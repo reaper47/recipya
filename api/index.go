@@ -21,11 +21,14 @@ func Index() {
 		log.Println(err)
 	}
 	for _, r := range recipes{
+		// numIndexed := 0
+		// numInserted := 0
 		if err := env.recipes.InsertRecipe(r); err != nil {
 			log.Println(err)
 		}
 	}
 
+	// log.Printf("Inserted %v recipes and indexed %v recipes", numInserted, numIndexed)
 	log.Printf("Indexed %v recipes", len(recipes)) 
 }
 

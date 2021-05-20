@@ -15,7 +15,7 @@ type tables struct {
 type table struct {
 	name       string
 	assocTable string
-	cols     map[string]string
+	cols       map[string]string
 }
 
 var (
@@ -51,53 +51,45 @@ var schema = tables{
 	nutrition: table{
 		name: "nutrition",
 		cols: map[string]string{
-			"recipes_id":           "INTEGER PRIMARY KEY",
-			"calories":            "TEXT",
-			"carbohydrate": "TEXT",
-			"fat":          "TEXT",
+			"id":            "INTEGER PRIMARY KEY",
+			"calories":      "TEXT",
+			"carbohydrate":  "TEXT",
+			"fat":           "TEXT",
 			"saturated_fat": "TEXT",
-			"cholesterol": "TEXT",
-			"protein":      "TEXT",
-			"sodium":       "TEXT",
-			"fiber":        "TEXT",
-			"sugar":        "TEXT",
-			"!foreignkey":         recipesForeignKey,
+			"cholesterol":   "TEXT",
+			"protein":       "TEXT",
+			"sodium":        "TEXT",
+			"fiber":         "TEXT",
+			"sugar":         "TEXT",
 		},
 	},
 	recipes: table{
 		name: "recipes",
 		cols: map[string]string{
-			"id":             "INTEGER PRIMARY KEY",
-			"name":           "TEXT UNIQUE",
-			"description":    "TEXT",
-			"categories_id": 	  "INTEGER",
-			"url":            "TEXT",
-			"image":          "TEXT",
-			"prepTime":       "TEXT",
-			"cookTime":       "TEXT",
-			"totalTime":      "TEXT",
-			"keywords":       "TEXT",
-			"recipeYield":    "INTEGER",
-			"dateModified":   "TEXT",
-			"dateCreated":    "TEXT",
-			//"!foreignkey": "FOREIGN KEY(categories_id) REFERENCES categories(id) " + foreignKeyExt,
-
+			"id":            "INTEGER PRIMARY KEY",
+			"name":          "TEXT UNIQUE",
+			"description":   "TEXT",
+			"categories_id": "INTEGER",
+			"nutrition_id":  "INTEGER",
+			"url":           "TEXT",
+			"image":         "TEXT",
+			"prepTime":      "TEXT",
+			"cookTime":      "TEXT",
+			"totalTime":     "TEXT",
+			"keywords":      "TEXT",
+			"recipeYield":   "INTEGER",
+			"dateModified":  "TEXT",
+			"dateCreated":   "TEXT",
+			"!foreignkey": "FOREIGN KEY (categories_id) REFERENCES categories(id) ON DELETE NO ACTION," +
+				"FOREIGN KEY (nutrition_id) REFERENCES nutrition(id) ON DELETE NO ACTION",
 		},
 	},
-	/*recipesCategories: table{
-		name: "recipes_categories",
-		cols: map[string]string{
-			"recipes_id":   "INTEGER",
-			"categories_id": "INTEGER",
-			"!foreignkey": recipesForeignKey + ", " + "FOREIGN KEY(categories_id) REFERENCES categories(id) " + foreignKeyExt,
-		},
-	},*/
 	recipesIngredients: table{
 		name: "recipes_ingredients",
 		cols: map[string]string{
 			"recipes_id":     "INTEGER",
 			"ingredients_id": "INTEGER",
-			"!foreignkey":   recipesForeignKey + ", " + "FOREIGN KEY(ingredients_id) REFERENCES ingredients(id) " + foreignKeyExt,
+			"!foreignkey":    recipesForeignKey + ", " + "FOREIGN KEY(ingredients_id) REFERENCES ingredients(id) " + foreignKeyExt,
 		},
 	},
 	recipesInstructions: table{
@@ -105,14 +97,14 @@ var schema = tables{
 		cols: map[string]string{
 			"recipes_id":      "INTEGER",
 			"instructions_id": "INTEGER",
-			"!foreignkey":    recipesForeignKey + ", " + "FOREIGN KEY(instructions_id) REFERENCES instructions(id) " + foreignKeyExt,
+			"!foreignkey":     recipesForeignKey + ", " + "FOREIGN KEY(instructions_id) REFERENCES instructions(id) " + foreignKeyExt,
 		},
 	},
 	recipesTools: table{
 		name: "recipes_tools",
 		cols: map[string]string{
-			"recipes_id":   "INTEGER",
-			"tools_id":     "INTEGER",
+			"recipes_id":  "INTEGER",
+			"tools_id":    "INTEGER",
 			"!foreignkey": recipesForeignKey + ", " + "FOREIGN KEY(tools_id) REFERENCES tools(id) " + foreignKeyExt,
 		},
 	},
