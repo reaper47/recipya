@@ -8,31 +8,12 @@ import (
 	"github.com/reaper47/recipe-hunter/model"
 )
 
-const pattern string = "+_+"
-
 type Repository struct {
 	DB *sql.DB
 }
 
 // InsertRecipe stores a recipe in the database.
-func (repo Repository) InsertRecipe(r *model.Recipe) error {
-	recipe, err := repo.GetRecipe(r.Name)
-	if err != nil {
-		return err
-	}
-
-	if recipe != nil {
-		if recipe.DateCreated == r.DateCreated {
-			if recipe.DateModified != r.DateModified {
-				return repo.UpdateRecipe(r, recipe.ID)
-			}
-			return nil
-		}
-		r.Name = pattern + r.Name
-	} else {
-		recipe = r
-	}
-
+func (repo Repository) InsertRecipe(recipe *model.Recipe) error {
 	ctx := context.Background()
 	tx, err := db.BeginTx(ctx, nil)
 	if err != nil {
@@ -255,7 +236,7 @@ func (repo Repository) UpdateRecipe(r *model.Recipe, recipeID int64) error {
 
 	// Recipe
 	stmt = "UPDATE " + schema.recipes.name + " " +
-		"SET description = ?, url = ?, image = ?, prepTime = ?, cookTime = ?, totalTime = ?, "+
+		"SET description = ?, url = ?, image = ?, prepTime = ?, cookTime = ?, totalTime = ?, " +
 		"    keywords = ?, recipeYield = ?, categories_id = ?, nutrition_id = ?" +
 		"WHERE id = ?"
 
@@ -294,7 +275,7 @@ func (repo Repository) UpdateRecipe(r *model.Recipe, recipeID int64) error {
 	}
 
 	// No errors, all good so update the dateModified field
-	stmt = "UPDATE " + schema.recipes.name + " SET dateModified = ? WHERE id = ?" 
+	stmt = "UPDATE " + schema.recipes.name + " SET dateModified = ? WHERE id = ?"
 	if _, err = tx.Exec(stmt, r.DateModified, recipeID); err != nil {
 		return err
 	}
@@ -307,24 +288,24 @@ func (repo Repository) UpdateRecipe(r *model.Recipe, recipeID int64) error {
 
 func updateAssocTable(t table, values []string, recipeID int64, tx *sql.Tx) error {
 	stmt := "DELETE FROM " + t.assocTable + " WHERE recipes_id = ?"
-		_, err := tx.Exec(stmt, recipeID)
-		if err != nil {
-			return err
-		}
+	_, err := tx.Exec(stmt, recipeID)
+	if err != nil {
+		return err
+	}
 
 	var ids []int64
 	for _, value := range values {
 		value = strings.ToLower(value)
 		stmt = "SELECT id FROM " + t.name + " WHERE name=\"" + value + "\""
-		var id int64 
+		var id int64
 		err = tx.QueryRow(stmt).Scan(&id)
 		if err == sql.ErrNoRows {
 			stmt = "INSERT INTO " + t.name + " (name) VALUES (?)"
 			result, err := tx.Exec(stmt, value)
 			if err != nil {
-				return err 
+				return err
 			}
-			
+
 			id, err = result.LastInsertId()
 			if err != nil {
 				return err
@@ -334,7 +315,7 @@ func updateAssocTable(t table, values []string, recipeID int64, tx *sql.Tx) erro
 	}
 
 	for _, id := range ids {
-		stmt = "INSERT INTO " + t.assocTable + " (recipes_id, " +  t.name + "_id) VALUES (?,?)"
+		stmt = "INSERT INTO " + t.assocTable + " (recipes_id, " + t.name + "_id) VALUES (?,?)"
 		_, err = tx.Exec(stmt, recipeID, id)
 		if err != nil {
 			return err
@@ -462,4 +443,3 @@ func getNutritionSet(recipeID int64, tx *sql.Tx) (*model.NutritionSet, error) {
 	}
 	return &n, nil
 }
-

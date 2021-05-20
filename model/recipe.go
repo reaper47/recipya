@@ -5,27 +5,27 @@ type Recipes struct {
 }
 
 type Recipe struct {
-	ID				   int64
-	Name               string     
-	Description        string       
-	Url                string       
-	Image              string       
-	PrepTime           string       
-	CookTime           string       
-	TotalTime          string       
-	RecipeCategory     string       
-	Keywords           string       
-	RecipeYield        int          
-	Tool               []string     
-	RecipeIngredient   []string     
-	RecipeInstructions []string     
-	Nutrition          *NutritionSet 
-	DateModified       string       
-	DateCreated        string       
+	ID                 int64
+	Name               string
+	Description        string
+	Url                string
+	Image              string
+	PrepTime           string
+	CookTime           string
+	TotalTime          string
+	RecipeCategory     string
+	Keywords           string
+	RecipeYield        int
+	Tool               []string
+	RecipeIngredient   []string
+	RecipeInstructions []string
+	Nutrition          *NutritionSet
+	DateModified       string
+	DateCreated        string
 }
 
 type NutritionSet struct {
-	Calories     string 
+	Calories     string
 	Carbohydrate string `json:"carbohydrateContent"`
 	Fat          string `json:"fatContent"`
 	SaturatedFat string `json:"saturatedFatContent"`
@@ -34,4 +34,12 @@ type NutritionSet struct {
 	Sodium       string `json:"sodiumContent"`
 	Fiber        string `json:"fiberContent"`
 	Sugar        string `json:"sugarContent"`
+}
+
+func (r *Recipe) IsCreatedSameTime(other *Recipe) bool {
+	return r.DateCreated == other.DateCreated
+}
+
+func (r *Recipe) IsModified(other *Recipe) bool {
+	return r.DateModified != other.DateModified
 }

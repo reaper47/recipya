@@ -13,6 +13,8 @@ import (
 	"github.com/reaper47/recipe-hunter/repository"
 )
 
+const pattern = "+_+"
+
 func Index() {
 	env := InitEnv(repository.Db())
 
@@ -20,16 +22,45 @@ func Index() {
 	if err != nil {
 		log.Println(err)
 	}
-	for _, r := range recipes{
-		// numIndexed := 0
-		// numInserted := 0
-		if err := env.recipes.InsertRecipe(r); err != nil {
+
+	var numInserted, numIndexed, numSkipped int64
+	for _, r := range recipes {
+		recipe, err := env.recipes.GetRecipe(r.Name)
+		if err != nil {
+			log.Printf("Error getting recipe: '%v'. Err: %v\n", r.Name, err)
+			continue
+		}
+
+		if recipe != nil {
+			if r.IsCreatedSameTime(recipe) {
+				if r.IsModified(recipe) {
+					if err = env.recipes.UpdateRecipe(r, recipe.ID); err != nil {
+						log.Printf("Error while indexing recipe: '%v'. Err: %v\n", r.Name, err)
+						numSkipped++
+						continue
+					}
+					numIndexed++
+					continue
+				}
+				numSkipped++
+				continue
+			}
+			r.Name = pattern + r.Name
+		}
+
+		if err = env.recipes.InsertRecipe(r); err != nil {
 			log.Println(err)
 		}
+		numInserted++
 	}
 
-	// log.Printf("Inserted %v recipes and indexed %v recipes", numInserted, numIndexed)
-	log.Printf("Indexed %v recipes", len(recipes)) 
+	log.Printf(
+		"Number of recipes: %v. Inserted %v, indexed %v and skipped %v",
+		len(recipes),
+		numInserted,
+		numIndexed,
+		numSkipped,
+	)
 }
 
 func getRecipes() ([]*model.Recipe, error) {
