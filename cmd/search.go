@@ -23,29 +23,26 @@ import (
 
 // searchCmd represents the search command
 var searchCmd = &cobra.Command{
-	Use:   "search",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Use:   "search ingredient1,ingredient2,...,ingredientN",
+	Short: "Search for recipes based on ingredients",
+	Long: `
+---------- Help for 'search' command ---------
+|                                            |
+|  Searches for recipes based on the list    |
+|  of ingredients provided as input.         |
+|                                            |
+|  In other words, the command returns       |
+|  recipes you can prepare or cook from      |
+|  ingredients in your fridge.               |
+|____________________________________________|	
+	 `,
+	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("search called")
+		fmt.Printf("search called with ingredients: %v\n", args)
+		fmt.Println()
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(searchCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// searchCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// searchCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

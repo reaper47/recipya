@@ -28,6 +28,7 @@ func Index() {
 		recipe, err := env.recipes.GetRecipe(r.Name)
 		if err != nil {
 			log.Printf("Error getting recipe: '%v'. Err: %v\n", r.Name, err)
+			numSkipped++
 			continue
 		}
 
@@ -49,7 +50,9 @@ func Index() {
 		}
 
 		if err = env.recipes.InsertRecipe(r); err != nil {
-			log.Println(err)
+			log.Printf("Error while inserting recipe: '%v'. Err: %v\n", r.Name, err)
+			numSkipped++
+			continue
 		}
 		numInserted++
 	}

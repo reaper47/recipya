@@ -13,7 +13,7 @@ type Repository struct {
 }
 
 // InsertRecipe stores a recipe in the database.
-func (repo Repository) InsertRecipe(recipe *model.Recipe) error {
+func (repo Repository) InsertRecipe(r *model.Recipe) error {
 	ctx := context.Background()
 	tx, err := db.BeginTx(ctx, nil)
 	if err != nil {
@@ -21,62 +21,60 @@ func (repo Repository) InsertRecipe(recipe *model.Recipe) error {
 	}
 	defer tx.Rollback()
 
-	nutritionID, err := insertNutrition(recipe.Nutrition, tx)
+	categoryID, err := getCategoryID(r.RecipeCategory, tx)
 	if err != nil {
 		return err
 	}
 
-	recipesID, err := insertRecipeBase(recipe, nutritionID, tx)
+	nutritionID, err := getNutritionID(r.Nutrition, tx)
 	if err != nil {
 		return err
 	}
 
-	err = insertValues(recipesID, recipe.RecipeIngredient, schema.recipesIngredients, tx)
+	recipeID, err := insertRecipe(r, categoryID, nutritionID, tx)
 	if err != nil {
 		return err
 	}
 
-	err = insertValues(recipesID, recipe.RecipeInstructions, schema.recipesInstructions, tx)
+	err = insertValues(recipeID, r.RecipeIngredient, schema.recipeIngredient, tx)
 	if err != nil {
 		return err
 	}
 
-	err = insertValues(recipesID, recipe.Tool, schema.recipesTools, tx)
+	err = insertValues(recipeID, r.RecipeInstructions, schema.recipeInstruction, tx)
 	if err != nil {
 		return err
 	}
 
-	err = insertCategory(recipesID, recipe.RecipeCategory, tx)
+	err = insertValues(recipeID, r.Tool, schema.recipeTool, tx)
 	if err != nil {
 		return err
 	}
 
-	if err = tx.Commit(); err != nil {
-		return err
-	}
-	return nil
+	return tx.Commit()
 }
 
-func insertRecipeBase(recipe *model.Recipe, nutritionID int64, tx *sql.Tx) (int64, error) {
-	stmt := "INSERT INTO " + schema.recipes.name + " " +
-		"(name, description, recipeYield, nutrition_id, dateCreated, " +
-		" url, keywords, prepTime, totalTime, dateModified, image, cookTime) " +
-		" VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"
-
+func insertRecipe(
+	r *model.Recipe,
+	categoryID int64,
+	nutritionID int64,
+	tx *sql.Tx,
+) (int64, error) {
 	result, err := tx.Exec(
-		stmt,
-		strings.ToLower(recipe.Name),
-		recipe.Description,
-		recipe.RecipeYield,
+		insertRecipeStmt,
+		strings.ToLower(r.Name),
+		r.Description,
+		r.Url,
+		r.Image,
+		r.PrepTime,
+		r.CookTime,
+		r.TotalTime,
+		categoryID,
+		strings.ToLower(r.Keywords),
+		r.RecipeYield,
 		nutritionID,
-		recipe.DateCreated,
-		recipe.Url,
-		strings.ToLower(recipe.Keywords),
-		recipe.PrepTime,
-		recipe.TotalTime,
-		recipe.DateModified,
-		recipe.Image,
-		recipe.CookTime,
+		r.DateModified,
+		r.DateCreated,
 	)
 	if err != nil {
 		return -1, err
@@ -89,42 +87,32 @@ func insertRecipeBase(recipe *model.Recipe, nutritionID int64, tx *sql.Tx) (int6
 	return id, nil
 }
 
-func insertNutrition(n *model.NutritionSet, tx *sql.Tx) (int64, error) {
-	stmt := "SELECT id FROM " + schema.nutrition.name + " " +
-		"WHERE protein=? AND sodium=? AND fiber=? AND carbohydrate=? AND fat=? AND " +
-		"      saturated_fat=? AND cholesterol=? AND sugar=? AND calories=?"
-
+func getNutritionID(n *model.NutritionSet, tx *sql.Tx) (int64, error) {
 	var id int64
-	row := db.QueryRow(
-		stmt,
-		n.Protein,
-		n.Sodium,
-		n.Fiber,
+	err := db.QueryRow(
+		selectNutritionIdStmt,
+		n.Calories,
 		n.Carbohydrate,
 		n.Fat,
 		n.SaturatedFat,
 		n.Cholesterol,
+		n.Protein,
+		n.Sodium,
+		n.Fiber,
 		n.Sugar,
-		n.Calories,
-	)
-	err := row.Scan(&id)
+	).Scan(&id)
 	if err == sql.ErrNoRows {
-		stmt = "INSERT INTO " + schema.nutrition.name + " " +
-			"(protein, sodium, fiber, carbohydrate, fat, " +
-			" saturated_fat, cholesterol, sugar, calories) " +
-			"VALUES (?,?,?,?,?,?,?,?,?)"
-
 		result, err := tx.Exec(
-			stmt,
-			n.Protein,
-			n.Sodium,
-			n.Fiber,
+			insertNutritionStmt,
+			n.Calories,
 			n.Carbohydrate,
 			n.Fat,
 			n.SaturatedFat,
 			n.Cholesterol,
+			n.Protein,
+			n.Sodium,
+			n.Fiber,
 			n.Sugar,
-			n.Calories,
 		)
 		if err != nil {
 			return -1, err
@@ -146,14 +134,12 @@ func insertValues(
 ) error {
 	for _, value := range values {
 		value = strings.ToLower(value)
-		assocTable := strings.Split(t.name, "_")[1]
-		stmt := "SELECT id FROM " + assocTable + " WHERE name=\"" + value + "\""
-		row := db.QueryRow(stmt)
 
 		var id int64
-		err := row.Scan(&id)
+		stmt := selectIdForNameStmt(t.assocTable)
+		err := db.QueryRow(stmt, value).Scan(&id)
 		if err == sql.ErrNoRows {
-			stmt := "INSERT INTO " + assocTable + " (name) VALUES (?)"
+			stmt := insertNameStmt(t.assocTable)
 			result, err := tx.Exec(stmt, strings.ToLower(value))
 			if err != nil {
 				return err
@@ -165,7 +151,7 @@ func insertValues(
 			}
 		}
 
-		stmt = "INSERT INTO " + t.name + " (recipes_id, " + assocTable + "_id) VALUES (?,?)"
+		stmt = insertAssocStmt(t)
 		_, err = tx.Exec(stmt, recipesID, id)
 		if err != nil {
 			return err
@@ -174,32 +160,24 @@ func insertValues(
 	return nil
 }
 
-func insertCategory(recipesID int64, category string, tx *sql.Tx) error {
+func getCategoryID(category string, tx *sql.Tx) (int64, error) {
 	category = strings.ToLower(category)
-	stmt := "SELECT id FROM " + schema.categories.name + " WHERE name='" + category + "'"
-	row := tx.QueryRow(stmt)
 
 	var categoryID int64
-	err := row.Scan(&categoryID)
+	err := tx.QueryRow(selectCategoryIdStmt, category).Scan(&categoryID)
 	if err == sql.ErrNoRows {
-		stmt := "INSERT INTO " + schema.categories.name + " (name) VALUES (?)"
-		result, err := tx.Exec(stmt, strings.ToLower(category))
+		stmt := insertNameStmt(schema.category.name)
+		result, err := tx.Exec(stmt, category)
 		if err != nil {
-			return err
+			return -1, err
 		}
 
 		categoryID, err = result.LastInsertId()
 		if err != nil {
-			return err
+			return -1, err
 		}
 	}
-
-	stmt = "UPDATE " + schema.recipes.name + " SET categories_id = ? WHERE id = ?"
-	_, err = tx.Exec(stmt, categoryID, recipesID)
-	if err != nil {
-		return err
-	}
-	return nil
+	return categoryID, nil
 }
 
 // UpdateRecipe updates a recipe in the database if the date modified differs.
@@ -209,14 +187,14 @@ func (repo Repository) UpdateRecipe(r *model.Recipe, recipeID int64) error {
 	if err != nil {
 		return err
 	}
+	defer tx.Rollback()
 
-	// Cateogry
+	// Category
 	var categoryID int64
-	stmt := "SELECT id FROM " + schema.categories.name + " WHERE name = ?"
 	category := strings.ToLower(r.RecipeCategory)
-	err = tx.QueryRow(stmt, category).Scan(&categoryID)
+	err = tx.QueryRow(selectCategoryIdStmt, category).Scan(&categoryID)
 	if err == sql.ErrNoRows {
-		stmt = "INSERT INTO " + schema.categories.name + " (name) VALUES (?)"
+		stmt := insertNameStmt(schema.category.name)
 		result, err := tx.Exec(stmt, category)
 		if err != nil {
 			return err
@@ -229,28 +207,23 @@ func (repo Repository) UpdateRecipe(r *model.Recipe, recipeID int64) error {
 	}
 
 	// Nutrition
-	nutritionID, err := insertNutrition(r.Nutrition, tx)
+	nutritionID, err := getNutritionID(r.Nutrition, tx)
 	if err != nil {
 		return err
 	}
 
 	// Recipe
-	stmt = "UPDATE " + schema.recipes.name + " " +
-		"SET description = ?, url = ?, image = ?, prepTime = ?, cookTime = ?, totalTime = ?, " +
-		"    keywords = ?, recipeYield = ?, categories_id = ?, nutrition_id = ?" +
-		"WHERE id = ?"
-
 	_, err = tx.Exec(
-		stmt,
+		updateRecipeStmt,
 		r.Description,
 		r.Url,
 		r.Image,
 		r.PrepTime,
 		r.CookTime,
 		r.TotalTime,
+		categoryID,
 		r.Keywords,
 		r.RecipeYield,
-		categoryID,
 		nutritionID,
 		recipeID,
 	)
@@ -259,24 +232,24 @@ func (repo Repository) UpdateRecipe(r *model.Recipe, recipeID int64) error {
 	}
 
 	// Association tables
-	err = updateAssocTable(schema.ingredients, r.RecipeIngredient, recipeID, tx)
+	err = updateAssocTable(schema.ingredient, r.RecipeIngredient, recipeID, tx)
 	if err != nil {
 		return err
 	}
 
-	err = updateAssocTable(schema.instructions, r.RecipeInstructions, recipeID, tx)
+	err = updateAssocTable(schema.instruction, r.RecipeInstructions, recipeID, tx)
 	if err != nil {
 		return err
 	}
 
-	err = updateAssocTable(schema.tools, r.Tool, recipeID, tx)
+	err = updateAssocTable(schema.tool, r.Tool, recipeID, tx)
 	if err != nil {
 		return err
 	}
 
-	// No errors, all good so update the dateModified field
-	stmt = "UPDATE " + schema.recipes.name + " SET dateModified = ? WHERE id = ?"
-	if _, err = tx.Exec(stmt, r.DateModified, recipeID); err != nil {
+	// No errors, all good so update the date_modified column
+	_, err = tx.Exec(updateDateModifiedStmt, r.DateModified, recipeID)
+	if err != nil {
 		return err
 	}
 
@@ -287,7 +260,7 @@ func (repo Repository) UpdateRecipe(r *model.Recipe, recipeID int64) error {
 }
 
 func updateAssocTable(t table, values []string, recipeID int64, tx *sql.Tx) error {
-	stmt := "DELETE FROM " + t.assocTable + " WHERE recipes_id = ?"
+	stmt := deleteAssocValues(t)
 	_, err := tx.Exec(stmt, recipeID)
 	if err != nil {
 		return err
@@ -296,11 +269,12 @@ func updateAssocTable(t table, values []string, recipeID int64, tx *sql.Tx) erro
 	var ids []int64
 	for _, value := range values {
 		value = strings.ToLower(value)
-		stmt = "SELECT id FROM " + t.name + " WHERE name=\"" + value + "\""
+
+		stmt = selectIdForNameStmt(t.name)
 		var id int64
-		err = tx.QueryRow(stmt).Scan(&id)
+		err = tx.QueryRow(stmt, value).Scan(&id)
 		if err == sql.ErrNoRows {
-			stmt = "INSERT INTO " + t.name + " (name) VALUES (?)"
+			stmt = insertNameStmt(t.name)
 			result, err := tx.Exec(stmt, value)
 			if err != nil {
 				return err
@@ -315,7 +289,7 @@ func updateAssocTable(t table, values []string, recipeID int64, tx *sql.Tx) erro
 	}
 
 	for _, id := range ids {
-		stmt = "INSERT INTO " + t.assocTable + " (recipes_id, " + t.name + "_id) VALUES (?,?)"
+		stmt = insertAssocReverseStmt(t)
 		_, err = tx.Exec(stmt, recipeID, id)
 		if err != nil {
 			return err
@@ -333,48 +307,29 @@ func (repo Repository) GetRecipe(name string) (*model.Recipe, error) {
 	}
 	defer tx.Rollback()
 
-	r := model.Recipe{Name: name}
-	name = strings.ToLower(name)
+	r := model.Recipe{}
 
-	fields := "id, description, image, keywords, dateCreated, dateModified, " +
-		"	url, prepTime, cookTime, totalTime, recipeYield "
-
-	stmt := "SELECT	" + fields + " " +
-		"FROM " + schema.recipes.name + " " +
-		"WHERE name = \"" + name + "\""
-
-	err = tx.QueryRow(stmt).Scan(
+	var nutritionID int64
+	err = tx.QueryRow(selectRecipeByNameStmt, strings.ToLower(name)).Scan(
 		&r.ID,
+		&r.Name,
 		&r.Description,
-		&r.Image,
-		&r.Keywords,
-		&r.DateCreated,
-		&r.DateModified,
 		&r.Url,
+		&r.Image,
 		&r.PrepTime,
 		&r.CookTime,
 		&r.TotalTime,
+		&r.RecipeCategory,
+		&r.Keywords,
 		&r.RecipeYield,
+		&nutritionID, // &r.Nutrition
+		&r.DateModified,
+		&r.DateCreated,
 	)
 	if err == sql.ErrNoRows {
 		tx.Commit()
 		return nil, nil
 	}
-
-	stmt = "SELECT name FROM " + schema.categories.name + " WHERE id = ?"
-	tx.QueryRow(stmt, r.ID).Scan(&r.RecipeCategory)
-
-	ingredients, err := getAssocValues(schema.ingredients, r.ID, tx)
-	if err != nil {
-		return nil, err
-	}
-	r.RecipeIngredient = ingredients
-
-	instructions, err := getAssocValues(schema.instructions, r.ID, tx)
-	if err != nil {
-		return nil, err
-	}
-	r.RecipeInstructions = instructions
 
 	n, err := getNutritionSet(r.ID, tx)
 	if err != nil {
@@ -382,7 +337,19 @@ func (repo Repository) GetRecipe(name string) (*model.Recipe, error) {
 	}
 	r.Nutrition = n
 
-	tools, err := getAssocValues(schema.tools, r.ID, tx)
+	ingredients, err := getAssocValues(schema.ingredient, r.ID, tx)
+	if err != nil {
+		return nil, err
+	}
+	r.RecipeIngredient = ingredients
+
+	instructions, err := getAssocValues(schema.instruction, r.ID, tx)
+	if err != nil {
+		return nil, err
+	}
+	r.RecipeInstructions = instructions
+
+	tools, err := getAssocValues(schema.tool, r.ID, tx)
 	if err != nil {
 		return nil, err
 	}
@@ -396,12 +363,7 @@ func (repo Repository) GetRecipe(name string) (*model.Recipe, error) {
 }
 
 func getAssocValues(t table, recipeID int64, tx *sql.Tx) ([]string, error) {
-	stmt := "SELECT name " +
-		"FROM " + t.name + " " +
-		"INNER JOIN " + t.assocTable + " " +
-		"ON id = " + t.name + "_id " +
-		"WHERE recipes_id = ?"
-
+	stmt := selectAssocValuesStmt(t)
 	rows, err := tx.Query(stmt, recipeID)
 	if err != nil {
 		return nil, err
@@ -421,22 +383,18 @@ func getAssocValues(t table, recipeID int64, tx *sql.Tx) ([]string, error) {
 }
 
 func getNutritionSet(recipeID int64, tx *sql.Tx) (*model.NutritionSet, error) {
-	fields := "carbohydrate, fiber, sodium, sugar, calories, fat, saturated_fat, cholesterol, protein"
-	stmt := "SELECT " + fields + " " +
-		"FROM " + schema.nutrition.name + " " +
-		"WHERE id = (SELECT nutrition_id FROM " + schema.recipes.name + " WHERE id = ?)"
-
 	var n model.NutritionSet
+	stmt := selectNutritionSetStmt
 	err := tx.QueryRow(stmt, recipeID).Scan(
-		&n.Carbohydrate,
-		&n.Fiber,
-		&n.Sodium,
-		&n.Sugar,
 		&n.Calories,
+		&n.Carbohydrate,
 		&n.Fat,
 		&n.SaturatedFat,
 		&n.Cholesterol,
 		&n.Protein,
+		&n.Sodium,
+		&n.Fiber,
+		&n.Sugar,
 	)
 	if err != nil {
 		return nil, err

@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strings"
 	"sync"
 
 	"github.com/reaper47/recipe-hunter/config"
@@ -52,6 +51,7 @@ func initDb() error {
 	if err != nil {
 		return err
 	}
+	defer tx.Rollback()
 
 	for _, t := range allTables {
 		_, err = tx.Exec(createTableStmt(t))
@@ -60,18 +60,4 @@ func initDb() error {
 		}
 	}
 	return tx.Commit()
-}
-
-func createTableStmt(t table) string {
-	stmt := "CREATE TABLE IF NOT EXISTS " + t.name + " ("
-	var end string
-	for key, value := range t.cols {
-		if strings.HasPrefix(key, "!") {
-			end += value + ", "
-		} else {
-			stmt += key + " " + value + ", "
-		}
-	}
-	stmt += end + ")"
-	return strings.Replace(stmt, ", )", ")", 1)
 }

@@ -1,15 +1,15 @@
 package repository
 
 type tables struct {
-	categories          table
-	ingredients         table
-	instructions        table
-	nutrition           table
-	recipes             table
-	recipesIngredients  table
-	recipesInstructions table
-	recipesTools        table
-	tools               table
+	category          table
+	ingredient        table
+	instruction       table
+	nutrition         table
+	recipe            table
+	recipeIngredient  table
+	recipeInstruction table
+	recipeTool        table
+	tool              table
 }
 
 type table struct {
@@ -18,31 +18,31 @@ type table struct {
 	cols       map[string]string
 }
 
-var (
-	foreignKeyExt     = "ON DELETE CASCADE ON UPDATE NO ACTION"
-	recipesForeignKey = "FOREIGN KEY(recipes_id) REFERENCES recipes(id) " + foreignKeyExt
+const (
+	foreignKeyExt    = "ON DELETE CASCADE ON UPDATE NO ACTION"
+	recipeForeignKey = "FOREIGN KEY(recipe_id) REFERENCES recipe(id) " + foreignKeyExt
 )
 
 var schema = tables{
-	categories: table{
-		name:       "categories",
-		assocTable: "recipes_categories",
+	category: table{
+		name:       "category",
+		assocTable: "recipe_category",
 		cols: map[string]string{
 			"id":   "INTEGER PRIMARY KEY",
 			"name": "TEXT NOT NULL UNIQUE",
 		},
 	},
-	ingredients: table{
-		name:       "ingredients",
-		assocTable: "recipes_ingredients",
+	ingredient: table{
+		name:       "ingredient",
+		assocTable: "recipe_ingredient",
 		cols: map[string]string{
 			"id":   "INTEGER PRIMARY KEY",
 			"name": "TEXT NOT NULL UNIQUE",
 		},
 	},
-	instructions: table{
-		name:       "instructions",
-		assocTable: "recipes_instructions",
+	instruction: table{
+		name:       "instruction",
+		assocTable: "recipe_instruction",
 		cols: map[string]string{
 			"id":   "INTEGER PRIMARY KEY",
 			"name": "TEXT NOT NULL UNIQUE",
@@ -63,54 +63,57 @@ var schema = tables{
 			"sugar":         "TEXT",
 		},
 	},
-	recipes: table{
-		name: "recipes",
+	recipe: table{
+		name: "recipe",
 		cols: map[string]string{
 			"id":            "INTEGER PRIMARY KEY",
 			"name":          "TEXT UNIQUE",
 			"description":   "TEXT",
-			"categories_id": "INTEGER",
+			"category_id":   "INTEGER",
 			"nutrition_id":  "INTEGER",
 			"url":           "TEXT",
 			"image":         "TEXT",
-			"prepTime":      "TEXT",
-			"cookTime":      "TEXT",
-			"totalTime":     "TEXT",
+			"prep_time":     "TEXT",
+			"cook_time":     "TEXT",
+			"total_time":    "TEXT",
 			"keywords":      "TEXT",
-			"recipeYield":   "INTEGER",
-			"dateModified":  "TEXT",
-			"dateCreated":   "TEXT",
-			"!foreignkey": "FOREIGN KEY (categories_id) REFERENCES categories(id) ON DELETE NO ACTION," +
+			"yield":         "INTEGER",
+			"date_modified": "TEXT",
+			"date_created":  "TEXT",
+			"!foreignkey": "FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE NO ACTION," +
 				"FOREIGN KEY (nutrition_id) REFERENCES nutrition(id) ON DELETE NO ACTION",
 		},
 	},
-	recipesIngredients: table{
-		name: "recipes_ingredients",
+	recipeIngredient: table{
+		name:       "recipe_ingredient",
+		assocTable: "ingredient",
 		cols: map[string]string{
-			"recipes_id":     "INTEGER",
-			"ingredients_id": "INTEGER",
-			"!foreignkey":    recipesForeignKey + ", " + "FOREIGN KEY(ingredients_id) REFERENCES ingredients(id) " + foreignKeyExt,
+			"recipe_id":     "INTEGER",
+			"ingredient_id": "INTEGER",
+			"!foreignkey":   recipeForeignKey + ", " + "FOREIGN KEY(ingredient_id) REFERENCES ingredient(id) " + foreignKeyExt,
 		},
 	},
-	recipesInstructions: table{
-		name: "recipes_instructions",
+	recipeInstruction: table{
+		name:       "recipe_instruction",
+		assocTable: "instruction",
 		cols: map[string]string{
-			"recipes_id":      "INTEGER",
-			"instructions_id": "INTEGER",
-			"!foreignkey":     recipesForeignKey + ", " + "FOREIGN KEY(instructions_id) REFERENCES instructions(id) " + foreignKeyExt,
+			"recipe_id":      "INTEGER",
+			"instruction_id": "INTEGER",
+			"!foreignkey":    recipeForeignKey + ", " + "FOREIGN KEY(instruction_id) REFERENCES instruction(id) " + foreignKeyExt,
 		},
 	},
-	recipesTools: table{
-		name: "recipes_tools",
+	recipeTool: table{
+		name:       "recipe_tool",
+		assocTable: "tool",
 		cols: map[string]string{
-			"recipes_id":  "INTEGER",
-			"tools_id":    "INTEGER",
-			"!foreignkey": recipesForeignKey + ", " + "FOREIGN KEY(tools_id) REFERENCES tools(id) " + foreignKeyExt,
+			"recipe_id":   "INTEGER",
+			"tool_id":     "INTEGER",
+			"!foreignkey": recipeForeignKey + ", " + "FOREIGN KEY(tool_id) REFERENCES tool(id) " + foreignKeyExt,
 		},
 	},
-	tools: table{
-		name:       "tools",
-		assocTable: "recipes_tools",
+	tool: table{
+		name:       "tool",
+		assocTable: "recipe_tool",
 		cols: map[string]string{
 			"id":   "INTEGER PRIMARY KEY",
 			"name": "TEXT NOT NULL UNIQUE",
@@ -119,13 +122,13 @@ var schema = tables{
 }
 
 var allTables = []table{
-	schema.categories,
-	schema.ingredients,
-	schema.instructions,
+	schema.category,
+	schema.ingredient,
+	schema.instruction,
 	schema.nutrition,
-	schema.recipes,
-	schema.recipesIngredients,
-	schema.recipesInstructions,
-	schema.recipesTools,
-	schema.tools,
+	schema.recipe,
+	schema.recipeIngredient,
+	schema.recipeInstruction,
+	schema.recipeTool,
+	schema.tool,
 }
