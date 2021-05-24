@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"strconv"
 	"strings"
 )
 
@@ -19,10 +20,11 @@ func createTableStmt(t table) string {
 }
 
 // SELECT statements
-var selectRecipeByNameStmt = "SELECT " +
-	"	id, name, description, url, image, prep_time, cook_time, total_time, " +
-	"   (SELECT name FROM category WHERE id=category_id) AS category, " +
-	"	keywords, yield, nutrition_id, date_modified, date_created " +
+var recipeFields = "id, name, description, url, image, prep_time, cook_time, total_time, " +
+	"(SELECT name FROM category WHERE id=category_id) AS category, " +
+	"keywords, yield, nutrition_id, date_modified, date_created"
+
+var selectRecipeByNameStmt = "SELECT " + recipeFields + " " +
 	"FROM " + schema.recipe.name + " " +
 	"WHERE name=?"
 
@@ -43,6 +45,63 @@ var selectNutritionSetStmt = "SELECT calories, carbohydrate, fat, saturated_fat,
 	"	FROM " + schema.recipe.name +
 	"	WHERE id=?" +
 	")"
+
+func maximizeFridgeStmt(ingredients []string, limit int) string {
+	return createSearchStmt(ingredients, limit, false)
+}
+
+func minimizeMissingStmt(ingredients []string, limit int) string {
+	return createSearchStmt(ingredients, limit, true)
+}
+
+func createSearchStmt(ingredients []string, limit int, isBuyMinIngredients bool) string {
+	selectNumIngredients := "(" +
+		"SELECT COUNT(*) " +
+		"	FROM (" +
+		"		SELECT name " +
+		"		FROM " + schema.ingredient.name + " " +
+		"		INNER JOIN " + schema.ingredient.assocTable + " " +
+		"		ON id=" + schema.ingredient.assocTable + ".ingredient_id " +
+		"		WHERE " + schema.ingredient.assocTable + ".recipe_id=" + schema.recipe.name + ".id" +
+		"	) " +
+		"	WHERE (" + createLikeStmt(ingredients) + ")" +
+		") "
+
+	selectTotalIngredients := "SELECT COUNT(*) " +
+		"FROM " + schema.ingredient.name + " " +
+		"INNER JOIN " + schema.ingredient.assocTable + " " +
+		"ON id=" + schema.ingredient.assocTable + ".ingredient_id " +
+		"WHERE " + schema.ingredient.assocTable + ".recipe_id=" + schema.recipe.name + ".id"
+
+	return "SELECT " + recipeFields +
+		"	FROM (" +
+		"		SELECT " + schema.recipe.name + ".id, " +
+		"		(" + selectNumIngredients + ") AS num_ingredients, " +
+		"		(" + selectTotalIngredients + ") AS total_ingredients, " +
+		"		recipe.* " +
+		"	FROM " + schema.recipe.name + " " +
+		" " + orderByMode(isBuyMinIngredients) + " " +
+		"	LIMIT " + strconv.Itoa(limit) +
+		")"
+}
+
+func orderByMode(isMinimizeMissing bool) string {
+	if isMinimizeMissing {
+		return "ORDER BY (total_ingredients - num_ingredients) ASC, total_ingredients"
+	}
+	return "ORDER BY num_ingredients DESC, total_ingredients"
+}
+
+func createLikeStmt(values []string) string {
+	stmt := ""
+	for i, value := range values {
+		stmt += "name LIKE '%" + value + "%' "
+		if i != len(values)-1 {
+			stmt += "OR "
+		}
+	}
+	return stmt
+}
 
 func selectAssocValuesStmt(t table) string {
 	return "SELECT name " +

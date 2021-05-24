@@ -13,6 +13,8 @@ type Env struct {
 		InsertRecipe(r *model.Recipe) error
 		UpdateRecipe(r *model.Recipe, id int64) error
 		GetRecipe(name string) (*model.Recipe, error)
+		SearchMaximizeFridge(ingredients []string, n int) ([]*model.Recipe, error)
+		SearchMinimizeMissing(ingredients []string, n int) ([]*model.Recipe, error)
 	}
 }
 

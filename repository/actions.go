@@ -331,29 +331,7 @@ func (repo Repository) GetRecipe(name string) (*model.Recipe, error) {
 		return nil, nil
 	}
 
-	n, err := getNutritionSet(r.ID, tx)
-	if err != nil {
-		return nil, err
-	}
-	r.Nutrition = n
-
-	ingredients, err := getAssocValues(schema.ingredient, r.ID, tx)
-	if err != nil {
-		return nil, err
-	}
-	r.RecipeIngredient = ingredients
-
-	instructions, err := getAssocValues(schema.instruction, r.ID, tx)
-	if err != nil {
-		return nil, err
-	}
-	r.RecipeInstructions = instructions
-
-	tools, err := getAssocValues(schema.tool, r.ID, tx)
-	if err != nil {
-		return nil, err
-	}
-	r.Tool = tools
+	populateRecipe(&r, tx)
 
 	err = tx.Commit()
 	if err != nil {
@@ -400,4 +378,116 @@ func getNutritionSet(recipeID int64, tx *sql.Tx) (*model.NutritionSet, error) {
 		return nil, err
 	}
 	return &n, nil
+}
+
+// SearchMaximizeFridge searches for recipes in the database
+// that maximize the number of ingredients taken from the fridge.
+func (repo Repository) SearchMaximizeFridge(ingredients []string, n int) ([]*model.Recipe, error) {
+	ctx := context.Background()
+	tx, err := repo.DB.BeginTx(ctx, nil)
+	if err != nil {
+		return nil, err
+	}
+	defer tx.Rollback()
+
+	stmt := maximizeFridgeStmt(ingredients, n)
+	recipes, err := searchRecipes(stmt, tx)
+	if err != nil {
+		return nil, err
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		return nil, err
+	}
+	return recipes, nil
+}
+
+func searchRecipes(stmt string, tx *sql.Tx) ([]*model.Recipe, error) {
+	rows, err := tx.Query(stmt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var nutritionID int64
+	var recipes []*model.Recipe
+	for rows.Next() {
+		r := model.Recipe{}
+		err = rows.Scan(
+			&r.ID,
+			&r.Name,
+			&r.Description,
+			&r.Url,
+			&r.Image,
+			&r.PrepTime,
+			&r.CookTime,
+			&r.TotalTime,
+			&r.RecipeCategory,
+			&r.Keywords,
+			&r.RecipeYield,
+			&nutritionID, // &r.Nutrition
+			&r.DateModified,
+			&r.DateCreated,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		populateRecipe(&r, tx)
+		recipes = append(recipes, &r)
+	}
+
+	return recipes, nil
+}
+
+// SearchMinimizeMissing searches for recipes in the database
+// that minimizes the number of ingredients to buy at the store.
+func (repo Repository) SearchMinimizeMissing(ingredients []string, n int) ([]*model.Recipe, error) {
+	ctx := context.Background()
+	tx, err := repo.DB.BeginTx(ctx, nil)
+	if err != nil {
+		return nil, err
+	}
+	defer tx.Rollback()
+
+	stmt := minimizeMissingStmt(ingredients, n)
+	recipes, err := searchRecipes(stmt, tx)
+	if err != nil {
+		return nil, err
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		return nil, err
+	}
+	return recipes, nil
+}
+
+func populateRecipe(r *model.Recipe, tx *sql.Tx) error {
+	n, err := getNutritionSet(r.ID, tx)
+	if err != nil {
+		return err
+	}
+	r.Nutrition = n
+
+	ingredients, err := getAssocValues(schema.ingredient, r.ID, tx)
+	if err != nil {
+		return err
+	}
+	r.RecipeIngredient = ingredients
+
+	instructions, err := getAssocValues(schema.instruction, r.ID, tx)
+	if err != nil {
+		return err
+	}
+	r.RecipeInstructions = instructions
+
+	tools, err := getAssocValues(schema.tool, r.ID, tx)
+	if err != nil {
+		return err
+	}
+	r.Tool = tools
+
+	return nil
 }
