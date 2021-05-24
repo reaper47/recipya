@@ -1,14 +1,14 @@
 package api
 
 import (
-	"fmt"
+	"encoding/json"
 	"log"
 
 	"github.com/reaper47/recipe-hunter/model"
 	"github.com/reaper47/recipe-hunter/repository"
 )
 
-func Search(ingredients []string, mode int, limit int) {
+func Search(ingredients []string, mode int, limit int) []byte {
 	env := InitEnv(repository.Db())
 
 	var (
@@ -23,7 +23,12 @@ func Search(ingredients []string, mode int, limit int) {
 	}
 
 	if err != nil {
-		log.Println(err)
+		log.Fatalf("Error fetching the recipes: %v\n", err)
 	}
-	fmt.Println(recipes)
+
+	recipesJson, err := json.Marshal(model.Recipes{Objects: recipes})
+	if err != nil {
+		log.Fatalf("Error marhsaling the recipes: %v\n", err)
+	}
+	return recipesJson
 }

@@ -49,6 +49,9 @@ var searchCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		ingredients := strings.Split(args[0], ",")
 		limit, _ := cmd.Flags().GetInt("num-recipes")
+		if limit > 30 {
+			limit = 30
+		}
 		mode, _ := cmd.Flags().GetInt("mode")
 
 		api.Search(ingredients, mode, limit)
@@ -56,7 +59,7 @@ var searchCmd = &cobra.Command{
 }
 
 func init() {
-	searchCmd.Flags().IntP("num-recipes", "n", 10, "number of recipes to return.")
+	searchCmd.Flags().IntP("num-recipes", "n", 10, "number of recipes to return (max: 30)")
 	searchCmd.Flags().IntP("mode", "m", 2, "the search mode to employ (see help for options)")
 	rootCmd.AddCommand(searchCmd)
 }

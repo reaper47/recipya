@@ -80,6 +80,7 @@ func createSearchStmt(ingredients []string, limit int, isBuyMinIngredients bool)
 		"		(" + selectTotalIngredients + ") AS total_ingredients, " +
 		"		recipe.* " +
 		"	FROM " + schema.recipe.name + " " +
+		"   WHERE num_ingredients >= 1 " +
 		" " + orderByMode(isBuyMinIngredients) + " " +
 		"	LIMIT " + strconv.Itoa(limit) +
 		")"
