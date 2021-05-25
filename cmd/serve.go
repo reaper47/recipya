@@ -1,5 +1,5 @@
 /*
-Copyright © 2021 Marc-Andre Charland <macpoule@gmail.com>
+Copyright © 2021 NAME HERE <EMAIL ADDRESS>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -20,24 +20,24 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// indexCmd represents the index command
-var indexCmd = &cobra.Command{
-	Use:   "index",
-	Short: "Indexes the recipes database",
+// serveCmd represents the serve command
+var serveCmd = &cobra.Command{
+	Use:   "serve",
+	Short: "Starts the web server",
 	Long: `
----------- Help for 'index' command ----------
-|                                            |
-|  Indexes the recipes SQLite database from  | 
-|  the recipes in the folder specified in    |
-|  the configuration file.                   |
-|____________________________________________|	
-  
- `,
+---------- Help for 'serve' command ------------
+|                                              |
+|  Starts the web server.                      |
+|                                              |
+|  The web server is responsible for serving   |
+|  the React application.                      |                       
+|______________________________________________|		
+	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		core.Index()
+		core.Serve()
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(indexCmd)
+	rootCmd.AddCommand(serveCmd)
 }

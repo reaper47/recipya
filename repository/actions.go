@@ -13,7 +13,7 @@ type Repository struct {
 }
 
 // InsertRecipe stores a recipe in the database.
-func (repo Repository) InsertRecipe(r *model.Recipe) error {
+func (repo *Repository) InsertRecipe(r *model.Recipe) error {
 	ctx := context.Background()
 	tx, err := db.BeginTx(ctx, nil)
 	if err != nil {
@@ -54,12 +54,7 @@ func (repo Repository) InsertRecipe(r *model.Recipe) error {
 	return tx.Commit()
 }
 
-func insertRecipe(
-	r *model.Recipe,
-	categoryID int64,
-	nutritionID int64,
-	tx *sql.Tx,
-) (int64, error) {
+func insertRecipe(r *model.Recipe, categoryID int64, nutritionID int64, tx *sql.Tx) (int64, error) {
 	result, err := tx.Exec(
 		insertRecipeStmt,
 		strings.ToLower(r.Name),
@@ -126,12 +121,7 @@ func getNutritionID(n *model.NutritionSet, tx *sql.Tx) (int64, error) {
 	return id, nil
 }
 
-func insertValues(
-	recipesID int64,
-	values []string,
-	t table,
-	tx *sql.Tx,
-) error {
+func insertValues(recipesID int64, values []string, t table, tx *sql.Tx) error {
 	for _, value := range values {
 		value = strings.ToLower(value)
 
@@ -181,7 +171,7 @@ func getCategoryID(category string, tx *sql.Tx) (int64, error) {
 }
 
 // UpdateRecipe updates a recipe in the database if the date modified differs.
-func (repo Repository) UpdateRecipe(r *model.Recipe, recipeID int64) error {
+func (repo *Repository) UpdateRecipe(r *model.Recipe, recipeID int64) error {
 	ctx := context.Background()
 	tx, err := db.BeginTx(ctx, nil)
 	if err != nil {
@@ -299,7 +289,7 @@ func updateAssocTable(t table, values []string, recipeID int64, tx *sql.Tx) erro
 }
 
 // GetRecipe gets the recipe from the database that matches the name.
-func (repo Repository) GetRecipe(name string) (*model.Recipe, error) {
+func (repo *Repository) GetRecipe(name string) (*model.Recipe, error) {
 	ctx := context.Background()
 	tx, err := repo.DB.BeginTx(ctx, nil)
 	if err != nil {
@@ -382,7 +372,7 @@ func getNutritionSet(recipeID int64, tx *sql.Tx) (*model.NutritionSet, error) {
 
 // SearchMaximizeFridge searches for recipes in the database
 // that maximize the number of ingredients taken from the fridge.
-func (repo Repository) SearchMaximizeFridge(ingredients []string, n int) ([]*model.Recipe, error) {
+func (repo *Repository) SearchMaximizeFridge(ingredients []string, n int) ([]*model.Recipe, error) {
 	ctx := context.Background()
 	tx, err := repo.DB.BeginTx(ctx, nil)
 	if err != nil {
@@ -443,7 +433,10 @@ func searchRecipes(stmt string, tx *sql.Tx) ([]*model.Recipe, error) {
 
 // SearchMinimizeMissing searches for recipes in the database
 // that minimizes the number of ingredients to buy at the store.
-func (repo Repository) SearchMinimizeMissing(ingredients []string, n int) ([]*model.Recipe, error) {
+func (repo *Repository) SearchMinimizeMissing(
+	ingredients []string,
+	n int,
+) ([]*model.Recipe, error) {
 	ctx := context.Background()
 	tx, err := repo.DB.BeginTx(ctx, nil)
 	if err != nil {

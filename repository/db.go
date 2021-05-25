@@ -17,6 +17,7 @@ var (
 	once sync.Once
 )
 
+// Db is the database singleton.
 func Db() *sql.DB {
 	once.Do(createDb)
 	return db
@@ -37,7 +38,7 @@ func createDb() {
 		log.Fatalf("Failed to open database: %v", err)
 	}
 
-	err = initDb()
+	err = InitDb(db)
 	if err != nil {
 		log.Fatalf("Failed to initialize the database: '%v'", err)
 	}
@@ -45,9 +46,10 @@ func createDb() {
 	log.Printf("Opened database '%v'\n", path)
 }
 
-func initDb() error {
+// InitDb initializes the database by creating the tables.
+func InitDb(database *sql.DB) error {
 	ctx := context.Background()
-	tx, err := db.BeginTx(ctx, &sql.TxOptions{Isolation: sql.LevelSerializable})
+	tx, err := database.BeginTx(ctx, nil)
 	if err != nil {
 		return err
 	}

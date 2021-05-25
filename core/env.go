@@ -1,4 +1,4 @@
-package api
+package core
 
 import (
 	"database/sql"
@@ -21,6 +21,6 @@ type Env struct {
 // InitEnv initializes the Environment struct
 func InitEnv(db *sql.DB) *Env {
 	return &Env{
-		recipes: repository.Repository{DB: db},
+		recipes: &repository.Repository{DB: db},
 	}
 }

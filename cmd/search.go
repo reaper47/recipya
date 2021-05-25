@@ -18,15 +18,15 @@ package cmd
 import (
 	"strings"
 
-	"github.com/reaper47/recipe-hunter/api"
+	"github.com/reaper47/recipe-hunter/core"
 	"github.com/spf13/cobra"
 )
 
 // searchCmd represents the search command
 var searchCmd = &cobra.Command{
-	Use:   "search ingredient1,ingredient2,...,ingredientN",
+	Use:     "search ingredient1,ingredient2,...,ingredientN",
 	Example: "recipe-hunter search avocado,garlic -m 1 -n 5",
-	Short: "Search for recipes based on ingredients",
+	Short:   "Search for recipes based on ingredients",
 	Long: `
 ---------- Help for 'search' command -----------
 |                                              |
@@ -54,7 +54,7 @@ var searchCmd = &cobra.Command{
 		}
 		mode, _ := cmd.Flags().GetInt("mode")
 
-		api.Search(ingredients, mode, limit)
+		core.Search(ingredients, mode, limit)
 	},
 }
 

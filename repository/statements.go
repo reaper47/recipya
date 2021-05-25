@@ -20,7 +20,7 @@ func createTableStmt(t table) string {
 }
 
 // SELECT statements
-var recipeFields = "id, name, description, url, image, prep_time, cook_time, total_time, " +
+const recipeFields = "id, name, description, url, image, prep_time, cook_time, total_time, " +
 	"(SELECT name FROM category WHERE id=category_id) AS category, " +
 	"keywords, yield, nutrition_id, date_modified, date_created"
 

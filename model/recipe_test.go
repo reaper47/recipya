@@ -1,4 +1,4 @@
-package model
+package model_test
 
 import (
 	"encoding/json"
@@ -6,13 +6,16 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/reaper47/recipe-hunter/model"
 )
 
 func TestRecipe(t *testing.T) {
-	t.Run("Unmarshal JSON", unmarshal_Recipe_JSON)
+	t.Run("Unmarshal JSON", test_UnmarshalJSON)
+	t.Run("Is created at same time", test_IsCreatedAtSameTime)
+	t.Run("Recipe is modified", test_IsModified)
 }
 
-func unmarshal_Recipe_JSON(t *testing.T) {
+func test_UnmarshalJSON(t *testing.T) {
 	aRecipeJSON := `{
 		"id": 72639,
 		"name": "Honey Garlic Butter Roasted Carrots",
@@ -47,26 +50,70 @@ func unmarshal_Recipe_JSON(t *testing.T) {
 			"sugarContent": "9g"
 		},
 		"@context": "http:\/\/schema.org",
-		"@type": "Recipe",
+		"@type": "model.Recipe",
 		"dateModified": "2021-03-30T00:25:51+0000",
 		"dateCreated": "2021-03-29T20:19:47+0000",
 		"printImage": false,
 		"imageUrl": "\/index.php\/apps\/cookbook\/recipes\/72639\/image?size=full"
 	}`
 
-	var recipeActual Recipe
+	var recipeActual model.Recipe
 	if err := json.Unmarshal([]byte(aRecipeJSON), &recipeActual); err != nil {
 		t.Fatal(err)
 	}
 
 	recipeExpected := aRecipe()
-	if !cmp.Equal(recipeActual, recipeExpected, cmpopts.IgnoreFields(Recipe{}, "ID")) {
+	if !cmp.Equal(recipeActual, recipeExpected, cmpopts.IgnoreFields(model.Recipe{}, "ID")) {
 		t.Fatal(cmp.Diff(recipeActual, recipeExpected))
 	}
 }
 
-func aRecipe() Recipe {
-	return Recipe{
+func test_IsCreatedAtSameTime(t *testing.T) {
+	recipe1 := aRecipe()
+	recipe2 := aRecipe()
+
+	if !recipe1.IsCreatedSameTime(&recipe2) {
+		t.Fatalf(
+			"recipe1 is not created at the=same time as recipe2: %v != %v\n",
+			recipe1.DateCreated,
+			recipe2.DateCreated,
+		)
+	}
+
+	recipe1.DateCreated += "9"
+	if recipe1.IsCreatedSameTime(&recipe2) {
+		t.Fatalf(
+			"recipe1 should not have been created at the same time as recipe2: %v == %v\n",
+			recipe1.DateCreated,
+			recipe2.DateCreated,
+		)
+	}
+}
+
+func test_IsModified(t *testing.T) {
+	recipe1 := aRecipe()
+	recipe2 := aRecipe()
+
+	if recipe1.IsModified(&recipe2) {
+		t.Fatalf(
+			"Recipe should not have been modified: %v == %v\n",
+			recipe1.DateModified,
+			recipe2.DateModified,
+		)
+	}
+
+	recipe2.DateModified += "9"
+	if !recipe1.IsModified(&recipe2) {
+		t.Fatalf(
+			"Recipe should have been modified: : %v != %v\n",
+			recipe1.DateModified,
+			recipe2.DateModified,
+		)
+	}
+}
+
+func aRecipe() model.Recipe {
+	return model.Recipe{
 		Name:           "Honey Garlic Butter Roasted Carrots",
 		Description:    "Honey Garlic Butter Roasted Carrots are the best side dish to add to your dinner table!",
 		Url:            "https://cafedelites.com/honey-garlic-butter-roasted-carrots/#wprm-recipe-container-51027",
@@ -87,7 +134,7 @@ func aRecipe() Recipe {
 			"Lightly grease a large baking sheet with nonstick cooking oil spray; set aside.\n",
 			"Trim ends of carrots and cut into thirds.",
 		},
-		Nutrition: &NutritionSet{
+		Nutrition: &model.NutritionSet{
 			Calories:     "281kcal",
 			Carbohydrate: "35g",
 			Protein:      "2g",

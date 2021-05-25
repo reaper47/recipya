@@ -1,3 +1,11 @@
 recipesDb: C:\Users\macpoule\Documents\Code\recipe-hunter\dist\recipes.db
-
 recipesDir: C:\Users\macpoule\Nextcloud\recipes_
+
+host: "localhost"
+port: 3000
+
+# The duration in seconds for which the server 
+# gracefully waits for existing connections to finish.
+wait: 10
+
+

@@ -9,12 +9,19 @@ import (
 type config struct {
 	RecipesDb  string
 	RecipesDir string
+
+	Host string
+	Port int
+	Wait int
 }
 
 var (
 	defaults = map[string]interface{}{
 		"recipesDb":  "./dist/recipes.db",
 		"recipesDir": "./recipes",
+		"host":       "0.0.0.0",
+		"port":       3000,
+		"wait":       15,
 	}
 	configName  = "config"
 	configPaths = []string{".", "./config/"}
