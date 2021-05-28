@@ -42,8 +42,6 @@ func createDb() {
 	if err != nil {
 		log.Fatalf("Failed to initialize the database: '%v'", err)
 	}
-
-	log.Printf("Opened database '%v'\n", path)
 }
 
 // InitDb initializes the database by creating the tables.

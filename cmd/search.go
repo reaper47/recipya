@@ -16,6 +16,8 @@ limitations under the License.
 package cmd
 
 import (
+	"fmt"
+	"log"
 	"strings"
 
 	"github.com/reaper47/recipe-hunter/core"
@@ -54,7 +56,14 @@ var searchCmd = &cobra.Command{
 		}
 		mode, _ := cmd.Flags().GetInt("mode")
 
-		core.Search(ingredients, mode, limit)
+		recipes, err := core.Search(ingredients, mode, limit)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		for _, r := range recipes {
+			fmt.Printf("%+v\n\n", r)
+		}
 	},
 }
 

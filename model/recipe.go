@@ -5,27 +5,27 @@ type Recipes struct {
 }
 
 type Recipe struct {
-	ID                 int64
-	Name               string
-	Description        string
-	Url                string
-	Image              string
-	PrepTime           string
-	CookTime           string
-	TotalTime          string
-	RecipeCategory     string
-	Keywords           string
-	RecipeYield        int
-	Tool               []string
-	RecipeIngredient   []string
-	RecipeInstructions []string
-	Nutrition          *NutritionSet
-	DateModified       string
-	DateCreated        string
+	ID                 int64         `json:"id"`
+	Name               string        `json:"name"`
+	Description        string        `json:"description"`
+	Url                string        `json:"url"`
+	Image              string        `json:"image"`
+	PrepTime           string        `json:"prepTime"`
+	CookTime           string        `json:"cookTime"`
+	TotalTime          string        `json:"totalTime"`
+	RecipeCategory     string        `json:"recipeCategory"`
+	Keywords           string        `json:"keywords"`
+	RecipeYield        int           `json:"recipeYield"`
+	Tool               []string      `json:"tool"`
+	RecipeIngredient   []string      `json:"recipeIngredient"`
+	RecipeInstructions []string      `json:"recipeInstructions"`
+	Nutrition          *NutritionSet `json:"nutrition"`
+	DateModified       string        `json:"dateModified"`
+	DateCreated        string        `json:"dateCreated"`
 }
 
 type NutritionSet struct {
-	Calories     string
+	Calories     string `json:"calories"`
 	Carbohydrate string `json:"carbohydrateContent"`
 	Fat          string `json:"fatContent"`
 	SaturatedFat string `json:"saturatedFatContent"`

@@ -2,7 +2,6 @@ package core
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -13,7 +12,7 @@ import (
 )
 
 func initRecipesRoutes(r *mux.Router, env *Env) {
-	r.HandleFunc(api.RecipeSearch, env.getSearch).Methods("GET")
+	r.HandleFunc(api.RecipeSearch, env.getSearch).Methods(http.MethodGet)
 }
 
 func (env *Env) getSearch(w http.ResponseWriter, r *http.Request) {
@@ -22,7 +21,6 @@ func (env *Env) getSearch(w http.ResponseWriter, r *http.Request) {
 	var err error
 
 	ingredientsVar := vars["ingredients"]
-	fmt.Println(ingredientsVar)
 	if len(ingredientsVar) == 0 {
 		message := "Query parameter: 'ingredients' must be specified."
 		writeErrorJson(http.StatusBadRequest, message, w)
@@ -35,7 +33,6 @@ func (env *Env) getSearch(w http.ResponseWriter, r *http.Request) {
 		writeErrorJson(http.StatusBadRequest, message, w)
 		return
 	}
-	fmt.Printf("BOO %v\n", ingredients[0])
 
 	numVar := vars["num"]
 	limit := 10

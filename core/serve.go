@@ -17,8 +17,12 @@ import (
 
 func Serve() {
 	env := InitEnv(repository.Db())
-	r := createRouter(env)
 
+	interval := config.Config.IndexIntervalToDuration()
+	log.Printf("Database indexing has been scheduled for every %v\n", interval)
+	schedule(Index, interval)
+
+	r := createRouter(env)
 	srv := createServer(r)
 	go func() {
 		if err := srv.ListenAndServe(); err != nil {
@@ -53,7 +57,7 @@ func handle404(w http.ResponseWriter, r *http.Request) {
 }
 
 func createServer(r *mux.Router) *http.Server {
-	addr := config.Config.Host + ":" + strconv.Itoa(config.Config.Port)
+	addr := ":" + strconv.Itoa(config.Config.Port)
 	log.Println("Server started @ " + addr)
 	return &http.Server{
 		Addr:         addr,
