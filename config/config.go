@@ -44,6 +44,9 @@ func InitConfig() {
 	}
 	viper.SetConfigName(configName)
 
+	viper.SetEnvPrefix("RH")
+	viper.AutomaticEnv()
+
 	err := viper.ReadInConfig()
 	if err != nil {
 		log.Fatalf("Reading configuration file failed: %v", err)

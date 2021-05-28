@@ -25,7 +25,28 @@ Install my-project with npm
   npm install my-project
   cd my-project
 ```
-    
+
+## Environment Variables
+
+1. RH_WAIT
+
+1. RH_INDEXINTERVAL
+
+docker run -e RH_WAIT=20 -e RH_INDEXINTERVAL=5m -v /path/to/JSON_recipes/folder:/recipes recipe-hunter
+
+```bash
+$ docker run -d \
+   --name recipe-hunter \
+   --restart=unless-stopped \
+   --user $(id -u):$(id -g) \
+   -v /path/to/json-recipes:/recipes \
+   -p 3001:3001 \ 
+   -e RH_INDEXINTERVAL=1d \
+   recipe-hunter
+   reap47/recipe-hunter:latest
+```
+docker run -d --name recipe-hunter --restart=unless-stopped -v /path/to/json-recipes:/recipes -p 3001:3001 -e RH_INDEXINTERVAL=1d recipe-hunter
+
 ## Run Locally
 
 Clone the project

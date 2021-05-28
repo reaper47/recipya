@@ -21,6 +21,7 @@ func Serve() {
 	interval := config.Config.IndexIntervalToDuration()
 	log.Printf("Database indexing has been scheduled for every %v\n", interval)
 	schedule(Index, interval)
+	Index()
 
 	r := createRouter(env)
 	srv := createServer(r)

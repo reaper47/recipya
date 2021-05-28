@@ -18,4 +18,4 @@ wait: 10
 #   - M: months
 #   - w: weeks
 #   - y: years
-indexInterval: 1m
+indexInterval: 1d
