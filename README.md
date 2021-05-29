@@ -99,7 +99,7 @@ The duration in seconds for which the server gracefully waits for existing conne
 
 Here is a sample Caddy blob to expose the container to the outside world:
 
-```json
+```bash
 recipes.your-domain.name {
     encode zstd gzip
     reverse_proxy localhost:3001
