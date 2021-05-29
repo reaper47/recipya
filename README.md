@@ -1,156 +1,224 @@
 
 # Recipe Hunter
 
-A brief description of what this project does and who it's for
+Recipe Hunter is an application whose goal is to search for what you can cook with the ingredients in your fridge. 
+It is to help you know what you can cook with what you have when you are out of ideas. 
 
+It works seamlessly with recipes in your Nextcloud Cookbook.
 
-## Demo
-
-Insert gif or link to demo
-
+The project consists of a backend and a frontend. 
+The backend is a REST API, and the frontend is a simple app where the user can search recipes.
   
 ## Features
 
-- Light/dark mode toggle
-- Live previews
-- Fullscreen mode
-- Cross platform
+- Search for recipes based on what you have in your fridge
+- Cross-platform solution 
+- Can be self-hosted
 
-  
 ## Installation 
 
-Install my-project with npm
+Docker is the preferred and easiest way to install this project and expose to the world.
 
-```bash 
-  npm install my-project
-  cd my-project
-```
+### Recipes Database
 
-## Environment Variables
+A folder filled with recipes is required for this application to work when running it locally because 
+the database will index the recipes.
 
-1. RH_WAIT
+The folder can be placed anywhere. Each recipe is a JSON format that follows the recipe schema standard.
 
-1. RH_INDEXINTERVAL
+If you use Nextcloud cookbook, then all is needed is to point to the folder where Cookbook stores the recipes.
 
-docker run -e RH_WAIT=20 -e RH_INDEXINTERVAL=5m -v /path/to/JSON_recipes/folder:/recipes recipe-hunter
+### Docker
+
+Run the following Docker command to run the project as a daemon in a container named "recipe-hunter".
 
 ```bash
 $ docker run -d \
    --name recipe-hunter \
    --restart=unless-stopped \
-   --user $(id -u):$(id -g) \
-   -v /path/to/json-recipes:/recipes \
+   -v /path/to/your/json-recipes/repository:/recipes \
    -p 3001:3001 \ 
-   -e RH_INDEXINTERVAL=1d \
-   recipe-hunter
-   reap47/recipe-hunter:latest
+   -e RH_INDEXINTERVAL=3d \
+   reap99/recipe-hunter:latest
 ```
-docker run -d --name recipe-hunter --restart=unless-stopped -v /path/to/json-recipes:/recipes -p 3001:3001 -e RH_INDEXINTERVAL=1d recipe-hunter
 
-## Run Locally
-
-Clone the project
+Finally, give the API a try:
 
 ```bash
-  git clone https://link-to-project
+$ curl "localhost:3001/api/v1/recipes/search?ingredients=avocado&num=1"
 ```
 
-Go to the project directory
+### Docker-Compose
 
-```bash
-  cd my-project
+Create a `docker-compose.yaml` file under `/var/www/you-domain-name/recipe-hunter/` and add the following content:
+
+```dockerfile
+version: "3"
+services:
+    recipe-hunter:
+        image: reaper99/recipe-hunter:latest
+        container_name: recipe-hunter
+        hostname: recipes
+        ports:
+            - "3001:3001"
+        restart: unless-stopped
+        environment:
+            RH_INDEXINTERVAL: 1d
+            RH_WAIT: 10
+        volumes:
+            - "/path/to/your/json-recipes/repository:/recipes"
 ```
 
-Install dependencies
+### Environment Variables
 
-```bash
-  npm install
-```
+The following environment variables can be set if you want to use a value different from the default:
 
-Start the server
+#### RH_INDEXINTERVAL
 
-```bash
-  npm run start
-```
+The interval at which the recipes database will be indexed. A value of -1 will disable the automatic indexing [Note: To be implemented]. 
 
-  
-## Usage/Examples
+The syntax is [int][unit], e.g. 10m, 1h, 1d.
 
-```javascript
-import Component from 'my-project'
+Valid units are:
+  - m: minutes
+  - h: hours
+  - d: days
+  - M: months
+  - w: weeks
+  - y: years
 
-function App() {
-  return <Component />
+**Default:** 1d
+
+#### RH_WAIT
+
+The duration in seconds for which the server gracefully waits for existing connections to finish.
+
+**Default:** 10
+
+## Deployment
+
+Here is a sample Caddy blob to expose the container to the outside world:
+
+```json
+recipes.your-domain.name {
+    encode zstd gzip
+    reverse_proxy localhost:3001
+
+    log {
+        output file /var/log/caddy/recipes.your-domain.name.access.log
+    }
 }
 ```
 
-  
-## Running Tests
-
-To run tests, run the following command
+Then, reload the server:
 
 ```bash
-  npm run test
+$ caddy reload
 ```
 
+No Nginx configuration is given because Caddy is easy, simple, has automatic HTTPS, generates and renews certbot certificates automatically, and works like a charm.
+
+## Run Locally
+
+1. Clone the project:
+
+```bash
+$ git clone https://github.com/reaper47/recipe-hunter.git
+```
+
+2. Move inside the directory:
+
+```bash
+$ cd recipe-hunter
+```
+
+3. Install dependencies:
+
+```bash
+$ go mod download
+```
+
+4. Build the program:
+
+```bash
+$ go build -o dist
+```
+
+5. Modify the configuration file in /dist
+
+6. You are ready to go!
+
+
+## Usage/Examples
+
+To display the help text:
+
+```bash
+$ ./recipe-hunter
+```
+
+To index the database:
+
+```bash
+$ ./recipe-hunter help index 
+
+$ ./recipe-hunter index
+```
+
+To search for recipes from a list of ingredients:
+
+```bash
+$ ./recipe-hunter help search
+
+$ ./recipe-hunter search avocado,garlic,ketchup
+```
+
+To start the web server that exposes the REST API:
+
+```bash
+$ ./recipe-hunter help serve
+
+$ ./recipe-hunter serve
+$ curl localhost:3001/api/v1/recipes/search?ingredients=avocado,garlic,ketchup&num=3&mode=2
+```
+
+ 
+## Running Tests
+
+To run tests, run the following command:
+
+```bash
+$ go test ./...
+```
   
 ## API Reference
 
-#### Get all items
+#### Search all items
 
 ```http
-  GET /api/items
+  GET /api/v1/recipes/search
 ```
 
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `api_key` | `string` | **Required**. Your API key |
+| Parameter     | Type     | Description                |
+| :------------ | :------- | :------------------------- |
+| `ingredients` | `string` | **Required**. A comma-separated list of ingredients |
+| `num`         | `int`    | The maximum number of recipes to fetch.<br>Default: `10`. |
+| `mode`        | `int`    | The search mode to employ.<br>Mode `1`: Minimize the number of missing ingredients to buy less at the grocery store.<br>Mode `2`: Maximize the number of ingredients taken from the fridge.<br>Default `2`.
 
-#### Get item
-
-```http
-  GET /api/items/${id}
-```
-
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id of item to fetch |
-
-#### add(num1, num2)
-
-Takes two numbers and returns the sum.
-
-  
 ## Tech Stack
 
-**Client:** React, Redux, TailwindCSS
+**Client:** Flutter
 
-**Server:** Node, Express
+**Server:** Go
 
-  
+**Deployment:** Docker
+
 ## Feedback
 
-If you have any feedback, please reach out to us at fake@fake.com
-
+If you have any feedback, please reach out to us at macpoule@gmail.com or
+open an issue on GitHub.
   
 ## Authors
 
-- [@katherinepeterson](https://www.github.com/katherinepeterson)
+- [@reaper99](https://www.github.com/reaper99)
 
-  
-## Appendix
-
-Any additional information goes here
-
-  
-## FAQ
-
-#### Question 1
-
-Answer 1
-
-#### Question 2
-
-Answer 2
-
-  

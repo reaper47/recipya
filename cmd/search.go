@@ -40,11 +40,11 @@ var searchCmd = &cobra.Command{
 |  your fridge.                                |
 |                                              |
 |  Search modes:                               |
-|	1 -> Minimize the number of missing        |
-|		 ingredients to buy less at the        |
-|		 grocery store.                        |
-|	2 -> Maximize the number of ingredients    |
-|		 taken from the fridge [default]       |
+|   1 -> Minimize the number of missing        |
+|        ingredients to buy less at the        |
+|        grocery store.                        |
+|   2 -> Maximize the number of ingredients    |
+|        taken from the fridge [default]       |
 |______________________________________________|	
 	 `,
 	Args: cobra.ExactArgs(1),

@@ -1,0 +1,14 @@
+version: "3"
+services:
+    recipe-hunter:
+        image: reaper99/recipe-hunter:latest
+        container_name: recipe-hunter
+        hostname: recipes
+        ports:
+            - "3001:3001"
+        restart: unless-stopped
+        environment:
+            RH_INDEXINTERVAL: "1d"
+            RH_WAIT: 10
+        volumes:
+            - "/mnt/bigger/recipes:/recipes"
