@@ -2,12 +2,12 @@
 # Recipe Hunter
 
 Recipe Hunter is an application whose goal is to search for what you can cook with the ingredients in your fridge. 
-It is to help you know what you can cook with what you have when you are out of ideas. 
+In other words, it helps you know what you can cook with what you have when you are out of ideas. 
 
-It works seamlessly with recipes in your Nextcloud Cookbook.
+It works seamlessly with recipes in your [Nextcloud Cookbook](https://apps.nextcloud.com/apps/cookbook).
 
 The project consists of a backend and a frontend. 
-The backend is a REST API, and the frontend is a simple app where the user can search recipes.
+The backend is a REST API. The frontend, found under the /web folder, is a simple app where the user can use the search function.
   
 ## Features
 
@@ -21,12 +21,17 @@ Docker is the preferred and easiest way to install this project and expose to th
 
 ### Recipes Database
 
-A folder filled with recipes is required for this application to work when running it locally because 
-the database will index the recipes.
+A folder of recipes is required for this application to work when running locally because 
+the database will index them.
 
-The folder can be placed anywhere. Each recipe is a JSON format that follows the recipe schema standard.
+The folder can be placed anywhere. Each recipe is a JSON-formatted file that follows the [recipe schema](https://schema.org/Recipe) standard.
+Not all fields are currently supported. Refer to the[Feedback](#feedback) if you require a field from the schema. 
 
-If you use Nextcloud cookbook, then all is needed is to point to the folder where Cookbook stores the recipes.
+If you use Nextcloud Cookbook, then all is needed is to point to the folder where Cookbook stores the recipes.
+
+#### No Recipes Right Now?
+
+No problem! Download this [sample](https://cloud.musicavis.ca/index.php/s/jiWRLkJKm359pX3). 
 
 ### Docker
 
@@ -69,6 +74,12 @@ services:
             - "/path/to/your/json-recipes/repository:/recipes"
 ```
 
+Then, run the container:
+
+```bash
+$ docker-compose up -d
+```
+
 ### Environment Variables
 
 The following environment variables can be set if you want to use a value different from the default:
@@ -87,13 +98,13 @@ Valid units are:
   - w: weeks
   - y: years
 
-**Default:** 1d
+Default: 1d
 
 #### RH_WAIT
 
 The duration in seconds for which the server gracefully waits for existing connections to finish.
 
-**Default:** 10
+Default: 10
 
 ## Deployment
 
@@ -203,7 +214,7 @@ $ go test ./...
 | :------------ | :------- | :------------------------- |
 | `ingredients` | `string` | **Required**. A comma-separated list of ingredients |
 | `num`         | `int`    | The maximum number of recipes to fetch.<br>Default: `10`. |
-| `mode`        | `int`    | The search mode to employ.<br>Mode `1`: Minimize the number of missing ingredients to buy less at the grocery store.<br>Mode `2`: Maximize the number of ingredients taken from the fridge.<br>Default `2`.
+| `mode`        | `int`    | The search mode to employ.<br>Mode `1`: Minimize the number of missing ingredients in order to buy less at the grocery store.<br>Mode `2`: Maximize the number of ingredients taken from the fridge.<br>Default `2`.
 
 ## Tech Stack
 
@@ -215,8 +226,7 @@ $ go test ./...
 
 ## Feedback
 
-If you have any feedback, please reach out to us at macpoule@gmail.com or
-open an issue on GitHub.
+If you have any feedback, please reach out to us at macpoule@gmail.com or open an issue on GitHub.
   
 ## Authors
 

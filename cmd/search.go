@@ -41,8 +41,8 @@ var searchCmd = &cobra.Command{
 |                                              |
 |  Search modes:                               |
 |   1 -> Minimize the number of missing        |
-|        ingredients to buy less at the        |
-|        grocery store.                        |
+|        ingredients in order to buy less      |
+|        at the grocery store.                 |
 |   2 -> Maximize the number of ingredients    |
 |        taken from the fridge [default]       |
 |______________________________________________|	
