@@ -115,11 +115,17 @@ recipes.your-domain.name {
     encode zstd gzip
     reverse_proxy localhost:3001
 
+    header Access-Control-Allow-Method "GET, OPTIONS"
+    header Access-Control-Allow-Headers "*"
+    header Access-Control-Allow-Origin "*
+
     log {
         output file /var/log/caddy/recipes.your-domain.name.access.log
     }
 }
 ```
+
+**Note:** The access control headers might move to the server in the future.
 
 Then, reload the server:
 
