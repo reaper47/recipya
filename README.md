@@ -25,13 +25,13 @@ A folder of recipes is required for this application to work when running locall
 the database will index them.
 
 The folder can be placed anywhere. Each recipe is a JSON-formatted file that follows the [recipe schema](https://schema.org/Recipe) standard.
-Not all fields are currently supported. Refer to the[Feedback](#feedback) if you require a field from the schema. 
+Not all fields are currently supported. Refer to the [Feedback](#feedback) if you require a field from the schema. 
 
 If you use Nextcloud Cookbook, then all is needed is to point to the folder where Cookbook stores the recipes.
 
 #### No Recipes Right Now?
 
-No problem! Download this [sample](https://cloud.musicavis.ca/index.php/s/jiWRLkJKm359pX3). 
+No problem! Download this [sample](https://cloud.musicavis.ca/index.php/s/LfiiemNmCw9zKEd). 
 
 ### Docker
 
