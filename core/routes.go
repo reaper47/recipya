@@ -62,6 +62,9 @@ func (env *Env) getSearch(w http.ResponseWriter, r *http.Request) {
 		writeErrorJson(http.StatusInternalServerError, message, w)
 		return
 	}
+	if recipes == nil {
+		recipes = make([]*model.Recipe, 0);
+	}
 
 	w.WriteHeader(200)
 	json.NewEncoder(w).Encode(&model.Recipes{

@@ -8,14 +8,18 @@ class RecipesNotifier extends StateNotifier<RecipesState> {
   })  : _repository = repository,
         super(const RecipesState.initial());
 
-  Future<void> getSearchRecipes(int? mode, int? n) async {
+  Future<void> getSearchRecipes(String? ingredients, int? mode, int? n) async {
     state = const RecipesState.loading();
 
     try {
-      final recipes = await _repository.getSearchRecipes(mode, n);
+      final recipes = await _repository.getSearchRecipes(ingredients, mode, n);
       state = RecipesState.data(recipes: recipes);
-    } catch (_) {
-      state = RecipesState.error('Error fetching recipes.');
+    } catch (err) {
+      state = RecipesState.error('Error fetching recipes: ${err.toString()}');
     }
+  }
+
+  void resetState() {
+    state = RecipesState.initial();
   }
 }

@@ -1,11 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-
 import 'recipe.dart';
 
-part 'recipes.g.dart';
-
-@JsonSerializable()
 class RecipesModel extends Equatable {
   final List<RecipeModel> recipes;
 
@@ -16,8 +11,8 @@ class RecipesModel extends Equatable {
         recipes,
       ];
 
-  factory RecipesModel.fromJson(Map<String, dynamic> json) =>
-      _$RecipesModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$RecipesModelToJson(this);
+  RecipesModel.fromJson(Map<String, dynamic> json)
+      : recipes = [
+          for (var recipe in json['recipes']) RecipeModel.fromJson(recipe)
+        ];
 }

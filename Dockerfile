@@ -1,3 +1,5 @@
+# docker build -t reaper99/recipe-hunter:latest .
+
 FROM golang:1.16.4-alpine3.13 AS builder
 
 ENV GO111MODULE=on \

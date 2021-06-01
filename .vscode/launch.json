@@ -10,7 +10,8 @@
             "request": "launch",
             "mode": "auto",
             "program": "${fileDirname}",
-            "args": ["search", "garlic,avocado", "-m", "1", "-n", "3"],
+            //"args": ["search", "garlic,avocado", "-m", "1", "-n", "3"],
+            "args": ["serve"],
             "dlvLoadConfig": {
                 "followPointers": true,
                 "maxVariableRecurse": 1,

@@ -1,25 +1,30 @@
-import 'package:dio/dio.dart';
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+
 import 'package:recipe_hunter/src/models/recipes.dart';
 
 abstract class IRecipesRepository {
-  Future<RecipesModel> getSearchRecipes(int? mode, int? n);
+  Future<RecipesModel> getSearchRecipes(String? ingredients, int? mode, int? n);
 }
 
 class RecipesRepository implements IRecipesRepository {
-  final _dio = Dio();
-  final baseUrl = "http://192.168.0.109:3000/api/v1/recipes";
+  final baseUrl = "https://recipes.musicavis.ca/api/v1/recipes";
 
   @override
-  Future<RecipesModel> getSearchRecipes(int? mode, int? n) async {
+  Future<RecipesModel> getSearchRecipes(
+      String? ingredients, int? mode, int? n) async {
     try {
-      String url = '$baseUrl/search?ingredients=avocado&mode=$mode&n=$n';
-      final result = await _dio.get(url);
-      if (result.statusCode == 200) {
-        return RecipesModel.fromJson(result.data);
+      var url =
+          Uri.parse('$baseUrl/search?ingredients=$ingredients&mode=$mode&n=$n');
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        return RecipesModel.fromJson(jsonDecode(response.body));
       } else {
         throw Exception();
       }
     } catch (e) {
+      
       throw Exception();
     }
   }

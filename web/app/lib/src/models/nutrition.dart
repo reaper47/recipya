@@ -1,9 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'nutrition.g.dart';
-
-@JsonSerializable()
 class NutritionModel extends Equatable {
   final String? calories;
   final String? carbohydrateContent;
@@ -40,8 +36,14 @@ class NutritionModel extends Equatable {
         sugarContent,
       ];
 
-  factory NutritionModel.fromJson(Map<String, dynamic> json) =>
-      _$NutritionModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$NutritionModelToJson(this);
+  NutritionModel.fromJson(Map<String, dynamic> json)
+      : calories = json['calories'],
+        carbohydrateContent = json['carbohydrate'],
+        fatContent = json['fat'],
+        saturatedFatContent = json['saturatedFat'],
+        cholesterolContent = json['cholesterol'],
+        proteinContent = json['protein'],
+        sodiumContent = json['sodium'],
+        fiberContent = json['fiber'],
+        sugarContent = json['sugar'];
 }

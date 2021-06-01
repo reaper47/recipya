@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipe_hunter/src/views/search_results.dart';
 
 import 'views/search.dart';
 
@@ -10,7 +11,11 @@ class RecipeHunterApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SearchPage(),
+      initialRoute: SearchPage.routeName,
+      routes: {
+        SearchPage.routeName: (context) => SearchPage(),
+        SearchResultsPage.routeName: (context) => SearchResultsPage(),
+      },
     );
   }
 }
