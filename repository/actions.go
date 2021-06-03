@@ -8,6 +8,7 @@ import (
 	"github.com/reaper47/recipe-hunter/model"
 )
 
+// Repository holds the database singleton.
 type Repository struct {
 	DB *sql.DB
 }

@@ -71,6 +71,8 @@ func test_InitDbWithTables(t *testing.T) {
 	}
 }
 
+/* Will be needed when the database tests will be written.
+
 func initTestDb(t *testing.T) (string, *repository.Repository) {
 	tmpfile, err := ioutil.TempFile("", "tmp.db")
 	if err != nil {
@@ -85,4 +87,4 @@ func initTestDb(t *testing.T) (string, *repository.Repository) {
 
 	repository.InitDb(db)
 	return tmpfile.Name(), &repository.Repository{DB: db}
-}
+}*/

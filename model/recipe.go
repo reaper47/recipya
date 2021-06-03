@@ -1,9 +1,12 @@
 package model
 
+// Recipes holds a list of Recipe objects.
 type Recipes struct {
 	Objects []*Recipe `json:"recipes"`
 }
 
+// Recipe holds the details of a recipe.
+// It follows the Recipe schema standard.
 type Recipe struct {
 	ID                 int64         `json:"id"`
 	Name               string        `json:"name"`
@@ -24,6 +27,7 @@ type Recipe struct {
 	DateCreated        string        `json:"dateCreated"`
 }
 
+// NutritionSet holds nutritional details of a recipe.
 type NutritionSet struct {
 	Calories     string `json:"calories"`
 	Carbohydrate string `json:"carbohydrateContent"`

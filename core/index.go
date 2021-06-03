@@ -15,6 +15,15 @@ import (
 
 const pattern = "+_+"
 
+// Index indexes the recipes database. 
+//
+// A recipe not present in the databas will be inserted.
+//
+// A recipe present in the database and whose dateModified  
+// field differs will be indexed/updated.
+//
+// A recipe present in the database and whose dateModified
+// field remains unchanged will be skipped.
 func Index() {
 	env := InitEnv(repository.Db())
 

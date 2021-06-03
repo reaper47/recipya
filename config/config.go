@@ -10,6 +10,8 @@ import (
 	"github.com/spf13/viper"
 )
 
+// ConfigStruct stores the configuration options
+// from the config.yaml file.
 type ConfigStruct struct {
 	RecipesDb     string
 	RecipesDir    string
@@ -31,9 +33,14 @@ var (
 	}
 	configName  = "config"
 	configPaths = []string{".", "./config/"}
-	Config      = &ConfigStruct{}
 )
 
+// Config is the package variable used to
+// retrieve configuration options.
+var Config      = &ConfigStruct{}
+
+// InitConfig initializes the configuration object with the
+// variables from the configuration file or environment.
 func InitConfig() {
 	for k, v := range defaults {
 		viper.SetDefault(k, v)

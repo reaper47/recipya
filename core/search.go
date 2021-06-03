@@ -7,6 +7,7 @@ import (
 	"github.com/reaper47/recipe-hunter/repository"
 )
 
+// Search searches for recipes based on the ingredients.
 func Search(ingredients []string, mode int, limit int) ([]*model.Recipe, error) {
 	env := InitEnv(repository.Db())
 
