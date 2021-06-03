@@ -37,7 +37,7 @@ var (
 
 // Config is the package variable used to
 // retrieve configuration options.
-var Config      = &ConfigStruct{}
+var Config = &ConfigStruct{}
 
 // InitConfig initializes the configuration object with the
 // variables from the configuration file or environment.

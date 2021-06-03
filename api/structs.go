@@ -14,8 +14,8 @@ type ErrorJson struct {
 // related the error at hand.
 //
 // For example: {
-//	"code": 404, 
-//	"message": "oops", 
+//	"code": 404,
+//	"message": "oops",
 //  "status": "Not Found"
 //}
 type Error struct {

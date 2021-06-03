@@ -15,7 +15,7 @@ import (
 	"github.com/reaper47/recipe-hunter/repository"
 )
 
-// Serve starts the web server at the address 
+// Serve starts the web server at the address
 // specified in the configration file.
 func Serve() {
 	env := InitEnv(repository.Db())

@@ -15,11 +15,11 @@ import (
 
 const pattern = "+_+"
 
-// Index indexes the recipes database. 
+// Index indexes the recipes database.
 //
 // A recipe not present in the databas will be inserted.
 //
-// A recipe present in the database and whose dateModified  
+// A recipe present in the database and whose dateModified
 // field differs will be indexed/updated.
 //
 // A recipe present in the database and whose dateModified
@@ -66,13 +66,8 @@ func Index() {
 		numInserted++
 	}
 
-	log.Printf(
-		"Number of recipes: %v. Inserted %v, indexed %v and skipped %v",
-		len(recipes),
-		numInserted,
-		numIndexed,
-		numSkipped,
-	)
+	msg := "Number of recipes: %v. Inserted %v, indexed %v and skipped %v"
+	log.Printf(msg, len(recipes), numInserted, numIndexed, numSkipped)
 }
 
 func getRecipes() ([]*model.Recipe, error) {

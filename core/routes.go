@@ -63,7 +63,7 @@ func (env *Env) getSearch(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if recipes == nil {
-		recipes = make([]*model.Recipe, 0);
+		recipes = make([]*model.Recipe, 0)
 	}
 
 	w.WriteHeader(200)
