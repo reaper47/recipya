@@ -49,9 +49,9 @@ func createRouter(env *Env) *mux.Router {
 	r.NotFoundHandler = http.HandlerFunc(handle404)
 
 	apiRootRouter := r.PathPrefix(api.ApiUrlSuffix).Subrouter()
-	recipesRouter := apiRootRouter.PathPrefix(api.RecipeSuffix).Subrouter()
-	initRecipesRoutes(recipesRouter, env)
+	initRecipesRoutes(apiRootRouter, env)
 
+	r.PathPrefix("/").Handler(http.FileServer(http.Dir(config.Config.WebAppDir)))
 	return r
 }
 

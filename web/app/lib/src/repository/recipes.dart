@@ -9,7 +9,7 @@ abstract class IRecipesRepository {
 }
 
 class RecipesRepository implements IRecipesRepository {
-  final baseUrl = "https://recipes.musicavis.ca/api/v1/recipes";
+  String baseUrl = Uri.base.origin + "/api/v1";
 
   @override
   Future<RecipesModel> getSearchRecipes(
@@ -24,8 +24,7 @@ class RecipesRepository implements IRecipesRepository {
         throw Exception();
       }
     } catch (e) {
-      
       throw Exception();
     }
   }
-} // you are smart :)
+}

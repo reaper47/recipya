@@ -15,7 +15,9 @@ limitations under the License.
 */
 package main
 
-import "github.com/reaper47/recipe-hunter/cmd"
+import (
+	"github.com/reaper47/recipe-hunter/cmd"
+)
 
 func main() {
 	cmd.Execute()

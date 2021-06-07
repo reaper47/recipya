@@ -166,4 +166,3 @@ class _SearchPageState extends State<SearchPage> {
     return _ingredientControllers.map((e) => e.text).join(',');
   }
 }
-

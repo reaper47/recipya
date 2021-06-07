@@ -20,6 +20,8 @@ type ConfigStruct struct {
 	Host string
 	Port int
 	Wait int
+
+	WebAppDir string
 }
 
 var (
@@ -30,6 +32,7 @@ var (
 		"host":          "0.0.0.0",
 		"port":          3000,
 		"wait":          15,
+		"webappDir":     "./web",
 	}
 	configName  = "config"
 	configPaths = []string{".", "./config/"}

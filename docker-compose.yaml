@@ -1,14 +1,16 @@
-version: "3"
+version: "3.8"
 services:
     recipe-hunter:
-        image: reaper99/recipe-hunter:latest
+        image: reaper99/recipe-hunter:${TAG}
         container_name: recipe-hunter
-        hostname: recipes
         ports:
-            - "3001:3001"
+            - target: ${CONTAINER_PORT}
+              published: ${PUBLIC_PORT}
+              protocol: tcp
+              mode: host
         restart: unless-stopped
         environment:
-            RH_INDEXINTERVAL: "1d"
-            RH_WAIT: 10
+            RH_INDEXINTERVAL: ${RH_INDEXINTERVAL}
+            RH_WAIT: ${RH_WAIT}
         volumes:
-            - "/mnt/bigger/recipes:/recipes"
+            - ${LOCAL_RECIPES_FOLDER}:/recipes

@@ -1,5 +1,26 @@
-
 # Recipe Hunter
+- [Recipe Hunter](#recipe-hunter)
+- [About](#about)
+- [Features](#features)
+- [Installation](#installation)
+  - [Recipes Database](#recipes-database)
+    - [No Recipes Right Now?](#no-recipes-right-now)
+  - [Docker](#docker)
+  - [Docker-Compose](#docker-compose)
+  - [Environment Variables](#environment-variables)
+    - [RH_INDEXINTERVAL](#rh_indexinterval)
+    - [RH_WAIT](#rh_wait)
+- [Deployment](#deployment)
+- [Run Locally](#run-locally)
+- [Usage/Examples](#usageexamples)
+- [Running Tests](#running-tests)
+- [API Reference](#api-reference)
+  - [Search recipes](#search-recipes)
+- [Tech Stack](#tech-stack)
+- [Feedback](#feedback)
+- [Authors](#authors)
+
+# About
 
 Recipe Hunter is an application whose goal is to search for what you can cook with the ingredients in your fridge. 
 In other words, it helps you know what you can cook with what you have when you are out of ideas. 
@@ -9,17 +30,17 @@ It works seamlessly with recipes in your [Nextcloud Cookbook](https://apps.nextc
 The project consists of a backend and a frontend. 
 The backend is a REST API. The frontend, found under the /web folder, is a simple app where the user can use the search function.
   
-## Features
+# Features
 
 - Search for recipes based on what you have in your fridge
 - Cross-platform solution 
 - Can be self-hosted
 
-## Installation 
+# Installation 
 
 Docker is the preferred and easiest way to install this project and expose to the world.
 
-### Recipes Database
+## Recipes Database
 
 A folder of recipes is required for this application to work when running locally because 
 the database will index them.
@@ -29,11 +50,11 @@ Not all fields are currently supported. Refer to the [Feedback](#feedback) if yo
 
 If you use Nextcloud Cookbook, then all is needed is to point to the folder where Cookbook stores the recipes.
 
-#### No Recipes Right Now?
+### No Recipes Right Now?
 
-No problem! Download this [sample](https://cloud.musicavis.ca/index.php/s/LfiiemNmCw9zKEd). 
+No problem! Download this [sample](https://cloud.musicavis.ca/index.php/s/NNge4Dp7sHXrPsW). 
 
-### Docker
+## Docker
 
 Run the following Docker command to run the project as a daemon in a container named "recipe-hunter".
 
@@ -43,7 +64,8 @@ $ docker run -d \
    --restart=unless-stopped \
    -v /path/to/your/json-recipes/repository:/recipes \
    -p 3001:3001 \ 
-   -e RH_INDEXINTERVAL=3d \
+   -e RH_INDEXINTERVAL=2d \
+   -e RH_WAIT 10 \
    reap99/recipe-hunter:latest
 ```
 
@@ -53,25 +75,18 @@ Finally, give the API a try:
 $ curl "localhost:3001/api/v1/recipes/search?ingredients=avocado&num=1"
 ```
 
-### Docker-Compose
+## Docker-Compose
 
-Create a `docker-compose.yaml` file under `/var/www/you-domain-name/recipe-hunter/` and add the following content:
+Download the [docker-compose.yaml](https://github.com/reaper47/recipe-hunter/blob/main/docker-compose.yaml) file along with its [configuration](https://github.com/reaper47/recipe-hunter/blob/main/docker-compose.yaml) file.
 
-```dockerfile
-version: "3"
-services:
-    recipe-hunter:
-        image: reaper99/recipe-hunter:latest
-        container_name: recipe-hunter
-        hostname: recipes
-        ports:
-            - "3001:3001"
-        restart: unless-stopped
-        environment:
-            RH_INDEXINTERVAL: 1d
-            RH_WAIT: 10
-        volumes:
-            - "/path/to/your/json-recipes/repository:/recipes"
+```bash
+$ curl -o https://github.com/reaper47/recipe-hunter/blob/main/docker-compose.yaml -o https://github.com/reaper47/recipe-hunter/blob/main/.env
+```
+
+Modify the configuration variables in the `.env` file if needed. 
+
+```bash
+$ nano .env
 ```
 
 Then, run the container:
@@ -80,11 +95,11 @@ Then, run the container:
 $ docker-compose up -d
 ```
 
-### Environment Variables
+## Environment Variables
 
 The following environment variables can be set if you want to use a value different from the default:
 
-#### RH_INDEXINTERVAL
+### RH_INDEXINTERVAL
 
 The interval at which the recipes database will be indexed. A value of -1 will disable the automatic indexing [Note: To be implemented]. 
 
@@ -100,13 +115,13 @@ Valid units are:
 
 Default: 1d
 
-#### RH_WAIT
+### RH_WAIT
 
 The duration in seconds for which the server gracefully waits for existing connections to finish.
 
 Default: 10
 
-## Deployment
+# Deployment
 
 Here is a sample Caddy blob to expose the container to the outside world:
 
@@ -117,7 +132,7 @@ recipes.your-domain.name {
 
     header Access-Control-Allow-Method "GET, OPTIONS"
     header Access-Control-Allow-Headers "*"
-    header Access-Control-Allow-Origin "*
+    header Access-Control-Allow-Origin "*"
 
     log {
         output file /var/log/caddy/recipes.your-domain.name.access.log
@@ -135,7 +150,7 @@ $ caddy reload
 
 No Nginx configuration is given because Caddy is easy, simple, has automatic HTTPS, generates and renews certbot certificates automatically, and works like a charm.
 
-## Run Locally
+# Run Locally
 
 1. Clone the project:
 
@@ -149,7 +164,7 @@ $ git clone https://github.com/reaper47/recipe-hunter.git
 $ cd recipe-hunter
 ```
 
-3. Install dependencies:
+3. Install the dependencies:
 
 ```bash
 $ go mod download
@@ -166,7 +181,7 @@ $ go build -o dist
 6. You are ready to go!
 
 
-## Usage/Examples
+# Usage/Examples
 
 To display the help text:
 
@@ -200,7 +215,7 @@ $ curl localhost:3001/api/v1/recipes/search?ingredients=avocado,garlic,ketchup&n
 ```
 
  
-## Running Tests
+# Running Tests
 
 To run tests, run the following command:
 
@@ -208,12 +223,12 @@ To run tests, run the following command:
 $ go test ./...
 ```
   
-## API Reference
+# API Reference
 
-#### Search all items
+## Search recipes
 
 ```http
-  GET /api/v1/recipes/search
+  GET /api/v1/search
 ```
 
 | Parameter     | Type     | Description                |
@@ -222,7 +237,7 @@ $ go test ./...
 | `num`         | `int`    | The maximum number of recipes to fetch.<br>Default: `10`. |
 | `mode`        | `int`    | The search mode to employ.<br>Mode `1`: Minimize the number of missing ingredients in order to buy less at the grocery store.<br>Mode `2`: Maximize the number of ingredients taken from the fridge.<br>Default `2`.
 
-## Tech Stack
+# Tech Stack
 
 **Client:** Flutter
 
@@ -230,11 +245,11 @@ $ go test ./...
 
 **Deployment:** Docker
 
-## Feedback
+# Feedback
 
 If you have any feedback, please reach out to us at macpoule@gmail.com or open an issue on GitHub.
   
-## Authors
+# Authors
 
 - [@reaper99](https://www.github.com/reaper99)
 
