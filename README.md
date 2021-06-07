@@ -80,7 +80,7 @@ $ curl "localhost:3001/api/v1/recipes/search?ingredients=avocado&num=1"
 Download the [docker-compose.yaml](https://github.com/reaper47/recipe-hunter/blob/main/docker-compose.yaml) file along with its [configuration](https://github.com/reaper47/recipe-hunter/blob/main/docker-compose.yaml) file.
 
 ```bash
-$ curl -o https://github.com/reaper47/recipe-hunter/blob/main/docker-compose.yaml -o https://github.com/reaper47/recipe-hunter/blob/main/.env
+$ curl -LJO https://raw.githubusercontent.com/reaper47/recipe-hunter/main/docker-compose.yaml -LJO https://raw.githubusercontent.com/reaper47/recipe-hunter/main/.env
 ```
 
 Modify the configuration variables in the `.env` file if needed. 
