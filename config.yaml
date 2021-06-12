@@ -4,18 +4,18 @@ recipesDb: ./dist/recipes.db
 # The location where the JSON recipes are stored.
 recipesDir: C:/Users/macpoule/Nextcloud/recipes_
 
+# The directory where the web application is built.
+webappDir: "./web/app/dist"
+
 host: "localhost"
 port: 3001
 
-# The directory where the web application is built.
-webappDir: "./web/app/build/web"
-
-# The duration in seconds for which the server 
+# The duration in seconds for which the server
 # gracefully waits for existing connections to finish.
 wait: 10
 
 # The interval at which the recipes database will be indexed.
-# A value of -1 will disable the automatic indexing. 
+# A value of -1 will disable the automatic indexing.
 # The syntax is [int][unit], e.g. 10m, 1h, 1d.
 # Valid units are:
 #   - m: minutes

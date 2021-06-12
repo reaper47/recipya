@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"strconv"
 	"time"
 
@@ -14,6 +15,11 @@ import (
 	"github.com/reaper47/recipe-hunter/config"
 	"github.com/reaper47/recipe-hunter/repository"
 )
+
+type spaHandler struct {
+	staticPath string
+	indexPath  string
+}
 
 // Serve starts the web server at the address
 // specified in the configration file.
@@ -51,8 +57,23 @@ func createRouter(env *Env) *mux.Router {
 	apiRootRouter := r.PathPrefix(api.ApiUrlSuffix).Subrouter()
 	initRecipesRoutes(apiRootRouter, env)
 
-	r.PathPrefix("/").Handler(http.FileServer(http.Dir(config.Config.WebAppDir)))
+	spaRouter := spaHandler{staticPath: config.Config.WebAppDir, indexPath: "index.html"}
+	r.PathPrefix("/").Handler(spaRouter)
+
 	return r
+}
+
+func (h spaHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	path := filepath.Join(h.staticPath, r.URL.Path)
+	_, err := os.Stat(path)
+	if os.IsNotExist(err) {
+		http.ServeFile(w, r, filepath.Join(h.staticPath, h.indexPath))
+		return
+	} else if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	http.FileServer(http.Dir(h.staticPath)).ServeHTTP(w, r)
 }
 
 func handle404(w http.ResponseWriter, r *http.Request) {
@@ -64,9 +85,9 @@ func createServer(r *mux.Router) *http.Server {
 	log.Println("Server started @ " + addr)
 	return &http.Server{
 		Addr:         addr,
-		WriteTimeout: time.Second * 15,
-		ReadTimeout:  time.Second * 15,
-		IdleTimeout:  time.Second * 60,
 		Handler:      r,
+		IdleTimeout:  60 * time.Second,
+		ReadTimeout:  15 * time.Second,
+		WriteTimeout: 15 * time.Second,
 	}
 }
