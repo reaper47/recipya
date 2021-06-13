@@ -1,10 +1,22 @@
 <template>
+  <app-bar />
   <div id="nav">
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
   </div>
   <router-view />
 </template>
+
+<script>
+import AppBar from "@/components/AppBar.vue";
+
+export default {
+  name: "Home",
+  components: {
+    AppBar,
+  },
+};
+</script>
 
 <style lang="scss">
 #app {

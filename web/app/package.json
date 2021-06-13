@@ -1,6 +1,6 @@
 {
-  "name": "vue-app",
-  "version": "0.1.0",
+  "name": "recipe_hunter",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
