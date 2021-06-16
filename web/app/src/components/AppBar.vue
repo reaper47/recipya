@@ -1,34 +1,53 @@
 <template>
-  <div></div>
-  <!--<v-app-bar
+  <v-app-bar
+    class="mb-8"
+    color="primary"
+    dark
     hide-on-scroll
-    density="compact"
-    scroll-target="#scrolling-techniques-4"
+    dense
+    max-height="48px"
   >
-    <v-app-bar-title>Recipe Hunter</v-app-bar-title>
-    <v-spacer></v-spacer>
-    <div id="nav">
-      <v-btn class="mr-3" text to="/about">
-        <router-link to="/">Home</router-link>
-      </v-btn>
-      <v-btn class="mr-3" text to="/search">
-        <router-link to="/search">Search</router-link>
-      </v-btn>
+    <div class="d-flex align-center">
+      <v-img
+        alt="Vuetify Logo"
+        class="shrink mr-2"
+        contain
+        src="/icons/android-chrome-192x192.png"
+        transition="scale-transition"
+        width="35"
+      />
+      <h2 class="font-weight-light">Recipe Hunter</h2>
     </div>
-    <v-divider inset vertical></v-divider>
-  </v-app-bar>-->
+
+    <v-spacer></v-spacer>
+
+    <nav>
+      <v-btn
+        v-for="action in actions"
+        :key="action.name"
+        text
+        :to="action.to"
+        active-class="active"
+      >
+        {{ action.name }}
+      </v-btn>
+    </nav>
+  </v-app-bar>
 </template>
 
-<style lang="scss">
-#nav {
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    text-decoration: none;
+<script>
+export default {
+  props: {
+    actions: {
+      type: Array,
+      required: true,
+    },
+  },
+};
+</script>
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+<style>
+.v-btn--active {
+  background-color: #e53935;
 }
 </style>

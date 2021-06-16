@@ -60,6 +60,7 @@ func createRouter(env *Env) *mux.Router {
 	spaRouter := spaHandler{staticPath: config.Config.WebAppDir, indexPath: "index.html"}
 	r.PathPrefix("/").Handler(spaRouter)
 
+	r.Use(mux.CORSMethodMiddleware(r))
 	return r
 }
 

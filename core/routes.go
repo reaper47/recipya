@@ -12,11 +12,12 @@ import (
 )
 
 func initRecipesRoutes(r *mux.Router, env *Env) {
-	r.HandleFunc(api.RecipeSearch, env.getSearch).Methods(http.MethodGet)
+	r.HandleFunc(api.RecipeSearch, env.getSearch).Methods(http.MethodGet, http.MethodOptions)
 }
 
 func (env *Env) getSearch(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	vars := r.URL.Query()
 	var err error
 

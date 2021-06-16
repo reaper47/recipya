@@ -1,6 +1,5 @@
 <template>
-  <div class="search">
-    <h1>This is the search page</h1>
+  <div id="search">
     <search-form></search-form>
   </div>
 </template>
@@ -9,7 +8,7 @@
 import SearchForm from "@/components/SearchForm.vue";
 
 export default {
-  name: "Home",
+  name: "Search",
   components: {
     SearchForm,
   },
