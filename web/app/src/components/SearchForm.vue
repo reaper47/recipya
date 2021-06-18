@@ -1,13 +1,7 @@
 <template>
-  <v-form
-    ref="form"
-    v-model="valid"
-    class="mx-4"
-    @submit.prevent="submit"
-    lazy-validation
-  >
+  <v-form ref="form" v-model="valid" @submit.prevent="submit" lazy-validation>
     <v-row>
-      <v-col cols="6">
+      <v-col cols="8">
         <v-select
           v-model="mode"
           :items="modes"
@@ -18,7 +12,7 @@
           outlined
         ></v-select>
       </v-col>
-      <v-col cols="6">
+      <v-col cols="4">
         <v-select
           v-model="limit"
           :items="numRecipes"
@@ -37,25 +31,59 @@
         :rules="[rules.required]"
         required
         outlined
-        :append-outer-icon="ingredient.icon"
+        :append-outer-icon="ingredient.icon.outer"
+        :append-icon="ingredient.icon.inner"
         :autofocus="ingredient.focus"
-        @click:append-outer="addOrDeleteItem(index)"
-        @keydown.enter.prevent="addOrDeleteItem(index)"
-      ></v-text-field>
+        @click:append-outer="ingredient.action.outer($event, index)"
+        @click:append="ingredient.action.inner($event, index)"
+        @keydown.enter.prevent="addIngredient($event)"
+      >
+      </v-text-field>
     </v-col>
     <div class="text-center">
-      <v-btn type="submit" color="primary" rounded class="pa-8 mb-8">
-        Search
-      </v-btn>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            v-bind="attrs"
+            v-on="on"
+            type="submit"
+            color="primary"
+            rounded
+            class="pa-8 mb-8"
+          >
+            Search
+          </v-btn>
+        </template>
+        <span>
+          You can also submit with Ctrl + Enter
+          <v-icon color="white">mdi-emoticon-cool</v-icon>
+        </span>
+      </v-tooltip>
     </div>
   </v-form>
 </template>
 
 <script>
+const addIcon = "mdi-plus";
+const removeIcon = "mdi-minus";
+
 export default {
   data() {
     return {
-      ingredients: [{ name: "", icon: "mdi-plus", focus: true }],
+      ingredients: [
+        {
+          name: "",
+          icon: {
+            inner: null,
+            outer: addIcon,
+          },
+          action: {
+            inner: this.removeIngredient,
+            outer: this.addIngredient,
+          },
+          focus: true,
+        },
+      ],
 
       limit: 10,
       numRecipes: [5, 10, 15, 20, 25, 30],
@@ -72,9 +100,14 @@ export default {
       },
     };
   },
+  computed: {
+    hasEmptyIngredient() {
+      return this.ingredients.filter((el) => el.name === "").length > 0;
+    },
+  },
   methods: {
-    submit() {
-      if (!this.$refs.form.validate()) {
+    submit(event) {
+      if (!event.ctrlKey || !this.$refs.form.validate()) {
         return;
       }
 
@@ -86,22 +119,52 @@ export default {
         mode: this.mode,
       });
 
-      this.$router.push("results");
+      this.$router.push({ name: "Search Results" });
     },
-    addOrDeleteItem(index) {
-      const item = this.ingredients[index];
-      if (item.icon === "mdi-plus") {
-        if (item.name !== "") {
-          item.icon = "mdi-minus";
-          item.focus = false;
-          this.ingredients.push({
-            name: "",
-            icon: "mdi-plus",
-            focus: true,
-          });
-        }
-      } else {
-        this.ingredients.splice(index, 1);
+    // eslint-disable-next-line no-unused-vars
+    addIngredient(event, _index) {
+      if (event.ctrlKey || this.hasEmptyIngredient) {
+        return;
+      }
+
+      this.ingredients.forEach((el) => {
+        el.icon.inner = null;
+        el.icon.outer = removeIcon;
+        el.action.inner = null;
+        el.action.outer = this.removeIngredient;
+        el.focus = false;
+      });
+
+      this.ingredients.push({
+        name: "",
+        icon: {
+          inner: removeIcon,
+          outer: addIcon,
+        },
+        action: {
+          inner: this.removeIngredient,
+          outer: this.addIngredient,
+        },
+        focus: true,
+      });
+    },
+    removeIngredient(_event, index) {
+      if (index === this.ingredients.length - 1) {
+        const entry = this.ingredients[index - 1];
+        entry.icon.inner = removeIcon;
+        entry.icon.outer = addIcon;
+        entry.action.inner = this.removeIngredient;
+        entry.action.outer = this.addIngredient;
+      }
+
+      this.ingredients.splice(index, 1);
+
+      if (this.ingredients.length === 1) {
+        const entry = this.ingredients[0];
+        entry.icon.inner = null;
+        entry.icon.outer = addIcon;
+        entry.action.inner = null;
+        entry.action.outer = this.addIngredient;
       }
     },
   },

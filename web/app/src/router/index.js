@@ -43,8 +43,8 @@ const routes = [
     },
   },
   {
-    path: "/results",
-    name: "Results",
+    path: "/search/results",
+    name: "Search Results",
     component: () =>
       import(/* webpackChunkName: "results" */ "../views/Results.vue"),
     meta: {

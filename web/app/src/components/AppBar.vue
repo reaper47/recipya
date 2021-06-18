@@ -27,6 +27,7 @@
         :key="action.name"
         text
         :to="action.to"
+        exact
         active-class="active"
       >
         {{ action.name }}

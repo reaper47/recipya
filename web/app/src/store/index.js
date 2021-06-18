@@ -9,6 +9,9 @@ export default new Vuex.Store({
   state: {
     recipes: [],
   },
+  getters: {
+    recipes: (state) => state.recipes,
+  },
   mutations: {
     replaceRecipes(state, recipes) {
       state.recipes.splice(
