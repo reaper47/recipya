@@ -16,7 +16,7 @@ RUN apt-get update
 RUN apt-get install -y nodejs npm
 #RUN npm install -g yarn
 RUN apt-get clean
-RUN sudo npm cache clean -f
+RUN npm cache clean -f
 
 
 # STAGE 2: build
