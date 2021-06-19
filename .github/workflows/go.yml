@@ -23,6 +23,9 @@ jobs:
       - name: Test
         run: go test -v ./...
 
+      - name: Create vendor folder
+        run: go mod vendor
+
   docker:
     runs-on: ubuntu-latest
     steps:
