@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <app-bar :actions="actions"></app-bar>
+    <snack-bar></snack-bar>
     <v-main>
       <router-view />
     </v-main>
@@ -11,12 +12,14 @@
 <script>
 import AppBar from "@/components/AppBar.vue";
 import NiceFooter from "@/components/NiceFooter.vue";
+import SnackBar from "@/components/basic/SnackBar.vue";
 
 export default {
   name: "App",
   components: {
     AppBar,
     NiceFooter,
+    SnackBar,
   },
   data: () => ({
     actions: [

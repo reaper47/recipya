@@ -1,5 +1,6 @@
 <template>
-  <v-container id="search" @keydown.enter="handleKey">
+  <loading-fullscreen v-if="$store.getters.isLoading"></loading-fullscreen>
+  <v-container v-else id="search" @keydown.enter="handleKey" fill-height>
     <v-layout justify-center>
       <search-form ref="form"></search-form>
     </v-layout>
@@ -7,11 +8,13 @@
 </template>
 
 <script>
+import LoadingFullscreen from "@/components/basic/LoadingFullscreen.vue";
 import SearchForm from "@/components/SearchForm.vue";
 
 export default {
   name: "Search",
   components: {
+    LoadingFullscreen,
     SearchForm,
   },
   methods: {

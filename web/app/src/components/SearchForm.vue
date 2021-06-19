@@ -64,6 +64,8 @@
 </template>
 
 <script>
+import { showSnackbar, SNACKBAR_TYPE } from "@/eventbus/action";
+
 const addIcon = "mdi-plus";
 const removeIcon = "mdi-minus";
 
@@ -106,20 +108,28 @@ export default {
     },
   },
   methods: {
-    submit(event) {
-      if (!event.ctrlKey || !this.$refs.form.validate()) {
+    async submit(event) {
+      if (
+        (event.type === "keydown" && !event.ctrlKey) ||
+        !this.$refs.form.validate()
+      ) {
         return;
       }
 
-      this.$store.dispatch("search", {
-        ingredientsList: this.ingredients
-          .filter((item) => item.name !== "")
-          .map((item) => item.name),
-        limit: this.limit,
-        mode: this.mode,
-      });
+      try {
+        await this.$store.dispatch("search", {
+          ingredientsList: this.ingredients
+            .filter((item) => item.name !== "")
+            .map((item) => item.name),
+          limit: this.limit,
+          mode: this.mode,
+        });
 
-      this.$router.push({ name: "Search Results" });
+        this.$router.push({ name: "Search Results" });
+      } catch (error) {
+        const title = `${error.status} (${error.code})`;
+        showSnackbar(SNACKBAR_TYPE.ERROR, title, error.message);
+      }
     },
     // eslint-disable-next-line no-unused-vars
     addIngredient(event, _index) {
