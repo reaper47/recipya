@@ -1,26 +1,4 @@
 # Recipe Hunter
-- [Recipe Hunter](#recipe-hunter)
-- [About](#about)
-- [Features](#features)
-- [Installation](#installation)
-  - [Recipes Database](#recipes-database)
-    - [No Recipes Right Now?](#no-recipes-right-now)
-  - [Docker](#docker)
-  - [Docker-Compose](#docker-compose)
-  - [Environment Variables](#environment-variables)
-    - [RH_INDEXINTERVAL](#rh_indexinterval)
-    - [RH_WAIT](#rh_wait)
-- [Deployment](#deployment)
-- [Run Locally](#run-locally)
-- [Usage/Examples](#usageexamples)
-- [Running Tests](#running-tests)
-- [API Reference](#api-reference)
-  - [Search recipes](#search-recipes)
-- [Tech Stack](#tech-stack)
-- [Feedback](#feedback)
-- [Authors](#authors)
-
-# About
 
 Recipe Hunter is an application whose goal is to search for what you can cook with the ingredients in your fridge. 
 In other words, it helps you know what you can cook with what you have when you are out of ideas. 
