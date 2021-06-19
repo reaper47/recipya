@@ -26,9 +26,9 @@ jobs:
       - name: Create vendor folder
         run: go mod vendor
 
-      #docker:
-      #  runs-on: ubuntu-latest
-      #  steps:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
       - name: Checkout
         uses: actions/checkout@v2
 

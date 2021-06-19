@@ -1,8 +1,8 @@
 # The location where the database will be stored.
-recipesDb: ./dist/recipes.db
+recipesDb: ./recipes.db
 
 # The location where the JSON recipes are stored.
-recipesDir: C:/Users/macpoule/Nextcloud/recipes_
+recipesDir: /recipes
 
 # The directory where the web application is built.
 webappDir: "./dist"
