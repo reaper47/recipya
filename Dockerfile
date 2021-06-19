@@ -12,21 +12,19 @@ COPY go.mod .
 COPY go.sum .
 RUN go mod download
 
-# STAGE 2: build
-FROM prepare as build
-
-COPY . .
-
-
 RUN apt-get update 
 RUN apt-get install -y nodejs npm
 RUN npm install -g yarn
 RUN yarn global add @vue/cli
 RUN apt-get clean
 
+# STAGE 2: build
+FROM prepare as build
+
+COPY . .
 
 RUN go build -o main .
-RUN cd /source/web/app && yarn build
+RUN cd /source/web/app && npx vue-cli-service build
 
 WORKDIR /dist 
 
