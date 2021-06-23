@@ -47,23 +47,21 @@ const routes = [
     name: "Search Results",
     component: () =>
       import(/* webpackChunkName: "results" */ "../views/Results.vue"),
-    meta: {
-      title: "Results | Recipe Hunter",
-      metaTags: [
-        {
-          name: "description",
-          content: "Recipes from the search are show on this page.",
-        },
-        {
-          name: "og:description",
-          content: "Recipes from the search are show on this page.",
-        },
-      ],
+  },
+  {
+    path: "/search/results/:id",
+    name: "Search Result Recipe Page",
+    component: () =>
+      import(/* webpackChunkName: "recipe" */ "../views/RecipePage.vue"),
+    props: (route) => {
+      const props = { ...route.params };
+      props.id = +props.id;
+      return props;
     },
   },
   {
     path: "/:pathMatch(.*)*",
-    component: import(/* webpackChunkName: "404" */ "../views/404.vue"),
+    component: () => import(/* webpackChunkName: "404" */ "../views/404.vue"),
     name: "NotFound",
     meta: {
       title: "Page Not Found | Recipe Hunter",

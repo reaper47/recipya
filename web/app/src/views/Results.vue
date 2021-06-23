@@ -20,6 +20,7 @@ import GobackCard from "@/components/basic/GobackCard.vue";
 import RecipeCard from "@/components/RecipeCard.vue";
 
 export default {
+  name: "Results",
   components: {
     GobackCard,
     RecipeCard,

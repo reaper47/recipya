@@ -24,7 +24,7 @@
     <v-divider></v-divider>
 
     <v-card-actions>
-      <v-btn text block>Open</v-btn>
+      <v-btn text block @click="openRecipe">Open</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -46,6 +46,14 @@ export default {
   computed: {
     isBestMatch() {
       return this.index === 1;
+    },
+  },
+  methods: {
+    openRecipe() {
+      this.$router.push({
+        name: "Search Result Recipe Page",
+        params: { id: this.recipe.id },
+      });
     },
   },
 };

@@ -15,6 +15,7 @@ export default new Vuex.Store({
   getters: {
     isLoading: (state) => state.isLoading,
     recipes: (state) => state.recipes,
+    recipe: (state) => (id) => state.recipes.find((recipe) => recipe.id === id),
   },
   mutations: {
     IS_LOADING(state, value) {
@@ -33,8 +34,10 @@ export default new Vuex.Store({
       commit("IS_LOADING", true);
 
       const ingredients = Array.from(new Set(ingredientsList)).join(",");
-      //const url = `${document.location.origin}/api/v1/search?ingredients=${ingredients}&mode=${this.mode}&n=${this.limit}`;
-      const url = `http://localhost:3001/api/v1/search?ingredients=${ingredients}&mode=${mode}&n=${limit}`;
+      const url = `${document.location.origin}/api/v1/search?ingredients=${ingredients}&mode=${mode}&n=${limit}`;
+
+      // Url for developmemt with the Go server running
+      //const url = `http://localhost:3001/api/v1/search?ingredients=${ingredients}&mode=${mode}&n=${limit}`;
 
       const res = await fetch(url);
       const data = await res.json();

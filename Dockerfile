@@ -14,12 +14,7 @@ RUN go mod download
 
 RUN apt-get update 
 RUN apt-get install -y nodejs npm
-RUN npm install -g yarn
-RUN apt-get clean
-RUN yarn global add @vue/cli
-
-#RUN npm cache clean -f
-
+RUN npm install -g yarn && yarn global add @vue/cli
 
 # STAGE 2: build
 FROM prepare as build
@@ -28,7 +23,6 @@ COPY . .
 
 RUN go build -o main .
 RUN cd /source/web/app && yarn install && yarn build
-#RUN cd /source/web/app && npm i -g @vue/cli && npm install && build
 
 WORKDIR /dist 
 
