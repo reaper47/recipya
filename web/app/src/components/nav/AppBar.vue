@@ -7,7 +7,12 @@
     dense
     max-height="48px"
   >
-    <div class="d-flex align-center">
+    <v-btn
+      class="d-flex align-center"
+      text
+      exact
+      @click.stop="$router.push({ name: 'Home' }, () => {})"
+    >
       <v-img
         alt="Vuetify Logo"
         class="shrink mr-2"
@@ -16,12 +21,12 @@
         transition="scale-transition"
         width="35"
       />
-      <h2 class="font-weight-light">Recipe Hunter</h2>
-    </div>
+      <p class="mb-0 font-weight-light">Recipe Hunter</p>
+    </v-btn>
 
     <v-spacer></v-spacer>
 
-    <nav>
+    <nav class="hidden-xs-only">
       <v-btn
         v-for="action in actions"
         :key="action.name"
@@ -33,17 +38,25 @@
         {{ action.name }}
       </v-btn>
     </nav>
+
+    <span class="hidden-sm-and-up">
+      <v-app-bar-nav-icon @click="$emit('toggle-drawer')"></v-app-bar-nav-icon>
+    </span>
   </v-app-bar>
 </template>
 
 <script>
 export default {
+  name: "AppBar",
   props: {
     actions: {
       type: Array,
       required: true,
     },
   },
+  data: () => ({
+    drawer: false,
+  }),
 };
 </script>
 

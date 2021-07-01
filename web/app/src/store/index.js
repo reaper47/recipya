@@ -39,15 +39,18 @@ export default new Vuex.Store({
       // Url for developmemt with the Go server running
       //const url = `http://localhost:3001/api/v1/search?ingredients=${ingredients}&mode=${mode}&n=${limit}`;
 
-      const res = await fetch(url);
-      const data = await res.json();
-      if (!res.ok) {
-        commit("IS_LOADING", false);
-        throw data["error"];
-      }
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        if (!res.ok) {
+          commit("IS_LOADING", false);
+          throw data["error"];
+        }
 
-      commit("SET_RECIPES", data["recipes"]);
-      commit("IS_LOADING", false);
+        commit("SET_RECIPES", data["recipes"]);
+      } finally {
+        commit("IS_LOADING", false);
+      }
     },
   },
   modules: {},

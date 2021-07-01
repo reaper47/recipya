@@ -217,7 +217,7 @@ $ go test ./...
 
 # Tech Stack
 
-**Client:** Flutter
+**Client:** Vue.js, Flutter
 
 **Server:** Go
 

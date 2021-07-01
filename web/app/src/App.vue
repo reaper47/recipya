@@ -1,6 +1,25 @@
 <template>
   <v-app>
-    <app-bar :actions="actions"></app-bar>
+    <app-bar :actions="actions" @toggle-drawer="drawer = !drawer"></app-bar>
+
+    <v-navigation-drawer v-model="drawer" absolute temporary>
+      <v-list nav dense>
+        <v-list-item-group v-model="page" color="primary">
+          <v-list-item
+            v-for="action in actions"
+            :key="action.name"
+            :to="action.to"
+            exact
+          >
+            <v-list-item-icon>
+              <v-icon>{{ action.icon }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>{{ action.name }}</v-list-item-title>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
+
     <snack-bar></snack-bar>
     <v-main>
       <router-view />
@@ -10,8 +29,8 @@
 </template>
 
 <script>
-import AppBar from "@/components/AppBar.vue";
-import NiceFooter from "@/components/NiceFooter.vue";
+import AppBar from "@/components/nav/AppBar.vue";
+import NiceFooter from "@/components/nav/NiceFooter.vue";
 import SnackBar from "@/components/basic/SnackBar.vue";
 
 export default {
@@ -24,14 +43,13 @@ export default {
   data: () => ({
     actions: [
       {
-        to: "/",
-        name: "Home",
-      },
-      {
         to: "/search",
         name: "Search",
+        icon: "mdi-briefcase-search",
       },
     ],
+    drawer: false,
+    page: null,
   }),
 };
 </script>

@@ -33,6 +33,7 @@
 import Recipe from "@/models/recipe";
 
 export default {
+  name: "RecipeCard",
   props: {
     index: {
       type: Number,

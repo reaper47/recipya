@@ -70,6 +70,7 @@ const addIcon = "mdi-plus";
 const removeIcon = "mdi-minus";
 
 export default {
+  name: "SearchForm",
   data() {
     return {
       ingredients: [
