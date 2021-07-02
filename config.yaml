@@ -5,7 +5,7 @@ recipesDb: ./dist/recipes.db
 recipesDir: C:/Users/macpoule/Nextcloud/recipes_
 
 # The directory where the web application is built.
-webappDir: "./web/app/dist"
+webappDir: "./web/dist"
 
 host: "localhost"
 port: 3001

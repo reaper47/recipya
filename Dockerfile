@@ -22,7 +22,7 @@ FROM prepare as build
 COPY . .
 
 RUN go build -o main .
-RUN cd /source/web/app && yarn install && yarn build
+RUN cd /source/web && yarn install && yarn build
 
 WORKDIR /dist 
 
@@ -32,7 +32,7 @@ RUN cp /source/main .
 FROM scratch as run
 
 COPY --from=build /dist/main /
-COPY --from=build /source/web/app/dist /dist
+COPY --from=build /source/web/dist /dist
 COPY --from=build /source/dist/config.yaml /
 
 EXPOSE 3001

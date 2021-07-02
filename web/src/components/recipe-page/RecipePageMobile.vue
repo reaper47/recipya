@@ -34,10 +34,10 @@
       ></r-ingredients>
     </v-row>
     <v-row style="border: 1px solid black; border-top: none">
-      <r-ingredients
+      <r-instructions
         :items="recipe.instructions"
         fontSize="text-body-2"
-      ></r-ingredients>
+      ></r-instructions>
     </v-row>
   </v-container>
 </template>
