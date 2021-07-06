@@ -10,8 +10,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   plugins: [createPersistedState()],
   state: {
-    //baseApiUrl: `${document.location.origin}/api/v1/`,
-    baseApiUrl: "http://localhost:3001/api/v1",
+    baseApiUrl: `${document.location.origin}/api/v1/`,
+    //baseApiUrl: "http://localhost:3001/api/v1",
     isLoading: false,
   },
   getters: {
