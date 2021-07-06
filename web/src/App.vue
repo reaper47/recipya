@@ -43,6 +43,11 @@ export default {
   data: () => ({
     actions: [
       {
+        to: "/browse",
+        name: "Browse",
+        icon: "mdi-folder",
+      },
+      {
         to: "/search",
         name: "Search",
         icon: "mdi-briefcase-search",

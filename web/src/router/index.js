@@ -1,73 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+
+import routes from "./routes";
 
 Vue.use(VueRouter);
-
-const routes = [
-  {
-    path: "/",
-    name: "Home",
-    component: Home,
-    meta: {
-      title: "Home | Recipe Hunter",
-      metaTags: [
-        {
-          name: "description",
-          content: "The home page of Recipe Hunter.",
-        },
-        {
-          name: "og:description",
-          content: "The home page of Recipe Hunter.",
-        },
-      ],
-    },
-  },
-  {
-    path: "/search",
-    name: "Search",
-    component: () =>
-      import(/* webpackChunkName: "search" */ "../views/Search.vue"),
-    meta: {
-      title: "Search | Recipe Hunter",
-      metaTags: [
-        {
-          name: "description",
-          content: "Search for recipes based on what is in your fridge.",
-        },
-        {
-          name: "og:description",
-          content: "Search for recipes based on what is in your fridge.",
-        },
-      ],
-    },
-  },
-  {
-    path: "/search/results",
-    name: "Search Results",
-    component: () =>
-      import(/* webpackChunkName: "results" */ "../views/Results.vue"),
-  },
-  {
-    path: "/search/results/:id",
-    name: "Search Result Recipe Page",
-    component: () =>
-      import(/* webpackChunkName: "recipe" */ "../views/RecipePage.vue"),
-    props: (route) => {
-      const props = { ...route.params };
-      props.id = +props.id;
-      return props;
-    },
-  },
-  {
-    path: "/:pathMatch(.*)*",
-    component: () => import(/* webpackChunkName: "404" */ "../views/404.vue"),
-    name: "NotFound",
-    meta: {
-      title: "Page Not Found | Recipe Hunter",
-    },
-  },
-];
 
 const router = new VueRouter({
   mode: "history",

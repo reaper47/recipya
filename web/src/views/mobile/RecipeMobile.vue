@@ -47,7 +47,7 @@ import Components from "@/components/recipe-page";
 import Recipe from "@/models/recipe";
 
 export default {
-  name: "RecipePageMobile",
+  name: "RecipeMobile",
   props: {
     recipe: {
       type: Recipe,

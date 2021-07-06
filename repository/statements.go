@@ -28,9 +28,23 @@ var selectRecipeByNameStmt = "SELECT " + recipeFields + " " +
 	"FROM " + schema.recipe.name + " " +
 	"WHERE name=?"
 
+func selectRecipesStmt(category string) string {
+	stmt := "SELECT " + recipeFields + " " +
+		"FROM " + schema.recipe.name
+
+	if category != "" {
+		stmt += " WHERE category_id=(SELECT id FROM category WHERE name='" + category + "')"
+	}
+	return stmt
+}
+
 var selectCategoryIdStmt = "SELECT id " +
 	"FROM " + schema.category.name + " " +
 	"WHERE name=?"
+
+var selectCategoriesStmt = "SELECT name " +
+	"FROM " + schema.category.name + " " +
+	"ORDER BY name ASC"
 
 var selectNutritionIdStmt = "SELECT id FROM " + schema.nutrition.name + " " +
 	"WHERE calories=? AND carbohydrate=? AND fat=? AND " +

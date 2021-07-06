@@ -118,7 +118,7 @@ export default {
       }
 
       try {
-        await this.$store.dispatch("search", {
+        await this.$store.dispatch("search/search", {
           ingredientsList: this.ingredients
             .filter((item) => item.name !== "")
             .map((item) => item.name),

@@ -1,5 +1,5 @@
 bin/
-dist/recipes.db
+dist/
 
 # Binaries for programs and plugins
 *.exe

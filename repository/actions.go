@@ -13,6 +13,77 @@ type Repository struct {
 	DB *sql.DB
 }
 
+// GetRecipes retrieves all recipes of 0 or 1 category.
+func (repo *Repository) GetRecipes(category string) ([]*model.Recipe, error) {
+	ctx := context.Background()
+	tx, err := db.BeginTx(ctx, nil)
+	if err != nil {
+		return nil, err
+	}
+	defer tx.Rollback()
+
+	rows, err := tx.Query(selectRecipesStmt(category))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var recipes []*model.Recipe
+	for rows.Next() {
+		r := model.Recipe{}
+		var nutritionID int64
+		err := rows.Scan(
+			&r.ID,
+			&r.Name,
+			&r.Description,
+			&r.Url,
+			&r.Image,
+			&r.PrepTime,
+			&r.CookTime,
+			&r.TotalTime,
+			&r.RecipeCategory,
+			&r.Keywords,
+			&r.RecipeYield,
+			&nutritionID, // &r.Nutrition
+			&r.DateModified,
+			&r.DateCreated,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		if err = populateRecipe(&r, tx); err != nil {
+			return nil, err
+		}
+		recipes = append(recipes, &r)
+	}
+
+	if err = tx.Commit(); err != nil {
+		return nil, err
+	}
+	return recipes, nil
+}
+
+// GetCategories retrieves all recipe categories from the database.
+func (repo *Repository) GetCategories() ([]string, error) {
+	rows, err := repo.DB.Query(selectCategoriesStmt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var categories []string
+	for rows.Next() {
+		var c string
+		err = rows.Scan(&c)
+		if err != nil {
+			return nil, err
+		}
+		categories = append(categories, c)
+	}
+	return categories, nil
+}
+
 // InsertRecipe stores a recipe in the database.
 func (repo *Repository) InsertRecipe(r *model.Recipe) error {
 	ctx := context.Background()
@@ -152,7 +223,7 @@ func insertValues(recipesID int64, values []string, t table, tx *sql.Tx) error {
 }
 
 func getCategoryID(category string, tx *sql.Tx) (int64, error) {
-	category = strings.ToLower(category)
+	category = strings.ToLower(strings.TrimSpace(category))
 
 	var categoryID int64
 	err := tx.QueryRow(selectCategoryIdStmt, category).Scan(&categoryID)

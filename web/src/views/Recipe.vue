@@ -42,12 +42,12 @@
       <r-instructions :items="recipe.instructions"></r-instructions>
     </v-row>
   </v-container>
-  <recipe-page-mobile v-else :recipe="recipe"></recipe-page-mobile>
+  <recipe-mobile v-else :recipe="recipe"></recipe-mobile>
 </template>
 
 <script>
 import Components from "@/components/recipe-page";
-import RecipePageMobile from "@/components/recipe-page/RecipePageMobile.vue";
+import RecipeMobile from "./mobile/RecipeMobile.vue";
 
 export default {
   name: "RecipePage",
@@ -56,13 +56,18 @@ export default {
       type: Number,
       required: true,
     },
+    store: {
+      type: String,
+      required: true,
+    },
   },
-  components: { ...Components, RecipePageMobile },
+  components: { ...Components, RecipeMobile },
   data: () => ({
     recipe: null,
   }),
   created() {
-    const recipe = this.$store.getters.recipe(this.id);
+    const recipe = this.$store.getters[`${this.store}/recipe`](this.id);
+    console.warn("GOT RECIPE:", recipe);
     if (recipe === undefined) {
       console.warn("not found");
       return;

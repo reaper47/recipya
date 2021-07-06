@@ -1,10 +1,12 @@
 <template>
   <v-card class="ma-3" elevation="2" outlined tile flat max-width="22rem">
     <v-card-title class="capitalize">
-      {{ recipe.name }}
+      <div class="truncate" :class="{ shortWidth: isResult }">
+        {{ recipe.name }}
+      </div>
       <v-spacer></v-spacer>
 
-      <v-tooltip bottom :disabled="!isBestMatch">
+      <v-tooltip v-if="isResult" bottom :disabled="!isBestMatch">
         <template #activator="{ on }">
           <v-chip v-on="on" color="secondary" text-color="white">
             <v-icon v-if="isBestMatch" left> mdi-trophy-outline </v-icon>
@@ -35,6 +37,11 @@ import Recipe from "@/models/recipe";
 export default {
   name: "RecipeCard",
   props: {
+    isResult: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
     index: {
       type: Number,
       required: true,
@@ -51,10 +58,19 @@ export default {
   },
   methods: {
     openRecipe() {
-      this.$router.push({
-        name: "Search Result Recipe Page",
-        params: { id: this.recipe.id },
-      });
+      const id = this.recipe.id;
+      let name = "";
+      let store = "";
+
+      if (this.isResult) {
+        name = "Search Result Recipe Page";
+        store = "search";
+      } else {
+        name = "Recipe Page";
+        store = "browse";
+      }
+
+      this.$router.push({ name, params: { id, store } });
     },
   },
 };
@@ -68,5 +84,14 @@ export default {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   white-space: normal;
+}
+.shortWidth {
+  width: 250px;
+}
+.truncate {
+  white-space: nowrap;
+  word-break: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

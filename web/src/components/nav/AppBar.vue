@@ -1,7 +1,7 @@
 <template>
   <v-app-bar
     class="mb-8"
-    color="primary"
+    color="blue darken-3"
     dark
     hide-on-scroll
     dense

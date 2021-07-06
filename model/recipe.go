@@ -5,6 +5,10 @@ type Recipes struct {
 	Objects []*Recipe `json:"recipes"`
 }
 
+type Categories struct {
+	Objects []string `json:"categories"`
+}
+
 // Recipe holds the details of a recipe.
 // It follows the Recipe schema standard.
 type Recipe struct {

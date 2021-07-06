@@ -1,7 +1,6 @@
 package core
 
 import (
-	"encoding/json"
 	"net/http"
 	"strconv"
 	"strings"
@@ -12,12 +11,38 @@ import (
 )
 
 func initRecipesRoutes(r *mux.Router, env *Env) {
+	r.HandleFunc(api.Recipes, env.getRecipes).Methods(http.MethodGet, http.MethodOptions)
+	r.HandleFunc(api.RecipeCategories, env.getCategories).
+		Methods(http.MethodGet, http.MethodOptions)
 	r.HandleFunc(api.RecipeSearch, env.getSearch).Methods(http.MethodGet, http.MethodOptions)
 }
 
+func (env *Env) getCategories(w http.ResponseWriter, r *http.Request) {
+	c, err := env.recipes.GetCategories()
+	if err != nil {
+		message := "Get categories: " + err.Error()
+		writeErrorJson(http.StatusBadRequest, message, w)
+		return
+	}
+	writeSuccessJson(&model.Categories{Objects: c}, w)
+}
+
+func (env *Env) getRecipes(w http.ResponseWriter, r *http.Request) {
+	var category string
+	if c, ok := r.URL.Query()["c"]; ok {
+		category = c[0]
+	}
+
+	recipes, err := env.recipes.GetRecipes(category)
+	if err != nil {
+		message := "Get recipes: " + err.Error()
+		writeErrorJson(http.StatusBadRequest, message, w)
+		return
+	}
+	writeSuccessJson(&model.Recipes{Objects: recipes}, w)
+}
+
 func (env *Env) getSearch(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 	vars := r.URL.Query()
 	var err error
 
@@ -67,19 +92,6 @@ func (env *Env) getSearch(w http.ResponseWriter, r *http.Request) {
 		recipes = make([]*model.Recipe, 0)
 	}
 
-	w.WriteHeader(200)
-	json.NewEncoder(w).Encode(&model.Recipes{
-		Objects: recipes,
-	})
-}
+	writeSuccessJson(&model.Recipes{Objects: recipes}, w)
 
-func writeErrorJson(code int, message string, w http.ResponseWriter) {
-	payload := api.ErrorJson{
-		Objects: api.Error{
-			Code:    code,
-			Message: message,
-			Status:  http.StatusText(code),
-		}}
-	w.WriteHeader(http.StatusBadRequest)
-	json.NewEncoder(w).Encode(payload)
 }
