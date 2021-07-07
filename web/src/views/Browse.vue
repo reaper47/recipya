@@ -22,9 +22,7 @@
       </template>
     </v-treeview>
     <v-divider vertical></v-divider>
-    <loading-fullscreen
-      v-if="$store.getters['browse/isLoading']"
-    ></loading-fullscreen>
+    <loading-fullscreen v-if="$store.getters['isLoading']"></loading-fullscreen>
     <v-container v-else style="width: 80%">
       <v-layout row wrap>
         <v-flex v-for="(recipe, index) in recipes" :key="recipe.name">
@@ -37,6 +35,7 @@
 <script>
 import LoadingFullscreen from "@/components/basic/LoadingFullscreen.vue";
 import RecipeCard from "@/components/RecipeCard.vue";
+import { showSnackbar, SNACKBAR_TYPE } from "@/eventbus/action";
 
 export default {
   name: "Browse",
@@ -52,12 +51,11 @@ export default {
     icons: {
       txt: "mdi-file-document-outline",
     },
-    categories: [],
   }),
   async created() {
-    this.$store.commit("IS_LOADING", true);
-
-    this.categories = await this.$store.dispatch("browse/getCategories");
+    if (this.categories.length === 0) {
+      await this.$store.dispatch("browse/getCategories");
+    }
     this.items = [
       { name: "all", icon: "txt" },
       {
@@ -67,18 +65,17 @@ export default {
         }),
       },
     ];
-
-    this.$store.commit("IS_LOADING", false);
   },
   computed: {
+    categories() {
+      return this.$store.getters["browse/categories"];
+    },
     recipes() {
       return this.$store.getters["browse/recipes"];
     },
   },
   methods: {
     async changeNode(nodes) {
-      this.$store.commit("browse/IS_LOADING", true);
-
       try {
         const node = nodes[0];
         if (node === "all") {
@@ -87,10 +84,9 @@ export default {
           await this.$store.dispatch("browse/getRecipes", { category: node });
         }
       } catch (error) {
-        console.warn({ error });
+        const title = `${error.status} (${error.code})`;
+        showSnackbar(SNACKBAR_TYPE.ERROR, title, error.message);
       }
-
-      this.$store.commit("browse/IS_LOADING", false);
     },
   },
 };

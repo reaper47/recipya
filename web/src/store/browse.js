@@ -3,21 +3,25 @@ import Recipe from "@/models/recipe";
 export default {
   namespaced: true,
   state: () => ({
-    isLoading: false,
+    categories: [],
     recipes: [],
   }),
   actions: {
-    async getCategories({ rootGetters }) {
+    async getCategories({ commit, rootGetters }) {
+      commit("IS_LOADING", true, { root: true });
+
       const res = await fetch(rootGetters.apiUrl("categories"));
       const data = await res.json();
-      if (!res.ok) {
-        return [];
+      if (res.ok) {
+        commit("SET_CATEGORIES", data["categories"]);
       }
-      return data["categories"];
+
+      commit("IS_LOADING", false, { root: false });
     },
     async getRecipes({ commit, rootGetters }, { category }) {
-      let data = null;
+      commit("IS_LOADING", true, { root: true });
 
+      let data = null;
       if (category === null) {
         const res = await fetch(rootGetters.apiUrl("recipes"));
         data = await res.json();
@@ -27,10 +31,11 @@ export default {
       }
 
       commit("SET_RECIPES", data["recipes"]);
+      commit("IS_LOADING", false, { root: true });
     },
   },
   mutations: {
-    IS_LOADING: (state, value) => (state.isLoading = value),
+    SET_CATEGORIES: (state, categories) => (state.categories = categories),
     SET_RECIPES: (state, recipes) => {
       state.recipes.splice(
         0,
@@ -40,7 +45,7 @@ export default {
     },
   },
   getters: {
-    isLoading: (state) => state.isLoading,
+    categories: (state) => state.categories,
     recipe: (state) => (id) => state.recipes.find((recipe) => recipe.id === id),
     recipes: (state) => state.recipes,
   },
