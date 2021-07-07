@@ -25,7 +25,7 @@
     <loading-fullscreen
       v-if="$store.getters['browse/isLoading']"
     ></loading-fullscreen>
-    <v-container v-else style="width: 80%">
+    <v-container v-else fill-height style="width: 80%">
       <v-layout row wrap>
         <v-flex v-for="(recipe, index) in recipes" :key="recipe.name">
           <recipe-card :index="index + 1" :recipe="recipe"></recipe-card>
