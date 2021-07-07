@@ -22,7 +22,9 @@
       </template>
     </v-treeview>
     <v-divider vertical></v-divider>
-    <loading-fullscreen v-if="$store.getters['isLoading']"></loading-fullscreen>
+    <loading-fullscreen
+      v-if="$store.getters['browse/isLoading']"
+    ></loading-fullscreen>
     <v-container v-else style="width: 80%">
       <v-layout row wrap>
         <v-flex v-for="(recipe, index) in recipes" :key="recipe.name">
@@ -35,7 +37,6 @@
 <script>
 import LoadingFullscreen from "@/components/basic/LoadingFullscreen.vue";
 import RecipeCard from "@/components/RecipeCard.vue";
-import { showSnackbar, SNACKBAR_TYPE } from "@/eventbus/action";
 
 export default {
   name: "Browse",
@@ -76,16 +77,11 @@ export default {
   },
   methods: {
     async changeNode(nodes) {
-      try {
-        const node = nodes[0];
-        if (node === "all") {
-          await this.$store.dispatch("browse/getRecipes", { category: null });
-        } else if (this.categories.includes(node)) {
-          await this.$store.dispatch("browse/getRecipes", { category: node });
-        }
-      } catch (error) {
-        const title = `${error.status} (${error.code})`;
-        showSnackbar(SNACKBAR_TYPE.ERROR, title, error.message);
+      const node = nodes[0];
+      if (node === "all") {
+        await this.$store.dispatch("browse/getRecipes", { category: null });
+      } else if (this.categories.includes(node)) {
+        await this.$store.dispatch("browse/getRecipes", { category: node });
       }
     },
   },
