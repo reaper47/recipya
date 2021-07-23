@@ -2,7 +2,15 @@
   <v-app>
     <app-bar :actions="actions" @toggle-drawer="drawer = !drawer"></app-bar>
 
-    <v-navigation-drawer v-model="drawer" absolute temporary>
+    <v-navigation-drawer v-model="drawer" absolute temporary right>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="text-h6">Recipe Hunter</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider></v-divider>
+
       <v-list nav dense>
         <v-list-item-group v-model="page" color="primary">
           <v-list-item
