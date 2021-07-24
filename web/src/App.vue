@@ -5,7 +5,7 @@
     <v-navigation-drawer v-model="drawer" absolute temporary right>
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title class="text-h6">Recipe Hunter</v-list-item-title>
+          <v-list-item-title class="text-h6">Recipya</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 

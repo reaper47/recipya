@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/reaper47/recipe-hunter/repository"
+	"github.com/reaper47/recipya/repository"
 )
 
 const baseUrl = "/api/v1"

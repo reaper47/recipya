@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"sync"
 
-	"github.com/reaper47/recipe-hunter/config"
+	"github.com/reaper47/recipya/config"
 	_ "modernc.org/sqlite"
 )
 

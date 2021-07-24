@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/reaper47/recipe-hunter/config"
+	"github.com/reaper47/recipya/config"
 )
 
 var testConfig = &config.ConfigStruct{

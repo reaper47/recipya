@@ -21,7 +21,7 @@
         transition="scale-transition"
         width="35"
       />
-      <p class="mb-0 font-weight-light">Recipe Hunter</p>
+      <p class="mb-0 font-weight-light">Recipya</p>
     </v-btn>
 
     <v-spacer></v-spacer>

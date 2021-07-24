@@ -3,8 +3,8 @@ package core
 import (
 	"log"
 
-	"github.com/reaper47/recipe-hunter/model"
-	"github.com/reaper47/recipe-hunter/repository"
+	"github.com/reaper47/recipya/model"
+	"github.com/reaper47/recipya/repository"
 )
 
 // Search searches for recipes based on the ingredients.

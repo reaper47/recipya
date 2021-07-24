@@ -6,15 +6,15 @@ export default [
     name: "Home",
     component: Home,
     meta: {
-      title: "Home | Recipe Hunter",
+      title: "Home | Recipya",
       metaTags: [
         {
           name: "description",
-          content: "The home page of Recipe Hunter.",
+          content: "The home page of Recipya.",
         },
         {
           name: "og:description",
-          content: "The home page of Recipe Hunter.",
+          content: "The home page of Recipya.",
         },
       ],
     },
@@ -25,7 +25,7 @@ export default [
     component: () =>
       import(/* webpackChunkName: "browse" */ "../views/Browse.vue"),
     meta: {
-      title: "Browse | Recipe Hunter",
+      title: "Browse | Recipya",
       metaTags: [
         {
           name: "description",
@@ -55,7 +55,7 @@ export default [
     component: () =>
       import(/* webpackChunkName: "search" */ "../views/Search.vue"),
     meta: {
-      title: "Search | Recipe Hunter",
+      title: "Search | Recipya",
       metaTags: [
         {
           name: "description",
@@ -90,7 +90,7 @@ export default [
     component: () => import(/* webpackChunkName: "404" */ "../views/404.vue"),
     name: "NotFound",
     meta: {
-      title: "Page Not Found | Recipe Hunter",
+      title: "Page Not Found | Recipya",
     },
   },
 ];

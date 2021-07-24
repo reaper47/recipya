@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/reaper47/recipe-hunter/consts"
+	"github.com/reaper47/recipya/consts"
 	"github.com/spf13/viper"
 )
 

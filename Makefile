@@ -1,6 +1,6 @@
 docker:
 	go mod tidy -v
 	go mod vendor
-	docker build . -t reaper99/recipe-hunter:$(tag)
+	docker build . -t reaper99/recipya:$(tag)
 
 .PHONY: docker

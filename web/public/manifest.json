@@ -1,6 +1,6 @@
 {
-    "name": "Recipe Hunter",
-    "short_name": "Recipe Hunter",
+    "name": "Recipya",
+    "short_name": "Recipya",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

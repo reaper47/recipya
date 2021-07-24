@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/reaper47/recipe-hunter/core"
+	"github.com/reaper47/recipya/core"
 	"github.com/spf13/cobra"
 )
 

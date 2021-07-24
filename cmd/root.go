@@ -1,17 +1,17 @@
 package cmd
 
 import (
-	"github.com/reaper47/recipe-hunter/config"
+	"github.com/reaper47/recipya/config"
 	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "recipe-hunter",
+	Use:   "recipya",
 	Short: "Search for what you can cook with the ingredients in your fridge",
 	Long: `
-                 Recipe Hunter 
+	Recipya 
 	
-Recipe Hunter is an application used to search 
+Recipya is an application used to search 
 for what you can cook with the ingredients in your fridge.
 
 It features a command line interface and a web application.

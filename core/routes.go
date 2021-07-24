@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/gorilla/mux"
-	"github.com/reaper47/recipe-hunter/api"
-	"github.com/reaper47/recipe-hunter/model"
+	"github.com/reaper47/recipya/api"
+	"github.com/reaper47/recipya/model"
 )
 
 func initRecipesRoutes(r *mux.Router, env *Env) {

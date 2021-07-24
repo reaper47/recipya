@@ -1,8 +1,8 @@
 version: "3.8"
 services:
-    recipe-hunter:
-        image: reaper99/recipe-hunter:${TAG}
-        container_name: recipe-hunter
+    recipya:
+        image: reaper99/recipya:${TAG}
+        container_name: recipya
         ports:
             - target: ${CONTAINER_PORT}
               published: ${PUBLIC_PORT}

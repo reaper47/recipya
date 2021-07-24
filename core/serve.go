@@ -11,9 +11,9 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	"github.com/reaper47/recipe-hunter/api"
-	"github.com/reaper47/recipe-hunter/config"
-	"github.com/reaper47/recipe-hunter/repository"
+	"github.com/reaper47/recipya/api"
+	"github.com/reaper47/recipya/config"
+	"github.com/reaper47/recipya/repository"
 )
 
 type spaHandler struct {

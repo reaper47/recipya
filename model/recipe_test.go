@@ -6,7 +6,7 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"github.com/reaper47/recipe-hunter/model"
+	"github.com/reaper47/recipya/model"
 )
 
 func TestRecipe(t *testing.T) {

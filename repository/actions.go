@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"strings"
 
-	"github.com/reaper47/recipe-hunter/model"
+	"github.com/reaper47/recipya/model"
 )
 
 // Repository holds the database singleton.

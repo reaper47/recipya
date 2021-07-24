@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/reaper47/recipe-hunter/model"
+	"github.com/reaper47/recipya/model"
 )
 
 type MockRecipeModel struct{}

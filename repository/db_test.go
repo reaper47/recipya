@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/reaper47/recipe-hunter/repository"
+	"github.com/reaper47/recipya/repository"
 )
 
 func TestDb(t *testing.T) {

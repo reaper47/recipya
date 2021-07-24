@@ -13,7 +13,7 @@
         "
         cols="4"
       >
-        {{ new Date().getFullYear() }} — <strong>Recipe Hunter</strong>
+        {{ new Date().getFullYear() }} — <strong>Recipya</strong>
       </v-col>
       <v-col class="text-right" cols="4">
         <v-tooltip top>
@@ -26,7 +26,7 @@
               icon
               tile
               small
-              href="https://github.com/reaper47/recipe-hunter"
+              href="https://github.com/reaper47/recipya"
               target="_blank"
             >
               <v-icon>mdi-github</v-icon>

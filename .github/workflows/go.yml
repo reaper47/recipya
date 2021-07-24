@@ -72,7 +72,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: reaper99/recipe-hunter:latest
+          tags: reaper99/recipya:latest
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

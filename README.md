@@ -1,6 +1,6 @@
-# Recipe Hunter
+# Recipya
 
-Recipe Hunter is an application whose goal is to search for what you can cook with the ingredients in your fridge.
+Recipya is an application whose goal is to search for what you can cook with the ingredients in your fridge.
 In other words, it helps you know what you can cook with what you have when you are out of ideas.
 
 It works seamlessly with recipes in your [Nextcloud Cookbook](https://apps.nextcloud.com/apps/cookbook).
@@ -34,17 +34,17 @@ No problem! Download this [sample](https://cloud.musicavis.ca/index.php/s/NNge4D
 
 ## Docker
 
-Run the following Docker command to run the project as a daemon in a container named "recipe-hunter".
+Run the following Docker command to run the project as a daemon in a container named "recipya".
 
 ```bash
 $ docker run -d \
-   --name recipe-hunter \
+   --name recipya \
    --restart=unless-stopped \
    -v /path/to/your/json-recipes/repository:/recipes \
    -p 3001:3001 \
    -e RH_INDEXINTERVAL=2d \
    -e RH_WAIT 10 \
-   reap99/recipe-hunter:latest
+   reap99/recipya:latest
 ```
 
 Finally, give the API a try:
@@ -55,10 +55,10 @@ $ curl "localhost:3001/api/v1/recipes/search?ingredients=avocado&num=1"
 
 ## Docker-Compose
 
-Download the [docker-compose.yaml](https://github.com/reaper47/recipe-hunter/blob/main/docker-compose.yaml) file along with its [configuration](https://github.com/reaper47/recipe-hunter/blob/main/docker-compose.yaml) file.
+Download the [docker-compose.yaml](https://github.com/reaper47/recipya/blob/main/docker-compose.yaml) file along with its [configuration](https://github.com/reaper47/recipya/blob/main/docker-compose.yaml) file.
 
 ```bash
-$ curl -LJO https://raw.githubusercontent.com/reaper47/recipe-hunter/main/docker-compose.yaml -LJO https://raw.githubusercontent.com/reaper47/recipe-hunter/main/.env
+$ curl -LJO https://raw.githubusercontent.com/reaper47/recipya/main/docker-compose.yaml -LJO https://raw.githubusercontent.com/reaper47/recipya/main/.env
 ```
 
 Modify the configuration variables in the `.env` file if needed.
@@ -134,13 +134,13 @@ No Nginx configuration is given because Caddy is easy, simple, has automatic HTT
 1. Clone the project:
 
 ```bash
-$ git clone https://github.com/reaper47/recipe-hunter.git
+$ git clone https://github.com/reaper47/recipya.git
 ```
 
 2. Move inside the directory:
 
 ```bash
-$ cd recipe-hunter
+$ cd recipya
 ```
 
 3. Install the dependencies:
@@ -164,28 +164,28 @@ $ go build -o dist
 To display the help text:
 
 ```bash
-$ ./recipe-hunter
+$ ./recipya
 ```
 
 To index the database:
 
 ```bash
-$ ./recipe-hunter help index
-$ ./recipe-hunter index
+$ ./recipya help index
+$ ./recipya index
 ```
 
 To search for recipes from a list of ingredients:
 
 ```bash
-$ ./recipe-hunter help search
-$ ./recipe-hunter search avocado,garlic,ketchup
+$ ./recipya help search
+$ ./recipya search avocado,garlic,ketchup
 ```
 
 To start the web server that exposes the REST API:
 
 ```bash
-$ ./recipe-hunter help serve
-$ ./recipe-hunter serve
+$ ./recipya help serve
+$ ./recipya serve
 $ curl localhost:3001/api/v1/recipes/search?ingredients=avocado,garlic,ketchup&num=3&mode=2
 ```
 

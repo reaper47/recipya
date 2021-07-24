@@ -3,8 +3,8 @@ package core
 import (
 	"database/sql"
 
-	"github.com/reaper47/recipe-hunter/model"
-	"github.com/reaper47/recipe-hunter/repository"
+	"github.com/reaper47/recipya/model"
+	"github.com/reaper47/recipya/repository"
 )
 
 // Env stores environment variables for use throughout the program.

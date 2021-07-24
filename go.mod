@@ -1,4 +1,4 @@
-module github.com/reaper47/recipe-hunter
+module github.com/reaper47/recipya
 
 go 1.16
 

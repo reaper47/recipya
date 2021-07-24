@@ -5,13 +5,13 @@ import (
 	"log"
 	"strings"
 
-	"github.com/reaper47/recipe-hunter/core"
+	"github.com/reaper47/recipya/core"
 	"github.com/spf13/cobra"
 )
 
 var searchCmd = &cobra.Command{
 	Use:     "search ingredient1,ingredient2,...,ingredientN",
-	Example: "recipe-hunter search avocado,garlic -m 1 -n 5",
+	Example: "recipya search avocado,garlic -m 1 -n 5",
 	Short:   "Search for recipes based on ingredients",
 	Long: `
 ---------- Help for 'search' command -----------

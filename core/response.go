@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/reaper47/recipe-hunter/api"
+	"github.com/reaper47/recipya/api"
 )
 
 func writeSuccessJson(object interface{}, w http.ResponseWriter) {
