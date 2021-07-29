@@ -56,23 +56,13 @@ export default {
       type: Number,
       required: true,
     },
-    store: {
-      type: String,
-      required: true,
-    },
   },
   components: { ...Components, RecipeMobile },
   data: () => ({
     recipe: null,
   }),
   created() {
-    const recipe = this.$store.getters[`${this.store}/recipe`](this.id);
-    console.warn("GOT RECIPE:", recipe);
-    if (recipe === undefined) {
-      console.warn("not found");
-      return;
-    }
-    this.recipe = recipe;
+    this.recipe = this.$store.getters.recipe(this.id);
   },
   computed: {
     isXs() {

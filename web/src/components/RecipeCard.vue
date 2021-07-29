@@ -58,7 +58,6 @@ export default {
   },
   methods: {
     openRecipe() {
-      const id = this.recipe.id;
       let name = "";
       let store = "";
 
@@ -70,7 +69,8 @@ export default {
         store = "browse";
       }
 
-      this.$router.push({ name, params: { id, store } });
+      this.$store.dispatch("setStore", { store });
+      this.$router.push({ name, params: { id: this.recipe.id } });
     },
   },
 };
