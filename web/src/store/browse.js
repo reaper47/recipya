@@ -7,6 +7,7 @@ export default {
     categories: [],
     isLoading: false,
     recipes: [],
+    selectedNode: null,
   }),
   actions: {
     async getCategories({ commit, rootGetters }) {
@@ -40,6 +41,9 @@ export default {
         commit("IS_LOADING", false);
       }
     },
+    async setSelectedNode({ commit }, node) {
+      commit("SET_SELECTED_NODE", node);
+    },
   },
   mutations: {
     SET_CATEGORIES: (state, categories) => (state.categories = categories),
@@ -51,11 +55,13 @@ export default {
         ...recipes.map((item) => new Recipe(item))
       );
     },
+    SET_SELECTED_NODE: (state, node) => (state.selectedNode = node),
   },
   getters: {
     isLoading: (state) => state.isLoading,
     categories: (state) => state.categories,
     recipe: (state) => (id) => state.recipes.find((recipe) => recipe.id === id),
     recipes: (state) => state.recipes,
+    selectedNode: (state) => state.selectedNode,
   },
 };

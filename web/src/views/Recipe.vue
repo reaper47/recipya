@@ -57,7 +57,10 @@ export default {
       required: true,
     },
   },
-  components: { ...Components, RecipeMobile },
+  components: {
+    ...Components,
+    RecipeMobile,
+  },
   data: () => ({
     recipe: null,
   }),
@@ -66,7 +69,7 @@ export default {
   },
   computed: {
     isXs() {
-      return this.$vuetify.breakpoint.name === "xs";
+      return this.$vuetify.breakpoint.xs;
     },
   },
 };

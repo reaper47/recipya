@@ -1,7 +1,13 @@
 <template>
   <loading-fullscreen v-if="$store.getters.isLoading"></loading-fullscreen>
-  <v-container v-else fill-height fluid class="pl-0 pt-0">
+  <v-container
+    v-else-if="!$vuetify.breakpoint.mdAndDown"
+    fill-height
+    fluid
+    class="pl-0 pt-0"
+  >
     <v-treeview
+      v-if="!$vuetify.breakpoint.mdAndDown"
       v-model="tree"
       :open="initiallyOpen"
       activatable
@@ -10,6 +16,7 @@
       item-key="name"
       open-on-click
       class="capitalize"
+      :active="[selectedNode]"
       style="align-self: start"
     >
       <template v-slot:prepend="{ item, open }">
@@ -27,11 +34,53 @@
     ></loading-fullscreen>
     <v-container v-else fill-height style="width: 80%">
       <v-layout row wrap>
-        <v-flex v-for="(recipe, index) in recipes" :key="recipe.name">
-          <recipe-card :index="index + 1" :recipe="recipe"></recipe-card>
+        <v-flex v-for="(recipe, i) in recipes" :key="recipe.name">
+          <recipe-card :index="i + 1" :recipe="recipe"></recipe-card>
         </v-flex>
       </v-layout>
     </v-container>
+  </v-container>
+  <v-container v-else fluid class="pt-0 align-start">
+    <v-row>
+      <v-col>
+        <v-select
+          v-model="nodeMobile"
+          :items="itemsMobile"
+          item-text="name"
+          item-value="id"
+          label="Filter"
+          @change="changeFilter"
+        ></v-select>
+      </v-col>
+    </v-row>
+    <loading-fullscreen
+      v-if="$store.getters['browse/isLoading']"
+    ></loading-fullscreen>
+    <v-row v-else>
+      <v-col>
+        <v-expansion-panels>
+          <v-expansion-panel
+            v-for="(recipe, i) in recipes"
+            :key="`${i}-mobile`"
+          >
+            <v-expansion-panel-header class="capitalize">
+              {{ recipe.name }}
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <v-card flat>
+                <v-card-text>
+                  {{ recipe.description }}
+                </v-card-text>
+                <v-card-actions class="pt-0">
+                  <v-spacer></v-spacer>
+                  <v-btn block @click="openRecipe(recipe.id)"> Open </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 <script>
@@ -45,7 +94,7 @@ export default {
     RecipeCard,
   },
   data: () => ({
-    active: null,
+    nodeMobile: null,
     tree: [],
     items: [],
     initiallyOpen: ["categories"],
@@ -66,23 +115,61 @@ export default {
         }),
       },
     ];
+    this.updateNodeMobile(this.selectedNode);
   },
   computed: {
     categories() {
       return this.$store.getters["browse/categories"];
     },
+    itemsMobile() {
+      return [
+        { id: "all", name: "All" },
+        ...this.categories.map((name) => ({
+          id: name,
+          name: `[Category] ${this.titleCase(name)}`,
+        })),
+      ];
+    },
     recipes() {
       return this.$store.getters["browse/recipes"];
     },
+    selectedNode() {
+      return this.$store.getters["browse/selectedNode"];
+    },
   },
   methods: {
+    changeFilter(filter) {
+      this.changeNode([filter.replace("[Category]", "").trim().toLowerCase()]);
+    },
     async changeNode(nodes) {
       const node = nodes[0];
+
+      let category;
       if (node === "all") {
-        await this.$store.dispatch("browse/getRecipes", { category: null });
+        category = null;
       } else if (this.categories.includes(node)) {
-        await this.$store.dispatch("browse/getRecipes", { category: node });
+        category = node;
       }
+
+      this.$store.dispatch("browse/setSelectedNode", node);
+      await this.$store.dispatch("browse/getRecipes", { category });
+      this.updateNodeMobile(node);
+    },
+    openRecipe(id) {
+      this.$store.dispatch("setStore", { store: "browse" });
+      this.$router.push({
+        name: "Recipe Page",
+        params: { id },
+      });
+    },
+    updateNodeMobile(node) {
+      this.nodeMobile = {
+        id: node,
+        name: this.titleCase(node),
+      };
+    },
+    titleCase(str) {
+      return str.toLowerCase().replace(/\b(\w)/g, (s) => s.toUpperCase());
     },
   },
 };
