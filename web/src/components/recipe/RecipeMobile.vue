@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import Components from "@/components/recipe-page";
+import Components from "@/components/recipe/recipe-page";
 import Recipe from "@/models/recipe";
 
 export default {

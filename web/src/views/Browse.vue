@@ -36,7 +36,7 @@
 </template>
 <script>
 import LoadingFullscreen from "@/components/basic/LoadingFullscreen.vue";
-import RecipeCard from "@/components/RecipeCard.vue";
+import RecipeCard from "@/components/recipe/RecipeCard.vue";
 
 export default {
   name: "Browse",

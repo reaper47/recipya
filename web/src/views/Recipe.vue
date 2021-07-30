@@ -46,8 +46,8 @@
 </template>
 
 <script>
-import Components from "@/components/recipe-page";
-import RecipeMobile from "./mobile/RecipeMobile.vue";
+import Components from "@/components/recipe/recipe-page";
+import RecipeMobile from "../components/recipe/RecipeMobile.vue";
 
 export default {
   name: "RecipePage",

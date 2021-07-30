@@ -9,7 +9,7 @@
 
 <script>
 import LoadingFullscreen from "@/components/basic/LoadingFullscreen.vue";
-import SearchForm from "@/components/SearchForm.vue";
+import SearchForm from "@/components/search/SearchForm.vue";
 
 export default {
   name: "Search",

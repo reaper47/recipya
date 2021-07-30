@@ -21,7 +21,7 @@
 
 <script>
 import GobackCard from "@/components/basic/GobackCard.vue";
-import RecipeCard from "@/components/RecipeCard.vue";
+import RecipeCard from "@/components/recipe/RecipeCard.vue";
 
 export default {
   name: "Results",
