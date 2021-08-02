@@ -7,7 +7,7 @@ export default {
     categories: [],
     isLoading: false,
     recipes: [],
-    selectedNode: null,
+    selectedNode: "all",
   }),
   actions: {
     async getCategories({ commit, rootGetters }) {
@@ -26,7 +26,7 @@ export default {
         commit("IS_LOADING", true);
 
         let data = null;
-        if (category === null) {
+        if (!category) {
           const res = await fetch(rootGetters.apiUrl("recipes"));
           data = await res.json();
         } else {
