@@ -6,15 +6,15 @@
       text="No recipes have been found for your given query."
     ></goback-card>
     <v-container v-else style="width: 80%">
-      <v-layout row wrap>
-        <v-flex v-for="(recipe, index) in recipes" :key="recipe.name">
+      <v-row wrap>
+        <v-col v-for="(recipe, index) in recipes" :key="recipe.name">
           <recipe-card
             :index="index + 1"
             :recipe="recipe"
             isResult
           ></recipe-card>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>

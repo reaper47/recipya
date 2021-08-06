@@ -8,16 +8,16 @@
   >
     <v-treeview
       v-if="!$vuetify.breakpoint.mdAndDown"
+      class="capitalize"
+      style="align-self: start"
       v-model="tree"
-      :open="initiallyOpen"
       activatable
-      @update:active="changeNode"
+      :open="initiallyOpen"
       :items="items"
       item-key="name"
       open-on-click
-      class="capitalize"
       :active="[selectedNode]"
-      style="align-self: start"
+      @update:active="changeNode"
     >
       <template v-slot:prepend="{ item, open }">
         <v-icon v-if="!item.icon">
@@ -32,12 +32,12 @@
     <loading-fullscreen
       v-if="$store.getters['browse/isLoading']"
     ></loading-fullscreen>
-    <v-container v-else fill-height style="width: 80%">
-      <v-layout row wrap>
-        <v-flex v-for="(recipe, i) in recipes" :key="recipe.name">
+    <v-container v-else fill-height align-start style="width: 80%">
+      <v-row wrap>
+        <v-col v-for="(recipe, i) in recipes" :key="recipe.name">
           <recipe-card :index="i + 1" :recipe="recipe"></recipe-card>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-container>
   </v-container>
   <v-container v-else fluid class="pt-0 align-start">
@@ -174,3 +174,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+::v-deep .v-treeview-node__root.v-treeview-node--active {
+  pointer-events: none;
+}
+
+::v-deep .v-treeview-node__toggle {
+  pointer-events: all;
+}
+</style>
