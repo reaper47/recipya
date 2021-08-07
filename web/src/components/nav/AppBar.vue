@@ -54,9 +54,6 @@ export default {
       required: true,
     },
   },
-  data: () => ({
-    drawer: false,
-  }),
 };
 </script>
 

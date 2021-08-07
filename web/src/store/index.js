@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 
 import browse from "./browse";
+import create from "./create";
 import search from "./search";
 
 Vue.use(Vuex);
@@ -30,6 +31,7 @@ export default new Vuex.Store({
   },
   modules: {
     browse,
+    create,
     search,
   },
 });

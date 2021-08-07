@@ -30,7 +30,7 @@
 
     <snack-bar></snack-bar>
     <v-main>
-      <router-view />
+      <router-view></router-view>
     </v-main>
     <nice-footer></nice-footer>
   </v-app>
@@ -59,6 +59,11 @@ export default {
         to: "/search",
         name: "Search",
         icon: "mdi-briefcase-search",
+      },
+      {
+        to: "/new",
+        name: "New",
+        icon: "mdi-plus-box",
       },
     ],
     drawer: false,

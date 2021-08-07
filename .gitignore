@@ -1,5 +1,6 @@
 bin/
 dist/
+tools/venv
 
 # Binaries for programs and plugins
 *.exe
