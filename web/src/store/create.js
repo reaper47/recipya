@@ -5,20 +5,7 @@ export default {
   state: {
     isImporting: false,
     isWebsitesLoading: false,
-    websites: [
-      "https://claudia.abril.com.br",
-      "https://acouplecooks.com/",
-      "http://www.afghankitchenrecipes.com/",
-      "https://1claudia.abril.com.br",
-      "https://2acouplecooks.com/",
-      "http://3www.afghankitchenrecipes.com/",
-      "https://4claudia.abril.com.br",
-      "https://5acouplecooks.com/",
-      "http://6www.afghankitchenrecipes.com/",
-      "https://7claudia.abril.com.br",
-      "https://8acouplecooks.com/",
-      "http://www.9afghankitchenrecipes.com/",
-    ],
+    websites: [],
   },
   actions: {
     async fetchWebsites({ commit, getters, rootGetters }) {

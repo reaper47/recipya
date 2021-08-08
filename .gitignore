@@ -1,6 +1,8 @@
 bin/
 dist/
 tools/venv
+tools/scraper/scraper.build
+tools/scraper/scraper.bin
 
 # Binaries for programs and plugins
 *.exe
