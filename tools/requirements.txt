@@ -62,7 +62,7 @@ paramiko==2.7.2
 pathspec==0.9.0
 pexpect==4.8.0
 pid==2.2.3
-Pillow==8.1.2
+Pillow==8.2.0
 platformio==5.1.1
 ply==3.11
 productmd==1.33
