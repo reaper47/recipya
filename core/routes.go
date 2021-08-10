@@ -1,6 +1,8 @@
 package core
 
 import (
+	"encoding/json"
+	"io"
 	"net/http"
 	"strconv"
 	"strings"
@@ -12,9 +14,9 @@ import (
 
 func initRecipesRoutes(r *mux.Router, env *Env) {
 	r.HandleFunc(api.Recipes, env.getRecipes).Methods(http.MethodGet, http.MethodOptions)
-	r.HandleFunc(api.RecipeCategories, env.getCategories).
-		Methods(http.MethodGet, http.MethodOptions)
+	r.HandleFunc(api.RecipeCategories, env.getCategories).Methods(http.MethodGet, http.MethodOptions)
 	r.HandleFunc(api.RecipeSearch, env.getSearch).Methods(http.MethodGet, http.MethodOptions)
+	r.HandleFunc(api.RecipeImport, env.postImportRecipe).Methods(http.MethodPost, http.MethodOptions)
 }
 
 func (env *Env) getCategories(w http.ResponseWriter, r *http.Request) {
@@ -93,5 +95,29 @@ func (env *Env) getSearch(w http.ResponseWriter, r *http.Request) {
 	}
 
 	writeSuccessJson(&model.Recipes{Objects: recipes}, w)
+}
 
+func (env *Env) postImportRecipe(w http.ResponseWriter, r *http.Request) {
+	var website model.Website
+	err := json.NewDecoder(r.Body).Decode(&website)
+	switch {
+	case err == io.EOF:
+		message := "No URL in body of the request."
+		writeErrorJson(http.StatusBadRequest, message, w)
+		return
+	case err != nil:
+		message := "Error decoding the JSON body of the request."
+		writeErrorJson(http.StatusInternalServerError, message, w)
+		return
+	}
+
+	recipe, err := env.recipes.ImportRecipe(website.Url)
+	if err != nil {
+		message := "Import recipe from website failed. The website might not be supported. Err: " + err.Error()
+		writeErrorJson(http.StatusBadRequest, message, w)
+		return
+	}
+
+	w.Header().Add("Location", "/browse/"+strconv.FormatInt(recipe.ID, 10))
+	writeCreatedJson(&recipe, w)
 }

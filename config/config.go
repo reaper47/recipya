@@ -26,8 +26,8 @@ type ConfigStruct struct {
 
 var (
 	defaults = map[string]interface{}{
-		"recipesDb":     "./bin/recipes.db",
-		"recipesDir":    "./recipes",
+		"recipesDb":     "./dist/recipes.db",
+		"recipesDir":    "./dist/recipes",
 		"indexInterval": "1d",
 		"host":          "0.0.0.0",
 		"port":          3000,

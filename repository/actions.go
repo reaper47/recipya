@@ -3,6 +3,10 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
+	"os"
+	"os/exec"
+	"runtime"
 	"strings"
 
 	"github.com/reaper47/recipya/model"
@@ -440,6 +444,45 @@ func getNutritionSet(recipeID int64, tx *sql.Tx) (*model.NutritionSet, error) {
 		return nil, err
 	}
 	return &n, nil
+}
+
+// ImportRecipe extracts the recipe data from the given URL and
+// stores it in the database.
+func (repo *Repository) ImportRecipe(url string) (*model.Recipe, error) {
+	ext := "bin"
+	if runtime.GOOS == "windows" {
+		ext = "exe"
+	}
+
+	scraper := "./tools/scraper." + ext
+	if _, err := os.Stat(scraper); os.IsNotExist(err) {
+		return nil, err
+	}
+
+	cmd := exec.Command(scraper, url)
+	output, err := cmd.Output()
+	if err != nil {
+		return nil, err
+	}
+
+	var recipe model.Recipe
+	err = json.Unmarshal(output, &recipe)
+	if err != nil {
+		return nil, err
+	}
+
+	recipeInDb, err := repo.GetRecipe(recipe.Name)
+	if err != nil {
+		return nil, err
+	} else if recipeInDb != nil {
+		return recipeInDb, nil
+	}
+
+	err = repo.InsertRecipe(&recipe)
+	if err != nil {
+		return nil, err
+	}
+	return &recipe, nil
 }
 
 // SearchMaximizeFridge searches for recipes in the database

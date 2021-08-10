@@ -33,6 +33,10 @@ func (repo *MockRecipeModel) UpdateRecipe(r *model.Recipe, id int64) error {
 	return nil
 }
 
+func (repo *MockRecipeModel) ImportRecipe(url string) (*model.Recipe, error) {
+	return aRecipe(), nil
+}
+
 func (repo *MockRecipeModel) SearchMaximizeFridge(
 	ingredients []string,
 	n int,

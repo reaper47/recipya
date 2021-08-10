@@ -15,6 +15,7 @@ type Env struct {
 		GetRecipe(name string) (*model.Recipe, error)
 		GetRecipes(category string) ([]*model.Recipe, error)
 		GetCategories() ([]string, error)
+		ImportRecipe(url string) (*model.Recipe, error)
 		SearchMaximizeFridge(ingredients []string, n int) ([]*model.Recipe, error)
 		SearchMinimizeMissing(ingredients []string, n int) ([]*model.Recipe, error)
 	}
