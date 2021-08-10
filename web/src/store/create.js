@@ -1,4 +1,6 @@
 import { showSnackbar, SNACKBAR_TYPE } from "@/eventbus/action";
+import store from "@/store";
+import router from "@/router";
 
 export default {
   namespaced: true,
@@ -34,8 +36,21 @@ export default {
       commit("IS_IMPORTING", true);
 
       try {
-        const apiUrl = rootGetters.apiUrl("new?type=import");
-        console.warn(apiUrl, { url });
+        const response = await fetch(rootGetters.apiUrl("import/url"), {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ url }),
+        });
+
+        const data = await response.json();
+        if ("error" in data) {
+          throw data["error"];
+        }
+
+        store.dispatch("browse/addRecipe", data);
+        router.push({ name: "Recipe Page", params: { id: data["id"] } });
       } catch (error) {
         const title = `${error.status} (${error.code})`;
         showSnackbar(SNACKBAR_TYPE.ERROR, title, error.message);

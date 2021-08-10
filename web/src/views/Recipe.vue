@@ -65,7 +65,7 @@ export default {
     recipe: null,
   }),
   created() {
-    this.recipe = this.$store.getters.recipe(this.id);
+    this.recipe = this.$store.getters["browse/recipe"](this.id);
   },
   computed: {
     isXs() {

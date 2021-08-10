@@ -16,7 +16,7 @@ func initRecipesRoutes(r *mux.Router, env *Env) {
 	r.HandleFunc(api.Recipes, env.getRecipes).Methods(http.MethodGet, http.MethodOptions)
 	r.HandleFunc(api.RecipeCategories, env.getCategories).Methods(http.MethodGet, http.MethodOptions)
 	r.HandleFunc(api.RecipeSearch, env.getSearch).Methods(http.MethodGet, http.MethodOptions)
-	r.HandleFunc(api.RecipeImport, env.postImportRecipe).Methods(http.MethodPost, http.MethodOptions)
+	r.HandleFunc(api.RecipeImport, env.postImportRecipe).Headers("Content-Type", "application/json").Methods(http.MethodPost, http.MethodOptions)
 }
 
 func (env *Env) getCategories(w http.ResponseWriter, r *http.Request) {
@@ -117,7 +117,5 @@ func (env *Env) postImportRecipe(w http.ResponseWriter, r *http.Request) {
 		writeErrorJson(http.StatusBadRequest, message, w)
 		return
 	}
-
-	w.Header().Add("Location", "/browse/"+strconv.FormatInt(recipe.ID, 10))
 	writeCreatedJson(&recipe, w)
 }

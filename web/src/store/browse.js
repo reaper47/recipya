@@ -10,6 +10,9 @@ export default {
     selectedNode: "all",
   }),
   actions: {
+    addRecipe({ commit }, recipe) {
+      commit("ADD_RECIPE", recipe);
+    },
     async getCategories({ commit, rootGetters }) {
       commit("IS_LOADING", true, { root: true });
 
@@ -46,6 +49,7 @@ export default {
     },
   },
   mutations: {
+    ADD_RECIPE: (state, recipe) => state.recipes.push(new Recipe(recipe)),
     SET_CATEGORIES: (state, categories) => (state.categories = categories),
     IS_LOADING: (state, value) => (state.isLoading = value),
     SET_RECIPES: (state, recipes) => {

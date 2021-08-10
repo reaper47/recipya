@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"strconv"
 	"strings"
 	"testing"
 
@@ -72,12 +71,6 @@ func test_PostImportRecipe_ValidUrl(t *testing.T) {
 	err := json.NewDecoder(rr.Body).Decode(&recipe)
 	if err != nil {
 		t.Fatal(err)
-	}
-
-	location := rr.Header().Get("Location")
-	locationExpected := "/browse/" + strconv.FormatInt(recipe.ID, 10)
-	if location != locationExpected {
-		t.Fatalf("location header unexpected: got %v want %v", location, locationExpected)
 	}
 }
 

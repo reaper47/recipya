@@ -14,6 +14,7 @@ import (
 	"github.com/reaper47/recipya/api"
 	"github.com/reaper47/recipya/config"
 	"github.com/reaper47/recipya/repository"
+	"github.com/rs/cors"
 )
 
 type spaHandler struct {
@@ -86,7 +87,7 @@ func createServer(r *mux.Router) *http.Server {
 	log.Println("Server started @ " + addr)
 	return &http.Server{
 		Addr:         addr,
-		Handler:      r,
+		Handler:      cors.Default().Handler(r),
 		IdleTimeout:  60 * time.Second,
 		ReadTimeout:  15 * time.Second,
 		WriteTimeout: 15 * time.Second,
