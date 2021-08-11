@@ -16,7 +16,7 @@
 
 <script>
 import CreateManual from "@/components/create/manual.vue";
-import CreateImport from "@/components/create//import/import.vue";
+import CreateImport from "@/components/create/import/import.vue";
 import CreateScan from "@/components/create/scan.vue";
 
 export default {

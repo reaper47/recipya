@@ -222,7 +222,3 @@ $ go test ./...
 # Feedback
 
 If you have any feedback, please reach out to us at macpoule@gmail.com or open an issue on GitHub.
-
-# Authors
-
-- [@reaper99](https://www.github.com/reaper99)
