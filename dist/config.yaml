@@ -25,3 +25,8 @@ wait: 10
 #   - w: weeks
 #   - y: years
 indexInterval: 1d
+
+# The Python executable from the virtual environment
+# with the dependencies installed.
+python: './tools/venv/bin/python'
+scraper: ./tools/scraper.py

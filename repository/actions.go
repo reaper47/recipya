@@ -4,11 +4,10 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
-	"os"
 	"os/exec"
-	"runtime"
 	"strings"
 
+	"github.com/reaper47/recipya/config"
 	"github.com/reaper47/recipya/model"
 )
 
@@ -449,17 +448,7 @@ func getNutritionSet(recipeID int64, tx *sql.Tx) (*model.NutritionSet, error) {
 // ImportRecipe extracts the recipe data from the given URL and
 // stores it in the database.
 func (repo *Repository) ImportRecipe(url string) (*model.Recipe, error) {
-	ext := "bin"
-	if runtime.GOOS == "windows" {
-		ext = "exe"
-	}
-
-	scraper := "./tools/scraper." + ext
-	if _, err := os.Stat(scraper); os.IsNotExist(err) {
-		return nil, err
-	}
-
-	cmd := exec.Command(scraper, url)
+	cmd := exec.Command(config.Config.Python, config.Config.Scraper, url)
 	output, err := cmd.Output()
 	if err != nil {
 		return nil, err
