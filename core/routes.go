@@ -9,6 +9,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/reaper47/recipya/api"
+	"github.com/reaper47/recipya/data"
 	"github.com/reaper47/recipya/model"
 )
 
@@ -120,13 +121,7 @@ func (env *Env) getSearch(w http.ResponseWriter, r *http.Request) {
 }
 
 func (env *Env) getImportWebsites(w http.ResponseWriter, r *http.Request) {
-	websites, err := env.recipes.GetWebsites()
-	if err != nil {
-		message := "Error retrieving supported websites: " + err.Error()
-		writeErrorJson(http.StatusInternalServerError, message, w)
-		return
-	}
-	writeSuccessJson(&model.Websites{Objects: websites}, w)
+	writeSuccessJson(&model.Websites{Objects: data.Websites}, w)
 }
 
 func (env *Env) postImportRecipe(w http.ResponseWriter, r *http.Request) {

@@ -70,21 +70,3 @@ func test_InitDbWithTables(t *testing.T) {
 		}
 	}
 }
-
-/* Will be needed when the database tests will be written.
-
-func initTestDb(t *testing.T) (string, *repository.Repository) {
-	tmpfile, err := ioutil.TempFile("", "tmp.db")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	db, err := sql.Open("sqlite", tmpfile.Name())
-	if err != nil {
-		os.Remove(tmpfile.Name())
-		t.Fatal(err)
-	}
-
-	repository.InitDb(db)
-	return tmpfile.Name(), &repository.Repository{DB: db}
-}*/

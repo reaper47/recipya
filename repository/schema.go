@@ -10,7 +10,6 @@ type tables struct {
 	recipeInstruction table
 	recipeTool        table
 	tool              table
-	website           table
 }
 
 type table struct {
@@ -120,13 +119,6 @@ var schema = tables{
 			"name": "TEXT NOT NULL UNIQUE",
 		},
 	},
-	website: table{
-		name: "website",
-		cols: map[string]string{
-			"id":  "INTEGER PRIMARY KEY",
-			"url": "TEXT NOT NULL UNIQUE",
-		},
-	},
 }
 
 var allTables = []table{
@@ -139,5 +131,4 @@ var allTables = []table{
 	schema.recipeInstruction,
 	schema.recipeTool,
 	schema.tool,
-	schema.website,
 }

@@ -34,6 +34,7 @@ export default {
       return this.recipes.length > 0;
     },
     recipes() {
+      console.warn(this.$store.getters["search/recipes"]);
       return this.$store.getters["search/recipes"];
     },
   },

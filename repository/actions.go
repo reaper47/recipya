@@ -444,24 +444,6 @@ func getNutritionSet(recipeID int64, tx *sql.Tx) (*model.NutritionSet, error) {
 	return &n, nil
 }
 
-// GetImportWebsites gets all the websites from the database.
-func (repo *Repository) GetWebsites() ([]string, error) {
-	rows, err := repo.DB.Query(selectAllWebsites)
-	if err != nil {
-		return nil, err
-	}
-
-	var urls []string
-	for rows.Next() {
-		var url string
-		if err = rows.Scan(&url); err != nil {
-			return nil, err
-		}
-		urls = append(urls, url)
-	}
-	return urls, nil
-}
-
 // ImportRecipe extracts the recipe data from the given URL and
 // stores it in the database.
 func (repo *Repository) ImportRecipe(url string) (*model.Recipe, error) {

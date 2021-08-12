@@ -25,10 +25,6 @@ func (repo *MockRecipeModel) GetRecipesByCategory(c string) ([]*model.Recipe, er
 	return []*model.Recipe{otherRecipe()}, nil
 }
 
-func (repo *MockRecipeModel) GetWebsites() ([]string, error) {
-	return []string{"https://www.allrecipes.com"}, nil
-}
-
 func (repo *MockRecipeModel) InsertRecipe(r *model.Recipe) error {
 	return nil
 }
