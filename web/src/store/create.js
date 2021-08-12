@@ -19,8 +19,7 @@ export default {
       commit("IS_WEBSITES_LOADING", true);
 
       try {
-        const url = rootGetters.apiUrl("new/import/websites");
-
+        const url = rootGetters.apiUrl("import/websites");
         const res = await fetch(url);
         const data = await res.json();
 

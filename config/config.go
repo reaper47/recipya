@@ -21,9 +21,6 @@ type ConfigStruct struct {
 	Host string
 	Port int
 	Wait int
-
-	Python  string
-	Scraper string
 }
 
 var (
@@ -36,7 +33,6 @@ var (
 		"wait":          15,
 		"webappDir":     "./web",
 		"python":        "python",
-		"scraper":       "./tools/scraper/scraper.py",
 	}
 	configName  = "config"
 	configPaths = []string{".", "./config/"}

@@ -7,7 +7,6 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/reaper47/recipya/config"
 	"github.com/reaper47/recipya/model"
 )
 
@@ -445,10 +444,28 @@ func getNutritionSet(recipeID int64, tx *sql.Tx) (*model.NutritionSet, error) {
 	return &n, nil
 }
 
+// GetImportWebsites gets all the websites from the database.
+func (repo *Repository) GetWebsites() ([]string, error) {
+	rows, err := repo.DB.Query(selectAllWebsites)
+	if err != nil {
+		return nil, err
+	}
+
+	var urls []string
+	for rows.Next() {
+		var url string
+		if err = rows.Scan(&url); err != nil {
+			return nil, err
+		}
+		urls = append(urls, url)
+	}
+	return urls, nil
+}
+
 // ImportRecipe extracts the recipe data from the given URL and
 // stores it in the database.
 func (repo *Repository) ImportRecipe(url string) (*model.Recipe, error) {
-	cmd := exec.Command(config.Config.Python, config.Config.Scraper, url)
+	cmd := exec.Command("./tools/venv/bin/python", "./tools/scraper/scraper.py", url)
 	output, err := cmd.Output()
 	if err != nil {
 		return nil, err

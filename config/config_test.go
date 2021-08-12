@@ -14,8 +14,6 @@ var testConfig = &config.ConfigStruct{
 	Host:          "0.0.0.0",
 	Port:          3000,
 	Wait:          15,
-	Python:        "python",
-	Scraper:       "./tools/scraper/scraper.py",
 }
 
 func TestConfig(t *testing.T) {

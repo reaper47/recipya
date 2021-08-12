@@ -11,7 +11,7 @@ def main():
         .parent.find_next_sibling("ul")
         .findAll("a")
     )
-    websites = [website["href"] for website in websites]
+    websites = ["'" + website["href"] + "'" for website in websites]
 
     with open("./websites.txt", "w") as f:
         f.write("\n".join(websites))

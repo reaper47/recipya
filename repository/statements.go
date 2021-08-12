@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -59,6 +60,10 @@ var selectNutritionSetStmt = "SELECT calories, carbohydrate, fat, saturated_fat,
 	"	FROM " + schema.recipe.name +
 	"	WHERE id=?" +
 	")"
+
+var selectAllWebsites = "SELECT url FROM " + schema.website.name
+
+var selectWebsiteCount = "SELECT COUNT(*) FROM " + schema.website.name
 
 func maximizeFridgeStmt(ingredients []string, limit int) string {
 	return createSearchStmt(ingredients, limit, false)
@@ -164,6 +169,18 @@ func insertAssocReverseStmt(t table) string {
 		") VALUES (?,?)"
 }
 
+func insertWebsitesBatch(urls []string) string {
+	values := make([]string, 0, len(urls))
+	for _, url := range urls {
+		values = append(values, "("+url+")")
+	}
+	return fmt.Sprintf(
+		"INSERT INTO "+schema.website.name+" (url) VALUES %s",
+		strings.Join(values, ","),
+	)
+
+}
+
 // UPDATE statements
 var updateRecipeStmt = "UPDATE " + schema.recipe.name + " " +
 	"SET description=?, url=?, image=?, prep_time=?, cook_time=?, " +
@@ -175,6 +192,10 @@ var updateDateModifiedStmt = "UPDATE " + schema.recipe.name + " " +
 	"WHERE id=?"
 
 // DELETE statements
+func deleteAllRows(t table) string {
+	return "DELETE FROM " + t.name
+}
+
 func deleteAssocValues(t table) string {
 	return "DELETE FROM " + t.assocTable + " WHERE recipe_id=?"
 }

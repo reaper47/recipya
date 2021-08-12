@@ -5,6 +5,7 @@ type Recipes struct {
 	Objects []*Recipe `json:"recipes"`
 }
 
+// Categories holds a list of categories.
 type Categories struct {
 	Objects []string `json:"categories"`
 }

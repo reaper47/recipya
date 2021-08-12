@@ -14,9 +14,31 @@ import (
 
 func initRecipesRoutes(r *mux.Router, env *Env) {
 	r.HandleFunc(api.Recipes, env.getRecipes).Methods(http.MethodGet, http.MethodOptions)
-	r.HandleFunc(api.RecipeCategories, env.getCategories).Methods(http.MethodGet, http.MethodOptions)
+	r.HandleFunc(
+		api.RecipeCategories,
+		env.getCategories,
+	).Methods(
+		http.MethodGet,
+		http.MethodOptions,
+	)
 	r.HandleFunc(api.RecipeSearch, env.getSearch).Methods(http.MethodGet, http.MethodOptions)
-	r.HandleFunc(api.RecipeImport, env.postImportRecipe).Headers("Content-Type", "application/json").Methods(http.MethodPost, http.MethodOptions)
+	r.HandleFunc(
+		api.RecipeImport,
+		env.postImportRecipe,
+	).Headers(
+		"Content-Type",
+		"application/json",
+	).Methods(
+		http.MethodPost,
+		http.MethodOptions,
+	)
+	r.HandleFunc(
+		api.ImportWebsites,
+		env.getImportWebsites,
+	).Methods(
+		http.MethodGet,
+		http.MethodOptions,
+	)
 }
 
 func (env *Env) getCategories(w http.ResponseWriter, r *http.Request) {
@@ -95,6 +117,16 @@ func (env *Env) getSearch(w http.ResponseWriter, r *http.Request) {
 	}
 
 	writeSuccessJson(&model.Recipes{Objects: recipes}, w)
+}
+
+func (env *Env) getImportWebsites(w http.ResponseWriter, r *http.Request) {
+	websites, err := env.recipes.GetWebsites()
+	if err != nil {
+		message := "Error retrieving supported websites: " + err.Error()
+		writeErrorJson(http.StatusInternalServerError, message, w)
+		return
+	}
+	writeSuccessJson(&model.Websites{Objects: websites}, w)
 }
 
 func (env *Env) postImportRecipe(w http.ResponseWriter, r *http.Request) {

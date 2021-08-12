@@ -68,5 +68,8 @@ export default {
       return this.$store.getters["create/websites"];
     },
   },
+  created() {
+    this.$store.dispatch("create/fetchWebsites");
+  },
 };
 </script>
