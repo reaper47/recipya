@@ -58,7 +58,7 @@ func Index() {
 			r.Name = pattern + r.Name
 		}
 
-		if err = env.recipes.InsertRecipe(r); err != nil {
+		if _, err = env.recipes.InsertRecipe(r); err != nil {
 			log.Printf("Error while inserting recipe: '%v'. Err: %v\n", r.Name, err)
 			numSkipped++
 			continue

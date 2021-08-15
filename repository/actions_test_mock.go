@@ -25,8 +25,8 @@ func (repo *MockRecipeModel) GetRecipesByCategory(c string) ([]*model.Recipe, er
 	return []*model.Recipe{otherRecipe()}, nil
 }
 
-func (repo *MockRecipeModel) InsertRecipe(r *model.Recipe) error {
-	return nil
+func (repo *MockRecipeModel) InsertRecipe(r *model.Recipe) (int64, error) {
+	return 10, nil
 }
 
 func (repo *MockRecipeModel) UpdateRecipe(r *model.Recipe, id int64) error {

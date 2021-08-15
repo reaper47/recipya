@@ -87,45 +87,45 @@ func (repo *Repository) GetCategories() ([]string, error) {
 }
 
 // InsertRecipe stores a recipe in the database.
-func (repo *Repository) InsertRecipe(r *model.Recipe) error {
+func (repo *Repository) InsertRecipe(r *model.Recipe) (int64, error) {
 	ctx := context.Background()
 	tx, err := db.BeginTx(ctx, nil)
 	if err != nil {
-		return err
+		return -1, err
 	}
 	defer tx.Rollback()
 
 	categoryID, err := getCategoryID(r.RecipeCategory, tx)
 	if err != nil {
-		return err
+		return -1, err
 	}
 
 	nutritionID, err := getNutritionID(r.Nutrition, tx)
 	if err != nil {
-		return err
+		return -1, err
 	}
 
 	recipeID, err := insertRecipe(r, categoryID, nutritionID, tx)
 	if err != nil {
-		return err
+		return -1, err
 	}
 
 	err = insertValues(recipeID, r.RecipeIngredient, schema.recipeIngredient, tx)
 	if err != nil {
-		return err
+		return -1, err
 	}
 
 	err = insertValues(recipeID, r.RecipeInstructions, schema.recipeInstruction, tx)
 	if err != nil {
-		return err
+		return -1, err
 	}
 
 	err = insertValues(recipeID, r.Tool, schema.recipeTool, tx)
 	if err != nil {
-		return err
+		return -1, err
 	}
 
-	return tx.Commit()
+	return recipeID, tx.Commit()
 }
 
 func insertRecipe(r *model.Recipe, categoryID int64, nutritionID int64, tx *sql.Tx) (int64, error) {
@@ -466,7 +466,7 @@ func (repo *Repository) ImportRecipe(url string) (*model.Recipe, error) {
 		return recipeInDb, nil
 	}
 
-	err = repo.InsertRecipe(&recipe)
+	_, err = repo.InsertRecipe(&recipe)
 	if err != nil {
 		return nil, err
 	}

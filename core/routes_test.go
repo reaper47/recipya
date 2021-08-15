@@ -21,6 +21,7 @@ func TestRoutes(t *testing.T) {
 	t.Run("Get all recipes", test_GetRecipes_All)
 	t.Run("Get all recipes of a category", test_GetRecipes_Category)
 	t.Run("Import a recipe given a valid URL", test_PostImportRecipe_ValidUrl)
+	t.Run("Post a recipe given a valid recipe JSON object", test_PostRecipe_ValidRecipe)
 }
 
 /*
@@ -65,10 +66,48 @@ func test_PostImportRecipe_ValidUrl(t *testing.T) {
 	postBody, _ := json.Marshal(map[string]string{
 		"url": "https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/",
 	})
-	rr := sendRequest("POST", "/import/url", postBody, 201, env.postImportRecipe, t)
+	rr := sendRequest(http.MethodPost, "/import/url", postBody, 201, env.postImportRecipe, t)
 
 	var recipe model.Recipe
 	err := json.NewDecoder(rr.Body).Decode(&recipe)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func test_PostRecipe_ValidRecipe(t *testing.T) {
+	postBody, _ := json.Marshal(
+		map[string]interface{}{
+			"name":               "carrots",
+			"description":        "some delicious carrots",
+			"url":                "https://www.example.com",
+			"image":              "",
+			"prepTime":           "PT3H30M",
+			"cookTime":           "PT0H30M",
+			"totalTime":          "PT4H0M",
+			"recipeCategory":     "side dish",
+			"keywords":           "carrots,butter",
+			"recipeYield":        4,
+			"tool":               []string{},
+			"recipeIngredient":   []string{"1 avocado", "2 carrots"},
+			"recipeInstructions": []string{"cut", "cook", "eat"},
+			"nutrition": map[string]string{
+				"calories":            "1g",
+				"carbohydrateContent": "2g",
+				"fatContent":          "3g",
+				"saturatedFatContent": "4g",
+				"cholesterolContent":  "5g",
+				"proteinContent":      "6g",
+				"sodiumContent":       "7g",
+				"fiberContent":        "8g",
+				"sugarContent":        "9g",
+			},
+			"dateModified": "20210820",
+			"dateCreated":  "20210820"})
+	rr := sendRequest(http.MethodPost, "/recipes", postBody, 201, env.postRecipe, t)
+
+	var id model.ID
+	err := json.NewDecoder(rr.Body).Decode(&id)
 	if err != nil {
 		t.Fatal(err)
 	}

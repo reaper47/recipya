@@ -22,7 +22,7 @@ export default [
     path: "/new/manual",
     name: "CreateManual",
     component: () =>
-      import(/* webpackChunkName: "create" */ "../../views/Create.vue"),
+      import(/* webpackChunkName: "create" */ "../../views/CreateManual.vue"),
     meta: {
       title: "New | Recipya",
       metaTags: [

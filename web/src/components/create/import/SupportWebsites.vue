@@ -62,7 +62,9 @@ export default {
   }),
   computed: {
     filteredWebsites() {
-      return this.websites.filter((website) => website.match(this.search));
+      return this.websites.filter((website) =>
+        website.toLowerCase().match(this.search.toLowerCase())
+      );
     },
     websites() {
       return this.$store.getters["create/websites"];

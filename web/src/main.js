@@ -8,6 +8,17 @@ import "@/assets/global.css";
 
 Vue.config.productionTip = false;
 
+const StringsPlugin = {
+  install(Vue) {
+    Vue.prototype.$toTitleCase = (str) =>
+      str
+        .toLowerCase()
+        .replace(/\.\s*([a-z])|^[a-z]/gm, (s) => s.toUpperCase());
+  },
+};
+
+Vue.use(StringsPlugin);
+
 new Vue({
   router,
   store,

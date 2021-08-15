@@ -14,7 +14,19 @@ import (
 )
 
 func initRecipesRoutes(r *mux.Router, env *Env) {
+	// GET /api/v1/recipes
 	r.HandleFunc(api.Recipes, env.getRecipes).Methods(http.MethodGet, http.MethodOptions)
+
+	// POST /api/v1/recipes
+	r.HandleFunc(api.Recipes, env.postRecipe).Headers(
+		"Content-Type",
+		"application/json",
+	).Methods(
+		http.MethodPost,
+		http.MethodOptions,
+	)
+
+	// GET /api/v1/categories
 	r.HandleFunc(
 		api.RecipeCategories,
 		env.getCategories,
@@ -22,7 +34,11 @@ func initRecipesRoutes(r *mux.Router, env *Env) {
 		http.MethodGet,
 		http.MethodOptions,
 	)
+
+	// GET /api/v1/search
 	r.HandleFunc(api.RecipeSearch, env.getSearch).Methods(http.MethodGet, http.MethodOptions)
+
+	// POST /api/v1/import/url
 	r.HandleFunc(
 		api.RecipeImport,
 		env.postImportRecipe,
@@ -33,6 +49,8 @@ func initRecipesRoutes(r *mux.Router, env *Env) {
 		http.MethodPost,
 		http.MethodOptions,
 	)
+
+	// GET /api/v1/import/websites
 	r.HandleFunc(
 		api.ImportWebsites,
 		env.getImportWebsites,
@@ -65,6 +83,29 @@ func (env *Env) getRecipes(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeSuccessJson(&model.Recipes{Objects: recipes}, w)
+}
+
+func (env *Env) postRecipe(w http.ResponseWriter, r *http.Request) {
+	var recipe model.Recipe
+	err := json.NewDecoder(r.Body).Decode(&recipe)
+	switch {
+	case err == io.EOF:
+		message := "No recipe in body of the request."
+		writeErrorJson(http.StatusBadRequest, message, w)
+		return
+	case err != nil:
+		message := "Error decoding the JSON body of the request: " + err.Error()
+		writeErrorJson(http.StatusInternalServerError, message, w)
+		return
+	}
+
+	recipeID, err := env.recipes.InsertRecipe(&recipe)
+	if err != nil {
+		message := "Adding the recipe has failed. Err: " + err.Error()
+		writeErrorJson(http.StatusBadRequest, message, w)
+		return
+	}
+	writeCreatedJson(&model.ID{Id: recipeID}, w)
 }
 
 func (env *Env) getSearch(w http.ResponseWriter, r *http.Request) {

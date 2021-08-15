@@ -13,7 +13,7 @@
 
           <v-list-item-content>
             <v-list-item-title class="text-wrap" :class="fontSize">
-              {{ toTitleCase(item) }}
+              {{ $toTitleCase(item) }}
             </v-list-item-title>
           </v-list-item-content>
         </template>
@@ -43,11 +43,5 @@ export default {
   data: () => ({
     checked: [],
   }),
-  methods: {
-    toTitleCase: (str) =>
-      str
-        .toLowerCase()
-        .replace(/\.\s*([a-z])|^[a-z]/gm, (s) => s.toUpperCase()),
-  },
 };
 </script>

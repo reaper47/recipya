@@ -10,12 +10,12 @@ import (
 // Env stores environment variables for use throughout the program.
 type Env struct {
 	recipes interface {
-		InsertRecipe(r *model.Recipe) error
-		UpdateRecipe(r *model.Recipe, id int64) error
 		GetRecipe(name string) (*model.Recipe, error)
 		GetRecipes(category string) ([]*model.Recipe, error)
 		GetCategories() ([]string, error)
+		InsertRecipe(r *model.Recipe) (int64, error)
 		ImportRecipe(url string) (*model.Recipe, error)
+		UpdateRecipe(r *model.Recipe, id int64) error
 		SearchMaximizeFridge(ingredients []string, n int) ([]*model.Recipe, error)
 		SearchMinimizeMissing(ingredients []string, n int) ([]*model.Recipe, error)
 	}

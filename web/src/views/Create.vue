@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import CreateManual from "@/components/create/manual.vue";
-import CreateImport from "@/components/create/import/import.vue";
+import CreateManual from "@/components/create/manual/Main.vue";
+import CreateImport from "@/components/create/import/Import.vue";
 import CreateScan from "@/components/create/scan.vue";
 
 export default {
