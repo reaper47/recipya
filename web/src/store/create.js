@@ -50,6 +50,7 @@ export default {
         }
 
         store.dispatch("browse/addRecipe", data);
+        store.dispatch("setStore", { store: "browse" });
         router.push({ name: "Recipe Page", params: { id: data["id"] } });
       } catch (error) {
         const title = `${error.status} (${error.code})`;
