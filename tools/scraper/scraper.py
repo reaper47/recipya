@@ -1,5 +1,3 @@
-# python -m nuitka scraper.py
-
 import argparse
 from datetime import datetime
 import json

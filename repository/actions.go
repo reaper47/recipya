@@ -447,7 +447,7 @@ func getNutritionSet(recipeID int64, tx *sql.Tx) (*model.NutritionSet, error) {
 // ImportRecipe extracts the recipe data from the given URL and
 // stores it in the database.
 func (repo *Repository) ImportRecipe(url string) (*model.Recipe, error) {
-	cmd := exec.Command("./tools/venv/bin/python", "./tools/scraper/scraper.py", url)
+	cmd := exec.Command("./tools/venv/bin/python", "./tools/scraper.py", url)
 	output, err := cmd.Output()
 	if err != nil {
 		return nil, err
