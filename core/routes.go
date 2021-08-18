@@ -14,69 +14,71 @@ import (
 )
 
 func initRecipesRoutes(r *mux.Router, env *Env) {
+	GET := []string{http.MethodGet, http.MethodOptions}
+	POST := []string{http.MethodPost, http.MethodOptions}
+	jsonHeader := []string{"Content-Type", "application/json"}
+
 	// GET /api/v1/recipes
-	r.HandleFunc(api.Recipes, env.getRecipes).Methods(http.MethodGet, http.MethodOptions)
+	r.HandleFunc(api.Recipes, env.getRecipes).Methods(GET...)
 
 	// POST /api/v1/recipes
-	r.HandleFunc(api.Recipes, env.postRecipe).Headers(
-		"Content-Type",
-		"application/json",
-	).Methods(
-		http.MethodPost,
-		http.MethodOptions,
-	)
+	r.HandleFunc(api.Recipes, env.postRecipe).Headers(jsonHeader...).Methods(POST...)
+
+	// GET /api/v1/recipes/info
+	r.HandleFunc(api.RecipesInfo, env.getRecipesInfo).Methods(GET...)
 
 	// GET /api/v1/categories
-	r.HandleFunc(
-		api.RecipeCategories,
-		env.getCategories,
-	).Methods(
-		http.MethodGet,
-		http.MethodOptions,
-	)
+	r.HandleFunc(api.RecipeCategories, env.getCategories).Methods(GET...)
 
 	// GET /api/v1/search
-	r.HandleFunc(api.RecipeSearch, env.getSearch).Methods(http.MethodGet, http.MethodOptions)
+	r.HandleFunc(api.RecipeSearch, env.getSearch).Methods(GET...)
 
 	// POST /api/v1/import/url
-	r.HandleFunc(
-		api.RecipeImport,
-		env.postImportRecipe,
-	).Headers(
-		"Content-Type",
-		"application/json",
-	).Methods(
-		http.MethodPost,
-		http.MethodOptions,
-	)
+	r.HandleFunc(api.RecipeImport, env.postImportRecipe).Headers(jsonHeader...).Methods(POST...)
 
 	// GET /api/v1/import/websites
-	r.HandleFunc(
-		api.ImportWebsites,
-		env.getImportWebsites,
-	).Methods(
-		http.MethodGet,
-		http.MethodOptions,
-	)
-}
-
-func (env *Env) getCategories(w http.ResponseWriter, r *http.Request) {
-	c, err := env.recipes.GetCategories()
-	if err != nil {
-		message := "Get categories: " + err.Error()
-		writeErrorJson(http.StatusBadRequest, message, w)
-		return
-	}
-	writeSuccessJson(&model.Categories{Objects: c}, w)
+	r.HandleFunc(api.ImportWebsites, env.getImportWebsites).Methods(GET...)
 }
 
 func (env *Env) getRecipes(w http.ResponseWriter, r *http.Request) {
+	q := r.URL.Query()
+
 	var category string
-	if c, ok := r.URL.Query()["c"]; ok {
+	if c, ok := q["c"]; ok {
 		category = c[0]
 	}
 
-	recipes, err := env.recipes.GetRecipes(category)
+	page := -1
+	if p, ok := q["page"]; ok {
+		page, _ = strconv.Atoi(p[0])
+		if page <= 0 {
+			message := "Page must be >= 1."
+			writeErrorJson(http.StatusBadRequest, message, w)
+			return
+		}
+	}
+
+	limit := -1
+	if l, ok := q["limit"]; ok {
+		limit, _ = strconv.Atoi(l[0])
+		if limit <= 0 {
+			message := "Limit must be >= 1."
+			writeErrorJson(http.StatusBadRequest, message, w)
+			return
+		}
+	}
+
+	if limit > 0 && page == -1 {
+		message := "The `limit` parameter must be used when `page` is specified."
+		writeErrorJson(http.StatusBadRequest, message, w)
+		return
+	}
+
+	if limit == -1 {
+		limit = 12
+	}
+
+	recipes, err := env.recipes.GetRecipes(category, page, limit)
 	if err != nil {
 		message := "Get recipes: " + err.Error()
 		writeErrorJson(http.StatusBadRequest, message, w)
@@ -106,6 +108,26 @@ func (env *Env) postRecipe(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeCreatedJson(&model.ID{Id: recipeID}, w)
+}
+
+func (env *Env) getRecipesInfo(w http.ResponseWriter, r *http.Request) {
+	info, err := env.recipes.GetRecipesInfo()
+	if err != nil {
+		message := "Error retrieving recipes info: " + err.Error()
+		writeErrorJson(http.StatusInternalServerError, message, w)
+		return
+	}
+	writeSuccessJson(model.RecipesInfoWrapper{Info: info}, w)
+}
+
+func (env *Env) getCategories(w http.ResponseWriter, r *http.Request) {
+	c, err := env.recipes.GetCategories()
+	if err != nil {
+		message := "Get categories: " + err.Error()
+		writeErrorJson(http.StatusBadRequest, message, w)
+		return
+	}
+	writeSuccessJson(&model.Categories{Objects: c}, w)
 }
 
 func (env *Env) getSearch(w http.ResponseWriter, r *http.Request) {

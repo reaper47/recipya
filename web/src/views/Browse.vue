@@ -29,15 +29,22 @@
       </template>
     </v-treeview>
     <v-divider vertical></v-divider>
-    <loading-fullscreen
-      v-if="$store.getters['browse/isLoading']"
-    ></loading-fullscreen>
-    <v-container v-else fill-height align-start style="width: 80%">
+    <v-container fill-height align-start style="width: 80%">
       <v-row wrap>
         <v-col v-for="(recipe, i) in recipes" :key="recipe.name">
-          <recipe-card :index="i + 1" :recipe="recipe"></recipe-card>
+          <loading-fullscreen
+            v-if="$store.getters['browse/isLoading']"
+          ></loading-fullscreen>
+          <recipe-card v-else :index="i + 1" :recipe="recipe"></recipe-card>
         </v-col>
       </v-row>
+      <v-container class="pa-0" style="align-self: end">
+        <v-row fill-height>
+          <v-col>
+            <browse-pagination :selectedNode="selectedNode"></browse-pagination>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-container>
   </v-container>
   <v-container v-else fluid class="pt-0 align-start">
@@ -81,15 +88,24 @@
         </v-expansion-panels>
       </v-col>
     </v-row>
+    <v-container class="pa-0" style="align-self: end">
+      <v-row fill-height>
+        <v-col>
+          <browse-pagination :selectedNode="selectedNode"></browse-pagination>
+        </v-col>
+      </v-row>
+    </v-container>
   </v-container>
 </template>
 <script>
+import BrowsePagination from "@/components/browse/Pagination.vue";
 import LoadingFullscreen from "@/components/basic/LoadingFullscreen.vue";
 import RecipeCard from "@/components/recipe/RecipeCard.vue";
 
 export default {
   name: "Browse",
   components: {
+    BrowsePagination,
     LoadingFullscreen,
     RecipeCard,
   },
@@ -102,6 +118,9 @@ export default {
       txt: "mdi-file-document-outline",
     },
   }),
+  beforeCreate() {
+    this.$store.dispatch("browse/getPaginationLengths");
+  },
   async created() {
     if (this.categories.length === 0) {
       await this.$store.dispatch("browse/getCategories");
@@ -151,6 +170,7 @@ export default {
         category = node;
       }
 
+      this.$store.dispatch("browse/setPage", 1);
       this.$store.dispatch("browse/setSelectedNode", node);
       await this.$store.dispatch("browse/getRecipes", { category });
       this.updateNodeMobile(node);

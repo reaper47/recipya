@@ -15,8 +15,90 @@ type Repository struct {
 	DB *sql.DB
 }
 
+// GetRecipe gets the recipe from the database that matches the name.
+func (repo *Repository) GetRecipe(name string) (*model.Recipe, error) {
+	ctx := context.Background()
+	tx, err := repo.DB.BeginTx(ctx, nil)
+	if err != nil {
+		return nil, err
+	}
+	defer tx.Rollback()
+
+	r := model.Recipe{}
+
+	var nutritionID int64
+	err = tx.QueryRow(selectRecipeByNameStmt, strings.ToLower(name)).Scan(
+		&r.ID,
+		&r.Name,
+		&r.Description,
+		&r.Url,
+		&r.Image,
+		&r.PrepTime,
+		&r.CookTime,
+		&r.TotalTime,
+		&r.RecipeCategory,
+		&r.Keywords,
+		&r.RecipeYield,
+		&nutritionID,
+		&r.DateModified,
+		&r.DateCreated,
+	)
+	if err == sql.ErrNoRows {
+		tx.Commit()
+		return nil, nil
+	}
+
+	populateRecipe(&r, tx)
+
+	err = tx.Commit()
+	if err != nil {
+		return nil, err
+	}
+	return &r, nil
+}
+
+func getAssocValues(t table, recipeID int64, tx *sql.Tx) ([]string, error) {
+	stmt := selectAssocValuesStmt(t)
+	rows, err := tx.Query(stmt, recipeID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var values []string
+	for rows.Next() {
+		var value string
+		rows.Scan(&value)
+		values = append(values, value)
+	}
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+	return values, nil
+}
+
+func getNutritionSet(recipeID int64, tx *sql.Tx) (*model.NutritionSet, error) {
+	var n model.NutritionSet
+	stmt := selectNutritionSetStmt
+	err := tx.QueryRow(stmt, recipeID).Scan(
+		&n.Calories,
+		&n.Carbohydrate,
+		&n.Fat,
+		&n.SaturatedFat,
+		&n.Cholesterol,
+		&n.Protein,
+		&n.Sodium,
+		&n.Fiber,
+		&n.Sugar,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &n, nil
+}
+
 // GetRecipes retrieves all recipes of 0 or 1 category.
-func (repo *Repository) GetRecipes(category string) ([]*model.Recipe, error) {
+func (repo *Repository) GetRecipes(category string, page int, limit int) ([]*model.Recipe, error) {
 	ctx := context.Background()
 	tx, err := db.BeginTx(ctx, nil)
 	if err != nil {
@@ -24,7 +106,18 @@ func (repo *Repository) GetRecipes(category string) ([]*model.Recipe, error) {
 	}
 	defer tx.Rollback()
 
-	rows, err := tx.Query(selectRecipesStmt(category))
+	var stmt string
+	if page == -1 {
+		stmt = selectRecipesStmt(category)
+	} else {
+		if category == "" {
+			stmt = selectRecipesPageStmt(page, limit)
+		} else {
+			stmt = selectRecipesByCategoryPageStmt(category, page, limit)
+		}
+	}
+
+	rows, err := tx.Query(stmt)
 	if err != nil {
 		return nil, err
 	}
@@ -33,8 +126,12 @@ func (repo *Repository) GetRecipes(category string) ([]*model.Recipe, error) {
 	var recipes []*model.Recipe
 	for rows.Next() {
 		r := model.Recipe{}
-		var nutritionID int64
+		var (
+			rowid       int64
+			nutritionID int64
+		)
 		err := rows.Scan(
+			&rowid,
 			&r.ID,
 			&r.Name,
 			&r.Description,
@@ -46,7 +143,7 @@ func (repo *Repository) GetRecipes(category string) ([]*model.Recipe, error) {
 			&r.RecipeCategory,
 			&r.Keywords,
 			&r.RecipeYield,
-			&nutritionID, // &r.Nutrition
+			&nutritionID,
 			&r.DateModified,
 			&r.DateCreated,
 		)
@@ -64,6 +161,46 @@ func (repo *Repository) GetRecipes(category string) ([]*model.Recipe, error) {
 		return nil, err
 	}
 	return recipes, nil
+}
+
+// GetRecipesInfo retrieves metadata from the recipes database.
+func (repo *Repository) GetRecipesInfo() (*model.RecipesInfo, error) {
+	categories, err := repo.GetCategories()
+	if err != nil {
+		return nil, err
+	}
+
+	ctx := context.Background()
+	tx, err := db.BeginTx(ctx, nil)
+	if err != nil {
+		return nil, err
+	}
+	defer tx.Rollback()
+
+	var numRecipes int64
+	err = tx.QueryRow(selectRecipeCountStmt).Scan(&numRecipes)
+	if err != nil {
+		return nil, err
+	}
+
+	numRecipesPerCategory := make(map[string]int64)
+	for _, category := range categories {
+		var count int64
+		stmt := selectRecipesCountCategoryStmt(category)
+		err = tx.QueryRow(stmt).Scan(&count)
+		if err != nil {
+			return nil, err
+		}
+		numRecipesPerCategory[category] = count
+	}
+
+	if err = tx.Commit(); err != nil {
+		return nil, err
+	}
+	return &model.RecipesInfo{
+		Total:            numRecipes,
+		TotalPerCategory: numRecipesPerCategory,
+	}, nil
 }
 
 // GetCategories retrieves all recipe categories from the database.
@@ -95,17 +232,7 @@ func (repo *Repository) InsertRecipe(r *model.Recipe) (int64, error) {
 	}
 	defer tx.Rollback()
 
-	categoryID, err := getCategoryID(r.RecipeCategory, tx)
-	if err != nil {
-		return -1, err
-	}
-
-	nutritionID, err := getNutritionID(r.Nutrition, tx)
-	if err != nil {
-		return -1, err
-	}
-
-	recipeID, err := insertRecipe(r, categoryID, nutritionID, tx)
+	recipeID, err := insertRecipe(r, tx)
 	if err != nil {
 		return -1, err
 	}
@@ -128,9 +255,25 @@ func (repo *Repository) InsertRecipe(r *model.Recipe) (int64, error) {
 	return recipeID, tx.Commit()
 }
 
-func insertRecipe(r *model.Recipe, categoryID int64, nutritionID int64, tx *sql.Tx) (int64, error) {
+func insertRecipe(r *model.Recipe, tx *sql.Tx) (int64, error) {
+	categoryID, err := getCategoryID(r.RecipeCategory, tx)
+	if err != nil {
+		return -1, err
+	}
+
+	nutritionID, err := getNutritionID(r.Nutrition, tx)
+	if err != nil {
+		return -1, err
+	}
+
+	rowIDCategory, err := getRowidCategory(categoryID, tx)
+	if err != nil {
+		return -1, err
+	}
+
 	result, err := tx.Exec(
 		insertRecipeStmt,
+		rowIDCategory,
 		strings.ToLower(r.Name),
 		r.Description,
 		r.Url,
@@ -154,6 +297,26 @@ func insertRecipe(r *model.Recipe, categoryID int64, nutritionID int64, tx *sql.
 		return -1, err
 	}
 	return id, nil
+}
+
+func getCategoryID(category string, tx *sql.Tx) (int64, error) {
+	category = strings.ToLower(strings.TrimSpace(category))
+
+	var categoryID int64
+	err := tx.QueryRow(selectCategoryIdStmt, category).Scan(&categoryID)
+	if err == sql.ErrNoRows {
+		stmt := insertNameStmt(schema.category.name)
+		result, err := tx.Exec(stmt, category)
+		if err != nil {
+			return -1, err
+		}
+
+		categoryID, err = result.LastInsertId()
+		if err != nil {
+			return -1, err
+		}
+	}
+	return categoryID, nil
 }
 
 func getNutritionID(n *model.NutritionSet, tx *sql.Tx) (int64, error) {
@@ -195,6 +358,16 @@ func getNutritionID(n *model.NutritionSet, tx *sql.Tx) (int64, error) {
 	return id, nil
 }
 
+func getRowidCategory(categoryID int64, tx *sql.Tx) (int64, error) {
+	var id int64
+	stmt := selectNextRowidCategoryStmt(categoryID)
+	err := tx.QueryRow(stmt).Scan(&id)
+	if err != nil {
+		return -1, err
+	}
+	return id, nil
+}
+
 func insertValues(recipesID int64, values []string, t table, tx *sql.Tx) error {
 	for _, value := range values {
 		value = strings.ToLower(value)
@@ -222,26 +395,6 @@ func insertValues(recipesID int64, values []string, t table, tx *sql.Tx) error {
 		}
 	}
 	return nil
-}
-
-func getCategoryID(category string, tx *sql.Tx) (int64, error) {
-	category = strings.ToLower(strings.TrimSpace(category))
-
-	var categoryID int64
-	err := tx.QueryRow(selectCategoryIdStmt, category).Scan(&categoryID)
-	if err == sql.ErrNoRows {
-		stmt := insertNameStmt(schema.category.name)
-		result, err := tx.Exec(stmt, category)
-		if err != nil {
-			return -1, err
-		}
-
-		categoryID, err = result.LastInsertId()
-		if err != nil {
-			return -1, err
-		}
-	}
-	return categoryID, nil
 }
 
 // UpdateRecipe updates a recipe in the database if the date modified differs.
@@ -360,88 +513,6 @@ func updateAssocTable(t table, values []string, recipeID int64, tx *sql.Tx) erro
 		}
 	}
 	return nil
-}
-
-// GetRecipe gets the recipe from the database that matches the name.
-func (repo *Repository) GetRecipe(name string) (*model.Recipe, error) {
-	ctx := context.Background()
-	tx, err := repo.DB.BeginTx(ctx, nil)
-	if err != nil {
-		return nil, err
-	}
-	defer tx.Rollback()
-
-	r := model.Recipe{}
-
-	var nutritionID int64
-	err = tx.QueryRow(selectRecipeByNameStmt, strings.ToLower(name)).Scan(
-		&r.ID,
-		&r.Name,
-		&r.Description,
-		&r.Url,
-		&r.Image,
-		&r.PrepTime,
-		&r.CookTime,
-		&r.TotalTime,
-		&r.RecipeCategory,
-		&r.Keywords,
-		&r.RecipeYield,
-		&nutritionID, // &r.Nutrition
-		&r.DateModified,
-		&r.DateCreated,
-	)
-	if err == sql.ErrNoRows {
-		tx.Commit()
-		return nil, nil
-	}
-
-	populateRecipe(&r, tx)
-
-	err = tx.Commit()
-	if err != nil {
-		return nil, err
-	}
-	return &r, nil
-}
-
-func getAssocValues(t table, recipeID int64, tx *sql.Tx) ([]string, error) {
-	stmt := selectAssocValuesStmt(t)
-	rows, err := tx.Query(stmt, recipeID)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var values []string
-	for rows.Next() {
-		var value string
-		rows.Scan(&value)
-		values = append(values, value)
-	}
-	if err = rows.Err(); err != nil {
-		return nil, err
-	}
-	return values, nil
-}
-
-func getNutritionSet(recipeID int64, tx *sql.Tx) (*model.NutritionSet, error) {
-	var n model.NutritionSet
-	stmt := selectNutritionSetStmt
-	err := tx.QueryRow(stmt, recipeID).Scan(
-		&n.Calories,
-		&n.Carbohydrate,
-		&n.Fat,
-		&n.SaturatedFat,
-		&n.Cholesterol,
-		&n.Protein,
-		&n.Sodium,
-		&n.Fiber,
-		&n.Sugar,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &n, nil
 }
 
 // ImportRecipe extracts the recipe data from the given URL and

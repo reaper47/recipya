@@ -6,6 +6,11 @@ export default {
   state: () => ({
     categories: [],
     isLoading: false,
+    pagination: {
+      page: 1,
+      itemsPerPage: 12,
+      lengths: {},
+    },
     recipes: [],
     selectedNode: "all",
   }),
@@ -24,16 +29,26 @@ export default {
 
       commit("IS_LOADING", false, { root: true });
     },
-    async getRecipes({ commit, rootGetters }, { category }) {
+    async getPaginationLengths({ commit, rootGetters }) {
+      const res = await fetch(rootGetters.apiUrl("recipes/info"));
+      const data = await res.json();
+      if (res.ok) {
+        commit("SET_PAGINATION_LENGTHS", data["info"]);
+      }
+    },
+    async getRecipes({ commit, getters, rootGetters }, { category }) {
       try {
         commit("IS_LOADING", true);
 
         let data = null;
+        const params = `page=${getters.page}&limit=${getters.itemsPerPage}`;
         if (!category) {
-          const res = await fetch(rootGetters.apiUrl("recipes"));
+          const res = await fetch(rootGetters.apiUrl(`recipes?${params}`));
           data = await res.json();
         } else {
-          const res = await fetch(rootGetters.apiUrl(`recipes?c=${category}`));
+          const res = await fetch(
+            rootGetters.apiUrl(`recipes?c=${category}&${params}`)
+          );
           data = await res.json();
         }
         commit("SET_RECIPES", data["recipes"]);
@@ -47,11 +62,24 @@ export default {
     async setSelectedNode({ commit }, node) {
       commit("SET_SELECTED_NODE", node);
     },
+    setPage({ commit }, page) {
+      commit("SET_PAGE", page);
+    },
   },
   mutations: {
     ADD_RECIPE: (state, recipe) => state.recipes.push(new Recipe(recipe)),
     SET_CATEGORIES: (state, categories) => (state.categories = categories),
     IS_LOADING: (state, value) => (state.isLoading = value),
+    SET_PAGE: (state, page) => (state.pagination.page = page),
+    SET_PAGINATION_LENGTHS: (state, info) => {
+      const lengths = state.pagination.lengths;
+      const itemsPerPage = state.pagination.itemsPerPage;
+
+      lengths.all = Math.ceil(info.total / itemsPerPage);
+      for (const [category, total] of Object.entries(info.totalPerCategory)) {
+        lengths[category] = Math.ceil(total / itemsPerPage);
+      }
+    },
     SET_RECIPES: (state, recipes) => {
       state.recipes.splice(
         0,
@@ -64,6 +92,9 @@ export default {
   getters: {
     isLoading: (state) => state.isLoading,
     categories: (state) => state.categories,
+    itemsPerPage: (state) => state.pagination.itemsPerPage,
+    page: (state) => state.pagination.page,
+    pages: (state) => state.pagination.lengths,
     recipe: (state) => (id) => state.recipes.find((recipe) => recipe.id === id),
     recipes: (state) => state.recipes,
     selectedNode: (state) => state.selectedNode,

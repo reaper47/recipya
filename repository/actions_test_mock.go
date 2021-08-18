@@ -14,15 +14,32 @@ func (repo *MockRecipeModel) GetRecipe(name string) (*model.Recipe, error) {
 	return nil, nil
 }
 
-func (repo *MockRecipeModel) GetRecipes(category string) ([]*model.Recipe, error) {
-	if category == "" {
-		return []*model.Recipe{aRecipe()}, nil
+func (repo *MockRecipeModel) GetRecipes(
+	category string,
+	page int,
+	limit int,
+) ([]*model.Recipe, error) {
+	hasPage := limit == -1
+	if !hasPage {
+		if category == "" {
+			return []*model.Recipe{aRecipe()}, nil
+		}
+		return []*model.Recipe{otherRecipe()}, nil
 	}
-	return []*model.Recipe{otherRecipe()}, nil
+	return []*model.Recipe{aRecipe(), otherRecipe()}, nil
 }
 
 func (repo *MockRecipeModel) GetRecipesByCategory(c string) ([]*model.Recipe, error) {
 	return []*model.Recipe{otherRecipe()}, nil
+}
+
+func (repo *MockRecipeModel) GetRecipesInfo() (*model.RecipesInfo, error) {
+	return &model.RecipesInfo{Total: 11, TotalPerCategory: map[string]int64{
+		"breakfast": 3,
+		"lunch":     2,
+		"dinner":    4,
+		"dessert":   2,
+	}}, nil
 }
 
 func (repo *MockRecipeModel) InsertRecipe(r *model.Recipe) (int64, error) {

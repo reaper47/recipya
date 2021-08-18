@@ -3,6 +3,7 @@ package core
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -20,6 +21,7 @@ func TestRoutes(t *testing.T) {
 	t.Run("Get categories returns all categories", test_GetCategories)
 	t.Run("Get all recipes", test_GetRecipes_All)
 	t.Run("Get all recipes of a category", test_GetRecipes_Category)
+	t.Run("Get recipes info", test_GetRecipesInfo_Complete)
 	t.Run("Import a recipe given a valid URL", test_PostImportRecipe_ValidUrl)
 	t.Run("Post a recipe given a valid recipe JSON object", test_PostRecipe_ValidRecipe)
 }
@@ -53,6 +55,16 @@ func test_GetRecipes_Category(t *testing.T) {
 
 	expected := `{"recipes":[{"id":2,"name":"super carrots","description":"some super delicious carrots","url":"https://www.example.com","image":"","prepTime":"PT3H0M","cookTime":"PT0H30M","totalTime":"PT3H30M","recipeCategory":"appetizer","keywords":"super carrots,butter","recipeYield":8,"tool":null,"recipeIngredient":["2 avocado","10 super carrots"],"recipeInstructions":["cut","cook well","eat"],"nutrition":null,"dateModified":"20210822","dateCreated":"20210821"}]}`
 	actual := strings.TrimSuffix(rr.Body.String(), "\n")
+	if actual != expected {
+		t.Errorf("handler returned unexpected body: got %v want %v", actual, expected)
+	}
+}
+
+func test_GetRecipesInfo_Complete(t *testing.T) {
+	rr := sendRequest("GET", "/recipes/info", nil, 200, env.getRecipesInfo, t)
+
+	expected := `{"info":{"total":11,"totalPerCategory":{"breakfast":3,"dessert":2,"dinner":4,"lunch":2}}}`
+	actual := fmt.Sprint(strings.TrimSuffix(rr.Body.String(), "\n"))
 	if actual != expected {
 		t.Errorf("handler returned unexpected body: got %v want %v", actual, expected)
 	}

@@ -8,4 +8,5 @@ const (
 	RecipeCategories = "/categories"
 	RecipeSearch     = "/search"
 	Recipes          = "/recipes"
+	RecipesInfo      = "/recipes/info"
 )

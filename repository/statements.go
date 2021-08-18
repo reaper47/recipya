@@ -29,13 +29,34 @@ var selectRecipeByNameStmt = "SELECT " + recipeFields + " " +
 	"WHERE name=?"
 
 func selectRecipesStmt(category string) string {
-	stmt := "SELECT " + recipeFields + " " +
-		"FROM " + schema.recipe.name
-
+	recipes := "SELECT rowid_category," + recipeFields + " FROM " + schema.recipe.name
 	if category != "" {
-		stmt += " WHERE category_id=(SELECT id FROM category WHERE name='" + category + "')"
+		recipes += " WHERE category_id=(SELECT id FROM category WHERE name='" + category + "')"
 	}
-	return stmt
+	return recipes
+}
+
+func selectRecipesPageStmt(page int, limit int) string {
+	recipes := "SELECT rowid," + recipeFields + " FROM " + schema.recipe.name
+
+	var condition string
+	if page == 1 {
+		condition = "rowid >= 0"
+	} else {
+		condition = "rowid > " + strconv.Itoa(page*limit-limit)
+	}
+
+	return "SELECT * FROM (" + recipes + ") " +
+		"WHERE " + condition + " " +
+		"ORDER BY rowid " +
+		"LIMIT " + strconv.Itoa(limit)
+}
+
+func selectRecipesByCategoryPageStmt(category string, page int, limit int) string {
+	return "SELECT * FROM (" + selectRecipesStmt(category) + ") " +
+		"WHERE rowid_category >= " + strconv.Itoa(page*limit-limit) + " " +
+		"ORDER BY rowid_category " +
+		"LIMIT " + strconv.Itoa(limit)
 }
 
 var selectCategoryIdStmt = "SELECT id " +
@@ -59,6 +80,18 @@ var selectNutritionSetStmt = "SELECT calories, carbohydrate, fat, saturated_fat,
 	"	FROM " + schema.recipe.name +
 	"	WHERE id=?" +
 	")"
+
+var selectRecipeCountStmt = "SELECT COUNT(*) FROM " + schema.recipe.name
+
+func selectRecipesCountCategoryStmt(category string) string {
+	return "SELECT COUNT(*) " +
+		"FROM " + schema.recipe.name + " " +
+		"WHERE category_id = (" +
+		"	SELECT id " +
+		"	FROM " + schema.category.name + " " +
+		"	WHERE name = '" + category + "'" +
+		")"
+}
 
 func maximizeFridgeStmt(ingredients []string, limit int) string {
 	return createSearchStmt(ingredients, limit, false)
@@ -132,12 +165,21 @@ func selectIdForNameStmt(tname string) string {
 		"WHERE name=?"
 }
 
+func selectNextRowidCategoryStmt(id int64) string {
+	stmt := "SELECT rowid_category " +
+		"FROM " + schema.recipe.name + " " +
+		"WHERE category_id=" + strconv.FormatInt(id, 10) + " " +
+		"ORDER BY rowid_category DESC " +
+		"LIMIT 1"
+	return "SELECT IIF((" + stmt + ") IS NOT NULL, (" + stmt + ") + 1, 0)"
+}
+
 // INSERT statements
 var insertRecipeStmt = "INSERT INTO " + schema.recipe.name + " (" +
-	"name, description, url, image, prep_time, cook_time, " +
-	"total_time, category_id, keywords, yield, " +
+	"rowid_category, name, description, url, image, prep_time, " +
+	"cook_time, total_time, category_id, keywords, yield, " +
 	"nutrition_id, date_modified, date_created" +
-	") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)"
+	") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
 
 var insertNutritionStmt = "INSERT INTO " + schema.nutrition.name + " (" +
 	"calories, carbohydrate, fat, saturated_fat, " +
@@ -148,7 +190,6 @@ func insertNameStmt(tname string) string {
 	return "INSERT INTO " + tname + " (" +
 		"name" +
 		") VALUES (?)"
-
 }
 
 func insertAssocStmt(t table) string {
