@@ -46,6 +46,9 @@ jobs:
         with:
           go-version: 1.16
 
+      - name: Install Tesseract
+        run: sudo apt-get install tesseract-ocr libtesseract-dev
+
       - name: Build
         run: go build -v ./...
 
