@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/gorilla/mux"
+	"github.com/otiai10/gosseract"
 	"github.com/reaper47/recipya/api"
 	"github.com/reaper47/recipya/data"
 	"github.com/reaper47/recipya/model"
@@ -32,6 +33,9 @@ func initRecipesRoutes(r *mux.Router, env *Env) {
 
 	// GET /api/v1/search
 	r.HandleFunc(api.RecipeSearch, env.getSearch).Methods(GET...)
+
+	// POST /api/v1/import/ocr
+	r.HandleFunc(api.RecipeOcr, env.postImportOcr).Methods(POST...)
 
 	// POST /api/v1/import/url
 	r.HandleFunc(api.RecipeImport, env.postImportRecipe).Headers(jsonHeader...).Methods(POST...)
@@ -185,6 +189,27 @@ func (env *Env) getSearch(w http.ResponseWriter, r *http.Request) {
 
 func (env *Env) getImportWebsites(w http.ResponseWriter, r *http.Request) {
 	writeSuccessJson(&model.Websites{Objects: data.Websites}, w)
+}
+
+func (env *Env) postImportOcr(w http.ResponseWriter, r *http.Request) {
+	buf, err := api.UploadFileBuffer(r, 5, "image")
+	if err != nil {
+		message := "Error uploading the image: " + err.Error()
+		writeErrorJson(http.StatusInternalServerError, message, w)
+		return
+	}
+
+	client := gosseract.NewClient()
+	defer client.Close()
+	client.SetImageFromBytes(buf.Bytes())
+	text, _ := client.Text()
+	recipe, err := parseRecipeOcr(text)
+	if err != nil {
+		message := "Error parsing the recipe: " + err.Error()
+		writeErrorJson(http.StatusInternalServerError, message, w)
+		return
+	}
+	writeSuccessJson(&recipe, w)
 }
 
 func (env *Env) postImportRecipe(w http.ResponseWriter, r *http.Request) {

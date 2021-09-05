@@ -22,6 +22,8 @@ require (
 	github.com/magiconair/properties v1.8.5 // indirect
 	github.com/mattn/go-isatty v0.0.13 // indirect
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
+	github.com/otiai10/gosseract v2.2.1+incompatible
+	github.com/otiai10/mint v1.3.3 // indirect
 	github.com/pelletier/go-toml v1.9.3 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20200410134404-eec4a21b6bb0 // indirect
 	github.com/spf13/afero v1.6.0 // indirect

@@ -46,10 +46,6 @@ func (repo *MockRecipeModel) InsertRecipe(r *model.Recipe) (int64, error) {
 	return 10, nil
 }
 
-func (repo *MockRecipeModel) UpdateRecipe(r *model.Recipe, id int64) error {
-	return nil
-}
-
 func (repo *MockRecipeModel) ImportRecipe(url string) (*model.Recipe, error) {
 	return aRecipe(), nil
 }
@@ -66,6 +62,10 @@ func (repo *MockRecipeModel) SearchMinimizeMissing(
 	n int,
 ) ([]*model.Recipe, error) {
 	return nil, nil
+}
+
+func (repo *MockRecipeModel) UpdateRecipe(r *model.Recipe, id int64) error {
+	return nil
 }
 
 func aRecipe() *model.Recipe {
