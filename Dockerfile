@@ -12,7 +12,7 @@ COPY go.mod .
 COPY go.sum .
 RUN go mod download
 
-RUN apt-get update && apt-get install -y nodejs npm python3-venv python3-pip
+RUN apt-get update && apt-get install -y nodejs npm python3-venv python3-pip tesseract-ocr
 RUN npm install -g yarn && yarn global add @vue/cli
 
 # STAGE 2: build
