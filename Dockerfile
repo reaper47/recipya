@@ -1,8 +1,8 @@
 # STAGE 1: prepare
-FROM golang AS prepare
+FROM golang:1.17.0-bullseye AS prepare
 
 ENV GO111MODULE=on \
-    CGO_ENABLED=0 \
+    CGO_ENABLED=1 \
     GOOS=linux \
     GOARCH=amd64
 
@@ -12,7 +12,8 @@ COPY go.mod .
 COPY go.sum .
 RUN go mod download
 
-RUN apt-get update && apt-get install -y nodejs npm python3-venv python3-pip tesseract-ocr
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y nodejs npm python3-venv python3-pip tesseract-ocr libtesseract-dev libleptonica-dev
 RUN npm install -g yarn && yarn global add @vue/cli
 
 # STAGE 2: build
