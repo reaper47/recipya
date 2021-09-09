@@ -18,6 +18,7 @@ require (
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/jdkato/prose/v2 v2.0.0
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
 	github.com/magiconair/properties v1.8.5 // indirect
 	github.com/mattn/go-isatty v0.0.13 // indirect
@@ -44,4 +45,11 @@ require (
 	modernc.org/opt v0.1.1 // indirect
 	modernc.org/strutil v1.1.1 // indirect
 	modernc.org/token v1.0.0 // indirect
+)
+
+require (
+	github.com/deckarep/golang-set v1.7.1 // indirect
+	github.com/mingrammer/commonregex v1.0.1 // indirect
+	gonum.org/v1/gonum v0.7.0 // indirect
+	gopkg.in/neurosnap/sentences.v1 v1.0.6 // indirect
 )

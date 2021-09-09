@@ -105,6 +105,9 @@ func (env *Env) postRecipe(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	ingredients := NlpExtractIngredients(recipe.RecipeIngredient)
+	recipe.Nutrition = FetchNutrientsInfo(ingredients)
+
 	recipeID, err := env.recipes.InsertRecipe(&recipe)
 	if err != nil {
 		message := "Adding the recipe has failed. Err: " + err.Error()

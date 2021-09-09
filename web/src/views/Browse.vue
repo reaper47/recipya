@@ -31,7 +31,11 @@
     <v-divider vertical></v-divider>
     <v-container fill-height align-start style="width: 80%">
       <v-row wrap>
-        <v-col v-for="(recipe, i) in recipes" :key="recipe.name">
+        <v-col
+          v-for="(recipe, i) in recipes"
+          :key="recipe.name"
+          style="min-width: 50ch"
+        >
           <loading-fullscreen
             v-if="$store.getters['browse/isLoading']"
           ></loading-fullscreen>

@@ -110,6 +110,7 @@ export default {
   },
   getters: {
     isImporting: (state) => state.isImporting,
+    isPosting: (state) => state.isPosting,
     isWebsitesLoading: (state) => state.isWebsitesLoading,
     websites: (state) => state.websites,
   },

@@ -21,6 +21,8 @@ type ConfigStruct struct {
 	Host string
 	Port int
 	Wait int
+
+	FdcApiKey string
 }
 
 var (
@@ -32,7 +34,6 @@ var (
 		"port":          3000,
 		"wait":          15,
 		"webappDir":     "./web",
-		"python":        "python",
 	}
 	configName  = "config"
 	configPaths = []string{".", "./config/"}

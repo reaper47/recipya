@@ -25,3 +25,10 @@ wait: 10
 #   - w: weeks
 #   - y: years
 indexInterval: 1d
+
+# Your FoodData Central API key.
+#
+# To get a key:
+# 1. Sign up on https://fdc.nal.usda.gov/api-key-signup.html
+# 2. Copy the key here
+fdcApiKey: 8v2PniYQdZm5Tz5wTSviVUfN503LUg47TvLHXDxD

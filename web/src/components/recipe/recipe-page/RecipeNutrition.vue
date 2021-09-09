@@ -23,7 +23,7 @@ export default {
   data: () => ({
     headers: [
       {
-        text: "Nutrition",
+        text: "Nutrition (per 100g)",
         align: "start",
         sortable: true,
         value: "name",

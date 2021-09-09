@@ -34,6 +34,7 @@ type Recipe struct {
 
 // NutritionSet holds nutritional details of a recipe.
 type NutritionSet struct {
+	FdcIDs       []int64
 	Calories     string `json:"calories"`
 	Carbohydrate string `json:"carbohydrateContent"`
 	Fat          string `json:"fatContent"`

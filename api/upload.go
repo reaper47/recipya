@@ -12,7 +12,9 @@ import (
 func UploadFileBuffer(r *http.Request, maxMB int64, key string) (*bytes.Buffer, error) {
 	err := r.ParseMultipartForm(maxMB << 20)
 	if err != nil {
-		return nil, errors.New("the file's size must be" + strconv.FormatInt(maxMB, 10) + "MB maximum")
+		return nil, errors.New(
+			"the file's size must be" + strconv.FormatInt(maxMB, 10) + "MB maximum",
+		)
 	}
 
 	file, _, err := r.FormFile(key)

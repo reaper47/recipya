@@ -23,7 +23,7 @@ export default {
   name: "RecipeNutrition",
   data: () => ({
     headers: [
-      { text: "Nutrition", value: "nutrition" },
+      { text: "Nutrition (per 100g)", value: "nutrition" },
       { text: "Amount (not required)", value: "amount" },
     ],
     items: [
