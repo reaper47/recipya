@@ -23,8 +23,8 @@ func NlpExtractIngredients(ingredients []string) []string {
 		"NNPS": 0,
 	}
 
-	var processed []string
-	for _, ingredient := range ingredients {
+	processed := make([]string, len(ingredients))
+	for i, ingredient := range ingredients {
 		doc, err := prose.NewDocument(ingredient)
 		if err != nil {
 			continue
@@ -51,7 +51,7 @@ func NlpExtractIngredients(ingredients []string) []string {
 			}
 
 		}
-		processed = append(processed, strings.TrimSpace(item))
+		processed[i] = strings.TrimSpace(item)
 	}
 	return processed
 }

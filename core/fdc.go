@@ -38,9 +38,9 @@ func FetchNutrientsInfo(foodList []string) *model.NutritionSet {
 }
 
 func getFoods(foodList []string, baseURL string) []*model.Foods {
-	var urls []string
-	for _, food := range foodList {
-		urls = append(urls, baseURL+"&query="+food)
+	urls := make([]string, len(foodList))
+	for i, food := range foodList {
+		urls[i] = baseURL + "&query=" + food
 	}
 
 	var wg sync.WaitGroup
