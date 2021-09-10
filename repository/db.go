@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"github.com/reaper47/recipya/config"
+	"github.com/reaper47/recipya/data"
 	_ "modernc.org/sqlite"
 )
 
@@ -42,6 +43,9 @@ func createDb() {
 	if err != nil {
 		log.Fatalf("Failed to initialize the database: '%v'", err)
 	}
+
+	addBlacklistIngredients()
+	addFruitsVeggies()
 }
 
 // InitDb initializes the database by creating the tables.
@@ -61,4 +65,30 @@ func InitDb(db *sql.DB) error {
 		}
 	}
 	return tx.Commit()
+}
+
+func addBlacklistIngredients() {
+	var count int64
+	stmt := selectCountStmt(schema.blacklistUnit.name)
+	db.QueryRow(stmt).Scan(&count)
+	if count == 0 {
+		stmt := insertNamesStmt(schema.blacklistUnit.name)
+		err := data.PopulateBlacklistIngredients(stmt, db)
+		if err != nil {
+			log.Fatalf("Failed to add blacklist ingredients to the database: '%v'", err)
+		}
+	}
+}
+
+func addFruitsVeggies() {
+	var count int64
+	stmt := selectCountStmt(schema.fruitVeggie.name)
+	db.QueryRow(stmt).Scan(&count)
+	if count == 0 {
+		stmt := insertNamesStmt(schema.fruitVeggie.name)
+		err := data.PopulateFruitsVeggies(stmt, db)
+		if err != nil {
+			log.Fatalf("Failed to add fruits and veggies to the database: '%v'", err)
+		}
+	}
 }

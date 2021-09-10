@@ -2,14 +2,7 @@ package core
 
 import (
 	"testing"
-
-	"github.com/reaper47/recipya/data"
-	"github.com/reaper47/recipya/mock"
 )
-
-func init() {
-	data.Data = &mock.MockDataReader{}
-}
 
 func TestNlp(t *testing.T) {
 	t.Run(
@@ -27,7 +20,7 @@ func test_NlpExtractIngredients_ProcessCorrectly(t *testing.T) {
 		"cracked black pepper":                                "black pepper",
 		"2 tablespoons fresh chopped parsley":                 "parsley",
 		"1 (8 ounce) package sliced mushrooms":                "mushrooms",
-		"1 large onion, diced":                                "large onion",
+		"1 large onion, diced":                                "large onion raw",
 		"4 cloves garlic, diced":                              "cloves garlic",
 		"salt and ground black pepper to taste":               "salt ground black pepper",
 		"1½ pounds beef sirloin steak, cut into 1 inch cubes": "beef sirloin steak",
@@ -54,7 +47,7 @@ func test_NlpExtractIngredients_ProcessCorrectly(t *testing.T) {
 		"1 cup sliced fresh mushrooms":                        "mushrooms",
 		"1 cup snow peas":                                     "snow peas",
 		"¾ cup shredded carrot":                               "carrot",
-		"4 medium green onions, sliced":                       "medium green onions",
+		"4 medium green onions, sliced":                       "medium green onions raw",
 		"1 clove garlic, minced":                              "clove garlic",
 		"¼ cup reduced-sodium soy sauce":                      "reduced-sodium soy sauce",
 		"1 teaspoon white sugar":                              "white sugar",
@@ -68,6 +61,13 @@ func test_NlpExtractIngredients_ProcessCorrectly(t *testing.T) {
 		"1 cup white sugar":                                   "white sugar",
 		"1 cup packed brown sugar":                            "brown sugar",
 		"2 cups semisweet chocolate chips":                    "semisweet chocolate chips",
+		"1 kiwi":                                              "kiwi raw",
+		"1 big kiwi":                                          "big kiwi raw",
+		"2 fresh kiwis":                                       "kiwis raw",
+		"1 big red strawberries":                              "big red strawberries raw",
+		"3 big tomatoes":                                      "big tomatoes raw",
+		"3 cups green squashes":                               "green squashes raw",
+		"5 potatoes":                                          "potatoes raw",
 	}
 	var ingredients, expected []string
 	for key, value := range entries {
@@ -75,7 +75,7 @@ func test_NlpExtractIngredients_ProcessCorrectly(t *testing.T) {
 		expected = append(expected, value)
 	}
 
-	actual := NlpExtractIngredients(ingredients)
+	actual := env.NlpExtractIngredients(ingredients)
 
 	fail := false
 	if len(actual) != len(expected) {

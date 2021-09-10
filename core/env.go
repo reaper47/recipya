@@ -20,11 +20,17 @@ type Env struct {
 		SearchMinimizeMissing(ingredients []string, n int) ([]*model.Recipe, error)
 		UpdateRecipe(r *model.Recipe, id int64) error
 	}
+	data interface {
+		GetBlacklistIngredients() (map[string]int8, error)
+		GetFruitsVeggies() (map[string]int8, error)
+	}
 }
 
 // InitEnv initializes the Environment struct.
 func InitEnv(db *sql.DB) *Env {
+	repo := &repository.Repository{DB: db}
 	return &Env{
-		recipes: &repository.Repository{DB: db},
+		recipes: repo,
+		data:    repo,
 	}
 }

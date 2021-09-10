@@ -1,4 +1,4 @@
-package repository
+package mock
 
 import (
 	"github.com/reaper47/recipya/model"
@@ -6,15 +6,15 @@ import (
 
 type MockRecipeModel struct{}
 
-func (repo *MockRecipeModel) GetCategories() ([]string, error) {
+func (r *MockRecipeModel) GetCategories() ([]string, error) {
 	return []string{"appetizer", "side dish", "dessert"}, nil
 }
 
-func (repo *MockRecipeModel) GetRecipe(name string) (*model.Recipe, error) {
+func (r *MockRecipeModel) GetRecipe(name string) (*model.Recipe, error) {
 	return nil, nil
 }
 
-func (repo *MockRecipeModel) GetRecipes(
+func (r *MockRecipeModel) GetRecipes(
 	category string,
 	page int,
 	limit int,
@@ -29,11 +29,11 @@ func (repo *MockRecipeModel) GetRecipes(
 	return []*model.Recipe{aRecipe(), otherRecipe()}, nil
 }
 
-func (repo *MockRecipeModel) GetRecipesByCategory(c string) ([]*model.Recipe, error) {
+func (r *MockRecipeModel) GetRecipesByCategory(c string) ([]*model.Recipe, error) {
 	return []*model.Recipe{otherRecipe()}, nil
 }
 
-func (repo *MockRecipeModel) GetRecipesInfo() (*model.RecipesInfo, error) {
+func (r *MockRecipeModel) GetRecipesInfo() (*model.RecipesInfo, error) {
 	return &model.RecipesInfo{Total: 11, TotalPerCategory: map[string]int64{
 		"breakfast": 3,
 		"lunch":     2,
@@ -42,29 +42,29 @@ func (repo *MockRecipeModel) GetRecipesInfo() (*model.RecipesInfo, error) {
 	}}, nil
 }
 
-func (repo *MockRecipeModel) InsertRecipe(r *model.Recipe) (int64, error) {
+func (r *MockRecipeModel) InsertRecipe(recipe *model.Recipe) (int64, error) {
 	return 10, nil
 }
 
-func (repo *MockRecipeModel) ImportRecipe(url string) (*model.Recipe, error) {
+func (r *MockRecipeModel) ImportRecipe(url string) (*model.Recipe, error) {
 	return aRecipe(), nil
 }
 
-func (repo *MockRecipeModel) SearchMaximizeFridge(
+func (r *MockRecipeModel) SearchMaximizeFridge(
 	ingredients []string,
 	n int,
 ) ([]*model.Recipe, error) {
 	return nil, nil
 }
 
-func (repo *MockRecipeModel) SearchMinimizeMissing(
+func (r *MockRecipeModel) SearchMinimizeMissing(
 	ingredients []string,
 	n int,
 ) ([]*model.Recipe, error) {
 	return nil, nil
 }
 
-func (repo *MockRecipeModel) UpdateRecipe(r *model.Recipe, id int64) error {
+func (r *MockRecipeModel) UpdateRecipe(recipe *model.Recipe, id int64) error {
 	return nil
 }
 

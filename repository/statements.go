@@ -81,7 +81,13 @@ var selectNutritionSetStmt = "SELECT calories, carbohydrate, fat, saturated_fat,
 	"	WHERE id=?" +
 	")"
 
-var selectRecipeCountStmt = "SELECT COUNT(*) FROM " + schema.recipe.name
+func selectCountStmt(tname string) string {
+	return "SELECT COUNT(*) FROM " + tname
+}
+
+func selectColStmt(col, tname string) string {
+	return "SELECT " + col + " FROM " + tname
+}
 
 func selectRecipesCountCategoryStmt(category string) string {
 	return "SELECT COUNT(*) " +
@@ -185,6 +191,10 @@ var insertNutritionStmt = "INSERT INTO " + schema.nutrition.name + " (" +
 	"calories, carbohydrate, fat, saturated_fat, " +
 	"cholesterol, protein, sodium, fiber, sugar" +
 	") VALUES (?,?,?,?,?,?,?,?,?)"
+
+func insertNamesStmt(tname string) string {
+	return "INSERT INTO " + tname + " (name) VALUES"
+}
 
 func insertNameStmt(tname string) string {
 	return "INSERT INTO " + tname + " (" +

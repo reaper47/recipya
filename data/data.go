@@ -2,29 +2,29 @@ package data
 
 import (
 	"bufio"
+	"database/sql"
+	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
-// Data is the global variable for the DataReader interface.
-var Data DataReader
-
-// DataReader is an interface for the data reader.
-//
-// It makes testing easier because we can mock.
-type DataReader interface {
-	ReadBlacklistIngredients() map[string]int8
+// PopulateBlacklistIngredients adds the blacklisted ingredients
+// listed under the 'data/blacklist_ingredients.txt' file to the database.
+func PopulateBlacklistIngredients(stmt string, db *sql.DB) error {
+	return populate("data/blacklist_units.txt", stmt, db)
 }
 
-// DataStruct holds functions related to files under the data directory.
-type DataStruct struct{}
+// PopulateFruitsVeggies adds the produce under the
+// 'data/fruits_veggies.txt' file to the database.
+func PopulateFruitsVeggies(stmt string, db *sql.DB) error {
+	return populate("data/fruits_veggies.txt", stmt, db)
+}
 
-// ReadBlacklistIngredients reads the list of blacklisted
-// ingredients listed in the data/blacklist_ingredients.txt file.
-func (d *DataStruct) ReadBlacklistIngredients() map[string]int8 {
-	f, err := os.Open("data/blacklist_ingredients.txt")
+func populate(fname string, stmt string, db *sql.DB) error {
+	f, err := os.Open(fname)
 	if err != nil {
-		log.Println("Read blacklist ingredients err:", err)
+		log.Fatalf("Read %s error: %v\n", fname, err)
 		return nil
 	}
 	defer f.Close()
@@ -32,13 +32,13 @@ func (d *DataStruct) ReadBlacklistIngredients() map[string]int8 {
 	scanner := bufio.NewScanner(f)
 	scanner.Split(bufio.ScanLines)
 
-	items := make(map[string]int8)
+	var items []interface{}
+	var values []string
 	for scanner.Scan() {
-		items[scanner.Text()] = 0
+		values = append(values, "(?)")
+		items = append(items, scanner.Text())
 	}
-	return items
-}
 
-func init() {
-	Data = &DataStruct{}
+	_, err = db.Exec(fmt.Sprintf("%s %s", stmt, strings.Join(values, ",")), items...)
+	return err
 }

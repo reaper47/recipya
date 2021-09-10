@@ -1,7 +1,9 @@
 package repository
 
 type tables struct {
+	blacklistUnit     table
 	category          table
+	fruitVeggie       table
 	ingredient        table
 	instruction       table
 	nutrition         table
@@ -24,11 +26,23 @@ const (
 )
 
 var schema = tables{
+	blacklistUnit: table{
+		name: "blacklist_unit",
+		cols: map[string]string{
+			"name": "TEXT NOT NULL UNIQUE",
+		},
+	},
 	category: table{
 		name:       "category",
 		assocTable: "recipe_category",
 		cols: map[string]string{
 			"id":   "INTEGER PRIMARY KEY",
+			"name": "TEXT NOT NULL UNIQUE",
+		},
+	},
+	fruitVeggie: table{
+		name: "fruit_veggie",
+		cols: map[string]string{
 			"name": "TEXT NOT NULL UNIQUE",
 		},
 	},
@@ -123,7 +137,9 @@ var schema = tables{
 }
 
 var allTables = []table{
+	schema.blacklistUnit,
 	schema.category,
+	schema.fruitVeggie,
 	schema.ingredient,
 	schema.instruction,
 	schema.nutrition,

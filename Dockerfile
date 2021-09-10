@@ -31,6 +31,8 @@ RUN cp /source/main .
 # STAGE 3: run
 FROM python:3.8-slim-buster as run
 
+RUN apt-get update && apt-get install -y tesseract-ocr libtesseract-dev libleptonica-dev
+
 COPY --from=build /source/tools/requirements.txt /tools/requirements.txt
 RUN pip install -r /tools/requirements.txt
 

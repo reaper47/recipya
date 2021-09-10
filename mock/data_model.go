@@ -1,13 +1,8 @@
 package mock
 
-// MockDataReader is the mock for the data.DataReader struct.
-type MockDataReader struct {
-	ReadBlacklistIngredientsFunc func() map[string]int8
-}
+type MockDataModel struct{}
 
-// ReadBlacklistIngredients returns a map of blacklisted
-// ingredients for mocking purposes.
-func (repo *MockDataReader) ReadBlacklistIngredients() map[string]int8 {
+func (d *MockDataModel) GetBlacklistIngredients() (map[string]int8, error) {
 	return map[string]int8{
 		"¼":           0,
 		"½":           0,
@@ -67,5 +62,17 @@ func (repo *MockDataReader) ReadBlacklistIngredients() map[string]int8 {
 		"tbsp":        0,
 		"teaspoon":    0,
 		"tsp":         0,
-	}
+	}, nil
+}
+
+func (d *MockDataModel) GetFruitsVeggies() (map[string]int8, error) {
+	return map[string]int8{
+		"kiwi":       0,
+		"kiwis":      0,
+		"onion":      0,
+		"potato":     0,
+		"strawberry": 0,
+		"squash":     0,
+		"tomato":     0,
+	}, nil
 }

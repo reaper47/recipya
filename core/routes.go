@@ -105,7 +105,7 @@ func (env *Env) postRecipe(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ingredients := NlpExtractIngredients(recipe.RecipeIngredient)
+	ingredients := env.NlpExtractIngredients(recipe.RecipeIngredient)
 	recipe.Nutrition = FetchNutrientsInfo(ingredients)
 
 	recipeID, err := env.recipes.InsertRecipe(&recipe)

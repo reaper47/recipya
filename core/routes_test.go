@@ -9,13 +9,13 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/reaper47/recipya/mock"
 	"github.com/reaper47/recipya/model"
-	"github.com/reaper47/recipya/repository"
 )
 
 const baseUrl = "/api/v1"
 
-var env = Env{recipes: &repository.MockRecipeModel{}}
+var env = Env{recipes: &mock.MockRecipeModel{}, data: &mock.MockDataModel{}}
 
 func TestRoutes(t *testing.T) {
 	t.Run("Get categories returns all categories", test_GetCategories)

@@ -38,7 +38,9 @@ func test_InitDbWithTables(t *testing.T) {
 	defer rows.Close()
 
 	tables := []string{
+		"blacklist_unit",
 		"category",
+		"fruit_veggie",
 		"ingredient",
 		"instruction",
 		"nutrition",

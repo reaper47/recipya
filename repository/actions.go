@@ -10,11 +10,6 @@ import (
 	"github.com/reaper47/recipya/model"
 )
 
-// Repository holds the database singleton.
-type Repository struct {
-	DB *sql.DB
-}
-
 // GetRecipe gets the recipe from the database that matches the name.
 func (repo *Repository) GetRecipe(name string) (*model.Recipe, error) {
 	ctx := context.Background()
@@ -178,7 +173,8 @@ func (repo *Repository) GetRecipesInfo() (*model.RecipesInfo, error) {
 	defer tx.Rollback()
 
 	var numRecipes int64
-	err = tx.QueryRow(selectRecipeCountStmt).Scan(&numRecipes)
+	stmt := selectCountStmt(schema.recipe.name)
+	err = tx.QueryRow(stmt).Scan(&numRecipes)
 	if err != nil {
 		return nil, err
 	}
