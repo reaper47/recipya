@@ -1,6 +1,6 @@
-import { showSnackbar, SNACKBAR_TYPE } from "@/eventbus/action";
-import store from "@/store";
-import router from "@/router";
+import { showSnackbar, SNACKBAR_TYPE } from "../eventbus/action";
+import store from "../store";
+import router from "../router";
 
 export default {
   namespaced: true,

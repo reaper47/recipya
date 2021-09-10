@@ -43,8 +43,8 @@
 </template>
 
 <script>
-import Components from "@/components/recipe/recipe-page";
-import Recipe from "@/models/recipe";
+import Components from "../../components/recipe/recipe-page";
+import Recipe from "../../models/recipe";
 
 export default {
   name: "RecipeMobile",

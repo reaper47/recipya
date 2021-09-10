@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { showSnackbar, SNACKBAR_TYPE } from "@/eventbus/action";
+import { showSnackbar, SNACKBAR_TYPE } from "../../eventbus/action";
 
 const addIcon = "mdi-plus";
 const removeIcon = "mdi-minus";

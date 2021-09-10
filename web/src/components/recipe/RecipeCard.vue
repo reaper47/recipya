@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import Recipe from "@/models/recipe";
+import Recipe from "../../models/recipe";
 
 export default {
   name: "RecipeCard",

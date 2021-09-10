@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import CreateManualForm from "@/components/create/manual/Form.vue";
+import CreateManualForm from "../components/create/manual/Form.vue";
 
 export default {
   name: "CreateManual",

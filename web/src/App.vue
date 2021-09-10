@@ -37,9 +37,9 @@
 </template>
 
 <script>
-import AppBar from "@/components/nav/AppBar.vue";
-import NiceFooter from "@/components/nav/NiceFooter.vue";
-import SnackBar from "@/components/basic/SnackBar.vue";
+import AppBar from "./components/nav/AppBar.vue";
+import NiceFooter from "./components/nav/NiceFooter.vue";
+import SnackBar from "./components/basic/SnackBar.vue";
 
 export default {
   name: "App",

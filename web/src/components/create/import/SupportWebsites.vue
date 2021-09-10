@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import LoadingFullscreen from "@/components/basic/LoadingFullscreen.vue";
+import LoadingFullscreen from "../../../components/basic/LoadingFullscreen.vue";
 
 export default {
   name: "SupportedWebsites",

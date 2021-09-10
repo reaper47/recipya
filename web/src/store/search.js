@@ -1,4 +1,4 @@
-import Recipe from "@/models/recipe";
+import Recipe from "../models/recipe";
 
 export default {
   namespaced: true,

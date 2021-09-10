@@ -1,5 +1,5 @@
-import Recipe from "@/models/recipe";
-import { showSnackbar, SNACKBAR_TYPE } from "@/eventbus/action";
+import Recipe from "../models/recipe";
+import { showSnackbar, SNACKBAR_TYPE } from "../eventbus/action";
 
 export default {
   namespaced: true,

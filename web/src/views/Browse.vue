@@ -102,9 +102,9 @@
   </v-container>
 </template>
 <script>
-import BrowsePagination from "@/components/browse/Pagination.vue";
-import LoadingFullscreen from "@/components/basic/LoadingFullscreen.vue";
-import RecipeCard from "@/components/recipe/RecipeCard.vue";
+import BrowsePagination from "../components/browse/Pagination.vue";
+import LoadingFullscreen from "../components/basic/LoadingFullscreen.vue";
+import RecipeCard from "../components/recipe/RecipeCard.vue";
 
 export default {
   name: "Browse",

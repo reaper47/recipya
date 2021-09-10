@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import BasicList from "@/components/basic/BasicList.vue";
+import BasicList from "../../../components/basic/BasicList.vue";
 
 export default {
   name: "RecipeIngredients",

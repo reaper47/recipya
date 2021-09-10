@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import EventBus from "@/eventbus";
-import { ACTION } from "@/eventbus/action";
+import EventBus from "../../eventbus";
+import { ACTION } from "../../eventbus/action";
 
 export default {
   data: () => ({
