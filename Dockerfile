@@ -37,6 +37,8 @@ COPY --from=build /source/tools/requirements.txt /tools/requirements.txt
 RUN pip install -r /tools/requirements.txt
 
 COPY --from=build /dist/main /
+COPY --from=build /source/data/blacklist_units.txt /data/blacklist_units.txt
+COPY --from=build /source/data/fruits_veggies.txt /data/fruits_veggies.txt
 COPY --from=build /source/tools/scraper.py /tools/scraper.py
 COPY --from=build /source/web/dist /dist
 COPY --from=build /source/dist/config.yaml /
