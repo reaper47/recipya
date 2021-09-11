@@ -12,7 +12,7 @@ import (
 //
 // For example, if the ingredient is "1 cup of butter", then the result would be "butter".
 func (env *Env) NlpExtractIngredients(ingredients []string) []string {
-	blacklist, err := env.data.GetBlacklistIngredients()
+	blacklist, err := env.data.GetBlacklistUnits()
 	if err != nil {
 		log.Printf("Error getting blacklisted ingredients: '%s'\n", err)
 		return []string{}

@@ -2,7 +2,7 @@ package mock
 
 type MockDataModel struct{}
 
-func (d *MockDataModel) GetBlacklistIngredients() (map[string]int8, error) {
+func (d *MockDataModel) GetBlacklistUnits() (map[string]int8, error) {
 	return map[string]int8{
 		"¼":           0,
 		"½":           0,

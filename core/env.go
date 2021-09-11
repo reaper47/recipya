@@ -21,7 +21,7 @@ type Env struct {
 		UpdateRecipe(r *model.Recipe, id int64) error
 	}
 	data interface {
-		GetBlacklistIngredients() (map[string]int8, error)
+		GetBlacklistUnits() (map[string]int8, error)
 		GetFruitsVeggies() (map[string]int8, error)
 	}
 }

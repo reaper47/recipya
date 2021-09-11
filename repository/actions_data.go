@@ -2,7 +2,7 @@ package repository
 
 import "context"
 
-func (repo *Repository) GetBlacklistIngredients() (map[string]int8, error) {
+func (repo *Repository) GetBlacklistUnits() (map[string]int8, error) {
 	countStmt := selectCountStmt(schema.blacklistUnit.name)
 	colStmt := selectColStmt("name", schema.blacklistUnit.name)
 	return getItems(countStmt, colStmt, repo)

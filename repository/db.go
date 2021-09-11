@@ -73,7 +73,7 @@ func addBlacklistIngredients() {
 	db.QueryRow(stmt).Scan(&count)
 	if count == 0 {
 		stmt := insertNamesStmt(schema.blacklistUnit.name)
-		err := data.PopulateBlacklistIngredients(stmt, db)
+		err := data.PopulateBlacklistUnits(stmt, db)
 		if err != nil {
 			log.Fatalf("Failed to add blacklist ingredients to the database: '%v'", err)
 		}

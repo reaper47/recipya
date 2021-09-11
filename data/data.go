@@ -9,9 +9,9 @@ import (
 	"strings"
 )
 
-// PopulateBlacklistIngredients adds the blacklisted ingredients
+// PopulateBlacklistUnits adds the blacklisted ingredients
 // listed under the 'data/blacklist_ingredients.txt' file to the database.
-func PopulateBlacklistIngredients(stmt string, db *sql.DB) error {
+func PopulateBlacklistUnits(stmt string, db *sql.DB) error {
 	return populate("data/blacklist_units.txt", stmt, db)
 }
 
