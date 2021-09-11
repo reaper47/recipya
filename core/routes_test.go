@@ -46,7 +46,7 @@ func test_GetCategories(t *testing.T) {
 func test_GetRecipes_All(t *testing.T) {
 	rr := sendRequest("GET", "/recipes", nil, 200, env.getRecipes, t)
 
-	expected := `{"recipes":[{"id":1,"name":"carrots","desciption":"some delicious carrots","url":"https://www.example.com","image":"","prepTime":"PT3H30M","cookTime":"PT0H30M","totalTime":"PT4H0M","recipeCategory":"side dish","keywords":"carrots,butter","recipeYield":4,"tool":null,"recipeIngredient":["1 avocado","2 carrots"],"recipeInstructions":["cut","cook","eat"],"nutrition":` + EMPTY_NUTRITION + `,"dateModified":"20210820","dateCreated":"20210820"}]}`
+	expected := `{"recipes":[{"id":1,"name":"carrots","description":"some delicious carrots","url":"https://www.example.com","image":"","prepTime":"PT3H30M","cookTime":"PT0H30M","totalTime":"PT4H0M","recipeCategory":"side dish","keywords":"carrots,butter","recipeYield":4,"tool":null,"recipeIngredient":["1 avocado","2 carrots"],"recipeInstructions":["cut","cook","eat"],"nutrition":` + EMPTY_NUTRITION + `,"dateModified":"20210820","dateCreated":"20210820"}]}`
 	actual := strings.TrimSuffix(rr.Body.String(), "\n")
 	if actual != expected {
 		t.Errorf("handler returned unexpected body: diff\n%v", cmp.Diff(actual, expected))
