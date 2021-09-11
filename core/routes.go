@@ -235,5 +235,11 @@ func (env *Env) postImportRecipe(w http.ResponseWriter, r *http.Request) {
 		writeErrorJson(http.StatusBadRequest, message, w)
 		return
 	}
+
+	if recipe.Nutrition.IsEmpty() {
+		ingredients := env.NlpExtractIngredients(recipe.RecipeIngredient)
+		recipe.Nutrition = FetchNutrientsInfo(ingredients)
+		env.recipes.UpdateRecipe(recipe, recipe.ID)
+	}
 	writeCreatedJson(&recipe, w)
 }

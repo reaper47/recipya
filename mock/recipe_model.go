@@ -82,6 +82,7 @@ func aRecipe() *model.Recipe {
 		RecipeYield:        4,
 		RecipeIngredient:   []string{"1 avocado", "2 carrots"},
 		RecipeInstructions: []string{"cut", "cook", "eat"},
+		Nutrition:          &model.NutritionSet{},
 		DateModified:       "20210820",
 		DateCreated:        "20210820",
 	}
@@ -101,6 +102,7 @@ func otherRecipe() *model.Recipe {
 		RecipeYield:        8,
 		RecipeIngredient:   []string{"2 avocado", "10 super carrots"},
 		RecipeInstructions: []string{"cut", "cook well", "eat"},
+		Nutrition:          &model.NutritionSet{},
 		DateModified:       "20210822",
 		DateCreated:        "20210821",
 	}

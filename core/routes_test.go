@@ -9,6 +9,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
 	"github.com/reaper47/recipya/mock"
 	"github.com/reaper47/recipya/model"
 )
@@ -16,6 +17,8 @@ import (
 const baseUrl = "/api/v1"
 
 var env = Env{recipes: &mock.MockRecipeModel{}, data: &mock.MockDataModel{}}
+
+const EMPTY_NUTRITION = `{"calories":"","carbohydrateContent":"","fatContent":"","saturatedFatContent":"","cholesterolContent":"","proteinContent":"","sodiumContent":"","fiberContent":"","sugarContent":""}`
 
 func TestRoutes(t *testing.T) {
 	t.Run("Get categories returns all categories", test_GetCategories)
@@ -36,27 +39,27 @@ func test_GetCategories(t *testing.T) {
 	expected := `{"categories":["appetizer","side dish","dessert"]}`
 	actual := strings.TrimSuffix(rr.Body.String(), "\n")
 	if actual != expected {
-		t.Errorf("handler returned unexpected body: got %v want %v", actual, expected)
+		t.Errorf("handler returned unexpected body: diff\n%v", cmp.Diff(actual, expected))
 	}
 }
 
 func test_GetRecipes_All(t *testing.T) {
 	rr := sendRequest("GET", "/recipes", nil, 200, env.getRecipes, t)
 
-	expected := `{"recipes":[{"id":1,"name":"carrots","description":"some delicious carrots","url":"https://www.example.com","image":"","prepTime":"PT3H30M","cookTime":"PT0H30M","totalTime":"PT4H0M","recipeCategory":"side dish","keywords":"carrots,butter","recipeYield":4,"tool":null,"recipeIngredient":["1 avocado","2 carrots"],"recipeInstructions":["cut","cook","eat"],"nutrition":null,"dateModified":"20210820","dateCreated":"20210820"}]}`
+	expected := `{"recipes":[{"id":1,"name":"carrots","desciption":"some delicious carrots","url":"https://www.example.com","image":"","prepTime":"PT3H30M","cookTime":"PT0H30M","totalTime":"PT4H0M","recipeCategory":"side dish","keywords":"carrots,butter","recipeYield":4,"tool":null,"recipeIngredient":["1 avocado","2 carrots"],"recipeInstructions":["cut","cook","eat"],"nutrition":` + EMPTY_NUTRITION + `,"dateModified":"20210820","dateCreated":"20210820"}]}`
 	actual := strings.TrimSuffix(rr.Body.String(), "\n")
 	if actual != expected {
-		t.Errorf("handler returned unexpected body: got %v want %v", actual, expected)
+		t.Errorf("handler returned unexpected body: diff\n%v", cmp.Diff(actual, expected))
 	}
 }
 
 func test_GetRecipes_Category(t *testing.T) {
 	rr := sendRequest("GET", "/recipes?c=appetizer", nil, 200, env.getRecipes, t)
 
-	expected := `{"recipes":[{"id":2,"name":"super carrots","description":"some super delicious carrots","url":"https://www.example.com","image":"","prepTime":"PT3H0M","cookTime":"PT0H30M","totalTime":"PT3H30M","recipeCategory":"appetizer","keywords":"super carrots,butter","recipeYield":8,"tool":null,"recipeIngredient":["2 avocado","10 super carrots"],"recipeInstructions":["cut","cook well","eat"],"nutrition":null,"dateModified":"20210822","dateCreated":"20210821"}]}`
+	expected := `{"recipes":[{"id":2,"name":"super carrots","description":"some super delicious carrots","url":"https://www.example.com","image":"","prepTime":"PT3H0M","cookTime":"PT0H30M","totalTime":"PT3H30M","recipeCategory":"appetizer","keywords":"super carrots,butter","recipeYield":8,"tool":null,"recipeIngredient":["2 avocado","10 super carrots"],"recipeInstructions":["cut","cook well","eat"],"nutrition":` + EMPTY_NUTRITION + `,"dateModified":"20210822","dateCreated":"20210821"}]}`
 	actual := strings.TrimSuffix(rr.Body.String(), "\n")
 	if actual != expected {
-		t.Errorf("handler returned unexpected body: got %v want %v", actual, expected)
+		t.Errorf("handler returned unexpected body: diff\n%v", cmp.Diff(actual, expected))
 	}
 }
 
@@ -66,7 +69,7 @@ func test_GetRecipesInfo_Complete(t *testing.T) {
 	expected := `{"info":{"total":11,"totalPerCategory":{"breakfast":3,"dessert":2,"dinner":4,"lunch":2}}}`
 	actual := fmt.Sprint(strings.TrimSuffix(rr.Body.String(), "\n"))
 	if actual != expected {
-		t.Errorf("handler returned unexpected body: got %v want %v", actual, expected)
+		t.Errorf("handler returned unexpected body: diff\n%v", cmp.Diff(actual, expected))
 	}
 }
 

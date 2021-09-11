@@ -2,6 +2,7 @@
 ½
 ¾
 bar
+c
 cc
 celsius
 centimeter
