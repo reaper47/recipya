@@ -10,13 +10,13 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/reaper47/recipya/mock"
 	"github.com/reaper47/recipya/model"
+	"github.com/reaper47/recipya/tests"
 )
 
 const baseUrl = "/api/v1"
 
-var env = Env{recipes: &mock.MockRecipeModel{}, data: &mock.MockDataModel{}}
+var env = Env{recipes: &tests.MockRecipeModel{}, data: &tests.MockDataModel{}}
 
 const EMPTY_NUTRITION = `{"calories":"","carbohydrateContent":"","fatContent":"","saturatedFatContent":"","cholesterolContent":"","proteinContent":"","sodiumContent":"","fiberContent":"","sugarContent":""}`
 

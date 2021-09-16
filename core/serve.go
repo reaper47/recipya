@@ -58,7 +58,7 @@ func createRouter(env *Env) *mux.Router {
 	apiRootRouter := r.PathPrefix(api.ApiUrlSuffix).Subrouter()
 	initRecipesRoutes(apiRootRouter, env)
 
-	spaRouter := spaHandler{staticPath: config.Config.WebAppDir, indexPath: "index.html"}
+	spaRouter := spaHandler{staticPath: "./ui/dist", indexPath: "index.html"}
 	r.PathPrefix("/").Handler(spaRouter)
 
 	r.Use(mux.CORSMethodMiddleware(r))

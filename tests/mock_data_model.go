@@ -1,4 +1,4 @@
-package mock
+package tests
 
 type MockDataModel struct{}
 

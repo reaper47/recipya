@@ -1,4 +1,4 @@
-package mock
+package tests
 
 import (
 	"github.com/reaper47/recipya/model"

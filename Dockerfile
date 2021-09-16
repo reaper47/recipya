@@ -22,7 +22,7 @@ FROM prepare as build
 COPY . .
 
 RUN go build -o main .
-RUN cd /source/web && yarn install && yarn build
+RUN cd /source/ui && yarn install && yarn build
 
 WORKDIR /dist 
 
@@ -40,7 +40,7 @@ COPY --from=build /dist/main /
 COPY --from=build /source/data/blacklist_units.txt /data/blacklist_units.txt
 COPY --from=build /source/data/fruits_veggies.txt /data/fruits_veggies.txt
 COPY --from=build /source/tools/scraper.py /tools/scraper.py
-COPY --from=build /source/web/dist /dist
+COPY --from=build /source/ui/dist /ui/dist
 COPY --from=build /source/dist/config.yaml /
 
 EXPOSE 3001

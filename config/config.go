@@ -16,7 +16,6 @@ type ConfigStruct struct {
 	RecipesDb     string
 	RecipesDir    string
 	IndexInterval string
-	WebAppDir     string
 
 	Host string
 	Port int
@@ -33,7 +32,6 @@ var (
 		"host":          "0.0.0.0",
 		"port":          3000,
 		"wait":          15,
-		"webappDir":     "./web",
 	}
 	configName  = "config"
 	configPaths = []string{".", "./config/"}

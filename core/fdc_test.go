@@ -9,12 +9,12 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/reaper47/recipya/api"
 	"github.com/reaper47/recipya/config"
-	"github.com/reaper47/recipya/mock"
 	"github.com/reaper47/recipya/model"
+	"github.com/reaper47/recipya/tests"
 )
 
 func init() {
-	api.Client = &mock.MockClient{}
+	api.Client = &tests.MockClient{}
 }
 
 func TestFdc(t *testing.T) {
@@ -38,7 +38,7 @@ func TestFdc(t *testing.T) {
 
 func test_FetchNutrientsInfo_MultipleIngredients(t *testing.T) {
 	config.Config.FdcApiKey = "hello"
-	mock.GetGetFunc = func(string) (resp *http.Response, err error) {
+	tests.GetGetFunc = func(string) (resp *http.Response, err error) {
 		return &http.Response{
 			StatusCode: 200,
 			Body:       ioutil.NopCloser(bytes.NewReader([]byte(fdcData()))),
@@ -66,7 +66,7 @@ func test_FetchNutrientsInfo_MultipleIngredients(t *testing.T) {
 
 func test_FetchNutrientsInfo_NoIngredients(t *testing.T) {
 	config.Config.FdcApiKey = "hello"
-	mock.GetGetFunc = func(string) (resp *http.Response, err error) {
+	tests.GetGetFunc = func(string) (resp *http.Response, err error) {
 		return &http.Response{
 			StatusCode: 200,
 			Body:       ioutil.NopCloser(bytes.NewReader([]byte(fdcData()))),
@@ -82,7 +82,7 @@ func test_FetchNutrientsInfo_NoIngredients(t *testing.T) {
 }
 
 func test_FetchNutrientsInfo_UndefinedApiKey(t *testing.T) {
-	mock.GetGetFunc = func(string) (resp *http.Response, err error) {
+	tests.GetGetFunc = func(string) (resp *http.Response, err error) {
 		return &http.Response{
 			StatusCode: 200,
 			Body:       ioutil.NopCloser(bytes.NewReader([]byte(fdcData()))),
@@ -100,7 +100,7 @@ func test_FetchNutrientsInfo_UndefinedApiKey(t *testing.T) {
 func test_FetchNutrientsInfo_NoResults(t *testing.T) {
 	config.Config.FdcApiKey = "hello"
 	data := `{"totalHits":0,"foods":[]}`
-	mock.GetGetFunc = func(string) (resp *http.Response, err error) {
+	tests.GetGetFunc = func(string) (resp *http.Response, err error) {
 		return &http.Response{
 			StatusCode: 200,
 			Body:       ioutil.NopCloser(bytes.NewReader([]byte(data))),
