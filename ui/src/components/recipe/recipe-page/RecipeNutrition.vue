@@ -7,7 +7,13 @@
       item-key="name"
       class="elevation-1 capitalize"
       hide-default-footer
-    ></v-data-table>
+    >
+      <template #item.amount="{ item }">
+        <div class="lowercase">
+          {{ item.amount.toLowerCase() }}
+        </div>
+      </template>
+    </v-data-table>
   </v-col>
 </template>
 
@@ -37,8 +43,8 @@ export default {
       .filter(([, amount]) => amount !== "")
       .map(([name, amount]) => {
         return {
-          name: name.replace("Content", "").replace("Fat", " Fat"),
           amount,
+          name: name.replace("Content", "").replace("Fat", " Fat"),
         };
       });
   },
