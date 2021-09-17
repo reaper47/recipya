@@ -50,19 +50,8 @@ export default {
   },
   methods: {
     extractTimes() {
-      const prep = { hours: 0, minutes: 0 };
-      if (this.prep !== "") {
-        const parts = this.prep.replace("PT", "").split("H");
-        prep.hours = parseInt(parts[0]);
-        prep.minutes = parseInt(parts[1].replace("M", ""));
-      }
-
-      const cook = { hours: 0, minutes: 0 };
-      if (this.cook !== "") {
-        const parts = this.cook.replace("PT", "").split("H");
-        cook.hours = parseInt(parts[0]);
-        cook.minutes = parseInt(parts[1].replace("M", ""));
-      }
+      const prep = this.extractTimesHelper(this.prep);
+      const cook = this.extractTimesHelper(this.cook);
 
       const totalMinutes = prep.minutes + cook.minutes;
       const additionalHours = (totalMinutes / 60) >> 0;
@@ -74,6 +63,23 @@ export default {
           minutes: (totalMinutes - 60 * additionalHours) % 60,
         },
       };
+    },
+    extractTimesHelper(str) {
+      const time = { hours: 0, minutes: 0 };
+      if (str !== "") {
+        if (str.startsWith("PT")) {
+          const parts = str.replace("PT", "").split("H");
+          time.hours = parseInt(parts[0]);
+          time.minutes = parseInt(parts[1].replace("M", ""));
+        } else {
+          let parts = str.replace("P", "").split("DT");
+          const days = parseInt(parts[0]);
+          parts = parts[1].split("H");
+          time.hours = 24 * days + parseInt(parts[0]);
+          time.minutes = parseInt(parts[1].replace("M", ""));
+        }
+      }
+      return time;
     },
     formatTime: (time) => `${time.hours}h${time.minutes}m`,
   },
