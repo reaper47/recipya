@@ -14,7 +14,7 @@ export default new Vuex.Store({
     baseApiUrl: `${document.location.origin}/api/v1`,
     //baseApiUrl: "http://localhost:3001/api/v1",
     isLoading: false,
-    store: null,
+    store: "browse",
   },
   actions: {
     setStore: ({ commit }, { store }) => commit("SET_STORE", store),

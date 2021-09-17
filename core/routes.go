@@ -119,7 +119,9 @@ func (env *Env) postRecipe(w http.ResponseWriter, r *http.Request) {
 		writeErrorJson(http.StatusBadRequest, message, w)
 		return
 	}
-	writeCreatedJson(&model.ID{Id: recipeID}, w)
+	recipe.ID = recipeID
+
+	writeCreatedJson(&recipe, w)
 }
 
 func (env *Env) deleteRecipe(w http.ResponseWriter, r *http.Request) {

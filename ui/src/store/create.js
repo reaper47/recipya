@@ -1,5 +1,4 @@
 import { showSnackbar, SNACKBAR_TYPE } from "../eventbus/action";
-import store from "../store";
 import router from "../router";
 
 export default {
@@ -32,7 +31,7 @@ export default {
         commit("IS_WEBSITES_LOADING", false);
       }
     },
-    async importRecipe({ commit, rootGetters }, url) {
+    async importRecipe({ commit, dispatch, rootGetters }, url) {
       commit("IS_IMPORTING", true);
 
       try {
@@ -49,8 +48,9 @@ export default {
           throw data["error"];
         }
 
-        store.dispatch("browse/addRecipe", data);
-        store.dispatch("setStore", { store: "browse" });
+        dispatch("browse/addRecipe", data, { root: true });
+        dispatch("setStore", { store: "browse" }, { root: true });
+        dispatch("browse/getCategories", {}, { root: true });
         router.push({ name: "Recipe Page", params: { id: data["id"] } });
       } catch (error) {
         const title = `${error.status} (${error.code})`;
@@ -59,7 +59,7 @@ export default {
         commit("IS_IMPORTING", false);
       }
     },
-    async postRecipe({ commit, rootGetters }, recipe) {
+    async postRecipe({ commit, dispatch, rootGetters }, recipe) {
       commit("IS_POSTING", true);
 
       try {
@@ -71,14 +71,15 @@ export default {
           body: JSON.stringify(recipe),
         });
 
-        const data = await response.json();
-        if ("error" in data) {
-          throw data["error"];
+        recipe = await response.json();
+        if ("error" in recipe) {
+          throw recipe["error"];
         }
 
-        recipe.id = data["id"];
-        store.dispatch("browse/addRecipe", recipe);
-        router.push({ name: "Recipe Page", params: { id: data["id"] } });
+        dispatch("browse/addRecipe", recipe, { root: true });
+        dispatch("setStore", { store: "browse" }, { root: true });
+        dispatch("browse/getCategories", {}, { root: true });
+        router.push({ name: "Recipe Page", params: { id: recipe.id } });
       } catch (error) {
         const title = `${error.status} (${error.code})`;
         showSnackbar(SNACKBAR_TYPE.ERROR, title, error.message);
