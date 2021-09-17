@@ -1,4 +1,4 @@
-package config
+package consts
 
 import "errors"
 
@@ -8,4 +8,8 @@ var (
 	ErrIndexIntervalInvalid = errors.New(
 		"config error: 'indexInterval' is invalid. Please check the legal values in config.yaml",
 	)
+)
+
+var (
+	ErrEntryNotFound = errors.New("entry not found")
 )

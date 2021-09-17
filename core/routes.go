@@ -10,6 +10,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/otiai10/gosseract"
 	"github.com/reaper47/recipya/api"
+	"github.com/reaper47/recipya/consts"
 	"github.com/reaper47/recipya/data"
 	"github.com/reaper47/recipya/model"
 )
@@ -17,6 +18,7 @@ import (
 func initRecipesRoutes(r *mux.Router, env *Env) {
 	GET := []string{http.MethodGet, http.MethodOptions}
 	POST := []string{http.MethodPost, http.MethodOptions}
+	DELETE := []string{http.MethodDelete, http.MethodOptions}
 	jsonHeader := []string{"Content-Type", "application/json"}
 
 	// GET /api/v1/recipes
@@ -24,6 +26,9 @@ func initRecipesRoutes(r *mux.Router, env *Env) {
 
 	// POST /api/v1/recipes
 	r.HandleFunc(api.Recipes, env.postRecipe).Headers(jsonHeader...).Methods(POST...)
+
+	// DELETE /api/v1/recipes/{:id}
+	r.HandleFunc(api.Recipes+"/{id:[0-9]+}", env.deleteRecipe).Methods(DELETE...)
 
 	// GET /api/v1/recipes/info
 	r.HandleFunc(api.RecipesInfo, env.getRecipesInfo).Methods(GET...)
@@ -115,6 +120,23 @@ func (env *Env) postRecipe(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeCreatedJson(&model.ID{Id: recipeID}, w)
+}
+
+func (env *Env) deleteRecipe(w http.ResponseWriter, r *http.Request) {
+	id, _ := strconv.ParseInt(mux.Vars(r)["id"], 10, 64)
+
+	err := env.recipes.DeleteRecipe(id)
+	switch {
+	case err == consts.ErrEntryNotFound:
+		message := "Recipe not found."
+		writeErrorJson(http.StatusNotFound, message, w)
+		return
+	case err != nil:
+		message := "Error deleting recipe: " + err.Error()
+		writeErrorJson(http.StatusInternalServerError, message, w)
+		return
+	}
+	w.WriteHeader(http.StatusNoContent)
 }
 
 func (env *Env) getRecipesInfo(w http.ResponseWriter, r *http.Request) {

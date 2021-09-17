@@ -75,12 +75,12 @@ func InitConfig() {
 // Validate ensures the configuration values are valid.
 func (c *ConfigStruct) Validate() error {
 	if c.Wait < 1 {
-		return ErrWaitNegative
+		return consts.ErrWaitNegative
 	}
 
 	match, _ := regexp.MatchString("^[1-9]([0-9]?)+[m,h,d,M,w,y]$", c.IndexInterval)
 	if !match {
-		return ErrIndexIntervalInvalid
+		return consts.ErrIndexIntervalInvalid
 	}
 
 	return nil

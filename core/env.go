@@ -10,6 +10,7 @@ import (
 // Env stores environment variables for use throughout the program.
 type Env struct {
 	recipes interface {
+		DeleteRecipe(id int64) error
 		GetRecipe(name string) (*model.Recipe, error)
 		GetRecipes(category string, page int, limit int) ([]*model.Recipe, error)
 		GetRecipesInfo() (*model.RecipesInfo, error)

@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/reaper47/recipya/config"
+	"github.com/reaper47/recipya/consts"
 )
 
 var testConfig = &config.ConfigStruct{
@@ -28,7 +29,7 @@ func test_Validate_ConfigIsValid(t *testing.T) {
 		testConfig.Wait = v
 
 		err := testConfig.Validate()
-		if err != config.ErrWaitNegative {
+		if err != consts.ErrWaitNegative {
 			t.Fatalf("Error '%v' unexpectedly thrown for wait: %v", err, v)
 		}
 	}
@@ -39,7 +40,7 @@ func test_Validate_ConfigIsValid(t *testing.T) {
 		testConfig.IndexInterval = v
 
 		err := testConfig.Validate()
-		if err != config.ErrIndexIntervalInvalid {
+		if err != consts.ErrIndexIntervalInvalid {
 			t.Fatalf("Error '%v' unexpectedly thrown for interval: %v", err, v)
 		}
 	}
@@ -49,7 +50,7 @@ func test_Validate_ConfigIsValid(t *testing.T) {
 		testConfig.IndexInterval = v
 
 		err := testConfig.Validate()
-		if err == config.ErrIndexIntervalInvalid {
+		if err == consts.ErrIndexIntervalInvalid {
 			t.Fatalf("'%v' unexpectedly thrown for interval: %v", err, v)
 
 		}

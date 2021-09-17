@@ -7,8 +7,39 @@ import (
 	"os/exec"
 	"strings"
 
+	"github.com/reaper47/recipya/consts"
 	"github.com/reaper47/recipya/model"
 )
+
+// DeleteRecipe deletes a recipe from the database.
+func (repo *Repository) DeleteRecipe(id int64) error {
+	ctx := context.Background()
+	tx, err := repo.DB.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	stmts := deleteRecipeStmts()
+	var numDeleted int64
+	for _, stmt := range stmts {
+		result, err := tx.Exec(stmt, id)
+		if err != nil {
+			return err
+		}
+
+		n, err := result.RowsAffected()
+		if err != nil {
+			return err
+		}
+		numDeleted += n
+	}
+
+	if numDeleted == 0 {
+		return consts.ErrEntryNotFound
+	}
+	return tx.Commit()
+}
 
 // GetRecipe gets the recipe from the database that matches the name.
 func (repo *Repository) GetRecipe(name string) (*model.Recipe, error) {

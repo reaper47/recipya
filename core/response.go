@@ -7,15 +7,15 @@ import (
 	"github.com/reaper47/recipya/api"
 )
 
-func writeSuccessJson(object interface{}, w http.ResponseWriter) {
+func writeCreatedJson(object interface{}, w http.ResponseWriter) {
 	addHeadersJson(w)
-	w.WriteHeader(200)
+	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(object)
 }
 
-func writeCreatedJson(object interface{}, w http.ResponseWriter) {
+func writeSuccessJson(object interface{}, w http.ResponseWriter) {
 	addHeadersJson(w)
-	w.WriteHeader(201)
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(object)
 }
 

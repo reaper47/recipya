@@ -1,6 +1,6 @@
 package model
 
-/// Constants that point to specific FDC nutrient IDs.
+// Constants that point to specific FDC nutrient IDs.
 const (
 	FDCID_CALORIES      = 1008
 	FDCID_CARBOHYDRATE  = 1005

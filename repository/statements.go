@@ -225,6 +225,16 @@ var updateDateModifiedStmt = "UPDATE " + schema.recipe.name + " " +
 	"SET date_modified=? " +
 	"WHERE id=?"
 
+// DELETE statements
+func deleteRecipeStmts() []string {
+	return []string{
+		deleteAssocValues(schema.ingredient),
+		deleteAssocValues(schema.instruction),
+		deleteAssocValues(schema.tool),
+		"DELETE FROM " + schema.recipe.name + " WHERE id=?",
+	}
+}
+
 func deleteAssocValues(t table) string {
 	return "DELETE FROM " + t.assocTable + " WHERE recipe_id=?"
 }

@@ -6,6 +6,10 @@ import (
 
 type MockRecipeModel struct{}
 
+func (r *MockRecipeModel) DeleteRecipe(id int64) error {
+	return nil
+}
+
 func (r *MockRecipeModel) GetCategories() ([]string, error) {
 	return []string{"appetizer", "side dish", "dessert"}, nil
 }
