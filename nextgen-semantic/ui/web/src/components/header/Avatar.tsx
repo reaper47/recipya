@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { Dropdown, DropdownItemProps, Icon } from 'semantic-ui-react';
-import { TablePortal } from '../portals/TablePortal';
+import { AboutPortal } from './AboutPortal';
 
 export const Avatar = (): JSX.Element => {
   const navigate: NavigateFunction = useNavigate();
@@ -44,72 +44,10 @@ export const Avatar = (): JSX.Element => {
     );
   };
 
-  const renderAboutPortal = (): JSX.Element => {
-    const rows = [
-      {
-        cells: [
-          'Version:',
-          <a
-            className='green-a'
-            href='https://github.com/reaper47/recipya/releases/tag/v1.0.0'
-            target='_blank'
-          >
-            1.0.0
-          </a>,
-        ],
-      },
-      {
-        cells: [
-          'Home page:',
-          <a
-            className='green-a'
-            href='https://www.musicavis.ca'
-            target='_blank'
-          >
-            www.musicavis.ca
-          </a>,
-        ],
-      },
-      {
-        cells: [
-          'Source code:',
-          <a
-            className='green-a'
-            href='https://github.com/reaper47/recipya'
-            target='_blank'
-          >
-            github.com/reaper47/recipya
-          </a>,
-        ],
-      },
-      {
-        cells: [
-          'Feature requests:',
-          <a
-            className='green-a'
-            href='https://github.com/reaper47/recipya/issues'
-            target='_blank'
-          >
-            github.com/reaper47/recipya/issues
-          </a>,
-        ],
-      },
-    ];
-
-    return (
-      <TablePortal
-        title='Recipya Recipes Manager'
-        rows={rows}
-        isOpen={isAboutOpen}
-        handleClose={handleAboutClose}
-      />
-    );
-  };
-
   return (
     <Fragment>
       {renderMenu()}
-      {renderAboutPortal()}
+      <AboutPortal isOpen={isAboutOpen} handleClose={handleAboutClose} />
     </Fragment>
   );
 };
