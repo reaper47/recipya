@@ -1,9 +1,6 @@
-bin/
 dist/
-tools/venv
-tools/scraper.bin
-tools/scraper/scraper.build
-tools/scraper/scraper.bin
+templates/tailwind/node_modules
+old/tools/venv
 
 # Binaries for programs and plugins
 *.exe
