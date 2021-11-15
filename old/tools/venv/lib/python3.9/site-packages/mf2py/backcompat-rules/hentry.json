@@ -1,0 +1,47 @@
+{
+    "type": [
+        "h-entry"
+    ], 
+    "properties": {
+        "category": [
+            "p-category"
+        ], 
+        "entry-title": [
+            "p-name"
+        ], 
+        "published": [
+            "dt-published"
+        ], 
+        "latitude": [
+            "p-latitude"
+        ], 
+        "entry-content": [
+            "e-content"
+        ], 
+        "entry-summary": [
+            "p-summary"
+        ], 
+        "author": [
+            "p-author", 
+            "h-card"
+        ], 
+        "geo": [
+            "p-geo", 
+            "h-geo"
+        ], 
+        "updated": [
+            "dt-updated"
+        ], 
+        "longitude": [
+            "p-longitude"
+        ]
+    },
+    "rels": {
+        "bookmark": [
+            "u-url"
+        ],
+        "tag": [
+            "p-category"
+        ]
+    }
+}

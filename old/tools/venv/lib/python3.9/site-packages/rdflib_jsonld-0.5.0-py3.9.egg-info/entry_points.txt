@@ -1,0 +1,8 @@
+[rdf.plugins.parser]
+application/ld+json = rdflib_jsonld.parser:JsonLDParser
+json-ld = rdflib_jsonld.parser:JsonLDParser
+
+[rdf.plugins.serializer]
+application/ld+json = rdflib_jsonld.serializer:JsonLDSerializer
+json-ld = rdflib_jsonld.serializer:JsonLDSerializer
+

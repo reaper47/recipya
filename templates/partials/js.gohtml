@@ -1,0 +1,58 @@
+{{ define "globaljs"}}
+<script>
+  const icons = {
+    close: 'M6 18L18 6M6 6l12 12',
+    hamburger: 'M4 6h16M4 12h16M4 18h16',
+  }
+
+  // Nav sidebar
+  document.getElementById('navbar__menu-icon').addEventListener('click', () => {
+    const menuIconPath = document.getElementById('navbar__menu-icon-path')
+
+    if (menuIconPath.getAttribute('d') === icons.close) {
+      menuIconPath.setAttribute('d', icons.hamburger)
+    } else {
+      menuIconPath.setAttribute('d', icons.close)
+    }
+
+    document.getElementById('navbar__menu-sidebar')
+      .classList.toggle('hidden')
+  })
+
+  // Nav avatar
+  document.getElementById('navbar__avatar-button').addEventListener('click', () => {
+    document.getElementById('navbar__avatar-menu-content').classList.toggle('hidden')
+  })
+
+
+
+  document.onclick = ({ target }) => {
+    const id = target.id
+
+    const avatarButton = document.getElementById('navbar__avatar-button')
+    const avatarMenuContent = document.getElementById('navbar__avatar-menu-content')
+
+    if (![avatarMenuContent.id, avatarButton.id].includes(id)) {
+      avatarMenuContent.classList.add('hidden')
+    }
+  }
+
+  // Modal windows
+  const modalAbout = document.getElementById('modal__about');
+
+  document.getElementById('modal__about-open-button').addEventListener('click', () => {
+    modalAbout.classList.remove('hidden');
+  });
+
+  document.getElementById('modal__about-close-button').addEventListener('click', () => {
+    modalAbout.classList.add('hidden');
+  });
+
+  modalAbout.addEventListener('click', ({ target }) => {
+    if (target.id === 'modal__about') {
+      modalAbout.classList.add('hidden');
+    }
+  });
+
+</script>
+{{end}}

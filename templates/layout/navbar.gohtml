@@ -1,0 +1,45 @@
+{{define "navbar"}}
+<div class="flex flex-col h-full bg-gray-100">
+  <nav class="bg-gray-800 ">
+    <div class="px-4 mx-auto">
+      <div class="flex justify-between text-">
+
+        <div class="flex items-center text-white">
+          <div id="navbar__menu-icon">
+            <a href="#" class="flex items-center px-2 py-2 text-">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path id="navbar__menu-icon-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </a>
+          </div>
+          <a class="font-bold transition duration-300 hover:text-red-500" href="#">Recipya</a>
+        </div>
+
+        <div class="relative py-2">
+          <button id="navbar__avatar-button"
+            class="items-center px-4 py-2 text-center text-gray-800 bg-blue-200 border rounded-full md:flex">
+            A
+          </button>
+          <div id="navbar__avatar-menu-content" class="hidden text-white">
+            <div class="absolute inline-block w-6 overflow-hidden right-4">
+              <div class="w-4 h-4 origin-bottom-left transform rotate-45 bg-red-500"></div>
+            </div>
+            <div class="absolute flex flex-col w-24 bg-gray-900 rounded-lg shadow-lg right-3 top-16">
+              <a href="#" class="block px-4 py-2 text-sm hover:rounded-t-lg hover:bg-red-600">Settings</a>
+              <hr>
+              <a id="modal__about-open-button" href="#" class="block px-4 py-2 text-sm hover:bg-red-600">About</a>
+              <a href="/settings" class="block px-4 py-2 text-sm hover:rounded-b-lg hover:bg-red-600">Sign Out</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <aside id="navbar__menu-sidebar" class="hidden h-full bg-gray-900 w-28">
+    <a href="#" class="block px-4 py-2 text-sm text-white hover:bg-red-600">Features</a>
+    <a href="#" class="block px-4 py-2 text-sm text-white hover:bg-red-600">Pricing</a>
+  </aside>
+</div>
+{{end}}

@@ -1,0 +1,516 @@
+<!doctype html>
+<!--
+
+Welcome to
+
+    _/
+   _/_/_/      _/_/    _/      _/  _/      _/  _/    _/ ®
+  _/    _/  _/_/_/_/  _/      _/  _/      _/  _/    _/
+ _/    _/  _/          _/  _/      _/  _/    _/    _/
+_/_/_/      _/_/_/      _/          _/        _/_/_/
+                                                 _/
+                                            _/_/
+
+For the modern drinker.
+
+(version 0.20.7160 beta)
+
+
+Bevvy helps people discover, track, and share great drinks. Our mission is to connect the world to better drinking.
+
+To that end, we celebrate the fun, responsible and healthy consumption of alcoholic
+beverages. Check with your physician on your health, and ability to consume alcohol.
+
+For professionals and enthusiasts alike - 100% free, no registration required.
+
+NEVER drink and drive - always drink responsibly, and with moderation.
+
+Copyright 2018 Bevvy, Inc. Some rights reserved.
+
+Bevvy is made in San Francisco while having a few.
+
+-->
+<html lang="en" dir="ltr" xmlns:ng="https://angularjs.org" id="ng-app" ng-app="bevvy.app" ng-controller="MasterCtrl" class="no-js env-production">
+
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta http-equiv="Content-Language" content="en" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store" />
+<meta http-equiv="Pragma" content="no-cache, no-store" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1" />
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin" />
+<base href="/" />
+<title>Irish Coffee Recipe | Bevvy</title>
+<meta name="title" content="Irish Coffee Recipe | Bevvy" />
+<meta name="description" content="The Irish Coffee is a perfect drink for when you need to wake up halfway through a long night, or kick yourself out of bed and fight off a hangover. It&rsquo;s an exceedingly simple cocktail, consisting of just Irish whiskey, coffee, a bit of brown sugar simple…" />
+<meta name="google-translate-customization" content="1ce1ddd3afdb5363-b8cfa68cfdf10596-g81eaa6ad3fadd0c5-8"></meta>
+<meta name="application-name" content="Bevvy" />
+<meta name="apple-mobile-web-app-title" content="Bevvy" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta property="og:title" content="Irish Coffee Recipe" />
+<meta property="og:type" content="article" />
+<meta property="og:image" content="https://bevvyco.s3.amazonaws.com/img/drinks/mq/smq/irish-coffee-05134e3c3023a18f5db9acb3e5f14315-lg.jpg"/>
+<meta property="og:image:width" content="640" />
+<meta property="og:image:height" content="640" />
+<meta property="og:url" content="https://bevvy.co/cocktail/irish-coffee/smq"/>
+<meta property="og:description" content="The Irish Coffee is a perfect drink for when you need to wake up halfway through a long night, or kick yourself out of bed and fight off a hangover. It&rsquo;s an exceedingly simple cocktail, consisting of just Irish whiskey, coffee, a bit of brown sugar simple…"/>
+<meta property="og:site_name" content="Bevvy"/>
+<meta property="og:updated_time" content="2018-01-24T17:23:58+00:00" />
+<meta property="article:modified_time" content="2018-01-24T17:23:58+00:00" />
+<meta property="article:published_time" content="2015-05-13T17:00:00+00:00" />
+<meta property="article:section" content="Cocktails" />
+<meta property="article:tag" content="whiskey" />
+<meta property="article:publisher" content="https://www.facebook.com/bevvyco" />
+<meta property="fb:admins" content="548782165"/>
+<meta property="fb:app_id" content="451583318212160"/>
+<meta property="fb:pages"  content="415968275139563"/>
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://bevvyco.s3.amazonaws.com/img/drinks/mq/smq/irish-coffee-05134e3c3023a18f5db9acb3e5f14315-lg.jpg" />
+<meta name="twitter:site" content="@bevvyco" />
+<meta name="twitter:creator" content="@bevvyco">
+<meta name="twitter:title" content="Irish Coffee Recipe" />
+<meta name="twitter:description" content="The Irish Coffee is a perfect drink for when you need to wake up halfway through a long night, or kick yourself out of bed and fight off a hangover. It&rsquo;s an exceedingly simple cocktail, consisting of just Irish whiskey, coffee, a bit of brown sugar simple…" />
+<meta name="msapplication-starturl" content="https://bevvy.co" />
+<meta name="msapplication-TileImage" content="https://bv.mcdn.me/img/ui/bevvy-badge-320x320.png" />
+<meta name="msapplication-TileColor" content="#45a9ec" />
+<meta name="msapplication-square150x150logo" content="https://bv.mcdn.me/img/ui/bevvy-badge-150x150.png" />
+<meta name="msapplication-square70x70logo" content="https://bv.mcdn.me/img/ui/bevvy-badge-70x70.png" />
+<meta name="msapplication-task" content="name=Bevvy Home;action-uri=https://bevvy.co;icon-uri=https://bv.mcdn.me/favicon.ico" />
+<meta name="msapplication-task" content="name=Bevvy Cocktails;action-uri=https://bevvy.co/cocktails;icon-uri=https://bv.mcdn.me/favicon.ico" />
+<meta name="msapplication-task" content="name=Bevvy Spirits;action-uri=https://bevvy.co/spirits;icon-uri=https://bv.mcdn.me/favicon.ico" />
+<meta name="msapplication-task" content="name=Bevvy Brands;action-uri=https://bevvy.co/brands;icon-uri=https://bv.mcdn.me/favicon.ico" />
+<meta name="msapplication-task" content="name=Bevvy Collections;action-uri=https://bevvy.co/collections;icon-uri=https://bv.mcdn.me/favicon.ico" />
+<meta name="msapplication-task" content="name=Bevvy Articles;action-uri=https://bevvy.co/articles;icon-uri=https://bv.mcdn.me/favicon.ico" />
+<meta name="msapplication-task" content="name=Feeling Lucky?;action-uri=https://bevvy.co/lucky;icon-uri=https://bv.mcdn.me/favicon.ico" />
+
+<link rel="image_src" href="https://bevvyco.s3.amazonaws.com/img/drinks/mq/smq/irish-coffee-05134e3c3023a18f5db9acb3e5f14315-lg.jpg" />
+<link rel="canonical" href="https://bevvy.co/cocktail/irish-coffee/smq" />
+<link rel="shortlink" href="https://bevvy.co/d/smq" />
+<link rel="publisher" href="https://plus.google.com/106048320280907686948" />
+<link rel="alternate" type="application/rss+xml" title="Bevvy RSS Feed" href="/articles/feed" />
+
+<!-- BigOven verification B954481098C23AB895642F64D5CF4184 -->
+
+<link rel="dns-prefetch" href="https://api.bevvy.co" />
+<link rel="dns-prefetch" href="https://platform.bevvy.co" />
+<link rel="dns-prefetch" href="https://bv.mcdn.me" />
+<link rel="dns-prefetch" href="https://bevvyco.s3.amazonaws.com" />
+<link rel="dns-prefetch" href="https://connect.facebook.net" />
+<link rel="dns-prefetch" href="https://platform.twitter.com" />
+<link rel="dns-prefetch" href="https://assets.pinterest.com" />
+<link rel="dns-prefetch" href="https://s0.wp.com" />
+<link rel="dns-prefetch" href="https://s1.wp.com" />
+<link rel="dns-prefetch" href="https://s2.wp.com" />
+<link rel="dns-prefetch" href="https://i0.wp.com" />
+<link rel="dns-prefetch" href="https://i1.wp.com" />
+<link rel="dns-prefetch" href="https://i2.wp.com" />
+<link rel="dns-prefetch" href="https://0.gravatar.com" />
+<link rel="dns-prefetch" href="https://1.gravatar.com" />
+<link rel="dns-prefetch" href="https://2.gravatar.com" />
+<!-- <link rel="dns-prefetch" href="https://fonts.googleapis.com" /> -->
+<meta name="apple-mobile-web-app-capable" content="yes" /><meta name="apple-mobile-web-app-status-bar-style" content="#45a9ec" />
+
+
+
+<link rel="apple-touch-icon-precomposed" href="https://bv.mcdn.me/img/ui/bevvy-disc-coupe-512x512.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="https://bv.mcdn.me/img/ui/bevvy-disc-coupe-192x192.png" />
+<link rel="icon" type="image/png" sizes="32x32"   href="https://bv.mcdn.me/img/ui/favicon-coupe-edge.png" />
+<link rel="apple-touch-startup-image" href="https://bv.mcdn.me/img/ui/bevvy-apple-start-image.png" />
+<link rel="stylesheet" type="text/css" href="https://bv.mcdn.me/css/dist/foundation-app.min.1d7da7bd.css" />
+<link rel="stylesheet" type="text/css" href="https://bv.mcdn.me/css/dist/bevvy-base-fonts.min.2d6dbf22.css" />
+<link rel="stylesheet" type="text/css" href="https://bv.mcdn.me/css/dist/font-awesome.min.f8fa62f5.css" />
+<link rel="stylesheet" type="text/css" href="https://bv.mcdn.me/css/dist/bevvicons.min.4ac45155.css" />
+<link rel="stylesheet" type="text/css" href="https://bv.mcdn.me/css/dist/bevvy-base.min.cdce81a6.css" />
+<link rel="stylesheet" type="text/css" href="https://bv.mcdn.me/css/dist/bevvy-main.min.f58ba8c9.css" />
+
+
+
+
+<script>
+(function(window) {
+        var _sf_startpt=(new Date()).getTime();
+
+        String.prototype.hashCode = function() {
+      var hash = 0, i, chr;
+      if (this.length === 0) return hash;
+      for (i = 0; i < this.length; i++) {
+        chr   = this.charCodeAt(i);
+        hash  = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+      }
+      return hash;
+    };
+
+        window.__env = window.__env || {
+        label : 'production',
+        baseurl : 'https://bevvy.co',
+        appBaseurl : 'https://bevvy.co',
+        cdnBaseurl : '//bv.mcdn.me',
+        apiEndpoint : 'https://api.bevvy.co/v0'
+    };
+}(this));
+</script>
+
+
+
+<script>if (window.console) delete window.console; window.console = { log : function(){} };</script>
+
+
+
+<noscript>
+    <style>
+    .veil { position:static; opacity:1; }
+    </style>
+</noscript>
+
+
+
+<script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-36913112-1','bevvy.co','bv');ga('bv.require','displayfeatures');ga('bv.require','linkid');ga('bv.require','cleanUrlTracker');ga('bv.require','outboundLinkTracker');ga('bv.require','pageVisibilityTracker',{sessionTimeout:15,fieldsObj:{nonInteraction:null}});ga('bv.require','socialWidgetTracker');</script><script async src="https://www.google-analytics.com/analytics.js"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/1.0.3/autotrack.js"></script>
+
+
+<script>(function(e,a){if(!a.__SV){var b=window;try{var c,l,i,j=b.location,g=j.hash;c=function(a,b){return(l=a.match(RegExp(b+"=([^&]*)")))?l[1]:null};g&&c(g,"state")&&(i=JSON.parse(decodeURIComponent(c(g,"state"))),"mpeditor"===i.action&&(b.sessionStorage.setItem("_mpcehash",g),history.replaceState(i.desiredHash||"",e.title,j.pathname+j.search)))}catch(m){}var k,h;window.mixpanel=a;a._i=[];a.init=function(b,c,f){function e(b,a){var c=a.split(".");2==c.length&&(b=b[c[0]],a=c[1]);b[a]=function(){b.push([a].concat(Array.prototype.slice.call(arguments,
+0)))}}var d=a;"undefined"!==typeof f?d=a[f]=[]:f="mixpanel";d.people=d.people||[];d.toString=function(b){var a="mixpanel";"mixpanel"!==f&&(a+="."+f);b||(a+=" (stub)");return a};d.people.toString=function(){return d.toString(1)+".people (stub)"};k="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config reset people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
+for(h=0;h<k.length;h++)e(d,k[h]);a._i.push([b,c,f])};a.__SV=1.2;b=e.createElement("script");b.type="text/javascript";b.async=!0;b.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";c=e.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c)}})(document,window.mixpanel||[]);
+mixpanel.init("85c2f2ecc0683d8ccbd0fc71014b31c8");</script>
+
+
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1681154492122013');
+//fbq('track', "ViewContent"); // moved into angular code analytics.js
+</script>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=1681154492122013&ev=PageView&noscript=1" /></noscript>
+
+
+<script>
+!function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+},s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+// Insert Twitter Pixel ID and Standard Event data below
+twq('init','nuxh4');
+//twq('track','PageView');  // moved into angular code analytics.js
+</script>
+
+
+<script type="text/javascript">
+!function(e){if(!window.pintrk){window.pintrk=function(){window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var n=window.pintrk;n.queue=[],n.version="3.0";var t=document.createElement("script");t.async=!0,t.src=e;var r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");
+pintrk('load','2614067273875');
+</script>
+<noscript><img height="1" width="1" style="display:none;" alt="" src="https://ct.pinterest.com/v3/?tid=2614067273875&noscript=1" /></noscript>
+
+
+
+
+<script>
+var $mcGoal = {'settings':{'uuid':'59b953613d0a3d392a4196efc','dc':'us7'}};
+(function() {
+var sp = document.createElement('script'); sp.type = 'text/javascript'; sp.async = true; sp.defer = true;
+sp.src = ('https:' == document.location.protocol ? 'https://s3.amazonaws.com/downloads.mailchimp.com' : 'http://downloads.mailchimp.com') + '/js/goal.min.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(sp, s);
+})();
+</script>
+
+
+<div class="afs_ads">&nbsp;</div><script>(function(){var tryMessage=function(){setTimeout(function(){if(!document.getElementsByClassName)return;var ads=document.getElementsByClassName('afs_ads'),ad=ads[ads.length-1];if(!ad||ad.innerHTML.length==0||ad.clientHeight===0){if(ga){ga('bv.send','event','Ad Blockers','Ad blocked user agent '+navigator.userAgent,'Ad blocked url',window.document.location);}
+if(mixpanel){mixpanel.track('Ad Blocker Detected');}}else{ad.style.display='none';}},2000);}
+if(window.addEventListener){window.addEventListener('load',tryMessage,false);}else{window.attachEvent('onload',tryMessage);}})();</script><script>var bevvy={session:{}};(function(sess){sess.token='',sess.baseUrl='https://bevvy.co',sess.ts=1529201581,sess.ip='174.85.236.94',sess.ipForwarded='174.85.236.94',sess.geo={latitude:'38.6273',longitude:'-90.1979',country_name:'United States',country_code:'US',city:'Saint Louis',location:'Saint Louis'},sess.csrf='b189930539adcc44e04e98d8e20132bc0ca744d0b434cc5c771bc132b4e22fef',sess.isSignedIn=0,sess.isEditOk=0,sess.isA=0,sess.isJ=0,sess.isATO=0,sess.isAdt=1,sess.isE=0;})(bevvy.session);</script></head>
+
+<body class=" {{'state-'+state.current.name | slugify}}" ng-class="{ 'state-home' : state.is('home'), 'isAdt' : $root.isAdt() && !$root.isPauseAdt(state) }">
+
+
+<!--[if lte IE 8]>
+<style>
+body { background-color:#333; }
+.view-main { display:none; }
+.ie8-warning { width:800px; margin:40px auto; padding:40px; }
+</style>
+<div class="ie8-warning panel">
+    <h2>Unsupported Web Browser Detected</h2>
+    <p class="lead">Bevvy is an advanced web application and uses some of the latest web technologies. Unfortunately, this means that many of our features will not function correctly on older web browsers.</p>
+    <p class="lead">If upgrading your browser is an option, checkout: <a class="button radius alert" href="http://browsehappy.com">browsehappy.com</a></p>
+    <div class="text-center"><img src="//bv.mcdn.me/img/ui/bevvy-logo-med-inv.png" width="150" height="30" alt="Bevvy logo" /></div>
+</div>
+<script>document.createElement('main');document.createElement('article');document.createElement('header');document.createElement('section');document.createElement('nav');document.createElement('figure');document.createElement('aside');</script>
+<![endif]-->
+
+<div id="fb-root"></div>
+
+<div ui-view="view-overlay" class="view-overlay"></div>
+
+<main ui-view="view-main" class="view-main" id="main-content">
+    <div id="bv-hdr-off-canvas" class="off-canvas-wrap">
+        
+
+
+
+<header class="bv-hdr-wrap" ng-controller="MainHeaderCtrl">
+    <a class="hide" href="#main-content">Skip header links</a>
+
+    <div id="bv-hdr" class="bv-hdr">
+        <style>
+        .g-loader:not(.ng-hide) {
+          position:absolute;
+          z-index:9999;
+          width: 100%;
+          height: 4px;
+          background-image:
+            repeating-linear-gradient(
+              -45deg,
+              #45a9ec,
+              #45a9ec 5px,
+              #ffffff 5px,
+              #ffffff 8px /* determines size */
+            );
+          background-size: 8px 8px;
+          animation: g-loading 1s linear infinite;
+          transform: translateZ(0);
+          backface-visibility: hidden;    // helps smooth out animation by promoting to independent layer
+        }
+        @keyframes g-loading {
+            0% { background-position: 0 0; }
+          100% { background-position: 32px 0; }
+        }
+        </style>
+        <div show-during-resolve class="g-loader"></div>
+
+        <nav role="menu" class="gnav ">
+            <a target="_self" class="brand" href="/" title="Bevvy Home">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 404 82">
+                    <path d="M51.85,81.899H0.233V1.101h49.565c12.783,0,22.431,9.045,22.431,21.586c0,6.512-2.291,13.629-7.596,16.402 c7.355,3.135,11.575,10.249,11.575,18.088C76.209,73.095,65.72,81.899,51.85,81.899z M47.87,16.416H15.55v15.073h32.32 c7.114,0,9.043-3.979,9.043-8.803C56.913,18.949,54.382,16.416,47.87,16.416z M48.111,46.687H15.55v19.895h32.32 c9.646,0,13.024-3.735,12.782-9.404C60.652,50.181,56.913,46.687,48.111,46.687z"/>
+                    <path d="M84.221,81.899V1.101h64.398v15.315h-49.08v14.713l35.368,0.114V46.8l-35.368-0.113v19.895h50.167v15.318 H84.221z"/>
+                    <polygon points="208.021,81.899 189.443,81.899 156.721,1.101 173.021,1.101 198.67,63.208 223.724,1.101 240.624,1.101"/>
+                    <polygon points="300.003,81.899 281.426,81.899 248.701,1.101 265.002,1.101 290.649,63.208 315.708,1.101 332.604,1.101"/>
+                    <polygon points="361.824,63.203 386.869,1.101 403.768,1.101 371.172,81.899 354.291,81.899"/>
+                    <polygon points="380.617,57.796 363.744,57.796 340.674,1.101 357.572,1.101"/>
+                </svg>
+            </a>
+
+            <span class="tm">&reg;</span>
+
+            
+            <ul class="menu hide-for-small-only" role="menu" aria-labelledby="bv-hdr">
+                <li ng-class="{ 'active' : state.is('cocktails') || state.is('cocktails_by_liquor') || (state.includes('drink') && $stateParams.type==='cocktail') }">
+                    <a href="/cocktails" title="Browse amazing cocktails"
+                            event-track="click" event-category="User Engagement" event-action="Site Navigation" event-label="Global Nav Cocktails Clicked"
+                            dropdown-toggle1="#drop-cocktails"
+                            dropdown-hover1="true"
+                            aria-controls1="drop-cocktails"
+                            aria-expanded1="false">Cocktails<!-- <i class="fa fa-caret-down"></i> --></a>
+
+                                    </li>
+                <li ng-class="{ 'active' : state.is('spirits') || state.is('spirits_by_liquor') || state.is('spirits_by_liquor_variety') || (state.includes('drink') && $stateParams.type==='spirit') }">
+                    <a href="/spirits" title="Browse amazing spirits"
+                            event-track="click" event-category="User Engagement" event-action="Site Navigation" event-label="Global Nav Spirits Clicked"
+                            dropdown-toggle1="#drop-spirits"
+                            dropdown-hover1="true"
+                            aria-controls1="drop-spirits"
+                            aria-expanded1="false">Spirits<!-- <i class="fa fa-caret-down"></i> --></a>
+
+                                    </li>
+                                <li class="tertiary">
+                    <a target="_self" href="/shop/" title="Shop beautiful products for thirsty people"
+                        event-track="click" event-category="User Engagement" event-action="Site Navigation" event-label="Global Nav Shop Clicked">Shop</a>
+                </li>
+                <li class="quaternary" ng-class="{ 'active' : state.is('collections') || state.includes('collection') }">
+                    <a href="/collections" title="Browse collections"
+                        event-track="click" event-category="User Engagement" event-action="Site Navigation" event-label="Global Nav Collections Clicked">Collections</a>
+                </li>
+                <li class="quaternary people" ng-class="{ 'active' : state.is('people') || state.includes('profile') }">
+                    <a href="/people" title="Get to know some spirited folks"
+                        event-track="click" event-category="User Engagement" event-action="Site Navigation" event-label="Global Nav People Clicked">People</a>
+                </li>
+                <li class="tertiary">
+                    <a target="_self" href="/articles/" title="Read our spirited stories"
+                        event-track="click" event-category="User Engagement" event-action="Site Navigation" event-label="Global Nav Articles Clicked">Articles</a>
+                </li>
+                <li ng-class="{ 'active' : state.is('glassware') || state.is('drinks_by_glassware') || state.is('tags') || state.includes('tag') }">
+                    <a href="#"
+                        dropdown-toggle="#drop-more"
+                        dropdown-hover="true"
+                        data-options="is_hover:true;"
+                        aria-controls="drop-more"
+                        aria-expanded="false"
+                        event-track="click" event-category="User Engagement" event-action="Site Navigation" event-label="Global Nav More Clicked"><i class="fa fa-ellipsis-h"></i></a>
+
+                    <ul id="drop-more" class="f-dropdown drop-more" aria-hidden="true" tabindex="-1">
+                        <li class="tertiary">
+                            <a target="_self" href="/shop/"
+                                event-track="click" event-category="User Engagement" event-action="Site Navigation" event-label="Global Nav More Dropdown Shop Clicked">Shop</a>
+                        </li>
+                        <li class="quaternary">
+                            <a href="/collections"
+                                event-track="click" event-category="User Engagement" event-action="Site Navigation" event-label="Global Nav More Dropdown Collections Clicked">Collections</a>
+                        </li>
+                        <li class="quaternary">
+                            <a href="/hubs"
+                                event-track="click" event-category="User Engagement" event-action="Site Navigation" event-label="Global Nav More Dropdown Hubs Clicked">Hubs</a>
+                        </li>
+                        <li class="quaternary">
+                            <a href="/people"
+                                event-track="click" event-category="User Engagement" event-action="Site Navigation" event-label="Global Nav More Dropdown People Clicked">People</a>
+                        </li>
+                        <li class="tertiary">
+                            <a target="_self" href="/articles/"
+                                event-track="click" event-category="User Engagement" event-action="Site Navigation" event-label="Global Nav More Dropdown Articles Clicked">Articles</a>
+                        </li>
+                        <li>
+                            <a href="/brands"
+                                event-track="click" event-category="User Engagement" event-action="Site Navigation" event-label="Global Nav More Dropdown Brands Clicked">Liquor Brands</a>
+                        </li>
+                        <!-- <li>
+                            <a href="/tags"
+                                event-track="click" event-category="User Engagement" event-action="Site Navigation" event-label="Global Nav More Dropdown Tags Clicked">Tagged Drinks</a></li
+                            > -->
+                        <li>
+                            <a href="/glassware"
+                                event-track="click" event-category="User Engagement" event-action="Site Navigation" event-label="Global Nav More Dropdown Glassware Clicked">Glassware</a>
+                        </li>
+                        <li>
+                            <a href="/books"
+                                event-track="click" event-category="User Engagement" event-action="Site Navigation" event-label="Global Nav More Dropdown Books Clicked">Books</a>
+                        </li>
+                                                <li>
+                            <a target="_self" href="/lucky"
+                                event-track="click" event-category="User Engagement" event-action="Site Navigation" event-label="Global Nav More Dropdown Feeling Lucky Clicked">Feeling Lucky?</a>
+                        </li>
+                        <li>
+                            <a href="/about"
+                                event-track="click" event-category="User Engagement" event-action="Site Navigation" event-label="Global Nav More Dropdown About Bevvy Clicked">About Bevvy</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <form   action="/search"
+                    class="search desktop"
+                    ng-class="{ 'visible' : !state.is('search') }">
+                <input  type="search"
+                        name="q"
+                        autocomplete1="off"
+                        autocapitalize="off"
+                        autocorrect="off"
+                        placeholder="Search Bevvy..."
+                        value="{{location.search().q}}" />
+                <i class="fa fa-search muted"></i>
+            </form>
+
+            <a class="menu-right fa fa-bars right-off-canvas-toggle" ng-class="{ 'signedout': !session.isSignedIn }" href="#"
+                event-track="click" event-category="User Engagement" event-action="Site Navigation" event-label="Global Nav Burger Menu Clicked"></a>
+
+                            <span class="menu-right signupin hide-for-small-only">
+                    <a ng-href="/signin?u={{location.path()}}"
+                        event-track="click" event-category="User Conversions" event-action="Sign In" event-label="Global Nav Sign In Clicked">Sign In</a>
+                    <a class="button small alert" ng-href="/signup"
+                        event-track="click" event-category="User Conversions" event-action="Sign Up" event-label="Global Nav Sign Up Clicked"><strong>Sign Up</strong></a>
+                </span>
+
+                            
+            <span ng-class="{ 'hide-for-medium-up': (state.is('home') && !session.isSignedIn) || state.is('search') }">
+                <span class="menu-right fa fa-search"
+                    ng-click="toggleHeaderSearch()"
+                    event-track="click" event-category="User Engagement" event-action="Site Navigation" event-label="Global Nav Mobile Search Toggle Clicked"></span>
+            </span>
+        </nav>
+        <form action="/search" class="search mobile" ng-class="{ visible : isShowHeaderSearch }">
+            <input  type="search"
+                    name="q"
+                    autocomplete1="off"
+                    autocapitalize="off"
+                    autocorrect="off"
+                    placeholder="Search Bevvy..."
+                    value="{{location.search().q}}" />
+            <i class="fa fa-search muted"></i>
+        </form>
+
+            </div>
+    </header>
+
+        <div class="inner-wrap">
+            
+<nav id="bv-hdr-menu" class="bv-hdr-menu right-off-canvas-menu ">
+    <a class="hide" href="#body-content">Skip off canvas menu links</a>
+
+    <ul class="off-canvas-list" role="menu" aria-labelledby="bv-hdr">
+                    <li><a class="add" ng-href="/signup"><i class="fa fa-plus"></i>Sign Up</a>
+            <li><a class="add" ng-href="/signin?u={{location.path()}}"><i class="fa fa-sign-in"></i>Sign In</a>
+        
+        
+        <li class="secondary"><label>Explore</label></li>
+        <li class="secondary"><a href="/cocktails"><i class="bv-icon bv-coupe-glass"></i> Cocktails</a></li>
+        <li class="secondary"><a href="/spirits"><i class="bv-icon bv-bottle"></i> Spirits</a></li>
+                <li class="secondary"><a href="/brands"><i class="fa fa-empire"></i> Brands</a></li>
+        <li class="secondary"><a target="_self" href="/shop/"><i class="fa fa-shopping-cart"></i> Shop</a></li>
+        <li class="secondary"><a href="/collections"><i class="fa fa-paperclip"></i> Collections</a></li>
+        <li class="secondary"><a href="/hubs"><i class="fa fa-connectdevelop"></i> Hubs</a></li>
+        <li class="secondary"><a href="/people"><i class="fa fa-users"></i> People</a></li>
+        <li class="secondary"><a target="_self" href="/articles/"><i class="fa fa-newspaper-o"></i> Articles</a></li>
+        <!--<li class="secondary"><a href="/tags"><i class="fa fa-tags"></i> Tags</a></li>-->
+        <li class="secondary"><a href="/glassware"><i class="bv-icon bv-aperitif-sherry-glass"></i> Glassware Guide</a></li>
+        <li class="secondary"><a href="/books"><i class="fa fa-book"></i> Books</a></li>
+                        <li class="secondary"><a target="_self" href="/lucky/drink"><i class="fa fa-smile-o"></i> Feeling Lucky?</a></li>
+        <li class="secondary"><a href="/about"><i class="fa fa-info"></i> About Bevvy</a></li>
+
+            </ul>
+</nav>
+
+            <div ui-view class="view-body-content" id="body-content">
+                <script type="application/ld+json">{"@context":"http:\/\/schema.org","@type":"Recipe","name":"Irish Coffee","description":"The Irish Coffee is a perfect drink for when you need to wake up halfway through a long night, or kick yourself out of bed and fight off a hangover. It's an exceedingly simple cocktail, consisting of just Irish whiskey, coffee, a bit of brown sugar simple syrup, and some optional unsweetened whipped cream (preferably homemade). If you're looking for whiskey recommendations, be sure to check out our collection of the best Irish whiskey under $50.The Irish Coffee was, unsurprisingly, invented in Ireland in the 1940s. It came to America by way of San Francisco's Buena Vista Cafe in the early 1950s, and has been associated with the City by the Bay&nbsp;ever since. For more of the story, check out our complete guide to the history of the Irish Coffee.","author":{"@type":"Person","name":"Bevvy"},"recipeCategory":"Cocktail","totalTime":"PT5M","recipeIngredient":["1.5 oz Irish whiskey","1 tsp brown sugar syrup","Hot black coffee","Unsweetened whipped cream"],"recipeInstructions":"Add Irish whiskey, brown sugar syrup, and hot coffee to an Irish coffee mug.\nTop with whipped cream.","publisher":{"@type":"Organization","name":"Bevvy, Inc.","logo":{"@type":"ImageObject","url":"https:\/\/bv.mcdn.me\/img\/ui\/bevvy-badge-320x320.png","width":320,"height":320}},"image":"https:\/\/bevvyco.s3.amazonaws.com\/img\/drinks\/mq\/smq\/irish-coffee-05134e3c3023a18f5db9acb3e5f14315-lg.jpg"}</script>
+            </div>
+            <a class="exit-off-canvas"></a>
+        </div>
+    </div>
+</main>
+
+
+
+
+
+<script>
+    // enable :active pseudo styles in Mobile Safari
+    // https://alxgbsn.co.uk/2011/10/17/enable-css-active-pseudo-styles-in-mobile-safari/
+    document.addEventListener("touchstart", function() {},false);
+</script>
+
+
+
+
+
+
+    <script src="https://bv.mcdn.me/js/dist/js-base.min.9855511e.js"></script>
+    <script src="https://bv.mcdn.me/js/dist/angular-base.min.7fc8032a.js"></script>
+    <script src="https://bv.mcdn.me/js/dist/angular-libs.min.5e3a79a7.js"></script>
+    <script src="https://bv.mcdn.me/js/dist/bevvy-templates.min.2a8d2a00.js"></script>
+        <script src="https://bv.mcdn.me/js/dist/bevvy-webapp.min.37c6f496.js"></script>
+
+
+
+<script>'use strict';bevvy.app=angular.module('bevvy.app',['ngResource','ngRoute','ngSanitize','ui.router','infinite-scroll','angucomplete-alt','mm.foundation','hl.sticky','angular-inview','angular.vertilize','ezfb','bevvy.templates','bevvy.main','bevvy.static','bevvy.drinks','bevvy.ratings','bevvy.brands','bevvy.collections','bevvy.venues','bevvy.hubs','bevvy.glassware','bevvy.images','bevvy.likes','bevvy.posts','bevvy.tags','bevvy.search','bevvy.activities','bevvy.recently-viewed','bevvy.follow','bevvy.notifications','bevvy.authenticate','bevvy.home','bevvy.profiles']).constant('_',window._).constant('ENV',window.__env).constant('Constants',{BASE_URL:window.__env.baseurl,APP_BASE_URL:window.__env.appBaseurl,CDN_BASE_URL:window.__env.cdnBaseurl,TILE_DEFAULT_THUMBNAIL:window.__env.cdnBaseurl+'/img/ui/tile-polygon.jpg',USER_DEFAULT_THUMBNAIL:window.__env.cdnBaseurl+'/img/ui/tile-polygon.jpg',DRINK_DEFAULT_THUMBNAIL_COCKTAIL:window.__env.cdnBaseurl+'/img/ui/tile-tabletop1b.jpg',DRINK_DEFAULT_THUMBNAIL_SPIRIT:window.__env.cdnBaseurl+'/img/ui/tile-polygon.jpg',DRINK_DEFAULT_THUMBNAIL_BEER:window.__env.cdnBaseurl+'/img/ui/tile-polygon.jpg',COLLECTION_DEFAULT_THUMBNAIL:window.__env.cdnBaseurl+'/img/ui/tile-polygon.jpg',FEAT_COLL_COCKTAILS:'eah,sah,gah,dah,qzh,yzh,sks,ems,azh,ezh,mms,fzh,bah,wah,ezh,gms',FEAT_COLL_SPIRITS:'xzh,czh,bzh,uzh,rzh,jzh,ozh,aah,zah,mah'}).config(['$compileProvider',function($compileProvider){$compileProvider.debugInfoEnabled(false);}]).config(['$sceDelegateProvider',function($sceDelegateProvider){$sceDelegateProvider.resourceUrlWhitelist(['self','https://*.bevvy.co/**']);}]).config(['$locationProvider','$provide',function($locationProvider,$provide){$locationProvider.html5Mode(true);}]).config(['ezfbProvider',function(ezfbProvider){ezfbProvider.setInitParams({appId:'451583318212160',xfbml:true,status:true,cookie:true,oauth:true,channelUrl:'/channel.html',version:'v2.8'});}]).factory('DoubleClick',[function(){return{clearTargeting:function(){return this;},setTargeting:function(key,val){return this;},refreshAds:function(id){return this;}};}]).config(['$httpProvider',function($httpProvider){$httpProvider.defaults.withCredentials=true;$httpProvider.interceptors.push('apiInterceptor');$httpProvider.interceptors.push('timestampMarker');}]).factory('apiInterceptor',['Session','$location',function(Session,$location){return{request:function(config){if(Session.isSignedIn){config.headers['x-session-token']=Session.token;}
+config.headers['x-csrf-token']=Session.csrf;config.headers['x-current-url']=$location.absUrl();return config;}};}]).factory('timestampMarker',[function(){return{request:function(config){config.requestTime=new Date().getTime();return config;},response:function(response){response.config.responseTime=new Date().getTime();response.config.elapsedTime=response.config.responseTime-response.config.requestTime;return response;}};}]).run(['$rootScope','$state','$window','$document','$timeout','$location','$sce','ezfb','ENV','Session','Constants','DoubleClick',function($rootScope,$state,$window,$document,$timeout,$location,$sce,ezfb,ENV,Session,Constants,DoubleClick){$rootScope._=window._;$rootScope.state=$state;$rootScope.session=Session;$rootScope.constants=Constants;$rootScope.dateObj=new Date();var $body=angular.element($document[0].querySelector("body"));$rootScope.$safeApply=function(scopeContext,fn){if(scopeContext.$$phase||scopeContext.$root.$$phase){fn();}else{scopeContext.$apply(fn);}};$rootScope.hideTopNav=function(hide){hide=hide||false;if(hide){$body.addClass('hide-top-nav');}else{$body.removeClass('hide-top-nav');}};$rootScope.updateMetaTag=function(attribsel,contentval){var selector='meta['+attribsel+']';var el=$document[0].querySelector(selector);if(el&&el.setAttribute){el.setAttribute('content',contentval);}};$rootScope.setPageTitle=function(str){if(angular.isDefined(str)){if(str.substr(-5)==='Bevvy'){$rootScope.pageTitle=str;}else if(str==='About'){$rootScope.pageTitle='About Bevvy';}else{$rootScope.pageTitle=str+' | Bevvy';}}else{$rootScope.pageTitle='Bevvy | Cocktail Recipes, Liquor Reviews and Drink Culture';}
+if($rootScope.session.isSignedIn&&$rootScope.session.user.unread_notifications){$rootScope.pageTitle='('+$rootScope.session.user.unread_notifications+') '+$rootScope.pageTitle;}
+$window.document.title=$rootScope.pageTitle;};$rootScope.protocolUrl=function(url){if(url.indexOf("http://")===-1&&url.indexOf("https://")===-1){return'http://'+url.replace(/^(\/\/)/,"");}};var templateCache={};$rootScope.apiUrl=function(url){if(url&&url!==''){if(!templateCache[url]){var full_include_url=ENV.apiEndpoint+url;templateCache[url]=$sce.trustAsResourceUrl(full_include_url);}
+return templateCache[url];}else{return'';}};$rootScope.trustedUrl=function(url){if(url&&url!==''){if(!templateCache[url]){templateCache[url]=$sce.trustAsResourceUrl(url);}
+return templateCache[url];}else{return'';}};$rootScope.loadScript=function(url,user_opts){var opts={timeout:0,async:true,attributes:{},id:url.hashCode()};opts=angular.extend(opts,user_opts);console.log('loadScript('+url+') called with options:');console.log(opts);$timeout(function(){(function(d){var js,id=opts.id,ref=d.getElementsByTagName('script')[0];if(d.getElementById(id)){return;}
+js=d.createElement('script');js.id=id;js.async=opts.async;js.src=url;angular.forEach(opts.attributes,function(val,key){js.setAttribute(key,val);console.log('adding attribute '+key+': '+val);});ref.parentNode.insertBefore(js,ref);console.log('loadScript() loaded '+url);}($document[0]));},opts.timeout);};$rootScope.randomInt=function(top){top=top||10;return Math.floor(Math.random()*top)+1;};$rootScope.isEmpty=function(vo){if(typeof vo==='undefined'||!vo||vo===''||vo==[]||vo=={}){return false;}
+return true;};$rootScope.isNumeric=function(n){return!isNaN(parseFloat(n))&&isFinite(n);};$rootScope.isObjectEmpty=function(o){return Object.keys(o).length===0;};$rootScope.isD=function(){return $location.search().is_debug==='1';};$rootScope.isAdt=function(){return $rootScope.session.isAdt;};$rootScope.isPauseAdt=function(state){if(angular.isDefined(state.current.data)&&angular.isDefined(state.current.data.isPauseAdt)){return state.current.data.isPauseAdt;}else{return 0;}};$rootScope.isE=function(){return $rootScope.session.isE;};$rootScope.isEditOk=function(){return $rootScope.session.isEditOk||$rootScope.session.isA;};$rootScope.isA=function(){return $rootScope.session.isA;};$rootScope.isJ=function(){return(!$rootScope.session.user)?false:$rootScope.session.user.user_id==1001||$rootScope.session.user.user_id==10001;};$rootScope.$on('$stateChangeSuccess',function(event,to,toParams,from,fromParams){$timeout(function(){$rootScope.lastState=from;console.log('stateChangeSuccess: refreshAds() called');DoubleClick.refreshAds();if($window.FB){$timeout(function(){$window.FB.XFBML.parse();console.log('stateChangeSuccess: FB.XFBML.parse() called');},100);}});$timeout(function(){window.adthrive=window.adthrive||{};window.adthrive.cmd=window.adthrive.cmd||[];window.adthrive.host='ads.adthrive.com';window.adthrive.plugin='adthrive-ads-1.0.11';(function(){var script=document.createElement('script');script.async=true;script.type='text/javascript';script.src=document.location.protocol+'//'+window.adthrive.host+'/sites/59a87bf27c870214e083c6c0/ads.min.js';var node=document.getElementsByTagName('script')[0];node.parentNode.insertBefore(script,node);})();},300);});ezfb.Event.subscribe('edge.create',function(url){if($window.ga){$window.ga('bv.send','event','Social','Facebook Like','page',url);console.log('### sending $window.ga event for social Facebook like for url: '+url);}
+if(window.ga){ga('bv.send','event','Social','Facebook Like','page',url);console.log('### sending ga event for social Facebook like for url: '+url);}});if(window.__env.label==='production'){$rootScope.loadScript('//load.sumome.com/',{timeout:5000,attributes:{'data-sumo-site-id':'d14bcd004c1fb0003ee4a0000087aa008474f800e10580001bfbd500a161ba00'}});}}]);</script><script>
+$(document).ready(function(){$('#bv-hdr-off-canvas').on('click.fndtn.offcanvas',function(){$('#bv-hdr-menu').css('padding-top',window.pageYOffset-36);});$exit_off_canvas=$(".exit-off-canvas");$("body").on("click",".bv-hdr, .off-canvas-list a",function(e){if(!$(e.target).hasClass("right-off-canvas-toggle")){$exit_off_canvas.click();}});});</script>
+
+
+
+
+
+<!-- page generated on 2018-06-17 02:13:01 in: 0.0656s -->
+<!-- host: bevvy.co (172.30.3.129) -->
+<!-- cc: US -->
+<!-- 38.6273,-90.1979 -->
+</body>
+
+</html>

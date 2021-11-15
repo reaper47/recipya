@@ -1,0 +1,12 @@
+[console_scripts]
+nuitka3 = nuitka.__main__:main
+nuitka3-run = nuitka.__main__:main
+
+[distutils.commands]
+bdist_nuitka = nuitka.distutils.DistutilCommands:bdist_nuitka
+build_nuitka = nuitka.distutils.DistutilCommands:build
+install_nuitka = nuitka.distutils.DistutilCommands:install
+
+[distutils.setup_keywords]
+build_with_nuitka = nuitka.distutils.DistutilCommands:setupNuitkaDistutilsCommands
+

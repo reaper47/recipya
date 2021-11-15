@@ -1,0 +1,241 @@
+Metadata-Version: 2.1
+Name: html-text
+Version: 0.5.2
+Summary: Extract text from HTML
+Home-page: https://github.com/TeamHG-Memex/html-text
+Author: Konstantin Lopukhin
+Author-email: kostia.lopuhin@gmail.com
+License: MIT license
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Dist: lxml
+
+============
+HTML to Text
+============
+
+
+.. image:: https://img.shields.io/pypi/v/html-text.svg
+   :target: https://pypi.python.org/pypi/html-text
+   :alt: PyPI Version
+
+.. image:: https://img.shields.io/travis/TeamHG-Memex/html-text.svg
+   :target: https://travis-ci.org/TeamHG-Memex/html-text
+   :alt: Build Status
+
+.. image:: http://codecov.io/github/TeamHG-Memex/soft404/coverage.svg?branch=master
+   :target: http://codecov.io/github/TeamHG-Memex/html-text?branch=master
+   :alt: Code Coverage
+
+Extract text from HTML
+
+* Free software: MIT license
+
+How is html_text different from ``.xpath('//text()')`` from LXML
+or ``.get_text()`` from Beautiful Soup?
+
+* Text extracted with ``html_text`` does not contain inline styles,
+  javascript, comments and other text that is not normally visible to users;
+* ``html_text`` normalizes whitespace, but in a way smarter than
+  ``.xpath('normalize-space())``, adding spaces around inline elements
+  (which are often used as block elements in html markup), and trying to
+  avoid adding extra spaces for punctuation;
+* ``html-text`` can add newlines (e.g. after headers or paragraphs), so
+  that the output text looks more like how it is rendered in browsers.
+
+Install
+-------
+
+Install with pip::
+
+    pip install html-text
+
+The package depends on lxml, so you might need to install additional
+packages: http://lxml.de/installation.html
+
+
+Usage
+-----
+
+Extract text from HTML::
+
+    >>> import html_text
+    >>> html_text.extract_text('<h1>Hello</h1> world!')
+    'Hello\n\nworld!'
+
+    >>> html_text.extract_text('<h1>Hello</h1> world!', guess_layout=False)
+    'Hello world!'
+
+Passed html is first cleaned from invisible non-text content such
+as styles, and then text is extracted.
+
+You can also pass an already parsed ``lxml.html.HtmlElement``:
+
+    >>> import html_text
+    >>> tree = html_text.parse_html('<h1>Hello</h1> world!')
+    >>> html_text.extract_text(tree)
+    'Hello\n\nworld!'
+
+If you want, you can handle cleaning manually; use lower-level
+``html_text.etree_to_text`` in this case:
+
+    >>> import html_text
+    >>> tree = html_text.parse_html('<h1>Hello<style>.foo{}</style>!</h1>')
+    >>> cleaned_tree = html_text.cleaner.clean_html(tree)
+    >>> html_text.etree_to_text(cleaned_tree)
+    'Hello!'
+
+parsel.Selector objects are also supported; you can define
+a parsel.Selector to extract text only from specific elements:
+
+    >>> import html_text
+    >>> sel = html_text.cleaned_selector('<h1>Hello</h1> world!')
+    >>> subsel = sel.xpath('//h1')
+    >>> html_text.selector_to_text(subsel)
+    'Hello'
+
+NB parsel.Selector objects are not cleaned automatically, you need to call
+``html_text.cleaned_selector`` first.
+
+Main functions and objects:
+
+* ``html_text.extract_text`` accepts html and returns extracted text.
+* ``html_text.etree_to_text`` accepts parsed lxml Element and returns
+  extracted text; it is a lower-level function, cleaning is not handled
+  here.
+* ``html_text.cleaner`` is an ``lxml.html.clean.Cleaner`` instance which
+  can be used with ``html_text.etree_to_text``; its options are tuned for
+  speed and text extraction quality.
+* ``html_text.cleaned_selector`` accepts html as text or as
+  ``lxml.html.HtmlElement``, and returns cleaned ``parsel.Selector``.
+* ``html_text.selector_to_text`` accepts ``parsel.Selector`` and returns
+  extracted text.
+
+If ``guess_layout`` is True (default), a newline is added before and after
+``newline_tags``, and two newlines are added before and after
+``double_newline_tags``. This heuristic makes the extracted text
+more similar to how it is rendered in the browser. Default newline and double
+newline tags can be found in `html_text.NEWLINE_TAGS`
+and `html_text.DOUBLE_NEWLINE_TAGS`.
+
+It is possible to customize how newlines are added, using ``newline_tags`` and
+``double_newline_tags`` arguments (which are `html_text.NEWLINE_TAGS` and
+`html_text.DOUBLE_NEWLINE_TAGS` by default). For example, don't add a newline
+after ``<div>`` tags:
+
+    >>> newline_tags = html_text.NEWLINE_TAGS - {'div'}
+    >>> html_text.extract_text('<div>Hello</div> world!',
+    ...                        newline_tags=newline_tags)
+    'Hello world!'
+
+Apart from just getting text from the page (e.g. for display or search),
+one intended usage of this library is for machine learning (feature extraction).
+If you want to use the text of the html page as a feature (e.g. for classification),
+this library gives you plain text that you can later feed into a standard text
+classification pipeline.
+If you feel that you need html structure as well, check out
+`webstruct <http://webstruct.readthedocs.io/en/latest/>`_ library.
+
+----
+
+.. image:: https://hyperiongray.s3.amazonaws.com/define-hg.svg
+	:target: https://www.hyperiongray.com/?pk_campaign=github&pk_kwd=html-text
+	:alt: define hyperiongray
+
+
+=======
+History
+=======
+
+0.5.2 (2020-07-22)
+------------------
+
+* Handle lxml Cleaner exceptions (a workaround for
+  https://bugs.launchpad.net/lxml/+bug/1838497 );
+* Python 3.8 support;
+* testing improvements.
+
+0.5.1 (2019-05-27)
+------------------
+
+Fixed whitespace handling when ``guess_punct_space`` is False: html-text was
+producing unnecessary spaces after newlines.
+
+0.5.0 (2018-11-19)
+------------------
+
+Parsel dependency is removed in this release,
+though parsel is still supported.
+
+* ``parsel`` package is no longer required to install and use html-text;
+* ``html_text.etree_to_text`` function allows to extract text from
+  lxml Elements;
+* ``html_text.cleaner`` is an ``lxml.html.clean.Cleaner`` instance with
+  options tuned for text extraction speed and quality;
+* test and documentation improvements;
+* Python 3.7 support.
+
+0.4.1 (2018-09-25)
+------------------
+
+Fixed a regression in 0.4.0 release: text was empty when
+``html_text.extract_text`` is called with a node with text, but
+without children.
+
+0.4.0 (2018-09-25)
+------------------
+
+This is a backwards-incompatible release: by default html_text functions
+now add newlines after elements, if appropriate, to make the extracted text
+to look more like how it is rendered in a browser.
+
+To turn it off, pass ``guess_layout=False`` option to html_text functions.
+
+* ``guess_layout`` option to to make extracted text look more like how
+  it is rendered in browser.
+* Add tests of layout extraction for real webpages.
+
+
+0.3.0 (2017-10-12)
+------------------
+
+* Expose functions that operate on selectors,
+  use ``.//text()`` to extract text from selector.
+
+
+0.2.1 (2017-05-29)
+------------------
+
+* Packaging fix (include CHANGES.rst)
+
+
+0.2.0 (2017-05-29)
+------------------
+
+* Fix unwanted joins of words with inline tags: spaces are added for inline
+  tags too, but a heuristic is used to preserve punctuation without extra spaces.
+* Accept parsed html trees.
+
+
+0.1.1 (2017-01-16)
+------------------
+
+* Travis-CI and codecov.io integrations added
+
+
+0.1.0 (2016-09-27)
+------------------
+
+* First release on PyPI.
+
+

@@ -1,0 +1,7 @@
+jstyleson.py
+setup.cfg
+setup.py
+jstyleson.egg-info/PKG-INFO
+jstyleson.egg-info/SOURCES.txt
+jstyleson.egg-info/dependency_links.txt
+jstyleson.egg-info/top_level.txt

@@ -1,0 +1,8 @@
+[rdf.plugins.parser]
+application/svg+xml = pyRdfa.rdflibparsers:RDFaParser
+application/xhtml+xml = pyRdfa.rdflibparsers:RDFaParser
+hturtle = pyRdfa.rdflibparsers:HTurtleParserhtml = pyRdfa.rdflibparsers:StructuredDataParserhtml/text = pyRdfa.rdflibparsers:StructuredDataParser
+rdfa = pyRdfa.rdflibparsers:RDFaParser
+rdfa1.0 = pyRdfa.rdflibparsers:RDFa10Parser
+rdfa1.1 = pyRdfa.rdflibparsers:RDFaParser
+

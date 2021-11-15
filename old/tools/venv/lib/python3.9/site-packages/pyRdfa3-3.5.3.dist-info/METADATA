@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: pyRdfa3
+Version: 3.5.3
+Summary: pyRdfa Libray
+Home-page: UNKNOWN
+Author: Ivan Herman
+Author-email: ivan@w3.org
+Maintainer: Ivan Herman
+Maintainer-email: ivan@w3.org
+License: UNKNOWN
+Platform: UNKNOWN
+Requires-Dist: rdflib
+Requires-Dist: html5lib
+
+UNKNOWN
+
+
