@@ -1,6 +1,7 @@
 dist/
 templates/tailwind/node_modules
 old/tools/venv
+.env
 
 # Binaries for programs and plugins
 *.exe
