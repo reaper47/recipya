@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/joho/godotenv"
@@ -26,7 +27,7 @@ type Context struct {
 
 // Reset ...
 func (m Context) Reset() {
-	ctx, cancel := contexts.DBContext()
+	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
 	_, err := m.pool.Exec(ctx, "DELETE FROM recipes")
@@ -43,7 +44,7 @@ func (m Context) Close() {
 	dbOptions := config.NewDBOptions(testDbName)
 	pool := driver.ConnectPostgres(dbOptions.Dsn())
 
-	ctx, cancel := contexts.DBContext()
+	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
 	dropSchema(ctx, m.roleName, pool)
@@ -54,7 +55,7 @@ func (m Context) Close() {
 
 // NewContext ...
 func NewContext() Context {
-	ctx, cancel := contexts.DBContext()
+	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
 	dbOptions := config.NewDBOptions(testDbName)

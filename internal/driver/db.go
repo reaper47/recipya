@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"log"
+	"time"
 
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/reaper47/recipya/internal/contexts"
@@ -16,7 +17,7 @@ func ConnectPostgres(dsn string) *pgxpool.Pool {
 		log.Fatalln("Unable to connect to database:", err)
 	}
 
-	ctx, cancel := contexts.DBContext()
+	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
 	err = pool.Ping(ctx)
@@ -33,7 +34,7 @@ func ConnectSqlDB(dsn string) *sql.DB {
 		log.Fatalln("Unable to connect to database:", err)
 	}
 
-	ctx, cancel := contexts.DBContext()
+	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
 	err = db.PingContext(ctx)

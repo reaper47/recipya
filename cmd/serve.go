@@ -1,31 +1,56 @@
 package cmd
 
 import (
-	"html/template"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"time"
+
+	"github.com/reaper47/recipya/internal/contexts"
+	"github.com/reaper47/recipya/internal/router"
+	_ "github.com/reaper47/recipya/internal/templates"
+	"github.com/spf13/cobra"
 )
 
-/*func main() {
-	http.HandleFunc("/", index)
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+var serveCmd = &cobra.Command{
+	Use:   "serve",
+	Short: "Starts the web server",
+	Long: `"Starts the web server."
 
-	log.Println("Server is running on http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
-}*/
+The application will be accessible through your favorite 
+web browser at the address specified when you run the command.
+`,
+	Run: func(cmd *cobra.Command, args []string) {
+		srv := &http.Server{
+			Addr:         "0.0.0.0:8080",
+			WriteTimeout: 15 * time.Second,
+			ReadTimeout:  15 * time.Second,
+			IdleTimeout:  60 * time.Second,
+			Handler:      router.New(),
+		}
 
-func index(w http.ResponseWriter, r *http.Request) {
-	// Dev
-	tmpl, err := template.ParseGlob("templates/*.gohtml")
-	template.Must(tmpl.ParseGlob("templates/layout/*.gohtml"))
-	template.Must(tmpl.ParseGlob("templates/partials/*.gohtml"))
-	if err != nil {
-		log.Fatal(err)
-	}
-	err = tmpl.Execute(w, "index.gohtml")
-	if err != nil {
-		log.Fatal(err)
-	}
+		go func() {
+			log.Println("Serving on 0.0.0.0:8080")
+			err := srv.ListenAndServe()
+			if err != nil {
+				log.Println(err)
+			}
+		}()
 
-	// config.Tpl().Execute(w, "index.gohtml")
+		c := make(chan os.Signal, 1)
+		signal.Notify(c, os.Interrupt)
+		<-c
+
+		ctx, cancel := contexts.Timeout(10 * time.Second)
+		defer cancel()
+
+		srv.Shutdown(ctx)
+		log.Println("Server shutting down")
+		os.Exit(0)
+	},
+}
+
+func init() {
+	rootCmd.AddCommand(serveCmd)
 }
