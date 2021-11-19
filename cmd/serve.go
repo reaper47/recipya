@@ -27,5 +27,5 @@ func index(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	//config.Tpl.Execute(w, "index.gohtml")
+	// config.Tpl().Execute(w, "index.gohtml")
 }

@@ -2,6 +2,7 @@ dist/
 templates/tailwind/node_modules
 old/tools/venv
 .env
+recipya
 
 # Binaries for programs and plugins
 *.exe

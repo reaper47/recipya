@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/golang-migrate/migrate/v4 v4.15.1
+	github.com/google/uuid v1.3.0
 	github.com/jackc/pgx/v4 v4.13.0
 	github.com/joho/godotenv v1.4.0
 	github.com/spf13/cobra v1.2.1

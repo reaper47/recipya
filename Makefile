@@ -11,6 +11,9 @@ build-api:
 build-css:
 	 ${TAILWIND} -o dist/static/css/tailwind.css 
 
+build-go:
+	go build -ldflags="-s -w"
+
 watch: 
 	${TAILWIND} -o static/css/tailwind.css -w
 	

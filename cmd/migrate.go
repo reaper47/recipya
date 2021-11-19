@@ -1,15 +1,14 @@
 package cmd
 
 import (
-	"database/sql"
-	"log"
 	"os"
 
+	"github.com/reaper47/recipya/internal/config"
+	"github.com/reaper47/recipya/internal/driver"
 	"github.com/reaper47/recipya/internal/migration"
 	"github.com/spf13/cobra"
 )
 
-// migrateCmd represents the migrate command
 var migrateCmd = &cobra.Command{
 	Use:   "migrate up|down",
 	Short: "Upgrade or downgrade Recipya's database",
@@ -36,10 +35,8 @@ func migrate(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	db, err := sql.Open("pgx", os.Getenv("DB_URI"))
-	if err != nil {
-		log.Fatalln("Unable to connect to database: ", err)
-	}
+	dbOptions := config.NewDBOptions("recipya")
+	db := driver.ConnectSqlDB(dbOptions.Dsn())
 	defer db.Close()
 
 	switch args[0] {

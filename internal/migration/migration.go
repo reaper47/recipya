@@ -3,6 +3,9 @@ package migration
 import (
 	"database/sql"
 	"log"
+	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/pgx"
@@ -76,7 +79,15 @@ func getInstance(db *sql.DB) *migrate.Migrate {
 		log.Fatalln("Unable to create postgres instance:", err)
 	}
 
-	source, err := (&file.File{}).Open(("file://migrations"))
+	wd, err := os.Getwd()
+	if err != nil {
+		log.Fatalln("Could not get working directory:", err)
+	}
+
+	root := strings.SplitN(wd, "internal", 2)[0]
+	migrationsDir := filepath.Join(root, "migrations")
+
+	source, err := (&file.File{}).Open("file://" + migrationsDir)
 	if err != nil {
 		log.Fatalln("Unable to migrations folder:", err)
 	}
