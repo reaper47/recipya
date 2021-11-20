@@ -1,4 +1,10 @@
 {{define "title"}}Home{{end}}
 {{define "content"}}
-Hello
+{{if not .Recipes}}
+<div class="w-full text-center text-grey-darkest">
+  <p class="py-2">Hope you like this!</p>
+</div>
+{{else}}
+Have recipes
+{{end}}
 {{end}}

@@ -10,10 +10,15 @@
   <link rel="stylesheet" href="/static/css/tailwind.css" />
 </head>
 
-<body class="h-screen bg-white">
-  {{template "navbar"}}
-  {{template "modal-about"}}
-  {{- template "content" . -}}
+<body class="h-screen font-sans antialiased">
+  {{template "header"}}
+  <main class="grid md:grid-cols-12">
+    {{template "sidebar"}}
+    <div class="h-full pt-16 bg-white md:col-span-11">
+      {{- template "content" . -}}
+    </div>
+  </main>
+  {{template "about"}}
   {{template "globaljs"}}
   {{block "js" .}}{{end}}
 </body>

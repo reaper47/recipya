@@ -10,7 +10,8 @@ import (
 
 // Index handles the "/" page.
 func Index(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	err := templates.Render(wr, "index.gohtml", nil)
+	data := templates.IndexData{}
+	err := templates.Render(wr, "index.gohtml", data)
 	if err != nil {
 		log.Println(err)
 	}

@@ -1,3 +1,4 @@
+
 DROP FUNCTION times_calc_total_time() CASCADE;
 DROP TABLE recipes CASCADE;
 DROP TABLE categories;

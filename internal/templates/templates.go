@@ -57,6 +57,7 @@ func Load() {
 
 // Render is a wrapper for template.ExecuteTemplate.
 func Render(wr http.ResponseWriter, name string, data interface{}) error {
+	Load()
 	tmpl, ok := templates[name]
 	if !ok {
 		err := fmt.Sprintf("The template %s does not exist.", name)
