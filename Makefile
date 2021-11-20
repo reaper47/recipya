@@ -18,6 +18,6 @@ watch:
 	${TAILWIND} -o static/css/tailwind.css -w
 	
 run:
-	go run cmd/web/*.go
+	go run main.go serve
 
 build: build-api build-css

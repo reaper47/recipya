@@ -9,7 +9,7 @@ import (
 
 	"github.com/reaper47/recipya/internal/contexts"
 	"github.com/reaper47/recipya/internal/router"
-	_ "github.com/reaper47/recipya/internal/templates"
+	"github.com/reaper47/recipya/internal/templates"
 	"github.com/spf13/cobra"
 )
 
@@ -22,6 +22,8 @@ The application will be accessible through your favorite
 web browser at the address specified when you run the command.
 `,
 	Run: func(cmd *cobra.Command, args []string) {
+		templates.Load()
+
 		srv := &http.Server{
 			Addr:         "0.0.0.0:8080",
 			WriteTimeout: 15 * time.Second,
