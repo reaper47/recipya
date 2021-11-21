@@ -1,15 +1,14 @@
 .ONESHELL:
 
-TAILWIND=pnpm dlx tailwindcss --jit -m --purge="./templates/**/*.gohtml"
+TAILWIND=pnpm dlx tailwindcss --jit -m --purge="./views/**/*.gohtml"
 
 build-api:
-	go build -o dist/recipya cmd/web/*.go
-	cp -R static dist/static
-	cp -R templates dist
-	cp -R migrations dist
+	go build -o dist/recipya main.go
+	mkdir -p dist/views
+	cp -R views/layouts views/*.gohtml dist/views/
 
 build-css:
-	 ${TAILWIND} -o dist/static/css/tailwind.css 
+	 ${TAILWIND} -o static/css/tailwind.css 
 
 build-go:
 	go build -ldflags="-s -w"
@@ -20,4 +19,4 @@ watch:
 run:
 	go run main.go serve
 
-build: build-api build-css
+build: build-css build-api 

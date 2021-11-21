@@ -22,12 +22,12 @@ func Load() {
 	templates = make(map[string]*template.Template)
 	bufpool = bpool.NewBufferPool(64)
 
-	layouts, err := filepath.Glob("templates/layouts/*.gohtml")
+	layouts, err := filepath.Glob("views/layouts/*.gohtml")
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	includes, err := filepath.Glob("templates/*.gohtml")
+	includes, err := filepath.Glob("views/*.gohtml")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -57,7 +57,6 @@ func Load() {
 
 // Render is a wrapper for template.ExecuteTemplate.
 func Render(wr http.ResponseWriter, name string, data interface{}) error {
-	Load()
 	tmpl, ok := templates[name]
 	if !ok {
 		err := fmt.Sprintf("The template %s does not exist.", name)

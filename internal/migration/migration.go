@@ -3,14 +3,12 @@ package migration
 import (
 	"database/sql"
 	"log"
-	"os"
-	"path/filepath"
-	"strings"
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/pgx"
-	"github.com/golang-migrate/migrate/v4/source/file"
+	"github.com/golang-migrate/migrate/v4/source/iofs"
 	"github.com/reaper47/recipya/internal/config"
+	"github.com/reaper47/recipya/migrations"
 )
 
 // Up upgrades the database to the next version.
@@ -79,20 +77,12 @@ func getInstance(db *sql.DB) *migrate.Migrate {
 		log.Fatalln("Unable to create postgres instance:", err)
 	}
 
-	wd, err := os.Getwd()
+	src, err := iofs.New(migrations.FS, ".")
 	if err != nil {
-		log.Fatalln("Could not get working directory:", err)
+		log.Fatalln("Unable to open migrations fs:", err)
 	}
 
-	root := strings.SplitN(wd, "internal", 2)[0]
-	migrationsDir := filepath.Join(root, "migrations")
-
-	source, err := (&file.File{}).Open("file://" + migrationsDir)
-	if err != nil {
-		log.Fatalln("Unable to migrations folder:", err)
-	}
-
-	m, err := migrate.NewWithInstance("file", source, config.DBName, driver)
+	m, err := migrate.NewWithInstance("file", src, config.DBName, driver)
 	if err != nil {
 		log.Fatalln("Error initializing migration:", err)
 	}

@@ -1,6 +1,5 @@
 dist/
-templates/tailwind/node_modules
-old/tools/venv
+views/tailwind/node_modules
 .env
 recipya
 
