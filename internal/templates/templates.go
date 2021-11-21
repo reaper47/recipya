@@ -2,12 +2,15 @@ package templates
 
 import (
 	"fmt"
+	"io/fs"
 	"log"
 	"net/http"
 	"path/filepath"
+	"strings"
 	"text/template"
 
 	"github.com/oxtoacart/bpool"
+	"github.com/reaper47/recipya/views"
 )
 
 var templates map[string]*template.Template
@@ -22,26 +25,29 @@ func Load() {
 	templates = make(map[string]*template.Template)
 	bufpool = bpool.NewBufferPool(64)
 
-	layouts, err := filepath.Glob("views/layouts/*.gohtml")
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	includes, err := filepath.Glob("views/*.gohtml")
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	const mainTmpl = `{{define "main" }} {{ template "base" . }} {{ end }}`
 	mainTemplate := template.New("main")
-	mainTemplate, err = mainTemplate.Parse(mainTmpl)
+	mainTemplate, err := mainTemplate.Parse(`{{define "main" }}{{ template "base" . }}{{ end }}`)
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+	var layouts, includes []string
+	fs.WalkDir(views.FS, ".", func(path string, d fs.DirEntry, err error) error {
+		if err != nil || d.IsDir() {
+			return err
+		}
+
+		if strings.HasPrefix(path, "layouts/") {
+			layouts = append(layouts, path)
+		} else {
+			includes = append(includes, filepath.Base(path))
+		}
+		return nil
+	})
 
 	for _, layout := range layouts {
 		files := append(includes, layout)
-		templates[filepath.Base(layout)] = template.Must(template.ParseFiles(files...))
+		templates[filepath.Base(layout)] = template.Must(template.ParseFS(views.FS, files...))
 	}
 
 	for _, file := range includes {
@@ -51,7 +57,7 @@ func Load() {
 		if err != nil {
 			log.Fatalln(err)
 		}
-		templates[fname] = template.Must(templates[fname].ParseFiles(files...))
+		templates[fname] = template.Must(templates[fname].ParseFS(views.FS, files...))
 	}
 }
 
