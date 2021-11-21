@@ -14,6 +14,7 @@ func New() *httprouter.Router {
 	router.ServeFiles("/static/*filepath", http.FS(static.FS))
 
 	router.GET("/", handlers.Index)
+	router.GET("/recipes", handlers.Index)
 
 	return router
 }

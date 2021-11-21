@@ -5,7 +5,7 @@
     hamburger: 'M4 6h16M4 12h16M4 18h16',
   }
 
-  document.getElementById('nav__avatar-button').addEventListener('click', () => {
+  document.getElementById('nav__avatar-button').addEventListener('mousedown', () => {
     document.getElementById('nav__avatar-content').classList.toggle('hidden')
   })
 
@@ -27,11 +27,11 @@
     modalAbout.classList.remove('hidden');
   });
 
-  document.getElementById('modal__about-close-button').addEventListener('click', () => {
+  document.getElementById('modal__about-close-button').addEventListener('mousedown', () => {
     modalAbout.classList.add('hidden');
   });
 
-  modalAbout.addEventListener('click', ({ target }) => {
+  modalAbout.addEventListener('mousedown', ({ target }) => {
     if (target.id === 'modal__about') {
       modalAbout.classList.add('hidden');
     }
@@ -39,7 +39,7 @@
 
 
   // Nav sidebar
-  document.getElementById('nav__menu-icon').addEventListener('click', () => {
+  document.getElementById('nav__menu-icon').addEventListener('mousedown', () => {
     const menuIconPath = document.getElementById('nav__menu-icon-path')
 
     if (menuIconPath.getAttribute('d') === icons.close) {
