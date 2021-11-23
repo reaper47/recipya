@@ -15,6 +15,8 @@ func New() *httprouter.Router {
 
 	router.GET("/", handlers.Index)
 	router.GET("/recipes", handlers.Index)
+	router.GET("/recipes/new", handlers.RecipesAdd)
+	router.GET("/recipes/new/manual", handlers.RecipesAddManual)
 
 	return router
 }

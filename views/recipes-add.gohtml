@@ -1,0 +1,126 @@
+{{define "title"}}Add Recipe{{end}}
+
+{{define "content"}}
+<div class="grid w-full h-full grid-rows-1 gap-8 px-4 pb-4 md:grid-flow-col text-grey-darkest">
+  <div class="shadow-lg rounded-xl h-96 ">
+    <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes-new/manual.jpg"
+      alt="Writing on a piece of paper with a traditional pen.">
+    <div class="h-40 px-6 py-4 ">
+      <div class="mb-2 text-xl font-bold">Manual</div>
+      <p class="text-base text-gray-700">
+        Add a new recipe by filling out its content manually.
+      </p>
+    </div>
+    <hr>
+    <div class="px-6 pt-4 pb-2">
+      <a class="flex justify-center col-span-2 duration-300 border-2 border-gray-800 rounded-lg text-gray-00 hover:bg-gray-800 hover:text-white center"
+        href="/recipes/new/manual">
+        <button>Fill In</button>
+      </a>
+    </div>
+  </div>
+
+  <div class="shadow-lg rounded-xl h-96 ">
+    <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes-new/import.jpg"
+      alt="Writing on a piece of paper with a traditional pen.">
+    <div class="h-40 px-6 py-4 ">
+      <div class="mb-2 text-xl font-bold">Import</div>
+      <p class="text-base text-gray-700">
+        Import a recipe from one of the supported websites.
+      </p>
+    </div>
+    <hr>
+    <div class="px-6 pt-4 pb-2">
+      <button id="import__button"
+        class="flex justify-center w-full duration-300 border-2 border-gray-800 rounded-lg text-gray-00 hover:bg-gray-800 hover:text-white center"
+        href="#">
+        Import
+      </button>
+    </div>
+  </div>
+
+  <div class="shadow-lg rounded-xl h-96 ">
+    <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes-new/camera.jpg"
+      alt="Writing on a piece of paper with a traditional pen.">
+    <div class="h-40 px-6 py-4 ">
+      <div class="mb-2 text-xl font-bold">Scan</div>
+      <p class="text-base text-gray-700">
+        Upload an image of the recipe you want to add or take a picture using your device's camera.
+      </p>
+    </div>
+    <hr>
+    <div class="px-6 pt-4 pb-2">
+      <button id="upload__button"
+        class="flex justify-center w-full duration-300 border-2 border-gray-800 rounded-lg text-gray-00 hover:bg-gray-800 hover:text-white center"
+        href="/recipes/new/manual">
+        Upload
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="import__modal" class="absolute inset-0 flex items-center justify-center hidden bg-gray-700 bg-opacity-50">
+  <div class="w-3/4 p-6 bg-white rounded-lg md:w-96">
+    <div class="flex items-center justify-between">
+      <h3 class="text-xl">Import from a Website</h3>
+      <svg id="import__modal-close" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 cursor-pointer" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </div>
+    <form action="/recipes/new/website" method="post" class="mt-4">
+      <div class="mb-5">
+        <label for="import__modal-url" class="text-sm font-bold text-gray-600">URL</label>
+        <input id="import__modal-url" type="url" name="url" required
+          class="w-full p-2 border border-gray-300 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-purple-600"
+          placeholder="https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/" autocomplete="off">
+      </div>
+      <button type="submit"
+        class="w-full p-2 font-semibold text-white duration-300 bg-blue-500 border-2 rounded-lg text-gray-00 hover:bg-blue-800">
+        Submit
+      </button>
+    </form>
+  </div>
+</div>
+
+<div id="upload__modal" class="absolute inset-0 flex items-center justify-center hidden bg-gray-700 bg-opacity-50">
+  <div class="w-3/4 p-6 bg-white rounded-lg md:w-96">
+    <div class="flex items-center justify-between">
+      <h3 class="text-xl">Scan or Upload</h3>
+      <svg id="upload__modal-close" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 cursor-pointer" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </div>
+    <form action="/recipes/new/image" method="post" class="mt-4">
+      <div class="mb-5">
+        <label for="upload__modal-file" class="text-sm font-bold text-gray-600">Choose an image to upload</label>
+        <input id="upload__modal-file" type="file" name="file" required accept="image/*;capture=camera"
+          class="w-full p-2 border border-gray-300 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-purple-600">
+      </div>
+      <button type="submit"
+        class="w-full p-2 font-semibold text-white duration-300 bg-blue-500 border-2 rounded-lg text-gray-00 hover:bg-blue-800">
+        Submit
+      </button>
+    </form>
+  </div>
+</div>
+
+<script>
+  const modals = {
+    import: document.getElementById('import__modal'),
+    upload: document.getElementById('upload__modal'),
+  }
+
+  Object.keys(modals).forEach(modal => {
+    document.getElementById(`${modal}__button`).addEventListener('mousedown', () => {
+      modals[modal].classList.toggle('hidden')
+      window.scroll(0, 0)
+    })
+
+    document.getElementById(`${modal}__modal-close`).addEventListener('mousedown', () => {
+      modals[modal].classList.add('hidden')
+    })
+  })
+</script>
+{{end}}
