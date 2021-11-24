@@ -49,14 +49,14 @@ jobs:
       - name: Install Tesseract
         run: sudo apt-get install tesseract-ocr libtesseract-dev
 
+      - name: Get dependencies
+        run: go mod download 
+
       - name: Build
-        run: go build -v ./...
+        run: make build
 
       - name: Test
         run: go test -v ./...
-
-      - name: Create vendor folder
-        run: go mod vendor
 
   deploy:
     runs-on: ubuntu-latest
