@@ -8,8 +8,12 @@ build-go:
 build-css:
 	 ${TAILWIND} -o static/css/tailwind.css 
 
-watch: 
+watch-css: 
 	${TAILWIND} -o static/css/tailwind.css -w
+
+watch-js:
+	cd views/tailwind && pnpm run watch
+
 
 run:
 	go run main.go serve

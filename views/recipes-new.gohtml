@@ -31,9 +31,9 @@
     </div>
     <hr>
     <div class="px-6 pt-4 pb-2">
-      <button id="import__button"
+      <button id="modal__import-open-button"
         class="flex justify-center w-full duration-300 border-2 border-gray-800 rounded-lg text-gray-00 hover:bg-gray-800 hover:text-white center"
-        href="#">
+        onclick="openModal(event)">
         Import
       </button>
     </div>
@@ -50,77 +50,12 @@
     </div>
     <hr>
     <div class="px-6 pt-4 pb-2">
-      <button id="upload__button"
+      <button id="modal__upload-open-button"
         class="flex justify-center w-full duration-300 border-2 border-gray-800 rounded-lg text-gray-00 hover:bg-gray-800 hover:text-white center"
-        href="/recipes/new/manual">
+        onclick="openModal(event)">
         Upload
       </button>
     </div>
   </div>
 </div>
-
-<div id="import__modal" class="absolute inset-0 flex items-center justify-center hidden bg-gray-700 bg-opacity-50">
-  <div class="w-3/4 p-6 bg-white rounded-lg md:w-96">
-    <div class="flex items-center justify-between">
-      <h3 class="text-xl">Import from a Website</h3>
-      <svg id="import__modal-close" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-      </svg>
-    </div>
-    <form action="/recipes/new/website" method="post" class="mt-4">
-      <div class="mb-5">
-        <label for="import__modal-url" class="text-sm font-bold text-gray-600">URL</label>
-        <input id="import__modal-url" type="url" name="url" required
-          class="w-full p-2 border border-gray-300 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-purple-600"
-          placeholder="https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/" autocomplete="off">
-      </div>
-      <button type="submit"
-        class="w-full p-2 font-semibold text-white duration-300 bg-blue-500 border-2 rounded-lg text-gray-00 hover:bg-blue-800">
-        Submit
-      </button>
-    </form>
-  </div>
-</div>
-
-<div id="upload__modal" class="absolute inset-0 flex items-center justify-center hidden bg-gray-700 bg-opacity-50">
-  <div class="w-3/4 p-6 bg-white rounded-lg md:w-96">
-    <div class="flex items-center justify-between">
-      <h3 class="text-xl">Scan or Upload</h3>
-      <svg id="upload__modal-close" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 " fill="none" viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-      </svg>
-    </div>
-    <form action="/recipes/new/image" method="post" class="mt-4">
-      <div class="mb-5">
-        <label for="upload__modal-file" class="text-sm font-bold text-gray-600">Choose an image to upload</label>
-        <input id="upload__modal-file" type="file" name="file" required accept="image/*;capture=camera"
-          class="w-full p-2 border border-gray-300 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-purple-600">
-      </div>
-      <button type="submit"
-        class="w-full p-2 font-semibold text-white duration-300 bg-blue-500 border-2 rounded-lg text-gray-00 hover:bg-blue-800">
-        Submit
-      </button>
-    </form>
-  </div>
-</div>
-
-<script>
-  const modals = {
-    import: document.getElementById('import__modal'),
-    upload: document.getElementById('upload__modal'),
-  }
-
-  Object.keys(modals).forEach(modal => {
-    document.getElementById(`${modal}__button`).addEventListener('mousedown', () => {
-      modals[modal].classList.toggle('hidden')
-      window.scroll(0, 0)
-    })
-
-    document.getElementById(`${modal}__modal-close`).addEventListener('mousedown', () => {
-      modals[modal].classList.add('hidden')
-    })
-  })
-</script>
 {{end}}

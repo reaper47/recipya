@@ -1,43 +1,75 @@
 {{define "title"}}New Recipe{{end}}
 
 {{define "content"}}
-<form action="/recipes/new/manual" method="post" class="px-4">
-  <div class="border border-gray-900">
+<form action="/recipes/new/manual" method="post" class="grid grid-cols-1 px-4 pb-4 md:grid-cols-3">
+  <div class="col-span-1 text-lg border-gray-900 md:col-span-2 rounded-t-md">
+    <label for="title" class="hidden"></label>
+    <input type="text" id="title" name="title" placeholder="Title of the recipe" required
+      class="relative w-full py-2 font-bold text-center text-gray-600 placeholder-gray-400 bg-white border border-gray-400 rounded-t-lg outline-none focus:outline-none focus:ring">
+  </div>
+
+  <div class="w-full col-span-1 border-b border-l border-r border-gray-900 place-self-end">
+    <img id="output" class="object-cover w-full h-full">
+    <label
+      class="flex flex-row items-center py-2 tracking-wide text-purple-600 transition-all duration-150 ease-linear bg-white place-content-center hover:bg-purple-600 hover:text-white">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+      </svg>
+      <span class="ml-2">
+        Upload an image of the recipe
+      </span>
+      <input type="file" name="image/*;capture=camera" onchange="loadFile(event)" class="hidden">
+    </label>
+  </div>
+
+  <div class="col-span-1 p-2 border-b border-l border-r border-black md:col-span-3">
+    <div class="flex flex-col pb-2">
+      <label for="category" class="text-sm font-bold text-gray-600">Category</label>
+      <select id="category" name="categories" required class="py-1.5 rounded-lg px-2">
+        <option value="">--Please choose an option--</option>
+        <option value="dog">Dog</option>
+        <option value="cat">Cat</option>
+        <option value="hamster">Hamster</option>
+        <option value="parrot">Parrot</option>
+        <option value="spider">Spider</option>
+        <option value="goldfish">Goldfish</option>
+      </select>
+    </div>
     <div>
-      Title
-      <div class="h-1/5">
-        <img id="output" src="" alt="Uploaded image of the recipe." class="object-contain h-96">
-        <label
-          class="flex flex-col items-center w-64 px-4 py-6 tracking-wide text-purple-600 uppercase transition-all duration-150 ease-linear bg-white border border-blue-900 rounded-md shadow-md hover:bg-purple-600 hover:text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 " fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-          </svg>
-          <span class="mt-2 text-base leading-normal">Select an image</span>
-          <input type="file" name="image/*;capture=camera" onchange="loadFile(event)" class="hidden">
-        </label>
+      <label for="category-new" class="text-sm font-bold text-gray-600">Category not listed?</label>
+      <div class="flex flex-col">
+        <input id="category-new" type="text" name="category-new"
+          class="p-2 border border-gray-300 rounded-t-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
+          placeholder="Add a category" autocomplete="off">
+        <button type="button"
+          class="col-span-2 duration-300 border border-gray-800 rounded-b-lg text-gray-00 hover:bg-gray-800 hover:text-white center"
+          onclick="addCategory(event)">
+          Add
+        </button>
+
       </div>
     </div>
-    <div>
-      <p>left category</p>
-      <p>Right source</p>
-    </div>
-    <div>
-      description
-    </div>
-    <div>
-      <div>nutrition</div>
-      <div>yields</div>
-      <div>times</div>
-    </div>
-    <div>
-      <div>ingredients</div>
-      <div>instructions</div>
-    </div>
+  </div>
+
+  <div class="col-span-1 py-2 border-b border-l border-r border-black md:col-span-3">
+    <p>Right source</p>
+  </div>
+
+  <div class="col-span-1 py-2 border-b border-l border-r border-black md:col-span-3">
+    description
+  </div>
+  <div class="col-span-1 py-2 border-b border-l border-r border-black md:col-span-3">
+    <div>nutrition</div>
+    <div>yields</div>
+    <div>times</div>
+  </div>
+  <div class="col-span-1 py-2 border-b border-l border-r border-black md:col-span-3">
+    <div>ingredients</div>
+    <div>instructions</div>
   </div>
   <button type="submit"
-    class="w-full p-2 font-semibold text-white duration-300 bg-blue-500 text-gray-00 hover:bg-blue-800">
+    class="w-full col-span-1 p-2 font-semibold text-white duration-300 bg-blue-500 md:col-span-3 text-gray-00 hover:bg-blue-800">
     Submit
   </button>
 </form>
@@ -46,7 +78,30 @@
   const loadFile = (event) => {
     const output = document.getElementById('output')
     output.src = URL.createObjectURL(event.target.files[0])
+    output.alt = "Uploaded image of the recipe."
     output.onload = () => URL.revokeObjectURL(output.src)
+  }
+
+  const addCategory = (event) => {
+    const input = event.target.previousElementSibling
+    if (!input.value) {
+      return
+    }
+
+    const category = input.value
+    const select = document.getElementById('category')
+    const options = [...select.options].map(o => o.value.toLowerCase())
+    if (options.includes(category.toLowerCase())) {
+      input.value = ""
+      return
+    }
+
+    const option = document.createElement('option')
+    option.text = option.value = category
+    select.add(option, select.childElementCount)
+    input.value = ""
+
+    showSuccessToast("Category has been added")
   }
 </script>
 {{end}}

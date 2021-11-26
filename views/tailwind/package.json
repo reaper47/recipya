@@ -1,7 +1,18 @@
 {
+	"scripts": {
+		"build": "esbuild index.js --bundle --minify --outfile=../../static/js/bundle.js",
+		"watch": "esbuild index.js --bundle --minify --outfile=../../static/js/bundle.js --watch"
+	},
 	"devDependencies": {
 		"autoprefixer": "^10.4.0",
 		"postcss": "^8.3.11",
 		"tailwindcss": "^2.2.19"
+	},
+	"dependencies": {
+		"esbuild": "^0.13.15",
+		"micromodal": "^0.4.9",
+		"picomodal": "^3.0.0",
+		"standard": "^16.0.4",
+		"toastify-js": "^1.11.2"
 	}
 }
