@@ -1,14 +1,14 @@
 {{define "title"}}New Recipe{{end}}
 
 {{define "content"}}
-<form action="/recipes/new/manual" method="post" class="grid grid-cols-1 px-4 pb-4 md:grid-cols-3">
+<form action="/recipes/new/manual" method="post" class="grid grid-cols-1 px-4 pb-4 md:grid-cols-3 md:border-r-0">
   <div class="col-span-1 text-lg border-gray-900 md:col-span-2 rounded-t-md">
     <label for="title" class="hidden"></label>
     <input type="text" id="title" name="title" placeholder="Title of the recipe*" required
       class="relative w-full py-2 font-bold text-center text-gray-600 placeholder-gray-400 bg-white border border-gray-400 rounded-t-lg outline-none focus:outline-none focus:ring">
   </div>
 
-  <div class="w-full col-span-1 border-b border-l border-r border-gray-900 place-self-end">
+  <div class="w-full col-span-1 border-b border-l border-r border-gray-900 place-self-end md:border-b-0 md:border-l-0">
     <img id="output" class="object-cover w-full h-full">
     <label
       class="flex flex-row items-center py-2 tracking-wide text-purple-600 transition-all duration-150 ease-linear bg-white place-content-center hover:bg-purple-600 hover:text-white">
@@ -23,7 +23,7 @@
     </label>
   </div>
 
-  <div class="col-span-1 p-2 border-b border-l border-r border-black md:col-span-3">
+  <div class="col-span-1 p-2 border-b border-l border-r border-black md:col-span-2 md:border-r-0">
     <div class="flex flex-col pb-2">
       <label for="category" class="text-sm font-bold text-gray-600">
         Category <sup class="text-red-600">*</sup>
@@ -52,7 +52,7 @@
     </div>
   </div>
 
-  <div class="col-span-1 border-b border-l border-r border-black md:col-span-3">
+  <div class="col-span-1 border-b border-l border-r border-black md:col-span-1 md:border-t">
     <div class="flex flex-col p-2">
       <label for="source" class="text-sm font-bold text-gray-600">
         Source <sup class="text-red-600">*</sup>
@@ -72,7 +72,7 @@
     </div>
   </div>
 
-  <div class="col-span-1 py-2 border-b border-l border-r border-black md:col-span-3">
+  <div class="col-span-1 py-2 border-b border-l border-r border-black md:col-span-1 md:border-r-0">
     <div class="relative flex flex-col p-2">
       <label for="yields" class="text-sm font-bold text-gray-600">Yields</label>
       <input type="number" name="yields" id="yields" min="1" value="1" class="p-2 border border-gray-300 rounded-lg ">
@@ -82,7 +82,7 @@
     </div>
   </div>
 
-  <div class="col-span-1 border-b border-l border-r border-black md:col-span-3">
+  <div class="col-span-1 border-b border-l border-r border-black md:col-span-1 md:border-r-0">
     <div class="inline-block min-w-full overflow-x-auto align-middle">
       <div class="overflow-hidden border-gray-200">
         <table class="min-w-full divide-y divide-gray-200">
@@ -190,7 +190,7 @@
     </div>
   </div>
 
-  <div class="col-span-1 border-b border-l border-r border-black md:col-span-3">
+  <div class="col-span-1 border-b border-l border-r border-black md:col-span-1">
     <div class="inline-block min-w-full overflow-x-auto align-middle">
       <div class="overflow-hidden border-gray-200">
         <table class="min-w-full divide-y divide-gray-200">
@@ -228,14 +228,15 @@
   </div>
 
 
-  <div class="col-span-1 py-2 border-b border-l border-r border-black md:col-span-3">
+  <div class="col-span-1 py-2 border-b border-l border-r border-black md:col-span-1 md:border-r-0">
     <fieldset class="text-center border-none">
-      <legend class="pb-2 m-auto text-sm font-bold text-gray-600 underline">Ingredients</legend>
+      <legend class="pb-2 m-auto text-sm font-bold text-gray-600 ">
+        <span class="underline">Ingredients</span> <sup class="text-red-600 no-underline">*</sup>
+      </legend>
       <ol class="pl-6 list-decimal">
         <li class="pl-2">
           <input type="text" name="ingredient-1" placeholder="Ingredient #1" required
             class="w-3/4 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
-
           <button type="button"
             class="w-8 h-8 col-span-2 text-center duration-300 bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center"
             onclick="addEntry(event)">
@@ -251,23 +252,24 @@
     </fieldset>
   </div>
 
-  <div class="col-span-1 py-2 border-b border-l border-r border-black md:col-span-3">
+  <div class="col-span-1 py-2 pb-8 border-b border-l border-r border-black md:col-span-2">
     <fieldset class="text-center border-none">
-      <legend class="pb-2 m-auto text-sm font-bold text-gray-600 underline">Instructions</legend>
+      <legend class="m-auto text-sm font-bold text-gray-600">
+        <span class="underline">Instructions</span> <sup class="text-red-600">*</sup>
+      </legend>
       <ol class="pl-6 list-decimal">
-        <li class="pl-2">
-          <input type="text" name="instruction-1" placeholder="Instrction #1" required
-            class="w-3/4 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
-
+        <li class="relative pt-2 pl-2">
+          <textarea required name="instruction-1" rows="3" class="w-3/4 border border-gray-300 md:w-4/5"
+            placeholder="Instruction #1" required></textarea>
           <button type="button"
-            class="w-8 h-8 col-span-2 text-center duration-300 bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center"
-            onclick="addEntry(event)">
-            +
-          </button>
-          <button type="button"
-            class="w-8 h-8 col-span-2 duration-300 bg-red-300 border border-gray-800 rounded-lg hover:bg-red-600 hover:text-white center"
+            class="absolute md:flex-initial w-8 h-8 right-0.5 md:right-auto duration-300 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center"
             onclick="removeEntry(event)">
             -
+          </button>
+          <button type="button"
+            class="absolute md:flex-initial bottom-0 right-0.5 md:right-auto w-8 h-8 text-center duration-300 bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center"
+            onclick="addEntry(event)">
+            +
           </button>
         </li>
       </ol>
@@ -332,9 +334,14 @@
     }
 
     const clone = li.cloneNode(true)
-    clone.firstElementChild.value = ""
+    const cloneInput = clone.firstElementChild
+    cloneInput.value = ""
+
+    const [type, i] = li.firstElementChild.name.split('-')
+    cloneInput.name = `${type}-${parseInt(i) + 1}`
+
     ol.appendChild(clone)
-    clone.firstElementChild.focus()
+    cloneInput.focus()
     adjustPlaceholder(ol)
   }
 
@@ -342,7 +349,7 @@
     const ol = event.target.parentElement.parentElement
     if (ol.childElementCount === 1) {
       let input = event.target
-      while (input.tagName !== "INPUT") {
+      while (!["INPUT", "TEXTAREA"].includes(input.tagName)) {
         input = input.previousElementSibling
       }
       input.value = ""
@@ -354,7 +361,7 @@
 
   document.addEventListener('keydown', (event) => {
     const { name } = event.target
-    if (event.key === "Enter" && (name.startsWith("ingredient") || name.startsWith('instruction'))) {
+    if (event.key === "Enter" && name.startsWith("ingredient")) {
       event.preventDefault()
       addEntry(event)
     }
