@@ -8,15 +8,16 @@ CREATE TABLE categories (
 
 CREATE TABLE times (
   id SERIAL PRIMARY KEY,
-  prep_time INTERVAL,
-  cook_time INTERVAL,
-  total_time INTERVAL
+  prep INTERVAL,
+  cook INTERVAL,
+  total INTERVAL,
+  UNIQUE (prep, cook)
 );
 
 CREATE TABLE nutrition (
   id SERIAL PRIMARY KEY,
   calories VARCHAR(10),
-  total_carbohydrate VARCHAR(5),
+  total_carbohydrates VARCHAR(5),
   sugars VARCHAR(7),
   protein VARCHAR(5),
   total_fat VARCHAR(5),
@@ -63,26 +64,30 @@ CREATE TABLE keywords (
 CREATE TABLE ingredient_recipe (
   id SERIAL PRIMARY KEY,
   recipe_id INTEGER NOT NULL REFERENCES recipes(id) ON DELETE CASCADE,
-  ingredient_id INTEGER NOT NULL REFERENCES ingredients(id) ON DELETE CASCADE
+  ingredient_id INTEGER NOT NULL REFERENCES ingredients(id) ON DELETE CASCADE,
+  UNIQUE (recipe_id, ingredient_id)
 );
 
 CREATE TABLE instruction_recipe (
   id SERIAL PRIMARY KEY,
   recipe_id INTEGER NOT NULL REFERENCES recipes(id) ON DELETE CASCADE,
-  instruction_id INTEGER NOT NULL REFERENCES instructions(id) ON DELETE CASCADE
+  instruction_id INTEGER NOT NULL REFERENCES instructions(id) ON DELETE CASCADE,
+  UNIQUE (recipe_id, instruction_id)
 
 );
 
 CREATE TABLE tool_recipe (
   id SERIAL PRIMARY KEY,
   recipe_id INTEGER NOT NULL REFERENCES recipes(id) ON DELETE CASCADE,
-  tool_id INTEGER NOT NULL REFERENCES tools(id) ON DELETE CASCADE
+  tool_id INTEGER NOT NULL REFERENCES tools(id) ON DELETE CASCADE,
+  UNIQUE (recipe_id, tool_id)
 );
 
 CREATE TABLE keyword_recipe (
   id SERIAL PRIMARY KEY,
   recipe_id INTEGER NOT NULL REFERENCES recipes(id) ON DELETE CASCADE,
-  keyword_id INTEGER NOT NULL REFERENCES keywords(id) ON DELETE CASCADE
+  keyword_id INTEGER NOT NULL REFERENCES keywords(id) ON DELETE CASCADE,
+  UNIQUE (recipe_id, keyword_id)
 );
 
 --
@@ -90,8 +95,8 @@ CREATE TABLE keyword_recipe (
 --
 CREATE FUNCTION times_calc_total_time() RETURNS trigger AS $func$
   BEGIN
-    IF NEW.prep_time IS NOT NULL AND cook_time IS NOT NULL AND total_time IS NULL THEN
-      NEW.total_time := NEW.prep_time + NEW.cook_time;
+    IF NEW.prep IS NOT NULL AND NEW.cook IS NOT NULL AND NEW.total IS NULL THEN
+      NEW.total := NEW.prep + NEW.cook;
       RETURN NEW;
     END IF;
   END;

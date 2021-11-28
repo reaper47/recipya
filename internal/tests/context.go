@@ -25,7 +25,7 @@ type Context struct {
 	pool     *pgxpool.Pool
 }
 
-// Reset ...
+// Reset resets the database.
 func (m Context) Reset() {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
@@ -36,7 +36,7 @@ func (m Context) Reset() {
 	}
 }
 
-// Close ...
+// Close closes the connection pool.
 func (m Context) Close() {
 	m.pool.Close()
 
@@ -53,7 +53,7 @@ func (m Context) Close() {
 	pool.Close()
 }
 
-// NewContext ...
+// NewContext creates a new context.
 func NewContext() Context {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()

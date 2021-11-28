@@ -7,15 +7,17 @@ build-go:
 
 build-css:
 	 ${TAILWIND} -o static/css/tailwind.css 
+	
+db-reset:
+	go run main.go migrate down && go run main.go migrate up
+
+run:
+	go run main.go serve
 
 watch-css: 
 	${TAILWIND} -o static/css/tailwind.css -w
 
 watch-js:
 	cd views/tailwind && pnpm run watch
-
-
-run:
-	go run main.go serve
 
 build: build-css build-go 

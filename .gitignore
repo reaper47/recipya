@@ -1,7 +1,9 @@
-dist/
-views/tailwind/node_modules
 .env
+data/
+dist/
 recipya
+views/tailwind/node_modules
+
 
 # Binaries for programs and plugins
 *.exe

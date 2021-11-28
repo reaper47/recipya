@@ -1,7 +1,8 @@
 {{define "title"}}New Recipe{{end}}
 
 {{define "content"}}
-<form action="/recipes/new/manual" method="post" class="grid grid-cols-1 px-4 pb-4 md:grid-cols-3 md:border-r-0">
+<form action="/recipes/new/manual" method="post" enctype=multipart/form-data
+  class="grid grid-cols-1 px-4 pb-4 md:grid-cols-3 md:border-r-0">
   <div class="col-span-1 text-lg border-gray-900 md:col-span-2 rounded-t-md">
     <label for="title" class="hidden"></label>
     <input type="text" id="title" name="title" placeholder="Title of the recipe*" required
@@ -19,7 +20,8 @@
       <span class="ml-2">
         Upload an image of the recipe
       </span>
-      <input type="file" name="image/*;capture=camera" onchange="loadFile(event)" class="hidden">
+      <input type="file" accept="image/*;capture=camera" capture="camera" name="image" onchange="loadFile(event)"
+        class="hidden">
     </label>
   </div>
 
@@ -28,7 +30,7 @@
       <label for="category" class="text-sm font-bold text-gray-600">
         Category <sup class="text-red-600">*</sup>
       </label>
-      <select id="category" name="categories" required class="py-1.5 rounded-lg px-2">
+      <select id="category" name="category" required class="py-1.5 rounded-lg px-2">
         <option value="">--Please choose an option--</option>
         <option value="dog">Dog</option>
         <option value="cat">Cat</option>
@@ -41,7 +43,7 @@
     <div>
       <label for="category-new" class="text-sm font-bold text-gray-600">Category not listed?</label>
       <div class="flex flex-col">
-        <input id="category-new" type="text" name="category-new" class="p-2 border border-gray-300 rounded-t-lg "
+        <input id="category-new" type="text" class="p-2 border border-gray-300 rounded-t-lg "
           placeholder="Add a category" autocomplete="off">
         <button type="button"
           class="col-span-2 duration-300 border border-gray-800 rounded-b-lg hover:bg-gray-800 hover:text-white center"

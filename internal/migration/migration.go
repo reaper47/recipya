@@ -37,7 +37,11 @@ func Up(db *sql.DB) {
 		log.Fatalln("Error retrieving database version post-up:", err)
 	}
 
-	log.Printf("Updated schema from version %d to version %d successfully.\n", versionPreUp, versionPostUp)
+	log.Printf(
+		"Updated schema from version %d to version %d successfully.\n",
+		versionPreUp,
+		versionPostUp,
+	)
 
 	err = runPostUpgradeHooks(versionPostUp, db)
 	if err != nil {
@@ -68,7 +72,11 @@ func Down(db *sql.DB) {
 		log.Fatalln("Error retrieving database version post-down:", err)
 	}
 
-	log.Printf("Downgrade schema from version %d to version %d successfully.\n", versionPreDown, versionPostDown)
+	log.Printf(
+		"Downgrade schema from version %d to version %d successfully.\n",
+		versionPreDown,
+		versionPostDown,
+	)
 }
 
 func getInstance(db *sql.DB) *migrate.Migrate {

@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/reaper47/recipya/internal/config"
 	"github.com/reaper47/recipya/internal/contexts"
 	"github.com/reaper47/recipya/internal/router"
 	"github.com/reaper47/recipya/internal/templates"
@@ -23,6 +24,15 @@ web browser at the address specified when you run the command.
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		templates.Load()
+		app := config.App()
+
+		_, err := os.Stat("data")
+		if os.IsNotExist(err) {
+			err := os.MkdirAll("data/img", os.ModePerm)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
 
 		srv := &http.Server{
 			Addr:         "0.0.0.0:8080",
@@ -48,7 +58,7 @@ web browser at the address specified when you run the command.
 		defer cancel()
 
 		srv.Shutdown(ctx)
-		log.Println("Server shutting down")
+		app.Teardown()
 		os.Exit(0)
 	},
 }

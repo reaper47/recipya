@@ -11,7 +11,8 @@ type Recipe struct {
 	ID           int64
 	Name         string
 	Description  string
-	Url          uuid.UUID
+	Image        uuid.UUID
+	Url          string
 	Yield        int16
 	Category     string
 	Times        Times
