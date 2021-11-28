@@ -14,6 +14,92 @@ type tableData struct {
 	Entries    []string
 }
 
+// GetAllRecipes gets all of the recipes in the database.
+func (m *postgresDBRepo) GetAllRecipes() ([]models.Recipe, error) {
+	ctx, cancel := contexts.Timeout(3 * time.Second)
+	defer cancel()
+
+	rows, err := m.Pool.Query(ctx, getRecipesStmt)
+	if err != nil {
+		return nil, err
+	}
+
+	var xr []models.Recipe
+	for rows.Next() {
+		var (
+			recipeID                                           int64
+			name, description, url, category                   string
+			image                                              uuid.UUID
+			yield                                              int16
+			prep, cook, total                                  time.Duration
+			calories, totalCarbohydrates, sugars, protein      string
+			totalFat, saturatedFat, cholesterol, sodium, fiber string
+			ingredients, instructions                          []string
+			createdAt, updatedAt                               time.Time
+		)
+
+		err := rows.Scan(
+			&recipeID,
+			&name,
+			&description,
+			&url,
+			&image,
+			&yield,
+			&category,
+			&ingredients,
+			&instructions,
+			&prep,
+			&cook,
+			&total,
+			&calories,
+			&totalCarbohydrates,
+			&sugars,
+			&protein,
+			&totalFat,
+			&saturatedFat,
+			&cholesterol,
+			&sodium,
+			&fiber,
+			&createdAt,
+			&updatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		xr = append(xr, models.Recipe{
+			ID:          recipeID,
+			Name:        name,
+			Description: description,
+			Image:       image,
+			Url:         url,
+			Yield:       yield,
+			Category:    category,
+			Times: models.Times{
+				Prep:  prep,
+				Cook:  cook,
+				Total: total,
+			},
+			Ingredients: ingredients,
+			Nutrition: models.Nutrition{
+				Calories:           calories,
+				TotalCarbohydrates: totalCarbohydrates,
+				Sugars:             sugars,
+				Protein:            protein,
+				TotalFat:           totalFat,
+				SaturatedFat:       saturatedFat,
+				Cholesterol:        cholesterol,
+				Sodium:             sodium,
+				Fiber:              fiber,
+			},
+			Instructions: instructions,
+			CreatedAt:    createdAt,
+			UpdatedAt:    updatedAt,
+		})
+	}
+	return xr, nil
+}
+
 // GetRecipe gets a recipe in the database.
 func (m *postgresDBRepo) GetRecipe(id int64) (models.Recipe, error) {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
@@ -87,12 +173,6 @@ func (m *postgresDBRepo) GetRecipe(id int64) (models.Recipe, error) {
 		CreatedAt:    createdAt,
 		UpdatedAt:    updatedAt,
 	}, nil
-}
-
-// GetAllRecipes gets all of the recipes in the database.
-func (m *postgresDBRepo) GetAllRecipes() ([]models.Recipe, error) {
-	recipes := []models.Recipe{}
-	return recipes, nil
 }
 
 // InsertNewRecipe inserts a new recipe into the database.

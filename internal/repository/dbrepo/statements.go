@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+// SELECT
 const getRecipeStmt = `
 	SELECT 
 		name, description, url, image, yield,
@@ -22,9 +23,33 @@ const getRecipeStmt = `
 	FROM recipes r
 	JOIN times t ON t.id=r.times_id
 	JOIN nutrition n ON n.id=r.nutrition_id 
-	WHERE r.id=$1;
+	WHERE r.id=$1
 `
 
+const getRecipesStmt = `
+	SELECT 
+		r.id, name, description, url, image, yield,
+		(
+			SELECT name
+			FROM categories
+			WHERE id=category_id
+		) AS category, 
+		array(select name from ingredient_recipe ir2 join ingredients i on i.id=ir2.id where ir2.recipe_id=r.id) as ingredients,
+		array(select name from instruction_recipe ir join instructions i2 on i2.id=ir.id where ir.recipe_id=r.id) as instructions,
+		prep, cook, total,
+		calories, total_carbohydrates, sugars, protein,
+		total_fat, saturated_fat, cholesterol, sodium, fiber,
+		created_at, updated_at
+	FROM recipes r
+	JOIN times t ON t.id=r.times_id
+	JOIN nutrition n ON n.id=r.nutrition_id 
+`
+
+func resetIDStmt(table string) string {
+	return "SELECT setval('" + table + "_id_seq', MAX(id)) FROM " + table
+}
+
+// INSERT
 const insertRecipeStmt = `
 	WITH nutrition AS (
 		INSERT INTO nutrition (
@@ -121,8 +146,4 @@ func insertAssocStmt(assocTable string, recipeID int64, ids []int64) (string, []
 	}
 	sql := "INSERT INTO " + assocTable + " (recipe_id," + col + ") VALUES " + values + " ON CONFLICT DO NOTHING"
 	return sql, si
-}
-
-func resetIDStmt(table string) string {
-	return "SELECT setval('" + table + "_id_seq', MAX(id)) FROM " + table
 }
