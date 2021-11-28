@@ -5,7 +5,27 @@ import (
 	"strings"
 )
 
-var insertRecipeStmt = `
+const getRecipeStmt = `
+	SELECT 
+		name, description, url, image, yield,
+		(
+			SELECT name
+			FROM categories
+			WHERE id=category_id
+		) AS category, 
+		array(select name from ingredient_recipe ir2 join ingredients i on i.id=ir2.id where ir2.recipe_id=$1) as ingredients,
+		array(select name from instruction_recipe ir join instructions i2 on i2.id=ir.id where ir.recipe_id=$1) as instructions,
+		prep, cook, total,
+		calories, total_carbohydrates, sugars, protein,
+		total_fat, saturated_fat, cholesterol, sodium, fiber,
+		created_at, updated_at
+	FROM recipes r
+	JOIN times t ON t.id=r.times_id
+	JOIN nutrition n ON n.id=r.nutrition_id 
+	WHERE r.id=$1;
+`
+
+const insertRecipeStmt = `
 	WITH nutrition AS (
 		INSERT INTO nutrition (
 			calories, total_carbohydrates, sugars, protein,

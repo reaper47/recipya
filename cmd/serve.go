@@ -54,11 +54,11 @@ web browser at the address specified when you run the command.
 		signal.Notify(c, os.Interrupt)
 		<-c
 
+		app.Teardown()
 		ctx, cancel := contexts.Timeout(10 * time.Second)
 		defer cancel()
 
 		srv.Shutdown(ctx)
-		app.Teardown()
 		os.Exit(0)
 	},
 }

@@ -3,21 +3,27 @@ package router
 import (
 	"net/http"
 
-	"github.com/julienschmidt/httprouter"
+	"github.com/gorilla/mux"
 	"github.com/reaper47/recipya/internal/router/handlers"
 	"github.com/reaper47/recipya/static"
 )
 
 // New creates a new, fully-configured router.
-func New() *httprouter.Router {
-	router := httprouter.New()
-	router.ServeFiles("/static/*filepath", http.FS(static.FS))
+func New() *mux.Router {
+	GET := http.MethodGet
+	POST := http.MethodPost
 
-	router.GET("/", handlers.Index)
-	router.GET("/recipes", handlers.Index)
-	router.GET("/recipes/new", handlers.RecipesAdd)
-	router.GET("/recipes/new/manual", handlers.GetRecipesNewManual)
-	router.POST("/recipes/new/manual", handlers.PostRecipesNewManual)
+	r := mux.NewRouter()
 
-	return router
+	r.PathPrefix("/static/").Handler(http.StripPrefix("/static", http.FileServer(http.FS(static.FS))))
+
+	r.HandleFunc("/", handlers.Index).Methods(GET)
+	r.HandleFunc("/recipes", handlers.Index).Methods(GET)
+	r.HandleFunc("/recipes/{id:[0-9]+}", handlers.GetRecipe).Methods(GET)
+
+	r.HandleFunc("/recipes/new", handlers.RecipesAdd).Methods(GET)
+	r.HandleFunc("/recipes/new/manual", handlers.GetRecipesNewManual).Methods(GET)
+	r.HandleFunc("/recipes/new/manual", handlers.PostRecipesNewManual).Methods(POST)
+
+	return r
 }

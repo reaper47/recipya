@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
 	"image"
 	"image/jpeg"
@@ -15,7 +16,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/julienschmidt/httprouter"
+	"github.com/gorilla/mux"
 	"github.com/reaper47/recipya/internal/config"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
@@ -23,15 +24,38 @@ import (
 )
 
 // RecipesAdd handles the GET /recipes/new URI.
-func RecipesAdd(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+func RecipesAdd(wr http.ResponseWriter, req *http.Request) {
 	err := templates.Render(wr, "recipes-new.gohtml", nil)
 	if err != nil {
 		log.Println(err)
 	}
 }
 
+// GetRecipe gets the recipe from the given ID.
+func GetRecipe(wr http.ResponseWriter, req *http.Request) {
+	id, err := strconv.ParseInt(mux.Vars(req)["id"], 10, 64)
+	if err != nil {
+		showErrorPage(wr, "The id is not specified.", err)
+		return
+	}
+
+	r, err := config.App().Repo.GetRecipe(id)
+	if err != nil {
+		showErrorPage(wr, "Could not retrieve the recipe.", err)
+		return
+	}
+
+	wr.Header().Set("Content-Type", "application/json")
+	j, err := json.Marshal(r)
+	if err != nil {
+		showErrorPage(wr, "Could not send the recipe.", err)
+		return
+	}
+	wr.Write(j)
+}
+
 // GetRecipesNewManual handles the GET /recipes/new/manual URI.
-func GetRecipesNewManual(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+func GetRecipesNewManual(wr http.ResponseWriter, req *http.Request) {
 	err := templates.Render(wr, "recipes-new-manual.gohtml", nil)
 	if err != nil {
 		log.Println(err)
@@ -39,7 +63,7 @@ func GetRecipesNewManual(wr http.ResponseWriter, req *http.Request, _ httprouter
 }
 
 // PostRecipesNewManual handles the POST /recipes/new/manual URI.
-func PostRecipesNewManual(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+func PostRecipesNewManual(wr http.ResponseWriter, req *http.Request) {
 	yield, err := strconv.ParseInt(req.FormValue("yields"), 10, 16)
 	if err != nil {
 		showErrorPage(wr, "An error occured when retrieving the yield count.", err)

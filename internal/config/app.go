@@ -1,6 +1,7 @@
 package config
 
 import (
+	"log"
 	"sync"
 
 	"github.com/reaper47/recipya/internal/repository"
@@ -25,6 +26,7 @@ type AppConfig struct {
 // This function should be called when the AppConfig is not needed anymore.
 func (m *AppConfig) Teardown() {
 	m.Repo.Close()
+	log.Println("Closed database connection")
 }
 
 // InitApp initializes the App configuration variable.

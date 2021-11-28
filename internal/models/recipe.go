@@ -34,7 +34,6 @@ type Times struct {
 
 // Nutrition holds nutrition facts.
 type Nutrition struct {
-	ID                 int64
 	Calories           string
 	TotalCarbohydrates string
 	Sugars             string

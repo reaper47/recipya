@@ -3,6 +3,7 @@ package db
 import (
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/contexts"
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -11,6 +12,81 @@ type tableData struct {
 	Table      string
 	AssocTable string
 	Entries    []string
+}
+
+// GetRecipe gets a recipe in the database.
+func (m *postgresDBRepo) GetRecipe(id int64) (models.Recipe, error) {
+	ctx, cancel := contexts.Timeout(3 * time.Second)
+	defer cancel()
+
+	var (
+		name, description, url, category                   string
+		image                                              uuid.UUID
+		yield                                              int16
+		prep, cook, total                                  time.Duration
+		calories, totalCarbohydrates, sugars, protein      string
+		totalFat, saturatedFat, cholesterol, sodium, fiber string
+		ingredients, instructions                          []string
+		createdAt, updatedAt                               time.Time
+	)
+
+	err := m.Pool.QueryRow(ctx, getRecipeStmt, id).Scan(
+		&name,
+		&description,
+		&url,
+		&image,
+		&yield,
+		&category,
+		&ingredients,
+		&instructions,
+		&prep,
+		&cook,
+		&total,
+		&calories,
+		&totalCarbohydrates,
+		&sugars,
+		&protein,
+		&totalFat,
+		&saturatedFat,
+		&cholesterol,
+		&sodium,
+		&fiber,
+		&createdAt,
+		&updatedAt,
+	)
+	if err != nil {
+		return models.Recipe{}, err
+	}
+
+	return models.Recipe{
+		ID:          id,
+		Name:        name,
+		Description: description,
+		Image:       image,
+		Url:         url,
+		Yield:       yield,
+		Category:    category,
+		Times: models.Times{
+			Prep:  prep,
+			Cook:  cook,
+			Total: total,
+		},
+		Ingredients: ingredients,
+		Nutrition: models.Nutrition{
+			Calories:           calories,
+			TotalCarbohydrates: totalCarbohydrates,
+			Sugars:             sugars,
+			Protein:            protein,
+			TotalFat:           totalFat,
+			SaturatedFat:       saturatedFat,
+			Cholesterol:        cholesterol,
+			Sodium:             sodium,
+			Fiber:              fiber,
+		},
+		Instructions: instructions,
+		CreatedAt:    createdAt,
+		UpdatedAt:    updatedAt,
+	}, nil
 }
 
 // GetAllRecipes gets all of the recipes in the database.
