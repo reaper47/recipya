@@ -235,3 +235,6 @@ func insertIntoAssocTableStmt(td tableData, from string, params map[string]strin
 	}
 	return stmt + ")"
 }
+
+// DELETE
+const deleteRecipeStmt = "DELETE FROM recipes WHERE id = $1"

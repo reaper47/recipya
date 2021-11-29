@@ -31,27 +31,45 @@ func RecipesAdd(wr http.ResponseWriter, req *http.Request) {
 	}
 }
 
-// GetRecipe gets the recipe from the given ID.
-func GetRecipe(wr http.ResponseWriter, req *http.Request) {
+// Recipe handles the /recipes/{id:[0-9]+} endpoint.
+func Recipe(wr http.ResponseWriter, req *http.Request) {
 	id, err := strconv.ParseInt(mux.Vars(req)["id"], 10, 64)
 	if err != nil {
-		showErrorPage(wr, "The id is not specified.", err)
+		showErrorPage(wr, "The id is not specified:", err)
 		return
 	}
 
+	switch req.Method {
+	case http.MethodGet:
+		handleGetRecipe(wr, id)
+	case http.MethodDelete:
+		handleDeleteRecipe(wr, req, id)
+	}
+}
+
+func handleGetRecipe(wr http.ResponseWriter, id int64) {
 	r, err := config.App().Repo.GetRecipe(id)
 	if err != nil {
-		showErrorPage(wr, "Could not retrieve the recipe.", err)
+		showErrorPage(wr, "Could not retrieve the recipe:", err)
 		return
 	}
 
 	wr.Header().Set("Content-Type", "application/json")
 	j, err := json.Marshal(r)
 	if err != nil {
-		showErrorPage(wr, "Could not send the recipe.", err)
+		showErrorPage(wr, "Could not send the recipe:", err)
 		return
 	}
 	wr.Write(j)
+}
+
+func handleDeleteRecipe(wr http.ResponseWriter, req *http.Request, id int64) {
+	err := config.App().Repo.DeleteRecipe(id)
+	if err != nil {
+		showErrorPage(wr, "Could not delete the recipe:", err)
+		return
+	}
+	http.Redirect(wr, req, "/", http.StatusSeeOther)
 }
 
 // GetRecipesNewManual handles the GET /recipes/new/manual URI.
@@ -66,19 +84,19 @@ func GetRecipesNewManual(wr http.ResponseWriter, req *http.Request) {
 func PostRecipesNewManual(wr http.ResponseWriter, req *http.Request) {
 	yield, err := strconv.ParseInt(req.FormValue("yields"), 10, 16)
 	if err != nil {
-		showErrorPage(wr, "An error occured when retrieving the yield count.", err)
+		showErrorPage(wr, "An error occured when retrieving the yield count:", err)
 		return
 	}
 
 	prepTime, err := timeToDuration(req, "time-preparation")
 	if err != nil {
-		showErrorPage(wr, "An error occured when parsing the preparation time.", err)
+		showErrorPage(wr, "An error occured when parsing the preparation time:", err)
 		return
 	}
 
 	cookTime, err := timeToDuration(req, "time-cooking")
 	if err != nil {
-		showErrorPage(wr, "An error occured when parsing the cooking time.", err)
+		showErrorPage(wr, "An error occured when parsing the cooking time:", err)
 		return
 	}
 
@@ -88,7 +106,7 @@ func PostRecipesNewManual(wr http.ResponseWriter, req *http.Request) {
 		defer file.Close()
 		imageUUID, err = saveImage(file, "img")
 		if err != nil {
-			showErrorPage(wr, "An error occured when saving the image.", err)
+			showErrorPage(wr, "An error occured when saving the image:", err)
 			return
 		}
 	}
@@ -121,7 +139,7 @@ func PostRecipesNewManual(wr http.ResponseWriter, req *http.Request) {
 
 	id, err := config.App().Repo.InsertNewRecipe(r)
 	if err != nil {
-		showErrorPage(wr, "An error occured when inserting the recipe.", err)
+		showErrorPage(wr, "An error occured when inserting the recipe:", err)
 		return
 	}
 

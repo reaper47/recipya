@@ -1,6 +1,7 @@
 package db
 
 import (
+	"errors"
 	"time"
 
 	"github.com/google/uuid"
@@ -236,4 +237,20 @@ func (m *postgresDBRepo) InsertNewRecipe(r models.Recipe) (int64, error) {
 		}
 	}
 	return recipeID, nil
+}
+
+// DeleteRecipe deletes the recipe with the passed id from the database.
+func (m *postgresDBRepo) DeleteRecipe(id int64) error {
+	ctx, cancel := contexts.Timeout(3 * time.Second)
+	defer cancel()
+
+	cmd, err := m.Pool.Exec(ctx, deleteRecipeStmt, id)
+	if err != nil {
+		return err
+	}
+
+	if cmd.RowsAffected() == 0 {
+		return errors.New("recipe not found")
+	}
+	return nil
 }

@@ -12,6 +12,7 @@ import (
 func New() *mux.Router {
 	GET := http.MethodGet
 	POST := http.MethodPost
+	DELETE := http.MethodDelete
 
 	r := mux.NewRouter()
 
@@ -19,7 +20,7 @@ func New() *mux.Router {
 
 	r.HandleFunc("/", handlers.Index).Methods(GET)
 	r.HandleFunc("/recipes", handlers.Index).Methods(GET)
-	r.HandleFunc("/recipes/{id:[0-9]+}", handlers.GetRecipe).Methods(GET)
+	r.HandleFunc("/recipes/{id:[0-9]+}", handlers.Recipe).Methods(GET, DELETE)
 
 	r.HandleFunc("/recipes/new", handlers.RecipesAdd).Methods(GET)
 	r.HandleFunc("/recipes/new/manual", handlers.GetRecipesNewManual).Methods(GET)
