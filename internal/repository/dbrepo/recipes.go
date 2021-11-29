@@ -14,12 +14,23 @@ type tableData struct {
 	Entries    []string
 }
 
+type nameParams struct {
+	Ingredients, Instructions, Keywords, Tools map[string]string
+}
+
+func (m *nameParams) init() {
+	m.Ingredients = make(map[string]string)
+	m.Instructions = make(map[string]string)
+	m.Keywords = make(map[string]string)
+	m.Tools = make(map[string]string)
+}
+
 // GetAllRecipes gets all of the recipes in the database.
 func (m *postgresDBRepo) GetAllRecipes() ([]models.Recipe, error) {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
-	rows, err := m.Pool.Query(ctx, getRecipesStmt)
+	rows, err := m.Pool.Query(ctx, getRecipes(false))
 	if err != nil {
 		return nil, err
 	}
@@ -34,7 +45,7 @@ func (m *postgresDBRepo) GetAllRecipes() ([]models.Recipe, error) {
 			prep, cook, total                                  time.Duration
 			calories, totalCarbohydrates, sugars, protein      string
 			totalFat, saturatedFat, cholesterol, sodium, fiber string
-			ingredients, instructions                          []string
+			ingredients, instructions, keywords, tools         []string
 			createdAt, updatedAt                               time.Time
 		)
 
@@ -45,12 +56,9 @@ func (m *postgresDBRepo) GetAllRecipes() ([]models.Recipe, error) {
 			&url,
 			&image,
 			&yield,
+			&createdAt,
+			&updatedAt,
 			&category,
-			&ingredients,
-			&instructions,
-			&prep,
-			&cook,
-			&total,
 			&calories,
 			&totalCarbohydrates,
 			&sugars,
@@ -60,8 +68,13 @@ func (m *postgresDBRepo) GetAllRecipes() ([]models.Recipe, error) {
 			&cholesterol,
 			&sodium,
 			&fiber,
-			&createdAt,
-			&updatedAt,
+			&ingredients,
+			&instructions,
+			&keywords,
+			&tools,
+			&prep,
+			&cook,
+			&total,
 		)
 		if err != nil {
 			return nil, err
@@ -93,6 +106,8 @@ func (m *postgresDBRepo) GetAllRecipes() ([]models.Recipe, error) {
 				Fiber:              fiber,
 			},
 			Instructions: instructions,
+			Keywords:     keywords,
+			Tools:        tools,
 			CreatedAt:    createdAt,
 			UpdatedAt:    updatedAt,
 		})
@@ -106,28 +121,27 @@ func (m *postgresDBRepo) GetRecipe(id int64) (models.Recipe, error) {
 	defer cancel()
 
 	var (
+		recipeID                                           int64
 		name, description, url, category                   string
 		image                                              uuid.UUID
 		yield                                              int16
 		prep, cook, total                                  time.Duration
 		calories, totalCarbohydrates, sugars, protein      string
 		totalFat, saturatedFat, cholesterol, sodium, fiber string
-		ingredients, instructions                          []string
+		ingredients, instructions, keywords, tools         []string
 		createdAt, updatedAt                               time.Time
 	)
 
-	err := m.Pool.QueryRow(ctx, getRecipeStmt, id).Scan(
+	err := m.Pool.QueryRow(ctx, getRecipes(true), id).Scan(
+		&recipeID,
 		&name,
 		&description,
 		&url,
 		&image,
 		&yield,
+		&createdAt,
+		&updatedAt,
 		&category,
-		&ingredients,
-		&instructions,
-		&prep,
-		&cook,
-		&total,
 		&calories,
 		&totalCarbohydrates,
 		&sugars,
@@ -137,15 +151,20 @@ func (m *postgresDBRepo) GetRecipe(id int64) (models.Recipe, error) {
 		&cholesterol,
 		&sodium,
 		&fiber,
-		&createdAt,
-		&updatedAt,
+		&ingredients,
+		&instructions,
+		&keywords,
+		&tools,
+		&prep,
+		&cook,
+		&total,
 	)
 	if err != nil {
 		return models.Recipe{}, err
 	}
 
 	return models.Recipe{
-		ID:          id,
+		ID:          recipeID,
 		Name:        name,
 		Description: description,
 		Image:       image,
@@ -170,6 +189,8 @@ func (m *postgresDBRepo) GetRecipe(id int64) (models.Recipe, error) {
 			Fiber:              fiber,
 		},
 		Instructions: instructions,
+		Keywords:     keywords,
+		Tools:        tools,
 		CreatedAt:    createdAt,
 		UpdatedAt:    updatedAt,
 	}, nil
@@ -189,65 +210,18 @@ func (m *postgresDBRepo) InsertNewRecipe(r models.Recipe) (int64, error) {
 	}
 	defer tx.Rollback(ctx)
 
-	var recipeID int64
-	err = tx.QueryRow(ctx, insertRecipeStmt, r.Nutrition.Calories,
-		r.Nutrition.TotalCarbohydrates,
-		r.Nutrition.Sugars,
-		r.Nutrition.Protein,
-		r.Nutrition.TotalFat,
-		r.Nutrition.SaturatedFat,
-		r.Nutrition.Cholesterol,
-		r.Nutrition.Sodium,
-		r.Nutrition.Fiber,
-		r.Category,
-		r.Times.Prep,
-		r.Times.Cook,
-		r.Name,
-		r.Description,
-		r.Url,
-		r.Image,
-		r.Yield,
-		r.Category,
-		r.Times.Prep,
-		r.Times.Cook,
-	).Scan(&recipeID)
-	if err != nil {
-		return -1, err
-	}
-
 	tables := []tableData{
 		{Table: "ingredients", AssocTable: "ingredient_recipe", Entries: r.Ingredients},
 		{Table: "instructions", AssocTable: "instruction_recipe", Entries: r.Instructions},
+		{Table: "keywords", AssocTable: "keyword_recipe", Entries: r.Keywords},
+		{Table: "tools", AssocTable: "tool_recipe", Entries: r.Tools},
 	}
-	for _, entry := range tables {
-		ids, err := func() ([]int64, error) {
-			sql, si := insertXsStmt(entry.Table, entry.Entries)
-			rows, err := tx.Query(ctx, sql, si...)
-			if err != nil {
-				return nil, err
-			}
-			defer rows.Close()
 
-			var ids []int64
-			for rows.Next() {
-				var id int64
-				err = rows.Scan(&id)
-				if err != nil {
-					return nil, err
-				}
-				ids = append(ids, id)
-			}
-			return ids, nil
-		}()
-		if err != nil {
-			return -1, err
-		}
-
-		sql, si := insertAssocStmt(entry.AssocTable, recipeID, ids)
-		_, err = tx.Exec(ctx, sql, si...)
-		if err != nil {
-			return -1, err
-		}
+	var recipeID int64
+	stmt := insertRecipeStmt(tables)
+	err = tx.QueryRow(ctx, stmt, r.ToArgs()...).Scan(&recipeID)
+	if err != nil {
+		return -1, err
 	}
 
 	err = tx.Commit(ctx)

@@ -25,6 +25,36 @@ type Recipe struct {
 	UpdatedAt    time.Time
 }
 
+func (r Recipe) ToArgs() []interface{} {
+	args := []interface{}{
+		r.Name,
+		r.Description,
+		r.Image,
+		r.Url,
+		r.Yield,
+		r.Category,
+		r.Nutrition.Calories,
+		r.Nutrition.TotalCarbohydrates,
+		r.Nutrition.Sugars,
+		r.Nutrition.Protein,
+		r.Nutrition.TotalFat,
+		r.Nutrition.SaturatedFat,
+		r.Nutrition.Cholesterol,
+		r.Nutrition.Sodium,
+		r.Nutrition.Fiber,
+		r.Times.Prep.String(),
+		r.Times.Cook.String(),
+	}
+
+	arrs := [][]string{r.Ingredients, r.Instructions, r.Keywords, r.Tools}
+	for _, arr := range arrs {
+		for _, v := range arr {
+			args = append(args, v)
+		}
+	}
+	return args
+}
+
 // Times holds a variety of intervals.
 type Times struct {
 	Prep  time.Duration

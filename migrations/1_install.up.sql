@@ -1,44 +1,20 @@
 --
 -- CREATES
 --
-CREATE TABLE categories (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(24) UNIQUE NOT NULL
-);
-
-CREATE TABLE times (
-  id SERIAL PRIMARY KEY,
-  prep INTERVAL,
-  cook INTERVAL,
-  total INTERVAL,
-  UNIQUE (prep, cook)
-);
-
-CREATE TABLE nutrition (
-  id SERIAL PRIMARY KEY,
-  calories VARCHAR(10),
-  total_carbohydrates VARCHAR(5),
-  sugars VARCHAR(7),
-  protein VARCHAR(5),
-  total_fat VARCHAR(5),
-  saturated_fat VARCHAR(5),
-  cholesterol VARCHAR(7),
-  sodium VARCHAR(7),
-  fiber VARCHAR(5)
-);
-
 CREATE TABLE recipes (
   id SERIAL PRIMARY KEY,
   name VARCHAR(80) NOT NULL,
   description TEXT,
   url VARCHAR(80),
-  image UUID,
+  image UUID DEFAULT gen_random_uuid(),
   yield SMALLINT,
-  category_id INTEGER DEFAULT 0 REFERENCES categories(id) ON DELETE SET DEFAULT,
-  times_id INTEGER REFERENCES times(id) ON DELETE SET NULL,
-  nutrition_id INTEGER REFERENCES nutrition(id) ON DELETE CASCADE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE categories (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(24) UNIQUE NOT NULL
 );
 
 CREATE TABLE ingredients (
@@ -61,6 +37,38 @@ CREATE TABLE keywords (
   name VARCHAR(24) UNIQUE NOT NULL
 );
 
+CREATE TABLE nutrition (
+  id SERIAL PRIMARY KEY,
+  recipe_id INTEGER REFERENCES recipes(id) ON DELETE CASCADE,
+  calories VARCHAR(10),
+  total_carbohydrates VARCHAR(5),
+  sugars VARCHAR(7),
+  protein VARCHAR(5),
+  total_fat VARCHAR(5),
+  saturated_fat VARCHAR(5),
+  cholesterol VARCHAR(7),
+  sodium VARCHAR(7),
+  fiber VARCHAR(5)
+);
+
+CREATE TABLE times (
+  id SERIAL PRIMARY KEY,
+  prep INTERVAL,
+  cook INTERVAL,
+  total INTERVAL,
+  UNIQUE (prep, cook)
+);
+
+--
+-- Association Tables
+--
+CREATE TABLE category_recipe (
+  id SERIAL PRIMARY KEY,
+  recipe_id INTEGER NOT NULL REFERENCES recipes(id) ON DELETE CASCADE,
+  category_id INTEGER DEFAULT 1 REFERENCES categories(id) ON DELETE SET DEFAULT,
+  UNIQUE (recipe_id, category_id)
+);
+
 CREATE TABLE ingredient_recipe (
   id SERIAL PRIMARY KEY,
   recipe_id INTEGER NOT NULL REFERENCES recipes(id) ON DELETE CASCADE,
@@ -73,7 +81,6 @@ CREATE TABLE instruction_recipe (
   recipe_id INTEGER NOT NULL REFERENCES recipes(id) ON DELETE CASCADE,
   instruction_id INTEGER NOT NULL REFERENCES instructions(id) ON DELETE CASCADE,
   UNIQUE (recipe_id, instruction_id)
-
 );
 
 CREATE TABLE tool_recipe (
@@ -88,6 +95,13 @@ CREATE TABLE keyword_recipe (
   recipe_id INTEGER NOT NULL REFERENCES recipes(id) ON DELETE CASCADE,
   keyword_id INTEGER NOT NULL REFERENCES keywords(id) ON DELETE CASCADE,
   UNIQUE (recipe_id, keyword_id)
+);
+
+CREATE TABLE time_recipe (
+  id SERIAL PRIMARY KEY,
+  recipe_id INTEGER NOT NULL REFERENCES recipes(id) ON DELETE CASCADE,
+  time_id INTEGER NOT NULL REFERENCES times(id) ON DELETE SET NULL,
+  UNIQUE (recipe_id, time_id)
 );
 
 --

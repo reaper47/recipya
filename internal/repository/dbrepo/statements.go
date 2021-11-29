@@ -6,144 +6,232 @@ import (
 )
 
 // SELECT
-const getRecipeStmt = `
-	SELECT 
-		name, description, url, image, yield,
-		(
-			SELECT name
-			FROM categories
-			WHERE id=category_id
-		) AS category, 
-		array(select name from ingredient_recipe ir2 join ingredients i on i.id=ir2.id where ir2.recipe_id=$1) as ingredients,
-		array(select name from instruction_recipe ir join instructions i2 on i2.id=ir.id where ir.recipe_id=$1) as instructions,
-		prep, cook, total,
-		calories, total_carbohydrates, sugars, protein,
-		total_fat, saturated_fat, cholesterol, sodium, fiber,
-		created_at, updated_at
-	FROM recipes r
-	JOIN times t ON t.id=r.times_id
-	JOIN nutrition n ON n.id=r.nutrition_id 
-	WHERE r.id=$1
-`
+func getRecipes(onlyOne bool) string {
+	id := "r.id"
+	if onlyOne {
+		id = "$1"
+	}
 
-const getRecipesStmt = `
-	SELECT 
-		r.id, name, description, url, image, yield,
-		(
+	stmt := `SELECT 
+		r.id,
+		r.name,
+		description,
+		url,
+		image,
+		yield,
+		created_at,
+		updated_at,
+		c.name AS category,
+		n.calories,
+		n.total_carbohydrates,
+		n.sugars,
+		n.protein,
+		n.total_fat,
+		n.saturated_fat,
+		n.cholesterol,
+		n.sodium,
+		n.fiber,
+		ARRAY(
 			SELECT name
-			FROM categories
-			WHERE id=category_id
-		) AS category, 
-		array(select name from ingredient_recipe ir2 join ingredients i on i.id=ir2.id where ir2.recipe_id=r.id) as ingredients,
-		array(select name from instruction_recipe ir join instructions i2 on i2.id=ir.id where ir.recipe_id=r.id) as instructions,
-		prep, cook, total,
-		calories, total_carbohydrates, sugars, protein,
-		total_fat, saturated_fat, cholesterol, sodium, fiber,
-		created_at, updated_at
+			FROM ingredients i
+			JOIN ingredient_recipe ir ON ir.ingredient_id = i.id
+			WHERE ir.recipe_id = ` + id + `
+		) AS ingredients,
+		ARRAY(
+			SELECT name
+			FROM instructions i2
+			JOIN instruction_recipe ir2 ON ir2.instruction_id = i2.id
+			WHERE ir2.recipe_id = ` + id + `
+		) AS instructions,
+		ARRAY(
+			SELECT name
+			FROM keywords k
+			JOIN keyword_recipe kr ON kr.keyword_id = k.id
+			WHERE kr.recipe_id = ` + id + `
+		) AS keywords,
+		ARRAY(
+			SELECT name
+			FROM tools t
+			JOIN tool_recipe tr ON tr.tool_id = t.id
+			WHERE tr.recipe_id = ` + id + `
+		) AS tools,
+		t2.prep,
+		t2.cook,
+		t2.total
 	FROM recipes r
-	JOIN times t ON t.id=r.times_id
-	JOIN nutrition n ON n.id=r.nutrition_id 
-`
+	JOIN category_recipe cr ON cr.recipe_id = r.id
+	JOIN categories c ON c.id = cr.category_id
+	JOIN nutrition n ON n.recipe_id = r.id
+	JOIN time_recipe tr2 ON tr2.recipe_id = r.id
+	JOIN times t2 ON t2.id = tr2.time_id`
+
+	if onlyOne {
+		stmt += " WHERE r.id = $1"
+	}
+	return stmt
+}
 
 func resetIDStmt(table string) string {
 	return "SELECT setval('" + table + "_id_seq', MAX(id)) FROM " + table
 }
 
 // INSERT
-const insertRecipeStmt = `
-	WITH nutrition AS (
-		INSERT INTO nutrition (
-			calories, total_carbohydrates, sugars, protein,
-			total_fat, saturated_fat, cholesterol, sodium, fiber
-		) 
-		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
-		RETURNING id
-	), all_categories (name) as (
-		values ($10)
-	), inserted_categories (id, name) as (
-		INSERT INTO categories (name)
-		SELECT name from all_categories
-		ON CONFLICT DO NOTHING 
-		RETURNING id, name 
-	), times_to_insert (prep, cook) AS (
-		VALUES ($11::interval,$12::interval)
-	), inserted_times (id, prep, cook) AS (
-		INSERT INTO times (prep, cook)
-		SELECT prep, cook
-		FROM times_to_insert
-		ON CONFLICT (prep, cook) DO NOTHING
-		RETURNING id, prep, cook
-	)
-	INSERT INTO recipes (
-		name, description, url, image, yield, 
-		category_id, times_id, nutrition_id
-	)
-	VALUES (
-		$13,$14,$15,$16,$17,
-		(
-			SELECT id 
-			FROM (
-				SELECT c.id, c.name
-				FROM categories c
-				UNION ALL
-				SELECT id, name
-				FROM inserted_categories
-			) AS id 
-			where name=$18
-		),
-		(
-			SELECT id 
-			FROM (
-				SELECT t.id, t.prep, t.cook FROM times t
-				UNION ALL
-				SELECT id, prep, cook FROM inserted_times
-			) AS id
-			WHERE prep=$19 AND cook=$20
-		),
-		(SELECT id FROM nutrition)
-	)
-	RETURNING id
-`
+func insertRecipeStmt(tables []tableData) string {
+	var params nameParams
+	params.init()
 
-func insertXsStmt(table string, xs []string) (string, []interface{}) {
-	si := make([]interface{}, len(xs))
-	var values, wheres string
-	for i, s := range xs {
-		values += "($" + strconv.Itoa(i+1) + ")"
-		wheres += "name=$" + strconv.Itoa(i+1)
-		if i < len(xs)-1 {
-			values += ","
-			wheres += " OR "
-		}
-		si[i] = s
-	}
+	offset := 18
+	ingredientsStmt, offset := insertIntoNameTableStmt(
+		"ingredients",
+		tables[0].Entries,
+		offset,
+		params.Ingredients,
+	)
 
-	sql := `
-		WITH inserts AS(
-			INSERT INTO ` + table + ` (name) 
-			VALUES ` + values + ` 
-			ON CONFLICT (name) DO NOTHING
+	instructionsStmt, offset := insertIntoNameTableStmt(
+		"instructions",
+		tables[1].Entries,
+		offset,
+		params.Instructions,
+	)
+
+	keywordsStmt, offset := insertIntoNameTableStmt(
+		"keywords",
+		tables[2].Entries,
+		offset,
+		params.Keywords,
+	)
+
+	toolsStmt, _ := insertIntoNameTableStmt("tools", tables[3].Entries, offset, params.Tools)
+
+	return `
+		WITH ins_recipe AS (
+			INSERT  INTO recipes (name, description, image, url, yield)
+			VALUES ($1, $2, $3, $4, $5)
 			RETURNING id
-		)
-		SELECT * FROM inserts
-		UNION
-		SELECT id FROM ` + table + ` 
-		WHERE ` + wheres
-
-	return sql, si
+		), ins_category AS (
+			INSERT INTO categories (name)
+			VALUES ($6)
+			ON CONFLICT ON CONSTRAINT categories_name_key DO UPDATE
+			SET name=NULL
+			WHERE FALSE
+			RETURNING id, name
+		), ins_category_id AS (
+			INSERT INTO category_recipe (recipe_id, category_id)
+			VALUES (
+				(
+					SELECT id 
+					FROM ins_recipe
+				),
+				(
+					SELECT id FROM ins_category
+					UNION ALL
+					SELECT id
+					FROM categories
+					WHERE name=$6
+				)
+			)
+		),  ins_nutrition AS (
+			INSERT INTO nutrition (
+				recipe_id, calories, total_carbohydrates, sugars,
+				protein, total_fat, saturated_fat, cholesterol, sodium, fiber
+			)
+			VALUES ((SELECT id FROM ins_recipe),$7,$8,$9,$10,$11,$12,$13,$14,$15)
+			RETURNING id
+		),  ins_times AS (
+			INSERT INTO times (prep, cook)
+			VALUES ($16::interval, $17::interval)
+			ON CONFLICT ON CONSTRAINT times_prep_cook_key DO UPDATE
+			SET prep=NULL
+			WHERE FALSE
+			RETURNING id, prep, cook, total
+		), ins_time_recipe AS (
+			INSERT INTO time_recipe (time_id, recipe_id)
+			VALUES
+				(
+					(
+						SELECT id FROM ins_times WHERE prep=$16::interval and cook=$17::interval
+						UNION ALL
+						SELECT id FROM times WHERE prep=$16::interval and cook=$17::interval
+					),
+					(
+						SELECT id
+						FROM ins_recipe
+					)
+				)
+		)` + ingredientsStmt + "" +
+		insertIntoAssocTableStmt(tables[0], "ins_ingredients", params.Ingredients) + "" +
+		instructionsStmt + "" +
+		insertIntoAssocTableStmt(tables[1], "ins_instructions", params.Instructions) + "" +
+		keywordsStmt + "" +
+		insertIntoAssocTableStmt(tables[2], "ins_keywords", params.Keywords) + "" +
+		toolsStmt + "" +
+		insertIntoAssocTableStmt(tables[3], "ins_tools", params.Tools) + `
+	SELECT id FROM ins_recipe`
 }
 
-func insertAssocStmt(assocTable string, recipeID int64, ids []int64) (string, []interface{}) {
-	col := strings.SplitN(assocTable, "_", 2)[0] + "_id"
-	values := ""
-	si := make([]interface{}, len(ids))
-	for i, id := range ids {
-		values += "(" + strconv.FormatInt(recipeID, 10) + ",$" + strconv.Itoa(i+1) + ")"
-		if i < len(ids)-1 {
-			values += ","
-		}
-		si[i] = id
+func insertIntoNameTableStmt(
+	name string,
+	values []string,
+	offset int,
+	params map[string]string,
+) (string, int) {
+	if len(values) == 0 {
+		return "", offset
 	}
-	sql := "INSERT INTO " + assocTable + " (recipe_id," + col + ") VALUES " + values + " ON CONFLICT DO NOTHING"
-	return sql, si
+
+	var stmt = ", ins_" + name + ` AS (
+		INSERT INTO ` + name + " (name) VALUES "
+
+	for i, v := range values {
+		param := "$" + strconv.Itoa(offset)
+		stmt += "(" + param + ")"
+		if i < len(values)-1 {
+			stmt += ","
+		}
+		params[v] = param
+		offset++
+	}
+
+	stmt += `
+		ON CONFLICT ON CONSTRAINT ` + name + `_name_key DO UPDATE
+		SET name=NULL
+		WHERE false
+		RETURNING id, name
+	)`
+
+	return stmt, offset
+}
+
+func insertIntoAssocTableStmt(td tableData, from string, params map[string]string) string {
+	if len(td.Entries) == 0 {
+		return ""
+	}
+
+	col := strings.SplitN(td.AssocTable, "_", 2)[0]
+	tname := "ins_" + col + "_recipe"
+
+	var stmt = "," + tname + ` AS (
+		INSERT INTO ` + td.AssocTable + " (" + col + `_id, recipe_id) VALUES `
+
+	for i, v := range td.Entries {
+		where := "WHERE name=" + params[v]
+		stmt += `
+		(
+			(
+				SELECT id FROM ` + from + " " + where + `
+				UNION ALL
+				SELECT id FROM ` + td.Table + " " + where + `
+			),
+			(
+				SELECT id
+				FROM ins_recipe
+			)
+		)`
+		if i < len(td.Entries)-1 {
+			stmt += ","
+		}
+
+	}
+	return stmt + ")"
 }

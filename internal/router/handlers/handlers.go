@@ -15,7 +15,7 @@ func Index(wr http.ResponseWriter, req *http.Request) {
 		showErrorPage(wr, "Cannot retrieve all recipes.", err)
 		return
 	}
-	log.Println(recipes)
+	log.Println(len(recipes))
 
 	data := templates.IndexData{}
 	err = templates.Render(wr, "index.gohtml", data)
