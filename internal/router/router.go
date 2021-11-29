@@ -16,6 +16,7 @@ func New() *mux.Router {
 
 	r := mux.NewRouter()
 
+	r.HandleFunc("/favicon.ico", handlers.Favicon).Methods(GET)
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static", http.FileServer(http.FS(static.FS))))
 
 	r.HandleFunc("/", handlers.Index).Methods(GET)
