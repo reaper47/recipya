@@ -24,7 +24,7 @@ CREATE TABLE ingredients (
 
 CREATE TABLE instructions (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(24) UNIQUE NOT NULL
+  name TEXT UNIQUE NOT NULL
 );
 
 CREATE TABLE tools (

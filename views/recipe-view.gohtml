@@ -1,0 +1,227 @@
+{{define "title"}}{{.Recipe.Name}}{{end}}
+
+{{define "content"}}
+<section class="grid max-w-6xl grid-cols-6 px-4 pb-4 m-auto">
+  <div class="col-span-6 text-lg border border-gray-900 md:text-xl rounded-t-md">
+    <h1 class="grid h-full font-bold place-content-center">{{.Recipe.Name}}</h1>
+  </div>
+
+  <div
+    class="w-full h-full grid-flow-col col-span-6 border-b border-l border-r border-gray-900 place-self-end md:border-b md:border-l md:border-r md:col-span-4">
+    <img src="data:image/jpg;base64,{{.RecipeImageBase64}}" alt="Image of the {{.Recipe.Name}} recipe."
+      class="text-center md:w-full">
+  </div>
+
+  <div class="grid grid-flow-col col-span-6 md:grid-flow-row md:col-span-2 md:grid">
+    <div
+      class="col-span-2 p-2 border-b border-l border-r border-black md:border-l-0 md:border-r md:col-span-3 md:grid md:place-items-center">
+      <span
+        class="flex items-center justify-center p-2 font-medium text-blue-700 bg-blue-100 border border-blue-300 rounded-full md:w-1/3 md:h-1/3 ">
+        <span class="text-sm font-normal leading-none capitalize">{{.Recipe.Category}}</span>
+      </span>
+    </div>
+
+    <div class="grid col-span-2 py-2 border-b border-r border-black md:border-b-0 md:col-span-3 place-items-center">
+      <p class="text-sm text-center">{{.Recipe.Yield}} servings</p>
+    </div>
+
+    <div class="flex items-center justify-center col-span-2 border-b border-r border-black md:col-span-3 md:border-t">
+      {{if isUrl .Recipe.Url}}
+      <a class="p-1 duration-300 border border-gray-800 rounded-lg md:justify-center md: md:h-1/3 md:w-1/3 md:inline-grid hover:bg-gray-800 hover:text-white center"
+        href="{{.Recipe.Url}}" target="_blank">
+        <button class="text-sm">Source</button>
+      </a>
+      {{else}}
+      <p>Source: {{.Recipe.Url}}</p>
+      {{end}}
+    </div>
+
+  </div>
+
+  <div class="col-span-6 border-b border-l border-r border-black md:col-span-4 md:border-r-0">
+    <p class="p-2 text-sm whitespace-pre-line">{{.Recipe.Description}}</p>
+  </div>
+
+  <div class="col-span-3 border-b border-l border-r border-black md:col-span-1">
+    <div class="inline-block min-w-full overflow-x-auto align-middle">
+      <div class="overflow-hidden border-gray-200">
+        <table class="min-w-full text-xs divide-y divide-gray-200">
+          <thead class="h-12 font-medium tracking-wider text-white bg-gray-800">
+            <tr>
+              <th scope=" col" class="text-right">
+                <p class="text-right">Nutrition<br>(per 100g)</p>
+              </th>
+              <th scope="col" class="text-center">
+                <p>
+                  Amount<br>(optional)
+                </p>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200">
+            <tr>
+              <td>
+                <p>Calories:</p>
+              </td>
+              <td class="py-3 text-center">
+                {{.Recipe.Nutrition.Calories}}
+              </td>
+            </tr>
+            <tr class="bg-gray-100">
+              <td>
+                <p>Total carbohydrates:</p>
+              </td>
+              <td class="py-3 text-center">
+                {{.Recipe.Nutrition.TotalCarbohydrates}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>Sugars:</p>
+              </td>
+              <td class="py-3 text-center">
+                {{.Recipe.Nutrition.Sugars}}
+              </td>
+            </tr>
+            <tr class="bg-gray-100">
+              <td>
+                <p>Protein:</p>
+              </td>
+              <td class="py-3 text-center">
+                {{.Recipe.Nutrition.Protein}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>Total fat:</p>
+              </td>
+              <td class="py-3 text-center">
+                {{.Recipe.Nutrition.TotalFat}}
+              </td>
+            </tr>
+            <tr class="bg-gray-100">
+              <td>
+                <p>Saturated fat:</p>
+              </td>
+              <td class="py-3 text-center">
+                {{.Recipe.Nutrition.SaturatedFat}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>Cholesterol:</p>
+              </td>
+              <td class="py-3 text-center">
+                {{.Recipe.Nutrition.Cholesterol}}
+              </td>
+            </tr>
+            <tr class="bg-gray-100">
+              <td>
+                <p>Sodium:</p>
+              </td>
+              <td class="py-3 text-center">
+                {{.Recipe.Nutrition.Sodium}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>Fiber:</p>
+              </td>
+              <td class="py-3 text-center">
+                {{.Recipe.Nutrition.Fiber}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-span-3 border-b border-r border-black md:col-span-1">
+    <div class="inline-block min-w-full overflow-x-auto align-middle">
+      <div class="overflow-hidden border-gray-200">
+        <table class="min-w-full text-xs divide-y divide-gray-200">
+          <thead class="h-12 font-medium tracking-wider text-white bg-gray-800 border-l border-white">
+            <tr>
+              <th scope="col" class="text-right">Time</th>
+              <th scope="col" class="text-center">h:m:s</th>
+            </tr>
+          </thead>
+          <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200">
+            <tr>
+              <td>
+                <p>Preparation:</p>
+              </td>
+              <td class="py-3 text-center">
+                <p>{{fmtDuration .Recipe.Times.Prep}}</p>
+              </td>
+            </tr>
+            <tr class="bg-gray-100">
+              <td>
+                <p>Cooking:</p>
+              </td>
+              <td class="w-1/2 py-3 text-center">
+                <p>{{fmtDuration .Recipe.Times.Cook}}</p>
+              </td>
+            </tr>
+            <tr class="font-bold">
+              <td>
+                <p>Total:</p>
+              </td>
+              <td class="w-1/2 py-3 text-center">
+                <p>{{fmtDuration .Recipe.Times.Total}}</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-span-6 py-2 border-b border-l border-r border-black md:col-span-2 md:border-r-0">
+    <h2 class="pb-2 m-auto text-sm font-bold text-center text-gray-600 underline ">Ingredients</h2>
+    <ul class="grid px-6 list-decimal">
+      {{$len := len .Recipe.Instructions}}
+      {{range $i, $e := .Recipe.Ingredients}}
+      <label for="ingredient-{{$i}}"
+        class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200 {{if eq $i 0}}rounded-t-lg{{else if eq $i (dec $len)}}rounded-b-lg{{end}}"
+        onmousedown="highlight(event)">
+        <input type="checkbox" id="ingredient-{{$i}}">
+        <span class="pl-2">{{$e}}</span>
+      </label>
+      {{end}}
+    </ul>
+  </div>
+
+  <div class="col-span-6 py-2 pb-8 border-b border-l border-r border-black rounded-b-lg md:col-span-4">
+    <h2 class="pb-2 m-auto text-sm font-bold text-center text-gray-600 underline ">Instructions</h2>
+    <ul class="grid px-6 list-decimal">
+      {{$len := len .Recipe.Instructions}}
+      {{range $i, $e := .Recipe.Instructions}}
+      <label for="instruction-{{$i}}"
+        class="inline-flex min-w-full p-2 text-sm select-none hover:bg-gray-200 {{if eq $i 0}}rounded-t-lg{{else if eq $i (dec $len)}}rounded-b-lg{{end}}"
+        onmousedown="highlight(event)">
+        <input type="checkbox" id="instruction-{{$i}}">
+        <p class="pl-2 whitespace-pre-line">{{$e}}</p>
+      </label>
+      {{end}}
+    </ul>
+  </div>
+  <div class="hidden xl:col-span-3 xl:visible"></div>
+</section>
+{{end}}
+
+{{define "js"}}
+<script>
+  const highlight = (event) => {
+    let target = event.target
+    while (target.tagName !== 'LABEL') {
+      target = target.parentElement
+    }
+
+    target.classList.toggle('bg-green-200')
+    target.classList.toggle('hover:bg-gray-200')
+    target.classList.toggle('hover:bg-green-400')
+  }
+</script>
+{{end}}

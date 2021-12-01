@@ -6,3 +6,9 @@ import "github.com/reaper47/recipya/internal/models"
 type IndexData struct {
 	Recipes []models.Recipe
 }
+
+// RecipeData holds data to pass to the recipe templates.
+type RecipeData struct {
+	Recipe            models.Recipe
+	RecipeImageBase64 string
+}

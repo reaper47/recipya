@@ -47,7 +47,7 @@ func Load() {
 
 	for _, layout := range layouts {
 		files := append(includes, layout)
-		templates[filepath.Base(layout)] = template.Must(template.ParseFS(views.FS, files...))
+		templates[filepath.Base(layout)] = template.Must(template.New("").Funcs(fm).ParseFS(views.FS, files...))
 	}
 
 	for _, file := range includes {
@@ -57,7 +57,7 @@ func Load() {
 		if err != nil {
 			log.Fatalln(err)
 		}
-		templates[fname] = template.Must(templates[fname].ParseFS(views.FS, files...))
+		templates[fname] = template.Must(templates[fname].Funcs(fm).ParseFS(views.FS, files...))
 	}
 }
 

@@ -1,7 +1,8 @@
 package handlers
 
 import (
-	"encoding/json"
+	"bufio"
+	"encoding/base64"
 	"fmt"
 	"image"
 	"image/jpeg"
@@ -54,13 +55,35 @@ func handleGetRecipe(wr http.ResponseWriter, id int64) {
 		return
 	}
 
-	wr.Header().Set("Content-Type", "application/json")
-	j, err := json.Marshal(r)
+	err = templates.Render(wr, "recipe-view.gohtml", templates.RecipeData{
+		Recipe:            r,
+		RecipeImageBase64: imageToBase64(r.Image),
+	})
 	if err != nil {
-		showErrorPage(wr, "Could not send the recipe:", err)
-		return
+		log.Println(err)
 	}
-	wr.Write(j)
+}
+
+func imageToBase64(image uuid.UUID) string {
+	imageBase64 := ""
+	f, err := os.Open("./data/img/" + image.String())
+	if err != nil {
+		return imageBase64
+	}
+	defer f.Close()
+
+	finfo, err := f.Stat()
+	if err != nil {
+		return imageBase64
+	}
+
+	buf := make([]byte, finfo.Size())
+	fr := bufio.NewReader(f)
+	_, err = fr.Read(buf)
+	if err != nil {
+		return imageBase64
+	}
+	return base64.StdEncoding.EncodeToString(buf)
 }
 
 func handleDeleteRecipe(wr http.ResponseWriter, req *http.Request, id int64) {
