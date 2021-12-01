@@ -49,7 +49,7 @@
           <thead class="h-12 font-medium tracking-wider text-white bg-gray-800">
             <tr>
               <th scope=" col" class="text-right">
-                <p class="text-right">Nutrition<br>(per 100g)</p>
+                <p class="text-center">Nutrition<br>(per 100g)</p>
               </th>
               <th scope="col" class="text-center">
                 <p>
@@ -178,7 +178,7 @@
     </div>
   </div>
 
-  <div class="col-span-6 py-2 border-b border-l border-r border-black md:col-span-2 md:border-r-0">
+  <div class="col-span-6 py-2 border-b border-l border-r border-black md:rounded-bl-lg md:col-span-2 md:border-r-0">
     <h2 class="pb-2 m-auto text-sm font-bold text-center text-gray-600 underline ">Ingredients</h2>
     <ul class="grid px-6 list-decimal">
       {{$len := len .Recipe.Instructions}}
@@ -193,7 +193,8 @@
     </ul>
   </div>
 
-  <div class="col-span-6 py-2 pb-8 border-b border-l border-r border-black rounded-b-lg md:col-span-4">
+  <div
+    class="col-span-6 py-2 pb-8 border-b border-l border-r border-black rounded-bl-lg rounded-br-lg md:rounded-bl-none md:col-span-4">
     <h2 class="pb-2 m-auto text-sm font-bold text-center text-gray-600 underline ">Instructions</h2>
     <ul class="grid px-6 list-decimal">
       {{$len := len .Recipe.Instructions}}
@@ -219,9 +220,8 @@
       target = target.parentElement
     }
 
-    target.classList.toggle('bg-green-200')
-    target.classList.toggle('hover:bg-gray-200')
-    target.classList.toggle('hover:bg-green-400')
+    const classes = ['bg-green-200', 'hover:bg-gray-200', 'hover:bg-green-400']
+    classes.forEach(c => target.classList.toggle(c))
   }
 </script>
 {{end}}

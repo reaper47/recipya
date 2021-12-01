@@ -2,7 +2,7 @@
 
 {{define "content"}}
 <form action="/recipes/new/manual" method="post" enctype=multipart/form-data
-  class="grid grid-cols-1 px-4 pb-4 md:grid-cols-3 md:border-r-0">
+  class="grid max-w-6xl grid-cols-1 px-4 pb-4 m-auto md:grid-cols-3 md:border-r-0">
   <div class="col-span-1 text-lg border-gray-900 md:col-span-2 rounded-t-md">
     <label for="title" class="hidden"></label>
     <input type="text" id="title" name="title" placeholder="Title of the recipe*" required

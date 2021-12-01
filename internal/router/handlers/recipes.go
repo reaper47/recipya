@@ -176,6 +176,8 @@ func timeToDuration(req *http.Request, field string) (time.Duration, error) {
 }
 
 func getFormItems(req *http.Request, field string) []string {
+	itemMap := make(map[string]bool)
+
 	items := []string{}
 	i := 1
 	for {
@@ -183,7 +185,13 @@ func getFormItems(req *http.Request, field string) []string {
 		if item == "" {
 			break
 		}
-		items = append(items, item)
+
+		_, found := itemMap[item]
+		fmt.Println(found, i, item)
+		if !found {
+			itemMap[item] = true
+			items = append(items, item)
+		}
 		i++
 	}
 	return items
