@@ -22,7 +22,7 @@ func ConnectPostgres(dsn string) *pgxpool.Pool {
 
 	err = pool.Ping(ctx)
 	if err != nil {
-		log.Fatalf("Unable to ping the database (%s): %s\n", dsn, err)
+		log.Fatalf("Unable to ping the database: %s\n", err)
 	}
 	return pool
 }
@@ -39,7 +39,7 @@ func ConnectSqlDB(dsn string) *sql.DB {
 
 	err = db.PingContext(ctx)
 	if err != nil {
-		log.Fatalf("Unable to ping the database (%s): %s\n", dsn, err)
+		log.Fatalf("Unable to ping the database: %s\n", err)
 	}
 	return db
 }
