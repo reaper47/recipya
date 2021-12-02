@@ -3,7 +3,10 @@
 TAILWIND=pnpm dlx tailwindcss --jit -m --purge="./views/**/*.gohtml"
 
 build-go:
-	go build -ldflags="-s -w" -o dist/recipya main.go
+	/usr/local/go/bin/go build -ldflags="-s -w" -o dist/recipya main.go
+
+build-js:
+	cd views/tailwind && pnpm run build
 
 build-css:
 	 ${TAILWIND} -o static/css/tailwind.css 
@@ -20,4 +23,4 @@ watch-css:
 watch-js:
 	cd views/tailwind && pnpm run watch
 
-build: build-css build-go 
+build: build-css build-js build-go 
