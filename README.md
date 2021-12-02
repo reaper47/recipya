@@ -16,7 +16,80 @@ The backend is a REST API. The frontend, found under the /web folder, is a simpl
 
 # Installation
 
-Docker is the preferred and easiest way to install this project and expose to the world.
+## Database
+
+Recipya uses PostgreSQL to store data.
+
+Install (Debian)
+```bash
+$ sudo apt-get install postgresql
+```
+
+Enable PostgreSQL on start:
+```bash
+$ sudo systemctl enable postgresql
+```
+
+Create the database:
+```bash
+$ sudo su - postgres
+$ psql
+$ CREATE USER recipya WITH password 'elephants';
+$ CREATE DATABASE recipya OWNER recipya;
+```
+
+## Recipya
+
+Clone the repository:
+```bash
+$ git clone https://github.com/containers/podman-compose.git
+```
+
+Build/update the program:
+```bash
+$ sudo sh update.sh
+```
+
+The build will be made available under **dist**.
+
+## Self-host
+
+Caddy server:
+```bash
+$ sudo nano /etc/caddy/Caddyfile
+
+...
+domain {
+	encode zstd gzip
+	
+	log {
+		output file /var/www/path/to/recipya/logs/caddy-access.log
+		format single_field common_log
+	}
+
+	reverse_proxy http://localhost:8080
+}
+...
+
+$ sudo mkdir /var/www/path/to/recipya/logs
+```
+
+Supervisor to start Recipya as a daemon:
+```bash
+$ sudo nano /etc/supervisor/conf.d/recipya.conf
+
+[program:recipya]
+command=/var/www/path/to/recipya/dist/recipya serve
+directory=/var/www/path/to/recipya/dist
+autorestart=true
+autostart=true
+stdout_logfile=/var/www/path/to/recipya/logs/supervisord.log
+
+$ sudo supervisorctl
+> status
+> update
+> status
+```
 
 ## Recipes Database
 
