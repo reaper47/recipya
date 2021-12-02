@@ -207,7 +207,7 @@
               <td>
                 <p>Preparation:</p>
               </td>
-              <td class="py-3 text-center whitespace-nowrap">
+              <td class="py-3 text-center">
                 <label for="time-preparation" class="hidden"></label>
                 <input type="text" id="time-preparation" name="time-preparation" value="00:15:00"
                   class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker">
@@ -217,7 +217,7 @@
               <td>
                 <p>Cooking:</p>
               </td>
-              <td class="w-1/2 py-3 text-center whitespace-nowrap">
+              <td class="w-1/2 py-3 text-center">
                 <label for="time-cooking" class="hidden"></label>
                 <input type="text" id="time-cooking" name="time-cooking" value="00:30:00"
                   class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker">
@@ -235,20 +235,27 @@
       <legend class="pb-2 m-auto text-sm font-bold text-gray-600 ">
         <span class="underline">Ingredients</span> <sup class="text-red-600 no-underline">*</sup>
       </legend>
-      <ol class="pl-6 list-decimal">
-        <li class="pl-2">
+      <ol id="ingredients__list" class="pl-6 list-decimal">
+        <li class="pb-2 pl-2">
           <input type="text" name="ingredient-1" placeholder="Ingredient #1" required
-            class="w-3/4 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
+            class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
           <button type="button"
-            class="w-8 h-8 col-span-2 text-center duration-300 bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center"
+            class="w-10 h-10 text-center duration-300 bg-green-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-green-600 hover:text-white center"
             onclick="addEntry(event)">
             +
           </button>
           <button type="button"
-            class="w-8 h-8 col-span-2 duration-300 bg-red-300 border border-gray-800 rounded-lg hover:bg-red-600 hover:text-white center"
+            class="w-10 h-10 duration-300 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center"
             onclick="removeEntry(event)">
             -
           </button>
+          <div class="inline-block h-4 cursor-move list__move-item">
+            <svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+            </svg>
+          </div>
         </li>
       </ol>
     </fieldset>
@@ -259,20 +266,29 @@
       <legend class="m-auto text-sm font-bold text-gray-600">
         <span class="underline">Instructions</span> <sup class="text-red-600">*</sup>
       </legend>
-      <ol class="pl-6 list-decimal">
-        <li class="relative pt-2 pl-2">
-          <textarea required name="instruction-1" rows="3" class="w-3/4 border border-gray-300 md:w-4/5"
+      <ol id="instructions__list" class="pl-4 list-decimal">
+        <li class="pt-2 pl-2">
+          <textarea required name="instruction-1" rows="3" class="w-9/12 border border-gray-300 md:w-4/5"
             placeholder="Instruction #1" required></textarea>
-          <button type="button"
-            class="absolute md:flex-initial w-8 h-8 right-0.5 md:right-auto duration-300 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center"
-            onclick="removeEntry(event)">
-            -
-          </button>
-          <button type="button"
-            class="absolute md:flex-initial bottom-0 right-0.5 md:right-auto w-8 h-8 text-center duration-300 bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center"
-            onclick="addEntry(event)">
-            +
-          </button>
+          <div class="inline-flex flex-col-reverse">
+            <button type="button"
+              class="mt-4 md:flex-initial w-10 h-10 right-0.5 md:w-7 md:h-7 md:right-auto duration-300 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center"
+              onclick="removeEntry(event)">
+              -
+            </button>
+            <button type="button"
+              class="md:flex-initial bottom-0 right-0.5 md:w-7 md:h-7 md:right-auto w-10 h-10 text-center duration-300 bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center"
+              onclick="addEntry(event)">
+              +
+            </button>
+          </div>
+          <div class="inline-block h-4 cursor-move list__move-item">
+            <svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+            </svg>
+          </div>
         </li>
       </ol>
     </fieldset>
@@ -282,7 +298,10 @@
     Submit
   </button>
 </form>
+{{end}}
 
+{{define "js"}}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <script src="/static/js/html-duration-picker.min.js"></script>
 <script>
   const loadFile = (event) => {
@@ -324,7 +343,10 @@
   }
 
   const addEntry = (event) => {
-    const li = event.target.parentNode
+    let li = event.target.parentNode
+    while (li.tagName !== "LI") {
+      li = li.parentNode
+    }
 
     const ol = li.parentElement
     for (let i = 0; i < ol.childElementCount; i++) {
@@ -348,16 +370,23 @@
   }
 
   const removeEntry = (event) => {
-    const ol = event.target.parentElement.parentElement
-    if (ol.childElementCount === 1) {
-      let input = event.target
-      while (!["INPUT", "TEXTAREA"].includes(input.tagName)) {
-        input = input.previousElementSibling
-      }
+    let li = event.target
+    while (li.tagName !== "LI") {
+      li = li.parentNode
+    }
+
+    let ol = li.parentNode
+    while (ol.tagName !== 'OL') {
+      ol = ol.parentNode
+    }
+
+    if (li.parentNode.childElementCount === 1) {
+      let input = Array.from(li.children).find(el => ["INPUT", "TEXTAREA"].includes(el.tagName))
       input.value = ""
       return
     }
-    event.target.parentNode.remove()
+
+    li.firstElementChild.parentNode.remove()
     adjustPlaceholder(ol)
   }
 
@@ -378,5 +407,25 @@
       event.returnValue = 'Are you sure you want to leave to unfinished changes?'
     }
   })
+
+  const makeListDraggable = (target) => {
+    Sortable.create(document.getElementById(target), {
+      handle: '.list__move-item',
+      forceFallback: true,
+      onEnd: function ({ target }) {
+        const pluralName = target.id.split('__')[0]
+        const singularName = pluralName.substr(0, pluralName.length - 1)
+
+        Array.from(target.children).forEach((li, index) => {
+          const input = li.firstElementChild
+          input.name = `${singularName}-${index + 1}`
+          input.placeholder = `${singularName[0].toUpperCase() + singularName.slice(1)} #${index + 1}`
+        })
+      }
+    })
+  }
+
+  makeListDraggable('ingredients__list')
+  makeListDraggable('instructions__list')
 </script>
 {{end}}

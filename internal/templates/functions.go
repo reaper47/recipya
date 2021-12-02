@@ -8,9 +8,6 @@ import (
 )
 
 var fm = template.FuncMap{
-	"dec": func(i int) int {
-		return i - 1
-	},
 	"fmtDuration": func(d time.Duration) string {
 		d = d.Round(time.Minute)
 		h := d / time.Hour

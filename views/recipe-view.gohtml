@@ -180,15 +180,15 @@
 
   <div class="col-span-6 py-2 border-b border-l border-r border-black md:rounded-bl-lg md:col-span-2 md:border-r-0">
     <h2 class="pb-2 m-auto text-sm font-bold text-center text-gray-600 underline ">Ingredients</h2>
-    <ul class="grid px-6 list-decimal">
+    <ul class="grid px-6">
       {{$len := len .Recipe.Instructions}}
       {{range $i, $e := .Recipe.Ingredients}}
-      <label for="ingredient-{{$i}}"
-        class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200 {{if eq $i 0}}rounded-t-lg{{else if eq $i (dec $len)}}rounded-b-lg{{end}}"
+      <li
+        class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200 {{if eq $i 0}}rounded-t-lg{{else if eq $i $len}}rounded-b-lg{{end}}"
         onmousedown="highlight(event)">
         <input type="checkbox" id="ingredient-{{$i}}">
         <span class="pl-2">{{$e}}</span>
-      </label>
+      </li>
       {{end}}
     </ul>
   </div>
@@ -196,16 +196,16 @@
   <div
     class="col-span-6 py-2 pb-8 border-b border-l border-r border-black rounded-bl-lg rounded-br-lg md:rounded-bl-none md:col-span-4">
     <h2 class="pb-2 m-auto text-sm font-bold text-center text-gray-600 underline ">Instructions</h2>
-    <ul class="grid px-6 list-decimal">
+    <ul class="grid px-6">
       {{$len := len .Recipe.Instructions}}
       {{range $i, $e := .Recipe.Instructions}}
-      <label for="instruction-{{$i}}"
-        class="inline-flex min-w-full p-2 text-sm select-none hover:bg-gray-200 {{if eq $i 0}}rounded-t-lg{{else if eq $i (dec $len)}}rounded-b-lg{{end}}"
+      <li
+        class="inline-flex min-w-full p-2 text-sm select-none hover:bg-gray-200 {{if eq $i 0}}rounded-t-lg{{else if eq $i $len}}rounded-b-lg{{end}}"
         onmousedown="highlight(event)">
         <input type="checkbox" id="instruction-{{$i}}">
-        <p class="pl-2 whitespace-pre-line">{{$e}}</p>
-      </label>
-      {{end}}
+        <span class="pl-2 whitespace-pre-line">{{$e}}</span>
+        {{end}}
+      </li>
     </ul>
   </div>
   <div class="hidden xl:col-span-3 xl:visible"></div>
@@ -216,12 +216,18 @@
 <script>
   const highlight = (event) => {
     let target = event.target
-    while (target.tagName !== 'LABEL') {
+    while (target.tagName !== 'LI') {
       target = target.parentElement
     }
+    const checkbox = target.firstElementChild
 
     const classes = ['bg-green-200', 'hover:bg-gray-200', 'hover:bg-green-400']
-    classes.forEach(c => target.classList.toggle(c))
+    classes.forEach(c => {
+      target.classList.toggle(c)
+      if (event.target.tagName !== "INPUT") {
+        checkbox.checked = Array.from(target.classList).includes(c)
+      }
+    })
   }
 </script>
 {{end}}
