@@ -4,7 +4,7 @@
 <section class="grid max-w-6xl grid-cols-6 px-4 pb-4 m-auto">
   <div class="grid grid-cols-6 col-span-6 text-lg border border-gray-900 md:text-xl rounded-t-md">
     <div class="grid justify-start col-span-1 place-content-center">
-      <a href="/recipes/{{.Recipe.ID}}/edit">
+      <a href="/recipes/{{.Recipe.ID}}/edit" class="ml-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 hover:text-red-600" fill="none" viewBox="0 0 24 24"
           stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -12,11 +12,11 @@
         </svg>
       </a>
     </div>
-    <h1 class="grid col-span-4 font-bold place-content-center">
+    <h1 class="grid col-span-4 py-2 font-bold place-content-center">
       {{.Recipe.Name}}
     </h1>
     <div class="grid justify-end col-span-1 place-content-center">
-      <button onclick="deleteRecipe()">
+      <button class="mr-2" onclick="deleteRecipe()">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 hover:text-red-600" fill="none" viewBox="0 0 24 24"
           stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -223,8 +223,8 @@
         onmousedown="highlight(event)">
         <input type="checkbox" id="instruction-{{$i}}">
         <span class="pl-2 whitespace-pre-line">{{$e}}</span>
-        {{end}}
       </li>
+      {{end}}
     </ul>
   </div>
   <div class="hidden xl:col-span-3 xl:visible"></div>

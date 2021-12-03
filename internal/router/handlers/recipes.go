@@ -94,6 +94,38 @@ func handleDeleteRecipe(wr http.ResponseWriter, req *http.Request, id int64) {
 	http.Redirect(wr, req, "/", http.StatusSeeOther)
 }
 
+// EditRecipe handles the /recipes/{id:[0-9]+}/edit endpoint
+func EditRecipe(wr http.ResponseWriter, req *http.Request) {
+	id, err := strconv.ParseInt(mux.Vars(req)["id"], 10, 64)
+	if err != nil {
+		showErrorPage(wr, "The id is not specified:", err)
+		return
+	}
+
+	switch req.Method {
+	case http.MethodGet:
+		handleGetEditRecipe(wr, id)
+	case http.MethodPatch:
+	}
+}
+
+func handleGetEditRecipe(wr http.ResponseWriter, id int64) {
+	r, err := config.App().Repo.GetRecipe(id)
+	if err != nil {
+		showErrorPage(wr, "Could not retrieve the recipe:", err)
+		return
+	}
+
+	err = templates.Render(wr, "recipe-edit.gohtml", templates.RecipeData{
+		Recipe:            r,
+		RecipeImageBase64: imageToBase64(r.Image),
+	})
+	if err != nil {
+		log.Println("EditRecipe error", err)
+		return
+	}
+}
+
 // GetRecipesNewManual handles the GET /recipes/new/manual URI.
 func GetRecipesNewManual(wr http.ResponseWriter, req *http.Request) {
 	err := templates.Render(wr, "recipe-new-manual.gohtml", nil)
