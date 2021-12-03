@@ -1,16 +1,17 @@
 {{define "title"}}New Recipe{{end}}
 
 {{define "content"}}
-<form id="form__new-recipe" action="/recipes/new/manual" method="post" enctype=multipart/form-data
-  class="grid max-w-6xl grid-cols-1 px-4 pb-4 m-auto md:grid-cols-3 md:border-r-0">
-  <div class="col-span-1 text-lg border-gray-900 md:col-span-2 rounded-t-md">
+<form id="form__new-recipe" action="/recipes/new/manual" method="post" enctype="multipart/form-data"
+  class="grid max-w-6xl grid-cols-6 px-4 pb-4 m-auto">
+  <div class="col-span-6 text-lg border border-gray-900 md:text-xl rounded-t-md">
     <label for="title" class="hidden"></label>
-    <input type="text" id="title" name="title" placeholder="Title of the recipe*" required
-      class="relative w-full py-2 font-bold text-center text-gray-600 placeholder-gray-400 bg-white border border-gray-400 rounded-t-lg outline-none focus:outline-none focus:ring">
+    <input type="text" name="title" id="title" placeholder="Title of the recipe*" required
+      class="w-full py-2 font-bold text-center text-gray-600 placeholder-gray-400 rounded-t-lg">
   </div>
 
-  <div class="w-full col-span-1 border-b border-l border-r border-gray-900 place-self-end md:border-b-0 md:border-l-0">
-    <img id="output" class="object-cover w-full h-full">
+  <div
+    class="w-full h-full grid-flow-col col-span-6 border-b border-l border-r border-gray-900 place-self-end md:border-b md:border-l md:border-r md:col-span-4">
+    <img id="output" class="hidden object-cover w-full" class="text-center md:w-full">
     <label
       class="flex flex-row items-center py-2 tracking-wide text-purple-600 transition-all duration-150 ease-linear bg-white place-content-center hover:bg-purple-600 hover:text-white">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -25,12 +26,12 @@
     </label>
   </div>
 
-  <div class="col-span-1 p-2 border-b border-l border-r border-black md:col-span-2 md:border-r-0">
-    <div class="flex flex-col pb-2">
-      <label for="category" class="text-sm font-bold text-gray-600">
+  <div class="grid grid-flow-row col-span-6 md:col-span-2">
+    <div class="col-span-2 gap-4 p-2 border-b border-l border-r border-black md:border-l-0 md:border-r md:col-span-3">
+      <label for="category" class="block col-span-2 text-sm font-bold text-gray-600">
         Category <sup class="text-red-600">*</sup>
       </label>
-      <select id="category" name="category" required class="py-1.5 rounded-lg px-2">
+      <select id="category" name="category" required class="w-full block py-1.5 rounded-lg px-2 col-span-2 mb-2">
         <option value="">--Please choose an option--</option>
         <option value="dog">Dog</option>
         <option value="cat">Cat</option>
@@ -39,32 +40,42 @@
         <option value="spider">Spider</option>
         <option value="goldfish">Goldfish</option>
       </select>
-    </div>
-    <div>
-      <label for="category-new" class="text-sm font-bold text-gray-600">Category not listed?</label>
+
+      <label for="category-new" class="col-span-2 text-sm font-bold text-gray-600">
+        Category not listed?
+      </label>
       <div class="flex flex-col">
-        <input id="category-new" type="text" class="p-2 border border-gray-300 rounded-t-lg "
-          placeholder="Add a category" autocomplete="off">
+        <input id="category-new" type="text" class="p-2 border rounded-t-lg " placeholder="Add a category"
+          autocomplete="off">
         <button type="button"
-          class="col-span-2 duration-300 border border-gray-800 rounded-b-lg hover:bg-gray-800 hover:text-white center"
+          class="col-span-2 duration-300 border border-gray-800 rounded-b-xl hover:bg-gray-800 hover:text-white center"
           onclick="addCategory(event)">
           Add
         </button>
       </div>
     </div>
-  </div>
 
-  <div class="col-span-1 border-b border-l border-r border-black md:col-span-1 md:border-t">
-    <div class="flex flex-col p-2">
+    <div class="block col-span-2 p-2 border-b border-l border-r border-black md:col-span-3 md:border-l-0 md:border-t-0">
+      <div class="relative flex flex-col p-2">
+        <label for="yields" class="text-sm font-bold text-gray-600">Yields</label>
+        <input type="number" name="yields" id="yields" min="1" value="1" class="p-2 border border-gray-300 rounded-lg ">
+        <span class="absolute z-10 font-normal leading-snug text-gray-400 bg-transparent cursor-text bottom-5 right-10">
+          servings
+        </span>
+      </div>
+    </div>
+
+    <div class="block col-span-2 p-2 border-b border-l border-r border-black md:col-span-3 md:border-t-0 md:border-l-0">
       <label for="source" class="text-sm font-bold text-gray-600">
         Source <sup class="text-red-600">*</sup>
       </label>
-      <input type="text" name="source" id="source" class="p-2 border border-gray-300 rounded-lg "
+      <input type="text" name="source" id="source" class="block w-full p-2 border border-gray-300 rounded-lg"
         placeholder="Where does it come from?" autocomplete="off" required>
+
     </div>
   </div>
 
-  <div class="col-span-1 border-b border-l border-r border-black md:col-span-3">
+  <div class="col-span-6 border-b border-l border-r border-black md:col-span-4">
     <div class="flex flex-col p-2">
       <label for="description" class="text-sm font-bold text-gray-600">
         Description <sup class="text-red-600">*</sup>
@@ -74,42 +85,38 @@
     </div>
   </div>
 
-  <div class="col-span-1 py-2 border-b border-l border-r border-black md:col-span-1 md:border-r-0">
-    <div class="relative flex flex-col p-2">
-      <label for="yields" class="text-sm font-bold text-gray-600">Yields</label>
-      <input type="number" name="yields" id="yields" min="1" value="1" class="p-2 border border-gray-300 rounded-lg ">
-      <span class="absolute z-10 font-normal leading-snug text-gray-400 bg-transparent cursor-text bottom-5 right-10">
-        servings
-      </span>
-    </div>
-  </div>
-
-  <div class="col-span-1 border-b border-l border-r border-black md:col-span-1 md:border-r-0">
+  <div class="col-span-3 border-b border-l border-r border-black md:border-l-0 md:col-span-1">
     <div class="inline-block min-w-full overflow-x-auto align-middle">
       <div class="overflow-hidden border-gray-200">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="h-12 text-sm font-medium tracking-wider text-gray-500 bg-gray-50">
+        <table class="min-w-full text-xs divide-y divide-gray-200">
+          <thead class="h-12 font-medium tracking-wider text-white bg-gray-800">
             <tr>
-              <th scope="col" class="text-right">Nutrition (per 100g)</th>
-              <th scope="col" class="text-center">Amount (optional)</th>
+              <th scope=" col" class="text-right md:text-center">
+                <p>Nutrition<br>(per 100g)</p>
+              </th>
+              <th scope="col" class="text-center">
+                <p>
+                  Amount<br>(optional)
+                </p>
+              </th>
             </tr>
           </thead>
-          <tbody class="text-sm text-right text-gray-500 bg-white divide-y divide-gray-200">
+          <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200">
             <tr>
               <td>
                 <p>Calories:</p>
               </td>
-              <td class="py-3 text-center whitespace-nowrap">
+              <td class="py-3 text-center">
                 <label for="calories" class="hidden"></label>
                 <input type="text" id="calories" name="calories" placeholder="368kcal"
                   class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
               </td>
             </tr>
-            <tr>
+            <tr class="bg-gray-100">
               <td>
                 <p>Total carbohydrates:</p>
               </td>
-              <td class="py-3 text-center whitespace-nowrap">
+              <td class="py-3 text-center">
                 <label for="total-carbohydrates" class="hidden"></label>
                 <input type="text" id="total-carbohydrates" name="total-carbohydrates" placeholder="35g"
                   class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
@@ -119,17 +126,17 @@
               <td>
                 <p>Sugars:</p>
               </td>
-              <td class="py-3 text-center whitespace-nowrap">
+              <td class="py-3 text-center">
                 <label for="sugars" class="hidden"></label>
                 <input type="text" id="sugars" name="sugars" placeholder="3g"
                   class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
               </td>
             </tr>
-            <tr>
+            <tr class="bg-gray-100">
               <td>
                 <p>Protein:</p>
               </td>
-              <td class="py-3 text-center whitespace-nowrap">
+              <td class="py-3 text-center">
                 <label for="protein" class="hidden"></label>
                 <input type="text" id="protein" name="protein" placeholder="21g"
                   class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
@@ -139,17 +146,17 @@
               <td>
                 <p>Total fat:</p>
               </td>
-              <td class="py-3 text-center whitespace-nowrap">
+              <td class="py-3 text-center">
                 <label for="total-fat" class="hidden"></label>
                 <input type="text" id="total-fat" name="total-fat" placeholder="15g"
                   class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
               </td>
             </tr>
-            <tr>
+            <tr class="bg-gray-100">
               <td>
                 <p>Saturated fat:</p>
               </td>
-              <td class="py-3 text-center whitespace-nowrap">
+              <td class="py-3 text-center">
                 <label for="saturated-fat" class="hidden"></label>
                 <input type="text" id="saturated-fat" name="saturated-fat" placeholder="1.8g"
                   class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
@@ -159,17 +166,17 @@
               <td>
                 <p>Cholesterol:</p>
               </td>
-              <td class="py-3 text-center whitespace-nowrap">
+              <td class="py-3 text-center">
                 <label for="cholesterol" class="hidden"></label>
                 <input type="text" id="cholesterol" name="cholesterol" placeholder="1.1mg"
                   class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
               </td>
             </tr>
-            <tr>
+            <tr class="bg-gray-100">
               <td>
                 <p>Sodium:</p>
               </td>
-              <td class="py-3 text-center whitespace-nowrap">
+              <td class="py-3 text-center">
                 <label for="sodium" class="hidden"></label>
                 <input type="text" id="sodium" name="sodium" placeholder="100mg"
                   class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
@@ -179,11 +186,10 @@
               <td>
                 <p>Fiber:</p>
               </td>
-              <td class="py-3 text-center whitespace-nowrap">
+              <td class="py-3 text-center">
                 <label for="fiber" class="hidden"></label>
                 <input type="text" id="fiber" name="fiber" placeholder="8g"
                   class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
-
               </td>
             </tr>
           </tbody>
@@ -192,17 +198,17 @@
     </div>
   </div>
 
-  <div class="col-span-1 border-b border-l border-r border-black md:col-span-1">
+  <div class="col-span-3 border-b border-r border-black md:col-span-1">
     <div class="inline-block min-w-full overflow-x-auto align-middle">
       <div class="overflow-hidden border-gray-200">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="h-12 text-sm font-medium tracking-wider text-gray-500 bg-gray-50">
+        <table class="min-w-full text-xs divide-y divide-gray-200">
+          <thead class="h-12 font-medium tracking-wider text-white bg-gray-800 border-l border-white">
             <tr>
               <th scope="col" class="text-right">Time</th>
               <th scope="col" class="text-center">h:m:s</th>
             </tr>
           </thead>
-          <tbody class="text-sm text-right text-gray-500 bg-white divide-y divide-gray-200">
+          <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200">
             <tr>
               <td>
                 <p>Preparation:</p>
@@ -210,17 +216,17 @@
               <td class="py-3 text-center">
                 <label for="time-preparation" class="hidden"></label>
                 <input type="text" id="time-preparation" name="time-preparation" value="00:15:00"
-                  class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker">
+                  class="w-full p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker">
               </td>
             </tr>
-            <tr>
+            <tr class="bg-gray-100">
               <td>
                 <p>Cooking:</p>
               </td>
               <td class="w-1/2 py-3 text-center">
                 <label for="time-cooking" class="hidden"></label>
                 <input type="text" id="time-cooking" name="time-cooking" value="00:30:00"
-                  class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker">
+                  class="w-full p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker">
               </td>
             </tr>
           </tbody>
@@ -229,8 +235,7 @@
     </div>
   </div>
 
-
-  <div class="col-span-1 py-2 border-b border-l border-r border-black md:col-span-1 md:border-r-0">
+  <div class="col-span-6 py-2 border-b border-l border-r border-black md:col-span-2 md:border-r-0">
     <fieldset class="text-center border-none">
       <legend class="pb-2 m-auto text-sm font-bold text-gray-600 ">
         <span class="underline">Ingredients</span> <sup class="text-red-600 no-underline">*</sup>
@@ -260,8 +265,7 @@
       </ol>
     </fieldset>
   </div>
-
-  <div class="col-span-1 py-2 pb-8 border-b border-l border-r border-black md:col-span-2">
+  <div class="col-span-6 py-2 pb-8 border-b border-l border-r border-black md:col-span-4">
     <fieldset class="text-center border-none">
       <legend class="m-auto text-sm font-bold text-gray-600">
         <span class="underline">Instructions</span> <sup class="text-red-600">*</sup>
@@ -293,8 +297,7 @@
       </ol>
     </fieldset>
   </div>
-  <button type="submit"
-    class="w-full col-span-1 p-2 font-semibold text-white duration-300 bg-blue-500 md:col-span-3 hover:bg-blue-800">
+  <button type="submit" class="col-span-6 p-2 font-semibold text-white duration-300 bg-blue-500 hover:bg-blue-800">
     Submit
   </button>
 </form>
@@ -309,6 +312,7 @@
     output.src = URL.createObjectURL(event.target.files[0])
     output.alt = "Uploaded image of the recipe."
     output.onload = () => URL.revokeObjectURL(output.src)
+    output.classList.remove('hidden')
   }
 
   const addCategory = (event) => {

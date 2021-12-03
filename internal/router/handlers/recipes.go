@@ -3,7 +3,6 @@ package handlers
 import (
 	"bufio"
 	"encoding/base64"
-	"fmt"
 	"image"
 	"image/jpeg"
 	_ "image/png"
@@ -26,7 +25,7 @@ import (
 
 // RecipesAdd handles the GET /recipes/new URI.
 func RecipesAdd(wr http.ResponseWriter, req *http.Request) {
-	err := templates.Render(wr, "recipes-new.gohtml", nil)
+	err := templates.Render(wr, "recipe-new.gohtml", nil)
 	if err != nil {
 		log.Println(err)
 	}
@@ -97,7 +96,7 @@ func handleDeleteRecipe(wr http.ResponseWriter, req *http.Request, id int64) {
 
 // GetRecipesNewManual handles the GET /recipes/new/manual URI.
 func GetRecipesNewManual(wr http.ResponseWriter, req *http.Request) {
-	err := templates.Render(wr, "recipes-new-manual.gohtml", nil)
+	err := templates.Render(wr, "recipe-new-manual.gohtml", nil)
 	if err != nil {
 		log.Println(err)
 	}
@@ -166,8 +165,7 @@ func PostRecipesNewManual(wr http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	fmt.Println(id)
-	wr.WriteHeader(http.StatusCreated)
+	http.Redirect(wr, req, "/recipes/"+strconv.FormatInt(id, 10), http.StatusSeeOther)
 }
 
 func timeToDuration(req *http.Request, field string) (time.Duration, error) {
@@ -187,7 +185,6 @@ func getFormItems(req *http.Request, field string) []string {
 		}
 
 		_, found := itemMap[item]
-		fmt.Println(found, i, item)
 		if !found {
 			itemMap[item] = true
 			items = append(items, item)
