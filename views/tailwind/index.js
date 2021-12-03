@@ -65,3 +65,19 @@ window.showSuccessToast = (text) => Toastify({
     background: '#27ae60'
   }
 }).showToast()
+
+window.showErrorToast = (text) => Toastify({
+  text,
+  close: true,
+  position: 'center',
+  style: {
+    background: '#c0392b'
+  }
+})
+
+// Storage
+const toastMessage = window.sessionStorage.getItem('showSuccessToast')
+if (toastMessage !== null) {
+  window.showSuccessToast(toastMessage)
+  window.sessionStorage.removeItem('showSuccessToast')
+}
