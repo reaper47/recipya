@@ -48,9 +48,9 @@
 
     <div class="flex items-center justify-center col-span-2 border-b border-r border-black md:col-span-3 md:border-t">
       {{if isUrl .Url}}
-      <a class="p-1 duration-300 border border-gray-800 rounded-lg md:justify-center md: md:h-1/3 md:w-1/3 md:inline-grid hover:bg-gray-800 hover:text-white center"
+      <a class="p-1 text-sm duration-300 border border-gray-800 rounded-lg md:justify-center md: md:h-1/3 md:w-1/3 md:inline-grid hover:bg-gray-800 hover:text-white center"
         href="{{.Url}}" target="_blank">
-        <button class="text-sm">Source</button>
+        Source
       </a>
       {{else}}
       <p>Source: {{.Url}}</p>

@@ -7,7 +7,7 @@
     <p class="py-2 ">It seems you have not added recipes yet.</p>
     <a class="flex justify-center col-span-2 duration-300 border-2 border-gray-800 rounded-lg text-gray-00 hover:bg-gray-800 hover:text-white center"
       href="/recipes/new">
-      <button>Add a recipe</button>
+      Add a recipe
     </a>
   </div>
 </div>
@@ -31,11 +31,17 @@
       </p>
       <a class="flex justify-center col-span-2 duration-300 border-2 border-gray-800 rounded-lg text-gray-00 hover:bg-gray-800 hover:text-white center"
         href="/recipes/{{.ID}}">
-        <button>View</button>
+        View
       </a>
     </div>
   </div>
   {{end}}
 </section>
 {{end}}
+{{end}}
+
+{{define "js"}}
+<script>
+  document.getElementById('header__recipe-add-button').classList.remove('hidden')
+</script>
 {{end}}
