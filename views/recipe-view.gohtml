@@ -1,10 +1,11 @@
 {{define "title"}}{{.Recipe.Name}}{{end}}
 
 {{define "content"}}
+{{with .Recipe}}
 <section class="grid max-w-6xl grid-cols-6 px-4 pb-4 m-auto">
   <div class="grid grid-cols-6 col-span-6 text-lg border border-gray-900 md:text-xl rounded-t-md">
     <div class="grid justify-start col-span-1 place-content-center">
-      <a href="/recipes/{{.Recipe.ID}}/edit" class="ml-2">
+      <a href="/recipes/{{.ID}}/edit" class="ml-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 hover:text-red-600" fill="none" viewBox="0 0 24 24"
           stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -13,7 +14,7 @@
       </a>
     </div>
     <h1 class="grid col-span-4 py-2 font-bold place-content-center">
-      {{.Recipe.Name}}
+      {{.Name}}
     </h1>
     <div class="grid justify-end col-span-1 place-content-center">
       <button class="mr-2" onclick="deleteRecipe()">
@@ -28,8 +29,8 @@
 
   <div
     class="w-full h-full grid-flow-col col-span-6 border-b border-l border-r border-gray-900 place-self-end md:border-b md:border-l md:border-r md:col-span-4">
-    <img src="data:image/jpg;base64,{{.RecipeImageBase64}}" alt="Image of the {{.Recipe.Name}} recipe."
-      class="text-center md:w-full">
+    <img id="output" class="text-center md:w-full" src="{{if isUuidValid .Image}}/data/img/{{.Image}}{{end}}"
+      alt="Image of the {{.Name}} recipe">
   </div>
 
   <div class="grid grid-flow-col col-span-6 md:grid-flow-row md:col-span-2 md:grid">
@@ -37,30 +38,31 @@
       class="col-span-2 p-2 border-b border-l border-r border-black md:border-l-0 md:border-r md:col-span-3 md:grid md:place-items-center">
       <span
         class="flex items-center justify-center p-2 font-medium text-blue-700 bg-blue-100 border border-blue-300 rounded-full md:w-1/3 md:h-1/3 ">
-        <span class="text-sm font-normal leading-none capitalize">{{.Recipe.Category}}</span>
+        <span class="text-sm font-normal leading-none capitalize">{{.Category}}</span>
       </span>
     </div>
 
     <div class="grid col-span-2 py-2 border-b border-r border-black md:border-b-0 md:col-span-3 place-items-center">
-      <p class="text-sm text-center">{{.Recipe.Yield}} servings</p>
+      <p class="text-sm text-center">{{.Yield}} servings</p>
     </div>
 
     <div class="flex items-center justify-center col-span-2 border-b border-r border-black md:col-span-3 md:border-t">
-      {{if isUrl .Recipe.Url}}
+      {{if isUrl .Url}}
       <a class="p-1 duration-300 border border-gray-800 rounded-lg md:justify-center md: md:h-1/3 md:w-1/3 md:inline-grid hover:bg-gray-800 hover:text-white center"
-        href="{{.Recipe.Url}}" target="_blank">
+        href="{{.Url}}" target="_blank">
         <button class="text-sm">Source</button>
       </a>
       {{else}}
-      <p>Source: {{.Recipe.Url}}</p>
+      <p>Source: {{.Url}}</p>
       {{end}}
     </div>
   </div>
 
   <div class="col-span-6 border-b border-l border-r border-black md:col-span-4 md:border-r-0">
-    <p class="p-2 text-sm whitespace-pre-line">{{.Recipe.Description}}</p>
+    <p class="p-2 text-sm whitespace-pre-line">{{.Description}}</p>
   </div>
 
+  {{with .Nutrition}}
   <div class="col-span-3 border-b border-l border-r border-black md:col-span-1">
     <div class="inline-block min-w-full overflow-x-auto align-middle">
       <div class="overflow-hidden border-gray-200">
@@ -83,7 +85,7 @@
                 <p>Calories:</p>
               </td>
               <td class="py-3 text-center">
-                {{.Recipe.Nutrition.Calories}}
+                {{.Calories}}
               </td>
             </tr>
             <tr class="bg-gray-100">
@@ -91,7 +93,7 @@
                 <p>Total carbohydrates:</p>
               </td>
               <td class="py-3 text-center">
-                {{.Recipe.Nutrition.TotalCarbohydrates}}
+                {{.TotalCarbohydrates}}
               </td>
             </tr>
             <tr>
@@ -99,7 +101,7 @@
                 <p>Sugars:</p>
               </td>
               <td class="py-3 text-center">
-                {{.Recipe.Nutrition.Sugars}}
+                {{.Sugars}}
               </td>
             </tr>
             <tr class="bg-gray-100">
@@ -107,7 +109,7 @@
                 <p>Protein:</p>
               </td>
               <td class="py-3 text-center">
-                {{.Recipe.Nutrition.Protein}}
+                {{.Protein}}
               </td>
             </tr>
             <tr>
@@ -115,7 +117,7 @@
                 <p>Total fat:</p>
               </td>
               <td class="py-3 text-center">
-                {{.Recipe.Nutrition.TotalFat}}
+                {{.TotalFat}}
               </td>
             </tr>
             <tr class="bg-gray-100">
@@ -123,7 +125,7 @@
                 <p>Saturated fat:</p>
               </td>
               <td class="py-3 text-center">
-                {{.Recipe.Nutrition.SaturatedFat}}
+                {{.SaturatedFat}}
               </td>
             </tr>
             <tr>
@@ -131,7 +133,7 @@
                 <p>Cholesterol:</p>
               </td>
               <td class="py-3 text-center">
-                {{.Recipe.Nutrition.Cholesterol}}
+                {{.Cholesterol}}
               </td>
             </tr>
             <tr class="bg-gray-100">
@@ -139,7 +141,7 @@
                 <p>Sodium:</p>
               </td>
               <td class="py-3 text-center">
-                {{.Recipe.Nutrition.Sodium}}
+                {{.Sodium}}
               </td>
             </tr>
             <tr>
@@ -147,7 +149,7 @@
                 <p>Fiber:</p>
               </td>
               <td class="py-3 text-center">
-                {{.Recipe.Nutrition.Fiber}}
+                {{.Fiber}}
               </td>
             </tr>
           </tbody>
@@ -155,7 +157,9 @@
       </div>
     </div>
   </div>
+  {{end}}
 
+  {{with .Times}}
   <div class="col-span-3 border-b border-r border-black md:col-span-1">
     <div class="inline-block min-w-full overflow-x-auto align-middle">
       <div class="overflow-hidden border-gray-200">
@@ -172,7 +176,7 @@
                 <p>Preparation:</p>
               </td>
               <td class="py-3 text-center">
-                <p>{{fmtDuration .Recipe.Times.Prep}}</p>
+                <p>{{fmtDuration .Prep}}</p>
               </td>
             </tr>
             <tr class="bg-gray-100">
@@ -180,7 +184,7 @@
                 <p>Cooking:</p>
               </td>
               <td class="w-1/2 py-3 text-center">
-                <p>{{fmtDuration .Recipe.Times.Cook}}</p>
+                <p>{{fmtDuration .Cook}}</p>
               </td>
             </tr>
             <tr class="font-bold">
@@ -188,7 +192,7 @@
                 <p>Total:</p>
               </td>
               <td class="w-1/2 py-3 text-center">
-                <p>{{fmtDuration .Recipe.Times.Total}}</p>
+                <p>{{fmtDuration .Total}}</p>
               </td>
             </tr>
           </tbody>
@@ -196,12 +200,13 @@
       </div>
     </div>
   </div>
+  {{end}}
 
   <div class="col-span-6 py-2 border-b border-l border-r border-black md:rounded-bl-lg md:col-span-2 md:border-r-0">
     <h2 class="pb-2 m-auto text-sm font-bold text-center text-gray-600 underline ">Ingredients</h2>
     <ul class="grid px-6">
-      {{$len := len .Recipe.Instructions}}
-      {{range $i, $e := .Recipe.Ingredients}}
+      {{$len := len .Instructions}}
+      {{range $i, $e := .Ingredients}}
       <li
         class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200 {{if eq $i 0}}rounded-t-lg{{else if eq $i $len}}rounded-b-lg{{end}}"
         onmousedown="highlight(event)">
@@ -216,8 +221,8 @@
     class="col-span-6 py-2 pb-8 border-b border-l border-r border-black rounded-bl-lg rounded-br-lg md:rounded-bl-none md:col-span-4">
     <h2 class="pb-2 m-auto text-sm font-bold text-center text-gray-600 underline ">Instructions</h2>
     <ul class="grid px-6">
-      {{$len := len .Recipe.Instructions}}
-      {{range $i, $e := .Recipe.Instructions}}
+      {{$len := len .Instructions}}
+      {{range $i, $e := .Instructions}}
       <li
         class="inline-flex min-w-full p-2 text-sm select-none hover:bg-gray-200 {{if eq $i 0}}rounded-t-lg{{else if eq $i $len}}rounded-b-lg{{end}}"
         onmousedown="highlight(event)">
@@ -229,6 +234,7 @@
   </div>
   <div class="hidden xl:col-span-3 xl:visible"></div>
 </section>
+{{end}}
 {{end}}
 
 {{define "js"}}

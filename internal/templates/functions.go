@@ -5,18 +5,20 @@ import (
 	"net/url"
 	"text/template"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 var fm = template.FuncMap{
-	"fmtDuration": func(d time.Duration) string {
-		h, m, d := getHourMin(d)
-		d -= m * time.Minute
-		return fmt.Sprintf("%dh%02d", h, m)
-	},
 	"durationToInput": func(d time.Duration) string {
 		h, m, d := getHourMin(d)
 		s := d / time.Second
 		return fmt.Sprintf("%d:%02d:%02d", h, m, s)
+	},
+	"fmtDuration": func(d time.Duration) string {
+		h, m, d := getHourMin(d)
+		d -= m * time.Minute
+		return fmt.Sprintf("%dh%02d", h, m)
 	},
 	"inc": func(i int) int {
 		return i + 1
@@ -32,6 +34,15 @@ var fm = template.FuncMap{
 			return false
 		}
 		return true
+	},
+	"isUuidValid": func(u uuid.UUID) bool {
+		return u != uuid.UUID{}
+	},
+	"substring": func(s string, endIndex int) string {
+		if len(s) <= endIndex {
+			return s
+		}
+		return s[:endIndex] + "..."
 	},
 }
 

@@ -1,23 +1,19 @@
 {{define "title"}}Edit Recipe{{end}}
 
 {{define "content"}}
+{{with .Recipe}}
 <form id="form__new-recipe" action="/recipes/new/manual" method="post" enctype="multipart/form-data"
   class="grid max-w-6xl grid-cols-6 px-4 pb-4 m-auto">
   <div class="col-span-6 text-lg border border-gray-900 md:text-xl rounded-t-md">
     <label for="title" class="hidden"></label>
-    <input type="text" name="title" id="title" placeholder="Title of the recipe*" value="{{.Recipe.Name}}" required
+    <input type="text" name="title" id="title" placeholder="Title of the recipe*" value="{{.Name}}" required
       class="w-full py-2 font-bold text-center text-gray-600 placeholder-gray-400 rounded-t-lg">
   </div>
 
   <div
     class="w-full h-full grid-flow-col col-span-6 border-b border-l border-r border-gray-900 place-self-end md:border-b md:border-l md:border-r md:col-span-4">
-    {{if .RecipeImageBase64}}
     <img id="output" class="object-cover w-full text-center md:w-full"
-      src="data:image/jpg;base64,{{.RecipeImageBase64}}" alt="Image of the {{.Recipe.Name}}">
-    {{else}}
-    <img id=" output" class="hidden object-cover w-full text-center md:w-full">
-    {{end}}
-    <img id="output" class="hidden object-cover w-full" class="text-center md:w-full">
+      src="{{if isUuidValid .Image}}/data/img/{{.Image}}{{end}}" alt="Image of the {{.Name}} recipe">
     <label
       class="flex flex-row items-center py-2 tracking-wide text-purple-600 transition-all duration-150 ease-linear bg-white place-content-center hover:bg-purple-600 hover:text-white">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -38,7 +34,7 @@
         Category <sup class="text-red-600">*</sup>
       </label>
       <select required id="category" name="category" class="w-full block py-1.5 rounded-lg px-2 col-span-2 mb-2"
-        value="{{.Recipe.Category}}">
+        value="{{.Category}}">
         <option value="">--Please choose an option--</option>
         <option value="dog">Dog</option>
         <option value="cat">Cat</option>
@@ -65,7 +61,7 @@
     <div class="block col-span-2 p-2 border-b border-l border-r border-black md:col-span-3 md:border-l-0 md:border-t-0">
       <div class="relative flex flex-col p-2">
         <label for="yields" class="text-sm font-bold text-gray-600">Yields</label>
-        <input type="number" name="yields" id="yields" min="1" value="{{.Recipe.Yield}}"
+        <input type="number" name="yields" id="yields" min="1" value="{{.Yield}}"
           class="p-2 border border-gray-300 rounded-lg ">
         <span class="absolute z-10 font-normal leading-snug text-gray-400 bg-transparent cursor-text bottom-5 right-10">
           servings
@@ -78,7 +74,7 @@
         Source <sup class="text-red-600">*</sup>
       </label>
       <input type="text" name="source" id="source" class="block w-full p-2 border border-gray-300 rounded-lg"
-        placeholder="Where does it come from?" autocomplete="off" required value="{{.Recipe.Url}}">
+        placeholder="Where does it come from?" autocomplete="off" required value="{{.Url}}">
 
     </div>
   </div>
@@ -89,10 +85,11 @@
         Description <sup class="text-red-600">*</sup>
       </label>
       <textarea id="description" name="description" rows="10" class="p-2 border border-gray-300 rounded-t-lg "
-        placeholder="This Thai curry chicken will make you drool..." required>{{.Recipe.Description}}</textarea>
+        placeholder="This Thai curry chicken will make you drool..." required>{{.Description}}</textarea>
     </div>
   </div>
 
+  {{with .Nutrition}}
   <div class="col-span-3 border-b border-l border-r border-black md:border-l-0 md:col-span-1">
     <div class="inline-block min-w-full overflow-x-auto align-middle">
       <div class="overflow-hidden border-gray-200">
@@ -116,8 +113,7 @@
               </td>
               <td class="py-3 text-center">
                 <label for="calories" class="hidden"></label>
-                <input type="text" id="calories" name="calories" placeholder="368kcal"
-                  value="{{.Recipe.Nutrition.Calories}}"
+                <input type="text" id="calories" name="calories" placeholder="368kcal" value="{{.Calories}}"
                   class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
               </td>
             </tr>
@@ -128,7 +124,7 @@
               <td class="py-3 text-center">
                 <label for="total-carbohydrates" class="hidden"></label>
                 <input type="text" id="total-carbohydrates" name="total-carbohydrates" placeholder="35g"
-                  value="{{.Recipe.Nutrition.TotalCarbohydrates}}"
+                  value="{{.TotalCarbohydrates}}"
                   class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
               </td>
             </tr>
@@ -138,7 +134,7 @@
               </td>
               <td class="py-3 text-center">
                 <label for="sugars" class="hidden"></label>
-                <input type="text" id="sugars" name="sugars" placeholder="3g" value="{{.Recipe.Nutrition.Sugars}}"
+                <input type="text" id="sugars" name="sugars" placeholder="3g" value="{{.Sugars}}"
                   class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
               </td>
             </tr>
@@ -148,7 +144,7 @@
               </td>
               <td class="py-3 text-center">
                 <label for="protein" class="hidden"></label>
-                <input type="text" id="protein" name="protein" placeholder="21g" value="{{.Recipe.Nutrition.Protein}}"
+                <input type="text" id="protein" name="protein" placeholder="21g" value="{{.Protein}}"
                   class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
               </td>
             </tr>
@@ -158,8 +154,7 @@
               </td>
               <td class="py-3 text-center">
                 <label for="total-fat" class="hidden"></label>
-                <input type="text" id="total-fat" name="total-fat" placeholder="15g"
-                  value="{{.Recipe.Nutrition.TotalFat}}"
+                <input type="text" id="total-fat" name="total-fat" placeholder="15g" value="{{.TotalFat}}"
                   class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
               </td>
             </tr>
@@ -169,8 +164,7 @@
               </td>
               <td class="py-3 text-center">
                 <label for="saturated-fat" class="hidden"></label>
-                <input type="text" id="saturated-fat" name="saturated-fat" placeholder="1.8g"
-                  value="{{.Recipe.Nutrition.SaturatedFat}}"
+                <input type="text" id="saturated-fat" name="saturated-fat" placeholder="1.8g" value="{{.SaturatedFat}}"
                   class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
               </td>
             </tr>
@@ -180,8 +174,7 @@
               </td>
               <td class="py-3 text-center">
                 <label for="cholesterol" class="hidden"></label>
-                <input type="text" id="cholesterol" name="cholesterol" placeholder="1.1mg"
-                  value="{{.Recipe.Nutrition.Cholesterol}}"
+                <input type="text" id="cholesterol" name="cholesterol" placeholder="1.1mg" value="{{.Cholesterol}}"
                   class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
               </td>
             </tr>
@@ -191,7 +184,7 @@
               </td>
               <td class="py-3 text-center">
                 <label for="sodium" class="hidden"></label>
-                <input type="text" id="sodium" name="sodium" placeholder="100mg" value="{{.Recipe.Nutrition.Sodium}}"
+                <input type="text" id="sodium" name="sodium" placeholder="100mg" value="{{.Sodium}}"
                   class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
               </td>
             </tr>
@@ -201,7 +194,7 @@
               </td>
               <td class="py-3 text-center">
                 <label for="fiber" class="hidden"></label>
-                <input type="text" id="fiber" name="fiber" placeholder="8g" value="{{.Recipe.Nutrition.Fiber}}"
+                <input type="text" id="fiber" name="fiber" placeholder="8g" value="{{.Fiber}}"
                   class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
               </td>
             </tr>
@@ -210,7 +203,9 @@
       </div>
     </div>
   </div>
+  {{end}}
 
+  {{with .Times}}
   <div class="col-span-3 border-b border-r border-black md:col-span-1">
     <div class="inline-block min-w-full overflow-x-auto align-middle">
       <div class="overflow-hidden border-gray-200">
@@ -228,8 +223,7 @@
               </td>
               <td class="py-3 text-center">
                 <label for="time-preparation" class="hidden"></label>
-                <input type="text" id="time-preparation" name="time-preparation"
-                  value="{{durationToInput .Recipe.Times.Prep}}"
+                <input type="text" id="time-preparation" name="time-preparation" value="{{durationToInput .Prep}}"
                   class="w-full p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker">
               </td>
             </tr>
@@ -239,7 +233,7 @@
               </td>
               <td class="w-1/2 py-3 text-center">
                 <label for="time-cooking" class="hidden"></label>
-                <input type="text" id="time-cooking" name="time-cooking" value="{{durationToInput .Recipe.Times.Cook}}"
+                <input type="text" id="time-cooking" name="time-cooking" value="{{durationToInput .Cook}}"
                   class="w-full p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker">
               </td>
             </tr>
@@ -248,6 +242,7 @@
       </div>
     </div>
   </div>
+  {{end}}
 
   <div class="col-span-6 py-2 border-b border-l border-r border-black md:col-span-2 md:border-r-0">
     <fieldset class="text-center border-none">
@@ -255,8 +250,8 @@
         <span class="underline">Ingredients</span> <sup class="text-red-600 no-underline">*</sup>
       </legend>
       <ol id="ingredients__list" class="pl-6 list-decimal">
-        {{$len := len .Recipe.Instructions}}
-        {{range $i, $e := .Recipe.Ingredients}}
+        {{$len := len .Instructions}}
+        {{range $i, $e := .Ingredients}}
         <li class="pb-2 pl-2">
           <input type="text" name="ingredient-{{inc $i}}" placeholder="Ingredient #{{inc $i}}" value="{{$e}}" required
             class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
@@ -288,8 +283,8 @@
         <span class="underline">Instructions</span> <sup class="text-red-600">*</sup>
       </legend>
       <ol id="instructions__list" class="pl-4 list-decimal">
-        {{$len := len .Recipe.Instructions}}
-        {{range $i, $e := .Recipe.Instructions}}
+        {{$len := len .Instructions}}
+        {{range $i, $e := .Instructions}}
         <li class="pt-2 pl-2">
           <textarea required name="instruction-{{inc $i}}" rows="3" class="w-9/12 border border-gray-300 md:w-4/5"
             placeholder="Instruction #{{inc $i}}" required>{{$e}}</textarea>
@@ -318,9 +313,10 @@
     </fieldset>
   </div>
   <button type="submit" class="col-span-6 p-2 font-semibold text-white duration-300 bg-blue-500 hover:bg-blue-800">
-    Submit
+    Update
   </button>
 </form>
+{{end}}
 {{end}}
 
 {{define "js"}}
