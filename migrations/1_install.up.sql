@@ -5,7 +5,7 @@ CREATE TABLE recipes (
   id SERIAL PRIMARY KEY,
   name VARCHAR(80) NOT NULL,
   description TEXT,
-  url VARCHAR(80),
+  url VARCHAR(256),
   image UUID DEFAULT gen_random_uuid(),
   yield SMALLINT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -105,9 +105,9 @@ CREATE TABLE time_recipe (
 );
 
 --
--- TRIGGERS
+-- FUNCTIONS
 --
-CREATE FUNCTION times_calc_total_time() RETURNS trigger AS $func$
+CREATE FUNCTION times_calc_total_time() RETURNS TRIGGER AS $func$
   BEGIN
     IF NEW.prep IS NOT NULL AND NEW.cook IS NOT NULL AND NEW.total IS NULL THEN
       NEW.total := NEW.prep + NEW.cook;
@@ -116,13 +116,35 @@ CREATE FUNCTION times_calc_total_time() RETURNS trigger AS $func$
   END;
 $func$ LANGUAGE plpgsql;
 
+CREATE FUNCTION recipes_update_updated_at() RETURNS TRIGGER AS $func$
+	BEGIN
+		NEW.updated_at := CURRENT_TIMESTAMP;
+		RETURN NEW;
+	END;
+$func$ LANGUAGE plpgsql;
+
+
+--
+-- TRIGGERS
+--
 CREATE TRIGGER times_calc_total_time 
   BEFORE INSERT OR UPDATE ON times 
   FOR EACH ROW 
   EXECUTE FUNCTION times_calc_total_time();
+
+CREATE TRIGGER recipes_update_updated_at
+	BEFORE UPDATE ON recipes 
+	FOR EACH ROW 
+	EXECUTE  FUNCTION recipes_update_updated_at();
+
 
 --
 -- INSERTS
 --
 INSERT INTO categories (name) 
 VALUES ('uncategorized');
+
+--
+-- EXTENSIONS
+--
+CREATE EXTENSION "uuid-ossp";

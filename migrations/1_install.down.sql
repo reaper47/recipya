@@ -1,5 +1,9 @@
+DROP EXTENSION "uuid-ossp";
 DROP FUNCTION times_calc_total_time() CASCADE;
+DROP FUNCTION recipes_update_updated_at() CASCADE;
+
 TRUNCATE TABLE recipes CASCADE;
+
 DROP TABLE recipes CASCADE;
 DROP TABLE categories CASCADE;
 DROP TABLE ingredients CASCADE;

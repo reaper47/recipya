@@ -46,11 +46,14 @@ jobs:
         with:
           go-version: 1.16
 
+      - name: PostgreSQL
+        run: sudo apt install -y postgresql postgresql-contrib
+
       - name: Install pnpm
-        run: sudo apt install nodejs && npm install -g pnpm
+        run: sudo apt install -y nodejs && npm install -g pnpm
 
       - name: Install Tesseract
-        run: sudo apt-get install tesseract-ocr libtesseract-dev
+        run: sudo apt-get install -y tesseract-ocr libtesseract-dev
 
       - name: Get dependencies
         run: go mod download 

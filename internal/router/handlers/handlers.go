@@ -10,28 +10,28 @@ import (
 )
 
 // Index handles the "/" page.
-func Index(wr http.ResponseWriter, req *http.Request) {
+func Index(w http.ResponseWriter, req *http.Request) {
 	recipes, err := config.App().Repo.GetAllRecipes()
 	if err != nil {
-		showErrorPage(wr, "Cannot retrieve all recipes.", err)
+		showErrorPage(w, "Cannot retrieve all recipes.", err)
 		return
 	}
 
-	err = templates.Render(wr, "index.gohtml", templates.RecipesData{Recipes: recipes})
+	err = templates.Render(w, "index.gohtml", templates.RecipesData{Recipes: recipes})
 	if err != nil {
 		log.Println(err)
 	}
 }
 
 // Favicon serves the favicon.ico file.
-func Favicon(wr http.ResponseWriter, req *http.Request) {
+func Favicon(w http.ResponseWriter, req *http.Request) {
 	f, err := static.FS.ReadFile("favicon.ico")
 	if err != nil {
-		wr.WriteHeader(http.StatusNotFound)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
-	wr.WriteHeader(http.StatusOK)
-	wr.Header().Set("Content-Type", "image/x-icon")
-	wr.Write(f)
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "image/x-icon")
+	w.Write(f)
 }

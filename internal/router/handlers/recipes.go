@@ -22,106 +22,135 @@ import (
 )
 
 // RecipesAdd handles the GET /recipes/new URI.
-func RecipesAdd(wr http.ResponseWriter, req *http.Request) {
-	err := templates.Render(wr, "recipe-new.gohtml", nil)
+func RecipesAdd(w http.ResponseWriter, req *http.Request) {
+	err := templates.Render(w, "recipe-new.gohtml", nil)
 	if err != nil {
 		log.Println(err)
 	}
 }
 
 // Recipe handles the /recipes/{id:[0-9]+} endpoint.
-func Recipe(wr http.ResponseWriter, req *http.Request) {
+func Recipe(w http.ResponseWriter, req *http.Request) {
 	id, err := strconv.ParseInt(mux.Vars(req)["id"], 10, 64)
 	if err != nil {
-		showErrorPage(wr, "The id is not specified:", err)
+		showErrorPage(w, "The id is not specified:", err)
 		return
 	}
 
 	switch req.Method {
 	case http.MethodGet:
-		handleGetRecipe(wr, id)
+		handleGetRecipe(w, id)
 	case http.MethodDelete:
-		handleDeleteRecipe(wr, req, id)
+		handleDeleteRecipe(w, req, id)
 	}
 }
 
-func handleGetRecipe(wr http.ResponseWriter, id int64) {
+func handleGetRecipe(w http.ResponseWriter, id int64) {
 	r, err := config.App().Repo.GetRecipe(id)
 	if err != nil {
-		showErrorPage(wr, "Could not retrieve the recipe:", err)
+		showErrorPage(w, "Could not retrieve the recipe:", err)
 		return
 	}
 
-	err = templates.Render(wr, "recipe-view.gohtml", templates.RecipeData{Recipe: r})
+	err = templates.Render(w, "recipe-view.gohtml", templates.RecipeData{Recipe: r})
 	if err != nil {
 		log.Println(err)
 	}
 }
 
-func handleDeleteRecipe(wr http.ResponseWriter, req *http.Request, id int64) {
+func handleDeleteRecipe(w http.ResponseWriter, req *http.Request, id int64) {
 	err := config.App().Repo.DeleteRecipe(id)
 	if err != nil {
-		showErrorPage(wr, "Could not delete the recipe:", err)
+		showErrorPage(w, "Could not delete the recipe:", err)
 		return
 	}
-	http.Redirect(wr, req, "/", http.StatusSeeOther)
+	http.Redirect(w, req, "/", http.StatusSeeOther)
 }
 
 // EditRecipe handles the /recipes/{id:[0-9]+}/edit endpoint
-func EditRecipe(wr http.ResponseWriter, req *http.Request) {
+func EditRecipe(w http.ResponseWriter, req *http.Request) {
 	id, err := strconv.ParseInt(mux.Vars(req)["id"], 10, 64)
 	if err != nil {
-		showErrorPage(wr, "The id is not specified:", err)
+		showErrorPage(w, "The id is not specified:", err)
 		return
 	}
 
 	switch req.Method {
 	case http.MethodGet:
-		handleGetEditRecipe(wr, id)
-	case http.MethodPatch:
+		handleGetEditRecipe(w, id)
+	case http.MethodPost:
+		handlePostEditRecipe(w, req, id)
 	}
 }
 
-func handleGetEditRecipe(wr http.ResponseWriter, id int64) {
+func handleGetEditRecipe(w http.ResponseWriter, id int64) {
 	r, err := config.App().Repo.GetRecipe(id)
 	if err != nil {
-		showErrorPage(wr, "Could not retrieve the recipe:", err)
+		showErrorPage(w, "Could not retrieve the recipe:", err)
 		return
 	}
 
-	err = templates.Render(wr, "recipe-edit.gohtml", templates.RecipeData{Recipe: r})
+	err = templates.Render(w, "recipe-edit.gohtml", templates.RecipeData{Recipe: r})
 	if err != nil {
 		log.Println("EditRecipe error", err)
 		return
 	}
 }
 
+func handlePostEditRecipe(w http.ResponseWriter, req *http.Request, id int64) {
+	r, err := getRecipeFromForm(req)
+	if err != nil {
+		showErrorPage(w, "Could not retrieve the recipe from the form:", err)
+		return
+	}
+	r.ID = id
+
+	err = config.App().Repo.UpdateRecipe(r)
+	if err != nil {
+		showErrorPage(w, "An error occured when updating the recipe:", err)
+		return
+	}
+	http.Redirect(w, req, "/recipes/"+strconv.FormatInt(id, 10), http.StatusSeeOther)
+}
+
 // GetRecipesNewManual handles the GET /recipes/new/manual URI.
-func GetRecipesNewManual(wr http.ResponseWriter, req *http.Request) {
-	err := templates.Render(wr, "recipe-new-manual.gohtml", nil)
+func GetRecipesNewManual(w http.ResponseWriter, req *http.Request) {
+	err := templates.Render(w, "recipe-new-manual.gohtml", nil)
 	if err != nil {
 		log.Println(err)
 	}
 }
 
 // PostRecipesNewManual handles the POST /recipes/new/manual URI.
-func PostRecipesNewManual(wr http.ResponseWriter, req *http.Request) {
+func PostRecipesNewManual(w http.ResponseWriter, req *http.Request) {
+	r, err := getRecipeFromForm(req)
+	if err != nil {
+		showErrorPage(w, "Could not retrieve the recipe from the form:", err)
+		return
+	}
+
+	id, err := config.App().Repo.InsertNewRecipe(r)
+	if err != nil {
+		showErrorPage(w, "An error occured when inserting the recipe:", err)
+		return
+	}
+	http.Redirect(w, req, "/recipes/"+strconv.FormatInt(id, 10), http.StatusSeeOther)
+}
+
+func getRecipeFromForm(req *http.Request) (models.Recipe, error) {
 	yield, err := strconv.ParseInt(req.FormValue("yields"), 10, 16)
 	if err != nil {
-		showErrorPage(wr, "An error occured when retrieving the yield count:", err)
-		return
+		return models.Recipe{}, err
 	}
 
 	prepTime, err := timeToDuration(req, "time-preparation")
 	if err != nil {
-		showErrorPage(wr, "An error occured when parsing the preparation time:", err)
-		return
+		return models.Recipe{}, err
 	}
 
 	cookTime, err := timeToDuration(req, "time-cooking")
 	if err != nil {
-		showErrorPage(wr, "An error occured when parsing the cooking time:", err)
-		return
+		return models.Recipe{}, err
 	}
 
 	file, _, err := req.FormFile("image")
@@ -130,12 +159,11 @@ func PostRecipesNewManual(wr http.ResponseWriter, req *http.Request) {
 		defer file.Close()
 		imageUUID, err = saveImage(file, "img")
 		if err != nil {
-			showErrorPage(wr, "An error occured when saving the image:", err)
-			return
+			return models.Recipe{}, err
 		}
 	}
 
-	r := models.Recipe{
+	return models.Recipe{
 		Name:        req.FormValue("title"),
 		Description: req.FormValue("description"),
 		Image:       imageUUID,
@@ -159,15 +187,7 @@ func PostRecipesNewManual(wr http.ResponseWriter, req *http.Request) {
 			Sodium:             req.FormValue("sodium"),
 			Fiber:              req.FormValue("fiber"),
 		},
-	}
-
-	id, err := config.App().Repo.InsertNewRecipe(r)
-	if err != nil {
-		showErrorPage(wr, "An error occured when inserting the recipe:", err)
-		return
-	}
-
-	http.Redirect(wr, req, "/recipes/"+strconv.FormatInt(id, 10), http.StatusSeeOther)
+	}, nil
 }
 
 func timeToDuration(req *http.Request, field string) (time.Duration, error) {

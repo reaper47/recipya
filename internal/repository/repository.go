@@ -6,7 +6,8 @@ import "github.com/reaper47/recipya/internal/models"
 type Repository interface {
 	GetRecipe(id int64) (models.Recipe, error)
 	GetAllRecipes() ([]models.Recipe, error)
-	InsertNewRecipe(recipe models.Recipe) (int64, error)
+	InsertNewRecipe(r models.Recipe) (int64, error)
+	UpdateRecipe(r models.Recipe) error
 	DeleteRecipe(id int64) error
 
 	Close()

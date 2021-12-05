@@ -62,11 +62,11 @@ func Load() {
 }
 
 // Render is a wrapper for template.ExecuteTemplate.
-func Render(wr http.ResponseWriter, name string, data interface{}) error {
+func Render(w http.ResponseWriter, name string, data interface{}) error {
 	tmpl, ok := templates[name]
 	if !ok {
 		err := fmt.Sprintf("The template %s does not exist.", name)
-		http.Error(wr, err, http.StatusInternalServerError)
+		http.Error(w, err, http.StatusInternalServerError)
 		return fmt.Errorf(err)
 	}
 
@@ -75,11 +75,11 @@ func Render(wr http.ResponseWriter, name string, data interface{}) error {
 
 	err := tmpl.Execute(buf, data)
 	if err != nil {
-		http.Error(wr, err.Error(), http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return err
 	}
 
-	wr.Header().Set("Content-Type", "text/html; charset=utf-8")
-	buf.WriteTo(wr)
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	buf.WriteTo(w)
 	return nil
 }

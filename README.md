@@ -22,7 +22,7 @@ Recipya uses PostgreSQL to store data.
 
 Install (Debian)
 ```bash
-$ sudo apt-get install postgresql
+$ sudo apt-get install postgresql postgresql-contrib
 ```
 
 Enable PostgreSQL on start:
@@ -42,7 +42,7 @@ $ CREATE DATABASE recipya OWNER recipya;
 
 Clone the repository:
 ```bash
-$ git clone https://github.com/containers/podman-compose.git
+$ git clone https://github.com/reaper47/recipya.git
 ```
 
 Build/update the program:

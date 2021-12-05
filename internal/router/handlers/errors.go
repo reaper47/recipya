@@ -7,9 +7,9 @@ import (
 	"github.com/reaper47/recipya/internal/templates"
 )
 
-func showErrorPage(wr http.ResponseWriter, message string, err error) {
+func showErrorPage(w http.ResponseWriter, message string, err error) {
 	log.Println(message, err)
-	wr.Header().Set("Content-Type", "text/html")
-	wr.WriteHeader(http.StatusInternalServerError)
-	templates.Render(wr, "error-500", message)
+	w.Header().Set("Content-Type", "text/html")
+	w.WriteHeader(http.StatusInternalServerError)
+	templates.Render(w, "error-500", message)
 }

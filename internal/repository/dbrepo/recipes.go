@@ -16,14 +16,62 @@ type tableData struct {
 }
 
 type nameParams struct {
-	Ingredients, Instructions, Keywords, Tools map[string]string
+	Ingredients  map[string]string
+	Instructions map[string]string
+	Keywords     map[string]string
+	Tools        map[string]string
+
+	InsertIngredientsStmt  string
+	InsertInstructionsStmt string
+	InsertKeywordsStmt     string
+	InsertToolsStmt        string
 }
 
-func (m *nameParams) init() {
+func (m *nameParams) init(tables []tableData, offset int) {
 	m.Ingredients = make(map[string]string)
 	m.Instructions = make(map[string]string)
 	m.Keywords = make(map[string]string)
 	m.Tools = make(map[string]string)
+
+	m.InsertIngredientsStmt, offset = insertIntoNameTableStmt(
+		"ingredients",
+		tables[0].Entries,
+		offset,
+		m.Ingredients,
+	)
+
+	m.InsertInstructionsStmt, offset = insertIntoNameTableStmt(
+		"instructions",
+		tables[1].Entries,
+		offset,
+		m.Instructions,
+	)
+
+	m.InsertKeywordsStmt, offset = insertIntoNameTableStmt(
+		"keywords",
+		tables[2].Entries,
+		offset,
+		m.Keywords,
+	)
+
+	m.InsertToolsStmt, _ = insertIntoNameTableStmt(
+		"tools",
+		tables[3].Entries,
+		offset,
+		m.Tools,
+	)
+}
+
+func (m *nameParams) insertStmts(tables []tableData, isInsRecipeDefined bool) string {
+	return m.InsertIngredientsStmt + "" +
+		insertIntoAssocTableStmt(tables[0], "ins_ingredients", m.Ingredients, isInsRecipeDefined) + "" +
+		m.InsertInstructionsStmt + "" +
+		insertIntoAssocTableStmt(tables[1], "ins_instructions", m.Instructions, isInsRecipeDefined) + "" +
+		m.InsertKeywordsStmt + "" +
+		insertIntoAssocTableStmt(tables[2], "ins_keywords", m.Keywords, isInsRecipeDefined) + "" +
+		m.InsertToolsStmt + "" +
+		insertIntoAssocTableStmt(tables[3], "ins_tools", m.Tools, isInsRecipeDefined)
+
 }
 
 // GetAllRecipes gets all of the recipes in the database.
@@ -211,16 +259,9 @@ func (m *postgresDBRepo) InsertNewRecipe(r models.Recipe) (int64, error) {
 	}
 	defer tx.Rollback(ctx)
 
-	tables := []tableData{
-		{Table: "ingredients", AssocTable: "ingredient_recipe", Entries: r.Ingredients},
-		{Table: "instructions", AssocTable: "instruction_recipe", Entries: r.Instructions},
-		{Table: "keywords", AssocTable: "keyword_recipe", Entries: r.Keywords},
-		{Table: "tools", AssocTable: "tool_recipe", Entries: r.Tools},
-	}
-
+	tables := getTables(r)
 	var recipeID int64
-	stmt := insertRecipeStmt(tables)
-	err = tx.QueryRow(ctx, stmt, r.ToArgs()...).Scan(&recipeID)
+	err = tx.QueryRow(ctx, insertRecipeStmt(tables), r.ToArgs(false)...).Scan(&recipeID)
 	if err != nil {
 		return -1, err
 	}
@@ -237,6 +278,47 @@ func (m *postgresDBRepo) InsertNewRecipe(r models.Recipe) (int64, error) {
 		}
 	}
 	return recipeID, nil
+}
+
+// UpdateRecipes update the recipe in the database.
+func (m *postgresDBRepo) UpdateRecipe(r models.Recipe) error {
+	ctx, cancel := contexts.Timeout(3 * time.Second)
+	defer cancel()
+
+	tx, err := m.Pool.Begin(ctx)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback(ctx)
+
+	_, err = m.Pool.Exec(ctx, deleteAssocTableEntries, r.ID)
+	if err != nil {
+		return err
+	}
+
+	tables := getTables(r)
+	_, err = m.Pool.Exec(ctx, updateRecipeStmt(tables), r.ToArgs(true)...)
+	if err != nil {
+		return err
+	}
+
+	tables = append(tables, tableData{Table: "categories"})
+	for _, td := range tables {
+		_, err = m.Pool.Exec(ctx, resetIDStmt(td.Table))
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func getTables(r models.Recipe) []tableData {
+	return []tableData{
+		{Table: "ingredients", AssocTable: "ingredient_recipe", Entries: r.Ingredients},
+		{Table: "instructions", AssocTable: "instruction_recipe", Entries: r.Instructions},
+		{Table: "keywords", AssocTable: "keyword_recipe", Entries: r.Keywords},
+		{Table: "tools", AssocTable: "tool_recipe", Entries: r.Tools},
+	}
 }
 
 // DeleteRecipe deletes the recipe with the passed id from the database.

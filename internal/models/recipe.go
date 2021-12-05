@@ -25,8 +25,13 @@ type Recipe struct {
 	UpdatedAt    time.Time
 }
 
-func (r Recipe) ToArgs() []interface{} {
-	args := []interface{}{
+func (r Recipe) ToArgs(includeID bool) []interface{} {
+	args := []interface{}{}
+	if includeID {
+		args = append(args, r.ID)
+	}
+
+	args = append(args, []interface{}{
 		r.Name,
 		r.Description,
 		r.Image,
@@ -44,7 +49,7 @@ func (r Recipe) ToArgs() []interface{} {
 		r.Nutrition.Fiber,
 		r.Times.Prep.String(),
 		r.Times.Cook.String(),
-	}
+	}...)
 
 	arrs := [][]string{r.Ingredients, r.Instructions, r.Keywords, r.Tools}
 	for _, arr := range arrs {
