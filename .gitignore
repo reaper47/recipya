@@ -3,6 +3,7 @@ data/
 dist/
 recipya
 views/tailwind/node_modules
+static/css/tailwind.css
 
 # Binaries for programs and plugins
 *.exe
