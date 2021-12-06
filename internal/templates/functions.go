@@ -2,14 +2,17 @@ package templates
 
 import (
 	"fmt"
+	"html/template"
 	"net/url"
-	"text/template"
 	"time"
 
 	"github.com/google/uuid"
 )
 
 var fm = template.FuncMap{
+	"dec": func(i int) int {
+		return i - 1
+	},
 	"durationToInput": func(d time.Duration) string {
 		h, m, d := getHourMin(d)
 		s := d / time.Second
@@ -37,6 +40,13 @@ var fm = template.FuncMap{
 	},
 	"isUuidValid": func(u uuid.UUID) bool {
 		return u != uuid.UUID{}
+	},
+	"mul": func(n ...int) int {
+		rslt := 1
+		for _, val := range n {
+			rslt *= val
+		}
+		return rslt
 	},
 	"substring": func(s string, endIndex int) string {
 		if len(s) <= endIndex {

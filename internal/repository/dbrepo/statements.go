@@ -71,6 +71,100 @@ func getRecipes(onlyOne bool) string {
 	return stmt
 }
 
+func getRecipesPagination(page int) string {
+	return `
+		WITH rows AS (
+			SELECT 
+				ROW_NUMBER() OVER (ORDER BY r.id) AS rowid,
+				r.id AS recipe_id,
+				r.name AS recipe_name,
+				description,
+				url,
+				image,
+				yield,
+				created_at,
+				updated_at,
+				c.name AS category,
+				n.calories AS calories,
+				n.total_carbohydrates AS total_carbohydrates,
+				n.sugars AS sugars,
+				n.protein AS protein,
+				n.total_fat AS total_fat,
+				n.saturated_fat AS saturated_fat,
+				n.cholesterol AS cholesterol,
+				n.sodium AS sodium,
+				n.fiber AS fiber,
+				ARRAY(
+					SELECT name
+					FROM ingredients i
+					JOIN ingredient_recipe ir ON ir.ingredient_id = i.id
+					WHERE ir.recipe_id = r.id
+				) AS ingredients,
+				ARRAY(
+					SELECT name
+					FROM instructions i2
+					JOIN instruction_recipe ir2 ON ir2.instruction_id = i2.id
+					WHERE ir2.recipe_id = r.id
+				) AS instructions,
+				ARRAY(
+					SELECT name
+					FROM keywords k
+					JOIN keyword_recipe kr ON kr.keyword_id = k.id
+					WHERE kr.recipe_id = r.id
+				) AS keywords,
+				ARRAY(
+					SELECT name
+					FROM tools t
+					JOIN tool_recipe tr ON tr.tool_id = t.id
+					WHERE tr.recipe_id = r.id
+				) AS tools,
+				t2.prep AS time_prep,
+				t2.cook AS time_cook,
+				t2.total AS time_total
+			FROM recipes r
+			JOIN category_recipe cr ON cr.recipe_id = r.id
+			JOIN categories c ON c.id = cr.category_id
+			JOIN nutrition n ON n.recipe_id = r.id
+			JOIN time_recipe tr2 ON tr2.recipe_id = r.id
+			JOIN times t2 ON t2.id = tr2.time_id
+		)
+		SELECT 
+			recipe_id,
+			recipe_name,
+			description,
+			url,
+			image,
+			yield,
+			created_at,
+			updated_at,
+			category,
+			calories,
+			total_carbohydrates,
+			sugars,
+			protein,
+			total_fat,
+			saturated_fat,
+			cholesterol,
+			sodium,
+			fiber,
+			ingredients,
+			instructions,
+			keywords,
+			tools,
+			time_prep,
+			time_cook,
+			time_total
+		FROM rows
+		WHERE rowid > ` + strconv.Itoa((page-1)*12) + `
+		ORDER BY recipe_id ASC
+		LIMIT 12`
+}
+
+const recipesCountStmt = `
+	SELECT recipes 
+	FROM counts AS recipes_count
+	WHERE id = 1`
+
 func resetIDStmt(table string) string {
 	return "SELECT setval('" + table + "_id_seq', MAX(id)) FROM " + table
 }

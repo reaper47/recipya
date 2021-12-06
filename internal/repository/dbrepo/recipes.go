@@ -75,11 +75,11 @@ func (m *nameParams) insertStmts(tables []tableData, isInsRecipeDefined bool) st
 }
 
 // GetAllRecipes gets all of the recipes in the database.
-func (m *postgresDBRepo) GetAllRecipes() ([]models.Recipe, error) {
+func (m *postgresDBRepo) GetAllRecipes(page int) ([]models.Recipe, error) {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
-	rows, err := m.Pool.Query(ctx, getRecipes(false))
+	rows, err := m.Pool.Query(ctx, getRecipesPagination(page))
 	if err != nil {
 		return nil, err
 	}
@@ -243,6 +243,18 @@ func (m *postgresDBRepo) GetRecipe(id int64) (models.Recipe, error) {
 		CreatedAt:    createdAt,
 		UpdatedAt:    updatedAt,
 	}, nil
+}
+
+func (m *postgresDBRepo) GetRecipesCount() (int, error) {
+	ctx, cancel := contexts.Timeout(3 * time.Second)
+	defer cancel()
+
+	var count int
+	err := m.Pool.QueryRow(ctx, recipesCountStmt).Scan(&count)
+	if err != nil {
+		return -1, err
+	}
+	return count, nil
 }
 
 // InsertNewRecipe inserts a new recipe into the database.

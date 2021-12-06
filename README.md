@@ -61,6 +61,8 @@ $ sudo nano /etc/caddy/Caddyfile
 ...
 domain {
 	encode zstd gzip
+
+  header /static/* Cache-Control "public, max-age=2678400, must-revalidate"
 	
 	log {
 		output file /var/www/path/to/recipya/logs/caddy-access.log

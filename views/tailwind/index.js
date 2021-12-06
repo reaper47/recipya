@@ -36,6 +36,7 @@ document.getElementById('nav__menu-icon').addEventListener('mousedown', () => {
 const sidebar = document.getElementById('sidebar__recipes')
 switch (document.location.pathname) {
   case '/':
+  case '/recipes':
     sidebar.classList.add('border-l-4', 'border-red-600')
     break
   default:

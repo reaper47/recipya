@@ -2,12 +2,12 @@ package templates
 
 import (
 	"fmt"
+	"html/template"
 	"io/fs"
 	"log"
 	"net/http"
 	"path/filepath"
 	"strings"
-	"text/template"
 
 	"github.com/oxtoacart/bpool"
 	"github.com/reaper47/recipya/views"

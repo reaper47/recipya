@@ -13,7 +13,7 @@ build-js:
 
 build-css:
 	 ${TAILWIND} -o static/css/tailwind.css 
-	
+
 db-reset:
 	go run main.go migrate down && go run main.go migrate up
 

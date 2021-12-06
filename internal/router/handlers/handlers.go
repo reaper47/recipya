@@ -3,6 +3,7 @@ package handlers
 import (
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/reaper47/recipya/internal/config"
 	"github.com/reaper47/recipya/internal/templates"
@@ -11,13 +12,36 @@ import (
 
 // Index handles the "/" page.
 func Index(w http.ResponseWriter, req *http.Request) {
-	recipes, err := config.App().Repo.GetAllRecipes()
+	recipesCount, err := config.App().Repo.GetRecipesCount()
+	if err != nil {
+		showErrorPage(w, "Could not retrieve total number of recipes", err)
+		return
+	}
+	pg := templates.Pagination{
+		NumResults: recipesCount,
+		NumPages:   recipesCount / 12,
+	}
+
+	qpage := req.URL.Query().Get("page")
+	var page int
+	page, err = strconv.Atoi(qpage)
+	if err != nil || page <= 0 {
+		page = 1
+	} else if page > pg.NumPages+1 {
+		page = pg.NumPages + 1
+	}
+
+	recipes, err := config.App().Repo.GetAllRecipes(page)
 	if err != nil {
 		showErrorPage(w, "Cannot retrieve all recipes.", err)
 		return
 	}
 
-	err = templates.Render(w, "index.gohtml", templates.RecipesData{Recipes: recipes})
+	pg.Init(page)
+	err = templates.Render(w, "index.gohtml", templates.RecipesData{
+		Recipes:    recipes,
+		Pagination: pg,
+	})
 	if err != nil {
 		log.Println(err)
 	}
@@ -25,13 +49,22 @@ func Index(w http.ResponseWriter, req *http.Request) {
 
 // Favicon serves the favicon.ico file.
 func Favicon(w http.ResponseWriter, req *http.Request) {
-	f, err := static.FS.ReadFile("favicon.ico")
+	serveFile(w, "favicon.ico", "image/x-icon")
+}
+
+// Robots serves the robots.txt file.
+func Robots(w http.ResponseWriter, req *http.Request) {
+	serveFile(w, "robots.txt", "text/plain")
+}
+
+func serveFile(w http.ResponseWriter, fname, contentType string) {
+	f, err := static.FS.ReadFile(fname)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "image/x-icon")
+	w.Header().Set("Content-Type", contentType)
 	w.Write(f)
 }

@@ -1,0 +1,138 @@
+{{define "pagination"}}
+<div class="grid justify-center">
+  <div class="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6">
+    <div class="flex justify-between flex-1 text-sm font-medium text-gray-700 sm:hidden">
+      {{if eq .Selected 1}}
+      <button disabled class="px-4 py-2 ml-3 bg-white border border-gray-300 rounded-md cursor-not-allowed">
+        Previous
+      </button>
+      {{else}}
+      <a href="/recipes?page={{.Prev}}" class="px-4 py-2 bg-white border border-gray-300 rounded-md">
+        Previous
+      </a>
+      {{end}}
+
+      {{if eq .Selected .NumPages}}
+      <button disabled class="px-4 py-2 ml-3 bg-white border border-gray-300 rounded-md cursor-not-allowed">
+        Next
+      </button>
+      {{else}}
+      <a href="/recipes?page={{.Next}}" class="px-4 py-2 ml-3 bg-white border border-gray-300 rounded-md">
+        Next
+      </a>
+      {{end}}
+    </div>
+
+    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+      <div class="col-span-8">
+        <nav class="relative z-0 inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+          {{if eq .Selected 1}}
+          <button disabled
+            class="inline-flex items-center p-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-not-allowed rounded-r-md">
+            <span class="sr-only">Previous</span>
+            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+              aria-hidden="true">
+              <path fill-rule="evenodd"
+                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                clip-rule="evenodd" />
+            </svg>
+          </button>
+          {{else}}
+          <a href="/recipes?page={{.Prev}}"
+            class="inline-flex items-center p-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50">
+            <span class="sr-only">Previous</span>
+            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+              aria-hidden="true">
+              <path fill-rule="evenodd"
+                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                clip-rule="evenodd" />
+            </svg>
+          </a>
+          {{end}}
+
+          {{range .Left}}
+          {{if eq $.Selected .}}
+          <a href="/recipes?page={{.}}" aria-current="page"
+            class="relative z-10 inline-flex items-center px-4 py-2 text-sm font-medium text-indigo-600 border border-indigo-500 bg-indigo-50">
+            {{.}}
+          </a>
+          {{else}}
+          <a href="/recipes?page={{.}}"
+            class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 hover:bg-gray-50">
+            {{.}}
+          </a>
+          {{end}}
+          {{end}}
+          <span
+            class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300">
+            ...
+          </span>
+          {{range .Right}}
+          {{if eq $.Selected .}}
+          <a href="/recipes?page={{.}}" aria-current="page"
+            class="relative z-10 inline-flex items-center px-4 py-2 text-sm font-medium text-indigo-600 border border-indigo-500 bg-indigo-50">
+            {{.}}
+          </a>
+          {{else}}
+          <a href="/recipes?page={{.}}"
+            class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 hover:bg-gray-50">
+            {{.}}
+          </a>
+          {{end}}
+          {{end}}
+
+          {{if eq .Selected .NumPages}}
+          <button disabled
+            class="inline-flex items-center p-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-not-allowed rounded-r-md disabled">
+            <span class="sr-only">Next</span>
+            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+              aria-hidden="true">
+              <path fill-rule="evenodd"
+                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                clip-rule="evenodd" />
+            </svg>
+          </button>
+          {{else}}
+          <a href="/recipes?page={{.Next}}"
+            class="inline-flex items-center p-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50">
+            <span class="sr-only">Next</span>
+            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+              aria-hidden="true">
+              <path fill-rule="evenodd"
+                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                clip-rule="evenodd" />
+            </svg>
+          </a>
+          {{end}}
+        </nav>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="text-center">
+  <p class="text-sm text-gray-700">
+    Showing
+    <span class="font-medium">
+      {{if eq .Selected .Prev}}
+      {{.Selected}}
+      {{else}}
+      {{inc (mul (dec .Selected) 12)}}
+      {{end}}
+    </span>
+    to
+    <span class="font-medium">
+      {{if eq .Selected .NumPages}}
+      {{.NumResults}}
+      {{else}}
+      {{mul .Selected 12}}
+      {{end}}
+    </span>
+    of
+    <span class="font-medium">
+      {{.NumResults}}
+    </span>
+    results
+  </p>
+</div>
+{{end}}

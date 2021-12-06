@@ -59,6 +59,12 @@ CREATE TABLE times (
   UNIQUE (prep, cook)
 );
 
+CREATE TABLE counts (
+  id SERIAL PRIMARY KEY,
+  recipes INTEGER NOT NULL
+);
+
+
 --
 -- Association Tables
 --
@@ -107,21 +113,47 @@ CREATE TABLE time_recipe (
 --
 -- FUNCTIONS
 --
-CREATE FUNCTION times_calc_total_time() RETURNS TRIGGER AS $func$
-  BEGIN
-    IF NEW.prep IS NOT NULL AND NEW.cook IS NOT NULL AND NEW.total IS NULL THEN
-      NEW.total := NEW.prep + NEW.cook;
-      RETURN NEW;
-    END IF;
-  END;
-$func$ LANGUAGE plpgsql;
+CREATE FUNCTION times_calc_total_time() RETURNS TRIGGER AS 
+$BODY$
+BEGIN
+  IF NEW.prep IS NOT NULL AND NEW.cook IS NOT NULL AND NEW.total IS NULL THEN
+    NEW.total := NEW.prep + NEW.cook;
+    RETURN NEW;
+  END IF;
+END;
+$BODY$ 
+LANGUAGE plpgsql;
 
-CREATE FUNCTION recipes_update_updated_at() RETURNS TRIGGER AS $func$
-	BEGIN
-		NEW.updated_at := CURRENT_TIMESTAMP;
-		RETURN NEW;
-	END;
-$func$ LANGUAGE plpgsql;
+CREATE FUNCTION recipes_update_updated_at() RETURNS TRIGGER AS 
+$BODY$
+BEGIN
+  NEW.updated_at := CURRENT_TIMESTAMP;
+  RETURN NEW;
+END;
+$BODY$ 
+LANGUAGE plpgsql;
+
+CREATE FUNCTION recipes_insert_inc_count() RETURNS TRIGGER AS
+$BODY$
+BEGIN 
+  UPDATE counts SET 
+    recipes = recipes + 1
+  WHERE id = 1;
+  RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE FUNCTION recipes_delete_dec_count() RETURNS TRIGGER AS
+$BODY$
+BEGIN 
+  UPDATE counts SET 
+    recipes = recipes - 1
+  WHERE id = 1;
+  RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
 
 
 --
@@ -135,14 +167,26 @@ CREATE TRIGGER times_calc_total_time
 CREATE TRIGGER recipes_update_updated_at
 	BEFORE UPDATE ON recipes 
 	FOR EACH ROW 
-	EXECUTE  FUNCTION recipes_update_updated_at();
+	EXECUTE FUNCTION recipes_update_updated_at();
 
+CREATE TRIGGER recipes_insert_inc_count
+  AFTER INSERT ON recipes
+  FOR EACH ROW
+  EXECUTE PROCEDURE recipes_insert_inc_count();
+
+CREATE TRIGGER recipes_delete_dec_count
+  AFTER DELETE ON recipes
+  FOR EACH ROW
+  EXECUTE PROCEDURE recipes_delete_dec_count();
 
 --
 -- INSERTS
 --
 INSERT INTO categories (name) 
 VALUES ('uncategorized');
+
+INSERT INTO counts (recipes)
+VALUES (0);
 
 --
 -- EXTENSIONS
