@@ -11,7 +11,7 @@
 
   <div
     class="w-full h-full grid-flow-col col-span-6 border-b border-l border-r border-gray-900 place-self-end md:border-b md:border-l md:border-r md:col-span-4">
-    <img id="output" class="hidden object-cover w-full" class="text-center md:w-full">
+    <img id="output" class="hidden object-cover w-full text-center md:w-full" alt="The uploaded image.">
     <label
       class="flex flex-row items-center py-2 tracking-wide text-purple-600 transition-all duration-150 ease-linear bg-white place-content-center hover:bg-purple-600 hover:text-white">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -21,8 +21,7 @@
       <span class="ml-2">
         Upload an image of the recipe
       </span>
-      <input type="file" accept="image/*;capture=camera" capture="camera" name="image" onchange="loadFile(event)"
-        class="hidden">
+      <input type="file" accept="image/*" name="image" onchange="loadFile(event)" class="hidden">
     </label>
   </div>
 
@@ -91,7 +90,7 @@
         <table class="min-w-full text-xs divide-y divide-gray-200">
           <thead class="h-12 font-medium tracking-wider text-white bg-gray-800">
             <tr>
-              <th scope=" col" class="text-right md:text-center">
+              <th scope="col" class="text-right md:text-center">
                 <p>Nutrition<br>(per 100g)</p>
               </th>
               <th scope="col" class="text-center">
@@ -273,7 +272,7 @@
       <ol id="instructions__list" class="pl-4 list-decimal">
         <li class="pt-2 pl-2">
           <textarea required name="instruction-1" rows="3" class="w-9/12 border border-gray-300 md:w-4/5"
-            placeholder="Instruction #1" required></textarea>
+            placeholder="Instruction #1"></textarea>
           <div class="inline-flex flex-col-reverse">
             <button type="button"
               class="mt-4 md:flex-initial w-10 h-10 right-0.5 md:w-7 md:h-7 md:right-auto duration-300 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center"
@@ -310,7 +309,6 @@
   const loadFile = (event) => {
     const output = document.getElementById('output')
     output.src = URL.createObjectURL(event.target.files[0])
-    output.alt = "Uploaded image of the recipe."
     output.onload = () => URL.revokeObjectURL(output.src)
     output.classList.remove('hidden')
   }

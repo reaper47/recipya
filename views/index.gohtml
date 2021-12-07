@@ -12,40 +12,38 @@
   </div>
 </div>
 {{else}}
-<section class="grid">
-  <div class="grid grid-rows-2 gap-4 px-4 pb-4 m-auto md:grid-cols-8 max-w-7xl">
-    {{range .Recipes}}
-    <div class="col-span-2 bg-white rounded-lg shadow-lg">
-      <a href="/recipes/{{.ID}}">
-        <img class="rounded-t-lg" src="{{if isUuidValid .Image}}/data/img/{{.Image}}{{end}}"
-          alt="Image of the {{.Name}} recipe">
+<article class="grid grid-rows-2 gap-4 px-4 pb-4 m-auto md:grid-cols-8 max-w-7xl">
+  {{range .Recipes}}
+  <div class="col-span-2 bg-white rounded-lg shadow-lg">
+    <a href="/recipes/{{.ID}}">
+      <img class="rounded-t-lg" src="{{if isUuidValid .Image}}/data/img/{{.Image}}{{end}}"
+        alt="Image of the {{.Name}} recipe">
+    </a>
+    <div class="p-4">
+      <span class="select-none float-right text-xs px-3 font-medium bg-indigo-700 text-white rounded-full py-1.5">
+        {{.Category}}
+      </span>
+      <h5 class="pb-2 text-xl font-medium text-gray-900 md:text-lg">
+        {{.Name}}
+      </h5>
+      <p class="mb-4 text-base text-gray-700">
+        {{substring .Description 144}}
+      </p>
+      <a class="flex justify-center col-span-2 duration-300 border-2 border-gray-800 rounded-lg text-gray-00 hover:bg-gray-800 hover:text-white center"
+        href="/recipes/{{.ID}}">
+        View
       </a>
-      <div class="p-4">
-        <span class="select-none float-right text-xs px-3 font-medium bg-indigo-700 text-white rounded-full py-1.5">
-          {{.Category}}
-        </span>
-        <h5 class="pb-2 text-xl font-medium text-gray-900 md:text-lg">
-          {{.Name}}
-        </h5>
-        <p style="max-lines: 3;" class="mb-4 text-base text-gray-700">
-          {{substring .Description 144}}
-        </p>
-        <a class="flex justify-center col-span-2 duration-300 border-2 border-gray-800 rounded-lg text-gray-00 hover:bg-gray-800 hover:text-white center"
-          href="/recipes/{{.ID}}">
-          View
-        </a>
-      </div>
     </div>
-    {{end}}
   </div>
-  {{template "pagination" .Pagination}}
-</section>
+  {{end}}
+</article>
+{{template "pagination" .Pagination}}
 {{end}}
 {{end}}
 
 {{define "js"}}
 {{if .Recipes}}
-<script defer>
+<script>
   document.getElementById('header__recipe-add-button').classList.remove('hidden')
 </script>
 {{end}}

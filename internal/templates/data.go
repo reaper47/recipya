@@ -17,8 +17,7 @@ type RecipeData struct {
 
 // Pagination holds pagination data for templates with pagination.
 type Pagination struct {
-	// [<][1][2][3][...][87][88][89][>] =>
-	Left, Right          []int
+	Left, Middle, Right  []int
 	Prev, Selected, Next int
 	NumPages, NumResults int
 }
@@ -44,20 +43,35 @@ func (p *Pagination) Init(page int) {
 	}
 
 	p.Selected = page
-	if page < numPages/2 {
-		if p.Prev == p.Selected {
-			p.Left = append(p.Left, p.Selected, p.Next, p.Next+1)
-		} else {
-			p.Left = append(p.Left, p.Prev, p.Selected, p.Next)
+	if numPages <= 10 {
+		for i := 1; i <= numPages; i++ {
+			p.Left = append(p.Left, i)
 		}
-
-		p.Right = append(p.Right, numPages-2, numPages-1, numPages)
 	} else {
-		if p.Selected == numPages {
-			p.Right = append(p.Right, p.Prev-1, p.Prev, p.Selected)
+		if page <= numPages/2 {
+			if page > 4 {
+				p.Middle = append(p.Middle, page-2, page-1, page, page+1, page+2)
+				p.Left = append(p.Left, 1)
+			} else {
+				for i := 1; i <= page; i++ {
+					p.Left = append(p.Left, i)
+				}
+				p.Left = append(p.Left, page+1, page+2, page+3)
+			}
+
+			p.Right = append(p.Right, numPages)
 		} else {
-			p.Right = append(p.Right, p.Prev, p.Selected, p.Next)
+			if page < numPages-3 {
+				p.Middle = append(p.Middle, page-2, page-1, page, page+1, page+2)
+				p.Right = append(p.Right, numPages)
+			} else {
+				for i := page - 3; i <= numPages; i++ {
+					p.Right = append(p.Right, i)
+				}
+			}
+
+			p.Left = append(p.Left, 1)
+
 		}
-		p.Left = append(p.Left, 1, 2, 3)
 	}
 }

@@ -1,5 +1,5 @@
 {{define "pagination"}}
-<div class="grid justify-center">
+<footer class="grid justify-center">
   <div class="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6">
     <div class="flex justify-between flex-1 text-sm font-medium text-gray-700 sm:hidden">
       {{if eq .Selected 1}}
@@ -50,7 +50,29 @@
           </a>
           {{end}}
 
+          <!-- Left Section -->
           {{range .Left}}
+          {{if eq $.Selected .}}
+          <button aria-current="page"
+            class="z-10 px-4 py-2 text-sm font-medium text-indigo-600 border border-indigo-500 cursor-default bg-indigo-50">
+            {{.}}
+          </button>
+          {{else}}
+          <a href="/recipes?page={{.}}"
+            class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 hover:bg-gray-50">
+            {{.}}
+          </a>
+          {{end}}
+          {{end}}
+
+          <!-- Middle Section -->
+          {{if .Middle}}
+          <span
+            class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300">
+            ...
+          </span>
+          {{end}}
+          {{range .Middle}}
           {{if eq $.Selected .}}
           <a href="/recipes?page={{.}}" aria-current="page"
             class="relative z-10 inline-flex items-center px-4 py-2 text-sm font-medium text-indigo-600 border border-indigo-500 bg-indigo-50">
@@ -63,10 +85,21 @@
           </a>
           {{end}}
           {{end}}
+          {{if .Middle}}
           <span
             class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300">
             ...
           </span>
+          {{end}}
+
+          <!-- Right Section -->
+          {{if and .Right (not .Middle)}}
+          <span
+            class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300">
+            ...
+          </span>
+          {{end}}
+
           {{range .Right}}
           {{if eq $.Selected .}}
           <a href="/recipes?page={{.}}" aria-current="page"
@@ -105,34 +138,33 @@
           </a>
           {{end}}
         </nav>
-        </nav>
       </div>
     </div>
   </div>
-</div>
-<div class="text-center">
-  <p class="text-sm text-gray-700">
-    Showing
-    <span class="font-medium">
-      {{if eq .Selected .Prev}}
-      {{.Selected}}
-      {{else}}
-      {{inc (mul (dec .Selected) 12)}}
-      {{end}}
-    </span>
-    to
-    <span class="font-medium">
-      {{if eq .Selected .NumPages}}
-      {{.NumResults}}
-      {{else}}
-      {{mul .Selected 12}}
-      {{end}}
-    </span>
-    of
-    <span class="font-medium">
-      {{.NumResults}}
-    </span>
-    results
-  </p>
-</div>
+  <div class="text-center">
+    <p class="text-sm text-gray-700">
+      Showing
+      <span class="font-medium">
+        {{if eq .Selected .Prev}}
+        {{.Selected}}
+        {{else}}
+        {{inc (mul (dec .Selected) 12)}}
+        {{end}}
+      </span>
+      to
+      <span class="font-medium">
+        {{if eq .Selected .NumPages}}
+        {{.NumResults}}
+        {{else}}
+        {{mul .Selected 12}}
+        {{end}}
+      </span>
+      of
+      <span class="font-medium">
+        {{.NumResults}}
+      </span>
+      results
+    </p>
+  </div>
+</footer>
 {{end}}

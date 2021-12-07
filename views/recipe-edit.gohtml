@@ -23,8 +23,7 @@
       <span class="ml-2">
         Upload an image of the recipe
       </span>
-      <input type="file" accept="image/*;capture=camera" capture="camera" name="image" onchange="loadFile(event)"
-        class="hidden">
+      <input type="file" accept="image/*" name="image" onchange="loadFile(event)" class="hidden">
     </label>
   </div>
 
@@ -95,7 +94,7 @@
         <table class="min-w-full text-xs divide-y divide-gray-200">
           <thead class="h-12 font-medium tracking-wider text-white bg-gray-800">
             <tr>
-              <th scope=" col" class="text-right md:text-center">
+              <th scope="col" class="text-right md:text-center">
                 <p>Nutrition<br>(per 100g)</p>
               </th>
               <th scope="col" class="text-center">
@@ -286,7 +285,7 @@
         {{range $i, $e := .Instructions}}
         <li class="pt-2 pl-2">
           <textarea required name="instruction-{{inc $i}}" rows="3" class="w-9/12 border border-gray-300 md:w-4/5"
-            placeholder="Instruction #{{inc $i}}" required>{{$e}}</textarea>
+            placeholder="Instruction #{{inc $i}}">{{$e}}</textarea>
           <div class="inline-flex flex-col-reverse">
             <button type="button"
               class="mt-4 md:flex-initial w-10 h-10 right-0.5 md:w-7 md:h-7 md:right-auto duration-300 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center"
