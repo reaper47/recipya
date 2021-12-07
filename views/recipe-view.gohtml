@@ -173,27 +173,21 @@
           </thead>
           <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200">
             <tr>
-              <td>
-                <p>Preparation:</p>
-              </td>
+              <td>Preparation:</td>
               <td class="py-3 text-center">
-                <p>{{fmtDuration .Prep}}</p>
+                <time datetime="{{fmtDuration .Prep true}}">{{fmtDuration .Prep false}}</time>
               </td>
             </tr>
             <tr class="bg-gray-100">
-              <td>
-                <p>Cooking:</p>
-              </td>
+              <td>Cooking:</td>
               <td class="w-1/2 py-3 text-center">
-                <p>{{fmtDuration .Cook}}</p>
+                <time datetime="{{fmtDuration .Cook true}}">{{fmtDuration .Cook false}}</time>
               </td>
             </tr>
             <tr class="font-bold">
-              <td>
-                <p>Total:</p>
-              </td>
+              <td>Total:</td>
               <td class="w-1/2 py-3 text-center">
-                <p>{{fmtDuration .Total}}</p>
+                <time datetime="{{fmtDuration .Total true}}">{{fmtDuration .Total false}}</time>
               </td>
             </tr>
           </tbody>

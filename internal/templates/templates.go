@@ -26,7 +26,7 @@ func Load() {
 	bufpool = bpool.NewBufferPool(64)
 
 	mainTemplate := template.New("main")
-	mainTemplate, err := mainTemplate.Parse(`{{define "main" }}{{ template "base" . }}{{ end }}`)
+	mainTemplate, err := mainTemplate.Parse(`{{define "main" }}{{template "base" .}}{{end}}`)
 	if err != nil {
 		log.Fatalln(err)
 	}

@@ -18,9 +18,15 @@ var fm = template.FuncMap{
 		s := d / time.Second
 		return fmt.Sprintf("%d:%02d:%02d", h, m, s)
 	},
-	"fmtDuration": func(d time.Duration) string {
+	"fmtDuration": func(d time.Duration, isDt bool) string {
 		h, m, d := getHourMin(d)
 		d -= m * time.Minute
+		if isDt {
+			if h > 0 {
+				return fmt.Sprintf("PT%dH%02dM", h, m)
+			}
+			return fmt.Sprintf("PT%02dM", m)
+		}
 		return fmt.Sprintf("%dh%02d", h, m)
 	},
 	"inc": func(i int) int {
