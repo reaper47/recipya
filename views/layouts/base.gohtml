@@ -1,4 +1,4 @@
-{{define "base"}}
+{{define "main"}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,16 +16,25 @@
 </head>
 
 <body class="h-screen font-sans antialiased">
-  {{template "header"}}
+  {{if and .HideHeader .HideSidebar -}}
+  <main>
+    {{- template "content" . -}}
+  </main>
+  {{- else -}}
+  {{template "header" .IsUnauthenticated}}
   <main class="grid h-full md:grid-cols-12">
-    {{template "sidebar"}}
-    <section class="h-full pt-16 bg-white md:col-span-11">
+    {{- if not .HideSidebar -}}{{template "sidebar"}}{{- end -}}
+    <section
+      class="h-full {{if and .IsUnauthenticated .IsViewRecipe}}md:col-span-12 pt-16{{else if .IsUnauthenticated}}md:col-span-12{{else}}md:col-span-11 pt-16{{end}} bg-white ">
       {{- template "content" . -}}
     </section>
   </main>
+  {{- if not .IsUnauthenticated -}}
   {{template "modals"}}
   <script src="/static/js/bundle.js" defer></script>
+  {{- end -}}
   {{block "js" .}}{{end}}
+  {{- end -}}
 </body>
 
 </html>

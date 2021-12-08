@@ -1,7 +1,7 @@
 {{define "title"}}Edit Recipe{{end}}
 
 {{define "content"}}
-{{with .Recipe}}
+{{- with .RecipeData.Recipe -}}
 <form id="form__new-recipe" action="/recipes/{{.ID}}/edit" method="post" enctype="multipart/form-data"
   class="grid max-w-6xl grid-cols-6 px-4 pb-4 m-auto">
   <div class="col-span-6 text-lg border border-gray-900 md:text-xl rounded-t-md">
@@ -87,7 +87,7 @@
     </div>
   </div>
 
-  {{with .Nutrition}}
+  {{- with .Nutrition -}}
   <div class="col-span-3 border-b border-l border-r border-black md:border-l-0 md:col-span-1">
     <div class="inline-block min-w-full overflow-x-auto align-middle">
       <div class="overflow-hidden border-gray-200">
@@ -201,9 +201,9 @@
       </div>
     </div>
   </div>
-  {{end}}
+  {{- end -}}
 
-  {{with .Times}}
+  {{- with .Times -}}
   <div class="col-span-3 border-b border-r border-black md:col-span-1">
     <div class="inline-block min-w-full overflow-x-auto align-middle">
       <div class="overflow-hidden border-gray-200">
@@ -240,7 +240,7 @@
       </div>
     </div>
   </div>
-  {{end}}
+  {{- end -}}
 
   <div class="col-span-6 py-2 border-b border-l border-r border-black md:col-span-2 md:border-r-0">
     <fieldset class="text-center border-none">
@@ -249,7 +249,7 @@
       </legend>
       <ol id="ingredients__list" class="pl-6 list-decimal">
         {{$len := len .Instructions}}
-        {{range $i, $e := .Ingredients}}
+        {{- range $i, $e := .Ingredients -}}
         <li class="pb-2 pl-2">
           <input type="text" name="ingredient-{{inc $i}}" placeholder="Ingredient #{{inc $i}}" value="{{$e}}" required
             class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
@@ -271,7 +271,7 @@
             </svg>
           </div>
         </li>
-        {{end}}
+        {{- end -}}
       </ol>
     </fieldset>
   </div>
@@ -282,7 +282,7 @@
       </legend>
       <ol id="instructions__list" class="pl-4 list-decimal">
         {{$len := len .Instructions}}
-        {{range $i, $e := .Instructions}}
+        {{- range $i, $e := .Instructions -}}
         <li class="pt-2 pl-2">
           <textarea required name="instruction-{{inc $i}}" rows="3" class="w-9/12 border border-gray-300 md:w-4/5"
             placeholder="Instruction #{{inc $i}}">{{$e}}</textarea>
@@ -306,7 +306,7 @@
             </svg>
           </div>
         </li>
-        {{end}}
+        {{- end -}}
       </ol>
     </fieldset>
   </div>
@@ -314,8 +314,8 @@
     Update
   </button>
 </form>
-{{end}}
-{{end}}
+{{- end -}}
+{{- end -}}
 
 {{define "js"}}
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js" async></script>
@@ -325,7 +325,7 @@
   const options = [...document.getElementById('category').options]
   for (let i = 0; i < options.length; i++) {
     const o = options[i]
-    if (o.value.toLowerCase() === "{{.Recipe.Category}}".toLowerCase()) {
+    if (o.value.toLowerCase() === "{{.RecipeData.Recipe.Category}}".toLowerCase()) {
       o.selected = "selected"
       break
     }

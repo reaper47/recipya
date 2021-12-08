@@ -6,12 +6,21 @@ import (
 	"strconv"
 
 	"github.com/reaper47/recipya/internal/config"
+	"github.com/reaper47/recipya/internal/repository"
 	"github.com/reaper47/recipya/internal/templates"
 	"github.com/reaper47/recipya/static"
 )
 
-// Index handles the "/" page.
+// Index handles the GET / page.
 func Index(w http.ResponseWriter, req *http.Request) {
+	if repository.IsAuthenticated(w, req) {
+		handleIndexAuthenticated(w, req)
+	} else {
+		handleIndexUnauthenticated(w, req)
+	}
+}
+
+func handleIndexAuthenticated(w http.ResponseWriter, req *http.Request) {
 	recipesCount, err := config.App().Repo.GetRecipesCount()
 	if err != nil {
 		showErrorPage(w, "Could not retrieve total number of recipes", err)
@@ -38,9 +47,22 @@ func Index(w http.ResponseWriter, req *http.Request) {
 	}
 
 	pg.Init(page)
-	err = templates.Render(w, "index.gohtml", templates.RecipesData{
-		Recipes:    recipes,
-		Pagination: pg,
+
+	err = templates.Render(w, "index.gohtml", templates.Data{
+		RecipesData: templates.RecipesData{
+			Recipes:    recipes,
+			Pagination: pg,
+		},
+	})
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+func handleIndexUnauthenticated(w http.ResponseWriter, req *http.Request) {
+	err := templates.Render(w, "landing.gohtml", templates.Data{
+		HideSidebar:       true,
+		IsUnauthenticated: true,
 	})
 	if err != nil {
 		log.Println(err)

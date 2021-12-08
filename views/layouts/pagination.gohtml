@@ -2,15 +2,15 @@
 <footer class="grid justify-center">
   <div class="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6">
     <div class="flex justify-between flex-1 text-sm font-medium text-gray-700 sm:hidden">
-      {{if eq .Selected 1}}
+      {{- if eq .Selected 1 -}}
       <button disabled class="px-4 py-2 ml-3 bg-white border border-gray-300 rounded-md cursor-not-allowed">
         Previous
       </button>
-      {{else}}
+      {{- else -}}
       <a href="/recipes?page={{.Prev}}" class="px-4 py-2 bg-white border border-gray-300 rounded-md">
         Previous
       </a>
-      {{end}}
+      {{- end -}}
 
       {{if eq .Selected .NumPages}}
       <button disabled class="px-4 py-2 ml-3 bg-white border border-gray-300 rounded-md cursor-not-allowed">
@@ -20,13 +20,13 @@
       <a href="/recipes?page={{.Next}}" class="px-4 py-2 ml-3 bg-white border border-gray-300 rounded-md">
         Next
       </a>
-      {{end}}
+      {{- end -}}
     </div>
 
     <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
       <div class="col-span-8">
         <nav class="relative z-0 inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
-          {{if eq .Selected 1}}
+          {{- if eq .Selected 1 -}}
           <button disabled
             class="inline-flex items-center p-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-not-allowed rounded-r-md">
             <span class="sr-only">Previous</span>
@@ -37,7 +37,7 @@
                 clip-rule="evenodd" />
             </svg>
           </button>
-          {{else}}
+          {{- else -}}
           <a href="/recipes?page={{.Prev}}"
             class="inline-flex items-center p-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50">
             <span class="sr-only">Previous</span>
@@ -48,73 +48,73 @@
                 clip-rule="evenodd" />
             </svg>
           </a>
-          {{end}}
+          {{- end -}}
 
           <!-- Left Section -->
           {{range .Left}}
-          {{if eq $.Selected .}}
+          {{- if eq $.Selected . -}}
           <button aria-current="page"
             class="z-10 px-4 py-2 text-sm font-medium text-indigo-600 border border-indigo-500 cursor-default bg-indigo-50">
             {{.}}
           </button>
-          {{else}}
+          {{- else -}}
           <a href="/recipes?page={{.}}"
             class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 hover:bg-gray-50">
             {{.}}
           </a>
-          {{end}}
-          {{end}}
+          {{- end -}}
+          {{- end -}}
 
           <!-- Middle Section -->
-          {{if .Middle}}
+          {{- if .Middle -}}
           <span
             class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300">
             ...
           </span>
-          {{end}}
+          {{- end -}}
           {{range .Middle}}
-          {{if eq $.Selected .}}
+          {{- if eq $.Selected . -}}
           <a href="/recipes?page={{.}}" aria-current="page"
             class="relative z-10 inline-flex items-center px-4 py-2 text-sm font-medium text-indigo-600 border border-indigo-500 bg-indigo-50">
             {{.}}
           </a>
-          {{else}}
+          {{- else -}}
           <a href="/recipes?page={{.}}"
             class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 hover:bg-gray-50">
             {{.}}
           </a>
-          {{end}}
-          {{end}}
-          {{if .Middle}}
+          {{- end -}}
+          {{- end -}}
+          {{- if .Middle -}}
           <span
             class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300">
             ...
           </span>
-          {{end}}
+          {{- end -}}
 
           <!-- Right Section -->
-          {{if and .Right (not .Middle)}}
+          {{- if and .Right (not .Middle) -}}
           <span
             class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300">
             ...
           </span>
-          {{end}}
+          {{- end -}}
 
           {{range .Right}}
-          {{if eq $.Selected .}}
+          {{- if eq $.Selected . -}}
           <a href="/recipes?page={{.}}" aria-current="page"
             class="relative z-10 inline-flex items-center px-4 py-2 text-sm font-medium text-indigo-600 border border-indigo-500 bg-indigo-50">
             {{.}}
           </a>
-          {{else}}
+          {{- else -}}
           <a href="/recipes?page={{.}}"
             class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 hover:bg-gray-50">
             {{.}}
           </a>
-          {{end}}
-          {{end}}
+          {{- end -}}
+          {{- end -}}
 
-          {{if eq .Selected .NumPages}}
+          {{- if eq .Selected .NumPages -}}
           <button disabled
             class="inline-flex items-center p-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-not-allowed rounded-r-md disabled">
             <span class="sr-only">Next</span>
@@ -125,7 +125,7 @@
                 clip-rule="evenodd" />
             </svg>
           </button>
-          {{else}}
+          {{- else -}}
           <a href="/recipes?page={{.Next}}"
             class="inline-flex items-center p-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50">
             <span class="sr-only">Next</span>
@@ -136,7 +136,7 @@
                 clip-rule="evenodd" />
             </svg>
           </a>
-          {{end}}
+          {{- end -}}
         </nav>
       </div>
     </div>
@@ -145,19 +145,19 @@
     <p class="text-sm text-gray-700">
       Showing
       <span class="font-medium">
-        {{if eq .Selected .Prev}}
+        {{- if eq .Selected .Prev -}}
         {{.Selected}}
-        {{else}}
+        {{- else -}}
         {{inc (mul (dec .Selected) 12)}}
-        {{end}}
+        {{- end -}}
       </span>
       to
       <span class="font-medium">
-        {{if eq .Selected .NumPages}}
+        {{- if eq .Selected .NumPages -}}
         {{.NumResults}}
-        {{else}}
+        {{- else -}}
         {{mul .Selected 12}}
-        {{end}}
+        {{- end -}}
       </span>
       of
       <span class="font-medium">
@@ -167,4 +167,4 @@
     </p>
   </div>
 </footer>
-{{end}}
+{{- end -}}

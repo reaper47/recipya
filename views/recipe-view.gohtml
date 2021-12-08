@@ -1,9 +1,10 @@
-{{define "title"}}{{.Recipe.Name}}{{end}}
+{{define "title"}}{{.RecipeData.Recipe.Name}}{{end}}
 
 {{define "content"}}
-{{with .Recipe}}
+{{- with .RecipeData.Recipe -}}
 <div class="grid max-w-6xl grid-cols-6 px-4 pb-4 m-auto">
   <div class="grid grid-cols-6 col-span-6 text-lg border border-gray-900 md:text-xl rounded-t-md">
+    {{- if not $.IsUnauthenticated -}}
     <div class="grid justify-start col-span-1 place-content-center">
       <a href="/recipes/{{.ID}}/edit" class="ml-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 hover:text-red-600" fill="none" viewBox="0 0 24 24"
@@ -25,11 +26,16 @@
         </svg>
       </button>
     </div>
+    {{- else -}}
+    <h1 class="grid col-span-6 py-2 font-bold place-content-center">
+      {{.Name}}
+    </h1>
+    {{- end -}}
   </div>
 
   <div
     class="w-full h-full grid-flow-col col-span-6 border-b border-l border-r border-gray-900 place-self-end md:border-b md:border-l md:border-r md:col-span-4">
-    <img id="output" class="text-center md:w-full" src="{{if isUuidValid .Image}}/data/img/{{.Image}}{{end}}"
+    <img id="output" class="text-center md:w-full" src="{{- if isUuidValid .Image -}}/data/img/{{.Image}}{{- end -}}"
       alt="Image of the {{.Name}} recipe">
   </div>
 
@@ -48,14 +54,14 @@
 
     <div
       class="flex items-center justify-center col-span-2 border-b border-r border-black md:col-span-3 md:border-t md:py-2">
-      {{if isUrl .Url}}
+      {{- if isUrl .Url -}}
       <a class="p-1 text-sm duration-300 border border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
         href="{{.Url}}" target="_blank">
         Source
       </a>
-      {{else}}
+      {{- else -}}
       <p>Source: {{.Url}}</p>
-      {{end}}
+      {{- end -}}
     </div>
   </div>
 
@@ -158,9 +164,9 @@
       </div>
     </div>
   </div>
-  {{end}}
+  {{- end -}}
 
-  {{with .Times}}
+  {{- with .Times -}}
   <div class="col-span-3 border-b border-r border-black md:col-span-1">
     <div class="inline-block min-w-full overflow-x-auto align-middle">
       <div class="overflow-hidden border-gray-200">
@@ -195,20 +201,20 @@
       </div>
     </div>
   </div>
-  {{end}}
+  {{- end -}}
 
   <div class="col-span-6 py-2 border-b border-l border-r border-black md:rounded-bl-lg md:col-span-2 md:border-r-0">
     <h2 class="pb-2 m-auto text-sm font-bold text-center text-gray-600 underline ">Ingredients</h2>
     <ul class="grid px-6">
       {{$len := len .Instructions}}
-      {{range $i, $e := .Ingredients}}
+      {{- range $i, $e := .Ingredients -}}
       <li
         class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200 {{if eq $i 0}}rounded-t-lg{{else if eq $i $len}}rounded-b-lg{{end}}"
         onmousedown="highlight(event)">
         <input type="checkbox" id="ingredient-{{$i}}">
         <span class="pl-2">{{$e}}</span>
       </li>
-      {{end}}
+      {{- end -}}
     </ul>
   </div>
 
@@ -217,20 +223,20 @@
     <h2 class="pb-2 m-auto text-sm font-bold text-center text-gray-600 underline ">Instructions</h2>
     <ul class="grid px-6">
       {{$len := len .Instructions}}
-      {{range $i, $e := .Instructions}}
+      {{- range $i, $e := .Instructions -}}
       <li
         class="inline-flex min-w-full p-2 text-sm select-none hover:bg-gray-200 {{if eq $i 0}}rounded-t-lg{{else if eq $i $len}}rounded-b-lg{{end}}"
         onmousedown="highlight(event)">
         <input type="checkbox" id="instruction-{{$i}}">
         <span class="pl-2 whitespace-pre-line">{{$e}}</span>
       </li>
-      {{end}}
+      {{- end -}}
     </ul>
   </div>
   <div class="hidden xl:col-span-3 xl:visible"></div>
 </div>
-{{end}}
-{{end}}
+{{- end -}}
+{{- end -}}
 
 {{define "js"}}
 <script>
@@ -255,11 +261,11 @@
       return
     }
 
-    fetch(`${document.location.origin}/recipes/{{.Recipe.ID}}`, {
+    fetch(`${document.location.origin}/recipes/{{.RecipeData.Recipe.ID}}`, {
       method: 'DELETE',
       redirect: 'follow'
     }).then((res) => {
-      sessionStorage.setItem('showSuccessToast', "Recipe '{{.Recipe.Name}}' has been deleted.");
+      sessionStorage.setItem('showSuccessToast', "Recipe '{{.RecipeData.Recipe.Name}}' has been deleted.");
       window.location.href = res.url
     }).catch((err) => {
       showErrorToast(`Could not delete recipe: ${err}`)

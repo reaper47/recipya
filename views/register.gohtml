@@ -1,0 +1,64 @@
+{{define "title"}}Register{{end}}
+
+{{define "content"}}
+{{- with .FormErrorData -}}
+<section class="flex items-center justify-center h-screen bg-indigo-100">
+  <div class="w-11/12 max-w-lg lg:w-2/5 md:w-2/5">
+    <form action="/auth/register" method="post" class="min-w-full p-8 bg-white rounded-lg shadow-lg">
+      <h1 class="mb-6 text-2xl font-bold text-center text-gray-600 underline">Create your Account</h1>
+
+      <div>
+        <label class="block my-3 font-semibold text-gray-800 text-md" for="username">
+          Username
+        </label>
+        <input class="w-full px-4 py-2 bg-gray-100 rounded-lg" type="text" name="username" id="username"
+          placeholder="username" required>
+        {{- if .Username -}}
+        <p class="pt-1 text-sm text-red-600">{{.Username}}</p>
+        {{- end -}}
+      </div>
+
+      <div>
+        <label class="block my-3 font-semibold text-gray-800 text-md" for="email">
+          Email
+        </label>
+        <input class="w-full px-4 py-2 bg-gray-100 rounded-lg" type="email" name="email" id="email"
+          placeholder="my@email.com" required>
+        {{- if .Email -}}
+        <p class="pt-1 text-sm text-red-600">{{.Email}}</p>
+        {{- end -}}
+      </div>
+
+      <div>
+        <label class="block my-3 font-semibold text-gray-800 text-md" for="password">
+          Password
+        </label>
+        <input class="w-full px-4 py-2 bg-gray-100 rounded-lg" type="password" name="password" id="password"
+          placeholder="password" required>
+        {{- if .Password -}}
+        <p class="pt-1 text-sm text-red-600">{{.Password}}</p>
+        {{- end -}}
+      </div>
+
+
+      <label class="block my-3 font-semibold text-gray-800 text-md" for="confirm">
+        Confirm password
+      </label>
+      <input class="w-full px-4 py-2 bg-gray-100 rounded-lg" type="password" name="confirm" id="confirm"
+        placeholder="retype password" required>
+
+      <button
+        class="w-full px-4 py-2 mt-6 text-lg font-semibold tracking-wide text-white bg-indigo-600 rounded-lg hover:bg-green-600">Register</button>
+
+      <div class="grid mt-4">
+        <p class="text-center">Already have an account?</p>
+        <a href="/auth/signin"
+          class="grid w-1/2 px-4 py-2 m-auto text-lg font-semibold text-gray-800 bg-indigo-100 rounded-lg hover:bg-green-600 hover:text-white place-content-center">
+          Sign In
+        </a>
+      </div>
+    </form>
+  </div>
+</section>
+{{- end -}}
+{{end}}

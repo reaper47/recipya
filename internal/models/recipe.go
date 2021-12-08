@@ -25,6 +25,7 @@ type Recipe struct {
 	UpdatedAt    time.Time
 }
 
+// ToArgs adds every field related to a Recipe to an interface{} slice.
 func (r Recipe) ToArgs(includeID bool) []interface{} {
 	args := []interface{}{}
 	if includeID {

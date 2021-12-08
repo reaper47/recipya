@@ -4,6 +4,27 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 )
 
+// Data holds general template data.
+type Data struct {
+	HideHeader, HideSidebar bool
+	IsUnauthenticated       bool
+	IsViewRecipe            bool
+
+	RecipesData RecipesData
+	RecipeData  RecipeData
+
+	FormErrorData FormErrorData
+}
+
+// FormErrorData holds errors related to forms.
+type FormErrorData struct {
+	Username, Email, Password string
+}
+
+func (m FormErrorData) IsEmpty() bool {
+	return m.Username == "" && m.Email == "" && m.Password == ""
+}
+
 // IndexData holds data to pass on to the index template.
 type RecipesData struct {
 	Recipes    []models.Recipe

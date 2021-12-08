@@ -17,6 +17,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/reaper47/recipya/internal/config"
 	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/repository"
 	"github.com/reaper47/recipya/internal/templates"
 	"golang.org/x/image/draw"
 )
@@ -39,20 +40,25 @@ func Recipe(w http.ResponseWriter, req *http.Request) {
 
 	switch req.Method {
 	case http.MethodGet:
-		handleGetRecipe(w, id)
+		handleGetRecipe(w, id, repository.IsAuthenticated(w, req))
 	case http.MethodDelete:
 		handleDeleteRecipe(w, req, id)
 	}
 }
 
-func handleGetRecipe(w http.ResponseWriter, id int64) {
+func handleGetRecipe(w http.ResponseWriter, id int64, isAuthenticated bool) {
 	r, err := config.App().Repo.GetRecipe(id)
 	if err != nil {
 		showErrorPage(w, "Could not retrieve the recipe:", err)
 		return
 	}
 
-	err = templates.Render(w, "recipe-view.gohtml", templates.RecipeData{Recipe: r})
+	err = templates.Render(w, "recipe-view.gohtml", templates.Data{
+		RecipeData:        templates.RecipeData{Recipe: r},
+		IsViewRecipe:      true,
+		HideSidebar:       !isAuthenticated,
+		IsUnauthenticated: !isAuthenticated,
+	})
 	if err != nil {
 		log.Println(err)
 	}
@@ -90,7 +96,9 @@ func handleGetEditRecipe(w http.ResponseWriter, id int64) {
 		return
 	}
 
-	err = templates.Render(w, "recipe-edit.gohtml", templates.RecipeData{Recipe: r})
+	err = templates.Render(w, "recipe-edit.gohtml", templates.Data{
+		RecipeData: templates.RecipeData{Recipe: r},
+	})
 	if err != nil {
 		log.Println("EditRecipe error", err)
 		return

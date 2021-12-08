@@ -2,6 +2,7 @@
 <header class="fixed z-50 flex items-center justify-between w-full h-12 bg-gray-800 shadow">
   <div class="flex items-center h-full">
     <div class="flex items-center w-24 h-full text-center text-white">
+      {{- if not . -}}
       <div id="nav__menu-icon" class="flex items-center px-2 py-2 hover:text-red-600 md:hidden">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1" fill="none" viewBox="0 0 24 24"
           stroke="currentColor">
@@ -10,8 +11,12 @@
         </svg>
       </div>
       <a href="/" class="pl-0 font-bold text-white md:pl-4 hover:text-red-600">Recipya</a>
+      {{- else -}}
+      <a href="/" class="ml-4 font-bold text-white md:pl-4 hover:text-red-600">Recipya</a>
+      {{- end -}}
     </div>
   </div>
+  {{- if not . -}}
   <div id="header__recipe-add-button" class="flex hidden text-sm ">
     <a class="flex justify-center p-2 text-gray-900 duration-300 bg-gray-300 border-2 rounded-lg center"
       href="/recipes/new">
@@ -63,6 +68,20 @@
       </div>
     </div>
   </div>
+  {{- else -}}
+  <div class="flex h-full text-sm">
+    <div class="flex items-center h-full mr-4">
+      <a href="/auth/signin"
+        class="grid w-1/2 px-2 py-1 mr-4 text-base text-white rounded-lg hover:bg-green-600 place-content-center">
+        Sign In
+      </a>
+      <a href="/auth/register"
+        class="grid w-1/2 px-2 py-1 text-base text-gray-900 bg-blue-100 rounded-lg hover:bg-red-600 hover:text-white place-content-center">
+        Register
+      </a>
+    </div>
+  </div>
+  {{- end -}}
 </header>
 <div class="hidden border-l-4 border-red-600"></div>
 {{end}}
