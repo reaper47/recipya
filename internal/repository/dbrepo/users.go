@@ -1,6 +1,7 @@
 package db
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -28,8 +29,9 @@ func (m *postgresDBRepo) CreateUser(username, email, password string) (models.Us
 		if err != nil {
 			return u, err
 		}
+		return u, nil
 	}
-	return u, nil
+	return u, errors.New("username or email is already taken")
 }
 
 // GetUser gets a user from the database based on the username or email.

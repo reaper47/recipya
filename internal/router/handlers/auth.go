@@ -35,35 +35,31 @@ func handleGetRegister(w http.ResponseWriter, req *http.Request) {
 }
 
 func handlePostRegister(w http.ResponseWriter, req *http.Request) {
-	var errors templates.FormErrorData
+	data := templates.Data{HideHeader: true, HideSidebar: true, IsUnauthenticated: true}
 
 	username := req.FormValue("username")
 	if username == "" || strings.TrimSpace(username) == "" {
-		errors.Username = "Username cannot be empty"
+		data.FormErrorData.Username = "Username cannot be empty"
 	}
 
 	email := req.FormValue("email")
 	if email == "" || !regex.Email.MatchString(email) {
-		errors.Email = "Email is incorrect or already taken."
+		data.FormErrorData.Email = "Email is incorrect or already taken."
 	}
 
 	password := req.FormValue("password")
 	if password == "" {
-		errors.Password = "Password cannot be empty."
+		data.FormErrorData.Password = "Password cannot be empty."
 	}
 
 	confirm := req.FormValue("confirm")
 	if password != confirm {
-		errors.Password = "Passwords do not match."
+		data.FormErrorData.Password = "Passwords do not match."
 	}
 
-	if !errors.IsEmpty() {
+	if !data.FormErrorData.IsEmpty() {
 		w.WriteHeader(http.StatusBadRequest)
-		err := templates.Render(w, "register.gohtml", templates.Data{
-			HideHeader:    true,
-			HideSidebar:   true,
-			FormErrorData: errors,
-		})
+		err := templates.Render(w, "register.gohtml", data)
 		if err != nil {
 			log.Println(err)
 		}
@@ -72,7 +68,11 @@ func handlePostRegister(w http.ResponseWriter, req *http.Request) {
 
 	u, err := config.App().Repo.CreateUser(username, email, password)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		data.FormErrorData.Username = err.Error()
+		err := templates.Render(w, "register.gohtml", data)
+		if err != nil {
+			log.Println(err)
+		}
 		return
 	}
 
