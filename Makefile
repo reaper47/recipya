@@ -7,7 +7,7 @@ build-go-deploy:
 	/usr/local/go/bin/go build -ldflags="-s -w" -o dist/recipya main.go
 
 build-static:
-	 cd views/tailwind && pnpm run build 
+	 cd views/tailwind && pnpm i && pnpm run build 
 
 db-reset:
 	go run main.go migrate down && go run main.go migrate up
