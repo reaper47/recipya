@@ -1,13 +1,7 @@
 module.exports = {
-  purge: [],
-  darkMode: false, // or 'media' or 'class'
+  content: ['../../views/**/*.gohtml'],
   theme: {
     extend: {}
-  },
-  variants: {
-    extend: {
-      backgroundColor: ['active']
-    }
   },
   plugins: []
 }
