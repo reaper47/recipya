@@ -3,14 +3,14 @@ package auth
 import (
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 type customClaims struct {
-	jwt.StandardClaims
+	jwt.RegisteredClaims
 	SID string
 }
 
 func (u *customClaims) IsValid() bool {
-	return u.VerifyExpiresAt(time.Now().Unix(), true) && u.SID != ""
+	return u.VerifyExpiresAt(time.Now(), true) && u.SID != ""
 }

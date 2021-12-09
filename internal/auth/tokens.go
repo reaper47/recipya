@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 var key = []byte(os.Getenv("key"))
@@ -16,8 +16,8 @@ var ExpiresAt = time.Now().Add(14 * 24 * time.Hour)
 // CreateToken creates a JWT token.
 func CreateToken(sid string) (string, error) {
 	cc := customClaims{
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: ExpiresAt.Unix(),
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: &jwt.NumericDate{Time: ExpiresAt},
 		},
 		SID: sid,
 	}
