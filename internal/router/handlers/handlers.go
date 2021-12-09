@@ -13,14 +13,26 @@ import (
 
 // Index handles the GET / page.
 func Index(w http.ResponseWriter, req *http.Request) {
-	if repository.IsAuthenticated(w, req) {
-		handleIndexAuthenticated(w, req)
+	_, isAuthenticated := repository.IsAuthenticated(w, req)
+	if isAuthenticated {
+		http.Redirect(w, req, "/recipes", http.StatusSeeOther)
 	} else {
 		handleIndexUnauthenticated(w, req)
 	}
 }
 
-func handleIndexAuthenticated(w http.ResponseWriter, req *http.Request) {
+func handleIndexUnauthenticated(w http.ResponseWriter, req *http.Request) {
+	err := templates.Render(w, "landing.gohtml", templates.Data{
+		HideSidebar:       true,
+		IsUnauthenticated: true,
+	})
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+// Recipes handles the GET /recipes page.
+func Recipes(w http.ResponseWriter, req *http.Request) {
 	recipesCount, err := config.App().Repo.GetRecipesCount()
 	if err != nil {
 		showErrorPage(w, "Could not retrieve total number of recipes", err)
@@ -40,7 +52,7 @@ func handleIndexAuthenticated(w http.ResponseWriter, req *http.Request) {
 		page = pg.NumPages + 1
 	}
 
-	recipes, err := config.App().Repo.GetAllRecipes(page)
+	recipes, err := config.App().Repo.GetRecipes(getUserID(req), page)
 	if err != nil {
 		showErrorPage(w, "Cannot retrieve all recipes.", err)
 		return
@@ -53,16 +65,6 @@ func handleIndexAuthenticated(w http.ResponseWriter, req *http.Request) {
 			Recipes:    recipes,
 			Pagination: pg,
 		},
-	})
-	if err != nil {
-		log.Println(err)
-	}
-}
-
-func handleIndexUnauthenticated(w http.ResponseWriter, req *http.Request) {
-	err := templates.Render(w, "landing.gohtml", templates.Data{
-		HideSidebar:       true,
-		IsUnauthenticated: true,
 	})
 	if err != nil {
 		log.Println(err)

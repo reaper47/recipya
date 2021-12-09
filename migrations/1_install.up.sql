@@ -1,6 +1,15 @@
 --
 -- CREATES
 --
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  username VARCHAR(36) NOT NULL UNIQUE CHECK (LOWER(username) = username),
+  email VARCHAR(254) NOT NULL UNIQUE CHECK (LOWER(email) = email),
+  hashed_password VARCHAR(254) NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE recipes (
   id SERIAL PRIMARY KEY,
   name VARCHAR(80) NOT NULL,
@@ -12,29 +21,30 @@ CREATE TABLE recipes (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+-- https://recipeland.com/recipes/categories/browse
 CREATE TABLE categories (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(24) UNIQUE NOT NULL
+  name VARCHAR(24) UNIQUE NOT NULL CHECK (LOWER(name) = name)
 );
 
 CREATE TABLE ingredients (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(24) UNIQUE NOT NULL
+  name VARCHAR(24) UNIQUE NOT NULL CHECK (LOWER(name) = name)
 );
 
 CREATE TABLE instructions (
   id SERIAL PRIMARY KEY,
-  name TEXT UNIQUE NOT NULL
+  name TEXT UNIQUE NOT NULL CHECK (LOWER(name) = name)
 );
 
 CREATE TABLE tools (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(24) UNIQUE NOT NULL
+  name VARCHAR(24) UNIQUE NOT NULL CHECK (LOWER(name) = name)
 );
 
 CREATE TABLE keywords (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(24) UNIQUE NOT NULL
+  name VARCHAR(24) UNIQUE NOT NULL CHECK (LOWER(name) = name)
 );
 
 CREATE TABLE nutrition (
@@ -61,13 +71,21 @@ CREATE TABLE times (
 
 CREATE TABLE counts (
   id SERIAL PRIMARY KEY,
-  recipes INTEGER NOT NULL
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  recipes INTEGER DEFAULT 0
 );
 
 
 --
 -- Association Tables
 --
+CREATE TABLE user_recipe (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  recipe_id INTEGER NOT NULL REFERENCES recipes(id) ON DELETE CASCADE,
+  UNIQUE (user_id, recipe_id)
+);
+
 CREATE TABLE category_recipe (
   id SERIAL PRIMARY KEY,
   recipe_id INTEGER NOT NULL REFERENCES recipes(id) ON DELETE CASCADE,
@@ -113,6 +131,16 @@ CREATE TABLE time_recipe (
 --
 -- FUNCTIONS
 --
+CREATE FUNCTION users_insert_init_counts() RETURNS TRIGGER AS 
+$BODY$
+BEGIN
+  INSERT INTO counts (user_id) 
+  VALUES (NEW.id);
+  RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
 CREATE FUNCTION times_calc_total_time() RETURNS TRIGGER AS 
 $BODY$
 BEGIN
@@ -133,24 +161,24 @@ END;
 $BODY$ 
 LANGUAGE plpgsql;
 
-CREATE FUNCTION recipes_insert_inc_count() RETURNS TRIGGER AS
+CREATE FUNCTION user_recipe_insert_inc_count() RETURNS TRIGGER AS
 $BODY$
 BEGIN 
   UPDATE counts SET 
     recipes = recipes + 1
-  WHERE id = 1;
+  WHERE id = NEW.user_id;
   RETURN NEW;
 END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE FUNCTION recipes_delete_dec_count() RETURNS TRIGGER AS
+CREATE FUNCTION user_recipe_delete_dec_count() RETURNS TRIGGER AS
 $BODY$
 BEGIN 
   UPDATE counts SET 
     recipes = recipes - 1
-  WHERE id = 1;
-  RETURN NEW;
+  WHERE id = OLD.user_id;
+  RETURN OLD;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -159,6 +187,11 @@ LANGUAGE plpgsql;
 --
 -- TRIGGERS
 --
+CREATE TRIGGER users_insert_init_counts
+  AFTER INSERT ON users
+  FOR EACH ROW
+  EXECUTE FUNCTION users_insert_init_counts();
+
 CREATE TRIGGER times_calc_total_time 
   BEFORE INSERT OR UPDATE ON times 
   FOR EACH ROW 
@@ -169,24 +202,34 @@ CREATE TRIGGER recipes_update_updated_at
 	FOR EACH ROW 
 	EXECUTE FUNCTION recipes_update_updated_at();
 
-CREATE TRIGGER recipes_insert_inc_count
-  AFTER INSERT ON recipes
+CREATE TRIGGER user_recipe_insert_inc_count
+  AFTER INSERT ON user_recipe
   FOR EACH ROW
-  EXECUTE PROCEDURE recipes_insert_inc_count();
+  EXECUTE PROCEDURE user_recipe_insert_inc_count();
 
-CREATE TRIGGER recipes_delete_dec_count
-  AFTER DELETE ON recipes
+CREATE TRIGGER user_recipe_delete_dec_count
+  AFTER DELETE ON user_recipe
   FOR EACH ROW
-  EXECUTE PROCEDURE recipes_delete_dec_count();
+  EXECUTE PROCEDURE user_recipe_delete_dec_count();
 
 --
 -- INSERTS
 --
 INSERT INTO categories (name) 
-VALUES ('uncategorized');
-
-INSERT INTO counts (recipes)
-VALUES (0);
+VALUES 
+  ('uncategorized'),
+  ('appetizers'),
+  ('bread'),
+  ('breakfasts'),
+  ('condiments'),
+  ('dessert'),
+  ('lunch'),
+  ('main dish'),
+  ('salad'),
+  ('side dish'),
+  ('snacks'),
+  ('soups'),
+  ('stews');
 
 --
 -- EXTENSIONS

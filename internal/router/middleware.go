@@ -1,25 +1,27 @@
 package router
 
 import (
+	"context"
 	"net/http"
 
+	"github.com/reaper47/recipya/internal/constants"
 	"github.com/reaper47/recipya/internal/repository"
 )
 
-type authenticationMiddleware struct {
-	tokenUsers map[string]string
-}
+type authenticationMiddleware struct{}
 
-func (m *authenticationMiddleware) Populate() {
-
-}
-
+// Middleware is the authentication middleware.
 func (m *authenticationMiddleware) Middleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		if !repository.IsAuthenticated(w, req) {
-			http.Error(w, "Forbidden", http.StatusForbidden)
+		userID, isAuthenticated := repository.IsAuthenticated(w, req)
+		if !isAuthenticated || userID == -1 {
+			http.Redirect(w, req, "/auth/signin", http.StatusSeeOther)
 			return
 		}
+
+		ctx := context.WithValue(req.Context(), constants.UserID, userID)
+		req = req.WithContext(ctx)
+
 		next.ServeHTTP(w, req)
 	}
 }

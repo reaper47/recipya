@@ -12,6 +12,7 @@ type Data struct {
 
 	RecipesData RecipesData
 	RecipeData  RecipeData
+	Categories  []string
 
 	FormErrorData FormErrorData
 }

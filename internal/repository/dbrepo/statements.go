@@ -6,13 +6,8 @@ import (
 )
 
 // SELECT
-func getRecipes(onlyOne bool) string {
-	id := "r.id"
-	if onlyOne {
-		id = "$1"
-	}
-
-	stmt := `SELECT 
+const getRecipeStmt = `
+	SELECT 
 		r.id,
 		r.name,
 		description,
@@ -35,25 +30,25 @@ func getRecipes(onlyOne bool) string {
 			SELECT name
 			FROM ingredients i
 			JOIN ingredient_recipe ir ON ir.ingredient_id = i.id
-			WHERE ir.recipe_id = ` + id + `
+			WHERE ir.recipe_id = $1
 		) AS ingredients,
 		ARRAY(
 			SELECT name
 			FROM instructions i2
 			JOIN instruction_recipe ir2 ON ir2.instruction_id = i2.id
-			WHERE ir2.recipe_id = ` + id + `
+			WHERE ir2.recipe_id = $1
 		) AS instructions,
 		ARRAY(
 			SELECT name
 			FROM keywords k
 			JOIN keyword_recipe kr ON kr.keyword_id = k.id
-			WHERE kr.recipe_id = ` + id + `
+			WHERE kr.recipe_id = $1
 		) AS keywords,
 		ARRAY(
 			SELECT name
 			FROM tools t
 			JOIN tool_recipe tr ON tr.tool_id = t.id
-			WHERE tr.recipe_id = ` + id + `
+			WHERE tr.recipe_id = $1
 		) AS tools,
 		t2.prep,
 		t2.cook,
@@ -63,102 +58,97 @@ func getRecipes(onlyOne bool) string {
 	JOIN categories c ON c.id = cr.category_id
 	JOIN nutrition n ON n.recipe_id = r.id
 	JOIN time_recipe tr2 ON tr2.recipe_id = r.id
-	JOIN times t2 ON t2.id = tr2.time_id`
+	JOIN times t2 ON t2.id = tr2.time_id
+	WHERE r.id = $1`
 
-	if onlyOne {
-		stmt += " WHERE r.id = $1"
-	}
-	return stmt
-}
-
-func getRecipesPagination(page int) string {
-	return `
-		WITH rows AS (
-			SELECT 
-				ROW_NUMBER() OVER (ORDER BY r.id) AS rowid,
-				r.id AS recipe_id,
-				r.name AS recipe_name,
-				description,
-				url,
-				image,
-				yield,
-				created_at,
-				updated_at,
-				c.name AS category,
-				n.calories AS calories,
-				n.total_carbohydrates AS total_carbohydrates,
-				n.sugars AS sugars,
-				n.protein AS protein,
-				n.total_fat AS total_fat,
-				n.saturated_fat AS saturated_fat,
-				n.cholesterol AS cholesterol,
-				n.sodium AS sodium,
-				n.fiber AS fiber,
-				ARRAY(
-					SELECT name
-					FROM ingredients i
-					JOIN ingredient_recipe ir ON ir.ingredient_id = i.id
-					WHERE ir.recipe_id = r.id
-				) AS ingredients,
-				ARRAY(
-					SELECT name
-					FROM instructions i2
-					JOIN instruction_recipe ir2 ON ir2.instruction_id = i2.id
-					WHERE ir2.recipe_id = r.id
-				) AS instructions,
-				ARRAY(
-					SELECT name
-					FROM keywords k
-					JOIN keyword_recipe kr ON kr.keyword_id = k.id
-					WHERE kr.recipe_id = r.id
-				) AS keywords,
-				ARRAY(
-					SELECT name
-					FROM tools t
-					JOIN tool_recipe tr ON tr.tool_id = t.id
-					WHERE tr.recipe_id = r.id
-				) AS tools,
-				t2.prep AS time_prep,
-				t2.cook AS time_cook,
-				t2.total AS time_total
-			FROM recipes r
-			JOIN category_recipe cr ON cr.recipe_id = r.id
-			JOIN categories c ON c.id = cr.category_id
-			JOIN nutrition n ON n.recipe_id = r.id
-			JOIN time_recipe tr2 ON tr2.recipe_id = r.id
-			JOIN times t2 ON t2.id = tr2.time_id
-		)
+const getRecipesStmt = `
+	WITH rows AS (
 		SELECT 
-			recipe_id,
-			recipe_name,
+			ROW_NUMBER() OVER (ORDER BY r.id) AS rowid,
+			r.id AS recipe_id,
+			r.name AS recipe_name,
 			description,
 			url,
 			image,
 			yield,
 			created_at,
 			updated_at,
-			category,
-			calories,
-			total_carbohydrates,
-			sugars,
-			protein,
-			total_fat,
-			saturated_fat,
-			cholesterol,
-			sodium,
-			fiber,
-			ingredients,
-			instructions,
-			keywords,
-			tools,
-			time_prep,
-			time_cook,
-			time_total
-		FROM rows
-		WHERE rowid > ` + strconv.Itoa((page-1)*12) + `
-		ORDER BY recipe_id ASC
-		LIMIT 12`
-}
+			c.name AS category,
+			n.calories AS calories,
+			n.total_carbohydrates AS total_carbohydrates,
+			n.sugars AS sugars,
+			n.protein AS protein,
+			n.total_fat AS total_fat,
+			n.saturated_fat AS saturated_fat,
+			n.cholesterol AS cholesterol,
+			n.sodium AS sodium,
+			n.fiber AS fiber,
+			ARRAY(
+				SELECT name
+				FROM ingredients i
+				JOIN ingredient_recipe ir ON ir.ingredient_id = i.id
+				WHERE ir.recipe_id = r.id
+			) AS ingredients,
+			ARRAY(
+				SELECT name
+				FROM instructions i2
+				JOIN instruction_recipe ir2 ON ir2.instruction_id = i2.id
+				WHERE ir2.recipe_id = r.id
+			) AS instructions,
+			ARRAY(
+				SELECT name
+				FROM keywords k
+				JOIN keyword_recipe kr ON kr.keyword_id = k.id
+				WHERE kr.recipe_id = r.id
+			) AS keywords,
+			ARRAY(
+				SELECT name
+				FROM tools t
+				JOIN tool_recipe tr ON tr.tool_id = t.id
+				WHERE tr.recipe_id = r.id
+			) AS tools,
+			t2.prep AS time_prep,
+			t2.cook AS time_cook,
+			t2.total AS time_total
+		FROM recipes r
+		JOIN category_recipe cr ON cr.recipe_id = r.id
+		JOIN categories c ON c.id = cr.category_id
+		JOIN nutrition n ON n.recipe_id = r.id
+		JOIN time_recipe tr2 ON tr2.recipe_id = r.id
+		JOIN times t2 ON t2.id = tr2.time_id
+		JOIN user_recipe ur ON ur.recipe_id = r.id
+		WHERE ur.user_id = $1
+	)
+	SELECT 
+		recipe_id,
+		recipe_name,
+		description,
+		url,
+		image,
+		yield,
+		created_at,
+		updated_at,
+		category,
+		calories,
+		total_carbohydrates,
+		sugars,
+		protein,
+		total_fat,
+		saturated_fat,
+		cholesterol,
+		sodium,
+		fiber,
+		ingredients,
+		instructions,
+		keywords,
+		tools,
+		time_prep,
+		time_cook,
+		time_total
+	FROM rows
+	WHERE rowid > $2
+	ORDER BY recipe_id ASC
+	LIMIT 12`
 
 const recipesCountStmt = `
 	SELECT recipes 
@@ -169,19 +159,28 @@ func resetIDStmt(table string) string {
 	return "SELECT setval('" + table + "_id_seq', MAX(id)) FROM " + table
 }
 
+const getUserStmt = `
+	SELECT id, username, email, hashed_password
+	FROM users
+	WHERE username = $1 OR email = $2`
+
+const getCategoriesStmt = `
+	SELECT name 
+	FROM categories`
+
 // INSERT
 func insertRecipeStmt(tables []tableData) string {
 	var params nameParams
-	params.init(tables, 18)
+	params.init(tables, 19)
 
 	return `
 		WITH ins_recipe AS (
 			INSERT  INTO recipes (name, description, image, url, yield)
-			VALUES ($1, $2, $3, $4, $5)
+			VALUES ($2,$3,$4,$5,$6)
 			RETURNING id
 		), ins_category AS (
 			INSERT INTO categories (name)
-			VALUES ($6)
+			VALUES ($7)
 			ON CONFLICT ON CONSTRAINT categories_name_key DO UPDATE
 			SET name=NULL
 			WHERE FALSE
@@ -198,7 +197,7 @@ func insertRecipeStmt(tables []tableData) string {
 					UNION ALL
 					SELECT id
 					FROM categories
-					WHERE name=$6
+					WHERE name=$7
 				)
 			)
 		),  ins_nutrition AS (
@@ -206,11 +205,11 @@ func insertRecipeStmt(tables []tableData) string {
 				recipe_id, calories, total_carbohydrates, sugars,
 				protein, total_fat, saturated_fat, cholesterol, sodium, fiber
 			)
-			VALUES ((SELECT id FROM ins_recipe),$7,$8,$9,$10,$11,$12,$13,$14,$15)
+			VALUES ((SELECT id FROM ins_recipe),$8,$9,$10,$11,$12,$13,$14,$15,$16)
 			RETURNING id
 		),  ins_times AS (
 			INSERT INTO times (prep, cook)
-			VALUES ($16::interval, $17::interval)
+			VALUES ($17::interval, $18::interval)
 			ON CONFLICT ON CONSTRAINT times_prep_cook_key DO UPDATE
 			SET prep=NULL
 			WHERE FALSE
@@ -219,14 +218,20 @@ func insertRecipeStmt(tables []tableData) string {
 			INSERT INTO time_recipe (time_id, recipe_id)
 			VALUES (
 				(
-					SELECT id FROM ins_times WHERE prep=$16::interval and cook=$17::interval
+					SELECT id FROM ins_times WHERE prep=$17::interval and cook=$18::interval
 					UNION ALL
-					SELECT id FROM times WHERE prep=$16::interval and cook=$17::interval
+					SELECT id FROM times WHERE prep=$17::interval and cook=$18::interval
 				),
 				(
 					SELECT id
 					FROM ins_recipe
 				)
+			)
+		), ins_user_recipe AS (
+			INSERT INTO user_recipe (user_id, recipe_id)
+			VALUES (
+				$1,
+				(SELECT id FROM ins_recipe)
 			)
 		)` + params.insertStmts(tables, true) + `
 	SELECT id FROM ins_recipe`
@@ -297,10 +302,13 @@ func insertIntoAssocTableStmt(td tableData, from string, params map[string]strin
 		if i < len(td.Entries)-1 {
 			stmt += ","
 		}
-
 	}
 	return stmt + ")"
 }
+
+const insertUserStmt = `
+	INSERT INTO users (username, email, hashed_password) 
+	VALUES ($1,$2,$3)`
 
 // UPDATE
 func updateRecipeStmt(tables []tableData) string {
@@ -385,7 +393,7 @@ const deleteAssocTableEntries = `
 		DELETE FROM tool_recipe
 		WHERE recipe_id = $1
 	)
-	
+
 	DELETE FROM keyword_recipe
 	WHERE recipe_id = $1
 `

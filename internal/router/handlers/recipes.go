@@ -40,20 +40,21 @@ func Recipe(w http.ResponseWriter, req *http.Request) {
 
 	switch req.Method {
 	case http.MethodGet:
-		handleGetRecipe(w, id, repository.IsAuthenticated(w, req))
+		_, isAuthenticated := repository.IsAuthenticated(w, req)
+		handleGetRecipe(w, req, id, isAuthenticated)
 	case http.MethodDelete:
 		handleDeleteRecipe(w, req, id)
 	}
 }
 
-func handleGetRecipe(w http.ResponseWriter, id int64, isAuthenticated bool) {
-	r, err := config.App().Repo.GetRecipe(id)
-	if err != nil {
-		showErrorPage(w, "Could not retrieve the recipe:", err)
+func handleGetRecipe(w http.ResponseWriter, req *http.Request, id int64, isAuthenticated bool) {
+	r := config.App().Repo.GetRecipe(id)
+	if r.ID == 0 {
+		http.Redirect(w, req, "/", http.StatusSeeOther)
 		return
 	}
 
-	err = templates.Render(w, "recipe-view.gohtml", templates.Data{
+	err := templates.Render(w, "recipe-view.gohtml", templates.Data{
 		RecipeData:        templates.RecipeData{Recipe: r},
 		IsViewRecipe:      true,
 		HideSidebar:       !isAuthenticated,
@@ -83,20 +84,21 @@ func EditRecipe(w http.ResponseWriter, req *http.Request) {
 
 	switch req.Method {
 	case http.MethodGet:
-		handleGetEditRecipe(w, id)
+		handleGetEditRecipe(w, req, id)
 	case http.MethodPost:
 		handlePostEditRecipe(w, req, id)
 	}
 }
 
-func handleGetEditRecipe(w http.ResponseWriter, id int64) {
-	r, err := config.App().Repo.GetRecipe(id)
-	if err != nil {
-		showErrorPage(w, "Could not retrieve the recipe:", err)
+func handleGetEditRecipe(w http.ResponseWriter, req *http.Request, id int64) {
+	r := config.App().Repo.GetRecipe(id)
+	if r.ID == 0 {
+		http.Redirect(w, req, "/", http.StatusSeeOther)
 		return
 	}
 
-	err = templates.Render(w, "recipe-edit.gohtml", templates.Data{
+	err := templates.Render(w, "recipe-edit.gohtml", templates.Data{
+		Categories: config.App().Repo.GetCategories(),
 		RecipeData: templates.RecipeData{Recipe: r},
 	})
 	if err != nil {
@@ -123,7 +125,9 @@ func handlePostEditRecipe(w http.ResponseWriter, req *http.Request, id int64) {
 
 // GetRecipesNewManual handles the GET /recipes/new/manual URI.
 func GetRecipesNewManual(w http.ResponseWriter, req *http.Request) {
-	err := templates.Render(w, "recipe-new-manual.gohtml", nil)
+	err := templates.Render(w, "recipe-new-manual.gohtml", templates.Data{
+		Categories: config.App().Repo.GetCategories(),
+	})
 	if err != nil {
 		log.Println(err)
 	}
@@ -137,7 +141,7 @@ func PostRecipesNewManual(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	id, err := config.App().Repo.InsertNewRecipe(r)
+	id, err := config.App().Repo.InsertNewRecipe(r, getUserID(req))
 	if err != nil {
 		showErrorPage(w, "An error occured when inserting the recipe:", err)
 		return
@@ -177,7 +181,7 @@ func getRecipeFromForm(req *http.Request) (models.Recipe, error) {
 		Image:       imageUUID,
 		Url:         req.FormValue("source"),
 		Yield:       int16(yield),
-		Category:    req.FormValue("category"),
+		Category:    strings.ToLower(req.FormValue("category")),
 		Times: models.Times{
 			Prep: prepTime,
 			Cook: cookTime,
@@ -209,7 +213,7 @@ func getFormItems(req *http.Request, field string) []string {
 	items := []string{}
 	i := 1
 	for {
-		item := req.FormValue(field + "-" + strconv.Itoa(i))
+		item := strings.ToLower(req.FormValue(field + "-" + strconv.Itoa(i)))
 		if item == "" {
 			break
 		}

@@ -8,7 +8,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/auth"
-	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/config"
 	"github.com/reaper47/recipya/internal/regex"
 	"github.com/reaper47/recipya/internal/repository"
 	"github.com/reaper47/recipya/internal/templates"
@@ -70,15 +70,13 @@ func handlePostRegister(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	user, err := models.NewUser(username, email, password)
+	u, err := config.App().Repo.CreateUser(username, email, password)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	repository.Users[user.Email] = user
-
-	err = setCookie(w, req, username, true)
+	err = setCookie(w, req, u.ID, true)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -98,8 +96,9 @@ func SignIn(w http.ResponseWriter, req *http.Request) {
 
 func handleGetSignIn(w http.ResponseWriter, req *http.Request) {
 	err := templates.Render(w, "signin.gohtml", templates.Data{
-		HideHeader:  true,
-		HideSidebar: true,
+		IsUnauthenticated: true,
+		HideHeader:        true,
+		HideSidebar:       true,
 	})
 	if err != nil {
 		log.Println(err)
@@ -119,17 +118,18 @@ func handlePostSignIn(w http.ResponseWriter, req *http.Request) {
 		errors.Password = "Password cannot be empty."
 	}
 
-	u, ok := repository.Users[id]
-	if !ok || !u.IsPasswordOk(password) {
+	u := config.App().Repo.GetUser(id)
+	if !u.IsPasswordOk(password) {
 		errors.Password = "Credentials are incorrect."
 	}
 
 	if !errors.IsEmpty() {
 		w.WriteHeader(http.StatusBadRequest)
 		err := templates.Render(w, "signin.gohtml", templates.Data{
-			HideHeader:    true,
-			HideSidebar:   true,
-			FormErrorData: errors,
+			IsUnauthenticated: true,
+			HideHeader:        true,
+			HideSidebar:       true,
+			FormErrorData:     errors,
 		})
 		if err != nil {
 			log.Println(err)
@@ -138,7 +138,7 @@ func handlePostSignIn(w http.ResponseWriter, req *http.Request) {
 	}
 
 	rememberMe := req.FormValue("remember-me")
-	err := setCookie(w, req, u.Username, rememberMe == "")
+	err := setCookie(w, req, u.ID, rememberMe == "")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -146,7 +146,7 @@ func handlePostSignIn(w http.ResponseWriter, req *http.Request) {
 	http.Redirect(w, req, "/", http.StatusSeeOther)
 }
 
-func setCookie(w http.ResponseWriter, r *http.Request, username string, isSession bool) error {
+func setCookie(w http.ResponseWriter, r *http.Request, userID int64, isSession bool) error {
 	sid := uuid.NewString()
 	token, err := auth.CreateToken(sid)
 	if err != nil {
@@ -154,7 +154,7 @@ func setCookie(w http.ResponseWriter, r *http.Request, username string, isSessio
 		return errors.New("our server didn't get enough lunch and is not working 200% right now. Try bak later")
 	}
 
-	repository.Sessions[sid] = username
+	repository.Sessions[sid] = userID
 
 	c := http.Cookie{Name: "session", Value: token, Path: "/"}
 	if !isSession {

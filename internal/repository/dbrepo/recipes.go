@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v4"
 	"github.com/reaper47/recipya/internal/contexts"
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -74,15 +75,16 @@ func (m *nameParams) insertStmts(tables []tableData, isInsRecipeDefined bool) st
 
 }
 
-// GetAllRecipes gets all of the recipes in the database.
-func (m *postgresDBRepo) GetAllRecipes(page int) ([]models.Recipe, error) {
+// GetRecipes gets all of the recipes in the database.
+func (m *postgresDBRepo) GetRecipes(userID int64, page int) ([]models.Recipe, error) {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
-	rows, err := m.Pool.Query(ctx, getRecipesPagination(page))
+	rows, err := m.Pool.Query(ctx, getRecipesStmt, userID, (page-1)*12)
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 
 	var xr []models.Recipe
 	for rows.Next() {
@@ -164,85 +166,53 @@ func (m *postgresDBRepo) GetAllRecipes(page int) ([]models.Recipe, error) {
 	return xr, nil
 }
 
-// GetRecipe gets a recipe in the database.
-func (m *postgresDBRepo) GetRecipe(id int64) (models.Recipe, error) {
+// GetRecipe fetches a recipe from the database.
+//
+// The returned recipe will be empty if the query returns no row.
+func (m *postgresDBRepo) GetRecipe(id int64) models.Recipe {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
 	var (
-		recipeID                                           int64
-		name, description, url, category                   string
-		image                                              uuid.UUID
-		yield                                              int16
-		prep, cook, total                                  time.Duration
-		calories, totalCarbohydrates, sugars, protein      string
-		totalFat, saturatedFat, cholesterol, sodium, fiber string
-		ingredients, instructions, keywords, tools         []string
-		createdAt, updatedAt                               time.Time
+		r models.Recipe
+		n models.Nutrition
+		t models.Times
 	)
 
-	err := m.Pool.QueryRow(ctx, getRecipes(true), id).Scan(
-		&recipeID,
-		&name,
-		&description,
-		&url,
-		&image,
-		&yield,
-		&createdAt,
-		&updatedAt,
-		&category,
-		&calories,
-		&totalCarbohydrates,
-		&sugars,
-		&protein,
-		&totalFat,
-		&saturatedFat,
-		&cholesterol,
-		&sodium,
-		&fiber,
-		&ingredients,
-		&instructions,
-		&keywords,
-		&tools,
-		&prep,
-		&cook,
-		&total,
+	err := m.Pool.QueryRow(ctx, getRecipeStmt, id).Scan(
+		&r.ID,
+		&r.Name,
+		&r.Description,
+		&r.Url,
+		&r.Image,
+		&r.Yield,
+		&r.CreatedAt,
+		&r.UpdatedAt,
+		&r.Category,
+		&n.Calories,
+		&n.TotalCarbohydrates,
+		&n.Sugars,
+		&n.Protein,
+		&n.TotalFat,
+		&n.SaturatedFat,
+		&n.Cholesterol,
+		&n.Sodium,
+		&n.Fiber,
+		&r.Ingredients,
+		&r.Instructions,
+		&r.Keywords,
+		&r.Tools,
+		&t.Prep,
+		&t.Cook,
+		&t.Total,
 	)
-	if err != nil {
-		return models.Recipe{}, err
+	if err == pgx.ErrNoRows {
+		return r
 	}
 
-	return models.Recipe{
-		ID:          recipeID,
-		Name:        name,
-		Description: description,
-		Image:       image,
-		Url:         url,
-		Yield:       yield,
-		Category:    category,
-		Times: models.Times{
-			Prep:  prep,
-			Cook:  cook,
-			Total: total,
-		},
-		Ingredients: ingredients,
-		Nutrition: models.Nutrition{
-			Calories:           calories,
-			TotalCarbohydrates: totalCarbohydrates,
-			Sugars:             sugars,
-			Protein:            protein,
-			TotalFat:           totalFat,
-			SaturatedFat:       saturatedFat,
-			Cholesterol:        cholesterol,
-			Sodium:             sodium,
-			Fiber:              fiber,
-		},
-		Instructions: instructions,
-		Keywords:     keywords,
-		Tools:        tools,
-		CreatedAt:    createdAt,
-		UpdatedAt:    updatedAt,
-	}, nil
+	r.Nutrition = n
+	r.Times = t
+	return r
 }
 
 func (m *postgresDBRepo) GetRecipesCount() (int, error) {
@@ -251,17 +221,40 @@ func (m *postgresDBRepo) GetRecipesCount() (int, error) {
 
 	var count int
 	err := m.Pool.QueryRow(ctx, recipesCountStmt).Scan(&count)
-	if err != nil {
+	if err == pgx.ErrNoRows {
+		return 0, nil
+	} else if err != nil {
 		return -1, err
 	}
 	return count, nil
+}
+
+// GetCategories gets all categories from the database.
+func (m *postgresDBRepo) GetCategories() []string {
+	ctx, cancel := contexts.Timeout(3 * time.Second)
+	defer cancel()
+
+	var categories []string
+	rows, err := m.Pool.Query(ctx, getCategoriesStmt)
+	if err == nil {
+		defer rows.Close()
+		for rows.Next() {
+			var c string
+			err := rows.Scan(&c)
+			if err != nil {
+				continue
+			}
+			categories = append(categories, c)
+		}
+	}
+	return categories
 }
 
 // InsertNewRecipe inserts a new recipe into the database.
 //
 // The CreatedAt and UpdatedAt timestamps are not inserted
 // because the database will take care it.
-func (m *postgresDBRepo) InsertNewRecipe(r models.Recipe) (int64, error) {
+func (m *postgresDBRepo) InsertNewRecipe(r models.Recipe, userID int64) (int64, error) {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
@@ -272,8 +265,11 @@ func (m *postgresDBRepo) InsertNewRecipe(r models.Recipe) (int64, error) {
 	defer tx.Rollback(ctx)
 
 	tables := getTables(r)
+	args := []interface{}{userID}
+	args = append(args, r.ToArgs(false)...)
+
 	var recipeID int64
-	err = tx.QueryRow(ctx, insertRecipeStmt(tables), r.ToArgs(false)...).Scan(&recipeID)
+	err = tx.QueryRow(ctx, insertRecipeStmt(tables), args...).Scan(&recipeID)
 	if err != nil {
 		return -1, err
 	}

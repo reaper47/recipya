@@ -17,7 +17,6 @@ func New() *mux.Router {
 	r := mux.NewRouter()
 
 	amw := authenticationMiddleware{}
-	amw.Populate()
 
 	r.HandleFunc("/favicon.ico", handlers.Favicon).Methods(GET)
 	r.HandleFunc("/robots.txt", handlers.Robots).Methods(GET)
@@ -26,10 +25,10 @@ func New() *mux.Router {
 
 	r.HandleFunc("/auth/register", handlers.Register).Methods(GET, POST)
 	r.HandleFunc("/auth/signin", handlers.SignIn).Methods(GET, POST)
-	r.HandleFunc("/auth/signout", handlers.SignOut).Methods(GET)
+	r.HandleFunc("/auth/signout", handlers.SignOut).Methods(POST)
 
 	r.HandleFunc("/", handlers.Index).Methods(GET)
-	r.HandleFunc("/recipes", handlers.Index).Methods(GET)
+	r.HandleFunc("/recipes", amw.Middleware(handlers.Recipes)).Methods(GET)
 	r.HandleFunc("/recipes/{id:[0-9]+}", handlers.Recipe).Methods(GET)
 	r.HandleFunc("/recipes/{id:[0-9]+}", amw.Middleware(handlers.Recipe)).Methods(DELETE)
 	r.HandleFunc("/recipes/{id:[0-9]+}/edit", amw.Middleware(handlers.EditRecipe)).Methods(GET, POST)

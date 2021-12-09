@@ -32,12 +32,9 @@
       </label>
       <select id="category" name="category" required class="w-full block py-1.5 rounded-lg px-2 col-span-2 mb-2">
         <option value="">--Please choose an option--</option>
-        <option value="dog">Dog</option>
-        <option value="cat">Cat</option>
-        <option value="hamster">Hamster</option>
-        <option value="parrot">Parrot</option>
-        <option value="spider">Spider</option>
-        <option value="goldfish">Goldfish</option>
+        {{- range .Categories}}
+        <option value="{{.}}">{{.}}</option>
+        {{- end -}}
       </select>
 
       <label for="category-new" class="col-span-2 text-sm font-bold text-gray-600">
@@ -245,7 +242,7 @@
             class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
           <button type="button"
             class="w-10 h-10 text-center duration-300 bg-green-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-green-600 hover:text-white center"
-            onclick="addEntry(event)">
+            onclick="addEntry(event)" title="Shortcut: Enter">
             +
           </button>
           <button type="button"
@@ -281,7 +278,7 @@
             </button>
             <button type="button"
               class="md:flex-initial bottom-0 right-0.5 md:w-7 md:h-7 md:right-auto w-10 h-10 text-center duration-300 bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center"
-              onclick="addEntry(event)">
+              onclick="addEntry(event)" title="Shortcut: CTRL + Enter">
               +
             </button>
           </div>
@@ -303,131 +300,5 @@
 {{end}}
 
 {{define "js"}}
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js" async></script>
-<script src="/static/js/html-duration-picker.min.js" async></script>
-<script>
-  const loadFile = (event) => {
-    const output = document.getElementById('output')
-    output.src = URL.createObjectURL(event.target.files[0])
-    output.onload = () => URL.revokeObjectURL(output.src)
-    output.classList.remove('hidden')
-  }
-
-  const addCategory = (event) => {
-    const input = event.target.previousElementSibling
-    if (!input.value) {
-      return
-    }
-
-    const category = input.value
-    const select = document.getElementById('category')
-    const options = [...select.options].map(o => o.value.toLowerCase())
-    if (options.includes(category.toLowerCase())) {
-      input.value = ""
-      return
-    }
-
-    const option = document.createElement('option')
-    option.text = option.value = category
-    select.add(option, select.childElementCount)
-    input.value = ""
-    select.value = category
-
-    showSuccessToast("Category has been added")
-  }
-
-  const adjustPlaceholder = (ol) => {
-    Array.from(ol.children).forEach((li, index) => {
-      const input = li.firstElementChild
-      const name = input.name.split('-')[0]
-      input.placeholder = `${name.charAt(0).toUpperCase() + name.slice(1)} #${index + 1}`
-    })
-  }
-
-  const addEntry = (event) => {
-    let li = event.target.parentNode
-    while (li.tagName !== "LI") {
-      li = li.parentNode
-    }
-
-    const ol = li.parentElement
-    for (let i = 0; i < ol.childElementCount; i++) {
-      const input = ol.children[i].firstElementChild
-      if (input.value === "") {
-        input.focus()
-        return
-      }
-    }
-
-    const clone = li.cloneNode(true)
-    const cloneInput = clone.firstElementChild
-    cloneInput.value = ""
-
-    const [type, i] = li.firstElementChild.name.split('-')
-    cloneInput.name = `${type}-${parseInt(i) + 1}`
-
-    ol.appendChild(clone)
-    cloneInput.focus()
-    adjustPlaceholder(ol)
-  }
-
-  const removeEntry = (event) => {
-    let li = event.target
-    while (li.tagName !== "LI") {
-      li = li.parentNode
-    }
-
-    let ol = li.parentNode
-    while (ol.tagName !== 'OL') {
-      ol = ol.parentNode
-    }
-
-    if (li.parentNode.childElementCount === 1) {
-      let input = Array.from(li.children).find(el => ["INPUT", "TEXTAREA"].includes(el.tagName))
-      input.value = ""
-      return
-    }
-
-    li.firstElementChild.parentNode.remove()
-    adjustPlaceholder(ol)
-  }
-
-  document.addEventListener('keydown', (event) => {
-    const { name } = event.target
-    if (event.key === "Enter" && name.startsWith("ingredient")) {
-      event.preventDefault()
-      addEntry(event)
-    }
-  })
-
-  const form = document.getElementById('form__new-recipe')
-  let isFormDirty = false
-  form.addEventListener('change', () => { isFormDirty = true })
-  form.addEventListener('submit', () => { isFormDirty = false })
-  window.addEventListener('beforeunload', (event) => {
-    if (isFormDirty) {
-      event.returnValue = 'Are you sure you want to leave to unfinished changes?'
-    }
-  })
-
-  const makeListDraggable = (target) => {
-    Sortable.create(document.getElementById(target), {
-      handle: '.list__move-item',
-      forceFallback: true,
-      onEnd: function ({ target }) {
-        const pluralName = target.id.split('__')[0]
-        const singularName = pluralName.substr(0, pluralName.length - 1)
-
-        Array.from(target.children).forEach((li, index) => {
-          const input = li.firstElementChild
-          input.name = `${singularName}-${index + 1}`
-          input.placeholder = `${singularName[0].toUpperCase() + singularName.slice(1)} #${index + 1}`
-        })
-      }
-    })
-  }
-
-  makeListDraggable('ingredients__list')
-  makeListDraggable('instructions__list')
-</script>
+{{template "js-recipe-form"}}
 {{end}}

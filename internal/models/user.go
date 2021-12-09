@@ -1,29 +1,15 @@
 package models
 
 import (
-	"fmt"
-
 	"github.com/reaper47/recipya/internal/auth"
 )
 
+// User holds data related to a user.
 type User struct {
-	Username       string `json:"username"`
-	Email          string `json:"email"`
-	HashedPassword string `json:"password"`
-}
-
-// NewUser creates a new user.
-func NewUser(username, email, password string) (User, error) {
-	hash, err := auth.HashPassword(password)
-	if err != nil {
-		return User{}, fmt.Errorf("could not create user: %s", err)
-	}
-
-	return User{
-		Username:       username,
-		Email:          email,
-		HashedPassword: string(hash),
-	}, nil
+	ID             int64
+	Username       string
+	Email          string
+	HashedPassword string
 }
 
 // IsPasswordOk checks whether the password is ok.

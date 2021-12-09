@@ -11,7 +11,9 @@
   <title>{{block "title" .}}{{end}} | Recipya</title>
   <link rel="canonical" href="https://recipes.musicavis.com/">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  {{- if not .IsUnauthenticated -}}
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  {{- end -}}
   <link rel="stylesheet" href="/static/css/tailwind.css">
 </head>
 
