@@ -1,4 +1,10 @@
 --
+-- EXTENSIONS
+--
+CREATE EXTENSION pgcrypto;
+CREATE EXTENSION "uuid-ossp";
+
+--
 -- CREATES
 --
 CREATE TABLE users (
@@ -230,8 +236,3 @@ VALUES
   ('snacks'),
   ('soups'),
   ('stews');
-
---
--- EXTENSIONS
---
-CREATE EXTENSION "uuid-ossp";

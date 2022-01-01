@@ -30,7 +30,7 @@
       <label for="category" class="block col-span-2 text-sm font-bold text-gray-600">
         Category <sup class="text-red-600">*</sup>
       </label>
-      <select id="category" name="category" required class="w-full block py-1.5 rounded-lg px-2 col-span-2 mb-2">
+      <select id="category" name="category" required class="w-full border block py-1.5 rounded-lg px-2 col-span-2 mb-2">
         <option value="">--Please choose an option--</option>
         {{- range .Categories}}
         <option value="{{.}}">{{.}}</option>
