@@ -272,7 +272,7 @@
       </ol>
     </fieldset>
   </div>
-  <div class="col-span-6 py-2 pb-8 border-b border-l border-r border-black md:col-span-4">
+  <div class="col-span-6 py-2 pb-8 pl-2 border-b border-l border-r border-black md:col-span-4">
     <fieldset class="text-center border-none">
       <legend class="m-auto text-sm font-bold text-gray-600">
         <span class="underline">Instructions</span> <sup class="text-red-600">*</sup>
@@ -280,8 +280,9 @@
       <ol id="instructions__list" class="pl-4 list-decimal">
         {{$len := len .Instructions}}
         {{- range $i, $e := .Instructions -}}
-        <li class="pt-2 pl-2">
-          <textarea required name="instruction-{{inc $i}}" rows="3" class="w-9/12 border border-gray-300 md:w-4/5"
+        <li class="pt-2 pl-2 md:pl-0">
+          <textarea required name="instruction-{{inc $i}}" rows="3"
+            class="w-9/12 border border-gray-300 md:w-5/6 xl:w-11/12"
             placeholder="Instruction #{{inc $i}}">{{$e}}</textarea>
           <div class="inline-flex flex-col-reverse">
             <button type="button"
