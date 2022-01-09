@@ -6,15 +6,22 @@ import (
 
 // Data holds general template data.
 type Data struct {
-	HideHeader, HideSidebar bool
-	IsUnauthenticated       bool
-	IsViewRecipe            bool
+	HideSidebar  bool
+	HeaderData   HeaderData
+	IsViewRecipe bool
 
 	RecipesData RecipesData
 	RecipeData  RecipeData
 	Categories  []string
 
 	FormErrorData FormErrorData
+}
+
+// HeaderData holds data for the header.
+type HeaderData struct {
+	Hide              bool
+	IsUnauthenticated bool
+	AvatarInitials    string
 }
 
 // FormErrorData holds errors related to forms.

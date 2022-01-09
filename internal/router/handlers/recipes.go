@@ -24,7 +24,12 @@ import (
 
 // RecipesAdd handles the GET /recipes/new URI.
 func RecipesAdd(w http.ResponseWriter, req *http.Request) {
-	err := templates.Render(w, "recipe-new.gohtml", nil)
+	s := getSession(req)
+	err := templates.Render(w, "recipe-new.gohtml", templates.Data{
+		HeaderData: templates.HeaderData{
+			AvatarInitials: s.UserInitials,
+		},
+	})
 	if err != nil {
 		log.Println(err)
 	}
@@ -54,11 +59,16 @@ func handleGetRecipe(w http.ResponseWriter, req *http.Request, id int64, isAuthe
 		return
 	}
 
+	s, _ := repository.IsAuthenticated(w, req)
+
 	err := templates.Render(w, "recipe-view.gohtml", templates.Data{
-		RecipeData:        templates.RecipeData{Recipe: r},
-		IsViewRecipe:      true,
-		HideSidebar:       !isAuthenticated,
-		IsUnauthenticated: !isAuthenticated,
+		RecipeData:   templates.RecipeData{Recipe: r},
+		IsViewRecipe: true,
+		HideSidebar:  !isAuthenticated,
+		HeaderData: templates.HeaderData{
+			IsUnauthenticated: !isAuthenticated,
+			AvatarInitials:    s.UserInitials,
+		},
 	})
 	if err != nil {
 		log.Println(err)
@@ -97,9 +107,13 @@ func handleGetEditRecipe(w http.ResponseWriter, req *http.Request, id int64) {
 		return
 	}
 
+	s := getSession(req)
 	err := templates.Render(w, "recipe-edit.gohtml", templates.Data{
 		Categories: config.App().Repo.GetCategories(),
 		RecipeData: templates.RecipeData{Recipe: r},
+		HeaderData: templates.HeaderData{
+			AvatarInitials: s.UserInitials,
+		},
 	})
 	if err != nil {
 		log.Println("EditRecipe error", err)
@@ -125,8 +139,12 @@ func handlePostEditRecipe(w http.ResponseWriter, req *http.Request, id int64) {
 
 // GetRecipesNewManual handles the GET /recipes/new/manual URI.
 func GetRecipesNewManual(w http.ResponseWriter, req *http.Request) {
+	s := getSession(req)
 	err := templates.Render(w, "recipe-new-manual.gohtml", templates.Data{
 		Categories: config.App().Repo.GetCategories(),
+		HeaderData: templates.HeaderData{
+			AvatarInitials: s.UserInitials,
+		},
 	})
 	if err != nil {
 		log.Println(err)
@@ -141,7 +159,8 @@ func PostRecipesNewManual(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	id, err := config.App().Repo.InsertNewRecipe(r, getUserID(req))
+	s := getSession(req)
+	id, err := config.App().Repo.InsertNewRecipe(r, s.UserID)
 	if err != nil {
 		showErrorPage(w, "An error occured when inserting the recipe:", err)
 		return

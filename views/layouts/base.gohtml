@@ -1,4 +1,5 @@
 {{define "main"}}
+{{- $isAuthenticated := not .HeaderData.IsUnauthenticated -}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,27 +12,27 @@
   <title>{{block "title" .}}{{end}} | Recipya</title>
   <link rel="canonical" href="https://recipes.musicavis.com/">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  {{- if not .IsUnauthenticated -}}
+  {{- if $isAuthenticated -}}
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   {{- end -}}
   <link rel="stylesheet" href="/static/css/tailwind.css">
 </head>
 
 <body class="h-screen font-sans antialiased">
-  {{if and .HideHeader .HideSidebar -}}
+  {{if and .HeaderData.Hide .HideSidebar -}}
   <main>
     {{- template "content" . -}}
   </main>
   {{- else -}}
-  {{template "header" .IsUnauthenticated}}
+  {{template "header" .HeaderData}}
   <main class="grid h-full md:grid-cols-12">
     {{- if not .HideSidebar -}}{{template "sidebar"}}{{- end -}}
     <section
-      class="h-full {{if and .IsUnauthenticated .IsViewRecipe}}md:col-span-12 pt-16{{else if .IsUnauthenticated}}md:col-span-12{{else}}md:col-span-11 pt-16{{end}} bg-white ">
+      class="h-full {{if and (not $isAuthenticated) .IsViewRecipe}}md:col-span-12 pt-16{{else if not $isAuthenticated}}md:col-span-12{{else}}md:col-span-11 pt-16{{end}} bg-white ">
       {{- template "content" . -}}
     </section>
   </main>
-  {{- if not .IsUnauthenticated -}}
+  {{- if $isAuthenticated -}}
   {{template "modals"}}
   <script src="/static/js/bundle.js" defer></script>
   {{- end -}}

@@ -1,8 +1,9 @@
 {{define "header"}}
+{{- $isAuthenticated := not .IsUnauthenticated -}}
 <header class="fixed z-50 flex items-center justify-between w-full h-12 bg-gray-800 shadow">
   <div class="flex items-center h-full">
     <div class="flex items-center w-24 h-full text-center text-white">
-      {{- if not . -}}
+      {{- if $isAuthenticated -}}
       <div id="nav__menu-icon" class="flex items-center px-2 py-2 hover:text-red-600 md:hidden">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1" fill="none" viewBox="0 0 24 24"
           stroke="currentColor">
@@ -16,10 +17,9 @@
       {{- end -}}
     </div>
   </div>
-  {{- if not . -}}
-  <div id="header__recipe-add-button" class="flex hidden text-sm ">
-    <a class="flex justify-center p-2 text-gray-900 duration-300 bg-gray-300 border-2 rounded-lg center"
-      href="/recipes/new">
+  {{- if $isAuthenticated -}}
+  <div id="header__recipe-add-button" class="hidden text-sm bg-gray-300">
+    <a class="flex justify-center p-2 text-gray-900 duration-300 border-2 rounded-lg center" href="/recipes/new">
       Add recipe
     </a>
   </div>
@@ -28,7 +28,7 @@
       <div class="relative h-full py-1 group">
         <button id="nav__avatar-button"
           class="flex items-center h-10 px-4 mr-1 text-center text-gray-800 bg-blue-200 border rounded-full md:flex">
-          A
+          {{.AvatarInitials}}
         </button>
         <div id="nav__avatar-content" class="absolute hidden w-48 bg-black right-2">
           <div class="absolute w-6 overflow-hidden right-1">

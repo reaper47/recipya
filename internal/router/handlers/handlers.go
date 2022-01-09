@@ -23,8 +23,10 @@ func Index(w http.ResponseWriter, req *http.Request) {
 
 func handleIndexUnauthenticated(w http.ResponseWriter, req *http.Request) {
 	err := templates.Render(w, "landing.gohtml", templates.Data{
-		HideSidebar:       true,
-		IsUnauthenticated: true,
+		HideSidebar: true,
+		HeaderData: templates.HeaderData{
+			IsUnauthenticated: true,
+		},
 	})
 	if err != nil {
 		log.Println(err)
@@ -52,7 +54,8 @@ func Recipes(w http.ResponseWriter, req *http.Request) {
 		page = pg.NumPages + 1
 	}
 
-	recipes, err := config.App().Repo.GetRecipes(getUserID(req), page)
+	s := getSession(req)
+	recipes, err := config.App().Repo.GetRecipes(s.UserID, page)
 	if err != nil {
 		showErrorPage(w, "Cannot retrieve all recipes.", err)
 		return
@@ -64,6 +67,9 @@ func Recipes(w http.ResponseWriter, req *http.Request) {
 		RecipesData: templates.RecipesData{
 			Recipes:    recipes,
 			Pagination: pg,
+		},
+		HeaderData: templates.HeaderData{
+			AvatarInitials: s.UserInitials,
 		},
 	})
 	if err != nil {
