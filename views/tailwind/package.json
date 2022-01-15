@@ -6,14 +6,16 @@
 		"watch-css": "tailwind -m --output ../../static/css/tailwind.css -w",
 		"watch": "esbuild index.js --bundle --minify --outfile=../../static/js/bundle.js --watch"
 	},
-	"devDependencies": {
-		"autoprefixer": "^10.4.0",
-		"tailwindcss": "^3.0.0",
-		"standard": "^16.0.4"
-	},
 	"dependencies": {
-		"esbuild": "^0.14.2",
 		"picomodal": "^3.0.0",
 		"toastify-js": "^1.11.2"
+	},
+	"devDependencies": {
+		"autoprefixer": "^10.4.2",
+		"esbuild": "^0.14.11",
+		"eslint": "^8.6.0",
+		"postcss": "^8.4.5",
+		"standard": "^16.0.4",
+		"tailwindcss": "^3.0.15"
 	}
 }

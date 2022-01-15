@@ -1,6 +1,6 @@
 {{define "header"}}
 {{- $isAuthenticated := not .IsUnauthenticated -}}
-<header class="fixed z-50 flex items-center justify-between w-full h-12 bg-gray-800 shadow">
+<header class="fixed z-50 flex items-center justify-between w-full h-12 bg-gray-800 shadow print:hidden">
   <div class="flex items-center h-full">
     <div class="flex items-center w-24 h-full text-center text-white">
       {{- if $isAuthenticated -}}

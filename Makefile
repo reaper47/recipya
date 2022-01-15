@@ -1,10 +1,10 @@
 .ONESHELL:
 
 build-go:
-	go build -ldflags="-s -w" -o dist/recipya main.go
+	go build -ldflags="-s -w" -o bin/recipya main.go
 
 build-go-deploy:
-	/usr/local/go/bin/go build -ldflags="-s -w" -o dist/recipya main.go
+	/usr/local/go/bin/go build -ldflags="-s -w" -o bin/recipya main.go
 
 build-static:
 	 cd views/tailwind && pnpm i && pnpm run build 

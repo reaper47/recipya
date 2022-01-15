@@ -3,12 +3,12 @@
 {{define "content"}}
 {{- $isAuthenticated := not .HeaderData.IsUnauthenticated -}}
 {{- with .RecipeData.Recipe -}}
-<div class="grid max-w-6xl grid-cols-6 px-4 pb-4 m-auto">
+<div class="grid max-w-6xl grid-cols-6 px-4 pb-4 m-auto print:m-0 print:p-0">
   <div class="grid grid-cols-6 col-span-6 text-lg border border-gray-900 md:text-xl rounded-t-md">
     {{- if $isAuthenticated -}}
-    <div class="grid justify-start col-span-1 place-content-center">
+    <div class="grid justify-start col-span-1 place-content-center print:invisible">
       <a href="/recipes/{{.ID}}/edit" class="ml-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 hover:text-red-600" fill="none" viewBox="0 0 24 24"
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24"
           stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -18,29 +18,48 @@
     <h1 class="grid col-span-4 py-2 font-bold place-content-center">
       {{.Name}}
     </h1>
-    <div class="grid justify-end col-span-1 place-content-center">
-      <button class="mr-2" onclick="deleteRecipe()">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 hover:text-red-600" fill="none" viewBox="0 0 24 24"
+    <div class="grid justify-end col-span-1 place-content-center print:invisible">
+      <div class="grid grid-flow-col">
+        <button class="mr-2" onclick="print()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+          </svg>
+        </button>
+        <button class="mr-2" onclick="deleteRecipe()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+    {{- else -}}
+    <div class="grid col-span-1"></div>
+    <h1 class="grid col-span-4 py-2 font-bold place-content-center">
+      {{.Name}}
+    </h1>
+    <div class="grid justify-end col-span-1 place-content-center print:invisible">
+      <button class="mr-2" onclick="print()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24"
           stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
         </svg>
       </button>
     </div>
-    {{- else -}}
-    <h1 class="grid col-span-6 py-2 font-bold place-content-center">
-      {{.Name}}
-    </h1>
     {{- end -}}
   </div>
 
   <div
-    class="w-full h-full grid-flow-col col-span-6 border-b border-l border-r border-gray-900 place-self-end md:border-b md:border-l md:border-r md:col-span-4">
+    class="w-full h-full grid-flow-col col-span-6 border-b border-l border-r border-gray-900 place-self-end md:border-b md:border-l md:border-r md:col-span-4 print:hidden">
     <img id="output" class="text-center md:w-full" src="{{- if isUuidValid .Image -}}/data/img/{{.Image}}{{- end -}}"
       alt="Image of the {{.Name}} recipe">
   </div>
 
-  <div class="grid grid-flow-col col-span-6 md:grid-flow-row md:col-span-2 md:grid">
+  <div class="grid grid-flow-col col-span-6 md:grid-flow-row md:col-span-2 md:grid print:border-b">
     <div
       class="col-span-2 p-2 border-b border-l border-r border-black md:border-l-0 md:border-r md:col-span-3 md:grid md:place-items-center">
       <span
@@ -66,15 +85,30 @@
     </div>
   </div>
 
-  <div class="col-span-6 border-b border-l border-r border-black md:col-span-4 md:border-r-0">
+  <div
+    class="col-span-6 border-b border-l border-r border-black md:col-span-4 md:border-r-0 print:col-span-5 print:border-r print:border-t-0">
     <p class="p-2 text-sm whitespace-pre-line">{{.Description}}</p>
+    <div class="hidden print:block print:p-2">
+      <h1 class="text-sm"><b>Nutrition Facts</b></h1>
+      <p class="text-xs">
+        Per 100g: {{.Nutrition.Calories}} calories;
+        total carbohydrates {{.Nutrition.TotalCarbohydrates}}
+        sugars {{.Nutrition.Sugars}}
+        protein {{.Nutrition.Protein}};
+        total fat {{.Nutrition.TotalFat}};
+        saturated fat {{.Nutrition.SaturatedFat}};
+        cholesterol {{.Nutrition.Cholesterol}};
+        sodium {{.Nutrition.Sodium}}
+        fiber {{.Nutrition.Fiber}}.
+      </p>
+    </div>
   </div>
 
   {{with .Nutrition}}
-  <div class="col-span-3 border-b border-l border-r border-black md:col-span-1">
+  <div class="col-span-3 border-b border-l border-r border-black md:col-span-1 print:hidden">
     <div class="inline-block min-w-full overflow-x-auto align-middle">
       <div class="overflow-hidden border-gray-200">
-        <table class="min-w-full text-xs divide-y divide-gray-200">
+        <table class="min-w-full text-xs divide-y divide-gray-200 table-auto">
           <thead class="h-12 font-medium tracking-wider text-white bg-gray-800">
             <tr>
               <th scope="col" class="text-right">
@@ -168,7 +202,7 @@
   {{- end -}}
 
   {{- with .Times -}}
-  <div class="col-span-3 border-b border-r border-black md:col-span-1">
+  <div class="col-span-3 border-b border-r border-black md:col-span-1 print:col-span-1">
     <div class="inline-block min-w-full overflow-x-auto align-middle">
       <div class="overflow-hidden border-gray-200">
         <table class="min-w-full text-xs divide-y divide-gray-200">
@@ -204,7 +238,8 @@
   </div>
   {{- end -}}
 
-  <div class="col-span-6 py-2 border-b border-l border-r border-black md:rounded-bl-lg md:col-span-2 md:border-r-0">
+  <div
+    class="col-span-6 py-2 border-b border-l border-r border-black md:col-span-2 md:border-r-0 print:col-span-2 print:border-r-0">
     <h2 class="pb-2 m-auto text-sm font-bold text-center text-gray-600 underline ">Ingredients</h2>
     <ul class="grid px-6">
       {{$len := len .Instructions}}
@@ -212,7 +247,7 @@
       <li
         class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200 {{if eq $i 0}}rounded-t-lg{{else if eq $i $len}}rounded-b-lg{{end}}"
         onmousedown="highlight(event)">
-        <input type="checkbox" id="ingredient-{{$i}}">
+        <input type="checkbox" id="ingredient-{{$i}}" class="mt-1">
         <span class="pl-2">{{$e}}</span>
       </li>
       {{- end -}}
@@ -220,7 +255,7 @@
   </div>
 
   <div
-    class="col-span-6 py-2 pb-8 border-b border-l border-r border-black rounded-bl-lg rounded-br-lg md:rounded-bl-none md:col-span-4">
+    class="col-span-6 py-2 pb-8 border-b border-l border-r border-black rounded-bl-lg md:rounded-bl-none md:col-span-4 print:rounded-bl-none print:col-span-4">
     <h2 class="pb-2 m-auto text-sm font-bold text-center text-gray-600 underline ">Instructions</h2>
     <ul class="grid px-6">
       {{$len := len .Instructions}}
@@ -228,7 +263,7 @@
       <li
         class="inline-flex min-w-full p-2 text-sm select-none hover:bg-gray-200 {{if eq $i 0}}rounded-t-lg{{else if eq $i $len}}rounded-b-lg{{end}}"
         onmousedown="highlight(event)">
-        <input type="checkbox" id="instruction-{{$i}}">
+        <input type="checkbox" id="instruction-{{$i}}" class="mt-1">
         <span class="pl-2 whitespace-pre-line">{{$e}}</span>
       </li>
       {{- end -}}

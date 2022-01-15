@@ -1,6 +1,6 @@
 .env
 data/
-dist/
+bin/
 recipya
 views/tailwind/node_modules
 static/css/tailwind.css
