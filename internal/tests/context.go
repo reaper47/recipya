@@ -19,7 +19,7 @@ import (
 
 const testDbName = "recipya-test"
 
-// Context ...
+// Context holds a contextual information on a connection.
 type Context struct {
 	roleName string
 	pool     *pgxpool.Pool
@@ -75,7 +75,7 @@ func NewContext() Context {
 	dbOptions.Password = roleName
 	dsn := dbOptions.Dsn()
 	db := driver.ConnectSqlDB(dsn)
-	migration.Up(db)
+	migration.Up(db, true)
 	err = db.Close()
 	if err != nil {
 		dropRole(ctx, roleName, pool, "NewContext")

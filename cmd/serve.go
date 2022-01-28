@@ -16,7 +16,7 @@ import (
 
 var serveCmd = &cobra.Command{
 	Use:   "serve",
-	Short: "Starts the web server",
+	Short: "starts the web server",
 	Long: `"Starts the web server."
 
 The application will be accessible through your favorite 

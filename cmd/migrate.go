@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"log"
 	"os"
 
 	"github.com/reaper47/recipya/internal/config"
@@ -10,14 +11,17 @@ import (
 )
 
 var migrateCmd = &cobra.Command{
-	Use:   "migrate up|down",
-	Short: "Upgrade or downgrade Recipya's database",
-	Long: `Upgrade or downgrade Recipya's database.
+	Use:   "migrate [up|down]",
+	Short: "upgrade or downgrade the database",
+	Long: `Upgrade or downgrade the database.
 
-To upgrade the database to the next version:
+Upgrade to the next version:
 $ ./recipya migrate up
 
-To downgrade the database to the previous version:
+Upgrade to the latest version:
+$ ./recipya migrate up -a
+
+Downgrade to the previous version:
 $ ./recipya migrate down
 `,
 	Args:      cobra.OnlyValidArgs,
@@ -26,6 +30,7 @@ $ ./recipya migrate down
 }
 
 func init() {
+	migrateCmd.Flags().BoolP("all", "a", false, "apply all migrations")
 	rootCmd.AddCommand(migrateCmd)
 }
 
@@ -39,10 +44,15 @@ func migrate(cmd *cobra.Command, args []string) {
 	db := driver.ConnectSqlDB(dbOptions.Dsn())
 	defer db.Close()
 
+	isAll, err := cmd.Flags().GetBool("all")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	switch args[0] {
 	case "up":
-		migration.Up(db)
+		migration.Up(db, isAll)
 	case "down":
-		migration.Down(db)
+		migration.Down(db, isAll)
 	}
 }

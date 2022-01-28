@@ -12,7 +12,10 @@ import (
 )
 
 // Up upgrades the database to the next version.
-func Up(db *sql.DB) {
+//
+// If isAll is true, then all migrations will be applied at once.
+// Otherwise, the next migration will be applied.
+func Up(db *sql.DB, isAll bool) {
 	m := getInstance(db)
 
 	versionPreUp, _, err := m.Version()
@@ -27,7 +30,12 @@ func Up(db *sql.DB) {
 		log.Fatalln("Error running pre upgrade hooks:", err)
 	}
 
-	err = m.Up()
+	if isAll {
+		err = m.Up()
+	} else {
+		err = m.Steps(1)
+	}
+
 	if err != nil {
 		log.Fatalln("Error running migration up:", err)
 	}
@@ -52,7 +60,7 @@ func Up(db *sql.DB) {
 }
 
 // Down downgrades the database to the previous version.
-func Down(db *sql.DB) {
+func Down(db *sql.DB, isAll bool) {
 	m := getInstance(db)
 
 	versionPreDown, _, err := m.Version()
@@ -60,7 +68,12 @@ func Down(db *sql.DB) {
 		log.Fatalln("Error retrieving database version pre-down:", err)
 	}
 
-	err = m.Down()
+	if isAll {
+		err = m.Down()
+	} else {
+		err = m.Steps(-1)
+	}
+
 	if err != nil {
 		log.Fatalln("Error during migration down:", err)
 	}
