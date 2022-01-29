@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/reaper47/recipya/internal/constants"
@@ -15,4 +16,17 @@ func getSession(req *http.Request) models.Session {
 		}
 	}
 	return s
+}
+
+func writeJson(w http.ResponseWriter, message string, code int) {
+	j, err := models.NewErrorJson(http.StatusBadRequest, message)
+	if err != nil {
+		fmt.Fprintf(w, constants.ErrDecodingJSON+err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Add(constants.HeaderContentType, constants.ApplicationJSON)
+	w.WriteHeader(code)
+	w.Write(j)
 }

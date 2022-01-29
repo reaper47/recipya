@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"image"
 	"image/jpeg"
 	_ "image/png"
@@ -53,7 +54,7 @@ func Recipe(w http.ResponseWriter, req *http.Request) {
 }
 
 func handleGetRecipe(w http.ResponseWriter, req *http.Request, id int64, isAuthenticated bool) {
-	r := config.App().Repo.GetRecipe(id)
+	r := config.App().Repo.Recipe(id)
 	if r.ID == 0 {
 		http.Redirect(w, req, "/", http.StatusSeeOther)
 		return
@@ -101,7 +102,7 @@ func EditRecipe(w http.ResponseWriter, req *http.Request) {
 }
 
 func handleGetEditRecipe(w http.ResponseWriter, req *http.Request, id int64) {
-	r := config.App().Repo.GetRecipe(id)
+	r := config.App().Repo.Recipe(id)
 	if r.ID == 0 {
 		http.Redirect(w, req, "/", http.StatusSeeOther)
 		return
@@ -109,7 +110,7 @@ func handleGetEditRecipe(w http.ResponseWriter, req *http.Request, id int64) {
 
 	s := getSession(req)
 	err := templates.Render(w, "recipe-edit.gohtml", templates.Data{
-		Categories: config.App().Repo.GetCategories(),
+		Categories: config.App().Repo.Categories(s.UserID),
 		RecipeData: templates.RecipeData{Recipe: r},
 		HeaderData: templates.HeaderData{
 			AvatarInitials: s.UserInitials,
@@ -141,7 +142,7 @@ func handlePostEditRecipe(w http.ResponseWriter, req *http.Request, id int64) {
 func GetRecipesNewManual(w http.ResponseWriter, req *http.Request) {
 	s := getSession(req)
 	err := templates.Render(w, "recipe-new-manual.gohtml", templates.Data{
-		Categories: config.App().Repo.GetCategories(),
+		Categories: config.App().Repo.Categories(s.UserID),
 		HeaderData: templates.HeaderData{
 			AvatarInitials: s.UserInitials,
 		},
@@ -155,7 +156,7 @@ func GetRecipesNewManual(w http.ResponseWriter, req *http.Request) {
 func PostRecipesNewManual(w http.ResponseWriter, req *http.Request) {
 	r, err := getRecipeFromForm(req)
 	if err != nil {
-		showErrorPage(w, "Could not retrieve the recipe from the form:", err)
+		showErrorPage(w, "Could not retrieve the recipe from the form.", err)
 		return
 	}
 
@@ -292,4 +293,36 @@ func compressImage(f multipart.File) (*image.RGBA, error) {
 	dst := image.NewRGBA(image.Rect(0, 0, x, y))
 	draw.NearestNeighbor.Scale(dst, dst.Rect, img, img.Bounds(), draw.Over, nil)
 	return dst, nil
+}
+
+// Categories handles the /recipes/categories endpoint.
+func Categories(w http.ResponseWriter, req *http.Request) {
+	switch req.Method {
+	case http.MethodPost:
+		handlePostCategories(w, req)
+	}
+}
+
+func handlePostCategories(w http.ResponseWriter, req *http.Request) {
+	j := make(map[string]string)
+	err := json.NewDecoder(req.Body).Decode(&j)
+	if err != nil {
+		writeJson(w, "Could not decode categories JSON.", http.StatusInternalServerError)
+		return
+	}
+
+	c, ok := j["category"]
+	if !ok {
+		writeJson(w, "JSON does not contain the key 'category'.", http.StatusBadRequest)
+		return
+	}
+
+	s := getSession(req)
+	err = config.App().Repo.InsertCategory(c, s.UserID)
+	if err != nil {
+		writeJson(w, "Could not insert the category - "+c+".", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
 }

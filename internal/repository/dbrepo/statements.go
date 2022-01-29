@@ -165,8 +165,11 @@ const getUserStmt = `
 	WHERE username = $1 OR email = $2`
 
 const getCategoriesStmt = `
-	SELECT name 
-	FROM categories`
+	SELECT c.name 
+	FROM user_category uc
+	JOIN categories c ON c.id = uc.category_id 
+	WHERE user_id = $1
+	ORDER BY c.name ASC`
 
 // INSERT
 func insertRecipeStmt(tables []tableData) string {
@@ -200,14 +203,14 @@ func insertRecipeStmt(tables []tableData) string {
 					WHERE name=$7
 				)
 			)
-		),  ins_nutrition AS (
+		), ins_nutrition AS (
 			INSERT INTO nutrition (
 				recipe_id, calories, total_carbohydrates, sugars,
 				protein, total_fat, saturated_fat, cholesterol, sodium, fiber
 			)
 			VALUES ((SELECT id FROM ins_recipe),$8,$9,$10,$11,$12,$13,$14,$15,$16)
 			RETURNING id
-		),  ins_times AS (
+		), ins_times AS (
 			INSERT INTO times (prep, cook)
 			VALUES ($17::interval, $18::interval)
 			ON CONFLICT ON CONSTRAINT times_prep_cook_key DO UPDATE
@@ -237,12 +240,7 @@ func insertRecipeStmt(tables []tableData) string {
 	SELECT id FROM ins_recipe`
 }
 
-func insertIntoNameTableStmt(
-	name string,
-	values []string,
-	offset int,
-	params map[string]string,
-) (string, int) {
+func insertIntoNameTableStmt(name string, values []string, offset int, params map[string]string) (string, int) {
 	if len(values) == 0 {
 		return "", offset
 	}
@@ -308,7 +306,20 @@ func insertIntoAssocTableStmt(td tableData, from string, params map[string]strin
 
 const insertUserStmt = `
 	INSERT INTO users (username, email, hashed_password) 
-	VALUES ($1,$2,$3)`
+	VALUES ($1,$2,$3)
+	RETURNING id`
+
+const insertUserCategoryStmt = `
+	WITH ins_category AS (
+		INSERT INTO categories (name)
+		VALUES ($1)
+		ON CONFLICT ON CONSTRAINT categories_name_key DO UPDATE
+		SET name=NULL
+		WHERE FALSE
+		RETURNING id
+	)
+	INSERT INTO user_category (user_id, category_id)
+	VALUES ($2, (SELECT id FROM ins_category))`
 
 // UPDATE
 func updateRecipeStmt(tables []tableData) string {

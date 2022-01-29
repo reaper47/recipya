@@ -25,17 +25,20 @@ func (m *postgresDBRepo) CreateUser(username, email, password string) (models.Us
 			return u, fmt.Errorf("could not create user: %s", err)
 		}
 
-		_, err = m.Pool.Exec(ctx, insertUserStmt, username, email, hash)
+		var id int64
+		err = m.Pool.QueryRow(ctx, insertUserStmt, username, email, hash).Scan(&id)
 		if err != nil {
 			return u, err
 		}
+
+		u.Populate(id, username, email, string(hash))
 		return u, nil
 	}
 	return u, errors.New("username or email is already taken")
 }
 
-// GetUser gets a user from the database based on the username or email.
-func (m *postgresDBRepo) GetUser(id string) models.User {
+// User gets a user from the database based on the username or email.
+func (m *postgresDBRepo) User(id string) models.User {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 

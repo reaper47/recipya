@@ -29,3 +29,11 @@ func (m User) GetInitials() string {
 	}
 	return strings.ToUpper(initials)
 }
+
+// Populate populates the fields of a User.
+func (m *User) Populate(id int64, username, email, hash string) {
+	m.ID = id
+	m.Username = username
+	m.Email = email
+	m.HashedPassword = hash
+}

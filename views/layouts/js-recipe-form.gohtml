@@ -1,139 +1,170 @@
 {{define "js-recipe-form"}}
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js" async></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"
+  async
+></script>
 <script src="/static/js/html-duration-picker.min.js" async></script>
 <script>
   const loadFile = (event) => {
-    const output = document.getElementById('output')
-    output.src = URL.createObjectURL(event.target.files[0])
-    output.onload = () => URL.revokeObjectURL(output.src)
-    output.classList.remove('hidden')
-  }
+    const output = document.getElementById("output");
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = () => URL.revokeObjectURL(output.src);
+    output.classList.remove("hidden");
+  };
 
   const addCategory = (event) => {
-    const input = event.target.previousElementSibling
+    const input = event.target.previousElementSibling;
     if (!input.value) {
-      return
+      return;
     }
 
-    const category = input.value.toLowerCase()
-    const select = document.getElementById('category')
-    const options = [...select.options].map(o => o.value.toLowerCase())
+    const category = input.value.toLowerCase();
+    const select = document.getElementById("category");
+    const options = [...select.options].map((o) => o.value.toLowerCase());
     if (options.includes(category.toLowerCase())) {
-      input.value = ""
-      return
+      input.value = "";
+      showErrorToast(`Category ${category} exists in the list.`);
+      return;
     }
 
-    const option = document.createElement('option')
-    option.text = option.value = category
-    select.add(option, select.childElementCount)
-    input.value = ""
-    select.value = category
+    fetch(`${document.location.origin}/recipes/categories`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ category }),
+    })
+      .then((res) => {
+        const option = document.createElement("option");
+        option.text = option.value = category;
+        select.add(option, select.childElementCount);
+        input.value = "";
+        select.value = category;
 
-    showSuccessToast("Category has been added")
-  }
+        showSuccessToast("Category has been added");
+      })
+      .catch((err) => {
+        showErrorToast(`Could not add category: ${err}`);
+      });
+  };
 
   const adjustPlaceholder = (ol) => {
     Array.from(ol.children).forEach((li, index) => {
-      const input = li.firstElementChild
-      const name = input.name.split('-')[0]
-      input.placeholder = `${name.charAt(0).toUpperCase() + name.slice(1)} #${index + 1}`
-      input.name = `${name}-${index + 1}`
-    })
-  }
+      const input = li.firstElementChild;
+      const name = input.name.split("-")[0];
+      input.placeholder = `${name.charAt(0).toUpperCase() + name.slice(1)} #${
+        index + 1
+      }`;
+      input.name = `${name}-${index + 1}`;
+    });
+  };
 
   const addEntry = (event) => {
-    let li = event.target.parentNode
+    let li = event.target.parentNode;
     while (li.tagName !== "LI") {
-      li = li.parentNode
+      li = li.parentNode;
     }
 
-    const ol = li.parentElement
+    const ol = li.parentElement;
     for (let i = 0; i < ol.childElementCount; i++) {
-      const input = ol.children[i].firstElementChild
+      const input = ol.children[i].firstElementChild;
       if (input.value === "") {
-        input.focus()
-        return
+        input.focus();
+        return;
       }
     }
 
-    const clone = li.cloneNode(true)
-    const cloneInput = clone.firstElementChild
-    cloneInput.value = ""
+    const clone = li.cloneNode(true);
+    const cloneInput = clone.firstElementChild;
+    cloneInput.value = "";
 
-    const [type, i] = li.firstElementChild.name.split('-')
-    cloneInput.name = `${type}-${parseInt(i) + 1}`
+    const [type, i] = li.firstElementChild.name.split("-");
+    cloneInput.name = `${type}-${parseInt(i) + 1}`;
 
-    ol.appendChild(clone)
-    cloneInput.focus()
-    adjustPlaceholder(ol)
-  }
+    ol.appendChild(clone);
+    cloneInput.focus();
+    adjustPlaceholder(ol);
+  };
 
   const removeEntry = (event) => {
-    let li = event.target
+    let li = event.target;
     while (li.tagName !== "LI") {
-      li = li.parentNode
+      li = li.parentNode;
     }
 
-    let ol = li.parentNode
-    while (ol.tagName !== 'OL') {
-      ol = ol.parentNode
+    let ol = li.parentNode;
+    while (ol.tagName !== "OL") {
+      ol = ol.parentNode;
     }
 
     if (li.parentNode.childElementCount === 1) {
-      let input = Array.from(li.children).find(el => ["INPUT", "TEXTAREA"].includes(el.tagName))
-      input.value = ""
-      return
+      let input = Array.from(li.children).find((el) =>
+        ["INPUT", "TEXTAREA"].includes(el.tagName)
+      );
+      input.value = "";
+      return;
     }
 
-    li.firstElementChild.parentNode.remove()
-    adjustPlaceholder(ol)
-  }
+    li.firstElementChild.parentNode.remove();
+    adjustPlaceholder(ol);
+  };
 
-  document.addEventListener('keydown', (event) => {
-    const { name } = event.target
-    if (name.startsWith('ingredient') && event.key === 'Enter') {
-      event.preventDefault()
-      addEntry(event)
-    } else if (name.startsWith('instruction') && event.ctrlKey && event.key === 'Enter') {
-      addEntry(event)
+  document.addEventListener("keydown", (event) => {
+    const { name } = event.target;
+    if (name.startsWith("ingredient") && event.key === "Enter") {
+      event.preventDefault();
+      addEntry(event);
+    } else if (
+      name.startsWith("instruction") &&
+      event.ctrlKey &&
+      event.key === "Enter"
+    ) {
+      addEntry(event);
     }
-  })
+  });
 
-  const form = document.getElementById('form__new-recipe')
-  let isFormDirty = false
-  form.addEventListener('change', () => { isFormDirty = true })
-  form.addEventListener('submit', () => { isFormDirty = false })
-  window.addEventListener('beforeunload', (event) => {
+  const form = document.getElementById("form__new-recipe");
+  let isFormDirty = false;
+  form.addEventListener("change", () => {
+    isFormDirty = true;
+  });
+  form.addEventListener("submit", () => {
+    isFormDirty = false;
+  });
+  window.addEventListener("beforeunload", (event) => {
     if (isFormDirty) {
-      event.returnValue = 'Are you sure you want to leave to unfinished changes?'
+      event.returnValue =
+        "Are you sure you want to leave to unfinished changes?";
     }
-  })
+  });
 
   const makeListDraggable = (target) => {
     Sortable.create(document.getElementById(target), {
-      handle: '.list__move-item',
+      handle: ".list__move-item",
       forceFallback: true,
       onEnd: function ({ target }) {
-        const pluralName = target.id.split('__')[0]
-        const singularName = pluralName.substr(0, pluralName.length - 1)
+        const pluralName = target.id.split("__")[0];
+        const singularName = pluralName.substr(0, pluralName.length - 1);
 
         Array.from(target.children).forEach((li, index) => {
-          const input = li.firstElementChild
-          input.name = `${singularName}-${index + 1}`
-          input.placeholder = `${singularName[0].toUpperCase() + singularName.slice(1)} #${index + 1}`
-        })
-      }
-    })
-  }
+          const input = li.firstElementChild;
+          input.name = `${singularName}-${index + 1}`;
+          input.placeholder = `${
+            singularName[0].toUpperCase() + singularName.slice(1)
+          } #${index + 1}`;
+        });
+      },
+    });
+  };
 
   let waitForSortable = window.setInterval(() => {
     if (!window.Sortable) {
-      return
+      return;
     }
 
-    window.clearInterval(waitForSortable)
-    makeListDraggable('ingredients__list')
-    makeListDraggable('instructions__list')
-  })
+    window.clearInterval(waitForSortable);
+    makeListDraggable("ingredients__list");
+    makeListDraggable("instructions__list");
+  });
 </script>
-{{end}}
+{{ end }}

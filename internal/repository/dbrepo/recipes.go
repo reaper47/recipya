@@ -75,8 +75,8 @@ func (m *nameParams) insertStmts(tables []tableData, isInsRecipeDefined bool) st
 
 }
 
-// GetRecipes gets all of the recipes in the database.
-func (m *postgresDBRepo) GetRecipes(userID int64, page int) ([]models.Recipe, error) {
+// Recipes fetches all of the recipes from the database.
+func (m *postgresDBRepo) Recipes(userID int64, page int) ([]models.Recipe, error) {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
@@ -166,10 +166,10 @@ func (m *postgresDBRepo) GetRecipes(userID int64, page int) ([]models.Recipe, er
 	return xr, nil
 }
 
-// GetRecipe fetches a recipe from the database.
+// Recipe fetches a recipe from the database.
 //
 // The returned recipe will be empty if the query returns no row.
-func (m *postgresDBRepo) GetRecipe(id int64) models.Recipe {
+func (m *postgresDBRepo) Recipe(id int64) models.Recipe {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
@@ -215,7 +215,8 @@ func (m *postgresDBRepo) GetRecipe(id int64) models.Recipe {
 	return r
 }
 
-func (m *postgresDBRepo) GetRecipesCount() (int, error) {
+// RecipesCount returns the number of recipes in the database.
+func (m *postgresDBRepo) RecipesCount() (int, error) {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
@@ -229,13 +230,13 @@ func (m *postgresDBRepo) GetRecipesCount() (int, error) {
 	return count, nil
 }
 
-// GetCategories gets all categories from the database.
-func (m *postgresDBRepo) GetCategories() []string {
+// Categories gets all categories for the given user from the database.
+func (m *postgresDBRepo) Categories(userID int64) []string {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
 	var categories []string
-	rows, err := m.Pool.Query(ctx, getCategoriesStmt)
+	rows, err := m.Pool.Query(ctx, getCategoriesStmt, userID)
 	if err == nil {
 		defer rows.Close()
 		for rows.Next() {
@@ -248,6 +249,15 @@ func (m *postgresDBRepo) GetCategories() []string {
 		}
 	}
 	return categories
+}
+
+// InsertCategory inserts a category for a user in the database.
+func (m *postgresDBRepo) InsertCategory(name string, userID int64) error {
+	ctx, cancel := contexts.Timeout(3 * time.Second)
+	defer cancel()
+
+	_, err := m.Pool.Exec(ctx, insertUserCategoryStmt, name, userID)
+	return err
 }
 
 // InsertNewRecipe inserts a new recipe into the database.

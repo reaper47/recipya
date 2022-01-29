@@ -35,14 +35,14 @@ func handleIndexUnauthenticated(w http.ResponseWriter, req *http.Request) {
 
 // Recipes handles the GET /recipes page.
 func Recipes(w http.ResponseWriter, req *http.Request) {
-	recipesCount, err := config.App().Repo.GetRecipesCount()
+	count, err := config.App().Repo.RecipesCount()
 	if err != nil {
 		showErrorPage(w, "Could not retrieve total number of recipes", err)
 		return
 	}
 	pg := templates.Pagination{
-		NumResults: recipesCount,
-		NumPages:   recipesCount / 12,
+		NumResults: count,
+		NumPages:   count / 12,
 	}
 
 	qpage := req.URL.Query().Get("page")
@@ -55,7 +55,7 @@ func Recipes(w http.ResponseWriter, req *http.Request) {
 	}
 
 	s := getSession(req)
-	recipes, err := config.App().Repo.GetRecipes(s.UserID, page)
+	recipes, err := config.App().Repo.Recipes(s.UserID, page)
 	if err != nil {
 		showErrorPage(w, "Cannot retrieve all recipes.", err)
 		return

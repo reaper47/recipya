@@ -27,7 +27,7 @@ func Register(w http.ResponseWriter, req *http.Request) {
 
 func handleGetRegister(w http.ResponseWriter, req *http.Request) {
 	err := templates.Render(w, "register.gohtml", templates.Data{
-		HeaderData:  templates.HeaderData{
+		HeaderData: templates.HeaderData{
 			Hide: true,
 		},
 		HideSidebar: true,
@@ -129,7 +129,7 @@ func handlePostSignIn(w http.ResponseWriter, req *http.Request) {
 		errors.Password = "Password cannot be empty."
 	}
 
-	u := config.App().Repo.GetUser(id)
+	u := config.App().Repo.User(id)
 	if !u.IsPasswordOk(password) {
 		errors.Password = "Credentials are incorrect."
 	}
