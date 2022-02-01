@@ -1,9 +1,11 @@
 package models
 
 import (
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/utils/duration"
 )
 
 // Recipe holds information on a recipe.
@@ -66,6 +68,31 @@ type Times struct {
 	Prep  time.Duration
 	Cook  time.Duration
 	Total time.Duration
+}
+
+// NewTimes creates a Times struct from the Schema Duration fields for prep and cook time.
+func NewTimes(prep, cook string) (Times, error) {
+	p, err := parseDuration(prep)
+	if err != nil {
+		return Times{}, err
+	}
+
+	c, err := parseDuration(cook)
+	if err != nil {
+		return Times{}, err
+	}
+
+	return Times{Prep: p, Cook: c}, nil
+}
+
+func parseDuration(d string) (time.Duration, error) {
+	parts := strings.SplitN(d, ":", 3)
+	if len(parts) == 3 {
+		return time.ParseDuration(parts[0] + "h" + parts[1] + "m" + parts[2] + "s")
+	}
+
+	p, err := duration.Parse(d)
+	return p.ToTimeDuration(), err
 }
 
 // Nutrition holds nutrition facts.

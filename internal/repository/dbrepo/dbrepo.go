@@ -17,7 +17,6 @@ func NewPostgresRepo(dsn string) repository.Repository {
 	}
 }
 
-// Close closes the PostgreSQL connection pool.
 func (m *postgresDBRepo) Close() {
 	m.Pool.Close()
 }

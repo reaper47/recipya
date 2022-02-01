@@ -9,18 +9,18 @@ CREATE EXTENSION "uuid-ossp";
 --
 CREATE TABLE users (
 	id SERIAL PRIMARY KEY,
-	username VARCHAR(36) NOT NULL UNIQUE CHECK (LOWER(username) = username),
-	email VARCHAR(254) NOT NULL UNIQUE CHECK (LOWER(email) = email),
-	hashed_password VARCHAR(254) NOT NULL,
+	username TEXT NOT NULL UNIQUE CHECK (LOWER(username) = username),
+	email TEXT NOT NULL UNIQUE CHECK (LOWER(email) = email),
+	hashed_password TEXT NOT NULL,
 	created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE recipes (
 	id SERIAL PRIMARY KEY,
-	name VARCHAR(80) NOT NULL,
+	name TEXT NOT NULL,
 	description TEXT,
-	url VARCHAR(256),
+	url TEXT,
 	image UUID DEFAULT gen_random_uuid(),
 	yield SMALLINT,
 	created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -30,41 +30,41 @@ CREATE TABLE recipes (
 -- https://recipeland.com/recipes/categories/browse
 CREATE TABLE categories (
 	id SERIAL PRIMARY KEY,
-	name VARCHAR(24) UNIQUE NOT NULL CHECK (LOWER(name) = name)
+	name TEXT UNIQUE NOT NULL
 );
 
 CREATE TABLE ingredients (
 	id SERIAL PRIMARY KEY,
-	name VARCHAR(24) UNIQUE NOT NULL CHECK (LOWER(name) = name)
+	name TEXT UNIQUE NOT NULL
 );
 
 CREATE TABLE instructions (
 	id SERIAL PRIMARY KEY,
-	name TEXT UNIQUE NOT NULL CHECK (LOWER(name) = name)
+	name TEXT UNIQUE NOT NULL
 );
 
 CREATE TABLE tools (
 	id SERIAL PRIMARY KEY,
-	name VARCHAR(24) UNIQUE NOT NULL CHECK (LOWER(name) = name)
+	name TEXT UNIQUE NOT NULL
 );
 
 CREATE TABLE keywords (
 	id SERIAL PRIMARY KEY,
-	name VARCHAR(24) UNIQUE NOT NULL CHECK (LOWER(name) = name)
+	name TEXT UNIQUE NOT NULL
 );
 
 CREATE TABLE nutrition (
 	id SERIAL PRIMARY KEY,
 	recipe_id INTEGER REFERENCES recipes(id) ON DELETE CASCADE,
-	calories VARCHAR(10),
-	total_carbohydrates VARCHAR(5),
-	sugars VARCHAR(7),
-	protein VARCHAR(5),
-	total_fat VARCHAR(5),
-	saturated_fat VARCHAR(5),
-	cholesterol VARCHAR(7),
-	sodium VARCHAR(7),
-	fiber VARCHAR(5)
+	calories TEXT,
+	total_carbohydrates TEXT,
+	sugars TEXT,
+	protein TEXT,
+	total_fat TEXT,
+	saturated_fat TEXT,
+	cholesterol TEXT,
+	sodium TEXT,
+	fiber TEXT
 );
 
 CREATE TABLE times (

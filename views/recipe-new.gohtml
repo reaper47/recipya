@@ -1,17 +1,18 @@
-{{define "title"}}Add Recipe{{end}}
+{{define "title"}}Add Recipe{{ end }}
 
 {{define "content"}}
-<div class="grid w-full h-full grid-rows-1 gap-8 px-4 pb-4 text-gray-900 xl:m-auto xl:max-w-6xl md:grid-flow-col">
-  <div class="shadow-lg rounded-xl h-96 ">
+<div
+  class="grid w-full h-full grid-cols-1 gap-8 px-4 pb-4 text-gray-900 md:grid-cols-2 md:grid-rows-2 xl:m-auto xl:max-w-6xl md:grid-flow-col">
+  <div class="shadow-lg rounded-xl h-96">
     <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes-new/manual.jpg"
-      alt="Writing on a piece of paper with a traditional pen.">
-    <div class="h-40 px-6 py-4 ">
+      alt="Writing on a piece of paper with a traditional pen." />
+    <div class="h-40 px-6 py-4">
       <div class="mb-2 text-xl font-bold">Manual</div>
       <p class="text-base text-gray-700">
         Add a new recipe by filling out its content manually.
       </p>
     </div>
-    <hr>
+    <hr />
     <div class="px-6 pt-4 pb-2">
       <a class="flex justify-center duration-300 border-2 border-gray-800 rounded-lg text-gray-00 hover:bg-gray-800 hover:text-white center"
         href="/recipes/new/manual">
@@ -20,35 +21,36 @@
     </div>
   </div>
 
-  <div class="shadow-lg rounded-xl h-96 ">
+  <div class="shadow-lg rounded-xl h-96">
     <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes-new/import.jpg"
-      alt="Writing on a piece of paper with a traditional pen.">
-    <div class="h-40 px-6 py-4 ">
-      <div class="mb-2 text-xl font-bold">Import</div>
+      alt="Writing on a piece of paper with a traditional pen." />
+    <div class="h-40 px-6 py-4">
+      <div class="mb-2 text-xl font-bold">Website</div>
       <p class="text-base text-gray-700">
-        Import a recipe from one of the supported websites.
+        Fetch a recipe from one of the supported websites.
       </p>
     </div>
-    <hr>
+    <hr />
     <div class="px-6 pt-4 pb-2">
-      <button id="modal__import-open-button"
+      <button id="modal__fetch-open-button"
         class="flex justify-center w-full duration-300 border-2 border-gray-800 rounded-lg text-gray-00 hover:bg-gray-800 hover:text-white center"
         onclick="openModal(event)">
-        Import
+        Fetch
       </button>
     </div>
   </div>
 
-  <div class="shadow-lg rounded-xl h-96 ">
+  <div class="shadow-lg rounded-xl h-96">
     <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes-new/camera.jpg"
-      alt="Writing on a piece of paper with a traditional pen.">
-    <div class="h-40 px-6 py-4 ">
+      alt="Writing on a piece of paper with a traditional pen." />
+    <div class="h-40 px-6 py-4">
       <div class="mb-2 text-xl font-bold">Scan</div>
       <p class="text-base text-gray-700">
-        Upload an image of the recipe you want to add or take a picture using your device's camera.
+        Upload an image of the recipe you want to add or take a picture using
+        your device's camera.
       </p>
     </div>
-    <hr>
+    <hr />
     <div class="px-6 pt-4 pb-2">
       <button id="modal__upload-open-button"
         class="flex justify-center w-full duration-300 border-2 border-gray-800 rounded-lg text-gray-00 hover:bg-gray-800 hover:text-white center"
@@ -57,5 +59,28 @@
       </button>
     </div>
   </div>
+
+  <div class="shadow-lg rounded-xl h-96">
+    <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes-new/camera.jpg"
+      alt="Writing on a piece of paper with a traditional pen." />
+    <div class="h-40 px-6 py-4">
+      <div class="mb-2 text-xl font-bold">Import</div>
+      <p class="text-base text-gray-700">
+        Import recipes in the that adhere to the
+        <a href="https://schema.org/Recipe" target="_blank"
+          class="text-blue-600 underline hover:text-blue-800 visited:text-purple-600">
+          recipe schema</a> standard,
+        i.e. your Nextcloud recipes.
+      </p>
+    </div>
+    <hr />
+    <div class="px-6 pt-4 pb-2">
+      <button id="modal__import-open-button"
+        class="flex justify-center w-full duration-300 border-2 border-gray-800 rounded-lg text-gray-00 hover:bg-gray-800 hover:text-white center"
+        onclick="openModal(event)">
+        Import
+      </button>
+    </div>
+  </div>
 </div>
-{{end}}
+{{ end }}

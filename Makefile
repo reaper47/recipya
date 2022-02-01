@@ -21,6 +21,9 @@ watch-css:
 watch-js:
 	cd views/tailwind && pnpm run watch
 
+test:
+	go test ./...
+
 build: build-static build-go
 
 build-deploy: build-static build-go-deploy

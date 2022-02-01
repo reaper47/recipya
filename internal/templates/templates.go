@@ -42,9 +42,9 @@ func Load() {
 func Render(w http.ResponseWriter, name string, data interface{}) error {
 	tmpl, ok := templates[name]
 	if !ok {
-		err := fmt.Sprintf("The template %s does not exist.", name)
-		http.Error(w, err, http.StatusInternalServerError)
-		return fmt.Errorf(err)
+		err := fmt.Errorf("the template %s does not exist", name)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return err
 	}
 
 	buf := bufpool.Get()

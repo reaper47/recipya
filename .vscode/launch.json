@@ -10,30 +10,9 @@
             "request": "launch",
             "mode": "auto",
             "program": "${fileDirname}",
-            //"args": ["search", "garlic,avocado", "-m", "1", "-n", "3"],
             "args": [
                 "serve"
-            ],
-            "dlvLoadConfig": {
-                "followPointers": true,
-                "maxVariableRecurse": 1,
-                "maxStringLen": 2000,
-                "maxArrayValues": 64,
-                "maxStructFields": -1
-            }
-        },
-        {
-            "name": "Test Current File",
-            "type": "go",
-            "request": "launch",
-            "mode": "test",
-            "remotePath": "",
-            "port": 2345,
-            "host": "127.0.0.1",
-            "program": "${file}",
-            "env": {},
-            "args": [],
-            "showLog": true
+            ]
         }
     ]
 }

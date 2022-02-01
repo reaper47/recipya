@@ -11,7 +11,6 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 )
 
-// CreateUsers stores a new user in the database.
 func (m *postgresDBRepo) CreateUser(username, email, password string) (models.User, error) {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
@@ -37,7 +36,6 @@ func (m *postgresDBRepo) CreateUser(username, email, password string) (models.Us
 	return u, errors.New("username or email is already taken")
 }
 
-// User gets a user from the database based on the username or email.
 func (m *postgresDBRepo) User(id string) models.User {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()

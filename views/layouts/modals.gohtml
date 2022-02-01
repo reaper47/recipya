@@ -56,8 +56,8 @@
   </footer>
 </section>
 
-<section id="modal__import" class="hidden">
-  <h3 class="text-xl text-center underline">Import from a Website</h3>
+<section id="modal__fetch" class="hidden">
+  <h3 class="text-xl text-center underline">Fetch from a Website</h3>
   <form action="/recipes/new/website" method="post" class="mt-4">
     <div class="grid mb-5">
       <label for="import__modal-url" class="text-sm font-bold text-gray-600">URL</label>
@@ -78,6 +78,23 @@
     <div class="grid mb-5">
       <label for="upload__modal-file" class="text-sm font-bold text-gray-600">Choose an image to upload</label>
       <input id="upload__modal-file" type="file" name="file" required accept="image/*"
+        class="p-2 border border-gray-300 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-purple-600">
+    </div>
+    <button type="submit"
+      class="w-full p-2 font-semibold text-white duration-300 bg-blue-500 border-2 rounded-lg text-gray-00 hover:bg-blue-800">
+      Submit
+    </button>
+  </form>
+</section>
+
+<section id="modal__import" class="hidden">
+  <h3 class="text-xl text-center underline decoration-1">Import Recipes</h3>
+  <form action="/recipes/import" method="post" enctype="multipart/form-data" class="mt-4">
+    <div class="grid mb-5">
+      <label for="import__modal-file" class="text-sm font-bold text-gray-600">
+        Choose files in the .json or .zip format.
+      </label>
+      <input id="import__modal-file" type="file" name="files" accept=".json,.zip" multiple
         class="p-2 border border-gray-300 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-purple-600">
     </div>
     <button type="submit"

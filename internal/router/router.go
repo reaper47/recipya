@@ -38,6 +38,7 @@ func New() *mux.Router {
 	recipes.HandleFunc("/new/manual", amw.Middleware(handlers.GetRecipesNewManual)).Methods(GET)
 	recipes.HandleFunc("/new/manual", amw.Middleware(handlers.PostRecipesNewManual)).Methods(POST)
 	recipes.HandleFunc("/categories", amw.Middleware(handlers.Categories)).Methods(POST)
+	recipes.HandleFunc("/import", amw.Middleware(handlers.ImportRecipes)).Methods(POST)
 
 	return r
 }

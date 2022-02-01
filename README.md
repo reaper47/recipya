@@ -62,7 +62,7 @@ $ sudo nano /etc/caddy/Caddyfile
 domain {
 	encode zstd gzip
 
-  header /static/* Cache-Control "public, max-age=2678400, must-revalidate"
+	header /static/* Cache-Control "public, max-age=2678400, must-revalidate"
 	
 	log {
 		output file /var/www/path/to/recipya/logs/caddy-access.log
@@ -98,7 +98,7 @@ $ sudo supervisorctl
 To run tests, run the following command:
 
 ```bash
-$ go test ./...
+$ make test
 ```
 
 # Feedback

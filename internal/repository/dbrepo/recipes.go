@@ -75,7 +75,6 @@ func (m *nameParams) insertStmts(tables []tableData, isInsRecipeDefined bool) st
 
 }
 
-// Recipes fetches all of the recipes from the database.
 func (m *postgresDBRepo) Recipes(userID int64, page int) ([]models.Recipe, error) {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
@@ -166,9 +165,6 @@ func (m *postgresDBRepo) Recipes(userID int64, page int) ([]models.Recipe, error
 	return xr, nil
 }
 
-// Recipe fetches a recipe from the database.
-//
-// The returned recipe will be empty if the query returns no row.
 func (m *postgresDBRepo) Recipe(id int64) models.Recipe {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
@@ -215,7 +211,6 @@ func (m *postgresDBRepo) Recipe(id int64) models.Recipe {
 	return r
 }
 
-// RecipesCount returns the number of recipes in the database.
 func (m *postgresDBRepo) RecipesCount() (int, error) {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
@@ -230,7 +225,6 @@ func (m *postgresDBRepo) RecipesCount() (int, error) {
 	return count, nil
 }
 
-// Categories gets all categories for the given user from the database.
 func (m *postgresDBRepo) Categories(userID int64) []string {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
@@ -251,7 +245,6 @@ func (m *postgresDBRepo) Categories(userID int64) []string {
 	return categories
 }
 
-// InsertCategory inserts a category for a user in the database.
 func (m *postgresDBRepo) InsertCategory(name string, userID int64) error {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
@@ -260,10 +253,6 @@ func (m *postgresDBRepo) InsertCategory(name string, userID int64) error {
 	return err
 }
 
-// InsertNewRecipe inserts a new recipe into the database.
-//
-// The CreatedAt and UpdatedAt timestamps are not inserted
-// because the database will take care it.
 func (m *postgresDBRepo) InsertNewRecipe(r models.Recipe, userID int64) (int64, error) {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
@@ -279,13 +268,11 @@ func (m *postgresDBRepo) InsertNewRecipe(r models.Recipe, userID int64) (int64, 
 	args = append(args, r.ToArgs(false)...)
 
 	var recipeID int64
-	err = tx.QueryRow(ctx, insertRecipeStmt(tables), args...).Scan(&recipeID)
-	if err != nil {
+	if err = tx.QueryRow(ctx, insertRecipeStmt(tables), args...).Scan(&recipeID); err != nil {
 		return -1, err
 	}
 
-	err = tx.Commit(ctx)
-	if err != nil {
+	if err = tx.Commit(ctx); err != nil {
 		return -1, err
 	}
 
@@ -298,7 +285,6 @@ func (m *postgresDBRepo) InsertNewRecipe(r models.Recipe, userID int64) (int64, 
 	return recipeID, nil
 }
 
-// UpdateRecipes update the recipe in the database.
 func (m *postgresDBRepo) UpdateRecipe(r models.Recipe) error {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
@@ -339,7 +325,6 @@ func getTables(r models.Recipe) []tableData {
 	}
 }
 
-// DeleteRecipe deletes the recipe with the passed id from the database.
 func (m *postgresDBRepo) DeleteRecipe(id int64) error {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()

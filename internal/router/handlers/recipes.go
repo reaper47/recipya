@@ -1,18 +1,22 @@
 package handlers
 
 import (
+	"archive/zip"
+	"bytes"
 	"encoding/json"
 	"image"
 	"image/jpeg"
 	_ "image/png"
 	"io"
+	"io/ioutil"
 	"log"
 	"mime/multipart"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
-	"time"
+	"sync"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
@@ -25,10 +29,9 @@ import (
 
 // RecipesAdd handles the GET /recipes/new URI.
 func RecipesAdd(w http.ResponseWriter, req *http.Request) {
-	s := getSession(req)
 	err := templates.Render(w, "recipe-new.gohtml", templates.Data{
 		HeaderData: templates.HeaderData{
-			AvatarInitials: s.UserInitials,
+			AvatarInitials: getSession(req).UserInitials,
 		},
 	})
 	if err != nil {
@@ -130,8 +133,7 @@ func handlePostEditRecipe(w http.ResponseWriter, req *http.Request, id int64) {
 	}
 	r.ID = id
 
-	err = config.App().Repo.UpdateRecipe(r)
-	if err != nil {
+	if err = config.App().Repo.UpdateRecipe(r); err != nil {
 		showErrorPage(w, "An error occured when updating the recipe:", err)
 		return
 	}
@@ -160,8 +162,7 @@ func PostRecipesNewManual(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	s := getSession(req)
-	id, err := config.App().Repo.InsertNewRecipe(r, s.UserID)
+	id, err := config.App().Repo.InsertNewRecipe(r, getSession(req).UserID)
 	if err != nil {
 		showErrorPage(w, "An error occured when inserting the recipe:", err)
 		return
@@ -175,12 +176,7 @@ func getRecipeFromForm(req *http.Request) (models.Recipe, error) {
 		return models.Recipe{}, err
 	}
 
-	prepTime, err := timeToDuration(req, "time-preparation")
-	if err != nil {
-		return models.Recipe{}, err
-	}
-
-	cookTime, err := timeToDuration(req, "time-cooking")
+	times, err := models.NewTimes(req.FormValue("time-preparation"), req.FormValue("time-cooking"))
 	if err != nil {
 		return models.Recipe{}, err
 	}
@@ -196,16 +192,13 @@ func getRecipeFromForm(req *http.Request) (models.Recipe, error) {
 	}
 
 	return models.Recipe{
-		Name:        req.FormValue("title"),
-		Description: req.FormValue("description"),
-		Image:       imageUUID,
-		Url:         req.FormValue("source"),
-		Yield:       int16(yield),
-		Category:    strings.ToLower(req.FormValue("category")),
-		Times: models.Times{
-			Prep: prepTime,
-			Cook: cookTime,
-		},
+		Name:         req.FormValue("title"),
+		Description:  req.FormValue("description"),
+		Image:        imageUUID,
+		Url:          req.FormValue("source"),
+		Yield:        int16(yield),
+		Category:     strings.ToLower(req.FormValue("category")),
+		Times:        times,
 		Ingredients:  getFormItems(req, "ingredient"),
 		Instructions: getFormItems(req, "instruction"),
 		Nutrition: models.Nutrition{
@@ -222,11 +215,6 @@ func getRecipeFromForm(req *http.Request) (models.Recipe, error) {
 	}, nil
 }
 
-func timeToDuration(req *http.Request, field string) (time.Duration, error) {
-	t := strings.SplitN(req.FormValue(field), ":", 3)
-	return time.ParseDuration(t[0] + "h" + t[1] + "m" + t[2] + "s")
-}
-
 func getFormItems(req *http.Request, field string) []string {
 	itemMap := make(map[string]bool)
 
@@ -238,8 +226,7 @@ func getFormItems(req *http.Request, field string) []string {
 			break
 		}
 
-		_, found := itemMap[item]
-		if !found {
+		if _, found := itemMap[item]; !found {
 			itemMap[item] = true
 			items = append(items, item)
 		}
@@ -305,8 +292,7 @@ func Categories(w http.ResponseWriter, req *http.Request) {
 
 func handlePostCategories(w http.ResponseWriter, req *http.Request) {
 	j := make(map[string]string)
-	err := json.NewDecoder(req.Body).Decode(&j)
-	if err != nil {
+	if err := json.NewDecoder(req.Body).Decode(&j); err != nil {
 		writeJson(w, "Could not decode categories JSON.", http.StatusInternalServerError)
 		return
 	}
@@ -318,11 +304,129 @@ func handlePostCategories(w http.ResponseWriter, req *http.Request) {
 	}
 
 	s := getSession(req)
-	err = config.App().Repo.InsertCategory(c, s.UserID)
-	if err != nil {
+	if err := config.App().Repo.InsertCategory(c, s.UserID); err != nil {
 		writeJson(w, "Could not insert the category - "+c+".", http.StatusInternalServerError)
 		return
 	}
 
 	w.WriteHeader(http.StatusNoContent)
+}
+
+// ImportRecipes handles the POST /recipes/import endpoint.
+func ImportRecipes(w http.ResponseWriter, req *http.Request) {
+	if err := req.ParseMultipartForm(120 << 20); err != nil {
+		showErrorPage(w, "Could not parse the uploaded files.", err)
+		return
+	}
+
+	files, filesOk := req.MultipartForm.File["files"]
+	if !filesOk {
+		showErrorPage(w, "Could not retrieve the files or the directory from the form.", nil)
+		return
+	}
+
+	userID := getSession(req).UserID
+	var wg sync.WaitGroup
+	for i, file := range files {
+		wg.Add(1)
+
+		f := file
+		i := i
+
+		go func() {
+			defer wg.Done()
+			importRecipe(f, i, userID)
+		}()
+	}
+	wg.Wait()
+
+	http.Redirect(w, req, "/recipes", http.StatusSeeOther)
+}
+
+func importRecipe(file *multipart.FileHeader, fnumber int, userID int64) {
+	switch file.Header.Get("Content-Type") {
+	case "application/json":
+		processJSON(file, userID)
+	case "application/zip":
+	case "application/x-zip":
+	case "application/x-zip-compressed":
+		processZip(file, userID)
+	default:
+		return
+	}
+}
+
+func processZip(file *multipart.FileHeader, userID int64) {
+	f, err := file.Open()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	defer f.Close()
+
+	buf := new(bytes.Buffer)
+	fsize, err := io.Copy(buf, f)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	z, err := zip.NewReader(bytes.NewReader(buf.Bytes()), fsize)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	for _, file := range z.File {
+		if filepath.Ext(file.Name) == ".json" {
+			f, err := file.Open()
+			if err != nil {
+				log.Println(err)
+				f.Close()
+				continue
+			}
+
+			if err := extractRecipe(f, userID); err != nil {
+				log.Println(err)
+			}
+			f.Close()
+		}
+	}
+}
+
+func processJSON(file *multipart.FileHeader, userID int64) {
+	f, err := file.Open()
+	if err != nil {
+		log.Printf("error opening file %s: '%s'\n", file.Filename, err)
+		return
+	}
+	defer f.Close()
+
+	if err := extractRecipe(f, userID); err != nil {
+		log.Println("could not extract recipe - ", err)
+		return
+	}
+}
+
+func extractRecipe(rd io.Reader, userID int64) error {
+	buf, err := ioutil.ReadAll(rd)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	var rs models.RecipeSchema
+	if err := json.Unmarshal(buf, &rs); err != nil {
+		log.Println("unmarshal err - ", err)
+		return err
+	}
+
+	r, err := rs.ToRecipe()
+	if err != nil {
+		log.Println("ToRecipe err - ", err)
+		return err
+	}
+
+	_, err = config.App().Repo.InsertNewRecipe(r, userID)
+	return err
 }
