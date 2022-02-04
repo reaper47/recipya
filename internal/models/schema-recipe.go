@@ -101,7 +101,8 @@ type instructions struct {
 // UnmarshalJSON unmarshals the instructions according to the schema (https://schema.org/recipeInstructions).
 func (m *instructions) UnmarshalJSON(data []byte) error {
 	var v interface{}
-	if err := json.Unmarshal(data, &v); err != nil {
+	err := json.Unmarshal(data, &v)
+	if err != nil {
 		return err
 	}
 
@@ -129,7 +130,8 @@ type yield struct {
 // UnmarshalJSON unmarshals the yield according to the schema (https://schema.org/recipeYield).
 func (m *yield) UnmarshalJSON(data []byte) error {
 	var v interface{}
-	if err := json.Unmarshal(data, &v); err != nil {
+	err := json.Unmarshal(data, &v)
+	if err != nil {
 		return err
 	}
 
@@ -182,7 +184,8 @@ func (m NutritionSchema) toNutrition() (Nutrition, error) {
 // UnmarshalJSON unmarshals the nutrition according to the schema
 func (m *NutritionSchema) UnmarshalJSON(data []byte) error {
 	var v interface{}
-	if err := json.Unmarshal(data, &v); err != nil {
+	err := json.Unmarshal(data, &v)
+	if err != nil {
 		return err
 	}
 
@@ -248,7 +251,8 @@ type tools struct {
 // UnmarshalJSON unmarshals the tools according to the schema (https://schema.org/tool).
 func (m *tools) UnmarshalJSON(data []byte) error {
 	var v interface{}
-	if err := json.Unmarshal(data, &v); err != nil {
+	err := json.Unmarshal(data, &v)
+	if err != nil {
 		return err
 	}
 

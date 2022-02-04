@@ -292,7 +292,8 @@ func Categories(w http.ResponseWriter, req *http.Request) {
 
 func handlePostCategories(w http.ResponseWriter, req *http.Request) {
 	j := make(map[string]string)
-	if err := json.NewDecoder(req.Body).Decode(&j); err != nil {
+	err := json.NewDecoder(req.Body).Decode(&j)
+	if err != nil {
 		writeJson(w, "Could not decode categories JSON.", http.StatusInternalServerError)
 		return
 	}
@@ -304,7 +305,8 @@ func handlePostCategories(w http.ResponseWriter, req *http.Request) {
 	}
 
 	s := getSession(req)
-	if err := config.App().Repo.InsertCategory(c, s.UserID); err != nil {
+	err = config.App().Repo.InsertCategory(c, s.UserID)
+	if err != nil {
 		writeJson(w, "Could not insert the category - "+c+".", http.StatusInternalServerError)
 		return
 	}
@@ -314,7 +316,8 @@ func handlePostCategories(w http.ResponseWriter, req *http.Request) {
 
 // ImportRecipes handles the POST /recipes/import endpoint.
 func ImportRecipes(w http.ResponseWriter, req *http.Request) {
-	if err := req.ParseMultipartForm(120 << 20); err != nil {
+	err := req.ParseMultipartForm(120 << 20)
+	if err != nil {
 		showErrorPage(w, "Could not parse the uploaded files.", err)
 		return
 	}
@@ -386,7 +389,8 @@ func processZip(file *multipart.FileHeader, userID int64) {
 				continue
 			}
 
-			if err := extractRecipe(f, userID); err != nil {
+			err = extractRecipe(f, userID)
+			if err != nil {
 				log.Println(err)
 			}
 			f.Close()
@@ -402,8 +406,9 @@ func processJSON(file *multipart.FileHeader, userID int64) {
 	}
 	defer f.Close()
 
-	if err := extractRecipe(f, userID); err != nil {
-		log.Println("could not extract recipe - ", err)
+	err = extractRecipe(f, userID)
+	if err != nil {
+		log.Printf("could not extract %s - %s", file.Filename, err)
 		return
 	}
 }
@@ -416,8 +421,9 @@ func extractRecipe(rd io.Reader, userID int64) error {
 	}
 
 	var rs models.RecipeSchema
-	if err := json.Unmarshal(buf, &rs); err != nil {
-		log.Println("unmarshal err - ", err)
+	err = json.Unmarshal(buf, &rs)
+	if err != nil {
+		log.Println(err)
 		return err
 	}
 
