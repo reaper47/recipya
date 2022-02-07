@@ -7,6 +7,7 @@ import (
 // Data holds general template data.
 type Data struct {
 	HideSidebar  bool
+	HideGap      bool
 	HeaderData   HeaderData
 	IsViewRecipe bool
 

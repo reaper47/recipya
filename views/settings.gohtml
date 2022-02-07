@@ -1,0 +1,37 @@
+{{define "title"}}Settings{{end}}
+
+{{define "content"}}
+<div class="flex">
+  <div id="panes" class="sticky top-0 w-24 h-screen text-center">
+    <p id="pane-profile" class="py-4 bg-blue-200">Profile</p>
+    <p id="pane-data" class="py-4">Data</p>
+    <hr>
+  </div>
+
+  <div id="containers" class="flex-grow p-4 bg-gray-300">
+    <div id="container-profile">
+      Profile
+    </div>
+    <div id="container-data" class="hidden">
+      Data
+    </div>
+  </div>
+</div>
+{{end}}
+
+{{define "js"}}
+<script>
+  const tabs = Array.from(document.getElementById("panes").children)
+  const containers = Array.from(document.getElementById("containers").children)
+  const selectedClasses = ["bg-blue-200"]
+
+  tabs.forEach(child => {
+    child.addEventListener("mousedown", event => {
+      tabs.forEach(t => t.classList.remove(...selectedClasses))
+      containers.forEach(c => c.classList.add("hidden"))
+      event.target.classList.add(...selectedClasses)
+      document.getElementById(`container-${event.target.id.split("-")[1]}`).classList.remove("hidden")
+    })
+  })
+</script>
+{{end}}

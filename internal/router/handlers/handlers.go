@@ -98,3 +98,17 @@ func serveFile(w http.ResponseWriter, fname, contentType string) {
 	w.Header().Set("Content-Type", contentType)
 	w.Write(f)
 }
+
+// Settings serves the GET /settings endpoint.
+func Settings(w http.ResponseWriter, req *http.Request) {
+	err := templates.Render(w, "settings.gohtml", templates.Data{
+		HeaderData: templates.HeaderData{
+			AvatarInitials: getSession(req).UserInitials,
+		},
+		HideSidebar: true,
+		HideGap:     true,
+	})
+	if err != nil {
+		log.Println(err)
+	}
+}

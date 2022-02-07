@@ -4,6 +4,7 @@ import (
 	"archive/zip"
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"image"
 	"image/jpeg"
 	_ "image/png"
@@ -435,4 +436,9 @@ func extractRecipe(rd io.Reader, userID int64) error {
 
 	_, err = config.App().Repo.InsertNewRecipe(r, userID)
 	return err
+}
+
+// ExportRecipes handles the POST /settings/export endpoint.
+func ExportRecipes(w http.ResponseWriter, req *http.Request) {
+	fmt.Println("Called POST /settings/export")
 }

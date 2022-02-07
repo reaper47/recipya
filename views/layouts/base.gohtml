@@ -27,8 +27,19 @@
   {{template "header" .HeaderData}}
   <main class="grid h-full md:grid-cols-12">
     {{- if not .HideSidebar -}}{{template "sidebar"}}{{- end -}}
-    <section
-      class="h-full {{if and (not $isAuthenticated) .IsViewRecipe}}md:col-span-12 pt-16{{else if not $isAuthenticated}}md:col-span-12{{else}}md:col-span-11 pt-16{{end}} bg-white print:pt-0">
+    <section class="
+        h-full 
+        {{- if and (not $isAuthenticated) .IsViewRecipe}}
+          md:col-span-12 
+          {{if not .HideGap}}pt-8{{end}}
+        {{- else if not $isAuthenticated}}
+          md:col-span-12
+        {{- else}}
+          md:col-span-11 
+          {{if not .HideGap}}pt-8{{end}}
+        {{- end}}
+        bg-white print:pt-0
+        ">
       {{- template "content" . -}}
     </section>
   </main>

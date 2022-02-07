@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"html/template"
 	"io/fs"
-	"log"
 	"net/http"
 
 	"github.com/oxtoacart/bpool"
@@ -15,19 +14,12 @@ var templates map[string]*template.Template
 var bufpool *bpool.BufferPool
 
 func init() {
-	bufpool = bpool.NewBufferPool(64)
-}
-
-// Load loads the templates.
-func Load() {
-	if templates == nil {
-		templates = make(map[string]*template.Template)
-	}
+	templates = make(map[string]*template.Template)
 	bufpool = bpool.NewBufferPool(64)
 
 	tmpls, err := fs.ReadDir(views.FS, ".")
 	if err != nil {
-		log.Fatalln(err)
+		panic(err)
 	}
 
 	for _, tmpl := range tmpls {
