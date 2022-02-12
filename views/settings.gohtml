@@ -2,18 +2,24 @@
 
 {{define "content"}}
 <div class="flex">
-  <div id="panes" class="sticky top-0 w-24 h-screen text-center">
-    <p id="pane-profile" class="py-4 bg-blue-200">Profile</p>
-    <p id="pane-data" class="py-4">Data</p>
+  <div id="panes" class="sticky top-0 w-20 h-screen text-center text-white bg-gray-800">
+    <hr>
+    <p id="pane-profile" class="py-4 border-l-4 border-red-600 select-none hover:bg-red-600">Profile</p>
+    <hr>
+    <p id="pane-data" class="py-4 select-none hover:bg-red-600">Data</p>
     <hr>
   </div>
 
-  <div id="containers" class="flex-grow p-4 bg-gray-300">
+  <div id="containers" class="flex-grow p-4">
     <div id="container-profile">
       Profile
     </div>
-    <div id="container-data" class="hidden">
-      Data
+    <div id="container-data" class="grid hidden grid-cols-2">
+      <div>Export Data:</div>
+      <form action="/settings/export" method="post"
+        class="px-6 py-2 text-gray-900 duration-300 border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center">
+        <button type="submit" class="w-full">Export your recipes</button>
+      </form>
     </div>
   </div>
 </div>
@@ -23,9 +29,13 @@
 <script>
   const tabs = Array.from(document.getElementById("panes").children)
   const containers = Array.from(document.getElementById("containers").children)
-  const selectedClasses = ["bg-blue-200"]
+  const selectedClasses = ["border-l-4", "border-red-600"]
 
   tabs.forEach(child => {
+    if (child.tagName === "HR") {
+      return
+    }
+
     child.addEventListener("mousedown", event => {
       tabs.forEach(t => t.classList.remove(...selectedClasses))
       containers.forEach(c => c.classList.add("hidden"))
