@@ -79,7 +79,14 @@ func (m *postgresDBRepo) Recipes(userID int64, page int) ([]models.Recipe, error
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
-	rows, err := m.Pool.Query(ctx, getRecipesStmt, userID, (page-1)*12)
+	var rows pgx.Rows
+	var err error
+	if page == -1 {
+		rows, err = m.Pool.Query(ctx, getAllRecipesStmt, userID)
+	} else {
+		rows, err = m.Pool.Query(ctx, getRecipesStmt, userID, (page-1)*12)
+	}
+
 	if err != nil {
 		return nil, err
 	}

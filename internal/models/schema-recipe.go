@@ -42,7 +42,7 @@ func (m RecipeSchema) ToRecipe() (Recipe, error) {
 	if m.Category == "" {
 		category = "uncategorized"
 	} else {
-		category = strings.ToLower(m.Category)
+		category = strings.TrimSpace(strings.ToLower(m.Category))
 	}
 
 	times, err := NewTimes(m.CookTime, m.PrepTime)

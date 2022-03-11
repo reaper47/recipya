@@ -4,7 +4,6 @@ import (
 	"archive/zip"
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"image"
 	"image/jpeg"
 	_ "image/png"
@@ -22,6 +21,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"github.com/reaper47/recipya/internal/config"
+	"github.com/reaper47/recipya/internal/constants"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/repository"
 	"github.com/reaper47/recipya/internal/templates"
@@ -198,7 +198,7 @@ func getRecipeFromForm(req *http.Request) (models.Recipe, error) {
 		Image:        imageUUID,
 		Url:          req.FormValue("source"),
 		Yield:        int16(yield),
-		Category:     strings.ToLower(req.FormValue("category")),
+		Category:     strings.TrimSpace(strings.ToLower(req.FormValue("category"))),
 		Times:        times,
 		Ingredients:  getFormItems(req, "ingredient"),
 		Instructions: getFormItems(req, "instruction"),
@@ -348,15 +348,11 @@ func ImportRecipes(w http.ResponseWriter, req *http.Request) {
 }
 
 func importRecipe(file *multipart.FileHeader, fnumber int, userID int64) {
-	switch file.Header.Get("Content-Type") {
-	case "application/json":
-		processJSON(file, userID)
-	case "application/zip":
-	case "application/x-zip":
-	case "application/x-zip-compressed":
+	content := file.Header.Get("Content-Type")
+	if strings.Contains(content, "zip") {
 		processZip(file, userID)
-	default:
-		return
+	} else if strings.Contains(content, "json") {
+		processJSON(file, userID)
 	}
 }
 
@@ -440,5 +436,41 @@ func extractRecipe(rd io.Reader, userID int64) error {
 
 // ExportRecipes handles the POST /settings/export endpoint.
 func ExportRecipes(w http.ResponseWriter, req *http.Request) {
-	fmt.Println("Called POST /settings/export")
+	buf := new(bytes.Buffer)
+	z := zip.NewWriter(buf)
+
+	recipes, err := config.App().Repo.Recipes(getSession(req).UserID, -1)
+	if err != nil {
+		showErrorPage(w, "Could not retrieve user recipes.", err)
+		return
+	}
+
+	for _, r := range recipes {
+		j, err := json.MarshalIndent(r, "", "\t")
+		if err != nil {
+			log.Printf("Could not marshal recipe %#v\r", r)
+			continue
+		}
+
+		zw, err := z.Create(r.Category + "/" + r.Name + ".json")
+		if err != nil {
+			log.Printf("Could not create file for %s\r", j)
+			continue
+		}
+
+		_, err = zw.Write(j)
+		if err != nil {
+			log.Printf("Could not write file %s\r", j)
+			continue
+		}
+	}
+
+	err = z.Close()
+	if err != nil {
+		log.Printf("Could not close zip writer: '%s'\n", err)
+	}
+
+	w.Header().Set(constants.HeaderContentType, constants.ApplicationZip)
+	w.Header().Set(constants.HeaderContentDisposition, `attachment; filename="recipya-recipes.zip"`)
+	w.Write(buf.Bytes())
 }

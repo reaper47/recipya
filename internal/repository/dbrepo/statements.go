@@ -61,7 +61,7 @@ const getRecipeStmt = `
 	JOIN times t2 ON t2.id = tr2.time_id
 	WHERE r.id = $1`
 
-const getRecipesStmt = `
+const getAllRecipesStmt = `
 	WITH rows AS (
 		SELECT 
 			ROW_NUMBER() OVER (ORDER BY r.id) AS rowid,
@@ -145,7 +145,9 @@ const getRecipesStmt = `
 		time_prep,
 		time_cook,
 		time_total
-	FROM rows
+	FROM rows`
+
+const getRecipesStmt = getAllRecipesStmt + `
 	WHERE rowid > $2
 	ORDER BY recipe_id ASC
 	LIMIT 12`
