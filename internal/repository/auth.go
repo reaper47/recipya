@@ -14,7 +14,7 @@ var Sessions = map[string]models.Session{}
 
 // IsAuthenticated verifies whether the user is authenticated.
 //
-// It returns the ID of the user and whether he or she is authenticated.
+// It returns the user's session and whether he or she is authenticated.
 func IsAuthenticated(w http.ResponseWriter, req *http.Request) (models.Session, bool) {
 	c, err := req.Cookie("session")
 	if err != nil {

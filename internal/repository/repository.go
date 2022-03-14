@@ -10,12 +10,19 @@ type Repository interface {
 	// User gets a user from the database based on the username or email.
 	User(id string) models.User
 
-	// Recipes fetches all of the recipes from the database.
-	Recipe(id int64) models.Recipe
-
 	// Recipe fetches a recipe from the database.
 	//
 	// The returned recipe will be empty if the query returns no row.
+	Recipe(id int64) models.Recipe
+
+	// RecipeForUser fetches a recipe for the given user. An error will
+	// be returned if the recipe is not tied to the user.
+	RecipeForUser(id, userID int64) (models.Recipe, error)
+
+	// RecipeBelongsToUser verifies that the recipe belongs to the user.
+	RecipeBelongsToUser(id, userID int64) bool
+
+	// Recipes fetches all of the recipes from the database.
 	Recipes(userID int64, page int) ([]models.Recipe, error)
 
 	// RecipesCount returns the number of recipes in the database.

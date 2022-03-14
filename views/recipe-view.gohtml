@@ -1,11 +1,11 @@
 {{define "title"}}{{.RecipeData.Recipe.Name}}{{end}}
 
 {{define "content"}}
-{{- $isAuthenticated := not .HeaderData.IsUnauthenticated -}}
+{{- $showEditControls := not .RecipeData.HideEditControls -}}
 {{- with .RecipeData.Recipe -}}
 <div class="grid max-w-6xl grid-cols-6 px-4 pb-4 m-auto print:m-0 print:p-0">
   <div class="grid grid-cols-6 col-span-6 text-lg border border-gray-900 md:text-xl rounded-t-md">
-    {{- if $isAuthenticated -}}
+    {{- if $showEditControls -}}
     <div class="grid justify-start col-span-1 place-content-center print:invisible">
       <a href="/recipes/{{.ID}}/edit" class="ml-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24"

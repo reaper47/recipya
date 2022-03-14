@@ -42,7 +42,8 @@ type RecipesData struct {
 
 // RecipeData holds data to pass to the recipe templates.
 type RecipeData struct {
-	Recipe models.Recipe
+	Recipe           models.Recipe
+	HideEditControls bool
 }
 
 // Pagination holds pagination data for templates with pagination.

@@ -2,6 +2,7 @@ package db
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/google/uuid"
@@ -172,6 +173,25 @@ func (m *postgresDBRepo) Recipes(userID int64, page int) ([]models.Recipe, error
 	return xr, nil
 }
 
+func (m *postgresDBRepo) RecipeForUser(id, userID int64) (models.Recipe, error) {
+	if !m.RecipeBelongsToUser(id, userID) {
+		return models.Recipe{}, errors.New("recipe does not belong to user")
+	}
+	return m.Recipe(id), nil
+}
+
+func (m *postgresDBRepo) RecipeBelongsToUser(id, userID int64) bool {
+	ctx, cancel := contexts.Timeout(3 * time.Second)
+	defer cancel()
+
+	var (
+		u int64
+		r int64
+	)
+	err := m.Pool.QueryRow(ctx, getUserRecipe, userID, id).Scan(&u, &r)
+	return err != pgx.ErrNoRows
+}
+
 func (m *postgresDBRepo) Recipe(id int64) models.Recipe {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
@@ -270,12 +290,23 @@ func (m *postgresDBRepo) InsertNewRecipe(r models.Recipe, userID int64) (int64, 
 	}
 	defer tx.Rollback(ctx)
 
+	var isExists bool
+	err = tx.QueryRow(ctx, isRecipeExistsForUserStmt, userID, r.Name, r.Description, r.Url, r.Yield).Scan(&isExists)
+	if err != nil {
+		return -1, err
+	}
+
+	if isExists {
+		return -1, fmt.Errorf("recipe '%s' exists for user %d", r.Name, userID)
+	}
+
 	tables := getTables(r)
 	args := []interface{}{userID}
 	args = append(args, r.ToArgs(false)...)
 
 	var recipeID int64
-	if err = tx.QueryRow(ctx, insertRecipeStmt(tables), args...).Scan(&recipeID); err != nil {
+	err = tx.QueryRow(ctx, insertRecipeStmt(tables), args...).Scan(&recipeID)
+	if err != nil {
 		return -1, err
 	}
 

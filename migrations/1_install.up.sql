@@ -24,8 +24,7 @@ CREATE TABLE recipes (
 	image UUID DEFAULT gen_random_uuid(),
 	yield SMALLINT,
 	created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-	UNIQUE (name, description, url, yield)
+	updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- https://recipeland.com/recipes/categories/browse

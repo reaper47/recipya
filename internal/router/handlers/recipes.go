@@ -64,10 +64,18 @@ func handleGetRecipe(w http.ResponseWriter, req *http.Request, id int64, isAuthe
 		return
 	}
 
-	s, _ := repository.IsAuthenticated(w, req)
+	s, isAuth := repository.IsAuthenticated(w, req)
+
+	var isShowEditControls bool
+	if isAuth {
+		isShowEditControls = config.App().Repo.RecipeBelongsToUser(id, s.UserID)
+	}
 
 	err := templates.Render(w, "recipe-view.gohtml", templates.Data{
-		RecipeData:   templates.RecipeData{Recipe: r},
+		RecipeData: templates.RecipeData{
+			Recipe:           r,
+			HideEditControls: !isShowEditControls,
+		},
 		IsViewRecipe: true,
 		HideSidebar:  !isAuthenticated,
 		HeaderData: templates.HeaderData{
@@ -81,6 +89,12 @@ func handleGetRecipe(w http.ResponseWriter, req *http.Request, id int64, isAuthe
 }
 
 func handleDeleteRecipe(w http.ResponseWriter, req *http.Request, id int64) {
+	s := getSession(req)
+	if !config.App().Repo.RecipeBelongsToUser(id, s.UserID) {
+		showErrorPage(w, "Unauthorized to delete this recipe", nil)
+		return
+	}
+
 	err := config.App().Repo.DeleteRecipe(id)
 	if err != nil {
 		showErrorPage(w, "Could not delete the recipe:", err)
@@ -106,14 +120,15 @@ func EditRecipe(w http.ResponseWriter, req *http.Request) {
 }
 
 func handleGetEditRecipe(w http.ResponseWriter, req *http.Request, id int64) {
-	r := config.App().Repo.Recipe(id)
-	if r.ID == 0 {
+	s := getSession(req)
+
+	r, err := config.App().Repo.RecipeForUser(id, s.UserID)
+	if err != nil || r.ID == 0 {
 		http.Redirect(w, req, "/", http.StatusSeeOther)
 		return
 	}
 
-	s := getSession(req)
-	err := templates.Render(w, "recipe-edit.gohtml", templates.Data{
+	err = templates.Render(w, "recipe-edit.gohtml", templates.Data{
 		Categories: config.App().Repo.Categories(s.UserID),
 		RecipeData: templates.RecipeData{Recipe: r},
 		HeaderData: templates.HeaderData{
@@ -127,6 +142,12 @@ func handleGetEditRecipe(w http.ResponseWriter, req *http.Request, id int64) {
 }
 
 func handlePostEditRecipe(w http.ResponseWriter, req *http.Request, id int64) {
+	s := getSession(req)
+	if !config.App().Repo.RecipeBelongsToUser(id, s.UserID) {
+		showErrorPage(w, "Unauthorized to edit this recipe", nil)
+		return
+	}
+
 	r, err := getRecipeFromForm(req)
 	if err != nil {
 		showErrorPage(w, "Could not retrieve the recipe from the form:", err)

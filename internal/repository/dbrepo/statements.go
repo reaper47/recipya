@@ -173,13 +173,30 @@ const getCategoriesStmt = `
 	WHERE user_id = $1
 	ORDER BY c.name ASC`
 
+const getUserRecipe = `
+	SELECT user_id, recipe_id
+	FROM user_recipe
+	WHERE user_id = $1 AND recipe_id = $2`
+
+const isRecipeExistsForUserStmt = `
+	SELECT EXISTS (
+		SELECT id
+		FROM user_recipe
+		WHERE user_id = $1 
+		AND recipe_id = (
+			SELECT id
+			FROM recipes
+			WHERE name = $2 AND description = $3 AND url = $4 AND yield = $5
+		)
+		
+	)`
+
 // INSERT
 func insertRecipeStmt(tables []tableData) string {
 	var params nameParams
 	params.init(tables, 19)
 
-	return `
-		WITH ins_recipe AS (
+	return `WITH ins_recipe AS (
 			INSERT  INTO recipes (name, description, image, url, yield)
 			VALUES ($2,$3,$4,$5,$6)
 			RETURNING id
