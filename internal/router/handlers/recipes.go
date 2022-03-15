@@ -23,6 +23,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/reaper47/recipya/internal/config"
 	"github.com/reaper47/recipya/internal/constants"
+	"github.com/reaper47/recipya/internal/logger"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/repository"
 	"github.com/reaper47/recipya/internal/templates"
@@ -410,7 +411,7 @@ func processZip(file *multipart.FileHeader, userID int64) {
 
 			err = extractRecipe(f, userID)
 			if err != nil {
-				log.Println(err)
+				logger.Sanitize(err.Error())
 			}
 			f.Close()
 		}
@@ -420,14 +421,14 @@ func processZip(file *multipart.FileHeader, userID int64) {
 func processJSON(file *multipart.FileHeader, userID int64) {
 	f, err := file.Open()
 	if err != nil {
-		log.Printf("error opening file %s: '%s'\n", file.Filename, err)
+		logger.Sanitize("error opening file %s: %s", file.Filename, err.Error())
 		return
 	}
 	defer f.Close()
 
 	err = extractRecipe(f, userID)
 	if err != nil {
-		log.Printf("could not extract '%s' - %s", file.Filename, err)
+		logger.Sanitize("could not extract '%s': %s", file.Filename, err.Error())
 		return
 	}
 }

@@ -1,6 +1,6 @@
 module github.com/reaper47/recipya
 
-go 1.17
+go 1.18
 
 require (
 	github.com/golang-migrate/migrate/v4 v4.15.1
@@ -12,7 +12,7 @@ require (
 
 require github.com/gorilla/mux v1.8.0
 
-require github.com/golang-jwt/jwt/v4 v4.2.0
+require github.com/golang-jwt/jwt/v4 v4.3.0
 
 require (
 	github.com/hashicorp/errwrap v1.1.0 // indirect
@@ -30,7 +30,7 @@ require (
 	github.com/oxtoacart/bpool v0.0.0-20190530202638-03653db5a59c
 	github.com/spf13/pflag v1.0.5 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
-	golang.org/x/crypto v0.0.0-20220128200615-198e4374d7ed
-	golang.org/x/image v0.0.0-20211028202545-6944b10bf410
+	golang.org/x/crypto v0.0.0-20220315160706-3147a52a75dd
+	golang.org/x/image v0.0.0-20220302094943-723b81ca9867
 	golang.org/x/text v0.3.7 // indirect
 )
