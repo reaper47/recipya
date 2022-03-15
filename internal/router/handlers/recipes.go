@@ -4,6 +4,7 @@ import (
 	"archive/zip"
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"image"
 	"image/jpeg"
 	_ "image/png"
@@ -426,7 +427,7 @@ func processJSON(file *multipart.FileHeader, userID int64) {
 
 	err = extractRecipe(f, userID)
 	if err != nil {
-		log.Printf("could not extract %s - %s", file.Filename, err)
+		log.Printf("could not extract '%s' - %s", file.Filename, err)
 		return
 	}
 }
@@ -441,14 +442,12 @@ func extractRecipe(rd io.Reader, userID int64) error {
 	var rs models.RecipeSchema
 	err = json.Unmarshal(buf, &rs)
 	if err != nil {
-		log.Println(err)
-		return err
+		return fmt.Errorf("extract recipe: %s", err)
 	}
 
 	r, err := rs.ToRecipe()
 	if err != nil {
-		log.Println("ToRecipe err - ", err)
-		return err
+		return fmt.Errorf("ToRecipe err: %s", err)
 	}
 
 	_, err = config.App().Repo.InsertNewRecipe(r, userID)
@@ -467,7 +466,7 @@ func ExportRecipes(w http.ResponseWriter, req *http.Request) {
 	}
 
 	for _, r := range recipes {
-		j, err := json.MarshalIndent(r, "", "\t")
+		j, err := json.MarshalIndent(r.ToSchema(), "", "\t")
 		if err != nil {
 			log.Printf("Could not marshal recipe %#v\r", r)
 			continue

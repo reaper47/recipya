@@ -98,6 +98,11 @@ type instructions struct {
 	Values []string
 }
 
+// MarshalJSON encodes the list of instructions.
+func (m instructions) MarshalJSON() ([]byte, error) {
+	return json.Marshal(m.Values)
+}
+
 // UnmarshalJSON unmarshals the instructions according to the schema (https://schema.org/recipeInstructions).
 func (m *instructions) UnmarshalJSON(data []byte) error {
 	var v interface{}
@@ -125,6 +130,11 @@ func (m *instructions) UnmarshalJSON(data []byte) error {
 
 type yield struct {
 	Value int16
+}
+
+// MarshalJSON encodes the value of the yield.
+func (m yield) MarshalJSON() ([]byte, error) {
+	return json.Marshal(m.Value)
 }
 
 // UnmarshalJSON unmarshals the yield according to the schema (https://schema.org/recipeYield).
@@ -246,6 +256,11 @@ func (m *NutritionSchema) UnmarshalJSON(data []byte) error {
 
 type tools struct {
 	Values []string
+}
+
+// MarshalJSON encodes the list of tools.
+func (m tools) MarshalJSON() ([]byte, error) {
+	return json.Marshal(m.Values)
 }
 
 // UnmarshalJSON unmarshals the tools according to the schema (https://schema.org/tool).
