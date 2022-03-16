@@ -27,7 +27,7 @@ func (m *postgresDBRepo) CreateUser(username, email, password string) (models.Us
 		var id int64
 		err = m.Pool.QueryRow(ctx, insertUserStmt, username, email, hash).Scan(&id)
 		if err != nil {
-			return u, err
+			return u, fmt.Errorf("could not query user row: %s", err)
 		}
 
 		u.Populate(id, username, email, string(hash))

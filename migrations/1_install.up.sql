@@ -86,6 +86,11 @@ CREATE TABLE fruitveggies (
 	name TEXT UNIQUE NOT NULL
 );
 
+CREATE TABLE blacklistunits (
+	id SERIAL PRIMARY KEY,
+	name TEXT UNIQUE NOT NULL
+);
+
 --
 -- Association Tables
 --
@@ -545,3 +550,65 @@ VALUES
 	('yam'),
 	('yuzu'),
 	('zucchini');
+
+INSERT INTO blacklistunits (name)
+VALUES 
+	('¼'),
+	('½'),
+	('¾'),
+	('bar'),
+	('c'),
+	('cc'),
+	('celsius'),
+	('centimeter'),
+	('centimetre'),
+	('cm'),
+	('cube'),
+	('cup'),
+	('deciliter'),
+	('decilitre'),
+	('dl'),
+	('fahrenheit'),
+	('fl'),
+	('fluid'),
+	('g'),
+	('gal'),
+	('gallon'),
+	('gill'),
+	('gram'),
+	('gramme'),
+	('imperial'),
+	('in'),
+	('inch'),
+	('kg'),
+	('kilogram'),
+	('kilogramme'),
+	('l'),
+	('lb'),
+	('liter'),
+	('litre'),
+	('m'),
+	('meter'),
+	('metre'),
+	('mg'),
+	('milligram'),
+	('milligramme'),
+	('milliliter'),
+	('millilitre'),
+	('millimeter'),
+	('millimetre'),
+	('ml'),
+	('mm'),
+	('optional'),
+	('ounce'),
+	('oz'),
+	('package'),
+	('pint'),
+	('pound'),
+	('quart'),
+	('tablespoon'),
+	('tbl'),
+	('tbs'),
+	('tbsp'),
+	('teaspoon'),
+	('tsp');
