@@ -7,7 +7,7 @@
   <div class="grid grid-cols-6 col-span-6 text-lg border border-gray-900 md:text-xl rounded-t-md">
     {{- if $showEditControls -}}
     <div class="grid justify-start col-span-1 place-content-center print:invisible">
-      <a href="/recipes/{{.ID}}/edit" class="ml-2">
+      <a href="/recipes/{{.ID}}/edit" class="ml-2" title="Edit recipe">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24"
           stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -20,14 +20,14 @@
     </h1>
     <div class="grid justify-end col-span-1 place-content-center print:invisible">
       <div class="grid grid-flow-col">
-        <button class="mr-2" onclick="print()">
+        <button class="mr-2" onclick="print()" title="Print recipe">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24"
             stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
           </svg>
         </button>
-        <button class="mr-2" onclick="deleteRecipe()">
+        <button class="mr-2" onclick="deleteRecipe()" title="Delete recipe">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24"
             stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -42,7 +42,7 @@
       {{.Name}}
     </h1>
     <div class="grid justify-end col-span-1 place-content-center print:invisible">
-      <button class="mr-2" onclick="print()">
+      <button class="mr-2" onclick="print()" title="Print recipe">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24"
           stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -297,7 +297,8 @@
       return
     }
 
-    fetch(`${document.location.origin}/recipes/{{.RecipeData.Recipe.ID}}`, {
+    const id = `{{.RecipeData.Recipe.ID}}`.trim()
+    fetch(`${document.location.origin}/recipes/${id}`, {
       method: 'DELETE',
       redirect: 'follow'
     }).then((res) => {
