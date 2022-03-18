@@ -31,24 +31,28 @@ const getRecipeStmt = `
 			FROM ingredients i
 			JOIN ingredient_recipe ir ON ir.ingredient_id = i.id
 			WHERE ir.recipe_id = $1
+			ORDER BY ir.id
 		) AS ingredients,
 		ARRAY(
 			SELECT name
 			FROM instructions i2
 			JOIN instruction_recipe ir2 ON ir2.instruction_id = i2.id
 			WHERE ir2.recipe_id = $1
+			ORDER BY ir2.id
 		) AS instructions,
 		ARRAY(
 			SELECT name
 			FROM keywords k
 			JOIN keyword_recipe kr ON kr.keyword_id = k.id
 			WHERE kr.recipe_id = $1
+			ORDER BY kr.id
 		) AS keywords,
 		ARRAY(
 			SELECT name
 			FROM tools t
 			JOIN tool_recipe tr ON tr.tool_id = t.id
 			WHERE tr.recipe_id = $1
+			ORDER BY tr.id
 		) AS tools,
 		t2.prep,
 		t2.cook,

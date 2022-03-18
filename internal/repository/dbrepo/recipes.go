@@ -9,6 +9,7 @@ import (
 	"github.com/jackc/pgx/v4"
 	"github.com/reaper47/recipya/internal/contexts"
 	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/nlp"
 )
 
 type tableData struct {
@@ -300,6 +301,8 @@ func (m *postgresDBRepo) InsertNewRecipe(r models.Recipe, userID int64) (int64, 
 		return -1, fmt.Errorf("recipe '%s' exists for user %d", r.Name, userID)
 	}
 
+	r.Instructions = nlp.CapitalizeParagraphs(r.Instructions)
+
 	tables := getTables(r)
 	args := []interface{}{userID}
 	args = append(args, r.ToArgs(false)...)
@@ -337,6 +340,8 @@ func (m *postgresDBRepo) UpdateRecipe(r models.Recipe) error {
 	if err != nil {
 		return err
 	}
+
+	r.Instructions = nlp.CapitalizeParagraphs(r.Instructions)
 
 	tables := getTables(r)
 	_, err = m.Pool.Exec(ctx, updateRecipeStmt(tables), r.ToArgs(true)...)

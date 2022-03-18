@@ -14,6 +14,12 @@ The backend is a REST API. The frontend, found under the /web folder, is a simpl
 - Cross-platform solution
 - Can be self-hosted
 
+# Demo
+
+Access the demo [webite](https://recipes.musicavis.ca) with the following credentials:
+- Login: demo
+- Password: demo
+
 # Installation
 
 ## Database
