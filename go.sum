@@ -673,6 +673,7 @@ github.com/jackc/puddle v1.1.3/go.mod h1:m4B5Dj62Y0fbyuIc15OsIqK0+JU8nkqQjsgx7dv
 github.com/jackc/puddle v1.2.0/go.mod h1:m4B5Dj62Y0fbyuIc15OsIqK0+JU8nkqQjsgx7dvjSWk=
 github.com/jackc/puddle v1.2.1 h1:gI8os0wpRXFd4FiAY2dWiqRK037tjj3t7rKFeO4X5iw=
 github.com/jackc/puddle v1.2.1/go.mod h1:m4B5Dj62Y0fbyuIc15OsIqK0+JU8nkqQjsgx7dvjSWk=
+github.com/jdkato/prose v1.1.1 h1:r6CwY09U97IZNgNQEHoeCh2nvg2e8WCOGjPH/b7lowI=
 github.com/jdkato/prose v1.1.1/go.mod h1:jkF0lkxaX5PFSlk9l4Gh9Y+T57TqUZziWT7uZbW5ADg=
 github.com/jdkato/prose/v2 v2.0.0 h1:XRwsTM2AJPilvW5T4t/H6Lv702Qy49efHaWfn3YjWbI=
 github.com/jdkato/prose/v2 v2.0.0/go.mod h1:7LVecNLWSO0OyTMOscbwtZaY7+4YV2TPzlv5g5XLl5c=
