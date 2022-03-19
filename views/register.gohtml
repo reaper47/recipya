@@ -33,8 +33,15 @@
         <label class="block my-3 font-semibold text-gray-800 text-md" for="password">
           Password
         </label>
-        <input class="w-full px-4 py-2 bg-gray-100 rounded-lg" type="password" name="password" id="password"
-          placeholder="password" required>
+        <div class="flex items-center justify-center ">
+          <div class="flex w-full border-2 border-gray-200 rounded">
+            <input class="w-full px-4 py-2 bg-gray-100 rounded-lg" type="password" name="password" id="password"
+              placeholder="password" required>
+            <button id="toggle-password2" class="w-16 px-2 text-white bg-gray-600 border-l" type="button">
+              Show
+            </button>
+          </div>
+        </div>
         {{- if .Password -}}
         <p class="pt-1 text-sm text-red-600">{{.Password}}</p>
         {{- end -}}
@@ -44,8 +51,15 @@
       <label class="block my-3 font-semibold text-gray-800 text-md" for="confirm">
         Confirm password
       </label>
-      <input class="w-full px-4 py-2 bg-gray-100 rounded-lg" type="password" name="confirm" id="confirm"
-        placeholder="retype password" required>
+      <div class="flex items-center justify-center ">
+        <div class="flex w-full border-2 border-gray-200 rounded">
+          <input class="w-full px-4 py-2 bg-gray-100 rounded-lg" type="password" name="confirm" id="confirm"
+            placeholder="retype password" required>
+          <button id="toggle-password1" class="w-16 px-2 text-white bg-gray-600 border-l" type="button">
+            Show
+          </button>
+        </div>
+      </div>
 
       <button
         class="w-full px-4 py-2 mt-6 text-lg font-semibold tracking-wide text-white bg-indigo-600 rounded-lg hover:bg-green-600">Register</button>
@@ -60,5 +74,21 @@
     </form>
   </div>
 </section>
+
+<script>
+  const togglePassword = (event) => {
+    const { target } = event
+    if (target.previousElementSibling.type === 'password') {
+      target.innerText = 'Hide'
+      target.previousElementSibling.type = 'text'
+    } else {
+      target.innerText = 'Show'
+      target.previousElementSibling.type = 'password'
+    }
+  }
+
+  document.getElementById('toggle-password1').addEventListener('mousedown', togglePassword)
+  document.getElementById('toggle-password2').addEventListener('mousedown', togglePassword)
+</script>
 {{- end -}}
 {{end}}

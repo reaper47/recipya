@@ -22,21 +22,27 @@
         <label class="block my-3 font-semibold text-gray-800 text-md" for="password">
           Password
         </label>
-        <input class="w-full px-4 py-2 bg-gray-100 rounded-lg" type="password" name="password" id="password"
-          placeholder="password" required>
+
+        <div class="flex items-center justify-center ">
+          <div class="flex w-full border-2 border-gray-200 rounded">
+            <input class="w-full px-4 py-2 bg-gray-100 rounded-l-lg rounded-bl-lg" type="password" name="password"
+              id="password" placeholder="password" required>
+            <button id="toggle-password" class="w-16 px-2 text-white bg-gray-600 border-l" type="button">
+              Show
+            </button>
+          </div>
+        </div>
         {{- if .Password -}}
         <p class="pt-1 text-sm text-red-600">{{.Password}}</p>
         {{- end -}}
       </div>
 
-
       <div class="flex justify-center mt-3">
         <input id="remember-me" name="remember-me" type="checkbox">
-        <label class="pl-4 font-semibold text-gray-800 text-md" for="remember-me">
+        <label class="pl-2 font-semibold text-gray-800 text-md" for="remember-me">
           Remember Me
         </label>
       </div>
-
 
       <button
         class="w-full px-4 py-2 mt-6 text-lg font-semibold tracking-wide text-white bg-indigo-600 rounded-lg hover:bg-green-600">
@@ -53,5 +59,18 @@
     </form>
   </div>
 </section>
+
+<script>
+  document.getElementById('toggle-password').addEventListener('mousedown', (event) => {
+    const { target } = event
+    if (target.previousElementSibling.type === 'password') {
+      target.innerText = 'Hide'
+      target.previousElementSibling.type = 'text'
+    } else {
+      target.innerText = 'Show'
+      target.previousElementSibling.type = 'password'
+    }
+  })
+</script>
 {{- end -}}
 {{end}}
