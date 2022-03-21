@@ -32,7 +32,7 @@ func CreateToken(sid string) (string, error) {
 
 // ParseToken parses the JWT token.
 func ParseToken(st string) (string, error) {
-	t, err := jwt.ParseWithClaims(st, &customClaims{}, func(t *jwt.Token) (interface{}, error) {
+	t, err := jwt.ParseWithClaims(st, &customClaims{}, func(t *jwt.Token) (any, error) {
 		if t.Method.Alg() != jwt.SigningMethodHS512.Alg() {
 			return nil, errors.New("invalid signing algorithm")
 		}

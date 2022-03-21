@@ -102,7 +102,6 @@ func (p *Pagination) Init(page int) {
 			}
 
 			p.Left = append(p.Left, 1)
-
 		}
 	}
 }

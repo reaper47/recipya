@@ -105,7 +105,7 @@ func (m instructions) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON unmarshals the instructions according to the schema (https://schema.org/recipeInstructions).
 func (m *instructions) UnmarshalJSON(data []byte) error {
-	var v interface{}
+	var v any
 	err := json.Unmarshal(data, &v)
 	if err != nil {
 		return err
@@ -120,7 +120,7 @@ func (m *instructions) UnmarshalJSON(data []byte) error {
 				m.Values = append(m.Values, val)
 			}
 		}
-	case []interface{}:
+	case []any:
 		for _, part := range x {
 			m.Values = append(m.Values, part.(string))
 		}
@@ -139,7 +139,7 @@ func (m yield) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON unmarshals the yield according to the schema (https://schema.org/recipeYield).
 func (m *yield) UnmarshalJSON(data []byte) error {
-	var v interface{}
+	var v any
 	err := json.Unmarshal(data, &v)
 	if err != nil {
 		return err
@@ -193,16 +193,16 @@ func (m NutritionSchema) toNutrition() (Nutrition, error) {
 
 // UnmarshalJSON unmarshals the nutrition according to the schema
 func (m *NutritionSchema) UnmarshalJSON(data []byte) error {
-	var v interface{}
+	var v any
 	err := json.Unmarshal(data, &v)
 	if err != nil {
 		return err
 	}
 
 	switch x := v.(type) {
-	case []interface{}:
+	case []any:
 		break
-	case map[string]interface{}:
+	case map[string]any:
 		if val, ok := x["calories"].(string); ok {
 			m.Calories = val
 		}
@@ -265,7 +265,7 @@ func (m tools) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON unmarshals the tools according to the schema (https://schema.org/tool).
 func (m *tools) UnmarshalJSON(data []byte) error {
-	var v interface{}
+	var v any
 	err := json.Unmarshal(data, &v)
 	if err != nil {
 		return err
@@ -274,7 +274,7 @@ func (m *tools) UnmarshalJSON(data []byte) error {
 	switch x := v.(type) {
 	case string:
 		m.Values = append(m.Values, x)
-	case []map[string]interface{}:
+	case []map[string]any:
 		for _, v := range x {
 			m.Values = append(m.Values, v["name"].(string))
 		}

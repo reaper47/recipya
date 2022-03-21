@@ -32,7 +32,7 @@ func TestParse(t *testing.T) {
 	type args struct {
 		d string
 	}
-	tests := []struct {
+	testcases := []struct {
 		name    string
 		args    args
 		want    *Duration
@@ -68,15 +68,15 @@ func TestParse(t *testing.T) {
 			wantErr: false,
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got, err := Parse(tt.args.d)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("Parse() error = %v, wantErr %v", err, tt.wantErr)
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			got, err := Parse(tc.args.d)
+			if (err != nil) != tc.wantErr {
+				t.Errorf("Parse() error = %v, wantErr %v", err, tc.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Parse() got = %v, want %v", got, tt.want)
+			if !reflect.DeepEqual(got, tc.want) {
+				t.Errorf("Parse() got = %v, want %v", got, tc.want)
 			}
 		})
 	}
@@ -92,7 +92,7 @@ func TestDuration_ToTimeDuration(t *testing.T) {
 		Minutes float64
 		Seconds float64
 	}
-	tests := []struct {
+	testcases := []struct {
 		name   string
 		fields fields
 		want   time.Duration
@@ -135,19 +135,19 @@ func TestDuration_ToTimeDuration(t *testing.T) {
 			want: time.Hour*24*7*12 + time.Hour*84,
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
 			duration := &Duration{
-				Years:   tt.fields.Years,
-				Months:  tt.fields.Months,
-				Weeks:   tt.fields.Weeks,
-				Days:    tt.fields.Days,
-				Hours:   tt.fields.Hours,
-				Minutes: tt.fields.Minutes,
-				Seconds: tt.fields.Seconds,
+				Years:   tc.fields.Years,
+				Months:  tc.fields.Months,
+				Weeks:   tc.fields.Weeks,
+				Days:    tc.fields.Days,
+				Hours:   tc.fields.Hours,
+				Minutes: tc.fields.Minutes,
+				Seconds: tc.fields.Seconds,
 			}
-			if got := duration.ToTimeDuration(); got != tt.want {
-				t.Errorf("ToTimeDuration() = %v, want %v", got, tt.want)
+			if got := duration.ToTimeDuration(); got != tc.want {
+				t.Errorf("ToTimeDuration() = %v, want %v", got, tc.want)
 			}
 		})
 	}

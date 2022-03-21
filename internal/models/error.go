@@ -15,8 +15,8 @@ type errorDetails struct {
 	Status  string `json:"status"`
 }
 
-// NewErrorJson returns the error message as JSON.
-func NewErrorJson(code int, message string) ([]byte, error) {
+// NewErrorJSON returns the error message as JSON.
+func NewErrorJSON(code int, message string) ([]byte, error) {
 	e := errorDetails{
 		Code:    code,
 		Message: message,

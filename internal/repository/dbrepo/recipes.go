@@ -304,7 +304,7 @@ func (m *postgresDBRepo) InsertNewRecipe(r models.Recipe, userID int64) (int64, 
 	r.Instructions = nlp.CapitalizeParagraphs(r.Instructions)
 
 	tables := getTables(r)
-	args := []interface{}{userID}
+	args := []any{userID}
 	args = append(args, r.ToArgs(false)...)
 
 	var recipeID int64

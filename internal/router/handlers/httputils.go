@@ -19,7 +19,7 @@ func getSession(req *http.Request) models.Session {
 }
 
 func writeJson(w http.ResponseWriter, message string, code int) {
-	j, err := models.NewErrorJson(http.StatusBadRequest, message)
+	j, err := models.NewErrorJSON(http.StatusBadRequest, message)
 	if err != nil {
 		fmt.Fprintf(w, constants.ErrDecodingJSON+err.Error())
 		w.WriteHeader(http.StatusInternalServerError)

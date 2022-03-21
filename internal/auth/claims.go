@@ -11,6 +11,7 @@ type customClaims struct {
 	SID string
 }
 
+// IsValid verifies whether the custom claim is valid.
 func (u *customClaims) IsValid() bool {
 	return u.VerifyExpiresAt(time.Now(), true) && u.SID != ""
 }

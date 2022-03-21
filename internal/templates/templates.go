@@ -31,7 +31,7 @@ func init() {
 }
 
 // Render is a wrapper for template.ExecuteTemplate.
-func Render(w http.ResponseWriter, name string, data interface{}) error {
+func Render(w http.ResponseWriter, name string, data any) error {
 	tmpl, ok := templates[name]
 	if !ok {
 		err := fmt.Errorf("the template %s does not exist", name)
