@@ -8,6 +8,7 @@ import (
 	"github.com/jdkato/prose/v2"
 )
 
+// CapitalizeParagraphs capitalizes every sentence of each paragrah.
 func CapitalizeParagraphs(paragraphs []string) []string {
 	output := make([]string, len(paragraphs))
 

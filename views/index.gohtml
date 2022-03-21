@@ -18,7 +18,7 @@
   <div class="col-span-2 bg-white rounded-lg shadow-lg">
     {{- if isUuidValid .Image -}}
     <a href="/recipes/{{.ID}}">
-      <img class="rounded-t-lg" src="/data/img/{{.Image}}" alt="Image of the {{.Name}} recipe">
+      <img class="rounded-t-lg" src="/data/img/{{.Image}}" alt="Image of the {{.Name}} recipe" width="400px">
     </a>
     {{- end -}}
     <div class="p-4">

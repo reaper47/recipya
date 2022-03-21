@@ -54,29 +54,29 @@
   </div>
 
   <div
-    class="w-full h-full grid-flow-col col-span-6 border-b border-l border-r border-gray-900 place-self-end md:border-b md:border-l md:border-r md:col-span-4 print:hidden">
-    <img id="output" class="text-center md:w-full" src="{{- if isUuidValid .Image -}}/data/img/{{.Image}}{{- end -}}"
-      alt="Image of the {{.Name}} recipe">
+    class="w-full grid-flow-col col-span-6 border-b border-l border-r border-black place-self-end md:border-r-0 md:col-span-4 print:hidden justify-self-start md:border-b-0">
+    <img id="output" class="text-center" style="height: 400px"
+      src="{{- if isUuidValid .Image -}}/data/img/{{.Image}}{{- end -}}" alt="Image of the {{.Name}} recipe">
   </div>
 
-  <div class="grid grid-flow-col col-span-6 md:grid-flow-row md:col-span-2 md:grid print:border-b">
-    <div
-      class="col-span-2 p-2 border-b border-l border-r border-black md:border-l-0 md:border-r md:col-span-3 md:grid md:place-items-center">
+  <div
+    class="grid grid-flow-col col-span-6 border-b border-l border-black md:border-l md:grid-flow-row md:col-span-2 md:grid print:border-b md:border-r md:border-b-0">
+    <div class="col-span-2 p-2 border-r border-black md:col-span-3 md:grid md:place-items-center md:border-r-0">
       <span
         class="flex items-center justify-center p-2 font-medium text-blue-700 bg-blue-100 border border-blue-300 rounded-full md:w-1/3">
         <span class="text-sm font-normal leading-none">{{.Category}}</span>
       </span>
     </div>
 
-    <div class="grid col-span-2 py-2 border-b border-r border-black md:border-b-0 md:col-span-3 place-items-center">
+    <div class="grid col-span-2 py-2 border-black md:col-span-3 place-items-center md:border-t">
       <p class="text-sm text-center">{{.Yield}} servings</p>
     </div>
 
     <div
-      class="flex items-center justify-center col-span-2 border-b border-r border-black md:col-span-3 md:border-t md:py-2">
+      class="flex items-center justify-center col-span-2 border-l border-r border-black md:border-l-0 md:border-r-0 md:border-b md:col-span-3 md:border-t md:py-2">
       {{- if isUrl .Url -}}
-      <a class="p-1 text-sm duration-300 border border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
-        href="{{.Url}}" target="_blank">
+      <a class="p-1 text-sm duration-300 border rounded-lg hover:bg-gray-800 hover:text-white center" href="{{.Url}}"
+        target="_blank">
         Source
       </a>
       {{- else -}}
@@ -86,7 +86,7 @@
   </div>
 
   <div
-    class="col-span-6 border-b border-l border-r border-black md:col-span-4 md:border-r-0 print:col-span-5 print:border-r print:border-t-0">
+    class="col-span-6 border-b border-l border-r border-black md:col-span-4 md:border-r-0 print:col-span-5 print:border-r print:border-t-0 md:border-t">
     <p class="p-2 text-sm whitespace-pre-line">{{.Description}}</p>
     <div class="hidden print:block print:p-2">
       <h1 class="text-sm"><b>Nutrition Facts</b></h1>
