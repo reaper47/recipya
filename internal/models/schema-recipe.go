@@ -6,6 +6,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 // RecipeSchema is a representation of the Recipe schema (https://schema.org/Recipe).
@@ -45,7 +47,7 @@ func (m RecipeSchema) ToRecipe() (Recipe, error) {
 		category = strings.TrimSpace(strings.ToLower(m.Category))
 	}
 
-	times, err := NewTimes(m.CookTime, m.PrepTime)
+	times, err := NewTimes(m.PrepTime, m.CookTime)
 	if err != nil {
 		return Recipe{}, err
 	}
@@ -68,6 +70,11 @@ func (m RecipeSchema) ToRecipe() (Recipe, error) {
 		}
 	}
 
+	image, err := uuid.Parse(m.Image)
+	if err != nil {
+		image = uuid.Nil
+	}
+
 	updatedAt := createdAt
 	if m.DateModified != "" {
 		updatedAt, err = time.Parse("2006-01-02", strings.Split(m.DateModified, "T")[0])
@@ -80,6 +87,7 @@ func (m RecipeSchema) ToRecipe() (Recipe, error) {
 		ID:           0,
 		Name:         m.Name,
 		Description:  m.Description,
+		Image:        image,
 		Url:          m.Url,
 		Yield:        m.Yield.Value,
 		Category:     category,

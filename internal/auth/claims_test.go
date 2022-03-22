@@ -7,12 +7,14 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-func TestClaims(t *testing.T) {
+func TestAuthClaims(t *testing.T) {
 	testcases := []struct {
+		name string
 		in   customClaims
 		want bool
 	}{
 		{
+			name: "claim is expired",
 			in: customClaims{
 				RegisteredClaims: jwt.RegisteredClaims{
 					ExpiresAt: &jwt.NumericDate{Time: time.Now().Add(-1024 * time.Hour)},
@@ -22,6 +24,7 @@ func TestClaims(t *testing.T) {
 			want: false,
 		},
 		{
+			name: "claim has no SID",
 			in: customClaims{
 				RegisteredClaims: jwt.RegisteredClaims{
 					ExpiresAt: &jwt.NumericDate{Time: time.Now().Add(14 * 24 * time.Hour)},
@@ -30,6 +33,7 @@ func TestClaims(t *testing.T) {
 			want: false,
 		},
 		{
+			name: "claim is valid",
 			in: customClaims{
 				RegisteredClaims: jwt.RegisteredClaims{
 					ExpiresAt: &jwt.NumericDate{Time: time.Now().Add(14 * 24 * time.Hour)},
@@ -40,8 +44,10 @@ func TestClaims(t *testing.T) {
 		},
 	}
 	for i, tc := range testcases {
-		if tc.in.IsValid() != tc.want {
-			t.Errorf("IsValid for test #%d: %#v, want %v", i, tc.in, tc.want)
-		}
+		t.Run(tc.name, func(t *testing.T) {
+			if tc.in.IsValid() != tc.want {
+				t.Errorf("IsValid for test #%d: %#v, want %v", i, tc.in, tc.want)
+			}
+		})
 	}
 }

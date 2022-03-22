@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func FuzzPasswords(f *testing.F) {
+func FuzzAuthPasswords(f *testing.F) {
 	testcases := []string{"password", " ", "!12345"}
 	for _, tc := range testcases {
 		f.Add(tc)

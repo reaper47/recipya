@@ -67,7 +67,7 @@ func (r Recipe) ToArgs(includeID bool) []any {
 // ToSchema creates the schema representation of the Recipe.
 func (r Recipe) ToSchema() RecipeSchema {
 	return RecipeSchema{
-		AtContext:       `http://schema.org`,
+		AtContext:       "http://schema.org",
 		AtType:          "Recipe",
 		Category:        r.Category,
 		CookTime:        formatDuration(r.Times.Cook),
@@ -109,7 +109,7 @@ func NewTimes(prep, cook string) (Times, error) {
 		return Times{}, err
 	}
 
-	return Times{Prep: p, Cook: c}, nil
+	return Times{Prep: p, Cook: c, Total: p + c}, nil
 }
 
 func parseDuration(d string) (time.Duration, error) {

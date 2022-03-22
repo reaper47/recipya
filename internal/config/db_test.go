@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestDb(t *testing.T) {
+func TestConfigDb(t *testing.T) {
 	t.Run("DBOptions struct creates the correct DSN", func(t *testing.T) {
 		os.Setenv("DB_PROTOCOL", "protocol")
 		defer os.Unsetenv("DB_PROTOCOL")
