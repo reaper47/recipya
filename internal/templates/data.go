@@ -55,6 +55,10 @@ type Pagination struct {
 
 // Init initializes the pagination struct.
 func (p *Pagination) Init(page int) {
+	if page < 0 {
+		return
+	}
+
 	numPages := p.NumResults / 12
 	if p.NumResults%12 > 0 {
 		numPages++

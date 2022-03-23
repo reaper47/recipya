@@ -18,10 +18,10 @@ var fm = template.FuncMap{
 		s := d / time.Second
 		return fmt.Sprintf("%d:%02d:%02d", h, m, s)
 	},
-	"fmtDuration": func(d time.Duration, isDt bool) string {
+	"fmtDuration": func(d time.Duration, isDatetime bool) string {
 		h, m, d := getHourMin(d)
 		d -= m * time.Minute
-		if isDt {
+		if isDatetime {
 			if h > 0 {
 				return fmt.Sprintf("PT%dH%02dM", h, m)
 			}
@@ -45,7 +45,7 @@ var fm = template.FuncMap{
 		return true
 	},
 	"isUuidValid": func(u uuid.UUID) bool {
-		return u != uuid.UUID{}
+		return u != uuid.Nil
 	},
 	"mul": func(n ...int) int {
 		rslt := 1
@@ -55,7 +55,7 @@ var fm = template.FuncMap{
 		return rslt
 	},
 	"substring": func(s string, endIndex int) string {
-		if len(s) <= endIndex {
+		if len(s) <= endIndex || endIndex < 0 {
 			return s
 		}
 		return s[:endIndex] + "..."
