@@ -291,8 +291,7 @@ func compressImage(f multipart.File) (*image.RGBA, error) {
 		return nil, err
 	}
 
-	imgWidth := 400
-	dst := image.NewRGBA(image.Rect(0, 0, imgWidth, imgWidth))
+	dst := image.NewRGBA(image.Rect(0, 0, 520, 432))
 	draw.NearestNeighbor.Scale(dst, dst.Rect, img, img.Bounds(), draw.Over, nil)
 	return dst, nil
 }
