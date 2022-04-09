@@ -29,13 +29,13 @@ type Recipe struct {
 }
 
 // ToArgs adds every field related to a Recipe to an any slice.
-func (r Recipe) ToArgs(includeID bool) []any {
-	args := []any{}
+func (r Recipe) ToArgs(includeID bool) []interface{} {
+	args := []interface{}{}
 	if includeID {
 		args = append(args, r.ID)
 	}
 
-	args = append(args, []any{
+	args = append(args, []interface{}{
 		r.Name,
 		r.Description,
 		r.Image,

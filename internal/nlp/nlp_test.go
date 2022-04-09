@@ -1,14 +1,12 @@
 package nlp
 
 import (
-	"strings"
 	"testing"
-
-	"golang.org/x/exp/slices"
 )
 
 func TestNlp(t *testing.T) {
-	t.Run("CapitalizeParagraphs", func(t *testing.T) {
+	// TODO: Uncomment when Fedora updated its Go package to 1.18
+	/*t.Run("CapitalizeParagraphs", func(t *testing.T) {
 		testcases := []struct {
 			name string
 			want []string
@@ -49,5 +47,5 @@ func TestNlp(t *testing.T) {
 				}
 			})
 		}
-	})
+	})*/
 }
