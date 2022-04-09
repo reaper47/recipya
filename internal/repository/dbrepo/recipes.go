@@ -152,7 +152,7 @@ func (m *postgresDBRepo) Recipes(userID int64, page int) ([]models.Recipe, error
 				Cook:  cook,
 				Total: total,
 			},
-			Ingredients: ingredients,
+			Ingredients: models.Ingredients{Values: ingredients},
 			Nutrition: models.Nutrition{
 				Calories:           calories,
 				TotalCarbohydrates: totalCarbohydrates,
@@ -361,7 +361,7 @@ func (m *postgresDBRepo) UpdateRecipe(r models.Recipe) error {
 
 func getTables(r models.Recipe) []tableData {
 	return []tableData{
-		{Table: "ingredients", AssocTable: "ingredient_recipe", Entries: r.Ingredients},
+		{Table: "ingredients", AssocTable: "ingredient_recipe", Entries: r.Ingredients.Values},
 		{Table: "instructions", AssocTable: "instruction_recipe", Entries: r.Instructions},
 		{Table: "keywords", AssocTable: "keyword_recipe", Entries: r.Keywords},
 		{Table: "tools", AssocTable: "tool_recipe", Entries: r.Tools},

@@ -22,7 +22,7 @@ func TestModelRecipe(t *testing.T) {
 				Cook:  2 * time.Hour,
 				Total: 3 * time.Hour,
 			},
-			Ingredients: []string{"ing1", "ing2", "ing3"},
+			Ingredients: Ingredients{Values: []string{"ing1", "ing2", "ing3"}},
 			Nutrition: Nutrition{
 				Calories:           "1kcal",
 				TotalCarbohydrates: "1g",
@@ -68,7 +68,7 @@ func TestModelRecipe(t *testing.T) {
 				Cook:  2 * time.Hour,
 				Total: 3 * time.Hour,
 			},
-			Ingredients: []string{"ing1", "ing2", "ing3"},
+			Ingredients: Ingredients{Values: []string{"ing1", "ing2", "ing3"}},
 			Nutrition: Nutrition{
 				Calories:           "1kcal",
 				TotalCarbohydrates: "1g",
@@ -92,19 +92,19 @@ func TestModelRecipe(t *testing.T) {
 		if schema.AtContext != "http://schema.org" {
 			t.Errorf("context must be http://schema.org")
 		}
-		if schema.AtType != "Recipe" {
+		if schema.AtType.Value != "Recipe" {
 			t.Errorf("type must be Recipe")
 		}
-		if schema.Category != "lunch" {
+		if schema.Category.Value != "lunch" {
 			t.Errorf("wanted category 'lunch' but got '%q'", schema.Category)
 		}
 		if schema.CookTime != "PT2H0M0S" {
 			t.Errorf("wanted cook time PT1H but got %q", schema.CookTime)
 		}
-		if schema.CookingMethod != "" {
+		if schema.CookingMethod.Value != "" {
 			t.Errorf("wanted an empty cooking method but got %q", schema.CookingMethod)
 		}
-		if schema.Cuisine != "" {
+		if schema.Cuisine.Value != "" {
 			t.Errorf("wanted an empty cusine but got %q", schema.Cuisine)
 		}
 		v := r.CreatedAt.Format("2006-01-02")
@@ -119,14 +119,14 @@ func TestModelRecipe(t *testing.T) {
 		if schema.DatePublished != v {
 			t.Errorf("wanted date published %q but got %q", v, schema.DatePublished)
 		}
-		if schema.Description != "description" {
+		if schema.Description.Value != "description" {
 			t.Errorf("wanted description 'description' but got %q", schema.Description)
 		}
-		if schema.Keywords != "kw1,kw2,kw3" {
+		if schema.Keywords.Values != "kw1,kw2,kw3" {
 			t.Errorf("wanted keywords 'kw1,kw2,kw3' but got %q", schema.Keywords)
 		}
 		v = string(imageUUID.String())
-		if schema.Image != v {
+		if schema.Image.Value != v {
 			t.Errorf("wanted uuid %q but got %q", v, schema.Image)
 		}
 		// TODO: Uncomment when Fedora updated its Go package to 1.18

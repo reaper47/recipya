@@ -223,7 +223,7 @@ func getRecipeFromForm(req *http.Request) (models.Recipe, error) {
 		Yield:        int16(yield),
 		Category:     strings.TrimSpace(strings.ToLower(req.FormValue("category"))),
 		Times:        times,
-		Ingredients:  getFormItems(req, "ingredient"),
+		Ingredients:  models.Ingredients{Values: getFormItems(req, "ingredient")},
 		Instructions: getFormItems(req, "instruction"),
 		Nutrition: models.Nutrition{
 			Calories:           req.FormValue("calories"),

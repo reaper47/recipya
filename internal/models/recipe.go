@@ -19,7 +19,7 @@ type Recipe struct {
 	Yield        int16
 	Category     string
 	Times        Times
-	Ingredients  []string
+	Ingredients  Ingredients
 	Nutrition    Nutrition
 	Instructions []string
 	Tools        []string
@@ -55,7 +55,7 @@ func (r Recipe) ToArgs(includeID bool) []interface{} {
 		r.Times.Cook.String(),
 	}...)
 
-	arrs := [][]string{r.Ingredients, r.Instructions, r.Keywords, r.Tools}
+	arrs := [][]string{r.Ingredients.Values, r.Instructions, r.Keywords, r.Tools}
 	for _, arr := range arrs {
 		for _, v := range arr {
 			args = append(args, v)
@@ -68,24 +68,23 @@ func (r Recipe) ToArgs(includeID bool) []interface{} {
 func (r Recipe) ToSchema() RecipeSchema {
 	return RecipeSchema{
 		AtContext:       "http://schema.org",
-		AtType:          "Recipe",
-		Category:        r.Category,
+		AtType:          SchemaType{Value: "Recipe"},
+		Category:        Category{Value: r.Category},
 		CookTime:        formatDuration(r.Times.Cook),
-		CookingMethod:   "",
-		Cuisine:         "",
+		Cuisine:         Cuisine{},
 		DateCreated:     r.CreatedAt.Format("2006-01-02"),
 		DateModified:    r.UpdatedAt.Format("2006-01-02"),
 		DatePublished:   r.CreatedAt.Format("2006-01-02"),
-		Description:     r.Description,
-		Keywords:        strings.Join(r.Keywords, ","),
-		Image:           string(r.Image.String()),
+		Description:     Description{Value: r.Description},
+		Keywords:        Keywords{Values: strings.Join(r.Keywords, ",")},
+		Image:           Image{Value: string(r.Image.String())},
 		Ingredients:     r.Ingredients,
-		Instructions:    instructions{Values: r.Instructions},
+		Instructions:    Instructions{Values: r.Instructions},
 		Name:            r.Name,
 		NutritionSchema: r.Nutrition.toSchema(strconv.Itoa(int(r.Yield))),
 		PrepTime:        formatDuration(r.Times.Prep),
-		Tools:           tools{Values: r.Tools},
-		Yield:           yield{Value: r.Yield},
+		Tools:           Tools{Values: r.Tools},
+		Yield:           Yield{Value: r.Yield},
 		Url:             r.Url,
 	}
 }

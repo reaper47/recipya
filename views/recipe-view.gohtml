@@ -243,7 +243,7 @@
     <h2 class="pb-2 m-auto text-sm font-bold text-center text-gray-600 underline ">Ingredients</h2>
     <ul class="grid px-6">
       {{$len := len .Instructions}}
-      {{- range $i, $e := .Ingredients -}}
+      {{- range $i, $e := .Ingredients.Values -}}
       <li
         class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200 {{if eq $i 0}}rounded-t-lg{{else if eq $i $len}}rounded-b-lg{{end}}"
         onmousedown="highlight(event)">

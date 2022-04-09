@@ -247,7 +247,7 @@
       </legend>
       <ol id="ingredients__list" class="pl-6 list-decimal">
         {{$len := len .Instructions}}
-        {{- range $i, $e := .Ingredients -}}
+        {{- range $i, $e := .Ingredients.Values -}}
         <li class="pb-2 pl-2">
           <input type="text" name="ingredient-{{inc $i}}" placeholder="Ingredient #{{inc $i}}" value="{{$e}}" required
             class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
