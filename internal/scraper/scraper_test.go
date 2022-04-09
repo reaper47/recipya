@@ -8347,7 +8347,7 @@ func TestScraper(t *testing.T) {
 	for _, tc := range testcases {
 		tc := tc
 		t.Run("scrape "+tc.name, func(t *testing.T) {
-			//t.Parallel()
+			t.Parallel()
 			defer func() {
 				if err := recover(); err != nil {
 					t.Fatalf("panic while testing %s: %s", tc.name, err)
