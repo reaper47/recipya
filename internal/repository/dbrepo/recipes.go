@@ -222,7 +222,7 @@ func (m *postgresDBRepo) Recipe(id int64) models.Recipe {
 		&n.Cholesterol,
 		&n.Sodium,
 		&n.Fiber,
-		&r.Ingredients,
+		&r.Ingredients.Values,
 		&r.Instructions,
 		&r.Keywords,
 		&r.Tools,

@@ -26,6 +26,10 @@ func Scrape(rawurl string) (rs models.RecipeSchema, err error) {
 	}
 
 	rs, err = scrapeWebsite(doc, getHost(rawurl))
+	if err != nil {
+		return rs, fmt.Errorf("Could not fetch the recipe from %s: %s", rawurl, err)
+	}
+
 	if rs.Url == "" {
 		rs.Url = rawurl
 	}

@@ -26,6 +26,7 @@ import (
 	"github.com/reaper47/recipya/internal/logger"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/repository"
+	"github.com/reaper47/recipya/internal/scraper"
 	"github.com/reaper47/recipya/internal/templates"
 	"golang.org/x/image/draw"
 )
@@ -164,7 +165,7 @@ func handlePostEditRecipe(w http.ResponseWriter, req *http.Request, id int64) {
 	http.Redirect(w, req, "/recipes/"+strconv.FormatInt(id, 10), http.StatusSeeOther)
 }
 
-// GetRecipesNewManual handles the GET /recipes/new/manual URI.
+// GetRecipesNewManual handles the GET /recipes/new/manual endpoint.
 func GetRecipesNewManual(w http.ResponseWriter, req *http.Request) {
 	s := getSession(req)
 	err := templates.Render(w, "recipe-new-manual.gohtml", templates.Data{
@@ -178,7 +179,7 @@ func GetRecipesNewManual(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-// PostRecipesNewManual handles the POST /recipes/new/manual URI.
+// PostRecipesNewManual handles the POST /recipes/new/manual endpoint.
 func PostRecipesNewManual(w http.ResponseWriter, req *http.Request) {
 	r, err := getRecipeFromForm(req)
 	if err != nil {
@@ -207,7 +208,10 @@ func getRecipeFromForm(req *http.Request) (models.Recipe, error) {
 
 	file, _, err := req.FormFile("image")
 	var imageUUID uuid.UUID
-	if err == nil {
+	switch err {
+	case http.ErrMissingFile:
+		imageUUID, _ = uuid.Parse(req.FormValue("image-scraper"))
+	case nil:
 		defer file.Close()
 		imageUUID, err = saveImage(file, "img")
 		if err != nil {
@@ -484,4 +488,54 @@ func ExportRecipes(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set(constants.HeaderContentType, constants.ApplicationZip)
 	w.Header().Set(constants.HeaderContentDisposition, `attachment; filename="recipya-recipes.zip"`)
 	w.Write(buf.Bytes())
+}
+
+// ScrapeRecipe handles the POST /recipes/scrape endpoint.
+func ScrapeRecipe(w http.ResponseWriter, req *http.Request) {
+	url := req.FormValue("url")
+	if url == "" {
+		showErrorPage(w, "You must input a recipe to fetch.", nil)
+		return
+	}
+
+	rs, err := scraper.Scrape(url)
+	if err != nil {
+		showErrorPage(w, "", err)
+		return
+	}
+
+	r, err := rs.ToRecipe()
+	if err != nil {
+		showErrorPage(w, "Could not parse recipe: "+url+".", nil)
+		return
+	}
+
+	s := getSession(req)
+	_ = config.App().Repo.InsertCategory(r.Category, s.UserID)
+
+	res, err := http.Get(rs.Image.Value)
+	if err == nil {
+		img := uuid.New()
+		out, err := os.Create("./data/img/" + img.String())
+		if err == nil {
+			_, err = io.Copy(out, res.Body)
+			if err == nil {
+				r.Image = img
+			}
+			out.Close()
+		}
+		res.Body.Close()
+	}
+
+	err = templates.Render(w, "recipe-new-scrape.gohtml", templates.Data{
+		Categories: config.App().Repo.Categories(s.UserID),
+		RecipeData: templates.RecipeData{Recipe: r},
+		HeaderData: templates.HeaderData{
+			AvatarInitials: s.UserInitials,
+		},
+	})
+	if err != nil {
+		log.Println("EditRecipe error", err)
+		return
+	}
 }

@@ -1,8 +1,5 @@
 {{define "js-recipe-form"}}
-<script
-  src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"
-  async
-></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js" async></script>
 <script src="/static/js/html-duration-picker.min.js" async></script>
 <script>
   const loadFile = (event) => {
@@ -52,9 +49,7 @@
     Array.from(ol.children).forEach((li, index) => {
       const input = li.firstElementChild;
       const name = input.name.split("-")[0];
-      input.placeholder = `${name.charAt(0).toUpperCase() + name.slice(1)} #${
-        index + 1
-      }`;
+      input.placeholder = `${name.charAt(0).toUpperCase() + name.slice(1)} #${index + 1}`;
       input.name = `${name}-${index + 1}`;
     });
   };
@@ -149,9 +144,7 @@
         Array.from(target.children).forEach((li, index) => {
           const input = li.firstElementChild;
           input.name = `${singularName}-${index + 1}`;
-          input.placeholder = `${
-            singularName[0].toUpperCase() + singularName.slice(1)
-          } #${index + 1}`;
+          input.placeholder = `${singularName[0].toUpperCase() + singularName.slice(1)} #${index + 1}`;
         });
       },
     });
