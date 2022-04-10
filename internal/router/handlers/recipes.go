@@ -527,15 +527,10 @@ func ScrapeRecipe(w http.ResponseWriter, req *http.Request) {
 		res.Body.Close()
 	}
 
-	err = templates.Render(w, "recipe-new-scrape.gohtml", templates.Data{
-		Categories: config.App().Repo.Categories(s.UserID),
-		RecipeData: templates.RecipeData{Recipe: r},
-		HeaderData: templates.HeaderData{
-			AvatarInitials: s.UserInitials,
-		},
-	})
+	id, err := config.App().Repo.InsertNewRecipe(r, getSession(req).UserID)
 	if err != nil {
-		log.Println("EditRecipe error", err)
+		showErrorPage(w, "An error occured when inserting the recipe:", err)
 		return
 	}
+	http.Redirect(w, req, "/recipes/"+strconv.FormatInt(id, 10), http.StatusSeeOther)
 }
