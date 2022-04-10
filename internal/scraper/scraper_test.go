@@ -2,11 +2,15 @@ package scraper
 
 import (
 	"fmt"
+	"os"
+	"path"
+	"runtime"
 	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/reaper47/recipya/internal/models"
+	"golang.org/x/net/html"
 )
 
 func TestScraper(t *testing.T) {
@@ -8354,10 +8358,8 @@ func TestScraper(t *testing.T) {
 				}
 			}()
 
-			actual, err := Scrape(tc.in)
-			if err != nil {
-				t.Fatal(err)
-			}
+			actual := testFile(t, tc.name, tc.in)
+			//actual := testHTTP(t, tc.in)
 
 			if !cmp.Equal(actual, tc.want) {
 				fmt.Println(cmp.Diff(actual, tc.want))
@@ -8365,4 +8367,35 @@ func TestScraper(t *testing.T) {
 			}
 		})
 	}
+}
+
+func testHTTP(t *testing.T, in string) models.RecipeSchema {
+	rs, err := Scrape(in)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return rs
+}
+
+func testFile(t *testing.T, name, in string) models.RecipeSchema {
+	_, fname, _, _ := runtime.Caller(0)
+	f, err := os.Open(path.Dir(fname) + "/testdata/" + name + ".html")
+	if err != nil {
+		t.Fatalf("%s open file: %s", in, err)
+	}
+
+	doc, err := html.Parse(f)
+	if err != nil {
+		t.Fatalf("%s could not parse HTML: %s", name, err)
+	}
+
+	actual, err := scrapeWebsite(doc, getHost(in))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if actual.Url == "" {
+		actual.Url = in
+	}
+	return actual
 }

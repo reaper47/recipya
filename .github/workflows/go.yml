@@ -61,8 +61,8 @@ jobs:
       - name: Build
         run: make build
 
-      #- name: Run unit tests
-      #  run: go test ./... -v
+      - name: Run unit tests
+        run: go test ./... -v
       
       #- name: Run fuzzing tests
       #  run: go test ./internal/auth/ -fuzz=Fuzz -fuzztime 30s

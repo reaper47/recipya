@@ -77,7 +77,10 @@ func scrapeTesco(root *html.Node) (models.RecipeSchema, error) {
 				continue
 			}
 
-			vals = append(vals, c.FirstChild.Data)
+			v := c.FirstChild.Data
+			v = strings.ReplaceAll(v, "\n", "")
+			v = strings.Join(strings.Fields(v), " ")
+			vals = append(vals, v)
 		}
 	}()
 
@@ -105,15 +108,22 @@ func scrapeTesco(root *html.Node) (models.RecipeSchema, error) {
 				continue
 			}
 
-			vals = append(vals, c.FirstChild.Data)
+			v := c.FirstChild.Data
+			v = strings.ReplaceAll(v, "\n", "")
+			v = strings.Join(strings.Fields(v), " ")
+			vals = append(vals, v)
 		}
 	}()
+
+	description := <-getElementData(root, "class", "recipe-detail__intro")
+	description = strings.ReplaceAll(description, "\n", "")
+	description = strings.Join(strings.Fields(description), " ")
 
 	return models.RecipeSchema{
 		AtContext:       "https://schema.org",
 		AtType:          models.SchemaType{Value: "Recipe"},
 		Name:            <-getElementData(root, "class", "recipe-detail__headline"),
-		Description:     models.Description{Value: <-getElementData(root, "class", "recipe-detail__intro")},
+		Description:     models.Description{Value: description},
 		Yield:           models.Yield{Value: <-chYield},
 		Image:           models.Image{Value: <-chImage},
 		NutritionSchema: <-chNutrition,

@@ -1,0 +1,1908 @@
+
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr" prefix="og: https://ogp.me/ns#">
+  <head>
+    <meta charset="utf-8" /><script type="text/javascript">(window.NREUM||(NREUM={})).init={ajax:{deny_list:["bam-cell.nr-data.net"]}};(window.NREUM||(NREUM={})).loader_config={licenseKey:"6b8b93db2d",applicationID:"401100790"};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var i=e[n]={exports:{}};t[n][0].call(i.exports,function(e){var i=t[n][1][e];return r(i||e)},i,i.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var i=0;i<n.length;i++)r(n[i]);return r}({1:[function(t,e,n){function r(){}function i(t,e,n,r){return function(){return s.recordSupportability("API/"+e+"/called"),o(t+e,[u.now()].concat(c(arguments)),n?null:this,r),n?void 0:this}}var o=t("handle"),a=t(10),c=t(11),f=t("ee").get("tracer"),u=t("loader"),s=t(4),d=NREUM;"undefined"==typeof window.newrelic&&(newrelic=d);var p=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],l="api-",v=l+"ixn-";a(p,function(t,e){d[e]=i(l,e,!0,"api")}),d.addPageAction=i(l,"addPageAction",!0),d.setCurrentRouteName=i(l,"routeName",!0),e.exports=newrelic,d.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(t,e){var n={},r=this,i="function"==typeof e;return o(v+"tracer",[u.now(),t,n],r),function(){if(f.emit((i?"":"no-")+"fn-start",[u.now(),r,i],n),i)try{return e.apply(this,arguments)}catch(t){throw f.emit("fn-err",[arguments,this,t],n),t}finally{f.emit("fn-end",[u.now()],n)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(t,e){m[e]=i(v,e)}),newrelic.noticeError=function(t,e){"string"==typeof t&&(t=new Error(t)),s.recordSupportability("API/noticeError/called"),o("err",[t,u.now(),!1,e])}},{}],2:[function(t,e,n){function r(t){if(NREUM.init){for(var e=NREUM.init,n=t.split("."),r=0;r<n.length-1;r++)if(e=e[n[r]],"object"!=typeof e)return;return e=e[n[n.length-1]]}}e.exports={getConfiguration:r}},{}],3:[function(t,e,n){var r=!1;try{var i=Object.defineProperty({},"passive",{get:function(){r=!0}});window.addEventListener("testPassive",null,i),window.removeEventListener("testPassive",null,i)}catch(o){}e.exports=function(t){return r?{passive:!0,capture:!!t}:!!t}},{}],4:[function(t,e,n){function r(t,e){var n=[a,t,{name:t},e];return o("storeMetric",n,null,"api"),n}function i(t,e){var n=[c,t,{name:t},e];return o("storeEventMetrics",n,null,"api"),n}var o=t("handle"),a="sm",c="cm";e.exports={constants:{SUPPORTABILITY_METRIC:a,CUSTOM_METRIC:c},recordSupportability:r,recordCustom:i}},{}],5:[function(t,e,n){function r(){return c.exists&&performance.now?Math.round(performance.now()):(o=Math.max((new Date).getTime(),o))-a}function i(){return o}var o=(new Date).getTime(),a=o,c=t(12);e.exports=r,e.exports.offset=a,e.exports.getLastTimestamp=i},{}],6:[function(t,e,n){function r(t){return!(!t||!t.protocol||"file:"===t.protocol)}e.exports=r},{}],7:[function(t,e,n){function r(t,e){var n=t.getEntries();n.forEach(function(t){"first-paint"===t.name?l("timing",["fp",Math.floor(t.startTime)]):"first-contentful-paint"===t.name&&l("timing",["fcp",Math.floor(t.startTime)])})}function i(t,e){var n=t.getEntries();if(n.length>0){var r=n[n.length-1];if(u&&u<r.startTime)return;var i=[r],o=a({});o&&i.push(o),l("lcp",i)}}function o(t){t.getEntries().forEach(function(t){t.hadRecentInput||l("cls",[t])})}function a(t){var e=navigator.connection||navigator.mozConnection||navigator.webkitConnection;if(e)return e.type&&(t["net-type"]=e.type),e.effectiveType&&(t["net-etype"]=e.effectiveType),e.rtt&&(t["net-rtt"]=e.rtt),e.downlink&&(t["net-dlink"]=e.downlink),t}function c(t){if(t instanceof y&&!w){var e=Math.round(t.timeStamp),n={type:t.type};a(n),e<=v.now()?n.fid=v.now()-e:e>v.offset&&e<=Date.now()?(e-=v.offset,n.fid=v.now()-e):e=v.now(),w=!0,l("timing",["fi",e,n])}}function f(t){"hidden"===t&&(u=v.now(),l("pageHide",[u]))}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var u,s,d,p,l=t("handle"),v=t("loader"),m=t(9),g=t(3),y=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){s=new PerformanceObserver(r);try{s.observe({entryTypes:["paint"]})}catch(h){}d=new PerformanceObserver(i);try{d.observe({entryTypes:["largest-contentful-paint"]})}catch(h){}p=new PerformanceObserver(o);try{p.observe({type:"layout-shift",buffered:!0})}catch(h){}}if("addEventListener"in document){var w=!1,b=["click","keydown","mousedown","pointerdown","touchstart"];b.forEach(function(t){document.addEventListener(t,c,g(!1))})}m(f)}},{}],8:[function(t,e,n){function r(t,e){if(!i)return!1;if(t!==i)return!1;if(!e)return!0;if(!o)return!1;for(var n=o.split("."),r=e.split("."),a=0;a<r.length;a++)if(r[a]!==n[a])return!1;return!0}var i=null,o=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var c=navigator.userAgent,f=c.match(a);f&&c.indexOf("Chrome")===-1&&c.indexOf("Chromium")===-1&&(i="Safari",o=f[1])}e.exports={agent:i,version:o,match:r}},{}],9:[function(t,e,n){function r(t){function e(){t(c&&document[c]?document[c]:document[o]?"hidden":"visible")}"addEventListener"in document&&a&&document.addEventListener(a,e,i(!1))}var i=t(3);e.exports=r;var o,a,c;"undefined"!=typeof document.hidden?(o="hidden",a="visibilitychange",c="visibilityState"):"undefined"!=typeof document.msHidden?(o="msHidden",a="msvisibilitychange"):"undefined"!=typeof document.webkitHidden&&(o="webkitHidden",a="webkitvisibilitychange",c="webkitVisibilityState")},{}],10:[function(t,e,n){function r(t,e){var n=[],r="",o=0;for(r in t)i.call(t,r)&&(n[o]=e(r,t[r]),o+=1);return n}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],11:[function(t,e,n){function r(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,i=n-e||0,o=Array(i<0?0:i);++r<i;)o[r]=t[e+r];return o}e.exports=r},{}],12:[function(t,e,n){e.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(t,e,n){function r(){}function i(t){function e(t){return t&&t instanceof r?t:t?u(t,f,a):a()}function n(n,r,i,o,a){if(a!==!1&&(a=!0),!l.aborted||o){t&&a&&t(n,r,i);for(var c=e(i),f=m(n),u=f.length,s=0;s<u;s++)f[s].apply(c,r);var p=d[w[n]];return p&&p.push([b,n,r,c]),c}}function o(t,e){h[t]=m(t).concat(e)}function v(t,e){var n=h[t];if(n)for(var r=0;r<n.length;r++)n[r]===e&&n.splice(r,1)}function m(t){return h[t]||[]}function g(t){return p[t]=p[t]||i(n)}function y(t,e){l.aborted||s(t,function(t,n){e=e||"feature",w[n]=e,e in d||(d[e]=[])})}var h={},w={},b={on:o,addEventListener:o,removeEventListener:v,emit:n,get:g,listeners:m,context:e,buffer:y,abort:c,aborted:!1};return b}function o(t){return u(t,f,a)}function a(){return new r}function c(){(d.api||d.feature)&&(l.aborted=!0,d=l.backlog={})}var f="nr@context",u=t("gos"),s=t(10),d={},p={},l=e.exports=i();e.exports.getOrSetContext=o,l.backlog=d},{}],gos:[function(t,e,n){function r(t,e,n){if(i.call(t,e))return t[e];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:r,writable:!0,enumerable:!1}),r}catch(o){}return t[e]=r,r}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],handle:[function(t,e,n){function r(t,e,n,r){i.buffer([t],r),i.emit(t,e,n)}var i=t("ee").get("handle");e.exports=r,r.ee=i},{}],id:[function(t,e,n){function r(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:a(t,o,function(){return i++})}var i=1,o="nr@id",a=t("gos");e.exports=r},{}],loader:[function(t,e,n){function r(){if(!P++){var t=M.info=NREUM.info,e=g.getElementsByTagName("script")[0];if(setTimeout(u.abort,3e4),!(t&&t.licenseKey&&t.applicationID&&e))return u.abort();f(O,function(e,n){t[e]||(t[e]=n)});var n=a();c("mark",["onload",n+M.offset],null,"api"),c("timing",["load",n]);var r=g.createElement("script");0===t.agent.indexOf("http://")||0===t.agent.indexOf("https://")?r.src=t.agent:r.src=v+"://"+t.agent,e.parentNode.insertBefore(r,e)}}function i(){"complete"===g.readyState&&o()}function o(){c("mark",["domContent",a()+M.offset],null,"api")}var a=t(5),c=t("handle"),f=t(10),u=t("ee"),s=t(8),d=t(6),p=t(2),l=t(3),v=p.getConfiguration("ssl")===!1?"http":"https",m=window,g=m.document,y="addEventListener",h="attachEvent",w=m.XMLHttpRequest,b=w&&w.prototype,E=!d(m.location);NREUM.o={ST:setTimeout,SI:m.setImmediate,CT:clearTimeout,XHR:w,REQ:m.Request,EV:m.Event,PR:m.Promise,MO:m.MutationObserver};var x=""+location,O={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1215.min.js"},T=w&&b&&b[y]&&!/CriOS/.test(navigator.userAgent),M=e.exports={offset:a.getLastTimestamp(),now:a,origin:x,features:{},xhrWrappable:T,userAgent:s,disabled:E};if(!E){t(1),t(7),g[y]?(g[y]("DOMContentLoaded",o,l(!1)),m[y]("load",r,l(!1))):(g[h]("onreadystatechange",i),m[h]("onload",r)),c("mark",["firstbyte",a.getLastTimestamp()],null,"api");var P=0}},{}],"wrap-function":[function(t,e,n){function r(t,e){function n(e,n,r,f,u){function nrWrapper(){var o,a,s,p;try{a=this,o=d(arguments),s="function"==typeof r?r(o,a):r||{}}catch(l){i([l,"",[o,a,f],s],t)}c(n+"start",[o,a,f],s,u);try{return p=e.apply(a,o)}catch(v){throw c(n+"err",[o,a,v],s,u),v}finally{c(n+"end",[o,a,p],s,u)}}return a(e)?e:(n||(n=""),nrWrapper[p]=e,o(e,nrWrapper,t),nrWrapper)}function r(t,e,r,i,o){r||(r="");var c,f,u,s="-"===r.charAt(0);for(u=0;u<e.length;u++)f=e[u],c=t[f],a(c)||(t[f]=n(c,s?f+r:r,i,f,o))}function c(n,r,o,a){if(!v||e){var c=v;v=!0;try{t.emit(n,r,o,e,a)}catch(f){i([f,n,r,o],t)}v=c}}return t||(t=s),n.inPlace=r,n.flag=p,n}function i(t,e){e||(e=s);try{e.emit("internal-error",t)}catch(n){}}function o(t,e,n){if(Object.defineProperty&&Object.keys)try{var r=Object.keys(t);return r.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(o){i([o],n)}for(var a in t)l.call(t,a)&&(e[a]=t[a]);return e}function a(t){return!(t&&t instanceof Function&&t.apply&&!t[p])}function c(t,e){var n=e(t);return n[p]=t,o(t,n,s),n}function f(t,e,n){var r=t[e];t[e]=c(r,n)}function u(){for(var t=arguments.length,e=new Array(t),n=0;n<t;++n)e[n]=arguments[n];return e}var s=t("ee"),d=t(11),p="nr@original",l=Object.prototype.hasOwnProperty,v=!1;e.exports=r,e.exports.wrapFunction=c,e.exports.wrapInPlace=f,e.exports.argsToArray=u},{}]},{},["loader"]);</script>
+<link rel="canonical" href="https://www.kingarthurbaking.com/recipes/sourdough-zucchini-bread-recipe" />
+<link rel="image_src" href="https://www.kingarthurbaking.com/sites/default/files/2021-06/sourdough-zucchini-bread_0521.jpg" />
+<meta name="description" content="Whole grain zucchini bread using sourdough discard" />
+<meta property="og:site_name" content="King Arthur Baking" />
+<meta property="og:url" content="https://www.kingarthurbaking.com/recipes/sourdough-zucchini-bread-recipe" />
+<meta property="og:title" content="Sourdough Zucchini Bread" />
+<meta property="og:description" content="Whole grain zucchini bread using sourdough discard" />
+<meta property="og:image" content="https://www.kingarthurbaking.com/sites/default/files/2021-06/sourdough-zucchini-bread_0521.jpg" />
+<meta name="p:domain_verify" content="0141af6904f9685eaafe9b65c80cf9d3" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@KingArthurFlour" />
+<meta name="twitter:creator" content="@KingArthurFlour" />
+<meta name="Generator" content="Drupal 9 (https://www.drupal.org)" />
+<meta name="MobileOptimized" content="width" />
+<meta name="HandheldFriendly" content="true" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script>var ct_check_js_val = 'ea3b5c83567cc25886111f3959614b56';var drupal_ac_antibot_cookie_value = '421abb42d80d8f92e17f05f44835068126a15a759cec47b292ce8656e6b054a6';var ct_use_alt_cookies = 0;var ct_capture_buffer = 0;</script>
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "Recipe",
+            "keywords": "Quick bread, Lemon, Raisin, Sourdough, Spice, Breakfast \u0026 brunch",
+            "name": "Sourdough Zucchini Bread",
+            "description": "\u003Cp\u003EThis delicious whole grain zucchini bread makes wonderful use of excess sourdough starter you might otherwise discard. Paired with summer’s avalanche of zucchini, it’s one loaf that solves two kitchen conundrums!\u003C/p\u003E",
+            "recipeYield": "one 9” x 5” loaf or 12” tea loaf",
+            "datePublished": "June 3, 2021 at 2:13pm",
+            "prepTime": "PT30M",
+            "cookTime": "PT1H5M",
+            "totalTime": "PT1H30M",
+            "recipeIngredient": [
+                "3/4 cup (170g) sourdough starter fed (ripe) or unfed (discard)",
+                "1/2 cup (99g) granulated sugar",
+                "1/4 cup (85g) honey",
+                "6 tablespoons (75g) vegetable oil",
+                "2 large eggs",
+                "1/4 teaspoon \u003Ca href=\u0022https://shop.kingarthurbaking.com/items/nutmeg\u0022  data-name=\u0022Nutmeg\u0022 data-sku=\u0022208282\u0022 data-price=\u0022$3.48\u0022\u003Enutmeg\u003C/a\u003E",
+                "1 1/2 teaspoons lemon zest (grated rind)",
+                "1 1/2 teaspoons \u003Ca href=\u0022https://shop.kingarthurbaking.com/items/king-arthur-pure-vanilla-extract\u0022  data-name=\u0022King Arthur Pure Vanilla Extract\u0022 data-sku=\u0022VG0014\u0022 data-price=\u0022$139.90\u0022\u003Evanilla extract\u003C/a\u003E",
+                "1 cup (113g) \u003Ca href=\u0022https://shop.kingarthurbaking.com/items/stone-ground-white-whole-wheat-flour\u0022  data-name=\u0022Stone-Ground White Whole Wheat Flour\u0022 data-sku=\u002205555\u0022 data-price=\u0022$5.95\u0022\u003EKing Arthur White Whole Wheat Flour\u003C/a\u003E",
+                "3/4 cup (90g) \u003Ca href=\u0022https://shop.kingarthurbaking.com/items/unbleached-all-purpose-flour\u0022  data-name=\u0022Unbleached All-Purpose Flour\u0022 data-sku=\u0022VG0001\u0022 data-price=\u0022$5.95\u0022\u003EKing Arthur Unbleached All-Purpose Flour\u003C/a\u003E",
+                "1/2 teaspoon baking soda",
+                "1 teaspoon baking powder",
+                "1 teaspoon salt",
+                "2 cups (242g to 300g) grated zucchini somewhere between firmly and lightly packed",
+                "3/4 cup (85g) chopped walnuts lightly toasted",
+                "3/4 cup (128g) raisins currants or dried cranberries"
+            ],
+            "recipeInstructions": "\u003Cp\u003EPreheat the oven to 350°F. Lightly grease a \u003Ca href=\u0022https://shop.kingarthurbaking.com/items/king-arthur-quick-bread-pan-9-in-x-5-in\u0022\u003E9” x 5” quick bread pan\u003C/a\u003E or \u003Ca href=\u0022https://shop.kingarthurbaking.com/items/tea-loaf-pan\u0022\u003E12” x 4” tea loaf pan\u003C/a\u003E.\u003C/p\u003E\n, \u003Cp\u003EIn a large bowl, stir together the starter, sugar, honey, oil, eggs, nutmeg, lemon zest, and vanilla until thoroughly combined.\u003C/p\u003E\n, \u003Cp\u003EIn a separate medium bowl, whisk together the flours, baking soda, baking powder, and salt; stir into the wet ingredients.\u003C/p\u003E\n, \u003Cp\u003EStir in the grated zucchini, then the nuts and fruit. Transfer the batter to the prepared pan, smoothing the top.\u003C/p\u003E\n, \u003Cp\u003EBake the bread in the 9” x 5” pan for 45 minutes. Tent with foil and bake for an additional 20 minutes, until a thin paring knife inserted in the center comes out clean. For bread in a tea loaf pan, bake for 40 minutes before tenting, then bake for another 20 minutes, or until the loaf tests done.\u003C/p\u003E\n, \u003Cp\u003ERemove the bread from the oven and cool in the pan on a rack.\u003C/p\u003E\n, \u003Cp\u003EStore bread, well wrapped, at room temperature for up to three days; freeze for longer storage.\u003C/p\u003E",
+            "author": {
+                "@type": "Organization",
+                "name": "King Arthur Flour",
+                "url": "https://www.kingarthurflour.com/",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.kingarthurflour.com/themes/custom/kaf_nextgenweb/images/logo--full.svg"
+                }
+            },
+            "image": {
+                "@type": "ImageObject",
+                "url": "https://www.kingarthurbaking.com/sites/default/files/2021-06/sourdough-zucchini-bread_0521.jpg"
+            },
+            "nutrition": {
+                "@type": "NutritionInformation",
+                "servingSize": [
+                    "1 slice",
+                    "91g"
+                ],
+                "calories": "279",
+                "carbohydrateContent": "33g",
+                "cholesterolContent": "23g",
+                "fiberContent": "2g",
+                "proteinContent": "5g",
+                "sodiumContent": "202mg",
+                "sugarContent": "21g",
+                "fatContent": "13g",
+                "saturatedFatContent": "2g",
+                "transFatContent": "0g"
+            },
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4.50",
+                "ratingCount": "36"
+            }
+        }
+    ]
+}</script>
+<link rel="icon" href="/themes/custom/kaf_nextgenweb/favicon.ico" type="image/vnd.microsoft.icon" />
+<script src="/sites/default/files/google_tag/drupal_gtm_container/google_tag.script.js?r9m2nt" defer></script>
+
+    <title>Sourdough Zucchini Bread | King Arthur Baking</title>
+    <link rel="stylesheet" media="all" href="/sites/default/files/css/css_Xz7uLsUhBf3NRM8P3VhIeZjOu5vGw20otdHgKpmonoQ.css" />
+<link rel="stylesheet" media="all" href="https://use.typekit.net/qwi2npt.css" />
+<link rel="stylesheet" media="all" href="/sites/default/files/css/css_SuYnuvpPFKnBXG_mJrGTHmBuHZiLhUS3Al6T-uA1TfQ.css" />
+
+    
+  
+<script>(window.BOOMR_mq=window.BOOMR_mq||[]).push(["addVar",{"rua.upush":"false","rua.cpush":"false","rua.upre":"false","rua.cpre":"false","rua.uprl":"false","rua.cprl":"false","rua.cprf":"false","rua.trans":"","rua.cook":"false","rua.ims":"false","rua.ufprl":"false","rua.cfprl":"false","rua.isuxp":"false","rua.texp":"norulematch"}]);</script>
+                              <script>!function(a){var e="https://s.go-mpulse.net/boomerang/",t="addEventListener";if("False"=="True")a.BOOMR_config=a.BOOMR_config||{},a.BOOMR_config.PageParams=a.BOOMR_config.PageParams||{},a.BOOMR_config.PageParams.pci=!0,e="https://s2.go-mpulse.net/boomerang/";if(window.BOOMR_API_key="SQQ6J-MS2G2-ZFAMA-2TTB7-72K6R",function(){function n(e){a.BOOMR_onload=e&&e.timeStamp||(new Date).getTime()}if(!a.BOOMR||!a.BOOMR.version&&!a.BOOMR.snippetExecuted){a.BOOMR=a.BOOMR||{},a.BOOMR.snippetExecuted=!0;var i,_,o,r=document.createElement("iframe");if(a[t])a[t]("load",n,!1);else if(a.attachEvent)a.attachEvent("onload",n);r.src="javascript:void(0)",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="width:0;height:0;border:0;display:none;",o=document.getElementsByTagName("script")[0],o.parentNode.insertBefore(r,o);try{_=r.contentWindow.document}catch(O){i=document.domain,r.src="javascript:var d=document.open();d.domain='"+i+"';void(0);",_=r.contentWindow.document}_.open()._l=function(){var a=this.createElement("script");if(i)this.domain=i;a.id="boomr-if-as",a.src=e+"SQQ6J-MS2G2-ZFAMA-2TTB7-72K6R",BOOMR_lstart=(new Date).getTime(),this.body.appendChild(a)},_.write("<bo"+'dy onload="document._l();">'),_.close()}}(),"".length>0)if(a&&"performance"in a&&a.performance&&"function"==typeof a.performance.setResourceTimingBufferSize)a.performance.setResourceTimingBufferSize();!function(){if(BOOMR=a.BOOMR||{},BOOMR.plugins=BOOMR.plugins||{},!BOOMR.plugins.AK){var e=""=="true"?1:0,t="",n="kgtlsxc7mufneystbmzq-f-4b719234c-clientnsv4-s.akamaihd.net",i="false"=="true"?2:1,_={"ak.v":"32","ak.cp":"1068635","ak.ai":parseInt("635712",10),"ak.ol":"0","ak.cr":4,"ak.ipv":4,"ak.proto":"h2","ak.rid":"2bafb523","ak.r":42548,"ak.a2":e,"ak.m":"a","ak.n":"essl","ak.bpcip":"81.166.185.0","ak.cport":36404,"ak.gh":"95.101.10.206","ak.quicv":"","ak.tlsv":"tls1.3","ak.0rtt":"","ak.csrc":"-","ak.acc":"","ak.t":"1649609523","ak.ak":"hOBiQwZUYzCg5VSAfCLimQ==Mh8Dc/3s/69uMHzzibvGV0Vo0PCXiQNLmtfh6pC24xeNBvGPWDlYYazvP8Eij6hp2XWZqvtpYb7WGk/YrKaD4/HQuDdErSY/jTqYtPWvQDDVXzFqy9Caj36Urz473SXr36KOwmM+kca9i/PmncoTYcWup0BeH+nRXIHPXCwsrIFFwvJcOENCA1jm9Trof8OF0hbgzF5CIZwUZ77nsFB2B9OrNT5jU2WYEpDsMKRY0Xku2PZ5lhzaodorVMBBHQjANNj+6kcfsVxTUsVQBVxUSDoNRXfCSjMyhWYETWMrBtV3dJWLPYO2aDTpFYI5O5F6uOvBQdaVh1jCIu9RJ6QpA0zZSxTwmPDqxISwioBgq6Qt+WleTm/qOHBgD8Mi1i+rtKIvE98AFjG/LfCOdv6XlUb9OlOLOFKY7xTawWzk76g=","ak.pv":"40","ak.dpoabenc":"","ak.tf":i};if(""!==t)_["ak.ruds"]=t;var o={i:!1,av:function(e){var t="http.initiator";if(e&&(!e[t]||"spa_hard"===e[t]))_["ak.feo"]=void 0!==a.aFeoApplied?1:0,BOOMR.addVar(_)},rv:function(){var a=["ak.bpcip","ak.cport","ak.cr","ak.csrc","ak.gh","ak.ipv","ak.m","ak.n","ak.ol","ak.proto","ak.quicv","ak.tlsv","ak.0rtt","ak.r","ak.acc","ak.t","ak.tf"];BOOMR.removeVar(a)}};BOOMR.plugins.AK={akVars:_,akDNSPreFetchDomain:n,init:function(){if(!o.i){var a=BOOMR.subscribe;a("before_beacon",o.av,null,null),a("onbeacon",o.rv,null,null),o.i=!0}return this},is_complete:function(){return!0}}}}()}(window);</script></head>
+  <body class="has-subnav path-node page-node-type-recipe">
+        <a href="#main-content" class="visually-hidden focusable skip-link">
+      Skip to main content
+    </a>
+    <noscript aria-hidden="true"><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M867KWL" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+      <div class="dialog-off-canvas-main-canvas" data-off-canvas-main-canvas>
+    <div class="page">
+
+  <header class="header" role="banner">
+    
+    <div class="header__wrap">
+        <div class="region region-header">
+    
+<div id="block-kaf-nextgenweb-branding" class="block block-branding">
+            <a href="/" aria-label="King Arthur Baking Company home page" rel="home" class="site-logo">
+        <img class="brand-lg" src="/themes/custom/kaf_nextgenweb/images/king-arthur-baking@2x.png" alt="King Arthur Baking Company">
+        <img class="brand-sm" src="/themes/custom/kaf_nextgenweb/images/crown@2x.png" alt="King Arthur Baking Company">
+      </a>
+      </div>
+<div id="block-kafsubmenu" class="block block-kaf-submenu">
+  
+    
+      <ul class="mnav-l1" id="mobile-nav" role="navigation" aria-labelledby="mnav-trigger" tabindex="-1">
+       <li class="mnav-l1--item mnav-item">
+      <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/" class="mobile-subnav-l1">Shop</a></span>
+
+                  
+    </li>
+       <li class="mnav-l1--item mnav-item">
+      <span class="mnav-item--wrapper"><a href="/recipes" class="mobile-subnav-l1">Recipes</a></span>
+
+                    <button class="mnav-more"><span class="visually-hidden">Expand Recipes</span></button>
+
+        <div class="mnav-l2--wrapper mnav-wrapper" aria-hidden="true">
+          <div class="mnav-header">
+            <button class="mnav-back"><span class="visually-hidden">Collapse Recipes</span></button>
+            <h3 class="mnav-l2--title">Recipes</h3>
+          </div>
+          <ul class="mnav-l2">
+                          <li class="mnav-l2--item mnav-item">
+                <span class="mnav-item--wrapper"><span class="mobile-subnav-l2">Categories</span></span>
+
+                                                  <button class="mnav-more"><span class="visually-hidden">Expand Categories</span></button>
+                  <div class="mnav-l3--wrapper mnav-wrapper" aria-hidden="true">
+                    <div class="mnav-header">
+                      <button class="mnav-back"><span class="visually-hidden">Collapse Categories</span></button>
+                      <h4 class="mnav-l3--title">Categories</h4>
+                    </div>
+                    <ul class="mnav-l3">
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/recipes/biscuits-shortcakes" class="mobile-subnav-l3">Biscuits &amp; Shortcakes</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/recipes/bread" class="mobile-subnav-l3">Bread</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/recipes/buns-rolls" class="mobile-subnav-l3">Buns &amp; Rolls</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/recipes/cake" class="mobile-subnav-l3">Cake</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/recipes/cookies-bars" class="mobile-subnav-l3">Cookies &amp; Bars</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/recipes/muffins-popovers" class="mobile-subnav-l3">Muffins &amp; Popovers</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/recipes/pancakes-waffles" class="mobile-subnav-l3">Pancakes &amp; Waffles</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/recipes/pastry" class="mobile-subnav-l3">Pastry</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/recipes/pie" class="mobile-subnav-l3">Pie</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/recipes/scones" class="mobile-subnav-l3">Scones</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><span class="mobile-subnav-l3">—</span></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="https://www.kingarthurbaking.com/recipes#categories" class="mobile-subnav-l3">See All Categories</a></span>
+                        </li>
+                                          </ul>
+                  </div>
+                                
+              </li>
+                          <li class="mnav-l2--item mnav-item">
+                <span class="mnav-item--wrapper"><a href="/recipes/collections" class="mobile-subnav-l2">Collections</a></span>
+
+                                                  <button class="mnav-more"><span class="visually-hidden">Expand Collections</span></button>
+                  <div class="mnav-l3--wrapper mnav-wrapper" aria-hidden="true">
+                    <div class="mnav-header">
+                      <button class="mnav-back"><span class="visually-hidden">Collapse Collections</span></button>
+                      <h4 class="mnav-l3--title">Collections</h4>
+                    </div>
+                    <ul class="mnav-l3">
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/recipes/collections/new-from-the-test-kitchen" class="mobile-subnav-l3">New from the Test Kitchen</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="https://www.kingarthurbaking.com/recipes/collections/best-basic-recipes" class="mobile-subnav-l3">Best Basic Recipes</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/recipes/collections/recipes-with-5-ingredients-or-fewer" class="mobile-subnav-l3">5 Ingredients or Fewer</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/recipes/collections/sourdough-discard-recipes" class="mobile-subnav-l3">Sourdough Discard Recipes</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/recipes/collections/best-chocolate-recipes" class="mobile-subnav-l3">Best Chocolate Recipes</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><span class="mobile-subnav-l3">—</span></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/recipes/collections" class="mobile-subnav-l3">View All Recipe Collections</a></span>
+                        </li>
+                                          </ul>
+                  </div>
+                                
+              </li>
+                          <li class="mnav-l2--item mnav-item">
+                <span class="mnav-item--wrapper"><span class="mobile-subnav-l2">Resources</span></span>
+
+                                                  <button class="mnav-more"><span class="visually-hidden">Expand Resources</span></button>
+                  <div class="mnav-l3--wrapper mnav-wrapper" aria-hidden="true">
+                    <div class="mnav-header">
+                      <button class="mnav-back"><span class="visually-hidden">Collapse Resources</span></button>
+                      <h4 class="mnav-l3--title">Resources</h4>
+                    </div>
+                    <ul class="mnav-l3">
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/recipebox" class="mobile-subnav-l3">Recipe Box</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/bakers-hotline" class="mobile-subnav-l3">Bakers Hotline</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/learn/ingredient-weight-chart" class="mobile-subnav-l3">Ingredient Weight Chart</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/videos/baking-skills/how-to-measure-flour" class="mobile-subnav-l3">How to Measure Flour</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/recipes/resources/recipe-success-guide" class="mobile-subnav-l3">Recipe Success Guide</a></span>
+                        </li>
+                                          </ul>
+                  </div>
+                                
+              </li>
+                      </ul>
+        </div>
+            
+    </li>
+       <li class="mnav-l1--item mnav-item">
+      <span class="mnav-item--wrapper"><a href="/learn" class="mobile-subnav-l1">Learn</a></span>
+
+                    <button class="mnav-more"><span class="visually-hidden">Expand Learn</span></button>
+
+        <div class="mnav-l2--wrapper mnav-wrapper" aria-hidden="true">
+          <div class="mnav-header">
+            <button class="mnav-back"><span class="visually-hidden">Collapse Learn</span></button>
+            <h3 class="mnav-l2--title">Learn</h3>
+          </div>
+          <ul class="mnav-l2">
+                          <li class="mnav-l2--item mnav-item">
+                <span class="mnav-item--wrapper"><a href="/learn/guides" class="mobile-subnav-l2">Baking Guides</a></span>
+
+                                                  <button class="mnav-more"><span class="visually-hidden">Expand Baking Guides</span></button>
+                  <div class="mnav-l3--wrapper mnav-wrapper" aria-hidden="true">
+                    <div class="mnav-header">
+                      <button class="mnav-back"><span class="visually-hidden">Collapse Baking Guides</span></button>
+                      <h4 class="mnav-l3--title">Baking Guides</h4>
+                    </div>
+                    <ul class="mnav-l3">
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/learn/guides/pie" class="mobile-subnav-l3">Pie Baking</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/learn/guides/sourdough" class="mobile-subnav-l3">Sourdough Baking</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/learn/guides/scone-baking" class="mobile-subnav-l3">Scone Baking</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/learn/guides/gluten-free" class="mobile-subnav-l3">Gluten-Free Baking</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><span class="mobile-subnav-l3">—</span></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/learn/guides" class="mobile-subnav-l3">View All Baking Guides</a></span>
+                        </li>
+                                          </ul>
+                  </div>
+                                
+              </li>
+                          <li class="mnav-l2--item mnav-item">
+                <span class="mnav-item--wrapper"><a href="/videos" class="mobile-subnav-l2">Videos</a></span>
+
+                                                
+              </li>
+                          <li class="mnav-l2--item mnav-item">
+                <span class="mnav-item--wrapper"><a href="/baking-school" class="mobile-subnav-l2">Baking School</a></span>
+
+                                                
+              </li>
+                          <li class="mnav-l2--item mnav-item">
+                <span class="mnav-item--wrapper"><span class="mobile-subnav-l2">Resources</span></span>
+
+                                                  <button class="mnav-more"><span class="visually-hidden">Expand Resources</span></button>
+                  <div class="mnav-l3--wrapper mnav-wrapper" aria-hidden="true">
+                    <div class="mnav-header">
+                      <button class="mnav-back"><span class="visually-hidden">Collapse Resources</span></button>
+                      <h4 class="mnav-l3--title">Resources</h4>
+                    </div>
+                    <ul class="mnav-l3">
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/learn/resources/tools-and-pans" class="mobile-subnav-l3">Tools and Pans</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/learn/resources/baking-tips-techniques" class="mobile-subnav-l3">Baking Tips and Techniques</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/learn/resources/yeast" class="mobile-subnav-l3">All About Yeast</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/learn/resources/high-altitude-baking" class="mobile-subnav-l3">High-Altitude Baking</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/learn/ingredient-weight-chart" class="mobile-subnav-l3">Ingredient Weight Chart</a></span>
+                        </li>
+                                          </ul>
+                  </div>
+                                
+              </li>
+                      </ul>
+        </div>
+            
+    </li>
+       <li class="mnav-l1--item mnav-item">
+      <span class="mnav-item--wrapper"><a href="/about" class="mobile-subnav-l1">About</a></span>
+
+                    <button class="mnav-more"><span class="visually-hidden">Expand About</span></button>
+
+        <div class="mnav-l2--wrapper mnav-wrapper" aria-hidden="true">
+          <div class="mnav-header">
+            <button class="mnav-back"><span class="visually-hidden">Collapse About</span></button>
+            <h3 class="mnav-l2--title">About</h3>
+          </div>
+          <ul class="mnav-l2">
+                          <li class="mnav-l2--item mnav-item">
+                <span class="mnav-item--wrapper"><a href="/about/mission-impact" class="mobile-subnav-l2">Mission &amp; Impact</a></span>
+
+                                                
+              </li>
+                          <li class="mnav-l2--item mnav-item">
+                <span class="mnav-item--wrapper"><a href="/about/our-products" class="mobile-subnav-l2">Our Products</a></span>
+
+                                                
+              </li>
+                          <li class="mnav-l2--item mnav-item">
+                <span class="mnav-item--wrapper"><a href="/visit" class="mobile-subnav-l2">Visit Us</a></span>
+
+                                                
+              </li>
+                          <li class="mnav-l2--item mnav-item">
+                <span class="mnav-item--wrapper"><a href="/about/bakeforgood" class="mobile-subnav-l2">Bake for Good</a></span>
+
+                                                
+              </li>
+                          <li class="mnav-l2--item mnav-item">
+                <span class="mnav-item--wrapper"><a href="/about/history" class="mobile-subnav-l2">Our History</a></span>
+
+                                                
+              </li>
+                          <li class="mnav-l2--item mnav-item">
+                <span class="mnav-item--wrapper"><a href="/newsroom" class="mobile-subnav-l2">Newsroom</a></span>
+
+                                                  <button class="mnav-more"><span class="visually-hidden">Expand Newsroom</span></button>
+                  <div class="mnav-l3--wrapper mnav-wrapper" aria-hidden="true">
+                    <div class="mnav-header">
+                      <button class="mnav-back"><span class="visually-hidden">Collapse Newsroom</span></button>
+                      <h4 class="mnav-l3--title">Newsroom</h4>
+                    </div>
+                    <ul class="mnav-l3">
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/newsroom" class="mobile-subnav-l3">Newsroom</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/newsroom/press-kit" class="mobile-subnav-l3">Press Kit</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/newsroom/company-stories" class="mobile-subnav-l3">Company Stories</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/newsroom/press-releases" class="mobile-subnav-l3">Press Releases</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/newsroom/in-the-press" class="mobile-subnav-l3">In the Press</a></span>
+                        </li>
+                                          </ul>
+                  </div>
+                                
+              </li>
+                      </ul>
+        </div>
+            
+    </li>
+       <li class="mnav-l1--item mnav-item">
+      <span class="mnav-item--wrapper"><a href="/blog" class="mobile-subnav-l1">Blog</a></span>
+
+                    <button class="mnav-more"><span class="visually-hidden">Expand Blog</span></button>
+
+        <div class="mnav-l2--wrapper mnav-wrapper" aria-hidden="true">
+          <div class="mnav-header">
+            <button class="mnav-back"><span class="visually-hidden">Collapse Blog</span></button>
+            <h3 class="mnav-l2--title">Blog</h3>
+          </div>
+          <ul class="mnav-l2">
+                          <li class="mnav-l2--item mnav-item">
+                <span class="mnav-item--wrapper"><a href="/blog-category/recipe" class="mobile-subnav-l2">Recipes</a></span>
+
+                                                
+              </li>
+                          <li class="mnav-l2--item mnav-item">
+                <span class="mnav-item--wrapper"><a href="/blog-category/tips-techniques" class="mobile-subnav-l2">Tips + Techniques</a></span>
+
+                                                
+              </li>
+                          <li class="mnav-l2--item mnav-item">
+                <span class="mnav-item--wrapper"><a href="/blog-category/story" class="mobile-subnav-l2">Stories</a></span>
+
+                                                
+              </li>
+                      </ul>
+        </div>
+            
+    </li>
+       <li class="mnav-l1--item mnav-item">
+      <span class="mnav-item--wrapper"><a href="/pro" class="mobile-subnav-l1">Bakery Flour Sales</a></span>
+
+                    <button class="mnav-more"><span class="visually-hidden">Expand Bakery Flour Sales</span></button>
+
+        <div class="mnav-l2--wrapper mnav-wrapper" aria-hidden="true">
+          <div class="mnav-header">
+            <button class="mnav-back"><span class="visually-hidden">Collapse Bakery Flour Sales</span></button>
+            <h3 class="mnav-l2--title">Bakery Flour Sales</h3>
+          </div>
+          <ul class="mnav-l2">
+                          <li class="mnav-l2--item mnav-item">
+                <span class="mnav-item--wrapper"><a href="/pro/products" class="mobile-subnav-l2">Products</a></span>
+
+                                                
+              </li>
+                          <li class="mnav-l2--item mnav-item">
+                <span class="mnav-item--wrapper"><a href="/pro/distributor" class="mobile-subnav-l2">Distributors</a></span>
+
+                                                
+              </li>
+                          <li class="mnav-l2--item mnav-item">
+                <span class="mnav-item--wrapper"><a href="/pro/formulas" class="mobile-subnav-l2">Formulas</a></span>
+
+                                                
+              </li>
+                          <li class="mnav-l2--item mnav-item">
+                <span class="mnav-item--wrapper"><a href="/pro/reference" class="mobile-subnav-l2">Reference</a></span>
+
+                                                  <button class="mnav-more"><span class="visually-hidden">Expand Reference</span></button>
+                  <div class="mnav-l3--wrapper mnav-wrapper" aria-hidden="true">
+                    <div class="mnav-header">
+                      <button class="mnav-back"><span class="visually-hidden">Collapse Reference</span></button>
+                      <h4 class="mnav-l3--title">Reference</h4>
+                    </div>
+                    <ul class="mnav-l3">
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/pro/bakers-percentage" class="mobile-subnav-l3">Baker&#039;s Percentage</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/pro/batch-costing" class="mobile-subnav-l3">Batch Costing</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/pro/reference/bromate" class="mobile-subnav-l3">Bromate</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/pro/reference/conversion" class="mobile-subnav-l3">Common conversions</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/pro/reference/dough-temperature" class="mobile-subnav-l3">Dough Temperatures</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/pro/reference/preferment" class="mobile-subnav-l3">Preferments</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/pro/reference/salt" class="mobile-subnav-l3">Salt</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/pro/reference/water" class="mobile-subnav-l3">Water</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/pro/reference/yeast" class="mobile-subnav-l3">Yeast</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/videos/professional-techniques" class="mobile-subnav-l3">Video Tips for Professionals</a></span>
+                        </li>
+                                              <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/baking-school/calendar" class="mobile-subnav-l3">Professional Classes</a></span>
+                        </li>
+                                          </ul>
+                  </div>
+                                
+              </li>
+                          <li class="mnav-l2--item mnav-item">
+                <span class="mnav-item--wrapper"><a href="/pro/contact" class="mobile-subnav-l2">Contact</a></span>
+
+                                                
+              </li>
+                      </ul>
+        </div>
+            
+    </li>
+  </ul>
+
+  </div>
+
+  </div>
+
+        <div class="region region-primary-menu">
+    <div id="block-kafmegamenu" class="block block- block-kaf-megamenu">
+  
+    
+      
+<nav aria-label="Main Menu">
+  <ul class="menu menu-level-0">
+          
+      <li class="menu-item">
+                  <a href="https://shop.kingarthurbaking.com/">Shop</a>
+        
+                          
+
+<div class="menu_link_content menu-link-contentmain view-mode-default menu-dropdown menu-dropdown-0 menu-type-default">
+        
+  </div>
+              </li>
+          
+      <li class="menu-item menu-item--active-trail">
+                  <a href="/recipes" class="is-active" data-drupal-link-system-path="node/116">Recipes</a>
+        
+                          
+
+<div class="menu_link_content menu-link-contentmain view-mode-default menu-dropdown menu-dropdown-0 menu-type-default">
+        
+  </div>
+              </li>
+          
+      <li class="menu-item">
+                  <a href="/learn" data-drupal-link-system-path="node/156">Learn</a>
+        
+                          
+
+<div class="menu_link_content menu-link-contentmain view-mode-default menu-dropdown menu-dropdown-0 menu-type-default">
+        
+  </div>
+              </li>
+          
+      <li class="menu-item">
+                  <a href="/about" data-drupal-link-system-path="node/27601">About</a>
+        
+                          
+
+<div class="menu_link_content menu-link-contentmain view-mode-default menu-dropdown menu-dropdown-0 menu-type-default">
+        
+  </div>
+              </li>
+          
+      <li class="menu-item">
+                  <a href="/blog" data-drupal-link-system-path="node/161">Blog</a>
+        
+                          
+
+<div class="menu_link_content menu-link-contentmain view-mode-default menu-dropdown menu-dropdown-0 menu-type-default">
+        
+  </div>
+              </li>
+      </ul>
+</nav>
+
+  </div>
+
+  </div>
+
+        <div class="menu--utility region region-secondary-menu">
+
+    <div class="search">
+      <i class="search__show" tabindex="0" role="button" aria-label="Select to open search panel" aria-haspopup="dialog"></i>
+    </div>
+
+    <div class="user-nav">
+     <nav role="navigation" aria-labelledby="block-kaf-nextgenweb-secondarynavigation-menu" id="block-kaf-nextgenweb-secondarynavigation">
+            
+  <h2 class="visually-hidden" id="block-kaf-nextgenweb-secondarynavigation-menu">Secondary navigation</h2>
+  
+
+        
+<ul class="menu menu-level-0">
+  
+  <li class="user__item user__item-account menu-item menu-item--expanded">
+    <a href="https://shop.kingarthurbaking.com/login.php">Sign in</a>
+
+              
+
+<div class="menu_link_content menu-link-contentsecondary view-mode-default menu-dropdown menu-dropdown-0 menu-type-default">
+        
+<ul class="menu menu-level-1">
+  
+  <li class="user__item menu-item">
+    <a href="/account/orders" data-drupal-link-system-path="account/orders">Order History</a>
+
+              
+
+<div class="menu_link_content menu-link-contentsecondary view-mode-default menu-dropdown menu-dropdown-1 menu-type-default">
+        
+  </div>
+      </li>
+  
+  <li class="user__item menu-item">
+    <a href="https://shop.kingarthurbaking.com/wishlist.php">Wishlist</a>
+
+              
+
+<div class="menu_link_content menu-link-contentsecondary view-mode-default menu-dropdown menu-dropdown-1 menu-type-default">
+        
+  </div>
+      </li>
+  
+  <li class="user__item menu-item">
+    <a href="/recipebox" data-drupal-link-system-path="recipebox">Recipe Box</a>
+
+              
+
+<div class="menu_link_content menu-link-contentsecondary view-mode-default menu-dropdown menu-dropdown-1 menu-type-default">
+        
+  </div>
+      </li>
+  
+  <li class="user__item menu-item">
+    <a href="https://shop.kingarthurbaking.com/rewards-dashboard">Baker&#039;s Rewards</a>
+
+              
+
+<div class="menu_link_content menu-link-contentsecondary view-mode-default menu-dropdown menu-dropdown-1 menu-type-default">
+        
+  </div>
+      </li>
+  
+  <li class="user__item menu-item">
+    <a href="/subscriptions" data-drupal-link-system-path="subscriptions">Email preferences</a>
+
+              
+
+<div class="menu_link_content menu-link-contentsecondary view-mode-default menu-dropdown menu-dropdown-1 menu-type-default">
+        
+  </div>
+      </li>
+  
+  <li class="user__item user__item-separator user__item-chevron menu-item">
+    <a href="https://classes.kingarthurbaking.com/Login.aspx">Baking School login</a>
+
+              
+
+<div class="menu_link_content menu-link-contentsecondary view-mode-default menu-dropdown menu-dropdown-1 menu-type-default">
+        
+  </div>
+      </li>
+  
+  <li class="user__item user__item-signout menu-item">
+    <a href="https://shop.kingarthurbaking.com/login.php?action=logout">Sign out</a>
+
+              
+
+<div class="menu_link_content menu-link-contentsecondary view-mode-default menu-dropdown menu-dropdown-1 menu-type-default">
+        
+  </div>
+      </li>
+</ul>
+
+  </div>
+      </li>
+  
+  <li class="user__item user__item-cart menu-item">
+    <a href="https://shop.kingarthurbaking.com/cart.php">View your cart</a>
+
+              
+
+<div class="menu_link_content menu-link-contentsecondary view-mode-default menu-dropdown menu-dropdown-0 menu-type-default">
+        
+  </div>
+      </li>
+</ul>
+
+  </nav>
+
+    </div>
+  </div>
+
+      <button class="menu__trigger" aria-haspopup="true" aria-controls="mobile-nav" aria-expanded="false" id="mnav-trigger"><span class="visually-hidden">Global Navigation Menu</span></button>
+    </div>
+
+          <nav aria-label="Section Navigation Menu" class="header-subnav">
+          <div class="region region-subnav-menu">
+    <nav role="navigation" aria-labelledby="block-subnavrecipes-menu" id="block-subnavrecipes">
+            
+  <h2 class="visually-hidden" id="block-subnavrecipes-menu">Subnav: Recipes</h2>
+  
+
+        
+
+                <ul class="menu-subnav-recipes menu-level-0">
+                                    <li class="subnav-li parent-item">
+                                                    <a aria-haspopup="true" aria-expanded="false" href="">Categories</a>
+                                      
+                          
+                  <ul>
+                                      <li>
+                                                    <a href="/recipes/biscuits-shortcakes">Biscuits &amp; Shortcakes</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/recipes/bread">Bread</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/recipes/buns-rolls">Buns &amp; Rolls</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/recipes/cake">Cake</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/recipes/cookies-bars">Cookies &amp; Bars</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/recipes/muffins-popovers">Muffins &amp; Popovers</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/recipes/pancakes-waffles">Pancakes &amp; Waffles</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/recipes/pastry">Pastry</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/recipes/pie">Pie</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/recipes/scones">Scones</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="">—</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="https://www.kingarthurbaking.com/recipes#categories">See All Categories</a>
+                                      
+                      </li>
+              </ul>
+      
+                      </li>
+                              <li class="subnav-li parent-item">
+                                                    <a aria-haspopup="true" aria-expanded="false" href="/recipes/collections">Collections</a>
+                                      
+                          
+                  <ul>
+                                      <li>
+                                                    <a href="/recipes/collections/new-from-the-test-kitchen">New from the Test Kitchen</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="https://www.kingarthurbaking.com/recipes/collections/best-basic-recipes">Best Basic Recipes</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/recipes/collections/recipes-with-5-ingredients-or-fewer">5 Ingredients or Fewer</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/recipes/collections/sourdough-discard-recipes">Sourdough Discard Recipes</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/recipes/collections/best-chocolate-recipes">Best Chocolate Recipes</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="">—</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/recipes/collections">View All Recipe Collections</a>
+                                      
+                      </li>
+              </ul>
+      
+                      </li>
+                              <li class="subnav-li parent-item">
+                                                    <a aria-haspopup="true" aria-expanded="false" href="">Resources</a>
+                                      
+                          
+                  <ul>
+                                      <li>
+                                                    <a href="/recipebox">Recipe Box</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/bakers-hotline">Bakers Hotline</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/learn/ingredient-weight-chart">Ingredient Weight Chart</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/videos/baking-skills/how-to-measure-flour">How to Measure Flour</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/recipes/resources/recipe-success-guide">Recipe Success Guide</a>
+                                      
+                      </li>
+              </ul>
+      
+                      </li>
+              </ul>
+      
+
+
+
+  </nav>
+
+  </div>
+
+      </nav>
+      </header>
+
+    <div class="region region-highlighted">
+    <div data-drupal-messages-fallback class="hidden"></div>
+
+  </div>
+
+
+  <main class="main" role="main">
+    <a id="main-content" tabindex="-1"></a>
+    
+    
+          <section class="page-content-header">
+          <div class="region region-content-header">
+    <div id="block-nodequickview" class="block block-ctools block-entity-viewnode">
+  
+    
+      
+
+<article  role="article" class="node node--type-recipe quickview quickview--recipe">
+  <div class="quickview__content">
+          
+<nav class="breadcrumb" role="navigation" aria-label="Breadcrumbs">
+  <ol class="breadcrumb__wrap">
+      <li class="breadcrumb__item">
+              <a href="/recipes">Recipes</a>
+          </li>
+      <li class="breadcrumb__item">
+              <a href="/recipes/bread">Bread</a>
+          </li>
+      <li class="breadcrumb__item">
+              <a href="/recipes/quick-bread">Quick bread</a>
+          </li>
+    </ol>
+</nav>
+
+    
+    <h1><span>Sourdough Zucchini Bread</span>
+</h1>
+
+    <div class="quickview__meta">
+      <div class="quickview__reviews reviews">
+                  <a class="reviews__jumplink" href="#review-section">
+                                <div class="reviews__wrapper">
+                                      <span class="reviews__label">36 Reviews</span>
+                                      <span class="rating rating-is-45">4.5 out of 5 stars</span>
+                                    </div>
+                              </a>
+              </div>
+
+              <div class="share js-kaf-share-widget no-shares" role="region" aria-label="Social share">
+  <div class="share__label">Share</div>
+  <div class="flex-line-breaker"></div>
+  <div class="share__count js-kaf-share-count hidden"></div>
+
+  <ul class="share__btn-group">
+    <li><a class="share__btn share__btn--facebook js-kaf-share-button-facebook" href="#">Share on Facebook</a></li>
+    <li><a class="share__btn share__btn--email js-kaf-share-button-email" href="#">Share by Email</a></li>
+    <li><a class="share__btn share__btn--pinterest js-kaf-share-button-pinterest" href="#">Share on Pinterest</a></li>
+    <li><a class="share__btn share__btn--twitter js-kaf-share-button-twitter" href="#">Share on Twitter</a></li>
+  </ul>
+</div>
+
+          </div>
+
+    <div class="quickview__description">
+        <p>This delicious whole grain zucchini bread makes wonderful use of excess sourdough starter you might otherwise discard. Paired with summer’s avalanche of zucchini, it’s one loaf that solves two kitchen conundrums!</p>
+
+
+    </div>
+
+    <div class="stats stats--recipe with-rule">
+              <div class="stat__item stat__item--prep">
+          <div class="label">Prep</div>
+          <span>30 mins</span>
+        </div>
+      
+              <div class="stat__item stat__item--bake">
+          <div class="label">Bake</div>
+          <span>1 hr to 1 hr 5 mins</span>
+        </div>
+      
+              <div class="stat__item stat__item--total">
+          <div class="label">Total</div>
+          <span>1 hr 30 mins</span>
+        </div>
+          </div>
+
+    <div class="stats stats--recipe">
+              <div class="stat__item stat__item--yield">
+          <div class="label">Yield</div>
+          <span>one 9” x 5” loaf or 12” tea loaf </span>
+        </div>
+      
+              <div class="stat__item stat__item--recipe-box">
+          <a href="/recipebox" class="btn btn--save js-kaf-recipe-box-add" data-recipe-id="45866" data-recipe-uuid="767152f3-adc4-4ea8-8bb0-8e9a333342b4">Save Recipe</a>
+        </div>
+      
+      <div class="stat__item stat__item--print">
+        <button id="print-recipe-button" class="btn btn--print" data-node=45866>
+          Print
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="quickview__media">
+    <div class="quickview__media-main">
+                            <div id="mainImage-0" >
+                <picture>
+                  <source srcset="/sites/default/files/styles/featured_image/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=UOymQdSF 1x, /sites/default/files/styles/featured_image_2x/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=7sJgenge 2x" media="(min-width: 480px)" type="image/jpeg"/>
+              <source srcset="/sites/default/files/styles/featured_image_sm/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=PrBBCF-v 1x, /sites/default/files/styles/featured_image_sm_2x/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=LYIkVF0k 2x" type="image/jpeg"/>
+                  <img src="/sites/default/files/styles/featured_image/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=UOymQdSF" alt="Sourdough Zucchini Bread" />
+
+  </picture>
+
+
+
+
+        </div>
+          </div>
+      </div>
+</article>
+
+  </div>
+
+  </div>
+
+      </section>
+    
+
+    <section class="page-content">
+        <div class="region region-content">
+    <div role="article" class="node node--type-recipe node--promoted node--view-mode-full">
+  
+  
+  
+
+  <div class="node__content">
+    <section class="recipe recipe--detail">
+      <aside class="recipe__ingredients">
+        <h4>Ingredients</h4>
+        
+<div  class="ingredients-list">
+      <div class="ingredient-section">
+  
+  <ul class="list--bullets">
+      <li>3/4 cup (170g) sourdough starter, fed (ripe) or unfed (discard)</li>
+      <li>1/2 cup (99g) granulated sugar</li>
+      <li>1/4 cup (85g) honey</li>
+      <li>6 tablespoons (75g) vegetable oil</li>
+      <li>2 large eggs</li>
+      <li>1/4 teaspoon <a href="https://shop.kingarthurbaking.com/items/nutmeg" data-name="Nutmeg" data-sku="208282" data-price="$3.48">nutmeg</a></li>
+      <li>1 1/2 teaspoons lemon zest (grated rind)</li>
+      <li>1 1/2 teaspoons <a href="https://shop.kingarthurbaking.com/items/king-arthur-pure-vanilla-extract" data-name="King Arthur Pure Vanilla Extract" data-sku="VG0014" data-price="$139.90">vanilla extract</a></li>
+      <li>1 cup (113g) <a href="https://shop.kingarthurbaking.com/items/stone-ground-white-whole-wheat-flour" data-name="Stone-Ground White Whole Wheat Flour" data-sku="05555" data-price="$5.95">King Arthur White Whole Wheat Flour</a></li>
+      <li>3/4 cup (90g) <a href="https://shop.kingarthurbaking.com/items/unbleached-all-purpose-flour" data-name="Unbleached All-Purpose Flour" data-sku="VG0001" data-price="$5.95">King Arthur Unbleached All-Purpose Flour</a></li>
+      <li>1/2 teaspoon baking soda</li>
+      <li>1 teaspoon baking powder</li>
+      <li>1 teaspoon salt</li>
+      <li>2 cups (242g to 300g) grated zucchini, somewhere between firmly and lightly packed</li>
+      <li>3/4 cup (85g) chopped walnuts, lightly toasted</li>
+      <li>3/4 cup (128g) raisins, currants, or dried cranberries</li>
+  </ul>
+
+
+  </div>
+
+  </div>
+
+
+                  <a href="/nutritional-info/45866" rel="nofollow" aria-haspopup="dialog" class="btn btn--secondary use-ajax" data-dialog-type="modal" data-dialog-options="{&quot;width&quot;:&quot;90%&quot;, &quot;dialogClass&quot;:&quot;kaf-modal&quot;}">Nutrition Information</a>
+        
+        <div class="recipe-ad__wrapper" id="recipe-ad__wrapper"></div>
+      </aside>
+
+      <article class="recipe__instructions">
+                <h4>Instructions</h4>
+        <div class="field field--recipe-steps">
+  <ol class="list--numbers">
+          <li class="field__item">
+
+        <p>Preheat the oven to 350°F. Lightly grease a <a href="https://shop.kingarthurbaking.com/items/king-arthur-quick-bread-pan-9-in-x-5-in">9” x 5” quick bread pan</a> or <a href="https://shop.kingarthurbaking.com/items/tea-loaf-pan">12” x 4” tea loaf pan</a>.</p>
+
+
+        
+      </li>
+          <li class="field__item">
+
+        <p>In a large bowl, stir together the starter, sugar, honey, oil, eggs, nutmeg, lemon zest, and vanilla until thoroughly combined.</p>
+
+
+        
+      </li>
+          <li class="field__item">
+
+        <p>In a separate medium bowl, whisk together the flours, baking soda, baking powder, and salt; stir into the wet ingredients.</p>
+
+
+        
+      </li>
+          <li class="field__item">
+
+        <p>Stir in the grated zucchini, then the nuts and fruit. Transfer the batter to the prepared pan, smoothing the top.</p>
+
+
+                  <aside>
+            <h4>Learn more</h4>
+            
+<div  role="article" class="article article--embed">
+  
+  
+
+  <a href="/blog/2019/08/28/baking-with-zucchini" rel="bookmark">
+            <img srcset="/sites/default/files/styles/kaf_thumbnail_small_200x135_/public/2019-08/Baking_With_Zucchini-3.jpg?itok=8w4c9yDY 1x, /sites/default/files/styles/kaf_thumbnail_small_2x_400x271_/public/2019-08/Baking_With_Zucchini-3.jpg?itok=eUuaRmtN 2x" src="/sites/default/files/styles/kaf_thumbnail_small_200x135_/public/2019-08/Baking_With_Zucchini-3.jpg?itok=8w4c9yDY" alt="Baking_With_Zucchini" />
+
+
+
+
+
+
+  </a>
+
+  <div class="article__content">
+
+    
+      <span class="eyebrow">Blog</span>
+      <h5>
+        <a href="/blog/2019/08/28/baking-with-zucchini" rel="bookmark"><span>Baking with zucchini</span>
+</a>
+      </h5>
+      <p class="article__author">By
+        Posie Brien</p>
+
+    
+  </div>
+</div>
+
+          </aside>
+        
+      </li>
+          <li class="field__item">
+
+        <p>Bake the bread in the 9” x 5” pan for 45 minutes. Tent with foil and bake for an additional 20 minutes, until a thin paring knife inserted in the center comes out clean. For bread in a tea loaf pan, bake for 40 minutes before tenting, then bake for another 20 minutes, or until the loaf tests done.</p>
+
+
+        
+      </li>
+          <li class="field__item">
+
+        <p>Remove the bread from the oven and cool in the pan on a rack.</p>
+
+
+        
+      </li>
+          <li class="field__item">
+
+        <p>Store bread, well wrapped, at room temperature for up to three days; freeze for longer storage.</p>
+
+
+        
+      </li>
+      </ol>
+</div>
+
+
+        
+                  <div class="recipe__tips">
+            <h4>Tips from our Bakers</h4>
+            <ul class="list--star">
+      <li><div class="eck-entity">
+      <p>If you happen to have a citrus-infused olive oil in the house, substitute it for the vegetable oil; it’ll add subtle perfume and rich flavor throughout.</p>
+
+<p><strong>To make your own citrus-infused olive oil: </strong>Use a peeler to remove the rind (just the outer layer, not the white pith) in strips from a lemon or an orange. Place these strips in a small saucepan and cover with 1 cup (198g) of neutral-flavored oil. Bring to a simmer over medium heat for 5 minutes. Turn off the heat, let the oil cool, then strain out the peel and store the oil at room temperature until needed.</p>
+
+
+</div>
+</li>
+  </ul>
+
+          </div>
+        
+                  <div class="share js-kaf-share-widget no-shares" role="region" aria-label="Social share">
+  <div class="share__label">Share</div>
+  <div class="flex-line-breaker"></div>
+  <div class="share__count js-kaf-share-count hidden"></div>
+
+  <ul class="share__btn-group">
+    <li><a class="share__btn share__btn--facebook js-kaf-share-button-facebook" href="#">Share on Facebook</a></li>
+    <li><a class="share__btn share__btn--email js-kaf-share-button-email" href="#">Share by Email</a></li>
+    <li><a class="share__btn share__btn--pinterest js-kaf-share-button-pinterest" href="#">Share on Pinterest</a></li>
+    <li><a class="share__btn share__btn--twitter js-kaf-share-button-twitter" href="#">Share on Twitter</a></li>
+  </ul>
+</div>
+
+              </article>
+
+      <div class="recipe-bakers-hotline">
+  <div class="recipe-bakers-hotline__content">
+    <h4>Baker’s Resources</h4>
+    <ul class="list--links">
+      <li><a href="/guides/recipe-success-guide">Recipe success guide</a></li>
+      <li><a href="/learn/resources/baking-tips-techniques">Tips & techniques</a></li>
+      <li><a href="/learn/resources/high-altitude-baking">High-altitude baking</a></li>
+      <li><a href="/learn/resources/yeast">Baker’s yeast</a></li>
+      <li><a href="/learn/ingredient-weight-chart">Ingredient weight chart</a></li>
+      <li><a href="/learn/resources/tools-and-pans">Tools & pans</a></li>
+      <li><a href="/videos/baking-skills/how-to-measure-flour">How to measure flour</a></li>
+      <li><a href="/about/products/docs/flour-safety">Safe handling instructions</a></li>
+    </ul>
+  </div>
+
+  <aside class="recipe-bakers-hotline__aside">
+    <div class="cta cta--card-small">
+      <img src="/themes/custom/kaf_nextgenweb/images/bakers-hotline.png" alt="Baker’s Hotline" />
+      <div class="cta__content">
+        <a class="btn btn--secondary" href="/launchchat">Chat with a baker</a>
+      </div>
+    </div>
+  </aside>
+</div>
+    </section>
+
+  </div>
+</div>
+
+  </div>
+
+    </section>
+
+    
+    
+            <div class="region region-content-footer">
+    <div id="block-kafreciperelatedproducts" class="block block-kaf-recipe block-kaf-related-products">
+  
+    
+      <div class="related related--products">
+  <div class="eyebrow">Shop</div>
+  <h3>Recommended for you</h3>
+  <div class="related__nodes">
+    
+<div role="article" class="product product--card">
+  
+  
+
+      <a href="https://shop.kingarthurbaking.com/items/nutmeg">
+  
+      <img 
+      src="/sites/default/files/product-image/nutmeg-2-oz-1__58864.1633400406.386.513.jpg%3Fc%3D1.jpg" 
+      alt="" 
+      width="386" 
+      height="386"
+    />
+  
+  <div class="product__content">
+    <div class="product__reviews">
+              <span class="rating rating-is-50">4.9 out of 5 stars<span class="visually-hidden"> out of 5 stars</span></span>
+                  <span class="reviews__label">(52<span class="visually-hidden"> Reviews</span>)</span>
+                  </div>
+
+    <div class="product--card__title" data-sku="208282" data-price="$3.48">
+      <span>Nutmeg</span>
+
+    </div>
+  </div>
+
+      </a>
+  
+</div>
+
+<div role="article" class="product product--card">
+  
+  
+
+      <a href="https://shop.kingarthurbaking.com/items/king-arthur-pure-vanilla-extract">
+  
+      <img 
+      src="/sites/default/files/product-image/201282__38980.1633630097.386.513.jpg%3Fc%3D1.jpg" 
+      alt="" 
+      width="386" 
+      height="386"
+    />
+  
+  <div class="product__content">
+    <div class="product__reviews">
+                      <span class="reviews__label">Not Yet Reviewed</span>
+          </div>
+
+    <div class="product--card__title" data-sku="VG0014" data-price="$139.90">
+      <span>King Arthur Pure Vanilla Extract</span>
+
+    </div>
+  </div>
+
+      </a>
+  
+</div>
+
+<div role="article" class="product product--card">
+  
+  
+
+      <a href="https://shop.kingarthurbaking.com/items/stone-ground-white-whole-wheat-flour">
+  
+      <img 
+      src="/sites/default/files/product-image/king-arthur-white-whole-wheat-flour-5-lb-1__57483.1633400144.386.513.jpg%3Fc%3D1.jpg" 
+      alt="" 
+      width="386" 
+      height="386"
+    />
+  
+  <div class="product__content">
+    <div class="product__reviews">
+              <span class="rating rating-is-50">4.9 out of 5 stars<span class="visually-hidden"> out of 5 stars</span></span>
+                  <span class="reviews__label">(511<span class="visually-hidden"> Reviews</span>)</span>
+                  </div>
+
+    <div class="product--card__title" data-sku="05555" data-price="$5.95">
+      <span>Stone-Ground White Whole Wheat Flour</span>
+
+    </div>
+  </div>
+
+      </a>
+  
+</div>
+
+<div role="article" class="product product--card">
+  
+  
+
+      <a href="https://shop.kingarthurbaking.com/items/unbleached-all-purpose-flour">
+  
+      <img 
+      src="/sites/default/files/product-image/king-arthur-unbleached-all-purpose-flour-5-lb-1__96453.1633400591.386.513.jpg%3Fc%3D1.jpg" 
+      alt="" 
+      width="386" 
+      height="386"
+    />
+  
+  <div class="product__content">
+    <div class="product__reviews">
+                      <span class="reviews__label">Not Yet Reviewed</span>
+          </div>
+
+    <div class="product--card__title" data-sku="VG0001" data-price="$5.95">
+      <span>Unbleached All-Purpose Flour</span>
+
+    </div>
+  </div>
+
+      </a>
+  
+</div>
+
+  </div>
+</div>
+
+  </div>
+<div id="block-kafrecipereviews" class="block block-kaf-recipe block-kaf-recipe-reviews">
+  
+    
+      <div class="yotpo yotpo-main-widget"
+  id="review-section"
+  data-product-id="45866"
+  data-name="Sourdough Zucchini Bread"
+  data-url="https://www.kingarthurbaking.com/recipes/sourdough-zucchini-bread-recipe"
+  data-description="This delicious whole grain zucchini bread makes wonderful use of excess sourdough starter you might otherwise discard. Paired with summer’s avalanche of zucchini, it’s one loaf that solves two kitchen conundrums!
+"
+></div>
+
+  </div>
+
+<div id="block-recipe-newsletter-signup" class="block block-webform block-webform-block">
+  <div class="newsletter-wrapper">
+    
+    
+
+          <picture>
+                  <source srcset="/sites/default/files/styles/featured_image/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=UOymQdSF 1x, /sites/default/files/styles/featured_image_2x/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=7sJgenge 2x" media="(min-width: 480px)" type="image/jpeg"/>
+              <source srcset="/sites/default/files/styles/featured_image_sm/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=PrBBCF-v 1x, /sites/default/files/styles/featured_image_sm_2x/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=LYIkVF0k 2x" type="image/jpeg"/>
+                  <img src="/sites/default/files/styles/featured_image/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=UOymQdSF" alt="Sourdough Zucchini Bread" />
+
+  </picture>
+
+
+
+
+
+    <div class="newsletter-form-area" tabindex="-1">
+      <h3 class="heading" aria-live="polite">For more recipes like this subscribe to our newsletter</h3>
+
+      <form class="recipe-newsletter-signup" id="recipe-newsletter-form">
+        <div class="form-item-email">
+          <input aria-label="Email address" class="custom-form-field form-email" id="recipe-newsletter-input" placeholder="Email address" type="email" value="">
+        </div>
+        <div class="form-actions webform-actions js-form-wrapper form-wrapper">
+          <input class="webform-button--submit button" id="recipe-email-submit" type="submit" value="submit">
+        </div>
+      </form>
+      <small style="display:block; margin-top: 5px;">View our <a href="/policies/privacy-policy">privacy policy</a></small></div>
+    </div>
+  </div>
+</div>
+
+<div class="knotch_placeholder"></div>
+<div id="block-kafrecommendedrecipes" class="block block-kaf-recipe block-kaf-recommended-recipes">
+  
+    
+      <div class="related related--recipes">
+  <div class="eyebrow">Recipes</div>
+  <h3>Recommended Recipes</h3>
+  <div class="related__nodes">
+    
+<div role="article" class="recipe recipe--card">
+  <a href="/recipes/pear-bran-bread-recipe" rel="bookmark">
+    
+    
+
+    <div class="recipe__media">
+                  <picture>
+                  <source srcset="/sites/default/files/styles/kaf_thumbnail_large/public/recipe_legacy/7673-3-large.jpg?itok=5XsQlCNe 1x, /sites/default/files/styles/kaf_thumbnail_large_2x_880x596_/public/recipe_legacy/7673-3-large.jpg?itok=2-L20qr7 2x" media="(min-width: 768px)" type="image/jpeg"/>
+              <source srcset="/sites/default/files/styles/kaf_thumbnail/public/recipe_legacy/7673-3-large.jpg?itok=3neYY4O1 1x, /sites/default/files/styles/kaf_thumbnail_2x/public/recipe_legacy/7673-3-large.jpg?itok=tNFCGQTN 2x" media="(min-width: 480px)" type="image/jpeg"/>
+              <source srcset="/sites/default/files/styles/kaf_thumbnail_small_200x135_/public/recipe_legacy/7673-3-large.jpg?itok=a1Y_QJnB 1x, /sites/default/files/styles/kaf_thumbnail_small_2x_400x271_/public/recipe_legacy/7673-3-large.jpg?itok=9pLQIta_ 2x" type="image/jpeg"/>
+                  <img src="/sites/default/files/styles/kaf_thumbnail/public/recipe_legacy/7673-3-large.jpg?itok=3neYY4O1" alt="Pear Bran Bread" />
+
+  </picture>
+
+
+
+
+    </div>
+
+    <div class="recipe__content">
+              <span class="eyebrow">Quick bread</span>
+      
+              <h5>
+          Pear Bran Bread
+        </h5>
+          </div>
+  </a>
+</div>
+
+
+<div role="article" class="recipe recipe--card">
+  <a href="/recipes/cranberry-apricot-quick-bread-recipe" rel="bookmark">
+    
+    
+
+    <div class="recipe__media">
+                  <picture>
+                  <source srcset="/sites/default/files/styles/kaf_thumbnail_large/public/2019-12/cranberry-apricot-quick-bread.jpg?itok=c7q4z85R 1x, /sites/default/files/styles/kaf_thumbnail_large_2x_880x596_/public/2019-12/cranberry-apricot-quick-bread.jpg?itok=89AuWcj5 2x" media="(min-width: 768px)" type="image/jpeg"/>
+              <source srcset="/sites/default/files/styles/kaf_thumbnail/public/2019-12/cranberry-apricot-quick-bread.jpg?itok=N9_HpFBn 1x, /sites/default/files/styles/kaf_thumbnail_2x/public/2019-12/cranberry-apricot-quick-bread.jpg?itok=LU2OkTgA 2x" media="(min-width: 480px)" type="image/jpeg"/>
+              <source srcset="/sites/default/files/styles/kaf_thumbnail_small_200x135_/public/2019-12/cranberry-apricot-quick-bread.jpg?itok=PB5SbBSC 1x, /sites/default/files/styles/kaf_thumbnail_small_2x_400x271_/public/2019-12/cranberry-apricot-quick-bread.jpg?itok=U6jj8bLq 2x" type="image/jpeg"/>
+                  <img src="/sites/default/files/styles/kaf_thumbnail/public/2019-12/cranberry-apricot-quick-bread.jpg?itok=N9_HpFBn" alt="Cranberry-Apricot Quick Bread" />
+
+  </picture>
+
+
+
+
+    </div>
+
+    <div class="recipe__content">
+              <span class="eyebrow">Quick bread</span>
+      
+              <h5>
+          Cranberry-Apricot Quick Bread
+        </h5>
+          </div>
+  </a>
+</div>
+
+
+<div role="article" class="recipe recipe--card">
+  <a href="/recipes/gluten-free-chocolate-zucchini-bread-recipe" rel="bookmark">
+    
+    
+
+    <div class="recipe__media">
+              <div class="product-flag mix_it_up">Mix Tips</div>
+                  <picture>
+                  <source srcset="/sites/default/files/styles/kaf_thumbnail_large/public/2020-12/KABC-PKG_GF-MIxologist-Zucchini-Bread_02.jpg?itok=6aspL8xl 1x, /sites/default/files/styles/kaf_thumbnail_large_2x_880x596_/public/2020-12/KABC-PKG_GF-MIxologist-Zucchini-Bread_02.jpg?itok=wH5scWxl 2x" media="(min-width: 768px)" type="image/jpeg"/>
+              <source srcset="/sites/default/files/styles/kaf_thumbnail/public/2020-12/KABC-PKG_GF-MIxologist-Zucchini-Bread_02.jpg?itok=UHg1-Yck 1x, /sites/default/files/styles/kaf_thumbnail_2x/public/2020-12/KABC-PKG_GF-MIxologist-Zucchini-Bread_02.jpg?itok=JPdL9ti0 2x" media="(min-width: 480px)" type="image/jpeg"/>
+              <source srcset="/sites/default/files/styles/kaf_thumbnail_small_200x135_/public/2020-12/KABC-PKG_GF-MIxologist-Zucchini-Bread_02.jpg?itok=T_ao3u8j 1x, /sites/default/files/styles/kaf_thumbnail_small_2x_400x271_/public/2020-12/KABC-PKG_GF-MIxologist-Zucchini-Bread_02.jpg?itok=tvNd4b4P 2x" type="image/jpeg"/>
+                  <img src="/sites/default/files/styles/kaf_thumbnail/public/2020-12/KABC-PKG_GF-MIxologist-Zucchini-Bread_02.jpg?itok=UHg1-Yck" alt="Gluten-Free Chocolate Zucchini Bread" />
+
+  </picture>
+
+
+
+
+    </div>
+
+    <div class="recipe__content">
+              <span class="eyebrow">Quick bread</span>
+      
+              <h5>
+          Gluten-Free Chocolate Zucchini Bread
+        </h5>
+          </div>
+  </a>
+</div>
+
+
+<div role="article" class="recipe recipe--card">
+  <a href="/recipes/rye-soda-bread-recipe" rel="bookmark">
+    
+    
+
+    <div class="recipe__media">
+                  <picture>
+                  <source srcset="/sites/default/files/styles/kaf_thumbnail_large/public/recipe_legacy/5677-3-large.jpg?itok=niv2WQMJ 1x, /sites/default/files/styles/kaf_thumbnail_large_2x_880x596_/public/recipe_legacy/5677-3-large.jpg?itok=IdDr7oPS 2x" media="(min-width: 768px)" type="image/jpeg"/>
+              <source srcset="/sites/default/files/styles/kaf_thumbnail/public/recipe_legacy/5677-3-large.jpg?itok=zeYATOZv 1x, /sites/default/files/styles/kaf_thumbnail_2x/public/recipe_legacy/5677-3-large.jpg?itok=lJ7xajcb 2x" media="(min-width: 480px)" type="image/jpeg"/>
+              <source srcset="/sites/default/files/styles/kaf_thumbnail_small_200x135_/public/recipe_legacy/5677-3-large.jpg?itok=AgwMtLio 1x, /sites/default/files/styles/kaf_thumbnail_small_2x_400x271_/public/recipe_legacy/5677-3-large.jpg?itok=Wzpf4_8_ 2x" type="image/jpeg"/>
+                  <img src="/sites/default/files/styles/kaf_thumbnail/public/recipe_legacy/5677-3-large.jpg?itok=zeYATOZv" alt="Rye Soda Bread" />
+
+  </picture>
+
+
+
+
+    </div>
+
+    <div class="recipe__content">
+              <span class="eyebrow">Quick bread</span>
+      
+              <h5>
+          Rye Soda Bread
+        </h5>
+          </div>
+  </a>
+</div>
+
+
+  </div>
+</div>
+
+  </div>
+
+  </div>
+
+      </main>
+
+      <div class="page-below-connect">
+        <div class="region region-below-connect">
+    <div id="block-connectwithus" class="block block-block-content block-block-content1b703610-b351-4568-bcc6-a91a133f7a95">
+  
+    
+        <h2>Connect with us</h2>
+
+  </div>
+<div id="block-receiverecipesspecialoffers" class="block block-block-content block-block-contentc53da24a-b22e-4ce3-acdd-9e13a0c06f0e">
+  
+      <h3 aria-live="polite">Receive Recipes &amp; Special Offers</h3>
+    
+        <form id="footer-newsletter-form">
+<div class="form-item-email"><input aria-label="Email address" class="custom-form-field form-email" id="footer-newsletter-input" placeholder="Email address" type="email" value="" /></div>
+
+<div class="form-actions webform-actions js-form-wrapper form-wrapper"><input class="webform-button--submit button" id="footer-email-submit" type="submit" value="submit" /></div>
+</form>
+
+<p class="footer-newsletter-text"><small style="display:block;">View our <a href="/policies/privacy-policy" style="text-decoration:underline;">privacy policy</a></small></p>
+
+
+  </div>
+<div id="block-oursocialcommunities" class="block block-block-content block-block-content411ae0cb-f0be-450c-b0b1-d6a9848d6093">
+  
+      <h3 aria-live="polite">Our Social Communities</h3>
+    
+        <p><a class="icon-facebook" href="https://www.facebook.com/kingarthurbaking/"><span class="visually-hidden">Facebook</span></a> <a class="icon-instagram" href="https://www.instagram.com/kingarthurbaking/"><span class="visually-hidden">Instagram</span></a> <a class="icon-pinterest" href="https://www.pinterest.com/kingarthurbaking/"><span class="visually-hidden">Pinterest</span></a> <a class="icon-twitter" href="https://twitter.com/kingarthurflour/"><span class="visually-hidden">Twitter</span></a> <a class="icon-youtube" href="https://www.youtube.com/KingArthurBakingCompany"><span class="visually-hidden">YouTube</span></a> <a class="icon-linkedin" href="https://www.linkedin.com/company/king-arthur-baking-company/"><span class="visually-hidden">LinkedIn</span></a></p>
+
+
+  </div>
+<div id="block-getintouch" class="block block-block-content block-block-contentf5d7c1ec-3561-40ba-b96c-6457ceecb13f">
+  
+      <h3 aria-live="polite">Get in Touch</h3>
+    
+        <p><a class="button contact-button" href="/launchchat">Chat | Email</a></p>
+
+
+  </div>
+
+  </div>
+
+    </div>
+  
+      <div class="page-below-values">
+        <div class="region region-below-values">
+    <div id="block-certifiedbcorporation" class="block block-block-content block-block-content900f3cf8-936b-4320-a12a-9f0aa9325299">
+  
+  
+                <img src="/sites/default/files/values-block/b-corp_6.svg" alt="Certified B Corporation Logo" loading="lazy" />
+
+
+
+      </div>
+<div id="block-100employeeowned" class="block block-block-content block-block-content0b74f5eb-9c02-4f1a-af3c-f3fbe64c2200">
+  
+  
+                <img src="/sites/default/files/values-block/employee-owned_6.svg" alt="100% Employee-owned logo" loading="lazy" />
+
+
+
+      </div>
+<div id="block-1fortheplanet" class="block block-block-content block-block-content8a5711d0-5544-4e42-bcdb-c59131dfa9d7">
+  
+  
+                <img src="/sites/default/files/values-block/for-the-planet_6.svg" alt="1% For The Planet Logo" loading="lazy" />
+
+
+
+      </div>
+<div id="block-100committedtoquality" class="block block-block-content block-block-content08516c39-cfe6-4e33-b48e-379b68c53063">
+  
+  
+                <img src="/sites/default/files/values-block/quality_6.svg" alt="100% Committed to Quality Logo" loading="lazy" />
+
+
+
+      </div>
+
+  </div>
+
+    </div>
+  
+  <footer class="footer" role="contentinfo">
+  <div class="footer-grid">
+          <div class="footer__first footer-menu">
+          <div class="region region-footer-first">
+    <nav role="navigation" aria-labelledby="block-kaf-nextgenweb-footerthebakerscatalogue-menu" id="block-kaf-nextgenweb-footerthebakerscatalogue">
+      
+  <h2 id="block-kaf-nextgenweb-footerthebakerscatalogue-menu">Shop Online</h2>
+  
+
+        
+
+                <ul class="menu-footer-bakers-catalog menu-level-0">
+                                    <li>
+                                                    <a href="https://shop.kingarthurbaking.com/current-promotions">Current Promotions</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/customer-service">Customer Service</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/customer-service/shipping">Shipping</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/customer-service/returns">Returns &amp; Refunds</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="https://shop.kingarthurbaking.com/giftcertificates.php?action=balance">Gift Card Balance Lookup</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/catalog-request">Request a Catalog </a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/bakers-rewards">Baker&#039;s Rewards Plus</a>
+                                      
+                      </li>
+              </ul>
+      
+
+
+
+  </nav>
+
+  </div>
+
+      </div>
+    
+          <div class="footer__second footer-menu">
+          <div class="region region-footer-second">
+    <nav role="navigation" aria-labelledby="block-kaf-nextgenweb-footerforhomebakers-menu" id="block-kaf-nextgenweb-footerforhomebakers">
+      
+  <h2 id="block-kaf-nextgenweb-footerforhomebakers-menu">For Home Bakers</h2>
+  
+
+        
+
+                <ul class="menu-footer-home-bakers menu-level-0">
+                                    <li>
+                                                    <a href="/recipes">Recipes</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/learn/guides">Baking Guides</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/bakers-hotline">Baker&#039;s Hotline</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/about/products/docs/flour-safety">Say No to Raw Dough</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/baking-school/calendar?cat=3">Classes for Home Bakers </a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/baking-contests">Baking Contests</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/cookbooks">Our Cookbooks</a>
+                                      
+                      </li>
+              </ul>
+      
+
+
+
+  </nav>
+
+  </div>
+
+      </div>
+    
+          <div class="footer__third footer-menu">
+          <div class="region region-footer-third">
+    <nav role="navigation" aria-labelledby="block-kaf-nextgenweb-footerforprofessionalbakers-menu" id="block-kaf-nextgenweb-footerforprofessionalbakers">
+      
+  <h2 id="block-kaf-nextgenweb-footerforprofessionalbakers-menu">For Professional Bakers</h2>
+  
+
+        
+
+                <ul class="menu-footer-professional-bakers menu-level-0">
+                                    <li>
+                                                    <a href="/pro">Bakery &amp; Food Service Sales</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/pro/products">Commercial Product Lines</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/pro/distributor">Wholesale Distributors</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/baking-school/calendar?cat=8">Classes &amp; Training</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/pro/formulas">Bakery Formulas</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/pro/reference">Resources &amp; Reference </a>
+                                      
+                      </li>
+              </ul>
+      
+
+
+
+  </nav>
+
+  </div>
+
+      </div>
+    
+          <div class="footer__fourth footer-menu">
+          <div class="region region-footer-fourth">
+    <nav role="navigation" aria-labelledby="block-kaf-nextgenweb-footerkingarthurflour-menu" id="block-kaf-nextgenweb-footerkingarthurflour">
+      
+  <h2 id="block-kaf-nextgenweb-footerkingarthurflour-menu">Our Company</h2>
+  
+
+        
+
+                <ul class="menu-footer-king-arthur-flour menu-level-0">
+                                    <li>
+                                                    <a href="/about/our-products">Our Product Lines</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/wheretobuy">Find Products Near You</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/visit">Visit Us</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/jobs">Jobs &amp; Careers</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/about/diversity-equity-inclusion">Diversity, Equity, and Inclusion</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/contact-us">Contact Us</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/newsroom">Newsroom</a>
+                                      
+                      </li>
+              </ul>
+      
+
+
+
+  </nav>
+
+  </div>
+
+      </div>
+      </div>
+      <div class="footer__legal">
+      
+<div class="region region-footer">
+  <p class="copyright">Copyright &copy;
+    2022
+    King Arthur Baking Company, Inc. All rights reserved.  </p>
+
+      <nav role="navigation" aria-labelledby="block-footerlegal-menu" id="block-footerlegal">
+            
+  <h2 class="visually-hidden" id="block-footerlegal-menu">Footer - Legal</h2>
+  
+
+        
+
+                <ul class="menu-footer-legal menu-level-0">
+                                    <li>
+                                                    <a href="/about/products/docs/supply-chain-disclosure">Supply Chain Disclosure</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/policies/accessibility">Accessibility</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/policies/privacy-policy">Privacy Policy</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/policies/terms-of-use">Terms of Use</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/policies/privacy/california#do-not-sell">Do Not Sell My Information</a>
+                                      
+                      </li>
+              </ul>
+      
+
+
+
+  </nav>
+
+  </div>
+
+    </div>
+  </footer>
+
+      
+<div  class="region region-search-overlay search__overlay" aria-modal="true" role="dialog">
+  <div class="search__overlay--inner-container">
+    <div class="search__bar" role="search" aria-label="Site Search">
+
+      <div class="select--container">
+        <select class="search__bar--select" tabindex="-1" name="search-overlay-select" aria-label="Search overlay select">
+          <option value="rebuild_all_index" selected disabled hidden>All</option>
+          <option value="rebuild_all_index">All</option>
+          <option value="recipe_index">Recipes</option>
+          <option value="bc_product_index">Products</option>
+          <option value="blog_index">Blog</option>
+          <option value="general_content_index">Other</option>
+        </select>
+      </div>
+
+      <div
+        class="mobile-search--container">
+        <!-- A live region to announce number of suggestions presented-->
+        <div id='search__overlay--announce' class='visually-hidden' aria-live="assertive"></div>
+        <input id='search__overlay--input' class="search-input" name="search-bar" aria-label="Search" placeholder="" autocomplete="off" aria-owns="search__overlay--results" aria-autocomplete="both" role="combobox"/>
+
+        <div class="submit--container">
+          <button class="search-submit" name="search-submit" aria-label="Submit">
+            <img class="search-image" style="min-width: 17px;" alt="" src="/themes/custom/kaf_nextgenweb/images/search--white.svg"/>
+            <span class="visually-hidden">Submit</span>
+          </button/>
+        </div>
+      </div>
+    </div>
+
+    <div class="search-autocomplete">
+      <ul role="listbox" tabindex="-1" id="search__overlay--results" aria-expanded="false"></ul>
+    </div>
+
+    <div class="search_promotion"><div id="block-searchformpromotionalarea" class="block block-block-content block-block-contentbadedd9e-df51-461a-b7b2-c133f22e0e3c">
+  
+    
+        <div class="wysiwyg__grid grid-has-3">
+<div class="wysiwyg__grid-item"><span class="eyebrow">Popular in recipes</span>
+<ul><li><a href="/recipes/crispy-cheesy-pan-pizza-recipe">Crispy Cheesy Pan Pizza</a></li>
+	<li><a href="/recipes/classic-birthday-cake-recipe">Classic Birthday Cake</a></li>
+	<li><a href="/recipes/sourdough-starter-recipe">Sourdough Starter</a></li>
+</ul></div>
+
+<div class="wysiwyg__grid-item"><span class="eyebrow">Popular in products</span>
+
+<ul><li><a href="https://shop.kingarthurbaking.com/items/king-arthur-unbleached-all-purpose-flour-8-lb">Unbleached All-Purpose Flour</a></li>
+	<li><a href="https://shop.kingarthurbaking.com/items/gluten-free-measure-for-measure-flour-3-lb">Gluten-Free Measure for Measure</a></li>
+	<li><a href="https://shop.kingarthurbaking.com/items/baking-parchment-paper-set-of-100-half-sheets">Baking Parchment Paper</a></li>
+</ul></div>
+
+<div class="wysiwyg__grid-item"><span class="eyebrow">Popular in blog</span>
+
+<ul><li><a href="/blog/2017/02/21/bread-baking-dutch-oven">Bread baking in a Dutch oven</a></li>
+	<li><a href="/blog/2020/06/10/10-tips-for-new-sourdough-bakers">10 tips for new sourdough bakers</a></li>
+	<li><a href="/blog/2018/10/31/make-and-freeze-pie-crust">Make and freeze pie crust</a></li>
+</ul></div>
+</div>
+
+
+  </div>
+</div>
+
+    <button class="search__hide" aria-label="Close search panel">
+      <span class="search__hide-text">close</span>
+    </button>
+  </div>
+</div>
+
+  
+</div>
+
+  </div>
+
+    
+    <script type="application/json" data-drupal-selector="drupal-settings-json">{"path":{"baseUrl":"\/","scriptPath":null,"pathPrefix":"","currentPath":"node\/45866","currentPathIsAdmin":false,"isFront":false,"currentLanguage":"en"},"pluralDelimiter":"\u0003","suppressDeprecationErrors":true,"ajaxPageState":{"libraries":"ckeditor_accordion\/accordion_style,cleantalk\/apbct-public,core\/picturefill,eu_cookie_compliance\/eu_cookie_compliance_bare,kab_bigcommerce\/kab_bigcommerce,kab_customer\/kab_customer,kaf_ga_tracking\/kaf_ga_tracking,kaf_helpscout\/helpscout,kaf_nextgenweb\/global-scripts,kaf_nextgenweb\/global-styling,kaf_nextgenweb\/status-message-ui,kaf_recipe_box\/recipebox_native,kaf_share\/kaf_share,system\/base","theme":"kaf_nextgenweb","theme_token":null},"ajaxTrustedUrl":[],"kabBigCommerce":{"apiBaseUrl":"https:\/\/shop.kingarthurbaking.com","appClientId":"j72v63q1r6g7gjpzidvupu142ducavb"},"kaf_helpscout":{"beacon_id":"fd820c57-521c-4c0a-9eff-0ba927533437"},"eu_cookie_compliance":{"cookie_policy_version":"1.0.0","popup_enabled":true,"popup_agreed_enabled":false,"popup_hide_agreed":false,"popup_clicking_confirmation":true,"popup_scrolling_confirmation":false,"popup_html_info":"\u003Cdiv class =\u0022alert alert--cookie sticky\u0022\u003E\n  \u003Cspan\u003E\n    \u003Cp\u003EThis site uses cookies to provide you with the best experience possible.\u003C\/p\u003E\n\n  \u003C\/span\u003E\n      \u003Ca class=\u0022find-more-button alert__learnmore\u0022\u003ERead our Privacy Policy\u003C\/a\u003E\n    \u003Ca class=\u0022agree-button alert__close\u0022\u003E\u003Ci\u003EClose\u003C\/i\u003E\u003C\/a\u003E\n\u003C\/div\u003E","use_mobile_message":false,"mobile_popup_html_info":"\u003Cdiv class =\u0022alert alert--cookie sticky\u0022\u003E\n  \u003Cspan\u003E\n    \n  \u003C\/span\u003E\n      \u003Ca class=\u0022find-more-button alert__learnmore\u0022\u003ERead our Privacy Policy\u003C\/a\u003E\n    \u003Ca class=\u0022agree-button alert__close\u0022\u003E\u003Ci\u003EClose\u003C\/i\u003E\u003C\/a\u003E\n\u003C\/div\u003E","mobile_breakpoint":768,"popup_html_agreed":false,"popup_use_bare_css":true,"popup_height":"auto","popup_width":"100%","popup_delay":1000,"popup_link":"\/policies\/privacy.html","popup_link_new_window":true,"popup_position":false,"fixed_top_position":true,"popup_language":"en","store_consent":false,"better_support_for_screen_readers":false,"cookie_name":"","reload_page":false,"domain":"","domain_all_sites":null,"popup_eu_only_js":false,"cookie_lifetime":100,"cookie_session":0,"set_cookie_session_zero_on_disagree":0,"disagree_do_not_show_popup":false,"method":"default","automatic_cookies_removal":true,"allowed_cookies":"","withdraw_markup":"\u003Cbutton type=\u0022button\u0022 class=\u0022eu-cookie-withdraw-tab\u0022\u003EPrivacy settings\u003C\/button\u003E\n\u003Cdiv role=\u0022alertdialog\u0022 aria-labelledby=\u0022popup-text\u0022 class=\u0022eu-cookie-withdraw-banner\u0022\u003E\n  \u003Cdiv class=\u0022popup-content info eu-cookie-compliance-content\u0022\u003E\n    \u003Cdiv id=\u0022popup-text\u0022 class=\u0022eu-cookie-compliance-message\u0022\u003E\n      \u003Ch2\u003EWe use cookies on this site to enhance your user experience\u003C\/h2\u003E\n\u003Cp\u003EYou have given your consent for us to set cookies.\u003C\/p\u003E\n\n    \u003C\/div\u003E\n    \u003Cdiv id=\u0022popup-buttons\u0022 class=\u0022eu-cookie-compliance-buttons\u0022\u003E\n      \u003Cbutton type=\u0022button\u0022 class=\u0022eu-cookie-withdraw-button\u0022\u003EWithdraw consent\u003C\/button\u003E\n    \u003C\/div\u003E\n  \u003C\/div\u003E\n\u003C\/div\u003E","withdraw_enabled":false,"reload_options":0,"reload_routes_list":"","withdraw_button_on_info_popup":null,"cookie_categories":[],"cookie_categories_details":[],"enable_save_preferences_button":null,"cookie_value_disagreed":"0","cookie_value_agreed_show_thank_you":"1","cookie_value_agreed":"2","containing_element":"body","settings_tab_enabled":false,"open_by_default":true},"ckeditorAccordion":{"accordionStyle":{"collapseAll":1,"keepRowsOpen":null}},"kaf_recipe_box":{"api_base_url":"https:\/\/www.kingarthurbaking.com\/api\/recipebox","shop_signin_url":"https:\/\/shop.kingarthurbaking.com\/login.php","bc_enabled":true},"kaf_search":{"algolia_app_id":"HWPWEWOTF5","algolia_api_key":"f76e4ac912eee478c11cad084afe4ecb"},"user":{"uid":0,"permissionsHash":"c50293c644408a7d52ffd7353eafe0b32da2035809d230aaf4ae7d894d3a6a42"}}</script>
+<script src="/sites/default/files/js/js_KJsRcrNtUZpTJFMB1Bo4tsMOkQbYoi3vGcbwCcxklh4.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default,Array.prototype.find,Array.prototype.includes,Promise,Object.assign,Object.entries"></script>
+<script src="/sites/default/files/js/js_4l2XyreFxW2pcr03u1ewx8vU-kMlhlwpf7IcJCfXuqo.js"></script>
+<script src="/modules/contrib/eu_cookie_compliance/js/eu_cookie_compliance.js?v=1.19" defer></script>
+<script src="/sites/default/files/js/js__-XZdbfWuemcY4DwMksiT7LIeKuYxexrE0Ifow4Q4EA.js"></script>
+
+  <script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam-cell.nr-data.net","licenseKey":"6b8b93db2d","applicationID":"401100790","transactionName":"YABQZUUAChBXU0xYDVlKZ0NeTg0NUlVAHxJfFQ==","queueTime":0,"applicationTime":161,"atts":"TEdTEw0aGR4=","errorBeacon":"bam-cell.nr-data.net","agent":""}</script></body>
+</html>
