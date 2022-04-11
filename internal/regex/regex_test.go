@@ -86,12 +86,6 @@ func TestRegex(t *testing.T) {
 			in:    `<img src="" alt="Eight chicken thighs topped with orange zest and a sweet and sour orange sauce in a cast iron skillet" title="Bohemian Orange Chicken" width="250">`,
 			want:  false,
 		},
-		{
-			name:          "quantity is valid",
-			regex:         Quantity,
-			in:            "1l 1 l 2ml 3 ml 425°f 220°c",
-			wantedMatches: []string{"1L 1 L 2mL 3 mL 425°F 220°C"},
-		},
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
