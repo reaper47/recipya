@@ -46,6 +46,10 @@ type Repository interface {
 	// DeleteRecipe deletes the recipe with the passed id from the database.
 	DeleteRecipe(id int64) error
 
+	// Images fetches all distinct image UUIDs for recipes.
+	// An empty slice will be returned when an error occurred.
+	Images() []string
+
 	// Close closes the database's connection.
 	Close()
 }

@@ -9,6 +9,7 @@ import (
 
 	"github.com/reaper47/recipya/internal/config"
 	"github.com/reaper47/recipya/internal/contexts"
+	"github.com/reaper47/recipya/internal/jobs"
 	"github.com/reaper47/recipya/internal/router"
 	_ "github.com/reaper47/recipya/internal/templates"
 	"github.com/spf13/cobra"
@@ -32,6 +33,8 @@ web browser at the address specified when you run the command.
 				log.Fatal(err)
 			}
 		}
+
+		jobs.ScheduleCronJobs()
 
 		srv := &http.Server{
 			Addr:         "0.0.0.0:8080",

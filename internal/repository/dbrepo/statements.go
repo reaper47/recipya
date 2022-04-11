@@ -195,6 +195,10 @@ const isRecipeExistsForUserStmt = `
 		
 	)`
 
+const getDistinctImagesStmt = `
+	SELECT DISTINCT image 
+	FROM recipes`
+
 // INSERT
 func insertRecipeStmt(tables []tableData) string {
 	var params nameParams

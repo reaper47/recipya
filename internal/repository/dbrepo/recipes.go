@@ -382,3 +382,22 @@ func (m *postgresDBRepo) DeleteRecipe(id int64) error {
 	}
 	return nil
 }
+
+func (m *postgresDBRepo) Images() []string {
+	ctx, cancel := contexts.Timeout(3 * time.Second)
+	defer cancel()
+
+	var images []string
+	rows, err := m.Pool.Query(ctx, getDistinctImagesStmt)
+	if err != nil {
+		return images
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var s string
+		_ = rows.Scan(&s)
+		images = append(images, s)
+	}
+	return images
+}
