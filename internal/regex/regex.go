@@ -17,4 +17,4 @@ var (
 	ImageSrc = regexp.MustCompile(`https://[\w./?=%-_&;]+`)
 )
 
-var Quantity = regexp.MustCompile(`[\d]\s*m?[l]{1}`)
+var Quantity = regexp.MustCompile(`([\d]\s*m?[l]{1})?(\d*°[cf]{1})?`)

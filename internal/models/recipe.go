@@ -108,8 +108,13 @@ func (r *Recipe) Normalize() {
 func normalizeQuantity(s string) string {
 	xr := []rune(s)
 	for i, v := range xr {
-		if v == 'l' {
+		switch v {
+		case 'l':
 			xr[i] = 'L'
+		case 'f':
+			xr[i] = 'F'
+		case 'c':
+			xr[i] = 'C'
 		}
 	}
 	return string(xr)
