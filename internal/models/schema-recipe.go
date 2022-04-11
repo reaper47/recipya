@@ -83,7 +83,7 @@ func (m RecipeSchema) ToRecipe() (Recipe, error) {
 		}
 	}
 
-	return Recipe{
+	r := Recipe{
 		ID:           0,
 		Name:         m.Name,
 		Description:  m.Description.Value,
@@ -99,7 +99,10 @@ func (m RecipeSchema) ToRecipe() (Recipe, error) {
 		Keywords:     strings.Split(m.Keywords.Values, ","),
 		CreatedAt:    createdAt,
 		UpdatedAt:    updatedAt,
-	}, nil
+	}
+
+	r.Normalize()
+	return r, nil
 }
 
 // SchemaType holds the type of the schema. It should be "Recipe".

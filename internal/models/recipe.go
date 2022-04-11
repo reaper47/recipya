@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/regex"
 	"github.com/reaper47/recipya/internal/utils/duration"
 )
 
@@ -87,6 +88,31 @@ func (r Recipe) ToSchema() RecipeSchema {
 		Yield:           Yield{Value: r.Yield},
 		Url:             r.Url,
 	}
+}
+
+// Normalize normalizes texts for readability.
+//
+// It normalizes quanities, i.e. 1l -> 1L and 1 ml -> 1 mL.
+func (r *Recipe) Normalize() {
+	r.Description = regex.Quantity.ReplaceAllStringFunc(r.Description, normalizeQuantity)
+
+	for i, v := range r.Ingredients.Values {
+		r.Ingredients.Values[i] = regex.Quantity.ReplaceAllStringFunc(v, normalizeQuantity)
+	}
+
+	for i, v := range r.Instructions {
+		r.Instructions[i] = regex.Quantity.ReplaceAllStringFunc(v, normalizeQuantity)
+	}
+}
+
+func normalizeQuantity(s string) string {
+	xr := []rune(s)
+	for i, v := range xr {
+		if v == 'l' {
+			xr[i] = 'L'
+		}
+	}
+	return string(xr)
 }
 
 // Times holds a variety of intervals.

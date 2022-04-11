@@ -173,4 +173,34 @@ func TestModelRecipe(t *testing.T) {
 			t.Errorf("wanted total time 3H but got %v", actual.Total.String())
 		}
 	})
+
+	t.Run("Recipe Normalize is correct", func(t *testing.T) {
+		r := Recipe{
+			Description:  "Place the chicken pieces on a baking sheet and bake 1l 1 l 1ml 1 ml until they are nice and golden, maybe 40 minutes or so (make sure they are cooked ... you don't want salmonella or some shit!!!).",
+			Ingredients:  Ingredients{Values: []string{"ing1 1L", "1 L ing2", "ing3 of 1mL stuff", "ing4 of stuff 1 mL"}},
+			Instructions: []string{"ins1 1l", "1 l ins2", "ins3 of 1ml stuff", "ins4 of stuff 1 ml"},
+		}
+
+		r.Normalize()
+
+		expectedDescription := "Place the chicken pieces on a baking sheet and bake 1L 1 L 1mL 1 mL until they are nice and golden, maybe 40 minutes or so (make sure they are cooked ... you don't want salmonella or some shit!!!)."
+		if r.Description != expectedDescription {
+			t.Errorf("expected the description to be normalized")
+		}
+
+		expected := []string{"ing1 1L", "1 L ing2", "ing3 of 1mL stuff", "ing4 of stuff 1 mL"}
+		for i, v := range r.Ingredients.Values {
+			if v != expected[i] {
+				t.Errorf("expected '%v' but got '%v'", expected[i], v)
+			}
+		}
+
+		expected = []string{"ins1 1L", "1 L ins2", "ins3 of 1mL stuff", "ins4 of stuff 1 mL"}
+		for i, v := range r.Instructions {
+			if v != expected[i] {
+				t.Errorf("expected '%v' but got '%v'", expected[i], v)
+			}
+		}
+	})
+
 }

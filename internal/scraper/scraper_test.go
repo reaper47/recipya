@@ -8351,7 +8351,6 @@ func TestScraper(t *testing.T) {
 	for _, tc := range testcases {
 		tc := tc
 		t.Run("scrape "+tc.name, func(t *testing.T) {
-			t.Parallel()
 			defer func() {
 				if err := recover(); err != nil {
 					t.Fatalf("panic while testing %s: %s", tc.name, err)
@@ -8370,6 +8369,7 @@ func TestScraper(t *testing.T) {
 }
 
 func testHTTP(t *testing.T, in string) models.RecipeSchema {
+	t.Parallel()
 	rs, err := Scrape(in)
 	if err != nil {
 		t.Fatal(err)

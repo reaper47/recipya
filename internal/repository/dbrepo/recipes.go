@@ -236,6 +236,7 @@ func (m *postgresDBRepo) Recipe(id int64) models.Recipe {
 
 	r.Nutrition = n
 	r.Times = t
+	r.Normalize()
 	return r
 }
 
