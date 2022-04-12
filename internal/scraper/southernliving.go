@@ -1,7 +1,6 @@
 package scraper
 
 import (
-	"strconv"
 	"strings"
 
 	"github.com/reaper47/recipya/internal/models"
@@ -33,14 +32,7 @@ func scrapeSouthernLiving(root *html.Node) (models.RecipeSchema, error) {
 		xn := traverseAll(root, func(node *html.Node) bool {
 			return strings.HasPrefix(node.Data, "Serves")
 		})
-		parts := strings.Split(xn[0].Data, " ")
-		for _, v := range parts {
-			i, err := strconv.Atoi(v)
-			if err == nil {
-				yield = int16(i)
-				break
-			}
-		}
+		yield = findYield(strings.Split(xn[0].Data, " "))
 	}()
 
 	chImage := make(chan string)

@@ -1,7 +1,6 @@
 package scraper
 
 import (
-	"strconv"
 	"strings"
 
 	"github.com/reaper47/recipya/internal/models"
@@ -31,15 +30,7 @@ func scrapeWoop(root *html.Node) (rs models.RecipeSchema, err error) {
 
 		node := getElement(root, "class", "product attribute serving-amount")
 		value := getElement(node, "class", "value")
-
-		parts := strings.Split(value.FirstChild.Data, " ")
-		for _, part := range parts {
-			i, err := strconv.Atoi(part)
-			if err == nil {
-				yield = int16(i)
-				break
-			}
-		}
+		yield = findYield(strings.Split(value.FirstChild.Data, " "))
 	}()
 
 	chInstructions := make(chan []string)

@@ -94,7 +94,7 @@ func scrapeWikiBooks(root *html.Node) (models.RecipeSchema, error) {
 		node := traverseAll(root, func(node *html.Node) bool {
 			return node.Data == "Servings"
 		})[0]
-		i, err := strconv.Atoi(node.Parent.NextSibling.NextSibling.FirstChild.Data)
+		i, err := strconv.ParseInt(node.Parent.NextSibling.NextSibling.FirstChild.Data, 10, 16)
 		if err == nil {
 			yield = int16(i)
 		}

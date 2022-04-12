@@ -21,7 +21,7 @@ func scrapeDk(root *html.Node) (rs models.RecipeSchema, err error) {
 		}()
 
 		yieldStr := getItemPropAttr(content, "recipeYield", "content")
-		yield, err := strconv.Atoi(<-yieldStr)
+		yield, err := strconv.ParseInt(<-yieldStr, 10, 16)
 		if err == nil {
 			i = int(yield)
 		}

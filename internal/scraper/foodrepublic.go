@@ -20,7 +20,7 @@ func scrapeFoodRepublic(root *html.Node) (rs models.RecipeSchema, err error) {
 		}()
 
 		yieldStr := <-getItemPropData(content, "recipeYield")
-		i, err := strconv.Atoi(strings.TrimSpace(yieldStr))
+		i, err := strconv.ParseInt(strings.TrimSpace(yieldStr), 10, 16)
 		if err == nil {
 			yield = int16(i)
 		}

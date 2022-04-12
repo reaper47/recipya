@@ -47,7 +47,7 @@ func scrapeGlobo(root *html.Node) (rs models.RecipeSchema, err error) {
 		}()
 
 		yieldStr := <-getItemPropAttr(root, "recipeYield", "content")
-		i, err := strconv.Atoi(yieldStr)
+		i, err := strconv.ParseInt(yieldStr, 10, 16)
 		if err == nil {
 			yield = int16(i)
 		}

@@ -58,7 +58,7 @@ func scrapeGreatBritishChefs(root *html.Node) (models.RecipeSchema, error) {
 		node := getElement(root, "itemprop", "recipeYield")
 		node = getElement(node, "class", "header-attribute-text")
 		iStr := strings.ReplaceAll(node.FirstChild.Data, "\n", "")
-		i, err := strconv.Atoi(strings.TrimSpace(iStr))
+		i, err := strconv.ParseInt(strings.TrimSpace(iStr), 10, 16)
 		if err == nil {
 			yield = int16(i)
 		}

@@ -480,7 +480,7 @@ func (m *Yield) UnmarshalJSON(data []byte) error {
 	case []interface{}:
 		if len(x) > 0 {
 			v := strings.Split(x[0].(string), " ")[0]
-			i, err := strconv.Atoi(v)
+			i, err := strconv.ParseInt(v, 10, 16)
 			if err == nil {
 				m.Value = int16(i)
 			}

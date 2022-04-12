@@ -35,7 +35,7 @@ func scrapePurelyPope(root *html.Node) (models.RecipeSchema, error) {
 			chYield <- yield
 		}()
 
-		i, err := strconv.Atoi(<-getItemPropData(root, "recipeYield"))
+		i, err := strconv.ParseInt(<-getItemPropData(root, "recipeYield"), 10, 16)
 		if err == nil {
 			yield = int16(i)
 		}

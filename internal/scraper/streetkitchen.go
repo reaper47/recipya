@@ -34,7 +34,7 @@ func scrapeStreetKitchen(root *html.Node) (models.RecipeSchema, error) {
 		}()
 
 		node := getElement(root, "class", "c-svgicon c-svgicon--servings ")
-		i, err := strconv.Atoi(node.NextSibling.NextSibling.FirstChild.Data)
+		i, err := strconv.ParseInt(node.NextSibling.NextSibling.FirstChild.Data, 10, 16)
 		if err == nil {
 			yield = int16(i)
 		}

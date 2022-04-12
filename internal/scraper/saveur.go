@@ -1,7 +1,6 @@
 package scraper
 
 import (
-	"strconv"
 	"strings"
 	"time"
 
@@ -68,13 +67,7 @@ func scrapeSaveur(root *html.Node) (models.RecipeSchema, error) {
 		}()
 
 		yieldStr := <-getElementData(root, "property", "recipeYield")
-		parts := strings.Split(yieldStr, " ")
-		for _, v := range parts {
-			i, err := strconv.Atoi(v)
-			if err == nil {
-				yield = int16(i)
-			}
-		}
+		yield = findYield(strings.Split(yieldStr, " "))
 	}()
 
 	chCookTime := make(chan string)

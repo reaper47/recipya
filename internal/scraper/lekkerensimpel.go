@@ -43,13 +43,7 @@ func scrapeLekkerenSimpel(root *html.Node) (models.RecipeSchema, error) {
 			case 2:
 				s := strings.TrimSpace(node.FirstChild.Data)
 				s = strings.ReplaceAll(s, "\n", "")
-				parts := strings.Split(s, " ")
-				for _, part := range parts {
-					i, err := strconv.Atoi(part)
-					if err == nil {
-						yield = int16(i)
-					}
-				}
+				yield = findYield(strings.Split(s, " "))
 			case 3:
 				for c := node.FirstChild; c != nil; c = c.NextSibling {
 					if c.Type != html.TextNode {

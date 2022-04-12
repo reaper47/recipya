@@ -1,7 +1,6 @@
 package scraper
 
 import (
-	"strconv"
 	"strings"
 
 	"github.com/reaper47/recipya/internal/models"
@@ -39,13 +38,7 @@ func scrapeTheHappyFoodie(root *html.Node) (models.RecipeSchema, error) {
 		} else {
 			parts = strings.Split(yieldStr, " ")
 		}
-
-		for _, v := range parts {
-			i, err := strconv.Atoi(v)
-			if err == nil {
-				yield = int16(i)
-			}
-		}
+		yield = findYield(parts)
 	}()
 
 	chDescription := make(chan string)

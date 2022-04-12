@@ -1,6 +1,7 @@
 package scraper
 
 import (
+	"strconv"
 	"strings"
 
 	"golang.org/x/net/html"
@@ -96,4 +97,14 @@ func getItemPropData(root *html.Node, item string) chan string {
 		v = node.FirstChild.Data
 	}()
 	return ch
+}
+
+func findYield(parts []string) int16 {
+	for _, part := range parts {
+		i, err := strconv.ParseInt(part, 10, 16)
+		if err == nil {
+			return int16(i)
+		}
+	}
+	return 0
 }

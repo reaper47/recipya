@@ -1,7 +1,6 @@
 package scraper
 
 import (
-	"strconv"
 	"strings"
 
 	"github.com/reaper47/recipya/internal/models"
@@ -21,15 +20,7 @@ func scrapeMindMegette(root *html.Node) (models.RecipeSchema, error) {
 
 		node := getElement(root, "class", "spritePortion")
 		yieldStr := node.NextSibling.FirstChild.FirstChild.Data
-		parts := strings.Split(yieldStr, " ")
-		for _, part := range parts {
-			i, err := strconv.Atoi(part)
-			if err == nil {
-				yield = int16(i)
-				break
-			}
-		}
-
+		yield = findYield(strings.Split(yieldStr, " "))
 	}()
 
 	rs.Yield = <-chYield

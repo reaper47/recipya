@@ -2,6 +2,7 @@ package nlp
 
 import (
 	"log"
+	"strings"
 	"sync"
 	"unicode"
 
@@ -20,6 +21,8 @@ func CapitalizeParagraphs(paragraphs []string) []string {
 
 			doc, err := prose.NewDocument(text)
 			if err != nil {
+				text = strings.Replace(text, "\n", "", -1)
+				text = strings.Replace(text, "\r", "", -1)
 				log.Printf("could not create a document from '%s': %s", text, err)
 				return
 			}

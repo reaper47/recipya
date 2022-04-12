@@ -33,14 +33,7 @@ func scrapeMyPlate(root *html.Node) (models.RecipeSchema, error) {
 		node = getElement(node, "class", "mp-recipe-full__detail--data")
 		s := strings.TrimSpace(node.FirstChild.Data)
 		s = strings.ReplaceAll(s, "\n", "")
-		parts := strings.Split(s, " ")
-		for _, part := range parts {
-			i, err := strconv.Atoi(part)
-			if err == nil {
-				yield = int16(i)
-				break
-			}
-		}
+		yield = findYield(strings.Split(s, " "))
 	}()
 
 	chCookTime := make(chan string)

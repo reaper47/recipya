@@ -92,13 +92,7 @@ func scrapeValdemarsro(root *html.Node) (models.RecipeSchema, error) {
 		node := traverseAll(root, func(node *html.Node) bool {
 			return node.Data == "Antal"
 		})[0]
-		parts := strings.Split(node.Parent.NextSibling.FirstChild.Data, " ")
-		for _, v := range parts {
-			i, err := strconv.Atoi(v)
-			if err == nil {
-				yield = int16(i)
-			}
-		}
+		yield = findYield(strings.Split(node.Parent.NextSibling.FirstChild.Data, " "))
 	}()
 
 	chIngredients := make(chan []string)

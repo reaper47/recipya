@@ -37,13 +37,7 @@ func scrapeMonsieurCuisine(root *html.Node) (models.RecipeSchema, error) {
 
 		node := getElement(content, "class", "recipe-portions")
 		node = getElement(node, "class", "info-label")
-		parts := strings.Split(strings.TrimSpace(node.FirstChild.Data), " ")
-		for _, part := range parts {
-			i, err := strconv.Atoi(part)
-			if err == nil {
-				yield = int16(i)
-			}
-		}
+		yield = findYield(strings.Split(strings.TrimSpace(node.FirstChild.Data), " "))
 	}()
 
 	chPrep := make(chan string)

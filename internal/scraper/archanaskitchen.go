@@ -1,7 +1,6 @@
 package scraper
 
 import (
-	"strconv"
 	"strings"
 
 	"github.com/reaper47/recipya/internal/models"
@@ -132,22 +131,15 @@ func scrapeArchanasKitchen(root *html.Node) (rs models.RecipeSchema, err error) 
 
 	chYield := make(chan int16)
 	go func() {
-		var v int16
+		var yield int16
 		defer func() {
 			_ = recover()
-			chYield <- v
+			chYield <- yield
 		}()
 
 		node := getElement(root, "itemprop", "recipeYield")
 		servings := node.FirstChild.NextSibling.FirstChild.Data
-
-		parts := strings.Split(servings, " ")
-		for _, part := range parts {
-			i, err := strconv.Atoi(part)
-			if err == nil {
-				v = int16(i)
-			}
-		}
+		yield = findYield(strings.Split(servings, " "))
 	}()
 
 	return models.RecipeSchema{

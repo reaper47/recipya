@@ -58,7 +58,7 @@ func scrapeTastyKitchen(root *html.Node) (models.RecipeSchema, error) {
 		node := traverseAll(root, func(node *html.Node) bool {
 			return getAttr(node, "name") == "servings"
 		})[0]
-		i, err := strconv.Atoi(getAttr(node, "value"))
+		i, err := strconv.ParseInt(getAttr(node, "value"), 10, 16)
 		if err == nil {
 			yield = int16(i)
 		}

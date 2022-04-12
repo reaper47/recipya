@@ -1,7 +1,6 @@
 package scraper
 
 import (
-	"strconv"
 	"strings"
 
 	"github.com/reaper47/recipya/internal/models"
@@ -50,14 +49,7 @@ func scrapeKuchniadomova(root *html.Node) (models.RecipeSchema, error) {
 		}()
 
 		servings := getElement(content, "itemprop", "recipeYield")
-		parts := strings.Split(servings.FirstChild.Data, " ")
-		for _, part := range parts {
-			i, err := strconv.Atoi(part)
-			if err == nil {
-				yield = int16(i)
-				break
-			}
-		}
+		yield = findYield(strings.Split(servings.FirstChild.Data, " "))
 	}()
 
 	chIngredients := make(chan []string)

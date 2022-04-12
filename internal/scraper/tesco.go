@@ -31,7 +31,7 @@ func scrapeTesco(root *html.Node) (models.RecipeSchema, error) {
 
 		node := getElement(root, "class", "recipe-detail__meta-item recipe-detail__meta-item_servings")
 		yieldStr := strings.Fields(node.FirstChild.Data)[1]
-		i, err := strconv.Atoi(yieldStr)
+		i, err := strconv.ParseInt(yieldStr, 10, 16)
 		if err == nil {
 			yield = int16(i)
 		}

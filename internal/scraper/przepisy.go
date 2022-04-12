@@ -1,7 +1,6 @@
 package scraper
 
 import (
-	"strconv"
 	"strings"
 
 	"github.com/reaper47/recipya/internal/models"
@@ -20,14 +19,7 @@ func scrapePrzepisy(root *html.Node) (models.RecipeSchema, error) {
 		}()
 
 		node := getElement(root, "class", "person-count")
-		parts := strings.Split(node.FirstChild.Data, " ")
-		for _, v := range parts {
-			i, err := strconv.Atoi(v)
-			if err == nil {
-				yield = int16(i)
-				break
-			}
-		}
+		yield = findYield(strings.Split(node.FirstChild.Data, " "))
 	}()
 
 	chingredients := make(chan []string)

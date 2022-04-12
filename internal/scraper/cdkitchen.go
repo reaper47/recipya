@@ -68,7 +68,7 @@ func scrapeCdKitchen(root *html.Node) (rs models.RecipeSchema, err error) {
 
 		node := getElement(content, "class", "change-servs-input s18")
 		yieldStr := getAttr(node, "value")
-		yield, err := strconv.Atoi(yieldStr)
+		yield, err := strconv.ParseInt(yieldStr, 10, 16)
 		if err == nil {
 			i = int16(yield)
 		}

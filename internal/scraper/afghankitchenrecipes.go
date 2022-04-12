@@ -36,7 +36,7 @@ func scrapeAfghanKitchen(root *html.Node) (rs models.RecipeSchema, err error) {
 
 		node := getElement(info, "class", "servings")
 		node = getElement(node, "class", "value")
-		i, err := strconv.Atoi(node.FirstChild.Data)
+		i, err := strconv.ParseInt(node.FirstChild.Data, 10, 16)
 		if err == nil {
 			yield = int16(i)
 		}

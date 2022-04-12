@@ -1,7 +1,6 @@
 package scraper
 
 import (
-	"strconv"
 	"strings"
 
 	"github.com/reaper47/recipya/internal/models"
@@ -42,14 +41,7 @@ func scrapeKwestiasmaku(root *html.Node) (models.RecipeSchema, error) {
 		}()
 
 		node := getElement(root, "class", "field field-name-field-ilosc-porcji field-type-text field-label-hidden")
-		parts := strings.Split(strings.TrimSpace(node.FirstChild.Data), " ")
-		for _, part := range parts {
-			i, err := strconv.Atoi(part)
-			if err == nil {
-				yield = int16(i)
-				break
-			}
-		}
+		yield = findYield(strings.Split(strings.TrimSpace(node.FirstChild.Data), " "))
 	}()
 
 	chIngredients := make(chan models.Ingredients)

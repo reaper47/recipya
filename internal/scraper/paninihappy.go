@@ -52,14 +52,7 @@ func scrapePaniniHappy(root *html.Node) (models.RecipeSchema, error) {
 		}()
 
 		node := getElement(content, "class", "yield")
-		parts := strings.Split(node.FirstChild.Data, " ")
-		for _, part := range parts {
-			i, err := strconv.Atoi(part)
-			if err == nil {
-				yield = int16(i)
-				break
-			}
-		}
+		yield = findYield(strings.Split(node.FirstChild.Data, " "))
 	}()
 
 	chName := make(chan string)
