@@ -166,6 +166,10 @@ func (m *Category) UnmarshalJSON(data []byte) error {
 			m.Value = x[0].(string)
 		}
 	}
+
+	if m.Value != "" {
+		m.Value = strings.ReplaceAll(m.Value, "&amp;", "&")
+	}
 	return nil
 }
 
@@ -348,10 +352,21 @@ func (m *Ingredients) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
+	cases := []struct {
+		old string
+		new string
+	}{
+		{old: "  ", new: " "},
+		{old: "\u00a0", new: " "},
+		{old: "&frac12;", new: "½"},
+		{old: "&frac34;", new: "¾"},
+	}
+
 	for _, v := range xv {
 		str := strings.TrimSpace(v.(string))
-		str = strings.ReplaceAll(str, "  ", " ")
-		str = strings.ReplaceAll(str, "\u00a0", " ")
+		for _, c := range cases {
+			str = strings.ReplaceAll(str, c.old, c.new)
+		}
 		m.Values = append(m.Values, str)
 	}
 	return nil

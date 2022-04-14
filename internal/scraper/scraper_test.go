@@ -4270,7 +4270,7 @@ func TestScraper(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "http://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Bread &amp; Baking"},
+				Category:      models.Category{Value: "Bread & Baking"},
 				CookTime:      "PT55M",
 				Cuisine:       models.Cuisine{Value: "American"},
 				DatePublished: "2021-11-09",
@@ -5372,7 +5372,7 @@ func TestScraper(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "http://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Vegetables &amp; Sides"},
+				Category:      models.Category{Value: "Vegetables & Sides"},
 				CookTime:      "PT0M",
 				CookingMethod: models.CookingMethod{Value: ""},
 				Cuisine:       models.Cuisine{Value: "Indian"},
@@ -5389,9 +5389,9 @@ func TestScraper(t *testing.T) {
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 cup basmati rice",
-						"1&frac34; cups water",
-						"1&frac12; tablespoons unsalted butter",
-						"&frac12; teaspoon salt",
+						"1¾ cups water",
+						"1½ tablespoons unsalted butter",
+						"½ teaspoon salt",
 					},
 				},
 				Instructions: models.Instructions{
@@ -8401,8 +8401,8 @@ func TestScraper(t *testing.T) {
 				}
 			}()
 
-			//actual := testFile(t, tc.name, tc.in)
-			actual := testHTTP(t, tc.in)
+			actual := testFile(t, tc.name, tc.in)
+			//actual := testHTTP(t, tc.in)
 
 			if !cmp.Equal(actual, tc.want) {
 				fmt.Println(cmp.Diff(actual, tc.want))
