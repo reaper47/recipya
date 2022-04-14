@@ -351,6 +351,7 @@ func (m *Ingredients) UnmarshalJSON(data []byte) error {
 	for _, v := range xv {
 		str := strings.TrimSpace(v.(string))
 		str = strings.ReplaceAll(str, "  ", " ")
+		str = strings.ReplaceAll(str, "\u00a0", " ")
 		m.Values = append(m.Values, str)
 	}
 	return nil

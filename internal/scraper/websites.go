@@ -253,6 +253,8 @@ func scrapeWebsite(doc *html.Node, host string) (models.RecipeSchema, error) {
 		switch host {
 		case "ohsheglows":
 			return findRecipeLdJSON(doc)
+		case "onceuponachef":
+			return findRecipeLdJSON(doc)
 		}
 	case 'p':
 		switch host {

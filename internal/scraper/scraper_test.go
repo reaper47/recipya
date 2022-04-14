@@ -533,6 +533,9 @@ func TestScraper(t *testing.T) {
 					TransFat:       "1 grams trans fat",
 					UnsaturatedFat: "12 grams unsaturated fat",
 				},
+				Keywords: models.Keywords{
+					Values: "slow cooker beef stroganoff, easy beef stroganoff recipe, beef stroganoff with cream of mushroom soup, beef stroganoff with stew meat, slow cooker beef stroganoff recipe",
+				},
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 6},
 				Url:      "https://www.averiecooks.com/slow-cooker-beef-stroganoff/",
@@ -3942,7 +3945,7 @@ func TestScraper(t *testing.T) {
 						"2 large eggs",
 						"1/4 teaspoon <a href=\"https://shop.kingarthurbaking.com/items/nutmeg\" data-name=\"Nutmeg\" data-sku=\"208282\" data-price=\"$3.48\">nutmeg</a>",
 						"1 1/2 teaspoons lemon zest (grated rind)",
-						"1 1/2 teaspoons <a href=\"https://shop.kingarthurbaking.com/items/king-arthur-pure-vanilla-extract\" data-name=\"King Arthur Pure Vanilla Extract\" data-sku=\"VG0014\" data-price=\"$139.90\">vanilla extract</a>",
+						"1 1/2 teaspoons <a href=\"https://shop.kingarthurbaking.com/items/king-arthur-pure-vanilla-extract\" data-name=\"King Arthur Pure Vanilla Extract\" data-sku=\"VG0014\" data-price=\"$129.95\">vanilla extract</a>",
 						"1 cup (113g) <a href=\"https://shop.kingarthurbaking.com/items/stone-ground-white-whole-wheat-flour\" data-name=\"Stone-Ground White Whole Wheat Flour\" data-sku=\"05555\" data-price=\"$5.95\">King Arthur White Whole Wheat Flour</a>",
 						"3/4 cup (90g) <a href=\"https://shop.kingarthurbaking.com/items/unbleached-all-purpose-flour\" data-name=\"Unbleached All-Purpose Flour\" data-sku=\"VG0001\" data-price=\"$5.95\">King Arthur Unbleached All-Purpose Flour</a>",
 						"1/2 teaspoon baking soda",
@@ -5364,6 +5367,47 @@ func TestScraper(t *testing.T) {
 			},
 		},
 		{
+			name: "onceuponachef.com",
+			in:   "https://www.onceuponachef.com/recipes/perfect-basmati-rice.html",
+			want: models.RecipeSchema{
+				AtContext:     "http://schema.org",
+				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "Vegetables &amp; Sides"},
+				CookTime:      "PT0M",
+				CookingMethod: models.CookingMethod{Value: ""},
+				Cuisine:       models.Cuisine{Value: "Indian"},
+				DateCreated:   "",
+				DateModified:  "",
+				DatePublished: "2013-12-05T16:29:22-05:00",
+				Description: models.Description{
+					Value: "This recipe makes light, tender and fluffy basmati rice every time.",
+				},
+				Keywords: models.Keywords{Values: "All Seasons, Rice"},
+				Image: models.Image{
+					Value: "https://www.onceuponachef.com/images/2013/12/basmati-rice-1200x912.jpg",
+				},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"1 cup basmati rice",
+						"1&frac34; cups water",
+						"1&frac12; tablespoons unsalted butter",
+						"&frac12; teaspoon salt",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Place the rice in medium bowl and add enough water to cover by 2 inches. Using your hands, gently swish the grains to release any excess starch. Carefully pour off the water, leaving the rice in the bowl. Repeat four times, or until the water runs almost clear. Using a fine mesh strainer, drain the rice.",
+						"In a medium pot, bring the water, butter, salt, and rice to a boil. Cover the pot with a tight fitting lid, then turn the heat down to a simmer and cook for 15 to 20 minutes, until all of the water is absorbed and the rice is tender. If the rice is still too firm, add a few more tablespoons of water and continue cooking for a few minutes more. Remove the pan from the heat and allow it to sit covered for 5 minutes. Fluff the rice with a fork and serve.",
+						"<strong>Freezer-Friendly Instructions:</strong> This rice can be frozen in an airtight container for up to 3 months. (Putting it in a flat layer in sealable plastic bags works well as it will take up less space in the freezer.) No need to thaw before reheating; remove it from the freezer and reheat in the microwave with 1 to 2 Tbsp. of water.",
+					},
+				},
+				Name:     "Perfect Basmati Rice",
+				PrepTime: "PT0M",
+				Yield:    models.Yield{Value: 4},
+				Url:      "https://www.onceuponachef.com/recipes/perfect-basmati-rice.html",
+			},
+		},
+		{
 			name: "paleorunningmomma.com",
 			in:   "https://www.paleorunningmomma.com/grain-free-peanut-butter-granola-bars-vegan-paleo-option/",
 			want: models.RecipeSchema{
@@ -5593,7 +5637,7 @@ func TestScraper(t *testing.T) {
 				},
 				Instructions: models.Instructions{
 					Values: []string{
-						"Add chicken to slow cooker and cover with seasoning. Top with cream cheese.",
+						"Add chicken to slow cooker and cover with seasoning. Top with cream cheese. Use the back of a spoon to smear the cream cheese over the meat.",
 						"Cover the slow cooker with a lid. Cook on LOW for 6-8 hours or HIGH 3-4 hours.",
 						"Once cooking time finishes, shred the chicken by using two forks and pulling the meat apart. Remove bones if needed. Stir well and thoroughly coat the chicken with sauce.",
 						"Fry bacon in a pan over medium heat on the stove. Remove and chop or crumble into small pieces. Cover the chicken with bacon and shredded cheese. Put the lid back on and continue cooking on HIGH for 15 minutes until cheese melts.",
@@ -6129,24 +6173,24 @@ func TestScraper(t *testing.T) {
 				},
 				Keywords: models.Keywords{Values: "breakfast pastries, danishes, pastry"},
 				Image: models.Image{
-					Value: "https://cdn.sallysbakingaddiction.com/wp-content/uploads/2020/06/breakfast-pastries-2-225x225.jpg",
+					Value: "https://sallysbakingaddiction.com/wp-content/uploads/2020/06/breakfast-pastries-2-225x225.jpg",
 				},
 				Ingredients: models.Ingredients{
 					Values: []string{
-						"1/4 cup\u00a0(60ml) warm\u00a0water (between 100-110°F, 38-43°C)",
-						"2\u00a0and 1/4 teaspoons\u00a0Platinum Yeast by Red Star\u00a0(1\u00a0standard packet)*",
-						"1/4 cup\u00a0(50g)\u00a0granulated sugar",
+						"1/4 cup (60ml) warm water (between 100-110°F, 38-43°C)",
+						"2 and 1/4 teaspoons Platinum Yeast by Red Star (1 standard packet)*",
+						"1/4 cup (50g) granulated sugar",
 						"1/2 cup (120ml) whole milk, at room temperature (between 68–72°F, 20-22°C)",
-						"1\u00a0large\u00a0egg, at room temperature",
-						"1 teaspoon\u00a0salt",
+						"1 large egg, at room temperature",
+						"1 teaspoon salt",
 						"14 Tablespoons (205g) unsalted butter, cold",
-						"2 and 1/2 cups (313g) all-purpose flour\u00a0(spoon &amp; leveled), plus more for generously flouring hands, surface, and dough",
+						"2 and 1/2 cups (313g) all-purpose flour (spoon &amp; leveled), plus more for generously flouring hands, surface, and dough",
 						"2/3 cup filling (see recipe notes for options &amp; cheese filling)",
-						"1\u00a0large\u00a0egg",
-						"2 Tablespoons (30ml)\u00a0milk",
-						"1 cup\u00a0(120g)\u00a0confectioners’ sugar",
-						"2 Tablespoons (30ml)\u00a0milk\u00a0or\u00a0heavy cream",
-						"1 teaspoon\u00a0pure vanilla extract",
+						"1 large egg",
+						"2 Tablespoons (30ml) milk",
+						"1 cup (120g) confectioners’ sugar",
+						"2 Tablespoons (30ml) milk or heavy cream",
+						"1 teaspoon pure vanilla extract",
 					},
 				},
 				Instructions: models.Instructions{
@@ -8357,8 +8401,8 @@ func TestScraper(t *testing.T) {
 				}
 			}()
 
-			actual := testFile(t, tc.name, tc.in)
-			//actual := testHTTP(t, tc.in)
+			//actual := testFile(t, tc.name, tc.in)
+			actual := testHTTP(t, tc.in)
 
 			if !cmp.Equal(actual, tc.want) {
 				fmt.Println(cmp.Diff(actual, tc.want))
