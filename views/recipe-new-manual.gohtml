@@ -9,67 +9,7 @@
       class="w-full py-2 font-bold text-center text-gray-600 placeholder-gray-400 rounded-t-lg">
   </div>
 
-  <div
-    class="w-full h-full grid-flow-col col-span-6 border-b border-l border-r border-gray-900 place-self-end md:border-b md:border-l md:border-r md:col-span-4">
-    <img id="output" class="hidden object-cover w-full text-center md:w-full" alt="The uploaded image.">
-    <label
-      class="flex flex-row items-center py-2 tracking-wide text-purple-600 transition-all duration-150 ease-linear bg-white place-content-center hover:bg-purple-600 hover:text-white">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-      </svg>
-      <span class="ml-2">
-        Upload an image of the recipe
-      </span>
-      <input type="file" accept="image/*" name="image" onchange="loadFile(event)" class="hidden">
-    </label>
-  </div>
 
-  <div class="grid grid-flow-row col-span-6 md:col-span-2">
-    <div class="col-span-2 gap-4 p-2 border-b border-l border-r border-black md:border-l-0 md:border-r md:col-span-3">
-      <label for="category" class="block col-span-2 text-sm font-bold text-gray-600">
-        Category <sup class="text-red-600">*</sup>
-      </label>
-      <select id="category" name="category" required class="w-full border block py-1.5 rounded-lg px-2 col-span-2 mb-2">
-        <option value="">--Please choose an option--</option>
-        {{- range .Categories}}
-        <option value="{{.}}">{{.}}</option>
-        {{- end -}}
-      </select>
-
-      <label for="category-new" class="col-span-2 text-sm font-bold text-gray-600">
-        Category not listed?
-      </label>
-      <div class="flex flex-col">
-        <input id="category-new" type="text" class="p-2 border rounded-t-lg " placeholder="Add a category"
-          autocomplete="off">
-        <button type="button"
-          class="col-span-2 duration-300 border border-gray-800 rounded-b-xl hover:bg-gray-800 hover:text-white center"
-          onclick="addCategory(event)">
-          Add
-        </button>
-      </div>
-    </div>
-
-    <div class="block col-span-2 p-2 border-b border-l border-r border-black md:col-span-3 md:border-l-0 md:border-t-0">
-      <div class="relative flex flex-col p-2">
-        <label for="yields" class="text-sm font-bold text-gray-600">Yields</label>
-        <input type="number" name="yields" id="yields" min="1" value="1" class="p-2 border border-gray-300 rounded-lg ">
-        <span class="absolute z-10 font-normal leading-snug text-gray-400 bg-transparent cursor-text bottom-5 right-10">
-          servings
-        </span>
-      </div>
-    </div>
-
-    <div class="block col-span-2 p-2 border-b border-l border-r border-black md:col-span-3 md:border-t-0 md:border-l-0">
-      <label for="source" class="text-sm font-bold text-gray-600">
-        Source <sup class="text-red-600">*</sup>
-      </label>
-      <input type="text" name="source" id="source" class="block w-full p-2 border border-gray-300 rounded-lg"
-        placeholder="Where does it come from?" autocomplete="off" required>
-
-    </div>
-  </div>
 
   <div class="col-span-6 border-b border-l border-r border-black md:col-span-4">
     <div class="flex flex-col p-2">
@@ -110,7 +50,7 @@
             </tr>
             <tr class="bg-gray-100">
               <td>
-                <p>Total carbohydrates:</p>
+                <p>Total carbs:</p>
               </td>
               <td class="py-3 text-center">
                 <label for="total-carbohydrates" class="hidden"></label>

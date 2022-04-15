@@ -15,7 +15,7 @@
 {{- else -}}
 <article class="grid grid-rows-2 gap-4 px-4 pb-4 m-auto md:grid-cols-8 max-w-7xl">
   {{- range .Recipes -}}
-  <div class="col-span-2 bg-white rounded-lg shadow-lg">
+  <div class="col-span-2 bg-white rounded-lg shadow-lg w-[93vw] md:w-full">
     {{- if isUuidValid .Image -}}
     <a href="/recipes/{{.ID}}">
       <img class="rounded-t-lg" src="/data/img/{{.Image}}" alt="Image of the {{.Name}} recipe" width="520px">
