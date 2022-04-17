@@ -1,4 +1,4 @@
-{{define "modals"}}
+{{define "modals" }}
 <section id="modal__about" class="hidden">
   <h1 class="text-lg font-semibold text-center underline">Recipya Recipe Manager</h1>
   <div class="container flex justify-center mx-auto">
@@ -70,6 +70,36 @@
       Submit
     </button>
   </form>
+</section>
+
+<section id="modal__websites" class="hidden md:w-[25vw]">
+  <h3 class="py-3 text-xl text-center underline">Supported Websites</h3>
+  <div class="px-4">
+    <input type="text" id="supported-websites-input" onkeyup="searchWebsite()" placeholder="Search for a website..."
+      class="p-1 mb-2 border">
+    <ul id="supported-websites-ul" class="list-disc">
+      {{range .ScraperWebsites}}
+      <li class="leading-8">
+        <a href="{{.URL}}" target="_blank"
+          class="text-blue-600 underline hover:text-blue-800 visited:text-purple-600">{{.Name}}</a>
+      </li>
+      {{end}}
+    </ul>
+  </div>
+  <script>
+    function searchWebsite() {
+      const filter = document.getElementById('supported-websites-input').value.toUpperCase();
+      document.getElementById('supported-websites-ul').getElementsByTagName('li').forEach(li => {
+        const a = li.getElementsByTagName('a')[0];
+        const txtValue = a.textContent || a.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          li.style.display = '';
+        } else {
+          li.style.display = 'none';
+        }
+      })
+    }
+  </script>
 </section>
 
 <section id="modal__upload" class="hidden">

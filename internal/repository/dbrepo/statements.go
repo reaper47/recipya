@@ -199,6 +199,11 @@ const getDistinctImagesStmt = `
 	SELECT DISTINCT image 
 	FROM recipes`
 
+const getWebsitesStmt = `
+	SELECT name, url
+	FROM websites
+	ORDER BY name`
+
 // INSERT
 func insertRecipeStmt(tables []tableData) string {
 	var params nameParams

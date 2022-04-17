@@ -102,11 +102,19 @@ func scrapeHomeChef(root *html.Node) (models.RecipeSchema, error) {
 				}
 
 				for c := c.FirstChild; c != nil; c = c.NextSibling {
+					var s string
 					switch c.Type {
 					case html.ElementNode:
-						xs = append(xs, strings.TrimSpace(c.FirstChild.Data))
+						s = c.FirstChild.Data
 					case html.TextNode:
-						xs = append(xs, strings.TrimSpace(c.Data))
+						s = c.Data
+					}
+
+					if s != "" {
+						s = strings.ReplaceAll(s, "\n", "")
+						s = strings.Join(strings.Fields(s), " ")
+						s = strings.ReplaceAll(s, "  ", " ")
+						xs = append(xs, strings.TrimSpace(s))
 					}
 				}
 			}

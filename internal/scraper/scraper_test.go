@@ -20,7 +20,7 @@ func TestScraper(t *testing.T) {
 		want models.RecipeSchema
 	}{
 		{
-			name: "abril",
+			name: "abril.com",
 			in:   "https://claudia.abril.com.br/receitas/estrogonofe-de-carne/",
 			want: models.RecipeSchema{
 				AtContext:     "http://schema.org",
@@ -75,7 +75,7 @@ func TestScraper(t *testing.T) {
 			},
 		},
 		{
-			name: "acouplecooks",
+			name: "acouplecooks.com",
 			in:   "https://www.acouplecooks.com/shaved-brussels-sprouts/",
 			want: models.RecipeSchema{
 				AtContext: "https://schema.org/",
@@ -3330,15 +3330,15 @@ func TestScraper(t *testing.T) {
 				},
 				Ingredients: models.Ingredients{
 					Values: []string{
-						"⅗ oz. Butter",
-						"4 oz. Light Cream",
-						"2 Green Onions",
 						"2 Russet Potatoes",
-						"6 fl. oz. Canola Oil",
 						"13 oz. Boneless Skinless Chicken Breasts",
-						"0.84 oz. Mayonnaise",
-						"3 oz. Corn Kernels",
+						"6 fl. oz. Canola Oil",
+						"4 oz. Light Cream",
 						"½ cup Chicken Breading",
+						"3 oz. Corn Kernels",
+						"2 Green Onions",
+						"0.84 oz. Mayonnaise",
+						"⅗ oz. Butter",
 					},
 				},
 			},

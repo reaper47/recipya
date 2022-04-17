@@ -77,12 +77,11 @@ func (m *nameParams) insertStmts(tables []tableData, isInsRecipeDefined bool) st
 
 }
 
-func (m *postgresDBRepo) Recipes(userID int64, page int) ([]models.Recipe, error) {
+func (m *postgresDBRepo) Recipes(userID int64, page int) (xr []models.Recipe, err error) {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
 	var rows pgx.Rows
-	var err error
 	if page == -1 {
 		rows, err = m.Pool.Query(ctx, getAllRecipesStmt, userID)
 	} else {
@@ -94,7 +93,6 @@ func (m *postgresDBRepo) Recipes(userID int64, page int) ([]models.Recipe, error
 	}
 	defer rows.Close()
 
-	var xr []models.Recipe
 	for rows.Next() {
 		var (
 			recipeID                                           int64
@@ -254,11 +252,10 @@ func (m *postgresDBRepo) RecipesCount() (int, error) {
 	return count, nil
 }
 
-func (m *postgresDBRepo) Categories(userID int64) []string {
+func (m *postgresDBRepo) Categories(userID int64) (xs []string) {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
-	var categories []string
 	rows, err := m.Pool.Query(ctx, getCategoriesStmt, userID)
 	if err == nil {
 		defer rows.Close()
@@ -268,10 +265,10 @@ func (m *postgresDBRepo) Categories(userID int64) []string {
 			if err != nil {
 				continue
 			}
-			categories = append(categories, c)
+			xs = append(xs, c)
 		}
 	}
-	return categories
+	return xs
 }
 
 func (m *postgresDBRepo) InsertCategory(name string, userID int64) error {
@@ -384,21 +381,41 @@ func (m *postgresDBRepo) DeleteRecipe(id int64) error {
 	return nil
 }
 
-func (m *postgresDBRepo) Images() []string {
+func (m *postgresDBRepo) Images() (xs []string) {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
-	var images []string
 	rows, err := m.Pool.Query(ctx, getDistinctImagesStmt)
 	if err != nil {
-		return images
+		return xs
 	}
 	defer rows.Close()
 
 	for rows.Next() {
 		var s string
 		_ = rows.Scan(&s)
-		images = append(images, s)
+		xs = append(xs, s)
 	}
-	return images
+	return xs
+}
+
+func (m *postgresDBRepo) Websites() (xs []models.Website) {
+	ctx, cancel := contexts.Timeout(3 * time.Second)
+	defer cancel()
+
+	rows, err := m.Pool.Query(ctx, getWebsitesStmt)
+	if err != nil {
+		return xs
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var name, url string
+		_ = rows.Scan(&name, &url)
+		xs = append(xs, models.Website{
+			Name: name,
+			URL:  url,
+		})
+	}
+	return xs
 }

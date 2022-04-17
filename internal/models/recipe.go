@@ -183,3 +183,9 @@ func (m Nutrition) toSchema(servings string) NutritionSchema {
 		Sugar:         m.Sugars,
 	}
 }
+
+// Website holds information related to a website.
+type Website struct {
+	Name string
+	URL  string
+}

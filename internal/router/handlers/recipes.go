@@ -37,6 +37,7 @@ func RecipesAdd(w http.ResponseWriter, req *http.Request) {
 		HeaderData: templates.HeaderData{
 			AvatarInitials: getSession(req).UserInitials,
 		},
+		ScraperWebsites: config.App().Repo.Websites(),
 	})
 	if err != nil {
 		log.Println(err)

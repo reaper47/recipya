@@ -11,9 +11,10 @@ type Data struct {
 	HeaderData   HeaderData
 	IsViewRecipe bool
 
-	RecipesData RecipesData
-	RecipeData  RecipeData
-	Categories  []string
+	RecipesData     RecipesData
+	RecipeData      RecipeData
+	Categories      []string
+	ScraperWebsites []models.Website
 
 	FormErrorData FormErrorData
 }

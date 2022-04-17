@@ -44,7 +44,7 @@
     </section>
   </main>
   {{- if $isAuthenticated -}}
-  {{template "modals"}}
+  {{template "modals" .}}
   <script src="/static/js/bundle.js" defer></script>
   {{- end -}}
   {{block "js" .}}{{end}}

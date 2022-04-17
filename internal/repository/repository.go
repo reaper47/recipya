@@ -50,6 +50,9 @@ type Repository interface {
 	// An empty slice will be returned when an error occurred.
 	Images() []string
 
+	// Fetches all of the scraper's supported websites.
+	Websites() []models.Website
+
 	// Close closes the database's connection.
 	Close()
 }
