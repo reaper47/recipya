@@ -89,7 +89,7 @@
   <script>
     function searchWebsite() {
       const filter = document.getElementById('supported-websites-input').value.toUpperCase();
-      document.getElementById('supported-websites-ul').getElementsByTagName('li').forEach(li => {
+      [...document.getElementById('supported-websites-ul').getElementsByTagName('li')].forEach(li => {
         const a = li.getElementsByTagName('a')[0];
         const txtValue = a.textContent || a.innerText;
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
