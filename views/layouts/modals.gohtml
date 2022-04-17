@@ -75,7 +75,7 @@
 <section id="modal__websites" class="hidden md:w-[25vw]">
   <h3 class="py-3 text-xl text-center underline">Supported Websites</h3>
   <div class="px-4">
-    <input type="text" id="supported-websites-input" onkeyup="searchWebsite()" placeholder="Search for a website..."
+    <input type="url" id="supported-websites-input" onkeyup="searchWebsite()" placeholder="Search for a website..."
       class="p-1 mb-2 border">
     <ul id="supported-websites-ul" class="list-disc">
       {{range .ScraperWebsites}}
