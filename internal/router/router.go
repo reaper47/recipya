@@ -40,6 +40,7 @@ func New() *mux.Router {
 	recipes.HandleFunc("/categories", amw.Middleware(handlers.Categories)).Methods(POST)
 	recipes.HandleFunc("/import", amw.Middleware(handlers.ImportRecipes)).Methods(POST)
 	recipes.HandleFunc("/scrape", amw.Middleware(handlers.ScrapeRecipe)).Methods(POST)
+	recipes.HandleFunc("/scrape/request", amw.Middleware(handlers.ScrapeRequest)).Methods(POST)
 
 	settings := r.PathPrefix("/settings").Subrouter()
 	settings.HandleFunc("", amw.Middleware(handlers.Settings)).Methods(GET)

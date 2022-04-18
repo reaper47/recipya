@@ -41,6 +41,15 @@ func (m *postgresDBRepo) User(id string) models.User {
 	defer cancel()
 
 	var u models.User
-	_ = m.Pool.QueryRow(ctx, getUserStmt, id, id).Scan(&u.ID, &u.Username, &u.Email, &u.HashedPassword)
+	_ = m.Pool.QueryRow(ctx, getUserStmt, id, id, -1).Scan(&u.ID, &u.Username, &u.Email, &u.HashedPassword)
+	return u
+}
+
+func (m *postgresDBRepo) UserByID(id int64) models.User {
+	ctx, cancel := contexts.Timeout(3 * time.Second)
+	defer cancel()
+
+	var u models.User
+	_ = m.Pool.QueryRow(ctx, getUserStmt, "", "", id).Scan(&u.ID, &u.Username, &u.Email, &u.HashedPassword)
 	return u
 }

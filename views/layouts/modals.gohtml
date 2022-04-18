@@ -78,7 +78,7 @@
     <input type="url" id="supported-websites-input" onkeyup="searchWebsite()" placeholder="Search for a website..."
       class="p-1 mb-2 border">
     <ul id="supported-websites-ul" class="list-disc">
-      {{range .ScraperWebsites}}
+      {{range .Scraper.Websites}}
       <li class="leading-8">
         <a href="{{.URL}}" target="_blank"
           class="text-blue-600 underline hover:text-blue-800 visited:text-purple-600">{{.Name}}</a>

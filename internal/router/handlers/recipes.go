@@ -23,6 +23,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/reaper47/recipya/internal/config"
 	"github.com/reaper47/recipya/internal/constants"
+	"github.com/reaper47/recipya/internal/email"
 	"github.com/reaper47/recipya/internal/logger"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/repository"
@@ -37,7 +38,9 @@ func RecipesAdd(w http.ResponseWriter, req *http.Request) {
 		HeaderData: templates.HeaderData{
 			AvatarInitials: getSession(req).UserInitials,
 		},
-		ScraperWebsites: config.App().Repo.Websites(),
+		Scraper: templates.Scraper{
+			Websites: config.App().Repo.Websites(),
+		},
 	})
 	if err != nil {
 		log.Println(err)
@@ -501,7 +504,17 @@ func ScrapeRecipe(w http.ResponseWriter, req *http.Request) {
 
 	rs, err := scraper.Scrape(url)
 	if err != nil {
-		showErrorPage(w, "", err)
+		w.WriteHeader(http.StatusBadRequest)
+		templates.Render(w, "recipe-scraper-404.gohtml", templates.Data{
+			HeaderData: templates.HeaderData{
+				AvatarInitials: getSession(req).UserInitials,
+			},
+			HideSidebar: true,
+			Scraper: templates.Scraper{
+				IsEmailSetUp: email.Email().IsValid(),
+				Websites:     []models.Website{{Name: "", URL: url}},
+			},
+		})
 		return
 	}
 
@@ -534,4 +547,15 @@ func ScrapeRecipe(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 	http.Redirect(w, req, "/recipes/"+strconv.FormatInt(id, 10), http.StatusSeeOther)
+}
+
+// ScrapeRequest handles the POST /recipes/scrape/request endpoint.
+func ScrapeRequest(w http.ResponseWriter, req *http.Request) {
+	user := config.App().Repo.UserByID(getSession(req).UserID)
+	msg := "Subject: [Recipya] Website Request\r\n" +
+		"\r\n" +
+		"Hello Recipya,\r\n\r\nPlease support this website: " + req.FormValue("website") + "\r\n\r\n" +
+		"Sincerely,\r\n" + user.Username + " (" + user.Email + ")"
+	email.Email().Send(user.Email, msg)
+	http.Redirect(w, req, "/recipes/new", http.StatusSeeOther)
 }

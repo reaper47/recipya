@@ -168,7 +168,7 @@ func resetIDStmt(table string) string {
 const getUserStmt = `
 	SELECT id, username, email, hashed_password
 	FROM users
-	WHERE username = $1 OR email = $2`
+	WHERE username = $1 OR email = $2 OR id = $3`
 
 const getCategoriesStmt = `
 	SELECT c.name 

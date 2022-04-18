@@ -10,6 +10,9 @@ type Repository interface {
 	// User gets a user from the database based on the username or email.
 	User(id string) models.User
 
+	// UserByID gets a user by its ID.
+	UserByID(id int64) models.User
+
 	// Recipe fetches a recipe from the database.
 	//
 	// The returned recipe will be empty if the query returns no row.

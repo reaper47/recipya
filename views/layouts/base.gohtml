@@ -34,6 +34,8 @@
           {{if not .HideGap}}pt-8{{end}}
         {{- else if not $isAuthenticated}}
           md:col-span-12
+        {{- else if and $isAuthenticated .HideSidebar}}
+          md:col-span-12 
         {{- else}}
           md:col-span-11 
           {{if not .HideGap}}pt-8{{end}}

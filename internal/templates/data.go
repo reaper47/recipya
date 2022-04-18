@@ -11,10 +11,10 @@ type Data struct {
 	HeaderData   HeaderData
 	IsViewRecipe bool
 
-	RecipesData     RecipesData
-	RecipeData      RecipeData
-	Categories      []string
-	ScraperWebsites []models.Website
+	RecipesData RecipesData
+	RecipeData  RecipeData
+	Categories  []string
+	Scraper     Scraper
 
 	FormErrorData FormErrorData
 }
@@ -109,4 +109,10 @@ func (p *Pagination) Init(page int) {
 			p.Left = append(p.Left, 1)
 		}
 	}
+}
+
+// Scraper holds template data related to the recipe scraper.
+type Scraper struct {
+	IsEmailSetUp bool
+	Websites     []models.Website
 }
