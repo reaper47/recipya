@@ -101,12 +101,22 @@ func serveFile(w http.ResponseWriter, fname, contentType string) {
 
 // Settings serves the GET /settings endpoint.
 func Settings(w http.ResponseWriter, req *http.Request) {
+	xc := config.App().Repo.Categories(getSession(req).UserID)
+	for i, c := range xc {
+		if c == "uncategorized" {
+			xc[i] = xc[len(xc)-1]
+			xc = xc[:len(xc)-1]
+			break
+		}
+	}
+
 	err := templates.Render(w, "settings.gohtml", templates.Data{
 		HeaderData: templates.HeaderData{
 			AvatarInitials: getSession(req).UserInitials,
 		},
 		HideSidebar: true,
 		HideGap:     true,
+		Categories:  xc,
 	})
 	if err != nil {
 		log.Println(err)

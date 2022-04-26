@@ -304,15 +304,8 @@ func compressImage(f multipart.File) (*image.RGBA, error) {
 	return dst, nil
 }
 
-// Categories handles the /recipes/categories endpoint.
+// Categories handles the [POST,DELETE] /recipes/categories endpoint.
 func Categories(w http.ResponseWriter, req *http.Request) {
-	switch req.Method {
-	case http.MethodPost:
-		handlePostCategories(w, req)
-	}
-}
-
-func handlePostCategories(w http.ResponseWriter, req *http.Request) {
 	j := make(map[string]string)
 	err := json.NewDecoder(req.Body).Decode(&j)
 	if err != nil {
@@ -327,12 +320,48 @@ func handlePostCategories(w http.ResponseWriter, req *http.Request) {
 	}
 
 	s := getSession(req)
-	err = config.App().Repo.InsertCategory(c, s.UserID)
+
+	switch req.Method {
+	case http.MethodPost:
+		handlePostCategories(w, c, s.UserID)
+	case http.MethodDelete:
+		handleDeleteCategories(w, c, s.UserID)
+	case http.MethodPut:
+		newCategory, ok := j["newCategory"]
+		if !ok {
+			writeJson(w, "JSON does not contain the key 'category'.", http.StatusBadRequest)
+			return
+		}
+		handlePutCategories(w, c, newCategory, s.UserID)
+	}
+}
+
+func handlePostCategories(w http.ResponseWriter, category string, userID int64) {
+	err := config.App().Repo.InsertCategory(category, userID)
 	if err != nil {
-		writeJson(w, "Could not insert the category - "+c+".", http.StatusInternalServerError)
+		writeJson(w, "Could not insert the category - "+category+".", http.StatusInternalServerError)
 		return
 	}
+	w.WriteHeader(http.StatusNoContent)
+}
 
+func handleDeleteCategories(w http.ResponseWriter, category string, userID int64) {
+	err := config.App().Repo.DeleteCategory(category, userID)
+	if err != nil {
+		log.Println(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusNoContent)
+}
+
+func handlePutCategories(w http.ResponseWriter, oldCategory, newCategory string, userID int64) {
+	err := config.App().Repo.EditCategory(oldCategory, newCategory, userID)
+	if err != nil {
+		log.Printf("could not edit category: %s", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	w.WriteHeader(http.StatusNoContent)
 }
 

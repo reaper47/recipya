@@ -12,6 +12,7 @@ import (
 func New() *mux.Router {
 	GET := http.MethodGet
 	POST := http.MethodPost
+	PUT := http.MethodPut
 	DELETE := http.MethodDelete
 
 	r := mux.NewRouter()
@@ -37,7 +38,7 @@ func New() *mux.Router {
 	recipes.HandleFunc("/new", amw.Middleware(handlers.RecipesAdd)).Methods(GET)
 	recipes.HandleFunc("/new/manual", amw.Middleware(handlers.GetRecipesNewManual)).Methods(GET)
 	recipes.HandleFunc("/new/manual", amw.Middleware(handlers.PostRecipesNewManual)).Methods(POST)
-	recipes.HandleFunc("/categories", amw.Middleware(handlers.Categories)).Methods(POST)
+	recipes.HandleFunc("/categories", amw.Middleware(handlers.Categories)).Methods(POST, DELETE, PUT)
 	recipes.HandleFunc("/import", amw.Middleware(handlers.ImportRecipes)).Methods(POST)
 	recipes.HandleFunc("/scrape", amw.Middleware(handlers.ScrapeRecipe)).Methods(POST)
 	recipes.HandleFunc("/scrape/request", amw.Middleware(handlers.ScrapeRequest)).Methods(POST)

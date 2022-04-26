@@ -34,8 +34,15 @@ type Repository interface {
 	// Categories gets all categories for the given user from the database.
 	Categories(userID int64) []string
 
+	// EditCategory changes the name of category 'oldCategory'
+	// to 'newCategory' where applicable.
+	EditCategory(oldCategory, newCategory string, userID int64) error
+
 	// InsertCategory inserts a category for a user in the database.
 	InsertCategory(name string, userID int64) error
+
+	// DeleteCategory deletes the category for the user.
+	DeleteCategory(name string, userID int64) error
 
 	// InsertNewRecipe inserts a new recipe into the database.
 	//

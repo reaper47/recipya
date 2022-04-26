@@ -422,8 +422,38 @@ func updateRecipeStmt(tables []tableData) string {
 		WHERE id = $1`
 }
 
+const updateCategoryStmt = `
+	WITH old_category_id AS (
+		SELECT id
+		FROM categories
+		WHERE name = $1
+	), ins_category AS (
+		INSERT INTO categories (name) 
+		VALUES ($2)
+		ON CONFLICT DO NOTHING  
+		RETURNING id
+	), new_category_id AS (
+		SELECT id FROM ins_category
+		UNION ALL 
+		SELECT id FROM categories WHERE name = $2
+		LIMIT 1
+	), replace_user_category AS (
+		UPDATE user_category  
+		SET category_id = (SELECT id FROM new_category_id)
+		WHERE user_id = $3 
+		AND category_id = (SELECT id FROM old_category_id)
+	)
+	UPDATE category_recipe cr
+	SET category_id = (SELECT id FROM new_category_id)
+	FROM user_recipe ur 
+	WHERE ur.user_id = $3 
+	AND ur.recipe_id = cr.recipe_id
+	AND cr.category_id = (SELECT id FROM old_category_id)`
+
 // DELETE
-const deleteRecipeStmt = "DELETE FROM recipes WHERE id = $1"
+const deleteRecipeStmt = `
+	DELETE FROM recipes 
+	WHERE id = $1`
 
 const deleteAssocTableEntries = `
 	WITH del_ingredients AS (
@@ -438,5 +468,27 @@ const deleteAssocTableEntries = `
 	)
 
 	DELETE FROM keyword_recipe
-	WHERE recipe_id = $1
-`
+	WHERE recipe_id = $1`
+
+const deleteUserCategoryStmt = `
+	DELETE FROM user_category
+	WHERE user_id = $1
+	AND category_id = (
+		SELECT  id
+		FROM categories
+		WHERE name = $2
+	)`
+
+const deleteRecipeCategoryStmt = `
+	UPDATE category_recipe  cr
+	SET category_id = 1
+	WHERE cr.recipe_id = (
+		SELECT recipe_id
+		FROM user_recipe
+		WHERE user_id = $1
+		AND recipe_id = cr.recipe_id
+	) AND cr.category_id  = (
+		SELECT  id
+		FROM categories
+		WHERE name = $2
+	)`

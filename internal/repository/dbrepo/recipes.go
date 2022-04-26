@@ -271,12 +271,36 @@ func (m *postgresDBRepo) Categories(userID int64) (xs []string) {
 	return xs
 }
 
+func (m *postgresDBRepo) EditCategory(oldCategory, newCategory string, userID int64) error {
+	ctx, cancel := contexts.Timeout(3 * time.Second)
+	defer cancel()
+
+	_, err := m.Pool.Exec(ctx, updateCategoryStmt, oldCategory, newCategory, userID)
+	return err
+}
+
 func (m *postgresDBRepo) InsertCategory(name string, userID int64) error {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
 	_, err := m.Pool.Exec(ctx, insertUserCategoryStmt, name, userID)
 	return err
+}
+
+func (m *postgresDBRepo) DeleteCategory(name string, userID int64) error {
+	ctx, cancel := contexts.Timeout(3 * time.Second)
+	defer cancel()
+
+	_, err := m.Pool.Exec(ctx, deleteUserCategoryStmt, userID, name)
+	if err != nil {
+		return fmt.Errorf("delete category - error deleting user category: %s", err)
+	}
+
+	_, err = m.Pool.Exec(ctx, deleteRecipeCategoryStmt, userID, name)
+	if err != nil {
+		return fmt.Errorf("delete category - error deleting recipe category: %s", err)
+	}
+	return nil
 }
 
 func (m *postgresDBRepo) InsertNewRecipe(r models.Recipe, userID int64) (int64, error) {

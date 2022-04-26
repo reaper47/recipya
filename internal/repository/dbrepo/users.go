@@ -16,7 +16,7 @@ func (m *postgresDBRepo) CreateUser(username, email, password string) (models.Us
 	defer cancel()
 
 	var u models.User
-	err := m.Pool.QueryRow(ctx, getUserStmt, username, email).Scan(&u.ID, &u.Username, &u.Email, &u.HashedPassword)
+	err := m.Pool.QueryRow(ctx, getUserStmt, username, email, -1).Scan(&u.ID, &u.Username, &u.Email, &u.HashedPassword)
 	switch err {
 	case pgx.ErrNoRows:
 		hash, err := auth.HashPassword(password)
