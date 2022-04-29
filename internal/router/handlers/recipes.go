@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"image"
 	"image/jpeg"
-	_ "image/png"
+	_ "image/png" // This blank import is required for initializing the png package.
 	"io"
 	"io/ioutil"
 	"log"
@@ -227,7 +227,7 @@ func getRecipeFromForm(req *http.Request) (models.Recipe, error) {
 		Name:         req.FormValue("title"),
 		Description:  req.FormValue("description"),
 		Image:        imageUUID,
-		Url:          req.FormValue("source"),
+		URL:          req.FormValue("source"),
 		Yield:        int16(yield),
 		Category:     strings.TrimSpace(strings.ToLower(req.FormValue("category"))),
 		Times:        times,

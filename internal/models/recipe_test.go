@@ -14,7 +14,7 @@ func TestModelRecipe(t *testing.T) {
 			Name:        "name",
 			Description: "description",
 			Image:       uuid.New(),
-			Url:         "https://www.google.com",
+			URL:         "https://www.google.com",
 			Yield:       4,
 			Category:    "lunch",
 			Times: Times{
@@ -60,7 +60,7 @@ func TestModelRecipe(t *testing.T) {
 			Name:        "name",
 			Description: "description",
 			Image:       imageUUID,
-			Url:         "https://www.google.com",
+			URL:         "https://www.google.com",
 			Yield:       4,
 			Category:    "lunch",
 			Times: Times{
@@ -152,8 +152,8 @@ func TestModelRecipe(t *testing.T) {
 		if schema.Yield.Value != 4 {
 			t.Errorf("wanted yield 4 but got %d", schema.Yield.Value)
 		}
-		if schema.Url != "https://www.google.com" {
-			t.Errorf("wanted url https://www.google.com but got %q", schema.Url)
+		if schema.URL != "https://www.google.com" {
+			t.Errorf("wanted url https://www.google.com but got %q", schema.URL)
 		}
 	})
 

@@ -7,6 +7,6 @@ import (
 
 func scrapeEspressen(root *html.Node) (rs models.RecipeSchema, err error) {
 	rs, err = scrapeLdJSONs(root)
-	rs.Url = "https://www.expressen.se" + rs.Url
+	rs.URL = "https://www.expressen.se" + rs.URL
 	return rs, err
 }

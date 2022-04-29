@@ -31,7 +31,7 @@ type RecipeSchema struct {
 	PrepTime        string          `json:"prepTime"`
 	Tools           Tools           `json:"tool"`
 	Yield           Yield           `json:"recipeYield"`
-	Url             string          `json:"url"`
+	URL             string          `json:"url"`
 }
 
 // ToRecipe transforms the RecipeSchema to a Recipe.
@@ -88,7 +88,7 @@ func (r RecipeSchema) ToRecipe() (Recipe, error) {
 		Name:         r.Name,
 		Description:  r.Description.Value,
 		Image:        image,
-		Url:          r.Url,
+		URL:          r.URL,
 		Yield:        r.Yield.Value,
 		Category:     category,
 		Times:        times,
@@ -111,8 +111,8 @@ type SchemaType struct {
 }
 
 // MarshalJSON encodes the schema's type.
-func (m SchemaType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(m.Value)
+func (s SchemaType) MarshalJSON() ([]byte, error) {
+	return json.Marshal(s.Value)
 }
 
 // UnmarshalJSON decodes the type of the schema.

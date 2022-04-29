@@ -71,7 +71,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Estrogonofe de carne",
 				PrepTime: "PT30M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://claudia.abril.com.br/receitas/estrogonofe-de-carne/",
+				URL:      "https://claudia.abril.com.br/receitas/estrogonofe-de-carne/",
 			},
 		},
 		{
@@ -90,7 +90,7 @@ func TestScraper(t *testing.T) {
 				Image: models.Image{
 					Value: "https://www.acouplecooks.com/wp-content/uploads/2022/03/Shredded-Brussels-Sprouts-001-225x225.jpg",
 				},
-				Url: "https://www.acouplecooks.com/shaved-brussels-sprouts/",
+				URL: "https://www.acouplecooks.com/shaved-brussels-sprouts/",
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 pound Brussels sprouts (off the stalk)",
@@ -190,7 +190,7 @@ func TestScraper(t *testing.T) {
 					},
 				},
 				Category: models.Category{Value: "Rice Dishes"},
-				Url:      "http://www.afghankitchenrecipes.com/recipe/norinj-palau-rice-with-orange/",
+				URL:      "http://www.afghankitchenrecipes.com/recipe/norinj-palau-rice-with-orange/",
 			},
 		},
 		{
@@ -244,7 +244,7 @@ func TestScraper(t *testing.T) {
 				PrepTime: "P0DT0H20M",
 				Tools:    models.Tools{},
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/",
+				URL:      "https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/",
 			},
 		},
 		{
@@ -293,7 +293,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Crispy Grilled Buffalo Wings Recipe",
 				PrepTime: "PT120M",
 				Yield:    models.Yield{Value: 6},
-				Url:      "https://amazingribs.com/tested-recipes-chicken-recipes-crispy-grilled-buffalo-wings-recipe/",
+				URL:      "https://amazingribs.com/tested-recipes-chicken-recipes-crispy-grilled-buffalo-wings-recipe/",
 			},
 		},
 		{
@@ -343,7 +343,7 @@ func TestScraper(t *testing.T) {
 				Name:          "Honey Lemon Garlic Salmon",
 				PrepTime:      "PT10M",
 				Yield:         models.Yield{Value: 4},
-				Url:           "https://www.ambitiouskitchen.com/lemon-garlic-salmon/",
+				URL:           "https://www.ambitiouskitchen.com/lemon-garlic-salmon/",
 				DatePublished: "2021-01-18T04:00:05+00:00",
 			},
 		},
@@ -404,7 +404,7 @@ func TestScraper(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "South Indian Recipes,Indian Lunch Recipes,Orange Recipes,Karnataka Recipes",
 				},
-				Url:           "https://www.archanaskitchen.com/karnataka-style-orange-peels-curry-recipe",
+				URL:           "https://www.archanaskitchen.com/karnataka-style-orange-peels-curry-recipe",
 				DateModified:  "2022-03-24T05:30:02+0000",
 				DatePublished: "2017-10-05T00:23:00+0000",
 				Cuisine:       models.Cuisine{Value: "Karnataka"},
@@ -474,7 +474,7 @@ func TestScraper(t *testing.T) {
 					},
 				},
 				PrepTime: "PT0H20M",
-				Url:      "https://www.atelierdeschefs.fr/fr/recette/17741-boeuf-bourguignon-traditionnel.php",
+				URL:      "https://www.atelierdeschefs.fr/fr/recette/17741-boeuf-bourguignon-traditionnel.php",
 			},
 		},
 		{
@@ -538,7 +538,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 6},
-				Url:      "https://www.averiecooks.com/slow-cooker-beef-stroganoff/",
+				URL:      "https://www.averiecooks.com/slow-cooker-beef-stroganoff/",
 			},
 		},
 		{
@@ -580,7 +580,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 6},
-				Url:      "https://bakingmischief.com/italian-roasted-potatoes/",
+				URL:      "https://bakingmischief.com/italian-roasted-potatoes/",
 			},
 		},
 		{
@@ -635,7 +635,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT30M",
 				Yield:    models.Yield{Value: 8},
-				Url:      "https://www.baking-sense.com/2022/02/23/irish-potato-farls/",
+				URL:      "https://www.baking-sense.com/2022/02/23/irish-potato-farls/",
 			},
 		},
 		{
@@ -691,7 +691,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT30M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://www.bbc.co.uk/food/recipes/healthy_sausage_16132",
+				URL:      "https://www.bbc.co.uk/food/recipes/healthy_sausage_16132",
 			},
 		},
 		{
@@ -750,7 +750,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT15M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://www.bbcgoodfood.com/recipes/next-level-three-cheese-risotto",
+				URL:      "https://www.bbcgoodfood.com/recipes/next-level-three-cheese-risotto",
 			},
 		},
 		{
@@ -810,7 +810,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT0H30M",
 				Yield:    models.Yield{Value: 8},
-				Url:      "https://www.bettycrocker.com/recipes/spinach-mushroom-quiche/ed3014db-7810-41d6-8e1c-cd4eed7b1db3",
+				URL:      "https://www.bettycrocker.com/recipes/spinach-mushroom-quiche/ed3014db-7810-41d6-8e1c-cd4eed7b1db3",
 			},
 		},
 		{
@@ -863,7 +863,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT30M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://www.bigoven.com/recipe/vegetable-tempura-japanese/19344",
+				URL:      "https://www.bigoven.com/recipe/vegetable-tempura-japanese/19344",
 			},
 		},
 		{
@@ -909,7 +909,7 @@ func TestScraper(t *testing.T) {
 				},
 				Name:  "Crispy Chicken With Za’atar-Olive Rice",
 				Yield: models.Yield{Value: 4},
-				Url:   "https://www.bonappetit.com/recipe/crispy-chicken-with-zaatar-olive-rice"},
+				URL:   "https://www.bonappetit.com/recipe/crispy-chicken-with-zaatar-olive-rice"},
 		},
 		{
 			name: "bowlofdelicious.com",
@@ -967,7 +967,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 8},
-				Url:      "https://www.bowlofdelicious.com/mini-meatloaves/",
+				URL:      "https://www.bowlofdelicious.com/mini-meatloaves/",
 			},
 		},
 		{
@@ -1033,7 +1033,7 @@ func TestScraper(t *testing.T) {
 				PrepTime: "PT15M",
 				Tools:    models.Tools{Values: []string(nil)},
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://www.budgetbytes.com/easy-vegetable-stir-fry/"},
+				URL:      "https://www.budgetbytes.com/easy-vegetable-stir-fry/"},
 		},
 		{
 			name: "castironketo.com",
@@ -1092,7 +1092,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://www.castironketo.net/blog/balsamic-mushrooms-with-herbed-veggie-mash/"},
+				URL:      "https://www.castironketo.net/blog/balsamic-mushrooms-with-herbed-veggie-mash/"},
 		},
 		{
 			name: "cdkitchen.com",
@@ -1147,7 +1147,7 @@ func TestScraper(t *testing.T) {
 					Fat:           "34 grams fat",
 					Protein:       "36 grams protein",
 				},
-				Url: "https://www.cdkitchen.com/recipes/recs/285/MerleHaggardsRainbowStew65112.shtml",
+				URL: "https://www.cdkitchen.com/recipes/recs/285/MerleHaggardsRainbowStew65112.shtml",
 			},
 		},
 		{
@@ -1203,7 +1203,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "P0DT0H20M",
 				Yield:    models.Yield{Value: 3},
-				Url:      "https://www.chefkoch.de/rezepte/1064631211795001/Knusprige-Ofenkartoffeln.html",
+				URL:      "https://www.chefkoch.de/rezepte/1064631211795001/Knusprige-Ofenkartoffeln.html",
 			},
 		},
 		{
@@ -1264,7 +1264,7 @@ func TestScraper(t *testing.T) {
 				PrepTime: "PT20M",
 				Tools:    models.Tools{Values: []string(nil)},
 				Yield:    models.Yield{Value: 50},
-				Url:      "https://comidinhasdochef.com/pudim-no-copinho-para-festa/"},
+				URL:      "https://comidinhasdochef.com/pudim-no-copinho-para-festa/"},
 		},
 		{
 			name: "cookeatshare.com",
@@ -1327,7 +1327,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT30M",
 				Yield:    models.Yield{Value: 0},
-				Url:      "https://cookeatshare.com/recipes/balinese-bbq-pork-roast-babi-guling-81003"},
+				URL:      "https://cookeatshare.com/recipes/balinese-bbq-pork-roast-babi-guling-81003"},
 		},
 		{
 			name: "cookieandkate.com",
@@ -1387,7 +1387,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 16},
-				Url:      "https://cookieandkate.com/honey-butter-cornbread-recipe/"},
+				URL:      "https://cookieandkate.com/honey-butter-cornbread-recipe/"},
 		},
 		{
 			name: "cookinglight.com",
@@ -1441,7 +1441,7 @@ func TestScraper(t *testing.T) {
 					Sodium:        "576 mg",
 				},
 				Yield: models.Yield{Value: 4},
-				Url:   "https://www.cookinglight.com/recipes/charred-lemon-chicken-piccata",
+				URL:   "https://www.cookinglight.com/recipes/charred-lemon-chicken-piccata",
 			},
 		},
 		{
@@ -1486,7 +1486,7 @@ func TestScraper(t *testing.T) {
 				},
 				Name:  "Kimchi Fried Rice",
 				Yield: models.Yield{Value: 0},
-				Url:   "https://www.cookstr.com/recipes/kimchi-fried-rice-2",
+				URL:   "https://www.cookstr.com/recipes/kimchi-fried-rice-2",
 			},
 		},
 		{
@@ -1546,7 +1546,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT5M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://copykat.com/mcdonalds-egg-mcmuffin",
+				URL:      "https://copykat.com/mcdonalds-egg-mcmuffin",
 			},
 		},
 		{
@@ -1596,7 +1596,7 @@ func TestScraper(t *testing.T) {
 
 				PrepTime: "PT40M",
 				Yield:    models.Yield{Value: 0},
-				Url:      "https://www.countryliving.com/food-drinks/a39298988/braised-turkey-wings-recipe/",
+				URL:      "https://www.countryliving.com/food-drinks/a39298988/braised-turkey-wings-recipe/",
 			},
 		},
 		{
@@ -1638,7 +1638,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Champignons farcis au fromage Brie",
 				PrepTime: "PT15M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://www.cuisineaz.com/recettes/champignons-farcis-au-fromage-brie-87449.aspx",
+				URL:      "https://www.cuisineaz.com/recettes/champignons-farcis-au-fromage-brie-87449.aspx",
 			},
 		},
 		{
@@ -1681,7 +1681,7 @@ func TestScraper(t *testing.T) {
 				PrepTime: "PT1H",
 				Tools:    models.Tools{Values: []string(nil)},
 				Yield:    models.Yield{Value: 5},
-				Url:      "https://cybercook.com.br/receitas/peixes-e-frutos-do-mar/receita-de-file-de-tilapia-com-batatas-82273",
+				URL:      "https://cybercook.com.br/receitas/peixes-e-frutos-do-mar/receita-de-file-de-tilapia-com-batatas-82273",
 			},
 		},
 		{
@@ -1733,7 +1733,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Beef & Broccoli",
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://www.delish.com/cooking/recipe-ideas/a24489879/beef-and-broccoli-recipe/",
+				URL:      "https://www.delish.com/cooking/recipe-ideas/a24489879/beef-and-broccoli-recipe/",
 			},
 		},
 		{
@@ -1795,7 +1795,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT30M",
 				Yield:    models.Yield{Value: 12},
-				Url:      "https://www.ditchthecarbs.com/how-to-make-keto-samosa-air-fryer-oven/",
+				URL:      "https://www.ditchthecarbs.com/how-to-make-keto-samosa-air-fryer-oven/",
 			},
 		},
 		{
@@ -1834,7 +1834,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Strawberry Thyme Cooler and 9 Other Summer Cocktail Recipes",
 				PrepTime: "PT5M",
 				Yield:    models.Yield{Value: 1},
-				Url:      "https://domesticate-me.com/10-summer-cocktail-recipes/",
+				URL:      "https://domesticate-me.com/10-summer-cocktail-recipes/",
 			},
 		},
 		{
@@ -1889,7 +1889,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT5M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://downshiftology.com/recipes/baked-chicken-breasts/",
+				URL:      "https://downshiftology.com/recipes/baked-chicken-breasts/",
 			},
 		},
 		{
@@ -1906,7 +1906,7 @@ func TestScraper(t *testing.T) {
 				Description: models.Description{
 					Value: "Smuk nytårskage med urvisere og masser af smag, der passer perfekt til nytårsaften.",
 				},
-				Url: "https://www.dr.dk/mad/opskrift/nytarskage-med-champagne-kransekagebund-solbaer-og-chokoladepynt",
+				URL: "https://www.dr.dk/mad/opskrift/nytarskage-med-champagne-kransekagebund-solbaer-og-chokoladepynt",
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"Kransekagebund",
@@ -2097,7 +2097,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT30M",
 				Yield:    models.Yield{Value: 12},
-				Url:      "https://www.eatingbirdfood.com/cinnamon-rolls/",
+				URL:      "https://www.eatingbirdfood.com/cinnamon-rolls/",
 			},
 		},
 		{
@@ -2147,7 +2147,7 @@ func TestScraper(t *testing.T) {
 					Sugar:         "2 g",
 				},
 				Yield: models.Yield{Value: 0},
-				Url:   "https://www.eatingwell.com/recipe/7935164/tuna-salad-with-egg/",
+				URL:   "https://www.eatingwell.com/recipe/7935164/tuna-salad-with-egg/",
 			},
 		},
 		{
@@ -2192,7 +2192,7 @@ func TestScraper(t *testing.T) {
 				Name:  "Vietnamese Chicken Cabbage Salad",
 				Tools: models.Tools{Values: []string(nil)},
 				Yield: models.Yield{Value: 4},
-				Url:   "https://eatsmarter.com/recipes/vietnamese-chicken-cabbage-salad",
+				URL:   "https://eatsmarter.com/recipes/vietnamese-chicken-cabbage-salad",
 			},
 		},
 		{
@@ -2242,7 +2242,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Diced Chicken with Spicy Chilies 辣子鸡丁",
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 1},
-				Url:      "https://eatwhattonight.com/2021/11/diced-chicken-with-spicy-chilies-%e8%be%a3%e5%ad%90%e9%b8%a1%e4%b8%81/#wpzoom-recipe-card",
+				URL:      "https://eatwhattonight.com/2021/11/diced-chicken-with-spicy-chilies-%e8%be%a3%e5%ad%90%e9%b8%a1%e4%b8%81/#wpzoom-recipe-card",
 			},
 		},
 		{
@@ -2290,7 +2290,7 @@ func TestScraper(t *testing.T) {
 				},
 				Name:  "Olive Oil Cake",
 				Yield: models.Yield{Value: 8},
-				Url:   "https://www.epicurious.com/recipes/food/views/olive-oil-cake",
+				URL:   "https://www.epicurious.com/recipes/food/views/olive-oil-cake",
 			},
 		},
 		{
@@ -2345,7 +2345,7 @@ func TestScraper(t *testing.T) {
 				},
 				Keywords: models.Keywords{Values: "sections/recept"},
 				Yield:    models.Yield{Value: 22},
-				Url:      "https://www.expressen.se/alltommat/recept/saftiga-choklad--och-apelsinbullar/",
+				URL:      "https://www.expressen.se/alltommat/recept/saftiga-choklad--och-apelsinbullar/",
 			},
 		},
 		{
@@ -2398,7 +2398,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://www.fifteenspatulas.com/guacamole/",
+				URL:      "https://www.fifteenspatulas.com/guacamole/",
 			},
 		},
 		{
@@ -2464,7 +2464,7 @@ func TestScraper(t *testing.T) {
 				},
 				Name:  "Szechuan Chicken",
 				Yield: models.Yield{Value: 4},
-				Url:   "https://www.finedininglovers.com/recipes/main-course/szechuan-chicken",
+				URL:   "https://www.finedininglovers.com/recipes/main-course/szechuan-chicken",
 			},
 		},
 		{
@@ -2519,7 +2519,7 @@ func TestScraper(t *testing.T) {
 					Sugar:         "5g",
 				},
 				PrepTime: "PT5M",
-				Url:      "https://fitmencook.com/rosemary-blue-cheese-turkey-sliders/",
+				URL:      "https://fitmencook.com/rosemary-blue-cheese-turkey-sliders/",
 			},
 		},
 		{
@@ -2578,7 +2578,7 @@ func TestScraper(t *testing.T) {
 					Sugar:         "2.7",
 				},
 				PrepTime: "PT30M",
-				Url:      "https://www.food.com/recipe/jim-lahey-s-no-knead-pizza-margherita-382696",
+				URL:      "https://www.food.com/recipe/jim-lahey-s-no-knead-pizza-margherita-382696",
 			},
 		},
 		{
@@ -2635,7 +2635,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Orecchiette Pasta with Roasted Butternut Squash, Kale, and Caramelized Red Onion",
 				PrepTime: "PT0H15M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://food52.com/recipes/7930-orecchiette-with-roasted-butternut-squash-kale-and-caramelized-red-onion",
+				URL:      "https://food52.com/recipes/7930-orecchiette-with-roasted-butternut-squash-kale-and-caramelized-red-onion",
 			},
 		},
 		{
@@ -2676,7 +2676,7 @@ func TestScraper(t *testing.T) {
 					},
 				},
 				Name: "Sizzling Garlic Salmon with Sheet Pan Potatoes",
-				Url:  "https://www.foodandwine.com/recipes/garlic-salmon-with-sheet-pan-potatoes",
+				URL:  "https://www.foodandwine.com/recipes/garlic-salmon-with-sheet-pan-potatoes",
 			},
 		},
 		{
@@ -2692,7 +2692,7 @@ func TestScraper(t *testing.T) {
 				Image: models.Image{
 					Value: "https://www.foodrepublic.com/wp-content/uploads/2018/06/A-Burger-to-Believe-In_Hand-Cut-Burger-e1528395264435-700x606.jpg",
 				},
-				Url:           "https://www.foodrepublic.com/recipes/hand-cut-burger/",
+				URL:           "https://www.foodrepublic.com/recipes/hand-cut-burger/",
 				Yield:         models.Yield{Value: 4},
 				DatePublished: "2018-06-08T11:00:40-04:00",
 				Ingredients: models.Ingredients{
@@ -2760,7 +2760,7 @@ func TestScraper(t *testing.T) {
 				},
 				Name:  "Crispy Buffalo Cauliflower Bites",
 				Yield: models.Yield{Value: 0},
-				Url:   "https://www.forksoverknives.com/recipes/vegan-snacks-appetizers/crispy-buffalo-cauliflower-bites/",
+				URL:   "https://www.forksoverknives.com/recipes/vegan-snacks-appetizers/crispy-buffalo-cauliflower-bites/",
 			},
 		},
 		{
@@ -2797,7 +2797,7 @@ func TestScraper(t *testing.T) {
 				},
 				Name:     "Navettes aus Marseille",
 				PrepTime: "PT60M",
-				Url:      "https://www.franzoesischkochen.de/navettes-aus-marseille/",
+				URL:      "https://www.franzoesischkochen.de/navettes-aus-marseille/",
 			},
 		},
 		{
@@ -2854,7 +2854,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT15M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://www.giallozafferano.com/recipes/penne-arrabbiata-spicy-penne-pasta.html",
+				URL:      "https://www.giallozafferano.com/recipes/penne-arrabbiata-spicy-penne-pasta.html",
 			},
 		},
 		{
@@ -2895,7 +2895,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Miso Chocolate Peanut Butter Cornflake Bars",
 				PrepTime: "PT20M",
 				Yield:    models.Yield{Value: 16},
-				Url:      "https://www.gimmesomeoven.com/miso-chocolate-peanut-butter-cornflake-bars-gimme-some-oven/",
+				URL:      "https://www.gimmesomeoven.com/miso-chocolate-peanut-butter-cornflake-bars-gimme-some-oven/",
 			},
 		},
 		{
@@ -2952,7 +2952,7 @@ func TestScraper(t *testing.T) {
 				},
 				Name:  "Cheesecake com geleia de frutas vermelhas do 'BBB 22'",
 				Yield: models.Yield{Value: 4},
-				Url:   "https://receitas.globo.com/cheesecake-com-geleia-de-frutas-vermelhas-do-bbb-22.ghtml",
+				URL:   "https://receitas.globo.com/cheesecake-com-geleia-de-frutas-vermelhas-do-bbb-22.ghtml",
 			},
 		},
 		{
@@ -3017,7 +3017,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://www.gonnawantseconds.com/beef-tomato-macaroni-soup/#wprm-recipe-container-15941",
+				URL:      "https://www.gonnawantseconds.com/beef-tomato-macaroni-soup/#wprm-recipe-container-15941",
 			},
 		},
 		{
@@ -3074,7 +3074,7 @@ func TestScraper(t *testing.T) {
 						"Once cooked, serve with the daikon salad and the dip on the side",
 					},
 				},
-				Url: "https://www.greatbritishchefs.com/recipes/babecued-miso-poussin-recipe",
+				URL: "https://www.greatbritishchefs.com/recipes/babecued-miso-poussin-recipe",
 			},
 		},
 		{
@@ -3124,7 +3124,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT20M",
 				Yield:    models.Yield{Value: 6},
-				Url:      "https://www.halfbakedharvest.com/louisiana-style-chicken-and-rice/",
+				URL:      "https://www.halfbakedharvest.com/louisiana-style-chicken-and-rice/",
 			},
 		},
 		{
@@ -3186,7 +3186,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 3},
-				Url:      "https://www.hassanchef.com/2021/01/kulcha-recipe.html",
+				URL:      "https://www.hassanchef.com/2021/01/kulcha-recipe.html",
 			},
 		},
 		{
@@ -3236,7 +3236,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Keto Chicken Adobo",
 				PrepTime: "PT5M",
 				Yield:    models.Yield{Value: 6},
-				Url:      "https://headbangerskitchen.com/recipe/keto-chicken-adobo/",
+				URL:      "https://headbangerskitchen.com/recipe/keto-chicken-adobo/",
 			},
 		},
 		{
@@ -3294,7 +3294,7 @@ func TestScraper(t *testing.T) {
 					Sugar:         "9 g",
 				},
 				Yield: models.Yield{Value: 2},
-				Url:   "https://www.hellofresh.com/recipes/creamy-shrimp-tagliatelle-5a8f0fcbae08b52f161b5832",
+				URL:   "https://www.hellofresh.com/recipes/creamy-shrimp-tagliatelle-5a8f0fcbae08b52f161b5832",
 			},
 		},
 		{
@@ -3307,7 +3307,7 @@ func TestScraper(t *testing.T) {
 					Value: "https://homechef.imgix.net/https%3A%2F%2Fasset.homechef.com%2Fuploads%2Fmeal%2Fplated%2F2504%2F2504FarmhouseFriedChicken_Ecomm__1_of_1_.jpg?ixlib=rails-1.1.0&w=600&auto=format&s=136cb76781125f3880aa8edd214bfae7",
 				},
 				Name: "Farmhouse Fried Chicken",
-				Url:  "https://www.homechef.com/meals/farmhouse-fried-chicken",
+				URL:  "https://www.homechef.com/meals/farmhouse-fried-chicken",
 				Description: models.Description{
 					Value: "This stick-to-your-ribs satisfying country classic is an indulgence you've earned. The crispy comfort that only fried chicken can supply is accompanied by mashed potatoes and sweet corn. While that “other” chicken has you eating out of a bucket, this homey treat transports you to an idyllic country farmhouse on the prairie. Yee-Haw!",
 				},
@@ -3400,7 +3400,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Guinness Beef Stew with Cheddar Herb Dumplings",
 				PrepTime: "PT30M",
 				Yield:    models.Yield{Value: 6},
-				Url:      "https://hostthetoast.com/guinness-beef-stew-with-cheddar-herb-dumplings/",
+				URL:      "https://hostthetoast.com/guinness-beef-stew-with-cheddar-herb-dumplings/",
 			},
 		},
 		{
@@ -3465,7 +3465,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://www.indianhealthyrecipes.com/mango-rice-mamidikaya-pulihora/",
+				URL:      "https://www.indianhealthyrecipes.com/mango-rice-mamidikaya-pulihora/",
 			},
 		},
 		{
@@ -3518,7 +3518,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT28M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://www.innit.com/meal/504/8008/Salad%3A%20Coconut-Pineapple-Salad",
+				URL:      "https://www.innit.com/meal/504/8008/Salad%3A%20Coconut-Pineapple-Salad",
 			},
 		},
 		{
@@ -3567,7 +3567,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Vegetarian Zucchini Noodle Pad Thai",
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 2},
-				Url:      "https://inspiralized.com/vegetarian-zucchini-noodle-pad-thai/",
+				URL:      "https://inspiralized.com/vegetarian-zucchini-noodle-pad-thai/",
 			},
 		},
 		{
@@ -3626,7 +3626,7 @@ func TestScraper(t *testing.T) {
 					Sugar:         "4.2 g sugar",
 				},
 				Yield: models.Yield{Value: 6},
-				Url:   "https://www.jamieoliver.com/recipes/chicken-recipes/thai-green-chicken-curry/",
+				URL:   "https://www.jamieoliver.com/recipes/chicken-recipes/thai-green-chicken-curry/",
 			},
 		},
 		{
@@ -3680,7 +3680,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT15M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://jimcooksfoodgood.com/recipe-weeknight-pad-thai/",
+				URL:      "https://jimcooksfoodgood.com/recipe-weeknight-pad-thai/",
 			},
 		},
 		{
@@ -3737,7 +3737,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT5M",
 				Yield:    models.Yield{Value: 16},
-				Url:      "https://joyfoodsunshine.com/peanut-butter-frosting/",
+				URL:      "https://joyfoodsunshine.com/peanut-butter-frosting/",
 			},
 		},
 		{
@@ -3805,7 +3805,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 18},
-				Url:      "https://www.justataste.com/mini-sour-cream-doughnut-muffins-recipe/",
+				URL:      "https://www.justataste.com/mini-sour-cream-doughnut-muffins-recipe/",
 			},
 		},
 		{
@@ -3874,7 +3874,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT5M",
 				Yield:    models.Yield{Value: 2},
-				Url:      "https://www.justonecookbook.com/teriyaki-tofu-bowl/",
+				URL:      "https://www.justonecookbook.com/teriyaki-tofu-bowl/",
 			},
 		},
 		{
@@ -3915,7 +3915,7 @@ func TestScraper(t *testing.T) {
 				PrepTime: "PT5M",
 				Tools:    models.Tools{Values: []string(nil)},
 				Yield:    models.Yield{Value: 1},
-				Url:      "https://kennymcgovern.com/chicken-noodle-soup",
+				URL:      "https://kennymcgovern.com/chicken-noodle-soup",
 			},
 		},
 		{
@@ -3985,7 +3985,7 @@ func TestScraper(t *testing.T) {
 				PrepTime: "PT30M",
 				Tools:    models.Tools{Values: []string(nil)},
 				Yield:    models.Yield{Value: 0},
-				Url:      "https://www.kingarthurbaking.com/recipes/sourdough-zucchini-bread-recipe",
+				URL:      "https://www.kingarthurbaking.com/recipes/sourdough-zucchini-bread-recipe",
 			},
 		},
 		{
@@ -4037,7 +4037,7 @@ func TestScraper(t *testing.T) {
 					Servings:      "100 g",
 				},
 				Yield: models.Yield{Value: 2},
-				Url:   "https://www.kochbar.de/rezept/465773/Spargelsalat-Fruchtig.html",
+				URL:   "https://www.kochbar.de/rezept/465773/Spargelsalat-Fruchtig.html",
 			},
 		},
 		{
@@ -4079,7 +4079,7 @@ func TestScraper(t *testing.T) {
 				},
 				Name:  "Myllymäkis toast skagen",
 				Yield: models.Yield{Value: 4},
-				Url:   "https://www.koket.se/mitt-kok/tommy-myllymaki/myllymakis-toast-skagen",
+				URL:   "https://www.koket.se/mitt-kok/tommy-myllymaki/myllymakis-toast-skagen",
 			},
 		},
 		{
@@ -4118,7 +4118,7 @@ func TestScraper(t *testing.T) {
 				},
 				Name:  "Mizeria",
 				Yield: models.Yield{Value: 5},
-				Url:   "https://www.kuchnia-domowa.pl/przepisy/dodatki-do-dan/548-mizeria",
+				URL:   "https://www.kuchnia-domowa.pl/przepisy/dodatki-do-dan/548-mizeria",
 			},
 		},
 		{
@@ -4161,7 +4161,7 @@ func TestScraper(t *testing.T) {
 				},
 				Name:  "Muffiny czekoladowe z masłem orzechowym",
 				Yield: models.Yield{Value: 15},
-				Url:   "https://www.kwestiasmaku.com/przepis/muffiny-czekoladowe-z-maslem-orzechowym",
+				URL:   "https://www.kwestiasmaku.com/przepis/muffiny-czekoladowe-z-maslem-orzechowym",
 			},
 		},
 		{
@@ -4225,7 +4225,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT20M",
 				Yield:    models.Yield{Value: 6},
-				Url:      "https://www.lecremedelacrumb.com/instant-pot-pot-roast-potatoes/",
+				URL:      "https://www.lecremedelacrumb.com/instant-pot-pot-roast-potatoes/",
 			},
 		},
 		{
@@ -4237,7 +4237,7 @@ func TestScraper(t *testing.T) {
 				Name:      "Gougères",
 				Category:  models.Category{Value: "Snacks"},
 				Yield:     models.Yield{Value: 4},
-				Url:       "https://www.lekkerensimpel.com/gougeres/",
+				URL:       "https://www.lekkerensimpel.com/gougeres/",
 				PrepTime:  "PT20M",
 				CookTime:  "PT25M",
 				Description: models.Description{
@@ -4310,7 +4310,7 @@ func TestScraper(t *testing.T) {
 				Name:     "The Best Starbucks Pumpkin Loaf Recipe (Copycat)",
 				PrepTime: "PT15M",
 				Yield:    models.Yield{Value: 2},
-				Url:      "https://littlespicejar.com/starbucks-pumpkin-loaf/",
+				URL:      "https://littlespicejar.com/starbucks-pumpkin-loaf/",
 			},
 		},
 		{
@@ -4364,7 +4364,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 1},
-				Url:      "https://livelytable.com/bbq-ribs-on-the-charcoal-grill/",
+				URL:      "https://livelytable.com/bbq-ribs-on-the-charcoal-grill/",
 			},
 		},
 		{
@@ -4428,7 +4428,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 8},
-				Url:      "https://lovingitvegan.com/vegan-buffalo-chicken-dip/",
+				URL:      "https://lovingitvegan.com/vegan-buffalo-chicken-dip/",
 			},
 		},
 		{
@@ -4480,7 +4480,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT15M",
 				Yield:    models.Yield{Value: 12},
-				Url:      "https://madensverden.dk/durumboller-nemme-italienske-boller-med-durum-mel/",
+				URL:      "https://madensverden.dk/durumboller-nemme-italienske-boller-med-durum-mel/",
 			},
 		},
 		{
@@ -4528,7 +4528,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Lemon-Glazed Sheet Cake",
 				PrepTime: "PT35M",
 				Yield:    models.Yield{Value: 12},
-				Url:      "https://www.marthastewart.com/1539828/lemon-glazed-sheet-cake",
+				URL:      "https://www.marthastewart.com/1539828/lemon-glazed-sheet-cake",
 			},
 		},
 		{
@@ -4567,7 +4567,7 @@ func TestScraper(t *testing.T) {
 				},
 				Name:  "Vafler",
 				Yield: models.Yield{Value: 1},
-				Url:   "https://www.matprat.no/oppskrifter/tradisjon/vafler/",
+				URL:   "https://www.matprat.no/oppskrifter/tradisjon/vafler/",
 			},
 		},
 		{
@@ -4615,7 +4615,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT500M",
 				Yield:    models.Yield{Value: 6},
-				Url:      "https://www.melskitchencafe.com/grilled-rosemary-ranch-chicken/",
+				URL:      "https://www.melskitchencafe.com/grilled-rosemary-ranch-chicken/",
 			},
 		},
 		{
@@ -4658,7 +4658,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Karamellás lávasüti receptje  |  Mindmegette.hu",
 				PrepTime: "PT1H",
 				Yield:    models.Yield{Value: 16},
-				Url:      "https://www.mindmegette.hu/karamellas-lavasuti.recept/",
+				URL:      "https://www.mindmegette.hu/karamellas-lavasuti.recept/",
 			},
 		},
 		{
@@ -4715,7 +4715,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT5M",
 				Yield:    models.Yield{Value: 10},
-				Url:      "https://minimalistbaker.com/adaptogenic-hot-chocolate-mix/",
+				URL:      "https://minimalistbaker.com/adaptogenic-hot-chocolate-mix/",
 			},
 		},
 		{
@@ -4769,7 +4769,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Grigliata di carne",
 				PrepTime: "PT15M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://www.misya.info/ricetta/grigliata-di-carne.htm",
+				URL:      "https://www.misya.info/ricetta/grigliata-di-carne.htm",
 			},
 		},
 		{
@@ -4813,7 +4813,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Crockpot Cornbread",
 				PrepTime: "PT5M",
 				Yield:    models.Yield{Value: 6},
-				Url:      "https://momswithcrockpots.com/crockpot-cornbread/",
+				URL:      "https://momswithcrockpots.com/crockpot-cornbread/",
 			},
 		},
 		{
@@ -4856,7 +4856,7 @@ func TestScraper(t *testing.T) {
 					Fat:           "35 g",
 				},
 
-				Url: "https://www.monsieur-cuisine.com/en/recipes/detail/little-chocolate-puddings-with-a-molten-centre/",
+				URL: "https://www.monsieur-cuisine.com/en/recipes/detail/little-chocolate-puddings-with-a-molten-centre/",
 			},
 		},
 		{
@@ -4903,7 +4903,7 @@ func TestScraper(t *testing.T) {
 					},
 				},
 				Name: "BLT Pasta Salad",
-				Url:  "https://www.motherthyme.com/2018/06/blt-pasta-salad.html",
+				URL:  "https://www.motherthyme.com/2018/06/blt-pasta-salad.html",
 			},
 		},
 		{
@@ -4964,7 +4964,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT5M",
 				Yield:    models.Yield{Value: 12},
-				Url:      "https://www.mybakingaddiction.com/pistachio-pudding-cake/",
+				URL:      "https://www.mybakingaddiction.com/pistachio-pudding-cake/",
 			},
 		},
 		{
@@ -4973,7 +4973,7 @@ func TestScraper(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
-				Url:           "https://mykitchen101.com/%e5%8e%9f%e5%91%b3%e7%89%9b%e6%b2%b9%e8%9b%8b%e7%b3%95/",
+				URL:           "https://mykitchen101.com/%e5%8e%9f%e5%91%b3%e7%89%9b%e6%b2%b9%e8%9b%8b%e7%b3%95/",
 				Name:          "原味牛油蛋糕",
 				DatePublished: "2017-10-19",
 				Description: models.Description{
@@ -5027,7 +5027,7 @@ func TestScraper(t *testing.T) {
 				Image: models.Image{
 					Value: "http://mykitchen101en.com/wp-content/uploads/2017/10/plain-butter-cake-mykitchen101en-feature1.jpg",
 				},
-				Url: "https://mykitchen101en.com/plain-butter-cake/",
+				URL: "https://mykitchen101en.com/plain-butter-cake/",
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"250 g (8.8 oz) butter (salted, room temperature)",
@@ -5112,7 +5112,7 @@ func TestScraper(t *testing.T) {
 					Protein:       "8 g",
 					Servings:      "1 cup (170g)",
 				},
-				Url: "https://www.myplate.gov/recipes/supplemental-nutrition-assistance-program-snap/20-minute-chicken-creole",
+				URL: "https://www.myplate.gov/recipes/supplemental-nutrition-assistance-program-snap/20-minute-chicken-creole",
 			},
 		},
 		{
@@ -5152,7 +5152,7 @@ func TestScraper(t *testing.T) {
 				},
 				Name:  "Quick and Easy Nachos",
 				Yield: models.Yield{Value: 4},
-				Url:   "https://www.myrecipes.com/recipe/quick-easy-nachos",
+				URL:   "https://www.myrecipes.com/recipe/quick-easy-nachos",
 			},
 		},
 		{
@@ -5192,7 +5192,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Fudgy Tahini Brownies",
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 12},
-				Url:      "https://nourishedbynutrition.com/fudgy-gluten-free-tahini-brownies/",
+				URL:      "https://nourishedbynutrition.com/fudgy-gluten-free-tahini-brownies/",
 			},
 		},
 		{
@@ -5226,7 +5226,7 @@ func TestScraper(t *testing.T) {
 						"Stir in vegan cream cheese and cilantro. Serve immediately and enjoy!",
 					},
 				},
-				Url: "https://www.nutritionbynathalie.com/single-post/2020/07/30/Mexican-Cauliflower-Rice",
+				URL: "https://www.nutritionbynathalie.com/single-post/2020/07/30/Mexican-Cauliflower-Rice",
 			},
 		},
 		{
@@ -5287,7 +5287,7 @@ func TestScraper(t *testing.T) {
 				PrepTime: "",
 				Tools:    models.Tools{Values: []string(nil)},
 				Yield:    models.Yield{Value: 2},
-				Url:      "https://cooking.nytimes.com/recipes/8357-spaghetti-with-fried-eggs?action=click&module=Collection%20Band%20Recipe%20Card&region=Easy%20Easter%20Dinner%20Recipes&pgType=supercollection&rank=2",
+				URL:      "https://cooking.nytimes.com/recipes/8357-spaghetti-with-fried-eggs?action=click&module=Collection%20Band%20Recipe%20Card&region=Easy%20Easter%20Dinner%20Recipes&pgType=supercollection&rank=2",
 			},
 		},
 		{
@@ -5363,7 +5363,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT30M",
 				Yield:    models.Yield{Value: 14},
-				Url:      "https://ohsheglows.com/2017/11/23/bread-free-stuffing-balls/",
+				URL:      "https://ohsheglows.com/2017/11/23/bread-free-stuffing-balls/",
 			},
 		},
 		{
@@ -5404,7 +5404,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Perfect Basmati Rice",
 				PrepTime: "PT0M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://www.onceuponachef.com/recipes/perfect-basmati-rice.html",
+				URL:      "https://www.onceuponachef.com/recipes/perfect-basmati-rice.html",
 			},
 		},
 		{
@@ -5467,7 +5467,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT15M",
 				Yield:    models.Yield{Value: 20},
-				Url:      "https://www.paleorunningmomma.com/grain-free-peanut-butter-granola-bars-vegan-paleo-option/",
+				URL:      "https://www.paleorunningmomma.com/grain-free-peanut-butter-granola-bars-vegan-paleo-option/",
 			},
 		},
 		{
@@ -5507,7 +5507,7 @@ func TestScraper(t *testing.T) {
 				},
 				Name:  "Frango ao curry com maçã",
 				Yield: models.Yield{Value: 4},
-				Url:   "https://www.panelinha.com.br/receita/Frango-ao-curry",
+				URL:   "https://www.panelinha.com.br/receita/Frango-ao-curry",
 			},
 		},
 		{
@@ -5545,7 +5545,7 @@ func TestScraper(t *testing.T) {
 						"Grease a muffin tin or fill your tin with cupcake papers. Fill the wells with the batter until they are 2/3 of the way full. Bake for 16-20 minutes. Cool 5 minutes and then complete the cooling process on a wire rack.",
 					},
 				},
-				Url: "https://paninihappy.com/why-you-need-this-pumpkin-muffin-recipe/",
+				URL: "https://paninihappy.com/why-you-need-this-pumpkin-muffin-recipe/",
 			},
 		},
 		{
@@ -5597,7 +5597,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Zucchini Relish",
 				PrepTime: "PT2H10M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://practicalselfreliance.com/zucchini-relish/",
+				URL:      "https://practicalselfreliance.com/zucchini-relish/",
 			},
 		},
 		{
@@ -5661,7 +5661,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT5M",
 				Yield:    models.Yield{Value: 8},
-				Url:      "https://www.primaledgehealth.com/slow-cooker-crack-chicken/",
+				URL:      "https://www.primaledgehealth.com/slow-cooker-crack-chicken/",
 			},
 		},
 		{
@@ -5703,7 +5703,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Placki ziemniaczane",
 				PrepTime: "PT40M",
 				Yield:    models.Yield{Value: 8},
-				Url:      "https://www.przepisy.pl/przepis/placki-ziemniaczane",
+				URL:      "https://www.przepisy.pl/przepis/placki-ziemniaczane",
 			},
 		},
 		{
@@ -5736,7 +5736,7 @@ func TestScraper(t *testing.T) {
 						"Top with everything or sesame seeds.",
 					},
 				},
-				Url: "https://purelypope.com/sweet-chili-brussel-sprouts/",
+				URL: "https://purelypope.com/sweet-chili-brussel-sprouts/",
 			},
 		},
 		{
@@ -5779,7 +5779,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT30M",
 				Yield:    models.Yield{Value: 2},
-				Url:      "https://www.purplecarrot.com/recipe/gnocchi-al-pesto-with-charred-green-beans-lemon-zucchini-bc225f0b-1985-4d94-b05b-a78de295b2da?plan=chefs_choice",
+				URL:      "https://www.purplecarrot.com/recipe/gnocchi-al-pesto-with-charred-green-beans-lemon-zucchini-bc225f0b-1985-4d94-b05b-a78de295b2da?plan=chefs_choice",
 			},
 		},
 		{
@@ -5831,7 +5831,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Delicious Crispy Rice Salad (gluten-free)",
 				PrepTime: "PT5M",
 				Yield:    models.Yield{Value: 2},
-				Url:      "https://rachlmansfield.com/delicious-crispy-rice-salad-gluten-free/",
+				URL:      "https://rachlmansfield.com/delicious-crispy-rice-salad-gluten-free/",
 			},
 		},
 		{
@@ -5885,7 +5885,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Stewed Beans, Livornese-Style",
 				PrepTime: "PT15M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://rainbowplantlife.com/livornese-stewed-beans/",
+				URL:      "https://rainbowplantlife.com/livornese-stewed-beans/",
 			},
 		},
 		{
@@ -5935,7 +5935,7 @@ func TestScraper(t *testing.T) {
 					Sugar:         "4.6 g",
 				},
 				Yield: models.Yield{Value: 4},
-				Url:   "https://www.realsimple.com/food-recipes/browse-all-recipes/sheet-pan-chicken-and-sweet-potatoes",
+				URL:   "https://www.realsimple.com/food-recipes/browse-all-recipes/sheet-pan-chicken-and-sweet-potatoes",
 			},
 		},
 		{
@@ -6006,7 +6006,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://www.recipetineats.com/chicken-sharwama-middle-eastern/",
+				URL:      "https://www.recipetineats.com/chicken-sharwama-middle-eastern/",
 			},
 		},
 		{
@@ -6062,7 +6062,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 3},
-				Url:      "https://redhousespice.com/pork-fried-rice/",
+				URL:      "https://redhousespice.com/pork-fried-rice/",
 			},
 		},
 		{
@@ -6119,7 +6119,7 @@ func TestScraper(t *testing.T) {
 				},
 				Name:  "Chicken Tikka Masala",
 				Yield: models.Yield{Value: 3},
-				Url:   "https://www.reishunger.de/rezepte/rezept/440/chicken-tikka-masala",
+				URL:   "https://www.reishunger.de/rezepte/rezept/440/chicken-tikka-masala",
 			},
 		},
 		{
@@ -6154,7 +6154,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT5M",
 				Yield:    models.Yield{Value: 1},
-				Url:      "https://www.rezeptwelt.de/backen-suess-rezepte/rhabarber-streuselkuchen-vegan/1bz87v8w-29db0-145829-cfcd2-xf6q1b6t",
+				URL:      "https://www.rezeptwelt.de/backen-suess-rezepte/rhabarber-streuselkuchen-vegan/1bz87v8w-29db0-145829-cfcd2-xf6q1b6t",
 			},
 		},
 		{
@@ -6218,7 +6218,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Breakfast Pastries with Shortcut Homemade Dough",
 				PrepTime: "PT6H",
 				Yield:    models.Yield{Value: 16},
-				Url:      "https://sallysbakingaddiction.com/breakfast-pastries/",
+				URL:      "https://sallysbakingaddiction.com/breakfast-pastries/",
 			},
 		},
 		{
@@ -6237,7 +6237,7 @@ func TestScraper(t *testing.T) {
 					Value: "https://www.saveur.com/uploads/2022/04/05/HR-Pierogi-Saveur-07-scaled.jpg?auto=webp&width=1440&height=960.1875",
 				},
 				Yield: models.Yield{Value: 4},
-				Url:   "https://www.saveur.com/recipes/varenyky-pierogi-recipe/",
+				URL:   "https://www.saveur.com/recipes/varenyky-pierogi-recipe/",
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 cups all-purpose flour, plus more for dusting",
@@ -6313,7 +6313,7 @@ func TestScraper(t *testing.T) {
 					UnsaturatedFat: "0 g",
 				},
 				Yield: models.Yield{Value: 6},
-				Url:   "https://www.seriouseats.com/miyeok-guk-korean-seaweed-and-brisket-soup",
+				URL:   "https://www.seriouseats.com/miyeok-guk-korean-seaweed-and-brisket-soup",
 			},
 		},
 		{
@@ -6372,7 +6372,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT3M",
 				Yield:    models.Yield{Value: 2},
-				Url:      "https://www.simplyquinoa.com/spicy-kimchi-quinoa-bowls/",
+				URL:      "https://www.simplyquinoa.com/spicy-kimchi-quinoa-bowls/",
 			},
 		},
 		{
@@ -6450,7 +6450,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT15M",
 				Yield:    models.Yield{Value: 6},
-				Url:      "https://www.simplyrecipes.com/recipes/chicken_tikka_masala/",
+				URL:      "https://www.simplyrecipes.com/recipes/chicken_tikka_masala/",
 			},
 		},
 		{
@@ -6512,7 +6512,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT15M",
 				Yield:    models.Yield{Value: 16},
-				Url:      "https://www.simplywhisked.com/dill-pickle-pasta-salad/",
+				URL:      "https://www.simplywhisked.com/dill-pickle-pasta-salad/",
 			},
 		},
 		{
@@ -6567,7 +6567,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT5M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://www.skinnytaste.com/air-fryer-steak/",
+				URL:      "https://www.skinnytaste.com/air-fryer-steak/",
 			},
 		},
 		{
@@ -6600,7 +6600,7 @@ func TestScraper(t *testing.T) {
 						"Spread 1 tablespoon herb butter on each corn cob; wrap each individually in aluminum foil. Place foil-wrapped corn on a baking sheet. Bake in preheated oven until corn is soft, 20 to 25 minutes, turning once halfway through cook time. Remove corn from foil, and serve",
 					},
 				},
-				Url: "https://www.southernliving.com/recipes/oven-roasted-corn-on-cob",
+				URL: "https://www.southernliving.com/recipes/oven-roasted-corn-on-cob",
 			},
 		},
 		{
@@ -6662,7 +6662,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT20M",
 				Yield:    models.Yield{Value: 6},
-				Url:      "https://www.spendwithpennies.com/split-pea-soup/",
+				URL:      "https://www.spendwithpennies.com/split-pea-soup/",
 			},
 		},
 		{
@@ -6720,7 +6720,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT60M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://steamykitchen.com/4474-korean-style-tacos-with-kogi-bbq-sauce.html",
+				URL:      "https://steamykitchen.com/4474-korean-style-tacos-with-kogi-bbq-sauce.html",
 			},
 		},
 		{
@@ -6754,7 +6754,7 @@ func TestScraper(t *testing.T) {
 						"Place roasted chicken and any pan juices into curry. Make sure to leave the chicken skin clear of the sauce. Cook in oven for 15-20 minutes or until chicken is cooked through. Garnish curry with Thai basil and sliced red chilli. Serve with steamed baby bok choy, jasmine rice and lime wedges.",
 					},
 				},
-				Url: "https://streetkitchen.co/recipe/green-thai-curry-roast-chicken/",
+				URL: "https://streetkitchen.co/recipe/green-thai-curry-roast-chicken/",
 			},
 		},
 		{
@@ -6811,7 +6811,7 @@ func TestScraper(t *testing.T) {
 					Sugar:        "7g",
 				},
 				Yield: models.Yield{Value: 2},
-				Url:   "https://sunbasket.com/recipe/chicken-and-dumplings",
+				URL:   "https://sunbasket.com/recipe/chicken-and-dumplings",
 			},
 		},
 		{
@@ -6875,7 +6875,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT5M",
 				Yield:    models.Yield{Value: 2},
-				Url:      "https://sweetcsdesigns.com/roasted-tomato-marinara-sauce/",
+				URL:      "https://sweetcsdesigns.com/roasted-tomato-marinara-sauce/",
 			},
 		},
 		{
@@ -6940,7 +6940,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT15M",
 				Yield:    models.Yield{Value: 8},
-				Url:      "https://sweetpeasandsaffron.com/slow-cooker-cilantro-lime-chicken-tacos-freezer-slow-cooker/",
+				URL:      "https://sweetpeasandsaffron.com/slow-cooker-cilantro-lime-chicken-tacos-freezer-slow-cooker/",
 			},
 		},
 		{
@@ -6981,7 +6981,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT5M",
 				Yield:    models.Yield{Value: 2},
-				Url:      "https://www.tasteofhome.com/recipes/cast-iron-skillet-steak/",
+				URL:      "https://www.tasteofhome.com/recipes/cast-iron-skillet-steak/",
 			},
 		},
 		{
@@ -7050,7 +7050,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT20M",
 				Yield:    models.Yield{Value: 8},
-				Url:      "https://www.tastesoflizzyt.com/easter-ham-pie/",
+				URL:      "https://www.tastesoflizzyt.com/easter-ham-pie/",
 			},
 		},
 		{
@@ -7103,7 +7103,7 @@ func TestScraper(t *testing.T) {
 					Sugar:         "57 grams",
 				},
 				Yield: models.Yield{Value: 2},
-				Url:   "https://tasty.co/recipe/honey-soy-glazed-salmon",
+				URL:   "https://tasty.co/recipe/honey-soy-glazed-salmon",
 			},
 		},
 		{
@@ -7149,7 +7149,7 @@ func TestScraper(t *testing.T) {
 					},
 				},
 				Yield: models.Yield{Value: 4},
-				Url:   "https://tastykitchen.com/recipes/main-courses/garlic-shrimp-scampi-with-angel-hair-pasta/",
+				URL:   "https://tastykitchen.com/recipes/main-courses/garlic-shrimp-scampi-with-angel-hair-pasta/",
 			},
 		},
 		{
@@ -7188,7 +7188,7 @@ func TestScraper(t *testing.T) {
 						"Meanwhile, make the mint sauce. Finely chop the mint leaves with the sugar (this helps to stop oxidisation), then mix well in a bowl with 3 tbsp boiling water and the vinegar. Serve alongside the roast lamb, potatoes and carrots.",
 					},
 				},
-				Url: "https://realfood.tesco.com/recipes/salted-honey-and-rosemary-lamb-with-roasties-and-rainbow-carrots.html",
+				URL: "https://realfood.tesco.com/recipes/salted-honey-and-rosemary-lamb-with-roasties-and-rainbow-carrots.html",
 			},
 		},
 		{
@@ -7236,7 +7236,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Homemade Sourdough Breadcrumbs",
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://www.theclevercarrot.com/2021/10/homemade-sourdough-breadcrumbs/",
+				URL:      "https://www.theclevercarrot.com/2021/10/homemade-sourdough-breadcrumbs/",
 			},
 		},
 		{
@@ -7272,7 +7272,7 @@ func TestScraper(t *testing.T) {
 						"Serve the gratin hot, with a mustard or balsamic dressed green salad alongside.",
 					},
 				},
-				Url: "https://thehappyfoodie.co.uk/recipes/leek-and-lentil-gratin/",
+				URL: "https://thehappyfoodie.co.uk/recipes/leek-and-lentil-gratin/",
 			},
 		},
 		{
@@ -7330,7 +7330,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT30M",
 				Yield:    models.Yield{Value: 12},
-				Url:      "https://www.thekitchenmagpie.com/blt-pasta-salad/",
+				URL:      "https://www.thekitchenmagpie.com/blt-pasta-salad/",
 			},
 		},
 		{
@@ -7380,7 +7380,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Fluffy Paleo Blueberry Pancakes",
 				PrepTime: "PT5M",
 				Yield:    models.Yield{Value: 6},
-				Url:      "http://thenutritiouskitchen.co/fluffy-paleo-blueberry-pancakes/",
+				URL:      "http://thenutritiouskitchen.co/fluffy-paleo-blueberry-pancakes/",
 			},
 		},
 		{
@@ -7422,7 +7422,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Eggs Benedict",
 				PrepTime: "PT15M",
 				Yield:    models.Yield{Value: 3},
-				Url:      "https://www.thepioneerwoman.com/food-cooking/recipes/a8865/eggs-benedict/",
+				URL:      "https://www.thepioneerwoman.com/food-cooking/recipes/a8865/eggs-benedict/",
 			},
 		},
 		{
@@ -7494,7 +7494,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT15M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://www.thespruceeats.com/pasta-with-anchovies-and-breadcrumbs-recipe-5215384",
+				URL:      "https://www.thespruceeats.com/pasta-with-anchovies-and-breadcrumbs-recipe-5215384",
 			},
 		},
 		{
@@ -7536,7 +7536,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Asparagus Grilled Cheese",
 				PrepTime: "PT5M",
 				Yield:    models.Yield{Value: 2},
-				Url:      "https://www.thevintagemixer.com/roasted-asparagus-grilled-cheese/",
+				URL:      "https://www.thevintagemixer.com/roasted-asparagus-grilled-cheese/",
 			},
 		},
 		{
@@ -7609,7 +7609,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT90M",
 				Yield:    models.Yield{Value: 12},
-				Url:      "https://thewoksoflife.com/fried-wontons/",
+				URL:      "https://thewoksoflife.com/fried-wontons/",
 			},
 		},
 		{
@@ -7655,7 +7655,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 2},
-				Url:      "https://recipes.timesofindia.com/recipes/beetroot-cold-soup/rs90713582.cms",
+				URL:      "https://recipes.timesofindia.com/recipes/beetroot-cold-soup/rs90713582.cms",
 			},
 		},
 		{
@@ -7710,7 +7710,7 @@ func TestScraper(t *testing.T) {
 				},
 				Name:  "Rask kylling tikka masala",
 				Yield: models.Yield{Value: 4},
-				Url:   "https://www.tine.no/oppskrifter/middag-og-hovedretter/kylling-og-fjarkre/rask-kylling-tikka-masala",
+				URL:   "https://www.tine.no/oppskrifter/middag-og-hovedretter/kylling-og-fjarkre/rask-kylling-tikka-masala",
 			},
 		},
 		{
@@ -7770,7 +7770,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://www.twopeasandtheirpod.com/easy-chickpea-salad/",
+				URL:      "https://www.twopeasandtheirpod.com/easy-chickpea-salad/",
 			},
 		},
 		{
@@ -7820,7 +7820,7 @@ func TestScraper(t *testing.T) {
 						"Lad det simre ved lav varme i 30-35 minutter, eller til kyllingen er mør. Server med ris og et drys frisk koriander",
 					},
 				},
-				Url: "https://www.valdemarsro.dk/butter_chicken/",
+				URL: "https://www.valdemarsro.dk/butter_chicken/",
 			},
 		},
 		{
@@ -7902,7 +7902,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT30M",
 				Yield:    models.Yield{Value: 10},
-				Url:      "https://vanillaandbean.com/carrot-cake-bread/",
+				URL:      "https://vanillaandbean.com/carrot-cake-bread/",
 			},
 		},
 		{
@@ -7944,7 +7944,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Pancake vegani senza glutine alla quinoa e cocco",
 				PrepTime: "PT20M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://www.vegolosi.it/ricette-vegane/pancake-vegani-senza-glutine-alla-quinoa-e-cocco/",
+				URL:      "https://www.vegolosi.it/ricette-vegane/pancake-vegani-senza-glutine-alla-quinoa-e-cocco/",
 			},
 		},
 		{
@@ -8031,7 +8031,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://www.vegrecipesofindia.com/paneer-butter-masala/",
+				URL:      "https://www.vegrecipesofindia.com/paneer-butter-masala/",
 			},
 		},
 		{
@@ -8085,7 +8085,7 @@ func TestScraper(t *testing.T) {
 				},
 				PrepTime: "PT15M",
 				Yield:    models.Yield{Value: 5},
-				Url:      "https://www.watchwhatueat.com/healthy-fried-brown-rice/",
+				URL:      "https://www.watchwhatueat.com/healthy-fried-brown-rice/",
 			},
 		},
 		{
@@ -8129,7 +8129,7 @@ func TestScraper(t *testing.T) {
 				Name:     "Pea Prosciutto Spring Pizza",
 				PrepTime: "PT10M",
 				Yield:    models.Yield{Value: 4},
-				Url:      "https://whatsgabycooking.com/pea-prosciutto-spring-pizza/",
+				URL:      "https://whatsgabycooking.com/pea-prosciutto-spring-pizza/",
 			},
 		},
 		{
@@ -8168,7 +8168,7 @@ func TestScraper(t *testing.T) {
 					},
 				},
 				Yield: models.Yield{Value: 4},
-				Url:   "https://en.wikibooks.org/wiki/Cookbook:Creamed_Spinach",
+				URL:   "https://en.wikibooks.org/wiki/Cookbook:Creamed_Spinach",
 			},
 		},
 		{
@@ -8207,7 +8207,7 @@ func TestScraper(t *testing.T) {
 					},
 				},
 				Yield: models.Yield{Value: 4},
-				Url:   "https://en.m.wikibooks.org/wiki/Cookbook:Creamed_Spinach",
+				URL:   "https://en.m.wikibooks.org/wiki/Cookbook:Creamed_Spinach",
 			},
 		},
 		{
@@ -8248,7 +8248,7 @@ func TestScraper(t *testing.T) {
 					Protein:       "44g",
 					Fat:           "28g",
 				},
-				Url: "https://woop.co.nz/thai-marinated-beef-sirlion-344-2-f.html",
+				URL: "https://woop.co.nz/thai-marinated-beef-sirlion-344-2-f.html",
 			},
 		},
 		{
@@ -8284,7 +8284,7 @@ func TestScraper(t *testing.T) {
 						"Finally, pour the cool syrup onto baklava. Rest for 20-25 minutes. Then, service.",
 					},
 				},
-				Url: "https://ye-mek.net/recipe/walnut-turkish-baklava-recipe",
+				URL: "https://ye-mek.net/recipe/walnut-turkish-baklava-recipe",
 			},
 		},
 		{
@@ -8337,7 +8337,7 @@ func TestScraper(t *testing.T) {
 				PrepTime:      "PT20M",
 				CookTime:      "PT1H10M",
 				DatePublished: "2020-09-01",
-				Url:           "https://www.zenbelly.com/short-ribs/",
+				URL:           "https://www.zenbelly.com/short-ribs/",
 			},
 		},
 		{
@@ -8388,7 +8388,7 @@ func TestScraper(t *testing.T) {
 				PrepTime:      "PT15M",
 				CookTime:      "PT5M",
 				DatePublished: "2022-03-31T11:36:16+00:00",
-				Url:           "https://www.101cookbooks.com/simple-bruschetta/",
+				URL:           "https://www.101cookbooks.com/simple-bruschetta/",
 			},
 		},
 	}
@@ -8438,8 +8438,8 @@ func testFile(t *testing.T, name, in string) models.RecipeSchema {
 		t.Fatal(err)
 	}
 
-	if actual.Url == "" {
-		actual.Url = in
+	if actual.URL == "" {
+		actual.URL = in
 	}
 	return actual
 }

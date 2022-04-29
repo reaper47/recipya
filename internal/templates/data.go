@@ -31,11 +31,12 @@ type FormErrorData struct {
 	Username, Email, Password string
 }
 
+// IsEmpty checks whether all of the form's error data fields are empty.
 func (f FormErrorData) IsEmpty() bool {
 	return f.Username == "" && f.Email == "" && f.Password == ""
 }
 
-// IndexData holds data to pass on to the index template.
+// RecipesData holds data to pass on to the index template.
 type RecipesData struct {
 	Recipes    []models.Recipe
 	Pagination Pagination

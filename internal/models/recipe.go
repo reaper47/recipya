@@ -16,7 +16,7 @@ type Recipe struct {
 	Name         string
 	Description  string
 	Image        uuid.UUID
-	Url          string
+	URL          string
 	Yield        int16
 	Category     string
 	Times        Times
@@ -40,7 +40,7 @@ func (r Recipe) ToArgs(includeID bool) []interface{} {
 		r.Name,
 		r.Description,
 		r.Image,
-		r.Url,
+		r.URL,
 		r.Yield,
 		r.Category,
 		r.Nutrition.Calories,
@@ -86,7 +86,7 @@ func (r Recipe) ToSchema() RecipeSchema {
 		PrepTime:        formatDuration(r.Times.Prep),
 		Tools:           Tools{Values: r.Tools},
 		Yield:           Yield{Value: r.Yield},
-		Url:             r.Url,
+		URL:             r.URL,
 	}
 }
 

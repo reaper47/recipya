@@ -29,7 +29,7 @@ func (a *AppConfig) Teardown() {
 	log.Println("Closed database connection")
 }
 
-// InitApp initializes the App configuration variable.
+// App initializes the App configuration variable.
 func App() AppConfig {
 	once.Do(func() {
 		dsn := NewDBOptions(DBName).Dsn()

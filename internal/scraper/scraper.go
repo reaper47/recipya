@@ -32,8 +32,8 @@ func Scrape(rawurl string) (models.RecipeSchema, error) {
 		return rs, fmt.Errorf("could not fetch the recipe from %s: %s", rawurl, err)
 	}
 
-	if rs.Url == "" {
-		rs.Url = rawurl
+	if rs.URL == "" {
+		rs.URL = rawurl
 	}
 	return rs, nil
 }

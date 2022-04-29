@@ -142,7 +142,7 @@ func (p *postgresDBRepo) Recipes(userID int64, page int) (xr []models.Recipe, er
 			Name:        name,
 			Description: description,
 			Image:       image,
-			Url:         url,
+			URL:         url,
 			Yield:       yield,
 			Category:    category,
 			Times: models.Times{
@@ -205,7 +205,7 @@ func (p *postgresDBRepo) Recipe(id int64) models.Recipe {
 		&r.ID,
 		&r.Name,
 		&r.Description,
-		&r.Url,
+		&r.URL,
 		&r.Image,
 		&r.Yield,
 		&r.CreatedAt,
@@ -314,7 +314,7 @@ func (p *postgresDBRepo) InsertNewRecipe(r models.Recipe, userID int64) (int64, 
 	defer tx.Rollback(ctx)
 
 	var isExists bool
-	err = tx.QueryRow(ctx, isRecipeExistsForUserStmt, userID, r.Name, r.Description, r.Url, r.Yield).Scan(&isExists)
+	err = tx.QueryRow(ctx, isRecipeExistsForUserStmt, userID, r.Name, r.Description, r.URL, r.Yield).Scan(&isExists)
 	if err != nil {
 		return -1, err
 	}
