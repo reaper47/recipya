@@ -7,7 +7,7 @@ import (
 	"golang.org/x/net/html"
 )
 
-func scrapeYemek(root *html.Node) (rs models.RecipeSchema, err error) {
+func scrapeYemek(root *html.Node) (models.RecipeSchema, error) {
 	root = getElement(root, "itemtype", "http://schema.org/Recipe")
 
 	chName := make(chan string)

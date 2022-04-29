@@ -13,7 +13,9 @@ import (
 
 // Scrape extracts the recipe from the given URL. An error will be
 // returned when the URL cannot be parsed.
-func Scrape(rawurl string) (rs models.RecipeSchema, err error) {
+func Scrape(rawurl string) (models.RecipeSchema, error) {
+	var rs models.RecipeSchema
+
 	res, err := http.Get(rawurl)
 	if err != nil {
 		return rs, fmt.Errorf("could not fetch the url: %s", err)
@@ -69,11 +71,12 @@ func getHost(rawurl string) string {
 	}
 }
 
-func scrapeLdJSONs(root *html.Node) (rs models.RecipeSchema, err error) {
+func scrapeLdJSONs(root *html.Node) (models.RecipeSchema, error) {
 	n := getElement(root, "type", "application/ld+json")
-
+	var rs models.RecipeSchema
 	var xrs []models.RecipeSchema
-	err = json.Unmarshal([]byte(n.FirstChild.Data), &xrs)
+
+	err := json.Unmarshal([]byte(n.FirstChild.Data), &xrs)
 	if err != nil {
 		return rs, err
 	}
@@ -86,10 +89,11 @@ func scrapeLdJSONs(root *html.Node) (rs models.RecipeSchema, err error) {
 	return models.RecipeSchema{}, nil
 }
 
-func scrapeLdJSON(root *html.Node) (rs models.RecipeSchema, err error) {
+func scrapeLdJSON(root *html.Node) (models.RecipeSchema, error) {
 	n := getElement(root, "type", "application/ld+json")
+	var rs models.RecipeSchema
 
-	err = json.Unmarshal([]byte(n.FirstChild.Data), &rs)
+	err := json.Unmarshal([]byte(n.FirstChild.Data), &rs)
 	if err != nil {
 		return rs, err
 	}
@@ -105,11 +109,12 @@ type graph struct {
 	AtGraph   []models.RecipeSchema `json:"@graph"`
 }
 
-func scrapeGraph(root *html.Node) (rs models.RecipeSchema, err error) {
+func scrapeGraph(root *html.Node) (models.RecipeSchema, error) {
 	n := getElement(root, "type", "application/ld+json")
-
+	var rs models.RecipeSchema
 	var g graph
-	err = json.Unmarshal([]byte(n.FirstChild.Data), &g)
+
+	err := json.Unmarshal([]byte(n.FirstChild.Data), &g)
 	if err != nil {
 		return rs, err
 	}
@@ -122,21 +127,21 @@ func scrapeGraph(root *html.Node) (rs models.RecipeSchema, err error) {
 	return rs, fmt.Errorf("no recipe for the given url")
 }
 
-func findRecipeLdJSON(root *html.Node) (rs models.RecipeSchema, err error) {
+func findRecipeLdJSON(root *html.Node) (models.RecipeSchema, error) {
 	xn := traverseAll(root, func(node *html.Node) bool {
 		return getAttr(node, "type") == "application/ld+json"
 	})
 	for _, n := range xn {
 		n.FirstChild.Data = strings.ReplaceAll(n.FirstChild.Data, "\n", "")
 
-		r, err := scrapeLdJSON(n)
+		rs, err := scrapeLdJSON(n)
 		if err != nil {
 			continue
 		}
 
-		if r.AtType.Value == "Recipe" {
-			return r, nil
+		if rs.AtType.Value == "Recipe" {
+			return rs, nil
 		}
 	}
-	return rs, err
+	return models.RecipeSchema{}, fmt.Errorf("recipe not found")
 }
