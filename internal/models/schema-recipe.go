@@ -35,31 +35,31 @@ type RecipeSchema struct {
 }
 
 // ToRecipe transforms the RecipeSchema to a Recipe.
-func (m RecipeSchema) ToRecipe() (Recipe, error) {
-	if m.AtType.Value != "Recipe" {
-		return Recipe{}, fmt.Errorf("RecipeSchema %#v is not based on the Schema or the field is missing", m)
+func (r RecipeSchema) ToRecipe() (Recipe, error) {
+	if r.AtType.Value != "Recipe" {
+		return Recipe{}, fmt.Errorf("RecipeSchema %#v is not based on the Schema or the field is missing", r)
 	}
 
 	var category string
-	if m.Category.Value == "" {
+	if r.Category.Value == "" {
 		category = "uncategorized"
 	} else {
-		category = strings.TrimSpace(strings.ToLower(m.Category.Value))
+		category = strings.TrimSpace(strings.ToLower(r.Category.Value))
 	}
 
-	times, err := NewTimes(m.PrepTime, m.CookTime)
+	times, err := NewTimes(r.PrepTime, r.CookTime)
 	if err != nil {
 		return Recipe{}, err
 	}
 
-	nutrition, err := m.NutritionSchema.toNutrition()
+	nutrition, err := r.NutritionSchema.toNutrition()
 	if err != nil {
 		return Recipe{}, err
 	}
 
-	created := m.DateCreated
-	if m.DatePublished != "" {
-		created = m.DatePublished
+	created := r.DateCreated
+	if r.DatePublished != "" {
+		created = r.DatePublished
 	}
 
 	var createdAt time.Time
@@ -70,39 +70,39 @@ func (m RecipeSchema) ToRecipe() (Recipe, error) {
 		}
 	}
 
-	image, err := uuid.Parse(m.Image.Value)
+	image, err := uuid.Parse(r.Image.Value)
 	if err != nil {
 		image = uuid.Nil
 	}
 
 	updatedAt := createdAt
-	if m.DateModified != "" {
-		updatedAt, err = time.Parse("2006-01-02", strings.Split(m.DateModified, "T")[0])
+	if r.DateModified != "" {
+		updatedAt, err = time.Parse("2006-01-02", strings.Split(r.DateModified, "T")[0])
 		if err != nil {
-			return Recipe{}, fmt.Errorf("could not parse modifiedAt date %s: '%s'", m.DateModified, err)
+			return Recipe{}, fmt.Errorf("could not parse modifiedAt date %s: '%s'", r.DateModified, err)
 		}
 	}
 
-	r := Recipe{
+	recipe := Recipe{
 		ID:           0,
-		Name:         m.Name,
-		Description:  m.Description.Value,
+		Name:         r.Name,
+		Description:  r.Description.Value,
 		Image:        image,
-		Url:          m.Url,
-		Yield:        m.Yield.Value,
+		Url:          r.Url,
+		Yield:        r.Yield.Value,
 		Category:     category,
 		Times:        times,
-		Ingredients:  m.Ingredients,
+		Ingredients:  r.Ingredients,
 		Nutrition:    nutrition,
-		Instructions: m.Instructions.Values,
-		Tools:        m.Tools.Values,
-		Keywords:     strings.Split(m.Keywords.Values, ","),
+		Instructions: r.Instructions.Values,
+		Tools:        r.Tools.Values,
+		Keywords:     strings.Split(r.Keywords.Values, ","),
 		CreatedAt:    createdAt,
 		UpdatedAt:    updatedAt,
 	}
 
-	r.Normalize()
-	return r, nil
+	recipe.Normalize()
+	return recipe, nil
 }
 
 // SchemaType holds the type of the schema. It should be "Recipe".
@@ -117,7 +117,7 @@ func (m SchemaType) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON decodes the type of the schema.
 // The type "Recipe" will be searched for if the data is an array.
-func (m *SchemaType) UnmarshalJSON(data []byte) error {
+func (s *SchemaType) UnmarshalJSON(data []byte) error {
 	var v interface{}
 	err := json.Unmarshal(data, &v)
 	if err != nil {
@@ -126,11 +126,11 @@ func (m *SchemaType) UnmarshalJSON(data []byte) error {
 
 	switch x := v.(type) {
 	case string:
-		m.Value = x
+		s.Value = x
 	case []interface{}:
 		for _, t := range x {
 			if t.(string) == "Recipe" {
-				m.Value = "Recipe"
+				s.Value = "Recipe"
 			}
 		}
 	}
@@ -144,14 +144,14 @@ type Category struct {
 }
 
 // MarshalJSON encodes the category.
-func (m Category) MarshalJSON() ([]byte, error) {
-	return json.Marshal(m.Value)
+func (c Category) MarshalJSON() ([]byte, error) {
+	return json.Marshal(c.Value)
 }
 
 // UnmarshalJSON decodes the category according to the schema (https://schema.org/recipeCategory).
 // The schema specifies that the expected value is of type Text. However, some
 // websites send the category in an array, which explains the need for this function.
-func (m *Category) UnmarshalJSON(data []byte) error {
+func (c *Category) UnmarshalJSON(data []byte) error {
 	var v interface{}
 	err := json.Unmarshal(data, &v)
 	if err != nil {
@@ -160,15 +160,15 @@ func (m *Category) UnmarshalJSON(data []byte) error {
 
 	switch x := v.(type) {
 	case string:
-		m.Value = x
+		c.Value = x
 	case []interface{}:
 		if len(x) > 0 {
-			m.Value = x[0].(string)
+			c.Value = x[0].(string)
 		}
 	}
 
-	if m.Value != "" {
-		m.Value = strings.ReplaceAll(m.Value, "&amp;", "&")
+	if c.Value != "" {
+		c.Value = strings.ReplaceAll(c.Value, "&amp;", "&")
 	}
 	return nil
 }
@@ -179,14 +179,14 @@ type CookingMethod struct {
 }
 
 // MarshalJSON encodes the cusine.
-func (m CookingMethod) MarshalJSON() ([]byte, error) {
-	return json.Marshal(m.Value)
+func (c CookingMethod) MarshalJSON() ([]byte, error) {
+	return json.Marshal(c.Value)
 }
 
 // UnmarshalJSON decodes the cooking method according to the schema (https://schema.org/cookingMethod).
 // The schema specifies that the expected value is of type Text. However, some
 // websites send the cuisine in an array, which explains the need for this function.
-func (m *CookingMethod) UnmarshalJSON(data []byte) error {
+func (c *CookingMethod) UnmarshalJSON(data []byte) error {
 	var v interface{}
 	err := json.Unmarshal(data, &v)
 	if err != nil {
@@ -195,10 +195,10 @@ func (m *CookingMethod) UnmarshalJSON(data []byte) error {
 
 	switch x := v.(type) {
 	case string:
-		m.Value = x
+		c.Value = x
 	case []interface{}:
 		if len(x) > 0 {
-			m.Value = x[0].(string)
+			c.Value = x[0].(string)
 		}
 	}
 	return nil
@@ -210,14 +210,14 @@ type Cuisine struct {
 }
 
 // MarshalJSON encodes the cusine.
-func (m Cuisine) MarshalJSON() ([]byte, error) {
-	return json.Marshal(m.Value)
+func (c Cuisine) MarshalJSON() ([]byte, error) {
+	return json.Marshal(c.Value)
 }
 
 // UnmarshalJSON decodes the cuisine according to the schema (https://schema.org/recipeCuisine).
 // The schema specifies that the expected value is of type Text. However, some
 // websites send the cuisine in an array, which explains the need for this function.
-func (m *Cuisine) UnmarshalJSON(data []byte) error {
+func (c *Cuisine) UnmarshalJSON(data []byte) error {
 	var v interface{}
 	err := json.Unmarshal(data, &v)
 	if err != nil {
@@ -226,10 +226,10 @@ func (m *Cuisine) UnmarshalJSON(data []byte) error {
 
 	switch x := v.(type) {
 	case string:
-		m.Value = x
+		c.Value = x
 	case []interface{}:
 		if len(x) > 0 {
-			m.Value = x[0].(string)
+			c.Value = x[0].(string)
 		}
 	}
 	return nil
@@ -241,22 +241,22 @@ type Description struct {
 }
 
 // MarshalJSON encodes the description.
-func (m Description) MarshalJSON() ([]byte, error) {
-	return json.Marshal(m.Value)
+func (d Description) MarshalJSON() ([]byte, error) {
+	return json.Marshal(d.Value)
 }
 
 // UnmarshalJSON decodes the description field of a recipe.
-func (m *Description) UnmarshalJSON(data []byte) error {
-	var d string
-	err := json.Unmarshal(data, &d)
+func (d *Description) UnmarshalJSON(data []byte) error {
+	var s string
+	err := json.Unmarshal(data, &s)
 	if err != nil {
 		return err
 	}
 
-	d = strings.TrimSpace(d)
-	d = strings.ReplaceAll(d, "\u00a0", "")
-	d = strings.ReplaceAll(d, "&quot;", "")
-	m.Value = d
+	s = strings.TrimSpace(s)
+	s = strings.ReplaceAll(s, "\u00a0", "")
+	s = strings.ReplaceAll(s, "&quot;", "")
+	d.Value = s
 
 	return nil
 }
@@ -267,14 +267,14 @@ type Keywords struct {
 }
 
 // MarshalJSON encodes the keywords.
-func (m Keywords) MarshalJSON() ([]byte, error) {
-	return json.Marshal(m.Values)
+func (k Keywords) MarshalJSON() ([]byte, error) {
+	return json.Marshal(k.Values)
 }
 
 // UnmarshalJSON decodes the recipe's keywords according to the schema (https://schema.org/keywords).
 // Some websites store the keywords in an array, which explains the need
 // for a custom decoder.
-func (m *Keywords) UnmarshalJSON(data []byte) error {
+func (k *Keywords) UnmarshalJSON(data []byte) error {
 	var v interface{}
 	err := json.Unmarshal(data, &v)
 	if err != nil {
@@ -283,13 +283,13 @@ func (m *Keywords) UnmarshalJSON(data []byte) error {
 
 	switch x := v.(type) {
 	case string:
-		m.Values = strings.TrimSpace(x)
+		k.Values = strings.TrimSpace(x)
 	case []interface{}:
 		var xs []string
 		for _, v := range x {
 			xs = append(xs, v.(string))
 		}
-		m.Values = strings.TrimSpace(strings.Join(xs, ","))
+		k.Values = strings.TrimSpace(strings.Join(xs, ","))
 	}
 	return nil
 }
@@ -300,12 +300,12 @@ type Image struct {
 }
 
 // MarshalJSON encodes the image.
-func (m Image) MarshalJSON() ([]byte, error) {
-	return json.Marshal(m.Value)
+func (i Image) MarshalJSON() ([]byte, error) {
+	return json.Marshal(i.Value)
 }
 
 // UnmarshalJSON decodes the image according to the schema (https://schema.org/image).
-func (m *Image) UnmarshalJSON(data []byte) error {
+func (i *Image) UnmarshalJSON(data []byte) error {
 	var v interface{}
 	err := json.Unmarshal(data, &v)
 	if err != nil {
@@ -314,21 +314,21 @@ func (m *Image) UnmarshalJSON(data []byte) error {
 
 	switch x := v.(type) {
 	case string:
-		m.Value = x
+		i.Value = x
 	case []interface{}:
 		if len(x) > 0 {
 			switch y := x[0].(type) {
 			case string:
-				m.Value = y
+				i.Value = y
 			case map[string]interface{}:
-				m.Value = y["url"].(string)
+				i.Value = y["url"].(string)
 			}
 
 		}
 	case interface{}:
 		url, ok := v.(map[string]interface{})["url"]
 		if ok {
-			m.Value = url.(string)
+			i.Value = url.(string)
 		}
 	}
 	return nil
@@ -340,12 +340,12 @@ type Ingredients struct {
 }
 
 // MarshalJSON encodes the ingredients.
-func (m Ingredients) MarshalJSON() ([]byte, error) {
-	return json.Marshal(m.Values)
+func (i Ingredients) MarshalJSON() ([]byte, error) {
+	return json.Marshal(i.Values)
 }
 
 // UnmarshalJSON unmarshals the ingredients according to the schema (https://schema.org/recipeInstructions).
-func (m *Ingredients) UnmarshalJSON(data []byte) error {
+func (i *Ingredients) UnmarshalJSON(data []byte) error {
 	var xv []interface{}
 	err := json.Unmarshal(data, &xv)
 	if err != nil {
@@ -367,7 +367,7 @@ func (m *Ingredients) UnmarshalJSON(data []byte) error {
 		for _, c := range cases {
 			str = strings.ReplaceAll(str, c.old, c.new)
 		}
-		m.Values = append(m.Values, str)
+		i.Values = append(i.Values, str)
 	}
 	return nil
 }
@@ -378,8 +378,8 @@ type Instructions struct {
 }
 
 // MarshalJSON encodes the list of instructions.
-func (m Instructions) MarshalJSON() ([]byte, error) {
-	return json.Marshal(m.Values)
+func (i Instructions) MarshalJSON() ([]byte, error) {
+	return json.Marshal(i.Values)
 }
 
 type section struct {
@@ -390,7 +390,7 @@ type section struct {
 }
 
 // UnmarshalJSON unmarshals the instructions according to the schema (https://schema.org/recipeInstructions).
-func (m *Instructions) UnmarshalJSON(data []byte) error {
+func (i *Instructions) UnmarshalJSON(data []byte) error {
 	var v interface{}
 	err := json.Unmarshal(data, &v)
 	if err != nil {
@@ -403,7 +403,7 @@ func (m *Instructions) UnmarshalJSON(data []byte) error {
 		parts := strings.Split(strings.TrimSpace(x), "\n")
 		for _, s := range parts {
 			if s != "" {
-				m.Values = append(m.Values, strings.TrimSpace(s))
+				i.Values = append(i.Values, strings.TrimSpace(s))
 			}
 		}
 	case []interface{}:
@@ -411,24 +411,24 @@ func (m *Instructions) UnmarshalJSON(data []byte) error {
 			switch y := part.(type) {
 			case string:
 				y = strings.ReplaceAll(y, "&quot;", "")
-				m.Values = append(m.Values, strings.TrimSpace(y))
+				i.Values = append(i.Values, strings.TrimSpace(y))
 			case map[string]interface{}:
 				text, ok := y["text"]
 				if ok {
 					str := strings.TrimSuffix(text.(string), "\n")
 					str = strings.ReplaceAll(str, "\u00a0", "")
 					str = strings.ReplaceAll(str, "\u2009", "")
-					m.Values = append(m.Values, strings.TrimSpace(str))
+					i.Values = append(i.Values, strings.TrimSpace(str))
 					continue
 				}
 
-				parseSections(part, m)
+				parseSections(part, i)
 			case []interface{}:
 				for _, sect := range y {
-					parseSections(sect, m)
+					parseSections(sect, i)
 				}
 			default:
-				parseSections(y, m)
+				parseSections(y, i)
 			}
 		}
 	}
@@ -469,12 +469,12 @@ type Yield struct {
 }
 
 // MarshalJSON encodes the value of the yield.
-func (m Yield) MarshalJSON() ([]byte, error) {
-	return json.Marshal(m.Value)
+func (y Yield) MarshalJSON() ([]byte, error) {
+	return json.Marshal(y.Value)
 }
 
 // UnmarshalJSON unmarshals the yield according to the schema (https://schema.org/recipeYield).
-func (m *Yield) UnmarshalJSON(data []byte) error {
+func (y *Yield) UnmarshalJSON(data []byte) error {
 	var v interface{}
 	err := json.Unmarshal(data, &v)
 	if err != nil {
@@ -487,18 +487,18 @@ func (m *Yield) UnmarshalJSON(data []byte) error {
 		for _, part := range parts {
 			i, err := strconv.ParseInt(part, 10, 8)
 			if err == nil {
-				m.Value = int16(i)
+				y.Value = int16(i)
 				break
 			}
 		}
 	case float64:
-		m.Value = int16(x)
+		y.Value = int16(x)
 	case []interface{}:
 		if len(x) > 0 {
 			v := strings.Split(x[0].(string), " ")[0]
 			i, err := strconv.ParseInt(v, 10, 16)
 			if err == nil {
-				m.Value = int16(i)
+				y.Value = int16(i)
 			}
 		}
 	}
@@ -521,22 +521,22 @@ type NutritionSchema struct {
 	UnsaturatedFat string `json:"unsaturatedFatContent"`
 }
 
-func (m NutritionSchema) toNutrition() (Nutrition, error) {
+func (n NutritionSchema) toNutrition() (Nutrition, error) {
 	return Nutrition{
-		Calories:           m.Calories,
-		TotalCarbohydrates: m.Carbohydrates,
-		Sugars:             m.Sugar,
-		Protein:            m.Protein,
-		TotalFat:           m.Fat,
-		SaturatedFat:       m.SaturatedFat,
-		Cholesterol:        m.Cholesterol,
-		Sodium:             m.Sodium,
-		Fiber:              m.Fiber,
+		Calories:           n.Calories,
+		TotalCarbohydrates: n.Carbohydrates,
+		Sugars:             n.Sugar,
+		Protein:            n.Protein,
+		TotalFat:           n.Fat,
+		SaturatedFat:       n.SaturatedFat,
+		Cholesterol:        n.Cholesterol,
+		Sodium:             n.Sodium,
+		Fiber:              n.Fiber,
 	}, nil
 }
 
 // UnmarshalJSON unmarshals the nutrition according to the schema
-func (m *NutritionSchema) UnmarshalJSON(data []byte) error {
+func (n *NutritionSchema) UnmarshalJSON(data []byte) error {
 	var v interface{}
 	err := json.Unmarshal(data, &v)
 	if err != nil {
@@ -548,51 +548,51 @@ func (m *NutritionSchema) UnmarshalJSON(data []byte) error {
 		break
 	case map[string]interface{}:
 		if val, ok := x["calories"].(string); ok {
-			m.Calories = val
+			n.Calories = val
 		}
 
 		if val, ok := x["carbohydrateContent"].(string); ok {
-			m.Carbohydrates = val
+			n.Carbohydrates = val
 		}
 
 		if val, ok := x["cholesterolContent"].(string); ok {
-			m.Cholesterol = val
+			n.Cholesterol = val
 		}
 
 		if val, ok := x["fatContent"].(string); ok {
-			m.Fat = val
+			n.Fat = val
 		}
 
 		if val, ok := x["fiberContent"].(string); ok {
-			m.Fiber = val
+			n.Fiber = val
 		}
 
 		if val, ok := x["proteinContent"].(string); ok {
-			m.Protein = val
+			n.Protein = val
 		}
 
 		if val, ok := x["saturatedFatContent"].(string); ok {
-			m.SaturatedFat = val
+			n.SaturatedFat = val
 		}
 
 		if val, ok := x["servingSize"].(string); ok {
-			m.Servings = val
+			n.Servings = val
 		}
 
 		if val, ok := x["sodiumContent"].(string); ok {
-			m.Sodium = val
+			n.Sodium = val
 		}
 
 		if val, ok := x["sugarContent"].(string); ok {
-			m.Sugar = val
+			n.Sugar = val
 		}
 
 		if val, ok := x["transFatContent"].(string); ok {
-			m.TransFat = val
+			n.TransFat = val
 		}
 
 		if val, ok := x["unsaturatedFatContent"].(string); ok {
-			m.UnsaturatedFat = val
+			n.UnsaturatedFat = val
 		}
 	}
 	return nil
@@ -604,12 +604,12 @@ type Tools struct {
 }
 
 // MarshalJSON encodes the list of tools.
-func (m Tools) MarshalJSON() ([]byte, error) {
-	return json.Marshal(m.Values)
+func (t Tools) MarshalJSON() ([]byte, error) {
+	return json.Marshal(t.Values)
 }
 
 // UnmarshalJSON unmarshals the tools according to the schema (https://schema.org/tool).
-func (m *Tools) UnmarshalJSON(data []byte) error {
+func (t *Tools) UnmarshalJSON(data []byte) error {
 	var v interface{}
 	err := json.Unmarshal(data, &v)
 	if err != nil {
@@ -618,10 +618,10 @@ func (m *Tools) UnmarshalJSON(data []byte) error {
 
 	switch x := v.(type) {
 	case string:
-		m.Values = append(m.Values, x)
+		t.Values = append(t.Values, x)
 	case []map[string]interface{}:
 		for _, v := range x {
-			m.Values = append(m.Values, v["name"].(string))
+			t.Values = append(t.Values, v["name"].(string))
 		}
 	}
 	return nil

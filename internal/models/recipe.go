@@ -169,18 +169,18 @@ type Nutrition struct {
 	Fiber              string
 }
 
-func (m Nutrition) toSchema(servings string) NutritionSchema {
+func (n Nutrition) toSchema(servings string) NutritionSchema {
 	return NutritionSchema{
-		Calories:      m.Calories,
-		Carbohydrates: m.TotalCarbohydrates,
-		Cholesterol:   m.Cholesterol,
-		Fat:           m.TotalFat,
-		Fiber:         m.Fiber,
-		Protein:       m.Protein,
-		SaturatedFat:  m.SaturatedFat,
+		Calories:      n.Calories,
+		Carbohydrates: n.TotalCarbohydrates,
+		Cholesterol:   n.Cholesterol,
+		Fat:           n.TotalFat,
+		Fiber:         n.Fiber,
+		Protein:       n.Protein,
+		SaturatedFat:  n.SaturatedFat,
 		Servings:      servings,
-		Sodium:        m.Sodium,
-		Sugar:         m.Sugars,
+		Sodium:        n.Sodium,
+		Sugar:         n.Sugars,
 	}
 }
 

@@ -17,6 +17,6 @@ func NewPostgresRepo(dsn string) repository.Repository {
 	}
 }
 
-func (m *postgresDBRepo) Close() {
-	m.Pool.Close()
+func (p *postgresDBRepo) Close() {
+	p.Pool.Close()
 }

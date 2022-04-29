@@ -20,20 +20,20 @@ func (u User) IsPasswordOk(password string) bool {
 }
 
 // GetInitials gets the user's 1-character initials from either the email address of username.
-func (m User) GetInitials() string {
+func (u User) GetInitials() string {
 	var initials string
-	if m.Username != "" {
-		initials = string(m.Username[0])
+	if u.Username != "" {
+		initials = string(u.Username[0])
 	} else {
-		initials = string(m.Email[0])
+		initials = string(u.Email[0])
 	}
 	return strings.ToUpper(initials)
 }
 
 // Populate populates the fields of a User.
-func (m *User) Populate(id int64, username, email, hash string) {
-	m.ID = id
-	m.Username = username
-	m.Email = email
-	m.HashedPassword = hash
+func (u *User) Populate(id int64, username, email, hash string) {
+	u.ID = id
+	u.Username = username
+	u.Email = email
+	u.HashedPassword = hash
 }

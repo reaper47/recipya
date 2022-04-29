@@ -30,62 +30,62 @@ type nameParams struct {
 	InsertToolsStmt        string
 }
 
-func (m *nameParams) init(tables []tableData, offset int) {
-	m.Ingredients = make(map[string]string)
-	m.Instructions = make(map[string]string)
-	m.Keywords = make(map[string]string)
-	m.Tools = make(map[string]string)
+func (n *nameParams) init(tables []tableData, offset int) {
+	n.Ingredients = make(map[string]string)
+	n.Instructions = make(map[string]string)
+	n.Keywords = make(map[string]string)
+	n.Tools = make(map[string]string)
 
-	m.InsertIngredientsStmt, offset = insertIntoNameTableStmt(
+	n.InsertIngredientsStmt, offset = insertIntoNameTableStmt(
 		"ingredients",
 		tables[0].Entries,
 		offset,
-		m.Ingredients,
+		n.Ingredients,
 	)
 
-	m.InsertInstructionsStmt, offset = insertIntoNameTableStmt(
+	n.InsertInstructionsStmt, offset = insertIntoNameTableStmt(
 		"instructions",
 		tables[1].Entries,
 		offset,
-		m.Instructions,
+		n.Instructions,
 	)
 
-	m.InsertKeywordsStmt, offset = insertIntoNameTableStmt(
+	n.InsertKeywordsStmt, offset = insertIntoNameTableStmt(
 		"keywords",
 		tables[2].Entries,
 		offset,
-		m.Keywords,
+		n.Keywords,
 	)
 
-	m.InsertToolsStmt, _ = insertIntoNameTableStmt(
+	n.InsertToolsStmt, _ = insertIntoNameTableStmt(
 		"tools",
 		tables[3].Entries,
 		offset,
-		m.Tools,
+		n.Tools,
 	)
 }
 
-func (m *nameParams) insertStmts(tables []tableData, isInsRecipeDefined bool) string {
-	return m.InsertIngredientsStmt + "" +
-		insertIntoAssocTableStmt(tables[0], "ins_ingredients", m.Ingredients, isInsRecipeDefined) + "" +
-		m.InsertInstructionsStmt + "" +
-		insertIntoAssocTableStmt(tables[1], "ins_instructions", m.Instructions, isInsRecipeDefined) + "" +
-		m.InsertKeywordsStmt + "" +
-		insertIntoAssocTableStmt(tables[2], "ins_keywords", m.Keywords, isInsRecipeDefined) + "" +
-		m.InsertToolsStmt + "" +
-		insertIntoAssocTableStmt(tables[3], "ins_tools", m.Tools, isInsRecipeDefined)
+func (n *nameParams) insertStmts(tables []tableData, isInsRecipeDefined bool) string {
+	return n.InsertIngredientsStmt + "" +
+		insertIntoAssocTableStmt(tables[0], "ins_ingredients", n.Ingredients, isInsRecipeDefined) + "" +
+		n.InsertInstructionsStmt + "" +
+		insertIntoAssocTableStmt(tables[1], "ins_instructions", n.Instructions, isInsRecipeDefined) + "" +
+		n.InsertKeywordsStmt + "" +
+		insertIntoAssocTableStmt(tables[2], "ins_keywords", n.Keywords, isInsRecipeDefined) + "" +
+		n.InsertToolsStmt + "" +
+		insertIntoAssocTableStmt(tables[3], "ins_tools", n.Tools, isInsRecipeDefined)
 
 }
 
-func (m *postgresDBRepo) Recipes(userID int64, page int) (xr []models.Recipe, err error) {
+func (p *postgresDBRepo) Recipes(userID int64, page int) (xr []models.Recipe, err error) {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
 	var rows pgx.Rows
 	if page == -1 {
-		rows, err = m.Pool.Query(ctx, getAllRecipesStmt, userID)
+		rows, err = p.Pool.Query(ctx, getAllRecipesStmt, userID)
 	} else {
-		rows, err = m.Pool.Query(ctx, getRecipesStmt, userID, (page-1)*12)
+		rows, err = p.Pool.Query(ctx, getRecipesStmt, userID, (page-1)*12)
 	}
 
 	if err != nil {
@@ -172,14 +172,14 @@ func (m *postgresDBRepo) Recipes(userID int64, page int) (xr []models.Recipe, er
 	return xr, nil
 }
 
-func (m *postgresDBRepo) RecipeForUser(id, userID int64) (models.Recipe, error) {
-	if !m.RecipeBelongsToUser(id, userID) {
+func (p *postgresDBRepo) RecipeForUser(id, userID int64) (models.Recipe, error) {
+	if !p.RecipeBelongsToUser(id, userID) {
 		return models.Recipe{}, errors.New("recipe does not belong to user")
 	}
-	return m.Recipe(id), nil
+	return p.Recipe(id), nil
 }
 
-func (m *postgresDBRepo) RecipeBelongsToUser(id, userID int64) bool {
+func (p *postgresDBRepo) RecipeBelongsToUser(id, userID int64) bool {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
@@ -187,11 +187,11 @@ func (m *postgresDBRepo) RecipeBelongsToUser(id, userID int64) bool {
 		u int64
 		r int64
 	)
-	err := m.Pool.QueryRow(ctx, getUserRecipe, userID, id).Scan(&u, &r)
+	err := p.Pool.QueryRow(ctx, getUserRecipe, userID, id).Scan(&u, &r)
 	return err != pgx.ErrNoRows
 }
 
-func (m *postgresDBRepo) Recipe(id int64) models.Recipe {
+func (p *postgresDBRepo) Recipe(id int64) models.Recipe {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
@@ -201,7 +201,7 @@ func (m *postgresDBRepo) Recipe(id int64) models.Recipe {
 		t models.Times
 	)
 
-	err := m.Pool.QueryRow(ctx, getRecipeStmt, id).Scan(
+	err := p.Pool.QueryRow(ctx, getRecipeStmt, id).Scan(
 		&r.ID,
 		&r.Name,
 		&r.Description,
@@ -238,12 +238,12 @@ func (m *postgresDBRepo) Recipe(id int64) models.Recipe {
 	return r
 }
 
-func (m *postgresDBRepo) RecipesCount() (int, error) {
+func (p *postgresDBRepo) RecipesCount() (int, error) {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
 	var count int
-	err := m.Pool.QueryRow(ctx, recipesCountStmt).Scan(&count)
+	err := p.Pool.QueryRow(ctx, recipesCountStmt).Scan(&count)
 	if err == pgx.ErrNoRows {
 		return 0, nil
 	} else if err != nil {
@@ -252,11 +252,11 @@ func (m *postgresDBRepo) RecipesCount() (int, error) {
 	return count, nil
 }
 
-func (m *postgresDBRepo) Categories(userID int64) (xs []string) {
+func (p *postgresDBRepo) Categories(userID int64) (xs []string) {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
-	rows, err := m.Pool.Query(ctx, getCategoriesStmt, userID)
+	rows, err := p.Pool.Query(ctx, getCategoriesStmt, userID)
 	if err == nil {
 		defer rows.Close()
 		for rows.Next() {
@@ -271,43 +271,43 @@ func (m *postgresDBRepo) Categories(userID int64) (xs []string) {
 	return xs
 }
 
-func (m *postgresDBRepo) EditCategory(oldCategory, newCategory string, userID int64) error {
+func (p *postgresDBRepo) EditCategory(oldCategory, newCategory string, userID int64) error {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
-	_, err := m.Pool.Exec(ctx, updateCategoryStmt, oldCategory, newCategory, userID)
+	_, err := p.Pool.Exec(ctx, updateCategoryStmt, oldCategory, newCategory, userID)
 	return err
 }
 
-func (m *postgresDBRepo) InsertCategory(name string, userID int64) error {
+func (p *postgresDBRepo) InsertCategory(name string, userID int64) error {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
-	_, err := m.Pool.Exec(ctx, insertUserCategoryStmt, name, userID)
+	_, err := p.Pool.Exec(ctx, insertUserCategoryStmt, name, userID)
 	return err
 }
 
-func (m *postgresDBRepo) DeleteCategory(name string, userID int64) error {
+func (p *postgresDBRepo) DeleteCategory(name string, userID int64) error {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
-	_, err := m.Pool.Exec(ctx, deleteUserCategoryStmt, userID, name)
+	_, err := p.Pool.Exec(ctx, deleteUserCategoryStmt, userID, name)
 	if err != nil {
 		return fmt.Errorf("delete category - error deleting user category: %s", err)
 	}
 
-	_, err = m.Pool.Exec(ctx, deleteRecipeCategoryStmt, userID, name)
+	_, err = p.Pool.Exec(ctx, deleteRecipeCategoryStmt, userID, name)
 	if err != nil {
 		return fmt.Errorf("delete category - error deleting recipe category: %s", err)
 	}
 	return nil
 }
 
-func (m *postgresDBRepo) InsertNewRecipe(r models.Recipe, userID int64) (int64, error) {
+func (p *postgresDBRepo) InsertNewRecipe(r models.Recipe, userID int64) (int64, error) {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
-	tx, err := m.Pool.Begin(ctx)
+	tx, err := p.Pool.Begin(ctx)
 	if err != nil {
 		return -1, err
 	}
@@ -340,7 +340,7 @@ func (m *postgresDBRepo) InsertNewRecipe(r models.Recipe, userID int64) (int64, 
 	}
 
 	for _, td := range tables {
-		_, err = m.Pool.Exec(ctx, resetIDStmt(td.Table))
+		_, err = p.Pool.Exec(ctx, resetIDStmt(td.Table))
 		if err != nil {
 			return -1, err
 		}
@@ -348,17 +348,17 @@ func (m *postgresDBRepo) InsertNewRecipe(r models.Recipe, userID int64) (int64, 
 	return recipeID, nil
 }
 
-func (m *postgresDBRepo) UpdateRecipe(r models.Recipe) error {
+func (p *postgresDBRepo) UpdateRecipe(r models.Recipe) error {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
-	tx, err := m.Pool.Begin(ctx)
+	tx, err := p.Pool.Begin(ctx)
 	if err != nil {
 		return err
 	}
 	defer tx.Rollback(ctx)
 
-	_, err = m.Pool.Exec(ctx, deleteAssocTableEntries, r.ID)
+	_, err = p.Pool.Exec(ctx, deleteAssocTableEntries, r.ID)
 	if err != nil {
 		return err
 	}
@@ -366,14 +366,14 @@ func (m *postgresDBRepo) UpdateRecipe(r models.Recipe) error {
 	r.Instructions = nlp.CapitalizeParagraphs(r.Instructions)
 
 	tables := getTables(r)
-	_, err = m.Pool.Exec(ctx, updateRecipeStmt(tables), r.ToArgs(true)...)
+	_, err = p.Pool.Exec(ctx, updateRecipeStmt(tables), r.ToArgs(true)...)
 	if err != nil {
 		return err
 	}
 
 	tables = append(tables, tableData{Table: "categories"})
 	for _, td := range tables {
-		_, err = m.Pool.Exec(ctx, resetIDStmt(td.Table))
+		_, err = p.Pool.Exec(ctx, resetIDStmt(td.Table))
 		if err != nil {
 			return err
 		}
@@ -390,11 +390,11 @@ func getTables(r models.Recipe) []tableData {
 	}
 }
 
-func (m *postgresDBRepo) DeleteRecipe(id int64) error {
+func (p *postgresDBRepo) DeleteRecipe(id int64) error {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
-	cmd, err := m.Pool.Exec(ctx, deleteRecipeStmt, id)
+	cmd, err := p.Pool.Exec(ctx, deleteRecipeStmt, id)
 	if err != nil {
 		return err
 	}
@@ -405,11 +405,11 @@ func (m *postgresDBRepo) DeleteRecipe(id int64) error {
 	return nil
 }
 
-func (m *postgresDBRepo) Images() (xs []string) {
+func (p *postgresDBRepo) Images() (xs []string) {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
-	rows, err := m.Pool.Query(ctx, getDistinctImagesStmt)
+	rows, err := p.Pool.Query(ctx, getDistinctImagesStmt)
 	if err != nil {
 		return xs
 	}
@@ -423,11 +423,11 @@ func (m *postgresDBRepo) Images() (xs []string) {
 	return xs
 }
 
-func (m *postgresDBRepo) Websites() (xs []models.Website) {
+func (p *postgresDBRepo) Websites() (xs []models.Website) {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
-	rows, err := m.Pool.Query(ctx, getWebsitesStmt)
+	rows, err := p.Pool.Query(ctx, getWebsitesStmt)
 	if err != nil {
 		return xs
 	}

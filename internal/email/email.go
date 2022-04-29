@@ -19,9 +19,9 @@ type emailConfig struct {
 }
 
 // Send sends an email to one recipient.
-func (m emailConfig) Send(from, msg string) {
-	msg = "To: " + m.To + "\r\n" + msg
-	err := smtp.SendMail(m.Addr, m.Auth, from, []string{m.To}, []byte(msg))
+func (e emailConfig) Send(from, msg string) {
+	msg = "To: " + e.To + "\r\n" + msg
+	err := smtp.SendMail(e.Addr, e.Auth, from, []string{e.To}, []byte(msg))
 	if err != nil {
 		log.Printf("could not send email: %s", err)
 	}
@@ -29,8 +29,8 @@ func (m emailConfig) Send(from, msg string) {
 
 // IsValid verifies whether the emailConfig is configured. If it is not, then
 // the user did not set the MAIL_* variables under the .env file.
-func (m emailConfig) IsValid() bool {
-	return m.Addr != "" && m.To != ""
+func (e emailConfig) IsValid() bool {
+	return e.Addr != "" && e.To != ""
 }
 
 // Email initializes the Email variable.

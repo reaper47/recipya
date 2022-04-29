@@ -12,6 +12,6 @@ type customClaims struct {
 }
 
 // IsValid verifies whether the custom claim is valid.
-func (u *customClaims) IsValid() bool {
-	return u.VerifyExpiresAt(time.Now(), true) && u.SID != ""
+func (c *customClaims) IsValid() bool {
+	return c.VerifyExpiresAt(time.Now(), true) && c.SID != ""
 }

@@ -24,8 +24,8 @@ type AppConfig struct {
 // Teardown cleans the AppConfig.
 //
 // This function should be called when the AppConfig is not needed anymore.
-func (m *AppConfig) Teardown() {
-	m.Repo.Close()
+func (a *AppConfig) Teardown() {
+	a.Repo.Close()
 	log.Println("Closed database connection")
 }
 

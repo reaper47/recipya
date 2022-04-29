@@ -15,8 +15,8 @@ type DBOptions struct {
 }
 
 // Dsn creates the data source name (DSN).
-func (m DBOptions) Dsn() string {
-	return m.Protocol + "://" + m.User + ":" + m.Password + "@" + m.Host + ":" + m.Port + "/" + m.DBName
+func (d DBOptions) Dsn() string {
+	return d.Protocol + "://" + d.User + ":" + d.Password + "@" + d.Host + ":" + d.Port + "/" + d.DBName
 }
 
 // NewDBOptions creates a new DBOptions struct from environment variables.

@@ -31,8 +31,8 @@ type FormErrorData struct {
 	Username, Email, Password string
 }
 
-func (m FormErrorData) IsEmpty() bool {
-	return m.Username == "" && m.Email == "" && m.Password == ""
+func (f FormErrorData) IsEmpty() bool {
+	return f.Username == "" && f.Email == "" && f.Password == ""
 }
 
 // IndexData holds data to pass on to the index template.

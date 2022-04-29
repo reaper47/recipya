@@ -26,19 +26,19 @@ type Context struct {
 }
 
 // Reset resets the database.
-func (m Context) Reset() {
+func (c Context) Reset() {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
-	_, err := m.pool.Exec(ctx, "DELETE FROM recipes")
+	_, err := c.pool.Exec(ctx, "DELETE FROM recipes")
 	if err != nil {
 		log.Fatalln("Could not reset database:", err)
 	}
 }
 
 // Close closes the connection pool.
-func (m Context) Close() {
-	m.pool.Close()
+func (c Context) Close() {
+	c.pool.Close()
 
 	// Reconnect as our root user
 	dbOptions := config.NewDBOptions(testDbName)
@@ -47,8 +47,8 @@ func (m Context) Close() {
 	ctx, cancel := contexts.Timeout(3 * time.Second)
 	defer cancel()
 
-	dropSchema(ctx, m.roleName, pool)
-	dropRole(ctx, m.roleName, pool, "Close")
+	dropSchema(ctx, c.roleName, pool)
+	dropRole(ctx, c.roleName, pool, "Close")
 
 	pool.Close()
 }
