@@ -74,13 +74,13 @@
 
     <div
       class="flex items-center justify-center col-span-2 border-l border-r border-black md:border-l-0 md:border-r-0 md:border-b md:col-span-3 md:border-t md:py-2">
-      {{- if isUrl .Url -}}
-      <a class="p-1 text-sm duration-300 border rounded-lg hover:bg-gray-800 hover:text-white center" href="{{.Url}}"
+      {{- if isUrl .URL -}}
+      <a class="p-1 text-sm duration-300 border rounded-lg hover:bg-gray-800 hover:text-white center" href="{{.URL}}"
         target="_blank">
         Source
       </a>
       {{- else -}}
-      <p>Source: {{.Url}}</p>
+      <p>Source: {{.URL}}</p>
       {{- end -}}
     </div>
   </div>
