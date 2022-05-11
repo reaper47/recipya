@@ -1,27 +1,32 @@
 package models
 
 import (
+	"encoding/json"
+	"fmt"
 	"testing"
+	"time"
+
+	"github.com/google/uuid"
+	"golang.org/x/exp/slices"
 )
 
 func TestModelRecipeSchema(t *testing.T) {
-	// TODO: Uncomment when Fedora updated its Go package to 1.18
-	/*imageID := uuid.New()
+	imageID := uuid.New()
 	rs := RecipeSchema{
 		AtContext:     "@Schema",
-		AtType:        "Recipe",
-		Category:      "lunch",
+		AtType:        SchemaType{Value: "Recipe"},
+		Category:      Category{Value: "lunch"},
 		CookTime:      "PT3H",
-		CookingMethod: "",
-		Cuisine:       "",
+		CookingMethod: CookingMethod{Value: ""},
+		Cuisine:       Cuisine{Value: ""},
 		DateCreated:   "2022-03-16",
 		DateModified:  "2022-03-20",
 		DatePublished: "2022-03-16",
-		Description:   "description",
-		Keywords:      "kw1,kw2,kw3",
-		Image:         imageID.String(),
-		Ingredients:   []string{"ing1", "ing2", "ing3"},
-		Instructions:  instructions{Values: []string{"ins1", "ins2", "ins3"}},
+		Description:   Description{Value: "description"},
+		Keywords:      Keywords{Values: "kw1,kw2,kw3"},
+		Image:         Image{Value: imageID.String()},
+		Ingredients:   Ingredients{Values: []string{"ing1", "ing2", "ing3"}},
+		Instructions:  Instructions{Values: []string{"ins1", "ins2", "ins3"}},
 		Name:          "name",
 		NutritionSchema: NutritionSchema{
 			Calories:       "341kcal",
@@ -38,9 +43,9 @@ func TestModelRecipeSchema(t *testing.T) {
 			UnsaturatedFat: "11g",
 		},
 		PrepTime: "PT1H",
-		Tools:    tools{Values: []string{"t1", "t2", "t3"}},
-		Yield:    yield{Value: 4},
-		Url:      "https://recipes.musicavis.ca",
+		Tools:    Tools{Values: []string{"t1", "t2", "t3"}},
+		Yield:    Yield{Value: 4},
+		URL:      "https://recipes.musicavis.ca",
 	}
 
 	t.Run("ToRecipe transform the schema to a Recipe", func(t *testing.T) {
@@ -50,7 +55,7 @@ func TestModelRecipeSchema(t *testing.T) {
 			Name:        "name",
 			Description: "description",
 			Image:       imageID,
-			Url:         "https://recipes.musicavis.ca",
+			URL:         "https://recipes.musicavis.ca",
 			Yield:       4,
 			Category:    "lunch",
 			Times: Times{
@@ -58,7 +63,7 @@ func TestModelRecipeSchema(t *testing.T) {
 				Cook:  3 * time.Hour,
 				Total: 4 * time.Hour,
 			},
-			Ingredients: []string{"ing1", "ing2", "ing3"},
+			Ingredients: Ingredients{Values: []string{"ing1", "ing2", "ing3"}},
 			Nutrition: Nutrition{
 				Calories:           "341kcal",
 				TotalCarbohydrates: "1g",
@@ -94,5 +99,5 @@ func TestModelRecipeSchema(t *testing.T) {
 			fmt.Println(created, updated)
 			t.Fatalf("expected:\n%s\nbut got\n%s", expectedBytes, actualBytes)
 		}
-	})*/
+	})
 }

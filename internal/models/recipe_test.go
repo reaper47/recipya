@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"golang.org/x/exp/slices"
 )
 
 func TestModelRecipe(t *testing.T) {
@@ -129,13 +130,13 @@ func TestModelRecipe(t *testing.T) {
 		if schema.Image.Value != v {
 			t.Errorf("wanted uuid %q but got %q", v, schema.Image)
 		}
-		// TODO: Uncomment when Fedora updated its Go package to 1.18
-		/*if !slices.Equal(schema.Ingredients, []string{"ing1", "ing2", "ing3"}) {
+
+		if !slices.Equal(schema.Ingredients.Values, []string{"ing1", "ing2", "ing3"}) {
 			t.Errorf("wanted ingredients []string{ing1, ing2, ing3} but got %v", schema.Ingredients)
 		}
 		if !slices.Equal(schema.Instructions.Values, []string{"ins1", "ins2", "ins3"}) {
 			t.Errorf("wanted instructions []string{ins1, ins2, ins3} but got %v", schema.Instructions.Values)
-		}*/
+		}
 		if schema.Name != "name" {
 			t.Errorf("wanted name 'name' but got %q", schema.Name)
 		}
@@ -145,10 +146,9 @@ func TestModelRecipe(t *testing.T) {
 		if schema.PrepTime != "PT1H0M0S" {
 			t.Errorf("wanted prepTime PT1H0M0S but got %q", schema.PrepTime)
 		}
-		// TODO: Uncomment when Fedora updated its Go package to 1.18
-		/*if !slices.Equal(schema.Tools.Values, []string{"t1", "t2", "t3"}) {
+		if !slices.Equal(schema.Tools.Values, []string{"t1", "t2", "t3"}) {
 			t.Errorf("wanted tools []string{t1, t2, t3} but got %v", schema.Tools.Values)
-		}*/
+		}
 		if schema.Yield.Value != 4 {
 			t.Errorf("wanted yield 4 but got %d", schema.Yield.Value)
 		}

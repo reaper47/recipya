@@ -1,11 +1,11 @@
 module github.com/reaper47/recipya
 
-go 1.16
+go 1.18
 
 require (
-	github.com/golang-migrate/migrate/v4 v4.15.1
+	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/google/uuid v1.3.0
-	github.com/jackc/pgx/v4 v4.15.0
+	github.com/jackc/pgx/v4 v4.16.1
 	github.com/joho/godotenv v1.4.0
 	github.com/spf13/cobra v1.4.0
 )
@@ -15,18 +15,39 @@ require github.com/gorilla/mux v1.8.0
 require github.com/golang-jwt/jwt/v4 v4.4.1
 
 require (
-	github.com/jdkato/prose/v2 v2.0.0
-	golang.org/x/exp v0.0.0-20220407100705-7b9b53b0aca4 // indirect
+	github.com/deckarep/golang-set v1.7.1 // indirect
+	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
+	github.com/jackc/pgconn v1.12.1 // indirect
+	github.com/jackc/pgerrcode v0.0.0-20201024163028-a0d42d470451 // indirect
+	github.com/jackc/pgio v1.0.0 // indirect
+	github.com/jackc/pgpassfile v1.0.0 // indirect
+	github.com/jackc/pgproto3/v2 v2.3.0 // indirect
+	github.com/jackc/pgservicefile v0.0.0-20200714003250-2b9c44734f2b // indirect
+	github.com/jackc/pgtype v1.11.0 // indirect
+	github.com/jackc/puddle v1.2.1 // indirect
+	github.com/mingrammer/commonregex v1.0.1 // indirect
+	github.com/robfig/cron/v3 v3.0.1 // indirect
+	github.com/spf13/pflag v1.0.5 // indirect
+	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
+	golang.org/x/text v0.3.7 // indirect
+	gonum.org/v1/gonum v0.9.3 // indirect
+	gopkg.in/neurosnap/sentences.v1 v1.0.6 // indirect
 )
 
 require (
-	github.com/go-co-op/gocron v1.13.0 // indirect
-	github.com/google/go-cmp v0.5.7
+	github.com/jdkato/prose/v2 v2.0.0
+	golang.org/x/exp v0.0.0-20220428152302-39d4317da171 // indirect
+)
+
+require (
+	github.com/go-co-op/gocron v1.13.0
+	github.com/google/go-cmp v0.5.8
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/oxtoacart/bpool v0.0.0-20190530202638-03653db5a59c
 	go.uber.org/atomic v1.9.0 // indirect
-	golang.org/x/crypto v0.0.0-20220408190544-5352b0902921
-	golang.org/x/image v0.0.0-20220321031419-a8550c1d254a
-	golang.org/x/net v0.0.0-20220407224826-aac1ed45d8e3
+	golang.org/x/crypto v0.0.0-20220511200225-c6db032c6c88
+	golang.org/x/image v0.0.0-20220413100746-70e8d0d3baa9
+	golang.org/x/net v0.0.0-20220425223048-2871e0cb64e4
 )

@@ -1,7 +1,8 @@
 package auth
 
-// TODO: Uncomment when Fedora updated its Go package to 1.18
-/*func FuzzAuthPasswords(f *testing.F) {
+import "testing"
+
+func FuzzAuthPasswords(f *testing.F) {
 	testcases := []string{"password", " ", "!12345"}
 	for _, tc := range testcases {
 		f.Add(tc)
@@ -23,4 +24,3 @@ package auth
 		}
 	})
 }
-*/
