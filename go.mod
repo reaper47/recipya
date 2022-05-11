@@ -37,7 +37,7 @@ require (
 
 require (
 	github.com/jdkato/prose/v2 v2.0.0
-	golang.org/x/exp v0.0.0-20220428152302-39d4317da171 // indirect
+	golang.org/x/exp v0.0.0-20220428152302-39d4317da171
 )
 
 require (
