@@ -19,4 +19,5 @@ var (
 	ImageSrc = regexp.MustCompile(`https://[\w./?=%-_&;]+`)
 )
 
+// Quantity is the regex for detecting quantities, i.e. 1ml, 1 ml, 1l and 1 l.
 var Quantity = regexp.MustCompile(`([\d]\s*m?[l]{1})?(\d*°[cf]{1})?`)
