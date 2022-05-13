@@ -272,7 +272,12 @@ func insertRecipeStmt(tables []tableData) string {
 	SELECT id FROM ins_recipe`
 }
 
-func insertIntoNameTableStmt(name string, values []string, offset int, params map[string]string) (string, int) {
+func insertIntoNameTableStmt(
+	name string,
+	values []string,
+	offset int,
+	params map[string]string,
+) (string, int) {
 	if len(values) == 0 {
 		return "", offset
 	}
@@ -300,7 +305,12 @@ func insertIntoNameTableStmt(name string, values []string, offset int, params ma
 	return stmt, offset
 }
 
-func insertIntoAssocTableStmt(td tableData, from string, params map[string]string, isInsRecipeDefiend bool) string {
+func insertIntoAssocTableStmt(
+	td tableData,
+	from string,
+	params map[string]string,
+	isInsRecipeDefiend bool,
+) string {
 	if len(td.Entries) == 0 {
 		return ""
 	}

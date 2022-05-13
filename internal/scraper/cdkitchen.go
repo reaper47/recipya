@@ -20,7 +20,11 @@ func scrapeCdKitchen(root *html.Node) (rs models.RecipeSchema, err error) {
 		}()
 
 		node := getElement(root, "class", "current-page")
-		node = getElement(node.Parent.Parent.LastChild.PrevSibling.PrevSibling.PrevSibling.FirstChild.NextSibling, "itemprop", "title")
+		node = getElement(
+			node.Parent.Parent.LastChild.PrevSibling.PrevSibling.PrevSibling.FirstChild.NextSibling,
+			"itemprop",
+			"title",
+		)
 		v = node.FirstChild.Data
 	}()
 

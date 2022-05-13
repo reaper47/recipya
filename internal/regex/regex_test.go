@@ -75,10 +75,12 @@ func TestRegex(t *testing.T) {
 			want:  false,
 		},
 		{
-			name:          "image source is valid",
-			regex:         ImageSrc,
-			in:            `<img src="https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F43%2F2022%2F03%2F29%2FBohemian-Orange-Chicken-2000.jpg&amp;q=60" alt="Eight chicken thighs topped with orange zest and a sweet and sour orange sauce in a cast iron skillet" title="Bohemian Orange Chicken" width="250">`,
-			wantedMatches: []string{"https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F43%2F2022%2F03%2F29%2FBohemian-Orange-Chicken-2000.jpg&amp;q=60"},
+			name:  "image source is valid",
+			regex: ImageSrc,
+			in:    `<img src="https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F43%2F2022%2F03%2F29%2FBohemian-Orange-Chicken-2000.jpg&amp;q=60" alt="Eight chicken thighs topped with orange zest and a sweet and sour orange sauce in a cast iron skillet" title="Bohemian Orange Chicken" width="250">`,
+			wantedMatches: []string{
+				"https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F43%2F2022%2F03%2F29%2FBohemian-Orange-Chicken-2000.jpg&amp;q=60",
+			},
 		},
 		{
 			name:  "image source is invalid",

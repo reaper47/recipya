@@ -37,7 +37,10 @@ type RecipeSchema struct {
 // ToRecipe transforms the RecipeSchema to a Recipe.
 func (r RecipeSchema) ToRecipe() (Recipe, error) {
 	if r.AtType.Value != "Recipe" {
-		return Recipe{}, fmt.Errorf("RecipeSchema %#v is not based on the Schema or the field is missing", r)
+		return Recipe{}, fmt.Errorf(
+			"RecipeSchema %#v is not based on the Schema or the field is missing",
+			r,
+		)
 	}
 
 	var category string
@@ -79,7 +82,11 @@ func (r RecipeSchema) ToRecipe() (Recipe, error) {
 	if r.DateModified != "" {
 		updatedAt, err = time.Parse("2006-01-02", strings.Split(r.DateModified, "T")[0])
 		if err != nil {
-			return Recipe{}, fmt.Errorf("could not parse modifiedAt date %s: '%s'", r.DateModified, err)
+			return Recipe{}, fmt.Errorf(
+				"could not parse modifiedAt date %s: '%s'",
+				r.DateModified,
+				err,
+			)
 		}
 	}
 

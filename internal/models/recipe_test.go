@@ -135,7 +135,10 @@ func TestModelRecipe(t *testing.T) {
 			t.Errorf("wanted ingredients []string{ing1, ing2, ing3} but got %v", schema.Ingredients)
 		}
 		if !slices.Equal(schema.Instructions.Values, []string{"ins1", "ins2", "ins3"}) {
-			t.Errorf("wanted instructions []string{ins1, ins2, ins3} but got %v", schema.Instructions.Values)
+			t.Errorf(
+				"wanted instructions []string{ins1, ins2, ins3} but got %v",
+				schema.Instructions.Values,
+			)
 		}
 		if schema.Name != "name" {
 			t.Errorf("wanted name 'name' but got %q", schema.Name)
@@ -176,9 +179,16 @@ func TestModelRecipe(t *testing.T) {
 
 	t.Run("Recipe Normalize is correct", func(t *testing.T) {
 		r := Recipe{
-			Description:  "Place the chicken pieces on a baking sheet and bake 1l 1 l 1ml 1 ml until they 425°f (220°c) and golden.",
-			Ingredients:  Ingredients{Values: []string{"ing1 1L", "1 L ing2", "ing3 of 1mL stuff", "ing4 of stuff 1 mL"}},
-			Instructions: []string{"ins1 1l", "1 l ins2", "ins3 of 1ml stuff", "ins4 of stuff 1 ml"},
+			Description: "Place the chicken pieces on a baking sheet and bake 1l 1 l 1ml 1 ml until they 425°f (220°c) and golden.",
+			Ingredients: Ingredients{
+				Values: []string{"ing1 1L", "1 L ing2", "ing3 of 1mL stuff", "ing4 of stuff 1 mL"},
+			},
+			Instructions: []string{
+				"ins1 1l",
+				"1 l ins2",
+				"ins3 of 1ml stuff",
+				"ins4 of stuff 1 ml",
+			},
 		}
 
 		r.Normalize()

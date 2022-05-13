@@ -339,7 +339,11 @@ func Categories(w http.ResponseWriter, req *http.Request) {
 func handlePostCategories(w http.ResponseWriter, category string, userID int64) {
 	err := config.App().Repo.InsertCategory(category, userID)
 	if err != nil {
-		writeJson(w, "Could not insert the category - "+category+".", http.StatusInternalServerError)
+		writeJson(
+			w,
+			"Could not insert the category - "+category+".",
+			http.StatusInternalServerError,
+		)
 		return
 	}
 	w.WriteHeader(http.StatusNoContent)

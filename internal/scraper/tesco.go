@@ -29,7 +29,11 @@ func scrapeTesco(root *html.Node) (models.RecipeSchema, error) {
 			chYield <- yield
 		}()
 
-		node := getElement(root, "class", "recipe-detail__meta-item recipe-detail__meta-item_servings")
+		node := getElement(
+			root,
+			"class",
+			"recipe-detail__meta-item recipe-detail__meta-item_servings",
+		)
 		yieldStr := strings.Fields(node.FirstChild.Data)[1]
 		i, err := strconv.ParseInt(yieldStr, 10, 16)
 		if err == nil {
@@ -48,7 +52,11 @@ func scrapeTesco(root *html.Node) (models.RecipeSchema, error) {
 			}
 		}()
 
-		node := getElement(root, "class", "recipe-detail__meta-item recipe-detail__meta-item_calories")
+		node := getElement(
+			root,
+			"class",
+			"recipe-detail__meta-item recipe-detail__meta-item_calories",
+		)
 		parts := strings.Split(node.FirstChild.Data, "/")
 		calories = strings.Split(parts[0], " ")[0]
 	}()

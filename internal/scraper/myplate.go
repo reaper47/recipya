@@ -29,7 +29,11 @@ func scrapeMyPlate(root *html.Node) (models.RecipeSchema, error) {
 			chYield <- yield
 		}()
 
-		node := getElement(root, "class", "mp-recipe-full__detail mp-recipe-full__detail--yield grid-col-6 grid-row flex-column flex-align-center ")
+		node := getElement(
+			root,
+			"class",
+			"mp-recipe-full__detail mp-recipe-full__detail--yield grid-col-6 grid-row flex-column flex-align-center ",
+		)
 		node = getElement(node, "class", "mp-recipe-full__detail--data")
 		s := strings.TrimSpace(node.FirstChild.Data)
 		s = strings.ReplaceAll(s, "\n", "")
@@ -44,7 +48,11 @@ func scrapeMyPlate(root *html.Node) (models.RecipeSchema, error) {
 			chCookTime <- s
 		}()
 
-		node := getElement(root, "class", "mp-recipe-full__detail mp-recipe-full__detail--cook-time grid-col-6 grid-row flex-column flex-align-center")
+		node := getElement(
+			root,
+			"class",
+			"mp-recipe-full__detail mp-recipe-full__detail--cook-time grid-col-6 grid-row flex-column flex-align-center",
+		)
 		node = getElement(node, "class", "mp-recipe-full__detail--data")
 
 		time := strings.TrimSpace(node.FirstChild.Data)
@@ -110,7 +118,11 @@ func scrapeMyPlate(root *html.Node) (models.RecipeSchema, error) {
 			chInstructions <- vals
 		}()
 
-		node := getElement(root, "class", "clearfix text-formatted field field--name-field-instructions field--type-text-long field--label-above")
+		node := getElement(
+			root,
+			"class",
+			"clearfix text-formatted field field--name-field-instructions field--type-text-long field--label-above",
+		)
 		ol := getElement(node, "class", "field__item").FirstChild
 		for li := ol.FirstChild; li != nil; li = li.NextSibling {
 			if li.Type != html.ElementNode {
@@ -174,7 +186,11 @@ func scrapeMyPlate(root *html.Node) (models.RecipeSchema, error) {
 			}
 		}
 
-		servings := getElement(root, "class", "field field--name-field-recipe-serving-size field--type-string field--label-inline")
+		servings := getElement(
+			root,
+			"class",
+			"field field--name-field-recipe-serving-size field--type-string field--label-inline",
+		)
 		servings = getElement(servings, "class", "field__item")
 		v := strings.TrimSpace(servings.FirstChild.Data)
 		v = strings.ReplaceAll(v, "\n", "")
@@ -182,9 +198,13 @@ func scrapeMyPlate(root *html.Node) (models.RecipeSchema, error) {
 	}()
 
 	return models.RecipeSchema{
-		AtContext:       "https://schema.org",
-		AtType:          models.SchemaType{Value: "Recipe"},
-		Name:            <-getElementData(root, "class", "field field--name-title field--type-string field--label-hidden"),
+		AtContext: "https://schema.org",
+		AtType:    models.SchemaType{Value: "Recipe"},
+		Name: <-getElementData(
+			root,
+			"class",
+			"field field--name-title field--type-string field--label-hidden",
+		),
 		Image:           models.Image{Value: <-chImage},
 		Yield:           models.Yield{Value: <-chYield},
 		CookTime:        <-chCookTime,

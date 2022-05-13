@@ -40,7 +40,11 @@ func scrapeKwestiasmaku(root *html.Node) (models.RecipeSchema, error) {
 			chYield <- yield
 		}()
 
-		node := getElement(root, "class", "field field-name-field-ilosc-porcji field-type-text field-label-hidden")
+		node := getElement(
+			root,
+			"class",
+			"field field-name-field-ilosc-porcji field-type-text field-label-hidden",
+		)
 		yield = findYield(strings.Split(strings.TrimSpace(node.FirstChild.Data), " "))
 	}()
 
@@ -52,7 +56,11 @@ func scrapeKwestiasmaku(root *html.Node) (models.RecipeSchema, error) {
 			chIngredients <- models.Ingredients{Values: vals}
 		}()
 
-		node := getElement(root, "class", "field field-name-field-skladniki field-type-text-long field-label-hidden")
+		node := getElement(
+			root,
+			"class",
+			"field field-name-field-skladniki field-type-text-long field-label-hidden",
+		)
 		for c := node.FirstChild; c != nil; c = c.NextSibling {
 			if c.Data == "ul" {
 				for li := c.FirstChild; li != nil; li = li.NextSibling {
@@ -73,7 +81,11 @@ func scrapeKwestiasmaku(root *html.Node) (models.RecipeSchema, error) {
 			chInstructions <- models.Instructions{Values: vals}
 		}()
 
-		node := getElement(root, "class", "field field-name-field-przygotowanie field-type-text-long field-label-above")
+		node := getElement(
+			root,
+			"class",
+			"field field-name-field-przygotowanie field-type-text-long field-label-above",
+		)
 		for c := node.FirstChild; c != nil; c = c.NextSibling {
 			if c.Data == "ul" {
 				for li := c.FirstChild; li != nil; li = li.NextSibling {

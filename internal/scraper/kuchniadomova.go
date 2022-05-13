@@ -88,10 +88,12 @@ func scrapeKuchniadomova(root *html.Node) (models.RecipeSchema, error) {
 	}()
 
 	return models.RecipeSchema{
-		AtContext:    "https://schema.org",
-		AtType:       models.SchemaType{Value: "Recipe"},
-		Name:         <-getItemPropAttr(content, "name", "content"),
-		Category:     models.Category{Value: <-getItemPropAttr(content, "recipeCategory", "content")},
+		AtContext: "https://schema.org",
+		AtType:    models.SchemaType{Value: "Recipe"},
+		Name:      <-getItemPropAttr(content, "name", "content"),
+		Category: models.Category{
+			Value: <-getItemPropAttr(content, "recipeCategory", "content"),
+		},
 		Image:        models.Image{Value: <-chImage},
 		Description:  models.Description{Value: <-chDescription},
 		Yield:        models.Yield{Value: <-chYield},

@@ -2,6 +2,8 @@ package templates
 
 import (
 	"testing"
+
+	"golang.org/x/exp/slices"
 )
 
 func TestTemplatesData(t *testing.T) {
@@ -36,8 +38,7 @@ func TestTemplatesData(t *testing.T) {
 		})
 	}
 
-	// TODO: Uncomment when Fedora updated its Go package to 1.18
-	/*testcases2 := []struct {
+	testcases2 := []struct {
 		name string
 		in   int
 		want Pagination
@@ -148,8 +149,12 @@ func TestTemplatesData(t *testing.T) {
 				t.Errorf("NumPages: wanted %#v but got %#v", tc.want.NumPages, actual.NumPages)
 			}
 			if actual.NumResults != tc.want.NumResults {
-				t.Errorf("NumResults: wanted %#v but got %#v", tc.want.NumResults, actual.NumResults)
+				t.Errorf(
+					"NumResults: wanted %#v but got %#v",
+					tc.want.NumResults,
+					actual.NumResults,
+				)
 			}
 		})
-	}*/
+	}
 }

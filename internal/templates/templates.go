@@ -26,7 +26,9 @@ func init() {
 		if tmpl.IsDir() {
 			continue
 		}
-		templates[tmpl.Name()] = template.Must(template.New("main").Funcs(fm).ParseFS(views.FS, tmpl.Name(), "layouts/*.gohtml"))
+		templates[tmpl.Name()] = template.Must(
+			template.New("main").Funcs(fm).ParseFS(views.FS, tmpl.Name(), "layouts/*.gohtml"),
+		)
 	}
 }
 

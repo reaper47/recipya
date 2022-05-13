@@ -152,9 +152,12 @@ func scrapeLekkerenSimpel(root *html.Node) (models.RecipeSchema, error) {
 			return strings.HasPrefix(strings.ToLower(node.Data), "benodigdheden")
 		})
 		if len(xn) == 0 {
-			xn = traverseAll(getElement(root, "class", "recipe__sidebar-title h3"), func(node *html.Node) bool {
-				return strings.HasPrefix(strings.ToLower(node.Data), "benodigdheden")
-			})
+			xn = traverseAll(
+				getElement(root, "class", "recipe__sidebar-title h3"),
+				func(node *html.Node) bool {
+					return strings.HasPrefix(strings.ToLower(node.Data), "benodigdheden")
+				},
+			)
 			if len(xn) == 0 {
 				return
 			}
@@ -191,8 +194,12 @@ func scrapeLekkerenSimpel(root *html.Node) (models.RecipeSchema, error) {
 								}
 
 								value := strings.TrimSpace(<-getElementData(c, "class", "value"))
-								measure := strings.TrimSpace(<-getElementData(c, "class", "measure"))
-								name := strings.TrimSpace(<-getElementData(c, "class", "ingredient"))
+								measure := strings.TrimSpace(
+									<-getElementData(c, "class", "measure"),
+								)
+								name := strings.TrimSpace(
+									<-getElementData(c, "class", "ingredient"),
+								)
 
 								var s string
 								if value != "" {

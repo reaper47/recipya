@@ -118,7 +118,8 @@ func scrapeMyKitchen101(root *html.Node) (models.RecipeSchema, error) {
 					continue
 				}
 
-				if c.Data == "script" || c.Data == "ins" || c.Data == "div" || c.FirstChild.Data == "img" {
+				if c.Data == "script" || c.Data == "ins" || c.Data == "div" ||
+					c.FirstChild.Data == "img" {
 					continue
 				}
 

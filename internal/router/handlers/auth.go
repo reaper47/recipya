@@ -164,7 +164,9 @@ func setCookie(w http.ResponseWriter, r *http.Request, u models.User, isSession 
 	token, err := auth.CreateToken(sid)
 	if err != nil {
 		log.Println("could not create token in login", err)
-		return errors.New("our server didn't get enough lunch and is not working 200% right now. Try back later")
+		return errors.New(
+			"our server didn't get enough lunch and is not working 200% right now. Try back later",
+		)
 	}
 
 	repository.Sessions[sid] = models.Session{

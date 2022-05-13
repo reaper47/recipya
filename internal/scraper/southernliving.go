@@ -88,9 +88,13 @@ func scrapeSouthernLiving(root *html.Node) (models.RecipeSchema, error) {
 	}()
 
 	return models.RecipeSchema{
-		AtContext:    "https://schema.org",
-		AtType:       models.SchemaType{Value: "Recipe"},
-		Name:         <-getElementData(root, "class", "headline heading-content elementFont__display"),
+		AtContext: "https://schema.org",
+		AtType:    models.SchemaType{Value: "Recipe"},
+		Name: <-getElementData(
+			root,
+			"class",
+			"headline heading-content elementFont__display",
+		),
 		Description:  models.Description{Value: <-chDescription},
 		Image:        models.Image{Value: <-chImage},
 		Yield:        models.Yield{Value: <-chYield},

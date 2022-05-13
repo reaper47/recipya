@@ -67,9 +67,19 @@ func (n *nameParams) init(tables []tableData, offset int) {
 
 func (n *nameParams) insertStmts(tables []tableData, isInsRecipeDefined bool) string {
 	return n.InsertIngredientsStmt + "" +
-		insertIntoAssocTableStmt(tables[0], "ins_ingredients", n.Ingredients, isInsRecipeDefined) + "" +
+		insertIntoAssocTableStmt(
+			tables[0],
+			"ins_ingredients",
+			n.Ingredients,
+			isInsRecipeDefined,
+		) + "" +
 		n.InsertInstructionsStmt + "" +
-		insertIntoAssocTableStmt(tables[1], "ins_instructions", n.Instructions, isInsRecipeDefined) + "" +
+		insertIntoAssocTableStmt(
+			tables[1],
+			"ins_instructions",
+			n.Instructions,
+			isInsRecipeDefined,
+		) + "" +
 		n.InsertKeywordsStmt + "" +
 		insertIntoAssocTableStmt(tables[2], "ins_keywords", n.Keywords, isInsRecipeDefined) + "" +
 		n.InsertToolsStmt + "" +
@@ -314,7 +324,8 @@ func (p *postgresDBRepo) InsertNewRecipe(r models.Recipe, userID int64) (int64, 
 	defer tx.Rollback(ctx)
 
 	var isExists bool
-	err = tx.QueryRow(ctx, isRecipeExistsForUserStmt, userID, r.Name, r.Description, r.URL, r.Yield).Scan(&isExists)
+	err = tx.QueryRow(ctx, isRecipeExistsForUserStmt, userID, r.Name, r.Description, r.URL, r.Yield).
+		Scan(&isExists)
 	if err != nil {
 		return -1, err
 	}

@@ -22,8 +22,10 @@ func New() *mux.Router {
 	r.HandleFunc("/", handlers.Index).Methods(GET)
 	r.HandleFunc("/favicon.ico", handlers.Favicon).Methods(GET)
 	r.HandleFunc("/robots.txt", handlers.Robots).Methods(GET)
-	r.PathPrefix("/static/").Handler(http.StripPrefix("/static", http.FileServer(http.FS(static.FS))))
-	r.PathPrefix("/data/img/").Handler(http.StripPrefix("/data/img/", http.FileServer(http.Dir("data/img"))))
+	r.PathPrefix("/static/").
+		Handler(http.StripPrefix("/static", http.FileServer(http.FS(static.FS))))
+	r.PathPrefix("/data/img/").
+		Handler(http.StripPrefix("/data/img/", http.FileServer(http.Dir("data/img"))))
 
 	auth := r.PathPrefix("/auth").Subrouter()
 	auth.HandleFunc("/register", handlers.Register).Methods(GET, POST)
@@ -38,7 +40,8 @@ func New() *mux.Router {
 	recipes.HandleFunc("/new", amw.Middleware(handlers.RecipesAdd)).Methods(GET)
 	recipes.HandleFunc("/new/manual", amw.Middleware(handlers.GetRecipesNewManual)).Methods(GET)
 	recipes.HandleFunc("/new/manual", amw.Middleware(handlers.PostRecipesNewManual)).Methods(POST)
-	recipes.HandleFunc("/categories", amw.Middleware(handlers.Categories)).Methods(POST, DELETE, PUT)
+	recipes.HandleFunc("/categories", amw.Middleware(handlers.Categories)).
+		Methods(POST, DELETE, PUT)
 	recipes.HandleFunc("/import", amw.Middleware(handlers.ImportRecipes)).Methods(POST)
 	recipes.HandleFunc("/scrape", amw.Middleware(handlers.ScrapeRecipe)).Methods(POST)
 	recipes.HandleFunc("/scrape/request", amw.Middleware(handlers.ScrapeRequest)).Methods(POST)

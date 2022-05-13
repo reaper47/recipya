@@ -43,7 +43,11 @@ func scrapeDk(root *html.Node) (rs models.RecipeSchema, err error) {
 			case "ul":
 				for l := c.FirstChild; l != nil; l = l.NextSibling {
 					amt := <-getElementData(l, "class", "recipe-ingredients__unit-amount")
-					name := <-getElementData(l, "class", "recipe-ingredients__ingredient-instruction")
+					name := <-getElementData(
+						l,
+						"class",
+						"recipe-ingredients__ingredient-instruction",
+					)
 					v.Values = append(v.Values, strings.TrimSpace(amt)+" "+strings.TrimSpace(name))
 				}
 			}

@@ -115,10 +115,12 @@ func scrapeFoodRepublic(root *html.Node) (rs models.RecipeSchema, err error) {
 	}()
 
 	return models.RecipeSchema{
-		AtContext:     "https://schema.org",
-		AtType:        models.SchemaType{Value: "Recipe"},
-		Name:          <-getItemPropAttr(content, "name", "content"),
-		Description:   models.Description{Value: <-getItemPropAttr(content, "description", "content")},
+		AtContext: "https://schema.org",
+		AtType:    models.SchemaType{Value: "Recipe"},
+		Name:      <-getItemPropAttr(content, "name", "content"),
+		Description: models.Description{
+			Value: <-getItemPropAttr(content, "description", "content"),
+		},
 		Image:         models.Image{Value: <-getItemPropAttr(content, "image", "content")},
 		Yield:         models.Yield{Value: <-chYield},
 		DatePublished: <-getItemPropAttr(content, "datePublished", "content"),

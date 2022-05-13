@@ -22,7 +22,8 @@ func IsAuthenticated(w http.ResponseWriter, req *http.Request) (models.Session, 
 	}
 
 	sid, err := auth.ParseToken(c.Value)
-	if err != nil && !strings.HasSuffix(err.Error(), "token contains an invalid number of segments") {
+	if err != nil &&
+		!strings.HasSuffix(err.Error(), "token contains an invalid number of segments") {
 		return models.Session{}, false
 	}
 
