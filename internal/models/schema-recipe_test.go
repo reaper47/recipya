@@ -1,4 +1,4 @@
-package models
+package models_test
 
 import (
 	"encoding/json"
@@ -7,28 +7,30 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/constants"
+	"github.com/reaper47/recipya/internal/models"
 	"golang.org/x/exp/slices"
 )
 
 func TestModelRecipeSchema(t *testing.T) {
 	imageID := uuid.New()
-	rs := RecipeSchema{
+	rs := models.RecipeSchema{
 		AtContext:     "@Schema",
-		AtType:        SchemaType{Value: "Recipe"},
-		Category:      Category{Value: "lunch"},
+		AtType:        models.SchemaType{Value: "Recipe"},
+		Category:      models.Category{Value: "lunch"},
 		CookTime:      "PT3H",
-		CookingMethod: CookingMethod{Value: ""},
-		Cuisine:       Cuisine{Value: ""},
+		CookingMethod: models.CookingMethod{Value: ""},
+		Cuisine:       models.Cuisine{Value: ""},
 		DateCreated:   "2022-03-16",
 		DateModified:  "2022-03-20",
 		DatePublished: "2022-03-16",
-		Description:   Description{Value: "description"},
-		Keywords:      Keywords{Values: "kw1,kw2,kw3"},
-		Image:         Image{Value: imageID.String()},
-		Ingredients:   Ingredients{Values: []string{"ing1", "ing2", "ing3"}},
-		Instructions:  Instructions{Values: []string{"ins1", "ins2", "ins3"}},
+		Description:   models.Description{Value: "description"},
+		Keywords:      models.Keywords{Values: "kw1,kw2,kw3"},
+		Image:         models.Image{Value: imageID.String()},
+		Ingredients:   models.Ingredients{Values: []string{"ing1", "ing2", "ing3"}},
+		Instructions:  models.Instructions{Values: []string{"ins1", "ins2", "ins3"}},
 		Name:          "name",
-		NutritionSchema: NutritionSchema{
+		NutritionSchema: models.NutritionSchema{
 			Calories:       "341kcal",
 			Carbohydrates:  "1g",
 			Cholesterol:    "2g",
@@ -43,28 +45,28 @@ func TestModelRecipeSchema(t *testing.T) {
 			UnsaturatedFat: "11g",
 		},
 		PrepTime: "PT1H",
-		Tools:    Tools{Values: []string{"t1", "t2", "t3"}},
-		Yield:    Yield{Value: 4},
+		Tools:    models.Tools{Values: []string{"t1", "t2", "t3"}},
+		Yield:    models.Yield{Value: 4},
 		URL:      "https://recipes.musicavis.ca",
 	}
 
 	t.Run("ToRecipe transform the schema to a Recipe", func(t *testing.T) {
-		created, _ := time.Parse("2006-01-02", "2022-03-16")
-		updated, _ := time.Parse("2006-01-02", "2022-03-20")
-		expected := Recipe{
+		created, _ := time.Parse(constants.BasicTimeLayout, "2022-03-16")
+		updated, _ := time.Parse(constants.BasicTimeLayout, "2022-03-20")
+		expected := models.Recipe{
 			Name:        "name",
 			Description: "description",
 			Image:       imageID,
 			URL:         "https://recipes.musicavis.ca",
 			Yield:       4,
 			Category:    "lunch",
-			Times: Times{
+			Times: models.Times{
 				Prep:  1 * time.Hour,
 				Cook:  3 * time.Hour,
 				Total: 4 * time.Hour,
 			},
-			Ingredients: Ingredients{Values: []string{"ing1", "ing2", "ing3"}},
-			Nutrition: Nutrition{
+			Ingredients: models.Ingredients{Values: []string{"ing1", "ing2", "ing3"}},
+			Nutrition: models.Nutrition{
 				Calories:           "341kcal",
 				TotalCarbohydrates: "1g",
 				Sugars:             "9g",

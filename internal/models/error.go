@@ -17,14 +17,11 @@ type errorDetails struct {
 
 // NewErrorJSON returns the error message as JSON.
 func NewErrorJSON(code int, message string) ([]byte, error) {
-	e := errorDetails{
-		Code:    code,
-		Message: message,
-		Status:  http.StatusText(code),
-	}
-	xb, err := json.Marshal(errorWrapper{Error: e})
-	if err != nil {
-		return nil, err
-	}
-	return xb, nil
+	return json.Marshal(errorWrapper{
+		Error: errorDetails{
+			Code:    code,
+			Message: message,
+			Status:  http.StatusText(code),
+		},
+	})
 }

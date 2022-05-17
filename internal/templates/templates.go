@@ -51,6 +51,6 @@ func Render(w http.ResponseWriter, name string, data interface{}) error {
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	buf.WriteTo(w)
+	_, _ = buf.WriteTo(w)
 	return nil
 }

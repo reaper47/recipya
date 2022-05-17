@@ -4,6 +4,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/reaper47/recipya/internal/constants"
 	"github.com/reaper47/recipya/internal/models"
 	"golang.org/x/net/html"
 )
@@ -61,7 +62,7 @@ func scrapeMyKitchen101(root *html.Node) (models.RecipeSchema, error) {
 
 		node := getElement(root, "class", "updated")
 		t, _ := time.Parse("Jan 02, 2006", node.FirstChild.Data)
-		s = t.Format("2006-01-02")
+		s = t.Format(constants.BasicTimeLayout)
 	}()
 
 	chIngredients := make(chan models.Ingredients)

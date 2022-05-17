@@ -29,6 +29,7 @@ import (
 	"github.com/reaper47/recipya/internal/repository"
 	"github.com/reaper47/recipya/internal/scraper"
 	"github.com/reaper47/recipya/internal/templates"
+	"github.com/reaper47/recipya/internal/utils/paths"
 	"golang.org/x/image/draw"
 )
 
@@ -57,7 +58,7 @@ func Recipe(w http.ResponseWriter, req *http.Request) {
 
 	switch req.Method {
 	case http.MethodGet:
-		_, isAuthenticated := repository.IsAuthenticated(w, req)
+		_, isAuthenticated := repository.IsAuthenticated(req)
 		handleGetRecipe(w, req, id, isAuthenticated)
 	case http.MethodDelete:
 		handleDeleteRecipe(w, req, id)
@@ -71,7 +72,7 @@ func handleGetRecipe(w http.ResponseWriter, req *http.Request, id int64, isAuthe
 		return
 	}
 
-	s, isAuth := repository.IsAuthenticated(w, req)
+	s, isAuth := repository.IsAuthenticated(req)
 
 	var isShowEditControls bool
 	if isAuth {
@@ -216,8 +217,11 @@ func getRecipeFromForm(req *http.Request) (models.Recipe, error) {
 	case http.ErrMissingFile:
 		imageUUID, _ = uuid.Parse(req.FormValue("image-scraper"))
 	case nil:
-		defer file.Close()
-		imageUUID, err = saveImage(file, "img")
+		defer func(file multipart.File) {
+			_ = file.Close()
+		}(file)
+
+		imageUUID, err = saveImage(file)
 		if err != nil {
 			return models.Recipe{}, err
 		}
@@ -250,7 +254,7 @@ func getRecipeFromForm(req *http.Request) (models.Recipe, error) {
 func getFormItems(req *http.Request, field string) []string {
 	itemMap := make(map[string]bool)
 
-	items := []string{}
+	var items []string
 	i := 1
 	for {
 		item := strings.ToLower(req.FormValue(field + "-" + strconv.Itoa(i)))
@@ -267,30 +271,29 @@ func getFormItems(req *http.Request, field string) []string {
 	return items
 }
 
-func saveImage(file multipart.File, dir string) (uuid.UUID, error) {
-	uuid := uuid.New()
+func saveImage(file multipart.File) (uuid.UUID, error) {
+	newUUID := uuid.New()
 
-	tmp, err := os.Create("data/" + dir + "/" + uuid.String())
+	tmp, err := os.Create(filepath.Join(paths.Images(), newUUID.String()))
 	if err != nil {
-		return uuid, err
+		return newUUID, err
 	}
-	defer tmp.Close()
+	defer func(tmp *os.File) {
+		_ = tmp.Close()
+	}(tmp)
 
 	img, err := compressImage(file)
 	if err != nil {
-		return uuid, err
+		return newUUID, err
 	}
 
 	err = jpeg.Encode(tmp, img, &jpeg.Options{Quality: 50})
 	if err != nil {
-		return uuid, err
+		return newUUID, err
 	}
 
 	_, err = io.Copy(tmp, file)
-	if err != nil {
-		return uuid, err
-	}
-	return uuid, nil
+	return newUUID, err
 }
 
 func compressImage(f multipart.File) (*image.RGBA, error) {
@@ -385,15 +388,13 @@ func ImportRecipes(w http.ResponseWriter, req *http.Request) {
 
 	userID := getSession(req).UserID
 	var wg sync.WaitGroup
-	for i, file := range files {
+	for _, file := range files {
 		wg.Add(1)
 
 		f := file
-		i := i
-
 		go func() {
 			defer wg.Done()
-			importRecipe(f, i, userID)
+			importRecipe(f, userID)
 		}()
 	}
 	wg.Wait()
@@ -401,7 +402,7 @@ func ImportRecipes(w http.ResponseWriter, req *http.Request) {
 	http.Redirect(w, req, "/recipes", http.StatusSeeOther)
 }
 
-func importRecipe(file *multipart.FileHeader, fnumber int, userID int64) {
+func importRecipe(file *multipart.FileHeader, userID int64) {
 	content := file.Header.Get("Content-Type")
 	if strings.Contains(content, "zip") {
 		processZip(file, userID)
@@ -416,7 +417,9 @@ func processZip(file *multipart.FileHeader, userID int64) {
 		log.Println(err)
 		return
 	}
-	defer f.Close()
+	defer func(f multipart.File) {
+		_ = f.Close()
+	}(f)
 
 	buf := new(bytes.Buffer)
 	fsize, err := io.Copy(buf, f)
@@ -436,7 +439,7 @@ func processZip(file *multipart.FileHeader, userID int64) {
 			f, err := file.Open()
 			if err != nil {
 				log.Println(err)
-				f.Close()
+				_ = f.Close()
 				continue
 			}
 
@@ -444,7 +447,7 @@ func processZip(file *multipart.FileHeader, userID int64) {
 			if err != nil {
 				logger.Sanitize(err.Error())
 			}
-			f.Close()
+			_ = f.Close()
 		}
 	}
 }
@@ -455,7 +458,9 @@ func processJSON(file *multipart.FileHeader, userID int64) {
 		logger.Sanitize("error opening file %s: %s", file.Filename, err.Error())
 		return
 	}
-	defer f.Close()
+	defer func(f multipart.File) {
+		_ = f.Close()
+	}(f)
 
 	err = extractRecipe(f, userID)
 	if err != nil {
@@ -524,7 +529,7 @@ func ExportRecipes(w http.ResponseWriter, req *http.Request) {
 
 	w.Header().Set(constants.HeaderContentType, constants.ApplicationZip)
 	w.Header().Set(constants.HeaderContentDisposition, `attachment; filename="recipya-recipes.zip"`)
-	w.Write(buf.Bytes())
+	_, _ = w.Write(buf.Bytes())
 }
 
 // ScrapeRecipe handles the POST /recipes/scrape endpoint.
@@ -538,13 +543,13 @@ func ScrapeRecipe(w http.ResponseWriter, req *http.Request) {
 	rs, err := scraper.Scrape(url)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		templates.Render(w, "recipe-scraper-404.gohtml", templates.Data{
+		_ = templates.Render(w, "recipe-scraper-404.gohtml", templates.Data{
 			HeaderData: templates.HeaderData{
 				AvatarInitials: getSession(req).UserInitials,
 			},
 			HideSidebar: true,
 			Scraper: templates.Scraper{
-				IsEmailSetUp: email.Email().IsValid(),
+				IsEmailSetUp: email.IsValid(),
 				Websites:     []models.Website{{Name: "", URL: url}},
 			},
 		})
@@ -569,9 +574,9 @@ func ScrapeRecipe(w http.ResponseWriter, req *http.Request) {
 			if err == nil {
 				r.Image = img
 			}
-			out.Close()
+			_ = out.Close()
 		}
-		res.Body.Close()
+		_ = res.Body.Close()
 	}
 
 	id, err := config.App().Repo.InsertNewRecipe(r, getSession(req).UserID)
@@ -589,6 +594,6 @@ func ScrapeRequest(w http.ResponseWriter, req *http.Request) {
 		"\r\n" +
 		"Hello Recipya,\r\n\r\nPlease support this website: " + req.FormValue("website") + "\r\n\r\n" +
 		"Sincerely,\r\n" + user.Username + " (" + user.Email + ")"
-	email.Email().Send(user.Email, msg)
+	email.Send(user.Email, msg)
 	http.Redirect(w, req, "/recipes/new", http.StatusSeeOther)
 }

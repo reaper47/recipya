@@ -7,16 +7,18 @@ import (
 
 func TestConfigDb(t *testing.T) {
 	t.Run("DBOptions struct creates the correct DSN", func(t *testing.T) {
-		os.Setenv("DB_PROTOCOL", "protocol")
-		defer os.Unsetenv("DB_PROTOCOL")
-		os.Setenv("DB_HOST", "host")
-		defer os.Unsetenv("DB_HOST")
-		os.Setenv("DB_PORT", "port")
-		defer os.Unsetenv("DB_PORT")
-		os.Setenv("DB_USER", "user")
-		defer os.Unsetenv("DB_USER")
-		os.Setenv("DB_PASSWORD", "password")
-		defer os.Unsetenv("DB_PASSWORD")
+		_ = os.Setenv("DB_PROTOCOL", "protocol")
+		_ = os.Setenv("DB_HOST", "host")
+		_ = os.Setenv("DB_PORT", "port")
+		_ = os.Setenv("DB_USER", "user")
+		_ = os.Setenv("DB_PASSWORD", "password")
+		defer func() {
+			_ = os.Unsetenv("DB_PROTOCOL")
+			_ = os.Unsetenv("DB_HOST")
+			_ = os.Unsetenv("DB_PORT")
+			_ = os.Unsetenv("DB_USER")
+			_ = os.Unsetenv("DB_PASSWORD")
+		}()
 
 		opts := NewDBOptions("dbname")
 		dsn := opts.Dsn()

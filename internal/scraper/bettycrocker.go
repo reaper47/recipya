@@ -3,6 +3,7 @@ package scraper
 import (
 	"time"
 
+	"github.com/reaper47/recipya/internal/constants"
 	"github.com/reaper47/recipya/internal/models"
 	"golang.org/x/net/html"
 )
@@ -11,7 +12,7 @@ func scrapeBettyCrocker(root *html.Node) (rs models.RecipeSchema, err error) {
 	rs, err = scrapeLdJSON(root)
 
 	actualLayout := "02/01/2006"
-	expectedLayout := "2006-01-02"
+	expectedLayout := constants.BasicTimeLayout
 
 	dp, err2 := time.Parse(actualLayout, rs.DatePublished)
 	if err2 == nil {

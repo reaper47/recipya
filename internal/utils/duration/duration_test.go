@@ -20,12 +20,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
-package duration
+package duration_test
 
 import (
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/reaper47/recipya/internal/utils/duration"
 )
 
 func TestParse(t *testing.T) {
@@ -35,13 +37,13 @@ func TestParse(t *testing.T) {
 	testcases := []struct {
 		name    string
 		args    args
-		want    *Duration
+		want    *duration.Duration
 		wantErr bool
 	}{
 		{
 			name: "period-only",
 			args: args{d: "P4Y"},
-			want: &Duration{
+			want: &duration.Duration{
 				Years: 4,
 			},
 			wantErr: false,
@@ -49,7 +51,7 @@ func TestParse(t *testing.T) {
 		{
 			name: "time-only-decimal",
 			args: args{d: "T2.5S"},
-			want: &Duration{
+			want: &duration.Duration{
 				Seconds: 2.5,
 			},
 			wantErr: false,
@@ -57,7 +59,7 @@ func TestParse(t *testing.T) {
 		{
 			name: "full",
 			args: args{d: "P3Y6M4DT12H30M5.5S"},
-			want: &Duration{
+			want: &duration.Duration{
 				Years:   3,
 				Months:  6,
 				Days:    4,
@@ -70,7 +72,7 @@ func TestParse(t *testing.T) {
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			got, err := Parse(tc.args.d)
+			got, err := duration.Parse(tc.args.d)
 			if (err != nil) != tc.wantErr {
 				t.Errorf("Parse() error = %v, wantErr %v", err, tc.wantErr)
 				return
@@ -137,7 +139,7 @@ func TestDuration_ToTimeDuration(t *testing.T) {
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			duration := &Duration{
+			duration := &duration.Duration{
 				Years:   tc.fields.Years,
 				Months:  tc.fields.Months,
 				Weeks:   tc.fields.Weeks,

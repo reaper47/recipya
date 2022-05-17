@@ -4,7 +4,7 @@ import "github.com/reaper47/recipya/internal/models"
 
 // Repository is the interface for the database repository.
 type Repository interface {
-	// CreateUsers stores a new user in the database.
+	// CreateUser stores a new user in the database.
 	CreateUser(username, email, hashedPassword string) (models.User, error)
 
 	// User gets a user from the database based on the username or email.
@@ -50,7 +50,7 @@ type Repository interface {
 	// because the database will take care it.
 	InsertNewRecipe(r models.Recipe, userID int64) (int64, error)
 
-	// UpdateRecipes update the recipe in the database.
+	// UpdateRecipe update the recipe in the database.
 	UpdateRecipe(r models.Recipe) error
 
 	// DeleteRecipe deletes the recipe with the passed id from the database.
@@ -60,7 +60,7 @@ type Repository interface {
 	// An empty slice will be returned when an error occurred.
 	Images() []string
 
-	// Fetches all of the scraper's supported websites.
+	// Websites fetches all the scraper's supported websites.
 	Websites() []models.Website
 
 	// Close closes the database's connection.

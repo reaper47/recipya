@@ -1,10 +1,11 @@
-package nlp
+package nlp_test
 
 import (
 	"strconv"
 	"strings"
 	"testing"
 
+	"github.com/reaper47/recipya/internal/nlp"
 	"golang.org/x/exp/slices"
 )
 
@@ -26,12 +27,12 @@ func TestNlp(t *testing.T) {
 		}
 		for i, want := range testcases {
 			t.Run("capitalize "+strconv.Itoa(i+1)+" paragraphs", func(t *testing.T) {
-				lower := []string{}
+				var lower []string
 				for _, s := range want {
 					lower = append(lower, strings.ToLower(s))
 				}
 
-				actual := CapitalizeParagraphs(lower)
+				actual := nlp.CapitalizeParagraphs(lower)
 
 				if !slices.Equal(actual, want) {
 					t.Fatalf("tc #%d:\nwanted %#v\n\ngot %#v", i, want, actual)

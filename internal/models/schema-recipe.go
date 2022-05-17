@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/constants"
 )
 
 // RecipeSchema is a representation of the Recipe schema (https://schema.org/Recipe).
@@ -67,7 +68,7 @@ func (r RecipeSchema) ToRecipe() (Recipe, error) {
 
 	var createdAt time.Time
 	if created != "" {
-		createdAt, err = time.Parse("2006-01-02", strings.Split(created, "T")[0])
+		createdAt, err = time.Parse(constants.BasicTimeLayout, strings.Split(created, "T")[0])
 		if err != nil {
 			return Recipe{}, fmt.Errorf("could not parse createdAt date %s: '%s'", created, err)
 		}
@@ -80,7 +81,7 @@ func (r RecipeSchema) ToRecipe() (Recipe, error) {
 
 	updatedAt := createdAt
 	if r.DateModified != "" {
-		updatedAt, err = time.Parse("2006-01-02", strings.Split(r.DateModified, "T")[0])
+		updatedAt, err = time.Parse(constants.BasicTimeLayout, strings.Split(r.DateModified, "T")[0])
 		if err != nil {
 			return Recipe{}, fmt.Errorf(
 				"could not parse modifiedAt date %s: '%s'",

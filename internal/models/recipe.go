@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/constants"
 	"github.com/reaper47/recipya/internal/regex"
 	"github.com/reaper47/recipya/internal/utils/duration"
 )
@@ -31,7 +32,7 @@ type Recipe struct {
 
 // ToArgs adds every field related to a Recipe to an any slice.
 func (r Recipe) ToArgs(includeID bool) []interface{} {
-	args := []interface{}{}
+	var args []any
 	if includeID {
 		args = append(args, r.ID)
 	}
@@ -56,8 +57,8 @@ func (r Recipe) ToArgs(includeID bool) []interface{} {
 		r.Times.Cook.String(),
 	}...)
 
-	arrs := [][]string{r.Ingredients.Values, r.Instructions, r.Keywords, r.Tools}
-	for _, arr := range arrs {
+	arrays := [][]string{r.Ingredients.Values, r.Instructions, r.Keywords, r.Tools}
+	for _, arr := range arrays {
 		for _, v := range arr {
 			args = append(args, v)
 		}
@@ -68,21 +69,21 @@ func (r Recipe) ToArgs(includeID bool) []interface{} {
 // ToSchema creates the schema representation of the Recipe.
 func (r Recipe) ToSchema() RecipeSchema {
 	return RecipeSchema{
-		AtContext:       "http://schema.org",
+		AtContext:       "https://schema.org",
 		AtType:          SchemaType{Value: "Recipe"},
 		Category:        Category{Value: r.Category},
 		CookTime:        formatDuration(r.Times.Cook),
 		Cuisine:         Cuisine{},
-		DateCreated:     r.CreatedAt.Format("2006-01-02"),
-		DateModified:    r.UpdatedAt.Format("2006-01-02"),
-		DatePublished:   r.CreatedAt.Format("2006-01-02"),
+		DateCreated:     r.CreatedAt.Format(constants.BasicTimeLayout),
+		DateModified:    r.UpdatedAt.Format(constants.BasicTimeLayout),
+		DatePublished:   r.CreatedAt.Format(constants.BasicTimeLayout),
 		Description:     Description{Value: r.Description},
 		Keywords:        Keywords{Values: strings.Join(r.Keywords, ",")},
-		Image:           Image{Value: string(r.Image.String())},
+		Image:           Image{Value: r.Image.String()},
 		Ingredients:     r.Ingredients,
 		Instructions:    Instructions{Values: r.Instructions},
 		Name:            r.Name,
-		NutritionSchema: r.Nutrition.toSchema(strconv.Itoa(int(r.Yield))),
+		NutritionSchema: r.Nutrition.ToSchema(strconv.Itoa(int(r.Yield))),
 		PrepTime:        formatDuration(r.Times.Prep),
 		Tools:           Tools{Values: r.Tools},
 		Yield:           Yield{Value: r.Yield},
@@ -92,7 +93,7 @@ func (r Recipe) ToSchema() RecipeSchema {
 
 // Normalize normalizes texts for readability.
 //
-// It normalizes quanities, i.e. 1l -> 1L and 1 ml -> 1 mL.
+// It normalizes quantities, i.e. 1l -> 1L and 1 ml -> 1 mL.
 func (r *Recipe) Normalize() {
 	r.Description = regex.Quantity.ReplaceAllStringFunc(r.Description, normalizeQuantity)
 
@@ -169,7 +170,8 @@ type Nutrition struct {
 	Fiber              string
 }
 
-func (n Nutrition) toSchema(servings string) NutritionSchema {
+// ToSchema creates the schema representation of the Nutrition.
+func (n Nutrition) ToSchema(servings string) NutritionSchema {
 	return NutritionSchema{
 		Calories:      n.Calories,
 		Carbohydrates: n.TotalCarbohydrates,

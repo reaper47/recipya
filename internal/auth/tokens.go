@@ -23,11 +23,7 @@ func CreateToken(sid string) (string, error) {
 	}
 
 	t := jwt.NewWithClaims(jwt.SigningMethodHS512, cc)
-	st, err := t.SignedString(key)
-	if err != nil {
-		return "", err
-	}
-	return st, nil
+	return t.SignedString(key)
 }
 
 // ParseToken parses the JWT token.

@@ -12,6 +12,7 @@ import (
 	"github.com/reaper47/recipya/internal/jobs"
 	"github.com/reaper47/recipya/internal/router"
 	_ "github.com/reaper47/recipya/internal/templates"
+	"github.com/reaper47/recipya/internal/utils/paths"
 	"github.com/spf13/cobra"
 )
 
@@ -26,9 +27,9 @@ web browser at the address specified when you run the command.
 	Run: func(cmd *cobra.Command, args []string) {
 		app := config.App()
 
-		_, err := os.Stat("data")
+		_, err := os.Stat(paths.Data())
 		if os.IsNotExist(err) {
-			err := os.MkdirAll("data/img", os.ModePerm)
+			err := os.MkdirAll(paths.Data(), os.ModePerm)
 			if err != nil {
 				log.Fatal(err)
 			}

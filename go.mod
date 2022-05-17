@@ -15,6 +15,7 @@ require github.com/gorilla/mux v1.8.0
 require github.com/golang-jwt/jwt/v4 v4.4.1
 
 require (
+	github.com/approvals/go-approval-tests v0.0.0-20220429035603-e60d9ca44d3e // indirect
 	github.com/deckarep/golang-set v1.7.1 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect

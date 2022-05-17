@@ -7,5 +7,5 @@ import (
 
 // Timeout is a context with a timeout of a given duration.
 func Timeout(duration time.Duration) (context.Context, context.CancelFunc) {
-	return context.WithTimeout(context.Background(), 3*time.Second)
+	return context.WithTimeout(context.Background(), duration)
 }

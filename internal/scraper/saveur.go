@@ -4,6 +4,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/reaper47/recipya/internal/constants"
 	"github.com/reaper47/recipya/internal/models"
 	"golang.org/x/net/html"
 )
@@ -42,7 +43,7 @@ func scrapeSaveur(root *html.Node) (models.RecipeSchema, error) {
 
 		t, err := time.Parse("Jan 02, 2006", s)
 		if err == nil {
-			s = t.Format("2006-01-02")
+			s = t.Format(constants.BasicTimeLayout)
 		}
 	}()
 

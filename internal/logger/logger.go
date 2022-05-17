@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-// Sanitize saniztize a log.Println message by removing new
+// Sanitize sanitizes a log.Println message by removing new
 // lines and carriage returns.
 func Sanitize(message string, args ...string) {
 	if len(args) > 0 {

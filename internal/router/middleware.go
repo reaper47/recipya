@@ -13,7 +13,7 @@ type authenticationMiddleware struct{}
 // Middleware is the authentication middleware.
 func (a *authenticationMiddleware) Middleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		s, isAuthenticated := repository.IsAuthenticated(w, req)
+		s, isAuthenticated := repository.IsAuthenticated(req)
 		if !isAuthenticated || s.UserID == -1 {
 			http.Redirect(w, req, "/auth/signin", http.StatusSeeOther)
 			return

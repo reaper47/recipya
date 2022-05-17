@@ -1,39 +1,39 @@
-package templates
+package templates_test
 
 import (
 	"testing"
 
+	"github.com/reaper47/recipya/internal/templates"
 	"golang.org/x/exp/slices"
 )
 
-func TestTemplatesData(t *testing.T) {
+func TestNewPagination(t *testing.T) {
 	testcases1 := []struct {
 		name string
-		in   FormErrorData
+		in   templates.FormErrorData
 		want bool
 	}{
 		{
 			name: "all fields empty",
-			in:   FormErrorData{},
+			in:   templates.FormErrorData{},
 			want: true,
 		},
 		{
 			name: "one field not empty",
-			in:   FormErrorData{Username: "mac"},
+			in:   templates.FormErrorData{Username: "mac"},
 			want: false,
 		},
 		{
 			name: "no fields empty",
-			in:   FormErrorData{Username: "a", Email: "b", Password: "c"},
+			in:   templates.FormErrorData{Username: "a", Email: "b", Password: "c"},
 			want: false,
 		},
 	}
 	for _, tc := range testcases1 {
 		t.Run("test FormErrorData.IsEmpty "+tc.name, func(t *testing.T) {
 			actual := tc.in.IsEmpty()
-
 			if actual != tc.want {
-				t.Fatalf("IsEmpty: wanted %v but got %v", tc.want, actual)
+				t.Fatalf("IsEmpty: got %v but want %v", actual, tc.want)
 			}
 		})
 	}
@@ -41,17 +41,17 @@ func TestTemplatesData(t *testing.T) {
 	testcases2 := []struct {
 		name string
 		in   int
-		want Pagination
+		want templates.Pagination
 	}{
 		{
 			name: "negative page number",
 			in:   -1,
-			want: Pagination{},
+			want: templates.Pagination{},
 		},
 		{
 			name: "paginate no results in db",
 			in:   2,
-			want: Pagination{
+			want: templates.Pagination{
 				Left:       []int{},
 				Middle:     []int{},
 				Right:      []int{},
@@ -65,7 +65,7 @@ func TestTemplatesData(t *testing.T) {
 		{
 			name: "paginate couple of results in db",
 			in:   2,
-			want: Pagination{
+			want: templates.Pagination{
 				Left:       []int{},
 				Middle:     []int{},
 				Right:      []int{},
@@ -79,7 +79,7 @@ func TestTemplatesData(t *testing.T) {
 		{
 			name: "paginate hundreds of results in db select left page",
 			in:   4,
-			want: Pagination{
+			want: templates.Pagination{
 				Left:       []int{1, 2, 3, 4, 5, 6, 7},
 				Middle:     []int{},
 				Right:      []int{22},
@@ -93,7 +93,7 @@ func TestTemplatesData(t *testing.T) {
 		{
 			name: "paginate hundreds of results in db select middle page",
 			in:   11,
-			want: Pagination{
+			want: templates.Pagination{
 				Left:       []int{1},
 				Middle:     []int{9, 10, 11, 12, 13},
 				Right:      []int{22},
@@ -107,7 +107,7 @@ func TestTemplatesData(t *testing.T) {
 		{
 			name: "paginate hundreds of results in db select right page",
 			in:   20,
-			want: Pagination{
+			want: templates.Pagination{
 				Left:       []int{1},
 				Middle:     []int{},
 				Right:      []int{17, 18, 19, 20, 21, 22},
@@ -121,11 +121,7 @@ func TestTemplatesData(t *testing.T) {
 	}
 	for _, tc := range testcases2 {
 		t.Run("test pagination init "+tc.name, func(t *testing.T) {
-			actual := Pagination{
-				NumPages:   tc.want.NumPages,
-				NumResults: tc.want.NumResults,
-			}
-			actual.Init(tc.in)
+			actual := templates.NewPagination(tc.want.NumPages, tc.want.NumResults, tc.in)
 
 			if !slices.Equal(actual.Left, tc.want.Left) {
 				t.Errorf("Left: wanted %#v but got %#v", tc.want.Left, actual.Left)

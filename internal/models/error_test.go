@@ -1,10 +1,14 @@
-package models
+package models_test
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/reaper47/recipya/internal/models"
+)
 
 func TestModelError(t *testing.T) {
 	t.Run("NewErrorJSON creates a proper JSON object for the error", func(t *testing.T) {
-		actual, err := NewErrorJSON(404, "An error message")
+		actual, err := models.NewErrorJSON(404, "An error message")
 		if err != nil {
 			t.Fatalf("error creating a a JSON object: %s", err)
 		}

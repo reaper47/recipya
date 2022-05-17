@@ -1,16 +1,18 @@
-package models
+package models_test
 
 import (
 	"testing"
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/constants"
+	"github.com/reaper47/recipya/internal/models"
 	"golang.org/x/exp/slices"
 )
 
 func TestModelRecipe(t *testing.T) {
 	t.Run("Recipe ToArgs is correct", func(t *testing.T) {
-		r := Recipe{
+		r := models.Recipe{
 			ID:          1,
 			Name:        "name",
 			Description: "description",
@@ -18,13 +20,13 @@ func TestModelRecipe(t *testing.T) {
 			URL:         "https://www.google.com",
 			Yield:       4,
 			Category:    "lunch",
-			Times: Times{
+			Times: models.Times{
 				Prep:  1 * time.Hour,
 				Cook:  2 * time.Hour,
 				Total: 3 * time.Hour,
 			},
-			Ingredients: Ingredients{Values: []string{"ing1", "ing2", "ing3"}},
-			Nutrition: Nutrition{
+			Ingredients: models.Ingredients{Values: []string{"ing1", "ing2", "ing3"}},
+			Nutrition: models.Nutrition{
 				Calories:           "1kcal",
 				TotalCarbohydrates: "1g",
 				Sugars:             "2g",
@@ -56,7 +58,7 @@ func TestModelRecipe(t *testing.T) {
 
 	t.Run("Recipe ToSchema transforms the Recipe to its schema successfully", func(t *testing.T) {
 		imageUUID := uuid.New()
-		r := Recipe{
+		r := models.Recipe{
 			ID:          1,
 			Name:        "name",
 			Description: "description",
@@ -64,13 +66,13 @@ func TestModelRecipe(t *testing.T) {
 			URL:         "https://www.google.com",
 			Yield:       4,
 			Category:    "lunch",
-			Times: Times{
+			Times: models.Times{
 				Prep:  1 * time.Hour,
 				Cook:  2 * time.Hour,
 				Total: 3 * time.Hour,
 			},
-			Ingredients: Ingredients{Values: []string{"ing1", "ing2", "ing3"}},
-			Nutrition: Nutrition{
+			Ingredients: models.Ingredients{Values: []string{"ing1", "ing2", "ing3"}},
+			Nutrition: models.Nutrition{
 				Calories:           "1kcal",
 				TotalCarbohydrates: "1g",
 				Sugars:             "2g",
@@ -90,8 +92,8 @@ func TestModelRecipe(t *testing.T) {
 
 		schema := r.ToSchema()
 
-		if schema.AtContext != "http://schema.org" {
-			t.Errorf("context must be http://schema.org")
+		if schema.AtContext != "https://schema.org" {
+			t.Errorf("context must be https://schema.org")
 		}
 		if schema.AtType.Value != "Recipe" {
 			t.Errorf("type must be Recipe")
@@ -108,15 +110,15 @@ func TestModelRecipe(t *testing.T) {
 		if schema.Cuisine.Value != "" {
 			t.Errorf("wanted an empty cusine but got %q", schema.Cuisine)
 		}
-		v := r.CreatedAt.Format("2006-01-02")
+		v := r.CreatedAt.Format(constants.BasicTimeLayout)
 		if schema.DateCreated != v {
 			t.Errorf("wanted date created %q but got %q", v, schema.DateCreated)
 		}
-		v = r.UpdatedAt.Format("2006-01-02")
+		v = r.UpdatedAt.Format(constants.BasicTimeLayout)
 		if schema.DateModified != v {
 			t.Errorf("wanted date modified %q but got %q", v, schema.DateModified)
 		}
-		v = r.CreatedAt.Format("2006-01-02")
+		v = r.CreatedAt.Format(constants.BasicTimeLayout)
 		if schema.DatePublished != v {
 			t.Errorf("wanted date published %q but got %q", v, schema.DatePublished)
 		}
@@ -126,7 +128,7 @@ func TestModelRecipe(t *testing.T) {
 		if schema.Keywords.Values != "kw1,kw2,kw3" {
 			t.Errorf("wanted keywords 'kw1,kw2,kw3' but got %q", schema.Keywords)
 		}
-		v = string(imageUUID.String())
+		v = imageUUID.String()
 		if schema.Image.Value != v {
 			t.Errorf("wanted uuid %q but got %q", v, schema.Image)
 		}
@@ -143,7 +145,7 @@ func TestModelRecipe(t *testing.T) {
 		if schema.Name != "name" {
 			t.Errorf("wanted name 'name' but got %q", schema.Name)
 		}
-		if schema.NutritionSchema != r.Nutrition.toSchema("4") {
+		if schema.NutritionSchema != r.Nutrition.ToSchema("4") {
 			t.Errorf("wanted nutrition but got %v", schema.NutritionSchema)
 		}
 		if schema.PrepTime != "PT1H0M0S" {
@@ -161,7 +163,7 @@ func TestModelRecipe(t *testing.T) {
 	})
 
 	t.Run("Creating a new Times parses correctly", func(t *testing.T) {
-		actual, err := NewTimes("PT1H0M0S", "PT2H0M0S")
+		actual, err := models.NewTimes("PT1H0M0S", "PT2H0M0S")
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -178,9 +180,9 @@ func TestModelRecipe(t *testing.T) {
 	})
 
 	t.Run("Recipe Normalize is correct", func(t *testing.T) {
-		r := Recipe{
+		r := models.Recipe{
 			Description: "Place the chicken pieces on a baking sheet and bake 1l 1 l 1ml 1 ml until they 425°f (220°c) and golden.",
-			Ingredients: Ingredients{
+			Ingredients: models.Ingredients{
 				Values: []string{"ing1 1L", "1 L ing2", "ing3 of 1mL stuff", "ing4 of stuff 1 mL"},
 			},
 			Instructions: []string{

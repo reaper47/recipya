@@ -11,3 +11,7 @@ const (
 	ApplicationJSON = "application/json"
 	ApplicationZip  = "application/zip"
 )
+
+const (
+	CookieSession = "session"
+)

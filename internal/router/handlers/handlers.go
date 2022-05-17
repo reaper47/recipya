@@ -13,15 +13,15 @@ import (
 
 // Index handles the GET / page.
 func Index(w http.ResponseWriter, req *http.Request) {
-	_, isAuthenticated := repository.IsAuthenticated(w, req)
+	_, isAuthenticated := repository.IsAuthenticated(req)
 	if isAuthenticated {
 		http.Redirect(w, req, "/recipes", http.StatusSeeOther)
 	} else {
-		handleIndexUnauthenticated(w, req)
+		handleIndexUnauthenticated(w)
 	}
 }
 
-func handleIndexUnauthenticated(w http.ResponseWriter, req *http.Request) {
+func handleIndexUnauthenticated(w http.ResponseWriter) {
 	err := templates.Render(w, "landing.gohtml", templates.Data{
 		HideSidebar: true,
 		HeaderData: templates.HeaderData{
@@ -40,18 +40,15 @@ func Recipes(w http.ResponseWriter, req *http.Request) {
 		showErrorPage(w, "Could not retrieve total number of recipes", err)
 		return
 	}
-	pg := templates.Pagination{
-		NumResults: count,
-		NumPages:   count / 12,
-	}
 
-	qpage := req.URL.Query().Get("page")
 	var page int
+	numPages := count / 12
+	qpage := req.URL.Query().Get("page")
 	page, err = strconv.Atoi(qpage)
 	if err != nil || page <= 0 {
 		page = 1
-	} else if page > pg.NumPages+1 {
-		page = pg.NumPages + 1
+	} else if page > numPages+1 {
+		page = numPages + 1
 	}
 
 	s := getSession(req)
@@ -61,12 +58,10 @@ func Recipes(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	pg.Init(page)
-
 	err = templates.Render(w, "index.gohtml", templates.Data{
 		RecipesData: templates.RecipesData{
 			Recipes:    recipes,
-			Pagination: pg,
+			Pagination: templates.NewPagination(count, numPages, page),
 		},
 		HeaderData: templates.HeaderData{
 			AvatarInitials: s.UserInitials,
@@ -78,12 +73,12 @@ func Recipes(w http.ResponseWriter, req *http.Request) {
 }
 
 // Favicon serves the favicon.ico file.
-func Favicon(w http.ResponseWriter, req *http.Request) {
+func Favicon(w http.ResponseWriter, _ *http.Request) {
 	serveFile(w, "favicon.ico", "image/x-icon")
 }
 
 // Robots serves the robots.txt file.
-func Robots(w http.ResponseWriter, req *http.Request) {
+func Robots(w http.ResponseWriter, _ *http.Request) {
 	serveFile(w, "robots.txt", "text/plain")
 }
 
@@ -96,7 +91,7 @@ func serveFile(w http.ResponseWriter, fname, contentType string) {
 
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", contentType)
-	w.Write(f)
+	_, _ = w.Write(f)
 }
 
 // Settings serves the GET /settings endpoint.

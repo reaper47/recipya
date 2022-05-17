@@ -9,6 +9,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/config"
+	"github.com/reaper47/recipya/internal/constants"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/regex"
 	"github.com/reaper47/recipya/internal/repository"
@@ -19,13 +20,13 @@ import (
 func Register(w http.ResponseWriter, req *http.Request) {
 	switch req.Method {
 	case http.MethodGet:
-		handleGetRegister(w, req)
+		handleGetRegister(w)
 	case http.MethodPost:
 		handlePostRegister(w, req)
 	}
 }
 
-func handleGetRegister(w http.ResponseWriter, req *http.Request) {
+func handleGetRegister(w http.ResponseWriter) {
 	err := templates.Render(w, "register.gohtml", templates.Data{
 		HeaderData: templates.HeaderData{
 			Hide: true,
@@ -85,7 +86,7 @@ func handlePostRegister(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	err = setCookie(w, req, u, true)
+	err = setCookie(w, u, true)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -97,13 +98,13 @@ func handlePostRegister(w http.ResponseWriter, req *http.Request) {
 func SignIn(w http.ResponseWriter, req *http.Request) {
 	switch req.Method {
 	case http.MethodGet:
-		handleGetSignIn(w, req)
+		handleGetSignIn(w)
 	case http.MethodPost:
 		handlePostSignIn(w, req)
 	}
 }
 
-func handleGetSignIn(w http.ResponseWriter, req *http.Request) {
+func handleGetSignIn(w http.ResponseWriter) {
 	err := templates.Render(w, "signin.gohtml", templates.Data{
 		HeaderData: templates.HeaderData{
 			Hide:              true,
@@ -117,24 +118,24 @@ func handleGetSignIn(w http.ResponseWriter, req *http.Request) {
 }
 
 func handlePostSignIn(w http.ResponseWriter, req *http.Request) {
-	var errors templates.FormErrorData
+	var errs templates.FormErrorData
 
 	id := req.FormValue("username-or-email")
 	if id == "" {
-		errors.Username = "Username/email cannot be empty"
+		errs.Username = "Username/email cannot be empty"
 	}
 
 	password := req.FormValue("password")
 	if password == "" {
-		errors.Password = "Password cannot be empty."
+		errs.Password = "Password cannot be empty."
 	}
 
 	u := config.App().Repo.User(id)
 	if !u.IsPasswordOk(password) {
-		errors.Password = "Credentials are incorrect."
+		errs.Password = "Credentials are incorrect."
 	}
 
-	if !errors.IsEmpty() {
+	if !errs.IsEmpty() {
 		w.WriteHeader(http.StatusBadRequest)
 		err := templates.Render(w, "signin.gohtml", templates.Data{
 			HeaderData: templates.HeaderData{
@@ -142,7 +143,7 @@ func handlePostSignIn(w http.ResponseWriter, req *http.Request) {
 				IsUnauthenticated: true,
 			},
 			HideSidebar:   true,
-			FormErrorData: errors,
+			FormErrorData: errs,
 		})
 		if err != nil {
 			log.Println(err)
@@ -151,7 +152,7 @@ func handlePostSignIn(w http.ResponseWriter, req *http.Request) {
 	}
 
 	rememberMe := req.FormValue("remember-me")
-	err := setCookie(w, req, u, rememberMe == "")
+	err := setCookie(w, u, rememberMe == "")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -159,7 +160,7 @@ func handlePostSignIn(w http.ResponseWriter, req *http.Request) {
 	http.Redirect(w, req, "/", http.StatusSeeOther)
 }
 
-func setCookie(w http.ResponseWriter, r *http.Request, u models.User, isSession bool) error {
+func setCookie(w http.ResponseWriter, u models.User, isSession bool) error {
 	sid := uuid.NewString()
 	token, err := auth.CreateToken(sid)
 	if err != nil {
@@ -174,7 +175,7 @@ func setCookie(w http.ResponseWriter, r *http.Request, u models.User, isSession 
 		UserInitials: u.GetInitials(),
 	}
 
-	c := http.Cookie{Name: "session", Value: token, Path: "/"}
+	c := http.Cookie{Name: constants.CookieSession, Value: token, Path: "/"}
 	if !isSession {
 		c.Expires = auth.ExpiresAt
 	}
@@ -185,9 +186,9 @@ func setCookie(w http.ResponseWriter, r *http.Request, u models.User, isSession 
 
 // SignOut handles the POST /auth/signout endpoint.
 func SignOut(w http.ResponseWriter, req *http.Request) {
-	c, err := req.Cookie("session")
+	c, err := req.Cookie(constants.CookieSession)
 	if err != nil {
-		c = &http.Cookie{Name: "session", Value: ""}
+		c = &http.Cookie{Name: constants.CookieSession, Value: ""}
 	}
 	c.MaxAge = -1
 

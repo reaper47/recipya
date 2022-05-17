@@ -5,6 +5,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/reaper47/recipya/internal/router/handlers"
+	"github.com/reaper47/recipya/internal/utils/paths"
 	"github.com/reaper47/recipya/static"
 )
 
@@ -25,7 +26,7 @@ func New() *mux.Router {
 	r.PathPrefix("/static/").
 		Handler(http.StripPrefix("/static", http.FileServer(http.FS(static.FS))))
 	r.PathPrefix("/data/img/").
-		Handler(http.StripPrefix("/data/img/", http.FileServer(http.Dir("data/img"))))
+		Handler(http.StripPrefix("/data/img/", http.FileServer(http.Dir(paths.Images()))))
 
 	auth := r.PathPrefix("/auth").Subrouter()
 	auth.HandleFunc("/register", handlers.Register).Methods(GET, POST)

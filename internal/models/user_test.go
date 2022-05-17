@@ -1,13 +1,14 @@
-package models
+package models_test
 
 import (
 	"testing"
 
 	"github.com/reaper47/recipya/internal/auth"
+	"github.com/reaper47/recipya/internal/models"
 )
 
 func TestModelUser(t *testing.T) {
-	u := User{
+	u := models.User{
 		ID:       1,
 		Username: "adam jenkins",
 		Email:    "user@name.com",

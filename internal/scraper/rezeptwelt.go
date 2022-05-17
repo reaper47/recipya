@@ -5,6 +5,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/reaper47/recipya/internal/constants"
 	"github.com/reaper47/recipya/internal/models"
 	"golang.org/x/net/html"
 )
@@ -49,7 +50,7 @@ func scrapeRezeptwelt(root *html.Node) (models.RecipeSchema, error) {
 			for _, v := range parts {
 				t, err := time.Parse("02.01.2006", strings.TrimSpace(v))
 				if err == nil {
-					created = t.Format("2006-01-02")
+					created = t.Format(constants.BasicTimeLayout)
 					break
 				}
 			}
@@ -63,7 +64,7 @@ func scrapeRezeptwelt(root *html.Node) (models.RecipeSchema, error) {
 			for _, v := range parts {
 				t, err := time.Parse("02.01.2006", strings.TrimSpace(v))
 				if err == nil {
-					mod = t.Format("2006-01-02")
+					mod = t.Format(constants.BasicTimeLayout)
 					break
 				}
 			}
