@@ -312,13 +312,13 @@ func Categories(w http.ResponseWriter, req *http.Request) {
 	j := make(map[string]string)
 	err := json.NewDecoder(req.Body).Decode(&j)
 	if err != nil {
-		writeJson(w, "Could not decode categories JSON.", http.StatusInternalServerError)
+		writeJSON(w, "Could not decode categories JSON.", http.StatusInternalServerError)
 		return
 	}
 
 	c, ok := j["category"]
 	if !ok {
-		writeJson(w, "JSON does not contain the key 'category'.", http.StatusBadRequest)
+		writeJSON(w, "JSON does not contain the key 'category'.", http.StatusBadRequest)
 		return
 	}
 
@@ -332,7 +332,7 @@ func Categories(w http.ResponseWriter, req *http.Request) {
 	case http.MethodPut:
 		newCategory, ok := j["newCategory"]
 		if !ok {
-			writeJson(w, "JSON does not contain the key 'category'.", http.StatusBadRequest)
+			writeJSON(w, "JSON does not contain the key 'category'.", http.StatusBadRequest)
 			return
 		}
 		handlePutCategories(w, c, newCategory, s.UserID)
@@ -342,7 +342,7 @@ func Categories(w http.ResponseWriter, req *http.Request) {
 func handlePostCategories(w http.ResponseWriter, category string, userID int64) {
 	err := config.App().Repo.InsertCategory(category, userID)
 	if err != nil {
-		writeJson(
+		writeJSON(
 			w,
 			"Could not insert the category - "+category+".",
 			http.StatusInternalServerError,

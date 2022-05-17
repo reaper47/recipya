@@ -13,5 +13,6 @@ const (
 )
 
 const (
+	// CookieSession is the name of the session cookie.
 	CookieSession = "session"
 )

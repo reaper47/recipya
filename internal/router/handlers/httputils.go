@@ -18,7 +18,7 @@ func getSession(req *http.Request) models.Session {
 	return s
 }
 
-func writeJson(w http.ResponseWriter, message string, code int) {
+func writeJSON(w http.ResponseWriter, message string, code int) {
 	j, err := models.NewErrorJSON(http.StatusBadRequest, message)
 	if err != nil {
 		_, _ = fmt.Fprintf(w, constants.ErrDecodingJSON+err.Error())

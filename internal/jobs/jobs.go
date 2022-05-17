@@ -56,7 +56,7 @@ func cleanImages(dir fs.FS, usedImages []string, rmFileFunc func(path string) er
 				return err
 			}
 
-			numFilesDeleted += 1
+			numFilesDeleted++
 			numBytesDeleted += info.Size()
 		}
 		return nil

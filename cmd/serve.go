@@ -11,7 +11,7 @@ import (
 	"github.com/reaper47/recipya/internal/contexts"
 	"github.com/reaper47/recipya/internal/jobs"
 	"github.com/reaper47/recipya/internal/router"
-	_ "github.com/reaper47/recipya/internal/templates"
+	_ "github.com/reaper47/recipya/internal/templates" // imported to initialize the templates
 	"github.com/reaper47/recipya/internal/utils/paths"
 	"github.com/spf13/cobra"
 )
