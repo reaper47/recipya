@@ -15,7 +15,6 @@ require github.com/gorilla/mux v1.8.0
 require github.com/golang-jwt/jwt/v4 v4.4.1
 
 require (
-	github.com/approvals/go-approval-tests v0.0.0-20220429035603-e60d9ca44d3e // indirect
 	github.com/deckarep/golang-set v1.7.1 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
@@ -31,12 +30,13 @@ require (
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
-	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/text v0.3.8 // indirect
 	gonum.org/v1/gonum v0.9.3 // indirect
 	gopkg.in/neurosnap/sentences.v1 v1.0.6 // indirect
 )
 
 require (
+	github.com/approvals/go-approval-tests v0.0.0-20220429035603-e60d9ca44d3e
 	github.com/jdkato/prose/v2 v2.0.0
 	golang.org/x/exp v0.0.0-20220428152302-39d4317da171
 )
