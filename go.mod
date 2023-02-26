@@ -29,8 +29,8 @@ require (
 	github.com/mingrammer/commonregex v1.0.1 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
-	golang.org/x/text v0.3.8 // indirect
+	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4 // indirect
+	golang.org/x/text v0.7.0 // indirect
 	gonum.org/v1/gonum v0.9.3 // indirect
 	gopkg.in/neurosnap/sentences.v1 v1.0.6 // indirect
 )
@@ -49,6 +49,6 @@ require (
 	github.com/oxtoacart/bpool v0.0.0-20190530202638-03653db5a59c
 	go.uber.org/atomic v1.9.0 // indirect
 	golang.org/x/crypto v0.0.0-20220511200225-c6db032c6c88
-	golang.org/x/image v0.0.0-20220413100746-70e8d0d3baa9
-	golang.org/x/net v0.0.0-20220425223048-2871e0cb64e4
+	golang.org/x/image v0.5.0
+	golang.org/x/net v0.0.0-20220722155237-a158d28d115b
 )
