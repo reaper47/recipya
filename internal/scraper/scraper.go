@@ -2,44 +2,48 @@ package scraper
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
+	"github.com/PuerkitoBio/goquery"
+	"github.com/reaper47/recipya/internal/models"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/net/html"
 )
+
+const atContext = "https://schema.org"
 
 // Scrape extracts the recipe from the given URL. An error will be
 // returned when the URL cannot be parsed.
-func Scrape(rawurl string) (models.RecipeSchema, error) {
+func Scrape(url string) (models.RecipeSchema, error) {
 	var rs models.RecipeSchema
 
-	res, err := http.Get(rawurl)
+	res, err := http.Get(url)
 	if err != nil {
 		return rs, fmt.Errorf("could not fetch the url: %s", err)
 	}
 	defer res.Body.Close()
 
-	doc, err := html.Parse(res.Body)
+	doc, err := goquery.NewDocumentFromReader(res.Body)
 	if err != nil {
 		return rs, fmt.Errorf("could not parse HTML: %s", err)
 	}
 
-	rs, err = scrapeWebsite(doc, getHost(rawurl))
+	rs, err = scrapeWebsite(doc, getHost(url))
 	if err != nil {
-		return rs, fmt.Errorf("could not fetch the recipe from %s: %s", rawurl, err)
+		return rs, errors.New("url could not be fetched")
 	}
 
 	if rs.URL == "" {
-		rs.URL = rawurl
+		rs.URL = url
 	}
+
+	rs.AtContext = atContext
 	return rs, nil
 }
 
-func getHost(rawurl string) string {
-	u, err := url.Parse(rawurl)
+func getHost(rawURL string) string {
+	u, err := url.Parse(rawURL)
 	if err != nil {
 		return ""
 	}
@@ -56,52 +60,45 @@ func getHost(rawurl string) string {
 			return parts[1]
 		}
 
-		if parts[1] == "wikibooks" || parts[1] == "tesco" {
+		if parts[1] == "wikibooks" || parts[1] == "tesco" || parts[1] == "expressen" {
 			return parts[1]
 		}
 
 		if parts[0] != "www" {
 			return parts[0]
 		}
-
 		return parts[1]
 	default:
 		return parts[len(parts)-2]
-
 	}
 }
 
-func scrapeLdJSONs(root *html.Node) (models.RecipeSchema, error) {
-	n := getElement(root, "type", "application/ld+json")
-	var rs models.RecipeSchema
-	var xrs []models.RecipeSchema
+func parseLdJSON(root *goquery.Document) (models.RecipeSchema, error) {
+	for _, node := range root.Find("script[type='application/ld+json']").Nodes {
+		var rs models.RecipeSchema
+		if err := json.Unmarshal([]byte(node.FirstChild.Data), &rs); err != nil {
+			var xrs []models.RecipeSchema
+			if err := json.Unmarshal([]byte(node.FirstChild.Data), &xrs); err != nil {
+				continue
+			}
 
-	err := json.Unmarshal([]byte(n.FirstChild.Data), &xrs)
-	if err != nil {
-		return rs, err
-	}
-
-	for _, rs := range xrs {
-		if rs.AtType.Value == "Recipe" {
-			return rs, nil
+			for _, rs := range xrs {
+				if rs.AtType.Value == "Recipe" {
+					rs.AtContext = atContext
+					return rs, nil
+				}
+			}
+			continue
 		}
+
+		if rs.AtType.Value != "Recipe" {
+			continue
+		}
+
+		rs.AtContext = atContext
+		return rs, nil
 	}
 	return models.RecipeSchema{}, nil
-}
-
-func scrapeLdJSON(root *html.Node) (models.RecipeSchema, error) {
-	n := getElement(root, "type", "application/ld+json")
-	var rs models.RecipeSchema
-
-	err := json.Unmarshal([]byte(n.FirstChild.Data), &rs)
-	if err != nil {
-		return rs, err
-	}
-
-	if rs.AtType.Value != "Recipe" {
-		return rs, fmt.Errorf("@type must be Recipe but got %s", rs.AtType.Value)
-	}
-	return rs, nil
 }
 
 type graph struct {
@@ -109,39 +106,23 @@ type graph struct {
 	AtGraph   []models.RecipeSchema `json:"@graph"`
 }
 
-func scrapeGraph(root *html.Node) (models.RecipeSchema, error) {
-	n := getElement(root, "type", "application/ld+json")
-	var rs models.RecipeSchema
-	var g graph
-
-	err := json.Unmarshal([]byte(n.FirstChild.Data), &g)
-	if err != nil {
-		return rs, err
-	}
-
-	for _, r := range g.AtGraph {
-		if r.AtType.Value == "Recipe" {
-			return r, nil
-		}
-	}
-	return rs, fmt.Errorf("no recipe for the given url")
-}
-
-func findRecipeLdJSON(root *html.Node) (models.RecipeSchema, error) {
-	xn := traverseAll(root, func(node *html.Node) bool {
-		return getAttr(node, "type") == "application/ld+json"
-	})
-	for _, n := range xn {
-		n.FirstChild.Data = strings.ReplaceAll(n.FirstChild.Data, "\n", "")
-
-		rs, err := scrapeLdJSON(n)
-		if err != nil {
+func parseGraph(root *goquery.Document) (models.RecipeSchema, error) {
+	for _, node := range root.Find("script[type='application/ld+json']").Nodes {
+		if node.FirstChild == nil {
 			continue
 		}
 
-		if rs.AtType.Value == "Recipe" {
-			return rs, nil
+		var g graph
+		if err := json.Unmarshal([]byte(node.FirstChild.Data), &g); err != nil {
+			continue
+		}
+
+		for _, r := range g.AtGraph {
+			if r.AtType.Value == "Recipe" {
+				r.AtContext = atContext
+				return r, nil
+			}
 		}
 	}
-	return models.RecipeSchema{}, fmt.Errorf("recipe not found")
+	return models.RecipeSchema{}, fmt.Errorf("no recipe for the given url")
 }

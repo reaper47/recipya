@@ -1,9 +1,8 @@
 package auth_test
 
 import (
-	"testing"
-
 	"github.com/reaper47/recipya/internal/auth"
+	"testing"
 )
 
 func FuzzAuthPasswords(f *testing.F) {
@@ -18,13 +17,12 @@ func FuzzAuthPasswords(f *testing.F) {
 			t.Errorf("password cannot be hashed: %q", orig)
 		}
 
-		if string(hashed) == orig {
+		if hashed.String() == orig {
 			t.Errorf("hashed password must be equal to the plain text password: %q", orig)
 		}
 
-		err = auth.ComparePassword(orig, hashed)
-		if err != nil {
-			t.Errorf("passwords do not match: %s", err)
+		if !auth.VerifyPassword(orig, hashed) {
+			t.Errorf("passwords do not match: %q", err)
 		}
 	})
 }

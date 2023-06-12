@@ -1,0 +1,9 @@
+{
+	"email": {
+		"from": "my@email.com",
+		"sendGridAPIKey": "API_KEY"
+	},
+	"isProduction": false,
+	"port": 8078,
+	"url": "http://0.0.0.0:8078"
+}

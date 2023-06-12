@@ -1,56 +1,113 @@
 package templates
 
 import (
+	"bytes"
+	"context"
 	"fmt"
+	"github.com/Boostport/mjml-go"
+	"github.com/reaper47/recipya/web"
+	"golang.org/x/exp/slices"
 	"html/template"
 	"io/fs"
+	"log"
 	"net/http"
-
-	"github.com/oxtoacart/bpool"
-	"github.com/reaper47/recipya/views"
+	"path/filepath"
+	"strings"
 )
 
-var templates map[string]*template.Template
-var bufpool *bpool.BufferPool
+var (
+	templates      map[string]*template.Template
+	templatesEmail map[string]*template.Template
+	emailsFuncMap  = template.FuncMap{
+		"nl2br": func(text string) template.HTML {
+			return template.HTML(strings.ReplaceAll(template.HTMLEscapeString(text), "\n", "<br />"))
+		},
+	}
+)
 
 func init() {
 	templates = make(map[string]*template.Template)
-	bufpool = bpool.NewBufferPool(64)
 
-	tmpls, err := fs.ReadDir(views.FS, ".")
+	if err := fs.WalkDir(web.FS, "templates", func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if !d.IsDir() && strings.HasSuffix(path, ".gohtml") {
+			authLayouts := []string{
+				"templates/pages/login.gohtml",
+				"templates/pages/register.gohtml",
+				"templates/pages/simple.gohtml",
+			}
+			var layouts []string
+			if slices.Contains(authLayouts, path) {
+				layouts, _ = fs.Glob(web.FS, "templates/layouts/auth.gohtml")
+			} else {
+				layouts, _ = fs.Glob(web.FS, "templates/layouts/main.gohtml")
+			}
+
+			components, _ := fs.Glob(web.FS, "templates/components/*.gohtml")
+
+			files := append(layouts, components...)
+			files = append(files, path)
+
+			templates[strings.TrimPrefix(path, "templates/")] = template.Must(template.ParseFS(web.FS, files...))
+		}
+		return nil
+	}); err != nil {
+		panic(err)
+	}
+
+	initEmailTemplates()
+}
+
+func initEmailTemplates() {
+	templatesEmail = make(map[string]*template.Template)
+
+	emailDir, err := fs.ReadDir(web.FS, "emails")
 	if err != nil {
 		panic(err)
 	}
 
-	for _, tmpl := range tmpls {
-		if tmpl.IsDir() {
-			continue
+	for _, entry := range emailDir {
+		n := entry.Name()
+
+		if filepath.Ext(n) == ".mjml" {
+			tmpl := template.Must(template.New(n).ParseFS(web.FS, "emails/"+n))
+
+			html, err := mjml.ToHTML(context.Background(), tmpl.Tree.Root.String(), mjml.WithMinify(true))
+			if err != nil {
+				log.Fatal(err)
+			}
+			html = strings.ReplaceAll(html, "[[", "{{")
+			html = strings.ReplaceAll(html, "]]", "}}")
+
+			templatesEmail[n] = template.Must(template.New(n).Funcs(emailsFuncMap).Parse(html))
 		}
-		templates[tmpl.Name()] = template.Must(
-			template.New("main").Funcs(fm).ParseFS(views.FS, tmpl.Name(), "layouts/*.gohtml"),
-		)
 	}
 }
 
-// Render is a wrapper for template.ExecuteTemplate.
-func Render(w http.ResponseWriter, name string, data interface{}) error {
-	tmpl, ok := templates[name]
-	if !ok {
-		err := fmt.Errorf("the template %s does not exist", name)
+// Render renders a page to the response writer.
+func Render(w http.ResponseWriter, page Page, data any) {
+	if err := templates["pages/"+page.String()+".gohtml"].Execute(w, data); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return err
 	}
+}
 
-	buf := bufpool.Get()
-	defer bufpool.Put(buf)
-
-	err := tmpl.Execute(buf, data)
+// RenderComponent renders a component to the response writer.
+func RenderComponent(w http.ResponseWriter, component, name string, data any) {
+	div, err := fs.ReadFile(web.FS, "templates/components/"+component+".gohtml")
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return err
+		return
 	}
 
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	_, _ = buf.WriteTo(w)
-	return nil
+	t, err := template.New("component").Parse(string(div))
+	if err != nil {
+		return
+	}
+
+	var buf bytes.Buffer
+	_ = t.ExecuteTemplate(&buf, name, data)
+	w.Header().Set("Content-Type", "text/html")
+	fmt.Fprint(w, buf.String())
 }

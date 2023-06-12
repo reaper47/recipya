@@ -1,90 +1,52 @@
 package scraper
 
 import (
-	"strconv"
+	"github.com/PuerkitoBio/goquery"
 	"strings"
 
 	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/net/html"
 )
 
-func scrapePurelyPope(root *html.Node) (models.RecipeSchema, error) {
-	chPrepTime := make(chan string)
-	chCookTime := make(chan string)
-	go func() {
-		var prep string
-		var cook string
-		defer func() {
-			_ = recover()
-			chPrepTime <- prep
-			chCookTime <- cook
-		}()
+func scrapePurelyPope(root *goquery.Document) (models.RecipeSchema, error) {
+	dateModified, _ := root.Find("meta[property='article:modified_time']").Attr("content")
+	datePublished, _ := root.Find("meta[property='article:published_time']").Attr("content")
+	image, _ := root.Find("img[itemprop='image']").Attr("src")
+	image = strings.Split(image, "?")[0]
 
-		node := getElement(root, "itemprop", "prepTime")
-		prep = strings.ReplaceAll(getAttr(node, "datetime"), " ", "")
+	name := root.Find("h2[itemprop='name']").Text()
+	yield := findYield(root.Find("span[itemprop='recipeYield']").Text())
 
-		node = getElement(root, "itemprop", "cookTime")
-		cook = strings.ReplaceAll(getAttr(node, "datetime"), " ", "")
-	}()
+	prepTime, _ := root.Find("time[itemprop='prepTime']").Attr("datetime")
+	prepTime = strings.ReplaceAll(prepTime, " ", "")
 
-	chYield := make(chan int16)
-	go func() {
-		var yield int16
-		defer func() {
-			_ = recover()
-			chYield <- yield
-		}()
+	cookTime, _ := root.Find("time[itemprop='cookTime']").Attr("datetime")
+	cookTime = strings.ReplaceAll(cookTime, " ", "")
 
-		i, err := strconv.ParseInt(<-getItemPropData(root, "recipeYield"), 10, 16)
-		if err == nil {
-			yield = int16(i)
-		}
-	}()
+	nodes := root.Find("span[itemprop='recipeIngredient']").FilterFunction(func(i int, s *goquery.Selection) bool {
+		return strings.TrimSpace(s.Text()) != ""
+	})
+	ingredients := make([]string, nodes.Length())
+	nodes.Each(func(i int, s *goquery.Selection) {
+		ingredients[i] = strings.TrimSpace(s.Text())
+	})
 
-	chingredients := make(chan []string)
-	go func() {
-		var vals []string
-		defer func() {
-			_ = recover()
-			chingredients <- vals
-		}()
-
-		xn := traverseAll(root, func(node *html.Node) bool {
-			return getAttr(node, "itemprop") == "recipeIngredient"
-		})
-		for _, n := range xn {
-			v := strings.TrimSpace(n.FirstChild.Data)
-			if v != "" {
-				vals = append(vals, v)
-			}
-		}
-	}()
-
-	chInstructions := make(chan []string)
-	go func() {
-		var vals []string
-		defer func() {
-			_ = recover()
-			chInstructions <- vals
-		}()
-
-		node := getElement(root, "itemprop", "recipeInstructions")
-		for c := node.LastChild.PrevSibling.FirstChild; c != nil; c = c.NextSibling {
-			if c.Type != html.ElementNode {
-				continue
-			}
-			vals = append(vals, c.FirstChild.Data)
-		}
-	}()
+	nodes = root.Find("div[itemprop='recipeInstructions'] li")
+	instructions := make([]string, nodes.Length())
+	nodes.Each(func(i int, s *goquery.Selection) {
+		instructions[i] = s.Text()
+	})
 
 	return models.RecipeSchema{
-		AtContext:    "https://schema.org",
-		AtType:       models.SchemaType{Value: "Recipe"},
-		Name:         <-getItemPropData(root, "name"),
-		PrepTime:     <-chPrepTime,
-		CookTime:     <-chCookTime,
-		Yield:        models.Yield{Value: <-chYield},
-		Ingredients:  models.Ingredients{Values: <-chingredients},
-		Instructions: models.Instructions{Values: <-chInstructions},
+		AtContext:     "https://schema.org",
+		AtType:        models.SchemaType{Value: "Recipe"},
+		DateModified:  dateModified,
+		DatePublished: datePublished,
+		Image:         models.Image{Value: image},
+		Name:          name,
+		PrepTime:      prepTime,
+		CookTime:      cookTime,
+		Yield:         models.Yield{Value: yield},
+		Ingredients:   models.Ingredients{Values: ingredients},
+		Instructions:  models.Instructions{Values: instructions},
 	}, nil
 }

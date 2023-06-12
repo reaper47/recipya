@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/recipya.iml" filepath="$PROJECT_DIR$/.idea/recipya.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/recipya-htmx.iml" filepath="$PROJECT_DIR$/.idea/recipya-htmx.iml" />
     </modules>
   </component>
 </project>

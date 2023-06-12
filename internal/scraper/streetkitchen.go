@@ -1,119 +1,47 @@
 package scraper
 
 import (
-	"strconv"
+	"github.com/PuerkitoBio/goquery"
 	"strings"
 
 	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/net/html"
 )
 
-func scrapeStreetKitchen(root *html.Node) (models.RecipeSchema, error) {
-	content := getElement(root, "id", "Main")
+func scrapeStreetKitchen(root *goquery.Document) (models.RecipeSchema, error) {
+	article := root.Find("article").First()
+	name := article.Find("h1").First().Text()
 
-	chName := make(chan string)
-	go func() {
-		var s string
-		defer func() {
-			_ = recover()
-			chName <- s
-		}()
+	description, _ := root.Find("meta[name='description']").Attr("content")
+	datePublished, _ := root.Find("meta[property='article:published_time").Attr("content")
+	dateModified, _ := root.Find("meta[property='article:modified_time").Attr("content")
 
-		h1 := traverseAll(content, func(node *html.Node) bool {
-			return node.Data == "h1"
-		})[0]
-		s = h1.FirstChild.Data
-	}()
+	yield := findYield(article.Find(".c-svgicon--servings").Next().Text())
 
-	chYield := make(chan int16)
-	go func() {
-		var yield int16
-		defer func() {
-			_ = recover()
-			chYield <- yield
-		}()
+	nodes := article.Find(".ingredients label")
+	ingredients := make([]string, nodes.Length())
+	nodes.Each(func(i int, s *goquery.Selection) {
+		ingredients[i] = strings.TrimSpace(s.Text())
+	})
 
-		node := getElement(root, "class", "c-svgicon c-svgicon--servings ")
-		i, err := strconv.ParseInt(node.NextSibling.NextSibling.FirstChild.Data, 10, 16)
-		if err == nil {
-			yield = int16(i)
-		}
-	}()
+	nodes = article.Find(".method-step")
+	instructions := make([]string, nodes.Length())
+	nodes.Each(func(i int, s *goquery.Selection) {
+		v := strings.TrimSuffix(s.Text(), "\n")
+		instructions[i] = v
+	})
 
-	chPrepTime := make(chan string)
-	go func() {
-		var s string
-		defer func() {
-			_ = recover()
-			chPrepTime <- s
-		}()
-
-		node := getElement(root, "class", "c-svgicon c-svgicon--prep-time ")
-		t := strings.ReplaceAll(node.NextSibling.Data, "\n", "")
-		t = strings.ReplaceAll(t, "\t", "")
-		if t != "" {
-			s = "PT" + t + "M"
-		}
-	}()
-
-	chImage := make(chan string)
-	go func() {
-		var s string
-		defer func() {
-			_ = recover()
-			chImage <- s
-		}()
-
-		node := getElement(root, "class", "c-single-recipe--container")
-		s = getAttr(node.FirstChild.NextSibling, "src")
-	}()
-
-	chIngredients := make(chan []string)
-	go func() {
-		var vals []string
-		defer func() {
-			_ = recover()
-			chIngredients <- vals
-		}()
-
-		node := traverseAll(root, func(node *html.Node) bool {
-			return node.Data == "Ingredients"
-		})[0]
-		for c := node.Parent.NextSibling; c != nil; c = c.NextSibling {
-			if c.Type != html.ElementNode {
-				continue
-			}
-			vals = append(vals, c.FirstChild.Data)
-		}
-	}()
-
-	chInstructions := make(chan []string)
-	go func() {
-		var vals []string
-		defer func() {
-			_ = recover()
-			chInstructions <- vals
-		}()
-
-		xn := traverseAll(root, func(node *html.Node) bool {
-			return getAttr(node, "class") == "c-single-recipe__method_copy"
-		})
-		for _, n := range xn {
-			if n.Type != html.ElementNode {
-				continue
-			}
-			vals = append(vals, n.FirstChild.FirstChild.Data)
-		}
-	}()
+	image, _ := article.Find("img").First().Attr("src")
 
 	return models.RecipeSchema{
-		AtContext:    "https://schema.org",
-		AtType:       models.SchemaType{Value: "Recipe"},
-		Name:         <-chName,
-		Yield:        models.Yield{Value: <-chYield},
-		PrepTime:     <-chPrepTime,
-		Image:        models.Image{Value: <-chImage},
-		Ingredients:  models.Ingredients{Values: <-chIngredients},
-		Instructions: models.Instructions{Values: <-chInstructions},
+		AtContext:     "https://schema.org",
+		AtType:        models.SchemaType{Value: "Recipe"},
+		DateModified:  dateModified,
+		DatePublished: datePublished,
+		Description:   models.Description{Value: description},
+		Name:          name,
+		Yield:         models.Yield{Value: yield},
+		Image:         models.Image{Value: image},
+		Ingredients:   models.Ingredients{Values: ingredients},
+		Instructions:  models.Instructions{Values: instructions},
 	}, nil
 }

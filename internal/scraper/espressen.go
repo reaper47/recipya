@@ -1,12 +1,16 @@
 package scraper
 
 import (
+	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/net/html"
 )
 
-func scrapeEspressen(root *html.Node) (rs models.RecipeSchema, err error) {
-	rs, err = scrapeLdJSONs(root)
-	rs.URL = "https://www.expressen.se" + rs.URL
-	return rs, err
+func scrapeEspressen(root *goquery.Document) (models.RecipeSchema, error) {
+	rs, err := parseLdJSON(root)
+	if err != nil {
+		return rs, err
+	}
+
+	rs.URL = "https://alltommat.expressen.se" + rs.URL
+	return rs, nil
 }

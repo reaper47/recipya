@@ -1,172 +1,83 @@
 package scraper
 
 import (
+	"github.com/PuerkitoBio/goquery"
 	"strings"
 
 	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/net/html"
 )
 
-func scrapeTheHappyFoodie(root *html.Node) (models.RecipeSchema, error) {
-	chName := make(chan string)
-	go func() {
-		var s string
-		defer func() {
-			_ = recover()
-			chName <- s
-		}()
+func scrapeTheHappyFoodie(root *goquery.Document) (models.RecipeSchema, error) {
+	name, _ := root.Find("meta[property='og:title']").Attr("content")
+	description, _ := root.Find("meta[property='og:description']").Attr("content")
+	datePublished, _ := root.Find("meta[property='article:published_time']").Attr("content")
+	dateModified, _ := root.Find("meta[property='article:modified_time']").Attr("content")
+	image, _ := root.Find("meta[property='og:image']").Attr("content")
 
-		node := getElement(root, "class", "hf-title__inner")
-		s = node.FirstChild.NextSibling.FirstChild.Data
-		s = strings.TrimSpace(s)
-		s = strings.ReplaceAll(s, "\n", "")
-	}()
+	yield := findYield(root.Find(".hf-metadata__portions p").Text())
 
-	chYield := make(chan int16)
-	go func() {
-		var yield int16
-		defer func() {
-			_ = recover()
-			chYield <- yield
-		}()
-
-		node := getElement(root, "class", "hf-metadata__portions d-flex align-items-center")
-		yieldStr := node.FirstChild.NextSibling.FirstChild.Data
-		var parts []string
-		if strings.Contains(yieldStr, "-") {
-			parts = strings.Split(yieldStr, "-")
-		} else {
-			parts = strings.Split(yieldStr, " ")
+	prepTimeStr := root.Find(".hf-metadata__time-prep span").Text()
+	var prepTime string
+	if prepTimeStr != "" {
+		parts := strings.Split(prepTimeStr, " ")
+		switch len(parts) {
+		case 1:
+			min := strings.TrimSuffix(parts[0], "min")
+			prepTime = "PT" + min + "M"
+		case 2:
+			hour := strings.TrimSuffix(parts[0], "hr")
+			min := strings.TrimSuffix(parts[1], "min")
+			prepTime = "PT" + hour + "H" + min + "M"
 		}
-		yield = findYield(parts)
-	}()
+	}
 
-	chDescription := make(chan string)
-	go func() {
-		var s string
-		defer func() {
-			_ = recover()
-			chDescription <- s
-		}()
-
-		node := getElement(root, "class", "hf-summary__inner")
-		s = node.FirstChild.NextSibling.FirstChild.Data
-		s = strings.TrimSpace(s)
-		s = strings.ReplaceAll(s, "\n", "")
-	}()
-
-	chPrepTime := make(chan string)
-	go func() {
-		var prep string
-		defer func() {
-			_ = recover()
-			chPrepTime <- prep
-		}()
-
-		node := getElement(root, "class", "hf-metadata__time-prep")
-		s := node.FirstChild.NextSibling.FirstChild.NextSibling.FirstChild.Data
-		s = strings.TrimSpace(s)
-		s = strings.ReplaceAll(s, "\n", "")
-		if strings.HasSuffix(s, "min") {
-			s = strings.TrimSuffix(s, "min")
-			prep = "PT" + s + "M"
+	cookTimeStr := root.Find(".hf-metadata__time-cook span").Text()
+	var cookTime string
+	if prepTimeStr != "" {
+		parts := strings.Split(cookTimeStr, " ")
+		switch len(parts) {
+		case 1:
+			min := strings.TrimSuffix(parts[0], "min")
+			cookTime = "PT" + min + "M"
+		case 2:
+			hour := strings.TrimSuffix(parts[0], "hr")
+			min := strings.TrimSuffix(parts[1], "min")
+			cookTime = "PT" + hour + "H" + min + "M"
 		}
-	}()
+	}
 
-	chCookTime := make(chan string)
-	go func() {
-		var cook string
-		defer func() {
-			_ = recover()
-			chCookTime <- cook
-		}()
+	nodes := root.Find(".hf-tags__single")
+	allKeywords := make([]string, nodes.Length())
+	nodes.Each(func(i int, s *goquery.Selection) {
+		allKeywords[i] = s.Text()
+	})
+	keywords := strings.Join(allKeywords, ", ")
 
-		node := getElement(root, "class", "hf-metadata__time-cook")
-		s := node.FirstChild.NextSibling.FirstChild.NextSibling.FirstChild.Data
-		s = strings.TrimSpace(s)
-		s = strings.ReplaceAll(s, "\n", "")
-		if strings.HasSuffix(s, "min") {
-			s = strings.TrimSuffix(s, "min")
-			cook = "PT" + s + "M"
-		}
-	}()
+	nodes = root.Find(".hf-ingredients__single-group tr")
+	ingredients := make([]string, nodes.Length())
+	nodes.Each(func(i int, s *goquery.Selection) {
+		ingredients[i] = strings.Join(strings.Fields(s.Text()), " ")
+	})
 
-	chKeywords := make(chan string)
-	go func() {
-		var s string
-		defer func() {
-			_ = recover()
-			chKeywords <- s
-		}()
-
-		xn := traverseAll(root, func(node *html.Node) bool {
-			return getAttr(node, "class") == "hf-tags__single"
-		})
-		var vals []string
-		for _, n := range xn {
-			vals = append(vals, n.FirstChild.Data)
-		}
-		s = strings.Join(vals, ", ")
-	}()
-
-	chIngredients := make(chan []string)
-	go func() {
-		var vals []string
-		defer func() {
-			_ = recover()
-			chIngredients <- vals
-		}()
-
-		node := getElement(root, "class", "hf-ingredients__single-group")
-		tbody := traverseAll(node, func(node *html.Node) bool {
-			return node.Data == "tbody"
-		})[0]
-		for tr := tbody.FirstChild; tr != nil; tr = tr.NextSibling {
-			if tr.Type != html.ElementNode {
-				continue
-			}
-
-			amount := tr.FirstChild.NextSibling.FirstChild.Data
-			amount = strings.ReplaceAll(amount, "\n", "")
-			amount = strings.ReplaceAll(amount, "\t", "")
-
-			name := tr.LastChild.PrevSibling.FirstChild.Data
-			name = strings.ReplaceAll(name, "\n", "")
-			name = strings.ReplaceAll(name, "\t", "")
-
-			v := strings.TrimSpace(amount + " " + name)
-			v = strings.Join(strings.Fields(v), " ")
-			vals = append(vals, v)
-		}
-	}()
-
-	chInstructions := make(chan []string)
-	go func() {
-		var vals []string
-		defer func() {
-			_ = recover()
-			chInstructions <- vals
-		}()
-
-		node := getElement(root, "class", "hf-method__text")
-		for p := node.FirstChild; p != nil; p = p.NextSibling {
-			if p.Type != html.ElementNode {
-				continue
-			}
-			vals = append(vals, p.FirstChild.Data)
-		}
-	}()
+	nodes = root.Find(".hf-method__text p")
+	instructions := make([]string, nodes.Length())
+	nodes.Each(func(i int, s *goquery.Selection) {
+		instructions[i] = s.Text()
+	})
 
 	return models.RecipeSchema{
-		AtContext:    "https://schema.org",
-		AtType:       models.SchemaType{Value: "Recipe"},
-		Name:         <-chName,
-		Description:  models.Description{Value: <-chDescription},
-		Yield:        models.Yield{Value: <-chYield},
-		PrepTime:     <-chPrepTime,
-		CookTime:     <-chCookTime,
-		Keywords:     models.Keywords{Values: <-chKeywords},
-		Ingredients:  models.Ingredients{Values: <-chIngredients},
-		Instructions: models.Instructions{Values: <-chInstructions},
+		AtContext:     "https://schema.org",
+		AtType:        models.SchemaType{Value: "Recipe"},
+		Name:          name,
+		DatePublished: datePublished,
+		DateModified:  dateModified,
+		Description:   models.Description{Value: description},
+		Image:         models.Image{Value: image},
+		Yield:         models.Yield{Value: yield},
+		PrepTime:      prepTime,
+		CookTime:      cookTime,
+		Keywords:      models.Keywords{Values: keywords},
+		Ingredients:   models.Ingredients{Values: ingredients},
+		Instructions:  models.Instructions{Values: instructions},
 	}, nil
 }

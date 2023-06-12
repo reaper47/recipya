@@ -1,49 +1,32 @@
 package scraper
 
 import (
-	"strings"
-
+	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/net/html"
+	"strings"
 )
 
-func scrapeReisHunger(root *html.Node) (models.RecipeSchema, error) {
-	rs, err := findRecipeLdJSON(root)
+func scrapeReisHunger(root *goquery.Document) (models.RecipeSchema, error) {
+	rs, err := parseLdJSON(root)
+	if err != nil {
+		return rs, err
+	}
 
-	chInstructions := make(chan []string)
-	go func() {
-		var vals []string
-		defer func() {
-			_ = recover()
-			chInstructions <- vals
-		}()
+	nodes := root.Find("span[ingredient-amount='']")
+	ingredients := make([]string, nodes.Length())
+	nodes.Each(func(i int, s *goquery.Selection) {
+		ingredients[i] = strings.TrimSpace(s.Parent().Text())
+	})
 
-		node := getElement(root, "class", "nsection recipe-preparation")
-		ol := traverseAll(node, func(node *html.Node) bool {
-			return node.Data == "ol"
-		})[0]
-		for li := ol.FirstChild; li != nil; li = li.NextSibling {
-			if li.Type != html.ElementNode {
-				continue
-			}
-
-			var xs []string
-			for c := li.FirstChild.NextSibling.FirstChild; c != nil; c = c.NextSibling {
-				switch c.Type {
-				case html.ElementNode:
-					if c.Data == "br" {
-						xs = append(xs, "\n")
-					}
-				case html.TextNode:
-					v := strings.TrimSpace(c.Data)
-					v = strings.ReplaceAll(v, "\n", "")
-					xs = append(xs, v)
-				}
-			}
-			vals = append(vals, strings.TrimSuffix(strings.Join(xs, ""), "\n"))
+	var instructions []string
+	root.Find("#zubereitung").Next().Find("div").Each(func(i int, s *goquery.Selection) {
+		v := strings.TrimFunc(s.Text(), func(r rune) bool { return r == '\n' })
+		if !strings.HasPrefix(v, "Schritt") {
+			instructions = append(instructions, v)
 		}
-	}()
+	})
 
-	rs.Instructions = models.Instructions{Values: <-chInstructions}
-	return rs, err
+	rs.Instructions = models.Instructions{Values: instructions}
+	rs.Ingredients = models.Ingredients{Values: ingredients}
+	return rs, nil
 }

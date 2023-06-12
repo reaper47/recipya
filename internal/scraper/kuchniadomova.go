@@ -1,103 +1,52 @@
 package scraper
 
 import (
+	"github.com/PuerkitoBio/goquery"
 	"strings"
 
 	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/net/html"
 )
 
-func scrapeKuchniadomova(root *html.Node) (models.RecipeSchema, error) {
-	content := getElement(root, "class", "item-page")
+func scrapeKuchniadomova(root *goquery.Document) (models.RecipeSchema, error) {
+	name := root.Find("h2[itemprop='name']").Text()
+	name = strings.ReplaceAll(name, "\n", "")
+	name = strings.ReplaceAll(name, "\t", "")
 
-	chImage := make(chan string)
-	go func() {
-		var v string
-		defer func() {
-			_ = recover()
-			chImage <- v
-		}()
+	yieldStr := root.Find("p[itemprop='recipeYield']").Text()
+	yieldStr = strings.ReplaceAll(yieldStr, "-", " ")
+	yield := findYield(yieldStr)
 
-		node := getElement(content, "id", "article-img-1")
-		v = getAttr(node, "data-src")
-		v = "https:" + v
-	}()
+	category, _ := root.Find("meta[itemprop='recipeCategory']").Attr("content")
+	keywords, _ := root.Find("meta[name='keywords']").Attr("content")
+	image, _ := root.Find("#article-img-1").Attr("data-src")
 
-	chDescription := make(chan string)
-	go func() {
-		var vals []string
-		defer func() {
-			_ = recover()
-			chDescription <- strings.Join(vals, "\n\n")
-		}()
+	description := root.Find("#recipe-description").Text()
+	description = strings.TrimPrefix(description, "\n")
+	description = strings.TrimSuffix(description, "\n")
 
-		node := getElement(content, "itemprop", "description")
-		for c := node.FirstChild; c != nil; c = c.NextSibling {
-			if c.Type != html.ElementNode {
-				continue
-			}
-			vals = append(vals, c.FirstChild.Data)
-		}
-	}()
+	nodes := root.Find("li[itemprop='recipeIngredient']")
+	ingredients := make([]string, nodes.Length())
+	nodes.Each(func(i int, s *goquery.Selection) {
+		ingredients[i] = s.Text()
+	})
 
-	chYield := make(chan int16)
-	go func() {
-		var yield int16
-		defer func() {
-			_ = recover()
-			chYield <- yield
-		}()
-
-		servings := getElement(content, "itemprop", "recipeYield")
-		yield = findYield(strings.Split(servings.FirstChild.Data, " "))
-	}()
-
-	chIngredients := make(chan []string)
-	go func() {
-		var vals []string
-		defer func() {
-			_ = recover()
-			chIngredients <- vals
-		}()
-
-		node := getElement(content, "id", "recipe-ingredients")
-		xn := traverseAll(node, func(node *html.Node) bool {
-			return getAttr(node, "itemprop") == "recipeIngredient"
-		})
-		for _, n := range xn {
-			vals = append(vals, n.FirstChild.Data)
-		}
-	}()
-
-	chInstructions := make(chan []string)
-	go func() {
-		var vals []string
-		defer func() {
-			_ = recover()
-			chInstructions <- vals
-		}()
-
-		node := getElement(content, "itemprop", "recipeInstructions")
-		ol := node.FirstChild
-		for c := ol.FirstChild; c != nil; c = c.NextSibling {
-			if c.Type != html.ElementNode {
-				continue
-			}
-			vals = append(vals, c.FirstChild.Data)
-		}
-	}()
+	nodes = root.Find("#recipe-instructions li")
+	instructions := make([]string, nodes.Length())
+	nodes.Each(func(i int, s *goquery.Selection) {
+		instructions[i] = s.Text()
+	})
 
 	return models.RecipeSchema{
-		AtContext: "https://schema.org",
-		AtType:    models.SchemaType{Value: "Recipe"},
-		Name:      <-getItemPropAttr(content, "name", "content"),
-		Category: models.Category{
-			Value: <-getItemPropAttr(content, "recipeCategory", "content"),
-		},
-		Image:        models.Image{Value: <-chImage},
-		Description:  models.Description{Value: <-chDescription},
-		Yield:        models.Yield{Value: <-chYield},
-		Ingredients:  models.Ingredients{Values: <-chIngredients},
-		Instructions: models.Instructions{Values: <-chInstructions},
+		AtContext:    "https://schema.org",
+		AtType:       models.SchemaType{Value: "Recipe"},
+		Name:         name,
+		Category:     models.Category{Value: category},
+		Cuisine:      models.Cuisine{Value: root.Find("p[itemprop='recipeCuisine']").Text()},
+		Keywords:     models.Keywords{Values: keywords},
+		Image:        models.Image{Value: "https://kuchnia-domowa.pl" + image},
+		Description:  models.Description{Value: description},
+		Yield:        models.Yield{Value: yield},
+		Ingredients:  models.Ingredients{Values: ingredients},
+		Instructions: models.Instructions{Values: instructions},
 	}, nil
 }

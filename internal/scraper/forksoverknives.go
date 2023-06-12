@@ -1,15 +1,17 @@
 package scraper
 
 import (
-	"strings"
-
+	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
-	"github.com/reaper47/recipya/internal/regex"
-	"golang.org/x/net/html"
+	"github.com/reaper47/recipya/internal/utils/regex"
+	"strings"
 )
 
-func scrapeForksOverKnives(root *html.Node) (rs models.RecipeSchema, err error) {
-	rs, err = scrapeLdJSON(root)
+func scrapeForksOverKnives(root *goquery.Document) (models.RecipeSchema, error) {
+	rs, err := parseLdJSON(root)
+	if err != nil {
+		return models.RecipeSchema{}, err
+	}
 
 	if rs.Category.Value != "" {
 		xb := regex.Anchor.ReplaceAll([]byte(rs.Category.Value), []byte(""))
@@ -17,5 +19,5 @@ func scrapeForksOverKnives(root *html.Node) (rs models.RecipeSchema, err error) 
 		xs := strings.Split(s, " ")
 		rs.Category.Value = xs[len(xs)-1]
 	}
-	return rs, err
+	return rs, nil
 }

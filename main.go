@@ -1,19 +1,34 @@
 package main
 
 import (
+	"github.com/reaper47/recipya/internal/app"
+	"github.com/reaper47/recipya/internal/server"
+	"github.com/reaper47/recipya/internal/services"
+	"github.com/urfave/cli/v2"
 	"log"
-
-	"github.com/joho/godotenv"
-	"github.com/reaper47/recipya/cmd"
+	"os"
 )
 
 func main() {
-	cmd.Execute()
-}
+	app.Init()
 
-func init() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file: ", err)
+	cliApp := &cli.App{
+		Commands: []*cli.Command{
+			{
+				Name:    "serve",
+				Aliases: []string{"s"},
+				Usage:   "starts the web server",
+				Action: func(ctx *cli.Context) error {
+					srv := server.NewServer(services.NewSQLiteService(), services.NewEmailService())
+					srv.Run()
+					return nil
+				},
+			},
+		},
+		Usage: "the ultimate recipes manager for you and your family",
+	}
+
+	if err := cliApp.Run(os.Args); err != nil {
+		log.Fatal(err)
 	}
 }

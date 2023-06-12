@@ -139,7 +139,7 @@ func TestDuration_ToTimeDuration(t *testing.T) {
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			duration := &duration.Duration{
+			d := &duration.Duration{
 				Years:   tc.fields.Years,
 				Months:  tc.fields.Months,
 				Weeks:   tc.fields.Weeks,
@@ -148,7 +148,7 @@ func TestDuration_ToTimeDuration(t *testing.T) {
 				Minutes: tc.fields.Minutes,
 				Seconds: tc.fields.Seconds,
 			}
-			if got := duration.ToTimeDuration(); got != tc.want {
+			if got := d.ToTimeDuration(); got != tc.want {
 				t.Errorf("ToTimeDuration() = %v, want %v", got, tc.want)
 			}
 		})

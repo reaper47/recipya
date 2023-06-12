@@ -1,111 +1,65 @@
 package scraper
 
 import (
+	"github.com/PuerkitoBio/goquery"
+	"github.com/reaper47/recipya/internal/models"
 	"strconv"
 	"strings"
-
-	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/net/html"
 )
 
-func scrapeCdKitchen(root *html.Node) (rs models.RecipeSchema, err error) {
-	content := getElement(root, "id", "recipepage")
+func scrapeCdKitchen(root *goquery.Document) (rs models.RecipeSchema, err error) {
+	category := root.Find(".prev-page").Last().Text()
+	category = strings.Join(strings.Fields(category), " ")
 
-	chCategory := make(chan string)
-	go func() {
-		var v string
-		defer func() {
-			_ = recover()
-			chCategory <- v
-		}()
+	content := root.Find("#recipepage")
 
-		node := getElement(root, "class", "current-page")
-		node = getElement(
-			node.Parent.Parent.LastChild.PrevSibling.PrevSibling.PrevSibling.FirstChild.NextSibling,
-			"itemprop",
-			"title",
-		)
-		v = node.FirstChild.Data
-	}()
+	nodes := content.Find("span[itemprop='recipeIngredient']")
+	ingredients := make([]string, nodes.Length())
+	nodes.Each(func(i int, s *goquery.Selection) {
+		v := strings.ReplaceAll(s.Text(), "  ", " ")
+		ingredients[i] = strings.TrimSpace(v)
+	})
 
-	chIngredients := make(chan models.Ingredients)
-	go func() {
-		var v models.Ingredients
-		defer func() {
-			_ = recover()
-			chIngredients <- v
-		}()
+	node := content.Find("div[itemprop='recipeInstructions'] p")
+	node.Find("br").Each(func(_ int, s *goquery.Selection) {
+		s.ReplaceWithHtml("$$$")
+	})
+	lines := strings.Split(node.Text(), "$$$$$$")
+	instructions := make([]string, len(lines))
+	for i, line := range lines {
+		instructions[i] = strings.TrimSpace(line)
+	}
 
-		node := getElement(content, "itemprop", "recipeIngredient").Parent
-		for c := node.FirstChild; c != nil; c = c.NextSibling {
-			if c.Type == html.ElementNode && c.Data == "span" {
-				s := strings.ReplaceAll(c.FirstChild.Data, "  ", " ")
-				s = strings.TrimSpace(s)
-				v.Values = append(v.Values, s)
-			}
-		}
-	}()
+	yieldStr, _ := content.Find(".change-servs-input").Attr("value")
+	yield, _ := strconv.ParseInt(yieldStr, 10, 16)
 
-	chInstructions := make(chan models.Instructions)
-	go func() {
-		var v models.Instructions
-		defer func() {
-			_ = recover()
-			chInstructions <- v
-		}()
+	node = content.Find("span[itemprop='nutrition']")
+	nutrition := models.NutritionSchema{
+		Calories:       node.Find("span[itemprop='calories']").Text(),
+		Carbohydrates:  node.Find(".carbohydrateContent").Text(),
+		Sugar:          node.Find(".sugarContent").Text(),
+		Protein:        node.Find(".proteinContent").Text(),
+		Fat:            node.Find(".fatContent").Text(),
+		SaturatedFat:   node.Find(".saturatedFatContent").Text(),
+		Cholesterol:    node.Find(".cholesterolContent").Text(),
+		Sodium:         node.Find(".sodiumContent").Text(),
+		Fiber:          node.Find(".fiberContent").Text(),
+		TransFat:       node.Find(".transFatContent").Text(),
+		UnsaturatedFat: node.Find(".unsaturatedFatContent").Text(),
+	}
 
-		node := getElement(content, "itemprop", "recipeInstructions").FirstChild
-		for c := node.FirstChild; c != nil; c = c.NextSibling {
-			if c.Type == html.TextNode {
-				v.Values = append(v.Values, strings.TrimSpace(c.Data))
-			}
-		}
-	}()
-
-	chYield := make(chan int16)
-	go func() {
-		var i int16
-		defer func() {
-			_ = recover()
-			chYield <- i
-		}()
-
-		node := getElement(content, "class", "change-servs-input s18")
-		yieldStr := getAttr(node, "value")
-		yield, err := strconv.ParseInt(yieldStr, 10, 16)
-		if err == nil {
-			i = int16(yield)
-		}
-	}()
-
-	chNutrition := make(chan models.NutritionSchema)
-	go func() {
-		node := getElement(content, "itemprop", "nutrition")
-		chNutrition <- models.NutritionSchema{
-			Calories:       getElement(node, "itemprop", "calories").FirstChild.Data,
-			Carbohydrates:  <-getElementData(node, "class", "carbohydrateContent"),
-			Sugar:          <-getElementData(node, "class", "sugarContent"),
-			Protein:        <-getElementData(node, "class", "proteinContent"),
-			Fat:            <-getElementData(node, "class", "fatContent"),
-			SaturatedFat:   <-getElementData(node, "class", "saturatedFatContent"),
-			Cholesterol:    <-getElementData(node, "class", "cholesterolContent"),
-			Sodium:         <-getElementData(node, "class", "sodiumContent"),
-			Fiber:          <-getElementData(node, "class", "fiberContent"),
-			TransFat:       <-getElementData(node, "class", "transFatContent"),
-			UnsaturatedFat: <-getElementData(node, "class", "unsaturatedFatContent"),
-		}
-	}()
+	cookTime, _ := content.Find("meta[itemprop='cookTime']").Attr("content")
 
 	return models.RecipeSchema{
 		AtContext:       "https://schema.org",
 		AtType:          models.SchemaType{Value: "Recipe"},
-		Category:        models.Category{Value: <-chCategory},
-		Name:            <-getItemPropData(content, "name"),
-		Description:     models.Description{Value: <-getItemPropData(content, "description")},
-		Yield:           models.Yield{Value: <-chYield},
-		CookTime:        <-getItemPropAttr(content, "cookTime", "content"),
-		Ingredients:     <-chIngredients,
-		Instructions:    <-chInstructions,
-		NutritionSchema: <-chNutrition,
+		Category:        models.Category{Value: category},
+		Name:            content.Find("h1[itemprop='name']").Text(),
+		Description:     models.Description{Value: content.Find("p[itemprop='description']").Text()},
+		Yield:           models.Yield{Value: int16(yield)},
+		CookTime:        cookTime,
+		Ingredients:     models.Ingredients{Values: ingredients},
+		Instructions:    models.Instructions{Values: instructions},
+		NutritionSchema: nutrition,
 	}, err
 }

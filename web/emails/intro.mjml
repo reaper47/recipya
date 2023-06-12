@@ -1,0 +1,67 @@
+<mjml>
+    <mj-head>
+        <mj-title>Welcome to Recipya</mj-title>
+        <mj-preview>Your account has been created.</mj-preview>
+        <mj-attributes>
+            <mj-text font-weight="400" font-size="16px" color="#000000" line-height="24px"/>
+        </mj-attributes>
+        <mj-style inline="inline">
+            body {
+                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif, serif;
+            }
+
+            .body-section {
+                -webkit-box-shadow: 1px 4px 11px 0 rgba(0, 0, 0, 0.15);
+                -moz-box-shadow: 1px 4px 11px 0 rgba(0, 0, 0, 0.15);
+                box-shadow: 1px 4px 11px 0 rgba(0, 0, 0, 0.15);
+            }
+            .text-link {
+                color: #5e6ebf
+            }
+            .footer-link {
+                color: #888888
+            }
+        </mj-style>
+    </mj-head>
+    <mj-body background-color="#E7E7E7" width="600px">
+        <mj-section full-width="full-width" background-color="#040B4F" padding-bottom="0">
+            <mj-column width="100%">
+                <mj-image
+                        src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Heavy_Metal_-_Flickr_-_Gexon.jpg"
+                        width="200px" alt="" padding="0"/>
+            </mj-column>
+        </mj-section>
+
+        <mj-wrapper padding-top="0" padding-bottom="0" css-class="body-section">
+            <mj-section background-color="#ffffff" padding-left="15px" padding-right="15px">
+                <mj-column width="100%">
+                    <mj-text color="#637381" font-size="16px">
+                        Hello [[.UserName]],
+                        <br/>
+                        <br/>
+                        This email proves that your Recipya account has been created.
+                    </mj-text>
+                    <mj-text color="#637381" font-size="16px">
+                        Please <a href="[[.URL]]/auth/confirm?token=[[.Token]]">confirm</a> your account to ensure it is not bogus.
+                    </mj-text>
+                    <mj-text color="#637381" font-size="16px">
+                        Sincerely,
+                        <br/>
+                        Recipya
+                    </mj-text>
+                </mj-column>
+            </mj-section>
+        </mj-wrapper>
+        <mj-wrapper full-width="full-width">
+            <mj-section padding-top="0">
+                <mj-group>
+                    <mj-column width="100%" padding-right="0">
+                        <mj-text color="#445566" font-size="11px" align="center" line-height="16px" font-weight="bold">
+                            <a class="footer-link" href="[[.URL]]/privacy">Privacy</a>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;
+                        </mj-text>
+                    </mj-column>
+                </mj-group>
+            </mj-section>
+        </mj-wrapper>
+    </mj-body>
+</mjml>

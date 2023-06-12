@@ -1,94 +1,47 @@
 package scraper
 
 import (
-	"strings"
-
+	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/net/html"
+	"strings"
 )
 
-func scrapeNutritionbynathalie(root *html.Node) (models.RecipeSchema, error) {
-	chImage := make(chan string)
-	go func() {
-		var s string
-		defer func() {
-			_ = recover()
-			chImage <- s
-		}()
+func scrapeNutritionByNathalie(root *goquery.Document) (models.RecipeSchema, error) {
+	description, _ := root.Find("meta[property='og:description']").Attr("content")
+	name, _ := root.Find("meta[property='og:title']").Attr("content")
+	image, _ := root.Find("meta[property='og:image']").Attr("content")
 
-		node := getElement(root, "id", "viewer-q926v").FirstChild.FirstChild.FirstChild
-		for c := node.FirstChild; c != nil; c = c.NextSibling {
-			if c.Type != html.ElementNode {
-				continue
-			}
+	datePublished, _ := root.Find("meta[property='article:published_time']").Attr("content")
+	dateModified, _ := root.Find("meta[property='article:modified_time']").Attr("content")
 
-			if c.Data == "img" {
-				s = getAttr(c, "src")
-			}
-		}
-	}()
-
-	chIngredients := make(chan []string)
-	go func() {
-		var vals []string
-		defer func() {
-			_ = recover()
-			chIngredients <- vals
-		}()
-
-		xn := traverseAll(root, func(node *html.Node) bool {
-			return strings.Contains(node.Data, "Ingredients")
-		})
-		for _, n := range xn {
-			for c := n.Parent.Parent.NextSibling; c != nil; c = c.NextSibling {
-				if c.Type != html.ElementNode || c.Data != "p" {
-					continue
-				}
-
-				v := strings.TrimSpace(c.FirstChild.FirstChild.Data)
-				if strings.Contains(v, "Directions") || v == "" {
-					break
-				}
-				vals = append(vals, strings.TrimPrefix(v, "• "))
-			}
-		}
-	}()
-
-	chInstructions := make(chan []string)
-	go func() {
-		var vals []string
-		defer func() {
-			_ = recover()
-			chInstructions <- vals
-		}()
-
-		xn := traverseAll(root, func(node *html.Node) bool {
-			return strings.Contains(node.Data, "Directions")
-		})
-		if len(xn) == 0 {
+	ingredients := make([]string, 0)
+	start := root.Find("span:contains('Ingredients:')").Last().Parent().Parent().First()
+	end := root.Find("span:contains('Directions:')").Last().Parent().Parent()
+	nodes := start.NextUntilNodes(end.Nodes...)
+	nodes.Each(func(i int, s *goquery.Selection) {
+		v := strings.TrimSpace(s.Text())
+		if strings.HasPrefix(v, "Ingredients:") || v == "" {
 			return
 		}
+		v = strings.TrimPrefix(v, "•")
+		ingredients = append(ingredients, strings.TrimSpace(v))
+	})
 
-		ol := xn[0].Parent.Parent.NextSibling.NextSibling
-		for li := ol.FirstChild; li != nil; li = li.NextSibling {
-			if li.Type != html.ElementNode {
-				continue
-			}
-
-			v := strings.TrimSpace(li.FirstChild.FirstChild.Data)
-			if strings.Contains(v, "Directions") || v == "" {
-				break
-			}
-			vals = append(vals, strings.TrimPrefix(v, "• "))
-		}
-	}()
+	nodes = root.Find("span:contains('Directions:')").Last().Parent().Parent().Next().Next().Find("li")
+	instructions := make([]string, nodes.Length())
+	nodes.Each(func(i int, s *goquery.Selection) {
+		instructions[i] = strings.TrimSpace(s.Find("p").Text())
+	})
 
 	return models.RecipeSchema{
-		AtContext:    "https://schema.org",
-		AtType:       models.SchemaType{Value: "Recipe"},
-		Name:         <-getElementData(root, "class", "blog-post-title-font blog-post-title-color"),
-		Image:        models.Image{Value: <-chImage},
-		Ingredients:  models.Ingredients{Values: <-chIngredients},
-		Instructions: models.Instructions{Values: <-chInstructions},
+		AtContext:     "https://schema.org",
+		AtType:        models.SchemaType{Value: "Recipe"},
+		DatePublished: datePublished,
+		DateModified:  dateModified,
+		Description:   models.Description{Value: description},
+		Name:          name,
+		Image:         models.Image{Value: image},
+		Ingredients:   models.Ingredients{Values: ingredients},
+		Instructions:  models.Instructions{Values: instructions},
 	}, nil
 }

@@ -1,33 +1,33 @@
 package scraper
 
 import (
-	"time"
-
-	"github.com/reaper47/recipya/internal/constants"
+	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/net/html"
+	"time"
 )
 
-func scrapeBettyCrocker(root *html.Node) (rs models.RecipeSchema, err error) {
-	rs, err = scrapeLdJSON(root)
+func scrapeBettyCrocker(root *goquery.Document) (models.RecipeSchema, error) {
+	rs, err := parseLdJSON(root)
+	if err != nil {
+		return rs, err
+	}
 
 	actualLayout := "02/01/2006"
-	expectedLayout := constants.BasicTimeLayout
 
-	dp, err2 := time.Parse(actualLayout, rs.DatePublished)
-	if err2 == nil {
-		rs.DatePublished = dp.Format(expectedLayout)
+	dp, err := time.Parse(actualLayout, rs.DatePublished)
+	if err == nil {
+		rs.DatePublished = dp.Format(time.DateOnly)
 	}
 
-	dc, err2 := time.Parse(actualLayout, rs.DateCreated)
-	if err2 == nil {
-		rs.DateCreated = dc.Format(expectedLayout)
+	dc, err := time.Parse(actualLayout, rs.DateCreated)
+	if err == nil {
+		rs.DateCreated = dc.Format(time.DateOnly)
 	}
 
-	dm, err2 := time.Parse(actualLayout, rs.DateModified)
-	if err2 == nil {
-		rs.DateModified = dm.Format(expectedLayout)
+	dm, err := time.Parse(actualLayout, rs.DateModified)
+	if err == nil {
+		rs.DateModified = dm.Format(time.DateOnly)
 	}
 
-	return rs, err
+	return rs, nil
 }

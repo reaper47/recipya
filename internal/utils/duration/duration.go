@@ -46,10 +46,7 @@ const (
 	parsingTime
 )
 
-var (
-	// ErrUnexpectedInput is returned when an input in the duration string does not match expectations
-	ErrUnexpectedInput = errors.New("unexpected input")
-)
+var errUnexpectedInput = errors.New("unexpected input")
 
 // Parse attempts to parse the given duration string into a *Duration
 // if parsing fails an error is returned instead
@@ -67,7 +64,7 @@ func Parse(d string) (*Duration, error) {
 			state = parsingTime
 		case 'Y':
 			if state != parsingPeriod {
-				return nil, ErrUnexpectedInput
+				return nil, errUnexpectedInput
 			}
 
 			duration.Years, err = strconv.ParseFloat(num, 64)
@@ -91,7 +88,7 @@ func Parse(d string) (*Duration, error) {
 			}
 		case 'W':
 			if state != parsingPeriod {
-				return nil, ErrUnexpectedInput
+				return nil, errUnexpectedInput
 			}
 
 			duration.Weeks, err = strconv.ParseFloat(num, 64)
@@ -101,7 +98,7 @@ func Parse(d string) (*Duration, error) {
 			num = ""
 		case 'D':
 			if state != parsingPeriod {
-				return nil, ErrUnexpectedInput
+				return nil, errUnexpectedInput
 			}
 
 			duration.Days, err = strconv.ParseFloat(num, 64)
@@ -111,7 +108,7 @@ func Parse(d string) (*Duration, error) {
 			num = ""
 		case 'H':
 			if state != parsingTime {
-				return nil, ErrUnexpectedInput
+				return nil, errUnexpectedInput
 			}
 
 			duration.Hours, err = strconv.ParseFloat(num, 64)
@@ -121,7 +118,7 @@ func Parse(d string) (*Duration, error) {
 			num = ""
 		case 'S':
 			if state != parsingTime {
-				return nil, ErrUnexpectedInput
+				return nil, errUnexpectedInput
 			}
 
 			duration.Seconds, err = strconv.ParseFloat(num, 64)
@@ -135,7 +132,7 @@ func Parse(d string) (*Duration, error) {
 				continue
 			}
 
-			return nil, ErrUnexpectedInput
+			return nil, errUnexpectedInput
 		}
 	}
 

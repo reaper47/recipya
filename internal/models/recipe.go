@@ -1,17 +1,29 @@
 package models
 
 import (
+	"github.com/reaper47/recipya/internal/utils/duration"
+	"github.com/reaper47/recipya/internal/utils/extensions"
+	"github.com/reaper47/recipya/internal/utils/regex"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/reaper47/recipya/internal/constants"
-	"github.com/reaper47/recipya/internal/regex"
-	"github.com/reaper47/recipya/internal/utils/duration"
 )
 
-// Recipe holds information on a recipe.
+// Recipes is the type for a slice of recipes.
+type Recipes []Recipe
+
+// Categories returns the category of every recipe. The resulting slice has no duplicates.
+func (r Recipes) Categories() []string {
+	xs := make([]string, len(r))
+	for i, recipe := range r {
+		xs[i] = recipe.Category
+	}
+	return extensions.Unique(xs)
+}
+
+// Recipe is the struct that holds a recipe's information.
 type Recipe struct {
 	ID           int64
 	Name         string
@@ -30,60 +42,24 @@ type Recipe struct {
 	UpdatedAt    time.Time
 }
 
-// ToArgs adds every field related to a Recipe to an any slice.
-func (r Recipe) ToArgs(includeID bool) []interface{} {
-	var args []any
-	if includeID {
-		args = append(args, r.ID)
-	}
-
-	args = append(args, []interface{}{
-		r.Name,
-		r.Description,
-		r.Image,
-		r.URL,
-		r.Yield,
-		r.Category,
-		r.Nutrition.Calories,
-		r.Nutrition.TotalCarbohydrates,
-		r.Nutrition.Sugars,
-		r.Nutrition.Protein,
-		r.Nutrition.TotalFat,
-		r.Nutrition.SaturatedFat,
-		r.Nutrition.Cholesterol,
-		r.Nutrition.Sodium,
-		r.Nutrition.Fiber,
-		r.Times.Prep.String(),
-		r.Times.Cook.String(),
-	}...)
-
-	arrays := [][]string{r.Ingredients.Values, r.Instructions, r.Keywords, r.Tools}
-	for _, arr := range arrays {
-		for _, v := range arr {
-			args = append(args, v)
-		}
-	}
-	return args
-}
-
-// ToSchema creates the schema representation of the Recipe.
-func (r Recipe) ToSchema() RecipeSchema {
+// Schema creates the schema representation of the Recipe.
+func (r *Recipe) Schema() RecipeSchema {
 	return RecipeSchema{
 		AtContext:       "https://schema.org",
 		AtType:          SchemaType{Value: "Recipe"},
 		Category:        Category{Value: r.Category},
 		CookTime:        formatDuration(r.Times.Cook),
 		Cuisine:         Cuisine{},
-		DateCreated:     r.CreatedAt.Format(constants.BasicTimeLayout),
-		DateModified:    r.UpdatedAt.Format(constants.BasicTimeLayout),
-		DatePublished:   r.CreatedAt.Format(constants.BasicTimeLayout),
+		DateCreated:     r.CreatedAt.Format(time.DateOnly),
+		DateModified:    r.UpdatedAt.Format(time.DateOnly),
+		DatePublished:   r.CreatedAt.Format(time.DateOnly),
 		Description:     Description{Value: r.Description},
 		Keywords:        Keywords{Values: strings.Join(r.Keywords, ",")},
 		Image:           Image{Value: r.Image.String()},
 		Ingredients:     r.Ingredients,
 		Instructions:    Instructions{Values: r.Instructions},
 		Name:            r.Name,
-		NutritionSchema: r.Nutrition.ToSchema(strconv.Itoa(int(r.Yield))),
+		NutritionSchema: r.Nutrition.Schema(strconv.Itoa(int(r.Yield))),
 		PrepTime:        formatDuration(r.Times.Prep),
 		Tools:           Tools{Values: r.Tools},
 		Yield:           Yield{Value: r.Yield},
@@ -92,7 +68,6 @@ func (r Recipe) ToSchema() RecipeSchema {
 }
 
 // Normalize normalizes texts for readability.
-//
 // It normalizes quantities, i.e. 1l -> 1L and 1 ml -> 1 mL.
 func (r *Recipe) Normalize() {
 	r.Description = regex.Quantity.ReplaceAllStringFunc(r.Description, normalizeQuantity)
@@ -128,7 +103,7 @@ type Times struct {
 	Total time.Duration
 }
 
-// NewTimes creates a Times struct from the Schema Duration fields for prep and cook time.
+// NewTimes creates a struct of Times from the Schema Duration fields for prep and cook time.
 func NewTimes(prep, cook string) (Times, error) {
 	p, err := parseDuration(prep)
 	if err != nil {
@@ -150,7 +125,10 @@ func parseDuration(d string) (time.Duration, error) {
 	}
 
 	p, err := duration.Parse(d)
-	return p.ToTimeDuration(), err
+	if err != nil {
+		return time.Duration(-1), err
+	}
+	return p.ToTimeDuration(), nil
 }
 
 func formatDuration(d time.Duration) string {
@@ -170,8 +148,8 @@ type Nutrition struct {
 	Fiber              string
 }
 
-// ToSchema creates the schema representation of the Nutrition.
-func (n Nutrition) ToSchema(servings string) NutritionSchema {
+// Schema creates the schema representation of the Nutrition.
+func (n Nutrition) Schema(servings string) NutritionSchema {
 	return NutritionSchema{
 		Calories:      n.Calories,
 		Carbohydrates: n.TotalCarbohydrates,
@@ -184,10 +162,4 @@ func (n Nutrition) ToSchema(servings string) NutritionSchema {
 		Sodium:        n.Sodium,
 		Sugar:         n.Sugars,
 	}
-}
-
-// Website holds information related to a website.
-type Website struct {
-	Name string
-	URL  string
 }

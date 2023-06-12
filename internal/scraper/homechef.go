@@ -1,148 +1,50 @@
 package scraper
 
 import (
-	"strings"
-
+	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/net/html"
 )
 
-func scrapeHomeChef(root *html.Node) (models.RecipeSchema, error) {
-	content := getElement(root, "id", "mainContent")
+func scrapeHomeChef(root *goquery.Document) (models.RecipeSchema, error) {
+	content := root.Find("main")
 
-	chName := make(chan string)
-	go func() {
-		var s string
-		defer func() {
-			_ = recover()
-			chName <- s
-		}()
+	yieldStr, _ := content.Find("meta[itemprop='recipeYield']").Attr("content")
 
-		node := getElement(content, "itemprop", "name")
-		for c := node.FirstChild; c != nil; c = c.NextSibling {
-			if c.Type == html.ElementNode {
-				s = c.FirstChild.Data
-				break
-			}
-		}
-	}()
+	image, _ := content.Find("img").First().Attr("src")
 
-	chDescription := make(chan string)
-	go func() {
-		var s string
-		defer func() {
-			_ = recover()
-			chDescription <- s
-		}()
+	nodes := content.Find("li[itemprop='recipeIngredient']")
+	ingredients := make([]string, nodes.Length())
+	nodes.Each(func(i int, s *goquery.Selection) {
+		ingredients[i] = s.Text()
+	})
 
-		node := getElement(content, "itemprop", "description")
-		for c := node.FirstChild; c != nil; c = c.NextSibling {
-			if c.Type == html.ElementNode {
-				s = strings.TrimSpace(c.FirstChild.Data)
-				break
-			}
-		}
-	}()
-
-	chYield := make(chan int16)
-	go func() {
-		var yield int16
-		defer func() {
-			_ = recover()
-			chYield <- yield
-		}()
-
-		servings := <-getItemPropAttr(content, "recipeYield", "content")
-		yield = findYield(strings.Split(servings, " "))
-	}()
-
-	chIngredients := make(chan []string)
-	go func() {
-		var vals []string
-		defer func() {
-			_ = recover()
-			chIngredients <- vals
-		}()
-
-		xn := traverseAll(root, func(node *html.Node) bool {
-			return getAttr(node, "itemprop") == "recipeIngredient"
-		})
-		for _, n := range xn {
-			var xs []string
-			for c := n.FirstChild; c != nil; c = c.NextSibling {
-				if c.Type == html.TextNode {
-					v := strings.ReplaceAll(c.Data, "\n", " ")
-					v = strings.ReplaceAll(v, "  ", " ")
-					xs = append(xs, strings.TrimSpace(v))
-				}
-			}
-			vals = append(vals, strings.Join(xs, ""))
-		}
-	}()
-
-	chInstructions := make(chan []string)
-	go func() {
-		var vals []string
-		defer func() {
-			_ = recover()
-			chInstructions <- vals
-		}()
-
-		node := getElement(content, "itemprop", "recipeInstructions")
-		xn := traverseAll(node, func(node *html.Node) bool {
-			return getAttr(node, "itemprop") == "itemListElement"
-		})
-		for _, n := range xn {
-			span := getElement(n, "itemprop", "description")
-
-			var xs []string
-			for c := span.FirstChild; c != nil; c = c.NextSibling {
-				if c.FirstChild == nil {
-					continue
-				}
-
-				for c := c.FirstChild; c != nil; c = c.NextSibling {
-					var s string
-					switch c.Type {
-					case html.ElementNode:
-						s = c.FirstChild.Data
-					case html.TextNode:
-						s = c.Data
-					}
-
-					if s != "" {
-						s = strings.ReplaceAll(s, "\n", "")
-						s = strings.Join(strings.Fields(s), " ")
-						s = strings.ReplaceAll(s, "  ", " ")
-						xs = append(xs, strings.TrimSpace(s))
-					}
-				}
-			}
-			vals = append(vals, strings.Join(xs, " "))
-		}
-	}()
+	nodes = content.Find(".meal__steps li[itemprop='description']")
+	instructions := make([]string, nodes.Length())
+	nodes.Each(func(i int, s *goquery.Selection) {
+		instructions[i] = s.Text()
+	})
 
 	return models.RecipeSchema{
 		AtContext:   "https://schema.org",
 		AtType:      models.SchemaType{Value: "Recipe"},
-		Image:       models.Image{Value: <-getItemPropAttr(content, "image", "content")},
-		Name:        <-chName,
-		Description: models.Description{Value: <-chDescription},
-		Yield:       models.Yield{Value: <-chYield},
+		Image:       models.Image{Value: image},
+		Name:        content.Find("span[itemprop='name'] h1").Text(),
+		Description: models.Description{Value: content.Find("div[itemprop='description'] p").Text()},
+		Yield:       models.Yield{Value: findYield(yieldStr)},
 		NutritionSchema: models.NutritionSchema{
-			Calories:       <-getItemPropData(content, "calories"),
-			Carbohydrates:  <-getItemPropData(content, "carbohydrateContent"),
-			Sugar:          <-getItemPropData(content, "sugarContent"),
-			Protein:        <-getItemPropData(content, "proteinContent"),
-			Fat:            <-getItemPropData(content, "fatContent"),
-			SaturatedFat:   <-getItemPropData(content, "saturatedFatContent"),
-			Cholesterol:    <-getItemPropData(content, "cholesterolContent"),
-			Sodium:         <-getItemPropData(content, "sodiumContent"),
-			Fiber:          <-getItemPropData(content, "fiberContent"),
-			TransFat:       <-getItemPropData(content, "transFatContent"),
-			UnsaturatedFat: <-getItemPropData(content, "unsaturatedFatContent"),
+			Calories:       content.Find("strong[itemprop='calories']").Text(),
+			Carbohydrates:  content.Find("strong[itemprop='carbohydrateContent']").Text(),
+			Sugar:          content.Find("strong[itemprop='sugarContent']").Text(),
+			Protein:        content.Find("strong[itemprop='proteinContent']").Text(),
+			Fat:            content.Find("strong[itemprop='fatContent']").Text(),
+			SaturatedFat:   content.Find("strong[itemprop='saturatedFatContent']").Text(),
+			Cholesterol:    content.Find("strong[itemprop='cholesterolContent']").Text(),
+			Sodium:         content.Find("strong[itemprop='sodiumContent']").Text(),
+			Fiber:          content.Find("strong[itemprop='fiberContent']").Text(),
+			TransFat:       content.Find("strong[itemprop='transFatContent']").Text(),
+			UnsaturatedFat: content.Find("strong[itemprop='unsaturatedFatContent']").Text(),
 		},
-		Ingredients:  models.Ingredients{Values: <-chIngredients},
-		Instructions: models.Instructions{Values: <-chInstructions},
+		Ingredients:  models.Ingredients{Values: ingredients},
+		Instructions: models.Instructions{Values: instructions},
 	}, nil
 }

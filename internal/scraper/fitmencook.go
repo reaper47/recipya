@@ -1,148 +1,104 @@
 package scraper
 
 import (
-	"strings"
-
+	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/net/html"
+	"github.com/reaper47/recipya/internal/utils/regex"
+	"strings"
 )
 
-func scrapeFitMenCook(root *html.Node) (rs models.RecipeSchema, err error) {
-	content := getElement(root, "id", "fit-wrapper")
+func scrapeFitMenCook(root *goquery.Document) (models.RecipeSchema, error) {
+	rs, err := parseLdJSON(root)
+	if err != nil && !strings.HasPrefix(err.Error(), "@type must be Recipe") {
+		return rs, err
+	}
+	rs.AtType = models.SchemaType{Value: "Recipe"}
 
-	chKeywords := make(chan []string)
-	go func() {
-		var vals []string
-		defer func() {
-			_ = recover()
-			chKeywords <- vals
-		}()
+	image, _ := root.Find("picture > img").Attr("data-lazy-src")
+	rs.Image = models.Image{Value: image}
 
-		node := getElement(content, "class", "fit-post-categories")
-		for c := node.FirstChild; c != nil; c = c.NextSibling {
-			if c.Type == html.ElementNode {
-				v := c.FirstChild.FirstChild.Data
-				vals = append(vals, strings.ToLower(v))
-			}
+	nodes := root.Find("a[rel='tag']")
+	keywords := make([]string, nodes.Length())
+	nodes.Each(func(i int, s *goquery.Selection) {
+		keywords[i] = strings.ToLower(s.Text())
+	})
+
+	prepTimeNode := root.Find(".fmc_prep .fmc_amount")
+	if prepTimeNode != nil {
+		t := prepTimeNode.Text()
+		num := regex.Letters.ReplaceAllString(t, "")
+		if strings.Contains(strings.ToLower(t), "min") {
+			rs.PrepTime = "PT" + num + "M"
 		}
-	}()
+	}
 
-	chPrepTime := make(chan string)
-	chCookTime := make(chan string)
-	go func() {
-		var prep, cook string
-		defer func() {
-			_ = recover()
-			chPrepTime <- prep
-			chCookTime <- cook
-		}()
-
-		str := getElement(content, "class", "prep-time macros").FirstChild.Data
-		if str != "" {
-			parts := strings.Split(str, " ")
-			if strings.ToLower(parts[1]) == "minutes" {
-				prep = "PT" + parts[0] + "M"
-			}
-
+	cookTimeNode := root.Find(".fmc_cook")
+	if cookTimeNode != nil {
+		t := cookTimeNode.Text()
+		num := regex.Letters.ReplaceAllString(t, "")
+		if strings.Contains(strings.ToLower(t), "min") {
+			rs.CookTime = "PT" + strings.TrimSpace(num) + "M"
 		}
+	}
 
-		str = getElement(content, "class", "cook-time macros").FirstChild.Data
-		if str != "" {
-			parts := strings.Split(str, " ")
-			if strings.ToLower(parts[1]) == "minutes" {
-				cook = "PT" + parts[0] + "M"
-			}
-
-		}
-	}()
-
-	chIngredients := make(chan models.Ingredients)
-	go func() {
-		var v models.Ingredients
-		defer func() {
-			_ = recover()
-			chIngredients <- v
-		}()
-
-		node := getElement(content, "class", "recipe-ingredients gap-bottom-small")
-		var ul *html.Node
-		for c := node.FirstChild; c != nil; c = c.NextSibling {
-			if c.Data != "ul" {
-				continue
-			}
-			ul = c
-			break
+	ingredients := make([]string, 0)
+	root.Find(".fmc_ingredients ul li").Each(func(i int, s *goquery.Selection) {
+		ing := s.Text()
+		if !strings.Contains(ing, "\n\n") {
+			return
 		}
 
-		for l := ul.FirstChild; l != nil; l = l.NextSibling {
-			if l.Type != html.ElementNode {
-				continue
-			}
-
-			for l2 := l.FirstChild; l2 != nil; l2 = l2.NextSibling {
-				if l2.Type != html.ElementNode {
-					continue
-				}
-
-				switch l2.Data {
-				case "strong":
-					v.Values = append(v.Values, "\n", l2.FirstChild.Data)
-				case "ul":
-					for ing := l2.FirstChild; ing != nil; ing = ing.NextSibling {
-						if ing.Type != html.ElementNode {
-							continue
-						}
-
-						var s string
-						for el := ing.FirstChild; el != nil; el = el.NextSibling {
-							switch el.Type {
-							case html.TextNode:
-								s += el.Data
-							case html.ElementNode:
-								s += el.FirstChild.Data
-							}
-						}
-						v.Values = append(v.Values, s)
-					}
-				}
-			}
+		split := strings.Split(ing, "\n\n")
+		ingredients = append(ingredients, split[0])
+		for _, s2 := range strings.Split(split[1], "\n") {
+			s2 = strings.ReplaceAll(s2, "\u00a0", " ")
+			ingredients = append(ingredients, strings.TrimSpace(s2))
 		}
-		v.Values = v.Values[1:]
-	}()
+		ingredients = append(ingredients, "\n")
+	})
+	rs.Ingredients = models.Ingredients{Values: ingredients}
 
-	chInstructions := make(chan models.Instructions)
-	go func() {
-		var v models.Instructions
-		defer func() {
-			_ = recover()
-			chInstructions <- v
-		}()
-
-		node := getElement(content, "class", "recipe-steps")
-		var ol *html.Node
-		for c := node.FirstChild; c != nil; c = c.NextSibling {
-			if c.Data != "ol" {
-				continue
-			}
-			ol = c
-			break
+	instructions := make([]string, 0)
+	root.Find(".fmc_step_content p").Each(func(i int, s *goquery.Selection) {
+		children := s.Children()
+		if children.Nodes != nil {
+			v := strings.ReplaceAll(children.Nodes[0].PrevSibling.Data, "\u00a0", "")
+			instructions = append(instructions, strings.TrimSpace(v))
+			return
 		}
 
-		for li := ol.FirstChild; li != nil; li = li.NextSibling {
-			if li.Type != html.ElementNode {
-				continue
-			}
-			s := li.FirstChild.Data
-			s = strings.ReplaceAll(s, "\u00a0", "")
-			v.Values = append(v.Values, s)
-		}
-	}()
+		v := strings.ReplaceAll(s.Text(), "\u00a0", "")
+		instructions = append(instructions, strings.TrimSpace(v))
+	})
+	rs.Instructions = models.Instructions{Values: instructions}
 
-	rs, err = scrapeLdJSON(root)
-	rs.Keywords = models.Keywords{Values: strings.TrimSpace(strings.Join(<-chKeywords, ","))}
-	rs.PrepTime = <-chPrepTime
-	rs.CookTime = <-chCookTime
-	rs.Ingredients = <-chIngredients
-	rs.Instructions = <-chInstructions
-	return rs, err
+	var nutrition models.NutritionSchema
+	nutritionNodes := root.Find(".fmc_macro_cals")
+	nutrition.Calories = nutritionNodes.First().Find("span").Text()
+
+	nutritionNodes.NextAll().Each(func(i int, s *goquery.Selection) {
+		switch strings.ToLower(s.Nodes[0].FirstChild.Data) {
+		case "protein":
+			nutrition.Protein = s.Find("span").Text()
+		case "fats":
+			nutrition.Fat = s.Find("span").Text()
+		case "carbs":
+			nutrition.Carbohydrates = s.Find("span").Text()
+		case "sodium":
+			nutrition.Sodium = s.Find("span").Text()
+		case "fiber":
+			nutrition.Fiber = s.Find("span").Text()
+		case "sugar":
+			nutrition.Sugar = s.Find("span").Text()
+		}
+	})
+	rs.NutritionSchema = nutrition
+
+	name := root.Find(".fmc_title_1").Text()
+	name = strings.ReplaceAll(name, "\n", "")
+	name = strings.ReplaceAll(name, "\t", "")
+	rs.Name = strings.TrimSpace(name)
+
+	rs.Keywords = models.Keywords{Values: strings.TrimSpace(strings.Join(keywords, ","))}
+	return rs, nil
 }

@@ -1,0 +1,172 @@
+{{define "add-recipe"}}
+    <title hx-swap-oob="true">Add Recipe | Recipya</title>
+
+    <div class="grid w-full h-full grid-cols-1 gap-8 px-4 py-4 text-gray-900 md:grid-cols-2 md:grid-rows-2 xl:m-auto xl:max-w-6xl md:grid-flow-col">
+        <div class="shadow-lg rounded-xl h-96">
+            <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes-new/manual.webp"
+                 alt="Writing on a piece of paper with a traditional pen."/>
+            <div class="h-40 px-6 py-4">
+                <div class="mb-2 text-xl font-bold">Manual</div>
+                <p class="text-base text-gray-700">
+                    Add a new recipe by filling out its content manually.
+                </p>
+            </div>
+            <hr>
+            <div class="px-6 pt-4 pb-2">
+                <a class="flex justify-center text-gray-900 duration-300 border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
+                   href="/recipes/add/manual">
+                    Fill In
+                </a>
+            </div>
+        </div>
+
+        <div class="shadow-lg rounded-xl h-96">
+            <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes-new/import.webp"
+                 alt="Writing on a piece of paper with a traditional pen."/>
+            <div class="h-40 px-6 py-4">
+                <div class="mb-2 text-xl font-bold">Website</div>
+                <p class="text-base text-gray-700">
+                    Fetch a recipe from one of the
+                    <button id="search-button" class="underline"
+                            hx-get="/recipes/supported-websites"
+                            hx-target="#search-results"
+                    >
+                        supported
+                    </button>
+                    websites.
+                </p>
+            </div>
+            <hr>
+            <div class="px-6 pt-4 pb-2">
+                <button class="flex justify-center w-full text-gray-900 duration-300 border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
+                        hx-target="#content"
+                        hx-push-url="/recipes/add/unsupported-website"
+                        hx-prompt="Enter the recipe's URL"
+                        hx-post="/recipes/add/website"
+                        hx-indicator="#fullscreen-loader">
+                    Fetch
+                </button>
+            </div>
+        </div>
+
+        <div id="modal" class="hidden modal">
+            <div class="modal-content">
+                <h3 class="flex">
+                    Search Websites
+                    <span id="dialog-indicator" class="pl-2 htmx-indicator">
+                        <img src="/static/img/bars.svg" alt="Loading..."/>
+                    </span>
+                </h3>
+
+                <label>
+                    <input class="w-full mb-1 border border-gray-300 py-2 px-3 text-gray-700 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50"
+                           type="search" name="search" placeholder="Search a website..."
+                           hx-post="/recipes/supported-websites"
+                           hx-trigger="keyup changed delay:500ms, search"
+                           hx-target="#search-results"
+                           hx-indicator="#dialog-indicator">
+                </label>
+
+                <table class="border-collapse">
+                    <thead>
+                    <tr>
+                        <th class="bg-blue-100 border text-left px-8 py-2 w-4">Number</th>
+                        <th class="bg-blue-100 border text-left px-8 py-2 w-72">Website</th>
+                    </tr>
+                    </thead>
+                    <tbody id="search-results"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="shadow-lg rounded-xl h-96">
+            <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes-new/camera.webp"
+                 alt="Writing on a piece of paper with a traditional pen."/>
+            <div class="h-40 px-6 py-4">
+                <div class="mb-2 text-xl font-bold">Scan</div>
+                <p class="text-base text-gray-700">
+                    Upload an image of the recipe you want to add or take a picture using
+                    your device's camera.
+                </p>
+            </div>
+            <hr>
+            <div class="px-6 pt-4 pb-2">
+                <button id="modal__upload-open-button"
+                        class="flex justify-center w-full text-gray-900 duration-300 border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
+                        onclick="openModal(event)">
+                    Upload
+                </button>
+            </div>
+        </div>
+
+        <div class="shadow-lg rounded-xl h-96">
+            <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes-new/schema.webp"
+                 alt="Writing on a piece of paper with a traditional pen."/>
+            <div class="h-40 px-6 py-4">
+                <div class="mb-2 text-xl font-bold">Import</div>
+                <p class="text-base text-gray-700">
+                    Import recipes in the that adhere to the
+                    <a href="https://schema.org/Recipe" target="_blank"
+                       class="text-blue-600 underline hover:text-blue-800 visited:text-purple-600">
+                        recipe schema</a> standard,
+                    i.e. your Nextcloud recipes.
+                </p>
+            </div>
+            <hr>
+            <div class="px-6 pt-4 pb-2">
+                <button id="modal__import-open-button"
+                        class="flex justify-center w-full text-gray-900 duration-300 border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
+                        onclick="openModal(event)">
+                    Import
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('search-button').addEventListener('click', function () {
+            document.getElementById('modal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+
+        document.getElementById('modal').addEventListener('click', function (event) {
+            if (!event.target.closest('.modal-content')) {
+                document.getElementById('modal').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+{{end}}
+
+{{define "unsupported-website"}}
+    <title hx-swap-oob="true">Unsupported Website | Recipya</title>
+
+    <div class="flex h-[95vh] items-center justify-center">
+        <article class="p-5 max-w-sm bg-white border border-gray-200 rounded-lg shadow-md md:max-w-md">
+            <h3 class="mb-2 text-2xl font-bold tracking-tight">
+                This website is not supported
+            </h3>
+            <p class="mb-3 text-gray-700">
+                You can either request our team to support this website or go back to the previous page.
+            </p>
+            <form hx-post="/recipes/add/request-website" hx-target="#content" class="mt-4">
+                <div class="grid grid-flow-col col-span-5 columns-4">
+                    <a href="javascript:history.back()"
+                       class="inline-flex items-center w-full col-span-1 p-2 font-semibold text-white bg-red-600 hover:bg-red-800">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z"/>
+                        </svg>
+                        Go back
+                    </a>
+                    <button name="website"
+                            value="{{.Scraper.UnsupportedWebsite}}"
+                            class="w-full col-span-4 ml-2 p-2 font-semibold text-white bg-blue-500 hover:bg-blue-800">
+                        Request
+                    </button>
+                </div>
+            </form>
+        </article>
+    </div>
+{{end}}

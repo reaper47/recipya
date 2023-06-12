@@ -1,15 +1,18 @@
 package scraper
 
 import (
-	"strings"
-
+	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/net/html"
+	"strings"
 )
 
-func scrapeFranzoesischKochen(root *html.Node) (rs models.RecipeSchema, err error) {
-	rs, err = findRecipeLdJSON(root)
+func scrapeFranzoesischKochen(root *goquery.Document) (models.RecipeSchema, error) {
+	rs, err := parseLdJSON(root)
+	if err != nil {
+		return rs, err
+	}
+
 	rs.DateModified = strings.TrimSpace(rs.DateModified)
 	rs.DatePublished = strings.TrimSpace(rs.DatePublished)
-	return rs, err
+	return rs, nil
 }

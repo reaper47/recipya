@@ -1,162 +1,63 @@
 package scraper
 
 import (
-	"strings"
-
+	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/net/html"
+	"strings"
 )
 
-func scrapeArchanasKitchen(root *html.Node) (rs models.RecipeSchema, err error) {
-	chCategory := make(chan string)
-	go func() {
-		var v string
-		defer func() {
-			_ = recover()
-			chCategory <- v
-		}()
+func scrapeArchanasKitchen(root *goquery.Document) (models.RecipeSchema, error) {
+	description := root.Find("span[itemprop='description']").Text()
+	description = strings.TrimPrefix(description, "\n")
+	description = strings.ReplaceAll(description, "\u00a0", " ")
+	description = strings.TrimSpace(description)
 
-		node := getElement(root, "class", "col-12 recipeCategory")
-		v = node.FirstChild.NextSibling.FirstChild.NextSibling.NextSibling.FirstChild.Data
-	}()
+	image, _ := root.Find("img[itemprop='image']").Attr("src")
+	image = "https://www.archanaskitchen.com" + image
 
-	chCuisine := make(chan string)
-	go func() {
-		var v string
-		defer func() {
-			_ = recover()
-			chCuisine <- v
-		}()
+	var keywords string
+	root.Find("li[itemprop='keywords'] a").Each(func(i int, s *goquery.Selection) {
+		keywords += strings.TrimSpace(s.Text()) + ","
+	})
+	keywords = strings.TrimSuffix(keywords, ",")
 
-		node := getElement(root, "itemprop", "recipeCuisine")
-		v = node.FirstChild.FirstChild.Data
-	}()
+	nodes := root.Find("li[itemprop='ingredients']")
+	ingredients := make([]string, nodes.Length())
+	nodes.Each(func(i int, s *goquery.Selection) {
+		v := strings.ReplaceAll(s.Text(), "\n", "")
+		v = strings.ReplaceAll(v, "\t", "")
+		ingredients[i] = strings.TrimSpace(strings.ReplaceAll(v, " , ", ", "))
+	})
 
-	chDescription := make(chan string)
-	go func() {
-		var v string
-		defer func() {
-			_ = recover()
-			chDescription <- v
-		}()
+	nodes = root.Find("li[itemprop='recipeInstructions'] p")
+	instructions := make([]string, nodes.Length())
+	nodes.Each(func(i int, s *goquery.Selection) {
+		v := strings.ReplaceAll(s.Text(), "\u00a0", " ")
+		v = strings.TrimSpace(strings.ReplaceAll(v, " .", "."))
+		instructions[i] = v
+	})
 
-		node := getElement(root, "property", "og:description")
-		v = getAttr(node, "content")
-	}()
-
-	chImage := make(chan string)
-	go func() {
-		var v string
-		defer func() {
-			_ = recover()
-			chImage <- v
-		}()
-
-		node := getElement(root, "itemprop", "image")
-		v = "https://www.archanaskitchen.com" + getAttr(node, "src")
-	}()
-
-	chKeywords := make(chan string)
-	go func() {
-		var v string
-		defer func() {
-			_ = recover()
-			chKeywords <- strings.TrimSuffix(v, ",")
-		}()
-
-		node := getElement(root, "class", "itemTags")
-		for c := node.FirstChild; c != nil; c = c.NextSibling {
-			if c.Type != html.ElementNode {
-				continue
-			}
-			v += strings.TrimSpace(c.FirstChild.NextSibling.FirstChild.Data) + ","
-		}
-	}()
-
-	chIngredients := make(chan []string)
-	go func() {
-		var vals []string
-		defer func() {
-			_ = recover()
-			chIngredients <- vals
-		}()
-
-		node := getElement(root, "class", "ingredientstitle")
-		list := node.NextSibling.NextSibling
-		for c := list.FirstChild; c != nil; c = c.NextSibling {
-			if c.Type == html.ElementNode && getAttr(c, "itemprop") == "ingredients" {
-				var v string
-				for c := c.FirstChild; c != nil; c = c.NextSibling {
-					var d string
-					if c.Type == html.ElementNode {
-						d = c.FirstChild.Data
-					} else {
-						d = c.Data
-					}
-					v += " " + strings.TrimSpace(d)
-				}
-				v = strings.TrimSpace(strings.ReplaceAll(v, " , ", ", "))
-				vals = append(vals, v)
-			}
-		}
-	}()
-
-	chInstructions := make(chan []string)
-	go func() {
-		var vals []string
-		defer func() {
-			_ = recover()
-			chInstructions <- vals
-		}()
-
-		node := getElement(root, "class", "recipeinstructionstitle")
-		list := node.NextSibling.NextSibling
-		for c := list.FirstChild; c != nil; c = c.NextSibling {
-			var v string
-			for c := c.FirstChild.FirstChild; c != nil; c = c.NextSibling {
-				var d string
-				if c.Type == html.ElementNode {
-					d = c.FirstChild.Data
-				} else {
-					d = c.Data
-				}
-				v += " " + strings.TrimSpace(d)
-			}
-
-			v = strings.ReplaceAll(v, "\u00a0", " ")
-			v = strings.TrimSpace(strings.ReplaceAll(v, " .", "."))
-			vals = append(vals, v)
-		}
-	}()
-
-	chYield := make(chan int16)
-	go func() {
-		var yield int16
-		defer func() {
-			_ = recover()
-			chYield <- yield
-		}()
-
-		node := getElement(root, "itemprop", "recipeYield")
-		servings := node.FirstChild.NextSibling.FirstChild.Data
-		yield = findYield(strings.Split(servings, " "))
-	}()
+	prepTime, _ := root.Find("span[itemprop='prepTime']").Attr("content")
+	cookTime, _ := root.Find("span[itemprop='cookTime']").Attr("content")
+	datePublished, _ := root.Find("span[itemprop='datePublished']").Attr("content")
+	dateModified, _ := root.Find("span[itemprop='dateModified']").Attr("content")
+	yield := findYield(root.Find("span[itemprop='recipeYield'] p").Text())
 
 	return models.RecipeSchema{
 		AtContext:     "https://schema.org",
 		AtType:        models.SchemaType{Value: "Recipe"},
-		Name:          <-getElementData(root, "class", "recipe-title"),
-		Description:   models.Description{Value: <-chDescription},
-		Image:         models.Image{Value: <-chImage},
-		Category:      models.Category{Value: <-chCategory},
-		Cuisine:       models.Cuisine{Value: <-chCuisine},
-		PrepTime:      <-getItemPropAttr(root, "prepTime", "content"),
-		CookTime:      <-getItemPropAttr(root, "cookTime", "content"),
-		DatePublished: <-getItemPropAttr(root, "datePublished", "content"),
-		DateModified:  <-getItemPropAttr(root, "dateModified", "content"),
-		Keywords:      models.Keywords{Values: <-chKeywords},
-		Ingredients:   models.Ingredients{Values: <-chIngredients},
-		Instructions:  models.Instructions{Values: <-chInstructions},
-		Yield:         models.Yield{Value: <-chYield},
+		Name:          root.Find("h1[itemprop='name']").Text(),
+		Description:   models.Description{Value: description},
+		Image:         models.Image{Value: image},
+		Category:      models.Category{Value: root.Find(".recipeCategory a").Text()},
+		Cuisine:       models.Cuisine{Value: root.Find("span[itemprop='recipeCuisine'] a").Text()},
+		PrepTime:      prepTime,
+		CookTime:      cookTime,
+		DatePublished: datePublished,
+		DateModified:  dateModified,
+		Keywords:      models.Keywords{Values: keywords},
+		Ingredients:   models.Ingredients{Values: ingredients},
+		Instructions:  models.Instructions{Values: instructions},
+		Yield:         models.Yield{Value: yield},
 	}, nil
 }

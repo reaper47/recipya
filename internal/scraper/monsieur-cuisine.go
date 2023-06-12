@@ -1,18 +1,12 @@
 package scraper
 
 import (
-	"strconv"
-	"strings"
-	"time"
-
-	"github.com/reaper47/recipya/internal/constants"
+	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
-	"github.com/reaper47/recipya/internal/regex"
-	"golang.org/x/net/html"
 )
 
-func scrapeMonsieurCuisine(root *html.Node) (models.RecipeSchema, error) {
-	content := getElement(root, "class", "row recipe--header")
+func scrapeMonsieurCuisine(root *goquery.Document) (models.RecipeSchema, error) {
+	/*content := getElement(root, "class", "row recipe--header")
 
 	chName := make(chan string)
 	go func() {
@@ -54,8 +48,8 @@ func scrapeMonsieurCuisine(root *html.Node) (models.RecipeSchema, error) {
 
 		var prepTime int
 		node := getElement(content, "class", "recipe-duration")
-		node = getElement(node, "class", "info-label")
-		s := strings.ReplaceAll(node.FirstChild.Data, "\n", "")
+		node = getElement(node, "class", "info-label").FirstChild
+		s := strings.ReplaceAll(node.Data, "\n", "")
 		parts := strings.Split(strings.TrimSpace(s), " ")
 		for _, part := range parts {
 			var err error
@@ -67,8 +61,9 @@ func scrapeMonsieurCuisine(root *html.Node) (models.RecipeSchema, error) {
 		}
 
 		node = getElement(content, "class", "recipe-duration-total")
-		node = getElement(node, "class", "info-label")
-		s = string(regex.HourMinutes.Find([]byte(strings.TrimSpace(node.FirstChild.Data))))
+		node = getElement(node, "class", "info-label").FirstChild
+		s = strings.TrimPrefix(node.Data, "Ready in:")
+		s = string(regex.HourMinutes.Find([]byte(strings.TrimSpace(s))))
 		parts = strings.Split(s, ":")
 		if len(parts) != 2 {
 			return
@@ -107,7 +102,7 @@ func scrapeMonsieurCuisine(root *html.Node) (models.RecipeSchema, error) {
 			for _, part := range parts {
 				t, err := time.Parse("02.01.2006", part)
 				if err == nil {
-					f := t.Format(constants.BasicTimeLayout)
+					f := t.Format(time.DateOnly)
 					created = f
 					pub = f
 					break
@@ -121,7 +116,7 @@ func scrapeMonsieurCuisine(root *html.Node) (models.RecipeSchema, error) {
 		for _, part := range parts {
 			t, err := time.Parse("02.01.2006", part)
 			if err == nil {
-				mod = t.Format(constants.BasicTimeLayout)
+				mod = t.Format(time.DateOnly)
 			}
 		}
 	}()
@@ -140,17 +135,17 @@ func scrapeMonsieurCuisine(root *html.Node) (models.RecipeSchema, error) {
 
 	chIngredients := make(chan models.Ingredients)
 	go func() {
-		var vals []string
+		var values []string
 		defer func() {
 			_ = recover()
-			chIngredients <- models.Ingredients{Values: vals}
+			chIngredients <- models.Ingredients{Values: values}
 		}()
 
 		node := getElement(root, "class", "recipe--ingredients-html-item col-md-8")
 		for c := node.FirstChild; c != nil; c = c.NextSibling {
 			if c.Data == "ul" {
 				for c := c.FirstChild; c != nil; c = c.NextSibling {
-					vals = append(vals, strings.TrimSpace(c.FirstChild.Data))
+					values = append(values, strings.TrimSpace(c.FirstChild.Data))
 				}
 				break
 			}
@@ -159,17 +154,17 @@ func scrapeMonsieurCuisine(root *html.Node) (models.RecipeSchema, error) {
 
 	chInstructions := make(chan models.Instructions)
 	go func() {
-		var vals []string
+		var values []string
 		defer func() {
 			_ = recover()
-			chInstructions <- models.Instructions{Values: vals}
+			chInstructions <- models.Instructions{Values: values}
 		}()
 
 		node := getElement(root, "class", "recipe--instructions")
 		for c := node.FirstChild; c != nil; c = c.NextSibling {
 			if c.Data == "ol" {
 				for c := c.FirstChild; c != nil; c = c.NextSibling {
-					vals = append(vals, strings.TrimSpace(c.FirstChild.Data))
+					values = append(values, strings.TrimSpace(c.FirstChild.Data))
 				}
 				break
 			}
@@ -231,5 +226,6 @@ func scrapeMonsieurCuisine(root *html.Node) (models.RecipeSchema, error) {
 		Ingredients:     <-chIngredients,
 		Instructions:    <-chInstructions,
 		NutritionSchema: <-chNutrition,
-	}, nil
+	}, nil*/
+	return models.RecipeSchema{}, nil
 }

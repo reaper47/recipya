@@ -1,28 +1,17 @@
 package scraper
 
 import (
-	"strings"
-
+	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/net/html"
 )
 
-func scrapeMindMegette(root *html.Node) (models.RecipeSchema, error) {
-	rs, err := scrapeLdJSON(root)
+func scrapeMindMegette(root *goquery.Document) (models.RecipeSchema, error) {
+	rs, err := parseLdJSON(root)
+	if err != nil {
+		return rs, err
+	}
 
-	chYield := make(chan models.Yield)
-	go func() {
-		var yield int16
-		defer func() {
-			_ = recover()
-			chYield <- models.Yield{Value: yield}
-		}()
-
-		node := getElement(root, "class", "spritePortion")
-		yieldStr := node.NextSibling.FirstChild.FirstChild.Data
-		yield = findYield(strings.Split(yieldStr, " "))
-	}()
-
-	rs.Yield = <-chYield
-	return rs, err
+	yield := findYield(root.Find(".spritePortion").Siblings().First().Text())
+	rs.Yield.Value = yield
+	return rs, nil
 }

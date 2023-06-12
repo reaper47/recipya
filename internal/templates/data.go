@@ -1,55 +1,24 @@
 package templates
 
-import (
-	"github.com/reaper47/recipya/internal/models"
-)
-
-// Data holds general template data.
+// Data holds data to pass on to the templates.
 type Data struct {
-	HideSidebar  bool
-	HideGap      bool
-	HeaderData   HeaderData
-	IsViewRecipe bool
+	IsAuthenticated bool // IsAuthenticated says whether the user is authenticated.
 
-	RecipesData RecipesData
-	RecipeData  RecipeData
-	Categories  []string
-	Scraper     Scraper
+	Title string // Title is the text inserted <title> tag's text.
 
-	FormErrorData FormErrorData
+	Content      string // Content is text to insert into the template.
+	ContentTitle string // ContentTitle is the header of the Content.
+
+	Scraper ScraperData
 }
 
-// HeaderData holds data for the header.
-type HeaderData struct {
-	Hide              bool
-	IsUnauthenticated bool
-	AvatarInitials    string
+// RegisterData is the data to pass on to the user registration template.
+type RegisterData struct {
+	Email           string
+	PasswordConfirm string
 }
 
-// FormErrorData holds errors related to forms.
-type FormErrorData struct {
-	Username, Email, Password string
-}
-
-// IsEmpty checks whether all of the form's error data fields are empty.
-func (f FormErrorData) IsEmpty() bool {
-	return f.Username == "" && f.Email == "" && f.Password == ""
-}
-
-// RecipesData holds data to pass on to the index template.
-type RecipesData struct {
-	Recipes    []models.Recipe
-	Pagination Pagination
-}
-
-// RecipeData holds data to pass to the recipe templates.
-type RecipeData struct {
-	Recipe           models.Recipe
-	HideEditControls bool
-}
-
-// Scraper holds template data related to the recipe scraper.
-type Scraper struct {
-	IsEmailSetUp bool
-	Websites     []models.Website
+// ScraperData holds template data related to the recipe scraper.
+type ScraperData struct {
+	UnsupportedWebsite string
 }

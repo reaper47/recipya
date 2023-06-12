@@ -1,53 +1,33 @@
 package scraper
 
 import (
-	"strings"
-
+	"fmt"
+	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/net/html"
+	"strings"
 )
 
-func scrapePrzepisy(root *html.Node) (models.RecipeSchema, error) {
-	rs, err := findRecipeLdJSON(root)
+func scrapePrzepisy(root *goquery.Document) (models.RecipeSchema, error) {
+	rs, err := parseLdJSON(root)
+	if err != nil {
+		return rs, err
+	}
 
-	chYield := make(chan int16)
-	go func() {
-		var yield int16
-		defer func() {
-			_ = recover()
-			chYield <- yield
-		}()
+	image, _ := root.Find(".recipe-img img").Attr("src")
 
-		node := getElement(root, "class", "person-count")
-		yield = findYield(strings.Split(node.FirstChild.Data, " "))
-	}()
+	yield := findYield(root.Find(".person-count").Text())
 
-	chingredients := make(chan []string)
-	go func() {
-		var vals []string
-		defer func() {
-			_ = recover()
-			chingredients <- vals
-		}()
+	nodes := root.Find(".ingredients-list-content-container")
+	ingredients := make([]string, nodes.Length())
+	nodes.Each(func(i int, s *goquery.Selection) {
+		name := s.Find(".ingredient-name").Text()
+		quantity := s.Find(".quantity").Text()
+		ing := fmt.Sprintf("%s %s", quantity, name)
+		ingredients[i] = strings.Join(strings.Fields(ing), " ")
+	})
 
-		xn := traverseAll(root, func(node *html.Node) bool {
-			return getAttr(node, "class") == "ingredients-list-content-item"
-		})
-		for _, n := range xn {
-			node := getElement(n, "class", "ingredient-name")
-			node = traverseAll(node, func(node *html.Node) bool {
-				return strings.Contains(getAttr(node, "class"), "text-bg-white")
-			})[0]
-			name := strings.TrimSpace(node.FirstChild.Data)
-
-			node = getElement(n, "class", "quantity")
-			quantity := strings.TrimSpace(node.FirstChild.FirstChild.Data)
-
-			vals = append(vals, quantity+" "+name)
-		}
-	}()
-
-	rs.Yield = models.Yield{Value: <-chYield}
-	rs.Ingredients = models.Ingredients{Values: <-chingredients}
-	return rs, err
+	rs.Image.Value = image
+	rs.Yield = models.Yield{Value: yield}
+	rs.Ingredients = models.Ingredients{Values: ingredients}
+	return rs, nil
 }

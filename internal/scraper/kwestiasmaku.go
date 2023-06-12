@@ -1,126 +1,47 @@
 package scraper
 
 import (
+	"github.com/PuerkitoBio/goquery"
 	"strings"
 
 	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/net/html"
 )
 
-func scrapeKwestiasmaku(root *html.Node) (models.RecipeSchema, error) {
-	chImage := make(chan string)
-	go func() {
-		var s string
-		defer func() {
-			_ = recover()
-			chImage <- s
-		}()
+func scrapeKwestiasmaku(root *goquery.Document) (models.RecipeSchema, error) {
+	image, _ := root.Find("meta[property='og:image']").Attr("content")
+	name, _ := root.Find("meta[property='og:title']").Attr("content")
+	datePublished, _ := root.Find("meta[property='article:published_time']").Attr("content")
+	dateModified, _ := root.Find("meta[property='article:modified_time']").Attr("content")
+	description := root.Find("span[itemprop='description']").Text()
 
-		node := getElement(root, "itemprop", "image")
-		s = getAttr(node, "src")
-	}()
+	nodes := root.Find(".field-name-field-skladniki li")
+	ingredients := make([]string, nodes.Length())
+	nodes.Each(func(i int, s *goquery.Selection) {
+		v := strings.ReplaceAll(s.Text(), "\n", "")
+		v = strings.ReplaceAll(v, "\t", "")
+		ingredients[i] = v
+	})
 
-	chName := make(chan string)
-	go func() {
-		var s string
-		defer func() {
-			_ = recover()
-			chName <- s
-		}()
+	nodes = root.Find(".field-name-field-przygotowanie li")
+	instructions := make([]string, nodes.Length())
+	nodes.Each(func(i int, s *goquery.Selection) {
+		v := strings.ReplaceAll(s.Text(), "\n", "")
+		v = strings.ReplaceAll(v, "\t", "")
+		instructions[i] = v
+	})
 
-		node := getElement(root, "itemprop", "name")
-		s = node.FirstChild.FirstChild.Data
-	}()
-
-	chYield := make(chan int16)
-	go func() {
-		var yield int16
-		defer func() {
-			_ = recover()
-			chYield <- yield
-		}()
-
-		node := getElement(
-			root,
-			"class",
-			"field field-name-field-ilosc-porcji field-type-text field-label-hidden",
-		)
-		yield = findYield(strings.Split(strings.TrimSpace(node.FirstChild.Data), " "))
-	}()
-
-	chIngredients := make(chan models.Ingredients)
-	go func() {
-		var vals []string
-		defer func() {
-			_ = recover()
-			chIngredients <- models.Ingredients{Values: vals}
-		}()
-
-		node := getElement(
-			root,
-			"class",
-			"field field-name-field-skladniki field-type-text-long field-label-hidden",
-		)
-		for c := node.FirstChild; c != nil; c = c.NextSibling {
-			if c.Data == "ul" {
-				for li := c.FirstChild; li != nil; li = li.NextSibling {
-					if li.Type == html.ElementNode {
-						vals = append(vals, strings.TrimSpace(li.FirstChild.Data))
-					}
-				}
-				break
-			}
-		}
-	}()
-
-	chInstructions := make(chan models.Instructions)
-	go func() {
-		var vals []string
-		defer func() {
-			_ = recover()
-			chInstructions <- models.Instructions{Values: vals}
-		}()
-
-		node := getElement(
-			root,
-			"class",
-			"field field-name-field-przygotowanie field-type-text-long field-label-above",
-		)
-		for c := node.FirstChild; c != nil; c = c.NextSibling {
-			if c.Data == "ul" {
-				for li := c.FirstChild; li != nil; li = li.NextSibling {
-					if li.Type != html.ElementNode {
-						continue
-					}
-
-					var xs []string
-					for c2 := li.FirstChild; c2 != nil; c2 = c2.NextSibling {
-						switch c2.Type {
-						case html.ElementNode:
-							xs = append(xs, c2.FirstChild.Data)
-						case html.TextNode:
-							xs = append(xs, c2.Data)
-						}
-					}
-
-					v := strings.Join(xs, " ")
-					v = strings.ReplaceAll(v, "\n", "")
-					v = strings.ReplaceAll(v, "\t", "")
-					vals = append(vals, v)
-				}
-				break
-			}
-		}
-	}()
+	yield := findYield(root.Find(".field-name-field-ilosc-porcji").Text())
 
 	return models.RecipeSchema{
-		AtContext:    "https://schema.org",
-		AtType:       models.SchemaType{Value: "Recipe"},
-		Image:        models.Image{Value: <-chImage},
-		Description:  models.Description{Value: <-getItemPropData(root, "description")},
-		Name:         <-chName,
-		Yield:        models.Yield{Value: <-chYield},
-		Ingredients:  <-chIngredients,
-		Instructions: <-chInstructions,
+		AtContext:     "https://schema.org",
+		AtType:        models.SchemaType{Value: "Recipe"},
+		Image:         models.Image{Value: image},
+		DatePublished: datePublished,
+		DateModified:  dateModified,
+		Description:   models.Description{Value: description},
+		Name:          name,
+		Yield:         models.Yield{Value: yield},
+		Ingredients:   models.Ingredients{Values: ingredients},
+		Instructions:  models.Instructions{Values: instructions},
 	}, nil
 }

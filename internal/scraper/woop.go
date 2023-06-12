@@ -1,119 +1,63 @@
 package scraper
 
 import (
+	"github.com/PuerkitoBio/goquery"
 	"strings"
 
 	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/net/html"
 )
 
-func scrapeWoop(root *html.Node) (rs models.RecipeSchema, err error) {
-	chDescription := make(chan string)
-	go func() {
-		var v string
-		go func() {
-			_ = recover()
-			chDescription <- v
-		}()
+func scrapeWoop(root *goquery.Document) (rs models.RecipeSchema, err error) {
+	name, _ := root.Find("meta[name='title']").Attr("content")
+	keywords, _ := root.Find("meta[name='keywords']").Attr("content")
+	description, _ := root.Find("meta[property='og:description']").Attr("content")
+	image, _ := root.Find("meta[property='og:image']").Attr("content")
 
-		node := getElement(root, "class", "product attribute recipe-origins")
-		v = getElement(node, "class", "value").FirstChild.Data
-	}()
+	yield := findYield(root.Find(".serving-amount").Children().Last().Text())
 
-	chYield := make(chan int16)
-	go func() {
-		var yield int16
-		go func() {
-			_ = recover()
-			chYield <- yield
-		}()
-
-		node := getElement(root, "class", "product attribute serving-amount")
-		value := getElement(node, "class", "value")
-		yield = findYield(strings.Split(value.FirstChild.Data, " "))
-	}()
-
-	chInstructions := make(chan []string)
-	go func() {
-		var vals []string
-		go func() {
-			_ = recover()
-			chInstructions <- vals
-		}()
-
-		node := getElement(root, "class", "product attribute cooking-instructions")
-		value := getElement(node, "class", "value")
-		for c := value.FirstChild.FirstChild; c != nil; c = c.NextSibling {
-			if c.Type != html.ElementNode || c.FirstChild == nil {
-				continue
-			}
-
-			h5 := strings.TrimSpace(c.FirstChild.NextSibling.FirstChild.Data)
-			if h5 == "" {
-				continue
-			}
-
-			p := strings.TrimSpace(c.LastChild.PrevSibling.FirstChild.Data)
-			vals = append(vals, strings.TrimSpace(h5+"\n"+p))
+	nodes := root.Find(".ingredients li")
+	var ingredients []string
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		v := strings.TrimSpace(s.Text())
+		if v != "" {
+			ingredients = append(ingredients, v)
 		}
-	}()
+	})
 
-	chIngredients := make(chan []string)
-	go func() {
-		var vals []string
-		go func() {
-			_ = recover()
-			chIngredients <- vals
-		}()
-
-		node := getElement(root, "class", "product attribute ingredients")
-		value := getElement(node, "class", "value")
-		for c := value.FirstChild.FirstChild; c != nil; c = c.NextSibling {
-			if c.Type != html.ElementNode || c.FirstChild == nil {
-				continue
-			}
-			vals = append(vals, strings.TrimSpace(c.FirstChild.Data))
+	instructions := make([]string, 0)
+	root.Find(".cooking-instructions li").Each(func(i int, s *goquery.Selection) {
+		v := strings.TrimSpace(s.Text())
+		if v != "" {
+			instructions = append(instructions, v)
 		}
-	}()
+	})
 
-	chNutrition := make(chan models.NutritionSchema)
-	go func() {
-		var m models.NutritionSchema
-		go func() {
-			_ = recover()
-			chNutrition <- m
-		}()
-
-		node := getElement(root, "class", "product attribute nutritional-info")
-		value := getElement(node, "class", "value")
-		for c := value.FirstChild.FirstChild; c != nil; c = c.NextSibling {
-			if c.Type != html.ElementNode {
-				continue
-			}
-
-			parts := strings.Split(c.FirstChild.Data, ":")
-			val := strings.TrimSpace(strings.Join(parts[1:], " "))
-			switch parts[0] {
-			case "Energy":
-				m.Calories = val
-			case "Protein":
-				m.Protein = val
-			case "Carbohydrate":
-				m.Carbohydrates = val
-			case "Fat":
-				m.Fat = val
-			}
+	var nutrition models.NutritionSchema
+	root.Find(".nutritional-info li").Each(func(i int, s *goquery.Selection) {
+		parts := strings.Split(s.Text(), ":")
+		val := strings.TrimSpace(strings.Join(parts[1:], " "))
+		switch parts[0] {
+		case "Energy":
+			nutrition.Calories = val
+		case "Protein":
+			nutrition.Protein = val
+		case "Carbohydrate":
+			nutrition.Carbohydrates = val
+		case "Fat":
+			nutrition.Fat = val
 		}
-	}()
+	})
 
 	return models.RecipeSchema{
 		AtContext:       "https://schema.org",
 		AtType:          models.SchemaType{Value: "Recipe"},
-		Name:            <-getElementData(root, "data-ui-id", "page-title-wrapper"),
-		Description:     models.Description{Value: <-chDescription},
-		Ingredients:     models.Ingredients{Values: <-chIngredients},
-		Instructions:    models.Instructions{Values: <-chInstructions},
-		NutritionSchema: <-chNutrition,
-		Yield:           models.Yield{Value: <-chYield},
+		Name:            name,
+		Description:     models.Description{Value: description},
+		Image:           models.Image{Value: image},
+		Ingredients:     models.Ingredients{Values: ingredients},
+		Instructions:    models.Instructions{Values: instructions},
+		Keywords:        models.Keywords{Values: keywords},
+		NutritionSchema: nutrition,
+		Yield:           models.Yield{Value: yield},
 	}, nil
 }

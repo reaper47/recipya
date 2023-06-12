@@ -1,61 +1,38 @@
 package scraper
 
 import (
+	"github.com/PuerkitoBio/goquery"
+	"github.com/reaper47/recipya/internal/models"
 	"strconv"
 	"strings"
-
-	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/net/html"
 )
 
-func scrapeDk(root *html.Node) (rs models.RecipeSchema, err error) {
-	content := getElement(root, "itemtype", "http://schema.org/Recipe")
-	description := strings.TrimSpace(<-getItemPropData(content, "description"))
+func scrapeDk(root *goquery.Document) (models.RecipeSchema, error) {
+	content := root.Find("section[itemtype='http://schema.org/Recipe']")
 
-	chYield := make(chan int16)
-	go func() {
-		var i int
-		defer func() {
-			_ = recover()
-			chYield <- int16(i)
-		}()
+	yieldStr, _ := content.Find("section[itemprop='recipeYield']").Attr("content")
+	yield, _ := strconv.ParseInt(yieldStr, 10, 16)
 
-		yieldStr := getItemPropAttr(content, "recipeYield", "content")
-		yield, err := strconv.ParseInt(<-yieldStr, 10, 16)
-		if err == nil {
-			i = int(yield)
+	nodes := content.Find("li[itemprop='recipeIngredient']")
+	ingredients := make([]string, nodes.Length())
+	nodes.Each(func(i int, s *goquery.Selection) {
+		v := strings.TrimSpace(s.Text())
+		v = strings.ReplaceAll(v, "\n", "")
+		ingredients[i] = strings.Join(strings.Fields(v), " ")
+	})
+
+	instructions := make([]string, 0)
+	content.Find("div[itemprop='recipeInstructions'] h3,div[itemprop='recipeInstructions'] li").Each(func(i int, s *goquery.Selection) {
+		if i > 0 && s.Nodes[0].Data == "h3" {
+			instructions = append(instructions, "\n")
 		}
-	}()
 
-	chIngredients := make(chan models.Ingredients)
-	go func() {
-		var v models.Ingredients
-		defer func() {
-			_ = recover()
-			chIngredients <- v
-		}()
+		v := strings.ReplaceAll(s.Text(), "\n", "")
+		v = strings.ReplaceAll(v, "\u00a0", "")
+		instructions = append(instructions, strings.TrimSpace(v))
+	})
 
-		node := getElement(content, "itemprop", "recipeIngredient").Parent.Parent
-		for c := node.FirstChild; c != nil; c = c.NextSibling {
-			switch c.Data {
-			case "h3":
-				v.Values = append(v.Values, "\n", c.FirstChild.Data)
-			case "ul":
-				for l := c.FirstChild; l != nil; l = l.NextSibling {
-					amt := <-getElementData(l, "class", "recipe-ingredients__unit-amount")
-					name := <-getElementData(
-						l,
-						"class",
-						"recipe-ingredients__ingredient-instruction",
-					)
-					v.Values = append(v.Values, strings.TrimSpace(amt)+" "+strings.TrimSpace(name))
-				}
-			}
-		}
-		v.Values = v.Values[1:]
-	}()
-
-	chInstructions := make(chan models.Instructions)
+	/*chInstructions := make(chan models.Instructions)
 	go func() {
 		var v models.Instructions
 		defer func() {
@@ -79,17 +56,23 @@ func scrapeDk(root *html.Node) (rs models.RecipeSchema, err error) {
 			}
 		}
 		v.Values = v.Values[1:]
-	}()
+	}()*/
+
+	description := content.Find("p[itemprop='description']").Text()
+	description = strings.ReplaceAll(description, "\n", "")
+
+	image, _ := content.Find("meta[itemprop='url']").Attr("content")
+	datePublished, _ := content.Find("meta[itemprop='datePublished']").Attr("content")
 
 	return models.RecipeSchema{
 		AtContext:     "https://schema.org",
 		AtType:        models.SchemaType{Value: "Recipe"},
-		Name:          <-getItemPropData(content, "name"),
-		Image:         models.Image{Value: <-getItemPropAttr(content, "url", "content")},
-		DatePublished: <-getItemPropAttr(content, "datePublished", "content"),
-		Description:   models.Description{Value: description},
-		Yield:         models.Yield{Value: <-chYield},
-		Ingredients:   <-chIngredients,
-		Instructions:  <-chInstructions,
+		Name:          content.Find("h1[itemprop='name']").Text(),
+		Image:         models.Image{Value: image},
+		DatePublished: datePublished,
+		Description:   models.Description{Value: strings.TrimSpace(description)},
+		Yield:         models.Yield{Value: int16(yield)},
+		Ingredients:   models.Ingredients{Values: ingredients},
+		Instructions:  models.Instructions{Values: instructions},
 	}, nil
 }

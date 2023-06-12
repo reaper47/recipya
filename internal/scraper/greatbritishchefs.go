@@ -1,123 +1,97 @@
 package scraper
 
 import (
+	"encoding/json"
+	"github.com/PuerkitoBio/goquery"
+	"github.com/reaper47/recipya/internal/models"
 	"strconv"
 	"strings"
-
-	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/net/html"
 )
 
-func scrapeGreatBritishChefs(root *html.Node) (models.RecipeSchema, error) {
-	chName := make(chan string)
-	go func() {
-		var s string
-		defer func() {
-			_ = recover()
-			chName <- s
-		}()
+type viteSsrPlugin struct {
+	PageContext struct {
+		PageProps struct {
+			RecipeInfoObject vitePluginRecipeInfo `json:"recipeInfoObject"`
+		} `json:"pageProps"`
+	} `json:"pageContext"`
+}
 
-		node := getElement(root, "class", "Header__Title")
-		node = getElement(node, "itemprop", "name")
-		s = node.FirstChild.Data
-	}()
+type vitePluginRecipeInfo struct {
+	YieldTextOverride string `json:"yieldTextOverride"`
+	IsO8601TimeToCook string `json:"isO8601_TimeToCook"`
+	Equipments        []struct {
+		Title  string `json:"title"`
+		QUnits int    `json:"qUnits"`
+	} `json:"equipments"`
+	LinkedData struct {
+		Context            string   `json:"@context"`
+		Name               string   `json:"name"`
+		Description        string   `json:"description"`
+		RecipeCategory     string   `json:"recipeCategory"`
+		TotalTime          string   `json:"totalTime"`
+		RecipeIngredient   []string `json:"recipeIngredient"`
+		RecipeInstructions []struct {
+			Type string `json:"@type"`
+			Text string `json:"text"`
+		} `json:"recipeInstructions"`
+		Keywords string   `json:"keywords"`
+		Type     string   `json:"@type"`
+		Image    []string `json:"image"`
+		Author   struct {
+			Type string `json:"@type"`
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"author"`
+		DatePublished string `json:"datePublished"`
+		DateModified  string `json:"dateModified"`
+	} `json:"linkedData"`
+	Author struct {
+		FullName     string `json:"fullName"`
+		Introduction string `json:"introduction"`
+	} `json:"author"`
+	Image struct {
+		URL string `json:"url"`
+	} `json:"image"`
+	PageTitle       string `json:"pageTitle"`
+	PageDescription string `json:"pageDescription"`
+	PublishedDate   string `json:"publishedDate"`
+	ModifiedDate    string `json:"modifiedDate"`
+}
 
-	chImage := make(chan string)
-	go func() {
-		var s string
-		defer func() {
-			_ = recover()
-			chImage <- s
-		}()
+func scrapeGreatBritishChefs(root *goquery.Document) (models.RecipeSchema, error) {
+	var vite viteSsrPlugin
+	if err := json.Unmarshal([]byte(root.Find("#vite-plugin-ssr_pageContext").Text()), &vite); err != nil {
+		return models.RecipeSchema{}, err
+	}
+	info := vite.PageContext.PageProps.RecipeInfoObject
+	linkedData := info.LinkedData
 
-		node := getElement(root, "id", "head-media")
-		s = getAttr(node, "src")
-	}()
+	yield, _ := strconv.Atoi(strings.TrimSpace(info.YieldTextOverride))
 
-	chCategory := make(chan string)
-	go func() {
-		var s string
-		defer func() {
-			_ = recover()
-			chCategory <- s
-		}()
+	instructions := make([]string, len(linkedData.RecipeInstructions))
+	for i, ins := range linkedData.RecipeInstructions {
+		instructions[i] = ins.Text
+	}
 
-		node := getElement(root, "itemprop", "recipeCategory")
-		node = getElement(node, "class", "header-attribute-text text-capitalize")
-		s = node.FirstChild.Data
-	}()
-
-	chYield := make(chan int16)
-	go func() {
-		var yield int16
-		defer func() {
-			_ = recover()
-			chYield <- yield
-		}()
-
-		node := getElement(root, "itemprop", "recipeYield")
-		node = getElement(node, "class", "header-attribute-text")
-		iStr := strings.ReplaceAll(node.FirstChild.Data, "\n", "")
-		i, err := strconv.ParseInt(strings.TrimSpace(iStr), 10, 16)
-		if err == nil {
-			yield = int16(i)
-		}
-	}()
-
-	chIngredients := make(chan []string)
-	go func() {
-		var vals []string
-		defer func() {
-			_ = recover()
-			chIngredients <- vals
-		}()
-
-		xn := traverseAll(root, func(node *html.Node) bool {
-			return getAttr(node, "itemprop") == "recipeIngredient"
-		})
-		for _, n := range xn {
-			var xs []string
-			for c := n.FirstChild; c != nil; c = c.NextSibling {
-				if c.Type != html.ElementNode {
-					continue
-				}
-				v := strings.ReplaceAll(c.FirstChild.Data, "\n", "")
-				xs = append(xs, strings.TrimSpace(v))
-			}
-			vals = append(vals, strings.Join(xs, " "))
-		}
-	}()
-
-	chInstructions := make(chan []string)
-	go func() {
-		var vals []string
-		defer func() {
-			_ = recover()
-			chInstructions <- vals
-		}()
-
-		xn := traverseAll(root, func(node *html.Node) bool {
-			return getAttr(node, "itemprop") == "recipeInstructions"
-		})
-		for _, n := range xn {
-			v := strings.ReplaceAll(n.FirstChild.Data, "\n", "")
-			vals = append(vals, strings.TrimSpace(v))
-		}
-	}()
+	tools := make([]string, len(info.Equipments))
+	for i, equipment := range info.Equipments {
+		tools[i] = strings.TrimSpace(equipment.Title)
+	}
 
 	return models.RecipeSchema{
-		AtContext:     "https://schema.org",
-		AtType:        models.SchemaType{Value: "Recipe"},
-		DatePublished: <-getItemPropAttr(root, "datePublished", "content"),
-		DateModified:  <-getItemPropAttr(root, "dateModified", "content"),
-		Description:   models.Description{Value: <-getItemPropAttr(root, "description", "content")},
-		Name:          <-chName,
-		Image:         models.Image{Value: <-chImage},
-		Category:      models.Category{Value: <-chCategory},
-		Yield:         models.Yield{Value: <-chYield},
-		CookTime:      <-getItemPropData(root, "cookTime"),
-		PrepTime:      <-getItemPropData(root, "prepTime"),
-		Ingredients:   models.Ingredients{Values: <-chIngredients},
-		Instructions:  models.Instructions{Values: <-chInstructions},
+		AtContext:     linkedData.Context,
+		AtType:        models.SchemaType{Value: linkedData.Type},
+		Category:      models.Category{Value: linkedData.RecipeCategory},
+		CookTime:      info.IsO8601TimeToCook,
+		DateModified:  linkedData.DateModified,
+		DatePublished: linkedData.DatePublished,
+		Description:   models.Description{Value: linkedData.Description},
+		Keywords:      models.Keywords{Values: linkedData.Keywords},
+		Image:         models.Image{Value: linkedData.Image[0]},
+		Ingredients:   models.Ingredients{Values: linkedData.RecipeIngredient},
+		Instructions:  models.Instructions{Values: instructions},
+		Name:          linkedData.Name,
+		Tools:         models.Tools{Values: tools},
+		Yield:         models.Yield{Value: int16(yield)},
 	}, nil
 }

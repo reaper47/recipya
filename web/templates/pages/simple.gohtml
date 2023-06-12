@@ -1,0 +1,12 @@
+{{define "auth-card-content"}}
+    <div class="min-w-full p-8 bg-white rounded-lg shadow-lg">
+        <h1 class="mb-6 text-2xl font-bold text-center text-gray-600 underline">{{.ContentTitle}}</h1>
+        <p class="block my-3 text-gray-800 text-md">
+            {{.Content}}
+        </p>
+        <a href="/" hx-boost="true"
+           class="w-full block text-center px-4 py-2 mt-6 text-lg font-semibold tracking-wide text-white bg-indigo-600 rounded-lg hover:bg-green-600">
+            Back Home
+        </a>
+    </div>
+{{end}}

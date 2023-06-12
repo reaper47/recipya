@@ -1,14 +1,13 @@
 package scraper
 
 import (
+	"github.com/PuerkitoBio/goquery"
+	"github.com/reaper47/recipya/internal/models"
 	"strconv"
 	"strings"
-
-	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/net/html"
 )
 
-func scrapeGlobo(root *html.Node) (rs models.RecipeSchema, err error) {
+func scrapeGlobo(root *goquery.Document) (rs models.RecipeSchema, err error) {
 	chDescription := make(chan string)
 	go func() {
 		var s string
@@ -17,25 +16,23 @@ func scrapeGlobo(root *html.Node) (rs models.RecipeSchema, err error) {
 			chDescription <- s
 		}()
 
-		div := getElement(root, "itemprop", "description")
-		p := getElement(div, "class", "content-text__container")
-		s = strings.TrimSpace(p.FirstChild.Data)
+		p := root.Find("div[itemprop='description'] .content-text__container")
+		s = strings.TrimSpace(p.Text())
 	}()
 
 	chIngredients := make(chan []string)
 	go func() {
-		var vals []string
+		nodes := root.Find("li[itemprop='recipeIngredient']")
+
+		values := make([]string, nodes.Length())
 		defer func() {
 			_ = recover()
-			chIngredients <- vals
+			chIngredients <- values
 		}()
 
-		xn := traverseAll(root, func(node *html.Node) bool {
-			return getAttr(node, "itemprop") == "recipeIngredient"
+		nodes.Each(func(i int, s *goquery.Selection) {
+			values[i] = s.Text()
 		})
-		for _, n := range xn {
-			vals = append(vals, n.FirstChild.Data)
-		}
 	}()
 
 	chYield := make(chan int16)
@@ -46,44 +43,47 @@ func scrapeGlobo(root *html.Node) (rs models.RecipeSchema, err error) {
 			chYield <- yield
 		}()
 
-		yieldStr := <-getItemPropAttr(root, "recipeYield", "content")
-		i, err := strconv.ParseInt(yieldStr, 10, 16)
-		if err == nil {
-			yield = int16(i)
-		}
+		yieldStr, _ := root.Find("span[itemprop='recipeYield']").Attr("content")
+		i, _ := strconv.ParseInt(yieldStr, 10, 16)
+		yield = int16(i)
 	}()
 
 	chInstructions := make(chan []string)
 	go func() {
-		var vals []string
+		nodes := root.Find("li[itemprop='recipeInstructions']")
+
+		values := make([]string, nodes.Length())
 		defer func() {
 			_ = recover()
-			chInstructions <- vals
+			chInstructions <- values
 		}()
 
-		xn := traverseAll(root, func(node *html.Node) bool {
-			return getAttr(node, "itemprop") == "recipeInstructions"
+		nodes.Each(func(i int, s *goquery.Selection) {
+			values[i] = strings.TrimSpace(s.Find(".recipeInstruction__text").Text())
 		})
-		for _, n := range xn {
-			n = getElement(n, "class", "recipeInstruction__text")
-			vals = append(vals, strings.TrimSpace(n.FirstChild.Data))
-		}
 	}()
 
+	name, _ := root.Find("meta[itemprop='name']").Attr("content")
+	image, _ := root.Find("meta[itemprop='image']").Attr("content")
+	dateModified, _ := root.Find("meta[itemprop='dateModified']").Attr("content")
+	datePublished, _ := root.Find("meta[itemprop='datePublished']").Attr("content")
+	keywords, _ := root.Find("meta[itemprop='keywords']").Attr("content")
+	category, _ := root.Find("meta[itemprop='recipeCategory']").Attr("content")
+	cookingMethod, _ := root.Find("meta[itemprop='recipeCuisine']").Attr("content")
+	cuisine, _ := root.Find("meta[itemprop='recipeCuisine']").Attr("content")
+
 	return models.RecipeSchema{
-		AtContext: "https://schema.org",
-		AtType:    models.SchemaType{Value: "Recipe"},
-		Name:      <-getItemPropAttr(root, "name", "content"),
-		Image:     models.Image{Value: <-getItemPropAttr(root, "image", "content")},
-		Yield:     models.Yield{Value: <-chYield},
-		Keywords:  models.Keywords{Values: <-getItemPropAttr(root, "keywords", "content")},
-		Category:  models.Category{Value: <-getItemPropAttr(root, "recipeCategory", "content")},
-		CookingMethod: models.CookingMethod{
-			Value: <-getItemPropAttr(root, "cookingMethod", "content"),
-		},
-		Cuisine:       models.Cuisine{Value: <-getItemPropAttr(root, "recipeCuisine", "content")},
-		DatePublished: <-getItemPropAttr(root, "datePublished", "content"),
-		DateModified:  getAttr(getElement(root, "itemprop", "dateModified"), "datetime"),
+		AtContext:     "https://schema.org",
+		AtType:        models.SchemaType{Value: "Recipe"},
+		Name:          name,
+		Image:         models.Image{Value: image},
+		Yield:         models.Yield{Value: <-chYield},
+		Keywords:      models.Keywords{Values: keywords},
+		Category:      models.Category{Value: category},
+		CookingMethod: models.CookingMethod{Value: cookingMethod},
+		Cuisine:       models.Cuisine{Value: cuisine},
+		DatePublished: datePublished,
+		DateModified:  dateModified,
 		Ingredients:   models.Ingredients{Values: <-chIngredients},
 		Instructions:  models.Instructions{Values: <-chInstructions},
 		Description:   models.Description{Value: <-chDescription},

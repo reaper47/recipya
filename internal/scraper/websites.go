@@ -2,124 +2,115 @@ package scraper
 
 import (
 	"fmt"
-
+	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/net/html"
 )
 
-func scrapeWebsite(doc *html.Node, host string) (models.RecipeSchema, error) {
+func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, error) {
 	switch []rune(host)[0] {
 	case 'a':
 		switch host {
 		case "abril":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "acouplecooks":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "afghankitchenrecipes":
 			return scrapeAfghanKitchen(doc)
 		case "allrecipes":
-			return scrapeLdJSONs(doc)
+			return parseLdJSON(doc)
 		case "amazingribs":
-			return scrapeGraph(doc)
-		case "ambitiouskitchen":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
+		case "ambitiouskitchen": /**/
+			return parseGraph(doc)
 		case "archanaskitchen":
 			return scrapeArchanasKitchen(doc)
 		case "atelierdeschefs":
-			return findRecipeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "averiecooks":
-			return findRecipeLdJSON(doc)
+			return parseLdJSON(doc)
 		}
 	case 'b':
 		switch host {
 		case "bakingmischief":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "baking-sense":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "bbc":
-			return findRecipeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "bbcgoodfood":
-			return findRecipeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "bettycrocker":
 			return scrapeBettyCrocker(doc)
 		case "bigoven":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "bonappetit":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "bowlofdelicious":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "budgetbytes":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		}
 	case 'c':
 		switch host {
 		case "castironketo":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "cdkitchen":
 			return scrapeCdKitchen(doc)
 		case "chefkoch":
-			return findRecipeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "comidinhasdochef":
-			return findRecipeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "cookeatshare":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "cookieandkate":
-			return scrapeGraph(doc)
-		case "cookinglight":
-			return scrapeLdJSONs(doc)
-		case "cookstr":
-			return findRecipeLdJSON(doc)
+			return parseGraph(doc)
 		case "copykat":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "countryliving":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "cuisineaz":
-			return scrapeLdJSONs(doc)
+			return parseGraph(doc)
 		case "cybercook":
-			return scrapeLdJSONs(doc)
+			return parseLdJSON(doc)
 		}
 	case 'd':
 		switch host {
 		case "delish":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "ditchthecarbs":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "domesticate-me":
-			return scrapeGraph(doc)
-		case "downshiftology":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "dr":
 			return scrapeDk(doc)
 		}
 	case 'e':
 		switch host {
 		case "eatingbirdfood":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "eatingwell":
-			return scrapeLdJSONs(doc)
+			return parseLdJSON(doc)
 		case "eatsmarter":
-			return scrapeLdJSON(doc)
-		case "eatwhattonight":
-			return findRecipeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "epicurious":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "expressen":
 			return scrapeEspressen(doc)
 		}
 	case 'f':
 		switch host {
 		case "fifteenspatulas":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "finedininglovers":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "fitmencook":
 			return scrapeFitMenCook(doc)
 		case "food":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "food52":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "foodandwine":
-			return scrapeLdJSONs(doc)
+			return parseLdJSON(doc)
 		case "foodrepublic":
 			return scrapeFoodRepublic(doc)
 		case "forksoverknives":
@@ -130,65 +121,61 @@ func scrapeWebsite(doc *html.Node, host string) (models.RecipeSchema, error) {
 	case 'g':
 		switch host {
 		case "giallozafferano":
-			return findRecipeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "gimmesomeoven":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "globo":
 			return scrapeGlobo(doc)
 		case "gonnawantseconds":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "greatbritishchefs":
 			return scrapeGreatBritishChefs(doc)
 		}
 	case 'h':
 		switch host {
 		case "halfbakedharvest":
-			return scrapeGraph(doc)
+			return scrapeHalfBakedHarvest(doc)
 		case "hassanchef":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "headbangerskitchen":
-			return findRecipeLdJSON(doc)
+			return parseGraph(doc)
 		case "hellofresh":
-			return scrapeLdJSON(doc)
-		case "homechef":
-			return scrapeHomeChef(doc)
+			return parseLdJSON(doc)
 		case "hostthetoast":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		}
 	case 'i':
 		switch host {
 		case "indianhealthyrecipes":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "innit":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "inspiralized":
-			return scrapeGraph(doc)
+			return parseLdJSON(doc)
 		}
 	case 'j':
 		switch host {
 		case "jamieoliver":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "jimcooksfoodgood":
-			return findRecipeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "joyfoodsunshine":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "justataste":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "justonecookbook":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		}
 	case 'k':
 		switch host {
 		case "kennymcgovern":
-			return scrapeGraph(doc)
+			return scrapeKennyMcGovern(doc)
 		case "kingarthurbaking":
-			rs, err := scrapeGraph(doc)
-			rs.AtContext = "http://schema.org/"
-			return rs, err
+			return parseGraph(doc)
 		case "kochbar":
-			return findRecipeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "koket":
-			return scrapeLdJSONs(doc)
+			return parseLdJSON(doc)
 		case "kuchnia-domowa":
 			return scrapeKuchniadomova(doc)
 		case "kwestiasmaku":
@@ -197,96 +184,94 @@ func scrapeWebsite(doc *html.Node, host string) (models.RecipeSchema, error) {
 	case 'l':
 		switch host {
 		case "lecremedelacrumb":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "lekkerensimpel":
 			return scrapeLekkerenSimpel(doc)
 		case "littlespicejar":
-			return findRecipeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "livelytable":
-			return scrapeGraph(doc)
+			return parseLdJSON(doc)
 		case "lovingitvegan":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		}
 	case 'm':
 		switch host {
 		case "madensverden":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "marthastewart":
-			return scrapeLdJSONs(doc)
+			return parseLdJSON(doc)
 		case "matprat":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "melskitchencafe":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "mindmegette":
 			return scrapeMindMegette(doc)
 		case "minimalistbaker":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "misya":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "momswithcrockpots":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "monsieur-cuisine":
 			return scrapeMonsieurCuisine(doc)
 		case "motherthyme":
-			return scrapeGraph(doc)
+			return parseLdJSON(doc)
 		case "mybakingaddiction":
-			return findRecipeLdJSON(doc)
-		case "mykitchen101":
-			return scrapeMyKitchen101(doc)
-		case "mykitchen101en":
-			return scrapeMyKitchen101(doc)
+			return parseLdJSON(doc)
+		case "mykitchen101", "mykitchen101en":
+			return parseGraph(doc)
 		case "myplate":
 			return scrapeMyPlate(doc)
 		case "myrecipes":
-			return scrapeLdJSONs(doc)
+			return parseLdJSON(doc)
 		}
 	case 'n':
 		switch host {
 		case "nourishedbynutrition":
-			return scrapeNourishedByNutrition(doc)
+			return parseGraph(doc)
 		case "nutritionbynathalie":
-			return scrapeNutritionbynathalie(doc)
+			return scrapeNutritionByNathalie(doc)
 		case "nytimes":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		}
 	case 'o':
 		switch host {
 		case "ohsheglows":
-			return findRecipeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "onceuponachef":
-			return findRecipeLdJSON(doc)
+			return parseLdJSON(doc)
 		}
 	case 'p':
 		switch host {
 		case "paleorunningmomma":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "panelinha":
 			return scrapePanelinha(doc)
 		case "paninihappy":
 			return scrapePaniniHappy(doc)
 		case "practicalselfreliance":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "primaledgehealth":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "przepisy":
 			return scrapePrzepisy(doc)
 		case "purelypope":
 			return scrapePurelyPope(doc)
 		case "purplecarrot":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		}
 	case 'r':
 		switch host {
 		case "rachlmansfield":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "rainbowplantlife":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "realsimple":
-			return scrapeLdJSONs(doc)
+			return parseLdJSON(doc)
 		case "recipetineats":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "redhousespice":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "reishunger":
 			return scrapeReisHunger(doc)
 		case "rezeptwelt":
@@ -295,94 +280,92 @@ func scrapeWebsite(doc *html.Node, host string) (models.RecipeSchema, error) {
 	case 's':
 		switch host {
 		case "sallysbakingaddiction":
-			return scrapeGraph(doc)
-		case "sallys-blog":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "saveur":
-			return scrapeSaveur(doc)
+			return parseLdJSON(doc)
 		case "seriouseats":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "simplyquinoa":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "simplyrecipes":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "simplywhisked":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "skinnytaste":
-			return scrapeLdJSON(doc)
+			return parseGraph(doc)
 		case "southernliving":
-			return scrapeSouthernLiving(doc)
+			return parseLdJSON(doc)
 		case "spendwithpennies":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "springlane":
-			return findRecipeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "steamykitchen":
-			return scrapeGraph(doc)
+			return parseLdJSON(doc)
 		case "streetkitchen":
 			return scrapeStreetKitchen(doc)
 		case "sunbasket":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "sundpaabudget":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "sweetcsdesigns":
-			return findRecipeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "sweetpeasandsaffron":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		}
 	case 't':
 		switch host {
 		case "tasteofhome":
-			return findRecipeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "tastesoflizzyt":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "tasty":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "tastykitchen":
 			return scrapeTastyKitchen(doc)
 		case "tesco":
 			return scrapeTesco(doc)
 		case "theclevercarrot":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "thehappyfoodie":
 			return scrapeTheHappyFoodie(doc)
 		case "thekitchenmagpie":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "thenutritiouskitchen":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "thepioneerwoman":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "thespruceeats":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "thevintagemixer":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "thewoksoflife":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "timesofindia":
-			return findRecipeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "tine":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "tudogostoso":
-			return scrapeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "twopeasandtheirpod":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		}
 	case 'v':
 		switch host {
 		case "valdemarsro":
 			return scrapeValdemarsro(doc)
 		case "vanillaandbean":
-			return scrapeLdJSON(doc)
+			return parseGraph(doc)
 		case "vegolosi":
-			return findRecipeLdJSON(doc)
+			return parseLdJSON(doc)
 		case "vegrecipesofindia":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		}
 	case 'w':
 		switch host {
 		case "watchwhatueat":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "whatsgabycooking":
-			return scrapeGraph(doc)
+			return parseGraph(doc)
 		case "wikibooks":
 			return scrapeWikiBooks(doc)
 		case "woop":
@@ -396,13 +379,12 @@ func scrapeWebsite(doc *html.Node, host string) (models.RecipeSchema, error) {
 	case 'z':
 		switch host {
 		case "zenbelly":
-			return findRecipeLdJSON(doc)
+			return parseLdJSON(doc)
 		}
 	default:
 		switch host {
 		case "101cookbooks":
-			root := getElement(doc, "class", "wprm-recipe-container")
-			return scrapeLdJSON(root)
+			return parseLdJSON(doc)
 		}
 	}
 	return models.RecipeSchema{}, fmt.Errorf("domain '%s' is not implemented", host)

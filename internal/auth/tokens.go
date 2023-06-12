@@ -2,45 +2,54 @@ package auth
 
 import (
 	"errors"
-	"os"
+	"github.com/go-chi/jwtauth/v5"
+	"github.com/google/uuid"
 	"time"
-
-	"github.com/golang-jwt/jwt/v4"
 )
 
-var key = []byte(os.Getenv("key"))
+var tokenAuth *jwtauth.JWTAuth
 
-// ExpiresAt is the time at which a token or cookie expires when the session is not desired.
-var ExpiresAt = time.Now().Add(14 * 24 * time.Hour)
-
-// CreateToken creates a JWT token.
-func CreateToken(sid string) (string, error) {
-	cc := customClaims{
-		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: &jwt.NumericDate{Time: ExpiresAt},
-		},
-		SID: sid,
+func init() {
+	secretUUID, err := uuid.NewUUID()
+	if err != nil {
+		panic(err)
 	}
-
-	t := jwt.NewWithClaims(jwt.SigningMethodHS512, cc)
-	return t.SignedString(key)
+	tokenAuth = jwtauth.New("HS512", []byte(secretUUID.String()), nil)
 }
 
-// ParseToken parses the JWT token.
-func ParseToken(st string) (string, error) {
-	t, err := jwt.ParseWithClaims(st, &customClaims{}, func(t *jwt.Token) (interface{}, error) {
-		if t.Method.Alg() != jwt.SigningMethodHS512.Alg() {
-			return nil, errors.New("invalid signing algorithm")
-		}
-		return key, nil
-	})
+// CreateToken creates a JWT token.
+func CreateToken(claims map[string]any, expiry time.Duration) (string, error) {
+	jwtauth.SetIssuedNow(claims)
+	jwtauth.SetExpiry(claims, time.Now().Add(expiry))
+
+	_, token, err := tokenAuth.Encode(claims)
+	return token, err
+}
+
+// ParseToken parses the JWT token for the userID.
+func ParseToken(token string) (int64, error) {
+	jwtToken, err := jwtauth.VerifyToken(tokenAuth, token)
 	if err != nil {
-		return "", err
+		return -1, err
 	}
 
-	if !t.Valid {
-		return "", err
+	userIDAny, ok := jwtToken.Get("userID")
+	if !ok {
+		return -1, errors.New("custom claims does not have the user field")
 	}
 
-	return t.Claims.(*customClaims).SID, nil
+	return parseUserID(userIDAny)
+}
+
+func parseUserID(userIDAny any) (int64, error) {
+	var userID int64
+	switch userIDAny.(type) {
+	case int64:
+		userID = userIDAny.(int64)
+	case float64:
+		userID = int64(userIDAny.(float64))
+	default:
+		userID = userIDAny.(int64)
+	}
+	return userID, nil
 }
