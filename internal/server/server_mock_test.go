@@ -12,17 +12,36 @@ import (
 )
 
 func newServerTest() *server.Server {
-	return server.NewServer(&mockRepository{}, &mockEmail{})
+	repo := &mockRepository{
+		AuthTokens:      make([]models.AuthToken, 0),
+		Recipes:         make(map[int64]models.Recipes, 0),
+		UsersRegistered: make([]models.User, 0),
+	}
+	return server.NewServer(repo, &mockEmail{})
 }
 
 type mockRepository struct {
 	AuthTokens      []models.AuthToken
+	AddRecipeFunc   func(recipe *models.Recipe, userID int64) error
+	Recipes         map[int64]models.Recipes
 	UsersRegistered []models.User
 }
 
 func (m *mockRepository) AddAuthToken(selector, validator string, userID int64) error {
 	token := models.NewAuthToken(int64(len(m.AuthTokens)+1), selector, validator, 10000, userID)
 	m.AuthTokens = append(m.AuthTokens, *token)
+	return nil
+}
+
+func (m *mockRepository) AddRecipe(r *models.Recipe, userID int64) error {
+	if m.AddRecipeFunc != nil {
+		return m.AddRecipeFunc(r, userID)
+	}
+
+	if m.Recipes[userID] == nil {
+		m.Recipes[userID] = make(models.Recipes, 0)
+	}
+	m.Recipes[userID] = append(m.Recipes[userID], *r)
 	return nil
 }
 

@@ -5,9 +5,15 @@ import (
 	"errors"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
+	"io"
+	"log"
 	"net/http"
 	"net/url"
+	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -32,6 +38,18 @@ func Scrape(url string) (models.RecipeSchema, error) {
 	rs, err = scrapeWebsite(doc, getHost(url))
 	if err != nil {
 		return rs, errors.New("url could not be fetched")
+	}
+
+	if rs.Image.Value != "" {
+		if res, err := http.Get(rs.Image.Value); err == nil {
+			b, err := io.ReadAll(res.Body)
+			img := uuid.New().String()
+			if err = os.WriteFile(filepath.Join(app.ImagesDir, img+".jpg"), b, os.ModePerm); err != nil {
+				log.Println(err)
+			}
+			rs.Image.Value = img
+		}
+		res.Body.Close()
 	}
 
 	if rs.URL == "" {

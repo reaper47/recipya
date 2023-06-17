@@ -49,7 +49,7 @@ func (s *Server) recipesAddWebsiteHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	_, err := scraper.Scrape(rawURL)
+	rs, err := scraper.Scrape(rawURL)
 	if err != nil {
 		templates.RenderComponent(w, "recipes", "unsupported-website", templates.Data{
 			IsAuthenticated: true,
@@ -60,7 +60,21 @@ func (s *Server) recipesAddWebsiteHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	//s.Repository.AddRecipe(rs.Recipe())
+	recipe, err := rs.Recipe()
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Recipe schema is invalid.", errorToast))
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
+
+	if err := s.Repository.AddRecipe(recipe, r.Context().Value("userID").(int64)); err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Recipe could not be added.", errorToast))
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
+
+	w.Header().Set("HX-Redirect", "/")
+	w.WriteHeader(http.StatusSeeOther)
 }
 
 func (s *Server) recipesSupportedWebsitesHandler(w http.ResponseWriter, r *http.Request) {

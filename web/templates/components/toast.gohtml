@@ -1,29 +1,24 @@
 {{define "toast"}}
-<div id="toast-container" class="fixed top-0 right-0 p-6 cursor-default select-none hidden">
-  <div class="hidden bg-blue-500 bg-yellow-500 bg-red-500"></div>
-  <div id="toast" class="text-white px-6 py-4 rounded shadow-md">
-    <p id="toast-body"></p>
-  </div>
-</div>
+    <div id="toast-container" class="fixed top-0 right-0 p-6 cursor-default hidden">
+        <div class="hidden bg-blue-500 bg-yellow-500 bg-red-500 text-white px-6 py-4 rounded shadow-md"></div>
+    </div>
 
-<script defer>
-    htmx.on('showInfoToast', ({detail}) => displayToast(detail.value, 'bg-blue-500'));
-    htmx.on('showWarningToast', ({detail}) => displayToast(detail.value, 'bg-orange-500'));
-    htmx.on('showErrorToast', ({detail}) => displayToast(detail.value, 'bg-red-500'));
+    <script defer>
+        htmx.on('showToast', function (event) {
+            const toastContainer = document.getElementById('toast-container');
+            toastContainer?.firstChild.parentElement.removeChild(toastContainer.firstChild);
 
-    function displayToast(message, backgroundClass) {
-        const toast = document.querySelector('#toast');
-        const toastContainer = document.querySelector('#toast-container');
-        const toastBody = document.querySelector('#toast-body');
+            const {message, backgroundColor} = JSON.parse(event.detail.value);
+            const toast = document.createElement('div');
+            toast.classList.add('text-white', 'px-6', 'py-4', 'rounded', 'shadow-md', backgroundColor);
+            toast.textContent = message;
+            toastContainer.appendChild(toast);
+            toastContainer.classList.remove('hidden');
 
-        toast.classList.add(backgroundClass);
-        toastContainer.classList.remove('hidden')
-        toastBody.innerText = message;
-
-        setTimeout(() => {
-            toast.classList.remove(backgroundClass);
-            toast.classList.add('hidden')
-        }, 5000);
-    }
-</script>
+            setTimeout(function () {
+                toastContainer.classList.add('hidden');
+                toastContainer.removeChild(toast);
+            }, 5000);
+        });
+    </script>
 {{end}}

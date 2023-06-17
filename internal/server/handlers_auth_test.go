@@ -1,6 +1,7 @@
 package server_test
 
 import (
+	"encoding/json"
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
@@ -94,9 +95,11 @@ func TestHandlers_Auth_Login(t *testing.T) {
 			rr := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader(tc.form))
 
 			assertStatus(t, rr.Code, http.StatusNoContent)
-			wantHeader := `{"showErrorToast":"Credentials are invalid."}`
-			if got := rr.Header().Get("HX-Trigger"); got != wantHeader {
-				t.Fatalf("got %q but want %q", got, wantHeader)
+			var got map[string]string
+			_ = json.Unmarshal([]byte(rr.Header().Get("HX-Trigger")), &got)
+			wantHeader := `{"message":"Credentials are invalid.","backgroundColor":"bg-red-500"}`
+			if got["showToast"] != wantHeader {
+				t.Fatalf("got\n%q\nbut want\n%q", got, wantHeader)
 			}
 		})
 	}
@@ -310,7 +313,7 @@ func TestHandlers_Auth_Register(t *testing.T) {
 		rr := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email="+email+"&password=test123&password-confirm=test123"))
 
 		assertStatus(t, rr.Code, http.StatusUnprocessableEntity)
-		assertHeader(t, rr, "HX-Trigger", `{"showErrorToast":"Registration failed."}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Registration failed.\",\"backgroundColor\":\"bg-red-500\"}"}`)
 		if len(srv.Repository.Users()) != originalNumUsers {
 			t.Fatalf("expected no user to be added to the db of %d users", originalNumUsers)
 		}

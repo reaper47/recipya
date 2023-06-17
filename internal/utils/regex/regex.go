@@ -6,7 +6,7 @@ import "regexp"
 var Email = regexp.MustCompile("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
 
 // Quantity detects quantities, i.e. 1ml, 1 ml, 1l and 1 l.
-var Quantity = regexp.MustCompile(`\d+\s*(ml|mL|l|L)?(°[cCfF])?`)
+var Quantity = regexp.MustCompile(`\d+\s*((ml|mL|l|L)(°[cCfF])?|°[cCfF])`)
 
 // Regular expressions related to HTML.
 var (

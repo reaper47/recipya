@@ -11,6 +11,9 @@ type RepositoryService interface {
 	// AddAuthToken adds an authentication token to the database.
 	AddAuthToken(selector, validator string, userID int64) error
 
+	// AddRecipe adds a recipe to the user's collection.
+	AddRecipe(r *models.Recipe, userID int64) error
+
 	// Confirm confirms the user's account.
 	Confirm(userID int64) error
 

@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"embed"
 	"errors"
+	"fmt"
 	"github.com/pressly/goose/v3"
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
@@ -78,6 +79,165 @@ func (s *SQLiteService) AddAuthToken(selector, validator string, userID int64) e
 
 	_, err := s.DB.ExecContext(ctx, statements.InsertAuthToken, selector, validator, userID)
 	return err
+}
+
+func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) error {
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{})
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	var isRecipeExists bool
+	err = tx.QueryRowContext(ctx, statements.IsRecipeForUserExist, userID, r.Name, r.Description, r.Yield, r.URL).Scan(&isRecipeExists)
+	if err != nil {
+		return err
+	}
+
+	if isRecipeExists {
+		return fmt.Errorf("recipe '%s' exists for user %d", r.Name, userID)
+	}
+
+	// Insert recipe
+	result, err := tx.ExecContext(ctx, statements.InsertRecipe, r.Name, r.Description, r.Image, r.Yield, r.URL)
+	if err != nil {
+		return err
+	}
+
+	recipeID, err := result.LastInsertId()
+	if err != nil {
+		return err
+	}
+	r.ID = recipeID
+
+	if _, err := tx.ExecContext(ctx, statements.InsertUserRecipe, userID, recipeID); err != nil {
+		return err
+	}
+
+	// Insert category
+	if _, err := tx.ExecContext(ctx, statements.InsertCategory, r.Category, userID); err != nil {
+		return err
+	}
+
+	var categoryID int64
+	if err := tx.QueryRowContext(ctx, statements.SelectCategoryID, r.Category).Scan(&categoryID); errors.Is(err, sql.ErrNoRows) {
+		return err
+	}
+
+	if _, err := tx.ExecContext(ctx, statements.InsertRecipeCategory, categoryID, recipeID); err != nil {
+		return err
+	}
+
+	// Insert cuisine
+	if _, err := tx.ExecContext(ctx, statements.InsertCuisine, r.Cuisine, userID); err != nil {
+		return err
+	}
+
+	var cuisineID int64
+	if err := tx.QueryRowContext(ctx, statements.SelectCuisineID, r.Cuisine).Scan(&cuisineID); errors.Is(err, sql.ErrNoRows) {
+		return err
+	}
+
+	if _, err := tx.ExecContext(ctx, statements.InsertRecipeCuisine, cuisineID, recipeID); err != nil {
+		return err
+	}
+
+	// Insert nutrition
+	n := r.Nutrition
+	if _, err := tx.ExecContext(ctx, statements.InsertNutrition, recipeID, n.Calories, n.TotalCarbohydrates, n.Sugars, n.Protein, n.TotalFat, n.SaturatedFat, n.UnsaturatedFat, n.Cholesterol, n.Sodium, n.Fiber); err != nil {
+		return err
+	}
+
+	// Insert times
+	result, err = tx.ExecContext(ctx, statements.InsertTimes, int64(r.Times.Prep.Seconds()), int64(r.Times.Cook.Seconds()))
+	if err != nil {
+		return err
+	}
+
+	timesID, err := result.LastInsertId()
+	if err != nil {
+		return err
+	}
+
+	if _, err := tx.ExecContext(ctx, statements.InsertRecipeTime, timesID, recipeID); err != nil {
+		return err
+	}
+
+	// Insert keywords
+	for _, keyword := range r.Keywords {
+		result, err := tx.ExecContext(ctx, statements.InsertKeyword, keyword)
+		if err != nil {
+			return err
+		}
+
+		keywordID, err := result.LastInsertId()
+		if err != nil {
+			return err
+		}
+
+		if _, err := tx.ExecContext(ctx, statements.InsertRecipeKeyword, keywordID, recipeID); err != nil {
+			return err
+		}
+	}
+
+	// Insert instructions
+	for _, instruction := range r.Instructions {
+		result, err := tx.ExecContext(ctx, statements.InsertInstruction, instruction)
+		if err != nil {
+			return err
+		}
+
+		instructionID, err := result.LastInsertId()
+		if err != nil {
+			return err
+		}
+
+		if _, err := tx.ExecContext(ctx, statements.InsertRecipeInstruction, instructionID, recipeID); err != nil {
+			return err
+		}
+	}
+
+	// Insert ingredients
+	for _, ingredient := range r.Ingredients {
+		result, err := tx.ExecContext(ctx, statements.InsertIngredient, ingredient)
+		if err != nil {
+			return err
+		}
+
+		ingredientID, err := result.LastInsertId()
+		if err != nil {
+			return err
+		}
+
+		if _, err := tx.ExecContext(ctx, statements.InsertRecipeIngredient, ingredientID, recipeID); err != nil {
+			return err
+		}
+	}
+
+	// Insert tools
+	for _, tool := range r.Tools {
+		result, err := tx.ExecContext(ctx, statements.InsertTool, tool)
+		if err != nil {
+			return err
+		}
+
+		toolID, err := result.LastInsertId()
+		if err != nil {
+			return err
+		}
+
+		if _, err := tx.ExecContext(ctx, statements.InsertRecipeTool, toolID, recipeID); err != nil {
+			return err
+		}
+	}
+
+	return tx.Commit()
 }
 
 func (s *SQLiteService) Confirm(userID int64) error {

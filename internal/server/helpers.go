@@ -18,8 +18,19 @@ const (
 )
 
 func makeToast(message string, toastType toast) string {
+	var backgroundColor string
+	switch toastType {
+	case infoToast:
+		backgroundColor = "bg-blue-500"
+	case warningToast:
+		backgroundColor = "bg-orange-500"
+	case errorToast:
+		backgroundColor = "bg-red-500"
+	default:
+	}
+
 	xb, _ := json.Marshal(map[string]string{
-		string(toastType): message,
+		"showToast": `{"message":"` + message + `","backgroundColor":"` + backgroundColor + `"}`,
 	})
 	return string(xb)
 }

@@ -4,21 +4,27 @@
 --
 CREATE TABLE recipes
 (
-    id          INTEGER PRIMARY KEY,
-    name        TEXT      NOT NULL,
-    description TEXT,
-    image       TEXT               DEFAULT (lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' ||
-                                            substr(lower(hex(randomblob(2))), 2) || '-a' ||
-                                            substr(lower(hex(randomblob(2))), 2) || '-%' ||
-                                            substr(lower(hex(randomblob(6))), 2)),
-    yield       INTEGER,
-    url         TEXT,
-    created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    id             INTEGER PRIMARY KEY,
+    name           TEXT      NOT NULL,
+    description    TEXT,
+    image          TEXT               DEFAULT (lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' ||
+                                               substr(lower(hex(randomblob(2))), 2) || '-a' ||
+                                               substr(lower(hex(randomblob(2))), 2) || '-%' ||
+                                               substr(lower(hex(randomblob(6))), 2)),
+    yield          INTEGER,
+    url            TEXT,
+    created_at     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- https://recipeland.com/recipes/categories/browse
 CREATE TABLE categories
+(
+    id   INTEGER PRIMARY KEY,
+    name TEXT UNIQUE NOT NULL
+);
+
+CREATE TABLE cuisines
 (
     id   INTEGER PRIMARY KEY,
     name TEXT UNIQUE NOT NULL
@@ -58,6 +64,7 @@ CREATE TABLE nutrition
     protein             TEXT,
     total_fat           TEXT,
     saturated_fat       TEXT,
+    unsaturated_fat     TEXT,
     cholesterol         TEXT,
     sodium              TEXT,
     fiber               TEXT
@@ -113,54 +120,65 @@ CREATE TABLE user_category
 CREATE TABLE category_recipe
 (
     id          INTEGER PRIMARY KEY,
-    recipe_id   INTEGER NOT NULL REFERENCES recipes (id) ON DELETE CASCADE,
     category_id INTEGER DEFAULT 1 REFERENCES categories (id) ON DELETE SET DEFAULT,
-    UNIQUE (recipe_id, category_id)
+    recipe_id   INTEGER NOT NULL REFERENCES recipes (id) ON DELETE CASCADE,
+    UNIQUE (category_id, recipe_id)
+);
+
+CREATE TABLE cuisine_recipe
+(
+    id         INTEGER PRIMARY KEY,
+    cuisine_id INTEGER DEFAULT 1 REFERENCES cuisines (id) ON DELETE SET DEFAULT,
+    recipe_id  INTEGER NOT NULL REFERENCES recipes (id) ON DELETE CASCADE,
+    UNIQUE (cuisine_id, recipe_id)
 );
 
 CREATE TABLE ingredient_recipe
 (
     id            INTEGER PRIMARY KEY,
-    recipe_id     INTEGER NOT NULL REFERENCES recipes (id) ON DELETE CASCADE,
     ingredient_id INTEGER NOT NULL REFERENCES ingredients (id) ON DELETE CASCADE,
+    recipe_id     INTEGER NOT NULL REFERENCES recipes (id) ON DELETE CASCADE,
     UNIQUE (recipe_id, ingredient_id)
 );
 
 CREATE TABLE instruction_recipe
 (
     id             INTEGER PRIMARY KEY,
-    recipe_id      INTEGER NOT NULL REFERENCES recipes (id) ON DELETE CASCADE,
     instruction_id INTEGER NOT NULL REFERENCES instructions (id) ON DELETE CASCADE,
+    recipe_id      INTEGER NOT NULL REFERENCES recipes (id) ON DELETE CASCADE,
     UNIQUE (recipe_id, instruction_id)
-);
-
-CREATE TABLE tool_recipe
-(
-    id        INTEGER PRIMARY KEY,
-    recipe_id INTEGER NOT NULL REFERENCES recipes (id) ON DELETE CASCADE,
-    tool_id   INTEGER NOT NULL REFERENCES tools (id) ON DELETE CASCADE,
-    UNIQUE (recipe_id, tool_id)
 );
 
 CREATE TABLE keyword_recipe
 (
     id         INTEGER PRIMARY KEY,
-    recipe_id  INTEGER NOT NULL REFERENCES recipes (id) ON DELETE CASCADE,
     keyword_id INTEGER NOT NULL REFERENCES keywords (id) ON DELETE CASCADE,
+    recipe_id  INTEGER NOT NULL REFERENCES recipes (id) ON DELETE CASCADE,
     UNIQUE (recipe_id, keyword_id)
 );
+
+CREATE TABLE tool_recipe
+(
+    id        INTEGER PRIMARY KEY,
+    tool_id   INTEGER NOT NULL REFERENCES tools (id) ON DELETE CASCADE,
+    recipe_id INTEGER NOT NULL REFERENCES recipes (id) ON DELETE CASCADE,
+    UNIQUE (recipe_id, tool_id)
+);
+
 
 CREATE TABLE time_recipe
 (
     id        INTEGER PRIMARY KEY,
-    recipe_id INTEGER NOT NULL REFERENCES recipes (id) ON DELETE CASCADE,
     time_id   INTEGER NOT NULL REFERENCES times (id) ON DELETE SET NULL,
+    recipe_id INTEGER NOT NULL REFERENCES recipes (id) ON DELETE CASCADE,
     UNIQUE (recipe_id, time_id)
 );
 
 --
 -- FUNCTIONS
 --
+
+-- +goose StatementBegin
 CREATE TRIGGER users_insert_trigger
     AFTER INSERT
     ON users
@@ -229,6 +247,7 @@ BEGIN
     SET recipes = recipes - 1
     WHERE id = OLD.user_id;
 END;
+-- +goose StatementEnd
 
 --
 -- INSERTS

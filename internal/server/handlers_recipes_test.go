@@ -1,6 +1,8 @@
 package server_test
 
 import (
+	"errors"
+	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
 	"net/http"
 	"net/http/httptest"
@@ -76,7 +78,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, promptHeader, strings.NewReader("I love chicken"))
 
 		assertStatus(t, rr.Code, http.StatusNoContent)
-		assertHeader(t, rr, "HX-Trigger", `{"showErrorToast":"Invalid URI."}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Invalid URI.\",\"backgroundColor\":\"bg-red-500\"}"}`)
 	})
 
 	t.Run("add recipe from an unsupported website", func(t *testing.T) {
@@ -93,14 +95,34 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
 
-	t.Run("add recipe from a supported website", func(t *testing.T) {
+	t.Run("add recipe from supported website error", func(t *testing.T) {
+		repo := &mockRepository{Recipes: make(map[int64]models.Recipes, 0)}
+		repo.AddRecipeFunc = func(r *models.Recipe, userID int64) error {
+			return errors.New("add recipe error")
+		}
+		srv.Repository = repo
+
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, promptHeader, strings.NewReader("https://www.eatingbirdfood.com/cinnamon-rolls/"))
 
-		assertStatus(t, rr.Code, http.StatusOK)
-		want := []string{
-			`<button name="website" value="https://www.example.com" class="w-full col-span-4 ml-2 p-2 font-semibold text-white bg-blue-500 hover:bg-blue-800"> Request </button>`,
+		assertStatus(t, rr.Code, http.StatusNoContent)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Recipe could not be added.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+	})
+
+	t.Run("add recipe from a supported website", func(t *testing.T) {
+		repo := &mockRepository{Recipes: make(map[int64]models.Recipes, 0)}
+		called := 0
+		repo.AddRecipeFunc = func(r *models.Recipe, userID int64) error {
+			called += 1
+			return nil
 		}
-		assertStringsInHTML(t, getBodyHTML(rr), want)
+		srv.Repository = repo
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, promptHeader, strings.NewReader("https://www.eatingbirdfood.com/cinnamon-rolls/"))
+
+		assertStatus(t, rr.Code, http.StatusSeeOther)
+		if called != 1 {
+			t.Fatal("recipe must have been added to the user's database")
+		}
 	})
 }
 

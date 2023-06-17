@@ -13,19 +13,16 @@ import (
 func TestRecipe_Schema(t *testing.T) {
 	imageUUID := uuid.New()
 	r := models.Recipe{
-		ID:          1,
-		Name:        "name",
-		Description: "description",
-		Image:       imageUUID,
-		URL:         "https://www.google.com",
-		Yield:       4,
-		Category:    "lunch",
-		Times: models.Times{
-			Prep:  1 * time.Hour,
-			Cook:  2 * time.Hour,
-			Total: 3 * time.Hour,
-		},
-		Ingredients: models.Ingredients{Values: []string{"ing1", "ing2", "ing3"}},
+		Category:     "lunch",
+		CreatedAt:    time.Now(),
+		Cuisine:      "american",
+		Description:  "description",
+		ID:           1,
+		Image:        imageUUID,
+		Ingredients:  []string{"ing1", "ing2", "ing3"},
+		Instructions: []string{"ins1", "ins2", "ins3"},
+		Keywords:     []string{"kw1", "kw2", "kw3"},
+		Name:         "name",
 		Nutrition: models.Nutrition{
 			Calories:           "1kcal",
 			TotalCarbohydrates: "1g",
@@ -37,11 +34,15 @@ func TestRecipe_Schema(t *testing.T) {
 			Sodium:             "7g",
 			Fiber:              "8g",
 		},
-		Instructions: []string{"ins1", "ins2", "ins3"},
-		Tools:        []string{"t1", "t2", "t3"},
-		Keywords:     []string{"kw1", "kw2", "kw3"},
-		CreatedAt:    time.Now(),
-		UpdatedAt:    time.Now().Add(2 * time.Hour),
+		Times: models.Times{
+			Prep:  1 * time.Hour,
+			Cook:  2 * time.Hour,
+			Total: 3 * time.Hour,
+		},
+		Tools:     []string{"t1", "t2", "t3"},
+		UpdatedAt: time.Now().Add(2 * time.Hour),
+		URL:       "https://www.google.com",
+		Yield:     4,
 	}
 
 	schema := r.Schema()
@@ -61,7 +62,7 @@ func TestRecipe_Schema(t *testing.T) {
 	if schema.CookingMethod.Value != "" {
 		t.Errorf("wanted an empty cooking method but got %q", schema.CookingMethod)
 	}
-	if schema.Cuisine.Value != "" {
+	if schema.Cuisine.Value != "american" {
 		t.Errorf("wanted an empty cusine but got %q", schema.Cuisine)
 	}
 	v := r.CreatedAt.Format(time.DateOnly)
@@ -119,9 +120,7 @@ func TestRecipe_Schema(t *testing.T) {
 func TestRecipe_Normalize(t *testing.T) {
 	r := models.Recipe{
 		Description: "Place the chicken pieces on a baking sheet and bake 1l 1 l 1ml 1 ml until they 425°f (220°c) and golden.",
-		Ingredients: models.Ingredients{
-			Values: []string{"ing1 1L", "1 L ing2", "ing3 of 1mL stuff", "ing4 of stuff 1 mL"},
-		},
+		Ingredients: []string{"ing1 1L", "1 L ing2", "ing3 of 1mL stuff", "ing4 of stuff 1 mL"},
 		Instructions: []string{
 			"ins1 1l",
 			"1 l ins2",
@@ -143,7 +142,7 @@ func TestRecipe_Normalize(t *testing.T) {
 		"ing3 of 1mL stuff",
 		"ing4 of stuff 1 mL",
 	}
-	for i, v := range r.Ingredients.Values {
+	for i, v := range r.Ingredients {
 		if v != expected[i] {
 			t.Errorf("expected '%v' but got '%v'", expected[i], v)
 		}

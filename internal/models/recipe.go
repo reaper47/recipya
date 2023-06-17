@@ -25,21 +25,22 @@ func (r Recipes) Categories() []string {
 
 // Recipe is the struct that holds a recipe's information.
 type Recipe struct {
-	ID           int64
-	Name         string
+	Category     string
+	CreatedAt    time.Time
+	Cuisine      string
 	Description  string
+	ID           int64
 	Image        uuid.UUID
+	Ingredients  []string
+	Instructions []string
+	Keywords     []string
+	Name         string
+	Nutrition    Nutrition
+	Times        Times
+	Tools        []string
+	UpdatedAt    time.Time
 	URL          string
 	Yield        int16
-	Category     string
-	Times        Times
-	Ingredients  Ingredients
-	Nutrition    Nutrition
-	Instructions []string
-	Tools        []string
-	Keywords     []string
-	CreatedAt    time.Time
-	UpdatedAt    time.Time
 }
 
 // Schema creates the schema representation of the Recipe.
@@ -49,14 +50,14 @@ func (r *Recipe) Schema() RecipeSchema {
 		AtType:          SchemaType{Value: "Recipe"},
 		Category:        Category{Value: r.Category},
 		CookTime:        formatDuration(r.Times.Cook),
-		Cuisine:         Cuisine{},
+		Cuisine:         Cuisine{Value: r.Cuisine},
 		DateCreated:     r.CreatedAt.Format(time.DateOnly),
 		DateModified:    r.UpdatedAt.Format(time.DateOnly),
 		DatePublished:   r.CreatedAt.Format(time.DateOnly),
 		Description:     Description{Value: r.Description},
 		Keywords:        Keywords{Values: strings.Join(r.Keywords, ",")},
 		Image:           Image{Value: r.Image.String()},
-		Ingredients:     r.Ingredients,
+		Ingredients:     Ingredients{Values: r.Ingredients},
 		Instructions:    Instructions{Values: r.Instructions},
 		Name:            r.Name,
 		NutritionSchema: r.Nutrition.Schema(strconv.Itoa(int(r.Yield))),
@@ -72,8 +73,8 @@ func (r *Recipe) Schema() RecipeSchema {
 func (r *Recipe) Normalize() {
 	r.Description = regex.Quantity.ReplaceAllStringFunc(r.Description, normalizeQuantity)
 
-	for i, v := range r.Ingredients.Values {
-		r.Ingredients.Values[i] = regex.Quantity.ReplaceAllStringFunc(v, normalizeQuantity)
+	for i, v := range r.Ingredients {
+		r.Ingredients[i] = regex.Quantity.ReplaceAllStringFunc(v, normalizeQuantity)
 	}
 
 	for i, v := range r.Instructions {
@@ -138,28 +139,30 @@ func formatDuration(d time.Duration) string {
 // Nutrition holds nutrition facts.
 type Nutrition struct {
 	Calories           string
-	TotalCarbohydrates string
-	Sugars             string
-	Protein            string
-	TotalFat           string
-	SaturatedFat       string
 	Cholesterol        string
-	Sodium             string
 	Fiber              string
+	Protein            string
+	SaturatedFat       string
+	Sodium             string
+	Sugars             string
+	TotalCarbohydrates string
+	TotalFat           string
+	UnsaturatedFat     string
 }
 
 // Schema creates the schema representation of the Nutrition.
 func (n Nutrition) Schema(servings string) NutritionSchema {
 	return NutritionSchema{
-		Calories:      n.Calories,
-		Carbohydrates: n.TotalCarbohydrates,
-		Cholesterol:   n.Cholesterol,
-		Fat:           n.TotalFat,
-		Fiber:         n.Fiber,
-		Protein:       n.Protein,
-		SaturatedFat:  n.SaturatedFat,
-		Servings:      servings,
-		Sodium:        n.Sodium,
-		Sugar:         n.Sugars,
+		Calories:       n.Calories,
+		Carbohydrates:  n.TotalCarbohydrates,
+		Cholesterol:    n.Cholesterol,
+		Fat:            n.TotalFat,
+		Fiber:          n.Fiber,
+		Protein:        n.Protein,
+		SaturatedFat:   n.SaturatedFat,
+		Servings:       servings,
+		Sodium:         n.Sodium,
+		Sugar:          n.Sugars,
+		UnsaturatedFat: n.UnsaturatedFat,
 	}
 }

@@ -36,9 +36,9 @@ type RecipeSchema struct {
 }
 
 // Recipe transforms the RecipeSchema to a Recipe.
-func (r *RecipeSchema) Recipe() (Recipe, error) {
+func (r *RecipeSchema) Recipe() (*Recipe, error) {
 	if r.AtType.Value != "Recipe" {
-		return Recipe{}, fmt.Errorf("RecipeSchema %#v is not based on the Schema or the field is missing", r)
+		return nil, fmt.Errorf("RecipeSchema %#v is not based on the Schema or the field is missing", r)
 	}
 
 	var category string
@@ -50,12 +50,12 @@ func (r *RecipeSchema) Recipe() (Recipe, error) {
 
 	times, err := NewTimes(r.PrepTime, r.CookTime)
 	if err != nil {
-		return Recipe{}, err
+		return nil, err
 	}
 
 	nutrition, err := r.NutritionSchema.nutrition()
 	if err != nil {
-		return Recipe{}, err
+		return nil, err
 	}
 
 	created := r.DateCreated
@@ -67,7 +67,7 @@ func (r *RecipeSchema) Recipe() (Recipe, error) {
 	if created != "" {
 		createdAt, err = time.Parse(time.DateOnly, strings.Split(created, "T")[0])
 		if err != nil {
-			return Recipe{}, fmt.Errorf("could not parse createdAt date %s: '%s'", created, err)
+			return nil, fmt.Errorf("could not parse createdAt date %s: '%s'", created, err)
 		}
 	}
 
@@ -80,30 +80,31 @@ func (r *RecipeSchema) Recipe() (Recipe, error) {
 	if r.DateModified != "" {
 		updatedAt, err = time.Parse(time.DateOnly, strings.Split(r.DateModified, "T")[0])
 		if err != nil {
-			return Recipe{}, fmt.Errorf("could not parse modifiedAt date %s: '%s'", r.DateModified, err)
+			return nil, fmt.Errorf("could not parse modifiedAt date %s: '%s'", r.DateModified, err)
 		}
 	}
 
 	recipe := Recipe{
-		ID:           0,
-		Name:         r.Name,
+		Category:     category,
+		CreatedAt:    createdAt,
+		Cuisine:      r.Cuisine.Value,
 		Description:  r.Description.Value,
+		ID:           0,
 		Image:        image,
+		Ingredients:  r.Ingredients.Values,
+		Instructions: r.Instructions.Values,
+		Keywords:     strings.Split(r.Keywords.Values, ","),
+		Name:         r.Name,
+		Nutrition:    nutrition,
+		Times:        times,
+		Tools:        r.Tools.Values,
+		UpdatedAt:    updatedAt,
 		URL:          r.URL,
 		Yield:        r.Yield.Value,
-		Category:     category,
-		Times:        times,
-		Ingredients:  r.Ingredients,
-		Nutrition:    nutrition,
-		Instructions: r.Instructions.Values,
-		Tools:        r.Tools.Values,
-		Keywords:     strings.Split(r.Keywords.Values, ","),
-		CreatedAt:    createdAt,
-		UpdatedAt:    updatedAt,
 	}
 
 	recipe.Normalize()
-	return recipe, nil
+	return &recipe, nil
 }
 
 // SchemaType holds the type of the schema. It should be "Recipe".
@@ -542,14 +543,15 @@ type NutritionSchema struct {
 func (n *NutritionSchema) nutrition() (Nutrition, error) {
 	return Nutrition{
 		Calories:           n.Calories,
-		TotalCarbohydrates: n.Carbohydrates,
-		Sugars:             n.Sugar,
-		Protein:            n.Protein,
-		TotalFat:           n.Fat,
-		SaturatedFat:       n.SaturatedFat,
 		Cholesterol:        n.Cholesterol,
-		Sodium:             n.Sodium,
 		Fiber:              n.Fiber,
+		Protein:            n.Protein,
+		SaturatedFat:       n.SaturatedFat,
+		Sodium:             n.Sodium,
+		Sugars:             n.Sugar,
+		TotalCarbohydrates: n.Carbohydrates,
+		TotalFat:           n.Fat,
+		UnsaturatedFat:     n.UnsaturatedFat,
 	}, nil
 }
 

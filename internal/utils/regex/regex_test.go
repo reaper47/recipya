@@ -45,31 +45,48 @@ func TestRegex_Email(t *testing.T) {
 }
 
 func TestRegex_Quantity(t *testing.T) {
-	quantities := []string{
-		"1ml", "1mL", "15 ml", "16 mL",
-		"1l", "1L", "15 l", "16 L",
-		"1°c", "1°f", "15 °c", "16 °f",
-		"1°C", "1°F", "15 °C", "16 °F",
+	testcasesValid := []struct{ quantity string }{
+		{quantity: "1ml"},
+		{quantity: "1mL"},
+		{quantity: "15 ml"},
+		{quantity: "16 mL"},
+		{quantity: "1l"},
+		{quantity: "1L"},
+		{quantity: "15 l"},
+		{quantity: "16 L"},
+		{quantity: "1°c"},
+		{quantity: "1°f"},
+		{quantity: "15 °c"},
+		{quantity: "16 °f"},
+		{quantity: "1°C"},
+		{quantity: "1°F"},
+		{quantity: "15 °C"},
+		{quantity: "16 °F"},
 	}
-	for _, q := range quantities {
-		t.Run("regex is valid "+q, func(t *testing.T) {
-			if !regex.Quantity.MatchString(q) {
+	for _, tc := range testcasesValid {
+		t.Run("regex is valid "+tc.quantity, func(t *testing.T) {
+			if !regex.Quantity.MatchString(tc.quantity) {
 				t.Error("got false when want true for")
 			}
 		})
 	}
 
-	quantities = []string{
-		"ml", "mL",
-		"l", "L",
-		"°c", "°f",
-		"°C", "°F",
-		"15 mX", "15mx",
+	testcasesInvalid := []struct{ quantity string }{
+		{quantity: "ml"},
+		{quantity: "mL"},
+		{quantity: "l"},
+		{quantity: "L"},
+		{quantity: "°c"},
+		{quantity: "°f"},
+		{quantity: "°C"},
+		{quantity: "°F"},
+		{quantity: "15 mX"},
+		{quantity: "\"15mx\""},
 	}
-	for _, q := range quantities {
-		t.Run("regex is invalid "+q, func(t *testing.T) {
-			if regex.Quantity.MatchString(q) {
-				t.Errorf("got true when want false for %q", q)
+	for _, tc := range testcasesInvalid {
+		t.Run("regex is invalid "+tc.quantity, func(t *testing.T) {
+			if regex.Quantity.MatchString(tc.quantity) {
+				t.Errorf("got true when want false for %q", tc.quantity)
 			}
 		})
 	}

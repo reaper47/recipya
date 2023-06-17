@@ -24,6 +24,9 @@ type ConfigEmail struct {
 	SendGridAPIKey string `json:"sendGridAPIKey"`
 }
 
+// ImagesDir is the directory where user images are stored.
+var ImagesDir string
+
 // Init initializes the app. This function must be called when the app starts.
 // Its name is not *init* so that the function is not executed during the tests.
 func Init() {
@@ -39,5 +42,12 @@ func Init() {
 
 	if err := json.Unmarshal(xb, &Config); err != nil {
 		panic(err)
+	}
+
+	ImagesDir = filepath.Join(filepath.Dir(exe), "data", "images")
+	if _, err := os.Stat(ImagesDir); os.IsNotExist(err) {
+		if err := os.MkdirAll(ImagesDir, os.ModePerm); err != nil {
+			panic(err)
+		}
 	}
 }

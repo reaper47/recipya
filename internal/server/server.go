@@ -18,6 +18,10 @@ import (
 	"time"
 )
 
+func init() {
+	SessionData = make(map[uuid.UUID]int64)
+}
+
 // NewServer creates a Server.
 func NewServer(repository services.RepositoryService, email services.EmailService) *Server {
 	srv := &Server{
@@ -134,8 +138,4 @@ func (s *Server) Run() {
 		log.Fatal(err)
 	}
 	<-serverCtx.Done()
-}
-
-func init() {
-	SessionData = make(map[uuid.UUID]int64)
 }
