@@ -12,7 +12,7 @@ func TestConfigFile_Address(t *testing.T) {
 		want string
 	}{
 		{name: "without port", in: app.ConfigFile{URL: "https://127.0.0.1"}, want: "https://127.0.0.1"},
-		{name: "without port", in: app.ConfigFile{URL: "https://127.0.0.1", Port: 8078}, want: "https://127.0.0.1:8078"},
+		{name: "with port", in: app.ConfigFile{URL: "https://127.0.0.1", Port: 8078}, want: "https://127.0.0.1:8078"},
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
