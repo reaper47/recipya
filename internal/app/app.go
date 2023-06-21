@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"strconv"
 )
 
 const configFileName = "config.json"
@@ -16,6 +17,15 @@ type ConfigFile struct {
 	IsProduction bool        `json:"isProduction"`
 	Port         int         `json:"port"`
 	URL          string      `json:"url"`
+}
+
+// Address assembles the server's web address from its URL and host.
+func (c *ConfigFile) Address() string {
+	addr := c.URL
+	if c.Port != 0 {
+		addr += ":" + strconv.Itoa(c.Port)
+	}
+	return addr
 }
 
 // ConfigEmail holds email configuration variables.

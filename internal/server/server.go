@@ -3,13 +3,13 @@ package server
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/services"
 	_ "github.com/reaper47/recipya/internal/templates"
 	"github.com/reaper47/recipya/static"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -123,19 +123,22 @@ func (s *Server) Run() {
 		go func() {
 			<-shutdownCtx.Done()
 			if errors.Is(shutdownCtx.Err(), context.DeadlineExceeded) {
-				log.Fatal("forcing exit as graceful shutdown timed out")
+				fmt.Println("forcing exit as graceful shutdown timed out")
+				os.Exit(1)
 			}
 		}()
 
 		if err := httpServer.Shutdown(shutdownCtx); err != nil {
-			log.Fatal(err)
+			fmt.Println(err)
+			os.Exit(1)
 		}
 		serverStopCtx()
 	}()
 
-	log.Printf("Serving on http://%s", httpServer.Addr)
+	fmt.Printf("Serving on %s\n", app.Config.Address())
 	if err := httpServer.ListenAndServe(); err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		os.Exit(1)
 	}
 	<-serverCtx.Done()
 }

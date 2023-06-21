@@ -1,24 +1,5 @@
-.modal {
-    background-color: rgba(0, 0, 0, 0.5);
-    display: none;
-    height: 100%;
-    left: 0;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-}
-
-.modal-content {
-    background-color: white;
-    border-radius: 0.5rem;
-    height: 66%;
-    left: 50%;
-    overflow-y: auto;
-    padding: 20px;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .close-button {

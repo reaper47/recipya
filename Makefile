@@ -1,8 +1,16 @@
 .ONESHELL:
 
+ifeq ($(OS),Windows_NT)
+    TARGET_EXT = .exe
+else
+    TARGET_EXT =
+endif
+
+TARGET = recipya$(TARGET_EXT)
+
 build:
 	go generate ./...
-	go build -ldflags="-s -w" -o bin/recipya main.go
+	go build -ldflags="-s -w" -o bin/$(TARGET) main.go
 
 release:
 ifdef tag

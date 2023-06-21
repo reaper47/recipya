@@ -30,6 +30,7 @@
                     <button id="search-button" class="underline"
                             hx-get="/recipes/supported-websites"
                             hx-target="#search-results"
+                            onclick="document.querySelector('#supported-websites-dialog').showModal()"
                     >
                         supported
                     </button>
@@ -38,7 +39,7 @@
             </div>
             <hr>
             <div class="px-6 pt-4 pb-2">
-                <button class="flex justify-center w-full text-gray-900 duration-300 border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
+                <button class="flex justify-center w-full duration-300 border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
                         hx-target="#content"
                         hx-push-url="/recipes/add/unsupported-website"
                         hx-prompt="Enter the recipe's URL"
@@ -49,35 +50,39 @@
             </div>
         </div>
 
-        <div id="modal" class="hidden modal">
-            <div class="modal-content">
-                <h3 class="flex">
+        <dialog id="supported-websites-dialog" class="h-2/3 ">
+            <h3 class="flex justify-between items-center mb-1">
+                <div class="flex">
                     Search Websites
                     <span id="dialog-indicator" class="pl-2 htmx-indicator">
                         <img src="/static/img/bars.svg" alt="Loading..."/>
                     </span>
-                </h3>
+                </div>
+                <button type="button" class="hover:bg-gray-800 hover:text-white px-2 border rounded"
+                        onclick="document.querySelector('#supported-websites-dialog').close()">
+                    X
+                </button>
+            </h3>
 
-                <label>
-                    <input class="w-full mb-1 border border-gray-300 py-2 px-3 text-gray-700 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50"
-                           type="search" name="search" placeholder="Search a website..."
-                           hx-post="/recipes/supported-websites"
-                           hx-trigger="keyup changed delay:500ms, search"
-                           hx-target="#search-results"
-                           hx-indicator="#dialog-indicator">
-                </label>
+            <label>
+                <input class="w-full mb-1 border border-gray-300 py-2 px-3 text-gray-700 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50"
+                       type="search" name="search" placeholder="Search a website..."
+                       hx-post="/recipes/supported-websites"
+                       hx-trigger="keyup changed delay:500ms, search"
+                       hx-target="#search-results"
+                       hx-indicator="#dialog-indicator">
+            </label>
 
-                <table class="border-collapse">
-                    <thead>
-                    <tr>
-                        <th class="bg-blue-100 border text-left px-8 py-2 w-4">Number</th>
-                        <th class="bg-blue-100 border text-left px-8 py-2 w-72">Website</th>
-                    </tr>
-                    </thead>
-                    <tbody id="search-results"></tbody>
-                </table>
-            </div>
-        </div>
+            <table class="border-collapse">
+                <thead>
+                <tr>
+                    <th class="bg-blue-100 border text-left px-8 py-2 w-4">Number</th>
+                    <th class="bg-blue-100 border text-left px-8 py-2 w-72">Website</th>
+                </tr>
+                </thead>
+                <tbody id="search-results"></tbody>
+            </table>
+        </dialog>
 
         <div class="shadow-lg rounded-xl h-96">
             <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes-new/camera.webp"
@@ -122,20 +127,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        document.getElementById('search-button').addEventListener('click', function () {
-            document.getElementById('modal').style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        });
-
-        document.getElementById('modal').addEventListener('click', function (event) {
-            if (!event.target.closest('.modal-content')) {
-                document.getElementById('modal').style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-        });
-    </script>
 {{end}}
 
 {{define "unsupported-website"}}
