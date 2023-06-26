@@ -26,6 +26,36 @@ func recipesAddHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request) {
+	r.Body = http.MaxBytesReader(w, r.Body, 128<<20)
+
+	if err := r.ParseMultipartForm(128 << 20); err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Could not parse the uploaded files.", errorToast))
+		return
+	}
+
+	files, filesOk := r.MultipartForm.File["files"]
+	if !filesOk {
+		w.Header().Set("HX-Trigger", makeToast("Could not retrieve the files or the directory from the form.", errorToast))
+		return
+	}
+
+	recipes := s.Files.ExtractRecipes(files)
+	userID := r.Context().Value("userID").(int64)
+
+	count := 0
+	for _, r := range recipes {
+		if err := s.Repository.AddRecipe(&r, userID); err != nil {
+			continue
+		}
+		count += 1
+	}
+
+	msg := fmt.Sprintf("Imported %d recipes. %d failed", count, len(recipes)-count)
+	w.Header().Set("HX-Trigger", makeToast(msg, infoToast))
+	w.WriteHeader(http.StatusCreated)
+}
+
 func (s *Server) recipesAddRequestWebsiteHandler(w http.ResponseWriter, r *http.Request) {
 	s.Email.Send(app.Config.Email.From, templates.EmailRequestWebsite, templates.EmailData{
 		Text: r.FormValue("website"),
@@ -77,7 +107,7 @@ func (s *Server) recipesAddWebsiteHandler(w http.ResponseWriter, r *http.Request
 	w.WriteHeader(http.StatusSeeOther)
 }
 
-func (s *Server) recipesSupportedWebsitesHandler(w http.ResponseWriter, r *http.Request) {
+func (s *Server) recipesSupportedWebsitesHandler(w http.ResponseWriter, _ *http.Request) {
 	websites := s.Repository.Websites()
 	w.Header().Set("Content-Type", "text/html")
 	_, _ = fmt.Fprintf(w, websites.TableHTML())

@@ -34,8 +34,8 @@ func TestHandlers_Recipes_New(t *testing.T) {
 			want := []string{
 				`<title hx-swap-oob="true">Add Recipe | Recipya</title>`,
 				`<img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes-new/import.webp" alt="Writing on a piece of paper with a traditional pen."/>`,
-				`<button id="search-button" class="underline" hx-get="/recipes/supported-websites" hx-target="#search-results" > supported </button>`,
-				`<button class="flex justify-center w-full text-gray-900 duration-300 border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center" hx-target="#content" hx-push-url="/recipes/add/unsupported-website" hx-prompt="Enter the recipe's URL" hx-post="/recipes/add/website" hx-indicator="#fullscreen-loader"> Fetch </button>`,
+				`<button id="search-button" class="underline" hx-get="/recipes/supported-websites" hx-target="#search-results" onclick="document.querySelector('#supported-websites-dialog').showModal()" > supported </button>`,
+				`<button class="flex justify-center w-full duration-300 border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center" hx-target="#content" hx-push-url="/recipes/add/unsupported-website" hx-prompt="Enter the recipe's URL" hx-post="/recipes/add/website" hx-indicator="#fullscreen-loader"> Fetch </button>`,
 			}
 			assertStringsInHTML(t, getBodyHTML(rr), want)
 		})
@@ -44,7 +44,7 @@ func TestHandlers_Recipes_New(t *testing.T) {
 
 func TestHandlers_Recipes_AddRequestWebsite(t *testing.T) {
 	emailMock := &mockEmail{}
-	srv := server.NewServer(&mockRepository{}, emailMock)
+	srv := server.NewServer(&mockRepository{}, emailMock, &mockFiles{})
 
 	uri := "/recipes/add/request-website"
 

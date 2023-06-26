@@ -10,6 +10,8 @@
         <function importPath="fmt" name="Print" />
         <function importPath="fmt" name="Fprint" />
         <function importPath="crypto/rand" name="Read" />
+        <function importPath="os" name="Remove" />
+        <function importPath="io" name="Copy" />
       </functions>
       <methods>
         <method importPath="hash" receiver="Hash" name="Write" />
@@ -27,6 +29,8 @@
         <method importPath="io" receiver="ReadCloser" name="Close" />
         <method importPath="os" receiver="*File" name="Close" />
         <method importPath="database/sql" receiver="*Tx" name="Rollback" />
+        <method importPath="mime/multipart" receiver="File" name="Close" />
+        <method importPath="mime/multipart" receiver="*Writer" name="Close" />
       </methods>
     </inspection_tool>
   </profile>

@@ -19,7 +19,7 @@ func main() {
 				Aliases: []string{"s"},
 				Usage:   "starts the web server",
 				Action: func(ctx *cli.Context) error {
-					srv := server.NewServer(services.NewSQLiteService(), services.NewEmailService())
+					srv := server.NewServer(services.NewSQLiteService(), services.NewEmailService(), services.NewFilesService())
 					srv.Run()
 					return nil
 				},

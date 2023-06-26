@@ -8,6 +8,7 @@ import (
 	"github.com/reaper47/recipya/internal/server"
 	"github.com/reaper47/recipya/internal/templates"
 	"golang.org/x/exp/slices"
+	"mime/multipart"
 	"strings"
 )
 
@@ -17,7 +18,7 @@ func newServerTest() *server.Server {
 		Recipes:         make(map[int64]models.Recipes, 0),
 		UsersRegistered: make([]models.User, 0),
 	}
-	return server.NewServer(repo, &mockEmail{})
+	return server.NewServer(repo, &mockEmail{}, &mockFiles{})
 }
 
 type mockRepository struct {
@@ -140,4 +141,15 @@ type mockEmail struct {
 
 func (m *mockEmail) Send(_ string, _ templates.EmailTemplate, _ any) {
 	m.hitCount += 1
+}
+
+type mockFiles struct {
+	extractRecipesFunc func(fileHeaders []*multipart.FileHeader) models.Recipes
+}
+
+func (m *mockFiles) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recipes {
+	if m.extractRecipesFunc != nil {
+		return m.extractRecipesFunc(fileHeaders)
+	}
+	return models.Recipes{}
 }

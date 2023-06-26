@@ -22,12 +22,12 @@ func (s *Server) indexHandler(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func notFoundHandler(w http.ResponseWriter, r *http.Request) {
+func notFoundHandler(w http.ResponseWriter, _ *http.Request) {
 	w.WriteHeader(http.StatusNotFound)
 	templates.Render(w, templates.Simple, templates.PageNotFound)
 }
 
-func (s *Server) settingsHandler(w http.ResponseWriter, r *http.Request) {
+func (s *Server) settingsHandler(_ http.ResponseWriter, _ *http.Request) {
 	panic("to implement")
 }
 

@@ -6,19 +6,25 @@
     <script defer>
         htmx.on('showToast', function (event) {
             const toastContainer = document.getElementById('toast-container');
-            toastContainer?.firstChild.parentElement.removeChild(toastContainer.firstChild);
 
             const {message, backgroundColor} = JSON.parse(event.detail.value);
             const toast = document.createElement('div');
             toast.classList.add('text-white', 'px-6', 'py-4', 'rounded', 'shadow-md', backgroundColor);
             toast.textContent = message;
-            toastContainer.appendChild(toast);
+
+            if (toastContainer.firstChild) {
+                toastContainer.replaceChild(toast, toastContainer.firstChild);
+            } else {
+                toastContainer.appendChild(toast);
+            }
+
             toastContainer.classList.remove('hidden');
 
             setTimeout(function () {
                 toastContainer.classList.add('hidden');
-                toastContainer.removeChild(toast);
+                toastContainer?.removeChild(toast);
             }, 5000);
         });
     </script>
+
 {{end}}

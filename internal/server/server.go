@@ -23,10 +23,11 @@ func init() {
 }
 
 // NewServer creates a Server.
-func NewServer(repository services.RepositoryService, email services.EmailService) *Server {
+func NewServer(repository services.RepositoryService, email services.EmailService, files services.FilesService) *Server {
 	srv := &Server{
 		Repository: repository,
 		Email:      email,
+		Files:      files,
 	}
 	srv.mountHandlers()
 	return srv
@@ -37,6 +38,7 @@ type Server struct {
 	Router     *chi.Mux
 	Repository services.RepositoryService
 	Email      services.EmailService
+	Files      services.FilesService
 }
 
 func (s *Server) mountHandlers() {
@@ -71,6 +73,7 @@ func (s *Server) mountHandlers() {
 
 		r.Route("/add", func(r chi.Router) {
 			r.Get("/", recipesAddHandler)
+			r.Post("/import", s.recipesAddImportHandler)
 			r.Post("/request-website", s.recipesAddRequestWebsiteHandler)
 			r.Post("/website", s.recipesAddWebsiteHandler)
 		})

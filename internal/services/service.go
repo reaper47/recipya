@@ -4,6 +4,7 @@ import (
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
+	"mime/multipart"
 )
 
 // RepositoryService is the interface that describes the methods required for managing the main data store.
@@ -50,4 +51,10 @@ type RepositoryService interface {
 type EmailService interface {
 	// Send sends an email using the SendGrid API.
 	Send(to string, template templates.EmailTemplate, data any)
+}
+
+// FilesService is the interface that describes the methods required for manipulating files.
+type FilesService interface {
+	// ExtractRecipes extracts the recipes from the HTTP files.
+	ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recipes
 }

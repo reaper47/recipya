@@ -52,12 +52,12 @@
 
         <dialog id="supported-websites-dialog" class="h-2/3 ">
             <h3 class="flex justify-between items-center mb-1">
-                <div class="flex">
+                <span class="flex font-bold">
                     Search Websites
                     <span id="dialog-indicator" class="pl-2 htmx-indicator">
                         <img src="/static/img/bars.svg" alt="Loading..."/>
                     </span>
-                </div>
+                </span>
                 <button type="button" class="hover:bg-gray-800 hover:text-white px-2 border rounded"
                         onclick="document.querySelector('#supported-websites-dialog').close()">
                     X
@@ -119,13 +119,39 @@
             </div>
             <hr>
             <div class="px-6 pt-4 pb-2">
-                <button id="modal__import-open-button"
-                        class="flex justify-center w-full text-gray-900 duration-300 border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
-                        onclick="openModal(event)">
+                <button class="flex justify-center w-full duration-300 border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
+                        onclick="document.querySelector('#import-recipes-dialog').showModal()">
                     Import
                 </button>
             </div>
         </div>
+
+        <dialog id="import-recipes-dialog">
+            <h3 class="flex justify-between items-center mb-4">
+                <span class="flex font-bold">Import Recipes</span>
+                <button type="button" class="hover:bg-gray-800 hover:text-white px-2 border rounded"
+                        onclick="document.querySelector('#import-recipes-dialog').close()">
+                    X
+                </button>
+            </h3>
+
+            <form hx-post="/recipes/add/import" enctype="multipart/form-data" hx-indicator="#fullscreen-loader"
+                  hx-swap="none">
+                <div class="grid mb-5">
+                    <label for="import-dialog-file" class="text-sm font-bold text-gray-600 mb-1">
+                        Choose files in the .json or .zip format.
+                    </label>
+                    <input id="import-dialog-file" type="file" name="files" accept=".json,.zip" multiple
+                           class="p-2 border border-gray-300 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-purple-600">
+                </div>
+                <button type="submit"
+                        class="w-full p-2 font-semibold text-white duration-300 bg-blue-500 border-2 rounded-lg hover:bg-blue-800"
+                        onclick="document.querySelector('#import-recipes-dialog').close()"
+                >
+                    Submit
+                </button>
+            </form>
+        </dialog>
     </div>
 {{end}}
 
