@@ -74,6 +74,21 @@ func (s *Server) mountHandlers() {
 		r.Route("/add", func(r chi.Router) {
 			r.Get("/", recipesAddHandler)
 			r.Post("/import", s.recipesAddImportHandler)
+
+			r.Route("/manual", func(r chi.Router) {
+				r.Get("/", recipeAddManualHandler)
+
+				r.Route("/ingredient", func(r chi.Router) {
+					r.Post("/", recipeAddManualIngredientHandler)
+					r.Post("/{entry:[1-9]([0-9])*}", recipeAddManualIngredientDeleteHandler)
+				})
+
+				r.Route("/instruction", func(r chi.Router) {
+					r.Post("/", recipeAddManualInstructionHandler)
+					r.Post("/{entry:[1-9]([0-9])*}", recipeAddManualInstructionDeleteHandler)
+				})
+			})
+
 			r.Post("/request-website", s.recipesAddRequestWebsiteHandler)
 			r.Post("/website", s.recipesAddWebsiteHandler)
 		})

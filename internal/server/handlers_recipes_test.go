@@ -6,6 +6,7 @@ import (
 	"github.com/reaper47/recipya/internal/server"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"strings"
 	"testing"
 )
@@ -37,6 +38,225 @@ func TestHandlers_Recipes_New(t *testing.T) {
 				`<button id="search-button" class="underline" hx-get="/recipes/supported-websites" hx-target="#search-results" onclick="document.querySelector('#supported-websites-dialog').showModal()" > supported </button>`,
 				`<button class="flex justify-center w-full duration-300 border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center" hx-target="#content" hx-push-url="/recipes/add/unsupported-website" hx-prompt="Enter the recipe's URL" hx-post="/recipes/add/website" hx-indicator="#fullscreen-loader"> Fetch </button>`,
 			}
+			assertStringsInHTML(t, getBodyHTML(rr), want)
+		})
+	}
+}
+
+func TestHandlers_Recipes_AddManual(t *testing.T) {
+	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{})
+
+	uri := "/recipes/add/manual"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, uri)
+	})
+
+	testcases := []struct {
+		name     string
+		sendFunc func(server *server.Server, target, uri string, contentType header, body *strings.Reader) *httptest.ResponseRecorder
+		want     []string
+	}{
+		{name: "is logged in Hx-Request", sendFunc: sendHxRequestAsLoggedIn},
+		{name: "is logged in no Hx-Request", sendFunc: sendRequestAsLoggedIn},
+	}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			rr := tc.sendFunc(srv, http.MethodGet, uri, noHeader, nil)
+
+			want := []string{
+				`<title hx-swap-oob="true">Manual | Recipya</title>`,
+				`<form hx-post="/recipes/add/manual" enctype="multipart/form-data" class="grid max-w-6xl grid-cols-6 px-4 pb-4 m-auto mt-4">`,
+				`<input type="text" name="title" id="title" placeholder="Title of the recipe*" required class="w-full py-2 font-bold text-center text-gray-600 placeholder-gray-400 rounded-t-lg">`,
+				`<textarea id="description" name="description" rows="10" class="p-2 border border-gray-300 rounded-t-lg" placeholder="This Thai curry chicken will make you drool..." required></textarea>`,
+				`<th scope="col" class="text-right md:text-center"><p>Nutrition<br>(per 100g)</p></th><th scope="col" class="text-center"><p>Amount<br>(optional)</p></th>`,
+				`<th scope="col" class="text-right">Time</th><th scope="col" class="text-center">h:m:s</th>`,
+				`<ol id="ingredients-list" class="pl-6 list-decimal">`,
+				`<ol id="instructions-list" class="pl-4 list-decimal">`,
+				`<input type="text" name="ingredient-1" placeholder="Ingredient #1" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">`,
+				`<button type="submit" class="col-span-6 p-2 font-semibold text-white duration-300 bg-blue-500 hover:bg-blue-800"> Submit </button>`,
+			}
+			assertStringsInHTML(t, getBodyHTML(rr), want)
+		})
+	}
+}
+
+func TestHandlers_Recipes_AddManualIngredient(t *testing.T) {
+	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{})
+
+	uri := "/recipes/add/manual/ingredient"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, uri)
+	})
+
+	t.Run("does not yield input when previous input empty", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("ingredient-1="))
+
+		assertStatus(t, rr.Code, http.StatusUnprocessableEntity)
+	})
+
+	t.Run("yields new ingredient input", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("ingredient-1=ingredient1"))
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		want := []string{
+			`<input autofocus type="text" name="ingredient-2" placeholder="Ingredient #2" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" onkeydown="handleKeyDownIngredient(event)">`,
+			`&nbsp;<button type="button" class="w-10 h-10 duration-300 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/2" hx-include="[name^='ingredient']">-</button>`,
+		}
+		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
+}
+
+func TestHandlers_Recipes_AddManualIngredientDelete(t *testing.T) {
+	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{})
+
+	uri := "/recipes/add/manual/ingredient/"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, uri)
+	})
+
+	t.Run("does not yield input when only one input left", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri+"1", formHeader, strings.NewReader("ingredient-1="))
+
+		assertStatus(t, rr.Code, http.StatusUnprocessableEntity)
+	})
+
+	testcases := []struct {
+		name  string
+		entry int
+		want  []string
+	}{
+		{
+			name:  "delete last entry",
+			entry: 4,
+			want: []string{
+				`<input type="text" name="ingredient-1" placeholder="Ingredient #1" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="one">`,
+				`<input type="text" name="ingredient-2" placeholder="Ingredient #2" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="two">`,
+				`<input type="text" name="ingredient-3" placeholder="Ingredient #3" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="three">`,
+			},
+		},
+		{
+			name:  "delete first entry",
+			entry: 1,
+			want: []string{
+				`<input type="text" name="ingredient-1" placeholder="Ingredient #1" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="two">`,
+				`<input type="text" name="ingredient-2" placeholder="Ingredient #2" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="three">`,
+				`<input type="text" name="ingredient-3" placeholder="Ingredient #3" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="''">`,
+			},
+		},
+		{
+			name:  "delete middle entry",
+			entry: 3,
+			want: []string{
+				`<input type="text" name="ingredient-1" placeholder="Ingredient #1" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="one">`,
+				`<input type="text" name="ingredient-2" placeholder="Ingredient #2" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="two">`,
+				`<input type="text" name="ingredient-3" placeholder="Ingredient #3" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="''">`,
+			},
+		},
+	}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri+strconv.Itoa(tc.entry), formHeader, strings.NewReader("ingredient-1=one&ingredient-2=two&ingredient-3=three&ingredient-4=''"))
+
+			assertStatus(t, rr.Code, http.StatusOK)
+			want := append(tc.want, []string{
+				`&nbsp;<button type="button" class="w-10 h-10 duration-300 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/1" hx-include="[name^='ingredient']">-</button>`,
+				`&nbsp;<button type="button" class="w-10 h-10 duration-300 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/2" hx-include="[name^='ingredient']">-</button>`,
+				`&nbsp;<button type="button" class="w-10 h-10 duration-300 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/3" hx-include="[name^='ingredient']">-</button>`,
+			}...)
+			assertStringsInHTML(t, getBodyHTML(rr), want)
+		})
+	}
+}
+
+func TestHandlers_Recipes_AddManualInstruction(t *testing.T) {
+	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{})
+
+	uri := "/recipes/add/manual/instruction"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, uri)
+	})
+
+	t.Run("does not yield input when previous input empty", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("instruction-1="))
+
+		assertStatus(t, rr.Code, http.StatusUnprocessableEntity)
+	})
+
+	t.Run("yields new instruction input", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("instruction-1=one"))
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		want := []string{
+			`<textarea autofocus required name="instruction-2" rows="3" class="w-9/12 border border-gray-300 md:w-5/6 xl:w-11/12" placeholder="Instruction #2" onkeydown="handleKeyDownInstruction(event)"></textarea>`,
+			`<button type="button" class="mt-4 md:flex-initial w-10 h-10 right-0.5 md:w-7 md:h-7 md:right-auto duration-300 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/2" hx-include="[name^='instruction']">-</button>`,
+			`<button type="button" class="md:flex-initial bottom-0 right-0.5 md:w-7 md:h-7 md:right-auto w-10 h-10 text-center duration-300 bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center" title="Shortcut: CTRL + Enter" hx-post="/recipes/add/manual/instruction" hx-target="#instructions-list" hx-swap="beforeend" hx-include="[name^='instruction']">+</button>`,
+		}
+		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
+}
+
+func TestHandlers_Recipes_AddManualInstructionDelete(t *testing.T) {
+	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{})
+
+	uri := "/recipes/add/manual/instruction/"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, uri)
+	})
+
+	t.Run("does not yield input when only one input left", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri+"1", formHeader, strings.NewReader("instruction-1="))
+
+		assertStatus(t, rr.Code, http.StatusUnprocessableEntity)
+	})
+
+	testcases := []struct {
+		name  string
+		entry int
+		want  []string
+	}{
+		{
+			name:  "delete last entry",
+			entry: 4,
+			want: []string{
+				`<textarea required name="instruction-1" rows="3" class="w-9/12 border border-gray-300 md:w-5/6 xl:w-11/12" placeholder="Instruction #1" onkeydown="handleKeyDownInstruction(event)">One</textarea>`,
+				`<textarea required name="instruction-2" rows="3" class="w-9/12 border border-gray-300 md:w-5/6 xl:w-11/12" placeholder="Instruction #2" onkeydown="handleKeyDownInstruction(event)">Two</textarea>`,
+				`<textarea required name="instruction-3" rows="3" class="w-9/12 border border-gray-300 md:w-5/6 xl:w-11/12" placeholder="Instruction #3" onkeydown="handleKeyDownInstruction(event)">Three</textarea>`,
+			},
+		},
+		{
+			name:  "delete first entry",
+			entry: 1,
+			want: []string{
+				`<textarea required name="instruction-1" rows="3" class="w-9/12 border border-gray-300 md:w-5/6 xl:w-11/12" placeholder="Instruction #1" onkeydown="handleKeyDownInstruction(event)">Two</textarea>`,
+				`<textarea required name="instruction-2" rows="3" class="w-9/12 border border-gray-300 md:w-5/6 xl:w-11/12" placeholder="Instruction #2" onkeydown="handleKeyDownInstruction(event)">Three</textarea>`,
+				`<textarea required name="instruction-3" rows="3" class="w-9/12 border border-gray-300 md:w-5/6 xl:w-11/12" placeholder="Instruction #3" onkeydown="handleKeyDownInstruction(event)">''</textarea>`,
+			},
+		},
+		{
+			name:  "delete middle entry",
+			entry: 3,
+			want: []string{
+				`<textarea required name="instruction-1" rows="3" class="w-9/12 border border-gray-300 md:w-5/6 xl:w-11/12" placeholder="Instruction #1" onkeydown="handleKeyDownInstruction(event)">One</textarea>`,
+				`<textarea required name="instruction-2" rows="3" class="w-9/12 border border-gray-300 md:w-5/6 xl:w-11/12" placeholder="Instruction #2" onkeydown="handleKeyDownInstruction(event)">Two</textarea>`,
+				`<textarea required name="instruction-3" rows="3" class="w-9/12 border border-gray-300 md:w-5/6 xl:w-11/12" placeholder="Instruction #3" onkeydown="handleKeyDownInstruction(event)">''</textarea>`,
+			},
+		},
+	}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri+strconv.Itoa(tc.entry), formHeader, strings.NewReader("instruction-1=One&instruction-2=Two&instruction-3=Three&instruction-4=''"))
+
+			assertStatus(t, rr.Code, http.StatusOK)
+			want := append(tc.want, []string{
+				`<button type="button" class="mt-4 md:flex-initial w-10 h-10 right-0.5 md:w-7 md:h-7 md:right-auto duration-300 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/1" hx-include="[name^='instruction']">-</button>`,
+				`<button type="button" class="mt-4 md:flex-initial w-10 h-10 right-0.5 md:w-7 md:h-7 md:right-auto duration-300 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/2" hx-include="[name^='instruction']">-</button>`,
+				`<button type="button" class="mt-4 md:flex-initial w-10 h-10 right-0.5 md:w-7 md:h-7 md:right-auto duration-300 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/3" hx-include="[name^='instruction']">-</button>`,
+			}...)
 			assertStringsInHTML(t, getBodyHTML(rr), want)
 		})
 	}

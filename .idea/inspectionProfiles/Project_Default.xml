@@ -12,6 +12,7 @@
         <function importPath="crypto/rand" name="Read" />
         <function importPath="os" name="Remove" />
         <function importPath="io" name="Copy" />
+        <function importPath="fmt" name="Fprintf" />
       </functions>
       <methods>
         <method importPath="hash" receiver="Hash" name="Write" />
