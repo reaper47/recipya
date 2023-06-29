@@ -2,6 +2,8 @@ package server_test
 
 import (
 	"errors"
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
 	"net/http"
@@ -9,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestHandlers_Recipes_New(t *testing.T) {
@@ -44,7 +47,8 @@ func TestHandlers_Recipes_New(t *testing.T) {
 }
 
 func TestHandlers_Recipes_AddManual(t *testing.T) {
-	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{})
+	repo := &mockRepository{}
+	srv := server.NewServer(repo, &mockEmail{}, &mockFiles{})
 
 	uri := "/recipes/add/manual"
 
@@ -73,12 +77,66 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 				`<th scope="col" class="text-right">Time</th><th scope="col" class="text-center">h:m:s</th>`,
 				`<ol id="ingredients-list" class="pl-6 list-decimal">`,
 				`<ol id="instructions-list" class="pl-4 list-decimal">`,
-				`<input type="text" name="ingredient-1" placeholder="Ingredient #1" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">`,
+				`<input type="text" name="ingredient-1" placeholder="Ingredient #1" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" onkeydown="handleKeyDownIngredient(event)">`,
 				`<button type="submit" class="col-span-6 p-2 font-semibold text-white duration-300 bg-blue-500 hover:bg-blue-800"> Submit </button>`,
 			}
 			assertStringsInHTML(t, getBodyHTML(rr), want)
 		})
 	}
+
+	t.Run("submit recipe", func(t *testing.T) {
+		repo = &mockRepository{
+			Recipes: make(map[int64]models.Recipes, 0),
+		}
+		srv.Repository = repo
+		originalNumRecipes := len(repo.Recipes)
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("title=Salsa&description=The best&calories=666&total-carbohydrates=31g&sugars=0.1mg&protein=5g&total-fat=0g&saturated-fat=0g&cholesterol=256mg&sodium=777mg&fiber=2g&time-preparation=00%3A15%3A30&time-cooking=00%3A30%3A15&ingredient-1=ing1&ingredient-2=ing2&instruction-1=ins1&instruction-2=ins2"))
+
+		assertStatus(t, rr.Code, http.StatusCreated)
+		id := int64(len(repo.Recipes))
+		if len(repo.Recipes) != originalNumRecipes+1 {
+			t.Fatal("expected one more recipe to be added to the database")
+		}
+		want := models.Recipe{
+			Category:     "",
+			CreatedAt:    time.Time{},
+			Cuisine:      "",
+			Description:  "The best",
+			Image:        uuid.UUID{},
+			Ingredients:  []string{"ing1", "ing2"},
+			Instructions: []string{"ins1", "ins2"},
+			Keywords:     nil,
+			Name:         "Salsa",
+			Nutrition: models.Nutrition{
+				Calories:           "666",
+				Cholesterol:        "256mg",
+				Fiber:              "2g",
+				Protein:            "5g",
+				SaturatedFat:       "0g",
+				Sodium:             "777mg",
+				Sugars:             "0.1mg",
+				TotalCarbohydrates: "31g",
+				TotalFat:           "0g",
+				UnsaturatedFat:     "",
+			},
+			Times: models.Times{
+				Prep:  15*time.Minute + 30*time.Second,
+				Cook:  30*time.Minute + 15*time.Second,
+				Total: 45*time.Minute + 45*time.Second,
+			},
+			Tools:     nil,
+			UpdatedAt: time.Time{},
+			URL:       "",
+			Yield:     0,
+		}
+		gotRecipe := repo.Recipes[1][id-1]
+		if !cmp.Equal(want, gotRecipe) {
+			t.Log(cmp.Diff(want, gotRecipe))
+			t.Fail()
+		}
+		assertHeader(t, rr, "HX-Redirect", "/recipes/"+strconv.FormatInt(id, 10))
+	})
 }
 
 func TestHandlers_Recipes_AddManualIngredient(t *testing.T) {
@@ -317,8 +375,8 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 
 	t.Run("add recipe from supported website error", func(t *testing.T) {
 		repo := &mockRepository{Recipes: make(map[int64]models.Recipes, 0)}
-		repo.AddRecipeFunc = func(r *models.Recipe, userID int64) error {
-			return errors.New("add recipe error")
+		repo.AddRecipeFunc = func(r *models.Recipe, userID int64) (int64, error) {
+			return -1, errors.New("add recipe error")
 		}
 		srv.Repository = repo
 
@@ -331,9 +389,9 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 	t.Run("add recipe from a supported website", func(t *testing.T) {
 		repo := &mockRepository{Recipes: make(map[int64]models.Recipes, 0)}
 		called := 0
-		repo.AddRecipeFunc = func(r *models.Recipe, userID int64) error {
+		repo.AddRecipeFunc = func(r *models.Recipe, userID int64) (int64, error) {
 			called += 1
-			return nil
+			return 1, nil
 		}
 		srv.Repository = repo
 

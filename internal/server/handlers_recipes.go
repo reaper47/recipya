@@ -3,13 +3,16 @@ package server
 import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
+	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/scraper"
 	"github.com/reaper47/recipya/internal/templates"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func recipesAddHandler(w http.ResponseWriter, r *http.Request) {
@@ -48,7 +51,7 @@ func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request)
 
 	count := 0
 	for _, r := range recipes {
-		if err := s.Repository.AddRecipe(&r, userID); err != nil {
+		if _, err := s.Repository.AddRecipe(&r, userID); err != nil {
 			continue
 		}
 		count += 1
@@ -69,6 +72,85 @@ func recipeAddManualHandler(w http.ResponseWriter, r *http.Request) {
 			Title:           page.Title(),
 		})
 	}
+}
+
+func (s *Server) recipeAddManualPostHandler(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Could not parse the form.", errorToast))
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
+
+	ingredients := make([]string, 0)
+	i := 1
+	for {
+		key := fmt.Sprintf("ingredient-%d", i)
+		if r.Form.Has(key) {
+			ingredients = append(ingredients, r.FormValue(key))
+			i++
+		} else {
+			break
+		}
+	}
+
+	instructions := make([]string, 0)
+	i = 1
+	for {
+		key := fmt.Sprintf("instruction-%d", i)
+		if r.Form.Has(key) {
+			instructions = append(instructions, r.FormValue(key))
+			i++
+		} else {
+			break
+		}
+	}
+
+	times, err := models.NewTimes(r.FormValue("time-preparation"), r.FormValue("time-cooking"))
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Error parsing times.", errorToast))
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
+
+	recipe := &models.Recipe{
+		Category:     "",
+		CreatedAt:    time.Time{},
+		Cuisine:      "",
+		Description:  r.FormValue("description"),
+		Image:        uuid.UUID{},
+		Ingredients:  ingredients,
+		Instructions: instructions,
+		Keywords:     nil,
+		Name:         r.FormValue("title"),
+		Nutrition: models.Nutrition{
+			Calories:           r.FormValue("calories"),
+			Cholesterol:        r.FormValue("cholesterol"),
+			Fiber:              r.FormValue("fiber"),
+			Protein:            r.FormValue("protein"),
+			SaturatedFat:       r.FormValue("saturated-fat"),
+			Sodium:             r.FormValue("sodium"),
+			Sugars:             r.FormValue("sugars"),
+			TotalCarbohydrates: r.FormValue("total-carbohydrates"),
+			TotalFat:           r.FormValue("total-fat"),
+			UnsaturatedFat:     "",
+		},
+		Times:     times,
+		Tools:     nil,
+		UpdatedAt: time.Time{},
+		URL:       "",
+		Yield:     0,
+	}
+
+	recipeID, err := s.Repository.AddRecipe(recipe, r.Context().Value("userID").(int64))
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Could not add recipe.", errorToast))
+		w.WriteHeader(http.StatusNoContent)
+
+		return
+	}
+
+	w.Header().Set("HX-Redirect", "/recipes/"+strconv.FormatInt(recipeID, 10))
+	w.WriteHeader(http.StatusCreated)
 }
 
 func recipeAddManualIngredientHandler(w http.ResponseWriter, r *http.Request) {
@@ -308,7 +390,7 @@ func (s *Server) recipesAddWebsiteHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	if err := s.Repository.AddRecipe(recipe, r.Context().Value("userID").(int64)); err != nil {
+	if _, err := s.Repository.AddRecipe(recipe, r.Context().Value("userID").(int64)); err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Recipe could not be added.", errorToast))
 		w.WriteHeader(http.StatusNoContent)
 		return

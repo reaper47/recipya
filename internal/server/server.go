@@ -77,6 +77,7 @@ func (s *Server) mountHandlers() {
 
 			r.Route("/manual", func(r chi.Router) {
 				r.Get("/", recipeAddManualHandler)
+				r.Post("/", s.recipeAddManualPostHandler)
 
 				r.Route("/ingredient", func(r chi.Router) {
 					r.Post("/", recipeAddManualIngredientHandler)
