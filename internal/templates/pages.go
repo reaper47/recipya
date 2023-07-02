@@ -5,13 +5,15 @@ type Page string
 
 // Name of the page. The value is the name of the associated template without the extension.
 const (
-	AddRecipePage       Page = "add-recipe"
-	AddRecipeManualPage Page = "add-recipe-manual"
-	HomePage            Page = "home"
-	LandingPage         Page = "landing"
-	LoginPage           Page = "login"
-	RegisterPage        Page = "register"
-	Simple              Page = "simple"
+	AddRecipePage           Page = "add-recipe"
+	AddRecipeManualPage     Page = "add-recipe-manual"
+	ForgotPasswordPage      Page = "forgot-password"
+	ForgotPasswordResetPage Page = "forgot-password-reset"
+	HomePage                Page = "home"
+	LandingPage             Page = "landing"
+	LoginPage               Page = "login"
+	RegisterPage            Page = "register"
+	Simple                  Page = "simple"
 )
 
 // String stringifies the Page.
@@ -26,6 +28,10 @@ func (p Page) Title() string {
 		return "Add Recipe"
 	case AddRecipeManualPage:
 		return "Manual"
+	case ForgotPasswordPage:
+		return "Forgot Password"
+	case ForgotPasswordResetPage:
+		return "Reset Password"
 	case HomePage, LandingPage:
 		return "Home"
 	case LoginPage:

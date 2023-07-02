@@ -31,3 +31,10 @@ var SuccessConfirm = Data{
 	ContentTitle: "Confirmation Successful",
 	Content:      "Your account has been confirmed.",
 }
+
+// ForgotPasswordSuccess encapsulates the information displayed to the user when the user clicks forgot password.
+var ForgotPasswordSuccess = Data{
+	Title:        "Forgot Password",
+	ContentTitle: "Password Reset Requested",
+	Content:      "An email with instructions on how to reset your password has been sent to you. Please check your inbox and follow the provided steps to regain access to your account.",
+}

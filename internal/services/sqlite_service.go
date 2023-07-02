@@ -319,6 +319,28 @@ func (s *SQLiteService) Register(email string, hashedPassword auth.HashedPasswor
 	return userID, err
 }
 
+func (s *SQLiteService) UpdatePassword(userID int64, password auth.HashedPassword) error {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	_, err := s.DB.ExecContext(ctx, statements.UpdatePassword, userID, string(password))
+	return err
+}
+
+func (s *SQLiteService) UserID(email string) int64 {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	var id int64
+	if err := s.DB.QueryRowContext(ctx, statements.SelectUserID, email).Scan(&id); err == sql.ErrNoRows {
+		return -1
+	}
+	return id
+}
+
 func (s *SQLiteService) UserInitials(userID int64) string {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()

@@ -7,6 +7,7 @@ import (
 
 var emailTemplates = []templates.EmailTemplate{
 	templates.EmailErrorAdmin,
+	templates.EmailForgotPassword,
 	templates.EmailIntro,
 	templates.EmailRequestWebsite,
 }
@@ -14,6 +15,7 @@ var emailTemplates = []templates.EmailTemplate{
 func TestEmailTemplate_String(t *testing.T) {
 	want := []string{
 		"error-admin.mjml",
+		"forgot-password.mjml",
 		"intro.mjml",
 		"request-website.mjml",
 	}
@@ -27,6 +29,7 @@ func TestEmailTemplate_String(t *testing.T) {
 func TestEmailTemplate_Subject(t *testing.T) {
 	want := []string{
 		"Recipya Error",
+		"Forgot Password",
 		"Confirm Account",
 		"Request Website",
 	}

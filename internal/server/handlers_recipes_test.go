@@ -79,6 +79,8 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 				`<ol id="instructions-list" class="pl-4 list-decimal">`,
 				`<input type="text" name="ingredient-1" placeholder="Ingredient #1" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" onkeydown="handleKeyDownIngredient(event)">`,
 				`<button type="submit" class="col-span-6 p-2 font-semibold text-white duration-300 bg-blue-500 hover:bg-blue-800"> Submit </button>`,
+				`<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>`,
+				`<script src="https://cdn.jsdelivr.net/npm/html-duration-picker@latest/dist/html-duration-picker.min.js"></script>`,
 			}
 			assertStringsInHTML(t, getBodyHTML(rr), want)
 		})

@@ -52,6 +52,12 @@ const SelectUserEmail = `
 	FROM users
 	WHERE id = ?`
 
+// SelectUserID fetches the user's id from their email.
+const SelectUserID = `
+	SELECT id
+	FROM users
+	WHERE email = ?`
+
 // SelectUserPassword fetches the user's password for verification purposes.
 const SelectUserPassword = `
 	SELECT id, hashed_password

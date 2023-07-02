@@ -8,6 +8,7 @@ import (
 	"github.com/reaper47/recipya/internal/utils/regex"
 	"golang.org/x/exp/maps"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -35,6 +36,97 @@ func (s *Server) confirmHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	templates.Render(w, templates.Simple, templates.SuccessConfirm)
+}
+
+func (s *Server) forgotPasswordHandler(w http.ResponseWriter, r *http.Request) {
+	if getUserIDFromSessionCookie(r) != -1 || getUserIDFromRememberMeCookie(r, s.Repository.GetAuthToken) != -1 {
+		w.Header().Set("HX-Redirect", "/settings")
+		w.WriteHeader(http.StatusSeeOther)
+		return
+	}
+
+	page := templates.ForgotPasswordPage
+	templates.Render(w, page, templates.Data{Title: page.Title()})
+}
+
+func (s *Server) forgotPasswordPostHandler(w http.ResponseWriter, r *http.Request) {
+	if getUserIDFromSessionCookie(r) != -1 || getUserIDFromRememberMeCookie(r, s.Repository.GetAuthToken) != -1 {
+		w.WriteHeader(http.StatusForbidden)
+		return
+	}
+
+	email := r.FormValue("email")
+	if s.Repository.IsUserExist(email) {
+		userID := s.Repository.UserID(email)
+		token, err := auth.CreateToken(map[string]any{"userID": userID}, 1*time.Hour)
+		if err != nil {
+			sendErrorAdminEmail(s.Email.Send, "forgotPasswordPostHandler.CreateToken", err)
+			w.Header().Set("HX-Trigger", makeToast("Forgot password failed.", errorToast))
+			w.WriteHeader(http.StatusUnprocessableEntity)
+			return
+		}
+
+		s.Email.Send(email, templates.EmailForgotPassword, templates.EmailData{
+			Token:    token,
+			UserName: strings.Split(email, "@")[0],
+			URL:      app.Config.URL,
+		})
+	}
+
+	templates.RenderComponent(w, "login", "forgot-password-requested", templates.ForgotPasswordSuccess)
+}
+
+func forgotPasswordResetHandler(w http.ResponseWriter, r *http.Request) {
+	userID, err := auth.ParseToken(r.URL.Query().Get("token"))
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		templates.Render(w, templates.Simple, templates.ErrorTokenExpired)
+		return
+	}
+
+	page := templates.ForgotPasswordResetPage
+	templates.Render(w, page, templates.Data{
+		Title:   page.Title(),
+		Content: strconv.FormatInt(userID, 10),
+	})
+}
+
+func (s *Server) forgotPasswordResetPostHandler(w http.ResponseWriter, r *http.Request) {
+	userIDStr := r.FormValue("user-id")
+	password := r.FormValue("password")
+	confirm := r.FormValue("password-confirm")
+	if userIDStr == "" || password == "" || password != confirm {
+		w.Header().Set("HX-Trigger", makeToast("Password is invalid.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	userID, err := strconv.ParseInt(userIDStr, 10, 64)
+	if err != nil {
+		sendErrorAdminEmail(s.Email.Send, "forgotPasswordResetPostHandler.ParseInt: "+userIDStr, err)
+		w.Header().Set("HX-Trigger", makeToast("Password is invalid.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+
+	}
+
+	hashPassword, err := auth.HashPassword(password)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Error encoding your password.", errorToast))
+		w.WriteHeader(http.StatusUnprocessableEntity)
+		return
+	}
+
+	if err := s.Repository.UpdatePassword(userID, hashPassword); err != nil {
+		sendErrorAdminEmail(s.Email.Send, "forgotPasswordResetPostHandler.UpdatePassword: "+strconv.FormatInt(userID, 10), err)
+		w.Header().Set("HX-Trigger", makeToast("Updating password failed.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("HX-Redirect", "/auth/login")
+	w.Header().Set("HX-Trigger", makeToast("Password updated.", infoToast))
+	w.WriteHeader(http.StatusSeeOther)
 }
 
 func loginHandler(w http.ResponseWriter, _ *http.Request) {
@@ -181,6 +273,7 @@ func (s *Server) registerPostHandler(w http.ResponseWriter, r *http.Request) {
 		UserName: strings.Split(email, "@")[0],
 		URL:      app.Config.URL,
 	})
+
 	w.Header().Set("HX-Redirect", "/auth/login")
 	w.WriteHeader(http.StatusSeeOther)
 }

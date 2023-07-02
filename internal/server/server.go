@@ -49,6 +49,16 @@ func (s *Server) mountHandlers() {
 	r.Route("/auth", func(r chi.Router) {
 		r.Get("/confirm", s.confirmHandler)
 
+		r.Route("/forgot-password", func(r chi.Router) {
+			r.Get("/", s.forgotPasswordHandler)
+			r.Post("/", s.forgotPasswordPostHandler)
+
+			r.Route("/reset", func(r chi.Router) {
+				r.Get("/", forgotPasswordResetHandler)
+				r.Post("/", s.forgotPasswordResetPostHandler)
+			})
+		})
+
 		r.Route("/login", func(r chi.Router) {
 			r.Use(s.redirectIfLoggedInMiddleware)
 

@@ -2,6 +2,7 @@ package server_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
@@ -31,7 +32,7 @@ func TestHandlers_Auth_Confirm(t *testing.T) {
 		assertHeader(t, rr, "Location", "/")
 	})
 
-	t.Run("invalid confirmation token for existing user", func(t *testing.T) {
+	t.Run("invalid token for existing user", func(t *testing.T) {
 		token, _ := auth.CreateToken(map[string]any{"userID": 2}, 1*time.Nanosecond)
 
 		rr := sendRequest(srv, http.MethodGet, uri+"?token="+token, noHeader, nil)
@@ -68,6 +69,144 @@ func TestHandlers_Auth_Confirm(t *testing.T) {
 			"Your account has been confirmed.",
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
+}
+
+func TestHandlers_Auth_ForgotPassword(t *testing.T) {
+	emailMock := &mockEmail{}
+	repo := &mockRepository{
+		UsersRegistered: []models.User{{ID: 1, Email: "test@example.com"}},
+	}
+	srv := server.NewServer(repo, emailMock, &mockFiles{})
+
+	uri := "/auth/forgot-password"
+
+	t.Run("anonymous user accesses forgot password", func(t *testing.T) {
+		rr := sendRequest(srv, http.MethodGet, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		want := []string{
+			`<title hx-swap-oob="true">Forgot Password | Recipya</title>`,
+			`<input type="email" class="w-full rounded-lg bg-gray-100 px-4 py-2" id="email" name="email" placeholder="Enter your email address..." required/>`,
+			`<button class="mt-6 w-full rounded-lg bg-indigo-600 px-4 py-2 text-lg font-semibold tracking-wide text-white hover:bg-green-600"> Reset password </button>`,
+		}
+		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
+
+	t.Run("logged-in user cannot access forgot password form", func(t *testing.T) {
+		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusSeeOther)
+		assertHeader(t, rr, "HX-Redirect", "/settings")
+	})
+
+	t.Run("logged in user cannot post", func(t *testing.T) {
+		numHits := emailMock.hitCount
+
+		rr := sendRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("email=not@exist.com"))
+
+		assertStatus(t, rr.Code, http.StatusForbidden)
+		if emailMock.hitCount == numHits+1 {
+			t.Fatal("an email should not have been sent")
+		}
+	})
+
+	testcases := []struct {
+		name        string
+		email       string
+		isEmailSent bool
+		want        []string
+	}{
+		{
+			name:  "user does not exist",
+			email: "email=not@exist.com",
+		},
+		{
+			name:        "user exists",
+			email:       "test@example.com",
+			isEmailSent: true,
+		},
+	}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			numHits := emailMock.hitCount
+
+			rr := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email="+tc.email))
+
+			assertStatus(t, rr.Code, http.StatusOK)
+			if tc.isEmailSent && emailMock.hitCount != numHits+1 {
+				t.Fatal("an email should have been sent")
+			} else if !tc.isEmailSent && emailMock.hitCount == numHits+1 {
+				t.Fatal("an email should not have been sent")
+			}
+			want := []string{
+				`<h1 class="mb-6 text-2xl font-bold text-center text-gray-600 underline">Password Reset Requested</h1>`,
+				`<p class="block my-3 text-gray-800 text-md"> An email with instructions on how to reset your password has been sent to you. Please check your inbox and follow the provided steps to regain access to your account. </p>`,
+				`<a href="/" hx-boost="true" class="w-full block text-center px-4 py-2 mt-6 text-lg font-semibold tracking-wide text-white bg-indigo-600 rounded-lg hover:bg-green-600"> Back Home </a>`,
+			}
+			assertStringsInHTML(t, getBodyHTML(rr), want)
+		})
+	}
+
+	testcases2 := []struct {
+		name        string
+		tokenExpire int
+	}{
+		{name: "reset password link has expired token", tokenExpire: -1},
+		{name: "reset password link has invalid token"},
+		{name: "reset password link has no token"},
+	}
+	for _, tc := range testcases2 {
+		t.Run(tc.name, func(t *testing.T) {
+			var token string
+			if tc.tokenExpire != 0 {
+				token, _ = auth.CreateToken(map[string]any{"userID": 1}, time.Duration(tc.tokenExpire)*time.Second)
+			} else if strings.Contains(tc.name, "invalid") {
+				token = "hello"
+			}
+
+			rr := sendRequest(srv, http.MethodGet, fmt.Sprintf("%s/reset?token=%s", uri, token), noHeader, nil)
+
+			assertStatus(t, rr.Code, http.StatusBadRequest)
+			want := []string{
+				`<title hx-swap-oob="true">Token Expired | Recipya</title>`,
+				"The token associated with the URL expired.",
+			}
+			assertStringsInHTML(t, getBodyHTML(rr), want)
+		})
+	}
+
+	t.Run("reset password link is valid", func(t *testing.T) {
+		token, _ := auth.CreateToken(map[string]any{"userID": 1}, 1*time.Second)
+
+		rr := sendRequest(srv, http.MethodGet, fmt.Sprintf("%s/reset?token=%s", uri, token), noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		want := []string{
+			`<title hx-swap-oob="true">Reset Password | Recipya</title>`,
+			`<input name="user-id" type="hidden" value="1"/>`,
+			`<input class="w-full rounded-lg bg-gray-100 px-4 py-2" id="password" name="password" placeholder="Enter your new password..." required type="password"/>`,
+			`<input class="w-full rounded-lg bg-gray-100 px-4 py-2" id="password-confirm" name="password-confirm" placeholder="Retype your password..." required type="password" hx-post="/auth/register/validate-password" hx-trigger="keyup changed delay:1s" hx-indicator="#ind"/>`,
+		}
+		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
+
+	t.Run("reset password invalid", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri+"/reset", formHeader, strings.NewReader("user-id=1&password=test&password-confirm=test2"))
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Password is invalid.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+	})
+
+	t.Run("reset password valid", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri+"/reset", formHeader, strings.NewReader("user-id=1&password=test&password-confirm=test"))
+
+		assertStatus(t, rr.Code, http.StatusSeeOther)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Password updated.\",\"backgroundColor\":\"bg-blue-500\"}"}`)
+		assertHeader(t, rr, "HX-Redirect", "/auth/login")
+		if !slices.Contains(repo.UsersUpdated, 1) {
+			t.Fatal("must have called UpdatePassword on the user")
+		}
 	})
 }
 

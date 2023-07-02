@@ -35,6 +35,7 @@ func init() {
 
 		if !d.IsDir() && strings.HasSuffix(path, ".gohtml") {
 			authLayouts := []string{
+				"templates/pages/forgot-password.gohtml",
 				"templates/pages/login.gohtml",
 				"templates/pages/register.gohtml",
 				"templates/pages/simple.gohtml",

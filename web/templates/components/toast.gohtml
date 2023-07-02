@@ -25,6 +25,12 @@
                 toastContainer?.removeChild(toast);
             }, 5000);
         });
+        document.body.addEventListener('htmx:beforeSwap', function(event) {
+            if(event.detail.xhr.status >= 400){
+                event.detail.shouldSwap = true;
+                event.detail.isError = false;
+            }
+        });
     </script>
 
 {{end}}

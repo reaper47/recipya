@@ -9,6 +9,7 @@ type EmailTemplate string
 
 const (
 	EmailErrorAdmin     EmailTemplate = "error-admin.mjml"
+	EmailForgotPassword EmailTemplate = "forgot-password.mjml"
 	EmailIntro          EmailTemplate = "intro.mjml"
 	EmailRequestWebsite EmailTemplate = "request-website.mjml"
 )
@@ -23,6 +24,8 @@ func (e EmailTemplate) Subject() string {
 	switch e {
 	case EmailErrorAdmin:
 		return "Recipya Error"
+	case EmailForgotPassword:
+		return "Forgot Password"
 	case EmailIntro:
 		return "Confirm Account"
 	case EmailRequestWebsite:

@@ -17,6 +17,7 @@ func newServerTest() *server.Server {
 		AuthTokens:      make([]models.AuthToken, 0),
 		Recipes:         make(map[int64]models.Recipes, 0),
 		UsersRegistered: make([]models.User, 0),
+		UsersUpdated:    make([]int64, 0),
 	}
 	return server.NewServer(repo, &mockEmail{}, &mockFiles{})
 }
@@ -26,6 +27,7 @@ type mockRepository struct {
 	AddRecipeFunc   func(recipe *models.Recipe, userID int64) (int64, error)
 	Recipes         map[int64]models.Recipes
 	UsersRegistered []models.User
+	UsersUpdated    []int64
 }
 
 func (m *mockRepository) AddAuthToken(selector, validator string, userID int64) error {
@@ -86,6 +88,21 @@ func (m *mockRepository) Register(email string, _ auth.HashedPassword) (int64, e
 		Email: email,
 	})
 	return userID, nil
+}
+
+func (m *mockRepository) UserID(email string) int64 {
+	index := slices.IndexFunc(m.UsersRegistered, func(user models.User) bool {
+		return user.Email == email
+	})
+	if index == -1 {
+		return -1
+	}
+	return m.UsersRegistered[index].ID
+}
+
+func (m *mockRepository) UpdatePassword(userID int64, _ auth.HashedPassword) error {
+	m.UsersUpdated = append(m.UsersUpdated, userID)
+	return nil
 }
 
 func (m *mockRepository) UserInitials(userID int64) string {

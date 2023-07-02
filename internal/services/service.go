@@ -30,6 +30,12 @@ type RepositoryService interface {
 	// Register adds a new user to the store.
 	Register(email string, hashPassword auth.HashedPassword) (int64, error)
 
+	// UpdatePassword updates the user's password.
+	UpdatePassword(userID int64, hashedPassword auth.HashedPassword) error
+
+	// UserID gets the user's id from the email. It returns -1 if user not found.
+	UserID(email string) int64
+
 	// UserInitials gets the user's initials of maximum two characters.
 	UserInitials(userID int64) string
 

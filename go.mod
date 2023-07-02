@@ -3,7 +3,7 @@ module github.com/reaper47/recipya
 go 1.20
 
 require (
-	github.com/Boostport/mjml-go v0.14.2
+	github.com/Boostport/mjml-go v0.14.3
 	github.com/PuerkitoBio/goquery v1.8.1
 	github.com/go-chi/chi/v5 v5.0.8
 	github.com/go-chi/jwtauth/v5 v5.1.0
@@ -11,9 +11,9 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/pressly/goose/v3 v3.11.2
 	github.com/sendgrid/sendgrid-go v3.12.0+incompatible
-	github.com/urfave/cli/v2 v2.25.6
+	github.com/urfave/cli/v2 v2.25.7
 	golang.org/x/crypto v0.10.0
-	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1
+	golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df
 	jaytaylor.com/html2text v0.0.0-20230321000545-74c2419ad056
 	modernc.org/sqlite v1.23.1
 )
@@ -53,7 +53,7 @@ require (
 	modernc.org/cc/v3 v3.41.0 // indirect
 	modernc.org/ccgo/v3 v3.16.14 // indirect
 	modernc.org/libc v1.24.1 // indirect
-	modernc.org/mathutil v1.5.0 // indirect
+	modernc.org/mathutil v1.6.0 // indirect
 	modernc.org/memory v1.6.0 // indirect
 	modernc.org/opt v0.1.3 // indirect
 	modernc.org/strutil v1.1.3 // indirect
