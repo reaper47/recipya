@@ -326,7 +326,7 @@ func (s *SQLiteService) UpdatePassword(userID int64, password auth.HashedPasswor
 	s.Mutex.Lock()
 	defer s.Mutex.Unlock()
 
-	_, err := s.DB.ExecContext(ctx, statements.UpdatePassword, userID, string(password))
+	_, err := s.DB.ExecContext(ctx, statements.UpdatePassword, string(password), userID)
 	return err
 }
 

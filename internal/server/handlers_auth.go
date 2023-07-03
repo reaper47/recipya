@@ -69,7 +69,7 @@ func (s *Server) forgotPasswordPostHandler(w http.ResponseWriter, r *http.Reques
 		s.Email.Send(email, templates.EmailForgotPassword, templates.EmailData{
 			Token:    token,
 			UserName: strings.Split(email, "@")[0],
-			URL:      app.Config.URL,
+			URL:      app.Config.Address(),
 		})
 	}
 
@@ -107,7 +107,6 @@ func (s *Server) forgotPasswordResetPostHandler(w http.ResponseWriter, r *http.R
 		w.Header().Set("HX-Trigger", makeToast("Password is invalid.", errorToast))
 		w.WriteHeader(http.StatusBadRequest)
 		return
-
 	}
 
 	hashPassword, err := auth.HashPassword(password)
@@ -271,7 +270,7 @@ func (s *Server) registerPostHandler(w http.ResponseWriter, r *http.Request) {
 	s.Email.Send(email, templates.EmailIntro, templates.EmailData{
 		Token:    token,
 		UserName: strings.Split(email, "@")[0],
-		URL:      app.Config.URL,
+		URL:      app.Config.Address(),
 	})
 
 	w.Header().Set("HX-Redirect", "/auth/login")

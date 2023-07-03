@@ -24,14 +24,6 @@
         </mj-style>
     </mj-head>
     <mj-body background-color="#E7E7E7" width="600px">
-        <mj-section full-width="full-width" background-color="#040B4F" padding-bottom="0">
-            <mj-column width="100%">
-                <mj-image
-                        src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Heavy_Metal_-_Flickr_-_Gexon.jpg"
-                        width="200px" alt="" padding="0"/>
-            </mj-column>
-        </mj-section>
-
         <mj-wrapper padding-top="0" padding-bottom="0" css-class="body-section">
             <mj-section background-color="#ffffff" padding-left="15px" padding-right="15px">
                 <mj-column width="100%">

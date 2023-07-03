@@ -186,7 +186,7 @@ func TestHandlers_Auth_ForgotPassword(t *testing.T) {
 			`<title hx-swap-oob="true">Reset Password | Recipya</title>`,
 			`<input name="user-id" type="hidden" value="1"/>`,
 			`<input class="w-full rounded-lg bg-gray-100 px-4 py-2" id="password" name="password" placeholder="Enter your new password..." required type="password"/>`,
-			`<input class="w-full rounded-lg bg-gray-100 px-4 py-2" id="password-confirm" name="password-confirm" placeholder="Retype your password..." required type="password" hx-post="/auth/register/validate-password" hx-trigger="keyup changed delay:1s" hx-indicator="#ind"/>`,
+			`<input class="w-full rounded-lg bg-gray-100 px-4 py-2" id="password-confirm" name="password-confirm" placeholder="Retype your password..." required type="password"/>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
