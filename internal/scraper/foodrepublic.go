@@ -41,7 +41,7 @@ func scrapeFoodRepublic(root *goquery.Document) (models.RecipeSchema, error) {
 	datePublished, _ := root.Find("meta[property='article:published_time']").Attr("content")
 
 	yieldStr := content.Find(".recipe-card-servings .recipe-card-amount").Text()
-	yield, _ := strconv.Atoi(yieldStr)
+	yield, _ := strconv.ParseInt(yieldStr, 10, 16)
 
 	return models.RecipeSchema{
 		AtContext:       "https://schema.org",

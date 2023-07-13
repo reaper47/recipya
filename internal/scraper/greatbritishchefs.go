@@ -66,7 +66,7 @@ func scrapeGreatBritishChefs(root *goquery.Document) (models.RecipeSchema, error
 	info := vite.PageContext.PageProps.RecipeInfoObject
 	linkedData := info.LinkedData
 
-	yield, _ := strconv.Atoi(strings.TrimSpace(info.YieldTextOverride))
+	yield, _ := strconv.ParseInt(strings.TrimSpace(info.YieldTextOverride), 10, 16)
 
 	instructions := make([]string, len(linkedData.RecipeInstructions))
 	for i, ins := range linkedData.RecipeInstructions {
