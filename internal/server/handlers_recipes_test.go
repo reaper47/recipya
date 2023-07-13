@@ -162,7 +162,7 @@ func TestHandlers_Recipes_AddManualIngredient(t *testing.T) {
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
 			`<input autofocus type="text" name="ingredient-2" placeholder="Ingredient #2" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" onkeydown="handleKeyDownIngredient(event)">`,
-			`&nbsp;<button type="button" class="w-10 h-10 duration-300 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/2" hx-include="[name^='ingredient']">-</button>`,
+			`&nbsp;<button type="button" class="delete-button w-10 h-10 duration-300 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/2" hx-include="[name^='ingredient']">-</button>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
@@ -192,27 +192,27 @@ func TestHandlers_Recipes_AddManualIngredientDelete(t *testing.T) {
 			name:  "delete last entry",
 			entry: 4,
 			want: []string{
-				`<input type="text" name="ingredient-1" placeholder="Ingredient #1" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="one">`,
-				`<input type="text" name="ingredient-2" placeholder="Ingredient #2" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="two">`,
-				`<input type="text" name="ingredient-3" placeholder="Ingredient #3" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="three">`,
+				`<input type="text" name="ingredient-1" placeholder="Ingredient #1" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="one" onkeydown="handleKeyDownIngredient(event)">`,
+				`<input type="text" name="ingredient-2" placeholder="Ingredient #2" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="two" onkeydown="handleKeyDownIngredient(event)">`,
+				`<input type="text" name="ingredient-3" placeholder="Ingredient #3" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="three" onkeydown="handleKeyDownIngredient(event)">`,
 			},
 		},
 		{
 			name:  "delete first entry",
 			entry: 1,
 			want: []string{
-				`<input type="text" name="ingredient-1" placeholder="Ingredient #1" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="two">`,
-				`<input type="text" name="ingredient-2" placeholder="Ingredient #2" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="three">`,
-				`<input type="text" name="ingredient-3" placeholder="Ingredient #3" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="''">`,
+				`<input type="text" name="ingredient-1" placeholder="Ingredient #1" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="two" onkeydown="handleKeyDownIngredient(event)">`,
+				`<input type="text" name="ingredient-2" placeholder="Ingredient #2" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="three" onkeydown="handleKeyDownIngredient(event)">`,
+				`<input type="text" name="ingredient-3" placeholder="Ingredient #3" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="''" onkeydown="handleKeyDownIngredient(event)">`,
 			},
 		},
 		{
 			name:  "delete middle entry",
 			entry: 3,
 			want: []string{
-				`<input type="text" name="ingredient-1" placeholder="Ingredient #1" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="one">`,
-				`<input type="text" name="ingredient-2" placeholder="Ingredient #2" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="two">`,
-				`<input type="text" name="ingredient-3" placeholder="Ingredient #3" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="''">`,
+				`<input type="text" name="ingredient-1" placeholder="Ingredient #1" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="one" onkeydown="handleKeyDownIngredient(event)"><`,
+				`<input type="text" name="ingredient-2" placeholder="Ingredient #2" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="two" onkeydown="handleKeyDownIngredient(event)">`,
+				`<input type="text" name="ingredient-3" placeholder="Ingredient #3" required class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400" value="''" onkeydown="handleKeyDownIngredient(event)">`,
 			},
 		},
 	}
@@ -222,9 +222,9 @@ func TestHandlers_Recipes_AddManualIngredientDelete(t *testing.T) {
 
 			assertStatus(t, rr.Code, http.StatusOK)
 			want := append(tc.want, []string{
-				`&nbsp;<button type="button" class="w-10 h-10 duration-300 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/1" hx-include="[name^='ingredient']">-</button>`,
-				`&nbsp;<button type="button" class="w-10 h-10 duration-300 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/2" hx-include="[name^='ingredient']">-</button>`,
-				`&nbsp;<button type="button" class="w-10 h-10 duration-300 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/3" hx-include="[name^='ingredient']">-</button>`,
+				`&nbsp;<button type="button" class="delete-button w-10 h-10 duration-300 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/1" hx-include="[name^='ingredient']">-</button>`,
+				`&nbsp;<button type="button" class="delete-button w-10 h-10 duration-300 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/2" hx-include="[name^='ingredient']">-</button>`,
+				`&nbsp;<button type="button" class="delete-button w-10 h-10 duration-300 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/3" hx-include="[name^='ingredient']">-</button>`,
 			}...)
 			assertStringsInHTML(t, getBodyHTML(rr), want)
 		})
@@ -252,7 +252,7 @@ func TestHandlers_Recipes_AddManualInstruction(t *testing.T) {
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
 			`<textarea autofocus required name="instruction-2" rows="3" class="w-9/12 border border-gray-300 md:w-5/6 xl:w-11/12" placeholder="Instruction #2" onkeydown="handleKeyDownInstruction(event)"></textarea>`,
-			`<button type="button" class="mt-4 md:flex-initial w-10 h-10 right-0.5 md:w-7 md:h-7 md:right-auto duration-300 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/2" hx-include="[name^='instruction']">-</button>`,
+			`<button type="button" class="delete-button mt-4 md:flex-initial w-10 h-10 right-0.5 md:w-7 md:h-7 md:right-auto duration-300 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/2" hx-include="[name^='instruction']">-</button>`,
 			`<button type="button" class="md:flex-initial bottom-0 right-0.5 md:w-7 md:h-7 md:right-auto w-10 h-10 text-center duration-300 bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center" title="Shortcut: CTRL + Enter" hx-post="/recipes/add/manual/instruction" hx-target="#instructions-list" hx-swap="beforeend" hx-include="[name^='instruction']">+</button>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)

@@ -346,7 +346,7 @@
                             +
                         </button>
                         <button type="button"
-                                class="w-10 h-10 duration-300 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center"
+                                class="delete-button w-10 h-10 duration-300 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center"
                                 hx-target="#ingredients-list"
                                 hx-post="/recipes/add/manual/ingredient/1"
                                 hx-include="[name^='ingredient']">
@@ -380,7 +380,7 @@
                         </label>
                         <div class="inline-flex flex-col-reverse">
                             <button type="button"
-                                    class="mt-4 md:flex-initial w-10 h-10 right-0.5 md:w-7 md:h-7 md:right-auto duration-300 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center"
+                                    class="delete-button mt-4 md:flex-initial w-10 h-10 right-0.5 md:w-7 md:h-7 md:right-auto duration-300 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center"
                                     hx-target="#instructions-list"
                                     hx-post="/recipes/add/manual/instruction/1"
                                     hx-include="[name^='instruction']">
@@ -418,20 +418,26 @@
     <script src="https://cdn.jsdelivr.net/npm/html-duration-picker@latest/dist/html-duration-picker.min.js"></script>
     <script defer>
         htmx.onLoad(function () {
-            const list = document.querySelector('#ingredients-list');
-            new Sortable.create(list, {
-                handle: '.handle',
-                onEnd: function () {
-                    Array.from(document.querySelectorAll("#ingredients-list input[name^='ingredient']")).forEach((d, i) => {
-                        const n = i + 1;
-                        d.name = `ingredient-${n}`;
-                        d.placeholder = `Ingredient #${n}`;
+            const inputs = [
+                {name: 'ingredient', type: 'input'},
+                {name: 'instruction', type: 'textarea'},
+            ];
+            inputs.forEach(({name, type}) => {
+                const list = document.querySelector(`#${name}s-list`);
+                new Sortable.create(list, {
+                    handle: '.handle',
+                    onEnd: function () {
+                        Array.from(document.querySelectorAll(`${type}[name^='${name}']`)).forEach((d, i) => {
+                            const n = i + 1;
+                            d.name = `${name}-${n}`;
+                            d.placeholder = `${name.substring(0,1).toUpperCase()+ name.substring(1)} #${n}`;
 
-                        const deleteButton = d.parentElement.nextElementSibling.nextElementSibling;
-                        deleteButton.setAttribute('hx-post', `/recipes/add/manual/ingredient/${n}`);
-                        htmx.process(deleteButton);
-                    });
-                }
+                            const deleteButton = d.parentElement.parentElement.querySelector(".delete-button");
+                            deleteButton.setAttribute('hx-post', `/recipes/add/manual/${name}/${n}`);
+                            htmx.process(deleteButton);
+                        });
+                    }
+                });
             });
         });
 
