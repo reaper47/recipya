@@ -5,10 +5,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/models"
+	"golang.org/x/exp/slices"
 	"io"
 	"log"
 	"mime/multipart"
+	"os"
 	"path/filepath"
 	"strings"
 	"sync"
@@ -67,21 +70,65 @@ func processZip(file *multipart.FileHeader) models.Recipes {
 		return recipes
 	}
 
+	var (
+		isDir        bool
+		imageUUID    uuid.UUID
+		recipeNumber int
+	)
+
 	for _, file := range z.File {
+		if isDir = file.FileInfo().IsDir(); isDir && imageUUID != uuid.Nil {
+			recipes[recipeNumber-1].Image = imageUUID
+			imageUUID = uuid.Nil
+		}
+
+		validImageFormats := []string{".jpg", ".jpeg", ".png"}
+		if imageUUID == uuid.Nil && slices.Contains(validImageFormats, filepath.Ext(file.Name)) {
+			f, err := file.Open()
+			if err != nil {
+				continue
+			}
+
+			if file.FileInfo().Size() < 1<<12 {
+				f.Close()
+				continue
+			}
+
+			exe, err := os.Executable()
+			if err != nil {
+				continue
+			}
+
+			imageUUID = uuid.New()
+
+			var out *os.File
+			if out, err = os.Create(filepath.Join(filepath.Dir(exe), "data", "images", imageUUID.String()+".jpg")); err != nil {
+				f.Close()
+				continue
+			}
+
+			io.Copy(out, f)
+			out.Close()
+			f.Close()
+		}
+
 		if filepath.Ext(file.Name) == ".json" {
 			f, err := file.Open()
 			if err != nil {
 				log.Println(err)
-				_ = f.Close()
 				continue
 			}
 
 			r, err := extractRecipe(f)
 			if err != nil {
-				log.Println(err)
+				log.Printf("could not extract %s: %q", file.Name, err.Error())
+				f.Close()
+				continue
 			}
-			f.Close()
+
 			recipes = append(recipes, *r)
+			recipeNumber++
+			f.Close()
 		}
 	}
 	return recipes
@@ -90,14 +137,14 @@ func processZip(file *multipart.FileHeader) models.Recipes {
 func processJSON(file *multipart.FileHeader) *models.Recipe {
 	f, err := file.Open()
 	if err != nil {
-		log.Printf("error opening file %s: %s", file.Filename, err.Error())
+		log.Printf("error opening file %s: %q", file.Filename, err.Error())
 		return nil
 	}
 	defer f.Close()
 
 	r, err := extractRecipe(f)
 	if err != nil {
-		log.Printf("could not extract '%s': %s", file.Filename, err.Error())
+		log.Printf("could not extract %s: %q", file.Filename, err.Error())
 		return nil
 	}
 	return r
@@ -113,12 +160,12 @@ func extractRecipe(rd io.Reader) (*models.Recipe, error) {
 	var rs models.RecipeSchema
 
 	if err = json.Unmarshal(buf, &rs); err != nil {
-		return nil, fmt.Errorf("extract recipe: %s", err)
+		return nil, fmt.Errorf("extract recipe: %q", err)
 	}
 
 	r, err := rs.Recipe()
 	if err != nil {
-		return nil, fmt.Errorf("rs.Recipe() err: %s", err)
+		return nil, fmt.Errorf("rs.Recipe() err: %q", err)
 	}
 	return r, err
 }
