@@ -40,7 +40,7 @@ func scrapeRezeptwelt(root *goquery.Document) (models.RecipeSchema, error) {
 	yield := findYield(root.Find("span[itemprop='recipeYield']").Text())
 
 	return models.RecipeSchema{
-		AtContext:     "https://schema.org",
+		AtContext:     atContext,
 		AtType:        models.SchemaType{Value: "Recipe"},
 		Name:          name,
 		Category:      models.Category{Value: category},

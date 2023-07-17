@@ -54,7 +54,7 @@ func scrapeValdemarsro(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	return models.RecipeSchema{
-		AtContext:     "https://schema.org",
+		AtContext:     atContext,
 		AtType:        models.SchemaType{Value: "Recipe"},
 		Name:          name,
 		CookTime:      cookTime,

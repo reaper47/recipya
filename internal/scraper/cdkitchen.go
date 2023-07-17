@@ -51,7 +51,7 @@ func scrapeCdKitchen(root *goquery.Document) (rs models.RecipeSchema, err error)
 	cookTime, _ := content.Find("meta[itemprop='cookTime']").Attr("content")
 
 	return models.RecipeSchema{
-		AtContext:       "https://schema.org",
+		AtContext:       atContext,
 		AtType:          models.SchemaType{Value: "Recipe"},
 		Category:        models.Category{Value: category},
 		Name:            content.Find("h1[itemprop='name']").Text(),

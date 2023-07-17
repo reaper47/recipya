@@ -33,7 +33,7 @@ func scrapeKwestiasmaku(root *goquery.Document) (models.RecipeSchema, error) {
 	yield := findYield(root.Find(".field-name-field-ilosc-porcji").Text())
 
 	return models.RecipeSchema{
-		AtContext:     "https://schema.org",
+		AtContext:     atContext,
 		AtType:        models.SchemaType{Value: "Recipe"},
 		Image:         models.Image{Value: image},
 		DatePublished: datePublished,

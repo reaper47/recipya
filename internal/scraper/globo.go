@@ -73,7 +73,7 @@ func scrapeGlobo(root *goquery.Document) (rs models.RecipeSchema, err error) {
 	cuisine, _ := root.Find("meta[itemprop='recipeCuisine']").Attr("content")
 
 	return models.RecipeSchema{
-		AtContext:     "https://schema.org",
+		AtContext:     atContext,
 		AtType:        models.SchemaType{Value: "Recipe"},
 		Name:          name,
 		Image:         models.Image{Value: image},

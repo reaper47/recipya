@@ -44,7 +44,7 @@ func scrapeFoodRepublic(root *goquery.Document) (models.RecipeSchema, error) {
 	yield, _ := strconv.ParseInt(yieldStr, 10, 16)
 
 	return models.RecipeSchema{
-		AtContext:       "https://schema.org",
+		AtContext:       atContext,
 		AtType:          models.SchemaType{Value: "Recipe"},
 		CookTime:        cookTime,
 		DateModified:    dateModified,

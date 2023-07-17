@@ -34,7 +34,7 @@ func scrapeNutritionByNathalie(root *goquery.Document) (models.RecipeSchema, err
 	})
 
 	return models.RecipeSchema{
-		AtContext:     "https://schema.org",
+		AtContext:     atContext,
 		AtType:        models.SchemaType{Value: "Recipe"},
 		DatePublished: datePublished,
 		DateModified:  dateModified,

@@ -40,7 +40,7 @@ func scrapeMyPlate(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	return models.RecipeSchema{
-		AtContext:    "https://schema.org",
+		AtContext:    atContext,
 		AtType:       models.SchemaType{Value: "Recipe"},
 		CookTime:     cookTime,
 		Description:  models.Description{Value: description},

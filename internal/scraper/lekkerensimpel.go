@@ -40,7 +40,7 @@ func scrapeLekkerenSimpel(root *goquery.Document) (models.RecipeSchema, error) {
 	name := root.Find(".hero__title").Text()
 
 	return models.RecipeSchema{
-		AtContext:     "https://schema.org",
+		AtContext:     atContext,
 		AtType:        models.SchemaType{Value: "Recipe"},
 		DatePublished: datePublished,
 		DateModified:  dateModified,

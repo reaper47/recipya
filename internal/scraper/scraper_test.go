@@ -23,7 +23,7 @@ func TestScraper(t *testing.T) {
 			name: "abril.com",
 			in:   "https://claudia.abril.com.br/receitas/estrogonofe-de-carne/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Carne"},
 				CookTime:      "PT30M",
@@ -83,7 +83,7 @@ func TestScraper(t *testing.T) {
 			name: "acouplecooks.com",
 			in:   "https://www.acouplecooks.com/shaved-brussels-sprouts/",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Name:      "Easy Shaved Brussels Sprouts",
 				Description: models.Description{
@@ -221,7 +221,7 @@ func TestScraper(t *testing.T) {
 			name: "allrecipes.com",
 			in:   "https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Dessert"},
 				CookTime:      "PT10M",
@@ -285,7 +285,7 @@ func TestScraper(t *testing.T) {
 			name: "amazingribs.com",
 			in:   "https://amazingribs.com/tested-recipes-chicken-recipes-crispy-grilled-buffalo-wings-recipe/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Appetizer"},
 				CookTime:      "PT30M",
@@ -362,7 +362,7 @@ func TestScraper(t *testing.T) {
 			name: "ambitiouskitchen.com",
 			in:   "https://www.ambitiouskitchen.com/lemon-garlic-salmon/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Dinner"},
 				CookTime:      "PT18M",
@@ -418,7 +418,7 @@ func TestScraper(t *testing.T) {
 			name: "archanaskitchen.com",
 			in:   "https://www.archanaskitchen.com/karnataka-style-orange-peels-curry-recipe",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Name:          "Karnataka Style Orange Peels Curry Recipe",
 				Cuisine:       models.Cuisine{Value: "Karnataka"},
@@ -483,7 +483,7 @@ func TestScraper(t *testing.T) {
 			name: "atelierdeschefs.fr",
 			in:   "https://www.atelierdeschefs.fr/fr/recette/17741-boeuf-bourguignon-traditionnel.php",
 			want: models.RecipeSchema{
-				AtContext:   "https://schema.org",
+				AtContext:   atContext,
 				AtType:      models.SchemaType{Value: "Recipe"},
 				Category:    models.Category{Value: "Plats"},
 				Name:        "Bœuf bourguignon traditionnel",
@@ -526,7 +526,7 @@ func TestScraper(t *testing.T) {
 			name: "averiecooks.com",
 			in:   "https://www.averiecooks.com/slow-cooker-beef-stroganoff/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Slow Cooker"},
 				CookTime:      "PT8H",
@@ -608,7 +608,7 @@ func TestScraper(t *testing.T) {
 			name: "bakingmischief.com",
 			in:   "https://bakingmischief.com/italian-roasted-potatoes/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Side"},
 				CookTime:      "PT40M",
@@ -654,7 +654,7 @@ func TestScraper(t *testing.T) {
 			name: "baking-sense.com",
 			in:   "https://www.baking-sense.com/2022/02/23/irish-potato-farls/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Breakfast"},
 				CookTime:      "PT10M",
@@ -718,7 +718,7 @@ func TestScraper(t *testing.T) {
 			name: "bbc.co.uk",
 			in:   "https://www.bbc.co.uk/food/recipes/healthy_sausage_16132",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Category:  models.Category{Value: "Main course"},
 				CookTime:  "PT2H",
@@ -780,7 +780,7 @@ func TestScraper(t *testing.T) {
 			name: "bbcgoodfood.com",
 			in:   "https://www.bbcgoodfood.com/recipes/three-cheese-risotto",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Dinner, Main course, Side dish, Supper"},
 				CookTime:      "PT35M",
@@ -837,7 +837,7 @@ func TestScraper(t *testing.T) {
 			name: "bettycrocker.com",
 			in:   "https://www.bettycrocker.com/recipes/spinach-mushroom-quiche/ed3014db-7810-41d6-8e1c-cd4eed7b1db3",
 			want: models.RecipeSchema{
-				AtContext:   "https://schema.org",
+				AtContext:   atContext,
 				AtType:      models.SchemaType{Value: "Recipe"},
 				Category:    models.Category{Value: "Breakfast"},
 				Cuisine:     models.Cuisine{Value: "French"},
@@ -904,7 +904,7 @@ func TestScraper(t *testing.T) {
 			name: "bigoven.com",
 			in:   "https://www.bigoven.com/recipe/vegetable-tempura-japanese/19344",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Main Dish"},
 				CookTime:      "PT30M",
@@ -962,7 +962,7 @@ func TestScraper(t *testing.T) {
 			name: "bonappetit.com",
 			in:   "https://www.bonappetit.com/recipe/crispy-chicken-with-zaatar-olive-rice",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				DateModified:  "2022-03-15T05:00:00.000-04:00",
 				DatePublished: "2022-03-15T05:00:00.000-04:00",
@@ -1017,7 +1017,7 @@ func TestScraper(t *testing.T) {
 			name: "bowlofdelicious.com",
 			in:   "https://www.bowlofdelicious.com/mini-meatloaves/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Dinner"},
 				CookTime:      "PT25M",
@@ -1084,7 +1084,7 @@ func TestScraper(t *testing.T) {
 			name: "budgetbytes.com",
 			in:   "https://www.budgetbytes.com/easy-vegetable-stir-fry/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Dinner"},
 				CookTime:      "PT10M",
@@ -1157,7 +1157,7 @@ func TestScraper(t *testing.T) {
 			name: "castironketo.com",
 			in:   "https://www.castironketo.net/blog/balsamic-mushrooms-with-herbed-veggie-mash/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Main Course"},
 				CookTime:      "PT30M",
@@ -1226,7 +1226,7 @@ func TestScraper(t *testing.T) {
 			name: "cdkitchen.com",
 			in:   "https://www.cdkitchen.com/recipes/recs/285/MerleHaggardsRainbowStew65112.shtml",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Name:      "Merle Haggard's Rainbow Stew",
 				Description: models.Description{
@@ -1289,7 +1289,7 @@ func TestScraper(t *testing.T) {
 			name: "chefkoch.de",
 			in:   "https://www.chefkoch.de/rezepte/1064631211795001/Knusprige-Ofenkartoffeln.html",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Raffiniert & preiswert"},
 				CookTime:      "P0DT0H40M",
@@ -1352,7 +1352,7 @@ func TestScraper(t *testing.T) {
 			name: "comidinhasdochef.com",
 			in:   "https://comidinhasdochef.com/pudim-no-copinho-para-festa/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Sobremesa"},
 				CookTime:      "PT5M",
@@ -1421,7 +1421,7 @@ func TestScraper(t *testing.T) {
 			name: "cookeatshare.com",
 			in:   "https://cookeatshare.com/recipes/balinese-bbq-pork-roast-babi-guling-81003",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Kid Friendly"},
 				CookTime:      "PT120M",
@@ -1506,7 +1506,7 @@ func TestScraper(t *testing.T) {
 			name: "cookieandkate.com",
 			in:   "https://cookieandkate.com/honey-butter-cornbread-recipe/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Baked goods"},
 				CookTime:      "PT35M",
@@ -1579,7 +1579,7 @@ func TestScraper(t *testing.T) {
 			name: "copykat.com",
 			in:   "https://copykat.com/mcdonalds-egg-mcmuffin",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Breakfast"},
 				CookTime:      "PT5M",
@@ -1643,7 +1643,7 @@ func TestScraper(t *testing.T) {
 			name: "countryliving.com",
 			in:   "https://www.countryliving.com/food-drinks/a39298988/braised-turkey-wings-recipe/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Sunday lunch"},
 				CookTime:      "PT0S",
@@ -1700,7 +1700,7 @@ func TestScraper(t *testing.T) {
 			name: "cuisineaz.com",
 			in:   "https://www.cuisineaz.com/recettes/champignons-farcis-au-fromage-brie-87449.aspx",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Legumes Farcis"},
 				CookTime:      "PT15M",
@@ -1750,7 +1750,7 @@ func TestScraper(t *testing.T) {
 			in: "https://cybercook.com.br/receitas/peixes-e-frutos-do-mar/receita-de-file-de-tilapia-com-batatas-82273?" +
 				"receita-do-dia",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Category:  models.Category{Value: "Peixes e Frutos do Mar"},
 				CookTime:  "PT1H",
@@ -1796,7 +1796,7 @@ func TestScraper(t *testing.T) {
 			name: "delish.com",
 			in:   "https://www.delish.com/cooking/recipe-ideas/a24489879/beef-and-broccoli-recipe/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "weeknight meals"},
 				CookTime:      "PT0S",
@@ -1866,7 +1866,7 @@ func TestScraper(t *testing.T) {
 			name: "ditchthecarbs.com",
 			in:   "https://www.ditchthecarbs.com/how-to-make-keto-samosa-air-fryer-oven/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Appetiser"},
 				CookTime:      "PT10M",
@@ -1947,7 +1947,7 @@ func TestScraper(t *testing.T) {
 			name: "domesticate-me.com",
 			in:   "https://domesticate-me.com/10-summer-cocktail-recipes/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Drinks"},
 				DatePublished: "2021-05-28T16:11:33+00:00",
@@ -1988,7 +1988,7 @@ func TestScraper(t *testing.T) {
 			name: "downshiftology.com",
 			in:   "https://downshiftology.com/recipes/baked-chicken-breasts/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Main Course"},
 				CookTime:      "PT20M",
@@ -2049,7 +2049,7 @@ func TestScraper(t *testing.T) {
 			name: "dr.dk",
 			in:   "https://www.dr.dk/mad/opskrift/nytarskage-med-champagne-kransekagebund-solbaer-og-chokoladepynt",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Name:          "Nytårskage med champagne, kransekagebund, solbær og chokoladepynt",
 				DatePublished: "2022-01-01T21:00:00+00:00",
@@ -2181,7 +2181,7 @@ func TestScraper(t *testing.T) {
 			name: "eatingbirdfood.com",
 			in:   "https://www.eatingbirdfood.com/cinnamon-rolls/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Breakast"},
 				CookTime:      "PT25M",
@@ -2271,7 +2271,7 @@ func TestScraper(t *testing.T) {
 			name: "eatingwell.com",
 			in:   "https://www.eatingwell.com/recipe/7887715/lemon-chicken-piccata/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Cuisine:       models.Cuisine{Value: ""},
 				DateModified:  "2021-02-04T15:20:10.000-05:00",
@@ -2326,7 +2326,7 @@ func TestScraper(t *testing.T) {
 			name: "eatsmarter.com",
 			in:   "https://eatsmarter.com/recipes/vietnamese-chicken-cabbage-salad",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Lunch"},
 				Cuisine:       models.Cuisine{Value: "Asian, Vietnamese"},
@@ -2374,7 +2374,7 @@ func TestScraper(t *testing.T) {
 			name: "eatwhattonight.com",
 			in:   "https://eatwhattonight.com/2021/11/diced-chicken-with-spicy-chilies-%e8%be%a3%e5%ad%90%e9%b8%a1%e4%b8%81/#wpzoom-recipe-card",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Sides"},
 				CookTime:      "PT20M",
@@ -2427,7 +2427,7 @@ func TestScraper(t *testing.T) {
 			name: "epicurious.com",
 			in:   "https://www.epicurious.com/recipes/food/views/olive-oil-cake",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				DateModified:  "2017-11-01T10:56:00.000-04:00",
 				DatePublished: "2017-11-01T10:56:00.000-04:00",
@@ -2495,7 +2495,7 @@ func TestScraper(t *testing.T) {
 			name: "expressen.se",
 			in:   "https://alltommat.expressen.se/recept/saftiga-choklad--och-apelsinbullar/",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Name:      "Saftiga choklad- och apelsinbullar",
 				Description: models.Description{
@@ -2560,7 +2560,7 @@ func TestScraper(t *testing.T) {
 			name: "fifteenspatulas.com",
 			in:   "https://www.fifteenspatulas.com/guacamole/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Appetizer"},
 				Cuisine:       models.Cuisine{Value: "Mexican"},
@@ -2693,7 +2693,7 @@ func TestScraper(t *testing.T) {
 			name: "fitmencook.com",
 			in:   "https://fitmencook.com/rosemary-blue-cheese-turkey-sliders/",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				CookTime:  "PT20M",
 				Keywords:  models.Keywords{Values: "meal prep,meat,turkey"},
@@ -2757,7 +2757,7 @@ func TestScraper(t *testing.T) {
 			name: "food.com",
 			in:   "https://www.food.com/recipe/jim-lahey-s-no-knead-pizza-margherita-382696",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Lunch/Snacks"},
 				CookTime:      "PT6M",
@@ -2834,7 +2834,7 @@ func TestScraper(t *testing.T) {
 			name: "food52.com",
 			in:   "https://food52.com/recipes/7930-orecchiette-with-roasted-butternut-squash-kale-and-caramelized-red-onion",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Appetizer"},
 				CookTime:      "PT1H0M",
@@ -2903,7 +2903,7 @@ func TestScraper(t *testing.T) {
 			name: "foodandwine.com",
 			in:   "https://www.foodandwine.com/recipes/garlic-salmon-with-sheet-pan-potatoes",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Dinner"},
 				DateModified:  "2022-03-25T10:20:00.000-04:00",
@@ -2956,7 +2956,7 @@ func TestScraper(t *testing.T) {
 			name: "foodrepublic.com",
 			in:   "https://www.foodrepublic.com/recipes/hand-cut-burger/",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Name:      "How To Cook A Hand-Cut Burger",
 				CookTime:  "PT0M",
@@ -2999,7 +2999,7 @@ func TestScraper(t *testing.T) {
 			name: "forksoverknives.com",
 			in:   "https://www.forksoverknives.com/recipes/vegan-snacks-appetizers/crispy-buffalo-cauliflower-bites/",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Category: models.Category{
 					Value: "Appetizers",
@@ -3054,7 +3054,7 @@ func TestScraper(t *testing.T) {
 			name: "franzoesischkochen.de",
 			in:   "https://www.franzoesischkochen.de/navettes-aus-marseille/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Alte französische Rezepte"},
 				CookTime:      "PT30M",
@@ -3095,7 +3095,7 @@ func TestScraper(t *testing.T) {
 			name: "giallozafferano.com",
 			in:   "https://www.giallozafferano.com/recipes/Christmas-spice-cookies.html",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Sweets and desserts"},
 				CookTime:      "PT15M",
@@ -3153,7 +3153,7 @@ func TestScraper(t *testing.T) {
 			name: "gimmesomeoven.com",
 			in:   "https://www.gimmesomeoven.com/miso-chocolate-peanut-butter-cornflake-bars-gimme-some-oven/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				DatePublished: "2022-02-18",
 				Description: models.Description{
@@ -3202,7 +3202,7 @@ func TestScraper(t *testing.T) {
 			name: "globo.com",
 			in:   "https://receitas.globo.com/cheesecake-com-geleia-de-frutas-vermelhas-do-bbb-22.ghtml",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Tortas e bolos"},
 				CookingMethod: models.CookingMethod{Value: "Americana"},
@@ -3263,7 +3263,7 @@ func TestScraper(t *testing.T) {
 			name: "gonnawantseconds.com",
 			in:   "https://www.gonnawantseconds.com/beef-tomato-macaroni-soup/#wprm-recipe-container-15941",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Soup"},
 				CookTime:      "PT30M",
@@ -3335,7 +3335,7 @@ func TestScraper(t *testing.T) {
 			name: "greatbritishchefs.com",
 			in:   "https://www.greatbritishchefs.com/recipes/babecued-miso-poussin-recipe",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				DatePublished: "2017-03-30T00:00:00Z",
 				DateModified:  "2021-07-16T15:18:02.087Z",
@@ -3412,7 +3412,7 @@ func TestScraper(t *testing.T) {
 			name: "halfbakedharvest.com",
 			in:   "https://www.halfbakedharvest.com/louisiana-style-chicken-and-rice/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Main Course"},
 				CookTime:      "PT50M",
@@ -3469,7 +3469,7 @@ func TestScraper(t *testing.T) {
 			name: "hassanchef.com",
 			in:   "https://www.hassanchef.com/2022/10/dragon-chicken.html",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "appetizer"},
 				CookTime:      "PT10M",
@@ -3534,7 +3534,7 @@ func TestScraper(t *testing.T) {
 			name: "headbangerskitchen.com",
 			in:   "https://headbangerskitchen.com/recipe/keto-chicken-adobo/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Main Dish"},
 				CookTime:      "PT25M",
@@ -3590,7 +3590,7 @@ func TestScraper(t *testing.T) {
 			name: "hellofresh.com",
 			in:   "https://www.hellofresh.com/recipes/creamy-shrimp-tagliatelle-5a8f0fcbae08b52f161b5832",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "main course"},
 				Cuisine:       models.Cuisine{Value: "American"},
@@ -3660,7 +3660,7 @@ func TestScraper(t *testing.T) {
 			name: "homechef.com",
 			in:   "https://www.homechef.com/meals/farmhouse-fried-chicken",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Image: models.Image{
 					Value: "https://homechef.imgix.net/https%3A%2F%2Fasset.homechef.com%2Fuploads%2Fmeal%2Fplated%2F2504%2F2504" +
@@ -3728,7 +3728,7 @@ func TestScraper(t *testing.T) {
 			name: "hostthetoast.com",
 			in:   "https://hostthetoast.com/guinness-beef-stew-with-cheddar-herb-dumplings/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				CookTime:      "PT3H",
 				DatePublished: "2014-03-18",
@@ -3799,7 +3799,7 @@ func TestScraper(t *testing.T) {
 			name: "indianhealthyrecipes.com",
 			in:   "https://www.indianhealthyrecipes.com/mango-rice-mamidikaya-pulihora/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Main"},
 				CookTime:      "PT25M",
@@ -3872,7 +3872,7 @@ func TestScraper(t *testing.T) {
 			name: "innit.com",
 			in:   "https://www.innit.com/meal/504/8008/Salad%3A%20Coconut-Pineapple-Salad",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Salads and Sides"},
 				CookTime:      "PT7M",
@@ -3926,7 +3926,7 @@ func TestScraper(t *testing.T) {
 			name: "inspiralized.com",
 			in:   "https://inspiralized.com/vegetarian-zucchini-noodle-pad-thai/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				CookTime:      "PT15M",
 				DatePublished: "2014-05-05T12:00:03+00:00",
@@ -3981,7 +3981,7 @@ func TestScraper(t *testing.T) {
 			name: "jamieoliver.html.com",
 			in:   "https://www.jamieoliver.com/recipes/chicken-recipes/thai-green-chicken-curry/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Mains"},
 				Cuisine:       models.Cuisine{Value: "https://schema.org/LowLactoseDiet"},
@@ -4057,7 +4057,7 @@ func TestScraper(t *testing.T) {
 			name: "jimcooksfoodgood.com",
 			in:   "https://jimcooksfoodgood.com/recipe-weeknight-pad-thai/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Main Dish"},
 				CookTime:      "PT15M",
@@ -4116,7 +4116,7 @@ func TestScraper(t *testing.T) {
 			name: "joyfoodsunshine.com",
 			in:   "https://joyfoodsunshine.com/peanut-butter-frosting/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "condiment"},
 				Cuisine:       models.Cuisine{Value: "American"},
@@ -4178,7 +4178,7 @@ func TestScraper(t *testing.T) {
 			name: "justataste.com",
 			in:   "https://www.justataste.com/mini-sour-cream-doughnut-muffins-recipe/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Breakfast"},
 				CookTime:      "PT16M",
@@ -4253,7 +4253,7 @@ func TestScraper(t *testing.T) {
 			name: "justonecookbook.com",
 			in:   "https://www.justonecookbook.com/teriyaki-tofu-bowl/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Main Course"},
 				CookTime:      "PT25M",
@@ -4343,7 +4343,7 @@ func TestScraper(t *testing.T) {
 			name: "kennymcgovern.com",
 			in:   "https://kennymcgovern.com/chicken-noodle-soup",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Soup"},
 				CookTime:      "PT5M",
@@ -4386,7 +4386,7 @@ func TestScraper(t *testing.T) {
 			name: "kingarthurbaking.com",
 			in:   "https://www.kingarthurbaking.com/recipes/sourdough-zucchini-bread-recipe",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: ""},
 				CookTime:      "PT1H5M",
@@ -4456,7 +4456,7 @@ func TestScraper(t *testing.T) {
 			name: "kochbar.de",
 			in:   "https://www.kochbar.de/rezept/465773/Spargelsalat-Fruchtig.html",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Hauptspeise"},
 				Cuisine:       models.Cuisine{Value: "Internationale Küche"},
@@ -4509,7 +4509,7 @@ func TestScraper(t *testing.T) {
 			name: "koket.se",
 			in:   "https://www.koket.se/mitt-kok/tommy-myllymaki/myllymakis-toast-skagen",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Description: models.Description{
 					Value: "Toast skagen är en klassisk förrätt på årets festdag - nyårsafton. Tommys variant görs med hemslagen " +
@@ -4557,7 +4557,7 @@ func TestScraper(t *testing.T) {
 			name: "kuchnia-domowa.pl",
 			in:   "https://www.kuchnia-domowa.pl/przepisy/dodatki-do-dan/548-mizeria",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Category:  models.Category{Value: "Dodatki do dań"},
 				Cuisine:   models.Cuisine{Value: "Polska"},
@@ -4599,7 +4599,7 @@ func TestScraper(t *testing.T) {
 			name: "kwestiasmaku.com",
 			in:   "https://www.kwestiasmaku.com/przepis/muffiny-czekoladowe-z-maslem-orzechowym",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				DateModified:  "2022-11-05T09:43:22+01:00",
 				DatePublished: "2022-03-24T19:55:17+01:00",
@@ -4658,7 +4658,7 @@ func TestScraper(t *testing.T) {
 			name: "lecremedelacrumb.com",
 			in:   "https://www.lecremedelacrumb.com/instant-pot-pot-roast-potatoes/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Main Course"},
 				CookTime:      "PT80M",
@@ -4735,7 +4735,7 @@ func TestScraper(t *testing.T) {
 			name: "lekkerensimpel.com",
 			in:   "https://www.lekkerensimpel.com/gougeres/",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Name:      "Gougères",
 				Category:  models.Category{Value: "Snacks"},
@@ -4788,7 +4788,7 @@ func TestScraper(t *testing.T) {
 			name: "littlespicejar.com",
 			in:   "https://littlespicejar.com/starbucks-pumpkin-loaf/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Bread & Baking"},
 				CookTime:      "PT55M",
@@ -4846,7 +4846,7 @@ func TestScraper(t *testing.T) {
 			name: "livelytable.com",
 			in:   "https://livelytable.com/bbq-ribs-on-the-charcoal-grill/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "main dish"},
 				CookTime:      "PT2H30M",
@@ -4912,7 +4912,7 @@ func TestScraper(t *testing.T) {
 			name: "lovingitvegan.com",
 			in:   "https://lovingitvegan.com/vegan-buffalo-chicken-dip/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Appetizer"},
 				CookTime:      "PT20M",
@@ -4979,7 +4979,7 @@ func TestScraper(t *testing.T) {
 			name: "madensverden.dk",
 			in:   "https://madensverden.dk/durumboller-nemme-italienske-boller-med-durum-mel/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Brød"},
 				CookTime:      "PT12M",
@@ -5034,7 +5034,7 @@ func TestScraper(t *testing.T) {
 			name: "marthastewart.com",
 			in:   "https://www.marthastewart.com/1539828/lemon-glazed-sheet-cake",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				DateModified:  "2020-11-17T14:30:47.000-05:00",
 				DatePublished: "2019-05-13T17:09:07.000-04:00",
@@ -5092,7 +5092,7 @@ func TestScraper(t *testing.T) {
 			name: "matprat.no",
 			in:   "https://www.matprat.no/oppskrifter/tradisjon/vafler/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Dessert"},
 				Cuisine:       models.Cuisine{Value: "Europa"},
@@ -5133,7 +5133,7 @@ func TestScraper(t *testing.T) {
 			name: "melskitchencafe.com",
 			in:   "https://www.melskitchencafe.com/grilled-rosemary-ranch-chicken/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				CookTime:      "PT12M",
 				DatePublished: "2021-08-23T04:00:00+00:00",
@@ -5185,7 +5185,7 @@ func TestScraper(t *testing.T) {
 			name: "mindmegette.hu",
 			in:   "https://www.mindmegette.hu/karamellas-lavasuti.recept/",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Category:  models.Category{Value: "Aprósütemény"},
 				CookTime:  "PT1H",
@@ -5229,7 +5229,7 @@ func TestScraper(t *testing.T) {
 			name: "minimalistbaker.com",
 			in:   "https://minimalistbaker.com/adaptogenic-hot-chocolate-mix/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Beverage"},
 				Cuisine:       models.Cuisine{Value: "Dairy-Free"},
@@ -5300,7 +5300,7 @@ func TestScraper(t *testing.T) {
 			name: "misya.info",
 			in:   "https://www.misya.info/ricetta/grigliata-di-carne.htm",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Secondi di carne"},
 				CookTime:      "PT25M",
@@ -5364,7 +5364,7 @@ func TestScraper(t *testing.T) {
 			name: "momswithcrockpots.com",
 			in:   "https://momswithcrockpots.com/crockpot-cornbread/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Bread"},
 				CookTime:      "PT120M",
@@ -5409,7 +5409,7 @@ func TestScraper(t *testing.T) {
 			name: "monsieur-cuisine.com",
 			in:   "https://fr.monsieur-cuisine.com/nl/recipe/concentraat-voor-runderbouillon",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Name:          "Little chocolate puddings with a molten centre",
 				Yield:         models.Yield{Value: 8},
@@ -5460,7 +5460,7 @@ func TestScraper(t *testing.T) {
 			name: "motherthyme.com",
 			in:   "https://www.motherthyme.com/2018/06/blt-pasta-salad.html",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				DatePublished: "2018-06-29",
 				Description: models.Description{
@@ -5509,7 +5509,7 @@ func TestScraper(t *testing.T) {
 			name: "mybakingaddiction.com",
 			in:   "https://www.mybakingaddiction.com/pistachio-pudding-cake/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Cake"},
 				CookTime:      "PT45M",
@@ -5575,7 +5575,7 @@ func TestScraper(t *testing.T) {
 			name: "mykitchen101.com",
 			in:   "https://mykitchen101.com/%e5%8e%9f%e5%91%b3%e7%89%9b%e6%b2%b9%e8%9b%8b%e7%b3%95/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Cake"},
 				Cuisine:       models.Cuisine{Value: "baking"},
@@ -5638,7 +5638,7 @@ func TestScraper(t *testing.T) {
 			name: "mykitchen101en.com",
 			in:   "https://mykitchen101en.com/plain-butter-cake/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Cake"},
 				CookTime:      "PT55M",
@@ -5701,7 +5701,7 @@ func TestScraper(t *testing.T) {
 			name: "myplate.gov",
 			in:   "https://www.myplate.gov/recipes/supplemental-nutrition-assistance-program-snap/20-minute-chicken-creole",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Name:      "20-Minute Chicken Creole",
 				Image: models.Image{
@@ -5761,7 +5761,7 @@ func TestScraper(t *testing.T) {
 			name: "myrecipes.com",
 			in:   "https://www.myrecipes.com/recipe/quick-easy-nachos",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				DatePublished: "2017-08-22T16:38:01.000Z",
 				Description: models.Description{
@@ -5816,7 +5816,7 @@ func TestScraper(t *testing.T) {
 			name: "nourishedbynutrition.com",
 			in:   "https://nourishedbynutrition.com/fudgy-gluten-free-tahini-brownies/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				CookTime:      "PT-468345H26M35S",
 				DatePublished: "2022-02-09",
@@ -5862,7 +5862,7 @@ func TestScraper(t *testing.T) {
 			name: "nutritionbynathalie.com",
 			in:   "https://www.nutritionbynathalie.com/single-post/2020/07/30/Mexican-Cauliflower-Rice",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				DateModified:  "2020-07-30T18:25:45.140Z",
 				DatePublished: "2020-07-30T18:25:45.140Z",
@@ -5905,7 +5905,7 @@ func TestScraper(t *testing.T) {
 				"Collection%20Band%20Recipe%20Card&region=Easy%20Easter%20Dinner%20Recipes&pgType=" +
 				"supercollection&rank=2",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Category: models.Category{
 					Value: "dinner, easy, for two, quick, weeknight, pastas, main course",
@@ -5968,7 +5968,7 @@ func TestScraper(t *testing.T) {
 			name: "ohsheglows.com",
 			in:   "https://ohsheglows.com/2017/11/23/bread-free-stuffing-balls/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Vegan"},
 				CookTime:      "PT23M",
@@ -6060,7 +6060,7 @@ func TestScraper(t *testing.T) {
 			name: "onceuponachef.com",
 			in:   "https://www.onceuponachef.com/recipes/perfect-basmati-rice.html",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Vegetables & Sides"},
 				CookTime:      "PT0M",
@@ -6119,7 +6119,7 @@ func TestScraper(t *testing.T) {
 			name: "paleorunningmomma.com",
 			in:   "https://www.paleorunningmomma.com/grain-free-peanut-butter-granola-bars-vegan-paleo-option/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Breakfast"},
 				Cuisine:       models.Cuisine{Value: "Gluten-free"},
@@ -6193,7 +6193,7 @@ func TestScraper(t *testing.T) {
 			name: "panelinha.com.br",
 			in:   "https://www.panelinha.com.br/receita/Frango-ao-curry",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Description: models.Description{
 					Value: "A lista de vantagens desta receita é longa: fácil, rápida, tem poucos ingredientes e muito sabor. E " +
@@ -6244,7 +6244,7 @@ func TestScraper(t *testing.T) {
 			name: "paninihappy.com",
 			in:   "https://paninihappy.com/why-you-need-this-pumpkin-muffin-recipe/",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Name:      "My Favorite Pumpkin Muffins",
 				PrepTime:  "PT10M",
@@ -6288,7 +6288,7 @@ func TestScraper(t *testing.T) {
 			name: "practicalselfreliance.com",
 			in:   "https://practicalselfreliance.com/zucchini-relish/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				CookTime:      "PT10M",
 				DatePublished: "2022-08-08",
@@ -6345,7 +6345,7 @@ func TestScraper(t *testing.T) {
 			name: "primaledgehealth.com",
 			in:   "https://www.primaledgehealth.com/slow-cooker-crack-chicken/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Appetizers"},
 				CookTime:      "PT360M",
@@ -6416,7 +6416,7 @@ func TestScraper(t *testing.T) {
 			name: "przepisy.pl",
 			in:   "https://www.przepisy.pl/przepis/placki-ziemniaczane",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Placki ziemniaczane"},
 				DatePublished: "2010-11-12T14:29:28.000Z",
@@ -6458,7 +6458,7 @@ func TestScraper(t *testing.T) {
 			name: "purelypope.com",
 			in:   "https://purelypope.com/sweet-chili-brussel-sprouts/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				DateModified:  "2020-09-17T22:05:26+00:00",
 				DatePublished: "2020-05-21T00:35:12+00:00",
@@ -6497,7 +6497,7 @@ func TestScraper(t *testing.T) {
 			in: "https://www.purplecarrot.com/recipe/gnocchi-al-pesto-with-charred-green-beans-lemon-zucchini-bc225f0b-" +
 				"1985-4d94-b05b-a78de295b2da?plan=chefs_choice",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				DatePublished: "2020-05-13T06:59:57.162-04:00",
 				Image: models.Image{
@@ -6541,7 +6541,7 @@ func TestScraper(t *testing.T) {
 			name: "rachlmansfield.com",
 			in:   "https://rachlmansfield.com/delicious-crispy-rice-salad-gluten-free/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				CookTime:      "PT15M",
 				DatePublished: "2022-04-03",
@@ -6597,7 +6597,7 @@ func TestScraper(t *testing.T) {
 			name: "rainbowplantlife.com",
 			in:   "https://rainbowplantlife.com/livornese-stewed-beans/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Dinner"},
 				CookTime:      "PT60M",
@@ -6674,7 +6674,7 @@ func TestScraper(t *testing.T) {
 			name: "realsimple.com",
 			in:   "https://www.realsimple.com/food-recipes/browse-all-recipes/sheet-pan-chicken-and-sweet-potatoes",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				DateModified:  "2018-07-05T14:07:52.000-04:00",
 				DatePublished: "2016-12-07T11:48:40.000-05:00",
@@ -6728,7 +6728,7 @@ func TestScraper(t *testing.T) {
 			name: "recipetineats.com",
 			in:   "https://www.recipetineats.com/chicken-sharwama-middle-eastern/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Chicken"},
 				CookTime:      "PT10M",
@@ -6810,7 +6810,7 @@ func TestScraper(t *testing.T) {
 			name: "redhousespice.com",
 			in:   "https://redhousespice.com/pork-fried-rice/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Main Course"},
 				CookTime:      "PT8M",
@@ -6874,7 +6874,7 @@ func TestScraper(t *testing.T) {
 			name: "reishunger.de",
 			in:   "https://www.reishunger.de/rezepte/rezept/440/chicken-tikka-masala",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Grillen"},
 				Cuisine:       models.Cuisine{Value: "Indisch"},
@@ -6930,7 +6930,7 @@ func TestScraper(t *testing.T) {
 			name: "rezeptwelt.de",
 			in:   "https://www.rezeptwelt.de/vorspeisensalate-rezepte/haehnchen-nuggets/y3duba6e-e2d56-608317-cfcd2-vjez4wd6",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Cuisine:       models.Cuisine{Value: "Europäisch, Spanisch"},
 				Name:          "Hähnchen-Nuggets",
@@ -6972,7 +6972,7 @@ func TestScraper(t *testing.T) {
 			name: "sallysbakingaddiction.com",
 			in:   "https://sallysbakingaddiction.com/breakfast-pastries/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Breakfast"},
 				CookTime:      "PT20M",
@@ -7078,7 +7078,7 @@ func TestScraper(t *testing.T) {
 			name: "saveur.com",
 			in:   "https://www.saveur.com/recipes/varenyky-pierogi-recipe/",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Name:      "Larisa Frumkin’s Varenyky",
 				CookTime:  "PT0D1H30M",
@@ -7120,7 +7120,7 @@ func TestScraper(t *testing.T) {
 			name: "seriouseats.com",
 			in:   "https://www.seriouseats.com/miyeok-guk-korean-seaweed-and-brisket-soup",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Soups and Stews"},
 				CookTime:      "PT180M",
@@ -7187,7 +7187,7 @@ func TestScraper(t *testing.T) {
 			name: "simplyquinoa.com",
 			in:   "https://www.simplyquinoa.com/spicy-kimchi-quinoa-bowls/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Main Course"},
 				CookTime:      "PT10M",
@@ -7252,7 +7252,7 @@ func TestScraper(t *testing.T) {
 			name: "simplyrecipes.com",
 			in:   "https://www.simplyrecipes.com/recipes/chicken_tikka_masala/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Dinner"},
 				CookTime:      "PT20M",
@@ -7341,7 +7341,7 @@ func TestScraper(t *testing.T) {
 			name: "simplywhisked.com",
 			in:   "https://www.simplywhisked.com/dill-pickle-pasta-salad/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Salads"},
 				CookTime:      "PT10M",
@@ -7409,7 +7409,7 @@ func TestScraper(t *testing.T) {
 			name: "skinnytaste.com",
 			in:   "https://www.skinnytaste.com/air-fryer-steak/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Dinner"},
 				CookTime:      "PT10M",
@@ -7468,7 +7468,7 @@ func TestScraper(t *testing.T) {
 			name: "southernliving.com",
 			in:   "https://www.southernliving.com/recipes/oven-roasted-corn-on-cob",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Name:          "Oven-Roasted Corn On The Cob",
 				DateModified:  "2023-01-11T23:35:04.135-05:00",
@@ -7508,7 +7508,7 @@ func TestScraper(t *testing.T) {
 			name: "spendwithpennies.com",
 			in:   "https://www.spendwithpennies.com/split-pea-soup/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Dinner"},
 				CookTime:      "PT130M",
@@ -7572,7 +7572,7 @@ func TestScraper(t *testing.T) {
 			name: "steamykitchen.com",
 			in:   "https://steamykitchen.com/4474-korean-style-tacos-with-kogi-bbq-sauce.html",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Main Course"},
 				Cuisine:       models.Cuisine{Value: "American"},
@@ -7638,7 +7638,7 @@ func TestScraper(t *testing.T) {
 			name: "streetkitchen.co",
 			in:   "https://streetkitchen.co/recipe/thai-red-duck-curry/",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Description: models.Description{
 					Value: "This exquisite Thai Red Duck Curry is made with pineapple, cherry tomatoes and authentic red curry spices and coconut.",
@@ -7675,7 +7675,7 @@ func TestScraper(t *testing.T) {
 			name: "sunbasket.com",
 			in:   "https://sunbasket.com/recipe/chicken-and-dumplings",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Category:  models.Category{Value: ""},
 				CookTime:  "PT35M",
@@ -7733,7 +7733,7 @@ func TestScraper(t *testing.T) {
 			name: "sweetcsdesigns.com",
 			in:   "https://sweetcsdesigns.com/roasted-tomato-marinara-sauce/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Pasta"},
 				CookTime:      "PT45M",
@@ -7801,7 +7801,7 @@ func TestScraper(t *testing.T) {
 			name: "sweetpeasandsaffron.com",
 			in:   "https://sweetpeasandsaffron.com/slow-cooker-cilantro-lime-chicken-tacos-freezer-slow-cooker/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Main Course"},
 				CookTime:      "PT240M",
@@ -7869,7 +7869,7 @@ func TestScraper(t *testing.T) {
 			name: "tasteofhome.com",
 			in:   "https://www.tasteofhome.com/recipes/cast-iron-skillet-steak/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Dinner"},
 				CookTime:      "PT5M",
@@ -7920,7 +7920,7 @@ func TestScraper(t *testing.T) {
 			name: "tastesoflizzyt.com",
 			in:   "https://www.tastesoflizzyt.com/easter-ham-pie/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Brunch"},
 				CookTime:      "PT75M",
@@ -7991,7 +7991,7 @@ func TestScraper(t *testing.T) {
 			name: "tasty.co",
 			in:   "https://tasty.co/recipe/honey-soy-glazed-salmon",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Lunch"},
 				Cuisine:       models.Cuisine{Value: "North American"},
@@ -8050,7 +8050,7 @@ func TestScraper(t *testing.T) {
 			name: "tastykitchen.com",
 			in:   "https://tastykitchen.com/recipes/main-courses/garlic-shrimp-scampi-with-angel-hair-pasta/",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Name:      "Garlic Shrimp Scampi with Angel Hair Pasta",
 				Category:  models.Category{Value: "Main Courses"},
@@ -8106,7 +8106,7 @@ func TestScraper(t *testing.T) {
 			name: "tesco.com",
 			in:   "https://realfood.tesco.com/recipes/salted-honey-and-rosemary-lamb-with-roasties-and-rainbow-carrots.html",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Name:          "Salted honey and rosemary lamb with roasties and rainbow carrots",
 				Category:      models.Category{Value: "Dinner"},
@@ -8174,7 +8174,7 @@ func TestScraper(t *testing.T) {
 			name: "theclevercarrot.com",
 			in:   "https://www.theclevercarrot.com/2021/10/homemade-sourdough-breadcrumbs/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Sourdough Bread"},
 				CookTime:      "PT25M",
@@ -8228,7 +8228,7 @@ func TestScraper(t *testing.T) {
 			name: "thehappyfoodie.co.uk",
 			in:   "https://thehappyfoodie.co.uk/recipes/leek-and-lentil-gratin/",
 			want: models.RecipeSchema{
-				AtContext:    "https://schema.org",
+				AtContext:    atContext,
 				AtType:       models.SchemaType{Value: "Recipe"},
 				DateModified: "2022-02-07T16:00:36+00:00",
 				Name:         "Leek and Puy Lentil Gratin with a Crunchy Feta Topping",
@@ -8273,7 +8273,7 @@ func TestScraper(t *testing.T) {
 			name: "thekitchenmagpie.com",
 			in:   "https://www.thekitchenmagpie.com/blt-pasta-salad/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Salad"},
 				Cuisine:       models.Cuisine{Value: "American"},
@@ -8335,7 +8335,7 @@ func TestScraper(t *testing.T) {
 			name: "thenutritiouskitchen.co",
 			in:   "http://thenutritiouskitchen.co/fluffy-paleo-blueberry-pancakes/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "breakfast"},
 				CookTime:      "PT15M",
@@ -8391,7 +8391,7 @@ func TestScraper(t *testing.T) {
 			name: "thepioneerwoman.com",
 			in:   "https://www.thepioneerwoman.com/food-cooking/recipes/a8865/eggs-benedict/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "brunch"},
 				CookTime:      "PT10M",
@@ -8435,7 +8435,7 @@ func TestScraper(t *testing.T) {
 			name: "thespruceeats.com",
 			in:   "https://www.thespruceeats.com/pasta-with-anchovies-and-breadcrumbs-recipe-5215384",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Dinner"},
 				CookTime:      "PT28M",
@@ -8517,7 +8517,7 @@ func TestScraper(t *testing.T) {
 			name: "thevintagemixer.com",
 			in:   "https://www.thevintagemixer.com/roasted-asparagus-grilled-cheese/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Main Course"},
 				CookTime:      "PT5M",
@@ -8562,7 +8562,7 @@ func TestScraper(t *testing.T) {
 			name: "thewoksoflife.com",
 			in:   "https://thewoksoflife.com/fried-wontons/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Appetizers and Snacks"},
 				CookTime:      "PT20M",
@@ -8651,7 +8651,7 @@ func TestScraper(t *testing.T) {
 			name: "timesofindia.com",
 			in:   "https://recipes.timesofindia.com/recipes/beetroot-cold-soup/rs90713582.cms",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Appetizers"},
 				Cuisine:       models.Cuisine{Value: "Vegetarian"},
@@ -8702,7 +8702,7 @@ func TestScraper(t *testing.T) {
 			name: "tine.no",
 			in:   "https://www.tine.no/oppskrifter/middag-og-hovedretter/kylling-og-fjarkre/rask-kylling-tikka-masala",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "middag"},
 				Cuisine:       models.Cuisine{Value: "indisk"},
@@ -8759,7 +8759,7 @@ func TestScraper(t *testing.T) {
 			name: "twopeasandtheirpod.com",
 			in:   "https://www.twopeasandtheirpod.com/easy-chickpea-salad/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Salad"},
 				Cuisine:       models.Cuisine{Value: "American"},
@@ -8831,7 +8831,7 @@ func TestScraper(t *testing.T) {
 			name: "valdemarsro.dk",
 			in:   "https://www.valdemarsro.dk/butter_chicken/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Name:          "Butter chicken",
 				CookTime:      "PT30M",
@@ -8887,7 +8887,7 @@ func TestScraper(t *testing.T) {
 			name: "vanillaandbean.com",
 			in:   "https://vanillaandbean.com/carrot-cake-bread/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Brunch"},
 				CookTime:      "PT60M",
@@ -9013,7 +9013,7 @@ func TestScraper(t *testing.T) {
 			name: "vegolosi.it",
 			in:   "https://www.vegolosi.it/ricette-vegane/pancake-vegani-senza-glutine-alla-quinoa-e-cocco/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				CookTime:      "PT15M",
 				DatePublished: "2018-08-02",
@@ -9066,7 +9066,7 @@ func TestScraper(t *testing.T) {
 			name: "vegrecipesofindia.com",
 			in:   "https://www.vegrecipesofindia.com/paneer-butter-masala/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Main Course"},
 				CookTime:      "PT30M",
@@ -9161,7 +9161,7 @@ func TestScraper(t *testing.T) {
 			name: "watchwhatueat.com",
 			in:   "https://www.watchwhatueat.com/healthy-fried-brown-rice/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Main or Side"},
 				CookTime:      "PT30M",
@@ -9218,7 +9218,7 @@ func TestScraper(t *testing.T) {
 			name: "whatsgabycooking.com",
 			in:   "https://whatsgabycooking.com/pea-prosciutto-spring-pizza/",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
+				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Breakfast"},
 				CookTime:      "PT10M",
@@ -9283,7 +9283,7 @@ func TestScraper(t *testing.T) {
 			name: "wikibooks.org",
 			in:   "https://en.wikibooks.org/wiki/Cookbook:Creamed_Spinach",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Name:      "Creamed Spinach",
 				Category:  models.Category{Value: "Sauce recipes"},
@@ -9327,7 +9327,7 @@ func TestScraper(t *testing.T) {
 			name: "wikibooks.org_mobile",
 			in:   "https://en.m.wikibooks.org/wiki/Cookbook:Creamed_Spinach",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Name:      "Creamed Spinach",
 				Category:  models.Category{Value: "Sauce recipes"},
@@ -9371,7 +9371,7 @@ func TestScraper(t *testing.T) {
 			name: "woop.co.nz",
 			in:   "https://woop.co.nz/thai-marinated-beef-sirlion-344-2-f.html",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Name:      "Thai marinated beef sirlion",
 				Description: models.Description{
@@ -9426,7 +9426,7 @@ func TestScraper(t *testing.T) {
 			name: "ye-mek.net",
 			in:   "https://ye-mek.net/recipe/walnut-turkish-baklava-recipe",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Name:      "Walnut Turkish Baklava Recipe",
 				Image: models.Image{
@@ -9462,7 +9462,7 @@ func TestScraper(t *testing.T) {
 			name: "zenbelly.com",
 			in:   "https://www.zenbelly.com/short-ribs/",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Name:      "pressure cooker honey balsamic short ribs",
 				Description: models.Description{
@@ -9521,7 +9521,7 @@ func TestScraper(t *testing.T) {
 			name: "101cookbooks.com",
 			in:   "https://www.101cookbooks.com/simple-bruschetta/",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
+				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Name:      "Simple Bruschetta",
 				Description: models.Description{

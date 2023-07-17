@@ -44,7 +44,7 @@ func scrapeArchanasKitchen(root *goquery.Document) (models.RecipeSchema, error) 
 	yield := findYield(root.Find("span[itemprop='recipeYield'] p").Text())
 
 	return models.RecipeSchema{
-		AtContext:     "https://schema.org",
+		AtContext:     atContext,
 		AtType:        models.SchemaType{Value: "Recipe"},
 		Name:          root.Find("h1[itemprop='name']").Text(),
 		Description:   models.Description{Value: description},

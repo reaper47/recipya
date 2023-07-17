@@ -5,11 +5,12 @@ import (
 	"errors"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/disintegration/imaging"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
-	"io"
-	"log"
+	"image"
+	"image/jpeg"
 	"net/http"
 	"net/url"
 	"os"
@@ -40,23 +41,45 @@ func Scrape(url string) (models.RecipeSchema, error) {
 		return rs, errors.New("url could not be fetched")
 	}
 
-	if rs.Image.Value != "" {
-		if res, err := http.Get(rs.Image.Value); err == nil {
-			b, err := io.ReadAll(res.Body)
-			img := uuid.New().String()
-			if err = os.WriteFile(filepath.Join(app.ImagesDir, img+".jpg"), b, os.ModePerm); err != nil {
-				log.Println(err)
-			}
-			rs.Image.Value = img
-		}
-		res.Body.Close()
+	if rs.AtContext == "" {
+		rs.AtContext = atContext
 	}
 
 	if rs.URL == "" {
 		rs.URL = url
 	}
 
-	rs.AtContext = atContext
+	if rs.Image.Value != "" {
+		res, err := http.Get(rs.Image.Value)
+		if err != nil {
+			return rs, nil
+		}
+		defer res.Body.Close()
+
+		img, _, err := image.Decode(res.Body)
+		if err != nil {
+			return rs, nil
+		}
+
+		imageUUID := uuid.New().String()
+		out, err := os.Create(filepath.Join(app.ImagesDir, imageUUID+".jpg"))
+		if err != nil {
+			return rs, nil
+		}
+		defer out.Close()
+
+		width := img.Bounds().Dx()
+		height := img.Bounds().Dy()
+		if width > 800 || height > 800 {
+			img = imaging.Resize(img, width/2, height/2, imaging.NearestNeighbor)
+		}
+
+		if err := jpeg.Encode(out, img, &jpeg.Options{Quality: 33}); err != nil {
+			return rs, nil
+		}
+
+		rs.Image.Value = imageUUID
+	}
 	return rs, nil
 }
 
