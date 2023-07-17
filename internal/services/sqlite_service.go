@@ -155,13 +155,8 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error)
 	}
 
 	// Insert times
-	result, err = tx.ExecContext(ctx, statements.InsertTimes, int64(r.Times.Prep.Seconds()), int64(r.Times.Cook.Seconds()))
-	if err != nil {
-		return -1, err
-	}
-
-	timesID, err := result.LastInsertId()
-	if err != nil {
+	var timesID int64
+	if err := tx.QueryRowContext(ctx, statements.InsertTimes, int64(r.Times.Prep.Seconds()), int64(r.Times.Cook.Seconds())).Scan(&timesID); err != nil {
 		return -1, err
 	}
 
@@ -171,13 +166,8 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error)
 
 	// Insert keywords
 	for _, keyword := range r.Keywords {
-		result, err := tx.ExecContext(ctx, statements.InsertKeyword, keyword)
-		if err != nil {
-			return -1, err
-		}
-
-		keywordID, err := result.LastInsertId()
-		if err != nil {
+		var keywordID int64
+		if err := tx.QueryRowContext(ctx, statements.InsertKeyword, keyword).Scan(&keywordID); err != nil {
 			return -1, err
 		}
 
@@ -188,13 +178,8 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error)
 
 	// Insert instructions
 	for _, instruction := range r.Instructions {
-		result, err := tx.ExecContext(ctx, statements.InsertInstruction, instruction)
-		if err != nil {
-			return -1, err
-		}
-
-		instructionID, err := result.LastInsertId()
-		if err != nil {
+		var instructionID int64
+		if err := tx.QueryRowContext(ctx, statements.InsertInstruction, instruction).Scan(&instructionID); err != nil {
 			return -1, err
 		}
 
@@ -205,13 +190,8 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error)
 
 	// Insert ingredients
 	for _, ingredient := range r.Ingredients {
-		result, err := tx.ExecContext(ctx, statements.InsertIngredient, ingredient)
-		if err != nil {
-			return -1, err
-		}
-
-		ingredientID, err := result.LastInsertId()
-		if err != nil {
+		var ingredientID int64
+		if err := tx.QueryRowContext(ctx, statements.InsertIngredient, ingredient).Scan(&ingredientID); err != nil {
 			return -1, err
 		}
 
@@ -222,13 +202,8 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error)
 
 	// Insert tools
 	for _, tool := range r.Tools {
-		result, err := tx.ExecContext(ctx, statements.InsertTool, tool)
-		if err != nil {
-			return -1, err
-		}
-
-		toolID, err := result.LastInsertId()
-		if err != nil {
+		var toolID int64
+		if err := tx.QueryRowContext(ctx, statements.InsertTool, tool).Scan(&toolID); err != nil {
 			return -1, err
 		}
 
@@ -298,6 +273,42 @@ func (s *SQLiteService) IsUserExist(email string) bool {
 	var exists int64
 	_ = s.DB.QueryRowContext(ctx, statements.SelectUserExist, email).Scan(&exists)
 	return exists == 1
+}
+
+func (s *SQLiteService) Recipe(id, userID int64) (*models.Recipe, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{})
+	if err != nil {
+		return nil, err
+	}
+
+	var (
+		r            models.Recipe
+		ingredients  string
+		instructions string
+		keywords     string
+		tools        string
+	)
+	row := tx.QueryRowContext(ctx, statements.SelectRecipe, userID, id, userID, id, userID, id)
+	if err := row.Scan(
+		&r.ID, &r.Name, &r.Description, &r.Image, &r.URL, &r.Yield, &r.CreatedAt, &r.UpdatedAt, &r.Category, &r.Cuisine,
+		&ingredients, &instructions, &keywords, &tools, &r.Nutrition.Calories, &r.Nutrition.TotalCarbohydrates,
+		&r.Nutrition.Sugars, &r.Nutrition.Protein, &r.Nutrition.TotalFat, &r.Nutrition.SaturatedFat, &r.Nutrition.UnsaturatedFat,
+		&r.Nutrition.Cholesterol, &r.Nutrition.Sodium, &r.Nutrition.Fiber, &r.Times.Prep, &r.Times.Cook, &r.Times.Total); err != nil {
+		return nil, err
+	}
+
+	r.Ingredients = strings.Split(ingredients, "<!---->")
+	r.Instructions = strings.Split(instructions, "<!---->")
+	r.Keywords = strings.Split(keywords, ",")
+	r.Tools = strings.Split(tools, ",")
+
+	r.Times.Prep = r.Times.Prep * time.Second
+	r.Times.Cook = r.Times.Cook * time.Second
+	r.Times.Total = r.Times.Total * time.Second
+	return &r, tx.Commit()
 }
 
 func (s *SQLiteService) Register(email string, hashedPassword auth.HashedPassword) (int64, error) {

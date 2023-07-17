@@ -13,13 +13,22 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"strconv"
 	"syscall"
 	"time"
 )
 
+var imagesDir string
+
 func init() {
 	SessionData = make(map[uuid.UUID]int64)
+
+	exe, err := os.Executable()
+	if err != nil {
+		return
+	}
+	imagesDir = filepath.Join(filepath.Dir(exe), "data", "images")
 }
 
 // NewServer creates a Server.
@@ -81,6 +90,8 @@ func (s *Server) mountHandlers() {
 	r.Route("/recipes", func(r chi.Router) {
 		r.Use(s.mustBeLoggedInMiddleware)
 
+		r.Get("/{id:[1-9]([0-9])*}", s.recipesViewHandler)
+
 		r.Route("/add", func(r chi.Router) {
 			r.Get("/", recipesAddHandler)
 			r.Post("/import", s.recipesAddImportHandler)
@@ -123,6 +134,10 @@ func (s *Server) mountHandlers() {
 	staticFS := http.FileServer(http.FS(static.FS))
 	r.Get("/static/*", func(w http.ResponseWriter, r *http.Request) {
 		http.StripPrefix("/static", staticFS).ServeHTTP(w, r)
+	})
+
+	r.Get("/data/images/*", func(w http.ResponseWriter, r *http.Request) {
+		http.StripPrefix("/data/images", http.FileServer(http.Dir(imagesDir))).ServeHTTP(w, r)
 	})
 
 	s.Router = r

@@ -17,6 +17,6 @@
   },
   "dependencies": {
     "copyfiles": "^2.4.1",
-    "esbuild": "^0.18.12"
+    "esbuild": "^0.18.13"
   }
 }

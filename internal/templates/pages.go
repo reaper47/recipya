@@ -14,6 +14,7 @@ const (
 	LoginPage               Page = "login"
 	RegisterPage            Page = "register"
 	Simple                  Page = "simple"
+	ViewRecipePage          Page = "view-recipe"
 )
 
 // String stringifies the Page.
@@ -40,6 +41,8 @@ func (p Page) Title() string {
 		return "Register"
 	case Simple:
 		return "<title>"
+	case ViewRecipePage:
+		return "View Recipe"
 	default:
 		return ""
 	}

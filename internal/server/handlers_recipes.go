@@ -417,3 +417,33 @@ func (s *Server) recipesSupportedWebsitesPostHandler(w http.ResponseWriter, r *h
 	w.Header().Set("Content-Type", "text/html")
 	_, _ = fmt.Fprintf(w, websites.TableHTML())
 }
+
+func (s *Server) recipesViewHandler(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	userID := r.Context().Value("userID").(int64)
+	recipe, err := s.Repository.Recipe(id, userID)
+	if err != nil {
+		notFoundHandler(w, r)
+		return
+	}
+
+	viewData := templates.NewViewRecipeData(id, recipe, true)
+
+	if r.Header.Get("Hx-Request") == "true" {
+		templates.RenderComponent(w, "recipes", "view-recipe", templates.Data{
+			Title: recipe.Name,
+			View:  viewData,
+		})
+	} else {
+		templates.Render(w, templates.ViewRecipePage, templates.Data{
+			IsAuthenticated: true,
+			Title:           recipe.Name,
+			View:            viewData,
+		})
+	}
+}

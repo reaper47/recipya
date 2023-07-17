@@ -25,6 +25,7 @@ func newServerTest() *server.Server {
 type mockRepository struct {
 	AuthTokens      []models.AuthToken
 	AddRecipeFunc   func(recipe *models.Recipe, userID int64) (int64, error)
+	RecipeFunc      func(id, userID int64) (*models.Recipe, error)
 	Recipes         map[int64]models.Recipes
 	UsersRegistered []models.User
 	UsersUpdated    []int64
@@ -44,7 +45,12 @@ func (m *mockRepository) AddRecipe(r *models.Recipe, userID int64) (int64, error
 	if m.Recipes[userID] == nil {
 		m.Recipes[userID] = make(models.Recipes, 0)
 	}
-	m.Recipes[userID] = append(m.Recipes[userID], *r)
+
+	if !slices.ContainsFunc(m.Recipes[userID], func(recipe models.Recipe) bool {
+		return recipe.ID == r.ID
+	}) {
+		m.Recipes[userID] = append(m.Recipes[userID], *r)
+	}
 	return int64(len(m.Recipes)), nil
 }
 
@@ -73,6 +79,20 @@ func (m *mockRepository) IsUserExist(email string) bool {
 	return slices.ContainsFunc(m.UsersRegistered, func(user models.User) bool {
 		return user.Email == email
 	})
+}
+
+func (m *mockRepository) Recipe(id, userID int64) (*models.Recipe, error) {
+	if m.RecipeFunc != nil {
+		return m.RecipeFunc(id, userID)
+	}
+
+	if recipes, ok := m.Recipes[userID]; ok {
+		if int64(len(recipes)) > id {
+			return nil, errors.New("recipe not found")
+		}
+		return &recipes[id-1], nil
+	}
+	return nil, errors.New("recipe not found")
 }
 
 func (m *mockRepository) Register(email string, _ auth.HashedPassword) (int64, error) {

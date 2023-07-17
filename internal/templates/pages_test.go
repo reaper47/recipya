@@ -15,6 +15,7 @@ var pages = []templates.Page{
 	templates.LoginPage,
 	templates.RegisterPage,
 	templates.Simple,
+	templates.ViewRecipePage,
 }
 
 func TestPage_String(t *testing.T) {
@@ -28,6 +29,7 @@ func TestPage_String(t *testing.T) {
 		"login",
 		"register",
 		"simple",
+		"view-recipe",
 	}
 	for i, p := range pages {
 		actual := p.String()
@@ -49,6 +51,7 @@ func TestPage_Title(t *testing.T) {
 		"Login",
 		"Register",
 		"<title>",
+		"View Recipe",
 	}
 	for i, p := range pages {
 		actual := p.Title()

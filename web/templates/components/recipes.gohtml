@@ -126,7 +126,7 @@
             </div>
         </div>
 
-        <dialog id="import-recipes-dialog">
+        <dialog id="import-recipes-dialog" class="p-4">
             <h3 class="flex justify-between items-center mb-4">
                 <span class="flex font-bold">Import Recipes</span>
                 <button type="button" class="hover:bg-gray-800 hover:text-white px-2 border rounded"
@@ -430,7 +430,7 @@
                         Array.from(document.querySelectorAll(`${type}[name^='${name}']`)).forEach((d, i) => {
                             const n = i + 1;
                             d.name = `${name}-${n}`;
-                            d.placeholder = `${name.substring(0,1).toUpperCase()+ name.substring(1)} #${n}`;
+                            d.placeholder = `${name.substring(0, 1).toUpperCase() + name.substring(1)} #${n}`;
 
                             const deleteButton = d.parentElement.parentElement.querySelector(".delete-button");
                             deleteButton.setAttribute('hx-post', `/recipes/add/manual/${name}/${n}`);
@@ -493,5 +493,292 @@
                 </div>
             </form>
         </article>
+    </div>
+{{end}}
+
+{{define "view-recipe"}}
+    <title hx-swap-oob="true">{{.Title}} | Recipya</title>
+
+    <div class="grid grid-cols-6 max-w-6xl px-4 pb-4 m-auto mt-4 print:m-0 print:p-0">
+        <div class="grid grid-cols-6 col-span-6 text-lg border border-gray-900 rounded-t-md md:text-xl print:rounded-t-none">
+            {{- if .View.IsEditMode -}}
+                <div class="grid justify-start col-span-1 place-content-center print:invisible">
+                    <a href="/recipes/{{.View.ID}}/edit" class="ml-2" title="Edit recipe">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                        </svg>
+                    </a>
+                </div>
+                <h1 class="grid col-span-4 py-2 font-bold place-content-center">{{.View.Recipe.Name}}</h1>
+                <div class="grid justify-end col-span-1 place-content-center print:invisible">
+                    <div class="grid grid-flow-col">
+                        <button class="mr-2" onclick="print()" title="Print recipe">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none"
+                                 viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+                            </svg>
+                        </button>
+                        <button class="mr-2" hx-delete="/recipes/{{.View.Recipe.ID}}" hx-swap="none"
+                                title="Delete recipe"
+                                hx-confirm="Are you sure you wish to delete this recipe?">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none"
+                                 viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            {{- else -}}
+                <div class="grid col-span-1"></div>
+                <h1 class="grid col-span-4 py-2 font-bold place-content-center">{{.View.Recipe.Name}}</h1>
+                <div class="grid justify-end col-span-1 place-content-center print:invisible">
+                    <button class="mr-2" onclick="print()" title="Print recipe">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+                        </svg>
+                    </button>
+                </div>
+            {{- end -}}
+        </div>
+
+        <div class="w-full grid grid-flow-col col-span-6 border-b border-l border-r border-black place-items-center md:border-r-0 md:col-span-4 md:border-b-0 print:hidden">
+            <img id="output" class="w-full text-center h-96" alt="Image of the recipe" style="object-fit: scale-down"
+                 src="{{- if .View.IsUUIDValid -}}/data/images/{{.View.Recipe.Image}}.jpg{{- end -}}">
+        </div>
+
+        <div class="grid grid-flow-col col-span-6 border-b border-l border-black md:border-l md:grid-flow-row md:col-span-2 md:grid md:border-r md:border-b-0 print:border-b">
+            <div class="col-span-2 p-2 border-r border-black md:col-span-3 md:grid md:place-items-center md:border-r-0">
+                <span class="flex items-center justify-center p-2 font-medium text-blue-700 bg-blue-100 border border-blue-300 rounded-full md:w-1/3 print:border-none print:text-black">
+                  <span class="text-sm font-normal leading-none">{{.View.Recipe.Category}}</span>
+                </span>
+            </div>
+
+            <div class="grid col-span-2 py-2 border-black place-items-center md:col-span-3 md:border-t">
+                <p class="text-sm text-center">{{.View.Recipe.Yield}} servings</p>
+            </div>
+
+            <div class="flex items-center justify-center col-span-2 border-l border-r border-black md:border-l-0 md:border-r-0 md:border-b md:col-span-3 md:border-t md:py-2">
+                {{- if .View.IsURL -}}
+                    <a class="p-1 text-sm duration-300 border rounded-lg hover:bg-gray-800 hover:text-white center"
+                       href="{{.View.Recipe.URL}}" target="_blank">
+                        Source
+                    </a>
+                {{- else -}}
+                    <p class="print:text-sm">
+                        Source: {{if .View.Recipe.URL}}{{.View.Recipe.URL}}{{else}}Unkwown{{end}}</p>
+                {{- end -}}
+            </div>
+        </div>
+
+        <div class="col-span-6 border-b border-l border-r border-black md:col-span-4 md:border-r-0 print:col-span-5 print:border-r print:border-t-0 md:border-t">
+            <p class="p-2 text-sm whitespace-pre-line">{{.View.Recipe.Description}}</p>
+            <div class="hidden print:block print:p-2">
+                <h1 class="text-sm"><b>Nutrition Facts</b></h1>
+                <p class="text-xs">
+                    {{- with .View.Recipe.Nutrition -}}
+                        Per 100g: {{.Calories}} calories;
+                        total carbohydrates {{.TotalCarbohydrates}};
+                        sugars {{.Sugars}};
+                        protein {{.Protein}};
+                        total fat {{.TotalFat}};
+                        saturated fat {{.SaturatedFat}};
+                        cholesterol {{.Cholesterol}};
+                        sodium {{.Sodium}};
+                        fiber {{.Fiber}}.
+                    {{- end -}}
+                </p>
+            </div>
+        </div>
+
+        {{with .View.Recipe.Nutrition}}
+            <div class="col-span-3 border-b border-l border-r border-black md:col-span-1 print:hidden">
+                <div class="inline-block min-w-full overflow-x-auto align-middle">
+                    <div class="overflow-hidden border-gray-200">
+                        <table class="min-w-full text-xs divide-y divide-gray-200 table-auto">
+                            <thead class="h-12 font-medium tracking-wider text-white bg-gray-800">
+                            <tr>
+                                <th scope="col" class="text-right">
+                                    <p class="text-center">Nutrition<br>(per 100g)</p>
+                                </th>
+                                <th scope="col" class="text-center">
+                                    <p>Amount<br>(optional)</p>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td>
+                                    <p>Calories:</p>
+                                </td>
+                                <td class="py-3 text-center">
+                                    {{.Calories}}
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td>
+                                    <p>Total carbs:</p>
+                                </td>
+                                <td class="py-3 text-center">
+                                    {{.TotalCarbohydrates}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Sugars:</p>
+                                </td>
+                                <td class="py-3 text-center">
+                                    {{.Sugars}}
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td>
+                                    <p>Protein:</p>
+                                </td>
+                                <td class="py-3 text-center">
+                                    {{.Protein}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Total fat:</p>
+                                </td>
+                                <td class="py-3 text-center">
+                                    {{.TotalFat}}
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td>
+                                    <p>Saturated fat:</p>
+                                </td>
+                                <td class="py-3 text-center">
+                                    {{.SaturatedFat}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Cholesterol:</p>
+                                </td>
+                                <td class="py-3 text-center">
+                                    {{.Cholesterol}}
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td>
+                                    <p>Sodium:</p>
+                                </td>
+                                <td class="py-3 text-center">
+                                    {{.Sodium}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Fiber:</p>
+                                </td>
+                                <td class="py-3 text-center">
+                                    {{.Fiber}}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {{- end -}}
+
+        <div class="col-span-3 border-b border-r border-black md:col-span-1 print:col-span-1">
+            <div class="inline-block min-w-full overflow-x-auto align-middle">
+                <div class="overflow-hidden border-gray-200">
+                    <table class="min-w-full text-xs divide-y divide-gray-200">
+                        <thead class="h-12 font-medium tracking-wider text-white bg-gray-800 border-l border-white print:h-1">
+                        <tr>
+                            <th scope="col" class="text-right">Time</th>
+                            <th scope="col" class="text-center">h:m:s</th>
+                        </tr>
+                        </thead>
+                        <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td>Preparation:</td>
+                            <td class="py-3 text-center print:py-0">
+                                <time datetime="{{.View.FormattedTimes.PrepDateTime}}">{{.View.FormattedTimes.Prep}}</time>
+                            </td>
+                        </tr>
+                        <tr class="bg-gray-100">
+                            <td>Cooking:</td>
+                            <td class="w-1/2 py-3 text-center print:py-0">
+                                <time datetime="{{.View.FormattedTimes.CookDateTime}}">{{.View.FormattedTimes.Cook}}</time>
+                            </td>
+                        </tr>
+                        <tr class="font-bold">
+                            <td>Total:</td>
+                            <td class="w-1/2 py-3 text-center print:py-0">
+                                <time datetime="{{.View.FormattedTimes.TotalDateTime}}">{{.View.FormattedTimes.Total}}</time>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-span-6 py-2 border-b border-l border-r border-black md:col-span-2 md:border-r-0 print:hidden">
+            <h2 class="pb-2 m-auto text-sm font-bold text-center text-gray-600 underline ">Ingredients</h2>
+            <ul class="grid px-6 columns-2">
+                {{$len := len .View.Recipe.Ingredients}}
+                {{- range $i, $e := .View.Recipe.Ingredients -}}
+                    <li class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200"
+                        _="on mousedown toggle .line-through on me then toggle @checked on first <input/> in me">
+                        <label for="ingredient-{{$i}}"></label>
+                        <input type="checkbox" id="ingredient-{{$i}}" class="mt-1">
+                        <span class="pl-2">{{$e}}</span>
+                    </li>
+                {{- end -}}
+            </ul>
+        </div>
+
+        <div class="col-span-6 py-2 pb-8 border-b border-l border-r border-black rounded-bl-lg md:rounded-bl-none md:col-span-4 print:hidden">
+            <h2 class="pb-2 m-auto text-sm font-bold text-center text-gray-600 underline">Instructions</h2>
+            <ol class="grid px-6 list-decimal">
+                {{$len = len .View.Recipe.Instructions}}
+                {{- range $i, $e := .View.Recipe.Instructions -}}
+                    <li class="min-w-full py-2 text-sm select-none hover:bg-gray-200"
+                        _="on mousedown toggle .line-through on me">
+                        <span class="whitespace-pre-line">{{$e}}</span>
+                    </li>
+                {{- end -}}
+            </ol>
+        </div>
+
+        <div class="hidden print:grid col-span-6 ml-2 mt-2 mb-4">
+            <h1 class="text-sm"><b>Ingredients</b></h1>
+            <ol class="col-span-6 w-full"
+                style="column-count: {{if gt (len .View.Recipe.Ingredients) 10}}2{{else}}1{{end}}">
+                {{- range $i, $e := .View.Recipe.Ingredients -}}
+                    <li class="text-sm">
+                        <label>
+                            <input type="checkbox">
+                        </label>
+                        <span class="pl-2">{{$e}}</span>
+                    </li>
+                {{- end -}}
+            </ol>
+        </div>
+
+        <div class="hidden print:grid col-span-5">
+            <h1 class="text-sm"><b>Instructions</b></h1>
+            <ol class="col-span-6 list-decimal w-full ml-6"
+                style="column-count: {{if gt (len .View.Recipe.Instructions) 2}}2{{else}}1{{end}}; column-gap: 2.5rem">
+                {{- range $i, $e := .View.Recipe.Instructions -}}
+                    <li>
+                        <span class="text-sm whitespace-pre-line">{{$e}}</span>
+                    </li>
+                {{- end -}}
+            </ol>
+        </div>
     </div>
 {{end}}

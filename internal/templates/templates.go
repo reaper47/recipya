@@ -98,18 +98,8 @@ func Render(w http.ResponseWriter, page Page, data any) {
 
 // RenderComponent renders a component to the response writer.
 func RenderComponent(w http.ResponseWriter, component, name string, data any) {
-	div, err := fs.ReadFile(web.FS, "templates/components/"+component+".gohtml")
-	if err != nil {
-		return
-	}
-
-	t, err := template.New("component").Parse(string(div))
-	if err != nil {
-		return
-	}
-
 	var buf bytes.Buffer
-	_ = t.ExecuteTemplate(&buf, name, data)
+	_ = templates["components/"+component+".gohtml"].ExecuteTemplate(&buf, name, data)
 	w.Header().Set("Content-Type", "text/html")
 	fmt.Fprint(w, buf.String())
 }

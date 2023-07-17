@@ -26,7 +26,6 @@ func TestHandlers_Recipes_New(t *testing.T) {
 	testcases := []struct {
 		name     string
 		sendFunc func(server *server.Server, target, uri string, contentType header, body *strings.Reader) *httptest.ResponseRecorder
-		want     []string
 	}{
 		{name: "is logged in Hx-Request", sendFunc: sendHxRequestAsLoggedIn},
 		{name: "is logged in no Hx-Request", sendFunc: sendRequestAsLoggedIn},
@@ -59,7 +58,6 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 	testcases := []struct {
 		name     string
 		sendFunc func(server *server.Server, target, uri string, contentType header, body *strings.Reader) *httptest.ResponseRecorder
-		want     []string
 	}{
 		{name: "is logged in Hx-Request", sendFunc: sendHxRequestAsLoggedIn},
 		{name: "is logged in no Hx-Request", sendFunc: sendRequestAsLoggedIn},
@@ -460,6 +458,94 @@ func TestHandlers_Recipes_SupportedWebsites(t *testing.T) {
 			assertStatus(t, rr.Code, http.StatusOK)
 			assertHeader(t, rr, "Content-Type", "text/html")
 			assertStringsInHTML(t, getBodyHTML(rr), tc.want)
+		})
+	}
+}
+
+func TestHandlers_Recipes_View(t *testing.T) {
+	srv := newServerTest()
+
+	uri := "/recipes"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, uri)
+	})
+
+	t.Run("recipe is not in user collection", func(t *testing.T) {
+		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri+"/999", noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusNotFound)
+		want := []string{
+			`<title hx-swap-oob="true">Not Found | Recipya</title>`,
+			"Page Not Found",
+			"The page you requested to view is not found. Please go back to the main page.",
+		}
+		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
+
+	testcases := []struct {
+		name     string
+		sendFunc func(server *server.Server, target, uri string, contentType header, body *strings.Reader) *httptest.ResponseRecorder
+	}{
+		{name: "logged in Hx-Request", sendFunc: sendHxRequestAsLoggedIn},
+		{name: "logged in no Hx-Request", sendFunc: sendRequestAsLoggedIn},
+	}
+	for _, tc := range testcases {
+		t.Run("recipe is in user's collection when "+tc.name, func(t *testing.T) {
+			image, _ := uuid.Parse("e81ba735-a4af-4c66-8c17-2f2ccc1b1a95")
+			r := &models.Recipe{
+				Category:     "American",
+				Description:  "This is the most delicious recipe!",
+				ID:           1,
+				Image:        image,
+				Ingredients:  []string{"Ing1", "Ing2", "Ing3"},
+				Instructions: []string{"Ins1", "Ins2", "Ins3"},
+				Name:         "Chicken Jersey",
+				Nutrition: models.Nutrition{
+					Calories:           "500",
+					Cholesterol:        "1g",
+					Fiber:              "2g",
+					Protein:            "3g",
+					SaturatedFat:       "4g",
+					Sodium:             "5g",
+					Sugars:             "6g",
+					TotalCarbohydrates: "7g",
+					TotalFat:           "8g",
+					UnsaturatedFat:     "9g",
+				},
+				Times: models.Times{
+					Prep:  5 * time.Minute,
+					Cook:  1*time.Hour + 5*time.Minute,
+					Total: 1*time.Hour + 10*time.Minute,
+				},
+				URL:   "https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/",
+				Yield: 2,
+			}
+			_, _ = srv.Repository.AddRecipe(r, 1)
+
+			rr := tc.sendFunc(srv, http.MethodGet, uri+"/1", noHeader, nil)
+
+			assertStatus(t, rr.Code, http.StatusOK)
+			want := []string{
+				`<title hx-swap-oob="true">` + r.Name + " | Recipya</title>",
+				`<a href="/recipes/1/edit" class="ml-2" title="Edit recipe">`,
+				`<h1 class="grid col-span-4 py-2 font-bold place-content-center">Chicken Jersey</h1>`,
+				`<button class="mr-2" onclick="print()" title="Print recipe">`,
+				`<button class="mr-2" hx-delete="/recipes/1" hx-swap="none" title="Delete recipe" hx-confirm="Are you sure you wish to delete this recipe?">`,
+				`<img id="output" class="w-full text-center h-96" alt="Image of the recipe" style="object-fit: scale-down" src="/data/images/` + r.Image.String() + `.jpg">`,
+				`<span class="text-sm font-normal leading-none">American</span>`,
+				`<p class="text-sm text-center">2 servings</p>`,
+				`<a class="p-1 text-sm duration-300 border rounded-lg hover:bg-gray-800 hover:text-white center" href="https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/" target="_blank"> Source </a>`,
+				`<p class="p-2 text-sm whitespace-pre-line">This is the most delicious recipe!</p>`,
+				`<p class="text-xs">Per 100g: 500 calories; total carbohydrates 7g; sugars 6g; protein 3g; total fat 8g; saturated fat 4g; cholesterol 1g; sodium 5g; fiber 2g.</p>`,
+				`<table class="min-w-full text-xs divide-y divide-gray-200 table-auto"><thead class="h-12 font-medium tracking-wider text-white bg-gray-800"><tr><th scope="col" class="text-right"><p class="text-center">Nutrition<br>(per 100g)</p></th><th scope="col" class="text-center"><p>Amount<br>(optional)</p></th></tr></thead><tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200"><tr><td><p>Calories:</p></td><td class="py-3 text-center"> 500 </td></tr><tr class="bg-gray-100"><td><p>Total carbs:</p></td><td class="py-3 text-center"> 7g </td></tr><tr><td><p>Sugars:</p></td><td class="py-3 text-center"> 6g </td></tr><tr class="bg-gray-100"><td><p>Protein:</p></td><td class="py-3 text-center"> 3g </td></tr><tr><td><p>Total fat:</p></td><td class="py-3 text-center"> 8g </td></tr><tr class="bg-gray-100"><td><p>Saturated fat:</p></td><td class="py-3 text-center"> 4g </td></tr><tr><td><p>Cholesterol:</p></td><td class="py-3 text-center"> 1g </td></tr><tr class="bg-gray-100"><td><p>Sodium:</p></td><td class="py-3 text-center"> 5g </td></tr><tr><td><p>Fiber:</p></td><td class="py-3 text-center"> 2g </td></tr></tbody></table>`,
+				`<td>Preparation:</td><td class="py-3 text-center print:py-0"><time datetime="PT05M">0h05</time></td>`,
+				`<td>Cooking:</td><td class="w-1/2 py-3 text-center print:py-0"><time datetime="PT1H05M">1h05</time></td>`,
+				`<td>Total:</td><td class="w-1/2 py-3 text-center print:py-0"><time datetime="PT1H10M">1h10</time></td>`,
+				`<div class="col-span-6 py-2 border-b border-l border-r border-black md:col-span-2 md:border-r-0 print:hidden"><h2 class="pb-2 m-auto text-sm font-bold text-center text-gray-600 underline ">Ingredients</h2><ul class="grid px-6 columns-2"><li class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200" _="on mousedown toggle .line-through on me then toggle @checked on first <input/> in me"><label for="ingredient-0"></label><input type="checkbox" id="ingredient-0" class="mt-1"><span class="pl-2">Ing1</span></li><li class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200" _="on mousedown toggle .line-through on me then toggle @checked on first <input/> in me"><label for="ingredient-1"></label><input type="checkbox" id="ingredient-1" class="mt-1"><span class="pl-2">Ing2</span></li><li class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200" _="on mousedown toggle .line-through on me then toggle @checked on first <input/> in me"><label for="ingredient-2"></label><input type="checkbox" id="ingredient-2" class="mt-1"><span class="pl-2">Ing3</span></li></ul></div>`,
+				`<div class="col-span-6 py-2 pb-8 border-b border-l border-r border-black rounded-bl-lg md:rounded-bl-none md:col-span-4 print:hidden"><h2 class="pb-2 m-auto text-sm font-bold text-center text-gray-600 underline">Instructions</h2><ol class="grid px-6 list-decimal"><li class="min-w-full py-2 text-sm select-none hover:bg-gray-200" _="on mousedown toggle .line-through on me"><span class="whitespace-pre-line">Ins1</span></li><li class="min-w-full py-2 text-sm select-none hover:bg-gray-200" _="on mousedown toggle .line-through on me"><span class="whitespace-pre-line">Ins2</span></li><li class="min-w-full py-2 text-sm select-none hover:bg-gray-200" _="on mousedown toggle .line-through on me"><span class="whitespace-pre-line">Ins3</span></li></ol></div>`,
+			}
+			assertStringsInHTML(t, getBodyHTML(rr), want)
 		})
 	}
 }

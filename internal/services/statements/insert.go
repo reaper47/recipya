@@ -20,21 +20,24 @@ const InsertIngredient = `
 	INSERT INTO ingredients (name)
 	VALUES (?)
 	ON CONFLICT (name)
-		DO UPDATE SET name = excluded.name`
+		DO UPDATE SET name = excluded.name
+	RETURNING id`
 
 // InsertInstruction is the query to add an instruction.
 const InsertInstruction = `
 	INSERT INTO instructions (name)
 	VALUES (?)
 	ON CONFLICT (name)
-		DO UPDATE SET name = excluded.name`
+		DO UPDATE SET name = excluded.name
+	RETURNING id`
 
 // InsertKeyword is the query to add a keyword.
 const InsertKeyword = `
 	INSERT INTO keywords (name)
 	VALUES (?)
 	ON CONFLICT (name)
-		DO UPDATE SET name = excluded.name`
+		DO UPDATE SET name = excluded.name
+	RETURNING id`
 
 // InsertNutrition is the query to add a nutrition fact.
 const InsertNutrition = `
@@ -85,17 +88,19 @@ const InsertRecipeTool = `
 const InsertTimes = `
 	INSERT INTO times (prep_seconds, cook_seconds)
 	VALUES (?, ?)
-	ON CONFLICT (prep_seconds, cook_seconds) DO UPDATE
-		SET prep_seconds=0
-	WHERE FALSE
-	RETURNING id, prep_seconds, cook_seconds, total_seconds`
+	ON CONFLICT (prep_seconds, cook_seconds) 
+	    DO UPDATE 
+		SET prep_seconds = excluded.prep_seconds,
+		    cook_seconds = excluded.cook_seconds
+	RETURNING id`
 
 // InsertTool is the query to add a tool.
 const InsertTool = `
 	INSERT INTO tools (name)
 	VALUES (?)
 	ON CONFLICT (name)
-		DO UPDATE SET name = excluded.name`
+		DO UPDATE SET name = excluded.name
+	RETURNING id`
 
 // InsertUser is the query to add a user to the database.
 const InsertUser = `

@@ -27,6 +27,9 @@ type RepositoryService interface {
 	// IsUserExist checks whether the user is present in the database.
 	IsUserExist(email string) bool
 
+	// Recipe gets the user's recipe of the given id.
+	Recipe(id, userID int64) (*models.Recipe, error)
+
 	// Register adds a new user to the store.
 	Register(email string, hashPassword auth.HashedPassword) (int64, error)
 
