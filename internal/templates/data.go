@@ -29,7 +29,7 @@ type ScraperData struct {
 }
 
 // NewViewRecipeData creates and populates a new ViewRecipeData.
-func NewViewRecipeData(id int64, recipe *models.Recipe, isEditMode bool) *ViewRecipeData {
+func NewViewRecipeData(id int64, recipe *models.Recipe, isFromHost, isShared bool) *ViewRecipeData {
 	return &ViewRecipeData{
 		FormattedTimes: formattedTimes{
 			Cook:          formatDuration(recipe.Times.Cook, false),
@@ -40,10 +40,13 @@ func NewViewRecipeData(id int64, recipe *models.Recipe, isEditMode bool) *ViewRe
 			TotalDateTime: formatDuration(recipe.Times.Total, true),
 		},
 		ID:          id,
-		IsEditMode:  isEditMode,
 		IsURL:       isURL(recipe.URL),
 		IsUUIDValid: isUUIDValid(recipe.Image),
 		Recipe:      recipe,
+		Share: shareData{
+			IsFromHost: isFromHost,
+			IsShared:   isShared,
+		},
 	}
 }
 
@@ -51,10 +54,10 @@ func NewViewRecipeData(id int64, recipe *models.Recipe, isEditMode bool) *ViewRe
 type ViewRecipeData struct {
 	FormattedTimes formattedTimes
 	ID             int64
-	IsEditMode     bool
 	IsURL          bool
 	IsUUIDValid    bool
 	Recipe         *models.Recipe
+	Share          shareData
 }
 
 type formattedTimes struct {
@@ -64,4 +67,9 @@ type formattedTimes struct {
 	PrepDateTime  string
 	Total         string
 	TotalDateTime string
+}
+
+type shareData struct {
+	IsFromHost bool
+	IsShared   bool
 }

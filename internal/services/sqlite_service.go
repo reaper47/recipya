@@ -238,6 +238,14 @@ func (s *SQLiteService) Confirm(userID int64) error {
 	return nil
 }
 
+func (s *SQLiteService) AddShareLink(link string, recipeID int64) error {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	_, err := s.DB.ExecContext(ctx, statements.InsertShareLink, link, recipeID)
+	return err
+}
+
 func (s *SQLiteService) DeleteAuthToken(userID int64) error {
 	s.Mutex.Lock()
 	defer s.Mutex.Unlock()
@@ -264,6 +272,15 @@ func (s *SQLiteService) GetAuthToken(selector, validator string) (models.AuthTok
 	}
 
 	return token, nil
+}
+
+func (s *SQLiteService) IsRecipeShared(id int64) bool {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	var exists int64
+	_ = s.DB.QueryRowContext(ctx, statements.SelectRecipeShared, id).Scan(&exists)
+	return exists == 1
 }
 
 func (s *SQLiteService) IsUserExist(email string) bool {
@@ -309,6 +326,15 @@ func (s *SQLiteService) Recipe(id, userID int64) (*models.Recipe, error) {
 	r.Times.Cook = r.Times.Cook * time.Second
 	r.Times.Total = r.Times.Total * time.Second
 	return &r, tx.Commit()
+}
+
+func (s *SQLiteService) RecipeUser(recipeID int64) int64 {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	var userID int64
+	_ = s.DB.QueryRowContext(ctx, statements.SelectRecipeUser, recipeID).Scan(&userID)
+	return userID
 }
 
 func (s *SQLiteService) Register(email string, hashedPassword auth.HashedPassword) (int64, error) {

@@ -108,6 +108,20 @@ const SelectRecipe = `
 							  WHERE user_id = ?) AS t
 						WHERE row_num = ?)`
 
+// SelectRecipeShared checks whether the recipe is shared.
+const SelectRecipeShared = `
+	SELECT EXISTS(
+		SELECT 1
+		FROM share
+		WHERE recipe_id = ?
+	)`
+
+// SelectRecipeUser fetches the user whose recipe belongs to.
+const SelectRecipeUser = `
+	SELECT user_id
+	FROM user_recipe
+	WHERE recipe_id = ?`
+
 // SelectUserExist checks whether the user is present.
 const SelectUserExist = `
 	SELECT EXISTS(

@@ -46,9 +46,27 @@ func sendRequestAsLoggedIn(srv *server.Server, method, target string, contentTyp
 	return rr
 }
 
+func sendRequestAsLoggedInOther(srv *server.Server, method, target string, contentType header, body *strings.Reader) *httptest.ResponseRecorder {
+	rr := httptest.NewRecorder()
+	srv.Router.ServeHTTP(rr, prepareRequestOther(method, target, contentType, body))
+	return rr
+}
+
 func sendHxRequestAsLoggedIn(srv *server.Server, method, target string, contentType header, body *strings.Reader) *httptest.ResponseRecorder {
 	rr := httptest.NewRecorder()
 	r := prepareRequest(method, target, contentType, body)
+	if contentType == promptHeader {
+		b, _ := io.ReadAll(body)
+		r.Header.Set("HX-Prompt", string(b))
+	}
+	r.Header.Set("HX-Request", "true")
+	srv.Router.ServeHTTP(rr, r)
+	return rr
+}
+
+func sendHxRequestAsLoggedInOther(srv *server.Server, method, target string, contentType header, body *strings.Reader) *httptest.ResponseRecorder {
+	rr := httptest.NewRecorder()
+	r := prepareRequestOther(method, target, contentType, body)
 	if contentType == promptHeader {
 		b, _ := io.ReadAll(body)
 		r.Header.Set("HX-Prompt", string(b))
@@ -77,6 +95,22 @@ func prepareRequest(method, target string, contentType header, body *strings.Rea
 	server.SessionData[sid] = 1
 	r.AddCookie(server.NewSessionCookie(sid.String()))
 	r = r.WithContext(context.WithValue(r.Context(), "userID", int64(1)))
+
+	if contentType != noHeader {
+		r.Header.Set("Content-Type", string(contentType))
+	}
+	return r
+}
+
+func prepareRequestOther(method, target string, contentType header, body *strings.Reader) *http.Request {
+	if body == nil {
+		body = strings.NewReader("")
+	}
+	r := httptest.NewRequest(method, target, body)
+	sid := uuid.New()
+	server.SessionData[sid] = 2
+	r.AddCookie(server.NewSessionCookie(sid.String()))
+	r = r.WithContext(context.WithValue(r.Context(), "userID", int64(2)))
 
 	if contentType != noHeader {
 		r.Header.Set("Content-Type", string(contentType))

@@ -2,8 +2,10 @@ package server_test
 
 import (
 	"errors"
+	"fmt"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
 	"net/http"
@@ -404,6 +406,146 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 	})
 }
 
+func TestHandlers_recipes_Share(t *testing.T) {
+	srv := newServerTest()
+
+	uri := "/recipes/%d/share"
+
+	app.Config.URL = "https://www.recipya.com"
+	recipe := &models.Recipe{
+		Category:     "American",
+		Description:  "This is the most delicious recipe!",
+		ID:           1,
+		Image:        uuid.New(),
+		Ingredients:  []string{"Ing1", "Ing2", "Ing3"},
+		Instructions: []string{"Ins1", "Ins2", "Ins3"},
+		Name:         "Chicken Jersey",
+		Nutrition: models.Nutrition{
+			Calories:           "500",
+			Cholesterol:        "1g",
+			Fiber:              "2g",
+			Protein:            "3g",
+			SaturatedFat:       "4g",
+			Sodium:             "5g",
+			Sugars:             "6g",
+			TotalCarbohydrates: "7g",
+			TotalFat:           "8g",
+			UnsaturatedFat:     "9g",
+		},
+		Times: models.Times{
+			Prep:  5 * time.Minute,
+			Cook:  1*time.Hour + 5*time.Minute,
+			Total: 1*time.Hour + 10*time.Minute,
+		},
+		URL:   "https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/",
+		Yield: 2,
+	}
+	_, _ = srv.Repository.AddRecipe(recipe, 1)
+	_ = srv.Repository.AddShareLink("https://www.recipya.com/recipes/1/share", 1)
+
+	t.Run("create valid share link", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, fmt.Sprintf(uri, 1), noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		want := []string{
+			`<input type="url" value="https://www.recipya.com/recipes/1/share" class="w-full rounded-lg bg-gray-100 px-4 py-2" readonly="readonly">`,
+			`<button class="w-24 font-semibold p-2 bg-gray-300 rounded-lg hover:bg-gray-400" title="Copy to clipboard" _="on click js if ('clipboard' in window.navigator) { navigator.clipboard.writeText('https://www.recipya.com/recipes/1/share') } end then put 'Copied!' into me then add @title='Copied to clipboard!' then toggle @disabled on me then toggle .cursor-not-allowed .bg-green-600 .text-white .hover:bg-gray-400 on me"> Copy </button>`,
+		}
+		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
+
+	t.Run("create invalid share link", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, fmt.Sprintf(uri, 10), noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusInternalServerError)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Failed to create share link.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+	})
+
+	t.Run("access share link anonymous", func(t *testing.T) {
+		rr := sendRequest(srv, http.MethodGet, fmt.Sprintf(uri, 1), noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		want := []string{
+			`<title hx-swap-oob="true">` + recipe.Name + " | Recipya</title>",
+			`<div class="flex"><div class="flex-auto"><a href="/auth/login" class="mr-4 rounded-lg px-2 py-1 text-white hover:bg-green-600">Log In</a></div><div class="flex-auto"><a href="/auth/register" class="mr-4 rounded-lg bg-blue-100 px-2 py-1 hover:bg-red-600 hover:text-white"> Sign Up </a></div></div>`,
+			`<div class="grid col-span-1"></div><h1 class="grid col-span-4 py-2 font-bold place-content-center">` + recipe.Name + `</h1><div class="grid justify-end col-span-1 place-content-center print:invisible"><button class="mr-2" onclick="print()" title="Print recipe"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg></button></div>`,
+			`<img id="output" class="w-full text-center h-96" alt="Image of the recipe" style="object-fit: scale-down" src="/data/images/` + recipe.Image.String() + `.jpg">`,
+			`<span class="text-sm font-normal leading-none">American</span>`,
+			`<p class="text-sm text-center">2 servings</p>`,
+			`<a class="p-1 text-sm duration-300 border rounded-lg hover:bg-gray-800 hover:text-white center" href="https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/" target="_blank"> Source </a>`,
+			`<p class="p-2 text-sm whitespace-pre-line">This is the most delicious recipe!</p>`,
+			`<p class="text-xs">Per 100g: 500 calories; total carbohydrates 7g; sugars 6g; protein 3g; total fat 8g; saturated fat 4g; cholesterol 1g; sodium 5g; fiber 2g.</p>`,
+			`<table class="min-w-full text-xs divide-y divide-gray-200 table-auto"><thead class="h-12 font-medium tracking-wider text-white bg-gray-800"><tr><th scope="col" class="text-right"><p class="text-center">Nutrition<br>(per 100g)</p></th><th scope="col" class="text-center"><p>Amount<br>(optional)</p></th></tr></thead><tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200"><tr><td><p>Calories:</p></td><td class="py-3 text-center"> 500 </td></tr><tr class="bg-gray-100"><td><p>Total carbs:</p></td><td class="py-3 text-center"> 7g </td></tr><tr><td><p>Sugars:</p></td><td class="py-3 text-center"> 6g </td></tr><tr class="bg-gray-100"><td><p>Protein:</p></td><td class="py-3 text-center"> 3g </td></tr><tr><td><p>Total fat:</p></td><td class="py-3 text-center"> 8g </td></tr><tr class="bg-gray-100"><td><p>Saturated fat:</p></td><td class="py-3 text-center"> 4g </td></tr><tr><td><p>Cholesterol:</p></td><td class="py-3 text-center"> 1g </td></tr><tr class="bg-gray-100"><td><p>Sodium:</p></td><td class="py-3 text-center"> 5g </td></tr><tr><td><p>Fiber:</p></td><td class="py-3 text-center"> 2g </td></tr></tbody></table>`,
+			`<td>Preparation:</td><td class="py-3 text-center print:py-0"><time datetime="PT05M">0h05</time></td>`,
+			`<td>Cooking:</td><td class="w-1/2 py-3 text-center print:py-0"><time datetime="PT1H05M">1h05</time></td>`,
+			`<td>Total:</td><td class="w-1/2 py-3 text-center print:py-0"><time datetime="PT1H10M">1h10</time></td>`,
+			`<div class="col-span-6 py-2 border-b border-l border-r border-black md:col-span-2 md:border-r-0 print:hidden"><h2 class="pb-2 m-auto text-sm font-bold text-center text-gray-600 underline ">Ingredients</h2><ul class="grid px-6 columns-2"><li class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200" _="on mousedown toggle .line-through on me then toggle @checked on first <input/> in me"><label for="ingredient-0"></label><input type="checkbox" id="ingredient-0" class="mt-1"><span class="pl-2">Ing1</span></li><li class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200" _="on mousedown toggle .line-through on me then toggle @checked on first <input/> in me"><label for="ingredient-1"></label><input type="checkbox" id="ingredient-1" class="mt-1"><span class="pl-2">Ing2</span></li><li class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200" _="on mousedown toggle .line-through on me then toggle @checked on first <input/> in me"><label for="ingredient-2"></label><input type="checkbox" id="ingredient-2" class="mt-1"><span class="pl-2">Ing3</span></li></ul></div>`,
+			`<div class="col-span-6 py-2 pb-8 border-b border-l border-r border-black rounded-bl-lg md:rounded-bl-none md:col-span-4 print:hidden"><h2 class="pb-2 m-auto text-sm font-bold text-center text-gray-600 underline">Instructions</h2><ol class="grid px-6 list-decimal"><li class="min-w-full py-2 text-sm select-none hover:bg-gray-200" _="on mousedown toggle .line-through on me"><span class="whitespace-pre-line">Ins1</span></li><li class="min-w-full py-2 text-sm select-none hover:bg-gray-200" _="on mousedown toggle .line-through on me"><span class="whitespace-pre-line">Ins2</span></li><li class="min-w-full py-2 text-sm select-none hover:bg-gray-200" _="on mousedown toggle .line-through on me"><span class="whitespace-pre-line">Ins3</span></li></ol></div>`,
+		}
+		notWant := []string{
+			`<dialog id="share-dialog" class="p-4 border-4 border-black min-w-[15rem]"><div id="share-dialog-result" class="pb-4"></div>`,
+		}
+		body := getBodyHTML(rr)
+		assertStringsInHTML(t, body, want)
+		assertStringsNotInHTML(t, body, notWant)
+	})
+
+	testcases := []struct {
+		name     string
+		sendFunc func(server *server.Server, target, uri string, contentType header, body *strings.Reader) *httptest.ResponseRecorder
+	}{
+		{name: "other user Hx-Request", sendFunc: sendHxRequestAsLoggedInOther},
+		{name: "other user no Hx-Request", sendFunc: sendRequestAsLoggedInOther},
+	}
+	for _, tc := range testcases {
+		t.Run("access share link logged in "+tc.name, func(t *testing.T) {
+			rr := tc.sendFunc(srv, http.MethodGet, fmt.Sprintf(uri, 1), noHeader, nil)
+
+			assertStatus(t, rr.Code, http.StatusOK)
+			want := []string{
+				`<title hx-swap-oob="true">` + recipe.Name + " | Recipya</title>",
+				`<button class="mr-2" title="Add recipe to collection" hx-post="/recipes/1/share/add"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24" width="24px" height="24px" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></button>`,
+			}
+			notWant := []string{
+				`<dialog id="share-dialog" class="p-4 border-4 border-black min-w-[15rem]"><div id="share-dialog-result" class="pb-4"></div>`,
+				`<button class="mr-2" title="Share recipe" hx-post="/recipes/1/share" hx-target="#share-dialog-result" _="on htmx:afterRequest from me if event.detail.successful call #share-dialog.showModal()">`,
+			}
+			body := getBodyHTML(rr)
+			assertStringsInHTML(t, body, want)
+			assertStringsNotInHTML(t, body, notWant)
+		})
+	}
+
+	testcases2 := []struct {
+		name     string
+		sendFunc func(server *server.Server, target, uri string, contentType header, body *strings.Reader) *httptest.ResponseRecorder
+	}{
+		{name: "host user Hx-Request", sendFunc: sendHxRequestAsLoggedIn},
+		{name: "host user no Hx-Request", sendFunc: sendRequestAsLoggedIn},
+	}
+	for _, tc := range testcases2 {
+		t.Run("access share link logged "+tc.name, func(t *testing.T) {
+			rr := tc.sendFunc(srv, http.MethodGet, fmt.Sprintf(uri, 1), noHeader, nil)
+
+			assertStatus(t, rr.Code, http.StatusOK)
+			want := []string{
+				`<title hx-swap-oob="true">` + recipe.Name + " | Recipya</title>",
+				`<button class="mr-2" onclick="print()" title="Print recipe">`,
+				`<button class="mr-2" hx-delete="/recipes/1" hx-swap="none" title="Delete recipe" hx-confirm="Are you sure you wish to delete this recipe?">`,
+			}
+			notWant := []string{
+				`<dialog id="share-dialog" class="p-4 border-4 border-black min-w-[15rem]"><div id="share-dialog-result" class="pb-4"></div>`,
+				`<button class="mr-2" title="Add recipe to collection" hx-post="/recipes/1/share/add"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24" width="24px" height="24px" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></button>`,
+				`<button class="mr-2" title="Share recipe" hx-post="/recipes/1/share" hx-target="#share-dialog-result" _="on htmx:afterRequest from me if event.detail.successful call #share-dialog.showModal()">`,
+				`<button class="mr-2" title="Add recipe to collection" hx-post="/recipes/1/share/add"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24" width="24px" height="24px" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></button>`,
+			}
+			body := getBodyHTML(rr)
+			assertStringsInHTML(t, body, want)
+			assertStringsNotInHTML(t, body, notWant)
+		})
+	}
+}
+
 func TestHandlers_Recipes_SupportedWebsites(t *testing.T) {
 	srv := newServerTest()
 
@@ -530,8 +672,10 @@ func TestHandlers_Recipes_View(t *testing.T) {
 				`<title hx-swap-oob="true">` + r.Name + " | Recipya</title>",
 				`<a href="/recipes/1/edit" class="ml-2" title="Edit recipe">`,
 				`<h1 class="grid col-span-4 py-2 font-bold place-content-center">Chicken Jersey</h1>`,
+				`<button class="mr-2" title="Share recipe" hx-post="/recipes/1/share" hx-target="#share-dialog-result" _="on htmx:afterRequest from me if event.detail.successful call #share-dialog.showModal()">`,
 				`<button class="mr-2" onclick="print()" title="Print recipe">`,
 				`<button class="mr-2" hx-delete="/recipes/1" hx-swap="none" title="Delete recipe" hx-confirm="Are you sure you wish to delete this recipe?">`,
+				`<dialog id="share-dialog" class="p-4 border-4 border-black min-w-[15rem]"><div id="share-dialog-result" class="pb-4"></div>`,
 				`<img id="output" class="w-full text-center h-96" alt="Image of the recipe" style="object-fit: scale-down" src="/data/images/` + r.Image.String() + `.jpg">`,
 				`<span class="text-sm font-normal leading-none">American</span>`,
 				`<p class="text-sm text-center">2 servings</p>`,

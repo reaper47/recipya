@@ -400,6 +400,63 @@ func (s *Server) recipesAddWebsiteHandler(w http.ResponseWriter, r *http.Request
 	w.WriteHeader(http.StatusSeeOther)
 }
 
+func (s *Server) recipeShareHandler(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	var userID int64
+	isLoggedIn := true
+	if userID = getUserIDFromSessionCookie(r); userID == -1 {
+		if userID = getUserIDFromRememberMeCookie(r, s.Repository.GetAuthToken); userID == -1 {
+			isLoggedIn = false
+		}
+	}
+
+	if !s.Repository.IsRecipeShared(id) {
+		notFoundHandler(w, r)
+		return
+	}
+
+	userRecipeID := s.Repository.RecipeUser(id)
+	recipe, err := s.Repository.Recipe(id, userRecipeID)
+	if err != nil {
+		notFoundHandler(w, r)
+		return
+	}
+
+	data := templates.Data{
+		IsAuthenticated: isLoggedIn,
+		Title:           recipe.Name,
+		View:            templates.NewViewRecipeData(id, recipe, userID == userRecipeID, true),
+	}
+
+	if r.Header.Get("Hx-Request") == "true" {
+		templates.RenderComponent(w, "recipes", "view-recipe", data)
+	} else {
+		templates.Render(w, templates.ViewRecipePage, data)
+	}
+}
+
+func (s *Server) recipeSharePostHandler(w http.ResponseWriter, r *http.Request) {
+	recipeID, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	link := app.Config.Address() + r.URL.String()
+	if err := s.Repository.AddShareLink(link, recipeID); err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Failed to create share link.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	templates.RenderComponent(w, "recipes", "share-recipe", templates.Data{Content: link})
+}
+
 func (s *Server) recipesSupportedWebsitesHandler(w http.ResponseWriter, _ *http.Request) {
 	websites := s.Repository.Websites()
 	w.Header().Set("Content-Type", "text/html")
@@ -432,18 +489,15 @@ func (s *Server) recipesViewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	viewData := templates.NewViewRecipeData(id, recipe, true)
+	data := templates.Data{
+		IsAuthenticated: true,
+		Title:           recipe.Name,
+		View:            templates.NewViewRecipeData(id, recipe, true, false),
+	}
 
 	if r.Header.Get("Hx-Request") == "true" {
-		templates.RenderComponent(w, "recipes", "view-recipe", templates.Data{
-			Title: recipe.Name,
-			View:  viewData,
-		})
+		templates.RenderComponent(w, "recipes", "view-recipe", data)
 	} else {
-		templates.Render(w, templates.ViewRecipePage, templates.Data{
-			IsAuthenticated: true,
-			Title:           recipe.Name,
-			View:            viewData,
-		})
+		templates.Render(w, templates.ViewRecipePage, data)
 	}
 }

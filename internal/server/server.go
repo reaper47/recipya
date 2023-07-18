@@ -54,6 +54,7 @@ func (s *Server) mountHandlers() {
 	r := chi.NewRouter()
 
 	r.Get("/", s.indexHandler)
+	r.Get("/recipes/{id:[1-9]([0-9])*}/share", s.recipeShareHandler)
 
 	r.Route("/auth", func(r chi.Router) {
 		r.Get("/confirm", s.confirmHandler)
@@ -90,7 +91,10 @@ func (s *Server) mountHandlers() {
 	r.Route("/recipes", func(r chi.Router) {
 		r.Use(s.mustBeLoggedInMiddleware)
 
-		r.Get("/{id:[1-9]([0-9])*}", s.recipesViewHandler)
+		r.Route("/{id:[1-9]([0-9])*}", func(r chi.Router) {
+			r.Get("/", s.recipesViewHandler)
+			r.Post("/share", s.recipeSharePostHandler)
+		})
 
 		r.Route("/add", func(r chi.Router) {
 			r.Get("/", recipesAddHandler)

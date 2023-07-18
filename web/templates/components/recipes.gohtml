@@ -463,6 +463,27 @@
     </script>
 {{end}}
 
+{{define "share-recipe"}}
+    <div class="grid grid-flow-col gap-2">
+        <label>
+            <input type="url" value="{{.Content}}" class="w-full rounded-lg bg-gray-100 px-4 py-2" readonly="readonly">
+        </label>
+        <button class="w-24 font-semibold p-2 bg-gray-300 rounded-lg hover:bg-gray-400" title="Copy to clipboard"
+                _="on click
+           js
+               if ('clipboard' in window.navigator) {
+               	 navigator.clipboard.writeText('{{.Content}}')
+               }
+           end
+           then put 'Copied!' into me
+           then add @title='Copied to clipboard!'
+           then toggle @disabled on me
+           then toggle .cursor-not-allowed .bg-green-600 .text-white .hover:bg-gray-400 on me">
+            Copy
+        </button>
+    </div>
+{{end}}
+
 {{define "unsupported-website"}}
     <title hx-swap-oob="true">Unsupported Website | Recipya</title>
 
@@ -499,9 +520,20 @@
 {{define "view-recipe"}}
     <title hx-swap-oob="true">{{.Title}} | Recipya</title>
 
+    {{- if not .View.Share.IsShared -}}
+        <dialog id="share-dialog" class="p-4 border-4 border-black min-w-[15rem]">
+            <div id="share-dialog-result" class="pb-4"></div>
+            <form method="dialog">
+                <button class="w-full p-1 font-semibold text-white duration-300 bg-blue-500 border-2 border-black rounded-lg hover:bg-blue-800">
+                    OK
+                </button>
+            </form>
+        </dialog>
+    {{- end -}}
+
     <div class="grid grid-cols-6 max-w-6xl px-4 pb-4 m-auto mt-4 print:m-0 print:p-0">
         <div class="grid grid-cols-6 col-span-6 text-lg border border-gray-900 rounded-t-md md:text-xl print:rounded-t-none">
-            {{- if .View.IsEditMode -}}
+            {{- if .IsAuthenticated -}}
                 <div class="grid justify-start col-span-1 place-content-center print:invisible">
                     <a href="/recipes/{{.View.ID}}/edit" class="ml-2" title="Edit recipe">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none"
@@ -514,6 +546,30 @@
                 <h1 class="grid col-span-4 py-2 font-bold place-content-center">{{.View.Recipe.Name}}</h1>
                 <div class="grid justify-end col-span-1 place-content-center print:invisible">
                     <div class="grid grid-flow-col">
+                        {{- if .View.Share.IsShared -}}
+                            {{- if not .View.Share.IsFromHost -}}
+                                <button class="mr-2" title="Add recipe to collection"
+                                        hx-post="/recipes/{{.View.Recipe.ID}}/share/add">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600"
+                                         fill="none" viewBox="0 0 24 24" width="24px" height="24px"
+                                         stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="12" y1="8" x2="12" y2="16"/>
+                                        <line x1="8" y1="12" x2="16" y2="12"/>
+                                    </svg>
+                                </button>
+                            {{- end -}}
+                        {{else}}
+                            <button class="mr-2" title="Share recipe" hx-post="/recipes/{{.View.Recipe.ID}}/share"
+                                    hx-target="#share-dialog-result"
+                                    _="on htmx:afterRequest from me if event.detail.successful call #share-dialog.showModal()">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none"
+                                     viewBox="0 0 24 24" width="24px" height="24px" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25"
+                                          d="M 18 2 C 16.35499 2 15 3.3549904 15 5 C 15 5.1909529 15.021791 5.3771224 15.056641 5.5585938 L 7.921875 9.7207031 C 7.3985399 9.2778539 6.7320771 9 6 9 C 4.3549904 9 3 10.35499 3 12 C 3 13.64501 4.3549904 15 6 15 C 6.7320771 15 7.3985399 14.722146 7.921875 14.279297 L 15.056641 18.439453 C 15.021555 18.621514 15 18.808386 15 19 C 15 20.64501 16.35499 22 18 22 C 19.64501 22 21 20.64501 21 19 C 21 17.35499 19.64501 16 18 16 C 17.26748 16 16.601593 16.279328 16.078125 16.722656 L 8.9433594 12.558594 C 8.9782095 12.377122 9 12.190953 9 12 C 9 11.809047 8.9782095 11.622878 8.9433594 11.441406 L 16.078125 7.2792969 C 16.60146 7.7221461 17.267923 8 18 8 C 19.64501 8 21 6.6450096 21 5 C 21 3.3549904 19.64501 2 18 2 z M 18 4 C 18.564129 4 19 4.4358706 19 5 C 19 5.5641294 18.564129 6 18 6 C 17.435871 6 17 5.5641294 17 5 C 17 4.4358706 17.435871 4 18 4 z M 6 11 C 6.5641294 11 7 11.435871 7 12 C 7 12.564129 6.5641294 13 6 13 C 5.4358706 13 5 12.564129 5 12 C 5 11.435871 5.4358706 11 6 11 z M 18 18 C 18.564129 18 19 18.435871 19 19 C 19 19.564129 18.564129 20 18 20 C 17.435871 20 17 19.564129 17 19 C 17 18.435871 17.435871 18 18 18 z"/>
+                                </svg>
+                            </button>
+                        {{- end -}}
                         <button class="mr-2" onclick="print()" title="Print recipe">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none"
                                  viewBox="0 0 24 24" stroke="currentColor">

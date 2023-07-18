@@ -15,6 +15,9 @@ type RepositoryService interface {
 	// AddRecipe adds a recipe to the user's collection.
 	AddRecipe(r *models.Recipe, userID int64) (int64, error)
 
+	// AddShareLink adds a share link for the recipe.
+	AddShareLink(link string, recipeID int64) error
+
 	// Confirm confirms the user's account.
 	Confirm(userID int64) error
 
@@ -24,11 +27,17 @@ type RepositoryService interface {
 	// GetAuthToken gets a non-expired auth token by the selector.
 	GetAuthToken(selector, validator string) (models.AuthToken, error)
 
+	// IsRecipeShared checks whether the recipe is shared.
+	IsRecipeShared(id int64) bool
+
 	// IsUserExist checks whether the user is present in the database.
 	IsUserExist(email string) bool
 
 	// Recipe gets the user's recipe of the given id.
 	Recipe(id, userID int64) (*models.Recipe, error)
+
+	// RecipeUser gets the user for which the recipe belongs to.
+	RecipeUser(recipeID int64) int64
 
 	// Register adds a new user to the store.
 	Register(email string, hashPassword auth.HashedPassword) (int64, error)

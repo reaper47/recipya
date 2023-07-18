@@ -84,6 +84,12 @@ const InsertRecipeTool = `
 	INSERT INTO tool_recipe (tool_id, recipe_id)
 	VALUES (?, ?)`
 
+// InsertShareLink is the query to add a recipe share link to the database.
+const InsertShareLink = `
+	INSERT INTO share (link, recipe_id)
+	VALUES (?, ?)
+	ON CONFLICT (link, recipe_id) DO NOTHING`
+
 // InsertTimes is the query to add kitchen times.
 const InsertTimes = `
 	INSERT INTO times (prep_seconds, cook_seconds)

@@ -16,6 +16,7 @@ func newServerTest() *server.Server {
 	repo := &mockRepository{
 		AuthTokens:      make([]models.AuthToken, 0),
 		Recipes:         make(map[int64]models.Recipes, 0),
+		ShareLinks:      make(map[int64]string, 0),
 		UsersRegistered: make([]models.User, 0),
 		UsersUpdated:    make([]int64, 0),
 	}
@@ -27,6 +28,7 @@ type mockRepository struct {
 	AddRecipeFunc   func(recipe *models.Recipe, userID int64) (int64, error)
 	RecipeFunc      func(id, userID int64) (*models.Recipe, error)
 	Recipes         map[int64]models.Recipes
+	ShareLinks      map[int64]string
 	UsersRegistered []models.User
 	UsersUpdated    []int64
 }
@@ -54,6 +56,19 @@ func (m *mockRepository) AddRecipe(r *models.Recipe, userID int64) (int64, error
 	return int64(len(m.Recipes)), nil
 }
 
+func (m *mockRepository) AddShareLink(link string, recipeID int64) error {
+	for _, recipes := range m.Recipes {
+		if slices.ContainsFunc(recipes, func(r models.Recipe) bool { return r.ID == recipeID }) {
+			if _, ok := m.ShareLinks[recipeID]; ok {
+				return nil
+			}
+			m.ShareLinks[recipeID] = link
+			return nil
+		}
+	}
+	return errors.New("recipe not found")
+}
+
 func (m *mockRepository) Confirm(userID int64) error {
 	if !slices.ContainsFunc(m.UsersRegistered, func(user models.User) bool {
 		return user.ID == userID
@@ -75,6 +90,11 @@ func (m *mockRepository) GetAuthToken(_, _ string) (models.AuthToken, error) {
 	return models.AuthToken{UserID: 1}, nil
 }
 
+func (m *mockRepository) IsRecipeShared(id int64) bool {
+	_, ok := m.ShareLinks[id]
+	return ok
+}
+
 func (m *mockRepository) IsUserExist(email string) bool {
 	return slices.ContainsFunc(m.UsersRegistered, func(user models.User) bool {
 		return user.Email == email
@@ -93,6 +113,15 @@ func (m *mockRepository) Recipe(id, userID int64) (*models.Recipe, error) {
 		return &recipes[id-1], nil
 	}
 	return nil, errors.New("recipe not found")
+}
+
+func (m *mockRepository) RecipeUser(recipeID int64) int64 {
+	for userID, recipes := range m.Recipes {
+		if i := slices.IndexFunc(recipes, func(r models.Recipe) bool { return r.ID == recipeID }); i != -1 {
+			return userID
+		}
+	}
+	return -1
 }
 
 func (m *mockRepository) Register(email string, _ auth.HashedPassword) (int64, error) {
