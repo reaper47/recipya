@@ -7,8 +7,10 @@ const InsertAuthToken = `
 
 // InsertCategory is the query to add a category to the database
 const InsertCategory = `
-	INSERT OR IGNORE INTO categories (name)
-	VALUES (?)`
+	INSERT INTO categories (name)
+	VALUES (?)
+	ON CONFLICT DO UPDATE SET name = EXCLUDED.name
+	RETURNING id`
 
 // InsertCuisine is the query to add a cuisine to the database
 const InsertCuisine = `
@@ -19,8 +21,7 @@ const InsertCuisine = `
 const InsertIngredient = `
 	INSERT INTO ingredients (name)
 	VALUES (?)
-	ON CONFLICT (name)
-		DO UPDATE SET name = excluded.name
+	ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name
 	RETURNING id`
 
 // InsertInstruction is the query to add an instruction.
@@ -28,7 +29,7 @@ const InsertInstruction = `
 	INSERT INTO instructions (name)
 	VALUES (?)
 	ON CONFLICT (name)
-		DO UPDATE SET name = excluded.name
+		DO UPDATE SET name = EXCLUDED.name
 	RETURNING id`
 
 // InsertKeyword is the query to add a keyword.
@@ -36,7 +37,7 @@ const InsertKeyword = `
 	INSERT INTO keywords (name)
 	VALUES (?)
 	ON CONFLICT (name)
-		DO UPDATE SET name = excluded.name
+		DO UPDATE SET name = EXCLUDED.name
 	RETURNING id`
 
 // InsertNutrition is the query to add a nutrition fact.
@@ -96,8 +97,8 @@ const InsertTimes = `
 	VALUES (?, ?)
 	ON CONFLICT (prep_seconds, cook_seconds) 
 	    DO UPDATE 
-		SET prep_seconds = excluded.prep_seconds,
-		    cook_seconds = excluded.cook_seconds
+		SET prep_seconds = EXCLUDED.prep_seconds,
+		    cook_seconds = EXCLUDED.cook_seconds
 	RETURNING id`
 
 // InsertTool is the query to add a tool.
@@ -105,12 +106,17 @@ const InsertTool = `
 	INSERT INTO tools (name)
 	VALUES (?)
 	ON CONFLICT (name)
-		DO UPDATE SET name = excluded.name
+		DO UPDATE SET name = EXCLUDED.name
 	RETURNING id`
 
 // InsertUser is the query to add a user to the database.
 const InsertUser = `
 	INSERT INTO users (email, hashed_password)
+	VALUES (?, ?)`
+
+// InsertUserCategory is the query to associate a category with a user.
+const InsertUserCategory = `
+	INSERT OR IGNORE INTO user_category (user_id, category_id)
 	VALUES (?, ?)`
 
 // InsertUserRecipe is the query to associate a recipe with a user.

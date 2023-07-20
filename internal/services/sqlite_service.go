@@ -121,16 +121,16 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error)
 	}
 
 	// Insert category
-	if _, err := tx.ExecContext(ctx, statements.InsertCategory, r.Category, userID); err != nil {
-		return -1, err
-	}
-
 	var categoryID int64
-	if err := tx.QueryRowContext(ctx, statements.SelectCategoryID, r.Category).Scan(&categoryID); errors.Is(err, sql.ErrNoRows) {
+	if err := tx.QueryRowContext(ctx, statements.InsertCategory, r.Category, userID).Scan(&categoryID); err != nil {
 		return -1, err
 	}
 
 	if _, err := tx.ExecContext(ctx, statements.InsertRecipeCategory, categoryID, recipeID); err != nil {
+		return -1, err
+	}
+
+	if _, err := tx.ExecContext(ctx, statements.InsertUserCategory, userID, categoryID); err != nil {
 		return -1, err
 	}
 
@@ -213,6 +213,27 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error)
 	}
 
 	return recipeID, tx.Commit()
+}
+
+func (s *SQLiteService) Categories(userID int64) ([]string, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	var categories []string
+	rows, err := s.DB.QueryContext(ctx, statements.SelectCategories, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var c string
+		if err := rows.Scan(&c); err != nil {
+			return nil, err
+		}
+		categories = append(categories, c)
+	}
+	return categories, nil
 }
 
 func (s *SQLiteService) Confirm(userID int64) error {

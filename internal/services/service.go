@@ -1,9 +1,11 @@
 package services
 
 import (
+	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
+	"io"
 	"mime/multipart"
 )
 
@@ -17,6 +19,9 @@ type RepositoryService interface {
 
 	// AddShareLink adds a share link for the recipe.
 	AddShareLink(link string, recipeID int64) error
+
+	// Categories gets all categories in the database.
+	Categories(userID int64) ([]string, error)
 
 	// Confirm confirms the user's account.
 	Confirm(userID int64) error
@@ -75,4 +80,7 @@ type EmailService interface {
 type FilesService interface {
 	// ExtractRecipes extracts the recipes from the HTTP files.
 	ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recipes
+
+	// UploadImage uploads an image to the server.
+	UploadImage(rc io.ReadCloser) (uuid.UUID, error)
 }

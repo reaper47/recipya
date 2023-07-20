@@ -1,11 +1,13 @@
 package server_test
 
 import (
+	"bytes"
 	"context"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/server"
 	"io"
+	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
 	"regexp"
@@ -24,6 +26,24 @@ var (
 	regexRmSpaces = regexp.MustCompile(`>\s+<`)
 	regexOneLine  = regexp.MustCompile(`\s{2,}|\n`)
 )
+
+func createMultipartForm(fields map[string]string) (contentType string, body string) {
+	var buf bytes.Buffer
+	writer := multipart.NewWriter(&buf)
+
+	for name, value := range fields {
+		if strings.HasSuffix(value, ".jpg") {
+			field, _ := writer.CreateFormFile(name, value)
+			field.Write([]byte("not a real file"))
+		} else {
+			field, _ := writer.CreateFormField(name)
+			field.Write([]byte(value))
+		}
+	}
+	writer.Close()
+
+	return writer.FormDataContentType(), buf.String()
+}
 
 func sendRequest(srv *server.Server, method, target string, contentType header, body *strings.Reader) *httptest.ResponseRecorder {
 	if body == nil {

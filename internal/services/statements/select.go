@@ -21,11 +21,13 @@ const SelectAuthToken = `
 	WHERE selector = ?
 	AND expires > unixepoch('now')`
 
-// SelectCategoryID is the query to get the ID of the specified category.
-const SelectCategoryID = `
-	SELECT id 
-	FROM categories 
-	WHERE name = ?`
+// SelectCategories is the query to fetch a user's recipe categories.
+const SelectCategories = `
+	SELECT c.name
+	FROM user_category AS uc
+	JOIN categories c ON c.id = uc.category_id
+	WHERE uc.user_id = ?
+	ORDER BY name`
 
 // SelectCuisineID is the query to get the ID of the specified cuisine.
 const SelectCuisineID = `

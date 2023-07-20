@@ -3,7 +3,6 @@ package server
 import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
-	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/scraper"
@@ -62,22 +61,56 @@ func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request)
 	w.WriteHeader(http.StatusCreated)
 }
 
-func recipeAddManualHandler(w http.ResponseWriter, r *http.Request) {
+func (s *Server) recipeAddManualHandler(w http.ResponseWriter, r *http.Request) {
+	categories, err := s.Repository.Categories(r.Context().Value("userID").(int64))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	viewData := &templates.ViewRecipeData{Categories: categories}
+
 	if r.Header.Get("Hx-Request") == "true" {
-		templates.RenderComponent(w, "recipes", "add-recipe-manual", nil)
+		templates.RenderComponent(w, "recipes", "add-recipe-manual", templates.Data{
+			View: viewData,
+		})
 	} else {
 		page := templates.AddRecipeManualPage
 		templates.Render(w, page, templates.Data{
 			IsAuthenticated: true,
 			Title:           page.Title(),
+			View:            viewData,
 		})
 	}
 }
 
 func (s *Server) recipeAddManualPostHandler(w http.ResponseWriter, r *http.Request) {
-	if err := r.ParseForm(); err != nil {
+	r.Body = http.MaxBytesReader(w, r.Body, 128<<20)
+	if err := r.ParseMultipartForm(128 << 20); err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not parse the form.", errorToast))
-		w.WriteHeader(http.StatusNoContent)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	imageFile, ok := r.MultipartForm.File["image"]
+	if !ok {
+		w.Header().Set("HX-Trigger", makeToast("Could not retrieve the image from the form.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	f, err := imageFile[0].Open()
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Could open the image from the form.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	defer f.Close()
+
+	imageUUID, err := s.Files.UploadImage(f)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Error uploading image.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
@@ -108,16 +141,23 @@ func (s *Server) recipeAddManualPostHandler(w http.ResponseWriter, r *http.Reque
 	times, err := models.NewTimes(r.FormValue("time-preparation"), r.FormValue("time-cooking"))
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Error parsing times.", errorToast))
-		w.WriteHeader(http.StatusNoContent)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	yield, err := strconv.ParseInt(r.FormValue("yield"), 10, 16)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Error parsing yield.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	recipe := &models.Recipe{
-		Category:     "",
+		Category:     strings.ToLower(r.FormValue("category")),
 		CreatedAt:    time.Time{},
 		Cuisine:      "",
 		Description:  r.FormValue("description"),
-		Image:        uuid.UUID{},
+		Image:        imageUUID,
 		Ingredients:  ingredients,
 		Instructions: instructions,
 		Keywords:     nil,
@@ -137,8 +177,8 @@ func (s *Server) recipeAddManualPostHandler(w http.ResponseWriter, r *http.Reque
 		Times:     times,
 		Tools:     nil,
 		UpdatedAt: time.Time{},
-		URL:       "",
-		Yield:     0,
+		URL:       r.FormValue("source"),
+		Yield:     int16(yield),
 	}
 
 	recipeID, err := s.Repository.AddRecipe(recipe, r.Context().Value("userID").(int64))
@@ -372,7 +412,7 @@ func (s *Server) recipesAddWebsiteHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	rs, err := scraper.Scrape(rawURL)
+	rs, err := scraper.Scrape(rawURL, s.Files)
 	if err != nil {
 		templates.RenderComponent(w, "recipes", "unsupported-website", templates.Data{
 			IsAuthenticated: true,

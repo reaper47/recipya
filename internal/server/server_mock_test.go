@@ -3,11 +3,13 @@ package server_test
 import (
 	"database/sql"
 	"errors"
+	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
 	"github.com/reaper47/recipya/internal/templates"
 	"golang.org/x/exp/slices"
+	"io"
 	"mime/multipart"
 	"strings"
 )
@@ -67,6 +69,10 @@ func (m *mockRepository) AddShareLink(link string, recipeID int64) error {
 		}
 	}
 	return errors.New("recipe not found")
+}
+
+func (m *mockRepository) Categories(_ int64) ([]string, error) {
+	return []string{"breakfast", "lunch", "dinner"}, nil
 }
 
 func (m *mockRepository) Confirm(userID int64) error {
@@ -218,4 +224,8 @@ func (m *mockFiles) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.R
 		return m.extractRecipesFunc(fileHeaders)
 	}
 	return models.Recipes{}
+}
+
+func (m *mockFiles) UploadImage(_ io.ReadCloser) (uuid.UUID, error) {
+	return uuid.New(), nil
 }

@@ -166,6 +166,57 @@
                    class="w-full py-2 font-bold text-center text-gray-600 placeholder-gray-400 rounded-t-lg">
         </div>
 
+        <label class="grid col-span-6 w-full h-96 border-b border-l border-r border-black place-content-center md:border-r-0 md:col-span-4 text-sm">
+            <img src="" alt="Image preview of the recipe." class="h-full">
+            <span>
+                <input type="file" accept="image/*" name="image" required
+                       _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
+                      on dragleave or drop set the target's style.background to ''
+                      on drop or change
+                        make an FileReader called reader
+                        then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end
+                        then set {src: window.URL.createObjectURL(it)} on previous <img/>
+                        then remove .hidden from next <button/>">
+                <button type="button"
+                        class="px-2 bg-red-300 border border-gray-800 rounded-lg hover:bg-red-600 hover:text-white hidden"
+                        _="on click
+                            set {value: ''} on previous <input/>
+                            then set {src: ''} on previous <img/>
+                            then add .hidden">
+                    Delete
+                </button>
+            </span>
+        </label>
+
+        <div class="grid grid-flow-col col-span-6 border-b border-l border-black md:border-l md:grid-flow-row md:col-span-2 md:grid md:border-r md:border-b-0 print:border-b">
+            <div class="col-span-2 p-2 border-r border-black md:col-span-3 md:grid md:place-items-center md:border-r-0">
+                <label class="grid place-content-center p-2 font-medium text-sm text-blue-700 bg-blue-100 border border-blue-300 rounded-full w-fit">
+                  <input type="text" list="categories" name="category" class="bg-transparent text-center" placeholder="Breakfast*" required>
+                    <datalist id="categories">
+                        {{- range .View.Categories -}}
+                        <option>{{.}}</option>
+                        {{- end -}}
+                    </datalist>
+                </label>
+            </div>
+
+            <div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t">
+                <div>
+                    <label for="yield">Yields</label>
+                    <input id="yield" type="number" min="1" name="yield" value="4"
+                           class="w-24 rounded bg-gray-100 p-2">
+                    <span>servings</span>
+                </div>
+            </div>
+
+            <div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t">
+                <label class="w-4/5">
+                    <input id="source" type="text" placeholder="Source*" class="w-full rounded bg-gray-100 p-2" required>
+                </label>
+                <p class="px-4">The source can be a website, name of a cookbook, from a relative or friend, a magazine, etc.</p>
+            </div>
+        </div>
+
         <div class="col-span-6 border-b border-l border-r border-black md:col-span-4">
             <div class="flex flex-col p-2">
                 <label for="description" class="text-sm font-bold text-gray-600">

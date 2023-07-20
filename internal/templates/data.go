@@ -52,6 +52,7 @@ func NewViewRecipeData(id int64, recipe *models.Recipe, isFromHost, isShared boo
 
 // ViewRecipeData holds template data related to viewing a recipe.
 type ViewRecipeData struct {
+	Categories     []string
 	FormattedTimes formattedTimes
 	ID             int64
 	IsURL          bool

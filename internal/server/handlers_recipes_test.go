@@ -72,6 +72,9 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 				`<title hx-swap-oob="true">Manual | Recipya</title>`,
 				`<form hx-post="/recipes/add/manual" enctype="multipart/form-data" class="grid max-w-6xl grid-cols-6 px-4 pb-4 m-auto mt-4">`,
 				`<input type="text" name="title" id="title" placeholder="Title of the recipe*" required class="w-full py-2 font-bold text-center text-gray-600 placeholder-gray-400 rounded-t-lg">`,
+				`<label class="grid col-span-6 w-full h-96 border-b border-l border-r border-black place-content-center md:border-r-0 md:col-span-4 text-sm"><img src="" alt="Image preview of the recipe." class="h-full"><span><input type="file" accept="image/*" name="image" required _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray' on dragleave or drop set the target's style.background to '' on drop or change make an FileReader called reader then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then set {src: window.URL.createObjectURL(it)} on previous <img/> then remove .hidden from next <button/>"><button type="button" class="px-2 bg-red-300 border border-gray-800 rounded-lg hover:bg-red-600 hover:text-white hidden" _="on click set {value: ''} on previous <input/> then set {src: ''} on previous <img/> then add .hidden"> Delete </button></span></label>`,
+				`<div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t"><div><label for="yield">Yields</label><input id="yield" type="number" min="1" name="yield" value="4" class="w-24 rounded bg-gray-100 p-2"><span>servings</span></div></div>`,
+				`<label class="grid place-content-center p-2 font-medium text-sm text-blue-700 bg-blue-100 border border-blue-300 rounded-full w-fit"><input type="text" list="categories" name="category" class="bg-transparent text-center" placeholder="Breakfast*" required><datalist id="categories"><option>breakfast</option><option>lunch</option><option>dinner</option></datalist></label>`,
 				`<textarea id="description" name="description" rows="10" class="p-2 border border-gray-300 rounded-t-lg" placeholder="This Thai curry chicken will make you drool..." required></textarea>`,
 				`<th scope="col" class="text-right md:text-center"><p>Nutrition<br>(per 100g)</p></th><th scope="col" class="text-center"><p>Amount<br>(optional)</p></th>`,
 				`<th scope="col" class="text-right">Time</th><th scope="col" class="text-center">h:m:s</th>`,
@@ -93,19 +96,44 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 		srv.Repository = repo
 		originalNumRecipes := len(repo.Recipes)
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("title=Salsa&description=The best&calories=666&total-carbohydrates=31g&sugars=0.1mg&protein=5g&total-fat=0g&saturated-fat=0g&cholesterol=256mg&sodium=777mg&fiber=2g&time-preparation=00%3A15%3A30&time-cooking=00%3A30%3A15&ingredient-1=ing1&ingredient-2=ing2&instruction-1=ins1&instruction-2=ins2"))
+		fields := map[string]string{
+			"title":               "Salsa",
+			"image":               "eggs.jpg",
+			"category":            "appetizers",
+			"source":              "Mommy",
+			"description":         "The best",
+			"calories":            "666",
+			"total-carbohydrates": "31g",
+			"sugars":              "0.1mg",
+			"protein":             "5g",
+			"total-fat":           "0g",
+			"saturated-fat":       "0g",
+			"cholesterol":         "256mg",
+			"sodium":              "777mg",
+			"fiber":               "2g",
+			"time-preparation":    "00:15:30",
+			"time-cooking":        "00:30:15",
+			"ingredient-1":        "ing1",
+			"ingredient-2":        "ing2",
+			"instruction-1":       "ins1",
+			"instruction-2":       "ins2",
+			"yield":               "4",
+		}
+		contentType, body := createMultipartForm(fields)
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
 
 		assertStatus(t, rr.Code, http.StatusCreated)
 		id := int64(len(repo.Recipes))
 		if len(repo.Recipes) != originalNumRecipes+1 {
 			t.Fatal("expected one more recipe to be added to the database")
 		}
+		gotRecipe := repo.Recipes[1][id-1]
 		want := models.Recipe{
-			Category:     "",
+			Category:     "appetizers",
 			CreatedAt:    time.Time{},
 			Cuisine:      "",
 			Description:  "The best",
-			Image:        uuid.UUID{},
+			Image:        gotRecipe.Image,
 			Ingredients:  []string{"ing1", "ing2"},
 			Instructions: []string{"ins1", "ins2"},
 			Keywords:     nil,
@@ -129,10 +157,12 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 			},
 			Tools:     nil,
 			UpdatedAt: time.Time{},
-			URL:       "",
-			Yield:     0,
+			URL:       "Mommy",
+			Yield:     4,
 		}
-		gotRecipe := repo.Recipes[1][id-1]
+		if gotRecipe.Image == uuid.Nil {
+			t.Fatal("got nil UUID image when want something other than nil")
+		}
 		if !cmp.Equal(want, gotRecipe) {
 			t.Log(cmp.Diff(want, gotRecipe))
 			t.Fail()

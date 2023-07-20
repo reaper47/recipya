@@ -5,9 +5,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/disintegration/imaging"
 	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"golang.org/x/exp/slices"
+	"image"
+	"image/jpeg"
 	"io"
 	"log"
 	"mime/multipart"
@@ -31,14 +35,14 @@ func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recip
 
 	for _, file := range fileHeaders {
 		wg.Add(1)
-		f := file
+		file := file
 		go func() {
 			defer wg.Done()
-			content := f.Header.Get("Content-Type")
+			content := file.Header.Get("Content-Type")
 			if strings.Contains(content, "zip") {
-				recipes = append(recipes, processZip(f)...)
+				recipes = append(recipes, f.processZip(file)...)
 			} else if strings.Contains(content, "json") {
-				recipes = append(recipes, *processJSON(f))
+				recipes = append(recipes, *processJSON(file))
 			}
 		}()
 	}
@@ -47,18 +51,18 @@ func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recip
 	return recipes
 }
 
-func processZip(file *multipart.FileHeader) models.Recipes {
+func (f *Files) processZip(file *multipart.FileHeader) models.Recipes {
 	recipes := make(models.Recipes, 0)
 
-	f, err := file.Open()
+	openFile, err := file.Open()
 	if err != nil {
 		log.Println(err)
 		return recipes
 	}
-	defer f.Close()
+	defer openFile.Close()
 
 	buf := new(bytes.Buffer)
-	fileSize, err := io.Copy(buf, f)
+	fileSize, err := io.Copy(buf, openFile)
 	if err != nil {
 		log.Println(err)
 		return recipes
@@ -84,32 +88,22 @@ func processZip(file *multipart.FileHeader) models.Recipes {
 
 		validImageFormats := []string{".jpg", ".jpeg", ".png"}
 		if imageUUID == uuid.Nil && slices.Contains(validImageFormats, filepath.Ext(file.Name)) {
-			f, err := file.Open()
+			zipFile, err := file.Open()
 			if err != nil {
+				log.Printf("Error opening image file: %q", err)
 				continue
 			}
 
 			if file.FileInfo().Size() < 1<<12 {
-				f.Close()
+				zipFile.Close()
 				continue
 			}
 
-			exe, err := os.Executable()
+			imageUUID, err = f.UploadImage(zipFile)
 			if err != nil {
-				continue
+				log.Printf("Error uploading image: %q", err)
 			}
-
-			imageUUID = uuid.New()
-
-			var out *os.File
-			if out, err = os.Create(filepath.Join(filepath.Dir(exe), "data", "images", imageUUID.String()+".jpg")); err != nil {
-				f.Close()
-				continue
-			}
-
-			io.Copy(out, f)
-			out.Close()
-			f.Close()
+			zipFile.Close()
 		}
 
 		if filepath.Ext(file.Name) == ".json" {
@@ -168,4 +162,29 @@ func extractRecipe(rd io.Reader) (*models.Recipe, error) {
 		return nil, fmt.Errorf("rs.Recipe() err: %q", err)
 	}
 	return r, err
+}
+
+func (f *Files) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
+	img, _, err := image.Decode(rc)
+	if err != nil {
+		return uuid.Nil, err
+	}
+
+	imageUUID := uuid.New()
+	out, err := os.Create(filepath.Join(app.ImagesDir, imageUUID.String()+".jpg"))
+	if err != nil {
+		return uuid.Nil, nil
+	}
+	defer out.Close()
+
+	width := img.Bounds().Dx()
+	height := img.Bounds().Dy()
+	if width > 800 || height > 800 {
+		img = imaging.Resize(img, width/2, height/2, imaging.NearestNeighbor)
+	}
+
+	if err := jpeg.Encode(out, img, &jpeg.Options{Quality: 33}); err != nil {
+		return uuid.Nil, nil
+	}
+	return imageUUID, nil
 }

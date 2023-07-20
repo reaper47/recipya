@@ -9628,14 +9628,15 @@ func updateHTMLFile(t *testing.T, url string) {
 	}
 }
 
+/* TODO: Change package name to scraper_test
 func testHTTP(t *testing.T, in string) models.RecipeSchema {
 	t.Helper()
-	rs, err := Scrape(in)
+	rs, err := Scrape(in, &mockFiles)
 	if err != nil {
 		t.Error(err)
 	}
 	return rs
-}
+}*/
 
 func testFile(t *testing.T, in string) models.RecipeSchema {
 	t.Helper()
