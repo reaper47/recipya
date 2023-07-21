@@ -29,6 +29,9 @@ type RepositoryService interface {
 	// DeleteAuthToken removes an authentication token from the database.
 	DeleteAuthToken(userID int64) error
 
+	// DeleteRecipe deletes a user's recipe. It returns the number of rows affected.
+	DeleteRecipe(id, userID int64) (int64, error)
+
 	// GetAuthToken gets a non-expired auth token by the selector.
 	GetAuthToken(selector, validator string) (models.AuthToken, error)
 

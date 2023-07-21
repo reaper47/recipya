@@ -93,6 +93,7 @@ func (s *Server) mountHandlers() {
 
 		r.Route("/{id:[1-9]([0-9])*}", func(r chi.Router) {
 			r.Get("/", s.recipesViewHandler)
+			r.Delete("/", s.recipeDeleteHandler)
 			r.Post("/share", s.recipeSharePostHandler)
 		})
 

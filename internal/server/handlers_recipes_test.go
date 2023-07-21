@@ -387,7 +387,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 	t.Run("add recipe from wrong URL", func(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, promptHeader, strings.NewReader("I love chicken"))
 
-		assertStatus(t, rr.Code, http.StatusNoContent)
+		assertStatus(t, rr.Code, http.StatusBadRequest)
 		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Invalid URI.\",\"backgroundColor\":\"bg-red-500\"}"}`)
 	})
 
@@ -414,7 +414,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, promptHeader, strings.NewReader("https://www.eatingbirdfood.com/cinnamon-rolls/"))
 
-		assertStatus(t, rr.Code, http.StatusNoContent)
+		assertStatus(t, rr.Code, http.StatusInternalServerError)
 		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Recipe could not be added.\",\"backgroundColor\":\"bg-red-500\"}"}`)
 	})
 
@@ -433,6 +433,38 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 		if called != 1 {
 			t.Fatal("recipe must have been added to the user's database")
 		}
+	})
+}
+
+func TestHandlers_recipes_Delete(t *testing.T) {
+	repo := &mockRepository{
+		Recipes:         map[int64]models.Recipes{1: make(models.Recipes, 0)},
+		UsersRegistered: []models.User{{ID: 1, Email: "test@example.com"}},
+	}
+	srv := newServerTest()
+	srv.Repository = repo
+
+	uri := "/recipes"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, uri)
+	})
+
+	t.Run("cannot delete recipe that does not exist", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri+"/5", noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusNotFound)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Recipe not found.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+	})
+
+	t.Run("can delete user's recipe", func(t *testing.T) {
+		r := &models.Recipe{ID: 1, Name: "Chicken"}
+		_, _ = srv.Repository.AddRecipe(r, 1)
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri+"/1", noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusNoContent)
+		assertHeader(t, rr, "HX-Redirect", "/")
 	})
 }
 

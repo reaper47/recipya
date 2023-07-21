@@ -62,7 +62,8 @@ func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request)
 }
 
 func (s *Server) recipeAddManualHandler(w http.ResponseWriter, r *http.Request) {
-	categories, err := s.Repository.Categories(r.Context().Value("userID").(int64))
+	userID := r.Context().Value("userID").(int64)
+	categories, err := s.Repository.Categories(userID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -402,13 +403,13 @@ func (s *Server) recipesAddRequestWebsiteHandler(w http.ResponseWriter, r *http.
 func (s *Server) recipesAddWebsiteHandler(w http.ResponseWriter, r *http.Request) {
 	rawURL := r.Header.Get("HX-Prompt")
 	if rawURL == "" {
-		w.WriteHeader(http.StatusNoContent)
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	if _, err := url.ParseRequestURI(rawURL); err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Invalid URI.", errorToast))
-		w.WriteHeader(http.StatusNoContent)
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
@@ -426,18 +427,43 @@ func (s *Server) recipesAddWebsiteHandler(w http.ResponseWriter, r *http.Request
 	recipe, err := rs.Recipe()
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Recipe schema is invalid.", errorToast))
-		w.WriteHeader(http.StatusNoContent)
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	if _, err := s.Repository.AddRecipe(recipe, r.Context().Value("userID").(int64)); err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Recipe could not be added.", errorToast))
-		w.WriteHeader(http.StatusNoContent)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("HX-Redirect", "/")
 	w.WriteHeader(http.StatusSeeOther)
+}
+
+func (s *Server) recipeDeleteHandler(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	userID := r.Context().Value("userID").(int64)
+
+	rowsAffected, err := s.Repository.DeleteRecipe(id, userID)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Recipe could not be deleted.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	if rowsAffected == 0 {
+		w.Header().Set("HX-Trigger", makeToast("Recipe not found.", errorToast))
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("HX-Redirect", "/")
+	w.WriteHeader(http.StatusNoContent)
 }
 
 func (s *Server) recipeShareHandler(w http.ResponseWriter, r *http.Request) {

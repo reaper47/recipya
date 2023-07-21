@@ -278,6 +278,20 @@ func (s *SQLiteService) DeleteAuthToken(userID int64) error {
 	return err
 }
 
+func (s *SQLiteService) DeleteRecipe(id, userID int64) (int64, error) {
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	result, err := s.DB.ExecContext(ctx, statements.DeleteRecipe, userID, id)
+	if err != nil {
+		return -1, err
+	}
+	return result.RowsAffected()
+}
+
 func (s *SQLiteService) GetAuthToken(selector, validator string) (models.AuthToken, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()

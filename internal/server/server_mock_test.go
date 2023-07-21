@@ -92,6 +92,28 @@ func (m *mockRepository) DeleteAuthToken(userID int64) error {
 	return nil
 }
 
+func (m *mockRepository) DeleteRecipe(id, userID int64) (int64, error) {
+	recipes, ok := m.Recipes[userID]
+	if !ok {
+		return -1, errors.New("user not found")
+	}
+
+	var rowsAffected int64
+	i := slices.IndexFunc(recipes, func(r models.Recipe) bool {
+		if r.ID == id {
+			rowsAffected++
+		}
+		return r.ID == id
+	})
+	if i == -1 {
+		return 0, nil
+	}
+
+	slices.Delete(recipes, i, i+1)
+	recipes = recipes[:]
+	return rowsAffected, nil
+}
+
 func (m *mockRepository) GetAuthToken(_, _ string) (models.AuthToken, error) {
 	return models.AuthToken{UserID: 1}, nil
 }
