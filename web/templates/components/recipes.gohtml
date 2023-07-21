@@ -704,15 +704,16 @@
                 <p class="text-sm text-center">{{.View.Recipe.Yield}} servings</p>
             </div>
 
-            <div class="flex items-center justify-center col-span-2 border-l border-r border-black md:border-l-0 md:border-r-0 md:border-b md:col-span-3 md:border-t md:py-2">
+            <div class="flex items-center justify-center col-span-2 border-l border-r border-black text-sm md:border-l-0 md:border-r-0 md:border-b md:col-span-3 md:border-t md:py-2">
                 {{- if .View.IsURL -}}
-                    <a class="p-1 text-sm duration-300 border rounded-lg hover:bg-gray-800 hover:text-white center"
+                    <a class="p-1 duration-300 border rounded-lg hover:bg-gray-800 hover:text-white center"
                        href="{{.View.Recipe.URL}}" target="_blank">
                         Source
                     </a>
                 {{- else -}}
-                    <p class="print:text-sm">
-                        Source: {{if .View.Recipe.URL}}{{.View.Recipe.URL}}{{else}}Unkwown{{end}}</p>
+                    <p>
+                        Source: {{if .View.Recipe.URL}}{{.View.Recipe.URL}}{{else}}Unkwown{{end}}
+                    </p>
                 {{- end -}}
             </div>
         </div>

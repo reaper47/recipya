@@ -129,7 +129,6 @@ func (s *Server) mountHandlers() {
 	r.Group(func(r chi.Router) {
 		r.Use(s.mustBeLoggedInMiddleware)
 
-		r.Get("/avatar-dropdown", avatarDropdownHandler)
 		r.Get("/settings", s.settingsHandler)
 		r.Get("/user-initials", s.userInitialsHandler)
 	})
