@@ -436,7 +436,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 	})
 }
 
-func TestHandlers_recipes_Delete(t *testing.T) {
+func TestHandlers_Recipes_Delete(t *testing.T) {
 	repo := &mockRepository{
 		Recipes:         map[int64]models.Recipes{1: make(models.Recipes, 0)},
 		UsersRegistered: []models.User{{ID: 1, Email: "test@example.com"}},
@@ -468,7 +468,7 @@ func TestHandlers_recipes_Delete(t *testing.T) {
 	})
 }
 
-func TestHandlers_recipes_Share(t *testing.T) {
+func TestHandlers_Recipes_Share(t *testing.T) {
 	srv := newServerTest()
 
 	uri := "/recipes/%d/share"

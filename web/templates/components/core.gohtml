@@ -12,6 +12,29 @@
         <link rel="icon" href="/static/favicon.ico">
         <script src="https://unpkg.com/htmx.org@1.9.3"></script>
         <script src="https://unpkg.com/hyperscript.org@0.9.9"></script>
+        <script defer>
+            window.addEventListener("DOMContentLoaded", () => {
+                const recipesPattern = new RegExp("^/recipes/\\d+$");
+
+                const pathsHideAddRecipeButton = [
+                    "/settings",
+                    "/recipes/add",
+                    "/recipes/add/manual",
+                    "/recipes/"
+                ];
+
+                const toggleAddRecipeButton = () => {
+                    if (pathsHideAddRecipeButton.some(path => path === location.pathname || recipesPattern.test(location.pathname))) {
+                        document.querySelector("#add-recipe")?.classList.add("hidden");
+                    } else {
+                        document.querySelector("#add-recipe")?.classList.remove("hidden");
+                    }
+                }
+
+                toggleAddRecipeButton();
+                document.addEventListener("htmx:pushedIntoHistory", toggleAddRecipeButton);
+            });
+        </script>
     </head>
 {{end}}
 
@@ -25,8 +48,8 @@
         <div id="avatar-dropdown-container" class="absolute w-24 right-3 top-[3.6rem] bg-white rounded-lg hidden">
             <ul id="avatar-menu">
                 <li class="hover:bg-blue-100 border-2 rounded-t-lg">
-                    <a href="/settings" class="flex">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                    <a class="flex" href="/settings" hx-get="/settings" hx-target="#content" hx-push-url="/settings">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 self-center" fill="none"
                              viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
@@ -38,7 +61,7 @@
                 </li>
                 <li class="hover:bg-blue-100 border-2">
                     <a href="#" class="flex">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 self-center" fill="none"
                              viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -48,7 +71,7 @@
                 </li>
                 <li class="hover:bg-blue-100 border-2 rounded-b-lg">
                     <a hx-post="/auth/logout" class="flex" href="#">
-                        <svg xmlns="http://www.w3.org/2000/svg" style="margin-left: 0;" class="w-5 h-5 ml-0"
+                        <svg xmlns="http://www.w3.org/2000/svg" style="margin-left: 0;" class="w-5 h-5 ml-0 self-center"
                              fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
@@ -63,46 +86,27 @@
     <script defer>
         document.addEventListener('click', (event) => {
             const dropdownContainer = document.querySelector("#avatar-dropdown-container");
-            if (!dropdownContainer.classList.contains("hidden") && !["avatar-button", "user-initials"].includes(event.target.id)) {
+            if (dropdownContainer && !dropdownContainer.classList.contains("hidden") && !["avatar-button", "user-initials"].includes(event.target.id)) {
                 dropdownContainer.classList.add("hidden");
             }
         });
     </script>
 {{end}}
 
-{{define "avatar-menu"}}
-    <ul id="avatar-menu">
-        <li class="hover:bg-blue-100 border-2 rounded-t-lg">
-            <a href="/settings" class="flex">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
-                     viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                </svg>
-                <div class="pl-1 align-bottom">Settings</div>
-            </a>
-        </li>
-        <li class="hover:bg-blue-100 border-2">
-            <a href="#" class="flex">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
-                     viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-                <span class="pl-1 align-bottom">About</span>
-            </a>
-        </li>
-        <li class="hover:bg-blue-100 border-2 rounded-b-lg">
-            <a hx-post="/auth/logout" class="flex" href="#">
-                <svg xmlns="http://www.w3.org/2000/svg" style="margin-left: 0;" class="w-5 h-5 ml-0"
-                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                </svg>
-                <span class="pl-1 align-bottom">Log out</span>
-            </a>
-        </li>
-    </ul>
+{{define "settings"}}
+    <div class="tab-list" role="tablist">
+        <button hx-get="/tab1" class="selected" role="tab" aria-selected="false" aria-controls="tab-content">Tab 1
+        </button>
+        <button hx-get="/tab2" role="tab" aria-selected="false" aria-controls="tab-content">Tab 2</button>
+        <button hx-get="/tab3" role="tab" aria-selected="false" aria-controls="tab-content">Tab 3</button>
+    </div>
+
+    <div id="tab-content" role="tabpanel" class="tab-content">
+        Commodo normcore truffaut VHS duis gluten-free keffiyeh iPhone taxidermy godard ramps anim pour-over.
+        Pitchfork vegan mollit umami quinoa aute aliquip kinfolk eiusmod live-edge cardigan ipsum locavore.
+        Polaroid duis occaecat narwhal small batch food truck.
+        PBR&B venmo shaman small batch you probably haven't heard of them hot chicken readymade.
+        Enim tousled cliche woke, typewriter single-origin coffee hella culpa.
+        Art party readymade 90's, asymmetrical hell of fingerstache ipsum.
+    </div>
 {{end}}

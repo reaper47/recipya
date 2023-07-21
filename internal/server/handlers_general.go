@@ -5,10 +5,6 @@ import (
 	"net/http"
 )
 
-func avatarDropdownHandler(w http.ResponseWriter, _ *http.Request) {
-	templates.RenderComponent(w, "core", "avatar-menu", nil)
-}
-
 func (s *Server) indexHandler(w http.ResponseWriter, r *http.Request) {
 	page := templates.LandingPage
 	isAuth := isAuthenticated(r, s.Repository.GetAuthToken)
@@ -27,8 +23,16 @@ func notFoundHandler(w http.ResponseWriter, _ *http.Request) {
 	templates.Render(w, templates.Simple, templates.PageNotFound)
 }
 
-func (s *Server) settingsHandler(_ http.ResponseWriter, _ *http.Request) {
-	panic("to implement")
+func (s *Server) settingsHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Header.Get("Hx-Request") == "true" {
+		templates.RenderComponent(w, "core", "settings", nil)
+	} else {
+		page := templates.SettingsPage
+		templates.Render(w, page, templates.Data{
+			IsAuthenticated: true,
+			Title:           page.Title(),
+		})
+	}
 }
 
 func (s *Server) userInitialsHandler(w http.ResponseWriter, r *http.Request) {
