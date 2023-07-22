@@ -94,19 +94,71 @@
 {{end}}
 
 {{define "settings"}}
-    <div class="tab-list" role="tablist">
-        <button hx-get="/tab1" class="selected" role="tab" aria-selected="false" aria-controls="tab-content">Tab 1
-        </button>
-        <button hx-get="/tab2" role="tab" aria-selected="false" aria-controls="tab-content">Tab 2</button>
-        <button hx-get="/tab3" role="tab" aria-selected="false" aria-controls="tab-content">Tab 3</button>
-    </div>
+    <div class="grid grid-flow-col h-full" style="grid-template-columns: min-content">
+        <div class="text-sm md:text-base grid bg-gray-800 text-white max-w-[5rem]" role="tablist">
+            <button class="px-2 bg-red-800 hover:bg-red-600" hx-get="/settings/tabs/profile"
+                    hx-target="#settings-tab-content" role="tab" aria-selected="false" aria-controls="tab-content"
+                    _="on click remove .bg-red-800 from <div[role='tablist'] button/> then add .bg-red-800">
+                Profile
+            </button>
+            <button class="px-2 hover:bg-red-600" hx-get="/settings/tabs/recipes" hx-target="#settings-tab-content"
+                    role="tab" aria-selected="false" aria-controls="tab-content"
+                    _="on click remove .bg-red-800 from <div[role='tablist'] button/> then add .bg-red-800">
+                Recipes
+            </button>
+        </div>
 
-    <div id="tab-content" role="tabpanel" class="tab-content">
-        Commodo normcore truffaut VHS duis gluten-free keffiyeh iPhone taxidermy godard ramps anim pour-over.
-        Pitchfork vegan mollit umami quinoa aute aliquip kinfolk eiusmod live-edge cardigan ipsum locavore.
-        Polaroid duis occaecat narwhal small batch food truck.
-        PBR&B venmo shaman small batch you probably haven't heard of them hot chicken readymade.
-        Enim tousled cliche woke, typewriter single-origin coffee hella culpa.
-        Art party readymade 90's, asymmetrical hell of fingerstache ipsum.
+        <div id="settings-tab-content" class="text-sm md:text-base p-4 grid grid-cols-2 gap-4 auto-rows-min" role="tabpanel">
+            {{template "settings-tabs-profile"}}
+        </div>
     </div>
+{{end}}
+
+{{define "settings-tabs-profile"}}
+    <p class="grid justify-end font-semibold">Change password:</p>
+    <form class="h-fit w-fit border p-2" hx-post="/auth/change-password" enctype="multipart/form-data"
+          hx-indicator="#fullscreen-loader" hx-swap="none">
+        <div class="grid mb-5">
+            <label class="block font-medium text-gray-800" for="password-current">
+                Current password
+            </label>
+            <input class="w-full rounded-lg bg-gray-100 px-4 py-2" id="password-current" name="password-current"
+                   placeholder="Current password..." required type="password"/>
+
+            <label class="mt-2 block font-medium text-gray-800" for="password-new">
+                New password
+            </label>
+            <input class="w-full rounded-lg bg-gray-100 px-4 py-2" id="password-new" name="password-new"
+                   placeholder="New password..." required type="password"/>
+
+            <label class="mt-2 block font-medium text-gray-800" for="password-confirm">
+                Confirm password
+            </label>
+            <input class="w-full rounded-lg bg-gray-100 px-4 py-2" id="password-confirm"
+                   name="password-confirm" placeholder="Retype new password..." required type="password"/>
+        </div>
+        <button type="submit"
+                class="w-full p-2 font-semibold text-white duration-300 bg-blue-500 rounded-lg hover:bg-blue-800"
+        >
+            Update
+        </button>
+    </form>
+{{end}}
+
+{{define "settings-tabs-recipes"}}
+    <p class="font-semibold grid justify-end">Export data:</p>
+    <button type="button" hx-get="/recipes/export" hx-swap="none"
+            class="h-fit w-fit bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 rounded-lg px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+        <svg xmlns="http://www.w3.org/2000/svg" style="margin-left: 0;" class="w-5 h-5 ml-0 self-center"
+             fill="black" viewBox="0 0 24 24" stroke="currentColor">
+            <path d="M16 11v5H2v-5H0v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5z"/>
+            <path d="m9 14 5-6h-4V0H8v8H4z"/>
+        </svg>
+    </button>
+    <label for="systems" class="grid justify-end mb-2 font-semibold dark:text-white">Measurement System:</label>
+    <select id="systems" name="system" hx-post="/settings/measurement-system" hx-swap="none"
+            class="h-fit w-fit bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <option value="imperial" selected>Imperial</option>
+        <option value="metric">Metric</option>
+    </select>
 {{end}}

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" style="height:100%;">
 {{- template "head" .}}
-<body style="min-height:100%;">
+<body class="min-h-full">
 <header hx-boost="true" class="z-50 flex h-12 w-full items-center justify-between bg-gray-800 shadow print:hidden">
     <div class="flex h-full items-center">
         <div class="flex h-full w-24 items-center text-center text-white">
@@ -34,7 +34,7 @@
     {{end}}
 </header>
 <div id="fullscreen-loader" class="htmx-indicator"></div>
-<main class="inline-flex h-[95%] w-full">
+<main class="inline-flex min-h-[95vh] w-full">
     <div id="content" class="w-full">
         {{- template "content" .}}
     </div>

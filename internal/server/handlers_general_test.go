@@ -75,6 +75,34 @@ func TestHandlers_General_Settings(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, uri)
 	})
 
+	t.Run("tab profile", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"/tabs/profile", noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		want := []string{
+			`<p class="grid justify-end font-semibold">Change password:</p>`,
+			`<form class="h-fit w-fit border p-2" hx-post="/auth/change-password" enctype="multipart/form-data" hx-indicator="#fullscreen-loader" hx-swap="none">`,
+			`<input class="w-full rounded-lg bg-gray-100 px-4 py-2" id="password-current" name="password-current" placeholder="Current password..." required type="password"/>`,
+			`<input class="w-full rounded-lg bg-gray-100 px-4 py-2" id="password-new" name="password-new" placeholder="New password..." required type="password"/>`,
+			`<input class="w-full rounded-lg bg-gray-100 px-4 py-2" id="password-confirm" name="password-confirm" placeholder="Retype new password..." required type="password"/>`,
+			`<button type="submit" class="w-full p-2 font-semibold text-white duration-300 bg-blue-500 rounded-lg hover:bg-blue-800" > Update </button>`,
+		}
+		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
+
+	t.Run("tab recipes", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"/tabs/recipes", noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		want := []string{
+			`<p class="font-semibold grid justify-end">Export data:</p>`,
+			`<button type="button" hx-get="/recipes/export" hx-swap="none" class="h-fit w-fit bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 rounded-lg px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">`,
+			`<svg xmlns="http://www.w3.org/2000/svg" style="margin-left: 0;" class="w-5 h-5 ml-0 self-center" fill="black" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 11v5H2v-5H0v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5z"/><path d="m9 14 5-6h-4V0H8v8H4z"/></svg>`,
+			`<label for="systems" class="grid justify-end mb-2 font-semibold dark:text-white">Measurement System:</label>`,
+			`<select id="systems" name="system" hx-post="/settings/measurement-system" hx-swap="none" class="h-fit w-fit bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"><option value="imperial" selected>Imperial</option><option value="metric">Metric</option></select>`,
+		}
+		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
 }
 
 func TestHandlers_General_UserInitials(t *testing.T) {

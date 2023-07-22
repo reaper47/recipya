@@ -129,7 +129,14 @@ func (s *Server) mountHandlers() {
 	r.Group(func(r chi.Router) {
 		r.Use(s.mustBeLoggedInMiddleware)
 
-		r.Get("/settings", s.settingsHandler)
+		r.Route("/settings", func(r chi.Router) {
+			r.Get("/", s.settingsHandler)
+
+			r.Route("/tabs", func(r chi.Router) {
+				r.Get("/profile", settingsTabsProfileHandler)
+				r.Get("/recipes", settingsTabsRecipesHandler)
+			})
+		})
 		r.Get("/user-initials", s.userInitialsHandler)
 	})
 

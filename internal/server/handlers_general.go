@@ -35,6 +35,14 @@ func (s *Server) settingsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func settingsTabsProfileHandler(w http.ResponseWriter, _ *http.Request) {
+	templates.RenderComponent(w, "core", "settings-tabs-profile", nil)
+}
+
+func settingsTabsRecipesHandler(w http.ResponseWriter, r *http.Request) {
+	templates.RenderComponent(w, "core", "settings-tabs-recipes", nil)
+}
+
 func (s *Server) userInitialsHandler(w http.ResponseWriter, r *http.Request) {
 	userID := r.Context().Value("userID")
 	if userID == nil {
