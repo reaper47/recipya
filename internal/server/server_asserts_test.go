@@ -16,9 +16,9 @@ func assertHeader(t testing.TB, rr *httptest.ResponseRecorder, key, value string
 	}
 }
 
-func assertMustBeLoggedIn(t *testing.T, srv *server.Server, uri string) {
+func assertMustBeLoggedIn(t *testing.T, srv *server.Server, method string, uri string) {
 	t.Helper()
-	rr := sendRequest(srv, http.MethodGet, uri, noHeader, nil)
+	rr := sendRequest(srv, method, uri, noHeader, nil)
 
 	assertStatus(t, rr.Code, http.StatusSeeOther)
 	assertHeader(t, rr, "Location", "/auth/login")

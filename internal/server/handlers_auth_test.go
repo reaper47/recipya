@@ -15,6 +15,55 @@ import (
 	"time"
 )
 
+func TestHandlers_Auth_ChangePassword(t *testing.T) {
+	srv := newServerTest()
+
+	const uri = "/auth/change-password"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
+	})
+
+	t.Run("mistake in form", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("password-current=test1&password-new=test2&password-confirm=test"))
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Passwords do not match.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+	})
+
+	t.Run("Wrong current password", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("password-current=cat&password-new=test2&password-confirm=test2"))
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Current password is incorrect.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+	})
+
+	t.Run("new password same as current", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("password-current=test2&password-new=test2&password-confirm=test2"))
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"New password is same as current.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+
+	})
+
+	t.Run("valid form", func(t *testing.T) {
+		repo := &mockRepository{
+			UsersRegistered: []models.User{
+				{ID: 1, Email: "test@example.com"},
+			},
+		}
+		srv.Repository = repo
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("password-current=test1&password-new=test2&password-confirm=test2"))
+
+		assertStatus(t, rr.Code, http.StatusNoContent)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Password updated.\",\"backgroundColor\":\"bg-blue-500\"}"}`)
+		if !slices.Contains(repo.UsersUpdated, 1) {
+			t.Fatal("must have called UpdatePassword on the user")
+		}
+	})
+}
+
 func TestHandlers_Auth_Confirm(t *testing.T) {
 	srv := newServerTest()
 	srv.Repository = &mockRepository{

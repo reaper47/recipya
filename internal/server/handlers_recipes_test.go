@@ -22,7 +22,7 @@ func TestHandlers_Recipes_New(t *testing.T) {
 	uri := "/recipes/add"
 
 	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, uri)
+		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
 	})
 
 	testcases := []struct {
@@ -54,7 +54,7 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 	uri := "/recipes/add/manual"
 
 	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, uri)
+		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
 	})
 
 	testcases := []struct {
@@ -177,7 +177,7 @@ func TestHandlers_Recipes_AddManualIngredient(t *testing.T) {
 	uri := "/recipes/add/manual/ingredient"
 
 	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, uri)
+		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
 	})
 
 	t.Run("does not yield input when previous input empty", func(t *testing.T) {
@@ -204,7 +204,7 @@ func TestHandlers_Recipes_AddManualIngredientDelete(t *testing.T) {
 	uri := "/recipes/add/manual/ingredient/"
 
 	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, uri)
+		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
 	})
 
 	t.Run("does not yield input when only one input left", func(t *testing.T) {
@@ -267,7 +267,7 @@ func TestHandlers_Recipes_AddManualInstruction(t *testing.T) {
 	uri := "/recipes/add/manual/instruction"
 
 	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, uri)
+		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
 	})
 
 	t.Run("does not yield input when previous input empty", func(t *testing.T) {
@@ -295,7 +295,7 @@ func TestHandlers_Recipes_AddManualInstructionDelete(t *testing.T) {
 	uri := "/recipes/add/manual/instruction/"
 
 	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, uri)
+		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
 	})
 
 	t.Run("does not yield input when only one input left", func(t *testing.T) {
@@ -359,7 +359,7 @@ func TestHandlers_Recipes_AddRequestWebsite(t *testing.T) {
 	uri := "/recipes/add/request-website"
 
 	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, uri)
+		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
 	})
 
 	t.Run("request website successful", func(t *testing.T) {
@@ -381,7 +381,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 	uri := "/recipes/add/website"
 
 	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, uri)
+		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
 	})
 
 	t.Run("add recipe from wrong URL", func(t *testing.T) {
@@ -447,7 +447,7 @@ func TestHandlers_Recipes_Delete(t *testing.T) {
 	uri := "/recipes"
 
 	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, uri)
+		assertMustBeLoggedIn(t, srv, http.MethodDelete, uri+"/5")
 	})
 
 	t.Run("cannot delete recipe that does not exist", func(t *testing.T) {
@@ -620,7 +620,7 @@ func TestHandlers_Recipes_SupportedWebsites(t *testing.T) {
 	website2 := `<tr class="border px-8 py-2"><td class="border px-8 py-2">2</td><td class="border px-8 py-2"><a class="underline" href="http://www.afghankitchenrecipes.com" target="_blank">afghankitchenrecipes.com</a></td></tr>`
 
 	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, uri)
+		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
 	})
 
 	t.Run("returns list of websites to logged in user", func(t *testing.T) {
@@ -675,7 +675,7 @@ func TestHandlers_Recipes_View(t *testing.T) {
 	uri := "/recipes"
 
 	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, uri)
+		assertMustBeLoggedIn(t, srv, http.MethodGet, uri+"/999")
 	})
 
 	t.Run("recipe is not in user collection", func(t *testing.T) {

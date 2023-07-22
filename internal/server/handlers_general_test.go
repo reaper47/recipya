@@ -72,7 +72,7 @@ func TestHandlers_General_Settings(t *testing.T) {
 	uri := "/settings"
 
 	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, uri)
+		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
 	})
 
 	t.Run("tab profile", func(t *testing.T) {
@@ -81,7 +81,7 @@ func TestHandlers_General_Settings(t *testing.T) {
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
 			`<p class="grid justify-end font-semibold">Change password:</p>`,
-			`<form class="h-fit w-fit border p-2" hx-post="/auth/change-password" enctype="multipart/form-data" hx-indicator="#fullscreen-loader" hx-swap="none">`,
+			`<form class="h-fit w-fit border p-2" hx-post="/auth/change-password" hx-indicator="#fullscreen-loader" hx-swap="none">`,
 			`<input class="w-full rounded-lg bg-gray-100 px-4 py-2" id="password-current" name="password-current" placeholder="Current password..." required type="password"/>`,
 			`<input class="w-full rounded-lg bg-gray-100 px-4 py-2" id="password-new" name="password-new" placeholder="New password..." required type="password"/>`,
 			`<input class="w-full rounded-lg bg-gray-100 px-4 py-2" id="password-confirm" name="password-confirm" placeholder="Retype new password..." required type="password"/>`,
@@ -116,7 +116,7 @@ func TestHandlers_General_UserInitials(t *testing.T) {
 	const uri = "/user-initials"
 
 	t.Run("anonymous user doesn't have initials", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, uri)
+		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
 	})
 
 	t.Run("logged in user has initials", func(t *testing.T) {

@@ -129,6 +129,10 @@ func (m *mockRepository) IsUserExist(email string) bool {
 	})
 }
 
+func (m *mockRepository) IsUserPassword(id int64, password string) bool {
+	return slices.IndexFunc(m.UsersRegistered, func(user models.User) bool { return user.ID == id }) != -1
+}
+
 func (m *mockRepository) Recipe(id, userID int64) (*models.Recipe, error) {
 	if m.RecipeFunc != nil {
 		return m.RecipeFunc(id, userID)

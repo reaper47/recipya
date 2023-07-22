@@ -327,6 +327,18 @@ func (s *SQLiteService) IsUserExist(email string) bool {
 	return exists == 1
 }
 
+func (s *SQLiteService) IsUserPassword(id int64, password string) bool {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	var hash string
+	if err := s.DB.QueryRowContext(ctx, statements.SelectUserPasswordByID, id).Scan(&hash); err != nil {
+		return false
+	}
+
+	return auth.VerifyPassword(password, auth.HashedPassword(hash))
+}
+
 func (s *SQLiteService) Recipe(id, userID int64) (*models.Recipe, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()

@@ -57,6 +57,7 @@ func (s *Server) mountHandlers() {
 	r.Get("/recipes/{id:[1-9]([0-9])*}/share", s.recipeShareHandler)
 
 	r.Route("/auth", func(r chi.Router) {
+		r.With(s.mustBeLoggedInMiddleware).Post("/change-password", s.changePasswordHandler)
 		r.Get("/confirm", s.confirmHandler)
 
 		r.Route("/forgot-password", func(r chi.Router) {

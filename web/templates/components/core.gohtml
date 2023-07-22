@@ -108,7 +108,8 @@
             </button>
         </div>
 
-        <div id="settings-tab-content" class="text-sm md:text-base p-4 grid grid-cols-2 gap-4 auto-rows-min" role="tabpanel">
+        <div id="settings-tab-content" role="tabpanel"
+             class="text-sm md:text-base p-4 grid grid-cols-2 gap-4 auto-rows-min">
             {{template "settings-tabs-profile"}}
         </div>
     </div>
@@ -116,7 +117,7 @@
 
 {{define "settings-tabs-profile"}}
     <p class="grid justify-end font-semibold">Change password:</p>
-    <form class="h-fit w-fit border p-2" hx-post="/auth/change-password" enctype="multipart/form-data"
+    <form class="h-fit w-fit border p-2" hx-post="/auth/change-password"
           hx-indicator="#fullscreen-loader" hx-swap="none">
         <div class="grid mb-5">
             <label class="block font-medium text-gray-800" for="password-current">

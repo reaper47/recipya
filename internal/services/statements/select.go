@@ -150,6 +150,12 @@ const SelectUserPassword = `
 	FROM users
 	WHERE email = ?`
 
+// SelectUserPasswordByID is the query to fetch the user's hashed password by their id.
+const SelectUserPasswordByID = `
+	SELECT hashed_password
+	FROM users
+	WHERE id = ?`
+
 // SelectUsers fetches all users from the database.
 const SelectUsers = `
 	SELECT id, email 

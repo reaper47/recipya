@@ -13,6 +13,46 @@ import (
 	"time"
 )
 
+func (s *Server) changePasswordHandler(w http.ResponseWriter, r *http.Request) {
+	currentPassword := r.FormValue("password-current")
+	newPassword := r.FormValue("password-new")
+	if currentPassword == newPassword {
+		w.Header().Set("HX-Trigger", makeToast("New password is same as current.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	confirmPassword := r.FormValue("password-confirm")
+	if confirmPassword != newPassword {
+		w.Header().Set("HX-Trigger", makeToast("Passwords do not match.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	userID := r.Context().Value("userID").(int64)
+	if !s.Repository.IsUserPassword(userID, currentPassword) {
+		w.Header().Set("HX-Trigger", makeToast("Current password is incorrect.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	hashPassword, err := auth.HashPassword(newPassword)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Error encoding your password.", errorToast))
+		w.WriteHeader(http.StatusUnprocessableEntity)
+		return
+	}
+
+	if err := s.Repository.UpdatePassword(userID, hashPassword); err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Failed to update password.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("HX-Trigger", makeToast("Password updated.", infoToast))
+	w.WriteHeader(http.StatusNoContent)
+}
+
 func (s *Server) confirmHandler(w http.ResponseWriter, r *http.Request) {
 	token := r.URL.Query().Get("token")
 	if token == "" {

@@ -41,6 +41,9 @@ type RepositoryService interface {
 	// IsUserExist checks whether the user is present in the database.
 	IsUserExist(email string) bool
 
+	// IsUserPassword checks whether the password is the user's password.
+	IsUserPassword(id int64, password string) bool
+
 	// Recipe gets the user's recipe of the given id.
 	Recipe(id, userID int64) (*models.Recipe, error)
 
