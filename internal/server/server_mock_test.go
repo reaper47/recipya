@@ -16,23 +16,23 @@ import (
 
 func newServerTest() *server.Server {
 	repo := &mockRepository{
-		AuthTokens:      make([]models.AuthToken, 0),
-		Recipes:         make(map[int64]models.Recipes, 0),
-		ShareLinks:      make(map[int64]string, 0),
-		UsersRegistered: make([]models.User, 0),
-		UsersUpdated:    make([]int64, 0),
+		AuthTokens:        make([]models.AuthToken, 0),
+		RecipesRegistered: make(map[int64]models.Recipes, 0),
+		ShareLinks:        make(map[int64]string, 0),
+		UsersRegistered:   make([]models.User, 0),
+		UsersUpdated:      make([]int64, 0),
 	}
 	return server.NewServer(repo, &mockEmail{}, &mockFiles{})
 }
 
 type mockRepository struct {
-	AuthTokens      []models.AuthToken
-	AddRecipeFunc   func(recipe *models.Recipe, userID int64) (int64, error)
-	RecipeFunc      func(id, userID int64) (*models.Recipe, error)
-	Recipes         map[int64]models.Recipes
-	ShareLinks      map[int64]string
-	UsersRegistered []models.User
-	UsersUpdated    []int64
+	AuthTokens        []models.AuthToken
+	AddRecipeFunc     func(recipe *models.Recipe, userID int64) (int64, error)
+	RecipeFunc        func(id, userID int64) (*models.Recipe, error)
+	RecipesRegistered map[int64]models.Recipes
+	ShareLinks        map[int64]string
+	UsersRegistered   []models.User
+	UsersUpdated      []int64
 }
 
 func (m *mockRepository) AddAuthToken(selector, validator string, userID int64) error {
@@ -46,20 +46,20 @@ func (m *mockRepository) AddRecipe(r *models.Recipe, userID int64) (int64, error
 		return m.AddRecipeFunc(r, userID)
 	}
 
-	if m.Recipes[userID] == nil {
-		m.Recipes[userID] = make(models.Recipes, 0)
+	if m.RecipesRegistered[userID] == nil {
+		m.RecipesRegistered[userID] = make(models.Recipes, 0)
 	}
 
-	if !slices.ContainsFunc(m.Recipes[userID], func(recipe models.Recipe) bool {
+	if !slices.ContainsFunc(m.RecipesRegistered[userID], func(recipe models.Recipe) bool {
 		return recipe.ID == r.ID
 	}) {
-		m.Recipes[userID] = append(m.Recipes[userID], *r)
+		m.RecipesRegistered[userID] = append(m.RecipesRegistered[userID], *r)
 	}
-	return int64(len(m.Recipes)), nil
+	return int64(len(m.RecipesRegistered)), nil
 }
 
 func (m *mockRepository) AddShareLink(link string, recipeID int64) error {
-	for _, recipes := range m.Recipes {
+	for _, recipes := range m.RecipesRegistered {
 		if slices.ContainsFunc(recipes, func(r models.Recipe) bool { return r.ID == recipeID }) {
 			if _, ok := m.ShareLinks[recipeID]; ok {
 				return nil
@@ -93,7 +93,7 @@ func (m *mockRepository) DeleteAuthToken(userID int64) error {
 }
 
 func (m *mockRepository) DeleteRecipe(id, userID int64) (int64, error) {
-	recipes, ok := m.Recipes[userID]
+	recipes, ok := m.RecipesRegistered[userID]
 	if !ok {
 		return -1, errors.New("user not found")
 	}
@@ -138,7 +138,7 @@ func (m *mockRepository) Recipe(id, userID int64) (*models.Recipe, error) {
 		return m.RecipeFunc(id, userID)
 	}
 
-	if recipes, ok := m.Recipes[userID]; ok {
+	if recipes, ok := m.RecipesRegistered[userID]; ok {
 		if int64(len(recipes)) > id {
 			return nil, errors.New("recipe not found")
 		}
@@ -147,8 +147,15 @@ func (m *mockRepository) Recipe(id, userID int64) (*models.Recipe, error) {
 	return nil, errors.New("recipe not found")
 }
 
+func (m *mockRepository) Recipes(userID int64) models.Recipes {
+	if recipes, ok := m.RecipesRegistered[userID]; ok {
+		return recipes
+	}
+	return models.Recipes{}
+}
+
 func (m *mockRepository) RecipeUser(recipeID int64) int64 {
-	for userID, recipes := range m.Recipes {
+	for userID, recipes := range m.RecipesRegistered {
 		if i := slices.IndexFunc(recipes, func(r models.Recipe) bool { return r.ID == recipeID }); i != -1 {
 			return userID
 		}
@@ -243,6 +250,15 @@ func (m *mockEmail) Send(_ string, _ templates.EmailTemplate, _ any) {
 
 type mockFiles struct {
 	extractRecipesFunc func(fileHeaders []*multipart.FileHeader) models.Recipes
+	ReadTempFileFunc   func(name string) ([]byte, error)
+}
+
+func (m *mockFiles) ExportRecipes(recipes models.Recipes) (string, error) {
+	var s string
+	for _, recipe := range recipes {
+		s += recipe.Name + "-"
+	}
+	return s, nil
 }
 
 func (m *mockFiles) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recipes {
@@ -250,6 +266,13 @@ func (m *mockFiles) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.R
 		return m.extractRecipesFunc(fileHeaders)
 	}
 	return models.Recipes{}
+}
+
+func (m *mockFiles) ReadTempFile(name string) ([]byte, error) {
+	if m.ReadTempFileFunc != nil {
+		return m.ReadTempFileFunc(name)
+	}
+	return []byte(name), nil
 }
 
 func (m *mockFiles) UploadImage(_ io.ReadCloser) (uuid.UUID, error) {

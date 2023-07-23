@@ -91,10 +91,10 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 
 	t.Run("submit recipe", func(t *testing.T) {
 		repo = &mockRepository{
-			Recipes: make(map[int64]models.Recipes, 0),
+			RecipesRegistered: make(map[int64]models.Recipes, 0),
 		}
 		srv.Repository = repo
-		originalNumRecipes := len(repo.Recipes)
+		originalNumRecipes := len(repo.RecipesRegistered)
 
 		fields := map[string]string{
 			"title":               "Salsa",
@@ -123,11 +123,11 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
 
 		assertStatus(t, rr.Code, http.StatusCreated)
-		id := int64(len(repo.Recipes))
-		if len(repo.Recipes) != originalNumRecipes+1 {
+		id := int64(len(repo.RecipesRegistered))
+		if len(repo.RecipesRegistered) != originalNumRecipes+1 {
 			t.Fatal("expected one more recipe to be added to the database")
 		}
-		gotRecipe := repo.Recipes[1][id-1]
+		gotRecipe := repo.RecipesRegistered[1][id-1]
 		want := models.Recipe{
 			Category:     "appetizers",
 			CreatedAt:    time.Time{},
@@ -406,7 +406,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 	})
 
 	t.Run("add recipe from supported website error", func(t *testing.T) {
-		repo := &mockRepository{Recipes: make(map[int64]models.Recipes, 0)}
+		repo := &mockRepository{RecipesRegistered: make(map[int64]models.Recipes, 0)}
 		repo.AddRecipeFunc = func(r *models.Recipe, userID int64) (int64, error) {
 			return -1, errors.New("add recipe error")
 		}
@@ -419,7 +419,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 	})
 
 	t.Run("add recipe from a supported website", func(t *testing.T) {
-		repo := &mockRepository{Recipes: make(map[int64]models.Recipes, 0)}
+		repo := &mockRepository{RecipesRegistered: make(map[int64]models.Recipes, 0)}
 		called := 0
 		repo.AddRecipeFunc = func(r *models.Recipe, userID int64) (int64, error) {
 			called += 1
@@ -438,8 +438,8 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 
 func TestHandlers_Recipes_Delete(t *testing.T) {
 	repo := &mockRepository{
-		Recipes:         map[int64]models.Recipes{1: make(models.Recipes, 0)},
-		UsersRegistered: []models.User{{ID: 1, Email: "test@example.com"}},
+		RecipesRegistered: map[int64]models.Recipes{1: make(models.Recipes, 0)},
+		UsersRegistered:   []models.User{{ID: 1, Email: "test@example.com"}},
 	}
 	srv := newServerTest()
 	srv.Repository = repo
@@ -465,6 +465,34 @@ func TestHandlers_Recipes_Delete(t *testing.T) {
 
 		assertStatus(t, rr.Code, http.StatusNoContent)
 		assertHeader(t, rr, "HX-Redirect", "/")
+	})
+}
+
+func TestHandlers_Recipes_Export(t *testing.T) {
+	srv := newServerTest()
+
+	uri := "/recipes/export"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
+	})
+
+	t.Run("no export if no recipes", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusNoContent)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"No recipes in database.\",\"backgroundColor\":\"bg-orange-500\"}"}`)
+	})
+
+	t.Run("have recipes", func(t *testing.T) {
+		_, _ = srv.Repository.AddRecipe(&models.Recipe{ID: 1, Name: "Chicken"}, 1)
+		_, _ = srv.Repository.AddRecipe(&models.Recipe{ID: 2, Name: "BBQ"}, 2)
+		_, _ = srv.Repository.AddRecipe(&models.Recipe{ID: 3, Name: "Jersey"}, 1)
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusSeeOther)
+		assertHeader(t, rr, "HX-Redirect", "/download/Chicken-Jersey-")
 	})
 }
 

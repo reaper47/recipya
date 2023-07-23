@@ -40,8 +40,7 @@ const SelectCountWebsites = `
 	SELECT COUNT(id)
 	FROM websites`
 
-// SelectRecipe fetches a user's recipe.
-const SelectRecipe = `
+const baseSelectRecipe = `
 	SELECT recipes.id                                                                      AS recipe_id,
 		   recipes.name                                                                    AS name,
 		   recipes.description                                                             AS description,
@@ -56,22 +55,12 @@ const SelectRecipe = `
 					 FROM (SELECT DISTINCT ingredients.name AS ingredient_name
 						   FROM ingredient_recipe
 									JOIN ingredients ON ingredients.id = ingredient_recipe.ingredient_id
-						   WHERE ingredient_recipe.recipe_id = (SELECT recipe_id
-																FROM (SELECT recipe_id,
-																			 ROW_NUMBER() OVER (ORDER BY id) AS row_num
-																	  FROM user_recipe
-																	  WHERE user_id = ?) AS t
-																WHERE row_num = ?))), '')  AS ingredients,
+						   WHERE ingredient_recipe.recipe_id = recipes.id)), '')  AS ingredients,
 		   COALESCE((SELECT GROUP_CONCAT(instruction_name, '<!---->')
 					 FROM (SELECT DISTINCT instructions.name AS instruction_name
 						   FROM instruction_recipe
 									JOIN instructions ON instructions.id = instruction_recipe.instruction_id
-						   WHERE instruction_recipe.recipe_id = (SELECT recipe_id
-																 FROM (SELECT recipe_id,
-																			  ROW_NUMBER() OVER (ORDER BY id) AS row_num
-																	   FROM user_recipe
-																	   WHERE user_id = ?) AS t
-																 WHERE row_num = ?))), '') AS instructions,
+						   WHERE instruction_recipe.recipe_id = recipes.id)), '') AS instructions,
 		   COALESCE(GROUP_CONCAT(DISTINCT keywords.name), '')                              AS keywords,
 		   COALESCE(GROUP_CONCAT(DISTINCT tools.name), '')                                 AS tools,
 		   nutrition.calories,
@@ -102,13 +91,21 @@ const SelectRecipe = `
 			 LEFT JOIN tools ON tool_recipe.tool_id = tools.id
 			 LEFT JOIN nutrition ON recipes.id = nutrition.recipe_id
 			 LEFT JOIN time_recipe ON recipes.id = time_recipe.recipe_id
-			 LEFT JOIN times ON time_recipe.time_id = times.id
+			 LEFT JOIN times ON time_recipe.time_id = times.id`
+
+// SelectRecipe fetches a user's recipe.
+const SelectRecipe = baseSelectRecipe + `
 	WHERE recipes.id = (SELECT recipe_id
 						FROM (SELECT recipe_id,
 									 ROW_NUMBER() OVER (ORDER BY id) AS row_num
 							  FROM user_recipe
 							  WHERE user_id = ?) AS t
 						WHERE row_num = ?)`
+
+// SelectRecipes is the query to fetch all the user's recipes.
+const SelectRecipes = baseSelectRecipe + `
+	WHERE recipes.id IN (SELECT recipe_id FROM user_recipe WHERE user_id = ?)
+	GROUP BY recipes.id;`
 
 // SelectRecipeShared checks whether the recipe is shared.
 const SelectRecipeShared = `

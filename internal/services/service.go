@@ -47,6 +47,9 @@ type RepositoryService interface {
 	// Recipe gets the user's recipe of the given id.
 	Recipe(id, userID int64) (*models.Recipe, error)
 
+	// Recipes gets the user's recipes.
+	Recipes(userID int64) models.Recipes
+
 	// RecipeUser gets the user for which the recipe belongs to.
 	RecipeUser(recipeID int64) int64
 
@@ -84,8 +87,15 @@ type EmailService interface {
 
 // FilesService is the interface that describes the methods required for manipulating files.
 type FilesService interface {
+	// ExportRecipes creates a zip containing the recipes to export.
+	// It returns the name of file in the temporary directory.
+	ExportRecipes(recipes models.Recipes) (string, error)
+
 	// ExtractRecipes extracts the recipes from the HTTP files.
 	ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recipes
+
+	// ReadTempFile gets the content of a file in the temporary directory.
+	ReadTempFile(name string) ([]byte, error)
 
 	// UploadImage uploads an image to the server.
 	UploadImage(rc io.ReadCloser) (uuid.UUID, error)

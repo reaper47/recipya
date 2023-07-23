@@ -29,6 +29,64 @@ func NewFilesService() *Files {
 // Files is the entity that manages the email client.
 type Files struct{}
 
+func (f *Files) ExportRecipes(recipes models.Recipes) (string, error) {
+	buf := new(bytes.Buffer)
+	writer := zip.NewWriter(buf)
+
+	for _, recipe := range recipes {
+		data, err := json.Marshal(recipe.Schema())
+		if err != nil {
+			return "", err
+		}
+
+		out, err := writer.Create(recipe.Name + "/recipe.json")
+		if err != nil {
+			return "", err
+		}
+
+		if _, err = out.Write(data); err != nil {
+			return "", err
+		}
+
+		if recipe.Image != uuid.Nil {
+			fileName := recipe.Image.String() + ".jpg"
+			filePath := filepath.Join(app.ImagesDir, fileName)
+
+			if _, err := os.Stat(filePath); err == nil {
+				out, err = writer.Create(recipe.Name + "/image.jpg")
+				if err != nil {
+					return "", err
+				}
+
+				data, err := os.ReadFile(filePath)
+				if err != nil {
+					return "", err
+				}
+
+				if _, err = out.Write(data); err != nil {
+					return "", err
+				}
+			}
+		}
+	}
+
+	if err := writer.Close(); err != nil {
+		return "", err
+	}
+
+	out, err := os.CreateTemp("", "*")
+	if err != nil {
+		return "", err
+	}
+	defer out.Close()
+
+	if _, err := out.Write(buf.Bytes()); err != nil {
+		return "", err
+	}
+
+	return filepath.Base(out.Name()), nil
+}
+
 func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recipes {
 	recipes := make(models.Recipes, 0)
 	var wg sync.WaitGroup
@@ -162,6 +220,16 @@ func extractRecipe(rd io.Reader) (*models.Recipe, error) {
 		return nil, fmt.Errorf("rs.Recipe() err: %q", err)
 	}
 	return r, err
+}
+
+func (f *Files) ReadTempFile(name string) ([]byte, error) {
+	file := filepath.Join(os.TempDir(), name)
+	data, err := os.ReadFile(file)
+	if err != nil {
+		return nil, err
+	}
+	os.Remove(file)
+	return data, nil
 }
 
 func (f *Files) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {

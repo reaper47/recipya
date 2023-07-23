@@ -121,6 +121,8 @@ func (s *Server) mountHandlers() {
 			r.Post("/website", s.recipesAddWebsiteHandler)
 		})
 
+		r.Get("/export", s.recipesExportHandler)
+
 		r.Route("/supported-websites", func(r chi.Router) {
 			r.Get("/", s.recipesSupportedWebsitesHandler)
 			r.Post("/", s.recipesSupportedWebsitesPostHandler)
@@ -138,6 +140,8 @@ func (s *Server) mountHandlers() {
 				r.Get("/recipes", settingsTabsRecipesHandler)
 			})
 		})
+
+		r.Get("/download/{tmpFile}", s.downloadHandler)
 		r.Get("/user-initials", s.userInitialsHandler)
 	})
 

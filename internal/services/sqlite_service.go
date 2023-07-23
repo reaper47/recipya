@@ -348,6 +348,40 @@ func (s *SQLiteService) Recipe(id, userID int64) (*models.Recipe, error) {
 		return nil, err
 	}
 
+	row := tx.QueryRowContext(ctx, statements.SelectRecipe, userID, id, userID, id, userID, id)
+	r, err := scanRecipe(row)
+	if err != nil {
+		return nil, err
+	}
+	return r, tx.Commit()
+}
+
+func (s *SQLiteService) Recipes(userID int64) models.Recipes {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	rows, err := s.DB.QueryContext(ctx, statements.SelectRecipes, userID)
+	if err != nil {
+		return models.Recipes{}
+	}
+	defer rows.Close()
+
+	var recipes models.Recipes
+	for rows.Next() {
+		r, err := scanRecipe(rows)
+		if err != nil {
+			continue
+		}
+		recipes = append(recipes, *r)
+	}
+	return recipes
+}
+
+type scanner interface {
+	Scan(dest ...any) error
+}
+
+func scanRecipe(sc scanner) (*models.Recipe, error) {
 	var (
 		r            models.Recipe
 		ingredients  string
@@ -355,8 +389,7 @@ func (s *SQLiteService) Recipe(id, userID int64) (*models.Recipe, error) {
 		keywords     string
 		tools        string
 	)
-	row := tx.QueryRowContext(ctx, statements.SelectRecipe, userID, id, userID, id, userID, id)
-	if err := row.Scan(
+	if err := sc.Scan(
 		&r.ID, &r.Name, &r.Description, &r.Image, &r.URL, &r.Yield, &r.CreatedAt, &r.UpdatedAt, &r.Category, &r.Cuisine,
 		&ingredients, &instructions, &keywords, &tools, &r.Nutrition.Calories, &r.Nutrition.TotalCarbohydrates,
 		&r.Nutrition.Sugars, &r.Nutrition.Protein, &r.Nutrition.TotalFat, &r.Nutrition.SaturatedFat, &r.Nutrition.UnsaturatedFat,
@@ -372,7 +405,7 @@ func (s *SQLiteService) Recipe(id, userID int64) (*models.Recipe, error) {
 	r.Times.Prep = r.Times.Prep * time.Second
 	r.Times.Cook = r.Times.Cook * time.Second
 	r.Times.Total = r.Times.Total * time.Second
-	return &r, tx.Commit()
+	return &r, nil
 }
 
 func (s *SQLiteService) RecipeUser(recipeID int64) int64 {

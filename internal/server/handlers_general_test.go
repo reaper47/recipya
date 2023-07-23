@@ -1,11 +1,46 @@
 package server_test
 
 import (
+	"errors"
 	"github.com/reaper47/recipya/internal/models"
 	"net/http"
 	"strings"
 	"testing"
 )
+
+func TestHandlers_General_Download(t *testing.T) {
+	srv := newServerTest()
+
+	uri := "/download"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodGet, uri+"/file.zip")
+	})
+
+	t.Run("file does not exist", func(t *testing.T) {
+		srv.Files = &mockFiles{
+			ReadTempFileFunc: func(name string) ([]byte, error) {
+				return nil, errors.New("file does not exist")
+			},
+		}
+		defer func() {
+			srv.Files = &mockFiles{}
+		}()
+
+		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri+"/does-not-exists", noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusNotFound)
+	})
+
+	t.Run("file exists", func(t *testing.T) {
+		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri+"/exists", noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		assertHeader(t, rr, "Content-Type", "text/plain; charset=utf-8")
+		assertHeader(t, rr, "Content-Disposition", `attachment; filename="exists"`)
+		assertHeader(t, rr, "Content-Length", "6")
+	})
+}
 
 func TestHandlers_General_Index(t *testing.T) {
 	srv := newServerTest()
