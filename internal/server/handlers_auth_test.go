@@ -136,8 +136,8 @@ func TestHandlers_Auth_ForgotPassword(t *testing.T) {
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
 			`<title hx-swap-oob="true">Forgot Password | Recipya</title>`,
-			`<input type="email" class="w-full rounded-lg bg-gray-100 px-4 py-2" id="email" name="email" placeholder="Enter your email address..." required/>`,
-			`<button class="mt-6 w-full rounded-lg bg-indigo-600 px-4 py-2 text-lg font-semibold tracking-wide text-white hover:bg-green-600"> Reset password </button>`,
+			`<input type="email" class="w-full rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-900" id="email" name="email" placeholder="Enter your email address" required/>`,
+			`<button class="mt-3 w-full rounded-lg bg-indigo-600 px-4 py-2 text-lg font-semibold tracking-wide text-white hover:bg-green-600"> Reset password </button>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
@@ -189,9 +189,9 @@ func TestHandlers_Auth_ForgotPassword(t *testing.T) {
 				t.Fatal("an email should not have been sent")
 			}
 			want := []string{
-				`<h1 class="mb-6 text-2xl font-bold text-center text-gray-600 underline">Password Reset Requested</h1>`,
-				`<p class="block my-3 text-gray-800 text-md"> An email with instructions on how to reset your password has been sent to you. Please check your inbox and follow the provided steps to regain access to your account. </p>`,
-				`<a href="/" hx-boost="true" class="w-full block text-center px-4 py-2 mt-6 text-lg font-semibold tracking-wide text-white bg-indigo-600 rounded-lg hover:bg-green-600"> Back Home </a>`,
+				`<h1 class="mb-6 text-2xl font-semibold text-center underline">Password Reset Requested</h1>`,
+				`<p class="block mb-3"> An email with instructions on how to reset your password has been sent to you. Please check your inbox and follow the provided steps to regain access to your account. </p>`,
+				`<a href="/" hx-boost="true" class="w-full block text-center px-4 py-2 mt-3 text-lg font-semibold tracking-wide text-white bg-indigo-600 rounded-lg hover:bg-green-600"> Back Home </a>`,
 			}
 			assertStringsInHTML(t, getBodyHTML(rr), want)
 		})
@@ -234,8 +234,8 @@ func TestHandlers_Auth_ForgotPassword(t *testing.T) {
 		want := []string{
 			`<title hx-swap-oob="true">Reset Password | Recipya</title>`,
 			`<input name="user-id" type="hidden" value="1"/>`,
-			`<input class="w-full rounded-lg bg-gray-100 px-4 py-2" id="password" name="password" placeholder="Enter your new password..." required type="password"/>`,
-			`<input class="w-full rounded-lg bg-gray-100 px-4 py-2" id="password-confirm" name="password-confirm" placeholder="Retype your password..." required type="password"/>`,
+			`<input class="w-full rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-900" id="password" name="password" placeholder="Enter your new password" required type="password"/>`,
+			`<input class="w-full rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-900" id="password-confirm" name="password-confirm" placeholder="Retype your password" required type="password"/>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
@@ -447,8 +447,7 @@ func TestHandlers_Auth_Register(t *testing.T) {
 		rr := sendRequest(srv, http.MethodPost, uri+"/validate-email", formHeader, strings.NewReader("email=test@example.com&password=test123&password-confirm=test123"))
 
 		want := []string{
-
-			`<input type="email" class="w-full rounded-lg bg-gray-100 px-4 py-2 border border-green-500" id="email" name="email" placeholder="Enter your email address..." hx-post="/auth/register/validate-email" hx-indicator="#ind" required value="test@example.com"/>`,
+			`<input type="email" class="w-full rounded-lg bg-gray-100 px-4 py-2 border border-green-500" id="email" name="email" placeholder="Enter your email address" hx-post="/auth/register/validate-email" hx-indicator="#ind" required value="test@example.com"/>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})

@@ -162,10 +162,3 @@ const SelectUsers = `
 const SelectWebsites = `
 	SELECT id, host, url
 	FROM websites`
-
-// SelectWebsitesSearch fetches all websites that match the query.
-const SelectWebsitesSearch = `
-	SELECT id, host, url
-	FROM websites
-	WHERE url
-	LIKE ?`

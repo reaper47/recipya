@@ -45,9 +45,11 @@
                 _="on click toggle .hidden on next <div/>">
             <span id="user-initials">A</span>
         </button>
-        <div id="avatar-dropdown-container" class="absolute w-24 right-3 top-[3.6rem] bg-white rounded-lg hidden">
-            <ul id="avatar-menu">
-                <li class="hover:bg-blue-100 border-2 rounded-t-lg">
+        <div id="avatar-dropdown-container"
+             class="absolute w-24 right-3 top-[3.6rem] bg-white rounded-lg hidden dark:bg-gray-900">
+            <ul id="avatar-menu"
+                class="before:content-[''] before:absolute before:right-2 before:top-[-9px] before:border-x-[10px] before:border-x-transparent before:border-b-[10px] before:border-b-[#333]  dark:before:border-b-[gray]">
+                <li class="border-2 rounded-t-lg hover:bg-blue-100 dark:border-gray-600 dark:hover:bg-blue-600">
                     <a class="flex" href="/settings" hx-get="/settings" hx-target="#content" hx-push-url="/settings">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 self-center" fill="none"
                              viewBox="0 0 24 24" stroke="currentColor">
@@ -59,7 +61,7 @@
                         <div class="pl-1 align-bottom">Settings</div>
                     </a>
                 </li>
-                <li class="hover:bg-blue-100 border-2">
+                <li class="border-2 hover:bg-blue-100 dark:border-gray-500 dark:hover:bg-blue-600">
                     <a href="#" class="flex">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 self-center" fill="none"
                              viewBox="0 0 24 24" stroke="currentColor">
@@ -69,9 +71,9 @@
                         <span class="pl-1 align-bottom">About</span>
                     </a>
                 </li>
-                <li class="hover:bg-blue-100 border-2 rounded-b-lg">
+                <li class="border-2 rounded-b-lg hover:bg-blue-100 dark:border-gray-500 dark:hover:bg-blue-600">
                     <a hx-post="/auth/logout" class="flex" href="#">
-                        <svg xmlns="http://www.w3.org/2000/svg" style="margin-left: 0;" class="w-5 h-5 ml-0 self-center"
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-0 self-center"
                              fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
@@ -95,71 +97,79 @@
 
 {{define "settings"}}
     <div class="grid grid-flow-col h-full" style="grid-template-columns: min-content">
-        <div class="text-sm md:text-base grid bg-gray-800 text-white max-w-[5rem]" role="tablist">
-            <button class="px-2 bg-red-800 hover:bg-red-600" hx-get="/settings/tabs/profile"
+        <div class="text-sm md:text-base grid bg-gray-200 max-w-[5rem] mt-[1px] dark:bg-gray-600 dark:border-r dark:border-r-gray-500"
+             role="tablist">
+            <button class="px-2 bg-gray-300 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-800"
+                    hx-get="/settings/tabs/profile"
                     hx-target="#settings-tab-content" role="tab" aria-selected="false" aria-controls="tab-content"
-                    _="on click remove .bg-red-800 from <div[role='tablist'] button/> then add .bg-red-800">
+                    _="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800">
                 Profile
             </button>
-            <button class="px-2 hover:bg-red-600" hx-get="/settings/tabs/recipes" hx-target="#settings-tab-content"
+            <button class="px-2 hover:bg-gray-300 dark:hover:bg-gray-800" hx-get="/settings/tabs/recipes"
+                    hx-target="#settings-tab-content"
                     role="tab" aria-selected="false" aria-controls="tab-content"
-                    _="on click remove .bg-red-800 from <div[role='tablist'] button/> then add .bg-red-800">
+                    _="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800">
                 Recipes
             </button>
         </div>
 
         <div id="settings-tab-content" role="tabpanel"
-             class="text-sm md:text-base p-4 grid grid-cols-2 gap-4 auto-rows-min">
+             class="text-sm md:text-base p-4 auto-rows-min">
             {{template "settings-tabs-profile"}}
         </div>
     </div>
 {{end}}
 
 {{define "settings-tabs-profile"}}
-    <p class="grid justify-end font-semibold">Change password:</p>
-    <form class="h-fit w-fit border p-2" hx-post="/auth/change-password"
-          hx-indicator="#fullscreen-loader" hx-swap="none">
-        <div class="grid mb-5">
-            <label class="block font-medium text-gray-800" for="password-current">
-                Current password
-            </label>
-            <input class="w-full rounded-lg bg-gray-100 px-4 py-2" id="password-current" name="password-current"
-                   placeholder="Current password..." required type="password"/>
+    <div class="flex md:grid md:grid-cols-2 md:gap-4 mb-2">
+        <p class="grid justify-end font-semibold">Change password:</p>
+        <form class="h-fit w-fit border p-4 rounded-lg dark:border-none dark:bg-gray-600" hx-post="/auth/change-password"
+              hx-indicator="#fullscreen-loader" hx-swap="none">
+            <div class="grid mb-5">
+                <div class="block">
+                    <label class="font-medium" for="password-current">Current password</label>
+                    <input class="w-full rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-900" id="password-current"
+                           name="password-current" placeholder="Enter current password" required type="password"/>
+                </div>
 
-            <label class="mt-2 block font-medium text-gray-800" for="password-new">
-                New password
-            </label>
-            <input class="w-full rounded-lg bg-gray-100 px-4 py-2" id="password-new" name="password-new"
-                   placeholder="New password..." required type="password"/>
+                <div class="block mt-3">
+                    <label class="font-medium" for="password-new">New password</label>
+                    <input class="w-full rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-900" id="password-new"
+                           name="password-new" placeholder="Enter new password" required type="password"/>
+                </div>
 
-            <label class="mt-2 block font-medium text-gray-800" for="password-confirm">
-                Confirm password
-            </label>
-            <input class="w-full rounded-lg bg-gray-100 px-4 py-2" id="password-confirm"
-                   name="password-confirm" placeholder="Retype new password..." required type="password"/>
-        </div>
-        <button type="submit"
-                class="w-full p-2 font-semibold text-white duration-300 bg-blue-500 rounded-lg hover:bg-blue-800"
-        >
-            Update
-        </button>
-    </form>
+                <div class="block mt-3">
+                    <label class="font-medium" for="password-confirm">Confirm password</label>
+                    <input class="w-full rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-900" id="password-confirm"
+                           name="password-confirm" placeholder="Retype new password" required type="password"/>
+                </div>
+            </div>
+            <button type="submit" class="w-full p-2 font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-800">
+                Update
+            </button>
+        </form>
+    </div>
 {{end}}
 
 {{define "settings-tabs-recipes"}}
-    <p class="font-semibold grid justify-end">Export data:</p>
-    <button type="button" hx-get="/recipes/export" hx-swap="none"
-            class="h-fit w-fit bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 rounded-lg px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
-        <svg xmlns="http://www.w3.org/2000/svg" style="margin-left: 0;" class="w-5 h-5 ml-0 self-center"
-             fill="black" viewBox="0 0 24 24" stroke="currentColor">
-            <path d="M16 11v5H2v-5H0v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5z"/>
-            <path d="m9 14 5-6h-4V0H8v8H4z"/>
-        </svg>
-    </button>
-    <label for="systems" class="grid justify-end mb-2 font-semibold dark:text-white">Measurement System:</label>
-    <select id="systems" name="system" hx-post="/settings/measurement-system" hx-swap="none"
-            class="h-fit w-fit bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-        <option value="imperial" selected>Imperial</option>
-        <option value="metric">Metric</option>
-    </select>
+    <div class="grid grid-cols-2 gap-4 mb-2">
+        <p class="text-end font-semibold select-none">Export data:</p>
+        <button type="button" hx-get="/recipes/export" hx-swap="none"
+                class="h-fit w-fit bg-white border border-gray-300 rounded-lg py-2 px-4 justify-start hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1"
+                 fill="black" viewBox="0 0 24 24" stroke="currentColor">
+                <path d="M16 11v5H2v-5H0v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5z"/>
+                <path d="m9 14 5-6h-4V0H8v8H4z"/>
+            </svg>
+        </button>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 mb-2">
+        <label for="systems" class="text-end font-semibold">Measurement system:</label>
+        <select id="systems" name="system" hx-post="/settings/measurement-system" hx-swap="none"
+                class="h-fit w-fit bg-gray-50 border border-gray-300 rounded-lg p-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <option value="imperial" selected>Imperial</option>
+            <option value="metric">Metric</option>
+        </select>
+    </div>
 {{end}}

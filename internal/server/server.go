@@ -122,11 +122,7 @@ func (s *Server) mountHandlers() {
 		})
 
 		r.Get("/export", s.recipesExportHandler)
-
-		r.Route("/supported-websites", func(r chi.Router) {
-			r.Get("/", s.recipesSupportedWebsitesHandler)
-			r.Post("/", s.recipesSupportedWebsitesPostHandler)
-		})
+		r.Get("/supported-websites", s.recipesSupportedWebsitesHandler)
 	})
 
 	r.Group(func(r chi.Router) {

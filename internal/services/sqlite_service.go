@@ -539,28 +539,3 @@ func (s *SQLiteService) Websites() models.Websites {
 	}
 	return websites
 }
-
-func (s *SQLiteService) WebsitesSearch(query string) models.Websites {
-	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
-	defer cancel()
-
-	websites := make(models.Websites, 0)
-
-	rows, err := s.DB.QueryContext(ctx, statements.SelectWebsitesSearch, "%"+query+"%")
-	if err != nil {
-		log.Printf("websites search error: %q", err)
-		return websites
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var w models.Website
-		if err := rows.Scan(&w.ID, &w.Host, &w.URL); err != nil {
-			log.Printf("error scanning searched website: %q", err)
-			continue
-		}
-		websites = append(websites, w)
-	}
-
-	return websites
-}

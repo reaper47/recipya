@@ -74,9 +74,6 @@ type RepositoryService interface {
 
 	// Websites gets the list of supported websites from which to extract the recipe.
 	Websites() models.Websites
-
-	// WebsitesSearch gets the list of supported websites that match the query.
-	WebsitesSearch(query string) models.Websites
 }
 
 // EmailService is the interface that describes the methods required for the email client.

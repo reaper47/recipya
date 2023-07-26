@@ -1,38 +1,40 @@
 {{define "auth-card-content"}}
-    <form hx-boost="true" hx-post="/auth/register" class="min-w-full rounded-lg bg-white p-8 shadow-lg">
-        <h1 class="mb-6 text-center text-2xl font-bold text-gray-600 underline">Create your Account</h1>
+    <form hx-boost="true" hx-post="/auth/register"
+          class="min-w-full rounded-lg bg-white py-4 px-8 shadow-lg dark:bg-gray-600">
+        <h1 class="mb-6 text-center text-2xl font-semibold underline">Create your Account</h1>
 
         <div hx-target="this" hx-swap="outerHTML">
             <div class="flex">
-                <label class="text-md my-3 block font-semibold text-gray-800" for="email">Email</label>
+                <label class="text-md block font-semibold" for="email">Email</label>
                 <img id="ind" src="/static/img/bars.svg" class="htmx-indicator ml-2" alt="Loading..."/>
             </div>
-            <input type="email" class="w-full rounded-lg bg-gray-100 px-4 py-2" id="email" name="email"
-                   placeholder="Enter your email address..." required
+            <input type="email" class="w-full rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-900"
+                   id="email" name="email" placeholder="Enter your email address" required
                    hx-post="/auth/register/validate-email" hx-indicator="#ind"/>
         </div>
 
-        <label class="text-md my-3 block font-semibold text-gray-800" for="password">Password</label>
-        <input class="w-full rounded-lg bg-gray-100 px-4 py-2" id="password" name="password"
-               placeholder="Enter your password..." required type="password"/>
+        <div class="block mt-3">
+            <label class="text-md font-semibold" for="password">Password</label>
+            <input class="w-full rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-900"
+                   id="password" name="password" placeholder="Enter your password" required type="password"/>
+        </div>
 
-        <div hx-target="this" hx-swap="outerHTML">
-            <label class="text-md my-3 block font-semibold text-gray-800" for="password-confirm">
-                Confirm password
-            </label>
-            <input class="w-full rounded-lg bg-gray-100 px-4 py-2" id="password-confirm" name="password-confirm"
-                   placeholder="Retype your password..." required type="password"
+        <div class="block mt-3" hx-target="this" hx-swap="outerHTML">
+            <label class="text-md font-semibold" for="password-confirm">Confirm password</label>
+            <input class="w-full rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-900" id="password-confirm"
+                   name="password-confirm" placeholder="Retype your password" required type="password"
                    hx-post="/auth/register/validate-password" hx-trigger="keyup changed delay:1s"
                    hx-indicator="#ind"/>
         </div>
 
-        <button class="mt-6 w-full rounded-lg bg-indigo-600 px-4 py-2 text-lg font-semibold tracking-wide text-white hover:bg-green-600">
+        <button class="mt-3 w-full rounded-lg bg-indigo-600 px-4 py-2 text-lg font-semibold tracking-wide text-white hover:bg-green-600">
             Sign Up
         </button>
 
-        <div class="mt-4 grid">
-            <p class="text-center">Already have an account?</p>
-            <a class="m-auto grid w-1/2 place-content-center rounded-lg bg-indigo-100 px-4 py-2 text-lg font-semibold text-gray-800 hover:bg-green-600 hover:text-white"
+        <div class="mt-4 grid place-content-center text-center">
+            <p>Already have
+                an account?</p>
+            <a class="rounded-lg bg-indigo-100 px-4 py-2 text-lg font-semibold text-gray-800 hover:bg-green-600 hover:text-white"
                href="/auth/login">
                 Log In
             </a>

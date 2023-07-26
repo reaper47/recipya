@@ -1,35 +1,32 @@
 <!DOCTYPE html>
-<html lang="en" style="height:100%;">
+<html lang="en" class="h-full">
 {{- template "head" .}}
-<body class="min-h-full">
-<header hx-boost="true" class="z-50 flex h-12 w-full items-center justify-between bg-gray-800 shadow print:hidden">
+<body class="min-h-full text-gray-900 dark:text-white dark:bg-gray-800">
+<header hx-boost="true"
+        class="flex h-12 w-full items-center justify-between bg-gray-100 dark:bg-black shadow-sm shadow-gray-600 print:hidden">
     <div class="flex h-full items-center">
-        <div class="flex h-full w-24 items-center text-center text-white">
-            <a href="/" hx-get="/" hx-push-url="/" hx-target="body" class="pl-4 font-bold text-white hover:text-red-600">Recipya</a>
-        </div>
+        <button hx-get="/" hx-push-url="/" hx-target="body" class="pl-4 font-semibold hover:text-red-600">Recipya</button>
     </div>
     {{- if .IsAuthenticated}}
-        <div class="flex justify-center" style="flex: 1">
-            <a href="/recipes/add" id="add-recipe"
-               hx-get="/recipes/add" hx-target="#content" hx-push-url="/recipes/add"
-               class="flex cursor-pointer items-center px-4 py-2 rounded-lg bg-blue-100 hover:bg-green-600 hover:text-white">
+        <div class="flex flex-1 justify-center">
+            <button id="add-recipe" hx-get="/recipes/add" hx-target="#content" hx-push-url="/recipes/add"
+                    class="flex cursor-pointer items-center px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-green-600">
                 Add recipe
-            </a>
+            </button>
         </div>
         <div class="flex">
             {{template "avatar" .}}
         </div>
     {{else}}
         <div class="flex">
-            <div class="flex-auto">
-                <a href="/auth/login" class="mr-4 rounded-lg px-2 py-1 text-white hover:bg-green-600">Log In</a>
-            </div>
-            <div class="flex-auto">
-                <a href="/auth/register"
-                   class="mr-4 rounded-lg bg-blue-100 px-2 py-1 hover:bg-red-600 hover:text-white">
-                    Sign Up
-                </a>
-            </div>
+            <a href="/auth/login"
+               class="flex-auto mr-2 rounded-lg px-2 py-1 hover:text-white hover:bg-green-600">
+                Log In
+            </a>
+            <a href="/auth/register"
+               class="flex-auto mr-4 rounded-lg px-2 py-1 bg-amber-300 dark:bg-orange-600 hover:text-white hover:bg-red-600">
+                Sign Up
+            </a>
         </div>
     {{end}}
 </header>

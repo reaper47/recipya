@@ -225,21 +225,6 @@ func (m *mockRepository) Websites() models.Websites {
 	}
 }
 
-func (m *mockRepository) WebsitesSearch(query string) models.Websites {
-	websites := models.Websites{
-		{ID: 1, Host: "101cookbooks.com", URL: "https://101cookbooks.com"},
-		{ID: 2, Host: "afghankitchenrecipes.com", URL: "http://www.afghankitchenrecipes.com"},
-	}
-
-	results := make(models.Websites, 0)
-	for _, w := range websites {
-		if strings.Contains(w.URL, query) {
-			results = append(results, w)
-		}
-	}
-	return results
-}
-
 type mockEmail struct {
 	hitCount int64
 }

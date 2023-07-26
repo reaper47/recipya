@@ -1,39 +1,38 @@
 {{define "auth-card-content"}}
-    <form hx-boost="true" hx-post="/auth/login" class="min-w-full rounded-lg bg-white p-8 shadow-lg">
-        <h1 class="mb-6 text-center text-2xl font-bold text-gray-600 underline">Log In</h1>
+    <form hx-boost="true" hx-post="/auth/login" class="min-w-full rounded-lg bg-white py-4 px-8 shadow-lg dark:bg-gray-600">
+        <h1 class="mb-6 text-center text-2xl font-semibold underline">Log In</h1>
 
-        <div>
-            <label class="text-md my-3 block font-semibold text-gray-800" for="email"> Email </label>
-            <input class="w-full rounded-lg bg-gray-100 px-4 py-2" id="email" name="email"
-                   placeholder="Enter your email address..." required type="email"/>
+        <div class="block">
+            <label class="text-md font-semibold" for="email">Email</label>
+            <input class="w-full rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-900" id="email" name="email"
+                   placeholder="Enter your email address" required type="email">
         </div>
 
-        <div>
-            <label class="text-md my-3 block font-semibold text-gray-800" for="password">Password</label>
-            <input class="w-full rounded-l-lg rounded-bl-lg bg-gray-100 px-4 py-2" id="password" name="password"
-                   placeholder="Enter your password..." required type="password"/>
+        <div class="block mt-3">
+            <label class="text-md font-semibold" for="password">Password</label>
+            <input class="w-full rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-900" id="password" name="password"
+                   placeholder="Enter your password" required type="password">
         </div>
 
         <div class="mt-3 flex justify-center">
-            <input id="remember-me" name="remember-me" type="checkbox"/>
-            <label class="text-md pl-2 font-semibold text-gray-800" for="remember-me">Remember Me</label>
+            <input id="remember-me" name="remember-me" type="checkbox">
+            <label class="text-md pl-2 font-semibold" for="remember-me">Remember Me</label>
         </div>
 
-        <button class="mt-6 w-full rounded-lg bg-indigo-600 px-4 py-2 text-lg font-semibold tracking-wide text-white hover:bg-green-600">
+        <button class="mt-3 w-full rounded-lg bg-indigo-600 px-4 py-2 text-lg font-semibold tracking-wide text-white hover:bg-green-600">
             Log In
         </button>
 
-        <div class="mt-4 grid">
+        <div class="mt-4 grid place-content-center text-center">
             <p class="text-center">Don't have an account?</p>
-            <a class="m-auto grid w-1/2 place-content-center rounded-lg bg-indigo-100 px-4 py-2 text-lg font-semibold text-gray-800 hover:bg-green-600 hover:text-white"
+            <a class="rounded-lg bg-indigo-100 px-4 py-2 text-lg font-semibold text-gray-900 hover:bg-green-600 hover:text-white"
                href="/auth/register">
                 Sign Up
             </a>
+            <a class="rounded-lg px-4 py-2 mt-1 text-gray-800 hover:bg-red-100 dark:text-gray-200 dark:hover:bg-red-600"
+               href="/auth/forgot-password">
+                Forgot your password?
+            </a>
         </div>
-
-        <a class="m-auto grid w-1/2 place-content-center px-4 py-2 mt-1 font-semibold text-gray-800 hover:bg-red-100"
-           href="/auth/forgot-password">
-            Forgot your password?
-        </a>
     </form>
 {{end}}

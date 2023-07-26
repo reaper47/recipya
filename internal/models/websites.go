@@ -12,17 +12,17 @@ type Websites []Website
 func (w Websites) TableHTML() string {
 	var sb strings.Builder
 	for _, website := range w {
-		tr := `<tr class="border px-8 py-2">`
-		data1 := `<td class="border px-8 py-2">` + strconv.FormatInt(website.ID, 10) + "</td>"
+		tr := `<tr class="border text-center">`
+		data1 := `<td class="border dark:border-gray-800">` + strconv.FormatInt(website.ID, 10) + "</td>"
 		link := `<a class="underline" href="` + website.URL + `" target="_blank">` + website.Host + "</a>"
-		data2 := `<td class="border px-8 py-2">` + link + "</td>"
+		data2 := `<td class="border py-1 dark:border-gray-800">` + link + "</td>"
 		sb.WriteString(tr + data1 + data2 + "</tr>")
 	}
 
 	if sb.Len() == 0 {
 		tr := `<tr class="border px-8 py-2">`
-		data1 := `<td class="border px-8 py-2">-1</td>`
-		data2 := `<td class="border px-8 py-2">No result</td>`
+		data1 := `<td class="border dark:border-gray-800">-1</td>`
+		data2 := `<td class="border py-1 dark:border-gray-800">No result</td>`
 		sb.WriteString(tr + data1 + data2 + "</tr>")
 	}
 

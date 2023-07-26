@@ -1,31 +1,29 @@
 {{define "add-recipe"}}
     <title hx-swap-oob="true">Add Recipe | Recipya</title>
 
-    <div class="grid w-full h-full grid-cols-1 gap-8 px-4 py-4 md:grid-cols-2 md:grid-rows-2 xl:m-auto xl:max-w-6xl md:grid-flow-col">
-        <div class="shadow-lg rounded-xl h-96">
+    <div class="grid w-full h-full grid-cols-1 gap-4 p-4 md:grid-cols-2 md:grid-rows-2 xl:m-auto xl:max-w-6xl md:grid-flow-col">
+        <div class="shadow-lg rounded-xl h-96 dark:shadow-none dark:bg-gray-600">
             <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes-new/manual.webp"
                  alt="Writing on a piece of paper with a traditional pen."/>
             <div class="h-40 px-6 py-4">
-                <div class="mb-2 text-xl font-bold">Manual</div>
-                <p class="text-base text-gray-700">
-                    Add a new recipe by filling out its content manually.
-                </p>
+                <div class="mb-2 text-xl font-semibold">Manual</div>
+                <p>Add a new recipe by filling out its content manually.</p>
             </div>
-            <hr>
+            <hr class="dark:border dark:border-gray-800">
             <div class="px-6 pt-4 pb-2">
-                <a class="flex justify-center text-gray-900 duration-300 border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
-                   href="/recipes/add/manual">
+                <button class="w-full border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
+                        hx-get="/recipes/add/manual" hx-target="#content" hx-push-url="/recipes/add/manual">
                     Fill In
-                </a>
+                </button>
             </div>
         </div>
 
-        <div class="shadow-lg rounded-xl h-96">
+        <div class="shadow-lg rounded-xl h-96 dark:shadow-none dark:bg-gray-600">
             <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes-new/import.webp"
                  alt="Writing on a piece of paper with a traditional pen."/>
             <div class="h-40 px-6 py-4">
-                <div class="mb-2 text-xl font-bold">Website</div>
-                <p class="text-base text-gray-700">
+                <div class="mb-2 text-xl font-semibold">Website</div>
+                <p>
                     Fetch a recipe from one of the
                     <button id="search-button" class="underline"
                             hx-get="/recipes/supported-websites"
@@ -37,9 +35,9 @@
                     websites.
                 </p>
             </div>
-            <hr>
+            <hr class="dark:border dark:border-gray-800">
             <div class="px-6 pt-4 pb-2">
-                <button class="flex justify-center w-full duration-300 border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
+                <button class="w-full border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
                         hx-target="#content"
                         hx-push-url="/recipes/add/unsupported-website"
                         hx-prompt="Enter the recipe's URL"
@@ -50,85 +48,76 @@
             </div>
         </div>
 
-        <dialog id="supported-websites-dialog" class="p-4 h-2/3 ">
-            <h3 class="flex justify-between items-center mb-1">
-                <span class="flex font-bold">
-                    Search Websites
-                    <span id="dialog-indicator" class="pl-2 htmx-indicator">
-                        <img src="/static/img/bars.svg" alt="Loading..."/>
-                    </span>
-                </span>
+        <dialog id="supported-websites-dialog" class="p-4 h-2/3 dark:bg-gray-600 rounded-lg">
+            <h3 class="flex justify-between items-center mb-1 dark:text-gray-200">
+                <label class="w-11/12">
+                    <input class="w-full rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-900"
+                           type="search" name="search" placeholder="Search a website" autocomplete="off"
+                           _="on input
+                            show <tbody>tr/> in next <table/>
+                            when its textContent.toLowerCase() contains my value.toLowerCase()">
+                </label>
                 <button type="button" class="hover:bg-gray-800 hover:text-white px-2 border rounded"
                         onclick="document.querySelector('#supported-websites-dialog').close()">
                     X
                 </button>
             </h3>
 
-            <label>
-                <input class="w-full mb-1 border border-gray-300 py-2 px-3 text-gray-700 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50"
-                       type="search" name="search" placeholder="Search a website..."
-                       hx-post="/recipes/supported-websites"
-                       hx-trigger="keyup changed delay:500ms, search"
-                       hx-target="#search-results"
-                       hx-indicator="#dialog-indicator">
-            </label>
-
-            <table class="border-collapse">
-                <thead>
-                <tr>
-                    <th class="bg-blue-100 border text-left px-8 py-2 w-4">Number</th>
-                    <th class="bg-blue-100 border text-left px-8 py-2 w-72">Website</th>
+            <table class="border-collapse mt-2 dark:text-gray-200">
+                <thead class="dark:text-gray-900">
+                <tr class="bg-blue-100 text-center">
+                    <th class="border px-4 py-1 w-4 dark:border-gray-800">Number</th>
+                    <th class="border px-4 py-1 w-72">Website</th>
                 </tr>
                 </thead>
                 <tbody id="search-results"></tbody>
             </table>
         </dialog>
 
-        <div class="shadow-lg rounded-xl h-96">
+        <div class="shadow-lg rounded-xl h-96 dark:shadow-none dark:bg-gray-600">
             <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes-new/camera.webp"
                  alt="Writing on a piece of paper with a traditional pen."/>
             <div class="h-40 px-6 py-4">
-                <div class="mb-2 text-xl font-bold">Scan</div>
-                <p class="text-base text-gray-700">
+                <div class="mb-2 text-xl font-semibold">Scan</div>
+                <p>
                     Upload an image of the recipe you want to add or take a picture using
                     your device's camera.
                 </p>
             </div>
-            <hr>
+            <hr class="dark:border dark:border-gray-800">
             <div class="px-6 pt-4 pb-2">
-                <button id="modal__upload-open-button"
-                        class="flex justify-center w-full text-gray-900 duration-300 border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
+                <button class="w-full border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
                         onclick="openModal(event)">
                     Upload
                 </button>
             </div>
         </div>
 
-        <div class="shadow-lg rounded-xl h-96">
+        <div class="shadow-lg rounded-xl h-96 dark:shadow-none dark:bg-gray-600">
             <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes-new/schema.webp"
                  alt="Writing on a piece of paper with a traditional pen."/>
             <div class="h-40 px-6 py-4">
-                <div class="mb-2 text-xl font-bold">Import</div>
-                <p class="text-base text-gray-700">
+                <div class="mb-2 text-xl font-semibold">Import</div>
+                <p>
                     Import recipes in the that adhere to the
                     <a href="https://schema.org/Recipe" target="_blank"
-                       class="text-blue-600 underline hover:text-blue-800 visited:text-purple-600">
-                        recipe schema</a> standard,
-                    i.e. your Nextcloud recipes.
+                       class="text-blue-600 underline hover:text-blue-800 visited:text-purple-600 dark:hover:text-blue-400 dark:visited:text-purple-400">
+                        recipe schema
+                    </a> standard, i.e. your Nextcloud recipes.
                 </p>
             </div>
-            <hr>
+            <hr class="dark:border dark:border-gray-800">
             <div class="px-6 pt-4 pb-2">
-                <button class="flex justify-center w-full duration-300 border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
+                <button class="flex justify-center w-full border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
                         onclick="document.querySelector('#import-recipes-dialog').showModal()">
                     Import
                 </button>
             </div>
         </div>
 
-        <dialog id="import-recipes-dialog" class="p-4">
+        <dialog id="import-recipes-dialog" class="p-4 dark:bg-gray-600 rounded-lg dark:text-gray-200">
             <h3 class="flex justify-between items-center mb-4">
-                <span class="flex font-bold">Import Recipes</span>
+                <span class="flex font-semibold">Import Recipes</span>
                 <button type="button" class="hover:bg-gray-800 hover:text-white px-2 border rounded"
                         onclick="document.querySelector('#import-recipes-dialog').close()">
                     X
@@ -137,15 +126,15 @@
 
             <form hx-post="/recipes/add/import" enctype="multipart/form-data" hx-indicator="#fullscreen-loader"
                   hx-swap="none">
-                <div class="grid mb-5">
-                    <label for="import-dialog-file" class="text-sm font-bold text-gray-600 mb-1">
+                <div class="grid mb-4">
+                    <label for="import-dialog-file" class="text-sm font-semibold mb-1">
                         Choose files in the .json or .zip format.
                     </label>
                     <input id="import-dialog-file" type="file" name="files" accept=".json,.zip" multiple
-                           class="p-2 border border-gray-300 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-purple-600">
+                           class="p-2 border border-gray-300 rounded-lg shadow focus:ring-2 focus:ring-purple-600 dark:bg-gray-900 dark:border-none">
                 </div>
                 <button type="submit"
-                        class="w-full p-2 font-semibold text-white duration-300 bg-blue-500 border-2 rounded-lg hover:bg-blue-800"
+                        class="w-full p-2 font-semibold text-white bg-blue-500 border rounded-lg hover:bg-blue-800 dark:border-gray-800"
                         onclick="document.querySelector('#import-recipes-dialog').close()"
                 >
                     Submit
@@ -159,14 +148,14 @@
     <title hx-swap-oob="true">Manual | Recipya</title>
 
     <form hx-post="/recipes/add/manual" enctype="multipart/form-data"
-          class="grid max-w-6xl grid-cols-6 px-4 pb-4 m-auto mt-4">
-        <div class="col-span-6 text-lg border border-gray-900 md:text-xl rounded-t-md">
+          class="grid max-w-6xl grid-cols-6 m-auto mt-4 pb-4 dark:bg-gray-600 dark:rounded-t-lg">
+        <div class="col-span-6 text-lg border border-gray-900 rounded-t-lg md:text-xl dark:border-gray-800">
             <label for="title" class="hidden"></label>
-            <input type="text" name="title" id="title" placeholder="Title of the recipe*" required
-                   class="w-full py-2 font-bold text-center text-gray-600 placeholder-gray-400 rounded-t-lg">
+            <input type="text" name="title" id="title" placeholder="Title of the recipe*" required autocomplete="off"
+                   class="w-full py-2 bg-gray-50 font-semibold text-center text-gray-600 placeholder-gray-400 rounded-t-lg dark:bg-gray-900 dark:text-gray-200">
         </div>
 
-        <label class="grid col-span-6 w-full h-96 border-b border-l border-r border-black place-content-center md:border-r-0 md:col-span-4 text-sm">
+        <label class="grid col-span-6 place-content-center w-full h-96 border-b border-x border-black md:border-r-0 md:col-span-4 text-sm dark:border-gray-800">
             <img src="" alt="Image preview of the recipe." class="h-full">
             <span>
                 <input type="file" accept="image/*" name="image" required
@@ -178,7 +167,7 @@
                         then set {src: window.URL.createObjectURL(it)} on previous <img/>
                         then remove .hidden from next <button/>">
                 <button type="button"
-                        class="px-2 bg-red-300 border border-gray-800 rounded-lg hover:bg-red-600 hover:text-white hidden"
+                        class="px-2 bg-red-300 border border-gray-800 rounded-lg hidden hover:bg-red-600 hover:text-white dark:border-gray-800 dark:bg-red-600 dark:hover:bg-red-700"
                         _="on click
                             set {value: ''} on previous <input/>
                             then set {src: ''} on previous <img/>
@@ -188,49 +177,55 @@
             </span>
         </label>
 
-        <div class="grid grid-flow-col col-span-6 border-b border-l border-black md:border-l md:grid-flow-row md:col-span-2 md:grid md:border-r md:border-b-0 print:border-b">
-            <div class="col-span-2 p-2 border-r border-black md:col-span-3 md:grid md:place-items-center md:border-r-0">
-                <label class="grid place-content-center p-2 font-medium text-sm text-blue-700 bg-blue-100 border border-blue-300 rounded-full w-fit">
-                  <input type="text" list="categories" name="category" class="bg-transparent text-center" placeholder="Breakfast*" required>
+        <div class="grid grid-flow-col col-span-6 border-b border-l border-black md:border-l md:grid-flow-row md:col-span-2 md:grid md:border-r md:border-b-0 dark:border-gray-800 print:border-b">
+            <div class="col-span-2 p-2 border-r border-black md:col-span-3 md:grid md:place-items-center md:border-r-0 dark:border-gray-800">
+                <label class="grid place-content-center p-2 font-medium text-sm text-gray-900 bg-blue-100 border border-blue-300 rounded-full w-fit">
+                    <input type="text" list="categories" name="category"
+                           class="bg-transparent text-center focus:outline-none" placeholder="Breakfast*" required>
                     <datalist id="categories">
                         {{- range .View.Categories -}}
-                        <option>{{.}}</option>
+                            <option>{{.}}</option>
                         {{- end -}}
                     </datalist>
                 </label>
             </div>
 
-            <div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t">
+            <div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t dark:border-gray-800">
                 <div>
                     <label for="yield">Yields</label>
                     <input id="yield" type="number" min="1" name="yield" value="4"
-                           class="w-24 rounded bg-gray-100 p-2">
+                           class="w-24 rounded bg-gray-100 p-2 dark:bg-gray-900">
                     <span>servings</span>
                 </div>
             </div>
 
-            <div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t">
+            <div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t dark:border-gray-800">
                 <label class="w-4/5">
-                    <input id="source" type="text" placeholder="Source*" class="w-full rounded bg-gray-100 p-2" required>
+                    <input id="source" type="text" placeholder="Source*"
+                           class="w-full rounded bg-gray-100 p-2 dark:bg-gray-900" required>
                 </label>
-                <p class="px-4">The source can be a website, name of a cookbook, from a relative or friend, a magazine, etc.</p>
+                <p class="px-4">
+                    The source can be a website, name of a cookbook, from a relative or friend, a magazine, etc.
+                </p>
             </div>
         </div>
 
-        <div class="col-span-6 border-b border-l border-r border-black md:col-span-4">
+        <div class="col-span-6 border-b border-x border-black md:col-span-4 dark:border-gray-800">
             <div class="flex flex-col p-2">
-                <label for="description" class="text-sm font-bold text-gray-600">
+                <label for="description" class="text-sm font-semibold text-gray-600 dark:text-gray-200">
                     Description <sup class="text-red-600">*</sup>
                 </label>
-                <textarea id="description" name="description" rows="10" class="p-2 border border-gray-300 rounded-t-lg"
-                          placeholder="This Thai curry chicken will make you drool..." required></textarea>
+                <textarea id="description" name="description" rows="10"
+                          placeholder="This Thai curry chicken will make you drool." required
+                          class="p-2 border border-gray-300 rounded-t-lg dark:bg-gray-800 dark:border-none"
+                ></textarea>
             </div>
         </div>
 
-        <div class="col-span-3 border-b border-l border-r border-black md:border-l-0 md:col-span-1">
+        <div class="col-span-3 border border-black md:border-l-0 md:col-span-1 dark:border-gray-800">
             <div class="inline-block min-w-full overflow-x-auto align-middle">
                 <div class="overflow-hidden border-gray-200">
-                    <table class="min-w-full text-xs divide-y divide-gray-200">
+                    <table class="min-w-full text-xs divide-y divide-gray-200 dark:text-gray-200 dark:divide-slate-600">
                         <thead class="h-12 font-medium tracking-wider text-white bg-gray-800">
                         <tr>
                             <th scope="col" class="text-right md:text-center">
@@ -241,95 +236,104 @@
                             </th>
                         </tr>
                         </thead>
-                        <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200">
+                        <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600">
                         <tr>
-                            <td>
+                            <td class="py-2 dark:border-gray-800">
                                 <p>Calories:</p>
                             </td>
-                            <td class="py-3 text-center">
+                            <td class="text-center dark:border-gray-800">
                                 <label for="calories" class="hidden"></label>
-                                <input type="text" id="calories" name="calories" placeholder="368kcal"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
+                                <input type="text" id="calories" name="calories"
+                                       autocomplete="off" placeholder="368kcal"
+                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
                             </td>
                         </tr>
-                        <tr class="bg-gray-100">
-                            <td>
+                        <tr class="bg-gray-100 dark:bg-slate-700">
+                            <td class="py-2 dark:border-gray-800">
                                 <p>Total carbs:</p>
                             </td>
-                            <td class="py-3 text-center">
+                            <td class="text-center dark:border-gray-800">
                                 <label for="total-carbohydrates" class="hidden"></label>
-                                <input type="text" id="total-carbohydrates" name="total-carbohydrates" placeholder="35g"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
+                                <input type="text" id="total-carbohydrates" name="total-carbohydrates"
+                                       autocomplete="off" placeholder="35g"
+                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td class="py-2 dark:border-gray-800">
                                 <p>Sugars:</p>
                             </td>
-                            <td class="py-3 text-center">
+                            <td class="text-center dark:border-gray-800">
                                 <label for="sugars" class="hidden"></label>
-                                <input type="text" id="sugars" name="sugars" placeholder="3g"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
+                                <input type="text" id="sugars" name="sugars"
+                                       autocomplete="off" placeholder="3g"
+                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
                             </td>
                         </tr>
-                        <tr class="bg-gray-100">
-                            <td>
+                        <tr class="bg-gray-100 dark:bg-slate-700">
+                            <td class="py-2 dark:border-gray-800">
                                 <p>Protein:</p>
                             </td>
-                            <td class="py-3 text-center">
+                            <td class="text-center dark:border-gray-800">
                                 <label for="protein" class="hidden"></label>
-                                <input type="text" id="protein" name="protein" placeholder="21g"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
+                                <input type="text" id="protein" name="protein"
+                                       autocomplete="off" placeholder="21g"
+                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td class="py-2 dark:border-gray-800">
                                 <p>Total fat:</p>
                             </td>
-                            <td class="py-3 text-center">
+                            <td class="text-center dark:border-gray-800">
                                 <label for="total-fat" class="hidden"></label>
-                                <input type="text" id="total-fat" name="total-fat" placeholder="15g"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
+                                <input type="text" id="total-fat" name="total-fat"
+                                       autocomplete="off" placeholder="15g"
+                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
                             </td>
                         </tr>
-                        <tr class="bg-gray-100">
-                            <td>
+                        <tr class="bg-gray-100 dark:bg-slate-700">
+                            <td class="py-2 dark:border-gray-800">
                                 <p>Saturated fat:</p>
                             </td>
-                            <td class="py-3 text-center">
+                            <td class="text-center dark:border-gray-800">
                                 <label for="saturated-fat" class="hidden"></label>
-                                <input type="text" id="saturated-fat" name="saturated-fat" placeholder="1.8g"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
+                                <input type="text" id="saturated-fat" name="saturated-fat"
+                                       autocomplete="off" placeholder="1.8g"
+                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td class="py-2 dark:border-gray-800">
                                 <p>Cholesterol:</p>
                             </td>
-                            <td class="py-3 text-center">
+                            <td class="text-center dark:border-gray-800">
                                 <label for="cholesterol" class="hidden"></label>
-                                <input type="text" id="cholesterol" name="cholesterol" placeholder="1.1mg"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
+                                <input type="text" id="cholesterol" name="cholesterol"
+                                       autocomplete="off" placeholder="1.1mg"
+                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
                             </td>
                         </tr>
-                        <tr class="bg-gray-100">
-                            <td>
+                        <tr class="bg-gray-100 dark:bg-slate-700">
+                            <td class="py-2 dark:border-gray-800">
                                 <p>Sodium:</p>
                             </td>
-                            <td class="py-3 text-center">
+                            <td class="text-center dark:border-gray-800">
                                 <label for="sodium" class="hidden"></label>
-                                <input type="text" id="sodium" name="sodium" placeholder="100mg"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
+                                <input type="text" id="sodium" name="sodium"
+                                       autocomplete="off" placeholder="100mg"
+                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td class="py-2 dark:border-gray-800">
                                 <p>Fiber:</p>
                             </td>
-                            <td class="py-3 text-center">
+                            <td class="text-center dark:border-gray-800">
                                 <label for="fiber" class="hidden"></label>
-                                <input type="text" id="fiber" name="fiber" placeholder="8g"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400">
+                                <input type="text" id="fiber" name="fiber"
+                                       autocomplete="off" placeholder="8g"
+                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
                             </td>
                         </tr>
                         </tbody>
@@ -341,32 +345,30 @@
         <div class="col-span-3 border-b border-r border-black md:col-span-1">
             <div class="inline-block min-w-full overflow-x-auto align-middle">
                 <div class="overflow-hidden border-gray-200">
-                    <table class="min-w-full text-xs divide-y divide-gray-200">
-                        <thead class="h-12 font-medium tracking-wider text-white bg-gray-800 border-l border-white">
+                    <table id="times-table"
+                           class="min-w-full text-xs divide-y divide-gray-200 dark:text-gray-200 dark:divide-slate-600">
+                        <thead class="h-12 font-medium tracking-wider text-white bg-gray-800 border-l dark:border-l-gray-600">
                         <tr>
                             <th scope="col" class="text-right">Time</th>
                             <th scope="col" class="text-center">h:m:s</th>
                         </tr>
                         </thead>
-                        <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200">
+                        <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600">
                         <tr>
-                            <td>
-                                <p>Preparation:</p>
-                            </td>
-                            <td class="py-3 text-center">
+                            <td class="py-2">Preparation:</td>
+                            <td class="text-center">
                                 <label for="time-preparation" class="hidden"></label>
                                 <input type="text" id="time-preparation" name="time-preparation" value="00:15:00"
-                                       class="w-full p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker">
+                                       class="w-full p-1 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker dark:bg-gray-900 dark:text-gray-200">
                             </td>
                         </tr>
-                        <tr class="bg-gray-100">
-                            <td>
-                                <p>Cooking:</p>
-                            </td>
-                            <td class="w-1/2 py-3 text-center">
+                        <tr class="bg-gray-100 dark:bg-slate-700">
+                            <td class="py-2">Cooking:</td>
+                            <td class="w-1/2 text-center">
                                 <label for="time-cooking" class="hidden"></label>
                                 <input type="text" id="time-cooking" name="time-cooking" value="00:30:00"
-                                       class="w-full p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker">
+                                       class="w-full p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker dark:bg-gray-900 dark:text-gray-200"
+                                       _="on load get <button/> in #times-table then add .dark:bg-gray-200 to it">
                             </td>
                         </tr>
                         </tbody>
@@ -375,20 +377,22 @@
             </div>
         </div>
 
-        <div class="col-span-6 py-2 border-b border-l border-r border-black md:col-span-2 md:border-r-0">
+        <div class="col-span-6 py-2 border-b border-x border-black md:col-span-2 md:border-r-0">
             <fieldset class="text-center border-none">
-                <legend class="pb-2 m-auto text-sm font-bold text-gray-600 ">
+                <legend class="pb-2 m-auto text-sm font-semibold text-gray-600 dark:text-gray-200">
                     <span class="underline">Ingredients</span> <sup class="text-red-600 no-underline">*</sup>
                 </legend>
                 <ol id="ingredients-list" class="pl-6 list-decimal">
                     <li class="pb-2 pl-2">
                         <label>
                             <input type="text" name="ingredient-1" placeholder="Ingredient #1" required
-                                   class="w-8/12 py-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400"
-                                   onkeydown="handleKeyDownIngredient(event)">
+                                   class="w-8/12 py-1 pl-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-900 dark:border-none dark:text-gray-200"
+                                   _="on keydown if event.key is 'Enter'
+                                        then halt the event then get next <button/> from the parentElement of me
+                                        then call htmx.trigger(it, 'click')">
                         </label>
                         <button type="button"
-                                class="w-10 h-10 text-center duration-300 bg-green-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-green-600 hover:text-white center"
+                                class="w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-green-600 hover:text-white center dark:bg-green-500"
                                 title="Shortcut: Enter"
                                 hx-post="/recipes/add/manual/ingredient"
                                 hx-target="#ingredients-list"
@@ -397,7 +401,7 @@
                             +
                         </button>
                         <button type="button"
-                                class="delete-button w-10 h-10 duration-300 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center"
+                                class="delete-button w-10 h-10 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center dark:bg-red-500"
                                 hx-target="#ingredients-list"
                                 hx-post="/recipes/add/manual/ingredient/1"
                                 hx-include="[name^='ingredient']">
@@ -405,8 +409,7 @@
                         </button>
                         <div class="inline-block h-4 cursor-move handle">
                             <svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
+                                 viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                       d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
                             </svg>
@@ -415,30 +418,33 @@
                 </ol>
             </fieldset>
         </div>
-        <div class="col-span-6 py-2 pb-8 pl-2 border-b border-l border-r border-black md:col-span-4">
+        <div class="col-span-6 py-2 pb-8 pl-2 border-b border-x border-black md:col-span-4">
             <fieldset class="text-center border-none">
-                <legend class="m-auto text-sm font-bold text-gray-600">
+                <legend class="m-auto text-sm font-semibold text-gray-600 dark:text-gray-200">
                     <span class="underline">Instructions</span> <sup class="text-red-600">*</sup>
                 </legend>
                 <ol id="instructions-list" class="pl-4 list-decimal">
                     <li class="pt-2 pl-2 md:pl-0">
                         <label>
                           <textarea required name="instruction-1" rows="3"
-                                    class="w-9/12 border border-gray-300 md:w-5/6 xl:w-11/12"
+                                    class="w-9/12 border border-gray-300 pl-1 md:w-5/6 xl:w-11/12 dark:bg-gray-900 dark:border-none"
                                     placeholder="Instruction #1"
-                                    onkeydown="handleKeyDownInstruction(event)"
-                          ></textarea>
+                                    _="on keydown if event.ctrlKey and event.key === 'Enter'
+                                        then halt the event
+                                        then get next <div/> from the parentElement of me
+                                        then get last <button/> in it
+                                        then call htmx.trigger(it, 'click')"></textarea>
                         </label>
                         <div class="inline-flex flex-col-reverse">
                             <button type="button"
-                                    class="delete-button mt-4 md:flex-initial w-10 h-10 right-0.5 md:w-7 md:h-7 md:right-auto duration-300 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center"
+                                    class="delete-button mt-4 md:flex-initial w-10 h-10 right-0.5 md:w-7 md:h-7 md:right-auto bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center dark:bg-red-500"
                                     hx-target="#instructions-list"
                                     hx-post="/recipes/add/manual/instruction/1"
                                     hx-include="[name^='instruction']">
                                 -
                             </button>
                             <button type="button"
-                                    class="md:flex-initial bottom-0 right-0.5 md:w-7 md:h-7 md:right-auto w-10 h-10 text-center duration-300 bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center"
+                                    class="bottom-0 right-0.5 md:flex-initial md:w-7 md:h-7 md:right-auto w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center dark:bg-green-500"
                                     title="Shortcut: CTRL + Enter"
                                     hx-post="/recipes/add/manual/instruction"
                                     hx-target="#instructions-list"
@@ -460,7 +466,7 @@
             </fieldset>
         </div>
         <button type="submit"
-                class="col-span-6 p-2 font-semibold text-white duration-300 bg-blue-500 hover:bg-blue-800">
+                class="col-span-6 p-2 font-semibold text-white bg-blue-500 hover:bg-blue-800">
             Submit
         </button>
     </form>
@@ -475,42 +481,24 @@
             ];
             inputs.forEach(({name, type}) => {
                 const list = document.querySelector(`#${name}s-list`);
-                new Sortable.create(list, {
-                    handle: '.handle',
-                    onEnd: function () {
-                        Array.from(document.querySelectorAll(`${type}[name^='${name}']`)).forEach((d, i) => {
-                            const n = i + 1;
-                            d.name = `${name}-${n}`;
-                            d.placeholder = `${name.substring(0, 1).toUpperCase() + name.substring(1)} #${n}`;
+                if (list) {
+                    new Sortable.create(list, {
+                        handle: '.handle',
+                        onEnd: function () {
+                            Array.from(document.querySelectorAll(`${type}[name^='${name}']`)).forEach((d, i) => {
+                                const n = i + 1;
+                                d.name = `${name}-${n}`;
+                                d.placeholder = `${name.substring(0, 1).toUpperCase() + name.substring(1)} #${n}`;
 
-                            const deleteButton = d.parentElement.parentElement.querySelector(".delete-button");
-                            deleteButton.setAttribute('hx-post', `/recipes/add/manual/${name}/${n}`);
-                            htmx.process(deleteButton);
-                        });
-                    }
-                });
+                                const deleteButton = d.parentElement.parentElement.querySelector(".delete-button");
+                                deleteButton.setAttribute('hx-post', `/recipes/add/manual/${name}/${n}`);
+                                htmx.process(deleteButton);
+                            });
+                        }
+                    });
+                }
             });
         });
-
-        function handleKeyDownIngredient(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                const addButton = event?.target?.parentElement.nextElementSibling;
-                if (addButton !== null) {
-                    htmx.trigger(addButton, 'click');
-                }
-            }
-        }
-
-        function handleKeyDownInstruction(event) {
-            if (event.ctrlKey && event.key === 'Enter') {
-                event.preventDefault();
-                const addButton = event?.target?.parentElement?.parentElement.querySelector('[hx-post="/recipes/add/manual/instruction"]');
-                if (addButton !== null) {
-                    htmx.trigger(addButton, 'click');
-                }
-            }
-        }
     </script>
 {{end}}
 
@@ -540,7 +528,7 @@
 
     <div class="flex h-[95vh] items-center justify-center">
         <article class="p-5 max-w-sm bg-white border border-gray-200 rounded-lg shadow-md md:max-w-md">
-            <h3 class="mb-2 text-2xl font-bold tracking-tight">
+            <h3 class="mb-2 text-2xl font-semibold tracking-tight">
                 This website is not supported
             </h3>
             <p class="mb-3 text-gray-700">
@@ -575,15 +563,15 @@
         <dialog id="share-dialog" class="p-4 border-4 border-black min-w-[15rem]">
             <div id="share-dialog-result" class="pb-4"></div>
             <form method="dialog">
-                <button class="w-full p-1 font-semibold text-white duration-300 bg-blue-500 border-2 border-black rounded-lg hover:bg-blue-800">
+                <button class="w-full p-1 font-semibold text-white bg-blue-500 border-2 border-black rounded-lg hover:bg-blue-800">
                     OK
                 </button>
             </form>
         </dialog>
     {{- end -}}
 
-    <div class="grid grid-cols-6 max-w-6xl px-4 pb-4 m-auto mt-4 print:m-0 print:p-0">
-        <div class="grid grid-cols-6 col-span-6 text-lg border border-gray-900 rounded-t-md md:text-xl print:rounded-t-none">
+    <div class="grid grid-cols-6 max-w-6xl m-auto mt-4 pb-4 dark:bg-gray-600 dark:rounded-t-lg print:m-0 print:p-0">
+        <div class="grid grid-cols-6 col-span-6 text-lg bg-gray-50 border border-gray-900 rounded-t-md md:text-xl dark:border-gray-800 dark:bg-gray-900 print:rounded-t-none">
             {{- if .IsAuthenticated -}}
                 <div class="grid justify-start col-span-1 place-content-center print:invisible">
                     <div class="grid grid-flow-col">
@@ -611,7 +599,7 @@
                         </button>
                     </div>
                 </div>
-                <h1 class="grid col-span-4 py-2 font-bold place-content-center">{{.View.Recipe.Name}}</h1>
+                <h1 class="grid col-span-4 py-2 font-semibold place-content-center">{{.View.Recipe.Name}}</h1>
                 <div class="grid justify-end col-span-1 place-content-center print:invisible">
                     <div class="grid grid-flow-col">
                         {{- if .View.Share.IsShared -}}
@@ -634,6 +622,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none"
                                      viewBox="0 0 24 24" width="24px" height="24px" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25"
+                                          fill="currentColor"
                                           d="M 18 2 C 16.35499 2 15 3.3549904 15 5 C 15 5.1909529 15.021791 5.3771224 15.056641 5.5585938 L 7.921875 9.7207031 C 7.3985399 9.2778539 6.7320771 9 6 9 C 4.3549904 9 3 10.35499 3 12 C 3 13.64501 4.3549904 15 6 15 C 6.7320771 15 7.3985399 14.722146 7.921875 14.279297 L 15.056641 18.439453 C 15.021555 18.621514 15 18.808386 15 19 C 15 20.64501 16.35499 22 18 22 C 19.64501 22 21 20.64501 21 19 C 21 17.35499 19.64501 16 18 16 C 17.26748 16 16.601593 16.279328 16.078125 16.722656 L 8.9433594 12.558594 C 8.9782095 12.377122 9 12.190953 9 12 C 9 11.809047 8.9782095 11.622878 8.9433594 11.441406 L 16.078125 7.2792969 C 16.60146 7.7221461 17.267923 8 18 8 C 19.64501 8 21 6.6450096 21 5 C 21 3.3549904 19.64501 2 18 2 z M 18 4 C 18.564129 4 19 4.4358706 19 5 C 19 5.5641294 18.564129 6 18 6 C 17.435871 6 17 5.5641294 17 5 C 17 4.4358706 17.435871 4 18 4 z M 6 11 C 6.5641294 11 7 11.435871 7 12 C 7 12.564129 6.5641294 13 6 13 C 5.4358706 13 5 12.564129 5 12 C 5 11.435871 5.4358706 11 6 11 z M 18 18 C 18.564129 18 19 18.435871 19 19 C 19 19.564129 18.564129 20 18 20 C 17.435871 20 17 19.564129 17 19 C 17 18.435871 17.435871 18 18 18 z"/>
                                 </svg>
                             </button>
@@ -674,7 +663,7 @@
                         </svg>
                     </button>
                 </div>
-                <h1 class="grid col-span-4 py-2 font-bold place-content-center">{{.View.Recipe.Name}}</h1>
+                <h1 class="grid col-span-4 py-2 font-semibold place-content-center">{{.View.Recipe.Name}}</h1>
                 <div class="grid justify-end col-span-1 place-content-center print:invisible">
                     <button class="mr-2" onclick="print()" title="Print recipe">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none"
@@ -687,26 +676,26 @@
             {{- end -}}
         </div>
 
-        <div class="w-full grid grid-flow-col col-span-6 border-b border-l border-r border-black place-items-center md:border-r-0 md:col-span-4 md:border-b-0 print:hidden">
+        <div class="w-full grid grid-flow-col col-span-6 border-b border-x border-black place-items-center md:border-r-0 md:col-span-4 md:border-b-0 dark:border-gray-800 print:hidden">
             <img id="output" class="w-full text-center h-96" alt="Image of the recipe"
                  style="object-fit: scale-down"
                  src="{{- if .View.IsUUIDValid -}}/data/images/{{.View.Recipe.Image}}.jpg{{- end -}}">
         </div>
 
-        <div class="grid grid-flow-col col-span-6 border-b border-l border-black md:border-l md:grid-flow-row md:col-span-2 md:grid md:border-r md:border-b-0 print:border-b">
-            <div class="col-span-2 p-2 border-r border-black md:col-span-3 md:grid md:place-items-center md:border-r-0">
-                <span class="flex items-center justify-center p-2 font-medium text-blue-700 bg-blue-100 border border-blue-300 rounded-full md:w-1/3 print:border-none print:text-black">
+        <div class="grid grid-flow-col col-span-6 border-b border-l border-black md:border-l md:grid-flow-row md:col-span-2 md:grid md:border-r md:border-b-0 dark:border-gray-800 print:border-b">
+            <div class="col-span-2 p-2 border-r border-black md:col-span-3 md:grid md:place-items-center md:border-r-0 dark:border-gray-800">
+                <span class="flex items-center justify-center p-2 font-medium text-blue-700 bg-blue-100 border border-blue-300 rounded-full md:w-1/3 dark:border-gray-800 print:border-none print:text-black">
                   <span class="text-sm font-normal leading-none">{{.View.Recipe.Category}}</span>
                 </span>
             </div>
 
-            <div class="grid col-span-2 py-2 border-black place-items-center md:col-span-3 md:border-t">
+            <div class="grid col-span-2 py-2 border-black place-items-center md:col-span-3 md:border-t dark:border-gray-800">
                 <p class="text-sm text-center">{{.View.Recipe.Yield}} servings</p>
             </div>
 
-            <div class="flex items-center justify-center col-span-2 border-l border-r border-black text-sm md:border-l-0 md:border-r-0 md:border-b md:col-span-3 md:border-t md:py-2">
+            <div class="flex items-center justify-center col-span-2 border-x border-black text-sm md:border-l-0 md:border-r-0 md:border-b md:col-span-3 md:border-t md:py-2 dark:border-gray-800">
                 {{- if .View.IsURL -}}
-                    <a class="p-1 duration-300 border rounded-lg hover:bg-gray-800 hover:text-white center"
+                    <a class="p-1 border rounded-lg center hover:bg-gray-800 hover:text-white dark:border-gray-800"
                        href="{{.View.Recipe.URL}}" target="_blank">
                         Source
                     </a>
@@ -718,7 +707,7 @@
             </div>
         </div>
 
-        <div class="col-span-6 border-b border-l border-r border-black md:col-span-4 md:border-r-0 print:col-span-5 print:border-r print:border-t-0 md:border-t">
+        <div class="col-span-6 border-b border-x border-black md:col-span-4 md:border-r-0 dark:border-gray-800 print:col-span-5 print:border-r print:border-t-0 md:border-t">
             <p class="p-2 text-sm whitespace-pre-line">{{.View.Recipe.Description}}</p>
             <div class="hidden print:block print:p-2">
                 <h1 class="text-sm"><b>Nutrition Facts</b></h1>
@@ -739,10 +728,10 @@
         </div>
 
         {{with .View.Recipe.Nutrition}}
-            <div class="col-span-3 border-b border-l border-r border-black md:col-span-1 print:hidden">
+            <div class="col-span-3 border-b border-x border-black md:col-span-1 dark:border-gray-800 print:hidden">
                 <div class="inline-block min-w-full overflow-x-auto align-middle">
                     <div class="overflow-hidden border-gray-200">
-                        <table class="min-w-full text-xs divide-y divide-gray-200 table-auto">
+                        <table class="min-w-full text-xs divide-y divide-gray-200 table-auto dark:text-gray-200 dark:divide-slate-600">
                             <thead class="h-12 font-medium tracking-wider text-white bg-gray-800">
                             <tr>
                                 <th scope="col" class="text-right">
@@ -753,77 +742,77 @@
                                 </th>
                             </tr>
                             </thead>
-                            <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200">
+                            <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600">
                             <tr>
-                                <td>
+                                <td class="py-2 dark:border-gray-800">
                                     <p>Calories:</p>
                                 </td>
-                                <td class="py-3 text-center">
-                                    {{.Calories}}
+                                <td class="text-center dark:border-gray-800">
+                                    {{if eq .Calories ""}}-{{else}}{{.Calories}}{{end}}
                                 </td>
                             </tr>
-                            <tr class="bg-gray-100">
-                                <td>
+                            <tr class="bg-gray-100 dark:bg-slate-700">
+                                <td class="py-2 dark:border-gray-800">
                                     <p>Total carbs:</p>
                                 </td>
-                                <td class="py-3 text-center">
-                                    {{.TotalCarbohydrates}}
+                                <td class="text-center dark:border-gray-800">
+                                    {{if eq .TotalCarbohydrates ""}}-{{else}}{{.TotalCarbohydrates}}{{end}}
                                 </td>
                             </tr>
                             <tr>
-                                <td>
+                                <td class="py-2 dark:border-gray-800">
                                     <p>Sugars:</p>
                                 </td>
-                                <td class="py-3 text-center">
-                                    {{.Sugars}}
+                                <td class="text-center dark:border-gray-800">
+                                    {{if eq .Sugars ""}}-{{else}}{{.Sugars}}{{end}}
                                 </td>
                             </tr>
-                            <tr class="bg-gray-100">
-                                <td>
+                            <tr class="bg-gray-100 dark:bg-slate-700">
+                                <td class="py-2 dark:border-gray-800">
                                     <p>Protein:</p>
                                 </td>
-                                <td class="py-3 text-center">
-                                    {{.Protein}}
+                                <td class="text-center dark:border-gray-800">
+                                    {{if eq .Protein ""}}-{{else}}{{.Protein}}{{end}}
                                 </td>
                             </tr>
                             <tr>
-                                <td>
+                                <td class="py-2 dark:border-gray-800">
                                     <p>Total fat:</p>
                                 </td>
-                                <td class="py-3 text-center">
-                                    {{.TotalFat}}
+                                <td class="text-center dark:border-gray-800">
+                                    {{if eq .TotalFat ""}}-{{else}}{{.TotalFat}}{{end}}
                                 </td>
                             </tr>
-                            <tr class="bg-gray-100">
-                                <td>
+                            <tr class="bg-gray-100 dark:bg-slate-700">
+                                <td class="py-2 dark:border-gray-800">
                                     <p>Saturated fat:</p>
                                 </td>
-                                <td class="py-3 text-center">
-                                    {{.SaturatedFat}}
+                                <td class="text-center dark:border-gray-800">
+                                    {{if eq .SaturatedFat ""}}-{{else}}{{.SaturatedFat}}{{end}}
                                 </td>
                             </tr>
                             <tr>
-                                <td>
+                                <td class="py-2 dark:border-gray-800">
                                     <p>Cholesterol:</p>
                                 </td>
-                                <td class="py-3 text-center">
-                                    {{.Cholesterol}}
+                                <td class="text-center dark:border-gray-800">
+                                    {{if eq .Cholesterol ""}}-{{else}}{{.Cholesterol}}{{end}}
                                 </td>
                             </tr>
-                            <tr class="bg-gray-100">
-                                <td>
+                            <tr class="bg-gray-100 dark:bg-slate-700">
+                                <td class="py-2 dark:border-gray-800">
                                     <p>Sodium:</p>
                                 </td>
-                                <td class="py-3 text-center">
-                                    {{.Sodium}}
+                                <td class="text-center dark:border-gray-800">
+                                    {{if eq .Sodium ""}}-{{else}}{{.Sodium}}{{end}}
                                 </td>
                             </tr>
                             <tr>
-                                <td>
+                                <td class="py-2 dark:border-gray-800">
                                     <p>Fiber:</p>
                                 </td>
-                                <td class="py-3 text-center">
-                                    {{.Fiber}}
+                                <td class="text-center dark:border-gray-800">
+                                    {{if eq .Fiber ""}}-{{else}}{{.Fiber}}{{end}}
                                 </td>
                             </tr>
                             </tbody>
@@ -836,29 +825,29 @@
         <div class="col-span-3 border-b border-r border-black md:col-span-1 print:col-span-1">
             <div class="inline-block min-w-full overflow-x-auto align-middle">
                 <div class="overflow-hidden border-gray-200">
-                    <table class="min-w-full text-xs divide-y divide-gray-200">
-                        <thead class="h-12 font-medium tracking-wider text-white bg-gray-800 border-l border-white print:h-1">
+                    <table class="min-w-full text-xs divide-y divide-gray-200 dark:text-gray-200 dark:divide-slate-600">
+                        <thead class="h-12 font-medium tracking-wider text-white bg-gray-800 border-l dark:border-l-gray-600 print:h-1">
                         <tr>
                             <th scope="col" class="text-right">Time</th>
                             <th scope="col" class="text-center">h:m:s</th>
                         </tr>
                         </thead>
-                        <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200">
+                        <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600">
                         <tr>
-                            <td>Preparation:</td>
-                            <td class="py-3 text-center print:py-0">
+                            <td class="py-2">Preparation:</td>
+                            <td class="text-center print:py-0">
                                 <time datetime="{{.View.FormattedTimes.PrepDateTime}}">{{.View.FormattedTimes.Prep}}</time>
                             </td>
                         </tr>
-                        <tr class="bg-gray-100">
-                            <td>Cooking:</td>
-                            <td class="w-1/2 py-3 text-center print:py-0">
+                        <tr class="bg-gray-100 dark:bg-slate-700">
+                            <td class="py-2">Cooking:</td>
+                            <td class="w-1/2 text-center print:py-0">
                                 <time datetime="{{.View.FormattedTimes.CookDateTime}}">{{.View.FormattedTimes.Cook}}</time>
                             </td>
                         </tr>
-                        <tr class="font-bold">
-                            <td>Total:</td>
-                            <td class="w-1/2 py-3 text-center print:py-0">
+                        <tr class="font-semibold">
+                            <td class="py-2">Total:</td>
+                            <td class="w-1/2 text-center print:py-0">
                                 <time datetime="{{.View.FormattedTimes.TotalDateTime}}">{{.View.FormattedTimes.Total}}</time>
                             </td>
                         </tr>
@@ -868,13 +857,15 @@
             </div>
         </div>
 
-        <div class="col-span-6 py-2 border-b border-l border-r border-black md:col-span-2 md:border-r-0 print:hidden">
-            <h2 class="pb-2 m-auto text-sm font-bold text-center text-gray-600 underline ">Ingredients</h2>
+        <div class="col-span-6 py-2 border-b border-x border-black md:col-span-2 md:border-r-0 dark:border-gray-800 print:hidden">
+            <h2 class="pb-2 m-auto text-sm font-semibold text-center text-gray-600 underline dark:text-gray-200">
+                Ingredients
+            </h2>
             <ul class="grid px-6 columns-2">
                 {{$len := len .View.Recipe.Ingredients}}
                 {{- range $i, $e := .View.Recipe.Ingredients -}}
-                    <li class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200"
-                        _="on mousedown toggle .line-through on me then toggle @checked on first <input/> in me">
+                    <li class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200 dark:hover:bg-gray-800"
+                        _="on mousedown toggle .line-through then toggle @checked on first <input/> in me">
                         <label for="ingredient-{{$i}}"></label>
                         <input type="checkbox" id="ingredient-{{$i}}" class="mt-1">
                         <span class="pl-2">{{$e}}</span>
@@ -883,13 +874,13 @@
             </ul>
         </div>
 
-        <div class="col-span-6 py-2 pb-8 border-b border-l border-r border-black rounded-bl-lg md:rounded-bl-none md:col-span-4 print:hidden">
-            <h2 class="pb-2 m-auto text-sm font-bold text-center text-gray-600 underline">Instructions</h2>
+        <div class="col-span-6 py-2 pb-8 border-b border-x border-black rounded-bl-lg md:rounded-bl-none md:col-span-4 dark:border-gray-800 print:hidden">
+            <h2 class="pb-2 m-auto text-sm font-semibold text-center text-gray-600 underline dark:text-gray-200">Instructions</h2>
             <ol class="grid px-6 list-decimal">
                 {{$len = len .View.Recipe.Instructions}}
                 {{- range $i, $e := .View.Recipe.Instructions -}}
-                    <li class="min-w-full py-2 text-sm select-none hover:bg-gray-200"
-                        _="on mousedown toggle .line-through on me">
+                    <li class="min-w-full py-2 text-sm select-none hover:bg-gray-200 dark:hover:bg-gray-800"
+                        _="on mousedown toggle .line-through">
                         <span class="whitespace-pre-line">{{$e}}</span>
                     </li>
                 {{- end -}}

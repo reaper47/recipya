@@ -5,7 +5,7 @@
             <img id="ind" src="/static/img/bars.svg" class="htmx-indicator ml-2" alt="Loading..."/>
         </div>
         <input type="email" class="w-full rounded-lg bg-gray-100 px-4 py-2 border border-green-500" id="email"
-               name="email" placeholder="Enter your email address..." hx-post="/auth/register/validate-email"
+               name="email" placeholder="Enter your email address" hx-post="/auth/register/validate-email"
                hx-indicator="#ind" required value="{{if .Email}}{{.Email}}{{end}}"/>
     </div>
 {{end}}
@@ -16,7 +16,7 @@
             <label class="text-md my-3 block font-semibold text-gray-800" for="email">Email</label>
             <img id="ind" src="/static/img/bars.svg" class="htmx-indicator ml-2" alt="Loading..."/>
         </div>
-        <input type="email" id="email" name="email" placeholder="Enter your email address..."
+        <input type="email" id="email" name="email" placeholder="Enter your email address"
                class="w-full rounded-lg bg-gray-100 px-4 py-2 border border-red-500 mb-3"
                hx-post="/auth/register/validate-email" hx-indicator="#ind"
                required value="{{.Email}}"/>
@@ -30,7 +30,7 @@
             <label class="text-md my-3 block font-semibold text-gray-800" for="email">Email</label>
             <img id="ind" src="/static/img/bars.svg" class="htmx-indicator ml-2" alt="Loading..."/>
         </div>
-        <input type="email" id="email" name="email" placeholder="Enter your email address..."
+        <input type="email" id="email" name="email" placeholder="Enter your email address"
                class="w-full rounded-lg bg-gray-100 px-4 py-2 border border-red-500 text-gray-700 mb-3"
                hx-post="/auth/register/validate-email" hx-indicator="#ind"
                required value="{{.Email}}"/>
@@ -48,7 +48,7 @@
         </div>
         <input class="w-full rounded-lg bg-gray-100 px-4 py-2 border border-green-500" id="password-confirm"
                name="password-confirm" value="{{.PasswordConfirm}}"
-               placeholder="Retype your password..." required type="password"
+               placeholder="Retype your password" required type="password"
                hx-post="/auth/register/validate-password" hx-trigger="keyup changed delay:1s" hx-indicator="#ind"/>
     </div>
 {{end}}
@@ -63,7 +63,7 @@
         </div>
         <input class="w-full rounded-lg bg-gray-100 px-4 py-2 border border-red-500" id="password-confirm"
                name="password-confirm"
-               placeholder="Retype your password..." required type="password"
+               placeholder="Retype your password" required type="password"
                hx-post="/auth/register/validate-password" hx-trigger="keyup changed delay:1s" hx-indicator="#ind"/>
         <div class="text-red-500 text-xs">Passwords do not match.</div>
     </div>

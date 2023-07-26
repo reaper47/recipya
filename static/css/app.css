@@ -1,13 +1,3 @@
-#avatar-menu:before {
-    content: "";
-    position: absolute;
-    right: 0.5rem;
-    top: -9px;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid #333;
-}
-
 .close-button {
     color: lightgray;
     float: right;
