@@ -56,7 +56,7 @@ func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request)
 		count += 1
 	}
 
-	msg := fmt.Sprintf("Imported %d recipes. %d failed", count, len(recipes)-count)
+	msg := fmt.Sprintf("Imported %d recipes. %d skipped", count, len(recipes)-count)
 	w.Header().Set("HX-Trigger", makeToast(msg, infoToast))
 	w.WriteHeader(http.StatusCreated)
 }

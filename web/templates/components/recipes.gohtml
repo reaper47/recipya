@@ -87,6 +87,7 @@
             <hr class="dark:border dark:border-gray-800">
             <div class="px-6 pt-4 pb-2">
                 <button class="w-full border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
+                        hx-indicator="#fullscreen-loader"
                         onclick="openModal(event)">
                     Upload
                 </button>
@@ -109,6 +110,7 @@
             <hr class="dark:border dark:border-gray-800">
             <div class="px-6 pt-4 pb-2">
                 <button class="flex justify-center w-full border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
+                        hx-indicator="#fullscreen-loader"
                         onclick="document.querySelector('#import-recipes-dialog').showModal()">
                     Import
                 </button>
@@ -636,7 +638,8 @@
                         </button>
                         <button class="mr-2" hx-delete="/recipes/{{.View.Recipe.ID}}" hx-swap="none"
                                 title="Delete recipe"
-                                hx-confirm="Are you sure you wish to delete this recipe?">
+                                hx-confirm="Are you sure you wish to delete this recipe?"
+                                hx-indicator="#fullscreen-loader">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none"
                                  viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

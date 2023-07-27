@@ -623,7 +623,7 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 				`<title hx-swap-oob="true">` + recipe.Name + " | Recipya</title>",
 				`<button class="ml-2" title="Toggle screen lock" _="on load if not navigator.wakeLock hide me end on click if wakeLock wakeLock.release()`,
 				`<button class="mr-2" onclick="print()" title="Print recipe">`,
-				`<button class="mr-2" hx-delete="/recipes/1" hx-swap="none" title="Delete recipe" hx-confirm="Are you sure you wish to delete this recipe?">`,
+				`<button class="mr-2" hx-delete="/recipes/1" hx-swap="none" title="Delete recipe" hx-confirm="Are you sure you wish to delete this recipe?" hx-indicator="#fullscreen-loader">`,
 			}
 			notWant := []string{
 				`<dialog id="share-dialog" class="p-4 border-4 border-black min-w-[15rem]"><div id="share-dialog-result" class="pb-4"></div>`,
@@ -731,7 +731,7 @@ func TestHandlers_Recipes_View(t *testing.T) {
 				`<h1 class="grid col-span-4 py-2 font-semibold place-content-center">Chicken Jersey</h1>`,
 				`<button class="mr-2" title="Share recipe" hx-post="/recipes/1/share" hx-target="#share-dialog-result" _="on htmx:afterRequest from me if event.detail.successful call #share-dialog.showModal()">`,
 				`<button class="mr-2" onclick="print()" title="Print recipe">`,
-				`<button class="mr-2" hx-delete="/recipes/1" hx-swap="none" title="Delete recipe" hx-confirm="Are you sure you wish to delete this recipe?">`,
+				`<button class="mr-2" hx-delete="/recipes/1" hx-swap="none" title="Delete recipe" hx-confirm="Are you sure you wish to delete this recipe?" hx-indicator="#fullscreen-loader">`,
 				`<dialog id="share-dialog" class="p-4 border-4 border-black min-w-[15rem]"><div id="share-dialog-result" class="pb-4"></div>`,
 				`<img id="output" class="w-full text-center h-96" alt="Image of the recipe" style="object-fit: scale-down" src="/data/images/` + r.Image.String() + `.jpg">`,
 				`<span class="text-sm font-normal leading-none">American</span>`,
