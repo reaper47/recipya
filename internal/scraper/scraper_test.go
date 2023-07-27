@@ -1154,6 +1154,79 @@ func TestScraper(t *testing.T) {
 				URL:      "https://www.budgetbytes.com/easy-vegetable-stir-fry/"},
 		},
 		{
+			name: "cafedelites.com",
+			in:   "https://cafedelites.com/butter-chicken",
+			want: models.RecipeSchema{
+				AtContext:     atContext,
+				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "Dinner"},
+				CookTime:      "PT30M",
+				Cuisine:       models.Cuisine{Value: "Indian"},
+				DatePublished: "2019-01-21T19:09:20+00:00",
+				Description: models.Description{
+					Value: "Butter Chicken is creamy and easy to make right at home in one pan with simple ingredients! Full of incredible flavours, it rivals any Indian restaurant! Aromatic golden chicken pieces in an incredible creamy curry sauce, this Butter Chicken recipe is one of the best you will try!",
+				},
+				Keywords: models.Keywords{Values: "butter chicken"},
+				Image: models.Image{
+					Value: "https://cafedelites.com/wp-content/uploads/2019/01/Butter-Chicken-IMAGE-64.jpg",
+				},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"28 oz (800g) boneless and skinless chicken thighs or breasts (cut into bite-sized pieces)",
+						"1/2 cup plain yogurt",
+						"1 1/2 tablespoons minced garlic",
+						"1 tablespoon minced ginger ((or finely grated))",
+						"2 teaspoons garam masala",
+						"1 teaspoon turmeric",
+						"1 teaspoon ground cumin",
+						"1 teaspoon red chili powder",
+						"1 teaspoon of salt",
+						"2 tablespoons olive oil",
+						"2 tablespoons ghee ((or 1 tbs butter + 1 tbs oil))",
+						"1 large onion, (sliced or chopped)",
+						"1 1/2 tablespoons garlic, (minced)",
+						"1 tablespoon ginger, (minced or finely grated)",
+						"1 1/2 teaspoons ground cumin",
+						"1 1/2 teaspoons garam masala",
+						"1 teaspoon ground coriander",
+						"14 oz (400 g) crushed tomatoes",
+						"1 teaspoon red chili powder ((adjust to your taste preference))",
+						"1 1/4 teaspoons salt ((or to taste))",
+						"1 cup of heavy or thickened cream ((or evaporated milk to save calories))",
+						"1 tablespoon sugar",
+						"1/2 teaspoon kasoori methi ((or dried fenugreek leaves))",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"In a bowl, combine chicken with all of the ingredients for the chicken marinade; let marinate for 30 minutes to an hour (or overnight if time allows).",
+						"Heat oil in a large skillet or pot over medium-high heat. When sizzling, add chicken pieces in batches of two or three, making sure not to crowd the pan. Fry until browned for only 3 minutes on each side. Set aside and keep warm. (You will finish cooking the chicken in the sauce.)",
+						"Heat butter or ghee in the same pan. Fry the onions until they start to sweat (about 6 minutes) while scraping up any browned bits stuck on the bottom of the pan.",
+						"Add garlic and ginger and sauté for 1 minute until fragrant, then add ground coriander, cumin and garam masala. Let cook for about 20 seconds until fragrant, while stirring occasionally.",
+						"Add crushed tomatoes, chili powder and salt. Let simmer for about 10-15 minutes, stirring occasionally until sauce thickens and becomes a deep brown red colour.",
+						"Remove from heat, scoop mixture into a blender and blend until smooth. You may need to add a couple tablespoons of water to help it blend (up to 1/4 cup). Work in batches depending on the size of your blender.",
+						"Pour the puréed sauce back into the pan. Stir the cream, sugar and crushed kasoori methi (or fenugreek leaves) through the sauce. Add the chicken with juices back into the pan and cook for an additional 8-10 minutes until chicken is cooked through and the sauce is thick and bubbling.",
+						"Garnish with chopped cilantro and serve with fresh, hot garlic butter rice and fresh homemade Naan bread!",
+					},
+				},
+				Name: "Butter Chicken",
+				NutritionSchema: models.NutritionSchema{
+					Calories:      "580 kcal",
+					Carbohydrates: "17 g",
+					Cholesterol:   "250 mg",
+					Fat:           "41 g",
+					Fiber:         "3 g",
+					Protein:       "36 g",
+					SaturatedFat:  "19 g",
+					Servings:      "1",
+					Sodium:        "1601 mg",
+					Sugar:         "8 g",
+				},
+				PrepTime: "PT15M",
+				Yield:    models.Yield{Value: 5},
+				URL:      "https://cafedelites.com/butter-chicken"},
+		},
+		{
 			name: "castironketo.com",
 			in:   "https://www.castironketo.net/blog/balsamic-mushrooms-with-herbed-veggie-mash/",
 			want: models.RecipeSchema{
@@ -5361,6 +5434,69 @@ func TestScraper(t *testing.T) {
 			},
 		},
 		{
+			name: "momsdish.com",
+			in:   "https://momsdish.com/khinkali",
+			want: models.RecipeSchema{
+				AtContext:     atContext,
+				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "Main Course"},
+				CookTime:      "PT15M",
+				Cuisine:       models.Cuisine{Value: "georgian"},
+				DatePublished: "2021-03-10T03:23:33+00:00",
+				Description: models.Description{
+					Value: "Khinkali are super flavorful, meat-filled dumplings that are similar to soup dumplings. They reheat well, making them great for meal prep and can even be frozen! Both the dough and filling are easy to make and they’re fun to assemble.",
+				},
+				Keywords: models.Keywords{Values: "dumpling recipe, georgian dumplings, khinkali recipe"},
+				Image: models.Image{
+					Value: "https://cdn.momsdish.com/wp-content/uploads/2021/02/Khinkali-Recipe-Georgian-Dumplings-018-scaled.jpg",
+				},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"4 cups all-purpose flour",
+						"2 tsp salt",
+						"2 eggs",
+						"1 cup water",
+						"1 lb ground beef",
+						"1 lb ground chicken",
+						"1 medium onion (minced)",
+						"1 tsp ground black pepper",
+						"1 tbsp salt (adjust to taste)",
+						"1 tbsp herbs ((optional))",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"In a large bowl combine the flour with the salt. Make a well in the center and add the eggs. Whisk together using a fork.",
+						"Add the water to the center and fold the flour into the liquid. Knead the dough by hand until it feels elastic.",
+						"Cover the kneaded dough and let it rest for at least 30 minutes.",
+						"Combine the beef with the chicken, minced onion, salt and pepper.",
+						"Roll out the dough as thin as you possibly can.",
+						"Cut the dough into 3 inch circles. Place a dollop of the meat filling in the center.",
+						"Pull the edge over the filling and pinch all around, forming little pockets with meat.",
+						"Bring a large pot of water to a boil. Add a few of the Khinkali at a time. Once they float to the top, give them 2-4 minutes to simmer.",
+						"Remove them from the water. Serve with butter, and fresh herbs.",
+					},
+				},
+				Name: "Khinkali Recipe (Georgian Dumplings)",
+				NutritionSchema: models.NutritionSchema{
+					Calories:      "127 kcal",
+					Carbohydrates: "13 g",
+					Cholesterol:   "35 mg",
+					Fat:           "5 g",
+					Fiber:         "1 g",
+					Protein:       "7 g",
+					SaturatedFat:  "2 g",
+					Servings:      "1",
+					Sodium:        "412 mg",
+					Sugar:         "1 g",
+					TransFat:      "1 g",
+				},
+				PrepTime: "PT30M",
+				Yield:    models.Yield{Value: 30},
+				URL:      "https://momsdish.com/khinkali",
+			},
+		},
+		{
 			name: "momswithcrockpots.com",
 			in:   "https://momswithcrockpots.com/crockpot-cornbread/",
 			want: models.RecipeSchema{
@@ -6722,6 +6858,54 @@ func TestScraper(t *testing.T) {
 					UnsaturatedFat: "0 g",
 				},
 				URL: "https://www.realsimple.com/food-recipes/browse-all-recipes/sheet-pan-chicken-and-sweet-potatoes",
+			},
+		},
+		{
+			name: "recettes.qc.ca",
+			in:   "https://www.recettes.qc.ca/recettes/recette/yakisoba-nouille-sautees-a-la-japonaise",
+			want: models.RecipeSchema{
+				AtContext:     atContext,
+				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "Pâtes alimentaires"},
+				CookTime:      "PT20M",
+				DatePublished: "2015-07-28T21:44:00-04:00",
+				Description: models.Description{
+					Value: "Recette de Yakisoba (nouilles sautées à la japonaise)",
+				},
+				Keywords: models.Keywords{Values: "pates alimentaires"},
+				Image: models.Image{
+					Value: "https://m1.quebecormedia.com/emp/rqc_prod/recettes_du_quebec-_-45fe466bb6b64f799cc2ce9ab8db72f66d46ef08-_-yakisoba.jpg",
+				},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"250 g nouilles soba ou à ramen",
+						"300 g porc haché",
+						"1 cuillère à table huile de sésame",
+						"2 cuillères à table huile de pépins de raisin",
+						"1 moyen oignon coupé en 8",
+						"1 gousse d'ail",
+						"500 g chou coupé en fines lanières",
+						"1 poivron coupé en fines tranches",
+						"2 cuillères à table gingembre rouge mariné (beni-shoga)",
+						"2 cuillères à table algues ao-nori séchées en poudre",
+						"1 cuillère à table sucre",
+						"60 mL mirin",
+						"2 cuillères à table saké",
+						"60 mL sauce soja japonaise",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Faites cuire les nouilles dans de l’eau bouillante en les gardant fermes. Égouttez-les.",
+						"Préparez la sauce : mettez les ingrédients de la sauce dans une petite casserole et chauffez jusqu’à ce que le sucre soit dissous.",
+						"Faites chauffer l’huile de sésame et 1 cuillerée d’huile de pépins de raisin dans un wok. Faites-y revenir le porc jusqu’à ce qu’il soit légèrement doré. Réservez.",
+						"Ajoutez le reste de l’huile dans le wok et faites sauter l’oignon et l’ail jusqu’à ce que l’oignon blondisse. Ajoutez le chou et le poivron. Cuisez jusqu’à ce qu’ils soient tendres. Ajoutez les nouilles, le porc, le gingembre mariné et la sauce. Mélangez et réchauffez. Servez et parsemez avec les ao-nori.",
+					},
+				},
+				Name:     "Yakisoba (nouilles sautées à la japonaise)",
+				PrepTime: "PT15M",
+				Yield:    models.Yield{Value: 4},
+				URL:      "https://www.recettes.qc.ca/recettes/recette/yakisoba-nouille-sautees-a-la-japonaise",
 			},
 		},
 		{
@@ -9628,8 +9812,8 @@ func updateHTMLFile(t *testing.T, url string) {
 	}
 }
 
-/* TODO: Change package name to scraper_test
-func testHTTP(t *testing.T, in string) models.RecipeSchema {
+// TODO: Change package name to scraper_test
+/*func testHTTP(t *testing.T, in string) models.RecipeSchema {
 	t.Helper()
 	rs, err := Scrape(in, &mockFiles)
 	if err != nil {

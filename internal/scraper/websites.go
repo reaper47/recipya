@@ -52,6 +52,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		}
 	case 'c':
 		switch host {
+		case "cafedelites":
+			return parseGraph(doc)
 		case "castironketo":
 			return parseGraph(doc)
 		case "cdkitchen":
@@ -210,6 +212,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return parseGraph(doc)
 		case "misya":
 			return parseLdJSON(doc)
+		case "momsdish":
+			return parseGraph(doc)
 		case "momswithcrockpots":
 			return parseGraph(doc)
 		case "monsieur-cuisine":
@@ -268,6 +272,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return parseGraph(doc)
 		case "realsimple":
 			return parseLdJSON(doc)
+		case "recettes":
+			return scrapeRecettesDuQuebec(doc)
 		case "recipetineats":
 			return parseGraph(doc)
 		case "redhousespice":
