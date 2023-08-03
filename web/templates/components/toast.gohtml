@@ -1,9 +1,11 @@
 {{define "toast"}}
-    <div id="toast-container" class="fixed top-0 right-0 p-6 cursor-default hidden" _="on click add .hidden">
+    <div id="toast-container" class="fixed top-0 right-0 p-6 cursor-default hidden"
+         _="on click add .hidden then call clearTimeout(timeoutToast) then set timeoutToast to null then log timeoutToast">
         <div class="hidden bg-blue-500 bg-orange-500 bg-red-500 text-white px-6 py-4 rounded shadow-md"></div>
     </div>
 
     <script defer>
+        var timeoutToast = timeoutToast || null;
         htmx.on('showToast', function (event) {
             const toastContainer = document.getElementById('toast-container');
 
@@ -20,7 +22,7 @@
 
             toastContainer.classList.remove('hidden');
 
-            setTimeout(function () {
+            timeoutToast = setTimeout(function () {
                 toastContainer.classList.add('hidden');
                 toastContainer?.removeChild(toast);
             }, 5000);

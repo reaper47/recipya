@@ -2,6 +2,7 @@ package templates
 
 import (
 	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/units"
 )
 
 // Data holds data to pass on to the templates.
@@ -13,14 +14,21 @@ type Data struct {
 	Content      string // Content is text to insert into the template.
 	ContentTitle string // ContentTitle is the header of the Content.
 
-	Scraper ScraperData
-	View    *ViewRecipeData
+	Settings SettingsData
+	Scraper  ScraperData
+	View     *ViewRecipeData
 }
 
 // RegisterData is the data to pass on to the user registration template.
 type RegisterData struct {
 	Email           string
 	PasswordConfirm string
+}
+
+// SettingsData holds template data related to the user settings.
+type SettingsData struct {
+	MeasurementSystems        []units.System
+	SelectedMeasurementSystem units.System
 }
 
 // ScraperData holds template data related to the recipe scraper.

@@ -40,6 +40,15 @@ const SelectCountWebsites = `
 	SELECT COUNT(id)
 	FROM websites`
 
+// SelectMeasurementSystems fetches the units systems along with the user's selected system.
+const SelectMeasurementSystems = `
+	SELECT ms.name,
+		   COALESCE((SELECT GROUP_CONCAT(name)
+					 FROM measurement_systems), '') AS systems
+	FROM measurement_systems AS ms
+			 JOIN user_settings ON measurement_system_id = ms.id
+	WHERE user_id = ?;`
+
 const baseSelectRecipe = `
 	SELECT recipes.id                                                                      AS recipe_id,
 		   recipes.name                                                                    AS name,

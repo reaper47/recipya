@@ -1,6 +1,8 @@
 package models
 
 import (
+	"errors"
+	"github.com/reaper47/recipya/internal/units"
 	"github.com/reaper47/recipya/internal/utils/duration"
 	"github.com/reaper47/recipya/internal/utils/extensions"
 	"github.com/reaper47/recipya/internal/utils/regex"
@@ -43,29 +45,61 @@ type Recipe struct {
 	Yield        int16
 }
 
-// Schema creates the schema representation of the Recipe.
-func (r *Recipe) Schema() RecipeSchema {
-	return RecipeSchema{
-		AtContext:       "https://schema.org",
-		AtType:          SchemaType{Value: "Recipe"},
-		Category:        Category{Value: r.Category},
-		CookTime:        formatDuration(r.Times.Cook),
-		Cuisine:         Cuisine{Value: r.Cuisine},
-		DateCreated:     r.CreatedAt.Format(time.DateOnly),
-		DateModified:    r.UpdatedAt.Format(time.DateOnly),
-		DatePublished:   r.CreatedAt.Format(time.DateOnly),
-		Description:     Description{Value: r.Description},
-		Keywords:        Keywords{Values: strings.Join(r.Keywords, ",")},
-		Image:           Image{Value: r.Image.String()},
-		Ingredients:     Ingredients{Values: r.Ingredients},
-		Instructions:    Instructions{Values: r.Instructions},
-		Name:            r.Name,
-		NutritionSchema: r.Nutrition.Schema(strconv.Itoa(int(r.Yield))),
-		PrepTime:        formatDuration(r.Times.Prep),
-		Tools:           Tools{Values: r.Tools},
-		Yield:           Yield{Value: r.Yield},
-		URL:             r.URL,
+// ConvertMeasurementSystem converts a recipe to another units.System.
+func (r *Recipe) ConvertMeasurementSystem(to units.System) (*Recipe, error) {
+	currentSystem := units.InvalidSystem
+	for _, s := range r.Ingredients {
+		system := units.DetectMeasurementSystemFromSentence(s)
+		if system != units.InvalidSystem {
+			currentSystem = system
+			break
+		}
 	}
+
+	if currentSystem == units.InvalidSystem {
+		return nil, errors.New("could not determine measurement system")
+	} else if currentSystem == to {
+		return nil, errors.New("system already " + to.String())
+	}
+
+	ingredients := make([]string, len(r.Ingredients))
+	for i, s := range r.Ingredients {
+		v, err := units.ConvertSentence(s, currentSystem, to)
+		if err != nil {
+			ingredients[i] = s
+			continue
+		}
+		ingredients[i] = v
+	}
+
+	instructions := make([]string, len(r.Instructions))
+	for i, s := range r.Instructions {
+		v, err := units.ConvertSentence(s, currentSystem, to)
+		if err != nil {
+			instructions[i] = s
+			continue
+		}
+		instructions[i] = v
+	}
+
+	return &Recipe{
+		Category:     r.Category,
+		CreatedAt:    r.CreatedAt,
+		Cuisine:      r.Cuisine,
+		Description:  units.ConvertParagraph(r.Description, currentSystem, to),
+		ID:           r.ID,
+		Image:        r.Image,
+		Ingredients:  ingredients,
+		Instructions: instructions,
+		Keywords:     r.Keywords,
+		Name:         r.Name,
+		Nutrition:    r.Nutrition,
+		Times:        r.Times,
+		Tools:        r.Tools,
+		UpdatedAt:    r.UpdatedAt,
+		URL:          r.URL,
+		Yield:        r.Yield,
+	}, nil
 }
 
 // Normalize normalizes texts for readability.
@@ -95,6 +129,31 @@ func normalizeQuantity(s string) string {
 		}
 	}
 	return string(xr)
+}
+
+// Schema creates the schema representation of the Recipe.
+func (r *Recipe) Schema() RecipeSchema {
+	return RecipeSchema{
+		AtContext:       "https://schema.org",
+		AtType:          SchemaType{Value: "Recipe"},
+		Category:        Category{Value: r.Category},
+		CookTime:        formatDuration(r.Times.Cook),
+		Cuisine:         Cuisine{Value: r.Cuisine},
+		DateCreated:     r.CreatedAt.Format(time.DateOnly),
+		DateModified:    r.UpdatedAt.Format(time.DateOnly),
+		DatePublished:   r.CreatedAt.Format(time.DateOnly),
+		Description:     Description{Value: r.Description},
+		Keywords:        Keywords{Values: strings.Join(r.Keywords, ",")},
+		Image:           Image{Value: r.Image.String()},
+		Ingredients:     Ingredients{Values: r.Ingredients},
+		Instructions:    Instructions{Values: r.Instructions},
+		Name:            r.Name,
+		NutritionSchema: r.Nutrition.Schema(strconv.Itoa(int(r.Yield))),
+		PrepTime:        formatDuration(r.Times.Prep),
+		Tools:           Tools{Values: r.Tools},
+		Yield:           Yield{Value: r.Yield},
+		URL:             r.URL,
+	}
 }
 
 // Times holds a variety of intervals.

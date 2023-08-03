@@ -1,14 +1,245 @@
 package models_test
 
 import (
+	"errors"
+	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/units"
+	"golang.org/x/exp/slices"
 	"testing"
 	"time"
-
-	"golang.org/x/exp/slices"
-
-	"github.com/google/uuid"
 )
+
+func BenchmarkRecipe_ConvertMeasurementSystem(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		r := models.Recipe{
+			Description: "Preheat the oven to 177 degrees C (175 degrees C). " +
+				"Stir in flour, chocolate chips, and walnuts. " +
+				"Drop spoonfuls of dough 30mm apart onto ungreased baking sheets. " +
+				"Bake in the preheated oven until edges are nicely browned, about 10 minutes.",
+			Ingredients: []string{
+				"236.58 mL butter, softened",
+				"2 eggs",
+				"10 mL vanilla extract",
+				"5 mL baking soda",
+				"709.76 mL all-purpose flour",
+				"473.18 mL semisweet chocolate chips",
+			},
+			Instructions: []string{
+				"Preheat the oven to 177 degrees C (175 degrees C).",
+				"Stir in flour, chocolate chips, and walnuts.",
+				"Drop spoonfuls of dough 30mm apart onto ungreased baking sheets.",
+				"Bake in the preheated oven until edges are nicely browned, about 10 minutes.",
+			},
+		}
+
+		converted, err := r.ConvertMeasurementSystem(units.MetricSystem)
+		_ = converted
+		_ = err
+	}
+}
+
+func TestRecipe_ConvertMeasurementSystem(t *testing.T) {
+	testcases := []struct {
+		name string
+		in   *models.Recipe
+		to   units.System
+		want error
+	}{
+		{
+			name: "imperial to imperial",
+			in: &models.Recipe{
+				Ingredients: []string{
+					"2 eggs",
+					"1 cup butter, softened",
+				},
+			},
+			to:   units.ImperialSystem,
+			want: errors.New("system already imperial"),
+		},
+		{
+			name: "metric to metric",
+			in: &models.Recipe{
+				Ingredients: []string{
+					"2 eggs",
+					"1.5 mL butter, softened",
+				},
+			},
+			to:   units.MetricSystem,
+			want: errors.New("system already metric"),
+		},
+	}
+	for _, tc := range testcases {
+		t.Run("cannot convert "+tc.name, func(t *testing.T) {
+			if _, err := tc.in.ConvertMeasurementSystem(tc.to); err == nil {
+				t.Fatalf("expected error but got %q", err)
+			}
+		})
+	}
+
+	testcases2 := []struct {
+		name string
+		in   models.Recipe
+		to   units.System
+		want models.Recipe
+	}{
+		{
+			name: "imperial to metric",
+			in: models.Recipe{
+				Description: "Preheat the oven to 351 °F (351 °F). " +
+					"Stir in flour, chocolate chips, and walnuts. " +
+					"Drop spoonfuls of dough 1.18 inches apart onto ungreased baking sheets. " +
+					"Bake in the preheated oven until edges are nicely browned, about 10 minutes.",
+				Ingredients: []string{
+					"1 cup butter, softened",
+					"2 eggs",
+					"2 teaspoons vanilla extract",
+					"1 teaspoon baking soda",
+					"3 cups all-purpose flour",
+					"2 cups semisweet chocolate chips",
+					"Salt and pepper",
+				},
+				Instructions: []string{
+					"Preheat the oven to 350 degrees F (175 degrees C).",
+					"Stir in flour, chocolate chips, and walnuts.",
+					"Drop spoonfuls of dough 2 inches apart onto ungreased baking sheets.",
+					"Bake in the preheated oven until edges are nicely browned, about 10 minutes.",
+				},
+			},
+			to: units.MetricSystem,
+			want: models.Recipe{
+				Description: "Preheat the oven to 177 °C (177 °C). " +
+					"Stir in flour, chocolate chips, and walnuts. " +
+					"Drop spoonfuls of dough 3 cm apart onto ungreased baking sheets. " +
+					"Bake in the preheated oven until edges are nicely browned, about 10 minutes.",
+				Ingredients: []string{
+					"2.37 dl butter, softened",
+					"2 eggs",
+					"10 ml vanilla extract",
+					"5 ml baking soda",
+					"7.1 dl all-purpose flour",
+					"4.73 dl semisweet chocolate chips",
+					"Salt and pepper",
+				},
+				Instructions: []string{
+					"Preheat the oven to 177 °C (177 °C).",
+					"Stir in flour, chocolate chips, and walnuts.",
+					"Drop spoonfuls of dough 5.08 cm apart onto ungreased baking sheets.",
+					"Bake in the preheated oven until edges are nicely browned, about 10 minutes.",
+				},
+			},
+		},
+		{
+			name: "metric to imperial",
+			in: models.Recipe{
+				Description: "Preheat the oven to 177 degrees C (175 degrees C). " +
+					"Stir in flour, chocolate chips, and walnuts. " +
+					"Drop spoonfuls of dough 30mm apart onto ungreased baking sheets. " +
+					"Bake in the preheated oven until edges are nicely browned, about 10 minutes.",
+				Ingredients: []string{
+					"236.58 mL butter, softened",
+					"2 eggs",
+					"10 mL vanilla extract",
+					"5 mL baking soda",
+					"709.76 mL all-purpose flour",
+					"473.18 mL semisweet chocolate chips",
+				},
+				Instructions: []string{
+					"Preheat the oven to 177 degrees C (175 degrees C).",
+					"Stir in flour, chocolate chips, and walnuts.",
+					"Drop spoonfuls of dough 30mm apart onto ungreased baking sheets.",
+					"Bake in the preheated oven until edges are nicely browned, about 10 minutes.",
+				},
+			},
+			to: units.ImperialSystem,
+			want: models.Recipe{
+				Description: "Preheat the oven to 351 °F (351 °F). " +
+					"Stir in flour, chocolate chips, and walnuts. " +
+					"Drop spoonfuls of dough 1.18 inches apart onto ungreased baking sheets. " +
+					"Bake in the preheated oven until edges are nicely browned, about 10 minutes.",
+				Ingredients: []string{
+					"1 cup butter, softened",
+					"2 eggs",
+					"2 tsp vanilla extract",
+					"1 tsp baking soda",
+					"3 cups all-purpose flour",
+					"2 cups semisweet chocolate chips",
+				},
+				Instructions: []string{
+					"Preheat the oven to 351 °F (351 °F).",
+					"Stir in flour, chocolate chips, and walnuts.",
+					"Drop spoonfuls of dough 1.18 inches apart onto ungreased baking sheets.",
+					"Bake in the preheated oven until edges are nicely browned, about 10 minutes.",
+				},
+			},
+		},
+	}
+	for _, tc := range testcases2 {
+		t.Run("valid "+tc.name, func(t *testing.T) {
+			got, _ := tc.in.ConvertMeasurementSystem(tc.to)
+
+			if got.Description != tc.want.Description {
+				t.Fatalf("got description:\n%s\nbut want:\n%s", got.Description, tc.want.Description)
+			}
+
+			if len(got.Ingredients) != len(tc.want.Ingredients) {
+				t.Fatalf("ingredients of different lengths: %#v but want %#v", got.Ingredients, tc.want.Ingredients)
+			}
+			if len(got.Instructions) != len(tc.want.Instructions) {
+				t.Fatalf("instructions of different lengths: %#v but want %#v", got.Ingredients, tc.want.Ingredients)
+			}
+			for i, s := range got.Ingredients {
+				if s != tc.want.Ingredients[i] {
+					t.Errorf("got ingredient %q but want %q", s, tc.want.Ingredients[i])
+				}
+			}
+			for i, s := range got.Instructions {
+				if s != tc.want.Instructions[i] {
+					t.Errorf("got instruction %q but want %q", s, tc.want.Instructions[i])
+				}
+			}
+		})
+	}
+}
+
+func TestRecipe_Normalize(t *testing.T) {
+	r := models.Recipe{
+		Description: "Place the chicken pieces on a baking sheet and bake 1l 1 l 1ml 1 ml until they 425°f (220°c) and golden.",
+		Ingredients: []string{"ing1 1L", "1 L ing2", "ing3 of 1mL stuff", "ing4 of stuff 1 mL"},
+		Instructions: []string{
+			"ins1 1l",
+			"1 l ins2",
+			"ins3 of 1ml stuff",
+			"ins4 of stuff 1 ml",
+		},
+	}
+
+	r.Normalize()
+
+	expectedDescription := "Place the chicken pieces on a baking sheet and bake 1L 1 L 1mL 1 mL until they 425°F (220°C) and golden."
+	if r.Description != expectedDescription {
+		t.Errorf("expected the description to be normalized")
+	}
+
+	expected := []string{
+		"ing1 1L",
+		"1 L ing2",
+		"ing3 of 1mL stuff",
+		"ing4 of stuff 1 mL",
+	}
+	for i, v := range r.Ingredients {
+		if v != expected[i] {
+			t.Errorf("expected '%v' but got '%v'", expected[i], v)
+		}
+	}
+
+	expected = []string{"ins1 1L", "1 L ins2", "ins3 of 1mL stuff", "ins4 of stuff 1 mL"}
+	for i, v := range r.Instructions {
+		if v != expected[i] {
+			t.Errorf("expected '%v' but got '%v'", expected[i], v)
+		}
+	}
+}
 
 func TestRecipe_Schema(t *testing.T) {
 	imageUUID := uuid.New()
@@ -114,45 +345,6 @@ func TestRecipe_Schema(t *testing.T) {
 	}
 	if schema.URL != "https://www.google.com" {
 		t.Errorf("wanted url https://www.google.com but got %q", schema.URL)
-	}
-}
-
-func TestRecipe_Normalize(t *testing.T) {
-	r := models.Recipe{
-		Description: "Place the chicken pieces on a baking sheet and bake 1l 1 l 1ml 1 ml until they 425°f (220°c) and golden.",
-		Ingredients: []string{"ing1 1L", "1 L ing2", "ing3 of 1mL stuff", "ing4 of stuff 1 mL"},
-		Instructions: []string{
-			"ins1 1l",
-			"1 l ins2",
-			"ins3 of 1ml stuff",
-			"ins4 of stuff 1 ml",
-		},
-	}
-
-	r.Normalize()
-
-	expectedDescription := "Place the chicken pieces on a baking sheet and bake 1L 1 L 1mL 1 mL until they 425°F (220°C) and golden."
-	if r.Description != expectedDescription {
-		t.Errorf("expected the description to be normalized")
-	}
-
-	expected := []string{
-		"ing1 1L",
-		"1 L ing2",
-		"ing3 of 1mL stuff",
-		"ing4 of stuff 1 mL",
-	}
-	for i, v := range r.Ingredients {
-		if v != expected[i] {
-			t.Errorf("expected '%v' but got '%v'", expected[i], v)
-		}
-	}
-
-	expected = []string{"ins1 1L", "1 L ins2", "ins3 of 1mL stuff", "ins4 of stuff 1 mL"}
-	for i, v := range r.Instructions {
-		if v != expected[i] {
-			t.Errorf("expected '%v' but got '%v'", expected[i], v)
-		}
 	}
 }
 

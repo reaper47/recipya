@@ -39,26 +39,6 @@ func notFoundHandler(w http.ResponseWriter, _ *http.Request) {
 	templates.Render(w, templates.Simple, templates.PageNotFound)
 }
 
-func (s *Server) settingsHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Header.Get("Hx-Request") == "true" {
-		templates.RenderComponent(w, "core", "settings", nil)
-	} else {
-		page := templates.SettingsPage
-		templates.Render(w, page, templates.Data{
-			IsAuthenticated: true,
-			Title:           page.Title(),
-		})
-	}
-}
-
-func settingsTabsProfileHandler(w http.ResponseWriter, _ *http.Request) {
-	templates.RenderComponent(w, "core", "settings-tabs-profile", nil)
-}
-
-func settingsTabsRecipesHandler(w http.ResponseWriter, r *http.Request) {
-	templates.RenderComponent(w, "core", "settings-tabs-recipes", nil)
-}
-
 func (s *Server) userInitialsHandler(w http.ResponseWriter, r *http.Request) {
 	userID := r.Context().Value("userID")
 	if userID == nil {

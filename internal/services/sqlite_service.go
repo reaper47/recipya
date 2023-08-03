@@ -10,6 +10,7 @@ import (
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services/statements"
+	"github.com/reaper47/recipya/internal/units"
 	"log"
 	_ "modernc.org/sqlite"
 	"os"
@@ -339,6 +340,26 @@ func (s *SQLiteService) IsUserPassword(id int64, password string) bool {
 	return auth.VerifyPassword(password, auth.HashedPassword(hash))
 }
 
+func (s *SQLiteService) MeasurementSystems(userID int64) ([]units.System, units.System, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	var (
+		groupedSystems string
+		selected       string
+	)
+	if err := s.DB.QueryRowContext(ctx, statements.SelectMeasurementSystems, userID).Scan(&selected, &groupedSystems); err != nil {
+		return nil, "", err
+	}
+
+	systemsStr := strings.Split(groupedSystems, ",")
+	systems := make([]units.System, len(systemsStr))
+	for i, s := range systemsStr {
+		systems[i] = units.NewSystem(s)
+	}
+	return systems, units.NewSystem(selected), nil
+}
+
 func (s *SQLiteService) Recipe(id, userID int64) (*models.Recipe, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
@@ -347,6 +368,7 @@ func (s *SQLiteService) Recipe(id, userID int64) (*models.Recipe, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer tx.Rollback()
 
 	row := tx.QueryRowContext(ctx, statements.SelectRecipe, userID, id, userID, id, userID, id)
 	r, err := scanRecipe(row)
@@ -434,6 +456,61 @@ func (s *SQLiteService) Register(email string, hashedPassword auth.HashedPasswor
 		return -1, err
 	}
 	return userID, err
+}
+
+func (s *SQLiteService) SwitchMeasurementSystem(system units.System, userID int64) error {
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Hour)
+	defer cancel()
+
+	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{})
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	if _, err := tx.ExecContext(ctx, statements.UpdateMeasurementSystem, system.String(), userID); err != nil {
+		return err
+	}
+
+	numConverted := 0
+	for _, r := range s.Recipes(userID) {
+		converted, err := r.ConvertMeasurementSystem(system)
+		if err != nil {
+			continue
+		}
+
+		if _, err = tx.ExecContext(ctx, statements.UpdateRecipeDescription, converted.Description, r.ID); err != nil {
+			continue
+		}
+
+		for i, ingredient := range converted.Ingredients {
+			var ingredientID int64
+			if err := tx.QueryRowContext(ctx, statements.InsertIngredient, ingredient).Scan(&ingredientID); err != nil {
+				continue
+			}
+
+			if _, err := tx.ExecContext(ctx, statements.UpdateRecipeIngredient, ingredientID, r.Ingredients[i], r.ID); err != nil {
+				continue
+			}
+		}
+
+		for i, instruction := range converted.Instructions {
+			var instructionID int64
+			if err := tx.QueryRowContext(ctx, statements.InsertInstruction, instruction).Scan(&instructionID); err != nil {
+				continue
+			}
+
+			if _, err := tx.ExecContext(ctx, statements.UpdateRecipeInstruction, instructionID, r.Instructions[i], r.ID); err != nil {
+				continue
+			}
+		}
+
+		numConverted++
+	}
+	return tx.Commit()
 }
 
 func (s *SQLiteService) UpdatePassword(userID int64, password auth.HashedPassword) error {

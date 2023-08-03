@@ -20,8 +20,8 @@ var (
 	HourMinutes = regexp.MustCompile(`^\d+:[0-5](\d?){1,2}?`)
 )
 
-// Sentences matches all sentences in a paragraph.
-var Sentences = regexp.MustCompile(`(?:[-|\w,'\s%]*(?:\d*\.\d+%?)*[\s|\w]*)*[.|?!]`)
-
 // Letters is the regular expression to search for letters in the text.
 var Letters = regexp.MustCompile("[a-zA-Z]+")
+
+// Unit is the regular expression to search for
+var Unit = regexp.MustCompile(`(?i)((?:\d*\.?\d+\s*to\s*)?(?:\d*\s*\d+/)?(?:\d+-\d*/?)?\d*\.?\d+)-?\s*(centimeters?|centimetres?|cm\b|cups?|deciliters?|decilitres?|dl\b|feet|foot|ft\.?|′|fluid\s*ounces|fl\.?\s*oz\.*|fluid\s*oz\.?|gallons?|gals?\b|milliliters?|millilitres?|ml\b|millimeters?|millimetres?|mm\b|grams?|grammes?|g\b|inches?|inch|in\b|["”]|kilograms?|kilogrammes?|kg|milligrams?|milligrammes?|mg\b|meters?|metres?|m\b|ounces?|oz\.?|pints?|fl\.?\s*pt\.?|pt\.?|pounds?|lbs?\.?|lb\.?|#|quarts?|fl\.?\s*qt\.?|qt\.?|liters?|litres?|l\b|tablespoons?|tbsp\.?\w*|teaspoons?|tsp\.?\w*|yards?|degrees?\s*celsius|degrees?\s*c|celsius|°?c\b|degrees?\s*fahrenheit|degrees?\s*f|fahrenheit|°?f\b)`)

@@ -8,6 +8,7 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
 	"github.com/reaper47/recipya/internal/templates"
+	"github.com/reaper47/recipya/internal/units"
 	"golang.org/x/exp/slices"
 	"io"
 	"mime/multipart"
@@ -26,13 +27,15 @@ func newServerTest() *server.Server {
 }
 
 type mockRepository struct {
-	AuthTokens        []models.AuthToken
-	AddRecipeFunc     func(recipe *models.Recipe, userID int64) (int64, error)
-	RecipeFunc        func(id, userID int64) (*models.Recipe, error)
-	RecipesRegistered map[int64]models.Recipes
-	ShareLinks        map[int64]string
-	UsersRegistered   []models.User
-	UsersUpdated      []int64
+	AuthTokens                  []models.AuthToken
+	AddRecipeFunc               func(recipe *models.Recipe, userID int64) (int64, error)
+	MeasurementSystemsFunc      func(userID int64) ([]units.System, units.System, error)
+	RecipeFunc                  func(id, userID int64) (*models.Recipe, error)
+	RecipesRegistered           map[int64]models.Recipes
+	ShareLinks                  map[int64]string
+	SwitchMeasurementSystemFunc func(system units.System, userID int64) error
+	UsersRegistered             []models.User
+	UsersUpdated                []int64
 }
 
 func (m *mockRepository) AddAuthToken(selector, validator string, userID int64) error {
@@ -129,8 +132,15 @@ func (m *mockRepository) IsUserExist(email string) bool {
 	})
 }
 
-func (m *mockRepository) IsUserPassword(id int64, password string) bool {
+func (m *mockRepository) IsUserPassword(id int64, _ string) bool {
 	return slices.IndexFunc(m.UsersRegistered, func(user models.User) bool { return user.ID == id }) != -1
+}
+
+func (m *mockRepository) MeasurementSystems(userID int64) ([]units.System, units.System, error) {
+	if m.MeasurementSystemsFunc != nil {
+		return m.MeasurementSystemsFunc(userID)
+	}
+	return []units.System{units.ImperialSystem, units.MetricSystem}, units.MetricSystem, nil
 }
 
 func (m *mockRepository) Recipe(id, userID int64) (*models.Recipe, error) {
@@ -176,6 +186,21 @@ func (m *mockRepository) Register(email string, _ auth.HashedPassword) (int64, e
 		Email: email,
 	})
 	return userID, nil
+}
+
+func (m *mockRepository) SwitchMeasurementSystem(system units.System, userID int64) error {
+	if m.SwitchMeasurementSystemFunc != nil {
+		return m.SwitchMeasurementSystemFunc(system, userID)
+	}
+
+	for i, r := range m.RecipesRegistered[userID] {
+		converted, err := r.ConvertMeasurementSystem(system)
+		if err != nil {
+			return err
+		}
+		m.RecipesRegistered[userID][i] = *converted
+	}
+	return nil
 }
 
 func (m *mockRepository) UserID(email string) int64 {

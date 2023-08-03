@@ -22,6 +22,7 @@ type params struct {
 // to pass a hashed string to functions that require such variable.
 type HashedPassword string
 
+// String represents the HashedPassword as a string.
 func (h HashedPassword) String() string {
 	return string(h)
 }

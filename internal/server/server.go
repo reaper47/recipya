@@ -131,9 +131,11 @@ func (s *Server) mountHandlers() {
 		r.Route("/settings", func(r chi.Router) {
 			r.Get("/", s.settingsHandler)
 
+			r.Post("/measurement-system", s.settingsMeasurementSystemsPostHandler)
+
 			r.Route("/tabs", func(r chi.Router) {
 				r.Get("/profile", settingsTabsProfileHandler)
-				r.Get("/recipes", settingsTabsRecipesHandler)
+				r.Get("/recipes", s.settingsTabsRecipesHandler)
 			})
 		})
 

@@ -5,6 +5,7 @@ import (
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
+	"github.com/reaper47/recipya/internal/units"
 	"io"
 	"mime/multipart"
 )
@@ -44,6 +45,9 @@ type RepositoryService interface {
 	// IsUserPassword checks whether the password is the user's password.
 	IsUserPassword(id int64, password string) bool
 
+	// MeasurementSystems gets the units systems, along with the one the user selected, in the database.
+	MeasurementSystems(userID int64) ([]units.System, units.System, error)
+
 	// Recipe gets the user's recipe of the given id.
 	Recipe(id, userID int64) (*models.Recipe, error)
 
@@ -55,6 +59,9 @@ type RepositoryService interface {
 
 	// Register adds a new user to the store.
 	Register(email string, hashPassword auth.HashedPassword) (int64, error)
+
+	// SwitchMeasurementSystem sets the user's units system to the desired one.
+	SwitchMeasurementSystem(system units.System, userID int64) error
 
 	// UpdatePassword updates the user's password.
 	UpdatePassword(userID int64, hashedPassword auth.HashedPassword) error
