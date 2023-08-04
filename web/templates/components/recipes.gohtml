@@ -1,3 +1,83 @@
+{{define "add-ingredient"}}
+    <li class="pb-2">
+        <label>
+            <input type="text" name="ingredient-{{.}}" placeholder="Ingredient #{{.}}" required
+                   {{if gt . 1}}autofocus{{end}}
+                   class="w-8/12 py-1 pl-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-900 dark:border-none dark:text-gray-200"
+                   _="on keydown if event.key is 'Enter'
+                        then halt the event then get next <button/> from the parentElement of me
+                        then call htmx.trigger(it, 'click')">
+        </label>
+        <button type="button"
+                class="w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-green-600 hover:text-white center dark:bg-green-500"
+                title="Shortcut: Enter"
+                hx-post="/recipes/add/manual/ingredient"
+                hx-target="#ingredients-list"
+                hx-swap="beforeend"
+                hx-include="[name^='ingredient']">
+            +
+        </button>
+        <button type="button"
+                class="delete-button w-10 h-10 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center dark:bg-red-500"
+                hx-target="#ingredients-list"
+                hx-post="/recipes/add/manual/ingredient/{{.}}"
+                hx-include="[name^='ingredient']">
+            -
+        </button>
+        <div class="inline-block h-4 cursor-move handle">
+            <svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+            </svg>
+        </div>
+    </li>
+{{end}}
+
+{{define "add-instruction"}}
+    <li class="pt-2 md:pl-0">
+        <div class="flex">
+            <label class="w-[95%]">
+                <textarea required name="instruction-{{.}}" rows="3"
+                          {{if gt . 1}}autofocus{{end}}
+                          class="w-[97%] border border-gray-300 pl-1 dark:bg-gray-900 dark:border-none"
+                          placeholder="Instruction #{{.}}"
+                          _="on keydown if event.ctrlKey and event.key === 'Enter'
+                            then halt the event
+                            then get next <div/> from the parentElement of me
+                            then get first <button/> in it
+                            then call htmx.trigger(it, 'click')"></textarea>
+            </label>
+            <div class="grid">
+                <div class="h-4 cursor-move handle grid place-content-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                    </svg>
+                </div>
+                <button type="button"
+                        class="md:w-7 md:h-7 md:right-auto w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center dark:bg-green-500"
+                        title="Shortcut: CTRL + Enter"
+                        hx-post="/recipes/add/manual/instruction"
+                        hx-target="#instructions-list"
+                        hx-swap="beforeend"
+                        hx-include="[name^='instruction']">
+                    +
+                </button>
+                <button type="button"
+                        class="delete-button w-10 h-10 md:w-7 md:h-7 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center dark:bg-red-500"
+                        hx-target="#instructions-list"
+                        hx-post="/recipes/add/manual/instruction/{{.}}"
+                        hx-include="[name^='instruction']">
+                    -
+                </button>
+            </div>
+        </div>
+    </li>
+{{end}}
+
 {{define "add-recipe"}}
     <title hx-swap-oob="true">Add Recipe | Recipya</title>
 
@@ -12,7 +92,7 @@
             <hr class="dark:border dark:border-gray-800">
             <div class="px-6 pt-4 pb-2">
                 <button class="w-full border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
-                        hx-get="/recipes/add/manual" hx-target="#content" hx-push-url="/recipes/add/manual">
+                        hx-get="/recipes/add/manual" hx-target="#content" hx-push-url="true">
                     Fill In
                 </button>
             </div>
@@ -384,39 +464,8 @@
                 <legend class="pb-2 m-auto text-sm font-semibold text-gray-600 dark:text-gray-200">
                     <span class="underline">Ingredients</span> <sup class="text-red-600 no-underline">*</sup>
                 </legend>
-                <ol id="ingredients-list" class="pl-6 list-decimal">
-                    <li class="pb-2 pl-2">
-                        <label>
-                            <input type="text" name="ingredient-1" placeholder="Ingredient #1" required
-                                   class="w-8/12 py-1 pl-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-900 dark:border-none dark:text-gray-200"
-                                   _="on keydown if event.key is 'Enter'
-                                        then halt the event then get next <button/> from the parentElement of me
-                                        then call htmx.trigger(it, 'click')">
-                        </label>
-                        <button type="button"
-                                class="w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-green-600 hover:text-white center dark:bg-green-500"
-                                title="Shortcut: Enter"
-                                hx-post="/recipes/add/manual/ingredient"
-                                hx-target="#ingredients-list"
-                                hx-swap="beforeend"
-                                hx-include="[name^='ingredient']">
-                            +
-                        </button>
-                        <button type="button"
-                                class="delete-button w-10 h-10 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center dark:bg-red-500"
-                                hx-target="#ingredients-list"
-                                hx-post="/recipes/add/manual/ingredient/1"
-                                hx-include="[name^='ingredient']">
-                            -
-                        </button>
-                        <div class="inline-block h-4 cursor-move handle">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none"
-                                 viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
-                            </svg>
-                        </div>
-                    </li>
+                <ol id="ingredients-list" class="pl-8 list-decimal">
+                    {{template "add-ingredient" 1}}
                 </ol>
             </fieldset>
         </div>
@@ -426,50 +475,432 @@
                     <span class="underline">Instructions</span> <sup class="text-red-600">*</sup>
                 </legend>
                 <ol id="instructions-list" class="pl-4 list-decimal">
-                    <li class="pt-2 pl-2 md:pl-0">
-                        <label>
-                          <textarea required name="instruction-1" rows="3"
-                                    class="w-9/12 border border-gray-300 pl-1 md:w-5/6 xl:w-11/12 dark:bg-gray-900 dark:border-none"
-                                    placeholder="Instruction #1"
-                                    _="on keydown if event.ctrlKey and event.key === 'Enter'
-                                        then halt the event
-                                        then get next <div/> from the parentElement of me
-                                        then get last <button/> in it
-                                        then call htmx.trigger(it, 'click')"></textarea>
-                        </label>
-                        <div class="inline-flex flex-col-reverse">
-                            <button type="button"
-                                    class="delete-button mt-4 md:flex-initial w-10 h-10 right-0.5 md:w-7 md:h-7 md:right-auto bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center dark:bg-red-500"
-                                    hx-target="#instructions-list"
-                                    hx-post="/recipes/add/manual/instruction/1"
-                                    hx-include="[name^='instruction']">
-                                -
-                            </button>
-                            <button type="button"
-                                    class="bottom-0 right-0.5 md:flex-initial md:w-7 md:h-7 md:right-auto w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center dark:bg-green-500"
-                                    title="Shortcut: CTRL + Enter"
-                                    hx-post="/recipes/add/manual/instruction"
-                                    hx-target="#instructions-list"
-                                    hx-swap="beforeend"
-                                    hx-include="[name^='instruction']">
-                                +
-                            </button>
-                        </div>
-                        <div class="inline-block h-4 cursor-move handle">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
-                            </svg>
-                        </div>
-                    </li>
+                    {{template "add-instruction" 1}}
                 </ol>
             </fieldset>
         </div>
         <button type="submit"
                 class="col-span-6 p-2 font-semibold text-white bg-blue-500 hover:bg-blue-800">
             Submit
+        </button>
+    </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html-duration-picker@latest/dist/html-duration-picker.min.js"></script>
+    <script defer>
+        htmx.onLoad(function () {
+            const inputs = [
+                {name: 'ingredient', type: 'input'},
+                {name: 'instruction', type: 'textarea'},
+            ];
+            inputs.forEach(({name, type}) => {
+                const list = document.querySelector(`#${name}s-list`);
+                if (list) {
+                    new Sortable.create(list, {
+                        handle: '.handle',
+                        onEnd: function () {
+                            Array.from(document.querySelectorAll(`${type}[name^='${name}']`)).forEach((d, i) => {
+                                const n = i + 1;
+                                d.name = `${name}-${n}`;
+                                d.placeholder = `${name.substring(0, 1).toUpperCase() + name.substring(1)} #${n}`;
+
+                                const deleteButton = d.parentElement.parentElement.querySelector(".delete-button");
+                                deleteButton.setAttribute('hx-post', `/recipes/add/manual/${name}/${n}`);
+                                htmx.process(deleteButton);
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+{{end}}
+
+{{define "edit-recipe"}}
+    <title hx-swap-oob="true">Edit {{.View.Recipe.Name}} | Recipya</title>
+
+    <form hx-post="/recipes/add/manual" enctype="multipart/form-data"
+          class="grid max-w-6xl grid-cols-6 m-auto mt-4 pb-4 dark:bg-gray-600 dark:rounded-t-lg">
+        <div class="col-span-6 text-lg border border-gray-900 rounded-t-lg md:text-xl dark:border-gray-800 relative">
+            <button class="ml-2 absolute text-2xl top-[0.25rem] hover:text-red-600" title="Back to view recipe" type="button"
+                    _="on click if confirm('Are you sure you wish to go back? Changes will not be saved.') then call history.back()">
+                &larr;
+            </button>
+            <label for="title" class="hidden"></label>
+            <input type="text" name="title" id="title" placeholder="Title of the recipe*"
+                   required autocomplete="off" value="{{.View.Recipe.Name}}"
+                   class="w-full py-2 bg-gray-50 font-semibold text-center text-gray-600 placeholder-gray-400 rounded-t-lg dark:bg-gray-900 dark:text-gray-200">
+        </div>
+
+        <label class="grid col-span-6 place-content-center w-full h-96 border-b border-x border-black md:border-r-0 md:col-span-4 text-sm dark:border-gray-800">
+            {{- if .View.IsUUIDValid -}}
+                <img src="/data/images/{{.View.Recipe.Image}}.jpg" alt="Image preview of the recipe." class="h-full">
+                <span>
+                    <input type="file" accept="image/*" name="image" required
+                           value="/data/images/{{.View.Recipe.Image}}.jpg"
+                           _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
+                          on dragleave or drop set the target's style.background to ''
+                          on drop or change
+                            make an FileReader called reader
+                            then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end
+                            then set {src: window.URL.createObjectURL(it)} on previous <img/>
+                            then remove .hidden from next <button/>">
+                    <button type="button"
+                            class="px-2 bg-red-300 border border-gray-800 rounded-lg hover:bg-red-600 hover:text-white dark:border-gray-800 dark:bg-red-600 dark:hover:bg-red-700"
+                            _="on click
+                                set {value: ''} on previous <input/>
+                                then set {src: ''} on previous <img/>
+                                then add .hidden">
+                        Delete
+                    </button>
+                </span>
+            {{- else -}}
+                <img src="" alt="Image preview of the recipe." class="h-full">
+                <span>
+                    <input type="file" accept="image/*" name="image" required
+                           _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
+                          on dragleave or drop set the target's style.background to ''
+                          on drop or change
+                            make an FileReader called reader
+                            then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end
+                            then set {src: window.URL.createObjectURL(it)} on previous <img/>
+                            then remove .hidden from next <button/>">
+                    <button type="button"
+                            class="px-2 bg-red-300 border border-gray-800 rounded-lg hidden hover:bg-red-600 hover:text-white dark:border-gray-800 dark:bg-red-600 dark:hover:bg-red-700"
+                            _="on click
+                                set {value: ''} on previous <input/>
+                                then set {src: ''} on previous <img/>
+                                then add .hidden">
+                        Delete
+                    </button>
+                </span>
+            {{- end -}}
+        </label>
+
+        <div class="grid grid-flow-col col-span-6 border-b border-l border-black md:border-l md:grid-flow-row md:col-span-2 md:grid md:border-r md:border-b-0 dark:border-gray-800 print:border-b">
+            <div class="col-span-2 p-2 border-r border-black md:col-span-3 md:grid md:place-items-center md:border-r-0 dark:border-gray-800">
+                <label class="grid place-content-center p-2 font-medium text-sm text-gray-900 bg-blue-100 border border-blue-300 rounded-full w-fit">
+                    <input type="text" list="categories" name="category" value="{{.View.Recipe.Category}}"
+                           class="bg-transparent text-center focus:outline-none" placeholder="Breakfast*" required>
+                    <datalist id="categories">
+                        {{- range .View.Categories -}}
+                            <option>{{.}}</option>
+                        {{- end -}}
+                    </datalist>
+                </label>
+            </div>
+
+            <div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t dark:border-gray-800">
+                <div>
+                    <label for="yield">Yields</label>
+                    <input id="yield" type="number" min="1" name="yield"
+                           value="{{if eq .View.Recipe.Yield 0}}4{{else}}{{.View.Recipe.Yield}}{{end}}"
+                           class="w-24 rounded bg-gray-100 p-2 dark:bg-gray-900">
+                    <span>servings</span>
+                </div>
+            </div>
+
+            <div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t dark:border-gray-800">
+                <label class="w-4/5">
+                    <input id="source" type="text" placeholder="Source*" value="{{.View.Recipe.URL}}"
+                           class="w-full rounded bg-gray-100 p-2 dark:bg-gray-900" required>
+                </label>
+                <p class="px-4">
+                    The source can be a website, name of a cookbook, from a relative or friend, a magazine, etc.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-span-6 border-b border-x border-black md:col-span-4 dark:border-gray-800">
+            <div class="flex flex-col p-2">
+                <label for="description" class="text-sm font-semibold text-gray-600 dark:text-gray-200">
+                    Description <sup class="text-red-600">*</sup>
+                </label>
+                <textarea id="description" name="description" rows="10"
+                          placeholder="This Thai curry chicken will make you drool." required
+                          class="p-2 border border-gray-300 rounded-t-lg dark:bg-gray-800 dark:border-none"
+                >{{- if not (eq .View.Recipe.Description "") -}}{{.View.Recipe.Description}}{{- end -}}</textarea>
+            </div>
+        </div>
+
+        <div class="col-span-3 border border-black md:border-l-0 md:col-span-1 dark:border-gray-800">
+            <div class="inline-block min-w-full overflow-x-auto align-middle">
+                <div class="overflow-hidden border-gray-200">
+                    <table class="min-w-full text-xs divide-y divide-gray-200 dark:text-gray-200 dark:divide-slate-600">
+                        <thead class="h-12 font-medium tracking-wider text-white bg-gray-800">
+                        <tr>
+                            <th scope="col" class="text-right md:text-center">
+                                <p>Nutrition<br>(per 100g)</p>
+                            </th>
+                            <th scope="col" class="text-center">
+                                <p>Amount<br>(optional)</p>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600">
+                        <tr>
+                            <td class="py-2 dark:border-gray-800">
+                                <p>Calories:</p>
+                            </td>
+                            <td class="text-center dark:border-gray-800">
+                                <label for="calories" class="hidden"></label>
+                                <input type="text" id="calories" name="calories"
+                                       autocomplete="off" placeholder="368kcal"
+                                       value="{{.View.Recipe.Nutrition.Calories}}"
+                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
+                            </td>
+                        </tr>
+                        <tr class="bg-gray-100 dark:bg-slate-700">
+                            <td class="py-2 dark:border-gray-800">
+                                <p>Total carbs:</p>
+                            </td>
+                            <td class="text-center dark:border-gray-800">
+                                <label for="total-carbohydrates" class="hidden"></label>
+                                <input type="text" id="total-carbohydrates" name="total-carbohydrates"
+                                       autocomplete="off" placeholder="35g"
+                                       value="{{.View.Recipe.Nutrition.TotalCarbohydrates}}"
+                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 dark:border-gray-800">
+                                <p>Sugars:</p>
+                            </td>
+                            <td class="text-center dark:border-gray-800">
+                                <label for="sugars" class="hidden"></label>
+                                <input type="text" id="sugars" name="sugars"
+                                       autocomplete="off" placeholder="3g"
+                                       value="{{.View.Recipe.Nutrition.Sugars}}"
+                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
+                            </td>
+                        </tr>
+                        <tr class="bg-gray-100 dark:bg-slate-700">
+                            <td class="py-2 dark:border-gray-800">
+                                <p>Protein:</p>
+                            </td>
+                            <td class="text-center dark:border-gray-800">
+                                <label for="protein" class="hidden"></label>
+                                <input type="text" id="protein" name="protein"
+                                       autocomplete="off" placeholder="21g"
+                                       value="{{.View.Recipe.Nutrition.Protein}}"
+                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 dark:border-gray-800">
+                                <p>Total fat:</p>
+                            </td>
+                            <td class="text-center dark:border-gray-800">
+                                <label for="total-fat" class="hidden"></label>
+                                <input type="text" id="total-fat" name="total-fat"
+                                       autocomplete="off" placeholder="15g"
+                                       value="{{.View.Recipe.Nutrition.TotalFat}}"
+                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
+                            </td>
+                        </tr>
+                        <tr class="bg-gray-100 dark:bg-slate-700">
+                            <td class="py-2 dark:border-gray-800">
+                                <p>Saturated fat:</p>
+                            </td>
+                            <td class="text-center dark:border-gray-800">
+                                <label for="saturated-fat" class="hidden"></label>
+                                <input type="text" id="saturated-fat" name="saturated-fat"
+                                       autocomplete="off" placeholder="1.8g"
+                                       value="{{.View.Recipe.Nutrition.SaturatedFat}}"
+                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 dark:border-gray-800">
+                                <p>Cholesterol:</p>
+                            </td>
+                            <td class="text-center dark:border-gray-800">
+                                <label for="cholesterol" class="hidden"></label>
+                                <input type="text" id="cholesterol" name="cholesterol"
+                                       autocomplete="off" placeholder="1.1mg"
+                                       value="{{.View.Recipe.Nutrition.Cholesterol}}"
+                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
+                            </td>
+                        </tr>
+                        <tr class="bg-gray-100 dark:bg-slate-700">
+                            <td class="py-2 dark:border-gray-800">
+                                <p>Sodium:</p>
+                            </td>
+                            <td class="text-center dark:border-gray-800">
+                                <label for="sodium" class="hidden"></label>
+                                <input type="text" id="sodium" name="sodium"
+                                       autocomplete="off" placeholder="100mg"
+                                       value="{{.View.Recipe.Nutrition.Sodium}}"
+                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 dark:border-gray-800">
+                                <p>Fiber:</p>
+                            </td>
+                            <td class="text-center dark:border-gray-800">
+                                <label for="fiber" class="hidden"></label>
+                                <input type="text" id="fiber" name="fiber"
+                                       autocomplete="off" placeholder="8g"
+                                       value="{{.View.Recipe.Nutrition.Fiber}}"
+                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-span-3 border-b border-r border-black md:col-span-1">
+            <div class="inline-block min-w-full overflow-x-auto align-middle">
+                <div class="overflow-hidden border-gray-200">
+                    <table id="times-table"
+                           class="min-w-full text-xs divide-y divide-gray-200 dark:text-gray-200 dark:divide-slate-600">
+                        <thead class="h-12 font-medium tracking-wider text-white bg-gray-800 border-l dark:border-l-gray-600">
+                        <tr>
+                            <th scope="col" class="text-right">Time</th>
+                            <th scope="col" class="text-center">h:m:s</th>
+                        </tr>
+                        </thead>
+                        <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600">
+                        <tr>
+                            <td class="py-2">Preparation:</td>
+                            <td class="text-center">
+                                <label for="time-preparation" class="hidden"></label>
+                                <input type="text" id="time-preparation" name="time-preparation"
+                                       value="{{if .View.FormattedTimes.PrepEdit}}{{.View.FormattedTimes.PrepEdit}}{{else}}00:15:00{{end}}"
+                                       class="w-full p-1 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker dark:bg-gray-900 dark:text-gray-200">
+                            </td>
+                        </tr>
+                        <tr class="bg-gray-100 dark:bg-slate-700">
+                            <td class="py-2">Cooking:</td>
+                            <td class="w-1/2 text-center">
+                                <label for="time-cooking" class="hidden"></label>
+                                <input type="text" id="time-cooking" name="time-cooking"
+                                       value="{{if .View.FormattedTimes.CookEdit}}{{.View.FormattedTimes.CookEdit}}{{else}}00:30:00{{end}}"
+                                       class="w-full p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker dark:bg-gray-900 dark:text-gray-200"
+                                       _="on load get <button/> in #times-table then add .dark:bg-gray-200 to it">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-span-6 py-2 border-b border-x border-black md:col-span-2 md:border-r-0">
+            <fieldset class="text-center border-none">
+                <legend class="pb-2 m-auto text-sm font-semibold text-gray-600 dark:text-gray-200">
+                    <span class="underline">Ingredients</span> <sup class="text-red-600 no-underline">*</sup>
+                </legend>
+                <ol id="ingredients-list" class="pl-8 list-decimal">
+                    {{- if eq (len .View.Recipe.Ingredients) 0 -}}
+                        {{template "add-ingredient" 1}}
+                    {{- else -}}
+                        {{$inc := .View.Inc}}
+                        {{ range $i, $v := .View.Recipe.Ingredients }}
+                            {{$num := call $inc $i}}
+                            <li class="pb-2">
+                                <label>
+                                    <input type="text" name="ingredient-{{$num}}" placeholder="Ingredient #{{$num}}"
+                                           required
+                                           class="w-8/12 py-1 pl-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-900 dark:border-none dark:text-gray-200"
+                                           value="{{$v}}"
+                                           _="on keydown if event.key is 'Enter'
+                                                then halt the event then get next <button/> from the parentElement of me
+                                                then call htmx.trigger(it, 'click')">
+                                </label>
+                                <button type="button"
+                                        class="w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-green-600 hover:text-white center dark:bg-green-500"
+                                        title="Shortcut: Enter"
+                                        hx-post="/recipes/add/manual/ingredient"
+                                        hx-target="#ingredients-list"
+                                        hx-swap="beforeend"
+                                        hx-include="[name^='ingredient']">
+                                    +
+                                </button>
+                                <button type="button"
+                                        class="delete-button w-10 h-10 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center dark:bg-red-500"
+                                        hx-target="#ingredients-list"
+                                        hx-post="/recipes/add/manual/ingredient/{{$num}}"
+                                        hx-include="[name^='ingredient']">
+                                    -
+                                </button>
+                                <div class="inline-block h-4 cursor-move handle">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none"
+                                         viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                              d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                                    </svg>
+                                </div>
+                            </li>
+                        {{- end -}}
+                    {{- end -}}
+                </ol>
+            </fieldset>
+        </div>
+        <div class="col-span-6 py-2 pb-8 pl-2 border-b border-x border-black md:col-span-4">
+            <fieldset class="text-center border-none">
+                <legend class="m-auto text-sm font-semibold text-gray-600 dark:text-gray-200">
+                    <span class="underline">Instructions</span> <sup class="text-red-600">*</sup>
+                </legend>
+                <ol id="instructions-list" class="pl-4 list-decimal">
+                    {{- if eq (len .View.Recipe.Instructions) 0 -}}
+                        {{template "add-instruction" 1}}
+                    {{- else -}}
+                        {{$inc := .View.Inc}}
+                        {{ range $i, $v := .View.Recipe.Instructions }}
+                            {{$num := call $inc $i}}
+                            <li class="pt-2 md:pl-0">
+                                <div class="flex">
+                                    <label class="w-[95%]">
+                                        <textarea required name="instruction-{{$num}}" rows="3"
+                                                  class="w-[97%] border border-gray-300 pl-1 dark:bg-gray-900 dark:border-none"
+                                                  placeholder="Instruction #{{$num}}"
+                                                  _="on keydown if event.ctrlKey and event.key === 'Enter'
+                                                        then halt the event
+                                                        then get next <div/> from the parentElement of me
+                                                        then get first <button/> in it
+                                                        then call htmx.trigger(it, 'click')">{{- $v -}}</textarea>
+                                    </label>
+                                    <div class="grid">
+                                        <div class="h-4 cursor-move handle grid place-content-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7"
+                                                 fill="none"
+                                                 viewBox="0 0 24 24"
+                                                 stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                      d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                                            </svg>
+                                        </div>
+                                        <button type="button"
+                                                class="md:w-7 md:h-7 md:right-auto w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center dark:bg-green-500"
+                                                title="Shortcut: CTRL + Enter"
+                                                hx-post="/recipes/add/manual/instruction"
+                                                hx-target="#instructions-list"
+                                                hx-swap="beforeend"
+                                                hx-include="[name^='instruction']">
+                                            +
+                                        </button>
+                                        <button type="button"
+                                                class="delete-button w-10 h-10 md:w-7 md:h-7 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center dark:bg-red-500"
+                                                hx-target="#instructions-list"
+                                                hx-post="/recipes/add/manual/instruction/{{$num}}"
+                                                hx-include="[name^='instruction']">
+                                            -
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                        {{- end -}}
+                    {{- end -}}
+                </ol>
+            </fieldset>
+        </div>
+        <button type="submit"
+                class="col-span-6 p-2 font-semibold text-white bg-blue-500 hover:bg-blue-800">
+            Update
         </button>
     </form>
 
@@ -592,7 +1023,10 @@
                                 <path d="M12.276 18.55v-.748a4.79 4.79 0 0 1 1.463-3.458 5.763 5.763 0 0 0 1.804-4.21 5.821 5.821 0 0 0-6.475-5.778c-2.779.307-4.99 2.65-5.146 5.448a5.82 5.82 0 0 0 1.757 4.503 4.906 4.906 0 0 1 1.5 3.495v.747a1.44 1.44 0 0 0 1.44 1.439h2.218a1.44 1.44 0 0 0 1.44-1.439zm-1.058 0c0 .209-.17.38-.38.38h-2.22c-.21 0-.38-.171-.38-.38v-.748c0-1.58-.664-3.13-1.822-4.254A4.762 4.762 0 0 1 4.98 9.863c.127-2.289 1.935-4.204 4.205-4.455a4.762 4.762 0 0 1 5.3 4.727 4.714 4.714 0 0 1-1.474 3.443 5.853 5.853 0 0 0-1.791 4.225v.746zM11.45 20.51H8.006a.397.397 0 1 0 0 .795h3.444a.397.397 0 1 0 0-.794zM11.847 22.162a.397.397 0 0 0-.397-.397H8.006a.397.397 0 1 0 0 .794h3.444c.22 0 .397-.178.397-.397zM.397 10.125h2.287a.397.397 0 1 0 0-.794H.397a.397.397 0 1 0 0 .794zM19.456 9.728a.397.397 0 0 0-.397-.397h-2.287a.397.397 0 1 0 0 .794h2.287c.22 0 .397-.178.397-.397zM9.331.397v2.287a.397.397 0 1 0 .794 0V.397a.397.397 0 1 0-.794 0zM16.045 2.85 14.43 4.465a.397.397 0 1 0 .561.561l1.617-1.617a.397.397 0 1 0-.562-.56zM5.027 14.429a.397.397 0 0 0-.56 0l-1.618 1.616a.397.397 0 1 0 .562.562l1.617-1.617a.397.397 0 0 0 0-.561zM4.466 5.027a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.56L3.41 2.848a.397.397 0 1 0-.561.561zM16.045 16.607a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.562L14.99 14.43a.397.397 0 1 0-.561.56zM10.986 23.416a.397.397 0 0 0-.397-.397H8.867a.397.397 0 1 0 0 .794h1.722c.22 0 .397-.178.397-.397z"/>
                             </svg>
                         </button>
-                        <button hx-get="/recipes/{{.View.ID}}/edit" class="ml-2" title="Edit recipe">
+                        <button class="ml-2" title="Edit recipe"
+                                hx-get="/recipes/{{.View.ID}}/edit"
+                                hx-push-url="true"
+                                hx-target="#content">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none"
                                  viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -878,7 +1312,8 @@
         </div>
 
         <div class="col-span-6 py-2 pb-8 border-b border-x border-black rounded-bl-lg md:rounded-bl-none md:col-span-4 dark:border-gray-800 print:hidden">
-            <h2 class="pb-2 m-auto text-sm font-semibold text-center text-gray-600 underline dark:text-gray-200">Instructions</h2>
+            <h2 class="pb-2 m-auto text-sm font-semibold text-center text-gray-600 underline dark:text-gray-200">
+                Instructions</h2>
             <ol class="grid px-6 list-decimal">
                 {{$len = len .View.Recipe.Instructions}}
                 {{- range $i, $e := .View.Recipe.Instructions -}}

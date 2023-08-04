@@ -5,11 +5,11 @@
 <header hx-boost="true"
         class="flex h-12 w-full items-center justify-between bg-gray-100 dark:bg-black shadow-sm shadow-gray-600 print:hidden">
     <div class="flex h-full items-center">
-        <button hx-get="/" hx-push-url="/" hx-target="body" class="pl-4 font-semibold hover:text-red-600">Recipya</button>
+        <button hx-get="/" hx-push-url="true" hx-target="body" class="pl-4 font-semibold hover:text-red-600">Recipya</button>
     </div>
     {{- if .IsAuthenticated}}
         <div class="flex flex-1 justify-center">
-            <button id="add-recipe" hx-get="/recipes/add" hx-target="#content" hx-push-url="/recipes/add"
+            <button id="add-recipe" hx-get="/recipes/add" hx-target="#content" hx-push-url="true"
                     class="flex cursor-pointer items-center px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-green-600">
                 Add recipe
             </button>

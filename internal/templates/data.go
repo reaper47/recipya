@@ -1,8 +1,10 @@
 package templates
 
 import (
+	"fmt"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/units"
+	"strings"
 )
 
 // Data holds data to pass on to the templates.
@@ -39,15 +41,11 @@ type ScraperData struct {
 // NewViewRecipeData creates and populates a new ViewRecipeData.
 func NewViewRecipeData(id int64, recipe *models.Recipe, isFromHost, isShared bool) *ViewRecipeData {
 	return &ViewRecipeData{
-		FormattedTimes: formattedTimes{
-			Cook:          formatDuration(recipe.Times.Cook, false),
-			CookDateTime:  formatDuration(recipe.Times.Cook, true),
-			Prep:          formatDuration(recipe.Times.Prep, false),
-			PrepDateTime:  formatDuration(recipe.Times.Prep, true),
-			Total:         formatDuration(recipe.Times.Total, false),
-			TotalDateTime: formatDuration(recipe.Times.Total, true),
+		FormattedTimes: newFormattedTimes(recipe.Times),
+		ID:             id,
+		Inc: func(n int) int {
+			return n + 1
 		},
-		ID:          id,
 		IsURL:       isURL(recipe.URL),
 		IsUUIDValid: isUUIDValid(recipe.Image),
 		Recipe:      recipe,
@@ -63,17 +61,42 @@ type ViewRecipeData struct {
 	Categories     []string
 	FormattedTimes formattedTimes
 	ID             int64
+	Inc            func(n int) int
 	IsURL          bool
 	IsUUIDValid    bool
 	Recipe         *models.Recipe
 	Share          shareData
 }
 
+func newFormattedTimes(times models.Times) formattedTimes {
+	cook := formatDuration(times.Cook, false)
+	prep := formatDuration(times.Prep, false)
+
+	parts := strings.Split(prep, "h")
+	prepEdit := fmt.Sprintf("%02s:%02s:00", parts[0], parts[1])
+
+	parts = strings.Split(cook, "h")
+	cookEdit := fmt.Sprintf("%02s:%02s:00", parts[0], parts[1])
+
+	return formattedTimes{
+		Cook:          cook,
+		CookDateTime:  formatDuration(times.Cook, true),
+		CookEdit:      cookEdit,
+		Prep:          prep,
+		PrepDateTime:  formatDuration(times.Prep, true),
+		PrepEdit:      prepEdit,
+		Total:         formatDuration(times.Total, false),
+		TotalDateTime: formatDuration(times.Total, true),
+	}
+}
+
 type formattedTimes struct {
 	Cook          string
 	CookDateTime  string
+	CookEdit      string
 	Prep          string
 	PrepDateTime  string
+	PrepEdit      string
 	Total         string
 	TotalDateTime string
 }

@@ -202,14 +202,12 @@ func recipeAddManualIngredientHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	i := 1
-	num := strconv.Itoa(i)
 	for {
-		if !r.Form.Has("ingredient-" + num) {
+		if !r.Form.Has("ingredient-" + strconv.Itoa(i)) {
 			break
 		}
 
 		i++
-		num = strconv.Itoa(i)
 	}
 
 	if r.Form.Get(fmt.Sprintf("ingredient-%d", i-1)) == "" {
@@ -217,18 +215,7 @@ func recipeAddManualIngredientHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var sb strings.Builder
-	xs := []string{
-		`<li class="pb-2 pl-2">`,
-		`<label><input autofocus type="text" name="ingredient-` + num + `" placeholder="Ingredient #` + num + `" required class="w-8/12 py-1 pl-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-900 dark:border-none dark:text-gray-200" _="on keydown if event.key is 'Enter' then halt the event then get next <button/> from the parentElement of me then call htmx.trigger(it, 'click')"></label>`,
-		`&nbsp;<button type="button" class="w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-green-600 hover:text-white center dark:bg-green-500" title="Shortcut: Enter" hx-post="/recipes/add/manual/ingredient" hx-target="#ingredients-list" hx-swap="beforeend" hx-include="[name^='ingredient']">+</button>`,
-		`&nbsp;<button type="button" class="delete-button w-10 h-10 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center dark:bg-red-500" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/` + num + `" hx-include="[name^='ingredient']">-</button>`,
-		`&nbsp;<div class="inline-block h-4 cursor-move handle"><svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg></div>`,
-	}
-	for _, x := range xs {
-		sb.WriteString(x)
-	}
-	fmt.Fprintf(w, sb.String())
+	templates.RenderComponent(w, "recipes", "add-ingredient", i)
 }
 
 func recipeAddManualIngredientDeleteHandler(w http.ResponseWriter, r *http.Request) {
@@ -273,11 +260,12 @@ func recipeAddManualIngredientDeleteHandler(w http.ResponseWriter, r *http.Reque
 
 		currStr := strconv.Itoa(curr)
 		xs := []string{
-			`<li class="pb-2 pl-2">`,
+			`<li class="pb-2">`,
 			`<label><input type="text" name="ingredient-` + currStr + `" placeholder="Ingredient #` + currStr + `" required class="w-8/12 py-1 pl-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-900 dark:border-none dark:text-gray-200" ` + `value="` + r.Form.Get(key) + `" _="on keydown if event.key is 'Enter' then halt the event then get next <button/> from the parentElement of me then call htmx.trigger(it, 'click')"></label>`,
 			`&nbsp;<button type="button" class="w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-green-600 hover:text-white center dark:bg-green-500" title="Shortcut: Enter" hx-post="/recipes/add/manual/ingredient" hx-target="#ingredients-list" hx-swap="beforeend" hx-include="[name^='ingredient']">+</button>`,
 			`&nbsp;<button type="button" class="delete-button w-10 h-10 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center dark:bg-red-500" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/` + currStr + `" hx-include="[name^='ingredient']">-</button>`,
 			`&nbsp;<div class="inline-block h-4 cursor-move handle"><svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg></div>`,
+			`</li>`,
 		}
 		for _, x := range xs {
 			sb.WriteString(x)
@@ -287,7 +275,7 @@ func recipeAddManualIngredientDeleteHandler(w http.ResponseWriter, r *http.Reque
 		curr++
 	}
 
-	fmt.Fprintf(w, sb.String())
+	fmt.Fprint(w, sb.String())
 }
 
 func recipeAddManualInstructionHandler(w http.ResponseWriter, r *http.Request) {
@@ -298,14 +286,12 @@ func recipeAddManualInstructionHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	i := 1
-	num := fmt.Sprintf("%d", i)
 	for {
-		if !r.Form.Has("instruction-" + num) {
+		if !r.Form.Has("instruction-" + strconv.Itoa(i)) {
 			break
 		}
 
 		i++
-		num = fmt.Sprintf("%d", i)
 	}
 
 	if r.Form.Get(fmt.Sprintf("instruction-%d", i-1)) == "" {
@@ -313,19 +299,7 @@ func recipeAddManualInstructionHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var sb strings.Builder
-	xs := []string{
-		`<li class="pb-2 pl-2 md:pl-0">`,
-		`<label><textarea autofocus required name="instruction-` + num + `" rows="3" class="w-9/12 border border-gray-300 pl-1 md:w-5/6 xl:w-11/12 dark:bg-gray-900 dark:border-none" placeholder="Instruction #` + num + `" _="on keydown if event.ctrlKey and event.key === 'Enter' then halt the event then get next <div/> from the parentElement of me then get last <button/> in it then call htmx.trigger(it, 'click')"></textarea>&nbsp;</label>`,
-		`<div class="inline-flex flex-col-reverse">`,
-		`<button type="button" class="delete-button mt-4 md:flex-initial w-10 h-10 right-0.5 md:w-7 md:h-7 md:right-auto bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center dark:bg-red-500" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/` + num + `" hx-include="[name^='instruction']">-</button>`,
-		`<button type="button" class="bottom-0 right-0.5 md:flex-initial md:w-7 md:h-7 md:right-auto w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center dark:bg-green-500" title="Shortcut: CTRL + Enter" hx-post="/recipes/add/manual/instruction" hx-target="#instructions-list" hx-swap="beforeend" hx-include="[name^='instruction']">+</button>`,
-		`</div>&nbsp;<div class="inline-block h-4 cursor-move handle"><svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg></div>`,
-	}
-	for _, x := range xs {
-		sb.WriteString(x)
-	}
-	fmt.Fprintf(w, sb.String())
+	templates.RenderComponent(w, "recipes", "add-instruction", i)
 }
 
 func recipeAddManualInstructionDeleteHandler(w http.ResponseWriter, r *http.Request) {
@@ -372,12 +346,13 @@ func recipeAddManualInstructionDeleteHandler(w http.ResponseWriter, r *http.Requ
 		value := r.Form.Get(key)
 
 		xs := []string{
-			`<li class="pb-2 pl-2 md:pl-0">`,
-			`<label><textarea required name="instruction-` + currStr + `" rows="3" class="w-9/12 border border-gray-300 pl-1 md:w-5/6 xl:w-11/12 dark:bg-gray-900 dark:border-none" placeholder="Instruction #` + currStr + `" _="on keydown if event.ctrlKey and event.key === 'Enter' then halt the event then get next <div/> from the parentElement of me then get last <button/> in it then call htmx.trigger(it, 'click')">` + value + `</textarea>&nbsp;</label>`,
-			`<div class="inline-flex flex-col-reverse">`,
-			`<button type="button" class="delete-button mt-4 md:flex-initial w-10 h-10 right-0.5 md:w-7 md:h-7 md:right-auto bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center dark:bg-red-500" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/` + currStr + `" hx-include="[name^='instruction']">-</button>`,
-			`<button type="button" class="bottom-0 right-0.5 md:flex-initial md:w-7 md:h-7 md:right-auto w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center dark:bg-green-500" title="Shortcut: CTRL + Enter" hx-post="/recipes/add/manual/instruction" hx-target="#instructions-list" hx-swap="beforeend" hx-include="[name^='instruction']">+</button>`,
-			`</div>&nbsp;<div class="inline-block h-4 cursor-move handle"><svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg></div>`,
+			`<li class="pt-2 md:pl-0"><div class="flex">`,
+			`<label class="w-[95%]"><textarea required name="instruction-` + currStr + `" rows="3" class="w-[97%] border border-gray-300 pl-1 dark:bg-gray-900 dark:border-none" placeholder="Instruction #` + currStr + `" _="on keydown if event.ctrlKey and event.key === 'Enter' then halt the event then get next <div/> from the parentElement of me then get first <button/> in it then call htmx.trigger(it, 'click')">` + value + `</textarea>&nbsp;</label>`,
+			`<div class="grid">`,
+			`<div class="h-4 cursor-move handle grid place-content-center"><svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg></div>`,
+			`<button type="button" class="md:w-7 md:h-7 md:right-auto w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center dark:bg-green-500" title="Shortcut: CTRL + Enter" hx-post="/recipes/add/manual/instruction" hx-target="#instructions-list" hx-swap="beforeend" hx-include="[name^='instruction']">+</button>`,
+			`<button type="button" class="delete-button w-10 h-10 md:w-7 md:h-7 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center dark:bg-red-500" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/` + currStr + `" hx-include="[name^='instruction']">-</button>`,
+			`</div></div></li>`,
 		}
 		for _, x := range xs {
 			sb.WriteString(x)
@@ -387,7 +362,7 @@ func recipeAddManualInstructionDeleteHandler(w http.ResponseWriter, r *http.Requ
 		curr++
 	}
 
-	fmt.Fprintf(w, sb.String())
+	fmt.Fprint(w, sb.String())
 }
 
 func (s *Server) recipesAddRequestWebsiteHandler(w http.ResponseWriter, r *http.Request) {
@@ -464,6 +439,30 @@ func (s *Server) recipeDeleteHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("HX-Redirect", "/")
 	w.WriteHeader(http.StatusNoContent)
+}
+
+func (s *Server) recipesEditHandler(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	userID := r.Context().Value("userID").(int64)
+	recipe, err := s.Repository.Recipe(id, userID)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Failed to retrieve recipe.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	templates.RenderComponent(w, "recipes", "edit-recipe", templates.Data{
+		View: templates.NewViewRecipeData(id, recipe, true, false),
+	})
+}
+
+func (s *Server) recipesEditPostHandler(w http.ResponseWriter, r *http.Request) {
+
 }
 
 func (s *Server) recipesExportHandler(w http.ResponseWriter, r *http.Request) {

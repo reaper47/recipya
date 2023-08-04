@@ -96,6 +96,11 @@ func (s *Server) mountHandlers() {
 			r.Get("/", s.recipesViewHandler)
 			r.Delete("/", s.recipeDeleteHandler)
 			r.Post("/share", s.recipeSharePostHandler)
+
+			r.Route("/edit", func(r chi.Router) {
+				r.Get("/", s.recipesEditHandler)
+				r.Post("/", s.recipesEditPostHandler)
+			})
 		})
 
 		r.Route("/add", func(r chi.Router) {
