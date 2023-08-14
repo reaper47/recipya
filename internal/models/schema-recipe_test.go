@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"golang.org/x/exp/slices"
+	"slices"
 )
 
 func TestRecipeSchema_Recipe(t *testing.T) {

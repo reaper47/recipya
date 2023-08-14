@@ -3,8 +3,8 @@ package server
 import (
 	"github.com/reaper47/recipya/internal/templates"
 	"github.com/reaper47/recipya/internal/units"
-	"golang.org/x/exp/slices"
 	"net/http"
+	"slices"
 )
 
 func (s *Server) settingsHandler(w http.ResponseWriter, r *http.Request) {

@@ -6,9 +6,9 @@ import (
 	"github.com/gertd/go-pluralize"
 	"github.com/neurosnap/sentences"
 	"github.com/reaper47/recipya/internal/utils/regex"
-	"golang.org/x/exp/slices"
 	"math"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 )

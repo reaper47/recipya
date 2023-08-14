@@ -82,7 +82,7 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 				`<ol id="instructions-list" class="pl-4 list-decimal">`,
 				`<input type="text" name="ingredient-1" placeholder="Ingredient #1" required class="w-8/12 py-1 pl-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-900 dark:border-none dark:text-gray-200" _="on keydown if event.key is 'Enter' then halt the event then get next <button/> from the parentElement of me then call htmx.trigger(it, 'click')">`,
 				`<button type="submit" class="col-span-6 p-2 font-semibold text-white bg-blue-500 hover:bg-blue-800"> Submit </button>`,
-				`<script defer> loadScript("https://cdn.jsdelivr.net/npm/html-duration-picker@latest/dist/html-duration-picker.min.js") .then(() => HtmlDurationPicker.init()) loadScript("https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js")`,
+				`loadScript("https://cdn.jsdelivr.net/npm/html-duration-picker@latest/dist/html-duration-picker.min.js") .then(() => HtmlDurationPicker.init()) loadScript("https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js")`,
 			}
 			assertStringsInHTML(t, getBodyHTML(rr), want)
 		})
@@ -90,7 +90,7 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 
 	t.Run("submit recipe", func(t *testing.T) {
 		repo = &mockRepository{
-			RecipesRegistered: make(map[int64]models.Recipes, 0),
+			RecipesRegistered: make(map[int64]models.Recipes),
 		}
 		srv.Repository = repo
 		originalNumRecipes := len(repo.RecipesRegistered)
@@ -405,7 +405,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 	})
 
 	t.Run("add recipe from supported website error", func(t *testing.T) {
-		repo := &mockRepository{RecipesRegistered: make(map[int64]models.Recipes, 0)}
+		repo := &mockRepository{RecipesRegistered: make(map[int64]models.Recipes)}
 		repo.AddRecipeFunc = func(r *models.Recipe, userID int64) (int64, error) {
 			return -1, errors.New("add recipe error")
 		}
@@ -418,7 +418,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 	})
 
 	t.Run("add recipe from a supported website", func(t *testing.T) {
-		repo := &mockRepository{RecipesRegistered: make(map[int64]models.Recipes, 0)}
+		repo := &mockRepository{RecipesRegistered: make(map[int64]models.Recipes)}
 		called := 0
 		repo.AddRecipeFunc = func(r *models.Recipe, userID int64) (int64, error) {
 			called += 1

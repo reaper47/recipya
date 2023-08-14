@@ -224,7 +224,7 @@ func (n *Nutrition) Equal(other Nutrition) bool {
 }
 
 // Schema creates the schema representation of the Nutrition.
-func (n Nutrition) Schema(servings string) NutritionSchema {
+func (n *Nutrition) Schema(servings string) NutritionSchema {
 	return NutritionSchema{
 		Calories:       n.Calories,
 		Carbohydrates:  n.TotalCarbohydrates,

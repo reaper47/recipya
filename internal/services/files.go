@@ -9,7 +9,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
-	"golang.org/x/exp/slices"
 	"image"
 	"image/jpeg"
 	"io"
@@ -17,6 +16,7 @@ import (
 	"mime/multipart"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"sync"
 )

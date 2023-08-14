@@ -2482,7 +2482,7 @@ func TestScraper(t *testing.T) {
 						"Heat up 1 tbsp cooking oil and panfry marinated chicken till cooked and remove from flame (helps " +
 							"to release excess oils from chicken).",
 						"Add to air-fryer to grill for further 5 mins at 160 degrees C or till browned. Remove and set aside.",
-						"Heat up balance cooking oil and saute ginger and garlic slices.",
+						"Heat up balance cooking oil and sauté ginger and garlic slices.",
 						"Add Szechuan pepper and dried chilies and stir-fry to bring out the aroma.",
 						"Add water if it starts to get too dry. Add chicken pieces and stir-fry to mix well.",
 						"Add cooking wine and stir-fry till chicken are dry. Off heat and sprinkle sesame seeds all over. " +

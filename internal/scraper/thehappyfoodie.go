@@ -22,12 +22,12 @@ func scrapeTheHappyFoodie(root *goquery.Document) (models.RecipeSchema, error) {
 		parts := strings.Split(prepTimeStr, " ")
 		switch len(parts) {
 		case 1:
-			min := strings.TrimSuffix(parts[0], "min")
-			prepTime = "PT" + min + "M"
+			minutes := strings.TrimSuffix(parts[0], "min")
+			prepTime = "PT" + minutes + "M"
 		case 2:
 			hour := strings.TrimSuffix(parts[0], "hr")
-			min := strings.TrimSuffix(parts[1], "min")
-			prepTime = "PT" + hour + "H" + min + "M"
+			minutes := strings.TrimSuffix(parts[1], "min")
+			prepTime = "PT" + hour + "H" + minutes + "M"
 		}
 	}
 
@@ -37,12 +37,12 @@ func scrapeTheHappyFoodie(root *goquery.Document) (models.RecipeSchema, error) {
 		parts := strings.Split(cookTimeStr, " ")
 		switch len(parts) {
 		case 1:
-			min := strings.TrimSuffix(parts[0], "min")
-			cookTime = "PT" + min + "M"
+			minutes := strings.TrimSuffix(parts[0], "min")
+			cookTime = "PT" + minutes + "M"
 		case 2:
 			hour := strings.TrimSuffix(parts[0], "hr")
-			min := strings.TrimSuffix(parts[1], "min")
-			cookTime = "PT" + hour + "H" + min + "M"
+			minutes := strings.TrimSuffix(parts[1], "min")
+			cookTime = "PT" + hour + "H" + minutes + "M"
 		}
 	}
 

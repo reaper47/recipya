@@ -1,6 +1,7 @@
 package server
 
 import (
+	"errors"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
@@ -78,7 +79,7 @@ func NewRememberMeCookie(selector, validator string) *http.Cookie {
 
 func getUserIDFromRememberMeCookie(r *http.Request, getAuthToken func(selector, validator string) (models.AuthToken, error)) int64 {
 	c, err := r.Cookie(cookieNameRememberMe)
-	if err == http.ErrNoCookie {
+	if errors.Is(err, http.ErrNoCookie) {
 		return -1
 	}
 

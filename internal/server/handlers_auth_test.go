@@ -6,10 +6,9 @@ import (
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
-	"golang.org/x/exp/maps"
-	"golang.org/x/exp/slices"
 	"net/http"
 	"net/http/httptest"
+	"slices"
 	"strings"
 	"testing"
 	"time"
@@ -313,7 +312,7 @@ func TestHandlers_Auth_Login(t *testing.T) {
 	})
 
 	t.Run("login  successful", func(t *testing.T) {
-		maps.Clear(server.SessionData)
+		clear(server.SessionData)
 
 		rr := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email=test@example.com&password=123&remember-me=false"))
 
@@ -397,7 +396,7 @@ func TestHandlers_Auth_Logout(t *testing.T) {
 	})
 
 	t.Run("valid logout for a logged-in user", func(t *testing.T) {
-		maps.Clear(server.SessionData)
+		clear(server.SessionData)
 		originalNumSessions := len(server.SessionData) + 1
 
 		rr := sendRequestAsLoggedIn(srv, http.MethodPost, uri, noHeader, nil)

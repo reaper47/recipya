@@ -2,7 +2,7 @@ package extensions_test
 
 import (
 	"github.com/reaper47/recipya/internal/utils/extensions"
-	"golang.org/x/exp/slices"
+	"slices"
 	"testing"
 )
 

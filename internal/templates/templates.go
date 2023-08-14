@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"github.com/Boostport/mjml-go"
 	"github.com/reaper47/recipya/web"
-	"golang.org/x/exp/slices"
 	"html/template"
 	"io/fs"
 	"log"
 	"net/http"
 	"path/filepath"
+	"slices"
 	"strings"
 )
 

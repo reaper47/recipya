@@ -12,11 +12,11 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services/statements"
 	"github.com/reaper47/recipya/internal/units"
-	"golang.org/x/exp/slices"
 	"log"
 	_ "modernc.org/sqlite"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -301,7 +301,7 @@ func (s *SQLiteService) GetAuthToken(selector, validator string) (models.AuthTok
 
 	token := models.AuthToken{Selector: selector}
 	row := s.DB.QueryRowContext(ctx, statements.SelectAuthToken, selector)
-	if err := row.Scan(&token.ID, &token.HashValidator, &token.Expires, &token.UserID); err == sql.ErrNoRows {
+	if err := row.Scan(&token.ID, &token.HashValidator, &token.Expires, &token.UserID); errors.Is(err, sql.ErrNoRows) {
 		return models.AuthToken{}, err
 	}
 
@@ -769,7 +769,7 @@ func (s *SQLiteService) UserInitials(userID int64) string {
 	defer cancel()
 
 	var email string
-	if err := s.DB.QueryRowContext(ctx, statements.SelectUserEmail, userID).Scan(&email); err == sql.ErrNoRows {
+	if err := s.DB.QueryRowContext(ctx, statements.SelectUserEmail, userID).Scan(&email); errors.Is(err, sql.ErrNoRows) {
 		return ""
 	}
 	return string(strings.ToUpper(email)[0])
@@ -821,7 +821,7 @@ func (s *SQLiteService) Websites() models.Websites {
 	defer cancel()
 
 	var count int64
-	if err := s.DB.QueryRowContext(ctx, statements.SelectCountWebsites).Scan(&count); err == sql.ErrNoRows {
+	if err := s.DB.QueryRowContext(ctx, statements.SelectCountWebsites).Scan(&count); errors.Is(err, sql.ErrNoRows) {
 		return models.Websites{}
 	}
 

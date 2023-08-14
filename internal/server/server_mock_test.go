@@ -9,17 +9,17 @@ import (
 	"github.com/reaper47/recipya/internal/server"
 	"github.com/reaper47/recipya/internal/templates"
 	"github.com/reaper47/recipya/internal/units"
-	"golang.org/x/exp/slices"
 	"io"
 	"mime/multipart"
+	"slices"
 	"strings"
 )
 
 func newServerTest() *server.Server {
 	repo := &mockRepository{
 		AuthTokens:        make([]models.AuthToken, 0),
-		RecipesRegistered: make(map[int64]models.Recipes, 0),
-		ShareLinks:        make(map[int64]string, 0),
+		RecipesRegistered: make(map[int64]models.Recipes),
+		ShareLinks:        make(map[int64]string),
 		UsersRegistered:   make([]models.User, 0),
 		UsersUpdated:      make([]int64, 0),
 	}

@@ -1,12 +1,13 @@
 package server
 
 import (
+	"errors"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/templates"
 	"github.com/reaper47/recipya/internal/utils/regex"
-	"golang.org/x/exp/maps"
+	"maps"
 	"net/http"
 	"strconv"
 	"strings"
@@ -202,7 +203,7 @@ func (s *Server) loginPostHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	redirectUri := "/"
-	if c, err := r.Cookie(cookieNameRedirect); err != http.ErrNoCookie {
+	if c, err := r.Cookie(cookieNameRedirect); !errors.Is(err, http.ErrNoCookie) {
 		redirectUri = c.Value
 	}
 
@@ -241,14 +242,14 @@ func (s *Server) logoutHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	sessionCookie, err := r.Cookie(cookieNameSession)
-	if err != http.ErrNoCookie {
+	if !errors.Is(err, http.ErrNoCookie) {
 		sessionCookie.MaxAge = -1
 		http.SetCookie(w, sessionCookie)
 	}
 	maps.DeleteFunc(SessionData, func(_ uuid.UUID, id int64) bool { return id == userID })
 
 	rememberMeCookie, err := r.Cookie(cookieNameRememberMe)
-	if err != http.ErrNoCookie {
+	if !errors.Is(err, http.ErrNoCookie) {
 		if err := s.Repository.DeleteAuthToken(userID); err != nil {
 			sendErrorAdminEmail(s.Email.Send, "logoutHandler.DeleteAuthToken", err)
 		}
