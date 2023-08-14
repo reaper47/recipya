@@ -10,8 +10,8 @@
         <link rel="stylesheet" href="/static/css/tailwind.css">
         <link rel="stylesheet" href="/static/css/app.css">
         <link rel="icon" href="/static/favicon.ico">
-        <script src="https://unpkg.com/htmx.org@1.9.3"></script>
-        <script src="https://unpkg.com/hyperscript.org@0.9.9"></script>
+        <script src="https://unpkg.com/htmx.org@1.9.4"></script>
+        <script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
         <script defer>
             window.addEventListener("DOMContentLoaded", () => {
                 const recipesPattern = new RegExp("^/recipes/\\d+(/edit)?$");
@@ -34,6 +34,17 @@
                 toggleAddRecipeButton();
                 document.addEventListener("htmx:pushedIntoHistory", toggleAddRecipeButton);
             });
+
+            function loadScript(url) {
+                const script = document.createElement("script");
+                script.src = url;
+                document.body.appendChild(script);
+
+                return new Promise((res, rej) => {
+                    script.onload = () => res();
+                    script.onerror = () => rej();
+                });
+            }
         </script>
     </head>
 {{end}}

@@ -4,17 +4,17 @@
 --
 CREATE TABLE recipes
 (
-    id             INTEGER PRIMARY KEY,
-    name           TEXT      NOT NULL,
-    description    TEXT,
-    image          TEXT               DEFAULT (lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' ||
-                                               substr(lower(hex(randomblob(2))), 2) || '-a' ||
-                                               substr(lower(hex(randomblob(2))), 2) || '-%' ||
-                                               substr(lower(hex(randomblob(6))), 2)),
-    yield          INTEGER,
-    url            TEXT,
-    created_at     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    id          INTEGER PRIMARY KEY,
+    name        TEXT      NOT NULL,
+    description TEXT,
+    image       TEXT               DEFAULT (lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' ||
+                                            substr(lower(hex(randomblob(2))), 2) || '-a' ||
+                                            substr(lower(hex(randomblob(2))), 2) || '-%' ||
+                                            substr(lower(hex(randomblob(6))), 2)),
+    yield       INTEGER,
+    url         TEXT,
+    created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- https://recipeland.com/recipes/categories/browse
@@ -135,17 +135,19 @@ CREATE TABLE cuisine_recipe
 
 CREATE TABLE ingredient_recipe
 (
-    id            INTEGER PRIMARY KEY,
-    ingredient_id INTEGER NOT NULL REFERENCES ingredients (id) ON DELETE CASCADE,
-    recipe_id     INTEGER NOT NULL REFERENCES recipes (id) ON DELETE CASCADE,
+    id               INTEGER PRIMARY KEY,
+    ingredient_id    INTEGER NOT NULL REFERENCES ingredients (id) ON DELETE CASCADE,
+    recipe_id        INTEGER NOT NULL REFERENCES recipes (id) ON DELETE CASCADE,
+    ingredient_order INTEGER NOT NULL,
     UNIQUE (recipe_id, ingredient_id)
 );
 
 CREATE TABLE instruction_recipe
 (
-    id             INTEGER PRIMARY KEY,
-    instruction_id INTEGER NOT NULL REFERENCES instructions (id) ON DELETE CASCADE,
-    recipe_id      INTEGER NOT NULL REFERENCES recipes (id) ON DELETE CASCADE,
+    id                INTEGER PRIMARY KEY,
+    instruction_id    INTEGER NOT NULL REFERENCES instructions (id) ON DELETE CASCADE,
+    recipe_id         INTEGER NOT NULL REFERENCES recipes (id) ON DELETE CASCADE,
+    instruction_order INTEGER NOT NULL,
     UNIQUE (recipe_id, instruction_id)
 );
 

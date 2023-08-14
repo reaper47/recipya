@@ -82,8 +82,7 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 				`<ol id="instructions-list" class="pl-4 list-decimal">`,
 				`<input type="text" name="ingredient-1" placeholder="Ingredient #1" required class="w-8/12 py-1 pl-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-900 dark:border-none dark:text-gray-200" _="on keydown if event.key is 'Enter' then halt the event then get next <button/> from the parentElement of me then call htmx.trigger(it, 'click')">`,
 				`<button type="submit" class="col-span-6 p-2 font-semibold text-white bg-blue-500 hover:bg-blue-800"> Submit </button>`,
-				`<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>`,
-				`<script src="https://cdn.jsdelivr.net/npm/html-duration-picker@latest/dist/html-duration-picker.min.js"></script>`,
+				`<script defer> loadScript("https://cdn.jsdelivr.net/npm/html-duration-picker@latest/dist/html-duration-picker.min.js") .then(() => HtmlDurationPicker.init()) loadScript("https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js")`,
 			}
 			assertStringsInHTML(t, getBodyHTML(rr), want)
 		})
@@ -512,7 +511,7 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodGet, fmt.Sprintf(uri, 5))
-		assertMustBeLoggedIn(t, srv, http.MethodPost, fmt.Sprintf(uri, 5))
+		assertMustBeLoggedIn(t, srv, http.MethodPut, fmt.Sprintf(uri, 5))
 	})
 
 	t.Run("error fetching recipe", func(t *testing.T) {
@@ -538,10 +537,10 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 		want := []string{
 			`<title hx-swap-oob="true">Edit Chicken Jersey | Recipya</title>`,
 			`<input type="text" name="title" id="title" placeholder="Title of the recipe*" required autocomplete="off" value="Chicken Jersey" class="w-full py-2 bg-gray-50 font-semibold text-center text-gray-600 placeholder-gray-400 rounded-t-lg dark:bg-gray-900 dark:text-gray-200">`,
-			`<img src="/data/images/` + baseRecipe.Image.String() + `.jpg" alt="Image preview of the recipe." class="h-full"><span><input type="file" accept="image/*" name="image" required value="/data/images/` + baseRecipe.Image.String() + `.jpg"`,
+			`<img src="/data/images/` + baseRecipe.Image.String() + `.jpg" alt="Image preview of the recipe." class="h-full"><span><input type="file" accept="image/*" name="image" value="/data/images/` + baseRecipe.Image.String() + `.jpg" _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray' on dragleave or drop set the target's style.background to '' on drop or change make an FileReader called reader then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then set {src: window.URL.createObjectURL(it)} on previous <img/> then remove .hidden from next <button/>">`,
 			`<input type="text" list="categories" name="category" value="american" class="bg-transparent text-center focus:outline-none" placeholder="Breakfast*" required>`,
 			`<input id="yield" type="number" min="1" name="yield" value="12" class="w-24 rounded bg-gray-100 p-2 dark:bg-gray-900">`,
-			`<input id="source" type="text" placeholder="Source*" value="https://example.com/recipes/yummy" class="w-full rounded bg-gray-100 p-2 dark:bg-gray-900" required>`,
+			`<input id="source" type="text" placeholder="Source*" name="source" value="https://example.com/recipes/yummy" class="w-full rounded bg-gray-100 p-2 dark:bg-gray-900">`,
 			`<textarea id="description" name="description" rows="10" placeholder="This Thai curry chicken will make you drool." required class="p-2 border border-gray-300 rounded-t-lg dark:bg-gray-800 dark:border-none" >A delicious recipe!</textarea>`,
 			`<tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600"><tr><td class="py-2 dark:border-gray-800"><p>Calories:</p></td><td class="text-center dark:border-gray-800"><label for="calories" class="hidden"></label><input type="text" id="calories" name="calories" autocomplete="off" placeholder="368kcal" value="354" class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200"></td></tr><tr class="bg-gray-100 dark:bg-slate-700"><td class="py-2 dark:border-gray-800"><p>Total carbs:</p></td><td class="text-center dark:border-gray-800"><label for="total-carbohydrates" class="hidden"></label><input type="text" id="total-carbohydrates" name="total-carbohydrates" autocomplete="off" placeholder="35g" value="7g" class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200"></td></tr><tr><td class="py-2 dark:border-gray-800"><p>Sugars:</p></td><td class="text-center dark:border-gray-800"><label for="sugars" class="hidden"></label><input type="text" id="sugars" name="sugars" autocomplete="off" placeholder="3g" value="6g" class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200"></td></tr><tr class="bg-gray-100 dark:bg-slate-700"><td class="py-2 dark:border-gray-800"><p>Protein:</p></td><td class="text-center dark:border-gray-800"><label for="protein" class="hidden"></label><input type="text" id="protein" name="protein" autocomplete="off" placeholder="21g" value="3g" class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200"></td></tr><tr><td class="py-2 dark:border-gray-800"><p>Total fat:</p></td><td class="text-center dark:border-gray-800"><label for="total-fat" class="hidden"></label><input type="text" id="total-fat" name="total-fat" autocomplete="off" placeholder="15g" value="8g" class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200"></td></tr><tr class="bg-gray-100 dark:bg-slate-700"><td class="py-2 dark:border-gray-800"><p>Saturated fat:</p></td><td class="text-center dark:border-gray-800"><label for="saturated-fat" class="hidden"></label><input type="text" id="saturated-fat" name="saturated-fat" autocomplete="off" placeholder="1.8g" value="4g" class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200"></td></tr><tr><td class="py-2 dark:border-gray-800"><p>Cholesterol:</p></td><td class="text-center dark:border-gray-800"><label for="cholesterol" class="hidden"></label><input type="text" id="cholesterol" name="cholesterol" autocomplete="off" placeholder="1.1mg" value="1g" class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200"></td></tr><tr class="bg-gray-100 dark:bg-slate-700"><td class="py-2 dark:border-gray-800"><p>Sodium:</p></td><td class="text-center dark:border-gray-800"><label for="sodium" class="hidden"></label><input type="text" id="sodium" name="sodium" autocomplete="off" placeholder="100mg" value="5g" class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200"></td></tr><tr><td class="py-2 dark:border-gray-800"><p>Fiber:</p></td><td class="text-center dark:border-gray-800"><label for="fiber" class="hidden"></label><input type="text" id="fiber" name="fiber" autocomplete="off" placeholder="8g" value="2g" class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200"></td></tr></tbody>`,
 			`<input type="text" id="time-preparation" name="time-preparation" value="00:30:00" class="w-full p-1 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker dark:bg-gray-900 dark:text-gray-200"></td></tr><tr class="bg-gray-100 dark:bg-slate-700"><td class="py-2">Cooking:</td><td class="w-1/2 text-center"><label for="time-cooking" class="hidden"></label><input type="text" id="time-cooking" name="time-cooking" value="01:00:00" class="w-full p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker dark:bg-gray-900 dark:text-gray-200" _="on load get <button/> in #times-table then add .dark:bg-gray-200 to it"></td></tr></tbody></table></div></div></div><div class="col-span-6 py-2 border-b border-x border-black md:col-span-2 md:border-r-0"><fieldset class="text-center border-none">`,
@@ -549,6 +548,114 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 			`<li class="pt-2 md:pl-0"><div class="flex"><label class="w-[95%]"><textarea required name="instruction-1" rows="3" class="w-[97%] border border-gray-300 pl-1 dark:bg-gray-900 dark:border-none" placeholder="Instruction #1" _="on keydown if event.ctrlKey and event.key === 'Enter' then halt the event then get next <div/> from the parentElement of me then get first <button/> in it then call htmx.trigger(it, 'click')">ins1</textarea></label><div class="grid"><div class="h-4 cursor-move handle grid place-content-center"><svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg></div><button type="button" class="md:w-7 md:h-7 md:right-auto w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center dark:bg-green-500" title="Shortcut: CTRL + Enter" hx-post="/recipes/add/manual/instruction" hx-target="#instructions-list" hx-swap="beforeend" hx-include="[name^='instruction']"> + </button><button type="button" class="delete-button w-10 h-10 md:w-7 md:h-7 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center dark:bg-red-500" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/1" hx-include="[name^='instruction']"> - </button></div></div></li><li class="pt-2 md:pl-0"><div class="flex"><label class="w-[95%]"><textarea required name="instruction-2" rows="3" class="w-[97%] border border-gray-300 pl-1 dark:bg-gray-900 dark:border-none" placeholder="Instruction #2" _="on keydown if event.ctrlKey and event.key === 'Enter' then halt the event then get next <div/> from the parentElement of me then get first <button/> in it then call htmx.trigger(it, 'click')">ins2</textarea></label><div class="grid"><div class="h-4 cursor-move handle grid place-content-center"><svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg></div><button type="button" class="md:w-7 md:h-7 md:right-auto w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center dark:bg-green-500" title="Shortcut: CTRL + Enter" hx-post="/recipes/add/manual/instruction" hx-target="#instructions-list" hx-swap="beforeend" hx-include="[name^='instruction']"> + </button><button type="button" class="delete-button w-10 h-10 md:w-7 md:h-7 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center dark:bg-red-500" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/2" hx-include="[name^='instruction']"> - </button></div></div></li><li class="pt-2 md:pl-0"><div class="flex"><label class="w-[95%]"><textarea required name="instruction-3" rows="3" class="w-[97%] border border-gray-300 pl-1 dark:bg-gray-900 dark:border-none" placeholder="Instruction #3" _="on keydown if event.ctrlKey and event.key === 'Enter' then halt the event then get next <div/> from the parentElement of me then get first <button/> in it then call htmx.trigger(it, 'click')">ins3</textarea></label><div class="grid"><div class="h-4 cursor-move handle grid place-content-center"><svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg></div><button type="button" class="md:w-7 md:h-7 md:right-auto w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center dark:bg-green-500" title="Shortcut: CTRL + Enter" hx-post="/recipes/add/manual/instruction" hx-target="#instructions-list" hx-swap="beforeend" hx-include="[name^='instruction']"> + </button><button type="button" class="delete-button w-10 h-10 md:w-7 md:h-7 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center dark:bg-red-500" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/3" hx-include="[name^='instruction']"> - </button></div></div></li>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
+
+	t.Run("no updated image", func(t *testing.T) {
+		files := &mockFiles{}
+		srv.Files = files
+		srv.Repository = &mockRepository{RecipesRegistered: map[int64]models.Recipes{1: {baseRecipe}}}
+		contentType, body := createMultipartForm(map[string]string{"image": ""})
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, fmt.Sprintf(uri, 1), header(contentType), strings.NewReader(body))
+
+		assertStatus(t, rr.Code, http.StatusNoContent)
+		got, _ := srv.Repository.Recipe(baseRecipe.ID, 1)
+		if got.Image != baseRecipe.Image {
+			t.Fatal("image should not have been updated")
+		}
+		if files.uploadImageHitCount > 0 {
+			t.Fatal("must not have uploaded image")
+		}
+	})
+
+	t.Run("updated image", func(t *testing.T) {
+		files := &mockFiles{}
+		srv.Files = files
+		srv.Repository = &mockRepository{RecipesRegistered: map[int64]models.Recipes{1: {baseRecipe}}}
+		contentType, body := createMultipartForm(map[string]string{"image": "eggs.jpg"})
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, fmt.Sprintf(uri, 1), header(contentType), strings.NewReader(body))
+
+		assertStatus(t, rr.Code, http.StatusNoContent)
+		got, _ := srv.Repository.Recipe(baseRecipe.ID, 1)
+		if got.Image == baseRecipe.Image {
+			t.Fatal("image should have been updated")
+		}
+		if files.uploadImageHitCount == 0 {
+			t.Fatal("must have uploaded image")
+		}
+	})
+
+	t.Run("update every field", func(t *testing.T) {
+		files := &mockFiles{}
+		srv.Files = files
+		srv.Repository = &mockRepository{RecipesRegistered: map[int64]models.Recipes{1: {baseRecipe}}}
+		fields := map[string]string{
+			"title":               "Salsa",
+			"image":               "jesus.jpg",
+			"category":            "appetizers",
+			"source":              "Mommy",
+			"description":         "The best",
+			"calories":            "666",
+			"total-carbohydrates": "31g",
+			"sugars":              "0.1mg",
+			"protein":             "5g",
+			"total-fat":           "24g",
+			"saturated-fat":       "58g",
+			"cholesterol":         "256mg",
+			"sodium":              "777mg",
+			"fiber":               "2g",
+			"time-preparation":    "00:15:30",
+			"time-cooking":        "00:30:15",
+			"ingredient-1":        "cheese",
+			"ingredient-2":        "avocado",
+			"instruction-1":       "mix",
+			"instruction-2":       "eat",
+			"yield":               "4",
+		}
+		contentType, body := createMultipartForm(fields)
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, fmt.Sprintf(uri, 1), header(contentType), strings.NewReader(body))
+
+		assertStatus(t, rr.Code, http.StatusNoContent)
+		assertHeader(t, rr, "HX-Redirect", "/recipes/1")
+		got, _ := srv.Repository.Recipe(baseRecipe.ID, 1)
+		want := models.Recipe{
+			Category:     "appetizers",
+			CreatedAt:    baseRecipe.CreatedAt,
+			Description:  "The best",
+			ID:           baseRecipe.ID,
+			Image:        got.Image,
+			Ingredients:  []string{"cheese", "avocado"},
+			Instructions: []string{"mix", "eat"},
+			Keywords:     nil,
+			Name:         "Salsa",
+			Nutrition: models.Nutrition{
+				Calories:           "666",
+				Cholesterol:        "256mg",
+				Fiber:              "2g",
+				Protein:            "5g",
+				SaturatedFat:       "58g",
+				Sodium:             "777mg",
+				Sugars:             "0.1mg",
+				TotalCarbohydrates: "31g",
+				TotalFat:           "24g",
+				UnsaturatedFat:     "",
+			},
+			Times: models.Times{
+				Prep:  15*time.Minute + 30*time.Second,
+				Cook:  30*time.Minute + 15*time.Second,
+				Total: 45*time.Minute + 45*time.Second,
+			},
+			Tools:     baseRecipe.Tools,
+			UpdatedAt: baseRecipe.UpdatedAt,
+			URL:       "Mommy",
+			Yield:     4,
+		}
+		if !cmp.Equal(*got, want) {
+			t.Log(cmp.Diff(*got, want))
+			t.Fail()
+		}
 	})
 }
 

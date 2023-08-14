@@ -6,11 +6,13 @@ import (
 	"embed"
 	"errors"
 	"fmt"
+	"github.com/google/uuid"
 	"github.com/pressly/goose/v3"
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services/statements"
 	"github.com/reaper47/recipya/internal/units"
+	"golang.org/x/exp/slices"
 	"log"
 	_ "modernc.org/sqlite"
 	"os"
@@ -178,25 +180,25 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error)
 	}
 
 	// Insert instructions
-	for _, instruction := range r.Instructions {
+	for i, instruction := range r.Instructions {
 		var instructionID int64
 		if err := tx.QueryRowContext(ctx, statements.InsertInstruction, instruction).Scan(&instructionID); err != nil {
 			return -1, err
 		}
 
-		if _, err := tx.ExecContext(ctx, statements.InsertRecipeInstruction, instructionID, recipeID); err != nil {
+		if _, err := tx.ExecContext(ctx, statements.InsertRecipeInstruction, instructionID, recipeID, i); err != nil {
 			return -1, err
 		}
 	}
 
 	// Insert ingredients
-	for _, ingredient := range r.Ingredients {
+	for i, ingredient := range r.Ingredients {
 		var ingredientID int64
 		if err := tx.QueryRowContext(ctx, statements.InsertIngredient, ingredient).Scan(&ingredientID); err != nil {
 			return -1, err
 		}
 
-		if _, err := tx.ExecContext(ctx, statements.InsertRecipeIngredient, ingredientID, recipeID); err != nil {
+		if _, err := tx.ExecContext(ctx, statements.InsertRecipeIngredient, ingredientID, recipeID, i); err != nil {
 			return -1, err
 		}
 	}
@@ -524,12 +526,239 @@ func (s *SQLiteService) UpdatePassword(userID int64, password auth.HashedPasswor
 	return err
 }
 
+func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64, recipeNum int64) error {
+	oldRecipe, err := s.Recipe(recipeNum, userID)
+	if err != nil {
+		return err
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{})
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	recipeID := oldRecipe.ID
+
+	if updatedRecipe.Category != oldRecipe.Category {
+		var categoryID int64
+		if err := tx.QueryRowContext(ctx, statements.InsertCategory, updatedRecipe.Category).Scan(&categoryID); err != nil {
+			return err
+		}
+
+		if _, err := tx.ExecContext(ctx, statements.UpdateRecipeCategory, categoryID, recipeID); err != nil {
+			return err
+		}
+	}
+
+	if !slices.Equal(updatedRecipe.Ingredients, oldRecipe.Ingredients) {
+		ids := make([]int64, len(updatedRecipe.Ingredients))
+		for i, v := range updatedRecipe.Ingredients {
+			var id int64
+			if err := tx.QueryRowContext(ctx, statements.InsertIngredient, v).Scan(&id); err != nil {
+				return err
+			}
+			ids[i] = id
+		}
+
+		if _, err := tx.ExecContext(ctx, statements.DeleteRecipeIngredients, recipeID); err != nil {
+			return err
+		}
+
+		for i, id := range ids {
+			if _, err := tx.ExecContext(ctx, statements.InsertRecipeIngredient, id, recipeID, i); err != nil {
+				return err
+			}
+		}
+	}
+
+	if !slices.Equal(updatedRecipe.Instructions, oldRecipe.Instructions) {
+		ids := make([]int64, len(updatedRecipe.Instructions))
+		for i, v := range updatedRecipe.Instructions {
+			var id int64
+			if err := tx.QueryRowContext(ctx, statements.InsertInstruction, v).Scan(&id); err != nil {
+				return err
+			}
+			ids[i] = id
+		}
+
+		if _, err := tx.ExecContext(ctx, statements.DeleteRecipeInstructions, recipeID); err != nil {
+			return err
+		}
+
+		for i, id := range ids {
+			if _, err := tx.ExecContext(ctx, statements.InsertRecipeInstruction, id, recipeID, i); err != nil {
+				return err
+			}
+		}
+	}
+
+	/* TODO: Support editing keywords
+	if !slices.Equal(updatedRecipe.Keywords, oldRecipe.Keywords) {
+		ids := make([]int64, len(updatedRecipe.Keywords))
+		for i, v := range updatedRecipe.Keywords {
+			var id int64
+			if err := tx.QueryRowContext(ctx, statements.InsertKeyword, v).Scan(&id); err != nil {
+				return err
+			}
+			ids[i] = id
+		}
+
+		if _, err := tx.ExecContext(ctx, statements.DeleteRecipeKeywords, recipeID); err != nil {
+			return err
+		}
+
+		for _, id := range ids {
+			if _, err := tx.ExecContext(ctx, statements.InsertRecipeKeyword, id, recipeID); err != nil {
+				return err
+			}
+		}
+	}*/
+
+	/* TODO: Support editing tools
+	if !slices.Equal(updatedRecipe.Tools, oldRecipe.Tools) {
+		ids := make([]int64, len(updatedRecipe.Tools))
+		for i, v := range updatedRecipe.Tools {
+			var id int64
+			if err := tx.QueryRowContext(ctx, statements.InsertTool, v).Scan(&id); err != nil {
+				return err
+			}
+			ids[i] = id
+		}
+
+		if _, err := tx.ExecContext(ctx, statements.DeleteRecipeTools, recipeID); err != nil {
+			return err
+		}
+
+		for _, id := range ids {
+			if _, err := tx.ExecContext(ctx, statements.InsertRecipeTool, id, recipeID); err != nil {
+				return err
+			}
+		}
+	}*/
+
+	updateFields := make(map[string]any)
+	if updatedRecipe.Description != oldRecipe.Description {
+		updateFields["description"] = updatedRecipe.Description
+	}
+
+	if updatedRecipe.Image != uuid.Nil && updatedRecipe.Image != oldRecipe.Image {
+		updateFields["image"] = updatedRecipe.Image.String()
+	}
+
+	if updatedRecipe.Name != oldRecipe.Name {
+		updateFields["name"] = updatedRecipe.Name
+	}
+
+	if updatedRecipe.URL != oldRecipe.URL {
+		updateFields["url"] = updatedRecipe.URL
+	}
+
+	if updatedRecipe.Yield != oldRecipe.Yield {
+		updateFields["yield"] = updatedRecipe.Yield
+	}
+
+	fields := []string{"name", "description", "image", "yield", "url"}
+	for _, field := range fields {
+		if _, ok := updateFields[field]; ok {
+			var xs []string
+			var args []any
+			for _, field := range fields {
+				if _, ok := updateFields[field]; ok {
+					xs = append(xs, field+" = ?")
+					args = append(args, updateFields[field])
+				}
+			}
+
+			xs[0] = " " + xs[0]
+			stmt := "UPDATE recipes SET" + strings.Join(xs, ", ") + " WHERE id = ?"
+			args = append(args, recipeID)
+			if _, err := tx.ExecContext(ctx, stmt, args...); err != nil {
+				return err
+			}
+			break
+		}
+	}
+
+	if updatedRecipe.Times.Prep != oldRecipe.Times.Prep ||
+		updatedRecipe.Times.Cook != oldRecipe.Times.Cook {
+		var timesID int64
+		if err := tx.QueryRowContext(ctx, statements.InsertTimes, int64(updatedRecipe.Times.Prep.Seconds()), int64(updatedRecipe.Times.Cook.Seconds())).Scan(&timesID); err != nil {
+			return err
+		}
+
+		if _, err := tx.ExecContext(ctx, statements.UpdateRecipeTimes, timesID, recipeID); err != nil {
+			return err
+		}
+	}
+
+	if !updatedRecipe.Nutrition.Equal(oldRecipe.Nutrition) {
+		var args []any
+		var xs []string
+		if updatedRecipe.Nutrition.Calories != oldRecipe.Nutrition.Calories {
+			xs = append(xs, "calories = ?")
+			args = append(args, updatedRecipe.Nutrition.Calories)
+		}
+		if updatedRecipe.Nutrition.Cholesterol != oldRecipe.Nutrition.Cholesterol {
+			xs = append(xs, "cholesterol = ?")
+			args = append(args, updatedRecipe.Nutrition.Cholesterol)
+		}
+		if updatedRecipe.Nutrition.Fiber != oldRecipe.Nutrition.Fiber {
+			xs = append(xs, "fiber = ?")
+			args = append(args, updatedRecipe.Nutrition.Fiber)
+		}
+		if updatedRecipe.Nutrition.Protein != oldRecipe.Nutrition.Protein {
+			xs = append(xs, "protein = ?")
+			args = append(args, updatedRecipe.Nutrition.Protein)
+		}
+		if updatedRecipe.Nutrition.SaturatedFat != oldRecipe.Nutrition.SaturatedFat {
+			xs = append(xs, "saturated_fat = ?")
+			args = append(args, updatedRecipe.Nutrition.SaturatedFat)
+		}
+		if updatedRecipe.Nutrition.Sodium != oldRecipe.Nutrition.Sodium {
+			xs = append(xs, "sodium = ?")
+			args = append(args, updatedRecipe.Nutrition.Sodium)
+		}
+		if updatedRecipe.Nutrition.Sugars != oldRecipe.Nutrition.Sugars {
+			xs = append(xs, "sugars = ?")
+			args = append(args, updatedRecipe.Nutrition.Sugars)
+		}
+		if updatedRecipe.Nutrition.TotalCarbohydrates != oldRecipe.Nutrition.TotalCarbohydrates {
+			xs = append(xs, "total_carbohydrates = ?")
+			args = append(args, updatedRecipe.Nutrition.TotalCarbohydrates)
+		}
+		if updatedRecipe.Nutrition.TotalFat != oldRecipe.Nutrition.TotalFat {
+			xs = append(xs, "total_fat = ?")
+			args = append(args, updatedRecipe.Nutrition.TotalFat)
+		}
+		if updatedRecipe.Nutrition.UnsaturatedFat != oldRecipe.Nutrition.UnsaturatedFat {
+			xs = append(xs, "unsaturated_fat = ?")
+			args = append(args, updatedRecipe.Nutrition.UnsaturatedFat)
+		}
+
+		xs[0] = " " + xs[0]
+		stmt := "UPDATE nutrition SET" + strings.Join(xs, ", ") + " WHERE recipe_id = ?"
+		args = append(args, recipeID)
+		if _, err := tx.ExecContext(ctx, stmt, args...); err != nil {
+			return err
+		}
+	}
+
+	return tx.Commit()
+}
+
 func (s *SQLiteService) UserID(email string) int64 {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
 	var id int64
-	if err := s.DB.QueryRowContext(ctx, statements.SelectUserID, email).Scan(&id); err == sql.ErrNoRows {
+	if err := s.DB.QueryRowContext(ctx, statements.SelectUserID, email).Scan(&id); errors.Is(err, sql.ErrNoRows) {
 		return -1
 	}
 	return id

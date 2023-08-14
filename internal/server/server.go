@@ -99,7 +99,7 @@ func (s *Server) mountHandlers() {
 
 			r.Route("/edit", func(r chi.Router) {
 				r.Get("/", s.recipesEditHandler)
-				r.Post("/", s.recipesEditPostHandler)
+				r.Put("/", s.recipesEditPostHandler)
 			})
 		})
 

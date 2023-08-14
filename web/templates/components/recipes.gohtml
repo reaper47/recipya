@@ -283,7 +283,7 @@
 
             <div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t dark:border-gray-800">
                 <label class="w-4/5">
-                    <input id="source" type="text" placeholder="Source*"
+                    <input id="source" type="text" placeholder="Source*" name="source"
                            class="w-full rounded bg-gray-100 p-2 dark:bg-gray-900" required>
                 </label>
                 <p class="px-4">
@@ -484,45 +484,17 @@
             Submit
         </button>
     </form>
-
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/html-duration-picker@latest/dist/html-duration-picker.min.js"></script>
-    <script defer>
-        htmx.onLoad(function () {
-            const inputs = [
-                {name: 'ingredient', type: 'input'},
-                {name: 'instruction', type: 'textarea'},
-            ];
-            inputs.forEach(({name, type}) => {
-                const list = document.querySelector(`#${name}s-list`);
-                if (list) {
-                    new Sortable.create(list, {
-                        handle: '.handle',
-                        onEnd: function () {
-                            Array.from(document.querySelectorAll(`${type}[name^='${name}']`)).forEach((d, i) => {
-                                const n = i + 1;
-                                d.name = `${name}-${n}`;
-                                d.placeholder = `${name.substring(0, 1).toUpperCase() + name.substring(1)} #${n}`;
-
-                                const deleteButton = d.parentElement.parentElement.querySelector(".delete-button");
-                                deleteButton.setAttribute('hx-post', `/recipes/add/manual/${name}/${n}`);
-                                htmx.process(deleteButton);
-                            });
-                        }
-                    });
-                }
-            });
-        });
-    </script>
+    {{template "load-recipes-manual-scripts"}}
 {{end}}
 
 {{define "edit-recipe"}}
     <title hx-swap-oob="true">Edit {{.View.Recipe.Name}} | Recipya</title>
 
-    <form hx-post="/recipes/add/manual" enctype="multipart/form-data"
+    <form hx-put="/recipes/{{.View.ID}}/edit" enctype="multipart/form-data"
           class="grid max-w-6xl grid-cols-6 m-auto mt-4 pb-4 dark:bg-gray-600 dark:rounded-t-lg">
         <div class="col-span-6 text-lg border border-gray-900 rounded-t-lg md:text-xl dark:border-gray-800 relative">
-            <button class="ml-2 absolute text-2xl top-[0.25rem] hover:text-red-600" title="Back to view recipe" type="button"
+            <button class="ml-2 absolute text-2xl top-[0.25rem] hover:text-red-600" title="Back to view recipe"
+                    type="button"
                     _="on click if confirm('Are you sure you wish to go back? Changes will not be saved.') then call history.back()">
                 &larr;
             </button>
@@ -536,7 +508,7 @@
             {{- if .View.IsUUIDValid -}}
                 <img src="/data/images/{{.View.Recipe.Image}}.jpg" alt="Image preview of the recipe." class="h-full">
                 <span>
-                    <input type="file" accept="image/*" name="image" required
+                    <input type="file" accept="image/*" name="image"
                            value="/data/images/{{.View.Recipe.Image}}.jpg"
                            _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
                           on dragleave or drop set the target's style.background to ''
@@ -557,7 +529,7 @@
             {{- else -}}
                 <img src="" alt="Image preview of the recipe." class="h-full">
                 <span>
-                    <input type="file" accept="image/*" name="image" required
+                    <input type="file" accept="image/*" name="image"
                            _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
                           on dragleave or drop set the target's style.background to ''
                           on drop or change
@@ -602,8 +574,8 @@
 
             <div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t dark:border-gray-800">
                 <label class="w-4/5">
-                    <input id="source" type="text" placeholder="Source*" value="{{.View.Recipe.URL}}"
-                           class="w-full rounded bg-gray-100 p-2 dark:bg-gray-900" required>
+                    <input id="source" type="text" placeholder="Source*" name="source"
+                           value="{{.View.Recipe.URL}}" class="w-full rounded bg-gray-100 p-2 dark:bg-gray-900">
                 </label>
                 <p class="px-4">
                     The source can be a website, name of a cookbook, from a relative or friend, a magazine, etc.
@@ -898,40 +870,44 @@
                 </ol>
             </fieldset>
         </div>
-        <button type="submit"
-                class="col-span-6 p-2 font-semibold text-white bg-blue-500 hover:bg-blue-800">
+        <button type="submit" class="col-span-6 p-2 font-semibold text-white bg-blue-500 hover:bg-blue-800">
             Update
         </button>
     </form>
+    {{template "load-recipes-manual-scripts"}}
+{{end}}
 
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/html-duration-picker@latest/dist/html-duration-picker.min.js"></script>
+{{define "load-recipes-manual-scripts"}}
     <script defer>
-        htmx.onLoad(function () {
-            const inputs = [
-                {name: 'ingredient', type: 'input'},
-                {name: 'instruction', type: 'textarea'},
-            ];
-            inputs.forEach(({name, type}) => {
-                const list = document.querySelector(`#${name}s-list`);
-                if (list) {
-                    new Sortable.create(list, {
-                        handle: '.handle',
-                        onEnd: function () {
-                            Array.from(document.querySelectorAll(`${type}[name^='${name}']`)).forEach((d, i) => {
-                                const n = i + 1;
-                                d.name = `${name}-${n}`;
-                                d.placeholder = `${name.substring(0, 1).toUpperCase() + name.substring(1)} #${n}`;
+        loadScript("https://cdn.jsdelivr.net/npm/html-duration-picker@latest/dist/html-duration-picker.min.js")
+            .then(() => HtmlDurationPicker.init())
 
-                                const deleteButton = d.parentElement.parentElement.querySelector(".delete-button");
-                                deleteButton.setAttribute('hx-post', `/recipes/add/manual/${name}/${n}`);
-                                htmx.process(deleteButton);
-                            });
-                        }
-                    });
-                }
+        loadScript("https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js")
+            .then(() => {
+                const inputs = [
+                    {name: 'ingredient', type: 'input'},
+                    {name: 'instruction', type: 'textarea'},
+                ];
+                inputs.forEach(({name, type}) => {
+                    const list = document.querySelector(`#${name}s-list`);
+                    if (list) {
+                        new Sortable.create(list, {
+                            handle: '.handle',
+                            onEnd: function () {
+                                Array.from(document.querySelectorAll(`${type}[name^='${name}']`)).forEach((d, i) => {
+                                    const n = i + 1;
+                                    d.name = `${name}-${n}`;
+                                    d.placeholder = `${name.substring(0, 1).toUpperCase() + name.substring(1)} #${n}`;
+
+                                    const deleteButton = d.parentElement.parentElement.querySelector(".delete-button");
+                                    deleteButton.setAttribute('hx-post', `/recipes/add/manual/${name}/${n}`);
+                                    htmx.process(deleteButton);
+                                });
+                            }
+                        });
+                    }
+                });
             });
-        });
     </script>
 {{end}}
 

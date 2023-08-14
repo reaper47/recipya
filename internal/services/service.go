@@ -66,6 +66,9 @@ type RepositoryService interface {
 	// UpdatePassword updates the user's password.
 	UpdatePassword(userID int64, hashedPassword auth.HashedPassword) error
 
+	// UpdateRecipe updates the recipe with its new values.
+	UpdateRecipe(updatedRecipe *models.Recipe, userID int64, recipeNum int64) error
+
 	// UserID gets the user's id from the email. It returns -1 if user not found.
 	UserID(email string) int64
 

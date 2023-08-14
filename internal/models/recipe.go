@@ -209,6 +209,20 @@ type Nutrition struct {
 	UnsaturatedFat     string
 }
 
+// Equal verifies whether the Nutrition struct is equal to the other.
+func (n *Nutrition) Equal(other Nutrition) bool {
+	return n.Calories == other.Calories &&
+		n.Cholesterol == other.Cholesterol &&
+		n.Fiber == other.Fiber &&
+		n.Protein == other.Protein &&
+		n.SaturatedFat == other.SaturatedFat &&
+		n.Sodium == other.Sodium &&
+		n.Sugars == other.Sugars &&
+		n.TotalCarbohydrates == other.TotalCarbohydrates &&
+		n.TotalFat == other.TotalFat &&
+		n.UnsaturatedFat == other.UnsaturatedFat
+}
+
 // Schema creates the schema representation of the Nutrition.
 func (n Nutrition) Schema(servings string) NutritionSchema {
 	return NutritionSchema{

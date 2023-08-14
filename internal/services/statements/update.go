@@ -18,6 +18,12 @@ const UpdatePassword = `
 	SET hashed_password = ?, updated_at = CURRENT_TIMESTAMP 
 	WHERE id = ?`
 
+// UpdateRecipeCategory is the query to update a recipe's category.
+const UpdateRecipeCategory = `
+	UPDATE category_recipe
+	SET category_id = ?
+	WHERE id = ?`
+
 // UpdateRecipeDescription is the query to update a recipe's description.
 const UpdateRecipeDescription = `
 	UPDATE recipes
@@ -37,3 +43,9 @@ const UpdateRecipeInstruction = `
 	SET instruction_id = ?
 	WHERE instruction_id = (SELECT id FROM instructions WHERE name = ?)
 	  AND recipe_id = ?`
+
+// UpdateRecipeTimes is the query to update a recipe's times.
+const UpdateRecipeTimes = `
+	UPDATE time_recipe
+	SET time_id = ?
+	WHERE recipe_id = ?`

@@ -218,6 +218,91 @@ func (m *mockRepository) UpdatePassword(userID int64, _ auth.HashedPassword) err
 	return nil
 }
 
+func (m *mockRepository) UpdateRecipe(updatedRecipe *models.Recipe, userID int64, recipeNum int64) error {
+	oldRecipe, err := m.Recipe(recipeNum, userID)
+	if err != nil {
+		return err
+	}
+
+	newRecipe := *oldRecipe
+
+	if oldRecipe.Category != updatedRecipe.Category {
+		newRecipe.Category = updatedRecipe.Category
+	}
+
+	if oldRecipe.Cuisine != updatedRecipe.Cuisine {
+		newRecipe.Cuisine = updatedRecipe.Cuisine
+	}
+
+	if oldRecipe.Description != updatedRecipe.Description {
+		newRecipe.Description = updatedRecipe.Description
+	}
+
+	if updatedRecipe.Image != uuid.Nil && oldRecipe.Image != updatedRecipe.Image {
+		newRecipe.Image = updatedRecipe.Image
+	}
+
+	if len(oldRecipe.Ingredients) == len(updatedRecipe.Ingredients) {
+		for i, ingredient := range updatedRecipe.Ingredients {
+			if oldRecipe.Ingredients[i] != updatedRecipe.Ingredients[i] {
+				newRecipe.Ingredients[i] = ingredient
+			}
+		}
+	} else {
+		newRecipe.Ingredients = slices.Clone(updatedRecipe.Ingredients)
+	}
+
+	if len(oldRecipe.Instructions) == len(updatedRecipe.Instructions) {
+		for i, ingredient := range updatedRecipe.Instructions {
+			if oldRecipe.Instructions[i] != updatedRecipe.Instructions[i] {
+				newRecipe.Instructions[i] = ingredient
+			}
+		}
+	} else {
+		newRecipe.Instructions = slices.Clone(updatedRecipe.Instructions)
+	}
+
+	if len(oldRecipe.Keywords) == len(updatedRecipe.Keywords) {
+		for i, ingredient := range updatedRecipe.Keywords {
+			if oldRecipe.Keywords[i] != updatedRecipe.Keywords[i] {
+				newRecipe.Keywords[i] = ingredient
+			}
+		}
+	} else {
+		newRecipe.Keywords = slices.Clone(updatedRecipe.Keywords)
+	}
+
+	if oldRecipe.Name != updatedRecipe.Name {
+		newRecipe.Name = updatedRecipe.Name
+	}
+
+	// To save some lines...
+	newRecipe.Nutrition = updatedRecipe.Nutrition
+
+	if oldRecipe.Times.Prep != updatedRecipe.Times.Prep {
+		newRecipe.Times.Prep = updatedRecipe.Times.Prep
+	}
+
+	if oldRecipe.Times.Cook != updatedRecipe.Times.Cook {
+		newRecipe.Times.Cook = updatedRecipe.Times.Cook
+	}
+
+	if oldRecipe.Times.Total != updatedRecipe.Times.Total {
+		newRecipe.Times.Total = updatedRecipe.Times.Total
+	}
+
+	if oldRecipe.URL != updatedRecipe.URL {
+		newRecipe.URL = updatedRecipe.URL
+	}
+
+	if oldRecipe.Yield != updatedRecipe.Yield {
+		newRecipe.Yield = updatedRecipe.Yield
+	}
+
+	m.RecipesRegistered[userID][oldRecipe.ID-1] = newRecipe
+	return nil
+}
+
 func (m *mockRepository) UserInitials(userID int64) string {
 	index := slices.IndexFunc(m.UsersRegistered, func(user models.User) bool {
 		return user.ID == userID
@@ -259,8 +344,9 @@ func (m *mockEmail) Send(_ string, _ templates.EmailTemplate, _ any) {
 }
 
 type mockFiles struct {
-	extractRecipesFunc func(fileHeaders []*multipart.FileHeader) models.Recipes
-	ReadTempFileFunc   func(name string) ([]byte, error)
+	extractRecipesFunc  func(fileHeaders []*multipart.FileHeader) models.Recipes
+	ReadTempFileFunc    func(name string) ([]byte, error)
+	uploadImageHitCount int
 }
 
 func (m *mockFiles) ExportRecipes(recipes models.Recipes) (string, error) {
@@ -286,5 +372,6 @@ func (m *mockFiles) ReadTempFile(name string) ([]byte, error) {
 }
 
 func (m *mockFiles) UploadImage(_ io.ReadCloser) (uuid.UUID, error) {
+	m.uploadImageHitCount++
 	return uuid.New(), nil
 }

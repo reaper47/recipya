@@ -62,13 +62,13 @@ const InsertRecipeCuisine = `
 
 // InsertRecipeIngredient is the query to associate a recipe with an ingredient.
 const InsertRecipeIngredient = `
-	INSERT INTO ingredient_recipe (ingredient_id, recipe_id)
-	VALUES (?, ?)`
+	INSERT INTO ingredient_recipe (ingredient_id, recipe_id, ingredient_order)
+	VALUES (?, ?, ?)`
 
 // InsertRecipeInstruction is the query to associate a recipe with an instruction.
 const InsertRecipeInstruction = `
-	INSERT INTO instruction_recipe (instruction_id, recipe_id)
-	VALUES (?, ?)`
+	INSERT INTO instruction_recipe (instruction_id, recipe_id, instruction_order)
+	VALUES (?, ?, ?)`
 
 // InsertRecipeKeyword is the query to associate a recipe with a keyword.
 const InsertRecipeKeyword = `

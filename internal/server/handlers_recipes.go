@@ -462,7 +462,99 @@ func (s *Server) recipesEditHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) recipesEditPostHandler(w http.ResponseWriter, r *http.Request) {
+	r.Body = http.MaxBytesReader(w, r.Body, 128<<20)
+	if err := r.ParseMultipartForm(128 << 20); err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Could not parse the form.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 
+	updatedRecipe := models.Recipe{
+		Category:     r.FormValue("category"),
+		Description:  r.FormValue("description"),
+		Ingredients:  make([]string, 0),
+		Instructions: make([]string, 0),
+		Name:         r.FormValue("title"),
+		Nutrition: models.Nutrition{
+			Calories:           r.FormValue("calories"),
+			Cholesterol:        r.FormValue("cholesterol"),
+			Fiber:              r.FormValue("fiber"),
+			Protein:            r.FormValue("protein"),
+			SaturatedFat:       r.FormValue("saturated-fat"),
+			Sodium:             r.FormValue("sodium"),
+			Sugars:             r.FormValue("sugars"),
+			TotalCarbohydrates: r.FormValue("total-carbohydrates"),
+			TotalFat:           r.FormValue("total-fat"),
+		},
+		URL: r.FormValue("source"),
+	}
+
+	imageFile, ok := r.MultipartForm.File["image"]
+	if ok {
+		f, err := imageFile[0].Open()
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Could open the image from the form.", errorToast))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		defer f.Close()
+
+		imageUUID, err := s.Files.UploadImage(f)
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Error uploading image.", errorToast))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		updatedRecipe.Image = imageUUID
+	}
+
+	times, err := models.NewTimes(r.FormValue("time-preparation"), r.FormValue("time-cooking"))
+	if err == nil {
+		updatedRecipe.Times = times
+	}
+
+	i := 1
+	for {
+		s := "ingredient-" + strconv.Itoa(i)
+		if !r.Form.Has(s) {
+			break
+		}
+		updatedRecipe.Ingredients = append(updatedRecipe.Ingredients, r.FormValue(s))
+		i++
+	}
+
+	i = 1
+	for {
+		s := "instruction-" + strconv.Itoa(i)
+		if !r.Form.Has(s) {
+			break
+		}
+		updatedRecipe.Instructions = append(updatedRecipe.Instructions, r.FormValue(s))
+		i++
+	}
+
+	yield, err := strconv.ParseInt(r.FormValue("yield"), 10, 16)
+	if err == nil {
+		updatedRecipe.Yield = int16(yield)
+	}
+
+	userID := r.Context().Value("userID").(int64)
+	recipeNumStr := chi.URLParam(r, "id")
+	recipeNum, err := strconv.ParseInt(recipeNumStr, 10, 64)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	if err := s.Repository.UpdateRecipe(&updatedRecipe, userID, recipeNum); err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Error updating recipe.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("HX-Redirect", "/recipes/"+recipeNumStr)
+	w.WriteHeader(http.StatusNoContent)
 }
 
 func (s *Server) recipesExportHandler(w http.ResponseWriter, r *http.Request) {

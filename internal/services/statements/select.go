@@ -64,12 +64,14 @@ const baseSelectRecipe = `
 					 FROM (SELECT DISTINCT ingredients.name AS ingredient_name
 						   FROM ingredient_recipe
 									JOIN ingredients ON ingredients.id = ingredient_recipe.ingredient_id
-						   WHERE ingredient_recipe.recipe_id = recipes.id)), '')  AS ingredients,
+						   WHERE ingredient_recipe.recipe_id = recipes.id
+						   ORDER BY ingredient_order)), '')  AS ingredients,
 		   COALESCE((SELECT GROUP_CONCAT(instruction_name, '<!---->')
 					 FROM (SELECT DISTINCT instructions.name AS instruction_name
 						   FROM instruction_recipe
 									JOIN instructions ON instructions.id = instruction_recipe.instruction_id
-						   WHERE instruction_recipe.recipe_id = recipes.id)), '') AS instructions,
+						   WHERE instruction_recipe.recipe_id = recipes.id
+						   ORDER BY instruction_order)), '') AS instructions,
 		   COALESCE(GROUP_CONCAT(DISTINCT keywords.name), '')                              AS keywords,
 		   COALESCE(GROUP_CONCAT(DISTINCT tools.name), '')                                 AS tools,
 		   nutrition.calories,
