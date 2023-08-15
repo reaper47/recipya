@@ -182,15 +182,15 @@ func (s *Server) recipeAddManualPostHandler(w http.ResponseWriter, r *http.Reque
 		Yield:     int16(yield),
 	}
 
-	recipeID, err := s.Repository.AddRecipe(recipe, r.Context().Value("userID").(int64))
+	userID := r.Context().Value("userID").(int64)
+	recipeNumber, err := s.Repository.AddRecipe(recipe, userID)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not add recipe.", errorToast))
 		w.WriteHeader(http.StatusNoContent)
-
 		return
 	}
 
-	w.Header().Set("HX-Redirect", "/recipes/"+strconv.FormatInt(recipeID, 10))
+	w.Header().Set("HX-Redirect", "/recipes/"+strconv.FormatInt(recipeNumber, 10))
 	w.WriteHeader(http.StatusCreated)
 }
 
@@ -406,13 +406,15 @@ func (s *Server) recipesAddWebsiteHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	if _, err := s.Repository.AddRecipe(recipe, r.Context().Value("userID").(int64)); err != nil {
+	userID := r.Context().Value("userID").(int64)
+	recipeNumber, err := s.Repository.AddRecipe(recipe, userID)
+	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Recipe could not be added.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	w.Header().Set("HX-Redirect", "/")
+	w.Header().Set("HX-Redirect", "/recipes/"+strconv.FormatInt(recipeNumber, 10))
 	w.WriteHeader(http.StatusSeeOther)
 }
 

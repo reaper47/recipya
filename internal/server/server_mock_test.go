@@ -17,11 +17,12 @@ import (
 
 func newServerTest() *server.Server {
 	repo := &mockRepository{
-		AuthTokens:        make([]models.AuthToken, 0),
-		RecipesRegistered: make(map[int64]models.Recipes),
-		ShareLinks:        make(map[int64]string),
-		UsersRegistered:   make([]models.User, 0),
-		UsersUpdated:      make([]int64, 0),
+		AuthTokens:             make([]models.AuthToken, 0),
+		RecipesRegistered:      make(map[int64]models.Recipes),
+		ShareLinks:             make(map[int64]string),
+		UserSettingsRegistered: make(map[int64]*models.UserSettings),
+		UsersRegistered:        make([]models.User, 0),
+		UsersUpdated:           make([]int64, 0),
 	}
 	return server.NewServer(repo, &mockEmail{}, &mockFiles{})
 }
@@ -29,11 +30,12 @@ func newServerTest() *server.Server {
 type mockRepository struct {
 	AuthTokens                  []models.AuthToken
 	AddRecipeFunc               func(recipe *models.Recipe, userID int64) (int64, error)
-	MeasurementSystemsFunc      func(userID int64) ([]units.System, units.System, error)
+	MeasurementSystemsFunc      func(userID int64) ([]units.System, models.UserSettings, error)
 	RecipeFunc                  func(id, userID int64) (*models.Recipe, error)
 	RecipesRegistered           map[int64]models.Recipes
 	ShareLinks                  map[int64]string
 	SwitchMeasurementSystemFunc func(system units.System, userID int64) error
+	UserSettingsRegistered      map[int64]*models.UserSettings
 	UsersRegistered             []models.User
 	UsersUpdated                []int64
 }
@@ -136,11 +138,14 @@ func (m *mockRepository) IsUserPassword(id int64, _ string) bool {
 	return slices.IndexFunc(m.UsersRegistered, func(user models.User) bool { return user.ID == id }) != -1
 }
 
-func (m *mockRepository) MeasurementSystems(userID int64) ([]units.System, units.System, error) {
+func (m *mockRepository) MeasurementSystems(userID int64) ([]units.System, models.UserSettings, error) {
 	if m.MeasurementSystemsFunc != nil {
 		return m.MeasurementSystemsFunc(userID)
 	}
-	return []units.System{units.ImperialSystem, units.MetricSystem}, units.MetricSystem, nil
+	return []units.System{units.ImperialSystem, units.MetricSystem}, models.UserSettings{
+		ConvertAutomatically: false,
+		MeasurementSystem:    units.MetricSystem,
+	}, nil
 }
 
 func (m *mockRepository) Recipe(id, userID int64) (*models.Recipe, error) {
@@ -203,14 +208,12 @@ func (m *mockRepository) SwitchMeasurementSystem(system units.System, userID int
 	return nil
 }
 
-func (m *mockRepository) UserID(email string) int64 {
-	index := slices.IndexFunc(m.UsersRegistered, func(user models.User) bool {
-		return user.Email == email
-	})
-	if index == -1 {
-		return -1
+func (m *mockRepository) UpdateConvertMeasurementSystem(userID int64, isEnabled bool) error {
+	if _, ok := m.UserSettingsRegistered[userID]; !ok {
+		return errors.New("user not found")
 	}
-	return m.UsersRegistered[index].ID
+	m.UserSettingsRegistered[userID].ConvertAutomatically = isEnabled
+	return nil
 }
 
 func (m *mockRepository) UpdatePassword(userID int64, _ auth.HashedPassword) error {
@@ -313,6 +316,23 @@ func (m *mockRepository) UserInitials(userID int64) string {
 	return string(strings.ToUpper(m.UsersRegistered[index].Email)[0])
 }
 
+func (m *mockRepository) UserID(email string) int64 {
+	index := slices.IndexFunc(m.UsersRegistered, func(user models.User) bool {
+		return user.Email == email
+	})
+	if index == -1 {
+		return -1
+	}
+	return m.UsersRegistered[index].ID
+}
+
+func (m *mockRepository) UserSettings(userID int64) (models.UserSettings, error) {
+	if _, ok := m.UserSettingsRegistered[userID]; !ok {
+		return models.UserSettings{}, errors.New("user not found")
+	}
+	return *m.UserSettingsRegistered[userID], nil
+}
+
 func (m *mockRepository) Users() []models.User {
 	return m.UsersRegistered
 }
@@ -331,7 +351,7 @@ func (m *mockRepository) VerifyLogin(email, _ string) int64 {
 func (m *mockRepository) Websites() models.Websites {
 	return models.Websites{
 		{ID: 1, Host: "101cookbooks.com", URL: "https://101cookbooks.com"},
-		{ID: 2, Host: "afghankitchenrecipes.com", URL: "http://www.afghankitchenrecipes.com"},
+		{ID: 2, Host: "afghankitchenrecipes.com", URL: "https://www.afghankitchenrecipes.com"},
 	}
 }
 

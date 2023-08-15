@@ -19,9 +19,26 @@ func (s *Server) settingsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (s *Server) settingsConvertAutomaticallyPostHandler(w http.ResponseWriter, r *http.Request) {
+	userID := r.Context().Value("userID").(int64)
+	isConvert := r.FormValue("convert") == "on"
+	if err := s.Repository.UpdateConvertMeasurementSystem(userID, isConvert); err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Failed to set setting.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	msg := "Recipe conversion disabled."
+	if isConvert {
+		msg = "Recipe conversion enabled."
+	}
+	w.Header().Set("HX-Trigger", makeToast(msg, infoToast))
+	w.WriteHeader(http.StatusNoContent)
+}
+
 func (s *Server) settingsMeasurementSystemsPostHandler(w http.ResponseWriter, r *http.Request) {
 	userID := r.Context().Value("userID").(int64)
-	systems, userSelectedSystem, err := s.Repository.MeasurementSystems(userID)
+	systems, settings, err := s.Repository.MeasurementSystems(userID)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Error fetching units systems.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)
@@ -35,7 +52,7 @@ func (s *Server) settingsMeasurementSystemsPostHandler(w http.ResponseWriter, r 
 		return
 	}
 
-	if userSelectedSystem == system {
+	if settings.MeasurementSystem == system {
 		w.Header().Set("HX-Trigger", makeToast("System already set to "+system.String()+".", warningToast))
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -57,7 +74,7 @@ func settingsTabsProfileHandler(w http.ResponseWriter, _ *http.Request) {
 
 func (s *Server) settingsTabsRecipesHandler(w http.ResponseWriter, r *http.Request) {
 	userID := r.Context().Value("userID").(int64)
-	systems, userSelectedSystem, err := s.Repository.MeasurementSystems(userID)
+	systems, settings, err := s.Repository.MeasurementSystems(userID)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Error fetching units systems.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)
@@ -66,8 +83,8 @@ func (s *Server) settingsTabsRecipesHandler(w http.ResponseWriter, r *http.Reque
 
 	templates.RenderComponent(w, "core", "settings-tabs-recipes", templates.Data{
 		Settings: templates.SettingsData{
-			MeasurementSystems:        systems,
-			SelectedMeasurementSystem: userSelectedSystem,
+			MeasurementSystems: systems,
+			UserSettings:       settings,
 		},
 	})
 }

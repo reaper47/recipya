@@ -38,6 +38,45 @@ func TestHandlers_Settings(t *testing.T) {
 	})
 }
 
+func TestHandlers_Settings_ConvertAutomatically(t *testing.T) {
+	srv := newServerTest()
+	srv.Repository = &mockRepository{
+		UserSettingsRegistered: map[int64]*models.UserSettings{
+			1: {
+				ConvertAutomatically: false,
+				MeasurementSystem:    units.ImperialSystem,
+			},
+		},
+	}
+
+	uri := "/settings/convert-automatically"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
+	})
+
+	t.Run("error updating the setting", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedInOther(srv, http.MethodPost, uri, formHeader, strings.NewReader("convert=off"))
+
+		assertStatus(t, rr.Code, http.StatusInternalServerError)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Failed to set setting.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+	})
+
+	t.Run("unchecked does not convert new recipes", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("convert=off"))
+
+		assertStatus(t, rr.Code, http.StatusNoContent)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Recipe conversion disabled.\",\"backgroundColor\":\"bg-blue-500\"}"}`)
+	})
+
+	t.Run("checked converts new recipes", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("convert=on"))
+
+		assertStatus(t, rr.Code, http.StatusNoContent)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Recipe conversion enabled.\",\"backgroundColor\":\"bg-blue-500\"}"}`)
+	})
+}
+
 func TestHandlers_Settings_MeasurementSystems(t *testing.T) {
 	srv := newServerTest()
 
@@ -49,8 +88,11 @@ func TestHandlers_Settings_MeasurementSystems(t *testing.T) {
 
 	t.Run("selected system is already user's selected", func(t *testing.T) {
 		srv.Repository = &mockRepository{
-			MeasurementSystemsFunc: func(userID int64) ([]units.System, units.System, error) {
-				return []units.System{units.ImperialSystem}, units.ImperialSystem, nil
+			MeasurementSystemsFunc: func(userID int64) ([]units.System, models.UserSettings, error) {
+				return []units.System{units.ImperialSystem}, models.UserSettings{
+					ConvertAutomatically: false,
+					MeasurementSystem:    units.ImperialSystem,
+				}, nil
 			},
 		}
 		defer func() {
@@ -192,12 +234,15 @@ func TestHandlers_Settings_MeasurementSystems(t *testing.T) {
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
 			repo := &mockRepository{
-				MeasurementSystemsFunc: func(userID int64) ([]units.System, units.System, error) {
+				MeasurementSystemsFunc: func(userID int64) ([]units.System, models.UserSettings, error) {
 					system := units.MetricSystem
 					if tc.system == units.MetricSystem {
 						system = units.ImperialSystem
 					}
-					return []units.System{units.ImperialSystem, units.MetricSystem}, system, nil
+					return []units.System{units.ImperialSystem, units.MetricSystem}, models.UserSettings{
+						ConvertAutomatically: false,
+						MeasurementSystem:    system,
+					}, nil
 				},
 				RecipesRegistered: map[int64]models.Recipes{1: tc.recipes},
 			}
@@ -267,8 +312,8 @@ func TestHandlers_Settings_TabsRecipes(t *testing.T) {
 
 	t.Run("error on getting units systems", func(t *testing.T) {
 		srv.Repository = &mockRepository{
-			MeasurementSystemsFunc: func(userID int64) ([]units.System, units.System, error) {
-				return nil, "", errors.New("error fetching systems")
+			MeasurementSystemsFunc: func(userID int64) ([]units.System, models.UserSettings, error) {
+				return nil, models.UserSettings{}, errors.New("error fetching systems")
 			},
 		}
 		defer func() {
@@ -291,6 +336,7 @@ func TestHandlers_Settings_TabsRecipes(t *testing.T) {
 			`<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1" fill="black" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 11v5H2v-5H0v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5z"/><path d="m9 14 5-6h-4V0H8v8H4z"/></svg>`,
 			`<label for="systems" class="text-end font-semibold">Measurement system:</label>`,
 			`<select id="systems" name="system" hx-post="/settings/measurement-system" hx-swap="none" class="h-fit w-fit bg-gray-50 border border-gray-300 rounded-lg p-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500"><option value="imperial" >imperial</option><option value="metric" selected>metric</option></select>`,
+			`<input type="checkbox" name="convert" id="convert" class="w-fit h-fit mt-1" hx-post="/settings/convert-automatically" hx-trigger="click">`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})

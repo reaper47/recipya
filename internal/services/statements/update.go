@@ -1,5 +1,11 @@
 package statements
 
+// UpdateConvertAutomatically is the query to update the user's convert automatically setting.
+const UpdateConvertAutomatically = `
+	UPDATE user_settings
+	SET convert_automatically = ?
+	WHERE user_id = ?`
+
 // UpdateIsConfirmed sets the user's account confirmed to true.
 const UpdateIsConfirmed = `
 	UPDATE users

@@ -35,18 +35,25 @@ const SelectCuisineID = `
 	FROM cuisines 
 	WHERE name = ?`
 
+// SelectRecipeCount is the query to get the number of recipes belonging to the user.
+const SelectRecipeCount = `
+	SELECT recipes
+	FROM counts 
+	WHERE user_id = ?`
+
 // SelectCountWebsites fetches the number of supported websites.
 const SelectCountWebsites = `
 	SELECT COUNT(id)
 	FROM websites`
 
-// SelectMeasurementSystems fetches the units systems along with the user's selected system.
+// SelectMeasurementSystems fetches the units systems along with the user's selected system and settings.
 const SelectMeasurementSystems = `
 	SELECT ms.name,
 		   COALESCE((SELECT GROUP_CONCAT(name)
-					 FROM measurement_systems), '') AS systems
+					 FROM measurement_systems), '') AS systems,
+		   us.convert_automatically
 	FROM measurement_systems AS ms
-			 JOIN user_settings ON measurement_system_id = ms.id
+			 JOIN user_settings AS us ON measurement_system_id = ms.id
 	WHERE user_id = ?;`
 
 const baseSelectRecipe = `
@@ -151,6 +158,13 @@ const SelectUserID = `
 	SELECT id
 	FROM users
 	WHERE email = ?`
+
+// SelectUserSettings is the query to fetch a user's settings.
+const SelectUserSettings = `
+	SELECT MS.name, convert_automatically
+	FROM user_settings
+	JOIN measurement_systems MS on MS.id = measurement_system_id
+	WHERE user_id = ?`
 
 // SelectUserPassword fetches the user's password for verification purposes.
 const SelectUserPassword = `

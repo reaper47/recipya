@@ -164,15 +164,22 @@
             </svg>
         </button>
     </div>
-
     <div class="grid grid-cols-2 gap-4 mb-2">
         <label for="systems" class="text-end font-semibold">Measurement system:</label>
         <select id="systems" name="system" hx-post="/settings/measurement-system" hx-swap="none"
                 class="h-fit w-fit bg-gray-50 border border-gray-300 rounded-lg p-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            {{- $selected := .Settings.SelectedMeasurementSystem -}}
+            {{- $selected := .Settings.UserSettings.MeasurementSystem -}}
             {{- range .Settings.MeasurementSystems -}}
                 <option value="{{.}}" {{if eq . $selected}}selected{{end}}>{{.}}</option>
             {{- end -}}
         </select>
+    </div>
+    <div class="grid grid-cols-2 gap-4 mb-2">
+        <label for="convert" class="text-end font-semibold">Convert automatically:<br><span
+                    class="font-light text-sm">Convert new recipes to your preferred measurement system.</span></label>
+        <input type="checkbox" name="convert" id="convert"
+               {{if .Settings.UserSettings.ConvertAutomatically}}checked{{end}}
+               class="w-fit h-fit mt-1"
+               hx-post="/settings/convert-automatically" hx-trigger="click">
     </div>
 {{end}}

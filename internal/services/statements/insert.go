@@ -48,7 +48,8 @@ const InsertNutrition = `
 // InsertRecipe is the query to add a recipe to the database.
 const InsertRecipe = `
 	INSERT INTO recipes (name, description, image, yield, url)
-	VALUES (?, ?, ?, ?, ?)`
+	VALUES (?, ?, ?, ?, ?)
+	RETURNING id`
 
 // InsertRecipeCategory associates a recipe with a category.
 const InsertRecipeCategory = `
@@ -112,7 +113,8 @@ const InsertTool = `
 // InsertUser is the query to add a user to the database.
 const InsertUser = `
 	INSERT INTO users (email, hashed_password)
-	VALUES (?, ?)`
+	VALUES (?, ?)
+	RETURNING id`
 
 // InsertUserCategory is the query to associate a category with a user.
 const InsertUserCategory = `

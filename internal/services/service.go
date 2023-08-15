@@ -46,7 +46,7 @@ type RepositoryService interface {
 	IsUserPassword(id int64, password string) bool
 
 	// MeasurementSystems gets the units systems, along with the one the user selected, in the database.
-	MeasurementSystems(userID int64) ([]units.System, units.System, error)
+	MeasurementSystems(userID int64) ([]units.System, models.UserSettings, error)
 
 	// Recipe gets the user's recipe of the given id.
 	Recipe(id, userID int64) (*models.Recipe, error)
@@ -63,6 +63,9 @@ type RepositoryService interface {
 	// SwitchMeasurementSystem sets the user's units system to the desired one.
 	SwitchMeasurementSystem(system units.System, userID int64) error
 
+	// UpdateConvertMeasurementSystem updates the user's convert automatically setting.
+	UpdateConvertMeasurementSystem(userID int64, isEnabled bool) error
+
 	// UpdatePassword updates the user's password.
 	UpdatePassword(userID int64, hashedPassword auth.HashedPassword) error
 
@@ -71,6 +74,9 @@ type RepositoryService interface {
 
 	// UserID gets the user's id from the email. It returns -1 if user not found.
 	UserID(email string) int64
+
+	// UserSettings gets the user's settings.
+	UserSettings(userID int64) (models.UserSettings, error)
 
 	// UserInitials gets the user's initials of maximum two characters.
 	UserInitials(userID int64) string

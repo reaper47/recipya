@@ -136,6 +136,7 @@ func (s *Server) mountHandlers() {
 		r.Route("/settings", func(r chi.Router) {
 			r.Get("/", s.settingsHandler)
 
+			r.Post("/convert-automatically", s.settingsConvertAutomaticallyPostHandler)
 			r.Post("/measurement-system", s.settingsMeasurementSystemsPostHandler)
 
 			r.Route("/tabs", func(r chi.Router) {

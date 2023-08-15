@@ -432,6 +432,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 		if called != 1 {
 			t.Fatal("recipe must have been added to the user's database")
 		}
+		assertHeader(t, rr, "HX-Redirect", "/recipes/1")
 	})
 }
 
@@ -834,7 +835,7 @@ func TestHandlers_Recipes_SupportedWebsites(t *testing.T) {
 	uri := "/recipes/supported-websites"
 
 	website1 := `<tr class="border text-center"><td class="border dark:border-gray-800">1</td><td class="border py-1 dark:border-gray-800"><a class="underline" href="https://101cookbooks.com" target="_blank">101cookbooks.com</a></td></tr>`
-	website2 := `<tr class="border text-center"><td class="border dark:border-gray-800">2</td><td class="border py-1 dark:border-gray-800"><a class="underline" href="http://www.afghankitchenrecipes.com" target="_blank">afghankitchenrecipes.com</a></td></tr>`
+	website2 := `<tr class="border text-center"><td class="border dark:border-gray-800">2</td><td class="border py-1 dark:border-gray-800"><a class="underline" href="https://www.afghankitchenrecipes.com" target="_blank">afghankitchenrecipes.com</a></td></tr>`
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)

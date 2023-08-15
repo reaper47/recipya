@@ -85,20 +85,11 @@ func (s *SQLiteService) AddAuthToken(selector, validator string, userID int64) e
 }
 
 func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error) {
-	s.Mutex.Lock()
-	defer s.Mutex.Unlock()
-
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
-	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{})
-	if err != nil {
-		return -1, err
-	}
-	defer tx.Rollback()
-
 	var isRecipeExists bool
-	err = tx.QueryRowContext(ctx, statements.IsRecipeForUserExist, userID, r.Name, r.Description, r.Yield, r.URL).Scan(&isRecipeExists)
+	err := s.DB.QueryRowContext(ctx, statements.IsRecipeForUserExist, userID, r.Name, r.Description, r.Yield, r.URL).Scan(&isRecipeExists)
 	if err != nil {
 		return -1, err
 	}
@@ -107,14 +98,27 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error)
 		return -1, fmt.Errorf("recipe '%s' exists for user %d", r.Name, userID)
 	}
 
-	// Insert recipe
-	result, err := tx.ExecContext(ctx, statements.InsertRecipe, r.Name, r.Description, r.Image, r.Yield, r.URL)
+	settings, err := s.UserSettings(userID)
 	if err != nil {
 		return -1, err
 	}
 
-	recipeID, err := result.LastInsertId()
+	if settings.ConvertAutomatically {
+		r, _ = r.ConvertMeasurementSystem(settings.MeasurementSystem)
+	}
+
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{})
 	if err != nil {
+		return -1, err
+	}
+	defer tx.Rollback()
+
+	// Insert recipe
+	var recipeID int64
+	if err := tx.QueryRowContext(ctx, statements.InsertRecipe, r.Name, r.Description, r.Image, r.Yield, r.URL).Scan(&recipeID); err != nil {
 		return -1, err
 	}
 	r.ID = recipeID
@@ -215,7 +219,9 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error)
 		}
 	}
 
-	return recipeID, tx.Commit()
+	var count int64
+	err = tx.QueryRowContext(ctx, statements.SelectRecipeCount, userID).Scan(&count)
+	return count, tx.Commit()
 }
 
 func (s *SQLiteService) Categories(userID int64) ([]string, error) {
@@ -342,16 +348,17 @@ func (s *SQLiteService) IsUserPassword(id int64, password string) bool {
 	return auth.VerifyPassword(password, auth.HashedPassword(hash))
 }
 
-func (s *SQLiteService) MeasurementSystems(userID int64) ([]units.System, units.System, error) {
+func (s *SQLiteService) MeasurementSystems(userID int64) ([]units.System, models.UserSettings, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
 	var (
-		groupedSystems string
-		selected       string
+		convertAutomatically int64
+		groupedSystems       string
+		selected             string
 	)
-	if err := s.DB.QueryRowContext(ctx, statements.SelectMeasurementSystems, userID).Scan(&selected, &groupedSystems); err != nil {
-		return nil, "", err
+	if err := s.DB.QueryRowContext(ctx, statements.SelectMeasurementSystems, userID).Scan(&selected, &groupedSystems, &convertAutomatically); err != nil {
+		return nil, models.UserSettings{}, err
 	}
 
 	systemsStr := strings.Split(groupedSystems, ",")
@@ -359,7 +366,10 @@ func (s *SQLiteService) MeasurementSystems(userID int64) ([]units.System, units.
 	for i, s := range systemsStr {
 		systems[i] = units.NewSystem(s)
 	}
-	return systems, units.NewSystem(selected), nil
+	return systems, models.UserSettings{
+		ConvertAutomatically: convertAutomatically == 1,
+		MeasurementSystem:    units.NewSystem(selected),
+	}, nil
 }
 
 func (s *SQLiteService) Recipe(id, userID int64) (*models.Recipe, error) {
@@ -448,15 +458,8 @@ func (s *SQLiteService) Register(email string, hashedPassword auth.HashedPasswor
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
-	result, err := s.DB.ExecContext(ctx, statements.InsertUser, email, hashedPassword)
-	if err != nil {
-		return -1, err
-	}
-
-	userID, err := result.LastInsertId()
-	if err != nil {
-		return -1, err
-	}
+	var userID int64
+	err := s.DB.QueryRowContext(ctx, statements.InsertUser, email, hashedPassword).Scan(&userID)
 	return userID, err
 }
 
@@ -513,6 +516,17 @@ func (s *SQLiteService) SwitchMeasurementSystem(system units.System, userID int6
 		numConverted++
 	}
 	return tx.Commit()
+}
+
+func (s *SQLiteService) UpdateConvertMeasurementSystem(userID int64, isEnabled bool) error {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	_, err := s.DB.ExecContext(ctx, statements.UpdateConvertAutomatically, isEnabled, userID)
+	return err
 }
 
 func (s *SQLiteService) UpdatePassword(userID int64, password auth.HashedPassword) error {
@@ -762,6 +776,21 @@ func (s *SQLiteService) UserID(email string) int64 {
 		return -1
 	}
 	return id
+}
+
+func (s *SQLiteService) UserSettings(userID int64) (models.UserSettings, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	var (
+		convertAutomatically int64
+		measurementSystem    string
+	)
+	err := s.DB.QueryRowContext(ctx, statements.SelectUserSettings, userID).Scan(&measurementSystem, &convertAutomatically)
+	return models.UserSettings{
+		ConvertAutomatically: convertAutomatically == 1,
+		MeasurementSystem:    units.NewSystem(measurementSystem),
+	}, err
 }
 
 func (s *SQLiteService) UserInitials(userID int64) string {
