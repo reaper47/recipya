@@ -1,10 +1,8 @@
 name: trigger-nightly
 
 on:
-  #schedule:
-  #  - cron: "1 4 * * *"
-  push:
-    branches: [ "main", "setup-nightly-build" ]
+  schedule:
+    - cron: "1 4 * * *"
 
 jobs:
   nightly:
