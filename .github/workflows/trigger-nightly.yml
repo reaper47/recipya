@@ -1,0 +1,28 @@
+name: trigger-nightly
+
+on:
+  #schedule:
+  #  - cron: "1 4 * * *"
+  push:
+    branches: [ "main" ]
+
+jobs:
+  nightly:
+    name: Nightly
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.21"
+      - name: Build
+        run: sh ./builds.sh github.com/reaper47/recipya nightly
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: nightly
+          prerelease: true
+          title: Nightly
+          files: ./release/nightly/*.zip
