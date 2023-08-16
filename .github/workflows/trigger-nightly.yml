@@ -2,7 +2,7 @@ name: trigger-nightly
 
 on:
   schedule:
-    - cron: "1 4 * * *"
+    - cron: "0 1 * * *"
 
 jobs:
   nightly:
