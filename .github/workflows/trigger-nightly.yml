@@ -1,10 +1,8 @@
 name: trigger-nightly
 
 on:
-  #schedule:
-  #  - cron: "1 4 * * *"
-  push:
-    branches: [ "main" ]
+  schedule:
+    - cron: "0 1 * * *"
 
 jobs:
   nightly:
@@ -18,11 +16,13 @@ jobs:
         with:
           go-version: "1.21"
       - name: Build
-        run: sh ./builds.sh github.com/reaper47/recipya nightly
+        run: |
+          cd ./releases
+          go run main.go -package github.com/reaper47/recipya -tag nightly
       - uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: nightly
           prerelease: true
           title: Nightly
-          files: ./release/nightly/*.zip
+          files: ./releases/nightly/*.zip
