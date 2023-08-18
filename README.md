@@ -177,13 +177,16 @@ make test
 
 ## Contributing
 
-Contributions are always welcome! Please open an issue, start a [discussion](https://github.com/reaper47/recipya/discussions), open a pull request or send me an email at macpoule@gmail.com.
+Contributions are always welcome! Please open an issue, start a [discussion](https://github.com/reaper47/recipya/discussions), open a pull request or send an email 
+at macpoule@gmail.com. The same applies if you have any feedback or need support. 
 
-If you have any feedback or need support, please contact me at the previously mentioned email address.
+You can also join our development and support channel on 
+the [Matrix space: #recipya:matrix.org](https://app.element.io/#/room/#recipya:matrix.org).
+Matrix is similar to Discord but is open source.
 
 ## Tech Stack
 
-**Client:** HTML, TailwindCSS
+**Client:** HTML, htmx, _hyperscript, TailwindCSS
 
 **Server:** Go
 
