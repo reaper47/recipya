@@ -22,16 +22,18 @@ func (s *Server) downloadHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) indexHandler(w http.ResponseWriter, r *http.Request) {
-	page := templates.LandingPage
-	isAuth := isAuthenticated(r, s.Repository.GetAuthToken)
-	if isAuth {
-		page = templates.HomePage
+	if isAuthenticated(r, s.Repository.GetAuthToken) {
+		middleware := s.mustBeLoggedInMiddleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			s.recipesHandler(w, r)
+		}))
+		middleware.ServeHTTP(w, r)
+	} else {
+		page := templates.LandingPage
+		templates.Render(w, page, templates.Data{
+			IsAuthenticated: false,
+			Title:           page.Title(),
+		})
 	}
-
-	templates.Render(w, page, templates.Data{
-		IsAuthenticated: isAuth,
-		Title:           page.Title(),
-	})
 }
 
 func notFoundHandler(w http.ResponseWriter, _ *http.Request) {

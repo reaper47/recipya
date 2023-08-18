@@ -180,6 +180,7 @@ make test
 Contributions are always welcome! Please open an issue, start a [discussion](https://github.com/reaper47/recipya/discussions), open a pull request or send me an email at macpoule@gmail.com.
 
 If you have any feedback or need support, please contact me at the previously mentioned email address.
+
 ## Tech Stack
 
 **Client:** HTML, TailwindCSS
@@ -193,3 +194,16 @@ If you have any feedback or need support, please contact me at the previously me
 - [Grocy](https://grocy.info/)
 - [Cooklist](https://cooklist.com/)
 - [Grossr](https://grossr.com/)
+
+# Inspiration
+
+This project was mainly coded to blasting the following albums:
+- [Archspire - Bleed the Future](https://www.youtube.com/watch?v=o8H9ahswldM)
+- [Sonata Arctica - Talviyö](https://www.youtube.com/watch?v=x6rEDMqM36I)
+- [Cattle Decapitation - Terrasite](https://www.youtube.com/watch?v=x6rEDMqM36I)
+- [Mozart - Requiem Dm](https://www.youtube.com/watch?v=pBGVfwOLU1w0)
+- [Ensiferum - From Afar](https://www.youtube.com/watch?v=6r8OPu3SRSM)
+- [Pain - You Only Live Twice](https://www.youtube.com/watch?v=obgCEoLzLs4)
+- [Abysmal Dawn - Phylogenesis](https://www.youtube.com/watch?v=xJMybqRMedk&pp=ygUMYWJ5c21hbCBkYXdu)
+- [Lofi Hip Hop Radio](https://www.youtube.com/watch?v=jfKfPfyJRdk)
+- [4am](https://www.youtube.com/watch?v=tBcPji_jRDc)

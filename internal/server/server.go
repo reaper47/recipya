@@ -92,6 +92,8 @@ func (s *Server) mountHandlers() {
 	r.Route("/recipes", func(r chi.Router) {
 		r.Use(s.mustBeLoggedInMiddleware)
 
+		r.Get("/", s.recipesHandler)
+
 		r.Route("/{id:[1-9]([0-9])*}", func(r chi.Router) {
 			r.Get("/", s.recipesViewHandler)
 			r.Delete("/", s.recipeDeleteHandler)

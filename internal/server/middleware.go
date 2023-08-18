@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"net/http"
+	"slices"
 )
 
 func (s *Server) redirectIfLoggedInMiddleware(next http.Handler) http.Handler {
@@ -26,6 +27,11 @@ func (s *Server) redirectIfLoggedInMiddleware(next http.Handler) http.Handler {
 
 func (s *Server) mustBeLoggedInMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		excludedURIs := []string{"/user-initials", "/settings/tabs/recipes", "/settings/tabs/profile"}
+		if !slices.Contains(excludedURIs, r.RequestURI) {
+			http.SetCookie(w, NewRedirectCookie(r.RequestURI))
+		}
+
 		if userID := getUserIDFromSessionCookie(r); userID != -1 {
 			ctx := context.WithValue(r.Context(), "userID", userID)
 			next.ServeHTTP(w, r.WithContext(ctx))
@@ -38,8 +44,6 @@ func (s *Server) mustBeLoggedInMiddleware(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r.WithContext(ctx))
 			return
 		}
-
-		http.SetCookie(w, NewRedirectCookie(r.RequestURI))
 
 		if r.Header.Get("HX-Request") == "true" {
 			w.Header().Set("HX-Redirect", "/auth/login")
