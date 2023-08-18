@@ -2,6 +2,7 @@ package templates
 
 import (
 	"fmt"
+	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/units"
 	"strings"
@@ -16,6 +17,9 @@ type Data struct {
 	Content      string // Content is text to insert into the template.
 	ContentTitle string // ContentTitle is the header of the Content.
 
+	Functions FunctionsData
+
+	Recipes  models.Recipes
 	Settings SettingsData
 	Scraper  ScraperData
 	View     *ViewRecipeData
@@ -104,4 +108,10 @@ type formattedTimes struct {
 type shareData struct {
 	IsFromHost bool
 	IsShared   bool
+}
+
+// FunctionsData provides functions for use in the templates.
+type FunctionsData struct {
+	CutString   func(s string, numCharacters int) string
+	IsUUIDValid func(u uuid.UUID) bool
 }

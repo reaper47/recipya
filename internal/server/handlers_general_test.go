@@ -63,7 +63,8 @@ func TestHandlers_General_Index(t *testing.T) {
 		assertStringsInHTML(t, got, want)
 		notWant := []string{
 			`<span id="user-initials">A</span>`,
-			"Add recipe"}
+			"Add recipe",
+		}
 		assertStringsNotInHTML(t, got, notWant)
 	})
 

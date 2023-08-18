@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/scraper"
@@ -13,6 +14,36 @@ import (
 	"strings"
 	"time"
 )
+
+func (s *Server) recipesHandler(w http.ResponseWriter, r *http.Request) {
+	userID := r.Context().Value("userID").(int64)
+
+	baseData := templates.Data{
+		Functions: templates.FunctionsData{
+			CutString: func(s string, numCharacters int) string {
+				if len(s) < numCharacters {
+					return s
+				}
+				return s[:numCharacters] + "…"
+			},
+			IsUUIDValid: func(u uuid.UUID) bool {
+				return u != uuid.Nil
+			},
+		},
+		Recipes: s.Repository.Recipes(userID),
+	}
+
+	if r.Header.Get("HX-Request") == "true" {
+		templates.RenderComponent(w, "recipes", "list-recipes", baseData)
+		return
+	} else {
+		page := templates.HomePage
+		baseData.IsAuthenticated = true
+		baseData.Title = page.Title()
+		templates.Render(w, page, baseData)
+		return
+	}
+}
 
 func recipesAddHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Header.Get("Hx-Request") == "true" {

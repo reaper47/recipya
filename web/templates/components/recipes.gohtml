@@ -877,6 +877,51 @@
     {{template "load-recipes-manual-scripts"}}
 {{end}}
 
+{{define "list-recipes"}}
+    <title hx-swap-oob="true">Home | Recipya</title>
+
+    {{if .Recipes}}
+        <article class="grid gap-4 p-4 text-sm grid-cols-4 md:m-auto md:max-w-7xl md:text-base md:grid-cols-10">
+            {{ $funcs := .Functions}}
+            {{- range .Recipes -}}
+                <div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700">
+                    {{ $isUUIDValid := call $funcs.IsUUIDValid .Image}}
+                    <img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 {{if not $isUUIDValid}}h-[236.8px] px-4 pt-4{{end}}"
+                         src="{{if $isUUIDValid}}/data/images/{{.Image}}.jpg{{end}}"
+                         alt="Image for the {{.Name}} recipe"
+                         hx-get="/recipes/{{.ID}}" hx-target="#content" hx-push-url="true">
+                    <div class="py-2 px-3">
+                        <div class="grid grid-flow-col gap-1 pb-2">
+                            <p class="font-semibold">{{.Name}}</p>
+                            <span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit">
+                                {{.Category}}
+                            </span>
+                        </div>
+
+                        <p class="pb-8 text-justify text-sm">{{call $funcs.CutString .Description 127}}</p>
+
+                        <button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600"
+                           hx-get="/recipes/{{.ID}}" hx-target="#content" hx-push-url="true">
+                            View
+                        </button>
+                    </div>
+                </div>
+            {{end}}
+        </article>
+    {{else}}
+        <div class="grid place-content-center text-sm h-full text-center md:text-base">
+            <p>Your recipe collection looks a bit empty at the moment.</p>
+            <p>
+                Why not start adding some of your favorite recipes by clicking the
+                <a class="underline font-semibold cursor-pointer"
+                   hx-get="/recipes/add" hx-target="#content" hx-push-url="true">
+                    Add recipe
+                </a> button at the top?
+            </p>
+        </div>
+    {{end}}
+{{end}}
+
 {{define "load-recipes-manual-scripts"}}
     <script defer>
         function loadScript(url) {

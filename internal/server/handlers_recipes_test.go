@@ -16,6 +16,57 @@ import (
 	"time"
 )
 
+func TestHandlers_Recipes(t *testing.T) {
+	srv := newServerTest()
+
+	uri := "/recipes"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
+	})
+
+	t.Run("user has no recipes", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+
+		want := []string{
+			`<title hx-swap-oob="true">Home | Recipya</title>`,
+			`<div class="grid place-content-center text-sm h-full text-center md:text-base"><p>Your recipe collection looks a bit empty at the moment.</p><p> Why not start adding some of your favorite recipes by clicking the <a class="underline font-semibold cursor-pointer" hx-get="/recipes/add" hx-target="#content" hx-push-url="true"> Add recipe </a> button at the top? </p></div>`,
+		}
+		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
+
+	t.Run("user has recipes", func(t *testing.T) {
+		srv.Repository = &mockRepository{
+			RecipesRegistered: map[int64]models.Recipes{
+				1: {
+					{ID: 1, Name: "One", Category: "Lunch", Description: "Recipe one"},
+					{ID: 2, Name: "Two", Category: "Soup", Description: "Recipe two"},
+					{ID: 3, Name: "Three", Category: "Dinner", Description: "Recipe three"},
+				},
+			},
+		}
+		defer func() {
+			srv.Repository = &mockRepository{}
+		}()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+
+		got := getBodyHTML(rr)
+		want := []string{
+			`<title hx-swap-oob="true">Home | Recipya</title>`,
+			`<article class="grid gap-4 p-4 text-sm grid-cols-4 md:m-auto md:max-w-7xl md:text-base md:grid-cols-10">`,
+			`<div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700"><img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 h-[236.8px] px-4 pt-4" src="" alt="Image for the One recipe" hx-get="/recipes/1" hx-target="#content" hx-push-url="true"><div class="py-2 px-3"><div class="grid grid-flow-col gap-1 pb-2"><p class="font-semibold">One</p><span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit"> Lunch </span></div><p class="pb-8 text-justify text-sm">Recipe one</p><button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/recipes/1" hx-target="#content" hx-push-url="true"> View </button></div></div>`,
+			`<div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700"><img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 h-[236.8px] px-4 pt-4" src="" alt="Image for the Two recipe" hx-get="/recipes/2" hx-target="#content" hx-push-url="true"><div class="py-2 px-3"><div class="grid grid-flow-col gap-1 pb-2"><p class="font-semibold">Two</p><span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit"> Soup </span></div><p class="pb-8 text-justify text-sm">Recipe two</p><button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/recipes/2" hx-target="#content" hx-push-url="true"> View </button></div></div>`,
+			`<div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700"><img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 h-[236.8px] px-4 pt-4" src="" alt="Image for the Three recipe" hx-get="/recipes/3" hx-target="#content" hx-push-url="true"><div class="py-2 px-3"><div class="grid grid-flow-col gap-1 pb-2"><p class="font-semibold">Three</p><span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit"> Dinner </span></div><p class="pb-8 text-justify text-sm">Recipe three</p><button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/recipes/3" hx-target="#content" hx-push-url="true"> View </button></div></div>`,
+		}
+		assertStringsInHTML(t, got, want)
+		notWant := []string{
+			`<div class="grid place-content-center text-sm h-full text-center md:text-base"><p>Your recipe collection looks a bit empty at the moment.</p><p> Why not start adding some of your favorite recipes by clicking the <a class="underline font-semibold cursor-pointer" hx-get="/recipes/add" hx-target="#content" hx-push-url="true"> Add recipe </a> button at the top? </p></div>`,
+		}
+		assertStringsNotInHTML(t, got, notWant)
+	})
+}
+
 func TestHandlers_Recipes_New(t *testing.T) {
 	srv := newServerTest()
 

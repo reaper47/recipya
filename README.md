@@ -110,3 +110,16 @@ $ make test
 # Feedback
 
 If you have any feedback, please reach out to us at macpoule@gmail.com or open an issue on GitHub.
+
+# Inspiration
+
+This project was mainly coded to blasting the following albums:
+- [Archspire - Bleed the Future](https://www.youtube.com/watch?v=o8H9ahswldM)
+- [Sonata Arctica - Talviyö](https://www.youtube.com/watch?v=x6rEDMqM36I)
+- [Cattle Decapitation - Terrasite](https://www.youtube.com/watch?v=x6rEDMqM36I)
+- [Mozart - Requiem Dm](https://www.youtube.com/watch?v=pBGVfwOLU1w0)
+- [Ensiferum - From Afar](https://www.youtube.com/watch?v=6r8OPu3SRSM)
+- [Pain - You Only Live Twice](https://www.youtube.com/watch?v=obgCEoLzLs4)
+- [Abysmal Dawn - Phylogenesis](https://www.youtube.com/watch?v=xJMybqRMedk&pp=ygUMYWJ5c21hbCBkYXdu)
+- [Lofi Hip Hop Radio](https://www.youtube.com/watch?v=jfKfPfyJRdk)
+- [4am](https://www.youtube.com/watch?v=tBcPji_jRDc)
