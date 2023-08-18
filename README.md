@@ -1,115 +1,199 @@
+
 # Recipya
 
-Recipya is an application whose goal is to search for what you can cook with the ingredients in your fridge.
-In other words, it helps you know what you can cook with what you have when you are out of ideas.
+A beautiful recipe manager web application for unforgettable family recipes, empowering you to curate and share your favorite recipes. It is focussed on simplicity for the whole family to benefit from the software.
 
-It works seamlessly with recipes in your [Nextcloud Cookbook](https://apps.nextcloud.com/apps/cookbook).
+## Features
 
-The project consists of a backend and a frontend.
-The backend is a REST API. The frontend, found under the /web folder, is a simple app where the user can use the search function.
+- Manage your favorite recipes (in progress)
+- Import recipes from around the web
+- Digitize paper recipes (in progress)
+- Works seamlessly with recipes in your [Nextcloud Cookbook](https://apps.nextcloud.com/apps/cookbook)
+- Automatic conversion to your preferred measurement system (imperial/metric)
+- Follows your system's theme (light/dark)
+- Cross-compiled for Windows, Linux, and macOS
 
-# Features
+## Screenshots
 
-- Search for recipes based on what you have in your fridge
-- Cross-platform solution
-- Can be self-hosted
+Screenshots will be added later, once the project is more mature.
 
-# Demo
+## Demo
 
-Access the demo [website](https://recipes.musicavis.ca) with the following credentials:
-- Login: demo
-- Password: demo
+The demo link will be added later, once I host the app somewhere.
 
-# Installation
+## Documentation
 
-## Database
+The documentation has to be written.
 
-Recipya uses PostgreSQL to store data.
+## Installtion
 
-Install (Debian)
-```bash
-$ sudo apt-get install postgresql postgresql-contrib
-```
+### Nightly Build
 
-Enable PostgreSQL on start:
-```bash
-$ sudo systemctl enable postgresql
-```
+A a portable, standalone build is available on the [releases page](https://github.com/reaper47/recipya/releases/tag/nightly). It is updated nightly.
 
-Create the database:
-```bash
-$ sudo su - postgres
-$ psql
-$ CREATE USER recipya WITH password 'elephants';
-$ CREATE DATABASE recipya OWNER recipya;
-```
+The following table lists the supported platforms and devices. It will help you decide which zip file to download if you do not know your computer's architecture.
 
-## Recipya
+| Platform      | Explanation                                  | Device Examples                                         |
+|---------------|----------------------------------------------|---------------------------------------------------------|
+| darwin/amd64  | macOS on 64-bit Intel (x86-64) architecture  | Apple MacBook, iMac, Mac Mini, Mac Pro                  |
+| darwin/arm64  | macOS on ARM64 architecture                  | MacBook Air (M1), MacBook Pro (M1), Mac Mini (M1)       |
+| linux/386     | Linux on 32-bit x86 architecture             | Older PCs, embedded systems                             |
+| linux/amd64   | Linux on 64-bit x86 architecture (x86-64)    | Desktops, laptops, servers, cloud instances             |
+| linux/arm     | Linux on ARMv6 architecture                  | Raspberry Pi 1st gen, IoT devices, some old smartphones |
+| linux/arm64   | Linux on ARMv8 64-bit architecture           | Raspberry Pi 3rd/4th gen, modern smartphones            |
+| linux/riscv64 | Linux on 64-bit RISC-V architecture          | RISC-V development boards, experimental devices         |
+| linux/s390x   | Linux on IBM System z architecture           | IBM mainframes, servers                                 |
+| windows/amd64 | Windows on 64-bit x86 architecture           | Modern Windows PCs, servers, virtual machines           |
+| windows/arm64 | Windows on ARM64 architecture                | Microsoft Surface Pro X, ARM-based Windows devices      |
 
-Clone the repository:
-```bash
-$ git clone https://github.com/reaper47/recipya.git
-```
+The program cannot be updated within the interface yet. If you wish to update the app, please download the nightly build and replace your existing `recipya.exe` with the one from the build zip.
 
-Build/update the program:
-```bash
-$ sudo sh update.sh
-```
+Extract the zip once downloaded. Then, follow these [steps](#modify-configuration-file) to modify your configuration file.
 
-The build will be made available under **bin**.
-
-## Self-host
-
-Caddy server:
-```bash
-$ sudo nano /etc/caddy/Caddyfile
-
-...
-domain {
-	encode zstd gzip
-
-	header /static/* Cache-Control "public, max-age=2678400, must-revalidate"
-	
-	log {
-		output file /var/www/path/to/recipya/logs/caddy-access.log
-		format single_field common_log
-	}
-
-	reverse_proxy http://localhost:8080
-}
-...
-
-$ sudo mkdir /var/www/path/to/recipya/logs
-```
-
-Supervisor to start Recipya as a daemon:
-```bash
-$ sudo nano /etc/supervisor/conf.d/recipya.conf
-
-[program:recipya]
-command=/var/www/path/to/recipya/bin/recipya serve
-directory=/var/www/path/to/recipya/bin
-autorestart=true
-autostart=true
-stdout_logfile=/var/www/path/to/recipya/logs/supervisord.log
-
-$ sudo supervisorctl
-> status
-> update
-> status
-```
-
-# Running Tests
-
-To run tests, run the following command:
+Finally, start the server by opening a command prompt in the folder, and run the following command.
 
 ```bash
-$ make test
+./recipya.exe serve
 ```
 
-# Feedback
+### Manual Install
 
-If you have any feedback, please reach out to us at macpoule@gmail.com or open an issue on GitHub.
+#### Windows
+
+The `make` program is required to build the project. To verify whether it's installed on your machine, execute `make` in a command prompt or PowerShell.
+
+Follow these steps if not installed:
+
+1. Open either the Command Prompt or Powershell in administrator mode.
+1. Execute `winget install GnuWin32.Make`
+1. Add `C:\Program Files (x86)\GnuWin32\bin` to the Windows PATH environment variable.
+
+---
+
+Follow these steps to build the program:
+
+First, clone the repository.
+
+```bash
+git clone https://github.com/reaper47/recipya.git
+```
+
+Go to the project directory.
+
+```bash
+cd recipya
+```
+
+Build the project.
+
+```bash
+make
+```
+
+Follow these [steps](#modify-configuration-file) to modify your configuration file.
+
+Start the server.
+
+```bash
+.\bin\recipya serve
+```
+
+#### Linux and macOS
+
+There is no nightly build available for Linux and macOS. You will have to build it yourself.
+
+First, clone the repository.
+
+```bash
+git clone https://github.com/reaper47/recipya.git
+```
+
+Go to the project directory.
+
+```bash
+cd recipya
+```
+
+Build the project.
+
+```bash
+make
+```
+
+Follow these [steps](#modify-configuration-file) to modify your configuration file.
+
+Start the server.
+
+```bash
+./bin/recipya serve
+```
+
+### Modify Configuration File
+
+Once the build zip is extracted or the project built, rename *config.json.example* to *config.json* and open the file to edit the following variables:
+- **email.from**: The administrator's email address
+- **email.sendGridAPIKey**: Your [SendGrid](https://sendgrid.com/) API key. The free tier should be sufficient for your needs.
+- **port**: The port the app will be served through.
+- **url**: The website the app is served on. This URL is used in the emails.
+
+
+## Deployment
+
+The project can be self-hosted. You first need to înstall the project [manually](#manual-install).
+
+Then, create a service to run the app automatically on boot.
+
+```bash
+sudo nano /etc/systemd/system/recipya.service 
+```
+
+Copy the following content to the newly-created file.
+
+```bash
+[Unit]
+Description=Recipya Service
+Wants=network.target
+
+[Service]
+ExecStart=/path/to/binary/recipya serve
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Start the service on boot.
+
+```bash
+sudo systemctl start recipya.service
+sudo systemctl enable recipya.service
+```
+## Running Tests
+
+Execute the following command to run the tests.
+
+```bash
+make test
+```
+
+## Contributing
+
+Contributions are always welcome! Please open an issue, start a [discussion](https://github.com/reaper47/recipya/discussions), open a pull request or send me an email at macpoule@gmail.com.
+
+If you have any feedback or need support, please contact me at the previously mentioned email address.
+
+## Tech Stack
+
+**Client:** HTML, TailwindCSS
+
+**Server:** Go
+
+## Other Recipe Manager Apps
+
+- [Mealie](https://github.com/mealie-recipes/mealie)
+- [Paprika](https://www.paprikaapp.com/)
+- [Grocy](https://grocy.info/)
+- [Cooklist](https://cooklist.com/)
+- [Grossr](https://grossr.com/)
 
 # Inspiration
 
