@@ -5,9 +5,9 @@ A beautiful recipe manager web application for unforgettable family recipes, emp
 
 ## Features
 
-- Manage your favorite recipes (in progress)
+- Manage your favorite recipes
 - Import recipes from around the web
-- Digitize paper recipes (in progress)
+- Digitize paper recipes (planned)
 - Works seamlessly with recipes in your [Nextcloud Cookbook](https://apps.nextcloud.com/apps/cookbook)
 - Automatic conversion to your preferred measurement system (imperial/metric)
 - Follows your system's theme (light/dark)
