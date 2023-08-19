@@ -1,7 +1,7 @@
-
 # Recipya
 
-A beautiful recipe manager web application for unforgettable family recipes, empowering you to curate and share your favorite recipes. It is focussed on simplicity for the whole family to benefit.
+A beautiful recipe manager web application for unforgettable family recipes, empowering you to curate and share your favorite recipes. It is focussed on simplicity for the whole family to 
+.
 
 ## Features
 
@@ -213,6 +213,8 @@ Matrix is similar to Discord but is open source.
 - [Grocy](https://grocy.info/)
 - [Cooklist](https://cooklist.com/)
 - [Grossr](https://grossr.com/)
+- [Awesome List](
+https://github.com/awesome-selfhosted/awesome-selfhosted#recipe-management)
 
 # Inspiration
 
