@@ -29,7 +29,7 @@ The documentation has to be written.
 
 ### Nightly Build
 
-A a portable, standalone build is available on the [releases page](https://github.com/reaper47/recipya/releases/tag/nightly). It is updated nightly.
+A portable, standalone build is available on the [releases page](https://github.com/reaper47/recipya/releases/tag/nightly). It is updated nightly.
 
 The following table lists the supported platforms and devices. It will help you decide which zip file to download if you do not know your computer's architecture.
 
