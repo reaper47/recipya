@@ -25,7 +25,7 @@ The demo link will be added later, once I host the app somewhere.
 
 The documentation has to be written.
 
-## Installtion
+## Installation
 
 ### Nightly Build
 
@@ -55,6 +55,19 @@ Finally, start the server by opening a command prompt in the folder, and run the
 ```bash
 ./recipya.exe serve
 ```
+
+You can now access the website at the address specified.
+
+#### Note for Windows users
+
+If you intend to access the website on other devices within your home network, please ensure that the program is permitted through the firewall. To verify:
+1. Open the "Firewall & network protection setting"
+1. Click on "Allow an app through firewall"
+1. Scroll down to recipya*.exe
+1. Make sure private and public boxes are checked
+1. Apply the settings
+1. Find the IP address of your machine (Wi-Fi settings -> Click on the network you are connected to -> IPv4 address)
+1. On your other device, access http://[IPv4 address]:[port]
 
 ### Manual Install
 
@@ -97,6 +110,8 @@ Start the server.
 ```bash
 .\bin\recipya serve
 ```
+
+Finally, please ensure that the program is permitted through the firewall if you intend to access it on other devices within your home network.
 
 #### Linux and macOS
 
