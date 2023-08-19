@@ -1,7 +1,6 @@
 # Recipya
 
-A beautiful recipe manager web application for unforgettable family recipes, empowering you to curate and share your favorite recipes. It is focussed on simplicity for the whole family to 
-.
+A beautiful recipe manager web application for unforgettable family recipes, empowering you to curate and share your favorite recipes. It is focussed on simplicity for the whole family to enjoy.
 
 ## Features
 
