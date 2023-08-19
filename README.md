@@ -1,7 +1,7 @@
 
 # Recipya
 
-A beautiful recipe manager web application for unforgettable family recipes, empowering you to curate and share your favorite recipes. It is focussed on simplicity for the whole family to benefit from the software.
+A beautiful recipe manager web application for unforgettable family recipes, empowering you to curate and share your favorite recipes. It is focussed on simplicity for the whole family to benefit.
 
 ## Features
 
@@ -10,6 +10,7 @@ A beautiful recipe manager web application for unforgettable family recipes, emp
 - Digitize paper recipes (planned)
 - Works seamlessly with recipes in your [Nextcloud Cookbook](https://apps.nextcloud.com/apps/cookbook)
 - Automatic conversion to your preferred measurement system (imperial/metric)
+- Print any recipe in your collection
 - Follows your system's theme (light/dark)
 - Cross-compiled for Windows, Linux, and macOS
 
