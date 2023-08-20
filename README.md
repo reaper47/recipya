@@ -87,6 +87,9 @@ docker run -v path/to/config.json:/app/config.json -p [host port]:[port specifie
 
 Access the app through your browser at `http://localhost:[host port]`.
 
+If you are using Windows and you intend to access the app on other devices within your home network, please ensure
+to `Allow the connection` of the `Docker Desktop Backend` inbound Windows Defender Firewall rule.
+
 ### Manual Install
 
 #### Windows
