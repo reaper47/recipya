@@ -90,7 +90,7 @@ docker run -v path/to/config.json:/app/config.json -p [host port]:[port specifie
 #### Using Docker Compose
 
 You can use Docker Compose to run the container. First, you need to modify the ports
-and the path to your local config.json in the [compose.yaml](https://github.com/reaper47/recipya/blob/docker/containers/compose.yaml).
+and the path to your local config.json in the [compose.yaml](https://github.com/reaper47/recipya/blob/main/containers/compose.yaml).
 Then, start the application.
 
 ```bash
