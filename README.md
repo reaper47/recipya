@@ -73,6 +73,8 @@ If you intend to access the website on other devices within your home network, p
 
 A Docker image called `reaper99/recipya` is produced nightly.
 
+#### Using Docker
+
 You first have to fetch it.
 
 ```bash
@@ -83,6 +85,16 @@ Then, run the image. You must pass your `config.json` file to the container.
 
 ```bash
 docker run -v path/to/config.json:/app/config.json -p [host port]:[port specified in config.json] -d reaper99/recipya:nightly reaper99/recipya:nightly
+```
+
+#### Using Docker Compose
+
+You can use Docker Compose to run the container. First, you need to modify the ports
+and the path to your local config.json in the [compose.yaml](https://github.com/reaper47/recipya/blob/docker/containers/compose.yaml).
+Then, start the application.
+
+```bash
+docker-compose up -d
 ```
 
 Access the app through your browser at `http://localhost:[host port]`.
