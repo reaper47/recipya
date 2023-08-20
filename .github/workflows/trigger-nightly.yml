@@ -1,8 +1,10 @@
 name: trigger-nightly
 
 on:
-  schedule:
-    - cron: "0 1 * * *"
+  #schedule:
+  #  - cron: "0 1 * * *"
+  push:
+    branches: [ "docker" ]
 
 jobs:
   nightly:
