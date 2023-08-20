@@ -1,10 +1,8 @@
 name: trigger-nightly
 
 on:
-  #schedule:
-  #  - cron: "0 1 * * *"
-  push:
-    branches: [ "docker" ]
+  schedule:
+    - cron: "0 1 * * *"
 
 jobs:
   nightly:
@@ -24,13 +22,13 @@ jobs:
           cd ./releases
           go run main.go -package github.com/reaper47/recipya -tag nightly
 
-      #- uses: marvinpinto/action-automatic-releases@latest
-      #  with:
-      #    repo_token: "${{ secrets.GITHUB_TOKEN }}"
-      #    automatic_release_tag: nightly
-      #    prerelease: true
-      #    title: Nightly
-      #    files: ./releases/nightly/*.zip
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: nightly
+          prerelease: true
+          title: Nightly
+          files: ./releases/nightly/*.zip
 
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a

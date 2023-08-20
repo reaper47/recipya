@@ -82,7 +82,7 @@ docker pull reaper99/recipya:nightly
 Then, run the image. You must pass your `config.json` file to the container.
 
 ```bash
-docker run -v path/to/config.json:/app/config.json -p [host port]:[port specified in config.json] -d recipya recipya
+docker run -v path/to/config.json:/app/config.json -p [host port]:[port specified in config.json] -d reaper99/recipya:nightly reaper99/recipya:nightly
 ```
 
 Access the app through your browser at `http://localhost:[host port]`.
