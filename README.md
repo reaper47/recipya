@@ -69,6 +69,24 @@ If you intend to access the website on other devices within your home network, p
 1. Find the IP address of your machine (Wi-Fi settings -> Click on the network you are connected to -> IPv4 address)
 1. On your other device, access http://[IPv4 address]:[port]
 
+### Docker
+
+A Docker image called `reaper99/recipya` is produced nightly.
+
+You first have to fetch it.
+
+```bash
+docker pull reaper99/recipya:nightly
+```
+
+Then, run the image. You must pass your `config.json` file to the container.
+
+```bash
+docker run -v path/to/config.json:/app/config.json -p [host port]:[port specified in config.json] -d recipya recipya
+```
+
+Access the app through your browser at `http://localhost:[host port]`.
+
 ### Manual Install
 
 #### Windows
