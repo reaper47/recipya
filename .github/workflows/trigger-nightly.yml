@@ -50,5 +50,5 @@ jobs:
           context: .
           file: ./containers/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: nightly
           labels: ${{ steps.meta.outputs.labels }}
