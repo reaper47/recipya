@@ -6,7 +6,7 @@ Then, we will guide you through adding a website to the supported list with an e
 ## The Scraper
 
 Recipya developed its own recipe scraper, which resides in the [internal/scraper](https://github.com/reaper47/recipya/tree/main/internal/scraper) 
-package. This scraper uses [goquery](github.com/PuerkitoBio/goquery) to extract information from web pages.
+package. This scraper uses [goquery](https://github.com/PuerkitoBio/goquery) to extract information from web pages.
 Its main file is [scraper.go](https://github.com/reaper47/recipya/blob/main/internal/scraper/scraper.go). You will find a single exposed function named `Scrape`, which
 takes a URL and a [files service](https://github.com/reaper47/recipya/blob/main/internal/services/service.go#L102) as parameters. The files services is an interface with functions to
 manipulate files in the OS. The use of an interface simplifies the process of mocking file operations during testing.
