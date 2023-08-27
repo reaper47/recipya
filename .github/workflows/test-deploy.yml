@@ -1,6 +1,9 @@
 name: Test deployment
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
@@ -17,6 +20,8 @@ jobs:
           cache: yarn
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: |
+          cd docs/website
+          yarn install --frozen-lockfile
       - name: Test build website
         run: yarn build

@@ -1,4 +1,4 @@
-name: trigger-nightly
+name: Trigger Nightly
 
 on:
   schedule:
