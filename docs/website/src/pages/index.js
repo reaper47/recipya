@@ -43,13 +43,13 @@ function HomepageHeader() {
                 centerMode={true}
             >
                 <div className="slide-item-box">
-                    <img src="/recipa/img/carousel/collection.png" alt="All recipes"/>
+                    <img src="/recipya/img/carousel/collection.png" alt="All recipes"/>
                 </div>
                 <div className="slide-item-box">
-                    <img src="/recipa/img/carousel/view.png" alt="Add recipe"/>
+                    <img src="/recipya/img/carousel/view.png" alt="Add recipe"/>
                 </div>
                 <div className="slide-item-box">
-                    <img src="/recipa/img/carousel/add-recipe.png" alt="View recipe"/>
+                    <img src="/recipya/img/carousel/add-recipe.png" alt="View recipe"/>
                 </div>
             </Carousel>
         </header>
