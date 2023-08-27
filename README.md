@@ -1,4 +1,6 @@
 # Recipya
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Freaper47%2Frecipya.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Freaper47%2Frecipya?ref=badge_shield)
+
 
 A beautiful recipe manager web application for unforgettable family recipes, empowering you to curate and share your favorite recipes. It is focussed on simplicity for the whole family to enjoy.
 
@@ -258,3 +260,7 @@ This project was mainly coded to blasting the following albums:
 - [Abysmal Dawn - Phylogenesis](https://www.youtube.com/watch?v=xJMybqRMedk&pp=ygUMYWJ5c21hbCBkYXdu)
 - [Lofi Hip Hop Radio](https://www.youtube.com/watch?v=jfKfPfyJRdk)
 - [4am](https://www.youtube.com/watch?v=tBcPji_jRDc)
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Freaper47%2Frecipya.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Freaper47%2Frecipya?ref=badge_large)
