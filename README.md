@@ -148,8 +148,6 @@ Finally, please ensure that the program is permitted through the firewall if you
 
 #### Linux and macOS
 
-There is no nightly build available for Linux and macOS. You will have to build it yourself.
-
 First, clone the repository.
 
 ```bash
