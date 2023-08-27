@@ -33,13 +33,11 @@
 
 ## Introduction
 
----
 A clean recipe manager web application for unforgettable family recipes, empowering you to curate and share your favorite recipes.
 It is focused on simplicity for the whole family to enjoy.
 
 ## Features
 
----
 - Manage your favorite recipes
 - Import recipes from around the web
 - Digitize paper recipes (planned)
@@ -51,12 +49,10 @@ It is focused on simplicity for the whole family to enjoy.
 
 ## Getting Started
 
----
 The installation instructions are on the [official website](https://reaper47.github.io/recipya/docs/category/installation).
 
 ## Contributing
 
----
 Contributions are always welcome! Please open an issue, start a [discussion](https://github.com/reaper47/recipya/discussions), open a pull request or send an email 
 at macpoule@gmail.com. The same applies if you have any feedback or need support. 
 
@@ -66,7 +62,6 @@ Matrix is similar to Discord but is open source.
 
 ## Other Recipe Manager Apps
 
----
 - [Mealie](https://github.com/mealie-recipes/mealie)
 - [Paprika](https://www.paprikaapp.com/)
 - [Grocy](https://grocy.info/)
@@ -76,12 +71,10 @@ Matrix is similar to Discord but is open source.
 
 ## License
 
----
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Freaper47%2Frecipya.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Freaper47%2Frecipya?ref=badge_large)
 
 # Inspiration
 
----
 This project was mainly coded to blasting the following albums:
 - [Archspire - Bleed the Future](https://www.youtube.com/watch?v=o8H9ahswldM)
 - [Sonata Arctica - Talviyö](https://www.youtube.com/watch?v=x6rEDMqM36I)
