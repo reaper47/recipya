@@ -14,6 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      - name: Set base path
+        run: echo "BASE_PATH=$GITHUB_WORKSPACE/docs/website" >> $GITHUB_ENV
+
       - uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -22,7 +26,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd ./docs/website
+          cd $BASE_PATH
           yarn install --frozen-lockfile
       - name: Test build website
-        run: yarn build
+        run: |
+          cd $BASE_PATH
+          yarn build
