@@ -7,12 +7,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="sortablejs" level="application" />
     <orderEntry type="library" name="html-duration-picker" level="application" />
+    <orderEntry type="library" name="sortablejs" level="application" />
     <orderEntry type="library" name="htmx.org" level="application" />
     <orderEntry type="library" name="hyperscript.org" level="application" />
-    <orderEntry type="library" name="hyperscript.org" level="application" />
-    <orderEntry type="library" name="sortablejs" level="application" />
-    <orderEntry type="library" name="html-duration-picker" level="application" />
   </component>
 </module>
