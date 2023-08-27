@@ -25,6 +25,7 @@ jobs:
         run: |
           cd $BASE_PATH
           yarn install --frozen-lockfile
+
       - name: Build website
         run: |
           cd $BASE_PATH

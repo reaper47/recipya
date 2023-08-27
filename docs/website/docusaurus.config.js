@@ -7,7 +7,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Recipya',
-  tagline: 'Dinosaurs are cool',
+  tagline: 'A clean recipe manager your whole family can enjoy.',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
