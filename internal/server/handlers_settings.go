@@ -22,7 +22,8 @@ func (s *Server) settingsHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) settingsConvertAutomaticallyPostHandler(w http.ResponseWriter, r *http.Request) {
 	userID := r.Context().Value("userID").(int64)
 	isConvert := r.FormValue("convert") == "on"
-	if err := s.Repository.UpdateConvertMeasurementSystem(userID, isConvert); err != nil {
+	err := s.Repository.UpdateConvertMeasurementSystem(userID, isConvert)
+	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Failed to set setting.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -58,7 +59,8 @@ func (s *Server) settingsMeasurementSystemsPostHandler(w http.ResponseWriter, r 
 		return
 	}
 
-	if err := s.Repository.SwitchMeasurementSystem(system, userID); err != nil {
+	err = s.Repository.SwitchMeasurementSystem(system, userID)
+	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Error switching units system.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)
 		return

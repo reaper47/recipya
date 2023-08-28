@@ -121,7 +121,8 @@ func (s *SchemaType) MarshalJSON() ([]byte, error) {
 // The type "Recipe" will be searched for if the data is an array.
 func (s *SchemaType) UnmarshalJSON(data []byte) error {
 	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
+	err := json.Unmarshal(data, &v)
+	if err != nil {
 		return err
 	}
 
@@ -154,7 +155,8 @@ func (c *Category) MarshalJSON() ([]byte, error) {
 // websites send the category in an array, which explains the need for this function.
 func (c *Category) UnmarshalJSON(data []byte) error {
 	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
+	err := json.Unmarshal(data, &v)
+	if err != nil {
 		return err
 	}
 
@@ -188,7 +190,8 @@ func (c *CookingMethod) MarshalJSON() ([]byte, error) {
 // websites send the cuisine in an array, which explains the need for this function.
 func (c *CookingMethod) UnmarshalJSON(data []byte) error {
 	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
+	err := json.Unmarshal(data, &v)
+	if err != nil {
 		return err
 	}
 
@@ -218,7 +221,8 @@ func (c *Cuisine) MarshalJSON() ([]byte, error) {
 // websites send the cuisine in an array, which explains the need for this function.
 func (c *Cuisine) UnmarshalJSON(data []byte) error {
 	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
+	err := json.Unmarshal(data, &v)
+	if err != nil {
 		return err
 	}
 
@@ -246,7 +250,8 @@ func (d *Description) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON decodes the description field of a recipe.
 func (d *Description) UnmarshalJSON(data []byte) error {
 	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	err := json.Unmarshal(data, &s)
+	if err != nil {
 		return err
 	}
 
@@ -276,7 +281,8 @@ func (k *Keywords) MarshalJSON() ([]byte, error) {
 // for a custom decoder.
 func (k *Keywords) UnmarshalJSON(data []byte) error {
 	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
+	err := json.Unmarshal(data, &v)
+	if err != nil {
 		return err
 	}
 
@@ -306,7 +312,8 @@ func (i *Image) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON decodes the image according to the schema (https://schema.org/image).
 func (i *Image) UnmarshalJSON(data []byte) error {
 	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
+	err := json.Unmarshal(data, &v)
+	if err != nil {
 		return err
 	}
 
@@ -345,7 +352,8 @@ func (i *Ingredients) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON decodes the ingredients according to the schema (https://schema.org/recipeInstructions).
 func (i *Ingredients) UnmarshalJSON(data []byte) error {
 	var xv []any
-	if err := json.Unmarshal(data, &xv); err != nil {
+	err := json.Unmarshal(data, &xv)
+	if err != nil {
 		return err
 	}
 
@@ -389,7 +397,8 @@ func (i *Instructions) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON decodes the instructions according to the schema (https://schema.org/recipeInstructions).
 func (i *Instructions) UnmarshalJSON(data []byte) error {
 	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
+	err := json.Unmarshal(data, &v)
+	if err != nil {
 		return err
 	}
 
@@ -463,7 +472,8 @@ func parseSections(part any, instructions *Instructions) {
 	}
 
 	var sect section
-	if err = json.Unmarshal(b, &sect); err != nil {
+	err = json.Unmarshal(b, &sect)
+	if err != nil {
 		log.Println(err)
 		return
 	}
@@ -496,7 +506,8 @@ func (y *Yield) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON decodes the yield according to the schema (https://schema.org/recipeYield).
 func (y *Yield) UnmarshalJSON(data []byte) error {
 	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
+	err := json.Unmarshal(data, &v)
+	if err != nil {
 		return err
 	}
 
@@ -558,7 +569,8 @@ func (n *NutritionSchema) nutrition() (Nutrition, error) {
 // UnmarshalJSON decodes the nutrition according to the schema
 func (n *NutritionSchema) UnmarshalJSON(data []byte) error {
 	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
+	err := json.Unmarshal(data, &v)
+	if err != nil {
 		return err
 	}
 
@@ -600,7 +612,8 @@ func (n *NutritionSchema) UnmarshalJSON(data []byte) error {
 				n.Servings = val
 			} else {
 				for _, s := range xs {
-					if _, err := strconv.Atoi(s); err == nil {
+					_, err := strconv.Atoi(s)
+					if err == nil {
 						n.Servings = s
 						break
 					}
@@ -640,7 +653,8 @@ func (t *Tools) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON decodes the tools according to the schema (https://schema.org/tool).
 func (t *Tools) UnmarshalJSON(data []byte) error {
 	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
+	err := json.Unmarshal(data, &v)
+	if err != nil {
 		return err
 	}
 

@@ -28,7 +28,8 @@ func main() {
 		Usage: "the ultimate recipes manager for you and your family",
 	}
 
-	if err := cliApp.Run(os.Args); err != nil {
+	err := cliApp.Run(os.Args)
+	if err != nil {
 		log.Fatal(err)
 	}
 }

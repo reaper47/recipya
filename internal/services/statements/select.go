@@ -54,7 +54,7 @@ const SelectMeasurementSystems = `
 		   us.convert_automatically
 	FROM measurement_systems AS ms
 			 JOIN user_settings AS us ON measurement_system_id = ms.id
-	WHERE user_id = ?;`
+	WHERE user_id = ?`
 
 const baseSelectRecipe = `
 	SELECT recipes.id                                                                      AS recipe_id,
@@ -123,7 +123,7 @@ const SelectRecipe = baseSelectRecipe + `
 // SelectRecipes is the query to fetch all the user's recipes.
 const SelectRecipes = baseSelectRecipe + `
 	WHERE recipes.id IN (SELECT recipe_id FROM user_recipe WHERE user_id = ?)
-	GROUP BY recipes.id;`
+	GROUP BY recipes.id`
 
 // SelectRecipeShared checks whether the recipe is shared.
 const SelectRecipeShared = `

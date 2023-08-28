@@ -25,7 +25,8 @@ func formatDuration(d time.Duration, isDatetime bool) string {
 }
 
 func isURL(s string) bool {
-	if _, err := url.ParseRequestURI(s); err != nil {
+	_, err := url.ParseRequestURI(s)
+	if err != nil {
 		return false
 	}
 

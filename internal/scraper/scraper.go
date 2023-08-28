@@ -93,9 +93,11 @@ func getHost(rawURL string) string {
 func parseLdJSON(root *goquery.Document) (models.RecipeSchema, error) {
 	for _, node := range root.Find("script[type='application/ld+json']").Nodes {
 		var rs models.RecipeSchema
-		if err := json.Unmarshal([]byte(node.FirstChild.Data), &rs); err != nil {
+		err := json.Unmarshal([]byte(node.FirstChild.Data), &rs)
+		if err != nil {
 			var xrs []models.RecipeSchema
-			if err := json.Unmarshal([]byte(node.FirstChild.Data), &xrs); err != nil {
+			err := json.Unmarshal([]byte(node.FirstChild.Data), &xrs)
+			if err != nil {
 				continue
 			}
 
@@ -130,7 +132,8 @@ func parseGraph(root *goquery.Document) (models.RecipeSchema, error) {
 		}
 
 		var g graph
-		if err := json.Unmarshal([]byte(node.FirstChild.Data), &g); err != nil {
+		err := json.Unmarshal([]byte(node.FirstChild.Data), &g)
+		if err != nil {
 			continue
 		}
 

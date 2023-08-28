@@ -50,13 +50,16 @@ func Init() {
 		panic(err)
 	}
 
-	if err := json.Unmarshal(xb, &Config); err != nil {
+	err = json.Unmarshal(xb, &Config)
+	if err != nil {
 		panic(err)
 	}
 
 	ImagesDir = filepath.Join(filepath.Dir(exe), "data", "images")
-	if _, err := os.Stat(ImagesDir); os.IsNotExist(err) {
-		if err := os.MkdirAll(ImagesDir, os.ModePerm); err != nil {
+	_, err = os.Stat(ImagesDir)
+	if os.IsNotExist(err) {
+		err := os.MkdirAll(ImagesDir, os.ModePerm)
+		if err != nil {
 			panic(err)
 		}
 	}

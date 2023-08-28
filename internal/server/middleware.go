@@ -8,13 +8,15 @@ import (
 
 func (s *Server) redirectIfLoggedInMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if userID := getUserIDFromSessionCookie(r); userID != -1 {
+		userID := getUserIDFromSessionCookie(r)
+		if userID != -1 {
 			ctx := context.WithValue(r.Context(), "userID", userID)
 			http.Redirect(w, r.WithContext(ctx), "/", http.StatusSeeOther)
 			return
 		}
 
-		if userID := getUserIDFromRememberMeCookie(r, s.Repository.GetAuthToken); userID != -1 {
+		userID = getUserIDFromRememberMeCookie(r, s.Repository.GetAuthToken)
+		if userID != -1 {
 			ctx := context.WithValue(r.Context(), "userID", userID)
 			w.Header().Set("HX-Redirect", "/")
 			http.Redirect(w, r.WithContext(ctx), "/", http.StatusSeeOther)
@@ -32,13 +34,15 @@ func (s *Server) mustBeLoggedInMiddleware(next http.Handler) http.Handler {
 			http.SetCookie(w, NewRedirectCookie(r.RequestURI))
 		}
 
-		if userID := getUserIDFromSessionCookie(r); userID != -1 {
+		userID := getUserIDFromSessionCookie(r)
+		if userID != -1 {
 			ctx := context.WithValue(r.Context(), "userID", userID)
 			next.ServeHTTP(w, r.WithContext(ctx))
 			return
 		}
 
-		if userID := getUserIDFromRememberMeCookie(r, s.Repository.GetAuthToken); userID != -1 {
+		userID = getUserIDFromRememberMeCookie(r, s.Repository.GetAuthToken)
+		if userID != -1 {
 			ctx := context.WithValue(r.Context(), "userID", userID)
 			w.Header().Set("HX-Redirect", "/")
 			next.ServeHTTP(w, r.WithContext(ctx))

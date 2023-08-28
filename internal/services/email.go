@@ -36,7 +36,8 @@ func (e *Email) Send(to string, template templates.EmailTemplate, data any) {
 		buf := templates.RenderEmail(template.String(), data)
 		r.body = buf
 
-		if err := r.sendMail(); err != nil {
+		err := r.sendMail()
+		if err != nil {
 			log.Printf("error sending %s email to %s: %q", template, to, err)
 		}
 	}()

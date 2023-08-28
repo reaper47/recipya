@@ -65,7 +65,8 @@ func recipesAddHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request) {
 	r.Body = http.MaxBytesReader(w, r.Body, 128<<20)
 
-	if err := r.ParseMultipartForm(128 << 20); err != nil {
+	err := r.ParseMultipartForm(128 << 20)
+	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not parse the uploaded files.", errorToast))
 		return
 	}
@@ -81,7 +82,8 @@ func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request)
 
 	count := 0
 	for _, r := range recipes {
-		if _, err := s.Repository.AddRecipe(&r, userID); err != nil {
+		_, err := s.Repository.AddRecipe(&r, userID)
+		if err != nil {
 			continue
 		}
 		count += 1
@@ -118,7 +120,8 @@ func (s *Server) recipeAddManualHandler(w http.ResponseWriter, r *http.Request) 
 
 func (s *Server) recipeAddManualPostHandler(w http.ResponseWriter, r *http.Request) {
 	r.Body = http.MaxBytesReader(w, r.Body, 128<<20)
-	if err := r.ParseMultipartForm(128 << 20); err != nil {
+	err := r.ParseMultipartForm(128 << 20)
+	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not parse the form.", errorToast))
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -226,7 +229,8 @@ func (s *Server) recipeAddManualPostHandler(w http.ResponseWriter, r *http.Reque
 }
 
 func recipeAddManualIngredientHandler(w http.ResponseWriter, r *http.Request) {
-	if err := r.ParseForm(); err != nil {
+	err := r.ParseForm()
+	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not parse the form.", errorToast))
 		w.WriteHeader(http.StatusNoContent)
 		return
@@ -250,7 +254,8 @@ func recipeAddManualIngredientHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func recipeAddManualIngredientDeleteHandler(w http.ResponseWriter, r *http.Request) {
-	if err := r.ParseForm(); err != nil {
+	err := r.ParseForm()
+	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not parse the form.", errorToast))
 		w.WriteHeader(http.StatusNoContent)
 		return
@@ -310,7 +315,8 @@ func recipeAddManualIngredientDeleteHandler(w http.ResponseWriter, r *http.Reque
 }
 
 func recipeAddManualInstructionHandler(w http.ResponseWriter, r *http.Request) {
-	if err := r.ParseForm(); err != nil {
+	err := r.ParseForm()
+	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not parse the form.", errorToast))
 		w.WriteHeader(http.StatusNoContent)
 		return
@@ -334,7 +340,8 @@ func recipeAddManualInstructionHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func recipeAddManualInstructionDeleteHandler(w http.ResponseWriter, r *http.Request) {
-	if err := r.ParseForm(); err != nil {
+	err := r.ParseForm()
+	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not parse the form.", errorToast))
 		w.WriteHeader(http.StatusNoContent)
 		return
@@ -413,7 +420,8 @@ func (s *Server) recipesAddWebsiteHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	if _, err := url.ParseRequestURI(rawURL); err != nil {
+	_, err := url.ParseRequestURI(rawURL)
+	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Invalid URI.", errorToast))
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -496,7 +504,8 @@ func (s *Server) recipesEditHandler(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) recipesEditPostHandler(w http.ResponseWriter, r *http.Request) {
 	r.Body = http.MaxBytesReader(w, r.Body, 128<<20)
-	if err := r.ParseMultipartForm(128 << 20); err != nil {
+	err := r.ParseMultipartForm(128 << 20)
+	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not parse the form.", errorToast))
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -580,7 +589,8 @@ func (s *Server) recipesEditPostHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	if err := s.Repository.UpdateRecipe(&updatedRecipe, userID, recipeNum); err != nil {
+	err = s.Repository.UpdateRecipe(&updatedRecipe, userID, recipeNum)
+	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Error updating recipe.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -619,8 +629,10 @@ func (s *Server) recipeShareHandler(w http.ResponseWriter, r *http.Request) {
 
 	var userID int64
 	isLoggedIn := true
-	if userID = getUserIDFromSessionCookie(r); userID == -1 {
-		if userID = getUserIDFromRememberMeCookie(r, s.Repository.GetAuthToken); userID == -1 {
+	userID = getUserIDFromSessionCookie(r)
+	if userID == -1 {
+		userID = getUserIDFromRememberMeCookie(r, s.Repository.GetAuthToken)
+		if userID == -1 {
 			isLoggedIn = false
 		}
 	}
@@ -658,7 +670,8 @@ func (s *Server) recipeSharePostHandler(w http.ResponseWriter, r *http.Request) 
 	}
 
 	link := app.Config.Address() + r.URL.String()
-	if err := s.Repository.AddShareLink(link, recipeID); err != nil {
+	err = s.Repository.AddShareLink(link, recipeID)
+	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Failed to create share link.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)
 		return

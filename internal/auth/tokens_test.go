@@ -29,7 +29,8 @@ func TestAuthTokens(t *testing.T) {
 		claims := map[string]any{"userID": 1}
 		jwtAuth, _ := auth.CreateToken(claims, -1*time.Second)
 
-		if _, err := auth.ParseToken(jwtAuth); err == nil {
+		_, err := auth.ParseToken(jwtAuth)
+		if err == nil {
 			t.Error(err)
 		}
 	})

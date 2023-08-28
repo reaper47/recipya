@@ -53,17 +53,20 @@ func NewSQLiteService() *SQLiteService {
 		panic(err)
 	}
 
-	if err := db.Ping(); err != nil {
+	err = db.Ping()
+	if err != nil {
 		panic(err)
 	}
 
 	goose.SetBaseFS(embedMigrations)
 
-	if err := goose.SetDialect("sqlite"); err != nil {
+	err = goose.SetDialect("sqlite")
+	if err != nil {
 		panic(err)
 	}
 
-	if err := goose.Up(db, "migrations"); err != nil {
+	err = goose.Up(db, "migrations")
+	if err != nil {
 		panic(err)
 	}
 
@@ -118,67 +121,80 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error)
 
 	// Insert recipe
 	var recipeID int64
-	if err := tx.QueryRowContext(ctx, statements.InsertRecipe, r.Name, r.Description, r.Image, r.Yield, r.URL).Scan(&recipeID); err != nil {
+	err = tx.QueryRowContext(ctx, statements.InsertRecipe, r.Name, r.Description, r.Image, r.Yield, r.URL).Scan(&recipeID)
+	if err != nil {
 		return -1, err
 	}
 	r.ID = recipeID
 
-	if _, err := tx.ExecContext(ctx, statements.InsertUserRecipe, userID, recipeID); err != nil {
+	_, err = tx.ExecContext(ctx, statements.InsertUserRecipe, userID, recipeID)
+	if err != nil {
 		return -1, err
 	}
 
 	// Insert category
 	var categoryID int64
-	if err := tx.QueryRowContext(ctx, statements.InsertCategory, r.Category, userID).Scan(&categoryID); err != nil {
+	err = tx.QueryRowContext(ctx, statements.InsertCategory, r.Category, userID).Scan(&categoryID)
+	if err != nil {
 		return -1, err
 	}
 
-	if _, err := tx.ExecContext(ctx, statements.InsertRecipeCategory, categoryID, recipeID); err != nil {
+	_, err = tx.ExecContext(ctx, statements.InsertRecipeCategory, categoryID, recipeID)
+	if err != nil {
 		return -1, err
 	}
 
-	if _, err := tx.ExecContext(ctx, statements.InsertUserCategory, userID, categoryID); err != nil {
+	_, err = tx.ExecContext(ctx, statements.InsertUserCategory, userID, categoryID)
+	if err != nil {
 		return -1, err
 	}
 
 	// Insert cuisine
-	if _, err := tx.ExecContext(ctx, statements.InsertCuisine, r.Cuisine, userID); err != nil {
+	_, err = tx.ExecContext(ctx, statements.InsertCuisine, r.Cuisine, userID)
+	if err != nil {
 		return -1, err
 	}
 
 	var cuisineID int64
-	if err := tx.QueryRowContext(ctx, statements.SelectCuisineID, r.Cuisine).Scan(&cuisineID); errors.Is(err, sql.ErrNoRows) {
+	err = tx.QueryRowContext(ctx, statements.SelectCuisineID, r.Cuisine).Scan(&cuisineID)
+	if errors.Is(err, sql.ErrNoRows) {
 		return -1, err
 	}
 
-	if _, err := tx.ExecContext(ctx, statements.InsertRecipeCuisine, cuisineID, recipeID); err != nil {
+	_, err = tx.ExecContext(ctx, statements.InsertRecipeCuisine, cuisineID, recipeID)
+	if err != nil {
 		return -1, err
 	}
 
 	// Insert nutrition
 	n := r.Nutrition
-	if _, err := tx.ExecContext(ctx, statements.InsertNutrition, recipeID, n.Calories, n.TotalCarbohydrates, n.Sugars, n.Protein, n.TotalFat, n.SaturatedFat, n.UnsaturatedFat, n.Cholesterol, n.Sodium, n.Fiber); err != nil {
+	_, err = tx.ExecContext(ctx, statements.InsertNutrition, recipeID, n.Calories, n.TotalCarbohydrates, n.Sugars, n.Protein, n.TotalFat, n.SaturatedFat, n.UnsaturatedFat, n.Cholesterol, n.Sodium, n.Fiber)
+	if err != nil {
 		return -1, err
 	}
 
 	// Insert times
 	var timesID int64
-	if err := tx.QueryRowContext(ctx, statements.InsertTimes, int64(r.Times.Prep.Seconds()), int64(r.Times.Cook.Seconds())).Scan(&timesID); err != nil {
+	err = tx.QueryRowContext(ctx, statements.InsertTimes, int64(r.Times.Prep.Seconds()), int64(r.Times.Cook.Seconds())).Scan(&timesID)
+	if err != nil {
 		return -1, err
 	}
 
-	if _, err := tx.ExecContext(ctx, statements.InsertRecipeTime, timesID, recipeID); err != nil {
+	_, err = tx.ExecContext(ctx, statements.InsertRecipeTime, timesID, recipeID)
+	if err != nil {
 		return -1, err
 	}
 
 	// Insert keywords
 	for _, keyword := range r.Keywords {
 		var keywordID int64
-		if err := tx.QueryRowContext(ctx, statements.InsertKeyword, keyword).Scan(&keywordID); err != nil {
+		err := tx.QueryRowContext(ctx, statements.InsertKeyword, keyword).Scan(&keywordID)
+		if err != nil {
 			return -1, err
 		}
 
-		if _, err := tx.ExecContext(ctx, statements.InsertRecipeKeyword, keywordID, recipeID); err != nil {
+		_, err = tx.ExecContext(ctx, statements.InsertRecipeKeyword, keywordID, recipeID)
+		if err != nil {
 			return -1, err
 		}
 	}
@@ -186,11 +202,13 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error)
 	// Insert instructions
 	for i, instruction := range r.Instructions {
 		var instructionID int64
-		if err := tx.QueryRowContext(ctx, statements.InsertInstruction, instruction).Scan(&instructionID); err != nil {
+		err := tx.QueryRowContext(ctx, statements.InsertInstruction, instruction).Scan(&instructionID)
+		if err != nil {
 			return -1, err
 		}
 
-		if _, err := tx.ExecContext(ctx, statements.InsertRecipeInstruction, instructionID, recipeID, i); err != nil {
+		_, err = tx.ExecContext(ctx, statements.InsertRecipeInstruction, instructionID, recipeID, i)
+		if err != nil {
 			return -1, err
 		}
 	}
@@ -198,11 +216,13 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error)
 	// Insert ingredients
 	for i, ingredient := range r.Ingredients {
 		var ingredientID int64
-		if err := tx.QueryRowContext(ctx, statements.InsertIngredient, ingredient).Scan(&ingredientID); err != nil {
+		err := tx.QueryRowContext(ctx, statements.InsertIngredient, ingredient).Scan(&ingredientID)
+		if err != nil {
 			return -1, err
 		}
 
-		if _, err := tx.ExecContext(ctx, statements.InsertRecipeIngredient, ingredientID, recipeID, i); err != nil {
+		_, err = tx.ExecContext(ctx, statements.InsertRecipeIngredient, ingredientID, recipeID, i)
+		if err != nil {
 			return -1, err
 		}
 	}
@@ -210,11 +230,12 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error)
 	// Insert tools
 	for _, tool := range r.Tools {
 		var toolID int64
-		if err := tx.QueryRowContext(ctx, statements.InsertTool, tool).Scan(&toolID); err != nil {
+		err := tx.QueryRowContext(ctx, statements.InsertTool, tool).Scan(&toolID)
+		if err != nil {
 			return -1, err
 		}
-
-		if _, err := tx.ExecContext(ctx, statements.InsertRecipeTool, toolID, recipeID); err != nil {
+		_, err = tx.ExecContext(ctx, statements.InsertRecipeTool, toolID, recipeID)
+		if err != nil {
 			return -1, err
 		}
 	}
@@ -237,7 +258,8 @@ func (s *SQLiteService) Categories(userID int64) ([]string, error) {
 
 	for rows.Next() {
 		var c string
-		if err := rows.Scan(&c); err != nil {
+		err := rows.Scan(&c)
+		if err != nil {
 			return nil, err
 		}
 		categories = append(categories, c)
@@ -307,7 +329,8 @@ func (s *SQLiteService) GetAuthToken(selector, validator string) (models.AuthTok
 
 	token := models.AuthToken{Selector: selector}
 	row := s.DB.QueryRowContext(ctx, statements.SelectAuthToken, selector)
-	if err := row.Scan(&token.ID, &token.HashValidator, &token.Expires, &token.UserID); errors.Is(err, sql.ErrNoRows) {
+	err := row.Scan(&token.ID, &token.HashValidator, &token.Expires, &token.UserID)
+	if errors.Is(err, sql.ErrNoRows) {
 		return models.AuthToken{}, err
 	}
 
@@ -341,7 +364,8 @@ func (s *SQLiteService) IsUserPassword(id int64, password string) bool {
 	defer cancel()
 
 	var hash string
-	if err := s.DB.QueryRowContext(ctx, statements.SelectUserPasswordByID, id).Scan(&hash); err != nil {
+	err := s.DB.QueryRowContext(ctx, statements.SelectUserPasswordByID, id).Scan(&hash)
+	if err != nil {
 		return false
 	}
 
@@ -357,7 +381,8 @@ func (s *SQLiteService) MeasurementSystems(userID int64) ([]units.System, models
 		groupedSystems       string
 		selected             string
 	)
-	if err := s.DB.QueryRowContext(ctx, statements.SelectMeasurementSystems, userID).Scan(&selected, &groupedSystems, &convertAutomatically); err != nil {
+	err := s.DB.QueryRowContext(ctx, statements.SelectMeasurementSystems, userID).Scan(&selected, &groupedSystems, &convertAutomatically)
+	if err != nil {
 		return nil, models.UserSettings{}, err
 	}
 
@@ -423,11 +448,14 @@ func scanRecipe(sc scanner) (*models.Recipe, error) {
 		keywords     string
 		tools        string
 	)
-	if err := sc.Scan(
+
+	err := sc.Scan(
 		&r.ID, &r.Name, &r.Description, &r.Image, &r.URL, &r.Yield, &r.CreatedAt, &r.UpdatedAt, &r.Category, &r.Cuisine,
 		&ingredients, &instructions, &keywords, &tools, &r.Nutrition.Calories, &r.Nutrition.TotalCarbohydrates,
 		&r.Nutrition.Sugars, &r.Nutrition.Protein, &r.Nutrition.TotalFat, &r.Nutrition.SaturatedFat, &r.Nutrition.UnsaturatedFat,
-		&r.Nutrition.Cholesterol, &r.Nutrition.Sodium, &r.Nutrition.Fiber, &r.Times.Prep, &r.Times.Cook, &r.Times.Total); err != nil {
+		&r.Nutrition.Cholesterol, &r.Nutrition.Sodium, &r.Nutrition.Fiber, &r.Times.Prep, &r.Times.Cook, &r.Times.Total,
+	)
+	if err != nil {
 		return nil, err
 	}
 
@@ -476,7 +504,8 @@ func (s *SQLiteService) SwitchMeasurementSystem(system units.System, userID int6
 	}
 	defer tx.Rollback()
 
-	if _, err := tx.ExecContext(ctx, statements.UpdateMeasurementSystem, system.String(), userID); err != nil {
+	_, err = tx.ExecContext(ctx, statements.UpdateMeasurementSystem, system.String(), userID)
+	if err != nil {
 		return err
 	}
 
@@ -487,28 +516,33 @@ func (s *SQLiteService) SwitchMeasurementSystem(system units.System, userID int6
 			continue
 		}
 
-		if _, err = tx.ExecContext(ctx, statements.UpdateRecipeDescription, converted.Description, r.ID); err != nil {
+		_, err = tx.ExecContext(ctx, statements.UpdateRecipeDescription, converted.Description, r.ID)
+		if err != nil {
 			continue
 		}
 
 		for i, ingredient := range converted.Ingredients {
 			var ingredientID int64
-			if err := tx.QueryRowContext(ctx, statements.InsertIngredient, ingredient).Scan(&ingredientID); err != nil {
+			err := tx.QueryRowContext(ctx, statements.InsertIngredient, ingredient).Scan(&ingredientID)
+			if err != nil {
 				continue
 			}
 
-			if _, err := tx.ExecContext(ctx, statements.UpdateRecipeIngredient, ingredientID, r.Ingredients[i], r.ID); err != nil {
+			_, err = tx.ExecContext(ctx, statements.UpdateRecipeIngredient, ingredientID, r.Ingredients[i], r.ID)
+			if err != nil {
 				continue
 			}
 		}
 
 		for i, instruction := range converted.Instructions {
 			var instructionID int64
-			if err := tx.QueryRowContext(ctx, statements.InsertInstruction, instruction).Scan(&instructionID); err != nil {
+			err := tx.QueryRowContext(ctx, statements.InsertInstruction, instruction).Scan(&instructionID)
+			if err != nil {
 				continue
 			}
 
-			if _, err := tx.ExecContext(ctx, statements.UpdateRecipeInstruction, instructionID, r.Instructions[i], r.ID); err != nil {
+			_, err = tx.ExecContext(ctx, statements.UpdateRecipeInstruction, instructionID, r.Instructions[i], r.ID)
+			if err != nil {
 				continue
 			}
 		}
@@ -562,11 +596,13 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 
 	if updatedRecipe.Category != oldRecipe.Category {
 		var categoryID int64
-		if err := tx.QueryRowContext(ctx, statements.InsertCategory, updatedRecipe.Category).Scan(&categoryID); err != nil {
+		err := tx.QueryRowContext(ctx, statements.InsertCategory, updatedRecipe.Category).Scan(&categoryID)
+		if err != nil {
 			return err
 		}
 
-		if _, err := tx.ExecContext(ctx, statements.UpdateRecipeCategory, categoryID, recipeID); err != nil {
+		_, err = tx.ExecContext(ctx, statements.UpdateRecipeCategory, categoryID, recipeID)
+		if err != nil {
 			return err
 		}
 	}
@@ -575,18 +611,21 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 		ids := make([]int64, len(updatedRecipe.Ingredients))
 		for i, v := range updatedRecipe.Ingredients {
 			var id int64
-			if err := tx.QueryRowContext(ctx, statements.InsertIngredient, v).Scan(&id); err != nil {
+			err := tx.QueryRowContext(ctx, statements.InsertIngredient, v).Scan(&id)
+			if err != nil {
 				return err
 			}
 			ids[i] = id
 		}
 
-		if _, err := tx.ExecContext(ctx, statements.DeleteRecipeIngredients, recipeID); err != nil {
+		_, err := tx.ExecContext(ctx, statements.DeleteRecipeIngredients, recipeID)
+		if err != nil {
 			return err
 		}
 
 		for i, id := range ids {
-			if _, err := tx.ExecContext(ctx, statements.InsertRecipeIngredient, id, recipeID, i); err != nil {
+			_, err := tx.ExecContext(ctx, statements.InsertRecipeIngredient, id, recipeID, i)
+			if err != nil {
 				return err
 			}
 		}
@@ -596,18 +635,21 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 		ids := make([]int64, len(updatedRecipe.Instructions))
 		for i, v := range updatedRecipe.Instructions {
 			var id int64
-			if err := tx.QueryRowContext(ctx, statements.InsertInstruction, v).Scan(&id); err != nil {
+			err := tx.QueryRowContext(ctx, statements.InsertInstruction, v).Scan(&id)
+			if err != nil {
 				return err
 			}
 			ids[i] = id
 		}
 
-		if _, err := tx.ExecContext(ctx, statements.DeleteRecipeInstructions, recipeID); err != nil {
+		_, err := tx.ExecContext(ctx, statements.DeleteRecipeInstructions, recipeID)
+		if err != nil {
 			return err
 		}
 
 		for i, id := range ids {
-			if _, err := tx.ExecContext(ctx, statements.InsertRecipeInstruction, id, recipeID, i); err != nil {
+			_, err := tx.ExecContext(ctx, statements.InsertRecipeInstruction, id, recipeID, i)
+			if err != nil {
 				return err
 			}
 		}
@@ -693,7 +735,8 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 			xs[0] = " " + xs[0]
 			stmt := "UPDATE recipes SET" + strings.Join(xs, ", ") + " WHERE id = ?"
 			args = append(args, recipeID)
-			if _, err := tx.ExecContext(ctx, stmt, args...); err != nil {
+			_, err := tx.ExecContext(ctx, stmt, args...)
+			if err != nil {
 				return err
 			}
 			break
@@ -703,11 +746,13 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 	if updatedRecipe.Times.Prep != oldRecipe.Times.Prep ||
 		updatedRecipe.Times.Cook != oldRecipe.Times.Cook {
 		var timesID int64
-		if err := tx.QueryRowContext(ctx, statements.InsertTimes, int64(updatedRecipe.Times.Prep.Seconds()), int64(updatedRecipe.Times.Cook.Seconds())).Scan(&timesID); err != nil {
+		err := tx.QueryRowContext(ctx, statements.InsertTimes, int64(updatedRecipe.Times.Prep.Seconds()), int64(updatedRecipe.Times.Cook.Seconds())).Scan(&timesID)
+		if err != nil {
 			return err
 		}
 
-		if _, err := tx.ExecContext(ctx, statements.UpdateRecipeTimes, timesID, recipeID); err != nil {
+		_, err = tx.ExecContext(ctx, statements.UpdateRecipeTimes, timesID, recipeID)
+		if err != nil {
 			return err
 		}
 	}
@@ -759,7 +804,8 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 		xs[0] = " " + xs[0]
 		stmt := "UPDATE nutrition SET" + strings.Join(xs, ", ") + " WHERE recipe_id = ?"
 		args = append(args, recipeID)
-		if _, err := tx.ExecContext(ctx, stmt, args...); err != nil {
+		_, err := tx.ExecContext(ctx, stmt, args...)
+		if err != nil {
 			return err
 		}
 	}
@@ -772,7 +818,8 @@ func (s *SQLiteService) UserID(email string) int64 {
 	defer cancel()
 
 	var id int64
-	if err := s.DB.QueryRowContext(ctx, statements.SelectUserID, email).Scan(&id); errors.Is(err, sql.ErrNoRows) {
+	err := s.DB.QueryRowContext(ctx, statements.SelectUserID, email).Scan(&id)
+	if errors.Is(err, sql.ErrNoRows) {
 		return -1
 	}
 	return id
@@ -798,7 +845,8 @@ func (s *SQLiteService) UserInitials(userID int64) string {
 	defer cancel()
 
 	var email string
-	if err := s.DB.QueryRowContext(ctx, statements.SelectUserEmail, userID).Scan(&email); errors.Is(err, sql.ErrNoRows) {
+	err := s.DB.QueryRowContext(ctx, statements.SelectUserEmail, userID).Scan(&email)
+	if errors.Is(err, sql.ErrNoRows) {
 		return ""
 	}
 	return string(strings.ToUpper(email)[0])
@@ -818,7 +866,8 @@ func (s *SQLiteService) Users() []models.User {
 
 	for rows.Next() {
 		var user models.User
-		if err := rows.Scan(&user.ID, &user.Email); err != nil {
+		err := rows.Scan(&user.ID, &user.Email)
+		if err != nil {
 			log.Printf("error scanning user: %q", err)
 			return users
 		}
@@ -835,11 +884,12 @@ func (s *SQLiteService) VerifyLogin(email, password string) int64 {
 		id   int64
 		hash string
 	)
-	if err := s.DB.QueryRowContext(ctx, statements.SelectUserPassword, email).Scan(&id, &hash); err != nil {
+	err := s.DB.QueryRowContext(ctx, statements.SelectUserPassword, email).Scan(&id, &hash)
+	if err != nil {
 		return -1
 	}
 
-	if isOk := auth.VerifyPassword(password, auth.HashedPassword(hash)); !isOk {
+	if ok := auth.VerifyPassword(password, auth.HashedPassword(hash)); !ok {
 		return -1
 	}
 	return id
@@ -850,7 +900,8 @@ func (s *SQLiteService) Websites() models.Websites {
 	defer cancel()
 
 	var count int64
-	if err := s.DB.QueryRowContext(ctx, statements.SelectCountWebsites).Scan(&count); errors.Is(err, sql.ErrNoRows) {
+	err := s.DB.QueryRowContext(ctx, statements.SelectCountWebsites).Scan(&count)
+	if errors.Is(err, sql.ErrNoRows) {
 		return models.Websites{}
 	}
 
@@ -865,7 +916,8 @@ func (s *SQLiteService) Websites() models.Websites {
 	i := 0
 	for rows.Next() {
 		var w models.Website
-		if err := rows.Scan(&w.ID, &w.Host, &w.URL); err != nil {
+		err := rows.Scan(&w.ID, &w.Host, &w.URL)
+		if err != nil {
 			log.Printf("error scanning website: %q", err)
 			continue
 		}

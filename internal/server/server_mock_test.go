@@ -171,7 +171,10 @@ func (m *mockRepository) Recipes(userID int64) models.Recipes {
 
 func (m *mockRepository) RecipeUser(recipeID int64) int64 {
 	for userID, recipes := range m.RecipesRegistered {
-		if i := slices.IndexFunc(recipes, func(r models.Recipe) bool { return r.ID == recipeID }); i != -1 {
+		i := slices.IndexFunc(recipes, func(r models.Recipe) bool {
+			return r.ID == recipeID
+		})
+		if i != -1 {
 			return userID
 		}
 	}

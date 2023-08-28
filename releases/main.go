@@ -88,7 +88,8 @@ func build(platform, packageName, tag string) {
 
 	_, err = os.Stat(outputName)
 	if err == nil {
-		if err := os.MkdirAll(tag, os.ModePerm); err != nil {
+		err := os.MkdirAll(tag, os.ModePerm)
+		if err != nil {
 			fmt.Printf("Creating the tag's directory failed: %q.\nAborting the script execution...\n", err)
 			os.Exit(1)
 		}

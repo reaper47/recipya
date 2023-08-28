@@ -148,7 +148,8 @@ func TestDuration_ToTimeDuration(t *testing.T) {
 				Minutes: tc.fields.Minutes,
 				Seconds: tc.fields.Seconds,
 			}
-			if got := d.ToTimeDuration(); got != tc.want {
+			got := d.ToTimeDuration()
+			if got != tc.want {
 				t.Errorf("ToTimeDuration() = %v, want %v", got, tc.want)
 			}
 		})

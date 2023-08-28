@@ -12,7 +12,8 @@ func scrapeTesco(root *goquery.Document) (models.RecipeSchema, error) {
 	j := root.Find("script[type='application/ld+json']").First().Text()
 	j = strings.ReplaceAll(j, "\n", "")
 	var rs models.RecipeSchema
-	if err := json.Unmarshal([]byte(j), &rs); err != nil {
+	err := json.Unmarshal([]byte(j), &rs)
+	if err != nil {
 		return models.RecipeSchema{}, err
 	}
 
