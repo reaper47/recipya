@@ -31,6 +31,7 @@ func TestGenerateSelectorAndValidator(t *testing.T) {
 		validatorSet := make(map[string]bool)
 		for i := 0; i < 1000; i++ {
 			selector, validator := auth.GenerateSelectorAndValidator()
+
 			if _, exists := selectorSet[selector]; exists {
 				t.Errorf("duplicate selector found: %s", selector)
 			}

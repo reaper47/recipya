@@ -44,7 +44,8 @@ func (s *Server) changePasswordHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := s.Repository.UpdatePassword(userID, hashPassword); err != nil {
+	err = s.Repository.UpdatePassword(userID, hashPassword)
+	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Failed to update password.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -69,7 +70,8 @@ func (s *Server) confirmHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := s.Repository.Confirm(userID); err != nil {
+	err = s.Repository.Confirm(userID)
+	if err != nil {
 		sendErrorAdminEmail(s.Email.Send, "confirmHandler.Confirm: "+token, err)
 		w.WriteHeader(http.StatusNotFound)
 		templates.Render(w, templates.Simple, templates.ErrorConfirm)
@@ -157,7 +159,8 @@ func (s *Server) forgotPasswordResetPostHandler(w http.ResponseWriter, r *http.R
 		return
 	}
 
-	if err := s.Repository.UpdatePassword(userID, hashPassword); err != nil {
+	err = s.Repository.UpdatePassword(userID, hashPassword)
+	if err != nil {
 		sendErrorAdminEmail(s.Email.Send, "forgotPasswordResetPostHandler.UpdatePassword: "+strconv.FormatInt(userID, 10), err)
 		w.Header().Set("HX-Trigger", makeToast("Updating password failed.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)
@@ -197,13 +200,15 @@ func (s *Server) loginPostHandler(w http.ResponseWriter, r *http.Request) {
 	if r.FormValue("remember-me") == "true" {
 		selector, validator := auth.GenerateSelectorAndValidator()
 		http.SetCookie(w, NewRememberMeCookie(selector, validator))
-		if err := s.Repository.AddAuthToken(selector, validator, userID); err != nil {
+		err := s.Repository.AddAuthToken(selector, validator, userID)
+		if err != nil {
 			sendErrorAdminEmail(s.Email.Send, "loginPostHandler.AddAuthToken", err)
 		}
 	}
 
 	redirectUri := "/"
-	if c, err := r.Cookie(cookieNameRedirect); !errors.Is(err, http.ErrNoCookie) {
+	c, err := r.Cookie(cookieNameRedirect)
+	if !errors.Is(err, http.ErrNoCookie) {
 		redirectUri = c.Value
 	}
 
@@ -250,7 +255,8 @@ func (s *Server) logoutHandler(w http.ResponseWriter, r *http.Request) {
 
 	rememberMeCookie, err := r.Cookie(cookieNameRememberMe)
 	if !errors.Is(err, http.ErrNoCookie) {
-		if err := s.Repository.DeleteAuthToken(userID); err != nil {
+		err := s.Repository.DeleteAuthToken(userID)
+		if err != nil {
 			sendErrorAdminEmail(s.Email.Send, "logoutHandler.DeleteAuthToken", err)
 		}
 

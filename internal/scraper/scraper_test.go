@@ -9764,7 +9764,8 @@ func TestScraper(t *testing.T) {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			defer func() {
-				if err := recover(); err != nil {
+				err := recover()
+				if err != nil {
 					t.Fatalf("panic while testing %s: %s", tc.name, err)
 				}
 			}()
@@ -9806,7 +9807,8 @@ func updateHTMLFile(t *testing.T, url string) {
 	host := getHost(url)
 	_, fileName, _, _ := runtime.Caller(0)
 	filePath := filepath.Join(path.Dir(fileName), "testdata", host+".html")
-	if err := os.WriteFile(filePath, body, os.ModePerm); err != nil {
+	err = os.WriteFile(filePath, body, os.ModePerm)
+	if err != nil {
 		t.Log(err)
 		return
 	}

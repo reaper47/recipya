@@ -194,7 +194,8 @@ func (s *Server) Run() {
 			}
 		}()
 
-		if err := httpServer.Shutdown(shutdownCtx); err != nil {
+		err := httpServer.Shutdown(shutdownCtx)
+		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
@@ -202,7 +203,8 @@ func (s *Server) Run() {
 	}()
 
 	fmt.Printf("Serving on %s\n", app.Config.Address())
-	if err := httpServer.ListenAndServe(); err != nil {
+	err := httpServer.ListenAndServe()
+	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}

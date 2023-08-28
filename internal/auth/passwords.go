@@ -75,7 +75,8 @@ func decodeHash(encodedHash HashedPassword) (p *params, salt, hash []byte, err e
 	}
 
 	var version int
-	if _, err = fmt.Sscanf(parts[2], "v=%d", &version); err != nil {
+	_, err = fmt.Sscanf(parts[2], "v=%d", &version)
+	if err != nil {
 		return nil, nil, nil, err
 	}
 
@@ -84,7 +85,8 @@ func decodeHash(encodedHash HashedPassword) (p *params, salt, hash []byte, err e
 	}
 
 	p = &params{}
-	if _, err = fmt.Sscanf(parts[3], "m=%d,t=%d,p=%d", &p.memory, &p.iterations, &p.parallelism); err != nil {
+	_, err = fmt.Sscanf(parts[3], "m=%d,t=%d,p=%d", &p.memory, &p.iterations, &p.parallelism)
+	if err != nil {
 		return nil, nil, nil, err
 	}
 

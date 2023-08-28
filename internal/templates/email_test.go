@@ -20,7 +20,8 @@ func TestEmailTemplate_String(t *testing.T) {
 		"request-website.mjml",
 	}
 	for i, template := range emailTemplates {
-		if got := template.String(); got != want[i] {
+		got := template.String()
+		if got != want[i] {
 			t.Fatalf("got %q but want %q", got, want[i])
 		}
 	}
@@ -34,7 +35,8 @@ func TestEmailTemplate_Subject(t *testing.T) {
 		"Request Website",
 	}
 	for i, template := range emailTemplates {
-		if got := template.Subject(); got != want[i] {
+		got := template.Subject()
+		if got != want[i] {
 			t.Fatalf("got %q but want %q", got, want[i])
 		}
 	}

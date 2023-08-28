@@ -71,7 +71,8 @@ func TestRecipe_ConvertMeasurementSystem(t *testing.T) {
 	}
 	for _, tc := range testcases {
 		t.Run("cannot convert "+tc.name, func(t *testing.T) {
-			if _, err := tc.in.ConvertMeasurementSystem(tc.to); err == nil {
+			_, err := tc.in.ConvertMeasurementSystem(tc.to)
+			if err == nil {
 				t.Fatalf("expected error but got %q", err)
 			}
 		})

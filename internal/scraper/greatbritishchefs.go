@@ -60,7 +60,8 @@ type vitePluginRecipeInfo struct {
 
 func scrapeGreatBritishChefs(root *goquery.Document) (models.RecipeSchema, error) {
 	var vite viteSsrPlugin
-	if err := json.Unmarshal([]byte(root.Find("#vite-plugin-ssr_pageContext").Text()), &vite); err != nil {
+	err := json.Unmarshal([]byte(root.Find("#vite-plugin-ssr_pageContext").Text()), &vite)
+	if err != nil {
 		return models.RecipeSchema{}, err
 	}
 	info := vite.PageContext.PageProps.RecipeInfoObject

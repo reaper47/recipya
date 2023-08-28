@@ -28,7 +28,7 @@ var (
 func init() {
 	templates = make(map[string]*template.Template)
 
-	if err := fs.WalkDir(web.FS, "templates", func(path string, d fs.DirEntry, err error) error {
+	err := fs.WalkDir(web.FS, "templates", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -56,7 +56,8 @@ func init() {
 			templates[strings.TrimPrefix(path, "templates/")] = template.Must(template.ParseFS(web.FS, files...))
 		}
 		return nil
-	}); err != nil {
+	})
+	if err != nil {
 		panic(err)
 	}
 
@@ -91,7 +92,8 @@ func initEmailTemplates() {
 
 // Render renders a page to the response writer.
 func Render(w http.ResponseWriter, page Page, data any) {
-	if err := templates["pages/"+page.String()+".gohtml"].Execute(w, data); err != nil {
+	err := templates["pages/"+page.String()+".gohtml"].Execute(w, data)
+	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }

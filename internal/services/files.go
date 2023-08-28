@@ -44,7 +44,8 @@ func (f *Files) ExportRecipes(recipes models.Recipes) (string, error) {
 			return "", err
 		}
 
-		if _, err = out.Write(data); err != nil {
+		_, err = out.Write(data)
+		if err != nil {
 			return "", err
 		}
 
@@ -52,7 +53,8 @@ func (f *Files) ExportRecipes(recipes models.Recipes) (string, error) {
 			fileName := recipe.Image.String() + ".jpg"
 			filePath := filepath.Join(app.ImagesDir, fileName)
 
-			if _, err := os.Stat(filePath); err == nil {
+			_, err := os.Stat(filePath)
+			if err == nil {
 				out, err = writer.Create(recipe.Name + "/image.jpg")
 				if err != nil {
 					return "", err
@@ -63,14 +65,16 @@ func (f *Files) ExportRecipes(recipes models.Recipes) (string, error) {
 					return "", err
 				}
 
-				if _, err = out.Write(data); err != nil {
+				_, err = out.Write(data)
+				if err != nil {
 					return "", err
 				}
 			}
 		}
 	}
 
-	if err := writer.Close(); err != nil {
+	err := writer.Close()
+	if err != nil {
 		return "", err
 	}
 
@@ -80,7 +84,8 @@ func (f *Files) ExportRecipes(recipes models.Recipes) (string, error) {
 	}
 	defer out.Close()
 
-	if _, err := out.Write(buf.Bytes()); err != nil {
+	_, err = out.Write(buf.Bytes())
+	if err != nil {
 		return "", err
 	}
 
@@ -139,7 +144,8 @@ func (f *Files) processZip(file *multipart.FileHeader) models.Recipes {
 	)
 
 	for _, file := range z.File {
-		if isDir = file.FileInfo().IsDir(); isDir && imageUUID != uuid.Nil {
+		isDir = file.FileInfo().IsDir()
+		if isDir && imageUUID != uuid.Nil {
 			recipes[recipeNumber-1].Image = imageUUID
 			imageUUID = uuid.Nil
 		}
@@ -210,8 +216,8 @@ func extractRecipe(rd io.Reader) (*models.Recipe, error) {
 	}
 
 	var rs models.RecipeSchema
-
-	if err = json.Unmarshal(buf, &rs); err != nil {
+	err = json.Unmarshal(buf, &rs)
+	if err != nil {
 		return nil, fmt.Errorf("extract recipe: %q", err)
 	}
 
@@ -251,7 +257,8 @@ func (f *Files) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
 		img = imaging.Resize(img, width/2, height/2, imaging.NearestNeighbor)
 	}
 
-	if err := jpeg.Encode(out, img, &jpeg.Options{Quality: 33}); err != nil {
+	err = jpeg.Encode(out, img, &jpeg.Options{Quality: 33})
+	if err != nil {
 		return uuid.Nil, nil
 	}
 	return imageUUID, nil
