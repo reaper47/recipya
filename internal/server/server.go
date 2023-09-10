@@ -128,7 +128,6 @@ func (s *Server) mountHandlers() {
 			r.Post("/website", s.recipesAddWebsiteHandler)
 		})
 
-		r.Get("/export", s.recipesExportHandler)
 		r.Get("/supported-websites", s.recipesSupportedWebsitesHandler)
 	})
 
@@ -137,6 +136,10 @@ func (s *Server) mountHandlers() {
 
 		r.Route("/settings", func(r chi.Router) {
 			r.Get("/", s.settingsHandler)
+
+			r.Route("/export", func(r chi.Router) {
+				r.Get("/recipes", s.settingsExportRecipesHandler)
+			})
 
 			r.Post("/convert-automatically", s.settingsConvertAutomaticallyPostHandler)
 			r.Post("/measurement-system", s.settingsMeasurementSystemsPostHandler)

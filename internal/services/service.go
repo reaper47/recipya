@@ -100,9 +100,9 @@ type EmailService interface {
 
 // FilesService is the interface that describes the methods required for manipulating files.
 type FilesService interface {
-	// ExportRecipes creates a zip containing the recipes to export.
+	// ExportRecipes creates a zip containing the recipes to export in the given file type.
 	// It returns the name of file in the temporary directory.
-	ExportRecipes(recipes models.Recipes) (string, error)
+	ExportRecipes(recipes models.Recipes, fileType models.FileType) (string, error)
 
 	// ExtractRecipes extracts the recipes from the HTTP files.
 	ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recipes

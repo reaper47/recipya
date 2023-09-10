@@ -367,16 +367,18 @@ func (m *mockEmail) Send(_ string, _ templates.EmailTemplate, _ any) {
 }
 
 type mockFiles struct {
+	exportHitCount      int
 	extractRecipesFunc  func(fileHeaders []*multipart.FileHeader) models.Recipes
 	ReadTempFileFunc    func(name string) ([]byte, error)
 	uploadImageHitCount int
 }
 
-func (m *mockFiles) ExportRecipes(recipes models.Recipes) (string, error) {
+func (m *mockFiles) ExportRecipes(recipes models.Recipes, _ models.FileType) (string, error) {
 	var s string
 	for _, recipe := range recipes {
 		s += recipe.Name + "-"
 	}
+	m.exportHitCount++
 	return s, nil
 }
 

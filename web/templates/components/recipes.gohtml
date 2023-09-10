@@ -182,9 +182,9 @@
                 <p>
                     Import recipes in the that adhere to the
                     <a href="https://schema.org/Recipe" target="_blank"
-                       class="text-blue-600 underline hover:text-blue-800 visited:text-purple-600 dark:hover:text-blue-400 dark:visited:text-purple-400">
-                        recipe schema
-                    </a> standard, i.e. your Nextcloud recipes.
+                       class="text-blue-600 underline hover:text-blue-800 visited:text-purple-600 dark:hover:text-blue-400 dark:visited:text-purple-400">recipe
+                        schema</a>
+                    standard, i.e. your Nextcloud recipes.
                 </p>
             </div>
             <hr class="dark:border dark:border-gray-800">
@@ -901,7 +901,7 @@
                         <p class="pb-8 text-justify text-sm">{{call $funcs.CutString .Description 127}}</p>
 
                         <button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600"
-                           hx-get="/recipes/{{.ID}}" hx-target="#content" hx-push-url="true">
+                                hx-get="/recipes/{{.ID}}" hx-target="#content" hx-push-url="true">
                             View
                         </button>
                     </div>
@@ -913,10 +913,9 @@
             <p>Your recipe collection looks a bit empty at the moment.</p>
             <p>
                 Why not start adding some of your favorite recipes by clicking the
-                <a class="underline font-semibold cursor-pointer"
-                   hx-get="/recipes/add" hx-target="#content" hx-push-url="true">
-                    Add recipe
-                </a> button at the top?
+                <a class="underline font-semibold cursor-pointer" hx-get="/recipes/add" hx-target="#content"
+                   hx-push-url="true">Add recipe</a>
+                button at the top?
             </p>
         </div>
     {{end}}

@@ -21,7 +21,8 @@ func formatDuration(d time.Duration, isDatetime bool) string {
 		}
 		return fmt.Sprintf("PT%02dM", m)
 	}
-	return fmt.Sprintf("%dh%02d", h, m)
+
+	return fmt.Sprintf("%dh%02dm", h, m)
 }
 
 func isURL(s string) bool {

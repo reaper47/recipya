@@ -54,7 +54,7 @@ We are now ready to create tests for our route.
 
 Tests related to the server are written in the `handlers_{resource}_test.go` files. The tests for our handlers are 
 stored in the [handlers_recipes_test.go](https://github.com/reaper47/recipya/blob/main/internal/server/handlers_recipes_test.go)
-file. The nomenclature for test function is `TestHandlers_{Resource}_{Endpoint}`. Let's write the foundation
+file. The naming convention for test functions is `TestHandlers_{Resource}_{Endpoint}`. Let's write the foundation
 function of our tests.
 
 ```go
@@ -205,7 +205,7 @@ Remember, invoking `s.Mutex.Lock()` and `defer s.Mutex.Unlock()` is necessary wh
 database entries. However, in this scenario, we're merely fetching data, rendering the mutex unnecessary.
 
 SQL statements are organized by action within the [internal/services/statements](https://github.com/reaper47/recipya/tree/main/internal/services/statements)
-directory. Their nomenclature is `{Action}{Resource}`. In our case, a `SELECT` statement for fetching recipes is termed
+directory. The naming convention is `{Action}{Resource}`. In our case, a `SELECT` statement for fetching recipes is termed
 `SelectSearchRecipes` and would reside in the 
 [select.go](https://github.com/reaper47/recipya/tree/main/internal/services/statements) file.
 

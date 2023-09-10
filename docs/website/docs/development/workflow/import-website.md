@@ -85,7 +85,7 @@ Inspect the source of the recipe web page for occurrences of `ld+json`. If found
 then write `return parseLdJSON(doc)` and run the test. If it fails or the function seems not to work, then
 try `return parseGraph(doc)`. If these attempts fall short, then you must write a custom scraper.
 
-The nomenclature of this function is `scrape{Host}`. In your case, it would be `return scrapeExample(doc)`.
+The naming convention of this function is `scrape{Host}`. In your case, it would be `return scrapeExample(doc)`.
 Then, create a new file named `example.go` under `internal/scraper` and add the 
 `func scrapeKuchniadomova(root *goquery.Document) (models.RecipeSchema, error)` function. Please check any other 
 custom scraper files to understand how to write your own.

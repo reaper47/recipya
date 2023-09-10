@@ -600,26 +600,6 @@ func (s *Server) recipesEditPostHandler(w http.ResponseWriter, r *http.Request) 
 	w.WriteHeader(http.StatusNoContent)
 }
 
-func (s *Server) recipesExportHandler(w http.ResponseWriter, r *http.Request) {
-	userID := r.Context().Value("userID").(int64)
-	recipes := s.Repository.Recipes(userID)
-	if len(recipes) == 0 {
-		w.Header().Set("HX-Trigger", makeToast("No recipes in database.", warningToast))
-		w.WriteHeader(http.StatusNoContent)
-		return
-	}
-
-	fileName, err := s.Files.ExportRecipes(recipes)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Failed to export recipes.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("HX-Redirect", "/download/"+fileName)
-	w.WriteHeader(http.StatusSeeOther)
-}
-
 func (s *Server) recipeShareHandler(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {

@@ -77,10 +77,22 @@ func newFormattedTimes(times models.Times) formattedTimes {
 	prep := formatDuration(times.Prep, false)
 
 	parts := strings.Split(prep, "h")
-	prepEdit := fmt.Sprintf("%02s:%02s:00", parts[0], parts[1])
+	minutes := strings.Split(parts[1], "m")[0]
+	prepEdit := fmt.Sprintf("%02s:%02s:00", parts[0], minutes)
 
 	parts = strings.Split(cook, "h")
-	cookEdit := fmt.Sprintf("%02s:%02s:00", parts[0], parts[1])
+	minutes = strings.Split(parts[1], "m")[0]
+	cookEdit := fmt.Sprintf("%02s:%02s:00", parts[0], minutes)
+
+	prep = strings.TrimPrefix(prep, "0h")
+	prep = strings.TrimPrefix(prep, "0")
+
+	cook = strings.TrimPrefix(cook, "0h")
+	cook = strings.TrimPrefix(cook, "0")
+
+	total := formatDuration(times.Total, false)
+	total = strings.TrimPrefix(total, "0h")
+	total = strings.TrimPrefix(total, "0")
 
 	return formattedTimes{
 		Cook:          cook,
@@ -89,7 +101,7 @@ func newFormattedTimes(times models.Times) formattedTimes {
 		Prep:          prep,
 		PrepDateTime:  formatDuration(times.Prep, true),
 		PrepEdit:      prepEdit,
-		Total:         formatDuration(times.Total, false),
+		Total:         total,
 		TotalDateTime: formatDuration(times.Total, true),
 	}
 }

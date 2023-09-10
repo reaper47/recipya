@@ -4,8 +4,7 @@ sidebar_position: 2
 
 # Measurement Systems
 
-Users usually adhere to one preferred measurement system, rarely
-feeling comfortable with multiple systems. 
+Users usually adhere to one preferred measurement system, rarely feeling comfortable with multiple systems. 
 
 Within Recipya, you have the option to set your preferred measurement system. The ones currently 
 supported are imperial and metric. Europeans predominantly use the metric system, while Americans

@@ -77,6 +77,65 @@ func TestHandlers_Settings_ConvertAutomatically(t *testing.T) {
 	})
 }
 
+func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
+	srv := newServerTest()
+	f := &mockFiles{}
+	srv.Files = f
+
+	uri := "/settings/export/recipes"
+
+	validExportTypes := []string{"json", "pdf"}
+
+	t.Run("must be logged in", func(t *testing.T) {
+		for _, q := range validExportTypes {
+			assertMustBeLoggedIn(t, srv, http.MethodGet, uri+"?type="+q)
+		}
+	})
+
+	t.Run("invalid file type", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Invalid export file format.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+	})
+
+	t.Run("no export if no recipes", func(t *testing.T) {
+		for _, q := range validExportTypes {
+			t.Run(q, func(t *testing.T) {
+				originalHitCount := f.exportHitCount
+
+				rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?type="+q, noHeader, nil)
+
+				assertStatus(t, rr.Code, http.StatusNoContent)
+				assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"No recipes in database.\",\"backgroundColor\":\"bg-orange-500\"}"}`)
+				if originalHitCount != f.exportHitCount {
+					t.Fatalf("expected the export function not to be called")
+				}
+			})
+		}
+	})
+
+	t.Run("have recipes", func(t *testing.T) {
+		_, _ = srv.Repository.AddRecipe(&models.Recipe{ID: 1, Name: "Chicken"}, 1)
+		_, _ = srv.Repository.AddRecipe(&models.Recipe{ID: 2, Name: "BBQ"}, 2)
+		_, _ = srv.Repository.AddRecipe(&models.Recipe{ID: 3, Name: "Jersey"}, 1)
+
+		for _, q := range validExportTypes {
+			t.Run(q, func(t *testing.T) {
+				originalHitCount := f.exportHitCount
+
+				rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?type="+q, noHeader, nil)
+
+				assertStatus(t, rr.Code, http.StatusSeeOther)
+				assertHeader(t, rr, "HX-Redirect", "/download/Chicken-Jersey-")
+				if f.exportHitCount != originalHitCount+1 {
+					t.Fatalf("expected the export function to be called")
+				}
+			})
+		}
+	})
+}
+
 func TestHandlers_Settings_MeasurementSystems(t *testing.T) {
 	srv := newServerTest()
 
@@ -332,7 +391,7 @@ func TestHandlers_Settings_TabsRecipes(t *testing.T) {
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
 			`<p class="text-end font-semibold select-none">Export data:</p>`,
-			`<button type="button" hx-get="/recipes/export" hx-swap="none" class="h-fit w-fit bg-white border border-gray-300 rounded-lg py-2 px-4 justify-start hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">`,
+			`<form class="grid gap-1 grid-flow-col w-fit" hx-get="/settings/export/recipes" hx-include="select[name='type']"><label><select required id="file-type" name="type" class="bg-gray-50 border border-gray-300 rounded-lg p-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500"><optgroup label="Recipes"><option value="json" selected>JSON</option><option value="pdf">PDF</option></optgroup></select></label><button class="bg-white border border-gray-300 rounded-lg py-2 px-4 justify-start hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1" fill="black" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 11v5H2v-5H0v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5z"/><path d="m9 14 5-6h-4V0H8v8H4z"/></svg></button></form>`,
 			`<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1" fill="black" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 11v5H2v-5H0v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5z"/><path d="m9 14 5-6h-4V0H8v8H4z"/></svg>`,
 			`<label for="systems" class="text-end font-semibold">Measurement system:</label>`,
 			`<select id="systems" name="system" hx-post="/settings/measurement-system" hx-swap="none" class="h-fit w-fit bg-gray-50 border border-gray-300 rounded-lg p-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500"><option value="imperial" >imperial</option><option value="metric" selected>metric</option></select>`,
