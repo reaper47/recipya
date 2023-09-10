@@ -4,21 +4,27 @@ import (
 	"archive/zip"
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/disintegration/imaging"
 	"github.com/google/uuid"
+	"github.com/jung-kurt/gofpdf"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/templates"
 	"image"
 	"image/jpeg"
 	"io"
 	"log"
 	"mime/multipart"
+	"net/url"
 	"os"
 	"path/filepath"
 	"slices"
+	"strconv"
 	"strings"
 	"sync"
+	"time"
 )
 
 // NewFilesService creates a new Files that satisfies the FilesService interface.
@@ -29,48 +35,72 @@ func NewFilesService() *Files {
 // Files is the entity that manages the email client.
 type Files struct{}
 
-func (f *Files) ExportRecipes(recipes models.Recipes) (string, error) {
+type exportData struct {
+	recipeName  string
+	recipeImage uuid.UUID
+	data        []byte
+}
+
+func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType) (string, error) {
 	buf := new(bytes.Buffer)
 	writer := zip.NewWriter(buf)
 
-	for _, recipe := range recipes {
-		data, err := json.Marshal(recipe.Schema())
-		if err != nil {
-			return "", err
-		}
+	var (
+		exports []exportData
+		ext     = fileType.Ext()
+	)
+	switch fileType {
+	case models.JSON:
+		exports = exportRecipesJSON(recipes)
+		for _, e := range exports {
+			out, err := writer.Create(e.recipeName + "/recipe" + ext)
+			if err != nil {
+				return "", err
+			}
 
-		out, err := writer.Create(recipe.Name + "/recipe.json")
-		if err != nil {
-			return "", err
-		}
+			_, err = out.Write(e.data)
+			if err != nil {
+				return "", err
+			}
 
-		_, err = out.Write(data)
-		if err != nil {
-			return "", err
-		}
+			if e.recipeImage != uuid.Nil {
+				fileName := e.recipeImage.String() + ".jpg"
+				filePath := filepath.Join(app.ImagesDir, fileName)
 
-		if recipe.Image != uuid.Nil {
-			fileName := recipe.Image.String() + ".jpg"
-			filePath := filepath.Join(app.ImagesDir, fileName)
+				_, err := os.Stat(filePath)
+				if err == nil {
+					out, err = writer.Create(e.recipeName + "/image.jpg")
+					if err != nil {
+						return "", err
+					}
 
-			_, err := os.Stat(filePath)
-			if err == nil {
-				out, err = writer.Create(recipe.Name + "/image.jpg")
-				if err != nil {
-					return "", err
-				}
+					data, err := os.ReadFile(filePath)
+					if err != nil {
+						return "", err
+					}
 
-				data, err := os.ReadFile(filePath)
-				if err != nil {
-					return "", err
-				}
-
-				_, err = out.Write(data)
-				if err != nil {
-					return "", err
+					_, err = out.Write(data)
+					if err != nil {
+						return "", err
+					}
 				}
 			}
 		}
+	case models.PDF:
+		exports = exportRecipesPDF(recipes)
+		for _, e := range exports {
+			out, err := writer.Create(e.recipeName + fileType.Ext())
+			if err != nil {
+				return "", err
+			}
+
+			_, err = out.Write(e.data)
+			if err != nil {
+				return "", err
+			}
+		}
+	default:
+		return "", errors.New("unsupported export file type")
 	}
 
 	err := writer.Close()
@@ -78,7 +108,8 @@ func (f *Files) ExportRecipes(recipes models.Recipes) (string, error) {
 		return "", err
 	}
 
-	out, err := os.CreateTemp("", "*")
+	tempFileName := "recipes_" + strings.TrimPrefix(ext, ".") + "_*.zip"
+	out, err := os.CreateTemp("", tempFileName)
 	if err != nil {
 		return "", err
 	}
@@ -90,6 +121,300 @@ func (f *Files) ExportRecipes(recipes models.Recipes) (string, error) {
 	}
 
 	return filepath.Base(out.Name()), nil
+}
+
+func exportRecipesJSON(recipes models.Recipes) []exportData {
+	var data []exportData
+	for _, r := range recipes {
+		xb, err := json.Marshal(r.Schema())
+		if err != nil {
+			continue
+		}
+		data = append(data, exportData{
+			recipeName:  r.Name,
+			recipeImage: r.Image,
+			data:        xb,
+		})
+	}
+	return data
+}
+
+func exportRecipesPDF(recipes models.Recipes) []exportData {
+	var data []exportData
+	for _, r := range recipes {
+		data = append(data, exportData{
+			recipeName:  r.Name,
+			recipeImage: r.Image,
+			data:        recipeToPDF(&r),
+		})
+	}
+	return data
+}
+
+func recipeToPDF(r *models.Recipe) []byte {
+	viewData := templates.NewViewRecipeData(1, r, true, false)
+
+	pdf := gofpdf.New("P", "mm", "Letter", "")
+
+	pdf.SetAuthor("Recipya user", true)
+	pdf.SetCreator("Recipya", false)
+	pdf.SetSubject(r.Name, true)
+	pdf.SetTitle(r.Name, true)
+	pdf.SetCreationDate(time.Now())
+	tr := pdf.UnicodeTranslatorFromDescriptor("")
+
+	marginLeft, marginTop, marginRight, _ := pdf.GetMargins()
+	pageWidth, pageHeight := pdf.GetPageSize()
+	const (
+		fontFamily    = "Arial"
+		fontSizeBig   = 16
+		fontSizeSmall = 9
+	)
+
+	pdf.SetHeaderFunc(func() {
+		pdf.SetFont(fontFamily, "B", fontSizeBig)
+		wd := pageWidth
+		pdf.SetX(marginLeft)
+		pdf.MultiCell(wd-marginLeft-marginRight, 9, r.Name, "1", "C", false)
+	})
+
+	pdf.SetFooterFunc(func() {
+		pdf.SetY(-15)
+		pdf.SetFont(fontFamily, "I", fontSizeSmall-1)
+		pdf.SetTextColor(128, 128, 128)
+		pdf.CellFormat(0, 10, fmt.Sprintf("Page %d", pdf.PageNo()), "", 0, "C", false, 0, "")
+	})
+
+	pdf.SetFont(fontFamily, "", fontSizeSmall)
+	pdf.AddPage()
+	pdf.Rect(marginLeft, marginTop, pageWidth-marginLeft-marginRight, pageHeight-3*marginTop, "D")
+
+	// Category, servings, source
+	pdf.SetX(marginLeft)
+
+	var (
+		colWd   = (pageWidth - marginLeft - marginRight) / 3.
+		lineHt  = 5.0
+		cellGap = 2.0
+	)
+
+	type cellType struct {
+		str  string
+		list [][]byte
+		ht   float64
+	}
+	var (
+		cellList [3]cellType
+		cell     cellType
+	)
+
+	source := r.URL
+	parse, err := url.Parse(source)
+	if err == nil {
+		source = parse.Hostname()
+	}
+
+	cols := []string{
+		r.Category,
+		strconv.FormatInt(int64(r.Yield), 10) + " servings",
+		"Source: " + source,
+	}
+
+	y := pdf.GetY()
+	originalY := y + 9
+	maxHt := lineHt
+	for j := 0; j < 3; j++ {
+		lines := pdf.SplitLines([]byte(cols[j]), colWd-cellGap-cellGap)
+		height := float64(len(lines)) * lineHt
+		if height > maxHt {
+			maxHt = height
+		}
+		cellList[j] = cellType{
+			str:  cols[j],
+			list: lines,
+			ht:   height,
+		}
+	}
+
+	x := marginLeft
+	for i := 0; i < 3; i++ {
+		pdf.Rect(pdf.GetX(), y, colWd, maxHt+cellGap+cellGap, "D")
+		cell = cellList[i]
+		cellY := y + cellGap + (maxHt-cell.ht)/2
+		for splitJ := 0; splitJ < len(cell.list); splitJ++ {
+			var linkStr string
+			if i == 2 && parse != nil {
+				linkStr = r.URL
+			}
+
+			pdf.SetXY(x+cellGap, cellY)
+			pdf.CellFormat(colWd-cellGap, lineHt, tr(string(cell.list[splitJ])), "", 0, "C", false, 0, linkStr)
+			cellY += lineHt
+		}
+		x += colWd
+	}
+	y += maxHt + cellGap + cellGap
+
+	for j := 0; j < 3; j++ {
+		lines := pdf.SplitLines([]byte(cols[j]), colWd-cellGap-cellGap)
+		height := float64(len(lines)) * lineHt
+		if height > maxHt {
+			maxHt = height
+		}
+		cellList[j] = cellType{
+			str:  cols[j],
+			list: lines,
+			ht:   height,
+		}
+	}
+
+	// Times
+	cols = []string{
+		"Prep: " + viewData.FormattedTimes.Prep,
+		"Cook: " + viewData.FormattedTimes.Cook,
+		"Total: " + viewData.FormattedTimes.Total,
+	}
+	widths := []float64{colWd + 4*cellGap, colWd - 8*cellGap, colWd + 4*cellGap}
+	h := lineHt + cellGap/2
+	pdf.SetXY(marginLeft, y)
+	pdf.Rect(pdf.GetX(), y, widths[0], maxHt, "D")
+	pdf.CellFormat(widths[0], h, cols[0], "", 0, "C", false, 0, "")
+	pdf.SetX(marginLeft + widths[0])
+	pdf.Rect(pdf.GetX(), y, widths[1], maxHt, "D")
+	pdf.CellFormat(widths[1], h, cols[1], "", 0, "C", false, 0, "")
+	pdf.SetX(marginLeft + widths[0] + widths[1])
+	pdf.Rect(pdf.GetX(), y, widths[2], maxHt, "D")
+	pdf.SetFont(fontFamily, "B", fontSizeSmall)
+	pdf.CellFormat(widths[2], h, cols[2], "", 0, "C", false, 0, "")
+	pdf.SetFont(fontFamily, "", fontSizeSmall)
+	y += maxHt
+
+	// Description
+	lines := pdf.SplitLines([]byte(r.Description), 3*colWd)
+	height := float64(len(lines)) * lineHt
+	if height > maxHt {
+		maxHt = height
+	}
+	cellList[0] = cellType{
+		str:  r.Description,
+		list: lines,
+		ht:   height,
+	}
+
+	x = marginLeft
+	pdf.Rect(x, y, 3*colWd, maxHt+cellGap+cellGap, "D")
+	cell = cellList[0]
+	cellY := y + cellGap + (maxHt-cell.ht)/2
+	for splitJ := 0; splitJ < len(cell.list); splitJ++ {
+		pdf.SetXY(x+cellGap, cellY)
+		pdf.CellFormat(marginLeft, lineHt, tr(string(cell.list[splitJ])), "", 0, "L", false, 0, "")
+		cellY += lineHt
+	}
+	x += colWd
+	y += maxHt + cellGap + cellGap
+
+	pdf.SetFont(fontFamily, "", fontSizeSmall)
+	pdf.SetY(originalY)
+
+	pdf.SetY(y)
+	pdf.Ln(1)
+	pdf.SetX(marginLeft)
+	nutrition := make([]string, 0)
+	if r.Nutrition.Calories != "" {
+		nutrition = append(nutrition, "Calories: "+r.Nutrition.Calories+";")
+	}
+	if r.Nutrition.Cholesterol != "" {
+		nutrition = append(nutrition, " Cholesterol: "+r.Nutrition.Cholesterol+";")
+	}
+	if r.Nutrition.Fiber != "" {
+		nutrition = append(nutrition, " Fiber: "+r.Nutrition.Fiber+";")
+	}
+	if r.Nutrition.Protein != "" {
+		nutrition = append(nutrition, " Protein: "+r.Nutrition.Protein+";")
+	}
+	if r.Nutrition.SaturatedFat != "" {
+		nutrition = append(nutrition, " Saturated fat: "+r.Nutrition.SaturatedFat+";")
+	}
+	if r.Nutrition.Sodium != "" {
+		nutrition = append(nutrition, " Sodium: "+r.Nutrition.Sodium+";")
+	}
+	if r.Nutrition.Sugars != "" {
+		nutrition = append(nutrition, " Sugars: "+r.Nutrition.Sugars+";")
+	}
+	if r.Nutrition.TotalCarbohydrates != "" {
+		nutrition = append(nutrition, " Total carbohydrates: "+r.Nutrition.TotalCarbohydrates+";")
+	}
+	if r.Nutrition.TotalFat != "" {
+		nutrition = append(nutrition, " Total fat: "+r.Nutrition.TotalFat+";")
+	}
+	if r.Nutrition.UnsaturatedFat != "" {
+		nutrition = append(nutrition, " Unsaturated fat: "+r.Nutrition.UnsaturatedFat+";")
+	}
+	if len(nutrition) > 0 {
+		nutrition[0] = "  " + nutrition[0]
+		nutrition[len(nutrition)/2-1] += "\n"
+
+		pdf.SetX(marginLeft + cellGap)
+		pdf.SetFont(fontFamily, "B", fontSizeSmall)
+		pdf.CellFormat(12, 6, "Nutrition Facts", "", 1, "L", false, 0, "")
+		pdf.SetFont(fontFamily, "", fontSizeSmall)
+		pdf.SetX(marginLeft)
+		pdf.MultiCell(pageWidth-2*marginLeft, 5, tr(strings.Join(nutrition, " ")), "B", "1", false)
+	}
+
+	// Ingredients
+	ingredientsY := pdf.GetY()
+	pdf.SetX(marginLeft + cellGap)
+	pdf.SetFont(fontFamily, "B", fontSizeSmall)
+	pdf.CellFormat(0, 6, "Ingredients", "", 1, "L", false, 0, "")
+	pdf.SetFont(fontFamily, "", fontSizeSmall)
+
+	onNewPage := true
+	for _, ing := range r.Ingredients {
+		currY := pdf.GetY()
+		if currY > pageHeight-3*marginTop && onNewPage {
+			pdf.AddPage()
+			pdf.SetX(marginLeft + cellGap)
+			pdf.SetFont(fontFamily, "B", fontSizeSmall)
+			pdf.CellFormat(0, 7, "Ingredients (continued)", "", 1, "L", false, 0, "")
+			pdf.SetFont(fontFamily, "", fontSizeSmall)
+			onNewPage = false
+		}
+		pdf.MultiCell(pageWidth/3-marginLeft/2, 5, tr("-> "+ing), "", "L", false)
+	}
+
+	// Instructions
+	pdf.SetPage(1)
+	pdf.SetXY(marginLeft+pageWidth/3, ingredientsY)
+	pdf.SetFont(fontFamily, "B", fontSizeSmall)
+	pdf.CellFormat(0, 6, "Instructions", "", 1, "L", false, 0, "")
+	pdf.SetFont(fontFamily, "", fontSizeSmall)
+	pdf.SetX(marginLeft + pageWidth/3)
+
+	onNewPage = true
+	_, f := pdf.GetPageSize()
+	for i, ins := range r.Instructions {
+		pdf.SetX(marginLeft + pageWidth/3)
+		if pdf.GetY() > f-100 {
+			pdf.SetXY(marginLeft+pageWidth/3, 9+marginTop)
+			pdf.SetPage(2)
+			pdf.SetFont(fontFamily, "B", fontSizeSmall)
+			pdf.CellFormat(0, 7, "Instructions (continued)", "", 1, "L", false, 0, "")
+			pdf.SetFont(fontFamily, "", fontSizeSmall)
+			pdf.SetX(marginLeft + pageWidth/3)
+		}
+		pdf.MultiCell(2*pageWidth/3-2*marginRight, 5, tr(strconv.Itoa(i)+". "+ins), "", "L", false)
+	}
+	pdf.SetPage(2)
+	pdf.Rect(marginLeft, marginTop, pageWidth-marginLeft-marginRight, pageHeight-3*marginTop, "D")
+
+	buf := &bytes.Buffer{}
+	err = pdf.Output(buf)
+	if err != nil {
+		log.Printf("could not create a pdf for %q", r.Name)
+		return []byte{}
+	}
+	return buf.Bytes()
 }
 
 func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recipes {

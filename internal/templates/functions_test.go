@@ -13,7 +13,7 @@ func TestTemplatesFunctions(t *testing.T) {
 		want string
 	}{
 		{name: "is datetime", in: true, want: "PT2H45M"},
-		{name: "is not datetime", in: false, want: "2h45"},
+		{name: "is not datetime", in: false, want: "2h45m"},
 	}
 	for _, tc := range testcases1 {
 		t.Run("format duration "+tc.name, func(t *testing.T) {

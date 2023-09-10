@@ -30,7 +30,7 @@ func TestHandlers_Recipes(t *testing.T) {
 
 		want := []string{
 			`<title hx-swap-oob="true">Home | Recipya</title>`,
-			`<div class="grid place-content-center text-sm h-full text-center md:text-base"><p>Your recipe collection looks a bit empty at the moment.</p><p> Why not start adding some of your favorite recipes by clicking the <a class="underline font-semibold cursor-pointer" hx-get="/recipes/add" hx-target="#content" hx-push-url="true"> Add recipe </a> button at the top? </p></div>`,
+			`<div class="grid place-content-center text-sm h-full text-center md:text-base"><p>Your recipe collection looks a bit empty at the moment.</p><p> Why not start adding some of your favorite recipes by clicking the <a class="underline font-semibold cursor-pointer" hx-get="/recipes/add" hx-target="#content" hx-push-url="true">Add recipe</a> button at the top? </p></div>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
@@ -711,34 +711,6 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 	})
 }
 
-func TestHandlers_Recipes_Export(t *testing.T) {
-	srv := newServerTest()
-
-	uri := "/recipes/export"
-
-	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
-	})
-
-	t.Run("no export if no recipes", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
-
-		assertStatus(t, rr.Code, http.StatusNoContent)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"No recipes in database.\",\"backgroundColor\":\"bg-orange-500\"}"}`)
-	})
-
-	t.Run("have recipes", func(t *testing.T) {
-		_, _ = srv.Repository.AddRecipe(&models.Recipe{ID: 1, Name: "Chicken"}, 1)
-		_, _ = srv.Repository.AddRecipe(&models.Recipe{ID: 2, Name: "BBQ"}, 2)
-		_, _ = srv.Repository.AddRecipe(&models.Recipe{ID: 3, Name: "Jersey"}, 1)
-
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
-
-		assertStatus(t, rr.Code, http.StatusSeeOther)
-		assertHeader(t, rr, "HX-Redirect", "/download/Chicken-Jersey-")
-	})
-}
-
 func TestHandlers_Recipes_Share(t *testing.T) {
 	srv := newServerTest()
 
@@ -811,7 +783,7 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 			`<p class="p-2 text-sm whitespace-pre-line">This is the most delicious recipe!</p>`,
 			`<p class="text-xs">Per 100g: 500 calories; total carbohydrates 7g; sugars 6g; protein 3g; total fat 8g; saturated fat 4g; cholesterol 1g; sodium 5g; fiber 2g.</p>`,
 			`<table class="min-w-full text-xs divide-y divide-gray-200 table-auto dark:text-gray-200 dark:divide-slate-600"><thead class="h-12 font-medium tracking-wider text-white bg-gray-800"><tr><th scope="col" class="text-right"><p class="text-center">Nutrition<br>(per 100g)</p></th><th scope="col" class="text-center"><p>Amount<br>(optional)</p></th></tr></thead><tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600"><tr><td class="py-2 dark:border-gray-800"><p>Calories:</p></td><td class="text-center dark:border-gray-800"> 500 </td></tr><tr class="bg-gray-100 dark:bg-slate-700"><td class="py-2 dark:border-gray-800"><p>Total carbs:</p></td><td class="text-center dark:border-gray-800"> 7g </td></tr><tr><td class="py-2 dark:border-gray-800"><p>Sugars:</p></td><td class="text-center dark:border-gray-800"> 6g </td></tr><tr class="bg-gray-100 dark:bg-slate-700"><td class="py-2 dark:border-gray-800"><p>Protein:</p></td><td class="text-center dark:border-gray-800"> 3g </td></tr><tr><td class="py-2 dark:border-gray-800"><p>Total fat:</p></td><td class="text-center dark:border-gray-800"> 8g </td></tr><tr class="bg-gray-100 dark:bg-slate-700"><td class="py-2 dark:border-gray-800"><p>Saturated fat:</p></td><td class="text-center dark:border-gray-800"> 4g </td></tr><tr><td class="py-2 dark:border-gray-800"><p>Cholesterol:</p></td><td class="text-center dark:border-gray-800"> 1g </td></tr><tr class="bg-gray-100 dark:bg-slate-700"><td class="py-2 dark:border-gray-800"><p>Sodium:</p></td><td class="text-center dark:border-gray-800"> 5g </td></tr><tr><td class="py-2 dark:border-gray-800"><p>Fiber:</p></td><td class="text-center dark:border-gray-800"> 2g </td></tr></tbody></table></div></div></div><div class="col-span-3 border-b border-r border-black md:col-span-1 print:col-span-1"><div class="inline-block min-w-full overflow-x-auto align-middle"><div class="overflow-hidden border-gray-200">`,
-			`<table class="min-w-full text-xs divide-y divide-gray-200 dark:text-gray-200 dark:divide-slate-600"><thead class="h-12 font-medium tracking-wider text-white bg-gray-800 border-l dark:border-l-gray-600 print:h-1"><tr><th scope="col" class="text-right">Time</th><th scope="col" class="text-center">h:m:s</th></tr></thead><tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600"><tr><td class="py-2">Preparation:</td><td class="text-center print:py-0"><time datetime="PT05M">0h05</time></td></tr><tr class="bg-gray-100 dark:bg-slate-700"><td class="py-2">Cooking:</td><td class="w-1/2 text-center print:py-0"><time datetime="PT1H05M">1h05</time></td></tr><tr class="font-semibold"><td class="py-2">Total:</td><td class="w-1/2 text-center print:py-0"><time datetime="PT1H10M">1h10</time></td></tr></tbody></table>`,
+			`<table class="min-w-full text-xs divide-y divide-gray-200 dark:text-gray-200 dark:divide-slate-600"><thead class="h-12 font-medium tracking-wider text-white bg-gray-800 border-l dark:border-l-gray-600 print:h-1"><tr><th scope="col" class="text-right">Time</th><th scope="col" class="text-center">h:m:s</th></tr></thead><tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600"><tr><td class="py-2">Preparation:</td><td class="text-center print:py-0"><time datetime="PT05M">5m</time></td></tr><tr class="bg-gray-100 dark:bg-slate-700"><td class="py-2">Cooking:</td><td class="w-1/2 text-center print:py-0"><time datetime="PT1H05M">1h05m</time></td></tr><tr class="font-semibold"><td class="py-2">Total:</td><td class="w-1/2 text-center print:py-0"><time datetime="PT1H10M">1h10m</time></td></tr></tbody></table>`,
 			`<div class="col-span-6 py-2 border-b border-x border-black md:col-span-2 md:border-r-0 dark:border-gray-800 print:hidden"><h2 class="pb-2 m-auto text-sm font-semibold text-center text-gray-600 underline dark:text-gray-200"> Ingredients </h2><ul class="grid px-6 columns-2"><li class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200 dark:hover:bg-gray-800" _="on mousedown toggle .line-through then toggle @checked on first <input/> in me"><label for="ingredient-0"></label><input type="checkbox" id="ingredient-0" class="mt-1"><span class="pl-2">Ing1</span></li><li class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200 dark:hover:bg-gray-800" _="on mousedown toggle .line-through then toggle @checked on first <input/> in me"><label for="ingredient-1"></label><input type="checkbox" id="ingredient-1" class="mt-1"><span class="pl-2">Ing2</span></li><li class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200 dark:hover:bg-gray-800" _="on mousedown toggle .line-through then toggle @checked on first <input/> in me"><label for="ingredient-2"></label><input type="checkbox" id="ingredient-2" class="mt-1"><span class="pl-2">Ing3</span></li></ul></div><div class="col-span-6 py-2 pb-8 border-b border-x border-black rounded-bl-lg md:rounded-bl-none md:col-span-4 dark:border-gray-800 print:hidden"><h2 class="pb-2 m-auto text-sm font-semibold text-center text-gray-600 underline dark:text-gray-200"> Instructions</h2><ol class="grid px-6 list-decimal"><li class="min-w-full py-2 text-sm select-none hover:bg-gray-200 dark:hover:bg-gray-800" _="on mousedown toggle .line-through"><span class="whitespace-pre-line">Ins1</span></li><li class="min-w-full py-2 text-sm select-none hover:bg-gray-200 dark:hover:bg-gray-800" _="on mousedown toggle .line-through"><span class="whitespace-pre-line">Ins2</span></li><li class="min-w-full py-2 text-sm select-none hover:bg-gray-200 dark:hover:bg-gray-800" _="on mousedown toggle .line-through"><span class="whitespace-pre-line">Ins3</span></li></ol></div>`,
 		}
 		notWant := []string{
@@ -982,9 +954,9 @@ func TestHandlers_Recipes_View(t *testing.T) {
 				`<p class="p-2 text-sm whitespace-pre-line">This is the most delicious recipe!</p>`,
 				`<p class="text-xs">Per 100g: 500 calories; total carbohydrates 7g; sugars 6g; protein 3g; total fat 8g; saturated fat 4g; cholesterol 1g; sodium 5g; fiber 2g.</p>`,
 				`<table class="min-w-full text-xs divide-y divide-gray-200 table-auto dark:text-gray-200 dark:divide-slate-600"><thead class="h-12 font-medium tracking-wider text-white bg-gray-800"><tr><th scope="col" class="text-right"><p class="text-center">Nutrition<br>(per 100g)</p></th><th scope="col" class="text-center"><p>Amount<br>(optional)</p></th></tr></thead><tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600"><tr><td class="py-2 dark:border-gray-800"><p>Calories:</p></td><td class="text-center dark:border-gray-800"> 500 </td></tr><tr class="bg-gray-100 dark:bg-slate-700"><td class="py-2 dark:border-gray-800"><p>Total carbs:</p></td><td class="text-center dark:border-gray-800"> 7g </td></tr><tr><td class="py-2 dark:border-gray-800"><p>Sugars:</p></td><td class="text-center dark:border-gray-800"> 6g </td></tr><tr class="bg-gray-100 dark:bg-slate-700"><td class="py-2 dark:border-gray-800"><p>Protein:</p></td><td class="text-center dark:border-gray-800"> 3g </td></tr><tr><td class="py-2 dark:border-gray-800"><p>Total fat:</p></td><td class="text-center dark:border-gray-800"> 8g </td></tr><tr class="bg-gray-100 dark:bg-slate-700"><td class="py-2 dark:border-gray-800"><p>Saturated fat:</p></td><td class="text-center dark:border-gray-800"> 4g </td></tr><tr><td class="py-2 dark:border-gray-800"><p>Cholesterol:</p></td><td class="text-center dark:border-gray-800"> 1g </td></tr><tr class="bg-gray-100 dark:bg-slate-700"><td class="py-2 dark:border-gray-800"><p>Sodium:</p></td><td class="text-center dark:border-gray-800"> 5g </td></tr><tr><td class="py-2 dark:border-gray-800"><p>Fiber:</p></td><td class="text-center dark:border-gray-800"> 2g </td></tr></tbody></table>`,
-				`<td class="py-2">Preparation:</td><td class="text-center print:py-0"><time datetime="PT05M">0h05</time></td></tr><tr class="bg-gray-100 dark:bg-slate-700">`,
-				`<td class="py-2">Cooking:</td><td class="w-1/2 text-center print:py-0"><time datetime="PT1H05M">1h05</time></td></tr><tr class="font-semibold">`,
-				`<td class="py-2">Total:</td><td class="w-1/2 text-center print:py-0"><time datetime="PT1H10M">1h10</time></td>`,
+				`<td class="py-2">Preparation:</td><td class="text-center print:py-0"><time datetime="PT05M">5m</time></td></tr><tr class="bg-gray-100 dark:bg-slate-700">`,
+				`<td class="py-2">Cooking:</td><td class="w-1/2 text-center print:py-0"><time datetime="PT1H05M">1h05m</time></td></tr><tr class="font-semibold">`,
+				`<td class="py-2">Total:</td><td class="w-1/2 text-center print:py-0"><time datetime="PT1H10M">1h10m</time></td>`,
 				`<div class="hidden print:grid col-span-6 ml-2 mt-2 mb-4"><h1 class="text-sm"><b>Ingredients</b></h1><ol class="col-span-6 w-full" style="column-count: 1"><li class="text-sm"><label><input type="checkbox"></label><span class="pl-2">Ing1</span></li><li class="text-sm"><label><input type="checkbox"></label><span class="pl-2">Ing2</span></li><li class="text-sm"><label><input type="checkbox"></label><span class="pl-2">Ing3</span></li></ol></div>`,
 				`<div class="hidden print:grid col-span-5"><h1 class="text-sm"><b>Instructions</b></h1><ol class="col-span-6 list-decimal w-full ml-6" style="column-count: 2; column-gap: 2.5rem"><li><span class="text-sm whitespace-pre-line">Ins1</span></li><li><span class="text-sm whitespace-pre-line">Ins2</span></li><li><span class="text-sm whitespace-pre-line">Ins3</span></li></ol></div>`,
 				`<script> var wakeLock = null; initWakeLock(); function initWakeLock() { navigator.wakeLock?.request("screen") .then((lock) => { wakeLock = lock; wakeLock.onrelease = () => { wakeLock = null; console.info("Screen lock deactivated."); } console.info("Screen lock activated."); }) .catch((err) => { ` + "console.log(`Screen lock error: ${err.name}, ${err.message}`)" + ` }); } </script>`,

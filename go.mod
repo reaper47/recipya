@@ -10,7 +10,8 @@ require (
 	github.com/go-chi/chi/v5 v5.0.10
 	github.com/go-chi/jwtauth/v5 v5.1.1
 	github.com/google/go-cmp v0.5.9
-	github.com/google/uuid v1.3.0
+	github.com/google/uuid v1.3.1
+	github.com/jung-kurt/gofpdf v1.16.2
 	github.com/neurosnap/sentences v1.1.2
 	github.com/pressly/goose/v3 v3.15.0
 	github.com/sendgrid/sendgrid-go v3.13.0+incompatible
