@@ -27,8 +27,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	licenseFile = filepath.Join("..", "LICENSE")
-	configFile = filepath.Join("../config.json.example")
+	licenseFile = filepath.Join(".", "LICENSE")
+	configFile = filepath.Join(".", "deploy", "config.example.json")
 
 	buildRelease(*packageName, *tag)
 }
@@ -88,13 +88,14 @@ func build(platform, packageName, tag string) {
 
 	_, err = os.Stat(outputName)
 	if err == nil {
-		err := os.MkdirAll(tag, os.ModePerm)
+		err := os.MkdirAll(filepath.Join(".", "releases", tag), os.ModePerm)
 		if err != nil {
 			fmt.Printf("Creating the tag's directory failed: %q.\nAborting the script execution...\n", err)
 			os.Exit(1)
 		}
 
-		destFile := filepath.Join(tag, filepath.Join(filepath.Base(outputName)+".zip"))
+		destFile := filepath.Join(".", "releases", tag, filepath.Join(filepath.Base(outputName)+".zip"))
+		destFile = strings.Replace(destFile, ".exe", "", 1)
 		err = zipFiles(destFile, outputName, licenseFile, configFile)
 		if err != nil {
 			fmt.Printf("Zip failed for %s: %q.\nAborting the script execution...\n", platform, err)
