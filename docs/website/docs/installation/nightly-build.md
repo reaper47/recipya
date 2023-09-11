@@ -10,7 +10,7 @@ It is updated nightly.
 First, download and extract the zip file compatible with your system. 
 Please consult the [supported platforms](#supported-platforms) table if you are unsure which file to download.
 
-Then, rename the `config.json.example` file to `config.json` and open it in a text editor 
+Then, rename the `config.example.json` file to `config.json` and open it in a text editor 
 to [modify the variables](/docs/installation/config-file). 
 
 Finally, start the server by opening a command prompt in the folder, and run the following command.

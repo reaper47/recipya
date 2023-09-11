@@ -4,7 +4,7 @@ sidebar_position: 6
 
 # Configuration File
 
-The [configuration file](https://github.com/reaper47/recipya/blob/main/config.json.example)
+The [configuration file](https://github.com/reaper47/recipya/blob/main/deploy/config.example.json)
 sets important variables for the application. Let's go over each of them.
 
   | **Variable**         | **Description**                                                                                      |

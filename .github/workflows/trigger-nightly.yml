@@ -5,38 +5,31 @@ on:
     - cron: "0 1 * * *"
 
 jobs:
-  check_date:
+  commits:
+    name: Commits
     runs-on: ubuntu-latest
-    name: Check latest commit
-    outputs:
-      should_run: ${{ steps.should_run.outputs.should_run }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-      - name: Print latest commit
-        run: echo ${{ github.sha }}
+      - name: Get new commits
+        id: numCommits
+        run: echo "NEW_COMMIT_COUNT=$(git log --oneline --since '24 hours ago' | wc -l)" >> $GITHUB_ENV
 
-      - id: should_run
-        continue-on-error: true
-        name: Check whether latest commit is less than a day
-        if: ${{ github.event_name == 'schedule' }}
-        run: |
-          sha=$(git rev-list --after="24 hours" ${{ github.sha }})
-          if test -z $sha
-          then
-            echo "should_run=false" >> $GITHUB_ENV
-          else
-            echo "should_run=true" >> $GITHUB_ENV
-          fi
+    outputs:
+      numberCommits: ${{ steps.numCommits.outputs.NEW_COMMIT_COUNT }}
 
   nightly:
-    needs: check_date
-    if: ${{ needs.check_date.outputs.should_run != 'false' }}
     name: Nightly
+    needs: commits
     runs-on: ubuntu-latest
+    if: ${{ needs.commits.outputs.NEW_COMMIT_COUNT > 0 }}
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Set up Go
         uses: actions/setup-go@v4
@@ -72,7 +65,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./containers/Dockerfile
+          file: ./deploy/Dockerfile
           push: true
           tags: reaper99/recipya:nightly
           labels: ${{ steps.meta.outputs.labels }}
