@@ -18,8 +18,7 @@ jobs:
 
       - name: Get new commits
         id: numCommits
-        run: echo "::set-output name=NEW_COMMIT_COUNT::$(git log --oneline --since '24 hours ago' | wc -l)"
-        #run: echo "NEW_COMMIT_COUNT=$(git log --oneline --since '24 hours ago' | wc -l)" >> $GITHUB_ENV
+        run: echo "NEW_COMMIT_COUNT=$(git log --oneline --since '24 hours ago' | wc -l)" >> $GITHUB_ENV
 
     outputs:
       numberCommits: ${{ steps.numCommits.outputs.NEW_COMMIT_COUNT }}
