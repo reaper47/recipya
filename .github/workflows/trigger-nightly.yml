@@ -3,9 +3,6 @@ name: Trigger Nightly
 on:
   schedule:
     - cron: "0 1 * * *"
-  push:
-    branches:
-      - "issue-80"
 
 jobs:
   commits:
