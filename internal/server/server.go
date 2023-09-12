@@ -54,7 +54,7 @@ func (s *Server) mountHandlers() {
 	r := chi.NewRouter()
 
 	r.Get("/", s.indexHandler)
-	r.Get("/recipes/{id:[1-9]([0-9])*}/share", s.recipeShareHandler)
+	r.Get("/r/{id:^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$}", s.recipeShareHandler)
 
 	r.Route("/auth", func(r chi.Router) {
 		r.With(s.mustBeLoggedInMiddleware).Post("/change-password", s.changePasswordHandler)

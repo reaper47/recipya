@@ -15,6 +15,7 @@
         <script defer>
             window.addEventListener("DOMContentLoaded", () => {
                 const recipesPattern = new RegExp("^/recipes/\\d+(/edit)?$");
+                const recipesSharePattern = new RegExp("^/r/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$");
 
                 const pathsHideAddRecipeButton = [
                     "/settings",
@@ -22,8 +23,9 @@
                     "/recipes/add/manual",
                 ];
 
+                const isRecipe = recipesPattern.test(location.pathname) || recipesSharePattern.test(location.pathname);
                 const toggleAddRecipeButton = () => {
-                    if (pathsHideAddRecipeButton.some(path => path === location.pathname || recipesPattern.test(location.pathname))) {
+                    if (pathsHideAddRecipeButton.some(path => path === location.pathname || isRecipe)) {
                         document.querySelector("#add-recipe")?.classList.add("hidden");
                     } else {
                         document.querySelector("#add-recipe")?.classList.remove("hidden");

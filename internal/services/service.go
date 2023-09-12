@@ -19,7 +19,7 @@ type RepositoryService interface {
 	AddRecipe(r *models.Recipe, userID int64) (int64, error)
 
 	// AddShareLink adds a share link for the recipe.
-	AddShareLink(link string, recipeID int64) error
+	AddShareLink(share models.ShareRecipe) (string, error)
 
 	// Categories gets all categories in the database.
 	Categories(userID int64) ([]string, error)
@@ -36,9 +36,6 @@ type RepositoryService interface {
 	// GetAuthToken gets a non-expired auth token by the selector.
 	GetAuthToken(selector, validator string) (models.AuthToken, error)
 
-	// IsRecipeShared checks whether the recipe is shared.
-	IsRecipeShared(id int64) bool
-
 	// IsUserExist checks whether the user is present in the database.
 	IsUserExist(email string) bool
 
@@ -53,6 +50,10 @@ type RepositoryService interface {
 
 	// Recipes gets the user's recipes.
 	Recipes(userID int64) models.Recipes
+
+	// RecipeShared checks whether the recipe is shared.
+	// It returns a models.ShareRecipe. Otherwise, an error.
+	RecipeShared(id string) (*models.ShareRecipe, error)
 
 	// RecipeUser gets the user for which the recipe belongs to.
 	RecipeUser(recipeID int64) int64

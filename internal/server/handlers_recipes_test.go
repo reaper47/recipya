@@ -746,15 +746,15 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 		Yield: 2,
 	}
 	_, _ = srv.Repository.AddRecipe(recipe, 1)
-	_ = srv.Repository.AddShareLink("https://www.recipya.com/recipes/1/share", 1)
+	link, _ := srv.Repository.AddShareLink(models.ShareRecipe{RecipeID: 1, UserID: 1})
 
 	t.Run("create valid share link", func(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, fmt.Sprintf(uri, 1), noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
-			`<input type="url" value="https://www.recipya.com/recipes/1/share" class="w-full rounded-lg bg-gray-100 px-4 py-2" readonly="readonly">`,
-			`<button class="w-24 font-semibold p-2 bg-gray-300 rounded-lg hover:bg-gray-400" title="Copy to clipboard" _="on click js if ('clipboard' in window.navigator) { navigator.clipboard.writeText('https://www.recipya.com/recipes/1/share') } end then put 'Copied!' into me then add @title='Copied to clipboard!' then toggle @disabled on me then toggle .cursor-not-allowed .bg-green-600 .text-white .hover:bg-gray-400 on me"> Copy </button>`,
+			`<input type="url" value="example.com` + link + `" class="w-full rounded-lg bg-gray-100 px-4 py-2" readonly="readonly">`,
+			`<button class="w-24 font-semibold p-2 bg-gray-300 rounded-lg hover:bg-gray-400" title="Copy to clipboard" _="on click js if ('clipboard' in window.navigator) { navigator.clipboard.writeText('example.com` + link + `') } end then put 'Copied!' into me then add @title='Copied to clipboard!' then toggle @disabled on me then toggle .cursor-not-allowed .bg-green-600 .text-white .hover:bg-gray-400 on me"> Copy </button>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
@@ -767,7 +767,7 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 	})
 
 	t.Run("access share link anonymous", func(t *testing.T) {
-		rr := sendRequest(srv, http.MethodGet, fmt.Sprintf(uri, 1), noHeader, nil)
+		rr := sendRequest(srv, http.MethodGet, link, noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
@@ -803,7 +803,7 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 	}
 	for _, tc := range testcases {
 		t.Run("access share link logged in "+tc.name, func(t *testing.T) {
-			rr := tc.sendFunc(srv, http.MethodGet, fmt.Sprintf(uri, 1), noHeader, nil)
+			rr := tc.sendFunc(srv, http.MethodGet, link, noHeader, nil)
 
 			assertStatus(t, rr.Code, http.StatusOK)
 			want := []string{
@@ -830,7 +830,7 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 	}
 	for _, tc := range testcases2 {
 		t.Run("access share link logged "+tc.name, func(t *testing.T) {
-			rr := tc.sendFunc(srv, http.MethodGet, fmt.Sprintf(uri, 1), noHeader, nil)
+			rr := tc.sendFunc(srv, http.MethodGet, link, noHeader, nil)
 
 			assertStatus(t, rr.Code, http.StatusOK)
 			want := []string{

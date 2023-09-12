@@ -1054,6 +1054,7 @@
                                 <path d="M12.276 18.55v-.748a4.79 4.79 0 0 1 1.463-3.458 5.763 5.763 0 0 0 1.804-4.21 5.821 5.821 0 0 0-6.475-5.778c-2.779.307-4.99 2.65-5.146 5.448a5.82 5.82 0 0 0 1.757 4.503 4.906 4.906 0 0 1 1.5 3.495v.747a1.44 1.44 0 0 0 1.44 1.439h2.218a1.44 1.44 0 0 0 1.44-1.439zm-1.058 0c0 .209-.17.38-.38.38h-2.22c-.21 0-.38-.171-.38-.38v-.748c0-1.58-.664-3.13-1.822-4.254A4.762 4.762 0 0 1 4.98 9.863c.127-2.289 1.935-4.204 4.205-4.455a4.762 4.762 0 0 1 5.3 4.727 4.714 4.714 0 0 1-1.474 3.443 5.853 5.853 0 0 0-1.791 4.225v.746zM11.45 20.51H8.006a.397.397 0 1 0 0 .795h3.444a.397.397 0 1 0 0-.794zM11.847 22.162a.397.397 0 0 0-.397-.397H8.006a.397.397 0 1 0 0 .794h3.444c.22 0 .397-.178.397-.397zM.397 10.125h2.287a.397.397 0 1 0 0-.794H.397a.397.397 0 1 0 0 .794zM19.456 9.728a.397.397 0 0 0-.397-.397h-2.287a.397.397 0 1 0 0 .794h2.287c.22 0 .397-.178.397-.397zM9.331.397v2.287a.397.397 0 1 0 .794 0V.397a.397.397 0 1 0-.794 0zM16.045 2.85 14.43 4.465a.397.397 0 1 0 .561.561l1.617-1.617a.397.397 0 1 0-.562-.56zM5.027 14.429a.397.397 0 0 0-.56 0l-1.618 1.616a.397.397 0 1 0 .562.562l1.617-1.617a.397.397 0 0 0 0-.561zM4.466 5.027a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.56L3.41 2.848a.397.397 0 1 0-.561.561zM16.045 16.607a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.562L14.99 14.43a.397.397 0 1 0-.561.56zM10.986 23.416a.397.397 0 0 0-.397-.397H8.867a.397.397 0 1 0 0 .794h1.722c.22 0 .397-.178.397-.397z"/>
                             </svg>
                         </button>
+                        {{- if .View.Share.IsFromHost -}}
                         <button class="ml-2" title="Edit recipe"
                                 hx-get="/recipes/{{.View.ID}}/edit"
                                 hx-push-url="true"
@@ -1064,6 +1065,7 @@
                                       d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
                             </svg>
                         </button>
+                        {{- end -}}
                     </div>
                 </div>
                 <h1 class="grid col-span-4 py-2 font-semibold place-content-center">{{.View.Recipe.Name}}</h1>
@@ -1072,7 +1074,7 @@
                         {{- if .View.Share.IsShared -}}
                             {{- if not .View.Share.IsFromHost -}}
                                 <button class="mr-2" title="Add recipe to collection"
-                                        hx-post="/recipes/{{.View.Recipe.ID}}/share/add">
+                                        hx-post="/recipes/{{.View.ID}}/share/add">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600"
                                          fill="none" viewBox="0 0 24 24" width="24px" height="24px"
                                          stroke="currentColor" stroke-width="2">
@@ -1083,7 +1085,7 @@
                                 </button>
                             {{- end -}}
                         {{else}}
-                            <button class="mr-2" title="Share recipe" hx-post="/recipes/{{.View.Recipe.ID}}/share"
+                            <button class="mr-2" title="Share recipe" hx-post="/recipes/{{.View.ID}}/share"
                                     hx-target="#share-dialog-result"
                                     _="on htmx:afterRequest from me if event.detail.successful call #share-dialog.showModal()">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none"
@@ -1101,6 +1103,7 @@
                                       d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
                             </svg>
                         </button>
+                        {{- if .View.Share.IsFromHost -}}
                         <button class="mr-2" hx-delete="/recipes/{{.View.Recipe.ID}}" hx-swap="none"
                                 title="Delete recipe"
                                 hx-confirm="Are you sure you wish to delete this recipe?"
@@ -1111,6 +1114,7 @@
                                       d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                             </svg>
                         </button>
+                        {{- end -}}
                     </div>
                 </div>
             {{- else -}}
