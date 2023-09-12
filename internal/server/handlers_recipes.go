@@ -26,6 +26,9 @@ func (s *Server) recipesHandler(w http.ResponseWriter, r *http.Request) {
 				}
 				return s[:numCharacters] + "…"
 			},
+			Inc: func(v int64) int64 {
+				return v + 1
+			},
 			IsUUIDValid: func(u uuid.UUID) bool {
 				return u != uuid.Nil
 			},
@@ -617,7 +620,6 @@ func (s *Server) recipeShareHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userRecipeID := s.Repository.RecipeUser(share.RecipeID)
 	recipe, err := s.Repository.Recipe(share.RecipeID, share.UserID)
 	if err != nil {
 		notFoundHandler(w, r)
@@ -627,7 +629,7 @@ func (s *Server) recipeShareHandler(w http.ResponseWriter, r *http.Request) {
 	data := templates.Data{
 		IsAuthenticated: isLoggedIn,
 		Title:           recipe.Name,
-		View:            templates.NewViewRecipeData(share.RecipeID, recipe, userRecipeID == share.UserID, true),
+		View:            templates.NewViewRecipeData(share.RecipeID, recipe, userID == share.UserID, true),
 	}
 
 	if r.Header.Get("Hx-Request") == "true" {

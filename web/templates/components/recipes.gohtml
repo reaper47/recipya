@@ -883,25 +883,25 @@
     {{if .Recipes}}
         <article class="grid gap-4 p-4 text-sm grid-cols-4 md:m-auto md:max-w-7xl md:text-base md:grid-cols-10">
             {{ $funcs := .Functions}}
-            {{- range .Recipes -}}
+            {{- range $i, $r := .Recipes -}}
                 <div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700">
                     {{ $isUUIDValid := call $funcs.IsUUIDValid .Image}}
                     <img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 {{if not $isUUIDValid}}h-[236.8px] px-4 pt-4{{end}}"
-                         src="{{if $isUUIDValid}}/data/images/{{.Image}}.jpg{{end}}"
-                         alt="Image for the {{.Name}} recipe"
-                         hx-get="/recipes/{{.ID}}" hx-target="#content" hx-push-url="true">
+                         src="{{if $isUUIDValid}}/data/images/{{$r.Image}}.jpg{{end}}"
+                         alt="Image for the {{$r.Name}} recipe"
+                         hx-get="/recipes/{{$r.ID}}" hx-target="#content" hx-push-url="true">
                     <div class="py-2 px-3">
                         <div class="grid grid-flow-col gap-1 pb-2">
-                            <p class="font-semibold">{{.Name}}</p>
+                            <p class="font-semibold">{{$r.Name}}</p>
                             <span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit">
-                                {{.Category}}
+                                {{$r.Category}}
                             </span>
                         </div>
 
-                        <p class="pb-8 text-justify text-sm">{{call $funcs.CutString .Description 127}}</p>
+                        <p class="pb-8 text-justify text-sm">{{call $funcs.CutString $r.Description 127}}</p>
 
                         <button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600"
-                                hx-get="/recipes/{{.ID}}" hx-target="#content" hx-push-url="true">
+                                hx-get="/recipes/{{call $funcs.Inc $i}}" hx-target="#content" hx-push-url="true">
                             View
                         </button>
                     </div>
