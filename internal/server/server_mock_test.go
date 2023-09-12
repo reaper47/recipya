@@ -19,7 +19,7 @@ func newServerTest() *server.Server {
 	repo := &mockRepository{
 		AuthTokens:             make([]models.AuthToken, 0),
 		RecipesRegistered:      make(map[int64]models.Recipes),
-		ShareLinks:             make(map[int64]string),
+		ShareLinks:             make(map[string]models.ShareRecipe),
 		UserSettingsRegistered: make(map[int64]*models.UserSettings),
 		UsersRegistered:        make([]models.User, 0),
 		UsersUpdated:           make([]int64, 0),
@@ -33,7 +33,7 @@ type mockRepository struct {
 	MeasurementSystemsFunc      func(userID int64) ([]units.System, models.UserSettings, error)
 	RecipeFunc                  func(id, userID int64) (*models.Recipe, error)
 	RecipesRegistered           map[int64]models.Recipes
-	ShareLinks                  map[int64]string
+	ShareLinks                  map[string]models.ShareRecipe
 	SwitchMeasurementSystemFunc func(system units.System, userID int64) error
 	UserSettingsRegistered      map[int64]*models.UserSettings
 	UsersRegistered             []models.User
@@ -63,17 +63,21 @@ func (m *mockRepository) AddRecipe(r *models.Recipe, userID int64) (int64, error
 	return int64(len(m.RecipesRegistered)), nil
 }
 
-func (m *mockRepository) AddShareLink(link string, recipeID int64) error {
+func (m *mockRepository) AddShareLink(share models.ShareRecipe) (string, error) {
 	for _, recipes := range m.RecipesRegistered {
-		if slices.ContainsFunc(recipes, func(r models.Recipe) bool { return r.ID == recipeID }) {
-			if _, ok := m.ShareLinks[recipeID]; ok {
-				return nil
+		if slices.ContainsFunc(recipes, func(r models.Recipe) bool { return r.ID == share.RecipeID }) {
+			for link, s := range m.ShareLinks {
+				if s.RecipeID == share.RecipeID && s.UserID == share.UserID {
+					return link, nil
+				}
 			}
-			m.ShareLinks[recipeID] = link
-			return nil
+
+			link := "/r/33320755-82f9-47e5-bb0a-d1b55cbd3f7b"
+			m.ShareLinks[link] = share
+			return link, nil
 		}
 	}
-	return errors.New("recipe not found")
+	return "", errors.New("recipe not found")
 }
 
 func (m *mockRepository) Categories(_ int64) ([]string, error) {
@@ -123,11 +127,6 @@ func (m *mockRepository) GetAuthToken(_, _ string) (models.AuthToken, error) {
 	return models.AuthToken{UserID: 1}, nil
 }
 
-func (m *mockRepository) IsRecipeShared(id int64) bool {
-	_, ok := m.ShareLinks[id]
-	return ok
-}
-
 func (m *mockRepository) IsUserExist(email string) bool {
 	return slices.ContainsFunc(m.UsersRegistered, func(user models.User) bool {
 		return user.Email == email
@@ -167,6 +166,14 @@ func (m *mockRepository) Recipes(userID int64) models.Recipes {
 		return recipes
 	}
 	return models.Recipes{}
+}
+
+func (m *mockRepository) RecipeShared(link string) (*models.ShareRecipe, error) {
+	share, ok := m.ShareLinks[link]
+	if !ok {
+		return nil, errors.New("recipe not found")
+	}
+	return &share, nil
 }
 
 func (m *mockRepository) RecipeUser(recipeID int64) int64 {

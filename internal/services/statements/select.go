@@ -127,11 +127,9 @@ const SelectRecipes = baseSelectRecipe + `
 
 // SelectRecipeShared checks whether the recipe is shared.
 const SelectRecipeShared = `
-	SELECT EXISTS(
-		SELECT 1
-		FROM share
-		WHERE recipe_id = ?
-	)`
+	SELECT recipe_id, user_id
+	FROM share
+	WHERE link = ?`
 
 // SelectRecipeUser fetches the user whose recipe belongs to.
 const SelectRecipeUser = `

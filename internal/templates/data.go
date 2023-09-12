@@ -125,5 +125,6 @@ type shareData struct {
 // FunctionsData provides functions for use in the templates.
 type FunctionsData struct {
 	CutString   func(s string, numCharacters int) string
+	Inc         func(v int64) int64
 	IsUUIDValid func(u uuid.UUID) bool
 }

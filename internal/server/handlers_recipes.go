@@ -26,6 +26,9 @@ func (s *Server) recipesHandler(w http.ResponseWriter, r *http.Request) {
 				}
 				return s[:numCharacters] + "…"
 			},
+			Inc: func(v int64) int64 {
+				return v + 1
+			},
 			IsUUIDValid: func(u uuid.UUID) bool {
 				return u != uuid.Nil
 			},
@@ -601,12 +604,6 @@ func (s *Server) recipesEditPostHandler(w http.ResponseWriter, r *http.Request) 
 }
 
 func (s *Server) recipeShareHandler(w http.ResponseWriter, r *http.Request) {
-	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
 	var userID int64
 	isLoggedIn := true
 	userID = getUserIDFromSessionCookie(r)
@@ -617,13 +614,13 @@ func (s *Server) recipeShareHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if !s.Repository.IsRecipeShared(id) {
+	share, err := s.Repository.RecipeShared(r.URL.String())
+	if err != nil {
 		notFoundHandler(w, r)
 		return
 	}
 
-	userRecipeID := s.Repository.RecipeUser(id)
-	recipe, err := s.Repository.Recipe(id, userRecipeID)
+	recipe, err := s.Repository.Recipe(share.RecipeID, share.UserID)
 	if err != nil {
 		notFoundHandler(w, r)
 		return
@@ -632,7 +629,7 @@ func (s *Server) recipeShareHandler(w http.ResponseWriter, r *http.Request) {
 	data := templates.Data{
 		IsAuthenticated: isLoggedIn,
 		Title:           recipe.Name,
-		View:            templates.NewViewRecipeData(id, recipe, userID == userRecipeID, true),
+		View:            templates.NewViewRecipeData(share.RecipeID, recipe, userID == share.UserID, true),
 	}
 
 	if r.Header.Get("Hx-Request") == "true" {
@@ -648,16 +645,19 @@ func (s *Server) recipeSharePostHandler(w http.ResponseWriter, r *http.Request) 
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	userID := r.Context().Value("userID").(int64)
+	share := models.ShareRecipe{RecipeID: recipeID, UserID: userID}
 
-	link := app.Config.Address() + r.URL.String()
-	err = s.Repository.AddShareLink(link, recipeID)
+	link, err := s.Repository.AddShareLink(share)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Failed to create share link.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	templates.RenderComponent(w, "recipes", "share-recipe", templates.Data{Content: link})
+	templates.RenderComponent(w, "recipes", "share-recipe", templates.Data{
+		Content: r.Host + link,
+	})
 }
 
 func (s *Server) recipesSupportedWebsitesHandler(w http.ResponseWriter, _ *http.Request) {

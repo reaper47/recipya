@@ -12,11 +12,13 @@ recipe's title.
 ![img alt](/img/features/sharing-icon.png)
 
 The link will be generated and displayed for you to copy, ready to be sent to your friends.
+Its naming convention is `{host}/r/{UUID}`. The UUID will prevent any clash with someone else's 
+shared recipe because no two UUID is the same.
+
+![img alt](/img/features/sharing-dialog.png)
 
 :::caution
 
 - Clicking the copy button does not always work. An [issue](https://github.com/reaper47/recipya/issues/72) is raised on GitHub.
-- The generated link is subpar when there are multiple users sharing the same recipe number.
-  An [issue](https://github.com/reaper47/recipya/issues/72) is raised on GitHub.
 
 :::
