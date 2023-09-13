@@ -8,23 +8,21 @@ jobs:
   commits:
     name: Commits
     runs-on: ubuntu-latest
+    outputs:
+      numCommits: ${{ steps.step1.outputs.commits }}
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-
       - name: Get new commits
         id: numCommits
-        run: echo "NEW_COMMIT_COUNT=$(git log --oneline --since '24 hours ago' | wc -l)" >> $GITHUB_ENV
-
-    outputs:
-      numberCommits: ${{ steps.numCommits.outputs.NEW_COMMIT_COUNT }}
+        run: echo "commits=$(git log --oneline --since '24 hours ago' | wc -l)" >> "$GITHUB_OUTPUT"
 
   nightly:
     name: Nightly
-    needs: commits
     runs-on: ubuntu-latest
-    if: ${{ needs.commits.outputs.NEW_COMMIT_COUNT > 0 }}
+    needs: commits
+    if: ${{ needs.commits.outputs.numCommits > 0 }}
 
     steps:
       - uses: actions/checkout@v3
