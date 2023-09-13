@@ -16,9 +16,3 @@ Its naming convention is `{host}/r/{UUID}`. The UUID will prevent any clash with
 shared recipe because no two UUID is the same.
 
 ![img alt](/img/features/sharing-dialog.png)
-
-:::caution
-
-- Clicking the copy button does not always work. An [issue](https://github.com/reaper47/recipya/issues/72) is raised on GitHub.
-
-:::
