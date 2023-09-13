@@ -13,25 +13,30 @@
         <script src="https://unpkg.com/htmx.org@1.9.5"></script>
         <script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
         <script defer>
-            window.addEventListener("DOMContentLoaded", () => {
-                const recipesPattern = new RegExp("^/recipes/\\d+(/edit)?$");
-                const recipesSharePattern = new RegExp("^/r/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$");
+            const recipesPattern = new RegExp("^/recipes/\\d+(/edit)?$");
+            const recipesSharePattern = new RegExp("^/r/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$");
 
-                const pathsHideAddRecipeButton = [
-                    "/settings",
-                    "/recipes/add",
-                    "/recipes/add/manual",
-                ];
+            const pathsHideAddRecipeButton = [
+                "/settings",
+                "/recipes/add",
+                "/recipes/add/manual",
+            ];
 
+            function toggleAddRecipeButton() {
                 const isRecipe = recipesPattern.test(location.pathname) || recipesSharePattern.test(location.pathname);
-                const toggleAddRecipeButton = () => {
-                    if (pathsHideAddRecipeButton.some(path => path === location.pathname || isRecipe)) {
-                        document.querySelector("#add-recipe")?.classList.add("hidden");
-                    } else {
-                        document.querySelector("#add-recipe")?.classList.remove("hidden");
-                    }
+                if (pathsHideAddRecipeButton.some(path => path === location.pathname || isRecipe)) {
+                    document.querySelector("#add-recipe")?.classList.add("hidden");
+                } else {
+                    document.querySelector("#add-recipe")?.classList.remove("hidden");
                 }
+            }
 
+            window.addEventListener("DOMContentLoaded", () => {
+                toggleAddRecipeButton();
+                document.addEventListener("htmx:pushedIntoHistory", toggleAddRecipeButton);
+            });
+
+            htmx.on('htmx:pushedIntoHistory', ()=>{
                 toggleAddRecipeButton();
                 document.addEventListener("htmx:pushedIntoHistory", toggleAddRecipeButton);
             });
@@ -160,7 +165,8 @@
         <p class="text-end font-semibold select-none">Export data:</p>
         <form class="grid gap-1 grid-flow-col w-fit" hx-get="/settings/export/recipes" hx-include="select[name='type']">
             <label>
-                <select required id="file-type" name="type" class="bg-gray-50 border border-gray-300 rounded-lg p-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <select required id="file-type" name="type"
+                        class="bg-gray-50 border border-gray-300 rounded-lg p-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <optgroup label="Recipes">
                         <option value="json" selected>JSON</option>
                         <option value="pdf">PDF</option>
