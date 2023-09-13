@@ -5,6 +5,43 @@ import (
 	"testing"
 )
 
+func TestRegex_Decimal(t *testing.T) {
+	t.Run("valid", func(t *testing.T) {
+		xs := []string{
+			"0.3335",
+			"123.30",
+			"1024.6894578",
+			".3234234",
+		}
+		for _, s := range xs {
+			t.Run("regex is valid "+s, func(t *testing.T) {
+				if !regex.Decimal.MatchString(s) {
+					t.Fatal("got false when want true")
+				}
+			})
+		}
+	})
+
+	t.Run("invalid", func(t *testing.T) {
+		xs := []string{
+			"033333",
+			"0.3333.56",
+			"1.",
+			"1.43a",
+			".com@",
+			"a1.4444",
+			"norway@rocks",
+		}
+		for _, s := range xs {
+			t.Run("regex is invalid "+s, func(t *testing.T) {
+				if regex.Email.MatchString(s) {
+					t.Error("got true when want false")
+				}
+			})
+		}
+	})
+}
+
 func TestRegex_Email(t *testing.T) {
 	t.Run("valid", func(t *testing.T) {
 		emails := []string{

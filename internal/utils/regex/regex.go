@@ -2,6 +2,9 @@ package regex
 
 import "regexp"
 
+// Decimal is the regular expression to search for a decimal number.
+var Decimal = regexp.MustCompile(`\d?\.\d+`)
+
 // Email verifies whether an email address is valid.
 var Email = regexp.MustCompile("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
 

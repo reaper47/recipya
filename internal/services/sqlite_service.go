@@ -216,6 +216,7 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error)
 	// Insert ingredients
 	for i, ingredient := range r.Ingredients {
 		var ingredientID int64
+		ingredient = units.ReplaceDecimalFractions(ingredient)
 		err := tx.QueryRowContext(ctx, statements.InsertIngredient, ingredient).Scan(&ingredientID)
 		if err != nil {
 			return -1, err
