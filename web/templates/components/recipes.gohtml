@@ -973,15 +973,15 @@
         </label>
         <button class="w-24 font-semibold p-2 bg-gray-300 rounded-lg hover:bg-gray-400" title="Copy to clipboard"
                 _="on click
-           js
-               if ('clipboard' in window.navigator) {
-               	 navigator.clipboard.writeText('{{.Content}}')
-               }
-           end
-           then put 'Copied!' into me
-           then add @title='Copied to clipboard!'
-           then toggle @disabled on me
-           then toggle .cursor-not-allowed .bg-green-600 .text-white .hover:bg-gray-400 on me">
+           if window.navigator.clipboard then
+             call navigator.clipboard.writeText('fuck it {{.Content}}')
+             then put 'Copied!' into me
+             then add @title='Copied to clipboard!'
+             then toggle @disabled on me
+             then toggle .cursor-not-allowed .bg-green-600 .text-white .hover:bg-gray-400 on me
+           else
+             call alert('Your browser does not support the clipboard feature. Please copy the link manually.')
+           end">
             Copy
         </button>
     </div>

@@ -754,7 +754,7 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
 			`<input type="url" value="example.com` + link + `" class="w-full rounded-lg bg-gray-100 px-4 py-2" readonly="readonly">`,
-			`<button class="w-24 font-semibold p-2 bg-gray-300 rounded-lg hover:bg-gray-400" title="Copy to clipboard" _="on click js if ('clipboard' in window.navigator) { navigator.clipboard.writeText('example.com` + link + `') } end then put 'Copied!' into me then add @title='Copied to clipboard!' then toggle @disabled on me then toggle .cursor-not-allowed .bg-green-600 .text-white .hover:bg-gray-400 on me"> Copy </button>`,
+			`<button class="w-24 font-semibold p-2 bg-gray-300 rounded-lg hover:bg-gray-400" title="Copy to clipboard" _="on click if window.navigator.clipboard then call navigator.clipboard.writeText('fuck it example.com/r/33320755-82f9-47e5-bb0a-d1b55cbd3f7b') then put 'Copied!' into me then add @title='Copied to clipboard!' then toggle @disabled on me then toggle .cursor-not-allowed .bg-green-600 .text-white .hover:bg-gray-400 on me else call alert('Your browser does not support the clipboard feature. Please copy the link manually.') end"> Copy </button>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
