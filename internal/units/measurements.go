@@ -18,11 +18,13 @@ var (
 	tokenizer       *sentences.DefaultSentenceTokenizer
 )
 
+// Measurement represents a physical measurement consisting of a quantity and a unit.
 type Measurement struct {
 	Quantity float64
 	Unit     Unit
 }
 
+// Convert converts the measurement to the desired unit.
 func (m Measurement) Convert(to Unit) (Measurement, error) {
 	q := m.Quantity
 	isCannotConvert := false
@@ -908,6 +910,42 @@ func DetectMeasurementSystemFromSentence(text string) System {
 		}
 	}
 	return InvalidSystem
+}
+
+// ReplaceDecimalFractions converts the decimals in a string to fractions.
+func ReplaceDecimalFractions(input string) string {
+	decimals := map[string]string{
+		".5":   "1/2",
+		".333": "1/3",
+		".666": "2/3",
+		".25":  "1/4",
+		".75":  "3/4",
+		".2":   "1/5",
+		".4":   "2/5",
+		".6":   "3/5",
+		".8":   "4/5",
+		".16":  "1/6",
+		".83":  "5/6",
+		".14":  "1/7",
+		".125": "1/8",
+		".375": "3/8",
+		".625": "5/8",
+		".875": "7/8",
+		".11":  "1/9",
+		".1":   "1/10",
+	}
+
+	return regex.Decimal.ReplaceAllStringFunc(input, func(s string) string {
+		if len(s) > 5 {
+			s = s[:5]
+		}
+
+		s = strings.Trim(s, "0")
+		if s[0] != '.' {
+			return fmt.Sprintf("%s %s", string(s[0]), decimals[s[1:5]])
+		}
+		return decimals[s]
+	})
 }
 
 func init() {

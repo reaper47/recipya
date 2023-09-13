@@ -60,6 +60,18 @@ You can also join our development and support channel on
 the [Matrix space: #recipya:matrix.org](https://app.element.io/#/room/#recipya:matrix.org).
 Matrix is similar to Discord but is open source.
 
+## Sponsors
+
+I am grateful for any support that helps me continue to develop this project. Your sponsorship will help me pay for 
+the SendGrid paid plan to increase the limit of users. The free plan currently used allows sending a maximum of 
+100 emails per day.
+
+You can sponsor me on 
+[GitHub Sponsors](https://github.com/sponsors/reaper47) or
+[Buy Me a Coffee](https://www.buymeacoffee.com/macpoule).
+
+Your support is greatly appreciated! A third of donations will be sent to the Armed Forces of Ukraine 🇺🇦
+
 ## Other Recipe Manager Apps
 
 - [Mealie](https://github.com/mealie-recipes/mealie)

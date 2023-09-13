@@ -1635,3 +1635,51 @@ func TestMeasurement_Convert(t *testing.T) {
 		})
 	}
 }
+
+func TestReplaceDecimalFractions(t *testing.T) {
+	type testcase struct {
+		name string
+		in   string
+		want string
+	}
+
+	decimals := map[string]string{
+		"0.50":    "1/2",
+		"0.333":   "1/3",
+		"0.666":   "2/3",
+		"0.25":    "1/4",
+		"0.75":    "3/4",
+		"0.2":     "1/5",
+		"0.4":     "2/5",
+		"0.6":     "3/5",
+		"0.8":     "4/5",
+		"0.16":    "1/6",
+		"0.83":    "5/6",
+		"0.14":    "1/7",
+		"0.125":   "1/8",
+		"0.375":   "3/8",
+		"0.625":   "5/8",
+		"0.875":   "7/8",
+		"0.11":    "1/9",
+		"0.1":     "1/10",
+		"3.33333": "3 1/3",
+	}
+
+	var testcases []testcase
+	for k, v := range decimals {
+		testcases = append(testcases, testcase{
+			name: k,
+			in:   k + " pineapples " + k,
+			want: v + " pineapples " + v,
+		})
+	}
+
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			got := units.ReplaceDecimalFractions(tc.in)
+			if got != tc.want {
+				t.Fatalf("got %q but want %q", got, tc.want)
+			}
+		})
+	}
+}
