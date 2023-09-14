@@ -16,15 +16,21 @@ jobs:
           fetch-depth: 0
       - name: Get new commits
         id: numCommits
-        run: echo "commits=$(git log --oneline --since '24 hours ago' | wc -l)" >> "$GITHUB_OUTPUT"
+        run: echo "commits=$(git rev-list --count HEAD  --since=1.day)" >> "$GITHUB_OUTPUT"
 
   nightly:
     name: Nightly
     runs-on: ubuntu-latest
     needs: commits
-    if: ${{ needs.commits.outputs.numCommits > 0 }}
+    #if: ${{ needs.commits.outputs.numCommits > 0 }}
 
     steps:
+      - env:
+          NUM_COMMITS_OK: ${{ needs.commits.outputs.numCommits > 0 }}
+          NUM_COMMITS: ${{ needs.commits.outputs.numCommits }}
+        run: |
+          echo "$NUM_COMMITS $NUM_COMMITS_OK"
+
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
