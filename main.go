@@ -18,7 +18,12 @@ func main() {
 				Usage:   "starts the web server",
 				Action: func(ctx *cli.Context) error {
 					app.Init()
-					srv := server.NewServer(services.NewSQLiteService(), services.NewEmailService(), services.NewFilesService())
+					srv := server.NewServer(
+						services.NewSQLiteService(),
+						services.NewEmailService(),
+						services.NewFilesService(),
+						services.NewIntegrationsService(),
+					)
 					srv.Run()
 					return nil
 				},
