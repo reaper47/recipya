@@ -32,11 +32,12 @@ func init() {
 }
 
 // NewServer creates a Server.
-func NewServer(repository services.RepositoryService, email services.EmailService, files services.FilesService) *Server {
+func NewServer(repository services.RepositoryService, email services.EmailService, files services.FilesService, integrations services.IntegrationsService) *Server {
 	srv := &Server{
-		Repository: repository,
-		Email:      email,
-		Files:      files,
+		Repository:   repository,
+		Email:        email,
+		Files:        files,
+		Integrations: integrations,
 	}
 	srv.mountHandlers()
 	return srv
@@ -44,10 +45,11 @@ func NewServer(repository services.RepositoryService, email services.EmailServic
 
 // Server is the web application's configuration object.
 type Server struct {
-	Router     *chi.Mux
-	Repository services.RepositoryService
-	Email      services.EmailService
-	Files      services.FilesService
+	Router       *chi.Mux
+	Repository   services.RepositoryService
+	Email        services.EmailService
+	Files        services.FilesService
+	Integrations services.IntegrationsService
 }
 
 func (s *Server) mountHandlers() {
@@ -87,6 +89,14 @@ func (s *Server) mountHandlers() {
 		})
 
 		r.Post("/logout", s.logoutHandler)
+	})
+
+	r.Route("/integrations", func(r chi.Router) {
+		r.Use(s.mustBeLoggedInMiddleware)
+
+		r.Route("/import", func(r chi.Router) {
+			r.Post("/nextcloud", s.integrationsImportNextcloud)
+		})
 	})
 
 	r.Route("/recipes", func(r chi.Router) {

@@ -100,7 +100,7 @@ func TestHandlers_Recipes_New(t *testing.T) {
 
 func TestHandlers_Recipes_AddManual(t *testing.T) {
 	repo := &mockRepository{}
-	srv := server.NewServer(repo, &mockEmail{}, &mockFiles{})
+	srv := server.NewServer(repo, &mockEmail{}, &mockFiles{}, &mockIntegrations{})
 
 	uri := "/recipes/add/manual"
 
@@ -222,7 +222,7 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 }
 
 func TestHandlers_Recipes_AddManualIngredient(t *testing.T) {
-	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{})
+	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{}, &mockIntegrations{})
 
 	uri := "/recipes/add/manual/ingredient"
 
@@ -249,7 +249,7 @@ func TestHandlers_Recipes_AddManualIngredient(t *testing.T) {
 }
 
 func TestHandlers_Recipes_AddManualIngredientDelete(t *testing.T) {
-	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{})
+	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{}, &mockIntegrations{})
 
 	uri := "/recipes/add/manual/ingredient/"
 
@@ -312,7 +312,7 @@ func TestHandlers_Recipes_AddManualIngredientDelete(t *testing.T) {
 }
 
 func TestHandlers_Recipes_AddManualInstruction(t *testing.T) {
-	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{})
+	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{}, &mockIntegrations{})
 
 	uri := "/recipes/add/manual/instruction"
 
@@ -340,7 +340,7 @@ func TestHandlers_Recipes_AddManualInstruction(t *testing.T) {
 }
 
 func TestHandlers_Recipes_AddManualInstructionDelete(t *testing.T) {
-	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{})
+	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{}, &mockIntegrations{})
 
 	uri := "/recipes/add/manual/instruction/"
 
@@ -404,7 +404,7 @@ func TestHandlers_Recipes_AddManualInstructionDelete(t *testing.T) {
 
 func TestHandlers_Recipes_AddRequestWebsite(t *testing.T) {
 	emailMock := &mockEmail{}
-	srv := server.NewServer(&mockRepository{}, emailMock, &mockFiles{})
+	srv := server.NewServer(&mockRepository{}, emailMock, &mockFiles{}, &mockIntegrations{})
 
 	uri := "/recipes/add/request-website"
 
