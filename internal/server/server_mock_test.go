@@ -7,10 +7,12 @@ import (
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
+	"github.com/reaper47/recipya/internal/services"
 	"github.com/reaper47/recipya/internal/templates"
 	"github.com/reaper47/recipya/internal/units"
 	"io"
 	"mime/multipart"
+	"net/http"
 	"slices"
 	"strings"
 )
@@ -24,7 +26,7 @@ func newServerTest() *server.Server {
 		UsersRegistered:        make([]models.User, 0),
 		UsersUpdated:           make([]int64, 0),
 	}
-	return server.NewServer(repo, &mockEmail{}, &mockFiles{})
+	return server.NewServer(repo, &mockEmail{}, &mockFiles{}, &mockIntegrations{})
 }
 
 type mockRepository struct {
@@ -406,4 +408,18 @@ func (m *mockFiles) ReadTempFile(name string) ([]byte, error) {
 func (m *mockFiles) UploadImage(_ io.ReadCloser) (uuid.UUID, error) {
 	m.uploadImageHitCount++
 	return uuid.New(), nil
+}
+
+type mockIntegrations struct {
+	NextcloudImportFunc func(client *http.Client, baseURL, username, password string, files services.FilesService) (*models.Recipes, error)
+}
+
+func (m *mockIntegrations) NextcloudImport(client *http.Client, baseURL, username, password string, files services.FilesService) (*models.Recipes, error) {
+	if m.NextcloudImportFunc != nil {
+		return m.NextcloudImportFunc(client, baseURL, username, password, files)
+	}
+	return &models.Recipes{
+		{ID: 1, Name: "One"},
+		{ID: 2, Name: "Two"},
+	}, nil
 }

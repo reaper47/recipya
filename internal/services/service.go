@@ -8,6 +8,7 @@ import (
 	"github.com/reaper47/recipya/internal/units"
 	"io"
 	"mime/multipart"
+	"net/http"
 )
 
 // RepositoryService is the interface that describes the methods required for managing the main data store.
@@ -113,4 +114,9 @@ type FilesService interface {
 
 	// UploadImage uploads an image to the server.
 	UploadImage(rc io.ReadCloser) (uuid.UUID, error)
+}
+
+// IntegrationsService is the interface that describes the methods required for various software integrations.
+type IntegrationsService interface {
+	NextcloudImport(client *http.Client, baseURL, username, password string, files FilesService) (*models.Recipes, error)
 }

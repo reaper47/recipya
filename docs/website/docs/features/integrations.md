@@ -4,21 +4,20 @@ sidebar_position: 6
 
 # Integrations
 
-Recipya offers integrations with other recipe manager applications. 
+Recipya offers integrations with other recipe manager applications. You can access them from the **Recipes** side tab
+in the settings.
+
+![img alt](/img/features/settings-integrations.png)
 
 ## Nextcloud Cookbook
 
 [Nextcloud Cookbook](https://github.com/nextcloud/cookbook) is an app for [Nextcloud](https://nextcloud.com/). 
-It stores recipes in the `.json` format following the [Recipe schema](https://schema.org/Recipe) standard. 
-Therefore, all recipes can be imported into Recipya.
+Follow these steps to import your recipes from a Nextcloud Cookbook instance:
 
-To do so, first navigate to where Nextcloud's recipes are stored in your computer. The path is written in
-the [settings](https://nextcloud.github.io/cookbook/user/#where-are-my-files). Then, create a zip of
-the recipe you want to import. Then, [import](/docs/features/manage/add#import) the zip file from Recipya.
+1. Go to the **Integrations** setting and select the **Nextcloud** option.
+2. Click the button adjacent to the menu of options.
+3. In the dialog that appears, enter the URL and credentials of your Nextcloud instance.
+   ![img alt](/img/features/settings-integrations-nextcloud.png)
+4. Click the **Import** button.
 
-:::note
-
-We will eventually let the user import Nextcloud Cookbook recipes automatically. 
-An [issue](https://github.com/reaper47/recipya/issues/74) is raised on GitHub.
-
-:::
+Your recipes will be swiftly transferred from Nextcloud Cookbook to Recipya.
