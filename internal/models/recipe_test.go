@@ -2,6 +2,7 @@ package models_test
 
 import (
 	"errors"
+	"github.com/google/go-cmp/cmp"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/units"
@@ -203,6 +204,76 @@ func TestRecipe_ConvertMeasurementSystem(t *testing.T) {
 	}
 }
 
+func TestRecipe_Copy(t *testing.T) {
+	times, _ := models.NewTimes("PT1H20M", "PT30M")
+	original := &models.Recipe{
+		Category:    "breakfast",
+		CreatedAt:   time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC),
+		Cuisine:     "American",
+		Description: "The best American breakfast you could ever have.",
+		ID:          1,
+		Image:       uuid.Nil,
+		Ingredients: []string{
+			"2 eggs",
+			"3 cups maple syrup",
+			"1/2 tbsp cinnamon",
+			"1 toast spread with butter",
+		},
+		Instructions: []string{
+			"Cook the meat on high",
+			"Mix the eggs together, whisk and cook on low",
+			"Pour maple syrup over meat",
+			"Eat",
+		},
+		Keywords: []string{"eggs", "meat", "juicy"},
+		Name:     "Chicken Sauce",
+		Nutrition: models.Nutrition{
+			Calories:           "1g",
+			Cholesterol:        "2g",
+			Fiber:              "3g",
+			Protein:            "4g",
+			SaturatedFat:       "5g",
+			Sodium:             "6g",
+			Sugars:             "7g",
+			TotalCarbohydrates: "8g",
+			TotalFat:           "9g",
+			UnsaturatedFat:     "10g",
+		},
+		Times: times,
+		Tools: []string{
+			"small pan",
+			"large pan",
+			"spatula",
+		},
+		UpdatedAt: time.Date(2012, 12, 25, 0, 0, 0, 0, time.UTC),
+		URL:       "https://www.example.com",
+		Yield:     4,
+	}
+
+	copied := original.Copy()
+
+	if !cmp.Equal(original, copied) {
+		t.Log(cmp.Diff(original, copied))
+		t.Fail()
+	}
+	copied.Ingredients[0] = "pig"
+	if slices.Equal(original.Ingredients, copied.Ingredients) {
+		t.Fatal("ingredients slices the same when they should not")
+	}
+	copied.Instructions[0] = "jesus"
+	if slices.Equal(original.Instructions, copied.Instructions) {
+		t.Fatal("instructions slices the same when they should not")
+	}
+	copied.Keywords[0] = "european"
+	if slices.Equal(original.Keywords, copied.Keywords) {
+		t.Fatal("keywords slices the same when they should not")
+	}
+	copied.Tools[0] = "saw"
+	if slices.Equal(original.Tools, copied.Tools) {
+		t.Fatal("tools slices the same when they should not")
+	}
+}
+
 func TestRecipe_Normalize(t *testing.T) {
 	r := models.Recipe{
 		Description: "Place the chicken pieces on a baking sheet and bake 1l 1 l 1ml 1 ml until they 425°f (220°c) and golden.",
@@ -240,6 +311,60 @@ func TestRecipe_Normalize(t *testing.T) {
 			t.Errorf("expected '%v' but got '%v'", expected[i], v)
 		}
 	}
+}
+
+func TestRecipe_Scale(t *testing.T) {
+	recipe := &models.Recipe{
+		ID: 1,
+		Ingredients: []string{
+			"2 big apples",
+		},
+		Instructions: nil,
+		Name:         "Sauce",
+		Yield:        4,
+	}
+
+	t.Run("double recipe", func(t *testing.T) {
+		got, err := recipe.Scale(8)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		want := &models.Recipe{
+			ID: 1,
+			Ingredients: []string{
+				"4 big apples",
+			},
+			Instructions: nil,
+			Name:         "Sauce",
+			Yield:        4,
+		}
+		if !cmp.Equal(got, want) {
+			t.Log(cmp.Diff(got, want))
+			t.Fail()
+		}
+	})
+
+	t.Run("decrease recipe by 1.5x", func(t *testing.T) {
+		got, err := recipe.Scale(8)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		want := &models.Recipe{
+			ID: 1,
+			Ingredients: []string{
+				"4 big apples",
+			},
+			Instructions: nil,
+			Name:         "Sauce",
+			Yield:        4,
+		}
+		if !cmp.Equal(got, want) {
+			t.Log(cmp.Diff(got, want))
+			t.Fail()
+		}
+	})
 }
 
 func TestRecipe_Schema(t *testing.T) {

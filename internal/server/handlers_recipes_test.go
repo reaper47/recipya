@@ -711,6 +711,92 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 	})
 }
 
+func TestHandlers_Recipes_Scale(t *testing.T) {
+	srv := newServerTest()
+	originalRepo := srv.Repository
+
+	uri := "/recipes/1/scale"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
+	})
+
+	yieldTestcases := []struct {
+		name string
+		in   string
+		want string
+	}{
+		{
+			name: "yield query parameter must be present",
+			in:   "",
+			want: "No yield in the query.",
+		},
+		{
+			name: "yield query parameter must be greater than zero",
+			in:   "-1",
+			want: "Yield must be greater than zero.",
+		},
+		{
+			name: "yield query parameter must be greater than zero",
+			in:   "0",
+			want: "Yield must be greater than zero.",
+		},
+	}
+	for _, tc := range yieldTestcases {
+		t.Run(tc.name, func(t *testing.T) {
+			rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?yield="+tc.in, noHeader, nil)
+
+			assertStatus(t, rr.Code, http.StatusBadRequest)
+			assertHeader(t, rr, "HX-Trigger", fmt.Sprintf(`{"showToast":"{\"message\":\"%s\",\"backgroundColor\":\"bg-red-500\"}"}`, tc.want))
+
+		})
+	}
+
+	t.Run("cannot find recipe in database", func(t *testing.T) {
+		srv.Repository = &mockRepository{
+			RecipesRegistered: map[int64]models.Recipes{1: make(models.Recipes, 0)},
+		}
+		defer func() {
+			srv.Repository = originalRepo
+		}()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?yield=6", noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusNotFound)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Recipe not found.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+	})
+
+	t.Run("valid request double yield", func(t *testing.T) {
+		srv.Repository = &mockRepository{
+			RecipesRegistered: map[int64]models.Recipes{
+				1: []models.Recipe{
+					{
+						ID:   1,
+						Name: "American Jerky",
+						Ingredients: []string{
+							"2lb chicken",
+							"1/2 cup bread loaf",
+							"½ tbsp beef broth",
+							"7 1/2 cups flour",
+						},
+						Instructions: []string{},
+						Yield:        4,
+					},
+				},
+			},
+		}
+		defer func() {
+			srv.Repository = originalRepo
+		}()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?yield=8", noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		want := []string{}
+		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
+}
+
 func TestHandlers_Recipes_Share(t *testing.T) {
 	srv := newServerTest()
 
@@ -949,7 +1035,7 @@ func TestHandlers_Recipes_View(t *testing.T) {
 				`<dialog id="share-dialog" class="p-4 border-4 border-black min-w-[15rem]"><div id="share-dialog-result" class="pb-4"></div>`,
 				`<img id="output" class="w-full text-center h-96" alt="Image of the recipe" style="object-fit: scale-down" src="/data/images/` + r.Image.String() + `.jpg">`,
 				`<span class="text-sm font-normal leading-none">American</span>`,
-				`<p class="text-sm text-center">2 servings</p>`,
+				`<div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t dark:border-gray-800"><form autocomplete="off"><input id="yield" type="number" min="1" name="yield" value="2" class="w-16 text-center rounded bg-gray-100 p-2 grid self-end dark:bg-gray-900" hx-get="/recipes/1/scale" hx-trigger="input delay:500" hx-target="#ingredients-instructions-container"><label for="yield" class="grid self-start">servings</label></form></div>`,
 				`<a class="p-1 border rounded-lg center hover:bg-gray-800 hover:text-white dark:border-gray-800" href="https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/" target="_blank"> Source </a>`,
 				`<p class="p-2 text-sm whitespace-pre-line">This is the most delicious recipe!</p>`,
 				`<p class="text-xs">Per 100g: 500 calories; total carbohydrates 7g; sugars 6g; protein 3g; total fat 8g; saturated fat 4g; cholesterol 1g; sodium 5g; fiber 2g.</p>`,

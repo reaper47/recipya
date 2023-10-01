@@ -102,6 +102,43 @@ func (r *Recipe) ConvertMeasurementSystem(to units.System) (*Recipe, error) {
 	}, nil
 }
 
+// Copy deep copies the Recipe.
+func (r *Recipe) Copy() Recipe {
+	return Recipe{
+		Category:     r.Category,
+		CreatedAt:    r.CreatedAt,
+		Cuisine:      r.Cuisine,
+		Description:  r.Description,
+		ID:           r.ID,
+		Image:        r.Image,
+		Ingredients:  nil,
+		Instructions: nil,
+		Keywords:     nil,
+		Name:         r.Name,
+		Nutrition: Nutrition{
+			Calories:           r.Nutrition.Calories,
+			Cholesterol:        r.Nutrition.Cholesterol,
+			Fiber:              r.Nutrition.Fiber,
+			Protein:            r.Nutrition.Protein,
+			SaturatedFat:       r.Nutrition.SaturatedFat,
+			Sodium:             r.Nutrition.Sodium,
+			Sugars:             r.Nutrition.Sugars,
+			TotalCarbohydrates: r.Nutrition.TotalCarbohydrates,
+			TotalFat:           r.Nutrition.TotalFat,
+			UnsaturatedFat:     r.Nutrition.UnsaturatedFat,
+		},
+		Times: Times{
+			Prep:  r.Times.Prep,
+			Cook:  r.Times.Cook,
+			Total: r.Times.Total,
+		},
+		Tools:     nil,
+		UpdatedAt: r.UpdatedAt,
+		URL:       r.URL,
+		Yield:     r.Yield,
+	}
+}
+
 // Normalize normalizes texts for readability.
 // It normalizes quantities, i.e. 1l -> 1L and 1 ml -> 1 mL.
 func (r *Recipe) Normalize() {
@@ -129,6 +166,35 @@ func normalizeQuantity(s string) string {
 		}
 	}
 	return string(xr)
+}
+
+// Scale scales the recipe to the given yield.
+func (r *Recipe) Scale(yield int) (*Recipe, error) {
+	ingredients := make([]string, len(r.Ingredients))
+	instructions := make([]string, len(r.Instructions))
+	copy(ingredients, r.Ingredients)
+	copy(instructions, r.Instructions)
+
+	ingredients[0] = "hi"
+
+	return &Recipe{
+		Category:     r.Category,
+		CreatedAt:    r.CreatedAt,
+		Cuisine:      r.Cuisine,
+		Description:  r.Description,
+		ID:           r.ID,
+		Image:        r.Image,
+		Ingredients:  ingredients,
+		Instructions: instructions,
+		Keywords:     r.Keywords,
+		Name:         r.Name,
+		Nutrition:    r.Nutrition,
+		Times:        r.Times,
+		Tools:        r.Tools,
+		UpdatedAt:    r.UpdatedAt,
+		URL:          r.URL,
+		Yield:        r.Yield,
+	}, nil
 }
 
 // Schema creates the schema representation of the Recipe.
