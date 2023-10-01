@@ -206,7 +206,7 @@ func TestRecipe_ConvertMeasurementSystem(t *testing.T) {
 
 func TestRecipe_Copy(t *testing.T) {
 	times, _ := models.NewTimes("PT1H20M", "PT30M")
-	original := &models.Recipe{
+	original := models.Recipe{
 		Category:    "breakfast",
 		CreatedAt:   time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC),
 		Cuisine:     "American",
@@ -314,10 +314,13 @@ func TestRecipe_Normalize(t *testing.T) {
 }
 
 func TestRecipe_Scale(t *testing.T) {
-	recipe := &models.Recipe{
+	recipe := models.Recipe{
 		ID: 1,
 		Ingredients: []string{
 			"2 big apples",
+			"Lots of big apples",
+			"2.5 slices of bacon",
+			"2 1/3 cans of bamboo sticks",
 		},
 		Instructions: nil,
 		Name:         "Sauce",
@@ -330,15 +333,13 @@ func TestRecipe_Scale(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		want := &models.Recipe{
-			ID: 1,
-			Ingredients: []string{
-				"4 big apples",
-			},
-			Instructions: nil,
-			Name:         "Sauce",
-			Yield:        4,
+		want := recipe.Copy()
+		want.Ingredients = []string{
+			"4 big apples",
+			"Lots of big apples",
+			"5 slices of bacon",
 		}
+		want.Yield = 8
 		if !cmp.Equal(got, want) {
 			t.Log(cmp.Diff(got, want))
 			t.Fail()
@@ -351,7 +352,7 @@ func TestRecipe_Scale(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		want := &models.Recipe{
+		want := models.Recipe{
 			ID: 1,
 			Ingredients: []string{
 				"4 big apples",

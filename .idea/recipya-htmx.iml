@@ -3,6 +3,7 @@
   <component name="Go" enabled="true" />
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/docs/website/build" />
       <excludeFolder url="file://$MODULE_DIR$/internal/scraper/testdata" />
     </content>
     <orderEntry type="inheritedJdk" />

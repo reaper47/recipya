@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gertd/go-pluralize"
 	"github.com/neurosnap/sentences"
+	"github.com/reaper47/recipya/internal/utils/extensions"
 	"github.com/reaper47/recipya/internal/utils/regex"
 	"math"
 	"regexp"
@@ -487,9 +488,7 @@ func (m Measurement) Convert(to Unit) (Measurement, error) {
 
 // String represents the Measurement as a string.
 func (m Measurement) String() string {
-	v := fmt.Sprintf("%.2f", m.Quantity)
-	v = strings.TrimRight(strings.TrimRight(v, "0"), ".")
-
+	v := extensions.FloatToString(m.Quantity, "%.2f")
 	unit := m.Unit.String()
 	if math.Round(m.Quantity*10)*0.1 > 1 {
 		unit = pluralizeClient.Plural(unit)
@@ -664,9 +663,7 @@ func parseIrregularQuantity(input string, matches []string, re *regexp.Regexp, t
 				if i == len(parts)-1 {
 					convertedParts[i] = converted.String()
 				} else {
-					v := fmt.Sprintf("%.2f", converted.Quantity)
-					v = strings.TrimRight(strings.TrimRight(v, "0"), ".")
-					convertedParts[i] = v
+					convertedParts[i] = extensions.FloatToString(converted.Quantity, "%.2f")
 				}
 				continue
 			}
@@ -681,9 +678,7 @@ func parseIrregularQuantity(input string, matches []string, re *regexp.Regexp, t
 		if i == len(parts)-1 {
 			convertedParts[i] = converted.String()
 		} else {
-			v := fmt.Sprintf("%.2f", converted.Quantity)
-			v = strings.TrimRight(strings.TrimRight(v, "0"), ".")
-			convertedParts[i] = v
+			convertedParts[i] = extensions.FloatToString(converted.Quantity, "%.2f")
 		}
 	}
 

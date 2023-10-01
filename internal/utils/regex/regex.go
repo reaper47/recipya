@@ -5,6 +5,9 @@ import "regexp"
 // Decimal is the regular expression to search for a decimal number.
 var Decimal = regexp.MustCompile(`\d?\.\d+`)
 
+// Digit is the regular expression to search for digits in the text.
+var Digit = regexp.MustCompile(`(\d+\.?\d*)`)
+
 // Email verifies whether an email address is valid.
 var Email = regexp.MustCompile("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
 

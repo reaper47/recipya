@@ -18,7 +18,7 @@ require (
 	github.com/urfave/cli/v2 v2.25.7
 	golang.org/x/crypto v0.13.0
 	jaytaylor.com/html2text v0.0.0-20230321000545-74c2419ad056
-	modernc.org/sqlite v1.25.0
+	modernc.org/sqlite v1.26.0
 )
 
 require (

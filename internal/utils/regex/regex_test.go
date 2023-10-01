@@ -42,6 +42,40 @@ func TestRegex_Decimal(t *testing.T) {
 	})
 }
 
+func TestRegex_Digit(t *testing.T) {
+	t.Run("valid", func(t *testing.T) {
+		emails := []string{
+			"2 apples",
+			"apples 4",
+			"200 apples and oranges",
+			"apple number 48 and orange number 2391",
+			"2.3 tests",
+		}
+		for _, email := range emails {
+			t.Run("regex is valid", func(t *testing.T) {
+				if !regex.Digit.MatchString(email) {
+					t.Fatal("got false when want true")
+				}
+			})
+		}
+	})
+
+	t.Run("invalid", func(t *testing.T) {
+		emails := []string{
+			"two apples",
+			"email",
+			"apples four",
+		}
+		for _, email := range emails {
+			t.Run("regex is invalid "+email, func(t *testing.T) {
+				if regex.Digit.MatchString(email) {
+					t.Error("got true when want false")
+				}
+			})
+		}
+	})
+}
+
 func TestRegex_Email(t *testing.T) {
 	t.Run("valid", func(t *testing.T) {
 		emails := []string{

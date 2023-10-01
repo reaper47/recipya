@@ -31,7 +31,7 @@ func TestNewSystem(t *testing.T) {
 		want units.System
 	}{
 		{"imperial", units.ImperialSystem},
-		{"imperal", units.InvalidSystem},
+		{"space", units.InvalidSystem},
 		{"metric", units.MetricSystem},
 	}
 	for _, tc := range testcases {

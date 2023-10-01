@@ -82,28 +82,27 @@ func (r *Recipe) ConvertMeasurementSystem(to units.System) (*Recipe, error) {
 		instructions[i] = v
 	}
 
-	return &Recipe{
-		Category:     r.Category,
-		CreatedAt:    r.CreatedAt,
-		Cuisine:      r.Cuisine,
-		Description:  units.ConvertParagraph(r.Description, currentSystem, to),
-		ID:           r.ID,
-		Image:        r.Image,
-		Ingredients:  ingredients,
-		Instructions: instructions,
-		Keywords:     r.Keywords,
-		Name:         r.Name,
-		Nutrition:    r.Nutrition,
-		Times:        r.Times,
-		Tools:        r.Tools,
-		UpdatedAt:    r.UpdatedAt,
-		URL:          r.URL,
-		Yield:        r.Yield,
-	}, nil
+	recipe := r.Copy()
+	recipe.Description = units.ConvertParagraph(r.Description, currentSystem, to)
+	recipe.Ingredients = ingredients
+	recipe.Instructions = instructions
+	return &recipe, nil
 }
 
 // Copy deep copies the Recipe.
 func (r *Recipe) Copy() Recipe {
+	ingredients := make([]string, len(r.Ingredients))
+	copy(ingredients, r.Ingredients)
+
+	instructions := make([]string, len(r.Instructions))
+	copy(instructions, r.Instructions)
+
+	keywords := make([]string, len(r.Keywords))
+	copy(keywords, r.Keywords)
+
+	tools := make([]string, len(r.Tools))
+	copy(tools, r.Tools)
+
 	return Recipe{
 		Category:     r.Category,
 		CreatedAt:    r.CreatedAt,
@@ -111,9 +110,9 @@ func (r *Recipe) Copy() Recipe {
 		Description:  r.Description,
 		ID:           r.ID,
 		Image:        r.Image,
-		Ingredients:  nil,
-		Instructions: nil,
-		Keywords:     nil,
+		Ingredients:  ingredients,
+		Instructions: instructions,
+		Keywords:     keywords,
 		Name:         r.Name,
 		Nutrition: Nutrition{
 			Calories:           r.Nutrition.Calories,
@@ -132,7 +131,7 @@ func (r *Recipe) Copy() Recipe {
 			Cook:  r.Times.Cook,
 			Total: r.Times.Total,
 		},
-		Tools:     nil,
+		Tools:     tools,
 		UpdatedAt: r.UpdatedAt,
 		URL:       r.URL,
 		Yield:     r.Yield,
@@ -169,32 +168,28 @@ func normalizeQuantity(s string) string {
 }
 
 // Scale scales the recipe to the given yield.
-func (r *Recipe) Scale(yield int) (*Recipe, error) {
-	ingredients := make([]string, len(r.Ingredients))
-	instructions := make([]string, len(r.Instructions))
-	copy(ingredients, r.Ingredients)
-	copy(instructions, r.Instructions)
+func (r *Recipe) Scale(yield int16) (Recipe, error) {
+	recipe := r.Copy()
 
-	ingredients[0] = "hi"
+	originalYield := r.Yield
+	recipe.Yield = yield
+	multiplier := float64(yield) / float64(originalYield)
 
-	return &Recipe{
-		Category:     r.Category,
-		CreatedAt:    r.CreatedAt,
-		Cuisine:      r.Cuisine,
-		Description:  r.Description,
-		ID:           r.ID,
-		Image:        r.Image,
-		Ingredients:  ingredients,
-		Instructions: instructions,
-		Keywords:     r.Keywords,
-		Name:         r.Name,
-		Nutrition:    r.Nutrition,
-		Times:        r.Times,
-		Tools:        r.Tools,
-		UpdatedAt:    r.UpdatedAt,
-		URL:          r.URL,
-		Yield:        r.Yield,
-	}, nil
+	for i, ingredient := range recipe.Ingredients {
+		system := units.DetectMeasurementSystemFromSentence(ingredient)
+		switch system {
+		case units.InvalidSystem:
+			recipe.Ingredients[i] = regex.Digit.ReplaceAllStringFunc(ingredient, func(s string) string {
+				num, err := strconv.ParseFloat(s, 64)
+				if err != nil {
+					return ""
+				}
+				return extensions.FloatToString(num*multiplier, "%f")
+			})
+		}
+	}
+
+	return recipe, nil
 }
 
 // Schema creates the schema representation of the Recipe.

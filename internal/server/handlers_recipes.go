@@ -641,7 +641,7 @@ func (s *Server) recipeShareHandler(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) recipeScaleHandler(w http.ResponseWriter, r *http.Request) {
 	yieldStr := r.URL.Query().Get("yield")
-	yield, err := strconv.Atoi(yieldStr)
+	yield, err := strconv.ParseInt(yieldStr, 10, 16)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("No yield in the query.", errorToast))
 		w.WriteHeader(http.StatusBadRequest)
@@ -668,7 +668,7 @@ func (s *Server) recipeScaleHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	scaled, err := recipe.Scale(yield)
+	scaled, err := recipe.Scale(int16(yield))
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Failed to scale recipe.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)
