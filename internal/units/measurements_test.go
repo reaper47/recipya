@@ -538,10 +538,7 @@ func TestConvertSentence(t *testing.T) {
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
 			got, _ := units.ConvertSentence(tc.in, tc.from, tc.to)
-
-			if got != tc.want {
-				t.Errorf("got %q but want %q", got, tc.want)
-			}
+			assertEqual(t, got, tc.want)
 		})
 	}
 
@@ -619,10 +616,7 @@ func TestConvertSentence(t *testing.T) {
 	for _, tc := range testcases2 {
 		t.Run(tc.name, func(t *testing.T) {
 			got, _ := units.ConvertSentence(tc.in, tc.from, tc.to)
-
-			if got != tc.want {
-				t.Errorf("got %q but want %q", got, tc.want)
-			}
+			assertEqual(t, got, tc.want)
 		})
 	}
 }
@@ -652,10 +646,7 @@ func TestDetectMeasurementSystemFromSentence(t *testing.T) {
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
 			got := units.DetectMeasurementSystemFromSentence(tc.in)
-
-			if got != tc.want {
-				t.Errorf("got %v but want %v", got, tc.want)
-			}
+			assertEqual(t, got, tc.want)
 		})
 	}
 }
@@ -1626,9 +1617,7 @@ func TestMeasurement_Convert(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			if got.Unit != tc.want.Unit {
-				t.Errorf("got unit %#v but want %#v", got.Unit, tc.want.Unit)
-			}
+			assertEqual(t, got.Unit, tc.want.Unit)
 			if math.Abs(got.Quantity-tc.want.Quantity) > 1e-2 {
 				t.Errorf("got %#v but want %#v", got.Quantity, tc.want.Quantity)
 			}
@@ -1663,6 +1652,7 @@ func TestReplaceDecimalFractions(t *testing.T) {
 		"0.11":    "1/9",
 		"0.1":     "1/10",
 		"3.33333": "3 1/3",
+		"6.5":     "6 1/2",
 	}
 
 	var testcases []testcase
@@ -1677,9 +1667,58 @@ func TestReplaceDecimalFractions(t *testing.T) {
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
 			got := units.ReplaceDecimalFractions(tc.in)
-			if got != tc.want {
-				t.Fatalf("got %q but want %q", got, tc.want)
-			}
+			assertEqual(t, got, tc.want)
 		})
+	}
+}
+
+func TestReplaceVulgarFractions(t *testing.T) {
+	type testcase struct {
+		name string
+		in   string
+		want string
+	}
+
+	vulgar := map[string]string{
+		"½": "1/2",
+		"⅓": "1/3",
+		"⅔": "2/3",
+		"¼": "1/4",
+		"¾": "3/4",
+		"⅕": "1/5",
+		"⅖": "2/5",
+		"⅗": "3/5",
+		"⅘": "4/5",
+		"⅙": "1/6",
+		"⅚": "5/6",
+		"⅐": "1/7",
+		"⅛": "1/8",
+		"⅜": "3/8",
+		"⅝": "5/8",
+		"⅞": "7/8",
+		"⅑": "1/9",
+		"⅒": "1/10",
+	}
+
+	var testcases []testcase
+	for k, v := range vulgar {
+		testcases = append(testcases, testcase{
+			name: k,
+			in:   "1" + k + "pineapples" + k,
+			want: "1 " + v + " pineapples " + v,
+		})
+	}
+
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			got := units.ReplaceVulgarFractions(tc.in)
+			assertEqual(t, got, tc.want)
+		})
+	}
+}
+
+func assertEqual[T string | units.System | units.Unit](t *testing.T, got, want T) {
+	if got != want {
+		t.Fatalf("got %q but want %q", got, want)
 	}
 }

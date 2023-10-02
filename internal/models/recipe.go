@@ -170,21 +170,43 @@ func normalizeQuantity(s string) string {
 // Scale scales the recipe to the given yield.
 func (r *Recipe) Scale(yield int16) (Recipe, error) {
 	recipe := r.Copy()
-
-	originalYield := r.Yield
 	recipe.Yield = yield
-	multiplier := float64(yield) / float64(originalYield)
+	multiplier := float64(yield) / float64(r.Yield)
 
 	for i, ingredient := range recipe.Ingredients {
-		system := units.DetectMeasurementSystemFromSentence(ingredient)
-		switch system {
+		ingredient = units.ReplaceVulgarFractions(ingredient)
+
+		switch units.DetectMeasurementSystemFromSentence(ingredient) {
 		case units.InvalidSystem:
 			recipe.Ingredients[i] = regex.Digit.ReplaceAllStringFunc(ingredient, func(s string) string {
-				num, err := strconv.ParseFloat(s, 64)
-				if err != nil {
-					return ""
+				num := 0.
+				split := strings.Split(s, " ")
+				for _, v := range split {
+					index := strings.Index(v, "/")
+					if index != -1 {
+						numerator, err := strconv.ParseFloat(v[:index], 64)
+						if err != nil {
+							continue
+						}
+
+						denominator, err := strconv.ParseFloat(v[index+1:], 64)
+						if err != nil {
+							continue
+						}
+
+						num += numerator / denominator
+					} else {
+						f, err := strconv.ParseFloat(v, 64)
+						if err != nil {
+							return ""
+						}
+						num += f
+					}
 				}
-				return extensions.FloatToString(num*multiplier, "%f")
+
+				str := extensions.FloatToString(num*multiplier, "%f")
+				str = units.ReplaceDecimalFractions(str)
+				return str
 			})
 		}
 	}

@@ -321,6 +321,10 @@ func TestRecipe_Scale(t *testing.T) {
 			"Lots of big apples",
 			"2.5 slices of bacon",
 			"2 1/3 cans of bamboo sticks",
+			"1½ can of tomato paste",
+			"6 ¾ peanut butter jars",
+			"7.5mL of whiskey",
+			"2 tsp lemon juice",
 		},
 		Instructions: nil,
 		Name:         "Sauce",
@@ -338,6 +342,11 @@ func TestRecipe_Scale(t *testing.T) {
 			"4 big apples",
 			"Lots of big apples",
 			"5 slices of bacon",
+			"4 2/3 cans of bamboo sticks",
+			"3 can of tomato paste",
+			"13 1/2 peanut butter jars",
+			"15mL of whiskey",
+			"1 1/3 tbsp lemon juice",
 		}
 		want.Yield = 8
 		if !cmp.Equal(got, want) {

@@ -577,7 +577,7 @@ func ConvertSentence(input string, from, to System) (string, error) {
 		return input, errors.New("the measurement system is unchanged")
 	}
 
-	input = replaceKeyboardFractions(input)
+	input = ReplaceVulgarFractions(input)
 
 	matches := regex.Unit.FindStringSubmatch(input)
 	if matches == nil {
@@ -596,34 +596,6 @@ func ConvertSentence(input string, from, to System) (string, error) {
 
 	converted := convertMeasurement(m, to)
 	return regex.Unit.ReplaceAllString(input, converted.String()), nil
-}
-
-func replaceKeyboardFractions(input string) string {
-	keyboardFractions := map[string]string{
-		"½": "1/2",
-		"⅓": "1/3",
-		"⅔": "2/3",
-		"¼": "1/4",
-		"¾": "3/4",
-		"⅕": "1/5",
-		"⅖": "2/5",
-		"⅗": "3/5",
-		"⅘": "4/5",
-		"⅙": "1/6",
-		"⅚": "5/6",
-		"⅐": "1/7",
-		"⅛": "1/8",
-		"⅜": "3/8",
-		"⅝": "5/8",
-		"⅞": "7/8",
-		"⅑": "1/9",
-		"⅒": "1/10",
-	}
-
-	for key, value := range keyboardFractions {
-		input = strings.Replace(input, key, value, -1)
-	}
-	return input
 }
 
 func parseIrregularQuantity(input string, matches []string, re *regexp.Regexp, to System) (string, error) {
@@ -910,24 +882,24 @@ func DetectMeasurementSystemFromSentence(text string) System {
 // ReplaceDecimalFractions converts the decimals in a string to fractions.
 func ReplaceDecimalFractions(input string) string {
 	decimals := map[string]string{
-		".5":   "1/2",
+		".500": "1/2",
 		".333": "1/3",
 		".666": "2/3",
-		".25":  "1/4",
-		".75":  "3/4",
-		".2":   "1/5",
-		".4":   "2/5",
-		".6":   "3/5",
-		".8":   "4/5",
-		".16":  "1/6",
-		".83":  "5/6",
-		".14":  "1/7",
+		".250": "1/4",
+		".750": "3/4",
+		".200": "1/5",
+		".400": "2/5",
+		".600": "3/5",
+		".800": "4/5",
+		".160": "1/6",
+		".830": "5/6",
+		".140": "1/7",
 		".125": "1/8",
 		".375": "3/8",
 		".625": "5/8",
 		".875": "7/8",
-		".11":  "1/9",
-		".1":   "1/10",
+		".110": "1/9",
+		".100": "1/10",
 	}
 
 	return regex.Decimal.ReplaceAllStringFunc(input, func(s string) string {
@@ -935,12 +907,51 @@ func ReplaceDecimalFractions(input string) string {
 			s = s[:5]
 		}
 
-		s = strings.Trim(s, "0")
+		n := len(strings.Split(s, ".")[1])
+		if n < 3 {
+			s = s + strings.Repeat("0", 3-n)
+		}
+
+		s = strings.TrimPrefix(s, "0")
 		if s[0] != '.' {
 			return fmt.Sprintf("%s %s", string(s[0]), decimals[s[1:5]])
 		}
 		return decimals[s]
 	})
+}
+
+// ReplaceVulgarFractions replaces vulgar fractions in a string to decimal ones.
+func ReplaceVulgarFractions(input string) string {
+	vulgar := map[string]string{
+		"½": "1/2",
+		"⅓": "1/3",
+		"⅔": "2/3",
+		"¼": "1/4",
+		"¾": "3/4",
+		"⅕": "1/5",
+		"⅖": "2/5",
+		"⅗": "3/5",
+		"⅘": "4/5",
+		"⅙": "1/6",
+		"⅚": "5/6",
+		"⅐": "1/7",
+		"⅛": "1/8",
+		"⅜": "3/8",
+		"⅝": "5/8",
+		"⅞": "7/8",
+		"⅑": "1/9",
+		"⅒": "1/10",
+	}
+
+	for k, v := range vulgar {
+		if strings.Contains(input, k) {
+			input = strings.Replace(input, k, " "+v+" ", -1)
+			input = strings.TrimSpace(input)
+			input = strings.Join(strings.Fields(input), " ")
+			break
+		}
+	}
+	return input
 }
 
 func init() {
