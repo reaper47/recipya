@@ -168,17 +168,21 @@ func normalizeQuantity(s string) string {
 }
 
 // Scale scales the recipe to the given yield.
-func (r *Recipe) Scale(yield int16) (Recipe, error) {
-	recipe := r.Copy()
-	recipe.Yield = yield
+func (r *Recipe) Scale(yield int16) {
 	multiplier := float64(yield) / float64(r.Yield)
+	r.Yield = yield
 
-	for i, ingredient := range recipe.Ingredients {
+	for i, ingredient := range r.Ingredients {
 		ingredient = units.ReplaceVulgarFractions(ingredient)
 
 		switch units.DetectMeasurementSystemFromSentence(ingredient) {
+		case units.MetricSystem, units.ImperialSystem:
+			r.Ingredients[i] = regex.Unit.ReplaceAllStringFunc(ingredient, func(s string) string {
+				// units.NewMeasurement()
+				return "5"
+			})
 		case units.InvalidSystem:
-			recipe.Ingredients[i] = regex.Digit.ReplaceAllStringFunc(ingredient, func(s string) string {
+			r.Ingredients[i] = regex.Digit.ReplaceAllStringFunc(ingredient, func(s string) string {
 				num := 0.
 				split := strings.Split(s, " ")
 				for _, v := range split {
@@ -210,8 +214,6 @@ func (r *Recipe) Scale(yield int16) (Recipe, error) {
 			})
 		}
 	}
-
-	return recipe, nil
 }
 
 // Schema creates the schema representation of the Recipe.

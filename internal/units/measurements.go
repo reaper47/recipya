@@ -19,6 +19,66 @@ var (
 	tokenizer       *sentences.DefaultSentenceTokenizer
 )
 
+// NewMeasurement creates a Measurement from a quantity of type int or float64
+// and a unit. The creation fails when the unit is invalid.
+func NewMeasurement(quantity float64, unit string) (Measurement, error) {
+	unit = pluralizeClient.Singular(strings.ToLower(unit))
+	unit = strings.TrimSuffix(unit, ".")
+
+	var u Unit
+	switch unit {
+	case "°c", "c", "celsius", "degrees celsius", "degree celsius", "degrees c", "degree c":
+		u = Celsius
+	case "cm", "centimeter", "centimetre":
+		u = Centimeter
+	case "cup":
+		u = Cup
+	case "dl", "dL", "deciliter", "decilitre":
+		u = Decilitre
+	case "°f", "f", "fahrenheit", "degrees farenheit", "degree farenheit", "degrees fahrenheit", "degree fahrenheit", "degrees f":
+		u = Fahrenheit
+	case "foot", "feet", "ft", "′":
+		u = Feet
+	case "fluid ounce", "fl oz", "fl. oz", "floz.", "floz":
+		u = FlOz
+	case "gallon", "gal":
+		u = Gallon
+	case "g", "gram", "gramme":
+		u = Gram
+	case "inche", "inch", "in", `"`, `”`:
+		u = Inch
+	case "kg", "kilogram", "kilogramme":
+		u = Kilogram
+	case "l", "litre", "liter":
+		u = Litre
+	case "m", "meter", "metre":
+		u = Meter
+	case "mg", "milligram", "milligramme":
+		u = Milligram
+	case "ml", "milliliter", "millilitre", "cc":
+		u = Millilitre
+	case "mm", "millimeter", "millimetre":
+		u = Millimeter
+	case "ounce", "oz":
+		u = Ounce
+	case "pint", "pt", "fl pt", "fl. pt":
+		u = Pint
+	case "lb", "#", "pound":
+		u = Pound
+	case "quart", "qt", "fl qt", "fl. qt":
+		u = Quart
+	case "tablespoon", "tbl", "tbs", "tb", "tbsp":
+		u = Tablespoon
+	case "teaspoon", "tsp":
+		u = Teaspoon
+	case "yard":
+		u = Yard
+	default:
+		return Measurement{}, errors.New("unit " + unit + " is unsupported")
+	}
+	return Measurement{Quantity: quantity, Unit: u}, nil
+}
+
 // Measurement represents a physical measurement consisting of a quantity and a unit.
 type Measurement struct {
 	Quantity float64
@@ -486,6 +546,176 @@ func (m Measurement) Convert(to Unit) (Measurement, error) {
 	return Measurement{Quantity: q, Unit: to}, nil
 }
 
+// Scale scales the measurement by the given multiplier.
+func (m Measurement) Scale(multiplier float64) Measurement {
+	q := m.Quantity * multiplier
+	switch m.Unit {
+	case Celsius, Fahrenheit:
+		return m
+	case Centimeter:
+		if q < 1 {
+			return Measurement{Quantity: q * 10, Unit: Millimeter}
+		} else if q < 100 {
+			return Measurement{Quantity: q, Unit: Centimeter}
+		}
+		return Measurement{Quantity: q * 0.01, Unit: Meter}
+	case Cup:
+		if q >= 16 {
+			return Measurement{Quantity: q * 0.0625, Unit: Gallon}
+		} else if q >= 1 {
+			return Measurement{Quantity: q, Unit: Cup}
+		} else if q >= 0.125 {
+			return Measurement{Quantity: q * 8, Unit: FlOz}
+		} else if q >= 0.0625 {
+			return Measurement{Quantity: q * 16, Unit: Tablespoon}
+		}
+		return Measurement{Quantity: q * 48, Unit: Teaspoon}
+	case Decilitre:
+		if q >= 10 {
+			return Measurement{Quantity: q * 0.1, Unit: Litre}
+		} else if q >= 1 {
+			return Measurement{Quantity: q, Unit: Decilitre}
+		}
+		return Measurement{Quantity: q * 100, Unit: Millilitre}
+	case Feet:
+		if q >= 3 {
+			return Measurement{Quantity: q * 0.33333333, Unit: Yard}
+		} else if q >= 1 {
+			return Measurement{Quantity: q, Unit: Feet}
+		}
+		return Measurement{Quantity: q * 12, Unit: Inch}
+	case FlOz:
+		if q >= 128 {
+			return Measurement{Quantity: q * 0.0078125, Unit: Gallon}
+		} else if q >= 8 {
+			return Measurement{Quantity: q * 0.125, Unit: Cup}
+		} else if q >= 1 {
+			return Measurement{Quantity: q, Unit: FlOz}
+		} else if q >= 0.5 {
+			return Measurement{Quantity: q * 2, Unit: Tablespoon}
+		}
+		return Measurement{Quantity: q * 6, Unit: Teaspoon}
+	case Gallon:
+		if q >= 1 {
+			return Measurement{Quantity: q, Unit: Gallon}
+		} else if q >= 0.0625 {
+			return Measurement{Quantity: q * 16, Unit: Cup}
+		} else if q >= 0.0078125 {
+			return Measurement{Quantity: q * 128, Unit: FlOz}
+		} else if q >= 0.00390625 {
+			return Measurement{Quantity: q * 256, Unit: Tablespoon}
+		}
+		return Measurement{Quantity: q * 768, Unit: Teaspoon}
+	case Gram:
+		if q >= 1000 {
+			return Measurement{Quantity: q * 0.001, Unit: Kilogram}
+		} else if q >= 1 {
+			return Measurement{Quantity: q, Unit: Gram}
+		}
+		return Measurement{Quantity: q * 1000, Unit: Milligram}
+	case Inch:
+		if q >= 12 {
+			return Measurement{Quantity: q * 0.08333333333, Unit: Feet}
+		} else if q >= 3 {
+			return Measurement{Quantity: q * 0.3333333, Unit: Yard}
+		}
+		return Measurement{Quantity: q, Unit: Inch}
+	case Kilogram:
+		if q >= 1 {
+			return Measurement{Quantity: q, Unit: Kilogram}
+		} else if q > 0.001 {
+			return Measurement{Quantity: q * 1e3, Unit: Gram}
+		}
+		return Measurement{Quantity: q * 1e6, Unit: Milligram}
+	case Litre:
+		if q >= 1 {
+			return Measurement{Quantity: q, Unit: Litre}
+		} else if q >= 0.1 {
+			return Measurement{Quantity: q * 10, Unit: Decilitre}
+		}
+		return Measurement{Quantity: q * 1000, Unit: Millilitre}
+	case Meter:
+		if q >= 1 {
+			return Measurement{Quantity: q, Unit: Meter}
+		} else if q >= 0.01 {
+			return Measurement{Quantity: q * 100, Unit: Centimeter}
+		}
+		return Measurement{Quantity: q * 1000, Unit: Millimeter}
+	case Milligram:
+		if q >= 1e6 {
+			return Measurement{Quantity: q * 1e-6, Unit: Kilogram}
+		} else if q >= 1e3 {
+			return Measurement{Quantity: q * 1e-3, Unit: Gram}
+		}
+		return Measurement{Quantity: q, Unit: Milligram}
+	case Millilitre:
+		if q > 1e3 {
+			return Measurement{Quantity: q * 1e-3, Unit: Litre}
+		} else if q > 100 {
+			return Measurement{Quantity: q * 1e-2, Unit: Decilitre}
+		}
+		return Measurement{Quantity: q, Unit: Millilitre}
+	case Millimeter:
+		if q >= 1e3 {
+			return Measurement{Quantity: q * 1e-3, Unit: Meter}
+		} else if q >= 10 {
+			return Measurement{Quantity: q * 0.1, Unit: Centimeter}
+		}
+		return Measurement{Quantity: q, Unit: Millimeter}
+	case Ounce:
+		if q >= 16 {
+			return Measurement{Quantity: q * 0.0625, Unit: Pound}
+		}
+		return Measurement{Quantity: q, Unit: Ounce}
+	case Pint:
+		if q >= 2 {
+			return Measurement{Quantity: q * 0.5, Unit: Quart}
+		}
+		return Measurement{Quantity: q, Unit: Pint}
+	case Pound:
+		if q >= 1 {
+			return Measurement{Quantity: q, Unit: Pound}
+		}
+		return Measurement{Quantity: q * 16, Unit: Ounce}
+	case Quart:
+		if q >= 0.5 {
+			return Measurement{Quantity: q * 2, Unit: Pint}
+		}
+		return Measurement{Quantity: q, Unit: Quart}
+	case Tablespoon:
+		if q >= 256 {
+			return Measurement{Quantity: q * 0.00390625, Unit: Gallon}
+		} else if q >= 16 {
+			return Measurement{Quantity: q * 0.0625, Unit: Cup}
+		} else if q >= 2 {
+			return Measurement{Quantity: q * 0.5, Unit: FlOz}
+		} else if q >= 1 {
+			return Measurement{Quantity: q, Unit: Tablespoon}
+		}
+		return Measurement{Quantity: q * 3, Unit: Teaspoon}
+	case Teaspoon:
+		if q >= 768 {
+			return Measurement{Quantity: q * 0.00130208333, Unit: Gallon}
+		} else if q >= 48 {
+			return Measurement{Quantity: q * 0.02083333333, Unit: Cup}
+		} else if q >= 6 {
+			return Measurement{Quantity: q * 0.16666666666, Unit: FlOz}
+		} else if q >= 3 {
+			return Measurement{Quantity: q * 0.33333333333, Unit: Tablespoon}
+		}
+		return Measurement{Quantity: q, Unit: Teaspoon}
+	case Yard:
+		if q >= 1 {
+			return Measurement{Quantity: q, Unit: Yard}
+		} else if q >= 0.33333333 {
+			return Measurement{Quantity: q * 3, Unit: Feet}
+		}
+		return Measurement{Quantity: q * 36, Unit: Inch}
+	default:
+		return m
+	}
+}
+
 // String represents the Measurement as a string.
 func (m Measurement) String() string {
 	v := extensions.FloatToString(m.Quantity, "%.2f")
@@ -494,66 +724,6 @@ func (m Measurement) String() string {
 		unit = pluralizeClient.Plural(unit)
 	}
 	return v + " " + unit
-}
-
-// NewMeasurement creates a Measurement from a quantity of type int or float64
-// and a unit. The creation fails when the unit is invalid.
-func NewMeasurement(quantity float64, unit string) (Measurement, error) {
-	unit = pluralizeClient.Singular(strings.ToLower(unit))
-	unit = strings.TrimSuffix(unit, ".")
-
-	var u Unit
-	switch unit {
-	case "°c", "c", "celsius", "degrees celsius", "degree celsius", "degrees c", "degree c":
-		u = Celsius
-	case "cm", "centimeter", "centimetre":
-		u = Centimeter
-	case "cup":
-		u = Cup
-	case "dl", "dL", "deciliter", "decilitre":
-		u = Decilitre
-	case "°f", "f", "fahrenheit", "degrees farenheit", "degree farenheit", "degrees fahrenheit", "degree fahrenheit", "degrees f":
-		u = Fahrenheit
-	case "foot", "feet", "ft", "′":
-		u = Feet
-	case "fluid ounce", "fl oz", "fl. oz", "floz.", "floz":
-		u = FlOz
-	case "gallon", "gal":
-		u = Gallon
-	case "g", "gram", "gramme":
-		u = Gram
-	case "inche", "inch", "in", `"`, `”`:
-		u = Inch
-	case "kg", "kilogram", "kilogramme":
-		u = Kilogram
-	case "l", "litre", "liter":
-		u = Litre
-	case "m", "meter", "metre":
-		u = Meter
-	case "mg", "milligram", "milligramme":
-		u = Milligram
-	case "ml", "milliliter", "millilitre", "cc":
-		u = Millilitre
-	case "mm", "millimeter", "millimetre":
-		u = Millimeter
-	case "ounce", "oz":
-		u = Ounce
-	case "pint", "pt", "fl pt", "fl. pt":
-		u = Pint
-	case "lb", "#", "pound":
-		u = Pound
-	case "quart", "qt", "fl qt", "fl. qt":
-		u = Quart
-	case "tablespoon", "tbl", "tbs", "tb", "tbsp":
-		u = Tablespoon
-	case "teaspoon", "tsp":
-		u = Teaspoon
-	case "yard":
-		u = Yard
-	default:
-		return Measurement{}, errors.New("unit " + unit + " is unsupported")
-	}
-	return Measurement{Quantity: quantity, Unit: u}, nil
 }
 
 // ConvertParagraph converts the paragraph to the desired System.

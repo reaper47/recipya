@@ -332,10 +332,8 @@ func TestRecipe_Scale(t *testing.T) {
 	}
 
 	t.Run("double recipe", func(t *testing.T) {
-		got, err := recipe.Scale(8)
-		if err != nil {
-			t.Fatal(err)
-		}
+		got := recipe.Copy()
+		got.Scale(8)
 
 		want := recipe.Copy()
 		want.Ingredients = []string{
@@ -349,31 +347,19 @@ func TestRecipe_Scale(t *testing.T) {
 			"1 1/3 tbsp lemon juice",
 		}
 		want.Yield = 8
-		if !cmp.Equal(got, want) {
-			t.Log(cmp.Diff(got, want))
-			t.Fail()
-		}
+		assertStructsEqual(t, got, want)
 	})
 
 	t.Run("decrease recipe by 1.5x", func(t *testing.T) {
-		got, err := recipe.Scale(8)
-		if err != nil {
-			t.Fatal(err)
-		}
+		got := recipe.Copy()
+		got.Scale(8)
 
-		want := models.Recipe{
-			ID: 1,
-			Ingredients: []string{
-				"4 big apples",
-			},
-			Instructions: nil,
-			Name:         "Sauce",
-			Yield:        4,
+		want := recipe.Copy()
+		want.Ingredients = []string{
+			"4 big apples",
 		}
-		if !cmp.Equal(got, want) {
-			t.Log(cmp.Diff(got, want))
-			t.Fail()
-		}
+		want.Yield = 4
+		assertStructsEqual(t, got, want)
 	})
 }
 
@@ -498,5 +484,20 @@ func TestNewTimes(t *testing.T) {
 	}
 	if actual.Total != 3*time.Hour {
 		t.Errorf("wanted total time 3H but got %v", actual.Total.String())
+	}
+}
+
+func assertNoError(t testing.TB, got error) {
+	t.Helper()
+	if got != nil {
+		t.Fatal("got an error but expected none")
+	}
+}
+
+func assertStructsEqual[T models.Recipe](t testing.TB, got, want T) {
+	t.Helper()
+	if !cmp.Equal(got, want) {
+		t.Log(cmp.Diff(got, want))
+		t.Fail()
 	}
 }

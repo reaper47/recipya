@@ -2,7 +2,6 @@ package units_test
 
 import (
 	"errors"
-	"github.com/google/go-cmp/cmp"
 	"github.com/reaper47/recipya/internal/units"
 	"math"
 	"testing"
@@ -770,9 +769,7 @@ func TestNewMeasurement(t *testing.T) {
 				t.Fatalf("got unexpected error %q", err)
 			}
 
-			if !cmp.Equal(got, tc.want) {
-				t.Errorf("got %#v but want %#v", got, tc.want)
-			}
+			assertMeasurementsEqual(t, got, tc.want)
 		})
 	}
 }
@@ -1613,14 +1610,10 @@ func TestMeasurement_Convert(t *testing.T) {
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
 			got, err := tc.in.Convert(tc.want.Unit)
-			if err != nil {
-				t.Fatal(err)
-			}
 
+			assertNoErr(t, err)
 			assertEqual(t, got.Unit, tc.want.Unit)
-			if math.Abs(got.Quantity-tc.want.Quantity) > 1e-2 {
-				t.Errorf("got %#v but want %#v", got.Quantity, tc.want.Quantity)
-			}
+			assertFloats(t, got.Quantity, tc.want.Quantity, 1e-2)
 		})
 	}
 }
@@ -1717,8 +1710,472 @@ func TestReplaceVulgarFractions(t *testing.T) {
 	}
 }
 
+func TestMeasurement_Scale(t *testing.T) {
+	testcases := []struct {
+		name       string
+		in         units.Measurement
+		multiplier float64
+		want       units.Measurement
+	}{
+		{
+			name:       "do not scale temperature celsius",
+			in:         units.Measurement{Quantity: 220, Unit: units.Celsius},
+			multiplier: 2,
+			want:       units.Measurement{Quantity: 220, Unit: units.Celsius},
+		},
+		{
+			name:       "do not scale temperature fahrenheit",
+			in:         units.Measurement{Quantity: 325, Unit: units.Fahrenheit},
+			multiplier: 2,
+			want:       units.Measurement{Quantity: 325, Unit: units.Fahrenheit},
+		},
+		{
+			name:       "cm to mm",
+			in:         units.Measurement{Quantity: 2, Unit: units.Centimeter},
+			multiplier: 0.1,
+			want:       units.Measurement{Quantity: 2, Unit: units.Millimeter},
+		},
+		{
+			name:       "cm to cm",
+			in:         units.Measurement{Quantity: 15, Unit: units.Centimeter},
+			multiplier: 3,
+			want:       units.Measurement{Quantity: 45, Unit: units.Centimeter},
+		},
+		{
+			name:       "cm to m",
+			in:         units.Measurement{Quantity: 65, Unit: units.Centimeter},
+			multiplier: 2,
+			want:       units.Measurement{Quantity: 1.3, Unit: units.Meter},
+		},
+		{
+			name:       "cup to fl. oz.",
+			in:         units.Measurement{Quantity: 2, Unit: units.Cup},
+			multiplier: 0.25,
+			want:       units.Measurement{Quantity: 4, Unit: units.FlOz},
+		},
+		{
+			name:       "cup to cup",
+			in:         units.Measurement{Quantity: 2, Unit: units.Cup},
+			multiplier: 2,
+			want:       units.Measurement{Quantity: 4, Unit: units.Cup},
+		},
+		{
+			name:       "cup to gallon",
+			in:         units.Measurement{Quantity: 10, Unit: units.Cup},
+			multiplier: 2,
+			want:       units.Measurement{Quantity: 1.25, Unit: units.Gallon},
+		},
+		{
+			name:       "cup to tbsp",
+			in:         units.Measurement{Quantity: 0.75, Unit: units.Cup},
+			multiplier: 0.1,
+			want:       units.Measurement{Quantity: 1.2, Unit: units.Tablespoon},
+		},
+		{
+			name:       "cup to tsp",
+			in:         units.Measurement{Quantity: 0.5, Unit: units.Cup},
+			multiplier: 0.1,
+			want:       units.Measurement{Quantity: 2.4, Unit: units.Teaspoon},
+		},
+		{
+			name:       "dl to l",
+			in:         units.Measurement{Quantity: 5, Unit: units.Decilitre},
+			multiplier: 5,
+			want:       units.Measurement{Quantity: 2.5, Unit: units.Litre},
+		},
+		{
+			name:       "dl to dl",
+			in:         units.Measurement{Quantity: 2, Unit: units.Decilitre},
+			multiplier: 2,
+			want:       units.Measurement{Quantity: 4, Unit: units.Decilitre},
+		},
+		{
+			name:       "dl to ml",
+			in:         units.Measurement{Quantity: 2, Unit: units.Decilitre},
+			multiplier: 0.25,
+			want:       units.Measurement{Quantity: 50, Unit: units.Millilitre},
+		},
+		{
+			name:       "ft to in",
+			in:         units.Measurement{Quantity: 1, Unit: units.Feet},
+			multiplier: 0.5,
+			want:       units.Measurement{Quantity: 6, Unit: units.Inch},
+		},
+		{
+			name:       "ft to yard",
+			in:         units.Measurement{Quantity: 1, Unit: units.Feet},
+			multiplier: 6,
+			want:       units.Measurement{Quantity: 2, Unit: units.Yard},
+		},
+		{
+			name:       "ft to ft",
+			in:         units.Measurement{Quantity: 1, Unit: units.Feet},
+			multiplier: 2,
+			want:       units.Measurement{Quantity: 2, Unit: units.Feet},
+		},
+		{
+			name:       "fl. oz. to fl.oz",
+			in:         units.Measurement{Quantity: 1, Unit: units.FlOz},
+			multiplier: 1.5,
+			want:       units.Measurement{Quantity: 1.5, Unit: units.FlOz},
+		},
+		{
+			name:       "fl. oz. to cup",
+			in:         units.Measurement{Quantity: 6, Unit: units.FlOz},
+			multiplier: 2,
+			want:       units.Measurement{Quantity: 1.5, Unit: units.Cup},
+		},
+		{
+			name:       "fl. oz. to gallon",
+			in:         units.Measurement{Quantity: 36, Unit: units.FlOz},
+			multiplier: 5,
+			want:       units.Measurement{Quantity: 1.406, Unit: units.Gallon},
+		},
+		{
+			name:       "fl. oz. to tbsp",
+			in:         units.Measurement{Quantity: 1, Unit: units.FlOz},
+			multiplier: 0.5,
+			want:       units.Measurement{Quantity: 1, Unit: units.Tablespoon},
+		},
+		{
+			name:       "fl. oz. to tsp",
+			in:         units.Measurement{Quantity: 1, Unit: units.FlOz},
+			multiplier: 0.25,
+			want:       units.Measurement{Quantity: 1.5, Unit: units.Teaspoon},
+		},
+		{
+			name:       "gallon to gallon",
+			in:         units.Measurement{Quantity: 1, Unit: units.Gallon},
+			multiplier: 5,
+			want:       units.Measurement{Quantity: 5, Unit: units.Gallon},
+		},
+		{
+			name:       "gallon to cup",
+			in:         units.Measurement{Quantity: 0.5, Unit: units.Gallon},
+			multiplier: 1.3,
+			want:       units.Measurement{Quantity: 10.4, Unit: units.Cup},
+		},
+		{
+			name:       "gallon to fl. oz.",
+			in:         units.Measurement{Quantity: 0.5, Unit: units.Gallon},
+			multiplier: 0.1,
+			want:       units.Measurement{Quantity: 6.4, Unit: units.FlOz},
+		},
+		{
+			name:       "gallon to tbsp",
+			in:         units.Measurement{Quantity: 0.4, Unit: units.Gallon},
+			multiplier: 0.01,
+			want:       units.Measurement{Quantity: 1.024, Unit: units.Tablespoon},
+		},
+		{
+			name:       "gallon to tsp",
+			in:         units.Measurement{Quantity: 0.2, Unit: units.Gallon},
+			multiplier: 0.01,
+			want:       units.Measurement{Quantity: 1.536, Unit: units.Teaspoon},
+		},
+		{
+			name:       "g to g",
+			in:         units.Measurement{Quantity: 50, Unit: units.Gram},
+			multiplier: 2,
+			want:       units.Measurement{Quantity: 100, Unit: units.Gram},
+		},
+		{
+			name:       "g to kg",
+			in:         units.Measurement{Quantity: 500, Unit: units.Gram},
+			multiplier: 3,
+			want:       units.Measurement{Quantity: 1.5, Unit: units.Kilogram},
+		},
+		{
+			name:       "g to mg",
+			in:         units.Measurement{Quantity: 1, Unit: units.Gram},
+			multiplier: 0.5,
+			want:       units.Measurement{Quantity: 500, Unit: units.Milligram},
+		},
+		{
+			name:       "in to in",
+			in:         units.Measurement{Quantity: 1, Unit: units.Inch},
+			multiplier: 2,
+			want:       units.Measurement{Quantity: 2, Unit: units.Inch},
+		},
+		{
+			name:       "in to ft",
+			in:         units.Measurement{Quantity: 8, Unit: units.Inch},
+			multiplier: 3,
+			want:       units.Measurement{Quantity: 2, Unit: units.Feet},
+		},
+		{
+			name:       "in to yard",
+			in:         units.Measurement{Quantity: 3, Unit: units.Inch},
+			multiplier: 3,
+			want:       units.Measurement{Quantity: 3, Unit: units.Yard},
+		},
+		{
+			name:       "kg to g",
+			in:         units.Measurement{Quantity: 1, Unit: units.Kilogram},
+			multiplier: 0.5,
+			want:       units.Measurement{Quantity: 500, Unit: units.Gram},
+		},
+		{
+			name:       "kg to kg",
+			in:         units.Measurement{Quantity: 2, Unit: units.Kilogram},
+			multiplier: 3,
+			want:       units.Measurement{Quantity: 6, Unit: units.Kilogram},
+		},
+		{
+			name:       "kg to mg",
+			in:         units.Measurement{Quantity: 0.5, Unit: units.Kilogram},
+			multiplier: 1e-3,
+			want:       units.Measurement{Quantity: 500, Unit: units.Milligram},
+		},
+		{
+			name:       "l to l",
+			in:         units.Measurement{Quantity: 5, Unit: units.Litre},
+			multiplier: 5,
+			want:       units.Measurement{Quantity: 25, Unit: units.Litre},
+		},
+		{
+			name:       "l to dl",
+			in:         units.Measurement{Quantity: 1, Unit: units.Litre},
+			multiplier: 0.5,
+			want:       units.Measurement{Quantity: 5, Unit: units.Decilitre},
+		},
+		{
+			name:       "l to ml",
+			in:         units.Measurement{Quantity: 1, Unit: units.Litre},
+			multiplier: 0.01,
+			want:       units.Measurement{Quantity: 10, Unit: units.Millilitre},
+		},
+		{
+			name:       "m to mm",
+			in:         units.Measurement{Quantity: 0.5, Unit: units.Meter},
+			multiplier: 0.01,
+			want:       units.Measurement{Quantity: 5, Unit: units.Millimeter},
+		},
+		{
+			name:       "m to cm",
+			in:         units.Measurement{Quantity: 0.5, Unit: units.Meter},
+			multiplier: 1.5,
+			want:       units.Measurement{Quantity: 75, Unit: units.Centimeter},
+		},
+		{
+			name:       "m to m",
+			in:         units.Measurement{Quantity: 3, Unit: units.Meter},
+			multiplier: 2,
+			want:       units.Measurement{Quantity: 6, Unit: units.Meter},
+		},
+		{
+			name:       "mg to g",
+			in:         units.Measurement{Quantity: 1e5, Unit: units.Milligram},
+			multiplier: 2,
+			want:       units.Measurement{Quantity: 200, Unit: units.Gram},
+		},
+		{
+			name:       "mg to kg",
+			in:         units.Measurement{Quantity: 1e5, Unit: units.Milligram},
+			multiplier: 11,
+			want:       units.Measurement{Quantity: 1.1, Unit: units.Kilogram},
+		},
+		{
+			name:       "mg to mg",
+			in:         units.Measurement{Quantity: 1, Unit: units.Milligram},
+			multiplier: 5,
+			want:       units.Measurement{Quantity: 5, Unit: units.Milligram},
+		},
+		{
+			name:       "ml to l",
+			in:         units.Measurement{Quantity: 1e3, Unit: units.Millilitre},
+			multiplier: 3,
+			want:       units.Measurement{Quantity: 3, Unit: units.Litre},
+		},
+		{
+			name:       "ml to dl",
+			in:         units.Measurement{Quantity: 60, Unit: units.Millilitre},
+			multiplier: 2,
+			want:       units.Measurement{Quantity: 1.2, Unit: units.Decilitre},
+		},
+		{
+			name:       "ml to ml",
+			in:         units.Measurement{Quantity: 1, Unit: units.Millilitre},
+			multiplier: 5,
+			want:       units.Measurement{Quantity: 5, Unit: units.Millilitre},
+		},
+		{
+			name:       "mm to mm",
+			in:         units.Measurement{Quantity: 5, Unit: units.Millimeter},
+			multiplier: 1.5,
+			want:       units.Measurement{Quantity: 7.5, Unit: units.Millimeter},
+		},
+		{
+			name:       "mm to cm",
+			in:         units.Measurement{Quantity: 75, Unit: units.Millimeter},
+			multiplier: 3,
+			want:       units.Measurement{Quantity: 22.5, Unit: units.Centimeter},
+		},
+		{
+			name:       "mm to m",
+			in:         units.Measurement{Quantity: 300, Unit: units.Millimeter},
+			multiplier: 4,
+			want:       units.Measurement{Quantity: 1.2, Unit: units.Meter},
+		},
+		{
+			name:       "oz to lb",
+			in:         units.Measurement{Quantity: 10, Unit: units.Ounce},
+			multiplier: 3,
+			want:       units.Measurement{Quantity: 1.875, Unit: units.Pound},
+		},
+		{
+			name:       "oz to oz",
+			in:         units.Measurement{Quantity: 5, Unit: units.Ounce},
+			multiplier: 2,
+			want:       units.Measurement{Quantity: 10, Unit: units.Ounce},
+		},
+		{
+			name:       "pt to qt",
+			in:         units.Measurement{Quantity: 3, Unit: units.Pint},
+			multiplier: 3,
+			want:       units.Measurement{Quantity: 4.5, Unit: units.Quart},
+		},
+		{
+			name:       "pt to pt",
+			in:         units.Measurement{Quantity: 1, Unit: units.Pint},
+			multiplier: 1,
+			want:       units.Measurement{Quantity: 1, Unit: units.Pint},
+		},
+		{
+			name:       "lb to lb",
+			in:         units.Measurement{Quantity: 10, Unit: units.Pound},
+			multiplier: 3,
+			want:       units.Measurement{Quantity: 30, Unit: units.Pound},
+		},
+		{
+			name:       "lb to oz",
+			in:         units.Measurement{Quantity: 0.25, Unit: units.Pound},
+			multiplier: 2,
+			want:       units.Measurement{Quantity: 8, Unit: units.Ounce},
+		},
+		{
+			name:       "qt to qt",
+			in:         units.Measurement{Quantity: 0.1, Unit: units.Quart},
+			multiplier: 3,
+			want:       units.Measurement{Quantity: 0.3, Unit: units.Quart},
+		},
+		{
+			name:       "qt to pt",
+			in:         units.Measurement{Quantity: 5, Unit: units.Quart},
+			multiplier: 2,
+			want:       units.Measurement{Quantity: 20, Unit: units.Pint},
+		},
+		{
+			name:       "tbsp to gallon",
+			in:         units.Measurement{Quantity: 120, Unit: units.Tablespoon},
+			multiplier: 4,
+			want:       units.Measurement{Quantity: 1.875, Unit: units.Gallon},
+		},
+		{
+			name:       "tbsp to cup",
+			in:         units.Measurement{Quantity: 10, Unit: units.Tablespoon},
+			multiplier: 3,
+			want:       units.Measurement{Quantity: 1.875, Unit: units.Cup},
+		},
+		{
+			name:       "tbsp to fl. oz.",
+			in:         units.Measurement{Quantity: 2, Unit: units.Tablespoon},
+			multiplier: 4,
+			want:       units.Measurement{Quantity: 4, Unit: units.FlOz},
+		},
+		{
+			name:       "tbsp to tbsp",
+			in:         units.Measurement{Quantity: 1, Unit: units.Tablespoon},
+			multiplier: 1.5,
+			want:       units.Measurement{Quantity: 1.5, Unit: units.Tablespoon},
+		},
+		{
+			name:       "tbsp to tsp",
+			in:         units.Measurement{Quantity: 0.2, Unit: units.Tablespoon},
+			multiplier: 4,
+			want:       units.Measurement{Quantity: 2.4, Unit: units.Teaspoon},
+		},
+		{
+			name:       "tsp to gallon",
+			in:         units.Measurement{Quantity: 256, Unit: units.Teaspoon},
+			multiplier: 4,
+			want:       units.Measurement{Quantity: 1.3333, Unit: units.Gallon},
+		},
+		{
+			name:       "tsp to cup",
+			in:         units.Measurement{Quantity: 30, Unit: units.Teaspoon},
+			multiplier: 3,
+			want:       units.Measurement{Quantity: 1.875, Unit: units.Cup},
+		},
+		{
+			name:       "tsp to fl. oz.",
+			in:         units.Measurement{Quantity: 2, Unit: units.Teaspoon},
+			multiplier: 4,
+			want:       units.Measurement{Quantity: 1.33333, Unit: units.FlOz},
+		},
+		{
+			name:       "tsp to tbsp",
+			in:         units.Measurement{Quantity: 3, Unit: units.Teaspoon},
+			multiplier: 1.5,
+			want:       units.Measurement{Quantity: 1.5, Unit: units.Tablespoon},
+		},
+		{
+			name:       "tsp to tsp",
+			in:         units.Measurement{Quantity: 1, Unit: units.Teaspoon},
+			multiplier: 2,
+			want:       units.Measurement{Quantity: 2, Unit: units.Teaspoon},
+		},
+		{
+			name:       "yard to ft",
+			in:         units.Measurement{Quantity: 1, Unit: units.Yard},
+			multiplier: 0.5,
+			want:       units.Measurement{Quantity: 1.5, Unit: units.Feet},
+		},
+		{
+			name:       "yard to in",
+			in:         units.Measurement{Quantity: 1, Unit: units.Yard},
+			multiplier: 0.3,
+			want:       units.Measurement{Quantity: 10.8, Unit: units.Inch},
+		},
+		{
+			name:       "yard to yard",
+			in:         units.Measurement{Quantity: 1, Unit: units.Yard},
+			multiplier: 2,
+			want:       units.Measurement{Quantity: 2, Unit: units.Yard},
+		},
+	}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			got := tc.in.Scale(tc.multiplier)
+			assertMeasurementsEqual(t, got, tc.want)
+		})
+	}
+}
+
 func assertEqual[T string | units.System | units.Unit](t *testing.T, got, want T) {
+	t.Helper()
 	if got != want {
 		t.Fatalf("got %q but want %q", got, want)
+	}
+}
+
+func assertFloats(t testing.TB, got, want, threshold float64) {
+	if math.Abs(got-want) > threshold {
+		t.Fatalf("got %.3f but want %.3f", got, want)
+	}
+}
+
+func assertMeasurementsEqual(t testing.TB, got, want units.Measurement) {
+	t.Helper()
+	assertFloats(t, got.Quantity, want.Quantity, 1e-3)
+	if got.Unit != want.Unit {
+		t.Fatalf("got unit %s but want %s", got.Unit, want.Unit)
+	}
+}
+
+func assertNoErr(t testing.TB, got error) {
+	t.Helper()
+	if got != nil {
+		t.Fatal("got an error when expected none")
 	}
 }
