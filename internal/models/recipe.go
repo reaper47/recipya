@@ -8,6 +8,7 @@ import (
 	"github.com/reaper47/recipya/internal/utils/regex"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/google/uuid"
@@ -170,50 +171,36 @@ func normalizeQuantity(s string) string {
 // Scale scales the recipe to the given yield.
 func (r *Recipe) Scale(yield int16) {
 	multiplier := float64(yield) / float64(r.Yield)
-	r.Yield = yield
+	scaledIngredients := make([]string, len(r.Ingredients))
 
+	var wg sync.WaitGroup
 	for i, ingredient := range r.Ingredients {
-		ingredient = units.ReplaceVulgarFractions(ingredient)
+		wg.Add(1)
+		go func(ing string, i int) {
+			defer wg.Done()
+			ing = units.ReplaceVulgarFractions(ing)
+			system := units.DetectMeasurementSystemFromSentence(ing)
 
-		switch units.DetectMeasurementSystemFromSentence(ingredient) {
-		case units.MetricSystem, units.ImperialSystem:
-			r.Ingredients[i] = regex.Unit.ReplaceAllStringFunc(ingredient, func(s string) string {
-				// units.NewMeasurement()
-				return "5"
-			})
-		case units.InvalidSystem:
-			r.Ingredients[i] = regex.Digit.ReplaceAllStringFunc(ingredient, func(s string) string {
-				num := 0.
-				split := strings.Split(s, " ")
-				for _, v := range split {
-					index := strings.Index(v, "/")
-					if index != -1 {
-						numerator, err := strconv.ParseFloat(v[:index], 64)
-						if err != nil {
-							continue
-						}
-
-						denominator, err := strconv.ParseFloat(v[index+1:], 64)
-						if err != nil {
-							continue
-						}
-
-						num += numerator / denominator
-					} else {
-						f, err := strconv.ParseFloat(v, 64)
-						if err != nil {
-							return ""
-						}
-						num += f
-					}
+			switch system {
+			case units.MetricSystem, units.ImperialSystem:
+				m, err := units.NewMeasurementFromString(ing)
+				if err != nil {
+					return
 				}
-
-				str := extensions.FloatToString(num*multiplier, "%f")
-				str = units.ReplaceDecimalFractions(str)
-				return str
-			})
-		}
+				m = m.Scale(multiplier)
+				scaled := regex.Unit.ReplaceAllString(ing, m.String())
+				scaledIngredients[i] = units.ReplaceDecimalFractions(scaled)
+			case units.InvalidSystem:
+				scaled := extensions.ScaleString(ing, multiplier)
+				scaled = units.ReplaceDecimalFractions(scaled)
+				scaledIngredients[i] = scaled
+			}
+		}(ingredient, i)
 	}
+	wg.Wait()
+
+	r.Ingredients = scaledIngredients
+	r.Yield = yield
 }
 
 // Schema creates the schema representation of the Recipe.

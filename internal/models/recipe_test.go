@@ -33,10 +33,39 @@ func BenchmarkRecipe_ConvertMeasurementSystem(b *testing.B) {
 				"Bake in the preheated oven until edges are nicely browned, about 10 minutes.",
 			},
 		}
-
 		converted, err := r.ConvertMeasurementSystem(units.MetricSystem)
 		_ = converted
 		_ = err
+	}
+}
+
+func BenchmarkRecipe_Scale(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		recipe := models.Recipe{
+			ID: 1,
+			Ingredients: []string{
+				"2 big apples",
+				"Lots of big apples",
+				"2.5 slices of bacon",
+				"2 1/3 cans of bamboo sticks",
+				"1½can of tomato paste",
+				"6 ¾ peanut butter jars",
+				"7.5mL of whiskey",
+				"2 tsp lemon juice",
+				"2 big apples",
+				"Lots of big apples",
+				"2.5 slices of bacon",
+				"2 1/3 cans of bamboo sticks",
+				"1½can of tomato paste",
+				"6 ¾ peanut butter jars",
+				"7.5mL of whiskey",
+				"2 tsp lemon juice",
+			},
+			Instructions: nil,
+			Name:         "Sauce",
+			Yield:        4,
+		}
+		recipe.Scale(4)
 	}
 }
 
@@ -321,7 +350,7 @@ func TestRecipe_Scale(t *testing.T) {
 			"Lots of big apples",
 			"2.5 slices of bacon",
 			"2 1/3 cans of bamboo sticks",
-			"1½ can of tomato paste",
+			"1½can of tomato paste",
 			"6 ¾ peanut butter jars",
 			"7.5mL of whiskey",
 			"2 tsp lemon juice",
@@ -343,7 +372,7 @@ func TestRecipe_Scale(t *testing.T) {
 			"4 2/3 cans of bamboo sticks",
 			"3 can of tomato paste",
 			"13 1/2 peanut butter jars",
-			"15mL of whiskey",
+			"15 ml of whiskey",
 			"1 1/3 tbsp lemon juice",
 		}
 		want.Yield = 8
@@ -352,13 +381,20 @@ func TestRecipe_Scale(t *testing.T) {
 
 	t.Run("decrease recipe by 1.5x", func(t *testing.T) {
 		got := recipe.Copy()
-		got.Scale(8)
+		got.Scale(1)
 
 		want := recipe.Copy()
 		want.Ingredients = []string{
-			"4 big apples",
+			"1/2 big apples",
+			"Lots of big apples",
+			"5/8 slices of bacon",
+			"0.583 cans of bamboo sticks",
+			"3/8 can of tomato paste",
+			"1.687 peanut butter jars",
+			"1.880 ml of whiskey",
+			"1/2 tsp lemon juice",
 		}
-		want.Yield = 4
+		want.Yield = 1
 		assertStructsEqual(t, got, want)
 	})
 }

@@ -7,6 +7,13 @@ import (
 	"testing"
 )
 
+func BenchmarkDetectMeasurementSystemFromSentence(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		got := units.DetectMeasurementSystemFromSentence("2 mL hot water")
+		_ = got
+	}
+}
+
 func TestConvertSentence(t *testing.T) {
 	testcases := []struct {
 		name string
@@ -769,6 +776,33 @@ func TestNewMeasurement(t *testing.T) {
 				t.Fatalf("got unexpected error %q", err)
 			}
 
+			assertMeasurementsEqual(t, got, tc.want)
+		})
+	}
+}
+
+func TestNewScaledMeasurementFromString(t *testing.T) {
+	testcases := []struct {
+		name string
+		in   string
+		want units.Measurement
+	}{
+		{
+			name: "fraction",
+			in:   "1 1/3 tbsp honey",
+			want: units.Measurement{Quantity: 1.333333, Unit: units.Tablespoon},
+		},
+		{
+			name: "no space after quantity",
+			in:   "10mL honey",
+			want: units.Measurement{Quantity: 10, Unit: units.Millilitre},
+		},
+	}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			got, err := units.NewMeasurementFromString(tc.in)
+
+			assertNoErr(t, err)
 			assertMeasurementsEqual(t, got, tc.want)
 		})
 	}

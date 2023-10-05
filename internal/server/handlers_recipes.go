@@ -667,15 +667,9 @@ func (s *Server) recipeScaleHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
+	recipe.Scale(int16(yield))
 
-	scaled, err := recipe.Scale(int16(yield))
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Failed to scale recipe.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	templates.RenderComponent(w, "recipes", "ingredients-instructions", scaled)
+	templates.RenderComponent(w, "recipes", "ingredients-instructions", recipe)
 }
 
 func (s *Server) recipeSharePostHandler(w http.ResponseWriter, r *http.Request) {

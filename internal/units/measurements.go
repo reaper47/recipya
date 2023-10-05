@@ -79,6 +79,20 @@ func NewMeasurement(quantity float64, unit string) (Measurement, error) {
 	return Measurement{Quantity: quantity, Unit: u}, nil
 }
 
+// NewMeasurementFromString creates a Measurement from a string.
+func NewMeasurementFromString(s string) (Measurement, error) {
+	s = regex.Digit.ReplaceAllStringFunc(s, func(s string) string {
+		return s + " "
+	})
+	sum := extensions.SumString(s)
+	if sum == 0 {
+		return Measurement{}, nil
+	}
+
+	unitMatches := regex.Unit.FindStringSubmatch(s)
+	return NewMeasurement(sum, unitMatches[len(unitMatches)-1])
+}
+
 // Measurement represents a physical measurement consisting of a quantity and a unit.
 type Measurement struct {
 	Quantity float64
@@ -548,6 +562,7 @@ func (m Measurement) Convert(to Unit) (Measurement, error) {
 
 // Scale scales the measurement by the given multiplier.
 func (m Measurement) Scale(multiplier float64) Measurement {
+	// TODO: Omit fluid ounces
 	q := m.Quantity * multiplier
 	switch m.Unit {
 	case Celsius, Fahrenheit:
@@ -1037,14 +1052,12 @@ func convertMeasurement(m Measurement, to System) Measurement {
 }
 
 // DetectMeasurementSystemFromSentence determines the System used in the text.
-func DetectMeasurementSystemFromSentence(text string) System {
-	for _, part := range strings.Split(text, " ") {
-		switch pluralizeClient.Singular(strings.ToLower(part)) {
-		case "°c", "celsius", "cm", "centimeter", "centimetre", "dl", "dL", "deciliter", "decilitre", "g", "gram", "gramme", "kg", "kilogram", "kilogramme", "l", "litre", "liter", "m", "meter", "metre", "mg", "milligram", "milligramme", "ml", "milliliter", "millilitre", "cc", "mm", "millimeter", "millimetre":
-			return MetricSystem
-		case "cup", "°f", "f", "farenheit", "foot", "feet", "ft", "′", "ounce", "oz", "gallon", "gal", "gill", "inche", "inch", `"`, "pint", "pt", "lb", "#", "pound", "quart", "qt", "tablespoon", "tbl", "tbs", "tb", "tbsp", "teaspoon", "tsp", "yard":
-			return ImperialSystem
-		}
+func DetectMeasurementSystemFromSentence(s string) System {
+	s = strings.ToLower(s)
+	if regex.UnitImperial.MatchString(s) {
+		return ImperialSystem
+	} else if regex.UnitMetric.MatchString(s) {
+		return MetricSystem
 	}
 	return InvalidSystem
 }
@@ -1053,6 +1066,7 @@ func DetectMeasurementSystemFromSentence(text string) System {
 func ReplaceDecimalFractions(input string) string {
 	decimals := map[string]string{
 		".500": "1/2",
+		".330": "1/3",
 		".333": "1/3",
 		".666": "2/3",
 		".250": "1/4",
@@ -1084,9 +1098,18 @@ func ReplaceDecimalFractions(input string) string {
 
 		s = strings.TrimPrefix(s, "0")
 		if s[0] != '.' {
-			return fmt.Sprintf("%s %s", string(s[0]), decimals[s[1:5]])
+			fraction, ok := decimals[s[1:5]]
+			if !ok {
+				return s
+			}
+			return fmt.Sprintf("%s %s", string(s[0]), fraction)
 		}
-		return decimals[s]
+
+		fraction, ok := decimals[s]
+		if !ok {
+			return "0" + s
+		}
+		return fraction
 	})
 }
 
