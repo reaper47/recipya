@@ -50,7 +50,7 @@ type Recipe struct {
 func (r *Recipe) ConvertMeasurementSystem(to units.System) (*Recipe, error) {
 	currentSystem := units.InvalidSystem
 	for _, s := range r.Ingredients {
-		system := units.DetectMeasurementSystemFromSentence(s)
+		system := units.DetectMeasurementSystem(s)
 		if system != units.InvalidSystem {
 			currentSystem = system
 			break
@@ -179,7 +179,7 @@ func (r *Recipe) Scale(yield int16) {
 		go func(ing string, i int) {
 			defer wg.Done()
 			ing = units.ReplaceVulgarFractions(ing)
-			system := units.DetectMeasurementSystemFromSentence(ing)
+			system := units.DetectMeasurementSystem(ing)
 
 			switch system {
 			case units.MetricSystem, units.ImperialSystem:
@@ -201,6 +201,7 @@ func (r *Recipe) Scale(yield int16) {
 
 	r.Ingredients = scaledIngredients
 	r.Yield = yield
+	r.Normalize()
 }
 
 // Schema creates the schema representation of the Recipe.

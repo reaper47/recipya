@@ -18,20 +18,10 @@ func FloatToString(number float64, format string) string {
 
 // ScaleString scales the numbers in the string in-place. The string may contain fractions.
 func ScaleString(s string, scale float64) string {
-	sum := SumString(s)
-	var sb strings.Builder
-	if sum > 0 {
-		sb.WriteString(FloatToString(sum*scale, "%f"))
-	}
-
-	start := 0
-	matches := regex.Digit.FindAllStringIndex(s, -1)
-	for _, i := range matches {
-		sb.WriteString(s[start:i[0]])
-		start = i[1]
-	}
-	sb.WriteString(s[start:])
-	return strings.Join(strings.Fields(sb.String()), " ")
+	return regex.Digit.ReplaceAllStringFunc(s, func(s string) string {
+		sum := SumString(s)
+		return FloatToString(sum*scale, "%f")
+	})
 }
 
 // SumString sums consecutive numbers in a string.

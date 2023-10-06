@@ -89,6 +89,11 @@ func TestScaleString(t *testing.T) {
 			in:   "41/3 apples",
 			want: "27.333333 apples",
 		},
+		{
+			name: "multiple numbers",
+			in:   "2 or 3 apples",
+			want: "4 or 6 apples",
+		},
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {

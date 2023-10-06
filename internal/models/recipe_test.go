@@ -354,6 +354,10 @@ func TestRecipe_Scale(t *testing.T) {
 			"6 ¾ peanut butter jars",
 			"7.5mL of whiskey",
 			"2 tsp lemon juice",
+			"Ground ginger",
+			"3 Large or 4 medium ripe Hass avocados",
+			"1/4-1/2 teaspoon salt plus more for seasoning",
+			"1/2 fresh pineapple, cored and cut into 1 1/2-inch pieces",
 		},
 		Instructions: nil,
 		Name:         "Sauce",
@@ -372,8 +376,12 @@ func TestRecipe_Scale(t *testing.T) {
 			"4 2/3 cans of bamboo sticks",
 			"3 can of tomato paste",
 			"13 1/2 peanut butter jars",
-			"15 ml of whiskey",
+			"15 mL of whiskey",
 			"1 1/3 tbsp lemon juice",
+			"Ground ginger",
+			"6 Large or 8 medium ripe Hass avocados",
+			"1/2 tsp salt plus more for seasoning",
+			"1 fresh pineapple, cored and cut into 3-inch pieces",
 		}
 		want.Yield = 8
 		assertStructsEqual(t, got, want)
@@ -391,8 +399,12 @@ func TestRecipe_Scale(t *testing.T) {
 			"0.583 cans of bamboo sticks",
 			"3/8 can of tomato paste",
 			"1.687 peanut butter jars",
-			"1.880 ml of whiskey",
+			"1.880 mL of whiskey",
 			"1/2 tsp lemon juice",
+			"Ground ginger",
+			"3/4 Large or 1 medium ripe Hass avocados",
+			"0.060 tsp salt plus more for seasoning",
+			"1/8 fresh pineapple, cored and cut into 3/8-inch pieces",
 		}
 		want.Yield = 1
 		assertStructsEqual(t, got, want)

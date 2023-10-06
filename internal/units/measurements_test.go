@@ -9,7 +9,7 @@ import (
 
 func BenchmarkDetectMeasurementSystemFromSentence(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		got := units.DetectMeasurementSystemFromSentence("2 mL hot water")
+		got := units.DetectMeasurementSystem("2 mL hot water")
 		_ = got
 	}
 }
@@ -648,10 +648,15 @@ func TestDetectMeasurementSystemFromSentence(t *testing.T) {
 			in:   "2 oranges",
 			want: units.InvalidSystem,
 		},
+		{
+			name: "invalid mixed with imperial",
+			in:   "1 fresh pineapple, cored and cut into 1 1/2-inch pieces",
+			want: units.InvalidSystem,
+		},
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			got := units.DetectMeasurementSystemFromSentence(tc.in)
+			got := units.DetectMeasurementSystem(tc.in)
 			assertEqual(t, got, tc.want)
 		})
 	}
@@ -1782,12 +1787,6 @@ func TestMeasurement_Scale(t *testing.T) {
 			want:       units.Measurement{Quantity: 1.3, Unit: units.Meter},
 		},
 		{
-			name:       "cup to fl. oz.",
-			in:         units.Measurement{Quantity: 2, Unit: units.Cup},
-			multiplier: 0.25,
-			want:       units.Measurement{Quantity: 4, Unit: units.FlOz},
-		},
-		{
 			name:       "cup to cup",
 			in:         units.Measurement{Quantity: 2, Unit: units.Cup},
 			multiplier: 2,
@@ -2112,12 +2111,6 @@ func TestMeasurement_Scale(t *testing.T) {
 			want:       units.Measurement{Quantity: 1.875, Unit: units.Cup},
 		},
 		{
-			name:       "tbsp to fl. oz.",
-			in:         units.Measurement{Quantity: 2, Unit: units.Tablespoon},
-			multiplier: 4,
-			want:       units.Measurement{Quantity: 4, Unit: units.FlOz},
-		},
-		{
 			name:       "tbsp to tbsp",
 			in:         units.Measurement{Quantity: 1, Unit: units.Tablespoon},
 			multiplier: 1.5,
@@ -2140,12 +2133,6 @@ func TestMeasurement_Scale(t *testing.T) {
 			in:         units.Measurement{Quantity: 30, Unit: units.Teaspoon},
 			multiplier: 3,
 			want:       units.Measurement{Quantity: 1.875, Unit: units.Cup},
-		},
-		{
-			name:       "tsp to fl. oz.",
-			in:         units.Measurement{Quantity: 2, Unit: units.Teaspoon},
-			multiplier: 4,
-			want:       units.Measurement{Quantity: 1.33333, Unit: units.FlOz},
 		},
 		{
 			name:       "tsp to tbsp",

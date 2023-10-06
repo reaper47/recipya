@@ -1203,7 +1203,7 @@
                                value="{{if eq .View.Recipe.Yield 0}}1{{else}}{{.View.Recipe.Yield}}{{end}}"
                                class="w-16 text-center rounded bg-gray-100 p-2 grid self-end dark:bg-gray-900"
                                hx-get="/recipes/{{.View.ID}}/scale"
-                               hx-trigger="input delay:500"
+                               hx-trigger="input"
                                hx-target="#ingredients-instructions-container">
                         <label for="yield" class="grid self-start">servings</label>
                     </form>

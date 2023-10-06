@@ -90,7 +90,10 @@ func NewMeasurementFromString(s string) (Measurement, error) {
 	}
 
 	unitMatches := regex.Unit.FindStringSubmatch(s)
-	return NewMeasurement(sum, unitMatches[len(unitMatches)-1])
+	if unitMatches == nil {
+		return Measurement{}, errors.New("unsupported unit")
+	}
+	return NewMeasurement(math.Abs(sum), unitMatches[len(unitMatches)-1])
 }
 
 // Measurement represents a physical measurement consisting of a quantity and a unit.
@@ -562,7 +565,6 @@ func (m Measurement) Convert(to Unit) (Measurement, error) {
 
 // Scale scales the measurement by the given multiplier.
 func (m Measurement) Scale(multiplier float64) Measurement {
-	// TODO: Omit fluid ounces
 	q := m.Quantity * multiplier
 	switch m.Unit {
 	case Celsius, Fahrenheit:
@@ -579,8 +581,6 @@ func (m Measurement) Scale(multiplier float64) Measurement {
 			return Measurement{Quantity: q * 0.0625, Unit: Gallon}
 		} else if q >= 1 {
 			return Measurement{Quantity: q, Unit: Cup}
-		} else if q >= 0.125 {
-			return Measurement{Quantity: q * 8, Unit: FlOz}
 		} else if q >= 0.0625 {
 			return Measurement{Quantity: q * 16, Unit: Tablespoon}
 		}
@@ -702,8 +702,6 @@ func (m Measurement) Scale(multiplier float64) Measurement {
 			return Measurement{Quantity: q * 0.00390625, Unit: Gallon}
 		} else if q >= 16 {
 			return Measurement{Quantity: q * 0.0625, Unit: Cup}
-		} else if q >= 2 {
-			return Measurement{Quantity: q * 0.5, Unit: FlOz}
 		} else if q >= 1 {
 			return Measurement{Quantity: q, Unit: Tablespoon}
 		}
@@ -713,8 +711,6 @@ func (m Measurement) Scale(multiplier float64) Measurement {
 			return Measurement{Quantity: q * 0.00130208333, Unit: Gallon}
 		} else if q >= 48 {
 			return Measurement{Quantity: q * 0.02083333333, Unit: Cup}
-		} else if q >= 6 {
-			return Measurement{Quantity: q * 0.16666666666, Unit: FlOz}
 		} else if q >= 3 {
 			return Measurement{Quantity: q * 0.33333333333, Unit: Tablespoon}
 		}
@@ -1051,14 +1047,18 @@ func convertMeasurement(m Measurement, to System) Measurement {
 	return converted
 }
 
-// DetectMeasurementSystemFromSentence determines the System used in the text.
-func DetectMeasurementSystemFromSentence(s string) System {
-	s = strings.ToLower(s)
-	if regex.UnitImperial.MatchString(s) {
+// DetectMeasurementSystem determines the System used in the text.
+func DetectMeasurementSystem(s string) System {
+	indexes := regex.UnitImperial.FindStringIndex(s)
+	if indexes != nil && indexes[0] < 20 {
 		return ImperialSystem
-	} else if regex.UnitMetric.MatchString(s) {
+	}
+
+	indexes = regex.UnitMetric.FindStringIndex(s)
+	if indexes != nil && indexes[0] < 20 {
 		return MetricSystem
 	}
+
 	return InvalidSystem
 }
 
