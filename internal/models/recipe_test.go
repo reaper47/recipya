@@ -52,6 +52,12 @@ func BenchmarkRecipe_Scale(b *testing.B) {
 				"6 ¾ peanut butter jars",
 				"7.5mL of whiskey",
 				"2 tsp lemon juice",
+				"Ground ginger",
+				"3 Large or 4 medium ripe Hass avocados",
+				"1/4-1/2 teaspoon salt plus more for seasoning",
+				"1/2 fresh pineapple, cored and cut into 1 1/2-inch pieces",
+				"Un sac de chips de 1kg",
+				"Two 15-ounce can Goya beans",
 				"2 big apples",
 				"Lots of big apples",
 				"2.5 slices of bacon",
@@ -60,6 +66,12 @@ func BenchmarkRecipe_Scale(b *testing.B) {
 				"6 ¾ peanut butter jars",
 				"7.5mL of whiskey",
 				"2 tsp lemon juice",
+				"Ground ginger",
+				"3 Large or 4 medium ripe Hass avocados",
+				"1/4-1/2 teaspoon salt plus more for seasoning",
+				"1/2 fresh pineapple, cored and cut into 1 1/2-inch pieces",
+				"Un sac de chips de 1kg",
+				"Two 15-ounce can Goya beans",
 			},
 			Instructions: nil,
 			Name:         "Sauce",
@@ -358,6 +370,8 @@ func TestRecipe_Scale(t *testing.T) {
 			"3 Large or 4 medium ripe Hass avocados",
 			"1/4-1/2 teaspoon salt plus more for seasoning",
 			"1/2 fresh pineapple, cored and cut into 1 1/2-inch pieces",
+			"Un sac de chips de 1kg",
+			"Two 15-ounce can Goya beans",
 		},
 		Instructions: nil,
 		Name:         "Sauce",
@@ -382,6 +396,8 @@ func TestRecipe_Scale(t *testing.T) {
 			"6 Large or 8 medium ripe Hass avocados",
 			"1/2 tsp salt plus more for seasoning",
 			"1 fresh pineapple, cored and cut into 3-inch pieces",
+			"Un sac de chips de 1kg",
+			"4 15-ounce can Goya beans",
 		}
 		want.Yield = 8
 		assertStructsEqual(t, got, want)
@@ -405,6 +421,8 @@ func TestRecipe_Scale(t *testing.T) {
 			"3/4 Large or 1 medium ripe Hass avocados",
 			"0.060 tsp salt plus more for seasoning",
 			"1/8 fresh pineapple, cored and cut into 3/8-inch pieces",
+			"Un sac de chips de 1kg",
+			"0.5 15-ounce can Goya beans",
 		}
 		want.Yield = 1
 		assertStructsEqual(t, got, want)

@@ -19,6 +19,8 @@ var (
 	tokenizer       *sentences.DefaultSentenceTokenizer
 )
 
+const maxLen = 20
+
 // NewMeasurement creates a Measurement from a quantity of type int or float64
 // and a unit. The creation fails when the unit is invalid.
 func NewMeasurement(quantity float64, unit string) (Measurement, error) {
@@ -1049,17 +1051,25 @@ func convertMeasurement(m Measurement, to System) Measurement {
 
 // DetectMeasurementSystem determines the System used in the text.
 func DetectMeasurementSystem(s string) System {
-	indexes := regex.UnitImperial.FindStringIndex(s)
-	if indexes != nil && indexes[0] < 20 {
+	if regex.BeginsWithWord.MatchString(s) {
+		return InvalidSystem
+	}
+
+	xi := regex.UnitImperial.FindStringIndex(s)
+	if isMatchValid(xi) {
 		return ImperialSystem
 	}
 
-	indexes = regex.UnitMetric.FindStringIndex(s)
-	if indexes != nil && indexes[0] < 20 {
+	xi = regex.UnitMetric.FindStringIndex(s)
+	if isMatchValid(xi) {
 		return MetricSystem
 	}
 
 	return InvalidSystem
+}
+
+func isMatchValid(indexes []int) bool {
+	return indexes != nil && indexes[0] < maxLen
 }
 
 // ReplaceDecimalFractions converts the decimals in a string to fractions.

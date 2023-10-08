@@ -9,7 +9,7 @@ import (
 
 func BenchmarkDetectMeasurementSystemFromSentence(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		got := units.DetectMeasurementSystem("2 mL hot water")
+		got := units.DetectMeasurementSystem("2 ki hot water")
 		_ = got
 	}
 }
@@ -646,6 +646,11 @@ func TestDetectMeasurementSystemFromSentence(t *testing.T) {
 		{
 			name: "invalid",
 			in:   "2 oranges",
+			want: units.InvalidSystem,
+		},
+		{
+			name: "invalid",
+			in:   "Two 14-ounce cans",
 			want: units.InvalidSystem,
 		},
 		{

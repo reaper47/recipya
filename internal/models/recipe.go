@@ -2,6 +2,8 @@ package models
 
 import (
 	"errors"
+	"github.com/donna-legal/word2number"
+	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/units"
 	"github.com/reaper47/recipya/internal/utils/duration"
 	"github.com/reaper47/recipya/internal/utils/extensions"
@@ -10,8 +12,10 @@ import (
 	"strings"
 	"sync"
 	"time"
+)
 
-	"github.com/google/uuid"
+var (
+	wordConverter *word2number.Converter
 )
 
 // Recipes is the type for a slice of recipes.
@@ -174,8 +178,9 @@ func (r *Recipe) Scale(yield int16) {
 	scaledIngredients := make([]string, len(r.Ingredients))
 
 	var wg sync.WaitGroup
+	wg.Add(len(r.Ingredients))
+
 	for i, ingredient := range r.Ingredients {
-		wg.Add(1)
 		go func(ing string, i int) {
 			defer wg.Done()
 			ing = units.ReplaceVulgarFractions(ing)
@@ -191,9 +196,19 @@ func (r *Recipe) Scale(yield int16) {
 				scaled := regex.Unit.ReplaceAllString(ing, m.String())
 				scaledIngredients[i] = units.ReplaceDecimalFractions(scaled)
 			case units.InvalidSystem:
-				scaled := extensions.ScaleString(ing, multiplier)
-				scaled = units.ReplaceDecimalFractions(scaled)
-				scaledIngredients[i] = scaled
+				if regex.BeginsWithWord.MatchString(ing) {
+					ing = regex.BeginsWithWord.ReplaceAllStringFunc(ing, func(s string) string {
+						f := wordConverter.Words2Number(s) * multiplier
+						if f > 0 {
+							return strconv.FormatFloat(f, 'g', 2, 64) + " "
+						}
+						return s
+					})
+				} else {
+					ing = extensions.ScaleString(ing, multiplier)
+					ing = units.ReplaceDecimalFractions(ing)
+				}
+				scaledIngredients[i] = ing
 			}
 		}(ingredient, i)
 	}
@@ -311,4 +326,12 @@ func (n *Nutrition) Schema(servings string) NutritionSchema {
 		Sugar:          n.Sugars,
 		UnsaturatedFat: n.UnsaturatedFat,
 	}
+}
+
+func init() {
+	c, err := word2number.NewConverter("en")
+	if err != nil {
+		panic(err)
+	}
+	wordConverter = c
 }

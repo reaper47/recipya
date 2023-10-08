@@ -778,6 +778,20 @@ func TestHandlers_Recipes_Scale(t *testing.T) {
 							"1/2 cup bread loaf",
 							"½ tbsp beef broth",
 							"7 1/2 cups flour",
+							"2 big apples",
+							"Lots of big apples",
+							"2.5 slices of bacon",
+							"2 1/3 cans of bamboo sticks",
+							"1½can of tomato paste",
+							"6 ¾ peanut butter jars",
+							"7.5mL of whiskey",
+							"2 tsp lemon juice",
+							"Ground ginger",
+							"3 Large or 4 medium ripe Hass avocados",
+							"1/4-1/2 teaspoon salt plus more for seasoning",
+							"1/2 fresh pineapple, cored and cut into 1 1/2-inch pieces",
+							"Un sac de chips de 1kg",
+							"Two 15-ounce can Goya beans",
 						},
 						Instructions: []string{},
 						Yield:        4,
@@ -792,7 +806,26 @@ func TestHandlers_Recipes_Scale(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?yield=8", noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusOK)
-		want := []string{}
+		want := []string{
+			`<label for="ingredient-0"></label><input type="checkbox" id="ingredient-0" class="mt-1"><span class="pl-2">4 lb chicken</span>`,
+			`<label for="ingredient-1"></label><input type="checkbox" id="ingredient-1" class="mt-1"><span class="pl-2">1 cup bread loaf</span>`,
+			`<label for="ingredient-2"></label><input type="checkbox" id="ingredient-2" class="mt-1"><span class="pl-2">1 tbsp beef broth</span>`,
+			`<label for="ingredient-3"></label><input type="checkbox" id="ingredient-3" class="mt-1"><span class="pl-2">15 cups flour</span>`,
+			`<label for="ingredient-4"></label><input type="checkbox" id="ingredient-4" class="mt-1"><span class="pl-2">4 big apples</span>`,
+			`<label for="ingredient-5"></label><input type="checkbox" id="ingredient-5" class="mt-1"><span class="pl-2">Lots of big apples</span>`,
+			`<label for="ingredient-6"></label><input type="checkbox" id="ingredient-6" class="mt-1"><span class="pl-2">5 slices of bacon</span>`,
+			`<label for="ingredient-7"></label><input type="checkbox" id="ingredient-7" class="mt-1"><span class="pl-2">4 2/3 cans of bamboo sticks</span>`,
+			`<label for="ingredient-8"></label><input type="checkbox" id="ingredient-8" class="mt-1"><span class="pl-2">3 can of tomato paste</span>`,
+			`<label for="ingredient-9"></label><input type="checkbox" id="ingredient-9" class="mt-1"><span class="pl-2">13 1/2 peanut butter jars</span>`,
+			`<label for="ingredient-10"></label><input type="checkbox" id="ingredient-10" class="mt-1"><span class="pl-2">15 mL of whiskey</span>`,
+			`<label for="ingredient-11"></label><input type="checkbox" id="ingredient-11" class="mt-1"><span class="pl-2">1 1/3 tbsp lemon juice</span>`,
+			`<label for="ingredient-12"></label><input type="checkbox" id="ingredient-12" class="mt-1"><span class="pl-2">Ground ginger</span>`,
+			`<label for="ingredient-13"></label><input type="checkbox" id="ingredient-13" class="mt-1"><span class="pl-2">6 Large or 8 medium ripe Hass avocados</span>`,
+			`<label for="ingredient-14"></label><input type="checkbox" id="ingredient-14" class="mt-1"><span class="pl-2">1/2 tsp salt plus more for seasoning</span>`,
+			`<label for="ingredient-15"></label><input type="checkbox" id="ingredient-15" class="mt-1"><span class="pl-2">1 fresh pineapple, cored and cut into 3-inch pieces</span>`,
+			`<label for="ingredient-16"></label><input type="checkbox" id="ingredient-16" class="mt-1"><span class="pl-2">Un sac de chips de 1kg</span>`,
+			`<label for="ingredient-17"></label><input type="checkbox" id="ingredient-17" class="mt-1"><span class="pl-2">4 15-ounce can Goya beans</span>`,
+		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
 }

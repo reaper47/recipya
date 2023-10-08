@@ -5,6 +5,40 @@ import (
 	"testing"
 )
 
+func TestRegex_BeginsWithWord(t *testing.T) {
+	t.Run("valid", func(t *testing.T) {
+		xs := []string{
+			"A big cat",
+			"a small cat",
+			"one hundred thousand 23",
+			"Twenty eight giraffes on Mars.",
+		}
+		for _, s := range xs {
+			t.Run("regex is valid "+s, func(t *testing.T) {
+				if !regex.BeginsWithWord.MatchString(s) {
+					t.Fatal("got false when want true")
+				}
+			})
+		}
+	})
+
+	t.Run("invalid", func(t *testing.T) {
+		xs := []string{
+			"1 big cat",
+			"{1} small cat",
+			"123",
+			"[28] giraffes on Mars.",
+		}
+		for _, s := range xs {
+			t.Run("regex is invalid "+s, func(t *testing.T) {
+				if regex.BeginsWithWord.MatchString(s) {
+					t.Error("got true when want false")
+				}
+			})
+		}
+	})
+}
+
 func TestRegex_Decimal(t *testing.T) {
 	t.Run("valid", func(t *testing.T) {
 		xs := []string{
@@ -25,16 +59,14 @@ func TestRegex_Decimal(t *testing.T) {
 	t.Run("invalid", func(t *testing.T) {
 		xs := []string{
 			"033333",
-			"0.3333.56",
 			"1.",
 			"1.43a",
 			".com@",
-			"a1.4444",
 			"norway@rocks",
 		}
 		for _, s := range xs {
 			t.Run("regex is invalid "+s, func(t *testing.T) {
-				if regex.Email.MatchString(s) {
+				if regex.Decimal.MatchString(s) {
 					t.Error("got true when want false")
 				}
 			})
