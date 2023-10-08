@@ -7,6 +7,7 @@ type Page string
 const (
 	AddRecipePage           Page = "add-recipe"
 	AddRecipeManualPage     Page = "add-recipe-manual"
+	CookbooksPage           Page = "cookbooks"
 	ForgotPasswordPage      Page = "forgot-password"
 	ForgotPasswordResetPage Page = "forgot-password-reset"
 	HomePage                Page = "home"
@@ -30,6 +31,8 @@ func (p Page) Title() string {
 		return "Add Recipe"
 	case AddRecipeManualPage:
 		return "Manual"
+	case CookbooksPage:
+		return "Cookbooks"
 	case ForgotPasswordPage:
 		return "Forgot Password"
 	case ForgotPasswordResetPage:

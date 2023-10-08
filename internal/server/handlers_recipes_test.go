@@ -31,6 +31,8 @@ func TestHandlers_Recipes(t *testing.T) {
 		want := []string{
 			`<title hx-swap-oob="true">Home | Recipya</title>`,
 			`<div class="grid place-content-center text-sm h-full text-center md:text-base"><p>Your recipe collection looks a bit empty at the moment.</p><p> Why not start adding some of your favorite recipes by clicking the <a class="underline font-semibold cursor-pointer" hx-get="/recipes/add" hx-target="#content" hx-push-url="true">Add recipe</a> button at the top? </p></div>`,
+			`<li id="recipes-sidebar-recipes" class="recipes-sidebar-selected" hx-get="/recipes" hx-target="#content" hx-push-url="true" hx-swap-oob="true"><img src="/static/img/cherries.svg" alt=""><span class="hidden md:block ml-1">Recipes</span></li>`,
+			`<li id="recipes-sidebar-cookbooks" class="recipes-sidebar-not-selected" hx-get="/cookbooks" hx-target="#content" hx-push-url="true" hx-swap-oob="true"><img src="/static/img/cookbook.svg" alt=""><span class="hidden md:block ml-1">Cookbooks</span></li>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})

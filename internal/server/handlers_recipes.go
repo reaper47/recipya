@@ -18,6 +18,7 @@ import (
 func (s *Server) recipesHandler(w http.ResponseWriter, r *http.Request) {
 	userID := r.Context().Value("userID").(int64)
 
+	isHxRequest := r.Header.Get("HX-Request") == "true"
 	baseData := templates.Data{
 		Functions: templates.FunctionsData{
 			CutString: func(s string, numCharacters int) string {
@@ -33,10 +34,11 @@ func (s *Server) recipesHandler(w http.ResponseWriter, r *http.Request) {
 				return u != uuid.Nil
 			},
 		},
-		Recipes: s.Repository.Recipes(userID),
+		IsHxRequest: isHxRequest,
+		Recipes:     s.Repository.Recipes(userID),
 	}
 
-	if r.Header.Get("HX-Request") == "true" {
+	if isHxRequest {
 		templates.RenderComponent(w, "recipes", "list-recipes", baseData)
 		return
 	} else {

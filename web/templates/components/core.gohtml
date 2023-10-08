@@ -16,29 +16,50 @@
             const recipesPattern = new RegExp("^/recipes/\\d+(/edit)?$");
             const recipesSharePattern = new RegExp("^/r/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$");
 
+            const pathsShowRecipesSidebar = [
+                "/",
+                "/cookbooks",
+                "/recipes",
+            ];
+
             const pathsHideAddRecipeButton = [
                 "/settings",
                 "/recipes/add",
                 "/recipes/add/manual",
             ];
 
+            function toggleAll() {
+                toggleAddRecipeButton();
+                toggleRecipesSidebar();
+            }
+
             function toggleAddRecipeButton() {
+                const addRecipeButton = document.querySelector("#add-recipe");
                 const isRecipe = recipesPattern.test(location.pathname) || recipesSharePattern.test(location.pathname);
                 if (pathsHideAddRecipeButton.some(path => path === location.pathname || isRecipe)) {
-                    document.querySelector("#add-recipe")?.classList.add("hidden");
+                    addRecipeButton?.classList.add("hidden");
                 } else {
-                    document.querySelector("#add-recipe")?.classList.remove("hidden");
+                    addRecipeButton?.classList.remove("hidden");
+                }
+            }
+
+            function toggleRecipesSidebar() {
+                const sidebar = document.querySelector("#recipes-sidebar");
+                if (pathsShowRecipesSidebar.includes(location.pathname)) {
+                    sidebar?.classList.remove("hidden");
+                } else {
+                    sidebar?.classList.add("hidden");
                 }
             }
 
             window.addEventListener("DOMContentLoaded", () => {
-                toggleAddRecipeButton();
-                document.addEventListener("htmx:pushedIntoHistory", toggleAddRecipeButton);
+                toggleAll();
+                document.addEventListener("htmx:pushedIntoHistory", toggleAll);
             });
 
             htmx.on('htmx:pushedIntoHistory', () => {
-                toggleAddRecipeButton();
-                document.addEventListener("htmx:pushedIntoHistory", toggleAddRecipeButton);
+                toggleAll();
+                document.addEventListener("htmx:pushedIntoHistory", toggleAll);
             });
         </script>
     </head>
@@ -52,7 +73,7 @@
             <span id="user-initials">A</span>
         </button>
         <div id="avatar-dropdown-container"
-             class="absolute w-24 right-3 top-[3.6rem] bg-white rounded-lg hidden dark:bg-gray-900">
+             class="absolute w-24 right-3 top-[3.6rem] bg-white rounded-lg hidden z-10 dark:bg-gray-900">
             <ul id="avatar-menu"
                 class="before:content-[''] before:absolute before:right-2 before:top-[-9px] before:border-x-[10px] before:border-x-transparent before:border-b-[10px] before:border-b-[#333]  dark:before:border-b-[gray]">
                 <li class="border-2 rounded-t-lg hover:bg-blue-100 dark:border-gray-600 dark:hover:bg-blue-600">
