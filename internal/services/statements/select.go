@@ -29,6 +29,12 @@ const SelectCategories = `
 	WHERE uc.user_id = ?
 	ORDER BY name`
 
+// SelectCookbooks is the query to get a limited number of cookbooks belonging to the user
+const SelectCookbooks = `
+	SELECT id, image, title, count
+	FROM cookbooks
+	WHERE user_id = ?`
+
 // SelectCuisineID is the query to get the ID of the specified cuisine.
 const SelectCuisineID = `
 	SELECT id 

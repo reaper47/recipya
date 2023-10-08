@@ -32,6 +32,8 @@ func newServerTest() *server.Server {
 type mockRepository struct {
 	AuthTokens                  []models.AuthToken
 	AddRecipeFunc               func(recipe *models.Recipe, userID int64) (int64, error)
+	CookbooksFunc               func(userID int64) ([]models.Cookbook, error)
+	CookbooksRegistered         map[int64][]models.Cookbook
 	MeasurementSystemsFunc      func(userID int64) ([]units.System, models.UserSettings, error)
 	RecipeFunc                  func(id, userID int64) (*models.Recipe, error)
 	RecipesRegistered           map[int64]models.Recipes
@@ -46,6 +48,29 @@ func (m *mockRepository) AddAuthToken(selector, validator string, userID int64) 
 	token := models.NewAuthToken(int64(len(m.AuthTokens)+1), selector, validator, 10000, userID)
 	m.AuthTokens = append(m.AuthTokens, *token)
 	return nil
+}
+
+func (m *mockRepository) AddCookbook(title string, userID int64) (int64, error) {
+	cookbook := models.Cookbook{
+		Recipes: make(models.Recipes, 0),
+		Title:   title,
+	}
+
+	cookbooks, ok := m.CookbooksRegistered[userID]
+	if !ok {
+		m.CookbooksRegistered[userID] = []models.Cookbook{cookbook}
+		return 1, nil
+	}
+
+	isExists := slices.ContainsFunc(cookbooks, func(cookbook models.Cookbook) bool {
+		return cookbook.Title == title
+	})
+	if isExists {
+		return -1, errors.New("cookbook exists")
+	}
+
+	m.CookbooksRegistered[userID] = append(m.CookbooksRegistered[userID], cookbook)
+	return 1, nil
 }
 
 func (m *mockRepository) AddRecipe(r *models.Recipe, userID int64) (int64, error) {
@@ -93,6 +118,18 @@ func (m *mockRepository) Confirm(userID int64) error {
 		return sql.ErrNoRows
 	}
 	return nil
+}
+
+func (m *mockRepository) Cookbooks(userID int64) ([]models.Cookbook, error) {
+	if m.CookbooksFunc != nil {
+		return m.CookbooksFunc(userID)
+	}
+
+	cookbooks, ok := m.CookbooksRegistered[userID]
+	if !ok {
+		return nil, errors.New("user not registered")
+	}
+	return cookbooks, nil
 }
 
 func (m *mockRepository) DeleteAuthToken(userID int64) error {

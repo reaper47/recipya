@@ -12,6 +12,12 @@ const InsertCategory = `
 	ON CONFLICT DO UPDATE SET name = EXCLUDED.name
 	RETURNING id`
 
+// InsertCookbook is the query to add a cookbook to the database.
+const InsertCookbook = `
+	INSERT INTO cookbooks (title, user_id) 
+	VALUES (?, ?)
+	RETURNING id`
+
 // InsertCuisine is the query to add a cuisine to the database
 const InsertCuisine = `
 	INSERT OR IGNORE INTO cuisines (name)

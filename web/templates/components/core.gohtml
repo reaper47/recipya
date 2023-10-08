@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="/static/css/tailwind.css">
         <link rel="stylesheet" href="/static/css/app.css">
         <link rel="icon" href="/static/favicon.ico">
-        <script src="https://unpkg.com/htmx.org@1.9.5"></script>
+        <script src="https://unpkg.com/htmx.org@1.9.6"></script>
         <script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
         <script defer>
             const recipesPattern = new RegExp("^/recipes/\\d+(/edit)?$");
@@ -23,27 +23,38 @@
             ];
 
             const pathsHideAddRecipeButton = [
+                "/cookbooks",
                 "/settings",
                 "/recipes/add",
                 "/recipes/add/manual",
             ];
 
-            function toggleAll() {
-                toggleAddRecipeButton();
-                toggleRecipesSidebar();
+            function showAll() {
+                showAddRecipeButton();
+                showAddCookbookButton();
+                showRecipesSidebar();
             }
 
-            function toggleAddRecipeButton() {
-                const addRecipeButton = document.querySelector("#add-recipe");
+            function showAddRecipeButton() {
+                const button = document.querySelector("#add-recipe");
                 const isRecipe = recipesPattern.test(location.pathname) || recipesSharePattern.test(location.pathname);
-                if (pathsHideAddRecipeButton.some(path => path === location.pathname || isRecipe)) {
-                    addRecipeButton?.classList.add("hidden");
+                if (isRecipe || pathsHideAddRecipeButton.some(path => path === location.pathname)) {
+                    button?.classList.add("hidden");
                 } else {
-                    addRecipeButton?.classList.remove("hidden");
+                    button?.classList.remove("hidden");
                 }
             }
 
-            function toggleRecipesSidebar() {
+            function showAddCookbookButton() {
+                const button = document.querySelector("#add-cookbook");
+                if (location.pathname === "/cookbooks") {
+                    button?.classList.remove("hidden");
+                } else {
+                    button?.classList.add("hidden");
+                }
+            }
+
+            function showRecipesSidebar() {
                 const sidebar = document.querySelector("#recipes-sidebar");
                 if (pathsShowRecipesSidebar.includes(location.pathname)) {
                     sidebar?.classList.remove("hidden");
@@ -53,13 +64,13 @@
             }
 
             window.addEventListener("DOMContentLoaded", () => {
-                toggleAll();
-                document.addEventListener("htmx:pushedIntoHistory", toggleAll);
+                showAll();
+                document.addEventListener("htmx:pushedIntoHistory", showAll);
             });
 
             htmx.on('htmx:pushedIntoHistory', () => {
-                toggleAll();
-                document.addEventListener("htmx:pushedIntoHistory", toggleAll);
+                showAll();
+                document.addEventListener("htmx:pushedIntoHistory", showAll);
             });
         </script>
     </head>
@@ -78,33 +89,19 @@
                 class="before:content-[''] before:absolute before:right-2 before:top-[-9px] before:border-x-[10px] before:border-x-transparent before:border-b-[10px] before:border-b-[#333]  dark:before:border-b-[gray]">
                 <li class="border-2 rounded-t-lg hover:bg-blue-100 dark:border-gray-600 dark:hover:bg-blue-600">
                     <a class="flex" href="/settings" hx-get="/settings" hx-target="#content" hx-push-url="true">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 self-center" fill="none"
-                             viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        </svg>
+                        {{template "icon-gear"}}
                         <div class="pl-1 align-bottom">Settings</div>
                     </a>
                 </li>
                 <li class="border-2 hover:bg-blue-100 dark:border-gray-500 dark:hover:bg-blue-600">
                     <a href="#" class="flex">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 self-center" fill="none"
-                             viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
+                        {{template "icon-help"}}
                         <span class="pl-1 align-bottom">About</span>
                     </a>
                 </li>
                 <li class="border-2 rounded-b-lg hover:bg-blue-100 dark:border-gray-500 dark:hover:bg-blue-600">
                     <a hx-post="/auth/logout" class="flex" href="#">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-0 self-center"
-                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                        </svg>
+                        {{template "icon-logout"}}
                         <span class="pl-1 align-bottom">Log out</span>
                     </a>
                 </li>
@@ -195,11 +192,7 @@
                 </select>
             </label>
             <button class="bg-white border border-gray-300 rounded-lg py-2 px-4 justify-start hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1"
-                     fill="black" viewBox="0 0 24 24" stroke="currentColor">
-                    <path d="M16 11v5H2v-5H0v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5z"/>
-                    <path d="m9 14 5-6h-4V0H8v8H4z"/>
-                </svg>
+                {{template "icon-download"}}
             </button>
         </form>
     </div>

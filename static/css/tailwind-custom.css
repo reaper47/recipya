@@ -10,4 +10,8 @@
     .recipes-sidebar-not-selected {
         @apply flex p-1 pr-1 md:pr-4 hover:bg-red-600 hover:text-white;
     }
+
+    .app-bar-center-button {
+        @apply flex cursor-pointer items-center px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-green-600
+    }
 }

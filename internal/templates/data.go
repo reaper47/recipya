@@ -20,10 +20,24 @@ type Data struct {
 
 	Functions FunctionsData
 
-	Recipes  models.Recipes
-	Settings SettingsData
-	Scraper  ScraperData
-	View     *ViewRecipeData
+	CookbookFeature CookbookFeature
+	Recipes         models.Recipes
+	Settings        SettingsData
+	Scraper         ScraperData
+	View            *ViewRecipeData
+}
+
+// CookbookFeature is the data to pass related to the cookbook feature.
+type CookbookFeature struct {
+	Cookbooks []models.Cookbook
+	ViewMode  string
+}
+
+// FunctionsData provides functions for use in the templates.
+type FunctionsData struct {
+	CutString   func(s string, numCharacters int) string
+	Inc         func(v int64) int64
+	IsUUIDValid func(u uuid.UUID) bool
 }
 
 // RegisterData is the data to pass on to the user registration template.
@@ -121,11 +135,4 @@ type formattedTimes struct {
 type shareData struct {
 	IsFromHost bool
 	IsShared   bool
-}
-
-// FunctionsData provides functions for use in the templates.
-type FunctionsData struct {
-	CutString   func(s string, numCharacters int) string
-	Inc         func(v int64) int64
-	IsUUIDValid func(u uuid.UUID) bool
 }

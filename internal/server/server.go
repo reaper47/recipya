@@ -95,6 +95,7 @@ func (s *Server) mountHandlers() {
 		r.Use(s.mustBeLoggedInMiddleware)
 
 		r.Get("/", s.cookbooksHandler)
+		r.Post("/", s.cookbooksPostHandler)
 	})
 
 	r.Route("/integrations", func(r chi.Router) {

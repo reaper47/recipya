@@ -16,6 +16,9 @@ type RepositoryService interface {
 	// AddAuthToken adds an authentication token to the database.
 	AddAuthToken(selector, validator string, userID int64) error
 
+	// AddCookbook adds a cookbook to the database.
+	AddCookbook(title string, userID int64) (int64, error)
+
 	// AddRecipe adds a recipe to the user's collection.
 	AddRecipe(r *models.Recipe, userID int64) (int64, error)
 
@@ -27,6 +30,9 @@ type RepositoryService interface {
 
 	// Confirm confirms the user's account.
 	Confirm(userID int64) error
+
+	// Cookbooks gets a limited number of cookbooks belonging to the user.
+	Cookbooks(userID int64) ([]models.Cookbook, error)
 
 	// DeleteAuthToken removes an authentication token from the database.
 	DeleteAuthToken(userID int64) error

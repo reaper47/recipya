@@ -87,6 +87,18 @@ func (s *SQLiteService) AddAuthToken(selector, validator string, userID int64) e
 	return err
 }
 
+func (s *SQLiteService) AddCookbook(title string, userID int64) (int64, error) {
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	var id int64
+	err := s.DB.QueryRowContext(ctx, statements.InsertCookbook, title, userID).Scan(&id)
+	return id, err
+}
+
 func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
@@ -301,6 +313,29 @@ func (s *SQLiteService) Confirm(userID int64) error {
 		return sql.ErrNoRows
 	}
 	return nil
+}
+
+func (s *SQLiteService) Cookbooks(userID int64) ([]models.Cookbook, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	rows, err := s.DB.QueryContext(ctx, statements.SelectCookbooks, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var cookbooks []models.Cookbook
+	for rows.Next() {
+		c := models.Cookbook{}
+		// TODO: Fetch recipes
+		err := rows.Scan(&c.ID, &c.Image, &c.Title, &c.Count)
+		if err != nil {
+			return nil, err
+		}
+		cookbooks = append(cookbooks, c)
+	}
+	return cookbooks, nil
 }
 
 func (s *SQLiteService) DeleteAuthToken(userID int64) error {

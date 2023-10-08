@@ -1,3 +1,31 @@
+{{define "cookbooks-grid"}}
+    {{- $funcs := .Functions -}}
+    <div class="grid grid-cols-5 gap-2">
+        {{ range $i, $book := .CookbookFeature.Cookbooks }}
+            <div class="col-span-1 bg-white rounded-lg shadow-md dark:bg-neutral-700">
+                {{- $isUUIDValid := call $funcs.IsUUIDValid $book.Image -}}
+                <img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 {{if not $isUUIDValid}}h-[180px] px-4 pt-4{{end}}"
+                     src="{{if $isUUIDValid}}/data/images/{{$book.Image}}.jpg{{end}}" alt="Cookbook image">
+                <div class="py-2 px-3">
+                    <div class="grid grid-flow-col gap-1 pb-2">
+                        <p class="font-semibold">{{$book.Title}}</p>
+                        <span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit">
+                        {{$book.Count}}
+                    </span>
+                    </div>
+
+                    <button class="w-full border-2 border-gray-800 rounded-lg center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600"
+                            hx-get="/cookbooks/{{call $funcs.Inc $i}}"
+                            hx-target="#content"
+                            hx-push-url="true">
+                        Open
+                    </button>
+                </div>
+            </div>
+        {{end}}
+    </div>
+{{end}}
+
 {{define "cookbooks-index"}}
     <title hx-swap-oob="true">Cookbooks | Recipya</title>
 
@@ -15,14 +43,80 @@
     {{- end -}}
 
     {{- if .IsAuthenticated -}}
-        <div class="grid place-content-center text-sm h-full text-center md:text-base">
-            <p>Your cookbooks collection looks a bit empty at the moment.</p>
-            <p>
-                Why not start by creating a cookbook by clicking the
-                <a class="underline font-semibold cursor-pointer" hx-get="/cookbooks/new" hx-target="#content"
-                   hx-push-url="true">Add cookbook</a>
-                button at the top?
-            </p>
-        </div>
+        {{- if .CookbookFeature.Cookbooks -}}
+            {{ $isViewModeGrid := eq .CookbookFeature.ViewMode "grid" }}
+            <div class="grid grid-flow-col place-content-end p-1">
+                {{- if $isViewModeGrid -}}
+                    <div class="p-2 bg-blue-600 text-white" title="Display as grid">
+                        {{template "icon-grid"}}
+                    </div>
+                    <div class="p-2 hover:bg-red-600 hover:text-white" title="Display as list"
+                         hx-get="/cookbooks?view=list" hx-target="#content">
+                        {{template "icon-list"}}
+                    </div>
+                {{- else -}}
+                    <div class="p-2 hover:bg-red-600 hover:text-white" title="Display as grid"
+                         hx-get="/cookbooks?view=grid" hx-target="#content">
+                        {{template "icon-grid"}}
+                    </div>
+                    <div class="p-2 bg-blue-600 text-white" title="Display as list">
+                        {{template "icon-list"}}
+                    </div>
+                {{- end -}}
+            </div>
+            <div id="cookbooks-container" class="grid justify-center">
+                {{- if $isViewModeGrid -}}
+                    {{template "cookbooks-grid" .}}
+                {{- else -}}
+                    {{template "cookbooks-list" .}}
+                {{- end -}}
+            </div>
+        {{- else -}}
+            <div class="grid place-content-center text-sm h-full text-center md:text-base">
+                <p>Your cookbooks collection looks a bit empty at the moment.</p>
+                <p>Why not start by creating a cookbook by clicking the
+                    <a class="underline font-semibold cursor-pointer"
+                       hx-post="/cookbooks"
+                       hx-prompt="Enter the name of your cookbook"
+                       hx-target="#content"
+                       hx-push-url="true">Add cookbook</a>
+                    button at the top?
+                </p>
+                <div id="new-cookbook-placeholder" class="hidden"></div>
+            </div>
+        {{- end -}}
     {{- end -}}
+{{end}}
+
+{{define "cookbooks-list"}}
+    {{- $funcs := .Functions -}}
+    <ul class="grid gap-2">
+        {{ range $i, $book := .CookbookFeature.Cookbooks }}
+            <li class="grid min-w-[30rem] max-w-[30rem] border bg-white rounded-md shadow-md dark:bg-neutral-700">
+                <div class="grid grid-cols-4">
+                    {{- $isUUIDValid := call $funcs.IsUUIDValid $book.Image -}}
+                    <img class="col-span-1 border-r {{if not $isUUIDValid}}h-[100px] px-4 pt-4{{end}}"
+                         src="{{if $isUUIDValid}}/data/images/{{$book.Image}}.jpg{{end}}"
+                         alt="Cookbook image">
+                    <div class="grid col-span-3 gap-1 p-2">
+                        <div class="grid grid-flow-col">
+                            <p class="font-semibold">{{$book.Title}}</p>
+                            <div>
+                                {{template "icon-dots-vertical"}}
+                            </div>
+                        </div>
+                        <span class="text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit">
+                            {{$book.Count}}
+                        </span>
+                    </div>
+                </div>
+                <button class="w-full border-t center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600 hover:rounded-b-md"
+                        hx-get="/cookbooks/{{call $funcs.Inc $i}}"
+                        hx-target="#content"
+                        hx-push-url="true">
+                    Open
+                </button>
+            </li>
+        {{end}}
+    </ul>
 {{end}}
