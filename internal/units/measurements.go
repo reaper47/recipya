@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gertd/go-pluralize"
 	"github.com/neurosnap/sentences"
+	"github.com/reaper47/recipya/internal/utils/extensions"
 	"github.com/reaper47/recipya/internal/utils/regex"
 	"math"
 	"regexp"
@@ -17,6 +18,85 @@ var (
 	pluralizeClient *pluralize.Client
 	tokenizer       *sentences.DefaultSentenceTokenizer
 )
+
+const maxLen = 20
+
+// NewMeasurement creates a Measurement from a quantity of type int or float64
+// and a unit. The creation fails when the unit is invalid.
+func NewMeasurement(quantity float64, unit string) (Measurement, error) {
+	unit = pluralizeClient.Singular(strings.ToLower(unit))
+	unit = strings.TrimSuffix(unit, ".")
+
+	var u Unit
+	switch unit {
+	case "°c", "c", "celsius", "degrees celsius", "degree celsius", "degrees c", "degree c":
+		u = Celsius
+	case "cm", "centimeter", "centimetre":
+		u = Centimeter
+	case "cup":
+		u = Cup
+	case "dl", "dL", "deciliter", "decilitre":
+		u = Decilitre
+	case "°f", "f", "fahrenheit", "degrees farenheit", "degree farenheit", "degrees fahrenheit", "degree fahrenheit", "degrees f":
+		u = Fahrenheit
+	case "foot", "feet", "ft", "′":
+		u = Feet
+	case "fluid ounce", "fl oz", "fl. oz", "floz.", "floz":
+		u = FlOz
+	case "gallon", "gal":
+		u = Gallon
+	case "g", "gram", "gramme":
+		u = Gram
+	case "inche", "inch", "in", `"`, `”`:
+		u = Inch
+	case "kg", "kilogram", "kilogramme":
+		u = Kilogram
+	case "l", "litre", "liter":
+		u = Litre
+	case "m", "meter", "metre":
+		u = Meter
+	case "mg", "milligram", "milligramme":
+		u = Milligram
+	case "ml", "milliliter", "millilitre", "cc":
+		u = Millilitre
+	case "mm", "millimeter", "millimetre":
+		u = Millimeter
+	case "ounce", "oz":
+		u = Ounce
+	case "pint", "pt", "fl pt", "fl. pt":
+		u = Pint
+	case "lb", "#", "pound":
+		u = Pound
+	case "quart", "qt", "fl qt", "fl. qt":
+		u = Quart
+	case "tablespoon", "tbl", "tbs", "tb", "tbsp":
+		u = Tablespoon
+	case "teaspoon", "tsp":
+		u = Teaspoon
+	case "yard":
+		u = Yard
+	default:
+		return Measurement{}, errors.New("unit " + unit + " is unsupported")
+	}
+	return Measurement{Quantity: quantity, Unit: u}, nil
+}
+
+// NewMeasurementFromString creates a Measurement from a string.
+func NewMeasurementFromString(s string) (Measurement, error) {
+	s = regex.Digit.ReplaceAllStringFunc(s, func(s string) string {
+		return s + " "
+	})
+	sum := extensions.SumString(s)
+	if sum == 0 {
+		return Measurement{}, nil
+	}
+
+	unitMatches := regex.Unit.FindStringSubmatch(s)
+	if unitMatches == nil {
+		return Measurement{}, errors.New("unsupported unit")
+	}
+	return NewMeasurement(math.Abs(sum), unitMatches[len(unitMatches)-1])
+}
 
 // Measurement represents a physical measurement consisting of a quantity and a unit.
 type Measurement struct {
@@ -485,76 +565,178 @@ func (m Measurement) Convert(to Unit) (Measurement, error) {
 	return Measurement{Quantity: q, Unit: to}, nil
 }
 
+// Scale scales the measurement by the given multiplier.
+func (m Measurement) Scale(multiplier float64) Measurement {
+	q := m.Quantity * multiplier
+	switch m.Unit {
+	case Celsius, Fahrenheit:
+		return m
+	case Centimeter:
+		if q < 1 {
+			return Measurement{Quantity: q * 10, Unit: Millimeter}
+		} else if q < 100 {
+			return Measurement{Quantity: q, Unit: Centimeter}
+		}
+		return Measurement{Quantity: q * 0.01, Unit: Meter}
+	case Cup:
+		if q >= 16 {
+			return Measurement{Quantity: q * 0.0625, Unit: Gallon}
+		} else if q >= 1 {
+			return Measurement{Quantity: q, Unit: Cup}
+		} else if q >= 0.0625 {
+			return Measurement{Quantity: q * 16, Unit: Tablespoon}
+		}
+		return Measurement{Quantity: q * 48, Unit: Teaspoon}
+	case Decilitre:
+		if q >= 10 {
+			return Measurement{Quantity: q * 0.1, Unit: Litre}
+		} else if q >= 1 {
+			return Measurement{Quantity: q, Unit: Decilitre}
+		}
+		return Measurement{Quantity: q * 100, Unit: Millilitre}
+	case Feet:
+		if q >= 3 {
+			return Measurement{Quantity: q * 0.33333333, Unit: Yard}
+		} else if q >= 1 {
+			return Measurement{Quantity: q, Unit: Feet}
+		}
+		return Measurement{Quantity: q * 12, Unit: Inch}
+	case FlOz:
+		if q >= 128 {
+			return Measurement{Quantity: q * 0.0078125, Unit: Gallon}
+		} else if q >= 8 {
+			return Measurement{Quantity: q * 0.125, Unit: Cup}
+		} else if q >= 1 {
+			return Measurement{Quantity: q, Unit: FlOz}
+		} else if q >= 0.5 {
+			return Measurement{Quantity: q * 2, Unit: Tablespoon}
+		}
+		return Measurement{Quantity: q * 6, Unit: Teaspoon}
+	case Gallon:
+		if q >= 1 {
+			return Measurement{Quantity: q, Unit: Gallon}
+		} else if q >= 0.0625 {
+			return Measurement{Quantity: q * 16, Unit: Cup}
+		} else if q >= 0.0078125 {
+			return Measurement{Quantity: q * 128, Unit: FlOz}
+		} else if q >= 0.00390625 {
+			return Measurement{Quantity: q * 256, Unit: Tablespoon}
+		}
+		return Measurement{Quantity: q * 768, Unit: Teaspoon}
+	case Gram:
+		if q >= 1000 {
+			return Measurement{Quantity: q * 0.001, Unit: Kilogram}
+		} else if q >= 1 {
+			return Measurement{Quantity: q, Unit: Gram}
+		}
+		return Measurement{Quantity: q * 1000, Unit: Milligram}
+	case Inch:
+		if q >= 12 {
+			return Measurement{Quantity: q * 0.08333333333, Unit: Feet}
+		} else if q >= 3 {
+			return Measurement{Quantity: q * 0.3333333, Unit: Yard}
+		}
+		return Measurement{Quantity: q, Unit: Inch}
+	case Kilogram:
+		if q >= 1 {
+			return Measurement{Quantity: q, Unit: Kilogram}
+		} else if q > 0.001 {
+			return Measurement{Quantity: q * 1e3, Unit: Gram}
+		}
+		return Measurement{Quantity: q * 1e6, Unit: Milligram}
+	case Litre:
+		if q >= 1 {
+			return Measurement{Quantity: q, Unit: Litre}
+		} else if q >= 0.1 {
+			return Measurement{Quantity: q * 10, Unit: Decilitre}
+		}
+		return Measurement{Quantity: q * 1000, Unit: Millilitre}
+	case Meter:
+		if q >= 1 {
+			return Measurement{Quantity: q, Unit: Meter}
+		} else if q >= 0.01 {
+			return Measurement{Quantity: q * 100, Unit: Centimeter}
+		}
+		return Measurement{Quantity: q * 1000, Unit: Millimeter}
+	case Milligram:
+		if q >= 1e6 {
+			return Measurement{Quantity: q * 1e-6, Unit: Kilogram}
+		} else if q >= 1e3 {
+			return Measurement{Quantity: q * 1e-3, Unit: Gram}
+		}
+		return Measurement{Quantity: q, Unit: Milligram}
+	case Millilitre:
+		if q > 1e3 {
+			return Measurement{Quantity: q * 1e-3, Unit: Litre}
+		} else if q > 100 {
+			return Measurement{Quantity: q * 1e-2, Unit: Decilitre}
+		}
+		return Measurement{Quantity: q, Unit: Millilitre}
+	case Millimeter:
+		if q >= 1e3 {
+			return Measurement{Quantity: q * 1e-3, Unit: Meter}
+		} else if q >= 10 {
+			return Measurement{Quantity: q * 0.1, Unit: Centimeter}
+		}
+		return Measurement{Quantity: q, Unit: Millimeter}
+	case Ounce:
+		if q >= 16 {
+			return Measurement{Quantity: q * 0.0625, Unit: Pound}
+		}
+		return Measurement{Quantity: q, Unit: Ounce}
+	case Pint:
+		if q >= 2 {
+			return Measurement{Quantity: q * 0.5, Unit: Quart}
+		}
+		return Measurement{Quantity: q, Unit: Pint}
+	case Pound:
+		if q >= 1 {
+			return Measurement{Quantity: q, Unit: Pound}
+		}
+		return Measurement{Quantity: q * 16, Unit: Ounce}
+	case Quart:
+		if q >= 0.5 {
+			return Measurement{Quantity: q * 2, Unit: Pint}
+		}
+		return Measurement{Quantity: q, Unit: Quart}
+	case Tablespoon:
+		if q >= 256 {
+			return Measurement{Quantity: q * 0.00390625, Unit: Gallon}
+		} else if q >= 16 {
+			return Measurement{Quantity: q * 0.0625, Unit: Cup}
+		} else if q >= 1 {
+			return Measurement{Quantity: q, Unit: Tablespoon}
+		}
+		return Measurement{Quantity: q * 3, Unit: Teaspoon}
+	case Teaspoon:
+		if q >= 768 {
+			return Measurement{Quantity: q * 0.00130208333, Unit: Gallon}
+		} else if q >= 48 {
+			return Measurement{Quantity: q * 0.02083333333, Unit: Cup}
+		} else if q >= 3 {
+			return Measurement{Quantity: q * 0.33333333333, Unit: Tablespoon}
+		}
+		return Measurement{Quantity: q, Unit: Teaspoon}
+	case Yard:
+		if q >= 1 {
+			return Measurement{Quantity: q, Unit: Yard}
+		} else if q >= 0.33333333 {
+			return Measurement{Quantity: q * 3, Unit: Feet}
+		}
+		return Measurement{Quantity: q * 36, Unit: Inch}
+	default:
+		return m
+	}
+}
+
 // String represents the Measurement as a string.
 func (m Measurement) String() string {
-	v := fmt.Sprintf("%.2f", m.Quantity)
-	v = strings.TrimRight(strings.TrimRight(v, "0"), ".")
-
+	v := extensions.FloatToString(m.Quantity, "%.2f")
 	unit := m.Unit.String()
 	if math.Round(m.Quantity*10)*0.1 > 1 {
 		unit = pluralizeClient.Plural(unit)
 	}
 	return v + " " + unit
-}
-
-// NewMeasurement creates a Measurement from a quantity of type int or float64
-// and a unit. The creation fails when the unit is invalid.
-func NewMeasurement(quantity float64, unit string) (Measurement, error) {
-	unit = pluralizeClient.Singular(strings.ToLower(unit))
-	unit = strings.TrimSuffix(unit, ".")
-
-	var u Unit
-	switch unit {
-	case "°c", "c", "celsius", "degrees celsius", "degree celsius", "degrees c", "degree c":
-		u = Celsius
-	case "cm", "centimeter", "centimetre":
-		u = Centimeter
-	case "cup":
-		u = Cup
-	case "dl", "dL", "deciliter", "decilitre":
-		u = Decilitre
-	case "°f", "f", "fahrenheit", "degrees farenheit", "degree farenheit", "degrees fahrenheit", "degree fahrenheit", "degrees f":
-		u = Fahrenheit
-	case "foot", "feet", "ft", "′":
-		u = Feet
-	case "fluid ounce", "fl oz", "fl. oz", "floz.", "floz":
-		u = FlOz
-	case "gallon", "gal":
-		u = Gallon
-	case "g", "gram", "gramme":
-		u = Gram
-	case "inche", "inch", "in", `"`, `”`:
-		u = Inch
-	case "kg", "kilogram", "kilogramme":
-		u = Kilogram
-	case "l", "litre", "liter":
-		u = Litre
-	case "m", "meter", "metre":
-		u = Meter
-	case "mg", "milligram", "milligramme":
-		u = Milligram
-	case "ml", "milliliter", "millilitre", "cc":
-		u = Millilitre
-	case "mm", "millimeter", "millimetre":
-		u = Millimeter
-	case "ounce", "oz":
-		u = Ounce
-	case "pint", "pt", "fl pt", "fl. pt":
-		u = Pint
-	case "lb", "#", "pound":
-		u = Pound
-	case "quart", "qt", "fl qt", "fl. qt":
-		u = Quart
-	case "tablespoon", "tbl", "tbs", "tb", "tbsp":
-		u = Tablespoon
-	case "teaspoon", "tsp":
-		u = Teaspoon
-	case "yard":
-		u = Yard
-	default:
-		return Measurement{}, errors.New("unit " + unit + " is unsupported")
-	}
-	return Measurement{Quantity: quantity, Unit: u}, nil
 }
 
 // ConvertParagraph converts the paragraph to the desired System.
@@ -578,7 +760,7 @@ func ConvertSentence(input string, from, to System) (string, error) {
 		return input, errors.New("the measurement system is unchanged")
 	}
 
-	input = replaceKeyboardFractions(input)
+	input = ReplaceVulgarFractions(input)
 
 	matches := regex.Unit.FindStringSubmatch(input)
 	if matches == nil {
@@ -597,34 +779,6 @@ func ConvertSentence(input string, from, to System) (string, error) {
 
 	converted := convertMeasurement(m, to)
 	return regex.Unit.ReplaceAllString(input, converted.String()), nil
-}
-
-func replaceKeyboardFractions(input string) string {
-	keyboardFractions := map[string]string{
-		"½": "1/2",
-		"⅓": "1/3",
-		"⅔": "2/3",
-		"¼": "1/4",
-		"¾": "3/4",
-		"⅕": "1/5",
-		"⅖": "2/5",
-		"⅗": "3/5",
-		"⅘": "4/5",
-		"⅙": "1/6",
-		"⅚": "5/6",
-		"⅐": "1/7",
-		"⅛": "1/8",
-		"⅜": "3/8",
-		"⅝": "5/8",
-		"⅞": "7/8",
-		"⅑": "1/9",
-		"⅒": "1/10",
-	}
-
-	for key, value := range keyboardFractions {
-		input = strings.Replace(input, key, value, -1)
-	}
-	return input
 }
 
 func parseIrregularQuantity(input string, matches []string, re *regexp.Regexp, to System) (string, error) {
@@ -664,9 +818,7 @@ func parseIrregularQuantity(input string, matches []string, re *regexp.Regexp, t
 				if i == len(parts)-1 {
 					convertedParts[i] = converted.String()
 				} else {
-					v := fmt.Sprintf("%.2f", converted.Quantity)
-					v = strings.TrimRight(strings.TrimRight(v, "0"), ".")
-					convertedParts[i] = v
+					convertedParts[i] = extensions.FloatToString(converted.Quantity, "%.2f")
 				}
 				continue
 			}
@@ -681,9 +833,7 @@ func parseIrregularQuantity(input string, matches []string, re *regexp.Regexp, t
 		if i == len(parts)-1 {
 			convertedParts[i] = converted.String()
 		} else {
-			v := fmt.Sprintf("%.2f", converted.Quantity)
-			v = strings.TrimRight(strings.TrimRight(v, "0"), ".")
-			convertedParts[i] = v
+			convertedParts[i] = extensions.FloatToString(converted.Quantity, "%.2f")
 		}
 	}
 
@@ -899,40 +1049,51 @@ func convertMeasurement(m Measurement, to System) Measurement {
 	return converted
 }
 
-// DetectMeasurementSystemFromSentence determines the System used in the text.
-func DetectMeasurementSystemFromSentence(text string) System {
-	for _, part := range strings.Split(text, " ") {
-		switch pluralizeClient.Singular(strings.ToLower(part)) {
-		case "°c", "celsius", "cm", "centimeter", "centimetre", "dl", "dL", "deciliter", "decilitre", "g", "gram", "gramme", "kg", "kilogram", "kilogramme", "l", "litre", "liter", "m", "meter", "metre", "mg", "milligram", "milligramme", "ml", "milliliter", "millilitre", "cc", "mm", "millimeter", "millimetre":
-			return MetricSystem
-		case "cup", "°f", "f", "farenheit", "foot", "feet", "ft", "′", "ounce", "oz", "gallon", "gal", "gill", "inche", "inch", `"`, "pint", "pt", "lb", "#", "pound", "quart", "qt", "tablespoon", "tbl", "tbs", "tb", "tbsp", "teaspoon", "tsp", "yard":
-			return ImperialSystem
-		}
+// DetectMeasurementSystem determines the System used in the text.
+func DetectMeasurementSystem(s string) System {
+	if regex.BeginsWithWord.MatchString(s) {
+		return InvalidSystem
 	}
+
+	xi := regex.UnitImperial.FindStringIndex(s)
+	if isMatchValid(xi) {
+		return ImperialSystem
+	}
+
+	xi = regex.UnitMetric.FindStringIndex(s)
+	if isMatchValid(xi) {
+		return MetricSystem
+	}
+
 	return InvalidSystem
+}
+
+func isMatchValid(indexes []int) bool {
+	return indexes != nil && indexes[0] < maxLen
 }
 
 // ReplaceDecimalFractions converts the decimals in a string to fractions.
 func ReplaceDecimalFractions(input string) string {
 	decimals := map[string]string{
-		".5":   "1/2",
+		".500": "1/2",
+		".330": "1/3",
 		".333": "1/3",
 		".666": "2/3",
-		".25":  "1/4",
-		".75":  "3/4",
-		".2":   "1/5",
-		".4":   "2/5",
-		".6":   "3/5",
-		".8":   "4/5",
-		".16":  "1/6",
-		".83":  "5/6",
-		".14":  "1/7",
+		".250": "1/4",
+		".750": "3/4",
+		".200": "1/5",
+		".400": "2/5",
+		".600": "3/5",
+		".800": "4/5",
+		".160": "1/6",
+		".830": "5/6",
+		".140": "1/7",
 		".125": "1/8",
 		".375": "3/8",
 		".625": "5/8",
 		".875": "7/8",
-		".11":  "1/9",
-		".1":   "1/10",
+		".110": "1/9",
+		".100": "1/10",
 	}
 
 	return regex.Decimal.ReplaceAllStringFunc(input, func(s string) string {
@@ -940,12 +1101,60 @@ func ReplaceDecimalFractions(input string) string {
 			s = s[:5]
 		}
 
-		s = strings.Trim(s, "0")
-		if s[0] != '.' {
-			return fmt.Sprintf("%s %s", string(s[0]), decimals[s[1:5]])
+		n := len(strings.Split(s, ".")[1])
+		if n < 3 {
+			s = s + strings.Repeat("0", 3-n)
 		}
-		return decimals[s]
+
+		s = strings.TrimPrefix(s, "0")
+		if s[0] != '.' {
+			fraction, ok := decimals[s[1:5]]
+			if !ok {
+				return s
+			}
+			return fmt.Sprintf("%s %s", string(s[0]), fraction)
+		}
+
+		fraction, ok := decimals[s]
+		if !ok {
+			return "0" + s
+		}
+		return fraction
 	})
+}
+
+// ReplaceVulgarFractions replaces vulgar fractions in a string to decimal ones.
+func ReplaceVulgarFractions(input string) string {
+	vulgar := map[string]string{
+		"½": "1/2",
+		"⅓": "1/3",
+		"⅔": "2/3",
+		"¼": "1/4",
+		"¾": "3/4",
+		"⅕": "1/5",
+		"⅖": "2/5",
+		"⅗": "3/5",
+		"⅘": "4/5",
+		"⅙": "1/6",
+		"⅚": "5/6",
+		"⅐": "1/7",
+		"⅛": "1/8",
+		"⅜": "3/8",
+		"⅝": "5/8",
+		"⅞": "7/8",
+		"⅑": "1/9",
+		"⅒": "1/10",
+	}
+
+	for k, v := range vulgar {
+		if strings.Contains(input, k) {
+			input = strings.Replace(input, k, " "+v+" ", -1)
+			input = strings.TrimSpace(input)
+			input = strings.Join(strings.Fields(input), " ")
+			break
+		}
+	}
+	return input
 }
 
 func init() {

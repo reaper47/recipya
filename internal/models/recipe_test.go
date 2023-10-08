@@ -2,6 +2,7 @@ package models_test
 
 import (
 	"errors"
+	"github.com/google/go-cmp/cmp"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/units"
@@ -32,10 +33,51 @@ func BenchmarkRecipe_ConvertMeasurementSystem(b *testing.B) {
 				"Bake in the preheated oven until edges are nicely browned, about 10 minutes.",
 			},
 		}
-
 		converted, err := r.ConvertMeasurementSystem(units.MetricSystem)
 		_ = converted
 		_ = err
+	}
+}
+
+func BenchmarkRecipe_Scale(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		recipe := models.Recipe{
+			ID: 1,
+			Ingredients: []string{
+				"2 big apples",
+				"Lots of big apples",
+				"2.5 slices of bacon",
+				"2 1/3 cans of bamboo sticks",
+				"1½can of tomato paste",
+				"6 ¾ peanut butter jars",
+				"7.5mL of whiskey",
+				"2 tsp lemon juice",
+				"Ground ginger",
+				"3 Large or 4 medium ripe Hass avocados",
+				"1/4-1/2 teaspoon salt plus more for seasoning",
+				"1/2 fresh pineapple, cored and cut into 1 1/2-inch pieces",
+				"Un sac de chips de 1kg",
+				"Two 15-ounce can Goya beans",
+				"2 big apples",
+				"Lots of big apples",
+				"2.5 slices of bacon",
+				"2 1/3 cans of bamboo sticks",
+				"1½can of tomato paste",
+				"6 ¾ peanut butter jars",
+				"7.5mL of whiskey",
+				"2 tsp lemon juice",
+				"Ground ginger",
+				"3 Large or 4 medium ripe Hass avocados",
+				"1/4-1/2 teaspoon salt plus more for seasoning",
+				"1/2 fresh pineapple, cored and cut into 1 1/2-inch pieces",
+				"Un sac de chips de 1kg",
+				"Two 15-ounce can Goya beans",
+			},
+			Instructions: nil,
+			Name:         "Sauce",
+			Yield:        4,
+		}
+		recipe.Scale(4)
 	}
 }
 
@@ -203,6 +245,76 @@ func TestRecipe_ConvertMeasurementSystem(t *testing.T) {
 	}
 }
 
+func TestRecipe_Copy(t *testing.T) {
+	times, _ := models.NewTimes("PT1H20M", "PT30M")
+	original := models.Recipe{
+		Category:    "breakfast",
+		CreatedAt:   time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC),
+		Cuisine:     "American",
+		Description: "The best American breakfast you could ever have.",
+		ID:          1,
+		Image:       uuid.Nil,
+		Ingredients: []string{
+			"2 eggs",
+			"3 cups maple syrup",
+			"1/2 tbsp cinnamon",
+			"1 toast spread with butter",
+		},
+		Instructions: []string{
+			"Cook the meat on high",
+			"Mix the eggs together, whisk and cook on low",
+			"Pour maple syrup over meat",
+			"Eat",
+		},
+		Keywords: []string{"eggs", "meat", "juicy"},
+		Name:     "Chicken Sauce",
+		Nutrition: models.Nutrition{
+			Calories:           "1g",
+			Cholesterol:        "2g",
+			Fiber:              "3g",
+			Protein:            "4g",
+			SaturatedFat:       "5g",
+			Sodium:             "6g",
+			Sugars:             "7g",
+			TotalCarbohydrates: "8g",
+			TotalFat:           "9g",
+			UnsaturatedFat:     "10g",
+		},
+		Times: times,
+		Tools: []string{
+			"small pan",
+			"large pan",
+			"spatula",
+		},
+		UpdatedAt: time.Date(2012, 12, 25, 0, 0, 0, 0, time.UTC),
+		URL:       "https://www.example.com",
+		Yield:     4,
+	}
+
+	copied := original.Copy()
+
+	if !cmp.Equal(original, copied) {
+		t.Log(cmp.Diff(original, copied))
+		t.Fail()
+	}
+	copied.Ingredients[0] = "pig"
+	if slices.Equal(original.Ingredients, copied.Ingredients) {
+		t.Fatal("ingredients slices the same when they should not")
+	}
+	copied.Instructions[0] = "jesus"
+	if slices.Equal(original.Instructions, copied.Instructions) {
+		t.Fatal("instructions slices the same when they should not")
+	}
+	copied.Keywords[0] = "european"
+	if slices.Equal(original.Keywords, copied.Keywords) {
+		t.Fatal("keywords slices the same when they should not")
+	}
+	copied.Tools[0] = "saw"
+	if slices.Equal(original.Tools, copied.Tools) {
+		t.Fatal("tools slices the same when they should not")
+	}
+}
+
 func TestRecipe_Normalize(t *testing.T) {
 	r := models.Recipe{
 		Description: "Place the chicken pieces on a baking sheet and bake 1l 1 l 1ml 1 ml until they 425°f (220°c) and golden.",
@@ -240,6 +352,81 @@ func TestRecipe_Normalize(t *testing.T) {
 			t.Errorf("expected '%v' but got '%v'", expected[i], v)
 		}
 	}
+}
+
+func TestRecipe_Scale(t *testing.T) {
+	recipe := models.Recipe{
+		ID: 1,
+		Ingredients: []string{
+			"2 big apples",
+			"Lots of big apples",
+			"2.5 slices of bacon",
+			"2 1/3 cans of bamboo sticks",
+			"1½can of tomato paste",
+			"6 ¾ peanut butter jars",
+			"7.5mL of whiskey",
+			"2 tsp lemon juice",
+			"Ground ginger",
+			"3 Large or 4 medium ripe Hass avocados",
+			"1/4-1/2 teaspoon salt plus more for seasoning",
+			"1/2 fresh pineapple, cored and cut into 1 1/2-inch pieces",
+			"Un sac de chips de 1kg",
+			"Two 15-ounce can Goya beans",
+		},
+		Instructions: nil,
+		Name:         "Sauce",
+		Yield:        4,
+	}
+
+	t.Run("double recipe", func(t *testing.T) {
+		got := recipe.Copy()
+		got.Scale(8)
+
+		want := recipe.Copy()
+		want.Ingredients = []string{
+			"4 big apples",
+			"Lots of big apples",
+			"5 slices of bacon",
+			"4 2/3 cans of bamboo sticks",
+			"3 can of tomato paste",
+			"13 1/2 peanut butter jars",
+			"15 mL of whiskey",
+			"1 1/3 tbsp lemon juice",
+			"Ground ginger",
+			"6 Large or 8 medium ripe Hass avocados",
+			"1/2 tsp salt plus more for seasoning",
+			"1 fresh pineapple, cored and cut into 3-inch pieces",
+			"Un sac de chips de 1kg",
+			"4 15-ounce can Goya beans",
+		}
+		want.Yield = 8
+		assertStructsEqual(t, got, want)
+	})
+
+	t.Run("decrease recipe by 1.5x", func(t *testing.T) {
+		got := recipe.Copy()
+		got.Scale(1)
+
+		want := recipe.Copy()
+		want.Ingredients = []string{
+			"1/2 big apples",
+			"Lots of big apples",
+			"5/8 slices of bacon",
+			"0.583 cans of bamboo sticks",
+			"3/8 can of tomato paste",
+			"1.687 peanut butter jars",
+			"1.880 mL of whiskey",
+			"1/2 tsp lemon juice",
+			"Ground ginger",
+			"3/4 Large or 1 medium ripe Hass avocados",
+			"0.060 tsp salt plus more for seasoning",
+			"1/8 fresh pineapple, cored and cut into 3/8-inch pieces",
+			"Un sac de chips de 1kg",
+			"0.5 15-ounce can Goya beans",
+		}
+		want.Yield = 1
+		assertStructsEqual(t, got, want)
+	})
 }
 
 func TestRecipe_Schema(t *testing.T) {
@@ -363,5 +550,20 @@ func TestNewTimes(t *testing.T) {
 	}
 	if actual.Total != 3*time.Hour {
 		t.Errorf("wanted total time 3H but got %v", actual.Total.String())
+	}
+}
+
+func assertNoError(t testing.TB, got error) {
+	t.Helper()
+	if got != nil {
+		t.Fatal("got an error but expected none")
+	}
+}
+
+func assertStructsEqual[T models.Recipe](t testing.TB, got, want T) {
+	t.Helper()
+	if !cmp.Equal(got, want) {
+		t.Log(cmp.Diff(got, want))
+		t.Fail()
 	}
 }

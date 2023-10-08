@@ -877,6 +877,41 @@
     {{template "load-recipes-manual-scripts"}}
 {{end}}
 
+{{define "ingredients-instructions"}}
+    <div id="ingredients-instructions-container" class="grid col-span-6 grid-flow-col">
+        <div class="col-span-6 py-2 border-b border-x border-black md:col-span-2 md:border-r-0 dark:border-gray-800 print:hidden">
+            <h2 class="pb-2 m-auto text-sm font-semibold text-center text-gray-600 underline dark:text-gray-200">
+                Ingredients
+            </h2>
+            <ul class="grid px-6 columns-2">
+                {{$len := len .Ingredients}}
+                {{- range $i, $e := .Ingredients -}}
+                    <li class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200 dark:hover:bg-gray-800"
+                        _="on mousedown toggle .line-through then toggle @checked on first <input/> in me">
+                        <label for="ingredient-{{$i}}"></label>
+                        <input type="checkbox" id="ingredient-{{$i}}" class="mt-1">
+                        <span class="pl-2">{{$e}}</span>
+                    </li>
+                {{- end -}}
+            </ul>
+        </div>
+
+        <div class="col-span-6 py-2 pb-8 border-b border-x border-black rounded-bl-lg md:rounded-bl-none md:col-span-4 dark:border-gray-800 print:hidden">
+            <h2 class="pb-2 m-auto text-sm font-semibold text-center text-gray-600 underline dark:text-gray-200">
+                Instructions</h2>
+            <ol class="grid px-6 list-decimal">
+                {{$len = len .Instructions}}
+                {{- range $i, $e := .Instructions -}}
+                    <li class="min-w-full py-2 text-sm select-none hover:bg-gray-200 dark:hover:bg-gray-800"
+                        _="on mousedown toggle .line-through">
+                        <span class="whitespace-pre-line">{{$e}}</span>
+                    </li>
+                {{- end -}}
+            </ol>
+        </div>
+    </div>
+{{end}}
+
 {{define "list-recipes"}}
     <title hx-swap-oob="true">Home | Recipya</title>
 
@@ -1055,16 +1090,16 @@
                             </svg>
                         </button>
                         {{- if .View.Share.IsFromHost -}}
-                        <button class="ml-2" title="Edit recipe"
-                                hx-get="/recipes/{{.View.ID}}/edit"
-                                hx-push-url="true"
-                                hx-target="#content">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none"
-                                 viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                            </svg>
-                        </button>
+                            <button class="ml-2" title="Edit recipe"
+                                    hx-get="/recipes/{{.View.ID}}/edit"
+                                    hx-push-url="true"
+                                    hx-target="#content">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none"
+                                     viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                </svg>
+                            </button>
                         {{- end -}}
                     </div>
                 </div>
@@ -1104,16 +1139,16 @@
                             </svg>
                         </button>
                         {{- if .View.Share.IsFromHost -}}
-                        <button class="mr-2" hx-delete="/recipes/{{.View.Recipe.ID}}" hx-swap="none"
-                                title="Delete recipe"
-                                hx-confirm="Are you sure you wish to delete this recipe?"
-                                hx-indicator="#fullscreen-loader">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none"
-                                 viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                            </svg>
-                        </button>
+                            <button class="mr-2" hx-delete="/recipes/{{.View.Recipe.ID}}" hx-swap="none"
+                                    title="Delete recipe"
+                                    hx-confirm="Are you sure you wish to delete this recipe?"
+                                    hx-indicator="#fullscreen-loader">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none"
+                                     viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                            </button>
                         {{- end -}}
                     </div>
                 </div>
@@ -1161,8 +1196,20 @@
                 </span>
             </div>
 
-            <div class="grid col-span-2 py-2 border-black place-items-center md:col-span-3 md:border-t dark:border-gray-800">
-                <p class="text-sm text-center">{{.View.Recipe.Yield}} servings</p>
+            <div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t dark:border-gray-800">
+                {{- if .IsAuthenticated -}}
+                    <form autocomplete="off" _="on submit halt the event">
+                        <input id="yield" type="number" min="1" name="yield"
+                               value="{{if eq .View.Recipe.Yield 0}}1{{else}}{{.View.Recipe.Yield}}{{end}}"
+                               class="w-16 text-center rounded bg-gray-100 p-2 grid self-end dark:bg-gray-900"
+                               hx-get="/recipes/{{.View.ID}}/scale"
+                               hx-trigger="input"
+                               hx-target="#ingredients-instructions-container">
+                        <label for="yield" class="grid self-start">servings</label>
+                    </form>
+                {{- else -}}
+                    <p class="text-sm text-center">{{.View.Recipe.Yield}} servings</p>
+                {{- end -}}
             </div>
 
             <div class="flex items-center justify-center col-span-2 border-x border-black text-sm md:border-l-0 md:border-r-0 md:border-b md:col-span-3 md:border-t md:py-2 dark:border-gray-800">
@@ -1172,9 +1219,7 @@
                         Source
                     </a>
                 {{- else -}}
-                    <p>
-                        Source: {{if .View.Recipe.URL}}{{.View.Recipe.URL}}{{else}}Unkwown{{end}}
-                    </p>
+                    <p>Source: {{if .View.Recipe.URL}}{{.View.Recipe.URL}}{{else}}Unknown{{end}}</p>
                 {{- end -}}
             </div>
         </div>
@@ -1329,36 +1374,7 @@
             </div>
         </div>
 
-        <div class="col-span-6 py-2 border-b border-x border-black md:col-span-2 md:border-r-0 dark:border-gray-800 print:hidden">
-            <h2 class="pb-2 m-auto text-sm font-semibold text-center text-gray-600 underline dark:text-gray-200">
-                Ingredients
-            </h2>
-            <ul class="grid px-6 columns-2">
-                {{$len := len .View.Recipe.Ingredients}}
-                {{- range $i, $e := .View.Recipe.Ingredients -}}
-                    <li class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200 dark:hover:bg-gray-800"
-                        _="on mousedown toggle .line-through then toggle @checked on first <input/> in me">
-                        <label for="ingredient-{{$i}}"></label>
-                        <input type="checkbox" id="ingredient-{{$i}}" class="mt-1">
-                        <span class="pl-2">{{$e}}</span>
-                    </li>
-                {{- end -}}
-            </ul>
-        </div>
-
-        <div class="col-span-6 py-2 pb-8 border-b border-x border-black rounded-bl-lg md:rounded-bl-none md:col-span-4 dark:border-gray-800 print:hidden">
-            <h2 class="pb-2 m-auto text-sm font-semibold text-center text-gray-600 underline dark:text-gray-200">
-                Instructions</h2>
-            <ol class="grid px-6 list-decimal">
-                {{$len = len .View.Recipe.Instructions}}
-                {{- range $i, $e := .View.Recipe.Instructions -}}
-                    <li class="min-w-full py-2 text-sm select-none hover:bg-gray-200 dark:hover:bg-gray-800"
-                        _="on mousedown toggle .line-through">
-                        <span class="whitespace-pre-line">{{$e}}</span>
-                    </li>
-                {{- end -}}
-            </ol>
-        </div>
+        {{template "ingredients-instructions" .View.Recipe}}
 
         <div class="hidden print:grid col-span-6 ml-2 mt-2 mb-4">
             <h1 class="text-sm"><b>Ingredients</b></h1>

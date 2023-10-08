@@ -2,15 +2,20 @@ package models
 
 import (
 	"errors"
+	"github.com/donna-legal/word2number"
+	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/units"
 	"github.com/reaper47/recipya/internal/utils/duration"
 	"github.com/reaper47/recipya/internal/utils/extensions"
 	"github.com/reaper47/recipya/internal/utils/regex"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
+)
 
-	"github.com/google/uuid"
+var (
+	wordConverter *word2number.Converter
 )
 
 // Recipes is the type for a slice of recipes.
@@ -49,7 +54,7 @@ type Recipe struct {
 func (r *Recipe) ConvertMeasurementSystem(to units.System) (*Recipe, error) {
 	currentSystem := units.InvalidSystem
 	for _, s := range r.Ingredients {
-		system := units.DetectMeasurementSystemFromSentence(s)
+		system := units.DetectMeasurementSystem(s)
 		if system != units.InvalidSystem {
 			currentSystem = system
 			break
@@ -82,24 +87,60 @@ func (r *Recipe) ConvertMeasurementSystem(to units.System) (*Recipe, error) {
 		instructions[i] = v
 	}
 
-	return &Recipe{
+	recipe := r.Copy()
+	recipe.Description = units.ConvertParagraph(r.Description, currentSystem, to)
+	recipe.Ingredients = ingredients
+	recipe.Instructions = instructions
+	return &recipe, nil
+}
+
+// Copy deep copies the Recipe.
+func (r *Recipe) Copy() Recipe {
+	ingredients := make([]string, len(r.Ingredients))
+	copy(ingredients, r.Ingredients)
+
+	instructions := make([]string, len(r.Instructions))
+	copy(instructions, r.Instructions)
+
+	keywords := make([]string, len(r.Keywords))
+	copy(keywords, r.Keywords)
+
+	tools := make([]string, len(r.Tools))
+	copy(tools, r.Tools)
+
+	return Recipe{
 		Category:     r.Category,
 		CreatedAt:    r.CreatedAt,
 		Cuisine:      r.Cuisine,
-		Description:  units.ConvertParagraph(r.Description, currentSystem, to),
+		Description:  r.Description,
 		ID:           r.ID,
 		Image:        r.Image,
 		Ingredients:  ingredients,
 		Instructions: instructions,
-		Keywords:     r.Keywords,
+		Keywords:     keywords,
 		Name:         r.Name,
-		Nutrition:    r.Nutrition,
-		Times:        r.Times,
-		Tools:        r.Tools,
-		UpdatedAt:    r.UpdatedAt,
-		URL:          r.URL,
-		Yield:        r.Yield,
-	}, nil
+		Nutrition: Nutrition{
+			Calories:           r.Nutrition.Calories,
+			Cholesterol:        r.Nutrition.Cholesterol,
+			Fiber:              r.Nutrition.Fiber,
+			Protein:            r.Nutrition.Protein,
+			SaturatedFat:       r.Nutrition.SaturatedFat,
+			Sodium:             r.Nutrition.Sodium,
+			Sugars:             r.Nutrition.Sugars,
+			TotalCarbohydrates: r.Nutrition.TotalCarbohydrates,
+			TotalFat:           r.Nutrition.TotalFat,
+			UnsaturatedFat:     r.Nutrition.UnsaturatedFat,
+		},
+		Times: Times{
+			Prep:  r.Times.Prep,
+			Cook:  r.Times.Cook,
+			Total: r.Times.Total,
+		},
+		Tools:     tools,
+		UpdatedAt: r.UpdatedAt,
+		URL:       r.URL,
+		Yield:     r.Yield,
+	}
 }
 
 // Normalize normalizes texts for readability.
@@ -129,6 +170,53 @@ func normalizeQuantity(s string) string {
 		}
 	}
 	return string(xr)
+}
+
+// Scale scales the recipe to the given yield.
+func (r *Recipe) Scale(yield int16) {
+	multiplier := float64(yield) / float64(r.Yield)
+	scaledIngredients := make([]string, len(r.Ingredients))
+
+	var wg sync.WaitGroup
+	wg.Add(len(r.Ingredients))
+
+	for i, ingredient := range r.Ingredients {
+		go func(ing string, i int) {
+			defer wg.Done()
+			ing = units.ReplaceVulgarFractions(ing)
+			system := units.DetectMeasurementSystem(ing)
+
+			switch system {
+			case units.MetricSystem, units.ImperialSystem:
+				m, err := units.NewMeasurementFromString(ing)
+				if err != nil {
+					return
+				}
+				m = m.Scale(multiplier)
+				scaled := regex.Unit.ReplaceAllString(ing, m.String())
+				scaledIngredients[i] = units.ReplaceDecimalFractions(scaled)
+			case units.InvalidSystem:
+				if regex.BeginsWithWord.MatchString(ing) {
+					ing = regex.BeginsWithWord.ReplaceAllStringFunc(ing, func(s string) string {
+						f := wordConverter.Words2Number(s) * multiplier
+						if f > 0 {
+							return strconv.FormatFloat(f, 'g', 2, 64) + " "
+						}
+						return s
+					})
+				} else {
+					ing = extensions.ScaleString(ing, multiplier)
+					ing = units.ReplaceDecimalFractions(ing)
+				}
+				scaledIngredients[i] = ing
+			}
+		}(ingredient, i)
+	}
+	wg.Wait()
+
+	r.Ingredients = scaledIngredients
+	r.Yield = yield
+	r.Normalize()
 }
 
 // Schema creates the schema representation of the Recipe.
@@ -238,4 +326,12 @@ func (n *Nutrition) Schema(servings string) NutritionSchema {
 		Sugar:          n.Sugars,
 		UnsaturatedFat: n.UnsaturatedFat,
 	}
+}
+
+func init() {
+	c, err := word2number.NewConverter("en")
+	if err != nil {
+		panic(err)
+	}
+	wordConverter = c
 }

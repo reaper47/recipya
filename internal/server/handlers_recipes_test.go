@@ -711,6 +711,125 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 	})
 }
 
+func TestHandlers_Recipes_Scale(t *testing.T) {
+	srv := newServerTest()
+	originalRepo := srv.Repository
+
+	uri := "/recipes/1/scale"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
+	})
+
+	yieldTestcases := []struct {
+		name string
+		in   string
+		want string
+	}{
+		{
+			name: "yield query parameter must be present",
+			in:   "",
+			want: "No yield in the query.",
+		},
+		{
+			name: "yield query parameter must be greater than zero",
+			in:   "-1",
+			want: "Yield must be greater than zero.",
+		},
+		{
+			name: "yield query parameter must be greater than zero",
+			in:   "0",
+			want: "Yield must be greater than zero.",
+		},
+	}
+	for _, tc := range yieldTestcases {
+		t.Run(tc.name, func(t *testing.T) {
+			rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?yield="+tc.in, noHeader, nil)
+
+			assertStatus(t, rr.Code, http.StatusBadRequest)
+			assertHeader(t, rr, "HX-Trigger", fmt.Sprintf(`{"showToast":"{\"message\":\"%s\",\"backgroundColor\":\"bg-red-500\"}"}`, tc.want))
+
+		})
+	}
+
+	t.Run("cannot find recipe in database", func(t *testing.T) {
+		srv.Repository = &mockRepository{
+			RecipesRegistered: map[int64]models.Recipes{1: make(models.Recipes, 0)},
+		}
+		defer func() {
+			srv.Repository = originalRepo
+		}()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?yield=6", noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusNotFound)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Recipe not found.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+	})
+
+	t.Run("valid request double yield", func(t *testing.T) {
+		srv.Repository = &mockRepository{
+			RecipesRegistered: map[int64]models.Recipes{
+				1: []models.Recipe{
+					{
+						ID:   1,
+						Name: "American Jerky",
+						Ingredients: []string{
+							"2lb chicken",
+							"1/2 cup bread loaf",
+							"½ tbsp beef broth",
+							"7 1/2 cups flour",
+							"2 big apples",
+							"Lots of big apples",
+							"2.5 slices of bacon",
+							"2 1/3 cans of bamboo sticks",
+							"1½can of tomato paste",
+							"6 ¾ peanut butter jars",
+							"7.5mL of whiskey",
+							"2 tsp lemon juice",
+							"Ground ginger",
+							"3 Large or 4 medium ripe Hass avocados",
+							"1/4-1/2 teaspoon salt plus more for seasoning",
+							"1/2 fresh pineapple, cored and cut into 1 1/2-inch pieces",
+							"Un sac de chips de 1kg",
+							"Two 15-ounce can Goya beans",
+						},
+						Instructions: []string{},
+						Yield:        4,
+					},
+				},
+			},
+		}
+		defer func() {
+			srv.Repository = originalRepo
+		}()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?yield=8", noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		want := []string{
+			`<label for="ingredient-0"></label><input type="checkbox" id="ingredient-0" class="mt-1"><span class="pl-2">4 lb chicken</span>`,
+			`<label for="ingredient-1"></label><input type="checkbox" id="ingredient-1" class="mt-1"><span class="pl-2">1 cup bread loaf</span>`,
+			`<label for="ingredient-2"></label><input type="checkbox" id="ingredient-2" class="mt-1"><span class="pl-2">1 tbsp beef broth</span>`,
+			`<label for="ingredient-3"></label><input type="checkbox" id="ingredient-3" class="mt-1"><span class="pl-2">15 cups flour</span>`,
+			`<label for="ingredient-4"></label><input type="checkbox" id="ingredient-4" class="mt-1"><span class="pl-2">4 big apples</span>`,
+			`<label for="ingredient-5"></label><input type="checkbox" id="ingredient-5" class="mt-1"><span class="pl-2">Lots of big apples</span>`,
+			`<label for="ingredient-6"></label><input type="checkbox" id="ingredient-6" class="mt-1"><span class="pl-2">5 slices of bacon</span>`,
+			`<label for="ingredient-7"></label><input type="checkbox" id="ingredient-7" class="mt-1"><span class="pl-2">4 2/3 cans of bamboo sticks</span>`,
+			`<label for="ingredient-8"></label><input type="checkbox" id="ingredient-8" class="mt-1"><span class="pl-2">3 can of tomato paste</span>`,
+			`<label for="ingredient-9"></label><input type="checkbox" id="ingredient-9" class="mt-1"><span class="pl-2">13 1/2 peanut butter jars</span>`,
+			`<label for="ingredient-10"></label><input type="checkbox" id="ingredient-10" class="mt-1"><span class="pl-2">15 mL of whiskey</span>`,
+			`<label for="ingredient-11"></label><input type="checkbox" id="ingredient-11" class="mt-1"><span class="pl-2">1 1/3 tbsp lemon juice</span>`,
+			`<label for="ingredient-12"></label><input type="checkbox" id="ingredient-12" class="mt-1"><span class="pl-2">Ground ginger</span>`,
+			`<label for="ingredient-13"></label><input type="checkbox" id="ingredient-13" class="mt-1"><span class="pl-2">6 Large or 8 medium ripe Hass avocados</span>`,
+			`<label for="ingredient-14"></label><input type="checkbox" id="ingredient-14" class="mt-1"><span class="pl-2">1/2 tsp salt plus more for seasoning</span>`,
+			`<label for="ingredient-15"></label><input type="checkbox" id="ingredient-15" class="mt-1"><span class="pl-2">1 fresh pineapple, cored and cut into 3-inch pieces</span>`,
+			`<label for="ingredient-16"></label><input type="checkbox" id="ingredient-16" class="mt-1"><span class="pl-2">Un sac de chips de 1kg</span>`,
+			`<label for="ingredient-17"></label><input type="checkbox" id="ingredient-17" class="mt-1"><span class="pl-2">4 15-ounce can Goya beans</span>`,
+		}
+		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
+}
+
 func TestHandlers_Recipes_Share(t *testing.T) {
 	srv := newServerTest()
 
@@ -949,7 +1068,7 @@ func TestHandlers_Recipes_View(t *testing.T) {
 				`<dialog id="share-dialog" class="p-4 border-4 border-black min-w-[15rem]"><div id="share-dialog-result" class="pb-4"></div>`,
 				`<img id="output" class="w-full text-center h-96" alt="Image of the recipe" style="object-fit: scale-down" src="/data/images/` + r.Image.String() + `.jpg">`,
 				`<span class="text-sm font-normal leading-none">American</span>`,
-				`<p class="text-sm text-center">2 servings</p>`,
+				`<div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t dark:border-gray-800"><form autocomplete="off" _="on submit halt the event"><input id="yield" type="number" min="1" name="yield" value="2" class="w-16 text-center rounded bg-gray-100 p-2 grid self-end dark:bg-gray-900" hx-get="/recipes/1/scale" hx-trigger="input" hx-target="#ingredients-instructions-container"><label for="yield" class="grid self-start">servings</label></form></div>`,
 				`<a class="p-1 border rounded-lg center hover:bg-gray-800 hover:text-white dark:border-gray-800" href="https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/" target="_blank"> Source </a>`,
 				`<p class="p-2 text-sm whitespace-pre-line">This is the most delicious recipe!</p>`,
 				`<p class="text-xs">Per 100g: 500 calories; total carbohydrates 7g; sugars 6g; protein 3g; total fat 8g; saturated fat 4g; cholesterol 1g; sodium 5g; fiber 2g.</p>`,

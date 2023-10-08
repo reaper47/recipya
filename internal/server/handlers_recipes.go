@@ -639,6 +639,39 @@ func (s *Server) recipeShareHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (s *Server) recipeScaleHandler(w http.ResponseWriter, r *http.Request) {
+	yieldStr := r.URL.Query().Get("yield")
+	yield, err := strconv.ParseInt(yieldStr, 10, 16)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("No yield in the query.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	if yield <= 0 {
+		w.Header().Set("HX-Trigger", makeToast("Yield must be greater than zero.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	userID := r.Context().Value("userID").(int64)
+
+	recipe, err := s.Repository.Recipe(id, userID)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Recipe not found.", errorToast))
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+	recipe.Scale(int16(yield))
+
+	templates.RenderComponent(w, "recipes", "ingredients-instructions", recipe)
+}
+
 func (s *Server) recipeSharePostHandler(w http.ResponseWriter, r *http.Request) {
 	recipeID, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {

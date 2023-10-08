@@ -155,7 +155,7 @@ func (m *mockRepository) Recipe(id, userID int64) (*models.Recipe, error) {
 	}
 
 	if recipes, ok := m.RecipesRegistered[userID]; ok {
-		if int64(len(recipes)) > id {
+		if int64(len(recipes)) < id {
 			return nil, errors.New("recipe not found")
 		}
 		return &recipes[id-1], nil
