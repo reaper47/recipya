@@ -9,14 +9,14 @@ jobs:
     name: Commits
     runs-on: ubuntu-latest
     outputs:
-      numCommits: ${{ steps.numCommits.outputs.commits }}
+      numCommits: ${{ steps.step1.outputs.commits }}
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Get new commits
         id: numCommits
-        run: echo "commits=$(git rev-list --count HEAD  --since=1.day)" >> "$GITHUB_OUTPUT"
+        run: echo "commits=$(git log --oneline --since '24 hours ago' | wc -l)" >> "$GITHUB_OUTPUT"
 
   nightly:
     name: Nightly
