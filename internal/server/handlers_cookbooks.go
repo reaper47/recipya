@@ -9,6 +9,25 @@ import (
 
 func (s *Server) cookbooksHandler(w http.ResponseWriter, r *http.Request) {
 	userID := r.Context().Value("userID").(int64)
+
+	view := r.URL.Query().Get("view")
+	if view != "" {
+		mode := models.ViewModeFromString(view)
+		err := s.Repository.UpdateUserSettingsCookbooksViewMode(userID, mode)
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Error updating user settings.", errorToast))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+	}
+
+	settings, err := s.Repository.UserSettings(userID)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Could not get user settings.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 	cookbooks, err := s.Repository.Cookbooks(userID)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Error getting cookbooks.", errorToast))
@@ -16,17 +35,12 @@ func (s *Server) cookbooksHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	viewMode := "grid"
-	if r.URL.Query().Get("view") == "list" {
-		viewMode = "list"
-	}
-
 	isHxRequest := r.Header.Get("Hx-Request") == "true"
 
 	data := templates.Data{
 		CookbookFeature: templates.CookbookFeature{
 			Cookbooks: cookbooks,
-			ViewMode:  viewMode,
+			ViewMode:  settings.CookbooksViewMode,
 		},
 		Functions: templates.FunctionsData{
 			Inc: func(v int64) int64 {
@@ -67,6 +81,7 @@ func (s *Server) cookbooksPostHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("HX-Trigger", makeToast("Cookbook created.", infoToast))
 	w.WriteHeader(http.StatusCreated)
+
 	templates.RenderComponent(w, "cookbooks", "cookbooks-grid", templates.Data{
 		CookbookFeature: templates.CookbookFeature{
 			Cookbooks: []models.Cookbook{{

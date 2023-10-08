@@ -30,7 +30,7 @@ type Data struct {
 // CookbookFeature is the data to pass related to the cookbook feature.
 type CookbookFeature struct {
 	Cookbooks []models.Cookbook
-	ViewMode  string
+	ViewMode  models.ViewMode
 }
 
 // FunctionsData provides functions for use in the templates.

@@ -80,6 +80,9 @@ type RepositoryService interface {
 	// UpdateRecipe updates the recipe with its new values.
 	UpdateRecipe(updatedRecipe *models.Recipe, userID int64, recipeNum int64) error
 
+	// UpdateUserSettingsCookbooksViewMode updates the user's preferred cookbooks viewing mode.
+	UpdateUserSettingsCookbooksViewMode(userID int64, mode models.ViewMode) error
+
 	// UserID gets the user's id from the email. It returns -1 if user not found.
 	UserID(email string) int64
 

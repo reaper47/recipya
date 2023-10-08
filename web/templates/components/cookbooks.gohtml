@@ -44,7 +44,7 @@
 
     {{- if .IsAuthenticated -}}
         {{- if .CookbookFeature.Cookbooks -}}
-            {{ $isViewModeGrid := eq .CookbookFeature.ViewMode "grid" }}
+            {{ $isViewModeGrid := eq .CookbookFeature.ViewMode 0 }}
             <div class="grid grid-flow-col place-content-end p-1">
                 {{- if $isViewModeGrid -}}
                     <div class="p-2 bg-blue-600 text-white" title="Display as grid">

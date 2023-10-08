@@ -355,6 +355,16 @@ func (m *mockRepository) UpdateRecipe(updatedRecipe *models.Recipe, userID int64
 	return nil
 }
 
+func (m *mockRepository) UpdateUserSettingsCookbooksViewMode(userID int64, mode models.ViewMode) error {
+	settings, ok := m.UserSettingsRegistered[userID]
+	if !ok {
+		return errors.New("user not found")
+	}
+
+	settings.CookbooksViewMode = mode
+	return nil
+}
+
 func (m *mockRepository) UserInitials(userID int64) string {
 	index := slices.IndexFunc(m.UsersRegistered, func(user models.User) bool {
 		return user.ID == userID

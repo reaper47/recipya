@@ -165,7 +165,7 @@ const SelectUserID = `
 
 // SelectUserSettings is the query to fetch a user's settings.
 const SelectUserSettings = `
-	SELECT MS.name, convert_automatically
+	SELECT MS.name, convert_automatically, cookbooks_view
 	FROM user_settings
 	JOIN measurement_systems MS on MS.id = measurement_system_id
 	WHERE user_id = ?`

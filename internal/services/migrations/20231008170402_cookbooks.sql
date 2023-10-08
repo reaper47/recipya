@@ -16,6 +16,9 @@ CREATE TABLE cookbook_recipes
     UNIQUE (cookbook_id, recipe_id)
 );
 
+ALTER TABLE user_settings
+    ADD COLUMN cookbooks_view INTEGER DEFAULT 0;
+
 -- +goose StatementBegin
 CREATE TRIGGER cookbook_recipes_insert
     AFTER INSERT

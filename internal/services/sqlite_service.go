@@ -856,6 +856,17 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 	return tx.Commit()
 }
 
+func (s *SQLiteService) UpdateUserSettingsCookbooksViewMode(userID int64, mode models.ViewMode) error {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	_, err := s.DB.ExecContext(ctx, statements.UpdateUserSettingsCookbooksViewMode, mode, userID)
+	return err
+}
+
 func (s *SQLiteService) UserID(email string) int64 {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
@@ -874,10 +885,12 @@ func (s *SQLiteService) UserSettings(userID int64) (models.UserSettings, error) 
 
 	var (
 		convertAutomatically int64
+		cookbooksViewMode    int64
 		measurementSystem    string
 	)
-	err := s.DB.QueryRowContext(ctx, statements.SelectUserSettings, userID).Scan(&measurementSystem, &convertAutomatically)
+	err := s.DB.QueryRowContext(ctx, statements.SelectUserSettings, userID).Scan(&measurementSystem, &convertAutomatically, &cookbooksViewMode)
 	return models.UserSettings{
+		CookbooksViewMode:    models.ViewModeFromInt(cookbooksViewMode),
 		ConvertAutomatically: convertAutomatically == 1,
 		MeasurementSystem:    units.NewSystem(measurementSystem),
 	}, err

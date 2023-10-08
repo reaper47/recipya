@@ -55,3 +55,9 @@ const UpdateRecipeTimes = `
 	UPDATE time_recipe
 	SET time_id = ?
 	WHERE recipe_id = ?`
+
+// UpdateUserSettingsCookbooksViewMode is the query to update the cookbooks_view column of a user's settings.
+const UpdateUserSettingsCookbooksViewMode = `
+	UPDATE user_settings
+	SET cookbooks_view = ?
+	WHERE user_id = ?`
