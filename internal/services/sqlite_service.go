@@ -856,6 +856,17 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 	return tx.Commit()
 }
 
+func (s *SQLiteService) UpdateCookbookImage(id int64, image uuid.UUID, userID int64) error {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	_, err := s.DB.ExecContext(ctx, statements.UpdateCookbookImage, image, userID, id)
+	return err
+}
+
 func (s *SQLiteService) UpdateUserSettingsCookbooksViewMode(userID int64, mode models.ViewMode) error {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()

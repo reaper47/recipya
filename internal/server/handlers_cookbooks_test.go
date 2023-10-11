@@ -2,8 +2,12 @@ package server_test
 
 import (
 	"errors"
+	"fmt"
+	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/models"
+	"io"
 	"net/http"
+	"net/http/httptest"
 	"slices"
 	"strings"
 	"testing"
@@ -79,6 +83,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertUserSettings(t, 1, repo.UserSettingsRegistered[1], &models.UserSettings{CookbooksViewMode: models.GridViewMode})
 		assertCookbooksViewMode(t, models.GridViewMode, getBodyHTML(rr))
+		t.Fail()
 	})
 
 	t.Run("have cookbooks list preferred mode", func(t *testing.T) {
@@ -98,6 +103,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertUserSettings(t, 1, repo.UserSettingsRegistered[1], &models.UserSettings{CookbooksViewMode: models.ListViewMode})
 		assertCookbooksViewMode(t, models.ListViewMode, getBodyHTML(rr))
+		t.Fail()
 	})
 
 	t.Run("have cookbooks grid view select list", func(t *testing.T) {
@@ -148,6 +154,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 	t.Run("create cookbook", func(t *testing.T) {
 		repo := originalRepo
 		repo.CookbooksRegistered[1] = make([]models.Cookbook, 0)
+		repo.UserSettingsRegistered = map[int64]*models.UserSettings{1: {CookbooksViewMode: models.GridViewMode}}
 		defer func() {
 			srv.Repository = originalRepo
 		}()
@@ -166,7 +173,6 @@ func TestHandlers_Cookbooks(t *testing.T) {
 		if !isFound {
 			t.Fatal("cookbook must have been added to the user's collection")
 		}
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Cookbook created.\",\"backgroundColor\":\"bg-blue-500\"}"}`)
 		want := []string{
 			`<div class="col-span-1 bg-white rounded-lg shadow-md dark:bg-neutral-700">`,
 			`<img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 h-[180px] px-4 pt-4" src="" alt="Cookbook image">`,
@@ -175,5 +181,90 @@ func TestHandlers_Cookbooks(t *testing.T) {
 			`<button class="w-full border-2 border-gray-800 rounded-lg center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/cookbooks/1" hx-target="#content" hx-push-url="true"> Open </button>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
+}
+
+func TestHandlers_Cookbooks_Image(t *testing.T) {
+	srv := newServerTest()
+	originalRepo := srv.Repository
+	originalFiles := srv.Files
+
+	uri := func(id int) string {
+		return fmt.Sprintf("/cookbooks/%d/image", id)
+	}
+
+	prepareCookbook := func() (*mockFiles, *mockRepository, func()) {
+		files := &mockFiles{}
+		repo := &mockRepository{
+			CookbooksRegistered: map[int64][]models.Cookbook{1: {models.Cookbook{ID: 1, Title: "Lovely Canada"}}},
+		}
+		srv.Files = files
+		srv.Repository = repo
+
+		return files, repo, func() {
+			srv.Files = originalFiles
+			srv.Repository = originalRepo
+		}
+	}
+
+	sendReq := func(image string) *httptest.ResponseRecorder {
+		fields := map[string]string{"image": image}
+		contentType, body := createMultipartForm(fields)
+		return sendHxRequestAsLoggedIn(srv, http.MethodPut, uri(1), header(contentType), strings.NewReader(body))
+	}
+
+	assert := func(t *testing.T, files *mockFiles, repo *mockRepository, gotStatusCode, wantStatusCode int, wantImage uuid.UUID, wantImageHitCount int) {
+		assertStatus(t, gotStatusCode, wantStatusCode)
+		assertUploadImageHitCount(t, files.uploadImageHitCount, wantImageHitCount)
+		assertImage(t, repo.CookbooksRegistered[1][0].Image, wantImage)
+	}
+
+	t.Run("empty image in form", func(t *testing.T) {
+		files, repo, revertFunc := prepareCookbook()
+		defer revertFunc()
+
+		rr := sendReq("")
+
+		assert(t, files, repo, rr.Code, http.StatusBadRequest, uuid.Nil, 0)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Could not retrieve the image from the form.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+	})
+
+	t.Run("upload image failed", func(t *testing.T) {
+		files, repo, revertFunc := prepareCookbook()
+		files.uploadImageFunc = func(_ io.ReadCloser) (uuid.UUID, error) {
+			return uuid.Nil, errors.New("error uploading")
+		}
+		srv.Files = files
+		defer revertFunc()
+
+		rr := sendReq("eggs.jpg")
+
+		assert(t, files, repo, rr.Code, http.StatusInternalServerError, uuid.Nil, 0)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Error uploading image.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+	})
+
+	t.Run("updating image failed", func(t *testing.T) {
+		files, repo, revertFunc := prepareCookbook()
+		repo.UpdateCookbookImageFunc = func(id int64, image uuid.UUID, userID int64) error {
+			return errors.New("error")
+		}
+		srv.Repository = repo
+		defer revertFunc()
+
+		rr := sendReq("eggs.jpg")
+
+		assert(t, files, repo, http.StatusInternalServerError, rr.Code, uuid.Nil, 1)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Error updating the cookbook's image.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+	})
+
+	t.Run("upload image", func(t *testing.T) {
+		files, repo, revertFunc := prepareCookbook()
+		defer revertFunc()
+
+		rr := sendReq("eggs.jpg")
+
+		assertStatus(t, rr.Code, http.StatusCreated)
+		assertUploadImageHitCount(t, files.uploadImageHitCount, 1)
+		assertImageNotNil(t, repo.CookbooksRegistered[1][0].Image)
 	})
 }

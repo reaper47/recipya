@@ -29,8 +29,18 @@ type Data struct {
 
 // CookbookFeature is the data to pass related to the cookbook feature.
 type CookbookFeature struct {
-	Cookbooks []models.Cookbook
-	ViewMode  models.ViewMode
+	Cookbooks    []models.Cookbook
+	MakeCookbook func(index int64, cookbook models.Cookbook) CookbookView
+	ViewMode     models.ViewMode
+}
+
+// CookbookView holds data related to viewing a cookbook.
+type CookbookView struct {
+	ID          int64
+	Image       uuid.UUID
+	IsUUIDValid bool
+	NumRecipes  int
+	Title       string
 }
 
 // FunctionsData provides functions for use in the templates.

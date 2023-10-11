@@ -20,7 +20,8 @@
             <button id="add-cookbook" class="app-bar-center-button"
                     hx-post="/cookbooks"
                     hx-prompt="Enter the name of your cookbook"
-                    hx-target="#content">
+                    hx-target=".cookbooks-display"
+                    hx-swap="beforeend">
                 Add cookbook
             </button>
         </div>

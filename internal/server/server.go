@@ -96,6 +96,10 @@ func (s *Server) mountHandlers() {
 
 		r.Get("/", s.cookbooksHandler)
 		r.Post("/", s.cookbooksPostHandler)
+
+		r.Route("/{id:[1-9]([0-9])*}", func(r chi.Router) {
+			r.Put("/image", s.cookbooksImagePostHandler)
+		})
 	})
 
 	r.Route("/integrations", func(r chi.Router) {

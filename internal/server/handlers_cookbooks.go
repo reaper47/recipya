@@ -1,10 +1,12 @@
 package server
 
 import (
+	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
 	"net/http"
+	"strconv"
 )
 
 func (s *Server) cookbooksHandler(w http.ResponseWriter, r *http.Request) {
@@ -40,20 +42,20 @@ func (s *Server) cookbooksHandler(w http.ResponseWriter, r *http.Request) {
 	data := templates.Data{
 		CookbookFeature: templates.CookbookFeature{
 			Cookbooks: cookbooks,
-			ViewMode:  settings.CookbooksViewMode,
-		},
-		Functions: templates.FunctionsData{
-			Inc: func(v int64) int64 {
-				return v + 1
+			MakeCookbook: func(index int64, cookbook models.Cookbook) templates.CookbookView {
+				return templates.CookbookView{
+					ID:          index + 1,
+					Image:       cookbook.Image,
+					IsUUIDValid: cookbook.Image != uuid.Nil,
+					NumRecipes:  cookbook.Count,
+					Title:       cookbook.Title,
+				}
 			},
-			IsUUIDValid: func(u uuid.UUID) bool {
-				return u != uuid.Nil
-			},
+			ViewMode: settings.CookbooksViewMode,
 		},
 		IsAuthenticated: true,
 		IsHxRequest:     isHxRequest,
-
-		Title: "Cookbooks",
+		Title:           "Cookbooks",
 	}
 
 	if isHxRequest {
@@ -79,23 +81,71 @@ func (s *Server) cookbooksPostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("HX-Trigger", makeToast("Cookbook created.", infoToast))
-	w.WriteHeader(http.StatusCreated)
+	settings, err := s.Repository.UserSettings(userID)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Could not get user settings.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
-	templates.RenderComponent(w, "cookbooks", "cookbooks-grid", templates.Data{
-		CookbookFeature: templates.CookbookFeature{
-			Cookbooks: []models.Cookbook{{
-				ID:    cookbookID,
-				Title: title,
-			}},
-		},
-		Functions: templates.FunctionsData{
-			Inc: func(v int64) int64 {
-				return v + 1
-			},
-			IsUUIDValid: func(u uuid.UUID) bool {
-				return u != uuid.Nil
-			},
-		},
+	tmpl := "cookbook-grid"
+	if settings.CookbooksViewMode == models.ListViewMode {
+		tmpl = "cookbook-list"
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	templates.RenderComponent(w, "cookbooks", tmpl, templates.CookbookView{
+		ID:          cookbookID,
+		IsUUIDValid: false,
+		Title:       title,
 	})
+}
+
+func (s *Server) cookbooksImagePostHandler(w http.ResponseWriter, r *http.Request) {
+	cookbookIDStr := chi.URLParam(r, "id")
+	cookbookID, err := strconv.ParseInt(cookbookIDStr, 10, 64)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	r.Body = http.MaxBytesReader(w, r.Body, 128<<20)
+
+	err = r.ParseMultipartForm(128 << 20)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Could not parse the uploaded image.", errorToast))
+		return
+	}
+
+	imageFile, ok := r.MultipartForm.File["image"]
+	if !ok {
+		w.Header().Set("HX-Trigger", makeToast("Could not retrieve the image from the form.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	f, err := imageFile[0].Open()
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Could open the image from the form.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	defer f.Close()
+
+	imageUUID, err := s.Files.UploadImage(f)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Error uploading image.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	userID := r.Context().Value("userID").(int64)
+	err = s.Repository.UpdateCookbookImage(cookbookID, imageUUID, userID)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Error updating the cookbook's image.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
 }

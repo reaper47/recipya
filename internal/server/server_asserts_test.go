@@ -1,6 +1,7 @@
 package server_test
 
 import (
+	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
 	"net/http"
@@ -25,7 +26,7 @@ func assertCookbooksViewMode(t testing.TB, mode models.ViewMode, got string) {
 			`<div class="grid grid-flow-col place-content-end p-1">`,
 			`<div class="p-2 bg-blue-600 text-white" title="Display as grid"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor"><path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z"/></svg></div>`,
 			`<div class="p-2 hover:bg-red-600 hover:text-white" title="Display as list" hx-get="/cookbooks?view=list" hx-target="#content"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor"><path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg></div>`,
-			`<div id="cookbooks-container" class="grid justify-center"><div class="grid grid-cols-5 gap-2">`,
+			`<div id="cookbooks-container" class="grid justify-center"><div class="cookbooks-display grid grid-cols-5 gap-2">`,
 			`<button class="w-full border-2 border-gray-800 rounded-lg center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/cookbooks/1" hx-target="#content" hx-push-url="true"> Open </button>`,
 			`<button class="w-full border-2 border-gray-800 rounded-lg center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/cookbooks/2" hx-target="#content" hx-push-url="true"> Open </button>`,
 			`<button class="w-full border-2 border-gray-800 rounded-lg center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/cookbooks/3" hx-target="#content" hx-push-url="true"> Open </button>`,
@@ -60,11 +61,32 @@ func assertCookbooksViewMode(t testing.TB, mode models.ViewMode, got string) {
 	assertStringsNotInHTML(t, got, notWant)
 }
 
+func assertUploadImageHitCount(t testing.TB, got, want int) {
+	t.Helper()
+	if got != want {
+		t.Fatalf("got %d images uploaded but want %d", got, want)
+	}
+}
+
 func assertHeader(t testing.TB, rr *httptest.ResponseRecorder, key, value string) {
 	t.Helper()
 	got := rr.Result().Header.Get(key)
 	if got != value {
 		t.Fatalf("expected header %s to be %s but got %s", key, value, got)
+	}
+}
+
+func assertImage(t testing.TB, got, want uuid.UUID) {
+	t.Helper()
+	if got != want {
+		t.Fatalf("got image %q but expected %q", got, want)
+	}
+}
+
+func assertImageNotNil(t testing.TB, got uuid.UUID) {
+	t.Helper()
+	if got == uuid.Nil {
+		t.Fatal("got nil image when expected not nil")
 	}
 }
 

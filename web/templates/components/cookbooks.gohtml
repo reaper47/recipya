@@ -1,28 +1,31 @@
 {{define "cookbooks-grid"}}
-    {{- $funcs := .Functions -}}
-    <div class="grid grid-cols-5 gap-2">
-        {{ range $i, $book := .CookbookFeature.Cookbooks }}
-            <div class="col-span-1 bg-white rounded-lg shadow-md dark:bg-neutral-700">
-                {{- $isUUIDValid := call $funcs.IsUUIDValid $book.Image -}}
-                <img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 {{if not $isUUIDValid}}h-[180px] px-4 pt-4{{end}}"
-                     src="{{if $isUUIDValid}}/data/images/{{$book.Image}}.jpg{{end}}" alt="Cookbook image">
-                <div class="py-2 px-3">
-                    <div class="grid grid-flow-col gap-1 pb-2">
-                        <p class="font-semibold">{{$book.Title}}</p>
-                        <span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit">
-                        {{$book.Count}}
-                    </span>
-                    </div>
-
-                    <button class="w-full border-2 border-gray-800 rounded-lg center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600"
-                            hx-get="/cookbooks/{{call $funcs.Inc $i}}"
-                            hx-target="#content"
-                            hx-push-url="true">
-                        Open
-                    </button>
-                </div>
-            </div>
+    <div class="cookbooks-display grid grid-cols-5 gap-2">
+        {{- $feature := .CookbookFeature -}}
+        {{ range $i, $book := $feature.Cookbooks }}
+            {{template "cookbook-grid" (call $feature.MakeCookbook $i $book)}}
         {{end}}
+    </div>
+{{end}}
+
+{{define "cookbook-grid"}}
+    <div class="col-span-1 bg-white rounded-lg shadow-md dark:bg-neutral-700">
+        <img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 {{if not .IsUUIDValid}}h-[180px] px-4 pt-4{{end}}"
+             src="{{if .IsUUIDValid}}/data/images/{{.Image}}.jpg{{end}}" alt="Cookbook image">
+        <div class="py-2 px-3">
+            <div class="grid grid-flow-col gap-1 pb-2">
+                <p class="font-semibold">{{.Title}}</p>
+                <span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit">
+                    {{.NumRecipes}}
+                </span>
+            </div>
+
+            <button class="w-full border-2 border-gray-800 rounded-lg center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600"
+                    hx-get="/cookbooks/{{.ID}}"
+                    hx-target="#content"
+                    hx-push-url="true">
+                Open
+            </button>
+        </div>
     </div>
 {{end}}
 
@@ -86,37 +89,110 @@
             </div>
         {{- end -}}
     {{- end -}}
+    <script defer>
+        document.addEventListener('click', (event) => {
+            const cookbookContainers = document.querySelectorAll(".cookbook-menu");
+            cookbookContainers.forEach(c => {
+                if (c && !c.classList.contains("hidden") &&
+                    !event.target.classList.contains("three-dots-container") &&
+                    !["svg", "path"].includes(event.target.tagName)) {
+                    c.classList.add("hidden");
+                }
+            });
+        });
+    </script>
 {{end}}
 
 {{define "cookbooks-list"}}
-    {{- $funcs := .Functions -}}
-    <ul class="grid gap-2">
-        {{ range $i, $book := .CookbookFeature.Cookbooks }}
-            <li class="grid min-w-[30rem] max-w-[30rem] border bg-white rounded-md shadow-md dark:bg-neutral-700">
-                <div class="grid grid-cols-4">
-                    {{- $isUUIDValid := call $funcs.IsUUIDValid $book.Image -}}
-                    <img class="col-span-1 border-r {{if not $isUUIDValid}}h-[100px] px-4 pt-4{{end}}"
-                         src="{{if $isUUIDValid}}/data/images/{{$book.Image}}.jpg{{end}}"
-                         alt="Cookbook image">
-                    <div class="grid col-span-3 gap-1 p-2">
-                        <div class="grid grid-flow-col">
-                            <p class="font-semibold">{{$book.Title}}</p>
-                            <div>
-                                {{template "icon-dots-vertical"}}
-                            </div>
+    <ul class="cookbooks-display grid gap-2">
+        {{- $feature := .CookbookFeature -}}
+        {{ range $i, $book := $feature.Cookbooks }}
+            {{template "cookbook-list" (call $feature.MakeCookbook $i $book)}}
+        {{end}}
+    </ul>
+{{end}}
+
+{{define "cookbook-list"}}
+    <li class="relative grid min-w-[30rem] max-w-[30rem] border bg-white rounded-md shadow-md dark:bg-neutral-700">
+        <div class="grid grid-cols-4">
+            {{- if .IsUUIDValid -}}
+                <div onclick="document.querySelector('#cookbook-image-{{.ID}}').click()">
+                    <img class="col-span-1 border-r" src="/data/images/{{.Image}}.jpg" alt="Cookbook image">
+                    {{template "cookbook-image-form" .ID}}
+                </div>
+            {{- else -}}
+                <div onclick="document.querySelector('#cookbook-image-{{.ID}}').click()">
+                    <img class="col-span-1 border-r h-[100px]" src="" alt="Cookbook image">
+                    {{template "cookbook-image-form" .ID}}
+                </div>
+            {{- end -}}
+            <div class="grid col-span-3 gap-1 p-2">
+                <div class="grid grid-flow-col">
+                    <p class="font-semibold">
+                        {{.Title}}
+                    </p>
+                    <div class="grid justify-end">
+                        <div class="three-dots-container cursor-pointer h-fit justify-self-end pb-4 pl-4 hover:text-red-600"
+                             _="on click
+                                if menuOpen add .hidden to menuOpen end then
+                                set global menuOpen to #cookbook-menu-container-{{.ID}} then
+                                toggle .hidden on #cookbook-menu-container-{{.ID}}">
+                            {{template "icon-dots-vertical"}}
                         </div>
-                        <span class="text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit">
-                            {{$book.Count}}
+                        <div id="cookbook-menu-container-{{.ID}}"
+                             class="cookbook-menu hidden right-0 top-[2.25rem] absolute bg-white rounded-lg z-10 dark:bg-gray-900">
+                            <ul id="cookbook-menu"
+                                class="before:content-[''] before:absolute before:right-2 before:top-[-9px] before:border-x-[10px] before:border-x-transparent before:border-b-[10px] before:border-b-[#333]  dark:before:border-b-[gray]">
+                                <li class="border-2 rounded-t-lg cursor-pointer hover:bg-blue-100 dark:border-gray-500 dark:hover:bg-blue-600">
+                                    <a class="flex p-1" hx-get="/cookbooks/{{.ID}}/share">
+                                        {{template "icon-share"}}
+                                        <span class="pl-1 align-bottom">Share</span>
+                                    </a>
+                                </li>
+                                <li class="border-2 cursor-pointer hover:bg-blue-100 dark:border-gray-600 dark:hover:bg-blue-600">
+                                    <a class="flex p-1" hx-get="/cookbooks/{{.ID}}/print">
+                                        <span class="mt-1">
+                                            {{template "icon-download"}}
+                                        </span>
+                                        <div class="align-bottom">Download</div>
+                                    </a>
+                                </li>
+                                <li class="border-2 rounded-b-lg cursor-pointer hover:bg-blue-100 dark:border-gray-600 dark:hover:bg-blue-600">
+                                    <a class="flex p-1" hx-delete="/cookbooks/{{.ID}}">
+                                        {{template "icon-delete"}}
+                                        <div class="pl-1 align-bottom">Delete</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <span class="w-fit h-fit text-xs text-center font-medium select-none py-1 px-2 bg-indigo-700 text-white self-end justify-self-end">
+                            {{.NumRecipes}}
                         </span>
                     </div>
                 </div>
-                <button class="w-full border-t center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600 hover:rounded-b-md"
-                        hx-get="/cookbooks/{{call $funcs.Inc $i}}"
-                        hx-target="#content"
-                        hx-push-url="true">
-                    Open
-                </button>
-            </li>
-        {{end}}
-    </ul>
+            </div>
+        </div>
+        <button class="w-full border-t center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600 hover:rounded-b-md"
+                hx-get="/cookbooks/{{.ID}}"
+                hx-target="#content"
+                hx-push-url="true">
+            Open
+        </button>
+    </li>
+{{end}}
+
+{{define "cookbook-image-form"}}
+    <form id="cookbook-image-form-{{.}}"
+          enctype="multipart/form-data"
+          hx-put="/cookbooks/{{.}}/image"
+          hx-trigger="change from:#cookbook-image-{{.}}"
+          hx-swap="none">
+        <input id="cookbook-image-{{.}}" type="file" accept="image/*" name="image" required
+               class="hidden"
+               _="on drop or change
+                            make an FileReader called reader
+                            then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end
+                            then set {src: window.URL.createObjectURL(it)} on previous <img/>
+                            then remove .hidden from next <button/>">
+    </form>
 {{end}}

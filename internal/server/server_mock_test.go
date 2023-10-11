@@ -39,6 +39,7 @@ type mockRepository struct {
 	RecipesRegistered           map[int64]models.Recipes
 	ShareLinks                  map[string]models.ShareRecipe
 	SwitchMeasurementSystemFunc func(system units.System, userID int64) error
+	UpdateCookbookImageFunc     func(id int64, image uuid.UUID, userID int64) error
 	UserSettingsRegistered      map[int64]*models.UserSettings
 	UsersRegistered             []models.User
 	UsersUpdated                []int64
@@ -265,6 +266,32 @@ func (m *mockRepository) UpdateConvertMeasurementSystem(userID int64, isEnabled 
 	return nil
 }
 
+func (m *mockRepository) UpdateCookbookImage(id int64, image uuid.UUID, userID int64) error {
+	if m.UpdateCookbookImageFunc != nil {
+		return m.UpdateCookbookImageFunc(id, image, userID)
+	}
+
+	_, ok := m.CookbooksRegistered[userID]
+	if !ok {
+		return errors.New("cookbook not found")
+	}
+
+	for i, cookbook := range m.CookbooksRegistered[userID] {
+		if cookbook.ID == id {
+			c := m.CookbooksRegistered[userID][i]
+			m.CookbooksRegistered[userID][i] = models.Cookbook{
+				ID:      c.ID,
+				Count:   c.Count,
+				Image:   image,
+				Recipes: c.Recipes,
+				Title:   c.Title,
+			}
+			return nil
+		}
+	}
+	return errors.New("cookbook not found")
+}
+
 func (m *mockRepository) UpdatePassword(userID int64, _ auth.HashedPassword) error {
 	m.UsersUpdated = append(m.UsersUpdated, userID)
 	return nil
@@ -427,6 +454,7 @@ type mockFiles struct {
 	extractRecipesFunc  func(fileHeaders []*multipart.FileHeader) models.Recipes
 	ReadTempFileFunc    func(name string) ([]byte, error)
 	uploadImageHitCount int
+	uploadImageFunc     func(rc io.ReadCloser) (uuid.UUID, error)
 }
 
 func (m *mockFiles) ExportRecipes(recipes models.Recipes, _ models.FileType) (string, error) {
@@ -452,7 +480,10 @@ func (m *mockFiles) ReadTempFile(name string) ([]byte, error) {
 	return []byte(name), nil
 }
 
-func (m *mockFiles) UploadImage(_ io.ReadCloser) (uuid.UUID, error) {
+func (m *mockFiles) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
+	if m.uploadImageFunc != nil {
+		return m.uploadImageFunc(rc)
+	}
 	m.uploadImageHitCount++
 	return uuid.New(), nil
 }

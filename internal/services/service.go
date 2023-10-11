@@ -74,6 +74,9 @@ type RepositoryService interface {
 	// UpdateConvertMeasurementSystem updates the user's convert automatically setting.
 	UpdateConvertMeasurementSystem(userID int64, isEnabled bool) error
 
+	// UpdateCookbookImage updates the image of a user's cookbook.
+	UpdateCookbookImage(id int64, image uuid.UUID, userID int64) error
+
 	// UpdatePassword updates the user's password.
 	UpdatePassword(userID int64, hashedPassword auth.HashedPassword) error
 

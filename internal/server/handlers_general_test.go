@@ -82,7 +82,7 @@ func TestHandlers_General_Index(t *testing.T) {
 			`<li id="recipes-sidebar-recipes" class="recipes-sidebar-selected" hx-get="/recipes" hx-target="#content" hx-push-url="true" hx-swap-oob="true" _="on load if location.pathname is not '/recipes' then remove .recipes-sidebar-selected then add .recipes-sidebar-not-selected"><img src="/static/img/cherries.svg" alt=""><span class="hidden md:block ml-1">Recipes</span></li>`,
 			`<li id="recipes-sidebar-cookbooks" class="recipes-sidebar-not-selected" hx-get="/cookbooks" hx-target="#content" hx-push-url="true" hx-swap-oob="true" _="on load if location.pathname is '/cookbooks' then remove .recipes-sidebar-not-selected add .recipes-sidebar-selected"><img src="/static/img/cookbook.svg" alt=""><span class="hidden md:block ml-1">Cookbooks</span></li>`,
 			`<button id="add-recipe" class="app-bar-center-button" hx-get="/recipes/add" hx-target="#content" hx-push-url="true"> Add recipe </button>`,
-			`<button id="add-cookbook" class="app-bar-center-button" hx-post="/cookbooks" hx-prompt="Enter the name of your cookbook" hx-target="#content"> Add cookbook </button>`,
+			`<button id="add-cookbook" class="app-bar-center-button" hx-post="/cookbooks" hx-prompt="Enter the name of your cookbook" hx-target=".cookbooks-display" hx-swap="beforeend"> Add cookbook </button>`,
 		}
 		assertStringsInHTML(t, got, want)
 		notWant := []string{
