@@ -1,0 +1,8 @@
+{
+  "name": "sponsors",
+  "version": "1.0.0",
+  "license": "MIT",
+  "dependencies": {
+    "sponsorkit": "^0.6.1"
+  }
+}

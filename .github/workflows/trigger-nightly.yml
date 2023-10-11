@@ -9,7 +9,7 @@ jobs:
     name: Commits
     runs-on: ubuntu-latest
     outputs:
-      numCommits: ${{ steps.step1.outputs.commits }}
+      numCommits: ${{ steps.numCommits.outputs.commits }}
     steps:
       - uses: actions/checkout@v3
         with:

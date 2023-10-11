@@ -1,4 +1,7 @@
 bin/
+docs/website/static/img/.cache.json
 releases/nightly
+scripts/sponsors/.env
+scripts/sponsors/node_modules/
 static/css/tailwind.css
 web/app/node_modules/
