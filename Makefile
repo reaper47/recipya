@@ -20,10 +20,15 @@ else
 		@echo 'Add the tag argument, i.e. `make release tag=v1.0.0`'
 endif
 
+sponsors:
+	cd ./scripts/sponsors
+	npm install sponsorkit@0.6.1
+	npx sponsorkit -o ../../docs/website/static/img/
+
 test:
 	go test ./...
 
 %:
 	@:
 
-.PHONY: release build run test
+.PHONY: release build run sponsors test
