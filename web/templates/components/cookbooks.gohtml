@@ -113,7 +113,7 @@
 {{end}}
 
 {{define "cookbook-list"}}
-    <li class="relative grid min-w-[30rem] max-w-[30rem] border bg-white rounded-md shadow-md dark:bg-neutral-700">
+    <li class="relative grid max-w-[30rem] border bg-white rounded-md shadow-md md:min-w-[30rem] dark:bg-neutral-700">
         <div class="grid grid-cols-4">
             {{- if .IsUUIDValid -}}
                 <div onclick="document.querySelector('#cookbook-image-{{.ID}}').click()">
@@ -122,7 +122,7 @@
                 </div>
             {{- else -}}
                 <div onclick="document.querySelector('#cookbook-image-{{.ID}}').click()">
-                    <img class="col-span-1 border-r h-[100px]" src="" alt="Cookbook image">
+                    <img class="col-span-1 border-r h-[100px] text-center hover:bg-blue-100" src="" alt="Cookbook image">
                     {{template "cookbook-image-form" .ID}}
                 </div>
             {{- end -}}

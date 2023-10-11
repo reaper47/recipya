@@ -102,8 +102,22 @@ func TestHandlers_Cookbooks(t *testing.T) {
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertUserSettings(t, 1, repo.UserSettingsRegistered[1], &models.UserSettings{CookbooksViewMode: models.ListViewMode})
-		assertCookbooksViewMode(t, models.ListViewMode, getBodyHTML(rr))
-		t.Fail()
+		body := getBodyHTML(rr)
+		assertCookbooksViewMode(t, models.ListViewMode, body)
+		want := []string{
+			`<li class="relative grid max-w-[30rem] border bg-white rounded-md shadow-md md:min-w-[30rem] dark:bg-neutral-700">`,
+			`<p class="font-semibold"> Lovely Canada </p>`,
+			`<p class="font-semibold"> Lovely America </p>`,
+			`<p class="font-semibold"> Lovely Ukraine </p>`,
+			`<form id="cookbook-image-form-1" enctype="multipart/form-data" hx-put="/cookbooks/1/image" hx-trigger="change from:#cookbook-image-1" hx-swap="none"><input id="cookbook-image-1" type="file" accept="image/*" name="image" required class="hidden" _="on drop or change make an FileReader called reader then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then set {src: window.URL.createObjectURL(it)} on previous <img/> then remove .hidden from next <button/>"></form>`,
+			`<form id="cookbook-image-form-2" enctype="multipart/form-data" hx-put="/cookbooks/2/image"`,
+			`<form id="cookbook-image-form-3" enctype="multipart/form-data" hx-put="/cookbooks/3/image"`,
+			`<img class="col-span-1 border-r h-[100px] text-center hover:bg-blue-100" src="" alt="Cookbook image">`,
+			`<div class="three-dots-container cursor-pointer h-fit justify-self-end pb-4 pl-4 hover:text-red-600" _="on click if menuOpen add .hidden to menuOpen end then set global menuOpen to #cookbook-menu-container-1 then toggle .hidden on #cookbook-menu-container-1">`,
+			`<span class="w-fit h-fit text-xs text-center font-medium select-none py-1 px-2 bg-indigo-700 text-white self-end justify-self-end"> 0 </span>`,
+			`<button class="w-full border-t center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600 hover:rounded-b-md" hx-get="/cookbooks/2" hx-target="#content" hx-push-url="true"> Open </button>`,
+		}
+		assertStringsInHTML(t, body, want)
 	})
 
 	t.Run("have cookbooks grid view select list", func(t *testing.T) {
