@@ -113,7 +113,7 @@
 {{end}}
 
 {{define "cookbook-list"}}
-    <li class="relative grid max-w-[30rem] border bg-white rounded-md shadow-md md:min-w-[30rem] dark:bg-neutral-700">
+    <li class="cookbook relative grid max-w-[30rem] border bg-white rounded-md shadow-md md:min-w-[30rem] dark:bg-neutral-700">
         <div class="grid grid-cols-4">
             {{- if .IsUUIDValid -}}
                 <div onclick="document.querySelector('#cookbook-image-{{.ID}}').click()">
@@ -158,7 +158,7 @@
                                     </a>
                                 </li>
                                 <li class="border-2 rounded-b-lg cursor-pointer hover:bg-blue-100 dark:border-gray-600 dark:hover:bg-blue-600">
-                                    <a class="flex p-1" hx-delete="/cookbooks/{{.ID}}">
+                                    <a class="flex p-1" hx-delete="/cookbooks/{{.ID}}" hx-swap="outerHTML" hx-target="closest .cookbook">
                                         {{template "icon-delete"}}
                                         <div class="pl-1 align-bottom">Delete</div>
                                     </a>

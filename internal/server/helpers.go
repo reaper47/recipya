@@ -44,3 +44,7 @@ func sendErrorAdminEmail(sendFunc func(to string, template templates.EmailTempla
 		Text: fmt.Sprintf("error in %s: %q", errFuncName, err),
 	})
 }
+
+func getUserID(r *http.Request) int64 {
+	return r.Context().Value("userID").(int64)
+}

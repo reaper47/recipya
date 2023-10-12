@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/server"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -105,7 +106,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 		body := getBodyHTML(rr)
 		assertCookbooksViewMode(t, models.ListViewMode, body)
 		want := []string{
-			`<li class="relative grid max-w-[30rem] border bg-white rounded-md shadow-md md:min-w-[30rem] dark:bg-neutral-700">`,
+			`<li class="cookbook relative grid max-w-[30rem] border bg-white rounded-md shadow-md md:min-w-[30rem] dark:bg-neutral-700">`,
 			`<p class="font-semibold"> Lovely Canada </p>`,
 			`<p class="font-semibold"> Lovely America </p>`,
 			`<p class="font-semibold"> Lovely Ukraine </p>`,
@@ -114,6 +115,9 @@ func TestHandlers_Cookbooks(t *testing.T) {
 			`<form id="cookbook-image-form-3" enctype="multipart/form-data" hx-put="/cookbooks/3/image"`,
 			`<img class="col-span-1 border-r h-[100px] text-center hover:bg-blue-100" src="" alt="Cookbook image">`,
 			`<div class="three-dots-container cursor-pointer h-fit justify-self-end pb-4 pl-4 hover:text-red-600" _="on click if menuOpen add .hidden to menuOpen end then set global menuOpen to #cookbook-menu-container-1 then toggle .hidden on #cookbook-menu-container-1">`,
+			`<a class="flex p-1" hx-get="/cookbooks/1/share">`,
+			`<a class="flex p-1" hx-get="/cookbooks/1/print">`,
+			`<a class="flex p-1" hx-delete="/cookbooks/1" hx-swap="outerHTML" hx-target="closest .cookbook">`,
 			`<span class="w-fit h-fit text-xs text-center font-medium select-none py-1 px-2 bg-indigo-700 text-white self-end justify-self-end"> 0 </span>`,
 			`<button class="w-full border-t center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600 hover:rounded-b-md" hx-get="/cookbooks/2" hx-target="#content" hx-push-url="true"> Open </button>`,
 		}
@@ -198,27 +202,95 @@ func TestHandlers_Cookbooks(t *testing.T) {
 	})
 }
 
+func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
+	srv := newServerTest()
+
+	uri := func(id int) string {
+		return fmt.Sprintf("/cookbooks/%d", id)
+	}
+
+	assertCookbooksEqual := func(t *testing.T, originalCookbooks, cookbooks []models.Cookbook) {
+		isCookbooksEqual := slices.EqualFunc(originalCookbooks, cookbooks, func(c1 models.Cookbook, c2 models.Cookbook) bool {
+			return c1.ID == c2.ID
+		})
+		if !isCookbooksEqual {
+			t.Fatal("did not expect a cookbook to be deleted")
+		}
+	}
+
+	prepare := func(srv *server.Server) ([]models.Cookbook, *mockRepository, func()) {
+		_, repo, revertFunc := prepareCookbook(srv)
+		originalCookbooks := make([]models.Cookbook, len(repo.CookbooksRegistered[1]))
+		copy(originalCookbooks, repo.CookbooksRegistered[1])
+		return originalCookbooks, repo, revertFunc
+	}
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodDelete, uri(1))
+	})
+
+	t.Run("cannot delete cookbooks from other user", func(t *testing.T) {
+		originalCookbooks, repo, revertFunc := prepare(srv)
+		repo.CookbooksRegistered[2] = []models.Cookbook{{ID: 1}}
+		defer revertFunc()
+
+		rr := sendHxRequestAsLoggedInOther(srv, http.MethodDelete, uri(1), noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		assertCookbooksEqual(t, originalCookbooks, repo.CookbooksRegistered[1])
+	})
+
+	t.Run("error deleting cookbook", func(t *testing.T) {
+		originalCookbooks, repo, revertFunc := prepare(srv)
+		defer revertFunc()
+		repo.DeleteCookbookFunc = func(_, _ int64) error {
+			return errors.New("error deleting")
+		}
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri(1), noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusInternalServerError)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Error deleting cookbook.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+		assertCookbooksEqual(t, originalCookbooks, repo.CookbooksRegistered[1])
+	})
+
+	testcases := []struct{ name string }{
+		{"success even when cookbook does not exist"},
+		{"success when cookbook exists"},
+	}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			originalCookbooks, repo, revertFunc := prepare(srv)
+			defer revertFunc()
+
+			rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri(4), noHeader, nil)
+
+			assertStatus(t, rr.Code, http.StatusOK)
+			assertCookbooksEqual(t, originalCookbooks, repo.CookbooksRegistered[1])
+		})
+	}
+
+	t.Run("deleting a cookbook does not delete recipes", func(t *testing.T) {
+		_, repo, revertFunc := prepare(srv)
+		defer revertFunc()
+		originalRecipes := repo.CookbooksRegistered[1][0].Recipes
+		repo.RecipesRegistered[1] = make(models.Recipes, len(originalRecipes))
+		repo.RecipesRegistered[1] = originalRecipes
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri(4), noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		if len(originalRecipes) != len(repo.CookbooksRegistered[1][0].Recipes) {
+			t.Fatal("no recipe should have been deleted")
+		}
+	})
+}
+
 func TestHandlers_Cookbooks_Image(t *testing.T) {
 	srv := newServerTest()
-	originalRepo := srv.Repository
-	originalFiles := srv.Files
 
 	uri := func(id int) string {
 		return fmt.Sprintf("/cookbooks/%d/image", id)
-	}
-
-	prepareCookbook := func() (*mockFiles, *mockRepository, func()) {
-		files := &mockFiles{}
-		repo := &mockRepository{
-			CookbooksRegistered: map[int64][]models.Cookbook{1: {models.Cookbook{ID: 1, Title: "Lovely Canada"}}},
-		}
-		srv.Files = files
-		srv.Repository = repo
-
-		return files, repo, func() {
-			srv.Files = originalFiles
-			srv.Repository = originalRepo
-		}
 	}
 
 	sendReq := func(image string) *httptest.ResponseRecorder {
@@ -233,8 +305,12 @@ func TestHandlers_Cookbooks_Image(t *testing.T) {
 		assertImage(t, repo.CookbooksRegistered[1][0].Image, wantImage)
 	}
 
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodDelete, uri(1))
+	})
+
 	t.Run("empty image in form", func(t *testing.T) {
-		files, repo, revertFunc := prepareCookbook()
+		files, repo, revertFunc := prepareCookbook(srv)
 		defer revertFunc()
 
 		rr := sendReq("")
@@ -244,7 +320,7 @@ func TestHandlers_Cookbooks_Image(t *testing.T) {
 	})
 
 	t.Run("upload image failed", func(t *testing.T) {
-		files, repo, revertFunc := prepareCookbook()
+		files, repo, revertFunc := prepareCookbook(srv)
 		files.uploadImageFunc = func(_ io.ReadCloser) (uuid.UUID, error) {
 			return uuid.Nil, errors.New("error uploading")
 		}
@@ -258,7 +334,7 @@ func TestHandlers_Cookbooks_Image(t *testing.T) {
 	})
 
 	t.Run("updating image failed", func(t *testing.T) {
-		files, repo, revertFunc := prepareCookbook()
+		files, repo, revertFunc := prepareCookbook(srv)
 		repo.UpdateCookbookImageFunc = func(id int64, image uuid.UUID, userID int64) error {
 			return errors.New("error")
 		}
@@ -272,7 +348,7 @@ func TestHandlers_Cookbooks_Image(t *testing.T) {
 	})
 
 	t.Run("upload image", func(t *testing.T) {
-		files, repo, revertFunc := prepareCookbook()
+		files, repo, revertFunc := prepareCookbook(srv)
 		defer revertFunc()
 
 		rr := sendReq("eggs.jpg")
@@ -281,4 +357,30 @@ func TestHandlers_Cookbooks_Image(t *testing.T) {
 		assertUploadImageHitCount(t, files.uploadImageHitCount, 1)
 		assertImageNotNil(t, repo.CookbooksRegistered[1][0].Image)
 	})
+}
+
+func prepareCookbook(srv *server.Server) (*mockFiles, *mockRepository, func()) {
+	originalFiles := srv.Files
+	originalRepo := srv.Repository
+
+	recipes := models.Recipes{{ID: 1, Name: "Chicken"}}
+
+	files := &mockFiles{}
+	repo := &mockRepository{
+		CookbooksRegistered: map[int64][]models.Cookbook{
+			1: {
+				models.Cookbook{ID: 1, Title: "Lovely Canada", Recipes: recipes},
+				models.Cookbook{ID: 2, Title: "Lovely Ukraine"},
+				models.Cookbook{ID: 3, Title: "Lovely America"},
+			},
+		},
+		RecipesRegistered: map[int64]models.Recipes{1: recipes},
+	}
+	srv.Files = files
+	srv.Repository = repo
+
+	return files, repo, func() {
+		srv.Files = originalFiles
+		srv.Repository = originalRepo
+	}
 }

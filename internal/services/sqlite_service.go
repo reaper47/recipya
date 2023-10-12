@@ -349,12 +349,23 @@ func (s *SQLiteService) DeleteAuthToken(userID int64) error {
 	return err
 }
 
-func (s *SQLiteService) DeleteRecipe(id, userID int64) (int64, error) {
+func (s *SQLiteService) DeleteCookbook(id, userID int64) error {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
 	s.Mutex.Lock()
 	defer s.Mutex.Unlock()
 
+	_, err := s.DB.ExecContext(ctx, statements.DeleteCookbook, userID, id)
+	return err
+}
+
+func (s *SQLiteService) DeleteRecipe(id, userID int64) (int64, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
+
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
 
 	result, err := s.DB.ExecContext(ctx, statements.DeleteRecipe, userID, id)
 	if err != nil {

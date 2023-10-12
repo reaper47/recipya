@@ -16,7 +16,7 @@ import (
 )
 
 func (s *Server) recipesHandler(w http.ResponseWriter, r *http.Request) {
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 
 	isHxRequest := r.Header.Get("HX-Request") == "true"
 	baseData := templates.Data{
@@ -83,7 +83,7 @@ func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request)
 	}
 
 	recipes := s.Files.ExtractRecipes(files)
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 
 	count := 0
 	for _, r := range recipes {
@@ -100,7 +100,7 @@ func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request)
 }
 
 func (s *Server) recipeAddManualHandler(w http.ResponseWriter, r *http.Request) {
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 	categories, err := s.Repository.Categories(userID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -221,7 +221,7 @@ func (s *Server) recipeAddManualPostHandler(w http.ResponseWriter, r *http.Reque
 		Yield:     int16(yield),
 	}
 
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 	recipeNumber, err := s.Repository.AddRecipe(recipe, userID)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not add recipe.", errorToast))
@@ -450,7 +450,7 @@ func (s *Server) recipesAddWebsiteHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 	recipeNumber, err := s.Repository.AddRecipe(recipe, userID)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Recipe could not be added.", errorToast))
@@ -468,7 +468,7 @@ func (s *Server) recipeDeleteHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 
 	rowsAffected, err := s.Repository.DeleteRecipe(id, userID)
 	if err != nil {
@@ -494,7 +494,7 @@ func (s *Server) recipesEditHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 	recipe, err := s.Repository.Recipe(id, userID)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Failed to retrieve recipe.", errorToast))
@@ -586,7 +586,7 @@ func (s *Server) recipesEditPostHandler(w http.ResponseWriter, r *http.Request) 
 		updatedRecipe.Yield = int16(yield)
 	}
 
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 	recipeNumStr := chi.URLParam(r, "id")
 	recipeNum, err := strconv.ParseInt(recipeNumStr, 10, 64)
 	if err != nil {
@@ -661,7 +661,7 @@ func (s *Server) recipeScaleHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 
 	recipe, err := s.Repository.Recipe(id, userID)
 	if err != nil {
@@ -680,7 +680,7 @@ func (s *Server) recipeSharePostHandler(w http.ResponseWriter, r *http.Request) 
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 	share := models.ShareRecipe{RecipeID: recipeID, UserID: userID}
 
 	link, err := s.Repository.AddShareLink(share)
@@ -708,7 +708,7 @@ func (s *Server) recipesViewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 	recipe, err := s.Repository.Recipe(id, userID)
 	if err != nil {
 		notFoundHandler(w, r)

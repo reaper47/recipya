@@ -37,6 +37,9 @@ type RepositoryService interface {
 	// DeleteAuthToken removes an authentication token from the database.
 	DeleteAuthToken(userID int64) error
 
+	// DeleteCookbook deletes a user's cookbook.
+	DeleteCookbook(id, userID int64) error
+
 	// DeleteRecipe deletes a user's recipe. It returns the number of rows affected.
 	DeleteRecipe(id, userID int64) (int64, error)
 

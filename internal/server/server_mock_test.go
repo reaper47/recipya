@@ -34,6 +34,7 @@ type mockRepository struct {
 	AddRecipeFunc               func(recipe *models.Recipe, userID int64) (int64, error)
 	CookbooksFunc               func(userID int64) ([]models.Cookbook, error)
 	CookbooksRegistered         map[int64][]models.Cookbook
+	DeleteCookbookFunc          func(id, userID int64) error
 	MeasurementSystemsFunc      func(userID int64) ([]units.System, models.UserSettings, error)
 	RecipeFunc                  func(id, userID int64) (*models.Recipe, error)
 	RecipesRegistered           map[int64]models.Recipes
@@ -138,6 +139,17 @@ func (m *mockRepository) DeleteAuthToken(userID int64) error {
 	if index != -1 {
 		m.AuthTokens = slices.Delete(m.AuthTokens, index, index+1)
 	}
+	return nil
+}
+
+func (m *mockRepository) DeleteCookbook(id, userID int64) error {
+	if m.DeleteCookbookFunc != nil {
+		return m.DeleteCookbookFunc(id, userID)
+	}
+
+	m.CookbooksRegistered[userID] = slices.DeleteFunc(m.CookbooksRegistered[userID], func(c models.Cookbook) bool {
+		return c.ID == id
+	})
 	return nil
 }
 

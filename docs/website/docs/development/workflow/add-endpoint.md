@@ -118,7 +118,7 @@ the following.
 
 ```go
 func (s *Server) recipesSearchHandler(w http.ResponseWriter, r *http.Request) {
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 	query := chi.URLParam(r, "q")
 	
 	recipes, err := s.Repository.SearchRecipes(query, userID)

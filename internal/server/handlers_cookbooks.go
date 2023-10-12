@@ -10,7 +10,7 @@ import (
 )
 
 func (s *Server) cookbooksHandler(w http.ResponseWriter, r *http.Request) {
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 
 	view := r.URL.Query().Get("view")
 	if view != "" {
@@ -73,7 +73,7 @@ func (s *Server) cookbooksPostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 	cookbookID, err := s.Repository.AddCookbook(title, userID)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not create cookbook.", errorToast))
@@ -99,6 +99,25 @@ func (s *Server) cookbooksPostHandler(w http.ResponseWriter, r *http.Request) {
 		IsUUIDValid: false,
 		Title:       title,
 	})
+}
+
+func (s *Server) cookbooksDeleteHandler(w http.ResponseWriter, r *http.Request) {
+	userID := getUserID(r)
+
+	cookbookIDStr := chi.URLParam(r, "id")
+	cookbookID, err := strconv.ParseInt(cookbookIDStr, 10, 64)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	err = s.Repository.DeleteCookbook(cookbookID, userID)
+	if err != nil {
+		// TODO: Log it with slog
+		w.Header().Set("HX-Trigger", makeToast("Error deleting cookbook.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 }
 
 func (s *Server) cookbooksImagePostHandler(w http.ResponseWriter, r *http.Request) {
@@ -139,7 +158,7 @@ func (s *Server) cookbooksImagePostHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 	err = s.Repository.UpdateCookbookImage(cookbookID, imageUUID, userID)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Error updating the cookbook's image.", errorToast))
