@@ -36,8 +36,7 @@ jobs:
 
       - name: Build
         run: |
-          cd ./releases
-          go run main.go -package github.com/reaper47/recipya -tag nightly
+          go run ./releases/main.go -package github.com/reaper47/recipya -tag nightly
 
       - uses: marvinpinto/action-automatic-releases@latest
         with:
