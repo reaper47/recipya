@@ -3,15 +3,39 @@
 @tailwind utilities;
 
 @layer components {
+    .app-bar-center-button {
+        @apply flex cursor-pointer items-center px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-green-600
+    }
+
+    .pagination-ellipsis {
+        @apply inline-flex items-center px-4 py-2 text-sm border border-gray-300 select-none
+    }
+
+    .pagination-hover {
+        @apply hover:bg-gray-50 dark:hover:bg-gray-700
+    }
+
+    .pagination-selected {
+        @apply z-10 px-4 py-2 text-sm text-indigo-600 border border-indigo-500 bg-indigo-50
+    }
+
+    .pagination-selected-edge-button-mobile {
+        @apply w-20 z-10 px-4 py-2 ml-3 border border-gray-300 rounded cursor-not-allowed
+    }
+
+    .pagination-selected-middle-button-mobile {
+        @apply w-20 px-4 py-2 border border-gray-300 rounded select-none
+    }
+
+    .pagination-square {
+        @apply inline-flex items-center text-sm border border-gray-300
+    }
+
     .recipes-sidebar-selected {
         @apply flex bg-green-600 p-1 pr-1 md:pr-4 text-white hover:bg-red-600 hover:text-white;
     }
 
     .recipes-sidebar-not-selected {
         @apply flex p-1 pr-1 md:pr-4 hover:bg-red-600 hover:text-white;
-    }
-
-    .app-bar-center-button {
-        @apply flex cursor-pointer items-center px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-green-600
     }
 }

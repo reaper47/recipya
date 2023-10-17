@@ -30,9 +30,22 @@ func (s *Server) cookbooksHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cookbooks, err := s.Repository.Cookbooks(userID)
+	pageStr := r.URL.Query().Get("page")
+	page, err := strconv.ParseUint(pageStr, 10, 64)
+	if err != nil {
+		page = 1
+	}
+
+	cookbooks, err := s.Repository.Cookbooks(userID, page)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Error getting cookbooks.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	p, err := newCookbooksPagination(s, w, userID, page, false)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Error updating pagination.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -44,7 +57,7 @@ func (s *Server) cookbooksHandler(w http.ResponseWriter, r *http.Request) {
 			Cookbooks: cookbooks,
 			MakeCookbook: func(index int64, cookbook models.Cookbook) templates.CookbookView {
 				return templates.CookbookView{
-					ID:          index + 1,
+					ID:          cookbook.ID,
 					Image:       cookbook.Image,
 					IsUUIDValid: cookbook.Image != uuid.Nil,
 					NumRecipes:  cookbook.Count,
@@ -56,6 +69,7 @@ func (s *Server) cookbooksHandler(w http.ResponseWriter, r *http.Request) {
 		IsAuthenticated: true,
 		IsHxRequest:     isHxRequest,
 		Title:           "Cookbooks",
+		Pagination:      p,
 	}
 
 	if isHxRequest {
@@ -88,22 +102,42 @@ func (s *Server) cookbooksPostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	pageStr := r.URL.Query().Get("page")
+	page, err := strconv.ParseUint(pageStr, 10, 64)
+	if err != nil {
+		page = 1
+	}
+
+	p, err := newCookbooksPagination(s, w, userID, page, true)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Error updating pagination.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	if p.NumResults == 1 {
+		s.cookbooksHandler(w, r)
+		return
+	}
+
 	tmpl := "cookbook-grid"
 	if settings.CookbooksViewMode == models.ListViewMode {
 		tmpl = "cookbook-list"
 	}
 
 	w.WriteHeader(http.StatusCreated)
-	templates.RenderComponent(w, "cookbooks", tmpl, templates.CookbookView{
-		ID:          cookbookID,
-		IsUUIDValid: false,
-		Title:       title,
+	templates.RenderComponent(w, "cookbooks", tmpl+"-add", templates.Data{
+		CookbookFeature: templates.CookbookFeature{
+			Cookbook: templates.CookbookView{
+				ID:    cookbookID,
+				Title: title,
+			},
+		},
+		Pagination: p,
 	})
 }
 
 func (s *Server) cookbooksDeleteHandler(w http.ResponseWriter, r *http.Request) {
-	userID := getUserID(r)
-
 	cookbookIDStr := chi.URLParam(r, "id")
 	cookbookID, err := strconv.ParseInt(cookbookIDStr, 10, 64)
 	if err != nil {
@@ -111,6 +145,7 @@ func (s *Server) cookbooksDeleteHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
+	userID := getUserID(r)
 	err = s.Repository.DeleteCookbook(cookbookID, userID)
 	if err != nil {
 		// TODO: Log it with slog
@@ -118,6 +153,42 @@ func (s *Server) cookbooksDeleteHandler(w http.ResponseWriter, r *http.Request) 
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+
+	pageStr := r.URL.Query().Get("page")
+	page, err := strconv.ParseUint(pageStr, 10, 64)
+	if err != nil {
+		page = 1
+	}
+
+	p, err := newCookbooksPagination(s, w, userID, page, true)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Error updating pagination.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	if p.NumResults == 0 {
+		w.Header().Set("HX-Refresh", "true")
+		return
+	}
+
+	templates.RenderComponent(w, "cookbooks", "pagination", p)
+}
+
+func newCookbooksPagination(srv *Server, w http.ResponseWriter, userID int64, page uint64, isSwap bool) (templates.Pagination, error) {
+	counts, err := srv.Repository.Counts(userID)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Error getting counts.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return templates.Pagination{}, err
+	}
+
+	numPages := counts.Cookbooks / templates.ResultsPerPage
+	if numPages == 0 {
+		numPages = 1
+	}
+
+	return templates.NewPagination(page, numPages, counts.Cookbooks, templates.ResultsPerPage, "/cookbooks", isSwap), nil
 }
 
 func (s *Server) cookbooksImagePostHandler(w http.ResponseWriter, r *http.Request) {

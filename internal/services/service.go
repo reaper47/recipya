@@ -20,7 +20,7 @@ type RepositoryService interface {
 	AddCookbook(title string, userID int64) (int64, error)
 
 	// AddRecipe adds a recipe to the user's collection.
-	AddRecipe(r *models.Recipe, userID int64) (int64, error)
+	AddRecipe(r *models.Recipe, userID int64) (uint64, error)
 
 	// AddShareLink adds a share link for the recipe.
 	AddShareLink(share models.ShareRecipe) (string, error)
@@ -32,7 +32,10 @@ type RepositoryService interface {
 	Confirm(userID int64) error
 
 	// Cookbooks gets a limited number of cookbooks belonging to the user.
-	Cookbooks(userID int64) ([]models.Cookbook, error)
+	Cookbooks(userID int64, page uint64) ([]models.Cookbook, error)
+
+	// Counts gets the models.Counts for the user.
+	Counts(userID int64) (models.Counts, error)
 
 	// DeleteAuthToken removes an authentication token from the database.
 	DeleteAuthToken(userID int64) error

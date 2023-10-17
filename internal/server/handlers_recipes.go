@@ -3,7 +3,6 @@ package server
 import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
-	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/scraper"
@@ -20,20 +19,7 @@ func (s *Server) recipesHandler(w http.ResponseWriter, r *http.Request) {
 
 	isHxRequest := r.Header.Get("HX-Request") == "true"
 	baseData := templates.Data{
-		Functions: templates.FunctionsData{
-			CutString: func(s string, numCharacters int) string {
-				if len(s) < numCharacters {
-					return s
-				}
-				return s[:numCharacters] + "…"
-			},
-			Inc: func(v int64) int64 {
-				return v + 1
-			},
-			IsUUIDValid: func(u uuid.UUID) bool {
-				return u != uuid.Nil
-			},
-		},
+		Functions:   templates.NewFunctionsData(),
 		IsHxRequest: isHxRequest,
 		Recipes:     s.Repository.Recipes(userID),
 	}
@@ -229,7 +215,7 @@ func (s *Server) recipeAddManualPostHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	w.Header().Set("HX-Redirect", "/recipes/"+strconv.FormatInt(recipeNumber, 10))
+	w.Header().Set("HX-Redirect", "/recipes/"+strconv.FormatUint(recipeNumber, 10))
 	w.WriteHeader(http.StatusCreated)
 }
 
@@ -458,7 +444,7 @@ func (s *Server) recipesAddWebsiteHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	w.Header().Set("HX-Redirect", "/recipes/"+strconv.FormatInt(recipeNumber, 10))
+	w.Header().Set("HX-Redirect", "/recipes/"+strconv.FormatUint(recipeNumber, 10))
 	w.WriteHeader(http.StatusSeeOther)
 }
 

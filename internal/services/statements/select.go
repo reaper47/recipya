@@ -1,5 +1,10 @@
 package statements
 
+import (
+	"github.com/reaper47/recipya/internal/templates"
+	"strconv"
+)
+
 // IsRecipeForUserExist checks whether the recipe belongs to the given user.
 const IsRecipeForUserExist = `
 	SELECT EXISTS(
@@ -30,10 +35,12 @@ const SelectCategories = `
 	ORDER BY name`
 
 // SelectCookbooks is the query to get a limited number of cookbooks belonging to the user
-const SelectCookbooks = `
+var SelectCookbooks = `
 	SELECT id, image, title, count
 	FROM cookbooks
-	WHERE user_id = ?`
+	WHERE user_id = ?
+		AND id > ?*` + strconv.FormatUint(templates.ResultsPerPage, 10) + `
+	LIMIT ` + strconv.FormatUint(templates.ResultsPerPage, 10)
 
 // SelectCuisineID is the query to get the ID of the specified cuisine.
 const SelectCuisineID = `
@@ -41,9 +48,9 @@ const SelectCuisineID = `
 	FROM cuisines 
 	WHERE name = ?`
 
-// SelectRecipeCount is the query to get the number of recipes belonging to the user.
-const SelectRecipeCount = `
-	SELECT recipes
+// SelectCounts is the query to get the number of recipes and cookbooks belonging to the user.
+const SelectCounts = `
+	SELECT cookbooks, recipes
 	FROM counts 
 	WHERE user_id = ?`
 

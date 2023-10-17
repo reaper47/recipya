@@ -10,11 +10,8 @@ const UpdateConvertAutomatically = `
 const UpdateCookbookImage = `
 UPDATE cookbooks
 	SET image = ?
-	WHERE id = (SELECT id
-				FROM (SELECT id, ROW_NUMBER() OVER (ORDER BY id) AS row_num
-					  FROM cookbooks
-					  WHERE user_id = ?) AS t
-				WHERE row_num = ?)`
+	WHERE user_id = ?
+	 AND id = ?`
 
 // UpdateIsConfirmed sets the user's account confirmed to true.
 const UpdateIsConfirmed = `

@@ -31,7 +31,7 @@ func newServerTest() *server.Server {
 
 type mockRepository struct {
 	AuthTokens                  []models.AuthToken
-	AddRecipeFunc               func(recipe *models.Recipe, userID int64) (int64, error)
+	AddRecipeFunc               func(recipe *models.Recipe, userID int64) (uint64, error)
 	CookbooksFunc               func(userID int64) ([]models.Cookbook, error)
 	CookbooksRegistered         map[int64][]models.Cookbook
 	DeleteCookbookFunc          func(id, userID int64) error
@@ -75,7 +75,7 @@ func (m *mockRepository) AddCookbook(title string, userID int64) (int64, error) 
 	return 1, nil
 }
 
-func (m *mockRepository) AddRecipe(r *models.Recipe, userID int64) (int64, error) {
+func (m *mockRepository) AddRecipe(r *models.Recipe, userID int64) (uint64, error) {
 	if m.AddRecipeFunc != nil {
 		return m.AddRecipeFunc(r, userID)
 	}
@@ -89,7 +89,7 @@ func (m *mockRepository) AddRecipe(r *models.Recipe, userID int64) (int64, error
 	}) {
 		m.RecipesRegistered[userID] = append(m.RecipesRegistered[userID], *r)
 	}
-	return int64(len(m.RecipesRegistered)), nil
+	return uint64(len(m.RecipesRegistered)), nil
 }
 
 func (m *mockRepository) AddShareLink(share models.ShareRecipe) (string, error) {
@@ -122,7 +122,7 @@ func (m *mockRepository) Confirm(userID int64) error {
 	return nil
 }
 
-func (m *mockRepository) Cookbooks(userID int64) ([]models.Cookbook, error) {
+func (m *mockRepository) Cookbooks(userID int64, _ uint64) ([]models.Cookbook, error) {
 	if m.CookbooksFunc != nil {
 		return m.CookbooksFunc(userID)
 	}
@@ -132,6 +132,21 @@ func (m *mockRepository) Cookbooks(userID int64) ([]models.Cookbook, error) {
 		return nil, errors.New("user not registered")
 	}
 	return cookbooks, nil
+}
+
+func (m *mockRepository) Counts(userID int64) (models.Counts, error) {
+	var counts models.Counts
+	recipes, ok := m.RecipesRegistered[userID]
+	if ok {
+		counts.Recipes = uint64(len(recipes))
+	}
+
+	cookbooks, ok := m.CookbooksRegistered[userID]
+	if ok {
+		counts.Cookbooks = uint64(len(cookbooks))
+	}
+
+	return counts, nil
 }
 
 func (m *mockRepository) DeleteAuthToken(userID int64) error {

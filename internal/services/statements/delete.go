@@ -10,11 +10,8 @@ const DeleteAuthToken = `
 const DeleteCookbook = `
 	DELETE 
 	FROM cookbooks
-	WHERE id = (SELECT id
-				FROM (SELECT id, ROW_NUMBER() OVER (ORDER BY id) AS row_num
-					  FROM cookbooks
-					  WHERE user_id = ?) AS t
-				WHERE row_num = ?)`
+	WHERE user_id = ?
+	 AND id = ?`
 
 // DeleteRecipe is the query to delete a user's recipe and the recipe itself.
 const DeleteRecipe = `
