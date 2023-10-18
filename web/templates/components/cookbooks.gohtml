@@ -8,7 +8,7 @@
 {{end}}
 
 {{define "cookbook-grid"}}
-    <section id="cookbook-{{.ID}}"
+    <section id="cookbook-{{.PageItemID}}"
              class="cookbook relative col-span-1 bg-white rounded-lg shadow-md dark:bg-neutral-700">
         <div class="absolute z-10 right-1 top-1 bg-slate-300 p-1 rounded-lg">
             {{template "cookbook-options"}}
@@ -27,7 +27,7 @@
                 </span>
             </div>
             <button class="w-full border-2 border-gray-800 rounded-lg center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600"
-                    hx-get="/cookbooks/{{.ID}}"
+                    hx-get="/cookbooks/{{.PageItemID}}"
                     hx-target="#content"
                     hx-push-url="true">
                 Open
@@ -126,7 +126,7 @@
 {{end}}
 
 {{define "cookbook-list"}}
-    <li id="cookbook-{{.ID}}"
+    <li id="cookbook-{{.PageItemID}}"
         class="cookbook relative grid max-w-[30rem] border bg-white rounded-md shadow-md md:min-w-[30rem] dark:bg-neutral-700">
         <div class="grid grid-cols-4">
             {{- if .IsUUIDValid -}}
@@ -160,7 +160,7 @@
             </div>
         </div>
         <button class="w-full border-t center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600 hover:rounded-b-md"
-                hx-get="/cookbooks/{{.ID}}"
+                hx-get="/cookbooks/{{.PageItemID}}"
                 hx-target="#content"
                 hx-push-url="true">
             Open

@@ -92,6 +92,11 @@
                     } else {
                         button.setAttribute("hx-target", ".cookbooks-display");
                         button.setAttribute("hx-swap", "beforeend");
+
+                        const pagination = document.querySelector("#pagination");
+                        if (pagination && pagination.querySelector("nav a:nth-last-child(2)")) {
+                            button.setAttribute("hx-swap", "none");
+                        }
                     }
                     htmx.process(button);
                 }

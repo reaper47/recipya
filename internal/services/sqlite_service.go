@@ -319,7 +319,7 @@ func (s *SQLiteService) Cookbooks(userID int64, page uint64) ([]models.Cookbook,
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
-	rows, err := s.DB.QueryContext(ctx, statements.SelectCookbooks, userID, page-1)
+	rows, err := s.DB.QueryContext(ctx, statements.SelectCookbooks, userID, page-1, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -358,14 +358,14 @@ func (s *SQLiteService) Counts(userID int64) (models.Counts, error) {
 	return counts, err
 }
 
-func (s *SQLiteService) DeleteCookbook(id, userID int64) error {
+func (s *SQLiteService) DeleteCookbook(id, userID int64, page uint64) error {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
 	s.Mutex.Lock()
 	defer s.Mutex.Unlock()
 
-	_, err := s.DB.ExecContext(ctx, statements.DeleteCookbook, userID, id)
+	_, err := s.DB.ExecContext(ctx, statements.DeleteCookbook, userID, page, id)
 	return err
 }
 

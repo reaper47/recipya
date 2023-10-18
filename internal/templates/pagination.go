@@ -1,7 +1,10 @@
 package templates
 
 // ResultsPerPage is the number of results to display per pagination page.
-const ResultsPerPage = 15
+const (
+	ResultsPerPage    = 15
+	ResultsPerPageStr = "15"
+)
 
 // NewPagination initializes a pagination struct of n pages.
 func NewPagination(page, numPages, numResults uint64, resultsPerPage uint64, url string, isSwap bool) Pagination {

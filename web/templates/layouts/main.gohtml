@@ -44,10 +44,10 @@
 <div id="fullscreen-loader" class="htmx-indicator"></div>
 <main class="inline-flex min-h-[95vh] w-full">
     {{- if .IsAuthenticated -}}
-        <aside id="recipes-sidebar" class="hidden border-r bg-gray-300 mt-[0.04rem] cursor-pointer dark:bg-gray-900">
+        <aside id="recipes-sidebar" class="hidden border-r bg-gray-300 mt-[0.04rem] dark:bg-gray-900">
             <ul>
                 <li id="recipes-sidebar-recipes"
-                    class="recipes-sidebar-selected"
+                    class="recipes-sidebar-selected cursor-pointer"
                     hx-get="/recipes" hx-target="#content"
                     hx-push-url="true" hx-swap-oob="true"
                     _="on load if location.pathname is not '/recipes' then remove .recipes-sidebar-selected then add .recipes-sidebar-not-selected">
@@ -55,7 +55,7 @@
                     <span class="hidden md:block ml-1">Recipes</span>
                 </li>
                 <li id="recipes-sidebar-cookbooks"
-                    class="recipes-sidebar-not-selected"
+                    class="recipes-sidebar-not-selected cursor-pointer"
                     hx-get="/cookbooks" hx-target="#content"
                     hx-push-url="true" hx-swap-oob="true"
                     _="on load if location.pathname is '/cookbooks' then remove .recipes-sidebar-not-selected add .recipes-sidebar-selected">

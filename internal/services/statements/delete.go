@@ -1,5 +1,7 @@
 package statements
 
+import "github.com/reaper47/recipya/internal/templates"
+
 // DeleteAuthToken removes the authentication token associated with the user id from the database.
 const DeleteAuthToken = `
 	DELETE
@@ -8,10 +10,18 @@ const DeleteAuthToken = `
 
 // DeleteCookbook is the query to delete a user's cookbook.
 const DeleteCookbook = `
-	DELETE 
+	DELETE
 	FROM cookbooks
-	WHERE user_id = ?
-	 AND id = ?`
+	WHERE id = (SELECT id
+				FROM (SELECT id,
+							 ROW_NUMBER() OVER (
+								 ORDER BY id
+								 ) row_id
+					  FROM (SELECT id, ROW_NUMBER() OVER (ORDER BY id) AS row_num
+							FROM cookbooks
+							WHERE user_id = ?)
+					  WHERE row_num > (? - 1) * ` + templates.ResultsPerPageStr + `)
+				WHERE row_id = ?)`
 
 // DeleteRecipe is the query to delete a user's recipe and the recipe itself.
 const DeleteRecipe = `

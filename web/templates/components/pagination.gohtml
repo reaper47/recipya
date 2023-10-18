@@ -10,7 +10,9 @@
                     </button>
                 {{- else -}}
                     <a class="pagination-selected-middle-button-mobile"
-                       hx-get="{{$url}}?page={{.Prev}}" hx-target="#content">
+                       hx-get="{{$url}}?page={{.Prev}}"
+                       hx-target="#content"
+                       hx-push-url="{{$url}}?page={{.Prev}}">
                         Previous
                     </a>
                 {{- end -}}
@@ -21,7 +23,9 @@
                     </button>
                 {{else}}
                     <a class="pagination-selected-middle-button-mobile"
-                       hx-get="{{$url}}?page={{.Next}}" hx-target="#content">
+                       hx-get="{{$url}}?page={{.Next}}"
+                       hx-target="#content"
+                       hx-push-url="{{$url}}?page={{.Next}}">
                         Next
                     </a>
                 {{- end -}}
@@ -38,7 +42,9 @@
                             </button>
                         {{- else -}}
                             <a class="pagination-square p-2 rounded-r pagination-hover"
-                               hx-get="{{$url}}?page={{.Prev}}" hx-target="#content">
+                               hx-get="{{$url}}?page={{.Prev}}"
+                               hx-target="#content"
+                               hx-push-url="{{$url}}?page={{.Prev}}">
                                 <span class="sr-only">Previous</span>
                                 {{template "icon-chevron-left"}}
                             </a>
@@ -52,7 +58,9 @@
                                 </button>
                             {{- else -}}
                                 <a class="pagination-ellipsis pagination-hover"
-                                   hx-get="{{$url}}?page={{.}}" hx-target="#content">
+                                   hx-get="{{$url}}?page={{.}}"
+                                   hx-target="#content"
+                                   hx-push-url="{{$url}}?page={{.}}">
                                     {{.}}
                                 </a>
                             {{- end -}}
@@ -67,12 +75,16 @@
                         {{range .Middle}}
                             {{- if eq $.Selected . -}}
                                 <a class="pagination-selected" aria-current="page"
-                                   hx-get="{{$url}}?page={{.}}" hx-target="#content">
+                                   hx-get="{{$url}}?page={{.}}"
+                                   hx-target="#content"
+                                   hx-push-url="{{$url}}?page={{.}}">
                                     {{.}}
                                 </a>
                             {{- else -}}
                                 <a class="text-sm border border-gray-300 px-4 py-2 pagination-hover"
-                                   hx-get="{{$url}}?page={{.}}" hx-target="#content">
+                                   hx-get="{{$url}}?page={{.}}"
+                                   hx-target="#content"
+                                   hx-push-url="{{$url}}?page={{.}}">
                                     {{.}}
                                 </a>
                             {{- end -}}
@@ -93,12 +105,16 @@
                         {{range .Right}}
                             {{- if eq $.Selected . -}}
                                 <a class="pagination-selected" aria-current="page"
-                                   hx-get="{{$url}}?page={{.}}" hx-target="#content">
+                                   hx-get="{{$url}}?page={{.}}"
+                                   hx-target="#content"
+                                   hx-push-url="{{$url}}?page={{.}}">
                                     {{.}}
                                 </a>
                             {{- else -}}
                                 <a class="pagination-square px-4 py-2 pagination-hover"
-                                   hx-get="{{$url}}?page={{.}}" hx-target="#content">
+                                   hx-get="{{$url}}?page={{.}}"
+                                   hx-target="#content"
+                                   hx-push-url="{{$url}}?page={{.}}">
                                     {{.}}
                                 </a>
                             {{- end -}}
@@ -112,7 +128,9 @@
                             </button>
                         {{- else -}}
                             <a class="pagination-square p-2 rounded-r select-none pagination-hover"
-                               hx-get="{{$url}}?page={{.Next}}" hx-target="#content">
+                               hx-get="{{$url}}?page={{.Next}}"
+                               hx-target="#content"
+                               hx-push-url="{{$url}}?page={{.Next}}">
                                 <span class="sr-only">Next</span>
                                 {{template "icon-chevron-right"}}
                             </a>

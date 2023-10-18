@@ -39,6 +39,7 @@ type CookbookFeature struct {
 // CookbookView holds data related to viewing a cookbook.
 type CookbookView struct {
 	ID          int64
+	PageItemID  int64
 	Image       uuid.UUID
 	IsUUIDValid bool
 	NumRecipes  int

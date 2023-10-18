@@ -12,6 +12,11 @@ build:
 	go generate ./...
 	go build -ldflags="-s -w" -o bin/$(TARGET) main.go
 
+cover:
+	go test ./... -coverprofile=coverage.out
+	go tool cover -html=coverage.out -o coverage.html
+	rm coverage.out
+
 release:
 ifdef tag
 		go run ./releases/main.go -package github.com/reaper47/recipya -tag $(tag)

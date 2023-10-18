@@ -61,6 +61,7 @@ func (s *Server) cookbooksHandler(w http.ResponseWriter, r *http.Request) {
 					Image:       cookbook.Image,
 					IsUUIDValid: cookbook.Image != uuid.Nil,
 					NumRecipes:  cookbook.Count,
+					PageItemID:  index + 1,
 					Title:       cookbook.Title,
 				}
 			},
@@ -129,8 +130,9 @@ func (s *Server) cookbooksPostHandler(w http.ResponseWriter, r *http.Request) {
 	templates.RenderComponent(w, "cookbooks", tmpl+"-add", templates.Data{
 		CookbookFeature: templates.CookbookFeature{
 			Cookbook: templates.CookbookView{
-				ID:    cookbookID,
-				Title: title,
+				ID:         cookbookID,
+				PageItemID: int64(p.NumResults),
+				Title:      title,
 			},
 		},
 		Pagination: p,
@@ -146,18 +148,18 @@ func (s *Server) cookbooksDeleteHandler(w http.ResponseWriter, r *http.Request) 
 	}
 
 	userID := getUserID(r)
-	err = s.Repository.DeleteCookbook(cookbookID, userID)
+	pageStr := r.URL.Query().Get("page")
+	page, err := strconv.ParseUint(pageStr, 10, 64)
+	if err != nil {
+		page = 1
+	}
+
+	err = s.Repository.DeleteCookbook(cookbookID, userID, page)
 	if err != nil {
 		// TODO: Log it with slog
 		w.Header().Set("HX-Trigger", makeToast("Error deleting cookbook.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
-	}
-
-	pageStr := r.URL.Query().Get("page")
-	page, err := strconv.ParseUint(pageStr, 10, 64)
-	if err != nil {
-		page = 1
 	}
 
 	p, err := newCookbooksPagination(s, w, userID, page, true)
