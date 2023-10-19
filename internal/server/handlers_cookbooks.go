@@ -2,7 +2,6 @@ package server
 
 import (
 	"github.com/go-chi/chi/v5"
-	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
 	"net/http"
@@ -55,15 +54,8 @@ func (s *Server) cookbooksHandler(w http.ResponseWriter, r *http.Request) {
 	data := templates.Data{
 		CookbookFeature: templates.CookbookFeature{
 			Cookbooks: cookbooks,
-			MakeCookbook: func(index int64, cookbook models.Cookbook) templates.CookbookView {
-				return templates.CookbookView{
-					ID:          cookbook.ID,
-					Image:       cookbook.Image,
-					IsUUIDValid: cookbook.Image != uuid.Nil,
-					NumRecipes:  cookbook.Count,
-					PageItemID:  index + 1,
-					Title:       cookbook.Title,
-				}
+			MakeCookbook: func(index int64, cookbook models.Cookbook, page uint64) models.CookbookView {
+				return cookbook.MakeView(index, page)
 			},
 			ViewMode: settings.CookbooksViewMode,
 		},
@@ -129,7 +121,7 @@ func (s *Server) cookbooksPostHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 	templates.RenderComponent(w, "cookbooks", tmpl+"-add", templates.Data{
 		CookbookFeature: templates.CookbookFeature{
-			Cookbook: templates.CookbookView{
+			Cookbook: models.CookbookView{
 				ID:         cookbookID,
 				PageItemID: int64(p.NumResults),
 				Title:      title,
@@ -139,7 +131,7 @@ func (s *Server) cookbooksPostHandler(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func (s *Server) cookbooksDeleteHandler(w http.ResponseWriter, r *http.Request) {
+func (s *Server) cookbooksDeleteCookbookHandler(w http.ResponseWriter, r *http.Request) {
 	cookbookIDStr := chi.URLParam(r, "id")
 	cookbookID, err := strconv.ParseInt(cookbookIDStr, 10, 64)
 	if err != nil {
@@ -193,7 +185,54 @@ func newCookbooksPagination(srv *Server, w http.ResponseWriter, userID int64, pa
 	return templates.NewPagination(page, numPages, counts.Cookbooks, templates.ResultsPerPage, "/cookbooks", isSwap), nil
 }
 
-func (s *Server) cookbooksImagePostHandler(w http.ResponseWriter, r *http.Request) {
+func (s *Server) cookbooksGetCookbookHandler(w http.ResponseWriter, r *http.Request) {
+	idStr := chi.URLParam(r, "id")
+	id, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	isHxRequest := r.Header.Get("Hx-Request") == "true"
+
+	userID := getUserID(r)
+	pageStr := r.URL.Query().Get("page")
+	page, err := strconv.ParseUint(pageStr, 10, 64)
+	if err != nil {
+		if !isHxRequest {
+			http.Redirect(w, r, "/cookbooks", http.StatusSeeOther)
+			return
+		}
+
+		w.Header().Set("HX-Trigger", makeToast("Missing page query parameter.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	cookbook, err := s.Repository.Cookbook(id, userID, page)
+	if err != nil {
+		// TODO: Create an error type to differentiate between http.StatusNotFound and http.StatusInternalServerError
+		http.NotFound(w, r)
+		return
+	}
+
+	data := templates.Data{
+		IsAuthenticated: true,
+		IsHxRequest:     isHxRequest,
+		CookbookFeature: templates.CookbookFeature{
+			Cookbook: cookbook.MakeView(1, page),
+		},
+		Title: cookbook.Title,
+	}
+
+	if isHxRequest {
+		templates.RenderComponent(w, "cookbooks", "cookbook-index", data)
+	} else {
+		templates.Render(w, templates.CookbookPage, data)
+	}
+}
+
+func (s *Server) cookbooksImagePostCookbookHandler(w http.ResponseWriter, r *http.Request) {
 	cookbookIDStr := chi.URLParam(r, "id")
 	cookbookID, err := strconv.ParseInt(cookbookIDStr, 10, 64)
 	if err != nil {

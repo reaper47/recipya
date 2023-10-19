@@ -31,6 +31,9 @@ type RepositoryService interface {
 	// Confirm confirms the user's account.
 	Confirm(userID int64) error
 
+	// Cookbook gets a cookbook belonging to a user.
+	Cookbook(id, userID int64, page uint64) (models.Cookbook, error)
+
 	// Cookbooks gets a limited number of cookbooks belonging to the user.
 	Cookbooks(userID int64, page uint64) ([]models.Cookbook, error)
 

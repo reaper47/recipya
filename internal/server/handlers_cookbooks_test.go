@@ -210,6 +210,7 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodDelete, uri(1))
+		assertMustBeLoggedIn(t, srv, http.MethodGet, uri(1))
 	})
 
 	t.Run("cannot delete cookbooks from other user", func(t *testing.T) {
@@ -267,6 +268,85 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 			t.Fatal("no recipe should have been deleted")
 		}
 	})
+
+	t.Run("open cookbook page must be specified hx request", func(t *testing.T) {
+		_, _, revertFunc := prepare(srv)
+		defer revertFunc()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri(1), noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Missing page query parameter.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+	})
+
+	t.Run("open cookbook page must be specified normal request", func(t *testing.T) {
+		_, _, revertFunc := prepare(srv)
+		defer revertFunc()
+
+		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri(20), noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusSeeOther)
+		assertHeader(t, rr, "Location", "/cookbooks")
+	})
+
+	t.Run("cookbook does not exist hx request", func(t *testing.T) {
+		_, _, revertFunc := prepare(srv)
+		defer revertFunc()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri(20)+"?page=1", noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusNotFound)
+		want := []string{"404 page not found"}
+		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
+
+	t.Run("cookbook does not belong to the user", func(t *testing.T) {
+		_, _, revertFunc := prepare(srv)
+		defer revertFunc()
+
+		rr := sendHxRequestAsLoggedInOther(srv, http.MethodGet, uri(1)+"?page=1", noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusNotFound)
+		want := []string{"404 page not found"}
+		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
+
+	t.Run("cookbook belongs to user and is empty", func(t *testing.T) {
+		cookbooks, repo, revertFunc := prepare(srv)
+		defer revertFunc()
+		id := len(cookbooks) + 1
+		repo.CookbooksRegistered[1] = append(cookbooks, models.Cookbook{ID: int64(id), Title: "Ensiferum"})
+		srv.Repository = repo
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri(id)+"?page=1", noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		want := []string{
+			`<title hx-swap-oob="true">Ensiferum | Recipya</title>`,
+			`<div id="content-title" hx-swap-oob="innerHTML">Ensiferum</div>`,
+			`<section class="grid justify-center p-4"><div class="relative">`,
+			`<form class="w-72 md:w-96"><div class="flex"><div class="relative w-full"><label><input type="search" id="search-recipes" class="block z-20 p-2.5 w-full text-sm bg-gray-50 rounded-r-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" placeholder="Search recipes to add..." required></label><button type="submit" class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700"><svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/></svg><span class="sr-only">Search</span></button></div></div></form>`,
+			`<p class="grid justify-center font-semibold underline mt-2 md:mt-0 md:text-xl md:hidden"> Ensiferum </p>`,
+			`<div id="search-recipes-results" class="absolute bg-gray-100 z-20 h-96 border border-gray-100 w-72 md:w-96"></div>`,
+			`<section class="grid place-content-center text-sm text-center h-3/5 md:text-base"><p>Your cookbook looks a bit empty at the moment.</p><p>Why not add recipes to your cookbook by searching for recipes in the search box above?</p></section>`,
+		}
+		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
+
+	requestTypes := []struct {
+		name     string
+		sendFunc func(server *server.Server, target, uri string, contentType header, body *strings.Reader) *httptest.ResponseRecorder
+	}{
+		{name: "is logged in Hx-Request", sendFunc: sendHxRequestAsLoggedIn},
+		{name: "is logged in no Hx-Request", sendFunc: sendRequestAsLoggedIn},
+	}
+	for _, tc := range requestTypes {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Run("cookbook has recipes", func(t *testing.T) {
+				t.Fail()
+			})
+		})
+	}
 }
 
 func TestHandlers_Cookbooks_Image(t *testing.T) {

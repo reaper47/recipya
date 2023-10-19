@@ -98,8 +98,9 @@ func (s *Server) mountHandlers() {
 		r.Post("/", s.cookbooksPostHandler)
 
 		r.Route("/{id:[1-9]([0-9])*}", func(r chi.Router) {
-			r.Delete("/", s.cookbooksDeleteHandler)
-			r.Put("/image", s.cookbooksImagePostHandler)
+			r.Get("/", s.cookbooksGetCookbookHandler)
+			r.Delete("/", s.cookbooksDeleteCookbookHandler)
+			r.Put("/image", s.cookbooksImagePostCookbookHandler)
 		})
 	})
 

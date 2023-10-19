@@ -315,6 +315,15 @@ func (s *SQLiteService) Confirm(userID int64) error {
 	return nil
 }
 
+func (s *SQLiteService) Cookbook(id, userID int64, page uint64) (models.Cookbook, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	var c models.Cookbook
+	err := s.DB.QueryRowContext(ctx, statements.SelectCookbook, userID, page, id-1).Scan(&c.Title, &c.Count)
+	return c, err
+}
+
 func (s *SQLiteService) Cookbooks(userID int64, page uint64) ([]models.Cookbook, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()

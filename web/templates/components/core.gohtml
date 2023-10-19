@@ -13,6 +13,7 @@
         <script src="https://unpkg.com/htmx.org@1.9.6"></script>
         <script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
         <script defer>
+            const cookbooksPattern = new RegExp("^/cookbooks/\\d+$");
             const recipesPattern = new RegExp("^/recipes/\\d+(/edit)?$");
             const recipesSharePattern = new RegExp("^/r/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$");
 
@@ -32,13 +33,16 @@
             function showAll() {
                 showAddRecipeButton();
                 showAddCookbookButton();
+                showCookbookTitle();
                 showRecipesSidebar();
             }
 
             function showAddRecipeButton() {
                 const button = document.querySelector("#add-recipe");
                 const isRecipe = recipesPattern.test(location.pathname) || recipesSharePattern.test(location.pathname);
-                if (isRecipe || pathsHideAddRecipeButton.some(path => path === location.pathname)) {
+                if (isRecipe ||
+                    pathsHideAddRecipeButton.some(path => path === location.pathname) ||
+                    cookbooksPattern.test(location.pathname)) {
                     button?.classList.add("hidden");
                 } else {
                     button?.classList.remove("hidden");
@@ -60,9 +64,18 @@
                 }
             }
 
+            function showCookbookTitle() {
+                const cookbookTitleDiv = document.querySelector("#content-title");
+                if (cookbooksPattern.test(location.pathname)) {
+                    cookbookTitleDiv?.classList.add("md:block");
+                } else {
+                    cookbookTitleDiv?.classList.remove("md:block");
+                }
+            }
+
             function showRecipesSidebar() {
                 const sidebar = document.querySelector("#recipes-sidebar");
-                if (pathsShowRecipesSidebar.includes(location.pathname)) {
+                if (pathsShowRecipesSidebar.includes(location.pathname) || cookbooksPattern.test(location.pathname)) {
                     sidebar?.classList.remove("hidden");
                 } else {
                     sidebar?.classList.add("hidden");

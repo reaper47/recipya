@@ -122,6 +122,22 @@ func (m *mockRepository) Confirm(userID int64) error {
 	return nil
 }
 
+func (m *mockRepository) Cookbook(id, userID int64, _ uint64) (models.Cookbook, error) {
+	cookbooks, ok := m.CookbooksRegistered[userID]
+	if !ok {
+		return models.Cookbook{}, errors.New("user does not have cookbooks")
+	}
+
+	i := slices.IndexFunc(cookbooks, func(c models.Cookbook) bool {
+		return c.ID == id
+	})
+	if i == -1 {
+		return models.Cookbook{}, errors.New("cookbook not found")
+	}
+
+	return cookbooks[i], nil
+}
+
 func (m *mockRepository) Cookbooks(userID int64, _ uint64) ([]models.Cookbook, error) {
 	if m.CookbooksFunc != nil {
 		return m.CookbooksFunc(userID)

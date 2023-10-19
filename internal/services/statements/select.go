@@ -33,6 +33,16 @@ const SelectCategories = `
 	WHERE uc.user_id = ?
 	ORDER BY name`
 
+// SelectCookbook is the query to get a user's cookbook.
+const SelectCookbook = `
+	SELECT c.title, c.count
+	FROM cookbooks AS c
+	WHERE id = (SELECT id
+				 FROM (SELECT id, ROW_NUMBER() OVER (ORDER BY id) AS row_num
+					   FROM cookbooks
+					   WHERE user_id = ?)
+				 WHERE row_num > (? - 1) *` + templates.ResultsPerPageStr + " + ?)"
+
 // SelectCookbooks is the query to get a limited number of cookbooks belonging to the user.
 var SelectCookbooks = `
 	SELECT id, image, title, count
@@ -45,12 +55,6 @@ var SelectCookbooks = `
 		AND user_id = ?
 	LIMIT ` + templates.ResultsPerPageStr
 
-// SelectCuisineID is the query to get the ID of the specified cuisine.
-const SelectCuisineID = `
-	SELECT id 
-	FROM cuisines 
-	WHERE name = ?`
-
 // SelectCounts is the query to get the number of recipes and cookbooks belonging to the user.
 const SelectCounts = `
 	SELECT cookbooks, recipes
@@ -61,6 +65,12 @@ const SelectCounts = `
 const SelectCountWebsites = `
 	SELECT COUNT(id)
 	FROM websites`
+
+// SelectCuisineID is the query to get the ID of the specified cuisine.
+const SelectCuisineID = `
+	SELECT id 
+	FROM cuisines 
+	WHERE name = ?`
 
 // SelectMeasurementSystems fetches the units systems along with the user's selected system and settings.
 const SelectMeasurementSystems = `
