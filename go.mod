@@ -3,7 +3,7 @@ module github.com/reaper47/recipya
 go 1.21
 
 require (
-	github.com/Boostport/mjml-go v0.14.3
+	github.com/Boostport/mjml-go v0.14.4
 	github.com/PuerkitoBio/goquery v1.8.1
 	github.com/disintegration/imaging v1.6.2
 	github.com/donna-legal/word2number v0.0.0-20180823152447-90bc2b233105
@@ -36,7 +36,7 @@ require (
 	github.com/lestrrat-go/httpcc v1.0.1 // indirect
 	github.com/lestrrat-go/httprc v1.0.4 // indirect
 	github.com/lestrrat-go/iter v1.0.2 // indirect
-	github.com/lestrrat-go/jwx/v2 v2.0.14 // indirect
+	github.com/lestrrat-go/jwx/v2 v2.0.15 // indirect
 	github.com/lestrrat-go/option v1.0.1 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
@@ -62,7 +62,7 @@ require (
 	lukechampine.com/uint128 v1.3.0 // indirect
 	modernc.org/cc/v3 v3.41.0 // indirect
 	modernc.org/ccgo/v3 v3.16.15 // indirect
-	modernc.org/libc v1.24.1 // indirect
+	modernc.org/libc v1.27.0 // indirect
 	modernc.org/mathutil v1.6.0 // indirect
 	modernc.org/memory v1.7.2 // indirect
 	modernc.org/opt v0.1.3 // indirect

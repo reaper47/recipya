@@ -96,11 +96,15 @@ func (s *Server) mountHandlers() {
 
 		r.Get("/", s.cookbooksHandler)
 		r.Post("/", s.cookbooksPostHandler)
+		r.Post("/recipes/search", s.cookbooksRecipesSearchPostHandler)
 
 		r.Route("/{id:[1-9]([0-9])*}", func(r chi.Router) {
 			r.Get("/", s.cookbooksGetCookbookHandler)
 			r.Delete("/", s.cookbooksDeleteCookbookHandler)
+			r.Post("/", s.cookbookPostCookbookHandler)
 			r.Put("/image", s.cookbooksImagePostCookbookHandler)
+			r.Put("/reorder", s.cookbooksPostCookbookReorderHandler)
+			r.Delete("/recipes/{recipeID:[1-9]([0-9])*}", s.cookbooksDeleteCookbookRecipeHandler)
 		})
 	})
 

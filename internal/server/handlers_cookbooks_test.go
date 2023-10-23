@@ -114,7 +114,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 			`<a id="cookbook-menu-download" class="flex p-1" hx-get="/cookbooks/1/download">`,
 			`<a id="cookbook-menu-delete" class="flex p-1" hx-delete="/cookbooks/1" hx-swap="outerHTML" hx-target="closest .cookbook" hx-confirm="Are you sure you want to delete 'Cookbooks'? Its recipes will not be deleted."><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg><div class="pl-1 align-bottom">Delete</div></a>`,
 			`<span class="w-fit h-fit text-xs text-center font-medium select-none py-1 px-2 bg-indigo-700 text-white self-end justify-self-end"> 0 </span>`,
-			`<button class="w-full border-t center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600 hover:rounded-b-md" hx-get="/cookbooks/2" hx-target="#content" hx-push-url="true"> Open </button>`,
+			`<button class="w-full border-t center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600 hover:rounded-b-md" hx-get="/cookbooks/2?page=1" hx-target="#content" hx-push-url="/cookbooks/2"> Open </button>`,
 			`<footer id="pagination" class="grid justify-center pb-2 " ><div class="grid p-2 border-t border-gray-200 sm:px-6 dark:border-t-gray-800"><div class="text-sm font-light sm:hidden"><button disabled class="pagination-selected-edge-button-mobile"> Previous </button><button disabled class="pagination-selected-edge-button-mobile"> Next </button></div><div class="hidden select-none sm:flex"><div class="col-span-8"><nav class="inline-flex -space-x-px rounded shadow-sm" aria-label="Pagination"><button disabled class="pagination-square p-2 cursor-not-allowed rounded-l"><span class="sr-only">Previous</span><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/></svg></button><button aria-current="page" class="pagination-selected cursor-default bg-indigo-50"> 1 </button><button disabled class="pagination-square p-2 cursor-not-allowed rounded-r disabled"><span class="sr-only">Next</span><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg></button></nav></div></div></div><div class="text-center"><p class="text-sm"> Showing <span class="font-medium">1</span> to <span class="font-medium">3</span> of <span class="font-medium">3</span> results </p></div></footer>`,
 			`<script defer> document.addEventListener('click', (event) => { const cookbookContainers = document.querySelectorAll(".cookbook-menu"); cookbookContainers.forEach(c => { if (c && !c.classList.contains("hidden") && !event.target.classList.contains("three-dots-container") && !["svg", "path"].includes(event.target.tagName)) { c.classList.add("hidden"); } }); }); </script>`,
 		}
@@ -179,7 +179,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 			`<div class="relative" onclick="document.querySelector('#cookbook-image-0').click()">`,
 			`<p class="font-semibold">Lovely America</p>`,
 			`<span class="grid justify-self-end text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg px-2 h-fit"> 0 </span>`,
-			`<button class="w-full border-2 border-gray-800 rounded-lg center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/cookbooks/1" hx-target="#content" hx-push-url="true"> Open </button>`,
+			`<button class="w-full border-2 border-gray-800 rounded-lg center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/cookbooks/1?page=1" hx-target="#content" hx-push-url="/cookbooks/1"> Open </button>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
@@ -325,10 +325,9 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 			`<title hx-swap-oob="true">Ensiferum | Recipya</title>`,
 			`<div id="content-title" hx-swap-oob="innerHTML">Ensiferum</div>`,
 			`<section class="grid justify-center p-4"><div class="relative">`,
-			`<form class="w-72 md:w-96"><div class="flex"><div class="relative w-full"><label><input type="search" id="search-recipes" class="block z-20 p-2.5 w-full text-sm bg-gray-50 rounded-r-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" placeholder="Search recipes to add..." required></label><button type="submit" class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700"><svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/></svg><span class="sr-only">Search</span></button></div></div></form>`,
+			`<form class="w-72 md:w-96" hx-post="/cookbooks/recipes/search" hx-target="#search-results" hx-vals='{"id": 4, "page": 1}'><div class="flex"><div class="relative w-full"><label><input type="search" id="search-recipes" name="q" class="block z-20 p-2.5 w-full text-sm bg-gray-50 rounded-r-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" placeholder="Search for recipes to add..." _="on keyup if event.target.value !== '' then remove .md:block from #search-shortcut else add .md:block to #search-shortcut end then if event.key === 'Backspace' and event.target.value === '' then send submit to closest <form/> end"></label><kbd id="search-shortcut" class="hidden absolute top-2 right-12 font-sans font-semibold select-none dark:text-slate-500 md:block"><abbr title="Control" class="no-underline text-slate-300 dark:text-slate-500">Ctrl </abbr> / </kbd><button type="submit" class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700"><svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/></svg><span class="sr-only">Search</span></button></div></div></form>`,
 			`<p class="grid justify-center font-semibold underline mt-2 md:mt-0 md:text-xl md:hidden"> Ensiferum </p>`,
-			`<div id="search-recipes-results" class="absolute bg-gray-100 z-20 h-96 border border-gray-100 w-72 md:w-96"></div>`,
-			`<section class="grid place-content-center text-sm text-center h-3/5 md:text-base"><p>Your cookbook looks a bit empty at the moment.</p><p>Why not add recipes to your cookbook by searching for recipes in the search box above?</p></section>`,
+			`<section id="search-results" class="h-full"><div class="grid place-content-center text-sm text-center h-3/5 md:text-base"><p>Your cookbook looks a bit empty at the moment.</p><p>Why not add recipes to your cookbook by searching for recipes in the search box above?</p></div></section>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
@@ -343,10 +342,197 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 	for _, tc := range requestTypes {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Run("cookbook has recipes", func(t *testing.T) {
-				t.Fail()
+				_, _, revertFunc := prepare(srv)
+				defer revertFunc()
+
+				rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri(1)+"?page=1", noHeader, nil)
+
+				assertStatus(t, rr.Code, http.StatusOK)
+				want := []string{
+					` <title hx-swap-oob="true">Lovely Canada | Recipya</title>`,
+					`<div id="content-title" hx-swap-oob="innerHTML">Lovely Canada</div>`,
+					`<script defer> function initReorder() { document.querySelectorAll("#search-results").forEach(sortable => { const sortableInstance = new Sortable(sortable, { animation: 150, ghostClass: 'blue-background-class', handle: '.handle', onEnd: function (event) { Array.from(document.querySelector('#search-results').children).forEach((c, i) => { const p = c.querySelector('.handle'); p.innerText = i + 1; }); }, }); sortable.addEventListener("htmx:afterSwap", function () { sortableInstance.option("disabled", false); }); }); } document.addEventListener("keydown", (event) => { if (event.ctrlKey && event.key === "/") { event.preventDefault(); document.querySelector("#search-recipes").focus(); } }); loadSortableJS().then(initReorder); </script>`,
+					`<section class="grid justify-center p-4"><div class="relative">`,
+					`<form class="w-72 md:w-96" hx-post="/cookbooks/recipes/search" hx-target="#search-results" hx-vals='{"id": 1, "page": 1}'><div class="flex"><div class="relative w-full"><label><input type="search" id="search-recipes" name="q" class="block z-20 p-2.5 w-full text-sm bg-gray-50 rounded-r-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" placeholder="Search for recipes to add..." _="on keyup if event.target.value !== '' then remove .md:block from #search-shortcut else add .md:block to #search-shortcut end then if event.key === 'Backspace' and event.target.value === '' then send submit to closest <form/> end"></label><kbd id="search-shortcut" class="hidden absolute top-2 right-12 font-sans font-semibold select-none dark:text-slate-500 md:block"><abbr title="Control" class="no-underline text-slate-300 dark:text-slate-500">Ctrl </abbr> / </kbd><button type="submit" class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700"><svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/></svg><span class="sr-only">Search</span></button></div></div></form></div><p class="grid justify-center font-semibold underline mt-2 md:mt-0 md:text-xl md:hidden"> Lovely Canada </p></section><section id="search-results" class="h-full"><div class="grid place-content-center text-sm text-center h-3/5 md:text-base"><p>Your cookbook looks a bit empty at the moment.</p><p>Why not add recipes to your cookbook by searching for recipes in the search box above?</p></div></section>`,
+				}
+				assertStringsInHTML(t, getBodyHTML(rr), want)
 			})
 		})
 	}
+}
+
+func TestHandlers_Cookbooks_AddRecipe(t *testing.T) {
+	srv := newServerTest()
+	originalRepo := srv.Repository
+
+	uri := func(cookbookID int64) string {
+		return fmt.Sprintf("/cookbooks/%d", cookbookID)
+	}
+
+	revert := func() {
+		srv.Repository = originalRepo
+	}
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodPost, uri(1))
+	})
+
+	testcases := []struct {
+		name      string
+		form      string
+		wantToast string
+	}{
+		{
+			name:      "cookbookID missing in form",
+			form:      "recipeId=1",
+			wantToast: "Missing 'cookbookId' in body.",
+		},
+		{
+			name:      "recipeID missing in form",
+			form:      "cookbookId=1",
+			wantToast: "Missing 'recipeId' in body.",
+		},
+	}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			rr := sendRequestAsLoggedIn(srv, http.MethodPost, uri(1), formHeader, strings.NewReader(tc.form))
+
+			assertStatus(t, rr.Code, http.StatusBadRequest)
+			assertHeader(t, rr, "HX-Trigger", fmt.Sprintf(`{"showToast":"{\"message\":\"%s\",\"backgroundColor\":\"bg-red-500\"}"}`, tc.wantToast))
+		})
+	}
+
+	t.Run("valid request", func(t *testing.T) {
+		recipes := models.Recipes{
+			{ID: 1, Name: "Cheese Toasts"},
+			{ID: 2, Name: "Maple Syrup Waffles"},
+			{ID: 3, Name: "Chicken Jerky"},
+		}
+		repo := &mockRepository{
+			CookbooksRegistered: map[int64][]models.Cookbook{
+				1: {
+					{ID: 1, Recipes: []models.Recipe{recipes[0]}},
+					{ID: 2, Recipes: []models.Recipe{recipes[1]}},
+				},
+			},
+			RecipesRegistered: map[int64]models.Recipes{1: slices.Clone(recipes)},
+		}
+		srv.Repository = repo
+		defer revert()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri(1), formHeader, strings.NewReader("cookbookId=2&recipeId=2"))
+
+		assertStatus(t, rr.Code, http.StatusCreated)
+		want := []models.Cookbook{
+			{ID: 1, Recipes: []models.Recipe{recipes[0]}},
+			{ID: 2, Recipes: []models.Recipe{recipes[1], recipes[2]}},
+		}
+		assertCookbooks(t, repo.CookbooksRegistered[1], want)
+	})
+}
+
+func TestHandlers_Cookbooks_DeleteCookbookRecipe(t *testing.T) {
+	srv := newServerTest()
+	originalRepo := srv.Repository
+
+	uri := func(cookbookID, recipeID int64) string {
+		return fmt.Sprintf("/cookbooks/%d/recipes/%d", cookbookID, recipeID)
+	}
+
+	restore := func() {
+		srv.Repository = originalRepo
+	}
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodDelete, uri(1, 2))
+	})
+
+	t.Run("no cookbook matches cookbookID", func(t *testing.T) {
+		repo := &mockRepository{CookbooksRegistered: map[int64][]models.Cookbook{
+			1: {{ID: 1}},
+		}}
+		srv.Repository = repo
+		defer restore()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri(10, 10), noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		if len(repo.CookbooksRegistered[1]) != 1 {
+			t.Fatal("expected the cookbooks to remain untouched")
+		}
+	})
+
+	t.Run("the recipe is not found in the cookbook", func(t *testing.T) {
+		repo := &mockRepository{CookbooksRegistered: map[int64][]models.Cookbook{
+			1: {{ID: 1}, {ID: 2}},
+		}}
+		srv.Repository = repo
+		defer restore()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri(1, 10), noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		if len(repo.CookbooksRegistered[1]) != 2 {
+			t.Fatal("expected the cookbooks to remain untouched")
+		}
+	})
+
+	t.Run("other user cannot delete other user's recipes", func(t *testing.T) {
+		cookbooks1 := []models.Cookbook{{ID: 1, Recipes: []models.Recipe{{ID: 1}, {ID: 2}}}}
+		cookbooks2 := []models.Cookbook{{ID: 3}, {ID: 4}}
+		repo := &mockRepository{CookbooksRegistered: map[int64][]models.Cookbook{
+			1: slices.Clone(cookbooks1),
+			2: slices.Clone(cookbooks2),
+		}}
+		srv.Repository = repo
+		defer restore()
+
+		rr := sendHxRequestAsLoggedInOther(srv, http.MethodDelete, uri(1, 1), noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		assertCookbooks(t, repo.CookbooksRegistered[1], cookbooks1)
+		assertCookbooks(t, repo.CookbooksRegistered[2], cookbooks2)
+	})
+
+	t.Run("valid request", func(t *testing.T) {
+		repo := &mockRepository{CookbooksRegistered: map[int64][]models.Cookbook{
+			1: {
+				{ID: 1, Recipes: []models.Recipe{{ID: 1}, {ID: 2}}},
+				{ID: 2, Recipes: models.Recipes{{ID: 1}}},
+			},
+		}}
+		srv.Repository = repo
+		defer restore()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri(1, 1), noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		assertCookbooks(t, repo.CookbooksRegistered[1], []models.Cookbook{
+			{ID: 1, Recipes: []models.Recipe{{ID: 2}}},
+			{ID: 2, Recipes: models.Recipes{{ID: 1}}},
+		})
+	})
+
+	t.Run("valid request delete all recipes in cookbook", func(t *testing.T) {
+		repo := &mockRepository{CookbooksRegistered: map[int64][]models.Cookbook{
+			1: {{ID: 1, Recipes: []models.Recipe{{ID: 1}}}},
+		}}
+		srv.Repository = repo
+		defer restore()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri(1, 1), noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		assertCookbooks(t, repo.CookbooksRegistered[1], []models.Cookbook{
+			{ID: 1, Recipes: []models.Recipe{}},
+		})
+		want := []string{
+			`<div class="grid place-content-center text-sm text-center h-3/5 md:text-base">`,
+			`<p>Your cookbook looks a bit empty at the moment.</p>`,
+			`<p>Why not add recipes to your cookbook by searching for recipes in the search box above?</p>`,
+		}
+		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
 }
 
 func TestHandlers_Cookbooks_Image(t *testing.T) {
@@ -422,17 +608,181 @@ func TestHandlers_Cookbooks_Image(t *testing.T) {
 	})
 }
 
+func TestHandlers_Cookbooks_RecipesSearch(t *testing.T) {
+	srv := newServerTest()
+	originalRepo := srv.Repository
+
+	uri := "/cookbooks/recipes/search"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
+	})
+
+	revert := func() {
+		srv.Repository = originalRepo
+	}
+
+	missingInBodyTestcases := []struct {
+		name      string
+		body      string
+		wantToast string
+	}{
+		{
+			name:      "missing cookbook ID in body",
+			body:      "page=1",
+			wantToast: "Missing cookbook ID in body.",
+		},
+		{
+			name:      "missing page number in body",
+			body:      "id=1",
+			wantToast: "Missing page number in body.",
+		},
+	}
+	for _, tc := range missingInBodyTestcases {
+		t.Run(tc.name, func(t *testing.T) {
+			rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader(tc.body))
+
+			assertStatus(t, rr.Code, http.StatusBadRequest)
+			assertHeader(t, rr, "HX-Trigger", fmt.Sprintf(`{"showToast":"{\"message\":\"%s\",\"backgroundColor\":\"bg-red-500\"}"}`, tc.wantToast))
+		})
+	}
+
+	t.Run("display cookbook recipes if search is empty", func(t *testing.T) {
+		srv.Repository = &mockRepository{
+			CookbooksRegistered: map[int64][]models.Cookbook{
+				1: {
+					{
+						ID: 1,
+						Recipes: models.Recipes{
+							{ID: 1, Name: "Americano", Category: "breakfast"},
+							{ID: 2, Name: "Chicken Latte", Category: "lunch"},
+						},
+					},
+				},
+			},
+			RecipesRegistered: nil,
+		}
+		defer revert()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("id=1&page=1"))
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		want := []string{
+			`<li class="recipe cookbook relative grid max-w-[30rem] border bg-white rounded-md shadow-md md:min-w-[30rem] dark:bg-neutral-700"><input type='hidden' name='recipe-id' value='1'/><div class="grid grid-cols-4"><img class="w-fit col-span-1 border-r h-[90px]" src="/data/images/00000000-0000-0000-0000-000000000000.jpg" alt="Recipe image"><div class="grid col-span-3 gap-1 p-2"><div class="grid grid-flow-col"><p class="font-semibold">Americano</p><div class="grid justify-end"><div class="pb-4 pl-4 text-xs"><span title="Remove recipe from cookbook" hx-delete="/cookbooks/1/recipes/1" hx-swap="outerHTML" hx-target="closest .recipe" hx-confirm="Are you sure you want to remove this recipe from the cookbook?" hx-indicator="#fullscreen-loader"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></span></div></div></div><div class="text-xs"><span class="w-fit leading-none flex items-center justify-center p-2 text-blue-700 bg-blue-100 border border-blue-300 rounded-full dark:border-gray-800"> breakfast </span></div></div></div><div class="flex border-t dark:border-gray-800"><button class="w-full center hover:bg-gray-800 hover:text-white hover:dark:bg-neutral-600 hover:rounded-b-md" hx-get="/recipes/1" hx-target="#content" hx-push-url="true"> View </button><p class="justify-self-end px-4 select-none cursor-move handle"> 1 </p></div></li>`,
+			`<li class="recipe cookbook relative grid max-w-[30rem] border bg-white rounded-md shadow-md md:min-w-[30rem] dark:bg-neutral-700"><input type='hidden' name='recipe-id' value='2'/><div class="grid grid-cols-4"><img class="w-fit col-span-1 border-r h-[90px]" src="/data/images/00000000-0000-0000-0000-000000000000.jpg" alt="Recipe image"><div class="grid col-span-3 gap-1 p-2"><div class="grid grid-flow-col"><p class="font-semibold">Chicken Latte</p><div class="grid justify-end"><div class="pb-4 pl-4 text-xs"><span title="Remove recipe from cookbook" hx-delete="/cookbooks/1/recipes/2" hx-swap="outerHTML" hx-target="closest .recipe" hx-confirm="Are you sure you want to remove this recipe from the cookbook?" hx-indicator="#fullscreen-loader"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></span></div></div></div><div class="text-xs"><span class="w-fit leading-none flex items-center justify-center p-2 text-blue-700 bg-blue-100 border border-blue-300 rounded-full dark:border-gray-800"> lunch </span></div></div></div><div class="flex border-t dark:border-gray-800"><button class="w-full center hover:bg-gray-800 hover:text-white hover:dark:bg-neutral-600 hover:rounded-b-md" hx-get="/recipes/2" hx-target="#content" hx-push-url="true"> View </button><p class="justify-self-end px-4 select-none cursor-move handle"> 2 </p></div></li>`,
+		}
+		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
+
+	t.Run("no results", func(t *testing.T) {
+		_, _, revertFunc := prepareCookbook(srv)
+		defer revertFunc()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("id=1&page=1&q=hello"))
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		want := []string{
+			`<div class="grid place-content-center text-sm text-center h-3/5 md:text-base"><p>No results found.</p></div>`,
+		}
+		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
+
+	searches := []struct {
+		query string
+		want  []string
+	}{
+		{
+			query: "lov",
+			want: []string{
+				`<article class="grid gap-4 p-4 text-sm justify-center md:p-0 md:text-base">`,
+				`<ul class="cookbooks-display grid gap-2 p-2 md:p-0 text-sm md:text-base"><li class="recipe cookbook relative grid max-w-[30rem] border bg-white rounded-md shadow-md md:min-w-[30rem] dark:bg-neutral-700"><div class="grid grid-cols-4"><img class="col-span-1 border-r" src="/data/images/00000000-0000-0000-0000-000000000000.jpg" alt="Recipe image"><div class="grid col-span-3 gap-1 p-2"><div class="grid grid-flow-col"><p class="font-semibold">Lovely Xenophobia</p><div class="grid justify-end"><div class="pb-4 pl-4 text-xs"><span class="w-fit leading-none flex items-center justify-center p-2 text-blue-700 bg-blue-100 border border-blue-300 rounded-full dark:border-gray-800"></span></div></div></div></div></div><button class="w-full border-t center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600 hover:rounded-b-md" hx-post="/cookbooks/1" hx-vals='{"cookbookId": 1, "recipeId": 2}' hx-swap="outerHTML" hx-target="closest .recipe"> Add </button></li>`,
+			},
+		},
+		{
+			query: "chi",
+			want: []string{
+				`<article class="grid gap-4 p-4 text-sm justify-center md:p-0 md:text-base">`,
+				`<ul class="cookbooks-display grid gap-2 p-2 md:p-0 text-sm md:text-base"><li class="recipe cookbook relative grid max-w-[30rem] border bg-white rounded-md shadow-md md:min-w-[30rem] dark:bg-neutral-700"><div class="grid grid-cols-4"><img class="col-span-1 border-r" src="/data/images/00000000-0000-0000-0000-000000000000.jpg" alt="Recipe image"><div class="grid col-span-3 gap-1 p-2"><div class="grid grid-flow-col"><p class="font-semibold">Chicken</p><div class="grid justify-end"><div class="pb-4 pl-4 text-xs"><span class="w-fit leading-none flex items-center justify-center p-2 text-blue-700 bg-blue-100 border border-blue-300 rounded-full dark:border-gray-800"></span></div></div></div></div></div><button class="w-full border-t center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600 hover:rounded-b-md" hx-post="/cookbooks/1" hx-vals='{"cookbookId": 1, "recipeId": 1}' hx-swap="outerHTML" hx-target="closest .recipe"> Add </button></li>`,
+			},
+		},
+		{
+			query: "lovely xenophobia",
+			want: []string{
+				`<article class="grid gap-4 p-4 text-sm justify-center md:p-0 md:text-base">`,
+				`<ul class="cookbooks-display grid gap-2 p-2 md:p-0 text-sm md:text-base"><li class="recipe cookbook relative grid max-w-[30rem] border bg-white rounded-md shadow-md md:min-w-[30rem] dark:bg-neutral-700"><div class="grid grid-cols-4"><img class="col-span-1 border-r" src="/data/images/00000000-0000-0000-0000-000000000000.jpg" alt="Recipe image"><div class="grid col-span-3 gap-1 p-2"><div class="grid grid-flow-col"><p class="font-semibold">Lovely Xenophobia</p><div class="grid justify-end"><div class="pb-4 pl-4 text-xs"><span class="w-fit leading-none flex items-center justify-center p-2 text-blue-700 bg-blue-100 border border-blue-300 rounded-full dark:border-gray-800"></span></div></div></div></div></div><button class="w-full border-t center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600 hover:rounded-b-md" hx-post="/cookbooks/1" hx-vals='{"cookbookId": 1, "recipeId": 2}' hx-swap="outerHTML" hx-target="closest .recipe"> Add </button></li>`,
+			},
+		},
+	}
+	for _, tc := range searches {
+		t.Run("results search titles only "+tc.query, func(t *testing.T) {
+			_, _, revertFunc := prepareCookbook(srv)
+			defer revertFunc()
+
+			rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("id=1&page=1&q="+tc.query))
+
+			assertStatus(t, rr.Code, http.StatusOK)
+			assertStringsInHTML(t, getBodyHTML(rr), tc.want)
+		})
+	}
+}
+
+func TestHandlers_Cookbooks_ReorderRecipes(t *testing.T) {
+	srv := newServerTest()
+
+	uri := "/cookbooks/1/reorder"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodPut, uri)
+	})
+
+	missingBodyPartsTestcases := []struct {
+		name      string
+		form      string
+		wantToast string
+	}{
+		{
+			name:      "missing cookbook ID",
+			form:      "recipe-id=8&recipe-id=3",
+			wantToast: "Missing cookbook ID in body.",
+		},
+		{
+			name:      "missing recipe IDs",
+			form:      "cookbook-id=1",
+			wantToast: "Missing recipe IDs in body.",
+		},
+		{
+			name:      "invalid recipe IDs",
+			form:      "cookbook-id=1&recipe-id=8&recipe-id=3&recipe-id=0&recipe-id=-1",
+			wantToast: `Recipe ID \"-1\" is invalid.`,
+		},
+	}
+	for _, tc := range missingBodyPartsTestcases {
+		t.Run(tc.name, func(t *testing.T) {
+			rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, uri, formHeader, strings.NewReader(tc.form))
+
+			assertStatus(t, rr.Code, http.StatusBadRequest)
+			assertHeader(t, rr, "HX-Trigger", fmt.Sprintf(`{"showToast":"{\"message\":\"%s\",\"backgroundColor\":\"bg-red-500\"}"}`, tc.wantToast))
+		})
+	}
+
+	t.Run("valid request", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, uri, formHeader, strings.NewReader("cookbook-id=1&recipe-id=1"))
+
+		assertStatus(t, rr.Code, http.StatusNoContent)
+	})
+}
+
 func prepareCookbook(srv *server.Server) (*mockFiles, *mockRepository, func()) {
 	originalFiles := srv.Files
 	originalRepo := srv.Repository
 
-	recipes := models.Recipes{{ID: 1, Name: "Chicken"}}
+	recipes := models.Recipes{{ID: 1, Name: "Chicken"}, {ID: 2, Name: "Lovely Xenophobia"}}
 
 	files := &mockFiles{}
 	repo := &mockRepository{
 		CookbooksRegistered: map[int64][]models.Cookbook{
 			1: {
-				models.Cookbook{ID: 1, Title: "Lovely Canada", Recipes: recipes},
+				models.Cookbook{ID: 1, Title: "Lovely Canada"},
 				models.Cookbook{ID: 2, Title: "Lovely Ukraine"},
 				models.Cookbook{ID: 3, Title: "Lovely America"},
 			},
@@ -445,5 +795,16 @@ func prepareCookbook(srv *server.Server) (*mockFiles, *mockRepository, func()) {
 	return files, repo, func() {
 		srv.Files = originalFiles
 		srv.Repository = originalRepo
+	}
+}
+
+func assertCookbooks(t testing.TB, got, want []models.Cookbook) {
+	t.Helper()
+	if !slices.EqualFunc(got, want, func(c1 models.Cookbook, c2 models.Cookbook) bool {
+		return c1.ID == c2.ID && slices.EqualFunc(c1.Recipes, c2.Recipes, func(r1 models.Recipe, r2 models.Recipe) bool {
+			return r1.ID == r2.ID
+		})
+	}) {
+		t.Fatalf("got\n%+v\nbut want\n%+v for user 1", got, want)
 	}
 }

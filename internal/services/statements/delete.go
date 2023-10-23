@@ -23,6 +23,13 @@ const DeleteCookbook = `
 					  WHERE row_num > (? - 1) * ` + templates.ResultsPerPageStr + `)
 				WHERE row_id = ?)`
 
+// DeleteCookbookRecipe is the query to delete a recipe from a user's cookbook.
+const DeleteCookbookRecipe = `
+	DELETE
+	FROM cookbook_recipes
+	WHERE cookbook_id = (SELECT id FROM cookbooks WHERE id = ? AND user_id = ?)
+		AND recipe_id = ?`
+
 // DeleteRecipe is the query to delete a user's recipe and the recipe itself.
 const DeleteRecipe = `
 	DELETE

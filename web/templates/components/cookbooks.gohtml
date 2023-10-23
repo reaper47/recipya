@@ -49,67 +49,169 @@
         <div id="content-title" hx-swap-oob="innerHTML">{{.Title}}</div>
     {{end}}
 
-    {{- if .CookbookFeature.Cookbook.Recipes -}}
-        <article class="grid gap-4 p-4 text-sm grid-cols-4 md:m-auto md:max-w-7xl md:text-base md:grid-cols-10">
-            {{ $funcs := .Functions}}
-            {{- range $i, $r := .CookbookFeature.Cookbook.Recipes -}}
-                <div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700">
-                    {{ $isUUIDValid := call $funcs.IsUUIDValid .Image}}
-                    <img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 {{if not $isUUIDValid}}h-[236.8px] px-4 pt-4{{end}}"
-                         src="{{if $isUUIDValid}}/data/images/{{$r.Image}}.jpg{{end}}"
-                         alt="Image for the {{$r.Name}} recipe"
-                         hx-get="/recipes/{{$r.ID}}" hx-target="#content" hx-push-url="true">
-                    <div class="py-2 px-3">
-                        <div class="grid grid-flow-col gap-1 pb-2">
-                            <p class="font-semibold">{{$r.Name}}</p>
-                            <span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit">
-                                {{$r.Category}}
-                            </span>
-                        </div>
+    <script defer>
+        function initReorder() {
+            document.querySelectorAll("#search-results").forEach(sortable => {
+                const sortableInstance = new Sortable(sortable, {
+                    animation: 150,
+                    ghostClass: 'blue-background-class',
+                    handle: '.handle',
+                    onEnd: function (event) {
+                        Array.from(document.querySelector('#search-results').children).forEach((c, i) => {
+                            const p = c.querySelector('.handle');
+                            p.innerText = i + 1;
+                        });
+                    },
+                });
 
-                        <p class="pb-8 text-justify text-sm">{{call $funcs.CutString $r.Description 127}}</p>
+                sortable.addEventListener("htmx:afterSwap", function () {
+                    sortableInstance.option("disabled", false);
+                });
+            });
+        }
 
-                        <button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600"
-                                hx-get="/recipes/{{call $funcs.Inc $i}}" hx-target="#content" hx-push-url="true">
-                            View
-                        </button>
+        document.addEventListener("keydown", (event) => {
+            if (event.ctrlKey && event.key === "/") {
+                event.preventDefault();
+                document.querySelector("#search-recipes").focus();
+            }
+        });
+
+        loadSortableJS().then(initReorder);
+    </script>
+
+    {{- $cookbook := .CookbookFeature.Cookbook -}}
+    {{- $funcs := .Functions -}}
+    {{- if $cookbook.Recipes -}}
+        <section class="grid gap-4 p-4 text-sm justify-center md:text-base">
+            <div class="flex flex-col h-full">
+                <section class="grid justify-center p-4">
+                    <div class="relative">
+                        {{template "cookbook-recipes-search-form" $cookbook}}
                     </div>
-                </div>
-            {{end}}
-        </article>
+                    <p class="grid justify-center font-semibold underline mt-2 md:mt-0 md:text-xl md:hidden">
+                        {{$cookbook.Title}}
+                    </p>
+                </section>
+            </div>
+            <form class="sortable"
+                  hx-put="/cookbooks/{{$cookbook.PageItemID}}/reorder"
+                  hx-trigger="end" hx-swap="none">
+                <input type='hidden' name='cookbook-id' value='{{$cookbook.ID}}'/>
+                <ul id="search-results" class="cookbooks-display grid gap-2 p-2 md:p-0 text-sm md:text-base">
+                    {{template "cookbook-recipes" .}}
+                </ul>
+            </form>
+        </section>
     {{- else -}}
         <div class="flex flex-col h-full">
             <section class="grid justify-center p-4">
                 <div class="relative">
-                    <form class="w-72 md:w-96">
-                        <div class="flex">
-                            <div class="relative w-full">
-                                <label>
-                                    <input type="search" id="search-recipes"
-                                           class="block z-20 p-2.5 w-full text-sm bg-gray-50 rounded-r-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                           placeholder="Search recipes to add..." required>
-                                </label>
-                                <button type="submit"
-                                        class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700">
-                                    {{template "icon-maginifying-glass"}}
-                                    <span class="sr-only">Search</span>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    <div id="search-recipes-results" class="absolute bg-gray-100 z-20 h-96 border border-gray-100 w-72 md:w-96"></div>
+                    {{template "cookbook-recipes-search-form" .CookbookFeature.Cookbook}}
                 </div>
                 <p class="grid justify-center font-semibold underline mt-2 md:mt-0 md:text-xl md:hidden">
                     {{.CookbookFeature.Cookbook.Title}}
                 </p>
             </section>
 
-            <section class="grid place-content-center text-sm text-center h-3/5 md:text-base">
-                <p>Your cookbook looks a bit empty at the moment.</p>
-                <p>Why not add recipes to your cookbook by searching for recipes in the search box above?</p>
+            <section id="search-results" class="h-full">
+                {{template "cookbook-index-no-recipes"}}
             </section>
         </div>
     {{- end -}}
+{{end}}
+
+{{define "cookbook-recipes-search-form"}}
+    <form class="w-72 md:w-96"
+          hx-post="/cookbooks/recipes/search"
+          hx-target="#search-results"
+          hx-vals='{"id": {{.PageItemID}}, "page": {{.PageNumber}}}'>
+        <div class="flex">
+            <div class="relative w-full">
+                <label>
+                    <input type="search" id="search-recipes" name="q"
+                           class="block z-20 p-2.5 w-full text-sm bg-gray-50 rounded-r-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                           placeholder="Search for recipes to add..."
+                           _="on keyup
+                                               if event.target.value !== '' then
+                                                   remove .md:block from #search-shortcut
+                                               else
+                                                   add .md:block to #search-shortcut
+                                               end then
+                                               if event.key === 'Backspace' and event.target.value === '' then
+                                                   send submit to closest <form/>
+                                               end">
+                </label>
+                <kbd id="search-shortcut"
+                     class="hidden absolute top-2 right-12 font-sans font-semibold select-none dark:text-slate-500 md:block">
+                    <abbr title="Control" class="no-underline text-slate-300 dark:text-slate-500">Ctrl </abbr> /
+                </kbd>
+                <button type="submit"
+                        class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700">
+                    {{template "icon-maginifying-glass"}}
+                    <span class="sr-only">Search</span>
+                </button>
+            </div>
+        </div>
+    </form>
+{{end}}
+
+{{define "cookbook-recipes"}}
+    {{- if .CookbookFeature.Cookbook.Recipes -}}
+        {{- $cookbook := .CookbookFeature.Cookbook -}}
+        {{- $funcs := .Functions -}}
+        {{- range $i, $r := .CookbookFeature.Cookbook.Recipes -}}
+            <li class="recipe cookbook relative grid max-w-[30rem] border bg-white rounded-md shadow-md md:min-w-[30rem] dark:bg-neutral-700">
+                <input type='hidden' name='recipe-id' value='{{$r.ID}}'/>
+                <div class="grid grid-cols-4">
+                    <img class="w-fit col-span-1 border-r h-[90px]" src="/data/images/{{$r.Image}}.jpg"
+                         alt="Recipe image">
+                    <div class="grid col-span-3 gap-1 p-2">
+                        <div class="grid grid-flow-col">
+                            <p class="font-semibold">{{$r.Name}}</p>
+                            <div class="grid justify-end">
+                                <div class="pb-4 pl-4 text-xs">
+                                    <span title="Remove recipe from cookbook"
+                                         hx-delete="/cookbooks/{{$cookbook.ID}}/recipes/{{$r.ID}}"
+                                         hx-swap="outerHTML"
+                                         hx-target="closest .recipe"
+                                         hx-confirm="Are you sure you want to remove this recipe from the cookbook?"
+                                         hx-indicator="#fullscreen-loader">
+                                      {{template "icon-delete"}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-xs">
+                           <span class="w-fit leading-none flex items-center justify-center p-2 text-blue-700 bg-blue-100 border border-blue-300 rounded-full dark:border-gray-800">
+                              {{$r.Category}}
+                           </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex border-t dark:border-gray-800">
+                    <button class="w-full center hover:bg-gray-800 hover:text-white hover:dark:bg-neutral-600 hover:rounded-b-md"
+                            hx-get="/recipes/{{.ID}}"
+                            hx-target="#content"
+                            hx-push-url="true">
+                        View
+                    </button>
+                    <p class="justify-self-end px-4 select-none cursor-move handle">
+                        {{call $funcs.Inc $i}}
+                    </p>
+                </div>
+            </li>
+        {{end}}
+    {{- else -}}
+        {{template "cookbook-index-no-recipes"}}
+    {{- end -}}
+{{end}}
+
+{{define "cookbook-index-no-recipes"}}
+    <div class="grid place-content-center text-sm text-center h-3/5 md:text-base">
+        <p>Your cookbook looks a bit empty at the moment.</p>
+        <p>Why not add recipes to your cookbook by searching for recipes in the search box above?</p>
+    </div>
 {{end}}
 
 {{define "cookbooks-index"}}

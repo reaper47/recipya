@@ -7,7 +7,7 @@ import (
 // Cookbook is the struct that holds information on a cookbook.
 type Cookbook struct {
 	ID      int64
-	Count   int
+	Count   int64
 	Image   uuid.UUID
 	Recipes Recipes
 	Title   string
@@ -33,7 +33,7 @@ type CookbookView struct {
 	ID          int64
 	Image       uuid.UUID
 	IsUUIDValid bool
-	NumRecipes  int
+	NumRecipes  int64
 	Recipes     Recipes
 	PageNumber  uint64
 	PageItemID  int64

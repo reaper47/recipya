@@ -19,6 +19,9 @@ type RepositoryService interface {
 	// AddCookbook adds a cookbook to the database.
 	AddCookbook(title string, userID int64) (int64, error)
 
+	// AddCookbookRecipe adds a recipe to the cookbook.
+	AddCookbookRecipe(cookbookID, recipeID, userID int64) error
+
 	// AddRecipe adds a recipe to the user's collection.
 	AddRecipe(r *models.Recipe, userID int64) (uint64, error)
 
@@ -49,6 +52,9 @@ type RepositoryService interface {
 	// DeleteRecipe deletes a user's recipe. It returns the number of rows affected.
 	DeleteRecipe(id, userID int64) (int64, error)
 
+	// DeleteRecipeFromCookbook deletes a recipe from a cookbook. It returns the number of recipes in the cookbook.
+	DeleteRecipeFromCookbook(recipeID, cookbookID uint64, userID int64) (int64, error)
+
 	// GetAuthToken gets a non-expired auth token by the selector.
 	GetAuthToken(selector, validator string) (models.AuthToken, error)
 
@@ -76,6 +82,12 @@ type RepositoryService interface {
 
 	// Register adds a new user to the store.
 	Register(email string, hashPassword auth.HashedPassword) (int64, error)
+
+	// ReorderCookbookRecipes reorders the recipe indices of a cookbook.
+	ReorderCookbookRecipes(cookbookID int64, recipeIDs []uint64, userID int64) error
+
+	// SearchRecipes searches for recipes based on the configuration.
+	SearchRecipes(query string, options models.SearchOptionsRecipes, userID int64) (models.Recipes, error)
 
 	// SwitchMeasurementSystem sets the user's units system to the desired one.
 	SwitchMeasurementSystem(system units.System, userID int64) error

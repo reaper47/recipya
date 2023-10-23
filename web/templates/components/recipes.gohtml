@@ -956,17 +956,6 @@
 
 {{define "load-recipes-manual-scripts"}}
     <script defer>
-        function loadScript(url) {
-            const script = document.createElement("script");
-            script.src = url;
-            document.body.appendChild(script);
-
-            return new Promise((res, rej) => {
-                script.onload = () => res();
-                script.onerror = () => rej();
-            });
-        }
-
         loadScript("https://cdn.jsdelivr.net/npm/html-duration-picker@latest/dist/html-duration-picker.min.js")
             .then(() => HtmlDurationPicker.init())
 
@@ -981,6 +970,7 @@
                     if (list) {
                         new Sortable.create(list, {
                             handle: '.handle',
+                            animation: 150,
                             onEnd: function () {
                                 Array.from(document.querySelectorAll(`${type}[name^='${name}']`)).forEach((d, i) => {
                                     const n = i + 1;
@@ -1111,7 +1101,8 @@
                             {{template "icon-print"}}
                         </button>
                         {{- if .View.Share.IsFromHost -}}
-                            <button class="mr-2" hx-delete="/recipes/{{.View.Recipe.ID}}" hx-swap="none"
+                            <button class="mr-2" hx-delete="/recipes/{{.View.Recipe.ID}}"
+                                    hx-swap="none"
                                     title="Delete recipe"
                                     hx-confirm="Are you sure you wish to delete this recipe?"
                                     hx-indicator="#fullscreen-loader">

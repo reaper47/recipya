@@ -1,7 +1,9 @@
 package statements
 
 import (
+	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
+	"strings"
 )
 
 // IsRecipeForUserExist checks whether the recipe belongs to the given user.
@@ -35,13 +37,35 @@ const SelectCategories = `
 
 // SelectCookbook is the query to get a user's cookbook.
 const SelectCookbook = `
-	SELECT c.title, c.count
+	SELECT c.id, c.title, c.count
 	FROM cookbooks AS c
 	WHERE id = (SELECT id
 				 FROM (SELECT id, ROW_NUMBER() OVER (ORDER BY id) AS row_num
 					   FROM cookbooks
 					   WHERE user_id = ?)
 				 WHERE row_num > (? - 1) *` + templates.ResultsPerPageStr + " + ?)"
+
+// SelectCookbookByID is the query to get a user's cookbook by cookbook ID.
+const SelectCookbookByID = `
+	SELECT c.id, c.title, c.count
+	FROM cookbooks AS c
+	WHERE id = ?`
+
+// SelectCookbookRecipeExists is the query to verify whether the recipe and the cookbook belongs to a user.
+const SelectCookbookRecipeExists = `
+	SELECT EXISTS (SELECT c.id
+				   FROM cookbooks AS c
+							JOIN user_recipe AS ur ON c.user_id = ur.user_id
+				   WHERE c.id = ?
+					 AND c.user_id = ?
+					 AND ur.recipe_id = ?);`
+
+// SelectCookbookRecipes is the query to fetch the recipes in a cookbook.
+const SelectCookbookRecipes = baseSelectRecipe + `
+	JOIN cookbook_recipes AS cr ON recipes.id = cr.recipe_id
+	WHERE cr.cookbook_id = ?
+	GROUP BY recipes.id
+	ORDER BY cr.order_index`
 
 // SelectCookbooks is the query to get a limited number of cookbooks belonging to the user.
 var SelectCookbooks = `
@@ -145,6 +169,33 @@ const SelectRecipe = baseSelectRecipe + `
 							  FROM user_recipe
 							  WHERE user_id = ?) AS t
 						WHERE row_num = ?)`
+
+// BuildSearchRecipeQuery builds a SQL query for searching recipes.
+func BuildSearchRecipeQuery(queries []string, options models.SearchOptionsRecipes) string {
+	var sb strings.Builder
+	sb.WriteString(baseSelectRecipe)
+	sb.WriteString(" WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ?")
+
+	n := len(queries)
+	if n > 0 {
+		sb.WriteString(" AND ")
+		if options.ByName {
+			switch n {
+			case 1:
+				sb.WriteString("(name MATCH ?)")
+			default:
+				sb.WriteString("(name MATCH ?")
+				for _ = range queries[1:] {
+					sb.WriteString(" AND name MATCH ?")
+				}
+				sb.WriteString(")")
+			}
+		}
+	}
+
+	sb.WriteString(" ORDER BY rank) GROUP BY recipes.id LIMIT 30")
+	return sb.String()
+}
 
 // SelectRecipes is the query to fetch all the user's recipes.
 const SelectRecipes = baseSelectRecipe + `

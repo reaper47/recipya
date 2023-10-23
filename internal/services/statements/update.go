@@ -13,6 +13,12 @@ UPDATE cookbooks
 	WHERE user_id = ?
 	 AND id = ?`
 
+const UpdateCookbookRecipesReorder = `
+	UPDATE cookbook_recipes
+	SET order_index = ?
+	WHERE cookbook_id = ?
+		AND recipe_id = ?`
+
 // UpdateIsConfirmed sets the user's account confirmed to true.
 const UpdateIsConfirmed = `
 	UPDATE users

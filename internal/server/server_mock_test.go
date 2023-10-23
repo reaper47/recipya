@@ -75,6 +75,30 @@ func (m *mockRepository) AddCookbook(title string, userID int64) (int64, error) 
 	return 1, nil
 }
 
+func (m *mockRepository) AddCookbookRecipe(cookbookID, recipeID, userID int64) error {
+	cookbooks, ok := m.CookbooksRegistered[userID]
+	if !ok {
+		return errors.New("cookbook does not belong to user")
+	}
+
+	cookbookIndex := slices.IndexFunc(cookbooks, func(c models.Cookbook) bool {
+		return c.ID == cookbookID
+	})
+	if cookbookIndex == -1 {
+		return errors.New("cookbook not found")
+	}
+
+	recipeIndex := slices.IndexFunc(m.RecipesRegistered[userID], func(r models.Recipe) bool {
+		return r.ID == recipeID
+	})
+	if recipeIndex == -1 {
+		return errors.New("recipe not found")
+	}
+
+	m.CookbooksRegistered[userID][cookbookIndex].Recipes = append(m.CookbooksRegistered[userID][cookbookIndex].Recipes, m.RecipesRegistered[userID][recipeID])
+	return nil
+}
+
 func (m *mockRepository) AddRecipe(r *models.Recipe, userID int64) (uint64, error) {
 	if m.AddRecipeFunc != nil {
 		return m.AddRecipeFunc(r, userID)
@@ -206,6 +230,28 @@ func (m *mockRepository) DeleteRecipe(id, userID int64) (int64, error) {
 	return rowsAffected, nil
 }
 
+func (m *mockRepository) DeleteRecipeFromCookbook(recipeID, cookbookID uint64, userID int64) (int64, error) {
+	cookbooks, ok := m.CookbooksRegistered[userID]
+	if !ok {
+		return -1, nil
+	}
+
+	i := slices.IndexFunc(cookbooks, func(c models.Cookbook) bool {
+		return uint64(c.ID) == cookbookID
+	})
+	if i == -1 {
+		return -1, nil
+	}
+	cookbook := cookbooks[i]
+
+	cookbook.Recipes = slices.DeleteFunc(cookbook.Recipes, func(r models.Recipe) bool {
+		return uint64(r.ID) == recipeID
+	})
+
+	m.CookbooksRegistered[userID][i] = cookbook
+	return int64(len(cookbook.Recipes)), nil
+}
+
 func (m *mockRepository) GetAuthToken(_, _ string) (models.AuthToken, error) {
 	return models.AuthToken{UserID: 1}, nil
 }
@@ -284,6 +330,27 @@ func (m *mockRepository) Register(email string, _ auth.HashedPassword) (int64, e
 		Email: email,
 	})
 	return userID, nil
+}
+
+func (m *mockRepository) ReorderCookbookRecipes(_ int64, _ []uint64, _ int64) error {
+	return nil
+}
+
+func (m *mockRepository) SearchRecipes(query string, options models.SearchOptionsRecipes, userID int64) (models.Recipes, error) {
+	recipes, ok := m.RecipesRegistered[userID]
+	if !ok {
+		return nil, errors.New("user not found")
+	}
+
+	var results models.Recipes
+	if options.ByName {
+		for _, r := range recipes {
+			if strings.Contains(strings.ToLower(r.Name), query) {
+				results = append(results, r)
+			}
+		}
+	}
+	return results, nil
 }
 
 func (m *mockRepository) SwitchMeasurementSystem(system units.System, userID int64) error {

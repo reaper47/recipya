@@ -114,6 +114,21 @@
                     htmx.process(button);
                 }
             }
+
+            function loadSortableJS() {
+                return loadScript("https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js")
+            }
+
+            function loadScript(url) {
+                const script = document.createElement("script");
+                script.src = url;
+                document.body.appendChild(script);
+
+                return new Promise((res, rej) => {
+                    script.onload = () => res();
+                    script.onerror = () => rej();
+                });
+            }
         </script>
     </head>
 {{end}}
