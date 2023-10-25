@@ -26,7 +26,7 @@ type RepositoryService interface {
 	AddRecipe(r *models.Recipe, userID int64) (uint64, error)
 
 	// AddShareLink adds a share link for the recipe.
-	AddShareLink(share models.ShareRecipe) (string, error)
+	AddShareLink(share models.Share) (string, error)
 
 	// Categories gets all categories in the database.
 	Categories(userID int64) ([]string, error)
@@ -36,6 +36,16 @@ type RepositoryService interface {
 
 	// Cookbook gets a cookbook belonging to a user.
 	Cookbook(id, userID int64, page uint64) (models.Cookbook, error)
+
+	// CookbookByID gets a cookbook by its ID.
+	CookbookByID(id, userID int64) (models.Cookbook, error)
+
+	// CookbookRecipe gets a recipe from a cookbook.
+	CookbookRecipe(id, cookbookID int64) (recipe *models.Recipe, userID int64, err error)
+
+	// CookbookShared checks whether the cookbook is shared.
+	// It returns a models.Share. Otherwise, an error.
+	CookbookShared(id string) (*models.Share, error)
 
 	// Cookbooks gets a limited number of cookbooks belonging to the user.
 	Cookbooks(userID int64, page uint64) ([]models.Cookbook, error)
@@ -74,8 +84,8 @@ type RepositoryService interface {
 	Recipes(userID int64) models.Recipes
 
 	// RecipeShared checks whether the recipe is shared.
-	// It returns a models.ShareRecipe. Otherwise, an error.
-	RecipeShared(id string) (*models.ShareRecipe, error)
+	// It returns a models.Share. Otherwise, an error.
+	RecipeShared(id string) (*models.Share, error)
 
 	// RecipeUser gets the user for which the recipe belongs to.
 	RecipeUser(recipeID int64) int64
@@ -135,7 +145,11 @@ type EmailService interface {
 
 // FilesService is the interface that describes the methods required for manipulating files.
 type FilesService interface {
-	// ExportRecipes creates a zip containing the recipes to export in the given file type.
+	// ExportCookbook exports the cookbook in the desired file type.
+	// It returns the name of file in the temporary directory.
+	ExportCookbook(cookbook models.Cookbook, fileType models.FileType) (string, error)
+
+	// ExportRecipes creates a zip containing the recipes to export in the desired file type.
 	// It returns the name of file in the temporary directory.
 	ExportRecipes(recipes models.Recipes, fileType models.FileType) (string, error)
 

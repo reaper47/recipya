@@ -56,7 +56,12 @@ func (s *Server) mountHandlers() {
 	r := chi.NewRouter()
 
 	r.Get("/", s.indexHandler)
-	r.Get("/r/{id:^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$}", s.recipeShareHandler)
+
+	r.Route("/r", func(r chi.Router) {
+		r.Get("/{id:[1-9]([0-9])*}", s.recipesViewShareHandler)
+		r.Get("/{id:^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$}", s.recipeShareHandler)
+	})
+	r.Get("/c/{id:^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$}", s.cookbookShareHandler)
 
 	r.Route("/auth", func(r chi.Router) {
 		r.With(s.mustBeLoggedInMiddleware).Post("/change-password", s.changePasswordHandler)
@@ -102,9 +107,11 @@ func (s *Server) mountHandlers() {
 			r.Get("/", s.cookbooksGetCookbookHandler)
 			r.Delete("/", s.cookbooksDeleteCookbookHandler)
 			r.Post("/", s.cookbookPostCookbookHandler)
+			r.Get("/download", s.cookbooksDownloadCookbookHandler)
 			r.Put("/image", s.cookbooksImagePostCookbookHandler)
 			r.Put("/reorder", s.cookbooksPostCookbookReorderHandler)
 			r.Delete("/recipes/{recipeID:[1-9]([0-9])*}", s.cookbooksDeleteCookbookRecipeHandler)
+			r.Post("/share", s.cookbookSharePostHandler)
 		})
 	})
 

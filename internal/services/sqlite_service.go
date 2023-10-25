@@ -288,15 +288,45 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (uint64, error
 	return counts.Recipes, tx.Commit()
 }
 
-func (s *SQLiteService) AddShareLink(share models.ShareRecipe) (string, error) {
+func (s *SQLiteService) AddShareLink(share models.Share) (string, error) {
 	s.Mutex.Lock()
 	defer s.Mutex.Unlock()
 
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
-	link := "/r/" + uuid.New().String()
-	_, err := s.DB.ExecContext(ctx, statements.InsertShareLink, link, share.RecipeID, share.UserID)
+	var (
+		stmt string
+		link string
+		id   int64
+	)
+	if share.CookbookID > -1 {
+		err := s.DB.QueryRowContext(ctx, statements.SelectCookbookSharedLink, share.CookbookID, share.UserID).Scan(&link)
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			var exists int64
+			err = s.DB.QueryRowContext(ctx, statements.SelectCookbookExists, share.CookbookID, share.UserID).Scan(&exists)
+			if err != nil {
+				return "", err
+			}
+
+			if exists == 0 {
+				return "", errors.New("cookbook does not belong to user")
+			}
+
+			stmt = statements.InsertShareLinkCookbook
+			link = "/c/" + uuid.New().String()
+			id = share.CookbookID
+		default:
+			return link, nil
+		}
+	} else {
+		stmt = statements.InsertShareLink
+		link = "/r/" + uuid.New().String()
+		id = share.RecipeID
+	}
+
+	_, err := s.DB.ExecContext(ctx, stmt, link, id, share.UserID)
 	return link, err
 }
 
@@ -363,6 +393,61 @@ func (s *SQLiteService) Cookbook(id, userID int64, page uint64) (models.Cookbook
 
 	c.Recipes = scanRecipes(rows)
 	return c, err
+}
+
+func (s *SQLiteService) CookbookByID(id, userID int64) (models.Cookbook, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	var c models.Cookbook
+	err := s.DB.QueryRowContext(ctx, statements.SelectCookbookByID, id, userID).Scan(&c.ID, &c.Title, &c.Image, &c.Count)
+	if err != nil {
+		return models.Cookbook{}, err
+	}
+
+	rows, err := s.DB.QueryContext(ctx, statements.SelectCookbookRecipes, id)
+	if err != nil {
+		return models.Cookbook{}, err
+	}
+	defer rows.Close()
+
+	var recipes models.Recipes
+	for rows.Next() {
+		r, err := scanRecipe(rows)
+		if err != nil {
+			return models.Cookbook{}, err
+		}
+		recipes = append(recipes, *r)
+	}
+
+	c.Recipes = recipes
+	return c, nil
+}
+
+func (s *SQLiteService) CookbookRecipe(id, cookbookID int64) (recipe *models.Recipe, userID int64, err error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	err = s.DB.QueryRowContext(ctx, statements.SelectCookbookUser, cookbookID).Scan(&userID)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	row := s.DB.QueryRowContext(ctx, statements.SelectCookbookRecipe, cookbookID, id)
+	recipe, err = scanRecipe(row)
+	return recipe, userID, err
+}
+
+func (s *SQLiteService) CookbookShared(link string) (*models.Share, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	var share models.Share
+	err := s.DB.QueryRowContext(ctx, statements.SelectCookbookShared, link).Scan(&share.CookbookID, &share.UserID)
+	if err != nil {
+		return nil, err
+	}
+	return &share, nil
 }
 
 func (s *SQLiteService) Cookbooks(userID int64, page uint64) ([]models.Cookbook, error) {
@@ -432,7 +517,7 @@ func (s *SQLiteService) DeleteRecipeFromCookbook(recipeID, cookbookID uint64, us
 	}
 
 	var c models.Cookbook
-	err = s.DB.QueryRowContext(ctx, statements.SelectCookbookByID, cookbookID).Scan(&c.ID, &c.Title, &c.Count)
+	err = s.DB.QueryRowContext(ctx, statements.SelectCookbookByID, cookbookID, userID).Scan(&c.ID, &c.Title, &c.Image, &c.Count)
 	return c.Count, err
 }
 
@@ -614,11 +699,11 @@ func scanRecipe(sc scanner) (*models.Recipe, error) {
 	return &r, nil
 }
 
-func (s *SQLiteService) RecipeShared(link string) (*models.ShareRecipe, error) {
+func (s *SQLiteService) RecipeShared(link string) (*models.Share, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
-	var share models.ShareRecipe
+	var share models.Share
 	err := s.DB.QueryRowContext(ctx, statements.SelectRecipeShared, link).Scan(&share.RecipeID, &share.UserID)
 	if err != nil {
 		return nil, err

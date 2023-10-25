@@ -47,9 +47,17 @@ const SelectCookbook = `
 
 // SelectCookbookByID is the query to get a user's cookbook by cookbook ID.
 const SelectCookbookByID = `
-	SELECT c.id, c.title, c.count
+	SELECT c.id, c.title, c.image, c.count
 	FROM cookbooks AS c
-	WHERE id = ?`
+	WHERE id = ?
+		AND user_id = ?`
+
+// SelectCookbookExists is the query to verify whether the cookbook belongs to the user.
+const SelectCookbookExists = `
+	SELECT EXISTS (SELECT c.id
+				   FROM cookbooks AS c
+				   WHERE id = ?
+					 AND user_id = ?)`
 
 // SelectCookbookRecipeExists is the query to verify whether the recipe and the cookbook belongs to a user.
 const SelectCookbookRecipeExists = `
@@ -60,12 +68,38 @@ const SelectCookbookRecipeExists = `
 					 AND c.user_id = ?
 					 AND ur.recipe_id = ?);`
 
+// SelectCookbookRecipe is the query to fetch a recipe from a cookbook.
+const SelectCookbookRecipe = baseSelectRecipe + `
+	JOIN cookbook_recipes AS cr ON recipes.id = cr.recipe_id
+	WHERE cr.cookbook_id = ?
+		AND cr.recipe_id = ?
+	GROUP BY recipes.id`
+
 // SelectCookbookRecipes is the query to fetch the recipes in a cookbook.
 const SelectCookbookRecipes = baseSelectRecipe + `
 	JOIN cookbook_recipes AS cr ON recipes.id = cr.recipe_id
 	WHERE cr.cookbook_id = ?
 	GROUP BY recipes.id
 	ORDER BY cr.order_index`
+
+// SelectCookbookShared is the query to get a shared cookbook link.
+const SelectCookbookShared = `
+	SELECT cookbook_id, user_id
+	FROM share_cookbooks
+	WHERE link = ?`
+
+// SelectCookbookSharedLink is the query to get the link of a shared cookbook.
+const SelectCookbookSharedLink = `
+	SELECT link 
+	FROM share_cookbooks
+	WHERE cookbook_id = ?
+		AND user_id = ?`
+
+// SelectCookbookUser is the query to get the ID of the user who has the cookbook ID.
+const SelectCookbookUser = `
+	SELECT user_id
+	FROM cookbooks
+	WHERE id = ?`
 
 // SelectCookbooks is the query to get a limited number of cookbooks belonging to the user.
 var SelectCookbooks = `
@@ -205,7 +239,7 @@ const SelectRecipes = baseSelectRecipe + `
 // SelectRecipeShared checks whether the recipe is shared.
 const SelectRecipeShared = `
 	SELECT recipe_id, user_id
-	FROM share
+	FROM share_recipes
 	WHERE link = ?`
 
 // SelectRecipeUser fetches the user whose recipe belongs to.

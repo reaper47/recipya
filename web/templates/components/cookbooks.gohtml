@@ -12,7 +12,7 @@
     <section id="cookbook-{{.PageItemID}}"
              class="cookbook relative col-span-1 bg-white rounded-lg shadow-md dark:bg-neutral-700">
         <div class="absolute z-10 right-1 top-1 bg-slate-300 p-1 rounded-lg">
-            {{template "cookbook-options"}}
+            {{template "cookbook-options" .}}
         </div>
         <div class="relative" onclick="document.querySelector('#cookbook-image-{{.ID}}').click()">
             <img class="rounded-t-lg w-full border-b dark:border-b-gray-800 h-32 md:h-48 text-center hover:bg-gray-100 dark:hover:bg-blue-100 hover:opacity-80"
@@ -49,36 +49,40 @@
         <div id="content-title" hx-swap-oob="innerHTML">{{.Title}}</div>
     {{end}}
 
-    <script defer>
-        function initReorder() {
-            document.querySelectorAll("#search-results").forEach(sortable => {
-                const sortableInstance = new Sortable(sortable, {
-                    animation: 150,
-                    ghostClass: 'blue-background-class',
-                    handle: '.handle',
-                    onEnd: function (event) {
-                        Array.from(document.querySelector('#search-results').children).forEach((c, i) => {
-                            const p = c.querySelector('.handle');
-                            p.innerText = i + 1;
-                        });
-                    },
-                });
+    {{- $feature := .CookbookFeature -}}
 
-                sortable.addEventListener("htmx:afterSwap", function () {
-                    sortableInstance.option("disabled", false);
-                });
-            });
-        }
+    {{- if $feature.ShareData.IsFromHost -}}
+        <script defer>
+            function initReorder() {
+                document.querySelectorAll("#search-results").forEach(sortable => {
+                    const sortableInstance = new Sortable(sortable, {
+                        animation: 150,
+                        ghostClass: 'blue-background-class',
+                        handle: '.handle',
+                        onEnd: function (event) {
+                            Array.from(document.querySelector('#search-results').children).forEach((c, i) => {
+                                const p = c.querySelector('.handle');
+                                p.innerText = i + 1;
+                            });
+                        },
+                    });
 
-        document.addEventListener("keydown", (event) => {
-            if (event.ctrlKey && event.key === "/") {
-                event.preventDefault();
-                document.querySelector("#search-recipes").focus();
+                    sortable.addEventListener("htmx:afterSwap", function () {
+                        sortableInstance.option("disabled", false);
+                    });
+                });
             }
-        });
 
-        loadSortableJS().then(initReorder);
-    </script>
+            document.addEventListener("keydown", (event) => {
+                if (event.ctrlKey && event.key === "/") {
+                    event.preventDefault();
+                    document.querySelector("#search-recipes").focus();
+                }
+            });
+
+            loadSortableJS().then(initReorder);
+        </script>
+    {{- end -}}
 
     {{- $cookbook := .CookbookFeature.Cookbook -}}
     {{- $funcs := .Functions -}}
@@ -86,10 +90,12 @@
         <section class="grid gap-4 p-4 text-sm justify-center md:text-base">
             <div class="flex flex-col h-full">
                 <section class="grid justify-center p-4">
-                    <div class="relative">
-                        {{template "cookbook-recipes-search-form" $cookbook}}
-                    </div>
-                    <p class="grid justify-center font-semibold underline mt-2 md:mt-0 md:text-xl md:hidden">
+                    {{- if $feature.ShareData.IsFromHost -}}
+                        <div class="relative">
+                            {{template "cookbook-recipes-search-form" $cookbook}}
+                        </div>
+                    {{- end -}}
+                    <p class="grid justify-center font-semibold underline mt-2 md:mt-0 md:text-xl {{if $feature.ShareData.IsFromHost}}md:hidden{{end}}">
                         {{$cookbook.Title}}
                     </p>
                 </section>
@@ -106,16 +112,18 @@
     {{- else -}}
         <div class="flex flex-col h-full">
             <section class="grid justify-center p-4">
-                <div class="relative">
-                    {{template "cookbook-recipes-search-form" .CookbookFeature.Cookbook}}
-                </div>
+                {{- if $feature.ShareData.IsFromHost -}}
+                    <div class="relative">
+                        {{template "cookbook-recipes-search-form" $feature.Cookbook}}
+                    </div>
+                {{- end -}}
                 <p class="grid justify-center font-semibold underline mt-2 md:mt-0 md:text-xl md:hidden">
-                    {{.CookbookFeature.Cookbook.Title}}
+                    {{$feature.Cookbook.Title}}
                 </p>
             </section>
 
             <section id="search-results" class="h-full">
-                {{template "cookbook-index-no-recipes"}}
+                {{template "cookbook-index-no-recipes" $feature.ShareData.IsFromHost}}
             </section>
         </div>
     {{- end -}}
@@ -157,8 +165,9 @@
 {{end}}
 
 {{define "cookbook-recipes"}}
+    {{- $feature := .CookbookFeature -}}
     {{- if .CookbookFeature.Cookbook.Recipes -}}
-        {{- $cookbook := .CookbookFeature.Cookbook -}}
+        {{- $cookbook := $feature.Cookbook -}}
         {{- $funcs := .Functions -}}
         {{- range $i, $r := .CookbookFeature.Cookbook.Recipes -}}
             <li class="recipe cookbook relative grid max-w-[30rem] border bg-white rounded-md shadow-md md:min-w-[30rem] dark:bg-neutral-700">
@@ -171,14 +180,16 @@
                             <p class="font-semibold">{{$r.Name}}</p>
                             <div class="grid justify-end">
                                 <div class="pb-4 pl-4 text-xs">
-                                    <span title="Remove recipe from cookbook"
-                                         hx-delete="/cookbooks/{{$cookbook.ID}}/recipes/{{$r.ID}}"
-                                         hx-swap="outerHTML"
-                                         hx-target="closest .recipe"
-                                         hx-confirm="Are you sure you want to remove this recipe from the cookbook?"
-                                         hx-indicator="#fullscreen-loader">
+                                    {{- if $feature.ShareData.IsFromHost -}}
+                                        <span title="Remove recipe from cookbook"
+                                              hx-delete="/cookbooks/{{$cookbook.ID}}/recipes/{{$r.ID}}"
+                                              hx-swap="outerHTML"
+                                              hx-target="closest .recipe"
+                                              hx-confirm="Are you sure you want to remove this recipe from the cookbook?"
+                                              hx-indicator="#fullscreen-loader">
                                       {{template "icon-delete"}}
                                     </span>
+                                    {{- end -}}
                                 </div>
                             </div>
                         </div>
@@ -190,27 +201,43 @@
                     </div>
                 </div>
                 <div class="flex border-t dark:border-gray-800">
-                    <button class="w-full center hover:bg-gray-800 hover:text-white hover:dark:bg-neutral-600 hover:rounded-b-md"
-                            hx-get="/recipes/{{.ID}}"
-                            hx-target="#content"
-                            hx-push-url="true">
-                        View
-                    </button>
-                    <p class="justify-self-end px-4 select-none cursor-move handle">
+                    {{- if $feature.ShareData.IsFromHost -}}
+                        <button class="w-full center hover:bg-gray-800 hover:text-white hover:dark:bg-neutral-600 hover:rounded-b-md"
+                                hx-get="/recipes/{{.ID}}"
+                                hx-target="#content"
+                                hx-swap="innerHTML"
+                                hx-push-url="true">
+                            View
+                        </button>
+                    {{- else -}}
+                        <button class="w-full center hover:bg-gray-800 hover:text-white hover:dark:bg-neutral-600 hover:rounded-b-md"
+                                hx-get="/r/{{.ID}}?cookbook={{$cookbook.ID}}"
+                                hx-target="#content"
+                                hx-swap="innerHTML"
+                                hx-push-url="true">
+                            View
+                        </button>
+                    {{- end -}}
+
+                    <p class="justify-self-end px-4 select-none {{if $feature.ShareData.IsFromHost}}cursor-move handle{{else}}cursor-none{{end}}">
                         {{call $funcs.Inc $i}}
                     </p>
                 </div>
             </li>
         {{end}}
     {{- else -}}
-        {{template "cookbook-index-no-recipes"}}
+        {{template "cookbook-index-no-recipes" $feature.ShareData.IsFromHost}}
     {{- end -}}
 {{end}}
 
 {{define "cookbook-index-no-recipes"}}
     <div class="grid place-content-center text-sm text-center h-3/5 md:text-base">
+    {{- if . -}}
         <p>Your cookbook looks a bit empty at the moment.</p>
         <p>Why not add recipes to your cookbook by searching for recipes in the search box above?</p>
+    {{- else -}}
+        <p>The user has not added recipes to this cookbook yet.</p>
+    {{- end -}}
     </div>
 {{end}}
 
@@ -229,6 +256,15 @@
             <span class="hidden md:block ml-1">Cookbooks</span>
         </li>
     {{- end -}}
+
+    <dialog id="share-dialog" class="p-4 border-4 border-black min-w-[15rem]">
+        <div id="share-dialog-result" class="pb-4"></div>
+        <form method="dialog">
+            <button class="w-full p-1 font-semibold text-white bg-blue-500 border-2 border-black rounded-lg hover:bg-blue-800">
+                OK
+            </button>
+        </form>
+    </dialog>
 
     {{- if .CookbookFeature.Cookbooks -}}
         {{ $isViewModeGrid := eq .CookbookFeature.ViewMode 0 }}
@@ -322,7 +358,7 @@
                     </p>
                     <div class="grid justify-end">
                         <div class="pb-4 pl-4">
-                            {{template "cookbook-options"}}
+                            {{template "cookbook-options" .}}
                         </div>
                         <span class="w-fit h-fit text-xs text-center font-medium select-none py-1 px-2 bg-indigo-700 text-white self-end justify-self-end">
                             {{.NumRecipes}}
@@ -351,7 +387,10 @@
         <ul id="cookbook-menu"
             class="relative before:content-[''] before:absolute before:right-0 before:top-[-9px] before:float-right before:border-x-[10px] before:border-x-transparent before:border-b-[10px] before:border-b-[#333] dark:before:border-b-[gray]">
             <li class="border-2 rounded-tl-lg cursor-pointer hover:bg-blue-100 dark:border-gray-500 dark:hover:bg-blue-600">
-                <a id="cookbook-menu-share" class="flex p-1" hx-get="/cookbooks/1/share">
+                <a id="cookbook-menu-share" class="flex p-1"
+                   hx-post="/cookbooks/1/share"
+                   hx-target="#share-dialog-result"
+                   _="on htmx:afterRequest from me if event.detail.successful call #share-dialog.showModal()">
                     {{template "icon-share"}}
                     <span class="pl-1 align-bottom">Share</span>
                 </a>
@@ -403,8 +442,12 @@
                set $li to closest <li/> to event.target then
                if not $li set $li to closest <section/> end then
                set $deleteOption to #cookbook-menu-delete then
+               set $downloadOption to #cookbook-menu-download then
+               set $shareOption to #cookbook-menu-share then
                set $addButton to #add-cookbook then
                js
+                   $shareOption.setAttribute('hx-post', '/cookbooks/{{.ID}}/share');
+                   $downloadOption.setAttribute('hx-get', '/cookbooks/{{.ID}}/download');
                    const page = $addButton.getAttribute('hx-post').split('?')[1];
                    $deleteOption.setAttribute('hx-delete', `/cookbooks/${$li.id.split('-')[1]}?${page}`);
                    $deleteOption.setAttribute('hx-target', `#${$li.id}`);

@@ -11,6 +11,41 @@ import (
 	"strings"
 )
 
+func (s *Server) cookbookShareHandler(w http.ResponseWriter, r *http.Request) {
+	userID, isLoggedIn := s.findUserID(r)
+
+	share, err := s.Repository.CookbookShared(r.URL.String())
+	if err != nil {
+		notFoundHandler(w, r)
+		return
+	}
+
+	cookbook, err := s.Repository.CookbookByID(share.CookbookID, share.UserID)
+	if err != nil {
+		notFoundHandler(w, r)
+		return
+	}
+
+	data := templates.Data{
+		IsAuthenticated: isLoggedIn,
+		Title:           cookbook.Title,
+		Functions:       templates.NewFunctionsData(),
+		CookbookFeature: templates.CookbookFeature{
+			Cookbook: cookbook.MakeView(1, 1),
+			ShareData: templates.ShareData{
+				IsFromHost: userID == share.UserID,
+				IsShared:   true,
+			},
+		},
+	}
+
+	if r.Header.Get("Hx-Request") == "true" {
+		templates.RenderComponent(w, "cookbooks", "cookbook-index", data)
+	} else {
+		templates.Render(w, templates.CookbookPage, data)
+	}
+}
+
 func (s *Server) cookbooksHandler(w http.ResponseWriter, r *http.Request) {
 	userID := getUserID(r)
 
@@ -60,7 +95,8 @@ func (s *Server) cookbooksHandler(w http.ResponseWriter, r *http.Request) {
 			MakeCookbook: func(index int64, cookbook models.Cookbook, page uint64) models.CookbookView {
 				return cookbook.MakeView(index, page)
 			},
-			ViewMode: settings.CookbooksViewMode,
+			ShareData: templates.ShareData{IsFromHost: true},
+			ViewMode:  settings.CookbooksViewMode,
 		},
 		IsAuthenticated: true,
 		IsHxRequest:     isHxRequest,
@@ -130,6 +166,7 @@ func (s *Server) cookbooksPostHandler(w http.ResponseWriter, r *http.Request) {
 				PageNumber: page,
 				Title:      title,
 			},
+			ShareData: templates.ShareData{IsFromHost: true},
 		},
 		Pagination: p,
 	})
@@ -216,8 +253,36 @@ func (s *Server) cookbooksDeleteCookbookRecipeHandler(w http.ResponseWriter, r *
 	}
 
 	if numRecipes == 0 {
-		templates.RenderComponent(w, "cookbooks", "cookbook-index-no-recipes", nil)
+		templates.RenderComponent(w, "cookbooks", "cookbook-index-no-recipes", true)
 	}
+}
+
+func (s *Server) cookbooksDownloadCookbookHandler(w http.ResponseWriter, r *http.Request) {
+	cookbookIDStr := chi.URLParam(r, "id")
+	cookbookID, err := strconv.ParseUint(cookbookIDStr, 10, 64)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Could not parse cookbook ID.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	userID := getUserID(r)
+	cookbook, err := s.Repository.CookbookByID(int64(cookbookID), userID)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Could not fetch cookbook.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	fileName, err := s.Files.ExportCookbook(cookbook, models.PDF)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Failed to export cookbook.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("HX-Redirect", "/download/"+fileName)
+	w.WriteHeader(http.StatusSeeOther)
 }
 
 func (s *Server) cookbooksGetCookbookHandler(w http.ResponseWriter, r *http.Request) {
@@ -256,7 +321,8 @@ func (s *Server) cookbooksGetCookbookHandler(w http.ResponseWriter, r *http.Requ
 		IsHxRequest:     isHxRequest,
 		Functions:       templates.NewFunctionsData(),
 		CookbookFeature: templates.CookbookFeature{
-			Cookbook: cookbook.MakeView(id-1, page),
+			Cookbook:  cookbook.MakeView(id-1, page),
+			ShareData: templates.ShareData{IsFromHost: true},
 		},
 		Title: cookbook.Title,
 	}
@@ -377,7 +443,8 @@ func (s *Server) cookbooksRecipesSearchPostHandler(w http.ResponseWriter, r *htt
 		templates.RenderComponent(w, "cookbooks", "cookbook-recipes", templates.Data{
 			Functions: templates.NewFunctionsData(),
 			CookbookFeature: templates.CookbookFeature{
-				Cookbook: cookbook.MakeView(1, page),
+				Cookbook:  cookbook.MakeView(1, page),
+				ShareData: templates.ShareData{IsFromHost: true},
 			},
 		})
 		return
@@ -408,6 +475,7 @@ func (s *Server) cookbooksRecipesSearchPostHandler(w http.ResponseWriter, r *htt
 				PageItemID: id,
 				PageNumber: page,
 			},
+			ShareData: templates.ShareData{IsFromHost: true},
 		},
 		Recipes: recipes,
 	})
@@ -450,4 +518,28 @@ func (s *Server) cookbooksPostCookbookReorderHandler(w http.ResponseWriter, r *h
 	}
 
 	w.WriteHeader(http.StatusNoContent)
+}
+
+func (s *Server) cookbookSharePostHandler(w http.ResponseWriter, r *http.Request) {
+	cookbookIDStr := chi.URLParam(r, "id")
+	cookbookID, err := strconv.ParseInt(cookbookIDStr, 10, 64)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Cookbook ID must be positive.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	userID := getUserID(r)
+	share := models.Share{CookbookID: cookbookID, RecipeID: -1, UserID: userID}
+
+	link, err := s.Repository.AddShareLink(share)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Failed to create share link.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	templates.RenderComponent(w, "recipes", "share-link", templates.Data{
+		Content: r.Host + link,
+	})
 }

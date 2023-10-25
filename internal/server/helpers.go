@@ -48,3 +48,16 @@ func sendErrorAdminEmail(sendFunc func(to string, template templates.EmailTempla
 func getUserID(r *http.Request) int64 {
 	return r.Context().Value("userID").(int64)
 }
+
+func (s *Server) findUserID(r *http.Request) (int64, bool) {
+	var userID int64
+	isLoggedIn := true
+	userID = getUserIDFromSessionCookie(r)
+	if userID == -1 {
+		userID = getUserIDFromRememberMeCookie(r, s.Repository.GetAuthToken)
+		if userID == -1 {
+			isLoggedIn = false
+		}
+	}
+	return userID, isLoggedIn
+}

@@ -33,6 +33,7 @@ type CookbookFeature struct {
 	Cookbooks    []models.Cookbook
 	Cookbook     models.CookbookView
 	MakeCookbook func(index int64, cookbook models.Cookbook, page uint64) models.CookbookView
+	ShareData    ShareData
 	ViewMode     models.ViewMode
 }
 
@@ -101,7 +102,7 @@ func NewViewRecipeData(id int64, recipe *models.Recipe, isFromHost, isShared boo
 		IsURL:       isURL(recipe.URL),
 		IsUUIDValid: isUUIDValid(recipe.Image),
 		Recipe:      recipe,
-		Share: shareData{
+		Share: ShareData{
 			IsFromHost: isFromHost,
 			IsShared:   isShared,
 		},
@@ -117,7 +118,7 @@ type ViewRecipeData struct {
 	IsURL          bool
 	IsUUIDValid    bool
 	Recipe         *models.Recipe
-	Share          shareData
+	Share          ShareData
 }
 
 func newFormattedTimes(times models.Times) formattedTimes {
@@ -165,7 +166,8 @@ type formattedTimes struct {
 	TotalDateTime string
 }
 
-type shareData struct {
+// ShareData holds information on the entity being shared.
+type ShareData struct {
 	IsFromHost bool
 	IsShared   bool
 }

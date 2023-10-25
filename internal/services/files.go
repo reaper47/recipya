@@ -27,6 +27,12 @@ import (
 	"time"
 )
 
+const (
+	fontFamily    = "Arial"
+	fontSizeBig   = 16
+	fontSizeSmall = 9
+)
+
 // NewFilesService creates a new Files that satisfies the FilesService interface.
 func NewFilesService() *Files {
 	return &Files{}
@@ -152,24 +158,22 @@ func exportRecipesPDF(recipes models.Recipes) []exportData {
 }
 
 func recipeToPDF(r *models.Recipe) []byte {
-	viewData := templates.NewViewRecipeData(1, r, true, false)
-
 	pdf := gofpdf.New("P", "mm", "Letter", "")
-
 	pdf.SetAuthor("Recipya user", true)
 	pdf.SetCreator("Recipya", false)
 	pdf.SetSubject(r.Name, true)
 	pdf.SetTitle(r.Name, true)
 	pdf.SetCreationDate(time.Now())
-	tr := pdf.UnicodeTranslatorFromDescriptor("")
+	addRecipeToPDF(pdf, r)
+	return pdfToBytes(pdf, r.Name)
+}
 
+func addRecipeToPDF(pdf *gofpdf.Fpdf, r *models.Recipe) *gofpdf.Fpdf {
+	viewData := templates.NewViewRecipeData(1, r, true, false)
+
+	tr := pdf.UnicodeTranslatorFromDescriptor("")
 	marginLeft, marginTop, marginRight, _ := pdf.GetMargins()
 	pageWidth, pageHeight := pdf.GetPageSize()
-	const (
-		fontFamily    = "Arial"
-		fontSizeBig   = 16
-		fontSizeSmall = 9
-	)
 
 	pdf.SetHeaderFunc(func() {
 		pdf.SetFont(fontFamily, "B", fontSizeBig)
@@ -179,10 +183,13 @@ func recipeToPDF(r *models.Recipe) []byte {
 	})
 
 	pdf.SetFooterFunc(func() {
+		if pdf.PageNo() == 1 {
+			return
+		}
 		pdf.SetY(-15)
 		pdf.SetFont(fontFamily, "I", fontSizeSmall-1)
 		pdf.SetTextColor(128, 128, 128)
-		pdf.CellFormat(0, 10, fmt.Sprintf("Page %d", pdf.PageNo()), "", 0, "C", false, 0, "")
+		pdf.CellFormat(0, 10, fmt.Sprintf("Page %d", pdf.PageNo()-1), "", 0, "C", false, 0, "")
 	})
 
 	pdf.SetFont(fontFamily, "", fontSizeSmall)
@@ -384,7 +391,7 @@ func recipeToPDF(r *models.Recipe) []byte {
 	}
 
 	// Instructions
-	pdf.SetPage(1)
+	pdf.SetPage(pdf.PageNo())
 	pdf.SetXY(marginLeft+pageWidth/3, ingredientsY)
 	pdf.SetFont(fontFamily, "B", fontSizeSmall)
 	pdf.CellFormat(0, 6, "Instructions", "", 1, "L", false, 0, "")
@@ -395,9 +402,10 @@ func recipeToPDF(r *models.Recipe) []byte {
 	_, f := pdf.GetPageSize()
 	for i, ins := range r.Instructions {
 		pdf.SetX(marginLeft + pageWidth/3)
-		if pdf.GetY() > f-100 {
+		if pdf.GetY() > f-15 {
+			pdf.AddPage()
 			pdf.SetXY(marginLeft+pageWidth/3, 9+marginTop)
-			pdf.SetPage(2)
+			pdf.SetPage(pdf.PageNo())
 			pdf.SetFont(fontFamily, "B", fontSizeSmall)
 			pdf.CellFormat(0, 7, "Instructions (continued)", "", 1, "L", false, 0, "")
 			pdf.SetFont(fontFamily, "", fontSizeSmall)
@@ -405,16 +413,9 @@ func recipeToPDF(r *models.Recipe) []byte {
 		}
 		pdf.MultiCell(2*pageWidth/3-2*marginRight, 5, tr(strconv.Itoa(i)+". "+ins), "", "L", false)
 	}
-	pdf.SetPage(2)
+	pdf.SetPage(pdf.PageNo())
 	pdf.Rect(marginLeft, marginTop, pageWidth-marginLeft-marginRight, pageHeight-3*marginTop, "D")
-
-	buf := &bytes.Buffer{}
-	err = pdf.Output(buf)
-	if err != nil {
-		log.Printf("could not create a pdf for %q", r.Name)
-		return []byte{}
-	}
-	return buf.Bytes()
+	return pdf
 }
 
 func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recipes {
@@ -551,6 +552,110 @@ func extractRecipe(rd io.Reader) (*models.Recipe, error) {
 		return nil, fmt.Errorf("rs.Recipe() err: %q", err)
 	}
 	return r, err
+}
+
+func (f *Files) ExportCookbook(cookbook models.Cookbook, fileType models.FileType) (string, error) {
+	buf := new(bytes.Buffer)
+
+	var tempFileName string
+	switch fileType {
+	case models.PDF:
+		export := exportCookbookToPDF(&cookbook)
+		_, err := buf.Write(export.data)
+		if err != nil {
+			return "", err
+		}
+		tempFileName = strings.Join(strings.Split(cookbook.Title, " "), "_") + "_*.pdf"
+	default:
+		return "", errors.New("unsupported export file type")
+	}
+
+	out, err := os.CreateTemp("", tempFileName)
+	if err != nil {
+		return "", err
+	}
+	defer out.Close()
+
+	_, err = out.Write(buf.Bytes())
+	if err != nil {
+		return "", err
+	}
+
+	return filepath.Base(out.Name()), nil
+}
+
+func exportCookbookToPDF(cookbook *models.Cookbook) exportData {
+	return exportData{
+		recipeName:  cookbook.Title,
+		recipeImage: cookbook.Image,
+		data:        cookbookToPDF(cookbook),
+	}
+}
+
+func cookbookToPDF(cookbook *models.Cookbook) []byte {
+	pdf := gofpdf.New("P", "mm", "Letter", "")
+	pdf.SetAuthor("Recipya user", true)
+	pdf.SetCreator("Recipya", false)
+	pdf.SetSubject(cookbook.Title, true)
+	pdf.SetTitle(cookbook.Title, true)
+	pdf.SetCreationDate(time.Now())
+
+	tr := pdf.UnicodeTranslatorFromDescriptor("")
+	marginLeft, marginTop, marginRight, _ := pdf.GetMargins()
+	pageWidth, pageHeight := pdf.GetPageSize()
+
+	pdf.SetFont(fontFamily, "", fontSizeSmall)
+	pdf.AddPage()
+	pdf.SetPage(1)
+	pdf.Rect(marginLeft, marginTop, pageWidth-marginLeft-marginRight, pageHeight-3*marginTop, "D")
+
+	pdf.SetXY(pageWidth/2-marginLeft-marginRight, pageHeight/4-marginTop)
+	pdf.SetFont(fontFamily, "B", fontSizeBig)
+	pdf.CellFormat(12, 6, tr(cookbook.Title), "", 1, "L", false, 0, "")
+
+	if cookbook.Image != uuid.Nil {
+		exe, err := os.Executable()
+		if err != nil {
+			return nil
+		}
+
+		imageFile := filepath.Join(filepath.Dir(exe), "data", "images", cookbook.Image.String()+".jpg")
+		pdf.ImageOptions(imageFile, pdf.GetX()+pageWidth/2-4*marginLeft, pdf.GetY()+marginTop, 0, 0, false, gofpdf.ImageOptions{ImageType: "JPG", ReadDpi: true}, 0, "")
+	}
+
+	pdf.SetXY(marginLeft+3, pageHeight-2.7*marginTop)
+	pdf.SetFont(fontFamily, "B", 10)
+	pdf.CellFormat(12, 6, "Dominant Categories: ", "", 1, "L", false, 0, "")
+	pdf.SetFont(fontFamily, "", 10)
+	pdf.SetXY(marginLeft*5.2, pageHeight-2.7*marginTop)
+	categories := strings.Join(cookbook.DominantCategories(5), ", ")
+	pdf.CellFormat(12, 6, tr(categories), "", 1, "L", false, 0, "")
+
+	pdf.SetXY(pageWidth-marginLeft*3.2, pageHeight-2.7*marginTop)
+	pdf.SetFont(fontFamily, "B", 10)
+	n := len(cookbook.Recipes)
+	s := " recipe"
+	if n > 1 {
+		s += "s"
+	}
+	numRecipes := strconv.Itoa(n) + s
+	pdf.CellFormat(12, 6, numRecipes, "", 1, "L", false, 0, "")
+	pdf.SetFont(fontFamily, "", fontSizeSmall)
+
+	for _, r := range cookbook.Recipes {
+		addRecipeToPDF(pdf, &r)
+	}
+	return pdfToBytes(pdf, cookbook.Title)
+}
+
+func pdfToBytes(pdf *gofpdf.Fpdf, name string) []byte {
+	buf := &bytes.Buffer{}
+	err := pdf.Output(buf)
+	if err != nil {
+		log.Printf("could not create a pdf for %q", name)
+		return []byte{}
+	}
+	return buf.Bytes()
 }
 
 func (f *Files) ReadTempFile(name string) ([]byte, error) {

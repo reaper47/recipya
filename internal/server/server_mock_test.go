@@ -21,7 +21,7 @@ func newServerTest() *server.Server {
 	repo := &mockRepository{
 		AuthTokens:             make([]models.AuthToken, 0),
 		RecipesRegistered:      make(map[int64]models.Recipes),
-		ShareLinks:             make(map[string]models.ShareRecipe),
+		ShareLinks:             make(map[string]models.Share),
 		UserSettingsRegistered: make(map[int64]*models.UserSettings),
 		UsersRegistered:        make([]models.User, 0),
 		UsersUpdated:           make([]int64, 0),
@@ -38,7 +38,7 @@ type mockRepository struct {
 	MeasurementSystemsFunc      func(userID int64) ([]units.System, models.UserSettings, error)
 	RecipeFunc                  func(id, userID int64) (*models.Recipe, error)
 	RecipesRegistered           map[int64]models.Recipes
-	ShareLinks                  map[string]models.ShareRecipe
+	ShareLinks                  map[string]models.Share
 	SwitchMeasurementSystemFunc func(system units.System, userID int64) error
 	UpdateCookbookImageFunc     func(id int64, image uuid.UUID, userID int64) error
 	UserSettingsRegistered      map[int64]*models.UserSettings
@@ -116,21 +116,37 @@ func (m *mockRepository) AddRecipe(r *models.Recipe, userID int64) (uint64, erro
 	return uint64(len(m.RecipesRegistered)), nil
 }
 
-func (m *mockRepository) AddShareLink(share models.ShareRecipe) (string, error) {
-	for _, recipes := range m.RecipesRegistered {
-		if slices.ContainsFunc(recipes, func(r models.Recipe) bool { return r.ID == share.RecipeID }) {
-			for link, s := range m.ShareLinks {
-				if s.RecipeID == share.RecipeID && s.UserID == share.UserID {
-					return link, nil
+func (m *mockRepository) AddShareLink(share models.Share) (string, error) {
+	if share.CookbookID != -1 {
+		for _, cookbooks := range m.CookbooksRegistered {
+			if slices.ContainsFunc(cookbooks, func(c models.Cookbook) bool { return c.ID == share.CookbookID }) {
+				for link, s := range m.ShareLinks {
+					if s.CookbookID == share.CookbookID && s.UserID == share.UserID {
+						return link, nil
+					}
 				}
-			}
 
-			link := "/r/33320755-82f9-47e5-bb0a-d1b55cbd3f7b"
-			m.ShareLinks[link] = share
-			return link, nil
+				link := "/c/33320755-82f9-47e5-bb0a-d1b55cbd3f7b"
+				m.ShareLinks[link] = share
+				return link, nil
+			}
+		}
+	} else if share.RecipeID != -1 {
+		for _, recipes := range m.RecipesRegistered {
+			if slices.ContainsFunc(recipes, func(r models.Recipe) bool { return r.ID == share.RecipeID }) {
+				for link, s := range m.ShareLinks {
+					if s.RecipeID == share.RecipeID && s.UserID == share.UserID {
+						return link, nil
+					}
+				}
+
+				link := "/r/33320755-82f9-47e5-bb0a-d1b55cbd3f7b"
+				m.ShareLinks[link] = share
+				return link, nil
+			}
 		}
 	}
-	return "", errors.New("recipe not found")
+	return "", errors.New("cookbook or recipe not found")
 }
 
 func (m *mockRepository) Categories(_ int64) ([]string, error) {
@@ -160,6 +176,38 @@ func (m *mockRepository) Cookbook(id, userID int64, _ uint64) (models.Cookbook, 
 	}
 
 	return cookbooks[i], nil
+}
+
+func (m *mockRepository) CookbookByID(id int64, userID int64) (models.Cookbook, error) {
+	return m.Cookbook(id, userID, 1)
+}
+
+func (m *mockRepository) CookbookRecipe(id int64, cookbookID int64) (recipe *models.Recipe, userID int64, err error) {
+	for userID, cookbooks := range m.CookbooksRegistered {
+		i := slices.IndexFunc(cookbooks, func(c models.Cookbook) bool {
+			return c.ID == cookbookID
+		})
+		if i == -1 {
+			continue
+		}
+
+		recipeI := slices.IndexFunc(cookbooks[i].Recipes, func(r models.Recipe) bool {
+			return r.ID == id
+		})
+		if recipeI == -1 {
+			break
+		}
+		return &cookbooks[i].Recipes[recipeI], userID, nil
+	}
+	return nil, -1, errors.New("recipe not found")
+}
+
+func (m *mockRepository) CookbookShared(id string) (*models.Share, error) {
+	share, ok := m.ShareLinks[id]
+	if !ok {
+		return nil, errors.New("link not found")
+	}
+	return &share, nil
 }
 
 func (m *mockRepository) Cookbooks(userID int64, _ uint64) ([]models.Cookbook, error) {
@@ -297,7 +345,7 @@ func (m *mockRepository) Recipes(userID int64) models.Recipes {
 	return models.Recipes{}
 }
 
-func (m *mockRepository) RecipeShared(link string) (*models.ShareRecipe, error) {
+func (m *mockRepository) RecipeShared(link string) (*models.Share, error) {
 	share, ok := m.ShareLinks[link]
 	if !ok {
 		return nil, errors.New("recipe not found")
@@ -565,6 +613,11 @@ type mockFiles struct {
 	ReadTempFileFunc    func(name string) ([]byte, error)
 	uploadImageHitCount int
 	uploadImageFunc     func(rc io.ReadCloser) (uuid.UUID, error)
+}
+
+func (m *mockFiles) ExportCookbook(cookbook models.Cookbook, fileType models.FileType) (string, error) {
+	m.exportHitCount++
+	return cookbook.Title + fileType.Ext(), nil
 }
 
 func (m *mockFiles) ExportRecipes(recipes models.Recipes, _ models.FileType) (string, error) {
