@@ -31,6 +31,8 @@ func TestHandlers_Recipes(t *testing.T) {
 		want := []string{
 			`<title hx-swap-oob="true">Home | Recipya</title>`,
 			`<div class="grid place-content-center text-sm h-full text-center md:text-base"><p>Your recipe collection looks a bit empty at the moment.</p><p> Why not start adding some of your favorite recipes by clicking the <a class="underline font-semibold cursor-pointer" hx-get="/recipes/add" hx-target="#content" hx-push-url="true">Add recipe</a> button at the top? </p></div>`,
+			`<li id="recipes-sidebar-recipes" class="recipes-sidebar-selected" hx-get="/recipes" hx-target="#content" hx-push-url="true" hx-swap-oob="true"><img src="/static/img/cherries.svg" alt=""><span class="hidden md:block ml-1">Recipes</span></li>`,
+			`<li id="recipes-sidebar-cookbooks" class="recipes-sidebar-not-selected" hx-get="/cookbooks" hx-target="#content" hx-push-url="true" hx-swap-oob="true"><img src="/static/img/cookbook.svg" alt=""><span class="hidden md:block ml-1">Cookbooks</span></li>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
@@ -457,8 +459,8 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 
 	t.Run("add recipe from supported website error", func(t *testing.T) {
 		repo := &mockRepository{RecipesRegistered: make(map[int64]models.Recipes)}
-		repo.AddRecipeFunc = func(r *models.Recipe, userID int64) (int64, error) {
-			return -1, errors.New("add recipe error")
+		repo.AddRecipeFunc = func(r *models.Recipe, userID int64) (uint64, error) {
+			return 0, errors.New("add recipe error")
 		}
 		srv.Repository = repo
 
@@ -471,7 +473,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 	t.Run("add recipe from a supported website", func(t *testing.T) {
 		repo := &mockRepository{RecipesRegistered: make(map[int64]models.Recipes)}
 		called := 0
-		repo.AddRecipeFunc = func(r *models.Recipe, userID int64) (int64, error) {
+		repo.AddRecipeFunc = func(r *models.Recipe, userID int64) (uint64, error) {
 			called += 1
 			return 1, nil
 		}
@@ -833,7 +835,9 @@ func TestHandlers_Recipes_Scale(t *testing.T) {
 func TestHandlers_Recipes_Share(t *testing.T) {
 	srv := newServerTest()
 
-	uri := "/recipes/%d/share"
+	uri := func(id int64) string {
+		return fmt.Sprintf("/recipes/%d/share", id)
+	}
 
 	app.Config.URL = "https://www.recipya.com"
 	recipe := &models.Recipe{
@@ -865,21 +869,21 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 		Yield: 2,
 	}
 	_, _ = srv.Repository.AddRecipe(recipe, 1)
-	link, _ := srv.Repository.AddShareLink(models.ShareRecipe{RecipeID: 1, UserID: 1})
+	link, _ := srv.Repository.AddShareLink(models.Share{RecipeID: 1, CookbookID: -1, UserID: 1})
 
 	t.Run("create valid share link", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, fmt.Sprintf(uri, 1), noHeader, nil)
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri(1), noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
-			`<input type="url" value="example.com` + link + `" class="w-full rounded-lg bg-gray-100 px-4 py-2" readonly="readonly">`,
+			`<input type="url" value="example.com/r/33320755-82f9-47e5-bb0a-d1b55cbd3f7b" class="w-full rounded-lg bg-gray-100 px-4 py-2" readonly="readonly">`,
 			`<button class="w-24 font-semibold p-2 bg-gray-300 rounded-lg hover:bg-gray-400" title="Copy to clipboard" _="on click if window.navigator.clipboard then call navigator.clipboard.writeText('example.com/r/33320755-82f9-47e5-bb0a-d1b55cbd3f7b') then put 'Copied!' into me then add @title='Copied to clipboard!' then toggle @disabled on me then toggle .cursor-not-allowed .bg-green-600 .text-white .hover:bg-gray-400 on me else call alert('Your browser does not support the clipboard feature. Please copy the link manually.') end"> Copy </button>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
 
 	t.Run("create invalid share link", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, fmt.Sprintf(uri, 10), noHeader, nil)
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri(10), noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
 		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Failed to create share link.\",\"backgroundColor\":\"bg-red-500\"}"}`)

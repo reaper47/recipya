@@ -16,11 +16,17 @@ type RepositoryService interface {
 	// AddAuthToken adds an authentication token to the database.
 	AddAuthToken(selector, validator string, userID int64) error
 
+	// AddCookbook adds a cookbook to the database.
+	AddCookbook(title string, userID int64) (int64, error)
+
+	// AddCookbookRecipe adds a recipe to the cookbook.
+	AddCookbookRecipe(cookbookID, recipeID, userID int64) error
+
 	// AddRecipe adds a recipe to the user's collection.
-	AddRecipe(r *models.Recipe, userID int64) (int64, error)
+	AddRecipe(r *models.Recipe, userID int64) (uint64, error)
 
 	// AddShareLink adds a share link for the recipe.
-	AddShareLink(share models.ShareRecipe) (string, error)
+	AddShareLink(share models.Share) (string, error)
 
 	// Categories gets all categories in the database.
 	Categories(userID int64) ([]string, error)
@@ -28,11 +34,36 @@ type RepositoryService interface {
 	// Confirm confirms the user's account.
 	Confirm(userID int64) error
 
+	// Cookbook gets a cookbook belonging to a user.
+	Cookbook(id, userID int64, page uint64) (models.Cookbook, error)
+
+	// CookbookByID gets a cookbook by its ID.
+	CookbookByID(id, userID int64) (models.Cookbook, error)
+
+	// CookbookRecipe gets a recipe from a cookbook.
+	CookbookRecipe(id, cookbookID int64) (recipe *models.Recipe, userID int64, err error)
+
+	// CookbookShared checks whether the cookbook is shared.
+	// It returns a models.Share. Otherwise, an error.
+	CookbookShared(id string) (*models.Share, error)
+
+	// Cookbooks gets a limited number of cookbooks belonging to the user.
+	Cookbooks(userID int64, page uint64) ([]models.Cookbook, error)
+
+	// Counts gets the models.Counts for the user.
+	Counts(userID int64) (models.Counts, error)
+
 	// DeleteAuthToken removes an authentication token from the database.
 	DeleteAuthToken(userID int64) error
 
+	// DeleteCookbook deletes a user's cookbook.
+	DeleteCookbook(id, userID int64) error
+
 	// DeleteRecipe deletes a user's recipe. It returns the number of rows affected.
 	DeleteRecipe(id, userID int64) (int64, error)
+
+	// DeleteRecipeFromCookbook deletes a recipe from a cookbook. It returns the number of recipes in the cookbook.
+	DeleteRecipeFromCookbook(recipeID, cookbookID uint64, userID int64) (int64, error)
 
 	// GetAuthToken gets a non-expired auth token by the selector.
 	GetAuthToken(selector, validator string) (models.AuthToken, error)
@@ -53,8 +84,8 @@ type RepositoryService interface {
 	Recipes(userID int64) models.Recipes
 
 	// RecipeShared checks whether the recipe is shared.
-	// It returns a models.ShareRecipe. Otherwise, an error.
-	RecipeShared(id string) (*models.ShareRecipe, error)
+	// It returns a models.Share. Otherwise, an error.
+	RecipeShared(id string) (*models.Share, error)
 
 	// RecipeUser gets the user for which the recipe belongs to.
 	RecipeUser(recipeID int64) int64
@@ -62,17 +93,29 @@ type RepositoryService interface {
 	// Register adds a new user to the store.
 	Register(email string, hashPassword auth.HashedPassword) (int64, error)
 
+	// ReorderCookbookRecipes reorders the recipe indices of a cookbook.
+	ReorderCookbookRecipes(cookbookID int64, recipeIDs []uint64, userID int64) error
+
+	// SearchRecipes searches for recipes based on the configuration.
+	SearchRecipes(query string, options models.SearchOptionsRecipes, userID int64) (models.Recipes, error)
+
 	// SwitchMeasurementSystem sets the user's units system to the desired one.
 	SwitchMeasurementSystem(system units.System, userID int64) error
 
 	// UpdateConvertMeasurementSystem updates the user's convert automatically setting.
 	UpdateConvertMeasurementSystem(userID int64, isEnabled bool) error
 
+	// UpdateCookbookImage updates the image of a user's cookbook.
+	UpdateCookbookImage(id int64, image uuid.UUID, userID int64) error
+
 	// UpdatePassword updates the user's password.
 	UpdatePassword(userID int64, hashedPassword auth.HashedPassword) error
 
 	// UpdateRecipe updates the recipe with its new values.
 	UpdateRecipe(updatedRecipe *models.Recipe, userID int64, recipeNum int64) error
+
+	// UpdateUserSettingsCookbooksViewMode updates the user's preferred cookbooks viewing mode.
+	UpdateUserSettingsCookbooksViewMode(userID int64, mode models.ViewMode) error
 
 	// UserID gets the user's id from the email. It returns -1 if user not found.
 	UserID(email string) int64
@@ -102,7 +145,11 @@ type EmailService interface {
 
 // FilesService is the interface that describes the methods required for manipulating files.
 type FilesService interface {
-	// ExportRecipes creates a zip containing the recipes to export in the given file type.
+	// ExportCookbook exports the cookbook in the desired file type.
+	// It returns the name of file in the temporary directory.
+	ExportCookbook(cookbook models.Cookbook, fileType models.FileType) (string, error)
+
+	// ExportRecipes creates a zip containing the recipes to export in the desired file type.
 	// It returns the name of file in the temporary directory.
 	ExportRecipes(recipes models.Recipes, fileType models.FileType) (string, error)
 

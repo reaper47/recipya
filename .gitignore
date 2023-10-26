@@ -1,4 +1,5 @@
 bin/
+coverage.html
 docs/website/static/img/.cache.json
 releases/nightly
 scripts/sponsors/.env

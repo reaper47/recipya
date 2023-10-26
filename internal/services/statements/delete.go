@@ -6,6 +6,20 @@ const DeleteAuthToken = `
 	FROM auth_tokens
 	WHERE user_id = ?`
 
+// DeleteCookbook is the query to delete a user's cookbook.
+const DeleteCookbook = `
+	DELETE
+	FROM cookbooks
+	WHERE id = ?
+		AND user_id = ?`
+
+// DeleteCookbookRecipe is the query to delete a recipe from a user's cookbook.
+const DeleteCookbookRecipe = `
+	DELETE
+	FROM cookbook_recipes
+	WHERE cookbook_id = (SELECT id FROM cookbooks WHERE id = ? AND user_id = ?)
+		AND recipe_id = ?`
+
 // DeleteRecipe is the query to delete a user's recipe and the recipe itself.
 const DeleteRecipe = `
 	DELETE

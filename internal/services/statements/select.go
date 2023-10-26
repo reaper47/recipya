@@ -1,5 +1,11 @@
 package statements
 
+import (
+	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/templates"
+	"strings"
+)
+
 // IsRecipeForUserExist checks whether the recipe belongs to the given user.
 const IsRecipeForUserExist = `
 	SELECT EXISTS(
@@ -29,15 +35,87 @@ const SelectCategories = `
 	WHERE uc.user_id = ?
 	ORDER BY name`
 
-// SelectCuisineID is the query to get the ID of the specified cuisine.
-const SelectCuisineID = `
-	SELECT id 
-	FROM cuisines 
-	WHERE name = ?`
+// SelectCookbook is the query to get a user's cookbook.
+const SelectCookbook = `
+	SELECT c.id, c.title, c.count
+	FROM cookbooks AS c
+	WHERE id = (SELECT id
+				 FROM (SELECT id, ROW_NUMBER() OVER (ORDER BY id) AS row_num
+					   FROM cookbooks
+					   WHERE user_id = ?)
+				 WHERE row_num > (? - 1) *` + templates.ResultsPerPageStr + " + ?)"
 
-// SelectRecipeCount is the query to get the number of recipes belonging to the user.
-const SelectRecipeCount = `
-	SELECT recipes
+// SelectCookbookByID is the query to get a user's cookbook by cookbook ID.
+const SelectCookbookByID = `
+	SELECT c.id, c.title, c.image, c.count
+	FROM cookbooks AS c
+	WHERE id = ?
+		AND user_id = ?`
+
+// SelectCookbookExists is the query to verify whether the cookbook belongs to the user.
+const SelectCookbookExists = `
+	SELECT EXISTS (SELECT c.id
+				   FROM cookbooks AS c
+				   WHERE id = ?
+					 AND user_id = ?)`
+
+// SelectCookbookRecipeExists is the query to verify whether the recipe and the cookbook belongs to a user.
+const SelectCookbookRecipeExists = `
+	SELECT EXISTS (SELECT c.id
+				   FROM cookbooks AS c
+							JOIN user_recipe AS ur ON c.user_id = ur.user_id
+				   WHERE c.id = ?
+					 AND c.user_id = ?
+					 AND ur.recipe_id = ?);`
+
+// SelectCookbookRecipe is the query to fetch a recipe from a cookbook.
+const SelectCookbookRecipe = baseSelectRecipe + `
+	JOIN cookbook_recipes AS cr ON recipes.id = cr.recipe_id
+	WHERE cr.cookbook_id = ?
+		AND cr.recipe_id = ?
+	GROUP BY recipes.id`
+
+// SelectCookbookRecipes is the query to fetch the recipes in a cookbook.
+const SelectCookbookRecipes = baseSelectRecipe + `
+	JOIN cookbook_recipes AS cr ON recipes.id = cr.recipe_id
+	WHERE cr.cookbook_id = ?
+	GROUP BY recipes.id
+	ORDER BY cr.order_index`
+
+// SelectCookbookShared is the query to get a shared cookbook link.
+const SelectCookbookShared = `
+	SELECT cookbook_id, user_id
+	FROM share_cookbooks
+	WHERE link = ?`
+
+// SelectCookbookSharedLink is the query to get the link of a shared cookbook.
+const SelectCookbookSharedLink = `
+	SELECT link 
+	FROM share_cookbooks
+	WHERE cookbook_id = ?
+		AND user_id = ?`
+
+// SelectCookbookUser is the query to get the ID of the user who has the cookbook ID.
+const SelectCookbookUser = `
+	SELECT user_id
+	FROM cookbooks
+	WHERE id = ?`
+
+// SelectCookbooks is the query to get a limited number of cookbooks belonging to the user.
+var SelectCookbooks = `
+	SELECT id, image, title, count
+	FROM cookbooks
+	WHERE id >= (SELECT id
+				 FROM (SELECT id, ROW_NUMBER() OVER (ORDER BY id) AS row_num
+					   FROM cookbooks
+					   WHERE user_id = ?)
+				 WHERE row_num > (? - 1) *` + templates.ResultsPerPageStr + " + " + templates.ResultsPerPageStr + `)
+		AND user_id = ?
+	LIMIT ` + templates.ResultsPerPageStr
+
+// SelectCounts is the query to get the number of recipes and cookbooks belonging to the user.
+const SelectCounts = `
+	SELECT cookbooks, recipes
 	FROM counts 
 	WHERE user_id = ?`
 
@@ -45,6 +123,12 @@ const SelectRecipeCount = `
 const SelectCountWebsites = `
 	SELECT COUNT(id)
 	FROM websites`
+
+// SelectCuisineID is the query to get the ID of the specified cuisine.
+const SelectCuisineID = `
+	SELECT id 
+	FROM cuisines 
+	WHERE name = ?`
 
 // SelectMeasurementSystems fetches the units systems along with the user's selected system and settings.
 const SelectMeasurementSystems = `
@@ -120,6 +204,33 @@ const SelectRecipe = baseSelectRecipe + `
 							  WHERE user_id = ?) AS t
 						WHERE row_num = ?)`
 
+// BuildSearchRecipeQuery builds a SQL query for searching recipes.
+func BuildSearchRecipeQuery(queries []string, options models.SearchOptionsRecipes) string {
+	var sb strings.Builder
+	sb.WriteString(baseSelectRecipe)
+	sb.WriteString(" WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ?")
+
+	n := len(queries)
+	if n > 0 {
+		sb.WriteString(" AND ")
+		if options.ByName {
+			switch n {
+			case 1:
+				sb.WriteString("(name MATCH ?)")
+			default:
+				sb.WriteString("(name MATCH ?")
+				for _ = range queries[1:] {
+					sb.WriteString(" AND name MATCH ?")
+				}
+				sb.WriteString(")")
+			}
+		}
+	}
+
+	sb.WriteString(" ORDER BY rank) GROUP BY recipes.id LIMIT 30")
+	return sb.String()
+}
+
 // SelectRecipes is the query to fetch all the user's recipes.
 const SelectRecipes = baseSelectRecipe + `
 	WHERE recipes.id IN (SELECT recipe_id FROM user_recipe WHERE user_id = ?)
@@ -128,7 +239,7 @@ const SelectRecipes = baseSelectRecipe + `
 // SelectRecipeShared checks whether the recipe is shared.
 const SelectRecipeShared = `
 	SELECT recipe_id, user_id
-	FROM share
+	FROM share_recipes
 	WHERE link = ?`
 
 // SelectRecipeUser fetches the user whose recipe belongs to.
@@ -159,7 +270,7 @@ const SelectUserID = `
 
 // SelectUserSettings is the query to fetch a user's settings.
 const SelectUserSettings = `
-	SELECT MS.name, convert_automatically
+	SELECT MS.name, convert_automatically, cookbooks_view
 	FROM user_settings
 	JOIN measurement_systems MS on MS.id = measurement_system_id
 	WHERE user_id = ?`

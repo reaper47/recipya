@@ -6,6 +6,19 @@ const UpdateConvertAutomatically = `
 	SET convert_automatically = ?
 	WHERE user_id = ?`
 
+// UpdateCookbookImage is the query to update the image of a user's cookbook.
+const UpdateCookbookImage = `
+UPDATE cookbooks
+	SET image = ?
+	WHERE user_id = ?
+	 AND id = ?`
+
+const UpdateCookbookRecipesReorder = `
+	UPDATE cookbook_recipes
+	SET order_index = ?
+	WHERE cookbook_id = ?
+		AND recipe_id = ?`
+
 // UpdateIsConfirmed sets the user's account confirmed to true.
 const UpdateIsConfirmed = `
 	UPDATE users
@@ -55,3 +68,9 @@ const UpdateRecipeTimes = `
 	UPDATE time_recipe
 	SET time_id = ?
 	WHERE recipe_id = ?`
+
+// UpdateUserSettingsCookbooksViewMode is the query to update the cookbooks_view column of a user's settings.
+const UpdateUserSettingsCookbooksViewMode = `
+	UPDATE user_settings
+	SET cookbooks_view = ?
+	WHERE user_id = ?`

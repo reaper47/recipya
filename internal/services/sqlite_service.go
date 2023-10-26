@@ -17,6 +17,7 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -87,23 +88,56 @@ func (s *SQLiteService) AddAuthToken(selector, validator string, userID int64) e
 	return err
 }
 
-func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error) {
+func (s *SQLiteService) AddCookbook(title string, userID int64) (int64, error) {
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	var id int64
+	err := s.DB.QueryRowContext(ctx, statements.InsertCookbook, title, userID).Scan(&id)
+	return id, err
+}
+
+func (s *SQLiteService) AddCookbookRecipe(cookbookID, recipeID, userID int64) error {
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	var exists int64
+	err := s.DB.QueryRowContext(ctx, statements.SelectCookbookRecipeExists, cookbookID, userID, recipeID).Scan(&exists)
+	if err != nil {
+		return err
+	}
+
+	if exists == 0 {
+		return errors.New("recipe or cookbook does not belong to the user")
+	}
+
+	_, err = s.DB.ExecContext(ctx, statements.InsertCookbookRecipe, cookbookID, recipeID, cookbookID, userID)
+	return err
+}
+
+func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (uint64, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
 	var isRecipeExists bool
 	err := s.DB.QueryRowContext(ctx, statements.IsRecipeForUserExist, userID, r.Name, r.Description, r.Yield, r.URL).Scan(&isRecipeExists)
 	if err != nil {
-		return -1, err
+		return 0, err
 	}
 
 	if isRecipeExists {
-		return -1, fmt.Errorf("recipe '%s' exists for user %d", r.Name, userID)
+		return 0, fmt.Errorf("recipe '%s' exists for user %d", r.Name, userID)
 	}
 
 	settings, err := s.UserSettings(userID)
 	if err != nil {
-		return -1, err
+		return 0, err
 	}
 
 	if settings.ConvertAutomatically {
@@ -115,7 +149,7 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error)
 
 	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{})
 	if err != nil {
-		return -1, err
+		return 0, err
 	}
 	defer tx.Rollback()
 
@@ -123,66 +157,66 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error)
 	var recipeID int64
 	err = tx.QueryRowContext(ctx, statements.InsertRecipe, r.Name, r.Description, r.Image, r.Yield, r.URL).Scan(&recipeID)
 	if err != nil {
-		return -1, err
+		return 0, err
 	}
 	r.ID = recipeID
 
 	_, err = tx.ExecContext(ctx, statements.InsertUserRecipe, userID, recipeID)
 	if err != nil {
-		return -1, err
+		return 0, err
 	}
 
 	// Insert category
 	var categoryID int64
 	err = tx.QueryRowContext(ctx, statements.InsertCategory, r.Category, userID).Scan(&categoryID)
 	if err != nil {
-		return -1, err
+		return 0, err
 	}
 
 	_, err = tx.ExecContext(ctx, statements.InsertRecipeCategory, categoryID, recipeID)
 	if err != nil {
-		return -1, err
+		return 0, err
 	}
 
 	_, err = tx.ExecContext(ctx, statements.InsertUserCategory, userID, categoryID)
 	if err != nil {
-		return -1, err
+		return 0, err
 	}
 
 	// Insert cuisine
 	_, err = tx.ExecContext(ctx, statements.InsertCuisine, r.Cuisine, userID)
 	if err != nil {
-		return -1, err
+		return 0, err
 	}
 
 	var cuisineID int64
 	err = tx.QueryRowContext(ctx, statements.SelectCuisineID, r.Cuisine).Scan(&cuisineID)
 	if errors.Is(err, sql.ErrNoRows) {
-		return -1, err
+		return 0, err
 	}
 
 	_, err = tx.ExecContext(ctx, statements.InsertRecipeCuisine, cuisineID, recipeID)
 	if err != nil {
-		return -1, err
+		return 0, err
 	}
 
 	// Insert nutrition
 	n := r.Nutrition
 	_, err = tx.ExecContext(ctx, statements.InsertNutrition, recipeID, n.Calories, n.TotalCarbohydrates, n.Sugars, n.Protein, n.TotalFat, n.SaturatedFat, n.UnsaturatedFat, n.Cholesterol, n.Sodium, n.Fiber)
 	if err != nil {
-		return -1, err
+		return 0, err
 	}
 
 	// Insert times
 	var timesID int64
 	err = tx.QueryRowContext(ctx, statements.InsertTimes, int64(r.Times.Prep.Seconds()), int64(r.Times.Cook.Seconds())).Scan(&timesID)
 	if err != nil {
-		return -1, err
+		return 0, err
 	}
 
 	_, err = tx.ExecContext(ctx, statements.InsertRecipeTime, timesID, recipeID)
 	if err != nil {
-		return -1, err
+		return 0, err
 	}
 
 	// Insert keywords
@@ -190,12 +224,12 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error)
 		var keywordID int64
 		err := tx.QueryRowContext(ctx, statements.InsertKeyword, keyword).Scan(&keywordID)
 		if err != nil {
-			return -1, err
+			return 0, err
 		}
 
 		_, err = tx.ExecContext(ctx, statements.InsertRecipeKeyword, keywordID, recipeID)
 		if err != nil {
-			return -1, err
+			return 0, err
 		}
 	}
 
@@ -204,12 +238,12 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error)
 		var instructionID int64
 		err := tx.QueryRowContext(ctx, statements.InsertInstruction, instruction).Scan(&instructionID)
 		if err != nil {
-			return -1, err
+			return 0, err
 		}
 
 		_, err = tx.ExecContext(ctx, statements.InsertRecipeInstruction, instructionID, recipeID, i)
 		if err != nil {
-			return -1, err
+			return 0, err
 		}
 	}
 
@@ -219,12 +253,12 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error)
 		ingredient = units.ReplaceDecimalFractions(ingredient)
 		err := tx.QueryRowContext(ctx, statements.InsertIngredient, ingredient).Scan(&ingredientID)
 		if err != nil {
-			return -1, err
+			return 0, err
 		}
 
 		_, err = tx.ExecContext(ctx, statements.InsertRecipeIngredient, ingredientID, recipeID, i)
 		if err != nil {
-			return -1, err
+			return 0, err
 		}
 	}
 
@@ -233,28 +267,66 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error)
 		var toolID int64
 		err := tx.QueryRowContext(ctx, statements.InsertTool, tool).Scan(&toolID)
 		if err != nil {
-			return -1, err
+			return 0, err
 		}
 		_, err = tx.ExecContext(ctx, statements.InsertRecipeTool, toolID, recipeID)
 		if err != nil {
-			return -1, err
+			return 0, err
 		}
 	}
 
-	var count int64
-	err = tx.QueryRowContext(ctx, statements.SelectRecipeCount, userID).Scan(&count)
-	return count, tx.Commit()
+	var counts models.Counts
+	err = tx.QueryRowContext(ctx, statements.SelectCounts, userID).Scan(&counts.Cookbooks, &counts.Recipes)
+	if err != nil {
+		return 0, err
+	}
+
+	_, err = tx.ExecContext(ctx, statements.InsertRecipeShadow, recipeID, r.Name, r.Description)
+	if err != nil {
+		return 0, err
+	}
+	return counts.Recipes, tx.Commit()
 }
 
-func (s *SQLiteService) AddShareLink(share models.ShareRecipe) (string, error) {
+func (s *SQLiteService) AddShareLink(share models.Share) (string, error) {
 	s.Mutex.Lock()
 	defer s.Mutex.Unlock()
 
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
-	link := "/r/" + uuid.New().String()
-	_, err := s.DB.ExecContext(ctx, statements.InsertShareLink, link, share.RecipeID, share.UserID)
+	var (
+		stmt string
+		link string
+		id   int64
+	)
+	if share.CookbookID > -1 {
+		err := s.DB.QueryRowContext(ctx, statements.SelectCookbookSharedLink, share.CookbookID, share.UserID).Scan(&link)
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			var exists int64
+			err = s.DB.QueryRowContext(ctx, statements.SelectCookbookExists, share.CookbookID, share.UserID).Scan(&exists)
+			if err != nil {
+				return "", err
+			}
+
+			if exists == 0 {
+				return "", errors.New("cookbook does not belong to user")
+			}
+
+			stmt = statements.InsertShareLinkCookbook
+			link = "/c/" + uuid.New().String()
+			id = share.CookbookID
+		default:
+			return link, nil
+		}
+	} else {
+		stmt = statements.InsertShareLink
+		link = "/r/" + uuid.New().String()
+		id = share.RecipeID
+	}
+
+	_, err := s.DB.ExecContext(ctx, stmt, link, id, share.UserID)
 	return link, err
 }
 
@@ -303,6 +375,104 @@ func (s *SQLiteService) Confirm(userID int64) error {
 	return nil
 }
 
+func (s *SQLiteService) Cookbook(id, userID int64, page uint64) (models.Cookbook, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	c := models.Cookbook{ID: id}
+	err := s.DB.QueryRowContext(ctx, statements.SelectCookbook, userID, page, id-1).Scan(&c.ID, &c.Title, &c.Count)
+	if err != nil {
+		return c, err
+	}
+
+	rows, err := s.DB.QueryContext(ctx, statements.SelectCookbookRecipes, c.ID)
+	if err != nil {
+		return c, err
+	}
+	defer rows.Close()
+
+	c.Recipes = scanRecipes(rows)
+	return c, err
+}
+
+func (s *SQLiteService) CookbookByID(id, userID int64) (models.Cookbook, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	var c models.Cookbook
+	err := s.DB.QueryRowContext(ctx, statements.SelectCookbookByID, id, userID).Scan(&c.ID, &c.Title, &c.Image, &c.Count)
+	if err != nil {
+		return models.Cookbook{}, err
+	}
+
+	rows, err := s.DB.QueryContext(ctx, statements.SelectCookbookRecipes, id)
+	if err != nil {
+		return models.Cookbook{}, err
+	}
+	defer rows.Close()
+
+	var recipes models.Recipes
+	for rows.Next() {
+		r, err := scanRecipe(rows)
+		if err != nil {
+			return models.Cookbook{}, err
+		}
+		recipes = append(recipes, *r)
+	}
+
+	c.Recipes = recipes
+	return c, nil
+}
+
+func (s *SQLiteService) CookbookRecipe(id, cookbookID int64) (recipe *models.Recipe, userID int64, err error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	err = s.DB.QueryRowContext(ctx, statements.SelectCookbookUser, cookbookID).Scan(&userID)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	row := s.DB.QueryRowContext(ctx, statements.SelectCookbookRecipe, cookbookID, id)
+	recipe, err = scanRecipe(row)
+	return recipe, userID, err
+}
+
+func (s *SQLiteService) CookbookShared(link string) (*models.Share, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	var share models.Share
+	err := s.DB.QueryRowContext(ctx, statements.SelectCookbookShared, link).Scan(&share.CookbookID, &share.UserID)
+	if err != nil {
+		return nil, err
+	}
+	return &share, nil
+}
+
+func (s *SQLiteService) Cookbooks(userID int64, page uint64) ([]models.Cookbook, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	rows, err := s.DB.QueryContext(ctx, statements.SelectCookbooks, userID, page-1, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var cookbooks []models.Cookbook
+	for rows.Next() {
+		c := models.Cookbook{}
+		// TODO: Fetch recipes
+		err := rows.Scan(&c.ID, &c.Image, &c.Title, &c.Count)
+		if err != nil {
+			return nil, err
+		}
+		cookbooks = append(cookbooks, c)
+	}
+	return cookbooks, nil
+}
+
 func (s *SQLiteService) DeleteAuthToken(userID int64) error {
 	s.Mutex.Lock()
 	defer s.Mutex.Unlock()
@@ -314,12 +484,49 @@ func (s *SQLiteService) DeleteAuthToken(userID int64) error {
 	return err
 }
 
-func (s *SQLiteService) DeleteRecipe(id, userID int64) (int64, error) {
+func (s *SQLiteService) Counts(userID int64) (models.Counts, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	var counts models.Counts
+	err := s.DB.QueryRowContext(ctx, statements.SelectCounts, userID).Scan(&counts.Cookbooks, &counts.Recipes)
+	return counts, err
+}
+
+func (s *SQLiteService) DeleteCookbook(id, userID int64) error {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
 	s.Mutex.Lock()
 	defer s.Mutex.Unlock()
 
+	_, err := s.DB.ExecContext(ctx, statements.DeleteCookbook, id, userID)
+	return err
+}
+
+func (s *SQLiteService) DeleteRecipeFromCookbook(recipeID, cookbookID uint64, userID int64) (int64, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
+
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	_, err := s.DB.ExecContext(ctx, statements.DeleteCookbookRecipe, cookbookID, userID, recipeID)
+	if err != nil {
+		return -1, err
+	}
+
+	var c models.Cookbook
+	err = s.DB.QueryRowContext(ctx, statements.SelectCookbookByID, cookbookID, userID).Scan(&c.ID, &c.Title, &c.Image, &c.Count)
+	return c.Count, err
+}
+
+func (s *SQLiteService) DeleteRecipe(id, userID int64) (int64, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
 
 	result, err := s.DB.ExecContext(ctx, statements.DeleteRecipe, userID, id)
 	if err != nil {
@@ -421,6 +628,32 @@ func (s *SQLiteService) Recipes(userID int64) models.Recipes {
 	}
 	defer rows.Close()
 
+	return scanRecipes(rows)
+}
+
+func (s *SQLiteService) SearchRecipes(query string, options models.SearchOptionsRecipes, userID int64) (models.Recipes, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	queries := strings.Split(query, " ")
+	stmt := statements.BuildSearchRecipeQuery(queries, options)
+
+	xa := make([]any, len(queries)+1)
+	xa[0] = userID
+	for i, q := range queries {
+		xa[i+1] = q + "*"
+	}
+	queries = append([]string{strconv.FormatInt(userID, 10)}, queries...)
+	rows, err := s.DB.QueryContext(ctx, stmt, xa...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	return scanRecipes(rows), nil
+}
+
+func scanRecipes(rows *sql.Rows) models.Recipes {
 	var recipes models.Recipes
 	for rows.Next() {
 		r, err := scanRecipe(rows)
@@ -466,11 +699,11 @@ func scanRecipe(sc scanner) (*models.Recipe, error) {
 	return &r, nil
 }
 
-func (s *SQLiteService) RecipeShared(link string) (*models.ShareRecipe, error) {
+func (s *SQLiteService) RecipeShared(link string) (*models.Share, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
-	var share models.ShareRecipe
+	var share models.Share
 	err := s.DB.QueryRowContext(ctx, statements.SelectRecipeShared, link).Scan(&share.RecipeID, &share.UserID)
 	if err != nil {
 		return nil, err
@@ -497,6 +730,36 @@ func (s *SQLiteService) Register(email string, hashedPassword auth.HashedPasswor
 	var userID int64
 	err := s.DB.QueryRowContext(ctx, statements.InsertUser, email, hashedPassword).Scan(&userID)
 	return userID, err
+}
+
+func (s *SQLiteService) ReorderCookbookRecipes(cookbookID int64, recipeIDs []uint64, userID int64) error {
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{})
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	for i, recipeID := range recipeIDs {
+		var exists int64
+		err := s.DB.QueryRowContext(ctx, statements.SelectCookbookRecipeExists, cookbookID, userID, recipeID).Scan(&exists)
+		if err != nil {
+			return err
+		}
+
+		if exists == 1 {
+			_, err = tx.ExecContext(ctx, statements.UpdateCookbookRecipesReorder, i, cookbookID, recipeID)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return tx.Commit()
 }
 
 func (s *SQLiteService) SwitchMeasurementSystem(system units.System, userID int64) error {
@@ -821,6 +1084,28 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 	return tx.Commit()
 }
 
+func (s *SQLiteService) UpdateCookbookImage(id int64, image uuid.UUID, userID int64) error {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	_, err := s.DB.ExecContext(ctx, statements.UpdateCookbookImage, image, userID, id)
+	return err
+}
+
+func (s *SQLiteService) UpdateUserSettingsCookbooksViewMode(userID int64, mode models.ViewMode) error {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	_, err := s.DB.ExecContext(ctx, statements.UpdateUserSettingsCookbooksViewMode, mode, userID)
+	return err
+}
+
 func (s *SQLiteService) UserID(email string) int64 {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
@@ -839,10 +1124,12 @@ func (s *SQLiteService) UserSettings(userID int64) (models.UserSettings, error) 
 
 	var (
 		convertAutomatically int64
+		cookbooksViewMode    int64
 		measurementSystem    string
 	)
-	err := s.DB.QueryRowContext(ctx, statements.SelectUserSettings, userID).Scan(&measurementSystem, &convertAutomatically)
+	err := s.DB.QueryRowContext(ctx, statements.SelectUserSettings, userID).Scan(&measurementSystem, &convertAutomatically, &cookbooksViewMode)
 	return models.UserSettings{
+		CookbooksViewMode:    models.ViewModeFromInt(cookbooksViewMode),
 		ConvertAutomatically: convertAutomatically == 1,
 		MeasurementSystem:    units.NewSystem(measurementSystem),
 	}, err

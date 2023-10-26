@@ -1,6 +1,4 @@
 -- +goose Up
-
--- Tables
 CREATE TABLE users
 (
     id              INTEGER PRIMARY KEY,
@@ -22,5 +20,4 @@ CREATE TABLE auth_tokens
 
 -- +goose Down
 DROP TABLE users;
-DROP TABLE counts;
 DROP TABLE auth_tokens;

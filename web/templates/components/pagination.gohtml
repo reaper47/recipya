@@ -1,0 +1,175 @@
+{{define "pagination"}}
+    {{- $url := .URL }}
+    <footer id="pagination" class="grid justify-center pb-2 {{if .IsHidden}}hidden{{end}}"
+            {{if .IsSwap}}hx-swap-oob="true"{{end}}>
+        <div class="grid p-2 border-t border-gray-200 sm:px-6 dark:border-t-gray-800">
+            <div class="text-sm font-light sm:hidden">
+                {{- if eq .Selected 1 -}}
+                    <button disabled class="pagination-selected-edge-button-mobile">
+                        Previous
+                    </button>
+                {{- else -}}
+                    <a class="pagination-selected-middle-button-mobile"
+                       hx-get="{{$url}}?page={{.Prev}}"
+                       hx-target="#content"
+                       hx-push-url="{{$url}}?page={{.Prev}}">
+                        Previous
+                    </a>
+                {{- end -}}
+
+                {{if eq .Selected .NumPages}}
+                    <button disabled class="pagination-selected-edge-button-mobile">
+                        Next
+                    </button>
+                {{else}}
+                    <a class="pagination-selected-middle-button-mobile"
+                       hx-get="{{$url}}?page={{.Next}}"
+                       hx-target="#content"
+                       hx-push-url="{{$url}}?page={{.Next}}">
+                        Next
+                    </a>
+                {{- end -}}
+            </div>
+
+            <div class="hidden select-none sm:flex">
+                <div class="col-span-8">
+                    <nav class="inline-flex -space-x-px rounded shadow-sm" aria-label="Pagination">
+                        {{- if eq .Selected 1 -}}
+                            <button disabled
+                                    class="pagination-square p-2 cursor-not-allowed rounded-l">
+                                <span class="sr-only">Previous</span>
+                                {{template "icon-chevron-left"}}
+                            </button>
+                        {{- else -}}
+                            <a class="pagination-square p-2 rounded-r pagination-hover"
+                               hx-get="{{$url}}?page={{.Prev}}"
+                               hx-target="#content"
+                               hx-push-url="{{$url}}?page={{.Prev}}">
+                                <span class="sr-only">Previous</span>
+                                {{template "icon-chevron-left"}}
+                            </a>
+                        {{- end -}}
+
+                        <!-- Left Section -->
+                        {{range .Left}}
+                            {{- if eq $.Selected . -}}
+                                <button aria-current="page" class="pagination-selected cursor-default bg-indigo-50">
+                                    {{.}}
+                                </button>
+                            {{- else -}}
+                                <a class="pagination-ellipsis pagination-hover"
+                                   hx-get="{{$url}}?page={{.}}"
+                                   hx-target="#content"
+                                   hx-push-url="{{$url}}?page={{.}}">
+                                    {{.}}
+                                </a>
+                            {{- end -}}
+                        {{- end -}}
+
+                        <!-- Middle Section -->
+                        {{- if .Middle -}}
+                            <span class="pagination-ellipsis">
+                                ...
+                            </span>
+                        {{- end -}}
+                        {{range .Middle}}
+                            {{- if eq $.Selected . -}}
+                                <a class="pagination-selected" aria-current="page"
+                                   hx-get="{{$url}}?page={{.}}"
+                                   hx-target="#content"
+                                   hx-push-url="{{$url}}?page={{.}}">
+                                    {{.}}
+                                </a>
+                            {{- else -}}
+                                <a class="text-sm border border-gray-300 px-4 py-2 pagination-hover"
+                                   hx-get="{{$url}}?page={{.}}"
+                                   hx-target="#content"
+                                   hx-push-url="{{$url}}?page={{.}}">
+                                    {{.}}
+                                </a>
+                            {{- end -}}
+                        {{- end -}}
+                        {{- if .Middle -}}
+                            <span class="pagination-ellipsis">
+                                ...
+                            </span>
+                        {{- end -}}
+
+                        <!-- Right Section -->
+                        {{- if and .Right (not .Middle) -}}
+                            <span class="pagination-ellipsis">
+                                ...
+                            </span>
+                        {{- end -}}
+
+                        {{range .Right}}
+                            {{- if eq $.Selected . -}}
+                                <a class="pagination-selected" aria-current="page"
+                                   hx-get="{{$url}}?page={{.}}"
+                                   hx-target="#content"
+                                   hx-push-url="{{$url}}?page={{.}}">
+                                    {{.}}
+                                </a>
+                            {{- else -}}
+                                <a class="pagination-square px-4 py-2 pagination-hover"
+                                   hx-get="{{$url}}?page={{.}}"
+                                   hx-target="#content"
+                                   hx-push-url="{{$url}}?page={{.}}">
+                                    {{.}}
+                                </a>
+                            {{- end -}}
+                        {{- end -}}
+
+                        {{- if eq .Selected .NumPages -}}
+                            <button disabled
+                                    class="pagination-square p-2 cursor-not-allowed rounded-r disabled">
+                                <span class="sr-only">Next</span>
+                                {{template "icon-chevron-right"}}
+                            </button>
+                        {{- else -}}
+                            <a class="pagination-square p-2 rounded-r select-none pagination-hover"
+                               hx-get="{{$url}}?page={{.Next}}"
+                               hx-target="#content"
+                               hx-push-url="{{$url}}?page={{.Next}}">
+                                <span class="sr-only">Next</span>
+                                {{template "icon-chevron-right"}}
+                            </a>
+                        {{- end -}}
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <p class="text-sm">
+                Showing
+                <span class="font-medium">
+                    {{- if eq .Selected .Prev -}}
+                        {{.Selected}}
+                    {{- else -}}
+                        {{call .Functions.Inc (call .Functions.MulAll (call .Functions.Dec .Selected) .ResultsPerPage)}}
+                    {{- end -}}
+                </span>
+                to
+                <span class="font-medium">
+                    {{- if eq .Selected .NumPages -}}
+                        {{.NumResults}}
+                    {{- else -}}
+                        {{call .Functions.MulAll .Selected .ResultsPerPage}}
+                    {{- end -}}
+                </span>
+                of <span class="font-medium">{{.NumResults}}</span> results
+            </p>
+        </div>
+    </footer>
+    <script defer>
+        function updateAddCookbookURL() {
+            const button = document.querySelector("#add-cookbook");
+            if (button) {
+                const selected = {{.Selected}};
+                button.setAttribute("hx-post", `/cookbooks?page=${selected}`);
+                htmx.process(button);
+            }
+        }
+        updateAddCookbookURL();
+    </script>
+{{- end -}}

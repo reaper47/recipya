@@ -21,7 +21,7 @@ func (s *Server) settingsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) settingsConvertAutomaticallyPostHandler(w http.ResponseWriter, r *http.Request) {
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 	isConvert := r.FormValue("convert") == "on"
 	err := s.Repository.UpdateConvertMeasurementSystem(userID, isConvert)
 	if err != nil {
@@ -46,7 +46,7 @@ func (s *Server) settingsExportRecipesHandler(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 	recipes := s.Repository.Recipes(userID)
 	if len(recipes) == 0 {
 		w.Header().Set("HX-Trigger", makeToast("No recipes in database.", warningToast))
@@ -66,7 +66,7 @@ func (s *Server) settingsExportRecipesHandler(w http.ResponseWriter, r *http.Req
 }
 
 func (s *Server) settingsMeasurementSystemsPostHandler(w http.ResponseWriter, r *http.Request) {
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 	systems, settings, err := s.Repository.MeasurementSystems(userID)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Error fetching units systems.", errorToast))
@@ -103,7 +103,7 @@ func settingsTabsProfileHandler(w http.ResponseWriter, _ *http.Request) {
 }
 
 func (s *Server) settingsTabsRecipesHandler(w http.ResponseWriter, r *http.Request) {
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 	systems, settings, err := s.Repository.MeasurementSystems(userID)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Error fetching units systems.", errorToast))

@@ -12,6 +12,21 @@ const InsertCategory = `
 	ON CONFLICT DO UPDATE SET name = EXCLUDED.name
 	RETURNING id`
 
+// InsertCookbook is the query to add a cookbook to the database.
+const InsertCookbook = `
+	INSERT INTO cookbooks (title, user_id) 
+	VALUES (?, ?)
+	RETURNING id`
+
+// InsertCookbookRecipe is the query to add a recipe to a cookbook.
+const InsertCookbookRecipe = `
+	INSERT INTO cookbook_recipes (cookbook_id, recipe_id, order_index)
+	VALUES (?, ?, (SELECT COUNT(*)
+				   FROM cookbooks AS c
+							INNER JOIN cookbook_recipes AS cr ON cr.cookbook_id = c.id
+				   WHERE c.id = ?
+					 AND c.user_id = ?))`
+
 // InsertCuisine is the query to add a cuisine to the database
 const InsertCuisine = `
 	INSERT OR IGNORE INTO cuisines (name)
@@ -76,6 +91,10 @@ const InsertRecipeKeyword = `
 	INSERT INTO keyword_recipe (keyword_id, recipe_id)
 	VALUES (?, ?)`
 
+const InsertRecipeShadow = `
+	INSERT OR REPLACE INTO shadow_last_inserted_recipe (row, id, name, description)
+	VALUES (1, ?, ?, ?)`
+
 // InsertRecipeTime is the query to associate a recipe with a time.
 const InsertRecipeTime = `
 	INSERT INTO time_recipe (time_id, recipe_id)
@@ -88,9 +107,15 @@ const InsertRecipeTool = `
 
 // InsertShareLink is the query to add a recipe share link to the database.
 const InsertShareLink = `
-	INSERT INTO share (link, recipe_id, user_id)
+	INSERT INTO share_recipes (link, recipe_id, user_id)
 	VALUES (?, ?, ?)
 	ON CONFLICT (link, recipe_id) DO NOTHING`
+
+// InsertShareLinkCookbook is the query to add a cookbook share link to the database.
+const InsertShareLinkCookbook = `
+	INSERT INTO share_cookbooks (link, cookbook_id, user_id)
+	VALUES (?, ?, ?)
+	ON CONFLICT (link, cookbook_id) DO NOTHING`
 
 // InsertTimes is the query to add kitchen times.
 const InsertTimes = `

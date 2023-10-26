@@ -10,7 +10,8 @@ import (
 
 // Data holds data to pass on to the templates.
 type Data struct {
-	IsAuthenticated bool // IsAuthenticated says whether the user is authenticated.
+	IsAuthenticated bool // IsAuthenticated indicates whether the user is authenticated.
+	IsHxRequest     bool // IsHxRequest indicates whether the request is an HX one. It is used for oop swaps.
 
 	Title string // Title is the text inserted <title> tag's text.
 
@@ -19,10 +20,58 @@ type Data struct {
 
 	Functions FunctionsData
 
-	Recipes  models.Recipes
-	Settings SettingsData
-	Scraper  ScraperData
-	View     *ViewRecipeData
+	CookbookFeature CookbookFeature
+	Pagination      Pagination
+	Recipes         models.Recipes
+	Settings        SettingsData
+	Scraper         ScraperData
+	View            *ViewRecipeData
+}
+
+// CookbookFeature is the data to pass related to the cookbook feature.
+type CookbookFeature struct {
+	Cookbooks    []models.Cookbook
+	Cookbook     models.CookbookView
+	MakeCookbook func(index int64, cookbook models.Cookbook, page uint64) models.CookbookView
+	ShareData    ShareData
+	ViewMode     models.ViewMode
+}
+
+// NewFunctionsData initializes a new FunctionsData.
+func NewFunctionsData() FunctionsData {
+	return FunctionsData{
+		CutString: func(s string, numCharacters int) string {
+			if len(s) < numCharacters {
+				return s
+			}
+			return s[:numCharacters] + "…"
+		},
+		Dec: func(v int64) int64 {
+			return v - 1
+		},
+		Inc: func(v int64) int64 {
+			return v + 1
+		},
+		IsUUIDValid: func(u uuid.UUID) bool {
+			return u != uuid.Nil
+		},
+		MulAll: func(vals ...int64) int64 {
+			res := int64(1)
+			for _, v := range vals {
+				res *= v
+			}
+			return res
+		},
+	}
+}
+
+// FunctionsData provides functions for use in the templates.
+type FunctionsData struct {
+	CutString   func(s string, numCharacters int) string
+	Dec         func(v int64) int64
+	Inc         func(v int64) int64
+	IsUUIDValid func(u uuid.UUID) bool
+	MulAll      func(vals ...int64) int64
 }
 
 // RegisterData is the data to pass on to the user registration template.
@@ -53,7 +102,7 @@ func NewViewRecipeData(id int64, recipe *models.Recipe, isFromHost, isShared boo
 		IsURL:       isURL(recipe.URL),
 		IsUUIDValid: isUUIDValid(recipe.Image),
 		Recipe:      recipe,
-		Share: shareData{
+		Share: ShareData{
 			IsFromHost: isFromHost,
 			IsShared:   isShared,
 		},
@@ -69,7 +118,7 @@ type ViewRecipeData struct {
 	IsURL          bool
 	IsUUIDValid    bool
 	Recipe         *models.Recipe
-	Share          shareData
+	Share          ShareData
 }
 
 func newFormattedTimes(times models.Times) formattedTimes {
@@ -117,14 +166,8 @@ type formattedTimes struct {
 	TotalDateTime string
 }
 
-type shareData struct {
+// ShareData holds information on the entity being shared.
+type ShareData struct {
 	IsFromHost bool
 	IsShared   bool
-}
-
-// FunctionsData provides functions for use in the templates.
-type FunctionsData struct {
-	CutString   func(s string, numCharacters int) string
-	Inc         func(v int64) int64
-	IsUUIDValid func(u uuid.UUID) bool
 }

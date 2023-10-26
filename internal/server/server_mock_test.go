@@ -21,7 +21,7 @@ func newServerTest() *server.Server {
 	repo := &mockRepository{
 		AuthTokens:             make([]models.AuthToken, 0),
 		RecipesRegistered:      make(map[int64]models.Recipes),
-		ShareLinks:             make(map[string]models.ShareRecipe),
+		ShareLinks:             make(map[string]models.Share),
 		UserSettingsRegistered: make(map[int64]*models.UserSettings),
 		UsersRegistered:        make([]models.User, 0),
 		UsersUpdated:           make([]int64, 0),
@@ -31,12 +31,16 @@ func newServerTest() *server.Server {
 
 type mockRepository struct {
 	AuthTokens                  []models.AuthToken
-	AddRecipeFunc               func(recipe *models.Recipe, userID int64) (int64, error)
+	AddRecipeFunc               func(recipe *models.Recipe, userID int64) (uint64, error)
+	CookbooksFunc               func(userID int64) ([]models.Cookbook, error)
+	CookbooksRegistered         map[int64][]models.Cookbook
+	DeleteCookbookFunc          func(id, userID int64) error
 	MeasurementSystemsFunc      func(userID int64) ([]units.System, models.UserSettings, error)
 	RecipeFunc                  func(id, userID int64) (*models.Recipe, error)
 	RecipesRegistered           map[int64]models.Recipes
-	ShareLinks                  map[string]models.ShareRecipe
+	ShareLinks                  map[string]models.Share
 	SwitchMeasurementSystemFunc func(system units.System, userID int64) error
+	UpdateCookbookImageFunc     func(id int64, image uuid.UUID, userID int64) error
 	UserSettingsRegistered      map[int64]*models.UserSettings
 	UsersRegistered             []models.User
 	UsersUpdated                []int64
@@ -48,7 +52,54 @@ func (m *mockRepository) AddAuthToken(selector, validator string, userID int64) 
 	return nil
 }
 
-func (m *mockRepository) AddRecipe(r *models.Recipe, userID int64) (int64, error) {
+func (m *mockRepository) AddCookbook(title string, userID int64) (int64, error) {
+	cookbook := models.Cookbook{
+		Recipes: make(models.Recipes, 0),
+		Title:   title,
+	}
+
+	cookbooks, ok := m.CookbooksRegistered[userID]
+	if !ok {
+		m.CookbooksRegistered[userID] = []models.Cookbook{cookbook}
+		return 1, nil
+	}
+
+	isExists := slices.ContainsFunc(cookbooks, func(cookbook models.Cookbook) bool {
+		return cookbook.Title == title
+	})
+	if isExists {
+		return -1, errors.New("cookbook exists")
+	}
+
+	m.CookbooksRegistered[userID] = append(m.CookbooksRegistered[userID], cookbook)
+	return 1, nil
+}
+
+func (m *mockRepository) AddCookbookRecipe(cookbookID, recipeID, userID int64) error {
+	cookbooks, ok := m.CookbooksRegistered[userID]
+	if !ok {
+		return errors.New("cookbook does not belong to user")
+	}
+
+	cookbookIndex := slices.IndexFunc(cookbooks, func(c models.Cookbook) bool {
+		return c.ID == cookbookID
+	})
+	if cookbookIndex == -1 {
+		return errors.New("cookbook not found")
+	}
+
+	recipeIndex := slices.IndexFunc(m.RecipesRegistered[userID], func(r models.Recipe) bool {
+		return r.ID == recipeID
+	})
+	if recipeIndex == -1 {
+		return errors.New("recipe not found")
+	}
+
+	m.CookbooksRegistered[userID][cookbookIndex].Recipes = append(m.CookbooksRegistered[userID][cookbookIndex].Recipes, m.RecipesRegistered[userID][recipeID])
+	return nil
+}
+
+func (m *mockRepository) AddRecipe(r *models.Recipe, userID int64) (uint64, error) {
 	if m.AddRecipeFunc != nil {
 		return m.AddRecipeFunc(r, userID)
 	}
@@ -62,24 +113,40 @@ func (m *mockRepository) AddRecipe(r *models.Recipe, userID int64) (int64, error
 	}) {
 		m.RecipesRegistered[userID] = append(m.RecipesRegistered[userID], *r)
 	}
-	return int64(len(m.RecipesRegistered)), nil
+	return uint64(len(m.RecipesRegistered)), nil
 }
 
-func (m *mockRepository) AddShareLink(share models.ShareRecipe) (string, error) {
-	for _, recipes := range m.RecipesRegistered {
-		if slices.ContainsFunc(recipes, func(r models.Recipe) bool { return r.ID == share.RecipeID }) {
-			for link, s := range m.ShareLinks {
-				if s.RecipeID == share.RecipeID && s.UserID == share.UserID {
-					return link, nil
+func (m *mockRepository) AddShareLink(share models.Share) (string, error) {
+	if share.CookbookID != -1 {
+		for _, cookbooks := range m.CookbooksRegistered {
+			if slices.ContainsFunc(cookbooks, func(c models.Cookbook) bool { return c.ID == share.CookbookID }) {
+				for link, s := range m.ShareLinks {
+					if s.CookbookID == share.CookbookID && s.UserID == share.UserID {
+						return link, nil
+					}
 				}
-			}
 
-			link := "/r/33320755-82f9-47e5-bb0a-d1b55cbd3f7b"
-			m.ShareLinks[link] = share
-			return link, nil
+				link := "/c/33320755-82f9-47e5-bb0a-d1b55cbd3f7b"
+				m.ShareLinks[link] = share
+				return link, nil
+			}
+		}
+	} else if share.RecipeID != -1 {
+		for _, recipes := range m.RecipesRegistered {
+			if slices.ContainsFunc(recipes, func(r models.Recipe) bool { return r.ID == share.RecipeID }) {
+				for link, s := range m.ShareLinks {
+					if s.RecipeID == share.RecipeID && s.UserID == share.UserID {
+						return link, nil
+					}
+				}
+
+				link := "/r/33320755-82f9-47e5-bb0a-d1b55cbd3f7b"
+				m.ShareLinks[link] = share
+				return link, nil
+			}
 		}
 	}
-	return "", errors.New("recipe not found")
+	return "", errors.New("cookbook or recipe not found")
 }
 
 func (m *mockRepository) Categories(_ int64) ([]string, error) {
@@ -95,11 +162,97 @@ func (m *mockRepository) Confirm(userID int64) error {
 	return nil
 }
 
+func (m *mockRepository) Cookbook(id, userID int64, _ uint64) (models.Cookbook, error) {
+	cookbooks, ok := m.CookbooksRegistered[userID]
+	if !ok {
+		return models.Cookbook{}, errors.New("user does not have cookbooks")
+	}
+
+	i := slices.IndexFunc(cookbooks, func(c models.Cookbook) bool {
+		return c.ID == id
+	})
+	if i == -1 {
+		return models.Cookbook{}, errors.New("cookbook not found")
+	}
+
+	return cookbooks[i], nil
+}
+
+func (m *mockRepository) CookbookByID(id int64, userID int64) (models.Cookbook, error) {
+	return m.Cookbook(id, userID, 1)
+}
+
+func (m *mockRepository) CookbookRecipe(id int64, cookbookID int64) (recipe *models.Recipe, userID int64, err error) {
+	for userID, cookbooks := range m.CookbooksRegistered {
+		i := slices.IndexFunc(cookbooks, func(c models.Cookbook) bool {
+			return c.ID == cookbookID
+		})
+		if i == -1 {
+			continue
+		}
+
+		recipeI := slices.IndexFunc(cookbooks[i].Recipes, func(r models.Recipe) bool {
+			return r.ID == id
+		})
+		if recipeI == -1 {
+			break
+		}
+		return &cookbooks[i].Recipes[recipeI], userID, nil
+	}
+	return nil, -1, errors.New("recipe not found")
+}
+
+func (m *mockRepository) CookbookShared(id string) (*models.Share, error) {
+	share, ok := m.ShareLinks[id]
+	if !ok {
+		return nil, errors.New("link not found")
+	}
+	return &share, nil
+}
+
+func (m *mockRepository) Cookbooks(userID int64, _ uint64) ([]models.Cookbook, error) {
+	if m.CookbooksFunc != nil {
+		return m.CookbooksFunc(userID)
+	}
+
+	cookbooks, ok := m.CookbooksRegistered[userID]
+	if !ok {
+		return nil, errors.New("user not registered")
+	}
+	return cookbooks, nil
+}
+
+func (m *mockRepository) Counts(userID int64) (models.Counts, error) {
+	var counts models.Counts
+	recipes, ok := m.RecipesRegistered[userID]
+	if ok {
+		counts.Recipes = uint64(len(recipes))
+	}
+
+	cookbooks, ok := m.CookbooksRegistered[userID]
+	if ok {
+		counts.Cookbooks = uint64(len(cookbooks))
+	}
+
+	return counts, nil
+}
+
 func (m *mockRepository) DeleteAuthToken(userID int64) error {
 	index := slices.IndexFunc(m.AuthTokens, func(token models.AuthToken) bool { return token.UserID == userID })
 	if index != -1 {
 		m.AuthTokens = slices.Delete(m.AuthTokens, index, index+1)
 	}
+	return nil
+}
+
+func (m *mockRepository) DeleteCookbook(id, userID int64) error {
+	if m.DeleteCookbookFunc != nil {
+		return m.DeleteCookbookFunc(id, userID)
+	}
+
+	m.CookbooksRegistered[userID] = slices.DeleteFunc(m.CookbooksRegistered[userID], func(c models.Cookbook) bool {
+		return c.ID == id
+	})
 	return nil
 }
 
@@ -123,6 +276,28 @@ func (m *mockRepository) DeleteRecipe(id, userID int64) (int64, error) {
 	slices.Delete(recipes, i, i+1)
 	recipes = recipes[:]
 	return rowsAffected, nil
+}
+
+func (m *mockRepository) DeleteRecipeFromCookbook(recipeID, cookbookID uint64, userID int64) (int64, error) {
+	cookbooks, ok := m.CookbooksRegistered[userID]
+	if !ok {
+		return -1, nil
+	}
+
+	i := slices.IndexFunc(cookbooks, func(c models.Cookbook) bool {
+		return uint64(c.ID) == cookbookID
+	})
+	if i == -1 {
+		return -1, nil
+	}
+	cookbook := cookbooks[i]
+
+	cookbook.Recipes = slices.DeleteFunc(cookbook.Recipes, func(r models.Recipe) bool {
+		return uint64(r.ID) == recipeID
+	})
+
+	m.CookbooksRegistered[userID][i] = cookbook
+	return int64(len(cookbook.Recipes)), nil
 }
 
 func (m *mockRepository) GetAuthToken(_, _ string) (models.AuthToken, error) {
@@ -170,7 +345,7 @@ func (m *mockRepository) Recipes(userID int64) models.Recipes {
 	return models.Recipes{}
 }
 
-func (m *mockRepository) RecipeShared(link string) (*models.ShareRecipe, error) {
+func (m *mockRepository) RecipeShared(link string) (*models.Share, error) {
 	share, ok := m.ShareLinks[link]
 	if !ok {
 		return nil, errors.New("recipe not found")
@@ -205,6 +380,27 @@ func (m *mockRepository) Register(email string, _ auth.HashedPassword) (int64, e
 	return userID, nil
 }
 
+func (m *mockRepository) ReorderCookbookRecipes(_ int64, _ []uint64, _ int64) error {
+	return nil
+}
+
+func (m *mockRepository) SearchRecipes(query string, options models.SearchOptionsRecipes, userID int64) (models.Recipes, error) {
+	recipes, ok := m.RecipesRegistered[userID]
+	if !ok {
+		return nil, errors.New("user not found")
+	}
+
+	var results models.Recipes
+	if options.ByName {
+		for _, r := range recipes {
+			if strings.Contains(strings.ToLower(r.Name), query) {
+				results = append(results, r)
+			}
+		}
+	}
+	return results, nil
+}
+
 func (m *mockRepository) SwitchMeasurementSystem(system units.System, userID int64) error {
 	if m.SwitchMeasurementSystemFunc != nil {
 		return m.SwitchMeasurementSystemFunc(system, userID)
@@ -226,6 +422,32 @@ func (m *mockRepository) UpdateConvertMeasurementSystem(userID int64, isEnabled 
 	}
 	m.UserSettingsRegistered[userID].ConvertAutomatically = isEnabled
 	return nil
+}
+
+func (m *mockRepository) UpdateCookbookImage(id int64, image uuid.UUID, userID int64) error {
+	if m.UpdateCookbookImageFunc != nil {
+		return m.UpdateCookbookImageFunc(id, image, userID)
+	}
+
+	_, ok := m.CookbooksRegistered[userID]
+	if !ok {
+		return errors.New("cookbook not found")
+	}
+
+	for i, cookbook := range m.CookbooksRegistered[userID] {
+		if cookbook.ID == id {
+			c := m.CookbooksRegistered[userID][i]
+			m.CookbooksRegistered[userID][i] = models.Cookbook{
+				ID:      c.ID,
+				Count:   c.Count,
+				Image:   image,
+				Recipes: c.Recipes,
+				Title:   c.Title,
+			}
+			return nil
+		}
+	}
+	return errors.New("cookbook not found")
 }
 
 func (m *mockRepository) UpdatePassword(userID int64, _ auth.HashedPassword) error {
@@ -318,6 +540,16 @@ func (m *mockRepository) UpdateRecipe(updatedRecipe *models.Recipe, userID int64
 	return nil
 }
 
+func (m *mockRepository) UpdateUserSettingsCookbooksViewMode(userID int64, mode models.ViewMode) error {
+	settings, ok := m.UserSettingsRegistered[userID]
+	if !ok {
+		return errors.New("user not found")
+	}
+
+	settings.CookbooksViewMode = mode
+	return nil
+}
+
 func (m *mockRepository) UserInitials(userID int64) string {
 	index := slices.IndexFunc(m.UsersRegistered, func(user models.User) bool {
 		return user.ID == userID
@@ -380,6 +612,12 @@ type mockFiles struct {
 	extractRecipesFunc  func(fileHeaders []*multipart.FileHeader) models.Recipes
 	ReadTempFileFunc    func(name string) ([]byte, error)
 	uploadImageHitCount int
+	uploadImageFunc     func(rc io.ReadCloser) (uuid.UUID, error)
+}
+
+func (m *mockFiles) ExportCookbook(cookbook models.Cookbook, fileType models.FileType) (string, error) {
+	m.exportHitCount++
+	return cookbook.Title + fileType.Ext(), nil
 }
 
 func (m *mockFiles) ExportRecipes(recipes models.Recipes, _ models.FileType) (string, error) {
@@ -405,7 +643,10 @@ func (m *mockFiles) ReadTempFile(name string) ([]byte, error) {
 	return []byte(name), nil
 }
 
-func (m *mockFiles) UploadImage(_ io.ReadCloser) (uuid.UUID, error) {
+func (m *mockFiles) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
+	if m.uploadImageFunc != nil {
+		return m.uploadImageFunc(rc)
+	}
 	m.uploadImageHitCount++
 	return uuid.New(), nil
 }

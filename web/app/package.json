@@ -1,16 +1,16 @@
 {
   "name": "recipya",
+  "author": "reaper47",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "build": "npm run build:css && npm run build:js",
-    "build:css": "tailwind -m --output ../../static/css/tailwind.css",
+    "build:css": "tailwind -m -i ../../static/css/tailwind-custom.css --output ../../static/css/tailwind.css",
     "build:js": "esbuild index.js --bundle --minify --outfile=../../static/js/bundle.js",
     "watch:css": "tailwind -m --output ../../../static/css/tailwind.css -w",
     "watch:js": "esbuild index.js --bundle --minify --outfile=../../static/js/bundle.js --watch"
   },
-  "author": "",
   "license": "MIT",
   "devDependencies": {
     "tailwindcss": "^3.3.3"

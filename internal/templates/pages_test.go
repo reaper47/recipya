@@ -8,6 +8,8 @@ import (
 var pages = []templates.Page{
 	templates.AddRecipePage,
 	templates.AddRecipeManualPage,
+	templates.CookbookPage,
+	templates.CookbooksPage,
 	templates.ForgotPasswordPage,
 	templates.ForgotPasswordResetPage,
 	templates.HomePage,
@@ -23,6 +25,8 @@ func TestPage_String(t *testing.T) {
 	expected := []string{
 		"add-recipe",
 		"add-recipe-manual",
+		"cookbook",
+		"cookbooks",
 		"forgot-password",
 		"forgot-password-reset",
 		"home",
@@ -46,6 +50,8 @@ func TestPage_Title(t *testing.T) {
 	expected := []string{
 		"Add Recipe",
 		"Manual",
+		"Cookbook",
+		"Cookbooks",
 		"Forgot Password",
 		"Reset Password",
 		"Home",

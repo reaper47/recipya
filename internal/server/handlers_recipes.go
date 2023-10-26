@@ -3,7 +3,6 @@ package server
 import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
-	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/scraper"
@@ -16,27 +15,16 @@ import (
 )
 
 func (s *Server) recipesHandler(w http.ResponseWriter, r *http.Request) {
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 
+	isHxRequest := r.Header.Get("HX-Request") == "true"
 	baseData := templates.Data{
-		Functions: templates.FunctionsData{
-			CutString: func(s string, numCharacters int) string {
-				if len(s) < numCharacters {
-					return s
-				}
-				return s[:numCharacters] + "…"
-			},
-			Inc: func(v int64) int64 {
-				return v + 1
-			},
-			IsUUIDValid: func(u uuid.UUID) bool {
-				return u != uuid.Nil
-			},
-		},
-		Recipes: s.Repository.Recipes(userID),
+		Functions:   templates.NewFunctionsData(),
+		IsHxRequest: isHxRequest,
+		Recipes:     s.Repository.Recipes(userID),
 	}
 
-	if r.Header.Get("HX-Request") == "true" {
+	if isHxRequest {
 		templates.RenderComponent(w, "recipes", "list-recipes", baseData)
 		return
 	} else {
@@ -81,7 +69,7 @@ func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request)
 	}
 
 	recipes := s.Files.ExtractRecipes(files)
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 
 	count := 0
 	for _, r := range recipes {
@@ -98,7 +86,7 @@ func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request)
 }
 
 func (s *Server) recipeAddManualHandler(w http.ResponseWriter, r *http.Request) {
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 	categories, err := s.Repository.Categories(userID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -219,7 +207,7 @@ func (s *Server) recipeAddManualPostHandler(w http.ResponseWriter, r *http.Reque
 		Yield:     int16(yield),
 	}
 
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 	recipeNumber, err := s.Repository.AddRecipe(recipe, userID)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not add recipe.", errorToast))
@@ -227,7 +215,7 @@ func (s *Server) recipeAddManualPostHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	w.Header().Set("HX-Redirect", "/recipes/"+strconv.FormatInt(recipeNumber, 10))
+	w.Header().Set("HX-Redirect", "/recipes/"+strconv.FormatUint(recipeNumber, 10))
 	w.WriteHeader(http.StatusCreated)
 }
 
@@ -448,7 +436,7 @@ func (s *Server) recipesAddWebsiteHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 	recipeNumber, err := s.Repository.AddRecipe(recipe, userID)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Recipe could not be added.", errorToast))
@@ -456,7 +444,7 @@ func (s *Server) recipesAddWebsiteHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	w.Header().Set("HX-Redirect", "/recipes/"+strconv.FormatInt(recipeNumber, 10))
+	w.Header().Set("HX-Redirect", "/recipes/"+strconv.FormatUint(recipeNumber, 10))
 	w.WriteHeader(http.StatusSeeOther)
 }
 
@@ -466,7 +454,7 @@ func (s *Server) recipeDeleteHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 
 	rowsAffected, err := s.Repository.DeleteRecipe(id, userID)
 	if err != nil {
@@ -492,7 +480,7 @@ func (s *Server) recipesEditHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 	recipe, err := s.Repository.Recipe(id, userID)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Failed to retrieve recipe.", errorToast))
@@ -584,7 +572,7 @@ func (s *Server) recipesEditPostHandler(w http.ResponseWriter, r *http.Request) 
 		updatedRecipe.Yield = int16(yield)
 	}
 
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 	recipeNumStr := chi.URLParam(r, "id")
 	recipeNum, err := strconv.ParseInt(recipeNumStr, 10, 64)
 	if err != nil {
@@ -604,15 +592,7 @@ func (s *Server) recipesEditPostHandler(w http.ResponseWriter, r *http.Request) 
 }
 
 func (s *Server) recipeShareHandler(w http.ResponseWriter, r *http.Request) {
-	var userID int64
-	isLoggedIn := true
-	userID = getUserIDFromSessionCookie(r)
-	if userID == -1 {
-		userID = getUserIDFromRememberMeCookie(r, s.Repository.GetAuthToken)
-		if userID == -1 {
-			isLoggedIn = false
-		}
-	}
+	userID, isLoggedIn := s.findUserID(r)
 
 	share, err := s.Repository.RecipeShared(r.URL.String())
 	if err != nil {
@@ -659,7 +639,7 @@ func (s *Server) recipeScaleHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 
 	recipe, err := s.Repository.Recipe(id, userID)
 	if err != nil {
@@ -678,8 +658,8 @@ func (s *Server) recipeSharePostHandler(w http.ResponseWriter, r *http.Request) 
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	userID := r.Context().Value("userID").(int64)
-	share := models.ShareRecipe{RecipeID: recipeID, UserID: userID}
+	userID := getUserID(r)
+	share := models.Share{CookbookID: -1, RecipeID: recipeID, UserID: userID}
 
 	link, err := s.Repository.AddShareLink(share)
 	if err != nil {
@@ -688,7 +668,7 @@ func (s *Server) recipeSharePostHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	templates.RenderComponent(w, "recipes", "share-recipe", templates.Data{
+	templates.RenderComponent(w, "recipes", "share-link", templates.Data{
 		Content: r.Host + link,
 	})
 }
@@ -706,7 +686,7 @@ func (s *Server) recipesViewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 	recipe, err := s.Repository.Recipe(id, userID)
 	if err != nil {
 		notFoundHandler(w, r)
@@ -717,6 +697,42 @@ func (s *Server) recipesViewHandler(w http.ResponseWriter, r *http.Request) {
 		IsAuthenticated: true,
 		Title:           recipe.Name,
 		View:            templates.NewViewRecipeData(id, recipe, true, false),
+	}
+
+	if r.Header.Get("Hx-Request") == "true" {
+		templates.RenderComponent(w, "recipes", "view-recipe", data)
+	} else {
+		templates.Render(w, templates.ViewRecipePage, data)
+	}
+}
+
+func (s *Server) recipesViewShareHandler(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	cookbookIDStr := r.URL.Query().Get("cookbook")
+	cookbookID, err := strconv.ParseInt(cookbookIDStr, 10, 64)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Could not parse cookbookID query parameter.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	recipe, cookbookUserID, err := s.Repository.CookbookRecipe(id, cookbookID)
+	if err != nil {
+		notFoundHandler(w, r)
+		return
+	}
+
+	userID, isLoggedIn := s.findUserID(r)
+
+	data := templates.Data{
+		IsAuthenticated: isLoggedIn,
+		Title:           recipe.Name,
+		View:            templates.NewViewRecipeData(id, recipe, cookbookUserID == userID, true),
 	}
 
 	if r.Header.Get("Hx-Request") == "true" {

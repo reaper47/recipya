@@ -328,6 +328,11 @@ func (n *Nutrition) Schema(servings string) NutritionSchema {
 	}
 }
 
+// SearchOptionsRecipes defines the options for searching recipes.
+type SearchOptionsRecipes struct {
+	ByName bool
+}
+
 func init() {
 	c, err := word2number.NewConverter("en")
 	if err != nil {

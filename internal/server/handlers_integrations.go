@@ -22,7 +22,7 @@ func (s *Server) integrationsImportNextcloud(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 
 	count := 0
 	skipped := 0

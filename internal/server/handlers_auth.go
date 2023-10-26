@@ -30,7 +30,7 @@ func (s *Server) changePasswordHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userID := r.Context().Value("userID").(int64)
+	userID := getUserID(r)
 	if !s.Repository.IsUserPassword(userID, currentPassword) {
 		w.Header().Set("HX-Trigger", makeToast("Current password is incorrect.", errorToast))
 		w.WriteHeader(http.StatusBadRequest)
