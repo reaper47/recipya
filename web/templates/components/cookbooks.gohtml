@@ -122,7 +122,7 @@
                 </p>
             </section>
 
-            <section id="search-results" class="h-full">
+            <section id="search-results" class="justify-center grid">
                 {{template "cookbook-index-no-recipes" $feature.ShareData.IsFromHost}}
             </section>
         </div>
@@ -231,7 +231,7 @@
 {{end}}
 
 {{define "cookbook-index-no-recipes"}}
-    <div class="grid place-content-center text-sm text-center h-3/5 md:text-base">
+    <div class="grid place-content-center text-sm text-center md:text-base" style="height: 50vh">
     {{- if . -}}
         <p>Your cookbook looks a bit empty at the moment.</p>
         <p>Why not add recipes to your cookbook by searching for recipes in the search box above?</p>
@@ -448,8 +448,7 @@
                js
                    $shareOption.setAttribute('hx-post', '/cookbooks/{{.ID}}/share');
                    $downloadOption.setAttribute('hx-get', '/cookbooks/{{.ID}}/download');
-                   const page = $addButton.getAttribute('hx-post').split('?')[1];
-                   $deleteOption.setAttribute('hx-delete', `/cookbooks/${$li.id.split('-')[1]}?${page}`);
+                   $deleteOption.setAttribute('hx-delete', `/cookbooks/{{.ID}}`);
                    $deleteOption.setAttribute('hx-target', `#${$li.id}`);
                end then
                call htmx.process($menuOpen) then

@@ -328,7 +328,7 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 			`<section class="grid justify-center p-4"><div class="relative">`,
 			`<form class="w-72 md:w-96" hx-post="/cookbooks/recipes/search" hx-target="#search-results" hx-vals='{"id": 4, "page": 1}'><div class="flex"><div class="relative w-full"><label><input type="search" id="search-recipes" name="q" class="block z-20 p-2.5 w-full text-sm bg-gray-50 rounded-r-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" placeholder="Search for recipes to add..." _="on keyup if event.target.value !== '' then remove .md:block from #search-shortcut else add .md:block to #search-shortcut end then if event.key === 'Backspace' and event.target.value === '' then send submit to closest <form/> end"></label><kbd id="search-shortcut" class="hidden absolute top-2 right-12 font-sans font-semibold select-none dark:text-slate-500 md:block"><abbr title="Control" class="no-underline text-slate-300 dark:text-slate-500">Ctrl </abbr> / </kbd><button type="submit" class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700"><svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/></svg><span class="sr-only">Search</span></button></div></div></form>`,
 			`<p class="grid justify-center font-semibold underline mt-2 md:mt-0 md:text-xl md:hidden"> Ensiferum </p>`,
-			`<section id="search-results" class="h-full"><div class="grid place-content-center text-sm text-center h-3/5 md:text-base"><p>Your cookbook looks a bit empty at the moment.</p><p>Why not add recipes to your cookbook by searching for recipes in the search box above?</p></div></section>`,
+			`<section id="search-results" class="justify-center grid"><div class="grid place-content-center text-sm text-center md:text-base" style="height: 50vh"><p>Your cookbook looks a bit empty at the moment.</p><p>Why not add recipes to your cookbook by searching for recipes in the search box above?</p></div></section>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
@@ -529,7 +529,7 @@ func TestHandlers_Cookbooks_DeleteCookbookRecipe(t *testing.T) {
 			{ID: 1, Recipes: []models.Recipe{}},
 		})
 		want := []string{
-			`<div class="grid place-content-center text-sm text-center h-3/5 md:text-base">`,
+			`<div class="grid place-content-center text-sm text-center md:text-base" style="height: 50vh">`,
 			`<p>Your cookbook looks a bit empty at the moment.</p>`,
 			`<p>Why not add recipes to your cookbook by searching for recipes in the search box above?</p>`,
 		}
@@ -873,7 +873,7 @@ func TestHandlers_Cookbooks_Share(t *testing.T) {
 			`<title hx-swap-oob="true">Lovely Ukraine | Recipya</title>`,
 			`<a href="/auth/login" class="flex-auto mr-2 rounded-lg px-2 py-1 hover:text-white hover:bg-green-600"> Log In </a>`,
 			`<section class="grid justify-center p-4"><p class="grid justify-center font-semibold underline mt-2 md:mt-0 md:text-xl md:hidden"> Lovely Ukraine </p></section>`,
-			`<div class="grid place-content-center text-sm text-center h-3/5 md:text-base"><p>The user has not added recipes to this cookbook yet.</p></div>`,
+			`<div class="grid place-content-center text-sm text-center md:text-base" style="height: 50vh"><p>The user has not added recipes to this cookbook yet.</p></div>`,
 		}
 		notWant := []string{
 			`<dialog id="share-dialog" class="p-4 border-4 border-black min-w-[15rem]"><div id="share-dialog-result" class="pb-4"></div>`,

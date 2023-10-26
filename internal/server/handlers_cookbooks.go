@@ -187,7 +187,7 @@ func (s *Server) cookbooksDeleteCookbookHandler(w http.ResponseWriter, r *http.R
 		page = 1
 	}
 
-	err = s.Repository.DeleteCookbook(cookbookID, userID, page)
+	err = s.Repository.DeleteCookbook(cookbookID, userID)
 	if err != nil {
 		// TODO: Log it with slog
 		w.Header().Set("HX-Trigger", makeToast("Error deleting cookbook.", errorToast))

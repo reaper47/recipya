@@ -245,7 +245,7 @@ func (m *mockRepository) DeleteAuthToken(userID int64) error {
 	return nil
 }
 
-func (m *mockRepository) DeleteCookbook(id, userID int64, _ uint64) error {
+func (m *mockRepository) DeleteCookbook(id, userID int64) error {
 	if m.DeleteCookbookFunc != nil {
 		return m.DeleteCookbookFunc(id, userID)
 	}
