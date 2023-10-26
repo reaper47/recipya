@@ -16,5 +16,6 @@ share your favorite recipes. It is focussed on simplicity for the whole family t
 - [Works seamlessly with recipes in your Nextcloud Cookbook](/docs/features/integrations)
 - [Automatic conversion to your preferred measurement system](/docs/features/measurement-systems) (imperial/metric)
 - [Print any recipe in your collection](/docs/features/print)
+- [Prevent your device from going to sleep while viewing a recipe](/docs/features/wakelock)
 - Follows your system's theme (light/dark)
 - Cross-compiled for Windows, Linux, and macOS
