@@ -41,9 +41,11 @@ It is focused on simplicity for the whole family to enjoy.
 - Manage your favorite recipes
 - Import recipes from around the web
 - Digitize paper recipes (planned)
+- Organize your recipes into cookbooks
 - Works seamlessly with recipes in your [Nextcloud Cookbook](https://apps.nextcloud.com/apps/cookbook)
 - Automatic conversion to your preferred measurement system (imperial/metric)
 - Print any recipe in your collection
+- Prevent your device from going to sleep while viewing a recipe
 - Follows your system's theme (light/dark)
 - Cross-compiled for Windows, Linux, and macOS
 
