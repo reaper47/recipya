@@ -59,7 +59,7 @@
                         animation: 150,
                         ghostClass: 'blue-background-class',
                         handle: '.handle',
-                        onEnd: function (event) {
+                        onEnd: function () {
                             Array.from(document.querySelector('#search-results').children).forEach((c, i) => {
                                 const p = c.querySelector('.handle');
                                 p.innerText = i + 1;

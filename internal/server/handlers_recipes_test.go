@@ -451,7 +451,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 		want := []string{
 			`<title hx-swap-oob="true">Unsupported Website | Recipya</title>`,
 			`<h3 class="mb-2 text-2xl font-semibold tracking-tight"> This website is not supported </h3>`,
-			`<p class="mb-3 text-gray-700"> You can either request our team to support this website or go back to the previous page. </p>`,
+			`<p class="mb-3 text-gray-700"> Unfortunately, we could not extract the recipe from this link. You can either request that our team support this website or go back to the previous page. </p>`,
 			`<button name="website" value="https://www.example.com" class="w-full col-span-4 ml-2 p-2 font-semibold text-white bg-blue-500 hover:bg-blue-800"> Request </button>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)

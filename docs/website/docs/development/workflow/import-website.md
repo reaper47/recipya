@@ -67,9 +67,9 @@ Executing the test by clicking the green play button to the left it should confi
 ### The Go Code
 
 The initial step is to include the `example.com` case within the list of supported websites. To achieve this, open 
-[internal/scraper/websites.go](https://github.com/reaper47/recipya/blob/main/internal/scraper/websites.go). This file 
-contains the `scrapeWebsite` function, which executes the relevant scrape function for the parsed 
-HTML web page. Your task involves adding the host within the switch-case block. Therefore, add `case "example"` to the switch-case block
+[internal/scraper/websites.go](https://github.com/reaper47/recipya/blob/main/internal/scraper/websites.go). This file contains the `scrapeWebsite` function, which executes the relevant 
+scrape function for the parsed HTML web page. Your task involves adding the host within the switch-case block. 
+Therefore, add `case "example"` to the switch-case block
 of [case 'e'](https://github.com/reaper47/recipya/blob/main/internal/scraper/websites.go#L90). 
 
 Following this, the body of the case must be added. Each case calls a function that scrapes the parsed HTML document

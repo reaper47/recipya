@@ -5,7 +5,7 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 )
 
-func scrapeMonsieurCuisine(root *goquery.Document) (models.RecipeSchema, error) {
+func scrapeMonsieurCuisine(_ *goquery.Document) (models.RecipeSchema, error) {
 	/*content := getElement(root, "class", "row recipe--header")
 
 	chName := make(chan string)

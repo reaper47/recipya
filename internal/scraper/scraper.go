@@ -2,7 +2,6 @@ package scraper
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
@@ -32,7 +31,10 @@ func Scrape(url string, files services.FilesService) (models.RecipeSchema, error
 
 	rs, err = scrapeWebsite(doc, getHost(url))
 	if err != nil {
-		return rs, errors.New("url could not be fetched")
+		rs, err = parseUnsupportedWebsite(doc)
+		if err != nil {
+			return rs, ErrNotImplemented
+		}
 	}
 
 	if rs.AtContext == "" {
@@ -117,7 +119,7 @@ func parseLdJSON(root *goquery.Document) (models.RecipeSchema, error) {
 		rs.AtContext = atContext
 		return rs, nil
 	}
-	return models.RecipeSchema{}, nil
+	return models.RecipeSchema{}, ErrNotImplemented
 }
 
 type graph struct {
@@ -144,5 +146,5 @@ func parseGraph(root *goquery.Document) (models.RecipeSchema, error) {
 			}
 		}
 	}
-	return models.RecipeSchema{}, fmt.Errorf("no recipe for the given url")
+	return models.RecipeSchema{}, ErrNotImplemented
 }

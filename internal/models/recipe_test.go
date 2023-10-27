@@ -538,6 +538,7 @@ func TestRecipe_Schema(t *testing.T) {
 
 func TestNewTimes(t *testing.T) {
 	actual, err := models.NewTimes("PT1H0M0S", "PT2H0M0S")
+	assertNoError(t, err)
 	if err != nil {
 		t.Fatal(err)
 	}

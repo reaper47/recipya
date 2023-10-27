@@ -8,7 +8,7 @@ import (
 )
 
 func scrapeFitMenCook(root *goquery.Document) (models.RecipeSchema, error) {
-	rs, err := parseLdJSON(root)
+	rs, err := parseGraph(root)
 	if err != nil && !strings.HasPrefix(err.Error(), "@type must be Recipe") {
 		return rs, err
 	}
@@ -43,7 +43,7 @@ func scrapeFitMenCook(root *goquery.Document) (models.RecipeSchema, error) {
 
 	ingredients := make([]string, 0)
 	root.Find(".fmc_ingredients ul li").Each(func(i int, s *goquery.Selection) {
-		ing := s.Text()
+		ing := strings.ReplaceAll(s.Text(), "\t", "")
 		if !strings.Contains(ing, "\n\n") {
 			return
 		}
@@ -57,20 +57,6 @@ func scrapeFitMenCook(root *goquery.Document) (models.RecipeSchema, error) {
 		ingredients = append(ingredients, "\n")
 	})
 	rs.Ingredients = models.Ingredients{Values: ingredients}
-
-	instructions := make([]string, 0)
-	root.Find(".fmc_step_content p").Each(func(i int, s *goquery.Selection) {
-		children := s.Children()
-		if children.Nodes != nil {
-			v := strings.ReplaceAll(children.Nodes[0].PrevSibling.Data, "\u00a0", "")
-			instructions = append(instructions, strings.TrimSpace(v))
-			return
-		}
-
-		v := strings.ReplaceAll(s.Text(), "\u00a0", "")
-		instructions = append(instructions, strings.TrimSpace(v))
-	})
-	rs.Instructions = models.Instructions{Values: instructions}
 
 	var nutrition models.NutritionSchema
 	nutritionNodes := root.Find(".fmc_macro_cals")
@@ -93,11 +79,6 @@ func scrapeFitMenCook(root *goquery.Document) (models.RecipeSchema, error) {
 		}
 	})
 	rs.NutritionSchema = nutrition
-
-	name := root.Find(".fmc_title_1").Text()
-	name = strings.ReplaceAll(name, "\n", "")
-	name = strings.ReplaceAll(name, "\t", "")
-	rs.Name = strings.TrimSpace(name)
 
 	rs.Keywords = models.Keywords{Values: strings.TrimSpace(strings.Join(keywords, ","))}
 	return rs, nil

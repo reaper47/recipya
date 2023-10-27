@@ -1,10 +1,13 @@
 package scraper
 
 import (
-	"fmt"
+	"errors"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
 )
+
+// ErrNotImplemented is the error used when the website is not supported.
+var ErrNotImplemented = errors.New("domain is not implemented")
 
 func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, error) {
 	switch []rune(host)[0] {
@@ -393,5 +396,16 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return parseLdJSON(doc)
 		}
 	}
-	return models.RecipeSchema{}, fmt.Errorf("domain '%s' is not implemented", host)
+	return models.RecipeSchema{}, ErrNotImplemented
+}
+
+func parseUnsupportedWebsite(doc *goquery.Document) (models.RecipeSchema, error) {
+	rs, err := parseLdJSON(doc)
+	if err != nil {
+		rs, err = parseGraph(doc)
+		if err != nil {
+			return models.RecipeSchema{}, ErrNotImplemented
+		}
+	}
+	return rs, nil
 }
