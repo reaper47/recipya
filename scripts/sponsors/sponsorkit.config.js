@@ -62,7 +62,7 @@ const tiers = {
     },
 }
 
-const composeFunc = (composer, tierSponsors, config) => {
+const composeFunc = (composer, _tierSponsors, _config) => {
     composer.addSpan(20);
 }
 

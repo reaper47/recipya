@@ -133,7 +133,7 @@ func (s *Server) recipesSearchHandler(w http.ResponseWriter, r *http.Request) {
 ```
 
 This code gets the logged-in user's ID and the search query, then passes them to the `SearchRecipes` function of the 
-repository. If this function encounters an error, an HTMX toast is sent to the user, accompanied by a HTTP 500 
+repository. If this function encounters an error, an HTMX toast is sent to the user, accompanied by an HTTP 500 
 status code. Otherwise, the HTML containing the recipes is sent.
 
 The `templates.RenderComponent` function displays a template from the [web/templates/components](https://github.com/reaper47/recipya/tree/main/web/templates/components)
@@ -146,7 +146,7 @@ GoHTML template.
 
 The final piece of the puzzle involves writing the `s.Repository.SearchRecipes` function. The repository is an interface
 that declares functions for interacting with a database. Currently, Recipya supports [sqlite](https://github.com/reaper47/recipya/blob/main/internal/services/sqlite_service.go)
-only. To support other databases, we need define a struct satisf the [RepositoryService](https://github.com/reaper47/recipya/blob/main/internal/services/service.go)
+only. To support other databases, we need define a struct to satisfy the [RepositoryService](https://github.com/reaper47/recipya/blob/main/internal/services/service.go)
 interface.
 
 Let's declare the function within the `RepositoryService` interface. The functions are declared alphabetically.

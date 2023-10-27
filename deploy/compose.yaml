@@ -2,6 +2,6 @@ services:
   web:
     image: reaper99/recipya:nightly
     ports:
-      - "[host port]:[port sepcified in config.json]"
+      - "[host port]:[port specified in config.json]"
     volumes:
       - path/to/config.json:/app/config.json

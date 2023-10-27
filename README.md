@@ -5,7 +5,7 @@
     <img src="https://img.shields.io/github/actions/workflow/status/reaper47/recipya/go.yml?branch=main&logo=Github" alt="Build" />
   </a>
   <a href="https://goreportcard.com/report/github.com/reaper47/recipya">
-    <img src="https://goreportcard.com/badge/github.com/reaper47/recipya" />
+    <img src="https://goreportcard.com/badge/github.com/reaper47/recipya" alt="Report" />
   </a>
   <a href="https://github.com/reaper47/recipya/issues">
     <img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat" alt="CodeFactor" />
@@ -17,8 +17,8 @@
   <a href="https://github.com/reaper47/recipya/blob/master/LICENSE">
     <img alt="GitHub" src="https://img.shields.io/github/license/reaper47/recipya"/>
   </a>
-  <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Freaper47%2Frecipya?ref=badge_small" alt="FOSSA Status">
-    <img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Freaper47%2Frecipya.svg?type=small"/>
+  <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Freaper47%2Frecipya?ref=badge_small">
+    <img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Freaper47%2Frecipya.svg?type=small" alt="FOSSA Status"/>
   </a>
 </p>
 

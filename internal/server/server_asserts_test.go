@@ -61,13 +61,6 @@ func assertCookbooksViewMode(t testing.TB, mode models.ViewMode, got string) {
 	assertStringsNotInHTML(t, got, notWant)
 }
 
-func assertUploadImageHitCount(t testing.TB, got, want int) {
-	t.Helper()
-	if got != want {
-		t.Fatalf("got %d images uploaded but want %d", got, want)
-	}
-}
-
 func assertHeader(t testing.TB, rr *httptest.ResponseRecorder, key, value string) {
 	t.Helper()
 	got := rr.Result().Header.Get(key)
@@ -123,7 +116,14 @@ func assertStringsNotInHTML(t testing.TB, bodyHTML string, wants []string) {
 	}
 }
 
-func assertUserSettings(t testing.TB, id int64, got, want *models.UserSettings) {
+func assertUploadImageHitCount(t testing.TB, got, want int) {
+	t.Helper()
+	if got != want {
+		t.Fatalf("got %d images uploaded but want %d", got, want)
+	}
+}
+
+func assertUserSettings(t testing.TB, got, want *models.UserSettings) {
 	t.Helper()
 	if got.ConvertAutomatically != want.ConvertAutomatically {
 		t.Fatalf("settings ConvertAutomatically got %t but want %t", got.ConvertAutomatically, want.ConvertAutomatically)

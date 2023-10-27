@@ -88,7 +88,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusOK)
-		assertUserSettings(t, 1, repo.UserSettingsRegistered[1], &models.UserSettings{CookbooksViewMode: models.GridViewMode})
+		assertUserSettings(t, repo.UserSettingsRegistered[1], &models.UserSettings{CookbooksViewMode: models.GridViewMode})
 		assertCookbooksViewMode(t, models.GridViewMode, getBodyHTML(rr))
 	})
 
@@ -99,7 +99,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusOK)
-		assertUserSettings(t, 1, repo.UserSettingsRegistered[1], &models.UserSettings{CookbooksViewMode: models.ListViewMode})
+		assertUserSettings(t, repo.UserSettingsRegistered[1], &models.UserSettings{CookbooksViewMode: models.ListViewMode})
 		body := getBodyHTML(rr)
 		assertCookbooksViewMode(t, models.ListViewMode, body)
 		want := []string{
@@ -129,7 +129,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?view=list", noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusOK)
-		assertUserSettings(t, 1, repo.UserSettingsRegistered[1], &models.UserSettings{CookbooksViewMode: models.ListViewMode})
+		assertUserSettings(t, repo.UserSettingsRegistered[1], &models.UserSettings{CookbooksViewMode: models.ListViewMode})
 		assertCookbooksViewMode(t, models.ListViewMode, getBodyHTML(rr))
 	})
 
@@ -140,7 +140,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?view=grid", noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusOK)
-		assertUserSettings(t, 1, repo.UserSettingsRegistered[1], &models.UserSettings{CookbooksViewMode: models.GridViewMode})
+		assertUserSettings(t, repo.UserSettingsRegistered[1], &models.UserSettings{CookbooksViewMode: models.GridViewMode})
 		assertCookbooksViewMode(t, models.GridViewMode, getBodyHTML(rr))
 	})
 
@@ -352,7 +352,7 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 				want := []string{
 					` <title hx-swap-oob="true">Lovely Canada | Recipya</title>`,
 					`<div id="content-title" hx-swap-oob="innerHTML">Lovely Canada</div>`,
-					`<script defer> function initReorder() { document.querySelectorAll("#search-results").forEach(sortable => { const sortableInstance = new Sortable(sortable, { animation: 150, ghostClass: 'blue-background-class', handle: '.handle', onEnd: function (event) { Array.from(document.querySelector('#search-results').children).forEach((c, i) => { const p = c.querySelector('.handle'); p.innerText = i + 1; }); }, }); sortable.addEventListener("htmx:afterSwap", function () { sortableInstance.option("disabled", false); }); }); } document.addEventListener("keydown", (event) => { if (event.ctrlKey && event.key === "/") { event.preventDefault(); document.querySelector("#search-recipes").focus(); } }); loadSortableJS().then(initReorder); </script>`,
+					`<script defer> function initReorder() { document.querySelectorAll("#search-results").forEach(sortable => { const sortableInstance = new Sortable(sortable, { animation: 150, ghostClass: 'blue-background-class', handle: '.handle', onEnd: function () { Array.from(document.querySelector('#search-results').children).forEach((c, i) => { const p = c.querySelector('.handle'); p.innerText = i + 1; }); }, }); sortable.addEventListener("htmx:afterSwap", function () { sortableInstance.option("disabled", false); }); }); } document.addEventListener("keydown", (event) => { if (event.ctrlKey && event.key === "/") { event.preventDefault(); document.querySelector("#search-recipes").focus(); } }); loadSortableJS().then(initReorder); </script>`,
 					`<section class="grid justify-center p-4"><div class="relative">`,
 					`<form class="sortable" hx-put="/cookbooks/1/reorder" hx-trigger="end" hx-swap="none"><input type='hidden' name='cookbook-id' value='1'/><ul id="search-results" class="cookbooks-display grid gap-2 p-2 md:p-0 text-sm md:text-base">`,
 					`<li class="recipe cookbook relative grid max-w-[30rem] border bg-white rounded-md shadow-md md:min-w-[30rem] dark:bg-neutral-700"><input type='hidden' name='recipe-id' value='3'/><div class="grid grid-cols-4"><img class="w-fit col-span-1 border-r h-[90px]" src="/data/images/00000000-0000-0000-0000-000000000000.jpg" alt="Recipe image"><div class="grid col-span-3 gap-1 p-2"><div class="grid grid-flow-col"><p class="font-semibold">Gotcha</p><div class="grid justify-end"><div class="pb-4 pl-4 text-xs"><span title="Remove recipe from cookbook" hx-delete="/cookbooks/1/recipes/3" hx-swap="outerHTML" hx-target="closest .recipe" hx-confirm="Are you sure you want to remove this recipe from the cookbook?" hx-indicator="#fullscreen-loader"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></span></div></div></div><div class="text-xs"><span class="w-fit leading-none flex items-center justify-center p-2 text-blue-700 bg-blue-100 border border-blue-300 rounded-full dark:border-gray-800"> American </span></div></div></div><div class="flex border-t dark:border-gray-800"><button class="w-full center hover:bg-gray-800 hover:text-white hover:dark:bg-neutral-600 hover:rounded-b-md" hx-get="/recipes/3" hx-target="#content" hx-swap="innerHTML" hx-push-url="true"> View </button><p class="justify-self-end px-4 select-none cursor-move handle"> 1 </p></div></li>`,

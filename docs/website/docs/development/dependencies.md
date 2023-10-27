@@ -18,8 +18,8 @@ To verify whether it's installed on your machine, execute `make` in a command pr
 Follow these steps if not installed:
 
 1. Open either the Command Prompt or Powershell in administrator mode.
-1. Execute `winget install GnuWin32.Make`
-1. Add `C:\Program Files (x86)\GnuWin32\bin` to the Windows PATH environment variable.
+2. Execute `winget install GnuWin32.Make`
+3. Add `C:\Program Files (x86)\GnuWin32\bin` to the Windows PATH environment variable.
 
 
 ## Recommended CLI Programs 

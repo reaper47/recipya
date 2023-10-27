@@ -42,15 +42,3 @@ const DeleteRecipeInstructions = `
 	DELETE
 	FROM instruction_recipe
 	WHERE recipe_id = ?`
-
-// DeleteRecipeKeywords is the query for deleting all keywords from a recipe.
-const DeleteRecipeKeywords = `
-	DELETE
-	FROM keyword_recipe
-	WHERE recipe_id = ?`
-
-// DeleteRecipeTools is the query for deleting all tools from a recipe.
-const DeleteRecipeTools = `
-	DELETE
-	FROM tool_recipe
-	WHERE recipe_id = ?`
