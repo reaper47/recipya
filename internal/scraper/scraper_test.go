@@ -2766,10 +2766,12 @@ func TestScraper(t *testing.T) {
 			name: "fitmencook.com",
 			in:   "https://fitmencook.com/rosemary-blue-cheese-turkey-sliders/",
 			want: models.RecipeSchema{
-				AtContext: atContext,
-				AtType:    models.SchemaType{Value: "Recipe"},
-				CookTime:  "PT20M",
-				Keywords:  models.Keywords{Values: "meal prep,meat,turkey"},
+				AtContext:     atContext,
+				AtType:        models.SchemaType{Value: "Recipe"},
+				CookTime:      "PT20M",
+				DateModified:  "2023-05-16T19:59:35+00:00",
+				DatePublished: "2021-09-05T18:05:31+00:00",
+				Keywords:      models.Keywords{Values: "meal prep,meat,turkey"},
 				Image: models.Image{
 					Value: "https://fitmencook.com/wp-content/uploads/2021/09/Rosemary-Blue-Cheese-Turkey-Sliders-2.jpg",
 				},
@@ -2798,7 +2800,7 @@ func TestScraper(t *testing.T) {
 				},
 				Instructions: models.Instructions{
 					Values: []string{
-						"In a bowl, mix together the ingredients for the turkey sliders. Use an ice cream scoop or 1/4 " +
+						"In a bowl, mix together the ingredients for the turkey sliders.  Use an ice cream scoop or 1/4 " +
 							"cup measuring cup to scoop to measure out each slider to keep them uniform. Alternatively " +
 							"you can measure out full sized burgers.",
 						"Set a nonstick skillet on medium heat and once hot, spray with avocado or olive oil, then add " +

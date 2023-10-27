@@ -55,13 +55,9 @@ The application will display the recipe if the request is successful. Otherwise,
 presented with a message asking you to either go back to the previous page or request the Recipya 
 developers to support the website.
 
-To view all supported websites, please click on the <ins>supported</ins> word. You will not be able to scrape a website not in the supported websites list.
-
-:::note
-
-It will be possible to scrape any website in the future. See GitHub issue [#70](https://github.com/reaper47/recipya/issues/70).
-
-:::
+To view all supported websites, please click on the <ins>supported</ins> word.
+You can scrape a website not in the supported list, but recipe extraction may fail. If it does, you can 
+request support for the website by clicking the button that appears.
 
 ![img alt](/img/features/add-recipe-website.png)
 
