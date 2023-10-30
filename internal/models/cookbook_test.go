@@ -55,7 +55,6 @@ func TestCookbook_DominantCategories(t *testing.T) {
 					{Category: "appetizer"},
 					{Category: "meat"},
 					{Category: "appetizer"},
-					{Category: "appetizer"},
 					{Category: "breakfast"},
 					{Category: "breakfast"},
 					{Category: "meat"},

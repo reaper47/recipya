@@ -894,7 +894,7 @@
     </div>
 {{end}}
 
-{{define "list-recipes"}}
+{{define "recipes-index"}}
     <title hx-swap-oob="true">Home | Recipya</title>
 
     {{- if .IsHxRequest -}}
@@ -915,33 +915,59 @@
     {{- end -}}
 
     {{- if .Recipes -}}
-        <article class="grid gap-4 p-4 text-sm grid-cols-4 md:m-auto md:max-w-7xl md:text-base md:grid-cols-10">
-            {{ $funcs := .Functions}}
-            {{- range $i, $r := .Recipes -}}
-                <div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700">
-                    {{ $isUUIDValid := call $funcs.IsUUIDValid .Image}}
-                    <img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 h-[236.8px] {{if not $isUUIDValid}}px-4 pt-4{{end}}"
-                         src="{{if $isUUIDValid}}/data/images/{{$r.Image}}.jpg{{end}}"
-                         alt="Image for the {{$r.Name}} recipe"
-                         hx-get="/recipes/{{$r.ID}}" hx-target="#content" hx-push-url="true">
-                    <div class="py-2 px-3">
-                        <div class="grid grid-flow-col gap-1 pb-2">
-                            <p class="font-semibold">{{$r.Name}}</p>
-                            <span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit">
-                                {{$r.Category}}
-                            </span>
+        <div class="flex flex-col">
+            <section class="grid justify-center px-4 pt-4">
+                <div class="relative">
+                    <form class="w-72 md:w-96"
+                          hx-post="/recipes/search"
+                          hx-vals='{"page": {{.Pagination.Selected}}}'
+                          hx-target="#list-recipes"
+                          _="on submit if #search-recipes.value is not '' then add .hidden to #pagination else remove .hidden from #pagination end">
+                        <div class="flex">
+                            <div class="relative w-full">
+                                <label>
+                                    <input type="search" id="search-recipes" name="q"
+                                           class="block z-20 p-2.5 w-full text-sm bg-gray-50 rounded-r-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                           placeholder="Search for recipes..."
+                                           _="on keyup
+                                               if event.target.value !== '' then
+                                                   remove .md:block from #search-shortcut
+                                               else
+                                                   add .md:block to #search-shortcut
+                                               end then
+                                               if event.key === 'Backspace' and event.target.value === '' then
+                                                   send submit to closest <form/>
+                                               end">
+                                </label>
+                                <kbd id="search-shortcut"
+                                     class="hidden absolute top-2 right-12 font-sans font-semibold select-none dark:text-slate-500 md:block">
+                                    <abbr title="Control"
+                                          class="no-underline text-slate-300 dark:text-slate-500">Ctrl </abbr>
+                                    /
+                                </kbd>
+                                <button type="submit"
+                                        class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700">
+                                    {{template "icon-maginifying-glass"}}
+                                    <span class="sr-only">Search</span>
+                                </button>
+                            </div>
                         </div>
-
-                        <p class="pb-8 text-justify text-sm">{{call $funcs.CutString $r.Description 127}}</p>
-
-                        <button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600"
-                                hx-get="/recipes/{{call $funcs.Inc $i}}" hx-target="#content" hx-push-url="true">
-                            View
-                        </button>
-                    </div>
+                    </form>
                 </div>
-            {{end}}
-        </article>
+            </section>
+        </div>
+        <div id="list-recipes">
+            {{template "list-recipes" .}}
+        </div>
+        {{template "pagination" .Pagination}}
+        <script defer>
+            document.addEventListener("keydown", (event) => {
+                if (event.ctrlKey && event.key === "/") {
+                    event.preventDefault();
+                    document.querySelector("#search-recipes").focus();
+                }
+            });
+        </script>
     {{- else -}}
         <div class="grid place-content-center text-sm h-full text-center md:text-base">
             <p>Your recipe collection looks a bit empty at the moment.</p>
@@ -953,6 +979,36 @@
             </p>
         </div>
     {{- end -}}
+{{end}}
+
+{{define "list-recipes"}}
+    <article class="grid gap-4 p-4 text-sm grid-cols-4 md:m-auto md:max-w-7xl md:text-base md:grid-cols-10">
+        {{ $funcs := .Functions}}
+        {{- range $i, $r := .Recipes -}}
+            <div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700">
+                {{ $isUUIDValid := call $funcs.IsUUIDValid .Image}}
+                <img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 h-48 {{if not $isUUIDValid}}px-4 pt-4{{end}}"
+                     src="{{if $isUUIDValid}}/data/images/{{$r.Image}}.jpg{{end}}"
+                     alt="Image for the {{$r.Name}} recipe"
+                     hx-get="/recipes/{{$r.ID}}" hx-target="#content" hx-push-url="true">
+                <div class="py-2 px-3">
+                    <div class="grid grid-flow-col gap-1 pb-2">
+                        <p class="font-semibold">{{$r.Name}}</p>
+                        <span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit">
+                            {{$r.Category}}
+                        </span>
+                    </div>
+
+                    <p class="pb-8 text-justify text-sm">{{call $funcs.CutString $r.Description 127}}</p>
+
+                    <button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600"
+                            hx-get="/recipes/{{$r.ID}}" hx-target="#content" hx-push-url="true">
+                        View
+                    </button>
+                </div>
+            </div>
+        {{end}}
+    </article>
 {{end}}
 
 {{define "load-recipes-manual-scripts"}}

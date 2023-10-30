@@ -92,8 +92,8 @@ const InsertRecipeKeyword = `
 	VALUES (?, ?)`
 
 const InsertRecipeShadow = `
-	INSERT OR REPLACE INTO shadow_last_inserted_recipe (row, id, name, description)
-	VALUES (1, ?, ?, ?)`
+	INSERT OR REPLACE INTO shadow_last_inserted_recipe (row, id, name, description, source)
+	VALUES (1, ?, ?, ?, ?)`
 
 // InsertRecipeTime is the query to associate a recipe with a time.
 const InsertRecipeTime = `

@@ -51,7 +51,7 @@
                     class="recipes-sidebar-selected"
                     hx-get="/recipes" hx-target="#content"
                     hx-push-url="true" hx-swap-oob="true"
-                    _="on load if location.pathname is not '/recipes' then remove .recipes-sidebar-selected then add .recipes-sidebar-not-selected">
+                    _="on load if location.pathname is '/recipes' or location.pathname is '/' then add .recipes-sidebar-selected else remove .recipes-sidebar-selected then add .recipes-sidebar-not-selected">
                     <img src="/static/img/cherries.svg" alt="">
                     <span class="hidden md:block ml-1">Recipes</span>
                 </li>

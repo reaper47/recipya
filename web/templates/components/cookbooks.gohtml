@@ -139,16 +139,16 @@
                 <label>
                     <input type="search" id="search-recipes" name="q"
                            class="block z-20 p-2.5 w-full text-sm bg-gray-50 rounded-r-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                           placeholder="Search for recipes to add..."
+                           placeholder="Search for recipes..."
                            _="on keyup
-                                               if event.target.value !== '' then
-                                                   remove .md:block from #search-shortcut
-                                               else
-                                                   add .md:block to #search-shortcut
-                                               end then
-                                               if event.key === 'Backspace' and event.target.value === '' then
-                                                   send submit to closest <form/>
-                                               end">
+                               if event.target.value !== '' then
+                                   remove .md:block from #search-shortcut
+                               else
+                                   add .md:block to #search-shortcut
+                               end then
+                               if event.key === 'Backspace' and event.target.value === '' then
+                                   send submit to closest <form/>
+                               end">
                 </label>
                 <kbd id="search-shortcut"
                      class="hidden absolute top-2 right-12 font-sans font-semibold select-none dark:text-slate-500 md:block">

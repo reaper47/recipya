@@ -281,7 +281,7 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (uint64, error
 		return 0, err
 	}
 
-	_, err = tx.ExecContext(ctx, statements.InsertRecipeShadow, recipeID, r.Name, r.Description)
+	_, err = tx.ExecContext(ctx, statements.InsertRecipeShadow, recipeID, r.Name, r.Description, r.URL)
 	if err != nil {
 		return 0, err
 	}
@@ -618,11 +618,26 @@ func (s *SQLiteService) Recipe(id, userID int64) (*models.Recipe, error) {
 	return r, tx.Commit()
 }
 
-func (s *SQLiteService) Recipes(userID int64) models.Recipes {
+func (s *SQLiteService) Recipes(userID int64, page uint64) models.Recipes {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
-	rows, err := s.DB.QueryContext(ctx, statements.SelectRecipes, userID)
+	stmt := statements.SelectRecipes
+
+	rows, err := s.DB.QueryContext(ctx, stmt, userID, page)
+	if err != nil {
+		return models.Recipes{}
+	}
+	defer rows.Close()
+
+	return scanRecipes(rows)
+}
+
+func (s *SQLiteService) RecipesAll(userID int64) models.Recipes {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	rows, err := s.DB.QueryContext(ctx, statements.SelectRecipesAll, userID)
 	if err != nil {
 		return models.Recipes{}
 	}
@@ -638,12 +653,19 @@ func (s *SQLiteService) SearchRecipes(query string, options models.SearchOptions
 	queries := strings.Split(query, " ")
 	stmt := statements.BuildSearchRecipeQuery(queries, options)
 
+	if options.FullSearch {
+		for _ = range statements.RecipesFTSFields {
+			queries = append(queries, queries...)
+		}
+	}
+
 	xa := make([]any, len(queries)+1)
 	xa[0] = userID
 	for i, q := range queries {
 		xa[i+1] = q + "*"
 	}
 	queries = append([]string{strconv.FormatInt(userID, 10)}, queries...)
+
 	rows, err := s.DB.QueryContext(ctx, stmt, xa...)
 	if err != nil {
 		return nil, err
@@ -781,7 +803,7 @@ func (s *SQLiteService) SwitchMeasurementSystem(system units.System, userID int6
 	}
 
 	numConverted := 0
-	for _, r := range s.Recipes(userID) {
+	for _, r := range s.RecipesAll(userID) {
 		converted, err := r.ConvertMeasurementSystem(system)
 		if err != nil {
 			continue

@@ -31,11 +31,12 @@ CREATE VIRTUAL TABLE recipes_fts USING fts5
     user_id,
     name,
     description,
-    categories,
-    cuisines,
+    category,
+    cuisine,
     ingredients,
     instructions,
-    keywords
+    keywords,
+    source
 );
 
 ALTER TABLE user_settings
@@ -49,7 +50,8 @@ CREATE TABLE shadow_last_inserted_recipe
     row         INTEGER PRIMARY KEY,
     id          INTEGER NOT NULL,
     name        TEXT    NOT NULL,
-    description TEXT
+    description TEXT,
+    source      TEXT
 );
 
 -- +goose StatementBegin
@@ -110,11 +112,12 @@ BEGIN
                              user_id,
                              name,
                              description,
-                             categories,
-                             cuisines,
+                             category,
+                             cuisine,
                              ingredients,
                              instructions,
-                             keywords)
+                             keywords,
+                             source)
     VALUES (NEW.id,
             (SELECT user_id FROM user_recipe AS ur WHERE ur.recipe_id = NEW.id),
             NEW.name,
@@ -143,7 +146,8 @@ BEGIN
                               FROM (SELECT DISTINCT keywords.name AS keyword_name
                                     FROM keyword_recipe
                                              JOIN keywords ON keywords.id = keyword_recipe.keyword_id
-                                    WHERE keyword_recipe.recipe_id = NEW.id)), '')));
+                                    WHERE keyword_recipe.recipe_id = NEW.id)), '')),
+            NEW.source);
 END;
 
 CREATE TRIGGER shadow_last_inserted_recipe_delete

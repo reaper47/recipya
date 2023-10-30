@@ -81,7 +81,10 @@ type RepositoryService interface {
 	Recipe(id, userID int64) (*models.Recipe, error)
 
 	// Recipes gets the user's recipes.
-	Recipes(userID int64) models.Recipes
+	Recipes(userID int64, page uint64) models.Recipes
+
+	// RecipesAll gets all the user's recipes.
+	RecipesAll(userID int64) models.Recipes
 
 	// RecipeShared checks whether the recipe is shared.
 	// It returns a models.Share. Otherwise, an error.
