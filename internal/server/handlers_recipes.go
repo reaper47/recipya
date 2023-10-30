@@ -17,15 +17,30 @@ import (
 func (s *Server) recipesHandler(w http.ResponseWriter, r *http.Request) {
 	userID := getUserID(r)
 
+	pageStr := r.URL.Query().Get("page")
+	pageNumber, err := strconv.ParseUint(pageStr, 10, 64)
+	if err != nil {
+		pageNumber = 1
+	}
+
+	p, err := newRecipesPagination(s, w, userID, pageNumber, false)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Error updating pagination.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 	isHxRequest := r.Header.Get("HX-Request") == "true"
+
 	baseData := templates.Data{
 		Functions:   templates.NewFunctionsData(),
 		IsHxRequest: isHxRequest,
-		Recipes:     s.Repository.Recipes(userID),
+		Pagination:  p,
+		Recipes:     s.Repository.Recipes(userID, pageNumber),
 	}
 
 	if isHxRequest {
-		templates.RenderComponent(w, "recipes", "list-recipes", baseData)
+		templates.RenderComponent(w, "recipes", "recipes-index", baseData)
 		return
 	} else {
 		page := templates.HomePage
@@ -34,6 +49,22 @@ func (s *Server) recipesHandler(w http.ResponseWriter, r *http.Request) {
 		templates.Render(w, page, baseData)
 		return
 	}
+}
+
+func newRecipesPagination(srv *Server, w http.ResponseWriter, userID int64, page uint64, isSwap bool) (templates.Pagination, error) {
+	counts, err := srv.Repository.Counts(userID)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Error getting counts.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return templates.Pagination{}, err
+	}
+
+	numPages := counts.Recipes / templates.ResultsPerPage
+	if numPages == 0 {
+		numPages = 1
+	}
+
+	return templates.NewPagination(page, numPages, counts.Recipes, templates.ResultsPerPage, "/recipes", isSwap), nil
 }
 
 func recipesAddHandler(w http.ResponseWriter, r *http.Request) {
@@ -670,6 +701,43 @@ func (s *Server) recipeSharePostHandler(w http.ResponseWriter, r *http.Request) 
 
 	templates.RenderComponent(w, "recipes", "share-link", templates.Data{
 		Content: r.Host + link,
+	})
+}
+
+func (s *Server) recipesSearchHandler(w http.ResponseWriter, r *http.Request) {
+	userID := getUserID(r)
+
+	pageStr := r.URL.Query().Get("page")
+	page, err := strconv.ParseUint(pageStr, 10, 64)
+	if err != nil {
+		page = 1
+	}
+
+	var recipes models.Recipes
+	q := r.FormValue("q")
+	if q == "" {
+		recipes = s.Repository.Recipes(userID, page)
+	} else {
+		q = strings.ReplaceAll(q, ",", " ")
+		q = strings.Join(strings.Fields(q), " ")
+
+		var err error
+		recipes, err = s.Repository.SearchRecipes(q, models.SearchOptionsRecipes{FullSearch: true}, userID)
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Error searching recipes.", errorToast))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+	}
+
+	if len(recipes) == 0 {
+		templates.RenderComponent(w, "search", "no-result", nil)
+		return
+	}
+
+	templates.RenderComponent(w, "recipes", "list-recipes", templates.Data{
+		Functions: templates.NewFunctionsData(),
+		Recipes:   recipes,
 	})
 }
 

@@ -47,7 +47,7 @@ func (s *Server) settingsExportRecipesHandler(w http.ResponseWriter, r *http.Req
 	}
 
 	userID := getUserID(r)
-	recipes := s.Repository.Recipes(userID)
+	recipes := s.Repository.RecipesAll(userID)
 	if len(recipes) == 0 {
 		w.Header().Set("HX-Trigger", makeToast("No recipes in database.", warningToast))
 		w.WriteHeader(http.StatusNoContent)

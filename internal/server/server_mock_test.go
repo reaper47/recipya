@@ -338,7 +338,14 @@ func (m *mockRepository) Recipe(id, userID int64) (*models.Recipe, error) {
 	return nil, errors.New("recipe not found")
 }
 
-func (m *mockRepository) Recipes(userID int64) models.Recipes {
+func (m *mockRepository) Recipes(userID int64, _ uint64) models.Recipes {
+	if recipes, ok := m.RecipesRegistered[userID]; ok {
+		return recipes
+	}
+	return models.Recipes{}
+}
+
+func (m *mockRepository) RecipesAll(userID int64) models.Recipes {
 	if recipes, ok := m.RecipesRegistered[userID]; ok {
 		return recipes
 	}
@@ -391,11 +398,9 @@ func (m *mockRepository) SearchRecipes(query string, options models.SearchOption
 	}
 
 	var results models.Recipes
-	if options.ByName {
-		for _, r := range recipes {
-			if strings.Contains(strings.ToLower(r.Name), query) {
-				results = append(results, r)
-			}
+	for _, r := range recipes {
+		if strings.Contains(strings.ToLower(r.Name), query) {
+			results = append(results, r)
 		}
 	}
 	return results, nil

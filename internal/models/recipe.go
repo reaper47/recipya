@@ -330,7 +330,8 @@ func (n *Nutrition) Schema(servings string) NutritionSchema {
 
 // SearchOptionsRecipes defines the options for searching recipes.
 type SearchOptionsRecipes struct {
-	ByName bool
+	ByName     bool
+	FullSearch bool
 }
 
 func init() {

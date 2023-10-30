@@ -163,6 +163,7 @@ func (s *Server) mountHandlers() {
 			r.Post("/website", s.recipesAddWebsiteHandler)
 		})
 
+		r.Post("/search", s.recipesSearchHandler)
 		r.Get("/supported-websites", s.recipesSupportedWebsitesHandler)
 	})
 

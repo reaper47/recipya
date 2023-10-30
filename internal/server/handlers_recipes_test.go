@@ -56,10 +56,11 @@ func TestHandlers_Recipes(t *testing.T) {
 		got := getBodyHTML(rr)
 		want := []string{
 			`<title hx-swap-oob="true">Home | Recipya</title>`,
+			`<form class="w-72 md:w-96" hx-post="/recipes/search" hx-vals='{"page": 1}' hx-target="#list-recipes" _="on submit if #search-recipes.value is not '' then add .hidden to #pagination else remove .hidden from #pagination end">`,
 			`<article class="grid gap-4 p-4 text-sm grid-cols-4 md:m-auto md:max-w-7xl md:text-base md:grid-cols-10">`,
-			`<div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700"><img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 h-[236.8px] px-4 pt-4" src="" alt="Image for the One recipe" hx-get="/recipes/1" hx-target="#content" hx-push-url="true"><div class="py-2 px-3"><div class="grid grid-flow-col gap-1 pb-2"><p class="font-semibold">One</p><span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit"> Lunch </span></div><p class="pb-8 text-justify text-sm">Recipe one</p><button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/recipes/1" hx-target="#content" hx-push-url="true"> View </button></div></div>`,
-			`<div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700"><img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 h-[236.8px] px-4 pt-4" src="" alt="Image for the Two recipe" hx-get="/recipes/2" hx-target="#content" hx-push-url="true"><div class="py-2 px-3"><div class="grid grid-flow-col gap-1 pb-2"><p class="font-semibold">Two</p><span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit"> Soup </span></div><p class="pb-8 text-justify text-sm">Recipe two</p><button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/recipes/2" hx-target="#content" hx-push-url="true"> View </button></div></div>`,
-			`<div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700"><img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 h-[236.8px] px-4 pt-4" src="" alt="Image for the Three recipe" hx-get="/recipes/3" hx-target="#content" hx-push-url="true"><div class="py-2 px-3"><div class="grid grid-flow-col gap-1 pb-2"><p class="font-semibold">Three</p><span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit"> Dinner </span></div><p class="pb-8 text-justify text-sm">Recipe three</p><button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/recipes/3" hx-target="#content" hx-push-url="true"> View </button></div></div>`,
+			`<div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700"><img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 h-48 px-4 pt-4" src="" alt="Image for the One recipe" hx-get="/recipes/1" hx-target="#content" hx-push-url="true"><div class="py-2 px-3"><div class="grid grid-flow-col gap-1 pb-2"><p class="font-semibold">One</p><span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit"> Lunch </span></div><p class="pb-8 text-justify text-sm">Recipe one</p><button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/recipes/1" hx-target="#content" hx-push-url="true"> View </button></div></div>`,
+			`<div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700"><img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 h-48 px-4 pt-4" src="" alt="Image for the Two recipe" hx-get="/recipes/2" hx-target="#content" hx-push-url="true"><div class="py-2 px-3"><div class="grid grid-flow-col gap-1 pb-2"><p class="font-semibold">Two</p><span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit"> Soup </span></div><p class="pb-8 text-justify text-sm">Recipe two</p><button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/recipes/2" hx-target="#content" hx-push-url="true"> View </button></div></div>`,
+			`<div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700"><img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 h-48 px-4 pt-4" src="" alt="Image for the Three recipe" hx-get="/recipes/3" hx-target="#content" hx-push-url="true"><div class="py-2 px-3"><div class="grid grid-flow-col gap-1 pb-2"><p class="font-semibold">Three</p><span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit"> Dinner </span></div><p class="pb-8 text-justify text-sm">Recipe three</p><button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/recipes/3" hx-target="#content" hx-push-url="true"> View </button></div></div>`,
 		}
 		assertStringsInHTML(t, got, want)
 		notWant := []string{
@@ -830,6 +831,82 @@ func TestHandlers_Recipes_Scale(t *testing.T) {
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
+}
+
+func TestHandlers_Recipes_Search(t *testing.T) {
+	srv := newServerTest()
+	srv.Repository = &mockRepository{
+		RecipesRegistered: map[int64]models.Recipes{
+			1: {
+				{ID: 1, Name: "Chinese Firmware"},
+				{ID: 2, Name: "Lovely Canada"},
+				{ID: 3, Name: "Lovely Ukraine"},
+			},
+		},
+	}
+
+	uri := "/recipes/search"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
+	})
+
+	t.Run("display all recipes if search is empty", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader(""))
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		want := []string{
+			`<article class="grid gap-4 p-4 text-sm grid-cols-4 md:m-auto md:max-w-7xl md:text-base md:grid-cols-10">`,
+			`<div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700"><img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 h-48 px-4 pt-4" src="" alt="Image for the Chinese Firmware recipe" hx-get="/recipes/1" hx-target="#content" hx-push-url="true"><div class="py-2 px-3"><div class="grid grid-flow-col gap-1 pb-2"><p class="font-semibold">Chinese Firmware</p><span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit"></span></div><p class="pb-8 text-justify text-sm"></p><button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/recipes/1" hx-target="#content" hx-push-url="true"> View </button></div>`,
+			`<div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700"><img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 h-48 px-4 pt-4" src="" alt="Image for the Lovely Canada recipe" hx-get="/recipes/2" hx-target="#content" hx-push-url="true"><div class="py-2 px-3"><div class="grid grid-flow-col gap-1 pb-2"><p class="font-semibold">Lovely Canada</p><span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit"></span></div><p class="pb-8 text-justify text-sm"></p><button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/recipes/2" hx-target="#content" hx-push-url="true"> View </button></div>`,
+			`<div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700"><img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 h-48 px-4 pt-4" src="" alt="Image for the Lovely Ukraine recipe" hx-get="/recipes/3" hx-target="#content" hx-push-url="true"><div class="py-2 px-3"><div class="grid grid-flow-col gap-1 pb-2"><p class="font-semibold">Lovely Ukraine</p><span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit"></span></div><p class="pb-8 text-justify text-sm"></p><button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/recipes/3" hx-target="#content" hx-push-url="true"> View </button></div>`,
+		}
+		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
+
+	t.Run("no results", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("q=kool-aid"))
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		want := []string{
+			`<div class="grid place-content-center text-sm text-center h-3/5 md:text-base"><p>No results found.</p></div>`,
+		}
+		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
+
+	searches := []struct {
+		query string
+		want  []string
+	}{
+		{
+			query: "lov",
+			want: []string{
+				`<div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700"><img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 h-48 px-4 pt-4" src="" alt="Image for the Lovely Canada recipe" hx-get="/recipes/2" hx-target="#content" hx-push-url="true"><div class="py-2 px-3"><div class="grid grid-flow-col gap-1 pb-2"><p class="font-semibold">Lovely Canada</p><span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit"></span></div><p class="pb-8 text-justify text-sm"></p><button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/recipes/2" hx-target="#content" hx-push-url="true"> View </button></div>`,
+				`<div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700"><img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 h-48 px-4 pt-4" src="" alt="Image for the Lovely Ukraine recipe" hx-get="/recipes/3" hx-target="#content" hx-push-url="true"><div class="py-2 px-3"><div class="grid grid-flow-col gap-1 pb-2"><p class="font-semibold">Lovely Ukraine</p><span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit"></span></div><p class="pb-8 text-justify text-sm"></p><button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/recipes/3" hx-target="#content" hx-push-url="true"> View </button></div>`,
+			},
+		},
+		{
+			query: "chi",
+			want: []string{
+				`<div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700"><img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 h-48 px-4 pt-4" src="" alt="Image for the Chinese Firmware recipe" hx-get="/recipes/1" hx-target="#content" hx-push-url="true"><div class="py-2 px-3"><div class="grid grid-flow-col gap-1 pb-2"><p class="font-semibold">Chinese Firmware</p><span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit"></span></div><p class="pb-8 text-justify text-sm"></p><button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/recipes/1" hx-target="#content" hx-push-url="true"> View </button></div>`,
+			},
+		},
+		{
+			query: "lovely",
+			want: []string{
+				`<div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700"><img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 h-48 px-4 pt-4" src="" alt="Image for the Lovely Canada recipe" hx-get="/recipes/2" hx-target="#content" hx-push-url="true"><div class="py-2 px-3"><div class="grid grid-flow-col gap-1 pb-2"><p class="font-semibold">Lovely Canada</p><span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit"></span></div><p class="pb-8 text-justify text-sm"></p><button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/recipes/2" hx-target="#content" hx-push-url="true"> View </button></div>`,
+				`<div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700"><img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 h-48 px-4 pt-4" src="" alt="Image for the Lovely Ukraine recipe" hx-get="/recipes/3" hx-target="#content" hx-push-url="true"><div class="py-2 px-3"><div class="grid grid-flow-col gap-1 pb-2"><p class="font-semibold">Lovely Ukraine</p><span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit"></span></div><p class="pb-8 text-justify text-sm"></p><button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/recipes/3" hx-target="#content" hx-push-url="true"> View </button></div>`,
+			},
+		},
+	}
+	for _, tc := range searches {
+		t.Run("results for "+tc.query, func(t *testing.T) {
+			rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("id=1&page=1&q="+tc.query))
+
+			assertStatus(t, rr.Code, http.StatusOK)
+			assertStringsInHTML(t, getBodyHTML(rr), tc.want)
+		})
+	}
 }
 
 func TestHandlers_Recipes_Share(t *testing.T) {

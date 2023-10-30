@@ -6,6 +6,62 @@ import (
 	"strings"
 )
 
+// RecipesFTSFields lists all columns in the recipes_fts table.
+var RecipesFTSFields = []string{"name", "description", "category", "ingredients", "instructions", "keywords", "source"}
+
+// BuildSearchRecipeQuery builds a SQL query for searching recipes.
+func BuildSearchRecipeQuery(queries []string, options models.SearchOptionsRecipes) string {
+	var sb strings.Builder
+	sb.WriteString(baseSelectRecipe)
+	sb.WriteString(" WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ?")
+
+	n := len(queries)
+	if n > 0 {
+		sb.WriteString(" AND (")
+		if options.ByName {
+			switch n {
+			case 1:
+				sb.WriteString("name MATCH ?)")
+			default:
+				sb.WriteString("name MATCH ?")
+				for range queries[1:] {
+					sb.WriteString(" AND name MATCH ?")
+				}
+				sb.WriteString(")")
+			}
+		} else if options.FullSearch {
+			nFields := len(RecipesFTSFields)
+			for i, field := range RecipesFTSFields {
+				if n == 1 {
+					sb.WriteString(field + " MATCH ?")
+					if i < nFields-1 {
+						sb.WriteString(" OR ")
+					}
+				} else {
+					sb.WriteString("(")
+					for j := range queries {
+						sb.WriteString(field + " MATCH ?")
+						if j < n-1 {
+							sb.WriteString(" AND ")
+						}
+					}
+
+					if i < nFields-1 {
+						sb.WriteString(") OR ")
+					} else {
+						sb.WriteString(")")
+					}
+				}
+			}
+
+			sb.WriteString(")")
+		}
+	}
+
+	sb.WriteString(" ORDER BY rank) GROUP BY recipes.id LIMIT 30")
+	return sb.String()
+}
+
 // IsRecipeForUserExist checks whether the recipe belongs to the given user.
 const IsRecipeForUserExist = `
 	SELECT EXISTS(
@@ -204,37 +260,20 @@ const SelectRecipe = baseSelectRecipe + `
 							  WHERE user_id = ?) AS t
 						WHERE row_num = ?)`
 
-// BuildSearchRecipeQuery builds a SQL query for searching recipes.
-func BuildSearchRecipeQuery(queries []string, options models.SearchOptionsRecipes) string {
-	var sb strings.Builder
-	sb.WriteString(baseSelectRecipe)
-	sb.WriteString(" WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ?")
-
-	n := len(queries)
-	if n > 0 {
-		sb.WriteString(" AND ")
-		if options.ByName {
-			switch n {
-			case 1:
-				sb.WriteString("(name MATCH ?)")
-			default:
-				sb.WriteString("(name MATCH ?")
-				for range queries[1:] {
-					sb.WriteString(" AND name MATCH ?")
-				}
-				sb.WriteString(")")
-			}
-		}
-	}
-
-	sb.WriteString(" ORDER BY rank) GROUP BY recipes.id LIMIT 30")
-	return sb.String()
-}
-
-// SelectRecipes is the query to fetch all the user's recipes.
-const SelectRecipes = baseSelectRecipe + `
+// SelectRecipesAll is the query to fetch all the user's recipes.
+const SelectRecipesAll = baseSelectRecipe + `
 	WHERE recipes.id IN (SELECT recipe_id FROM user_recipe WHERE user_id = ?)
 	GROUP BY recipes.id`
+
+// SelectRecipes is the query to fetch a chunk of the user's recipes.
+const SelectRecipes = baseSelectRecipe + `
+	WHERE recipes.id >= (SELECT id
+			 FROM (SELECT id, ROW_NUMBER() OVER (ORDER BY id) AS row_num
+				   FROM user_recipe AS UR
+				   WHERE ur.user_id = ?)
+			 WHERE row_num > (? - 2) *` + templates.ResultsPerPageStr + " + " + templates.ResultsPerPageStr + `)
+	GROUP BY recipes.id
+	LIMIT ` + templates.ResultsPerPageStr
 
 // SelectRecipeShared checks whether the recipe is shared.
 const SelectRecipeShared = `
