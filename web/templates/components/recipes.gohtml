@@ -1200,14 +1200,14 @@
 
         <div class="grid grid-flow-col col-span-6 border-b border-l border-black md:border-l md:grid-flow-row md:col-span-2 md:grid md:border-r md:border-b-0 dark:border-gray-800 print:border-b">
             <div class="col-span-2 p-2 border-r border-black md:col-span-3 md:grid md:place-items-center md:border-r-0 dark:border-gray-800">
-                <span class="flex items-center justify-center p-2 font-medium text-blue-700 bg-blue-100 border border-blue-300 rounded-full md:w-1/3 dark:border-gray-800 print:border-none print:text-black">
+                <span class="flex items-center justify-center p-2 font-medium text-blue-700 bg-blue-100 border border-blue-300 rounded-full md:w-1/3 dark:border-gray-800 print:border-none print:text-black print:bg-transparent">
                   <span class="text-sm font-normal leading-none">{{.View.Recipe.Category}}</span>
                 </span>
             </div>
 
             <div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t dark:border-gray-800">
                 {{- if .IsAuthenticated -}}
-                    <form autocomplete="off" _="on submit halt the event">
+                    <form autocomplete="off" _="on submit halt the event" class="print:hidden">
                         <input id="yield" type="number" min="1" name="yield"
                                value="{{if eq .View.Recipe.Yield 0}}1{{else}}{{.View.Recipe.Yield}}{{end}}"
                                class="w-16 text-center rounded bg-gray-100 p-2 grid self-end dark:bg-gray-900"
@@ -1216,6 +1216,7 @@
                                hx-target="#ingredients-instructions-container">
                         <label for="yield" class="grid self-start">servings</label>
                     </form>
+                    <p class="hidden print:block">{{.View.Recipe.Yield}} servings</p>
                 {{- else -}}
                     <p class="text-sm text-center">{{.View.Recipe.Yield}} servings</p>
                 {{- end -}}
@@ -1223,10 +1224,11 @@
 
             <div class="flex items-center justify-center col-span-2 border-x border-black text-sm md:border-l-0 md:border-r-0 md:border-b md:col-span-3 md:border-t md:py-2 dark:border-gray-800">
                 {{- if .View.IsURL -}}
-                    <a class="p-1 border rounded-lg center hover:bg-gray-800 hover:text-white dark:border-gray-800"
+                    <a class="p-1 border rounded-lg center hover:bg-gray-800 hover:text-white dark:border-gray-800 print:hidden"
                        href="{{.View.Recipe.URL}}" target="_blank">
                         Source
                     </a>
+                    <p class="hidden print:block print:whitespace-nowrap print:overflow-hidden print:text-ellipsis print:max-w-xs">{{.View.Recipe.URL}}</p>
                 {{- else -}}
                     <p>Source: {{if .View.Recipe.URL}}{{.View.Recipe.URL}}{{else}}Unknown{{end}}</p>
                 {{- end -}}
@@ -1352,15 +1354,15 @@
             <div class="inline-block min-w-full overflow-x-auto align-middle">
                 <div class="overflow-hidden border-gray-200">
                     <table class="min-w-full text-xs divide-y divide-gray-200 dark:text-gray-200 dark:divide-slate-600">
-                        <thead class="h-12 font-medium tracking-wider text-white bg-gray-800 border-l dark:border-l-gray-600 print:h-1">
+                        <thead class="h-12 font-medium tracking-wider text-white bg-gray-800 border-l dark:border-l-gray-600 print:h-1 print:text-black print:bg-gray-200">
                         <tr>
                             <th scope="col" class="text-right">Time</th>
                             <th scope="col" class="text-center">h:m:s</th>
                         </tr>
                         </thead>
-                        <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600">
+                        <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600 print:text-gray-700">
                         <tr>
-                            <td class="py-2">Preparation:</td>
+                            <td class="py-2">Prep:</td>
                             <td class="text-center print:py-0">
                                 <time datetime="{{.View.FormattedTimes.PrepDateTime}}">{{.View.FormattedTimes.Prep}}</time>
                             </td>
