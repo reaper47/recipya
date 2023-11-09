@@ -25,7 +25,7 @@ type ConfigFile struct {
 // Address assembles the server's web address from its URL and host.
 func (c *ConfigFile) Address() string {
 	addr := c.URL
-	if runtime.GOOS == "windows" && strings.Contains(addr, "0.0.0.0") {
+	if (runtime.GOOS == "windows" || isRunningInDocker()) && strings.Contains(addr, "0.0.0.0") {
 		addr = strings.Replace(addr, "0.0.0.0", "127.0.0.1", 1)
 	}
 
