@@ -17,8 +17,7 @@ import (
 	"time"
 )
 
-// Setup sets up Recipya.
-func Setup() {
+func setup() {
 	reset := "\033[0m"
 	greenText := func(s string) string {
 		return "\033[32m" + s + reset
@@ -64,7 +63,7 @@ func Setup() {
 		fmt.Println(greenText("✓") + " Configuration file")
 	}
 
-	fmt.Println("Recipya is ready to be served by running: ./recipya serve")
+	fmt.Println("Recipya is properly set up.")
 }
 
 func createConfigFile() error {

@@ -10,13 +10,8 @@ It is updated nightly if the main branch has new commits.
 First, download and extract the zip file compatible with your system. 
 Please consult the [supported platforms](#supported-platforms) table if you are unsure which file to download.
 
-Then, run the interactive setup by running the following command.
-
-```bash
-./recipya setup
-```
-
-Finally, start the server by opening a command prompt in the folder, and run the following command.
+Then, start the server by opening a command prompt in the folder, and run the following command.
+The application will perform a one-time setup if not already done.
 
 ```bash
 ./recipya-{os}-{architecture} serve

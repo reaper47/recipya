@@ -47,6 +47,8 @@ var ImagesDir string
 // Init initializes the app. This function must be called when the app starts.
 // Its name is not *init* so that the function is not executed during the tests.
 func Init() {
+	setup()
+
 	exe, err := os.Executable()
 	if err != nil {
 		panic(err)
@@ -56,14 +58,6 @@ func Init() {
 	xb, err := os.ReadFile(filepath.Join(dir, configFileName))
 	if err != nil {
 		fmt.Println("The configuration file must be present.")
-		fmt.Println("Did you run ./recipya setup?")
-		os.Exit(1)
-	}
-
-	_, err = os.Stat(filepath.Join(dir, "fdc.db"))
-	if os.IsNotExist(err) {
-		fmt.Println("The FDC database must be present.")
-		fmt.Println("Did you run ./recipya setup?")
 		os.Exit(1)
 	}
 
