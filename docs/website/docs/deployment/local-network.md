@@ -16,8 +16,6 @@ the site network wide via at http://[host computer IP]:[[port]](/docs/installati
 
 ### Linux
 
-Please first ensure that the [url](/docs/installation/config-file) in the configuration file is set to http://0.0.0.0.
-
 Create a service to run the app automatically on boot.
 
 ```bash

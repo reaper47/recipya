@@ -3,6 +3,7 @@ package app
 import (
 	"encoding/json"
 	"fmt"
+	"net"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -24,13 +25,26 @@ type ConfigFile struct {
 
 // Address assembles the server's web address from its URL and host.
 func (c *ConfigFile) Address() string {
-	addr := c.URL
-	if (runtime.GOOS == "windows" || isRunningInDocker()) && strings.Contains(addr, "0.0.0.0") {
-		addr = strings.Replace(addr, "0.0.0.0", "127.0.0.1", 1)
-	}
+	port := ":" + strconv.Itoa(c.Port)
 
+	conn, err := net.Dial("udp", "8.8.8.8:80")
+	if err != nil || isRunningInDocker() {
+		addr := c.URL
+		if (runtime.GOOS == "windows" || isRunningInDocker()) && strings.Contains(addr, "0.0.0.0") {
+			addr = strings.Replace(addr, "0.0.0.0", "127.0.0.1", 1)
+		}
+
+		if c.Port != 0 {
+			addr += port
+		}
+		return addr
+	}
+	defer conn.Close()
+
+	localAddr := conn.LocalAddr().(*net.UDPAddr)
+	addr := strings.SplitAfter(c.URL, "://")[0] + localAddr.IP.String()
 	if c.Port != 0 {
-		addr += ":" + strconv.Itoa(c.Port)
+		return addr + port
 	}
 	return addr
 }
