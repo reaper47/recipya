@@ -135,7 +135,7 @@ func TestHandlers_Auth_ForgotPassword(t *testing.T) {
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
 			`<title hx-swap-oob="true">Forgot Password | Recipya</title>`,
-			`<input type="email" class="w-full rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-900" id="email" name="email" placeholder="Enter your email address" required/>`,
+			`<input type="email" class="text-input" id="email" name="email" placeholder="Enter your email address" required/>`,
 			`<button class="mt-3 w-full rounded-lg bg-indigo-600 px-4 py-2 text-lg font-semibold tracking-wide text-white hover:bg-green-600"> Reset password </button>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
@@ -233,8 +233,8 @@ func TestHandlers_Auth_ForgotPassword(t *testing.T) {
 		want := []string{
 			`<title hx-swap-oob="true">Reset Password | Recipya</title>`,
 			`<input name="user-id" type="hidden" value="1"/>`,
-			`<input class="w-full rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-900" id="password" name="password" placeholder="Enter your new password" required type="password"/>`,
-			`<input class="w-full rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-900" id="password-confirm" name="password-confirm" placeholder="Retype your password" required type="password"/>`,
+			`<input class="text-input" id="password" name="password" placeholder="Enter your new password" required type="password"/>`,
+			`<input class="text-input" id="password-confirm" name="password-confirm" placeholder="Retype your password" required type="password"/>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
@@ -442,39 +442,10 @@ func TestHandlers_Auth_Register(t *testing.T) {
 
 	const uri = "/auth/register"
 
-	t.Run("valid email", func(t *testing.T) {
-		rr := sendRequest(srv, http.MethodPost, uri+"/validate-email", formHeader, strings.NewReader("email=test@example.com&password=test123&password-confirm=test123"))
-
-		want := []string{
-			`<input type="email" class="w-full rounded-lg bg-gray-100 px-4 py-2 border border-green-500" id="email" name="email" placeholder="Enter your email address" hx-post="/auth/register/validate-email" hx-indicator="#ind" required value="test@example.com"/>`,
-		}
-		assertStringsInHTML(t, getBodyHTML(rr), want)
-	})
-
-	t.Run("invalid email", func(t *testing.T) {
-		rr := sendRequest(srv, http.MethodPost, uri+"/validate-email", formHeader, strings.NewReader("email=invalid-email&password=test123&password-confirm=test123"))
-
-		want := []string{`<div class="text-red-500 text-xs">Please enter a valid email.</div>`}
-		assertStringsInHTML(t, getBodyHTML(rr), want)
-	})
-
-	t.Run("email already taken", func(t *testing.T) {
-		srv.Repository = &mockRepository{
-			UsersRegistered: []models.User{
-				{ID: 1, Email: "test@example.com"},
-			},
-		}
-
-		rr := sendRequest(srv, http.MethodPost, uri+"/validate-email", formHeader, strings.NewReader("email=test@example.com&password=test123&password-confirm=test123"))
-
-		want := []string{`<div class="text-red-500 text-xs">This email is already taken. Please enter another one.</div>`}
-		assertStringsInHTML(t, getBodyHTML(rr), want)
-	})
-
 	t.Run("valid passwords", func(t *testing.T) {
 		rr := sendRequest(srv, http.MethodPost, uri+"/validate-password", formHeader, strings.NewReader("email=invalid-email&password=test123&password-confirm=test123"))
 
-		want := []string{`<input class="w-full rounded-lg bg-gray-100 px-4 py-2 border border-green-500" id="password-confirm" name="password-confirm"`}
+		want := []string{`<input class="text-input border border-green-500" id="password-confirm" name="password-confirm"`}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
 
@@ -499,7 +470,7 @@ func TestHandlers_Auth_Register(t *testing.T) {
 		rr := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email="+email+"&password=test123&password-confirm=test123"))
 
 		assertStatus(t, rr.Code, http.StatusUnprocessableEntity)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Registration failed.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Registration failed. User might be registered or password invalid.\",\"backgroundColor\":\"bg-red-500\"}"}`)
 		if len(srv.Repository.Users()) != originalNumUsers {
 			t.Fatalf("expected no user to be added to the db of %d users", originalNumUsers)
 		}

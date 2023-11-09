@@ -89,7 +89,6 @@ func (s *Server) mountHandlers() {
 
 			r.Get("/", registerHandler)
 			r.Post("/", s.registerPostHandler)
-			r.Post("/validate-email", s.registerPostEmailHandler)
 			r.Post("/validate-password", s.registerPostPasswordHandler)
 		})
 

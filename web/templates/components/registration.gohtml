@@ -1,52 +1,10 @@
-{{define "email-valid"}}
-    <div hx-target="this" hx-swap="outerHTML">
-        <div class="flex">
-            <label class="text-md my-3 block font-semibold text-gray-800" for="email">Email</label>
-            <img id="ind" src="/static/img/bars.svg" class="htmx-indicator ml-2" alt="Loading..."/>
-        </div>
-        <input type="email" class="w-full rounded-lg bg-gray-100 px-4 py-2 border border-green-500" id="email"
-               name="email" placeholder="Enter your email address" hx-post="/auth/register/validate-email"
-               hx-indicator="#ind" required value="{{if .Email}}{{.Email}}{{end}}"/>
-    </div>
-{{end}}
-
-{{define "email-invalid"}}
-    <div hx-target="this" hx-swap="outerHTML" class="error">
-        <div class="flex">
-            <label class="text-md my-3 block font-semibold text-gray-800" for="email">Email</label>
-            <img id="ind" src="/static/img/bars.svg" class="htmx-indicator ml-2" alt="Loading..."/>
-        </div>
-        <input type="email" id="email" name="email" placeholder="Enter your email address"
-               class="w-full rounded-lg bg-gray-100 px-4 py-2 border border-red-500 mb-3"
-               hx-post="/auth/register/validate-email" hx-indicator="#ind"
-               required value="{{.Email}}"/>
-        <div class="text-red-500 text-xs">Please enter a valid email.</div>
-    </div>
-{{end}}
-
-{{define "email-taken"}}
-    <div hx-target="this" hx-swap="outerHTML" class="error">
-        <div class="flex">
-            <label class="text-md my-3 block font-semibold text-gray-800" for="email">Email</label>
-            <img id="ind" src="/static/img/bars.svg" class="htmx-indicator ml-2" alt="Loading..."/>
-        </div>
-        <input type="email" id="email" name="email" placeholder="Enter your email address"
-               class="w-full rounded-lg bg-gray-100 px-4 py-2 border border-red-500 text-gray-700 mb-3"
-               hx-post="/auth/register/validate-email" hx-indicator="#ind"
-               required value="{{.Email}}"/>
-        <div class="text-red-500 text-xs">This email is already taken. Please enter another one.</div>
-    </div>
-{{end}}
-
 {{define "password-valid"}}
     <div hx-target="this" hx-swap="outerHTML">
         <div class="flex">
-            <label class="text-md my-3 block font-semibold text-gray-800" for="password-confirm">
-                Confirm password
-            </label>
+            <label class="text-md block font-semibold" for="password-confirm">Confirm password</label>
             <img id="ind" src="/static/img/bars.svg" class="htmx-indicator ml-2" alt="Loading..."/>
         </div>
-        <input class="w-full rounded-lg bg-gray-100 px-4 py-2 border border-green-500" id="password-confirm"
+        <input class="text-input border border-green-500" id="password-confirm"
                name="password-confirm" value="{{.PasswordConfirm}}"
                placeholder="Retype your password" required type="password"
                hx-post="/auth/register/validate-password" hx-trigger="keyup changed delay:1s" hx-indicator="#ind"/>
@@ -56,12 +14,10 @@
 {{define "password-invalid"}}
     <div hx-target="this" hx-swap="outerHTML">
         <div class="flex">
-            <label class="text-md my-3 block font-semibold text-gray-800" for="password-confirm">
-                Confirm password
-            </label>
+            <label class="text-md font-semibold" for="password-confirm">Confirm password</label>
             <img id="ind" src="/static/img/bars.svg" class="htmx-indicator ml-2" alt="Loading..."/>
         </div>
-        <input class="w-full rounded-lg bg-gray-100 px-4 py-2 border border-red-500" id="password-confirm"
+        <input class="text-input border border-red-500" id="password-confirm"
                name="password-confirm"
                placeholder="Retype your password" required type="password"
                hx-post="/auth/register/validate-password" hx-trigger="keyup changed delay:1s" hx-indicator="#ind"/>

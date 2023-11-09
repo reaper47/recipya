@@ -221,21 +221,6 @@ func registerHandler(w http.ResponseWriter, _ *http.Request) {
 	templates.Render(w, page, templates.Data{Title: page.Title()})
 }
 
-func (s *Server) registerPostEmailHandler(w http.ResponseWriter, r *http.Request) {
-	email := r.FormValue("email")
-	if !regex.Email.MatchString(email) {
-		templates.RenderComponent(w, "registration", "email-invalid", templates.RegisterData{Email: email})
-		return
-	}
-
-	if s.Repository.IsUserExist(email) {
-		templates.RenderComponent(w, "registration", "email-taken", templates.RegisterData{Email: email})
-		return
-	}
-
-	templates.RenderComponent(w, "registration", "email-valid", templates.RegisterData{Email: email})
-}
-
 func (s *Server) logoutHandler(w http.ResponseWriter, r *http.Request) {
 	userID := getUserIDFromSessionCookie(r)
 	if userID == -1 {
@@ -287,7 +272,7 @@ func (s *Server) registerPostHandler(w http.ResponseWriter, r *http.Request) {
 	password := r.FormValue("password")
 
 	if !regex.Email.MatchString(email) || password != r.FormValue("password-confirm") {
-		w.Header().Set("HX-Trigger", makeToast("Registration failed.", errorToast))
+		w.Header().Set("HX-Trigger", makeToast("Registration failed. User might be registered or password invalid.", errorToast))
 		w.WriteHeader(http.StatusUnprocessableEntity)
 		return
 	}
@@ -301,7 +286,7 @@ func (s *Server) registerPostHandler(w http.ResponseWriter, r *http.Request) {
 
 	userID, err := s.Repository.Register(email, hashPassword)
 	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Registration failed.", errorToast))
+		w.Header().Set("HX-Trigger", makeToast("Registration failed. User might be registered or password invalid.", errorToast))
 		w.WriteHeader(http.StatusUnprocessableEntity)
 		return
 	}
@@ -309,7 +294,7 @@ func (s *Server) registerPostHandler(w http.ResponseWriter, r *http.Request) {
 	token, err := auth.CreateToken(map[string]any{"userID": userID}, 14*24*time.Hour)
 	if err != nil {
 		sendErrorAdminEmail(s.Email.Send, "registerPostHandler.CreateToken", err)
-		w.Header().Set("HX-Trigger", makeToast("Registration failed.", errorToast))
+		w.Header().Set("HX-Trigger", makeToast("Registration failed. User might be registered or password invalid.", errorToast))
 		w.WriteHeader(http.StatusUnprocessableEntity)
 		return
 	}
