@@ -55,7 +55,7 @@ const InsertKeyword = `
 		DO UPDATE SET name = EXCLUDED.name
 	RETURNING id`
 
-// InsertNutrition is the query to add a nutrition fact.
+// InsertNutrition is the query to add a nutrition facts.
 const InsertNutrition = `
 	INSERT INTO nutrition (recipe_id, calories, total_carbohydrates, sugars, protein, total_fat, saturated_fat, unsaturated_fat, cholesterol, sodium, fiber)
 	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`

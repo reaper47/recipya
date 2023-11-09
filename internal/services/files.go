@@ -419,21 +419,27 @@ func addRecipeToPDF(pdf *gofpdf.Fpdf, r *models.Recipe) *gofpdf.Fpdf {
 }
 
 func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recipes {
-	recipes := make(models.Recipes, 0)
-	var wg sync.WaitGroup
+	var (
+		recipes models.Recipes
+		wg      sync.WaitGroup
+		mu      sync.Mutex
+	)
+	wg.Add(len(fileHeaders))
 
 	for _, file := range fileHeaders {
-		wg.Add(1)
-		file := file
-		go func() {
+		go func(fh *multipart.FileHeader) {
 			defer wg.Done()
-			content := file.Header.Get("Content-Type")
+			content := fh.Header.Get("Content-Type")
 			if strings.Contains(content, "zip") {
-				recipes = append(recipes, f.processZip(file)...)
+				mu.Lock()
+				recipes = append(recipes, f.processZip(fh)...)
+				mu.Unlock()
 			} else if strings.Contains(content, "json") {
-				recipes = append(recipes, *processJSON(file))
+				mu.Lock()
+				recipes = append(recipes, *processJSON(fh))
+				mu.Unlock()
 			}
-		}()
+		}(file)
 	}
 
 	wg.Wait()
@@ -464,14 +470,12 @@ func (f *Files) processZip(file *multipart.FileHeader) models.Recipes {
 	}
 
 	var (
-		isDir        bool
 		imageUUID    uuid.UUID
 		recipeNumber int
 	)
 
 	for _, file := range z.File {
-		isDir = file.FileInfo().IsDir()
-		if isDir && imageUUID != uuid.Nil {
+		if imageUUID != uuid.Nil && (file.FileInfo().IsDir() || (recipeNumber > 0 && recipes[recipeNumber-1].Image == uuid.Nil)) {
 			recipes[recipeNumber-1].Image = imageUUID
 			imageUUID = uuid.Nil
 		}
@@ -509,12 +513,18 @@ func (f *Files) processZip(file *multipart.FileHeader) models.Recipes {
 				f.Close()
 				continue
 			}
+			r.Image = uuid.Nil
 
 			recipes = append(recipes, *r)
 			recipeNumber++
 			f.Close()
 		}
 	}
+
+	if recipes[len(recipes)-1].Image == uuid.Nil {
+		recipes[len(recipes)-1].Image = imageUUID
+	}
+
 	return recipes
 }
 

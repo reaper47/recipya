@@ -10,7 +10,8 @@ type User struct {
 
 // UserSettings holds the user's settings.
 type UserSettings struct {
-	ConvertAutomatically bool
-	CookbooksViewMode    ViewMode
-	MeasurementSystem    units.System
+	CalculateNutritionFact bool
+	ConvertAutomatically   bool
+	CookbooksViewMode      ViewMode
+	MeasurementSystem      units.System
 }

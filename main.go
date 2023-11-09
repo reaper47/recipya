@@ -13,6 +13,14 @@ func main() {
 	cliApp := &cli.App{
 		Commands: []*cli.Command{
 			{
+				Name:  "setup",
+				Usage: "sets up Recipya",
+				Action: func(ctx *cli.Context) error {
+					app.Setup()
+					return nil
+				},
+			},
+			{
 				Name:    "serve",
 				Aliases: []string{"s"},
 				Usage:   "starts the web server",

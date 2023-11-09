@@ -198,7 +198,8 @@
                 </button>
             </h3>
 
-            <form hx-post="/recipes/add/import" enctype="multipart/form-data" hx-indicator="#fullscreen-loader"
+            <form hx-post="/recipes/add/import" enctype="multipart/form-data"
+                  hx-indicator="#fullscreen-loader"
                   hx-swap="none">
                 <div class="grid mb-4">
                     <label for="import-dialog-file" class="text-sm font-semibold mb-1">
@@ -221,8 +222,10 @@
 {{define "add-recipe-manual"}}
     <title hx-swap-oob="true">Manual | Recipya</title>
 
-    <form hx-post="/recipes/add/manual" enctype="multipart/form-data"
-          class="grid max-w-6xl grid-cols-6 m-auto mt-4 pb-4 dark:bg-gray-600 dark:rounded-t-lg">
+    <form enctype="multipart/form-data"
+          class="grid max-w-6xl grid-cols-6 m-auto mt-4 pb-4 dark:bg-gray-600 dark:rounded-t-lg"
+          hx-post="/recipes/add/manual"
+          hx-indicator="#fullscreen-loader">
         <div class="col-span-6 text-lg border border-gray-900 rounded-t-lg md:text-xl dark:border-gray-800">
             <label for="title" class="hidden"></label>
             <input type="text" name="title" id="title" placeholder="Title of the recipe*" required autocomplete="off"

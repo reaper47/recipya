@@ -324,6 +324,10 @@ func (m *mockRepository) MeasurementSystems(userID int64) ([]units.System, model
 	}, nil
 }
 
+func (m *mockRepository) Nutrients(_ []string) (models.NutrientsFDC, float64, error) {
+	return models.NutrientsFDC{}, 0, nil
+}
+
 func (m *mockRepository) Recipe(id, userID int64) (*models.Recipe, error) {
 	if m.RecipeFunc != nil {
 		return m.RecipeFunc(id, userID)
@@ -418,6 +422,14 @@ func (m *mockRepository) SwitchMeasurementSystem(system units.System, userID int
 		}
 		m.RecipesRegistered[userID][i] = *converted
 	}
+	return nil
+}
+
+func (m *mockRepository) UpdateCalculateNutrition(userID int64, isEnabled bool) error {
+	if _, ok := m.UserSettingsRegistered[userID]; !ok {
+		return errors.New("user not found")
+	}
+	m.UserSettingsRegistered[userID].CalculateNutritionFact = isEnabled
 	return nil
 }
 

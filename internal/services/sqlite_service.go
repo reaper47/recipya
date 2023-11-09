@@ -27,6 +27,8 @@ import (
 var embedMigrations embed.FS
 
 const (
+	fdcDB           = "fdc.db"
+	recipyaDB       = "recipya.db"
 	shortCtxTimeout = 3 * time.Second
 )
 
@@ -34,6 +36,7 @@ const (
 type SQLiteService struct {
 	DB    *sql.DB
 	Mutex *sync.Mutex
+	FdcDB *sql.DB
 }
 
 func NewSQLiteService() *SQLiteService {
@@ -42,7 +45,7 @@ func NewSQLiteService() *SQLiteService {
 		panic(err)
 	}
 
-	path := filepath.Join(filepath.Dir(exe), "recipya.db")
+	path := filepath.Join(filepath.Dir(exe), recipyaDB)
 	dsnURI := "file:" + path + "?" +
 		"_pragma=foreign_keys(1)" +
 		"&_pragma=journal_mode(wal)" +
@@ -73,8 +76,29 @@ func NewSQLiteService() *SQLiteService {
 
 	return &SQLiteService{
 		DB:    db,
+		FdcDB: openFdcDB(),
 		Mutex: &sync.Mutex{},
 	}
+}
+
+func openFdcDB() *sql.DB {
+	exe, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
+
+	path := filepath.Join(filepath.Dir(exe), fdcDB)
+	db, err := sql.Open("sqlite", "file:"+path)
+	if err != nil {
+		panic(err)
+	}
+
+	err = db.Ping()
+	if err != nil {
+		panic(err)
+	}
+
+	return db
 }
 
 func (s *SQLiteService) AddAuthToken(selector, validator string, userID int64) error {
@@ -122,7 +146,7 @@ func (s *SQLiteService) AddCookbookRecipe(cookbookID, recipeID, userID int64) er
 }
 
 func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (uint64, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
 	var isRecipeExists bool
@@ -142,6 +166,13 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (uint64, error
 
 	if settings.ConvertAutomatically {
 		r, _ = r.ConvertMeasurementSystem(settings.MeasurementSystem)
+	}
+
+	if settings.CalculateNutritionFact && r.Nutrition.Equal(models.Nutrition{}) {
+		nutrients, weight, err := s.Nutrients(r.Ingredients)
+		if err == nil {
+			r.Nutrition = nutrients.NutritionFact(weight)
+		}
 	}
 
 	s.Mutex.Lock()
@@ -580,11 +611,12 @@ func (s *SQLiteService) MeasurementSystems(userID int64) ([]units.System, models
 	defer cancel()
 
 	var (
+		calculateNutrition   int64
 		convertAutomatically int64
 		groupedSystems       string
 		selected             string
 	)
-	err := s.DB.QueryRowContext(ctx, statements.SelectMeasurementSystems, userID).Scan(&selected, &groupedSystems, &convertAutomatically)
+	err := s.DB.QueryRowContext(ctx, statements.SelectMeasurementSystems, userID).Scan(&selected, &groupedSystems, &convertAutomatically, &calculateNutrition)
 	if err != nil {
 		return nil, models.UserSettings{}, err
 	}
@@ -595,9 +627,63 @@ func (s *SQLiteService) MeasurementSystems(userID int64) ([]units.System, models
 		systems[i] = units.NewSystem(s)
 	}
 	return systems, models.UserSettings{
-		ConvertAutomatically: convertAutomatically == 1,
-		MeasurementSystem:    units.NewSystem(selected),
+		CalculateNutritionFact: calculateNutrition == 1,
+		ConvertAutomatically:   convertAutomatically == 1,
+		MeasurementSystem:      units.NewSystem(selected),
 	}, nil
+}
+
+func (s *SQLiteService) Nutrients(ingredients []string) (models.NutrientsFDC, float64, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
+	defer cancel()
+
+	var wg sync.WaitGroup
+	wg.Add(len(ingredients))
+	tokens := make([]units.TokenizedIngredient, len(ingredients))
+	for i, ing := range ingredients {
+		go func(s string, index int) {
+			defer wg.Done()
+			tokens[index] = units.NewTokenizedIngredientFromText(s)
+		}(ing, i)
+	}
+	wg.Wait()
+
+	var weight float64
+	var nutrients models.NutrientsFDC
+	for _, token := range tokens {
+		if len(token.Ingredients) == 0 {
+			continue
+		}
+
+		m, err := token.Measurement.Convert(units.Gram)
+		if err != nil {
+			m, err = token.Measurement.Convert(units.Millilitre)
+			if err == nil {
+				weight += m.Quantity
+			}
+		} else {
+			weight += m.Quantity
+		}
+
+		stmt := statements.BuildSelectNutrientFDC(token.Ingredients)
+		rows, err := s.FdcDB.QueryContext(ctx, stmt)
+		if err != nil {
+			return nil, 0, err
+		}
+
+		for rows.Next() {
+			var n models.NutrientFDC
+			err := rows.Scan(&n.ID, &n.Name, &n.Amount, &n.UnitName)
+			if err != nil {
+				return nil, 0, err
+			}
+			n.Reference = token.Measurement
+			nutrients = append(nutrients, n)
+		}
+		rows.Close()
+	}
+
+	return nutrients, weight, nil
 }
 
 func (s *SQLiteService) Recipe(id, userID int64) (*models.Recipe, error) {
@@ -843,6 +929,17 @@ func (s *SQLiteService) SwitchMeasurementSystem(system units.System, userID int6
 		numConverted++
 	}
 	return tx.Commit()
+}
+
+func (s *SQLiteService) UpdateCalculateNutrition(userID int64, isEnabled bool) error {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	_, err := s.DB.ExecContext(ctx, statements.UpdateCalculateNutrition, isEnabled, userID)
+	return err
 }
 
 func (s *SQLiteService) UpdateConvertMeasurementSystem(userID int64, isEnabled bool) error {
@@ -1145,15 +1242,17 @@ func (s *SQLiteService) UserSettings(userID int64) (models.UserSettings, error) 
 	defer cancel()
 
 	var (
+		calculateNutrition   int64
 		convertAutomatically int64
 		cookbooksViewMode    int64
 		measurementSystem    string
 	)
-	err := s.DB.QueryRowContext(ctx, statements.SelectUserSettings, userID).Scan(&measurementSystem, &convertAutomatically, &cookbooksViewMode)
+	err := s.DB.QueryRowContext(ctx, statements.SelectUserSettings, userID).Scan(&measurementSystem, &convertAutomatically, &cookbooksViewMode, &calculateNutrition)
 	return models.UserSettings{
-		CookbooksViewMode:    models.ViewModeFromInt(cookbooksViewMode),
-		ConvertAutomatically: convertAutomatically == 1,
-		MeasurementSystem:    units.NewSystem(measurementSystem),
+		CalculateNutritionFact: calculateNutrition == 1,
+		CookbooksViewMode:      models.ViewModeFromInt(cookbooksViewMode),
+		ConvertAutomatically:   convertAutomatically == 1,
+		MeasurementSystem:      units.NewSystem(measurementSystem),
 	}, err
 }
 

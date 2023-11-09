@@ -1,0 +1,8 @@
+{
+  "label": "Recipes",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "You can add, view, edit, and delete any recipe in your collection."
+  }
+}

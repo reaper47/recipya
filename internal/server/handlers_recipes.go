@@ -11,6 +11,8 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"sync"
+	"sync/atomic"
 	"time"
 )
 
@@ -102,16 +104,24 @@ func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request)
 	recipes := s.Files.ExtractRecipes(files)
 	userID := getUserID(r)
 
-	count := 0
+	var (
+		count int64
+		wg    sync.WaitGroup
+	)
+	wg.Add(len(recipes))
 	for _, r := range recipes {
-		_, err := s.Repository.AddRecipe(&r, userID)
-		if err != nil {
-			continue
-		}
-		count += 1
+		go func(r models.Recipe) {
+			defer wg.Done()
+			_, err := s.Repository.AddRecipe(&r, userID)
+			if err != nil {
+				return
+			}
+			atomic.AddInt64(&count, 1)
+		}(r)
 	}
+	wg.Wait()
 
-	msg := fmt.Sprintf("Imported %d recipes. %d skipped", count, len(recipes)-count)
+	msg := fmt.Sprintf("Imported %d recipes. %d skipped", count, int64(len(recipes))-count)
 	w.Header().Set("HX-Trigger", makeToast(msg, infoToast))
 	w.WriteHeader(http.StatusCreated)
 }

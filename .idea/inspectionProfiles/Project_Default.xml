@@ -34,6 +34,8 @@
         <method importPath="mime/multipart" receiver="*Writer" name="Close" />
         <method importPath="io" receiver="Writer" name="Write" />
         <method importPath="archive/zip" receiver="*Writer" name="Close" />
+        <method importPath="database/sql" receiver="*DB" name="Close" />
+        <method importPath="archive/zip" receiver="*ReadCloser" name="Close" />
       </methods>
     </inspection_tool>
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">

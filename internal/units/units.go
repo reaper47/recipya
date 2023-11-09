@@ -6,7 +6,8 @@ import "embed"
 var fs embed.FS
 
 const (
-	Celsius Unit = iota
+	Invalid Unit = iota
+	Celsius
 	Centimeter
 	Cup
 	Decilitre

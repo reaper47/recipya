@@ -77,6 +77,9 @@ type RepositoryService interface {
 	// MeasurementSystems gets the units systems, along with the one the user selected, in the database.
 	MeasurementSystems(userID int64) ([]units.System, models.UserSettings, error)
 
+	// Nutrients gets the nutrients for the ingredients from the FDC database, along with the total weight.
+	Nutrients(ingredients []string) (models.NutrientsFDC, float64, error)
+
 	// Recipe gets the user's recipe of the given id.
 	Recipe(id, userID int64) (*models.Recipe, error)
 
@@ -104,6 +107,9 @@ type RepositoryService interface {
 
 	// SwitchMeasurementSystem sets the user's units system to the desired one.
 	SwitchMeasurementSystem(system units.System, userID int64) error
+
+	// UpdateCalculateNutrition updates the user's calculate nutrition facts automatically setting.
+	UpdateCalculateNutrition(userID int64, isEnabled bool) error
 
 	// UpdateConvertMeasurementSystem updates the user's convert automatically setting.
 	UpdateConvertMeasurementSystem(userID int64, isEnabled bool) error

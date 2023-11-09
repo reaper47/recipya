@@ -2,6 +2,7 @@ package statements
 
 import (
 	"github.com/reaper47/recipya/internal/models"
+	"strings"
 	"testing"
 )
 
@@ -9,6 +10,40 @@ func BenchmarkBuildSearchRecipeQuery(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		got := BuildSearchRecipeQuery([]string{"one", "two", "three", "four", "five"}, models.SearchOptionsRecipes{FullSearch: true})
 		_ = got
+	}
+}
+
+func BenchmarkBuildSelectNutrientFDC(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		got := BuildSelectNutrientFDC([]string{"one", "two", "three", "four", "five"})
+		_ = got
+	}
+}
+
+func TestBuildSelectNutrientFDC(t *testing.T) {
+	testcases := []struct {
+		name        string
+		ingredients []string
+		want        string
+	}{
+		{
+			name:        "one ingredient",
+			ingredients: []string{"one"},
+			want:        "WHERE description LIKE '%one%'",
+		},
+		{
+			name:        "multiple ingredients",
+			ingredients: []string{"one", "two"},
+			want:        "WHERE description LIKE '%one%' AND description LIKE '%two%'",
+		},
+	}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			got := BuildSelectNutrientFDC(tc.ingredients)
+			if !strings.Contains(got, tc.want) {
+				t.Fatalf("expected %q in query", tc.want)
+			}
+		})
 	}
 }
 
