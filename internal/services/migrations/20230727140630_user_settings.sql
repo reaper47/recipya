@@ -10,7 +10,8 @@ CREATE TABLE user_settings
     id                    INTEGER PRIMARY KEY,
     user_id               INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
     measurement_system_id INTEGER REFERENCES measurement_systems (id) ON DELETE CASCADE DEFAULT 1,
-    convert_automatically INTEGER NOT NULL DEFAULT 0
+    calculate_nutrition   INTEGER NOT NULL                                              DEFAULT 0,
+    convert_automatically INTEGER NOT NULL                                              DEFAULT 0
 );
 
 INSERT INTO measurement_systems (name)

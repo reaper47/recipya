@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="/static/css/tailwind.css">
         <link rel="stylesheet" href="/static/css/app.css">
         <link rel="icon" href="/static/favicon.ico">
-        <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+        <script src="https://unpkg.com/htmx.org@1.9.7"></script>
         <script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
         <script defer>
             const cookbooksPattern = new RegExp("^/cookbooks/\\d+$");
@@ -275,6 +275,18 @@
                {{if .Settings.UserSettings.ConvertAutomatically}}checked{{end}}
                class="w-fit h-fit mt-1"
                hx-post="/settings/convert-automatically" hx-trigger="click">
+    </div>
+    <div class="grid grid-cols-2 gap-4 mb-2">
+        <label for="calculate-nutrition" class="text-end font-semibold">Calculate nutrition facts:<br>
+            <span class="font-light text-sm">
+                Calculate the nutrition facts automatically when adding a recipe.<br>
+                This will add a few seconds to the processing.
+            </span>
+        </label>
+        <input type="checkbox" name="calculate-nutrition" id="calculate-nutrition"
+               {{if .Settings.UserSettings.CalculateNutritionFact}}checked{{end}}
+               class="w-fit h-fit mt-1"
+               hx-post="/settings/calculate-nutrition" hx-trigger="click">
     </div>
     <div class="grid grid-cols-2 gap-4 mb-2">
         <label for="integrations" class="text-end font-semibold">Integrations:<br>

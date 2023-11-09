@@ -20,6 +20,18 @@ func (s *Server) settingsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (s *Server) settingsCalculateNutritionPostHandler(w http.ResponseWriter, r *http.Request) {
+	userID := getUserID(r)
+	isConvert := r.FormValue("calculate-nutrition") == "on"
+	err := s.Repository.UpdateCalculateNutrition(userID, isConvert)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Failed to set setting.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusNoContent)
+}
+
 func (s *Server) settingsConvertAutomaticallyPostHandler(w http.ResponseWriter, r *http.Request) {
 	userID := getUserID(r)
 	isConvert := r.FormValue("convert") == "on"
@@ -29,12 +41,6 @@ func (s *Server) settingsConvertAutomaticallyPostHandler(w http.ResponseWriter, 
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-
-	msg := "Recipe conversion disabled."
-	if isConvert {
-		msg = "Recipe conversion enabled."
-	}
-	w.Header().Set("HX-Trigger", makeToast(msg, infoToast))
 	w.WriteHeader(http.StatusNoContent)
 }
 

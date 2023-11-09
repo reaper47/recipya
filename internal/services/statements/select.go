@@ -62,6 +62,49 @@ func BuildSearchRecipeQuery(queries []string, options models.SearchOptionsRecipe
 	return sb.String()
 }
 
+// BuildSelectNutrientFDC builds the query to fetch a nutrient from the FDC database.
+func BuildSelectNutrientFDC(ingredients []string) string {
+	var sb strings.Builder
+	for i, ing := range ingredients {
+		if i > 0 {
+			sb.WriteString(" AND ")
+		}
+		sb.WriteString("description LIKE '%")
+		sb.WriteString(ing)
+		sb.WriteString("%'")
+	}
+
+	return `
+	SELECT food.fdc_id,
+		   nutrient.name,
+		   food_nutrient.amount,
+		   nutrient.unit_name
+	FROM food_nutrient
+			 INNER JOIN food ON food_nutrient.fdc_id = food.fdc_id
+			 INNER JOIN nutrient ON food_nutrient.nutrient_id = nutrient.id
+	WHERE food.fdc_id = (SELECT fdc_id
+						 FROM food
+						 WHERE ` + sb.String() + `
+                             AND ((data_type = 'sr_legacy_food' AND (food_category_id = 11 OR food_category_id = 2 OR food_category_id = 18)) OR data_type = 'survey_fndds_food' OR data_type = 'branded_food')
+						 ORDER BY 
+							 food_category_id DESC, 
+							 data_type DESC,
+							 description ASC
+						 LIMIT 1)
+	  AND nutrient.name IN (
+							'Energy',
+							'Cholesterol',
+							'Carbohydrate, by difference',
+							'Fiber, total dietary',
+							'Protein',
+							'Fatty acids, total monounsaturated',
+							'Fatty acids, total polyunsaturated',
+							'Fatty acids, total trans',
+							'Fatty acids, total saturated',
+							'Sodium, Na',
+							'Sugars, total including NLEA')`
+}
+
 // IsRecipeForUserExist checks whether the recipe belongs to the given user.
 const IsRecipeForUserExist = `
 	SELECT EXISTS(
@@ -191,7 +234,8 @@ const SelectMeasurementSystems = `
 	SELECT ms.name,
 		   COALESCE((SELECT GROUP_CONCAT(name)
 					 FROM measurement_systems), '') AS systems,
-		   us.convert_automatically
+		   us.convert_automatically,
+		   us.calculate_nutrition
 	FROM measurement_systems AS ms
 			 JOIN user_settings AS us ON measurement_system_id = ms.id
 	WHERE user_id = ?`
@@ -309,7 +353,7 @@ const SelectUserID = `
 
 // SelectUserSettings is the query to fetch a user's settings.
 const SelectUserSettings = `
-	SELECT MS.name, convert_automatically, cookbooks_view
+	SELECT MS.name, convert_automatically, cookbooks_view, calculate_nutrition
 	FROM user_settings
 	JOIN measurement_systems MS on MS.id = measurement_system_id
 	WHERE user_id = ?`

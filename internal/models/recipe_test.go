@@ -6,6 +6,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/units"
+	"math"
 	"slices"
 	"testing"
 	"time"
@@ -242,6 +243,96 @@ func TestRecipe_ConvertMeasurementSystem(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestNutrientFDC_ValuePerGram(t *testing.T) {
+	testcases := []struct {
+		name     string
+		nutrient models.NutrientFDC
+		want     float64
+	}{
+		{
+			name: "ug",
+			nutrient: models.NutrientFDC{
+				Amount:    777,
+				UnitName:  "UG",
+				Reference: units.Measurement{Quantity: 3, Unit: units.Teaspoon},
+			},
+			want: 0.00011655,
+		},
+		{
+			name: "mg",
+			nutrient: models.NutrientFDC{
+				Amount:    78,
+				UnitName:  "MG",
+				Reference: units.Measurement{Quantity: 2, Unit: units.Cup},
+			},
+			want: 0.369,
+		},
+		{
+			name: "g",
+			nutrient: models.NutrientFDC{
+				Amount:    128,
+				UnitName:  "G",
+				Reference: units.Measurement{Quantity: 1, Unit: units.Pound},
+			},
+			want: 580.60,
+		},
+		{
+			name: "kg",
+			nutrient: models.NutrientFDC{
+				Amount:    23,
+				UnitName:  "KG",
+				Reference: units.Measurement{Quantity: 27, Unit: units.Tablespoon},
+			},
+			want: 91825.8417,
+		},
+	}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			got := tc.nutrient.Value()
+			if math.Abs(got-tc.want) > 1e-2 {
+				t.Fatalf("got %g but want %g", got, tc.want)
+			}
+		})
+	}
+}
+
+func TestNutrientsFDC_CalculateNutrition(t *testing.T) {
+	nutrients := models.NutrientsFDC{
+		{Name: "Carbohydrates", Amount: 61, UnitName: "G", Reference: units.Measurement{Quantity: 1, Unit: units.Pound}},
+		{Name: "Energy", Amount: 478, UnitName: "KCAL", Reference: units.Measurement{Quantity: 100, Unit: units.Gram}},
+		{Name: "Carbohydrates", Amount: 478, UnitName: "MG", Reference: units.Measurement{Quantity: 0.5, Unit: units.Teaspoon}},
+		{Name: "Cholesterol", Amount: 1.2, UnitName: "MG", Reference: units.Measurement{Quantity: 0.5, Unit: units.Teaspoon}},
+		{Name: "Cholesterol", Amount: 1.2, UnitName: "MG", Reference: units.Measurement{Quantity: 1, Unit: units.Tablespoon}},
+		{Name: "Fiber, total dietary", Amount: 3, UnitName: "G", Reference: units.Measurement{Quantity: 1, Unit: units.Cup}},
+		{Name: "Protein", Amount: 12, UnitName: "G", Reference: units.Measurement{Quantity: 6, Unit: units.Cup}},
+		{Name: "Fatty acids, total monounsaturated", Amount: 0.6, UnitName: "MG", Reference: units.Measurement{Quantity: 2, Unit: units.Pound}},
+		{Name: "Fatty acids, total polyunsaturated", Amount: 1.2, UnitName: "MG", Reference: units.Measurement{Quantity: 5, Unit: units.Pound}},
+		{Name: "Fatty acids, total trans", Amount: 56, UnitName: "UG", Reference: units.Measurement{Quantity: 5, Unit: units.Tablespoon}},
+		{Name: "Fatty acids, total saturated", Amount: 128, UnitName: "UG", Reference: units.Measurement{Quantity: 12, Unit: units.Tablespoon}},
+		{Name: "Sodium, Na", Amount: 1286, UnitName: "MG", Reference: units.Measurement{Quantity: 3, Unit: units.Cup}},
+		{Name: "Sugars, total including NLEA", Amount: 90, UnitName: "G", Reference: units.Measurement{Quantity: 7, Unit: units.Cup}},
+	}
+
+	got := nutrients.NutritionFact(100)
+	want := models.Nutrition{
+		Calories:           "478 kcal",
+		Cholesterol:        "207.44 ug",
+		Fiber:              "7.10 g",
+		Protein:            "170.34 g",
+		SaturatedFat:       "227.12 ug",
+		Sodium:             "9.13 g",
+		Sugars:             "1.49 kg",
+		TotalCarbohydrates: "276.70 g",
+		TotalFat:           "32.93 mg",
+		UnsaturatedFat:     "32.66 mg",
+	}
+
+	if !got.Equal(want) {
+		t.Log(cmp.Diff(got, want))
+		t.Fail()
 	}
 }
 

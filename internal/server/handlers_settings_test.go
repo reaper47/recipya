@@ -39,6 +39,39 @@ func TestHandlers_Settings(t *testing.T) {
 	})
 }
 
+func TestHandlers_Settings_CalculateNutrition(t *testing.T) {
+	srv := newServerTest()
+	srv.Repository = &mockRepository{
+		UserSettingsRegistered: map[int64]*models.UserSettings{
+			1: {CalculateNutritionFact: false}},
+	}
+
+	uri := "/settings/calculate-nutrition"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
+	})
+
+	t.Run("error updating the setting", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedInOther(srv, http.MethodPost, uri, formHeader, strings.NewReader("calculate-nutrition=off"))
+
+		assertStatus(t, rr.Code, http.StatusInternalServerError)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Failed to set setting.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+	})
+
+	t.Run("unchecked does not convert new recipes", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("convert=off"))
+
+		assertStatus(t, rr.Code, http.StatusNoContent)
+	})
+
+	t.Run("checked converts new recipes", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("convert=on"))
+
+		assertStatus(t, rr.Code, http.StatusNoContent)
+	})
+}
+
 func TestHandlers_Settings_ConvertAutomatically(t *testing.T) {
 	srv := newServerTest()
 	srv.Repository = &mockRepository{
@@ -67,14 +100,12 @@ func TestHandlers_Settings_ConvertAutomatically(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("convert=off"))
 
 		assertStatus(t, rr.Code, http.StatusNoContent)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Recipe conversion disabled.\",\"backgroundColor\":\"bg-blue-500\"}"}`)
 	})
 
 	t.Run("checked converts new recipes", func(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("convert=on"))
 
 		assertStatus(t, rr.Code, http.StatusNoContent)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Recipe conversion enabled.\",\"backgroundColor\":\"bg-blue-500\"}"}`)
 	})
 }
 

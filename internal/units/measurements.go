@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gertd/go-pluralize"
+	"github.com/jdkato/prose/v2"
 	"github.com/neurosnap/sentences"
 	"github.com/reaper47/recipya/internal/utils/extensions"
 	"github.com/reaper47/recipya/internal/utils/regex"
@@ -93,7 +94,7 @@ func NewMeasurementFromString(s string) (Measurement, error) {
 
 	unitMatches := regex.Unit.FindStringSubmatch(s)
 	if unitMatches == nil {
-		return Measurement{}, errors.New("unsupported unit")
+		return Measurement{Quantity: sum}, errors.New("unsupported unit")
 	}
 	return NewMeasurement(math.Abs(sum), unitMatches[len(unitMatches)-1])
 }
@@ -1194,4 +1195,65 @@ func init() {
 	}
 
 	tokenizer = sentences.NewSentenceTokenizer(training)
+}
+
+// NewTokenizedIngredientFromText creates a TokenizedIngredient from a sentence.
+func NewTokenizedIngredientFromText(sentence string) TokenizedIngredient {
+	var t TokenizedIngredient
+	sentence = ReplaceVulgarFractions(sentence)
+	m, err := NewMeasurementFromString(sentence)
+	if err == nil {
+
+	}
+	t.Measurement = m
+
+	sentence = regex.Unit.ReplaceAllString(sentence, "1 tsp")
+	doc, err := prose.NewDocument(sentence)
+	if err != nil {
+		return TokenizedIngredient{}
+	}
+
+	for _, tok := range doc.Tokens() {
+		switch tok.Tag {
+		case "NN", "NNP", "NNS", "JJ":
+			t.Ingredients = append(t.Ingredients, tok.Text)
+		}
+
+		if len(t.Ingredients) == 3 {
+			break
+		}
+	}
+
+	t.Ingredients = slices.DeleteFunc(t.Ingredients, func(s string) bool {
+		s = strings.ToLower(s)
+		s = pluralizeClient.Singular(s)
+		return slices.Contains([]string{
+			"clove", "small", "medium", "peel",
+			"large", "optional", "tsp", "whole",
+			"stalk", "pure",
+		}, s)
+	})
+
+	if slices.ContainsFunc(t.Ingredients, func(s string) bool { return strings.ToLower(s) == "oil" }) &&
+		slices.ContainsFunc(t.Ingredients, func(s string) bool { return strings.ToLower(s) == "vegetable" }) {
+		t.Ingredients = append(t.Ingredients, "NFS")
+	}
+
+	if slices.ContainsFunc(t.Ingredients, func(s string) bool { return strings.ToLower(s) == "grain" }) &&
+		slices.ContainsFunc(t.Ingredients, func(s string) bool { return strings.ToLower(s) == "white" }) {
+		t.Ingredients = []string{"white", "rice"}
+	}
+
+	if len(t.Ingredients) == 1 && slices.ContainsFunc(t.Ingredients, func(s string) bool { return strings.ToLower(s) == "chicken" }) {
+		t.Ingredients = append(t.Ingredients, "breast")
+	}
+
+	t.Ingredients = extensions.Unique(t.Ingredients)
+	return t
+}
+
+// TokenizedIngredient holds tokenized ingredients and a Measurement.
+type TokenizedIngredient struct {
+	Ingredients []string
+	Measurement Measurement
 }

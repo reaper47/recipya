@@ -2,6 +2,7 @@ package units_test
 
 import (
 	"errors"
+	"github.com/google/go-cmp/cmp"
 	"github.com/reaper47/recipya/internal/units"
 	"math"
 	"testing"
@@ -814,6 +815,316 @@ func TestNewScaledMeasurementFromString(t *testing.T) {
 
 			assertNoErr(t, err)
 			assertMeasurementsEqual(t, got, tc.want)
+		})
+	}
+}
+
+func TestNewTokenizedIngredientFromText(t *testing.T) {
+	testcases := []struct {
+		sentence string
+		want     units.TokenizedIngredient
+	}{
+		{
+			sentence: "1 pound Brussels sprouts (off the stalk)",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"Brussels", "sprouts"},
+				Measurement: units.Measurement{
+					Quantity: 1,
+					Unit:     units.Pound,
+				},
+			},
+		},
+		{
+			sentence: "2 cloves garlic, minced",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"garlic"},
+				Measurement: units.Measurement{
+					Quantity: 2,
+					Unit:     units.Invalid,
+				},
+			},
+		},
+		{
+			sentence: "1 small shallot, minced",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"shallot"},
+				Measurement: units.Measurement{
+					Quantity: 1,
+					Unit:     units.Invalid,
+				},
+			},
+		},
+		{
+			sentence: "1/4 cup shredded Parmesan cheese (omit for vegan)",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"Parmesan", "cheese"},
+				Measurement: units.Measurement{
+					Quantity: 0.25,
+					Unit:     units.Cup,
+				},
+			},
+		},
+		{
+			sentence: "½ teaspoon kosher salt, plus more to taste",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"kosher", "salt"},
+				Measurement: units.Measurement{
+					Quantity: 0.5,
+					Unit:     units.Teaspoon,
+				},
+			},
+		},
+		{
+			sentence: "2 tablespoons olive oil",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"olive", "oil"},
+				Measurement: units.Measurement{
+					Quantity: 2,
+					Unit:     units.Tablespoon,
+				},
+			},
+		},
+		{
+			sentence: "1/4 cup Italian panko (optional, omit for gluten-free or use GF panko)",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"Italian", "panko"},
+				Measurement: units.Measurement{
+					Quantity: 0.25,
+					Unit:     units.Cup,
+				},
+			},
+		},
+		{
+			sentence: "450 g long grain white rice, preferably basmati",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"white", "rice"},
+				Measurement: units.Measurement{
+					Quantity: 450,
+					Unit:     units.Gram,
+				},
+			},
+		},
+		{
+			sentence: "75 ml vegetable oil",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"vegetable", "oil", "NFS"},
+				Measurement: units.Measurement{
+					Quantity: 75,
+					Unit:     units.Millilitre,
+				},
+			},
+		},
+		{
+			sentence: "75 ml vegetable oil",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"vegetable", "oil", "NFS"},
+				Measurement: units.Measurement{
+					Quantity: 75,
+					Unit:     units.Millilitre,
+				},
+			},
+		},
+		{
+			sentence: "2 medium onions, chopped",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"onions"},
+				Measurement: units.Measurement{
+					Quantity: 2,
+					Unit:     units.Invalid,
+				},
+			},
+		},
+		{
+			sentence: "1 medium chicken or 700–900 g lamb on the bone cut in pieces",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"chicken", "breast"},
+				Measurement: units.Measurement{
+					Quantity: 1,
+					Unit:     units.Gram,
+				},
+			},
+		},
+		{
+			sentence: "570 ml water, plus 110 ml water",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"water"},
+				Measurement: units.Measurement{
+					Quantity: 570,
+					Unit:     units.Millilitre,
+				},
+			},
+		},
+		{
+			sentence: "peel of 1 large orange",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"orange"},
+				Measurement: units.Measurement{
+					Quantity: 1,
+					Unit:     units.Invalid,
+				},
+			},
+		},
+		{
+			sentence: "50 g sugar",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"sugar"},
+				Measurement: units.Measurement{
+					Quantity: 50,
+					Unit:     units.Gram,
+				},
+			},
+		},
+		{
+			sentence: "50 g blanched and flaked almonds",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"almonds"},
+				Measurement: units.Measurement{
+					Quantity: 50,
+					Unit:     units.Gram,
+				},
+			},
+		},
+		{
+			sentence: "½ tsp saffron or egg yellow food colour (optional)",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"saffron", "egg"},
+				Measurement: units.Measurement{
+					Quantity: 0.5,
+					Unit:     units.Teaspoon,
+				},
+			},
+		},
+		{
+			sentence: "25 ml rosewater (optional)",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"rosewater"},
+				Measurement: units.Measurement{
+					Quantity: 25,
+					Unit:     units.Millilitre,
+				},
+			},
+		},
+		{
+			sentence: "1 tsp ground green or white cardamom seeds (optional)",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"ground", "green"},
+				Measurement: units.Measurement{
+					Quantity: 1,
+					Unit:     units.Teaspoon,
+				},
+			},
+		},
+		{
+			sentence: "1 cup butter, softened",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"butter"},
+				Measurement: units.Measurement{
+					Quantity: 1,
+					Unit:     units.Cup,
+				},
+			},
+		},
+		{
+			sentence: "1 cup packed brown sugar",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"brown", "sugar"},
+				Measurement: units.Measurement{
+					Quantity: 1,
+					Unit:     units.Cup,
+				},
+			},
+		},
+		{
+			sentence: "2 teaspoons vanilla extract",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"vanilla", "extract"},
+				Measurement: units.Measurement{
+					Quantity: 2,
+					Unit:     units.Teaspoon,
+				},
+			},
+		},
+		{
+			sentence: "1 teaspoon baking soda",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"baking", "soda"},
+				Measurement: units.Measurement{
+					Quantity: 1,
+					Unit:     units.Teaspoon,
+				},
+			},
+		},
+		{
+			sentence: "3 ounces cream cheese",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"cream", "cheese"},
+				Measurement: units.Measurement{
+					Quantity: 3,
+					Unit:     units.Ounce,
+				},
+			},
+		},
+		{
+			sentence: "24  whole chicken wings ((about 4 pounds (1.8 kg) for 24 whole wings))",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"chicken", "wings"},
+				Measurement: units.Measurement{
+					Quantity: 24,
+					Unit:     units.Pound,
+				},
+			},
+		},
+		{
+			sentence: "6 stalks of celery",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"celery"},
+				Measurement: units.Measurement{
+					Quantity: 6,
+					Unit:     units.Invalid,
+				},
+			},
+		},
+		{
+			sentence: "2 tablespoons honey (or sub pure maple syrup)",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"honey"},
+				Measurement: units.Measurement{
+					Quantity: 2,
+					Unit:     units.Tablespoon,
+				},
+			},
+		},
+		{
+			sentence: "1 teaspoon dijon mustard, preferably grainy dijon",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"dijon", "mustard"},
+				Measurement: units.Measurement{
+					Quantity: 1,
+					Unit:     units.Teaspoon,
+				},
+			},
+		},
+		{
+			sentence: "½ lemon, juiced",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"lemon"},
+				Measurement: units.Measurement{
+					Quantity: 0.5,
+					Unit:     units.Invalid,
+				},
+			},
+		},
+	}
+	for _, tc := range testcases {
+		tc := tc
+		t.Run(tc.sentence, func(t *testing.T) {
+			t.Parallel()
+
+			got := units.NewTokenizedIngredientFromText(tc.sentence)
+			if !cmp.Equal(got, tc.want) {
+				t.Log(cmp.Diff(got, tc.want))
+				t.Fail()
+			}
 		})
 	}
 }

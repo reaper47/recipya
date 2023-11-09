@@ -328,6 +328,130 @@ func (n *Nutrition) Schema(servings string) NutritionSchema {
 	}
 }
 
+// NutrientsFDC is a type alias for a slice of NutrientFDC.
+type NutrientsFDC []NutrientFDC
+
+// NutritionFact calculates the nutrition facts from the nutrients.
+// The values in the nutrition table are per 100 grams. The weight is
+// the sum of all ingredient quantities in grams.
+func (n NutrientsFDC) NutritionFact(weight float64) Nutrition {
+	var (
+		calories       float64
+		carbs          float64
+		cholesterol    float64
+		fiber          float64
+		protein        float64
+		saturatedFat   float64
+		sodium         float64
+		sugars         float64
+		totalFat       float64
+		unsaturatedFat float64
+	)
+
+	for _, nutrient := range n {
+		v := nutrient.Value()
+
+		switch nutrient.Name {
+		case "Carbohydrates":
+			carbs += v
+		case "Cholesterol":
+			cholesterol += v
+		case "Energy":
+			if nutrient.UnitName == "KCAL" {
+				calories += v
+			}
+		case "Fatty acids, total monounsaturated", "Fatty acids, total polyunsaturated":
+			unsaturatedFat += v
+			totalFat += v
+		case "Fatty acids, total trans":
+			totalFat += v
+		case "Fatty acids, total saturated":
+			saturatedFat += v
+			totalFat += v
+		case "Fiber, total dietary":
+			fiber += v
+		case "Protein":
+			protein += v
+		case "Sodium, Na":
+			sodium += v
+		case "Sugars, total including NLEA":
+			sugars += v
+		}
+	}
+
+	weight = weight * 1e-2
+	return Nutrition{
+		Calories:           strconv.FormatFloat(calories/weight, 'f', 0, 64) + " kcal",
+		Cholesterol:        formatNutrient(cholesterol / weight),
+		Fiber:              formatNutrient(fiber / weight),
+		Protein:            formatNutrient(protein / weight),
+		SaturatedFat:       formatNutrient(saturatedFat / weight),
+		Sodium:             formatNutrient(sodium / weight),
+		Sugars:             formatNutrient(sugars / weight),
+		TotalCarbohydrates: formatNutrient(carbs / weight),
+		TotalFat:           formatNutrient(totalFat / weight),
+		UnsaturatedFat:     formatNutrient(unsaturatedFat / weight),
+	}
+}
+
+func formatNutrient(value float64) string {
+	if value == 0 {
+		return "-"
+	}
+
+	unit := "g"
+
+	if value < 1 {
+		value *= 1e3
+		unit = "mg"
+	}
+
+	if value < 1 {
+		value *= 1e3
+		unit = "ug"
+	}
+
+	if value > 1e3 {
+		value *= 1e-3
+		unit = "kg"
+	}
+
+	return strconv.FormatFloat(value, 'f', 2, 64) + " " + unit
+}
+
+// NutrientFDC holds the nutrient data from the FDC database.
+type NutrientFDC struct {
+	ID        int64
+	Name      string
+	Amount    float64
+	UnitName  string
+	Reference units.Measurement
+}
+
+// Value calculates the amount of the nutrient scaled to the reference, in grams.
+func (n NutrientFDC) Value() float64 {
+	perGram := n.Amount * 1e-2
+	switch n.UnitName {
+	case "UG":
+		perGram *= 1e-6
+	case "MG":
+		perGram *= 1e-3
+	case "G":
+		break
+	case "KG":
+		perGram *= 1e3
+	}
+
+	m, err := n.Reference.Convert(units.Gram)
+	if err != nil {
+		m, err = n.Reference.Convert(units.Millilitre)
+		if err != nil {
+			return 0
+		}
+	}
+	return m.Quantity * perGram
+}
+
 // SearchOptionsRecipes defines the options for searching recipes.
 type SearchOptionsRecipes struct {
 	ByName     bool

@@ -123,12 +123,27 @@ func (s *SchemaType) UnmarshalJSON(data []byte) error {
 	var v any
 	err := json.Unmarshal(data, &v)
 	if err != nil {
-		return err
+		m := map[string]string{}
+		err := json.Unmarshal(data, &m)
+		if err != nil {
+			return err
+		}
+
+		val, ok := m["Value"]
+		if !ok {
+			return fmt.Errorf("could not decode description %q", data)
+		}
+		v = val
 	}
 
 	switch x := v.(type) {
 	case string:
 		s.Value = x
+	case map[string]any:
+		v, ok := x["Value"]
+		if ok {
+			s.Value = v.(string)
+		}
 	case []any:
 		for _, t := range x {
 			if t.(string) == "Recipe" {
@@ -252,7 +267,17 @@ func (d *Description) UnmarshalJSON(data []byte) error {
 	var s string
 	err := json.Unmarshal(data, &s)
 	if err != nil {
-		return err
+		m := map[string]string{}
+		err := json.Unmarshal(data, &m)
+		if err != nil {
+			return err
+		}
+
+		v, ok := m["Value"]
+		if !ok {
+			return fmt.Errorf("could not decode description %q", data)
+		}
+		s = v
 	}
 
 	s = strings.TrimSpace(s)
@@ -330,6 +355,17 @@ func (i *Image) UnmarshalJSON(data []byte) error {
 			}
 
 		}
+	case map[string]any:
+		url, ok := v.(map[string]any)["url"]
+		if ok {
+			i.Value = url.(string)
+			break
+		}
+
+		val, ok := v.(map[string]any)["Value"]
+		if ok {
+			i.Value = val.(string)
+		}
 	case any:
 		url, ok := v.(map[string]any)["url"]
 		if ok {
@@ -354,7 +390,17 @@ func (i *Ingredients) UnmarshalJSON(data []byte) error {
 	var xv []any
 	err := json.Unmarshal(data, &xv)
 	if err != nil {
-		return err
+		m := map[string][]any{}
+		err := json.Unmarshal(data, &m)
+		if err != nil {
+			return err
+		}
+
+		v, ok := m["Values"]
+		if !ok {
+			return fmt.Errorf("could not decode description %q", data)
+		}
+		xv = v
 	}
 
 	cases := []struct {
@@ -399,7 +445,17 @@ func (i *Instructions) UnmarshalJSON(data []byte) error {
 	var v any
 	err := json.Unmarshal(data, &v)
 	if err != nil {
-		return err
+		m := map[string][]any{}
+		err := json.Unmarshal(data, &m)
+		if err != nil {
+			return err
+		}
+
+		xv, ok := m["Values"]
+		if !ok {
+			return fmt.Errorf("could not decode description %q", data)
+		}
+		v = xv
 	}
 
 	switch x := v.(type) {
@@ -451,6 +507,13 @@ func (i *Instructions) UnmarshalJSON(data []byte) error {
 				}
 			default:
 				parseSections(y, i)
+			}
+		}
+	case map[string]any:
+		xv, ok := x["Values"]
+		if ok {
+			for _, s := range xv.([]any) {
+				i.Values = append(i.Values, s.(string))
 			}
 		}
 	}
@@ -530,6 +593,11 @@ func (y *Yield) UnmarshalJSON(data []byte) error {
 			if err == nil {
 				y.Value = int16(i)
 			}
+		}
+	case map[string]any:
+		v, ok := x["Value"]
+		if ok {
+			y.Value = int16(v.(float64))
 		}
 	}
 	return nil

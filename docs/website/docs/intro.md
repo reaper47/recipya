@@ -9,13 +9,14 @@ share your favorite recipes. It is focussed on simplicity for the whole family t
 
 ## Features
 
-- [Manage your favorite recipes](/docs/category/manage-recipes)
-- [Import recipes from around the web](/docs/features/manage/add#website)
-- [Digitize paper recipes](/docs/features/manage/add#scan) (planned)
+- [Manage your favorite recipes](/docs/category/recipes)
+- [Import recipes from around the web](/docs/features/recipes/add#website)
+- [Digitize paper recipes](/docs/features/recipes/add#scan) (planned)
 - [Organize your recipes into cookbooks](/docs/category/cookbooks)
 - [Works seamlessly with recipes in your Nextcloud Cookbook](/docs/features/integrations)
 - [Automatic conversion to your preferred measurement system](/docs/features/measurement-systems) (imperial/metric)
-- [Print any recipe in your collection](/docs/features/print)
-- [Prevent your device from going to sleep while viewing a recipe](/docs/features/wakelock)
+- [Calculate nutritional information automatically](/docs/features/nutrition-facts)
+- [Print any recipe in your collection](/docs/features/recipes/print)
+- [Prevent your device from going to sleep while viewing a recipe](/docs/features/recipes/wakelock)
 - Follows your system's theme (light/dark)
 - Cross-compiled for Windows, Linux, and macOS

@@ -177,6 +177,7 @@ func (s *Server) mountHandlers() {
 				r.Get("/recipes", s.settingsExportRecipesHandler)
 			})
 
+			r.Post("/calculate-nutrition", s.settingsCalculateNutritionPostHandler)
 			r.Post("/convert-automatically", s.settingsConvertAutomaticallyPostHandler)
 			r.Post("/measurement-system", s.settingsMeasurementSystemsPostHandler)
 
