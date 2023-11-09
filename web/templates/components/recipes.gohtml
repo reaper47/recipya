@@ -123,7 +123,7 @@
         <dialog id="supported-websites-dialog" class="p-4 h-2/3 dark:bg-gray-600 rounded-lg">
             <h3 class="flex justify-between items-center mb-1 dark:text-gray-200">
                 <label class="w-11/12">
-                    <input class="w-full rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-900"
+                    <input class="text-input"
                            type="search" name="search" placeholder="Search a website" autocomplete="off"
                            _="on input
                             show <tbody>tr/> in next <table/>
@@ -1052,7 +1052,7 @@
 {{define "share-link"}}
     <div class="grid grid-flow-col gap-2">
         <label>
-            <input type="url" value="{{.Content}}" class="w-full rounded-lg bg-gray-100 px-4 py-2" readonly="readonly">
+            <input type="url" value="{{.Content}}" class="text-input" readonly="readonly">
         </label>
         <button class="w-24 font-semibold p-2 bg-gray-300 rounded-lg hover:bg-gray-400" title="Copy to clipboard"
                 _="on click
