@@ -17,8 +17,7 @@ import (
 	"time"
 )
 
-// Setup sets up Recipya.
-func Setup() {
+func setup() {
 	reset := "\033[0m"
 	greenText := func(s string) string {
 		return "\033[32m" + s + reset
@@ -39,21 +38,23 @@ func Setup() {
 		s.Prefix = "Fetching the FDC database... "
 		s.FinalMSG = "Fetching the FDC database... " + greenText("Success") + "\n"
 		s.Start()
-		err := downloadFile("fdc.db.zip", "https://raw.githubusercontent.com/reaper47/recipya/main/deploy/fdc.db.zip")
+		err := downloadFile(filepath.Join(dir, "fdc.db.zip"), "https://raw.githubusercontent.com/reaper47/recipya/main/deploy/fdc.db.zip")
 		if err != nil {
 			fmt.Printf("\n"+redText("Error downloading FDC database")+": %s\n", err)
 			fmt.Println("Application setup will terminate")
 			os.Exit(1)
 		}
 		s.Stop()
+		_ = os.Remove(filepath.Join(dir, "fdc.db.zip"))
 	} else {
-		fmt.Println(greenText("✓") + " FDC database")
+		fmt.Println(greenText("OK") + " FDC database")
 	}
 
-	_, err = os.Stat(filepath.Join(dir, "config.json"))
+	configFilePath := filepath.Join(dir, "config.json")
+	_, err = os.Stat(configFilePath)
 	if err != nil {
 		fmt.Print("Creating the configuration file... ")
-		err := createConfigFile()
+		err := createConfigFile(configFilePath)
 		if err != nil {
 			fmt.Printf("\n"+redText("Error creating config file")+": %s\n", err)
 			fmt.Println("Application setup will terminate")
@@ -61,13 +62,13 @@ func Setup() {
 		}
 		fmt.Println(greenText("Success"))
 	} else {
-		fmt.Println(greenText("✓") + " Configuration file")
+		fmt.Println(greenText("OK") + " Configuration file")
 	}
 
-	fmt.Println("Recipya is ready to be served by running: ./recipya serve")
+	fmt.Println("Recipya is properly set up.")
 }
 
-func createConfigFile() error {
+func createConfigFile(path string) error {
 	if isRunningInDocker() {
 		return nil
 	}
@@ -100,7 +101,7 @@ func createConfigFile() error {
 		return err
 	}
 
-	return os.WriteFile("config.json", j, os.ModePerm)
+	return os.WriteFile(path, j, os.ModePerm)
 }
 
 func downloadFile(path, url string) error {
@@ -130,8 +131,7 @@ func downloadFile(path, url string) error {
 	}
 	defer z.Close()
 
-	dest := "fdc.db"
-	destFile, err := os.OpenFile(filepath.Join(".", dest), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, z.File[0].Mode())
+	destFile, err := os.OpenFile(filepath.Join(filepath.Dir(path), "fdc.db"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, z.File[0].Mode())
 	if err != nil {
 		return err
 	}
@@ -144,10 +144,7 @@ func downloadFile(path, url string) error {
 	defer zippedFile.Close()
 
 	_, err = io.Copy(destFile, zippedFile)
-	if err != nil {
-		return err
-	}
-	return os.Remove(path)
+	return err
 }
 
 func isRunningInDocker() bool {
