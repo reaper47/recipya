@@ -39,7 +39,7 @@ func Setup() {
 		s.Prefix = "Fetching the FDC database... "
 		s.FinalMSG = "Fetching the FDC database... " + greenText("Success") + "\n"
 		s.Start()
-		err := downloadFile("fdc.db.zip", "https://github.com/reaper47/recipya/blob/main/deploy/fdc.db.zip")
+		err := downloadFile("fdc.db.zip", "https://raw.githubusercontent.com/reaper47/recipya/main/deploy/fdc.db.zip")
 		if err != nil {
 			fmt.Printf("\n"+redText("Error downloading FDC database")+": %s\n", err)
 			fmt.Println("Application setup will terminate")
@@ -144,7 +144,10 @@ func downloadFile(path, url string) error {
 	defer zippedFile.Close()
 
 	_, err = io.Copy(destFile, zippedFile)
-	return err
+	if err != nil {
+		return err
+	}
+	return os.Remove(path)
 }
 
 func isRunningInDocker() bool {
