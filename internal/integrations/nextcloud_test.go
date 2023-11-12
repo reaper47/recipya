@@ -44,7 +44,7 @@ func TestNextcloudImport(t *testing.T) {
 			  }
 			]`
 			w.WriteHeader(http.StatusOK)
-			fmt.Fprintf(w, payload)
+			_, _ = fmt.Fprint(w, payload)
 			return
 		}
 
@@ -58,7 +58,7 @@ func TestNextcloudImport(t *testing.T) {
 				payload = `{"id":"140","name":"Jesus Buds","description":"The best recipes approved by Jesus","url":"","image":"/Nextcloud.png","prepTime":"PT2H15M0S","cookTime":"PT1H30M0S","totalTime":"PT3H45M0S","recipeCategory":"Breakfast","keywords":"chips,jesus","recipeYield":12,"tool":[],"recipeIngredient":["1 apple","2 cups chocolate","1 cup flour"],"recipeInstructions":["Mix everything in a big bowl","Preheat oven at 350 f","Put mixture in an oven bowl","Put in oven and pray to jesus the cookies don't burn after 15 minutes"],"nutrition":{"servingSize":"1","proteinContent":"2 g","sugarContent":"50g","calories":"450kcal","@type":"NutritionInformation"},"@context":"https://schema.org","@type":"Recipe","dateModified":"2023-09-27T13:42:51+0000","dateCreated":"2023-09-27T13:42:51+0000","printImage":true,"imageUrl":"/apps/cookbook/webapp/recipes/140/image?size=full"}`
 			}
 			w.WriteHeader(http.StatusOK)
-			fmt.Fprintf(w, payload)
+			_, _ = fmt.Fprint(w, payload)
 			return
 		}
 

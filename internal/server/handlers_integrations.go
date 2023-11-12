@@ -26,8 +26,9 @@ func (s *Server) integrationsImportNextcloud(w http.ResponseWriter, r *http.Requ
 
 	count := 0
 	skipped := 0
-	for _, r := range *recipes {
-		_, err := s.Repository.AddRecipe(&r, userID)
+	for _, recipe := range *recipes {
+		c := recipe.Copy()
+		_, err = s.Repository.AddRecipe(&c, userID)
 		if err != nil {
 			skipped++
 			continue

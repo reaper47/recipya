@@ -299,16 +299,16 @@ func TestHandlers_Auth_Login(t *testing.T) {
 	})
 
 	t.Run("redirect to accessed uri after logged in", func(t *testing.T) {
-		otherUri := "/recipes/add"
+		otherURI := "/recipes/add"
 		r := httptest.NewRequest(http.MethodPost, uri, strings.NewReader("email=test@example.com&password=123&remember-me=false"))
 		r.Header.Set("Content-Type", string(formHeader))
-		r.AddCookie(server.NewRedirectCookie(otherUri))
+		r.AddCookie(server.NewRedirectCookie(otherURI))
 
 		rr := httptest.NewRecorder()
 		srv.Router.ServeHTTP(rr, r)
 
 		assertStatus(t, rr.Code, http.StatusSeeOther)
-		assertHeader(t, rr, "HX-Redirect", otherUri)
+		assertHeader(t, rr, "HX-Redirect", otherURI)
 	})
 
 	t.Run("login  successful", func(t *testing.T) {

@@ -273,8 +273,7 @@ func (m *mockRepository) DeleteRecipe(id, userID int64) (int64, error) {
 		return 0, nil
 	}
 
-	slices.Delete(recipes, i, i+1)
-	recipes = recipes[:]
+	m.RecipesRegistered[userID] = slices.Delete(recipes, i, i+1)
 	return rowsAffected, nil
 }
 
@@ -395,7 +394,7 @@ func (m *mockRepository) ReorderCookbookRecipes(_ int64, _ []uint64, _ int64) er
 	return nil
 }
 
-func (m *mockRepository) SearchRecipes(query string, options models.SearchOptionsRecipes, userID int64) (models.Recipes, error) {
+func (m *mockRepository) SearchRecipes(query string, _ models.SearchOptionsRecipes, userID int64) (models.Recipes, error) {
 	recipes, ok := m.RecipesRegistered[userID]
 	if !ok {
 		return nil, errors.New("user not found")
@@ -621,7 +620,7 @@ type mockEmail struct {
 }
 
 func (m *mockEmail) Send(_ string, _ templates.EmailTemplate, _ any) {
-	m.hitCount += 1
+	m.hitCount++
 }
 
 type mockFiles struct {

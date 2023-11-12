@@ -8,7 +8,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/services"
-	_ "github.com/reaper47/recipya/internal/templates"
+	_ "github.com/reaper47/recipya/internal/templates" // Need to initialize the templates package.
 	"github.com/reaper47/recipya/static"
 	"net/http"
 	"os"

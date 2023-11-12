@@ -363,7 +363,9 @@ func (s *Server) cookbooksImagePostCookbookHandler(w http.ResponseWriter, r *htt
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	defer f.Close()
+	defer func() {
+		_ = f.Close()
+	}()
 
 	imageUUID, err := s.Files.UploadImage(f)
 	if err != nil {
@@ -499,15 +501,15 @@ func (s *Server) cookbooksPostCookbookReorderHandler(w http.ResponseWriter, r *h
 		return
 	}
 
-	var recipeIDs []uint64
-	for _, s := range recipeIDsStr {
+	recipeIDs := make([]uint64, len(recipeIDsStr))
+	for i, s := range recipeIDsStr {
 		id, err := strconv.ParseUint(s, 10, 64)
 		if err != nil {
 			w.Header().Set("HX-Trigger", makeToast(fmt.Sprintf("Recipe ID %q is invalid.", s), errorToast))
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		recipeIDs = append(recipeIDs, id)
+		recipeIDs[i] = id
 	}
 
 	err = s.Repository.ReorderCookbookRecipes(cookbookID, recipeIDs, userID)

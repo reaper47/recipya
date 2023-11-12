@@ -43,11 +43,11 @@ func ParseToken(token string) (int64, error) {
 
 func parseUserID(userIDAny any) (int64, error) {
 	var userID int64
-	switch userIDAny.(type) {
+	switch x := userIDAny.(type) {
 	case int64:
-		userID = userIDAny.(int64)
+		userID = x
 	case float64:
-		userID = int64(userIDAny.(float64))
+		userID = int64(x)
 	default:
 		userID = userIDAny.(int64)
 	}

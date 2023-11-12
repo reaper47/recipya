@@ -5,7 +5,7 @@ const InsertAuthToken = `
 	INSERT INTO auth_tokens (selector, hash_validator, user_id)
 	VALUES (?, ?, ?)`
 
-// InsertCategory is the query to add a category to the database
+// InsertCategory is the query to add a category to the database.
 const InsertCategory = `
 	INSERT INTO categories (name)
 	VALUES (?)

@@ -379,7 +379,7 @@ func (n NutrientsFDC) NutritionFact(weight float64) Nutrition {
 		}
 	}
 
-	weight = weight * 1e-2
+	weight *= 1e-2
 	return Nutrition{
 		Calories:           strconv.FormatFloat(calories/weight, 'f', 0, 64) + " kcal",
 		Cholesterol:        formatNutrient(cholesterol / weight),

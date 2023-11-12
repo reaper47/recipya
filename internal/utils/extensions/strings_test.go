@@ -148,16 +148,16 @@ func TestSumString(t *testing.T) {
 	}
 }
 
-func assertFloatsEqual(t testing.TB, got, want, threshold float64) {
-	t.Helper()
+func assertFloatsEqual(tb testing.TB, got, want, threshold float64) {
+	tb.Helper()
 	if math.Abs(got-want) > threshold {
-		t.Fatalf("got %g but want %g", got, want)
+		tb.Fatalf("got %g but want %g", got, want)
 	}
 }
 
-func assertStringsEqual(t testing.TB, got, want string) {
-	t.Helper()
+func assertStringsEqual(tb testing.TB, got, want string) {
+	tb.Helper()
 	if got != want {
-		t.Fatalf("got %q but want %q", got, want)
+		tb.Fatalf("got %q but want %q", got, want)
 	}
 }

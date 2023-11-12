@@ -1,7 +1,6 @@
 package app_test
 
 import (
-	"fmt"
 	"github.com/reaper47/recipya/internal/app"
 	"net"
 	"testing"
@@ -12,7 +11,9 @@ func TestConfigFile_Address(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer conn.Close()
+	defer func() {
+		_ = conn.Close()
+	}()
 
 	localAddr := conn.LocalAddr().(*net.UDPAddr)
 	ip := localAddr.IP.String()
@@ -30,7 +31,7 @@ func TestConfigFile_Address(t *testing.T) {
 		{
 			name: "with port",
 			in:   app.ConfigFile{URL: "https://127.0.0.1", Port: 8078},
-			want: fmt.Sprintf("https://%s:8078", ip),
+			want: "https://" + net.JoinHostPort(ip, "8078"),
 		},
 	}
 	for _, tc := range testcases {

@@ -4,8 +4,6 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/google/go-cmp/cmp"
 	"github.com/reaper47/recipya/internal/models"
-	"io"
-	"net/http"
 	"os"
 	"path"
 	"path/filepath"
@@ -14,6 +12,8 @@ import (
 )
 
 func TestScraper(t *testing.T) {
+	t.Parallel()
+
 	testcases := []struct {
 		name string
 		in   string
@@ -9772,9 +9772,9 @@ func TestScraper(t *testing.T) {
 				}
 			}()
 
-			//updateHTMLFile(t, tc.in)
+			// updateHTMLFile(t, tc.in)
 			actual := testFile(t, tc.in)
-			//actual := testHTTP(t, tc.in)
+			// actual := testHTTP(t, tc.in)
 
 			if !cmp.Equal(actual, tc.want) {
 				t.Logf(cmp.Diff(actual, tc.want))
@@ -9784,7 +9784,7 @@ func TestScraper(t *testing.T) {
 	}
 }
 
-func updateHTMLFile(t *testing.T, url string) {
+/*func updateHTMLFile(t *testing.T, url string) {
 	t.Helper()
 	t.Parallel()
 
@@ -9814,7 +9814,7 @@ func updateHTMLFile(t *testing.T, url string) {
 		t.Log(err)
 		return
 	}
-}
+}*/
 
 // TODO: Change package name to scraper_test
 /*func testHTTP(t *testing.T, in string) models.RecipeSchema {
@@ -9836,7 +9836,9 @@ func testFile(t *testing.T, in string) models.RecipeSchema {
 	if err != nil {
 		t.Fatalf("%s open file: %s", in, err)
 	}
-	defer f.Close()
+	defer func() {
+		_ = f.Close()
+	}()
 
 	doc, err := goquery.NewDocumentFromReader(f)
 	if err != nil {

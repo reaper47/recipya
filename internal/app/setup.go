@@ -38,7 +38,7 @@ func setup() {
 		s.Prefix = "Fetching the FDC database... "
 		s.FinalMSG = "Fetching the FDC database... " + greenText("Success") + "\n"
 		s.Start()
-		err := downloadFile(filepath.Join(dir, "fdc.db.zip"), "https://raw.githubusercontent.com/reaper47/recipya/main/deploy/fdc.db.zip")
+		err = downloadFile(filepath.Join(dir, "fdc.db.zip"), "https://raw.githubusercontent.com/reaper47/recipya/main/deploy/fdc.db.zip")
 		if err != nil {
 			fmt.Printf("\n"+redText("Error downloading FDC database")+": %s\n", err)
 			fmt.Println("Application setup will terminate")
@@ -109,7 +109,9 @@ func downloadFile(path, url string) error {
 	if err != nil {
 		return err
 	}
-	defer res.Body.Close()
+	defer func() {
+		_ = res.Body.Close()
+	}()
 
 	if res.StatusCode != http.StatusOK {
 		return fmt.Errorf("file not found at %q", url)
@@ -129,19 +131,25 @@ func downloadFile(path, url string) error {
 	if err != nil {
 		return err
 	}
-	defer z.Close()
+	defer func() {
+		_ = z.Close()
+	}()
 
 	destFile, err := os.OpenFile(filepath.Join(filepath.Dir(path), "fdc.db"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, z.File[0].Mode())
 	if err != nil {
 		return err
 	}
-	defer destFile.Close()
+	defer func() {
+		_ = destFile.Close()
+	}()
 
 	zippedFile, err := z.File[0].Open()
 	if err != nil {
 		return err
 	}
-	defer zippedFile.Close()
+	defer func() {
+		_ = zippedFile.Close()
+	}()
 
 	_, err = io.Copy(destFile, zippedFile)
 	return err

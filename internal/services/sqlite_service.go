@@ -17,7 +17,6 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
-	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -182,7 +181,9 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (uint64, error
 	if err != nil {
 		return 0, err
 	}
-	defer tx.Rollback()
+	defer func() {
+		_ = tx.Rollback()
+	}()
 
 	// Insert recipe
 	var recipeID int64
@@ -253,7 +254,7 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (uint64, error
 	// Insert keywords
 	for _, keyword := range r.Keywords {
 		var keywordID int64
-		err := tx.QueryRowContext(ctx, statements.InsertKeyword, keyword).Scan(&keywordID)
+		err = tx.QueryRowContext(ctx, statements.InsertKeyword, keyword).Scan(&keywordID)
 		if err != nil {
 			return 0, err
 		}
@@ -267,7 +268,7 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (uint64, error
 	// Insert instructions
 	for i, instruction := range r.Instructions {
 		var instructionID int64
-		err := tx.QueryRowContext(ctx, statements.InsertInstruction, instruction).Scan(&instructionID)
+		err = tx.QueryRowContext(ctx, statements.InsertInstruction, instruction).Scan(&instructionID)
 		if err != nil {
 			return 0, err
 		}
@@ -282,7 +283,7 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (uint64, error
 	for i, ingredient := range r.Ingredients {
 		var ingredientID int64
 		ingredient = units.ReplaceDecimalFractions(ingredient)
-		err := tx.QueryRowContext(ctx, statements.InsertIngredient, ingredient).Scan(&ingredientID)
+		err = tx.QueryRowContext(ctx, statements.InsertIngredient, ingredient).Scan(&ingredientID)
 		if err != nil {
 			return 0, err
 		}
@@ -296,7 +297,7 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (uint64, error
 	// Insert tools
 	for _, tool := range r.Tools {
 		var toolID int64
-		err := tx.QueryRowContext(ctx, statements.InsertTool, tool).Scan(&toolID)
+		err = tx.QueryRowContext(ctx, statements.InsertTool, tool).Scan(&toolID)
 		if err != nil {
 			return 0, err
 		}
@@ -370,16 +371,24 @@ func (s *SQLiteService) Categories(userID int64) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() {
+		_ = rows.Close()
+	}()
 
 	for rows.Next() {
 		var c string
-		err := rows.Scan(&c)
+		err = rows.Scan(&c)
 		if err != nil {
 			return nil, err
 		}
 		categories = append(categories, c)
 	}
+
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+
 	return categories, nil
 }
 
@@ -420,7 +429,9 @@ func (s *SQLiteService) Cookbook(id, userID int64, page uint64) (models.Cookbook
 	if err != nil {
 		return c, err
 	}
-	defer rows.Close()
+	defer func() {
+		_ = rows.Close()
+	}()
 
 	c.Recipes = scanRecipes(rows)
 	return c, err
@@ -440,7 +451,9 @@ func (s *SQLiteService) CookbookByID(id, userID int64) (models.Cookbook, error) 
 	if err != nil {
 		return models.Cookbook{}, err
 	}
-	defer rows.Close()
+	defer func() {
+		_ = rows.Close()
+	}()
 
 	var recipes models.Recipes
 	for rows.Next() {
@@ -449,6 +462,11 @@ func (s *SQLiteService) CookbookByID(id, userID int64) (models.Cookbook, error) 
 			return models.Cookbook{}, err
 		}
 		recipes = append(recipes, *r)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return models.Cookbook{}, err
 	}
 
 	c.Recipes = recipes
@@ -489,18 +507,26 @@ func (s *SQLiteService) Cookbooks(userID int64, page uint64) ([]models.Cookbook,
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() {
+		_ = rows.Close()
+	}()
 
 	var cookbooks []models.Cookbook
 	for rows.Next() {
-		c := models.Cookbook{}
+		var c models.Cookbook
 		// TODO: Fetch recipes
-		err := rows.Scan(&c.ID, &c.Image, &c.Title, &c.Count)
+		err = rows.Scan(&c.ID, &c.Image, &c.Title, &c.Count)
 		if err != nil {
 			return nil, err
 		}
 		cookbooks = append(cookbooks, c)
 	}
+
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+
 	return cookbooks, nil
 }
 
@@ -673,14 +699,19 @@ func (s *SQLiteService) Nutrients(ingredients []string) (models.NutrientsFDC, fl
 
 		for rows.Next() {
 			var n models.NutrientFDC
-			err := rows.Scan(&n.ID, &n.Name, &n.Amount, &n.UnitName)
+			err = rows.Scan(&n.ID, &n.Name, &n.Amount, &n.UnitName)
 			if err != nil {
 				return nil, 0, err
 			}
 			n.Reference = token.Measurement
 			nutrients = append(nutrients, n)
 		}
-		rows.Close()
+		_ = rows.Close()
+
+		err = rows.Err()
+		if err != nil {
+			return nil, 0, err
+		}
 	}
 
 	return nutrients, weight, nil
@@ -694,7 +725,9 @@ func (s *SQLiteService) Recipe(id, userID int64) (*models.Recipe, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer tx.Rollback()
+	defer func() {
+		_ = tx.Rollback()
+	}()
 
 	row := tx.QueryRowContext(ctx, statements.SelectRecipe, userID, id)
 	r, err := scanRecipe(row)
@@ -714,7 +747,9 @@ func (s *SQLiteService) Recipes(userID int64, page uint64) models.Recipes {
 	if err != nil {
 		return models.Recipes{}
 	}
-	defer rows.Close()
+	defer func() {
+		_ = rows.Close()
+	}()
 
 	return scanRecipes(rows)
 }
@@ -727,7 +762,9 @@ func (s *SQLiteService) RecipesAll(userID int64) models.Recipes {
 	if err != nil {
 		return models.Recipes{}
 	}
-	defer rows.Close()
+	defer func() {
+		_ = rows.Close()
+	}()
 
 	return scanRecipes(rows)
 }
@@ -740,7 +777,7 @@ func (s *SQLiteService) SearchRecipes(query string, options models.SearchOptions
 	stmt := statements.BuildSearchRecipeQuery(queries, options)
 
 	if options.FullSearch {
-		for _ = range statements.RecipesFTSFields {
+		for range statements.RecipesFTSFields {
 			queries = append(queries, queries...)
 		}
 	}
@@ -750,13 +787,14 @@ func (s *SQLiteService) SearchRecipes(query string, options models.SearchOptions
 	for i, q := range queries {
 		xa[i+1] = q + "*"
 	}
-	queries = append([]string{strconv.FormatInt(userID, 10)}, queries...)
 
 	rows, err := s.DB.QueryContext(ctx, stmt, xa...)
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() {
+		_ = rows.Close()
+	}()
 
 	return scanRecipes(rows), nil
 }
@@ -801,9 +839,9 @@ func scanRecipe(sc scanner) (*models.Recipe, error) {
 	r.Keywords = strings.Split(keywords, ",")
 	r.Tools = strings.Split(tools, ",")
 
-	r.Times.Prep = r.Times.Prep * time.Second
-	r.Times.Cook = r.Times.Cook * time.Second
-	r.Times.Total = r.Times.Total * time.Second
+	r.Times.Prep *= time.Second
+	r.Times.Cook *= time.Second
+	r.Times.Total *= time.Second
 	return &r, nil
 }
 
@@ -851,7 +889,9 @@ func (s *SQLiteService) ReorderCookbookRecipes(cookbookID int64, recipeIDs []uin
 	if err != nil {
 		return err
 	}
-	defer tx.Rollback()
+	defer func() {
+		_ = tx.Rollback()
+	}()
 
 	for i, recipeID := range recipeIDs {
 		var exists int64
@@ -881,7 +921,9 @@ func (s *SQLiteService) SwitchMeasurementSystem(system units.System, userID int6
 	if err != nil {
 		return err
 	}
-	defer tx.Rollback()
+	defer func() {
+		_ = tx.Rollback()
+	}()
 
 	_, err = tx.ExecContext(ctx, statements.UpdateMeasurementSystem, system.String(), userID)
 	if err != nil {
@@ -980,7 +1022,9 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 	if err != nil {
 		return err
 	}
-	defer tx.Rollback()
+	defer func() {
+		_ = tx.Rollback()
+	}()
 
 	recipeID := oldRecipe.ID
 
@@ -1278,17 +1322,21 @@ func (s *SQLiteService) Users() []models.User {
 		log.Printf("error fetching users: %q", err)
 		return users
 	}
-	defer rows.Close()
+	defer func() {
+		_ = rows.Close()
+	}()
 
 	for rows.Next() {
 		var user models.User
-		err := rows.Scan(&user.ID, &user.Email)
+		err = rows.Scan(&user.ID, &user.Email)
 		if err != nil {
 			log.Printf("error scanning user: %q", err)
 			return users
 		}
 		users = append(users, user)
 	}
+
+	_ = rows.Err()
 	return users
 }
 
@@ -1327,7 +1375,9 @@ func (s *SQLiteService) Websites() models.Websites {
 		log.Printf("websites count error: %q", err)
 		return websites
 	}
-	defer rows.Close()
+	defer func() {
+		_ = rows.Close()
+	}()
 
 	i := 0
 	for rows.Next() {
@@ -1340,5 +1390,7 @@ func (s *SQLiteService) Websites() models.Websites {
 		websites[i] = w
 		i++
 	}
+
+	_ = rows.Err()
 	return websites
 }

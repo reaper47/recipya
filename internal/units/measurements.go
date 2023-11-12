@@ -1104,7 +1104,7 @@ func ReplaceDecimalFractions(input string) string {
 
 		n := len(strings.Split(s, ".")[1])
 		if n < 3 {
-			s = s + strings.Repeat("0", 3-n)
+			s += strings.Repeat("0", 3-n)
 		}
 
 		s = strings.TrimPrefix(s, "0")
@@ -1149,7 +1149,7 @@ func ReplaceVulgarFractions(input string) string {
 
 	for k, v := range vulgar {
 		if strings.Contains(input, k) {
-			input = strings.Replace(input, k, " "+v+" ", -1)
+			input = strings.ReplaceAll(input, k, " "+v+" ")
 			input = strings.TrimSpace(input)
 			input = strings.Join(strings.Fields(input), " ")
 			break
@@ -1201,10 +1201,7 @@ func init() {
 func NewTokenizedIngredientFromText(sentence string) TokenizedIngredient {
 	var t TokenizedIngredient
 	sentence = ReplaceVulgarFractions(sentence)
-	m, err := NewMeasurementFromString(sentence)
-	if err == nil {
-
-	}
+	m, _ := NewMeasurementFromString(sentence)
 	t.Measurement = m
 
 	sentence = regex.Unit.ReplaceAllString(sentence, "1 tsp")

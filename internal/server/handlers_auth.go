@@ -206,13 +206,13 @@ func (s *Server) loginPostHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	redirectUri := "/"
+	redirectURI := "/"
 	c, err := r.Cookie(cookieNameRedirect)
 	if !errors.Is(err, http.ErrNoCookie) {
-		redirectUri = c.Value
+		redirectURI = c.Value
 	}
 
-	w.Header().Set("HX-Redirect", redirectUri)
+	w.Header().Set("HX-Redirect", redirectURI)
 	w.WriteHeader(http.StatusSeeOther)
 }
 

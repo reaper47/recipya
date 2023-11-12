@@ -6,18 +6,25 @@ import (
 	"slices"
 )
 
+// Key is a type alias for a context key.
+type Key string
+
+const (
+	UserIDKey Key = "userID"
+)
+
 func (s *Server) redirectIfLoggedInMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		userID := getUserIDFromSessionCookie(r)
 		if userID != -1 {
-			ctx := context.WithValue(r.Context(), "userID", userID)
+			ctx := context.WithValue(r.Context(), UserIDKey, userID)
 			http.Redirect(w, r.WithContext(ctx), "/", http.StatusSeeOther)
 			return
 		}
 
 		userID = getUserIDFromRememberMeCookie(r, s.Repository.GetAuthToken)
 		if userID != -1 {
-			ctx := context.WithValue(r.Context(), "userID", userID)
+			ctx := context.WithValue(r.Context(), UserIDKey, userID)
 			w.Header().Set("HX-Redirect", "/")
 			http.Redirect(w, r.WithContext(ctx), "/", http.StatusSeeOther)
 			return
@@ -36,14 +43,14 @@ func (s *Server) mustBeLoggedInMiddleware(next http.Handler) http.Handler {
 
 		userID := getUserIDFromSessionCookie(r)
 		if userID != -1 {
-			ctx := context.WithValue(r.Context(), "userID", userID)
+			ctx := context.WithValue(r.Context(), UserIDKey, userID)
 			next.ServeHTTP(w, r.WithContext(ctx))
 			return
 		}
 
 		userID = getUserIDFromRememberMeCookie(r, s.Repository.GetAuthToken)
 		if userID != -1 {
-			ctx := context.WithValue(r.Context(), "userID", userID)
+			ctx := context.WithValue(r.Context(), UserIDKey, userID)
 			w.Header().Set("HX-Redirect", "/")
 			next.ServeHTTP(w, r.WithContext(ctx))
 			return

@@ -19,7 +19,7 @@ import (
 func TestHandlers_Recipes(t *testing.T) {
 	srv := newServerTest()
 
-	uri := "/recipes"
+	const uri = "/recipes"
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
@@ -304,12 +304,12 @@ func TestHandlers_Recipes_AddManualIngredientDelete(t *testing.T) {
 			rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri+strconv.Itoa(tc.entry), formHeader, strings.NewReader("ingredient-1=one&ingredient-2=two&ingredient-3=three&ingredient-4=''"))
 
 			assertStatus(t, rr.Code, http.StatusOK)
-			want := append(tc.want, []string{
+			tc.want = append(tc.want, []string{
 				`&nbsp;<button type="button" class="delete-button w-10 h-10 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center dark:bg-red-500" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/1" hx-include="[name^='ingredient']">-</button>`,
 				`&nbsp;<button type="button" class="delete-button w-10 h-10 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center dark:bg-red-500" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/2" hx-include="[name^='ingredient']">-</button>`,
 				`&nbsp;<button type="button" class="delete-button w-10 h-10 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center dark:bg-red-500" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/3" hx-include="[name^='ingredient']">-</button>`,
 			}...)
-			assertStringsInHTML(t, getBodyHTML(rr), want)
+			assertStringsInHTML(t, getBodyHTML(rr), tc.want)
 		})
 	}
 }
@@ -395,12 +395,12 @@ func TestHandlers_Recipes_AddManualInstructionDelete(t *testing.T) {
 			rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri+strconv.Itoa(tc.entry), formHeader, strings.NewReader("instruction-1=One&instruction-2=Two&instruction-3=Three&instruction-4=''"))
 
 			assertStatus(t, rr.Code, http.StatusOK)
-			want := append(tc.want, []string{
+			tc.want = append(tc.want, []string{
 				`<button type="button" class="delete-button w-10 h-10 md:w-7 md:h-7 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center dark:bg-red-500" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/1" hx-include="[name^='instruction']">-</button>`,
 				`<button type="button" class="delete-button w-10 h-10 md:w-7 md:h-7 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center dark:bg-red-500" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/2" hx-include="[name^='instruction']">-</button>`,
 				`<button type="button" class="delete-button w-10 h-10 md:w-7 md:h-7 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center dark:bg-red-500" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/3" hx-include="[name^='instruction']">-</button>`,
 			}...)
-			assertStringsInHTML(t, getBodyHTML(rr), want)
+			assertStringsInHTML(t, getBodyHTML(rr), tc.want)
 		})
 	}
 }
@@ -475,7 +475,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 		repo := &mockRepository{RecipesRegistered: make(map[int64]models.Recipes)}
 		called := 0
 		repo.AddRecipeFunc = func(r *models.Recipe, userID int64) (uint64, error) {
-			called += 1
+			called++
 			return 1, nil
 		}
 		srv.Repository = repo

@@ -28,7 +28,7 @@ func (c Cookbook) DominantCategories(n int) []string {
 		hit[r.Category]++
 	}
 
-	var counts []count
+	counts := make([]count, 0, len(hit))
 	for k, v := range hit {
 		counts = append(counts, count{k, v})
 	}

@@ -39,7 +39,9 @@ func (c *ConfigFile) Address() string {
 		}
 		return addr
 	}
-	defer conn.Close()
+	defer func() {
+		_ = conn.Close()
+	}()
 
 	localAddr := conn.LocalAddr().(*net.UDPAddr)
 	addr := strings.SplitAfter(c.URL, "://")[0] + localAddr.IP.String()

@@ -34,13 +34,13 @@ func createMultipartForm(fields map[string]string) (contentType string, body str
 	for name, value := range fields {
 		if strings.HasSuffix(value, ".jpg") {
 			field, _ := writer.CreateFormFile(name, value)
-			field.Write([]byte("not a real file"))
+			_, _ = field.Write([]byte("not a real file"))
 		} else {
 			field, _ := writer.CreateFormField(name)
-			field.Write([]byte(value))
+			_, _ = field.Write([]byte(value))
 		}
 	}
-	writer.Close()
+	_ = writer.Close()
 
 	return writer.FormDataContentType(), buf.String()
 }
@@ -114,7 +114,7 @@ func prepareRequest(method, target string, contentType header, body *strings.Rea
 	sid := uuid.New()
 	server.SessionData[sid] = 1
 	r.AddCookie(server.NewSessionCookie(sid.String()))
-	r = r.WithContext(context.WithValue(r.Context(), "userID", int64(1)))
+	r = r.WithContext(context.WithValue(r.Context(), server.UserIDKey, int64(1)))
 
 	if contentType != noHeader {
 		r.Header.Set("Content-Type", string(contentType))
@@ -130,7 +130,7 @@ func prepareRequestOther(method, target string, contentType header, body *string
 	sid := uuid.New()
 	server.SessionData[sid] = 2
 	r.AddCookie(server.NewSessionCookie(sid.String()))
-	r = r.WithContext(context.WithValue(r.Context(), "userID", int64(2)))
+	r = r.WithContext(context.WithValue(r.Context(), server.UserIDKey, int64(2)))
 
 	if contentType != noHeader {
 		r.Header.Set("Content-Type", string(contentType))

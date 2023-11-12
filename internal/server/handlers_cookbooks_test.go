@@ -194,6 +194,7 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 	}
 
 	assertCookbooksEqual := func(t *testing.T, originalCookbooks, cookbooks []models.Cookbook) {
+		t.Helper()
 		isCookbooksEqual := slices.EqualFunc(originalCookbooks, cookbooks, func(c1 models.Cookbook, c2 models.Cookbook) bool {
 			return c1.ID == c2.ID
 		})
@@ -604,6 +605,7 @@ func TestHandlers_Cookbooks_Image(t *testing.T) {
 	}
 
 	assert := func(t *testing.T, files *mockFiles, repo *mockRepository, gotStatusCode, wantStatusCode int, wantImage uuid.UUID, wantImageHitCount int) {
+		t.Helper()
 		assertStatus(t, gotStatusCode, wantStatusCode)
 		assertUploadImageHitCount(t, files.uploadImageHitCount, wantImageHitCount)
 		assertImage(t, repo.CookbooksRegistered[1][0].Image, wantImage)
@@ -1039,13 +1041,13 @@ func prepareCookbook(srv *server.Server) (*mockFiles, *mockRepository, func()) {
 	}
 }
 
-func assertCookbooks(t testing.TB, got, want []models.Cookbook) {
-	t.Helper()
+func assertCookbooks(tb testing.TB, got, want []models.Cookbook) {
+	tb.Helper()
 	if !slices.EqualFunc(got, want, func(c1 models.Cookbook, c2 models.Cookbook) bool {
 		return c1.ID == c2.ID && slices.EqualFunc(c1.Recipes, c2.Recipes, func(r1 models.Recipe, r2 models.Recipe) bool {
 			return r1.ID == r2.ID
 		})
 	}) {
-		t.Fatalf("got\n%+v\nbut want\n%+v for user 1", got, want)
+		tb.Fatalf("got\n%+v\nbut want\n%+v for user 1", got, want)
 	}
 }

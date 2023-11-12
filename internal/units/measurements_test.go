@@ -793,6 +793,8 @@ func TestNewMeasurement(t *testing.T) {
 }
 
 func TestNewScaledMeasurementFromString(t *testing.T) {
+	t.Parallel()
+
 	testcases := []struct {
 		name string
 		in   string
@@ -810,7 +812,10 @@ func TestNewScaledMeasurementFromString(t *testing.T) {
 		},
 	}
 	for _, tc := range testcases {
+		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
 			got, err := units.NewMeasurementFromString(tc.in)
 
 			assertNoErr(t, err)
@@ -820,6 +825,8 @@ func TestNewScaledMeasurementFromString(t *testing.T) {
 }
 
 func TestNewTokenizedIngredientFromText(t *testing.T) {
+	t.Parallel()
+
 	testcases := []struct {
 		sentence string
 		want     units.TokenizedIngredient
@@ -2003,7 +2010,7 @@ func TestReplaceDecimalFractions(t *testing.T) {
 		"6.5":     "6 1/2",
 	}
 
-	var testcases []testcase
+	testcases := make([]testcase, 0, len(decimals))
 	for k, v := range decimals {
 		testcases = append(testcases, testcase{
 			name: k,
@@ -2048,7 +2055,7 @@ func TestReplaceVulgarFractions(t *testing.T) {
 		"⅒": "1/10",
 	}
 
-	var testcases []testcase
+	testcases := make([]testcase, 0, len(vulgar))
 	for k, v := range vulgar {
 		testcases = append(testcases, testcase{
 			name: k,
@@ -2496,23 +2503,24 @@ func assertEqual[T string | units.System | units.Unit](t *testing.T, got, want T
 	}
 }
 
-func assertFloats(t testing.TB, got, want, threshold float64) {
+func assertFloats(tb testing.TB, got, want, threshold float64) {
+	tb.Helper()
 	if math.Abs(got-want) > threshold {
-		t.Fatalf("got %.3f but want %.3f", got, want)
+		tb.Fatalf("got %.3f but want %.3f", got, want)
 	}
 }
 
-func assertMeasurementsEqual(t testing.TB, got, want units.Measurement) {
-	t.Helper()
-	assertFloats(t, got.Quantity, want.Quantity, 1e-3)
+func assertMeasurementsEqual(tb testing.TB, got, want units.Measurement) {
+	tb.Helper()
+	assertFloats(tb, got.Quantity, want.Quantity, 1e-3)
 	if got.Unit != want.Unit {
-		t.Fatalf("got unit %s but want %s", got.Unit, want.Unit)
+		tb.Fatalf("got unit %s but want %s", got.Unit, want.Unit)
 	}
 }
 
-func assertNoErr(t testing.TB, got error) {
-	t.Helper()
+func assertNoErr(tb testing.TB, got error) {
+	tb.Helper()
 	if got != nil {
-		t.Fatal("got an error when expected none")
+		tb.Fatal("got an error when expected none")
 	}
 }

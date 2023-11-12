@@ -25,7 +25,9 @@ func NextcloudImport(client *http.Client, baseURL, username, password string, up
 	if err != nil {
 		return nil, err
 	}
-	defer resRecipes.Body.Close()
+	defer func() {
+		_ = resRecipes.Body.Close()
+	}()
 
 	var allRecipes []models.NextcloudRecipes
 	err = json.NewDecoder(resRecipes.Body).Decode(&allRecipes)
@@ -34,9 +36,9 @@ func NextcloudImport(client *http.Client, baseURL, username, password string, up
 	}
 
 	var wg sync.WaitGroup
+	wg.Add(len(allRecipes))
 	recipes := make(models.Recipes, len(allRecipes))
 	for i, r := range allRecipes {
-		wg.Add(1)
 		go func(i int, r models.NextcloudRecipes, authHeader string) {
 			defer wg.Done()
 
@@ -45,7 +47,9 @@ func NextcloudImport(client *http.Client, baseURL, username, password string, up
 			if err != nil {
 				return
 			}
-			defer res.Body.Close()
+			defer func() {
+				_ = res.Body.Close()
+			}()
 
 			var rs models.RecipeSchema
 			err = json.NewDecoder(res.Body).Decode(&rs)
@@ -65,7 +69,9 @@ func NextcloudImport(client *http.Client, baseURL, username, password string, up
 			if err != nil {
 				return
 			}
-			defer imageRes.Body.Close()
+			defer func() {
+				_ = imageRes.Body.Close()
+			}()
 
 			imageUUID, err := uploadImageFunc(imageRes.Body)
 			if err != nil {

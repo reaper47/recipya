@@ -51,8 +51,8 @@ func buildRelease(packageName, tag string) {
 	}
 
 	var wg sync.WaitGroup
+	wg.Add(len(platforms))
 	for _, platform := range platforms {
-		wg.Add(1)
 		go func(platform, packageName, tag string) {
 			defer wg.Done()
 			fmt.Printf("Building %s...\n", platform)
@@ -88,7 +88,7 @@ func build(platform, packageName, tag string) {
 
 	_, err = os.Stat(outputName)
 	if err == nil {
-		err := os.MkdirAll(filepath.Join(".", "releases", tag), os.ModePerm)
+		err = os.MkdirAll(filepath.Join(".", "releases", tag), os.ModePerm)
 		if err != nil {
 			fmt.Printf("Creating the tag's directory failed: %q.\nAborting the script execution...\n", err)
 			os.Exit(1)
@@ -109,10 +109,14 @@ func zipFiles(destFile string, files ...string) error {
 	if err != nil {
 		return err
 	}
-	defer zipFile.Close()
+	defer func() {
+		_ = zipFile.Close()
+	}()
 
 	w := zip.NewWriter(zipFile)
-	defer w.Close()
+	defer func() {
+		_ = w.Close()
+	}()
 
 	for _, file := range files {
 		src, err := os.Open(file)
@@ -122,13 +126,13 @@ func zipFiles(destFile string, files ...string) error {
 
 		info, err := src.Stat()
 		if err != nil {
-			src.Close()
+			_ = src.Close()
 			return err
 		}
 
 		header, err := zip.FileInfoHeader(info)
 		if err != nil {
-			src.Close()
+			_ = src.Close()
 			return err
 		}
 
@@ -137,17 +141,17 @@ func zipFiles(destFile string, files ...string) error {
 
 		writer, err := w.CreateHeader(header)
 		if err != nil {
-			src.Close()
+			_ = src.Close()
 			return err
 		}
 
 		_, err = io.Copy(writer, src)
 		if err != nil {
-			src.Close()
+			_ = src.Close()
 			return err
 		}
 
-		src.Close()
+		_ = src.Close()
 	}
 
 	return w.Close()

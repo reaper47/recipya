@@ -67,7 +67,7 @@ func (r *RecipeSchema) Recipe() (*Recipe, error) {
 	if created != "" {
 		createdAt, err = time.Parse(time.DateOnly, strings.Split(created, "T")[0])
 		if err != nil {
-			return nil, fmt.Errorf("could not parse createdAt date %s: '%s'", created, err)
+			return nil, fmt.Errorf("could not parse createdAt date %s: %w", created, err)
 		}
 	}
 
@@ -80,7 +80,7 @@ func (r *RecipeSchema) Recipe() (*Recipe, error) {
 	if r.DateModified != "" {
 		updatedAt, err = time.Parse(time.DateOnly, strings.Split(r.DateModified, "T")[0])
 		if err != nil {
-			return nil, fmt.Errorf("could not parse modifiedAt date %s: '%s'", r.DateModified, err)
+			return nil, fmt.Errorf("could not parse modifiedAt date %s: %w", r.DateModified, err)
 		}
 	}
 
@@ -123,8 +123,8 @@ func (s *SchemaType) UnmarshalJSON(data []byte) error {
 	var v any
 	err := json.Unmarshal(data, &v)
 	if err != nil {
-		m := map[string]string{}
-		err := json.Unmarshal(data, &m)
+		m := make(map[string]string)
+		err = json.Unmarshal(data, &m)
 		if err != nil {
 			return err
 		}
@@ -267,8 +267,8 @@ func (d *Description) UnmarshalJSON(data []byte) error {
 	var s string
 	err := json.Unmarshal(data, &s)
 	if err != nil {
-		m := map[string]string{}
-		err := json.Unmarshal(data, &m)
+		m := make(map[string]string)
+		err = json.Unmarshal(data, &m)
 		if err != nil {
 			return err
 		}
@@ -324,7 +324,7 @@ func (k *Keywords) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// Image holds a recipe's image. The JSON fields correspond
+// Image holds a recipe's image. The JSON fields correspond.
 type Image struct {
 	Value string
 }
@@ -390,7 +390,7 @@ func (i *Ingredients) UnmarshalJSON(data []byte) error {
 	var xv []any
 	err := json.Unmarshal(data, &xv)
 	if err != nil {
-		m := map[string][]any{}
+		m := make(map[string][]any)
 		err := json.Unmarshal(data, &m)
 		if err != nil {
 			return err
@@ -445,7 +445,7 @@ func (i *Instructions) UnmarshalJSON(data []byte) error {
 	var v any
 	err := json.Unmarshal(data, &v)
 	if err != nil {
-		m := map[string][]any{}
+		m := make(map[string][]any)
 		err := json.Unmarshal(data, &m)
 		if err != nil {
 			return err
@@ -634,7 +634,7 @@ func (n *NutritionSchema) nutrition() (Nutrition, error) {
 	}, nil
 }
 
-// UnmarshalJSON decodes the nutrition according to the schema
+// UnmarshalJSON decodes the nutrition according to the schema.
 func (n *NutritionSchema) UnmarshalJSON(data []byte) error {
 	var v any
 	err := json.Unmarshal(data, &v)
