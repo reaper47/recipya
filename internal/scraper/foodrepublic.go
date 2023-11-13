@@ -43,6 +43,10 @@ func scrapeFoodRepublic(root *goquery.Document) (models.RecipeSchema, error) {
 	yieldStr := content.Find(".recipe-card-servings .recipe-card-amount").Text()
 	yield, _ := strconv.ParseInt(yieldStr, 10, 16)
 
+	name := content.Find(".recipe-card-title").Text()
+	name = strings.TrimLeft(name, "\n")
+	name = strings.TrimSpace(name)
+
 	return models.RecipeSchema{
 		AtContext:       atContext,
 		AtType:          models.SchemaType{Value: "Recipe"},
@@ -53,7 +57,7 @@ func scrapeFoodRepublic(root *goquery.Document) (models.RecipeSchema, error) {
 		Image:           models.Image{Value: image},
 		Ingredients:     models.Ingredients{Values: ingredients},
 		Instructions:    models.Instructions{Values: instructions},
-		Name:            content.Find(".recipe-card-title").Text(),
+		Name:            name,
 		NutritionSchema: models.NutritionSchema{},
 		PrepTime:        prepTime,
 		Yield:           models.Yield{Value: int16(yield)},
