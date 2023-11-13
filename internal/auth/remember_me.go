@@ -12,8 +12,8 @@ func GenerateSelectorAndValidator() (string, string) {
 	selector := make([]byte, 12)
 	validator := make([]byte, 32)
 
-	rand.Read(selector)
-	rand.Read(validator)
+	_, _ = rand.Read(selector)
+	_, _ = rand.Read(validator)
 
 	return base64.URLEncoding.EncodeToString(selector), base64.URLEncoding.EncodeToString(validator)
 }

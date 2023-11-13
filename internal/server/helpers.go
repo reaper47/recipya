@@ -46,7 +46,7 @@ func sendErrorAdminEmail(sendFunc func(to string, template templates.EmailTempla
 }
 
 func getUserID(r *http.Request) int64 {
-	return r.Context().Value("userID").(int64)
+	return r.Context().Value(UserIDKey).(int64)
 }
 
 func (s *Server) findUserID(r *http.Request) (int64, bool) {

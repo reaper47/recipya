@@ -44,13 +44,12 @@ func (s *Server) recipesHandler(w http.ResponseWriter, r *http.Request) {
 	if isHxRequest {
 		templates.RenderComponent(w, "recipes", "recipes-index", baseData)
 		return
-	} else {
-		page := templates.HomePage
-		baseData.IsAuthenticated = true
-		baseData.Title = page.Title()
-		templates.Render(w, page, baseData)
-		return
 	}
+
+	page := templates.HomePage
+	baseData.IsAuthenticated = true
+	baseData.Title = page.Title()
+	templates.Render(w, page, baseData)
 }
 
 func newRecipesPagination(srv *Server, w http.ResponseWriter, userID int64, page uint64, isSwap bool) (templates.Pagination, error) {
@@ -109,15 +108,15 @@ func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request)
 		wg    sync.WaitGroup
 	)
 	wg.Add(len(recipes))
-	for _, r := range recipes {
+	for _, recipe := range recipes {
 		go func(r models.Recipe) {
 			defer wg.Done()
-			_, err := s.Repository.AddRecipe(&r, userID)
+			_, err = s.Repository.AddRecipe(&r, userID)
 			if err != nil {
 				return
 			}
 			atomic.AddInt64(&count, 1)
-		}(r)
+		}(recipe)
 	}
 	wg.Wait()
 
@@ -172,7 +171,9 @@ func (s *Server) recipeAddManualPostHandler(w http.ResponseWriter, r *http.Reque
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	defer f.Close()
+	defer func() {
+		_ = f.Close()
+	}()
 
 	imageUUID, err := s.Files.UploadImage(f)
 	if err != nil {
@@ -343,7 +344,7 @@ func recipeAddManualIngredientDeleteHandler(w http.ResponseWriter, r *http.Reque
 		curr++
 	}
 
-	fmt.Fprint(w, sb.String())
+	_, _ = fmt.Fprint(w, sb.String())
 }
 
 func recipeAddManualInstructionHandler(w http.ResponseWriter, r *http.Request) {
@@ -432,7 +433,7 @@ func recipeAddManualInstructionDeleteHandler(w http.ResponseWriter, r *http.Requ
 		curr++
 	}
 
-	fmt.Fprint(w, sb.String())
+	_, _ = fmt.Fprint(w, sb.String())
 }
 
 func (s *Server) recipesAddRequestWebsiteHandler(w http.ResponseWriter, r *http.Request) {
@@ -571,7 +572,9 @@ func (s *Server) recipesEditPostHandler(w http.ResponseWriter, r *http.Request) 
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		defer f.Close()
+		defer func() {
+			_ = f.Close()
+		}()
 
 		imageUUID, err := s.Files.UploadImage(f)
 		if err != nil {
@@ -754,7 +757,7 @@ func (s *Server) recipesSearchHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) recipesSupportedWebsitesHandler(w http.ResponseWriter, _ *http.Request) {
 	websites := s.Repository.Websites()
 	w.Header().Set("Content-Type", "text/html")
-	_, _ = fmt.Fprintf(w, websites.TableHTML())
+	_, _ = fmt.Fprint(w, websites.TableHTML())
 }
 
 func (s *Server) recipesViewHandler(w http.ResponseWriter, r *http.Request) {

@@ -18,7 +18,7 @@ func (s *Server) downloadHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", http.DetectContentType(data))
 	w.Header().Set("Content-Disposition", `attachment; filename="`+file+`"`)
 	w.Header().Set("Content-Length", strconv.Itoa(len(data)))
-	w.Write(data)
+	_, _ = w.Write(data)
 }
 
 func (s *Server) indexHandler(w http.ResponseWriter, r *http.Request) {
@@ -42,10 +42,10 @@ func notFoundHandler(w http.ResponseWriter, _ *http.Request) {
 }
 
 func (s *Server) userInitialsHandler(w http.ResponseWriter, r *http.Request) {
-	userID := r.Context().Value("userID")
+	userID := r.Context().Value(UserIDKey)
 	if userID == nil {
 		w.WriteHeader(http.StatusUnprocessableEntity)
 		return
 	}
-	w.Write([]byte(s.Repository.UserInitials(userID.(int64))))
+	_, _ = w.Write([]byte(s.Repository.UserInitials(userID.(int64))))
 }

@@ -2,6 +2,7 @@ package models
 
 import "strings"
 
+// These constants enumerate all possible file types used by the software.
 const (
 	JSON FileType = iota
 	PDF

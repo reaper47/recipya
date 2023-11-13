@@ -7,6 +7,7 @@ import (
 // EmailTemplate represents the name of a .mjml email template.
 type EmailTemplate string
 
+// These constants associate an EmailTemplate with its MJML file.
 const (
 	EmailErrorAdmin     EmailTemplate = "error-admin.mjml"
 	EmailForgotPassword EmailTemplate = "forgot-password.mjml"

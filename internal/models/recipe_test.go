@@ -645,17 +645,17 @@ func TestNewTimes(t *testing.T) {
 	}
 }
 
-func assertNoError(t testing.TB, got error) {
-	t.Helper()
+func assertNoError(tb testing.TB, got error) {
+	tb.Helper()
 	if got != nil {
-		t.Fatal("got an error but expected none")
+		tb.Fatal("got an error but expected none")
 	}
 }
 
-func assertStructsEqual[T models.Recipe](t testing.TB, got, want T) {
-	t.Helper()
+func assertStructsEqual[T models.Recipe](tb testing.TB, got, want T) {
+	tb.Helper()
 	if !cmp.Equal(got, want) {
-		t.Log(cmp.Diff(got, want))
-		t.Fail()
+		tb.Log(cmp.Diff(got, want))
+		tb.Fail()
 	}
 }

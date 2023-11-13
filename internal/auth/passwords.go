@@ -102,5 +102,5 @@ func decodeHash(encodedHash HashedPassword) (p *params, salt, hash []byte, err e
 	}
 	p.keyLength = uint32(len(hash))
 
-	return
+	return p, salt, hash, err
 }

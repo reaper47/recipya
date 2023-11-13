@@ -20,13 +20,15 @@ func Scrape(url string, files services.FilesService) (models.RecipeSchema, error
 
 	res, err := http.Get(url)
 	if err != nil {
-		return rs, fmt.Errorf("could not fetch the url: %s", err)
+		return rs, fmt.Errorf("could not fetch the url: %w", err)
 	}
-	defer res.Body.Close()
+	defer func() {
+		_ = res.Body.Close()
+	}()
 
 	doc, err := goquery.NewDocumentFromReader(res.Body)
 	if err != nil {
-		return rs, fmt.Errorf("could not parse HTML: %s", err)
+		return rs, fmt.Errorf("could not parse HTML: %w", err)
 	}
 
 	rs, err = scrapeWebsite(doc, getHost(url))
@@ -46,11 +48,13 @@ func Scrape(url string, files services.FilesService) (models.RecipeSchema, error
 	}
 
 	if rs.Image.Value != "" {
-		res, err := http.Get(rs.Image.Value)
+		res, err = http.Get(rs.Image.Value)
 		if err != nil {
 			return rs, err
 		}
-		defer res.Body.Close()
+		defer func() {
+			_ = res.Body.Close()
+		}()
 
 		imageUUID, err := files.UploadImage(res.Body)
 		if err != nil {

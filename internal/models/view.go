@@ -3,6 +3,7 @@ package models
 // ViewMode is an integer type alias for various data view modes.
 type ViewMode int
 
+// These constants enumerate all possible viewing modes.
 const (
 	GridViewMode ViewMode = iota
 	ListViewMode

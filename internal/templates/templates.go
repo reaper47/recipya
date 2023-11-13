@@ -103,5 +103,5 @@ func RenderComponent(w http.ResponseWriter, component, name string, data any) {
 	var buf bytes.Buffer
 	_ = templates["components/"+component+".gohtml"].ExecuteTemplate(&buf, name, data)
 	w.Header().Set("Content-Type", "text/html")
-	fmt.Fprint(w, buf.String())
+	_, _ = fmt.Fprint(w, buf.String())
 }

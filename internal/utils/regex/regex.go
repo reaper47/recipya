@@ -12,7 +12,7 @@ var Decimal = regexp.MustCompile(`\d?\.\d+\b`)
 var Digit = regexp.MustCompile(`(\b\d+\s+\d+/\d+\b)|(\d+\.?/?\d*)`)
 
 // Email verifies whether an email address is valid.
-var Email = regexp.MustCompile("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
+var Email = regexp.MustCompile(`^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$`)
 
 // Quantity detects quantities, i.e. 1ml, 1 ml, 1l and 1 l.
 var Quantity = regexp.MustCompile(`(?i)\d+\s*((ml|l\b)(°[cf])?|°[cf])`)

@@ -142,7 +142,7 @@ func Parse(d string) (*Duration, error) {
 // ToTimeDuration converts the *Duration to the standard library's time.Duration
 // note that for *Duration's with period values of a month or year that the duration becomes a bit fuzzy
 // since obviously those things vary month to month and year to year
-// I used the values that Google's search provided me with as I couldn't find anything concrete on what they should be
+// I used the values that Google's search provided me with as I couldn't find anything concrete on what they should be.
 func (duration *Duration) ToTimeDuration() (d time.Duration) {
 	d += time.Duration(math.Round(duration.Years * 3.154e+16))
 	d += time.Duration(math.Round(duration.Months * 2.628e+15))

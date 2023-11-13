@@ -12,6 +12,8 @@ import (
 )
 
 func TestScraper(t *testing.T) {
+	t.Parallel()
+
 	testcases := []struct {
 		name string
 		in   string
@@ -9772,9 +9774,9 @@ func TestScraper(t *testing.T) {
 				}
 			}()
 
-			//updateHTMLFile(t, tc.in)
+			// updateHTMLFile(t, tc.in)
 			actual := testFile(t, tc.in)
-			//actual := testHTTP(t, tc.in)
+			// actual := testHTTP(t, tc.in)
 
 			if !cmp.Equal(actual, tc.want) {
 				t.Logf(cmp.Diff(actual, tc.want))

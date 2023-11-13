@@ -47,6 +47,8 @@ type exportData struct {
 	data        []byte
 }
 
+// ExportRecipes creates a zip containing the recipes to export in the desired file type.
+// It returns the name of file in the temporary directory.
 func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType) (string, error) {
 	buf := new(bytes.Buffer)
 	writer := zip.NewWriter(buf)
@@ -119,7 +121,9 @@ func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType) 
 	if err != nil {
 		return "", err
 	}
-	defer out.Close()
+	defer func() {
+		_ = out.Close()
+	}()
 
 	_, err = out.Write(buf.Bytes())
 	if err != nil {
@@ -130,29 +134,29 @@ func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType) 
 }
 
 func exportRecipesJSON(recipes models.Recipes) []exportData {
-	var data []exportData
-	for _, r := range recipes {
+	data := make([]exportData, len(recipes))
+	for i, r := range recipes {
 		xb, err := json.Marshal(r.Schema())
 		if err != nil {
 			continue
 		}
-		data = append(data, exportData{
+		data[i] = exportData{
 			recipeName:  r.Name,
 			recipeImage: r.Image,
 			data:        xb,
-		})
+		}
 	}
 	return data
 }
 
 func exportRecipesPDF(recipes models.Recipes) []exportData {
-	var data []exportData
-	for _, r := range recipes {
-		data = append(data, exportData{
+	data := make([]exportData, len(recipes))
+	for i, r := range recipes {
+		data[i] = exportData{
 			recipeName:  r.Name,
 			recipeImage: r.Image,
 			data:        recipeToPDF(&r),
-		})
+		}
 	}
 	return data
 }
@@ -317,7 +321,6 @@ func addRecipeToPDF(pdf *gofpdf.Fpdf, r *models.Recipe) *gofpdf.Fpdf {
 		pdf.CellFormat(marginLeft, lineHt, tr(string(cell.list[splitJ])), "", 0, "L", false, 0, "")
 		cellY += lineHt
 	}
-	x += colWd
 	y += maxHt + cellGap + cellGap
 
 	pdf.SetFont(fontFamily, "", fontSizeSmall)
@@ -398,7 +401,6 @@ func addRecipeToPDF(pdf *gofpdf.Fpdf, r *models.Recipe) *gofpdf.Fpdf {
 	pdf.SetFont(fontFamily, "", fontSizeSmall)
 	pdf.SetX(marginLeft + pageWidth/3)
 
-	onNewPage = true
 	_, f := pdf.GetPageSize()
 	for i, ins := range r.Instructions {
 		pdf.SetX(marginLeft + pageWidth/3)
@@ -418,6 +420,7 @@ func addRecipeToPDF(pdf *gofpdf.Fpdf, r *models.Recipe) *gofpdf.Fpdf {
 	return pdf
 }
 
+// ExtractRecipes extracts the recipes from the HTTP files.
 func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recipes {
 	var (
 		recipes models.Recipes
@@ -454,7 +457,9 @@ func (f *Files) processZip(file *multipart.FileHeader) models.Recipes {
 		log.Println(err)
 		return recipes
 	}
-	defer openFile.Close()
+	defer func() {
+		_ = openFile.Close()
+	}()
 
 	buf := new(bytes.Buffer)
 	fileSize, err := io.Copy(buf, openFile)
@@ -474,22 +479,22 @@ func (f *Files) processZip(file *multipart.FileHeader) models.Recipes {
 		recipeNumber int
 	)
 
-	for _, file := range z.File {
-		if imageUUID != uuid.Nil && (file.FileInfo().IsDir() || (recipeNumber > 0 && recipes[recipeNumber-1].Image == uuid.Nil)) {
+	for _, zf := range z.File {
+		if imageUUID != uuid.Nil && (zf.FileInfo().IsDir() || (recipeNumber > 0 && recipes[recipeNumber-1].Image == uuid.Nil)) {
 			recipes[recipeNumber-1].Image = imageUUID
 			imageUUID = uuid.Nil
 		}
 
 		validImageFormats := []string{".jpg", ".jpeg", ".png"}
-		if imageUUID == uuid.Nil && slices.Contains(validImageFormats, filepath.Ext(file.Name)) {
+		if imageUUID == uuid.Nil && slices.Contains(validImageFormats, filepath.Ext(zf.Name)) {
 			zipFile, err := file.Open()
 			if err != nil {
 				log.Printf("Error opening image file: %q", err)
 				continue
 			}
 
-			if file.FileInfo().Size() < 1<<12 {
-				zipFile.Close()
+			if zf.FileInfo().Size() < 1<<12 {
+				_ = zipFile.Close()
 				continue
 			}
 
@@ -497,10 +502,10 @@ func (f *Files) processZip(file *multipart.FileHeader) models.Recipes {
 			if err != nil {
 				log.Printf("Error uploading image: %q", err)
 			}
-			zipFile.Close()
+			_ = zipFile.Close()
 		}
 
-		if filepath.Ext(file.Name) == ".json" {
+		if filepath.Ext(zf.Name) == ".json" {
 			f, err := file.Open()
 			if err != nil {
 				log.Println(err)
@@ -509,15 +514,15 @@ func (f *Files) processZip(file *multipart.FileHeader) models.Recipes {
 
 			r, err := extractRecipe(f)
 			if err != nil {
-				log.Printf("could not extract %s: %q", file.Name, err.Error())
-				f.Close()
+				log.Printf("could not extract %s: %q", zf.Name, err.Error())
+				_ = f.Close()
 				continue
 			}
 			r.Image = uuid.Nil
 
 			recipes = append(recipes, *r)
 			recipeNumber++
-			f.Close()
+			_ = f.Close()
 		}
 	}
 
@@ -534,7 +539,9 @@ func processJSON(file *multipart.FileHeader) *models.Recipe {
 		log.Printf("error opening file %s: %q", file.Filename, err.Error())
 		return nil
 	}
-	defer f.Close()
+	defer func() {
+		_ = f.Close()
+	}()
 
 	r, err := extractRecipe(f)
 	if err != nil {
@@ -554,16 +561,18 @@ func extractRecipe(rd io.Reader) (*models.Recipe, error) {
 	var rs models.RecipeSchema
 	err = json.Unmarshal(buf, &rs)
 	if err != nil {
-		return nil, fmt.Errorf("extract recipe: %q", err)
+		return nil, fmt.Errorf("extract recipe: %w", err)
 	}
 
 	r, err := rs.Recipe()
 	if err != nil {
-		return nil, fmt.Errorf("rs.Recipe() err: %q", err)
+		return nil, fmt.Errorf("rs.Recipe() err: %w", err)
 	}
 	return r, err
 }
 
+// ExportCookbook exports the cookbook in the desired file type.
+// It returns the name of file in the temporary directory.
 func (f *Files) ExportCookbook(cookbook models.Cookbook, fileType models.FileType) (string, error) {
 	buf := new(bytes.Buffer)
 
@@ -584,7 +593,9 @@ func (f *Files) ExportCookbook(cookbook models.Cookbook, fileType models.FileTyp
 	if err != nil {
 		return "", err
 	}
-	defer out.Close()
+	defer func() {
+		_ = out.Close()
+	}()
 
 	_, err = out.Write(buf.Bytes())
 	if err != nil {
@@ -668,16 +679,18 @@ func pdfToBytes(pdf *gofpdf.Fpdf, name string) []byte {
 	return buf.Bytes()
 }
 
+// ReadTempFile gets the content of a file in the temporary directory.
 func (f *Files) ReadTempFile(name string) ([]byte, error) {
 	file := filepath.Join(os.TempDir(), name)
 	data, err := os.ReadFile(file)
 	if err != nil {
 		return nil, err
 	}
-	os.Remove(file)
+	_ = os.Remove(file)
 	return data, nil
 }
 
+// UploadImage uploads an image to the server.
 func (f *Files) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
 	img, _, err := image.Decode(rc)
 	if err != nil {
@@ -687,9 +700,11 @@ func (f *Files) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
 	imageUUID := uuid.New()
 	out, err := os.Create(filepath.Join(app.ImagesDir, imageUUID.String()+".jpg"))
 	if err != nil {
-		return uuid.Nil, nil
+		return uuid.Nil, err
 	}
-	defer out.Close()
+	defer func() {
+		_ = out.Close()
+	}()
 
 	width := img.Bounds().Dx()
 	height := img.Bounds().Dy()
@@ -699,7 +714,7 @@ func (f *Files) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
 
 	err = jpeg.Encode(out, img, &jpeg.Options{Quality: 33})
 	if err != nil {
-		return uuid.Nil, nil
+		return uuid.Nil, err
 	}
 	return imageUUID, nil
 }

@@ -10,8 +10,8 @@ import (
 	"testing"
 )
 
-func assertCookbooksViewMode(t testing.TB, mode models.ViewMode, got string) {
-	t.Helper()
+func assertCookbooksViewMode(tb testing.TB, mode models.ViewMode, got string) {
+	tb.Helper()
 
 	var (
 		want    []string
@@ -57,83 +57,83 @@ func assertCookbooksViewMode(t testing.TB, mode models.ViewMode, got string) {
 		}
 	}
 
-	assertStringsInHTML(t, got, want)
-	assertStringsNotInHTML(t, got, notWant)
+	assertStringsInHTML(tb, got, want)
+	assertStringsNotInHTML(tb, got, notWant)
 }
 
-func assertHeader(t testing.TB, rr *httptest.ResponseRecorder, key, value string) {
-	t.Helper()
+func assertHeader(tb testing.TB, rr *httptest.ResponseRecorder, key, value string) {
+	tb.Helper()
 	got := rr.Result().Header.Get(key)
 	if got != value {
-		t.Fatalf("expected header %s to be %s but got %s", key, value, got)
+		tb.Fatalf("expected header %s to be %s but got %s", key, value, got)
 	}
 }
 
-func assertImage(t testing.TB, got, want uuid.UUID) {
-	t.Helper()
+func assertImage(tb testing.TB, got, want uuid.UUID) {
+	tb.Helper()
 	if got != want {
-		t.Fatalf("got image %q but expected %q", got, want)
+		tb.Fatalf("got image %q but expected %q", got, want)
 	}
 }
 
-func assertImageNotNil(t testing.TB, got uuid.UUID) {
-	t.Helper()
+func assertImageNotNil(tb testing.TB, got uuid.UUID) {
+	tb.Helper()
 	if got == uuid.Nil {
-		t.Fatal("got nil image when expected not nil")
+		tb.Fatal("got nil image when expected not nil")
 	}
 }
 
-func assertMustBeLoggedIn(t testing.TB, srv *server.Server, method string, uri string) {
-	t.Helper()
+func assertMustBeLoggedIn(tb testing.TB, srv *server.Server, method string, uri string) {
+	tb.Helper()
 	rr := sendRequest(srv, method, uri, noHeader, nil)
 
-	assertStatus(t, rr.Code, http.StatusSeeOther)
-	assertHeader(t, rr, "Location", "/auth/login")
+	assertStatus(tb, rr.Code, http.StatusSeeOther)
+	assertHeader(tb, rr, "Location", "/auth/login")
 }
 
-func assertStatus(t testing.TB, got, want int) {
-	t.Helper()
+func assertStatus(tb testing.TB, got, want int) {
+	tb.Helper()
 	if got != want {
-		t.Fatalf("expected status %d but got %d", want, got)
+		tb.Fatalf("expected status %d but got %d", want, got)
 	}
 }
 
-func assertStringsInHTML(t testing.TB, bodyHTML string, wants []string) {
-	t.Helper()
+func assertStringsInHTML(tb testing.TB, bodyHTML string, wants []string) {
+	tb.Helper()
 	for _, want := range wants {
 		if !strings.Contains(bodyHTML, want) {
-			t.Fatalf("string not found in HTML:\n%s", want)
+			tb.Fatalf("string not found in HTML:\n%s", want)
 		}
 	}
 }
 
-func assertStringsNotInHTML(t testing.TB, bodyHTML string, wants []string) {
-	t.Helper()
+func assertStringsNotInHTML(tb testing.TB, bodyHTML string, wants []string) {
+	tb.Helper()
 	for _, want := range wants {
 		if strings.Contains(bodyHTML, want) {
-			t.Fatalf("string found in HTML when it should not:\n%s", want)
+			tb.Fatalf("string found in HTML when it should not:\n%s", want)
 		}
 	}
 }
 
-func assertUploadImageHitCount(t testing.TB, got, want int) {
-	t.Helper()
+func assertUploadImageHitCount(tb testing.TB, got, want int) {
+	tb.Helper()
 	if got != want {
-		t.Fatalf("got %d images uploaded but want %d", got, want)
+		tb.Fatalf("got %d images uploaded but want %d", got, want)
 	}
 }
 
-func assertUserSettings(t testing.TB, got, want *models.UserSettings) {
-	t.Helper()
+func assertUserSettings(tb testing.TB, got, want *models.UserSettings) {
+	tb.Helper()
 	if got.ConvertAutomatically != want.ConvertAutomatically {
-		t.Fatalf("settings ConvertAutomatically got %t but want %t", got.ConvertAutomatically, want.ConvertAutomatically)
+		tb.Fatalf("settings ConvertAutomatically got %t but want %t", got.ConvertAutomatically, want.ConvertAutomatically)
 	}
 
 	if got.CookbooksViewMode != want.CookbooksViewMode {
-		t.Fatalf("settings CookbooksViewMode got %d but want %d", got.CookbooksViewMode, want.CookbooksViewMode)
+		tb.Fatalf("settings CookbooksViewMode got %d but want %d", got.CookbooksViewMode, want.CookbooksViewMode)
 	}
 
 	if got.MeasurementSystem != want.MeasurementSystem {
-		t.Fatalf("settings MeasurementSystem got %q but want %q", got.MeasurementSystem, want.MeasurementSystem)
+		tb.Fatalf("settings MeasurementSystem got %q but want %q", got.MeasurementSystem, want.MeasurementSystem)
 	}
 }

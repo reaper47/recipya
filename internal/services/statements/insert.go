@@ -5,7 +5,7 @@ const InsertAuthToken = `
 	INSERT INTO auth_tokens (selector, hash_validator, user_id)
 	VALUES (?, ?, ?)`
 
-// InsertCategory is the query to add a category to the database
+// InsertCategory is the query to add a category to the database.
 const InsertCategory = `
 	INSERT INTO categories (name)
 	VALUES (?)
@@ -91,6 +91,7 @@ const InsertRecipeKeyword = `
 	INSERT INTO keyword_recipe (keyword_id, recipe_id)
 	VALUES (?, ?)`
 
+// InsertRecipeShadow is the query to insert a recipe into the shadow table.
 const InsertRecipeShadow = `
 	INSERT OR REPLACE INTO shadow_last_inserted_recipe (row, id, name, description, source)
 	VALUES (1, ?, ?, ?, ?)`
