@@ -224,7 +224,7 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		case "motherthyme":
 			return parseLdJSON(doc)
 		case "mybakingaddiction":
-			return parseLdJSON(doc)
+			return parseGraph(doc)
 		case "mykitchen101", "mykitchen101en":
 			return parseGraph(doc)
 		case "myplate":

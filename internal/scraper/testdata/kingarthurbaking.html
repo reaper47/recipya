@@ -3,8 +3,48 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr" prefix="og: https://ogp.me/ns#">
   <head>
-    <script src="https://rapid-cdn.yottaa.com/rapid/lib/OxPT6H61GJkLAw.js"></script>
-    <script src="https://www.googleoptimize.com/optimize.js?id=OPT-KPL5B54"></script>
+    <script src="https://cmp.osano.com/16BVKQTfs1jrp3fQq/38f12463-ec03-4b90-bebd-1d81c52b1d3d/osano.js"></script>
+          <link rel="preconnect" href="//cdn.dynamicyield.com">
+      <link rel="preconnect" href="//st.dynamicyield.com">
+      <link rel="preconnect" href="//rcom.dynamicyield.com">
+      <link rel="dns-prefetch" href="//cdn.dynamicyield.com">
+      <link rel="dns-prefetch" href="//st.dynamicyield.com">
+      <link rel="dns-prefetch" href="//rcom.dynamicyield.com">
+      <script type="text/javascript">
+        window.DY = window.DY || {};
+        DY.recommendationContext = {
+          type: 'PRODUCT',
+          data: ['45866']
+        };
+        DY.consentIntegrationActive = true;
+      </script>
+      <script type="text/javascript" src="//cdn.dynamicyield.com/api/8784792/api_dynamic.js"></script>
+      <script type="text/javascript" src="//cdn.dynamicyield.com/api/8784792/api_static.js"></script>
+      <script type="text/javascript">
+        window.Osano = window.Osano || {};
+        if ('cm' in Osano && 'API' in DY) {
+          let allowCallback = false;
+          let updateConsent = function (consent) {
+            if (!allowCallback) {
+              return;
+            }
+            if ('PERSONALIZATION' in consent && consent.PERSONALIZATION === 'ACCEPT') {
+              DY.API('consent_status_update', { status: true });
+            } else {
+              DY.API('consent_status_update', { status: false });
+            }
+          }
+          Osano.cm.addEventListener('osano-cm-ui-changed', function (component, stateChange) {
+            if ((component === 'drawer' || component === 'dialog') && stateChange === 'show') {
+              allowCallback = true;
+            }
+          });
+          Osano.cm.addEventListener('osano-cm-consent-saved', function (consent) {
+            updateConsent(consent);
+          });
+        }
+      </script>
+        <script src="https://rapid-cdn.yottaa.com/rapid/lib/OxPT6H61GJkLAw.js"></script>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -13,19 +53,19 @@
       })(window,document,'script','dataLayer','GTM-M867KWL');</script>
     <!-- End Google Tag Manager -->
     <meta charset="utf-8" />
+<meta name="description" content="Whole grain zucchini bread using sourdough discard" />
 <link rel="canonical" href="https://www.kingarthurbaking.com/recipes/sourdough-zucchini-bread-recipe" />
 <link rel="image_src" href="https://www.kingarthurbaking.com/sites/default/files/2021-06/sourdough-zucchini-bread_0521.jpg" />
-<meta name="description" content="Whole grain zucchini bread using sourdough discard" />
 <meta property="og:site_name" content="King Arthur Baking" />
 <meta property="og:url" content="https://www.kingarthurbaking.com/recipes/sourdough-zucchini-bread-recipe" />
 <meta property="og:title" content="Sourdough Zucchini Bread" />
 <meta property="og:description" content="Whole grain zucchini bread using sourdough discard" />
 <meta property="og:image" content="https://www.kingarthurbaking.com/sites/default/files/2021-06/sourdough-zucchini-bread_0521.jpg" />
-<meta name="p:domain_verify" content="0141af6904f9685eaafe9b65c80cf9d3" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:site" content="@KingArthurFlour" />
 <meta name="twitter:creator" content="@KingArthurFlour" />
-<meta name="Generator" content="Drupal 9 (https://www.drupal.org)" />
+<meta name="p:domain_verify" content="0141af6904f9685eaafe9b65c80cf9d3" />
+<meta name="Generator" content="Drupal 10 (https://www.drupal.org)" />
 <meta name="MobileOptimized" content="width" />
 <meta name="HandheldFriendly" content="true" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -44,8 +84,9 @@
             ],
             "datePublished": "June 3, 2021 at 2:13pm",
             "prepTime": "PT30M",
-            "cookTime": "PT1H5M",
             "totalTime": "PT1H30M",
+            "cookTime": "PT1H5M",
+            "recipeInstructions": "Preheat the oven to 350°F. Lightly grease a 9” x 5” quick bread pan or 12” x 4” tea loaf pan.\n, In a large bowl, stir together the starter, sugar, honey, oil, eggs, nutmeg, lemon zest, and vanilla until thoroughly combined.\n, In a separate medium bowl, whisk together the flours, baking soda, baking powder, and salt; stir into the wet ingredients.\n, Stir in the grated zucchini, then the nuts and fruit. Transfer the batter to the prepared pan, smoothing the top.\n, Bake the bread in the 9” x 5” pan for 45 minutes. Tent with foil and bake for an additional 20 minutes, until a thin paring knife inserted in the center comes out clean. For bread in a tea loaf pan, bake for 40 minutes before tenting, then bake for another 20 minutes, or until the loaf tests done.\n, Remove the bread from the oven and cool in the pan on a rack.\n, Store bread, well wrapped, at room temperature for up to three days; freeze for longer storage.",
             "recipeIngredient": [
                 "3/4 cup (170g) sourdough starter fed (ripe) or unfed (discard)",
                 "1/2 cup (99g) granulated sugar",
@@ -59,12 +100,11 @@
                 "3/4 cup (90g) King Arthur Unbleached All-Purpose Flour",
                 "1/2 teaspoon baking soda",
                 "1 teaspoon baking powder",
-                "1 teaspoon salt",
+                "1 teaspoon table salt",
                 "2 cups (242g to 300g) grated zucchini somewhere between firmly and lightly packed",
                 "3/4 cup (85g) chopped walnuts lightly toasted",
                 "3/4 cup (128g) raisins currants or dried cranberries"
             ],
-            "recipeInstructions": "Preheat the oven to 350°F. Lightly grease a 9” x 5” quick bread pan or 12” x 4” tea loaf pan.\n, In a large bowl, stir together the starter, sugar, honey, oil, eggs, nutmeg, lemon zest, and vanilla until thoroughly combined.\n, In a separate medium bowl, whisk together the flours, baking soda, baking powder, and salt; stir into the wet ingredients.\n, Stir in the grated zucchini, then the nuts and fruit. Transfer the batter to the prepared pan, smoothing the top.\n, Bake the bread in the 9” x 5” pan for 45 minutes. Tent with foil and bake for an additional 20 minutes, until a thin paring knife inserted in the center comes out clean. For bread in a tea loaf pan, bake for 40 minutes before tenting, then bake for another 20 minutes, or until the loaf tests done.\n, Remove the bread from the oven and cool in the pan on a rack.\n, Store bread, well wrapped, at room temperature for up to three days; freeze for longer storage.",
             "author": {
                 "@type": "Organization",
                 "name": "King Arthur Baking",
@@ -98,7 +138,7 @@
             "aggregateRating": {
                 "@type": "AggregateRating",
                 "ratingValue": "4.50",
-                "ratingCount": "45"
+                "ratingCount": "47"
             }
         }
     ]
@@ -107,14 +147,14 @@
 
     <link rel="preconnect" href="https://use.typekit.net" crossorigin>
     <title>Sourdough Zucchini Bread Recipe | King Arthur Baking</title>
-    <link rel="stylesheet" media="all" href="/sites/default/files/css/css_QHPA92B518pX-cEdYL7IzFLx89282IrZaT9ofXWSkFQ.css" />
+    <link rel="stylesheet" media="all" href="/sites/default/files/css/css_ZXF1vchZeraWohIQk5yGXSpFV3RXSCHUSXgKgEQfQsw.css?delta=0&amp;language=en&amp;theme=kaf_nextgenweb&amp;include=eJyFUVGywiAMvFD7OMs7ARMgRYQSJgk-vf3D6jhqx_GLXbJZsiGDsy5FT-uK7NHkVz5due-iNKh5JltlIV5tqoqRQRNVMSWJMmTrQPCLZCHSjz4VT8iOet1mWGwEO5p8TjWaN77VD1iaeOpqHmiSiyiu5j7KYiueNWL9Q2diIQdlFr2Uq4MnRhO4Nyg_jSkyinxq8Zya7qohxUSHyWcMSYkt-OEZRhTzQD8L04hYw-QLQlUo2UBzXudlxNxi7yqtu5L89pgcgNE80JflMvrU0AZUSGXrv92YSlIQ2_OVJ8orBbyt4fjbkS_v-Y6N5qGBF6_bMY8N8oiNVWWnsY7Od91Ato4xT7vfEAXto3dsHSLOPf0DcbEEPA" />
 <link rel="stylesheet" media="all" href="https://use.typekit.net/qwi2npt.css" />
-<link rel="stylesheet" media="all" href="/sites/default/files/css/css_yOj3ZGAC6R4T5eZd6dBFJMVVUM2tb9c6iAdFoxgHvfQ.css" />
+<link rel="stylesheet" media="all" href="/sites/default/files/css/css_GaUFfiQtvRSGl_k9vSScZ0mEZrt14r8KNtocXxwMVV0.css?delta=2&amp;language=en&amp;theme=kaf_nextgenweb&amp;include=eJyFUVGywiAMvFD7OMs7ARMgRYQSJgk-vf3D6jhqx_GLXbJZsiGDsy5FT-uK7NHkVz5due-iNKh5JltlIV5tqoqRQRNVMSWJMmTrQPCLZCHSjz4VT8iOet1mWGwEO5p8TjWaN77VD1iaeOpqHmiSiyiu5j7KYiueNWL9Q2diIQdlFr2Uq4MnRhO4Nyg_jSkyinxq8Zya7qohxUSHyWcMSYkt-OEZRhTzQD8L04hYw-QLQlUo2UBzXudlxNxi7yqtu5L89pgcgNE80JflMvrU0AZUSGXrv92YSlIQ2_OVJ8orBbyt4fjbkS_v-Y6N5qGBF6_bMY8N8oiNVWWnsY7Od91Ato4xT7vfEAXto3dsHSLOPf0DcbEEPA" />
 
     
   
 <script>(window.BOOMR_mq=window.BOOMR_mq||[]).push(["addVar",{"rua.upush":"false","rua.cpush":"false","rua.upre":"false","rua.cpre":"false","rua.uprl":"false","rua.cprl":"false","rua.cprf":"false","rua.trans":"","rua.cook":"false","rua.ims":"false","rua.ufprl":"false","rua.cfprl":"false","rua.isuxp":"false","rua.texp":"norulematch"}]);</script>
-                              <script>!function(a){var e="https://s.go-mpulse.net/boomerang/",t="addEventListener";if("False"=="True")a.BOOMR_config=a.BOOMR_config||{},a.BOOMR_config.PageParams=a.BOOMR_config.PageParams||{},a.BOOMR_config.PageParams.pci=!0,e="https://s2.go-mpulse.net/boomerang/";if(window.BOOMR_API_key="SQQ6J-MS2G2-ZFAMA-2TTB7-72K6R",function(){function n(e){a.BOOMR_onload=e&&e.timeStamp||(new Date).getTime()}if(!a.BOOMR||!a.BOOMR.version&&!a.BOOMR.snippetExecuted){a.BOOMR=a.BOOMR||{},a.BOOMR.snippetExecuted=!0;var i,_,o,r=document.createElement("iframe");if(a[t])a[t]("load",n,!1);else if(a.attachEvent)a.attachEvent("onload",n);r.src="javascript:void(0)",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="width:0;height:0;border:0;display:none;",o=document.getElementsByTagName("script")[0],o.parentNode.insertBefore(r,o);try{_=r.contentWindow.document}catch(O){i=document.domain,r.src="javascript:var d=document.open();d.domain='"+i+"';void(0);",_=r.contentWindow.document}_.open()._l=function(){var a=this.createElement("script");if(i)this.domain=i;a.id="boomr-if-as",a.src=e+"SQQ6J-MS2G2-ZFAMA-2TTB7-72K6R",BOOMR_lstart=(new Date).getTime(),this.body.appendChild(a)},_.write("<bo"+'dy onload="document._l();">'),_.close()}}(),"".length>0)if(a&&"performance"in a&&a.performance&&"function"==typeof a.performance.setResourceTimingBufferSize)a.performance.setResourceTimingBufferSize();!function(){if(BOOMR=a.BOOMR||{},BOOMR.plugins=BOOMR.plugins||{},!BOOMR.plugins.AK){var e=""=="true"?1:0,t="",n="d7e6cb27mvfgazd655wa-f-a6a205a73-clientnsv4-s.akamaihd.net",i="false"=="true"?2:1,_={"ak.v":"35","ak.cp":"1068635","ak.ai":parseInt("635712",10),"ak.ol":"0","ak.cr":4,"ak.ipv":4,"ak.proto":"h2","ak.rid":"98a5ff2","ak.r":46265,"ak.a2":e,"ak.m":"a","ak.n":"essl","ak.bpcip":"31.201.225.0","ak.cport":36692,"ak.gh":"95.101.55.32","ak.quicv":"","ak.tlsv":"tls1.3","ak.0rtt":"","ak.csrc":"-","ak.acc":"","ak.t":"1686040428","ak.ak":"hOBiQwZUYzCg5VSAfCLimQ==oUF/Jh/iFq+NsQPaMPYlPNnjc+ZQmBF0NavBwYujrNpzkRElhrTWPAcIzi84usy32tRN9UHzBnwBH37/geNHNgCNfdrdasZmzgrGLJCQf95xyc/hxnmwo/Gfy5nj+NVsQ51/I6xWUd0hAguW36EUJvsVEdwBmypy4YMIQm54LfpHgobUHpUfhbN8s+F+qF2kmezETwA4C2pbttJEOP9S/nAA2bB0JKe98xqb75+rkNoYWEhbW5xfG6YO+FXzhOaPnddnKOhLSYpjFvNhBkxWKgRNaur8vqZKQb+9ec9yXbakMWNY8kbJBdpKmWt5EYwj70o2PNXbmBJuuGj1148Nv0gIhpTdue/vbvO0JKRE+0dLwZ2BUjvJOtNWtB4V+zvo4hRZJGNcyYMcefbDYNBY5hJ77Bims8YHCEM/NTigjCQ=","ak.pv":"41","ak.dpoabenc":"","ak.tf":i};if(""!==t)_["ak.ruds"]=t;var o={i:!1,av:function(e){var t="http.initiator";if(e&&(!e[t]||"spa_hard"===e[t]))_["ak.feo"]=void 0!==a.aFeoApplied?1:0,BOOMR.addVar(_)},rv:function(){var a=["ak.bpcip","ak.cport","ak.cr","ak.csrc","ak.gh","ak.ipv","ak.m","ak.n","ak.ol","ak.proto","ak.quicv","ak.tlsv","ak.0rtt","ak.r","ak.acc","ak.t","ak.tf"];BOOMR.removeVar(a)}};BOOMR.plugins.AK={akVars:_,akDNSPreFetchDomain:n,init:function(){if(!o.i){var a=BOOMR.subscribe;a("before_beacon",o.av,null,null),a("onbeacon",o.rv,null,null),o.i=!0}return this},is_complete:function(){return!0}}}}()}(window);</script></head>
+                              <script>!function(a){var e="https://s.go-mpulse.net/boomerang/",t="addEventListener";if("False"=="True")a.BOOMR_config=a.BOOMR_config||{},a.BOOMR_config.PageParams=a.BOOMR_config.PageParams||{},a.BOOMR_config.PageParams.pci=!0,e="https://s2.go-mpulse.net/boomerang/";if(window.BOOMR_API_key="SQQ6J-MS2G2-ZFAMA-2TTB7-72K6R",function(){function n(e){a.BOOMR_onload=e&&e.timeStamp||(new Date).getTime()}if(!a.BOOMR||!a.BOOMR.version&&!a.BOOMR.snippetExecuted){a.BOOMR=a.BOOMR||{},a.BOOMR.snippetExecuted=!0;var i,_,o,r=document.createElement("iframe");if(a[t])a[t]("load",n,!1);else if(a.attachEvent)a.attachEvent("onload",n);r.src="javascript:void(0)",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="width:0;height:0;border:0;display:none;",o=document.getElementsByTagName("script")[0],o.parentNode.insertBefore(r,o);try{_=r.contentWindow.document}catch(O){i=document.domain,r.src="javascript:var d=document.open();d.domain='"+i+"';void(0);",_=r.contentWindow.document}_.open()._l=function(){var a=this.createElement("script");if(i)this.domain=i;a.id="boomr-if-as",a.src=e+"SQQ6J-MS2G2-ZFAMA-2TTB7-72K6R",BOOMR_lstart=(new Date).getTime(),this.body.appendChild(a)},_.write("<bo"+'dy onload="document._l();">'),_.close()}}(),"".length>0)if(a&&"performance"in a&&a.performance&&"function"==typeof a.performance.setResourceTimingBufferSize)a.performance.setResourceTimingBufferSize();!function(){if(BOOMR=a.BOOMR||{},BOOMR.plugins=BOOMR.plugins||{},!BOOMR.plugins.AK){var e=""=="true"?1:0,t="",n="d7e6cb27mvfgazkq3vmq-f-3db78b03d-clientnsv4-s.akamaihd.net",i="false"=="true"?2:1,_={"ak.v":"36","ak.cp":"1068635","ak.ai":parseInt("635712",10),"ak.ol":"0","ak.cr":7,"ak.ipv":4,"ak.proto":"h2","ak.rid":"b072939","ak.r":46265,"ak.a2":e,"ak.m":"a","ak.n":"essl","ak.bpcip":"31.201.225.0","ak.cport":50568,"ak.gh":"95.101.55.32","ak.quicv":"","ak.tlsv":"tls1.3","ak.0rtt":"","ak.csrc":"-","ak.acc":"","ak.t":"1699798361","ak.ak":"hOBiQwZUYzCg5VSAfCLimQ==/yNwefoNvE3vzveluxdhJZCsq9+KNuWHPQz/N/wixsnzHUWqeV9YP4JlvJESgrkp+niaS+dXUWt/LN9nOs1jwdRPBq2ZadET0ZXeg3hi3NrGggKRRQ09maFJLkoGOmI9Lt9PeydaNO+vzUCA8fTRHaH9XOXn8SZUZJpbfgrDcCF+dbqvyrDMFklvqPqQcsMcka4jxe0/z7sKWeOyY8viIXJWtXnnr4Xc6n+63FD2ExqPNOXtWpbSbACHsB2q+OfDqKkENAPmXjTgpj0Y6cskVf3KSYkKZZtFN7x0h8Klo1l4L+TgSU16kWn9Rrv/0evYJLVflAxmvKcxDH3q5Xa9Zcsi1z8XTH4vNedPyfjMlFNfZwU5rYEz4ssywu89szcp+5+47TMn3ZluCWpJkdJKaE45xUmHj2kVDy4Hz5REECM=","ak.pv":"41","ak.dpoabenc":"","ak.tf":i};if(""!==t)_["ak.ruds"]=t;var o={i:!1,av:function(e){var t="http.initiator";if(e&&(!e[t]||"spa_hard"===e[t]))_["ak.feo"]=void 0!==a.aFeoApplied?1:0,BOOMR.addVar(_)},rv:function(){var a=["ak.bpcip","ak.cport","ak.cr","ak.csrc","ak.gh","ak.ipv","ak.m","ak.n","ak.ol","ak.proto","ak.quicv","ak.tlsv","ak.0rtt","ak.r","ak.acc","ak.t","ak.tf"];BOOMR.removeVar(a)}};BOOMR.plugins.AK={akVars:_,akDNSPreFetchDomain:n,init:function(){if(!o.i){var a=BOOMR.subscribe;a("before_beacon",o.av,null,null),a("onbeacon",o.rv,null,null),o.i=!0}return this},is_complete:function(){return!0}}}}()}(window);</script></head>
   <body class="has-subnav path-node page-node-type-recipe has-promo-banner">
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M867KWL"
@@ -135,7 +175,7 @@
 <div id="block-standardpromobanner" class="block block-block-content block-block-content4f566a07-78b0-483e-9a83-f09f3e7229fb block--block-content--promo-banner promo-banner--alert--alt">
   <div class="alert alert--alt">
     <div class="promo-banner__content">
-              <a href="https://shop.kingarthurbaking.com">15% off your $60+ order</a>
+              <a href="https://shop.kingarthurbaking.com/current-promotions">15% off your $60+ order</a>
           </div>
 
     
@@ -350,7 +390,7 @@
                               <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/mixes/seasonal" class="mobile-subnav-l4">Seasonal</a></span>
                             </li>
                                                       <li class="mnav-l4--item mnav-item">
-                              <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/pans/mix-pan-sets" class="mobile-subnav-l4">Mix &amp; Pan Sets</a></span>
+                              <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/mix-pan-sets" class="mobile-subnav-l4">Mix &amp; Pan Sets</a></span>
                             </li>
                                                                                                                                               <li class="mnav-l3--item mnav-item">
                           <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/c/mixes" class="mobile-subnav-viewmore">Explore Our Mixes</a></span>
@@ -521,10 +561,7 @@
                           <span class="mnav-item--wrapper"><span class="mobile-subnav-l3">Seasonal Pans &amp; Sets</span></span>
                         </li>
                                                                                                       <li class="mnav-l4--item mnav-item">
-                              <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/pans/seasonal" class="mobile-subnav-l4">Seasonal</a></span>
-                            </li>
-                                                      <li class="mnav-l4--item mnav-item">
-                              <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/pans/mix-pan-sets" class="mobile-subnav-l4">Mix &amp; Pan Sets</a></span>
+                              <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/mix-pan-sets" class="mobile-subnav-l4">Mix &amp; Pan Sets</a></span>
                             </li>
                                                                                                                                               <li class="mnav-l3--item mnav-item">
                           <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/c/pans" class="mobile-subnav-viewmore">Explore Our Pans</a></span>
@@ -576,10 +613,16 @@
                           <span class="mnav-item--wrapper"><span class="mobile-subnav-l3">Bakers&#039; Favorites</span></span>
                         </li>
                                                                                                       <li class="mnav-l4--item mnav-item">
+                              <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/seasonal-4-dollar-deals" class="mobile-subnav-l4">$4 Savings</a></span>
+                            </li>
+                                                      <li class="mnav-l4--item mnav-item">
                               <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/collections/new-arrivals" class="mobile-subnav-l4">New Arrivals</a></span>
                             </li>
                                                       <li class="mnav-l4--item mnav-item">
                               <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/collections/best-sellers" class="mobile-subnav-l4">Best Sellers</a></span>
+                            </li>
+                                                      <li class="mnav-l4--item mnav-item">
+                              <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/recipe-bundles" class="mobile-subnav-l4">Recipe Bundles</a></span>
                             </li>
                                                       <li class="mnav-l4--item mnav-item">
                               <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/collections/seasonal" class="mobile-subnav-l4">Seasonal</a></span>
@@ -594,7 +637,7 @@
                           <span class="mnav-item--wrapper"><span class="mobile-subnav-l3">Collections</span></span>
                         </li>
                                                                                                       <li class="mnav-l4--item mnav-item">
-                              <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/collections/cake-made-easy" class="mobile-subnav-l4">(Cup)Cake Made Easy</a></span>
+                              <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/collections/cake-made-easy" class="mobile-subnav-l4">Birthdays Made Easy</a></span>
                             </li>
                                                       <li class="mnav-l4--item mnav-item">
                               <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/collections/pie-must-haves" class="mobile-subnav-l4">Pie Must-Haves</a></span>
@@ -624,7 +667,10 @@
                               <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/collections/pizza-perfection" class="mobile-subnav-l4">Pizza Perfection</a></span>
                             </li>
                                                       <li class="mnav-l4--item mnav-item">
-                              <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/collections/biscuits" class="mobile-subnav-l4">Brilliant Biscuits</a></span>
+                              <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/holiday-mix-pan-sets" class="mobile-subnav-l4">Holiday Mix &amp; Pan Sets</a></span>
+                            </li>
+                                                      <li class="mnav-l4--item mnav-item">
+                              <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/collections/pan-dulce" class="mobile-subnav-l4">Pan Dulce</a></span>
                             </li>
                                                       <li class="mnav-l4--item mnav-item">
                               <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/collections/sustainable-baking" class="mobile-subnav-l4">Sustainable Baking</a></span>
@@ -659,13 +705,19 @@
                               <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/gifts/gift-cards" class="mobile-subnav-l4">Gift Cards</a></span>
                             </li>
                                                       <li class="mnav-l4--item mnav-item">
-                              <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/sale-savings/recipe-bundles" class="mobile-subnav-l4">Recipe Bundles</a></span>
+                              <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/recipe-bundles" class="mobile-subnav-l4">Recipe Bundles</a></span>
                             </li>
                                                       <li class="mnav-l4--item mnav-item">
-                              <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/pans/mix-pan-sets" class="mobile-subnav-l4">Mix &amp; Pan Sets</a></span>
+                              <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/mix-pan-sets" class="mobile-subnav-l4">Mix &amp; Pan Sets</a></span>
                             </li>
                                                       <li class="mnav-l4--item mnav-item">
                               <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/tools/appliances" class="mobile-subnav-l4">Appliances</a></span>
+                            </li>
+                                                      <li class="mnav-l4--item mnav-item">
+                              <span class="mnav-item--wrapper"><a href="https://www.kingarthurbaking.com/holiday-gift-guide" class="mobile-subnav-l4">Holiday Gift Guide</a></span>
+                            </li>
+                                                      <li class="mnav-l4--item mnav-item">
+                              <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/gifts/ready-to-gift" class="mobile-subnav-l4">Ready to Gift</a></span>
                             </li>
                                                       <li class="mnav-l4--item mnav-item">
                               <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/gifts/must-have-tools" class="mobile-subnav-l4">Must-Have Tools</a></span>
@@ -677,10 +729,7 @@
                               <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/gifts/customer-favorites" class="mobile-subnav-l4">Customer Favorites</a></span>
                             </li>
                                                       <li class="mnav-l4--item mnav-item">
-                              <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/gifts/everything-cake" class="mobile-subnav-l4">Everything Cake</a></span>
-                            </li>
-                                                      <li class="mnav-l4--item mnav-item">
-                              <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/gifts/for-kids" class="mobile-subnav-l4">For Kids</a></span>
+                              <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/gifts/stocking-stuffers" class="mobile-subnav-l4">Stocking Stuffers</a></span>
                             </li>
                                                       <li class="mnav-l4--item mnav-item">
                               <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/gifts/gifts-under-25" class="mobile-subnav-l4">Gifts Under $25</a></span>
@@ -702,7 +751,7 @@
                                 
               </li>
                           <li class="mnav-l2--item mnav-item">
-                <span class="mnav-item--wrapper"><span class="mobile-subnav-l2">Sale</span></span>
+                <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/sale-savings/sale/" class="mobile-subnav-l2">Sale</a></span>
 
                                                   <button class="mnav-more"><span class="visually-hidden">Expand Sale</span></button>
                   <div class="mnav-l3--wrapper mnav-wrapper" aria-hidden="true">
@@ -711,16 +760,7 @@
                       <h4 class="mnav-l3--title">Sale</h4>
                     </div>
                     <ul class="mnav-l3">
-                                              <li class="mnav-l3--item mnav-item">
-                          <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/sale-savings/recipe-bundles" class="mobile-subnav-l3">Recipe Bundles</a></span>
-                        </li>
-                                                                                                                      <li class="mnav-l3--item mnav-item">
-                          <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/sale-savings/sets/" class="mobile-subnav-l3">Sets</a></span>
-                        </li>
-                                                                                                                      <li class="mnav-l3--item mnav-item">
-                          <span class="mnav-item--wrapper"><a href="https://shop.kingarthurbaking.com/sale-savings/" class="mobile-subnav-l3">Shop All Sale</a></span>
-                        </li>
-                                                                                                                                        </ul>
+                                                                </ul>
                   </div>
                                 
               </li>
@@ -750,9 +790,6 @@
                     </div>
                     <ul class="mnav-l3">
                                               <li class="mnav-l3--item mnav-item">
-                          <span class="mnav-item--wrapper"><a href="/recipes/biscuits-shortcakes" class="mobile-subnav-l3">Biscuits &amp; Shortcakes</a></span>
-                        </li>
-                                                                                                                      <li class="mnav-l3--item mnav-item">
                           <span class="mnav-item--wrapper"><a href="/recipes/bread" class="mobile-subnav-l3">Bread</a></span>
                         </li>
                                                                                                                       <li class="mnav-l3--item mnav-item">
@@ -771,13 +808,16 @@
                           <span class="mnav-item--wrapper"><a href="/recipes/pancakes-waffles" class="mobile-subnav-l3">Pancakes &amp; Waffles</a></span>
                         </li>
                                                                                                                       <li class="mnav-l3--item mnav-item">
-                          <span class="mnav-item--wrapper"><a href="/recipes/pastry" class="mobile-subnav-l3">Pastry</a></span>
-                        </li>
-                                                                                                                      <li class="mnav-l3--item mnav-item">
                           <span class="mnav-item--wrapper"><a href="/recipes/pie" class="mobile-subnav-l3">Pie</a></span>
                         </li>
                                                                                                                       <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/recipes/pizza" class="mobile-subnav-l3">Pizza</a></span>
+                        </li>
+                                                                                                                      <li class="mnav-l3--item mnav-item">
                           <span class="mnav-item--wrapper"><a href="/recipes/scones" class="mobile-subnav-l3">Scones</a></span>
+                        </li>
+                                                                                                                      <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/recipes/sourdough" class="mobile-subnav-l3">Sourdough</a></span>
                         </li>
                                                                                                                       <li class="mnav-l3--item mnav-item">
                           <span class="mnav-item--wrapper"><span class="mobile-subnav-l3">—</span></span>
@@ -800,6 +840,12 @@
                     </div>
                     <ul class="mnav-l3">
                                               <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/holiday-breads" class="mobile-subnav-l3">Holiday Breads</a></span>
+                        </li>
+                                                                                                                      <li class="mnav-l3--item mnav-item">
+                          <span class="mnav-item--wrapper"><a href="/pan-dulce" class="mobile-subnav-l3">Pan Dulce</a></span>
+                        </li>
+                                                                                                                      <li class="mnav-l3--item mnav-item">
                           <span class="mnav-item--wrapper"><a href="/recipe-of-the-year" class="mobile-subnav-l3">Recipe of the Year</a></span>
                         </li>
                                                                                                                       <li class="mnav-l3--item mnav-item">
@@ -807,9 +853,6 @@
                         </li>
                                                                                                                       <li class="mnav-l3--item mnav-item">
                           <span class="mnav-item--wrapper"><a href="/new-classics-thanksgiving-pie" class="mobile-subnav-l3">New Classics: Pie</a></span>
-                        </li>
-                                                                                                                      <li class="mnav-l3--item mnav-item">
-                          <span class="mnav-item--wrapper"><a href="/buns" class="mobile-subnav-l3">Brilliant Beautiful Buns</a></span>
                         </li>
                                                                                                                       <li class="mnav-l3--item mnav-item">
                           <span class="mnav-item--wrapper"><span class="mobile-subnav-l3">—</span></span>
@@ -1231,75 +1274,188 @@
 
         <div class="region region-primary-menu">
     <div id="block-kafmegamenu" class="block block- block-kaf-megamenu">
-  
+	
+		
+		   <link rel='stylesheet' media='all' href='https://kab-megamenu-prod.netlify.app/css/vars.css'>
+	   <link rel='stylesheet' media='all' href='https://kab-megamenu-prod.netlify.app/css/grid.css'>
+	   <link rel='stylesheet' media='all' href='https://kab-megamenu-prod.netlify.app//_astro/index.bc0bd0f3.css'>
+	   <link rel='stylesheet' media='all' href='https://kab-megamenu-prod.netlify.app//_astro/api.60954094.css'>
+			 
     
-      
-<nav aria-label="Main Menu">
-  <ul class="menu menu-level-0">
-          
-      <li class="menu-item">
-                  <a href="https://shop.kingarthurbaking.com/">Shop</a>
-        
-                          
-
-<div class="menu_link_content menu-link-contentmain view-mode-default menu-dropdown menu-dropdown-0 menu-type-default">
-        
-  </div>
-              </li>
-          
-      <li class="menu-item menu-item--active-trail">
-                  <a href="/recipes" class="is-active" data-drupal-link-system-path="node/116">Recipes</a>
-        
-                          
-
-<div class="menu_link_content menu-link-contentmain view-mode-default menu-dropdown menu-dropdown-0 menu-type-default">
-        
-  </div>
-              </li>
-          
-      <li class="menu-item">
-                  <a href="/learn" data-drupal-link-system-path="node/156">Learn</a>
-        
-                          
-
-<div class="menu_link_content menu-link-contentmain view-mode-default menu-dropdown menu-dropdown-0 menu-type-default">
-        
-  </div>
-              </li>
-          
-      <li class="menu-item">
-                  <a href="/baking-school" data-drupal-link-system-path="node/27726">Baking School</a>
-        
-                          
-
-<div class="menu_link_content menu-link-contentmain view-mode-default menu-dropdown menu-dropdown-0 menu-type-default">
-        
-  </div>
-              </li>
-          
-      <li class="menu-item">
-                  <a href="/impact" data-drupal-link-system-path="node/48771">Impact</a>
-        
-                          
-
-<div class="menu_link_content menu-link-contentmain view-mode-default menu-dropdown menu-dropdown-0 menu-type-default">
-        
-  </div>
-              </li>
-          
-      <li class="menu-item">
-                  <a href="/blog" data-drupal-link-system-path="node/161">Blog</a>
-        
-                          
-
-<div class="menu_link_content menu-link-contentmain view-mode-default menu-dropdown menu-dropdown-0 menu-type-default">
-        
-  </div>
-              </li>
-      </ul>
+  <nav class="kab-mm--nav-container _nav-container_5fvik_17" aria-labelledby="mainmenu">
+  <h2 id="mainmenu" class="_visuallyhidden_x1wrr_1">Main Menu</h2>
+  <div class="_mainLinksListOuterContainer_8bg9z_11 _mm-container_x1wrr_12 mm-container"><div class="_primaryMenu_8bg9z_22"><ul class="kab-mm--main-list _mainLinksList_8bg9z_1"><li class="kab-mm--main-nav-link"><div class="_mainLinkOuterContainer_1lumq_29"><div class="_mainLinkContainer_1lumq_30"><a aria-expanded="false" aria-controls="shop" class="kab-mm--main-link _main-link_5fvik_35 _mainLink_1lumq_1" href="https://shop.kingarthurbaking.com">Shop</a></div><div hidden id="shop" class="kab-mm--column-footer-container kab-mm--close _footerBorder_1lumq_34"><div class="_columnWrapper_1lumq_38 "><div class="_columnTitleWrapper_1lumq_91"><a href="https://shop.kingarthurbaking.com" class="_columnTitleLink_1lumq_63"><span class="_caret_1lumq_68">Shop</span></a><button class=" kab-mm--close-button"><span class="_visuallyhidden_x1wrr_1">Close</span><svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.53039 1.5L15.5304 15.5M15.4697 1.5L1.46973 15.5" stroke="black" strokeWidth="1.5"></path></svg></button></div><div class="_column-container_5fvik_1 _mm-container_x1wrr_12"><div class="_widgetContainer_70se9_1 " style="grid-column: span 2;"><div class=" _span-two_x1wrr_21"><h3><a class="_large_5uv6f_1 " href="https://shop.kingarthurbaking.com/flours"><span class="_caret_5uv6f_32"><span>Flours</span></span></a></h3><ul class="_linkList_iios9_1"><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/flours/signature">Signature Flour</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/flours/signature">Bread Flour</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/flours/pasta-pizza">Pizza &amp; Pasta Flour</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/flours/cake-pastry">Cake &amp; Pastry Flour</a></li></ul></div><div class=" _span-two_x1wrr_21"><h3><a class="_large_5uv6f_1 " href="https://shop.kingarthurbaking.com/ingredients"><span class="_caret_5uv6f_32"><span>Ingredients</span></span></a></h3><ul class="_linkList_iios9_1"><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/ingredients/extracts-flavorings/">Extracts &amp; Flavorings</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/ingredients/spices-pantry">Spices &amp; Pantry</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/ingredients/fruit">Fruit &amp; Add-Ins</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/ingredients/chocolate-cocoa">Chocolate &amp; Cocoa</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/ingredients/starters-leaveners">Starters &amp; Leaveners</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/ingredients/enhancers-thickeners">Enhancers &amp; Thickeners</a></li></ul></div></div><div class="_widgetContainer_70se9_1 " style="grid-column: span 2;"><div class=" _span-two_x1wrr_21"><h3><a class="_large_5uv6f_1 " href="https://shop.kingarthurbaking.com/gluten-free"><span class="_caret_5uv6f_32"><span>Gluten-Free</span></span></a></h3><ul class="_linkList_iios9_1"><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/gluten-free/flours">Gluten-Free Flour</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/gluten-free/flours">Gluten-Free Mixes</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/gluten-free/dessert-cups">Gluten-Free Dessert Cups</a></li></ul></div><div class=" _span-two_x1wrr_21"><h3><a class="_large_5uv6f_1 " href="https://shop.kingarthurbaking.com/mixes"><span class="_caret_5uv6f_32"><span>Baking Mixes</span></span></a></h3><ul class="_linkList_iios9_1"><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/mixes/scones">Scones</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/mixes/doughnuts">Doughnuts</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/mixes/muffins-quick-bread">Muffins &amp; Quick Bread</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/mixes/cookies">Cookies</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/mixes/pancakes">Pancake Mixes</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/mixes/bread">Bread Mixes</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/mixes/cake-pie">Cake &amp; Pie</a></li></ul></div></div><div class="_widgetContainer_70se9_1 " style="grid-column: span 2;"><div class=" _span-two_x1wrr_21"><h3><a class="_large_5uv6f_1 " href="https://shop.kingarthurbaking.com/tools"><span class="_caret_5uv6f_32"><span>Kitchen Tools</span></span></a></h3><ul class="_linkList_iios9_1"><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/tools/appliances">Appliances</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/tools/parchment-mats/">Parchment &amp; Mats</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/tools/bread">Bread Tools</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/tools/pizza">Pizza Tools</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/tools/cake-cookie">Cake &amp; Cookie Tools</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/tools/pie">Pie Tools</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/tools/thermometers">Thermometers</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/tools/measuring">Measuring</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/tools/gadgets-utensils">Gadgets &amp; Utensils</a></li></ul></div><div class=" _span-two_x1wrr_21"><h3><a class="_large_5uv6f_1 " href="https://shop.kingarthurbaking.com/pans"><span class="_caret_5uv6f_32"><span>Bakeware &amp; Pans</span></span></a></h3><ul class="_linkList_iios9_1"><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/pans/scone-popover">Scone &amp; Popover Pans</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/pans/bread">Bread Pans</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/pans/cookie-sheet-pans">Cookie &amp; Sheet Pans</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/pans/doughnut-muffin">Doughnut &amp; Muffin Pans</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/pans/cake-pie">Cake &amp; Pie Pans</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/pans/bundt-specialty">Bundt &amp; Specialty Pans</a></li></ul></div></div><div class="_widgetContainer_70se9_1 " style="grid-column: span 2;"><div class=" _span-two_x1wrr_21"><h3><a class="_large_5uv6f_1 " href="https://shop.kingarthurbaking.com/collections"><span class="_caret_5uv6f_32"><span>Collections</span></span></a></h3><ul class="_linkList_iios9_1"><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/collections/new-arrivals">New Products</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/collections/best-sellers">Best Sellers</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/recipe-bundles">Recipe Bundles</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/logo-shop">Our Logo Shop</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/collections/pizza-perfection">Perfect Pizza</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/collections/your-best-bread">Your Best Bread</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/collections/cookie-creativity">Creative Cookies</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/collections/scrumptious-scones">Scrumptious Scones</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/holiday-mix-pan-sets">Holiday Mix &amp; Pan Sets</a></li></ul></div><div class=" _span-two_x1wrr_21"><h3><a class="_large_5uv6f_1 " href="https://shop.kingarthurbaking.com/gifts"><span class="_caret_5uv6f_32"><span>Gifts</span></span></a></h3><ul class="_linkList_iios9_1"><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/gifts/gift-cards">Gift Cards</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/gifts/gifts-under-25">Gifts Under $25</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/gifts/gifts-under-50">Gifts Under $50</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/gifts/gifts-under-100">Gifts Under $100</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/gifts/best-splurges/">Best Splurges</a></li><li><a class="_regular_5uv6f_17" href="https://shop.kingarthurbaking.com/gifts/ready-to-gift">Ready to Gift</a></li></ul></div></div><div class="_widgetContainer_70se9_1 " style="grid-column: span 4;"><a href="https://www.kingarthurbaking.com/holiday-gift-guide" class="_span-two_x1wrr_21"><div class="_articleWidgetcontainer_x0ox6_60 _widget-container_x1wrr_17"><img src="https://www.kingarthurbaking.com/sites/default/files/styles/megamenu_thumbnail/public/2023-10/shop_gift-guide.jpg?itok=heeXSOvf" /><h3><span class="_body_5uv6f_16"><span class="_caret_5uv6f_32"><span>Holiday 2023 Gift Guide</span></span></span></h3></div></a><a href="https://shop.kingarthurbaking.com/sale-savings/sale" class="_span-one_x1wrr_25"><div class="_articleWidgetcontainer_x0ox6_60 _widget-container_x1wrr_17"><img src="https://www.kingarthurbaking.com/sites/default/files/styles/megamenu_thumbnail/public/2023-10/shop_sale-2.jpg?itok=LYajDWit" /><h3><span class="_body_5uv6f_16"><span class="_caret_5uv6f_32"><span>Sale</span></span></span></h3></div></a><a href="https://shop.kingarthurbaking.com/tools/parchment-mats" class="_span-one_x1wrr_25"><div class="_articleWidgetcontainer_x0ox6_60 _widget-container_x1wrr_17"><img src="https://www.kingarthurbaking.com/sites/default/files/styles/megamenu_thumbnail/public/2023-09/shop_parchment.jpg?itok=tbq3-TbW" /><h3><span class="_body_5uv6f_16"><span class="_caret_5uv6f_32"><span>Shop Parchment</span></span></span></h3></div></a></div></div></div></div></div></li><li class="kab-mm--main-nav-link"><div class="_mainLinkOuterContainer_1lumq_29"><div class="_mainLinkContainer_1lumq_30"><a aria-expanded="false" aria-controls="recipes" class="kab-mm--main-link _main-link_5fvik_35 _mainLink_1lumq_1" href="https://www.kingarthurbaking.com/recipes">Recipes</a></div><div hidden id="recipes" class="kab-mm--column-footer-container kab-mm--close _footerBorder_1lumq_34"><div class="_columnWrapper_1lumq_38 "><div class="_columnTitleWrapper_1lumq_91"><a href="https://www.kingarthurbaking.com/recipes" class="_columnTitleLink_1lumq_63"><span class="_caret_1lumq_68">Recipes</span></a><button class=" kab-mm--close-button"><span class="_visuallyhidden_x1wrr_1">Close</span><svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.53039 1.5L15.5304 15.5M15.4697 1.5L1.46973 15.5" stroke="black" strokeWidth="1.5"></path></svg></button></div><div class="_column-container_5fvik_1 _mm-container_x1wrr_12"><div class="_widgetContainer_70se9_1 " style="grid-column: span 2;"><div class=" _span-two_x1wrr_21"><ul class="_linkList_iios9_1"><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/biscuits-shortcakes">Biscuits &amp; Shortcakes</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/bread">Bread</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/buns-rolls">Buns &amp; Rolls</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/cake">Cake</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/cheesecake">Cheesecake</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/coffee-cake">Coffee Cake</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/cookies-bars">Cookies &amp; Bars</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/crackers">Crackers</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/crisps-cobblers">Crisps &amp; Cobblers</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/cupcakes">Cupcakes</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/doughnuts">Doughnuts</a></li></ul></div></div><div class="_widgetContainer_70se9_1 " style="grid-column: span 2;"><div class=" _span-two_x1wrr_21"><ul class="_linkList_iios9_1"><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/collections/gluten-free-recipes">Gluten-Free</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/main-dish">Main Dish</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/muffins-popovers">Muffins &amp; Popovers</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/pancakes-waffles">Pancakes &amp; Waffles</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/pasta-noodles">Pasta &amp; Noodles</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/pastry">Pastry</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/pies-tarts">Pies &amp; Tarts</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/pizza">Pizza</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/puddings">Puddings</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/scones">Scones</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/sourdough">Sourdough</a></li></ul></div></div><div class="_widgetContainer_70se9_1 " style="grid-column: span 2;"><div class=" _span-two_x1wrr_21"><h3><a class="_large_5uv6f_1 " href="https://www.kingarthurbaking.com/recipes/collections"><span class="_caret_5uv6f_32"><span>Collections</span></span></a></h3><ul class="_linkList_iios9_1"><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/collections/new-from-the-test-kitchen">New from the Test Kitchen</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/collections/master-the-classics">Master the Classics</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/collections/recipes-with-5-ingredients-or-fewer">5 Ingredients or Fewer</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/collections/sourdough-discard-recipes">Sourdough Discard Recipes</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/collections/best-thanksgiving-recipes">Thanksgiving Classics</a></li></ul></div></div><div class="_widgetContainer_70se9_1 " style="grid-column: span 2;"><div class=" _span-two_x1wrr_21"><h3 style="padding: 0 0 8px 0;"><span tabIndex="0" class="_large_5uv6f_1 _noLine_5uv6f_63 _noLink_5uv6f_70"><span>Resources</span></span></h3><ul class="_linkList_iios9_1"><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/collections">Recipe Collections</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/bakers-hotline">Bakers Hotline</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipebox">Recipe Box</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/learn/ingredient-weight-chart">Ingredient Weight Chart</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/features">Features</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/recipes/resources/recipe-success-guide">Recipe Success Guide</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/learn/resources/high-altitude-baking">High-Altitude Baking</a></li></ul></div></div><div class="_widgetContainer_70se9_1 " style="grid-column: span 4;"><a href="https://www.kingarthurbaking.com/recipe-of-the-year" class="_span-two_x1wrr_21"><div class="_articleWidgetcontainer_x0ox6_60 _widget-container_x1wrr_17"><img src="https://www.kingarthurbaking.com/sites/default/files/styles/megamenu_thumbnail/public/2023-09/Recipe_of_the_Year.jpg?itok=zYc6MmZ8" /><h3><span class="_body_5uv6f_16"><span class="_caret_5uv6f_32"><span>2023 Recipe of the Year</span></span></span></h3></div></a><a href="https://www.kingarthurbaking.com/pan-dulce" class="_span-one_x1wrr_25"><div class="_articleWidgetcontainer_x0ox6_60 _widget-container_x1wrr_17"><img src="https://www.kingarthurbaking.com/sites/default/files/styles/megamenu_thumbnail/public/2023-09/Pan_Dulce.jpg?itok=wWcAP41d" /><h3><span class="_body_5uv6f_16"><span class="_caret_5uv6f_32"><span>Explore Pan Dulce Recipes</span></span></span></h3></div></a><a href="https://www.kingarthurbaking.com/recipes/collections/bake-of-the-week-recipes" class="_span-one_x1wrr_25"><div class="_articleWidgetcontainer_x0ox6_60 _widget-container_x1wrr_17"><img src="https://www.kingarthurbaking.com/sites/default/files/styles/megamenu_thumbnail/public/2023-09/Bake_of_the_Week.jpg?itok=1HaRWuUq" /><h3><span class="_body_5uv6f_16"><span class="_caret_5uv6f_32"><span>Bake of the Week Recipes</span></span></span></h3></div></a></div></div></div></div></div></li><li class="kab-mm--main-nav-link"><div class="_mainLinkOuterContainer_1lumq_29"><div class="_mainLinkContainer_1lumq_30"><a aria-expanded="false" aria-controls="learn" class="kab-mm--main-link _main-link_5fvik_35 _mainLink_1lumq_1" href="https://www.kingarthurbaking.com/learn">Learn</a></div><div hidden id="learn" class="kab-mm--column-footer-container kab-mm--close _footerBorder_1lumq_34"><div class="_columnWrapper_1lumq_38 "><div class="_columnTitleWrapper_1lumq_91"><a href="https://www.kingarthurbaking.com/learn" class="_columnTitleLink_1lumq_63"><span class="_caret_1lumq_68">Learn</span></a><button class=" kab-mm--close-button"><span class="_visuallyhidden_x1wrr_1">Close</span><svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.53039 1.5L15.5304 15.5M15.4697 1.5L1.46973 15.5" stroke="black" strokeWidth="1.5"></path></svg></button></div><div class="_column-container_5fvik_1 _mm-container_x1wrr_12"><div class="_widgetContainer_70se9_1 " style="grid-column: span 2;"><div class=" _span-two_x1wrr_21"><h3><a class="_large_5uv6f_1 _noLine_5uv6f_63" href="https://www.kingarthurbaking.com/learn/guides/sourdough"><span class="_caret_5uv6f_32"><span>Sourdough</span></span></a></h3></div><div class=" _span-two_x1wrr_21"><h3><a class="_large_5uv6f_1 _noLine_5uv6f_63" href="https://www.kingarthurbaking.com/learn/guides/pie-baking-guide"><span class="_caret_5uv6f_32"><span>Pie</span></span></a></h3></div><div class=" _span-two_x1wrr_21"><h3><a class="_large_5uv6f_1 _noLine_5uv6f_63" href="https://www.kingarthurbaking.com/learn/guides/cake"><span class="_caret_5uv6f_32"><span>Cake</span></span></a></h3></div><div class=" _span-two_x1wrr_21"><h3><a class="_large_5uv6f_1 _noLine_5uv6f_63" href="https://www.kingarthurbaking.com/learn/guides/scone"><span class="_caret_5uv6f_32"><span>Scones</span></span></a></h3></div></div><div class="_widgetContainer_70se9_1 " style="grid-column: span 2;"><div class=" _span-two_x1wrr_21"><h3><a class="_large_5uv6f_1 " href="https://www.kingarthurbaking.com/videos"><span class="_caret_5uv6f_32"><span>Videos</span></span></a></h3><ul class="_linkList_iios9_1"><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/videos/perfect-pizza-dough">Perfect Pizza Dough</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/videos/the-best-everyday-sourdough">The Best Everyday Sourdough</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/videos/failproof-pie-crust">Failproof Pie Crust</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/videos/bakery-worthy-baguettes">Bakery-Worthy Baguettes</a></li></ul></div></div><div class="_widgetContainer_70se9_1 " style="grid-column: span 2;"><div class=" _span-two_x1wrr_21"><h3><a class="_large_5uv6f_1 " href="https://www.kingarthurbaking.com/blog"><span class="_caret_5uv6f_32"><span>Blog</span></span></a></h3><ul class="_linkList_iios9_1"><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/blog/2021/05/24/why-and-how-to-prebake-pie-crust">How (and why) to prebake pie crust</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/blog/2020/06/10/10-tips-for-new-sourdough-bakers">10 tips for new sourdough bakers</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/blog/2023/05/10/guide-to-baking-with-yeast">How to bake with yeast</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/blog/2023/08/31/proofing-bread">Proof your bread the right way</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/blog/2022/07/14/8-reasons-your-cakes-turn-out-dry">8 reasons your cakes turn out dry</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/blog/2022/03/09/what-is-reverse-creaming-and-why-does-it-make-great-cake">What is reverse creaming ?</a></li></ul></div><div class=" _span-two_x1wrr_21"><h3><a class="_large_5uv6f_1 _noLine_5uv6f_63" href="https://www.kingarthurbaking.com/learn/guides"><span class="_caret_5uv6f_32"><span>Baking Guides</span></span></a></h3></div><div class=" _span-two_x1wrr_21"><h3><a class="_large_5uv6f_1 _noLine_5uv6f_63" href="https://www.kingarthurbaking.com/learn/bakeforgood"><span class="_caret_5uv6f_32"><span>Bake for Good</span></span></a></h3></div></div><div class="_widgetContainer_70se9_1 " style="grid-column: span 4;"><a href="https://www.kingarthurbaking.com/baking-school" class="_span-two_x1wrr_21"><div class="_articleWidgetcontainer_x0ox6_60 _widget-container_x1wrr_17"><img src="https://www.kingarthurbaking.com/sites/default/files/styles/megamenu_thumbnail/public/2019-06/camelot-campus.jpg?itok=sqD4Gu3u" /><h3><span tabIndex="-1" class="_large_5uv6f_1 _noLine_5uv6f_63 _noLink_5uv6f_70"><span>King Arthur Baking School</span></span></h3></div></a></div></div></div></div></div></li><li class="kab-mm--main-nav-link"><div class="_mainLinkOuterContainer_1lumq_29"><div class="_mainLinkContainer_1lumq_30"><a aria-expanded="false" aria-controls="baking-school" class="kab-mm--main-link _main-link_5fvik_35 _mainLink_1lumq_1" href="https://www.kingarthurbaking.com/baking-school">Baking School</a></div><div hidden id="baking-school" class="kab-mm--column-footer-container kab-mm--close _footerBorder_1lumq_34"><div class="_columnWrapper_1lumq_38 "><div class="_columnTitleWrapper_1lumq_91"><a href="https://www.kingarthurbaking.com/baking-school" class="_columnTitleLink_1lumq_63"><span class="_caret_1lumq_68">Baking School</span></a><button class=" kab-mm--close-button"><span class="_visuallyhidden_x1wrr_1">Close</span><svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.53039 1.5L15.5304 15.5M15.4697 1.5L1.46973 15.5" stroke="black" strokeWidth="1.5"></path></svg></button></div><div class="_column-container_5fvik_1 _mm-container_x1wrr_12"><div class="_widgetContainer_70se9_1 " style="grid-column: span 3;"><a href="https://www.kingarthurbaking.com/baking-school/calendar?loc=1" class="_span-two_x1wrr_21"><div class="_articleWidgetcontainer_x0ox6_60 _widget-container_x1wrr_17"><img src="https://www.kingarthurbaking.com/sites/default/files/styles/megamenu_thumbnail/public/2023-09/classes_vermont.jpg?itok=XCyuuClE" /><h3><span tabIndex="-1" class="_large_5uv6f_1 _noLine_5uv6f_63 _noLink_5uv6f_70"><span>Vermont Classes</span></span></h3></div></a></div><div class="_widgetContainer_70se9_1 " style="grid-column: span 3;"><a href="https://www.kingarthurbaking.com/baking-school/calendar?loc=2" class="_span-two_x1wrr_21"><div class="_articleWidgetcontainer_x0ox6_60 _widget-container_x1wrr_17"><img src="https://www.kingarthurbaking.com/sites/default/files/styles/megamenu_thumbnail/public/2023-09/classes_washington.jpg?itok=Amj_2UbZ" /><h3><span tabIndex="-1" class="_large_5uv6f_1 _noLine_5uv6f_63 _noLink_5uv6f_70"><span>Washington Classes</span></span></h3></div></a></div><div class="_widgetContainer_70se9_1 " style="grid-column: span 3;"><a href="https://www.kingarthurbaking.com/baking-school/calendar?loc=4" class="_span-two_x1wrr_21"><div class="_articleWidgetcontainer_x0ox6_60 _widget-container_x1wrr_17"><img src="https://www.kingarthurbaking.com/sites/default/files/styles/megamenu_thumbnail/public/2023-09/classes_virtual.jpg?itok=4X6PpxXj" /><h3><span tabIndex="-1" class="_large_5uv6f_1 _noLine_5uv6f_63 _noLink_5uv6f_70"><span>Virtual Classes</span></span></h3></div></a></div><div class="_widgetContainer_70se9_1 " style="grid-column: span 3;"><a href="https://www.kingarthurbaking.com/baking-school/on-demand" class="_span-two_x1wrr_21"><div class="_articleWidgetcontainer_x0ox6_60 _widget-container_x1wrr_17"><img src="https://www.kingarthurbaking.com/sites/default/files/styles/megamenu_thumbnail/public/2023-11/baking-school-on-demand.jpg?itok=Vy-WsgrO" /><h3><span tabIndex="-1" class="_large_5uv6f_1 _noLine_5uv6f_63 _noLink_5uv6f_70"><span>New! On-Demand Classes</span></span></h3></div></a></div></div></div></div></div></li><li class="kab-mm--main-nav-link"><div class="_mainLinkOuterContainer_1lumq_29"><div class="_mainLinkContainer_1lumq_30"><a aria-expanded="false" aria-controls="impact" class="kab-mm--main-link _main-link_5fvik_35 _mainLink_1lumq_1" href="https://www.kingarthurbaking.com/impact">Impact</a></div><div hidden id="impact" class="kab-mm--column-footer-container kab-mm--close _footerBorder_1lumq_34"><div class="_columnWrapper_1lumq_38 "><div class="_columnTitleWrapper_1lumq_91"><a href="https://www.kingarthurbaking.com/impact" class="_columnTitleLink_1lumq_63"><span class="_caret_1lumq_68">Impact</span></a><button class=" kab-mm--close-button"><span class="_visuallyhidden_x1wrr_1">Close</span><svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.53039 1.5L15.5304 15.5M15.4697 1.5L1.46973 15.5" stroke="black" strokeWidth="1.5"></path></svg></button></div><div class="_column-container_5fvik_1 _mm-container_x1wrr_12"><div class="_widgetContainer_70se9_1 " style="grid-column: span 3;"><a href="https://www.kingarthurbaking.com/impact/people" class="_span-two_x1wrr_21"><div class="_articleWidgetcontainer_x0ox6_60 _widget-container_x1wrr_17"><img src="https://www.kingarthurbaking.com/sites/default/files/styles/megamenu_thumbnail/public/2023-09/impact_people_0.jpg?itok=6b6E99Xd" /><h3><span tabIndex="-1" class="_large_5uv6f_1 _noLine_5uv6f_63 _noLink_5uv6f_70"><span>For People</span></span></h3></div></a></div><div class="_widgetContainer_70se9_1 " style="grid-column: span 3;"><a href="https://www.kingarthurbaking.com/impact/planet" class="_span-two_x1wrr_21"><div class="_articleWidgetcontainer_x0ox6_60 _widget-container_x1wrr_17"><img src="https://www.kingarthurbaking.com/sites/default/files/styles/megamenu_thumbnail/public/2023-09/impact_planet_0.jpg?itok=Vik_LXkp" /><h3><span tabIndex="-1" class="_large_5uv6f_1 _noLine_5uv6f_63 _noLink_5uv6f_70"><span>For Planet</span></span></h3></div></a></div><div class="_widgetContainer_70se9_1 " style="grid-column: span 3;"><a href="https://www.kingarthurbaking.com/impact/food-justice" class="_span-two_x1wrr_21"><div class="_articleWidgetcontainer_x0ox6_60 _widget-container_x1wrr_17"><img src="https://www.kingarthurbaking.com/sites/default/files/styles/megamenu_thumbnail/public/2023-09/impact_food-justice_0.jpg?itok=FgdUyimn" /><h3><span tabIndex="-1" class="_large_5uv6f_1 _noLine_5uv6f_63 _noLink_5uv6f_70"><span>Food Justice</span></span></h3></div></a></div><div class="_widgetContainer_70se9_1 " style="grid-column: span 3;"><div class=" _span-two_x1wrr_21"><h3 style="padding: 0 0 8px 0;"><span tabIndex="0" class="_large_5uv6f_1 _noLine_5uv6f_63 _noLink_5uv6f_70"><span>Stories of Impact</span></span></h3><ul class="_linkList_iios9_1"><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/blog/2021/04/22/why-were-committed-to-environmental-stewardship">Why we're committed to environmental stewardship</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/blog/2021/02/15/fighting-for-justice-sweet-potato-pie-black-history-month">Fighting for justice, one pie at a time</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/blog/2020/03/11/where-our-stone-ground-white-whole-wheat-flour-starts">Where our white whole wheat flour starts</a></li><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/blog/2022/04/11/nordic-ware-bundt-cake-pan">Nordic Ware is more than just a cake pan</a></li></ul></div><div class=" _span-two_x1wrr_21"><h3 style="padding: 0 0 8px 0;"><span tabIndex="0" class="_large_5uv6f_1 _noLine_5uv6f_63 _noLink_5uv6f_70"><span>Impact Report</span></span></h3><ul class="_linkList_iios9_1"><li><a class="_regular_5uv6f_17" href="https://www.kingarthurbaking.com/impact/impact-report">2022 Annual Report</a></li></ul></div></div></div></div></div></div></li></ul></div></div>
 </nav>
 
-  </div>
+  <script>
+const navContainer = document.querySelector('.kab-mm--nav-container');
+if (navContainer) {
+  const list = navContainer.querySelectorAll('.kab-mm--main-nav-link');
+
+  if (list) {
+    list.forEach((item) => {
+      const anchor = item.querySelector('.kab-mm--main-link');
+      const menuArea = item.querySelector('.kab-mm--column-footer-container');
+      const closeButton = item.querySelector('.kab-mm--close-button');
+      const isHover = (e) => e.parentElement.querySelector(':hover') === e;
+      item.addEventListener('mouseover', (event) => {
+        list.forEach((item) => {
+          item.classList.add('kab-mm--z-index-close');
+        });
+        item.classList.remove('kab-mm--z-index-close');
+        item.setAttribute('data-open', 'true');
+        item.classList.add('kab-mm--open');
+        item.classList.remove('kab-mm--close');
+        item.classList.remove('kab-mm--click');
+        menuArea.setAttribute('hidden', 'false');
+        item.classList.add('kab-mm--delay');
+        anchor.setAttribute('aria-expanded', 'true');
+      });
+
+      closeButton.addEventListener('click', (event) => {
+        item.blur();
+        anchor.blur();
+        // item.classList.add('kab-mm--delay');
+        item.setAttribute('data-open', 'false');
+        item.classList.remove('kab-mm--open');
+        item.classList.add('kab-mm--close');
+        item.classList.remove('kab-mm--click');
+        menuArea.setAttribute('hidden', '');
+        anchor.setAttribute('aria-expanded', 'false');
+      });
+
+      closeButton.addEventListener('mouseover', (event) => {
+        item.classList.remove('kab-mm--delay');
+      });
+
+      closeButton.addEventListener('mouseout', (event) => {
+        item.classList.add('kab-mm--delay');
+      });
+
+      menuArea.addEventListener('transitionend', (event) => {
+        if (event.target === menuArea) {
+          if (event.propertyName === 'visibility') {
+            if (parseFloat(event.elapsedTime.toFixed(2)) === 0.1) {
+              item.classList.remove('kab-mm--delay');
+            }
+            if (parseFloat(event.elapsedTime.toFixed(2)) === 0.3) {
+              item.classList.add('kab-mm--delay');
+            }
+          }
+        }
+      });
+
+      item.addEventListener('mouseout', (event) => {
+        item.classList.add('kab-mm--delay');
+      });
+
+      const checkHover = () => {
+        const hoveredListitem = isHover(item);
+        if (hoveredListitem !== checkHover.hoveredListitem) {
+          checkHover.hoveredListitem = hoveredListitem;
+          if (!hoveredListitem) {
+            item.blur();
+            anchor.blur();
+            item.classList.add('kab-mm--delay');
+            item.setAttribute('data-open', 'false');
+            item.classList.remove('kab-mm--open');
+            item.classList.add('kab-mm--close');
+            item.classList.remove('kab-mm--click');
+            menuArea.setAttribute('hidden', '');
+            anchor.setAttribute('aria-expanded', 'false');
+          }
+        }
+
+        const hoveredMenu = isHover(menuArea);
+        if (hoveredMenu !== checkHover.hoveredMenu) {
+          checkHover.hoveredMenu = hoveredMenu;
+          if (hoveredMenu) {
+            item.classList.remove('kab-mm--delay');
+          }
+        }
+
+        const hoveredCloseButton = isHover(closeButton);
+        if (hoveredCloseButton !== checkHover.hoveredCloseButton) {
+          checkHover.hoveredCloseButton = hoveredCloseButton;
+          if (hoveredCloseButton) {
+            item.classList.remove('kab-mm--delay');
+          }
+        }
+      };
+
+      document.addEventListener('mousemove', checkHover);
+
+      item.addEventListener('click', (event) => {
+        if (event.target === anchor) {
+          item.classList.add('kab-mm--click');
+          item.classList.remove('kab-mm--delay');
+          if (item.getAttribute('data-open') === 'true') {
+            item.setAttribute('data-open', 'false');
+            item.classList.remove('kab-mm--open');
+            item.classList.add('kab-mm--close');
+            menuArea.setAttribute('hidden', '');
+            anchor.setAttribute('aria-expanded', 'false');
+          } else {
+            item.setAttribute('data-open', 'true');
+            item.classList.add('kab-mm--open');
+            item.classList.remove('kab-mm--close');
+            menuArea.setAttribute('hidden', 'false');
+            anchor.setAttribute('aria-expanded', 'true');
+          }
+        }
+      });
+
+      anchor.addEventListener('focus', (event) => {
+        list.forEach((item) => {
+          item.classList.remove('kab-mm--open');
+          item.classList.add('kab-mm--close');
+          menuArea.setAttribute('hidden', '');
+          anchor.setAttribute('aria-expanded', 'false');
+        });
+      });
+
+      anchor.addEventListener('keydown', (event) => {
+        item.classList.add('kab-mm--click');
+        item.classList.remove('kab-mm--delay');
+        if (event.keyCode === 13) {
+          item.setAttribute('data-open', 'true');
+          item.classList.add('kab-mm--open');
+          item.classList.remove('kab-mm--close');
+          menuArea.setAttribute('hidden', 'false');
+          anchor.setAttribute('aria-expanded', 'true');
+          event.preventDefault();
+        }
+        if (event.keyCode === 27) {
+          item.setAttribute('data-open', 'false');
+          item.classList.remove('kab-mm--open');
+          item.classList.add('kab-mm--close');
+          menuArea.setAttribute('hidden', '');
+          anchor.setAttribute('aria-expanded', 'false');
+          anchor.focus();
+          event.preventDefault();
+        }
+        return false;
+      });
+
+      item.addEventListener('keydown', (event) => {
+        item.classList.add('kab-mm--click');
+        item.classList.remove('kab-mm--delay');
+        if (event.keyCode === 27) {
+          item.setAttribute('data-open', 'false');
+          item.classList.remove('kab-mm--open');
+          item.classList.add('kab-mm--close');
+          menuArea.setAttribute('hidden', '');
+          anchor.setAttribute('aria-expanded', 'false');
+          anchor.focus();
+          event.preventDefault();
+        }
+        return false;
+      });
+    });
+  }
+}
+</script>
+	</div>
 
   </div>
 
@@ -1446,10 +1602,6 @@
                           
                   <ul>
                                       <li>
-                                                    <a href="/recipes/biscuits-shortcakes">Biscuits &amp; Shortcakes</a>
-                                      
-                      </li>
-                              <li>
                                                     <a href="/recipes/bread">Bread</a>
                                       
                       </li>
@@ -1474,15 +1626,19 @@
                                       
                       </li>
                               <li>
-                                                    <a href="/recipes/pastry">Pastry</a>
-                                      
-                      </li>
-                              <li>
                                                     <a href="/recipes/pie">Pie</a>
                                       
                       </li>
                               <li>
+                                                    <a href="/recipes/pizza">Pizza</a>
+                                      
+                      </li>
+                              <li>
                                                     <a href="/recipes/scones">Scones</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/recipes/sourdough">Sourdough</a>
                                       
                       </li>
                               <li>
@@ -1502,6 +1658,14 @@
                           
                   <ul>
                                       <li>
+                                                    <a href="/holiday-breads">Holiday Breads</a>
+                                      
+                      </li>
+                              <li>
+                                                    <a href="/pan-dulce">Pan Dulce</a>
+                                      
+                      </li>
+                              <li>
                                                     <a href="/recipe-of-the-year">Recipe of the Year</a>
                                       
                       </li>
@@ -1511,10 +1675,6 @@
                       </li>
                               <li>
                                                     <a href="/new-classics-thanksgiving-pie">New Classics: Pie</a>
-                                      
-                      </li>
-                              <li>
-                                                    <a href="/buns">Brilliant Beautiful Buns</a>
                                       
                       </li>
                               <li>
@@ -1621,7 +1781,7 @@
     
       
 
-<article  role="article" class="node node--type-recipe quickview quickview--recipe">
+<article  class="node node--type-recipe quickview quickview--recipe">
   <div class="quickview__content">
           
 <nav class="breadcrumb" role="navigation" aria-label="Breadcrumbs">
@@ -1650,7 +1810,7 @@
                   <a class="reviews__jumplink" href="#review-section">
                                 <div class="reviews__wrapper">
               <svg enable-background="new 0 0 39 39" viewBox="0 0 39 39" xmlns="http://www.w3.org/2000/svg"><path d="m19.5.3c-10.6 0-19.2 8.6-19.2 19.2s8.6 19.2 19.2 19.2 19.2-8.6 19.2-19.2-8.6-19.2-19.2-19.2zm0 37c-9.8 0-17.8-8-17.8-17.8s8-17.8 17.8-17.8 17.8 8 17.8 17.8-8 17.8-17.8 17.8z"/><path d="m26.2 15.4h-4.8l1.5-5c.1-.2.1-.3.1-.5 0-1-.8-1.9-1.9-1.9h-2.5l-.2.4c-2.3 4.7-4.3 7-5.9 7h-2.5v13.6l14.3 2h.5c1.8 0 3.4-1.3 3.7-3.1l1.4-8.1c0-.2.1-.4.1-.6 0-2.1-1.7-3.8-3.8-3.8zm2.4 4.2-1.4 8.1c-.2 1.3-1.4 2.1-2.6 1.9l-13.1-1.8v-11h1.2c2.3 0 4.4-2.3 7-7.4h1.6c.3 0 .5.2.5.5v.1l-2.1 6.8h6.7c1.3 0 2.3 1.1 2.3 2.3-.1.2-.1.3-.1.5z"/></svg>
-                                      <span class="reviews__label">45 Reviews</span>
+                                      <span class="reviews__label">47 Reviews</span>
                                       <span class="rating rating-is-45">4.5 out of 5 stars</span>
                                     </div>
                               </a>
@@ -1699,7 +1859,7 @@ Share on Twitter</a></li>
         </div>
           </div>
 
-    <div class="stats stats--recipe">
+        <div class="stats stats--recipe ">
               <div class="stat__item stat__item--yield">
           <div class="label">Yield</div>
           <span>one 9” x 5” loaf or 12” tea loaf </span>
@@ -1716,15 +1876,16 @@ Share on Twitter</a></li>
         </button>
       </div>
     </div>
-  </div>
+
+      </div>
 
   <div class="quickview__media">
     <div class="quickview__media-main">
                                     <div id="mainImage-0" >
-                <picture>
-                  <source srcset="/sites/default/files/styles/featured_image/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=UOymQdSF 1x, /sites/default/files/styles/featured_image_2x/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=7sJgenge 2x" media="(min-width: 480px)" type="image/jpeg"/>
-              <source srcset="/sites/default/files/styles/featured_image_sm/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=PrBBCF-v 1x, /sites/default/files/styles/featured_image_sm_2x/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=LYIkVF0k 2x" type="image/jpeg"/>
-                  <img src="/sites/default/files/styles/featured_image/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=UOymQdSF" alt="Sourdough Zucchini Bread" />
+                  <picture>
+                  <source srcset="/sites/default/files/styles/featured_image/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=UOymQdSF 1x, /sites/default/files/styles/featured_image_2x/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=7sJgenge 2x" media="(min-width: 480px)" type="image/jpeg" width="960" height="636"/>
+              <source srcset="/sites/default/files/styles/featured_image_sm/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=PrBBCF-v 1x, /sites/default/files/styles/featured_image_sm_2x/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=LYIkVF0k 2x" type="image/jpeg" width="480" height="318"/>
+                  <img loading="eager" src="/sites/default/files/styles/featured_image/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=UOymQdSF" width="960" height="636" alt="Sourdough Zucchini Bread" />
 
   </picture>
 
@@ -1745,7 +1906,7 @@ Share on Twitter</a></li>
 
     <section class="page-content">
         <div class="region region-content">
-    <div role="article" class="node node--type-recipe node--promoted node--view-mode-full">
+    <div class="node node--type-recipe node--promoted node--view-mode-full">
   
   
   
@@ -1773,14 +1934,14 @@ Share on Twitter</a></li>
       <li>1/4 cup (85g) honey</li>
       <li>6 tablespoons (75g) vegetable oil</li>
       <li>2 large eggs</li>
-      <li>1/4 teaspoon <a href="https://shop.kingarthurbaking.com/items/nutmeg" data-name="Nutmeg" data-sku="208282" data-price="$5.95" class="product-modal">nutmeg</a></li>
+      <li>1/4 teaspoon <a href="https://shop.kingarthurbaking.com/items/nutmeg" data-name="Nutmeg" data-sku="208282" data-price="$6.95" class="product-modal">nutmeg</a></li>
       <li>1 1/2 teaspoons lemon zest (grated rind)</li>
-      <li>1 1/2 teaspoons <a href="https://shop.kingarthurbaking.com/items/king-arthur-pure-vanilla-extract" data-name="King Arthur Pure Vanilla Extract - 16 oz" data-sku="201282" data-price="$79.95" class="product-modal">King Arthur Pure Vanilla Extract</a></li>
-      <li>1 cup (113g) <a href="https://shop.kingarthurbaking.com/items/stone-ground-white-whole-wheat-flour" data-name="Stone-Ground White Whole Wheat Flour" data-sku="05555" data-price="$6.95" class="product-modal">King Arthur White Whole Wheat Flour</a></li>
-      <li>3/4 cup (90g) <a href="https://shop.kingarthurbaking.com/items/unbleached-all-purpose-flour" data-name="All-Purpose Flour" data-sku="01050" data-price="$6.95" class="product-modal">King Arthur Unbleached All-Purpose Flour</a></li>
+      <li>1 1/2 teaspoons <a href="https://shop.kingarthurbaking.com/items/king-arthur-pure-vanilla-extract" data-name="King Arthur Pure Vanilla Extract - 16 oz" data-sku="201282" data-price="$80.95" class="product-modal">King Arthur Pure Vanilla Extract</a></li>
+      <li>1 cup (113g) <a href="https://shop.kingarthurbaking.com/items/stone-ground-white-whole-wheat-flour" data-name="Stone-Ground White Whole Wheat Flour" data-sku="305555" data-price="$6.95" class="product-modal">King Arthur White Whole Wheat Flour</a></li>
+      <li>3/4 cup (90g) <a href="https://shop.kingarthurbaking.com/items/unbleached-all-purpose-flour" data-name="All-Purpose Flour" data-sku="301050" data-price="$6.95" class="product-modal">King Arthur Unbleached All-Purpose Flour</a></li>
       <li>1/2 teaspoon baking soda</li>
       <li>1 teaspoon baking powder</li>
-      <li>1 teaspoon salt</li>
+      <li>1 teaspoon table salt</li>
       <li>2 cups (242g to 300g) grated zucchini, somewhere between firmly and lightly packed</li>
       <li>3/4 cup (85g) chopped walnuts, lightly toasted</li>
       <li>3/4 cup (128g) raisins, currants, or dried cranberries</li>
@@ -1811,6 +1972,19 @@ Share on Twitter</a></li>
 
       <article class="recipe__instructions">
                 <h4>Instructions</h4>
+        <div class="cook-mode">
+          <div class="cook-mode-toggle">
+            <input class="visually-hidden" type="checkbox" id="cook-mode-toggle"/>
+            <label for="cook-mode-toggle">
+              <svg xmlns="http://www.w3.org/2000/svg" width="47" height="24" viewBox="0 0 47 24" fill="none">
+                <rect x="0.547241" y="0.5" width="45.0741" height="23" rx="11.5" fill="#EBEAEA" stroke="#CBCBCB"/>
+                <ellipse cx="12.6128" cy="12" rx="8.3771" ry="8" fill="#CBCBCB"/>
+              </svg>
+              <span class="cook-mode-label">Bake Mode</span>
+            </label>
+          </div>
+          <div class="cook-mode-description">Prevent your screen from going dark as you follow along.</div>
+        </div>
         <div class="field field--recipe-steps">
   <ol class="list--numbers">
           <li class="field__item">
@@ -1842,12 +2016,12 @@ Share on Twitter</a></li>
                   <aside>
             <h4>Learn more</h4>
             
-<div  role="article" class="article article--embed">
+<div  class="article article--embed">
   
   
 
   <a href="/blog/2019/08/28/baking-with-zucchini" rel="bookmark">
-            <img srcset="/sites/default/files/styles/kaf_thumbnail_small_200x135_/public/2019-08/Baking_With_Zucchini-3.jpg?itok=8w4c9yDY 1x, /sites/default/files/styles/kaf_thumbnail_small_2x_400x271_/public/2019-08/Baking_With_Zucchini-3.jpg?itok=eUuaRmtN 2x" src="/sites/default/files/styles/kaf_thumbnail_small_200x135_/public/2019-08/Baking_With_Zucchini-3.jpg?itok=8w4c9yDY" alt="Baking_With_Zucchini" />
+              <img loading="lazy" srcset="/sites/default/files/styles/kaf_thumbnail_small_200x135_/public/2019-08/Baking_With_Zucchini-3.jpg?itok=8w4c9yDY 1x, /sites/default/files/styles/kaf_thumbnail_small_2x_400x271_/public/2019-08/Baking_With_Zucchini-3.jpg?itok=eUuaRmtN 2x" width="200" height="135" src="/sites/default/files/styles/kaf_thumbnail_small_200x135_/public/2019-08/Baking_With_Zucchini-3.jpg?itok=8w4c9yDY" alt="Baking_With_Zucchini" />
 
 
 
@@ -1898,11 +2072,11 @@ Share on Twitter</a></li>
       </ol>
 </div>
 
-
                   <div class="recipe__tips">
             <h4>Tips from our Bakers</h4>
             <ul class="list--star">
-      <li><div class="eck-entity">
+      <li>
+<div class="eck-entity">
       <p>If you happen to have a citrus-infused olive oil in the house, substitute it for the vegetable oil; it’ll add subtle perfume and rich flavor throughout.</p>
 
 <p><strong>To make your own citrus-infused olive oil: </strong>Use a peeler to remove the rind (just the outer layer, not the white pith) in strips from a lemon or an orange. Place these strips in a small saucepan and cover with 1 cup (198g) of neutral-flavored oil. Bring to a simmer over medium heat for 5 minutes. Turn off the heat, let the oil cool, then strain out the peel and store the oil at room temperature until needed.</p>
@@ -1978,7 +2152,7 @@ Share on Twitter</a></li>
   <h3>Recommended for you</h3>
   <div class="related__nodes">
     
-<div role="article" class="product product--card">
+<div class="product product--card">
   
   
 
@@ -1993,10 +2167,10 @@ Share on Twitter</a></li>
   <div class="product__content">
     <div class="product__reviews">
               <span class="rating rating-is-50">4.9 out of 5 stars<span class="visually-hidden"> out of 5 stars</span></span>
-                  <span class="reviews__label">(52<span class="visually-hidden"> Reviews</span>)</span>
+                  <span class="reviews__label">(129<span class="visually-hidden"> Reviews</span>)</span>
                   </div>
 
-    <div class="product--card__title" data-sku="208282" data-price="$5.95">
+    <div class="product--card__title" data-sku="208282" data-price="$6.95">
       <span>Nutmeg</span>
 
     </div>
@@ -2006,7 +2180,7 @@ Share on Twitter</a></li>
   
 </div>
 
-<div role="article" class="product product--card">
+<div class="product product--card">
   
   
 
@@ -2021,10 +2195,10 @@ Share on Twitter</a></li>
   <div class="product__content">
     <div class="product__reviews">
               <span class="rating rating-is-50">4.8 out of 5 stars<span class="visually-hidden"> out of 5 stars</span></span>
-                  <span class="reviews__label">(683<span class="visually-hidden"> Reviews</span>)</span>
+                  <span class="reviews__label">(1322<span class="visually-hidden"> Reviews</span>)</span>
                   </div>
 
-    <div class="product--card__title" data-sku="201282" data-price="$79.95">
+    <div class="product--card__title" data-sku="201282" data-price="$80.95">
       <span>King Arthur Pure Vanilla Extract - 16 oz</span>
 
     </div>
@@ -2034,13 +2208,13 @@ Share on Twitter</a></li>
   
 </div>
 
-<div role="article" class="product product--card">
+<div class="product product--card">
   
   
 
       <a href="https://shop.kingarthurbaking.com/items/stone-ground-white-whole-wheat-flour">
   
-          <img src="/sites/default/files/styles/square_medium_550_x_550/public/product-image/king-arthur-white-whole-wheat-flour-5-lb-1__57483.1677267690.386.513.jpg%3Fc%3D1.jpg?itok=PE_x5mr2" width="550" height="550" alt="" loading="lazy" />
+          <img src="/sites/default/files/styles/square_medium_550_x_550/public/product-image/king-arthur-white-whole-wheat-flour-5-lb-front__54781.1684417855.386.513.jpg%3Fc%3D1.jpg?itok=XugoIeh9" width="550" height="550" alt="" loading="lazy" />
 
 
 
@@ -2049,10 +2223,10 @@ Share on Twitter</a></li>
   <div class="product__content">
     <div class="product__reviews">
               <span class="rating rating-is-50">4.9 out of 5 stars<span class="visually-hidden"> out of 5 stars</span></span>
-                  <span class="reviews__label">(511<span class="visually-hidden"> Reviews</span>)</span>
+                  <span class="reviews__label">(883<span class="visually-hidden"> Reviews</span>)</span>
                   </div>
 
-    <div class="product--card__title" data-sku="05555" data-price="$6.95">
+    <div class="product--card__title" data-sku="305555" data-price="$6.95">
       <span>Stone-Ground White Whole Wheat Flour</span>
 
     </div>
@@ -2062,13 +2236,13 @@ Share on Twitter</a></li>
   
 </div>
 
-<div role="article" class="product product--card">
+<div class="product product--card">
   
   
 
       <a href="https://shop.kingarthurbaking.com/items/unbleached-all-purpose-flour">
   
-          <img src="/sites/default/files/styles/square_medium_550_x_550/public/product-image/king-arthur-unbleached-all-purpose-flour-5-lb-1__96453__68278.1672250630.386.513.jpg%3Fc%3D1.jpg?itok=I20DR4fE" width="550" height="550" alt="" loading="lazy" />
+          <img src="/sites/default/files/styles/square_medium_550_x_550/public/product-image/king-arthur-unbleached-all-purpose-flour-5-lb-1__96453__68278__72623.1684333819.386.513.jpg%3Fc%3D1.jpg?itok=H_f-gvpe" width="550" height="550" alt="" loading="lazy" />
 
 
 
@@ -2076,11 +2250,11 @@ Share on Twitter</a></li>
   
   <div class="product__content">
     <div class="product__reviews">
-              <span class="rating rating-is-50">5 out of 5 stars<span class="visually-hidden"> out of 5 stars</span></span>
-                  <span class="reviews__label">(311<span class="visually-hidden"> Reviews</span>)</span>
+              <span class="rating rating-is-50">4.9 out of 5 stars<span class="visually-hidden"> out of 5 stars</span></span>
+                  <span class="reviews__label">(2999<span class="visually-hidden"> Reviews</span>)</span>
                   </div>
 
-    <div class="product--card__title" data-sku="01050" data-price="$6.95">
+    <div class="product--card__title" data-sku="301050" data-price="$6.95">
       <span>All-Purpose Flour</span>
 
     </div>
@@ -2113,10 +2287,10 @@ Share on Twitter</a></li>
     
     
 
-          <picture>
-                  <source srcset="/sites/default/files/styles/featured_image/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=UOymQdSF 1x, /sites/default/files/styles/featured_image_2x/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=7sJgenge 2x" media="(min-width: 480px)" type="image/jpeg"/>
-              <source srcset="/sites/default/files/styles/featured_image_sm/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=PrBBCF-v 1x, /sites/default/files/styles/featured_image_sm_2x/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=LYIkVF0k 2x" type="image/jpeg"/>
-                  <img src="/sites/default/files/styles/featured_image/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=UOymQdSF" alt="Sourdough Zucchini Bread" />
+            <picture>
+                  <source srcset="/sites/default/files/styles/featured_image/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=UOymQdSF 1x, /sites/default/files/styles/featured_image_2x/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=7sJgenge 2x" media="(min-width: 480px)" type="image/jpeg" width="960" height="636"/>
+              <source srcset="/sites/default/files/styles/featured_image_sm/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=PrBBCF-v 1x, /sites/default/files/styles/featured_image_sm_2x/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=LYIkVF0k 2x" type="image/jpeg" width="480" height="318"/>
+                  <img loading="eager" src="/sites/default/files/styles/featured_image/public/2021-06/sourdough-zucchini-bread_0521.jpg?itok=UOymQdSF" width="960" height="636" alt="Sourdough Zucchini Bread" />
 
   </picture>
 
@@ -2135,6 +2309,7 @@ Share on Twitter</a></li>
           <input class="webform-button--submit button" id="recipe-email-submit" type="submit" value="submit">
         </div>
       </form>
+      <div id="recipe-error-message" class="input-error-message"></div>
       <small class="newsletter-privacy-policy">View our <a href="/policies/privacy-policy">privacy policy</a></small></div>
     </div>
   </div>
@@ -2147,17 +2322,17 @@ Share on Twitter</a></li>
   <h3>Recommended Recipes</h3>
   <div class="related__nodes">
     
-<div role="article" class="recipe recipe--card">
-  <a href="/recipes/rye-soda-bread-recipe" rel="bookmark">
+<div class="recipe recipe--card">
+  <a href="/recipes/gluten-free-pumpkin-bread-recipe" rel="bookmark">
     
     
 
     <div class="recipe__media">
-                  <picture>
-                  <source srcset="/sites/default/files/styles/kaf_thumbnail_large/public/recipe_legacy/5677-3-large.jpg?itok=niv2WQMJ 1x, /sites/default/files/styles/kaf_thumbnail_large_2x_880x596_/public/recipe_legacy/5677-3-large.jpg?itok=IdDr7oPS 2x" media="(min-width: 768px)" type="image/jpeg"/>
-              <source srcset="/sites/default/files/styles/kaf_thumbnail/public/recipe_legacy/5677-3-large.jpg?itok=zeYATOZv 1x, /sites/default/files/styles/kaf_thumbnail_2x/public/recipe_legacy/5677-3-large.jpg?itok=lJ7xajcb 2x" media="(min-width: 480px)" type="image/jpeg"/>
-              <source srcset="/sites/default/files/styles/kaf_thumbnail_small_200x135_/public/recipe_legacy/5677-3-large.jpg?itok=AgwMtLio 1x, /sites/default/files/styles/kaf_thumbnail_small_2x_400x271_/public/recipe_legacy/5677-3-large.jpg?itok=Wzpf4_8_ 2x" type="image/jpeg"/>
-                  <img src="/sites/default/files/styles/kaf_thumbnail/public/recipe_legacy/5677-3-large.jpg?itok=zeYATOZv" alt="Rye Soda Bread" />
+                    <picture>
+                  <source srcset="/sites/default/files/styles/kaf_thumbnail_large/public/2020-11/gluten-free-pumpkin-bread.jpg?itok=5pWbyiLU 1x, /sites/default/files/styles/kaf_thumbnail_large_2x_880x596_/public/2020-11/gluten-free-pumpkin-bread.jpg?itok=AaJPygGq 2x" media="(min-width: 768px)" type="image/jpeg" width="440" height="298"/>
+              <source srcset="/sites/default/files/styles/kaf_thumbnail/public/2020-11/gluten-free-pumpkin-bread.jpg?itok=dJNxF7JW 1x, /sites/default/files/styles/kaf_thumbnail_2x/public/2020-11/gluten-free-pumpkin-bread.jpg?itok=BHVZDjHl 2x" media="(min-width: 480px)" type="image/jpeg" width="325" height="220"/>
+              <source srcset="/sites/default/files/styles/kaf_thumbnail_small_200x135_/public/2020-11/gluten-free-pumpkin-bread.jpg?itok=_xstNMem 1x, /sites/default/files/styles/kaf_thumbnail_small_2x_400x271_/public/2020-11/gluten-free-pumpkin-bread.jpg?itok=RPhcBo90 2x" type="image/jpeg" width="200" height="135"/>
+                  <img loading="lazy" src="/sites/default/files/styles/kaf_thumbnail/public/2020-11/gluten-free-pumpkin-bread.jpg?itok=dJNxF7JW" width="325" height="220" alt="Gluten-Free Pumpkin Bread" />
 
   </picture>
 
@@ -2170,24 +2345,24 @@ Share on Twitter</a></li>
               <span class="eyebrow">Quick bread</span>
       
               <h5>
-          Rye Soda Bread
+          Gluten-Free Pumpkin Bread
         </h5>
           </div>
   </a>
 </div>
 
 
-<div role="article" class="recipe recipe--card">
-  <a href="/recipes/boston-brown-bread-recipe" rel="bookmark">
+<div class="recipe recipe--card">
+  <a href="/recipes/100-whole-wheat-banana-bread-recipe" rel="bookmark">
     
     
 
     <div class="recipe__media">
-                  <picture>
-                  <source srcset="/sites/default/files/styles/kaf_thumbnail_large/public/2021-03/boston-brown-bread_0221.jpg?itok=xnwt7_mA 1x, /sites/default/files/styles/kaf_thumbnail_large_2x_880x596_/public/2021-03/boston-brown-bread_0221.jpg?itok=Ee2CunDn 2x" media="(min-width: 768px)" type="image/jpeg"/>
-              <source srcset="/sites/default/files/styles/kaf_thumbnail/public/2021-03/boston-brown-bread_0221.jpg?itok=ePwYq9Sr 1x, /sites/default/files/styles/kaf_thumbnail_2x/public/2021-03/boston-brown-bread_0221.jpg?itok=a61SN6tH 2x" media="(min-width: 480px)" type="image/jpeg"/>
-              <source srcset="/sites/default/files/styles/kaf_thumbnail_small_200x135_/public/2021-03/boston-brown-bread_0221.jpg?itok=xNBKM58c 1x, /sites/default/files/styles/kaf_thumbnail_small_2x_400x271_/public/2021-03/boston-brown-bread_0221.jpg?itok=EIh3ov3a 2x" type="image/jpeg"/>
-                  <img src="/sites/default/files/styles/kaf_thumbnail/public/2021-03/boston-brown-bread_0221.jpg?itok=ePwYq9Sr" alt="Boston Brown Bread" />
+                    <picture>
+                  <source srcset="/sites/default/files/styles/kaf_thumbnail_large/public/recipe_legacy/2053-3-large.jpg?itok=XAFPcTuC 1x, /sites/default/files/styles/kaf_thumbnail_large_2x_880x596_/public/recipe_legacy/2053-3-large.jpg?itok=0dn7nHJ6 2x" media="(min-width: 768px)" type="image/jpeg" width="440" height="298"/>
+              <source srcset="/sites/default/files/styles/kaf_thumbnail/public/recipe_legacy/2053-3-large.jpg?itok=68RIeBzE 1x, /sites/default/files/styles/kaf_thumbnail_2x/public/recipe_legacy/2053-3-large.jpg?itok=TiDSKGao 2x" media="(min-width: 480px)" type="image/jpeg" width="325" height="220"/>
+              <source srcset="/sites/default/files/styles/kaf_thumbnail_small_200x135_/public/recipe_legacy/2053-3-large.jpg?itok=DQCJ2bTR 1x, /sites/default/files/styles/kaf_thumbnail_small_2x_400x271_/public/recipe_legacy/2053-3-large.jpg?itok=K9vLFoSp 2x" type="image/jpeg" width="200" height="135"/>
+                  <img loading="lazy" src="/sites/default/files/styles/kaf_thumbnail/public/recipe_legacy/2053-3-large.jpg?itok=68RIeBzE" width="325" height="220" alt="100% Whole Wheat Banana Bread" />
 
   </picture>
 
@@ -2200,24 +2375,24 @@ Share on Twitter</a></li>
               <span class="eyebrow">Quick bread</span>
       
               <h5>
-          Boston Brown Bread
+          100% Whole Wheat Banana Bread
         </h5>
           </div>
   </a>
 </div>
 
 
-<div role="article" class="recipe recipe--card">
-  <a href="/recipes/skillet-cornbread-recipe" rel="bookmark">
+<div class="recipe recipe--card">
+  <a href="/recipes/gluten-free-apple-bread-recipe" rel="bookmark">
     
     
 
     <div class="recipe__media">
-                  <picture>
-                  <source srcset="/sites/default/files/styles/kaf_thumbnail_large/public/recipe_legacy/6359-3-large.jpg?itok=1_V9xPln 1x, /sites/default/files/styles/kaf_thumbnail_large_2x_880x596_/public/recipe_legacy/6359-3-large.jpg?itok=xbarBuNv 2x" media="(min-width: 768px)" type="image/jpeg"/>
-              <source srcset="/sites/default/files/styles/kaf_thumbnail/public/recipe_legacy/6359-3-large.jpg?itok=k4gIoreU 1x, /sites/default/files/styles/kaf_thumbnail_2x/public/recipe_legacy/6359-3-large.jpg?itok=gODJD2Vl 2x" media="(min-width: 480px)" type="image/jpeg"/>
-              <source srcset="/sites/default/files/styles/kaf_thumbnail_small_200x135_/public/recipe_legacy/6359-3-large.jpg?itok=Ffis3Pmu 1x, /sites/default/files/styles/kaf_thumbnail_small_2x_400x271_/public/recipe_legacy/6359-3-large.jpg?itok=BsZ0OTP4 2x" type="image/jpeg"/>
-                  <img src="/sites/default/files/styles/kaf_thumbnail/public/recipe_legacy/6359-3-large.jpg?itok=k4gIoreU" alt="Skillet Cornbread" />
+                    <picture>
+                  <source srcset="/sites/default/files/styles/kaf_thumbnail_large/public/2021-04/gluten-free-apple-bread_0321.jpg?itok=B6ftGGcy 1x, /sites/default/files/styles/kaf_thumbnail_large_2x_880x596_/public/2021-04/gluten-free-apple-bread_0321.jpg?itok=V-WBF-hz 2x" media="(min-width: 768px)" type="image/jpeg" width="440" height="298"/>
+              <source srcset="/sites/default/files/styles/kaf_thumbnail/public/2021-04/gluten-free-apple-bread_0321.jpg?itok=YmgNqeWj 1x, /sites/default/files/styles/kaf_thumbnail_2x/public/2021-04/gluten-free-apple-bread_0321.jpg?itok=XuL9o_Vi 2x" media="(min-width: 480px)" type="image/jpeg" width="325" height="220"/>
+              <source srcset="/sites/default/files/styles/kaf_thumbnail_small_200x135_/public/2021-04/gluten-free-apple-bread_0321.jpg?itok=puVL8lku 1x, /sites/default/files/styles/kaf_thumbnail_small_2x_400x271_/public/2021-04/gluten-free-apple-bread_0321.jpg?itok=xDbWvQBI 2x" type="image/jpeg" width="200" height="135"/>
+                  <img loading="lazy" src="/sites/default/files/styles/kaf_thumbnail/public/2021-04/gluten-free-apple-bread_0321.jpg?itok=YmgNqeWj" width="325" height="220" alt="Gluten-Free Apple Bread" />
 
   </picture>
 
@@ -2230,24 +2405,24 @@ Share on Twitter</a></li>
               <span class="eyebrow">Quick bread</span>
       
               <h5>
-          Skillet Cornbread
+          Gluten-Free Apple Bread
         </h5>
           </div>
   </a>
 </div>
 
 
-<div role="article" class="recipe recipe--card">
-  <a href="/recipes/rosemary-cheddar-cheese-bread-recipe" rel="bookmark">
+<div class="recipe recipe--card">
+  <a href="/recipes/quick-lemon-bread-recipe" rel="bookmark">
     
     
 
     <div class="recipe__media">
-                  <picture>
-                  <source srcset="/sites/default/files/styles/kaf_thumbnail_large/public/recipe_legacy/6825-3-large.jpg?itok=i_42n9u0 1x, /sites/default/files/styles/kaf_thumbnail_large_2x_880x596_/public/recipe_legacy/6825-3-large.jpg?itok=5T_888Xl 2x" media="(min-width: 768px)" type="image/jpeg"/>
-              <source srcset="/sites/default/files/styles/kaf_thumbnail/public/recipe_legacy/6825-3-large.jpg?itok=WCHlQFBl 1x, /sites/default/files/styles/kaf_thumbnail_2x/public/recipe_legacy/6825-3-large.jpg?itok=mQSsa92w 2x" media="(min-width: 480px)" type="image/jpeg"/>
-              <source srcset="/sites/default/files/styles/kaf_thumbnail_small_200x135_/public/recipe_legacy/6825-3-large.jpg?itok=nbHwDpvO 1x, /sites/default/files/styles/kaf_thumbnail_small_2x_400x271_/public/recipe_legacy/6825-3-large.jpg?itok=sI723ja0 2x" type="image/jpeg"/>
-                  <img src="/sites/default/files/styles/kaf_thumbnail/public/recipe_legacy/6825-3-large.jpg?itok=WCHlQFBl" alt="Rosemary Cheddar Cheese Bread" />
+                    <picture>
+                  <source srcset="/sites/default/files/styles/kaf_thumbnail_large/public/2023-04/quick-lemon-bread_0423.jpg?itok=yWoyjbaG 1x, /sites/default/files/styles/kaf_thumbnail_large_2x_880x596_/public/2023-04/quick-lemon-bread_0423.jpg?itok=1OfwZreW 2x" media="(min-width: 768px)" type="image/jpeg" width="440" height="298"/>
+              <source srcset="/sites/default/files/styles/kaf_thumbnail/public/2023-04/quick-lemon-bread_0423.jpg?itok=bbsn_WQI 1x, /sites/default/files/styles/kaf_thumbnail_2x/public/2023-04/quick-lemon-bread_0423.jpg?itok=IgVhKBPl 2x" media="(min-width: 480px)" type="image/jpeg" width="325" height="220"/>
+              <source srcset="/sites/default/files/styles/kaf_thumbnail_small_200x135_/public/2023-04/quick-lemon-bread_0423.jpg?itok=6_OhPhio 1x, /sites/default/files/styles/kaf_thumbnail_small_2x_400x271_/public/2023-04/quick-lemon-bread_0423.jpg?itok=c0ERCS1L 2x" type="image/jpeg" width="200" height="135"/>
+                  <img loading="lazy" src="/sites/default/files/styles/kaf_thumbnail/public/2023-04/quick-lemon-bread_0423.jpg?itok=bbsn_WQI" width="325" height="220" alt="Quick Lemon Bread" />
 
   </picture>
 
@@ -2260,7 +2435,7 @@ Share on Twitter</a></li>
               <span class="eyebrow">Quick bread</span>
       
               <h5>
-          Rosemary Cheddar Cheese Bread
+          Quick Lemon Bread
         </h5>
           </div>
   </a>
@@ -2604,8 +2779,8 @@ Share on Twitter</a></li>
       <div id="block-adtaxiscript" class="block block-block-content block-block-content861bd971-b20c-440a-bfd8-fe2fa87e45f7">
   
     
-        <!-- Begin Adtaxi Container Tag - Loading asynchronously --><script type="text/javascript">
-<!--//--><![CDATA[// ><!--
+        <script type="text/javascript">
+//<![CDATA[
 
     (function(a,b,c,d){
     a="https://tags.tiqcdn.com/utag/adtaxi/kingarthurbaking.com/prod/utag.js";
@@ -2613,8 +2788,13 @@ Share on Twitter</a></li>
     a=b.getElementsByTagName(c)[0];a.parentNode.insertBefore(d,a);
     })();
 
-//--><!]]>
-</script><!-- End Adtaxi Container Tag -->
+//]]>
+</script><style>
+/*<![CDATA[*/
+
+.product--inner-grid-item .product-bottom a[href*="sku=212949"]{ display:none; }
+/*]]>*/
+</style>
 
   </div>
 <nav role="navigation" aria-labelledby="block-footerlegal-menu" id="block-footerlegal">
@@ -2645,12 +2825,22 @@ Share on Twitter</a></li>
                                                     <a href="/policies/privacy/california#do-not-sell">Do Not Sell My Information</a>
                                       
                       </li>
+                              <li>
+                                                    <a href="#osano-cm">My Privacy Choices</a>
+                                      
+                      </li>
               </ul>
       
 
 
 
   </nav>
+<div id="block-yotposcript" class="block block-kaf-recipe block-kaf-recipe-yotpo-script">
+  
+    
+      <script type="text/javascript" async src="//staticw2.yotpo.com/yMhyxN9Ftb8duotfEYaZFMjbryJRD1hHhtRRzruP/widget.js"></script>
+
+  </div>
 
   </div>
 
@@ -2676,7 +2866,7 @@ Share on Twitter</a></li>
       <div
         class="mobile-search--container">
         <!-- A live region to announce number of suggestions presented-->
-        <div id='search__overlay--announce' class='visually-hidden' aria-live="assertive"></div>
+        <div id='search__overlay--announce' class='visually-hidden' aria-live="assertive" aria-atomic="true"></div>
         <input id='search__overlay--input' class="search-input" name="search-bar" aria-label="Search" placeholder="" autocomplete="off" aria-owns="search__overlay--results" aria-autocomplete="both" role="combobox" aria-expanded="false"/>
 
         <div class="submit--container">
@@ -2733,16 +2923,24 @@ Share on Twitter</a></li>
   </div>
 
     
-    <script type="application/json" data-drupal-selector="drupal-settings-json">{"path":{"baseUrl":"\/","scriptPath":null,"pathPrefix":"","currentPath":"node\/45866","currentPathIsAdmin":false,"isFront":false,"currentLanguage":"en"},"pluralDelimiter":"\u0003","suppressDeprecationErrors":true,"ajaxPageState":{"libraries":"ckeditor_accordion\/accordion.frontend,cleantalk\/apbct-public,core\/picturefill,eu_cookie_compliance\/eu_cookie_compliance_bare,kab_bigcommerce\/kab_bigcommerce,kab_customer\/kab_customer,kaf_ga_tracking\/kaf_ga_tracking,kaf_helpscout\/helpscout,kaf_nextgenweb\/digioh,kaf_nextgenweb\/global-scripts,kaf_nextgenweb\/global-styling,kaf_nextgenweb\/status-message-ui,kaf_recipe\/recipe-ingredients-modal,kaf_recipe_box\/recipebox_native,kaf_share\/kaf_share,system\/base","theme":"kaf_nextgenweb","theme_token":null},"ajaxTrustedUrl":[],"kabBigCommerce":{"apiBaseUrl":"https:\/\/shop.kingarthurbaking.com","appClientId":"j72v63q1r6g7gjpzidvupu142ducavb","apiCustomerNameUrl":"https:\/\/www.kingarthurbaking.com\/api\/customer_name"},"kaf_helpscout":{"beacon_id":"fd820c57-521c-4c0a-9eff-0ba927533437"},"eu_cookie_compliance":{"cookie_policy_version":"1.0.0","popup_enabled":true,"popup_agreed_enabled":false,"popup_hide_agreed":false,"popup_clicking_confirmation":true,"popup_scrolling_confirmation":false,"popup_html_info":"\u003Cdiv class =\u0022alert alert--cookie sticky\u0022\u003E\n  \u003Cspan\u003E\n    \u003Cp\u003EThis site uses cookies to provide you with the best experience possible.\u003C\/p\u003E\n\n  \u003C\/span\u003E\n      \u003Ca class=\u0022find-more-button alert__learnmore\u0022\u003ERead our Privacy Policy\u003C\/a\u003E\n    \u003Ca class=\u0022agree-button alert__close\u0022\u003E\u003Ci\u003EClose\u003C\/i\u003E\u003C\/a\u003E\n\u003C\/div\u003E","use_mobile_message":false,"mobile_popup_html_info":"\u003Cdiv class =\u0022alert alert--cookie sticky\u0022\u003E\n  \u003Cspan\u003E\n    \n  \u003C\/span\u003E\n      \u003Ca class=\u0022find-more-button alert__learnmore\u0022\u003ERead our Privacy Policy\u003C\/a\u003E\n    \u003Ca class=\u0022agree-button alert__close\u0022\u003E\u003Ci\u003EClose\u003C\/i\u003E\u003C\/a\u003E\n\u003C\/div\u003E","mobile_breakpoint":768,"popup_html_agreed":false,"popup_use_bare_css":true,"popup_height":"auto","popup_width":"100%","popup_delay":1000,"popup_link":"\/policies\/privacy.html","popup_link_new_window":true,"popup_position":false,"fixed_top_position":true,"popup_language":"en","store_consent":false,"better_support_for_screen_readers":false,"cookie_name":"","reload_page":false,"domain":"","domain_all_sites":null,"popup_eu_only":false,"popup_eu_only_js":false,"cookie_lifetime":100,"cookie_session":0,"set_cookie_session_zero_on_disagree":0,"disagree_do_not_show_popup":false,"method":"default","automatic_cookies_removal":true,"allowed_cookies":"","withdraw_markup":"\u003Cbutton type=\u0022button\u0022 class=\u0022eu-cookie-withdraw-tab\u0022\u003EPrivacy settings\u003C\/button\u003E\n\u003Cdiv aria-labelledby=\u0022popup-text\u0022 class=\u0022eu-cookie-withdraw-banner\u0022\u003E\n  \u003Cdiv class=\u0022popup-content info eu-cookie-compliance-content\u0022\u003E\n    \u003Cdiv id=\u0022popup-text\u0022 class=\u0022eu-cookie-compliance-message\u0022 role=\u0022document\u0022\u003E\n      \u003Ch2\u003EWe use cookies on this site to enhance your user experience\u003C\/h2\u003E\n\u003Cp\u003EYou have given your consent for us to set cookies.\u003C\/p\u003E\n\n    \u003C\/div\u003E\n    \u003Cdiv id=\u0022popup-buttons\u0022 class=\u0022eu-cookie-compliance-buttons\u0022\u003E\n      \u003Cbutton type=\u0022button\u0022 class=\u0022eu-cookie-withdraw-button \u0022\u003EWithdraw consent\u003C\/button\u003E\n    \u003C\/div\u003E\n  \u003C\/div\u003E\n\u003C\/div\u003E","withdraw_enabled":false,"reload_options":0,"reload_routes_list":"","withdraw_button_on_info_popup":null,"cookie_categories":[],"cookie_categories_details":[],"enable_save_preferences_button":null,"cookie_value_disagreed":"0","cookie_value_agreed_show_thank_you":"1","cookie_value_agreed":"2","containing_element":"body","settings_tab_enabled":false,"olivero_primary_button_classes":"","olivero_secondary_button_classes":"","close_button_action":"","open_by_default":true,"modules_allow_popup":true,"hide_the_banner":false,"geoip_match":true},"ckeditorAccordion":{"accordionStyle":{"collapseAll":1,"keepRowsOpen":null,"animateAccordionOpenAndClose":1,"openTabsWithHash":1}},"recipeAdList":[{"href":"https:\/\/shop.kingarthurbaking.com","src":"https:\/\/www.kingarthurbaking.com\/sites\/default\/files\/2023-03\/shop-home%20%281%29.jpg","alt":"A Baker\u0027s Pantry Starts Here"},{"href":"\/baking-school","src":"https:\/\/www.kingarthurbaking.com\/sites\/default\/files\/2023-03\/baking-school%20%281%29.jpg","alt":"Baking School Is In Session. Are You Ready?"},{"href":"\/blog\/2023\/03\/06\/pan-pizza-recipes","src":"https:\/\/www.kingarthurbaking.com\/sites\/default\/files\/2023-03\/Pan-pizza%20%281%29.jpg","alt":"Grab Your Pan, And Let\u0027s Make Pizza"}],"productsModal":{"productUrl":"\/api\/product-link\/__sku__","recipeUrl":"\/api\/shop-this-recipe\/__recipe_id__","storeUrl":"https:\/\/shop.kingarthurbaking.com","addToCartUrl":"https:\/\/www.kingarthurbaking.com\/api\/add_to_cart"},"kaf_recipe_box":{"api_base_url":"https:\/\/www.kingarthurbaking.com\/api\/recipebox","shop_signin_url":"https:\/\/shop.kingarthurbaking.com\/login.php","bc_enabled":true},"kaf_search":{"algolia_app_id":"HWPWEWOTF5","algolia_api_key":"6860dedd7a22f80f3bcb0402d1c7215a"},"user":{"uid":0,"permissionsHash":"c50293c644408a7d52ffd7353eafe0b32da2035809d230aaf4ae7d894d3a6a42"}}</script>
-<script src="/sites/default/files/js/js_IoekGpjB72hyzuj_VB9S6kLaVqQ0A8A_qkPoTY8r-pI.js"></script>
-<script src="/modules/custom/kaf_helpscout/js/helpscout.js?v=9.5.8" defer></script>
-<script src="/sites/default/files/js/js_bONiesn2IDJDDZjW-_4fXTyi2pVCWvBECpxVCKLbyaQ.js"></script>
+        <script type="text/javascript">
+      _NBSettings = {
+        apiKey: 'public_052ece9a38c92c361b45e56430755f5d',
+        autoFieldHookup: false,
+        feedback: false,
+      };
+    </script>
+    <script type="application/json" data-drupal-selector="drupal-settings-json">{"path":{"baseUrl":"\/","scriptPath":null,"pathPrefix":"","currentPath":"node\/45866","currentPathIsAdmin":false,"isFront":false,"currentLanguage":"en"},"pluralDelimiter":"\u0003","suppressDeprecationErrors":true,"ajaxPageState":{"libraries":"ckeditor_accordion\/accordion.frontend,cleantalk\/apbct-public,kab_bigcommerce\/kab_bigcommerce,kab_customer\/kab_customer,kab_form_integrations\/listrak_base,kab_form_integrations\/listrak_footer,kab_form_integrations\/listrak_recipe_detail,kab_form_integrations\/neverbounce,kaf_ga_tracking\/kaf_ga_tracking,kaf_helpscout\/helpscout,kaf_nextgenweb\/digioh,kaf_nextgenweb\/global-scripts,kaf_nextgenweb\/global-styling,kaf_nextgenweb\/status-message-ui,kaf_recipe\/cookmode,kaf_recipe\/recipe-ingredients-modal,kaf_recipe_box\/recipebox_native,kaf_share\/kaf_share,system\/base","theme":"kaf_nextgenweb","theme_token":null},"ajaxTrustedUrl":[],"kabBigCommerce":{"apiBaseUrl":"https:\/\/shop.kingarthurbaking.com","appClientId":"j72v63q1r6g7gjpzidvupu142ducavb","apiCustomerNameUrl":"https:\/\/www.kingarthurbaking.com\/api\/customer_name"},"kaf_helpscout":{"beacon_id":"fd820c57-521c-4c0a-9eff-0ba927533437"},"ckeditorAccordion":{"accordionStyle":{"collapseAll":1,"keepRowsOpen":null,"animateAccordionOpenAndClose":1,"openTabsWithHash":1}},"recipeAdList":[{"href":"https:\/\/shop.kingarthurbaking.com","src":"https:\/\/www.kingarthurbaking.com\/sites\/default\/files\/2023-03\/shop-home%20%281%29.jpg","alt":"A Baker\u0027s Pantry Starts Here"},{"href":"\/baking-school","src":"https:\/\/www.kingarthurbaking.com\/sites\/default\/files\/2023-03\/baking-school%20%281%29.jpg","alt":"Baking School Is In Session. Are You Ready?"},{"href":"\/blog\/2023\/03\/06\/pan-pizza-recipes","src":"https:\/\/www.kingarthurbaking.com\/sites\/default\/files\/2023-03\/Pan-pizza%20%281%29.jpg","alt":"Grab Your Pan, And Let\u0027s Make Pizza"}],"productsModal":{"productUrl":"\/api\/product-link\/__sku__","recipeUrl":"\/api\/shop-this-recipe\/__recipe_id__","storeUrl":"https:\/\/shop.kingarthurbaking.com","addToCartUrl":"https:\/\/www.kingarthurbaking.com\/api\/add_to_cart"},"kaf_recipe_box":{"api_base_url":"https:\/\/www.kingarthurbaking.com\/api\/recipebox","shop_signin_url":"https:\/\/shop.kingarthurbaking.com\/login.php","bc_enabled":true},"kaf_search":{"algolia_app_id":"HWPWEWOTF5","algolia_api_key":"6860dedd7a22f80f3bcb0402d1c7215a"},"user":{"uid":0,"permissionsHash":"57dcf7ca11ed2305ce578aad44ec3455f05b01e4580d475f7e7141ca5ba4e44c"}}</script>
+<script src="/sites/default/files/js/js_I_h4YsTn3SZze_eKYGVR-fuZDRYhGd2fC9OVk79XU5c.js?scope=footer&amp;delta=0&amp;language=en&amp;theme=kaf_nextgenweb&amp;include=eJyFUVGywiAMvFD7OMs7ARMgRYQSJgk-vf3D6jhqx_GLXbJZsiGDsy5FT-uK7NHkVz5due-iNKh5JltlIV5tqoqRQRNVMSWJMmTrQPCLZCHSjz4VT8iOet1mWGwEO5p8TjWaN77VD1iaeOpqHmiSiyiu5j7KYiueNWL9Q2diIQdlFr2Uq4MnRhO4Nyg_jSkyinxq8Zya7qohxUSHyWcMSYkt-OEZRhTzQD8L04hYw-QLQlUo2UBzXudlxNxi7yqtu5L89pgcgNE80JflMvrU0AZUSGXrv92YSlIQ2_OVJ8orBbyt4fjbkS_v-Y6N5qGBF6_bMY8N8oiNVWWnsY7Od91Ato4xT7vfEAXto3dsHSLOPf0DcbEEPA"></script>
+<script src="https://cdn.neverbounce.com/widget/dist/NeverBounce.js"></script>
+<script src="/sites/default/files/js/js_jDGsD0Avn1E_KX2xB44uGuk7IAP10fYVrTb5ktTW8Sk.js?scope=footer&amp;delta=2&amp;language=en&amp;theme=kaf_nextgenweb&amp;include=eJyFUVGywiAMvFD7OMs7ARMgRYQSJgk-vf3D6jhqx_GLXbJZsiGDsy5FT-uK7NHkVz5due-iNKh5JltlIV5tqoqRQRNVMSWJMmTrQPCLZCHSjz4VT8iOet1mWGwEO5p8TjWaN77VD1iaeOpqHmiSiyiu5j7KYiueNWL9Q2diIQdlFr2Uq4MnRhO4Nyg_jSkyinxq8Zya7qohxUSHyWcMSYkt-OEZRhTzQD8L04hYw-QLQlUo2UBzXudlxNxi7yqtu5L89pgcgNE80JflMvrU0AZUSGXrv92YSlIQ2_OVJ8orBbyt4fjbkS_v-Y6N5qGBF6_bMY8N8oiNVWWnsY7Od91Ato4xT7vfEAXto3dsHSLOPf0DcbEEPA"></script>
+<script src="/modules/custom/kaf_helpscout/js/helpscout.js?v=10.1.3" defer></script>
+<script src="/sites/default/files/js/js_EZv4Ntsm4VMKrjkP17sgZ2QCdk4nZIgXKR2GIEHWu8w.js?scope=footer&amp;delta=4&amp;language=en&amp;theme=kaf_nextgenweb&amp;include=eJyFUVGywiAMvFD7OMs7ARMgRYQSJgk-vf3D6jhqx_GLXbJZsiGDsy5FT-uK7NHkVz5due-iNKh5JltlIV5tqoqRQRNVMSWJMmTrQPCLZCHSjz4VT8iOet1mWGwEO5p8TjWaN77VD1iaeOpqHmiSiyiu5j7KYiueNWL9Q2diIQdlFr2Uq4MnRhO4Nyg_jSkyinxq8Zya7qohxUSHyWcMSYkt-OEZRhTzQD8L04hYw-QLQlUo2UBzXudlxNxi7yqtu5L89pgcgNE80JflMvrU0AZUSGXrv92YSlIQ2_OVJ8orBbyt4fjbkS_v-Y6N5qGBF6_bMY8N8oiNVWWnsY7Od91Ato4xT7vfEAXto3dsHSLOPf0DcbEEPA"></script>
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default,Array.prototype.find,Array.prototype.includes,Promise,Object.assign,Object.entries"></script>
-<script src="/sites/default/files/js/js_sJtpIlPqrp9nmiPLX01jfNFkvD-6YAUOPLQo78PcbSs.js"></script>
+<script src="/sites/default/files/js/js_GSvStYmAXhZvPiOwWTBfg1GUwZ_InDj2eH0RVtqHPms.js?scope=footer&amp;delta=6&amp;language=en&amp;theme=kaf_nextgenweb&amp;include=eJyFUVGywiAMvFD7OMs7ARMgRYQSJgk-vf3D6jhqx_GLXbJZsiGDsy5FT-uK7NHkVz5due-iNKh5JltlIV5tqoqRQRNVMSWJMmTrQPCLZCHSjz4VT8iOet1mWGwEO5p8TjWaN77VD1iaeOpqHmiSiyiu5j7KYiueNWL9Q2diIQdlFr2Uq4MnRhO4Nyg_jSkyinxq8Zya7qohxUSHyWcMSYkt-OEZRhTzQD8L04hYw-QLQlUo2UBzXudlxNxi7yqtu5L89pgcgNE80JflMvrU0AZUSGXrv92YSlIQ2_OVJ8orBbyt4fjbkS_v-Y6N5qGBF6_bMY8N8oiNVWWnsY7Od91Ato4xT7vfEAXto3dsHSLOPf0DcbEEPA"></script>
 <script src="https://www.lightboxcdn.com/vendor/e4f80abf-94a1-4384-b89c-aed5749bcc2d/lightbox_speed.js" async></script>
-<script src="/modules/contrib/eu_cookie_compliance/js/eu_cookie_compliance.min.js?v=9.5.8" defer></script>
-<script src="/modules/contrib/ckeditor_accordion/js/accordion.frontend.js?rv7rsa"></script>
-<script src="/sites/default/files/js/js_e0JhAc3YUeAcbabzI2pPuBDYs5M0gZSA5CC-CXW8PTg.js"></script>
+<script src="/modules/contrib/ckeditor_accordion/js/accordion.frontend.js?s3g7pc"></script>
+<script src="/sites/default/files/js/js_DBZ0HQ-_kbqcomfqiCvHsp5jdX6CDq-XOaTFOreTNQw.js?scope=footer&amp;delta=9&amp;language=en&amp;theme=kaf_nextgenweb&amp;include=eJyFUVGywiAMvFD7OMs7ARMgRYQSJgk-vf3D6jhqx_GLXbJZsiGDsy5FT-uK7NHkVz5due-iNKh5JltlIV5tqoqRQRNVMSWJMmTrQPCLZCHSjz4VT8iOet1mWGwEO5p8TjWaN77VD1iaeOpqHmiSiyiu5j7KYiueNWL9Q2diIQdlFr2Uq4MnRhO4Nyg_jSkyinxq8Zya7qohxUSHyWcMSYkt-OEZRhTzQD8L04hYw-QLQlUo2UBzXudlxNxi7yqtu5L89pgcgNE80JflMvrU0AZUSGXrv92YSlIQ2_OVJ8orBbyt4fjbkS_v-Y6N5qGBF6_bMY8N8oiNVWWnsY7Od91Ato4xT7vfEAXto3dsHSLOPf0DcbEEPA"></script>
 
   </body>
 </html>

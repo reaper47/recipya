@@ -13,6 +13,8 @@ func scrapeForksOverKnives(root *goquery.Document) (models.RecipeSchema, error) 
 		return models.RecipeSchema{}, err
 	}
 
+	rs.Description.Value = root.Find(".core-paragraph").Text()
+
 	if rs.Category.Value != "" {
 		xb := regex.Anchor.ReplaceAll([]byte(rs.Category.Value), []byte(""))
 		s := strings.ReplaceAll(string(xb), "</a>", "")

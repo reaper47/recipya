@@ -102,7 +102,7 @@ func parseLdJSON(root *goquery.Document) (models.RecipeSchema, error) {
 		err := json.Unmarshal([]byte(node.FirstChild.Data), &rs)
 		if err != nil {
 			var xrs []models.RecipeSchema
-			err := json.Unmarshal([]byte(node.FirstChild.Data), &xrs)
+			err = json.Unmarshal([]byte(node.FirstChild.Data), &xrs)
 			if err != nil {
 				continue
 			}
