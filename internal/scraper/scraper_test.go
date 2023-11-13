@@ -4,8 +4,6 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/google/go-cmp/cmp"
 	"github.com/reaper47/recipya/internal/models"
-	"io"
-	"net/http"
 	"os"
 	"path"
 	"path/filepath"
@@ -38,8 +36,7 @@ func TestScraper(t *testing.T) {
 						"adicione água quente aos poucos. Quando o molho estiver [&hellip;]",
 				},
 				Keywords: models.Keywords{
-					Values: "Estrogonofe de carne, Refogado, Dia a Dia, Carne, Brasileira, alcatra, cebola, Cogumelo, " +
-						"creme de leite, ketchup (ou catchup), manteiga, Mostarda, pimenta-do-reino, sal, tomate",
+					Values: "Estrogonofe de carne, Refogado, Dia a Dia, Carne, Brasileira, creme de leite, ketchup (ou catchup), pimenta-do-reino",
 				},
 				Image: models.Image{
 					Value: "https://claudia.abril.com.br/wp-content/uploads/2020/02/receita-estrogonofe-de-carne.jpg?" +
@@ -226,7 +223,7 @@ func TestScraper(t *testing.T) {
 				Category:      models.Category{Value: "Dessert"},
 				CookTime:      "PT10M",
 				Cuisine:       models.Cuisine{Value: "American"},
-				DateModified:  "2023-03-29T10:51:20.644-04:00",
+				DateModified:  "2023-08-28T17:26:15.610-04:00",
 				DatePublished: "1998-04-18T16:10:32.000-04:00",
 				Description: models.Description{
 					Value: "This chocolate chip cookie recipe makes delicious cookies with crisp edges and chewy middles. Try this wildly-popular cookie recipe for yourself!",
@@ -422,7 +419,7 @@ func TestScraper(t *testing.T) {
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Name:          "Karnataka Style Orange Peels Curry Recipe",
 				Cuisine:       models.Cuisine{Value: "Karnataka"},
-				DateModified:  "2023-01-21T05:30:02+0000",
+				DateModified:  "2023-09-02T05:30:01+0000",
 				DatePublished: "2017-10-05T00:23:00+0000",
 				Description: models.Description{
 					Value: "Did you know that we can make a yummy curry out of Orange Peels? It is tangy, sweetish, spicy, slightly bitter and bursting with flavors. It is an unique recipe. So next time you have some guests at home, make this recipe and impress your friends and family. It is filled with flavours and tastes delicious with almost everything. Next time you eat an orange, don't throw the peels, make a curry out of it.\nServe Karnataka Style Orange Peels Curry along with Cabbage Thoran and Whole Wheat Lachha Paratha for your weekday meal. It even tastes great with Steamed Rice.\nIf you like this recipe, you can also try other Karnataka recipes such as\n\nMavina Hannina Gojju Recipe\nMavina Hannina Gojju Recipe\nKarnataka Style Bassaru Palya Recipe",
@@ -485,7 +482,6 @@ func TestScraper(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:   atContext,
 				AtType:      models.SchemaType{Value: "Recipe"},
-				Category:    models.Category{Value: "Plats"},
 				Name:        "Bœuf bourguignon traditionnel",
 				CookTime:    "P0Y0M0DT0H0M10800S",
 				Description: models.Description{Value: "Une vraie recette de la tradition française: des morceaux de bœuf cuits longuement dans un bouillon au vin rouge."},
@@ -530,13 +526,10 @@ func TestScraper(t *testing.T) {
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Slow Cooker"},
 				CookTime:      "PT8H",
-				Cuisine:       models.Cuisine{Value: "Beef"},
+				Cuisine:       models.Cuisine{Value: "American"},
 				DatePublished: "2022-03-15",
 				Description: models.Description{
-					Value: "Slow Cooker Beef Stroganoff – A comfort food classic that everyone in the family LOVES! " +
-						"Hearty chunks of beef, rich and flavorful beef gravy, and served over a bed of warm " +
-						"noodles to soak up all that goodness! The EASIEST recipe for beef stroganoff ever because " +
-						"your Crock-Pot truly does all the work! Set it and forget it!",
+					Value: "A comfort food classic that everyone in the family LOVES! Hearty chunks of beef, rich and flavorful beef gravy, and served over a bed of warm noodles to soak up all that goodness! The EASIEST recipe for beef stroganoff ever because your Crock-Pot truly does all the work! Set it and forget it!",
 				},
 				Image: models.Image{
 					Value: "https://www.averiecooks.com/wp-content/uploads/2022/03/beefstroganoff-13-480x480.jpg",
@@ -729,7 +722,7 @@ func TestScraper(t *testing.T) {
 						"fat (of which 2g saturates), 9.5g fibre and 1.8g salt.",
 				},
 				Keywords: models.Keywords{
-					Values: "absolute bangers, 400-calorie dinners, cheap stews , comfort food on a budget, easy healthy dinner ideas, easy sausage suppers , healthy and filling, healthy british classics, healthy comfort food, healthy dinner, healthy family meals, healthy meals on a budget, healthy winter food, low-calorie comfort food, low-calorie, making meat go further, sausage suppers, summery sausages, winter stew, autumn, bonfire night, easy family dinners, winter, sausage casserole, sausage, healthy",
+					Values: "absolute bangers, 400-calorie dinners, cheap stews , comfort food on a budget, easy healthy dinner ideas, easy sausage suppers , healthy and filling, healthy british classics, healthy comfort food, healthy dinner, healthy family meals, healthy meals on a budget, healthy winter food, low-calorie comfort food, low-calorie, making meat go further, sausage suppers, summery sausages, the best sausage, winter stew, autumn, bonfire night, easy family dinners, winter, sausage casserole, sausage, healthy",
 				},
 				Image: models.Image{
 					Value: "https://food-images.files.bbci.co.uk/food/recipes/healthy_sausage_16132_16x9.jpg",
@@ -837,18 +830,19 @@ func TestScraper(t *testing.T) {
 			name: "bettycrocker.com",
 			in:   "https://www.bettycrocker.com/recipes/spinach-mushroom-quiche/ed3014db-7810-41d6-8e1c-cd4eed7b1db3",
 			want: models.RecipeSchema{
-				AtContext:   atContext,
-				AtType:      models.SchemaType{Value: "Recipe"},
-				Category:    models.Category{Value: "Breakfast"},
-				Cuisine:     models.Cuisine{Value: "French"},
-				DateCreated: "2011-10-05",
+				AtContext:    atContext,
+				AtType:       models.SchemaType{Value: "Recipe"},
+				Category:     models.Category{Value: "Breakfast"},
+				Cuisine:      models.Cuisine{Value: "French"},
+				DateCreated:  "2011-10-05",
+				DateModified: "2013-04-03",
 				Description: models.Description{
 					Value: "Bisquick® Gluten Free mix crust topped with spinach and mushroom mixture for a tasty breakfast – " +
 						"perfect if you love French cuisine.",
 				},
 				Keywords: models.Keywords{Values: "spinach mushroom quiche"},
 				Image: models.Image{
-					Value: "https://images-gmi-pmc.edge-generalmills.com/9480d5a5-0d1d-4b21-bcf6-e1ec2f99376f.jpg",
+					Value: "https://mojo.generalmills.com/api/public/content/MAHdJv1NBUeLl4-jtMq24g_gmi_hi_res_jpeg.jpeg%3Fv=2e1b9203&t=b5673970ed9e41549a020b29d456506d",
 				},
 				Ingredients: models.Ingredients{
 					Values: []string{
@@ -1235,7 +1229,7 @@ func TestScraper(t *testing.T) {
 				Category:      models.Category{Value: "Main Course"},
 				CookTime:      "PT30M",
 				Cuisine:       models.Cuisine{Value: "Italian"},
-				DatePublished: "2023-02-14T23:47:51+00:00",
+				DatePublished: "2022-03-06T03:40:00+00:00",
 				Description: models.Description{
 					Value: "This easy low-carb dinner is perfect for plant-based eaters or anyone looking to add more veggies " +
 						"to their diet!",
@@ -1368,7 +1362,7 @@ func TestScraper(t *testing.T) {
 				CookTime:      "P0DT0H40M",
 				DatePublished: "2008-05-26",
 				Description: models.Description{
-					Value: "Knusprige Ofenkartoffeln. Über 212 Bewertungen und für raffiniert befunden. Mit ► Portionsrechner ► Kochbuch ► Video-Tipps! Jetzt entdecken und ausprobieren!",
+					Value: "Knusprige Ofenkartoffeln. Über 226 Bewertungen und für raffiniert befunden. Mit ► Portionsrechner ► Kochbuch ► Video-Tipps! Jetzt entdecken und ausprobieren!",
 				},
 				Keywords: models.Keywords{
 					Values: "Backen,Vegetarisch,Saucen,Dips,Beilage,raffiniert oder preiswert,einfach,Kartoffel,Snack",
@@ -1721,7 +1715,7 @@ func TestScraper(t *testing.T) {
 				Category:      models.Category{Value: "Sunday lunch"},
 				CookTime:      "PT0S",
 				Cuisine:       models.Cuisine{Value: "American"},
-				DatePublished: "2022-03-04T00:01:33.158861ZZ",
+				DatePublished: "2022-03-04T00:01:33.158861Z",
 				Description: models.Description{
 					Value: "This Southern dish is just bursting with flavor.",
 				},
@@ -1785,7 +1779,7 @@ func TestScraper(t *testing.T) {
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"16 Champignon(s) de paris",
-						"0,5 Brie",
+						"0.5 Brie",
 						"1 Échalote(s)",
 						"1 c. à soupe Crème fraîche",
 						"1 Tranche(s) de jambon blanc",
@@ -1874,8 +1868,8 @@ func TestScraper(t *testing.T) {
 				Category:      models.Category{Value: "weeknight meals"},
 				CookTime:      "PT0S",
 				Cuisine:       models.Cuisine{Value: "American"},
-				DateModified:  "2023-05-25T17:40:00ZZ",
-				DatePublished: "2018-11-06T17:45:06.218596ZZ",
+				DateModified:  "2023-06-26T17:34:00Z",
+				DatePublished: "2018-11-06T17:45:06.218596Z",
 				Description: models.Description{
 					Value: "A classic Chinese-American dish with thinly sliced, velveted flank steak in a rich brown sauce with tender-crisp broccoli.",
 				},
@@ -1950,8 +1944,7 @@ func TestScraper(t *testing.T) {
 				},
 				Keywords: models.Keywords{Values: "Keto Samosas"},
 				Image: models.Image{
-					Value: "https://www.ditchthecarbs.com/wp-content/uploads/2022/02/" +
-						"Keto-Samosa-Featured-Image-Template-1200x1200-1.jpg",
+					Value: "https://thinlicious.com/wp-content/uploads/2022/02/Keto-Samosa-Featured-Image-Template-1200x1200-1.jpg",
 				},
 				Ingredients: models.Ingredients{
 					Values: []string{
@@ -2347,7 +2340,7 @@ func TestScraper(t *testing.T) {
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Cuisine:       models.Cuisine{Value: ""},
-				DateModified:  "2021-02-04T15:20:10.000-05:00",
+				DateModified:  "2023-09-19T12:07:24.154-04:00",
 				DatePublished: "2021-02-04T15:20:10.000-05:00",
 				Description: models.Description{
 					Value: "This chicken piccata recipe has a bright, briny flavor, is made from ingredients you likely have on hand, and goes with everything from chicken to tofu to scallops. Bonus: It&#39;s lower in calories than a lot of other pan sauces.",
@@ -2692,7 +2685,7 @@ func TestScraper(t *testing.T) {
 				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Category: models.Category{
-					Value: "<a href=\"/recipes/main-course\" hreflang=\"en\">Main Course</a>",
+					Value: "Main Course",
 				},
 				Description: models.Description{
 					Value: "<p>Szechuan Chicken is a spicy, crispy chicken recipe from Sichuan Region in China: discover " +
@@ -2705,19 +2698,19 @@ func TestScraper(t *testing.T) {
 					Values: []string{
 						"Chicken",
 						"White onion",
-						"Red Pepper",
-						"Yellow Bell Peppers",
+						"Red pepper",
+						"Yellow bell peppers",
 						"Chilli",
 						"Ginger",
-						"Cane Sugar",
+						"Cane sugar",
 						"Cornstarch",
-						"Garlic Powder",
+						"Garlic powder",
 						"Dark soy sauce",
 						"Sesame Oil",
 						"Chicken stock",
 						"Szechuan pepper",
 						"Sunflower oil",
-						"Kosher Salt",
+						"Kosher salt",
 					},
 				},
 				Instructions: models.Instructions{
@@ -2757,7 +2750,11 @@ func TestScraper(t *testing.T) {
 							"you can add the grated lime or lemon zest just before serving.",
 					},
 				},
-				Name:  "Szechuan Chicken",
+				Keywords: models.Keywords{Values: "Tried and Tasted,Channel: Food & Drinks"},
+				Name:     "Szechuan Chicken",
+				NutritionSchema: models.NutritionSchema{
+					Servings: "4",
+				},
 				Yield: models.Yield{Value: 4},
 				URL:   "https://www.finedininglovers.com/recipes/main-course/szechuan-chicken",
 			},
@@ -2981,7 +2978,7 @@ func TestScraper(t *testing.T) {
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Dinner"},
-				DateModified:  "2022-03-25T10:20:00.000-04:00",
+				DateModified:  "2023-08-02T10:26:55.248-04:00",
 				DatePublished: "2022-03-25T10:20:00.000-04:00",
 				Description: models.Description{
 					Value: "For this sheet pan dinner, baby potatoes, red onion, and spring onions get a head start in a hot oven, before they are joined by a side of salmon, slathered with mustard and drizzled with toasted garlic oil, which cooks alongside the vegetables for a seamless final presentation. Sommelier Erin Miller, of Charlie Palmer&#39;s Dry Creek Kitchen in Healdsburg, California, who provided the inspiration for this dish, notes that it tastes even better when served with a great wine. She recommends a glass of Hirsch Vineyards Raschen Ridge Sonoma Coast Pinot Noir, noting, &#34;The bright acidity of the Hirsch Pinot Noir is a perfect foil for the fresh, fatty fish and flavors of garlic and lemon.&#34;",
@@ -3034,16 +3031,14 @@ func TestScraper(t *testing.T) {
 				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Name:      "How To Cook A Hand-Cut Burger",
-				CookTime:  "PT0M",
-				PrepTime:  "PT0M",
 				Description: models.Description{
 					Value: "When you don't have a meat grinder, but still want a nice, juicy burger, this recipe for a hand-cut burger has a trick you'll use over and over again.",
 				},
 				Image: models.Image{
 					Value: "https://www.foodrepublic.com/img/gallery/hand-cut-burger/intro-import.jpg",
 				},
-				DateModified:  "2018-06-07T19:13:57+00:00",
-				DatePublished: "2018-06-08T11:00:40+00:00",
+				DateModified:  "2018-06-07T23:13:57+00:00",
+				DatePublished: "2018-06-08T15:00:40+00:00",
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 (1 1/2-pound) boneless rib-eye steak (preferably dry-aged)",
@@ -3079,6 +3074,8 @@ func TestScraper(t *testing.T) {
 				Category: models.Category{
 					Value: "Appetizers",
 				},
+				CookTime:      "PT0D0H35M",
+				DatePublished: "2017-01-27 15:29:56",
 				Description: models.Description{
 					Value: "It took a lot of trial and error to find the right coating that would not draw out the moisture " +
 						"and would make the florets crisp, so I am pleased that it has turned out to be a very " +
@@ -3090,7 +3087,7 @@ func TestScraper(t *testing.T) {
 						"the sauce, so hold off tossing until the very last minute",
 				},
 				Image: models.Image{
-					Value: "https://www.forksoverknives.com/wp-content/uploads/FOK_Coliflower8384-WP.jpg",
+					Value: "https://www.forksoverknives.com/uploads/FOK_Coliflower8384-WP.jpg?auto=webp",
 				},
 				Ingredients: models.Ingredients{
 					Values: []string{
@@ -3120,9 +3117,10 @@ func TestScraper(t *testing.T) {
 							"and drizzle with the sauce. Serve immediately.",
 					},
 				},
-				Name:  "Crispy Buffalo Cauliflower Bites",
-				Yield: models.Yield{Value: 0},
-				URL:   "https://www.forksoverknives.com/recipes/vegan-snacks-appetizers/crispy-buffalo-cauliflower-bites/",
+				Name:     "Crispy Buffalo Cauliflower Bites",
+				PrepTime: "PT0D0H0M",
+				Yield:    models.Yield{Value: 6},
+				URL:      "https://www.forksoverknives.com/recipes/vegan-snacks-appetizers/crispy-buffalo-cauliflower-bites/",
 			},
 		},
 		{
@@ -3174,7 +3172,7 @@ func TestScraper(t *testing.T) {
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Sweets and desserts"},
 				CookTime:      "PT15M",
-				DateModified:  "2022-12-08 14:46:24",
+				DateModified:  "2022-12-10 00:00:00",
 				DatePublished: "2022-12-10 00:00:00",
 				Description: models.Description{
 					Value: "Christmas spice cookies are shortcrust pastry sweets flavored with vanilla, ginger and cinnamon garnished with a white chocolate ganache!",
@@ -3282,6 +3280,7 @@ func TestScraper(t *testing.T) {
 				Category:      models.Category{Value: "Tortas e bolos"},
 				CookingMethod: models.CookingMethod{Value: "Americana"},
 				Cuisine:       models.Cuisine{Value: "Americana"},
+				DateModified:  "2023-03-07T19:38:51.176Z",
 				DatePublished: "2022-03-30T19:43:06.164Z",
 				Description: models.Description{
 					Value: "Veja como fazer cheesecake com geleia de frutas vermelhas. Receita é feita em camadas, sendo a massa " +
@@ -3293,7 +3292,7 @@ func TestScraper(t *testing.T) {
 					Values: "cheesecake, lanche da tarde, recepção, aniversário",
 				},
 				Image: models.Image{
-					Value: "https://s2.glbimg.com/XjnpBAqPQSKGTlZ6fYujfyRZ0lA=/1200x/smart/filters:cover():strip_icc()/i.s3.glbimg.com/v1/AUTH_1f540e0b94d8437dbbc39d567a1dee68/internal_photos/bs/2022/s/3/rsLexpSU6nXAgmuhfKNw/cheesecake-com-geleia-de-frutas-vermelhas-bbb22-1.jpg",
+					Value: "https://s2-receitas.glbimg.com/XjnpBAqPQSKGTlZ6fYujfyRZ0lA=/1200x/smart/filters:cover():strip_icc()/i.s3.glbimg.com/v1/AUTH_1f540e0b94d8437dbbc39d567a1dee68/internal_photos/bs/2022/s/3/rsLexpSU6nXAgmuhfKNw/cheesecake-com-geleia-de-frutas-vermelhas-bbb22-1.jpg",
 				},
 				Ingredients: models.Ingredients{
 					Values: []string{
@@ -3345,14 +3344,13 @@ func TestScraper(t *testing.T) {
 				Cuisine:       models.Cuisine{Value: "American"},
 				DatePublished: "2022-03-25T05:00:29+00:00",
 				Description: models.Description{
-					Value: "This simple, satisfying, hearty Beef Tomato Soup will be a repeat visitor to your dining table " +
-						"when the temperatures drop and appetites grow.",
+					Value: "This simple but satisfying, hearty Beef and Tomato MacaroniSoup will be a repeat visitor to your dining table when the temperatures drop and appetites grow.",
 				},
 				Keywords: models.Keywords{
-					Values: "beef soup recipes, macaroni soup recipes, tomato soup recipes",
+					Values: "beef soup recipes, ground beef recipes, ground beef soup recipes, macaroni soup recipes, tomato soup recipes",
 				},
 				Image: models.Image{
-					Value: "https://www.gonnawantseconds.com/wp-content/uploads/2020/09/Beef-Tomato-Soup-01.jpg",
+					Value: "https://www.gonnawantseconds.com/wp-content/uploads/2022/03/Beef-and-Tomato-Macaroni-Soup-01.jpg",
 				},
 				Ingredients: models.Ingredients{
 					Values: []string{
@@ -3387,7 +3385,7 @@ func TestScraper(t *testing.T) {
 							"Adjust seasoning and serve.",
 					},
 				},
-				Name: "Beef Tomato Soup",
+				Name: "Beef and Tomato Macaroni\u00a0Soup",
 				NutritionSchema: models.NutritionSchema{
 					Calories:       "829 kcal",
 					Carbohydrates:  "79 g",
@@ -3419,11 +3417,10 @@ func TestScraper(t *testing.T) {
 				},
 				Name: "Barbecued miso poussin with lemon, garlic and chilli dip",
 				Image: models.Image{
-					Value: "https://media-cdn2.greatbritishchefs.com/media/hpsovny5/img68297.whqc_1426x713q90.jpg",
+					Value: "https://media-cdn2.greatbritishchefs.com/media/hpsovny5/img68297.whqc_1426x713q80.jpg",
 				},
 				Category: models.Category{Value: "Main"},
-				Yield:    models.Yield{Value: 4},
-				CookTime: "PT1H",
+				CookTime: "PT60M",
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 poussin",
@@ -3474,13 +3471,8 @@ func TestScraper(t *testing.T) {
 					},
 				},
 				Keywords: models.Keywords{Values: "easy"},
-				Tools: models.Tools{
-					Values: []string{
-						"Japanese Mandolin slicer",
-						"Barbecue",
-					},
-				},
-				URL: "https://www.greatbritishchefs.com/recipes/babecued-miso-poussin-recipe",
+				URL:      "https://www.greatbritishchefs.com/recipes/babecued-miso-poussin-recipe",
+				Yield:    models.Yield{Value: 4},
 			},
 		},
 		{
@@ -3690,7 +3682,7 @@ func TestScraper(t *testing.T) {
 						"4 tablespoon Sour Cream",
 						"1 teaspoon Olive Oil",
 						"2 tablespoon Butter",
-						"Kosher Salt",
+						"Salt",
 						"Pepper",
 					},
 				},
@@ -4335,9 +4327,7 @@ func TestScraper(t *testing.T) {
 				Cuisine:       models.Cuisine{Value: "Japanese"},
 				DatePublished: "2022-03-21T05:00:00+00:00",
 				Description: models.Description{
-					Value: "Smothered with sweet-savory homemade teriyaki sauce, this crispy Pan-Fried Teriyaki Tofu Bowl " +
-						"is amazingly easy and delicious!  It&#039;s also a great way to incorporate tofu into your " +
-						"weekly menu rotation.",
+					Value: "Smothered with sweet-savory homemade teriyaki sauce, this crispy Pan-Fried Teriyaki Tofu Bowl is amazingly easy and delicious!  It‘s also a great way to incorporate tofu into your weekly menu rotation.",
 				},
 				Keywords: models.Keywords{Values: "teriyaki sauce, tofu"},
 				Image: models.Image{
@@ -4345,54 +4335,37 @@ func TestScraper(t *testing.T) {
 				},
 				Ingredients: models.Ingredients{
 					Values: []string{
-						"14 oz medium-firm tofu (momen dofu) ((1 block for 2 servings))",
+						"14 oz medium-firm tofu (momen dofu) ((1 block))",
 						"⅓ cup potato starch or cornstarch",
-						"3 Tbsp neutral-flavored oil ((divided))",
+						"3 Tbsp neutral oil ((divided))",
 						"¼ cup sake",
 						"¼ cup mirin",
 						"¼ cup soy sauce",
 						"4 tsp sugar",
+						"2 servings cooked Japanese short-grain rice ((typically 1⅔ cups (250 g) per donburi serving))",
 						"1 green onion/scallion",
 						"½ tsp toasted white sesame seeds",
 					},
 				},
 				Instructions: models.Instructions{
 					Values: []string{
-						"Open the package of tofu and drain out the water.Next, wrap the tofu block in a paper towel (or tea " +
-							"towel) and place it on a plate or tray. Now, press the tofu: First, put another tray or plate or " +
-							"even a cutting board on top of the tofu block to evenly distribute the weight. Then, place a heavy " +
-							"item* (I used a marble mortar but a can of food works) on top to apply pressure.Let it sit for at " +
-							"least 30 minutes before using. *The weighted item should not be so heavy that it will crumble or crush " +
-							"the tofu block but heavy enough that it will press out the tofu&#39;s liquid.",
-						"While draining the tofu, you can cook the rice or a side dish. For this recipe, I also prepare this " +
-							"blanched broccoli recipe.",
+						"Before You Start: For the steamed rice, please note that 1½ cups (300 g, 2 rice cooker cups) of uncooked Japanese short-grain rice yield 4⅓ cups (660 g) of cooked rice, enough for 2 donburi servings (3⅓ cups, 500 g). See how to cook short-grain rice with a rice cooker, pot over the stove, Instant Pot, or donabe.",
+						"Open the package of 14 oz medium-firm tofu (momen dofu) and drain out the water.Next, wrap the tofu block in a paper towel (or tea towel) and place it on a plate or tray. Now, press the tofu: First, put another tray or plate or even a cutting board on top of the tofu block to evenly distribute the weight. Then, place a heavy item* (I used a marble mortar but a can of food works) on top to apply pressure.Let it sit for at least 30 minutes before using. *The weighted item should not be so heavy that it will crumble or crush the tofu block but heavy enough that it will press out the tofu&#39;s liquid.",
+						"While draining the tofu, you can cook the rice or a side dish. For this recipe, I also prepare this blanched broccoli recipe.",
 						"Gather all the ingredients.",
-						"To make the homemade teriyaki sauce, whisk the sauce ingredients in a (microwave-safe) medium bowl. " +
-							"If the sugar doesn&#39;t dissolve easily, microwave it for 30 seconds and whisk well. Set aside.",
-						"Cut the green onion diagonally into thin slices.",
-						"After 30 minutes of draining the tofu, remove the paper towel and transfer the tofu to the cutting " +
-							"board. First, cut the tofu block in half widthwise.",
-						"Next, cut the tofu into roughly ¾-inch (2 cm) cubes.",
-						"Put the potato starch in a shallow tray or bowl and gently coat the tofu cubes with the potato starch. " +
-							"Set aside.",
-						"Heat a large frying pan on medium-high heat. When it&#39;s hot, add half of the oil (keep the other " +
-							"half for the next batch) and distribute it evenly. Add the first batch of tofu cubes to the pan, " +
-							"placing them about 1 inch (2.5 cm) apart from each other so it&#39;s easy to rotate the tofu cubes " +
-							"without sticking to each other.",
-						"Fry the cubes on one side until golden brown, then turn them to fry the next side. Repeat until all " +
-							"sides are brown and crispy. Transfer the fried tofu cubes to a plate or tray lined with a paper towel.",
-						"Add the next batch of uncooked tofu to the pan and fry until crispy and golden brown on all sides. " +
-							"Add the remaining oil if necessary, which helps brown the tofu faster.",
+						"To make the homemade teriyaki sauce, whisk the ¼ cup sake, ¼ cup mirin, ¼ cup soy sauce, and 4 tsp sugar in a (microwave-safe) medium bowl. If the sugar doesn‘t dissolve easily, microwave it for 30 seconds and whisk well. Set aside.",
+						"Cut 1 green onion/scallion diagonally into thin slices.",
+						"After 30 minutes of draining the tofu, remove the paper towel and transfer the tofu to the cutting board. First, cut the tofu block in half widthwise.",
+						"Next, cut the tofu into roughly ¾-inch (2-cm) cubes.",
+						"Put ⅓ cup potato starch or cornstarch in a shallow tray or bowl and gently coat the tofu cubes with the potato starch. Set aside.",
+						"Heat a large frying pan on medium-high heat. When it‘s hot, add 1½ Tbsp of the 3 Tbsp neutral oil (keep the rest for the next batch) and distribute it evenly. Add the first batch of tofu cubes to the pan, placing them about 1 inch (2.5 cm) apart from each other so it‘s easy to rotate the tofu cubes without sticking to each other.",
+						"Fry the cubes on one side until golden brown, then turn them to fry the next side. Repeat until all sides are brown and crispy. Transfer the fried tofu cubes to a plate or tray lined with a paper towel.",
+						"Add the next batch of uncooked tofu to the pan and fry until crispy and golden brown on all sides. Add more of the remaining oil as needed to help brown the tofu faster.",
 						"Remove all the fried tofu to the plate/tray.",
 						"Wipe off any remaining oil in the pan with a paper towel. Then, transfer the tofu back into the pan.",
-						"Add the teriyaki sauce to the pan; the sauce will start to thicken immediately. Quickly toss the tofu " +
-							"cubes in the sauce to coat, then turn off the heat and remove the pan from the stove. Tip: The sauce " +
-							"will continue to thicken with the residual heat, so if you want to keep some sauce in the pan, be " +
-							"sure to turn off the heat as soon as the tofu is coated.",
-						"Serve the tofu and blanched broccoli over the steamed rice. Garnish the tofu with green onions and " +
-							"sesame seeds.",
-						"You can keep the leftovers in an airtight container and store in the refrigerator for 3 days. Since " +
-							"the texture of the tofu changes when frozen, I don&#39;t recommend storing the tofu in the freezer.",
+						"Add the teriyaki sauce to the pan; the sauce will start to thicken immediately. Quickly toss the tofu cubes in the sauce to coat, then turn off the heat and remove the pan from the stove. Tip: The sauce will continue to thicken with the residual heat, so if you want to keep some sauce in the pan, be sure to turn off the heat as soon as the tofu is coated.",
+						"Divide 2 servings cooked Japanese short-grain rice into individual large (donburi) bowls. Serve the tofu and blanched broccoli over the steamed rice. Garnish the tofu with green onions and ½ tsp toasted white sesame seeds.",
+						"You can keep the leftovers in an airtight container and store in the refrigerator for 3 days. Since the texture of the tofu changes when frozen, I don‘t recommend storing the tofu in the freezer.",
 					},
 				},
 				Name: "Pan-Fried Teriyaki Tofu Bowl",
@@ -4427,7 +4400,9 @@ func TestScraper(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "noodles, Soup, noodle soup, chicken, chicken noodle soup, chicken soup",
 				},
-				Image: models.Image{Value: "https://kennymcgovern.com/wp-content/uploads/2022/03/chicken-noodle-soup.jpg"},
+				Image: models.Image{
+					Value: "https://i0.wp.com/kennymcgovern.com/wp-content/uploads/2022/03/chicken-noodle-soup.jpg?fit=685%2C643&ssl=1",
+				},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"40g thin lucky boat noodles (soaked and drained, drained weight)",
@@ -4489,7 +4464,7 @@ func TestScraper(t *testing.T) {
 						"3/4 cup (90g) King Arthur Unbleached All-Purpose Flour",
 						"1/2 teaspoon baking soda",
 						"1 teaspoon baking powder",
-						"1 teaspoon salt",
+						"1 teaspoon table salt",
 						"2 cups (242g to 300g) grated zucchini somewhere between firmly and lightly packed",
 						"3/4 cup (85g) chopped walnuts lightly toasted",
 						"3/4 cup (128g) raisins currants or dried cranberries",
@@ -5071,10 +5046,10 @@ func TestScraper(t *testing.T) {
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"50 gram gær",
-						"500 gram vand (lunkent)",
+						"500 gram vand",
 						"500 gram durum mel",
 						"150 gram manitoba hvedemel",
-						"10 gram bageenzymer (kan udelades)",
+						"10 gram bageenzymer",
 						"12 gram salt",
 					},
 				},
@@ -5176,9 +5151,9 @@ func TestScraper(t *testing.T) {
 					Value: "Vafler er alltid en suksess! Sett frem syltet&#248;y, r&#248;mme, sm&#248;r, sukker og brunost. Da  f&#229;r alle sine &#248;nsker oppfylt. Verdens beste vafler!",
 				},
 				Keywords: models.Keywords{
-					Values: "vafler, hvetemel, melk, egg, smør, sukker, malt kardemomme, vaffel, vaffelrøre, vafler, vafler, vafler med bær, vafler, vafler, vafler, vaffeloppskrifter, oppskrift på vafler, vaffel, vaffelkake, vaffler, vaffelrøre, den store vaffeldagen,",
+					Values: "vafler, hvetemel, melk, egg, smør, sukker, malt kardemomme, vaffel, vaffelrøre, vafler, vafler, vafler med bær, vafler, vafler, vafler, vaffeloppskrifter, oppskrift på vafler, vaffel, vaffelkake, vaffler, vaffelrøre, den store vaffeldagen",
 				},
-				Image: models.Image{Value: "https://images.matprat.no/3lz2vfytzr"},
+				Image: models.Image{Value: "https://images.matprat.no/uveqekyypv"},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"4 dl hvetemel",
@@ -5651,28 +5626,28 @@ func TestScraper(t *testing.T) {
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Cake"},
 				CookTime:      "PT45M",
-				DatePublished: "2022-03-10",
+				DatePublished: "2022-03-10T12:36:34+00:00",
 				Description: models.Description{
 					Value: "Pistachio Pudding Cake is a simple bundt cake to make any time of year. Made with a cake mix and " +
 						"pistachio pudding mix, this cake can be topped with a simple glaze or any number of frostings for " +
 						"a delicious crowd-pleasing dessert.",
 				},
 				Keywords: models.Keywords{
-					Values: "cake, cake mix, bundt cake, st patrick's day, recipe, dessert",
+					Values: "bundt cake, Cake, cake mix, dessert, recipe, st patrick's day",
 				},
 				Image: models.Image{
-					Value: "https://www.mybakingaddiction.com/wp-content/uploads/2022/03/overhead-view-sliced-pistachio-cake-720x720.jpg",
+					Value: "https://www.mybakingaddiction.com/wp-content/uploads/2022/03/overhead-view-sliced-pistachio-cake.jpg",
 				},
 				Ingredients: models.Ingredients{
 					Values: []string{
-						"1 (15.25 ounce) package yellow cake mix",
-						"1 (3.4 ounce) package instant pistachio pudding mix",
+						"1 package yellow cake mix (15.25 ounces)",
+						"1 package instant pistachio pudding mix (3.4 ounces)",
 						"3/4 cup sour cream",
 						"3/4 cup vegetable oil",
-						"3 large eggs, lightly beaten",
+						"3 large eggs (lightly beaten)",
 						"2 teaspoons pure vanilla extract",
 						"1/2 cup water",
-						"½ cup roughly chopped pistachios, plus extra for garnish",
+						"½ cup roughly chopped pistachios (plus extra for garnish)",
 						"1 cup powdered sugar",
 						"½ teaspoon pure vanilla extract",
 						"1-2 tablespoons milk",
@@ -5691,18 +5666,18 @@ func TestScraper(t *testing.T) {
 				},
 				Name: "Pistachio Pudding Cake",
 				NutritionSchema: models.NutritionSchema{
-					Calories:       "413 calories",
-					Carbohydrates:  "50 grams carbohydrates",
-					Cholesterol:    "55 milligrams cholesterol",
-					Fat:            "22 grams fat",
-					Fiber:          "1 grams fiber",
-					Protein:        "5 grams protein",
-					SaturatedFat:   "4 grams saturated fat",
+					Calories:       "425 kcal",
+					Carbohydrates:  "55 g",
+					Cholesterol:    "50 mg",
+					Fat:            "21 g",
+					Fiber:          "1 g",
+					Protein:        "4 g",
+					SaturatedFat:   "5 g",
 					Servings:       "1",
-					Sodium:         "379 milligrams sodium",
-					Sugar:          "31 grams sugar",
-					TransFat:       "1 grams trans fat",
-					UnsaturatedFat: "16 grams unsaturated fat",
+					Sodium:         "454 mg",
+					Sugar:          "37 g",
+					TransFat:       "0.2 g",
+					UnsaturatedFat: "15 g",
 				},
 				PrepTime: "PT5M",
 				Yield:    models.Yield{Value: 12},
@@ -5856,8 +5831,8 @@ func TestScraper(t *testing.T) {
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 tablespoon vegetable oil",
-						"2 chicken breasts (whole, skinless, boneless)",
-						"1 can diced tomatoes (14 1/2 oz., with juice)",
+						"2 chicken breasts (skinless, boneless)",
+						"1 can diced tomatoes (14 1/2 ounces)",
 						"1 cup chili sauce",
 						"1 green pepper (chopped, large)",
 						"2 celery stalks (chopped)",
@@ -5871,6 +5846,7 @@ func TestScraper(t *testing.T) {
 				},
 				Instructions: models.Instructions{
 					Values: []string{
+						"Wash hands with soap and water.",
 						"Heat pan over medium-high heat (350 °F in an electric skillet). Add vegetable oil and chicken and " +
 							"cook until the chicken reaches an internal temperature of 165 °F\u00a0(3-5 minutes).",
 						"Reduce heat to medium (300 °F in electric skillet).",
@@ -5882,11 +5858,11 @@ func TestScraper(t *testing.T) {
 					},
 				},
 				NutritionSchema: models.NutritionSchema{
-					Calories:      "76",
+					Calories:      "77",
 					Fat:           "3 g",
 					SaturatedFat:  "0 g",
 					Cholesterol:   "21 mg",
-					Sodium:        "251 mg",
+					Sodium:        "255 mg",
 					Carbohydrates: "6 g",
 					Fiber:         "2 g",
 					Sugar:         "3 g",
@@ -5901,53 +5877,80 @@ func TestScraper(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
-				DatePublished: "2017-08-22T16:38:01.000Z",
+				Category:      models.Category{Value: "Appetizer"},
+				CookTime:      "PT15M",
+				Cuisine:       models.Cuisine{Value: "TexMex"},
+				DateModified:  "2023-09-26T14:52:05.511-04:00",
+				DatePublished: "2006-02-03T07:37:15.000-05:00",
 				Description: models.Description{
-					Value: "This platter of goodness represents the lowest-effort end of the homemade nachos spectrum. That " +
-						"said, &ldquo;low-effort&rdquo;&mdash;by no stretch of the imagination&mdash;means a low YUM-factor " +
-						"here. Although this game day-perfect platter of beefy, cheesy nachos comes together quickly and " +
-						"relies largely on store-bought shortcuts, it delivers the classic meld of flavors and textures that " +
-						"you want from everyone&rsquo;s favorite appetizer. For this nachos recipe, we combine the meat and " +
-						"nacho cheese elements to create a Ro*Tel Dip-inspired, beefy cheese sauce. This guarantees an even " +
-						"distribution of the hearty toppings and keeps you from having to crank up the oven. However, if you " +
-						"prefer melted, shredded cheese over a nacho cheese sauce, simply cook your ground beef in a skillet" +
-						" on the stovetop, drain, and distribute over the nachos on a sheet pan. Then, top the platter with s" +
-						"hredded cheese and pop it under the broiler until melty and glorious (no Ro*Tel required).",
+					Value: "These classic Tex-Mex nachos are loaded to the max! Avoid soggy nachos by briefly baking them before topping with cheese, seasoned beef, refried beans, guacamole, and salsa. They&#39;re a great snack, party appetizer, or even casual weeknight dinner.",
 				},
 				Image: models.Image{
-					Value: "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2F" +
-						"uploads%2Fsites%2F19%2F2017%2F08%2F22%2Feconomicnachos.jpg",
+					Value: "https://www.simplyrecipes.com/thmb/_38VUZIotH7LHCImZlAMMtlBl50=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__simply_recipes__uploads__2019__04__Nachos-LEAD-5-ab0842bd5c3a492b989240cca869cefb.jpg",
 				},
 				Ingredients: models.Ingredients{
 					Values: []string{
-						"1 teaspoon canola oil",
-						"1 pound ground beef",
-						"1 (16-oz.) pkg. processed cheese (such as Velveeta), cut into cubes",
-						"1 (10-oz.) can diced tomatoes with green chiles (such as Rotel)",
-						"1 (11-oz.) bag tortilla chips (such as Santitas)",
-						"½ cup sour cream",
-						"½ cup prepared guacamole",
-						"1 cup chopped plum tomatoes (from 2 medium tomatoes)",
-						"3 tablespoons chopped fresh cilantro",
-						"2 tablespoons sliced pickled jalape&ntilde;o chiles",
-						"1 medium lime, cut into wedges",
+						"For the spice mix:",
+						"2 tablespoons chili powder",
+						"1 1/2 teaspoons kosher salt",
+						"1 teaspoon granulated garlic",
+						"1 teaspoon granulated onion",
+						"1 teaspoon ground cumin",
+						"1/2 teaspoon dried oregano",
+						"1/4 teaspoon black pepper",
+						"Pinch of cayenne pepper (optional)",
+						"For the nachos:",
+						"1 teaspoon vegetable oil",
+						"1 pound ground beef (80:20 lean-to-fat ratio)",
+						"16 ounces (2 cups) refried beans, canned or homemade",
+						"1/4 cup water",
+						"1 large bag of tortilla chips",
+						"4 ounces cheddar cheese, grated (about 2 cups), plus more for topping",
+						"4 ounces Colby Jack cheese, grated (about 2 cups), plus more for topping",
+						"1 cup pico de gallo, store-bought or homemade , plus more for topping",
+						"1/4 cup chopped cilantro",
+						"1 sliced jalapeño (pickled or fresh)",
+						"Optional toppings:",
+						"Guacamole",
+						"Salsa",
+						"Sour cream",
+						"Canned black olives",
+						"Sliced green onions",
+						"Shredded lettuce",
+						"Corn",
+						"Hot sauce",
 					},
 				},
 				Instructions: models.Instructions{
 					Values: []string{
-						"Prepare the Cheese Dip: Heat oil in a large skillet over medium-high. Add beef, and cook, stirring " +
-							"to crumble, until browned and cooked through, about 10 minutes.",
-						"Combine cheese and tomatoes in a medium-size microwaveable bowl. Microwave on HIGH until melted, " +
-							"about 3 minutes, stirring every 1 minute. Stir cooked beef into cheese mixture.",
-						"Assemble the Nachos: Arrange half of chips on an aluminum foil-lined rimmed baking sheet. Spoon " +
-							"2 cups of Cheese Dip evenly over chips. Top evenly with remaining chips, and spoon remaining " +
-							"Cheese Dip evenly over mixture. Dollop evenly with sour cream and guacamole. Sprinkle with" +
-							" tomatoes, cilantro, and jalape&ntilde;os. Garnish with lime wedges.",
+						"Preheat the oven to 350°F.",
+						"Make the taco spice blend: Combine all of the spices (chili powder through cayenne) together in a small bowl.",
+						"Make the beef and bean topping: Heat the vegetable oil on medium high heat until it begins to shimmer. Add the ground beef to the pan and season it with all of the taco spice blend. As the meat cooks, use a spoon to break the meat up into crumbles. Cook for about 8 minutes until the meat has browned and drain the fat using a colander. Return the meat to the pan and add the refried beans and the water. Heat the mixture until the beans are smooth and warmed through. Reduce the heat to low and keep the beef-bean mixture warm while you prepare the chips.",
+						"Toast the chips: On a 13x18-inch oven-safe platter or sheet pan, arrange the tortilla chips in a single layer, overlapping them slightly. Toast the chips in the preheated oven for 5 minutes, or just until you begin to smell their aroma.",
+						"Assemble and bake the nachos: Carefully remove the pan from the oven and top with one half of the shredded cheeses. Allow the heat from the chips to melt the cheese slightly before topping the chips with the beef and bean mixture. Sprinkle the remaining cheese over the beef and return the pan to the oven for 5 minutes, or until the cheese has fully melted.",
+						"Top and serve: Top the nachos with the pico de gallo, chopped cilantro, jalapeño slices, or any of your preferred toppings. Serve hot. Did you love the recipe? Give us some stars and leave a comment below!",
 					},
 				},
-				Name:  "Quick and Easy Nachos",
-				Yield: models.Yield{Value: 4},
-				URL:   "https://www.myrecipes.com/recipe/quick-easy-nachos",
+				Keywords: models.Keywords{
+					Values: "Quick and Easy, Nachos, Refried Beans, Super Bowl, TexMex, Tortilla, Gluten-Free, Appetizer, Snack, Game Day",
+				},
+				Name: "The Best Nachos",
+				NutritionSchema: models.NutritionSchema{
+					Calories:       "1237 kcal",
+					Carbohydrates:  "40 g",
+					Cholesterol:    "305 mg",
+					Fat:            "75 g",
+					Fiber:          "7 g",
+					Protein:        "98 g",
+					SaturatedFat:   "29 g",
+					Servings:       "Serves 6",
+					Sodium:         "1432 mg",
+					Sugar:          "2 g",
+					UnsaturatedFat: "0 g",
+				},
+				PrepTime: "PT15M",
+				Yield:    models.Yield{Value: 6},
+				URL:      "https://www.myrecipes.com/recipe/quick-easy-nachos",
 			},
 		},
 		{
@@ -5956,7 +5959,7 @@ func TestScraper(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
-				CookTime:      "PT-468345H26M35S",
+				CookTime:      "PT-472163H35M40S",
 				DatePublished: "2022-02-09",
 				Description: models.Description{
 					Value: "Rich and fudgy gluten-free tahini brownies that just happen to be also be grain-free and nut-free! " +
@@ -6331,8 +6334,11 @@ func TestScraper(t *testing.T) {
 			name: "panelinha.com.br",
 			in:   "https://www.panelinha.com.br/receita/Frango-ao-curry",
 			want: models.RecipeSchema{
-				AtContext: atContext,
-				AtType:    models.SchemaType{Value: "Recipe"},
+				AtContext:     atContext,
+				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "Aves"},
+				Cuisine:       models.Cuisine{Value: "Prática"},
+				DatePublished: "2000-05-13",
 				Description: models.Description{
 					Value: "A lista de vantagens desta receita é longa: fácil, rápida, tem poucos ingredientes e muito sabor. E " +
 						"tem mais: você pode preparar bem antes da hora de servir. Graças ao caldinho delicioso de creme de leite, " +
@@ -6340,7 +6346,7 @@ func TestScraper(t *testing.T) {
 						"em um curry de qualidade, já que é ele que dá todo o sabor ao preparo.",
 				},
 				Image: models.Image{
-					Value: "https://cdn.panelinha.com.br/receita/1648074649804-frango%20ao%20curry%20com%20mac%CC%A7a%CC%83.jpg",
+					Value: "https://i.panelinha.com.br/i1/228-q-5378-frango-ao-curry-com-maca.webp",
 				},
 				Ingredients: models.Ingredients{
 					Values: []string{
@@ -7078,9 +7084,9 @@ func TestScraper(t *testing.T) {
 						"200g Basmati Reis Pusa",
 						"2 TL Indian Tikka Marinade",
 						"2 EL Bio Cashewkerne",
-						"2 EL",
-						"4-5",
-						"4-5",
+						"2 EL Rosinen",
+						"4-5 Minzblätter",
+						"4-5 Minzblätter",
 						"2 EL Tomatenmark",
 						"300g Hähnchenbrustfilet",
 						"4 Hähnchenkeulen",
@@ -7182,7 +7188,7 @@ func TestScraper(t *testing.T) {
 						"1/2 cup (120ml) whole milk, at room temperature (between 68–72°F, 20-22°C)",
 						"1 large egg, at room temperature",
 						"1 teaspoon salt",
-						"14 Tablespoons (205g) unsalted butter, cold",
+						"14 Tablespoons (196g) unsalted butter, cold",
 						"2 and 1/2 cups (313g) all-purpose flour (spooned &amp; leveled), plus more for generously flouring hands, " +
 							"surface, and dough",
 						"2/3 cup filling (see recipe notes for options &amp; cheese filling)",
@@ -7311,7 +7317,7 @@ func TestScraper(t *testing.T) {
 				Category:      models.Category{Value: "Soups and Stews"},
 				CookTime:      "PT180M",
 				Cuisine:       models.Cuisine{Value: "Korean"},
-				DateModified:  "2020-04-20T11:52:09.000-04:00",
+				DateModified:  "2023-07-12T11:51:57.502-04:00",
 				DatePublished: "2020-03-02T08:00:03.000-05:00",
 				Description: models.Description{
 					Value: "Tender seaweed and pieces of beef brisket come together in this warming, comforting, and nutritious " +
@@ -7350,7 +7356,7 @@ func TestScraper(t *testing.T) {
 						"Ladle soup into bowls and serve alongside hot rice and any banchan (side dishes) of your choosing.",
 					},
 				},
-				Name: "Korean Seaweed and Brisket Soup (Miyeok-Guk) Recipe",
+				Name: "Miyeok-Guk (Korean Seaweed and Brisket Soup)",
 				NutritionSchema: models.NutritionSchema{
 					Calories:       "173 kcal",
 					Carbohydrates:  "2 g",
@@ -7443,7 +7449,7 @@ func TestScraper(t *testing.T) {
 				Category:      models.Category{Value: "Dinner"},
 				CookTime:      "PT20M",
 				Cuisine:       models.Cuisine{Value: "British"},
-				DateModified:  "2021-09-15T16:42:10.271-04:00",
+				DateModified:  "2023-09-29T18:15:43.573-04:00",
 				DatePublished: "2017-02-27T04:30:56.000-05:00",
 				Description: models.Description{
 					Value: "This easy stovetop Chicken Tikka Masala tastes just like your favorite Indian take-out and is ready " +
@@ -7657,14 +7663,16 @@ func TestScraper(t *testing.T) {
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Name:          "Oven-Roasted Corn On The Cob",
-				DateModified:  "2023-01-11T23:35:04.135-05:00",
+				Category:      models.Category{Value: "Side Dish"},
+				Cuisine:       models.Cuisine{Value: "American"},
+				DateModified:  "2023-11-05T21:00:17.338-05:00",
 				DatePublished: "2019-05-14T09:02:49.000-04:00",
 				Description: models.Description{
-					Value: "Great summer corn doesn&#39;t get much easier than our Oven-Roasted Corn on the Cob recipe. The trick? Flavored butter and foil. See how to bake corn on the cob in the oven.",
+					Value: "Great corn doesn&#39;t get much easier than our Oven-Roasted Corn on the Cob recipe. The trick? Flavored butter and foil. See how to bake corn on the cob in the oven.",
 				},
 				Yield: models.Yield{Value: 4},
 				Image: models.Image{
-					Value: "https://www.southernliving.com/thmb/XznmjZqjBIBjELLqffb8iRJ6n6Y=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/20220408_SL_OvenRoastedCornontheCobb_Beauty_1904-2000-4aa6ab6a32954b6d87d3f8834141914b.jpg",
+					Value: "https://www.southernliving.com/thmb/-bpB7uavaEqLXMhmTD0mz3Fj9c0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/20220408_SL_OvenRoastedCornontheCobb_Beauty_1904-ed8011d403984f0aba111ec358359e02.jpg",
 				},
 				Ingredients: models.Ingredients{
 					Values: []string{
@@ -7680,11 +7688,10 @@ func TestScraper(t *testing.T) {
 				},
 				Instructions: models.Instructions{
 					Values: []string{
-						"Preheat oven to 425°F. Stir together butter, parsley, garlic, rosemary, thyme, salt, and pepper " +
-							"in a bowl until evenly combined.",
-						"Spread 1 tablespoon herb butter on each corn cob; wrap each individually in aluminum foil. Place " +
-							"foil-wrapped corn on a baking sheet. Bake in preheated oven until corn is soft, 20 to 25 " +
-							"minutes, turning once halfway through cook time. Remove corn from foil, and serve",
+						"Make butter mixture: Preheat oven to 425°F. Stir together butter, parsley, garlic, rosemary, thyme, salt, and pepper in a bowl until evenly combined.",
+						"Spread butter on corn: Spread 1 tablespoon herb butter on each corn cob.",
+						"Wrap corn in foil: Wrap each corn on the cob individually in aluminum foil.",
+						"Roast corn in oven: Place foil-wrapped corn on a baking sheet. Bake in preheated oven until corn is soft, 20 to 25 minutes, turning once halfway through cook time. Remove corn from foil, and serve",
 					},
 				},
 				URL: "https://www.southernliving.com/recipes/oven-roasted-corn-on-cob",
@@ -7699,27 +7706,26 @@ func TestScraper(t *testing.T) {
 				Category:      models.Category{Value: "Dinner"},
 				CookTime:      "PT130M",
 				Cuisine:       models.Cuisine{Value: "American"},
-				DatePublished: "2022-04-03T08:52:35+00:00",
+				DatePublished: "2023-10-15T20:32:25+00:00",
 				Description: models.Description{
-					Value: "Split pea soup is the perfect way to use up leftover ham. Split peas and ham are simmered in a " +
-						"delicious chicken broth to create a thick and hearty soup!",
+					Value: "Split pea soup is the perfect way to use up leftover ham. Split peas and ham are simmered in a delicious broth to create a thick and hearty soup!",
 				},
 				Keywords: models.Keywords{
-					Values: "best recipe, ham and pea soup, how to make, split pea soup",
+					Values: "best recipe, ham and pea soup, how to make, leftover ham, split pea soup",
 				},
 				Image: models.Image{
-					Value: "https://www.spendwithpennies.com/wp-content/uploads/2021/03/Split-Pea-Soup-SpendWithPennies-5.jpg",
+					Value: "https://www.spendwithpennies.com/wp-content/uploads/2023/10/1200-Split-Pea-Soup-SpendWithPennies.jpg",
 				},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 cups dried split peas (green or yellow (14 oz))",
-						"1 meaty ham bone (or leftover ham)",
+						"1 meaty ham bone (or 2 cups diced leftover ham)",
 						"4 cups chicken broth",
-						"4 cups water (or additonal low sodium broth if desired)",
-						"2 teaspoons parsley",
+						"4 cups water (or additional broth if desired)",
+						"2 teaspoons dried parsley",
 						"1 bay leaf",
-						"3 stalks celery (diced)",
-						"2 large carrots (diced)",
+						"3 ribs celery (diced)",
+						"2  carrots (diced)",
 						"1 large onion (diced)",
 						"½ teaspoon black pepper",
 						"½ teaspoon dried thyme",
@@ -7732,9 +7738,8 @@ func TestScraper(t *testing.T) {
 						"In a large pot, combine peas, ham, water, broth, parsley, and bay leaf. Bring to a boil, reduce heat " +
 							"to low, and simmer covered for 1 hour.",
 						"Add in celery, carrots, onion, pepper, thyme, and salt. Cover and simmer 45 minutes more.",
-						"Remove ham bone and chop meat. Return meat to soup and cook uncovered until thickened and the peas " +
-							"have broken down, about 20 minutes more.",
-						"Discard bay leaf and serve.",
+						"Remove ham bone and chop the meat. Return the meat to the soup and cook uncovered until thickened and the peas have broken down and the soup has thickened, about 20 minutes more.",
+						"Discard the bay leaf and season with salt and additional pepper to taste.",
 					},
 				},
 				Name: "Split Pea Soup",
@@ -7933,7 +7938,7 @@ func TestScraper(t *testing.T) {
 					Values: "pasta, sauce, tomato, italian, tomato sauce",
 				},
 				Image: models.Image{
-					Value: "https://sweetcsdesigns.com/wp-content/uploads/2022/03/roasted-tomato-marinara-sauce-recipe-picture.jpg",
+					Value: "https://sweetcsdesigns.com/wp-content/uploads/2022/03/roasted-tomato-marinara-sauce-recipe-picture-720x720.jpg",
 				},
 				Ingredients: models.Ingredients{
 					Values: []string{
@@ -8059,15 +8064,14 @@ func TestScraper(t *testing.T) {
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Dinner"},
 				CookTime:      "PT5M",
-				DateModified:  "2023-05-12",
+				DateModified:  "2023-10-21",
 				DatePublished: "2019-02-13",
 				Description: models.Description{
 					Value: `If you’ve never cooked steak at home before, it can be a little intimidating. That’s why I came up with this simple steak recipe that’s so easy, you could make it any day of the week. —<a href="https://www.tasteofhome.com/author/jschend/">James Schend</a>, <a href="https://www.dairyfreed.com/" target="_blank">Dairy Freed</a>`,
 				},
 				Keywords: models.Keywords{Values: ""},
 				Image: models.Image{
-					Value: "https://tmbidigitalassetsazure.blob.core.windows.net/rms3-prod/attachments/37/1200x1200/" +
-						"Cast-Iron-Skillet-Steak_EXPS_CIMZ19_235746_B01_15_10b.jpg",
+					Value: "https://www.tasteofhome.com/wp-content/uploads/2019/02/Cast-Iron-Skillet-Steak_EXPS_CIMZ19_235746_B01_15_10b-6.jpg",
 				},
 				Ingredients: models.Ingredients{
 					Values: []string{
@@ -8077,14 +8081,10 @@ func TestScraper(t *testing.T) {
 				},
 				Instructions: models.Instructions{
 					Values: []string{
-						"Remove steak from refrigerator and sprinkle with 2 teaspoons salt; let stand 45-60 minutes. ,   " +
-							" Preheat a cast-iron skillet over high heat until extremely hot, 4-5 minutes. " +
-							"Sprinkle remaining 1 teaspoon salt in bottom of skillet; pat beef dry with paper " +
-							"towels. Place steak in skillet and cook until easily moved, 1-2 minutes; flip, " +
-							"placing steak in a different section of the skillet. Cook 30 seconds and then begin " +
-							"moving steak, occasionally pressing slightly to ensure even contact with skillet.,   " +
-							" Continue turning and flipping until cooked to desired degree of doneness (for medium-rare," +
-							" a thermometer should read 135°; medium, 140°; medium-well, 145°), 1-2 minutes.",
+						"When making steak, you want to make sure it's well-seasoned. You don't need a lot of fancy flavors to make the meat taste amazing. In fact, we opt only for salt—just make sure that it's kosher. Salt with a smaller grain, such as table salt, breaks down faster and can give your steak a briny flavor. (This bamboo salt cellar is perfect for storing your kosher salt.) To season, start by removing the steak from the refrigerator and generously sprinkle two teaspoons of kosher salt on all sides of the filet. Let it stand for 45-60 minutes. This resting period gives the meat time to come up to room temperature, which helps the steak cook more evenly. It also gives the meat time to absorb some of the salt. If you've already mastered steak basics, try one of these steak rubs and marinades.",
+						"The other key to a delicious steak is heat. And since that signature sear comes from a sizzling hot pan, a cast-iron skillet is the way to go. This hearty pan gets extremely hot and also retains heat for a long time, making it the perfect vessel for steak. You'll want to preheat your pan over high heat for 4-5 minutes, or until very hot. Then, pat your steak dry with paper towels and sprinkle the remaining teaspoon of salt in the bottom of the skillet. Now you're ready to sear! Love your skillet? You're going to be obsessed with all the amazing cast-iron accessories. We're big fans of these Lodge handle covers to protect your hands from the cast iron's super hot handle.",
+						"Place the steak into the skillet and cook until it's easily moved. This takes between one and two minutes. Carefully flip the steak, placing it in a different section of the skillet. Cook for 30 seconds, and then begin moving the steak around, occasionally pressing slightly to ensure even contact with the skillet. A grill press is great for this. Moving the steak around the pan helps it cook faster and more evenly. Editor's Tip: This step will produce a lot of smoke, so make sure you're cooking in a well-ventilated space. It's also a good idea to turn your kitchen vent or fan on.",
+						"Continue turning and flipping the steak until it's cooked to your desired degree of doneness. Let the steak rest for 10 minutes before cutting in. Have leftovers? Here's the right way to reheat steak and how to repurpose last night's dinner into one of these amazing leftover steak recipes.",
 					},
 				},
 				Name: "Cast-Iron Skillet Steak",
@@ -8181,7 +8181,7 @@ func TestScraper(t *testing.T) {
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Lunch"},
 				Cuisine:       models.Cuisine{Value: "North American"},
-				DateModified:  "2022-11-29T20:06:46",
+				DateModified:  "2022-11-28T23:00:00",
 				DatePublished: "2017-05-11T21:21:36",
 				Description: models.Description{
 					Value: "Two words: honey salmon! Sure, it takes a tiny bit of prep work, but once you marinate your " +
@@ -8582,8 +8582,8 @@ func TestScraper(t *testing.T) {
 				Category:      models.Category{Value: "brunch"},
 				CookTime:      "PT10M",
 				Cuisine:       models.Cuisine{Value: "American"},
-				DateModified:  "2023-03-22T14:48:00ZZ",
-				DatePublished: "2007-10-12T09:33:50ZZ",
+				DateModified:  "2023-03-22T14:48:00Z",
+				DatePublished: "2007-10-12T09:33:50Z",
 				Description: models.Description{
 					Value: "Ree Drummond shares her secrets to making perfect eggs Benedict. From flawless poached eggs to velvety Hollandaise sauce, it's the best brunch recipe.",
 				},
@@ -8848,7 +8848,7 @@ func TestScraper(t *testing.T) {
 						"follow us through some simple steps and make a sumptuous and enjoy it cold.",
 				},
 				Keywords: models.Keywords{
-					Values: "Beetroot Cold Soup recipe, Vegetarian, cook Beetroot Cold Soup,",
+					Values: "Beetroot Cold Soup recipe, Vegetarian, cook Beetroot Cold Soup",
 				},
 				Image: models.Image{
 					Value: "https://static.toiimg.com/thumb/90713582.cms?width=1200&height=900",
@@ -9784,7 +9784,37 @@ func TestScraper(t *testing.T) {
 	}
 }
 
-func updateHTMLFile(t *testing.T, url string) {
+func testFile(t *testing.T, in string) models.RecipeSchema {
+	t.Helper()
+	t.Parallel()
+
+	host := getHost(in)
+	_, fileName, _, _ := runtime.Caller(0)
+	f, err := os.Open(filepath.Join(path.Dir(fileName), "testdata", host+".html"))
+	if err != nil {
+		t.Fatalf("%s open file: %s", in, err)
+	}
+	defer f.Close()
+
+	doc, err := goquery.NewDocumentFromReader(f)
+	if err != nil {
+		t.Fatalf("%s could not parse HTML: %s", host, err)
+	}
+
+	actual, err := scrapeWebsite(doc, getHost(in))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if actual.URL == "" {
+		actual.URL = in
+	}
+
+	actual.AtContext = atContext
+	return actual
+}
+
+/*func updateHTMLFile(t *testing.T, url string) {
 	t.Helper()
 	t.Parallel()
 
@@ -9817,41 +9847,55 @@ func updateHTMLFile(t *testing.T, url string) {
 }
 
 // TODO: Change package name to scraper_test
-/*func testHTTP(t *testing.T, in string) models.RecipeSchema {
+func testHTTP(t *testing.T, in string) models.RecipeSchema {
 	t.Helper()
-	rs, err := Scrape(in, &mockFiles)
+	rs, err := Scrape(in, &mockFiles{})
 	if err != nil {
 		t.Error(err)
 	}
 	return rs
-}*/
-
-func testFile(t *testing.T, in string) models.RecipeSchema {
-	t.Helper()
-	t.Parallel()
-
-	host := getHost(in)
-	_, fileName, _, _ := runtime.Caller(0)
-	f, err := os.Open(filepath.Join(path.Dir(fileName), "testdata", host+".html"))
-	if err != nil {
-		t.Fatalf("%s open file: %s", in, err)
-	}
-	defer f.Close()
-
-	doc, err := goquery.NewDocumentFromReader(f)
-	if err != nil {
-		t.Fatalf("%s could not parse HTML: %s", host, err)
-	}
-
-	actual, err := scrapeWebsite(doc, getHost(in))
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if actual.URL == "" {
-		actual.URL = in
-	}
-
-	actual.AtContext = atContext
-	return actual
 }
+
+type mockFiles struct {
+	exportHitCount      int
+	extractRecipesFunc  func(fileHeaders []*multipart.FileHeader) models.Recipes
+	ReadTempFileFunc    func(name string) ([]byte, error)
+	uploadImageHitCount int
+	uploadImageFunc     func(rc io.ReadCloser) (uuid.UUID, error)
+}
+
+func (m *mockFiles) ExportCookbook(cookbook models.Cookbook, fileType models.FileType) (string, error) {
+	m.exportHitCount++
+	return cookbook.Title + fileType.Ext(), nil
+}
+
+func (m *mockFiles) ExportRecipes(recipes models.Recipes, _ models.FileType) (string, error) {
+	var s string
+	for _, recipe := range recipes {
+		s += recipe.Name + "-"
+	}
+	m.exportHitCount++
+	return s, nil
+}
+
+func (m *mockFiles) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recipes {
+	if m.extractRecipesFunc != nil {
+		return m.extractRecipesFunc(fileHeaders)
+	}
+	return models.Recipes{}
+}
+
+func (m *mockFiles) ReadTempFile(name string) ([]byte, error) {
+	if m.ReadTempFileFunc != nil {
+		return m.ReadTempFileFunc(name)
+	}
+	return []byte(name), nil
+}
+
+func (m *mockFiles) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
+	if m.uploadImageFunc != nil {
+		return m.uploadImageFunc(rc)
+	}
+	m.uploadImageHitCount++
+	return uuid.New(), nil
+}*/

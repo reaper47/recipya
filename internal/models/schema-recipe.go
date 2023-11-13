@@ -321,6 +321,8 @@ func (k *Keywords) UnmarshalJSON(data []byte) error {
 		}
 		k.Values = strings.TrimSpace(strings.Join(xs, ","))
 	}
+
+	k.Values = strings.TrimRight(k.Values, ",")
 	return nil
 }
 
@@ -351,9 +353,11 @@ func (i *Image) UnmarshalJSON(data []byte) error {
 			case string:
 				i.Value = y
 			case map[string]any:
-				i.Value = y["url"].(string)
+				u, ok := y["url"]
+				if ok {
+					i.Value = u.(string)
+				}
 			}
-
 		}
 	case map[string]any:
 		url, ok := v.(map[string]any)["url"]
