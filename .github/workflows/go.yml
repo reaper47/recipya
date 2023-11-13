@@ -28,6 +28,9 @@ jobs:
         version: latest
         args: --timeout 10m
 
+    - name: Run Revive Action by pulling pre-built image
+      uses: docker://morphy/revive-action:v2
+
     - name: Build
       run: make build
 

@@ -91,6 +91,7 @@ const InsertRecipeKeyword = `
 	INSERT INTO keyword_recipe (keyword_id, recipe_id)
 	VALUES (?, ?)`
 
+// InsertRecipeShadow is the query to insert a recipe into the shadow table.
 const InsertRecipeShadow = `
 	INSERT OR REPLACE INTO shadow_last_inserted_recipe (row, id, name, description, source)
 	VALUES (1, ?, ?, ?, ?)`

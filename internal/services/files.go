@@ -47,6 +47,8 @@ type exportData struct {
 	data        []byte
 }
 
+// ExportRecipes creates a zip containing the recipes to export in the desired file type.
+// It returns the name of file in the temporary directory.
 func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType) (string, error) {
 	buf := new(bytes.Buffer)
 	writer := zip.NewWriter(buf)
@@ -418,6 +420,7 @@ func addRecipeToPDF(pdf *gofpdf.Fpdf, r *models.Recipe) *gofpdf.Fpdf {
 	return pdf
 }
 
+// ExtractRecipes extracts the recipes from the HTTP files.
 func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recipes {
 	var (
 		recipes models.Recipes
@@ -568,6 +571,8 @@ func extractRecipe(rd io.Reader) (*models.Recipe, error) {
 	return r, err
 }
 
+// ExportCookbook exports the cookbook in the desired file type.
+// It returns the name of file in the temporary directory.
 func (f *Files) ExportCookbook(cookbook models.Cookbook, fileType models.FileType) (string, error) {
 	buf := new(bytes.Buffer)
 
@@ -674,6 +679,7 @@ func pdfToBytes(pdf *gofpdf.Fpdf, name string) []byte {
 	return buf.Bytes()
 }
 
+// ReadTempFile gets the content of a file in the temporary directory.
 func (f *Files) ReadTempFile(name string) ([]byte, error) {
 	file := filepath.Join(os.TempDir(), name)
 	data, err := os.ReadFile(file)
@@ -684,6 +690,7 @@ func (f *Files) ReadTempFile(name string) ([]byte, error) {
 	return data, nil
 }
 
+// UploadImage uploads an image to the server.
 func (f *Files) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
 	img, _, err := image.Decode(rc)
 	if err != nil {

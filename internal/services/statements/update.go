@@ -19,6 +19,7 @@ UPDATE cookbooks
 	WHERE user_id = ?
 	 AND id = ?`
 
+// UpdateCookbookRecipesReorder is the query to reorder recipes in a cookbook.
 const UpdateCookbookRecipesReorder = `
 	UPDATE cookbook_recipes
 	SET order_index = ?

@@ -174,5 +174,6 @@ type FilesService interface {
 
 // IntegrationsService is the interface that describes the methods required for various software integrations.
 type IntegrationsService interface {
+	// NextcloudImport imports the recipes from a Nextcloud instance.
 	NextcloudImport(client *http.Client, baseURL, username, password string, files FilesService) (*models.Recipes, error)
 }

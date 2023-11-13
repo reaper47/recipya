@@ -1,3 +1,4 @@
+// Package main is Recipya's entrypoint.
 package main
 
 import (

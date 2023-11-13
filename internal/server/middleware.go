@@ -9,9 +9,8 @@ import (
 // Key is a type alias for a context key.
 type Key string
 
-const (
-	UserIDKey Key = "userID"
-)
+// UserIDKey is the key to identify a user ID.
+const UserIDKey Key = "userID"
 
 func (s *Server) redirectIfLoggedInMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

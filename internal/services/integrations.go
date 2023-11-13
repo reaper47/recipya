@@ -14,6 +14,7 @@ func NewIntegrationsService() *Integrations {
 // Integrations is the entity that manages software integrations.
 type Integrations struct{}
 
+// NextcloudImport imports the recipes from a Nextcloud instance.
 func (i *Integrations) NextcloudImport(client *http.Client, baseURL, username, password string, files FilesService) (*models.Recipes, error) {
 	return integrations.NextcloudImport(client, baseURL, username, password, files.UploadImage)
 }

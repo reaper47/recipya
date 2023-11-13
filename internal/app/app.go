@@ -13,6 +13,7 @@ import (
 
 const configFileName = "config.json"
 
+// Config references a global ConfigFile.
 var Config ConfigFile
 
 // ConfigFile holds the contents of config.json.

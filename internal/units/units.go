@@ -5,6 +5,7 @@ import "embed"
 //go:embed lang/*.json
 var fs embed.FS
 
+// These constants enumerate all possible units.
 const (
 	Invalid Unit = iota
 	Celsius

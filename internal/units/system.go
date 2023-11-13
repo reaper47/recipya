@@ -2,6 +2,7 @@ package units
 
 import "strings"
 
+// These constants enumerate all possible measurement systems.
 const (
 	ImperialSystem System = "imperial"
 	InvalidSystem  System = "invalid"
