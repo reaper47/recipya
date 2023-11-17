@@ -3,7 +3,15 @@
 		"from": "my@email.com",
 		"sendGridAPIKey": "API_KEY"
 	},
-	"isProduction": false,
-	"port": 8078,
-	"url": "http://0.0.0.0"
+	"integrations": {
+		"azureComputerVision": {
+			"resourceKey": "KEY_1",
+			"visionEndpoint": "https://{resource}.cognitiveservices.azure.com/"
+		}
+	},
+	"server": {
+		"isProduction": false,
+		"port": 8078,
+		"url": "http://0.0.0.0"
+	}
 }

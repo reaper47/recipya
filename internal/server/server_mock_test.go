@@ -12,7 +12,6 @@ import (
 	"github.com/reaper47/recipya/internal/units"
 	"io"
 	"mime/multipart"
-	"net/http"
 	"slices"
 	"strings"
 )
@@ -668,15 +667,23 @@ func (m *mockFiles) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
 }
 
 type mockIntegrations struct {
-	NextcloudImportFunc func(client *http.Client, baseURL, username, password string, files services.FilesService) (*models.Recipes, error)
+	NextcloudImportFunc func(baseURL, username, password string, files services.FilesService) (*models.Recipes, error)
+	ProcessImageOCRFunc func(file io.Reader) (models.Recipe, error)
 }
 
-func (m *mockIntegrations) NextcloudImport(client *http.Client, baseURL, username, password string, files services.FilesService) (*models.Recipes, error) {
+func (m *mockIntegrations) NextcloudImport(baseURL, username, password string, files services.FilesService) (*models.Recipes, error) {
 	if m.NextcloudImportFunc != nil {
-		return m.NextcloudImportFunc(client, baseURL, username, password, files)
+		return m.NextcloudImportFunc(baseURL, username, password, files)
 	}
 	return &models.Recipes{
 		{ID: 1, Name: "One"},
 		{ID: 2, Name: "Two"},
 	}, nil
+}
+
+func (m *mockIntegrations) ProcessImageOCR(f io.Reader) (models.Recipe, error) {
+	if m.ProcessImageOCRFunc != nil {
+		return m.ProcessImageOCRFunc(f)
+	}
+	return models.Recipe{ID: 1}, nil
 }

@@ -25,7 +25,7 @@ func NewRedirectCookie(uri string) *http.Cookie {
 		Name:     cookieNameRedirect,
 		Value:    uri,
 		Path:     "/",
-		Secure:   app.Config.IsProduction,
+		Secure:   app.Config.Server.IsProduction,
 		HttpOnly: true,
 		SameSite: http.SameSiteStrictMode,
 	}
@@ -37,7 +37,7 @@ func NewSessionCookie(value string) *http.Cookie {
 		Name:     cookieNameSession,
 		Value:    value,
 		Path:     "/",
-		Secure:   app.Config.IsProduction,
+		Secure:   app.Config.Server.IsProduction,
 		HttpOnly: true,
 		SameSite: http.SameSiteStrictMode,
 	}
@@ -71,7 +71,7 @@ func NewRememberMeCookie(selector, validator string) *http.Cookie {
 		Value:    selector + ":" + validator,
 		Path:     "/",
 		Expires:  time.Now().Add(30 * 24 * time.Hour),
-		Secure:   app.Config.IsProduction,
+		Secure:   app.Config.Server.IsProduction,
 		HttpOnly: true,
 		SameSite: http.SameSiteStrictMode,
 	}

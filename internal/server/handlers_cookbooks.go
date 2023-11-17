@@ -359,7 +359,7 @@ func (s *Server) cookbooksImagePostCookbookHandler(w http.ResponseWriter, r *htt
 
 	f, err := imageFile[0].Open()
 	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Could open the image from the form.", errorToast))
+		w.Header().Set("HX-Trigger", makeToast("Could not open the image from the form.", errorToast))
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}

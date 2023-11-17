@@ -143,6 +143,15 @@ func (r *Recipe) Copy() Recipe {
 	}
 }
 
+// IsEmpty verifies whether all the Recipe fields are empty.
+func (r *Recipe) IsEmpty() bool {
+	return r.Category == "" && r.CreatedAt.Equal(time.Time{}) && r.Cuisine == "" && r.Description == "" &&
+		r.ID == 0 && r.Image == uuid.Nil && len(r.Ingredients) == 0 && len(r.Instructions) == 0 &&
+		len(r.Keywords) == 0 && r.Name == "" && r.Nutrition.Equal(Nutrition{}) &&
+		r.Times.Equal(Times{}) && len(r.Tools) == 0 && r.UpdatedAt.Equal(time.Time{}) &&
+		r.URL == "" && r.Yield == 0
+}
+
 // Normalize normalizes texts for readability.
 // It normalizes quantities, i.e. 1l -> 1L and 1 ml -> 1 mL.
 func (r *Recipe) Normalize() {
@@ -249,6 +258,11 @@ type Times struct {
 	Prep  time.Duration
 	Cook  time.Duration
 	Total time.Duration
+}
+
+// Equal verifies whether the Times is equal to the other Times.
+func (t Times) Equal(other Times) bool {
+	return t.Prep == other.Prep && t.Cook == other.Cook && t.Total == other.Total
 }
 
 // NewTimes creates a struct of Times from the Schema Duration fields for prep and cook time.

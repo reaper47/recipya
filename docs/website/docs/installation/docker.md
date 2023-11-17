@@ -34,7 +34,7 @@ Then, start the application.
 docker-compose up -d
 ```
 
-Access the app through your browser at `http://localhost:[host port]`.
+Access the app through your browser at `http://localhost:[host's port]`.
 
 If you are using Windows and you intend to access the app on other devices within your home network, please ensure to `Allow the connection` of the `Docker Desktop Backend`
 inbound Windows Defender Firewall rule.

@@ -158,6 +158,7 @@ func (s *Server) mountHandlers() {
 				})
 			})
 
+			r.Post("/ocr", s.recipesAddOCRHandler)
 			r.Post("/request-website", s.recipesAddRequestWebsiteHandler)
 			r.Post("/website", s.recipesAddWebsiteHandler)
 		})
@@ -207,7 +208,7 @@ func (s *Server) mountHandlers() {
 // Run starts the web server.
 func (s *Server) Run() {
 	httpServer := &http.Server{
-		Addr:              "0.0.0.0:" + strconv.Itoa(app.Config.Port),
+		Addr:              "0.0.0.0:" + strconv.Itoa(app.Config.Server.Port),
 		Handler:           s.Router,
 		ReadTimeout:       15 * time.Second,
 		ReadHeaderTimeout: 15 * time.Second,
