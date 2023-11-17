@@ -246,6 +246,44 @@ func TestRecipe_ConvertMeasurementSystem(t *testing.T) {
 	}
 }
 
+func TestRecipe_IsEmpty(t *testing.T) {
+	t.Run("is empty", func(t *testing.T) {
+		var r models.Recipe
+		if !r.IsEmpty() {
+			t.Fail()
+		}
+	})
+
+	testcases := []struct {
+		name   string
+		recipe models.Recipe
+	}{
+		{name: "has category only", recipe: models.Recipe{Category: "breakfast"}},
+		{name: "has created at only", recipe: models.Recipe{CreatedAt: time.Now()}},
+		{name: "has cuisine only", recipe: models.Recipe{Cuisine: "american"}},
+		{name: "has description only", recipe: models.Recipe{Description: "american"}},
+		{name: "has ID only", recipe: models.Recipe{ID: 1}},
+		{name: "has image only", recipe: models.Recipe{Image: uuid.New()}},
+		{name: "has Ingredients only", recipe: models.Recipe{Ingredients: []string{"one"}}},
+		{name: "has Instructions only", recipe: models.Recipe{Instructions: []string{"one"}}},
+		{name: "has Keywords only", recipe: models.Recipe{Keywords: []string{"one"}}},
+		{name: "has Name only", recipe: models.Recipe{Name: "one"}},
+		{name: "has Nutrition only", recipe: models.Recipe{Nutrition: models.Nutrition{Calories: "666 kcal"}}},
+		{name: "has times only", recipe: models.Recipe{Times: models.Times{Prep: 5 * time.Hour}}},
+		{name: "has Tools only", recipe: models.Recipe{Tools: []string{"hose"}}},
+		{name: "has UpdatedAt only", recipe: models.Recipe{UpdatedAt: time.Now()}},
+		{name: "has URL only", recipe: models.Recipe{URL: "mama"}},
+		{name: "has Yield only", recipe: models.Recipe{Yield: 5}},
+	}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			if tc.recipe.IsEmpty() {
+				t.Fail()
+			}
+		})
+	}
+}
+
 func TestNutrientFDC_ValuePerGram(t *testing.T) {
 	testcases := []struct {
 		name     string

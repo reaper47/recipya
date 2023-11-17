@@ -40,9 +40,13 @@ You can also reorder the ingredients and the instructions by dragging the arrow 
 You can upload an image or a scan of a handwritten or printed recipe to add it to your collection. 
 This option is useful for digitizing your and your family's paper recipes.
 
-:::danger
+To do so, click the *Upload* button and select an image in your computer.
 
-This feature is not implemented yet.
+![img alt](/img/features/add-recipe-scan.png)
+
+:::warning
+
+You must have an [Azure AI Vision](/installation/system-requirements#azure-ai-vision) account to use this feature.
 
 :::
 

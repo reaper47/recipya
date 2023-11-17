@@ -17,9 +17,6 @@
   <a href="https://github.com/reaper47/recipya/blob/master/LICENSE">
     <img alt="GitHub" src="https://img.shields.io/github/license/reaper47/recipya"/>
   </a>
-  <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Freaper47%2Frecipya?ref=badge_small">
-    <img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Freaper47%2Frecipya.svg?type=small" alt="FOSSA Status"/>
-  </a>
 </p>
 
 <div align="center">
@@ -40,7 +37,7 @@ It is focused on simplicity for the whole family to enjoy.
 
 - Manage your favorite recipes
 - Import recipes from around the web
-- Digitize paper recipes (planned)
+- Digitize paper recipes
 - Organize your recipes into cookbooks
 - Works seamlessly with recipes in your [Nextcloud Cookbook](https://apps.nextcloud.com/apps/cookbook)
 - Automatic conversion to your preferred measurement system (imperial/metric)
@@ -80,16 +77,13 @@ This project is supported by these kind people:
 
 ## Other Recipe Manager Apps
 
+- [Tandoor](https://github.com/TandoorRecipes/recipes)
 - [Mealie](https://github.com/mealie-recipes/mealie)
 - [Paprika](https://www.paprikaapp.com/)
 - [Grocy](https://grocy.info/)
 - [Cooklist](https://cooklist.com/)
 - [Grossr](https://grossr.com/)
 - [Awesome List](https://github.com/awesome-selfhosted/awesome-selfhosted#recipe-management)
-
-## License
-
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Freaper47%2Frecipya.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Freaper47%2Frecipya?ref=badge_large)
 
 # Inspiration
 
@@ -101,5 +95,6 @@ This project was mainly coded to blasting the following albums:
 - [Ensiferum - From Afar](https://www.youtube.com/watch?v=6r8OPu3SRSM)
 - [Pain - You Only Live Twice](https://www.youtube.com/watch?v=obgCEoLzLs4)
 - [Abysmal Dawn - Phylogenesis](https://www.youtube.com/watch?v=xJMybqRMedk&pp=ygUMYWJ5c21hbCBkYXdu)
-- [Lofi Hip Hop Radio](https://www.youtube.com/watch?v=jfKfPfyJRdk)
+- [Lofi Girl - lofi hip hop radio](https://www.youtube.com/watch?v=jfKfPfyJRdk)
+- [Lofi Girl - synthwave radio](https://www.youtube.com/watch?v=4xDzrJKXOOY)
 - [4am](https://www.youtube.com/watch?v=tBcPji_jRDc)

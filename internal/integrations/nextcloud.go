@@ -16,10 +16,11 @@ const (
 )
 
 // NextcloudImport imports recipes from a Nextcloud instance.
-func NextcloudImport(client *http.Client, baseURL, username, password string, uploadImageFunc func(rc io.ReadCloser) (uuid.UUID, error)) (*models.Recipes, error) {
+func NextcloudImport(baseURL, username, password string, uploadImageFunc func(rc io.ReadCloser) (uuid.UUID, error)) (*models.Recipes, error) {
 	auth := base64.StdEncoding.EncodeToString([]byte(username + ":" + password))
 	header := fmt.Sprintf("Basic %s", auth)
 
+	client := http.DefaultClient
 	recipesURL := fmt.Sprintf("%s%s/recipes", baseURL, baseURLNextcloud)
 	resRecipes, err := sendBasicAuthRequest(client, recipesURL, header)
 	if err != nil {

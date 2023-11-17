@@ -8,6 +8,7 @@ import (
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
@@ -403,6 +404,65 @@ func TestHandlers_Recipes_AddManualInstructionDelete(t *testing.T) {
 			assertStringsInHTML(t, getBodyHTML(rr), tc.want)
 		})
 	}
+}
+
+func TestHandlers_Recipes_AddOCR(t *testing.T) {
+	srv := newServerTest()
+	originalIntegrations := srv.Integrations
+	originalRepo := srv.Repository
+
+	uri := "/recipes/add/ocr"
+
+	sendReq := func(image string) *httptest.ResponseRecorder {
+		fields := map[string]string{"image": image}
+		contentType, body := createMultipartForm(fields)
+		return sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
+	}
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
+	})
+
+	t.Run("image file must not be empty", func(t *testing.T) {
+		rr := sendReq("")
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Could not retrieve the image from the form.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+	})
+
+	t.Run("processing OCR failed", func(t *testing.T) {
+		srv.Integrations = &mockIntegrations{
+			ProcessImageOCRFunc: func(_ io.Reader) (models.Recipe, error) {
+				return models.Recipe{}, errors.New("error")
+			},
+		}
+		defer func() {
+			srv.Integrations = originalIntegrations
+		}()
+
+		rr := sendReq("hello.jpg")
+
+		assertStatus(t, rr.Code, http.StatusInternalServerError)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Could not process OCR.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+	})
+
+	t.Run("valid request", func(t *testing.T) {
+		repo := &mockRepository{
+			RecipesRegistered: make(map[int64]models.Recipes),
+		}
+		srv.Repository = repo
+		defer func() {
+			srv.Repository = originalRepo
+		}()
+
+		rr := sendReq("hello.jpg")
+
+		assertStatus(t, rr.Code, http.StatusCreated)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Recipe scanned and uploaded.\",\"backgroundColor\":\"bg-blue-500\"}"}`)
+		if len(repo.RecipesRegistered[1]) != 1 && repo.RecipesRegistered[1][0].ID != 1 {
+			t.Fatal("expected the recipe to be added")
+		}
+	})
 }
 
 func TestHandlers_Recipes_AddRequestWebsite(t *testing.T) {
@@ -916,7 +976,7 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 		return fmt.Sprintf("/recipes/%d/share", id)
 	}
 
-	app.Config.URL = "https://www.recipya.com"
+	app.Config.Server.URL = "https://www.recipya.com"
 	recipe := &models.Recipe{
 		Category:     "American",
 		Description:  "This is the most delicious recipe!",

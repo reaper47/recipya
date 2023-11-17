@@ -71,7 +71,7 @@ func TestNextcloudImport(t *testing.T) {
 	defer srv.Close()
 	files := &mockFiles{}
 
-	got, err := integrations.NextcloudImport(srv.Client(), srv.URL, "master", "yoda", files.UploadImage)
+	got, err := integrations.NextcloudImport(srv.URL, "master", "yoda", files.UploadImage)
 	if err != nil {
 		return
 	}

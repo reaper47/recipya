@@ -15,7 +15,7 @@ func (s *Server) integrationsImportNextcloud(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	recipes, err := s.Integrations.NextcloudImport(http.DefaultClient, baseURL, username, password, s.Files)
+	recipes, err := s.Integrations.NextcloudImport(baseURL, username, password, s.Files)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Failed to import Nextcloud recipes.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)
