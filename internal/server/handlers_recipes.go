@@ -167,7 +167,7 @@ func (s *Server) recipeAddManualPostHandler(w http.ResponseWriter, r *http.Reque
 
 	f, err := imageFile[0].Open()
 	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Could open the image from the form.", errorToast))
+		w.Header().Set("HX-Trigger", makeToast("Could not open the image from the form.", errorToast))
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -436,6 +436,50 @@ func recipeAddManualInstructionDeleteHandler(w http.ResponseWriter, r *http.Requ
 	_, _ = fmt.Fprint(w, sb.String())
 }
 
+func (s *Server) recipesAddOCRHandler(w http.ResponseWriter, r *http.Request) {
+	r.Body = http.MaxBytesReader(w, r.Body, 1<<24)
+	err := r.ParseMultipartForm(1 << 24)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Could not parse the form.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	images, ok := r.MultipartForm.File["image"]
+	if !ok {
+		w.Header().Set("HX-Trigger", makeToast("Could not retrieve the image from the form.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	f, err := images[0].Open()
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Could not open the image from the form.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	defer func() {
+		_ = f.Close()
+	}()
+
+	recipe, err := s.Integrations.ProcessImageOCR(f)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Could not process OCR.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	_, err = s.Repository.AddRecipe(&recipe, getUserID(r))
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Recipe could not be added.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("HX-Trigger", makeToast("Recipe scanned and uploaded.", infoToast))
+	w.WriteHeader(http.StatusCreated)
+}
+
 func (s *Server) recipesAddRequestWebsiteHandler(w http.ResponseWriter, r *http.Request) {
 	s.Email.Send(app.Config.Email.From, templates.EmailRequestWebsite, templates.EmailData{
 		Text: r.FormValue("website"),
@@ -568,7 +612,7 @@ func (s *Server) recipesEditPostHandler(w http.ResponseWriter, r *http.Request) 
 	if ok {
 		f, err := imageFile[0].Open()
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Could open the image from the form.", errorToast))
+			w.Header().Set("HX-Trigger", makeToast("Could not open the image from the form.", errorToast))
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}

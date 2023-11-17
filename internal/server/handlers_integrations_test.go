@@ -39,7 +39,7 @@ func TestHandlers_Integrations_Nextcloud(t *testing.T) {
 
 	t.Run("error when importing", func(t *testing.T) {
 		srv.Integrations = &mockIntegrations{
-			NextcloudImportFunc: func(client *http.Client, baseURL, username, password string, files services.FilesService) (*models.Recipes, error) {
+			NextcloudImportFunc: func(baseURL, username, password string, files services.FilesService) (*models.Recipes, error) {
 				return nil, errors.New("import error")
 			},
 		}
@@ -59,7 +59,7 @@ func TestHandlers_Integrations_Nextcloud(t *testing.T) {
 		}
 		srv.Repository = repo
 		srv.Integrations = &mockIntegrations{
-			NextcloudImportFunc: func(client *http.Client, baseURL, username, password string, files services.FilesService) (*models.Recipes, error) {
+			NextcloudImportFunc: func(baseURL, username, password string, files services.FilesService) (*models.Recipes, error) {
 				return &models.Recipes{
 					{ID: 1, Name: "One"},
 					{ID: 2, Name: "Two"},

@@ -18,24 +18,23 @@ var Config ConfigFile
 
 // ConfigFile holds the contents of config.json.
 type ConfigFile struct {
-	Email        ConfigEmail `json:"email"`
-	IsProduction bool        `json:"isProduction"`
-	Port         int         `json:"port"`
-	URL          string      `json:"url"`
+	Email        ConfigEmail        `json:"email"`
+	Integrations ConfigIntegrations `json:"integrations"`
+	Server       ConfigServer       `json:"server"`
 }
 
 // Address assembles the server's web address from its URL and host.
 func (c *ConfigFile) Address() string {
-	port := ":" + strconv.Itoa(c.Port)
+	port := ":" + strconv.Itoa(c.Server.Port)
 
 	conn, err := net.Dial("udp", "8.8.8.8:80")
 	if err != nil || isRunningInDocker() {
-		addr := c.URL
+		addr := c.Server.URL
 		if (runtime.GOOS == "windows" || isRunningInDocker()) && strings.Contains(addr, "0.0.0.0") {
 			addr = strings.Replace(addr, "0.0.0.0", "127.0.0.1", 1)
 		}
 
-		if c.Port != 0 {
+		if c.Server.Port != 0 {
 			addr += port
 		}
 		return addr
@@ -45,8 +44,8 @@ func (c *ConfigFile) Address() string {
 	}()
 
 	localAddr := conn.LocalAddr().(*net.UDPAddr)
-	addr := strings.SplitAfter(c.URL, "://")[0] + localAddr.IP.String()
-	if c.Port != 0 {
+	addr := strings.SplitAfter(c.Server.URL, "://")[0] + localAddr.IP.String()
+	if c.Server.Port != 0 {
 		return addr + port
 	}
 	return addr
@@ -56,6 +55,24 @@ func (c *ConfigFile) Address() string {
 type ConfigEmail struct {
 	From           string `json:"from"`
 	SendGridAPIKey string `json:"sendGridAPIKey"`
+}
+
+// ConfigIntegrations holds configuration data for 3rd-party services.
+type ConfigIntegrations struct {
+	AzureComputerVision AzureComputerVision `json:"azureComputerVision"`
+}
+
+// AzureComputerVision holds configuration data for the Azure Computer Vision API.
+type AzureComputerVision struct {
+	ResourceKey    string `json:"resourceKey"`
+	VisionEndpoint string `json:"visionEndpoint"`
+}
+
+// ConfigServer holds configuration data for the server.
+type ConfigServer struct {
+	IsProduction bool   `json:"isProduction"`
+	Port         int    `json:"port"`
+	URL          string `json:"url"`
 }
 
 // ImagesDir is the directory where user images are stored.

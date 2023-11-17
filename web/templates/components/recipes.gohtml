@@ -157,13 +157,18 @@
                 </p>
             </div>
             <hr class="dark:border dark:border-gray-800">
-            <div class="px-6 pt-4 pb-2">
+            <form id="ocr-form" class="px-6 pt-4 pb-2"
+                  hx-post="/recipes/add/ocr"
+                  hx-encoding="multipart/form-data"
+                  hx-indicator="#fullscreen-loader"
+                  hx-swap="none">
+                <input hidden type="file" id="ocr-file-picker" name="image">
                 <button class="w-full border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
-                        hx-indicator="#fullscreen-loader"
-                        onclick="openModal(event)">
+                        type="button"
+                        onclick="handleOCR()">
                     Upload
                 </button>
-            </div>
+            </form>
         </div>
 
         <div class="shadow-lg rounded-xl h-96 dark:shadow-none dark:bg-gray-600">
@@ -217,6 +222,21 @@
             </form>
         </dialog>
     </div>
+    <script defer>
+        async function handleOCR() {
+            const input = document.querySelector("#ocr-file-picker");
+
+            const filePromise = new Promise((resolve) => {
+                input.addEventListener("change", () => {
+                    resolve(input.files[0]);
+                }, {once: true});
+            });
+
+            input.click();
+            await filePromise;
+            htmx.trigger("#ocr-form", "submit");
+        }
+    </script>
 {{end}}
 
 {{define "add-recipe-manual"}}

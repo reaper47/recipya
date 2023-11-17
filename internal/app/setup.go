@@ -8,100 +8,46 @@ import (
 	"fmt"
 	"github.com/briandowns/spinner"
 	"io"
+	"net"
 	"net/http"
 	"os"
 	"path/filepath"
 	"runtime"
-	"strconv"
 	"strings"
 	"time"
 )
 
 func setup() {
-	reset := "\033[0m"
-	greenText := func(s string) string {
-		return "\033[32m" + s + reset
-	}
-	redText := func(s string) string {
-		return "\033[31m" + s + reset
-	}
-
 	exe, err := os.Executable()
 	if err != nil {
 		panic(err)
 	}
 	dir := filepath.Dir(exe)
 
-	_, err = os.Stat(filepath.Join(dir, "fdc.db"))
+	setupFDC(dir)
+	setupConfigFile(dir)
+
+	fmt.Println("Recipya is properly set up.")
+}
+
+func setupFDC(exeDir string) {
+	_, err := os.Stat(filepath.Join(exeDir, "fdc.db"))
 	if errors.Is(err, os.ErrNotExist) {
 		s := spinner.New(spinner.CharSets[9], 100*time.Millisecond)
 		s.Prefix = "Fetching the FDC database... "
 		s.FinalMSG = "Fetching the FDC database... " + greenText("Success") + "\n"
 		s.Start()
-		err = downloadFile(filepath.Join(dir, "fdc.db.zip"), "https://raw.githubusercontent.com/reaper47/recipya/main/deploy/fdc.db.zip")
+		err = downloadFile(filepath.Join(exeDir, "fdc.db.zip"), "https://raw.githubusercontent.com/reaper47/recipya/main/deploy/fdc.db.zip")
 		if err != nil {
 			fmt.Printf("\n"+redText("Error downloading FDC database")+": %s\n", err)
 			fmt.Println("Application setup will terminate")
 			os.Exit(1)
 		}
 		s.Stop()
-		_ = os.Remove(filepath.Join(dir, "fdc.db.zip"))
+		_ = os.Remove(filepath.Join(exeDir, "fdc.db.zip"))
 	} else {
 		fmt.Println(greenText("OK") + " FDC database")
 	}
-
-	configFilePath := filepath.Join(dir, "config.json")
-	_, err = os.Stat(configFilePath)
-	if err != nil {
-		fmt.Print("Creating the configuration file... ")
-		err := createConfigFile(configFilePath)
-		if err != nil {
-			fmt.Printf("\n"+redText("Error creating config file")+": %s\n", err)
-			fmt.Println("Application setup will terminate")
-			os.Exit(1)
-		}
-		fmt.Println(greenText("Success"))
-	} else {
-		fmt.Println(greenText("OK") + " Configuration file")
-	}
-
-	fmt.Println("Recipya is properly set up.")
-}
-
-func createConfigFile(path string) error {
-	if isRunningInDocker() {
-		return nil
-	}
-
-	var c ConfigFile
-	r := bufio.NewReader(os.Stdin)
-	fmt.Println()
-	c.Email.From = promptUser(r, "What is the email address of your SendGrid account?", "")
-	c.Email.SendGridAPIKey = promptUser(r, "What is your SendGrid API key?", "")
-	isProduction := promptUser(r, "Is your application in production? [y/N]", "N")
-	c.IsProduction = isProduction == "y"
-	url := promptUser(r, "What is the app's URL? (default, http://0.0.0.0)", "http://0.0.0.0")
-	if runtime.GOOS == "windows" && strings.Contains(url, "0.0.0.0") {
-		url = strings.Replace(url, "0.0.0.0", "127.0.0.1", 1)
-	}
-	c.URL = url
-
-	portStr := promptUser(r, "What is the port? (default, 8078)", "8078")
-	port, err := strconv.Atoi(portStr)
-	if err != nil {
-		port = 8078
-	}
-	if port < 1024 {
-		return fmt.Errorf("port must be greater than 1024, got %d", port)
-	}
-	c.Port = port
-
-	j, err := json.MarshalIndent(c, "", "\t")
-	if err != nil {
-		return err
-	}
-
-	return os.WriteFile(path, j, os.ModePerm)
 }
 
 func downloadFile(path, url string) error {
@@ -153,6 +99,76 @@ func downloadFile(path, url string) error {
 
 	_, err = io.Copy(destFile, zippedFile)
 	return err
+}
+
+func setupConfigFile(exeDir string) {
+	configFilePath := filepath.Join(exeDir, "config.json")
+	_, err := os.Stat(configFilePath)
+	if err != nil {
+		fmt.Print("Creating the configuration file... ")
+		err = createConfigFile(configFilePath)
+		if err != nil {
+			fmt.Printf("\n"+redText("Error creating config file")+": %s\n", err)
+			fmt.Println("Application setup will terminate")
+			os.Exit(1)
+		}
+		fmt.Println(greenText("Success"))
+	} else {
+		fmt.Println(greenText("OK") + " Configuration file")
+	}
+}
+
+func createConfigFile(path string) error {
+	if isRunningInDocker() {
+		return nil
+	}
+
+	var c ConfigFile
+	r := bufio.NewReader(os.Stdin)
+	fmt.Println()
+
+	hasSendGrid := promptUser(r, "Do you have a SendGrid account? If not, important emails will not be sent [Y/n]", "y")
+	if isYes(hasSendGrid) {
+		c.Email.From = promptUser(r, "\tWhat is the email address of your SendGrid account?", "")
+		c.Email.SendGridAPIKey = promptUser(r, "\tWhat is your SendGrid API key?", "")
+	}
+
+	hasVisionAPI := promptUser(r, "Do you have an Azure AI Vision account? If not, OCR features will be disabled. [Y/n]", "y")
+	if isYes(hasVisionAPI) {
+		c.Integrations.AzureComputerVision.ResourceKey = promptUser(r, "\tWhat is your resource key?", "")
+		c.Integrations.AzureComputerVision.VisionEndpoint = promptUser(r, "\tWhat is your vision API endpoint?", "")
+	}
+
+	isInProd := promptUser(r, "Is your application in production? [y/N]", "N")
+	c.Server.IsProduction = isYes(isInProd)
+
+	url := promptUser(r, "What is the app's URL? (default, http://0.0.0.0)", "http://0.0.0.0")
+	if runtime.GOOS == "windows" && strings.Contains(url, "0.0.0.0") {
+		url = strings.Replace(url, "0.0.0.0", "127.0.0.1", 1)
+	}
+	c.Server.URL = url
+
+	if !isYes(isInProd) {
+		listener, err := net.Listen("tcp", ":0")
+		if err != nil {
+			panic(err)
+		}
+		defer func() {
+			_ = listener.Close()
+		}()
+		c.Server.Port = listener.Addr().(*net.TCPAddr).Port
+	}
+
+	j, err := json.MarshalIndent(c, "", "\t")
+	if err != nil {
+		return err
+	}
+
+	return os.WriteFile(path, j, os.ModePerm)
+}
+
+func isYes(s string) bool {
+	return strings.HasPrefix(strings.ToLower(s), "y")
 }
 
 func isRunningInDocker() bool {
