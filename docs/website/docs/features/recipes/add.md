@@ -46,7 +46,7 @@ To do so, click the *Upload* button and select an image in your computer.
 
 :::warning
 
-You must have an [Azure AI Vision](/installation/system-requirements#azure-ai-vision) account to use this feature.
+You must have an [Azure AI Vision](/docs/installation/system-requirements#azure-ai-vision) account to use this feature.
 
 :::
 
