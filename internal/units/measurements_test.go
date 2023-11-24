@@ -793,8 +793,6 @@ func TestNewMeasurement(t *testing.T) {
 }
 
 func TestNewScaledMeasurementFromString(t *testing.T) {
-	t.Parallel()
-
 	testcases := []struct {
 		name string
 		in   string

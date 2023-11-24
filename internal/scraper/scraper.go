@@ -33,10 +33,7 @@ func Scrape(url string, files services.FilesService) (models.RecipeSchema, error
 
 	rs, err = scrapeWebsite(doc, getHost(url))
 	if err != nil {
-		rs, err = parseUnsupportedWebsite(doc)
-		if err != nil {
-			return rs, ErrNotImplemented
-		}
+		return rs, ErrNotImplemented
 	}
 
 	if rs.AtContext == "" {
@@ -79,7 +76,8 @@ func getHost(rawURL string) string {
 		}
 		return parts[1]
 	case 3:
-		if parts[0] == "recipes" || parts[0] == "receitas" || parts[0] == "cooking" {
+		s := parts[0]
+		if s == "recipes" || s == "receitas" || s == "cooking" || s == "news" || s == "mobile" {
 			return parts[1]
 		}
 
@@ -87,8 +85,8 @@ func getHost(rawURL string) string {
 			return parts[1]
 		}
 
-		if parts[0] != "www" {
-			return parts[0]
+		if s != "www" {
+			return s
 		}
 		return parts[1]
 	default:
@@ -99,7 +97,7 @@ func getHost(rawURL string) string {
 func parseLdJSON(root *goquery.Document) (models.RecipeSchema, error) {
 	for _, node := range root.Find("script[type='application/ld+json']").Nodes {
 		var rs models.RecipeSchema
-		err := json.Unmarshal([]byte(node.FirstChild.Data), &rs)
+		err := json.Unmarshal([]byte(strings.ReplaceAll(node.FirstChild.Data, "\n", "")), &rs)
 		if err != nil {
 			var xrs []models.RecipeSchema
 			err = json.Unmarshal([]byte(node.FirstChild.Data), &xrs)

@@ -34,7 +34,7 @@ They offer a [free plan](https://sendgrid.com/en-us/pricing) that allows you to 
 
 Within Recipya, the email module is used for the following events:
 - Send a confirmation email to a user who registered.
-- Notifying the administrator when some errors occur.
+- Notify the administrator when some errors occur.
 - Inform the administrator when a user requests a URL to import from an unsupported website.
 
 If none of these reasons persuade you to use this service, then leave the `email.from` and `email.sendGridAPIKey` fields

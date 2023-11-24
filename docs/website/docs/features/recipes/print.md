@@ -14,10 +14,3 @@ recipe's title.
 You will then be presented with the print dialog.
 
 ![img alt](/img/features/print-dialog.png)
-
-:::caution
-
-Printing a recipe does not look the same across browsers when it should.
-An [issue](https://github.com/reaper47/recipya/issues/73) is raised on GitHub.
-
-:::
