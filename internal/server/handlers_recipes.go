@@ -35,6 +35,9 @@ func (s *Server) recipesHandler(w http.ResponseWriter, r *http.Request) {
 	isHxRequest := r.Header.Get("HX-Request") == "true"
 
 	baseData := templates.Data{
+		About: templates.AboutData{
+			Version: app.Version,
+		},
 		Functions:   templates.NewFunctionsData(),
 		IsHxRequest: isHxRequest,
 		Pagination:  p,

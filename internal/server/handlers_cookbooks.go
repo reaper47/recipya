@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
+	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
 	"net/http"
@@ -27,6 +28,9 @@ func (s *Server) cookbookShareHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := templates.Data{
+		About: templates.AboutData{
+			Version: app.Version,
+		},
 		IsAuthenticated: isLoggedIn,
 		Title:           cookbook.Title,
 		Functions:       templates.NewFunctionsData(),
@@ -90,6 +94,9 @@ func (s *Server) cookbooksHandler(w http.ResponseWriter, r *http.Request) {
 	isHxRequest := r.Header.Get("Hx-Request") == "true"
 
 	data := templates.Data{
+		About: templates.AboutData{
+			Version: app.Version,
+		},
 		CookbookFeature: templates.CookbookFeature{
 			Cookbooks: cookbooks,
 			MakeCookbook: func(index int64, cookbook models.Cookbook, page uint64) models.CookbookView {

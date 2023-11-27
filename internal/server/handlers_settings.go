@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
 	"github.com/reaper47/recipya/internal/units"
@@ -14,6 +15,9 @@ func (s *Server) settingsHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		page := templates.SettingsPage
 		templates.Render(w, page, templates.Data{
+			About: templates.AboutData{
+				Version: app.Version,
+			},
 			IsAuthenticated: true,
 			Title:           page.Title(),
 		})

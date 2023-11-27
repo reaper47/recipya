@@ -67,6 +67,10 @@ type RepositoryService interface {
 	// GetAuthToken gets a non-expired auth token by the selector.
 	GetAuthToken(selector, validator string) (models.AuthToken, error)
 
+	// Images fetches all distinct image UUIDs for recipes.
+	// An empty slice is returned when an error occurred.
+	Images() []string
+
 	// IsUserExist checks whether the user is present in the database.
 	IsUserExist(email string) bool
 

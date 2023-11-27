@@ -630,6 +630,32 @@ func (s *SQLiteService) GetAuthToken(selector, validator string) (models.AuthTok
 	return token, nil
 }
 
+// Images fetches all distinct image UUIDs for recipes.
+// An empty slice is returned when an error occurred.
+func (s *SQLiteService) Images() []string {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	xs := make([]string, 0)
+
+	rows, err := s.DB.QueryContext(ctx, statements.SelectDistinctImages)
+	if err != nil {
+		return xs
+	}
+	defer func() {
+		_ = rows.Close()
+	}()
+
+	for rows.Next() {
+		var file string
+		err = rows.Scan(&file)
+		if err == nil {
+			xs = append(xs, file+".jpg")
+		}
+	}
+	return xs
+}
+
 // IsUserExist checks whether the user is present in the database.
 func (s *SQLiteService) IsUserExist(email string) bool {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
