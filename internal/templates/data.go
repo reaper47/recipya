@@ -13,19 +13,24 @@ type Data struct {
 	IsAuthenticated bool // IsAuthenticated indicates whether the user is authenticated.
 	IsHxRequest     bool // IsHxRequest indicates whether the request is an HX one. It is used for oop swaps.
 
-	Title string // Title is the text inserted <title> tag's text.
-
+	Title        string // Title is the text inserted <title> tag's text.
 	Content      string // Content is text to insert into the template.
 	ContentTitle string // ContentTitle is the header of the Content.
 
 	Functions FunctionsData
 
+	About           AboutData
 	CookbookFeature CookbookFeature
 	Pagination      Pagination
 	Recipes         models.Recipes
 	Settings        SettingsData
 	Scraper         ScraperData
 	View            *ViewRecipeData
+}
+
+// AboutData holds general application data.
+type AboutData struct {
+	Version string
 }
 
 // CookbookFeature is the data to pass related to the cookbook feature.

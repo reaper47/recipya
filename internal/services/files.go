@@ -487,42 +487,42 @@ func (f *Files) processZip(file *multipart.FileHeader) models.Recipes {
 
 		validImageFormats := []string{".jpg", ".jpeg", ".png"}
 		if imageUUID == uuid.Nil && slices.Contains(validImageFormats, filepath.Ext(zf.Name)) {
-			zipFile, err := file.Open()
+			imageFile, err := zf.Open()
 			if err != nil {
 				log.Printf("Error opening image file: %q", err)
 				continue
 			}
 
 			if zf.FileInfo().Size() < 1<<12 {
-				_ = zipFile.Close()
+				_ = imageFile.Close()
 				continue
 			}
 
-			imageUUID, err = f.UploadImage(zipFile)
+			imageUUID, err = f.UploadImage(imageFile)
 			if err != nil {
 				log.Printf("Error uploading image: %q", err)
 			}
-			_ = zipFile.Close()
+			_ = imageFile.Close()
 		}
 
 		if filepath.Ext(zf.Name) == ".json" {
-			f, err := file.Open()
+			jsonFile, err := zf.Open()
 			if err != nil {
 				log.Println(err)
 				continue
 			}
 
-			r, err := extractRecipe(f)
+			r, err := extractRecipe(jsonFile)
 			if err != nil {
 				log.Printf("could not extract %s: %q", zf.Name, err.Error())
-				_ = f.Close()
+				_ = jsonFile.Close()
 				continue
 			}
 			r.Image = uuid.Nil
 
 			recipes = append(recipes, *r)
 			recipeNumber++
-			_ = f.Close()
+			_ = jsonFile.Close()
 		}
 	}
 

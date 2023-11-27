@@ -154,11 +154,11 @@
                         <div class="pl-1 align-bottom">Settings</div>
                     </a>
                 </li>
-                <li class="border-2 hover:bg-blue-100 dark:border-gray-500 dark:hover:bg-blue-600">
-                    <a href="#" class="flex">
+                <li class="border-2 cursor-pointer hover:bg-blue-100 dark:border-gray-500 dark:hover:bg-blue-600">
+                    <div class="flex" onmousedown="document.querySelector('#about-dialog').showModal()">
                         {{template "icon-help"}}
                         <span class="pl-1 align-bottom">About</span>
-                    </a>
+                    </div>
                 </li>
                 <li class="border-2 rounded-b-lg hover:bg-blue-100 dark:border-gray-500 dark:hover:bg-blue-600">
                     <a hx-post="/auth/logout" class="flex" href="#">
@@ -169,6 +169,66 @@
             </ul>
         </div>
     </div>
+
+    <dialog id="about-dialog" class="border-4 border-black dark:border-slate-700">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3 hidden"></th>
+                <th scope="col" class="px-6 py-3 hidden"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-right dark:text-white">
+                    Application Name:
+                </th>
+                <td class="px-6 py-4">
+                    Recipya
+                </td>
+            </tr>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-right dark:text-white">
+                    Version:
+                </th>
+                <td class="px-6 py-4">
+                    {{.About.Version}}
+                </td>
+            </tr>
+            <tr class="bg-white border-b dark:border-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-right dark:text-white">
+                    Repository:
+                </th>
+                <td class="px-6 py-4">
+                    <a href="https://github.com/reaper47/recipya" target="_blank"
+                       class="about-link">reaper47/recipya</a>
+                </td>
+            </tr>
+            <tr class="bg-white border-b dark:border-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-right dark:text-white">
+                    Support Channel:
+                </th>
+                <td class="px-6 py-4">
+                    <a href="https://app.element.io/#/room/#recipya:matrix.org" target="_blank"
+                       class="about-link">Matrix Space</a>
+                </td>
+            </tr>
+            <tr class="bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-right dark:text-white">
+                    License:
+                </th>
+                <td class="px-6 py-4">
+                    GPLv3
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <button class="w-full border-t center hover:bg-gray-800 hover:text-white hover:dark:bg-neutral-600 dark:border-gray-800 dark:bg-gray-200"
+                onclick="document.querySelector('#about-dialog').close()">
+            Close
+        </button>
+    </dialog>
 
     <script defer>
         document.addEventListener('click', (event) => {

@@ -229,6 +229,11 @@ const SelectCuisineID = `
 	FROM cuisines 
 	WHERE name = ?`
 
+// SelectDistinctImages is the query to get all distinct image UUIDs from the recipes table.
+const SelectDistinctImages = `
+	SELECT DISTINCT image 
+	FROM recipes`
+
 // SelectMeasurementSystems fetches the units systems along with the user's selected system and settings.
 const SelectMeasurementSystems = `
 	SELECT ms.name,

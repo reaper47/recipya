@@ -11,7 +11,10 @@ import (
 	"strings"
 )
 
-const configFileName = "config.json"
+const (
+	Version        = "1.0.0"
+	configFileName = "config.json"
+)
 
 // Config references a global ConfigFile.
 var Config ConfigFile
@@ -103,7 +106,7 @@ func Init() {
 	ImagesDir = filepath.Join(dir, "data", "images")
 	_, err = os.Stat(ImagesDir)
 	if os.IsNotExist(err) {
-		err := os.MkdirAll(ImagesDir, os.ModePerm)
+		err = os.MkdirAll(ImagesDir, os.ModePerm)
 		if err != nil {
 			panic(err)
 		}

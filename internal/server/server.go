@@ -7,6 +7,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
+	"github.com/reaper47/recipya/internal/jobs"
 	"github.com/reaper47/recipya/internal/services"
 	_ "github.com/reaper47/recipya/internal/templates" // Need to initialize the templates package.
 	"github.com/reaper47/recipya/static"
@@ -241,6 +242,8 @@ func (s *Server) Run() {
 		}
 		serverStopCtx()
 	}()
+
+	jobs.ScheduleCronJobs(s.Repository, imagesDir)
 
 	fmt.Printf("Serving on %s\n", app.Config.Address())
 	err := httpServer.ListenAndServe()
