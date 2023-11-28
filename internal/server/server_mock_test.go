@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
@@ -25,6 +26,7 @@ func newServerTest() *server.Server {
 		UsersRegistered:        make([]models.User, 0),
 		UsersUpdated:           make([]int64, 0),
 	}
+	app.Config.Email.MaxNumberUsers = 100
 	return server.NewServer(repo, &mockEmail{}, &mockFiles{}, &mockIntegrations{})
 }
 

@@ -18,6 +18,13 @@ var ErrorTokenExpired = Data{
                 back to you. We apologise for this inconvenience.`,
 }
 
+// ForgotPasswordSuccess encapsulates the information displayed to the user when the user clicks forgot password.
+var ForgotPasswordSuccess = Data{
+	Title:        "Forgot Password",
+	ContentTitle: "Password Reset Requested",
+	Content:      "An email with instructions on how to reset your password has been sent to you. Please check your inbox and follow the provided steps to regain access to your account.",
+}
+
 // PageNotFound encapsulates the information displayed when the page is 404.
 var PageNotFound = Data{
 	Title:        "Not Found",
@@ -32,9 +39,13 @@ var SuccessConfirm = Data{
 	Content:      "Your account has been confirmed.",
 }
 
-// ForgotPasswordSuccess encapsulates the information displayed to the user when the user clicks forgot password.
-var ForgotPasswordSuccess = Data{
-	Title:        "Forgot Password",
-	ContentTitle: "Password Reset Requested",
-	Content:      "An email with instructions on how to reset your password has been sent to you. Please check your inbox and follow the provided steps to regain access to your account.",
+// UserLimitReachedError encapsulates the information displayed to the user when the user limit has been reached.
+// The limit depends on the SendGrid API key.
+var UserLimitReachedError = Data{
+	Title:        "User Limit Reached",
+	ContentTitle: "User Limit Reached",
+	Content: `You cannot register because the user limit has been reached. This limit depends on the SendGrid API key. 
+				You can sponsor the author of this project or buy him a coffee for him to have enough money to purchase
+				the paid SendGrid plan to increase the limit. You will find the details here: 
+				https://github.com/reaper47/heavy-metal-notifier?tab=readme-ov-file#sponsors.`,
 }

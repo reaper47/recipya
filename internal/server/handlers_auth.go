@@ -268,6 +268,13 @@ func (s *Server) registerPostPasswordHandler(w http.ResponseWriter, r *http.Requ
 }
 
 func (s *Server) registerPostHandler(w http.ResponseWriter, r *http.Request) {
+	users := s.Repository.Users()
+	if len(users) >= app.Config.Email.MaxNumberUsers {
+		w.WriteHeader(http.StatusBadRequest)
+		templates.Render(w, templates.Simple, templates.UserLimitReachedError)
+		return
+	}
+
 	email := r.FormValue("email")
 	password := r.FormValue("password")
 
