@@ -57,6 +57,7 @@ func (c *ConfigFile) Address() string {
 // ConfigEmail holds email configuration variables.
 type ConfigEmail struct {
 	From           string `json:"from"`
+	MaxNumberUsers int    `json:"maxNumberUsers"`
 	SendGridAPIKey string `json:"sendGridAPIKey"`
 }
 

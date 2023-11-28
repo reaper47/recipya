@@ -439,6 +439,7 @@ func TestHandlers_Auth_Logout(t *testing.T) {
 
 func TestHandlers_Auth_Register(t *testing.T) {
 	srv := newServerTest()
+	originalRepo := srv.Repository
 
 	const uri = "/auth/register"
 
@@ -473,6 +474,33 @@ func TestHandlers_Auth_Register(t *testing.T) {
 		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Registration failed. User might be registered or password invalid.\",\"backgroundColor\":\"bg-red-500\"}"}`)
 		if len(srv.Repository.Users()) != originalNumUsers {
 			t.Fatalf("expected no user to be added to the db of %d users", originalNumUsers)
+		}
+	})
+
+	t.Run("cannot register a user beyond the limit", func(t *testing.T) {
+		email := "regsiter@valid.com"
+		originalNumUsers := len(srv.Repository.Users())
+		users := make([]models.User, 0, 100)
+		for i := 0; i < 100; i++ {
+			users = append(users, models.User{ID: int64(i + 1)})
+		}
+		srv.Repository = &mockRepository{UsersRegistered: users}
+		defer func() {
+			srv.Repository = originalRepo
+		}()
+
+		rr := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email="+email+"&password=test123&password-confirm=test123"))
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		want := []string{
+			`<section class="flex h-screen w-full items-center justify-center bg-indigo-100 dark:bg-gray-800">`,
+			`<div class="w-11/12 max-w-lg md:w-2/5 lg:w-2/5"><div class="min-w-full p-8 bg-white rounded-lg shadow-lg dark:bg-gray-600">`,
+			`<h1 class="mb-6 text-2xl font-semibold text-center underline">User Limit Reached</h1>`,
+			`<p class="block mb-3"> You cannot register because the user limit has been reached. This limit depends on the SendGrid API key. You can sponsor the author of this project or buy him a coffee for him to have enough money to purchase the paid SendGrid plan to increase the limit. You will find the details here: https://github.com/reaper47/heavy-metal-notifier?tab=readme-ov-file#sponsors. </p><a href="/" class="w-full block text-center px-4 py-2 mt-3 text-lg font-semibold tracking-wide text-white bg-indigo-600 rounded-lg hover:bg-green-600"> Back Home </a></div>`,
+		}
+		assertStringsInHTML(t, getBodyHTML(rr), want)
+		if len(srv.Repository.Users()) == originalNumUsers+1 {
+			t.Fatal("did not expect the user to be registered")
 		}
 	})
 
