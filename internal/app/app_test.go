@@ -35,7 +35,7 @@ func TestConfigFile_Address(t *testing.T) {
 		},
 		{
 			name: "hosted somewhere",
-			in:   app.ConfigFile{Server: app.ConfigServer{URL: "https://recipya.com", Port: 8078}},
+			in:   app.ConfigFile{Server: app.ConfigServer{URL: "https://recipya.com", Port: 8078, IsProduction: true}},
 			want: "https://recipya.com",
 		},
 	}
