@@ -28,6 +28,12 @@ type ConfigFile struct {
 
 // Address assembles the server's web address from its URL and host.
 func (c *ConfigFile) Address() string {
+	if !strings.Contains(c.Server.URL, "0.0.0.0") &&
+		!strings.Contains(c.Server.URL, "localhost") &&
+		!strings.Contains(c.Server.URL, "127.0.0.1") {
+		return c.Server.URL
+	}
+
 	port := ":" + strconv.Itoa(c.Server.Port)
 
 	conn, err := net.Dial("udp", "8.8.8.8:80")
