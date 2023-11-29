@@ -133,7 +133,7 @@ func createConfigFile(path string) error {
 		c.Email.From = promptUser(r, "\tWhat is the email address of your SendGrid account?", "")
 		c.Email.SendGridAPIKey = promptUser(r, "\tWhat is your SendGrid API key?", "")
 
-		isFreeTier := promptUser(r, "\tIs your plan the free tier? [Y/n]", "")
+		isFreeTier := promptUser(r, "\tIs your plan the free tier? [Y/n]", "y")
 		if !isYes(isFreeTier) {
 			c.Email.MaxNumberUsers = 500_000
 		}

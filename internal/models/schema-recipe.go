@@ -182,6 +182,11 @@ func (c *Category) UnmarshalJSON(data []byte) error {
 		if len(x) > 0 {
 			c.Value = x[0].(string)
 		}
+	case map[string]any:
+		v, ok := x["Value"]
+		if ok {
+			c.Value = v.(string)
+		}
 	}
 
 	if c.Value != "" {
