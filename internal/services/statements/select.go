@@ -283,7 +283,7 @@ const baseSelectRecipe = `
 		   times.prep_seconds,
 		   times.cook_seconds,
 		   times.total_seconds
-	FROM recipes
+	FROM recipes 
 			 LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id
 			 LEFT JOIN categories ON category_recipe.category_id = categories.id
 			 LEFT JOIN cuisine_recipe ON recipes.id = cuisine_recipe.recipe_id
@@ -302,12 +302,10 @@ const baseSelectRecipe = `
 
 // SelectRecipe fetches a user's recipe.
 const SelectRecipe = baseSelectRecipe + `
-	WHERE recipes.id = (SELECT recipe_id
-						FROM (SELECT recipe_id,
-									 ROW_NUMBER() OVER (ORDER BY id) AS row_num
-							  FROM user_recipe
-							  WHERE user_id = ?) AS t
-						WHERE row_num = ?)`
+	INNER JOIN user_recipe AS ur ON ur.recipe_id = recipes.id
+	WHERE recipes.id = ?
+		AND ur.user_id = ?
+	LIMIT 1`
 
 // SelectRecipesAll is the query to fetch all the user's recipes.
 const SelectRecipesAll = baseSelectRecipe + `

@@ -17,7 +17,7 @@ var pages = []templates.Page{
 	templates.LoginPage,
 	templates.RegisterPage,
 	templates.SettingsPage,
-	templates.Simple,
+	templates.SimplePage,
 	templates.ViewRecipePage,
 }
 

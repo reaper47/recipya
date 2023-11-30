@@ -491,7 +491,7 @@ func TestHandlers_Auth_Register(t *testing.T) {
 
 		rr := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email="+email+"&password=test123&password-confirm=test123"))
 
-		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertStatus(t, rr.Code, http.StatusOK) // Status is ok for HTMX to display the response. Ideally, it should be something 4XX.
 		want := []string{
 			`<section class="flex h-screen w-full items-center justify-center bg-indigo-100 dark:bg-gray-800">`,
 			`<div class="w-11/12 max-w-lg md:w-2/5 lg:w-2/5"><div class="min-w-full p-8 bg-white rounded-lg shadow-lg dark:bg-gray-600">`,
