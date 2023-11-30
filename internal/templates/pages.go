@@ -16,7 +16,7 @@ const (
 	LoginPage               Page = "login"
 	RegisterPage            Page = "register"
 	SettingsPage            Page = "settings"
-	Simple                  Page = "simple"
+	SimplePage              Page = "simple"
 	ViewRecipePage          Page = "view-recipe"
 )
 
@@ -48,7 +48,7 @@ func (p Page) Title() string {
 		return "Register"
 	case SettingsPage:
 		return "Settings"
-	case Simple:
+	case SimplePage:
 		return "<title>"
 	case ViewRecipePage:
 		return "View Recipe"

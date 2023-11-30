@@ -66,7 +66,7 @@ func (s *Server) confirmHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		sendErrorAdminEmail(s.Email.Send, "confirmHandler.ParseToken: "+token, err)
 		w.WriteHeader(http.StatusBadRequest)
-		templates.Render(w, templates.Simple, templates.ErrorTokenExpired)
+		templates.Render(w, templates.SimplePage, templates.ErrorTokenExpired)
 		return
 	}
 
@@ -74,11 +74,11 @@ func (s *Server) confirmHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		sendErrorAdminEmail(s.Email.Send, "confirmHandler.Confirm: "+token, err)
 		w.WriteHeader(http.StatusNotFound)
-		templates.Render(w, templates.Simple, templates.ErrorConfirm)
+		templates.Render(w, templates.SimplePage, templates.ErrorConfirm)
 		return
 	}
 
-	templates.Render(w, templates.Simple, templates.SuccessConfirm)
+	templates.Render(w, templates.SimplePage, templates.SuccessConfirm)
 }
 
 func (s *Server) forgotPasswordHandler(w http.ResponseWriter, r *http.Request) {
@@ -123,7 +123,7 @@ func forgotPasswordResetHandler(w http.ResponseWriter, r *http.Request) {
 	userID, err := auth.ParseToken(r.URL.Query().Get("token"))
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		templates.Render(w, templates.Simple, templates.ErrorTokenExpired)
+		templates.Render(w, templates.SimplePage, templates.ErrorTokenExpired)
 		return
 	}
 
@@ -270,8 +270,7 @@ func (s *Server) registerPostPasswordHandler(w http.ResponseWriter, r *http.Requ
 func (s *Server) registerPostHandler(w http.ResponseWriter, r *http.Request) {
 	users := s.Repository.Users()
 	if len(users) >= app.Config.Email.MaxNumberUsers {
-		w.WriteHeader(http.StatusBadRequest)
-		templates.Render(w, templates.Simple, templates.UserLimitReachedError)
+		templates.Render(w, templates.SimplePage, templates.UserLimitReachedError)
 		return
 	}
 

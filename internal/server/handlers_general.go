@@ -38,7 +38,7 @@ func (s *Server) indexHandler(w http.ResponseWriter, r *http.Request) {
 
 func notFoundHandler(w http.ResponseWriter, _ *http.Request) {
 	w.WriteHeader(http.StatusNotFound)
-	templates.Render(w, templates.Simple, templates.PageNotFound)
+	templates.Render(w, templates.SimplePage, templates.PageNotFound)
 }
 
 func (s *Server) userInitialsHandler(w http.ResponseWriter, r *http.Request) {

@@ -780,7 +780,7 @@ func (s *SQLiteService) Recipe(id, userID int64) (*models.Recipe, error) {
 		_ = tx.Rollback()
 	}()
 
-	row := tx.QueryRowContext(ctx, statements.SelectRecipe, userID, id)
+	row := tx.QueryRowContext(ctx, statements.SelectRecipe, id, userID)
 	r, err := scanRecipe(row)
 	if err != nil {
 		return nil, err
