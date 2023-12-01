@@ -105,12 +105,17 @@ const config = {
             ],
           },
           {
+            to: 'https://recipes.musicavis.ca',
+            label: 'Demo',
+            position: 'right',
+          },
+          {
             to: "https://github.com/sponsors/reaper47",
             label: "Sponsor",
             position: "right",
           },
           {
-            href: 'https://github.com/reaper47/recipya',
+            to: 'https://github.com/reaper47/recipya',
             label: 'GitHub',
             position: 'right',
           },

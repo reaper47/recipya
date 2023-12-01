@@ -81,6 +81,7 @@ type AzureComputerVision struct {
 
 // ConfigServer holds configuration data for the server.
 type ConfigServer struct {
+	IsDemo       bool   `json:"isDemo"`
 	IsProduction bool   `json:"isProduction"`
 	Port         int    `json:"port"`
 	URL          string `json:"url"`
