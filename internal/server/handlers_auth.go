@@ -31,6 +31,13 @@ func (s *Server) changePasswordHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	userID := getUserID(r)
+
+	if app.Config.Server.IsDemo && s.Repository.UserID("demo@demo.com") == userID {
+		w.Header().Set("HX-Trigger", makeToast("Nice try :)", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	if !s.Repository.IsUserPassword(userID, currentPassword) {
 		w.Header().Set("HX-Trigger", makeToast("Current password is incorrect.", errorToast))
 		w.WriteHeader(http.StatusBadRequest)
@@ -174,7 +181,10 @@ func (s *Server) forgotPasswordResetPostHandler(w http.ResponseWriter, r *http.R
 
 func loginHandler(w http.ResponseWriter, _ *http.Request) {
 	page := templates.LoginPage
-	templates.Render(w, page, templates.Data{Title: page.Title()})
+	templates.Render(w, page, templates.Data{
+		IsDemo: app.Config.Server.IsDemo,
+		Title:  page.Title(),
+	})
 }
 
 func (s *Server) loginPostHandler(w http.ResponseWriter, r *http.Request) {

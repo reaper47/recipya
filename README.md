@@ -23,7 +23,7 @@
 <strong>
 
 [Explore the docs](https://reaper47.github.io/recipya/) · 
-[Demo](#)
+[Demo](https://recipes.musicavis.ca/)
 
 </strong>
 </div>

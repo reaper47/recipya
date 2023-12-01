@@ -1,6 +1,7 @@
 {
 	"email": {
 		"from": "my@email.com",
+		"maxNumberUsers": 100,
 		"sendGridAPIKey": "API_KEY"
 	},
 	"integrations": {
@@ -10,6 +11,7 @@
 		}
 	},
 	"server": {
+		"isDemo": false,
 		"isProduction": false,
 		"port": 8078,
 		"url": "http://0.0.0.0"

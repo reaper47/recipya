@@ -5,7 +5,7 @@
 <header hx-boost="true"
         class="flex h-12 w-full items-center justify-between bg-gray-100 dark:bg-black shadow-sm shadow-gray-600 print:hidden">
     <div class="flex h-full items-center">
-        <button hx-get="/" hx-push-url="true" hx-target="#content" class="pl-4 font-semibold hover:text-red-600">
+        <button hx-get="/" hx-push-url="true" hx-target="{{if .IsAuthenticated}}#content{{else}}body{{end}}" class="pl-4 font-semibold hover:text-red-600">
             Recipya
         </button>
     </div>
