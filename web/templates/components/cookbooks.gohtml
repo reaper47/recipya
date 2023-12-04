@@ -130,17 +130,18 @@
 {{end}}
 
 {{define "cookbook-recipes-search-form"}}
-    <form class="w-72 md:w-96"
-          hx-post="/cookbooks/recipes/search"
-          hx-target="#search-results"
-          hx-vals='{"id": {{.PageItemID}}, "page": {{.PageNumber}}}'>
-        <div class="flex">
-            <div class="relative w-full">
-                <label>
-                    <input type="search" id="search-recipes" name="q"
-                           class="block z-20 p-2.5 w-full text-sm bg-gray-50 rounded-r-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                           placeholder="Search for recipes..."
-                           _="on keyup
+    <search>
+        <form class="w-72 md:w-96"
+              hx-post="/cookbooks/recipes/search"
+              hx-target="#search-results"
+              hx-vals='{"id": {{.PageItemID}}, "page": {{.PageNumber}}}'>
+            <div class="flex">
+                <div class="relative w-full">
+                    <label>
+                        <input type="search" id="search-recipes" name="q"
+                               class="block z-20 p-2.5 w-full text-sm bg-gray-50 rounded-r-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                               placeholder="Search for recipes..."
+                               _="on keyup
                                if event.target.value !== '' then
                                    remove .md:block from #search-shortcut
                                else
@@ -149,19 +150,20 @@
                                if event.key === 'Backspace' and event.target.value === '' then
                                    send submit to closest <form/>
                                end">
-                </label>
-                <kbd id="search-shortcut"
-                     class="hidden absolute top-2 right-12 font-sans font-semibold select-none dark:text-slate-500 md:block">
-                    <abbr title="Control" class="no-underline text-slate-300 dark:text-slate-500">Ctrl </abbr> /
-                </kbd>
-                <button type="submit"
-                        class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700">
-                    {{template "icon-maginifying-glass"}}
-                    <span class="sr-only">Search</span>
-                </button>
+                    </label>
+                    <kbd id="search-shortcut"
+                         class="hidden absolute top-2 right-12 font-sans font-semibold select-none dark:text-slate-500 md:block">
+                        <abbr title="Control" class="no-underline text-slate-300 dark:text-slate-500">Ctrl </abbr> /
+                    </kbd>
+                    <button type="submit"
+                            class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700">
+                        {{template "icon-maginifying-glass"}}
+                        <span class="sr-only">Search</span>
+                    </button>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </search>
 {{end}}
 
 {{define "cookbook-recipes"}}

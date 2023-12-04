@@ -28,14 +28,19 @@ type ConfigFile struct {
 
 // Address assembles the server's web address from its URL and host.
 func (c *ConfigFile) Address() string {
-	if c.Server.IsProduction &&
-		!strings.Contains(c.Server.URL, "0.0.0.0") &&
-		!strings.Contains(c.Server.URL, "localhost") &&
-		!strings.Contains(c.Server.URL, "127.0.0.1") {
+	isLocalhost := strings.Contains(c.Server.URL, "0.0.0.0") ||
+		strings.Contains(c.Server.URL, "localhost") ||
+		strings.Contains(c.Server.URL, "127.0.0.1")
+
+	if c.Server.IsProduction && !isLocalhost {
 		return c.Server.URL
 	}
 
 	port := ":" + strconv.Itoa(c.Server.Port)
+
+	if runtime.GOOS == "windows" && isLocalhost {
+		return c.Server.URL + port
+	}
 
 	conn, err := net.Dial("udp", "8.8.8.8:80")
 	if err != nil || isRunningInDocker() {

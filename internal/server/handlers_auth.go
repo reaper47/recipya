@@ -88,6 +88,15 @@ func (s *Server) confirmHandler(w http.ResponseWriter, r *http.Request) {
 	templates.Render(w, templates.SimplePage, templates.SuccessConfirm)
 }
 
+func (s *Server) deleteUserHandler(w http.ResponseWriter, r *http.Request) {
+	err := s.Repository.DeleteUser(getUserID(r))
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	s.logoutHandler(w, r)
+}
+
 func (s *Server) forgotPasswordHandler(w http.ResponseWriter, r *http.Request) {
 	if getUserIDFromSessionCookie(r) != -1 || getUserIDFromRememberMeCookie(r, s.Repository.GetAuthToken) != -1 {
 		w.Header().Set("HX-Redirect", "/settings")
@@ -238,6 +247,7 @@ func (s *Server) logoutHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if userID == -1 {
+		w.WriteHeader(http.StatusNoContent)
 		return
 	}
 

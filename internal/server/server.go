@@ -94,6 +94,12 @@ func (s *Server) mountHandlers() {
 		})
 
 		r.Post("/logout", s.logoutHandler)
+
+		r.Group(func(r chi.Router) {
+			r.Use(s.mustBeLoggedInMiddleware)
+
+			r.Delete("/user", s.deleteUserHandler)
+		})
 	})
 
 	r.Route("/cookbooks", func(r chi.Router) {

@@ -940,7 +940,7 @@
     {{- if .Recipes -}}
         <div class="flex flex-col">
             <section class="grid justify-center px-4 pt-4">
-                <div class="relative">
+                <search class="relative">
                     <form class="w-72 md:w-96"
                           hx-post="/recipes/search"
                           hx-vals='{"page": {{.Pagination.Selected}}}'
@@ -976,7 +976,7 @@
                             </div>
                         </div>
                     </form>
-                </div>
+                </search>
             </section>
         </div>
         <div id="list-recipes">
