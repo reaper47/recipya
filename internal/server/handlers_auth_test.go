@@ -120,6 +120,76 @@ func TestHandlers_Auth_Confirm(t *testing.T) {
 	})
 }
 
+func TestHandlers_Auth_DeleteUser(t *testing.T) {
+	srv := newServerTest()
+	originalRepo := &mockRepository{
+		UsersRegistered: []models.User{
+			{ID: 1},
+			{ID: 2},
+		},
+	}
+	srv.Repository = originalRepo
+
+	uri := "/auth/user"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodDelete, uri)
+	})
+
+	t.Run("user cannot delete other user", func(t *testing.T) {
+		repo := originalRepo
+		defer func() {
+			srv.Repository = originalRepo
+		}()
+
+		rr := sendHxRequestAsLoggedInOther(srv, http.MethodDelete, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusSeeOther)
+		assertHeader(t, rr, "HX-Redirect", "/")
+		if !slices.ContainsFunc(repo.UsersRegistered, func(user models.User) bool { return user.ID == 1 }) {
+			t.Fatal("user 1 should not have been deleted")
+		}
+	})
+
+	t.Run("valid request", func(t *testing.T) {
+		clear(server.SessionData)
+		originalNumSessions := len(server.SessionData) + 1
+		repo := originalRepo
+		defer func() {
+			srv.Repository = originalRepo
+		}()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusSeeOther)
+		assertHeader(t, rr, "HX-Redirect", "/")
+		if slices.ContainsFunc(repo.UsersRegistered, func(user models.User) bool { return user.ID == 1 }) {
+			t.Fatal("user 1 should have been deleted")
+		}
+		if len(server.SessionData) == originalNumSessions {
+			t.Fatalf("expected one less number of sessions")
+		}
+	})
+
+	t.Run("delete a deleted user does nothing", func(t *testing.T) {
+		repo := originalRepo
+		defer func() {
+			srv.Repository = originalRepo
+		}()
+		rr := httptest.NewRecorder()
+		r := prepareRequest(http.MethodDelete, uri, noHeader, nil)
+		srv.Router.ServeHTTP(rr, r)
+
+		rr = httptest.NewRecorder()
+		srv.Router.ServeHTTP(rr, r)
+
+		assertStatus(t, rr.Code, http.StatusSeeOther)
+		if slices.ContainsFunc(repo.UsersRegistered, func(user models.User) bool { return user.ID == 1 }) {
+			t.Fatal("user 1 should have been deleted")
+		}
+	})
+}
+
 func TestHandlers_Auth_ForgotPassword(t *testing.T) {
 	emailMock := &mockEmail{}
 	repo := &mockRepository{
@@ -389,7 +459,7 @@ func TestHandlers_Auth_Logout(t *testing.T) {
 
 		rr := sendRequest(srv, http.MethodPost, uri, noHeader, nil)
 
-		assertStatus(t, rr.Code, http.StatusOK)
+		assertStatus(t, rr.Code, http.StatusNoContent)
 		if originalNumSessions != len(server.SessionData) {
 			t.Fatalf("expected same number of sessions")
 		}

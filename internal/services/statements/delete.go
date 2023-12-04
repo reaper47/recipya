@@ -25,11 +25,9 @@ const DeleteRecipe = `
 	DELETE
 	FROM recipes
 	WHERE recipes.id = (SELECT recipe_id
-						FROM (SELECT recipe_id,
-									 ROW_NUMBER() OVER (ORDER BY id) AS row_num
-							  FROM user_recipe
-							  WHERE user_id = ?) AS t
-						WHERE row_num = ?)`
+						FROM user_recipe
+						WHERE user_id = ?
+							AND recipe_id = ?)`
 
 // DeleteRecipeIngredients is the query for deleting all ingredients from a recipe.
 const DeleteRecipeIngredients = `
@@ -42,3 +40,9 @@ const DeleteRecipeInstructions = `
 	DELETE
 	FROM instruction_recipe
 	WHERE recipe_id = ?`
+
+// DeleteUser is the query to delete a user from the users table.
+const DeleteUser = `
+	DELETE
+	FROM users
+	WHERE id = ?`

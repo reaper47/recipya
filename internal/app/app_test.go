@@ -25,18 +25,23 @@ func TestConfigFile_Address(t *testing.T) {
 	}{
 		{
 			name: "without port",
-			in:   app.ConfigFile{Server: app.ConfigServer{URL: "https://127.0.0.1"}},
+			in:   app.ConfigFile{Server: app.ConfigServer{URL: "https://192.168.1.1"}},
 			want: "https://" + ip,
 		},
 		{
 			name: "with port",
-			in:   app.ConfigFile{Server: app.ConfigServer{URL: "https://127.0.0.1", Port: 8078}},
+			in:   app.ConfigFile{Server: app.ConfigServer{URL: "https://192.168.1.1", Port: 8078}},
 			want: "https://" + net.JoinHostPort(ip, "8078"),
 		},
 		{
 			name: "hosted somewhere",
 			in:   app.ConfigFile{Server: app.ConfigServer{URL: "https://recipya.com", Port: 8078, IsProduction: true}},
 			want: "https://recipya.com",
+		},
+		{
+			name: "hosted on windows locally",
+			in:   app.ConfigFile{Server: app.ConfigServer{URL: "http://localhost", Port: 8078}},
+			want: "http://localhost:8078",
 		},
 	}
 	for _, tc := range testcases {

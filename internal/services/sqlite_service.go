@@ -611,6 +611,18 @@ func (s *SQLiteService) DeleteRecipeFromCookbook(recipeID, cookbookID uint64, us
 	return c.Count, err
 }
 
+// DeleteUser deletes a user and his or her data.
+func (s *SQLiteService) DeleteUser(id int64) error {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	_, err := s.DB.ExecContext(ctx, statements.DeleteUser, id)
+	return err
+}
+
 // GetAuthToken gets a non-expired auth token by the selector.
 func (s *SQLiteService) GetAuthToken(selector, validator string) (models.AuthToken, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)

@@ -300,11 +300,18 @@ func (m *mockRepository) DeleteRecipeFromCookbook(recipeID, cookbookID uint64, u
 	return int64(len(cookbook.Recipes)), nil
 }
 
+func (m *mockRepository) DeleteUser(id int64) error {
+	m.UsersRegistered = slices.DeleteFunc(m.UsersRegistered, func(user models.User) bool {
+		return user.ID == id
+	})
+	return nil
+}
+
 func (m *mockRepository) GetAuthToken(_, _ string) (models.AuthToken, error) {
 	return models.AuthToken{UserID: 1}, nil
 }
 
-func (s *mockRepository) Images() []string {
+func (m *mockRepository) Images() []string {
 	return make([]string, 0)
 }
 

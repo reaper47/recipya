@@ -9,7 +9,6 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
-	"sync"
 )
 
 var (
@@ -50,16 +49,10 @@ func buildRelease(packageName, tag string) {
 		"windows/arm64",
 	}
 
-	var wg sync.WaitGroup
-	wg.Add(len(platforms))
 	for _, platform := range platforms {
-		go func(platform, packageName, tag string) {
-			defer wg.Done()
-			fmt.Printf("Building %s...\n", platform)
-			build(platform, packageName, tag)
-		}(platform, packageName, tag)
+		fmt.Printf("Building %s...\n", platform)
+		build(platform, packageName, tag)
 	}
-	wg.Wait()
 
 	err := os.RemoveAll("builds")
 	if err != nil {
@@ -69,10 +62,7 @@ func buildRelease(packageName, tag string) {
 }
 
 func build(platform, packageName, tag string) {
-	parts := strings.Split(platform, "/")
-	goos := parts[0]
-	goarch := parts[1]
-
+	goos, goarch, _ := strings.Cut(platform, "/")
 	outputName := fmt.Sprintf("builds/%s-%s-%s", packageName, goos, goarch)
 	if goos == "windows" {
 		outputName += ".exe"
