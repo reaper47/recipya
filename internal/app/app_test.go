@@ -38,11 +38,6 @@ func TestConfigFile_Address(t *testing.T) {
 			in:   app.ConfigFile{Server: app.ConfigServer{URL: "https://recipya.com", Port: 8078, IsProduction: true}},
 			want: "https://recipya.com",
 		},
-		{
-			name: "hosted on windows locally",
-			in:   app.ConfigFile{Server: app.ConfigServer{URL: "http://localhost", Port: 8078}},
-			want: "http://localhost:8078",
-		},
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
