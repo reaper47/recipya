@@ -177,11 +177,14 @@
             <div class="h-40 px-6 py-4">
                 <div class="mb-2 text-xl font-semibold">Import</div>
                 <p>
-                    Import recipes in the that adhere to the
+                    Import recipes that adhere to the
                     <a href="https://schema.org/Recipe" target="_blank"
                        class="text-blue-600 underline hover:text-blue-800 visited:text-purple-600 dark:hover:text-blue-400 dark:visited:text-purple-400">recipe
                         schema</a>
-                    standard, i.e. your Nextcloud recipes.
+                    standard or the
+                    <a href="https://www.mastercook.com/" target="_blank"
+                       class="text-blue-600 underline hover:text-blue-800 visited:text-purple-600 dark:hover:text-blue-400 dark:visited:text-purple-400">MasterCook</a>
+                    file format.
                 </p>
             </div>
             <hr class="dark:border dark:border-gray-800">
@@ -208,9 +211,9 @@
                   hx-swap="none">
                 <div class="grid mb-4">
                     <label for="import-dialog-file" class="text-sm font-semibold mb-1">
-                        Choose files in the .json or .zip format.
+                        Choose files in the .json, .mxp or .zip format.
                     </label>
-                    <input id="import-dialog-file" type="file" name="files" accept=".json,.zip" multiple
+                    <input id="import-dialog-file" type="file" name="files" accept=".json,.zip,.mxp" multiple
                            class="p-2 border border-gray-300 rounded-lg shadow focus:ring-2 focus:ring-purple-600 dark:bg-gray-900 dark:border-none">
                 </div>
                 <button type="submit"

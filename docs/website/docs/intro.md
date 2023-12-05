@@ -13,7 +13,7 @@ share your favorite recipes. It is focussed on simplicity for the whole family t
 - [Import recipes from around the web](/docs/features/recipes/add#website)
 - [Digitize paper recipes](/docs/features/recipes/add#scan)
 - [Organize your recipes into cookbooks](/docs/category/cookbooks)
-- [Works seamlessly with recipes in your Nextcloud Cookbook](/docs/features/integrations)
+- [Works seamlessly with Nextcloud Cookbook](/docs/features/integrations)
 - [Automatic conversion to your preferred measurement system](/docs/features/measurement-systems) (imperial/metric)
 - [Calculate nutritional information automatically](/docs/features/nutrition-facts)
 - [Print any recipe in your collection](/docs/features/recipes/print)

@@ -1,6 +1,7 @@
 package models_test
 
 import (
+	"bytes"
 	"errors"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/uuid"
@@ -680,6 +681,144 @@ func TestNewTimes(t *testing.T) {
 	}
 	if actual.Total != 3*time.Hour {
 		t.Errorf("wanted total time 3H but got %v", actual.Total.String())
+	}
+}
+
+func TestNewRecipesFromMasterCook(t *testing.T) {
+	testcases := []struct {
+		name string
+		buf  *bytes.Buffer
+		want models.Recipes
+	}{
+		{
+			name: "standard mxp file structure",
+			buf:  bytes.NewBuffer([]byte("                     *  Exported from  MasterCook  *\n\n                                !Read Me!\n\nRecipe By     : Bill Wight\nServing Size  : 1    Preparation Time :0:00\nCategories    : *Afghan                          Info\n\n  Amount  Measure       Ingredient -- Preparation Method\n--------  ------------  --------------------------------\n                        ***Information***\n\nThe recipes in this collection were collected, corrected, edited and categorized by Bill Wight.\n\nYou may redistribute this collection in any form as long as this message is included.\n\nFor comments or suggestions, email me at:   Bill_Wight_CA@yahoo.com\n\nSome answers to frequently asked questions about my recipe collection:\n\nI notice that you have edited and corrected many of the recipe archives you have on your page.  What did you edit out and correct?\n\nMany of the recipes in this collection were typed, formatted and posted in the late 1980's and early 1990's to various bulletin boards before the Internet came into being.  These recipes were often formatted for a recipe management program called MealMaster.  During the years, the recipes have been posted and reposted to various mailing lists and newsgroups on the Internet.  They often pick up errors during reformatting and reposting.  I have also converted many of these recipes from Web page format and MealMaster format to MasterCook format.  This conversion process often introduces errors into the recipe.  I have attempted to correct the conversion errors.  I have also removed the names of the people who typed, formatted and posted these recipes.  I have kept the recipe author or creator where known.  I have also removed duplicate recipes and I have attempted to make some sense out of the recipes categories. \n\nI notice that you have removed all the nutrition data from the recipes in your collection.  Why did you do this?\n\nSince many of the recipes in this archive were typed and formatted several years ago and they often contain conflicting nutrition information, I have decided to strip out the nutritional data from all the recipes I edit.  If you have a current version of MasterCook (6.0) it will calculate nutritional data more accurately than the older versions.  So after you import the recipes into your copy of MasterCook, you will have up-to-date nutritional data available.  If nutritional data is important to you, make sure that the serving size looks reasonable.  Many recipes have a serving size set to the MasterCook default setting of '1'.  So nutritional data would assume the entire recipe is one serving and report the data incorrectly.  I have tired, as I edited the recipes, to correct the serving size if it was set to \"1\" to a reasonable serving size based on the recipes ingredient amounts.\n\n                   - - - - - - - - - - - - - - - - - - \n\n\n                     *  Exported from  MasterCook  *\n\n                      Abraysham Kabaub (Silk Kebab)\n\nRecipe By     : \nServing Size  : 30   Preparation Time :0:00\nCategories    : *Afghan                          Desserts\n\n  Amount  Measure       Ingredient -- Preparation Method\n--------  ------------  --------------------------------\n                        ***SYRUP***\n   1 1/2  cups          granulated sugar\n   1      teaspoon      lemon juice\n   1      cup           water\n     1/4  teaspoon      saffron threads -- (optional)\n                        ***OMELET***\n   8                    eggs\n   1      pinch         salt\n                        ***TO FINISH***\n   2      cups          oil\n     1/2  teaspoon      ground cardamom\n     3/4  cup           finely chopped pistachios *\n\n*Note: Instead of pistachio nuts, walnuts may be used if desired. \n\nDissolve sugar in water in heavy pan over medium heat. Bring to the boil, add lemon juice and saffron and boil for 10 minutes. Cool and strain into a 25 cm (10 inch) pie plate. Keep aside. Break eggs into a casserole dish about 20 cm (8 inches) in diameter. \n\nThe size and flat base are important. Add salt and mix eggs with fork until yolks and whites are thoroughly combined - do not beat as eggs must not be foamy. Heat oil in an electric frying pan to 190 C (375 F) or in a 25 cm (10 inch) frying pan placed on a thermostatically controlled hot plate or burner. Have ready nearby a long skewer, the plate of syrup, a baking sheet and the nuts mixed with the cardamom. \n\nA bowl of water and a cloth for drying hands are also necessary. Hold dish with eggs in one hand next to the pan of oil and slightly above it. Put hand into egg, palm down, so that egg covers back of hand. Lift out hand, curling fingers slightly inwards, then open out over hot oil, fingers pointing down. \n\nMove hand across surface of oil so that egg falls in streams from fingertips. Dip hand in egg again and make more strands across those already in pan. Repeat 3 to 4 times until about an eighth of the egg is used. There should be a closely meshed layer of egg strands about 20 cm (8 inches) across. Work quickly so that the last lot of egg is added not long after the first lot. Rinse hands quickly and dry. Take skewer and slide under bubbling omelet, lift up and turn over to lightly brown other side. \n\nThe first side will be bubbly, the underside somewhat smoother. When golden brown lift out with skewer and drain over pan. Place omelet flat in the syrup, spoon syrup over the top and lift out with skewer onto baking sheet. Roll up with bubbly side inwards. \n\nFinish roll should be about 3 cm (1 1/4 inches) in diameter. Put to one side and sprinkle with nuts. Repeat with remaining egg, making 7 to 8 rolls in all. Though depth of egg diminishes, you will become so adept that somehow you will get it in the pan in fine strands. \n\nWhen cool, cut kabaubs into 4-5 cm (1 1/2 to 2 inch pieces and serve. These keep well in a sealed container in a cool place.\n\n\n\n                   - - - - - - - - - - - - - - - - - - \n\n\n                     *  Exported from  MasterCook  *\n\n                              Afghan Chicken\n\nRecipe By     : San Francisco Examiner, 6/2/93.\nServing Size  : 6    Preparation Time :0:00\nCategories    : Middle East                      Chicken\n                *Afghan                          On-The-Grill\n\n  Amount  Measure       Ingredient -- Preparation Method\n--------  ------------  --------------------------------\n   2      large   clov  garlic\n     1/2  teaspoon      salt\n   2      cups          plain whole-milk yogurt\n   4      tablespoons   juice and pulp of 1 large lemon\n     1/2  teaspoon      cracked black pepper\n   2      large   whol  chicken breasts -- about 2 pounds\n\nLong, slow marinating in garlicky yogurt tenderizes, moistens and adds deep flavor, so you end up with skinless grilled chicken that's as delicious as it is nutritionally correct. Serve with soft pita or Arab flatbread and fresh yogurt.\n\nPut the salt in a wide, shallow non-reactive bowl with the garlic and mash them together until you have paste. Add yogurt, lemon and pepper.\n\nSkin the chicken breasts, remove all visible fat and separate the halves. Bend each backward to break the bones so the pieces win lie flat. Add to the yogurt and turn so all surfaces are well-coated.\n\nCover the bowl tightly and refrigerate. Allow to marinate at least overnight, up to a day and a half. Turn when you think of it.\n\nTo cook, remove breasts from marinade and wipe off all but a thin film. Broil or grill about 6 inches from the heat for 6 to 8 minutes a side, or until thoroughly cooked. Meat will brown somewhat but should not char. Serve at once.\n\n\n\n\n\n                   - - - - - - - - - - - - - - - - - - \n\n\n                     *  Exported from  MasterCook  *\n\n                          Afghan Chicken Kebobs\n\nRecipe By     : \nServing Size  : 4    Preparation Time :0:00\nCategories    : Chicken                          *Afghan\n                On-The-Grill\n\n  Amount  Measure       Ingredient -- Preparation Method\n--------  ------------  --------------------------------\n   1      cup           yogurt\n   1 1/2  teaspoons     salt\n     1/2  teaspoon      ground red or black pepper\n   3      centiliters   garlic -- finely minced\n   1 1/2  pounds        chicken breasts -- boneless,\n                        skinless -- cut into kebob\n                         -- ¥\n                        flatbread such as lavash\n                        pita or flour tortillas\n   3                    tomatoes -- sliced\n   2                    onions -- sliced\n                        cilantro to taste\n   2                    lemons or 4 limes -- quartered\n\n1. Mix yogurt, salt, pepper and garlic in a bowl. Mix chicken with yogurt and marinate 1 to 2 hours at room temperature, up to 2 days refrigerated.\n\n2. Thread chicken on skewers and grill over medium hot coals.\n\n3. Place warmed pita bread on plates (if using tortillas, toast briefly over flame), divide meat among them, top with tomato and onion slices and cilantro and fold bread over. Serve with lemon or lime quarters for squeezing.\n\n\n\n                   - - - - - - - - - - - - - - - - - - \n\n\n                     *  Exported from  MasterCook  *\n\n              Afghan Pumpkins Kadu Bouranee (Sweet Pumpkin)\n\nRecipe By     : \nServing Size  : 1    Preparation Time :0:00\nCategories    : *Afghan                          Vegetables\n\n  Amount  Measure       Ingredient -- Preparation Method\n--------  ------------  --------------------------------\n   2      pounds        fresh pumpkin or squash\n     1/4  cup           corn oil\n                        ***SWEET TOMATO SAUCE***\n   1      teaspoon      crushed garlic\n   1      cup           water\n     1/2  teaspoon      salt\n     1/2  cup           sugar\n   4      ounces        tomato sauce\n     1/2  teaspoon      ginger root -- chopped fine\n   1      teaspoon      freshly ground coriander\n                        seeds\n     1/4  teaspoon      black pepper\n                        ***YOGURT SAUCE***\n     1/4  teaspoon      crushed garlic\n     1/4  teaspoon      salt\n     3/4  cup           plain yogurt\n                        ***GARNISH***\n                        dry mint leaves -- crushed\n\nPeel the pumpkin and cut into 2-3\" cubes; set aside. Heat oil in a large frying pan that has a lid. Fry the pumpkins on both sides for a couple of minutes until lightly browned. Mix together ingredients for Sweet Tomato Sauce in a bowl then add to pumpkin mixture in fry pan. \n\nCover and cook 20-25 minutes over low heat until the pumpkin is cooked and most of the liquid has evaporated. (I don't know how it's going to evaporate if the pan is covered....-B.) \n\nMix together the ingredients for the yogurt sauce. To serve: Spread half the yogurt sauce on a plate and lay the pumpkin on top. Top with remaining yogurt and any cooking juices left over. Sprinkle with dry mint. \n\nMay be served with chalow (basmati rice) and naan or pita bread.\n\nFrom Afghani Cooking, the cookbook from Da Afghan Restaurant, Bloomington/Minneapolis, MN.\n\n\n                   - - - - - - - - - - - - - - - - - - \n")),
+			want: models.Recipes{
+				{
+					Category: "*Afghan",
+					Ingredients: []string{
+						"***SYRUP***",
+						"1 1/2 cups granulated sugar",
+						"1 teaspoon lemon juice",
+						"1 cup water",
+						"1/4 teaspoon saffron threads -- (optional)",
+						"***OMELET***",
+						"8 eggs",
+						"1 pinch salt",
+						"***TO FINISH***",
+						"2 cups oil",
+						"1/2 teaspoon ground cardamom",
+						"3/4 cup finely chopped pistachios *",
+					},
+					Instructions: []string{
+						"*Note: Instead of pistachio nuts, walnuts may be used if desired.",
+						"Dissolve sugar in water in heavy pan over medium heat. Bring to the boil, add lemon juice and saffron and boil for 10 minutes. Cool and strain into a 25 cm (10 inch) pie plate. Keep aside. Break eggs into a casserole dish about 20 cm (8 inches) in diameter.",
+						"The size and flat base are important. Add salt and mix eggs with fork until yolks and whites are thoroughly combined - do not beat as eggs must not be foamy. Heat oil in an electric frying pan to 190 C (375 F) or in a 25 cm (10 inch) frying pan placed on a thermostatically controlled hot plate or burner. Have ready nearby a long skewer, the plate of syrup, a baking sheet and the nuts mixed with the cardamom.",
+						"A bowl of water and a cloth for drying hands are also necessary. Hold dish with eggs in one hand next to the pan of oil and slightly above it. Put hand into egg, palm down, so that egg covers back of hand. Lift out hand, curling fingers slightly inwards, then open out over hot oil, fingers pointing down.",
+						"Move hand across surface of oil so that egg falls in streams from fingertips. Dip hand in egg again and make more strands across those already in pan. Repeat 3 to 4 times until about an eighth of the egg is used. There should be a closely meshed layer of egg strands about 20 cm (8 inches) across. Work quickly so that the last lot of egg is added not long after the first lot. Rinse hands quickly and dry. Take skewer and slide under bubbling omelet, lift up and turn over to lightly brown other side.",
+						"The first side will be bubbly, the underside somewhat smoother. When golden brown lift out with skewer and drain over pan. Place omelet flat in the syrup, spoon syrup over the top and lift out with skewer onto baking sheet. Roll up with bubbly side inwards.",
+						"Finish roll should be about 3 cm (1 1/4 inches) in diameter. Put to one side and sprinkle with nuts. Repeat with remaining egg, making 7 to 8 rolls in all. Though depth of egg diminishes, you will become so adept that somehow you will get it in the pan in fine strands.",
+						"When cool, cut kabaubs into 4-5 cm (1 1/2 to 2 inch pieces and serve. These keep well in a sealed container in a cool place.",
+					},
+					Keywords: []string{"*Afghan", "Desserts"},
+					Name:     "Abraysham Kabaub (Silk Kebab)",
+					URL:      "Imported from MasterCook",
+					Yield:    30,
+				},
+				{
+					Category: "Middle East",
+					Ingredients: []string{
+						"2 large clov garlic",
+						"1/2 teaspoon salt",
+						"2 cups plain whole-milk yogurt",
+						"4 tablespoons juice and pulp of 1 large lemon",
+						"1/2 teaspoon cracked black pepper",
+						"2 large whol chicken breasts -- about 2 pounds",
+					},
+					Instructions: []string{
+						"Long, slow marinating in garlicky yogurt tenderizes, moistens and adds deep flavor, so you end up with skinless grilled chicken that's as delicious as it is nutritionally correct. Serve with soft pita or Arab flatbread and fresh yogurt.",
+						"Put the salt in a wide, shallow non-reactive bowl with the garlic and mash them together until you have paste. Add yogurt, lemon and pepper.",
+						"Skin the chicken breasts, remove all visible fat and separate the halves. Bend each backward to break the bones so the pieces win lie flat. Add to the yogurt and turn so all surfaces are well-coated.",
+						"Cover the bowl tightly and refrigerate. Allow to marinate at least overnight, up to a day and a half. Turn when you think of it.",
+						"To cook, remove breasts from marinade and wipe off all but a thin film. Broil or grill about 6 inches from the heat for 6 to 8 minutes a side, or until thoroughly cooked. Meat will brown somewhat but should not char. Serve at once.",
+					},
+					Keywords: []string{"Middle East", "Chicken", "*Afghan", "On-The-Grill"},
+					Name:     "Afghan Chicken",
+					URL:      "Imported from MasterCook",
+					Yield:    6,
+				},
+				{
+					Category: "Chicken",
+					Ingredients: []string{
+						"1 cup yogurt",
+						"1 1/2 teaspoons salt",
+						"1/2 teaspoon ground red or black pepper",
+						"3 centiliters garlic -- finely minced",
+						"1 1/2 pounds chicken breasts -- boneless,",
+						"skinless -- cut into kebob",
+						"-- ¥",
+						"flatbread such as lavash",
+						"pita or flour tortillas",
+						"3 tomatoes -- sliced",
+						"2 onions -- sliced",
+						"cilantro to taste",
+						"2 lemons or 4 limes -- quartered",
+					},
+					Instructions: []string{
+						"Mix yogurt, salt, pepper and garlic in a bowl. Mix chicken with yogurt and marinate 1 to 2 hours at room temperature, up to 2 days refrigerated.",
+						"Thread chicken on skewers and grill over medium hot coals.",
+						"Place warmed pita bread on plates (if using tortillas, toast briefly over flame), divide meat among them, top with tomato and onion slices and cilantro and fold bread over. Serve with lemon or lime quarters for squeezing.",
+					},
+					Keywords: []string{"Chicken", "*Afghan", "On-The-Grill"},
+					Name:     "Afghan Chicken Kebobs",
+					URL:      "Imported from MasterCook",
+					Yield:    4,
+				},
+				{
+					Category: "*Afghan",
+					Ingredients: []string{
+						"2 pounds fresh pumpkin or squash",
+						"1/4 cup corn oil",
+						"***SWEET TOMATO SAUCE***",
+						"1 teaspoon crushed garlic",
+						"1 cup water",
+						"1/2 teaspoon salt",
+						"1/2 cup sugar",
+						"4 ounces tomato sauce",
+						"1/2 teaspoon ginger root -- chopped fine",
+						"1 teaspoon freshly ground coriander",
+						"seeds",
+						"1/4 teaspoon black pepper",
+						"***YOGURT SAUCE***",
+						"1/4 teaspoon crushed garlic",
+						"1/4 teaspoon salt",
+						"3/4 cup plain yogurt",
+						"***GARNISH***",
+						"dry mint leaves -- crushed",
+					},
+					Instructions: []string{
+						`Peel the pumpkin and cut into 2-3" cubes; set aside. Heat oil in a large frying pan that has a lid. Fry the pumpkins on both sides for a couple of minutes until lightly browned. Mix together ingredients for Sweet Tomato Sauce in a bowl then add to pumpkin mixture in fry pan.`,
+						"Cover and cook 20-25 minutes over low heat until the pumpkin is cooked and most of the liquid has evaporated. (I don't know how it's going to evaporate if the pan is covered....-B.)",
+						"Mix together the ingredients for the yogurt sauce. To serve: Spread half the yogurt sauce on a plate and lay the pumpkin on top. Top with remaining yogurt and any cooking juices left over. Sprinkle with dry mint.",
+						"May be served with chalow (basmati rice) and naan or pita bread.",
+						"From Afghani Cooking, the cookbook from Da Afghan Restaurant, Bloomington/Minneapolis, MN.",
+					},
+					Keywords: []string{"*Afghan", "Vegetables"},
+					Name:     "Afghan Pumpkins Kadu Bouranee (Sweet Pumpkin)",
+					URL:      "Imported from MasterCook",
+					Yield:    1,
+				},
+			},
+		},
+	}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			got := models.NewRecipesFromMasterCook(tc.buf)
+			if !cmp.Equal(got, tc.want) {
+				t.Log(cmp.Diff(got, tc.want))
+				t.Fail()
+			}
+		})
 	}
 }
 

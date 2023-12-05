@@ -153,6 +153,9 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (uint64, error
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
 	var isRecipeExists bool
 	err := s.DB.QueryRowContext(ctx, statements.IsRecipeForUserExist, userID, r.Name, r.Description, r.Yield, r.URL).Scan(&isRecipeExists)
 	if err != nil {
@@ -178,9 +181,6 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (uint64, error
 			r.Nutrition = nutrients.NutritionFact(weight)
 		}
 	}
-
-	s.Mutex.Lock()
-	defer s.Mutex.Unlock()
 
 	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{})
 	if err != nil {

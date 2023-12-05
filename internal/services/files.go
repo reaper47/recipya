@@ -441,6 +441,13 @@ func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recip
 				mu.Lock()
 				recipes = append(recipes, *processJSON(fh))
 				mu.Unlock()
+			} else if content == "application/octet-stream" {
+				switch strings.ToLower(filepath.Ext(fh.Filename)) {
+				case models.MXP.Ext():
+					mu.Lock()
+					recipes = append(recipes, processMasterCook(fh)...)
+					mu.Unlock()
+				}
 			}
 		}(file)
 	}
@@ -505,7 +512,8 @@ func (f *Files) processZip(file *multipart.FileHeader) models.Recipes {
 			_ = imageFile.Close()
 		}
 
-		if filepath.Ext(zf.Name) == ".json" {
+		switch strings.ToLower(filepath.Ext(zf.Name)) {
+		case models.JSON.Ext():
 			jsonFile, err := zf.Open()
 			if err != nil {
 				log.Println(err)
@@ -523,11 +531,26 @@ func (f *Files) processZip(file *multipart.FileHeader) models.Recipes {
 			recipes = append(recipes, *r)
 			recipeNumber++
 			_ = jsonFile.Close()
+		case models.MXP.Ext():
+			mxpFile, err := zf.Open()
+			if err != nil {
+				log.Println(err)
+				continue
+			}
+
+			xr := models.NewRecipesFromMasterCook(mxpFile)
+			if len(xr) > 0 {
+				recipes = append(recipes, xr...)
+				recipeNumber += len(xr)
+			}
+
+			_ = mxpFile.Close()
 		}
 	}
 
-	if recipes[len(recipes)-1].Image == uuid.Nil {
-		recipes[len(recipes)-1].Image = imageUUID
+	n := len(recipes)
+	if n > 0 && recipes[n-1].Image == uuid.Nil {
+		recipes[n-1].Image = imageUUID
 	}
 
 	return recipes
@@ -549,6 +572,19 @@ func processJSON(file *multipart.FileHeader) *models.Recipe {
 		return nil
 	}
 	return r
+}
+
+func processMasterCook(file *multipart.FileHeader) models.Recipes {
+	f, err := file.Open()
+	if err != nil {
+		log.Printf("error opening file %s: %q", file.Filename, err.Error())
+		return nil
+	}
+	defer func() {
+		_ = f.Close()
+	}()
+
+	return models.NewRecipesFromMasterCook(f)
 }
 
 func extractRecipe(rd io.Reader) (*models.Recipe, error) {
