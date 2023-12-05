@@ -138,8 +138,7 @@ CREATE TABLE ingredient_recipe
     id               INTEGER PRIMARY KEY,
     ingredient_id    INTEGER NOT NULL REFERENCES ingredients (id) ON DELETE CASCADE,
     recipe_id        INTEGER NOT NULL REFERENCES recipes (id) ON DELETE CASCADE,
-    ingredient_order INTEGER NOT NULL,
-    UNIQUE (recipe_id, ingredient_id)
+    ingredient_order INTEGER NOT NULL
 );
 
 CREATE TABLE instruction_recipe
@@ -147,8 +146,7 @@ CREATE TABLE instruction_recipe
     id                INTEGER PRIMARY KEY,
     instruction_id    INTEGER NOT NULL REFERENCES instructions (id) ON DELETE CASCADE,
     recipe_id         INTEGER NOT NULL REFERENCES recipes (id) ON DELETE CASCADE,
-    instruction_order INTEGER NOT NULL,
-    UNIQUE (recipe_id, instruction_id)
+    instruction_order INTEGER NOT NULL
 );
 
 CREATE TABLE keyword_recipe

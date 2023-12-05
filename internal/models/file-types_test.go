@@ -13,6 +13,7 @@ func TestFileType_Ext(t *testing.T) {
 	}{
 		{name: "json", in: models.JSON, want: ".json"},
 		{name: "pdf", in: models.PDF, want: ".pdf"},
+		{name: "mxp", in: models.MXP, want: ".mxp"},
 		{name: "invalid", in: models.InvalidFileType, want: ""},
 	}
 	for _, tc := range testcases {
@@ -33,6 +34,7 @@ func TestNewFileType(t *testing.T) {
 	}{
 		{name: "json", in: "json", want: models.JSON},
 		{name: "pdf", in: "pdf", want: models.PDF},
+		{name: "mxp", in: "mxp", want: models.MXP},
 		{name: "invalid", in: "", want: models.InvalidFileType},
 	}
 	for _, tc := range testcases {

@@ -1,6 +1,7 @@
 package models
 
 import (
+	"bytes"
 	"errors"
 	"github.com/donna-legal/word2number"
 	"github.com/google/uuid"
@@ -8,6 +9,7 @@ import (
 	"github.com/reaper47/recipya/internal/utils/duration"
 	"github.com/reaper47/recipya/internal/utils/extensions"
 	"github.com/reaper47/recipya/internal/utils/regex"
+	"io"
 	"strconv"
 	"strings"
 	"sync"
@@ -470,6 +472,133 @@ func (n NutrientFDC) Value() float64 {
 type SearchOptionsRecipes struct {
 	ByName     bool
 	FullSearch bool
+}
+
+// NewRecipesFromMasterCook extracts the recipes from a MasterCook file.
+func NewRecipesFromMasterCook(r io.Reader) Recipes {
+	var recipes Recipes
+
+	all, err := io.ReadAll(r)
+	if err != nil {
+		return nil
+	}
+
+	baseRecipe := Recipe{URL: "Imported from MasterCook"}
+
+	var (
+		isCategory     bool
+		isIngredients  bool
+		isInstructions bool
+		isStartRecipe  bool
+	)
+
+	recipe := baseRecipe
+	for _, line := range bytes.Split(all, []byte("\n")) {
+		if !isStartRecipe && bytes.Contains(line, []byte("*  Exported from  MasterCook  *")) {
+			if recipe.Yield == 0 {
+				recipe.Yield = 4
+			}
+
+			if len(recipe.Ingredients) > 0 && recipe.Ingredients[0] != "***Information***" {
+				recipes = append(recipes, recipe)
+			}
+
+			recipe = baseRecipe
+			isStartRecipe = true
+			isInstructions = false
+			continue
+		}
+
+		if isStartRecipe && len(line) > 1 {
+			recipe.Name = string(bytes.Join(bytes.Fields(line), []byte(" ")))
+			isStartRecipe = false
+			continue
+		}
+
+		if recipe.Yield == 0 && bytes.HasPrefix(line, []byte("Serving Size")) {
+			before, prep, _ := bytes.Cut(line, []byte("   "))
+
+			_, after, _ := bytes.Cut(before, []byte(":"))
+			yield, err := strconv.ParseInt(string(bytes.TrimSpace(after)), 10, 16)
+			if err == nil {
+				recipe.Yield = int16(yield)
+			}
+
+			_, prep, ok := bytes.Cut(prep, []byte(":"))
+			if ok {
+				h, m, _ := bytes.Cut(prep, []byte(":"))
+				times, err := NewTimes("PT"+string(h)+"H"+string(m), "PT0H0M")
+				if err == nil {
+					recipe.Times = times
+				}
+			}
+			continue
+		}
+
+		if !isCategory && recipe.Category == "" && bytes.HasPrefix(line, []byte("Categories")) {
+			isCategory = true
+			_, after, _ := bytes.Cut(line, []byte(":"))
+			before, after, _ := bytes.Cut(after, []byte("  "))
+			recipe.Category = string(bytes.TrimSpace(before))
+			recipe.Keywords = append(recipe.Keywords, recipe.Category, strings.TrimSpace(string(after)))
+			continue
+		}
+
+		isIngredientsStart := bytes.HasPrefix(line, []byte("  Amount"))
+		if isCategory && len(line) > 0 && !isIngredientsStart {
+			split := bytes.Split(line, []byte("   "))
+			for _, b := range split {
+				s := string(bytes.TrimSpace(b))
+				if s != "" {
+					recipe.Keywords = append(recipe.Keywords, s)
+				}
+			}
+		}
+
+		if !isIngredients && isIngredientsStart {
+			isCategory = false
+			isIngredients = true
+			continue
+		}
+
+		if isIngredients && len(line) > 1 && !bytes.HasPrefix(line, []byte("-")) {
+			recipe.Ingredients = append(recipe.Ingredients, strings.Join(strings.Fields(string(line)), " "))
+			continue
+		}
+
+		if isIngredients && len(line) < 2 {
+			isIngredients = false
+			isInstructions = true
+			continue
+		}
+
+		isEnd := bytes.Contains(line, []byte("- - - - - - -"))
+		if isInstructions && len(line) > 0 && !isEnd {
+			s := string(bytes.TrimSpace(line))
+			before, after, found := strings.Cut(s, ".")
+			if found {
+				_, err := strconv.Atoi(before)
+				if err == nil {
+					s = strings.TrimSpace(after)
+				}
+			}
+			if s != "" {
+				recipe.Instructions = append(recipe.Instructions, s)
+			}
+		}
+
+		if isEnd {
+			isInstructions = false
+			isStartRecipe = false
+		}
+	}
+
+	if recipe.Yield == 0 {
+		recipe.Yield = 4
+	}
+
+	recipes = append(recipes, recipe)
+	return recipes
 }
 
 func init() {

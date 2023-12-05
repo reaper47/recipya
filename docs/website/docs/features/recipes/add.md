@@ -67,11 +67,13 @@ request support for the website by clicking the button that appears.
 
 ### Import
 
-You can import recipes in the `.json` that adhere to the [Recipe schema](https://schema.org/Recipe) standard. 
+You can import recipes in the following formats:
+- `.json`: If they adhere to the [Recipe schema](https://schema.org/Recipe) standard
+- `.mxp`: Exported recipes from [MasterCook](https://www.mastercook.com)  
 
 ![img alt](/img/features/add-recipe-import.png)
 
-You can upload either a single `.json` file or a zip file containing multiple recipes.
+You can upload either a single file or a zip archive containing multiple recipes.
 The recipes in a zip file may be organized by folder. Each folder may contain the `.json` recipe file and an image 
 file. All other files in a folder will be ignored during processing. Here is an 
 [example](https://sea.musicavis.ca/f/683b9b9a7cc84e1bac0c/?dl=1) of how such zip may look like.
