@@ -32,20 +32,19 @@ var PageNotFound = Data{
 	Content:      "The page you requested to view is not found. Please go back to the main page.",
 }
 
+// EmailQuotaReached displays information on when the SendGrid email limit has been reached.
+var EmailQuotaReached = Data{
+	Title:        "Email Quota Reached",
+	ContentTitle: "Email Quota Reached",
+	Content: "The email could not be sent because the SendGrid daily sent email quota has been reached. " +
+		"The action has been logged. The next batch of emails will be sent tomorrow. " +
+		"You can sponsor the author of this project or buy him a coffee for him to have enough money to purchase the paid SendGrid plan to increase the limit. " +
+		"You will find the details here: https://github.com/reaper47/heavy-metal-notifier?tab=readme-ov-file#sponsors.",
+}
+
 // SuccessConfirm encapsulates the information displayed to the user when confirming an account succeeds.
 var SuccessConfirm = Data{
 	Title:        "Confirm",
 	ContentTitle: "Confirmation Successful",
 	Content:      "Your account has been confirmed.",
-}
-
-// UserLimitReachedError encapsulates the information displayed to the user when the user limit has been reached.
-// The limit depends on the SendGrid API key.
-var UserLimitReachedError = Data{
-	Title:        "User Limit Reached",
-	ContentTitle: "User Limit Reached",
-	Content: `You cannot register because the user limit has been reached. This limit depends on the SendGrid API key. 
-				You can sponsor the author of this project or buy him a coffee for him to have enough money to purchase
-				the paid SendGrid plan to increase the limit. You will find the details here: 
-				https://github.com/reaper47/heavy-metal-notifier?tab=readme-ov-file#sponsors.`,
 }

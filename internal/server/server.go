@@ -249,7 +249,7 @@ func (s *Server) Run() {
 		serverStopCtx()
 	}()
 
-	jobs.ScheduleCronJobs(s.Repository, imagesDir)
+	jobs.ScheduleCronJobs(s.Repository, imagesDir, s.Email)
 
 	fmt.Printf("Serving on %s\n", app.Config.Address())
 	err := httpServer.ListenAndServe()

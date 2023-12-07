@@ -2,10 +2,7 @@ package server
 
 import (
 	"encoding/json"
-	"fmt"
-	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
-	"github.com/reaper47/recipya/internal/templates"
 	"net/http"
 )
 
@@ -37,12 +34,6 @@ func makeToast(message string, toastType toast) string {
 
 func isAuthenticated(r *http.Request, getAuthToken func(selector string, validator string) (models.AuthToken, error)) bool {
 	return getUserIDFromSessionCookie(r) != -1 || getUserIDFromRememberMeCookie(r, getAuthToken) != -1
-}
-
-func sendErrorAdminEmail(sendFunc func(to string, template templates.EmailTemplate, data any), errFuncName string, err error) {
-	sendFunc(app.Config.Email.From, templates.EmailErrorAdmin, templates.EmailData{
-		Text: fmt.Sprintf("error in %s: %q", errFuncName, err),
-	})
 }
 
 func getUserID(r *http.Request) int64 {

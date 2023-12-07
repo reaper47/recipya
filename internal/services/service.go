@@ -154,8 +154,17 @@ type RepositoryService interface {
 
 // EmailService is the interface that describes the methods required for the email client.
 type EmailService interface {
+	// Queue adds an unsent email to the queue.
+	Queue(to string, template templates.EmailTemplate, data any)
+
+	// RateLimits gets the SendGrid API's remaining and reset rate limits.
+	RateLimits() (remaining int, resetUnix int64, err error)
+
 	// Send sends an email using the SendGrid API.
-	Send(to string, template templates.EmailTemplate, data any)
+	Send(to string, template templates.EmailTemplate, data any) error
+
+	// SendQueue sends emails in the queue until the rate limit has been reached.
+	SendQueue() (sent, remaining int, err error)
 }
 
 // FilesService is the interface that describes the methods required for manipulating files.

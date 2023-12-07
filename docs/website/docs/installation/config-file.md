@@ -10,7 +10,6 @@ sets important variables for the application. Let's go over each of them.
 - **email**
   - **from**: The administrator's email address. It is usually the email address of your [SendGrid](https://sendgrid.com/) account.
   - **sendGridAPIKey**: Your [SendGrid](https://sendgrid.com/) API key. The free tier should be sufficient for your needs.
-  - **maxNumberUsers**: If you have the free tier, then it defaults to 100 because you can send up to 100 emails/day. Otherwise, it defaults to 500,000 if you do not change it manually.
 - **integrations**
   - **azureComputerVision**
     - **resourceKey**: The *KEY 1* variable displayed on the *Keys and endpoint* tab of your Computer vision resource in the [Azure Portal](https://portal.azure.com/#home).

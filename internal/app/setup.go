@@ -127,16 +127,10 @@ func createConfigFile(path string) error {
 	r := bufio.NewReader(os.Stdin)
 	fmt.Println()
 
-	c.Email.MaxNumberUsers = 100
 	hasSendGrid := promptUser(r, "Do you have a SendGrid account? If not, important emails will not be sent [Y/n]", "y")
 	if isYes(hasSendGrid) {
 		c.Email.From = promptUser(r, "\tWhat is the email address of your SendGrid account?", "")
 		c.Email.SendGridAPIKey = promptUser(r, "\tWhat is your SendGrid API key?", "")
-
-		isFreeTier := promptUser(r, "\tIs your plan the free tier? [Y/n]", "y")
-		if !isYes(isFreeTier) {
-			c.Email.MaxNumberUsers = 500_000
-		}
 	}
 
 	hasVisionAPI := promptUser(r, "Do you have an Azure AI Vision account? If not, OCR features will be disabled. [Y/n]", "y")
