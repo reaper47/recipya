@@ -16,8 +16,11 @@ import (
 // ScheduleCronJobs schedules cron jobs for the web app. It starts the following jobs:
 //
 // - Clean Images: Removes unreferenced images from the data/img folder to save space.
-func ScheduleCronJobs(repo services.RepositoryService, imagesDir string) {
+//
+// - Send Queued Emails
+func ScheduleCronJobs(repo services.RepositoryService, imagesDir string, email services.EmailService) {
 	scheduler := gocron.NewScheduler(time.UTC)
+
 	_, _ = scheduler.Every(1).MonthLastDay().Do(func() {
 		rmFunc := func(file string) error {
 			return os.Remove(filepath.Join(imagesDir, file))
@@ -30,6 +33,12 @@ func ScheduleCronJobs(repo services.RepositoryService, imagesDir string) {
 		}
 		log.Printf("CleanImages: Removed %d unreferenced images %s", numFiles, s)
 	})
+
+	_, _ = scheduler.Every(1).Day().At("00:00").Do(func() {
+		sent, remaining, err := email.SendQueue()
+		log.Printf("SendQueuedEmails: Sent %d | Remaining %d | Error: %q", sent, remaining, err)
+	})
+
 	scheduler.StartAsync()
 }
 

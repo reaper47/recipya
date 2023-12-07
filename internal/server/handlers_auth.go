@@ -7,6 +7,7 @@ import (
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/templates"
 	"github.com/reaper47/recipya/internal/utils/regex"
+	"log"
 	"maps"
 	"net/http"
 	"strconv"
@@ -71,7 +72,7 @@ func (s *Server) confirmHandler(w http.ResponseWriter, r *http.Request) {
 
 	userID, err := auth.ParseToken(token)
 	if err != nil {
-		sendErrorAdminEmail(s.Email.Send, "confirmHandler.ParseToken: "+token, err)
+		log.Printf("[error] confirmHandler.ParseToken (token: %s): %q", token, err)
 		w.WriteHeader(http.StatusBadRequest)
 		templates.Render(w, templates.SimplePage, templates.ErrorTokenExpired)
 		return
@@ -79,7 +80,7 @@ func (s *Server) confirmHandler(w http.ResponseWriter, r *http.Request) {
 
 	err = s.Repository.Confirm(userID)
 	if err != nil {
-		sendErrorAdminEmail(s.Email.Send, "confirmHandler.Confirm: "+token, err)
+		log.Printf("[error] confirmHandler.Confirm (token: %s): %q", token, err)
 		w.WriteHeader(http.StatusNotFound)
 		templates.Render(w, templates.SimplePage, templates.ErrorConfirm)
 		return
@@ -119,17 +120,25 @@ func (s *Server) forgotPasswordPostHandler(w http.ResponseWriter, r *http.Reques
 		userID := s.Repository.UserID(email)
 		token, err := auth.CreateToken(map[string]any{"userID": userID}, 1*time.Hour)
 		if err != nil {
-			sendErrorAdminEmail(s.Email.Send, "forgotPasswordPostHandler.CreateToken", err)
+			log.Printf("[error] forgotPasswordPostHandler.CreateToken: %q", err)
 			w.Header().Set("HX-Trigger", makeToast("Forgot password failed.", errorToast))
 			w.WriteHeader(http.StatusUnprocessableEntity)
 			return
 		}
 
-		s.Email.Send(email, templates.EmailForgotPassword, templates.EmailData{
+		data := templates.EmailData{
 			Token:    token,
 			UserName: strings.Split(email, "@")[0],
 			URL:      app.Config.Address(),
-		})
+		}
+
+		err = s.Email.Send(email, templates.EmailForgotPassword, data)
+		if err != nil {
+			log.Printf("[error] forgotPasswordPostHandler.SendEmail (data: %+v): %q", data, err)
+			s.Email.Queue(email, templates.EmailForgotPassword, data)
+			templates.Render(w, templates.SimplePage, templates.EmailQuotaReached)
+			return
+		}
 	}
 
 	templates.RenderComponent(w, "login", "forgot-password-requested", templates.ForgotPasswordSuccess)
@@ -162,7 +171,7 @@ func (s *Server) forgotPasswordResetPostHandler(w http.ResponseWriter, r *http.R
 
 	userID, err := strconv.ParseInt(userIDStr, 10, 64)
 	if err != nil {
-		sendErrorAdminEmail(s.Email.Send, "forgotPasswordResetPostHandler.ParseInt: "+userIDStr, err)
+		log.Printf("[error] forgotPasswordResetPostHandler.ParseInt for (%d): %q", userID, err)
 		w.Header().Set("HX-Trigger", makeToast("Password is invalid.", errorToast))
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -177,7 +186,7 @@ func (s *Server) forgotPasswordResetPostHandler(w http.ResponseWriter, r *http.R
 
 	err = s.Repository.UpdatePassword(userID, hashPassword)
 	if err != nil {
-		sendErrorAdminEmail(s.Email.Send, "forgotPasswordResetPostHandler.UpdatePassword: "+strconv.FormatInt(userID, 10), err)
+		log.Printf("[error] forgotPasswordResetPostHandler.UpdatePassword for %d: %q", userID, err)
 		w.Header().Set("HX-Trigger", makeToast("Updating password failed.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -221,7 +230,7 @@ func (s *Server) loginPostHandler(w http.ResponseWriter, r *http.Request) {
 		http.SetCookie(w, NewRememberMeCookie(selector, validator))
 		err := s.Repository.AddAuthToken(selector, validator, userID)
 		if err != nil {
-			sendErrorAdminEmail(s.Email.Send, "loginPostHandler.AddAuthToken", err)
+			log.Printf("[error] loginPostHandler.AddAuthToken: %q", err)
 		}
 	}
 
@@ -262,7 +271,7 @@ func (s *Server) logoutHandler(w http.ResponseWriter, r *http.Request) {
 	if !errors.Is(err, http.ErrNoCookie) {
 		err := s.Repository.DeleteAuthToken(userID)
 		if err != nil {
-			sendErrorAdminEmail(s.Email.Send, "logoutHandler.DeleteAuthToken", err)
+			log.Printf("[error] logoutHandler.DeleteAuthToken: %q", err)
 		}
 
 		rememberMeCookie.MaxAge = -1
@@ -288,12 +297,6 @@ func (s *Server) registerPostPasswordHandler(w http.ResponseWriter, r *http.Requ
 }
 
 func (s *Server) registerPostHandler(w http.ResponseWriter, r *http.Request) {
-	users := s.Repository.Users()
-	if len(users) >= app.Config.Email.MaxNumberUsers {
-		templates.Render(w, templates.SimplePage, templates.UserLimitReachedError)
-		return
-	}
-
 	email := r.FormValue("email")
 	password := r.FormValue("password")
 
@@ -319,17 +322,23 @@ func (s *Server) registerPostHandler(w http.ResponseWriter, r *http.Request) {
 
 	token, err := auth.CreateToken(map[string]any{"userID": userID}, 14*24*time.Hour)
 	if err != nil {
-		sendErrorAdminEmail(s.Email.Send, "registerPostHandler.CreateToken", err)
+		log.Printf("[error] registerPostHandler.CreateToken: %q", err)
 		w.Header().Set("HX-Trigger", makeToast("Registration failed. User might be registered or password invalid.", errorToast))
 		w.WriteHeader(http.StatusUnprocessableEntity)
 		return
 	}
 
-	s.Email.Send(email, templates.EmailIntro, templates.EmailData{
+	data := templates.EmailData{
 		Token:    token,
 		UserName: strings.Split(email, "@")[0],
 		URL:      app.Config.Address(),
-	})
+	}
+
+	err = s.Email.Send(email, templates.EmailIntro, data)
+	if err != nil {
+		log.Printf("[error] registerPostHandler.SendEmail (data: %+v): %q", data, err)
+		s.Email.Queue(email, templates.EmailIntro, data)
+	}
 
 	w.Header().Set("HX-Redirect", "/auth/login")
 	w.WriteHeader(http.StatusSeeOther)
