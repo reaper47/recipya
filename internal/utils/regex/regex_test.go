@@ -539,7 +539,27 @@ func TestRegex_Website(t *testing.T) {
 
 	for _, url := range urls {
 		if !regex.URL.MatchString(url) {
-			t.Errorf("%v should be matched", url)
+			t.Errorf("%v should match", url)
+		}
+	}
+}
+
+func TestRegex_WildcardURL(t *testing.T) {
+	urls := []string{
+		"/cookbooks/123/download",
+		"/cookbooks/5/image",
+		"/cookbooks/7/reorder",
+		"/cookbooks/87878/recipes/434",
+		"/cookbooks/1/share",
+		"/recipes/5/edit",
+		"/recipes/6/scale",
+		"/recipes/6/share",
+		"/download/656",
+	}
+
+	for _, url := range urls {
+		if !regex.WildcardURL.MatchString(url) {
+			t.Errorf("%v should match", url)
 		}
 	}
 }
