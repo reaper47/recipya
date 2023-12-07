@@ -76,7 +76,6 @@ func udpAddr() *net.UDPAddr {
 // ConfigEmail holds email configuration variables.
 type ConfigEmail struct {
 	From           string `json:"from"`
-	MaxNumberUsers int    `json:"maxNumberUsers"`
 	SendGridAPIKey string `json:"sendGridAPIKey"`
 }
 

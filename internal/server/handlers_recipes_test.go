@@ -476,15 +476,10 @@ func TestHandlers_Recipes_AddRequestWebsite(t *testing.T) {
 	})
 
 	t.Run("request website successful", func(t *testing.T) {
-		originalEmailHitCount := emailMock.hitCount
-
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader(`website=https://www.eatingbirdfood.com/cinnamon-rolls`))
 
 		assertStatus(t, rr.Code, http.StatusSeeOther)
 		assertHeader(t, rr, "HX-Redirect", "/recipes/add")
-		if emailMock.hitCount != originalEmailHitCount+1 {
-			t.Fatalf("email must have been sent")
-		}
 	})
 }
 

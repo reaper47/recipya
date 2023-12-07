@@ -7,6 +7,7 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/scraper"
 	"github.com/reaper47/recipya/internal/templates"
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -484,10 +485,7 @@ func (s *Server) recipesAddOCRHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) recipesAddRequestWebsiteHandler(w http.ResponseWriter, r *http.Request) {
-	s.Email.Send(app.Config.Email.From, templates.EmailRequestWebsite, templates.EmailData{
-		Text: r.FormValue("website"),
-	})
-
+	log.Printf("[info] Website Request: Please support %s", r.FormValue("website"))
 	w.Header().Set("HX-Redirect", "/recipes/add")
 	w.Header().Set("HX-Trigger", makeToast("I love chicken", infoToast))
 	http.Redirect(w, r, "/recipes/add", http.StatusSeeOther)
