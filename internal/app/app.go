@@ -36,34 +36,41 @@ func (c *ConfigFile) Address() string {
 		return c.Server.URL
 	}
 
+	localAddr := udpAddr()
+	if localAddr != nil && c.Server.Port == 0 {
+		c.Server.Port = localAddr.Port
+	}
 	port := ":" + strconv.Itoa(c.Server.Port)
 
 	if runtime.GOOS == "windows" && isLocalhost {
 		return c.Server.URL + port
 	}
 
-	conn, err := net.Dial("udp", "8.8.8.8:80")
-	if err != nil || isRunningInDocker() {
+	if localAddr != nil || isRunningInDocker() {
 		addr := c.Server.URL
 		if (runtime.GOOS == "windows" || isRunningInDocker()) && strings.Contains(addr, "0.0.0.0") {
 			addr = strings.Replace(addr, "0.0.0.0", "127.0.0.1", 1)
 		}
-
-		if c.Server.Port != 0 {
-			addr += port
-		}
-		return addr
+		return addr + port
 	}
-	defer func() {
-		_ = conn.Close()
-	}()
 
-	localAddr := conn.LocalAddr().(*net.UDPAddr)
 	addr := strings.SplitAfter(c.Server.URL, "://")[0] + localAddr.IP.String()
 	if c.Server.Port != 0 {
 		return addr + port
 	}
 	return addr
+}
+
+func udpAddr() *net.UDPAddr {
+	conn, err := net.Dial("udp", "8.8.8.8:80")
+	if err != nil {
+		return nil
+	}
+	defer func() {
+		_ = conn.Close()
+	}()
+
+	return conn.LocalAddr().(*net.UDPAddr)
 }
 
 // ConfigEmail holds email configuration variables.
