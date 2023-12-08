@@ -16,7 +16,7 @@
         </div>
         <div class="relative" onclick="document.querySelector('#cookbook-image-{{.ID}}').click()">
             <img class="rounded-t-lg w-full border-b dark:border-b-gray-800 h-32 md:h-48 text-center hover:bg-gray-100 dark:hover:bg-blue-100 hover:opacity-80"
-                 src="{{if .IsUUIDValid}}/data/images/{{.Image}}.jpg{{else}}/static/img/cookbooks-new/placeholder.png{{end}}"
+                 src="{{if .IsUUIDValid}}/data/images/{{.Image}}.jpg{{else}}/static/img/cookbooks-new/placeholder.webp{{end}}"
                  alt="Cookbook image">
             {{template "cookbook-image-form" .ID}}
         </div>
@@ -348,7 +348,7 @@
             {{- else -}}
                 <div onclick="document.querySelector('#cookbook-image-{{.ID}}').click()">
                     <img class="col-span-1 border-r h-[100px] text-center hover:bg-gray-100 dark:hover:bg-blue-100 hover:opacity-80"
-                         src="/static/img/cookbooks-new/placeholder.png"
+                         src="/static/img/cookbooks-new/placeholder.webp"
                          alt="Cookbook image">
                     {{template "cookbook-image-form" .ID}}
                 </div>
