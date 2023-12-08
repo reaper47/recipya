@@ -3,6 +3,7 @@ package server_test
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
@@ -134,6 +135,26 @@ func TestHandlers_Auth_DeleteUser(t *testing.T) {
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodDelete, uri)
+	})
+
+	t.Run("demo version cannot be deleted", func(t *testing.T) {
+		repo := &mockRepository{
+			UsersRegistered: []models.User{
+				{ID: 1, Email: "demo@demo.com"},
+				{ID: 2},
+			},
+		}
+		srv.Repository = repo
+		app.Config.Server.IsDemo = true
+		defer func() {
+			app.Config.Server.IsDemo = false
+			srv.Repository = originalRepo
+		}()
+
+		rr := sendRequestAsLoggedIn(srv, http.MethodDelete, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusTeapot)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"You thought you could, eh?\",\"backgroundColor\":\"bg-red-500\"}"}`)
 	})
 
 	t.Run("user cannot delete other user", func(t *testing.T) {

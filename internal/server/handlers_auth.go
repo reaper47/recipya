@@ -90,6 +90,12 @@ func (s *Server) confirmHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) deleteUserHandler(w http.ResponseWriter, r *http.Request) {
+	if app.Config.Server.IsDemo && s.Repository.UserID("demo@demo.com") == getUserID(r) {
+		w.Header().Set("HX-Trigger", makeToast("You thought you could, eh?", errorToast))
+		w.WriteHeader(http.StatusTeapot)
+		return
+	}
+
 	err := s.Repository.DeleteUser(getUserID(r))
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
