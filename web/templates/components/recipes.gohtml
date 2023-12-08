@@ -74,7 +74,7 @@
 
     <div class="grid w-full h-full grid-cols-1 gap-4 p-4 md:grid-cols-2 md:grid-rows-2 xl:m-auto xl:max-w-6xl md:grid-flow-col">
         <div class="shadow-lg rounded-xl h-96 dark:shadow-none dark:bg-gray-600">
-            <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes-new/manual.webp"
+            <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes/new/manual.webp"
                  alt="Writing on a piece of paper with a traditional pen."/>
             <div class="h-40 px-6 py-4">
                 <div class="mb-2 text-xl font-semibold">Manual</div>
@@ -90,7 +90,7 @@
         </div>
 
         <div class="shadow-lg rounded-xl h-96 dark:shadow-none dark:bg-gray-600">
-            <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes-new/import.webp"
+            <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes/new/import.webp"
                  alt="Writing on a piece of paper with a traditional pen."/>
             <div class="h-40 px-6 py-4">
                 <div class="mb-2 text-xl font-semibold">Website</div>
@@ -147,7 +147,7 @@
         </dialog>
 
         <div class="shadow-lg rounded-xl h-96 dark:shadow-none dark:bg-gray-600">
-            <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes-new/camera.webp"
+            <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes/new/camera.webp"
                  alt="Writing on a piece of paper with a traditional pen."/>
             <div class="h-40 px-6 py-4">
                 <div class="mb-2 text-xl font-semibold">Scan</div>
@@ -172,7 +172,7 @@
         </div>
 
         <div class="shadow-lg rounded-xl h-96 dark:shadow-none dark:bg-gray-600">
-            <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes-new/schema.webp"
+            <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes/new/schema.webp"
                  alt="Writing on a piece of paper with a traditional pen."/>
             <div class="h-40 px-6 py-4">
                 <div class="mb-2 text-xl font-semibold">Import</div>
@@ -1014,7 +1014,7 @@
             <div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700">
                 {{ $isUUIDValid := call $funcs.IsUUIDValid .Image}}
                 <img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 h-48 {{if not $isUUIDValid}}px-4 pt-4{{end}}"
-                     src="{{if $isUUIDValid}}/data/images/{{$r.Image}}.jpg{{end}}"
+                     src="{{if $isUUIDValid}}/data/images/{{$r.Image}}.jpg{{else}}/static/img/recipes/placeholder.webp{{end}}"
                      alt="Image for the {{$r.Name}} recipe"
                      hx-get="/recipes/{{$r.ID}}" hx-target="#content" hx-push-url="true">
                 <div class="py-2 px-3">
@@ -1221,7 +1221,7 @@
         <div class="w-full grid grid-flow-col col-span-6 border-b border-x border-black place-items-center md:border-r-0 md:col-span-4 md:border-b-0 dark:border-gray-800 print:hidden">
             <img id="output" class="w-full text-center h-96" alt="Image of the recipe"
                  style="object-fit: scale-down"
-                 src="{{- if .View.IsUUIDValid -}}/data/images/{{.View.Recipe.Image}}.jpg{{- end -}}">
+                 src="{{- if .View.IsUUIDValid -}}/data/images/{{.View.Recipe.Image}}.jpg{{else}}/static/img/recipes/placeholder.webp{{end}}">
         </div>
 
         <div class="grid grid-flow-col col-span-6 border-b border-l border-black md:border-l md:grid-flow-row md:col-span-2 md:grid md:border-r md:border-b-0 dark:border-gray-800 print:border-b">
