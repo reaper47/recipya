@@ -154,7 +154,7 @@ func TestHandlers_Auth_DeleteUser(t *testing.T) {
 		rr := sendRequestAsLoggedIn(srv, http.MethodDelete, uri, noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusTeapot)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"You thought you could, eh?\",\"backgroundColor\":\"bg-red-500\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Your savings account has been deleted.\",\"backgroundColor\":\"bg-red-500\"}"}`)
 	})
 
 	t.Run("user cannot delete other user", func(t *testing.T) {

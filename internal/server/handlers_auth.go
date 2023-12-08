@@ -34,7 +34,7 @@ func (s *Server) changePasswordHandler(w http.ResponseWriter, r *http.Request) {
 	userID := getUserID(r)
 
 	if app.Config.Server.IsDemo && s.Repository.UserID("demo@demo.com") == userID {
-		w.Header().Set("HX-Trigger", makeToast("Nice try :)", errorToast))
+		w.Header().Set("HX-Trigger", makeToast("Your Facebook password has been changed.", infoToast))
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -91,7 +91,7 @@ func (s *Server) confirmHandler(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) deleteUserHandler(w http.ResponseWriter, r *http.Request) {
 	if app.Config.Server.IsDemo && s.Repository.UserID("demo@demo.com") == getUserID(r) {
-		w.Header().Set("HX-Trigger", makeToast("You thought you could, eh?", errorToast))
+		w.Header().Set("HX-Trigger", makeToast("Your savings account has been deleted.", errorToast))
 		w.WriteHeader(http.StatusTeapot)
 		return
 	}

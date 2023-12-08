@@ -13,6 +13,7 @@ type Key string
 const UserIDKey Key = "userID"
 
 var excludedURIs = map[string]struct{}{
+	"/auth/change-password":             {},
 	"/auth/confirm":                     {},
 	"/auth/register/validate-password":  {},
 	"/auth/user":                        {},
