@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/reaper47/recipya/internal/utils/regex"
 	"net/http"
+	"strings"
 )
 
 // Key is a type alias for a context key.
@@ -13,29 +14,29 @@ type Key string
 const UserIDKey Key = "userID"
 
 var excludedURIs = map[string]struct{}{
-	"/auth/change-password":             {},
-	"/auth/confirm":                     {},
-	"/auth/register/validate-password":  {},
-	"/auth/user":                        {},
-	"/cookbooks/recipes/search":         {},
-	"/integrations/import/nextcloud":    {},
-	"/recipes/add/import":               {},
-	"/recipes/add/manual/ingredient":    {},
-	"/recipes/add/manual/instruction":   {},
-	"/recipes/add/manual/ingredient/*":  {},
-	"/recipes/add/manual/instruction/*": {},
-	"/recipes/add/ocr":                  {},
-	"/recipes/add/request-website":      {},
-	"/recipes/add/website":              {},
-	"/recipes/search":                   {},
-	"/recipes/supported-websites":       {},
-	"/settings/export/recipes":          {},
-	"/settings/calculate-nutrition":     {},
-	"/settings/convert-automatically":   {},
-	"/settings/measurement-system":      {},
-	"/settings/tabs/profile":            {},
-	"/settings/tabs/recipes":            {},
-	"/user-initials":                    {},
+	"/auth/change-password":              {},
+	"/auth/confirm":                      {},
+	"/auth/register/validate-password":   {},
+	"/auth/user":                         {},
+	"/cookbooks/recipes/search":          {},
+	"/integrations/import/nextcloud":     {},
+	"/recipes/add/import":                {},
+	"/recipes/add/manual/ingredient":     {},
+	"/recipes/add/manual/instruction":    {},
+	"/recipes/add/manual/ingredient/*":   {},
+	"/recipes/add/manual/instruction/*":  {},
+	"/recipes/add/ocr":                   {},
+	"/recipes/add/request-website":       {},
+	"/recipes/add/website":               {},
+	"/recipes/search":                    {},
+	"/recipes/supported-websites":        {},
+	"/settings/export/recipes?type=json": {},
+	"/settings/calculate-nutrition":      {},
+	"/settings/convert-automatically":    {},
+	"/settings/measurement-system":       {},
+	"/settings/tabs/profile":             {},
+	"/settings/tabs/recipes":             {},
+	"/user-initials":                     {},
 }
 
 func (s *Server) redirectIfLoggedInMiddleware(next http.Handler) http.Handler {
@@ -61,12 +62,16 @@ func (s *Server) redirectIfLoggedInMiddleware(next http.Handler) http.Handler {
 
 func (s *Server) mustBeLoggedInMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		uri := r.RequestURI
 		_, found := excludedURIs[r.RequestURI]
 		if found || regex.WildcardURL.MatchString(r.RequestURI) {
-			http.SetCookie(w, NewRedirectCookie("/"))
-		} else {
-			http.SetCookie(w, NewRedirectCookie(r.RequestURI))
+			if strings.HasPrefix(r.RequestURI, "/settings") {
+				uri = "/settings"
+			} else {
+				uri = "/"
+			}
 		}
+		http.SetCookie(w, NewRedirectCookie(uri))
 
 		userID := getUserIDFromSessionCookie(r)
 		if userID != -1 {
