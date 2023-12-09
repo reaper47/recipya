@@ -26,9 +26,10 @@ import (
 var embedMigrations embed.FS
 
 const (
-	fdcDB           = "fdc.db"
-	recipyaDB       = "recipya.db"
-	shortCtxTimeout = 3 * time.Second
+	fdcDB            = "fdc.db"
+	recipyaDB        = "recipya.db"
+	shortCtxTimeout  = 3 * time.Second
+	longerCtxTimeout = 1 * time.Minute
 )
 
 // SQLiteService represents the Service implemented with SQLite.
@@ -820,7 +821,7 @@ func (s *SQLiteService) Recipes(userID int64, page uint64) models.Recipes {
 
 // RecipesAll gets all the user's recipes.
 func (s *SQLiteService) RecipesAll(userID int64) models.Recipes {
-	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), longerCtxTimeout)
 	defer cancel()
 
 	rows, err := s.DB.QueryContext(ctx, statements.SelectRecipesAll, userID)

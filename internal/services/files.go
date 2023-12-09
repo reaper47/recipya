@@ -163,10 +163,11 @@ func exportRecipesPDF(recipes models.Recipes) []exportData {
 
 func recipeToPDF(r *models.Recipe) []byte {
 	pdf := gofpdf.New("P", "mm", "Letter", "")
-	pdf.SetAuthor("Recipya user", true)
+	pdf.SetAuthor("Recipya user", false)
 	pdf.SetCreator("Recipya", false)
-	pdf.SetSubject(r.Name, true)
-	pdf.SetTitle(r.Name, true)
+	sanitized := strings.ToValidUTF8(r.Name, "")
+	pdf.SetSubject(sanitized, true)
+	pdf.SetTitle(sanitized, true)
 	pdf.SetCreationDate(time.Now())
 	addRecipeToPDF(pdf, r)
 	return pdfToBytes(pdf, r.Name)
@@ -413,7 +414,7 @@ func addRecipeToPDF(pdf *gofpdf.Fpdf, r *models.Recipe) *gofpdf.Fpdf {
 			pdf.SetFont(fontFamily, "", fontSizeSmall)
 			pdf.SetX(marginLeft + pageWidth/3)
 		}
-		pdf.MultiCell(2*pageWidth/3-2*marginRight, 5, tr(strconv.Itoa(i)+". "+ins), "", "L", false)
+		pdf.MultiCell(2*pageWidth/3-2*marginRight, 5, tr(strconv.Itoa(i+1)+". "+ins), "", "L", false)
 	}
 	pdf.SetPage(pdf.PageNo())
 	pdf.Rect(marginLeft, marginTop, pageWidth-marginLeft-marginRight, pageHeight-3*marginTop, "D")
@@ -651,10 +652,11 @@ func exportCookbookToPDF(cookbook *models.Cookbook) exportData {
 
 func cookbookToPDF(cookbook *models.Cookbook) []byte {
 	pdf := gofpdf.New("P", "mm", "Letter", "")
-	pdf.SetAuthor("Recipya user", true)
+	pdf.SetAuthor("Recipya user", false)
 	pdf.SetCreator("Recipya", false)
-	pdf.SetSubject(cookbook.Title, true)
-	pdf.SetTitle(cookbook.Title, true)
+	sanitized := strings.ToValidUTF8(cookbook.Title, "")
+	pdf.SetSubject(sanitized, true)
+	pdf.SetTitle(sanitized, true)
 	pdf.SetCreationDate(time.Now())
 
 	tr := pdf.UnicodeTranslatorFromDescriptor("")

@@ -313,7 +313,10 @@
 {{define "settings-tabs-recipes"}}
     <div class="grid grid-cols-2 gap-4 mb-2">
         <p class="text-end font-semibold select-none">Export data:</p>
-        <form class="grid gap-1 grid-flow-col w-fit" hx-get="/settings/export/recipes" hx-include="select[name='type']">
+        <form class="grid gap-1 grid-flow-col w-fit"
+              hx-get="/settings/export/recipes"
+              hx-include="select[name='type']"
+              hx-indicator="#fullscreen-loader">
             <label>
                 <select required id="file-type" name="type"
                         class="bg-gray-50 border border-gray-300 rounded-lg p-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500">
