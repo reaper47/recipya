@@ -1,6 +1,7 @@
 package server_test
 
 import (
+	"bytes"
 	"database/sql"
 	"errors"
 	"github.com/google/uuid"
@@ -657,13 +658,13 @@ func (m *mockFiles) ExportCookbook(cookbook models.Cookbook, fileType models.Fil
 	return cookbook.Title + fileType.Ext(), nil
 }
 
-func (m *mockFiles) ExportRecipes(recipes models.Recipes, _ models.FileType) (string, error) {
-	var s string
+func (m *mockFiles) ExportRecipes(recipes models.Recipes, _ models.FileType, _ *models.Broker) (*bytes.Buffer, error) {
+	var b bytes.Buffer
 	for _, recipe := range recipes {
-		s += recipe.Name + "-"
+		b.WriteString(recipe.Name + "-")
 	}
 	m.exportHitCount++
-	return s, nil
+	return &b, nil
 }
 
 func (m *mockFiles) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recipes {

@@ -8,6 +8,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/jobs"
+	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services"
 	_ "github.com/reaper47/recipya/internal/templates" // Need to initialize the templates package.
 	"github.com/reaper47/recipya/static"
@@ -35,6 +36,7 @@ func init() {
 // NewServer creates a Server.
 func NewServer(repository services.RepositoryService, email services.EmailService, files services.FilesService, integrations services.IntegrationsService) *Server {
 	srv := &Server{
+		Brokers:      make(map[int64]*models.Broker),
 		Repository:   repository,
 		Email:        email,
 		Files:        files,
@@ -46,6 +48,7 @@ func NewServer(repository services.RepositoryService, email services.EmailServic
 
 // Server is the web application's configuration object.
 type Server struct {
+	Brokers      map[int64]*models.Broker
 	Router       *chi.Mux
 	Repository   services.RepositoryService
 	Email        services.EmailService
@@ -196,6 +199,7 @@ func (s *Server) mountHandlers() {
 
 		r.Get("/download/{tmpFile}", s.downloadHandler)
 		r.Get("/user-initials", s.userInitialsHandler)
+		r.Get("/ws", s.wsHandler)
 	})
 
 	r.NotFound(notFoundHandler)

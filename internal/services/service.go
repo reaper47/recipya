@@ -1,6 +1,7 @@
 package services
 
 import (
+	"bytes"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
@@ -175,7 +176,7 @@ type FilesService interface {
 
 	// ExportRecipes creates a zip containing the recipes to export in the desired file type.
 	// It returns the name of file in the temporary directory.
-	ExportRecipes(recipes models.Recipes, fileType models.FileType) (string, error)
+	ExportRecipes(recipes models.Recipes, fileType models.FileType, broker *models.Broker) (*bytes.Buffer, error)
 
 	// ExtractRecipes extracts the recipes from the HTTP files.
 	ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recipes

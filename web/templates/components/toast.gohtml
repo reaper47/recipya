@@ -7,9 +7,12 @@
     <script defer>
         var timeoutToast = timeoutToast || null;
         htmx.on('showToast', function (event) {
-            const toastContainer = document.getElementById('toast-container');
-
             const {message, backgroundColor} = JSON.parse(event.detail.value);
+            showToast(message, backgroundColor);
+        });
+
+        function showToast(message, backgroundColor) {
+            const toastContainer = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.classList.add('text-white', 'px-6', 'py-4', 'rounded', 'shadow-md', backgroundColor);
             toast.textContent = message;
@@ -26,6 +29,43 @@
                 toastContainer.classList.add('hidden');
                 toastContainer?.removeChild(toast);
             }, 5000);
+        }
+    </script>
+{{end}}
+
+{{define "toast-ws"}}
+    <div id="ws-notification-container"
+         class="z-20 fixed bottom-0 right-0 p-6 cursor-default {{if not .IsToastWSVisible}}hidden{{end}}">
+        <div class="bg-blue-500 text-white px-4 py-2 rounded shadow-md">
+            <p class="font-medium text-center pb-1">{{.Title}}</p>
+            {{.ContentHTML}}
+        </div>
+    </div>
+{{end}}
+
+{{define "toast-ws-js"}}
+    <script defer>
+        document.addEventListener("htmx:wsBeforeMessage", (event) => {
+            try {
+                const {type, data, fileName} = JSON.parse(event.detail.message);
+                switch (type) {
+                    case "toast":
+                        const {message, background} = JSON.parse(data);
+                        showToast(message, background);
+                        break;
+                    case "file":
+                        const decoded = atob(data)
+                        const bytes = new Uint8Array(decoded.length);
+                        for (let i = 0; i < decoded.length; i++) {
+                            bytes[i] = decoded.charCodeAt(i);
+                        }
+                        const blob = new Blob([bytes], {type: "application/zip"})
+                        downloadFile(blob, fileName, "application/zip");
+                        event.preventDefault();
+                        break;
+                }
+            } catch (_) {
+            }
         });
     </script>
 {{end}}

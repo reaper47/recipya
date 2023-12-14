@@ -4,7 +4,9 @@ import (
 	"bytes"
 	"context"
 	"github.com/google/uuid"
+	"github.com/gorilla/websocket"
 	"github.com/reaper47/recipya/internal/auth"
+	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
 	"io"
 	"mime/multipart"
@@ -26,6 +28,41 @@ var (
 	regexRmSpaces = regexp.MustCompile(`>\s+<`)
 	regexOneLine  = regexp.MustCompile(`\s{2,}|\n`)
 )
+
+func createWSServer() (*server.Server, *httptest.Server, *websocket.Conn) {
+	srv := newServerTest()
+	repo := &mockRepository{
+		UsersRegistered: []models.User{
+			{ID: 1, Email: "test@example.com"},
+		},
+	}
+	srv.Repository = repo
+
+	ts := httptest.NewServer(srv.Router)
+
+	req, _ := http.NewRequest(http.MethodPost, ts.URL+"/auth/login", strings.NewReader("email=test@example.com&password=123&remember-me=true"))
+	req.Header.Set("Content-Type", string(formHeader))
+	res, _ := http.DefaultClient.Do(req)
+	defer res.Body.Close()
+
+	var sessionCookie *http.Cookie
+	for _, cookie := range res.Cookies() {
+		if cookie.Name == "session" {
+			sessionCookie = cookie
+			break
+		}
+	}
+
+	u := strings.Replace(ts.URL, "http", "ws", 1)
+	h := http.Header{}
+	h.Add("Cookie", sessionCookie.String())
+
+	c, _, err := websocket.DefaultDialer.Dial(u+"/ws", h)
+	if err != nil {
+		panic(err)
+	}
+	return srv, ts, c
+}
 
 func createMultipartForm(fields map[string]string) (contentType string, body string) {
 	var buf bytes.Buffer

@@ -105,3 +105,7 @@ func RenderComponent(w http.ResponseWriter, component, name string, data any) {
 	w.Header().Set("Content-Type", "text/html")
 	_, _ = fmt.Fprint(w, buf.String())
 }
+
+func ToastWS() *template.Template {
+	return templates["components/toast.gohtml"]
+}

@@ -2,12 +2,14 @@ package server_test
 
 import (
 	"errors"
+	"github.com/gorilla/websocket"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/units"
 	"net/http"
 	"slices"
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestHandlers_Settings(t *testing.T) {
@@ -110,11 +112,17 @@ func TestHandlers_Settings_ConvertAutomatically(t *testing.T) {
 }
 
 func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer func() {
+		_ = c.Close()
+	}()
+
+	originalRepo := srv.Repository
+
 	f := &mockFiles{}
 	srv.Files = f
 
-	uri := "/settings/export/recipes"
+	uri := ts.URL + "/settings/export/recipes"
 
 	validExportTypes := []string{"json", "pdf"}
 
@@ -125,21 +133,36 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 	})
 
 	t.Run("invalid file type", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		_ = c.SetReadDeadline(time.Now().Add(2 * time.Second))
 
-		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Invalid export file format.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		mt, got, err := c.ReadMessage()
+		if err != nil {
+			t.Error(err)
+		}
+
+		assertStatus(t, rr.Code, http.StatusAccepted)
+		want := `{"type":"toast","fileName":"","data":"{\"message\":\"Invalid export file format.\",\"background\":\"bg-red-500\"}"}`
+		if mt != websocket.TextMessage || strings.TrimSpace(string(got)) != want {
+			t.Errorf("got:\n%q\nbut want:\n%q", got, want)
+		}
 	})
 
 	t.Run("no export if no recipes", func(t *testing.T) {
 		for _, q := range validExportTypes {
 			t.Run(q, func(t *testing.T) {
+				_ = c.SetReadDeadline(time.Now().Add(2 * time.Second))
 				originalHitCount := f.exportHitCount
 
 				rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?type="+q, noHeader, nil)
+				mt, got, _ := c.ReadMessage()
+				mt, got, _ = c.ReadMessage()
 
-				assertStatus(t, rr.Code, http.StatusNoContent)
-				assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"No recipes in database.\",\"backgroundColor\":\"bg-orange-500\"}"}`)
+				assertStatus(t, rr.Code, http.StatusAccepted)
+				want := `{"type":"toast","fileName":"","data":"{\"message\":\"No recipes in database.\",\"background\":\"bg-yellow-500\"}"}`
+				if mt != websocket.TextMessage || strings.TrimSpace(string(got)) != want {
+					t.Errorf("got:\n%q\nbut want:\n%q", got, want)
+				}
 				if originalHitCount != f.exportHitCount {
 					t.Fatalf("expected the export function not to be called")
 				}
@@ -148,18 +171,33 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 	})
 
 	t.Run("have recipes", func(t *testing.T) {
-		_, _ = srv.Repository.AddRecipe(&models.Recipe{ID: 1, Name: "Chicken"}, 1)
-		_, _ = srv.Repository.AddRecipe(&models.Recipe{ID: 2, Name: "BBQ"}, 2)
-		_, _ = srv.Repository.AddRecipe(&models.Recipe{ID: 3, Name: "Jersey"}, 1)
+		repo := &mockRepository{
+			RecipesRegistered: map[int64]models.Recipes{
+				1: {{ID: 1, Name: "Chicken"}, {ID: 3, Name: "Jersey"}},
+				2: {{ID: 2, Name: "BBQ"}},
+			},
+			UsersRegistered: srv.Repository.Users(),
+		}
+		srv.Repository = repo
+		defer func() {
+			srv.Repository = originalRepo
+		}()
 
 		for _, q := range validExportTypes {
 			t.Run(q, func(t *testing.T) {
+				_ = c.SetReadDeadline(time.Now().Add(2 * time.Second))
 				originalHitCount := f.exportHitCount
 
 				rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?type="+q, noHeader, nil)
+				mt, got, _ := c.ReadMessage()
+				mt, got, _ = c.ReadMessage()
+				mt, got, _ = c.ReadMessage()
 
-				assertStatus(t, rr.Code, http.StatusSeeOther)
-				assertHeader(t, rr, "HX-Redirect", "/download/Chicken-Jersey-")
+				assertStatus(t, rr.Code, http.StatusAccepted)
+				want := `{"type":"file","fileName":"recipes_` + q + `.zip","data":"Q2hpY2tlbi1KZXJzZXkt"}` + "\n"
+				if mt != websocket.TextMessage || string(got) != want {
+					t.Errorf("got:\n%q\nbut want:\n%q", got, want)
+				}
 				if f.exportHitCount != originalHitCount+1 {
 					t.Fatalf("expected the export function to be called")
 				}
@@ -423,12 +461,12 @@ func TestHandlers_Settings_TabsRecipes(t *testing.T) {
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
 			`<p class="text-end font-semibold select-none">Export data:</p>`,
-			`<form class="grid gap-1 grid-flow-col w-fit" hx-get="/settings/export/recipes" hx-include="select[name='type']" hx-indicator="#fullscreen-loader"><label><select required id="file-type" name="type" class="bg-gray-50 border border-gray-300 rounded-lg p-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500"><optgroup label="Recipes"><option value="json" selected>JSON</option><option value="pdf">PDF</option></optgroup></select></label><button class="bg-white border border-gray-300 rounded-lg py-2 px-4 justify-start hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1" fill="black" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 11v5H2v-5H0v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5z"/><path d="m9 14 5-6h-4V0H8v8H4z"/></svg></button></form>`,
+			`<form method="dialog" hx-post="/integrations/import/nextcloud" hx-swap="none" hx-indicator="#fullscreen-loader" onsubmit="document.querySelector('#integrations-nextcloud-dialog').close()"><div class="block"><label for="integrations-nextcloud-dialog-url" class="font-medium">Nextcloud URL</label><input id="integrations-nextcloud-dialog-url" type="url" name="url" placeholder="https://nextcloud.mydomain.com" class="text-input"></div><div class="block mt-3"><label for="integrations-nextcloud-dialog-username" class="font-medium">Username</label><input id="integrations-nextcloud-dialog-username" type="text" name="username" placeholder="Enter your Nextcloud username" class="text-input"></div><div class="block mt-3"><label for="integrations-nextcloud-dialog-password" class="font-medium">Password</label><input id="integrations-nextcloud-dialog-password" type="password" name="password" placeholder="Enter your Nextcloud password" class="text-input"></div><button class="mt-3 w-full rounded-lg bg-indigo-600 px-4 py-2 text-lg font-semibold tracking-wide text-white hover:bg-green-600"> Import </button></form>`,
 			`<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1" fill="black" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 11v5H2v-5H0v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5z"/><path d="m9 14 5-6h-4V0H8v8H4z"/></svg>`,
 			`<label for="systems" class="text-end font-semibold">Measurement system:</label>`,
 			`<select id="systems" name="system" hx-post="/settings/measurement-system" hx-swap="none" class="h-fit w-fit bg-gray-50 border border-gray-300 rounded-lg p-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500"><option value="imperial" >imperial</option><option value="metric" selected>metric</option></select>`,
 			`<input type="checkbox" name="convert" id="convert" class="w-fit h-fit mt-1" hx-post="/settings/convert-automatically" hx-trigger="click">`,
-			`<div class="grid grid-cols-2 gap-4 mb-2"><label for="integrations" class="text-end font-semibold">Integrations:<br><span class="font-light text-sm">Import recipes from a selected solution.</span></label><div class="grid gap-1 grid-flow-col w-fit h-fit"><label><select id="integrations" name="integrations" hx-post="/settings/measurement-system" hx-swap="none" class="h-fit w-fit bg-gray-50 border border-gray-300 rounded-lg p-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500"><option value="nextcloud" selected>Nextcloud</option></select></label><button class="bg-white border border-gray-300 rounded-lg py-1 px-2 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" onmousedown="document.querySelector('#integrations-nextcloud-dialog').showModal()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-cloud-arrow-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.646 10.854a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2z"/><path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/></svg></button></div></div>`,
+			`<div class="grid grid-cols-2 gap-4 mb-2"><label for="integrations" class="text-end font-semibold">Integrations:<br><span class="font-light text-sm">Import recipes from a selected solution.</span></label><div class="grid gap-1 grid-flow-col w-fit h-fit"><label><select id="integrations" name="integrations" hx-post="/settings/measurement-system" hx-swap="none" class="h-fit w-fit bg-gray-50 border border-gray-300 rounded-lg p-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500"><option value="nextcloud" selected>Nextcloud</option></select></label><button class="bg-white border border-gray-300 rounded-lg py-1 px-2 hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" onmousedown="document.querySelector('#integrations-nextcloud-dialog').showModal()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-cloud-arrow-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.646 10.854a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2z"/><path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/></svg></button></div></div>`,
 			`<dialog id="integrations-nextcloud-dialog" class="p-4 dark:bg-gray-600 rounded-lg dark:text-gray-200"><h1 class="mb-3 text-center text-2xl font-semibold underline">Import from Nextcloud</h1><form method="dialog" hx-post="/integrations/import/nextcloud" hx-swap="none" hx-indicator="#fullscreen-loader" onsubmit="document.querySelector('#integrations-nextcloud-dialog').close()"><div class="block"><label for="integrations-nextcloud-dialog-url" class="font-medium">Nextcloud URL</label><input id="integrations-nextcloud-dialog-url" type="url" name="url" placeholder="https://nextcloud.mydomain.com" class="text-input"></div><div class="block mt-3"><label for="integrations-nextcloud-dialog-username" class="font-medium">Username</label><input id="integrations-nextcloud-dialog-username" type="text" name="username" placeholder="Enter your Nextcloud username" class="text-input"></div><div class="block mt-3"><label for="integrations-nextcloud-dialog-password" class="font-medium">Password</label><input id="integrations-nextcloud-dialog-password" type="password" name="password" placeholder="Enter your Nextcloud password" class="text-input"></div><button class="mt-3 w-full rounded-lg bg-indigo-600 px-4 py-2 text-lg font-semibold tracking-wide text-white hover:bg-green-600"> Import </button></form></dialog>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)

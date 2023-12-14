@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
@@ -49,30 +50,50 @@ func (s *Server) settingsConvertAutomaticallyPostHandler(w http.ResponseWriter, 
 }
 
 func (s *Server) settingsExportRecipesHandler(w http.ResponseWriter, r *http.Request) {
-	fileType := models.NewFileType(r.URL.Query().Get("type"))
-	if fileType == models.InvalidFileType {
-		w.Header().Set("HX-Trigger", makeToast("Invalid export file format.", errorToast))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
 	userID := getUserID(r)
-	recipes := s.Repository.RecipesAll(userID)
-	if len(recipes) == 0 {
-		w.Header().Set("HX-Trigger", makeToast("No recipes in database.", warningToast))
-		w.WriteHeader(http.StatusNoContent)
-		return
-	}
 
-	fileName, err := s.Files.ExportRecipes(recipes, fileType)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Failed to export recipes.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
+	go func() {
+		broker := s.Brokers[userID]
 
-	w.Header().Set("HX-Redirect", "/download/"+fileName)
-	w.WriteHeader(http.StatusSeeOther)
+		qType := r.URL.Query().Get("type")
+		fileType := models.NewFileType(qType)
+		if fileType == models.InvalidFileType {
+			_ = broker.SendToast("Invalid export file format.", "bg-red-500")
+			return
+		}
+
+		err := broker.SendProgressStatus("Preparing...", true, 0, -1)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		recipes := s.Repository.RecipesAll(userID)
+		if len(recipes) == 0 {
+			_ = broker.SendToast("No recipes in database.", "bg-yellow-500")
+			return
+		}
+
+		data, err := s.Files.ExportRecipes(recipes, fileType, s.Brokers[userID])
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		err = broker.SendProgressStatus("Finished", false, 0, 100)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		err = broker.SendFile("recipes_"+qType+".zip", data)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+	}()
+
+	w.WriteHeader(http.StatusAccepted)
 }
 
 func (s *Server) settingsMeasurementSystemsPostHandler(w http.ResponseWriter, r *http.Request) {
