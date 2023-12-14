@@ -2,10 +2,20 @@ package server
 
 import (
 	"github.com/go-chi/chi/v5"
+	"github.com/gorilla/websocket"
+	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
 	"net/http"
 	"strconv"
 )
+
+var upgrader = websocket.Upgrader{
+	CheckOrigin: func(r *http.Request) bool {
+		return true
+	},
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+}
 
 func (s *Server) downloadHandler(w http.ResponseWriter, r *http.Request) {
 	file := chi.URLParam(r, "tmpFile")
@@ -48,4 +58,16 @@ func (s *Server) userInitialsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	_, _ = w.Write([]byte(s.Repository.UserInitials(userID.(int64))))
+}
+
+func (s *Server) wsHandler(w http.ResponseWriter, r *http.Request) {
+	ws, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		w.Header().Set("HX-Trigger", makeToast("Could not upgrade connection.", warningToast))
+		return
+	}
+
+	userID := getUserID(r)
+	broker := models.NewBroker(userID, s.Brokers, ws, templates.ToastWS())
+	s.Brokers[userID] = broker
 }

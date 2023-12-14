@@ -5,18 +5,21 @@ import (
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/units"
+	"html/template"
 	"strings"
 )
 
 // Data holds data to pass on to the templates.
 type Data struct {
-	IsAuthenticated bool // IsAuthenticated indicates whether the user is authenticated.
-	IsDemo          bool // IsDemo indicates whether running instance is the demo version.
-	IsHxRequest     bool // IsHxRequest indicates whether the request is an HX one. It is used for oop swaps.
+	IsAuthenticated  bool // IsAuthenticated indicates whether the user is authenticated.
+	IsDemo           bool // IsDemo indicates whether running instance is the demo version.
+	IsHxRequest      bool // IsHxRequest indicates whether the request is an HX one. It is used for oop swaps.
+	IsToastWSVisible bool // IsToastWSVisible indicates whether to display the notification for websocket tasks.
 
-	Title        string // Title is the text inserted <title> tag's text.
-	Content      string // Content is text to insert into the template.
-	ContentTitle string // ContentTitle is the header of the Content.
+	Title        string        // Title is the text inserted <title> tag's text.
+	Content      string        // Content is text to insert into the template.
+	ContentHTML  template.HTML // ContentHTML is the non-escaped HTML to insert into the template.
+	ContentTitle string        // ContentTitle is the header of the Content.
 
 	Functions FunctionsData
 

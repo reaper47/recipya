@@ -49,88 +49,80 @@ type exportData struct {
 
 // ExportRecipes creates a zip containing the recipes to export in the desired file type.
 // It returns the name of file in the temporary directory.
-func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType) (string, error) {
+func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType, iter chan int) (*bytes.Buffer, error) {
 	buf := new(bytes.Buffer)
 	writer := zip.NewWriter(buf)
 
-	var (
-		exports []exportData
-		ext     = fileType.Ext()
-	)
 	switch fileType {
 	case models.JSON:
-		exports = exportRecipesJSON(recipes)
-		for _, e := range exports {
-			out, err := writer.Create(e.recipeName + "/recipe" + ext)
+		for i, e := range exportRecipesJSON(recipes) {
+			iter <- i
+
+			out, err := writer.Create(e.recipeName + "/recipe" + fileType.Ext())
 			if err != nil {
-				return "", err
+				return nil, err
 			}
 
 			_, err = out.Write(e.data)
 			if err != nil {
-				return "", err
+				return nil, err
 			}
 
 			if e.recipeImage != uuid.Nil {
-				fileName := e.recipeImage.String() + ".jpg"
-				filePath := filepath.Join(app.ImagesDir, fileName)
+				filePath := filepath.Join(app.ImagesDir, e.recipeImage.String()+".jpg")
 
-				_, err := os.Stat(filePath)
+				_, err = os.Stat(filePath)
 				if err == nil {
 					out, err = writer.Create(e.recipeName + "/image.jpg")
 					if err != nil {
-						return "", err
+						return nil, err
 					}
 
 					data, err := os.ReadFile(filePath)
 					if err != nil {
-						return "", err
+						return nil, err
 					}
 
 					_, err = out.Write(data)
 					if err != nil {
-						return "", err
+						return nil, err
 					}
 				}
 			}
 		}
 	case models.PDF:
-		exports = exportRecipesPDF(recipes)
-		for _, e := range exports {
-			out, err := writer.Create(e.recipeName + fileType.Ext())
+		processed := make(map[string]struct{})
+		for i, e := range exportRecipesPDF(recipes) {
+			iter <- i
+
+			name := strings.ReplaceAll(e.recipeName+fileType.Ext(), "/", "_")
+
+			_, found := processed[name]
+			if found {
+				name += "_" + uuid.NewString()[:4]
+			}
+			processed[name] = struct{}{}
+
+			out, err := writer.Create(name)
 			if err != nil {
-				return "", err
+				return nil, err
 			}
 
 			_, err = out.Write(e.data)
 			if err != nil {
-				return "", err
+				return nil, err
 			}
 		}
 	default:
-		return "", errors.New("unsupported export file type")
+		return nil, errors.New("unsupported export file type")
 	}
 
 	err := writer.Close()
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	tempFileName := "recipes_" + strings.TrimPrefix(ext, ".") + "_*.zip"
-	out, err := os.CreateTemp("", tempFileName)
-	if err != nil {
-		return "", err
-	}
-	defer func() {
-		_ = out.Close()
-	}()
-
-	_, err = out.Write(buf.Bytes())
-	if err != nil {
-		return "", err
-	}
-
-	return filepath.Base(out.Name()), nil
+	return buf, nil
 }
 
 func exportRecipesJSON(recipes models.Recipes) []exportData {

@@ -37,6 +37,7 @@ var excludedURIs = map[string]struct{}{
 	"/settings/tabs/profile":             {},
 	"/settings/tabs/recipes":             {},
 	"/user-initials":                     {},
+	"/ws":                                {},
 }
 
 func (s *Server) redirectIfLoggedInMiddleware(next http.Handler) http.Handler {

@@ -1,6 +1,7 @@
 package server_test
 
 import (
+	"bytes"
 	"database/sql"
 	"errors"
 	"github.com/google/uuid"
@@ -657,13 +658,13 @@ func (m *mockFiles) ExportCookbook(cookbook models.Cookbook, fileType models.Fil
 	return cookbook.Title + fileType.Ext(), nil
 }
 
-func (m *mockFiles) ExportRecipes(recipes models.Recipes, _ models.FileType) (string, error) {
-	var s string
+func (m *mockFiles) ExportRecipes(recipes models.Recipes, _ models.FileType, _ chan int) (*bytes.Buffer, error) {
+	var b bytes.Buffer
 	for _, recipe := range recipes {
-		s += recipe.Name + "-"
+		b.WriteString(recipe.Name + "-")
 	}
 	m.exportHitCount++
-	return s, nil
+	return &b, nil
 }
 
 func (m *mockFiles) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recipes {
@@ -693,7 +694,7 @@ type mockIntegrations struct {
 	ProcessImageOCRFunc func(file io.Reader) (models.Recipe, error)
 }
 
-func (m *mockIntegrations) NextcloudImport(baseURL, username, password string, files services.FilesService) (*models.Recipes, error) {
+func (m *mockIntegrations) NextcloudImport(baseURL, username, password string, files services.FilesService, _ chan models.Progress) (*models.Recipes, error) {
 	if m.NextcloudImportFunc != nil {
 		return m.NextcloudImportFunc(baseURL, username, password, files)
 	}

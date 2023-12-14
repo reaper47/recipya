@@ -71,9 +71,19 @@ func TestNextcloudImport(t *testing.T) {
 	defer srv.Close()
 	files := &mockFiles{}
 
-	got, err := integrations.NextcloudImport(srv.URL, "master", "yoda", files.UploadImage)
-	if err != nil {
-		return
+	c := make(chan models.Progress)
+	var (
+		got *models.Recipes
+		err error
+	)
+	go func() {
+		defer close(c)
+		got, err = integrations.NextcloudImport(srv.URL, "master", "yoda", files.UploadImage, c)
+		if err != nil {
+			return
+		}
+	}()
+	for range c {
 	}
 
 	t1, _ := time.Parse("2006-01-02 15:04:05 +0000 UTC", "2023-09-26 00:00:00 +0000 UTC")

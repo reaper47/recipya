@@ -2,6 +2,7 @@ package server_test
 
 import (
 	"errors"
+	"github.com/gorilla/websocket"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services"
 	"net/http"
@@ -10,11 +11,15 @@ import (
 )
 
 func TestHandlers_Integrations_Nextcloud(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer func() {
+		_ = c.Close()
+	}()
+
 	originalRepo := srv.Repository
 	originalIntegrations := srv.Integrations
 
-	uriImport := "/integrations/import/nextcloud"
+	uriImport := ts.URL + "/integrations/import/nextcloud"
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodPost, uriImport)
@@ -48,9 +53,16 @@ func TestHandlers_Integrations_Nextcloud(t *testing.T) {
 		}()
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uriImport, formHeader, strings.NewReader("username=admin&password=admin&url=http://localhost:8080"))
+		var mt int
+		var got []byte
+		_, _, _ = c.ReadMessage()
+		mt, got, _ = c.ReadMessage()
 
-		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Failed to import Nextcloud recipes.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+		assertStatus(t, rr.Code, http.StatusAccepted)
+		want := "{\"type\":\"toast\",\"fileName\":\"\",\"data\":\"{\\\"message\\\":\\\"Failed to import Nextcloud recipes.\\\",\\\"background\\\":\\\"bg-error-500\\\"}\"}\n"
+		if mt != websocket.TextMessage || string(got) != want {
+			t.Errorf("got:\n%q\nbut want:\n%q", got, want)
+		}
 	})
 
 	t.Run("valid request", func(t *testing.T) {
@@ -72,9 +84,17 @@ func TestHandlers_Integrations_Nextcloud(t *testing.T) {
 		}()
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uriImport, formHeader, strings.NewReader("username=admin&password=admin&url=http://localhost:8080"))
+		var mt int
+		var got []byte
+		for i := 0; i < 5; i++ {
+			mt, got, _ = c.ReadMessage()
+		}
 
-		assertStatus(t, rr.Code, http.StatusCreated)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Imported 2 recipes. Skipped 0.\",\"backgroundColor\":\"bg-blue-500\"}"}`)
+		assertStatus(t, rr.Code, http.StatusAccepted)
+		want := "{\"type\":\"toast\",\"fileName\":\"\",\"data\":\"{\\\"message\\\":\\\"Imported 2 recipes. Skipped 0.\\\",\\\"background\\\":\\\"bg-blue-500\\\"}\"}\n"
+		if mt != websocket.TextMessage || string(got) != want {
+			t.Errorf("got:\n%q\nbut want:\n%q", got, want)
+		}
 		if len(repo.RecipesRegistered[1]) != 2 {
 			t.Fatal("expected 2 recipes in the repo")
 		}

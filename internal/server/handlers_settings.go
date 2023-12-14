@@ -1,6 +1,8 @@
 package server
 
 import (
+	"bytes"
+	"fmt"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
@@ -49,30 +51,70 @@ func (s *Server) settingsConvertAutomaticallyPostHandler(w http.ResponseWriter, 
 }
 
 func (s *Server) settingsExportRecipesHandler(w http.ResponseWriter, r *http.Request) {
-	fileType := models.NewFileType(r.URL.Query().Get("type"))
+	if s.Brokers == nil {
+		w.Header().Set("HX-Trigger", makeToast("Connection lost. Please reload page.", warningToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	qType := r.URL.Query().Get("type")
+	fileType := models.NewFileType(qType)
 	if fileType == models.InvalidFileType {
 		w.Header().Set("HX-Trigger", makeToast("Invalid export file format.", errorToast))
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	userID := getUserID(r)
-	recipes := s.Repository.RecipesAll(userID)
-	if len(recipes) == 0 {
-		w.Header().Set("HX-Trigger", makeToast("No recipes in database.", warningToast))
-		w.WriteHeader(http.StatusNoContent)
-		return
-	}
+	go func(userID int64) {
+		err := s.Brokers[userID].SendProgressStatus("Preparing...", true, 0, -1)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 
-	fileName, err := s.Files.ExportRecipes(recipes, fileType)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Failed to export recipes.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
+		recipes := s.Repository.RecipesAll(userID)
+		if len(recipes) == 0 {
+			_ = s.Brokers[userID].SendToast("No recipes in database.", "bg-yellow-500")
+			return
+		}
 
-	w.Header().Set("HX-Redirect", "/download/"+fileName)
-	w.WriteHeader(http.StatusSeeOther)
+		iter := make(chan int)
+		errors := make(chan error, 1)
+		numRecipes := len(recipes)
+
+		var data *bytes.Buffer
+		go func() {
+			defer close(iter)
+			data, err = s.Files.ExportRecipes(recipes, fileType, iter)
+			if err != nil {
+				errors <- err
+				return
+			}
+		}()
+
+		select {
+		case err := <-errors:
+			fmt.Println(err)
+			return
+		case <-iter:
+			for value := range iter {
+				err = s.Brokers[userID].SendProgress("Exporting recipes...", value, numRecipes)
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
+			}
+		}
+
+		_ = s.Brokers[userID].SendProgressStatus("Finished", false, 0, 100)
+		err = s.Brokers[userID].SendFile("recipes_"+qType+".zip", data)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+	}(getUserID(r))
+
+	w.WriteHeader(http.StatusAccepted)
 }
 
 func (s *Server) settingsMeasurementSystemsPostHandler(w http.ResponseWriter, r *http.Request) {

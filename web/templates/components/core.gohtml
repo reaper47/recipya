@@ -12,6 +12,7 @@
         <link rel="icon" href="/static/favicon.ico">
         <script src="https://unpkg.com/htmx.org@1.9.9"></script>
         <script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
+        <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
         <script defer>
             const cookbooksPattern = new RegExp("^/cookbooks/\\d+$");
             const cookbooksSharePattern = new RegExp("^/c/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$");
@@ -133,6 +134,23 @@
                     script.onerror = () => rej();
                 });
             }
+
+            function downloadFile(data, filename, mime) {
+                const blobURL = window.URL.createObjectURL(data);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobURL;
+                a.setAttribute('download', filename);
+                if (typeof a.download === 'undefined') {
+                    a.setAttribute('target', '_blank');
+                }
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                setTimeout(() => {
+                    window.URL.revokeObjectURL(blobURL);
+                }, 100);
+            }
         </script>
     </head>
 {{end}}
@@ -180,7 +198,8 @@
             </thead>
             <tbody>
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-right dark:text-white">
+                <th scope="row"
+                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-right dark:text-white">
                     Application Name:
                 </th>
                 <td class="px-6 py-4">
@@ -188,7 +207,8 @@
                 </td>
             </tr>
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-right dark:text-white">
+                <th scope="row"
+                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-right dark:text-white">
                     Version:
                 </th>
                 <td class="px-6 py-4">
@@ -196,7 +216,8 @@
                 </td>
             </tr>
             <tr class="bg-white border-b dark:border-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-right dark:text-white">
+                <th scope="row"
+                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-right dark:text-white">
                     Repository:
                 </th>
                 <td class="px-6 py-4">
@@ -205,7 +226,8 @@
                 </td>
             </tr>
             <tr class="bg-white border-b dark:border-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-right dark:text-white">
+                <th scope="row"
+                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-right dark:text-white">
                     Support Channel:
                 </th>
                 <td class="px-6 py-4">
@@ -214,7 +236,8 @@
                 </td>
             </tr>
             <tr class="bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-right dark:text-white">
+                <th scope="row"
+                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-right dark:text-white">
                     License:
                 </th>
                 <td class="px-6 py-4">
@@ -316,7 +339,7 @@
         <form class="grid gap-1 grid-flow-col w-fit"
               hx-get="/settings/export/recipes"
               hx-include="select[name='type']"
-              hx-indicator="#fullscreen-loader">
+              hx-swap="none">
             <label>
                 <select required id="file-type" name="type"
                         class="bg-gray-50 border border-gray-300 rounded-lg p-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -326,7 +349,7 @@
                     </optgroup>
                 </select>
             </label>
-            <button class="bg-white border border-gray-300 rounded-lg py-2 px-4 justify-start hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+            <button class="bg-white border border-gray-300 rounded-lg py-2 px-4 justify-start hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
                 {{template "icon-download"}}
             </button>
         </form>
@@ -373,7 +396,7 @@
                     <option value="nextcloud" selected>Nextcloud</option>
                 </select>
             </label>
-            <button class="bg-white border border-gray-300 rounded-lg py-1 px-2 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+            <button class="bg-white border border-gray-300 rounded-lg py-1 px-2 hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                     onmousedown="document.querySelector('#integrations-nextcloud-dialog').showModal()">
                 {{template "icon-download2"}}
             </button>
@@ -381,12 +404,17 @@
     </div>
 
     <dialog id="integrations-nextcloud-dialog" class="p-4 dark:bg-gray-600 rounded-lg dark:text-gray-200">
-        <h1 class="mb-3 text-center text-2xl font-semibold underline">Import from Nextcloud</h1>
+        <h3 class="flex justify-between mb-4">
+            <span class="flex font-semibold underline">Import from Nextcloud</span>
+            <button type="button" class="hover:bg-gray-800 hover:text-white px-2 border rounded"
+                    onclick="document.querySelector('#integrations-nextcloud-dialog').close()">
+                X
+            </button>
+        </h3>
 
         <form method="dialog"
               hx-post="/integrations/import/nextcloud"
               hx-swap="none"
-              hx-indicator="#fullscreen-loader"
               onsubmit="document.querySelector('#integrations-nextcloud-dialog').close()">
             <div class="block">
                 <label for="integrations-nextcloud-dialog-url" class="font-medium">Nextcloud URL</label>

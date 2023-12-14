@@ -105,3 +105,8 @@ func RenderComponent(w http.ResponseWriter, component, name string, data any) {
 	w.Header().Set("Content-Type", "text/html")
 	_, _ = fmt.Fprint(w, buf.String())
 }
+
+// ToastWS returns the toast for use in conjunction with websockets for further processing.
+func ToastWS() *template.Template {
+	return templates["components/toast.gohtml"]
+}
