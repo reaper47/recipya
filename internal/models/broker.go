@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"github.com/gorilla/websocket"
 	"html/template"
+	"sync"
 	"time"
 )
 
@@ -15,6 +16,7 @@ import (
 type Broker struct {
 	brokers      map[int64]*Broker
 	conn         *websocket.Conn
+	mu           sync.Mutex
 	notification *template.Template
 	userID       int64
 }
@@ -56,6 +58,9 @@ func (b *Broker) SendFile(fileName string, data *bytes.Buffer) error {
 		return errors.New("ws connection nil")
 	}
 
+	b.mu.Lock()
+	defer b.mu.Unlock()
+
 	return b.conn.WriteJSON(Message{
 		Type:     "file",
 		FileName: fileName,
@@ -77,6 +82,9 @@ func (b *Broker) SendProgress(title string, value, numValues int) error {
 		Title:            title,
 	})
 
+	b.mu.Lock()
+	defer b.mu.Unlock()
+
 	return b.conn.WriteMessage(websocket.TextMessage, buf.Bytes())
 }
 
@@ -92,6 +100,9 @@ func (b *Broker) SendProgressStatus(title string, isToastVisible bool, value, nu
 		ContentHTML:      template.HTML(fmt.Sprintf(`<div id="export-progress"><progress max="100" value="%f"></progress></div>`, float64(value)/float64(numValues)*100)),
 		Title:            title,
 	})
+
+	b.mu.Lock()
+	defer b.mu.Unlock()
 
 	return b.conn.WriteMessage(websocket.TextMessage, buf.Bytes())
 }
@@ -122,7 +133,9 @@ func (b *Broker) setPingPongHandlers() {
 		defer ticker.Stop()
 
 		for range ticker.C {
+			b.mu.Lock()
 			err := b.conn.WriteMessage(websocket.PingMessage, []byte{})
+			b.mu.Unlock()
 			if err != nil {
 				return
 			}
@@ -143,6 +156,9 @@ func (b *Broker) SendToast(message, background string) error {
 	if err != nil {
 		return err
 	}
+
+	b.mu.Lock()
+	defer b.mu.Unlock()
 
 	return b.conn.WriteJSON(Message{
 		Type: "toast",

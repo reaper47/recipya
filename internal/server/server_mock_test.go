@@ -658,7 +658,7 @@ func (m *mockFiles) ExportCookbook(cookbook models.Cookbook, fileType models.Fil
 	return cookbook.Title + fileType.Ext(), nil
 }
 
-func (m *mockFiles) ExportRecipes(recipes models.Recipes, _ models.FileType, _ *models.Broker) (*bytes.Buffer, error) {
+func (m *mockFiles) ExportRecipes(recipes models.Recipes, _ models.FileType, _ chan int) (*bytes.Buffer, error) {
 	var b bytes.Buffer
 	for _, recipe := range recipes {
 		b.WriteString(recipe.Name + "-")

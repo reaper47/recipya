@@ -49,18 +49,14 @@ type exportData struct {
 
 // ExportRecipes creates a zip containing the recipes to export in the desired file type.
 // It returns the name of file in the temporary directory.
-func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType, broker *models.Broker) (*bytes.Buffer, error) {
+func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType, iter chan int) (*bytes.Buffer, error) {
 	buf := new(bytes.Buffer)
 	writer := zip.NewWriter(buf)
-	numRecipes := len(recipes)
 
 	switch fileType {
 	case models.JSON:
 		for i, e := range exportRecipesJSON(recipes) {
-			err := broker.SendProgress("Exporting recipes...", i, numRecipes)
-			if err != nil {
-				return nil, err
-			}
+			iter <- i
 
 			out, err := writer.Create(e.recipeName + "/recipe" + fileType.Ext())
 			if err != nil {
@@ -97,10 +93,7 @@ func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType, 
 	case models.PDF:
 		processed := make(map[string]struct{})
 		for i, e := range exportRecipesPDF(recipes) {
-			err := broker.SendProgress("Exporting recipes...", i, numRecipes)
-			if err != nil {
-				return nil, err
-			}
+			iter <- i
 
 			name := strings.ReplaceAll(e.recipeName+fileType.Ext(), "/", "_")
 

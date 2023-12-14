@@ -1,6 +1,7 @@
 package server
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
@@ -50,19 +51,21 @@ func (s *Server) settingsConvertAutomaticallyPostHandler(w http.ResponseWriter, 
 }
 
 func (s *Server) settingsExportRecipesHandler(w http.ResponseWriter, r *http.Request) {
-	userID := getUserID(r)
+	if s.Brokers == nil {
+		w.Header().Set("HX-Trigger", makeToast("Connection lost. Please reload page.", warningToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 
-	go func() {
-		broker := s.Brokers[userID]
-
+	go func(userID int64) {
 		qType := r.URL.Query().Get("type")
 		fileType := models.NewFileType(qType)
 		if fileType == models.InvalidFileType {
-			_ = broker.SendToast("Invalid export file format.", "bg-red-500")
+			_ = s.Brokers[userID].SendToast("Invalid export file format.", "bg-red-500")
 			return
 		}
 
-		err := broker.SendProgressStatus("Preparing...", true, 0, -1)
+		err := s.Brokers[userID].SendProgressStatus("Preparing...", true, 0, -1)
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -70,28 +73,50 @@ func (s *Server) settingsExportRecipesHandler(w http.ResponseWriter, r *http.Req
 
 		recipes := s.Repository.RecipesAll(userID)
 		if len(recipes) == 0 {
-			_ = broker.SendToast("No recipes in database.", "bg-yellow-500")
+			_ = s.Brokers[userID].SendToast("No recipes in database.", "bg-yellow-500")
 			return
 		}
 
-		data, err := s.Files.ExportRecipes(recipes, fileType, s.Brokers[userID])
+		iter := make(chan int)
+		errors := make(chan error, 1)
+		numRecipes := len(recipes)
+
+		var data *bytes.Buffer
+		go func() {
+			defer close(iter)
+			data, err = s.Files.ExportRecipes(recipes, fileType, iter)
+			if err != nil {
+				errors <- err
+				return
+			}
+		}()
+
+		select {
+		case err := <-errors:
+			fmt.Println(err)
+			return
+		default:
+			for value := range iter {
+				err = s.Brokers[userID].SendProgress("Exporting recipes...", value, numRecipes)
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
+			}
+		}
+
+		err = s.Brokers[userID].SendProgressStatus("Finished", false, 0, 100)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
 
-		err = broker.SendProgressStatus("Finished", false, 0, 100)
+		err = s.Brokers[userID].SendFile("recipes_"+qType+".zip", data)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
-
-		err = broker.SendFile("recipes_"+qType+".zip", data)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-	}()
+	}(getUserID(r))
 
 	w.WriteHeader(http.StatusAccepted)
 }

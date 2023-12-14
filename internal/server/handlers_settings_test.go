@@ -5,6 +5,7 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/units"
+	"maps"
 	"net/http"
 	"slices"
 	"strings"
@@ -130,6 +131,19 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 		for _, q := range validExportTypes {
 			assertMustBeLoggedIn(t, srv, http.MethodGet, uri+"?type="+q)
 		}
+	})
+
+	t.Run("lost socket connection", func(t *testing.T) {
+		brokers := maps.Clone(srv.Brokers)
+		srv.Brokers = nil
+		defer func() {
+			srv.Brokers = brokers
+		}()
+
+		rr := sendRequestAsLoggedIn(srv, http.MethodGet, "/settings/export/recipes", noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Connection lost. Please reload page.\",\"backgroundColor\":\"bg-orange-500\"}"}`)
 	})
 
 	t.Run("invalid file type", func(t *testing.T) {
