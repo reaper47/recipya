@@ -155,8 +155,8 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 				originalHitCount := f.exportHitCount
 
 				rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?type="+q, noHeader, nil)
+				_, _, _ = c.ReadMessage()
 				mt, got, _ := c.ReadMessage()
-				mt, got, _ = c.ReadMessage()
 
 				assertStatus(t, rr.Code, http.StatusAccepted)
 				want := `{"type":"toast","fileName":"","data":"{\"message\":\"No recipes in database.\",\"background\":\"bg-yellow-500\"}"}`
@@ -189,9 +189,9 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 				originalHitCount := f.exportHitCount
 
 				rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?type="+q, noHeader, nil)
+				_, _, _ = c.ReadMessage()
+				_, _, _ = c.ReadMessage()
 				mt, got, _ := c.ReadMessage()
-				mt, got, _ = c.ReadMessage()
-				mt, got, _ = c.ReadMessage()
 
 				assertStatus(t, rr.Code, http.StatusAccepted)
 				want := `{"type":"file","fileName":"recipes_` + q + `.zip","data":"Q2hpY2tlbi1KZXJzZXkt"}` + "\n"

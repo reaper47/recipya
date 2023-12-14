@@ -42,7 +42,10 @@ func createWSServer() (*server.Server, *httptest.Server, *websocket.Conn) {
 
 	req, _ := http.NewRequest(http.MethodPost, ts.URL+"/auth/login", strings.NewReader("email=test@example.com&password=123&remember-me=true"))
 	req.Header.Set("Content-Type", string(formHeader))
-	res, _ := http.DefaultClient.Do(req)
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
 	defer res.Body.Close()
 
 	var sessionCookie *http.Cookie

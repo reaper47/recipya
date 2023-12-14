@@ -120,18 +120,17 @@ func (b *Broker) setPingPongHandlers() {
 	go func() {
 		ticker := time.NewTicker(30 * time.Second)
 		defer ticker.Stop()
-		for {
-			select {
-			case <-ticker.C:
-				err := b.conn.WriteMessage(websocket.PingMessage, []byte{})
-				if err != nil {
-					return
-				}
+
+		for range ticker.C {
+			err := b.conn.WriteMessage(websocket.PingMessage, []byte{})
+			if err != nil {
+				return
 			}
 		}
 	}()
 }
 
+// SendToast sends a toast notification to the user.
 func (b *Broker) SendToast(message, background string) error {
 	if b == nil {
 		return errors.New("ws connection nil")
