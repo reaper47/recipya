@@ -21,6 +21,11 @@ type Broker struct {
 	userID       int64
 }
 
+type Result struct {
+	Value int
+	Total int
+}
+
 // Message represents the data format for file and progress updates sent to the client.
 type Message struct {
 	Type     string `json:"type"`     // Message type, e.g. file.

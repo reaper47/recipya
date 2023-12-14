@@ -694,7 +694,7 @@ type mockIntegrations struct {
 	ProcessImageOCRFunc func(file io.Reader) (models.Recipe, error)
 }
 
-func (m *mockIntegrations) NextcloudImport(baseURL, username, password string, files services.FilesService) (*models.Recipes, error) {
+func (m *mockIntegrations) NextcloudImport(baseURL, username, password string, files services.FilesService, _ chan models.Result) (*models.Recipes, error) {
 	if m.NextcloudImportFunc != nil {
 		return m.NextcloudImportFunc(baseURL, username, password, files)
 	}

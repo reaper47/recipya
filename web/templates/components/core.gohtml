@@ -404,12 +404,17 @@
     </div>
 
     <dialog id="integrations-nextcloud-dialog" class="p-4 dark:bg-gray-600 rounded-lg dark:text-gray-200">
-        <h1 class="mb-3 text-center text-2xl font-semibold underline">Import from Nextcloud</h1>
+        <h3 class="flex justify-between mb-4">
+            <span class="flex font-semibold underline">Import from Nextcloud</span>
+            <button type="button" class="hover:bg-gray-800 hover:text-white px-2 border rounded"
+                    onclick="document.querySelector('#integrations-nextcloud-dialog').close()">
+                X
+            </button>
+        </h3>
 
         <form method="dialog"
               hx-post="/integrations/import/nextcloud"
               hx-swap="none"
-              hx-indicator="#fullscreen-loader"
               onsubmit="document.querySelector('#integrations-nextcloud-dialog').close()">
             <div class="block">
                 <label for="integrations-nextcloud-dialog-url" class="font-medium">Nextcloud URL</label>

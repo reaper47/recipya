@@ -53,18 +53,19 @@ func (s *Server) settingsConvertAutomaticallyPostHandler(w http.ResponseWriter, 
 func (s *Server) settingsExportRecipesHandler(w http.ResponseWriter, r *http.Request) {
 	if s.Brokers == nil {
 		w.Header().Set("HX-Trigger", makeToast("Connection lost. Please reload page.", warningToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	qType := r.URL.Query().Get("type")
+	fileType := models.NewFileType(qType)
+	if fileType == models.InvalidFileType {
+		w.Header().Set("HX-Trigger", makeToast("Invalid export file format.", errorToast))
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	go func(userID int64) {
-		qType := r.URL.Query().Get("type")
-		fileType := models.NewFileType(qType)
-		if fileType == models.InvalidFileType {
-			_ = s.Brokers[userID].SendToast("Invalid export file format.", "bg-red-500")
-			return
-		}
-
 		err := s.Brokers[userID].SendProgressStatus("Preparing...", true, 0, -1)
 		if err != nil {
 			fmt.Println(err)
@@ -95,7 +96,7 @@ func (s *Server) settingsExportRecipesHandler(w http.ResponseWriter, r *http.Req
 		case err := <-errors:
 			fmt.Println(err)
 			return
-		default:
+		case <-iter:
 			for value := range iter {
 				err = s.Brokers[userID].SendProgress("Exporting recipes...", value, numRecipes)
 				if err != nil {
@@ -105,12 +106,7 @@ func (s *Server) settingsExportRecipesHandler(w http.ResponseWriter, r *http.Req
 			}
 		}
 
-		err = s.Brokers[userID].SendProgressStatus("Finished", false, 0, 100)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-
+		_ = s.Brokers[userID].SendProgressStatus("Finished", false, 0, 100)
 		err = s.Brokers[userID].SendFile("recipes_"+qType+".zip", data)
 		if err != nil {
 			fmt.Println(err)

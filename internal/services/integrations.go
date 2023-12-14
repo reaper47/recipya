@@ -20,8 +20,8 @@ func NewIntegrationsService() *Integrations {
 type Integrations struct{}
 
 // NextcloudImport imports the recipes from a Nextcloud instance.
-func (i *Integrations) NextcloudImport(baseURL, username, password string, files FilesService) (*models.Recipes, error) {
-	return integrations.NextcloudImport(baseURL, username, password, files.UploadImage)
+func (i *Integrations) NextcloudImport(baseURL, username, password string, files FilesService, result chan models.Result) (*models.Recipes, error) {
+	return integrations.NextcloudImport(baseURL, username, password, files.UploadImage, result)
 }
 
 // ProcessImageOCR processes an image using an OCR service to extract the recipe.
