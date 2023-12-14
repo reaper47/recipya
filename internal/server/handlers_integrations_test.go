@@ -86,11 +86,9 @@ func TestHandlers_Integrations_Nextcloud(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uriImport, formHeader, strings.NewReader("username=admin&password=admin&url=http://localhost:8080"))
 		var mt int
 		var got []byte
-		_, _, _ = c.ReadMessage()
-		_, _, _ = c.ReadMessage()
-		_, _, _ = c.ReadMessage()
-		_, _, _ = c.ReadMessage()
-		mt, got, _ = c.ReadMessage()
+		for i := 0; i < 5; i++ {
+			mt, got, _ = c.ReadMessage()
+		}
 
 		assertStatus(t, rr.Code, http.StatusAccepted)
 		want := "{\"type\":\"toast\",\"fileName\":\"\",\"data\":\"{\\\"message\\\":\\\"Imported 2 recipes. Skipped 0.\\\",\\\"background\\\":\\\"bg-blue-500\\\"}\"}\n"

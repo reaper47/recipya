@@ -71,7 +71,7 @@ func TestNextcloudImport(t *testing.T) {
 	defer srv.Close()
 	files := &mockFiles{}
 
-	c := make(chan models.Result)
+	c := make(chan models.Progress)
 	var (
 		got *models.Recipes
 		err error

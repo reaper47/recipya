@@ -16,7 +16,7 @@ const (
 )
 
 // NextcloudImport imports recipes from a Nextcloud instance.
-func NextcloudImport(baseURL, username, password string, uploadImageFunc func(rc io.ReadCloser) (uuid.UUID, error), result chan models.Result) (*models.Recipes, error) {
+func NextcloudImport(baseURL, username, password string, uploadImageFunc func(rc io.ReadCloser) (uuid.UUID, error), progress chan models.Progress) (*models.Recipes, error) {
 	auth := base64.StdEncoding.EncodeToString([]byte(username + ":" + password))
 	header := fmt.Sprintf("Basic %s", auth)
 
@@ -42,7 +42,7 @@ func NextcloudImport(baseURL, username, password string, uploadImageFunc func(rc
 	for i, r := range allRecipes {
 		go func(i int, r models.NextcloudRecipes, authHeader string) {
 			defer func() {
-				result <- models.Result{
+				progress <- models.Progress{
 					Value: i,
 					Total: len(allRecipes),
 				}

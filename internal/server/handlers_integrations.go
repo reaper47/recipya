@@ -32,13 +32,13 @@ func (s *Server) integrationsImportNextcloud(w http.ResponseWriter, r *http.Requ
 		var (
 			recipes   *models.Recipes
 			processed int
-			result    = make(chan models.Result)
+			progress  = make(chan models.Progress)
 			errors    = make(chan error, 1)
 		)
 
 		go func() {
-			defer close(result)
-			recipes, err = s.Integrations.NextcloudImport(baseURL, username, password, s.Files, result)
+			defer close(progress)
+			recipes, err = s.Integrations.NextcloudImport(baseURL, username, password, s.Files, progress)
 			if err != nil {
 				errors <- err
 			}
@@ -49,10 +49,10 @@ func (s *Server) integrationsImportNextcloud(w http.ResponseWriter, r *http.Requ
 			_ = s.Brokers[userID].SendToast("Failed to import Nextcloud recipes.", "bg-error-500")
 			fmt.Println(err)
 			return
-		case <-result:
-			for r := range result {
+		case <-progress:
+			for p := range progress {
 				processed++
-				err = s.Brokers[userID].SendProgress("Fetching recipes...", processed, r.Total*2)
+				err = s.Brokers[userID].SendProgress("Fetching recipes...", processed, p.Total*2)
 				if err != nil {
 					fmt.Println(err)
 					return

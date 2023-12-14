@@ -21,7 +21,9 @@ type Broker struct {
 	userID       int64
 }
 
-type Result struct {
+// Progress represents a current value and the total number of values.
+// It is used to calculate progress as a percentage.
+type Progress struct {
 	Value int
 	Total int
 }
