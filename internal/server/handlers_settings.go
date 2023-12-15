@@ -74,7 +74,8 @@ func (s *Server) settingsExportRecipesHandler(w http.ResponseWriter, r *http.Req
 
 		recipes := s.Repository.RecipesAll(userID)
 		if len(recipes) == 0 {
-			_ = s.Brokers[userID].SendToast("No recipes in database.", "bg-yellow-500")
+			s.Brokers[userID].HideNotification()
+			_ = s.Brokers[userID].SendToast("No recipes in database.", "bg-orange-500")
 			return
 		}
 
@@ -95,18 +96,21 @@ func (s *Server) settingsExportRecipesHandler(w http.ResponseWriter, r *http.Req
 		select {
 		case err := <-errors:
 			fmt.Println(err)
+			s.Brokers[userID].HideNotification()
+			_ = s.Brokers[userID].SendToast("Failed to export recipes.", "bg-error-500")
 			return
 		case <-iter:
 			for value := range iter {
 				err = s.Brokers[userID].SendProgress("Exporting recipes...", value, numRecipes)
 				if err != nil {
 					fmt.Println(err)
+					s.Brokers[userID].HideNotification()
 					return
 				}
 			}
 		}
 
-		_ = s.Brokers[userID].SendProgressStatus("Finished", false, 0, 100)
+		s.Brokers[userID].HideNotification()
 		err = s.Brokers[userID].SendFile("recipes_"+qType+".zip", data)
 		if err != nil {
 			fmt.Println(err)

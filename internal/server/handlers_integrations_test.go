@@ -53,10 +53,7 @@ func TestHandlers_Integrations_Nextcloud(t *testing.T) {
 		}()
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uriImport, formHeader, strings.NewReader("username=admin&password=admin&url=http://localhost:8080"))
-		var mt int
-		var got []byte
-		_, _, _ = c.ReadMessage()
-		mt, got, _ = c.ReadMessage()
+		mt, got := readMessage(c, 3)
 
 		assertStatus(t, rr.Code, http.StatusAccepted)
 		want := "{\"type\":\"toast\",\"fileName\":\"\",\"data\":\"{\\\"message\\\":\\\"Failed to import Nextcloud recipes.\\\",\\\"background\\\":\\\"bg-error-500\\\"}\"}\n"
@@ -84,11 +81,7 @@ func TestHandlers_Integrations_Nextcloud(t *testing.T) {
 		}()
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uriImport, formHeader, strings.NewReader("username=admin&password=admin&url=http://localhost:8080"))
-		var mt int
-		var got []byte
-		for i := 0; i < 5; i++ {
-			mt, got, _ = c.ReadMessage()
-		}
+		mt, got := readMessage(c, 5)
 
 		assertStatus(t, rr.Code, http.StatusAccepted)
 		want := "{\"type\":\"toast\",\"fileName\":\"\",\"data\":\"{\\\"message\\\":\\\"Imported 2 recipes. Skipped 0.\\\",\\\"background\\\":\\\"bg-blue-500\\\"}\"}\n"
