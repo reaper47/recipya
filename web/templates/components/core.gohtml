@@ -335,7 +335,9 @@
 
 {{define "settings-tabs-recipes"}}
     <div class="grid grid-cols-2 gap-4 mb-2">
-        <p class="text-end font-semibold select-none">Export data:</p>
+        <p class="text-end font-semibold select-none">Export data:<br>
+            <span class="font-light text-sm">Download your recipes in the selected file format.</span>
+        </p>
         <form class="grid gap-1 grid-flow-col w-fit"
               hx-get="/settings/export/recipes"
               hx-include="select[name='type']"
@@ -387,7 +389,7 @@
     </div>
     <div class="grid grid-cols-2 gap-4 mb-2">
         <label for="integrations" class="text-end font-semibold">Integrations:<br>
-            <span class="font-light text-sm">Import recipes from a selected solution.</span>
+            <span class="font-light text-sm">Import recipes from the selected solution.</span>
         </label>
         <div class="grid gap-1 grid-flow-col w-fit h-fit">
             <label>

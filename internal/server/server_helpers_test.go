@@ -185,3 +185,14 @@ func getBodyHTML(rr *httptest.ResponseRecorder) string {
 	bodyStr = regexRmSpaces.ReplaceAllString(bodyStr, "><")
 	return bodyStr
 }
+
+func readMessage(c *websocket.Conn, number int) (int, []byte) {
+	var (
+		mt   int
+		data []byte
+	)
+	for i := 0; i < number; i++ {
+		mt, data, _ = c.ReadMessage()
+	}
+	return mt, data
+}

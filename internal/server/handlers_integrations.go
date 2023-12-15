@@ -46,8 +46,9 @@ func (s *Server) integrationsImportNextcloud(w http.ResponseWriter, r *http.Requ
 
 		select {
 		case err = <-errors:
-			_ = s.Brokers[userID].SendToast("Failed to import Nextcloud recipes.", "bg-error-500")
 			fmt.Println(err)
+			s.Brokers[userID].HideNotification()
+			_ = s.Brokers[userID].SendToast("Failed to import Nextcloud recipes.", "bg-error-500")
 			return
 		case <-progress:
 			for p := range progress {
@@ -55,6 +56,7 @@ func (s *Server) integrationsImportNextcloud(w http.ResponseWriter, r *http.Requ
 				err = s.Brokers[userID].SendProgress("Fetching recipes...", processed, p.Total*2)
 				if err != nil {
 					fmt.Println(err)
+					s.Brokers[userID].HideNotification()
 					return
 				}
 			}
@@ -74,7 +76,7 @@ func (s *Server) integrationsImportNextcloud(w http.ResponseWriter, r *http.Requ
 			count++
 		}
 
-		_ = s.Brokers[userID].SendProgressStatus("Finished", false, 0, 100)
+		s.Brokers[userID].HideNotification()
 		_ = s.Brokers[userID].SendToast(fmt.Sprintf("Imported %d recipes. Skipped %d.", count, skipped), "bg-blue-500")
 	}(getUserID(r))
 
