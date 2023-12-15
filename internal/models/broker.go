@@ -59,6 +59,7 @@ func NewBroker(userID int64, brokers map[int64]*Broker, conn *websocket.Conn, no
 	return b
 }
 
+// HideNotification hides the websocket's frontend notification.
 func (b *Broker) HideNotification() {
 	_ = b.SendProgressStatus("", false, -1, -1)
 }
