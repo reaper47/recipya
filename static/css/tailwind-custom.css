@@ -7,8 +7,8 @@
         @apply flex cursor-pointer items-center px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-green-600
     }
 
-    .about-link {
-        @apply underline text-blue-600 hover:text-blue-600 visited:text-purple-600 dark:hover:text-blue-300 dark:visited:text-purple-300
+    .link {
+        @apply underline text-blue-600 hover:text-blue-600 visited:text-purple-600 dark:hover:text-blue-300 dark:visited:text-purple-300 dark:text-blue-400
     }
 
     .text-input {
