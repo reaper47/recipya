@@ -433,7 +433,7 @@ func TestHandlers_Auth_Login(t *testing.T) {
 	t.Run("user checked remember me", func(t *testing.T) {
 		numAuthTokensBefore := len(repo.AuthTokens)
 
-		rr := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email=test@example.com&password=123&remember-me=true"))
+		rr := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email=test@example.com&password=123&remember-me=yes"))
 
 		assertStatus(t, rr.Code, http.StatusSeeOther)
 		assertHeader(t, rr, "HX-Redirect", "/")
@@ -453,7 +453,7 @@ func TestHandlers_Auth_Login(t *testing.T) {
 	})
 
 	t.Run("user checked remember me and accesses login page", func(t *testing.T) {
-		rr := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email=test@example.com&password=123&remember-me=true"))
+		rr := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email=test@example.com&password=123&remember-me=yes"))
 		r := httptest.NewRequest(http.MethodGet, uri, nil)
 		for _, c := range rr.Result().Cookies() {
 			if c.Name != "session" {

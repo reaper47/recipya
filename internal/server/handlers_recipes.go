@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/scraper"
@@ -162,28 +163,25 @@ func (s *Server) recipeAddManualPostHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
+	var imageUUID uuid.UUID
 	imageFile, ok := r.MultipartForm.File["image"]
-	if !ok {
-		w.Header().Set("HX-Trigger", makeToast("Could not retrieve the image from the form.", errorToast))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
+	if ok {
+		f, err := imageFile[0].Open()
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Could not open the image from the form.", errorToast))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		defer func() {
+			_ = f.Close()
+		}()
 
-	f, err := imageFile[0].Open()
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Could not open the image from the form.", errorToast))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	defer func() {
-		_ = f.Close()
-	}()
-
-	imageUUID, err := s.Files.UploadImage(f)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Error uploading image.", errorToast))
-		w.WriteHeader(http.StatusBadRequest)
-		return
+		imageUUID, err = s.Files.UploadImage(f)
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Error uploading image.", errorToast))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
 	}
 
 	ingredients := make([]string, 0)

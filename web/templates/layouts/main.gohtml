@@ -43,7 +43,7 @@
     {{- end -}}
 </header>
 <div id="fullscreen-loader" class="htmx-indicator"></div>
-<main hx-ext="ws" ws-connect="/ws" class="inline-flex min-h-[95vh] w-full">
+<main class="inline-flex min-h-[95vh] w-full">
     {{- if .IsAuthenticated -}}
         <aside id="recipes-sidebar" class="hidden border-r bg-gray-300 mt-[0.04rem] dark:bg-gray-900">
             <ul>
