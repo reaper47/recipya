@@ -231,7 +231,7 @@ func (s *Server) loginPostHandler(w http.ResponseWriter, r *http.Request) {
 	SessionData[sid] = userID
 	http.SetCookie(w, NewSessionCookie(sid.String()))
 
-	if r.FormValue("remember-me") == "true" {
+	if r.FormValue("remember-me") == "yes" {
 		selector, validator := auth.GenerateSelectorAndValidator()
 		http.SetCookie(w, NewRememberMeCookie(selector, validator))
 		err := s.Repository.AddAuthToken(selector, validator, userID)

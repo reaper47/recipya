@@ -266,7 +266,7 @@
 {{define "settings"}}
     <title hx-swap-oob="true">Settings | Recipya</title>
 
-    <div class="grid grid-flow-col h-full" style="grid-template-columns: min-content">
+    <div hx-ext="ws" ws-connect="/ws" class="grid grid-flow-col h-full" style="grid-template-columns: min-content">
         <div class="text-sm md:text-base grid bg-gray-200 max-w-[5rem] mt-[1px] dark:bg-gray-600 dark:border-r dark:border-r-gray-500"
              role="tablist">
             <button class="px-2 bg-gray-300 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-800"

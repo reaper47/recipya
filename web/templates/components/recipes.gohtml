@@ -243,7 +243,7 @@
     <title hx-swap-oob="true">Manual | Recipya</title>
 
     <form enctype="multipart/form-data"
-          class="grid max-w-6xl grid-cols-6 m-auto mt-4 pb-4 dark:bg-gray-600 dark:rounded-t-lg"
+          class="grid max-w-6xl grid-cols-6 m-auto mt-4 mb-4 dark:bg-gray-600 dark:rounded-t-lg"
           hx-post="/recipes/add/manual"
           hx-indicator="#fullscreen-loader">
         <div class="col-span-6 text-lg border border-gray-900 rounded-t-lg md:text-xl dark:border-gray-800">
@@ -255,7 +255,7 @@
         <label class="grid col-span-6 place-content-center w-full h-96 border-b border-x border-black md:border-r-0 md:col-span-4 text-sm dark:border-gray-800">
             <img src="" alt="Image preview of the recipe." class="h-full">
             <span>
-                <input type="file" accept="image/*" name="image" required
+                <input type="file" accept="image/*" name="image"
                        _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
                       on dragleave or drop set the target's style.background to ''
                       on drop or change
