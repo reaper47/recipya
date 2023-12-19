@@ -23,7 +23,7 @@ require (
 	github.com/pressly/goose/v3 v3.17.0
 	github.com/sendgrid/sendgrid-go v3.14.0+incompatible
 	github.com/urfave/cli/v2 v2.26.0
-	golang.org/x/crypto v0.16.0
+	golang.org/x/crypto v0.17.0
 	golang.org/x/net v0.19.0
 	jaytaylor.com/html2text v0.0.0-20230321000545-74c2419ad056
 	modernc.org/sqlite v1.28.0
