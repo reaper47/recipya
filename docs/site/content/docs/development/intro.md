@@ -1,8 +1,7 @@
 ---
+title: Introduction
 weight: 1
 ---
-
-# Introduction
 
 This chapter serves as the developer's guide to building Recipya. 
 

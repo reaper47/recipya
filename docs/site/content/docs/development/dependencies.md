@@ -1,14 +1,16 @@
 ---
+title: Dependencies
 weight: 2
 ---
 
-# Dependencies
-
 The following software is required to build the project.
 
-- [Go](https://go.dev/dl)
-- [npm](https://nodejs.org/en/download)
-- [Make](https://en.wikipedia.org/wiki/Make_(software))
+| Software                                              | Version  |
+|-------------------------------------------------------|----------|
+| [Go](https://go.dev/dl)                               | 1.21+    |
+| [Node.js](https://nodejs.org/en/download)             | 20.10.0+ |
+| [Make](https://en.wikipedia.org/wiki/Make_(software)) | any      |
+ | [Hugo](https://gohugo.io/installation/)               | latest   |
 
 ## Windows
 

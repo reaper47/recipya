@@ -1,6 +1,8 @@
-# Support a Website
+---
+title: Support a Website
+---
 
-You to understand how the scraper works to support a website. 
+You first need to understand how the scraper works to support a website. 
 Then, we will guide you through adding a website to the supported list with an example.
 
 ## The Scraper
@@ -29,16 +31,17 @@ websites table. To do so, open a terminal and navigate to `internal/services/mig
 the migration file.
 
 ```bash
+cd internal/services/migrations
 goose create support-website sql
 ```
 
 The `support-website` is the name of the migration. It can be anything else. The command will create a new file of the 
-form `timestamp_name-of-migration.sql`. It will be embedded into the executable on build and will be executed when the 
+form `timestamp_name_of_migration.sql`. It will be embedded into the executable on build and will be executed when the 
 user starts the server. 
 
 The final step involves inserting the website into the database:
 
-```sql
+```sql {filename="internal/services/migrations/timestamp_support_website.sql"}
 -- +goose Up
 INSERT INTO websites (host, url) 
 VALUES ('example.com', 'https://www.example.com/recipes/declicious-bbq-steak');
@@ -72,7 +75,7 @@ The initial step is to include the `example.com` case within the list of support
 [internal/scraper/websites.go](https://github.com/reaper47/recipya/blob/main/internal/scraper/websites.go). This file contains the `scrapeWebsite` function, which executes the relevant 
 scrape function for the parsed HTML web page. Your task involves adding the host within the switch-case block. 
 Therefore, add `case "example"` to the switch-case block
-of [case 'e'](https://github.com/reaper47/recipya/blob/main/internal/scraper/websites.go#L90). 
+of [case 'e'](https://github.com/reaper47/recipya/blob/main/internal/scraper/websites.go#L64). 
 
 Following this, the body of the case must be added by calling a custom HTML parser function.
 Its naming convention is `scrape{Host}`. In your case, it would be `return scrapeExample(doc)`.

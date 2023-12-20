@@ -1,4 +1,6 @@
-# Add an Endpoint
+---
+title: Add an Endpoint
+---
 
 It is essential to grasp how the server works before bringing any modifications. 
 Then, we will guide you through the process of incorporating an HTTP endpoint into the server.
@@ -29,7 +31,7 @@ The first step involves adding the endpoint to the router. A suitable endpoint i
 endpoint within the `/recipes` route block. The handler should be named `recipesSearchHandler`, following the
  `{resource}{LastWordEndpoint}{Handler}` naming convention.
 
-```go
+```go {filename="internal/server/server.go"}
 r.Route("/recipes", func(r chi.Router) {
   r.Use(s.mustBeLoggedInMiddleware)
   
@@ -42,7 +44,7 @@ With the route established, it is time to declare the handler. Since we are deal
 add the handler to the [handlers_recipes.go](https://github.com/reaper47/recipya/blob/main/internal/server/handlers_recipes.go)
 file. 
 
-```go
+```go {filename="internal/server/handlers_recipes.go"}
 func (s *Server) recipesSearchHandler(w http.ResponseWriter, r *http.Request) {
 	panic("TODO: To implement")
 }
@@ -57,7 +59,7 @@ stored in the [handlers_recipes_test.go](https://github.com/reaper47/recipya/blo
 file. The naming convention for test functions is `TestHandlers_{Resource}_{Endpoint}`. Let's write the foundation
 function of our tests.
 
-```go
+```go {filename="internal/server/handlers_recipes_test.go"}
 func TestHandlers_Recipes_AddManual(t *testing.T) {
     srv := newServerTest()
 
@@ -67,7 +69,7 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 
 The subsequent step involves writing the different tests that add value to the users.
 
-```go
+```go {filename="internal/server/handlers_recipes_test.go"}
 func TestHandlers_Recipes_AddManual(t *testing.T) {
     srv := newServerTest()
 
@@ -116,7 +118,7 @@ The next step entails crafting the handler's code. Return to the `handles_recipe
 the `recipesSearchHandler` function that will make the tests go green. For instance, the implementation could resemble
 the following. 
 
-```go
+```go {filename="internal/server/handlers_recipes.go"}
 func (s *Server) recipesSearchHandler(w http.ResponseWriter, r *http.Request) {
 	userID := getUserID(r)
 	query := chi.URLParam(r, "q")
@@ -151,7 +153,7 @@ interface.
 
 Let's declare the function within the `RepositoryService` interface. The functions are declared alphabetically.
 
-```go
+```go {filename="internal/services/service.go"}
 type RepositoryService interface {
     // AddAuthToken adds an authentication token to the database.
     AddAuthToken(selector, validator string, userID int64) error
@@ -177,9 +179,9 @@ type RepositoryService interface {
 
 Subsequently, let's implement the function within the `sqlite_service.go` file.
 
-```go
+```go {filename="internal/services/sqlite_service.go"}
 func (s *SQLiteService) SearchRecipes(query string, userID int64) (models.Recipes, error) {
-	// s.Mutex.Lock()
+	// s.Mutex.Lock() // Lock when you are inserting, updating or deleting from the database.
 	// defer s.Mutex.Unlock()
 
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)

@@ -1,8 +1,7 @@
 ---
+title: Docker
 weight: 3
 ---
-
-# Docker
 
 A Docker image named [reaper99/recipya](https://hub.docker.com/layers/reaper99/recipya/nightly/images/sha256-b2238a11a53982953df5bbcfd7796a19fa382abf75d316b62fa05ac1c867332c?context=repo)
 is produced nightly.

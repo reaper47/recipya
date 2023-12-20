@@ -1,7 +1,7 @@
 ---
+title: Web Hosting
 weight: 2
+next: /docs/development
 ---
-
-# Web Hosting
 
 This subsection will be written once I host Recipya somewhere.

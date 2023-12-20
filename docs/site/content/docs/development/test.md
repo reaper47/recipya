@@ -1,8 +1,8 @@
 ---
+title: Test
 weight: 4
+next: /docs/development/workflow
 ---
-
-# Tests
 
 Recipya has an extensive test suites to ensure the software works as expected. 
 The tests are run during the [Go workflow](https://github.com/reaper47/recipya/blob/main/.github/workflows/go.yml)
@@ -21,6 +21,6 @@ It is of vital important to write tests when submitting pull requests. This
 unit testing matters.
 
 You will see many files under the `internal` folder that finish with `*_test.go`. That is where tests are written.
-Please refer to the [development workflow](/docs/category/workflow) section for more information and examples.
+Please refer to the [development workflow](/docs/development/workflow) section for more information and examples.
 
 Please feel free to add as many tests as you deem fit to any of those files.

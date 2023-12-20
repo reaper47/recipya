@@ -1,8 +1,8 @@
 ---
+title: Local Network
 weight: 1
+prev: /docs/installation/windows-users
 ---
-
-# Local Network
 
 The project can be self-hosted network-wide over your local network for access from devices other than the computer
 you installed the application on.

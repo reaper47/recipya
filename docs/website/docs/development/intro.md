@@ -22,9 +22,9 @@ gh repo clone reaper47/recipya
 
 ## Technology Stack
 
-| Frontend                                              | Backend               |
-|-------------------------------------------------------|-----------------------|
-| [Go HTML templates](https://pkg.go.dev/html/template) | [Go](https://go.dev/) |
-| [htmx](https://htmx.org/)                             |                       |
-| [_hyperscript](https://hyperscript.org/)              |                       |
-| [Tailwind CSS](https://tailwindcss.com/)              |                       |
+| Frontend                                               | Backend               |
+|:-------------------------------------------------------|-----------------------|
+| [Go HTML templates](https://pkg.go.dev/html/template)  | [Go](https://go.dev/) |
+| [htmx](https://htmx.org/)                              |                       |
+| [_hyperscript](https://hyperscript.org/)               |                       |
+| [Tailwind CSS](https://tailwindcss.com/)               |                       |

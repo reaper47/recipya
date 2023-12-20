@@ -1,8 +1,7 @@
 ---
+title: Prerequisites
 weight: 1
 ---
-
-# Prerequisites
 
 ## System Requirements
 

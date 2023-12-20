@@ -1,8 +1,8 @@
 ---
+title: Windows Users
 weight: 5
+next: /docs/deployment
 ---
-
-# Windows Users
 
 If you intend to access the website on other devices within your home network, please ensure that the program is permitted through the firewall. To verify:
 
