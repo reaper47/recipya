@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+weight: 4
 ---
 
 # Delete

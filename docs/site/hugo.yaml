@@ -1,0 +1,55 @@
+baseURL: docs/
+languageCode: en-us
+defaultContentLanguage: en
+languages:
+  en:
+    languageName: English
+    weight: 1
+  fr:
+    languageName: Français
+    weight: 2
+params:
+  contact:
+    email: macpoule@gmail.com
+  editURL:
+    base: "https://github.com/reaper47/recipya/edit/main"
+  navbar:
+    displayTitle: true
+    displayLogo: true
+    logo:
+      path: images/logo.png
+      dark: images/logo.png
+      link: /
+      width: 25
+      height: 25
+  theme:
+    default: system
+    displayToggle: false
+title: Recipya
+theme: hextra
+menu:
+  main:
+    - identifier: documentation
+      name: Documentation
+      pageRef: /docs
+      weight: 1
+    - identifier: blog
+      name: Blog
+      pageRef: /blog
+      weight: 2
+    - identifier: searchPlaceholder
+      name: Search
+      weight: 3
+      params:
+        type: search
+    - identifier: sponsor
+      name: Sponsor
+      url: "https://github.com/sponsors/reaper47"
+      weight: 4
+      params:
+        icon: heart
+    - name: GitHub
+      weight: 5
+      url: "https://github.com/reaper47/recipya"
+      params:
+        icon: github

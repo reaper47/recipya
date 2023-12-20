@@ -1,0 +1,195 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Recipya – Features Tour</title>
+    <link>docs/docs/features/</link>
+    <description>Recent content in Features Tour on Recipya</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    
+	  <atom:link href="docs/docs/features/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>Recipes</title>
+      <link>docs/docs/features/recipes/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/recipes/</guid>
+      <description>
+        
+        
+        &lt;p&gt;You can add, view, edit, and delete any recipe in your collection.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Cookbooks</title>
+      <link>docs/docs/features/cookbooks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/cookbooks/</guid>
+      <description>
+        
+        
+        &lt;p&gt;A cookbook is a collection of recipes. You can access this feature from &amp;lsquo;Cookbook&amp;rsquo; tab of the sidebar.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Measurement Systems</title>
+      <link>docs/docs/features/measurement-systems/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/measurement-systems/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Users usually adhere to one preferred measurement system, rarely feeling comfortable with multiple systems.&lt;/p&gt;
+&lt;p&gt;Within Recipya, you have the option to set your preferred measurement system. The ones currently
+supported are imperial and metric. Europeans predominantly use the metric system, while Americans
+favor the imperial one.&lt;/p&gt;
+&lt;p&gt;All options related to this are found under the &lt;strong&gt;Recipes&lt;/strong&gt; side tab in the settings.
+To access your settings, click on your avatar in the top right corner of any page within Recipya.
+Then, select the &lt;strong&gt;Settings&lt;/strong&gt; option.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/settings-access.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h2&gt;Changing System&lt;span class=&#34;absolute -mt-20&#34; id=&#34;changing-system&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#changing-system&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;You can change the measurement system to your preferred one by selecting a system from the dropdown next to
+the &lt;strong&gt;Measurement system&lt;/strong&gt; setting.&lt;/p&gt;
+&lt;p&gt;:::info&lt;/p&gt;
+&lt;p&gt;The default measurement system is imperial.&lt;/p&gt;
+&lt;p&gt;:::&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/settings-measurement-system.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;All of your recipes in your collection will be converted to the measurement system you selected.
+This process is automatic.&lt;/p&gt;
+&lt;h2&gt;Automatic Conversion&lt;span class=&#34;absolute -mt-20&#34; id=&#34;automatic-conversion&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#automatic-conversion&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Select this option if you wish to automatically convert new recipes to your preferred measurement system.&lt;/p&gt;
+&lt;p&gt;For instance, let&amp;rsquo;s assume you prefer the metric measurement system, and you want to import a delicious recipe from an
+American website. The website employs the imperial system. On import, the recipe will be automatically converted to metric
+if the &lt;strong&gt;Convert automatically&lt;/strong&gt; checkbox is checked. Otherwise, the recipe will remain in the imperial system.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/settings-convert-automatically.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Nutrition Facts</title>
+      <link>docs/docs/features/nutrition-facts/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/nutrition-facts/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Many recipes lack nutritional information users may be unwilling to calculate themselves. To address this issue,
+Recipya can calculate the nutrition facts for you automatically when adding a recipe.&lt;/p&gt;
+&lt;p&gt;To enable this feature, access your settings via your avatar, click the &lt;code&gt;Recipes&lt;/code&gt; tab on the left, and
+check the &lt;strong&gt;Calculate nutrition facts&lt;/strong&gt; setting&amp;rsquo;s checkbox.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/settings-nutrition-facts.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;This setting is initially disabled because adding a recipe will take up to a few additional seconds. This happens
+because querying the nutritional database for every ingredient takes time.&lt;/p&gt;
+&lt;p&gt;Recipya does its best at calculating the nutritional information based on a recipe&amp;rsquo;s ingredients. However, please
+understand that the calculation is more indicative than absolute truth. The information is based on the U.S. Department
+of Agriculture, Agricultural Research Service&amp;rsquo;s &lt;a href=&#34;https://fdc.nal.usda.gov&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;FoodData Central&lt;/a&gt;, which is an integrated
+data system that provides expanded nutrient profile data. Please &lt;a href=&#34;https://github.com/reaper47/recipya/issues/new?assignees=&amp;amp;labels=bug&amp;amp;projects=&amp;amp;template=bug_report.md&amp;amp;title=Problem&amp;#43;with&amp;#43;nutrition&amp;#43;facts&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;open an issue&lt;/a&gt;
+on GitHub if you ever notice a recipe with nutritional information that seems vastly inaccurate.&lt;/p&gt;
+&lt;p&gt;:::note&lt;/p&gt;
+&lt;p&gt;The calculation can only be done with ingredients written in english because the database is in english only.&lt;/p&gt;
+&lt;p&gt;:::&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Export Data</title>
+      <link>docs/docs/features/export-data/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/export-data/</guid>
+      <description>
+        
+        
+        &lt;p&gt;It is possible to download your data through the settings. To access them, click on your avatar in the top right
+corner of any page within Recipya. Then, select the &lt;strong&gt;Settings&lt;/strong&gt; option.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/settings-access.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Finally, click the &lt;code&gt;Recipes&lt;/code&gt; settings tab on the left. You can select the data you want to export from the dropdown
+to the right of the &lt;code&gt;Export data&lt;/code&gt; setting.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/settings-export.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The dropdown is organized in groups. Let&amp;rsquo;s go over them.&lt;/p&gt;
+&lt;h2&gt;Recipes&lt;span class=&#34;absolute -mt-20&#34; id=&#34;recipes&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#recipes&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;You can export your recipes in the following formats.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;JSON&lt;/li&gt;
+&lt;li&gt;PDF&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The JSON format exports all your recipes in a zipped archive organized in a hierarchical manner, with each folder
+containing a JSON file of the recipe and an existing image. The recipe file follows the
+&lt;a href=&#34;https://schema.org/Recipe&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Recipe schema&lt;/a&gt; standard.&lt;/p&gt;
+&lt;p&gt;The PDF format exports all your recipes in a zipped archive. Each file in the archive follows the naming
+convention &lt;code&gt;{recipe name}.pdf&lt;/code&gt;.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Integrations</title>
+      <link>docs/docs/features/integrations/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/integrations/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Recipya offers integrations with other recipe manager applications. You can access them from the &lt;strong&gt;Recipes&lt;/strong&gt; side tab
+in the settings.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/settings-integrations.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h2&gt;Compatibility&lt;span class=&#34;absolute -mt-20&#34; id=&#34;compatibility&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#compatibility&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Integration&lt;/th&gt;
+&lt;th&gt;Import&lt;/th&gt;
+&lt;th&gt;Export&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://www.mastercook.com&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;MasterCook&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;:heavy_check_mark:&lt;/td&gt;
+&lt;td&gt;:x:&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://apps.nextcloud.com/apps/cookbook&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Nextcloud Cookbook&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;:heavy_check_mark:&lt;/td&gt;
+&lt;td&gt;:x:&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;Nextcloud Cookbook&lt;span class=&#34;absolute -mt-20&#34; id=&#34;nextcloud-cookbook&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#nextcloud-cookbook&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/nextcloud/cookbook&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Nextcloud Cookbook&lt;/a&gt; is an app for &lt;a href=&#34;https://nextcloud.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Nextcloud&lt;/a&gt;.
+Follow these steps to import your recipes from a Nextcloud Cookbook instance:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Go to the &lt;strong&gt;Integrations&lt;/strong&gt; setting and select the &lt;strong&gt;Nextcloud&lt;/strong&gt; option.&lt;/li&gt;
+&lt;li&gt;Click the button adjacent to the menu of options.&lt;/li&gt;
+&lt;li&gt;In the dialog that appears, enter the URL and credentials of your Nextcloud instance.
+&lt;img src=&#34;docs/docs/img/features/settings-integrations-nextcloud.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/li&gt;
+&lt;li&gt;Click the &lt;strong&gt;Import&lt;/strong&gt; button.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Your recipes will be swiftly transferred from Nextcloud Cookbook to Recipya.&lt;/p&gt;
+&lt;h2&gt;MasterCook&lt;span class=&#34;absolute -mt-20&#34; id=&#34;mastercook&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#mastercook&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;You can import your MasterCook recipes from the import button on the
+&lt;a href=&#34;docs/docs/features/recipes/add#import&#34; &gt;add recipe page&lt;/a&gt;. You can either upload a single &lt;code&gt;.mxp&lt;/code&gt; file or a zip archive
+containing multiple &lt;code&gt;.mxp&lt;/code&gt; files.&lt;/p&gt;
+&lt;p&gt;This &lt;a href=&#34;https://www.grassrootsrecipes.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;website&lt;/a&gt; contains endless MasterCook recipe collections for you to try.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

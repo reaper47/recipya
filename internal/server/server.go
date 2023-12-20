@@ -6,12 +6,14 @@ import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
+	"github.com/reaper47/recipya/docs"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/jobs"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services"
 	_ "github.com/reaper47/recipya/internal/templates" // Need to initialize the templates package.
 	"github.com/reaper47/recipya/static"
+	"io/fs"
 	"net/http"
 	"os"
 	"os/signal"
@@ -203,6 +205,9 @@ func (s *Server) mountHandlers() {
 	})
 
 	r.NotFound(notFoundHandler)
+
+	subFS, _ := fs.Sub(docs.FS, "site/public")
+	r.Handle("/docs/*", http.StripPrefix("/docs", http.FileServer(http.FS(subFS))))
 
 	staticFS := http.FileServer(http.FS(static.FS))
 	r.Get("/static/*", func(w http.ResponseWriter, r *http.Request) {

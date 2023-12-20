@@ -1,5 +1,5 @@
 ---
-sidebar_position: 8
+weight: 8
 ---
 
 # Wakelock

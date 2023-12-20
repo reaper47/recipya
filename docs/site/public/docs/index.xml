@@ -1,0 +1,1429 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Recipya – Introduction</title>
+    <link>docs/docs/</link>
+    <description>Recent content in Introduction on Recipya</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    
+	  <atom:link href="docs/docs/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title></title>
+      <link>docs/docs/deployment/local-network/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/deployment/local-network/</guid>
+      <description>
+        
+        
+        &lt;h1&gt;Local Network&lt;/h1&gt;&lt;p&gt;The project can be self-hosted network-wide over your local network for access from devices other than the computer
+you installed the application on.&lt;/p&gt;
+&lt;h2&gt;Docker&lt;span class=&#34;absolute -mt-20&#34; id=&#34;docker&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#docker&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After &lt;a href=&#34;docs/docs/installation/docker&#34; &gt;installing the Docker&lt;/a&gt; image, you can access
+the site network wide via at http://[host computer IP]:&lt;a href=&#34;docs/docs/installation/config-file&#34; &gt;[port]&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Nightly Build&lt;span class=&#34;absolute -mt-20&#34; id=&#34;nightly-build&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#nightly-build&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Linux&lt;span class=&#34;absolute -mt-20&#34; id=&#34;linux&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#linux&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Create a service to run the app automatically on boot.&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo nano /etc/systemd/system/recipya.service &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+    &lt;button
+      class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
+      title=&#34;Copy code&#34;
+    &gt;
+      &lt;div class=&#34;group-[.copied]/copybtn:hidden copy-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;hidden group-[.copied]/copybtn:block success-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Copy the following content to the newly-created file.&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;Unit&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Description&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;Recipya Service
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Wants&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;network.target
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;Service&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ExecStart&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;/path/to/binary/recipya serve
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;Install&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;WantedBy&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;multi-user.target&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+    &lt;button
+      class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
+      title=&#34;Copy code&#34;
+    &gt;
+      &lt;div class=&#34;group-[.copied]/copybtn:hidden copy-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;hidden group-[.copied]/copybtn:block success-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Start the service on boot.&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl start recipya.service
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl enable recipya.service&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+    &lt;button
+      class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
+      title=&#34;Copy code&#34;
+    &gt;
+      &lt;div class=&#34;group-[.copied]/copybtn:hidden copy-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;hidden group-[.copied]/copybtn:block success-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;You can now access the application on your local network at http://[host computer IP]:&lt;a href=&#34;docs/docs/installation/config-file&#34; &gt;[port]&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Windows&lt;span class=&#34;absolute -mt-20&#34; id=&#34;windows&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#windows&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The feasibility on Windows remains to be explored.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>docs/docs/development/intro/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/development/intro/</guid>
+      <description>
+        
+        
+        &lt;h1&gt;Introduction&lt;/h1&gt;&lt;p&gt;This chapter serves as the developer&amp;rsquo;s guide to building Recipya.&lt;/p&gt;
+&lt;h2&gt;Fetch the Code&lt;span class=&#34;absolute -mt-20&#34; id=&#34;fetch-the-code&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#fetch-the-code&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Run the following command to get the code.&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git clone https://github.com/reaper47/recipya.git&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+    &lt;button
+      class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
+      title=&#34;Copy code&#34;
+    &gt;
+      &lt;div class=&#34;group-[.copied]/copybtn:hidden copy-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;hidden group-[.copied]/copybtn:block success-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;You may also use the &lt;a href=&#34;https://cli.github.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GitHub CLI&lt;/a&gt; if you prefer.&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;gh repo clone reaper47/recipya&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+    &lt;button
+      class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
+      title=&#34;Copy code&#34;
+    &gt;
+      &lt;div class=&#34;group-[.copied]/copybtn:hidden copy-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;hidden group-[.copied]/copybtn:block success-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;Technology Stack&lt;span class=&#34;absolute -mt-20&#34; id=&#34;technology-stack&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#technology-stack&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Frontend&lt;/th&gt;
+&lt;th&gt;Backend&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://pkg.go.dev/html/template&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Go HTML templates&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://go.dev/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Go&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://htmx.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;htmx&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://hyperscript.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;_hyperscript&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://tailwindcss.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Tailwind CSS&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>docs/docs/installation/system-requirements/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/installation/system-requirements/</guid>
+      <description>
+        
+        
+        &lt;h1&gt;Prerequisites&lt;/h1&gt;&lt;h2&gt;System Requirements&lt;span class=&#34;absolute -mt-20&#34; id=&#34;system-requirements&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#system-requirements&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The following table lists the supported platforms and devices.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Platform&lt;/th&gt;
+&lt;th&gt;Explanation&lt;/th&gt;
+&lt;th&gt;Device Examples&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;darwin/amd64&lt;/td&gt;
+&lt;td&gt;macOS on 64-bit Intel (x86-64) architecture&lt;/td&gt;
+&lt;td&gt;Apple MacBook, iMac, Mac Mini, Mac Pro&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;darwin/arm64&lt;/td&gt;
+&lt;td&gt;macOS on ARM64 architecture&lt;/td&gt;
+&lt;td&gt;MacBook Air (M1), MacBook Pro (M1), Mac Mini (M1)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;linux/386&lt;/td&gt;
+&lt;td&gt;Linux on 32-bit x86 architecture&lt;/td&gt;
+&lt;td&gt;Older PCs, embedded systems&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;linux/amd64&lt;/td&gt;
+&lt;td&gt;Linux on 64-bit x86 architecture (x86-64)&lt;/td&gt;
+&lt;td&gt;Desktops, laptops, servers, cloud instances&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;linux/arm&lt;/td&gt;
+&lt;td&gt;Linux on ARMv6 architecture&lt;/td&gt;
+&lt;td&gt;Raspberry Pi 1st gen, IoT devices, some old smartphones&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;linux/arm64&lt;/td&gt;
+&lt;td&gt;Linux on ARMv8 64-bit architecture&lt;/td&gt;
+&lt;td&gt;Raspberry Pi 3rd/4th gen, modern smartphones&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;linux/riscv64&lt;/td&gt;
+&lt;td&gt;Linux on 64-bit RISC-V architecture&lt;/td&gt;
+&lt;td&gt;RISC-V development boards, experimental devices&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;linux/s390x&lt;/td&gt;
+&lt;td&gt;Linux on IBM System z architecture&lt;/td&gt;
+&lt;td&gt;IBM mainframes, servers&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;windows/amd64&lt;/td&gt;
+&lt;td&gt;Windows on 64-bit x86 architecture&lt;/td&gt;
+&lt;td&gt;Modern Windows PCs, servers, virtual machines&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;windows/arm64&lt;/td&gt;
+&lt;td&gt;Windows on ARM64 architecture&lt;/td&gt;
+&lt;td&gt;Microsoft Surface Pro X, ARM-based Windows devices&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;In addition, you must have at least 300 MB of free space.&lt;/p&gt;
+&lt;h2&gt;Third-party Services&lt;span class=&#34;absolute -mt-20&#34; id=&#34;third-party-services&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#third-party-services&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Recipya uses the following third-party services to enhance the product.&lt;/p&gt;
+&lt;h3&gt;SendGrid&lt;span class=&#34;absolute -mt-20&#34; id=&#34;sendgrid&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#sendgrid&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;a href=&#34;https://sendgrid.com&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;SendGrid&lt;/a&gt; provides a cloud-based service that assists businesses with email delivery.
+They offer a &lt;a href=&#34;https://sendgrid.com/en-us/pricing&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;free plan&lt;/a&gt; that allows you to send up to 100 emails per day.&lt;/p&gt;
+&lt;p&gt;Within Recipya, the email module is used for the following events:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Send a confirmation email to a user who registered.&lt;/li&gt;
+&lt;li&gt;Notify the administrator when some errors occur.&lt;/li&gt;
+&lt;li&gt;Inform the administrator when a user requests a URL to import from an unsupported website.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If none of these reasons persuade you to use this service, then leave the &lt;code&gt;email.from&lt;/code&gt; and &lt;code&gt;email.sendGridAPIKey&lt;/code&gt; fields
+in the &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/deploy/config.example.json&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;configuration file&lt;/a&gt; empty. No emails
+will then be sent.&lt;/p&gt;
+&lt;h3&gt;Azure AI Vision&lt;span class=&#34;absolute -mt-20&#34; id=&#34;azure-ai-vision&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#azure-ai-vision&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;a href=&#34;https://azure.microsoft.com/en-us/products/ai-services/ai-vision&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Azure AI Vision&lt;/a&gt; is a unified service that offers
+innovative computer vision capabilities. It gives apps the ability to analyze images, read text, and detect faces
+with prebuilt image tagging, text extraction with optical character recognition (OCR), and responsible facial
+recognition. Microsoft offers a &lt;a href=&#34;https://azure.microsoft.com/en-us/pricing/details/cognitive-services/computer-vision/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;free plan&lt;/a&gt;
+that allows you to perform 5000 transactions per month.&lt;/p&gt;
+&lt;p&gt;Within Recipya, this service is used to &lt;a href=&#34;docs/docs/features/recipes/add#scan&#34; &gt;digitize recipes&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you do not plan on digitizing paper recipes, then leave the &lt;code&gt;integrations.azureComputerVision.resourceKey&lt;/code&gt; and
+&lt;code&gt;integrations.azureComputerVision.visionEndpoint&lt;/code&gt; fields in the &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/deploy/config.example.json&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;configuration file&lt;/a&gt;
+empty. This feature will then be disabled.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Add</title>
+      <link>docs/docs/features/recipes/add/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/recipes/add/</guid>
+      <description>
+        
+        
+        &lt;p&gt;You can add a recipe by clicking the blue &lt;strong&gt;Add Recipe&lt;/strong&gt; in the middle of the application bar.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/add-recipe.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h2&gt;Adding Recipes&lt;span class=&#34;absolute -mt-20&#34; id=&#34;adding-recipes&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#adding-recipes&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;You will be presented with four different ways of adding a recipe to your collection.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#manual&#34; &gt;Manual&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#scan&#34; &gt;Scan&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#website&#34; &gt;Website&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#import&#34; &gt;Import&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/add-recipe-options.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h3&gt;Manual&lt;span class=&#34;absolute -mt-20&#34; id=&#34;manual&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#manual&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The simplest method of inputting a recipe involves completing a form that outlines your dish.
+Mandatory fields are indicated with an asterisk (*).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/add-recipe-manual.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;You might find these shortcuts useful if you are filling the form from your computer.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Shortcut&lt;/th&gt;
+&lt;th&gt;How to enable&lt;/th&gt;
+&lt;th&gt;Result&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Enter&lt;/td&gt;
+&lt;td&gt;Focus on an ingredient text input&lt;/td&gt;
+&lt;td&gt;Add ingredient row&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Ctrl + Enter&lt;/td&gt;
+&lt;td&gt;Focus on an instruction text area&lt;/td&gt;
+&lt;td&gt;Add instruction row&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;You can also reorder the ingredients and the instructions by dragging the arrow vertically.&lt;/p&gt;
+&lt;h3&gt;Scan&lt;span class=&#34;absolute -mt-20&#34; id=&#34;scan&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#scan&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;You can upload an image or a scan of a handwritten or printed recipe to add it to your collection.
+This option is useful for digitizing your and your family&amp;rsquo;s paper recipes.&lt;/p&gt;
+&lt;p&gt;To do so, click the &lt;em&gt;Upload&lt;/em&gt; button and select an image in your computer.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/add-recipe-scan.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;:::warning&lt;/p&gt;
+&lt;p&gt;You must have an &lt;a href=&#34;docs/docs/installation/system-requirements#azure-ai-vision&#34; &gt;Azure AI Vision&lt;/a&gt; account to use this feature.&lt;/p&gt;
+&lt;p&gt;:::&lt;/p&gt;
+&lt;h3&gt;Website&lt;span class=&#34;absolute -mt-20&#34; id=&#34;website&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#website&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;You can import any recipe from the supported websites. To do so, click the &lt;strong&gt;Fetch&lt;/strong&gt; button,
+paste the recipe&amp;rsquo;s URL and click &lt;em&gt;OK&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;The application will display the recipe if the request is successful. Otherwise, you will be
+presented with a message asking you to either go back to the previous page or request the Recipya
+developers to support the website.&lt;/p&gt;
+&lt;p&gt;To view all supported websites, please click on the &lt;!-- raw HTML omitted --&gt;supported&lt;!-- raw HTML omitted --&gt; word.
+You can scrape a website not in the supported list, but recipe extraction may fail. If it does, you can
+request support for the website by clicking the button that appears.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/add-recipe-website.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h3&gt;Import&lt;span class=&#34;absolute -mt-20&#34; id=&#34;import&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#import&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;You can import recipes in the following formats:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;.json&lt;/code&gt;: If they adhere to the &lt;a href=&#34;https://schema.org/Recipe&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Recipe schema&lt;/a&gt; standard&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.mxp&lt;/code&gt;: Exported recipes from &lt;a href=&#34;https://www.mastercook.com&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;MasterCook&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/add-recipe-import.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;You can upload either a single file or a zip archive containing multiple recipes.
+The recipes in a zip file may be organized by folder. Each folder may contain the &lt;code&gt;.json&lt;/code&gt; recipe file and an image
+file. All other files in a folder will be ignored during processing. Here is an
+&lt;a href=&#34;https://sea.musicavis.ca/f/683b9b9a7cc84e1bac0c/?dl=1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;example&lt;/a&gt; of how such zip may look like.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Create</title>
+      <link>docs/docs/features/cookbooks/add/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/cookbooks/add/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Click the &lt;em&gt;Add Cookbook&lt;/em&gt; button from the cookbook feature tab to create a cookbook.
+You will be prompted for its title.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-add.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The cookbook will then be displayed to you immediately. The following image shows two created cookbooks.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbooks-view.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h2&gt;Adding Recipes&lt;span class=&#34;absolute -mt-20&#34; id=&#34;adding-recipes&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#adding-recipes&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Your cookbook is empty after creation. You can add recipes by searching for them in the search box.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-no-recipes.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;After typing, press &lt;strong&gt;Enter&lt;/strong&gt; or click the magnifying glass to submit your search request. The results will
+appear below the search box. Queries are case-insensitive.&lt;/p&gt;
+&lt;p&gt;Finally, click the &lt;em&gt;Add&lt;/em&gt; button on the recipes you want to the add to the cookbook.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-search-results-add.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-recipe-added.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Introduction</title>
+      <link>docs/docs/intro/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/intro/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Recipya is a clean recipe manager web application for unforgettable family recipes, empowering you to curate and
+share your favorite recipes. It is focussed on simplicity for the whole family to enjoy.&lt;/p&gt;
+&lt;h2&gt;Features&lt;span class=&#34;absolute -mt-20&#34; id=&#34;features&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#features&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;docs/docs/category/recipes&#34; &gt;Manage your favorite recipes&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;docs/docs/features/recipes/add#website&#34; &gt;Import recipes from around the web&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;docs/docs/features/recipes/add#scan&#34; &gt;Digitize paper recipes&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;docs/docs/category/cookbooks&#34; &gt;Organize your recipes into cookbooks&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;docs/docs/features/integrations&#34; &gt;Works seamlessly with Nextcloud Cookbook&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;docs/docs/features/measurement-systems&#34; &gt;Automatic conversion to your preferred measurement system&lt;/a&gt; (imperial/metric)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;docs/docs/features/nutrition-facts&#34; &gt;Calculate nutritional information automatically&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;docs/docs/features/recipes/print&#34; &gt;Print any recipe in your collection&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;docs/docs/features/recipes/wakelock&#34; &gt;Prevent your device from going to sleep while viewing a recipe&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Follows your system&amp;rsquo;s theme (light/dark)&lt;/li&gt;
+&lt;li&gt;Cross-compiled for Windows, Linux, and macOS&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>docs/docs/deployment/internet/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/deployment/internet/</guid>
+      <description>
+        
+        
+        &lt;h1&gt;Web Hosting&lt;/h1&gt;&lt;p&gt;This subsection will be written once I host Recipya somewhere.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>docs/docs/development/dependencies/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/development/dependencies/</guid>
+      <description>
+        
+        
+        &lt;h1&gt;Dependencies&lt;/h1&gt;&lt;p&gt;The following software is required to build the project.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://go.dev/dl&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Go&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://nodejs.org/en/download&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;npm&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Make_%28software%29&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Make&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Windows&lt;span class=&#34;absolute -mt-20&#34; id=&#34;windows&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#windows&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The &lt;code&gt;make&lt;/code&gt; program is required to build the project but Windows users must install it.
+To verify whether it&amp;rsquo;s installed on your machine, execute &lt;code&gt;make&lt;/code&gt; in a command prompt or PowerShell.&lt;/p&gt;
+&lt;p&gt;Follow these steps if not installed:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Open either the Command Prompt or Powershell in administrator mode.&lt;/li&gt;
+&lt;li&gt;Execute &lt;code&gt;winget install GnuWin32.Make&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Add &lt;code&gt;C:\Program Files (x86)\GnuWin32\bin&lt;/code&gt; to the Windows PATH environment variable.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Recommended CLI Programs&lt;span class=&#34;absolute -mt-20&#34; id=&#34;recommended-cli-programs&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#recommended-cli-programs&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The following lists CLI programs you should install to help you develop the project.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The &lt;a href=&#34;https://github.com/pressly/goose?tab=readme-ov-file#install&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Goose&lt;/a&gt; database migration tool&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>docs/docs/installation/config-file/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/installation/config-file/</guid>
+      <description>
+        
+        
+        &lt;h1&gt;Configuration File&lt;/h1&gt;&lt;p&gt;The &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/deploy/config.example.json&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;configuration file&lt;/a&gt;
+sets important variables for the application. Let&amp;rsquo;s go over each of them.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;email&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;from&lt;/strong&gt;: The administrator&amp;rsquo;s email address. It is usually the email address of your &lt;a href=&#34;https://sendgrid.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;SendGrid&lt;/a&gt; account.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;sendGridAPIKey&lt;/strong&gt;: Your &lt;a href=&#34;https://sendgrid.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;SendGrid&lt;/a&gt; API key. The free tier should be sufficient for your needs.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;integrations&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;azureComputerVision&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;resourceKey&lt;/strong&gt;: The &lt;em&gt;KEY 1&lt;/em&gt; variable displayed on the &lt;em&gt;Keys and endpoint&lt;/em&gt; tab of your Computer vision resource in the &lt;a href=&#34;https://portal.azure.com/#home&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Azure Portal&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;visionEndpoint&lt;/strong&gt;: The &lt;em&gt;Endpoint&lt;/em&gt; variable displayed on the &lt;em&gt;Keys and endpoint&lt;/em&gt; tab of your Computer vision resource in the &lt;a href=&#34;https://portal.azure.com/#home&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Azure Portal&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;server&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;isProduction&lt;/strong&gt;: Whether the app is in production. Its value is either &lt;strong&gt;true&lt;/strong&gt; or &lt;strong&gt;false&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;port&lt;/strong&gt;: The port the app will be served through if localhost.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;url&lt;/strong&gt;: The website the app is served on. This URL will serve as the base link in the emails.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>View</title>
+      <link>docs/docs/features/recipes/view/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/recipes/view/</guid>
+      <description>
+        
+        
+        &lt;p&gt;To view a recipe, you first need to view your collection of recipes.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/view-recipe-enter.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;You will then be presented with the recipe&amp;rsquo;s information for you
+to follow while cooking.&lt;/p&gt;
+&lt;p&gt;:::tip&lt;/p&gt;
+&lt;p&gt;You can click or tap on the ingredients
+and instructions to cross them out.&lt;/p&gt;
+&lt;p&gt;:::&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/view-recipe.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h2&gt;Scaling&lt;span class=&#34;absolute -mt-20&#34; id=&#34;scaling&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#scaling&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;To scale a recipe, use the number input in the yield square to select the number of servings you want to make.&lt;/p&gt;
+&lt;p&gt;If you want to make more servings, enter a higher number.
+If you want to make fewer servings, enter a lower number.&lt;/p&gt;
+&lt;p&gt;For example, the recipe above yields 6 servings. To double the recipe, set the number of servings to 12.
+The recipe will then be automatically scaled to make 12 servings of oven roasted potatoes, as shown below.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/view-recipe-scale.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;:::caution&lt;/p&gt;
+&lt;p&gt;The scaling feature currently only scales ingredients, leaving instructions untouched. This
+means that if an instruction mentions a specific amount of an ingredient, then that amount will
+not be scaled. This limitation will be addressed in the future.&lt;/p&gt;
+&lt;p&gt;:::&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>docs/docs/development/building/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/development/building/</guid>
+      <description>
+        
+        
+        &lt;h1&gt;Build&lt;/h1&gt;&lt;p&gt;Go to the project directory.&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd recipya&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+    &lt;button
+      class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
+      title=&#34;Copy code&#34;
+    &gt;
+      &lt;div class=&#34;group-[.copied]/copybtn:hidden copy-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;hidden group-[.copied]/copybtn:block success-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Build the project.&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;make&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+    &lt;button
+      class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
+      title=&#34;Copy code&#34;
+    &gt;
+      &lt;div class=&#34;group-[.copied]/copybtn:hidden copy-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;hidden group-[.copied]/copybtn:block success-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Modify your &lt;a href=&#34;docs/docs/installation/config-file&#34; &gt;configuration file&lt;/a&gt; and ensure it sits next to the executable
+in the &lt;code&gt;bin&lt;/code&gt; folder.&lt;/p&gt;
+&lt;p&gt;Start the server.&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./bin/recipya serve&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+    &lt;button
+      class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
+      title=&#34;Copy code&#34;
+    &gt;
+      &lt;div class=&#34;group-[.copied]/copybtn:hidden copy-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;hidden group-[.copied]/copybtn:block success-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Access the application through a web browser at the address specified in the terminal.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>docs/docs/installation/docker/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/installation/docker/</guid>
+      <description>
+        
+        
+        &lt;h1&gt;Docker&lt;/h1&gt;&lt;p&gt;A Docker image named &lt;a href=&#34;https://hub.docker.com/layers/reaper99/recipya/nightly/images/sha256-b2238a11a53982953df5bbcfd7796a19fa382abf75d316b62fa05ac1c867332c?context=repo&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;reaper99/recipya&lt;/a&gt;
+is produced nightly.&lt;/p&gt;
+&lt;p&gt;You can either install the application using &lt;a href=&#34;https://www.docker.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Docker&lt;/a&gt; or
+&lt;a href=&#34;https://docs.docker.com/compose/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Docker Compose&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Using Docker&lt;span class=&#34;absolute -mt-20&#34; id=&#34;using-docker&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#using-docker&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;You first have to fetch it.&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker pull reaper99/recipya:nightly&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+    &lt;button
+      class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
+      title=&#34;Copy code&#34;
+    &gt;
+      &lt;div class=&#34;group-[.copied]/copybtn:hidden copy-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;hidden group-[.copied]/copybtn:block success-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Then, run the image. You must pass your &lt;a href=&#34;docs/docs/installation/config-file&#34; &gt;config.json&lt;/a&gt; file to the container.&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker run -v path/to/config.json:/app/config.json -p &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;host port&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;:&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;port specified in config.json&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; -d reaper99/recipya:nightly reaper99/recipya:nightly&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+    &lt;button
+      class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
+      title=&#34;Copy code&#34;
+    &gt;
+      &lt;div class=&#34;group-[.copied]/copybtn:hidden copy-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;hidden group-[.copied]/copybtn:block success-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;Using Docker Compose&lt;span class=&#34;absolute -mt-20&#34; id=&#34;using-docker-compose&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#using-docker-compose&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;You can use Docker Compose to run the container. First, you need to modify the ports and the path to your local
+&lt;a href=&#34;docs/docs/installation/config-file&#34; &gt;config.json&lt;/a&gt; in the &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/deploy/compose.yaml&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;compose.yaml&lt;/a&gt;.
+Then, start the application.&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker-compose up -d&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+    &lt;button
+      class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
+      title=&#34;Copy code&#34;
+    &gt;
+      &lt;div class=&#34;group-[.copied]/copybtn:hidden copy-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;hidden group-[.copied]/copybtn:block success-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Access the app through your browser at &lt;code&gt;http://localhost:[host&#39;s port]&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;If you are using Windows and you intend to access the app on other devices within your home network, please ensure to &lt;code&gt;Allow the connection&lt;/code&gt; of the &lt;code&gt;Docker Desktop Backend&lt;/code&gt;
+inbound Windows Defender Firewall rule.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Edit</title>
+      <link>docs/docs/features/cookbooks/edit/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/cookbooks/edit/</guid>
+      <description>
+        
+        
+        &lt;p&gt;You can update the image of a cookbook as well as reorder the recipes.&lt;/p&gt;
+&lt;h2&gt;Update the Image&lt;span class=&#34;absolute -mt-20&#34; id=&#34;update-the-image&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#update-the-image&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Click the image of a cookbook to update it. You will be then prompted with the
+operating system&amp;rsquo;s file picker to select and image.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbooks-update-image.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The cookbook&amp;rsquo;s image will be updated immediately after selecting the file.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbooks-updated-image.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h2&gt;Reorder the Recipes&lt;span class=&#34;absolute -mt-20&#34; id=&#34;reorder-the-recipes&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#reorder-the-recipes&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;You can reorder the recipes in a cookbook. This is useful when you want its recipes to flow
+in a certain way. For example, you might want all appetizers to appear first, then the lunches, and
+finally the dinners.&lt;/p&gt;
+&lt;p&gt;To reorder them, first open a cookbook. In the following image, we want to switch the position of the
+first recipe with that of the last.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-recipes-before-reorder.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Then, drag the page number of the recipe you wish to update. Once at the desired position,
+release the mouse. The pages will be immediately updated.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-recipes-after-reorder.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h2&gt;Switch View Mode&lt;span class=&#34;absolute -mt-20&#34; id=&#34;switch-view-mode&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#switch-view-mode&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The cookbooks can be displayed in the following modes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Grid&lt;/li&gt;
+&lt;li&gt;List&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To display them as a grid, click the grid icon under your avatar.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbooks-grid.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbooks-grid-mode.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;To display them as a list, click the list icon.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbooks-list.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Edit</title>
+      <link>docs/docs/features/recipes/edit/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/recipes/edit/</guid>
+      <description>
+        
+        
+        &lt;p&gt;To edit a recipe in your collection, you first must &lt;a href=&#34;docs/docs/features/recipes/view&#34; &gt;view&lt;/a&gt; a recipe.
+Then, click the pencil icon to the left of the recipe&amp;rsquo;s title.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/edit-recipe-enter.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;You will enter the edit mode, which allows you to edit any of the recipe&amp;rsquo;s information.
+Press the blue &lt;strong&gt;Update&lt;/strong&gt; button at the bottom of the form to save your changes.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/edit-recipe.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Measurement Systems</title>
+      <link>docs/docs/features/measurement-systems/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/measurement-systems/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Users usually adhere to one preferred measurement system, rarely feeling comfortable with multiple systems.&lt;/p&gt;
+&lt;p&gt;Within Recipya, you have the option to set your preferred measurement system. The ones currently
+supported are imperial and metric. Europeans predominantly use the metric system, while Americans
+favor the imperial one.&lt;/p&gt;
+&lt;p&gt;All options related to this are found under the &lt;strong&gt;Recipes&lt;/strong&gt; side tab in the settings.
+To access your settings, click on your avatar in the top right corner of any page within Recipya.
+Then, select the &lt;strong&gt;Settings&lt;/strong&gt; option.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/settings-access.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h2&gt;Changing System&lt;span class=&#34;absolute -mt-20&#34; id=&#34;changing-system&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#changing-system&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;You can change the measurement system to your preferred one by selecting a system from the dropdown next to
+the &lt;strong&gt;Measurement system&lt;/strong&gt; setting.&lt;/p&gt;
+&lt;p&gt;:::info&lt;/p&gt;
+&lt;p&gt;The default measurement system is imperial.&lt;/p&gt;
+&lt;p&gt;:::&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/settings-measurement-system.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;All of your recipes in your collection will be converted to the measurement system you selected.
+This process is automatic.&lt;/p&gt;
+&lt;h2&gt;Automatic Conversion&lt;span class=&#34;absolute -mt-20&#34; id=&#34;automatic-conversion&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#automatic-conversion&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Select this option if you wish to automatically convert new recipes to your preferred measurement system.&lt;/p&gt;
+&lt;p&gt;For instance, let&amp;rsquo;s assume you prefer the metric measurement system, and you want to import a delicious recipe from an
+American website. The website employs the imperial system. On import, the recipe will be automatically converted to metric
+if the &lt;strong&gt;Convert automatically&lt;/strong&gt; checkbox is checked. Otherwise, the recipe will remain in the imperial system.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/settings-convert-automatically.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>docs/docs/development/tests/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/development/tests/</guid>
+      <description>
+        
+        
+        &lt;h1&gt;Tests&lt;/h1&gt;&lt;p&gt;Recipya has an extensive test suites to ensure the software works as expected.
+The tests are run during the &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/.github/workflows/go.yml&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Go workflow&lt;/a&gt;
+when you open a pull request against the main branch.&lt;/p&gt;
+&lt;p&gt;Execute the following when you wish to run all the tests locally.&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;make test&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+    &lt;button
+      class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
+      title=&#34;Copy code&#34;
+    &gt;
+      &lt;div class=&#34;group-[.copied]/copybtn:hidden copy-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;hidden group-[.copied]/copybtn:block success-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;Writing Tests&lt;span class=&#34;absolute -mt-20&#34; id=&#34;writing-tests&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#writing-tests&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;It is of vital important to write tests when submitting pull requests. This
+&lt;a href=&#34;https://www.codemag.com/Article/1901071/10-Reasons-Why-Unit-Testing-Matters&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;article&lt;/a&gt; explains why
+unit testing matters.&lt;/p&gt;
+&lt;p&gt;You will see many files under the &lt;code&gt;internal&lt;/code&gt; folder that finish with &lt;code&gt;*_test.go&lt;/code&gt;. That is where tests are written.
+Please refer to the &lt;a href=&#34;docs/docs/category/workflow&#34; &gt;development workflow&lt;/a&gt; section for more information and examples.&lt;/p&gt;
+&lt;p&gt;Please feel free to add as many tests as you deem fit to any of those files.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>docs/docs/installation/nightly-build/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/installation/nightly-build/</guid>
+      <description>
+        
+        
+        &lt;h1&gt;Nightly Build&lt;/h1&gt;&lt;p&gt;A portable, standalone build is available on the &lt;a href=&#34;https://github.com/reaper47/recipya/releases/tag/nightly&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;releases page&lt;/a&gt;.
+It is updated nightly if the main branch has new commits.&lt;/p&gt;
+&lt;p&gt;First, download and extract the zip file compatible with your system.
+Please consult the &lt;a href=&#34;#supported-platforms&#34; &gt;supported platforms&lt;/a&gt; table if you are unsure which file to download.&lt;/p&gt;
+&lt;p&gt;Then, start the server by opening a command prompt in the folder, and run the following command.
+The application will perform a one-time setup if not already done.&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./recipya-&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;os&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;-&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;architecture&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt; serve&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+    &lt;button
+      class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
+      title=&#34;Copy code&#34;
+    &gt;
+      &lt;div class=&#34;group-[.copied]/copybtn:hidden copy-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;hidden group-[.copied]/copybtn:block success-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;You can now access the website at the address specified.&lt;/p&gt;
+&lt;p&gt;:::note&lt;/p&gt;
+&lt;p&gt;The program cannot be updated within the interface yet. If you wish to update the app, please download the nightly
+build and replace your existing &lt;code&gt;recipya&lt;/code&gt; executable with the one from the build zip.&lt;/p&gt;
+&lt;p&gt;:::&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Delete</title>
+      <link>docs/docs/features/cookbooks/delete/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/cookbooks/delete/</guid>
+      <description>
+        
+        
+        &lt;p&gt;To delete a cookbook from your collection, first click the three vertical dots at the top right of
+the cookbook you wish to delete. Then, click the &lt;strong&gt;Delete&lt;/strong&gt; submenu item. You will be prompted whether
+you want to proceed before deletion.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-delete.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;:::danger&lt;/p&gt;
+&lt;p&gt;Deleting a cookbook is irreversible. It will be gone forever.
+However, its recipes will be left untouched.&lt;/p&gt;
+&lt;p&gt;:::&lt;/p&gt;
+&lt;p&gt;The cookbook will then be deleted from your collection and the changes will be reflected immediately.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-delete-aftermath.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Delete</title>
+      <link>docs/docs/features/recipes/delete/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/recipes/delete/</guid>
+      <description>
+        
+        
+        &lt;p&gt;To delete a recipe from your collection, you first must &lt;a href=&#34;docs/docs/features/recipes/view&#34; &gt;view&lt;/a&gt; a recipe.
+Then, click the trashcan icon to the right of the recipe&amp;rsquo;s title. You will be prompted whether
+you want to proceed before deletion.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/delete-recipe.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;:::danger&lt;/p&gt;
+&lt;p&gt;Deleting a recipe is irreversible. It will be gone forever.&lt;/p&gt;
+&lt;p&gt;:::&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>docs/docs/installation/windows-users/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/installation/windows-users/</guid>
+      <description>
+        
+        
+        &lt;h1&gt;Windows Users&lt;/h1&gt;&lt;p&gt;If you intend to access the website on other devices within your home network, please ensure that the program is permitted through the firewall. To verify:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Open the &amp;ldquo;Firewall &amp;amp; network protection setting&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;Click on &amp;ldquo;Allow an app through firewall&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;Scroll down to recipya*.exe&lt;/li&gt;
+&lt;li&gt;Ensure private and public boxes are checked&lt;/li&gt;
+&lt;li&gt;Apply the settings&lt;/li&gt;
+&lt;li&gt;Find the IP address of your machine (Wi-Fi settings -&amp;gt; Click on the network you are connected to -&amp;gt; IPv4 address)&lt;/li&gt;
+&lt;li&gt;On your other device, access http://[IPv4 address]:[port]&lt;/li&gt;
+&lt;/ol&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Download</title>
+      <link>docs/docs/features/cookbooks/download/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/cookbooks/download/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Any of your cookbooks can be downloaded as a PDF file for physical, offline, or archival purposes.
+Click &lt;a href=&#34;https://sea.musicavis.ca/f/9f87258f6d5f485692d1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;here&lt;/a&gt; to view a sample.&lt;/p&gt;
+&lt;p&gt;To download a cookbook, first click the three vertical dots at the top right of
+the cookbook you wish to download. Then, click the &lt;strong&gt;Download&lt;/strong&gt; submenu item. The file will be
+downloaded immediately.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-download.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Search</title>
+      <link>docs/docs/features/recipes/search/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/recipes/search/</guid>
+      <description>
+        
+        
+        &lt;p&gt;You can search for recipes from the search text box below the add recipes button of the recipes view page.
+Type your keywords delimited by either a space, comma or both. Then press the enter key to fire the search.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/recipes-search-view.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Your query will search the following fields of all recipes belonging to you:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Title&lt;/li&gt;
+&lt;li&gt;Description&lt;/li&gt;
+&lt;li&gt;Category&lt;/li&gt;
+&lt;li&gt;Ingredients&lt;/li&gt;
+&lt;li&gt;Instructions&lt;/li&gt;
+&lt;li&gt;Keywords&lt;/li&gt;
+&lt;li&gt;Source&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The results will be ranked based on their relevance to the search terms.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/recipes-search-query.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Share</title>
+      <link>docs/docs/features/cookbooks/share/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/cookbooks/share/</guid>
+      <description>
+        
+        
+        &lt;p&gt;You can share a cookbook to your family and friends. To do so, you must first generate the cookbook&amp;rsquo;s share
+link by clicking the &lt;strong&gt;Share&lt;/strong&gt; submenu option from the three dots icon&amp;rsquo;s menu.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-share.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The link will then be displayed to you, ready to be sent to your family and friends.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-share-link.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Anyone who opens this link will be presented with the recipes you added to the cookbook you shared.
+Any of its recipes can then be viewed without the need to log in.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-share-anonymous.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Nutrition Facts</title>
+      <link>docs/docs/features/nutrition-facts/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/nutrition-facts/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Many recipes lack nutritional information users may be unwilling to calculate themselves. To address this issue,
+Recipya can calculate the nutrition facts for you automatically when adding a recipe.&lt;/p&gt;
+&lt;p&gt;To enable this feature, access your settings via your avatar, click the &lt;code&gt;Recipes&lt;/code&gt; tab on the left, and
+check the &lt;strong&gt;Calculate nutrition facts&lt;/strong&gt; setting&amp;rsquo;s checkbox.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/settings-nutrition-facts.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;This setting is initially disabled because adding a recipe will take up to a few additional seconds. This happens
+because querying the nutritional database for every ingredient takes time.&lt;/p&gt;
+&lt;p&gt;Recipya does its best at calculating the nutritional information based on a recipe&amp;rsquo;s ingredients. However, please
+understand that the calculation is more indicative than absolute truth. The information is based on the U.S. Department
+of Agriculture, Agricultural Research Service&amp;rsquo;s &lt;a href=&#34;https://fdc.nal.usda.gov&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;FoodData Central&lt;/a&gt;, which is an integrated
+data system that provides expanded nutrient profile data. Please &lt;a href=&#34;https://github.com/reaper47/recipya/issues/new?assignees=&amp;amp;labels=bug&amp;amp;projects=&amp;amp;template=bug_report.md&amp;amp;title=Problem&amp;#43;with&amp;#43;nutrition&amp;#43;facts&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;open an issue&lt;/a&gt;
+on GitHub if you ever notice a recipe with nutritional information that seems vastly inaccurate.&lt;/p&gt;
+&lt;p&gt;:::note&lt;/p&gt;
+&lt;p&gt;The calculation can only be done with ingredients written in english because the database is in english only.&lt;/p&gt;
+&lt;p&gt;:::&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Share</title>
+      <link>docs/docs/features/recipes/share/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/recipes/share/</guid>
+      <description>
+        
+        
+        &lt;p&gt;A recipe can be shared to anyone who has the share link.&lt;/p&gt;
+&lt;p&gt;To generate the link, you first must &lt;a href=&#34;docs/docs/features/recipes/view&#34; &gt;view a recipe&lt;/a&gt;. Then, click the share icon to the right of the
+recipe&amp;rsquo;s title.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/sharing-icon.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The link will be generated and displayed for you to copy, ready to be sent to your friends.
+Its naming convention is &lt;code&gt;{host}/r/{UUID}&lt;/code&gt;. The UUID will prevent any clash with someone else&amp;rsquo;s
+shared recipe because no two UUID is the same.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/sharing-dialog.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Export Data</title>
+      <link>docs/docs/features/export-data/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/export-data/</guid>
+      <description>
+        
+        
+        &lt;p&gt;It is possible to download your data through the settings. To access them, click on your avatar in the top right
+corner of any page within Recipya. Then, select the &lt;strong&gt;Settings&lt;/strong&gt; option.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/settings-access.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Finally, click the &lt;code&gt;Recipes&lt;/code&gt; settings tab on the left. You can select the data you want to export from the dropdown
+to the right of the &lt;code&gt;Export data&lt;/code&gt; setting.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/settings-export.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The dropdown is organized in groups. Let&amp;rsquo;s go over them.&lt;/p&gt;
+&lt;h2&gt;Recipes&lt;span class=&#34;absolute -mt-20&#34; id=&#34;recipes&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#recipes&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;You can export your recipes in the following formats.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;JSON&lt;/li&gt;
+&lt;li&gt;PDF&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The JSON format exports all your recipes in a zipped archive organized in a hierarchical manner, with each folder
+containing a JSON file of the recipe and an existing image. The recipe file follows the
+&lt;a href=&#34;https://schema.org/Recipe&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Recipe schema&lt;/a&gt; standard.&lt;/p&gt;
+&lt;p&gt;The PDF format exports all your recipes in a zipped archive. Each file in the archive follows the naming
+convention &lt;code&gt;{recipe name}.pdf&lt;/code&gt;.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Print</title>
+      <link>docs/docs/features/recipes/print/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/recipes/print/</guid>
+      <description>
+        
+        
+        &lt;p&gt;A recipe can be printed for your convenience and preference.&lt;/p&gt;
+&lt;p&gt;To print, you first must &lt;a href=&#34;docs/docs/features/recipes/view&#34; &gt;view a recipe&lt;/a&gt;. Then, click the printer icon to the right of the
+recipe&amp;rsquo;s title.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/print-icon.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;You will then be presented with the print dialog.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/print-dialog.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Integrations</title>
+      <link>docs/docs/features/integrations/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/integrations/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Recipya offers integrations with other recipe manager applications. You can access them from the &lt;strong&gt;Recipes&lt;/strong&gt; side tab
+in the settings.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/settings-integrations.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h2&gt;Compatibility&lt;span class=&#34;absolute -mt-20&#34; id=&#34;compatibility&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#compatibility&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Integration&lt;/th&gt;
+&lt;th&gt;Import&lt;/th&gt;
+&lt;th&gt;Export&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://www.mastercook.com&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;MasterCook&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;:heavy_check_mark:&lt;/td&gt;
+&lt;td&gt;:x:&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://apps.nextcloud.com/apps/cookbook&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Nextcloud Cookbook&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;:heavy_check_mark:&lt;/td&gt;
+&lt;td&gt;:x:&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;Nextcloud Cookbook&lt;span class=&#34;absolute -mt-20&#34; id=&#34;nextcloud-cookbook&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#nextcloud-cookbook&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/nextcloud/cookbook&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Nextcloud Cookbook&lt;/a&gt; is an app for &lt;a href=&#34;https://nextcloud.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Nextcloud&lt;/a&gt;.
+Follow these steps to import your recipes from a Nextcloud Cookbook instance:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Go to the &lt;strong&gt;Integrations&lt;/strong&gt; setting and select the &lt;strong&gt;Nextcloud&lt;/strong&gt; option.&lt;/li&gt;
+&lt;li&gt;Click the button adjacent to the menu of options.&lt;/li&gt;
+&lt;li&gt;In the dialog that appears, enter the URL and credentials of your Nextcloud instance.
+&lt;img src=&#34;docs/docs/img/features/settings-integrations-nextcloud.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/li&gt;
+&lt;li&gt;Click the &lt;strong&gt;Import&lt;/strong&gt; button.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Your recipes will be swiftly transferred from Nextcloud Cookbook to Recipya.&lt;/p&gt;
+&lt;h2&gt;MasterCook&lt;span class=&#34;absolute -mt-20&#34; id=&#34;mastercook&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#mastercook&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;You can import your MasterCook recipes from the import button on the
+&lt;a href=&#34;docs/docs/features/recipes/add#import&#34; &gt;add recipe page&lt;/a&gt;. You can either upload a single &lt;code&gt;.mxp&lt;/code&gt; file or a zip archive
+containing multiple &lt;code&gt;.mxp&lt;/code&gt; files.&lt;/p&gt;
+&lt;p&gt;This &lt;a href=&#34;https://www.grassrootsrecipes.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;website&lt;/a&gt; contains endless MasterCook recipe collections for you to try.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Wakelock</title>
+      <link>docs/docs/features/recipes/wakelock/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/recipes/wakelock/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Imagine you are cooking a recipe from a mobile device. You gather all the ingredients, and you are ready to start,
+but your device goes to sleep. You unlock your device and start getting your hands dirty in the flour. Your device
+goes to sleep again. You clean your hands, unlock your phone, and continue the recipe. Your device goes to sleep
+once again. You are frustrated. This process continues over and over. Your device is dirty and so is your food.&lt;/p&gt;
+&lt;p&gt;You want the device not to sleep while you are cooking.&lt;/p&gt;
+&lt;p&gt;Recipya solves this problem by providing a browser wakelock when viewing a recipe, preventing the device from
+going to sleep.&lt;/p&gt;
+&lt;p&gt;:::note&lt;/p&gt;
+&lt;p&gt;The wakelock is turned on automatically when viewing a recipe.&lt;/p&gt;
+&lt;p&gt;:::&lt;/p&gt;
+&lt;p&gt;On supported browsers, you will notice a light bulb icon to the far left of a recipe&amp;rsquo;s title. When the light bulb
+is on, the wakelock is enabled and the screen will not sleep.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/wakelock-on.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;When turned off, the wakelock is disabled and the screen will eventually sleep.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/wakelock-off.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;:::caution&lt;/p&gt;
+&lt;p&gt;The wakelock feature is not supported on the following platforms:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Firefox&lt;/li&gt;
+&lt;li&gt;Firefox for Android&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;:::&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>docs/docs/development/workflow/add-endpoint/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/development/workflow/add-endpoint/</guid>
+      <description>
+        
+        
+        &lt;h1&gt;Add an Endpoint&lt;/h1&gt;&lt;p&gt;It is essential to grasp how the server works before bringing any modifications.
+Then, we will guide you through the process of incorporating an HTTP endpoint into the server.&lt;/p&gt;
+&lt;h2&gt;The Server&lt;span class=&#34;absolute -mt-20&#34; id=&#34;the-server&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#the-server&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Recipya&amp;rsquo;s server code is located within the &lt;code&gt;internal/server&lt;/code&gt; package. The main file
+is &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/internal/server/server.go&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;server.go&lt;/a&gt;. It exports a single with
+a receiver function and a corresponding struct.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Server&lt;/code&gt;: This struct holds the HTTP router, the repository, the email service and the files service. You can
+find the declaration of each service in the &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/internal/services/service.go&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;internal/services/service.go&lt;/a&gt;
+file.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Server.Run&lt;/code&gt;: Starts the web server.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;NewServer&lt;/code&gt;: Creates a server that is ready for use. It requires the services to be passed as arguments.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The HTTP router is initialized during the server&amp;rsquo;s creation. We use &lt;a href=&#34;https://github.com/go-chi/chi&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;chi&lt;/a&gt; due to
+its simplicity in organizing endpoints. Please read the &lt;code&gt;mountHandlers&lt;/code&gt; function to observe the router in action.&lt;/p&gt;
+&lt;h2&gt;Example&lt;span class=&#34;absolute -mt-20&#34; id=&#34;example&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#example&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Let&amp;rsquo;s walk through an example aimed at adding an endpoint that searches for recipes.&lt;/p&gt;
+&lt;h3&gt;Router&lt;span class=&#34;absolute -mt-20&#34; id=&#34;router&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#router&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The first step involves adding the endpoint to the router. A suitable endpoint is &lt;code&gt;GET /recipes/search?q=query&lt;/code&gt;. Open the
+&lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/internal/server/server.go&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;internal/server/server.go&lt;/a&gt; file and include the
+endpoint within the &lt;code&gt;/recipes&lt;/code&gt; route block. The handler should be named &lt;code&gt;recipesSearchHandler&lt;/code&gt;, following the
+&lt;code&gt;{resource}{LastWordEndpoint}{Handler}&lt;/code&gt; naming convention.&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Route&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/recipes&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;chi&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Router&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Use&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;s&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;mustBeLoggedInMiddleware&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Get&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/search&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;recipesSearchHandler&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;})&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+    &lt;button
+      class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
+      title=&#34;Copy code&#34;
+    &gt;
+      &lt;div class=&#34;group-[.copied]/copybtn:hidden copy-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;hidden group-[.copied]/copybtn:block success-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;With the route established, it is time to declare the handler. Since we are dealing with the &lt;code&gt;/recipes&lt;/code&gt; resource,
+add the handler to the &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/internal/server/handlers_recipes.go&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;handlers_recipes.go&lt;/a&gt;
+file.&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;s&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;Server&lt;/span&gt;) &lt;span style=&#34;color:#a6e22e&#34;&gt;recipesSearchHandler&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ResponseWriter&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Request&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	panic(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;TODO: To implement&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+    &lt;button
+      class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
+      title=&#34;Copy code&#34;
+    &gt;
+      &lt;div class=&#34;group-[.copied]/copybtn:hidden copy-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;hidden group-[.copied]/copybtn:block success-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;We are now ready to create tests for our route.&lt;/p&gt;
+&lt;h3&gt;Test&lt;span class=&#34;absolute -mt-20&#34; id=&#34;test&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#test&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Tests related to the server are written in the &lt;code&gt;handlers_{resource}_test.go&lt;/code&gt; files. The tests for our handlers are
+stored in the &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/internal/server/handlers_recipes_test.go&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;handlers_recipes_test.go&lt;/a&gt;
+file. The naming convention for test functions is &lt;code&gt;TestHandlers_{Resource}_{Endpoint}&lt;/code&gt;. Let&amp;rsquo;s write the foundation
+function of our tests.&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;TestHandlers_Recipes_AddManual&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;testing&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;T&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;srv&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;newServerTest&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;uri&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/recipes/search&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+    &lt;button
+      class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
+      title=&#34;Copy code&#34;
+    &gt;
+      &lt;div class=&#34;group-[.copied]/copybtn:hidden copy-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;hidden group-[.copied]/copybtn:block success-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The subsequent step involves writing the different tests that add value to the users.&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;TestHandlers_Recipes_AddManual&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;testing&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;T&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;srv&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;newServerTest&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;uri&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/recipes/search&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Run&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;must be logged in&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;testing&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;T&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#a6e22e&#34;&gt;assertMustBeLoggedIn&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;srv&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;MethodGet&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;uri&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    })
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Run&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;search fails&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;testing&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;T&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fail&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    })
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Run&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;user has no recipes&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;testing&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;T&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fail&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    })
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Run&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;user searches empty string&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;testing&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;T&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fail&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    })
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;testcases&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; []&lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#a6e22e&#34;&gt;name&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#a6e22e&#34;&gt;in&lt;/span&gt;   &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#a6e22e&#34;&gt;want&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;models&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Recipes&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	}{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        {&lt;span style=&#34;color:#a6e22e&#34;&gt;name&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;user searches empty string&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;in&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;want&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;},
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        {&lt;span style=&#34;color:#a6e22e&#34;&gt;name&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;user searches for lunch&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;in&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;lunch&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;want&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;},
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;_&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;tc&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;range&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;testcases&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Run&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;tc&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;name&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;testing&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;T&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#a6e22e&#34;&gt;rr&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sendHxRequestAsLoggedIn&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;srv&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;MethodGet&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;uri&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;?q=&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;tc&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;in&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;noHeader&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        })
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+    &lt;button
+      class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
+      title=&#34;Copy code&#34;
+    &gt;
+      &lt;div class=&#34;group-[.copied]/copybtn:hidden copy-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;hidden group-[.copied]/copybtn:block success-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The body of the tests is omitted for brevity. Run the tests to ensure that they fail.&lt;/p&gt;
+&lt;h3&gt;Handler&lt;span class=&#34;absolute -mt-20&#34; id=&#34;handler&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#handler&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The next step entails crafting the handler&amp;rsquo;s code. Return to the &lt;code&gt;handles_recipes.go&lt;/code&gt; file, and implement
+the &lt;code&gt;recipesSearchHandler&lt;/code&gt; function that will make the tests go green. For instance, the implementation could resemble
+the following.&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;s&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;Server&lt;/span&gt;) &lt;span style=&#34;color:#a6e22e&#34;&gt;recipesSearchHandler&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ResponseWriter&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Request&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;userID&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;getUserID&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;query&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;chi&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;URLParam&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;q&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;recipes&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;s&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Repository&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;SearchRecipes&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;query&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;userID&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#a6e22e&#34;&gt;w&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Header&lt;/span&gt;().&lt;span style=&#34;color:#a6e22e&#34;&gt;Set&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;HX-Trigger&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;makeToast&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Failed to search recipes.&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;errorToast&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#a6e22e&#34;&gt;w&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;WriteHeader&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;StatusInternalServerError&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;templates&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;RenderComponent&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;w&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;recipes&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;search-recipes&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;templates&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Data&lt;/span&gt;{&lt;span style=&#34;color:#a6e22e&#34;&gt;Recipes&lt;/span&gt;: &lt;span style=&#34;color:#a6e22e&#34;&gt;recipes&lt;/span&gt;})
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+    &lt;button
+      class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
+      title=&#34;Copy code&#34;
+    &gt;
+      &lt;div class=&#34;group-[.copied]/copybtn:hidden copy-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;hidden group-[.copied]/copybtn:block success-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;This code gets the logged-in user&amp;rsquo;s ID and the search query, then passes them to the &lt;code&gt;SearchRecipes&lt;/code&gt; function of the
+repository. If this function encounters an error, an HTMX toast is sent to the user, accompanied by an HTTP 500
+status code. Otherwise, the HTML containing the recipes is sent.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;templates.RenderComponent&lt;/code&gt; function displays a template from the &lt;a href=&#34;https://github.com/reaper47/recipya/tree/main/web/templates/components&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;web/templates/components&lt;/a&gt;
+directory. Its second parameter is the name of one of the files within that directory, excluding the extension.
+The third parameter is the name of the template within a file in that folder. Lastly, the fourth parameter is
+a &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/internal/templates/data.go&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;struct&lt;/a&gt; containing data for the
+GoHTML template.&lt;/p&gt;
+&lt;h3&gt;Repository&lt;span class=&#34;absolute -mt-20&#34; id=&#34;repository&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#repository&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The final piece of the puzzle involves writing the &lt;code&gt;s.Repository.SearchRecipes&lt;/code&gt; function. The repository is an interface
+that declares functions for interacting with a database. Currently, Recipya supports &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/internal/services/sqlite_service.go&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;sqlite&lt;/a&gt;
+only. To support other databases, we need define a struct to satisfy the &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/internal/services/service.go&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;RepositoryService&lt;/a&gt;
+interface.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s declare the function within the &lt;code&gt;RepositoryService&lt;/code&gt; interface. The functions are declared alphabetically.&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;RepositoryService&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// AddAuthToken adds an authentication token to the database.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;AddAuthToken&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;selector&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;validator&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;userID&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int64&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;error&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// AddRecipe adds a recipe to the user&amp;#39;s collection.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;AddRecipe&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;models&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Recipe&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;userID&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int64&lt;/span&gt;) (&lt;span style=&#34;color:#66d9ef&#34;&gt;int64&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;error&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#75715e&#34;&gt;// SearchRecipes gets the user&amp;#39;s recipes that include the search query.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;SearchRecipes&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;query&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;userID&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int64&lt;/span&gt;) (&lt;span style=&#34;color:#a6e22e&#34;&gt;models&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Recipes&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;error&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// VerifyLogin checks whether the user provided correct login credentials.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// If yes, their user ID will be returned. Otherwise, -1 is returned.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;VerifyLogin&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;email&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;password&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;int64&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// Websites gets the list of supported websites from which to extract the recipe.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;Websites&lt;/span&gt;() &lt;span style=&#34;color:#a6e22e&#34;&gt;models&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Websites&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+    &lt;button
+      class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
+      title=&#34;Copy code&#34;
+    &gt;
+      &lt;div class=&#34;group-[.copied]/copybtn:hidden copy-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;hidden group-[.copied]/copybtn:block success-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Subsequently, let&amp;rsquo;s implement the function within the &lt;code&gt;sqlite_service.go&lt;/code&gt; file.&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;s&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;SQLiteService&lt;/span&gt;) &lt;span style=&#34;color:#a6e22e&#34;&gt;SearchRecipes&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;query&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;userID&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int64&lt;/span&gt;) (&lt;span style=&#34;color:#a6e22e&#34;&gt;models&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Recipes&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;error&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#75715e&#34;&gt;// s.Mutex.Lock()
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#75715e&#34;&gt;// defer s.Mutex.Unlock()
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;ctx&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;cancel&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;context&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;WithTimeout&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;context&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Background&lt;/span&gt;(), &lt;span style=&#34;color:#a6e22e&#34;&gt;shortCtxTimeout&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;defer&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cancel&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;rows&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;s&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;DB&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;QueryContext&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;ctx&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;statements&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;SelectSearchRecipes&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;query&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;userID&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;defer&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;rows&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Close&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;recipes&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;models&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Recipes&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;rows&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Next&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;// code to scan a recipe
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;		&lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#a6e22e&#34;&gt;recipes&lt;/span&gt; = append(&lt;span style=&#34;color:#a6e22e&#34;&gt;recipes&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;recipes&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+    &lt;button
+      class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
+      title=&#34;Copy code&#34;
+    &gt;
+      &lt;div class=&#34;group-[.copied]/copybtn:hidden copy-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;hidden group-[.copied]/copybtn:block success-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Remember, invoking &lt;code&gt;s.Mutex.Lock()&lt;/code&gt; and &lt;code&gt;defer s.Mutex.Unlock()&lt;/code&gt; is necessary when inserting, updating, or deleting
+database entries. However, in this scenario, we&amp;rsquo;re merely fetching data, rendering the mutex unnecessary.&lt;/p&gt;
+&lt;p&gt;SQL statements are organized by action within the &lt;a href=&#34;https://github.com/reaper47/recipya/tree/main/internal/services/statements&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;internal/services/statements&lt;/a&gt;
+directory. The naming convention is &lt;code&gt;{Action}{Resource}&lt;/code&gt;. In our case, a &lt;code&gt;SELECT&lt;/code&gt; statement for fetching recipes is termed
+&lt;code&gt;SelectSearchRecipes&lt;/code&gt; and would reside in the
+&lt;a href=&#34;https://github.com/reaper47/recipya/tree/main/internal/services/statements&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;select.go&lt;/a&gt; file.&lt;/p&gt;
+&lt;p&gt;Every statement is a &lt;code&gt;const&lt;/code&gt; whose value is the SQLite statement itself. If Recipya ever supports other databases, we
+shall find a way to organize the statements per database type.&lt;/p&gt;
+&lt;p&gt;You can call it a day and open a PR once you wrote your SQL and the tests pass.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>docs/docs/development/workflow/import-website/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/development/workflow/import-website/</guid>
+      <description>
+        
+        
+        &lt;h1&gt;Support a Website&lt;/h1&gt;&lt;p&gt;You to understand how the scraper works to support a website.
+Then, we will guide you through adding a website to the supported list with an example.&lt;/p&gt;
+&lt;h2&gt;The Scraper&lt;span class=&#34;absolute -mt-20&#34; id=&#34;the-scraper&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#the-scraper&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Recipya developed its own recipe scraper, which resides in the &lt;a href=&#34;https://github.com/reaper47/recipya/tree/main/internal/scraper&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;internal/scraper&lt;/a&gt;
+package. This scraper uses &lt;a href=&#34;https://github.com/PuerkitoBio/goquery&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;goquery&lt;/a&gt; to extract information from web pages.
+Its main file is &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/internal/scraper/scraper.go&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;scraper.go&lt;/a&gt;. You will find a single exposed function named &lt;code&gt;Scrape&lt;/code&gt;, which
+takes a URL and a &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/internal/services/service.go#L102&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;files service&lt;/a&gt; as parameters. The files services is an interface with functions to
+manipulate files in the OS. The use of an interface simplifies the process of mocking file operations during testing.&lt;/p&gt;
+&lt;p&gt;You can read how the function works, but essentially it involves fetching the web page using Go&amp;rsquo;s HTTP client,
+creating a &lt;code&gt;goquery&lt;/code&gt; document from the response, extracting into a
+&lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/internal/models/schema-recipe.go&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;models.RecipeSchema&lt;/a&gt; struct, uploading
+the image to the server, and finally returning the recipe schema model. The image is compressed and resized.
+Whether compression is too high remains is subject to evaluation.&lt;/p&gt;
+&lt;h2&gt;Workflow&lt;span class=&#34;absolute -mt-20&#34; id=&#34;workflow&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#workflow&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Let&amp;rsquo;s assume a user requests &lt;a href=&#34;https://www.example.com/recipes/declicious-bbq-steak&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.example.com/recipes/declicious-bbq-steak&lt;/a&gt; to be supported.
+This section will help you understand how to add this website to the list of supported sites.&lt;/p&gt;
+&lt;h3&gt;Database&lt;span class=&#34;absolute -mt-20&#34; id=&#34;database&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#database&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Initially, a SQLite migration file needs to be created using Goose to insert the desired website into the
+websites table. To do so, open a terminal and navigate to &lt;code&gt;internal/services/migrations&lt;/code&gt;. Then, generate
+the migration file.&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;goose create support-website sql&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+    &lt;button
+      class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
+      title=&#34;Copy code&#34;
+    &gt;
+      &lt;div class=&#34;group-[.copied]/copybtn:hidden copy-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;hidden group-[.copied]/copybtn:block success-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The &lt;code&gt;support-website&lt;/code&gt; is the name of the migration. It can be anything else. The command will create a new file of the
+form &lt;code&gt;timestamp_name-of-migration.sql&lt;/code&gt;. It will be embedded into the executable on build and will be executed when the
+user starts the server.&lt;/p&gt;
+&lt;p&gt;The final step involves inserting the website into the database:&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sql&#34; data-lang=&#34;sql&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;-- +goose Up
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;INSERT&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;INTO&lt;/span&gt; websites (&lt;span style=&#34;color:#66d9ef&#34;&gt;host&lt;/span&gt;, url) 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;VALUES&lt;/span&gt; (&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;example.com&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;https://www.example.com/recipes/declicious-bbq-steak&amp;#39;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;-- +goose Down
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;DELETE&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;FROM&lt;/span&gt; websites
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;WHERE&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;host&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;example.com&amp;#39;&lt;/span&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;AND&lt;/span&gt; url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;https://www.example.com/recipes/declicious-bbq-steak&amp;#39;&lt;/span&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+    &lt;button
+      class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
+      title=&#34;Copy code&#34;
+    &gt;
+      &lt;div class=&#34;group-[.copied]/copybtn:hidden copy-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;hidden group-[.copied]/copybtn:block success-icon pointer-events-none h-4 w-4&#34;&gt;&lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The host field could eventually be removed because we can determine it from Go using
+the &lt;a href=&#34;https://pkg.go.dev/net/url#URL.Hostname&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;net/url&lt;/a&gt; package.&lt;/p&gt;
+&lt;h3&gt;Test&lt;span class=&#34;absolute -mt-20&#34; id=&#34;test&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#test&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Setting up a test involves accessing the website and creating a test case within &lt;code&gt;internal/scraper/scraper_{letter}_test.go&lt;/code&gt;.
+In our case, open &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/internal/scraper/scraper_E_test.go&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;internal/scraper/scraper_E_test.go&lt;/a&gt;
+because &lt;code&gt;example&lt;/code&gt; begins with &lt;code&gt;E&lt;/code&gt;. The tests within the &lt;code&gt;testcases&lt;/code&gt; slice are listed alphabetically so insert your &lt;code&gt;name: &amp;quot;example.com&amp;quot;&lt;/code&gt;
+test where appropriate. You can use an existing struct as a template.&lt;/p&gt;
+&lt;p&gt;Next, alternate between the recipe web page and the test to modify the &lt;code&gt;models.RecipeSchema&lt;/code&gt; of
+the &lt;code&gt;want&lt;/code&gt; field. You can proceed to writing code once the setup is done.&lt;/p&gt;
+&lt;p&gt;Executing the test by clicking the green play button to the left it should confirm its failure.
+If you notice the test returns a &lt;code&gt;models.RecipeSchema&lt;/code&gt; that looks valid, then replace the empty schema
+of the test with the one from the output and make the test go green. Otherwise, continue to the next section.&lt;/p&gt;
+&lt;h3&gt;The Go Code&lt;span class=&#34;absolute -mt-20&#34; id=&#34;the-go-code&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#the-go-code&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The initial step is to include the &lt;code&gt;example.com&lt;/code&gt; case within the list of supported websites. To achieve this, open
+&lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/internal/scraper/websites.go&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;internal/scraper/websites.go&lt;/a&gt;. This file contains the &lt;code&gt;scrapeWebsite&lt;/code&gt; function, which executes the relevant
+scrape function for the parsed HTML web page. Your task involves adding the host within the switch-case block.
+Therefore, add &lt;code&gt;case &amp;quot;example&amp;quot;&lt;/code&gt; to the switch-case block
+of &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/internal/scraper/websites.go#L90&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;case &amp;rsquo;e&amp;rsquo;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Following this, the body of the case must be added by calling a custom HTML parser function.
+Its naming convention is &lt;code&gt;scrape{Host}&lt;/code&gt;. In your case, it would be &lt;code&gt;return scrapeExample(doc)&lt;/code&gt;.
+Then, create a new file named &lt;code&gt;example.go&lt;/code&gt; under &lt;code&gt;internal/scraper&lt;/code&gt; and add the
+&lt;code&gt;func scrapeKuchniadomova(root *goquery.Document) (models.RecipeSchema, error)&lt;/code&gt; function. Please check any
+custom scraper file to understand how to write your own.&lt;/p&gt;
+&lt;p&gt;Congratulations! That is all you need to know to support a website. Feel free to open a PR once your scrape function is
+written and the tests pass.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

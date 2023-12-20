@@ -1,0 +1,49 @@
+.close-button {
+    color: lightgray;
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.close-button:hover {
+    color: darkgray;
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+#fullscreen-loader.htmx-request {
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    left: 0;
+    opacity: 1;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 9999;
+}
+
+#fullscreen-loader.htmx-request::after {
+    animation: spin 1s ease-in-out infinite;
+    border: 5px solid #ccc;
+    border-radius: 50%;
+    border-top-color: #333;
+    content: "";
+    height: 50px;
+    width: 50px;
+}
+
+#fullscreen-loader:not(.htmx-indicator) {
+    opacity: 0;
+    transition: opacity 200ms ease-in;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

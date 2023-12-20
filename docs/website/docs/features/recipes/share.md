@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+weight: 6
 ---
 
 # Share

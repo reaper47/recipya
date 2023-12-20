@@ -1,0 +1,148 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Recipya – Cookbooks</title>
+    <link>docs/docs/features/cookbooks/</link>
+    <description>Recent content in Cookbooks on Recipya</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    
+	  <atom:link href="docs/docs/features/cookbooks/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>Create</title>
+      <link>docs/docs/features/cookbooks/add/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/cookbooks/add/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Click the &lt;em&gt;Add Cookbook&lt;/em&gt; button from the cookbook feature tab to create a cookbook.
+You will be prompted for its title.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-add.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The cookbook will then be displayed to you immediately. The following image shows two created cookbooks.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbooks-view.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h2&gt;Adding Recipes&lt;span class=&#34;absolute -mt-20&#34; id=&#34;adding-recipes&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#adding-recipes&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Your cookbook is empty after creation. You can add recipes by searching for them in the search box.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-no-recipes.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;After typing, press &lt;strong&gt;Enter&lt;/strong&gt; or click the magnifying glass to submit your search request. The results will
+appear below the search box. Queries are case-insensitive.&lt;/p&gt;
+&lt;p&gt;Finally, click the &lt;em&gt;Add&lt;/em&gt; button on the recipes you want to the add to the cookbook.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-search-results-add.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-recipe-added.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Edit</title>
+      <link>docs/docs/features/cookbooks/edit/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/cookbooks/edit/</guid>
+      <description>
+        
+        
+        &lt;p&gt;You can update the image of a cookbook as well as reorder the recipes.&lt;/p&gt;
+&lt;h2&gt;Update the Image&lt;span class=&#34;absolute -mt-20&#34; id=&#34;update-the-image&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#update-the-image&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Click the image of a cookbook to update it. You will be then prompted with the
+operating system&amp;rsquo;s file picker to select and image.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbooks-update-image.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The cookbook&amp;rsquo;s image will be updated immediately after selecting the file.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbooks-updated-image.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h2&gt;Reorder the Recipes&lt;span class=&#34;absolute -mt-20&#34; id=&#34;reorder-the-recipes&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#reorder-the-recipes&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;You can reorder the recipes in a cookbook. This is useful when you want its recipes to flow
+in a certain way. For example, you might want all appetizers to appear first, then the lunches, and
+finally the dinners.&lt;/p&gt;
+&lt;p&gt;To reorder them, first open a cookbook. In the following image, we want to switch the position of the
+first recipe with that of the last.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-recipes-before-reorder.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Then, drag the page number of the recipe you wish to update. Once at the desired position,
+release the mouse. The pages will be immediately updated.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-recipes-after-reorder.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h2&gt;Switch View Mode&lt;span class=&#34;absolute -mt-20&#34; id=&#34;switch-view-mode&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#switch-view-mode&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The cookbooks can be displayed in the following modes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Grid&lt;/li&gt;
+&lt;li&gt;List&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To display them as a grid, click the grid icon under your avatar.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbooks-grid.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbooks-grid-mode.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;To display them as a list, click the list icon.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbooks-list.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Delete</title>
+      <link>docs/docs/features/cookbooks/delete/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/cookbooks/delete/</guid>
+      <description>
+        
+        
+        &lt;p&gt;To delete a cookbook from your collection, first click the three vertical dots at the top right of
+the cookbook you wish to delete. Then, click the &lt;strong&gt;Delete&lt;/strong&gt; submenu item. You will be prompted whether
+you want to proceed before deletion.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-delete.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;:::danger&lt;/p&gt;
+&lt;p&gt;Deleting a cookbook is irreversible. It will be gone forever.
+However, its recipes will be left untouched.&lt;/p&gt;
+&lt;p&gt;:::&lt;/p&gt;
+&lt;p&gt;The cookbook will then be deleted from your collection and the changes will be reflected immediately.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-delete-aftermath.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Download</title>
+      <link>docs/docs/features/cookbooks/download/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/cookbooks/download/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Any of your cookbooks can be downloaded as a PDF file for physical, offline, or archival purposes.
+Click &lt;a href=&#34;https://sea.musicavis.ca/f/9f87258f6d5f485692d1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;here&lt;/a&gt; to view a sample.&lt;/p&gt;
+&lt;p&gt;To download a cookbook, first click the three vertical dots at the top right of
+the cookbook you wish to download. Then, click the &lt;strong&gt;Download&lt;/strong&gt; submenu item. The file will be
+downloaded immediately.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-download.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Share</title>
+      <link>docs/docs/features/cookbooks/share/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>docs/docs/features/cookbooks/share/</guid>
+      <description>
+        
+        
+        &lt;p&gt;You can share a cookbook to your family and friends. To do so, you must first generate the cookbook&amp;rsquo;s share
+link by clicking the &lt;strong&gt;Share&lt;/strong&gt; submenu option from the three dots icon&amp;rsquo;s menu.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-share.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The link will then be displayed to you, ready to be sent to your family and friends.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-share-link.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Anyone who opens this link will be presented with the recipes you added to the cookbook you shared.
+Any of its recipes can then be viewed without the need to log in.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;docs/docs/img/features/cookbooks/cookbook-share-anonymous.png&#34; alt=&#34;img alt&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>
