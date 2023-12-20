@@ -2,40 +2,40 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>docs/fr/categories/</loc>
+    <loc>https://recipes.musicavis.ca/docs/fr/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="docs/categories/"
+                href="https://recipes.musicavis.ca/docs/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="docs/fr/categories/"
+                href="https://recipes.musicavis.ca/docs/fr/categories/"
                 />
   </url><url>
-    <loc>docs/fr/</loc>
+    <loc>https://recipes.musicavis.ca/docs/fr/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="docs/"
+                href="https://recipes.musicavis.ca/docs/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="docs/fr/"
+                href="https://recipes.musicavis.ca/docs/fr/"
                 />
   </url><url>
-    <loc>docs/fr/tags/</loc>
+    <loc>https://recipes.musicavis.ca/docs/fr/tags/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="docs/tags/"
+                href="https://recipes.musicavis.ca/docs/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="docs/fr/tags/"
+                href="https://recipes.musicavis.ca/docs/fr/tags/"
                 />
   </url>
 </urlset>

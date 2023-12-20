@@ -1,28 +1,29 @@
 ---
 title: Create
 weight: 1
+prev: /docs/features/cookbooks
 ---
 
 Click the *Add Cookbook* button from the cookbook feature tab to create a cookbook. 
 You will be prompted for its title. 
 
-![img alt](/img/features/cookbooks/cookbook-add.png)
+![](cookbook-add.webp)
 
 The cookbook will then be displayed to you immediately. The following image shows two created cookbooks.
 
-![img alt](/img/features/cookbooks/cookbooks-view.png)
+![](cookbooks-view.webp)
 
 ## Adding Recipes
 
 Your cookbook is empty after creation. You can add recipes by searching for them in the search box.
 
-![img alt](/img/features/cookbooks/cookbook-no-recipes.png)
+![](cookbook-no-recipes.webp)
 
 After typing, press **Enter** or click the magnifying glass to submit your search request. The results will
 appear below the search box. Queries are case-insensitive.
 
 Finally, click the *Add* button on the recipes you want to the add to the cookbook.
 
-![img alt](/img/features/cookbooks/cookbook-search-results-add.png)
+![](cookbook-search-results-add.webp)
 
-![img alt](/img/features/cookbooks/cookbook-recipe-added.png)
+![](cookbook-recipe-added.webp)

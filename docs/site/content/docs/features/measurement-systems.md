@@ -1,6 +1,7 @@
 ---
 title: "Measurement Systems"
 weight: 3
+prev: /docs/features/cookbooks/share
 ---
 
 Users usually adhere to one preferred measurement system, rarely feeling comfortable with multiple systems. 
@@ -13,20 +14,18 @@ All options related to this are found under the **Recipes** side tab in the sett
 To access your settings, click on your avatar in the top right corner of any page within Recipya.
 Then, select the **Settings** option.
 
-![img alt](/img/features/settings-access.png)
+![](settings-access.webp)
 
 ## Changing System
 
 You can change the measurement system to your preferred one by selecting a system from the dropdown next to 
 the **Measurement system** setting.
 
-:::info
-
+{{< callout type="info" >}}
 The default measurement system is imperial.
+{{< /callout >}}
 
-:::
-
-![img alt](/img/features/settings-measurement-system.png)
+![](settings-measurement-system.webp)
 
 All of your recipes in your collection will be converted to the measurement system you selected. 
 This process is automatic.
@@ -39,4 +38,4 @@ For instance, let's assume you prefer the metric measurement system, and you wan
 American website. The website employs the imperial system. On import, the recipe will be automatically converted to metric
 if the **Convert automatically** checkbox is checked. Otherwise, the recipe will remain in the imperial system.
 
-![img alt](/img/features/settings-convert-automatically.png)
+![](settings-convert-automatically.webp)

@@ -1,11 +1,12 @@
 ---
 title: Add
 weight: 1
+prev: /docs/features/recipes
 ---
 
 You can add a recipe by clicking the blue **Add Recipe** in the middle of the application bar.
 
-![img alt](/img/features/add-recipe.png)
+![](add-recipe.webp)
 
 ## Adding Recipes
 
@@ -16,14 +17,14 @@ You will be presented with four different ways of adding a recipe to your collec
 - [Website](#website)
 - [Import](#import)
 
-![img alt](/img/features/add-recipe-options.png)
+![](add-recipe-options.webp)
 
 ### Manual
 
 The simplest method of inputting a recipe involves completing a form that outlines your dish.
 Mandatory fields are indicated with an asterisk (*).
 
-![img alt](/img/features/add-recipe-manual.png)
+![](add-recipe-manual.webp)
 
 You might find these shortcuts useful if you are filling the form from your computer.
 
@@ -41,13 +42,11 @@ This option is useful for digitizing your and your family's paper recipes.
 
 To do so, click the *Upload* button and select an image in your computer.
 
-![img alt](/img/features/add-recipe-scan.png)
+![](add-recipe-scan.webp)
 
-:::warning
-
+{{< callout type="warning" >}}
 You must have an [Azure AI Vision](/docs/installation/system-requirements#azure-ai-vision) account to use this feature.
-
-:::
+{{< /callout >}}
 
 ### Website
 
@@ -62,7 +61,7 @@ To view all supported websites, please click on the <ins>supported</ins> word.
 You can scrape a website not in the supported list, but recipe extraction may fail. If it does, you can 
 request support for the website by clicking the button that appears.
 
-![img alt](/img/features/add-recipe-website.png)
+![](add-recipe-website.webp)
 
 ### Import
 
@@ -70,7 +69,7 @@ You can import recipes in the following formats:
 - `.json`: If they adhere to the [Recipe schema](https://schema.org/Recipe) standard
 - `.mxp`: Exported recipes from [MasterCook](https://www.mastercook.com)  
 
-![img alt](/img/features/add-recipe-import.png)
+![](add-recipe-import.webp)
 
 You can upload either a single file or a zip archive containing multiple recipes.
 The recipes in a zip file may be organized by folder. Each folder may contain the `.json` recipe file and an image 

@@ -1,19 +1,20 @@
 ---
 title: Integrations
 weight: 8
+next: /docs/installation
 ---
 
 Recipya offers integrations with other recipe manager applications. You can access them from the **Recipes** side tab
 in the settings.
 
-![img alt](/img/features/settings-integrations.png)
+![](settings-integrations.webp)
 
 ## Compatibility
 
-| Integration                                                    | Import             | Export |
-|----------------------------------------------------------------|--------------------|--------|
-| [MasterCook](https://www.mastercook.com)                       | :heavy_check_mark: | :x:    |
-| [Nextcloud Cookbook](https://apps.nextcloud.com/apps/cookbook) | :heavy_check_mark: | :x:    |
+| Integration                                                    |         Import         |       Export       |
+|----------------------------------------------------------------|:----------------------:|:------------------:|
+| [MasterCook](https://www.mastercook.com)                       |  {{< icon "check" >}}  |  {{< icon "x" >}}  |
+| [Nextcloud Cookbook](https://apps.nextcloud.com/apps/cookbook) |  {{< icon "check" >}}  |  {{< icon "x" >}}  |
 
 ## Nextcloud Cookbook
 
@@ -23,7 +24,7 @@ Follow these steps to import your recipes from a Nextcloud Cookbook instance:
 1. Go to the **Integrations** setting and select the **Nextcloud** option.
 2. Click the button adjacent to the menu of options.
 3. In the dialog that appears, enter the URL and credentials of your Nextcloud instance.
-   ![img alt](/img/features/settings-integrations-nextcloud.png)
+   ![](settings-integrations-nextcloud.webp)
 4. Click the **Import** button.
 
 Your recipes will be swiftly transferred from Nextcloud Cookbook to Recipya.

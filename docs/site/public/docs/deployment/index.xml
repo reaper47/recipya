@@ -1,12 +1,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Recipya – Deployment</title>
-    <link>docs/docs/deployment/</link>
+    <link>https://recipes.musicavis.ca/docs/docs/deployment/</link>
     <description>Recent content in Deployment on Recipya</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     
-	  <atom:link href="docs/docs/deployment/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="https://recipes.musicavis.ca/docs/docs/deployment/index.xml" rel="self" type="application/rss+xml" />
     
     
       
@@ -15,23 +15,23 @@
     
     
     <item>
-      <title></title>
-      <link>docs/docs/deployment/local-network/</link>
+      <title>Local Network</title>
+      <link>https://recipes.musicavis.ca/docs/docs/deployment/local-network/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>docs/docs/deployment/local-network/</guid>
+      <guid>https://recipes.musicavis.ca/docs/docs/deployment/local-network/</guid>
       <description>
         
         
-        &lt;h1&gt;Local Network&lt;/h1&gt;&lt;p&gt;The project can be self-hosted network-wide over your local network for access from devices other than the computer
+        &lt;p&gt;The project can be self-hosted network-wide over your local network for access from devices other than the computer
 you installed the application on.&lt;/p&gt;
 &lt;h2&gt;Docker&lt;span class=&#34;absolute -mt-20&#34; id=&#34;docker&#34;&gt;&lt;/span&gt;
-    &lt;a href=&#34;#docker&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After &lt;a href=&#34;docs/docs/installation/docker&#34; &gt;installing the Docker&lt;/a&gt; image, you can access
-the site network wide via at http://[host computer IP]:&lt;a href=&#34;docs/docs/installation/config-file&#34; &gt;[port]&lt;/a&gt;.&lt;/p&gt;
+    &lt;a href=&#34;#docker&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/installation/docker&#34; &gt;installing the Docker&lt;/a&gt; image, you can access
+the site network wide via at http://[host computer IP]:&lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/installation/config-file&#34; &gt;[port]&lt;/a&gt;.&lt;/p&gt;
 &lt;h2&gt;Nightly Build&lt;span class=&#34;absolute -mt-20&#34; id=&#34;nightly-build&#34;&gt;&lt;/span&gt;
     &lt;a href=&#34;#nightly-build&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Linux&lt;span class=&#34;absolute -mt-20&#34; id=&#34;linux&#34;&gt;&lt;/span&gt;
     &lt;a href=&#34;#linux&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Create a service to run the app automatically on boot.&lt;/p&gt;
-&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo nano /etc/systemd/system/recipya.service &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo nano /etc/systemd/system/recipya.service &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
     &lt;button
       class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
       title=&#34;Copy code&#34;
@@ -42,15 +42,15 @@ the site network wide via at http://[host computer IP]:&lt;a href=&#34;docs/docs
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;Copy the following content to the newly-created file.&lt;/p&gt;
-&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;Unit&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Description&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;Recipya Service
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Wants&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;network.target
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;Service&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ExecStart&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;/path/to/binary/recipya serve
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;Install&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;WantedBy&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;multi-user.target&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;Unit&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;Description&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;Recipya Service
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;Wants&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;network.target
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;Service&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;ExecStart&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/path/to/binary/recipya serve
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;Install&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;WantedBy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;multi-user.target&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
     &lt;button
       class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
       title=&#34;Copy code&#34;
@@ -61,8 +61,8 @@ the site network wide via at http://[host computer IP]:&lt;a href=&#34;docs/docs
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;Start the service on boot.&lt;/p&gt;
-&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl start recipya.service
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl enable recipya.service&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo systemctl start recipya.service
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo systemctl &lt;span class=&#34;nb&#34;&gt;enable&lt;/span&gt; recipya.service&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
     &lt;button
       class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
       title=&#34;Copy code&#34;
@@ -72,7 +72,7 @@ the site network wide via at http://[host computer IP]:&lt;a href=&#34;docs/docs
     &lt;/button&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;You can now access the application on your local network at http://[host computer IP]:&lt;a href=&#34;docs/docs/installation/config-file&#34; &gt;[port]&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;You can now access the application on your local network at http://[host computer IP]:&lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/installation/config-file&#34; &gt;[port]&lt;/a&gt;.&lt;/p&gt;
 &lt;h3&gt;Windows&lt;span class=&#34;absolute -mt-20&#34; id=&#34;windows&#34;&gt;&lt;/span&gt;
     &lt;a href=&#34;#windows&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The feasibility on Windows remains to be explored.&lt;/p&gt;
 
@@ -80,15 +80,15 @@ the site network wide via at http://[host computer IP]:&lt;a href=&#34;docs/docs
     </item>
     
     <item>
-      <title></title>
-      <link>docs/docs/deployment/internet/</link>
+      <title>Web Hosting</title>
+      <link>https://recipes.musicavis.ca/docs/docs/deployment/internet/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>docs/docs/deployment/internet/</guid>
+      <guid>https://recipes.musicavis.ca/docs/docs/deployment/internet/</guid>
       <description>
         
         
-        &lt;h1&gt;Web Hosting&lt;/h1&gt;&lt;p&gt;This subsection will be written once I host Recipya somewhere.&lt;/p&gt;
+        &lt;p&gt;This subsection will be written once I host Recipya somewhere.&lt;/p&gt;
 
       </description>
     </item>

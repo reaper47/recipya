@@ -1,12 +1,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Recipya – Installation</title>
-    <link>docs/docs/installation/</link>
+    <link>https://recipes.musicavis.ca/docs/docs/installation/</link>
     <description>Recent content in Installation on Recipya</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     
-	  <atom:link href="docs/docs/installation/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="https://recipes.musicavis.ca/docs/docs/installation/index.xml" rel="self" type="application/rss+xml" />
     
     
       
@@ -15,15 +15,15 @@
     
     
     <item>
-      <title></title>
-      <link>docs/docs/installation/system-requirements/</link>
+      <title>Prerequisites</title>
+      <link>https://recipes.musicavis.ca/docs/docs/installation/system-requirements/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>docs/docs/installation/system-requirements/</guid>
+      <guid>https://recipes.musicavis.ca/docs/docs/installation/system-requirements/</guid>
       <description>
         
         
-        &lt;h1&gt;Prerequisites&lt;/h1&gt;&lt;h2&gt;System Requirements&lt;span class=&#34;absolute -mt-20&#34; id=&#34;system-requirements&#34;&gt;&lt;/span&gt;
+        &lt;h2&gt;System Requirements&lt;span class=&#34;absolute -mt-20&#34; id=&#34;system-requirements&#34;&gt;&lt;/span&gt;
     &lt;a href=&#34;#system-requirements&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The following table lists the supported platforms and devices.&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -107,7 +107,7 @@ innovative computer vision capabilities. It gives apps the ability to analyze im
 with prebuilt image tagging, text extraction with optical character recognition (OCR), and responsible facial
 recognition. Microsoft offers a &lt;a href=&#34;https://azure.microsoft.com/en-us/pricing/details/cognitive-services/computer-vision/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;free plan&lt;/a&gt;
 that allows you to perform 5000 transactions per month.&lt;/p&gt;
-&lt;p&gt;Within Recipya, this service is used to &lt;a href=&#34;docs/docs/features/recipes/add#scan&#34; &gt;digitize recipes&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Within Recipya, this service is used to &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/features/recipes/add#scan&#34; &gt;digitize recipes&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;If you do not plan on digitizing paper recipes, then leave the &lt;code&gt;integrations.azureComputerVision.resourceKey&lt;/code&gt; and
 &lt;code&gt;integrations.azureComputerVision.visionEndpoint&lt;/code&gt; fields in the &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/deploy/config.example.json&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;configuration file&lt;/a&gt;
 empty. This feature will then be disabled.&lt;/p&gt;
@@ -116,15 +116,15 @@ empty. This feature will then be disabled.&lt;/p&gt;
     </item>
     
     <item>
-      <title></title>
-      <link>docs/docs/installation/config-file/</link>
+      <title>Configuration File</title>
+      <link>https://recipes.musicavis.ca/docs/docs/installation/config-file/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>docs/docs/installation/config-file/</guid>
+      <guid>https://recipes.musicavis.ca/docs/docs/installation/config-file/</guid>
       <description>
         
         
-        &lt;h1&gt;Configuration File&lt;/h1&gt;&lt;p&gt;The &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/deploy/config.example.json&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;configuration file&lt;/a&gt;
+        &lt;p&gt;The &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/deploy/config.example.json&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;configuration file&lt;/a&gt;
 sets important variables for the application. Let&amp;rsquo;s go over each of them.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;email&lt;/strong&gt;
@@ -145,7 +145,8 @@ sets important variables for the application. Let&amp;rsquo;s go over each of th
 &lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;server&lt;/strong&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;isProduction&lt;/strong&gt;: Whether the app is in production. Its value is either &lt;strong&gt;true&lt;/strong&gt; or &lt;strong&gt;false&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;isDemo&lt;/strong&gt;: Whether the app is a demo version. Its value can be either &lt;em&gt;true&lt;/em&gt; or &lt;em&gt;false&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;isProduction&lt;/strong&gt;: Whether the app is in production. Its value can be either &lt;em&gt;true&lt;/em&gt; or &lt;em&gt;false&lt;/em&gt;.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;port&lt;/strong&gt;: The port the app will be served through if localhost.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;url&lt;/strong&gt;: The website the app is served on. This URL will serve as the base link in the emails.&lt;/li&gt;
 &lt;/ul&gt;
@@ -156,21 +157,21 @@ sets important variables for the application. Let&amp;rsquo;s go over each of th
     </item>
     
     <item>
-      <title></title>
-      <link>docs/docs/installation/docker/</link>
+      <title>Docker</title>
+      <link>https://recipes.musicavis.ca/docs/docs/installation/docker/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>docs/docs/installation/docker/</guid>
+      <guid>https://recipes.musicavis.ca/docs/docs/installation/docker/</guid>
       <description>
         
         
-        &lt;h1&gt;Docker&lt;/h1&gt;&lt;p&gt;A Docker image named &lt;a href=&#34;https://hub.docker.com/layers/reaper99/recipya/nightly/images/sha256-b2238a11a53982953df5bbcfd7796a19fa382abf75d316b62fa05ac1c867332c?context=repo&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;reaper99/recipya&lt;/a&gt;
+        &lt;p&gt;A Docker image named &lt;a href=&#34;https://hub.docker.com/layers/reaper99/recipya/nightly/images/sha256-b2238a11a53982953df5bbcfd7796a19fa382abf75d316b62fa05ac1c867332c?context=repo&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;reaper99/recipya&lt;/a&gt;
 is produced nightly.&lt;/p&gt;
 &lt;p&gt;You can either install the application using &lt;a href=&#34;https://www.docker.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Docker&lt;/a&gt; or
 &lt;a href=&#34;https://docs.docker.com/compose/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Docker Compose&lt;/a&gt;.&lt;/p&gt;
 &lt;h2&gt;Using Docker&lt;span class=&#34;absolute -mt-20&#34; id=&#34;using-docker&#34;&gt;&lt;/span&gt;
     &lt;a href=&#34;#using-docker&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;You first have to fetch it.&lt;/p&gt;
-&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker pull reaper99/recipya:nightly&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker pull reaper99/recipya:nightly&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
     &lt;button
       class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
       title=&#34;Copy code&#34;
@@ -180,8 +181,8 @@ is produced nightly.&lt;/p&gt;
     &lt;/button&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;Then, run the image. You must pass your &lt;a href=&#34;docs/docs/installation/config-file&#34; &gt;config.json&lt;/a&gt; file to the container.&lt;/p&gt;
-&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker run -v path/to/config.json:/app/config.json -p &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;host port&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;:&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;port specified in config.json&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; -d reaper99/recipya:nightly reaper99/recipya:nightly&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+&lt;p&gt;Then, run the image. You must pass your &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/installation/config-file&#34; &gt;config.json&lt;/a&gt; file to the container.&lt;/p&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker run -v path/to/config.json:/app/config.json -p &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;host port&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;:&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;port specified in config.json&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; -d reaper99/recipya:nightly reaper99/recipya:nightly&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
     &lt;button
       class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
       title=&#34;Copy code&#34;
@@ -193,9 +194,9 @@ is produced nightly.&lt;/p&gt;
 &lt;/div&gt;
 &lt;h2&gt;Using Docker Compose&lt;span class=&#34;absolute -mt-20&#34; id=&#34;using-docker-compose&#34;&gt;&lt;/span&gt;
     &lt;a href=&#34;#using-docker-compose&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;You can use Docker Compose to run the container. First, you need to modify the ports and the path to your local
-&lt;a href=&#34;docs/docs/installation/config-file&#34; &gt;config.json&lt;/a&gt; in the &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/deploy/compose.yaml&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;compose.yaml&lt;/a&gt;.
+&lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/installation/config-file&#34; &gt;config.json&lt;/a&gt; in the &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/deploy/compose.yaml&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;compose.yaml&lt;/a&gt;.
 Then, start the application.&lt;/p&gt;
-&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker-compose up -d&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker-compose up -d&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
     &lt;button
       class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
       title=&#34;Copy code&#34;
@@ -213,21 +214,21 @@ inbound Windows Defender Firewall rule.&lt;/p&gt;
     </item>
     
     <item>
-      <title></title>
-      <link>docs/docs/installation/nightly-build/</link>
+      <title>Nightly Build</title>
+      <link>https://recipes.musicavis.ca/docs/docs/installation/nightly-build/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>docs/docs/installation/nightly-build/</guid>
+      <guid>https://recipes.musicavis.ca/docs/docs/installation/nightly-build/</guid>
       <description>
         
         
-        &lt;h1&gt;Nightly Build&lt;/h1&gt;&lt;p&gt;A portable, standalone build is available on the &lt;a href=&#34;https://github.com/reaper47/recipya/releases/tag/nightly&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;releases page&lt;/a&gt;.
+        &lt;p&gt;A portable, standalone build is available on the &lt;a href=&#34;https://github.com/reaper47/recipya/releases/tag/nightly&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;releases page&lt;/a&gt;.
 It is updated nightly if the main branch has new commits.&lt;/p&gt;
 &lt;p&gt;First, download and extract the zip file compatible with your system.
-Please consult the &lt;a href=&#34;#supported-platforms&#34; &gt;supported platforms&lt;/a&gt; table if you are unsure which file to download.&lt;/p&gt;
+Please consult the &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/installation/system-requirements&#34; &gt;supported platforms&lt;/a&gt; table if you are unsure which file to download.&lt;/p&gt;
 &lt;p&gt;Then, start the server by opening a command prompt in the folder, and run the following command.
 The application will perform a one-time setup if not already done.&lt;/p&gt;
-&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./recipya-&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;os&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;-&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;architecture&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt; serve&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
+&lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;./recipya-&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;os&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;architecture&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; serve&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
     &lt;button
       class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
       title=&#34;Copy code&#34;
@@ -238,24 +239,51 @@ The application will perform a one-time setup if not already done.&lt;/p&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;You can now access the website at the address specified.&lt;/p&gt;
-&lt;p&gt;:::note&lt;/p&gt;
-&lt;p&gt;The program cannot be updated within the interface yet. If you wish to update the app, please download the nightly
-build and replace your existing &lt;code&gt;recipya&lt;/code&gt; executable with the one from the build zip.&lt;/p&gt;
-&lt;p&gt;:::&lt;/p&gt;
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;div class=&#34;overflow-x-auto mt-6 flex rounded-lg border py-2 ltr:pr-4 rtl:pl-4 contrast-more:border-current contrast-more:dark:border-current border-blue-200 bg-blue-100 text-blue-900 dark:border-blue-200/30 dark:bg-blue-900/30 dark:text-blue-200&#34;&gt;
+  &lt;div class=&#34;ltr:pl-3 ltr:pr-2 rtl:pr-3 rtl:pl-2&#34;&gt;&lt;div class=&#34;select-none text-xl&#34; style=&#34;font-family: &#39;Apple Color Emoji&#39;, &#39;Segoe UI Emoji&#39;, &#39;Segoe UI Symbol&#39;;&#34;&gt;
+        ℹ️
+      &lt;/div&gt;&lt;/div&gt;
+
+  &lt;div class=&#34;w-full min-w-0 leading-7&#34;&gt;
+    &lt;div class=&#34;mt-6 leading-7 first:mt-0&#34;&gt;
+      The program cannot be updated within the interface yet. If you wish to update the app, please download the nightly
+build and replace your existing &lt;code&gt;recipya&lt;/code&gt; executable with the one from the build zip.
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
 
       </description>
     </item>
     
     <item>
-      <title></title>
-      <link>docs/docs/installation/windows-users/</link>
+      <title>Windows Users</title>
+      <link>https://recipes.musicavis.ca/docs/docs/installation/windows-users/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>docs/docs/installation/windows-users/</guid>
+      <guid>https://recipes.musicavis.ca/docs/docs/installation/windows-users/</guid>
       <description>
         
         
-        &lt;h1&gt;Windows Users&lt;/h1&gt;&lt;p&gt;If you intend to access the website on other devices within your home network, please ensure that the program is permitted through the firewall. To verify:&lt;/p&gt;
+        &lt;p&gt;If you intend to access the website on other devices within your home network, please ensure that the program is permitted through the firewall. To verify:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;Open the &amp;ldquo;Firewall &amp;amp; network protection setting&amp;rdquo;&lt;/li&gt;
 &lt;li&gt;Click on &amp;ldquo;Allow an app through firewall&amp;rdquo;&lt;/li&gt;

@@ -11,30 +11,30 @@
 <link rel="apple-touch-icon" href="/docs/apple-touch-icon.png" sizes="180x180" />
 <link fetchpriority="low" href="/docs/site.webmanifest" rel="manifest" />
 
-  <title>Recipya</title>
-  <meta name="description" content="Add an EndpointIt is essential to grasp how the server works before bringing any modifications. Then, we will guide you through the process of incorporating an HTTP endpoint into the server.
+  <title>Add an Endpoint – Recipya</title>
+  <meta name="description" content="It is essential to grasp how the server works before bringing any modifications. Then, we will guide you through the process of incorporating an HTTP endpoint into the server.
 The ServerRecipya’s server code is located within the internal/server package. The main file is server.go. It exports a single with a receiver function and a corresponding struct.
 Server: This struct holds the HTTP router, the repository, the email service and the files service." />
 
   
 
-<meta property="og:title" content="" />
-<meta property="og:description" content="Add an EndpointIt is essential to grasp how the server works before bringing any modifications. Then, we will guide you through the process of incorporating an HTTP endpoint into the server.
+<meta property="og:title" content="Add an Endpoint" />
+<meta property="og:description" content="It is essential to grasp how the server works before bringing any modifications. Then, we will guide you through the process of incorporating an HTTP endpoint into the server.
 The ServerRecipya&rsquo;s server code is located within the internal/server package. The main file is server.go. It exports a single with a receiver function and a corresponding struct.
 Server: This struct holds the HTTP router, the repository, the email service and the files service." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="docs/docs/development/workflow/add-endpoint/" /><meta property="article:section" content="docs" />
+<meta property="og:url" content="https://recipes.musicavis.ca/docs/docs/development/workflow/add-endpoint/" /><meta property="article:section" content="docs" />
 
+<meta property="article:modified_time" content="2023-12-20T16:12:14+01:00" />
 
-
-  <meta itemprop="name" content="">
-<meta itemprop="description" content="Add an EndpointIt is essential to grasp how the server works before bringing any modifications. Then, we will guide you through the process of incorporating an HTTP endpoint into the server.
+  <meta itemprop="name" content="Add an Endpoint">
+<meta itemprop="description" content="It is essential to grasp how the server works before bringing any modifications. Then, we will guide you through the process of incorporating an HTTP endpoint into the server.
 The ServerRecipya&rsquo;s server code is located within the internal/server package. The main file is server.go. It exports a single with a receiver function and a corresponding struct.
 Server: This struct holds the HTTP router, the repository, the email service and the files service.">
-
-<meta itemprop="wordCount" content="948">
-<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content=""/>
-<meta name="twitter:description" content="Add an EndpointIt is essential to grasp how the server works before bringing any modifications. Then, we will guide you through the process of incorporating an HTTP endpoint into the server.
+<meta itemprop="dateModified" content="2023-12-20T16:12:14+01:00" />
+<meta itemprop="wordCount" content="958">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Add an Endpoint"/>
+<meta name="twitter:description" content="It is essential to grasp how the server works before bringing any modifications. Then, we will guide you through the process of incorporating an HTTP endpoint into the server.
 The ServerRecipya&rsquo;s server code is located within the internal/server package. The main file is server.go. It exports a single with a receiver function and a corresponding struct.
 Server: This struct holds the HTTP router, the repository, the email service and the files service."/>
 
@@ -97,6 +97,13 @@ Server: This struct holds the HTTP router, the repository, the email service and
             class="text-sm contrast-more:text-gray-700 contrast-more:dark:text-gray-100 relative -ml-2 hidden whitespace-nowrap p-2 md:inline-block text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
           >
             <span class="text-center">Blog</span>
+          </a><a
+            title="About"
+            href="/docs/about"
+            
+            class="text-sm contrast-more:text-gray-700 contrast-more:dark:text-gray-100 relative -ml-2 hidden whitespace-nowrap p-2 md:inline-block text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
+          >
+            <span class="text-center">About</span>
           </a><div class="search-wrapper relative md:w-64">
   <div class="relative flex items-center text-gray-900 contrast-more:text-gray-800 dark:text-gray-300 contrast-more:dark:text-gray-300">
     <input
@@ -166,7 +173,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
           <li class="open"><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/"
+    href="/docs/docs/"
     
   >Documentation
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg></span>
@@ -174,15 +181,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
         <ul class='relative flex flex-col gap-1 before:absolute before:inset-y-1 before:w-px before:bg-gray-200 before:content-[""] ltr:ml-3 ltr:pl-3 ltr:before:left-0 rtl:mr-3 rtl:pr-3 rtl:before:right-0 dark:before:bg-neutral-800'><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/intro/"
-    
-  >Introduction
-    </a>
-              
-            </li><li class="flex flex-col "><a
-    class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/"
+    href="/docs/docs/features/"
     
   >Features Tour
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg></span>
@@ -191,7 +190,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
         <ul class='relative flex flex-col gap-1 before:absolute before:inset-y-1 before:w-px before:bg-gray-200 before:content-[""] ltr:ml-3 ltr:pl-3 ltr:before:left-0 rtl:mr-3 rtl:pr-3 rtl:before:right-0 dark:before:bg-neutral-800'><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/recipes/"
+    href="/docs/docs/features/recipes/"
     
   >Recipes
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg></span>
@@ -200,7 +199,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
         <ul class='relative flex flex-col gap-1 before:absolute before:inset-y-1 before:w-px before:bg-gray-200 before:content-[""] ltr:ml-3 ltr:pl-3 ltr:before:left-0 rtl:mr-3 rtl:pr-3 rtl:before:right-0 dark:before:bg-neutral-800'><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/recipes/add/"
+    href="/docs/docs/features/recipes/add/"
     
   >Add
     </a>
@@ -208,7 +207,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/recipes/view/"
+    href="/docs/docs/features/recipes/view/"
     
   >View
     </a>
@@ -216,7 +215,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/recipes/edit/"
+    href="/docs/docs/features/recipes/edit/"
     
   >Edit
     </a>
@@ -224,7 +223,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/recipes/delete/"
+    href="/docs/docs/features/recipes/delete/"
     
   >Delete
     </a>
@@ -232,7 +231,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/recipes/search/"
+    href="/docs/docs/features/recipes/search/"
     
   >Search
     </a>
@@ -240,7 +239,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/recipes/share/"
+    href="/docs/docs/features/recipes/share/"
     
   >Share
     </a>
@@ -248,7 +247,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/recipes/print/"
+    href="/docs/docs/features/recipes/print/"
     
   >Print
     </a>
@@ -256,7 +255,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/recipes/wakelock/"
+    href="/docs/docs/features/recipes/wakelock/"
     
   >Wakelock
     </a>
@@ -266,7 +265,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/cookbooks/"
+    href="/docs/docs/features/cookbooks/"
     
   >Cookbooks
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg></span>
@@ -275,7 +274,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
         <ul class='relative flex flex-col gap-1 before:absolute before:inset-y-1 before:w-px before:bg-gray-200 before:content-[""] ltr:ml-3 ltr:pl-3 ltr:before:left-0 rtl:mr-3 rtl:pr-3 rtl:before:right-0 dark:before:bg-neutral-800'><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/cookbooks/add/"
+    href="/docs/docs/features/cookbooks/add/"
     
   >Create
     </a>
@@ -283,7 +282,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/cookbooks/edit/"
+    href="/docs/docs/features/cookbooks/edit/"
     
   >Edit
     </a>
@@ -291,7 +290,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/cookbooks/delete/"
+    href="/docs/docs/features/cookbooks/delete/"
     
   >Delete
     </a>
@@ -299,7 +298,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/cookbooks/download/"
+    href="/docs/docs/features/cookbooks/download/"
     
   >Download
     </a>
@@ -307,7 +306,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/cookbooks/share/"
+    href="/docs/docs/features/cookbooks/share/"
     
   >Share
     </a>
@@ -317,7 +316,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/measurement-systems/"
+    href="/docs/docs/features/measurement-systems/"
     
   >Measurement Systems
     </a>
@@ -325,7 +324,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/nutrition-facts/"
+    href="/docs/docs/features/nutrition-facts/"
     
   >Nutrition Facts
     </a>
@@ -333,7 +332,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/export-data/"
+    href="/docs/docs/features/my-first-post/"
     
   >Export Data
     </a>
@@ -341,7 +340,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/integrations/"
+    href="/docs/docs/features/integrations/"
     
   >Integrations
     </a>
@@ -351,7 +350,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/installation/"
+    href="/docs/docs/installation/"
     
   >Installation
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg></span>
@@ -360,41 +359,41 @@ Server: This struct holds the HTTP router, the repository, the email service and
         <ul class='relative flex flex-col gap-1 before:absolute before:inset-y-1 before:w-px before:bg-gray-200 before:content-[""] ltr:ml-3 ltr:pl-3 ltr:before:left-0 rtl:mr-3 rtl:pr-3 rtl:before:right-0 dark:before:bg-neutral-800'><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/installation/system-requirements/"
+    href="/docs/docs/installation/system-requirements/"
     
-  >system-requirements
+  >Prerequisites
     </a>
               
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/installation/config-file/"
+    href="/docs/docs/installation/config-file/"
     
-  >config-file
+  >Configuration File
     </a>
               
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/installation/docker/"
+    href="/docs/docs/installation/docker/"
     
-  >docker
+  >Docker
     </a>
               
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/installation/nightly-build/"
+    href="/docs/docs/installation/nightly-build/"
     
-  >nightly-build
+  >Nightly Build
     </a>
               
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/installation/windows-users/"
+    href="/docs/docs/installation/windows-users/"
     
-  >windows-users
+  >Windows Users
     </a>
               
             </li></ul>
@@ -402,7 +401,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/deployment/"
+    href="/docs/docs/deployment/"
     
   >Deployment
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg></span>
@@ -411,17 +410,17 @@ Server: This struct holds the HTTP router, the repository, the email service and
         <ul class='relative flex flex-col gap-1 before:absolute before:inset-y-1 before:w-px before:bg-gray-200 before:content-[""] ltr:ml-3 ltr:pl-3 ltr:before:left-0 rtl:mr-3 rtl:pr-3 rtl:before:right-0 dark:before:bg-neutral-800'><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/deployment/local-network/"
+    href="/docs/docs/deployment/local-network/"
     
-  >local-network
+  >Local Network
     </a>
               
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/deployment/internet/"
+    href="/docs/docs/deployment/internet/"
     
-  >internet
+  >Web Hosting
     </a>
               
             </li></ul>
@@ -429,7 +428,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col open"><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/development/"
+    href="/docs/docs/development/"
     
   >Development
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg></span>
@@ -438,39 +437,39 @@ Server: This struct holds the HTTP router, the repository, the email service and
         <ul class='relative flex flex-col gap-1 before:absolute before:inset-y-1 before:w-px before:bg-gray-200 before:content-[""] ltr:ml-3 ltr:pl-3 ltr:before:left-0 rtl:mr-3 rtl:pr-3 rtl:before:right-0 dark:before:bg-neutral-800'><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/development/intro/"
+    href="/docs/docs/development/intro/"
     
-  >intro
+  >Introduction
     </a>
               
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/development/dependencies/"
+    href="/docs/docs/development/dependencies/"
     
-  >dependencies
+  >Dependencies
     </a>
               
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/development/building/"
+    href="/docs/docs/development/build/"
     
-  >building
+  >Build
     </a>
               
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/development/tests/"
+    href="/docs/docs/development/test/"
     
-  >tests
+  >Test
     </a>
               
             </li><li class="flex flex-col open"><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/development/workflow/"
+    href="/docs/docs/development/workflow/"
     
   >Workflow
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg></span>
@@ -479,9 +478,9 @@ Server: This struct holds the HTTP router, the repository, the email service and
         <ul class='relative flex flex-col gap-1 before:absolute before:inset-y-1 before:w-px before:bg-gray-200 before:content-[""] ltr:ml-3 ltr:pl-3 ltr:before:left-0 rtl:mr-3 rtl:pr-3 rtl:before:right-0 dark:before:bg-neutral-800'><li class="flex flex-col open"><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       sidebar-active-item bg-primary-100 font-semibold text-primary-800 contrast-more:border contrast-more:border-primary-500 dark:bg-primary-400/10 dark:text-primary-600 contrast-more:dark:border-primary-500"
-    href="docs/docs/development/workflow/add-endpoint/"
+    href="/docs/docs/development/workflow/add-endpoint/"
     
-  >add-endpoint
+  >Add an Endpoint
     </a>
   
     <ul class='flex flex-col gap-1 relative before:absolute before:inset-y-1 before:w-px before:bg-gray-200 before:content-[""] dark:before:bg-neutral-800 ltr:pl-3 ltr:before:left-0 rtl:pr-3 rtl:before:right-0 ltr:ml-3 rtl:mr-3'><li>
@@ -502,15 +501,33 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/development/workflow/import-website/"
+    href="/docs/docs/development/workflow/import-website/"
     
-  >import-website
+  >Support a Website
     </a>
               
             </li></ul>
       </div>
             </li></ul>
       </div>
+            </li></ul>
+      </div></li>
+          <li class=""><a
+    class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
+    href="/docs/blog/"
+    
+  >Blog
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg></span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class='relative flex flex-col gap-1 before:absolute before:inset-y-1 before:w-px before:bg-gray-200 before:content-[""] ltr:ml-3 ltr:pl-3 ltr:before:left-0 rtl:mr-3 rtl:pr-3 rtl:before:right-0 dark:before:bg-neutral-800'><li class="flex flex-col "><a
+    class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
+    href="/docs/blog/2023-08-26-welcome/"
+    
+  >Welcome
+    </a>
+              
             </li></ul>
       </div></li>
     </ul>
@@ -520,14 +537,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
           <li class=""><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/intro/"
-    
-  >Introduction
-    </a></li>
-          <li class=""><a
-    class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/"
+    href="/docs/docs/features/"
     
   >Features Tour
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg></span>
@@ -535,7 +545,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
         <ul class='relative flex flex-col gap-1 before:absolute before:inset-y-1 before:w-px before:bg-gray-200 before:content-[""] ltr:ml-3 ltr:pl-3 ltr:before:left-0 rtl:mr-3 rtl:pr-3 rtl:before:right-0 dark:before:bg-neutral-800'><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/recipes/"
+    href="/docs/docs/features/recipes/"
     
   >Recipes
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg></span>
@@ -544,7 +554,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
         <ul class='relative flex flex-col gap-1 before:absolute before:inset-y-1 before:w-px before:bg-gray-200 before:content-[""] ltr:ml-3 ltr:pl-3 ltr:before:left-0 rtl:mr-3 rtl:pr-3 rtl:before:right-0 dark:before:bg-neutral-800'><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/recipes/add/"
+    href="/docs/docs/features/recipes/add/"
     
   >Add
     </a>
@@ -552,7 +562,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/recipes/view/"
+    href="/docs/docs/features/recipes/view/"
     
   >View
     </a>
@@ -560,7 +570,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/recipes/edit/"
+    href="/docs/docs/features/recipes/edit/"
     
   >Edit
     </a>
@@ -568,7 +578,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/recipes/delete/"
+    href="/docs/docs/features/recipes/delete/"
     
   >Delete
     </a>
@@ -576,7 +586,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/recipes/search/"
+    href="/docs/docs/features/recipes/search/"
     
   >Search
     </a>
@@ -584,7 +594,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/recipes/share/"
+    href="/docs/docs/features/recipes/share/"
     
   >Share
     </a>
@@ -592,7 +602,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/recipes/print/"
+    href="/docs/docs/features/recipes/print/"
     
   >Print
     </a>
@@ -600,7 +610,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/recipes/wakelock/"
+    href="/docs/docs/features/recipes/wakelock/"
     
   >Wakelock
     </a>
@@ -610,7 +620,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/cookbooks/"
+    href="/docs/docs/features/cookbooks/"
     
   >Cookbooks
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg></span>
@@ -619,7 +629,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
         <ul class='relative flex flex-col gap-1 before:absolute before:inset-y-1 before:w-px before:bg-gray-200 before:content-[""] ltr:ml-3 ltr:pl-3 ltr:before:left-0 rtl:mr-3 rtl:pr-3 rtl:before:right-0 dark:before:bg-neutral-800'><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/cookbooks/add/"
+    href="/docs/docs/features/cookbooks/add/"
     
   >Create
     </a>
@@ -627,7 +637,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/cookbooks/edit/"
+    href="/docs/docs/features/cookbooks/edit/"
     
   >Edit
     </a>
@@ -635,7 +645,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/cookbooks/delete/"
+    href="/docs/docs/features/cookbooks/delete/"
     
   >Delete
     </a>
@@ -643,7 +653,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/cookbooks/download/"
+    href="/docs/docs/features/cookbooks/download/"
     
   >Download
     </a>
@@ -651,7 +661,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/cookbooks/share/"
+    href="/docs/docs/features/cookbooks/share/"
     
   >Share
     </a>
@@ -661,7 +671,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/measurement-systems/"
+    href="/docs/docs/features/measurement-systems/"
     
   >Measurement Systems
     </a>
@@ -669,7 +679,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/nutrition-facts/"
+    href="/docs/docs/features/nutrition-facts/"
     
   >Nutrition Facts
     </a>
@@ -677,7 +687,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/export-data/"
+    href="/docs/docs/features/my-first-post/"
     
   >Export Data
     </a>
@@ -685,7 +695,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/features/integrations/"
+    href="/docs/docs/features/integrations/"
     
   >Integrations
     </a>
@@ -695,7 +705,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
           <li class=""><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/installation/"
+    href="/docs/docs/installation/"
     
   >Installation
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg></span>
@@ -703,41 +713,41 @@ Server: This struct holds the HTTP router, the repository, the email service and
         <ul class='relative flex flex-col gap-1 before:absolute before:inset-y-1 before:w-px before:bg-gray-200 before:content-[""] ltr:ml-3 ltr:pl-3 ltr:before:left-0 rtl:mr-3 rtl:pr-3 rtl:before:right-0 dark:before:bg-neutral-800'><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/installation/system-requirements/"
+    href="/docs/docs/installation/system-requirements/"
     
-  >system-requirements
+  >Prerequisites
     </a>
               
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/installation/config-file/"
+    href="/docs/docs/installation/config-file/"
     
-  >config-file
+  >Configuration File
     </a>
               
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/installation/docker/"
+    href="/docs/docs/installation/docker/"
     
-  >docker
+  >Docker
     </a>
               
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/installation/nightly-build/"
+    href="/docs/docs/installation/nightly-build/"
     
-  >nightly-build
+  >Nightly Build
     </a>
               
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/installation/windows-users/"
+    href="/docs/docs/installation/windows-users/"
     
-  >windows-users
+  >Windows Users
     </a>
               
             </li></ul>
@@ -745,7 +755,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
           <li class=""><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/deployment/"
+    href="/docs/docs/deployment/"
     
   >Deployment
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg></span>
@@ -753,17 +763,17 @@ Server: This struct holds the HTTP router, the repository, the email service and
         <ul class='relative flex flex-col gap-1 before:absolute before:inset-y-1 before:w-px before:bg-gray-200 before:content-[""] ltr:ml-3 ltr:pl-3 ltr:before:left-0 rtl:mr-3 rtl:pr-3 rtl:before:right-0 dark:before:bg-neutral-800'><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/deployment/local-network/"
+    href="/docs/docs/deployment/local-network/"
     
-  >local-network
+  >Local Network
     </a>
               
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/deployment/internet/"
+    href="/docs/docs/deployment/internet/"
     
-  >internet
+  >Web Hosting
     </a>
               
             </li></ul>
@@ -771,7 +781,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
           <li class="open"><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/development/"
+    href="/docs/docs/development/"
     
   >Development
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg></span>
@@ -779,39 +789,39 @@ Server: This struct holds the HTTP router, the repository, the email service and
         <ul class='relative flex flex-col gap-1 before:absolute before:inset-y-1 before:w-px before:bg-gray-200 before:content-[""] ltr:ml-3 ltr:pl-3 ltr:before:left-0 rtl:mr-3 rtl:pr-3 rtl:before:right-0 dark:before:bg-neutral-800'><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/development/intro/"
+    href="/docs/docs/development/intro/"
     
-  >intro
+  >Introduction
     </a>
               
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/development/dependencies/"
+    href="/docs/docs/development/dependencies/"
     
-  >dependencies
+  >Dependencies
     </a>
               
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/development/building/"
+    href="/docs/docs/development/build/"
     
-  >building
+  >Build
     </a>
               
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/development/tests/"
+    href="/docs/docs/development/test/"
     
-  >tests
+  >Test
     </a>
               
             </li><li class="flex flex-col open"><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/development/workflow/"
+    href="/docs/docs/development/workflow/"
     
   >Workflow
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg></span>
@@ -820,17 +830,17 @@ Server: This struct holds the HTTP router, the repository, the email service and
         <ul class='relative flex flex-col gap-1 before:absolute before:inset-y-1 before:w-px before:bg-gray-200 before:content-[""] ltr:ml-3 ltr:pl-3 ltr:before:left-0 rtl:mr-3 rtl:pr-3 rtl:before:right-0 dark:before:bg-neutral-800'><li class="flex flex-col open"><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       sidebar-active-item bg-primary-100 font-semibold text-primary-800 contrast-more:border contrast-more:border-primary-500 dark:bg-primary-400/10 dark:text-primary-600 contrast-more:dark:border-primary-500"
-    href="docs/docs/development/workflow/add-endpoint/"
+    href="/docs/docs/development/workflow/add-endpoint/"
     
-  >add-endpoint
+  >Add an Endpoint
     </a>
               
             </li><li class="flex flex-col "><a
     class="flex items-center justify-between gap-2 cursor-pointer rounded px-2 py-1.5 text-sm transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 contrast-more:border contrast-more:border-transparent contrast-more:text-gray-900 contrast-more:hover:border-gray-900 dark:text-neutral-400 dark:hover:bg-primary-100/5 dark:hover:text-gray-50 contrast-more:dark:text-gray-50 contrast-more:dark:hover:border-gray-50"
-    href="docs/docs/development/workflow/import-website/"
+    href="/docs/docs/development/workflow/import-website/"
     
-  >import-website
+  >Support a Website
     </a>
               
             </li></ul>
@@ -860,7 +870,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
         
         <li class="flex flex-col">
           <a
-            href="docs/docs/development/workflow/add-endpoint/"
+            href="/docs/docs/development/workflow/add-endpoint/"
             class="text-gray-800 dark:text-gray-100 hover:bg-primary-50 hover:text-primary-600 hover:dark:bg-primary-500/10 hover:dark:text-primary-600 relative cursor-pointer whitespace-nowrap py-1.5 transition-colors ltr:pl-3 ltr:pr-9 rtl:pr-3 rtl:pl-9"
           >English<span class="absolute inset-y-0 flex items-center ltr:right-3 rtl:left-3"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></a>
         </li>
@@ -868,7 +878,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
         
         <li class="flex flex-col">
           <a
-            href="docs/fr/"
+            href="/docs/fr/"
             class="text-gray-800 dark:text-gray-100 hover:bg-primary-50 hover:text-primary-600 hover:dark:bg-primary-500/10 hover:dark:text-primary-600 relative cursor-pointer whitespace-nowrap py-1.5 transition-colors ltr:pl-3 ltr:pr-9 rtl:pr-3 rtl:pl-9"
           >Français</a>
         </li>
@@ -901,7 +911,7 @@ Server: This struct holds the HTTP router, the repository, the email service and
         <a class="ltr:pl-4 rtl:pr-4 inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 contrast-more:text-gray-900 contrast-more:underline contrast-more:dark:text-gray-50 w-full break-words" href="#repository">Repository
         </a>
       </li></ul>
-      <div class="mt-8 border-t bg-white pt-8 shadow-[0_-12px_16px_white] dark:bg-dark dark:shadow-[0_-12px_16px_#111] sticky bottom-0 flex flex-col items-start gap-2 pb-8 dark:border-neutral-800 contrast-more:border-t contrast-more:border-neutral-400 contrast-more:shadow-none contrast-more:dark:border-neutral-400">
+      <div class="mt-8 border-t bg-white pt-8 shadow-[0_-12px_16px_white] dark:bg-dark dark:shadow-[0_-12px_16px_#111] sticky bottom-0 flex flex-col items-start gap-2 pb-8 dark:border-neutral-800 contrast-more:border-t contrast-more:border-neutral-400 contrast-more:shadow-none contrast-more:dark:border-neutral-400"><a class="text-xs font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 contrast-more:text-gray-800 contrast-more:dark:text-gray-50" href="https://github.com/reaper47/recipya/edit/main/docs/development/workflow/add-endpoint.md" target="_blank" rel="noreferer">Edit this page on GitHub →</a>
         <button aria-hidden="true" id="backToTop" onClick="scrollUp();" class="transition-all transition duration-75 opacity-0 text-xs font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 contrast-more:text-gray-800 contrast-more:dark:text-gray-50">
           <span>Scroll to top</span>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="inline ml-1 h-3.5 w-3.5 border rounded-full border-gray-500 hover:border-gray-900 dark:border-gray-400 dark:hover:border-gray-100 contrast-more:border-gray-800 contrast-more:dark:border-gray-50">
@@ -917,19 +927,19 @@ Server: This struct holds the HTTP router, the repository, the email service and
       <main class="w-full min-w-0 max-w-6xl px-6 pt-4 md:px-12">
         <div class="mt-1.5 flex items-center gap-1 overflow-hidden text-sm text-gray-500 dark:text-gray-400 contrast-more:text-current">
       <div class="whitespace-nowrap transition-colors min-w-[24px] overflow-hidden text-ellipsis hover:text-gray-900 dark:hover:text-gray-100">
-        <a href="docs/docs/">Documentation</a>
+        <a href="https://recipes.musicavis.ca/docs/docs/">Documentation</a>
       </div><svg class="w-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
       <div class="whitespace-nowrap transition-colors min-w-[24px] overflow-hidden text-ellipsis hover:text-gray-900 dark:hover:text-gray-100">
-        <a href="docs/docs/development/">Development</a>
+        <a href="https://recipes.musicavis.ca/docs/docs/development/">Development</a>
       </div><svg class="w-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
       <div class="whitespace-nowrap transition-colors min-w-[24px] overflow-hidden text-ellipsis hover:text-gray-900 dark:hover:text-gray-100">
-        <a href="docs/docs/development/workflow/">Workflow</a>
-      </div><svg class="w-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="whitespace-nowrap transition-colors font-medium text-gray-700 contrast-more:font-bold contrast-more:text-current dark:text-gray-100 contrast-more:dark:text-current"></div>
+        <a href="https://recipes.musicavis.ca/docs/docs/development/workflow/">Workflow</a>
+      </div><svg class="w-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="whitespace-nowrap transition-colors font-medium text-gray-700 contrast-more:font-bold contrast-more:text-current dark:text-gray-100 contrast-more:dark:text-current">Add an Endpoint</div>
 </div>
 
         <div class="content">
-          <h1></h1>
-          <h1>Add an Endpoint</h1><p>It is essential to grasp how the server works before bringing any modifications.
+          <h1>Add an Endpoint</h1>
+          <p>It is essential to grasp how the server works before bringing any modifications.
 Then, we will guide you through the process of incorporating an HTTP endpoint into the server.</p>
 <h2>The Server<span class="absolute -mt-20" id="the-server"></span>
     <a href="#the-server" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Recipya&rsquo;s server code is located within the <code>internal/server</code> package. The main file
@@ -951,12 +961,12 @@ its simplicity in organizing endpoints. Please read the <code>mountHandlers</cod
 <a href="https://github.com/reaper47/recipya/blob/main/internal/server/server.go" target="_blank" rel="noopener">internal/server/server.go</a> file and include the
 endpoint within the <code>/recipes</code> route block. The handler should be named <code>recipesSearchHandler</code>, following the
 <code>{resource}{LastWordEndpoint}{Handler}</code> naming convention.</p>
-<div class="code-block relative mt-6 first:mt-0 group/code"><div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Route</span>(<span style="color:#e6db74">&#34;/recipes&#34;</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">r</span> <span style="color:#a6e22e">chi</span>.<span style="color:#a6e22e">Router</span>) {
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Use</span>(<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">mustBeLoggedInMiddleware</span>)
-</span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Get</span>(<span style="color:#e6db74">&#34;/search&#34;</span>, <span style="color:#a6e22e">recipesSearchHandler</span>)
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">...</span>
-</span></span><span style="display:flex;"><span>})</span></span></code></pre></div></div><div class="opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0">
+<div class="code-block relative mt-6 first:mt-0 group/code"><div class="filename">internal/server/server.go</div><div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">Route</span><span class="p">(</span><span class="s">&#34;/recipes&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">r</span> <span class="nx">chi</span><span class="p">.</span><span class="nx">Router</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">r</span><span class="p">.</span><span class="nf">Use</span><span class="p">(</span><span class="nx">s</span><span class="p">.</span><span class="nx">mustBeLoggedInMiddleware</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="nx">r</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="s">&#34;/search&#34;</span><span class="p">,</span> <span class="nx">recipesSearchHandler</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="o">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span></span></span></code></pre></div></div><div class="opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-8">
     <button
       class="code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50"
       title="Copy code"
@@ -969,9 +979,9 @@ endpoint within the <code>/recipes</code> route block. The handler should be nam
 <p>With the route established, it is time to declare the handler. Since we are dealing with the <code>/recipes</code> resource,
 add the handler to the <a href="https://github.com/reaper47/recipya/blob/main/internal/server/handlers_recipes.go" target="_blank" rel="noopener">handlers_recipes.go</a>
 file.</p>
-<div class="code-block relative mt-6 first:mt-0 group/code"><div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Server</span>) <span style="color:#a6e22e">recipesSearchHandler</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
-</span></span><span style="display:flex;"><span>	panic(<span style="color:#e6db74">&#34;TODO: To implement&#34;</span>)
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0">
+<div class="code-block relative mt-6 first:mt-0 group/code"><div class="filename">internal/server/handlers_recipes.go</div><div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="o">*</span><span class="nx">Server</span><span class="p">)</span> <span class="nf">recipesSearchHandler</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">panic</span><span class="p">(</span><span class="s">&#34;TODO: To implement&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div><div class="opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-8">
     <button
       class="code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50"
       title="Copy code"
@@ -987,11 +997,11 @@ file.</p>
 stored in the <a href="https://github.com/reaper47/recipya/blob/main/internal/server/handlers_recipes_test.go" target="_blank" rel="noopener">handlers_recipes_test.go</a>
 file. The naming convention for test functions is <code>TestHandlers_{Resource}_{Endpoint}</code>. Let&rsquo;s write the foundation
 function of our tests.</p>
-<div class="code-block relative mt-6 first:mt-0 group/code"><div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TestHandlers_Recipes_AddManual</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">srv</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">newServerTest</span>()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">uri</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;/recipes/search&#34;</span>
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0">
+<div class="code-block relative mt-6 first:mt-0 group/code"><div class="filename">internal/server/handlers_recipes_test.go</div><div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">TestHandlers_Recipes_AddManual</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">srv</span> <span class="o">:=</span> <span class="nf">newServerTest</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">uri</span> <span class="o">:=</span> <span class="s">&#34;/recipes/search&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div><div class="opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-8">
     <button
       class="code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50"
       title="Copy code"
@@ -1002,44 +1012,44 @@ function of our tests.</p>
   </div>
 </div>
 <p>The subsequent step involves writing the different tests that add value to the users.</p>
-<div class="code-block relative mt-6 first:mt-0 group/code"><div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TestHandlers_Recipes_AddManual</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">srv</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">newServerTest</span>()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">uri</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;/recipes/search&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Run</span>(<span style="color:#e6db74">&#34;must be logged in&#34;</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">assertMustBeLoggedIn</span>(<span style="color:#a6e22e">t</span>, <span style="color:#a6e22e">srv</span>, <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">MethodGet</span>, <span style="color:#a6e22e">uri</span>)
-</span></span><span style="display:flex;"><span>    })
-</span></span><span style="display:flex;"><span>	
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Run</span>(<span style="color:#e6db74">&#34;search fails&#34;</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Fail</span>()
-</span></span><span style="display:flex;"><span>    })
-</span></span><span style="display:flex;"><span>	
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Run</span>(<span style="color:#e6db74">&#34;user has no recipes&#34;</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Fail</span>()
-</span></span><span style="display:flex;"><span>    })
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Run</span>(<span style="color:#e6db74">&#34;user searches empty string&#34;</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
-</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Fail</span>()
-</span></span><span style="display:flex;"><span>    })
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">testcases</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">struct</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">name</span> <span style="color:#66d9ef">string</span>
-</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">in</span>   <span style="color:#66d9ef">string</span>
-</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">want</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">Recipes</span>
-</span></span><span style="display:flex;"><span>	}{
-</span></span><span style="display:flex;"><span>        {<span style="color:#a6e22e">name</span>: <span style="color:#e6db74">&#34;user searches empty string&#34;</span>, <span style="color:#a6e22e">in</span>: <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#a6e22e">want</span>: <span style="color:#f92672">...</span>},
-</span></span><span style="display:flex;"><span>        {<span style="color:#a6e22e">name</span>: <span style="color:#e6db74">&#34;user searches for lunch&#34;</span>, <span style="color:#a6e22e">in</span>: <span style="color:#e6db74">&#34;lunch&#34;</span>, <span style="color:#a6e22e">want</span>: <span style="color:#f92672">...</span>},
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">...</span>
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">tc</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">testcases</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Run</span>(<span style="color:#a6e22e">tc</span>.<span style="color:#a6e22e">name</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
-</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">rr</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sendHxRequestAsLoggedIn</span>(<span style="color:#a6e22e">srv</span>, <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">MethodGet</span>, <span style="color:#a6e22e">uri</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#34;?q=&#34;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">tc</span>.<span style="color:#a6e22e">in</span>, <span style="color:#a6e22e">noHeader</span>, <span style="color:#66d9ef">nil</span>)
-</span></span><span style="display:flex;"><span>			
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">...</span>
-</span></span><span style="display:flex;"><span>        })
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0">
+<div class="code-block relative mt-6 first:mt-0 group/code"><div class="filename">internal/server/handlers_recipes_test.go</div><div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">TestHandlers_Recipes_AddManual</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">srv</span> <span class="o">:=</span> <span class="nf">newServerTest</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">uri</span> <span class="o">:=</span> <span class="s">&#34;/recipes/search&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">t</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="s">&#34;must be logged in&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">assertMustBeLoggedIn</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">srv</span><span class="p">,</span> <span class="nx">http</span><span class="p">.</span><span class="nx">MethodGet</span><span class="p">,</span> <span class="nx">uri</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">    <span class="nx">t</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="s">&#34;search fails&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">t</span><span class="p">.</span><span class="nf">Fail</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">    <span class="nx">t</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="s">&#34;user has no recipes&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">t</span><span class="p">.</span><span class="nf">Fail</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">t</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="s">&#34;user searches empty string&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">t</span><span class="p">.</span><span class="nf">Fail</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">testcases</span> <span class="o">:=</span> <span class="p">[]</span><span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">name</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">in</span>   <span class="kt">string</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">want</span> <span class="nx">models</span><span class="p">.</span><span class="nx">Recipes</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}{</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span><span class="nx">name</span><span class="p">:</span> <span class="s">&#34;user searches empty string&#34;</span><span class="p">,</span> <span class="nx">in</span><span class="p">:</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="nx">want</span><span class="p">:</span> <span class="o">...</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span><span class="nx">name</span><span class="p">:</span> <span class="s">&#34;user searches for lunch&#34;</span><span class="p">,</span> <span class="nx">in</span><span class="p">:</span> <span class="s">&#34;lunch&#34;</span><span class="p">,</span> <span class="nx">want</span><span class="p">:</span> <span class="o">...</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="o">...</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">tc</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">testcases</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">t</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="nx">tc</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">rr</span> <span class="o">:=</span> <span class="nf">sendHxRequestAsLoggedIn</span><span class="p">(</span><span class="nx">srv</span><span class="p">,</span> <span class="nx">http</span><span class="p">.</span><span class="nx">MethodGet</span><span class="p">,</span> <span class="nx">uri</span><span class="o">+</span><span class="s">&#34;?q=&#34;</span><span class="o">+</span><span class="nx">tc</span><span class="p">.</span><span class="nx">in</span><span class="p">,</span> <span class="nx">noHeader</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			
+</span></span><span class="line"><span class="cl">            <span class="o">...</span>
+</span></span><span class="line"><span class="cl">        <span class="p">})</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div><div class="opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-8">
     <button
       class="code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50"
       title="Copy code"
@@ -1054,19 +1064,19 @@ function of our tests.</p>
     <a href="#handler" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>The next step entails crafting the handler&rsquo;s code. Return to the <code>handles_recipes.go</code> file, and implement
 the <code>recipesSearchHandler</code> function that will make the tests go green. For instance, the implementation could resemble
 the following.</p>
-<div class="code-block relative mt-6 first:mt-0 group/code"><div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Server</span>) <span style="color:#a6e22e">recipesSearchHandler</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
-</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">userID</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">getUserID</span>(<span style="color:#a6e22e">r</span>)
-</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">query</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">chi</span>.<span style="color:#a6e22e">URLParam</span>(<span style="color:#a6e22e">r</span>, <span style="color:#e6db74">&#34;q&#34;</span>)
-</span></span><span style="display:flex;"><span>	
-</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">recipes</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">Repository</span>.<span style="color:#a6e22e">SearchRecipes</span>(<span style="color:#a6e22e">query</span>, <span style="color:#a6e22e">userID</span>)
-</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Header</span>().<span style="color:#a6e22e">Set</span>(<span style="color:#e6db74">&#34;HX-Trigger&#34;</span>, <span style="color:#a6e22e">makeToast</span>(<span style="color:#e6db74">&#34;Failed to search recipes.&#34;</span>, <span style="color:#a6e22e">errorToast</span>))
-</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">WriteHeader</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusInternalServerError</span>)
-</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span>
-</span></span><span style="display:flex;"><span>	}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">templates</span>.<span style="color:#a6e22e">RenderComponent</span>(<span style="color:#a6e22e">w</span>, <span style="color:#e6db74">&#34;recipes&#34;</span>, <span style="color:#e6db74">&#34;search-recipes&#34;</span>, <span style="color:#a6e22e">templates</span>.<span style="color:#a6e22e">Data</span>{<span style="color:#a6e22e">Recipes</span>: <span style="color:#a6e22e">recipes</span>})
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0">
+<div class="code-block relative mt-6 first:mt-0 group/code"><div class="filename">internal/server/handlers_recipes.go</div><div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="o">*</span><span class="nx">Server</span><span class="p">)</span> <span class="nf">recipesSearchHandler</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">userID</span> <span class="o">:=</span> <span class="nf">getUserID</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">query</span> <span class="o">:=</span> <span class="nx">chi</span><span class="p">.</span><span class="nf">URLParam</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="s">&#34;q&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="nx">recipes</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Repository</span><span class="p">.</span><span class="nf">SearchRecipes</span><span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="nx">userID</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">w</span><span class="p">.</span><span class="nf">Header</span><span class="p">().</span><span class="nf">Set</span><span class="p">(</span><span class="s">&#34;HX-Trigger&#34;</span><span class="p">,</span> <span class="nf">makeToast</span><span class="p">(</span><span class="s">&#34;Failed to search recipes.&#34;</span><span class="p">,</span> <span class="nx">errorToast</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">w</span><span class="p">.</span><span class="nf">WriteHeader</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusInternalServerError</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">templates</span><span class="p">.</span><span class="nf">RenderComponent</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="s">&#34;recipes&#34;</span><span class="p">,</span> <span class="s">&#34;search-recipes&#34;</span><span class="p">,</span> <span class="nx">templates</span><span class="p">.</span><span class="nx">Data</span><span class="p">{</span><span class="nx">Recipes</span><span class="p">:</span> <span class="nx">recipes</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div><div class="opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-8">
     <button
       class="code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50"
       title="Copy code"
@@ -1090,27 +1100,27 @@ that declares functions for interacting with a database. Currently, Recipya supp
 only. To support other databases, we need define a struct to satisfy the <a href="https://github.com/reaper47/recipya/blob/main/internal/services/service.go" target="_blank" rel="noopener">RepositoryService</a>
 interface.</p>
 <p>Let&rsquo;s declare the function within the <code>RepositoryService</code> interface. The functions are declared alphabetically.</p>
-<div class="code-block relative mt-6 first:mt-0 group/code"><div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">RepositoryService</span> <span style="color:#66d9ef">interface</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// AddAuthToken adds an authentication token to the database.
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">AddAuthToken</span>(<span style="color:#a6e22e">selector</span>, <span style="color:#a6e22e">validator</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">userID</span> <span style="color:#66d9ef">int64</span>) <span style="color:#66d9ef">error</span>
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// AddRecipe adds a recipe to the user&#39;s collection.
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">AddRecipe</span>(<span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">Recipe</span>, <span style="color:#a6e22e">userID</span> <span style="color:#66d9ef">int64</span>) (<span style="color:#66d9ef">int64</span>, <span style="color:#66d9ef">error</span>)
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
-</span></span><span style="display:flex;"><span>	
-</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// SearchRecipes gets the user&#39;s recipes that include the search query.
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">SearchRecipes</span>(<span style="color:#a6e22e">query</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">userID</span> <span style="color:#66d9ef">int64</span>) (<span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">Recipes</span>, <span style="color:#66d9ef">error</span>)
-</span></span><span style="display:flex;"><span>	
-</span></span><span style="display:flex;"><span>	<span style="color:#f92672">...</span>
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// VerifyLogin checks whether the user provided correct login credentials.
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// If yes, their user ID will be returned. Otherwise, -1 is returned.
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">VerifyLogin</span>(<span style="color:#a6e22e">email</span>, <span style="color:#a6e22e">password</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">int64</span>
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Websites gets the list of supported websites from which to extract the recipe.
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">Websites</span>() <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">Websites</span>
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0">
+<div class="code-block relative mt-6 first:mt-0 group/code"><div class="filename">internal/services/service.go</div><div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">RepositoryService</span> <span class="kd">interface</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// AddAuthToken adds an authentication token to the database.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">AddAuthToken</span><span class="p">(</span><span class="nx">selector</span><span class="p">,</span> <span class="nx">validator</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">userID</span> <span class="kt">int64</span><span class="p">)</span> <span class="kt">error</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1">// AddRecipe adds a recipe to the user&#39;s collection.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">AddRecipe</span><span class="p">(</span><span class="nx">r</span> <span class="o">*</span><span class="nx">models</span><span class="p">.</span><span class="nx">Recipe</span><span class="p">,</span> <span class="nx">userID</span> <span class="kt">int64</span><span class="p">)</span> <span class="p">(</span><span class="kt">int64</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="o">...</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="c1">// SearchRecipes gets the user&#39;s recipes that include the search query.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">SearchRecipes</span><span class="p">(</span><span class="nx">query</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">userID</span> <span class="kt">int64</span><span class="p">)</span> <span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Recipes</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="o">...</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1">// VerifyLogin checks whether the user provided correct login credentials.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// If yes, their user ID will be returned. Otherwise, -1 is returned.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">VerifyLogin</span><span class="p">(</span><span class="nx">email</span><span class="p">,</span> <span class="nx">password</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">int64</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1">// Websites gets the list of supported websites from which to extract the recipe.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">Websites</span><span class="p">()</span> <span class="nx">models</span><span class="p">.</span><span class="nx">Websites</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div><div class="opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-8">
     <button
       class="code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50"
       title="Copy code"
@@ -1121,27 +1131,27 @@ interface.</p>
   </div>
 </div>
 <p>Subsequently, let&rsquo;s implement the function within the <code>sqlite_service.go</code> file.</p>
-<div class="code-block relative mt-6 first:mt-0 group/code"><div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">SQLiteService</span>) <span style="color:#a6e22e">SearchRecipes</span>(<span style="color:#a6e22e">query</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">userID</span> <span style="color:#66d9ef">int64</span>) (<span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">Recipes</span>, <span style="color:#66d9ef">error</span>) {
-</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// s.Mutex.Lock()
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// defer s.Mutex.Unlock()
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">cancel</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">WithTimeout</span>(<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Background</span>(), <span style="color:#a6e22e">shortCtxTimeout</span>)
-</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">cancel</span>()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">rows</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">DB</span>.<span style="color:#a6e22e">QueryContext</span>(<span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">statements</span>.<span style="color:#a6e22e">SelectSearchRecipes</span>, <span style="color:#a6e22e">query</span>, <span style="color:#a6e22e">userID</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">err</span>
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">rows</span>.<span style="color:#a6e22e">Close</span>()
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">recipes</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">Recipes</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">rows</span>.<span style="color:#a6e22e">Next</span>() {
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// code to scan a recipe
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#f92672">...</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">recipes</span> = append(<span style="color:#a6e22e">recipes</span>, <span style="color:#a6e22e">c</span>)
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">recipes</span>, <span style="color:#66d9ef">nil</span>
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0">
+<div class="code-block relative mt-6 first:mt-0 group/code"><div class="filename">internal/services/sqlite_service.go</div><div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="o">*</span><span class="nx">SQLiteService</span><span class="p">)</span> <span class="nf">SearchRecipes</span><span class="p">(</span><span class="nx">query</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">userID</span> <span class="kt">int64</span><span class="p">)</span> <span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Recipes</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// s.Mutex.Lock() // Lock when you are inserting, updating or deleting from the database.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// defer s.Mutex.Unlock()
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="nx">ctx</span><span class="p">,</span> <span class="nx">cancel</span> <span class="o">:=</span> <span class="nx">context</span><span class="p">.</span><span class="nf">WithTimeout</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">(),</span> <span class="nx">shortCtxTimeout</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">defer</span> <span class="nf">cancel</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">rows</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">DB</span><span class="p">.</span><span class="nf">QueryContext</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="nx">statements</span><span class="p">.</span><span class="nx">SelectSearchRecipes</span><span class="p">,</span> <span class="nx">query</span><span class="p">,</span> <span class="nx">userID</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">defer</span> <span class="nx">rows</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">	<span class="kd">var</span> <span class="nx">recipes</span> <span class="nx">models</span><span class="p">.</span><span class="nx">Recipes</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">rows</span><span class="p">.</span><span class="nf">Next</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// code to scan a recipe
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="o">...</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">recipes</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">recipes</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">recipes</span><span class="p">,</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div><div class="opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-8">
     <button
       class="code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50"
       title="Copy code"
@@ -1164,10 +1174,10 @@ shall find a way to organize the statements per database type.</p>
         </div>
         <div class="mt-16"></div>
         <div class="mb-8 flex items-center border-t pt-8 dark:border-neutral-800 contrast-more:border-neutral-400 dark:contrast-more:border-neutral-400 print:hidden"><a
-        href="docs/docs/development/workflow/import-website/"
-        title=""
+        href="/docs/docs/development/workflow/import-website/"
+        title="Support a Website"
         class="flex max-w-[50%] items-center gap-1 py-4 text-base font-medium text-gray-600 transition-colors [word-break:break-word] hover:text-primary-600 dark:text-gray-300 md:text-lg ltr:ml-auto ltr:pl-4 ltr:text-right rtl:mr-auto rtl:pr-4 rtl:text-left"
-      ><svg class="inline h-5 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a></div>
+      >Support a Website<svg class="inline h-5 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a></div>
         
       </main>
     </article>

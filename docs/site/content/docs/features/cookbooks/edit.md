@@ -10,11 +10,11 @@ You can update the image of a cookbook as well as reorder the recipes.
 Click the image of a cookbook to update it. You will be then prompted with the
 operating system's file picker to select and image. 
 
-![img alt](/img/features/cookbooks/cookbooks-update-image.png)
+![](cookbooks-update-image.webp)
 
 The cookbook's image will be updated immediately after selecting the file.
 
-![img alt](/img/features/cookbooks/cookbooks-updated-image.png)
+![](cookbooks-updated-image.webp)
 
 ## Reorder the Recipes
 
@@ -25,12 +25,12 @@ finally the dinners.
 To reorder them, first open a cookbook. In the following image, we want to switch the position of the
 first recipe with that of the last.
 
-![img alt](/img/features/cookbooks/cookbook-recipes-before-reorder.png)
+![](cookbook-recipes-before-reorder.webp)
 
 Then, drag the page number of the recipe you wish to update. Once at the desired position, 
 release the mouse. The pages will be immediately updated.
 
-![img alt](/img/features/cookbooks/cookbook-recipes-after-reorder.png)
+![](cookbook-recipes-after-reorder.webp)
 
 ## Switch View Mode
 
@@ -40,10 +40,10 @@ The cookbooks can be displayed in the following modes:
 
 To display them as a grid, click the grid icon under your avatar.
 
-![img alt](/img/features/cookbooks/cookbooks-grid.png)
+![](cookbooks-grid.webp)
 
-![img alt](/img/features/cookbooks/cookbooks-grid-mode.png)
+![](cookbooks-grid-mode.webp)
 
 To display them as a list, click the list icon.
 
-![img alt](/img/features/cookbooks/cookbooks-list.png)
+![](cookbooks-list.webp)
