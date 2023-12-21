@@ -2,174 +2,174 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://recipes.musicavis.ca/docs/docs/features/recipes/add/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/docs/features/recipes/add/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/features/cookbooks/add/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/docs/features/cookbooks/add/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/docs/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/development/intro/</loc>
+    <loc>https://recipes.musicavis.ca/guide/docs/development/intro/</loc>
     <lastmod>2023-12-20T16:12:14+01:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/deployment/local-network/</loc>
+    <loc>https://recipes.musicavis.ca/guide/docs/deployment/local-network/</loc>
     <lastmod>2023-12-20T16:12:14+01:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/installation/system-requirements/</loc>
+    <loc>https://recipes.musicavis.ca/guide/docs/installation/system-requirements/</loc>
     <lastmod>2023-12-20T16:12:14+01:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/features/recipes/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/docs/features/recipes/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/installation/config-file/</loc>
+    <loc>https://recipes.musicavis.ca/guide/docs/installation/config-file/</loc>
     <lastmod>2023-12-20T16:12:14+01:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/features/cookbooks/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/docs/features/cookbooks/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/development/dependencies/</loc>
+    <loc>https://recipes.musicavis.ca/guide/docs/development/dependencies/</loc>
     <lastmod>2023-12-20T16:12:14+01:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/features/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/docs/features/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/installation/</loc>
+    <loc>https://recipes.musicavis.ca/guide/docs/installation/</loc>
     <lastmod>2023-12-20T16:12:14+01:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/features/recipes/view/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/docs/features/recipes/view/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/deployment/internet/</loc>
+    <loc>https://recipes.musicavis.ca/guide/docs/deployment/internet/</loc>
     <lastmod>2023-12-20T16:12:14+01:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/development/build/</loc>
+    <loc>https://recipes.musicavis.ca/guide/docs/development/build/</loc>
     <lastmod>2023-12-20T16:12:14+01:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/deployment/</loc>
+    <loc>https://recipes.musicavis.ca/guide/docs/deployment/</loc>
     <lastmod>2023-12-20T16:12:14+01:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/installation/docker/</loc>
+    <loc>https://recipes.musicavis.ca/guide/docs/installation/docker/</loc>
     <lastmod>2023-12-20T16:12:14+01:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/features/cookbooks/edit/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/docs/features/cookbooks/edit/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/features/recipes/edit/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/docs/features/recipes/edit/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/features/measurement-systems/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/docs/features/measurement-systems/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/features/cookbooks/delete/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/docs/features/cookbooks/delete/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/features/recipes/delete/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/docs/features/recipes/delete/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/development/</loc>
+    <loc>https://recipes.musicavis.ca/guide/docs/development/</loc>
     <lastmod>2023-12-20T16:12:14+01:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/installation/nightly-build/</loc>
+    <loc>https://recipes.musicavis.ca/guide/docs/installation/nightly-build/</loc>
     <lastmod>2023-12-20T16:12:14+01:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/development/test/</loc>
+    <loc>https://recipes.musicavis.ca/guide/docs/development/test/</loc>
     <lastmod>2023-12-20T16:12:14+01:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/development/workflow/</loc>
+    <loc>https://recipes.musicavis.ca/guide/docs/development/workflow/</loc>
     <lastmod>2023-12-20T16:12:14+01:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/features/cookbooks/download/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/docs/features/cookbooks/download/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/features/recipes/search/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/docs/features/recipes/search/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/features/cookbooks/share/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/docs/features/cookbooks/share/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/installation/windows-users/</loc>
+    <loc>https://recipes.musicavis.ca/guide/docs/installation/windows-users/</loc>
     <lastmod>2023-12-20T16:12:14+01:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/features/nutrition-facts/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/docs/features/nutrition-facts/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/features/recipes/share/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/docs/features/recipes/share/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/features/my-first-post/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/docs/features/my-first-post/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/features/recipes/print/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/docs/features/recipes/print/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/features/integrations/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/docs/features/integrations/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/features/recipes/wakelock/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/docs/features/recipes/wakelock/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/tags/new-software/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/tags/new-software/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/tags/recipes/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/tags/recipes/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/</loc>
-    <lastmod>2023-12-20T16:12:14+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/tags/self-host/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
+  </url><url>
+    <loc>https://recipes.musicavis.ca/guide/tags/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://recipes.musicavis.ca/docs/fr/"
+                href="https://recipes.musicavis.ca/guide/fr/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://recipes.musicavis.ca/docs/"
+                href="https://recipes.musicavis.ca/guide/tags/"
                 />
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/tags/self-host/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/tags/technology/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/tags/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="https://recipes.musicavis.ca/docs/fr/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://recipes.musicavis.ca/docs/tags/"
-                />
+    <loc>https://recipes.musicavis.ca/guide/blog/2023-08-26-welcome/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/tags/technology/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
-  </url><url>
-    <loc>https://recipes.musicavis.ca/docs/blog/2023-08-26-welcome/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
-  </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/development/workflow/add-endpoint/</loc>
+    <loc>https://recipes.musicavis.ca/guide/docs/development/workflow/add-endpoint/</loc>
     <lastmod>2023-12-20T16:12:14+01:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/blog/</loc>
-    <lastmod>2023-12-20T05:06:51+01:00</lastmod>
+    <loc>https://recipes.musicavis.ca/guide/blog/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/categories/</loc>
+    <loc>https://recipes.musicavis.ca/guide/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://recipes.musicavis.ca/docs/fr/categories/"
+                href="https://recipes.musicavis.ca/guide/fr/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://recipes.musicavis.ca/docs/categories/"
+                href="https://recipes.musicavis.ca/guide/categories/"
                 />
   </url><url>
-    <loc>https://recipes.musicavis.ca/docs/docs/development/workflow/import-website/</loc>
+    <loc>https://recipes.musicavis.ca/guide/</loc>
+    <lastmod>2023-12-20T13:58:52-05:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://recipes.musicavis.ca/guide/fr/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://recipes.musicavis.ca/guide/"
+                />
+  </url><url>
+    <loc>https://recipes.musicavis.ca/guide/docs/development/workflow/import-website/</loc>
     <lastmod>2023-12-20T16:12:14+01:00</lastmod>
   </url>
 </urlset>

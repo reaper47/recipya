@@ -1,12 +1,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Recipya – Recipya</title>
-    <link>https://recipes.musicavis.ca/docs/fr/</link>
+    <link>https://recipes.musicavis.ca/guide/fr/</link>
     <description>Recent content on Recipya</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>fr</language>
     
-	  <atom:link href="https://recipes.musicavis.ca/docs/fr/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="https://recipes.musicavis.ca/guide/fr/index.xml" rel="self" type="application/rss+xml" />
     
     
       

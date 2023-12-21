@@ -1,13 +1,13 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Recipya – Tags</title>
-    <link>https://recipes.musicavis.ca/docs/tags/</link>
+    <link>https://recipes.musicavis.ca/guide/tags/</link>
     <description>Recent content in Tags on Recipya</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Wed, 23 Aug 2023 00:00:00 +0000</lastBuildDate>
     
-	  <atom:link href="https://recipes.musicavis.ca/docs/tags/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="https://recipes.musicavis.ca/guide/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
       

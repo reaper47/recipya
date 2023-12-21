@@ -64,9 +64,9 @@ func (r *Recipe) ConvertMeasurementSystem(to units.System) (*Recipe, error) {
 	}
 
 	if currentSystem == units.InvalidSystem {
-		return nil, errors.New("could not determine measurement system")
+		return r, errors.New("could not determine measurement system")
 	} else if currentSystem == to {
-		return nil, errors.New("system already " + to.String())
+		return r, errors.New("system already " + to.String())
 	}
 
 	ingredients := make([]string, len(r.Ingredients))

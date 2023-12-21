@@ -37,13 +37,10 @@ func (s *Server) indexHandler(w http.ResponseWriter, r *http.Request) {
 			s.recipesHandler(w, r)
 		}))
 		middleware.ServeHTTP(w, r)
-	} else {
-		page := templates.LandingPage
-		templates.Render(w, page, templates.Data{
-			IsAuthenticated: false,
-			Title:           page.Title(),
-		})
+		return
 	}
+
+	http.Redirect(w, r, "/guide", http.StatusSeeOther)
 }
 
 func notFoundHandler(w http.ResponseWriter, _ *http.Request) {

@@ -1,4 +1,4 @@
-baseURL: https://recipes.musicavis.ca/docs/
+baseURL: https://recipes.musicavis.ca/guide/
 title: Recipya
 theme: hextra
 
@@ -36,7 +36,7 @@ params:
 
   editURL:
     enable: true
-    base: "https://github.com/reaper47/recipya/edit/main"
+    base: "https://github.com/reaper47/recipya/edit/main/docs/website"
 
   blog:
     list:
@@ -70,31 +70,36 @@ params:
 
 menu:
   main:
+    - name: Open App
+      params:
+        rel: external
+      url: /login
+      weight: 1
     - identifier: documentation
       name: Documentation
       pageRef: /docs
-      weight: 1
+      weight: 2
     - identifier: blog
       name: Blog
       pageRef: /blog
-      weight: 2
+      weight: 3
     - identifier: about
       name: About
       pageRef: /about
-      weight: 3
+      weight: 4
     - identifier: searchPlaceholder
       name: Search
-      weight: 4
+      weight: 5
       params:
         type: search
     - identifier: sponsor
       name: Sponsor
       url: "https://github.com/sponsors/reaper47"
-      weight: 5
+      weight: 6
       params:
         icon: heart
     - name: GitHub
-      weight: 6
+      weight: 7
       url: "https://github.com/reaper47/recipya"
       params:
         icon: github

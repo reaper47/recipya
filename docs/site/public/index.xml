@@ -1,13 +1,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Recipya – Recipya</title>
-    <link>https://recipes.musicavis.ca/docs/</link>
+    <link>https://recipes.musicavis.ca/guide/</link>
     <description>Recent content on Recipya</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 23 Aug 2023 00:00:00 +0000</lastBuildDate>
     
-	  <atom:link href="https://recipes.musicavis.ca/docs/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="https://recipes.musicavis.ca/guide/index.xml" rel="self" type="application/rss+xml" />
     
     
       
@@ -16,10 +15,10 @@
     
     <item>
       <title>Welcome</title>
-      <link>https://recipes.musicavis.ca/docs/blog/2023-08-26-welcome/</link>
+      <link>https://recipes.musicavis.ca/guide/blog/2023-08-26-welcome/</link>
       <pubDate>Wed, 23 Aug 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/blog/2023-08-26-welcome/</guid>
+      <guid>https://recipes.musicavis.ca/guide/blog/2023-08-26-welcome/</guid>
       <description>
         
         
@@ -33,11 +32,11 @@ written in my favorite programming language, &lt;a href=&#34;https://go.dev&#34;
 long because the other solutions are much more mature than the state Recipya is in now. However, I do believe the
 effort will pay off.&lt;/p&gt;
 &lt;p&gt;Thanks to Go, you can rest assured that the software is well-tested, solid, easy to read and maintain, and simple to
-build and install. Development should be straightforward. Please read the &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/category/development&#34; &gt;developer guide&lt;/a&gt;
+build and install. Development should be straightforward. Please read the &lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/category/development&#34; &gt;developer guide&lt;/a&gt;
 if you wish to contribute with code.&lt;/p&gt;
 &lt;p&gt;Today&amp;rsquo;s main goal for the project is to move towards the v1.0.0 milestone. The issues left to complete before
 celebrating the first official release on &lt;a href=&#34;https://github.com/reaper47/recipya/issues?q=is%3Aopen&amp;#43;is%3Aissue&amp;#43;milestone%3Av1.0.0&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Thank you for reading! If you believe in this project, then feel free to lend a hand. The &lt;a href=&#34;https://recipes.musicavis.ca/docs/community-guide&#34; &gt;community guide&lt;/a&gt;
+&lt;p&gt;Thank you for reading! If you believe in this project, then feel free to lend a hand. The &lt;a href=&#34;https://recipes.musicavis.ca/guide/community-guide&#34; &gt;community guide&lt;/a&gt;
 explains how you can help. You are not required to know how to code 😊&lt;/p&gt;
 
       </description>

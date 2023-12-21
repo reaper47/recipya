@@ -1,12 +1,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Recipya – Development</title>
-    <link>https://recipes.musicavis.ca/docs/docs/development/</link>
+    <link>https://recipes.musicavis.ca/guide/docs/development/</link>
     <description>Recent content in Development on Recipya</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     
-	  <atom:link href="https://recipes.musicavis.ca/docs/docs/development/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="https://recipes.musicavis.ca/guide/docs/development/index.xml" rel="self" type="application/rss+xml" />
     
     
       
@@ -16,10 +16,10 @@
     
     <item>
       <title>Introduction</title>
-      <link>https://recipes.musicavis.ca/docs/docs/development/intro/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/development/intro/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/development/intro/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/development/intro/</guid>
       <description>
         
         
@@ -80,10 +80,10 @@
     
     <item>
       <title>Dependencies</title>
-      <link>https://recipes.musicavis.ca/docs/docs/development/dependencies/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/development/dependencies/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/development/dependencies/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/development/dependencies/</guid>
       <description>
         
         
@@ -134,10 +134,10 @@ To verify whether it&amp;rsquo;s installed on your machine, execute &lt;code&gt;
     
     <item>
       <title>Build</title>
-      <link>https://recipes.musicavis.ca/docs/docs/development/build/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/development/build/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/development/build/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/development/build/</guid>
       <description>
         
         
@@ -164,7 +164,7 @@ To verify whether it&amp;rsquo;s installed on your machine, execute &lt;code&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;Start the server. You will go through the interactive setup process if
-your &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/installation/config-file&#34; &gt;configuration file&lt;/a&gt; is nonexistent.&lt;/p&gt;
+your &lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/installation/config-file&#34; &gt;configuration file&lt;/a&gt; is nonexistent.&lt;/p&gt;
 &lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;./bin/recipya serve&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
     &lt;button
       class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
@@ -182,10 +182,10 @@ your &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/installation/config-
     
     <item>
       <title>Test</title>
-      <link>https://recipes.musicavis.ca/docs/docs/development/test/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/development/test/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/development/test/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/development/test/</guid>
       <description>
         
         
@@ -208,7 +208,7 @@ when you open a pull request against the main branch.&lt;/p&gt;
 &lt;a href=&#34;https://www.codemag.com/Article/1901071/10-Reasons-Why-Unit-Testing-Matters&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;article&lt;/a&gt; explains why
 unit testing matters.&lt;/p&gt;
 &lt;p&gt;You will see many files under the &lt;code&gt;internal&lt;/code&gt; folder that finish with &lt;code&gt;*_test.go&lt;/code&gt;. That is where tests are written.
-Please refer to the &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/development/workflow&#34; &gt;development workflow&lt;/a&gt; section for more information and examples.&lt;/p&gt;
+Please refer to the &lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/development/workflow&#34; &gt;development workflow&lt;/a&gt; section for more information and examples.&lt;/p&gt;
 &lt;p&gt;Please feel free to add as many tests as you deem fit to any of those files.&lt;/p&gt;
 
       </description>
@@ -216,10 +216,10 @@ Please refer to the &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/devel
     
     <item>
       <title>Workflow</title>
-      <link>https://recipes.musicavis.ca/docs/docs/development/workflow/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/development/workflow/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/development/workflow/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/development/workflow/</guid>
       <description>
         
         
@@ -228,9 +228,9 @@ Please refer to the &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/devel
 
 &lt;div class=&#34;hextra-cards mt-4 gap-4 grid not-prose&#34; style=&#34;--rows: 3;&#34;&gt;
     &lt;a
-      class=&#34;hextra-card group flex flex-col justify-start overflow-hidden rounded-lg border border-gray-200 text-current no-underline dark:shadow-none hover:shadow-gray-100 dark:hover:shadow-none shadow-gray-100 active:shadow-sm active:shadow-gray-200 transition-all duration-200 hover:border-gray-300 bg-transparent shadow-sm dark:border-neutral-800 hover:bg-slate-50 hover:shadow-md dark:hover:border-neutral-700 dark:hover:bg-neutral-900&#34;href=&#34;https://recipes.musicavis.ca/docs/docs/development/workflow/add-endpoint/&#34; &gt;&lt;span class=&#34;flex font-semibold items-start gap-2 pt-4 px-4 text-gray-700 hover:text-gray-900 dark:text-neutral-200 dark:hover:text-neutral-50&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; fill=&#34;none&#34; viewBox=&#34;0 0 24 24&#34; stroke-width=&#34;2&#34; stroke=&#34;currentColor&#34; aria-hidden=&#34;true&#34;&gt;&lt;path stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34; d=&#34;M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z&#34;/&gt;&lt;/svg&gt;Add an Endpoint&lt;/span&gt;&lt;div class=&#34;line-clamp-3 text-sm font-normal text-gray-500 dark:text-gray-400 px-4 mb-4 mt-2&#34;&gt;It is essential to grasp how the server works before bringing any modifications.&lt;/div&gt;&lt;/a&gt;
+      class=&#34;hextra-card group flex flex-col justify-start overflow-hidden rounded-lg border border-gray-200 text-current no-underline dark:shadow-none hover:shadow-gray-100 dark:hover:shadow-none shadow-gray-100 active:shadow-sm active:shadow-gray-200 transition-all duration-200 hover:border-gray-300 bg-transparent shadow-sm dark:border-neutral-800 hover:bg-slate-50 hover:shadow-md dark:hover:border-neutral-700 dark:hover:bg-neutral-900&#34;href=&#34;https://recipes.musicavis.ca/guide/docs/development/workflow/add-endpoint/&#34; &gt;&lt;span class=&#34;flex font-semibold items-start gap-2 pt-4 px-4 text-gray-700 hover:text-gray-900 dark:text-neutral-200 dark:hover:text-neutral-50&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; fill=&#34;none&#34; viewBox=&#34;0 0 24 24&#34; stroke-width=&#34;2&#34; stroke=&#34;currentColor&#34; aria-hidden=&#34;true&#34;&gt;&lt;path stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34; d=&#34;M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z&#34;/&gt;&lt;/svg&gt;Add an Endpoint&lt;/span&gt;&lt;div class=&#34;line-clamp-3 text-sm font-normal text-gray-500 dark:text-gray-400 px-4 mb-4 mt-2&#34;&gt;It is essential to grasp how the server works before bringing any modifications.&lt;/div&gt;&lt;/a&gt;
     &lt;a
-      class=&#34;hextra-card group flex flex-col justify-start overflow-hidden rounded-lg border border-gray-200 text-current no-underline dark:shadow-none hover:shadow-gray-100 dark:hover:shadow-none shadow-gray-100 active:shadow-sm active:shadow-gray-200 transition-all duration-200 hover:border-gray-300 bg-transparent shadow-sm dark:border-neutral-800 hover:bg-slate-50 hover:shadow-md dark:hover:border-neutral-700 dark:hover:bg-neutral-900&#34;href=&#34;https://recipes.musicavis.ca/docs/docs/development/workflow/import-website/&#34; &gt;&lt;span class=&#34;flex font-semibold items-start gap-2 pt-4 px-4 text-gray-700 hover:text-gray-900 dark:text-neutral-200 dark:hover:text-neutral-50&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; fill=&#34;none&#34; viewBox=&#34;0 0 24 24&#34; stroke-width=&#34;2&#34; stroke=&#34;currentColor&#34; aria-hidden=&#34;true&#34;&gt;&lt;path stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34; d=&#34;M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z&#34;/&gt;&lt;/svg&gt;Support a Website&lt;/span&gt;&lt;div class=&#34;line-clamp-3 text-sm font-normal text-gray-500 dark:text-gray-400 px-4 mb-4 mt-2&#34;&gt;You first need to understand how the scraper works to support a website.&lt;/div&gt;&lt;/a&gt;
+      class=&#34;hextra-card group flex flex-col justify-start overflow-hidden rounded-lg border border-gray-200 text-current no-underline dark:shadow-none hover:shadow-gray-100 dark:hover:shadow-none shadow-gray-100 active:shadow-sm active:shadow-gray-200 transition-all duration-200 hover:border-gray-300 bg-transparent shadow-sm dark:border-neutral-800 hover:bg-slate-50 hover:shadow-md dark:hover:border-neutral-700 dark:hover:bg-neutral-900&#34;href=&#34;https://recipes.musicavis.ca/guide/docs/development/workflow/import-website/&#34; &gt;&lt;span class=&#34;flex font-semibold items-start gap-2 pt-4 px-4 text-gray-700 hover:text-gray-900 dark:text-neutral-200 dark:hover:text-neutral-50&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; fill=&#34;none&#34; viewBox=&#34;0 0 24 24&#34; stroke-width=&#34;2&#34; stroke=&#34;currentColor&#34; aria-hidden=&#34;true&#34;&gt;&lt;path stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34; d=&#34;M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z&#34;/&gt;&lt;/svg&gt;Support a Website&lt;/span&gt;&lt;div class=&#34;line-clamp-3 text-sm font-normal text-gray-500 dark:text-gray-400 px-4 mb-4 mt-2&#34;&gt;You first need to understand how the scraper works to support a website.&lt;/div&gt;&lt;/a&gt;
 &lt;/div&gt;
 
 

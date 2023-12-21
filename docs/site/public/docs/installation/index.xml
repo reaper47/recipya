@@ -1,12 +1,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Recipya – Installation</title>
-    <link>https://recipes.musicavis.ca/docs/docs/installation/</link>
+    <link>https://recipes.musicavis.ca/guide/docs/installation/</link>
     <description>Recent content in Installation on Recipya</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     
-	  <atom:link href="https://recipes.musicavis.ca/docs/docs/installation/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="https://recipes.musicavis.ca/guide/docs/installation/index.xml" rel="self" type="application/rss+xml" />
     
     
       
@@ -16,10 +16,10 @@
     
     <item>
       <title>Prerequisites</title>
-      <link>https://recipes.musicavis.ca/docs/docs/installation/system-requirements/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/installation/system-requirements/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/installation/system-requirements/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/installation/system-requirements/</guid>
       <description>
         
         
@@ -107,7 +107,7 @@ innovative computer vision capabilities. It gives apps the ability to analyze im
 with prebuilt image tagging, text extraction with optical character recognition (OCR), and responsible facial
 recognition. Microsoft offers a &lt;a href=&#34;https://azure.microsoft.com/en-us/pricing/details/cognitive-services/computer-vision/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;free plan&lt;/a&gt;
 that allows you to perform 5000 transactions per month.&lt;/p&gt;
-&lt;p&gt;Within Recipya, this service is used to &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/features/recipes/add#scan&#34; &gt;digitize recipes&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Within Recipya, this service is used to &lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/features/recipes/add#scan&#34; &gt;digitize recipes&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;If you do not plan on digitizing paper recipes, then leave the &lt;code&gt;integrations.azureComputerVision.resourceKey&lt;/code&gt; and
 &lt;code&gt;integrations.azureComputerVision.visionEndpoint&lt;/code&gt; fields in the &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/deploy/config.example.json&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;configuration file&lt;/a&gt;
 empty. This feature will then be disabled.&lt;/p&gt;
@@ -117,10 +117,10 @@ empty. This feature will then be disabled.&lt;/p&gt;
     
     <item>
       <title>Configuration File</title>
-      <link>https://recipes.musicavis.ca/docs/docs/installation/config-file/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/installation/config-file/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/installation/config-file/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/installation/config-file/</guid>
       <description>
         
         
@@ -158,10 +158,10 @@ sets important variables for the application. Let&amp;rsquo;s go over each of th
     
     <item>
       <title>Docker</title>
-      <link>https://recipes.musicavis.ca/docs/docs/installation/docker/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/installation/docker/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/installation/docker/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/installation/docker/</guid>
       <description>
         
         
@@ -181,7 +181,7 @@ is produced nightly.&lt;/p&gt;
     &lt;/button&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;Then, run the image. You must pass your &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/installation/config-file&#34; &gt;config.json&lt;/a&gt; file to the container.&lt;/p&gt;
+&lt;p&gt;Then, run the image. You must pass your &lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/installation/config-file&#34; &gt;config.json&lt;/a&gt; file to the container.&lt;/p&gt;
 &lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker run -v path/to/config.json:/app/config.json -p &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;host port&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;:&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;port specified in config.json&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; -d reaper99/recipya:nightly reaper99/recipya:nightly&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
     &lt;button
       class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
@@ -194,7 +194,7 @@ is produced nightly.&lt;/p&gt;
 &lt;/div&gt;
 &lt;h2&gt;Using Docker Compose&lt;span class=&#34;absolute -mt-20&#34; id=&#34;using-docker-compose&#34;&gt;&lt;/span&gt;
     &lt;a href=&#34;#using-docker-compose&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;You can use Docker Compose to run the container. First, you need to modify the ports and the path to your local
-&lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/installation/config-file&#34; &gt;config.json&lt;/a&gt; in the &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/deploy/compose.yaml&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;compose.yaml&lt;/a&gt;.
+&lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/installation/config-file&#34; &gt;config.json&lt;/a&gt; in the &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/deploy/compose.yaml&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;compose.yaml&lt;/a&gt;.
 Then, start the application.&lt;/p&gt;
 &lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker-compose up -d&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
     &lt;button
@@ -215,17 +215,17 @@ inbound Windows Defender Firewall rule.&lt;/p&gt;
     
     <item>
       <title>Nightly Build</title>
-      <link>https://recipes.musicavis.ca/docs/docs/installation/nightly-build/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/installation/nightly-build/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/installation/nightly-build/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/installation/nightly-build/</guid>
       <description>
         
         
         &lt;p&gt;A portable, standalone build is available on the &lt;a href=&#34;https://github.com/reaper47/recipya/releases/tag/nightly&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;releases page&lt;/a&gt;.
 It is updated nightly if the main branch has new commits.&lt;/p&gt;
 &lt;p&gt;First, download and extract the zip file compatible with your system.
-Please consult the &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/installation/system-requirements&#34; &gt;supported platforms&lt;/a&gt; table if you are unsure which file to download.&lt;/p&gt;
+Please consult the &lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/installation/system-requirements&#34; &gt;supported platforms&lt;/a&gt; table if you are unsure which file to download.&lt;/p&gt;
 &lt;p&gt;Then, start the server by opening a command prompt in the folder, and run the following command.
 The application will perform a one-time setup if not already done.&lt;/p&gt;
 &lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;./recipya-&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;os&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;architecture&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; serve&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
@@ -276,10 +276,10 @@ build and replace your existing &lt;code&gt;recipya&lt;/code&gt; executable with
     
     <item>
       <title>Windows Users</title>
-      <link>https://recipes.musicavis.ca/docs/docs/installation/windows-users/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/installation/windows-users/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/installation/windows-users/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/installation/windows-users/</guid>
       <description>
         
         

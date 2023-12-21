@@ -1,12 +1,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Recipya – Recipes</title>
-    <link>https://recipes.musicavis.ca/docs/docs/features/recipes/</link>
+    <link>https://recipes.musicavis.ca/guide/docs/features/recipes/</link>
     <description>Recent content in Recipes on Recipya</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     
-	  <atom:link href="https://recipes.musicavis.ca/docs/docs/features/recipes/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="https://recipes.musicavis.ca/guide/docs/features/recipes/index.xml" rel="self" type="application/rss+xml" />
     
     
       
@@ -16,10 +16,10 @@
     
     <item>
       <title>Add</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/recipes/add/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/recipes/add/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/recipes/add/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/recipes/add/</guid>
       <description>
         
         
@@ -95,7 +95,7 @@ This option is useful for digitizing your and your family&amp;rsquo;s paper reci
 
   &lt;div class=&#34;w-full min-w-0 leading-7&#34;&gt;
     &lt;div class=&#34;mt-6 leading-7 first:mt-0&#34;&gt;
-      You must have an &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/installation/system-requirements#azure-ai-vision&#34; &gt;Azure AI Vision&lt;/a&gt; account to use this feature.
+      You must have an &lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/installation/system-requirements#azure-ai-vision&#34; &gt;Azure AI Vision&lt;/a&gt; account to use this feature.
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
@@ -129,10 +129,10 @@ file. All other files in a folder will be ignored during processing. Here is an
     
     <item>
       <title>View</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/recipes/view/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/recipes/view/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/recipes/view/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/recipes/view/</guid>
       <description>
         
         
@@ -220,14 +220,14 @@ not be scaled. This limitation will be addressed in the future.
     
     <item>
       <title>Edit</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/recipes/edit/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/recipes/edit/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/recipes/edit/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/recipes/edit/</guid>
       <description>
         
         
-        &lt;p&gt;To edit a recipe in your collection, you first must &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/features/recipes/view&#34; &gt;view&lt;/a&gt; a recipe.
+        &lt;p&gt;To edit a recipe in your collection, you first must &lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/features/recipes/view&#34; &gt;view&lt;/a&gt; a recipe.
 Then, click the pencil icon to the left of the recipe&amp;rsquo;s title.&lt;/p&gt;
 &lt;p&gt;
     &lt;img src=&#34;../edit-recipe-enter.webp&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
@@ -241,14 +241,14 @@ Press the blue &lt;strong&gt;Update&lt;/strong&gt; button at the bottom of the f
     
     <item>
       <title>Delete</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/recipes/delete/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/recipes/delete/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/recipes/delete/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/recipes/delete/</guid>
       <description>
         
         
-        &lt;p&gt;To delete a recipe from your collection, you first must &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/features/recipes/view&#34; &gt;view&lt;/a&gt; a recipe.
+        &lt;p&gt;To delete a recipe from your collection, you first must &lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/features/recipes/view&#34; &gt;view&lt;/a&gt; a recipe.
 Then, click the trashcan icon to the right of the recipe&amp;rsquo;s title. You will be prompted whether
 you want to proceed before deletion.&lt;/p&gt;
 &lt;p&gt;
@@ -289,10 +289,10 @@ you want to proceed before deletion.&lt;/p&gt;
     
     <item>
       <title>Search</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/recipes/search/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/recipes/search/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/recipes/search/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/recipes/search/</guid>
       <description>
         
         
@@ -319,15 +319,15 @@ Type your keywords delimited by either a space, comma or both. Then press the en
     
     <item>
       <title>Share</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/recipes/share/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/recipes/share/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/recipes/share/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/recipes/share/</guid>
       <description>
         
         
         &lt;p&gt;A recipe can be shared to anyone who has the share link.&lt;/p&gt;
-&lt;p&gt;To generate the link, you first must &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/features/recipes/view&#34; &gt;view a recipe&lt;/a&gt;. Then, click the share icon to the right of the
+&lt;p&gt;To generate the link, you first must &lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/features/recipes/view&#34; &gt;view a recipe&lt;/a&gt;. Then, click the share icon to the right of the
 recipe&amp;rsquo;s title.&lt;/p&gt;
 &lt;p&gt;
     &lt;img src=&#34;../sharing-icon.webp&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
@@ -342,15 +342,15 @@ shared recipe because no two UUID is the same.&lt;/p&gt;
     
     <item>
       <title>Print</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/recipes/print/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/recipes/print/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/recipes/print/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/recipes/print/</guid>
       <description>
         
         
         &lt;p&gt;A recipe can be printed for your convenience and preference.&lt;/p&gt;
-&lt;p&gt;To print, you first must &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/features/recipes/view&#34; &gt;view a recipe&lt;/a&gt;. Then, click the printer icon to the right of the
+&lt;p&gt;To print, you first must &lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/features/recipes/view&#34; &gt;view a recipe&lt;/a&gt;. Then, click the printer icon to the right of the
 recipe&amp;rsquo;s title.&lt;/p&gt;
 &lt;p&gt;
     &lt;img src=&#34;../print-icon.webp&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
@@ -363,10 +363,10 @@ recipe&amp;rsquo;s title.&lt;/p&gt;
     
     <item>
       <title>Wakelock</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/recipes/wakelock/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/recipes/wakelock/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/recipes/wakelock/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/recipes/wakelock/</guid>
       <description>
         
         

@@ -1,12 +1,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Recipya – Introduction</title>
-    <link>https://recipes.musicavis.ca/docs/docs/</link>
+    <link>https://recipes.musicavis.ca/guide/docs/</link>
     <description>Recent content in Introduction on Recipya</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     
-	  <atom:link href="https://recipes.musicavis.ca/docs/docs/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="https://recipes.musicavis.ca/guide/docs/index.xml" rel="self" type="application/rss+xml" />
     
     
       
@@ -16,10 +16,10 @@
     
     <item>
       <title>Add</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/recipes/add/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/recipes/add/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/recipes/add/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/recipes/add/</guid>
       <description>
         
         
@@ -95,7 +95,7 @@ This option is useful for digitizing your and your family&amp;rsquo;s paper reci
 
   &lt;div class=&#34;w-full min-w-0 leading-7&#34;&gt;
     &lt;div class=&#34;mt-6 leading-7 first:mt-0&#34;&gt;
-      You must have an &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/installation/system-requirements#azure-ai-vision&#34; &gt;Azure AI Vision&lt;/a&gt; account to use this feature.
+      You must have an &lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/installation/system-requirements#azure-ai-vision&#34; &gt;Azure AI Vision&lt;/a&gt; account to use this feature.
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
@@ -129,10 +129,10 @@ file. All other files in a folder will be ignored during processing. Here is an
     
     <item>
       <title>Create</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/cookbooks/add/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/cookbooks/add/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/cookbooks/add/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/cookbooks/add/</guid>
       <description>
         
         
@@ -160,10 +160,10 @@ appear below the search box. Queries are case-insensitive.&lt;/p&gt;
     
     <item>
       <title>Introduction</title>
-      <link>https://recipes.musicavis.ca/docs/docs/development/intro/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/development/intro/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/development/intro/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/development/intro/</guid>
       <description>
         
         
@@ -224,18 +224,18 @@ appear below the search box. Queries are case-insensitive.&lt;/p&gt;
     
     <item>
       <title>Local Network</title>
-      <link>https://recipes.musicavis.ca/docs/docs/deployment/local-network/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/deployment/local-network/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/deployment/local-network/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/deployment/local-network/</guid>
       <description>
         
         
         &lt;p&gt;The project can be self-hosted network-wide over your local network for access from devices other than the computer
 you installed the application on.&lt;/p&gt;
 &lt;h2&gt;Docker&lt;span class=&#34;absolute -mt-20&#34; id=&#34;docker&#34;&gt;&lt;/span&gt;
-    &lt;a href=&#34;#docker&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/installation/docker&#34; &gt;installing the Docker&lt;/a&gt; image, you can access
-the site network wide via at http://[host computer IP]:&lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/installation/config-file&#34; &gt;[port]&lt;/a&gt;.&lt;/p&gt;
+    &lt;a href=&#34;#docker&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After &lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/installation/docker&#34; &gt;installing the Docker&lt;/a&gt; image, you can access
+the site network wide via at http://[host computer IP]:&lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/installation/config-file&#34; &gt;[port]&lt;/a&gt;.&lt;/p&gt;
 &lt;h2&gt;Nightly Build&lt;span class=&#34;absolute -mt-20&#34; id=&#34;nightly-build&#34;&gt;&lt;/span&gt;
     &lt;a href=&#34;#nightly-build&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Linux&lt;span class=&#34;absolute -mt-20&#34; id=&#34;linux&#34;&gt;&lt;/span&gt;
     &lt;a href=&#34;#linux&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Create a service to run the app automatically on boot.&lt;/p&gt;
@@ -280,7 +280,7 @@ the site network wide via at http://[host computer IP]:&lt;a href=&#34;https://r
     &lt;/button&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;You can now access the application on your local network at http://[host computer IP]:&lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/installation/config-file&#34; &gt;[port]&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;You can now access the application on your local network at http://[host computer IP]:&lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/installation/config-file&#34; &gt;[port]&lt;/a&gt;.&lt;/p&gt;
 &lt;h3&gt;Windows&lt;span class=&#34;absolute -mt-20&#34; id=&#34;windows&#34;&gt;&lt;/span&gt;
     &lt;a href=&#34;#windows&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The feasibility on Windows remains to be explored.&lt;/p&gt;
 
@@ -289,10 +289,10 @@ the site network wide via at http://[host computer IP]:&lt;a href=&#34;https://r
     
     <item>
       <title>Prerequisites</title>
-      <link>https://recipes.musicavis.ca/docs/docs/installation/system-requirements/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/installation/system-requirements/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/installation/system-requirements/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/installation/system-requirements/</guid>
       <description>
         
         
@@ -380,7 +380,7 @@ innovative computer vision capabilities. It gives apps the ability to analyze im
 with prebuilt image tagging, text extraction with optical character recognition (OCR), and responsible facial
 recognition. Microsoft offers a &lt;a href=&#34;https://azure.microsoft.com/en-us/pricing/details/cognitive-services/computer-vision/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;free plan&lt;/a&gt;
 that allows you to perform 5000 transactions per month.&lt;/p&gt;
-&lt;p&gt;Within Recipya, this service is used to &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/features/recipes/add#scan&#34; &gt;digitize recipes&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Within Recipya, this service is used to &lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/features/recipes/add#scan&#34; &gt;digitize recipes&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;If you do not plan on digitizing paper recipes, then leave the &lt;code&gt;integrations.azureComputerVision.resourceKey&lt;/code&gt; and
 &lt;code&gt;integrations.azureComputerVision.visionEndpoint&lt;/code&gt; fields in the &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/deploy/config.example.json&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;configuration file&lt;/a&gt;
 empty. This feature will then be disabled.&lt;/p&gt;
@@ -390,10 +390,10 @@ empty. This feature will then be disabled.&lt;/p&gt;
     
     <item>
       <title>Configuration File</title>
-      <link>https://recipes.musicavis.ca/docs/docs/installation/config-file/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/installation/config-file/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/installation/config-file/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/installation/config-file/</guid>
       <description>
         
         
@@ -431,10 +431,10 @@ sets important variables for the application. Let&amp;rsquo;s go over each of th
     
     <item>
       <title>Dependencies</title>
-      <link>https://recipes.musicavis.ca/docs/docs/development/dependencies/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/development/dependencies/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/development/dependencies/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/development/dependencies/</guid>
       <description>
         
         
@@ -485,10 +485,10 @@ To verify whether it&amp;rsquo;s installed on your machine, execute &lt;code&gt;
     
     <item>
       <title>View</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/recipes/view/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/recipes/view/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/recipes/view/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/recipes/view/</guid>
       <description>
         
         
@@ -576,10 +576,10 @@ not be scaled. This limitation will be addressed in the future.
     
     <item>
       <title>Web Hosting</title>
-      <link>https://recipes.musicavis.ca/docs/docs/deployment/internet/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/deployment/internet/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/deployment/internet/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/deployment/internet/</guid>
       <description>
         
         
@@ -590,10 +590,10 @@ not be scaled. This limitation will be addressed in the future.
     
     <item>
       <title>Build</title>
-      <link>https://recipes.musicavis.ca/docs/docs/development/build/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/development/build/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/development/build/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/development/build/</guid>
       <description>
         
         
@@ -620,7 +620,7 @@ not be scaled. This limitation will be addressed in the future.
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;Start the server. You will go through the interactive setup process if
-your &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/installation/config-file&#34; &gt;configuration file&lt;/a&gt; is nonexistent.&lt;/p&gt;
+your &lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/installation/config-file&#34; &gt;configuration file&lt;/a&gt; is nonexistent.&lt;/p&gt;
 &lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;./bin/recipya serve&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
     &lt;button
       class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
@@ -638,10 +638,10 @@ your &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/installation/config-
     
     <item>
       <title>Docker</title>
-      <link>https://recipes.musicavis.ca/docs/docs/installation/docker/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/installation/docker/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/installation/docker/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/installation/docker/</guid>
       <description>
         
         
@@ -661,7 +661,7 @@ is produced nightly.&lt;/p&gt;
     &lt;/button&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;Then, run the image. You must pass your &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/installation/config-file&#34; &gt;config.json&lt;/a&gt; file to the container.&lt;/p&gt;
+&lt;p&gt;Then, run the image. You must pass your &lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/installation/config-file&#34; &gt;config.json&lt;/a&gt; file to the container.&lt;/p&gt;
 &lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker run -v path/to/config.json:/app/config.json -p &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;host port&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;:&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;port specified in config.json&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; -d reaper99/recipya:nightly reaper99/recipya:nightly&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
     &lt;button
       class=&#34;code-copy-btn group/copybtn transition-all active:opacity-50 bg-primary-700/5 border border-black/5 text-gray-600 hover:text-gray-900 rounded-md p-1.5 dark:bg-primary-300/10 dark:border-white/10 dark:text-gray-400 dark:hover:text-gray-50&#34;
@@ -674,7 +674,7 @@ is produced nightly.&lt;/p&gt;
 &lt;/div&gt;
 &lt;h2&gt;Using Docker Compose&lt;span class=&#34;absolute -mt-20&#34; id=&#34;using-docker-compose&#34;&gt;&lt;/span&gt;
     &lt;a href=&#34;#using-docker-compose&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;You can use Docker Compose to run the container. First, you need to modify the ports and the path to your local
-&lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/installation/config-file&#34; &gt;config.json&lt;/a&gt; in the &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/deploy/compose.yaml&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;compose.yaml&lt;/a&gt;.
+&lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/installation/config-file&#34; &gt;config.json&lt;/a&gt; in the &lt;a href=&#34;https://github.com/reaper47/recipya/blob/main/deploy/compose.yaml&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;compose.yaml&lt;/a&gt;.
 Then, start the application.&lt;/p&gt;
 &lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker-compose up -d&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
     &lt;button
@@ -695,10 +695,10 @@ inbound Windows Defender Firewall rule.&lt;/p&gt;
     
     <item>
       <title>Edit</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/cookbooks/edit/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/cookbooks/edit/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/cookbooks/edit/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/cookbooks/edit/</guid>
       <description>
         
         
@@ -743,14 +743,14 @@ release the mouse. The pages will be immediately updated.&lt;/p&gt;
     
     <item>
       <title>Edit</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/recipes/edit/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/recipes/edit/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/recipes/edit/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/recipes/edit/</guid>
       <description>
         
         
-        &lt;p&gt;To edit a recipe in your collection, you first must &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/features/recipes/view&#34; &gt;view&lt;/a&gt; a recipe.
+        &lt;p&gt;To edit a recipe in your collection, you first must &lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/features/recipes/view&#34; &gt;view&lt;/a&gt; a recipe.
 Then, click the pencil icon to the left of the recipe&amp;rsquo;s title.&lt;/p&gt;
 &lt;p&gt;
     &lt;img src=&#34;../edit-recipe-enter.webp&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
@@ -764,10 +764,10 @@ Press the blue &lt;strong&gt;Update&lt;/strong&gt; button at the bottom of the f
     
     <item>
       <title>Measurement Systems</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/measurement-systems/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/measurement-systems/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/measurement-systems/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/measurement-systems/</guid>
       <description>
         
         
@@ -830,10 +830,10 @@ if the &lt;strong&gt;Convert automatically&lt;/strong&gt; checkbox is checked. O
     
     <item>
       <title>Delete</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/cookbooks/delete/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/cookbooks/delete/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/cookbooks/delete/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/cookbooks/delete/</guid>
       <description>
         
         
@@ -882,14 +882,14 @@ However, its recipes will be left untouched.
     
     <item>
       <title>Delete</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/recipes/delete/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/recipes/delete/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/recipes/delete/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/recipes/delete/</guid>
       <description>
         
         
-        &lt;p&gt;To delete a recipe from your collection, you first must &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/features/recipes/view&#34; &gt;view&lt;/a&gt; a recipe.
+        &lt;p&gt;To delete a recipe from your collection, you first must &lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/features/recipes/view&#34; &gt;view&lt;/a&gt; a recipe.
 Then, click the trashcan icon to the right of the recipe&amp;rsquo;s title. You will be prompted whether
 you want to proceed before deletion.&lt;/p&gt;
 &lt;p&gt;
@@ -930,17 +930,17 @@ you want to proceed before deletion.&lt;/p&gt;
     
     <item>
       <title>Nightly Build</title>
-      <link>https://recipes.musicavis.ca/docs/docs/installation/nightly-build/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/installation/nightly-build/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/installation/nightly-build/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/installation/nightly-build/</guid>
       <description>
         
         
         &lt;p&gt;A portable, standalone build is available on the &lt;a href=&#34;https://github.com/reaper47/recipya/releases/tag/nightly&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;releases page&lt;/a&gt;.
 It is updated nightly if the main branch has new commits.&lt;/p&gt;
 &lt;p&gt;First, download and extract the zip file compatible with your system.
-Please consult the &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/installation/system-requirements&#34; &gt;supported platforms&lt;/a&gt; table if you are unsure which file to download.&lt;/p&gt;
+Please consult the &lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/installation/system-requirements&#34; &gt;supported platforms&lt;/a&gt; table if you are unsure which file to download.&lt;/p&gt;
 &lt;p&gt;Then, start the server by opening a command prompt in the folder, and run the following command.
 The application will perform a one-time setup if not already done.&lt;/p&gt;
 &lt;div class=&#34;code-block relative mt-6 first:mt-0 group/code&#34;&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;./recipya-&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;os&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;architecture&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; serve&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;opacity-0 transition group-hover/code:opacity-100 flex gap-1 absolute m-[11px] right-0 top-0&#34;&gt;
@@ -991,10 +991,10 @@ build and replace your existing &lt;code&gt;recipya&lt;/code&gt; executable with
     
     <item>
       <title>Test</title>
-      <link>https://recipes.musicavis.ca/docs/docs/development/test/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/development/test/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/development/test/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/development/test/</guid>
       <description>
         
         
@@ -1017,7 +1017,7 @@ when you open a pull request against the main branch.&lt;/p&gt;
 &lt;a href=&#34;https://www.codemag.com/Article/1901071/10-Reasons-Why-Unit-Testing-Matters&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;article&lt;/a&gt; explains why
 unit testing matters.&lt;/p&gt;
 &lt;p&gt;You will see many files under the &lt;code&gt;internal&lt;/code&gt; folder that finish with &lt;code&gt;*_test.go&lt;/code&gt;. That is where tests are written.
-Please refer to the &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/development/workflow&#34; &gt;development workflow&lt;/a&gt; section for more information and examples.&lt;/p&gt;
+Please refer to the &lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/development/workflow&#34; &gt;development workflow&lt;/a&gt; section for more information and examples.&lt;/p&gt;
 &lt;p&gt;Please feel free to add as many tests as you deem fit to any of those files.&lt;/p&gt;
 
       </description>
@@ -1025,10 +1025,10 @@ Please refer to the &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/devel
     
     <item>
       <title>Download</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/cookbooks/download/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/cookbooks/download/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/cookbooks/download/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/cookbooks/download/</guid>
       <description>
         
         
@@ -1045,10 +1045,10 @@ downloaded immediately.&lt;/p&gt;
     
     <item>
       <title>Search</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/recipes/search/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/recipes/search/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/recipes/search/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/recipes/search/</guid>
       <description>
         
         
@@ -1075,10 +1075,10 @@ Type your keywords delimited by either a space, comma or both. Then press the en
     
     <item>
       <title>Share</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/cookbooks/share/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/cookbooks/share/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/cookbooks/share/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/cookbooks/share/</guid>
       <description>
         
         
@@ -1099,10 +1099,10 @@ Any of its recipes can then be viewed without the need to log in.&lt;/p&gt;
     
     <item>
       <title>Windows Users</title>
-      <link>https://recipes.musicavis.ca/docs/docs/installation/windows-users/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/installation/windows-users/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/installation/windows-users/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/installation/windows-users/</guid>
       <description>
         
         
@@ -1122,10 +1122,10 @@ Any of its recipes can then be viewed without the need to log in.&lt;/p&gt;
     
     <item>
       <title>Nutrition Facts</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/nutrition-facts/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/nutrition-facts/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/nutrition-facts/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/nutrition-facts/</guid>
       <description>
         
         
@@ -1178,15 +1178,15 @@ on GitHub if you ever notice a recipe with nutritional information that seems va
     
     <item>
       <title>Share</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/recipes/share/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/recipes/share/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/recipes/share/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/recipes/share/</guid>
       <description>
         
         
         &lt;p&gt;A recipe can be shared to anyone who has the share link.&lt;/p&gt;
-&lt;p&gt;To generate the link, you first must &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/features/recipes/view&#34; &gt;view a recipe&lt;/a&gt;. Then, click the share icon to the right of the
+&lt;p&gt;To generate the link, you first must &lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/features/recipes/view&#34; &gt;view a recipe&lt;/a&gt;. Then, click the share icon to the right of the
 recipe&amp;rsquo;s title.&lt;/p&gt;
 &lt;p&gt;
     &lt;img src=&#34;../sharing-icon.webp&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
@@ -1201,10 +1201,10 @@ shared recipe because no two UUID is the same.&lt;/p&gt;
     
     <item>
       <title>Export Data</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/my-first-post/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/my-first-post/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/my-first-post/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/my-first-post/</guid>
       <description>
         
         
@@ -1234,15 +1234,15 @@ convention &lt;code&gt;{recipe name}.pdf&lt;/code&gt;.&lt;/p&gt;
     
     <item>
       <title>Print</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/recipes/print/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/recipes/print/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/recipes/print/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/recipes/print/</guid>
       <description>
         
         
         &lt;p&gt;A recipe can be printed for your convenience and preference.&lt;/p&gt;
-&lt;p&gt;To print, you first must &lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/features/recipes/view&#34; &gt;view a recipe&lt;/a&gt;. Then, click the printer icon to the right of the
+&lt;p&gt;To print, you first must &lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/features/recipes/view&#34; &gt;view a recipe&lt;/a&gt;. Then, click the printer icon to the right of the
 recipe&amp;rsquo;s title.&lt;/p&gt;
 &lt;p&gt;
     &lt;img src=&#34;../print-icon.webp&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
@@ -1255,10 +1255,10 @@ recipe&amp;rsquo;s title.&lt;/p&gt;
     
     <item>
       <title>Integrations</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/integrations/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/integrations/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/integrations/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/integrations/</guid>
       <description>
         
         
@@ -1306,7 +1306,7 @@ Follow these steps to import your recipes from a Nextcloud Cookbook instance:&lt
 &lt;p&gt;Your recipes will be swiftly transferred from Nextcloud Cookbook to Recipya.&lt;/p&gt;
 &lt;h2&gt;MasterCook&lt;span class=&#34;absolute -mt-20&#34; id=&#34;mastercook&#34;&gt;&lt;/span&gt;
     &lt;a href=&#34;#mastercook&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;You can import your MasterCook recipes from the import button on the
-&lt;a href=&#34;https://recipes.musicavis.ca/docs/docs/features/recipes/add#import&#34; &gt;add recipe page&lt;/a&gt;. You can either upload a single &lt;code&gt;.mxp&lt;/code&gt; file or a zip archive
+&lt;a href=&#34;https://recipes.musicavis.ca/guide/docs/features/recipes/add#import&#34; &gt;add recipe page&lt;/a&gt;. You can either upload a single &lt;code&gt;.mxp&lt;/code&gt; file or a zip archive
 containing multiple &lt;code&gt;.mxp&lt;/code&gt; files.&lt;/p&gt;
 &lt;p&gt;This &lt;a href=&#34;https://www.grassrootsrecipes.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;website&lt;/a&gt; contains endless MasterCook recipe collections for you to try.&lt;/p&gt;
 
@@ -1315,10 +1315,10 @@ containing multiple &lt;code&gt;.mxp&lt;/code&gt; files.&lt;/p&gt;
     
     <item>
       <title>Wakelock</title>
-      <link>https://recipes.musicavis.ca/docs/docs/features/recipes/wakelock/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/features/recipes/wakelock/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/features/recipes/wakelock/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/features/recipes/wakelock/</guid>
       <description>
         
         
@@ -1406,10 +1406,10 @@ is on, the wakelock is enabled and the screen will not sleep.&lt;/p&gt;
     
     <item>
       <title>Add an Endpoint</title>
-      <link>https://recipes.musicavis.ca/docs/docs/development/workflow/add-endpoint/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/development/workflow/add-endpoint/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/development/workflow/add-endpoint/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/development/workflow/add-endpoint/</guid>
       <description>
         
         
@@ -1650,10 +1650,10 @@ shall find a way to organize the statements per database type.&lt;/p&gt;
     
     <item>
       <title>Support a Website</title>
-      <link>https://recipes.musicavis.ca/docs/docs/development/workflow/import-website/</link>
+      <link>https://recipes.musicavis.ca/guide/docs/development/workflow/import-website/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://recipes.musicavis.ca/docs/docs/development/workflow/import-website/</guid>
+      <guid>https://recipes.musicavis.ca/guide/docs/development/workflow/import-website/</guid>
       <description>
         
         
