@@ -2,5 +2,5 @@ package docs
 
 import "embed"
 
-//go:embed site/public
+//go:embed website/public
 var FS embed.FS

@@ -63,7 +63,7 @@ func (s *Server) mountHandlers() {
 
 	r.Get("/", s.indexHandler)
 
-	subFS, _ := fs.Sub(docs.FS, "site/public")
+	subFS, _ := fs.Sub(docs.FS, "website/public")
 	r.Get("/guide*", http.StripPrefix("/guide", http.FileServer(http.FS(subFS))).ServeHTTP)
 	r.Get("/guide/login", guideLoginHandler)
 	r.Get("/static/*", http.StripPrefix("/static", http.FileServer(http.FS(static.FS))).ServeHTTP)
