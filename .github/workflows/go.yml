@@ -31,13 +31,6 @@ jobs:
           hugo-version: "latest"
           extended: true
 
-      - uses: actions/cache@v3
-        with:
-          path: /home/runner/.cache/hugo_cache
-          key: ${{ runner.os }}-hugomod-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-hugomod-
-
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v3.7.0
         with:
