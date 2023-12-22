@@ -1,36 +1,19 @@
-<h1 style="text-align: center">Recipya</h1>
+# Recipya
 
-<p align="center">
-  <a href="https://github.com/reaper47/recipya/actions/workflows/go.yml" rel="nofollow">
-    <img src="https://img.shields.io/github/actions/workflow/status/reaper47/recipya/go.yml?branch=main&logo=Github" alt="Build" />
-  </a>
-  <a href="https://goreportcard.com/report/github.com/reaper47/recipya">
-    <img src="https://goreportcard.com/badge/github.com/reaper47/recipya" alt="Report" />
-  </a>
-  <a href="https://github.com/reaper47/recipya/issues">
-    <img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat" alt="CodeFactor" />
-  </a>
-  <br/>
-  <a href="https://github.com/reaper47/recipya/tags" rel="nofollow">
-    <img alt="GitHub tag (latest SemVer pre-release)" src="https://img.shields.io/github/v/tag/reaper47/recipya?include_prereleases&label=version"/>
-  </a>
-  <a href="https://github.com/reaper47/recipya/blob/master/LICENSE">
-    <img alt="GitHub" src="https://img.shields.io/github/license/reaper47/recipya"/>
-  </a>
-</p>
+[![Build](https://img.shields.io/github/actions/workflow/status/reaper47/recipya/go.yml?branch=main&logo=Github)](https://github.com/reaper47/recipya/actions/workflows/go.yml)
+[![Report](https://goreportcard.com/badge/github.com/reaper47/recipya)](https://goreportcard.com/report/github.com/reaper47/recipya)
+[![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/reaper47/recipya/issues)
 
-<div align="center">
-<strong>
+[![GitHub tag](https://img.shields.io/github/v/tag/reaper47/recipya?include_prereleases&label=version)](https://github.com/reaper47/recipya/tags)
+[![License](https://img.shields.io/github/license/reaper47/recipya)](./LICENSE)
+
 
 [Explore the docs](https://recipes.musicavis.ca/guide/docs/) · 
 [Demo](https://recipes.musicavis.ca)
 
-</strong>
-</div>
-
 ## Introduction
 
-A clean recipe manager web application for unforgettable family recipes, empowering you to curate and share your favorite recipes.
+A clean, simple and powerful recipe manager web application for unforgettable family recipes, empowering you to curate and share your favorite recipes.
 It is focused on simplicity for the whole family to enjoy.
 
 ## Features
