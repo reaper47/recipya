@@ -1,7 +1,6 @@
 ---
 title: "Export Data"
 weight: 7
-slug: my-first-post
 ---
 
 It is possible to download your data through the settings. To access them, click on your avatar in the top right
