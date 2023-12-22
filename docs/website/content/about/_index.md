@@ -4,7 +4,7 @@ cascade:
   type: docs
 ---
 
-A clean recipe manager web application for unforgettable family recipes, empowering you to curate and share your favorite recipes.
+A clean, simple and powerful recipe manager web application for unforgettable family recipes, empowering you to curate and share your favorite recipes.
 It is focused on simplicity for the whole family to enjoy.
 
 ## Features
@@ -45,9 +45,6 @@ You can sponsor me on
 [Buy Me a Coffee](https://www.buymeacoffee.com/macpoule).
 
 Your support is greatly appreciated! A third of donations will be sent to the Armed Forces of Ukraine 🇺🇦
-
-This project is supported by these kind people:
-<img src="docs/website/static/img/sponsors.svg" style="width:100%;max-width:800px;"/>
 
 ## Other Recipe Manager Apps
 
