@@ -22,8 +22,8 @@
 <div align="center">
 <strong>
 
-[Explore the docs](https://reaper47.github.io/recipya/) · 
-[Demo](https://recipes.musicavis.ca/)
+[Explore the docs](https://recipes.musicavis.ca/guide/docs/) · 
+[Demo](https://recipes.musicavis.ca)
 
 </strong>
 </div>
@@ -49,7 +49,7 @@ It is focused on simplicity for the whole family to enjoy.
 
 ## Getting Started
 
-The installation instructions are on the [official website](https://reaper47.github.io/recipya/docs/category/installation).
+The installation instructions are written in the [installation section](https://recipes.musicavis.ca/guide/docs/installation/) of the documentation.
 
 ## Contributing
 
