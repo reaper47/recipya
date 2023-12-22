@@ -250,6 +250,10 @@ func (s *Server) loginPostHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusSeeOther)
 }
 
+func guideLoginHandler(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "/auth/login", http.StatusSeeOther)
+}
+
 func registerHandler(w http.ResponseWriter, _ *http.Request) {
 	page := templates.RegisterPage
 	templates.Render(w, page, templates.Data{Title: page.Title()})

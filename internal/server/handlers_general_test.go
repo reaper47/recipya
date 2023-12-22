@@ -55,10 +55,10 @@ func TestHandlers_General_Index(t *testing.T) {
 	t.Run("anonymous access", func(t *testing.T) {
 		rr := sendRequest(srv, http.MethodGet, uri, noHeader, nil)
 
+		assertStatus(t, rr.Code, http.StatusSeeOther)
 		got := getBodyHTML(rr)
 		want := []string{
-			`<title hx-swap-oob="true">Home | Recipya</title>`,
-			`<h1 class="mb-4 text-2xl font-bold leading-tight text-white md:text-5xl"> A powerful recipe manager that will blow your kitchen away </h1>`,
+			`<a href="/guide">See Other</a>`,
 		}
 		assertStringsInHTML(t, got, want)
 		notWant := []string{

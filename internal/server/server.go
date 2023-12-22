@@ -6,12 +6,14 @@ import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
+	"github.com/reaper47/recipya/docs"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/jobs"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services"
 	_ "github.com/reaper47/recipya/internal/templates" // Need to initialize the templates package.
 	"github.com/reaper47/recipya/static"
+	"io/fs"
 	"net/http"
 	"os"
 	"os/signal"
@@ -60,6 +62,14 @@ func (s *Server) mountHandlers() {
 	r := chi.NewRouter()
 
 	r.Get("/", s.indexHandler)
+
+	subFS, _ := fs.Sub(docs.FS, "website/public")
+	r.Get("/guide*", http.StripPrefix("/guide", http.FileServer(http.FS(subFS))).ServeHTTP)
+	r.Get("/guide/login", guideLoginHandler)
+	r.Get("/static/*", http.StripPrefix("/static", http.FileServer(http.FS(static.FS))).ServeHTTP)
+	r.Get("/data/images/*", http.StripPrefix("/data/images", http.FileServer(http.Dir(imagesDir))).ServeHTTP)
+
+	r.NotFound(notFoundHandler)
 
 	r.Route("/r", func(r chi.Router) {
 		r.Get("/{id:[1-9]([0-9])*}", s.recipesViewShareHandler)
@@ -200,17 +210,6 @@ func (s *Server) mountHandlers() {
 		r.Get("/download/{tmpFile}", s.downloadHandler)
 		r.Get("/user-initials", s.userInitialsHandler)
 		r.Get("/ws", s.wsHandler)
-	})
-
-	r.NotFound(notFoundHandler)
-
-	staticFS := http.FileServer(http.FS(static.FS))
-	r.Get("/static/*", func(w http.ResponseWriter, r *http.Request) {
-		http.StripPrefix("/static", staticFS).ServeHTTP(w, r)
-	})
-
-	r.Get("/data/images/*", func(w http.ResponseWriter, r *http.Request) {
-		http.StripPrefix("/data/images", http.FileServer(http.Dir(imagesDir))).ServeHTTP(w, r)
 	})
 
 	s.Router = r

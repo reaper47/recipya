@@ -1,8 +1,0 @@
-{
-  "label": "Deployment",
-  "position": 3,
-  "link": {
-    "type": "generated-index",
-    "description": "Learn how to deploy Recipya to the whole world. The application can be self-hosted."
-  }
-}

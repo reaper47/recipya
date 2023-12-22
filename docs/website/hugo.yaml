@@ -1,0 +1,105 @@
+baseURL: https://recipes.musicavis.ca/guide/
+title: Recipya
+theme: hextra
+
+enableInlineShortcodes: true
+enableRobotsTXT: true
+enableGitInfo: true
+
+languageCode: en-us
+defaultContentLanguage: en
+languages:
+  en:
+    languageName: English
+    weight: 1
+    title: Recipya
+  fr:
+    languageName: Français
+    weight: 2
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  highlight:
+    noClasses: false
+
+params:
+  description: A clean and powerful recipe manager your whole family can enjoy.
+
+  author:
+    email: macpoule@gmail.com
+    name: Marc-André Charland
+  contact:
+    email: macpoule@gmail.com
+    name: Marc-André Charland
+
+  editURL:
+    enable: true
+    base: "https://github.com/reaper47/recipya/edit/main/docs/website"
+
+  blog:
+    list:
+      displayTags: true
+
+  navbar:
+    displayTitle: true
+    displayLogo: true
+    logo:
+      path: images/logo.png
+      dark: images/logo.png
+      link: /
+      width: 25
+      height: 25
+
+  page:
+    width: normal
+
+  theme:
+    default: system
+    displayToggle: false
+
+  footer:
+    enable: true
+    displayCopyright: false
+    displayPoweredBy: true
+    width: normal
+
+    displayUpdatedDate: true
+    dateFormat: "January 2, 2006"
+
+menu:
+  main:
+    - name: Open App
+      params:
+        rel: external
+      url: /login
+      weight: 1
+    - identifier: documentation
+      name: Documentation
+      pageRef: /docs
+      weight: 2
+    - identifier: blog
+      name: Blog
+      pageRef: /blog
+      weight: 3
+    - identifier: about
+      name: About
+      pageRef: /about
+      weight: 4
+    - identifier: searchPlaceholder
+      name: Search
+      weight: 5
+      params:
+        type: search
+    - identifier: sponsor
+      name: Sponsor
+      url: "https://github.com/sponsors/reaper47"
+      weight: 6
+      params:
+        icon: heart
+    - name: GitHub
+      weight: 7
+      url: "https://github.com/reaper47/recipya"
+      params:
+        icon: github
