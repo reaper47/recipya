@@ -39,12 +39,6 @@ jobs:
           go-version: "1.21"
           cache: false
 
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
-        with:
-          hugo-version: "latest"
-          extended: true
-
       - name: Build
         run: |
           go run ./releases/main.go -package github.com/reaper47/recipya -tag nightly

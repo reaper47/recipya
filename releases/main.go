@@ -72,7 +72,7 @@ func build(platform, packageName, tag string) {
 	cmd.Env = append(os.Environ(), fmt.Sprintf("GOOS=%s", goos), fmt.Sprintf("GOARCH=%s", goarch))
 	err := cmd.Run()
 	if err != nil {
-		fmt.Printf("Running the build command failed: %q.\nAborting the script execution...\n", err)
+		fmt.Printf("Running the build command failed %#v: %q.\nAborting the script execution...\n", cmd.Args, err)
 		os.Exit(1)
 	}
 
