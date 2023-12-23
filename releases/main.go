@@ -68,11 +68,11 @@ func build(platform, packageName, tag string) {
 		outputName += ".exe"
 	}
 
-	cmd := exec.Command("go", "build", "-ldflags=-s -w", "-o", outputName, packageName)
+	cmd := exec.Command("go", "build", "-ldflags=-s -w", "-o", outputName)
 	cmd.Env = append(os.Environ(), fmt.Sprintf("GOOS=%s", goos), fmt.Sprintf("GOARCH=%s", goarch))
-	err := cmd.Run()
+	out, err := cmd.Output()
 	if err != nil {
-		fmt.Printf("Running the build command failed %#v: %q.\nAborting the script execution...\n", cmd.Args, err)
+		fmt.Printf("Running the build command failed %q for %#v: %q.\nAborting the script execution...\n", out, cmd.Args, err)
 		os.Exit(1)
 	}
 
