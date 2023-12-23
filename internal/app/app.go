@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	Version        = "1.0.0" // The current version of the application.
+	Version        = "1.0.0" // Version represents the current version of the application.
 	configFileName = "config.json"
 )
 
