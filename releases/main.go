@@ -63,16 +63,16 @@ func buildRelease(packageName, tag string) {
 
 func build(platform, packageName, tag string) {
 	goos, goarch, _ := strings.Cut(platform, "/")
-	outputName := fmt.Sprintf("builds/recipya-%s-%s", goos, goarch)
+	outputName := fmt.Sprintf("builds/%s-%s-%s", packageName, goos, goarch)
 	if goos == "windows" {
 		outputName += ".exe"
 	}
 
-	cmd := exec.Command("go", "build", "-ldflags=-s -w", "-o", outputName, packageName)
+	cmd := exec.Command("go", "build", "-ldflags=-s -w", "-v", "-o", outputName, packageName)
 	cmd.Env = append(os.Environ(), fmt.Sprintf("GOOS=%s", goos), fmt.Sprintf("GOARCH=%s", goarch))
 	err := cmd.Run()
 	if err != nil {
-		fmt.Printf("Running the build command failed %#v: %q.\nAborting the script execution...\n", cmd.Args, err)
+		fmt.Printf("Running the build command failed: %q.\nAborting the script execution...\n", err)
 		os.Exit(1)
 	}
 
