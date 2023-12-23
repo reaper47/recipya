@@ -150,7 +150,7 @@ func (s *SQLiteService) AddCookbookRecipe(cookbookID, recipeID, userID int64) er
 }
 
 // AddRecipe adds a recipe to the user's collection.
-func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (uint64, error) {
+func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
@@ -313,17 +313,11 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (uint64, error
 		}
 	}
 
-	var counts models.Counts
-	err = tx.QueryRowContext(ctx, statements.SelectCounts, userID).Scan(&counts.Cookbooks, &counts.Recipes)
-	if err != nil {
-		return 0, err
-	}
-
 	_, err = tx.ExecContext(ctx, statements.InsertRecipeShadow, recipeID, r.Name, r.Description, r.URL)
 	if err != nil {
 		return 0, err
 	}
-	return counts.Recipes, tx.Commit()
+	return recipeID, tx.Commit()
 }
 
 // AddShareLink adds a share link for the recipe.

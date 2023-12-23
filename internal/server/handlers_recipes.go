@@ -259,7 +259,7 @@ func (s *Server) recipeAddManualPostHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	w.Header().Set("HX-Redirect", "/recipes/"+strconv.FormatUint(recipeNumber, 10))
+	w.Header().Set("HX-Redirect", "/recipes/"+strconv.FormatInt(recipeNumber, 10))
 	w.WriteHeader(http.StatusCreated)
 }
 
@@ -529,7 +529,7 @@ func (s *Server) recipesAddWebsiteHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	w.Header().Set("HX-Redirect", "/recipes/"+strconv.FormatUint(recipeNumber, 10))
+	w.Header().Set("HX-Redirect", "/recipes/"+strconv.FormatInt(recipeNumber, 10))
 	w.WriteHeader(http.StatusSeeOther)
 }
 

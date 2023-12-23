@@ -515,7 +515,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 
 	t.Run("add recipe from supported website error", func(t *testing.T) {
 		repo := &mockRepository{RecipesRegistered: make(map[int64]models.Recipes)}
-		repo.AddRecipeFunc = func(r *models.Recipe, userID int64) (uint64, error) {
+		repo.AddRecipeFunc = func(r *models.Recipe, userID int64) (int64, error) {
 			return 0, errors.New("add recipe error")
 		}
 		srv.Repository = repo
@@ -529,7 +529,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 	t.Run("add recipe from a supported website", func(t *testing.T) {
 		repo := &mockRepository{RecipesRegistered: make(map[int64]models.Recipes)}
 		called := 0
-		repo.AddRecipeFunc = func(r *models.Recipe, userID int64) (uint64, error) {
+		repo.AddRecipeFunc = func(r *models.Recipe, userID int64) (int64, error) {
 			called++
 			return 1, nil
 		}

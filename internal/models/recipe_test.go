@@ -529,7 +529,7 @@ func TestRecipe_Scale(t *testing.T) {
 			"1 fresh pineapple, cored and cut into 3-inch pieces",
 			"Un sac de chips de 1kg",
 			"4 15-ounce can Goya beans",
-			"4 cups soupe bovril boeuf",
+			"2 cups. soupe bovril boeuf",
 		}
 		want.Yield = 8
 		assertStructsEqual(t, got, want)

@@ -12,7 +12,6 @@ const (
 	ForgotPasswordPage      Page = "forgot-password"
 	ForgotPasswordResetPage Page = "forgot-password-reset"
 	HomePage                Page = "home"
-	LandingPage             Page = "landing"
 	LoginPage               Page = "login"
 	RegisterPage            Page = "register"
 	SettingsPage            Page = "settings"
@@ -40,7 +39,7 @@ func (p Page) Title() string {
 		return "Forgot Password"
 	case ForgotPasswordResetPage:
 		return "Reset Password"
-	case HomePage, LandingPage:
+	case HomePage:
 		return "Home"
 	case LoginPage:
 		return "Login"

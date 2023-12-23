@@ -7,7 +7,6 @@
 [![GitHub tag](https://img.shields.io/github/v/tag/reaper47/recipya?include_prereleases&label=version)](https://github.com/reaper47/recipya/tags)
 [![License](https://img.shields.io/github/license/reaper47/recipya)](./LICENSE)
 
-
 [Explore the docs](https://recipes.musicavis.ca/guide/docs/) · 
 [Demo](https://recipes.musicavis.ca)
 
@@ -15,6 +14,8 @@
 
 A clean, simple and powerful recipe manager web application for unforgettable family recipes, empowering you to curate and share your favorite recipes.
 It is focused on simplicity for the whole family to enjoy.
+
+![Recipe page screenshot](.github/screenshot-recipes.png)
 
 ## Features
 
