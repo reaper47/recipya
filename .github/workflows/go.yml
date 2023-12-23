@@ -32,6 +32,9 @@ jobs:
           hugo-version: "latest"
           extended: true
 
+      - name: Build
+        run: make build
+
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v3.7.0
         with:
@@ -40,9 +43,6 @@ jobs:
 
       - name: Run Revive Action by pulling pre-built image
         uses: docker://morphy/revive-action:v2
-
-      - name: Build
-        run: make build
 
       - name: Test
         run: make test
