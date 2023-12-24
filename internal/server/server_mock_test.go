@@ -31,7 +31,7 @@ func newServerTest() *server.Server {
 
 type mockRepository struct {
 	AuthTokens                  []models.AuthToken
-	AddRecipeFunc               func(recipe *models.Recipe, userID int64) (int64, error)
+	AddRecipeFunc               func(recipe *models.Recipe, userID int64, settings models.UserSettings) (int64, error)
 	CookbooksFunc               func(userID int64) ([]models.Cookbook, error)
 	CookbooksRegistered         map[int64][]models.Cookbook
 	DeleteCookbookFunc          func(id, userID int64) error
@@ -99,9 +99,9 @@ func (m *mockRepository) AddCookbookRecipe(cookbookID, recipeID, userID int64) e
 	return nil
 }
 
-func (m *mockRepository) AddRecipe(r *models.Recipe, userID int64) (int64, error) {
+func (m *mockRepository) AddRecipe(r *models.Recipe, userID int64, settings models.UserSettings) (int64, error) {
 	if m.AddRecipeFunc != nil {
-		return m.AddRecipeFunc(r, userID)
+		return m.AddRecipeFunc(r, userID, settings)
 	}
 
 	if m.RecipesRegistered[userID] == nil {

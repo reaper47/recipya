@@ -23,7 +23,7 @@ type RepositoryService interface {
 	AddCookbookRecipe(cookbookID, recipeID, userID int64) error
 
 	// AddRecipe adds a recipe to the user's collection.
-	AddRecipe(r *models.Recipe, userID int64) (int64, error)
+	AddRecipe(r *models.Recipe, userID int64, settings models.UserSettings) (int64, error)
 
 	// AddShareLink adds a share link for the recipe.
 	AddShareLink(share models.Share) (string, error)

@@ -35,6 +35,9 @@ func createWSServer() (*server.Server, *httptest.Server, *websocket.Conn) {
 		UsersRegistered: []models.User{
 			{ID: 1, Email: "test@example.com"},
 		},
+		UserSettingsRegistered: map[int64]*models.UserSettings{
+			1: {},
+		},
 	}
 	srv.Repository = repo
 

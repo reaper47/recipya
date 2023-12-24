@@ -150,8 +150,8 @@ func (s *SQLiteService) AddCookbookRecipe(cookbookID, recipeID, userID int64) er
 }
 
 // AddRecipe adds a recipe to the user's collection.
-func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64, settings models.UserSettings) (int64, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), longerCtxTimeout)
 	defer cancel()
 
 	s.Mutex.Lock()
@@ -165,11 +165,6 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64) (int64, error)
 
 	if isRecipeExists {
 		return 0, fmt.Errorf("recipe '%s' exists for user %d", r.Name, userID)
-	}
-
-	settings, err := s.UserSettings(userID)
-	if err != nil {
-		return 0, err
 	}
 
 	if settings.ConvertAutomatically {

@@ -108,6 +108,14 @@ func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request)
 	recipes := s.Files.ExtractRecipes(files)
 	userID := getUserID(r)
 
+	settings, err := s.Repository.UserSettings(userID)
+	if err != nil {
+		log.Printf("recipesAddImportHandler.UserSettings error: %q", err)
+		w.Header().Set("HX-Trigger", makeToast("Error getting user settings.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 	var (
 		count int64
 		wg    sync.WaitGroup
@@ -116,7 +124,7 @@ func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request)
 	for _, recipe := range recipes {
 		go func(r models.Recipe) {
 			defer wg.Done()
-			_, err = s.Repository.AddRecipe(&r, userID)
+			_, err = s.Repository.AddRecipe(&r, userID, settings)
 			if err != nil {
 				return
 			}
@@ -252,7 +260,15 @@ func (s *Server) recipeAddManualPostHandler(w http.ResponseWriter, r *http.Reque
 	}
 
 	userID := getUserID(r)
-	recipeNumber, err := s.Repository.AddRecipe(recipe, userID)
+	settings, err := s.Repository.UserSettings(userID)
+	if err != nil {
+		log.Printf("recipeAddManualPostHandler.UserSettings error: %q", err)
+		w.Header().Set("HX-Trigger", makeToast("Error getting user settings.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	recipeNumber, err := s.Repository.AddRecipe(recipe, userID, settings)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not add recipe.", errorToast))
 		w.WriteHeader(http.StatusNoContent)
@@ -471,7 +487,16 @@ func (s *Server) recipesAddOCRHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = s.Repository.AddRecipe(&recipe, getUserID(r))
+	userID := getUserID(r)
+	settings, err := s.Repository.UserSettings(userID)
+	if err != nil {
+		log.Printf("recipesAddOCRHandler.UserSettings error: %q", err)
+		w.Header().Set("HX-Trigger", makeToast("Error getting user settings.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	_, err = s.Repository.AddRecipe(&recipe, userID, settings)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Recipe could not be added.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)
@@ -522,7 +547,15 @@ func (s *Server) recipesAddWebsiteHandler(w http.ResponseWriter, r *http.Request
 	}
 
 	userID := getUserID(r)
-	recipeNumber, err := s.Repository.AddRecipe(recipe, userID)
+	settings, err := s.Repository.UserSettings(userID)
+	if err != nil {
+		log.Printf("recipesAddWebsiteHandler.UserSettings error: %q", err)
+		w.Header().Set("HX-Trigger", makeToast("Error getting user settings.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	recipeNumber, err := s.Repository.AddRecipe(recipe, userID, settings)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Recipe could not be added.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)

@@ -50,6 +50,7 @@ func TestHandlers_Integrations_Nextcloud(t *testing.T) {
 		}
 		defer func() {
 			srv.Integrations = originalIntegrations
+			srv.Repository = originalRepo
 		}()
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uriImport, formHeader, strings.NewReader("username=admin&password=admin&url=http://localhost:8080"))
@@ -64,7 +65,8 @@ func TestHandlers_Integrations_Nextcloud(t *testing.T) {
 
 	t.Run("valid request", func(t *testing.T) {
 		repo := &mockRepository{
-			RecipesRegistered: make(map[int64]models.Recipes),
+			RecipesRegistered:      make(map[int64]models.Recipes),
+			UserSettingsRegistered: map[int64]*models.UserSettings{1: {}},
 		}
 		srv.Repository = repo
 		srv.Integrations = &mockIntegrations{
