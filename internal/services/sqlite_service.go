@@ -363,11 +363,13 @@ func (s *SQLiteService) CalculateNutrition(userID int64, recipes []int64, settin
 		defer cancel()
 
 		for _, id := range recipes {
+			s.Mutex.Lock()
 			recipe, err := s.Recipe(id, userID)
 			if err != nil {
 				log.Printf("CalculateNutrition.Recipe: %q", err)
 				continue
 			}
+			s.Mutex.Unlock()
 
 			if !recipe.Nutrition.Equal(models.Nutrition{}) {
 				continue
@@ -382,10 +384,12 @@ func (s *SQLiteService) CalculateNutrition(userID int64, recipes []int64, settin
 			recipe.Nutrition = nutrients.NutritionFact(weight)
 			n := recipe.Nutrition
 
+			s.Mutex.Lock()
 			_, err = s.DB.ExecContext(ctx, statements.UpdateNutrition, n.Calories, n.TotalCarbohydrates, n.Sugars, n.Protein, n.TotalFat, n.SaturatedFat, n.UnsaturatedFat, n.Cholesterol, n.Sodium, n.Fiber, id)
 			if err != nil {
 				log.Printf("CalculateNutrition.UpdateNutrition: %q", err)
 			}
+			s.Mutex.Unlock()
 		}
 	}()
 }

@@ -134,6 +134,12 @@ func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request)
 			recipeIDs = make([]int64, 0, total)
 		)
 
+		if total == 0 {
+			s.Brokers[userID].HideNotification()
+			s.Brokers[userID].SendToast("No recipes found.", "bg-orange-500")
+			return
+		}
+
 		s.Brokers[userID].SendProgress(fmt.Sprintf("Importing 1/%d", total), 1, total)
 
 		for i, recipe := range recipes {
@@ -156,7 +162,7 @@ func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request)
 		for p := range progress {
 			processed++
 			s.Brokers[userID].SendProgress(fmt.Sprintf("Importing %d/%d", processed, p.Total), processed, p.Total)
-			if processed == total-1 {
+			if processed == total {
 				close(progress)
 			}
 		}

@@ -12,8 +12,8 @@ check the **Calculate nutrition facts** setting's checkbox.
 ![](settings-nutrition-facts.webp)
 
 This setting is initially disabled because adding a recipe will take up to a few additional seconds. This happens
-because querying the nutritional database for every ingredient takes time. The processing is 
-done in the background to ensure your interaction with the application is uninterrupted.
+because querying the nutritional database for every ingredient takes time. The processing is done in the background 
+to ensure your interaction with the application is uninterrupted.
 
 Recipya does its best at calculating the nutritional information based on a recipe's ingredients. However, please 
 understand that the calculation is more indicative than absolute truth. The information is based on the U.S. Department 
