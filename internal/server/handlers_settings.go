@@ -51,9 +51,11 @@ func (s *Server) settingsConvertAutomaticallyPostHandler(w http.ResponseWriter, 
 }
 
 func (s *Server) settingsExportRecipesHandler(w http.ResponseWriter, r *http.Request) {
-	if s.Brokers == nil {
+	userID := getUserID(r)
+	_, found := s.Brokers[userID]
+	if !found {
 		w.Header().Set("HX-Trigger", makeToast("Connection lost. Please reload page.", warningToast))
-		w.WriteHeader(http.StatusInternalServerError)
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
@@ -65,23 +67,22 @@ func (s *Server) settingsExportRecipesHandler(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	go func(userID int64) {
-		err := s.Brokers[userID].SendProgressStatus("Preparing...", true, 0, -1)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
+	go func() {
+		s.Brokers[userID].SendProgressStatus("Preparing...", true, 0, -1)
 
 		recipes := s.Repository.RecipesAll(userID)
 		if len(recipes) == 0 {
 			s.Brokers[userID].HideNotification()
-			_ = s.Brokers[userID].SendToast("No recipes in database.", "bg-orange-500")
+			s.Brokers[userID].SendToast("No recipes in database.", "bg-orange-500")
 			return
 		}
 
-		iter := make(chan int)
-		errors := make(chan error, 1)
-		numRecipes := len(recipes)
+		var (
+			iter       = make(chan int)
+			errors     = make(chan error, 1)
+			numRecipes = len(recipes)
+			err        error
+		)
 
 		var data *bytes.Buffer
 		go func() {
@@ -97,26 +98,21 @@ func (s *Server) settingsExportRecipesHandler(w http.ResponseWriter, r *http.Req
 		case err := <-errors:
 			fmt.Println(err)
 			s.Brokers[userID].HideNotification()
-			_ = s.Brokers[userID].SendToast("Failed to export recipes.", "bg-error-500")
+			s.Brokers[userID].SendToast("Failed to export recipes.", "bg-error-500")
 			return
 		case <-iter:
 			for value := range iter {
-				err = s.Brokers[userID].SendProgress("Exporting recipes...", value, numRecipes)
-				if err != nil {
-					fmt.Println(err)
-					s.Brokers[userID].HideNotification()
-					return
-				}
+				s.Brokers[userID].SendProgress("Exporting recipes...", value, numRecipes)
 			}
 		}
 
 		s.Brokers[userID].HideNotification()
-		err = s.Brokers[userID].SendFile("recipes_"+qType+".zip", data)
+		s.Brokers[userID].SendFile("recipes_"+qType+".zip", data)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
-	}(getUserID(r))
+	}()
 
 	w.WriteHeader(http.StatusAccepted)
 }

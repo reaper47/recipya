@@ -149,6 +149,10 @@ func (m *mockRepository) AddShareLink(share models.Share) (string, error) {
 	return "", errors.New("cookbook or recipe not found")
 }
 
+func (m *mockRepository) CalculateNutrition(_ int64, _ []int64, _ models.UserSettings) {
+
+}
+
 func (m *mockRepository) Categories(_ int64) ([]string, error) {
 	return []string{"breakfast", "lunch", "dinner"}, nil
 }

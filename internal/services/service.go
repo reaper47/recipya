@@ -28,6 +28,10 @@ type RepositoryService interface {
 	// AddShareLink adds a share link for the recipe.
 	AddShareLink(share models.Share) (string, error)
 
+	// CalculateNutrition calculates the nutrition facts for the recipes.
+	// It is best to in the background because it takes a while per recipe.
+	CalculateNutrition(userID int64, recipes []int64, settings models.UserSettings)
+
 	// Categories gets all categories in the database.
 	Categories(userID int64) ([]string, error)
 

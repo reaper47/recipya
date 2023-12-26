@@ -13,7 +13,6 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
-	"sync"
 	"sync/atomic"
 	"time"
 )
@@ -93,49 +92,81 @@ func recipesAddHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request) {
 	r.Body = http.MaxBytesReader(w, r.Body, 128<<20)
 
+	userID := getUserID(r)
+	_, found := s.Brokers[userID]
+	if !found {
+		w.Header().Set("HX-Trigger", makeToast("Connection lost. Please reload page.", warningToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	s.Brokers[userID].SendProgressStatus("Preparing...", true, 0, -1)
+
 	err := r.ParseMultipartForm(128 << 20)
 	if err != nil {
+		s.Brokers[userID].HideNotification()
 		w.Header().Set("HX-Trigger", makeToast("Could not parse the uploaded files.", errorToast))
 		return
 	}
 
 	files, filesOk := r.MultipartForm.File["files"]
 	if !filesOk {
+		s.Brokers[userID].HideNotification()
 		w.Header().Set("HX-Trigger", makeToast("Could not retrieve the files or the directory from the form.", errorToast))
 		return
 	}
 
-	recipes := s.Files.ExtractRecipes(files)
-	userID := getUserID(r)
-
 	settings, err := s.Repository.UserSettings(userID)
 	if err != nil {
-		log.Printf("recipesAddImportHandler.UserSettings error: %q", err)
+		s.Brokers[userID].HideNotification()
 		w.Header().Set("HX-Trigger", makeToast("Error getting user settings.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	var (
-		count int64
-		wg    sync.WaitGroup
-	)
-	wg.Add(len(recipes))
-	for _, recipe := range recipes {
-		go func(r models.Recipe) {
-			defer wg.Done()
-			_, err = s.Repository.AddRecipe(&r, userID, settings)
-			if err != nil {
-				return
-			}
-			atomic.AddInt64(&count, 1)
-		}(recipe)
-	}
-	wg.Wait()
+	go func() {
+		var (
+			count     atomic.Int64
+			processed int
+			progress  = make(chan models.Progress)
+			recipes   = s.Files.ExtractRecipes(files)
+			total     = len(recipes)
+			recipeIDs = make([]int64, 0, total)
+		)
 
-	msg := fmt.Sprintf("Imported %d recipes. %d skipped", count, int64(len(recipes))-count)
-	w.Header().Set("HX-Trigger", makeToast(msg, infoToast))
-	w.WriteHeader(http.StatusCreated)
+		s.Brokers[userID].SendProgress(fmt.Sprintf("Importing 1/%d", total), 1, total)
+
+		for i, recipe := range recipes {
+			go func(index int, r models.Recipe) {
+				defer func() {
+					progress <- models.Progress{Total: total, Value: index}
+				}()
+
+				id, err := s.Repository.AddRecipe(&r, userID, settings)
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
+
+				recipeIDs = append(recipeIDs, id)
+				count.Add(1)
+			}(i, recipe)
+		}
+
+		for p := range progress {
+			processed++
+			s.Brokers[userID].SendProgress(fmt.Sprintf("Importing %d/%d", processed, p.Total), processed, p.Total)
+			if processed == total-1 {
+				close(progress)
+			}
+		}
+
+		s.Repository.CalculateNutrition(userID, recipeIDs, settings)
+		s.Brokers[userID].HideNotification()
+		s.Brokers[userID].SendToast(fmt.Sprintf("Imported %d recipes. %d skipped", count.Load(), int64(len(recipes))-count.Load()), "bg-blue-500")
+	}()
+
+	w.WriteHeader(http.StatusAccepted)
 }
 
 func (s *Server) recipeAddManualHandler(w http.ResponseWriter, r *http.Request) {
@@ -275,6 +306,7 @@ func (s *Server) recipeAddManualPostHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
+	s.Repository.CalculateNutrition(userID, []int64{recipeNumber}, settings)
 	w.Header().Set("HX-Redirect", "/recipes/"+strconv.FormatInt(recipeNumber, 10))
 	w.WriteHeader(http.StatusCreated)
 }
@@ -496,13 +528,14 @@ func (s *Server) recipesAddOCRHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = s.Repository.AddRecipe(&recipe, userID, settings)
+	id, err := s.Repository.AddRecipe(&recipe, userID, settings)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Recipe could not be added.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
+	s.Repository.CalculateNutrition(userID, []int64{id}, settings)
 	w.Header().Set("HX-Trigger", makeToast("Recipe scanned and uploaded.", infoToast))
 	w.WriteHeader(http.StatusCreated)
 }
@@ -555,14 +588,15 @@ func (s *Server) recipesAddWebsiteHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	recipeNumber, err := s.Repository.AddRecipe(recipe, userID, settings)
+	id, err := s.Repository.AddRecipe(recipe, userID, settings)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Recipe could not be added.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	w.Header().Set("HX-Redirect", "/recipes/"+strconv.FormatInt(recipeNumber, 10))
+	s.Repository.CalculateNutrition(userID, []int64{id}, settings)
+	w.Header().Set("HX-Redirect", "/recipes/"+strconv.FormatInt(id, 10))
 	w.WriteHeader(http.StatusSeeOther)
 }
 

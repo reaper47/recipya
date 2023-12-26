@@ -142,7 +142,7 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 
 		rr := sendRequestAsLoggedIn(srv, http.MethodGet, "/settings/export/recipes", noHeader, nil)
 
-		assertStatus(t, rr.Code, http.StatusInternalServerError)
+		assertStatus(t, rr.Code, http.StatusBadRequest)
 		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Connection lost. Please reload page.\",\"backgroundColor\":\"bg-orange-500\"}"}`)
 	})
 

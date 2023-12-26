@@ -171,13 +171,6 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64, settings model
 		r, _ = r.ConvertMeasurementSystem(settings.MeasurementSystem)
 	}
 
-	if settings.CalculateNutritionFact && r.Nutrition.Equal(models.Nutrition{}) {
-		nutrients, weight, err := s.Nutrients(r.Ingredients)
-		if err == nil {
-			r.Nutrition = nutrients.NutritionFact(weight)
-		}
-	}
-
 	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{})
 	if err != nil {
 		return 0, err
@@ -356,6 +349,45 @@ func (s *SQLiteService) AddShareLink(share models.Share) (string, error) {
 
 	_, err := s.DB.ExecContext(ctx, stmt, link, id, share.UserID)
 	return link, err
+}
+
+// CalculateNutrition calculates the nutrition facts for the recipes.
+// It is best to in the background because it takes a while per recipe.
+func (s *SQLiteService) CalculateNutrition(userID int64, recipes []int64, settings models.UserSettings) {
+	if !settings.CalculateNutritionFact {
+		return
+	}
+
+	go func() {
+		ctx, cancel := context.WithTimeout(context.Background(), time.Duration(len(recipes))*longerCtxTimeout)
+		defer cancel()
+
+		for _, id := range recipes {
+			recipe, err := s.Recipe(id, userID)
+			if err != nil {
+				log.Printf("CalculateNutrition.Recipe: %q", err)
+				continue
+			}
+
+			if !recipe.Nutrition.Equal(models.Nutrition{}) {
+				continue
+			}
+
+			nutrients, weight, err := s.Nutrients(recipe.Ingredients)
+			if err != nil {
+				log.Printf("CalculateNutrition.Nutrients: %q", err)
+				continue
+			}
+
+			recipe.Nutrition = nutrients.NutritionFact(weight)
+			n := recipe.Nutrition
+
+			_, err = s.DB.ExecContext(ctx, statements.UpdateNutrition, n.Calories, n.TotalCarbohydrates, n.Sugars, n.Protein, n.TotalFat, n.SaturatedFat, n.UnsaturatedFat, n.Cholesterol, n.Sodium, n.Fiber, id)
+			if err != nil {
+				log.Printf("CalculateNutrition.UpdateNutrition: %q", err)
+			}
+		}
+	}()
 }
 
 // Categories gets all categories in the database.
@@ -712,7 +744,7 @@ func (s *SQLiteService) MeasurementSystems(userID int64) ([]units.System, models
 
 // Nutrients gets the nutrients for the ingredients from the FDC database, along with the total weight.
 func (s *SQLiteService) Nutrients(ingredients []string) (models.NutrientsFDC, float64, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
+	ctx, cancel := context.WithTimeout(context.Background(), longerCtxTimeout)
 	defer cancel()
 
 	var wg sync.WaitGroup
