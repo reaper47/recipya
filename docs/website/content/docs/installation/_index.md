@@ -20,9 +20,9 @@ Learn how install Recipya.
             title="Docker"
             subtitle="Install the application with Docker."
             icon="newspaper" >}}
-    {{< card link="/guide/docs/installation/nightly-build/"
-            title="Nightly Build"
-            subtitle="Install the nightly build of the application."
+    {{< card link="/guide/docs/installation/build/"
+            title="Release Build"
+            subtitle="Install a release build of the application."
             icon="newspaper" >}}
     {{< card link="/guide/docs/installation/windows-users/"
             title="Windows users"
