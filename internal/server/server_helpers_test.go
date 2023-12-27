@@ -19,6 +19,7 @@ import (
 type header string
 
 const (
+	formData     header = "multipart/form-data"
 	formHeader   header = "application/x-www-form-urlencoded"
 	noHeader     header = ""
 	promptHeader header = "prompt"

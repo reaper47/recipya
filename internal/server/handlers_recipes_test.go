@@ -1,6 +1,7 @@
 package server_test
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"github.com/google/go-cmp/cmp"
@@ -9,6 +10,7 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
 	"io"
+	"maps"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
@@ -100,6 +102,60 @@ func TestHandlers_Recipes_New(t *testing.T) {
 			assertStringsInHTML(t, getBodyHTML(rr), want)
 		})
 	}
+}
+
+func TestHandlers_Recipes_AddImport(t *testing.T) {
+	srv, ts, c := createWSServer()
+	defer func() {
+		_ = c.Close()
+	}()
+
+	originalBrokers := maps.Clone(srv.Brokers)
+
+	uri := ts.URL + "/recipes/add/import"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
+	})
+
+	t.Run("no ws connection", func(t *testing.T) {
+		srv.Brokers = map[int64]*models.Broker{}
+		defer func() {
+			srv.Brokers = originalBrokers
+		}()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Connection lost. Please reload page.\",\"backgroundColor\":\"bg-orange-500\"}"}`)
+	})
+
+	t.Run("payload too big", func(t *testing.T) {
+		b := bytes.NewBuffer(make([]byte, 130<<20))
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formData, strings.NewReader(b.String()))
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Could not parse the uploaded files.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+		want := `<div id="ws-notification-container" class="z-20 fixed bottom-0 right-0 p-6 cursor-default hidden"> <div class="bg-blue-500 text-white px-4 py-2 rounded shadow-md"> <p class="font-medium text-center pb-1"></p> <div id="export-progress"><progress max="100" value="100.000000"></progress></div> </div> </div>`
+		assertWebsocket(t, c, 2, want)
+	})
+
+	t.Run("error parsing files", func(t *testing.T) {
+		contentType, body := createMultipartForm(map[string]string{"files": "file1"})
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Could not retrieve the files or the directory from the form.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+		want := `<div id="ws-notification-container" class="z-20 fixed bottom-0 right-0 p-6 cursor-default hidden"> <div class="bg-blue-500 text-white px-4 py-2 rounded shadow-md"> <p class="font-medium text-center pb-1"></p> <div id="export-progress"><progress max="100" value="100.000000"></progress></div> </div> </div>`
+		assertWebsocket(t, c, 2, want)
+	})
+
+	t.Run("valid request", func(t *testing.T) {
+		contentType, body := createMultipartForm(map[string]string{"files": "file1.jpg"})
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
+
+		assertStatus(t, rr.Code, http.StatusAccepted)
+	})
 }
 
 func TestHandlers_Recipes_AddManual(t *testing.T) {

@@ -106,6 +106,7 @@ func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request)
 	if err != nil {
 		s.Brokers[userID].HideNotification()
 		w.Header().Set("HX-Trigger", makeToast("Could not parse the uploaded files.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
@@ -113,6 +114,7 @@ func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request)
 	if !filesOk {
 		s.Brokers[userID].HideNotification()
 		w.Header().Set("HX-Trigger", makeToast("Could not retrieve the files or the directory from the form.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 

@@ -1,7 +1,9 @@
 package server_test
 
 import (
+	"bytes"
 	"github.com/google/uuid"
+	"github.com/gorilla/websocket"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
 	"net/http"
@@ -135,5 +137,14 @@ func assertUserSettings(tb testing.TB, got, want *models.UserSettings) {
 
 	if got.MeasurementSystem != want.MeasurementSystem {
 		tb.Fatalf("settings MeasurementSystem got %q but want %q", got.MeasurementSystem, want.MeasurementSystem)
+	}
+}
+
+func assertWebsocket(tb testing.TB, conn *websocket.Conn, message int, want string) {
+	tb.Helper()
+	mt, got := readMessage(conn, message)
+	got = bytes.Join(bytes.Fields(bytes.ReplaceAll(got, []byte("\r\n"), []byte(""))), []byte(" "))
+	if mt != websocket.TextMessage || string(got) != want {
+		tb.Errorf("got:\n%s\nbut want:\n%s", got, want)
 	}
 }
