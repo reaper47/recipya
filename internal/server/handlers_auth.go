@@ -272,20 +272,23 @@ func (s *Server) logoutHandler(w http.ResponseWriter, r *http.Request) {
 
 	sessionCookie, err := r.Cookie(cookieNameSession)
 	if !errors.Is(err, http.ErrNoCookie) {
-		sessionCookie.MaxAge = -1
-		http.SetCookie(w, sessionCookie)
+		c := NewSessionCookie(sessionCookie.Value)
+		c.MaxAge = -1
+		http.SetCookie(w, c)
 	}
 	maps.DeleteFunc(SessionData, func(_ uuid.UUID, id int64) bool { return id == userID })
 
 	rememberMeCookie, err := r.Cookie(cookieNameRememberMe)
 	if !errors.Is(err, http.ErrNoCookie) {
-		err := s.Repository.DeleteAuthToken(userID)
+		err = s.Repository.DeleteAuthToken(userID)
 		if err != nil {
 			log.Printf("[error] logoutHandler.DeleteAuthToken: %q", err)
 		}
 
-		rememberMeCookie.MaxAge = -1
-		http.SetCookie(w, rememberMeCookie)
+		selector, validator, _ := strings.Cut(rememberMeCookie.Value, ":")
+		c := NewRememberMeCookie(selector, validator)
+		c.MaxAge = -1
+		http.SetCookie(w, c)
 	}
 
 	w.Header().Set("HX-Redirect", "/")
