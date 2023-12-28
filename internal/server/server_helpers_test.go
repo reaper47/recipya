@@ -19,6 +19,7 @@ import (
 type header string
 
 const (
+	formData     header = "multipart/form-data"
 	formHeader   header = "application/x-www-form-urlencoded"
 	noHeader     header = ""
 	promptHeader header = "prompt"
@@ -34,6 +35,9 @@ func createWSServer() (*server.Server, *httptest.Server, *websocket.Conn) {
 	repo := &mockRepository{
 		UsersRegistered: []models.User{
 			{ID: 1, Email: "test@example.com"},
+		},
+		UserSettingsRegistered: map[int64]*models.UserSettings{
+			1: {},
 		},
 	}
 	srv.Repository = repo

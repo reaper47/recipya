@@ -1,6 +1,7 @@
 package server_test
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"github.com/google/go-cmp/cmp"
@@ -9,6 +10,7 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
 	"io"
+	"maps"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
@@ -32,8 +34,8 @@ func TestHandlers_Recipes(t *testing.T) {
 		want := []string{
 			`<title hx-swap-oob="true">Home | Recipya</title>`,
 			`<div class="grid place-content-center text-sm h-full text-center md:text-base"><p>Your recipe collection looks a bit empty at the moment.</p><p> Why not start adding some of your favorite recipes by clicking the <a class="underline font-semibold cursor-pointer" hx-get="/recipes/add" hx-target="#content" hx-push-url="true">Add recipe</a> button at the top? </p></div>`,
-			`<li id="recipes-sidebar-recipes" class="recipes-sidebar-selected" hx-get="/recipes" hx-target="#content" hx-push-url="true" hx-swap-oob="true"><img src="/static/img/cherries.svg" alt=""><span class="hidden md:block ml-1">Recipes</span></li>`,
-			`<li id="recipes-sidebar-cookbooks" class="recipes-sidebar-not-selected" hx-get="/cookbooks" hx-target="#content" hx-push-url="true" hx-swap-oob="true"><img src="/static/img/cookbook.svg" alt=""><span class="hidden md:block ml-1">Cookbooks</span></li>`,
+			`<li id="recipes-sidebar-recipes" class="recipes-sidebar-selected" hx-get="/recipes" hx-target="#content" hx-push-url="true" hx-swap-oob="true"><img src="/static/img/cherries.svg" alt=""><span class="hidden lg:block ml-1">Recipes</span></li>`,
+			`<li id="recipes-sidebar-cookbooks" class="recipes-sidebar-not-selected" hx-get="/cookbooks" hx-target="#content" hx-push-url="true" hx-swap-oob="true"><img src="/static/img/cookbook.svg" alt=""><span class="hidden lg:block ml-1">Cookbooks</span></li>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
@@ -102,6 +104,60 @@ func TestHandlers_Recipes_New(t *testing.T) {
 	}
 }
 
+func TestHandlers_Recipes_AddImport(t *testing.T) {
+	srv, ts, c := createWSServer()
+	defer func() {
+		_ = c.Close()
+	}()
+
+	originalBrokers := maps.Clone(srv.Brokers)
+
+	uri := ts.URL + "/recipes/add/import"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
+	})
+
+	t.Run("no ws connection", func(t *testing.T) {
+		srv.Brokers = map[int64]*models.Broker{}
+		defer func() {
+			srv.Brokers = originalBrokers
+		}()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Connection lost. Please reload page.\",\"backgroundColor\":\"bg-orange-500\"}"}`)
+	})
+
+	t.Run("payload too big", func(t *testing.T) {
+		b := bytes.NewBuffer(make([]byte, 130<<20))
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formData, strings.NewReader(b.String()))
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Could not parse the uploaded files.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+		want := `<div id="ws-notification-container" class="z-20 fixed bottom-0 right-0 p-6 cursor-default hidden"> <div class="bg-blue-500 text-white px-4 py-2 rounded shadow-md"> <p class="font-medium text-center pb-1"></p> <div id="export-progress"><progress max="100" value="100.000000"></progress></div> </div> </div>`
+		assertWebsocket(t, c, 2, want)
+	})
+
+	t.Run("error parsing files", func(t *testing.T) {
+		contentType, body := createMultipartForm(map[string]string{"files": "file1"})
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Could not retrieve the files or the directory from the form.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+		want := `<div id="ws-notification-container" class="z-20 fixed bottom-0 right-0 p-6 cursor-default hidden"> <div class="bg-blue-500 text-white px-4 py-2 rounded shadow-md"> <p class="font-medium text-center pb-1"></p> <div id="export-progress"><progress max="100" value="100.000000"></progress></div> </div> </div>`
+		assertWebsocket(t, c, 2, want)
+	})
+
+	t.Run("valid request", func(t *testing.T) {
+		contentType, body := createMultipartForm(map[string]string{"files": "file1.jpg"})
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
+
+		assertStatus(t, rr.Code, http.StatusAccepted)
+	})
+}
+
 func TestHandlers_Recipes_AddManual(t *testing.T) {
 	repo := &mockRepository{}
 	srv := server.NewServer(repo, &mockEmail{}, &mockFiles{}, &mockIntegrations{})
@@ -145,7 +201,8 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 
 	t.Run("submit recipe", func(t *testing.T) {
 		repo = &mockRepository{
-			RecipesRegistered: make(map[int64]models.Recipes),
+			RecipesRegistered:      make(map[int64]models.Recipes),
+			UserSettingsRegistered: map[int64]*models.UserSettings{1: {}},
 		}
 		srv.Repository = repo
 		originalNumRecipes := len(repo.RecipesRegistered)
@@ -448,7 +505,8 @@ func TestHandlers_Recipes_AddOCR(t *testing.T) {
 
 	t.Run("valid request", func(t *testing.T) {
 		repo := &mockRepository{
-			RecipesRegistered: make(map[int64]models.Recipes),
+			RecipesRegistered:      make(map[int64]models.Recipes),
+			UserSettingsRegistered: map[int64]*models.UserSettings{1: {}},
 		}
 		srv.Repository = repo
 		defer func() {
@@ -514,8 +572,11 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 	})
 
 	t.Run("add recipe from supported website error", func(t *testing.T) {
-		repo := &mockRepository{RecipesRegistered: make(map[int64]models.Recipes)}
-		repo.AddRecipeFunc = func(r *models.Recipe, userID int64) (uint64, error) {
+		repo := &mockRepository{
+			RecipesRegistered:      make(map[int64]models.Recipes),
+			UserSettingsRegistered: map[int64]*models.UserSettings{1: {}},
+		}
+		repo.AddRecipeFunc = func(r *models.Recipe, userID int64, _ models.UserSettings) (int64, error) {
 			return 0, errors.New("add recipe error")
 		}
 		srv.Repository = repo
@@ -527,9 +588,12 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 	})
 
 	t.Run("add recipe from a supported website", func(t *testing.T) {
-		repo := &mockRepository{RecipesRegistered: make(map[int64]models.Recipes)}
+		repo := &mockRepository{
+			RecipesRegistered:      make(map[int64]models.Recipes),
+			UserSettingsRegistered: map[int64]*models.UserSettings{1: {}},
+		}
 		called := 0
-		repo.AddRecipeFunc = func(r *models.Recipe, userID int64) (uint64, error) {
+		repo.AddRecipeFunc = func(r *models.Recipe, userID int64, _ models.UserSettings) (int64, error) {
 			called++
 			return 1, nil
 		}
@@ -568,7 +632,7 @@ func TestHandlers_Recipes_Delete(t *testing.T) {
 
 	t.Run("can delete user's recipe", func(t *testing.T) {
 		r := &models.Recipe{ID: 1, Name: "Chicken"}
-		_, _ = srv.Repository.AddRecipe(r, 1)
+		_, _ = srv.Repository.AddRecipe(r, 1, models.UserSettings{})
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri+"/1", noHeader, nil)
 
@@ -1000,7 +1064,7 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 		URL:   "https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/",
 		Yield: 2,
 	}
-	_, _ = srv.Repository.AddRecipe(recipe, 1)
+	_, _ = srv.Repository.AddRecipe(recipe, 1, models.UserSettings{})
 	link, _ := srv.Repository.AddShareLink(models.Share{RecipeID: 1, CookbookID: -1, UserID: 1})
 
 	t.Run("create valid share link", func(t *testing.T) {
@@ -1188,7 +1252,7 @@ func TestHandlers_Recipes_View(t *testing.T) {
 				URL:   "https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/",
 				Yield: 2,
 			}
-			_, _ = srv.Repository.AddRecipe(r, 1)
+			_, _ = srv.Repository.AddRecipe(r, 1, models.UserSettings{})
 
 			rr := tc.sendFunc(srv, http.MethodGet, uri+"/1", noHeader, nil)
 

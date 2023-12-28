@@ -275,7 +275,7 @@
 {{define "settings"}}
     <title hx-swap-oob="true">Settings | Recipya</title>
 
-    <div hx-ext="ws" ws-connect="/ws" class="grid grid-flow-col h-full" style="grid-template-columns: min-content">
+    <div class="grid grid-flow-col h-full" style="grid-template-columns: min-content">
         <div class="text-sm md:text-base grid bg-gray-200 max-w-[5rem] mt-[1px] dark:bg-gray-600 dark:border-r dark:border-r-gray-500"
              role="tablist">
             <button class="px-2 bg-gray-300 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-800"
@@ -388,7 +388,7 @@
         <label for="calculate-nutrition" class="text-end font-semibold">Calculate nutrition facts:<br>
             <span class="font-light text-sm">
                 Calculate the nutrition facts automatically when adding a recipe.<br>
-                This will add a few seconds to the processing.
+                The processing will be done in the background.
             </span>
         </label>
         <input type="checkbox" name="calculate-nutrition" id="calculate-nutrition"

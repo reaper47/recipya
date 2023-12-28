@@ -2,7 +2,6 @@ package server_test
 
 import (
 	"errors"
-	"github.com/gorilla/websocket"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services"
 	"net/http"
@@ -50,21 +49,20 @@ func TestHandlers_Integrations_Nextcloud(t *testing.T) {
 		}
 		defer func() {
 			srv.Integrations = originalIntegrations
+			srv.Repository = originalRepo
 		}()
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uriImport, formHeader, strings.NewReader("username=admin&password=admin&url=http://localhost:8080"))
-		mt, got := readMessage(c, 3)
 
 		assertStatus(t, rr.Code, http.StatusAccepted)
-		want := "{\"type\":\"toast\",\"fileName\":\"\",\"data\":\"{\\\"message\\\":\\\"Failed to import Nextcloud recipes.\\\",\\\"background\\\":\\\"bg-error-500\\\"}\"}\n"
-		if mt != websocket.TextMessage || string(got) != want {
-			t.Errorf("got:\n%q\nbut want:\n%q", got, want)
-		}
+		want := `{"type":"toast","fileName":"","data":"{\"message\":\"Failed to import Nextcloud recipes.\",\"background\":\"bg-error-500\"}"}`
+		assertWebsocket(t, c, 3, want)
 	})
 
 	t.Run("valid request", func(t *testing.T) {
 		repo := &mockRepository{
-			RecipesRegistered: make(map[int64]models.Recipes),
+			RecipesRegistered:      make(map[int64]models.Recipes),
+			UserSettingsRegistered: map[int64]*models.UserSettings{1: {}},
 		}
 		srv.Repository = repo
 		srv.Integrations = &mockIntegrations{
@@ -81,13 +79,10 @@ func TestHandlers_Integrations_Nextcloud(t *testing.T) {
 		}()
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uriImport, formHeader, strings.NewReader("username=admin&password=admin&url=http://localhost:8080"))
-		mt, got := readMessage(c, 5)
 
 		assertStatus(t, rr.Code, http.StatusAccepted)
-		want := "{\"type\":\"toast\",\"fileName\":\"\",\"data\":\"{\\\"message\\\":\\\"Imported 2 recipes. Skipped 0.\\\",\\\"background\\\":\\\"bg-blue-500\\\"}\"}\n"
-		if mt != websocket.TextMessage || string(got) != want {
-			t.Errorf("got:\n%q\nbut want:\n%q", got, want)
-		}
+		want := "{\"type\":\"toast\",\"fileName\":\"\",\"data\":\"{\\\"message\\\":\\\"Imported 2 recipes. Skipped 0.\\\",\\\"background\\\":\\\"bg-blue-500\\\"}\"}"
+		assertWebsocket(t, c, 5, want)
 		if len(repo.RecipesRegistered[1]) != 2 {
 			t.Fatal("expected 2 recipes in the repo")
 		}

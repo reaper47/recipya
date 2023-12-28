@@ -2,7 +2,6 @@ package server_test
 
 import (
 	"errors"
-	"github.com/gorilla/websocket"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/units"
 	"maps"
@@ -142,7 +141,7 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 
 		rr := sendRequestAsLoggedIn(srv, http.MethodGet, "/settings/export/recipes", noHeader, nil)
 
-		assertStatus(t, rr.Code, http.StatusInternalServerError)
+		assertStatus(t, rr.Code, http.StatusBadRequest)
 		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Connection lost. Please reload page.\",\"backgroundColor\":\"bg-orange-500\"}"}`)
 	})
 
@@ -162,13 +161,10 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 				originalHitCount := f.exportHitCount
 
 				rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?type="+q, noHeader, nil)
-				mt, got := readMessage(c, 3)
 
 				assertStatus(t, rr.Code, http.StatusAccepted)
 				want := `{"type":"toast","fileName":"","data":"{\"message\":\"No recipes in database.\",\"background\":\"bg-orange-500\"}"}`
-				if mt != websocket.TextMessage || strings.TrimSpace(string(got)) != want {
-					t.Errorf("got:\n%q\nbut want:\n%q", got, want)
-				}
+				assertWebsocket(t, c, 3, want)
 				if originalHitCount != f.exportHitCount {
 					t.Fatalf("expected the export function not to be called")
 				}
@@ -195,13 +191,10 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 				originalHitCount := f.exportHitCount
 
 				rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?type="+q, noHeader, nil)
-				mt, got := readMessage(c, 3)
 
 				assertStatus(t, rr.Code, http.StatusAccepted)
-				want := `{"type":"file","fileName":"recipes_` + q + `.zip","data":"Q2hpY2tlbi1KZXJzZXkt"}` + "\n"
-				if mt != websocket.TextMessage || string(got) != want {
-					t.Errorf("got:\n%q\nbut want:\n%q", got, want)
-				}
+				want := `{"type":"file","fileName":"recipes_` + q + `.zip","data":"Q2hpY2tlbi1KZXJzZXkt"}`
+				assertWebsocket(t, c, 3, want)
 				if f.exportHitCount != originalHitCount+1 {
 					t.Fatalf("expected the export function to be called")
 				}

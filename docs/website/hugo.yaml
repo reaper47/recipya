@@ -36,7 +36,7 @@ params:
 
   editURL:
     enable: true
-    base: "https://github.com/reaper47/recipya/edit/main/docs/website"
+    base: "https://github.com/reaper47/recipya/edit/main/docs/website/content"
 
   blog:
     list:

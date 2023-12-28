@@ -30,11 +30,11 @@ func NewMeasurement(quantity float64, unit string) (Measurement, error) {
 
 	var u Unit
 	switch unit {
-	case "°c", "c", "celsius", "degrees celsius", "degree celsius", "degrees c", "degree c":
+	case "°c", "celsius", "degrees celsius", "degree celsius", "degrees c", "degree c":
 		u = Celsius
 	case "cm", "centimeter", "centimetre":
 		u = Centimeter
-	case "cup":
+	case "cup", "c":
 		u = Cup
 	case "dl", "dL", "deciliter", "decilitre":
 		u = Decilitre

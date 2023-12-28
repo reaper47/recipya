@@ -25,16 +25,27 @@ jobs:
     if: ${{ needs.commits.outputs.numCommits > 0 }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
         with:
+          submodules: true
           fetch-depth: 0
 
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
           go-version: "1.21"
+          cache: false
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: "latest"
+          extended: true
 
       - name: Build
+        run: make build
+
+      - name: Build nightly builds
         run: |
           go run ./releases/main.go -package github.com/reaper47/recipya -tag nightly
 

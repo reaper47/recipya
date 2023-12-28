@@ -15,3 +15,8 @@ type UserSettings struct {
 	CookbooksViewMode      ViewMode
 	MeasurementSystem      units.System
 }
+
+// IsCalculateNutrition verifies whether the nutrition facts should be calculated for the recipe.
+func (u *UserSettings) IsCalculateNutrition(recipe *Recipe) bool {
+	return u.CalculateNutritionFact && recipe.Nutrition.Equal(Nutrition{})
+}

@@ -55,8 +55,8 @@ func TestHandlers_Cookbooks(t *testing.T) {
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
 			`<title hx-swap-oob="true">Cookbooks | Recipya</title>`,
-			`<li id="recipes-sidebar-recipes" class="recipes-sidebar-not-selected" hx-get="/recipes" hx-target="#content" hx-push-url="true" hx-swap-oob="true"><img src="/static/img/cherries.svg" alt=""><span class="hidden md:block ml-1">Recipes</span></li>`,
-			`<li id="recipes-sidebar-cookbooks" class="recipes-sidebar-selected" hx-get="/cookbooks" hx-target="#content" hx-push-url="true" hx-swap-oob="true"><img src="/static/img/cookbook.svg" alt=""><span class="hidden md:block ml-1">Cookbooks</span></li>`,
+			`<li id="recipes-sidebar-recipes" class="recipes-sidebar-not-selected" hx-get="/recipes" hx-target="#content" hx-push-url="true" hx-swap-oob="true"><img src="/static/img/cherries.svg" alt=""><span class="hidden lg:block ml-1">Recipes</span></li>`,
+			`<li id="recipes-sidebar-cookbooks" class="recipes-sidebar-selected" hx-get="/cookbooks" hx-target="#content" hx-push-url="true" hx-swap-oob="true"><img src="/static/img/cookbook.svg" alt=""><span class="hidden lg:block ml-1">Cookbooks</span></li>`,
 			`<div class="grid place-content-center text-sm h-full text-center md:text-base">`,
 			`<p>Your cookbooks collection looks a bit empty at the moment.</p>`,
 			`<p>Why not start by creating a cookbook by clicking the <a class="underline font-semibold cursor-pointer" hx-post="/cookbooks" hx-prompt="Enter the name of your cookbook" hx-target="#content">Add cookbook</a> button at the top? </p>`,

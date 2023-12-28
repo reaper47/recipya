@@ -708,6 +708,7 @@ func TestNewMeasurement(t *testing.T) {
 		{quantity: 6, unit: "fl. oz.", want: units.Measurement{Quantity: 6, Unit: units.FlOz}},
 
 		{quantity: 8, unit: "cups", want: units.Measurement{Quantity: 8, Unit: units.Cup}},
+		{quantity: 4, unit: "c.", want: units.Measurement{Quantity: 4, Unit: units.Cup}},
 
 		{quantity: 9, unit: "pints", want: units.Measurement{Quantity: 9, Unit: units.Pint}},
 		{quantity: 9, unit: "pt", want: units.Measurement{Quantity: 9, Unit: units.Pint}},

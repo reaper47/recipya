@@ -40,10 +40,10 @@
     }
 
     .recipes-sidebar-selected {
-        @apply flex bg-green-600 p-1 pr-1 md:pr-4 text-white select-none cursor-pointer hover:bg-red-600 hover:text-white;
+        @apply flex bg-green-600 p-1 pr-1 lg:pr-4 text-white select-none cursor-pointer hover:bg-red-600 hover:text-white;
     }
 
     .recipes-sidebar-not-selected {
-        @apply flex p-1 pr-1 md:pr-4 select-none cursor-pointer hover:bg-red-600 hover:text-white;
+        @apply flex p-1 pr-1 lg:pr-4 select-none cursor-pointer hover:bg-red-600 hover:text-white;
     }
 }

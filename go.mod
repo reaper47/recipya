@@ -11,7 +11,7 @@ require (
 	github.com/disintegration/imaging v1.6.2
 	github.com/donna-legal/word2number v0.0.0-20180823152447-90bc2b233105
 	github.com/gertd/go-pluralize v0.2.1
-	github.com/go-chi/chi/v5 v5.0.10
+	github.com/go-chi/chi/v5 v5.0.11
 	github.com/go-chi/jwtauth/v5 v5.3.0
 	github.com/go-co-op/gocron v1.37.0
 	github.com/google/go-cmp v0.6.0
@@ -40,7 +40,7 @@ require (
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/jackc/puddle/v2 v2.2.1 // indirect
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
-	github.com/labstack/gommon v0.4.1 // indirect
+	github.com/labstack/gommon v0.4.2 // indirect
 	github.com/lestrrat-go/blackmagic v1.0.2 // indirect
 	github.com/lestrrat-go/httpcc v1.0.1 // indirect
 	github.com/lestrrat-go/httprc v1.0.4 // indirect
@@ -60,7 +60,7 @@ require (
 	github.com/sendgrid/rest v2.6.9+incompatible // indirect
 	github.com/sethvargo/go-retry v0.2.4 // indirect
 	github.com/ssor/bom v0.0.0-20170718123548-6386211fdfcf // indirect
-	github.com/tetratelabs/wazero v1.5.0 // indirect
+	github.com/tetratelabs/wazero v1.6.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	github.com/xrash/smetrics v0.0.0-20231213231151-1d8dd44e695e // indirect
@@ -79,7 +79,7 @@ require (
 	lukechampine.com/uint128 v1.3.0 // indirect
 	modernc.org/cc/v3 v3.41.0 // indirect
 	modernc.org/ccgo/v3 v3.16.15 // indirect
-	modernc.org/libc v1.37.6 // indirect
+	modernc.org/libc v1.38.0 // indirect
 	modernc.org/mathutil v1.6.0 // indirect
 	modernc.org/memory v1.7.2 // indirect
 	modernc.org/opt v0.1.3 // indirect

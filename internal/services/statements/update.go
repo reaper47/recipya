@@ -38,6 +38,21 @@ const UpdateMeasurementSystem = `
 	SET measurement_system_id = (SELECT id FROM measurement_systems WHERE name = ?)
 	WHERE user_id = ?`
 
+// UpdateNutrition updates the recipe's nutrition.
+const UpdateNutrition = `
+	UPDATE nutrition 
+	SET calories = ?,
+	    total_carbohydrates = ?,
+	    sugars = ?, 
+	    protein = ?, 
+	    total_fat = ?, 
+	    saturated_fat = ?, 
+	    unsaturated_fat = ?, 
+	    cholesterol = ?, 
+	    sodium = ?, 
+	    fiber = ?
+	WHERE recipe_id = ?`
+
 // UpdatePassword sets the user's new password.
 const UpdatePassword = `
 	UPDATE users

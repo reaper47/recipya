@@ -23,10 +23,14 @@ type RepositoryService interface {
 	AddCookbookRecipe(cookbookID, recipeID, userID int64) error
 
 	// AddRecipe adds a recipe to the user's collection.
-	AddRecipe(r *models.Recipe, userID int64) (uint64, error)
+	AddRecipe(r *models.Recipe, userID int64, settings models.UserSettings) (int64, error)
 
 	// AddShareLink adds a share link for the recipe.
 	AddShareLink(share models.Share) (string, error)
+
+	// CalculateNutrition calculates the nutrition facts for the recipes.
+	// It is best to in the background because it takes a while per recipe.
+	CalculateNutrition(userID int64, recipes []int64, settings models.UserSettings)
 
 	// Categories gets all categories in the database.
 	Categories(userID int64) ([]string, error)
