@@ -53,7 +53,7 @@ func (i *Integrations) ProcessImageOCR(file io.Reader) (models.Recipe, error) {
 	}
 
 	resBody := res.Body
-	if body == nil {
+	if resBody == nil {
 		return models.Recipe{}, errors.New("response body is nil")
 	}
 
