@@ -81,6 +81,10 @@ func (m *mockRepository) AddCookbookRecipe(cookbookID, recipeID, userID int64) e
 		return errors.New("cookbook does not belong to user")
 	}
 
+	if cookbooks == nil {
+		return errors.New("user cookbooks registered is nil")
+	}
+
 	cookbookIndex := slices.IndexFunc(cookbooks, func(c models.Cookbook) bool {
 		return c.ID == cookbookID
 	})
@@ -88,18 +92,27 @@ func (m *mockRepository) AddCookbookRecipe(cookbookID, recipeID, userID int64) e
 		return errors.New("cookbook not found")
 	}
 
-	recipeIndex := slices.IndexFunc(m.RecipesRegistered[userID], func(r models.Recipe) bool {
+	recipes := m.RecipesRegistered[userID]
+	if recipes == nil {
+		return errors.New("user recipes is nil")
+	}
+
+	recipeIndex := slices.IndexFunc(recipes, func(r models.Recipe) bool {
 		return r.ID == recipeID
 	})
 	if recipeIndex == -1 {
 		return errors.New("recipe not found")
 	}
 
-	m.CookbooksRegistered[userID][cookbookIndex].Recipes = append(m.CookbooksRegistered[userID][cookbookIndex].Recipes, m.RecipesRegistered[userID][recipeID])
+	cookbooks[cookbookIndex].Recipes = append(cookbooks[cookbookIndex].Recipes, recipes[recipeID])
 	return nil
 }
 
 func (m *mockRepository) AddRecipe(r *models.Recipe, userID int64, settings models.UserSettings) (int64, error) {
+	if r == nil {
+		return 0, errors.New("recipe is nil")
+	}
+
 	if m.AddRecipeFunc != nil {
 		return m.AddRecipeFunc(r, userID, settings)
 	}
@@ -201,7 +214,13 @@ func (m *mockRepository) CookbookRecipe(id int64, cookbookID int64) (recipe *mod
 		if recipeI == -1 {
 			break
 		}
-		return &cookbooks[i].Recipes[recipeI], userID, nil
+
+		cookbook := cookbooks[i]
+		recipes := cookbook.Recipes
+		if recipes == nil {
+			return nil, 0, errors.New("user recipes in cookbook is nil")
+		}
+		return &recipes[recipeI], userID, nil
 	}
 	return nil, -1, errors.New("recipe not found")
 }
@@ -287,6 +306,10 @@ func (m *mockRepository) DeleteRecipeFromCookbook(recipeID, cookbookID uint64, u
 		return -1, nil
 	}
 
+	if cookbooks == nil {
+		return 0, errors.New("user cookbooks registered is nil")
+	}
+
 	i := slices.IndexFunc(cookbooks, func(c models.Cookbook) bool {
 		return uint64(c.ID) == cookbookID
 	})
@@ -299,7 +322,7 @@ func (m *mockRepository) DeleteRecipeFromCookbook(recipeID, cookbookID uint64, u
 		return uint64(r.ID) == recipeID
 	})
 
-	m.CookbooksRegistered[userID][i] = cookbook
+	cookbooks[i] = cookbook
 	return int64(len(cookbook.Recipes)), nil
 }
 
@@ -434,24 +457,41 @@ func (m *mockRepository) SwitchMeasurementSystem(system units.System, userID int
 		if err != nil {
 			return err
 		}
-		m.RecipesRegistered[userID][i] = *converted
+
+		recipes := m.RecipesRegistered[userID]
+		if recipes == nil || converted == nil {
+			return errors.New("user recipes or converted recipe is nil")
+		}
+		recipes[i] = *converted
 	}
 	return nil
 }
 
 func (m *mockRepository) UpdateCalculateNutrition(userID int64, isEnabled bool) error {
-	if _, ok := m.UserSettingsRegistered[userID]; !ok {
+	settings, ok := m.UserSettingsRegistered[userID]
+	if !ok {
 		return errors.New("user not found")
 	}
-	m.UserSettingsRegistered[userID].CalculateNutritionFact = isEnabled
+
+	if settings == nil {
+		return errors.New("settings for user is empty")
+	}
+
+	settings.CalculateNutritionFact = isEnabled
 	return nil
 }
 
 func (m *mockRepository) UpdateConvertMeasurementSystem(userID int64, isEnabled bool) error {
-	if _, ok := m.UserSettingsRegistered[userID]; !ok {
+	settings, ok := m.UserSettingsRegistered[userID]
+	if !ok {
 		return errors.New("user not found")
 	}
-	m.UserSettingsRegistered[userID].ConvertAutomatically = isEnabled
+
+	if settings == nil {
+		return errors.New("settings for user is empty")
+	}
+
+	settings.ConvertAutomatically = isEnabled
 	return nil
 }
 
@@ -465,10 +505,20 @@ func (m *mockRepository) UpdateCookbookImage(id int64, image uuid.UUID, userID i
 		return errors.New("cookbook not found")
 	}
 
-	for i, cookbook := range m.CookbooksRegistered[userID] {
+	cookbooks := m.CookbooksRegistered[userID]
+	if cookbooks == nil {
+		return errors.New("CookbooksRegistered nil for user")
+	}
+
+	for i, cookbook := range cookbooks {
 		if cookbook.ID == id {
-			c := m.CookbooksRegistered[userID][i]
-			m.CookbooksRegistered[userID][i] = models.Cookbook{
+			c := cookbooks[i]
+			userCookbooks := m.CookbooksRegistered[userID]
+			if userCookbooks == nil {
+				return errors.New("user has no cookbooks registered")
+			}
+
+			userCookbooks[i] = models.Cookbook{
 				ID:      c.ID,
 				Count:   c.Count,
 				Image:   image,
@@ -510,34 +560,43 @@ func (m *mockRepository) UpdateRecipe(updatedRecipe *models.Recipe, userID int64
 		newRecipe.Image = updatedRecipe.Image
 	}
 
-	if len(oldRecipe.Ingredients) == len(updatedRecipe.Ingredients) {
+	if newRecipe.Ingredients != nil && len(oldRecipe.Ingredients) == len(updatedRecipe.Ingredients) {
 		for i, ingredient := range updatedRecipe.Ingredients {
 			if oldRecipe.Ingredients[i] != updatedRecipe.Ingredients[i] {
 				newRecipe.Ingredients[i] = ingredient
 			}
 		}
 	} else {
-		newRecipe.Ingredients = slices.Clone(updatedRecipe.Ingredients)
+		cloned := slices.Clone(updatedRecipe.Ingredients)
+		if cloned != nil {
+			newRecipe.Ingredients = cloned
+		}
 	}
 
-	if len(oldRecipe.Instructions) == len(updatedRecipe.Instructions) {
+	if newRecipe.Instructions != nil && len(oldRecipe.Instructions) == len(updatedRecipe.Instructions) {
 		for i, ingredient := range updatedRecipe.Instructions {
 			if oldRecipe.Instructions[i] != updatedRecipe.Instructions[i] {
 				newRecipe.Instructions[i] = ingredient
 			}
 		}
 	} else {
-		newRecipe.Instructions = slices.Clone(updatedRecipe.Instructions)
+		cloned := slices.Clone(updatedRecipe.Instructions)
+		if cloned != nil {
+			newRecipe.Instructions = cloned
+		}
 	}
 
-	if len(oldRecipe.Keywords) == len(updatedRecipe.Keywords) {
+	if newRecipe.Keywords != nil && len(oldRecipe.Keywords) == len(updatedRecipe.Keywords) {
 		for i, ingredient := range updatedRecipe.Keywords {
 			if oldRecipe.Keywords[i] != updatedRecipe.Keywords[i] {
 				newRecipe.Keywords[i] = ingredient
 			}
 		}
 	} else {
-		newRecipe.Keywords = slices.Clone(updatedRecipe.Keywords)
+		cloned := slices.Clone(updatedRecipe.Keywords)
+		if cloned != nil {
+			newRecipe.Keywords = cloned
+		}
 	}
 
 	if oldRecipe.Name != updatedRecipe.Name {
@@ -567,7 +626,12 @@ func (m *mockRepository) UpdateRecipe(updatedRecipe *models.Recipe, userID int64
 		newRecipe.Yield = updatedRecipe.Yield
 	}
 
-	m.RecipesRegistered[userID][oldRecipe.ID-1] = newRecipe
+	recipes := m.RecipesRegistered[userID]
+	if recipes == nil {
+		return errors.New("user has no recipes")
+	}
+
+	recipes[oldRecipe.ID-1] = newRecipe
 	return nil
 }
 
@@ -602,10 +666,16 @@ func (m *mockRepository) UserID(email string) int64 {
 }
 
 func (m *mockRepository) UserSettings(userID int64) (models.UserSettings, error) {
-	if _, ok := m.UserSettingsRegistered[userID]; !ok {
+	settings, ok := m.UserSettingsRegistered[userID]
+	if !ok {
 		return models.UserSettings{}, errors.New("user not found")
 	}
-	return *m.UserSettingsRegistered[userID], nil
+
+	if settings == nil {
+		return models.UserSettings{}, errors.New("settings is nil")
+	}
+
+	return *settings, nil
 }
 
 func (m *mockRepository) Users() []models.User {

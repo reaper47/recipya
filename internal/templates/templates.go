@@ -78,6 +78,10 @@ func initEmailTemplates() {
 		if filepath.Ext(n) == ".mjml" {
 			tmpl := template.Must(template.New(n).ParseFS(web.FS, "emails/"+n))
 
+			if tmpl == nil || tmpl.Tree == nil || tmpl.Tree.Root == nil {
+				panic("template or tree or root of " + entry.Name() + " is nil")
+			}
+
 			html, err := mjml.ToHTML(context.Background(), tmpl.Tree.Root.String(), mjml.WithMinify(true))
 			if err != nil {
 				log.Fatal(err)

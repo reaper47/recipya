@@ -18,14 +18,20 @@ import (
 )
 
 func (s *Server) recipesHandler(w http.ResponseWriter, r *http.Request) {
-	userID := getUserID(r)
+	query := r.URL.Query()
+	if query == nil {
+		w.Header().Set("HX-Trigger", makeToast("Could not parse query.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 
-	pageStr := r.URL.Query().Get("page")
+	pageStr := query.Get("page")
 	pageNumber, err := strconv.ParseUint(pageStr, 10, 64)
 	if err != nil {
 		pageNumber = 1
 	}
 
+	userID := getUserID(r)
 	p, err := newRecipesPagination(s, w, userID, pageNumber, false)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Error updating pagination.", errorToast))
@@ -103,14 +109,15 @@ func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request)
 	s.Brokers[userID].SendProgressStatus("Preparing...", true, 0, -1)
 
 	err := r.ParseMultipartForm(128 << 20)
-	if err != nil {
+	form := r.MultipartForm
+	if err != nil || form == nil || form.File == nil {
 		s.Brokers[userID].HideNotification()
 		w.Header().Set("HX-Trigger", makeToast("Could not parse the uploaded files.", errorToast))
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	files, filesOk := r.MultipartForm.File["files"]
+	files, filesOk := form.File["files"]
 	if !filesOk {
 		s.Brokers[userID].HideNotification()
 		w.Header().Set("HX-Trigger", makeToast("Could not retrieve the files or the directory from the form.", errorToast))
@@ -204,14 +211,16 @@ func (s *Server) recipeAddManualHandler(w http.ResponseWriter, r *http.Request) 
 func (s *Server) recipeAddManualPostHandler(w http.ResponseWriter, r *http.Request) {
 	r.Body = http.MaxBytesReader(w, r.Body, 128<<20)
 	err := r.ParseMultipartForm(128 << 20)
-	if err != nil {
+	multipartForm := r.MultipartForm
+	form := r.Form
+	if err != nil || form == nil || multipartForm == nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not parse the form.", errorToast))
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	var imageUUID uuid.UUID
-	imageFile, ok := r.MultipartForm.File["image"]
+	imageFile, ok := multipartForm.File["image"]
 	if ok {
 		f, err := imageFile[0].Open()
 		if err != nil {
@@ -235,7 +244,7 @@ func (s *Server) recipeAddManualPostHandler(w http.ResponseWriter, r *http.Reque
 	i := 1
 	for {
 		key := fmt.Sprintf("ingredient-%d", i)
-		if r.Form.Has(key) {
+		if form.Has(key) {
 			ingredients = append(ingredients, r.FormValue(key))
 			i++
 		} else {
@@ -247,7 +256,7 @@ func (s *Server) recipeAddManualPostHandler(w http.ResponseWriter, r *http.Reque
 	i = 1
 	for {
 		key := fmt.Sprintf("instruction-%d", i)
-		if r.Form.Has(key) {
+		if form.Has(key) {
 			instructions = append(instructions, r.FormValue(key))
 			i++
 		} else {
@@ -321,7 +330,8 @@ func (s *Server) recipeAddManualPostHandler(w http.ResponseWriter, r *http.Reque
 
 func recipeAddManualIngredientHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
-	if err != nil {
+	form := r.Form
+	if err != nil || form == nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not parse the form.", errorToast))
 		w.WriteHeader(http.StatusNoContent)
 		return
@@ -329,14 +339,14 @@ func recipeAddManualIngredientHandler(w http.ResponseWriter, r *http.Request) {
 
 	i := 1
 	for {
-		if !r.Form.Has("ingredient-" + strconv.Itoa(i)) {
+		if !form.Has("ingredient-" + strconv.Itoa(i)) {
 			break
 		}
 
 		i++
 	}
 
-	if r.Form.Get(fmt.Sprintf("ingredient-%d", i-1)) == "" {
+	if form.Get(fmt.Sprintf("ingredient-%d", i-1)) == "" {
 		w.WriteHeader(http.StatusUnprocessableEntity)
 		return
 	}
@@ -346,7 +356,8 @@ func recipeAddManualIngredientHandler(w http.ResponseWriter, r *http.Request) {
 
 func recipeAddManualIngredientDeleteHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
-	if err != nil {
+	form := r.Form
+	if err != nil || form == nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not parse the form.", errorToast))
 		w.WriteHeader(http.StatusNoContent)
 		return
@@ -355,7 +366,7 @@ func recipeAddManualIngredientDeleteHandler(w http.ResponseWriter, r *http.Reque
 	count := 0
 	i := 1
 	for {
-		if !r.Form.Has("ingredient-" + strconv.Itoa(i)) {
+		if !form.Has("ingredient-" + strconv.Itoa(i)) {
 			break
 		}
 
@@ -375,7 +386,7 @@ func recipeAddManualIngredientDeleteHandler(w http.ResponseWriter, r *http.Reque
 	i = 1
 	for {
 		key := "ingredient-" + strconv.Itoa(i)
-		if !r.Form.Has(key) {
+		if !form.Has(key) {
 			break
 		}
 
@@ -388,7 +399,7 @@ func recipeAddManualIngredientDeleteHandler(w http.ResponseWriter, r *http.Reque
 		currStr := strconv.Itoa(curr)
 		xs := []string{
 			`<li class="pb-2">`,
-			`<label><input type="text" name="ingredient-` + currStr + `" placeholder="Ingredient #` + currStr + `" required class="w-8/12 py-1 pl-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-900 dark:border-none dark:text-gray-200" ` + `value="` + r.Form.Get(key) + `" _="on keydown if event.key is 'Enter' then halt the event then get next <button/> from the parentElement of me then call htmx.trigger(it, 'click')"></label>`,
+			`<label><input type="text" name="ingredient-` + currStr + `" placeholder="Ingredient #` + currStr + `" required class="w-8/12 py-1 pl-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-900 dark:border-none dark:text-gray-200" ` + `value="` + form.Get(key) + `" _="on keydown if event.key is 'Enter' then halt the event then get next <button/> from the parentElement of me then call htmx.trigger(it, 'click')"></label>`,
 			`&nbsp;<button type="button" class="w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-green-600 hover:text-white center dark:bg-green-500" title="Shortcut: Enter" hx-post="/recipes/add/manual/ingredient" hx-target="#ingredients-list" hx-swap="beforeend" hx-include="[name^='ingredient']">+</button>`,
 			`&nbsp;<button type="button" class="delete-button w-10 h-10 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center dark:bg-red-500" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/` + currStr + `" hx-include="[name^='ingredient']">-</button>`,
 			`&nbsp;<div class="inline-block h-4 cursor-move handle"><svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg></div>`,
@@ -407,7 +418,8 @@ func recipeAddManualIngredientDeleteHandler(w http.ResponseWriter, r *http.Reque
 
 func recipeAddManualInstructionHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
-	if err != nil {
+	form := r.Form
+	if err != nil || form == nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not parse the form.", errorToast))
 		w.WriteHeader(http.StatusNoContent)
 		return
@@ -415,14 +427,14 @@ func recipeAddManualInstructionHandler(w http.ResponseWriter, r *http.Request) {
 
 	i := 1
 	for {
-		if !r.Form.Has("instruction-" + strconv.Itoa(i)) {
+		if !form.Has("instruction-" + strconv.Itoa(i)) {
 			break
 		}
 
 		i++
 	}
 
-	if r.Form.Get(fmt.Sprintf("instruction-%d", i-1)) == "" {
+	if form.Get(fmt.Sprintf("instruction-%d", i-1)) == "" {
 		w.WriteHeader(http.StatusUnprocessableEntity)
 		return
 	}
@@ -432,7 +444,8 @@ func recipeAddManualInstructionHandler(w http.ResponseWriter, r *http.Request) {
 
 func recipeAddManualInstructionDeleteHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
-	if err != nil {
+	form := r.Form
+	if err != nil || form == nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not parse the form.", errorToast))
 		w.WriteHeader(http.StatusNoContent)
 		return
@@ -441,7 +454,7 @@ func recipeAddManualInstructionDeleteHandler(w http.ResponseWriter, r *http.Requ
 	count := 0
 	i := 1
 	for {
-		if !r.Form.Has("instruction-" + strconv.Itoa(i)) {
+		if !form.Has("instruction-" + strconv.Itoa(i)) {
 			break
 		}
 
@@ -461,7 +474,7 @@ func recipeAddManualInstructionDeleteHandler(w http.ResponseWriter, r *http.Requ
 	i = 1
 	for {
 		key := "instruction-" + strconv.Itoa(i)
-		if !r.Form.Has(key) {
+		if !form.Has(key) {
 			break
 		}
 
@@ -472,7 +485,7 @@ func recipeAddManualInstructionDeleteHandler(w http.ResponseWriter, r *http.Requ
 		}
 
 		currStr := strconv.Itoa(curr)
-		value := r.Form.Get(key)
+		value := form.Get(key)
 
 		xs := []string{
 			`<li class="pt-2 md:pl-0"><div class="flex">`,
@@ -497,13 +510,14 @@ func recipeAddManualInstructionDeleteHandler(w http.ResponseWriter, r *http.Requ
 func (s *Server) recipesAddOCRHandler(w http.ResponseWriter, r *http.Request) {
 	r.Body = http.MaxBytesReader(w, r.Body, 1<<24)
 	err := r.ParseMultipartForm(1 << 24)
-	if err != nil {
+	form := r.MultipartForm
+	if err != nil || form == nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not parse the form.", errorToast))
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	images, ok := r.MultipartForm.File["image"]
+	images, ok := form.File["image"]
 	if !ok {
 		w.Header().Set("HX-Trigger", makeToast("Could not retrieve the image from the form.", errorToast))
 		w.WriteHeader(http.StatusBadRequest)
@@ -655,8 +669,11 @@ func (s *Server) recipesEditHandler(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) recipesEditPostHandler(w http.ResponseWriter, r *http.Request) {
 	r.Body = http.MaxBytesReader(w, r.Body, 128<<20)
+
 	err := r.ParseMultipartForm(128 << 20)
-	if err != nil {
+	form := r.Form
+	multipartForm := r.MultipartForm
+	if err != nil || form == nil || multipartForm == nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not parse the form.", errorToast))
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -682,7 +699,7 @@ func (s *Server) recipesEditPostHandler(w http.ResponseWriter, r *http.Request) 
 		URL: r.FormValue("source"),
 	}
 
-	imageFile, ok := r.MultipartForm.File["image"]
+	imageFile, ok := multipartForm.File["image"]
 	if ok {
 		f, err := imageFile[0].Open()
 		if err != nil {
@@ -712,7 +729,7 @@ func (s *Server) recipesEditPostHandler(w http.ResponseWriter, r *http.Request) 
 	i := 1
 	for {
 		s := "ingredient-" + strconv.Itoa(i)
-		if !r.Form.Has(s) {
+		if !form.Has(s) {
 			break
 		}
 		updatedRecipe.Ingredients = append(updatedRecipe.Ingredients, r.FormValue(s))
@@ -722,7 +739,7 @@ func (s *Server) recipesEditPostHandler(w http.ResponseWriter, r *http.Request) 
 	i = 1
 	for {
 		s := "instruction-" + strconv.Itoa(i)
-		if !r.Form.Has(s) {
+		if !form.Has(s) {
 			break
 		}
 		updatedRecipe.Instructions = append(updatedRecipe.Instructions, r.FormValue(s))
@@ -782,7 +799,14 @@ func (s *Server) recipeShareHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) recipeScaleHandler(w http.ResponseWriter, r *http.Request) {
-	yieldStr := r.URL.Query().Get("yield")
+	query := r.URL.Query()
+	if query == nil {
+		w.Header().Set("HX-Trigger", makeToast("Could not parse query.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	yieldStr := query.Get("yield")
 	yield, err := strconv.ParseInt(yieldStr, 10, 16)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("No yield in the query.", errorToast))
@@ -836,13 +860,20 @@ func (s *Server) recipeSharePostHandler(w http.ResponseWriter, r *http.Request) 
 }
 
 func (s *Server) recipesSearchHandler(w http.ResponseWriter, r *http.Request) {
-	userID := getUserID(r)
+	query := r.URL.Query()
+	if query == nil {
+		w.Header().Set("HX-Trigger", makeToast("Could not parse query.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 
-	pageStr := r.URL.Query().Get("page")
+	pageStr := query.Get("page")
 	page, err := strconv.ParseUint(pageStr, 10, 64)
 	if err != nil {
 		page = 1
 	}
+
+	userID := getUserID(r)
 
 	var recipes models.Recipes
 	q := r.FormValue("q")
@@ -912,7 +943,14 @@ func (s *Server) recipesViewShareHandler(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	cookbookIDStr := r.URL.Query().Get("cookbook")
+	query := r.URL.Query()
+	if query == nil {
+		w.Header().Set("HX-Trigger", makeToast("Could not parse query.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	cookbookIDStr := query.Get("cookbook")
 	cookbookID, err := strconv.ParseInt(cookbookIDStr, 10, 64)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not parse cookbookID query parameter.", errorToast))

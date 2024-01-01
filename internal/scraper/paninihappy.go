@@ -23,21 +23,27 @@ func scrapePaniniHappy(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 	description = strings.TrimSuffix(description, "\n\n\n")
 
+	var prepTime string
 	prepTimeStr := recipe.Find(".preptime").Text()
 	parts := strings.Split(prepTimeStr, " ")
-	letter := "M"
-	if strings.HasPrefix(parts[1], "hour") {
-		letter = "H"
+	if len(parts) > 1 {
+		letter := "M"
+		if strings.HasPrefix(parts[1], "hour") {
+			letter = "H"
+		}
+		prepTime = fmt.Sprintf("PT%s%s", parts[0], letter)
 	}
-	prepTime := fmt.Sprintf("PT%s%s", parts[0], letter)
 
+	var cookTime string
 	cookeTimeStr := recipe.Find(".cooktime").Text()
 	parts = strings.Split(cookeTimeStr, " ")
-	letter = "M"
-	if strings.HasPrefix(parts[1], "hour") {
-		letter = "H"
+	if len(parts) > 1 {
+		letter := "M"
+		if strings.HasPrefix(parts[1], "hour") {
+			letter = "H"
+		}
+		cookTime = fmt.Sprintf("PT%s%s", parts[0], letter)
 	}
-	cookTime := fmt.Sprintf("PT%s%s", parts[0], letter)
 
 	yield := findYield(recipe.Find(".yield").Text())
 

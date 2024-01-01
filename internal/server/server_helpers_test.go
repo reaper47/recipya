@@ -9,6 +9,7 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
 	"io"
+	"log"
 	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
@@ -45,6 +46,10 @@ func createWSServer() (*server.Server, *httptest.Server, *websocket.Conn) {
 	ts := httptest.NewServer(srv.Router)
 
 	req, _ := http.NewRequest(http.MethodPost, ts.URL+"/auth/login", strings.NewReader("email=test@example.com&password=123&remember-me=true"))
+	if req == nil {
+		panic("could not create new request")
+	}
+
 	req.Header.Set("Content-Type", string(formHeader))
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -78,9 +83,17 @@ func createMultipartForm(fields map[string]string) (contentType string, body str
 	for name, value := range fields {
 		if strings.HasSuffix(value, ".jpg") {
 			field, _ := writer.CreateFormFile(name, value)
+			if field == nil {
+				log.Println("createMultipartForm.CreateFormField: field is nil after writer.CreateFormField")
+				return
+			}
 			_, _ = field.Write([]byte("not a real file"))
 		} else {
 			field, _ := writer.CreateFormField(name)
+			if field == nil {
+				log.Println("createMultipartForm.CreateFormField: field is nil after writer.CreateFormField")
+				return
+			}
 			_, _ = field.Write([]byte(value))
 		}
 	}
@@ -154,9 +167,14 @@ func prepareRequest(method, target string, contentType header, body *strings.Rea
 	if body == nil {
 		body = strings.NewReader("")
 	}
-	r := httptest.NewRequest(method, target, body)
+
 	sid := uuid.New()
+	if server.SessionData == nil {
+		server.SessionData = make(map[uuid.UUID]int64)
+	}
 	server.SessionData[sid] = 1
+
+	r := httptest.NewRequest(method, target, body)
 	r.AddCookie(server.NewSessionCookie(sid.String()))
 	r = r.WithContext(context.WithValue(r.Context(), server.UserIDKey, int64(1)))
 
@@ -170,9 +188,14 @@ func prepareRequestOther(method, target string, contentType header, body *string
 	if body == nil {
 		body = strings.NewReader("")
 	}
-	r := httptest.NewRequest(method, target, body)
+
 	sid := uuid.New()
+	if server.SessionData == nil {
+		server.SessionData = make(map[uuid.UUID]int64)
+	}
 	server.SessionData[sid] = 2
+
+	r := httptest.NewRequest(method, target, body)
 	r.AddCookie(server.NewSessionCookie(sid.String()))
 	r = r.WithContext(context.WithValue(r.Context(), server.UserIDKey, int64(2)))
 

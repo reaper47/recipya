@@ -14,7 +14,7 @@ COPY ./static ./static
 COPY ./web ./web
 
 RUN go generate ./...
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /app/recipya main.go
+RUN CGO_ENABLED=1 GOOS=linux go build -ldflags="-s -w" -o /app/recipya main.go
 
 # Run the tests in the container
 FROM build-stage AS run-test-stage

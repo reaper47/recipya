@@ -19,7 +19,9 @@ func scrapeAfghanKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 	} else if strings.Contains(time, "h") {
 		time = strings.TrimSuffix(time, " h")
 		parts := strings.Split(time, ":")
-		prep = "PT" + parts[0] + "H" + parts[1] + "M"
+		if len(parts) >= 2 {
+			prep = "PT" + parts[0] + "H" + parts[1] + "M"
+		}
 	}
 
 	var cook string
@@ -29,12 +31,17 @@ func scrapeAfghanKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 	} else if strings.Contains(time, "h") {
 		time = strings.TrimSuffix(time, " h")
 		parts := strings.Split(time, ":")
-		cook = "PT" + parts[0] + "H" + parts[1] + "M"
+		if len(parts) > 1 {
+			cook = "PT" + parts[0] + "H" + parts[1] + "M"
+		}
 	}
 
-	description := about.Nodes[0].FirstChild.NextSibling.FirstChild.Data
-	description = strings.ReplaceAll(description, "\n", "")
-	description = strings.ReplaceAll(description, "\u00a0", " ")
+	var description string
+	if len(about.Nodes) > 0 && about.Nodes[0].FirstChild != nil && about.Nodes[0].FirstChild.NextSibling != nil && about.Nodes[0].FirstChild.NextSibling.FirstChild != nil {
+		description = about.Nodes[0].FirstChild.NextSibling.FirstChild.Data
+		description = strings.ReplaceAll(description, "\n", "")
+		description = strings.ReplaceAll(description, "\u00a0", " ")
+	}
 
 	nodes := about.Find("li.ingredient")
 	ingredients := make([]string, nodes.Length())

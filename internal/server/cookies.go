@@ -79,7 +79,7 @@ func NewRememberMeCookie(selector, validator string) *http.Cookie {
 
 func getUserIDFromRememberMeCookie(r *http.Request, getAuthToken func(selector, validator string) (models.AuthToken, error)) int64 {
 	c, err := r.Cookie(cookieNameRememberMe)
-	if errors.Is(err, http.ErrNoCookie) {
+	if errors.Is(err, http.ErrNoCookie) || c == nil {
 		return -1
 	}
 

@@ -51,9 +51,15 @@ func (s *Server) cookbookShareHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) cookbooksHandler(w http.ResponseWriter, r *http.Request) {
-	userID := getUserID(r)
+	query := r.URL.Query()
+	if query == nil {
+		w.Header().Set("HX-Trigger", makeToast("Could not parse query.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 
-	view := r.URL.Query().Get("view")
+	userID := getUserID(r)
+	view := query.Get("view")
 	if view != "" {
 		mode := models.ViewModeFromString(view)
 		err := s.Repository.UpdateUserSettingsCookbooksViewMode(userID, mode)
@@ -71,7 +77,7 @@ func (s *Server) cookbooksHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pageStr := r.URL.Query().Get("page")
+	pageStr := query.Get("page")
 	page, err := strconv.ParseUint(pageStr, 10, 64)
 	if err != nil {
 		page = 1
@@ -141,7 +147,14 @@ func (s *Server) cookbooksPostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pageStr := r.URL.Query().Get("page")
+	query := r.URL.Query()
+	if query == nil {
+		w.Header().Set("HX-Trigger", makeToast("Query is empty.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	pageStr := query.Get("page")
 	page, err := strconv.ParseUint(pageStr, 10, 64)
 	if err != nil {
 		page = 1
@@ -187,8 +200,14 @@ func (s *Server) cookbooksDeleteCookbookHandler(w http.ResponseWriter, r *http.R
 		return
 	}
 
+	query := r.URL.Query()
+	if query == nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	userID := getUserID(r)
-	pageStr := r.URL.Query().Get("page")
+	pageStr := query.Get("page")
 	page, err := strconv.ParseUint(pageStr, 10, 64)
 	if err != nil {
 		page = 1
@@ -293,6 +312,13 @@ func (s *Server) cookbooksDownloadCookbookHandler(w http.ResponseWriter, r *http
 }
 
 func (s *Server) cookbooksGetCookbookHandler(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query()
+	if query == nil {
+		w.Header().Set("HX-Trigger", makeToast("Could not parse query.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.ParseInt(idStr, 10, 64)
 	if err != nil {
@@ -303,7 +329,7 @@ func (s *Server) cookbooksGetCookbookHandler(w http.ResponseWriter, r *http.Requ
 	isHxRequest := r.Header.Get("Hx-Request") == "true"
 
 	userID := getUserID(r)
-	pageStr := r.URL.Query().Get("page")
+	pageStr := query.Get("page")
 	page, err := strconv.ParseUint(pageStr, 10, 64)
 	if err != nil {
 		if !isHxRequest {
@@ -352,12 +378,13 @@ func (s *Server) cookbooksImagePostCookbookHandler(w http.ResponseWriter, r *htt
 	r.Body = http.MaxBytesReader(w, r.Body, 128<<20)
 
 	err = r.ParseMultipartForm(128 << 20)
-	if err != nil {
+	form := r.MultipartForm
+	if err != nil || form == nil || form.File == nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not parse the uploaded image.", errorToast))
 		return
 	}
 
-	imageFile, ok := r.MultipartForm.File["image"]
+	imageFile, ok := form.File["image"]
 	if !ok {
 		w.Header().Set("HX-Trigger", makeToast("Could not retrieve the image from the form.", errorToast))
 		w.WriteHeader(http.StatusBadRequest)

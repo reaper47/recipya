@@ -19,7 +19,9 @@ func scrapeForksOverKnives(root *goquery.Document) (models.RecipeSchema, error) 
 		xb := regex.Anchor.ReplaceAll([]byte(rs.Category.Value), []byte(""))
 		s := strings.ReplaceAll(string(xb), "</a>", "")
 		xs := strings.Split(s, " ")
-		rs.Category.Value = xs[len(xs)-1]
+		if len(xs) > 0 {
+			rs.Category.Value = xs[len(xs)-1]
+		}
 	}
 	return rs, nil
 }

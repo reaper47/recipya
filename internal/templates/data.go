@@ -134,13 +134,23 @@ func newFormattedTimes(times models.Times) formattedTimes {
 	cook := formatDuration(times.Cook, false)
 	prep := formatDuration(times.Prep, false)
 
+	var prepEdit string
 	parts := strings.Split(prep, "h")
-	minutes := strings.Split(parts[1], "m")[0]
-	prepEdit := fmt.Sprintf("%02s:%02s:00", parts[0], minutes)
+	if len(parts) > 0 {
+		minutes := strings.Split(parts[1], "m")
+		if len(minutes) > 0 {
+			prepEdit = fmt.Sprintf("%02s:%02s:00", parts[0], minutes[0])
+		}
+	}
 
+	var cookEdit string
 	parts = strings.Split(cook, "h")
-	minutes = strings.Split(parts[1], "m")[0]
-	cookEdit := fmt.Sprintf("%02s:%02s:00", parts[0], minutes)
+	if len(parts) > 0 {
+		minutes := strings.Split(parts[1], "m")
+		if len(minutes) > 0 {
+			cookEdit = fmt.Sprintf("%02s:%02s:00", parts[0], minutes[0])
+		}
+	}
 
 	prep = strings.TrimPrefix(prep, "0h")
 	prep = strings.TrimPrefix(prep, "0")

@@ -64,7 +64,19 @@ func (s *Server) changePasswordHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) confirmHandler(w http.ResponseWriter, r *http.Request) {
-	token := r.URL.Query().Get("token")
+	if r.URL == nil {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	values := r.URL.Query()
+	if values == nil {
+		log.Printf("confirmHandler.Query() returned nil")
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	token := values.Get("token")
 	if token == "" {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
@@ -132,9 +144,15 @@ func (s *Server) forgotPasswordPostHandler(w http.ResponseWriter, r *http.Reques
 			return
 		}
 
+		username := "user"
+		split := strings.Split(email, "@")
+		if len(split) > 0 {
+			username = split[0]
+		}
+
 		data := templates.EmailData{
 			Token:    token,
-			UserName: strings.Split(email, "@")[0],
+			UserName: username,
 			URL:      app.Config.Address(),
 		}
 
@@ -151,7 +169,14 @@ func (s *Server) forgotPasswordPostHandler(w http.ResponseWriter, r *http.Reques
 }
 
 func forgotPasswordResetHandler(w http.ResponseWriter, r *http.Request) {
-	userID, err := auth.ParseToken(r.URL.Query().Get("token"))
+	query := r.URL.Query()
+	if query == nil {
+		w.WriteHeader(http.StatusBadRequest)
+		templates.Render(w, templates.SimplePage, templates.ErrorTokenExpired)
+		return
+	}
+
+	userID, err := auth.ParseToken(query.Get("token"))
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		templates.Render(w, templates.SimplePage, templates.ErrorTokenExpired)
@@ -228,6 +253,9 @@ func (s *Server) loginPostHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	sid := uuid.New()
+	if SessionData == nil {
+		SessionData = make(map[uuid.UUID]int64)
+	}
 	SessionData[sid] = userID
 	http.SetCookie(w, NewSessionCookie(sid.String()))
 
@@ -242,7 +270,7 @@ func (s *Server) loginPostHandler(w http.ResponseWriter, r *http.Request) {
 
 	redirectURI := "/"
 	c, err := r.Cookie(cookieNameRedirect)
-	if !errors.Is(err, http.ErrNoCookie) {
+	if c != nil && !errors.Is(err, http.ErrNoCookie) {
 		redirectURI = c.Value
 	}
 
@@ -271,7 +299,7 @@ func (s *Server) logoutHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	sessionCookie, err := r.Cookie(cookieNameSession)
-	if !errors.Is(err, http.ErrNoCookie) {
+	if sessionCookie != nil && !errors.Is(err, http.ErrNoCookie) {
 		c := NewSessionCookie(sessionCookie.Value)
 		c.MaxAge = -1
 		http.SetCookie(w, c)
@@ -279,7 +307,7 @@ func (s *Server) logoutHandler(w http.ResponseWriter, r *http.Request) {
 	maps.DeleteFunc(SessionData, func(_ uuid.UUID, id int64) bool { return id == userID })
 
 	rememberMeCookie, err := r.Cookie(cookieNameRememberMe)
-	if !errors.Is(err, http.ErrNoCookie) {
+	if rememberMeCookie != nil && !errors.Is(err, http.ErrNoCookie) {
 		err = s.Repository.DeleteAuthToken(userID)
 		if err != nil {
 			log.Printf("[error] logoutHandler.DeleteAuthToken: %q", err)
@@ -341,9 +369,15 @@ func (s *Server) registerPostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	username := "user"
+	split := strings.Split(email, "@")
+	if len(split) > 0 {
+		username = split[0]
+	}
+
 	data := templates.EmailData{
 		Token:    token,
-		UserName: strings.Split(email, "@")[0],
+		UserName: username,
 		URL:      app.Config.Address(),
 	}
 

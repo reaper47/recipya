@@ -83,6 +83,12 @@ func scrapeRecettesDuQuebec(root *goquery.Document) (models.RecipeSchema, error)
 		instructions[i] = sel.Text()
 	})
 
+	var recipeImage string
+	split := strings.Split(image, "?")
+	if len(split) > 0 {
+		recipeImage = split[0]
+	}
+
 	return models.RecipeSchema{
 		AtContext:       atContext,
 		AtType:          models.SchemaType{Value: "Recipe"},
@@ -90,7 +96,7 @@ func scrapeRecettesDuQuebec(root *goquery.Document) (models.RecipeSchema, error)
 		CookTime:        cookTime,
 		DatePublished:   datePublished,
 		Description:     models.Description{Value: description},
-		Image:           models.Image{Value: strings.Split(image, "?")[0]},
+		Image:           models.Image{Value: recipeImage},
 		Ingredients:     models.Ingredients{Values: ingredients},
 		Instructions:    models.Instructions{Values: instructions},
 		Keywords:        models.Keywords{Values: keywords},

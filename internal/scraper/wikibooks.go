@@ -8,7 +8,11 @@ import (
 )
 
 func scrapeWikiBooks(root *goquery.Document) (models.RecipeSchema, error) {
-	name := strings.Split(root.Find("#firstHeading").Text(), ":")[1]
+	var name string
+	split := strings.Split(root.Find("#firstHeading").Text(), ":")
+	if len(split) > 1 {
+		name = split[1]
+	}
 
 	start := root.Find(".mw-parser-output").Children().First()
 	if start.Nodes[0].Data == "section" {

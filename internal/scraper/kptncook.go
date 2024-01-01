@@ -12,7 +12,7 @@ func scrapeKptncook(root *goquery.Document) (models.RecipeSchema, error) {
 
 	var prep string
 	clock := root.Find("img[alt='clockIcon']")
-	if clock != nil && len(clock.Nodes) > 0 {
+	if clock != nil && len(clock.Nodes) > 0 && clock.Nodes[0].NextSibling != nil {
 		data := clock.Nodes[0].NextSibling.Data
 		isMin := strings.Contains(data, "min")
 		split := strings.Split(data, " ")

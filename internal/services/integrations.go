@@ -48,8 +48,17 @@ func (i *Integrations) ProcessImageOCR(file io.Reader) (models.Recipe, error) {
 		_ = res.Body.Close()
 	}()
 
+	if res == nil {
+		return models.Recipe{}, errors.New("response is nil")
+	}
+
+	resBody := res.Body
+	if body == nil {
+		return models.Recipe{}, errors.New("response body is nil")
+	}
+
 	var av models.AzureVision
-	err = json.NewDecoder(res.Body).Decode(&av)
+	err = json.NewDecoder(resBody).Decode(&av)
 	if err != nil {
 		return models.Recipe{}, err
 	}
