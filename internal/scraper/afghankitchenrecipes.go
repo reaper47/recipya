@@ -19,7 +19,7 @@ func scrapeAfghanKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 	} else if strings.Contains(time, "h") {
 		time = strings.TrimSuffix(time, " h")
 		parts := strings.Split(time, ":")
-		if len(parts) >= 2 {
+		if len(parts) > 1 {
 			prep = "PT" + parts[0] + "H" + parts[1] + "M"
 		}
 	}

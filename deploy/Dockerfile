@@ -1,20 +1,25 @@
 # Build the application from source
-FROM golang:1.21.0-alpine AS build-stage
+FROM golang:1.21.5-alpine AS build-stage
 
 WORKDIR /app
 
-RUN apk add --update nodejs npm
+RUN apk add --update nodejs npm gcc g++ musl-dev git
+RUN CGO_ENABLED=1 go install -tags extended github.com/gohugoio/hugo@latest
+ENV PATH="/go/bin:${PATH}"
 
 COPY ../go.mod ../go.sum ./
 RUN go mod download && go mod verify
 
+COPY ./.git ./.git
+COPY ./.gitmodules ./.gitmodules
 COPY ./internal ./internal
 COPY ./main.go ./
 COPY ./static ./static
+COPY ./docs ./docs
 COPY ./web ./web
 
 RUN go generate ./...
-RUN CGO_ENABLED=1 GOOS=linux go build -ldflags="-s -w" -o /app/recipya main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /app/recipya main.go
 
 # Run the tests in the container
 FROM build-stage AS run-test-stage

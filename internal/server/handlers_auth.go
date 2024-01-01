@@ -69,14 +69,14 @@ func (s *Server) confirmHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	values := r.URL.Query()
-	if values == nil {
+	query := r.URL.Query()
+	if query == nil {
 		log.Printf("confirmHandler.Query() returned nil")
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
 
-	token := values.Get("token")
+	token := query.Get("token")
 	if token == "" {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
