@@ -36,6 +36,10 @@ func (c *ConfigFile) Address() string {
 		return c.Server.URL
 	}
 
+	if isLocalhost && c.Server.Port > 0 {
+		return c.Server.URL + ":" + strconv.Itoa(c.Server.Port)
+	}
+
 	localAddr := udpAddr()
 	if localAddr == nil {
 		return c.Server.URL
