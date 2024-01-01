@@ -19,7 +19,7 @@ func scrapeGreatBritishChefs(root *goquery.Document) (models.RecipeSchema, error
 
 	node := root.Find(".gbcicon-clock").Next().Text()
 	split := strings.Split(node, " ")
-	if split[1] == "minutes" {
+	if len(split) > 1 && split[1] == "minutes" {
 		rs.CookTime = "PT" + split[0] + "M"
 	}
 

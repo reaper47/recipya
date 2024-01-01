@@ -19,7 +19,10 @@ func scrapeChefnini(root *goquery.Document) (models.RecipeSchema, error) {
 	categories, _ := root.Find("meta[property='article:section']").Attr("content")
 	var category string
 	if categories != "" {
-		category = strings.TrimSpace(strings.Split(categories, ",")[0])
+		split := strings.Split(categories, ",")
+		if len(split) > 0 {
+			category = strings.TrimSpace(split[0])
+		}
 	}
 
 	image, _ := root.Find("meta[property='og:image']").Attr("content")

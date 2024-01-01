@@ -24,8 +24,10 @@ func BuildSearchRecipeQuery(queries []string, options models.SearchOptionsRecipe
 				sb.WriteString("name MATCH ?)")
 			default:
 				sb.WriteString("name MATCH ?")
-				for range queries[1:] {
-					sb.WriteString(" AND name MATCH ?")
+				if len(queries) > 1 {
+					for range queries[1:] {
+						sb.WriteString(" AND name MATCH ?")
+					}
 				}
 				sb.WriteString(")")
 			}

@@ -2,6 +2,7 @@ package scraper
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
@@ -26,7 +27,16 @@ func Scrape(url string, files services.FilesService) (models.RecipeSchema, error
 		_ = res.Body.Close()
 	}()
 
-	doc, err := goquery.NewDocumentFromReader(res.Body)
+	if res == nil {
+		return rs, errors.New("scrape response is nil")
+	}
+
+	body := res.Body
+	if body == nil {
+		return rs, errors.New("scrape response body is nil")
+	}
+
+	doc, err := goquery.NewDocumentFromReader(body)
 	if err != nil {
 		return rs, fmt.Errorf("could not parse HTML: %w", err)
 	}
@@ -45,15 +55,24 @@ func Scrape(url string, files services.FilesService) (models.RecipeSchema, error
 	}
 
 	if rs.Image.Value != "" {
-		res, err = http.Get(rs.Image.Value)
+		resImage, err := http.Get(rs.Image.Value)
 		if err != nil {
 			return rs, err
 		}
 		defer func() {
-			_ = res.Body.Close()
+			_ = resImage.Body.Close()
 		}()
 
-		imageUUID, err := files.UploadImage(res.Body)
+		if resImage == nil {
+			return rs, errors.New("image response is nil")
+		}
+
+		body = resImage.Body
+		if body == nil {
+			return rs, errors.New("image response body is nil")
+		}
+
+		imageUUID, err := files.UploadImage(body)
 		if err != nil {
 			return rs, err
 		}
@@ -90,12 +109,19 @@ func getHost(rawURL string) string {
 		}
 		return parts[1]
 	default:
-		return parts[len(parts)-2]
+		if len(parts) > 1 {
+			return parts[len(parts)-2]
+		}
+		return ""
 	}
 }
 
 func parseLdJSON(root *goquery.Document) (models.RecipeSchema, error) {
 	for _, node := range root.Find("script[type='application/ld+json']").Nodes {
+		if node.FirstChild == nil {
+			continue
+		}
+
 		var rs models.RecipeSchema
 		err := json.Unmarshal([]byte(strings.ReplaceAll(node.FirstChild.Data, "\n", "")), &rs)
 		if err != nil {

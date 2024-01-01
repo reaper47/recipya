@@ -168,7 +168,10 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64, settings model
 	}
 
 	if settings.ConvertAutomatically {
-		r, _ = r.ConvertMeasurementSystem(settings.MeasurementSystem)
+		converted, _ := r.ConvertMeasurementSystem(settings.MeasurementSystem)
+		if converted != nil {
+			r = converted
+		}
 	}
 
 	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{})
@@ -1031,7 +1034,7 @@ func (s *SQLiteService) SwitchMeasurementSystem(system units.System, userID int6
 	numConverted := 0
 	for _, r := range s.RecipesAll(userID) {
 		converted, err := r.ConvertMeasurementSystem(system)
-		if err != nil {
+		if err != nil || converted == nil {
 			continue
 		}
 
@@ -1047,7 +1050,7 @@ func (s *SQLiteService) SwitchMeasurementSystem(system units.System, userID int6
 				continue
 			}
 
-			_, err = tx.ExecContext(ctx, statements.UpdateRecipeIngredient, ingredientID, r.Ingredients[i], r.ID)
+			_, err = tx.ExecContext(ctx, statements.UpdateRecipeIngredient, ingredientID, converted.Ingredients[i], converted.ID)
 			if err != nil {
 				continue
 			}
@@ -1060,7 +1063,7 @@ func (s *SQLiteService) SwitchMeasurementSystem(system units.System, userID int6
 				continue
 			}
 
-			_, err = tx.ExecContext(ctx, statements.UpdateRecipeInstruction, instructionID, r.Instructions[i], r.ID)
+			_, err = tx.ExecContext(ctx, statements.UpdateRecipeInstruction, instructionID, converted.Instructions[i], converted.ID)
 			if err != nil {
 				continue
 			}
@@ -1280,6 +1283,10 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 				}
 			}
 
+			if len(xs) == 0 {
+				continue
+			}
+
 			xs[0] = " " + xs[0]
 			stmt := "UPDATE recipes SET" + strings.Join(xs, ", ") + " WHERE id = ?"
 			args = append(args, recipeID)
@@ -1349,7 +1356,10 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 			args = append(args, updatedRecipe.Nutrition.UnsaturatedFat)
 		}
 
-		xs[0] = " " + xs[0]
+		if len(xs) > 0 {
+			xs[0] = " " + xs[0]
+		}
+
 		stmt := "UPDATE nutrition SET" + strings.Join(xs, ", ") + " WHERE recipe_id = ?"
 		args = append(args, recipeID)
 		_, err = tx.ExecContext(ctx, stmt, args...)

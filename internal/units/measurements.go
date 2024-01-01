@@ -793,6 +793,9 @@ func parseIrregularQuantity(input string, matches []string, re *regexp.Regexp, t
 		if err != nil {
 			if strings.Contains(part, "/") {
 				subParts := strings.Split(part, "/")
+				if len(subParts) < i {
+					continue
+				}
 
 				numerator, err := strconv.ParseFloat(subParts[0], 64)
 				if err != nil {

@@ -12,7 +12,11 @@ func scrapeBarefootcontessa(root *goquery.Document) (models.RecipeSchema, error)
 		return models.RecipeSchema{}, err
 	}
 
-	rs.Name = strings.TrimSpace(strings.Split(rs.Name, " |")[0])
+	split := strings.Split(rs.Name, " |")
+	if len(split) > 0 {
+		rs.Name = strings.TrimSpace(split[0])
+	}
+
 	for i, value := range rs.Instructions.Values {
 		value = strings.TrimPrefix(value, "<p>")
 		value = strings.TrimSuffix(value, "</p>")

@@ -3,6 +3,7 @@ package templates
 import (
 	"fmt"
 	"github.com/google/uuid"
+	"log"
 	"net/url"
 	"time"
 )
@@ -28,10 +29,15 @@ func formatDuration(d time.Duration, isDatetime bool) string {
 func isURL(s string) bool {
 	_, err := url.ParseRequestURI(s)
 	if err != nil {
+		log.Printf("isURL.ParseRequestURI error: %q", err)
 		return false
 	}
 
 	u, err := url.Parse(s)
+	if u == nil {
+		log.Printf("parsed URL %q is nil", s)
+		return false
+	}
 	return err == nil && u.Scheme != "" && u.Host != ""
 }
 

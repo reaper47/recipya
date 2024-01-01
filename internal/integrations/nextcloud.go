@@ -3,6 +3,7 @@ package integrations
 import (
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/models"
@@ -30,8 +31,17 @@ func NextcloudImport(baseURL, username, password string, uploadImageFunc func(rc
 		_ = resRecipes.Body.Close()
 	}()
 
+	if resRecipes == nil {
+		return nil, errors.New("recipes response is nil")
+	}
+
+	body := resRecipes.Body
+	if body == nil {
+		return nil, errors.New("recipes response body is nil")
+	}
+
 	var allRecipes []models.NextcloudRecipes
-	err = json.NewDecoder(resRecipes.Body).Decode(&allRecipes)
+	err = json.NewDecoder(body).Decode(&allRecipes)
 	if err != nil {
 		return nil, err
 	}
@@ -94,6 +104,10 @@ func NextcloudImport(baseURL, username, password string, uploadImageFunc func(rc
 }
 
 func sendBasicAuthRequest(client *http.Client, url string, auth string) (*http.Response, error) {
+	if client == nil {
+		return nil, errors.New("HTTP client is nil when it should not")
+	}
+
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err

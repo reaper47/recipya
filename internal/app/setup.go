@@ -59,6 +59,15 @@ func downloadFile(path, url string) error {
 		_ = res.Body.Close()
 	}()
 
+	if res == nil {
+		return errors.New("download file response is nil")
+	}
+
+	body := res.Body
+	if body == nil {
+		return errors.New("download file response body is nil")
+	}
+
 	if res.StatusCode != http.StatusOK {
 		return fmt.Errorf("file not found at %q", url)
 	}
@@ -68,7 +77,7 @@ func downloadFile(path, url string) error {
 		return err
 	}
 
-	_, err = io.Copy(out, res.Body)
+	_, err = io.Copy(out, body)
 	if err != nil {
 		return err
 	}

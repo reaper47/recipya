@@ -36,8 +36,16 @@ func (c *ConfigFile) Address() string {
 		return c.Server.URL
 	}
 
+	if isLocalhost && c.Server.Port > 0 {
+		return c.Server.URL + ":" + strconv.Itoa(c.Server.Port)
+	}
+
 	localAddr := udpAddr()
-	if localAddr != nil && c.Server.Port == 0 {
+	if localAddr == nil {
+		return c.Server.URL
+	}
+
+	if c.Server.Port == 0 {
 		c.Server.Port = localAddr.Port
 	}
 	port := ":" + strconv.Itoa(c.Server.Port)
@@ -46,15 +54,21 @@ func (c *ConfigFile) Address() string {
 		return c.Server.URL + port
 	}
 
-	if localAddr != nil || isRunningInDocker() {
+	if isRunningInDocker() {
 		addr := c.Server.URL
-		if (runtime.GOOS == "windows" || isRunningInDocker()) && strings.Contains(addr, "0.0.0.0") {
+		if runtime.GOOS == "windows" && strings.Contains(addr, "0.0.0.0") {
 			addr = strings.Replace(addr, "0.0.0.0", "127.0.0.1", 1)
 		}
 		return addr + port
 	}
 
-	addr := strings.SplitAfter(c.Server.URL, "://")[0] + localAddr.IP.String()
+	xs := strings.SplitAfter(c.Server.URL, "://")
+	protocol := "https://"
+	if len(xs) > 0 {
+		protocol = xs[0]
+	}
+
+	addr := protocol + localAddr.IP.String()
 	if c.Server.Port != 0 {
 		return addr + port
 	}

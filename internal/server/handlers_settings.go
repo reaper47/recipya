@@ -59,7 +59,14 @@ func (s *Server) settingsExportRecipesHandler(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	qType := r.URL.Query().Get("type")
+	query := r.URL.Query()
+	if query == nil {
+		w.Header().Set("HX-Trigger", makeToast("Could not parse query.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	qType := query.Get("type")
 	fileType := models.NewFileType(qType)
 	if fileType == models.InvalidFileType {
 		w.Header().Set("HX-Trigger", makeToast("Invalid export file format.", errorToast))

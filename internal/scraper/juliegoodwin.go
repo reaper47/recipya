@@ -28,8 +28,9 @@ func scrapeJuliegoodwin(root *goquery.Document) (models.RecipeSchema, error) {
 	if times != "" {
 		split := strings.Split(times, "\n")
 		if len(split) == 2 {
-			split = strings.Split(split[0], " ")
-			isMin := strings.Contains(split[0], "min")
+			s := split[0]
+			split = strings.Split(s, " ")
+			isMin := strings.Contains(s, "min")
 			for i, s := range split {
 				_, err := strconv.ParseInt(s, 10, 64)
 				if err == nil && isMin {
@@ -37,12 +38,16 @@ func scrapeJuliegoodwin(root *goquery.Document) (models.RecipeSchema, error) {
 				}
 			}
 
-			split = strings.Split(split[1], " ")
-			isMin = strings.Contains(split[0], "min")
-			for i, s := range split {
-				_, err := strconv.ParseInt(s, 10, 64)
-				if err == nil && isMin {
-					cook = "PT" + split[i] + "M"
+			if len(split) > 1 {
+				split = strings.Split(split[1], " ")
+				if len(split) > 0 {
+					isMin = strings.Contains(split[0], "min")
+					for i, s := range split {
+						_, err := strconv.ParseInt(s, 10, 64)
+						if err == nil && isMin {
+							cook = "PT" + split[i] + "M"
+						}
+					}
 				}
 			}
 		}

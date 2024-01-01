@@ -65,9 +65,12 @@ func (r *RecipeSchema) Recipe() (*Recipe, error) {
 
 	var createdAt time.Time
 	if created != "" {
-		createdAt, err = time.Parse(time.DateOnly, strings.Split(created, "T")[0])
-		if err != nil {
-			return nil, fmt.Errorf("could not parse createdAt date %s: %w", created, err)
+		split := strings.Split(created, "T")
+		if len(split) > 0 {
+			createdAt, err = time.Parse(time.DateOnly, split[0])
+			if err != nil {
+				return nil, fmt.Errorf("could not parse createdAt date %s: %w", created, err)
+			}
 		}
 	}
 
@@ -78,9 +81,12 @@ func (r *RecipeSchema) Recipe() (*Recipe, error) {
 
 	updatedAt := createdAt
 	if r.DateModified != "" {
-		updatedAt, err = time.Parse(time.DateOnly, strings.Split(r.DateModified, "T")[0])
-		if err != nil {
-			return nil, fmt.Errorf("could not parse modifiedAt date %s: %w", r.DateModified, err)
+		split := strings.Split(r.DateModified, "T")
+		if len(split) > 0 {
+			updatedAt, err = time.Parse(time.DateOnly, split[0])
+			if err != nil {
+				return nil, fmt.Errorf("could not parse modifiedAt date %s: %w", r.DateModified, err)
+			}
 		}
 	}
 
@@ -596,8 +602,13 @@ func (y *Yield) UnmarshalJSON(data []byte) error {
 	case float64:
 		y.Value = int16(x)
 	case []any:
-		if len(x) > 0 {
-			v := strings.Split(x[0].(string), " ")[0]
+		if len(x) == 0 {
+			break
+		}
+
+		split := strings.Split(x[0].(string), " ")
+		if len(split) > 0 {
+			v := split[0]
 			i, err := strconv.ParseInt(v, 10, 16)
 			if err == nil {
 				y.Value = int16(i)

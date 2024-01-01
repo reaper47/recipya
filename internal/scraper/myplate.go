@@ -18,13 +18,16 @@ func scrapeMyPlate(root *goquery.Document) (models.RecipeSchema, error) {
 	yieldStr = strings.ReplaceAll(yieldStr, "\n", "")
 	yield := findYield(strings.TrimSpace(yieldStr))
 
+	var cookTime string
 	cookTimeText := root.Find(".mp-recipe-full__detail--cook-time .mp-recipe-full__detail--data").Text()
 	parts := strings.Split(cookTimeText, " ")
-	letter := "M"
-	if strings.HasPrefix(parts[1], "hour") {
-		letter = "H"
+	if len(parts) > 1 {
+		letter := "M"
+		if strings.HasPrefix(parts[1], "hour") {
+			letter = "H"
+		}
+		cookTime = fmt.Sprintf("PT%s%s", parts[0], letter)
 	}
-	cookTime := fmt.Sprintf("PT%s%s", parts[0], letter)
 
 	nodes := root.Find(".ingredients li")
 	ingredients := make([]string, nodes.Length())

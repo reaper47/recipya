@@ -802,7 +802,7 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 			Image:        got.Image,
 			Ingredients:  []string{"cheese", "avocado"},
 			Instructions: []string{"mix", "eat"},
-			Keywords:     nil,
+			Keywords:     []string{"chicken", "big", "marinade"},
 			Name:         "Salsa",
 			Nutrition: models.Nutrition{
 				Calories:           "666",
