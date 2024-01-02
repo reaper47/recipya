@@ -33,8 +33,7 @@ They offer a [free plan](https://sendgrid.com/en-us/pricing) that allows you to 
 
 Within Recipya, the email module is used for the following events:
 - Send a confirmation email to a user who registered.
-- Notify the administrator when some errors occur.
-- Inform the administrator when a user requests a URL to import from an unsupported website.
+- Send a forgot password email
 
 If none of these reasons persuade you to use this service, then leave the `email.from` and `email.sendGridAPIKey` fields
 in the [configuration file](https://github.com/reaper47/recipya/blob/main/deploy/config.example.json) empty. No emails
