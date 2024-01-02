@@ -947,6 +947,8 @@ func convertMeasurement(m Measurement, to System) Measurement {
 			} else {
 				converted, _ = m.Convert(Yard)
 			}
+		default:
+			converted = m
 		}
 	case MetricSystem:
 		switch m.Unit {
@@ -1048,6 +1050,8 @@ func convertMeasurement(m Measurement, to System) Measurement {
 			} else {
 				converted, _ = m.Convert(Meter)
 			}
+		default:
+			converted = m
 		}
 	}
 	return converted
