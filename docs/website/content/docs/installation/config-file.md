@@ -6,6 +6,10 @@ weight: 2
 The [configuration file](https://github.com/reaper47/recipya/blob/main/deploy/config.example.json)
 sets important variables for the application. Let's go over each of them. 
 
+{{< callout type="info" >}}
+You do not need to create this file if you do not use Docker because it will be created during the one-time setup.
+{{< /callout >}}
+
 - **email**
   - **from**: The administrator's email address. It is usually the email address of your [SendGrid](https://sendgrid.com/) account.
   - **sendGridAPIKey**: Your [SendGrid](https://sendgrid.com/) API key. The free tier should be sufficient for your needs.

@@ -11,10 +11,7 @@ import (
 	"strings"
 )
 
-var (
-	licenseFile string
-	configFile  string
-)
+var licenseFile string
 
 func main() {
 	packageName := flag.String("package", "", "The package name")
@@ -27,7 +24,6 @@ func main() {
 	}
 
 	licenseFile = filepath.Join(".", "LICENSE")
-	configFile = filepath.Join(".", "deploy", "config.example.json")
 
 	buildRelease(*packageName, *tag)
 }
@@ -86,7 +82,7 @@ func build(platform, packageName, tag string) {
 
 		destFile := filepath.Join(".", "releases", tag, filepath.Join(filepath.Base(outputName)+".zip"))
 		destFile = strings.Replace(destFile, ".exe", "", 1)
-		err = zipFiles(destFile, outputName, licenseFile, configFile)
+		err = zipFiles(destFile, outputName, licenseFile)
 		if err != nil {
 			fmt.Printf("Zip failed for %s: %q.\nAborting the script execution...\n", platform, err)
 			os.Exit(1)

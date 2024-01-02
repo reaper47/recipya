@@ -32,7 +32,7 @@ Your recipes will be swiftly transferred from Nextcloud Cookbook to Recipya.
 ## MasterCook
 
 You can import your MasterCook recipes from the import button on the 
-[add recipe page](/docs/features/recipes/add#import). You can either upload a single `.mxp` file or a zip archive 
+[add recipe page](/guide/docs/features/recipes/add#import). You can either upload a single `.mxp` file or a zip archive 
 containing multiple `.mxp` files.
 
 This [website](https://www.grassrootsrecipes.com/) contains endless MasterCook recipe collections for you to try.

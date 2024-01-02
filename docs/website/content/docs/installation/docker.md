@@ -17,7 +17,7 @@ You first have to fetch it.
 docker pull reaper99/recipya:nightly
 ```
 
-Then, run the image. You must pass your [config.json](/docs/installation/config-file) file to the container.
+Then, run the image. You must pass your [config.json](/guide/docs/installation/config-file) file to the container.
 
 ```bash
 docker run -v path/to/config.json:/app/config.json -p [host port]:[port specified in config.json] -d reaper99/recipya:nightly reaper99/recipya:nightly
@@ -26,7 +26,7 @@ docker run -v path/to/config.json:/app/config.json -p [host port]:[port specifie
 ## Using Docker Compose
 
 You can use Docker Compose to run the container. First, you need to modify the ports and the path to your local
-[config.json](/docs/installation/config-file) in the [compose.yaml](https://github.com/reaper47/recipya/blob/main/deploy/compose.yaml).
+[config.json](/guide/docs/installation/config-file) in the [compose.yaml](https://github.com/reaper47/recipya/blob/main/deploy/compose.yaml).
 Then, start the application.
 
 ```bash

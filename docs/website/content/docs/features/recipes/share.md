@@ -5,7 +5,7 @@ weight: 6
 
 A recipe can be shared to anyone who has the share link.
 
-To generate the link, you first must [view a recipe](/docs/features/recipes/view). Then, click the share icon to the right of the
+To generate the link, you first must [view a recipe](/guide/docs/features/recipes/view). Then, click the share icon to the right of the
 recipe's title. 
 
 ![](sharing-icon.webp)
