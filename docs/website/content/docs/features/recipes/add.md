@@ -45,7 +45,7 @@ To do so, click the *Upload* button and select an image in your computer.
 ![](add-recipe-scan.webp)
 
 {{< callout type="warning" >}}
-You must have an [Azure AI Vision](/docs/installation/system-requirements#azure-ai-vision) account to use this feature.
+You must have an [Azure AI Vision](/guide/docs/installation/system-requirements#azure-ai-vision) account to use this feature.
 {{< /callout >}}
 
 ### Website

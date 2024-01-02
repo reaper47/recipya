@@ -47,7 +47,7 @@ with prebuilt image tagging, text extraction with optical character recognition 
 recognition. Microsoft offers a [free plan](https://azure.microsoft.com/en-us/pricing/details/cognitive-services/computer-vision/)
 that allows you to perform 5000 transactions per month.
 
-Within Recipya, this service is used to [digitize recipes](/docs/features/recipes/add#scan).
+Within Recipya, this service is used to [digitize recipes](/guide/docs/features/recipes/add#scan).
 
 If you do not plan on digitizing paper recipes, then leave the `integrations.azureComputerVision.resourceKey` and
 `integrations.azureComputerVision.visionEndpoint` fields in the [configuration file](https://github.com/reaper47/recipya/blob/main/deploy/config.example.json) 

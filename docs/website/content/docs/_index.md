@@ -10,14 +10,14 @@ share your favorite recipes. It is focussed on simplicity for the whole family t
 
 ## Features
 
-- [Manage your favorite recipes](/docs/features/recipes)
-- [Import recipes from around the web](/docs/features/recipes/add#website)
-- [Digitize paper recipes](/docs/features/recipes/add#scan)
-- [Organize your recipes into cookbooks](/docs/features/cookbooks)
-- [Works seamlessly with Nextcloud Cookbook](/docs/features/integrations)
-- [Automatic conversion to your preferred measurement system](/docs/features/measurement-systems) (imperial/metric)
-- [Calculate nutritional information automatically](/docs/features/nutrition-facts)
-- [Print any recipe in your collection](/docs/features/recipes/print)
-- [Prevent your device from going to sleep while viewing a recipe](/docs/features/recipes/wakelock)
+- [Manage your favorite recipes](/guide/docs/features/recipes)
+- [Import recipes from around the web](/guide/docs/features/recipes/add#website)
+- [Digitize paper recipes](/guide/docs/features/recipes/add#scan)
+- [Organize your recipes into cookbooks](/guide/docs/features/cookbooks)
+- [Works seamlessly with Nextcloud Cookbook](/guide/docs/features/integrations)
+- [Automatic conversion to your preferred measurement system](/guide/docs/features/measurement-systems) (imperial/metric)
+- [Calculate nutritional information automatically](/guide/docs/features/nutrition-facts)
+- [Print any recipe in your collection](/guide/docs/features/recipes/print)
+- [Prevent your device from going to sleep while viewing a recipe](/guide/docs/features/recipes/wakelock)
 - Follows your system's theme (light/dark)
 - Cross-compiled for Windows, Linux, and macOS
