@@ -659,6 +659,11 @@ func TestDetectMeasurementSystemFromSentence(t *testing.T) {
 			in:   "1 fresh pineapple, cored and cut into 1 1/2-inch pieces",
 			want: units.InvalidSystem,
 		},
+		{
+			name: "metric",
+			in:   "450 g long grain white rice, preferably basmati",
+			want: units.MetricSystem,
+		},
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
