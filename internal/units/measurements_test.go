@@ -409,6 +409,13 @@ func TestConvertSentence(t *testing.T) {
 			want: "Rope with 9.86 dl of rice.",
 		},
 		{
+			name: "tsp to tsp",
+			in:   "½ tsp saffron or egg yellow food colour (optional)",
+			from: units.MetricSystem,
+			to:   units.ImperialSystem,
+			want: "0.5 tsp saffron or egg yellow food colour (optional)",
+		},
+		{
 			name: "tsp to L",
 			in:   "Rope with 250 teaspoons of rice.",
 			from: units.ImperialSystem,
@@ -658,6 +665,11 @@ func TestDetectMeasurementSystemFromSentence(t *testing.T) {
 			name: "invalid mixed with imperial",
 			in:   "1 fresh pineapple, cored and cut into 1 1/2-inch pieces",
 			want: units.InvalidSystem,
+		},
+		{
+			name: "metric",
+			in:   "450 g long grain white rice, preferably basmati",
+			want: units.MetricSystem,
 		},
 	}
 	for _, tc := range testcases {
