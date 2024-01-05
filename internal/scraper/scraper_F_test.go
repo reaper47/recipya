@@ -633,7 +633,7 @@ func TestScraper_F(t *testing.T) {
 				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Category: models.Category{
-					Value: "Appetizers",
+					Value: "vegan snacks",
 				},
 				CookTime:      "PT0D0H35M",
 				DatePublished: "2017-01-27 15:29:56",

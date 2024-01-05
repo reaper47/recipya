@@ -85,7 +85,8 @@ adHandler.cmd.push(function () {
   window.adHandler = window.adHandler || {};
   window.adHandler.cmd = window.adHandler.cmd || [];
   window.adHandler.conversionRateFile = '/sites/default/files/eatsmarter_advertisement/currency.json';
-  adHandler.cmd.push(function () {
+      window.adHandler.disableConsentManagement = true;
+    adHandler.cmd.push(function () {
         adHandler.service.setTargeting("keywords", ["Lunch","Course","Poultry","Meat","Cooking","Vegetable","Spices","Nut","Hearty Salad","Salad","Herb","Root Vegetable","Chicken","Vegetable Salad","Asian","regional","Vietnamese","Summer Salad","Summer","seasonal","Family","Special","Picnic","Home Cooking","Lunchbox","250-400 Calorie","nutritional","Raw Food","Vitamin-rich","Light Cooking","Garden Party","Easy","flowering vegetables","Cabbage","Fresh herbs","vegetable oil","carrot","pepper","chili pepper","Chicken breast","Peanuts","Lime","Chinese cabbage","Radish","Chicken broth","low-fat","low-fat salad","What to Cook Today?","Chicken salad","Poultry Salad"]);
         adHandler.service.setTargeting("recipe_categories", ["Lunch","Course","Poultry","Meat","Cooking","Vegetable","Spices","Nut","Hearty Salad","Salad","Herb","Root Vegetable","Chicken","Vegetable Salad","Asian","regional","Vietnamese","Summer Salad","Summer","seasonal","Family","Special","Picnic","Home Cooking","Lunchbox","250-400 Calorie","nutritional","Raw Food","Vitamin-rich","Light Cooking","Garden Party","Easy","flowering vegetables","Cabbage","low-fat","low-fat salad","What to Cook Today?","Chicken salad","Poultry Salad"]);
         adHandler.service.setTargeting("ingredients", ["Fresh herbs","vegetable oil","carrot","pepper","chili pepper","Chicken breast","Peanuts","Lime","Chinese cabbage","Radish","Chicken broth"]);
@@ -99,8 +100,14 @@ adHandler.cmd.push(function () {
     adHandler.service.request();
   });
 </script>
-<script type="text/javascript" src="/sites/all/modules/custom/eatsmarter_advertisement/assets/js/marketers/dfp/com/EAT_Rezepte.js?1698079783" async></script>
-<!-- Begin Inspectlet Embed Code -->
+<script type="text/javascript">
+  function loadCpgFramework() {
+    var cpgScript = document.createElement('script');
+    cpgScript.src = '/sites/all/modules/custom/eatsmarter_advertisement/assets/js/marketers/dfp/com/EAT_Rezepte.js?1698079783';
+    cpgScript.async = true;
+    document.body.appendChild(cpgScript);
+  }
+</script><!-- Begin Inspectlet Embed Code -->
 <script type="text/javascript" id="inspectletjs">
 function executeInspectlet() {
   window.__insp = window.__insp || [];
@@ -136,7 +143,7 @@ function executeInspectlet() {
   }
 </script>
 <!-- End Pinterest Pixel Base Code -->
-<script type="application/ld+json">{"@context":"http://schema.org","@type":"Recipe","mainEntityOfPage":"true","name":"Vietnamese Chicken Cabbage Salad","author":"EAT SMARTER","datePublished":"2016-10-07","recipeYield":"4","totalTime":"PT40M","image":"https://images.eatsmarter.com/sites/default/files/styles/max_size/public/vietnamese-chicken-cabbage-salad-580858.jpg","aggregateRating":{"@type":"AggregateRating","ratingValue":5,"ratingCount":"4","bestRating":"5","worstRating":"1","url":"https://eatsmarter.com/recipes/vietnamese-chicken-cabbage-salad/ratings"},"recipeIngredient":["24 ozs  Chicken broth ","22 ozs  Chicken breasts ","3   carrots (10-12 ounces)","1 bunch  Radish ","1  Red chili pepper ","1   Chinese cabbage ","1 bunch mixed Fresh herbs (such as mint, basil)","1   Lime ","3 Tbsps chopped Peanuts ","2 Tbsps  vegetable oil ","   peppers "],"recipeInstructions":["Bring broth to a boil, add chicken and simmer for about 20 minutes on low heat.","Peel carrots and cut into thin, long strips. Rinse and dry radishes, cut into thin slices. Rinse and chop chile pepper. ","Rinse and dry cabbage, cut into fine strips. Rinse and shake dry herbs, pluck off leaves.&nbsp;\r\n","Remove chicken from broth and cool. Squeeze lime juice. ","Cut meat into thin strips, mix with prepared vegetables and herbs, drizzle with lime juice and oil, season with salt and pepper and sprinkle with nuts. Serve.  "],"description":"Light and refreshing Vietnamese Chicken Cabbage Salad with crunchy peanuts","recipeCategory":"Lunch","recipeCuisine":"Asian, Vietnamese","suitableForDiet":"250-400 Calorie, Raw Food, Vitamin-rich, Light Cooking, Garden Party, low-fat","video":[],"publisher":{"@type":"Organization","name":"EAT SMARTER","url":"https://eatsmarter.com","logo":{"@type":"ImageObject","url":"https://eatsmarter.com/sites/all/themes/eatsmarter/logo.png"}},"review":[{"@type":"Review","reviewBody":null,"headline":null,"datePublished":"2014-08-06","itemReviewed":{"@type":"Thing","name":"Vietnamese Chicken Cabbage Salad"},"author":{"@type":"Person","name":"Sovori"},"reviewRating":{"@type":"Rating","ratingValue":5,"bestRating":5,"worstRating":1}},{"@type":"Review","reviewBody":null,"headline":null,"datePublished":"2018-03-25","itemReviewed":{"@type":"Thing","name":"Vietnamese Chicken Cabbage Salad"},"author":{"@type":"Person","name":"sdhifu8"},"reviewRating":{"@type":"Rating","ratingValue":5,"bestRating":5,"worstRating":1}},{"@type":"Review","reviewBody":null,"headline":null,"datePublished":"2019-06-14","itemReviewed":{"@type":"Thing","name":"Vietnamese Chicken Cabbage Salad"},"author":{"@type":"Person","name":"madmad"},"reviewRating":{"@type":"Rating","ratingValue":5,"bestRating":5,"worstRating":1}},{"@type":"Review","reviewBody":null,"headline":null,"datePublished":"2021-04-09","itemReviewed":{"@type":"Thing","name":"Vietnamese Chicken Cabbage Salad"},"author":{"@type":"Person","name":"Cyndy from EAT SMARTER"},"reviewRating":{"@type":"Rating","ratingValue":5,"bestRating":5,"worstRating":1}}]}</script>
+<script type="application/ld+json">{"@context":"http://schema.org","@type":"Recipe","mainEntityOfPage":"true","name":"Vietnamese Chicken Cabbage Salad","author":{"@type":"Organization","name":"EAT SMARTER","url":"https://eatsmarter.com/"},"datePublished":"2016-10-07","recipeYield":"4","totalTime":"PT40M","image":"https://images.eatsmarter.com/sites/default/files/styles/max_size/public/vietnamese-chicken-cabbage-salad-580858.jpg","aggregateRating":{"@type":"AggregateRating","ratingValue":5,"ratingCount":"4","bestRating":"5","worstRating":"1","url":"https://eatsmarter.com/recipes/vietnamese-chicken-cabbage-salad/ratings"},"recipeIngredient":["24 ozs  Chicken broth ","22 ozs  Chicken breasts ","3   carrots (10-12 ounces)","1 bunch  Radish ","1  Red chili pepper ","1   Chinese cabbage ","1 bunch mixed Fresh herbs (such as mint, basil)","1   Lime ","3 Tbsps chopped Peanuts ","2 Tbsps  vegetable oil ","   peppers "],"recipeInstructions":["Bring broth to a boil, add chicken and simmer for about 20 minutes on low heat.","Peel carrots and cut into thin, long strips. Rinse and dry radishes, cut into thin slices. Rinse and chop chile pepper. ","Rinse and dry cabbage, cut into fine strips. Rinse and shake dry herbs, pluck off leaves.&nbsp;\r\n","Remove chicken from broth and cool. Squeeze lime juice. ","Cut meat into thin strips, mix with prepared vegetables and herbs, drizzle with lime juice and oil, season with salt and pepper and sprinkle with nuts. Serve.  "],"description":"Light and refreshing Vietnamese Chicken Cabbage Salad with crunchy peanuts","recipeCategory":"Lunch","recipeCuisine":"Asian, Vietnamese","suitableForDiet":"250-400 Calorie, Raw Food, Vitamin-rich, Light Cooking, Garden Party, low-fat","video":[],"publisher":{"@type":"Organization","name":"EAT SMARTER","url":"https://eatsmarter.com","logo":{"@type":"ImageObject","url":"https://eatsmarter.com/sites/all/themes/eatsmarter/logo.png"}},"review":[{"@type":"Review","reviewBody":null,"headline":null,"datePublished":"2014-08-06","itemReviewed":{"@type":"Thing","name":"Vietnamese Chicken Cabbage Salad"},"author":{"@type":"Person","name":"Sovori"},"reviewRating":{"@type":"Rating","ratingValue":5,"bestRating":5,"worstRating":1}},{"@type":"Review","reviewBody":null,"headline":null,"datePublished":"2018-03-25","itemReviewed":{"@type":"Thing","name":"Vietnamese Chicken Cabbage Salad"},"author":{"@type":"Person","name":"sdhifu8"},"reviewRating":{"@type":"Rating","ratingValue":5,"bestRating":5,"worstRating":1}},{"@type":"Review","reviewBody":null,"headline":null,"datePublished":"2019-06-14","itemReviewed":{"@type":"Thing","name":"Vietnamese Chicken Cabbage Salad"},"author":{"@type":"Person","name":"madmad"},"reviewRating":{"@type":"Rating","ratingValue":5,"bestRating":5,"worstRating":1}},{"@type":"Review","reviewBody":null,"headline":null,"datePublished":"2021-04-09","itemReviewed":{"@type":"Thing","name":"Vietnamese Chicken Cabbage Salad"},"author":{"@type":"Person","name":"Cyndy from EAT SMARTER"},"reviewRating":{"@type":"Rating","ratingValue":5,"bestRating":5,"worstRating":1}}]}</script>
 <!--[if IE]><![endif]-->
 <link rel="icon" href="https://eatsmarter.com/sites/all/themes/eatsmarter/images/favicons/touch-icon-152x152.png" sizes="152x152" />
 <link rel="apple-touch-icon-precomposed" href="https://eatsmarter.com/sites/all/themes/eatsmarter/images/favicons/touch-icon-152x152-precomposed.png" sizes="152x152" />
@@ -154,8 +161,8 @@ function executeInspectlet() {
   <link type="text/css" rel="stylesheet" href="https://eatsmarter.com/sites/default/files/advagg_css/css__Uro0xdUVSImgiJmrjrHq6zMlE71uYJi5DWE640XkT7c__hG-bFXEfy_6ZwPpLQjNJaRgaaSKpIY0p2SaD6zrPp7k__4rZR3hzk4v0aGc9cQfWDV87AbU3UWsBEJCAtyrVJvUI.css" media="all" />
 <link type="text/css" rel="stylesheet" href="https://eatsmarter.com/sites/default/files/advagg_css/css__BF8W_blKQtPnbjQTY9x1jeMYAPMgw_DaHD_Jx-1OrhE__VgwyfQt-yRZrTCQFX_pOadE6PR9mZKmik_FgvfGFGJc__4rZR3hzk4v0aGc9cQfWDV87AbU3UWsBEJCAtyrVJvUI.css" media="screen" />
 <link type="text/css" rel="stylesheet" href="https://eatsmarter.com/sites/default/files/advagg_css/css__o4BmFEsHL3w9NGcDQPQSasi5bLa7YfunE12JoZ0DF-k__wpG3E_dFCYhj6KKltCVIvVZBXMOPhC1pi4TtHiTatm8__4rZR3hzk4v0aGc9cQfWDV87AbU3UWsBEJCAtyrVJvUI.css" media="all" />
-<link type="text/css" rel="stylesheet" href="https://eatsmarter.com/sites/default/files/advagg_css/css__h0U3okTgDq1KsmDYjUBkxU51Gk-R6yA42Hj6x_rqNgY__eZPLU1jmGMy5TKHoTMwQcpiHavSXDELWUYXZpSvwSqs__4rZR3hzk4v0aGc9cQfWDV87AbU3UWsBEJCAtyrVJvUI.css" media="all" />
-<link type="text/css" rel="stylesheet" href="https://eatsmarter.com/sites/default/files/advagg_css/css__npo1yePr13-KQPYCngd8Ae_BVLMOcSTCvMdsiRUVrgI__vmPBXkT-On1a9vwfbjA8C9__tBVW_VUC8G6QKhe6NIw__4rZR3hzk4v0aGc9cQfWDV87AbU3UWsBEJCAtyrVJvUI.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://eatsmarter.com/sites/default/files/advagg_css/css__pYkgDX_kUEd8NXRfsWtl1uo26LFkpuwWx7eV0tjum6s__Xt6ZGki-kLMTIk4_p3Dl7AtF1ZRRwMWMSlLvnZYeWi4__4rZR3hzk4v0aGc9cQfWDV87AbU3UWsBEJCAtyrVJvUI.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://eatsmarter.com/sites/default/files/advagg_css/css__JAh01tME2uAKvicIPcSO7xBK6LbkUjNO0Ut-FIPTZoY__vmPBXkT-On1a9vwfbjA8C9__tBVW_VUC8G6QKhe6NIw__4rZR3hzk4v0aGc9cQfWDV87AbU3UWsBEJCAtyrVJvUI.css" media="all" />
 <link type="text/css" rel="stylesheet" href="https://eatsmarter.com/sites/default/files/advagg_css/css__qn4oVDkoDJJGX056FmPv2L4pPdC93r9GMq-fhR7TosM__pQZQAK52-ndrMdfMn0wH5Y13WNuUw-fTFqhvp6_8zyQ__4rZR3hzk4v0aGc9cQfWDV87AbU3UWsBEJCAtyrVJvUI.css" media="screen and (min-width: 768px)" />
   </head>
 <body class="html not-front not-logged-in no-sidebars page-node page-node- page-node-580858 node-type-recipe domain-eatsmarter-com   i18n-en" >
@@ -240,7 +247,7 @@ Criteo.events.push(function() {
   <label for="edit-pass">Password <span class="form-required" title="This field is required.">*</span></label>
  <input placeholder="Password*" type="password" id="edit-pass" name="pass" size="15" maxlength="128" class="form-text required" />
 </div>
-<div class="password-forgotten-link"><span class="masked-link " data-link="/user/password" title="Request new password via e-mail.">Password forgotten?</span></div><input type="hidden" name="form_build_id" value="form-0hAgBXgK1iB3rW1mqvGeY29Cm9-46ZQws5mWIs74Sms" />
+<div class="password-forgotten-link"><span class="masked-link " data-link="/user/password" title="Request new password via e-mail.">Password forgotten?</span></div><input type="hidden" name="form_build_id" value="form-u9-UdUpxhl849N9djExlNDT9o1Lqd15gphdVcld02iI" />
 <input type="hidden" name="form_id" value="user_login_block" />
 <div class="form-actions form-wrapper" id="edit-actions--2"><input class="user-form-button form-submit" type="submit" id="edit-submit--3" name="op" value="Log in" /><div class="login-separator form-wrapper" id="">or</div><div class="social-login-container form-wrapper" id="edit-social-login-container"><div class="form-item form-type-item">
  <div class="social-login-button fb-connect-login" data-id="facebook"><span class="icon fa fa-facebook"></span>
@@ -252,7 +259,7 @@ Criteo.events.push(function() {
 <div id="edit-apple-login-link" class="form-item form-type-item">
  <div class="social-login-button apple-login" data-id="apple"><img class="apple-login-icon" src="/sites/all/modules/custom/eatsmarter_social_action/images/apple_logo_black.svg" /><span class="apple-login-text">Sign in with Apple</span></div>
 </div>
-</div></div></div></form><form action="/recipes/vietnamese-chicken-cabbage-salad" method="post" id="openid-connect-login-form" accept-charset="UTF-8"><div><input type="submit" id="edit-openid-connect-client-apple-login" name="apple" value="Log in with Apple" class="form-submit" /><input type="submit" id="edit-openid-connect-client-facebook-login" name="facebook" value="Log in with Facebook" class="form-submit" /><input type="submit" id="edit-openid-connect-client-google-login" name="google" value="Log in with Google" class="form-submit" /><input type="hidden" name="form_build_id" value="form-V3CprqIDGEs_0mDZvnjGsfACHIeMfVXU2dZ1q7ZoLbE" />
+</div></div></div></form><form action="/recipes/vietnamese-chicken-cabbage-salad" method="post" id="openid-connect-login-form" accept-charset="UTF-8"><div><input type="submit" id="edit-openid-connect-client-apple-login" name="apple" value="Log in with Apple" class="form-submit" /><input type="submit" id="edit-openid-connect-client-facebook-login" name="facebook" value="Log in with Facebook" class="form-submit" /><input type="submit" id="edit-openid-connect-client-google-login" name="google" value="Log in with Google" class="form-submit" /><input type="hidden" name="form_build_id" value="form-8LBqsNItpynPc-z5rxwfUdJlH0-3IXqyRZjZ1EqY_Kc" />
 <input type="hidden" name="form_id" value="openid_connect_login_form" />
 </div></form></li></ul></li><li class=""><div class="masked-link" data-link="/user/register">Register</div></li></ul>  </div>
 </div><div class="header-elements-wrapper-mobile hidden-desktop"><div class="navigation">
@@ -281,24 +288,25 @@ Criteo.events.push(function() {
 <div class="form-item form-type-textfield form-item-fulltext">
  <input name="ft" placeholder="Search" type="text" id="edit-fulltext" value="" size="60" maxlength="128" class="form-text" />
 </div>
-<input type="submit" id="edit-submit-button" name="op" value="search" class="form-submit" /><input type="reset" class="search-form-reset" value="X"><div class="reset-value">X</div><input type="hidden" name="form_build_id" value="form-0hdJYTF5ooNApxDMJ-AzeqOXm8js6vFiK6fitL8J4_g" />
+<input type="submit" id="edit-submit-button" name="op" value="search" class="form-submit" /><input type="reset" class="search-form-reset" value="X"><div class="reset-value">X</div><input type="hidden" name="form_build_id" value="form-dnwmYUNlupZ5qbsHBFpmS_7_02M-e2jwfUEFApUQL-k" />
 <input type="hidden" name="form_id" value="eatsmarter_search_search_form" />
 <i class="search-magnifier"></i>
-</div></form></div><div class="main-menu"><ul class="menu"><li class="first expanded depth-1"><a href="/recipes/seasonal/autumn" title="Autumn" class="link-depth-1" rel="follow">Autumn</a><div class="flyout"><ul class="menu"><li class="first depth-2"><a href="https://eatsmarter.com/recipes/seasonal/autumn" title="Autumn Recipes" class="link-depth-2" rel="follow">Autumn Recipes</a></li>
-<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/beet-recipes" title="Beet Recipes" class="link-depth-2" rel="follow">Beet Recipes</a></li>
-<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/cauliflower-recipes" title="Cauliflower Recipes" class="link-depth-2" rel="follow">Cauliflower Recipes</a></li>
-<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/chanterelle-recipes" title="Chanterelle Recipes" class="link-depth-2" rel="follow">Chanterelle Recipes</a></li>
-<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/cranberry-recipes" title="Cranberry Recipes" class="link-depth-2" rel="follow">Cranberry Recipes</a></li>
-<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/eggplant-recipes" title="Eggplant Recipes" class="link-depth-2" rel="follow">Eggplant Recipes</a></li>
-<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/endive-recipes" title="Endive Recipe" class="link-depth-2" rel="follow">Endive Recipe</a></li>
-<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/grape-recipes" title="Grape Recipes" class="link-depth-2" rel="follow">Grape Recipes</a></li>
-<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/kale-recipes" title="Kale Recipes" class="link-depth-2" rel="follow">Kale Recipes</a></li>
+</div></form></div><div class="main-menu"><ul class="menu"><li class="first expanded depth-1"><a href="/recipes/seasonal/winter" title="Winter" class="link-depth-1" rel="follow">Winter</a><div class="flyout"><ul class="menu"><li class="first depth-2"><a href="https://eatsmarter.com/recipes/seasonal/winter" title="Winter Recipes" class="link-depth-2" rel="follow">Winter Recipes</a></li>
+<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/bok-choy-recipes" title="Bok Choy Recipes" class="link-depth-2" rel="follow">Bok Choy Recipes</a></li>
+<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/brussels-sprouts-recipes" title="Brussels Sprouts Recipes" class="link-depth-2" rel="follow">Brussels Sprouts Recipes</a></li>
+<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/butternut-squash-recipes" title="Butternut Squash Recipes" class="link-depth-2" rel="follow">Butternut Squash Recipes</a></li>
+<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/celery-recipes" title="Celery Recipes" class="link-depth-2" rel="follow">Celery Recipes</a></li>
+<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/grapefruit-recipes" title="Grapefruit Recipes" class="link-depth-2" rel="follow">Grapefruit Recipes</a></li>
+<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/kohlrabi-recipes" title="Kohlrabi Recipes" class="link-depth-2" rel="follow">Kohlrabi Recipes</a></li>
+<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/leek-recipes" title="Leek Recipes" class="link-depth-2" rel="follow">Leek Recipes</a></li>
+<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/lemon-recipes" title="Lemon Recipes" class="link-depth-2" rel="follow">Lemon Recipes</a></li>
+<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/napa-cabbage-recipes" title="Napa Cabbage Recipes" class="link-depth-2" rel="follow">Napa Cabbage Recipes</a></li>
+<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/nutmeg-recipes" title="Nutmeg Recipes" class="link-depth-2" rel="follow">Nutmeg Recipes</a></li>
+<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/parsnip-recipes" title="Parsnip Recipes" class="link-depth-2" rel="follow">Parsnip Recipes</a></li>
 <li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/pear-recipes" title="Pear Recipes" class="link-depth-2" rel="follow">Pear Recipes</a></li>
-<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/persimmon-recipes" title="Persimmon Recipes" class="link-depth-2" rel="follow">Persimmon Recipes</a></li>
-<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/pomegranate-recipes" title="Pomegranate Recipes" class="link-depth-2" rel="follow">Pomegranate Recipes</a></li>
-<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/porcini-mushroom-recipes " title="Porcini Mushroom Recipes" class="link-depth-2" rel="follow">Porcini Mushroom Recipes</a></li>
-<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/pumpkin-recipes" title="Pumpkin Recipes" class="link-depth-2" rel="follow">Pumpkin Recipes</a></li>
-<li class="last leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/sweet-potato-recipes" title="Sweet Potato Recipes" class="link-depth-2" rel="follow">Sweet Potato Recipes</a></li>
+<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/pomelo-recipes" title="Pomelo Recipes" class="link-depth-2" rel="follow">Pomelo Recipes</a></li>
+<li class="leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/savoy-cabbage-recipes" title="Savoy Cabbage Recipes" class="link-depth-2" rel="follow">Savoy Cabbage Recipes</a></li>
+<li class="last leaf depth-2"><a href="https://eatsmarter.com/recipes/ingredients/turnip-recipes" title="Turnip Recipes" class="link-depth-2" rel="follow">Turnip Recipes</a></li>
 </ul></div></li>
 <li class="expanded depth-1"><a href="/recipes" title="80,000 Recipes" class="link-depth-1" rel="follow">80,000 Recipes</a><div class="flyout"><ul class="menu"><li class="first depth-2"><a href="/recipes" title="All recipes" class="link-depth-2" rel="follow">All recipes</a></li>
 <li class="expanded no-tile-titles depth-2"><a href="/recipes/course" title="Course" class="link-depth-2" rel="follow">Course</a><ul class="menu"><li class="first leaf depth-3"><a href="/recipes/course/breakfast" title="Breakfast Recipes" class="link-depth-3" rel="follow">Breakfast Recipes</a></li>
@@ -476,14 +484,6 @@ Criteo.events.push(function() {
               <div class="link-container">
           <table class="search-result-arrow-layout">
             <tr>
-              <td><a href="/recipes/nutritional/lactose-free/lactose-free-snacks" title="Lactose-free Snacks recipes" rel="follow">Lactose-free Snacks</a></td>
-              <td class="search-result-arrow">&#x2196;</td>
-            </tr>
-          </table>
-        </div>
-              <div class="link-container">
-          <table class="search-result-arrow-layout">
-            <tr>
               <td><a href="/recipes/cooking/meat/poultry/chicken" title="Chicken recipes" rel="follow">Chicken</a></td>
               <td class="search-result-arrow">&#x2196;</td>
             </tr>
@@ -492,7 +492,7 @@ Criteo.events.push(function() {
               <div class="link-container">
           <table class="search-result-arrow-layout">
             <tr>
-              <td><a href="/recipes/cooking/meat/poultry" title="Poultry recipes" rel="follow">Poultry</a></td>
+              <td><a href="/recipes/ingredients/mango-recipes" title="Mango recipes" rel="follow">Mango</a></td>
               <td class="search-result-arrow">&#x2196;</td>
             </tr>
           </table>
@@ -500,7 +500,7 @@ Criteo.events.push(function() {
               <div class="link-container">
           <table class="search-result-arrow-layout">
             <tr>
-              <td><a href="/recipes/baking/cake/nut-torte" title="nut torte recipes" rel="follow">nut torte</a></td>
+              <td><a href="/recipes/beverage/mixed-drink" title="Mixed Drink recipes" rel="follow">Mixed Drink</a></td>
               <td class="search-result-arrow">&#x2196;</td>
             </tr>
           </table>
@@ -508,7 +508,7 @@ Criteo.events.push(function() {
               <div class="link-container">
           <table class="search-result-arrow-layout">
             <tr>
-              <td><a href="/recipes/ingredients/egg-recipes" title="egg recipes" rel="follow">egg</a></td>
+              <td><a href="/recipes/beverage/cocktail" title="Cocktail recipes" rel="follow">Cocktail</a></td>
               <td class="search-result-arrow">&#x2196;</td>
             </tr>
           </table>
@@ -530,7 +530,7 @@ Criteo.events.push(function() {
       <div class="link-container">
         <table class="search-result-arrow-layout">
           <tr>
-            <td><a href="/recipes/watercress-salad-with-feta-and-sweet-potatoes" rel="follow">Watercress Salad with feta and sweet potatoes</a></td>
+            <td><a href="/recipes/chickpea-tofu-meatballs-on-bulgur-salad" rel="follow">Chickpea Tofu Meatballs on Bulgur Salad</a></td>
             <td class="search-result-arrow">&#x2196;</td>
           </tr>
         </table>
@@ -670,7 +670,7 @@ Criteo.events.push(function() {
 </div>
 
 </div>
-</div></div><input class="es-button-primary form-submit" type="submit" id="edit-submit" name="op" value="Save review" /><input type="hidden" name="form_build_id" value="form-mNZ1EMGqHWek5Guf0pgTrVnvA4XZdwQaC0ipeF80vso" />
+</div></div><input class="es-button-primary form-submit" type="submit" id="edit-submit" name="op" value="Save review" /><input type="hidden" name="form_build_id" value="form-U6r_mccJG1uxJ3G6D6Ul0hoNVCxLuOEPW8qb05WdFyc" />
 <input type="hidden" name="form_id" value="eatsmarter_node_review_form" />
 </div></form>        <span class="reviews-link" data-url="https://eatsmarter.com/recipes/vietnamese-chicken-cabbage-salad/ratings">Show all reviews</span>
         <i class="fa fa-close"></i>
@@ -707,7 +707,7 @@ Criteo.events.push(function() {
   <div class="pane-content">
           <div class="actionbar-common full-width"><div class="actionbar-node-buttons"><div class="actionbar-common-cookbook-link actionbar-common-item"><div class="actionbar-common-item-content"><span class="cookbook_link_placeholder" data-rnid="580858"></span>
  Save</div></div><div class="actionbar-common-share actionbar-common-item"><div class="actionbar-common-item-content"><i class="material-icons">share</i> Share</div></div><div class="actionbar-common-pinterest actionbar-common-item"><div class="actionbar-common-item-content"><a href="https://pinterest.com/pin/create/button/?&amp;description=Erfrischend%20und%20leicht%3A%20Vietnamese%20Chicken%20Cabbage%20Salad%20-%20simple%20dish%20-%20A%20recipe%20idea%20by%20EAT%20SMARTER%20%7C%20low-fat%2C%20low-fat%20salad%2C%20250-400%20Calorie%2C%20Light%20Cooking%2C%20Raw%20Food%2C%20Vitamin-rich%2C%20Garden%20Party%2C%20Asian%2C%20Vietnamese%2C%20Summer%20Salad%2C%20What%20to%20Cook%20Today%3F%2C%20Easy%2C%20Family%2C%20Home%20Cooking%2C%20Lunchbox%2C%20Picnic%2C%20Poultry%2C%20Chicken%2C%20Vegetable%2C%20flowering%20vegetables%2C%20Cabbage%2C%20Root%20Vegetable%2C%20Spices%2C%20Herb%2C%20Nut%2C%20Chicken%20salad%2C%20Hearty%20Salad%2C%20Vegetable%20Salad%2C%20Lunch%20%23poultrysalad%20%23recipes&amp;url=https%3A//eatsmarter.com/recipes/vietnamese-chicken-cabbage-salad&amp;media=https%3A//images.eatsmarter.com/sites/default/files/pinterest/7a4/29b/580858.jpg" data-pin-config="beside" data-pin-do="buttonPin" data-pin-custom="true" rel="nofollow"></a></div></div><div class="actionbar-common-print actionbar-common-item"><div class="actionbar-common-item-content"><span data-url="https://eatsmarter.com/recipes/vietnamese-chicken-cabbage-salad/printview"><i class="material-icons">print</i></span>
-</div></div></div><div class="actionbar-share-buttons"><div class="actionbar-common-clipboard actionbar-common-item"><div class="actionbar-common-item-content"><i class="material-icons">bookmark_border</i> Copy URL</div></div><div class="actionbar-common-email actionbar-common-item"><div class="actionbar-common-item-content"><a href="mailto:?subject=Found%20on%20EAT%20SMARTER%3A%20Vietnamese%20Chicken%20Cabbage%20Salad&amp;body=Hello%21%20This%20could%20interest%20you%3A%20https%3A%2F%2Featsmarter.com%2Frecipes%2Fvietnamese-chicken-cabbage-salad" class="email-share-button" rel="nofollow"><i class="material-icons">mail</i><span>E-Mail</span></a></div></div><div class="actionbar-common-whatsapp actionbar-common-item"><div class="actionbar-common-item-content"><a href="https://send?text=Vietnamese%20Chicken%20Cabbage%20Salad%0Ahttps%3A//eatsmarter.com/recipes/vietnamese-chicken-cabbage-salad" rel="nofollow"><i class="fa fa-whatsapp"></i></a></div></div><div class="actionbar-common-facebook actionbar-common-item"><div class="actionbar-common-item-content"><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//eatsmarter.com/recipes/vietnamese-chicken-cabbage-salad&amp;t=Vietnamese%20Chicken%20Cabbage%20Salad%20" rel="nofollow"><i class="fa fa-facebook"></i></a></div></div><div class="actionbar-common-flipboard actionbar-common-item"><div class="actionbar-common-item-content"><a href="https://share.flipboard.com/bookmarklet/popout?v=2&amp;title=Vietnamese%20Chicken%20Cabbage%20Salad%20%7C%20Eat%20Smarter%20USA&amp;url=https%3A//eatsmarter.com/recipes/vietnamese-chicken-cabbage-salad&amp;t=1700839553&amp;utm_campaign=widgets&amp;utm_medium=web&amp;utm_source=flipit2&amp;utm_content=eatsmarter.com" rel="nofollow"><i class="flipboard"></i></a></div></div></div></div>      </div>
+</div></div></div><div class="actionbar-share-buttons"><div class="actionbar-common-clipboard actionbar-common-item"><div class="actionbar-common-item-content"><i class="material-icons">bookmark_border</i> Copy URL</div></div><div class="actionbar-common-email actionbar-common-item"><div class="actionbar-common-item-content"><a href="mailto:?subject=Found%20on%20EAT%20SMARTER%3A%20Vietnamese%20Chicken%20Cabbage%20Salad&amp;body=Hello%21%20This%20could%20interest%20you%3A%20https%3A%2F%2Featsmarter.com%2Frecipes%2Fvietnamese-chicken-cabbage-salad" class="email-share-button" rel="nofollow"><i class="material-icons">mail</i><span>E-Mail</span></a></div></div><div class="actionbar-common-whatsapp actionbar-common-item"><div class="actionbar-common-item-content"><a href="https://send?text=Vietnamese%20Chicken%20Cabbage%20Salad%0Ahttps%3A//eatsmarter.com/recipes/vietnamese-chicken-cabbage-salad" rel="nofollow"><i class="fa fa-whatsapp"></i></a></div></div><div class="actionbar-common-facebook actionbar-common-item"><div class="actionbar-common-item-content"><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//eatsmarter.com/recipes/vietnamese-chicken-cabbage-salad&amp;t=Vietnamese%20Chicken%20Cabbage%20Salad%20" rel="nofollow"><i class="fa fa-facebook"></i></a></div></div><div class="actionbar-common-flipboard actionbar-common-item"><div class="actionbar-common-item-content"><a href="https://share.flipboard.com/bookmarklet/popout?v=2&amp;title=Vietnamese%20Chicken%20Cabbage%20Salad%20%7C%20Eat%20Smarter%20USA&amp;url=https%3A//eatsmarter.com/recipes/vietnamese-chicken-cabbage-salad&amp;t=1704452241&amp;utm_campaign=widgets&amp;utm_medium=web&amp;utm_source=flipit2&amp;utm_content=eatsmarter.com" rel="nofollow"><i class="flipboard"></i></a></div></div></div></div>      </div>
 
   
   </div>
@@ -936,35 +936,35 @@ Criteo.events.push(function() {
           </div>
 </div>
 </a>
-</div><div class="tile"><a class="teaser-wrapper-link" href="/recipes/mexican-chicken-avocado-salad" title="Mexican Chicken Avocado Salad recipe" rel="follow">
+</div><div class="tile"><a class="teaser-wrapper-link" href="/recipes/chicken-apple-salad" title="Chicken Apple Salad recipe" rel="follow">
 <div class="teaser teaser-medium teaser-node-recipe" >
       <div class="teaser-left">
-      <span class="cookbook_link_placeholder" data-rnid="489743"></span>
-<picture  title="Mexican Chicken Avocado Salad recipe">
+      <span class="cookbook_link_placeholder" data-rnid="605406"></span>
+<picture  title="Chicken Apple Salad recipe">
 <!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/200x150/public/mexican-chicken-avocado-salad-489743.jpg 1x" data-aspectratio="200/150" media="(min-width: 1px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/200x150-webp/public/mexican-chicken-avocado-salad-489743.jpg 1x" data-aspectratio="200/150" media="(min-width: 1px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/200x150/public/chicken-apple-salad-605406.jpg 1x" data-aspectratio="200/150" media="(min-width: 1px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/200x150-webp/public/chicken-apple-salad-605406.jpg 1x" data-aspectratio="200/150" media="(min-width: 1px /* webp */)" type="image/webp" />
 <!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/200x150-webp/public/mexican-chicken-avocado-salad-489743.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="200" height="150" alt="Mexican Chicken Avocado Salad recipe" title="Mexican Chicken Avocado Salad recipe" />
+<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/200x150-webp/public/chicken-apple-salad-605406.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="200" height="150" alt="Chicken Apple Salad recipe" title="Chicken Apple Salad recipe" />
 </picture>    </div><div class="teaser-right">
             <div class="information-container">
-              <div class="premium-badge">Low-Carb Lunch</div>
+              <div class="premium-badge">Protein-Packed Lunch</div>
     
     
     
           <div class="title">
-        Mexican Chicken Avocado Salad      </div>
+        Chicken Apple Salad      </div>
     
     
     
     
                   <div class="teaser-rating">
           <div class="clearfix fivestar-average-stars"><div class="fivestar-static-item"><div class="form-item form-type-item">
- <div class="fivestar-default"><div class="fivestar-widget-static fivestar-widget-static-vote fivestar-widget-static-5 clearfix"><span class="rating">4</span><div class="star star-1 star-odd star-first on"></div><div class="star star-2 star-even on"></div><div class="star star-3 star-odd on"></div><div class="star star-4 star-even on"></div><div class="star star-5 star-odd star-last off"></div></div></div>
+ <div class="fivestar-default"><div class="fivestar-widget-static fivestar-widget-static-vote fivestar-widget-static-5 clearfix"><span class="rating">5</span><div class="star star-1 star-odd star-first on"></div><div class="star star-2 star-even on"></div><div class="star star-3 star-odd on"></div><div class="star star-4 star-even on"></div><div class="star star-5 star-odd star-last on"></div></div></div>
 <div class="description"><div class="fivestar-summary fivestar-summary-"></div></div>
 </div>
 </div></div>            <div class="rating-count">
-              (2)
+              (3)
             </div>
         </div>
             </div>
@@ -973,11 +973,11 @@ Criteo.events.push(function() {
         <hr />
                   <div>
             <i class="fa fa-clock-o"></i>
-            <p  class="preparation-wait">150 mins</p>          </div>
+            <p  class="preparation-wait">90 mins</p>          </div>
         
                   <div>
             <i class="fa fa-balance-scale"></i>
-            <p  class="calories">579 calories</p>          </div>
+            <p  class="calories">318 calories</p>          </div>
         
                   <div class="health-score-teaser"><div class="health-score-image-container health-score-9"></div>94</div>              </div>
           </div>
@@ -1000,7 +1000,7 @@ Criteo.events.push(function() {
           <form class="comment-form user-info-from-cookie" action="/recipes/vietnamese-chicken-cabbage-salad#comment-form" method="post" id="comment-form" accept-charset="UTF-8"><div><div class="field-type-text-long field-name-comment-body field-widget-text-textarea form-wrapper" id="edit-comment-body"><div id="comment-body-add-more-wrapper"><div class="form-item form-type-textarea form-item-comment-body-und-0-value">
  <div class="form-textarea-wrapper resizable"><textarea class="text-full form-textarea required" id="edit-comment-body-und-0-value" name="comment_body[und][0][value]" cols="60" rows="5"></textarea></div>
 </div>
-</div></div><input type="hidden" name="form_build_id" value="form-byVr0UiYUApvMCHKtnMh9Laj5aUdSaLnzIL2T5nDuFg" />
+</div></div><input type="hidden" name="form_build_id" value="form-SrJUxhHNpceIXPe8ze1TbEucK-6wotGtSk4rMnUKqVc" />
 <input type="hidden" name="form_id" value="comment_node_recipe_form" />
 <div class="form-actions form-wrapper" id="edit-actions"><input class="es-button-primary form-submit" type="submit" id="edit-submit--2" name="op" value="Send" /></div><div class="text_body_und_0_value-textfield"><div class="form-item form-type-textfield form-item-text-body-und-0-value">
   <label for="edit-text-body-und-0-value">Leave this field blank </label>
@@ -1038,413 +1038,6 @@ Criteo.events.push(function() {
 
 
   <h2 class="section-title">
-    Fall Favorites  </h2>
-
-
-
-  <div class="dynamic-list-carousel-wrapper"><div class="dynamic-list-carousel-prev"></div>
-<div class="dynamic-list-carousel-next"></div>
-<div  class="odd first last cols-3 dynamic-list-carousel es-list tiles-container" data-cycle-slides=".tile" data-cycle-fx="carousel" data-cycle-carousel-fluid="true" data-cycle-carousel-visible="3" data-cycle-timeout="0" data-cycle-swipe="true" data-cycle-carousel-hops="3">
-  <div class="tile">
-<a class="teaser-wrapper-link" href="/recipes/cookbooks/recipes-with-pumpkin-seeds" title="Recipes with Pumpkin Seeds recipes" rel="follow">
-<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
-      <div class="teaser-left">
-      <picture  title="Recipes with Pumpkin Seeds recipes">
-<!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/roasted-butternut-squash-soup-with-feta-675605_0.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/roasted-butternut-squash-soup-with-feta-675605_0.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/roasted-butternut-squash-soup-with-feta-675605_0.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/roasted-butternut-squash-soup-with-feta-675605_0.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/roasted-butternut-squash-soup-with-feta-675605_0.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/roasted-butternut-squash-soup-with-feta-675605_0.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
-<!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/roasted-butternut-squash-soup-with-feta-675605_0.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Recipes with Pumpkin Seeds recipes" title="Recipes with Pumpkin Seeds recipes" />
-</picture><div class="recipe-counter-container"><div class="recipe-counter">25 recipes</div>
-</div>    </div><div class="teaser-right">
-        
-    
-    
-          <div class="title">
-        Recipes with Pumpkin Seeds      </div>
-    
-    
-          <div class="teasertext short">
-        Recipes with Pumpkin Seeds Recipe Collection      </div>
-    
-    
-          </div>
-</div>
-</a>
-</div><div class="tile">
-<a class="teaser-wrapper-link" href="/recipes/cookbooks/pumpkin" title="Pumpkin recipes" rel="follow">
-<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
-      <div class="teaser-left">
-      <picture  title="Pumpkin recipes">
-<!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/creamy-pumpkin-pasta-676701_0.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/creamy-pumpkin-pasta-676701_0.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/creamy-pumpkin-pasta-676701_0.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/creamy-pumpkin-pasta-676701_0.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/creamy-pumpkin-pasta-676701_0.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/creamy-pumpkin-pasta-676701_0.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
-<!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/creamy-pumpkin-pasta-676701_0.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Pumpkin recipes" title="Pumpkin recipes" />
-</picture><div class="recipe-counter-container"><div class="recipe-counter">20 recipes</div>
-</div>    </div><div class="teaser-right">
-        
-    
-    
-          <div class="title">
-        Pumpkin      </div>
-    
-    
-          <div class="teasertext short">
-        Pumpkin Recipe Collection      </div>
-    
-    
-          </div>
-</div>
-</a>
-</div><div class="tile">
-<a class="teaser-wrapper-link" href="/recipes/cookbooks/sweet-potato-recipes" title="Sweet Potato Recipes recipes" rel="follow">
-<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
-      <div class="teaser-left">
-      <picture  title="Sweet Potato Recipes recipes">
-<!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/sweet-potato-gnocchi-with-herb-pesto-667643.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/sweet-potato-gnocchi-with-herb-pesto-667643.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/sweet-potato-gnocchi-with-herb-pesto-667643.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/sweet-potato-gnocchi-with-herb-pesto-667643.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/sweet-potato-gnocchi-with-herb-pesto-667643.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/sweet-potato-gnocchi-with-herb-pesto-667643.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
-<!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/sweet-potato-gnocchi-with-herb-pesto-667643.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Sweet Potato Recipes recipes" title="Sweet Potato Recipes recipes" />
-</picture><div class="recipe-counter-container"><div class="recipe-counter">30 recipes</div>
-</div>    </div><div class="teaser-right">
-        
-    
-    
-          <div class="title">
-        Sweet Potato Recipes      </div>
-    
-    
-          <div class="teasertext short">
-        Sweet Potato Recipes Recipe Collection      </div>
-    
-    
-          </div>
-</div>
-</a>
-</div><div class="tile">
-<a class="teaser-wrapper-link" href="/recipes/cookbooks/pumpkin-and-squash-soups" title="Pumpkin and Squash Soups recipes" rel="follow">
-<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
-      <div class="teaser-left">
-      <picture  title="Pumpkin and Squash Soups recipes">
-<!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/creamy-pumpkin-soup-470955.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/creamy-pumpkin-soup-470955.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/creamy-pumpkin-soup-470955.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/creamy-pumpkin-soup-470955.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/creamy-pumpkin-soup-470955.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/creamy-pumpkin-soup-470955.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
-<!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/creamy-pumpkin-soup-470955.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Pumpkin and Squash Soups recipes" title="Pumpkin and Squash Soups recipes" />
-</picture><div class="recipe-counter-container"><div class="recipe-counter">26 recipes</div>
-</div>    </div><div class="teaser-right">
-        
-    
-    
-          <div class="title">
-        Pumpkin and Squash Soups      </div>
-    
-    
-          <div class="teasertext short">
-        Pumpkin and Squash Soups Recipe Collection      </div>
-    
-    
-          </div>
-</div>
-</a>
-</div><div class="tile">
-<a class="teaser-wrapper-link" href="/recipes/cookbooks/healthier-baking" title="Healthier Baking recipes" rel="follow">
-<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
-      <div class="teaser-left">
-      <picture  title="Healthier Baking recipes">
-<!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/banana-bread-with-blackberries-674491.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/banana-bread-with-blackberries-674491.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/banana-bread-with-blackberries-674491.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/banana-bread-with-blackberries-674491.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/banana-bread-with-blackberries-674491.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/banana-bread-with-blackberries-674491.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
-<!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/banana-bread-with-blackberries-674491.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Healthier Baking recipes" title="Healthier Baking recipes" />
-</picture><div class="recipe-counter-container"><div class="recipe-counter">20 recipes</div>
-</div>    </div><div class="teaser-right">
-        
-    
-    
-          <div class="title">
-        Healthier Baking      </div>
-    
-    
-          <div class="teasertext short">
-        Healthier Baking Recipe Collection      </div>
-    
-    
-          </div>
-</div>
-</a>
-</div><div class="tile">
-<a class="teaser-wrapper-link" href="/recipes/cookbooks/soups-under-300-calories" title="Soups under 300 Calories recipes" rel="follow">
-<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
-      <div class="teaser-left">
-      <picture  title="Soups under 300 Calories recipes">
-<!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/japanese-pumpkin-soup-676177.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/japanese-pumpkin-soup-676177.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/japanese-pumpkin-soup-676177.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/japanese-pumpkin-soup-676177.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/japanese-pumpkin-soup-676177.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/japanese-pumpkin-soup-676177.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
-<!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/japanese-pumpkin-soup-676177.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Soups under 300 Calories recipes" title="Soups under 300 Calories recipes" />
-</picture><div class="recipe-counter-container"><div class="recipe-counter">30 recipes</div>
-</div>    </div><div class="teaser-right">
-        
-    
-    
-          <div class="title">
-        Soups under 300 Calories      </div>
-    
-    
-          <div class="teasertext short">
-        Soups under 300 Calories Recipe Collection      </div>
-    
-    
-          </div>
-</div>
-</a>
-</div><div class="tile">
-<a class="teaser-wrapper-link" href="/recipes/cookbooks/baked-apple-recipes" title="Baked Apple Recipes recipes" rel="follow">
-<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
-      <div class="teaser-left">
-      <picture  title="Baked Apple Recipes recipes">
-<!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/apple-rose-tarts-673585.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/apple-rose-tarts-673585.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/apple-rose-tarts-673585.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/apple-rose-tarts-673585.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/apple-rose-tarts-673585.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/apple-rose-tarts-673585.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
-<!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/apple-rose-tarts-673585.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Baked Apple Recipes recipes" title="Baked Apple Recipes recipes" />
-</picture><div class="recipe-counter-container"><div class="recipe-counter">18 recipes</div>
-</div>    </div><div class="teaser-right">
-        
-    
-    
-          <div class="title">
-        Baked Apple Recipes      </div>
-    
-    
-          <div class="teasertext short">
-        Baked Apple Recipes Recipe Collection      </div>
-    
-    
-          </div>
-</div>
-</a>
-</div><div class="tile">
-<a class="teaser-wrapper-link" href="/recipes/cookbooks/fast-pasta-dishes" title="Fast Pasta Dishes recipes" rel="follow">
-<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
-      <div class="teaser-left">
-      <picture  title="Fast Pasta Dishes recipes">
-<!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/f3060849-0465-4c35-bdd7-864b31f1f60d_1.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/f3060849-0465-4c35-bdd7-864b31f1f60d_1.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/f3060849-0465-4c35-bdd7-864b31f1f60d_1.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/f3060849-0465-4c35-bdd7-864b31f1f60d_1.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/f3060849-0465-4c35-bdd7-864b31f1f60d_1.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/f3060849-0465-4c35-bdd7-864b31f1f60d_1.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
-<!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/f3060849-0465-4c35-bdd7-864b31f1f60d_1.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Fast Pasta Dishes recipes" title="Fast Pasta Dishes recipes" />
-</picture><div class="recipe-counter-container"><div class="recipe-counter">21 recipes</div>
-</div>    </div><div class="teaser-right">
-        
-    
-    
-          <div class="title">
-        Fast Pasta Dishes      </div>
-    
-    
-          <div class="teasertext short">
-        Fast Pasta Dishes Recipe Collection      </div>
-    
-    
-          </div>
-</div>
-</a>
-</div><div class="tile">
-<a class="teaser-wrapper-link" href="/recipes/cookbooks/spaghetti-squash" title="Spaghetti Squash recipes" rel="follow">
-<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
-      <div class="teaser-left">
-      <picture  title="Spaghetti Squash recipes">
-<!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/stuffed-spaghetti-squash-676595.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/stuffed-spaghetti-squash-676595.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/stuffed-spaghetti-squash-676595.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/stuffed-spaghetti-squash-676595.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/stuffed-spaghetti-squash-676595.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/stuffed-spaghetti-squash-676595.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
-<!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/stuffed-spaghetti-squash-676595.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Spaghetti Squash recipes" title="Spaghetti Squash recipes" />
-</picture><div class="recipe-counter-container"><div class="recipe-counter">6 recipes</div>
-</div>    </div><div class="teaser-right">
-        
-    
-    
-          <div class="title">
-        Spaghetti Squash      </div>
-    
-    
-          <div class="teasertext short">
-        Spaghetti Squash Recipe Collection      </div>
-    
-    
-          </div>
-</div>
-</a>
-</div><div class="tile">
-<a class="teaser-wrapper-link" href="/recipes/cookbooks/mushroom-recipes" title="Mushroom Recipes recipes" rel="follow">
-<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
-      <div class="teaser-left">
-      <picture  title="Mushroom Recipes recipes">
-<!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/potato-pancake-with-mushrooms-628464.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/potato-pancake-with-mushrooms-628464.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/potato-pancake-with-mushrooms-628464.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/potato-pancake-with-mushrooms-628464.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/potato-pancake-with-mushrooms-628464.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/potato-pancake-with-mushrooms-628464.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
-<!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/potato-pancake-with-mushrooms-628464.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Mushroom Recipes recipes" title="Mushroom Recipes recipes" />
-</picture><div class="recipe-counter-container"><div class="recipe-counter">21 recipes</div>
-</div>    </div><div class="teaser-right">
-        
-    
-    
-          <div class="title">
-        Mushroom Recipes      </div>
-    
-    
-          <div class="teasertext short">
-        Mushroom Recipes Recipe Collection      </div>
-    
-    
-          </div>
-</div>
-</a>
-</div><div class="tile">
-<a class="teaser-wrapper-link" href="/recipes/cookbooks/pomegranate-recipes" title="Pomegranate Recipes recipes" rel="follow">
-<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
-      <div class="teaser-left">
-      <picture  title="Pomegranate Recipes recipes">
-<!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/spinach-salad-with-brie-and-pomegranate-seeds-553042.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/spinach-salad-with-brie-and-pomegranate-seeds-553042.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/spinach-salad-with-brie-and-pomegranate-seeds-553042.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/spinach-salad-with-brie-and-pomegranate-seeds-553042.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/spinach-salad-with-brie-and-pomegranate-seeds-553042.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/spinach-salad-with-brie-and-pomegranate-seeds-553042.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
-<!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/spinach-salad-with-brie-and-pomegranate-seeds-553042.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Pomegranate Recipes recipes" title="Pomegranate Recipes recipes" />
-</picture><div class="recipe-counter-container"><div class="recipe-counter">30 recipes</div>
-</div>    </div><div class="teaser-right">
-        
-    
-    
-          <div class="title">
-        Pomegranate Recipes      </div>
-    
-    
-          <div class="teasertext short">
-        Ruby Red Pomegranates      </div>
-    
-    
-          </div>
-</div>
-</a>
-</div><div class="tile">
-<a class="teaser-wrapper-link" href="/recipes/cookbooks/delicious-butternut-squash-recipes" title="Delicious Butternut Squash Recipes recipes" rel="follow">
-<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
-      <div class="teaser-left">
-      <picture  title="Delicious Butternut Squash Recipes recipes">
-<!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/baked-butternut-squash-631114.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/baked-butternut-squash-631114.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/baked-butternut-squash-631114.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/baked-butternut-squash-631114.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/baked-butternut-squash-631114.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/baked-butternut-squash-631114.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
-<!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/baked-butternut-squash-631114.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Delicious Butternut Squash Recipes recipes" title="Delicious Butternut Squash Recipes recipes" />
-</picture><div class="recipe-counter-container"><div class="recipe-counter">15 recipes</div>
-</div>    </div><div class="teaser-right">
-        
-    
-    
-          <div class="title">
-        Delicious Butternut Squash Recipes      </div>
-    
-    
-          <div class="teasertext short">
-        Delicious Butternut Squash Recipes Recipe Collection      </div>
-    
-    
-          </div>
-</div>
-</a>
-</div><div class="tile">
-<a class="teaser-wrapper-link" href="/recipes/cookbooks/the-best-autumn-soups" title="The Best Autumn Soups recipes" rel="follow">
-<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
-      <div class="teaser-left">
-      <picture  title="The Best Autumn Soups recipes">
-<!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/tomato-soup-with-chicken-chickpeas-and-vegetables-627150.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/tomato-soup-with-chicken-chickpeas-and-vegetables-627150.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/tomato-soup-with-chicken-chickpeas-and-vegetables-627150.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/tomato-soup-with-chicken-chickpeas-and-vegetables-627150.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/tomato-soup-with-chicken-chickpeas-and-vegetables-627150.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/tomato-soup-with-chicken-chickpeas-and-vegetables-627150.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
-<!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/tomato-soup-with-chicken-chickpeas-and-vegetables-627150.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="The Best Autumn Soups recipes" title="The Best Autumn Soups recipes" />
-</picture><div class="recipe-counter-container"><div class="recipe-counter">28 recipes</div>
-</div>    </div><div class="teaser-right">
-        
-    
-    
-          <div class="title">
-        The Best Autumn Soups      </div>
-    
-    
-          <div class="teasertext short">
-        The Best Autumn Soups Recipe Collection      </div>
-    
-    
-          </div>
-</div>
-</a>
-</div></div>
-</div>
-
-
-</div>
-<div class="panel-separator"></div>
-<div class="panel-pane pane-dynamic-list"  >
-
-
-  <h2 class="section-title">
     Editors Favorite Recipes  </h2>
 
 
@@ -1453,6 +1046,66 @@ Criteo.events.push(function() {
 <div class="dynamic-list-carousel-next"></div>
 <div  class="odd first last cols-3 dynamic-list-carousel es-list tiles-container" data-cycle-slides=".tile" data-cycle-fx="carousel" data-cycle-carousel-fluid="true" data-cycle-carousel-visible="3" data-cycle-timeout="0" data-cycle-swipe="true" data-cycle-carousel-hops="3">
   <div class="tile">
+<a class="teaser-wrapper-link" href="/recipes/cookbooks/editors-favorite-snacks-and-appetizers" title="Editors Favorite Snacks and Appetizers recipes" rel="follow">
+<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
+      <div class="teaser-left">
+      <picture  title="Editors Favorite Snacks and Appetizers recipes">
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/6d64bb95-28be-4caa-91e4-91575fa150cb_0.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/6d64bb95-28be-4caa-91e4-91575fa150cb_0.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/6d64bb95-28be-4caa-91e4-91575fa150cb_0.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/6d64bb95-28be-4caa-91e4-91575fa150cb_0.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/6d64bb95-28be-4caa-91e4-91575fa150cb_0.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/6d64bb95-28be-4caa-91e4-91575fa150cb_0.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
+<!--[if IE 9]></video><![endif]-->
+<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/6d64bb95-28be-4caa-91e4-91575fa150cb_0.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Editors Favorite Snacks and Appetizers recipes" title="Editors Favorite Snacks and Appetizers recipes" />
+</picture><div class="recipe-counter-container"><div class="recipe-counter">30 recipes</div>
+</div>    </div><div class="teaser-right">
+        
+    
+    
+          <div class="title">
+        Editors Favorite Snacks and Appetizers      </div>
+    
+    
+          <div class="teasertext short">
+        Editors Favorite Snacks and Appetizers Recipe Collection      </div>
+    
+    
+          </div>
+</div>
+</a>
+</div><div class="tile">
+<a class="teaser-wrapper-link" href="/recipes/cookbooks/editors-favorite-desserts-and-sweets" title="Editors Favorite Desserts and Sweets recipes" rel="follow">
+<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
+      <div class="teaser-left">
+      <picture  title="Editors Favorite Desserts and Sweets recipes">
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/chia-pudding-with-berries-674065.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/chia-pudding-with-berries-674065.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/chia-pudding-with-berries-674065.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/chia-pudding-with-berries-674065.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/chia-pudding-with-berries-674065.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/chia-pudding-with-berries-674065.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
+<!--[if IE 9]></video><![endif]-->
+<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/chia-pudding-with-berries-674065.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Editors Favorite Desserts and Sweets recipes" title="Editors Favorite Desserts and Sweets recipes" />
+</picture><div class="recipe-counter-container"><div class="recipe-counter">26 recipes</div>
+</div>    </div><div class="teaser-right">
+        
+    
+    
+          <div class="title">
+        Editors Favorite Desserts and Sweets      </div>
+    
+    
+          <div class="teasertext short">
+        Editors Favorite Desserts and Sweets Recipe Collection      </div>
+    
+    
+          </div>
+</div>
+</a>
+</div><div class="tile">
 <a class="teaser-wrapper-link" href="/recipes/cookbooks/editors-favorite-breakfast-recipes" title="Editors Favorite Breakfast Recipes recipes" rel="follow">
 <div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
       <div class="teaser-left">
@@ -1572,61 +1225,525 @@ Criteo.events.push(function() {
           </div>
 </div>
 </a>
-</div><div class="tile">
-<a class="teaser-wrapper-link" href="/recipes/cookbooks/editors-favorite-snacks-and-appetizers" title="Editors Favorite Snacks and Appetizers recipes" rel="follow">
+</div></div>
+</div>
+
+
+</div>
+<div class="panel-separator"></div>
+<div class="panel-pane pane-dynamic-list"  >
+
+
+  <h2 class="section-title">
+    Get Fit!  </h2>
+
+
+
+  <div class="dynamic-list-carousel-wrapper"><div class="dynamic-list-carousel-prev"></div>
+<div class="dynamic-list-carousel-next"></div>
+<div  class="odd first last cols-3 dynamic-list-carousel es-list tiles-container" data-cycle-slides=".tile" data-cycle-fx="carousel" data-cycle-carousel-fluid="true" data-cycle-carousel-visible="3" data-cycle-timeout="0" data-cycle-swipe="true" data-cycle-carousel-hops="3">
+  <div class="tile">
+<a class="teaser-wrapper-link" href="/recipes/cookbooks/easy-keto-recipes" rel="follow">
 <div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
       <div class="teaser-left">
-      <picture  title="Editors Favorite Snacks and Appetizers recipes">
-<!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/6d64bb95-28be-4caa-91e4-91575fa150cb_0.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/6d64bb95-28be-4caa-91e4-91575fa150cb_0.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/6d64bb95-28be-4caa-91e4-91575fa150cb_0.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/6d64bb95-28be-4caa-91e4-91575fa150cb_0.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/6d64bb95-28be-4caa-91e4-91575fa150cb_0.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/6d64bb95-28be-4caa-91e4-91575fa150cb_0.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
-<!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/6d64bb95-28be-4caa-91e4-91575fa150cb_0.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Editors Favorite Snacks and Appetizers recipes" title="Editors Favorite Snacks and Appetizers recipes" />
-</picture><div class="recipe-counter-container"><div class="recipe-counter">30 recipes</div>
+      <img data-src="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/herb-omelette-with-green-asparagus-and-salmon-667659.jpg" class="lazyload" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="450" height="338" alt="" /><noscript><img src="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/herb-omelette-with-green-asparagus-and-salmon-667659.jpg" width="450" height="338" alt="" /></noscript><div class="recipe-counter-container"><div class="recipe-counter">25 recipes</div>
 </div>    </div><div class="teaser-right">
         
     
     
           <div class="title">
-        Editors Favorite Snacks and Appetizers      </div>
+        Easy Keto Recipes      </div>
     
     
           <div class="teasertext short">
-        Editors Favorite Snacks and Appetizers Recipe Collection      </div>
+        Easy Keto Recipes Recipe Collection      </div>
     
     
           </div>
 </div>
 </a>
 </div><div class="tile">
-<a class="teaser-wrapper-link" href="/recipes/cookbooks/editors-favorite-desserts-and-sweets" title="Editors Favorite Desserts and Sweets recipes" rel="follow">
+<a class="teaser-wrapper-link" href="/recipes/cookbooks/300-400-calorie-dinner-recipes" rel="follow">
 <div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
       <div class="teaser-left">
-      <picture  title="Editors Favorite Desserts and Sweets recipes">
-<!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/chia-pudding-with-berries-674065.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/chia-pudding-with-berries-674065.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/chia-pudding-with-berries-674065.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/chia-pudding-with-berries-674065.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/chia-pudding-with-berries-674065.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/chia-pudding-with-berries-674065.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
-<!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/chia-pudding-with-berries-674065.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Editors Favorite Desserts and Sweets recipes" title="Editors Favorite Desserts and Sweets recipes" />
-</picture><div class="recipe-counter-container"><div class="recipe-counter">26 recipes</div>
+      <img data-src="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/sheet-pan-chicken-with-asparagus-673549.jpg" class="lazyload" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="450" height="338" alt="" /><noscript><img src="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/sheet-pan-chicken-with-asparagus-673549.jpg" width="450" height="338" alt="" /></noscript><div class="recipe-counter-container"><div class="recipe-counter">40 recipes</div>
 </div>    </div><div class="teaser-right">
         
     
     
           <div class="title">
-        Editors Favorite Desserts and Sweets      </div>
+        300-400 Calorie Dinner Recipes      </div>
     
     
           <div class="teasertext short">
-        Editors Favorite Desserts and Sweets Recipe Collection      </div>
+        300-400 Calorie Dinner Recipes Recipe Collection      </div>
+    
+    
+          </div>
+</div>
+</a>
+</div><div class="tile">
+<a class="teaser-wrapper-link" href="/recipes/cookbooks/lower-carb-dinners" rel="follow">
+<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
+      <div class="teaser-left">
+      <img data-src="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/zoodles-with-prawns-674551.jpg" class="lazyload" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="450" height="338" alt="" /><noscript><img src="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/zoodles-with-prawns-674551.jpg" width="450" height="338" alt="" /></noscript><div class="recipe-counter-container"><div class="recipe-counter">40 recipes</div>
+</div>    </div><div class="teaser-right">
+        
+    
+    
+          <div class="title">
+        Lower Carb Dinners      </div>
+    
+    
+          <div class="teasertext short">
+        Lower Carb Dinners Recipe Collection      </div>
+    
+    
+          </div>
+</div>
+</a>
+</div><div class="tile">
+<a class="teaser-wrapper-link" href="/recipes/cookbooks/chicken-recipes-for-everyday" rel="follow">
+<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
+      <div class="teaser-left">
+      <img data-src="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/grilled-caesar-salad-with-chicken-676271.jpg" class="lazyload" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="450" height="338" alt="" /><noscript><img src="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/grilled-caesar-salad-with-chicken-676271.jpg" width="450" height="338" alt="" /></noscript><div class="recipe-counter-container"><div class="recipe-counter">30 recipes</div>
+</div>    </div><div class="teaser-right">
+        
+    
+    
+          <div class="title">
+        Chicken Recipes for Everyday      </div>
+    
+    
+          <div class="teasertext short">
+        Chicken Recipes for Everyday Recipe Collection      </div>
+    
+    
+          </div>
+</div>
+</a>
+</div><div class="tile">
+<a class="teaser-wrapper-link" href="/recipes/cookbooks/lower-carb-snacks" rel="follow">
+<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
+      <div class="teaser-left">
+      <img data-src="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/deviled-eggs-with-yogurt-and-cress-612592.jpg" class="lazyload" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="450" height="338" alt="" /><noscript><img src="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/deviled-eggs-with-yogurt-and-cress-612592.jpg" width="450" height="338" alt="" /></noscript><div class="recipe-counter-container"><div class="recipe-counter">30 recipes</div>
+</div>    </div><div class="teaser-right">
+        
+    
+    
+          <div class="title">
+        Lower Carb Snacks      </div>
+    
+    
+          <div class="teasertext short">
+        Lower Carb Snacks Recipe Collection      </div>
+    
+    
+          </div>
+</div>
+</a>
+</div><div class="tile">
+<a class="teaser-wrapper-link" href="/recipes/cookbooks/400-calories-or-less-recipes" title="400 Calories or Less Recipes recipes" rel="follow">
+<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
+      <div class="teaser-left">
+      <picture  title="400 Calories or Less Recipes recipes">
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/sheet-pan-couscous-with-vegetables-667307.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/sheet-pan-couscous-with-vegetables-667307.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/sheet-pan-couscous-with-vegetables-667307.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/sheet-pan-couscous-with-vegetables-667307.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/sheet-pan-couscous-with-vegetables-667307.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/sheet-pan-couscous-with-vegetables-667307.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
+<!--[if IE 9]></video><![endif]-->
+<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/sheet-pan-couscous-with-vegetables-667307.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="400 Calories or Less Recipes recipes" title="400 Calories or Less Recipes recipes" />
+</picture><div class="recipe-counter-container"><div class="recipe-counter">30 recipes</div>
+</div>    </div><div class="teaser-right">
+        
+    
+    
+          <div class="title">
+        400 Calories or Less Recipes      </div>
+    
+    
+          <div class="teasertext short">
+        400 Calories or Less Recipes Recipe Collection      </div>
+    
+    
+          </div>
+</div>
+</a>
+</div><div class="tile">
+<a class="teaser-wrapper-link" href="/recipes/cookbooks/low-carb-vegetarian-eating" title="Low Carb Vegetarian Eating recipes" rel="follow">
+<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
+      <div class="teaser-left">
+      <picture  title="Low Carb Vegetarian Eating recipes">
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/brussels-sprouts-salad-with-hemp-seeds-669289.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/brussels-sprouts-salad-with-hemp-seeds-669289.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/brussels-sprouts-salad-with-hemp-seeds-669289.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/brussels-sprouts-salad-with-hemp-seeds-669289.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/brussels-sprouts-salad-with-hemp-seeds-669289.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/brussels-sprouts-salad-with-hemp-seeds-669289.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
+<!--[if IE 9]></video><![endif]-->
+<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/brussels-sprouts-salad-with-hemp-seeds-669289.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Low Carb Vegetarian Eating recipes" title="Low Carb Vegetarian Eating recipes" />
+</picture><div class="recipe-counter-container"><div class="recipe-counter">20 recipes</div>
+</div>    </div><div class="teaser-right">
+        
+    
+    
+          <div class="title">
+        Low Carb Vegetarian Eating      </div>
+    
+    
+          <div class="teasertext short">
+        Low Carb Vegetarian Eating Recipe Collection      </div>
+    
+    
+          </div>
+</div>
+</a>
+</div><div class="tile">
+<a class="teaser-wrapper-link" href="/recipes/cookbooks/whole30-recipes" title="Whole30 Recipes recipes" rel="follow">
+<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
+      <div class="teaser-left">
+      <picture  title="Whole30 Recipes recipes">
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/auberginen_vom_grill-343063.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/auberginen_vom_grill-343063.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/auberginen_vom_grill-343063.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/auberginen_vom_grill-343063.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/auberginen_vom_grill-343063.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/auberginen_vom_grill-343063.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
+<!--[if IE 9]></video><![endif]-->
+<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/auberginen_vom_grill-343063.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Whole30 Recipes recipes" title="Whole30 Recipes recipes" />
+</picture><div class="recipe-counter-container"><div class="recipe-counter">22 recipes</div>
+</div>    </div><div class="teaser-right">
+        
+    
+    
+          <div class="title">
+        Whole30 Recipes      </div>
+    
+    
+          <div class="teasertext short">
+        Whole30 Recipes Recipe Collection      </div>
+    
+    
+          </div>
+</div>
+</a>
+</div><div class="tile">
+<a class="teaser-wrapper-link" href="/recipes/cookbooks/high-protein-recipes" title="High Protein Recipes recipes" rel="follow">
+<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
+      <div class="teaser-left">
+      <picture  title="High Protein Recipes recipes">
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/sauteed-salmon-with-lentils-572958.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/sauteed-salmon-with-lentils-572958.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/sauteed-salmon-with-lentils-572958.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/sauteed-salmon-with-lentils-572958.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/sauteed-salmon-with-lentils-572958.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/sauteed-salmon-with-lentils-572958.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
+<!--[if IE 9]></video><![endif]-->
+<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/sauteed-salmon-with-lentils-572958.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="High Protein Recipes recipes" title="High Protein Recipes recipes" />
+</picture><div class="recipe-counter-container"><div class="recipe-counter">30 recipes</div>
+</div>    </div><div class="teaser-right">
+        
+    
+    
+          <div class="title">
+        High Protein Recipes      </div>
+    
+    
+          <div class="teasertext short">
+        High Protein Recipes Recipe Collection      </div>
+    
+    
+          </div>
+</div>
+</a>
+</div><div class="tile">
+<a class="teaser-wrapper-link" href="/recipes/cookbooks/editors-favorite-salads-and-bowls" title="Editors Favorite Salads and Bowls recipes" rel="follow">
+<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
+      <div class="teaser-left">
+      <picture  title="Editors Favorite Salads and Bowls recipes">
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/vegan-bulgur-carrot-and-kale-bowl-674643.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/vegan-bulgur-carrot-and-kale-bowl-674643.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/vegan-bulgur-carrot-and-kale-bowl-674643.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/vegan-bulgur-carrot-and-kale-bowl-674643.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/vegan-bulgur-carrot-and-kale-bowl-674643.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/vegan-bulgur-carrot-and-kale-bowl-674643.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
+<!--[if IE 9]></video><![endif]-->
+<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/vegan-bulgur-carrot-and-kale-bowl-674643.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Editors Favorite Salads and Bowls recipes" title="Editors Favorite Salads and Bowls recipes" />
+</picture><div class="recipe-counter-container"><div class="recipe-counter">30 recipes</div>
+</div>    </div><div class="teaser-right">
+        
+    
+    
+          <div class="title">
+        Editors Favorite Salads and Bowls      </div>
+    
+    
+          <div class="teasertext short">
+        Editors Favorite Salads and Bowls Recipe Collection      </div>
+    
+    
+          </div>
+</div>
+</a>
+</div><div class="tile">
+<a class="teaser-wrapper-link" href="/recipes/cookbooks/sirtfood-diet-recipes" title="Paleo Recipes" rel="follow">
+<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
+      <div class="teaser-left">
+      <picture  title="Paleo Recipes">
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/shrimp-and-kale-bowl-673821-1.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/shrimp-and-kale-bowl-673821-1.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/shrimp-and-kale-bowl-673821-1.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/shrimp-and-kale-bowl-673821-1.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/shrimp-and-kale-bowl-673821-1.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/shrimp-and-kale-bowl-673821-1.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
+<!--[if IE 9]></video><![endif]-->
+<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/shrimp-and-kale-bowl-673821-1.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Paleo Recipes" title="Paleo Recipes" />
+</picture><div class="recipe-counter-container"><div class="recipe-counter">20 recipes</div>
+</div>    </div><div class="teaser-right">
+        
+    
+    
+          <div class="title">
+        Paleo Recipes      </div>
+    
+    
+          <div class="teasertext short">
+        Sirt Diet friendly recipes      </div>
+    
+    
+          </div>
+</div>
+</a>
+</div><div class="tile">
+<a class="teaser-wrapper-link" href="/recipes/cookbooks/250-calories-or-less-dinners" title="250 Calories or Less Dinners recipes" rel="follow">
+<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
+      <div class="teaser-left">
+      <picture  title="250 Calories or Less Dinners recipes">
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/white-bean-salad-with-feta-cheese-568502.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/white-bean-salad-with-feta-cheese-568502.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/white-bean-salad-with-feta-cheese-568502.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/white-bean-salad-with-feta-cheese-568502.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/white-bean-salad-with-feta-cheese-568502.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/white-bean-salad-with-feta-cheese-568502.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
+<!--[if IE 9]></video><![endif]-->
+<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/white-bean-salad-with-feta-cheese-568502.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="250 Calories or Less Dinners recipes" title="250 Calories or Less Dinners recipes" />
+</picture><div class="recipe-counter-container"><div class="recipe-counter">24 recipes</div>
+</div>    </div><div class="teaser-right">
+        
+    
+    
+          <div class="title">
+        250 Calories or Less Dinners      </div>
+    
+    
+          <div class="teasertext short">
+        250 Calories or Less Dinners Recipe Collection      </div>
+    
+    
+          </div>
+</div>
+</a>
+</div><div class="tile">
+<a class="teaser-wrapper-link" href="/recipes/cookbooks/keto-diet-recipes" title="Keto Recipes" rel="follow">
+<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
+      <div class="teaser-left">
+      <picture  title="Keto Recipes">
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/ribeye-steaks-with-chimichurri-sauce-674021.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/ribeye-steaks-with-chimichurri-sauce-674021.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/ribeye-steaks-with-chimichurri-sauce-674021.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/ribeye-steaks-with-chimichurri-sauce-674021.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/ribeye-steaks-with-chimichurri-sauce-674021.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/ribeye-steaks-with-chimichurri-sauce-674021.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
+<!--[if IE 9]></video><![endif]-->
+<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/ribeye-steaks-with-chimichurri-sauce-674021.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Keto Recipes" title="Keto Recipes" />
+</picture><div class="recipe-counter-container"><div class="recipe-counter">30 recipes</div>
+</div>    </div><div class="teaser-right">
+        
+    
+    
+          <div class="title">
+        Keto Recipes      </div>
+    
+    
+          <div class="teasertext short">
+        Keto Diet Recipes Recipe Collection      </div>
+    
+    
+          </div>
+</div>
+</a>
+</div></div>
+</div>
+
+
+</div>
+<div class="panel-separator"></div>
+<div class="panel-pane pane-dynamic-list"  >
+
+
+  <h2 class="section-title">
+    Simple, But Good  </h2>
+
+
+
+  <div class="dynamic-list-carousel-wrapper"><div class="dynamic-list-carousel-prev"></div>
+<div class="dynamic-list-carousel-next"></div>
+<div  class="odd first last cols-3 dynamic-list-carousel es-list tiles-container" data-cycle-slides=".tile" data-cycle-fx="carousel" data-cycle-carousel-fluid="true" data-cycle-carousel-visible="3" data-cycle-timeout="0" data-cycle-swipe="true" data-cycle-carousel-hops="3">
+  <div class="tile">
+<a class="teaser-wrapper-link" href="/recipes/cookbooks/easy-vegan-recipes" rel="follow">
+<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
+      <div class="teaser-left">
+      <img data-src="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/winter-bowl-with-hemp-seed-balls-667485.jpg" class="lazyload" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="450" height="338" alt="" /><noscript><img src="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/winter-bowl-with-hemp-seed-balls-667485.jpg" width="450" height="338" alt="" /></noscript><div class="recipe-counter-container"><div class="recipe-counter">30 recipes</div>
+</div>    </div><div class="teaser-right">
+        
+    
+    
+          <div class="title">
+        Easy Vegan Recipes      </div>
+    
+    
+          <div class="teasertext short">
+        Easy Vegan Recipes Recipe Collection      </div>
+    
+    
+          </div>
+</div>
+</a>
+</div><div class="tile">
+<a class="teaser-wrapper-link" href="/recipes/cookbooks/10-minutes-or-less-recipes" rel="follow">
+<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
+      <div class="teaser-left">
+      <img data-src="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/c63bc03b-ef21-4974-b360-577356d191ae_0.jpg" class="lazyload" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="450" height="338" alt="" /><noscript><img src="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/c63bc03b-ef21-4974-b360-577356d191ae_0.jpg" width="450" height="338" alt="" /></noscript><div class="recipe-counter-container"><div class="recipe-counter">30 recipes</div>
+</div>    </div><div class="teaser-right">
+        
+    
+    
+          <div class="title">
+        10-Minutes or Less Recipes      </div>
+    
+    
+          <div class="teasertext short">
+        10-Minutes or Less Recipes Recipe Collection      </div>
+    
+    
+          </div>
+</div>
+</a>
+</div><div class="tile">
+<a class="teaser-wrapper-link" href="/recipes/cookbooks/fast-pasta-dishes" rel="follow">
+<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
+      <div class="teaser-left">
+      <img data-src="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/spaghetti-with-prawns-and-bok-choy-667727.jpg" class="lazyload" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="450" height="338" alt="" /><noscript><img src="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/spaghetti-with-prawns-and-bok-choy-667727.jpg" width="450" height="338" alt="" /></noscript><div class="recipe-counter-container"><div class="recipe-counter">21 recipes</div>
+</div>    </div><div class="teaser-right">
+        
+    
+    
+          <div class="title">
+        Fast Pasta Dishes      </div>
+    
+    
+          <div class="teasertext short">
+        Fast Pasta Dishes Recipe Collection      </div>
+    
+    
+          </div>
+</div>
+</a>
+</div><div class="tile">
+<a class="teaser-wrapper-link" href="/recipes/cookbooks/easy-one-pan-dishes" title="Easy One Pan Dishes recipes" rel="follow">
+<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
+      <div class="teaser-left">
+      <picture  title="Easy One Pan Dishes recipes">
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/lamm-kuerbis-eintopf-mit-nudelreis-656730-2.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/lamm-kuerbis-eintopf-mit-nudelreis-656730-2.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/lamm-kuerbis-eintopf-mit-nudelreis-656730-2.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/lamm-kuerbis-eintopf-mit-nudelreis-656730-2.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/lamm-kuerbis-eintopf-mit-nudelreis-656730-2.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/lamm-kuerbis-eintopf-mit-nudelreis-656730-2.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
+<!--[if IE 9]></video><![endif]-->
+<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/lamm-kuerbis-eintopf-mit-nudelreis-656730-2.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Easy One Pan Dishes recipes" title="Easy One Pan Dishes recipes" />
+</picture><div class="recipe-counter-container"><div class="recipe-counter">21 recipes</div>
+</div>    </div><div class="teaser-right">
+        
+    
+    
+          <div class="title">
+        Easy One Pan Dishes      </div>
+    
+    
+          <div class="teasertext short">
+        Easy One Pan Dishes Recipe Collection      </div>
+    
+    
+          </div>
+</div>
+</a>
+</div><div class="tile">
+<a class="teaser-wrapper-link" href="/recipes/cookbooks/quick-clean-eating-recipes" title="Quick Clean Eating Recipes recipes" rel="follow">
+<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
+      <div class="teaser-left">
+      <picture  title="Quick Clean Eating Recipes recipes">
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/red-cabbage-radicchio-salad-676423-1.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/red-cabbage-radicchio-salad-676423-1.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/red-cabbage-radicchio-salad-676423-1.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/red-cabbage-radicchio-salad-676423-1.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/red-cabbage-radicchio-salad-676423-1.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/red-cabbage-radicchio-salad-676423-1.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
+<!--[if IE 9]></video><![endif]-->
+<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/red-cabbage-radicchio-salad-676423-1.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Quick Clean Eating Recipes recipes" title="Quick Clean Eating Recipes recipes" />
+</picture><div class="recipe-counter-container"><div class="recipe-counter">25 recipes</div>
+</div>    </div><div class="teaser-right">
+        
+    
+    
+          <div class="title">
+        Quick Clean Eating Recipes      </div>
+    
+    
+          <div class="teasertext short">
+        Quick Clean Eating Recipes Recipe Collection      </div>
+    
+    
+          </div>
+</div>
+</a>
+</div><div class="tile">
+<a class="teaser-wrapper-link" href="/recipes/cookbooks/easy-meal-prep-recipes" title="Easy Meal Prep Recipes recipes" rel="follow">
+<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
+      <div class="teaser-left">
+      <picture  title="Easy Meal Prep Recipes recipes">
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/439afb34-8b58-4df5-beb1-49ecac1dd71a_0.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/439afb34-8b58-4df5-beb1-49ecac1dd71a_0.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/439afb34-8b58-4df5-beb1-49ecac1dd71a_0.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/439afb34-8b58-4df5-beb1-49ecac1dd71a_0.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/439afb34-8b58-4df5-beb1-49ecac1dd71a_0.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/439afb34-8b58-4df5-beb1-49ecac1dd71a_0.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
+<!--[if IE 9]></video><![endif]-->
+<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/439afb34-8b58-4df5-beb1-49ecac1dd71a_0.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Easy Meal Prep Recipes recipes" title="Easy Meal Prep Recipes recipes" />
+</picture><div class="recipe-counter-container"><div class="recipe-counter">25 recipes</div>
+</div>    </div><div class="teaser-right">
+        
+    
+    
+          <div class="title">
+        Easy Meal Prep Recipes      </div>
+    
+    
+          <div class="teasertext short">
+        Easy Meal Prep Recipes Recipe Collection      </div>
     
     
           </div>
@@ -1650,36 +1767,6 @@ Criteo.events.push(function() {
 <div class="dynamic-list-carousel-next"></div>
 <div  class="odd first last cols-3 dynamic-list-carousel es-list tiles-container" data-cycle-slides=".tile" data-cycle-fx="carousel" data-cycle-carousel-fluid="true" data-cycle-carousel-visible="3" data-cycle-timeout="0" data-cycle-swipe="true" data-cycle-carousel-hops="3">
   <div class="tile">
-<a class="teaser-wrapper-link" href="/recipes/cookbooks/30-minute-meals" title="30-Minute Meals recipes" rel="follow">
-<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
-      <div class="teaser-left">
-      <picture  title="30-Minute Meals recipes">
-<!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/vegetarian-ramen-soup-678733.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/vegetarian-ramen-soup-678733.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/vegetarian-ramen-soup-678733.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/vegetarian-ramen-soup-678733.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/vegetarian-ramen-soup-678733.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/vegetarian-ramen-soup-678733.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
-<!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/vegetarian-ramen-soup-678733.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="30-Minute Meals recipes" title="30-Minute Meals recipes" />
-</picture><div class="recipe-counter-container"><div class="recipe-counter">30 recipes</div>
-</div>    </div><div class="teaser-right">
-        
-    
-    
-          <div class="title">
-        30-Minute Meals      </div>
-    
-    
-          <div class="teasertext short">
-        30-Minute Meals Recipe Collection      </div>
-    
-    
-          </div>
-</div>
-</a>
-</div><div class="tile">
 <a class="teaser-wrapper-link" href="/recipes/cookbooks/low-carb-meals" title="Low Carb Meals recipes" rel="follow">
 <div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
       <div class="teaser-left">
@@ -1753,7 +1840,7 @@ Criteo.events.push(function() {
 <source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/fig-pizza-557830.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
 <!--[if IE 9]></video><![endif]-->
 <img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/fig-pizza-557830.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Make Your Own Pizza recipes" title="Make Your Own Pizza recipes" />
-</picture><div class="recipe-counter-container"><div class="recipe-counter">25 recipes</div>
+</picture><div class="recipe-counter-container"><div class="recipe-counter">24 recipes</div>
 </div>    </div><div class="teaser-right">
         
     
@@ -1794,6 +1881,36 @@ Criteo.events.push(function() {
     
           <div class="teasertext short">
         Family Dinner Recipe Collection      </div>
+    
+    
+          </div>
+</div>
+</a>
+</div><div class="tile">
+<a class="teaser-wrapper-link" href="/recipes/cookbooks/30-minute-meals" title="30-Minute Meals recipes" rel="follow">
+<div class="teaser teaser-search-result teaser-field_collection_item-field_manual_teasers teaser-node-gallery" >
+      <div class="teaser-left">
+      <picture  title="30-Minute Meals recipes">
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/vegetarian-ramen-soup-678733.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/vegetarian-ramen-soup-678733.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/vegetarian-ramen-soup-678733.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/vegetarian-ramen-soup-678733.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/vegetarian-ramen-soup-678733.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/vegetarian-ramen-soup-678733.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
+<!--[if IE 9]></video><![endif]-->
+<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/vegetarian-ramen-soup-678733.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="30-Minute Meals recipes" title="30-Minute Meals recipes" />
+</picture><div class="recipe-counter-container"><div class="recipe-counter">30 recipes</div>
+</div>    </div><div class="teaser-right">
+        
+    
+    
+          <div class="title">
+        30-Minute Meals      </div>
+    
+    
+          <div class="teasertext short">
+        30-Minute Meals Recipe Collection      </div>
     
     
           </div>
@@ -1852,173 +1969,6 @@ Criteo.events.push(function() {
 <li><a href="/recipes/cooking/salad/vegetable-salad" title="Vegetable Salad recipes" rel="follow">Vegetable Salad</a></li>
 <li class="last"><a href="/recipes/course/lunch" title="Lunch recipes" rel="follow">Lunch</a></li>
 </ul></div>      </div>
-
-  
-  </div>
-<div class="panel-separator"></div>
-<div class="panel-pane pane-eatsmarter-recipe-seasonal-recipes"  >
-  
-  
-      <div class="pane-title">
-      dinner seasonal    </div>
-  
-  
-  
-  <div class="pane-content">
-          <div class="teaser-slider"><div class="tiles-container cols-3"><div class="tile"><a class="teaser-wrapper-link" href="/recipes/cod-with-lemon-sauce-and-mashed-potatoes" title="Cod with Lemon Sauce and Mashed Potatoes recipe" rel="follow">
-<div class="teaser teaser-search-result teaser-node-recipe" >
-      <div class="teaser-left">
-      <span class="cookbook_link_placeholder" data-rnid="676013"></span>
-<picture  title="Cod with Lemon Sauce and Mashed Potatoes recipe">
-<!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/cod-with-lemon-sauce-and-mashed-potatoes-676013.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/cod-with-lemon-sauce-and-mashed-potatoes-676013.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/cod-with-lemon-sauce-and-mashed-potatoes-676013.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/cod-with-lemon-sauce-and-mashed-potatoes-676013.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/cod-with-lemon-sauce-and-mashed-potatoes-676013.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/cod-with-lemon-sauce-and-mashed-potatoes-676013.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
-<!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/cod-with-lemon-sauce-and-mashed-potatoes-676013.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Cod with Lemon Sauce and Mashed Potatoes recipe" title="Cod with Lemon Sauce and Mashed Potatoes recipe" />
-</picture>    </div><div class="teaser-right">
-            <div class="information-container">
-              <div class="premium-badge">High-Protein</div>
-    
-    
-    
-          <div class="title">
-        Cod with Lemon Sauce and Mashed Potatoes      </div>
-    
-    
-    
-    
-                  <div class="teaser-rating">
-          <div class="clearfix fivestar-average-stars"><div class="fivestar-static-item"><div class="form-item form-type-item">
- <div class="fivestar-default"><div class="fivestar-widget-static fivestar-widget-static-vote fivestar-widget-static-5 clearfix"><span class="rating">4.666665</span><div class="star star-1 star-odd star-first on"></div><div class="star star-2 star-even on"></div><div class="star star-3 star-odd on"></div><div class="star star-4 star-even on"></div><div class="star star-5 star-odd star-last on"></div></div></div>
-<div class="description"><div class="fivestar-summary fivestar-summary-"></div></div>
-</div>
-</div></div>            <div class="rating-count">
-              (3)
-            </div>
-        </div>
-            </div>
-
-      <div class="recipe-info">
-        <hr />
-                  <div>
-            <i class="fa fa-clock-o"></i>
-            <p  class="preparation">50 mins</p><p  class="preparation-wait">50 mins</p>          </div>
-        
-                  <div>
-            <i class="fa fa-balance-scale"></i>
-            <p  class="calories">608 calories</p>          </div>
-        
-                  <div class="health-score-teaser"><div class="health-score-image-container health-score-9"></div>93</div>              </div>
-          </div>
-</div>
-</a>
-</div><div class="tile"><a class="teaser-wrapper-link" href="/recipes/chicken-breast-with-avocado-cauliflower-mash" title="Chicken Breast with Avocado Cauliflower Mash recipe" rel="follow">
-<div class="teaser teaser-search-result teaser-node-recipe" >
-      <div class="teaser-left">
-      <span class="cookbook_link_placeholder" data-rnid="675783"></span>
-<picture  title="Chicken Breast with Avocado Cauliflower Mash recipe">
-<!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/chicken-breast-with-avocado-cauliflower-mash-675783.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/chicken-breast-with-avocado-cauliflower-mash-675783.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/chicken-breast-with-avocado-cauliflower-mash-675783.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/chicken-breast-with-avocado-cauliflower-mash-675783.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/chicken-breast-with-avocado-cauliflower-mash-675783.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/chicken-breast-with-avocado-cauliflower-mash-675783.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
-<!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/chicken-breast-with-avocado-cauliflower-mash-675783.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Chicken Breast with Avocado Cauliflower Mash recipe" title="Chicken Breast with Avocado Cauliflower Mash recipe" />
-</picture>    </div><div class="teaser-right">
-            <div class="information-container">
-              <div class="premium-badge">Low-Carb and Protein-Rich</div>
-    
-    
-    
-          <div class="title">
-        Chicken Breast with Avocado Cauliflower Mash      </div>
-    
-    
-    
-    
-                  <div class="teaser-rating">
-          <div class="clearfix fivestar-average-stars"><div class="fivestar-static-item"><div class="form-item form-type-item">
- <div class="fivestar-default"><div class="fivestar-widget-static fivestar-widget-static-vote fivestar-widget-static-5 clearfix"><span class="rating">4.88889</span><div class="star star-1 star-odd star-first on"></div><div class="star star-2 star-even on"></div><div class="star star-3 star-odd on"></div><div class="star star-4 star-even on"></div><div class="star star-5 star-odd star-last on"></div></div></div>
-<div class="description"><div class="fivestar-summary fivestar-summary-"></div></div>
-</div>
-</div></div>            <div class="rating-count">
-              (27)
-            </div>
-        </div>
-            </div>
-
-      <div class="recipe-info">
-        <hr />
-                  <div>
-            <i class="fa fa-clock-o"></i>
-            <p  class="preparation">25 mins</p><p  class="preparation-wait">25 mins</p>          </div>
-        
-                  <div>
-            <i class="fa fa-balance-scale"></i>
-            <p  class="calories">294 calories</p>          </div>
-        
-                  <div class="health-score-teaser"><div class="health-score-image-container health-score-9"></div>92</div>              </div>
-          </div>
-</div>
-</a>
-</div><div class="tile"><a class="teaser-wrapper-link" href="/recipes/pasta-with-nasturtium-pesto" title="Pasta with Nasturtium Pesto recipe" rel="follow">
-<div class="teaser teaser-search-result teaser-node-recipe" >
-      <div class="teaser-left">
-      <span class="cookbook_link_placeholder" data-rnid="675405"></span>
-<picture  title="Pasta with Nasturtium Pesto recipe">
-<!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/pasta-with-nasturtium-pesto-675405.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/pasta-with-nasturtium-pesto-675405.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/pasta-with-nasturtium-pesto-675405.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/pasta-with-nasturtium-pesto-675405.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/pasta-with-nasturtium-pesto-675405.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/pasta-with-nasturtium-pesto-675405.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
-<!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/pasta-with-nasturtium-pesto-675405.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Pasta with Nasturtium Pesto recipe" title="Pasta with Nasturtium Pesto recipe" />
-</picture>    </div><div class="teaser-right">
-            <div class="information-container">
-              <div class="premium-badge">Seasonal Kitchen</div>
-    
-    
-    
-          <div class="title">
-        Pasta with Nasturtium Pesto      </div>
-    
-          <p  class="subtitle">and green beans</p>    
-    
-    
-                  <div class="teaser-rating">
-          <div class="clearfix fivestar-average-stars"><div class="fivestar-static-item"><div class="form-item form-type-item">
- <div class="fivestar-default"><div class="fivestar-widget-static fivestar-widget-static-vote fivestar-widget-static-5 clearfix"><span class="rating">5</span><div class="star star-1 star-odd star-first on"></div><div class="star star-2 star-even on"></div><div class="star star-3 star-odd on"></div><div class="star star-4 star-even on"></div><div class="star star-5 star-odd star-last on"></div></div></div>
-<div class="description"><div class="fivestar-summary fivestar-summary-"></div></div>
-</div>
-</div></div>            <div class="rating-count">
-              (2)
-            </div>
-        </div>
-            </div>
-
-      <div class="recipe-info">
-        <hr />
-                  <div>
-            <i class="fa fa-clock-o"></i>
-            <p  class="preparation">30 mins</p><p  class="preparation-wait">30 mins</p>          </div>
-        
-                  <div>
-            <i class="fa fa-balance-scale"></i>
-            <p  class="calories">589 calories</p>          </div>
-        
-                  <div class="health-score-teaser"><div class="health-score-image-container health-score-9"></div>97</div>              </div>
-          </div>
-</div>
-</a>
-</div></div></div>      </div>
 
   
   </div>
@@ -2276,53 +2226,6 @@ Criteo.events.push(function() {
           </div>
 </div>
 </a>
-</div><div class="tile"><a class="teaser-wrapper-link" href="/recipes/mexican-chicken-avocado-salad" title="Mexican Chicken Avocado Salad recipe" rel="follow">
-<div class="teaser teaser-small teaser-node-recipe" >
-      <div class="teaser-left">
-      <span class="cookbook_link_placeholder" data-rnid="489743"></span>
-<picture  title="Mexican Chicken Avocado Salad recipe">
-<!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/120x90/public/mexican-chicken-avocado-salad-489743.jpg 1x" data-aspectratio="120/90" media="(min-width: 1px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/120x90-webp/public/mexican-chicken-avocado-salad-489743.jpg 1x" data-aspectratio="120/90" media="(min-width: 1px /* webp */)" type="image/webp" />
-<!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/120x90-webp/public/mexican-chicken-avocado-salad-489743.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="120" height="90" alt="Mexican Chicken Avocado Salad recipe" title="Mexican Chicken Avocado Salad recipe" />
-</picture>    </div><div class="teaser-right">
-            <div class="information-container">
-              <div class="premium-badge">Low-Carb Lunch</div>
-    
-    
-    
-          <div class="title">
-        Mexican Chicken Avocado Salad      </div>
-    
-    
-    
-    
-                  <div class="teaser-rating">
-          <div class="clearfix fivestar-average-stars"><div class="fivestar-static-item"><div class="form-item form-type-item">
- <div class="fivestar-default"><div class="fivestar-widget-static fivestar-widget-static-vote fivestar-widget-static-5 clearfix"><span class="rating">4</span><div class="star star-1 star-odd star-first on"></div><div class="star star-2 star-even on"></div><div class="star star-3 star-odd on"></div><div class="star star-4 star-even on"></div><div class="star star-5 star-odd star-last off"></div></div></div>
-<div class="description"><div class="fivestar-summary fivestar-summary-"></div></div>
-</div>
-</div></div>            <div class="rating-count">
-              (2)
-            </div>
-        </div>
-            </div>
-
-      <div class="recipe-info">
-        <hr />
-                  <div>
-            <i class="fa fa-clock-o"></i>
-            <p  class="preparation-wait">150 mins</p>          </div>
-        
-                  <div>
-            <i class="fa fa-balance-scale"></i>
-            <p  class="calories">579 calories</p>          </div>
-        
-                  <div class="health-score-teaser"><div class="health-score-image-container health-score-9"></div>94</div>              </div>
-          </div>
-</div>
-</a>
 </div><div class="tile"><a class="teaser-wrapper-link" href="/recipes/chicken-apple-salad" title="Chicken Apple Salad recipe" rel="follow">
 <div class="teaser teaser-small teaser-node-recipe" >
       <div class="teaser-left">
@@ -2365,6 +2268,53 @@ Criteo.events.push(function() {
                   <div>
             <i class="fa fa-balance-scale"></i>
             <p  class="calories">318 calories</p>          </div>
+        
+                  <div class="health-score-teaser"><div class="health-score-image-container health-score-9"></div>94</div>              </div>
+          </div>
+</div>
+</a>
+</div><div class="tile"><a class="teaser-wrapper-link" href="/recipes/mexican-chicken-avocado-salad" title="Mexican Chicken Avocado Salad recipe" rel="follow">
+<div class="teaser teaser-small teaser-node-recipe" >
+      <div class="teaser-left">
+      <span class="cookbook_link_placeholder" data-rnid="489743"></span>
+<picture  title="Mexican Chicken Avocado Salad recipe">
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/120x90/public/mexican-chicken-avocado-salad-489743.jpg 1x" data-aspectratio="120/90" media="(min-width: 1px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/120x90-webp/public/mexican-chicken-avocado-salad-489743.jpg 1x" data-aspectratio="120/90" media="(min-width: 1px /* webp */)" type="image/webp" />
+<!--[if IE 9]></video><![endif]-->
+<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/120x90-webp/public/mexican-chicken-avocado-salad-489743.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="120" height="90" alt="Mexican Chicken Avocado Salad recipe" title="Mexican Chicken Avocado Salad recipe" />
+</picture>    </div><div class="teaser-right">
+            <div class="information-container">
+              <div class="premium-badge">Low-Carb Lunch</div>
+    
+    
+    
+          <div class="title">
+        Mexican Chicken Avocado Salad      </div>
+    
+    
+    
+    
+                  <div class="teaser-rating">
+          <div class="clearfix fivestar-average-stars"><div class="fivestar-static-item"><div class="form-item form-type-item">
+ <div class="fivestar-default"><div class="fivestar-widget-static fivestar-widget-static-vote fivestar-widget-static-5 clearfix"><span class="rating">4</span><div class="star star-1 star-odd star-first on"></div><div class="star star-2 star-even on"></div><div class="star star-3 star-odd on"></div><div class="star star-4 star-even on"></div><div class="star star-5 star-odd star-last off"></div></div></div>
+<div class="description"><div class="fivestar-summary fivestar-summary-"></div></div>
+</div>
+</div></div>            <div class="rating-count">
+              (2)
+            </div>
+        </div>
+            </div>
+
+      <div class="recipe-info">
+        <hr />
+                  <div>
+            <i class="fa fa-clock-o"></i>
+            <p  class="preparation-wait">150 mins</p>          </div>
+        
+                  <div>
+            <i class="fa fa-balance-scale"></i>
+            <p  class="calories">579 calories</p>          </div>
         
                   <div class="health-score-teaser"><div class="health-score-image-container health-score-9"></div>94</div>              </div>
           </div>
@@ -2432,43 +2382,41 @@ Criteo.events.push(function() {
           <div class="panel-display panel-1col clearfix" id="mini-panel-us_eatsmarter_recipe_sidebar">
   <div class="panel-panel panel-col">
     <div>
-<div class="panel-pane pane-node-of-the-day"  >
-  
-  
-      <h2 class="pane-title">
-      Topic of the Day    </h2>
-  
-  
-  
-  <div class="pane-content">
-          <a class="teaser-wrapper-link" href="/community/how-to-organize-your-refrigerator" title="How To Organize Your Refrigerator" rel="follow">
-<div class="teaser teaser-big teaser-node-article" >
+<div class="panel-pane pane-dynamic-list"  >
+
+
+  <h2 class="section-title">
+    App Download  </h2>
+
+
+
+  <div  class="odd first last cols-1 es-list tiles-container" data-cycle-slides=".tile">
+  <div class="tile">
+<a class="teaser-wrapper-link" href="/" rel="follow">
+<div class="teaser teaser-big teaser-field_collection_item-field_manual_teasers" >
       <div class="teaser-left">
-      <picture  title="How To Organize Your Refrigerator">
+      <picture >
 <!--[if IE 9]><video style="display: none;"><![endif]-->
-<source srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/screen_shot_2020-04-30_at_8.02.08_am.png 1x" media="(min-width: 1px)" />
-<source srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/screen_shot_2020-04-30_at_8.02.08_am.png 1x" media="(min-width: 1px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/download_the_new_eat_smarter_app.png 1x" data-aspectratio="300/225" media="(min-width: 1px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/download_the_new_eat_smarter_app.png 1x" data-aspectratio="300/225" media="(min-width: 1px /* webp */)" type="image/webp" />
 <!--[if IE 9]></video><![endif]-->
-<img  src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/screen_shot_2020-04-30_at_8.02.08_am.png" width="300" height="225" alt="How To Organize Your Refrigerator" title="How To Organize Your Refrigerator" />
+<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/download_the_new_eat_smarter_app.png" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="" title="" />
 </picture>    </div><div class="teaser-right">
         
     
     
-          <div class="title">
-        How To Organize Your Refrigerator      </div>
     
     
     
-          <div class="teasertext long">
-        How to organize your refrigerator to keep your ingredients fresh and healthy.      </div>
     
           </div>
 </div>
 </a>
-      </div>
+</div></div>
 
-  
-  </div>
+
+
+</div>
 <div class="panel-separator"></div>
 <div class="panel-pane pane-node-of-the-day"  >
   
@@ -2479,24 +2427,24 @@ Criteo.events.push(function() {
   
   
   <div class="pane-content">
-          <a class="teaser-wrapper-link" href="/recipes/watercress-salad-with-feta-and-sweet-potatoes" title="Watercress Salad with Feta and Sweet Potatoes recipe" rel="follow">
+          <a class="teaser-wrapper-link" href="/recipes/chickpea-tofu-meatballs-on-bulgur-salad" title="Chickpea Tofu Meatballs on Bulgur Salad recipe" rel="follow">
 <div class="teaser teaser-big teaser-node-recipe" >
       <div class="teaser-left">
-      <span class="cookbook_link_placeholder" data-rnid="674405"></span>
-<picture  title="Watercress Salad with Feta and Sweet Potatoes recipe">
+      <span class="cookbook_link_placeholder" data-rnid="675939"></span>
+<picture  title="Chickpea Tofu Meatballs on Bulgur Salad recipe">
 <!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/watercress-salad-with-feta-and-sweet-potatoes-674405.jpg 1x" data-aspectratio="300/225" media="(min-width: 1px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/watercress-salad-with-feta-and-sweet-potatoes-674405.jpg 1x" data-aspectratio="300/225" media="(min-width: 1px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/chickpea-tofu-meatballs-on-bulgur-salad-675939.jpg 1x" data-aspectratio="300/225" media="(min-width: 1px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/chickpea-tofu-meatballs-on-bulgur-salad-675939.jpg 1x" data-aspectratio="300/225" media="(min-width: 1px /* webp */)" type="image/webp" />
 <!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/watercress-salad-with-feta-and-sweet-potatoes-674405.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Watercress Salad with Feta and Sweet Potatoes recipe" title="Watercress Salad with Feta and Sweet Potatoes recipe" />
+<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/chickpea-tofu-meatballs-on-bulgur-salad-675939.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Chickpea Tofu Meatballs on Bulgur Salad recipe" title="Chickpea Tofu Meatballs on Bulgur Salad recipe" />
 </picture>    </div><div class="teaser-right">
             <div class="information-container">
-              <div class="premium-badge">Healthy Gourmet Kitchen</div>
+              <div class="premium-badge">Protein-Packed Vegan Recipe</div>
     
     
     
           <div class="title">
-        Watercress Salad with Feta and Sweet Potatoes      </div>
+        Chickpea Tofu Meatballs on Bulgur Salad      </div>
     
     
     
@@ -2516,13 +2464,13 @@ Criteo.events.push(function() {
         <hr />
                   <div>
             <i class="fa fa-clock-o"></i>
-            <p  class="preparation-wait">25 mins</p>          </div>
+            <p  class="preparation-wait">50 mins</p>          </div>
         
                   <div>
             <i class="fa fa-balance-scale"></i>
-            <p  class="calories">478 calories</p>          </div>
+            <p  class="calories">488 calories</p>          </div>
         
-                  <div class="health-score-teaser"><div class="health-score-image-container health-score-7-8"></div>87</div>              </div>
+                  <div class="health-score-teaser"><div class="health-score-image-container health-score-9"></div>90</div>              </div>
           </div>
 </div>
 </a>
@@ -2738,16 +2686,13 @@ Criteo.events.push(function() {
   
   
   <div class="pane-content">
-          <div class="item-list"><ul class="tag-cloud-list"><li class="tag-cloud-list-item weight-2 first"><a href="/recipes/nutritional/high-protein/high-protein-poultry-dish" title="High-protein Poultry Dish recipes" rel="follow">High-protein Poultry Dish</a></li>
-<li class="tag-cloud-list-item weight-1"><a href="/recipes/ingredients/tomato-recipes" title="Tomato recipes" rel="follow">Tomato</a></li>
-<li class="tag-cloud-list-item weight-5"><a href="/recipes/cooking/vegetable" title="Vegetable recipes" rel="follow">Vegetable</a></li>
-<li class="tag-cloud-list-item weight-7"><a href="/recipes/ingredients/egg-recipes" title="egg recipes" rel="follow">egg</a></li>
-<li class="tag-cloud-list-item weight-4"><a href="/recipes/ingredients/baked-potato-recipes" title="Baked potato recipes" rel="follow">Baked potato</a></li>
-<li class="tag-cloud-list-item weight-5"><a href="/recipes/baking/cake/nut-torte" title="nut torte recipes" rel="follow">nut torte</a></li>
-<li class="tag-cloud-list-item weight-10"><a href="/recipes/nutritional/lactose-free/lactose-free-snacks" title="Lactose-free Snacks recipes" rel="follow">Lactose-free Snacks</a></li>
-<li class="tag-cloud-list-item weight-1"><a href="/recipes/baking/cake/chocolate-cake" title="Chocolate Cake recipes" rel="follow">Chocolate Cake</a></li>
-<li class="tag-cloud-list-item weight-9"><a href="/recipes/cooking/meat/poultry" title="Poultry recipes" rel="follow">Poultry</a></li>
-<li class="tag-cloud-list-item weight-5 last"><a href="/recipes/cooking/meat/poultry/chicken" title="Chicken recipes" rel="follow">Chicken</a></li>
+          <div class="item-list"><ul class="tag-cloud-list"><li class="tag-cloud-list-item weight-2 first"><a href="/recipes/course/breakfast" title="Breakfast recipes" rel="follow">Breakfast</a></li>
+<li class="tag-cloud-list-item weight-3"><a href="/recipes/beverage/mixed-drink" title="Mixed Drink recipes" rel="follow">Mixed Drink</a></li>
+<li class="tag-cloud-list-item weight-10"><a href="/recipes/cooking/meat/poultry/chicken" title="Chicken recipes" rel="follow">Chicken</a></li>
+<li class="tag-cloud-list-item weight-1"><a href="/recipes/ingredients/ramen-noodle-recipes-1" title="Ramen noodle recipes" rel="follow">Ramen noodle</a></li>
+<li class="tag-cloud-list-item weight-6"><a href="/recipes/ingredients/mango-recipes" title="Mango recipes" rel="follow">Mango</a></li>
+<li class="tag-cloud-list-item weight-1"><a href="/recipes/cooking/meat/beef" title="Beef recipes" rel="follow">Beef</a></li>
+<li class="tag-cloud-list-item weight-2 last"><a href="/recipes/beverage/cocktail" title="Cocktail recipes" rel="follow">Cocktail</a></li>
 </ul></div><a href="/recipes/recipe-categories" rel="follow">Show all recipe categories</a>      </div>
 
   
@@ -2870,117 +2815,88 @@ Criteo.events.push(function() {
   
   
   <div class="pane-content">
-          <div class="tiles-container cols-3 hide-last-column"><div class="tile"><a class="teaser-wrapper-link" href="/recipes/cookbooks/thanksgiving-dessert-1" title="Thanksgiving Dessert recipes" rel="follow">
+          <div class="tiles-container cols-3 hide-last-column"><div class="tile"><a class="teaser-wrapper-link" href="/recipes/cookbooks/low-carb-meals" title="Low Carb Meals recipes" rel="follow">
 <div class="teaser teaser-search-result teaser-node-gallery" >
       <div class="teaser-left">
-      <picture  title="Thanksgiving Dessert recipes">
+      <picture  title="Low Carb Meals recipes">
 <!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/cranberry-and-pumpkin-pie-483269.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/cranberry-and-pumpkin-pie-483269.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/cranberry-and-pumpkin-pie-483269.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/cranberry-and-pumpkin-pie-483269.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/cranberry-and-pumpkin-pie-483269.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/cranberry-and-pumpkin-pie-483269.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/8725ec14-2e0d-46e4-a0b1-6ec9de0d71e0_0.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/8725ec14-2e0d-46e4-a0b1-6ec9de0d71e0_0.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/8725ec14-2e0d-46e4-a0b1-6ec9de0d71e0_0.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/8725ec14-2e0d-46e4-a0b1-6ec9de0d71e0_0.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/8725ec14-2e0d-46e4-a0b1-6ec9de0d71e0_0.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/8725ec14-2e0d-46e4-a0b1-6ec9de0d71e0_0.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
 <!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/cranberry-and-pumpkin-pie-483269.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Thanksgiving Dessert recipes" title="Thanksgiving Dessert recipes" />
-</picture><div class="recipe-counter-container"><div class="recipe-counter">41 recipes</div>
-</div>    </div><div class="teaser-right">
-        
-    
-    
-          <div class="title">
-        Thanksgiving Dessert      </div>
-    
-    
-          <div class="teasertext short">
-        Thanksgiving Dessert Recipe Collection      </div>
-    
-    
-          </div>
-</div>
-</a>
-</div><div class="tile"><a class="teaser-wrapper-link" href="/recipes/cookbooks/thanksgiving-everything-but-the-turkey" title="Thanksgiving - Everything but the Turkey recipes" rel="follow">
-<div class="teaser teaser-search-result teaser-node-gallery" >
-      <div class="teaser-left">
-      <picture  title="Thanksgiving - Everything but the Turkey recipes">
-<!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/risotto-with-pumpkin-beet-and-goat-cheese-676741.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/risotto-with-pumpkin-beet-and-goat-cheese-676741.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/risotto-with-pumpkin-beet-and-goat-cheese-676741.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/risotto-with-pumpkin-beet-and-goat-cheese-676741.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/risotto-with-pumpkin-beet-and-goat-cheese-676741.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/risotto-with-pumpkin-beet-and-goat-cheese-676741.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
-<!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/risotto-with-pumpkin-beet-and-goat-cheese-676741.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Thanksgiving - Everything but the Turkey recipes" title="Thanksgiving - Everything but the Turkey recipes" />
+<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/8725ec14-2e0d-46e4-a0b1-6ec9de0d71e0_0.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Low Carb Meals recipes" title="Low Carb Meals recipes" />
 </picture><div class="recipe-counter-container"><div class="recipe-counter">30 recipes</div>
 </div>    </div><div class="teaser-right">
         
     
     
           <div class="title">
-        Thanksgiving - Everything but the Turkey      </div>
+        Low Carb Meals      </div>
     
     
           <div class="teasertext short">
-        Thanksgiving - Everything but the Turkey Recipe Collection      </div>
+        Low Carb Meals Recipe Collection      </div>
     
     
           </div>
 </div>
 </a>
-</div><div class="tile"><a class="teaser-wrapper-link" href="/recipes/cookbooks/thanksgiving-best-1" title="Thanksgiving Best recipes" rel="follow">
+</div><div class="tile"><a class="teaser-wrapper-link" href="/recipes/cookbooks/celery" title="Celery recipes" rel="follow">
 <div class="teaser teaser-search-result teaser-node-gallery" >
       <div class="teaser-left">
-      <picture  title="Thanksgiving Best recipes">
+      <picture  title="Celery recipes">
 <!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/stuffed-turkey-543712.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/stuffed-turkey-543712.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/stuffed-turkey-543712.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/stuffed-turkey-543712.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/stuffed-turkey-543712.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/stuffed-turkey-543712.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/curly-kale-broth-469833.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/curly-kale-broth-469833.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/curly-kale-broth-469833.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/curly-kale-broth-469833.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/curly-kale-broth-469833.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/curly-kale-broth-469833.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
 <!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/stuffed-turkey-543712.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Thanksgiving Best recipes" title="Thanksgiving Best recipes" />
-</picture><div class="recipe-counter-container"><div class="recipe-counter">25 recipes</div>
+<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/curly-kale-broth-469833.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Celery recipes" title="Celery recipes" />
+</picture><div class="recipe-counter-container"><div class="recipe-counter">30 recipes</div>
 </div>    </div><div class="teaser-right">
         
     
     
           <div class="title">
-        Thanksgiving Best      </div>
+        Celery      </div>
     
     
           <div class="teasertext short">
-        Thanksgiving Best Recipe Collection      </div>
+        Celery is light and low calorie!       </div>
     
     
           </div>
 </div>
 </a>
-</div><div class="tile"><a class="teaser-wrapper-link" href="/recipes/cookbooks/thanksgiving-starters-1" title="Thanksgiving Starters recipes" rel="follow">
+</div><div class="tile"><a class="teaser-wrapper-link" href="/recipes/cookbooks/healthy-breakfast" title="Healthy Breakfast recipes" rel="follow">
 <div class="teaser teaser-search-result teaser-node-gallery" >
       <div class="teaser-left">
-      <picture  title="Thanksgiving Starters recipes">
+      <picture  title="Healthy Breakfast recipes">
 <!--[if IE 9]><video style="display: none;"><![endif]-->
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/pumpkin-sweet-potato-soup-674133.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/pumpkin-sweet-potato-soup-674133.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/pumpkin-sweet-potato-soup-674133.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/pumpkin-sweet-potato-soup-674133.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/pumpkin-sweet-potato-soup-674133.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
-<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/pumpkin-sweet-potato-soup-674133.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/post_0064_mini.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/post_0064_mini.jpg 1x" data-aspectratio="300/225" media="(min-width: 481px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225/public/post_0064_mini.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338/public/post_0064_mini.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px)" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/450x338-webp/public/post_0064_mini.jpg 1x" data-aspectratio="450/338" media="(max-width: 480px /* webp */)" type="image/webp" />
+<source data-srcset="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/post_0064_mini.jpg 1x" data-aspectratio="300/225" media="(max-width: 320px /* webp */)" type="image/webp" />
 <!--[if IE 9]></video><![endif]-->
-<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/pumpkin-sweet-potato-soup-674133.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Thanksgiving Starters recipes" title="Thanksgiving Starters recipes" />
-</picture><div class="recipe-counter-container"><div class="recipe-counter">33 recipes</div>
+<img  class="lazyload" data-aspectratio="" data-src="https://images.eatsmarter.com/sites/default/files/styles/300x225-webp/public/post_0064_mini.jpg" src="https://images.eatsmarter.com/sites/all/modules/custom/eatsmarter_image/images/image_placeholder.gif" width="300" height="225" alt="Healthy Breakfast recipes" title="Healthy Breakfast recipes" />
+</picture><div class="recipe-counter-container"><div class="recipe-counter">30 recipes</div>
 </div>    </div><div class="teaser-right">
         
     
     
           <div class="title">
-        Thanksgiving Starters      </div>
+        Healthy Breakfast      </div>
     
     
           <div class="teasertext short">
-        Thanksgiving Starters Recipe Collection      </div>
+        Healthy Breakfast Recipe Collection      </div>
     
     
           </div>
@@ -3163,7 +3079,7 @@ function loadVGWort(){if(typeof executeVGWort==='function')executeVGWort()};
 <script src="https://eatsmarter.com/sites/default/files/advagg_js/js__vYq9eCZxxQPUtTqEwnD9CRnuEg1rgWsGfzsCYADv0X0__sIB6GzDrpMy04n-xxggqXWAwt5eBo0sbP4LvaB1PAgY__4rZR3hzk4v0aGc9cQfWDV87AbU3UWsBEJCAtyrVJvUI.js"></script>
 <script>
 <!--//--><![CDATA[//><!--
-jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","setHasJsCookie":0,"eatsmarter_multidomain":{"domain":"eatsmarter_com"},"ajaxPageState":{"theme":"eatsmarter","theme_token":"Tn1ARqxKTm9XCcxYL7uerPf1rb-r0Zf39TcBjLBwHTI","css":{"modules\/system\/system.messages.css":1,"sites\/all\/modules\/contrib\/picture\/lazysizes\/plugins\/aspectratio\/ls.aspectratio.css":1,"misc\/ui\/jquery.ui.core.css":1,"misc\/ui\/jquery.ui.theme.css":1,"misc\/ui\/jquery.ui.menu.css":1,"misc\/ui\/jquery.ui.autocomplete.css":1,"styles":1,"sites\/all\/modules\/contrib\/comment_notify\/comment_notify.css":1,"modules\/comment\/comment.css":1,"modules\/field\/theme\/field.css":1,"sites\/all\/modules\/contrib\/logintoboggan\/logintoboggan.css":1,"modules\/node\/node.css":1,"sites\/all\/modules\/contrib\/picture\/picture_wysiwyg.css":1,"modules\/user\/user.css":1,"sites\/all\/modules\/contrib\/views\/css\/views.css":1,"sites\/all\/modules\/contrib\/ckeditor\/css\/ckeditor.css":1,"sites\/all\/modules\/contrib\/ctools\/css\/ctools.css":1,"sites\/all\/themes\/eatsmarter\/plugins\/layouts\/content-template\/panel-content-template.css":1,"sites\/all\/modules\/contrib\/comment_goodness\/css\/disabled_actions.css":1,"public:\/\/honeypot\/honeypot.css":1,"sites\/all\/modules\/contrib\/panels\/plugins\/layouts\/onecol\/onecol.css":1,"sites\/all\/modules\/custom\/eatsmarter_node\/modules\/eatsmarter_article\/assets\/css\/youtube\/stylesheets\/youtube_widget.css":1,"sites\/all\/modules\/custom\/eatsmarter_node\/modules\/eatsmarter_article\/assets\/css\/bmi_calculator\/stylesheets\/bmi_calculator.css":1,"sites\/all\/themes\/eatsmarter\/plugins\/layouts\/site-template\/panel-site-template.css":1,"sites\/all\/libraries\/fontawesome\/css\/font-awesome.min.css":1,"sites\/all\/modules\/contrib\/hide_submit\/css\/hide_submit.css":1,"sites\/all\/themes\/eatsmarter\/compass\/stylesheets\/eatsmarter-all.css":1,"sites\/all\/themes\/eatsmarter\/compass\/stylesheets\/desktop.css":1},"js":{"\/sites\/all\/libraries\/jquery\/jquery-3.7.1.min.js":1,"\/sites\/all\/libraries\/jquery-migrate\/jquery-migrate-3.4.1.min.js":1,"misc\/jquery-extend-3.4.0.js":1,"misc\/jquery-html-prefilter-3.5.0-backport.js":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1,"sites\/all\/modules\/contrib\/jquery_update\/js\/jquery_browser.js":1,"sites\/all\/modules\/contrib\/picture\/lazysizes\/lazysizes.min.js":1,"\/sites\/all\/libraries\/jquery-ui\/jquery-ui.min.js":1,"sites\/all\/modules\/contrib\/picture\/lazysizes\/plugins\/aspectratio\/ls.aspectratio.min.js":1,"\/sites\/all\/libraries\/jquery.cookie\/jquery.cookie.min.js":1,"misc\/ui\/jquery.ui.position-1.13.0-backport.js":1,"sites\/all\/modules\/contrib\/scroll_button\/js\/scroll_button.js":1,"misc\/form-single-submit.js":1,"misc\/states.js":1,"sites\/all\/modules\/contrib\/comment_notify\/comment_notify.js":1,"sites\/all\/modules\/contrib\/entityreference\/js\/entityreference.js":1,"sites\/all\/libraries\/picturefill\/picturefill.min.js":1,"sites\/all\/modules\/contrib\/picture\/picture.min.js":1,"sites\/all\/modules\/custom\/eatsmarter_actionbar\/assets\/js\/clipboard.min.js":1,"sites\/all\/modules\/custom\/eatsmarter_actionbar\/assets\/js\/eatsmarter_actionbar_common.js":1,"sites\/all\/modules\/contrib\/comment_goodness\/comment_goodness.js":1,"misc\/textarea.js":1,"sites\/all\/themes\/eatsmarter\/js\/zorro.js":1,"sites\/all\/modules\/custom\/eatsmarter_advertisement\/assets\/js\/adsense_loader.js":1,"sites\/all\/modules\/contrib\/fivestar\/js\/fivestar.js":1,"sites\/all\/modules\/custom\/eatsmarter_qna_community_dashboard\/js\/ajax_report.js":1,"sites\/all\/modules\/contrib\/hide_submit\/js\/hide_submit.js":1,"sites\/all\/themes\/eatsmarter\/js\/base.js":1,"sites\/all\/modules\/contrib\/jquery_update\/js\/jquery_position.js":1,"sites\/all\/modules\/custom\/eatsmarter_cookbook\/assets\/js\/eatsmarter_cookbook\/main.js":1,"sites\/all\/libraries\/cycle2\/build\/jquery.cycle2.min.js":1,"sites\/all\/libraries\/cycle2\/build\/plugin\/jquery.cycle2.carousel.min.js":1,"sites\/all\/libraries\/cycle2\/build\/plugin\/jquery.cycle2.swipe.min.js":1,"sites\/all\/modules\/custom\/dynamic_list\/dynamic_list_carousel.js":1,"sites\/all\/modules\/custom\/eatsmarter_analytics\/js\/eatsmarter_analytics.js":1,"sites\/all\/modules\/custom\/eatsmarter_node\/modules\/eatsmarter_article\/assets\/js\/smooth_scrolling\/smooth_scrolling.js":1,"sites\/all\/modules\/custom\/eatsmarter_node\/modules\/eatsmarter_recipe\/assets\/js\/fivestar_static\/fivestar_static.js":1,"sites\/all\/modules\/custom\/eatsmarter_node\/modules\/eatsmarter_recipe\/assets\/js\/yield_customizer\/main.js":1,"sites\/all\/modules\/custom\/eatsmarter_node\/modules\/eatsmarter_recipe\/assets\/js\/eatsmarter_recipe.js":1,"sites\/all\/libraries\/underscore\/underscore-umd-min.js":1,"sites\/all\/libraries\/backbone\/backbone-min.js":1,"sites\/all\/modules\/custom\/eatsmarter_extra_panes\/plugins\/content_types\/header_pane\/header.js":1,"sites\/all\/modules\/custom\/eatsmarter_search\/js\/search_as_you_type.js":1,"sites\/all\/modules\/custom\/eatsmarter_menu\/js\/menu-teasers.js":1,"sites\/all\/libraries\/jquery.dropdown\/jquery.dropdown.js":1,"sites\/all\/libraries\/jquery.sticky\/jquery.sticky.js":1,"sites\/all\/themes\/eatsmarter\/js\/outbound.js":1,"sites\/all\/modules\/custom\/eatsmarter_advertisement\/assets\/js\/eatsmarter_advertisement.js":1,"sites\/all\/modules\/custom\/eatsmarter_node\/modules\/eatsmarter_article\/assets\/js\/youtube\/youtube_widget.js":1,"sites\/all\/modules\/custom\/eatsmarter_node\/modules\/eatsmarter_article\/assets\/js\/bmi_calculator\/bmi_calculator.js":1,"sites\/all\/modules\/custom\/eatsmarter_menu\/js\/eatsmarter_menu.js":1,"sites\/all\/libraries\/polyfills\/matchMedia\/matchMedia.js":1,"sites\/all\/libraries\/polyfills\/matchMedia\/matchMedia.addListener.js":1,"sites\/all\/themes\/eatsmarter\/js\/responsive.js":1}},"eatsmarter_cookbook":{"content":[],"linkDrafts":{"delete":"\u003Ci class=\u0022cookbook-link cookbook-link-remove fa fa-heart-o\u0022 data-rnid=\u0022\u0022 data-href=\u0022\/my-cookbook\/remove\/%7Beatsmarter_cookbook_recipe_id_placeholder%7D\/ajax\u0022 title=\u0022Remove from cookbook\u0022 \/\u003E\n","anonymous":"\u003Ci class=\u0022cookbook-link cookbook-link-add fa fa-heart-o\u0022 data-rnid=\u0022\u0022 data-href=\u0022\/user?destination=my-cookbook\/check\/%7Beatsmarter_cookbook_recipe_id_placeholder%7D\/node\/580858\u0022 title=\u0022Copy to cookbook\u0022 \/\u003E\n","add":"\u003Ci class=\u0022cookbook-link cookbook-link-add fa fa-heart-o\u0022 data-rnid=\u0022\u0022 data-href=\u0022\/my-cookbook\/add\/%7Beatsmarter_cookbook_recipe_id_placeholder%7D\/ajax\u0022 title=\u0022Copy to cookbook\u0022 \/\u003E\n"},"notesForm":"my-cookbook\/get-notes-form\/","returnTo":"node\/580858","user":"anonymous","recipeIdPlaceholder":"{eatsmarter_cookbook_recipe_id_placeholder}"},"hide_submit":{"hide_submit_status":true,"hide_submit_method":"disable","hide_submit_css":"hide-submit-disable","hide_submit_abtext":"","hide_submit_atext":"","hide_submit_hide_css":"hide-submit-processing","hide_submit_hide_text":"Processing...","hide_submit_indicator_style":"expand-left","hide_submit_spinner_color":"#000","hide_submit_spinner_lines":12,"hide_submit_hide_fx":0,"hide_submit_reset_time":5000},"urlIsAjaxTrusted":{"\/recipes\/vietnamese-chicken-cabbage-salad":true,"\/recipes\/vietnamese-chicken-cabbage-salad#comment-form":true,"\/recipes\/vietnamese-chicken-cabbage-salad?destination=node\/580858":true},"states":{"#edit-submit--2":{"disabled":{"textarea[name=\u0022comment_body[en][0][value]\u0022]":{"empty":true}}}},"dynamic_list":{"carouselSelector":".dynamic-list-carousel","carouselWrapperSelector":".dynamic-list-carousel-wrapper","carouselPrevSelector":".dynamic-list-carousel-prev","carouselNextSelector":".dynamic-list-carousel-next"},"base_url":"https:\/\/eatsmarter.com","eatsmarter_advertisement":{"showAdFree":false},"eatsmarter_article":{"newsletter2go_backend_endpoint":"\/eatsmarter_newsletter2go\/ajax\/submit","show_newsletter_form":false},"eatsmarter_search_post":[],"language":"en","recipe_yield_customizer":{"original_value_attribute":"yc-original-value"},"scroll_button":{"buttons":{"bot":0,"top":1},"color":{"bg":"#ffffff","hv":"#ffffff"},"css":"fa fa-chevron-circle-up","distance":"400","duration":400,"offset":{"x":"80","y":"2"},"position":"float","speed":"slow","title":""},"throbber":{"src":"\/sites\/all\/modules\/custom\/eatsmarter_search\/images\/throbber.gif"},"eatsmarter":{"logoReducedHeaderUrl":"\/sites\/all\/themes\/eatsmarter\/logo-reduced-header.png"},"theme":{"mobile_media_query":"screen and (min-width: 768px)"}});
+jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","setHasJsCookie":0,"eatsmarter_multidomain":{"domain":"eatsmarter_com"},"ajaxPageState":{"theme":"eatsmarter","theme_token":"rtGOT4WG7C2VOjvcPmRSdZRNM6jFRYqvT0vlN875LAo","css":{"modules\/system\/system.messages.css":1,"sites\/all\/modules\/contrib\/picture\/lazysizes\/plugins\/aspectratio\/ls.aspectratio.css":1,"misc\/ui\/jquery.ui.core.css":1,"misc\/ui\/jquery.ui.theme.css":1,"misc\/ui\/jquery.ui.menu.css":1,"misc\/ui\/jquery.ui.autocomplete.css":1,"styles":1,"sites\/all\/modules\/contrib\/comment_notify\/comment_notify.css":1,"modules\/comment\/comment.css":1,"modules\/field\/theme\/field.css":1,"sites\/all\/modules\/contrib\/logintoboggan\/logintoboggan.css":1,"modules\/node\/node.css":1,"sites\/all\/modules\/contrib\/picture\/picture_wysiwyg.css":1,"modules\/user\/user.css":1,"sites\/all\/modules\/contrib\/views\/css\/views.css":1,"sites\/all\/modules\/contrib\/ckeditor\/css\/ckeditor.css":1,"sites\/all\/modules\/contrib\/ctools\/css\/ctools.css":1,"sites\/all\/themes\/eatsmarter\/plugins\/layouts\/content-template\/panel-content-template.css":1,"sites\/all\/modules\/contrib\/comment_goodness\/css\/disabled_actions.css":1,"public:\/\/honeypot\/honeypot.css":1,"sites\/all\/modules\/contrib\/panels\/plugins\/layouts\/onecol\/onecol.css":1,"sites\/all\/modules\/custom\/eatsmarter_node\/modules\/eatsmarter_article\/assets\/css\/youtube\/stylesheets\/youtube_widget.css":1,"sites\/all\/modules\/custom\/eatsmarter_node\/modules\/eatsmarter_article\/assets\/css\/bmi_calculator\/stylesheets\/bmi_calculator.css":1,"sites\/all\/themes\/eatsmarter\/plugins\/layouts\/site-template\/panel-site-template.css":1,"sites\/all\/libraries\/fontawesome\/css\/font-awesome.min.css":1,"sites\/all\/modules\/contrib\/hide_submit\/css\/hide_submit.css":1,"sites\/all\/themes\/eatsmarter\/compass\/stylesheets\/eatsmarter-all.css":1,"sites\/all\/themes\/eatsmarter\/compass\/stylesheets\/desktop.css":1},"js":{"\/sites\/all\/libraries\/jquery\/jquery-3.7.1.min.js":1,"\/sites\/all\/libraries\/jquery-migrate\/jquery-migrate-3.4.1.min.js":1,"misc\/jquery-extend-3.4.0.js":1,"misc\/jquery-html-prefilter-3.5.0-backport.js":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1,"sites\/all\/modules\/contrib\/jquery_update\/js\/jquery_browser.js":1,"sites\/all\/modules\/contrib\/picture\/lazysizes\/lazysizes.min.js":1,"\/sites\/all\/libraries\/jquery-ui\/jquery-ui.min.js":1,"sites\/all\/modules\/contrib\/picture\/lazysizes\/plugins\/aspectratio\/ls.aspectratio.min.js":1,"\/sites\/all\/libraries\/jquery.cookie\/jquery.cookie.min.js":1,"misc\/ui\/jquery.ui.position-1.13.0-backport.js":1,"sites\/all\/modules\/contrib\/scroll_button\/js\/scroll_button.js":1,"misc\/form-single-submit.js":1,"misc\/states.js":1,"sites\/all\/modules\/contrib\/comment_notify\/comment_notify.js":1,"sites\/all\/modules\/contrib\/entityreference\/js\/entityreference.js":1,"sites\/all\/libraries\/picturefill\/picturefill.min.js":1,"sites\/all\/modules\/contrib\/picture\/picture.min.js":1,"sites\/all\/modules\/custom\/eatsmarter_actionbar\/assets\/js\/clipboard.min.js":1,"sites\/all\/modules\/custom\/eatsmarter_actionbar\/assets\/js\/eatsmarter_actionbar_common.js":1,"sites\/all\/modules\/contrib\/comment_goodness\/comment_goodness.js":1,"misc\/textarea.js":1,"sites\/all\/themes\/eatsmarter\/js\/zorro.js":1,"sites\/all\/modules\/custom\/eatsmarter_advertisement\/assets\/js\/adsense_loader.js":1,"sites\/all\/modules\/contrib\/fivestar\/js\/fivestar.js":1,"sites\/all\/modules\/custom\/eatsmarter_qna_community_dashboard\/js\/ajax_report.js":1,"sites\/all\/modules\/contrib\/hide_submit\/js\/hide_submit.js":1,"sites\/all\/themes\/eatsmarter\/js\/base.js":1,"sites\/all\/modules\/contrib\/jquery_update\/js\/jquery_position.js":1,"sites\/all\/modules\/custom\/eatsmarter_cookbook\/assets\/js\/eatsmarter_cookbook\/main.js":1,"sites\/all\/libraries\/cycle2\/build\/jquery.cycle2.min.js":1,"sites\/all\/libraries\/cycle2\/build\/plugin\/jquery.cycle2.carousel.min.js":1,"sites\/all\/libraries\/cycle2\/build\/plugin\/jquery.cycle2.swipe.min.js":1,"sites\/all\/modules\/custom\/dynamic_list\/dynamic_list_carousel.js":1,"sites\/all\/modules\/custom\/eatsmarter_analytics\/js\/eatsmarter_analytics.js":1,"sites\/all\/modules\/custom\/eatsmarter_node\/modules\/eatsmarter_article\/assets\/js\/smooth_scrolling\/smooth_scrolling.js":1,"sites\/all\/modules\/custom\/eatsmarter_node\/modules\/eatsmarter_recipe\/assets\/js\/fivestar_static\/fivestar_static.js":1,"sites\/all\/modules\/custom\/eatsmarter_node\/modules\/eatsmarter_recipe\/assets\/js\/yield_customizer\/main.js":1,"sites\/all\/modules\/custom\/eatsmarter_node\/modules\/eatsmarter_recipe\/assets\/js\/eatsmarter_recipe.js":1,"sites\/all\/libraries\/underscore\/underscore-umd-min.js":1,"sites\/all\/libraries\/backbone\/backbone-min.js":1,"sites\/all\/modules\/custom\/eatsmarter_extra_panes\/plugins\/content_types\/header_pane\/header.js":1,"sites\/all\/modules\/custom\/eatsmarter_search\/js\/search_as_you_type.js":1,"sites\/all\/modules\/custom\/eatsmarter_menu\/js\/menu-teasers.js":1,"sites\/all\/libraries\/jquery.dropdown\/jquery.dropdown.js":1,"sites\/all\/libraries\/jquery.sticky\/jquery.sticky.js":1,"sites\/all\/themes\/eatsmarter\/js\/outbound.js":1,"sites\/all\/modules\/custom\/eatsmarter_advertisement\/assets\/js\/eatsmarter_advertisement.js":1,"sites\/all\/modules\/custom\/eatsmarter_node\/modules\/eatsmarter_article\/assets\/js\/youtube\/youtube_widget.js":1,"sites\/all\/modules\/custom\/eatsmarter_node\/modules\/eatsmarter_article\/assets\/js\/bmi_calculator\/bmi_calculator.js":1,"sites\/all\/modules\/custom\/eatsmarter_menu\/js\/eatsmarter_menu.js":1,"sites\/all\/libraries\/polyfills\/matchMedia\/matchMedia.js":1,"sites\/all\/libraries\/polyfills\/matchMedia\/matchMedia.addListener.js":1,"sites\/all\/themes\/eatsmarter\/js\/responsive.js":1}},"eatsmarter_cookbook":{"content":[],"linkDrafts":{"delete":"\u003Ci class=\u0022cookbook-link cookbook-link-remove fa fa-heart-o\u0022 data-rnid=\u0022\u0022 data-href=\u0022\/my-cookbook\/remove\/%7Beatsmarter_cookbook_recipe_id_placeholder%7D\/ajax\u0022 title=\u0022Remove from cookbook\u0022 \/\u003E\n","anonymous":"\u003Ci class=\u0022cookbook-link cookbook-link-add fa fa-heart-o\u0022 data-rnid=\u0022\u0022 data-href=\u0022\/user?destination=my-cookbook\/check\/%7Beatsmarter_cookbook_recipe_id_placeholder%7D\/node\/580858\u0022 title=\u0022Copy to cookbook\u0022 \/\u003E\n","add":"\u003Ci class=\u0022cookbook-link cookbook-link-add fa fa-heart-o\u0022 data-rnid=\u0022\u0022 data-href=\u0022\/my-cookbook\/add\/%7Beatsmarter_cookbook_recipe_id_placeholder%7D\/ajax\u0022 title=\u0022Copy to cookbook\u0022 \/\u003E\n"},"notesForm":"my-cookbook\/get-notes-form\/","returnTo":"node\/580858","user":"anonymous","recipeIdPlaceholder":"{eatsmarter_cookbook_recipe_id_placeholder}"},"hide_submit":{"hide_submit_status":true,"hide_submit_method":"disable","hide_submit_css":"hide-submit-disable","hide_submit_abtext":"","hide_submit_atext":"","hide_submit_hide_css":"hide-submit-processing","hide_submit_hide_text":"Processing...","hide_submit_indicator_style":"expand-left","hide_submit_spinner_color":"#000","hide_submit_spinner_lines":12,"hide_submit_hide_fx":0,"hide_submit_reset_time":5000},"urlIsAjaxTrusted":{"\/recipes\/vietnamese-chicken-cabbage-salad":true,"\/recipes\/vietnamese-chicken-cabbage-salad#comment-form":true,"\/recipes\/vietnamese-chicken-cabbage-salad?destination=node\/580858":true},"states":{"#edit-submit--2":{"disabled":{"textarea[name=\u0022comment_body[en][0][value]\u0022]":{"empty":true}}}},"dynamic_list":{"carouselSelector":".dynamic-list-carousel","carouselWrapperSelector":".dynamic-list-carousel-wrapper","carouselPrevSelector":".dynamic-list-carousel-prev","carouselNextSelector":".dynamic-list-carousel-next"},"base_url":"https:\/\/eatsmarter.com","eatsmarter_advertisement":{"showAdFree":false},"eatsmarter_article":{"newsletter2go_backend_endpoint":"\/eatsmarter_newsletter2go\/ajax\/submit","show_newsletter_form":false},"eatsmarter_search_post":[],"language":"en","recipe_yield_customizer":{"original_value_attribute":"yc-original-value"},"scroll_button":{"buttons":{"bot":0,"top":1},"color":{"bg":"#ffffff","hv":"#ffffff"},"css":"fa fa-chevron-circle-up","distance":"400","duration":400,"offset":{"x":"80","y":"2"},"position":"float","speed":"slow","title":""},"throbber":{"src":"\/sites\/all\/modules\/custom\/eatsmarter_search\/images\/throbber.gif"},"eatsmarter":{"logoReducedHeaderUrl":"\/sites\/all\/themes\/eatsmarter\/logo-reduced-header.png"},"theme":{"mobile_media_query":"screen and (min-width: 768px)"}});
 //--><!]]>
 </script>
 <script src="https://eatsmarter.com/sites/default/files/advagg_js/js__IlAFkiQGjkVev1mNBH00Fr9Njf0CTV3UaEl_EY3le40__IFRGoXDiK3lb55P2ykEKiIkj9u7ePxRWBLZhrnRyii0__4rZR3hzk4v0aGc9cQfWDV87AbU3UWsBEJCAtyrVJvUI.js"></script>

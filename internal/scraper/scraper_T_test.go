@@ -309,8 +309,8 @@ func TestScraper_T(t *testing.T) {
 				Category:      models.Category{Value: "Dinner"},
 				CookTime:      "PT2H0M",
 				Cuisine:       models.Cuisine{Value: "British"},
-				DateModified:  "06/04/2022 10:26:45",
-				DatePublished: "23/03/2022 14:55:51",
+				DateModified:  "2022-04-06T10:26:45Z",
+				DatePublished: "2022-03-23T14:55:51Z",
 				Description: models.Description{
 					Value: "This one-tray wonder is a great option for Sunday roast, Mother's Day or even Easter",
 				},
@@ -512,7 +512,7 @@ func TestScraper_T(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
-				DateModified:  "2023-11-23T12:25:23-05:00",
+				DateModified:  "2023-12-08T11:47:42-05:00",
 				DatePublished: "2023-11-23T12:23:49-05:00",
 				Description: models.Description{
 					Value: "Are you looking for a great way to use that leftover turkey from your holiday feast? Look no further – we have the perfect turkey salad recipe for you! This easy turkey salad is not only a delicious option, but it's also a fantastic way to ensure that none of your delicious turkey goes to",
