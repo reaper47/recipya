@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 	"github.com/reaper47/recipya/internal/models"
 	"net/http"
 )
@@ -39,19 +40,23 @@ func (s *Server) integrationsImportNextcloud(w http.ResponseWriter, r *http.Requ
 			recipes   *models.Recipes
 			processed int
 			progress  = make(chan models.Progress)
-			errors    = make(chan error, 1)
+			errs      = make(chan error, 1)
 		)
 
 		go func() {
 			defer close(progress)
 			recipes, err = s.Integrations.NextcloudImport(baseURL, username, password, s.Files, progress)
 			if err != nil {
-				errors <- err
+				errs <- err
+			}
+
+			if recipes == nil {
+				errs <- errors.New("recipes from Nextcloud is nil")
 			}
 		}()
 
 		select {
-		case err = <-errors:
+		case err = <-errs:
 			fmt.Println(err)
 			s.Brokers[id].HideNotification()
 			s.Brokers[id].SendToast("Failed to import Nextcloud recipes.", "bg-error-500")
