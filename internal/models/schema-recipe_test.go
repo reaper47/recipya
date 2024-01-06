@@ -2,6 +2,7 @@ package models_test
 
 import (
 	"encoding/json"
+	"github.com/google/go-cmp/cmp"
 	"github.com/reaper47/recipya/internal/models"
 	"testing"
 	"time"
@@ -97,6 +98,7 @@ func TestRecipeSchema_Recipe(t *testing.T) {
 	}
 
 	if !slices.Equal(actualBytes, expectedBytes) {
-		t.Fatalf("expected:\n%s\nbut got\n%s", expectedBytes, actualBytes)
+		t.Logf(cmp.Diff(*actual, expected))
+		t.Fail()
 	}
 }

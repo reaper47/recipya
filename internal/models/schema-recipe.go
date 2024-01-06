@@ -67,7 +67,7 @@ func (r *RecipeSchema) Recipe() (*Recipe, error) {
 	if created != "" {
 		before, _, found := strings.Cut(created, "T")
 		if !found {
-			before, _, found = strings.Cut(created, " ")
+			before, _, _ = strings.Cut(created, " ")
 		}
 
 		createdAt, err = time.Parse(time.DateOnly, before)
@@ -83,12 +83,14 @@ func (r *RecipeSchema) Recipe() (*Recipe, error) {
 
 	updatedAt := createdAt
 	if r.DateModified != "" {
-		split := strings.Split(r.DateModified, "T")
-		if len(split) > 0 {
-			updatedAt, err = time.Parse(time.DateOnly, split[0])
-			if err != nil {
-				return nil, fmt.Errorf("could not parse modifiedAt date %s: %w", r.DateModified, err)
-			}
+		before, _, found := strings.Cut(r.DateModified, "T")
+		if !found {
+			before, _, _ = strings.Cut(r.DateModified, " ")
+		}
+
+		updatedAt, err = time.Parse(time.DateOnly, before)
+		if err != nil {
+			return nil, fmt.Errorf("could not parse modifiedAt date %s: %w", r.DateModified, err)
 		}
 	}
 
@@ -463,7 +465,7 @@ func (i *Instructions) UnmarshalJSON(data []byte) error {
 	err := json.Unmarshal(data, &v)
 	if err != nil {
 		m := make(map[string][]any)
-		err := json.Unmarshal(data, &m)
+		err = json.Unmarshal(data, &m)
 		if err != nil {
 			return err
 		}
