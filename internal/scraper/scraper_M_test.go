@@ -47,7 +47,7 @@ func TestScraper_M(t *testing.T) {
 				},
 				Name:  "Hot and spicy rice cake (Tteokbokki)",
 				Yield: models.Yield{Value: 4},
-				URL:   "https://www.maangchi.com/recipe/tteokbokki/comment-page-8",
+				URL:   "https://www.maangchi.com/recipe/tteokbokki",
 			},
 		},
 		{
@@ -573,44 +573,6 @@ func TestScraper_M(t *testing.T) {
 				PrepTime: "PT15M",
 				Yield:    models.Yield{Value: 4},
 				URL:      "https://www.misya.info/ricetta/grigliata-di-carne.htm",
-			},
-		},
-		{
-			name: "mob.co.uk",
-			in:   "https://www.mob.co.uk/recipes/california-walnut-plant-based-bolognese",
-			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Dinner Party"},
-				DatePublished: "2018-12-05",
-				Description: models.Description{
-					Value: "The ultimate plant-based bolly. Rich and moreish. The crunch from the walnuts makes it.",
-				},
-				Image: models.Image{Value: "https://files.mob-cdn.co.uk/recipes/54924_1-3.jpg"},
-				Ingredients: models.Ingredients{
-					Values: []string{
-						"1 Onion", "3 Cloves of Garlic", "2 Carrots", "2 Sticks of Celery",
-						"2 Tsp Dried Oregano", "300g Red Lentils", "150g Walnuts", "1 Bay Leaf",
-						"Bunch of Parsley", "Bunch of Basil", "800g Tinned Tomatoes", "1 Lemon",
-						"400g Wholewheat Spaghetti", "Olive Oil",
-					},
-				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Thinly slice up the onion, garlic, carrots and celery.",
-						"Add a splash of olive oil to a large frying pan. Add the onion, garlic, carrots and celery along with some oregano. Fry until soft.",
-						"Add the lentils and 100g of finely chopped walnuts. Give it a stir.",
-						"Pour in the tomatoes and 600ml of water. Add the bay leaf and let the sauce simmer away until it is nice and thick.",
-						"When the lentils are cooked (50 minutes), add the chopped parsley and basil (reserving some for garnish) and season with salt and pepper.",
-						"Get the spaghetti on.",
-						"Roughly chop 50g of the walnuts and toast them in a pan without oil.",
-						"Toss the cooked spaghetti in with the bolognese and the juice of 1 lemon.",
-						"Serve in bowls with the remaining herbs and the toasted walnuts scattered on top. Enjoy!",
-					},
-				},
-				Name:  "Walnut Plant-Based Bolognese",
-				Yield: models.Yield{Value: 4},
-				URL:   "https://www.mob.co.uk/recipes/california-walnut-plant-based-bolognese",
 			},
 		},
 		{

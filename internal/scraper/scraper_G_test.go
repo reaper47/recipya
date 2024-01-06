@@ -152,7 +152,7 @@ func TestScraper_G(t *testing.T) {
 				Category:      models.Category{Value: "Tortas e bolos"},
 				CookingMethod: models.CookingMethod{Value: "Americana"},
 				Cuisine:       models.Cuisine{Value: "Americana"},
-				DateModified:  "2023-03-07T19:38:51.176Z",
+				DateModified:  "2023-12-12T07:02:11.772Z",
 				DatePublished: "2022-03-30T19:43:06.164Z",
 				Description: models.Description{
 					Value: "Veja como fazer cheesecake com geleia de frutas vermelhas. Receita é feita em camadas, sendo a massa " +

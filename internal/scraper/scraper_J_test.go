@@ -14,7 +14,7 @@ func TestScraper_J(t *testing.T) {
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Mains"},
-				Cuisine:       models.Cuisine{Value: "https://schema.org/LowLactoseDiet"},
+				Cuisine:       models.Cuisine{Value: "asian"},
 				DatePublished: "2015-09-16",
 				Description: models.Description{
 					Value: "This deliciously fragrant Thai green curry really packs a flavour punch.",

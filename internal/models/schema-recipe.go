@@ -65,12 +65,14 @@ func (r *RecipeSchema) Recipe() (*Recipe, error) {
 
 	var createdAt time.Time
 	if created != "" {
-		split := strings.Split(created, "T")
-		if len(split) > 0 {
-			createdAt, err = time.Parse(time.DateOnly, split[0])
-			if err != nil {
-				return nil, fmt.Errorf("could not parse createdAt date %s: %w", created, err)
-			}
+		before, _, found := strings.Cut(created, "T")
+		if !found {
+			before, _, found = strings.Cut(created, " ")
+		}
+
+		createdAt, err = time.Parse(time.DateOnly, before)
+		if err != nil {
+			return nil, fmt.Errorf("could not parse createdAt date %s: %w", created, err)
 		}
 	}
 

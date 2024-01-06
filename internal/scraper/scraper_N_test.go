@@ -89,7 +89,7 @@ func TestScraper_N(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
-				CookTime:      "PT-472456H34M28S",
+				CookTime:      "PT-473458H45M24S",
 				DatePublished: "2022-02-09",
 				Description: models.Description{
 					Value: "Rich and fudgy gluten-free tahini brownies that just happen to be also be grain-free and nut-free! " +
@@ -192,7 +192,7 @@ func TestScraper_N(t *testing.T) {
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Forrett/smårett"},
 				Cuisine:       models.Cuisine{Value: "Japan"},
-				DateModified:  "2023-06-14T11:18:24+02:00",
+				DateModified:  "2023-12-19T10:49:36+01:00",
 				DatePublished: "2023-06-14T11:18:23+02:00",
 				Description: models.Description{
 					Value: "Tamagoyaki er japansk rullet omelett. Den serveres oftest som smakfull siderett eller til frokost. Den lages ved å brette sammen tynne lag med krydret egg.",

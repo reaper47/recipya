@@ -742,13 +742,13 @@ func TestScraper_F(t *testing.T) {
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Alte französische Rezepte"},
 				CookTime:      "PT30M",
-				Cuisine:       models.Cuisine{Value: "French"},
-				DateModified:  "2022-03-09T15:14:09+02:00",
-				DatePublished: "2022-03-09T15:14:09+02:00",
+				Cuisine:       models.Cuisine{Value: "französische Rezepte"},
+				DateModified:  "2022-03-09T15:14:09+02:00 ",
+				DatePublished: "2022-03-09T15:14:09+02:00 ",
 				Description:   models.Description{Value: "Ein einfaches Rezept mit Schritt-für-Schritt-Fotos und vielen Tipps über das Thema: Navettes aus Marseille"},
-				Keywords:      models.Keywords{Values: "Alte französische Rezepte,Einfachste Rezepte,In der Boulangerie,Kekse &amp; Plätzchen,Provence,Traditionelle Rezepte,Typisch französische Kuchen"},
+				Keywords:      models.Keywords{Values: "französisch,frankreich,Alte französische Rezepte,Einfachste Rezepte,In der Boulangerie,Kekse &amp; Plätzchen,Provence,Traditionelle Rezepte,Typisch französische Kuchen"},
 				Image: models.Image{
-					Value: "https://www.franzoesischkochen.de/wp-content/uploads/2022/01/Navette-orangenbluettenwasser.jpg",
+					Value: "https://www.franzoesischkochen.de/wp-content/uploads/2022/03/navettes-aus-marseille.jpg",
 				},
 				Ingredients: models.Ingredients{
 					Values: []string{
@@ -772,6 +772,7 @@ func TestScraper_F(t *testing.T) {
 				},
 				Name:     "Navettes aus Marseille",
 				PrepTime: "PT60M",
+				Yield:    models.Yield{Value: 3},
 				URL:      "https://www.franzoesischkochen.de/navettes-aus-marseille/",
 			},
 		},
