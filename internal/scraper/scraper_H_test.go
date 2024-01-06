@@ -18,13 +18,11 @@ func TestScraper_H(t *testing.T) {
 				Cuisine:       models.Cuisine{Value: "American"},
 				DatePublished: "2022-03-23T02:00:00+00:00",
 				Description: models.Description{
-					Value: "One Skillet Louisiana Style Chicken and Rice: has a variety of flavors and textures, yet it&#39;s all " +
-						"made in ONE skillet with pantry staple ingredients!",
+					Value: "One Skillet Louisiana Style Chicken and Rice: has a variety of flavors and textures, yet it&#39;s all made in ONE skillet with pantry staple ingredients!",
 				},
 				Keywords: models.Keywords{Values: "one skillet"},
 				Image: models.Image{
-					Value: "https://www.halfbakedharvest.com/wp-content/uploads/2022/03/One-Skillet-Louisiana-Style-Chicken-and" +
-						"-Rice-1.jpg",
+					Value: "https://www.halfbakedharvest.com/wp-content/uploads/2022/03/One-Skillet-Louisiana-Style-Chicken-and-Rice-1.jpg",
 				},
 				Ingredients: models.Ingredients{
 					Values: []string{

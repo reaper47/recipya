@@ -207,7 +207,7 @@
 	</script>-->
 	<meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
 
-	<!-- This site is optimized with the Yoast SEO plugin v21.5 - https://yoast.com/wordpress/plugins/seo/ -->
+	<!-- This site is optimized with the Yoast SEO plugin v21.6 - https://yoast.com/wordpress/plugins/seo/ -->
 	<meta name="description" content="Det indiske køkken med de lækre krydderier som kardemomme og garam masala gør sig virkelig godt i en et som denne lækre butter chicken - se opskrift her" />
 	<link rel="canonical" href="https://www.valdemarsro.dk/butter_chicken/" />
 	<meta property="og:locale" content="da_DK" />
@@ -234,7 +234,7 @@
 
 <link rel='dns-prefetch' href='//ajax.googleapis.com' />
 <link rel='dns-prefetch' href='//fonts.googleapis.com' />
-		<!-- This site uses the Google Analytics by MonsterInsights plugin v8.20.1 - Using Analytics tracking - https://www.monsterinsights.com/ -->
+		<!-- This site uses the Google Analytics by MonsterInsights plugin v8.22.0 - Using Analytics tracking - https://www.monsterinsights.com/ -->
 		<!-- Note: MonsterInsights is not currently configured on this site. The site owner needs to authenticate with Google Analytics in the MonsterInsights settings panel. -->
 					<!-- No tracking code set -->
 				<!-- / Google Analytics by MonsterInsights -->
@@ -249,9 +249,9 @@ body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: 
 :where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
 .wp-block-pullquote{font-size: 1.5em;line-height: 1.6;}
 </style>
-<link rel='stylesheet' id='opensans-css' href='//fonts.googleapis.com/css?family=Open+Sans%3A300%2C400%2C400i%2C600%2C700&#038;display=swap&#038;ver=6.3.2' type='text/css' media='all' />
-<link rel='stylesheet' id='style-css' href='https://www.valdemarsro.dk/wp-content/themes/valdemarsro16/style.css?v=16112023a&#038;ver=6.3.2' type='text/css' media='all' />
-<link rel='stylesheet' id='fa-css' href='https://www.valdemarsro.dk/wp-content/themes/valdemarsro16/assets/fa/css/all.min.css?ver=6.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='opensans-css' href='//fonts.googleapis.com/css?family=Open+Sans%3A300%2C400%2C400i%2C600%2C700&#038;display=swap&#038;ver=6.4.2' type='text/css' media='all' />
+<link rel='stylesheet' id='style-css' href='https://www.valdemarsro.dk/wp-content/themes/valdemarsro16/style.css?v=16112023a&#038;ver=6.4.2' type='text/css' media='all' />
+<link rel='stylesheet' id='fa-css' href='https://www.valdemarsro.dk/wp-content/themes/valdemarsro16/assets/fa/css/all.min.css?ver=6.4.2' type='text/css' media='all' />
 <link rel='shortlink' href='http://wp.me/p9s7E-4dk' />
 <link rel="alternate" type="application/json+oembed" href="https://www.valdemarsro.dk/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.valdemarsro.dk%2Fbutter_chicken%2F" />
 <link rel="alternate" type="text/xml+oembed" href="https://www.valdemarsro.dk/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.valdemarsro.dk%2Fbutter_chicken%2F&#038;format=xml" />
@@ -286,7 +286,7 @@ body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: 
 
 				}
 			</style>	</head>
-<body class="page-butter_chicken desktop" itemscope="itemscope" itemtype="http://schema.org/WebPage">
+<body class="page-butter_chicken" itemscope="itemscope" itemtype="http://schema.org/WebPage">
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KPHRD4D"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -466,9 +466,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<!--<div id="cncpt-mob1"></div>-->
 	<div id="cncpt-mob-top"></div>
 				<div id="main">
-				<div class="promobar-container" id="promobar-container" style="display:none;"><div class="promobar" style="background-color:#f7f4ef;color:#2b536c;"><div class="promobar-border"><div class="promobar-image"><a href="http://applink.dk/valdemarsro/"><img src="https://www.valdemarsro.dk/wp-content/2023/07/APP.png"></a></div><span class="promobar-dismiss" title="Klik her for at fjerne banneret i 24 timer" onclick="_dismiss_promo();"><span style="font-size:40px;color:#2b536c;line-height:0;">&times;</span></span></div></div></div><script>
+				<div class="promobar-container" id="promobar-container" style="display:none;"><div class="promobar" style="background-color:#f7f4ef;color:#2b536c;"><div class="promobar-border"><div class="promobar-image"><a href="http://applink.dk/valdemarsro/"><img src="https://www.valdemarsro.dk/wp-content/2023/07/APP-1.png"></a></div></div></div></div><script>
 				if(document.cookie.indexOf('dismiss_promobar') == -1)
-					document.querySelector('#promobar-container').style.display = 'block';
+				{
+					if(document.querySelector('#promobar-container').classList.contains('promobar-only-mobile'))
+					{
+						if(window.innerWidth <= 675)
+							document.querySelector('#promobar-container').style.display = 'block';
+					}
+					else if(document.querySelector('#promobar-container').classList.contains('promobar-only-desktop'))
+					{
+						if(window.innerWidth > 675)
+							document.querySelector('#promobar-container').style.display = 'block';
+					}
+					else
+					{					
+						document.querySelector('#promobar-container').style.display = 'block';
+					}
+				}
 					
 				function _dismiss_promo()
 				{
@@ -722,39 +737,31 @@ var config1 = {
 <li>Du kan både bruge græsk yoghurt eller drænet yoghurt naturel. Jo højere fedt procent der er i yoghurten, jo mindre tendens vil retten have til at blive lidt grynet fordi yoghurten skiller. Uanset, så sker der intet ved at den bliver lidt grynet.</li>
 <li>valg af vin, hvis man gerne vil nyde et godt glas til de indiske retter, det gælder både butter chicken, men også retter som tikka chicken masala og curry &#8211; en krydret Gewurztraminer gør sig virkelig glimrende til de smagfyldte krydrede &#8211; men dog ikke alt for stærke &#8211; retter.</li>
 </ul>
-<p class="p1"><span class="s1"><div class="kogebog-side"><img src="/wp-content/2020/09/Valdemarsro_aftensmad.png" width="1394" height="1785"/><p>Denne opskrift kan du også finde i kogebogen<br/><a href="/kogebog-valdemarsro-aftensmad/">Valdemarsro Aftensmad</a> på side “256”</p></div></span></p>
-<p><img decoding="async" fetchpriority="high" class="alignleft size-full wp-image-47204" src="https://www.valdemarsro.dk/wp-content/2014/06/butterchicken-opskrift-1.jpg" alt="butterchicken" width="1000" height="1423" srcset="https://www.valdemarsro.dk/wp-content/2014/06/butterchicken-opskrift-1.jpg 1000w, https://www.valdemarsro.dk/wp-content/2014/06/butterchicken-opskrift-1-211x300.jpg 211w, https://www.valdemarsro.dk/wp-content/2014/06/butterchicken-opskrift-1-600x854.jpg 600w, https://www.valdemarsro.dk/wp-content/2014/06/butterchicken-opskrift-1-768x1093.jpg 768w" sizes="(max-width: 1000px) 100vw, 1000px" /></p>
+<p class="p1"><span class="s1"><div class="kogebog-side"><img fetchpriority="high" decoding="async" src="/wp-content/2020/09/Valdemarsro_aftensmad.png" width="1394" height="1785"/><p>Denne opskrift kan du også finde i kogebogen<br/><a href="/kogebog-valdemarsro-aftensmad/">Valdemarsro Aftensmad</a> på side “256”</p></div></span></p>
+<p><img decoding="async" class="alignleft size-full wp-image-47204" src="https://www.valdemarsro.dk/wp-content/2014/06/butterchicken-opskrift-1.jpg" alt="butterchicken" width="1000" height="1423" srcset="https://www.valdemarsro.dk/wp-content/2014/06/butterchicken-opskrift-1.jpg 1000w, https://www.valdemarsro.dk/wp-content/2014/06/butterchicken-opskrift-1-211x300.jpg 211w, https://www.valdemarsro.dk/wp-content/2014/06/butterchicken-opskrift-1-600x854.jpg 600w, https://www.valdemarsro.dk/wp-content/2014/06/butterchicken-opskrift-1-768x1093.jpg 768w" sizes="(max-width: 1000px) 100vw, 1000px" /></p>
 <p>Krydderierne i det indiske køkken har en stor stjerne hos mig. Kanel, kardemomme, karry,  garam masala, spidskommen og jeg kunne blive ved. Jeg er fan! <a title="tikka masala" href="http://www.valdemarsro.dk/tikka-chicken-masala/">Tikka chicken masala</a> og <a title="indisk curry" href="http://www.valdemarsro.dk/indisk_curry_med_kylling/">indisk curry</a> er blandt favoritterne og til listen er tilføjet denne butter chicken, som vi spiste i weekenden med sprød indisk inspireret salat, brød og ris til.</p>
 					<div class="clear"></div>
-															<p><strong>Vil du gemme opskriften?<br />
-</strong>Klik på det blå hjerte på det første billede i opskriften, så kan du samle alle dine favoritopskrifter fra Valdemarsro, så du altid nemt og hurtigt kan finde dem igen, næste gang du skal i køkkenet. Du får adgang til favoritfunktionen som <a href="https://www.valdemarsro.dk/premium/opret/">medlem af Valdemarsro</a> – det koster <em>under 4 kr om ugen</em> med et årsabonnement for et medlemskab til hele din husstand.</p>
+															<p><a id="frontpage_notpremium_mobile_1" href="https://www.valdemarsro.dk/premium/opret/"><img loading="lazy" decoding="async" class="aligncenter wp-image-51133 size-large" src="https://www.valdemarsro.dk/wp-content/2023/12/Premium-web2-mobil.jpg" alt="valdemarsro premium" width="600" height="450" /></a><br />
+<script>
+</script></p>
+
+<p><strong>Ny Valdemarsro madplan hver uge<br />
+</strong>I madplanen fra Valdemarsro kan du frit udskifte opskrifterne og tilpasse madplanen perfekt til dig &#8211; og du kan lave indkøbsseddel med ét klik</p>
+<p><a href="https://www.valdemarsro.dk/madplan/">Få Valdemarsro madplan her &gt;&gt;</a><br />
+– det koster <em>under 4 kr om ugen</em> med et årsabonnement for et medlemskab til hele din husstand.</p>
 <p>&nbsp;</p>
-<p><strong>Få en lækker madplan hver uge og spar penge med en god madplan<br />
-</strong>Madplan fra Valdemarsro gør det nemt at have styr på ugens måltider og du kan lave indkøbsseddel med ét klik + du kan tilpasse det hele så det passer perfekt til dig og din familie.</p>
-<p>Du får adgang til <a href="https://www.valdemarsro.dk/madplan/">Valdemarsro madplaner og indkøbslisten når du er medlem af Valdemarsro</a> – det koster <em>under 4 kr om ugen</em> med et årsabonnement for et medlemskab til hele din husstand.</p>
+<p><strong>Få opskrifterne i Valdemarsro APP´en<br />
+</strong>Valdemarsro app har 4,8 stjerner i App Store og har over 7000 reviews. Vi er simpelthen så glade for, at så mange har glæde af den 🥰<br />
+<a href="http://applink.dk/valdemarsro/" target="_blank" rel="noopener">Hent Valdemarsro App her &gt;&gt;</a></p>
 <p>&nbsp;</p>
-<p><strong>Undgå madspild med Valdemarsro<br />
-</strong>Som medlem af Valdemarsro er det ekstra nemt at undgå madspild og samtidig spare penge på budgettet med den smarte indkøbsseddel, madplaner og ’Tøm Køleskabet’ funktion – det koster <em>under 4 kr om ugen</em> med <a href="https://www.valdemarsro.dk/premium/opret/">et årsabonnement for et medlemskab til hele din husstand</a>.</p>
+<p><strong>Slip for reklamer på Valdemarsro<br />
+</strong>Når du er medlem af Valdemarsro, fjerner vi alle reklamebannere og du kan nyde en mere enkel og rolig oplevelse af Valdemarsro</p>
+<p>Det koster <em>under 4 kr om ugen</em> at være medlem af Valdemarsro, når du har årsabonnement, og du får både madplaner, indkøbslistefunktion og en masse ekstra features, som du <a href="https://www.valdemarsro.dk/valdemarsro-premium/">kan læse mere om her.</a></p>
+<p>&nbsp;</p>
+<p><a href="https://www.valdemarsro.dk/kogeboeger/"><img decoding="async" class="alignright size-full wp-image-65188" src="https://www.valdemarsro.dk/wp-content/2022/11/kogebogbanner-bund-indlaeg.jpg" alt="kogebøger" width="800" height="350" srcset="https://www.valdemarsro.dk/wp-content/2022/11/kogebogbanner-bund-indlaeg.jpg 800w, https://www.valdemarsro.dk/wp-content/2022/11/kogebogbanner-bund-indlaeg-300x131.jpg 300w, https://www.valdemarsro.dk/wp-content/2022/11/kogebogbanner-bund-indlaeg-600x263.jpg 600w, https://www.valdemarsro.dk/wp-content/2022/11/kogebogbanner-bund-indlaeg-768x336.jpg 768w" sizes="(max-width: 800px) 100vw, 800px" /></a></p>
 <p>&nbsp;</p>
 <p><strong>Følg Valdemarsro på de sociale medier<br />
 </strong>Husk også at følge Valdemarsro på de sociale medier, og få masser af inspiration til dejlig madlavning. Du kan følge med på <a href="https://www.instagram.com/valdemarsro_dk/" target="_blank" rel="noopener">Instagram</a>, <a href="https://www.facebook.com/Valdemarsro" target="_blank" rel="noopener">Facebook</a> og <a href="https://www.pinterest.dk/valdemarsro/" target="_blank" rel="noopener">Pinterest</a></p>
-<p>&nbsp;</p>
-<p><strong>Få opskrifterne i Valdemarsro APP´en<br />
-</strong>Valdemarsro app er bedre end nogensinde før &#8211; for vi har udviklet appen rigtig meget det seneste år, så Valdemarsro appen er hurtig, driftsikker, nem at bruge og nyttig i hverdagen. Appen får 4,8 stjerner i App Store og har over 6000 reviews. Vi er simpelthen så glade for, at så mange har glæde af den 🥰 <a href="http://applink.dk/valdemarsro/" target="_blank" rel="noopener">Du kan hente Valdemarsro Appen her &gt;&gt;</a></p>
-<p>&nbsp;</p>
-<p><strong>Slip for reklamer her på Valdemarsro<br />
-</strong>Når du er medlem af Valdemarsro, så fjerner vi alle reklamebannere og du kan nyde en mere enkel og rolig oplevelse af Valdemarsro.</p>
-<p>Det koster <em>under 4 kr om ugen</em> at være medlem af Valdemarsro, når du har årsabonnement, og du får både madplaner, indkøbslistefunktion og en masse ekstra features, som du <a href="https://www.valdemarsro.dk/valdemarsro-premium/">kan læse mere om her.</a></p>
-<p>&nbsp;</p>
-<p><a href="https://www.valdemarsro.dk/kogeboeger/"><img decoding="async" loading="lazy" class="alignright size-full wp-image-65188" src="https://www.valdemarsro.dk/wp-content/2022/11/kogebogbanner-bund-indlaeg.jpg" alt="kogebøger" width="800" height="350" srcset="https://www.valdemarsro.dk/wp-content/2022/11/kogebogbanner-bund-indlaeg.jpg 800w, https://www.valdemarsro.dk/wp-content/2022/11/kogebogbanner-bund-indlaeg-300x131.jpg 300w, https://www.valdemarsro.dk/wp-content/2022/11/kogebogbanner-bund-indlaeg-600x263.jpg 600w, https://www.valdemarsro.dk/wp-content/2022/11/kogebogbanner-bund-indlaeg-768x336.jpg 768w" sizes="(max-width: 800px) 100vw, 800px" /></a></p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<hr />
-<div class="banner-horizontal-1"><div class="container"><div class="madplan-banner"><img src="/wp-content/2021/06/indkoebsliste.png" style="height:120px;width:auto;" width="500" height="500"/><div class="banner-text"></p>
-<h3>MADPLANER MED INDKØBSSEDDEL</h3>
-<p>FÅ EN LÆKKER MADPLAN MED INDKØBSSEDDEL FRA VALDEMARSRO HVER UGE OG TILPAS MADPLANEN PRÆCIS SÅ DEN PASSER DIG<br />
-</div><div class="banner-link"><a href="/madplan/" id="banner_indkoeb" target="_blank" rel="noopener" onclick="return _promotion_click('banner_indkoeb', '');">Læs mere her >></a></div></div></div></div><script>document.addEventListener('DOMContentLoaded', (event) => { _promotion_view('banner_indkoeb', ''); });</script>
-
 									</div>
 				<div class="recipe-bar">
 					<a href="https://www.valdemarsro.dk/aftensmad/">Aftensmad</a> <a href="https://www.valdemarsro.dk/indisk/">Indisk</a> <a href="https://www.valdemarsro.dk/opskrifter/">Opskrifter</a><a href="https://www.valdemarsro.dk/tag/graesk-yoghurt/">Græsk Yoghurt</a><a href="https://www.valdemarsro.dk/tag/chili/">Chili</a><a href="https://www.valdemarsro.dk/tag/nelliker/">Nelliker</a><a href="https://www.valdemarsro.dk/tag/spidskommen/">Spidskommen</a><a href="https://www.valdemarsro.dk/tag/kardemomme/">Kardemomme</a><a href="https://www.valdemarsro.dk/tag/garam-masala/">Garam Masala</a><a href="https://www.valdemarsro.dk/tag/hvidloeg/">Hvidløg</a><a href="https://www.valdemarsro.dk/tag/gurkemeje/">Gurkemeje</a><a href="https://www.valdemarsro.dk/tag/ingefaer/">Ingefær</a><a href="https://www.valdemarsro.dk/tag/hakkede-tomater/">Hakkede tomater</a><a href="https://www.valdemarsro.dk/tag/kylling/">Kylling</a><a href="https://www.valdemarsro.dk/tag/piskefloede/">piskefløde</a><a href="https://www.valdemarsro.dk/tag/koriander/">Koriander</a>				</div>
@@ -1784,7 +1791,7 @@ Kh Ann-Christine</p>
 		<br/><br/>
 		<input type='hidden' name='comment_post_ID' value='16202' id='comment_post_ID' />
 <input type='hidden' name='comment_parent' id='comment_parent' value='0' />
-		<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="a21a072d6e" /></p><p style="display: none !important;"><label>&#916;<textarea name="ak_hp_textarea" cols="45" rows="8" maxlength="100"></textarea></label><input type="hidden" id="ak_js_1" name="ak_js" value="126"/><script>document.getElementById( "ak_js_1" ).setAttribute( "value", ( new Date() ).getTime() );</script></p>	</form>
+		<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="f2ec242ef0" /></p><p style="display: none !important;"><label>&#916;<textarea name="ak_hp_textarea" cols="45" rows="8" maxlength="100"></textarea></label><input type="hidden" id="ak_js_1" name="ak_js" value="184"/><script>document.getElementById( "ak_js_1" ).setAttribute( "value", ( new Date() ).getTime() );</script></p>	</form>
 	<div class="clear"></div>
 </div>
 <script>
@@ -1803,7 +1810,7 @@ function _track_comment()
 			<div id="text-23" class="widget widget_text">			<div class="textwidget"><div class="widget-om">
 <div class="image"><img src="/wp-content/2020/06/valdemarsro_.png"alt="Ann Christine Hellerup Brandt" width="310" height="390"/></div>
 <p>Jeg hedder Ann-Christine, er mor til Julie og Johan og er gift med Martin. <br />
-Jeg elsker at udvikle og finde på lækre og velsmagende opskrifter, som jeg deler med jer her på Valdemarsro, i mine kogebøger og i <a href="https://www.valdemarsro.dk/madplan/">Valdemarsro madplaner</a></p>
+Jeg elsker at udvikle og finde på lækre og velsmagende opskrifter, som jeg deler med jer her på Valdemarsro, i mine kogebøger og i <a href="https://www.valdemarsro.dk/madplan/">Valdemarsro madplan</a></p>
 <p>Det er mig, der tager billederne til Valdemarsro og så deler jeg indimellem også boganbefalinger, tips til havearbejde og indlæg om min have, rejseguides fra vores rejser og andre små skønne ting. Hvis du har lyst kan du læse mere <a href="https://www.valdemarsro.dk/ann-christine-hellerup-brandt/">Om Valdemarsro her ...</a></p>
 </div>
 &nbsp;
@@ -1817,17 +1824,15 @@ Jeg elsker at udvikle og finde på lækre og velsmagende opskrifter, som jeg del
 
 &nbsp;</div></div><div id="text-129" class="widget widget_text">			<div class="textwidget"></p>
 <div id="sidebarwidget_1" class="widget-om">
-<div class="image" style="margin-top: 0;"><a href="/madplan/"><img decoding="async" loading="lazy" class="alignright size-full wp-image-68671" src="https://www.valdemarsro.dk/wp-content/2023/06/valdemarsro-app.jpg" alt="" width="800" height="851" srcset="https://www.valdemarsro.dk/wp-content/2023/06/valdemarsro-app.jpg 800w, https://www.valdemarsro.dk/wp-content/2023/06/valdemarsro-app-282x300.jpg 282w, https://www.valdemarsro.dk/wp-content/2023/06/valdemarsro-app-600x638.jpg 600w, https://www.valdemarsro.dk/wp-content/2023/06/valdemarsro-app-768x817.jpg 768w" sizes="(max-width: 800px) 100vw, 800px" /></a></div>
-<p style="text-align: center;">SPAR TID  &#8211;  SPAR PENGE<br />
-UNDGÅ MADSPILD<br />
-SPIS GODT OG VARIERET</p>
+<div class="image" style="margin-top: 0;"><a href="/madplan/"><img loading="lazy" decoding="async" class="alignright size-full wp-image-68671" src="https://www.valdemarsro.dk/wp-content/2023/06/valdemarsro-app.jpg" alt="" width="800" height="851" srcset="https://www.valdemarsro.dk/wp-content/2023/06/valdemarsro-app.jpg 800w, https://www.valdemarsro.dk/wp-content/2023/06/valdemarsro-app-282x300.jpg 282w, https://www.valdemarsro.dk/wp-content/2023/06/valdemarsro-app-600x638.jpg 600w, https://www.valdemarsro.dk/wp-content/2023/06/valdemarsro-app-768x817.jpg 768w" sizes="(max-width: 800px) 100vw, 800px" /></a></div>
 <h3></h3>
-<h4 style="text-align: center;"><b>MED MADPLAN FRA VALDEMARSRO</b></h4>
+<h4 style="text-align: center;"><b>MEDLEM AF VALDEMARSRO</b></h4>
 <ul>
-<li>Nye lækre madplaner hver uge</li>
+<li>Ny madplan hver uge</li>
 <li>Smart og tidssparende indkøbsseddel</li>
 <li>Din egen favoritside</li>
-<li>Filtrering på allergener fx gluten og laktose</li>
+<li>Filtrer på allergener fx gluten og laktose</li>
+<li>Næringsberegning</li>
 <li>Slip for reklame og annoncer</li>
 <li>Adgang både i Valdemarsro app og på hjemmesiden</li>
 </ul>
@@ -1835,8 +1840,8 @@ SPIS GODT OG VARIERET</p>
 </div>
 <p><script>
 document.addEventListener('DOMContentLoaded', (event) => { _promotion_view('sidebarwidget_1', '');
-</script><br />
-
+</script></p>
+<p>
 </div>
 		</div><div id="custom_html-11" class="widget_text widget widget_custom_html"><div class="textwidget custom-html-widget"><div class="banner-vertical-1" onclick="document.location='https://www.valdemarsro.dk/kogebog-valdemarsro-kager-desserter/';" style="cursor:pointer;">
 	<div class="leaf"></div>
@@ -1862,14 +1867,14 @@ document.addEventListener('DOMContentLoaded', (event) => { _promotion_view('side
 		}
 	}
 })();
-</script><!-- Mailchimp for WordPress v4.9.9 - https://wordpress.org/plugins/mailchimp-for-wp/ --><form id="mc4wp-form-1" class="mc4wp-form mc4wp-form-23617" method="post" data-id="23617" data-name="Default sign-up form" ><div class="mc4wp-form-fields"><input type="email" name="EMAIL" placeholder="Email" required="required" id="mc_email"/>
+</script><!-- Mailchimp for WordPress v4.9.10 - https://wordpress.org/plugins/mailchimp-for-wp/ --><form id="mc4wp-form-1" class="mc4wp-form mc4wp-form-23617" method="post" data-id="23617" data-name="Default sign-up form" ><div class="mc4wp-form-fields"><input type="email" name="EMAIL" placeholder="Email" required="required" id="mc_email"/>
 <input type="submit" value="Tilmeld" id="mc_submit"/>
 <p style="font-size:14px;margin:10px 0;line-height:1.3;">
   <br/>Ugentligt inspiration til sæsonaktuelle opskrifter.
 </p>
 <p style="font-size:10px;margin-bottom:20px;line-height:1.3;">
   Samtykke til at modtage nyhedsbrevet kan til enhver tid trækkes tilbage, <a href="/personoplysninger-og-cookie-politik/" style="text-decoration:underline;">læs mere her</a>
-</p></div><label style="display: none !important;">Leave this field empty if you're human: <input type="text" name="_mc4wp_honeypot" value="" tabindex="-1" autocomplete="off" /></label><input type="hidden" name="_mc4wp_timestamp" value="1700742467" /><input type="hidden" name="_mc4wp_form_id" value="23617" /><input type="hidden" name="_mc4wp_form_element_id" value="mc4wp-form-1" /><div class="mc4wp-response"></div></form><!-- / Mailchimp for WordPress Plugin --></div><div id="custom_html-9" class="widget_text widget widget_custom_html"><div class="textwidget custom-html-widget"><!--<div id="cncpt-mob4"></div>--></div></div><div id="custom_html-12" class="widget_text widget widget_custom_html"><div class="textwidget custom-html-widget"><div class="banner-vertical-1" onclick="document.location='https://www.valdemarsro.dk/kogeboeger/';" style="cursor:pointer;">
+</p></div><label style="display: none !important;">Leave this field empty if you're human: <input type="text" name="_mc4wp_honeypot" value="" tabindex="-1" autocomplete="off" /></label><input type="hidden" name="_mc4wp_timestamp" value="1704193974" /><input type="hidden" name="_mc4wp_form_id" value="23617" /><input type="hidden" name="_mc4wp_form_element_id" value="mc4wp-form-1" /><div class="mc4wp-response"></div></form><!-- / Mailchimp for WordPress Plugin --></div><div id="custom_html-9" class="widget_text widget widget_custom_html"><div class="textwidget custom-html-widget"><!--<div id="cncpt-mob4"></div>--></div></div><div id="custom_html-12" class="widget_text widget widget_custom_html"><div class="textwidget custom-html-widget"><div class="banner-vertical-1" onclick="document.location='https://www.valdemarsro.dk/kogeboeger/';" style="cursor:pointer;">
 	<div class="leaf"></div>
 	<div class="bg">
 		<img src="https://www.valdemarsro.dk/wp-content/2022/09/kogeboeger-valdemarsro-1.jpg" width="452" height="566"/>
@@ -2039,14 +2044,14 @@ function _open_modal_wrapper(id, val, unit, default_val)
 		}
 	}
 })();
-</script><!-- Mailchimp for WordPress v4.9.9 - https://wordpress.org/plugins/mailchimp-for-wp/ --><form id="mc4wp-form-2" class="mc4wp-form mc4wp-form-23617" method="post" data-id="23617" data-name="Default sign-up form" ><div class="mc4wp-form-fields"><input type="email" name="EMAIL" placeholder="Email" required="required" id="mc_email"/>
+</script><!-- Mailchimp for WordPress v4.9.10 - https://wordpress.org/plugins/mailchimp-for-wp/ --><form id="mc4wp-form-2" class="mc4wp-form mc4wp-form-23617" method="post" data-id="23617" data-name="Default sign-up form" ><div class="mc4wp-form-fields"><input type="email" name="EMAIL" placeholder="Email" required="required" id="mc_email"/>
 <input type="submit" value="Tilmeld" id="mc_submit"/>
 <p style="font-size:14px;margin:10px 0;line-height:1.3;">
   <br/>Ugentligt inspiration til sæsonaktuelle opskrifter.
 </p>
 <p style="font-size:10px;margin-bottom:20px;line-height:1.3;">
   Samtykke til at modtage nyhedsbrevet kan til enhver tid trækkes tilbage, <a href="/personoplysninger-og-cookie-politik/" style="text-decoration:underline;">læs mere her</a>
-</p></div><label style="display: none !important;">Leave this field empty if you're human: <input type="text" name="_mc4wp_honeypot" value="" tabindex="-1" autocomplete="off" /></label><input type="hidden" name="_mc4wp_timestamp" value="1700742467" /><input type="hidden" name="_mc4wp_form_id" value="23617" /><input type="hidden" name="_mc4wp_form_element_id" value="mc4wp-form-2" /><div class="mc4wp-response"></div></form><!-- / Mailchimp for WordPress Plugin -->			</div>
+</p></div><label style="display: none !important;">Leave this field empty if you're human: <input type="text" name="_mc4wp_honeypot" value="" tabindex="-1" autocomplete="off" /></label><input type="hidden" name="_mc4wp_timestamp" value="1704193974" /><input type="hidden" name="_mc4wp_form_id" value="23617" /><input type="hidden" name="_mc4wp_form_element_id" value="mc4wp-form-2" /><div class="mc4wp-response"></div></form><!-- / Mailchimp for WordPress Plugin -->			</div>
 			<div class="footer-logo">
 				<img src="https://www.valdemarsro.dk/wp-content/themes/valdemarsro16/assets/img/logo4.png" width="45" height="35" alt="Valdemarsro"/>
 			</div>
@@ -2174,12 +2179,12 @@ const urlFields = document.querySelectorAll('.mc4wp-form input[type="url"]')
 for (let j = 0; j < urlFields.length; j++) {
   urlFields[j].addEventListener('blur', maybePrefixUrlField)
 }
-})();</script><script type='text/javascript' src='https://www.valdemarsro.dk/wp-includes/js/comment-reply.min.js?ver=6.3.2' id='comment-reply-js'></script>
-<script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js' id='jquery-js'></script>
-<script type='text/javascript' src='https://www.valdemarsro.dk/wp-content/themes/valdemarsro16/assets/js/valdemarsro.js?v=26092022&#038;ver=6.3.2' id='main-js'></script>
-<script defer type='text/javascript' src='https://www.valdemarsro.dk/wp-content/plugins/akismet/_inc/akismet-frontend.js?ver=1696261483' id='akismet-frontend-js'></script>
-<script type='text/javascript' defer src='https://www.valdemarsro.dk/wp-content/plugins/mailchimp-for-wp/assets/js/forms.js?ver=4.9.9' id='mc4wp-forms-api-js'></script>
-<!--stats_footer_test--><script src="https://stats.wordpress.com/e-202347.js" type="text/javascript"></script>
+})();</script><script type="text/javascript" src="https://www.valdemarsro.dk/wp-includes/js/comment-reply.min.js?ver=6.4.2" id="comment-reply-js" async="async" data-wp-strategy="async"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" id="jquery-js"></script>
+<script type="text/javascript" src="https://www.valdemarsro.dk/wp-content/themes/valdemarsro16/assets/js/valdemarsro.js?v=26092022&amp;ver=6.4.2" id="main-js"></script>
+<script defer type="text/javascript" src="https://www.valdemarsro.dk/wp-content/plugins/akismet/_inc/akismet-frontend.js?ver=1696261483" id="akismet-frontend-js"></script>
+<script type="text/javascript" defer src="https://www.valdemarsro.dk/wp-content/plugins/mailchimp-for-wp/assets/js/forms.js?ver=4.9.10" id="mc4wp-forms-api-js"></script>
+<!--stats_footer_test--><script src="https://stats.wordpress.com/e-202401.js" type="text/javascript"></script>
 <script type="text/javascript">
 st_go({blog:'2253058',v:'ext',post:'16202'});
 var load_cmc = function(){linktracker_init(2253058,16202,2);};

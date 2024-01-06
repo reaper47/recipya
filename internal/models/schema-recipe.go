@@ -65,12 +65,14 @@ func (r *RecipeSchema) Recipe() (*Recipe, error) {
 
 	var createdAt time.Time
 	if created != "" {
-		split := strings.Split(created, "T")
-		if len(split) > 0 {
-			createdAt, err = time.Parse(time.DateOnly, split[0])
-			if err != nil {
-				return nil, fmt.Errorf("could not parse createdAt date %s: %w", created, err)
-			}
+		before, _, found := strings.Cut(created, "T")
+		if !found {
+			before, _, _ = strings.Cut(created, " ")
+		}
+
+		createdAt, err = time.Parse(time.DateOnly, before)
+		if err != nil {
+			return nil, fmt.Errorf("could not parse createdAt date %s: %w", created, err)
 		}
 	}
 
@@ -81,12 +83,14 @@ func (r *RecipeSchema) Recipe() (*Recipe, error) {
 
 	updatedAt := createdAt
 	if r.DateModified != "" {
-		split := strings.Split(r.DateModified, "T")
-		if len(split) > 0 {
-			updatedAt, err = time.Parse(time.DateOnly, split[0])
-			if err != nil {
-				return nil, fmt.Errorf("could not parse modifiedAt date %s: %w", r.DateModified, err)
-			}
+		before, _, found := strings.Cut(r.DateModified, "T")
+		if !found {
+			before, _, _ = strings.Cut(r.DateModified, " ")
+		}
+
+		updatedAt, err = time.Parse(time.DateOnly, before)
+		if err != nil {
+			return nil, fmt.Errorf("could not parse modifiedAt date %s: %w", r.DateModified, err)
 		}
 	}
 
@@ -461,7 +465,7 @@ func (i *Instructions) UnmarshalJSON(data []byte) error {
 	err := json.Unmarshal(data, &v)
 	if err != nil {
 		m := make(map[string][]any)
-		err := json.Unmarshal(data, &m)
+		err = json.Unmarshal(data, &m)
 		if err != nil {
 			return err
 		}
@@ -563,7 +567,21 @@ func parseSections(part any, instructions *Instructions) {
 	for _, item := range sect.Items {
 		text, ok := item["text"]
 		if ok {
-			str := strings.TrimSuffix(text.(string), "\n")
+			var str string
+			switch x := text.(type) {
+			case string:
+				str = x
+			case []any:
+				xs := make([]string, 0, len(x))
+				for _, v := range x {
+					xs = append(xs, v.(string))
+				}
+				str = strings.Join(xs, ", ")
+			default:
+				continue
+			}
+
+			str = strings.TrimSuffix(str, "\n")
 			str = strings.ReplaceAll(str, "\u00a0", "")
 			str = strings.ReplaceAll(str, "\u2009", "")
 			instructions.Values = append(instructions.Values, strings.TrimSpace(str))

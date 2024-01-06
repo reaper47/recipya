@@ -75,7 +75,7 @@ func TestScraper_B(t *testing.T) {
 						"24 oz russet potatoes (peeled and cut into 1&quot; cubes.)",
 						"1 1/2 teaspoons table salt (divided)",
 						"2 oz Irish Butter (room temperature, divided)",
-						"3.75 oz all purpose flour (3/4 cup)", "1/2 teaspoon baking powder",
+						"3.75 oz all purpose flour (3/4 cup, see note)", "1/2 teaspoon baking powder",
 						"1/4 teaspoon ground black pepper", "2 scallions (chopped fine)",
 					},
 				},
@@ -130,7 +130,7 @@ func TestScraper_B(t *testing.T) {
 					Value: "Brussels Sprouts Lardons from Barefoot Contessa.",
 				},
 				Image: models.Image{
-					Value: "https://d14iv1hjmfkv57.cloudfront.net/assets/recipes/brussels-sprouts-lardons/_1200x630_crop_center-center_82_none/155-web-horizon.jpg?v=1698349539",
+					Value: "https://d14iv1hjmfkv57.cloudfront.net/assets/recipes/brussels-sprouts-lardons/_1200x630_crop_center-center_82_none/155-web-horizon.jpg?v=1704301339",
 				},
 				Ingredients: models.Ingredients{
 					Values: []string{
@@ -225,7 +225,7 @@ func TestScraper_B(t *testing.T) {
 				Category:      models.Category{Value: "Dinner, Main course, Side dish, Supper"},
 				CookTime:      "PT35M",
 				Cuisine:       models.Cuisine{Value: "Italian"},
-				DateModified:  "2022-11-08T14:35:36+00:00",
+				DateModified:  "2023-12-15T11:03:00+00:00",
 				DatePublished: "2014-12-04T12:17:29+00:00",
 				Description: models.Description{
 					Value: "Tom Kerridge's indulgently rich and cheesy risotto makes an extra-special side dish for a celebration dinner party",
@@ -573,7 +573,7 @@ func TestScraper_B(t *testing.T) {
 				AtContext: "https://schema.org",
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Description: models.Description{
-					Value: "Il y a quelques temps je vous avais donné la recette du taillé au sel, celle de ma voisine Claudine, une spécialité vaudoise. Cette recette, je l’avais obtenue, un soir après un bon repas entre amis, chez Claudine. Elle m’avait gribouillé la liste des ingrédients sur un morceau de papier avec quelques explications orales. Quelques semaines plus tard je m’étais lancé et avais alors refait cette recette chez moi mais quelque peu adaptée à ma façon de faire. Après plusieurs essais et content du résultat, je l’avais alors publiée (recette ICI) et il a fait des émules ce taillé, presque le tour du monde, même jusqu’aux oreilles des producteurs de la TV suisse (Couleurs Locales). Ils m’ont contacté car ils désiraient en faire un petit reportage.\n\nAlors, j’ai aussitôt convoqué Claudine et devant les caméras, elle nous a réalisé son taillé, SA recette avec tous les détails qui me manquaient. Mais claudine a bien précisé que ce taillé est une spécialité du village où nous habitons, cette recette qui nous a été transmise de familles en familles et que nous avons envie de faire perdurer. \n\nSa confection est des plus simple et rapide à réaliser. Ici pas de robot, pas de levain et le pétrissage se fait à l’ancienne, c’est-à-dire à la main. Voilà ce que ça donne :\n\n \n\nL’émission sera diffusée à \"Couleurs Locales, TSR\", le mardi 14 novembre",
+					Value: "Il y a quelques temps je vous avais donné la recette du taillé au sel, celle de ma voisine Claudine, une spécialité vaudoise. Cette recette, je l’avais obtenue, un soir après un bon repas entre amis, chez Claudine. Elle m’avait gribouillé la liste des ingrédients sur un morceau de papier avec quelques explications orales. Quelques semaines plus tard je m’étais lancé et avais alors refait cette recette chez moi mais quelque peu adaptée à ma façon de faire. Après plusieurs essais et content du résultat, je l’avais alors publiée (recette ICI) et il a fait des émules ce taillé, presque le tour du monde, même jusqu’aux oreilles des producteurs de la TV suisse (Couleurs Locales). Ils m’ont contacté car ils désiraient en faire un petit reportage que voici: \n\ninfo : pour visualiser uniquement la petite séquence, allez à la minute 5:15\n\n\n\nAlors, j’ai aussitôt convoqué Claudine et devant les caméras, elle nous a réalisé son taillé, SA recette avec tous les détails qui me manquaient. Mais claudine a bien précisé que ce taillé est une spécialité du village où nous habitons, cette recette qui nous a été transmise de familles en familles et que nous avons envie de faire perdurer. \n\nSa confection est des plus simple et rapide à réaliser. Ici pas de robot, pas de levain et le pétrissage se fait à l’ancienne, c’est-à-dire à la main. Voilà ce que ça donne :",
 				},
 				Keywords: models.Keywords{Values: "Apéritifs,Boulangerie,Petit-déjeuner,Recettes suisses salées"},
 				Image: models.Image{

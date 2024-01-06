@@ -48,16 +48,7 @@ func TestScraper_A(t *testing.T) {
 				},
 				Instructions: models.Instructions{
 					Values: []string{
-						"Derreta a manteiga e refogue a cebola até ficar transparente.",
-						"Junte a carne e tempere com o sal.",
-						"Mexa até a carne dourar de todos os lados.",
-						"Acrescente a mostarda, o catchup, a pimenta-do-reino e o tomate picado.",
-						"Cozinhe até formar um molho espesso.",
-						"Se necessário, adicione água quente aos poucos.",
-						"Quando o molho estiver encorpado e a carne macia, adicione os cogumelos e o creme de leite.",
-						"Mexa por 1 minuto e retire do fogo.",
-						"Sirva imediatamente, acompanhado de arroz e batata palha.",
-						"Dica: Se juntar água ao refogar a carne, frite-a até todo o líquido evaporar.",
+						"Derreta a manteiga e refogue a cebola até ficar transparente.Junte a carne e tempere com o sal.Mexa até a carne dourar de todos os lados.Acrescente a mostarda, o catchup, a pimenta-do-reino e o tomate picado.Cozinhe até formar um molho espesso.Se necessário, adicione água quente aos poucos.Quando o molho estiver encorpado e a carne macia, adicione os cogumelos e o creme de leite.Mexa por 1 minuto e retire do fogo.Sirva imediatamente, acompanhado de arroz e batata palha.Dica: Se juntar água ao refogar a carne, frite-a até todo o líquido evaporar.",
 					},
 				},
 				Name:     "Estrogonofe de carne",
@@ -497,7 +488,7 @@ func TestScraper_A(t *testing.T) {
 				},
 				Instructions: models.Instructions{
 					Values: []string{
-						"Combine the flour, salt, and sugar in the bowl of your food processor and pulse 3-4 times. Add the butter and pulse until texture looks mealy, 5-6 pulses. Then, add the shortening and pulse until incorporated, another 3-4 pulses. Remove the lid and drizzle in 5 tablespoons of the Applajack. Replace the lid and pulse 5 times. Add the remaining Applejack and pulse until the mixture begins to hold together and pull away from the sides of the bowl.",
+						"Combine the flour, salt, and sugar in the bowl of your food processor and pulse 3-4 times. Add the butter and pulse until texture looks mealy, 5-6 pulses. Then, add the shortening and pulse until incorporated, another 3-4 pulses. Remove the lid and drizzle in 5 tablespoons of the Applejack. Replace the lid and pulse 5 times. Add the remaining Applejack and pulse until the mixture begins to hold together and pull away from the sides of the bowl.",
 						"Dump the mixture onto a clean surface and squeeze together with your hands to form a smooth ball. Divide the ball in half and press each into a disk about 1-inch thick. Wrap each dough in plastic wrap and refrigerate for at least 1 hour. (You can refrigerate longer, even overnight, but the dough will have to sit at room temperature for 15 minutes to be malleable enough to roll.",
 						"Peel, core, and slice the apples into 1/4-inch slices and move to a large mixing bowl. Add 1/4 cup of the sugar and toss with your hands to thoroughly coat. Set aside for 45 minutes, tossing halfway through, then transfer to a colander set over a large bowl and set aside to drain for 45 minutes.",
 						"Transfer the accumulated juices (you should have about 1/4 cup) to a small saucepan and reduce over medium heat to 2 tablespoons, about 3 minutes. Set aside to cool.",
@@ -725,11 +716,11 @@ func TestScraper_A(t *testing.T) {
 				},
 				Keywords: models.Keywords{Values: "Kyckling,Pasta"},
 				Image: models.Image{
-					Value: "https://cdn-rdb.arla.com/Files/arla-se/2485582835/17d593bd-6d99-44ab-a5f9-4649eb3b2972.jpg?mode=crop&w=1300&h=525&ak=f525e733&hm=1de43e21",
+					Value: "https://cdn-rdb.arla.com/Files/arla-se/2485582835/17d593bd-6d99-44ab-a5f9-4649eb3b2972.jpg?w=1300&h=525&mode=crop&ak=f525e733&hm=697c0698",
 				},
 				Ingredients: models.Ingredients{
 					Values: []string{
-						"450 g kycklinglårfilé", "2 msk Arla Köket® Smör & rapsolja",
+						"450 g kycklinglårfilé", "2 msk Arla Köket® Smör- & rapsolja",
 						"1 tsk salt", "1 krm svartpeppar",
 						"2 dl Arla Köket® Lätt crème fraiche parmesan & vitlök",
 						"65 g babyspenat", "300 g pasta",

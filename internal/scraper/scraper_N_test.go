@@ -89,7 +89,7 @@ func TestScraper_N(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
-				CookTime:      "PT-472456H34M28S",
+				CookTime:      "PT-473458H45M24S",
 				DatePublished: "2022-02-09",
 				Description: models.Description{
 					Value: "Rich and fudgy gluten-free tahini brownies that just happen to be also be grain-free and nut-free! " +
@@ -192,7 +192,7 @@ func TestScraper_N(t *testing.T) {
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Forrett/smårett"},
 				Cuisine:       models.Cuisine{Value: "Japan"},
-				DateModified:  "2023-06-14T11:18:24+02:00",
+				DateModified:  "2023-12-19T10:49:36+01:00",
 				DatePublished: "2023-06-14T11:18:23+02:00",
 				Description: models.Description{
 					Value: "Tamagoyaki er japansk rullet omelett. Den serveres oftest som smakfull siderett eller til frokost. Den lages ved å brette sammen tynne lag med krydret egg.",
@@ -267,47 +267,6 @@ func TestScraper_N(t *testing.T) {
 				PrepTime: "PT15M",
 				Yield:    models.Yield{Value: 4},
 				URL:      "https://www.number-2-pencil.com/creamy-one-pot-pumpkin-alfredo/",
-			},
-		},
-		{
-			name: "nutritionbynathalie.com",
-			in:   "https://www.nutritionbynathalie.com/single-post/2020/07/30/Mexican-Cauliflower-Rice",
-			want: models.RecipeSchema{
-				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				DateModified:  "2020-07-30T18:25:45.140Z",
-				DatePublished: "2020-07-30T18:25:45.140Z",
-				Description: models.Description{
-					Value: "Ingredients: • 1 bag fresh or frozen cauliflower rice (if using fresh cauliflower rice, add olive oil, avocado oil or coconut oil to pan) • 1-2 Tbsp olive oil • 1/4 teaspoon turmeric • 1/4 teaspoon cayenne pepper (optional) • 1/2 teaspoon garlic powder • 3/4 cup salsa • vegan chive or scallion cream cheese • fresh cilantro, chopped • sea salt and pepper to taste Directions: Heat a pan on medium heat with oil. Add the cauliflower and allow it to cook for about 5 minutes (should be nearly fully co",
-				},
-				Name: "Mexican Cauliflower Rice",
-				Image: models.Image{
-					Value: "https://static.wixstatic.com/media/d3b5ba_7ae468273837425aa869486557b06bac~mv2.jpg/v1/fill/w_837,h_1000,al_c,q_85,usm_0.66_1.00_0.01/d3b5ba_7ae468273837425aa869486557b06bac~mv2.jpg",
-				},
-				Ingredients: models.Ingredients{
-					Values: []string{
-						"1 bag fresh or frozen cauliflower rice (if using fresh cauliflower rice, add olive oil, avocado oil " +
-							"or coconut oil to pan)",
-						"1-2 Tbsp olive oil",
-						"1/4 teaspoon turmeric",
-						"1/4 teaspoon cayenne pepper (optional)",
-						"1/2 teaspoon garlic powder",
-						"3/4 cup salsa",
-						"vegan chive or scallion cream cheese",
-						"fresh cilantro, chopped",
-						"sea salt and pepper to taste",
-					},
-				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Heat a pan on medium heat with oil.",
-						"Add the cauliflower and allow it to cook for about 5 minutes (should be nearly fully cooked).",
-						"Turn heat down to low and add turmeric, cayenne, garlic powder, salsa, salt and pepper and continue to" +
-							" cook until done (about 2-3 more minutes).",
-						"Stir in vegan cream cheese and cilantro. Serve immediately and enjoy!",
-					},
-				},
-				URL: "https://www.nutritionbynathalie.com/single-post/2020/07/30/Mexican-Cauliflower-Rice",
 			},
 		},
 		{

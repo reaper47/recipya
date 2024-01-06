@@ -5,7 +5,7 @@ go 1.21.0
 toolchain go1.21.4
 
 require (
-	github.com/Boostport/mjml-go v0.14.4
+	github.com/Boostport/mjml-go v0.14.5
 	github.com/PuerkitoBio/goquery v1.8.1
 	github.com/briandowns/spinner v1.23.0
 	github.com/disintegration/imaging v1.6.2
@@ -22,7 +22,7 @@ require (
 	github.com/neurosnap/sentences v1.1.2
 	github.com/pressly/goose/v3 v3.17.0
 	github.com/sendgrid/sendgrid-go v3.14.0+incompatible
-	github.com/urfave/cli/v2 v2.26.0
+	github.com/urfave/cli/v2 v2.27.1
 	golang.org/x/crypto v0.17.0
 	golang.org/x/net v0.19.0
 	jaytaylor.com/html2text v0.0.0-20230321000545-74c2419ad056
@@ -67,11 +67,11 @@ require (
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect
-	golang.org/x/image v0.14.0 // indirect
+	golang.org/x/image v0.15.0 // indirect
 	golang.org/x/mod v0.14.0 // indirect
-	golang.org/x/sync v0.5.0 // indirect
-	golang.org/x/sys v0.15.0 // indirect
-	golang.org/x/term v0.15.0 // indirect
+	golang.org/x/sync v0.6.0 // indirect
+	golang.org/x/sys v0.16.0 // indirect
+	golang.org/x/term v0.16.0 // indirect
 	golang.org/x/tools v0.16.1 // indirect
 	gonum.org/v1/gonum v0.14.0 // indirect
 	gopkg.in/neurosnap/sentences.v1 v1.0.7 // indirect
@@ -79,7 +79,7 @@ require (
 	lukechampine.com/uint128 v1.3.0 // indirect
 	modernc.org/cc/v3 v3.41.0 // indirect
 	modernc.org/ccgo/v3 v3.16.15 // indirect
-	modernc.org/libc v1.38.0 // indirect
+	modernc.org/libc v1.38.1 // indirect
 	modernc.org/mathutil v1.6.0 // indirect
 	modernc.org/memory v1.7.2 // indirect
 	modernc.org/opt v0.1.3 // indirect
