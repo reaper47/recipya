@@ -415,6 +415,13 @@ func addRecipeToPDF(pdf *gofpdf.Fpdf, r *models.Recipe) *gofpdf.Fpdf {
 
 // ExtractRecipes extracts the recipes from the HTTP files.
 func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recipes {
+	defer func() {
+		err := recover()
+		if err != nil {
+			log.Printf("ExtractRecipes recovered from panic for %#v file headers: %q", fileHeaders, err)
+		}
+	}()
+
 	var (
 		recipes models.Recipes
 		wg      sync.WaitGroup
