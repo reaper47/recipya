@@ -14,7 +14,7 @@ func scrapeProjectgezond(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 	description, _ := root.Find("meta[property='og:description']").Attr("content")
 	category, _ := root.Find("meta[property='article:section']").Attr("content")
-	image, _ := root.Find("meta[property='og:updated_time']").Attr("content")
+	image, _ := root.Find(".wp-post-image").First().Attr("src")
 
 	datePublished, _ := root.Find("meta[property='og:published_time']").Attr("content")
 	dateModified, _ := root.Find("meta[property='article:modified_time']").Attr("content")

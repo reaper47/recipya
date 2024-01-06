@@ -565,7 +565,21 @@ func parseSections(part any, instructions *Instructions) {
 	for _, item := range sect.Items {
 		text, ok := item["text"]
 		if ok {
-			str := strings.TrimSuffix(text.(string), "\n")
+			var str string
+			switch x := text.(type) {
+			case string:
+				str = x
+			case []any:
+				xs := make([]string, 0, len(x))
+				for _, v := range x {
+					xs = append(xs, v.(string))
+				}
+				str = strings.Join(xs, ", ")
+			default:
+				continue
+			}
+
+			str = strings.TrimSuffix(str, "\n")
 			str = strings.ReplaceAll(str, "\u00a0", "")
 			str = strings.ReplaceAll(str, "\u2009", "")
 			instructions.Values = append(instructions.Values, strings.TrimSpace(str))

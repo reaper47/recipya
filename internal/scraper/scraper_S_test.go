@@ -719,7 +719,7 @@ func TestScraper_S(t *testing.T) {
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
 				CookTime:      "PT40M",
-				DateModified:  "2023-11-23",
+				DateModified:  "2023-11-24",
 				DatePublished: "2023-11-23",
 				Description: models.Description{
 					Value: "Készíts végtelenül krémes desszertet, amelyet akár több nappal a vendégvárás előtt is összedobhatsz: hamis sajtkrém és mennyei karamellszósz alkotja!",

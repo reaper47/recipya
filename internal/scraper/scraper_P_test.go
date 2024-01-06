@@ -709,11 +709,11 @@ func TestScraper_P(t *testing.T) {
 				AtContext:    "https://schema.org",
 				AtType:       models.SchemaType{Value: "Recipe"},
 				Category:     models.Category{Value: "Diner"},
-				DateModified: "2023-11-20T12:45:04+00:00",
+				DateModified: "2023-12-04T13:31:53+00:00",
 				Description: models.Description{
 					Value: "Ben je gek op kip pesto en valt een rollade ook altijd goed in de smaak? Maar vind je het op z’n tijd ook leuk en lekker om eens iets anders te proberen? Dan is dit recept echt iets voor jou! Een heerlijke zelfgemaakte kiprollade op Italiaanse wijze. De pesto vervang je door gremolata. Een …",
 				},
-				Image: models.Image{Value: "2023-11-20T12:45:04+00:00"},
+				Image: models.Image{Value: "https://www.projectgezond.nl/wp-content/uploads/2023/09/Italiaanse-Kiprollade-Gremolata1600-810x1080.jpg"},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"400 gr kipfilet", "40 gr prosciutto", "40 gr zuivelspread",
@@ -723,7 +723,6 @@ func TestScraper_P(t *testing.T) {
 				},
 				Instructions: models.Instructions{
 					Values: []string{
-						"Verwarm de oven voor op 150 graden.",
 						"Snijd de kipfilets doormidden en leg de kipfilets op een stuk huishoudfolie.",
 						"Hoe platter de kipfilets zijn hoe beter. Daarom gaan we ze platslaan. Bedek de kipfilets met nog een stuk huishoudfolie en sla ze voorzichtig plat met bijvoorbeeld een koekenpan.",
 						"Verwijder de bovenste laag huishoudfolie en leg de kipfilets tegen elkaar aan.",
@@ -732,6 +731,7 @@ func TestScraper_P(t *testing.T) {
 						"Maak de gremolata door de peterselie, knoflook, sap van de citroen en de olijfolie met elkaar te blenden in een keukenmachine of hakmolen.",
 						"Verdeel de gremolata nu ook over de kipfilet.",
 						"Rol de kipfilet met de prosciutto aan de buitenkant nu zo strak mogelijk in de folie en leg voor 1 uur in de koelkast.",
+						"Verwarm de oven voor op 150 graden.",
 						"Verwijder het folie van de kiprollade en bindt hem eventueel op met rolladetouw om te voorkomen dat hij uit elkaar valt.",
 						"Leg de kiprollade in een ovenschaal en bak in ongeveer 45 à 60 minuten gaar.",
 						"Snijd de kiprollade in mooie plakken en serveer ze direct.",
