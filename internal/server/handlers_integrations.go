@@ -1,8 +1,8 @@
 package server
 
 import (
+	"errors"
 	"fmt"
-	"github.com/pkg/errors"
 	"github.com/reaper47/recipya/internal/models"
 	"net/http"
 )

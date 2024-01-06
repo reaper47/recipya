@@ -20,7 +20,6 @@ require (
 	github.com/jdkato/prose/v2 v2.0.0
 	github.com/jung-kurt/gofpdf v1.16.2
 	github.com/neurosnap/sentences v1.1.2
-	github.com/pkg/errors v0.9.1
 	github.com/pressly/goose/v3 v3.17.0
 	github.com/sendgrid/sendgrid-go v3.14.0+incompatible
 	github.com/urfave/cli/v2 v2.27.1
