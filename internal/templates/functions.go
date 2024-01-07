@@ -5,6 +5,7 @@ import (
 	"github.com/google/uuid"
 	"log"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -29,7 +30,9 @@ func formatDuration(d time.Duration, isDatetime bool) string {
 func isURL(s string) bool {
 	_, err := url.ParseRequestURI(s)
 	if err != nil {
-		log.Printf("isURL.ParseRequestURI error: %q", err)
+		if strings.HasPrefix(s, "http") {
+			log.Printf("isURL.ParseRequestURI error: %q", err)
+		}
 		return false
 	}
 
