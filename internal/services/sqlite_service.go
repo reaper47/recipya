@@ -231,7 +231,7 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64, settings model
 
 	// Insert nutrition
 	n := r.Nutrition
-	_, err = tx.ExecContext(ctx, statements.InsertNutrition, recipeID, n.Calories, n.TotalCarbohydrates, n.Sugars, n.Protein, n.TotalFat, n.SaturatedFat, n.UnsaturatedFat, n.Cholesterol, n.Sodium, n.Fiber)
+	_, err = tx.ExecContext(ctx, statements.InsertNutrition, recipeID, n.Calories, n.TotalCarbohydrates, n.Sugars, n.Protein, n.TotalFat, n.SaturatedFat, n.UnsaturatedFat, n.Cholesterol, n.Sodium, n.Fiber, n.IsPerServing)
 	if err != nil {
 		return 0, err
 	}
@@ -388,7 +388,7 @@ func (s *SQLiteService) CalculateNutrition(userID int64, recipes []int64, settin
 			n := recipe.Nutrition
 
 			s.Mutex.Lock()
-			_, err = s.DB.ExecContext(ctx, statements.UpdateNutrition, n.Calories, n.TotalCarbohydrates, n.Sugars, n.Protein, n.TotalFat, n.SaturatedFat, n.UnsaturatedFat, n.Cholesterol, n.Sodium, n.Fiber, id)
+			_, err = s.DB.ExecContext(ctx, statements.UpdateNutrition, n.Calories, n.TotalCarbohydrates, n.Sugars, n.Protein, n.TotalFat, n.SaturatedFat, n.UnsaturatedFat, n.Cholesterol, n.Sodium, n.Fiber, n.IsPerServing, id)
 			if err != nil {
 				log.Printf("CalculateNutrition.UpdateNutrition: %q", err)
 			}
@@ -985,6 +985,7 @@ func scanRecipe(sc scanner) (*models.Recipe, error) {
 		r            models.Recipe
 		ingredients  string
 		instructions string
+		isPerServing int64
 		keywords     string
 		tools        string
 	)
@@ -993,7 +994,7 @@ func scanRecipe(sc scanner) (*models.Recipe, error) {
 		&r.ID, &r.Name, &r.Description, &r.Image, &r.URL, &r.Yield, &r.CreatedAt, &r.UpdatedAt, &r.Category, &r.Cuisine,
 		&ingredients, &instructions, &keywords, &tools, &r.Nutrition.Calories, &r.Nutrition.TotalCarbohydrates,
 		&r.Nutrition.Sugars, &r.Nutrition.Protein, &r.Nutrition.TotalFat, &r.Nutrition.SaturatedFat, &r.Nutrition.UnsaturatedFat,
-		&r.Nutrition.Cholesterol, &r.Nutrition.Sodium, &r.Nutrition.Fiber, &r.Times.Prep, &r.Times.Cook, &r.Times.Total,
+		&r.Nutrition.Cholesterol, &r.Nutrition.Sodium, &r.Nutrition.Fiber, &isPerServing, &r.Times.Prep, &r.Times.Cook, &r.Times.Total,
 	)
 	if err != nil {
 		return nil, err
@@ -1002,6 +1003,7 @@ func scanRecipe(sc scanner) (*models.Recipe, error) {
 	r.Ingredients = strings.Split(ingredients, "<!---->")
 	r.Instructions = strings.Split(instructions, "<!---->")
 	r.Keywords = strings.Split(keywords, ",")
+	r.Nutrition.IsPerServing = isPerServing == 1
 	r.Tools = strings.Split(tools, ",")
 
 	r.Times.Prep *= time.Second

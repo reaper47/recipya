@@ -617,7 +617,7 @@
                         <thead class="h-12 font-medium tracking-wider text-white bg-gray-800">
                         <tr>
                             <th scope="col" class="text-right md:text-center">
-                                <p>Nutrition<br>(per 100g)</p>
+                                <p>Nutrition<br>(per {{if .View.Recipe.Nutrition.IsPerServing}}serving{{else}}100g{{end}})</p>
                             </th>
                             <th scope="col" class="text-center">
                                 <p>Amount<br>(optional)</p>
@@ -1286,7 +1286,7 @@
                             <thead class="h-12 font-medium tracking-wider text-white bg-gray-800">
                             <tr>
                                 <th scope="col" class="text-right">
-                                    <p class="text-center">Nutrition<br>(per 100g)</p>
+                                    <p class="text-center">Nutrition<br>(per {{if .IsPerServing}}serving{{else}}100g{{end}})</p>
                                 </th>
                                 <th scope="col" class="text-center">
                                     <p>Amount</p>

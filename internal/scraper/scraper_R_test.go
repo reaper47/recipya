@@ -191,7 +191,8 @@ func TestScraper_R(t *testing.T) {
 					Sugar:          "5 g",
 					UnsaturatedFat: "0 g",
 				},
-				URL: "https://www.realsimple.com/food-recipes/browse-all-recipes/sheet-pan-chicken-and-sweet-potatoes",
+				URL:   "https://www.realsimple.com/food-recipes/browse-all-recipes/sheet-pan-chicken-and-sweet-potatoes",
+				Yield: models.Yield{Value: 1},
 			},
 		},
 		{
@@ -693,6 +694,7 @@ func TestScraper_R(t *testing.T) {
 				Name:     "Oreo topping van roomkaas",
 				PrepTime: "PT12M",
 				URL:      "https://rutgerbakt.nl/basisrecepten/oreo-topping-van-roomkaas/",
+				Yield:    models.Yield{Value: 1},
 			},
 		},
 	}

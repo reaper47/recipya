@@ -22,6 +22,1206 @@
 
 
 <title>Eierlikör – Pralinen &#8211; Kochbucher</title>
+    <style>
+        .pro-wccp:before {
+            content: "\f160";
+            top: 3px;
+        }
+        .pro-wccp:before{
+            color:#02CA03 !important
+        }
+        .pro-wccp {
+            transform: rotate(45deg);
+        }
+    </style>
+    	<script id="wccp_pro_clear_body_at_all_for_extentions">
+	function clear_body_at_all_for_extentions()
+	{
+		wccp_pro_log_to_console_if_allowed("function", "clear_body_at_all_for_extentions");
+		
+		clearInterval(remove_ext_code);
+		clearInterval(disable_ext_code);
+		jQuery("body").empty();
+		div_style = 'style="margin: auto;width: 60%;border: 5px solid #ff0060a3;padding: 10px;"';
+		jQuery("body").append('<p>&nbsp;</p><p>&nbsp;</p><div ' + div_style + '><p style="text-align: center;"><b>Warning:</b> Unwanted <u>Copy/Paste</u> extension detected!</p><p style="text-align: center;">Please deactivate it and refresh</p></div>');
+	}
+
+	window.addEventListener('load', function (){
+		if(window.Zepto || !window.jQuery) jQuery =  $;
+		jQuery(document).ready(disable_ext_code);
+	});
+	function disable_ext_code(){
+		wccp_pro_log_to_console_if_allowed("function", "disable_ext_code");
+		/*PART-1: check for any extension fingrprint inside HTML */
+		var str = "";
+		var div_style = "";
+		setTimeout(() => {
+			  jQuery("script,style").each(function()
+				{
+					str = jQuery(this).attr("src") + " " + jQuery(this).attr("id");
+					if (str != "" && typeof str != 'undefined'){
+						if(str.includes("onepmapfbjohnegdmfhndpefjkppbjkm") || str.includes("allow-copy_style")) 
+						{
+							clear_body_at_all_for_extentions();
+						}
+					}
+				});
+			}, 2000);
+		
+		/*PART-2: check if the menu was canceled by any extension */
+		let timer2;
+		
+		window.addEventListener('contextmenu',
+		  e => { if (e.isTrusted) timer2 = setTimeout(detectCanceledMenu, 0, e.target); },
+		  true);
+
+		window.addEventListener('contextmenu', () => clearTimeout(timer2));
+
+		function detectCanceledMenu(el) {
+		  //console.log('the menu was canceled');
+		  clear_body_at_all_for_extentions();
+		}
+	}
+	setInterval(disable_ext_code,4000);
+
+	function remove_ext_code()
+	{
+		wccp_pro_log_to_console_if_allowed("function", "remove_ext_code " + jQuery("p").css("user-select").toString().toLowerCase());
+		
+		const TextSelectionType = jQuery("p").css("user-select").toString().toLowerCase();
+		
+		if(TextSelectionType == "text" || TextSelectionType == "auto") clear_body_at_all_for_extentions(); /* if selection still! kill the page content at all */
+	}
+	setInterval(remove_ext_code,1000);
+
+	const ultraPropagation = function(event) {
+		
+		if (ultraMode.toggle) event.stopPropagation();
+	};
+	</script>
+	<script id="wccp_pro_disable_selection">
+
+var image_save_msg = 'You are not allowed to save images!';
+
+var no_menu_msg = 'Context menu disabled!';
+
+var smessage = "";
+
+
+"use strict";
+/* This because search property "includes" does not supported by IE*/
+if (!String.prototype.includes) {
+String.prototype.includes = function(search, start) {
+  if (typeof start !== 'number') {
+	start = 0;
+  }
+
+  if (start + search.length > this.length) {
+	return false;
+  } else {
+	return this.indexOf(search, start) !== -1;
+  }
+};
+}
+/*////////////////////////////////////*/
+let canCall = true;
+
+function call_disable_copy_WithDelay(e) {
+  if (canCall) {
+    canCall = false;
+    disable_copy(e);
+    setTimeout(() => {
+      canCall = true;
+    }, 1000);
+  }
+}
+
+function disable_copy(e)
+{
+	window.wccp_pro_iscontenteditable_flag = false;
+	
+	wccp_pro_log_to_console_if_allowed("function", "disable_copy");
+	
+	var e = e || window.event; // also there is no e.target property in IE. instead IE uses window.event.srcElement
+  	
+	var target = e.target || e.srcElement;
+
+	var elemtype = e.target.nodeName;
+	
+	elemtype = elemtype.toUpperCase();
+	
+	if (apply_class_exclusion(e) == "Yes") return true;
+
+	if(wccp_pro_iscontenteditable(e) == true) {return true;}
+	
+	if(is_content_editable_element(current_clicked_element) == true)
+	{
+		return true;
+	}
+	else
+	{
+		if (smessage !== "" && e.detail == 2)
+			show_wccp_pro_message(smessage);
+		
+		if (isSafari)
+		{
+			return true;
+		}
+		else
+		{
+			//wccp_pro_clear_any_selection();
+			
+			return false;
+		}
+	}
+	
+	/*disable context menu when shift + right click is pressed*/
+	var shiftPressed = 0;
+	
+	var evt = e?e:window.event;
+	
+	if (parseInt(navigator.appVersion)>3) {
+		
+		if (document.layers && navigator.appName=="Netscape")
+			
+			shiftPressed = (e.modifiers-0>3);
+			
+		else
+			
+			shiftPressed = e.shiftKey;
+			
+		if (shiftPressed) {
+			
+			if (smessage !== "") show_wccp_pro_message(smessage);
+			
+			var isFirefox = typeof InstallTrigger !== 'undefined';   /* Firefox 1.0+ */
+			
+			if (isFirefox) {
+			evt.cancelBubble = true;
+			if (evt.stopPropagation) evt.stopPropagation();
+			if (evt.preventDefault()) evt.preventDefault();
+			show_wccp_pro_message (smessage);
+			wccp_pro_clear_any_selection();
+			return false;
+			}
+			
+			wccp_pro_clear_any_selection();
+			return false;
+		}
+	}
+	
+	if(e.which === 2 ){
+	var clickedTag_a = (e==null) ? event.srcElement.tagName : e.target.tagName;
+	   show_wccp_pro_message(smessage);
+       wccp_pro_clear_any_selection(); return false;
+    }
+	var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
+	var checker_IMG = 'checked';
+	if (elemtype == "IMG" && checker_IMG == 'checked' && e.detail == 2) {show_wccp_pro_message(alertMsg_IMG);wccp_pro_clear_any_selection();return false;}
+
+    //elemtype must be merged by elemtype checker on function disable_copy & disable_hot_keys
+	if (is_content_editable_element(elemtype) == false)
+	{
+		if (smessage !== "" && e.detail == 2)
+			show_wccp_pro_message(smessage);
+		
+		if (isSafari)
+		{
+			return true;
+		}
+		else
+		{
+			wccp_pro_clear_any_selection(); return false;
+		}
+	}
+	else
+	{
+		return true;
+	}
+}
+////////////////////////////
+function disable_copy_ie()
+{
+	wccp_pro_log_to_console_if_allowed("function", "disable_copy_ie_function_started");
+	
+	var e = e || window.event;
+	/*also there is no e.target property in IE.*/
+	/*instead IE uses window.event.srcElement*/
+  	var target = e.target || e.srcElement;
+	
+	var elemtype = window.event.srcElement.nodeName;
+	
+	elemtype = elemtype.toUpperCase();
+
+	if(wccp_pro_iscontenteditable(e) == true) return true;
+	
+	if (apply_class_exclusion(e) == "Yes") return true;
+	
+	if (elemtype == "IMG") {show_wccp_pro_message(alertMsg_IMG);return false;}
+	
+	//elemtype must be merged by elemtype checker on function disable_copy & disable_hot_keys
+	if (is_content_editable_element(elemtype) == false)
+	{
+		return false;
+	}
+}
+function disable_drag_text(e)
+{
+	wccp_pro_log_to_console_if_allowed("function", "disable_drag_text");
+	
+	/*var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);*/
+	/*if (isSafari) {show_wccp_pro_message(alertMsg_IMG);return false;}*/
+	
+	var e = e || window.event; // also there is no e.target property in IE. instead IE uses window.event.srcElement*/
+  	
+	var target = e.target || e.srcElement;
+	
+	/*For contenteditable tags*/
+	
+	if (apply_class_exclusion(e) == "Yes") return true;
+
+	var elemtype = e.target.nodeName;
+	
+	elemtype = elemtype.toUpperCase();
+	
+	var disable_drag_text_drop = 'checked';
+	
+	if (disable_drag_text_drop != "checked")  return true;
+	
+	if (window.location.href.indexOf("/user/") > -1) {
+      return true; /*To allow users to drag & drop images when editing thier profiles*/
+    }
+	
+	return false;
+}
+
+/*/////////////////special for safari Start////////////////*/
+var onlongtouch;
+
+var timer;
+
+var touchduration = 1000; /*length of time we want the user to touch before we do something*/
+
+var elemtype = "";
+
+function touchstart(e)
+{
+	wccp_pro_log_to_console_if_allowed("function", "touchstart");
+	
+	var e = e || window.event;
+	/*also there is no e.target property in IE.*/
+	/*instead IE uses window.event.srcElement*/
+  	var target = e.target || e.srcElement;
+	
+	elemtype = window.event.srcElement.nodeName;
+	
+	elemtype = elemtype.toUpperCase();
+	
+	if(!wccp_pro_is_passive()) e.preventDefault();
+	if (!timer) {
+		timer = setTimeout(onlongtouch, touchduration);
+	}
+}
+
+function touchend()
+{
+	wccp_pro_log_to_console_if_allowed("function", "touchend");
+	
+    /*stops short touches from firing the event*/
+    if (timer) {
+        clearTimeout(timer);
+        timer = null;
+    }
+	onlongtouch();
+}
+
+onlongtouch = function(e)/*this will clear the current selection if any_not_editable_thing selected*/
+{
+	wccp_pro_log_to_console_if_allowed("function", "onlongtouch");
+	
+	if (is_content_editable_element(elemtype) == false)
+	{
+		if (window.getSelection) {
+			if (window.getSelection().empty) { /*Chrome*/
+			window.getSelection().empty();
+			} else if (window.getSelection().removeAllRanges) {  /*Firefox*/
+			window.getSelection().removeAllRanges();
+			}
+		} else if (document.selection) {  /*IE?*/
+			var textRange = document.body.createTextRange();
+			textRange.moveToElementText(element);
+			textRange.select();
+
+			document.selection.empty();
+		}
+		return false;
+	}
+};
+
+document.addEventListener("DOMContentLoaded", function(event)
+	{ 
+		window.addEventListener("touchstart", touchstart, false);
+		window.addEventListener("touchend", touchend, false);
+	});
+
+
+function wccp_pro_is_passive()
+{
+	wccp_pro_log_to_console_if_allowed("function", "wccp_pro_is_passive");
+	
+	var cold = false,
+	hike = function() {};
+
+	try {
+	var aid = Object.defineProperty({}, 'passive', {
+	get() {cold = true}
+	});
+	window.addEventListener('test', hike, aid);
+	window.removeEventListener('test', hike, aid);
+	} catch (e) {}
+
+	return cold;
+}
+/*/////////////////////////////////////////////////////////////////*/
+function reEnable()
+{
+	return true;
+}
+
+if(navigator.userAgent.indexOf('MSIE')==-1) //If not IE
+{
+	document.ondragstart = disable_drag_text;
+	document.onselectstart = call_disable_copy_WithDelay;
+	document.onselectionchange = call_disable_copy_WithDelay;
+	//document.onmousedown = disable_copy;
+	//document.addEventListener('click', disable_copy, false);
+	//document.addEventListener('click', set_current_clicked_element, false);
+	document.addEventListener('mousedown', set_current_clicked_element, false);
+	//document.onclick = reEnable;
+}else
+{
+	document.onselectstart = disable_copy_ie;
+}
+
+var current_clicked_element = "";
+
+var current_clicked_object = null;
+
+function set_current_clicked_element(e)
+{
+	var e = e || window.event; // also there is no e.target property in IE. instead IE uses window.event.srcElement
+  	
+	var target = e.target || e.srcElement;
+
+	var elemtype = e.target.nodeName;
+	
+	elemtype = elemtype.toUpperCase();
+	
+	current_clicked_element = elemtype;
+	
+	console.log("current_clicked_element = " + current_clicked_element);
+}
+</script>
+<script id="wccp_pro_disable_hot_keys">
+/*****************For contenteditable tags***************/
+var wccp_pro_iscontenteditable_flag = false;
+
+function wccp_pro_iscontenteditable(e)
+{
+	var e = e || window.event; // also there is no e.target property in IE. instead IE uses window.event.srcElement
+  	
+	var target = e.target || e.srcElement;
+	
+	var iscontenteditable = "false";
+		
+	if(typeof target.getAttribute!="undefined" )
+	{
+		iscontenteditable = target.getAttribute("contenteditable"); // Return true or false as string
+		
+		if(typeof target.hasAttribute!="undefined")
+		{
+			if(target.hasAttribute("contenteditable"))
+				iscontenteditable = true;
+		}
+	}
+	
+	console.log("iscontenteditable:" + iscontenteditable);
+	
+	var iscontenteditable2 = false;
+	
+	if(typeof target.isContentEditable!="undefined" ) iscontenteditable2 = target.isContentEditable; // Return true or false as boolean
+
+	if(target.parentElement !=null) iscontenteditable2 = target.parentElement.isContentEditable;
+	
+	if (iscontenteditable == "true" || iscontenteditable == true || iscontenteditable2 == true)
+	{
+		if(typeof target.style!="undefined" ) target.style.cursor = "text";
+		
+		//wccp_pro_log_to_console_if_allowed("", iscontenteditable + " " + iscontenteditable2);
+		
+		wccp_pro_iscontenteditable_flag = true;
+		
+		wccp_pro_log_to_console_if_allowed("function", "wccp_pro_iscontenteditable: true");
+		
+		return true;
+	}
+	wccp_pro_log_to_console_if_allowed("function", "wccp_pro_iscontenteditable: false");
+	
+	//wccp_pro_iscontenteditable_flag = false;
+}
+/******************************************************/
+function wccp_pro_clear_any_selection()
+{
+	if(window.wccp_pro_iscontenteditable_flag == true) return;
+	
+	wccp_pro_log_to_console_if_allowed("function", "wccp_pro_clear_any_selection");
+	
+	var myName = wccp_pro_clear_any_selection.caller.toString();
+	
+	myName = myName.substr('function '.length);
+	
+	myName = myName.substr(0, myName.indexOf('('));
+
+	console.log("called_by: " + myName);
+	
+	if (window.getSelection)
+	{
+		if (window.getSelection().empty)
+		{  // Chrome
+			window.getSelection().empty();
+		} else if (window.getSelection().removeAllRanges) 
+		{  // Firefox
+			window.getSelection().removeAllRanges();
+		}
+	} else if (document.selection)
+	{  // IE?
+		document.selection.empty();
+	}
+	
+	//show_wccp_pro_message("You are not allowed to make this operation");
+}
+
+
+/*Is content_editable element*/
+function is_content_editable_element(element_name = "")
+{
+	if (element_name == "TEXT" || element_name == "#TEXT" || element_name == "TEXTAREA" || element_name == "INPUT" || element_name == "PASSWORD" || element_name == "SELECT" || element_name == "OPTION" || element_name == "EMBED" || element_name == "CODE" || element_name == "CODEBLOCK")
+	{
+		wccp_pro_log_to_console_if_allowed("function", "is_content_editable_element: true >>" + element_name);
+		
+		return true;
+	}
+	wccp_pro_log_to_console_if_allowed("function", "is_content_editable_element: false >>" + element_name);
+	
+	return false;
+}
+/*Is selection enabled element*/
+/*
+function is_selection_enabled_element(element_name = "")
+{
+	if (is_content_editable_element == true)
+	{
+		wccp_pro_log_to_console_if_allowed("function", "is_selection_enabled_element: true >>" + element_name);
+		
+		return true;
+	}
+	wccp_pro_log_to_console_if_allowed("function", "is_selection_enabled_element: false >>" + element_name);
+	
+	return false;
+}
+*/
+/*Hot keys function  */
+function disable_hot_keys(e)
+{
+	wccp_pro_log_to_console_if_allowed("function", "disable_hot_keys");
+	
+	e = e || window.event;
+	
+	//console.log(e);
+	
+	if (!e) return;
+	
+	var key;
+
+		if(window.event)
+			  key = window.event.keyCode;     /*IE*/
+		else if (e.hasOwnProperty("which")) key = e.which;     /*firefox (97)*/
+
+	wccp_pro_log_to_console_if_allowed("Data:", key);
+	
+			
+		if (key == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) )//F12 chrome developer key disable
+		{
+			show_wccp_pro_message('');
+			
+			return false;
+		}
+		
+	var elemtype = e.target.tagName;
+	
+	elemtype = elemtype.toUpperCase();
+	
+	var sel = getSelectionTextAndContainerElement();
+	
+	if(elemtype == "BODY" && sel.text != "") elemtype = sel.containerElement.tagName; /* no need for it when tag name is BODY, so we get the selected text tag name */
+
+	/*elemtype must be merged by elemtype checker on function disable_copy & disable_copy_ie*/
+	if (is_content_editable_element(elemtype) == true)
+	{
+		elemtype = 'TEXT';
+	}
+	
+	if(wccp_pro_iscontenteditable(e) == true) elemtype = 'TEXT';
+	
+		if (key == 44)/*For any emement type, text elemtype is not excluded here, (prntscr (44)*/
+		{
+			copyTextToClipboard("");
+			show_wccp_pro_message('');
+			return false;
+		}	
+	if (e.ctrlKey || e.metaKey)
+	{
+		if (elemtype!= 'TEXT' && (key == 97 || key == 99 || key == 120 || key == 26 || key == 43))
+		{
+			 show_wccp_pro_message('');
+			 return false;
+		}
+		if (elemtype!= 'TEXT')
+		{
+						
+			if (key == 65)
+			{
+				show_wccp_pro_message('');
+				return false;
+			}			
+						
+			if (key == 67)
+			{
+				show_wccp_pro_message('');
+				return false;
+			}			
+						
+			if (key == 88)
+			{
+				show_wccp_pro_message('');
+				return false;
+			}			
+						
+			if (key == 86)
+			{
+				show_wccp_pro_message('');
+				return false;
+			}		}
+				
+		if (key == 85)
+		{
+			show_wccp_pro_message('');
+			return false;
+		}		
+				if (key == 80)
+		{
+			show_wccp_pro_message('');
+			return false;
+		}		
+				if (key == 44)
+		{
+			copyTextToClipboard("no");
+			show_wccp_pro_message('');
+			return false;
+		}		
+		
+					if (key == 73)//F12 chrome developer key disable
+			{
+				show_wccp_pro_message('');
+				return false;
+			}
+				
+				
+		if (key == 83)
+		{
+			show_wccp_pro_message('');
+			return false;
+		}    }
+return true;
+}
+
+
+window.addEventListener('load', function (){
+	if(window.Zepto || !window.jQuery) jQuery =  $;
+	jQuery(document).ready(function() {
+	  jQuery(document).bind("keyup keydown", disable_hot_keys);
+	});
+});
+
+</script>
+<style>
+.wccp_pro_copy_code_button
+{
+	line-height: 6px;
+	width: auto;
+	font-size: 8pt;
+	font-family: tahoma;
+	margin-top: 1px;
+	margin-right: 2px;
+	position:absolute;
+	top:0;
+	right:0;
+	border-radius: 4px;
+	opacity: 100%;
+	margin-top: -30px;
+}
+.wccp_pro_copy_code_button:hover
+{
+	opacity: 100%;
+}
+
+.wccp_pro_copy_code_button[disabled]
+{
+	opacity: 40%;
+	border-color: red;
+}
+code,pre
+{
+	overflow: visible;
+	white-space: pre-line;
+}
+</style>
+<script id="wccp_pro_disable_Right_Click">
+		function nocontext(e) {
+
+			wccp_pro_log_to_console_if_allowed("function", "nocontext");
+			
+			e = e || window.event; // also there is no e.target property in IE. instead IE uses window.event.srcElement
+			
+			if (apply_class_exclusion(e) == 'Yes') return true;
+			
+	    	var exception_tags = 'NOTAG,';
+			
+	        var clickedTag = (e==null) ? event.srcElement.tagName : e.target.tagName;
+			
+			console.log("clickedTag: " + clickedTag);
+			
+			var target = e.target || e.srcElement;
+			
+			var parent_tag = ""; var parent_of_parent_tag = "";
+			
+			if(target.parentElement != null)
+			{
+				parent_tag = target.parentElement.tagName;
+				
+				if(target.parentElement.parentElement != null) parent_of_parent_tag = target.parentElement.parentElement.tagName;
+			}
+			
+	        var checker = 'checked';
+	        if ((clickedTag == "IMG" || clickedTag == "FIGURE" || clickedTag == "SVG" || clickedTag == "PROTECTEDIMGDIV") && checker == 'checked') {
+	            if (alertMsg_IMG != "")show_wccp_pro_message(alertMsg_IMG);
+	            return false;
+	        }else {exception_tags = exception_tags + 'IMG,';}
+			
+			checker = '';
+			if ((clickedTag == "VIDEO" || clickedTag == "PROTECTEDWCCPVIDEO" || clickedTag == "EMBED") && checker == 'checked') {
+	            if (alertMsg_VIDEO != "")show_wccp_pro_message(alertMsg_VIDEO);
+	            return false;
+	        }else {exception_tags = exception_tags + 'VIDEO,PROTECTEDWCCPVIDEO,EMBED,';}
+	        
+	        checker = 'checked';
+	        if ((clickedTag == "A" || clickedTag == "TIME" || parent_tag == "A" || parent_of_parent_tag == "A") && checker == 'checked') {
+	            if (alertMsg_A != "")show_wccp_pro_message(alertMsg_A);
+	            return false;
+	        }else {exception_tags = exception_tags + 'A,';if(parent_tag == "A" || parent_of_parent_tag == "A") clickedTag = "A";}
+
+	        checker = 'checked';
+	        if ((clickedTag == "P" || clickedTag == "B" || clickedTag == "FONT" ||  clickedTag == "LI" || clickedTag == "UL" || clickedTag == "STRONG" || clickedTag == "OL" || clickedTag == "BLOCKQUOTE" || clickedTag == "TH" || clickedTag == "TR" || clickedTag == "TD" || clickedTag == "SPAN" || clickedTag == "EM" || clickedTag == "SMALL" || clickedTag == "I" || clickedTag == "BUTTON") && checker == 'checked') {
+	            if (alertMsg_PB != "")show_wccp_pro_message(alertMsg_PB);
+	            return false;
+	        }else {exception_tags = exception_tags + 'P,B,FONT,LI,UL,STRONG,OL,BLOCKQUOTE,TD,SPAN,EM,SMALL,I,BUTTON,';}
+	        
+	        checker = 'checked';
+	        if ((clickedTag == "INPUT" || clickedTag == "PASSWORD") && checker == 'checked') {
+	            if (alertMsg_INPUT != "")show_wccp_pro_message(alertMsg_INPUT);
+	            return false;
+	        }else {exception_tags = exception_tags + 'INPUT,PASSWORD,';}
+	        
+	        checker = 'checked';
+	        if ((clickedTag == "H1" || clickedTag == "H2" || clickedTag == "H3" || clickedTag == "H4" || clickedTag == "H5" || clickedTag == "H6" || clickedTag == "ASIDE" || clickedTag == "NAV") && checker == 'checked') {
+	            if (alertMsg_H != "")show_wccp_pro_message(alertMsg_H);
+	            return false;
+	        }else {exception_tags = exception_tags + 'H1,H2,H3,H4,H5,H6,';}
+	        
+	        checker = 'checked';
+	        if (clickedTag == "TEXTAREA" && checker == 'checked') {
+	            if (alertMsg_TEXTAREA != "")show_wccp_pro_message(alertMsg_TEXTAREA);
+	            return false;
+	        }else {exception_tags = exception_tags + 'TEXTAREA,';}
+	        
+	        checker = 'checked';
+	        if ((clickedTag == "DIV" || clickedTag == "BODY" || clickedTag == "HTML" || clickedTag == "ARTICLE" || clickedTag == "SECTION" || clickedTag == "NAV" || clickedTag == "HEADER" || clickedTag == "FOOTER") && checker == 'checked') {
+	            if (alertMsg_EmptySpaces != "")show_wccp_pro_message(alertMsg_EmptySpaces);
+	            return false;
+	        }
+	        else
+	        {
+	        	if (exception_tags.indexOf(clickedTag)!=-1)
+	        	{
+		        	return true;
+		        }
+	        	else
+	        	return false;
+	        }
+	    }
+		
+		function disable_drag_images(e)
+		{
+			wccp_pro_log_to_console_if_allowed("function", "disable_drag_images");
+			
+			var e = e || window.event; // also there is no e.target property in IE. instead IE uses window.event.srcElement
+			
+			var target = e.target || e.srcElement;
+			
+			//For contenteditable tags
+			if (apply_class_exclusion(e) == "Yes") return true;
+
+			var elemtype = e.target.nodeName;
+			
+			if (elemtype != "IMG") {return;}
+			
+			elemtype = elemtype.toUpperCase();
+			
+			var disable_drag_drop_images = 'checked';
+			
+			if (disable_drag_drop_images != "checked")  return true;
+			
+			if (window.location.href.indexOf("/user/") > -1) {
+			  return true; //To allow users to drag & drop images when editing thier profiles
+			}
+			
+			show_wccp_pro_message(alertMsg_IMG);
+			
+			return false;
+		}
+		
+	    var alertMsg_IMG = "";
+	    var alertMsg_A = "";
+	    var alertMsg_PB = "";
+	    var alertMsg_INPUT = "";
+	    var alertMsg_H = "";
+	    var alertMsg_TEXTAREA = "";
+	    var alertMsg_EmptySpaces = "";
+		var alertMsg_VIDEO = "";
+	    document.oncontextmenu=null;
+		document.oncontextmenu = nocontext;
+		document.addEventListener("contextmenu",nocontext);
+		window.addEventListener("contextmenu",nocontext);
+</script>
+	
+	<script id="wccp_pro_disable_drag_images">
+	document.ondragstart = disable_drag_images;
+		window.addEventListener('load', function (){
+			if(window.Zepto || !window.jQuery) jQuery =  $;
+			jQuery(document).ready(function(){
+				jQuery('img').each(function() {
+					jQuery(this).attr('draggable', false);
+				});
+			});
+		});
+	</script>
+	<style id="wccp_pro_style1">
+		img{
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+			-khtml-user-select: none;
+			user-select: none;
+			-webkit-user-drag: none;
+		}
+	</style>
+<style>/* Start your code after this line */
+ 
+/* End your code before this line */</style>	<script id="wccp_pro_css_disable_selection">
+	function wccp_pro_msieversion() 
+		{
+			var ua = window.navigator.userAgent;
+			var msie = ua.indexOf("MSIE");
+			var msie2 = ua.indexOf("Edge");
+			var msie3 = ua.indexOf("Trident");
+
+		if (msie > -1 || msie2 > -1 || msie3 > -1) // If Internet Explorer, return version number
+		{
+			return "IE";
+		}
+		else  // If another browser, return 0
+		{
+			return "otherbrowser";
+		}
+	}
+    
+	var e = document.getElementsByTagName('H1')[0];
+	if(e && wccp_pro_msieversion() == "IE")
+	{
+		e.setAttribute('unselectable',"on");
+	}
+	</script>
+<script id="wccp_pro_class_exclusion">
+function copyToClipboard(elem) {
+	  // create hidden text element, if it doesn't already exist
+    var targetId = "_wccp_pro_hiddenCopyText_";
+    {
+        // must use a temporary form element for the selection and copy
+        target = document.getElementById(targetId);
+        if (!target) {
+            var target = document.createElement("textarea");
+            target.style.position = "absolute";
+            target.style.left = "-9999px";
+            target.style.top = "0";
+            target.id = targetId;
+            document.body.appendChild(target);
+        }
+        target.textContent = elem.textContent;
+    }
+    // select the content
+    var currentFocus = document.activeElement;
+    target.focus();
+    target.setSelectionRange(0, target.value.length);
+    
+    // copy the selection
+    var succeed;
+    try {
+    	  succeed = document.execCommand("copy");
+    } catch(e) {
+        succeed = false;
+    }
+
+    // restore original focus
+    if (currentFocus && typeof currentFocus.focus === "function") {
+        currentFocus.focus();
+    }
+    
+    
+	// clear temporary content
+	target.textContent = "";
+	document.getElementsByTagName('span')[0].innerHTML = " ";
+    return succeed;
+}
+/**************************************************/
+function wccp_pro_log_to_console_if_allowed(title = "title", data = "")
+{
+	var myName = "";
+	
+	if(wccp_pro_log_to_console_if_allowed.caller != null) myName = wccp_pro_log_to_console_if_allowed.caller.toString();
+	
+	myName = myName.substr('function '.length);
+	
+	myName = myName.substr(0, myName.indexOf('('));
+
+	//console.log("function_name: " + myName);
+	
+	}
+/**************************************************/
+function fallbackCopyTextToClipboard(text) {
+  var textArea = document.createElement("textarea");
+  textArea.value = text;
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+
+  try {
+    var successful = document.execCommand("copy");
+    var msg = successful ? "successful" : "unsuccessful";
+    console.log("Fallback: Copying text command was " + msg);
+  } catch (err) {
+    console.error("Fallback: Oops, unable to copy", err);
+  }
+
+  document.body.removeChild(textArea);
+}
+/*****************************************/
+function copyTextToClipboard(text) {
+  if (!navigator.clipboard) {
+    fallbackCopyTextToClipboard(text);
+    return;
+  }
+  navigator.clipboard.writeText(text).then(
+    function() {
+      console.log("Async: Copying to clipboard was successful!");
+    },
+    function(err) {
+      console.error("Async: Could not copy text: ", err);
+    }
+  );
+}
+/*****************************************/
+/*getSelectionTextAndContainerElement*/
+function getSelectionTextAndContainerElement()
+{
+    var text = "", containerElement = null;
+    if (typeof window.getSelection != "undefined") {
+        var sel = window.getSelection();
+        if (sel.rangeCount) {
+            var node = sel.getRangeAt(0).commonAncestorContainer;
+            containerElement = node.nodeType == 1 ? node : node.parentNode;
+			if (typeof(containerElement.parentElement) != 'undefined') current_clicked_object = containerElement.parentElement;
+            text = sel.toString();
+        }
+    } else if (typeof document.selection != "undefined" && document.selection.type != "Control")
+	{
+        var textRange = document.selection.createRange();
+        containerElement = textRange.parentElement();
+        text = textRange.text;
+    }
+    
+	return {
+        text: text,
+        containerElement: containerElement
+    };
+}
+
+function getSelectionParentElement() {
+    var parentEl = null, sel;
+	
+    if (window.getSelection) {
+        sel = window.getSelection();
+        if (sel.rangeCount) {
+            parentEl = sel.getRangeAt(0).commonAncestorContainer;
+			//sel.getRangeAt(0).startContainer.parentNode;
+            if (parentEl.nodeType != 1) {
+                parentEl = parentEl.parentNode;
+            }
+        }
+    } else if ( (sel = document.selection) && sel.type != "Control") {
+        parentEl = sel.createRange().parentElement();
+    }
+	
+	let arr = new Array();
+	
+	arr["nodeName"] = "cant_find_parent_element";
+	
+	if(parentEl != null)
+		return parentEl;
+	else
+		return arr;
+}
+/*****************************************/
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+/*****************************************/
+</script>
+
+<script id="apply_class_exclusion">
+function apply_class_exclusion(e)
+{
+	wccp_pro_log_to_console_if_allowed("function", "apply_class_exclusion" + e);
+	
+	var my_return = 'No';
+	
+	var e = e || window.event; // also there is no e.target property in IE. instead IE uses window.event.srcElement
+  	
+	var target = e.target || e.srcElement || 'nothing';
+	
+	//if(target.parentElement != null) console.log (target.parentElement.className);
+	
+	var excluded_classes = '' + '';
+	
+	var class_to_exclude = "";
+	
+	if(target.parentElement != null)
+	{
+		class_to_exclude = target.className + ' ' + target.parentElement.className || '';
+	}else{
+		class_to_exclude = target.className;
+	}
+	
+	var class_to_exclude_array = Array();
+	
+	//console.log(class_to_exclude);
+	
+	if (typeof(class_to_exclude) != 'undefined') class_to_exclude_array = class_to_exclude.split(" ");
+	
+	//console.log (class_to_exclude_array);
+	
+	class_to_exclude_array.forEach(function(item)
+	{
+		if(item != '' && excluded_classes.indexOf(item)>=0)
+		{
+			//target.style.cursor = "text";
+			
+			//console.log ('Yes');
+			
+			my_return = 'Yes';
+		}
+	});
+
+	try {
+		class_to_exclude = target.parentElement.getAttribute('class') || target.parentElement.className || '';
+		}
+	catch(err) 
+		{
+		class_to_exclude = '';
+		}
+	
+	if(class_to_exclude != '' && excluded_classes.indexOf(class_to_exclude)>=0)
+	{
+		//target.style.cursor = "text";
+		my_return = 'Yes';
+	}
+
+	return my_return;
+}
+</script>
+<style id="wccp_pro_style2" data-asas-style="">
+
+	
+	*[contenteditable] , [contenteditable] *,*[contenteditable="true"] , [contenteditable="true"] * { /* for contenteditable tags*/ , /* for tags inside contenteditable tags*/
+	  -webkit-user-select: auto !important;
+	  cursor: text !important;
+	  user-select: text !important;
+	  pointer-events: auto !important;
+	}
+	
+	/*
+	*[contenteditable]::selection, [contenteditable] *::selection, [contenteditable="true"]::selection, [contenteditable="true"] *::selection { background: Highlight !important; color: HighlightText !important;}
+	*[contenteditable]::-moz-selection, [contenteditable="true"] *::-moz-selection { background: Highlight !important; color: HighlightText !important;}
+	input::selection,textarea::selection, code::selection, code > *::selection { background: Highlight !important; color: HighlightText !important;}
+	input::-moz-selection,textarea::-moz-selection, code::-moz-selection, code > *::-moz-selection { background: Highlight !important; color: HighlightText !important;}
+	*/
+	a{ cursor: pointer ; pointer-events: auto !important;}
+
+	</style><style>TEXT,TEXTAREA,input[type="text"] {cursor: text !important; user-select: text !important;}</style>	<script id="wccp_pro_alert_message">
+	window.addEventListener('DOMContentLoaded', function() {}); //This line to stop JS deffer function in wp-rockt pluign
+	
+	window.addEventListener('load', function (){
+		// Create the first div element with the "oncontextmenu" attribute
+		const wccp_pro_mask = document.createElement('div');
+		wccp_pro_mask.setAttribute('oncontextmenu', 'return false;');
+		wccp_pro_mask.setAttribute('id', 'wccp_pro_mask');
+
+		// Create the second div element with the "msgmsg-box-wpcp hideme" classes
+		const wpcp_error_message = document.createElement('div');
+		wpcp_error_message.setAttribute('id', 'wpcp-error-message');
+		wpcp_error_message.setAttribute('class', 'msgmsg-box-wpcp hideme');
+
+		// Add a span element with the "error: " text inside the second div
+		const error_span = document.createElement('span');
+		error_span.innerText = 'error: ';
+		wpcp_error_message.appendChild(error_span);
+
+		// Add the error message text inside the second div
+		const error_text = document.createTextNode('');
+		wpcp_error_message.appendChild(error_text);
+
+		// Add the div elements to the document body
+		document.body.appendChild(wccp_pro_mask);
+		document.body.appendChild(wpcp_error_message);
+	});
+
+	var timeout_result;
+	function show_wccp_pro_message(smessage="", style="")
+	{
+		wccp_pro_log_to_console_if_allowed("function", "show_wccp_pro_message" + smessage);
+				
+		timeout = 3000;
+		
+		if(style == "") style = "warning-wpcp";
+		
+		if (smessage !== "" && timeout!=0)
+		{
+			var smessage_text = smessage;
+			jquery_fadeTo();
+			document.getElementById("wpcp-error-message").innerHTML = smessage_text;
+			document.getElementById("wpcp-error-message").className = "msgmsg-box-wpcp showme " + style;
+			clearTimeout(timeout_result);
+			timeout_result = setTimeout(hide_message, timeout);
+		}
+		else
+		{
+			clearTimeout(timeout_result);
+			timeout_result = setTimeout(hide_message, timeout);
+		}
+	}
+	function hide_message()
+	{
+		jquery_fadeOut();
+		document.getElementById("wpcp-error-message").className = "msgmsg-box-wpcp warning-wpcp hideme";
+	}
+	function jquery_fadeTo()
+	{
+		try {
+			jQuery("#wccp_pro_mask").fadeTo("slow", 0.3);
+		}
+		catch(err) {
+			//alert(err.message);
+			}
+	}
+	function jquery_fadeOut()
+	{
+		try {
+			jQuery("#wccp_pro_mask").fadeOut( "slow" );
+		}
+		catch(err) {}
+	}
+	</script>
+	<style>
+	#wccp_pro_mask
+	{
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		position: fixed;
+		right: 0;
+		top: 0;
+		background-color: #000;
+		pointer-events: none;
+		display: none;
+		z-index: 10000;
+		animation: 0.5s ease 0s normal none 1 running ngdialog-fadein;
+		background: rgba(0, 0, 0, 0.4) none repeat scroll 0 0;
+	}
+	#wpcp-error-message {
+	    direction: ltr;
+	    text-align: center;
+	    transition: opacity 900ms ease 0s;
+		pointer-events: none;
+	    z-index: 99999999;
+	}
+	.hideme {
+    	opacity:0;
+    	visibility: hidden;
+	}
+	.showme {
+    	opacity:1;
+    	visibility: visible;
+	}
+	.msgmsg-box-wpcp {
+		border-radius: 10px;
+		color: #555555;
+		font-family: Tahoma;
+		font-size: 12px;
+		margin: 10px;
+		padding: 10px 36px;
+		position: fixed;
+		width: 255px;
+		top: 50%;
+  		left: 50%;
+  		margin-top: -10px;
+  		margin-left: -130px;
+	}
+	.msgmsg-box-wpcp b {
+		font-weight:bold;
+		text-transform:uppercase;
+	}
+		.warning-wpcp {
+		background:#ffecec url('https://kochbucher.com/wp-content/plugins/wccp-pro/images/warning.png') no-repeat 10px 50%;
+		border:1px solid #f2bfbf;
+		-webkit-box-shadow: 0px 0px 34px 2px #f2bfbf;
+		-moz-box-shadow: 0px 0px 34px 2px #f2bfbf;
+		box-shadow: 0px 0px 34px 2px #f2bfbf;
+	}
+	.success-wpcp {
+		background: #fafafa url('https://kochbucher.com/wp-content/plugins/wccp-pro/images/success.png') no-repeat 10px 50%;
+		border: 1px solid #00b38f;
+		box-shadow: 0px 0px 34px 2px #adc;
+	}
+    </style>
 <meta name='robots' content='max-image-preview:large' />
 <link rel='dns-prefetch' href='//netdna.bootstrapcdn.com' />
 <link rel='dns-prefetch' href='//fonts.googleapis.com' />
@@ -70,9 +1270,7 @@ body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: 
 <![endif]-->
 <link rel='stylesheet' id='mvp-fonts-css' href='//fonts.googleapis.com/css?family=Oswald%3A400%2C700%7CLato%3A400%2C700%7CWork+Sans%3A900%7CMontserrat%3A400%2C700%7COpen+Sans%3A800%7CPlayfair+Display%3A400%2C700%2C900%7CQuicksand%7CRaleway%3A200%2C400%2C700%7CRoboto+Slab%3A400%2C700%7CWork+Sans%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800%2C900%7CMontserrat%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800%2C900%7CWork+Sans%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800%2C900%7CLato%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800%2C900%7CMontserrat%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800%2C900%26subset%3Dlatin%2Clatin-ext%2Ccyrillic%2Ccyrillic-ext%2Cgreek-ext%2Cgreek%2Cvietnamese' type='text/css' media='all' />
 <link rel='stylesheet' id='mvp-media-queries-css' href='https://kochbucher.com/wp-content/themes/flex-mag/css/media-queries.css?ver=6.4.2' type='text/css' media='all' />
-<link rel='stylesheet' id='bf-icon-css' href='https://kochbucher.com/wp-content/plugins/wpshield-content-protector/libs/better-framework/assets/css/bf-icon.min.css?ver=4.2.0' type='text/css' media='all' />
-<link rel='stylesheet' id='wpshield-content-protector-text-copy-css-css' href='https://kochbucher.com/wp-content/plugins/wpshield-content-protector/src/Components/TextCopyProtector/css/text-copy.css?ver=1.4.0' type='text/css' media='all' />
-<link rel='stylesheet' id='wpshield-content-protector-popup-message-addons-css-css' href='https://kochbucher.com/wp-content/plugins/wpshield-content-protector/src/Components/Addons/PopupMessage/css/popup-message.css?ver=1.4.0' type='text/css' media='all' />
+<link rel='stylesheet' id='css-protect.css-css' href='https://kochbucher.com/wp-content/plugins/wccp-pro/css-protect.css?wccp_ver_num=8&#038;ver=10.9.2' type='text/css' media='all' />
 <script type="text/javascript" src="https://kochbucher.com/wp-includes/js/jquery/jquery.min.js?ver=3.7.1" id="jquery-core-js"></script>
 <script type="text/javascript" src="https://kochbucher.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1" id="jquery-migrate-js"></script>
 <link rel="https://api.w.org/" href="https://kochbucher.com/wp-json/" /><link rel="alternate" type="application/json" href="https://kochbucher.com/wp-json/wp/v2/posts/4679" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://kochbucher.com/xmlrpc.php?rsd" />
@@ -336,7 +1534,7 @@ body.custom-background { background-color: #eeeeee; }
 	
 </head>
 
-<body class="post-template-default single single-post postid-4679 single-format-standard custom-background wp-embed-responsive">
+<body class="post-template-default single single-post postid-4679 single-format-standard custom-background wp-embed-responsive unselectable">
 	<amp-auto-ads type="adsense" data-ad-client="ca-pub-7745957064640489"> </amp-auto-ads>
 	<div id="site" class="left relative">
 		<div id="site-wrap" class="left relative">
@@ -511,7 +1709,7 @@ Kalorien p. P.: keine Angabe</p>
 <p>Mit Hilfe von einem Teelöffel kleine Mengen abstechen und zu Kugeln formen. Die Kugeln anschließend in den restlichen gemahlenen Mandeln wälzen und in Papierförmchen setzen. Kühl aufbewahren!</p>
 <p>Das Rezept ergibt ca. 24 Pralinen.</p>
 <div class="post-views content-post post-4679 entry-meta">
-				<span class="post-views-icon dashicons dashicons-chart-bar"></span> <span class="post-views-label">Post Views:</span> <span class="post-views-count">172</span>
+				<span class="post-views-icon dashicons dashicons-chart-bar"></span> <span class="post-views-label">Post Views:</span> <span class="post-views-count">173</span>
 			</div>																														<div class="mvp-org-wrap" itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
 											<div class="mvp-org-logo" itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
 																									<img src="https://kochbucher.com/wp-content/uploads/2023/04/logo3.png"/>
@@ -549,7 +1747,7 @@ Kalorien p. P.: keine Angabe</p>
 									<div class="feat-widget-img left relative">
 						<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2023/05/60104595_659375171166688_4641797608937881600_n-300x180.jpeg" class="reg-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/05/60104595_659375171166688_4641797608937881600_n-300x180.jpeg 300w, https://kochbucher.com/wp-content/uploads/2023/05/60104595_659375171166688_4641797608937881600_n-1000x600.jpeg 1000w, https://kochbucher.com/wp-content/uploads/2023/05/60104595_659375171166688_4641797608937881600_n-450x270.jpeg 450w" sizes="(max-width: 300px) 100vw, 300px" />						<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2023/05/60104595_659375171166688_4641797608937881600_n-80x80.jpeg" class="mob-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/05/60104595_659375171166688_4641797608937881600_n-80x80.jpeg 80w, https://kochbucher.com/wp-content/uploads/2023/05/60104595_659375171166688_4641797608937881600_n-150x150.jpeg 150w" sizes="(max-width: 80px) 100vw, 80px" />													<div class="feat-info-wrap">
 								<div class="feat-info-views">
-									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">168.3K</span>
+									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">168.4K</span>
 								</div><!--feat-info-views-->
 															</div><!--feat-info-wrap-->
 																	</div><!--feat-widget-img-->
@@ -684,7 +1882,7 @@ Kalorien p. P.: keine Angabe</p>
 									<div class="feat-widget-img left relative">
 						<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2023/05/314448415_3260457547602715_5185925697844252261_n-300x180.jpg" class="reg-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/05/314448415_3260457547602715_5185925697844252261_n-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2023/05/314448415_3260457547602715_5185925697844252261_n-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2023/05/314448415_3260457547602715_5185925697844252261_n-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />						<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2023/05/314448415_3260457547602715_5185925697844252261_n-80x80.jpg" class="mob-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/05/314448415_3260457547602715_5185925697844252261_n-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2023/05/314448415_3260457547602715_5185925697844252261_n-150x150.jpg 150w" sizes="(max-width: 80px) 100vw, 80px" />													<div class="feat-info-wrap">
 								<div class="feat-info-views">
-									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">19.8K</span>
+									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">19.9K</span>
 								</div><!--feat-info-views-->
 															</div><!--feat-info-wrap-->
 																	</div><!--feat-widget-img-->
@@ -721,102 +1919,101 @@ Kalorien p. P.: keine Angabe</p>
 																							</ul>
 										</div><!--foot-soc-->
 									</div><!--foot-widget-->
-																<div id="mvp_catlist_widget-6" class=" h-ni w-t foot-widget left relative mvp_catlist_widget"><h3 class="foot-head">Latest News</h3>			<div class="blog-widget-wrap left relative">
+																<div id="mvp_catlist_widget-6" class="foot-widget left relative mvp_catlist_widget"><h3 class="foot-head">Latest News</h3>			<div class="blog-widget-wrap left relative">
 				<ul class="blog-widget-list left relative">
 											<li>
 
-							<a href="https://kochbucher.com/schweinefilet-mit-kase-in-dunkler-sauce-mit-gebratenen-miniklosen-und-chinakohl-salat/" rel="bookmark">
+							<a href="https://kochbucher.com/rinderbraten-mit-spirellis/" rel="bookmark">
 															<div class="blog-widget-img left relative">
-									<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_241132180_411654373958832_2048532548394670674_n_1080-1-300x180.jpg" class="widget-img-main wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_241132180_411654373958832_2048532548394670674_n_1080-1-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_241132180_411654373958832_2048532548394670674_n_1080-1-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_241132180_411654373958832_2048532548394670674_n_1080-1-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />									<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_241132180_411654373958832_2048532548394670674_n_1080-1-80x80.jpg" class="widget-img-side wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_241132180_411654373958832_2048532548394670674_n_1080-1-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_241132180_411654373958832_2048532548394670674_n_1080-1-300x300.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_241132180_411654373958832_2048532548394670674_n_1080-1-1024x1024.jpg 1024w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_241132180_411654373958832_2048532548394670674_n_1080-1-150x150.jpg 150w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_241132180_411654373958832_2048532548394670674_n_1080-1-768x768.jpg 768w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_241132180_411654373958832_2048532548394670674_n_1080-1.jpg 1080w" sizes="(max-width: 80px) 100vw, 80px" />																		<div class="feat-info-wrap">
+									<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_357430848_822132202881905_5065950440262940139_n_1080-300x180.jpg" class="widget-img-main wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_357430848_822132202881905_5065950440262940139_n_1080-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_357430848_822132202881905_5065950440262940139_n_1080-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_357430848_822132202881905_5065950440262940139_n_1080-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />									<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_357430848_822132202881905_5065950440262940139_n_1080-80x80.jpg" class="widget-img-side wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_357430848_822132202881905_5065950440262940139_n_1080-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_357430848_822132202881905_5065950440262940139_n_1080-300x300.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_357430848_822132202881905_5065950440262940139_n_1080-1024x1024.jpg 1024w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_357430848_822132202881905_5065950440262940139_n_1080-150x150.jpg 150w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_357430848_822132202881905_5065950440262940139_n_1080-768x768.jpg 768w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_357430848_822132202881905_5065950440262940139_n_1080.jpg 1080w" sizes="(max-width: 80px) 100vw, 80px" />																		<div class="feat-info-wrap">
 										<div class="feat-info-views">
-											<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">79</span>
+											<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">52</span>
 										</div><!--feat-info-views-->
 																			</div><!--feat-info-wrap-->
 																										</div><!--blog-widget-img-->
 														<div class="blog-widget-text left relative">
 																	<span class="side-list-cat">Salzige Gerichte</span>
-																<h2>Schweinefilet mit Käse in dunkler Sauce mit gebratenen Miniklößen und Chinakohl Salat</h2>
-								<p>Schweinefilet mit Käse in dunkler Sauce mit gebratenen Miniklößen und Chinakohl Salat Rezept Schweinefilet...</p>
+																<h2>Rinderbraten mit Spirellis</h2>
+								<p>Braten und Sauce: 800 g Rindfleisch (aus der Blume) 500 g weiße Zwiebeln 280...</p>
 							</div><!--blog-widget-text-->
 							</a>
 						</li>
 											<li>
 
-							<a href="https://kochbucher.com/huhnersuppe-2/" rel="bookmark">
+							<a href="https://kochbucher.com/bratwurst-mit-rosenkohl-und-bratkartoffeln/" rel="bookmark">
 															<div class="blog-widget-img left relative">
-									<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_266328198_273733641444433_8965544764129531503_n_1080-300x180.jpg" class="widget-img-main wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_266328198_273733641444433_8965544764129531503_n_1080-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_266328198_273733641444433_8965544764129531503_n_1080-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_266328198_273733641444433_8965544764129531503_n_1080-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />									<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_266328198_273733641444433_8965544764129531503_n_1080-80x80.jpg" class="widget-img-side wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_266328198_273733641444433_8965544764129531503_n_1080-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_266328198_273733641444433_8965544764129531503_n_1080-150x150.jpg 150w" sizes="(max-width: 80px) 100vw, 80px" />																		<div class="feat-info-wrap">
+									<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_398056387_630752685669242_6434606897893211566_n_1080-300x180.jpg" class="widget-img-main wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_398056387_630752685669242_6434606897893211566_n_1080-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_398056387_630752685669242_6434606897893211566_n_1080-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_398056387_630752685669242_6434606897893211566_n_1080-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />									<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_398056387_630752685669242_6434606897893211566_n_1080-80x80.jpg" class="widget-img-side wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_398056387_630752685669242_6434606897893211566_n_1080-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_398056387_630752685669242_6434606897893211566_n_1080-300x300.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_398056387_630752685669242_6434606897893211566_n_1080-1024x1024.jpg 1024w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_398056387_630752685669242_6434606897893211566_n_1080-150x150.jpg 150w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_398056387_630752685669242_6434606897893211566_n_1080-768x768.jpg 768w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_398056387_630752685669242_6434606897893211566_n_1080.jpg 1080w" sizes="(max-width: 80px) 100vw, 80px" />																		<div class="feat-info-wrap">
 										<div class="feat-info-views">
-											<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">84</span>
-										</div><!--feat-info-views-->
-																			</div><!--feat-info-wrap-->
-																										</div><!--blog-widget-img-->
-														<div class="blog-widget-text left relative">
-																	<span class="side-list-cat">Suppe</span>
-																<h2>Hühnersuppe</h2>
-								<p>Rezept : Suppenhuhn oder in meinem Fall ein Maishuhn mit 1 Zwiebel halbiert Lauch...</p>
-							</div><!--blog-widget-text-->
-							</a>
-						</li>
-											<li>
-
-							<a href="https://kochbucher.com/pasta-mit-hahnchen-brokkoli-sahne-sauce/" rel="bookmark">
-															<div class="blog-widget-img left relative">
-									<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_275509887_138226745369916_4814349580788230372_n_1080-300x180.jpg" class="widget-img-main wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_275509887_138226745369916_4814349580788230372_n_1080-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_275509887_138226745369916_4814349580788230372_n_1080-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_275509887_138226745369916_4814349580788230372_n_1080-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />									<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_275509887_138226745369916_4814349580788230372_n_1080-80x80.jpg" class="widget-img-side wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_275509887_138226745369916_4814349580788230372_n_1080-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_275509887_138226745369916_4814349580788230372_n_1080-300x300.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_275509887_138226745369916_4814349580788230372_n_1080-1024x1024.jpg 1024w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_275509887_138226745369916_4814349580788230372_n_1080-150x150.jpg 150w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_275509887_138226745369916_4814349580788230372_n_1080-768x768.jpg 768w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_275509887_138226745369916_4814349580788230372_n_1080.jpg 1080w" sizes="(max-width: 80px) 100vw, 80px" />																		<div class="feat-info-wrap">
-										<div class="feat-info-views">
-											<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">177</span>
+											<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">28</span>
 										</div><!--feat-info-views-->
 																			</div><!--feat-info-wrap-->
 																										</div><!--blog-widget-img-->
 														<div class="blog-widget-text left relative">
 																	<span class="side-list-cat">Salzige Gerichte</span>
-																<h2>Pasta mit Hähnchen Brokkoli Sahne Sauce</h2>
-								<p>Hähnchen Innenfilet in mundgerechte Stücke schneiden mit einer fein gewürfelten Zwiebel Salz Pfeffer Paprika...</p>
+																<h2>Bratwurst mit Rosenkohl und Bratkartoffeln</h2>
+								<p>So sieht wohl ein ausgewogener Lunch-Teller aus: viel Gemüse, Kohlenhydrate in Form von Kartoffeln...</p>
 							</div><!--blog-widget-text-->
 							</a>
 						</li>
 											<li>
 
-							<a href="https://kochbucher.com/hahnchen-brokkoli-curry-pfanne-mit-reis/" rel="bookmark">
+							<a href="https://kochbucher.com/sauerkraut-und-puree/" rel="bookmark">
 															<div class="blog-widget-img left relative">
-									<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_306741804_162903286396464_2474314631610351703_n_1080-300x180.jpg" class="widget-img-main wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_306741804_162903286396464_2474314631610351703_n_1080-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_306741804_162903286396464_2474314631610351703_n_1080-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_306741804_162903286396464_2474314631610351703_n_1080-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />									<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_306741804_162903286396464_2474314631610351703_n_1080-80x80.jpg" class="widget-img-side wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_306741804_162903286396464_2474314631610351703_n_1080-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_306741804_162903286396464_2474314631610351703_n_1080-150x150.jpg 150w" sizes="(max-width: 80px) 100vw, 80px" />																		<div class="feat-info-wrap">
+									<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_401838540_990884465344450_4610654777123301326_n_1080-300x180.jpg" class="widget-img-main wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_401838540_990884465344450_4610654777123301326_n_1080-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_401838540_990884465344450_4610654777123301326_n_1080-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_401838540_990884465344450_4610654777123301326_n_1080-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />									<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_401838540_990884465344450_4610654777123301326_n_1080-80x80.jpg" class="widget-img-side wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_401838540_990884465344450_4610654777123301326_n_1080-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_401838540_990884465344450_4610654777123301326_n_1080-300x300.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_401838540_990884465344450_4610654777123301326_n_1080-1024x1024.jpg 1024w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_401838540_990884465344450_4610654777123301326_n_1080-150x150.jpg 150w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_401838540_990884465344450_4610654777123301326_n_1080-768x768.jpg 768w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_401838540_990884465344450_4610654777123301326_n_1080.jpg 1080w" sizes="(max-width: 80px) 100vw, 80px" />																		<div class="feat-info-wrap">
 										<div class="feat-info-views">
-											<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">85</span>
+											<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">25</span>
 										</div><!--feat-info-views-->
 																			</div><!--feat-info-wrap-->
 																										</div><!--blog-widget-img-->
 														<div class="blog-widget-text left relative">
 																	<span class="side-list-cat">Salzige Gerichte</span>
-																<h2>Hähnchen Brokkoli Curry Pfanne mit Reis</h2>
-								<p>Hähnchen Innenfilet in mundgerechte Stücke schneiden mit einer fein gewürfelten Zwiebel Salz Pfeffer Paprika...</p>
+																<h2>Sauerkraut und Püree</h2>
+								<p>500 g Kasseler ohne Knochen 1 m.-große Zwiebel(n) 1 Zehe/n Knoblauch ⅛ Liter Wasser...</p>
 							</div><!--blog-widget-text-->
 							</a>
 						</li>
 											<li>
 
-							<a href="https://kochbucher.com/pasta-mit-garnelen-2/" rel="bookmark">
+							<a href="https://kochbucher.com/sauerbraten-mit-rotkohl-und-klosen-2/" rel="bookmark">
 															<div class="blog-widget-img left relative">
-									<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_342229131_832619831619873_6905058387703690105_n_1080-300x180.jpg" class="widget-img-main wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_342229131_832619831619873_6905058387703690105_n_1080-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_342229131_832619831619873_6905058387703690105_n_1080-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_342229131_832619831619873_6905058387703690105_n_1080-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />									<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_342229131_832619831619873_6905058387703690105_n_1080-80x80.jpg" class="widget-img-side wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_342229131_832619831619873_6905058387703690105_n_1080-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_342229131_832619831619873_6905058387703690105_n_1080-150x150.jpg 150w" sizes="(max-width: 80px) 100vw, 80px" />																		<div class="feat-info-wrap">
+									<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_403680632_291139883914019_6394368262596296427_n_1080-300x180.jpg" class="widget-img-main wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_403680632_291139883914019_6394368262596296427_n_1080-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_403680632_291139883914019_6394368262596296427_n_1080-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_403680632_291139883914019_6394368262596296427_n_1080-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />									<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_403680632_291139883914019_6394368262596296427_n_1080-80x80.jpg" class="widget-img-side wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_403680632_291139883914019_6394368262596296427_n_1080-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_403680632_291139883914019_6394368262596296427_n_1080-300x300.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_403680632_291139883914019_6394368262596296427_n_1080-1024x1024.jpg 1024w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_403680632_291139883914019_6394368262596296427_n_1080-150x150.jpg 150w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_403680632_291139883914019_6394368262596296427_n_1080-768x768.jpg 768w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_403680632_291139883914019_6394368262596296427_n_1080.jpg 1080w" sizes="(max-width: 80px) 100vw, 80px" />																		<div class="feat-info-wrap">
 										<div class="feat-info-views">
-											<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">86</span>
+											<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">15</span>
 										</div><!--feat-info-views-->
 																			</div><!--feat-info-wrap-->
 																										</div><!--blog-widget-img-->
 														<div class="blog-widget-text left relative">
 																	<span class="side-list-cat">Salzige Gerichte</span>
-																<h2>Pasta mit Garnelen</h2>
-								<p>1 kleine Zwiebel fein geschnitten in 1 EL gehäuft Butter und etwas Olivenöl glasig...</p>
+																<h2>Sauerbraten mit Rotkohl und Klößen</h2>
+								<p>Rinderbraten 1 Kg Wacholderbeeren 8 Nelken 8 Loorbeerblätter 4 Tassen Essig 2 Wasser 500...</p>
+							</div><!--blog-widget-text-->
+							</a>
+						</li>
+											<li>
+
+							<a href="https://kochbucher.com/fischstabchen-an-bratkartoffeln-romersalat-und-senfsosse/" rel="bookmark">
+															<div class="blog-widget-img left relative">
+									<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_416287368_871876084606149_5181494578629101975_n_1080-300x180.jpg" class="widget-img-main wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_416287368_871876084606149_5181494578629101975_n_1080-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_416287368_871876084606149_5181494578629101975_n_1080-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_416287368_871876084606149_5181494578629101975_n_1080-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />									<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_416287368_871876084606149_5181494578629101975_n_1080-80x80.jpg" class="widget-img-side wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_416287368_871876084606149_5181494578629101975_n_1080-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_416287368_871876084606149_5181494578629101975_n_1080-150x150.jpg 150w" sizes="(max-width: 80px) 100vw, 80px" />																		<div class="feat-info-wrap">
+										<div class="feat-info-views">
+											<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">88</span>
+										</div><!--feat-info-views-->
+																			</div><!--feat-info-wrap-->
+																										</div><!--blog-widget-img-->
+														<div class="blog-widget-text left relative">
+																	<span class="side-list-cat">Salzige Gerichte</span>
+																<h2>FISCHSTÄBCHEN an BRATKARTOFFELN ,RÖMERSALAT und SENFSOSSE</h2>
+								<p>Die Bratkartoffeln sind zum Teil aus rohen Kartoffeln und aus Resten von Pellkartoffeln. Ganz...</p>
 							</div><!--blog-widget-text-->
 							</a>
 						</li>
 									</ul>
 			</div><!--blog-widget-wrap-->
-		</div><div id="mvp_tags_widget-1" class=" h-ni w-t foot-widget left relative mvp_tags_widget"><h3 class="foot-head">Popular Tags</h3>
+		</div><div id="mvp_tags_widget-1" class="foot-widget left relative mvp_tags_widget"><h3 class="foot-head">Popular Tags</h3>
 			<div class="tag-cloud left relative">
 				<a href="https://kochbucher.com/tag/salat/" class="tag-cloud-link tag-link-179 tag-link-position-1" style="font-size: 10px;">salat</a>
 <a href="https://kochbucher.com/tag/torte/" class="tag-cloud-link tag-link-177 tag-link-position-2" style="font-size: 10px;">torte</a>
-<a href="https://kochbucher.com/tag/featured/" class="tag-cloud-link tag-link-176 tag-link-position-3" style="font-size: 10px;">featured</a>
-<a href="https://kochbucher.com/tag/kekse/" class="tag-cloud-link tag-link-180 tag-link-position-4" style="font-size: 10px;">kekse</a>
-<a href="https://kochbucher.com/tag/kuchen/" class="tag-cloud-link tag-link-178 tag-link-position-5" style="font-size: 10px;">kuchen</a>			</div>
+<a href="https://kochbucher.com/tag/kekse/" class="tag-cloud-link tag-link-180 tag-link-position-3" style="font-size: 10px;">kekse</a>
+<a href="https://kochbucher.com/tag/kuchen/" class="tag-cloud-link tag-link-178 tag-link-position-4" style="font-size: 10px;">kuchen</a>			</div>
 
 		</div>							</div><!--foot-widget-wrap-->
 						</div><!--body-main-in-->
@@ -830,11 +2027,11 @@ Kalorien p. P.: keine Angabe</p>
 									<div class="menu"><ul>
 <li class="page_item page-item-3707"><a href="https://kochbucher.com/datenschutz-bestimmungen/">Datenschutz-Bestimmungen</a></li>
 <li class="page_item page-item-2549"><a href="https://kochbucher.com/latest-news/">Neuesten Nachrichten</a></li>
-<li class="page_item page-item-2550"><a href="https://kochbucher.com/">Rindschnitzel</a></li>
+<li class="page_item page-item-2550"><a href="https://kochbucher.com/home/">Rindschnitzel</a></li>
 </ul></div>
 								</div><!--foot-menu-->
 								<div class="foot-copy relative">
-									<p>Copyright © 2023 Kochbucher</p>
+									<p>Copyright © 2024 Kochbucher</p>
 								</div><!--foot-copy-->
 							</div><!--foot-bot-->
 						</div><!--body-main-in-->
@@ -934,63 +2131,15 @@ jQuery(document).ready(function($) {
 
 </script>
 
-<noscript>
-
-    <style>
-        #cpp-js-disabled {
-            top: 0;
-            left: 0;
-            color: #111;
-            width: 100%;
-            height: 100%;
-            z-index: 9999;
-            position: fixed;
-            font-size: 25px;
-            text-align: center;
-            background: #fcfcfc;
-            padding-top: 200px;
-        }
-
-    </style>
-
-    <div id="cpp-js-disabled">
-        <h4>
-			
-				<div class="cp-alert cp-alert-1" style="--cp-primary-color: #DC1F1F">
-	<div class="cp-alert-inner" role="alert">
-		<span class="bf-icon bf-icon-svg cp-close bsfi bsfi-close" ><svg class="bf-svg-tag"><use xlink:href="#bsfi-close"></use></svg><svg width="0" height="0" class="hidden"><symbol xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 30 30" id="bsfi-close"><defs><clipPath id="b"><rect width="30" height="30"/></clipPath></defs><g id="a" clip-path="url(#b)"><g transform="translate(33.913 17.851)"><path d="M16.63,45.221a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7l10.977-11,10.977,11a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7,2.314,2.314,0,0,0,0-3.3l-10.977-11,10.977-11a2.331,2.331,0,1,0-3.293-3.3l-10.977,11-10.977-11a2.331,2.331,0,1,0-3.293,3.3l10.977,11-10.977,11A2.243,2.243,0,0,0,16.63,45.221Z" transform="translate(-49.862 -33.776)"/></g></g></symbol></svg></span><span class="bf-icon bf-icon-svg cp-icon bsfi bsfi-warning-1" ><svg class="bf-svg-tag"><use xlink:href="#bsfi-warning-1"></use></svg><svg width="0" height="0" class="hidden"><symbol version="1.1" id="bsfi-warning-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 30 30" style="enable-background:new 0 0 30 30;" xml:space="preserve">
-<path d="M29.5,22.7L18.1,3.6c-0.7-1.1-1.8-1.8-3.1-1.8s-2.4,0.7-3.1,1.7L0.5,22.7c-0.7,1.1-0.7,2.5,0,3.6c0.6,1.1,1.8,1.8,3.1,1.8
-	h22.8c1.3,0,2.5-0.7,3.1-1.8C30.2,25.2,30.2,23.8,29.5,22.7L29.5,22.7z M13.5,11c0-0.8,0.7-1.5,1.5-1.5c0.8,0,1.5,0.7,1.5,1.5v6
-	c0,0.8-0.7,1.5-1.5,1.5c-0.8,0-1.5-0.7-1.5-1.5V11z M15,23.5c-1,0-1.8-0.8-1.8-1.8c0-1,0.8-1.8,1.8-1.8s1.8,0.8,1.8,1.8
-	C16.8,22.7,16,23.5,15,23.5z"/>
-</symbol></svg></span>		<h4 class="cp-alert-heading">Content Protected!</h4>
-
-		<p class="cp-alert-message">The content of this website cannot be copied!</p>
-	</div>
-</div>
-
-			        </h4>
-    </div>
-
-</noscript><script type="text/javascript" src="https://kochbucher.com/wp-includes/js/comment-reply.min.js?ver=6.4.2" id="comment-reply-js" async="async" data-wp-strategy="async"></script>
+<script type="text/javascript" src="https://kochbucher.com/wp-includes/js/comment-reply.min.js?ver=6.4.2" id="comment-reply-js" async="async" data-wp-strategy="async"></script>
 <script type="text/javascript" src="https://kochbucher.com/wp-content/themes/flex-mag/js/scripts.js?ver=6.4.2" id="mvp-flexmag-js"></script>
 <script type="text/javascript" src="https://kochbucher.com/wp-content/themes/flex-mag/js/jquery.infinitescroll.min.js?ver=6.4.2" id="mvp-infinitescroll-js"></script>
 <script type="text/javascript" src="https://kochbucher.com/wp-content/themes/flex-mag/js/retina.js?ver=6.4.2" id="retina-js"></script>
-<script type="text/javascript" id="wpshield-content-protector-components-js-js-extra">
+<script type="text/javascript" id="wccp_pro_admin_bar_ajax-js-extra">
 /* <![CDATA[ */
-var AudiosL10n = {"options":{"audios":"enable","audios\/disable-right-click":"enable","audios\/download-button":"enable","audios\/disable-hotlink":"enable","audios\/filters":[{"type":"include","in":"global","user-role":{"administrator":"","editor":"","author":"","contributor":"","subscriber":"","campaign_manager":"","donor":""},"user":"","category":"","taxonomies":{"category":"","post_tag":"","post_format":""},"post":"","post-type":{"post":"","page":"","attachment":""},"url":"","css-class":""}],"audios\/alert-popup":"enable","audios\/alert-popup\/template":"template-1","audios\/alert-popup\/title":"Content Protected!","audios\/alert-popup\/text":"The content of this website cannot be copied!","audios\/alert-popup\/color":"","audios\/alert-popup\/icon":{"icon":"","type":""},"audios\/audio-alert":"disable","audios\/audio-alert\/sound":"beep-warning.mp3","audios\/audio-alert\/volume":50},"available-pro":"","is-filter":""};
-var VideosL10n = {"options":{"videos":"enable","videos\/disable-right-click":"enable","videos\/download-button":"enable","videos\/disable-hotlink":"enable","videos\/alert-popup":"enable","videos\/alert-popup\/template":"template-1","videos\/alert-popup\/title":"Videos Are Protected!","videos\/alert-popup\/text":"Because of the copyrights associated with the content, copying video is not allowed.","videos\/alert-popup\/color":"","videos\/alert-popup\/icon":{"icon":"","type":""},"videos\/audio-alert":"disable","videos\/audio-alert\/sound":"beep-warning.mp3","videos\/audio-alert\/volume":50,"videos\/filters":[{"type":"include","in":"global","user-role":{"administrator":"","editor":"","author":"","contributor":"","subscriber":"","campaign_manager":"","donor":""},"user":"","category":"","taxonomies":{"category":"","post_tag":"","post_format":""},"post":"","post-type":{"post":"","page":"","attachment":""},"url":"","css-class":""}]},"available-pro":"","is-filter":""};
-var PrintL10n = {"options":{"print":"enable","print\/type":"hotkeys","print\/watermark\/file":"","print\/watermark\/opacity":50,"print\/filters":[{"type":"include","in":"global","user-role":{"administrator":"","editor":"","author":"","contributor":"","subscriber":"","campaign_manager":"","donor":""},"user":"","category":"","taxonomies":{"category":"","post_tag":"","post_format":""},"post":"","post-type":{"post":"","page":"","attachment":""},"url":""}],"print\/alert-popup":"enable","print\/alert-popup\/template":"template-1","print\/alert-popup\/title":"Content Print Protected!","print\/alert-popup\/text":"Because of the copyrights associated with the content, printing content is not allowed.","print\/alert-popup\/color":"","print\/alert-popup\/icon":{"icon":"","type":""},"print\/audio-alert":"disable","print\/audio-alert\/sound":"beep-warning.mp3","print\/audio-alert\/volume":50},"disabled-shortcuts":["ctrl_p","cmd_option_p","cmd_p"],"available-pro":""};
-var EmailL10n = {"options":{"email-address":"enable","email-address\/type":"char-encoding","email-address\/filters":[{"type":"include","in":"global","user-role":{"administrator":"","editor":"","author":"","contributor":"","subscriber":"","campaign_manager":"","donor":""},"user":"","category":"","taxonomies":{"category":"","post_tag":"","post_format":""},"post":"","post-type":{"post":"","page":"","attachment":""},"url":"","css-class":""}]}};
-var IframeL10n = {"options":{"iframe":"enable","iframe\/type":"message","iframe\/redirect\/page":"","iframe\/watermark\/file":"","iframe\/watermark\/opacity":"","iframe\/filters":[{"type":"include","in":"global","user-role":{"administrator":"","editor":"","author":"","contributor":"","subscriber":"","campaign_manager":"","donor":""},"user":"","category":"","taxonomies":{"category":"","post_tag":"","post_format":""},"post":"","post-type":{"post":"","page":"","attachment":""},"url":"","css-class":""}],"iframe\/alert-popup":"enable","iframe\/alert-popup\/template":"template-1","iframe\/alert-popup\/title":"iFrame Loading Protected!","iframe\/alert-popup\/text":"Because of the copyrights associated with the content, loading this site in iframes is not allowed.","iframe\/alert-popup\/color":"","iframe\/alert-popup\/icon":{"icon":"","type":""},"iframe\/audio-alert":"disable","iframe\/audio-alert\/sound":"beep-warning.mp3","iframe\/audio-alert\/volume":50},"redirect_url":null,"watermark":null};
-var ImagesL10n = {"options":{"images":"enable","images\/disable-right-click":"enable","images\/disable-drag":"enable","images\/remove-links":"enable","images\/disable-hotlink":"enable","images\/disable-attachment-pages":"disable","images\/alert-popup":"disable","images\/alert-popup\/template":"template-1","images\/alert-popup\/title":"Images Are Protected!","images\/alert-popup\/text":"Because of the copyrights associated with the content, copying images is not allowed.","images\/alert-popup\/color":"","images\/alert-popup\/icon":{"icon":"","type":""},"images\/audio-alert":"disable","images\/audio-alert\/sound":"beep-warning.mp3","images\/audio-alert\/volume":50,"images\/filters":[{"type":"include","in":"global","user-role":{"administrator":"","editor":"","author":"","contributor":"","subscriber":"","campaign_manager":"","donor":""},"user":"","category":"","taxonomies":{"category":"","post_tag":"","post_format":""},"post":"","post-type":{"post":"","page":"","attachment":""},"url":"","css-class":""}]},"is-filter":""};
-var TextCopyL10n = {"options":{"text-copy":"enable","text-copy\/type":"disable","text-copy\/exclude-inputs":"disable","text-copy\/copy-appender\/text":"%TEXT% <br> Reference: <a href=\"%POSTLINK%\">%POSTTITLE%<\/a>","text-copy\/copy-appender\/max-text-length":80,"text-copy\/alert-popup":"disable","text-copy\/alert-popup\/template":"template-1","text-copy\/alert-popup\/title":"Content Copy Protected!","text-copy\/alert-popup\/text":"Because of the copyrights associated with the content, copying content is not allowed.","text-copy\/alert-popup\/color":"","text-copy\/alert-popup\/icon":{"icon":"","type":""},"text-copy\/audio-alert":"disable","text-copy\/audio-alert\/sound":"beep-warning.mp3","text-copy\/audio-alert\/volume":50,"text-copy\/filters":[{"type":"include","in":"","user-role":{"administrator":"","editor":"","author":"","contributor":"","subscriber":"","campaign_manager":"","donor":""},"user":"","category":"","taxonomies":{"category":"","post_tag":"","post_format":""},"post":"","post-type":{"post":"","page":"","attachment":""},"url":"","css-class":""}]},"disabled-shortcuts":["ctrl_a","ctrl_c","ctrl_x","ctrl_v","cmd_a","cmd_c","cmd_x","cmd_v"],"available-pro":{"mode":false},"is-filter":""};
-var RightClickL10n = {"options":{"right-click":"enable","right-click\/type":"disable","right-click\/internal-links":"disable","right-click\/input-fields":"disable","right-click\/alert-popup":"disable","right-click\/alert-popup\/template":"template-1","right-click\/alert-popup\/title":"Content Copy Protected!","right-click\/alert-popup\/text":"Because of the copyrights associated with the content, right clicking and copying content is not allowed.","right-click\/alert-popup\/color":"","right-click\/alert-popup\/icon":{"icon":"","type":""},"right-click\/audio-alert":"disable","right-click\/audio-alert\/sound":"beep-warning.mp3","right-click\/audio-alert\/volume":50,"right-click\/filters":[{"type":"include","in":"global","user-role":{"administrator":"","editor":"","author":"","contributor":"","subscriber":"","campaign_manager":"","donor":""},"user":"","category":"","taxonomies":{"category":"","post_tag":"","post_format":""},"post":"","post-type":{"post":"","page":"","attachment":""},"url":"","css-class":""}],"images\/disable-right-click":"enable","videos\/disable-right-click":"enable","audios\/disable-right-click":"enable"},"available-pro":{"mode":false},"exclude-hosts":["kochbucher.com"],"is-filter":""};
-var PopupMessageL10n = {"templates":{"feed\/template-1":"<div class=\"cp-alert cp-alert-1\" style=\"--cp-primary-color: #DC1F1F\">\n\t<div class=\"cp-alert-inner\" role=\"alert\">\n\t\t<span class=\"bf-icon bf-icon-svg cp-close bsfi bsfi-close\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-close\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" viewBox=\"0 0 30 30\" id=\"bsfi-close\"><defs><clipPath id=\"b\"><rect width=\"30\" height=\"30\"\/><\/clipPath><\/defs><g id=\"a\" clip-path=\"url(#b)\"><g transform=\"translate(33.913 17.851)\"><path d=\"M16.63,45.221a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7l10.977-11,10.977,11a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7,2.314,2.314,0,0,0,0-3.3l-10.977-11,10.977-11a2.331,2.331,0,1,0-3.293-3.3l-10.977,11-10.977-11a2.331,2.331,0,1,0-3.293,3.3l10.977,11-10.977,11A2.243,2.243,0,0,0,16.63,45.221Z\" transform=\"translate(-49.862 -33.776)\"\/><\/g><\/g><\/symbol><\/svg><\/span><span class=\"bf-icon bf-icon-svg cp-icon bsfi bsfi-warning-1\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-warning-1\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol version=\"1.1\" id=\"bsfi-warning-1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 30 30\" style=\"enable-background:new 0 0 30 30;\" xml:space=\"preserve\">\n<path d=\"M29.5,22.7L18.1,3.6c-0.7-1.1-1.8-1.8-3.1-1.8s-2.4,0.7-3.1,1.7L0.5,22.7c-0.7,1.1-0.7,2.5,0,3.6c0.6,1.1,1.8,1.8,3.1,1.8\n\th22.8c1.3,0,2.5-0.7,3.1-1.8C30.2,25.2,30.2,23.8,29.5,22.7L29.5,22.7z M13.5,11c0-0.8,0.7-1.5,1.5-1.5c0.8,0,1.5,0.7,1.5,1.5v6\n\tc0,0.8-0.7,1.5-1.5,1.5c-0.8,0-1.5-0.7-1.5-1.5V11z M15,23.5c-1,0-1.8-0.8-1.8-1.8c0-1,0.8-1.8,1.8-1.8s1.8,0.8,1.8,1.8\n\tC16.8,22.7,16,23.5,15,23.5z\"\/>\n<\/symbol><\/svg><\/span>\t\t<h4 class=\"cp-alert-heading\">Content Protected!<\/h4>\n\n\t\t<p class=\"cp-alert-message\">The content of this website cannot be copied!<\/p>\n\t<\/div>\n<\/div>","print\/template-1":"<div class=\"cp-alert cp-alert-1\" style=\"--cp-primary-color: #DC1F1F\">\n\t<div class=\"cp-alert-inner\" role=\"alert\">\n\t\t<span class=\"bf-icon bf-icon-svg cp-close bsfi bsfi-close\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-close\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" viewBox=\"0 0 30 30\" id=\"bsfi-close\"><defs><clipPath id=\"b\"><rect width=\"30\" height=\"30\"\/><\/clipPath><\/defs><g id=\"a\" clip-path=\"url(#b)\"><g transform=\"translate(33.913 17.851)\"><path d=\"M16.63,45.221a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7l10.977-11,10.977,11a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7,2.314,2.314,0,0,0,0-3.3l-10.977-11,10.977-11a2.331,2.331,0,1,0-3.293-3.3l-10.977,11-10.977-11a2.331,2.331,0,1,0-3.293,3.3l10.977,11-10.977,11A2.243,2.243,0,0,0,16.63,45.221Z\" transform=\"translate(-49.862 -33.776)\"\/><\/g><\/g><\/symbol><\/svg><\/span><span class=\"bf-icon bf-icon-svg cp-icon bsfi bsfi-warning-1\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-warning-1\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol version=\"1.1\" id=\"bsfi-warning-1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 30 30\" style=\"enable-background:new 0 0 30 30;\" xml:space=\"preserve\">\n<path d=\"M29.5,22.7L18.1,3.6c-0.7-1.1-1.8-1.8-3.1-1.8s-2.4,0.7-3.1,1.7L0.5,22.7c-0.7,1.1-0.7,2.5,0,3.6c0.6,1.1,1.8,1.8,3.1,1.8\n\th22.8c1.3,0,2.5-0.7,3.1-1.8C30.2,25.2,30.2,23.8,29.5,22.7L29.5,22.7z M13.5,11c0-0.8,0.7-1.5,1.5-1.5c0.8,0,1.5,0.7,1.5,1.5v6\n\tc0,0.8-0.7,1.5-1.5,1.5c-0.8,0-1.5-0.7-1.5-1.5V11z M15,23.5c-1,0-1.8-0.8-1.8-1.8c0-1,0.8-1.8,1.8-1.8s1.8,0.8,1.8,1.8\n\tC16.8,22.7,16,23.5,15,23.5z\"\/>\n<\/symbol><\/svg><\/span>\t\t<h4 class=\"cp-alert-heading\">Content Print Protected!<\/h4>\n\n\t\t<p class=\"cp-alert-message\">Because of the copyrights associated with the content, printing content is not allowed.<\/p>\n\t<\/div>\n<\/div>","images\/template-1":"<div class=\"cp-alert cp-alert-1\" style=\"--cp-primary-color: #DC1F1F\">\n\t<div class=\"cp-alert-inner\" role=\"alert\">\n\t\t<span class=\"bf-icon bf-icon-svg cp-close bsfi bsfi-close\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-close\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" viewBox=\"0 0 30 30\" id=\"bsfi-close\"><defs><clipPath id=\"b\"><rect width=\"30\" height=\"30\"\/><\/clipPath><\/defs><g id=\"a\" clip-path=\"url(#b)\"><g transform=\"translate(33.913 17.851)\"><path d=\"M16.63,45.221a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7l10.977-11,10.977,11a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7,2.314,2.314,0,0,0,0-3.3l-10.977-11,10.977-11a2.331,2.331,0,1,0-3.293-3.3l-10.977,11-10.977-11a2.331,2.331,0,1,0-3.293,3.3l10.977,11-10.977,11A2.243,2.243,0,0,0,16.63,45.221Z\" transform=\"translate(-49.862 -33.776)\"\/><\/g><\/g><\/symbol><\/svg><\/span><span class=\"bf-icon bf-icon-svg cp-icon bsfi bsfi-warning-1\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-warning-1\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol version=\"1.1\" id=\"bsfi-warning-1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 30 30\" style=\"enable-background:new 0 0 30 30;\" xml:space=\"preserve\">\n<path d=\"M29.5,22.7L18.1,3.6c-0.7-1.1-1.8-1.8-3.1-1.8s-2.4,0.7-3.1,1.7L0.5,22.7c-0.7,1.1-0.7,2.5,0,3.6c0.6,1.1,1.8,1.8,3.1,1.8\n\th22.8c1.3,0,2.5-0.7,3.1-1.8C30.2,25.2,30.2,23.8,29.5,22.7L29.5,22.7z M13.5,11c0-0.8,0.7-1.5,1.5-1.5c0.8,0,1.5,0.7,1.5,1.5v6\n\tc0,0.8-0.7,1.5-1.5,1.5c-0.8,0-1.5-0.7-1.5-1.5V11z M15,23.5c-1,0-1.8-0.8-1.8-1.8c0-1,0.8-1.8,1.8-1.8s1.8,0.8,1.8,1.8\n\tC16.8,22.7,16,23.5,15,23.5z\"\/>\n<\/symbol><\/svg><\/span>\t\t<h4 class=\"cp-alert-heading\">Images Are Protected!<\/h4>\n\n\t\t<p class=\"cp-alert-message\">Because of the copyrights associated with the content, copying images is not allowed.<\/p>\n\t<\/div>\n<\/div>","audios\/template-1":"<div class=\"cp-alert cp-alert-1\" style=\"--cp-primary-color: #DC1F1F\">\n\t<div class=\"cp-alert-inner\" role=\"alert\">\n\t\t<span class=\"bf-icon bf-icon-svg cp-close bsfi bsfi-close\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-close\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" viewBox=\"0 0 30 30\" id=\"bsfi-close\"><defs><clipPath id=\"b\"><rect width=\"30\" height=\"30\"\/><\/clipPath><\/defs><g id=\"a\" clip-path=\"url(#b)\"><g transform=\"translate(33.913 17.851)\"><path d=\"M16.63,45.221a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7l10.977-11,10.977,11a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7,2.314,2.314,0,0,0,0-3.3l-10.977-11,10.977-11a2.331,2.331,0,1,0-3.293-3.3l-10.977,11-10.977-11a2.331,2.331,0,1,0-3.293,3.3l10.977,11-10.977,11A2.243,2.243,0,0,0,16.63,45.221Z\" transform=\"translate(-49.862 -33.776)\"\/><\/g><\/g><\/symbol><\/svg><\/span><span class=\"bf-icon bf-icon-svg cp-icon bsfi bsfi-warning-1\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-warning-1\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol version=\"1.1\" id=\"bsfi-warning-1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 30 30\" style=\"enable-background:new 0 0 30 30;\" xml:space=\"preserve\">\n<path d=\"M29.5,22.7L18.1,3.6c-0.7-1.1-1.8-1.8-3.1-1.8s-2.4,0.7-3.1,1.7L0.5,22.7c-0.7,1.1-0.7,2.5,0,3.6c0.6,1.1,1.8,1.8,3.1,1.8\n\th22.8c1.3,0,2.5-0.7,3.1-1.8C30.2,25.2,30.2,23.8,29.5,22.7L29.5,22.7z M13.5,11c0-0.8,0.7-1.5,1.5-1.5c0.8,0,1.5,0.7,1.5,1.5v6\n\tc0,0.8-0.7,1.5-1.5,1.5c-0.8,0-1.5-0.7-1.5-1.5V11z M15,23.5c-1,0-1.8-0.8-1.8-1.8c0-1,0.8-1.8,1.8-1.8s1.8,0.8,1.8,1.8\n\tC16.8,22.7,16,23.5,15,23.5z\"\/>\n<\/symbol><\/svg><\/span>\t\t<h4 class=\"cp-alert-heading\">Content Protected!<\/h4>\n\n\t\t<p class=\"cp-alert-message\">The content of this website cannot be copied!<\/p>\n\t<\/div>\n<\/div>","videos\/template-1":"<div class=\"cp-alert cp-alert-1\" style=\"--cp-primary-color: #DC1F1F\">\n\t<div class=\"cp-alert-inner\" role=\"alert\">\n\t\t<span class=\"bf-icon bf-icon-svg cp-close bsfi bsfi-close\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-close\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" viewBox=\"0 0 30 30\" id=\"bsfi-close\"><defs><clipPath id=\"b\"><rect width=\"30\" height=\"30\"\/><\/clipPath><\/defs><g id=\"a\" clip-path=\"url(#b)\"><g transform=\"translate(33.913 17.851)\"><path d=\"M16.63,45.221a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7l10.977-11,10.977,11a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7,2.314,2.314,0,0,0,0-3.3l-10.977-11,10.977-11a2.331,2.331,0,1,0-3.293-3.3l-10.977,11-10.977-11a2.331,2.331,0,1,0-3.293,3.3l10.977,11-10.977,11A2.243,2.243,0,0,0,16.63,45.221Z\" transform=\"translate(-49.862 -33.776)\"\/><\/g><\/g><\/symbol><\/svg><\/span><span class=\"bf-icon bf-icon-svg cp-icon bsfi bsfi-warning-1\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-warning-1\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol version=\"1.1\" id=\"bsfi-warning-1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 30 30\" style=\"enable-background:new 0 0 30 30;\" xml:space=\"preserve\">\n<path d=\"M29.5,22.7L18.1,3.6c-0.7-1.1-1.8-1.8-3.1-1.8s-2.4,0.7-3.1,1.7L0.5,22.7c-0.7,1.1-0.7,2.5,0,3.6c0.6,1.1,1.8,1.8,3.1,1.8\n\th22.8c1.3,0,2.5-0.7,3.1-1.8C30.2,25.2,30.2,23.8,29.5,22.7L29.5,22.7z M13.5,11c0-0.8,0.7-1.5,1.5-1.5c0.8,0,1.5,0.7,1.5,1.5v6\n\tc0,0.8-0.7,1.5-1.5,1.5c-0.8,0-1.5-0.7-1.5-1.5V11z M15,23.5c-1,0-1.8-0.8-1.8-1.8c0-1,0.8-1.8,1.8-1.8s1.8,0.8,1.8,1.8\n\tC16.8,22.7,16,23.5,15,23.5z\"\/>\n<\/symbol><\/svg><\/span>\t\t<h4 class=\"cp-alert-heading\">Videos Are Protected!<\/h4>\n\n\t\t<p class=\"cp-alert-message\">Because of the copyrights associated with the content, copying video is not allowed.<\/p>\n\t<\/div>\n<\/div>","iframe\/template-1":"<div class=\"cp-alert cp-alert-1\" style=\"--cp-primary-color: #DC1F1F\">\n\t<div class=\"cp-alert-inner\" role=\"alert\">\n\t\t<span class=\"bf-icon bf-icon-svg cp-close bsfi bsfi-close\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-close\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" viewBox=\"0 0 30 30\" id=\"bsfi-close\"><defs><clipPath id=\"b\"><rect width=\"30\" height=\"30\"\/><\/clipPath><\/defs><g id=\"a\" clip-path=\"url(#b)\"><g transform=\"translate(33.913 17.851)\"><path d=\"M16.63,45.221a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7l10.977-11,10.977,11a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7,2.314,2.314,0,0,0,0-3.3l-10.977-11,10.977-11a2.331,2.331,0,1,0-3.293-3.3l-10.977,11-10.977-11a2.331,2.331,0,1,0-3.293,3.3l10.977,11-10.977,11A2.243,2.243,0,0,0,16.63,45.221Z\" transform=\"translate(-49.862 -33.776)\"\/><\/g><\/g><\/symbol><\/svg><\/span><span class=\"bf-icon bf-icon-svg cp-icon bsfi bsfi-warning-1\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-warning-1\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol version=\"1.1\" id=\"bsfi-warning-1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 30 30\" style=\"enable-background:new 0 0 30 30;\" xml:space=\"preserve\">\n<path d=\"M29.5,22.7L18.1,3.6c-0.7-1.1-1.8-1.8-3.1-1.8s-2.4,0.7-3.1,1.7L0.5,22.7c-0.7,1.1-0.7,2.5,0,3.6c0.6,1.1,1.8,1.8,3.1,1.8\n\th22.8c1.3,0,2.5-0.7,3.1-1.8C30.2,25.2,30.2,23.8,29.5,22.7L29.5,22.7z M13.5,11c0-0.8,0.7-1.5,1.5-1.5c0.8,0,1.5,0.7,1.5,1.5v6\n\tc0,0.8-0.7,1.5-1.5,1.5c-0.8,0-1.5-0.7-1.5-1.5V11z M15,23.5c-1,0-1.8-0.8-1.8-1.8c0-1,0.8-1.8,1.8-1.8s1.8,0.8,1.8,1.8\n\tC16.8,22.7,16,23.5,15,23.5z\"\/>\n<\/symbol><\/svg><\/span>\t\t<h4 class=\"cp-alert-heading\">iFrame Loading Protected!<\/h4>\n\n\t\t<p class=\"cp-alert-message\">Because of the copyrights associated with the content, loading this site in iframes is not allowed.<\/p>\n\t<\/div>\n<\/div>","text-copy\/template-1":"<div class=\"cp-alert cp-alert-1\" style=\"--cp-primary-color: #DC1F1F\">\n\t<div class=\"cp-alert-inner\" role=\"alert\">\n\t\t<span class=\"bf-icon bf-icon-svg cp-close bsfi bsfi-close\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-close\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" viewBox=\"0 0 30 30\" id=\"bsfi-close\"><defs><clipPath id=\"b\"><rect width=\"30\" height=\"30\"\/><\/clipPath><\/defs><g id=\"a\" clip-path=\"url(#b)\"><g transform=\"translate(33.913 17.851)\"><path d=\"M16.63,45.221a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7l10.977-11,10.977,11a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7,2.314,2.314,0,0,0,0-3.3l-10.977-11,10.977-11a2.331,2.331,0,1,0-3.293-3.3l-10.977,11-10.977-11a2.331,2.331,0,1,0-3.293,3.3l10.977,11-10.977,11A2.243,2.243,0,0,0,16.63,45.221Z\" transform=\"translate(-49.862 -33.776)\"\/><\/g><\/g><\/symbol><\/svg><\/span><span class=\"bf-icon bf-icon-svg cp-icon bsfi bsfi-warning-1\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-warning-1\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol version=\"1.1\" id=\"bsfi-warning-1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 30 30\" style=\"enable-background:new 0 0 30 30;\" xml:space=\"preserve\">\n<path d=\"M29.5,22.7L18.1,3.6c-0.7-1.1-1.8-1.8-3.1-1.8s-2.4,0.7-3.1,1.7L0.5,22.7c-0.7,1.1-0.7,2.5,0,3.6c0.6,1.1,1.8,1.8,3.1,1.8\n\th22.8c1.3,0,2.5-0.7,3.1-1.8C30.2,25.2,30.2,23.8,29.5,22.7L29.5,22.7z M13.5,11c0-0.8,0.7-1.5,1.5-1.5c0.8,0,1.5,0.7,1.5,1.5v6\n\tc0,0.8-0.7,1.5-1.5,1.5c-0.8,0-1.5-0.7-1.5-1.5V11z M15,23.5c-1,0-1.8-0.8-1.8-1.8c0-1,0.8-1.8,1.8-1.8s1.8,0.8,1.8,1.8\n\tC16.8,22.7,16,23.5,15,23.5z\"\/>\n<\/symbol><\/svg><\/span>\t\t<h4 class=\"cp-alert-heading\">Content Copy Protected!<\/h4>\n\n\t\t<p class=\"cp-alert-message\">Because of the copyrights associated with the content, copying content is not allowed.<\/p>\n\t<\/div>\n<\/div>","extensions\/template-1":"<div class=\"cp-alert cp-alert-1\" style=\"--cp-primary-color: #DC1F1F\">\n\t<div class=\"cp-alert-inner\" role=\"alert\">\n\t\t<span class=\"bf-icon bf-icon-svg cp-close bsfi bsfi-close\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-close\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" viewBox=\"0 0 30 30\" id=\"bsfi-close\"><defs><clipPath id=\"b\"><rect width=\"30\" height=\"30\"\/><\/clipPath><\/defs><g id=\"a\" clip-path=\"url(#b)\"><g transform=\"translate(33.913 17.851)\"><path d=\"M16.63,45.221a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7l10.977-11,10.977,11a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7,2.314,2.314,0,0,0,0-3.3l-10.977-11,10.977-11a2.331,2.331,0,1,0-3.293-3.3l-10.977,11-10.977-11a2.331,2.331,0,1,0-3.293,3.3l10.977,11-10.977,11A2.243,2.243,0,0,0,16.63,45.221Z\" transform=\"translate(-49.862 -33.776)\"\/><\/g><\/g><\/symbol><\/svg><\/span><span class=\"bf-icon bf-icon-svg cp-icon bsfi bsfi-warning-1\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-warning-1\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol version=\"1.1\" id=\"bsfi-warning-1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 30 30\" style=\"enable-background:new 0 0 30 30;\" xml:space=\"preserve\">\n<path d=\"M29.5,22.7L18.1,3.6c-0.7-1.1-1.8-1.8-3.1-1.8s-2.4,0.7-3.1,1.7L0.5,22.7c-0.7,1.1-0.7,2.5,0,3.6c0.6,1.1,1.8,1.8,3.1,1.8\n\th22.8c1.3,0,2.5-0.7,3.1-1.8C30.2,25.2,30.2,23.8,29.5,22.7L29.5,22.7z M13.5,11c0-0.8,0.7-1.5,1.5-1.5c0.8,0,1.5,0.7,1.5,1.5v6\n\tc0,0.8-0.7,1.5-1.5,1.5c-0.8,0-1.5-0.7-1.5-1.5V11z M15,23.5c-1,0-1.8-0.8-1.8-1.8c0-1,0.8-1.8,1.8-1.8s1.8,0.8,1.8,1.8\n\tC16.8,22.7,16,23.5,15,23.5z\"\/>\n<\/symbol><\/svg><\/span>\t\t<h4 class=\"cp-alert-heading\">Content Copy Protected!<\/h4>\n\n\t\t<p class=\"cp-alert-message\">Because of the copyrights associated with the content, copying content is not allowed.<\/p>\n\t<\/div>\n<\/div>","javascript\/template-1":"<div class=\"cp-alert cp-alert-1\" style=\"--cp-primary-color: #DC1F1F\">\n\t<div class=\"cp-alert-inner\" role=\"alert\">\n\t\t<span class=\"bf-icon bf-icon-svg cp-close bsfi bsfi-close\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-close\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" viewBox=\"0 0 30 30\" id=\"bsfi-close\"><defs><clipPath id=\"b\"><rect width=\"30\" height=\"30\"\/><\/clipPath><\/defs><g id=\"a\" clip-path=\"url(#b)\"><g transform=\"translate(33.913 17.851)\"><path d=\"M16.63,45.221a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7l10.977-11,10.977,11a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7,2.314,2.314,0,0,0,0-3.3l-10.977-11,10.977-11a2.331,2.331,0,1,0-3.293-3.3l-10.977,11-10.977-11a2.331,2.331,0,1,0-3.293,3.3l10.977,11-10.977,11A2.243,2.243,0,0,0,16.63,45.221Z\" transform=\"translate(-49.862 -33.776)\"\/><\/g><\/g><\/symbol><\/svg><\/span><span class=\"bf-icon bf-icon-svg cp-icon bsfi bsfi-warning-1\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-warning-1\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol version=\"1.1\" id=\"bsfi-warning-1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 30 30\" style=\"enable-background:new 0 0 30 30;\" xml:space=\"preserve\">\n<path d=\"M29.5,22.7L18.1,3.6c-0.7-1.1-1.8-1.8-3.1-1.8s-2.4,0.7-3.1,1.7L0.5,22.7c-0.7,1.1-0.7,2.5,0,3.6c0.6,1.1,1.8,1.8,3.1,1.8\n\th22.8c1.3,0,2.5-0.7,3.1-1.8C30.2,25.2,30.2,23.8,29.5,22.7L29.5,22.7z M13.5,11c0-0.8,0.7-1.5,1.5-1.5c0.8,0,1.5,0.7,1.5,1.5v6\n\tc0,0.8-0.7,1.5-1.5,1.5c-0.8,0-1.5-0.7-1.5-1.5V11z M15,23.5c-1,0-1.8-0.8-1.8-1.8c0-1,0.8-1.8,1.8-1.8s1.8,0.8,1.8,1.8\n\tC16.8,22.7,16,23.5,15,23.5z\"\/>\n<\/symbol><\/svg><\/span>\t\t<h4 class=\"cp-alert-heading\">Content Protected!<\/h4>\n\n\t\t<p class=\"cp-alert-message\">Because of the copyrights associated with the content, disabling javascript is not allowed.<\/p>\n\t<\/div>\n<\/div>","right-click\/template-1":"<div class=\"cp-alert cp-alert-1\" style=\"--cp-primary-color: #DC1F1F\">\n\t<div class=\"cp-alert-inner\" role=\"alert\">\n\t\t<span class=\"bf-icon bf-icon-svg cp-close bsfi bsfi-close\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-close\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" viewBox=\"0 0 30 30\" id=\"bsfi-close\"><defs><clipPath id=\"b\"><rect width=\"30\" height=\"30\"\/><\/clipPath><\/defs><g id=\"a\" clip-path=\"url(#b)\"><g transform=\"translate(33.913 17.851)\"><path d=\"M16.63,45.221a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7l10.977-11,10.977,11a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7,2.314,2.314,0,0,0,0-3.3l-10.977-11,10.977-11a2.331,2.331,0,1,0-3.293-3.3l-10.977,11-10.977-11a2.331,2.331,0,1,0-3.293,3.3l10.977,11-10.977,11A2.243,2.243,0,0,0,16.63,45.221Z\" transform=\"translate(-49.862 -33.776)\"\/><\/g><\/g><\/symbol><\/svg><\/span><span class=\"bf-icon bf-icon-svg cp-icon bsfi bsfi-warning-1\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-warning-1\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol version=\"1.1\" id=\"bsfi-warning-1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 30 30\" style=\"enable-background:new 0 0 30 30;\" xml:space=\"preserve\">\n<path d=\"M29.5,22.7L18.1,3.6c-0.7-1.1-1.8-1.8-3.1-1.8s-2.4,0.7-3.1,1.7L0.5,22.7c-0.7,1.1-0.7,2.5,0,3.6c0.6,1.1,1.8,1.8,3.1,1.8\n\th22.8c1.3,0,2.5-0.7,3.1-1.8C30.2,25.2,30.2,23.8,29.5,22.7L29.5,22.7z M13.5,11c0-0.8,0.7-1.5,1.5-1.5c0.8,0,1.5,0.7,1.5,1.5v6\n\tc0,0.8-0.7,1.5-1.5,1.5c-0.8,0-1.5-0.7-1.5-1.5V11z M15,23.5c-1,0-1.8-0.8-1.8-1.8c0-1,0.8-1.8,1.8-1.8s1.8,0.8,1.8,1.8\n\tC16.8,22.7,16,23.5,15,23.5z\"\/>\n<\/symbol><\/svg><\/span>\t\t<h4 class=\"cp-alert-heading\">Content Copy Protected!<\/h4>\n\n\t\t<p class=\"cp-alert-message\">Because of the copyrights associated with the content, right clicking and copying content is not allowed.<\/p>\n\t<\/div>\n<\/div>","view-source\/template-1":"<div class=\"cp-alert cp-alert-1\" style=\"--cp-primary-color: #DC1F1F\">\n\t<div class=\"cp-alert-inner\" role=\"alert\">\n\t\t<span class=\"bf-icon bf-icon-svg cp-close bsfi bsfi-close\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-close\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" viewBox=\"0 0 30 30\" id=\"bsfi-close\"><defs><clipPath id=\"b\"><rect width=\"30\" height=\"30\"\/><\/clipPath><\/defs><g id=\"a\" clip-path=\"url(#b)\"><g transform=\"translate(33.913 17.851)\"><path d=\"M16.63,45.221a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7l10.977-11,10.977,11a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7,2.314,2.314,0,0,0,0-3.3l-10.977-11,10.977-11a2.331,2.331,0,1,0-3.293-3.3l-10.977,11-10.977-11a2.331,2.331,0,1,0-3.293,3.3l10.977,11-10.977,11A2.243,2.243,0,0,0,16.63,45.221Z\" transform=\"translate(-49.862 -33.776)\"\/><\/g><\/g><\/symbol><\/svg><\/span><span class=\"bf-icon bf-icon-svg cp-icon bsfi bsfi-warning-1\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-warning-1\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol version=\"1.1\" id=\"bsfi-warning-1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 30 30\" style=\"enable-background:new 0 0 30 30;\" xml:space=\"preserve\">\n<path d=\"M29.5,22.7L18.1,3.6c-0.7-1.1-1.8-1.8-3.1-1.8s-2.4,0.7-3.1,1.7L0.5,22.7c-0.7,1.1-0.7,2.5,0,3.6c0.6,1.1,1.8,1.8,3.1,1.8\n\th22.8c1.3,0,2.5-0.7,3.1-1.8C30.2,25.2,30.2,23.8,29.5,22.7L29.5,22.7z M13.5,11c0-0.8,0.7-1.5,1.5-1.5c0.8,0,1.5,0.7,1.5,1.5v6\n\tc0,0.8-0.7,1.5-1.5,1.5c-0.8,0-1.5-0.7-1.5-1.5V11z M15,23.5c-1,0-1.8-0.8-1.8-1.8c0-1,0.8-1.8,1.8-1.8s1.8,0.8,1.8,1.8\n\tC16.8,22.7,16,23.5,15,23.5z\"\/>\n<\/symbol><\/svg><\/span>\t\t<h4 class=\"cp-alert-heading\">Source Code Protected!<\/h4>\n\n\t\t<p class=\"cp-alert-message\">Because of the copyrights associated with the content, viewing source code is not allowed.<\/p>\n\t<\/div>\n<\/div>","phone-number\/template-1":"<div class=\"cp-alert cp-alert-1\" style=\"--cp-primary-color: #DC1F1F\">\n\t<div class=\"cp-alert-inner\" role=\"alert\">\n\t\t<span class=\"bf-icon bf-icon-svg cp-close bsfi bsfi-close\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-close\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" viewBox=\"0 0 30 30\" id=\"bsfi-close\"><defs><clipPath id=\"b\"><rect width=\"30\" height=\"30\"\/><\/clipPath><\/defs><g id=\"a\" clip-path=\"url(#b)\"><g transform=\"translate(33.913 17.851)\"><path d=\"M16.63,45.221a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7l10.977-11,10.977,11a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7,2.314,2.314,0,0,0,0-3.3l-10.977-11,10.977-11a2.331,2.331,0,1,0-3.293-3.3l-10.977,11-10.977-11a2.331,2.331,0,1,0-3.293,3.3l10.977,11-10.977,11A2.243,2.243,0,0,0,16.63,45.221Z\" transform=\"translate(-49.862 -33.776)\"\/><\/g><\/g><\/symbol><\/svg><\/span><span class=\"bf-icon bf-icon-svg cp-icon bsfi bsfi-warning-1\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-warning-1\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol version=\"1.1\" id=\"bsfi-warning-1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 30 30\" style=\"enable-background:new 0 0 30 30;\" xml:space=\"preserve\">\n<path d=\"M29.5,22.7L18.1,3.6c-0.7-1.1-1.8-1.8-3.1-1.8s-2.4,0.7-3.1,1.7L0.5,22.7c-0.7,1.1-0.7,2.5,0,3.6c0.6,1.1,1.8,1.8,3.1,1.8\n\th22.8c1.3,0,2.5-0.7,3.1-1.8C30.2,25.2,30.2,23.8,29.5,22.7L29.5,22.7z M13.5,11c0-0.8,0.7-1.5,1.5-1.5c0.8,0,1.5,0.7,1.5,1.5v6\n\tc0,0.8-0.7,1.5-1.5,1.5c-0.8,0-1.5-0.7-1.5-1.5V11z M15,23.5c-1,0-1.8-0.8-1.8-1.8c0-1,0.8-1.8,1.8-1.8s1.8,0.8,1.8,1.8\n\tC16.8,22.7,16,23.5,15,23.5z\"\/>\n<\/symbol><\/svg><\/span>\t\t<h4 class=\"cp-alert-heading\">Content Protected!<\/h4>\n\n\t\t<p class=\"cp-alert-message\">The content of this website cannot be copied!<\/p>\n\t<\/div>\n<\/div>","idm-extension\/template-1":"<div class=\"cp-alert cp-alert-1\" style=\"--cp-primary-color: #DC1F1F\">\n\t<div class=\"cp-alert-inner\" role=\"alert\">\n\t\t<span class=\"bf-icon bf-icon-svg cp-close bsfi bsfi-close\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-close\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" viewBox=\"0 0 30 30\" id=\"bsfi-close\"><defs><clipPath id=\"b\"><rect width=\"30\" height=\"30\"\/><\/clipPath><\/defs><g id=\"a\" clip-path=\"url(#b)\"><g transform=\"translate(33.913 17.851)\"><path d=\"M16.63,45.221a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7l10.977-11,10.977,11a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7,2.314,2.314,0,0,0,0-3.3l-10.977-11,10.977-11a2.331,2.331,0,1,0-3.293-3.3l-10.977,11-10.977-11a2.331,2.331,0,1,0-3.293,3.3l10.977,11-10.977,11A2.243,2.243,0,0,0,16.63,45.221Z\" transform=\"translate(-49.862 -33.776)\"\/><\/g><\/g><\/symbol><\/svg><\/span><span class=\"bf-icon bf-icon-svg cp-icon bsfi bsfi-warning-1\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-warning-1\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol version=\"1.1\" id=\"bsfi-warning-1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 30 30\" style=\"enable-background:new 0 0 30 30;\" xml:space=\"preserve\">\n<path d=\"M29.5,22.7L18.1,3.6c-0.7-1.1-1.8-1.8-3.1-1.8s-2.4,0.7-3.1,1.7L0.5,22.7c-0.7,1.1-0.7,2.5,0,3.6c0.6,1.1,1.8,1.8,3.1,1.8\n\th22.8c1.3,0,2.5-0.7,3.1-1.8C30.2,25.2,30.2,23.8,29.5,22.7L29.5,22.7z M13.5,11c0-0.8,0.7-1.5,1.5-1.5c0.8,0,1.5,0.7,1.5,1.5v6\n\tc0,0.8-0.7,1.5-1.5,1.5c-0.8,0-1.5-0.7-1.5-1.5V11z M15,23.5c-1,0-1.8-0.8-1.8-1.8c0-1,0.8-1.8,1.8-1.8s1.8,0.8,1.8,1.8\n\tC16.8,22.7,16,23.5,15,23.5z\"\/>\n<\/symbol><\/svg><\/span>\t\t<h4 class=\"cp-alert-heading\">IDM Extension Detected!<\/h4>\n\n\t\t<p class=\"cp-alert-message\">Because of the copyrights associated with the content, IDM browser extension is not allowed while using our site. Please disable IDM extension and visit again.<\/p>\n\t<\/div>\n<\/div>","email-address\/template-1":"<div class=\"cp-alert cp-alert-1\" style=\"--cp-primary-color: #DC1F1F\">\n\t<div class=\"cp-alert-inner\" role=\"alert\">\n\t\t<span class=\"bf-icon bf-icon-svg cp-close bsfi bsfi-close\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-close\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" viewBox=\"0 0 30 30\" id=\"bsfi-close\"><defs><clipPath id=\"b\"><rect width=\"30\" height=\"30\"\/><\/clipPath><\/defs><g id=\"a\" clip-path=\"url(#b)\"><g transform=\"translate(33.913 17.851)\"><path d=\"M16.63,45.221a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7l10.977-11,10.977,11a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7,2.314,2.314,0,0,0,0-3.3l-10.977-11,10.977-11a2.331,2.331,0,1,0-3.293-3.3l-10.977,11-10.977-11a2.331,2.331,0,1,0-3.293,3.3l10.977,11-10.977,11A2.243,2.243,0,0,0,16.63,45.221Z\" transform=\"translate(-49.862 -33.776)\"\/><\/g><\/g><\/symbol><\/svg><\/span><span class=\"bf-icon bf-icon-svg cp-icon bsfi bsfi-warning-1\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-warning-1\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol version=\"1.1\" id=\"bsfi-warning-1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 30 30\" style=\"enable-background:new 0 0 30 30;\" xml:space=\"preserve\">\n<path d=\"M29.5,22.7L18.1,3.6c-0.7-1.1-1.8-1.8-3.1-1.8s-2.4,0.7-3.1,1.7L0.5,22.7c-0.7,1.1-0.7,2.5,0,3.6c0.6,1.1,1.8,1.8,3.1,1.8\n\th22.8c1.3,0,2.5-0.7,3.1-1.8C30.2,25.2,30.2,23.8,29.5,22.7L29.5,22.7z M13.5,11c0-0.8,0.7-1.5,1.5-1.5c0.8,0,1.5,0.7,1.5,1.5v6\n\tc0,0.8-0.7,1.5-1.5,1.5c-0.8,0-1.5-0.7-1.5-1.5V11z M15,23.5c-1,0-1.8-0.8-1.8-1.8c0-1,0.8-1.8,1.8-1.8s1.8,0.8,1.8,1.8\n\tC16.8,22.7,16,23.5,15,23.5z\"\/>\n<\/symbol><\/svg><\/span>\t\t<h4 class=\"cp-alert-heading\">Content Protected!<\/h4>\n\n\t\t<p class=\"cp-alert-message\">The content of this website cannot be copied!<\/p>\n\t<\/div>\n<\/div>","developer-tools\/template-1":"<div class=\"cp-alert cp-alert-1\" style=\"--cp-primary-color: #DC1F1F\">\n\t<div class=\"cp-alert-inner\" role=\"alert\">\n\t\t<span class=\"bf-icon bf-icon-svg cp-close bsfi bsfi-close\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-close\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" viewBox=\"0 0 30 30\" id=\"bsfi-close\"><defs><clipPath id=\"b\"><rect width=\"30\" height=\"30\"\/><\/clipPath><\/defs><g id=\"a\" clip-path=\"url(#b)\"><g transform=\"translate(33.913 17.851)\"><path d=\"M16.63,45.221a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7l10.977-11,10.977,11a2.4,2.4,0,0,0,1.668.7,2.29,2.29,0,0,0,1.668-.7,2.314,2.314,0,0,0,0-3.3l-10.977-11,10.977-11a2.331,2.331,0,1,0-3.293-3.3l-10.977,11-10.977-11a2.331,2.331,0,1,0-3.293,3.3l10.977,11-10.977,11A2.243,2.243,0,0,0,16.63,45.221Z\" transform=\"translate(-49.862 -33.776)\"\/><\/g><\/g><\/symbol><\/svg><\/span><span class=\"bf-icon bf-icon-svg cp-icon bsfi bsfi-warning-1\" ><svg class=\"bf-svg-tag\"><use xlink:href=\"#bsfi-warning-1\"><\/use><\/svg><svg width=\"0\" height=\"0\" class=\"hidden\"><symbol version=\"1.1\" id=\"bsfi-warning-1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 30 30\" style=\"enable-background:new 0 0 30 30;\" xml:space=\"preserve\">\n<path d=\"M29.5,22.7L18.1,3.6c-0.7-1.1-1.8-1.8-3.1-1.8s-2.4,0.7-3.1,1.7L0.5,22.7c-0.7,1.1-0.7,2.5,0,3.6c0.6,1.1,1.8,1.8,3.1,1.8\n\th22.8c1.3,0,2.5-0.7,3.1-1.8C30.2,25.2,30.2,23.8,29.5,22.7L29.5,22.7z M13.5,11c0-0.8,0.7-1.5,1.5-1.5c0.8,0,1.5,0.7,1.5,1.5v6\n\tc0,0.8-0.7,1.5-1.5,1.5c-0.8,0-1.5-0.7-1.5-1.5V11z M15,23.5c-1,0-1.8-0.8-1.8-1.8c0-1,0.8-1.8,1.8-1.8s1.8,0.8,1.8,1.8\n\tC16.8,22.7,16,23.5,15,23.5z\"\/>\n<\/symbol><\/svg><\/span>\t\t<h4 class=\"cp-alert-heading\">Content Copy Protected!<\/h4>\n\n\t\t<p class=\"cp-alert-message\">Because of the copyrights associated with the content, the developer tools is not allowed.<\/p>\n\t<\/div>\n<\/div>"},"ajax-url":"https:\/\/kochbucher.com\/wp-admin\/admin-ajax.php","nonce":"ee6e42ce9f"};
-var ViewSourceL10n = {"options":{"view-source":"enable","view-source\/type":"hotkeys","view-source\/message\/title":"Source Code Protected","view-source\/message\/text":"\u00a9 Copyright (C) 2022 %SITENAME% - All Rights Reserved\n\nThe %SITELINK% site may not be copied or duplicated in whole or part by any means\nwithout express prior agreement in writing.\n\nSome photographs or documents contained on the site may be the copyrighted property of others;\nAcknowledgement of those copyrights is hereby given. All such material is used with the permission of the owner.","view-source\/alert-popup":"enable","view-source\/alert-popup\/template":"template-1","view-source\/alert-popup\/title":"Source Code Protected!","view-source\/alert-popup\/text":"Because of the copyrights associated with the content, viewing source code is not allowed.","view-source\/alert-popup\/color":"","view-source\/alert-popup\/icon":{"icon":"","type":""},"view-source\/audio-alert":"disable","view-source\/audio-alert\/sound":"beep-warning.mp3","view-source\/audio-alert\/volume":50,"view-source\/filters":[{"type":"include","in":"global","user-role":{"administrator":"","editor":"","author":"","contributor":"","subscriber":"","campaign_manager":"","donor":""},"user":"","category":"","taxonomies":{"category":"","post_tag":"","post_format":""},"post":"","post-type":{"post":"","page":"","attachment":""},"url":""}]},"disabled-shortcuts":["ctrl_u","cmd_option_u"],"available-pro":""};
-var DevToolsL10n = {"options":{"developer-tools":"enable","developer-tools\/type":"hotkeys","developer-tools\/redirect\/page":"","developer-tools\/filters":[{"type":"include","in":"global","user-role":{"administrator":"","editor":"","author":"","contributor":"","subscriber":"","campaign_manager":"","donor":""},"user":"","category":"","taxonomies":{"category":"","post_tag":"","post_format":""},"post":"","post-type":{"post":"","page":"","attachment":""},"url":""}],"developer-tools\/alert-popup":"enable","developer-tools\/alert-popup\/template":"template-1","developer-tools\/alert-popup\/title":"Content Copy Protected!","developer-tools\/alert-popup\/text":"Because of the copyrights associated with the content, the developer tools is not allowed.","developer-tools\/alert-popup\/color":"","developer-tools\/alert-popup\/icon":{"icon":"","type":""}},"disabled-shortcuts":["{","ctrl_{","ctrl_shift_c","ctrl_shift_i","ctrl_shift_j","cmd_shift_4","cmd_shift_3","cmd_alt_i","cmd_alt_u","cmd_shift_c","cmd_ctrl_shift_3","cmd_shift_4_space","cmd_option_i","cmd_option_j","cmd_option_c"],"available-pro":""};
+var ajax_object = {"ajaxurl":"https:\/\/kochbucher.com\/wp-admin\/admin-ajax.php","link":"https:\/\/kochbucher.com\/eierlikor-pralinen\/"};
 /* ]]> */
 </script>
-<script type="text/javascript" src="https://kochbucher.com/wp-content/plugins/wpshield-content-protector/dist/app.min.js?ver=1702889111" id="wpshield-content-protector-components-js-js"></script>
+<script type="text/javascript" src="https://kochbucher.com/wp-content/plugins/wccp-pro/js/admin_bar_ajax.js?ver=6.4.2" id="wccp_pro_admin_bar_ajax-js"></script>
 </body>
 </html>

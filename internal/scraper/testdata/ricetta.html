@@ -52,7 +52,7 @@
                 type: "POST",
                 url: "google_recaptcha.ashx",
                 data: {
-                    securityToken: '41057fa9-efeb-4e7f-9d0a-5fd9ccdd9b3a',
+                    securityToken: '6952b71b-bf58-4179-8256-5d424399747b',
                     
                     name: name,
                     email: email,
@@ -1447,7 +1447,7 @@ Mettiamola in un mixer e aggiungiamo il latte <strong>[2]</strong></p>
                                 var formData = new FormData();
                                 formData.append('image', $('input[type=file]')[0].files[0]);
                                 $.ajax({
-                                    url: '/photoup.ashx?recipe=2982&title=' + $('#photoUploadModalCenterTitle').val() + '&securityToken=41057fa9-efeb-4e7f-9d0a-5fd9ccdd9b3a',
+                                    url: '/photoup.ashx?recipe=2982&title=' + $('#photoUploadModalCenterTitle').val() + '&securityToken=6952b71b-bf58-4179-8256-5d424399747b',
                                     data: formData,  // The form with the file inputs.
                                     cache: false,
                                     contentType: false,
@@ -2216,7 +2216,7 @@ appearance: none;
             var maxRating = 5;
             var callback = function (rating) {
                 jQuery.ajaxSetup({ async: false });
-                var result = $.post('/rating.ashx?securityToken=41057fa9-efeb-4e7f-9d0a-5fd9ccdd9b3a&recipe=2982&rating=' + rating);
+                var result = $.post('/rating.ashx?securityToken=6952b71b-bf58-4179-8256-5d424399747b&recipe=2982&rating=' + rating);
                 /* alert(result.responseText); */
                 ratingElement.innerHTML = "<strong>" + result.responseText + "</strong>";
                 resvot.innerHTML = "<span>&nbsp;</span> ";
@@ -2226,7 +2226,7 @@ appearance: none;
 
         function cookbook(id) {
         	jQuery.ajaxSetup({ async: false });
-        	var result = $.get('/cookbook.ashx?securityToken=41057fa9-efeb-4e7f-9d0a-5fd9ccdd9b3a&recipe=' + id);
+        	var result = $.get('/cookbook.ashx?securityToken=6952b71b-bf58-4179-8256-5d424399747b&recipe=' + id);
 			if(result.responseText == "")
 				document.location = '/users/login.aspx?ReturnUrl=%2fpan-d-arancio';
 			else {alert(result.responseText); $(".icon-login").fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200); }
@@ -2367,7 +2367,7 @@ setTimeout(function() {
                 })
                 .then(function (token) {
                     var xhr = new XMLHttpRequest();
-                    xhr.open("GET", "/notifyToken.ashx?securityToken=4hjjo3uvpjzqckbmkgah3tvx&pageUrl=/pan-d-arancio&token=" + token, true);
+                    xhr.open("GET", "/notifyToken.ashx?securityToken=yv3m3p2yogup0fhb5ulh3zt5&pageUrl=/pan-d-arancio&token=" + token, true);
                 xhr.send(null);
 
                 console.log(token);

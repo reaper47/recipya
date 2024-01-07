@@ -304,6 +304,7 @@ type Nutrition struct {
 	Calories           string
 	Cholesterol        string
 	Fiber              string
+	IsPerServing       bool
 	Protein            string
 	SaturatedFat       string
 	Sodium             string
@@ -325,6 +326,28 @@ func (n *Nutrition) Equal(other Nutrition) bool {
 		n.TotalCarbohydrates == other.TotalCarbohydrates &&
 		n.TotalFat == other.TotalFat &&
 		n.UnsaturatedFat == other.UnsaturatedFat
+}
+
+// Scale scales the nutrition by the given multiplier.
+func (n *Nutrition) Scale(multiplier float64) {
+	scale := func(s string) string {
+		f, err := strconv.ParseFloat(s, 64)
+		if err != nil {
+			return s
+		}
+		return extensions.FloatToString(f*multiplier, "%.2f")
+	}
+
+	n.Calories = regex.Digit.ReplaceAllStringFunc(n.Calories, scale)
+	n.Cholesterol = regex.Digit.ReplaceAllStringFunc(n.Cholesterol, scale)
+	n.Fiber = regex.Digit.ReplaceAllStringFunc(n.Fiber, scale)
+	n.Protein = regex.Digit.ReplaceAllStringFunc(n.Protein, scale)
+	n.SaturatedFat = regex.Digit.ReplaceAllStringFunc(n.SaturatedFat, scale)
+	n.Sodium = regex.Digit.ReplaceAllStringFunc(n.Sodium, scale)
+	n.Sugars = regex.Digit.ReplaceAllStringFunc(n.Sugars, scale)
+	n.TotalCarbohydrates = regex.Digit.ReplaceAllStringFunc(n.TotalCarbohydrates, scale)
+	n.TotalFat = regex.Digit.ReplaceAllStringFunc(n.TotalFat, scale)
+	n.UnsaturatedFat = regex.Digit.ReplaceAllStringFunc(n.UnsaturatedFat, scale)
 }
 
 // Schema creates the schema representation of the Nutrition.

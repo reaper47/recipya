@@ -169,6 +169,7 @@ func TestScraper_K(t *testing.T) {
 				},
 				PrepTime: "PT45M",
 				URL:      "https://www.kitchenstories.com/de/rezepte/valencianische-paella",
+				Yield:    models.Yield{Value: 1},
 			},
 		},
 		{

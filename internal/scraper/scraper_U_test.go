@@ -53,6 +53,7 @@ func TestScraper_U(t *testing.T) {
 				Name:     "Breekbrood met kaasfondue",
 				PrepTime: "PT0H45M",
 				URL:      "https://uitpaulineskeuken.nl/recept/breekbrood-met-kaasfondue",
+				Yield:    models.Yield{Value: 1},
 			},
 		},
 		{

@@ -520,8 +520,9 @@ func TestScraper_T(t *testing.T) {
 				Image: models.Image{
 					Value: "https://thekitchencommunity.org/wp-content/uploads/2023/11/Turkey-Salad-1200x800.jpg",
 				},
-				Name: "Turkey Salad Recipe",
-				URL:  "https://thekitchencommunity.org/turkey-salad-recipe/",
+				Name:  "Turkey Salad Recipe",
+				URL:   "https://thekitchencommunity.org/turkey-salad-recipe/",
+				Yield: models.Yield{Value: 1},
 			},
 		},
 		{
@@ -762,7 +763,7 @@ func TestScraper_T(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "dinner, soup, diary-free, gluten-free, one-pot-meals"},
+				Category:      models.Category{Value: "dinner"},
 				CookTime:      "PT1H",
 				Cuisine:       models.Cuisine{Value: "Mexican"},
 				DateModified:  "2023-11-23",

@@ -426,6 +426,7 @@ func TestScraper_F(t *testing.T) {
 				},
 				PrepTime: "PT30M",
 				URL:      "https://www.food.com/recipe/jim-lahey-s-no-knead-pizza-margherita-382696",
+				Yield:    models.Yield{Value: 1},
 			},
 		},
 		{
@@ -762,11 +763,11 @@ func TestScraper_F(t *testing.T) {
 				},
 				Instructions: models.Instructions{
 					Values: []string{
-						"1- Das Ei mit dem Honig, Orangenblütenwasser und Olivenöl rühren....",
-						"2- Kleine Teigkugels (25 bis 30g ) nehmen, wie Knete in die Länge ausrollen. Sie sollten eine " +
+						"Das Ei mit dem Honig, Orangenblütenwasser und Olivenöl rühren....",
+						"Kleine Teigkugels (25 bis 30g ) nehmen, wie Knete in die Länge ausrollen. Sie sollten eine " +
 							"ovale Form oder besser eine Schiff-Form bekommen. Die geformten Navette auf " +
 							"einem mit Backpapier belegten Backblech legen. Die Navettes in der Mitte entlang anschneiden.",
-						"3- Backen: 180°C Umluft für 12 bis 15 Minuten. (es kommt darauf an, ob Ihr eure Navettes brauner " +
+						"Backen: 180°C Umluft für 12 bis 15 Minuten. (es kommt darauf an, ob Ihr eure Navettes brauner " +
 							"mögt wie ich oder lieber hell!)",
 					},
 				},
@@ -782,7 +783,7 @@ func TestScraper_F(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Fika, äppelpaj"},
+				Category:      models.Category{Value: "Fika"},
 				DateCreated:   "2020-08-27T17:18:00.000000Z",
 				DateModified:  "2023-01-07T09:01:57.000000Z",
 				DatePublished: "2020-08-27T17:18:00.000000Z",

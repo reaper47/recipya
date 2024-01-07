@@ -8,6 +8,7 @@ import (
 	"path"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"testing"
 )
 
@@ -26,10 +27,10 @@ func test(t *testing.T, tc testcase) {
 	}()
 
 	// Uncomment the two lines below to refresh the HTML files to test against any changes the sites have brought.
-	/*updateHTMLFile(t, tc.in)
+	/*updateHTMLFile(t, tc.name, tc.in)
 	return*/
 
-	actual := testFile(t, tc.in)
+	actual := testFile(t, tc.name, tc.in)
 
 	if !cmp.Equal(actual, tc.want) {
 		t.Logf(cmp.Diff(actual, tc.want))
@@ -37,13 +38,13 @@ func test(t *testing.T, tc testcase) {
 	}
 }
 
-func testFile(t *testing.T, in string) models.RecipeSchema {
+func testFile(t *testing.T, name, url string) models.RecipeSchema {
 	t.Helper()
-	host := getHost(in)
+	host, _, _ := strings.Cut(name, ".")
 	_, fileName, _, _ := runtime.Caller(0)
 	f, err := os.Open(filepath.Join(path.Dir(fileName), "testdata", host+".html"))
 	if err != nil {
-		t.Fatalf("%s open file: %s", in, err)
+		t.Fatalf("%s open file: %s", name, err)
 	}
 	defer f.Close()
 
@@ -52,20 +53,20 @@ func testFile(t *testing.T, in string) models.RecipeSchema {
 		t.Fatalf("%s could not parse HTML: %s", host, err)
 	}
 
-	actual, err := scrapeWebsite(doc, getHost(in))
+	actual, err := scrapeWebsite(doc, getHost(url))
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	if actual.URL == "" {
-		actual.URL = in
+		actual.URL = url
 	}
 
 	actual.AtContext = atContext
 	return actual
 }
 
-/*func updateHTMLFile(t *testing.T, url string) {
+/*func updateHTMLFile(t *testing.T, name, url string) {
 	t.Helper()
 
 	c := http.Client{
@@ -90,7 +91,7 @@ func testFile(t *testing.T, in string) models.RecipeSchema {
 		return
 	}
 
-	host := getHost(url)
+	host, _, _ := strings.Cut(name, ".")
 	_, fileName, _, _ := runtime.Caller(0)
 	filePath := filepath.Join(path.Dir(fileName), "testdata", host+".html")
 	err = os.WriteFile(filePath, body, os.ModePerm)
@@ -99,7 +100,6 @@ func testFile(t *testing.T, in string) models.RecipeSchema {
 		return
 	}
 }
-
 
 type mockFiles struct {
 	exportHitCount      int
