@@ -203,6 +203,7 @@ func TestScraper_M(t *testing.T) {
 				Name:     "Lemon-Glazed Sheet Cake",
 				PrepTime: "PT35M",
 				URL:      "https://www.marthastewart.com/1539828/lemon-glazed-sheet-cake",
+				Yield:    models.Yield{Value: 1},
 			},
 		},
 		{
@@ -779,8 +780,9 @@ func TestScraper_M(t *testing.T) {
 						"Before serving toss with remaining dressing, top with croutons and season with additional salt and pepper.",
 					},
 				},
-				Name: "BLT Pasta Salad",
-				URL:  "https://www.motherthyme.com/2018/06/blt-pasta-salad.html",
+				Name:  "BLT Pasta Salad",
+				URL:   "https://www.motherthyme.com/2018/06/blt-pasta-salad.html",
+				Yield: models.Yield{Value: 1},
 			},
 		},
 		{

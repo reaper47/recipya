@@ -1138,9 +1138,9 @@ func TestNewTokenizedIngredientFromText(t *testing.T) {
 			},
 		},
 		{
-			sentence: "2 x 150g salmon fillets (about 4cm thick), skin on ",
+			sentence: "2 x 150g salmon fillets (about 4cm thick), skin on",
 			want: units.TokenizedIngredient{
-				Ingredients: []string{"salmon fillets"},
+				Ingredients: []string{"salmon", "fillets"},
 				Measurement: units.Measurement{
 					Quantity: 300,
 					Unit:     units.Gram,

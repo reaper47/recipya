@@ -392,6 +392,7 @@ func TestScraper_A(t *testing.T) {
 				},
 				PrepTime: "PT35M",
 				URL:      "https://akispetretzikis.com/recipe/6867/eukolos-mpaklavas",
+				Yield:    models.Yield{Value: 1},
 			},
 		},
 		{
@@ -710,7 +711,7 @@ func TestScraper_A(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext: "https://schema.org",
 				AtType:    models.SchemaType{Value: "Recipe"},
-				Category:  models.Category{Value: "Huvudrätt, Kvällsmat, Lunch, Middag"},
+				Category:  models.Category{Value: "Huvudrätt"},
 				Description: models.Description{
 					Value: "Supersnabb vardagspasta med krämig sås. Vill du göra rätten vegetarisk, tillsätt färdigkokta bönor eller kikärtor istället för kyckling. Klart!",
 				},

@@ -282,6 +282,7 @@ const baseSelectRecipe = `
 		   nutrition.cholesterol,
 		   nutrition.sodium,
 		   nutrition.fiber,
+		   nutrition.is_per_serving,
 		   times.prep_seconds,
 		   times.cook_seconds,
 		   times.total_seconds

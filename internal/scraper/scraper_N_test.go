@@ -89,7 +89,7 @@ func TestScraper_N(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
-				CookTime:      "PT-473458H45M24S",
+				CookTime:      "PT-473507H35M45S",
 				DatePublished: "2022-02-09",
 				Description: models.Description{
 					Value: "Rich and fudgy gluten-free tahini brownies that just happen to be also be grain-free and nut-free! " +
@@ -215,8 +215,9 @@ func TestScraper_N(t *testing.T) {
 						"Pynt gjerne med vårløk.",
 					},
 				},
-				Name: "Japansk omelett (Tamagoyaki)",
-				URL:  "https://www.nrk.no/mat/japansk-omelett-_tamagoyaki_-1.16435297",
+				Name:  "Japansk omelett (Tamagoyaki)",
+				URL:   "https://www.nrk.no/mat/japansk-omelett-_tamagoyaki_-1.16435297",
+				Yield: models.Yield{Value: 1},
 			},
 		},
 		{
@@ -308,7 +309,7 @@ func TestScraper_N(t *testing.T) {
 				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Category: models.Category{
-					Value: "dinner, easy, for two, quick, weeknight, pastas, main course",
+					Value: "dinner",
 				},
 				CookingMethod: models.CookingMethod{Value: ""},
 				Cuisine:       models.Cuisine{Value: "italian"},

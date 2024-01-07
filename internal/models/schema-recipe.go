@@ -658,7 +658,7 @@ type NutritionSchema struct {
 }
 
 func (n *NutritionSchema) nutrition() (Nutrition, error) {
-	return Nutrition{
+	nutrition := Nutrition{
 		Calories:           n.Calories,
 		Cholesterol:        n.Cholesterol,
 		Fiber:              n.Fiber,
@@ -669,7 +669,19 @@ func (n *NutritionSchema) nutrition() (Nutrition, error) {
 		TotalCarbohydrates: n.Carbohydrates,
 		TotalFat:           n.Fat,
 		UnsaturatedFat:     n.UnsaturatedFat,
-	}, nil
+	}
+
+	if n.Servings != "" {
+		servings, err := strconv.ParseInt(n.Servings, 10, 16)
+		if err != nil {
+			return Nutrition{}, nil
+		}
+
+		nutrition.IsPerServing = true
+		nutrition.Scale(1 / float64(servings))
+	}
+
+	return nutrition, nil
 }
 
 // UnmarshalJSON decodes the nutrition according to the schema.

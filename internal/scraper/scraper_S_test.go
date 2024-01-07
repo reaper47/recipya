@@ -748,6 +748,7 @@ func TestScraper_S(t *testing.T) {
 				Name:     "Karamelles sajttortapohárkrém",
 				PrepTime: "PT5M",
 				URL:      "https://sobors.hu/receptek/karamelles-sajttorta-poharkrem-recept/",
+				Yield:    models.Yield{Value: 1},
 			},
 		},
 		{

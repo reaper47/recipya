@@ -57,8 +57,8 @@ const InsertKeyword = `
 
 // InsertNutrition is the query to add a nutrition facts.
 const InsertNutrition = `
-	INSERT INTO nutrition (recipe_id, calories, total_carbohydrates, sugars, protein, total_fat, saturated_fat, unsaturated_fat, cholesterol, sodium, fiber)
-	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+	INSERT INTO nutrition (recipe_id, calories, total_carbohydrates, sugars, protein, total_fat, saturated_fat, unsaturated_fat, cholesterol, sodium, fiber, is_per_serving)
+	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
 // InsertRecipe is the query to add a recipe to the database.
 const InsertRecipe = `

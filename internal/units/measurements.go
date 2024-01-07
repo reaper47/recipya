@@ -1211,6 +1211,7 @@ func NewTokenizedIngredientFromText(sentence string) TokenizedIngredient {
 	m, _ := NewMeasurementFromString(sentence)
 	t.Measurement = m
 
+	sentence = regex.DimensionPattern.ReplaceAllString(sentence, "")
 	sentence = regex.Unit.ReplaceAllString(sentence, "1 tsp")
 	doc, err := prose.NewDocument(sentence)
 	if err != nil {

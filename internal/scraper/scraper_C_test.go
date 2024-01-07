@@ -571,7 +571,7 @@ func TestScraper_C(t *testing.T) {
 					TransFat:      "0.18 g",
 				},
 				PrepTime: "PT30M",
-				Yield:    models.Yield{Value: 0},
+				Yield:    models.Yield{Value: 1},
 				URL:      "https://cookeatshare.com/recipes/balinese-bbq-pork-roast-babi-guling-81003"},
 		},
 		{
@@ -685,8 +685,9 @@ func TestScraper_C(t *testing.T) {
 						"子供ごはんはこんな感じの盛り付けに♡♥",
 					},
 				},
-				Name: "30分で簡単♡本格バターチキンカレー♡",
-				URL:  "https://cookpad.com/recipe/4610651",
+				Name:  "30分で簡単♡本格バターチキンカレー♡",
+				URL:   "https://cookpad.com/recipe/4610651",
+				Yield: models.Yield{Value: 1},
 			},
 		},
 		{
@@ -990,8 +991,9 @@ func TestScraper_C(t *testing.T) {
 						"Sfornate il baccalà in crosta senza glutine, lasciate intiepidire per almeno 15 minuti prima di servirlo tagliato a tranci.",
 					},
 				},
-				Name: "Baccalà in crosta senza glutine",
-				URL:  "https://www.cucchiaio.it/ricetta/baccala-in-crosta-senza-glutine/",
+				Name:  "Baccalà in crosta senza glutine",
+				URL:   "https://www.cucchiaio.it/ricetta/baccala-in-crosta-senza-glutine/",
+				Yield: models.Yield{Value: 1},
 			},
 		},
 		{

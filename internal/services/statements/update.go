@@ -50,7 +50,8 @@ const UpdateNutrition = `
 	    unsaturated_fat = ?, 
 	    cholesterol = ?, 
 	    sodium = ?, 
-	    fiber = ?
+	    fiber = ?,
+	    is_per_serving = ?
 	WHERE recipe_id = ?`
 
 // UpdatePassword sets the user's new password.
