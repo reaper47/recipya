@@ -783,7 +783,7 @@ func TestScraper_F(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Fika"},
+				Category:      models.Category{Value: "Fika, äppelpaj"},
 				DateCreated:   "2020-08-27T17:18:00.000000Z",
 				DateModified:  "2023-01-07T09:01:57.000000Z",
 				DatePublished: "2020-08-27T17:18:00.000000Z",
