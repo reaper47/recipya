@@ -197,7 +197,12 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64, settings model
 
 	// Insert category
 	var categoryID int64
-	err = tx.QueryRowContext(ctx, statements.InsertCategory, r.Category, userID).Scan(&categoryID)
+	category := r.Category
+	before, _, found := strings.Cut(r.Category, ",")
+	if found {
+		category = before
+	}
+	err = tx.QueryRowContext(ctx, statements.InsertCategory, category, userID).Scan(&categoryID)
 	if err != nil {
 		return 0, err
 	}
@@ -1149,7 +1154,12 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 
 	if updatedRecipe.Category != oldRecipe.Category {
 		var categoryID int64
-		err = tx.QueryRowContext(ctx, statements.InsertCategory, updatedRecipe.Category).Scan(&categoryID)
+		category := updatedRecipe.Category
+		before, _, found := strings.Cut(updatedRecipe.Category, ",")
+		if found {
+			category = before
+		}
+		err = tx.QueryRowContext(ctx, statements.InsertCategory, category).Scan(&categoryID)
 		if err != nil {
 			return err
 		}

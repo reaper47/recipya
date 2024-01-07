@@ -763,7 +763,7 @@ func TestScraper_T(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "dinner"},
+				Category:      models.Category{Value: "dinner, soup, diary-free, gluten-free, one-pot-meals"},
 				CookTime:      "PT1H",
 				Cuisine:       models.Cuisine{Value: "Mexican"},
 				DateModified:  "2023-11-23",

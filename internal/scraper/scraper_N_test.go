@@ -306,11 +306,9 @@ func TestScraper_N(t *testing.T) {
 			name: "nytimes.com",
 			in:   "https://cooking.nytimes.com/recipes/8357-spaghetti-with-fried-eggs",
 			want: models.RecipeSchema{
-				AtContext: atContext,
-				AtType:    models.SchemaType{Value: "Recipe"},
-				Category: models.Category{
-					Value: "dinner",
-				},
+				AtContext:     atContext,
+				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "dinner, easy, for two, quick, weeknight, pastas, main course"},
 				CookingMethod: models.CookingMethod{Value: ""},
 				Cuisine:       models.Cuisine{Value: "italian"},
 				Description: models.Description{

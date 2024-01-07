@@ -222,7 +222,7 @@ func TestScraper_B(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Dinner"},
+				Category:      models.Category{Value: "Dinner, Main course, Side dish, Supper"},
 				CookTime:      "PT35M",
 				Cuisine:       models.Cuisine{Value: "Italian"},
 				DateModified:  "2023-12-15T11:03:00+00:00",
@@ -281,7 +281,7 @@ func TestScraper_B(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Dinner"},
+				Category:      models.Category{Value: "Dinner, Main course, Side dish, Supper"},
 				CookTime:      "PT35M",
 				Cuisine:       models.Cuisine{Value: "Italian"},
 				DateModified:  "2023-12-15T11:03:00+00:00",
@@ -340,7 +340,7 @@ func TestScraper_B(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Dinner"},
+				Category:      models.Category{Value: "Dinner, Main course, Supper"},
 				CookTime:      "PT5M",
 				DateModified:  "2023-10-03T17:51:48+01:00",
 				DatePublished: "2019-02-17T17:02:00+00:00",

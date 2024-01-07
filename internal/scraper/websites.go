@@ -4,7 +4,6 @@ import (
 	"errors"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
-	"strings"
 )
 
 // ErrNotImplemented is the error used when the website is not supported.
@@ -291,11 +290,6 @@ func parseWebsite(doc *goquery.Document) (models.RecipeSchema, error) {
 
 	if rs.Yield.Value == 0 {
 		rs.Yield.Value = 1
-	}
-
-	category, _, found := strings.Cut(rs.Category.Value, ",")
-	if found {
-		rs.Category.Value = category
 	}
 
 	return rs, nil

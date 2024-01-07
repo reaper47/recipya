@@ -711,7 +711,7 @@ func TestScraper_A(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext: "https://schema.org",
 				AtType:    models.SchemaType{Value: "Recipe"},
-				Category:  models.Category{Value: "Huvudrätt"},
+				Category:  models.Category{Value: "Huvudrätt, Kvällsmat, Lunch, Middag"},
 				Description: models.Description{
 					Value: "Supersnabb vardagspasta med krämig sås. Vill du göra rätten vegetarisk, tillsätt färdigkokta bönor eller kikärtor istället för kyckling. Klart!",
 				},
