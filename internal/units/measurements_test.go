@@ -821,6 +821,11 @@ func TestNewScaledMeasurementFromString(t *testing.T) {
 			in:   "10mL honey",
 			want: units.Measurement{Quantity: 10, Unit: units.Millilitre},
 		},
+		{
+			name: "quantity multiplication",
+			in:   "2 x 150g salmon fillets",
+			want: units.Measurement{Quantity: 300, Unit: units.Gram},
+		},
 	}
 	for _, tc := range testcases {
 		tc := tc
@@ -1129,6 +1134,16 @@ func TestNewTokenizedIngredientFromText(t *testing.T) {
 				Measurement: units.Measurement{
 					Quantity: 0.5,
 					Unit:     units.Invalid,
+				},
+			},
+		},
+		{
+			sentence: "2 x 150g salmon fillets (about 4cm thick), skin on ",
+			want: units.TokenizedIngredient{
+				Ingredients: []string{"salmon fillets"},
+				Measurement: units.Measurement{
+					Quantity: 300,
+					Unit:     units.Gram,
 				},
 			},
 		},

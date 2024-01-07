@@ -27,6 +27,26 @@ func ScaleString(s string, scale float64) string {
 // SumString sums consecutive numbers in a string.
 func SumString(s string) float64 {
 	sum := 0.
+
+	matches := regex.DimensionPattern.FindAllStringSubmatch(s, -1)
+	if len(matches) > 0 {
+		for _, match := range matches {
+			l, err := strconv.ParseFloat(match[1], 64)
+			if err != nil {
+				continue
+			}
+
+			r, err := strconv.ParseFloat(match[2], 64)
+			if err != nil {
+				continue
+			}
+
+			sum += l * r
+		}
+
+		s = regex.DimensionPattern.ReplaceAllString(s, "")
+	}
+
 	for _, v := range strings.Split(s, " ") {
 		if v == "" {
 			continue

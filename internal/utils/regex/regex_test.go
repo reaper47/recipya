@@ -108,6 +108,38 @@ func TestRegex_Digit(t *testing.T) {
 	})
 }
 
+func TestRegex_DimensionPattern(t *testing.T) {
+	t.Run("valid", func(t *testing.T) {
+		xs := []string{
+			"2x150g salmon",
+			"2 x150g salmon",
+			"2x 150g salmon",
+			"2 x 150g salmon",
+		}
+		for _, s := range xs {
+			t.Run("regex is valid "+s, func(t *testing.T) {
+				if !regex.DimensionPattern.MatchString(s) {
+					t.Fatal("got false when want true")
+				}
+			})
+		}
+	})
+
+	t.Run("invalid", func(t *testing.T) {
+		xs := []string{
+			"2 150g salmon",
+			"2y150g salmon",
+		}
+		for _, s := range xs {
+			t.Run("regex is invalid "+s, func(t *testing.T) {
+				if regex.DimensionPattern.MatchString(s) {
+					t.Error("got true when want false")
+				}
+			})
+		}
+	})
+}
+
 func TestRegex_Email(t *testing.T) {
 	t.Run("valid", func(t *testing.T) {
 		emails := []string{

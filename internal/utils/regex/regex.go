@@ -11,6 +11,9 @@ var Decimal = regexp.MustCompile(`\d?\.\d+\b`)
 // Digit matches digits in the text.
 var Digit = regexp.MustCompile(`(\b\d+\s+\d+/\d+\b)|(\d+\.?/?\d*)`)
 
+// DimensionPattern matches patterns representing dimensions.
+var DimensionPattern = regexp.MustCompile(`(\d+)\s*x\s*(\d+)`)
+
 // Email verifies whether an email address is valid.
 var Email = regexp.MustCompile(`^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$`)
 
