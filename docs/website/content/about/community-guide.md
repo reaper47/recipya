@@ -38,12 +38,10 @@ do wish to.
 6. Push the changes to your fork.
 7. Open a pull request so that I can merge your work into `main`.
 
-:::note 
-
+{{< callout type="info" >}}
 Please be aware that working on a feature without opening an issue on GitHub first might lead to rejection if I believe
 it is not a good fit for Recipya.
-
-:::
+{{< /callout >}}
 
 ### Bugs
 
