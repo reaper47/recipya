@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net"
+	"net/url"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -85,6 +86,17 @@ func udpAddr() *net.UDPAddr {
 	}()
 
 	return conn.LocalAddr().(*net.UDPAddr)
+}
+
+// IsCookieSecure returns whether the cookie should secure.
+func (c *ConfigFile) IsCookieSecure() bool {
+	u, err := url.ParseRequestURI(c.Server.URL)
+	if u == nil || err != nil {
+		return false
+	}
+
+	host := u.Hostname()
+	return c.Server.IsProduction && (u.Scheme == "https" || (host == "localhost" || host == "127.0.0.1"))
 }
 
 // ConfigEmail holds email configuration variables.

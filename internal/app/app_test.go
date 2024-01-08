@@ -54,3 +54,53 @@ func TestConfigFile_Address(t *testing.T) {
 		})
 	}
 }
+
+func TestConfigServer_IsCookieSecure(t *testing.T) {
+	testcases := []struct {
+		name     string
+		in       app.ConfigFile
+		isSecure bool
+	}{
+		{
+			name:     "is prod localhost",
+			in:       app.ConfigFile{Server: app.ConfigServer{IsDemo: false, IsProduction: true, Port: 8078, URL: "http://localhost"}},
+			isSecure: true,
+		},
+		{
+			name:     "is demo and prod",
+			in:       app.ConfigFile{Server: app.ConfigServer{IsDemo: true, IsProduction: true, Port: 8078, URL: "http://localhost"}},
+			isSecure: true,
+		},
+		{
+			name:     "is prod not localhost",
+			in:       app.ConfigFile{Server: app.ConfigServer{IsDemo: false, IsProduction: true, Port: 8078, URL: "http://192.168.0.1"}},
+			isSecure: false,
+		},
+		{
+			name:     "is not prod",
+			in:       app.ConfigFile{Server: app.ConfigServer{IsDemo: false, IsProduction: false, Port: 8078, URL: "http://192.168.0.1"}},
+			isSecure: false,
+		},
+		{
+			name:     "is demo not prod",
+			in:       app.ConfigFile{Server: app.ConfigServer{IsDemo: true, IsProduction: false, Port: 8078, URL: "http://localhost"}},
+			isSecure: false,
+		},
+		{
+			name:     "is hosted website",
+			in:       app.ConfigFile{Server: app.ConfigServer{IsDemo: false, IsProduction: true, Port: 8078, URL: "https://www.recipya.com"}},
+			isSecure: true,
+		},
+	}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			if tc.in.IsCookieSecure() != tc.isSecure {
+				if tc.isSecure {
+					t.Fatal("should have been secure")
+				} else {
+					t.Fatal("should not have been secure")
+				}
+			}
+		})
+	}
+}
