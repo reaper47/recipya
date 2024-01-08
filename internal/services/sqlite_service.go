@@ -841,7 +841,7 @@ func (s *SQLiteService) Recipes(userID int64, page uint64) models.Recipes {
 
 	stmt := statements.SelectRecipes
 
-	rows, err := s.DB.QueryContext(ctx, stmt, userID, page)
+	rows, err := s.DB.QueryContext(ctx, stmt, userID, page, userID)
 	if err != nil {
 		return models.Recipes{}
 	}

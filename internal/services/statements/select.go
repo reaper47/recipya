@@ -317,11 +317,13 @@ const SelectRecipesAll = baseSelectRecipe + `
 
 // SelectRecipes is the query to fetch a chunk of the user's recipes.
 const SelectRecipes = baseSelectRecipe + `
+	LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id
 	WHERE recipes.id >= (SELECT id
 			 FROM (SELECT id, ROW_NUMBER() OVER (ORDER BY id) AS row_num
 				   FROM user_recipe AS UR
 				   WHERE ur.user_id = ?)
 			 WHERE row_num > (? - 2) *` + templates.ResultsPerPageStr + " + " + templates.ResultsPerPageStr + `)
+	AND user_recipe.user_id = ?
 	GROUP BY recipes.id
 	LIMIT ` + templates.ResultsPerPageStr
 
