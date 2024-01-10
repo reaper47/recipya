@@ -131,7 +131,7 @@ func TestScraper_V(t *testing.T) {
 							"oil is cooling (solidifying). Fold in the yogurt until no white streaks remain.Working quickly, fold in " +
 							"the shredded carrots and nuts. If using canola oil, the batter should be thick but loose and almost pourable " +
 							"(pictured in the photos). For coconut oil, the batter should be stiff and thick.",
-						"Transfer the cake batter to the loaf pan and using an offset spatula,  smooth the batter into an even layer. " +
+						"Transfer the cake batter to the loaf pan and using an offset spatula, smooth the batter into an even layer. " +
 							"If using coconut oil, spread the batter while pressing it into the pan. Tap the pan on the counter to " +
 							"disperse any air pockets. Remove the parchment clips if using.",
 						"Bake the cake for 60-70 minutes. The loaf is ready when it&#039;s golden, a toothpick poked in the center " +
@@ -141,7 +141,7 @@ func TestScraper_V(t *testing.T) {
 							"temperature before icing or covering (about 2 hours).",
 						"Start with ingredients at room temperature. Place butter in mixer and beat on high with the paddle " +
 							"attachment until light and fluffy, about three minutes. Scrape down your bowl several times to make sure " +
-							"the butter is getting whipped. Add the cream cheese and beat another  minute. Scrape down the bowl.",
+							"the butter is getting whipped. Add the cream cheese and beat another minute. Scrape down the bowl.",
 						"Sift in the powder sugar, add the vanilla, and orange zest then mix on low until incorporated, about 30 " +
 							"seconds. Taste for sweet adjustment and add another tablespoon of powered sugar if desired. To loosen the " +
 							"icing, you can add a few teaspoons of orange juice.",
@@ -339,7 +339,7 @@ func TestScraper_V(t *testing.T) {
 							"the sides of the masala paste.",
 						"The cashew paste will begin to cook fast. Approx 3 to 4 minutes on a low heat. So keep stirring non-stop.",
 						"Add water and mix very well. Simmer on a low to medium-low heat.",
-						"The curry will come to a boil.&nbsp;",
+						"The curry will come to a boil.",
 						"After 2 to 3 minutes of boiling, add ginger julienne. Reserve a few for garnishing. The curry will also " +
 							"begin to thicken.",
 						"Add julienned ginger and green chillies, salt and sugar and simmer till the curry begins to thicken.",

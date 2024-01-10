@@ -892,7 +892,7 @@
                 {{$len := len .Ingredients}}
                 {{- range $i, $e := .Ingredients -}}
                     <li class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200 dark:hover:bg-gray-800"
-                        _="on mousedown toggle .line-through then toggle @checked on first <input/> in me">
+                        _="on mousedown toggle @checked on first <input/> in me">
                         <label for="ingredient-{{$i}}"></label>
                         <input type="checkbox" id="ingredient-{{$i}}" class="mt-1">
                         <span class="pl-2">{{$e}}</span>

@@ -294,7 +294,7 @@ func TestScraper_L(t *testing.T) {
 				},
 				Instructions: models.Instructions{
 					Values: []string{
-						"PREP: Position a rack in the center of the oven and preheat the oven to 350ºF. Spray two 8 ½ x 4 ½ " +
+						"PREP: Position a rack in the center of the oven and preheat the oven to 350°F. Spray two 8 ½ x 4 ½ " +
 							"(or 9x5) bread pans with cooking spray, you can also line with parchment if you’d like; set aside for now.",
 						"DRY INGREDIENTS: Add the dry ingredients: flour, baking soda baking powder, all the spices, and salt " +
 							"to a medium bowl. Whisk to combine; set aside for now.",

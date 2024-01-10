@@ -28,7 +28,7 @@ func TestScraper_W(t *testing.T) {
 				Ingredients: models.Ingredients{Values: []string{"350 g De Cecco Chifferi Rigati, or similar pasta"}},
 				Instructions: models.Instructions{
 					Values: []string{
-						"Preheat the oven to 200\nºC, gas mark 6.\nBring a large pan of water to the boil and add\na big pinch of salt. Add the pasta and cook\nfor 1 minute less than pack instructions (it will\ncontinue to cook in the oven later). Drain and\nset aside.",
+						"Preheat the oven to 200\n°C, gas mark 6.\nBring a large pan of water to the boil and add\na big pinch of salt. Add the pasta and cook\nfor 1 minute less than pack instructions (it will\ncontinue to cook in the oven later). Drain and\nset aside.",
 						"While the pasta cooks, make the cheese\nsauce. Melt the butter in a large saucepan.\nOnce melted, add the flour and stir until a thick\npaste forms. Cook the mixture for 1 minute,\nstirring constantly, to cook the flour out. Add\nthe paprika, mustard powder, garlic granules\nand pepper, then stir again.",
 						"Gradually add the milk, little by little, until the\nsauce is completely smooth. Once bubbling,\nstir in the evaporated milk and add ¾ of all the\ngrated cheese. Mix well until the cheese has\nmelted, then drain the pasta and add it to the\nsauce. Tip into a large ovenproof dish and top\nwith the remaining cheese.",
 						"Bake for 10 minutes, then switch the oven to\ngrill and cook for 5 minutes more, or until the\ncheese on top is bubbling and golden. Allow\nto stand for a few minutes before serving.",

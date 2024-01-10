@@ -107,7 +107,7 @@ func TestScraper_I(t *testing.T) {
 						"When the lentils turn light golden, add ginger, green chilies &amp; curry leaves. Fry till the curry leaves " +
 							"become crisp, then add hing.",
 						"Add mango, salt and turmeric.Saute for 2 to 3 minutes. Cook covered until the mango turns mushy, completely " +
-							"soft &amp; pulpy.  (skip this with cooked mango.)",
+							"soft &amp; pulpy. (skip this with cooked mango.)",
 						"Add this to the cooked rice little by little and begin to mix. Taste test and add more mango mixture as " +
 							"required. Adjust salt and oil at this stage.",
 						"Transfer mango rice to serving plates and garnish with roasted peanuts.",

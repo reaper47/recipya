@@ -479,7 +479,6 @@ func (i *Instructions) UnmarshalJSON(data []byte) error {
 
 	switch x := v.(type) {
 	case string:
-		x = strings.ReplaceAll(x, "\u00a0", " ")
 		parts := strings.Split(strings.TrimSpace(x), "\n")
 		for _, s := range parts {
 			if s != "" {
@@ -487,34 +486,15 @@ func (i *Instructions) UnmarshalJSON(data []byte) error {
 			}
 		}
 	case []any:
-		cases := []struct {
-			old string
-			new string
-		}{
-			{old: "\u00a0", new: " "},
-			{old: "\u2009", new: ""},
-			{old: "    ", new: " "},
-			{old: "&apos;", new: "'"},
-			{old: "&nbsp;", new: " "},
-			{old: "<br>", new: " "},
-			{old: "  ", new: " "},
-			{old: "&quot;", new: `"`},
-		}
 
 		for _, part := range x {
 			switch y := part.(type) {
 			case string:
-				for _, c := range cases {
-					y = strings.ReplaceAll(y, c.old, c.new)
-				}
 				i.Values = append(i.Values, strings.TrimSpace(y))
 			case map[string]any:
 				text, ok := y["text"]
 				if ok {
 					str := strings.TrimSuffix(text.(string), "\n")
-					for _, c := range cases {
-						str = strings.ReplaceAll(str, c.old, c.new)
-					}
 					i.Values = append(i.Values, strings.TrimSpace(str))
 					continue
 				}
@@ -536,6 +516,25 @@ func (i *Instructions) UnmarshalJSON(data []byte) error {
 			}
 		}
 	}
+
+	cases := map[string]string{
+		"\u00a0": " ",
+		"\u2009": "",
+		"&apos;": "'",
+		"&nbsp;": " ",
+		"<br>":   " ",
+		"&quot;": `"`,
+		"º":      "°",
+	}
+	for i2, value := range i.Values {
+		for old, newValue := range cases {
+			value = strings.ReplaceAll(value, old, newValue)
+		}
+
+		value = strings.ReplaceAll(value, "  ", " ")
+		i.Values[i2] = strings.TrimSpace(value)
+	}
+
 	return nil
 }
 

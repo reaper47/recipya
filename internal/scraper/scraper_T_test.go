@@ -35,7 +35,7 @@ func TestScraper_T(t *testing.T) {
 						"To season, start by removing the steak from the refrigerator and generously sprinkle two teaspoons of kosher salt on all sides of the fillet. Let it stand for 45 to 60 minutes. This resting period gives the meat time to come up to room temperature, which helps the steak cook more evenly. It also gives the meat time to absorb some of the salt. Editor's Tip: Use this time to whip up a homemade steak seasoning blend to take it up a notch.",
 						"The other key to a delicious steak is heat. And since that signature sear comes from a sizzling hot pan, a cast-iron skillet is the way to go. This hearty pan gets extremely hot and also retains heat for a long time, making it the perfect vessel for steak. You'll want to preheat your pan over high heat for four to five minutes, or until very hot. Then, pat your steak dry with paper towels and sprinkle the remaining teaspoon of salt in the bottom of the skillet. Now you're ready to sear!",
 						"Place the steak into the skillet and cook until it's easily moved. This takes between one and two minutes. Carefully flip the steak, placing it in a different section of the skillet. Cook for 30 seconds, and then begin moving the steak around, occasionally pressing slightly to ensure even contact with the skillet. A grill press is great for this. Moving the steak around the pan helps it cook faster and more evenly. Editor's Tip: This step produces a lot of smoke, so make sure you're cooking in a well-ventilated space. It's also a good idea to turn your kitchen vent or fan on.",
-						"Continue turning and flipping the steak until it's cooked to your desired degree of doneness. A thermometer inserted in the thickest part of the meat should read: Medium-rare: 135\u00baF Medium: 140\u00baF Medium-well: 145\u00baF Keep in mind that the steak will continue to cook a little bit after it's been removed from the pan, so aim for a few degrees shy of your desired temperature. Let it rest for 10 minutes before slicing.",
+						"Continue turning and flipping the steak until it's cooked to your desired degree of doneness. A thermometer inserted in the thickest part of the meat should read: Medium-rare: 135°F Medium: 140°F Medium-well: 145°F Keep in mind that the steak will continue to cook a little bit after it's been removed from the pan, so aim for a few degrees shy of your desired temperature. Let it rest for 10 minutes before slicing.",
 					},
 				},
 				Name: "Cast-Iron Skillet Steak",
@@ -150,7 +150,7 @@ func TestScraper_T(t *testing.T) {
 					Values: []string{
 						"Place one of the pie crusts in the bottom of a greased 9” pie plate. Flute the edges.",
 						"Chill the pie crust for 30 minutes.",
-						"Preheat the oven to 375ºF.",
+						"Preheat the oven to 375°F.",
 						"Place parchment paper in the bottom of the pie crust, then fill with pie weights or dry beans.",
 						"Blind bake the pie crust for 15 minutes or until the edges are starting to brown. Remove the crust " +
 							"from the oven and allow it to cool while you prepare the filling.",
@@ -160,7 +160,7 @@ func TestScraper_T(t *testing.T) {
 						"Top with the second crust and flute the edges to seal.",
 						"Use a sharp knife to make 3 slits across the top of the pie crust.",
 						"Sprinkle with sea salt and freshly ground pepper.",
-						"Bake at 350ºF for one hour.",
+						"Bake at 350°F for one hour.",
 						"Store any leftoveres in the refrigerator in an airtight container.",
 					},
 				},
