@@ -532,25 +532,25 @@ func TestScraper_C(t *testing.T) {
 						"Combine the shallots, chiles, garlic, ginger, turmeric, galangal, lemongrass, coriander, pepper, lime " +
 							"juice, sugar, salt, and 1 Tbsp vegetable oil in a mortar and pound to a smooth paste with the " +
 							"pestle, or puree in a blender or food processor to a smooth paste.",
-						"Heat 2 Tbsp of oil in a wok or skillet over medium heat.  Add the spice paste and saute until fragrant, " +
-							"about 5 minutes.  Stir frequently to avoid splattering, and run your fan on high.  Remove from " +
+						"Heat 2 Tbsp of oil in a wok or skillet over medium heat. Add the spice paste and saute until fragrant, " +
+							"about 5 minutes. Stir frequently to avoid splattering, and run your fan on high. Remove from " +
 							"pan and let cool. The paste can be made up to a day in advance and refrigerated in an airtight container.",
-						"Trim the roast of excess fat, if any.  Using a sharp knife, make a deep slice in the center of roast, " +
+						"Trim the roast of excess fat, if any. Using a sharp knife, make a deep slice in the center of roast, " +
 							"starting and ending 3/4 inch from the ends, and cutting almost though to the other side of the " +
-							"roast.  You should have a nice pocket about 6 inches long.",
+							"roast. You should have a nice pocket about 6 inches long.",
 						"Fill the pocket with spice paste and tie the roast back together with kitchen twine or pin it with " +
-							"metal skewers.   Spread the remaining paste all over the outside of the roast.  If any spice mixture " +
+							"metal skewers.  Spread the remaining paste all over the outside of the roast. If any spice mixture " +
 							"remains, set it aside to add during the grilling process.",
-						"If you have a rotisserie, this is probably the best way to cook the roast.  Preheat your grill to high " +
+						"If you have a rotisserie, this is probably the best way to cook the roast. Preheat your grill to high " +
 							"and cook for about 1.5 hours.",
-						"I used the indirect cooking method.  Move the charcoals to either side of the place where you plan to " +
-							"cook the roast, and place a drip pan in the middle.  If you have a gas grill where the coals are not " +
+						"I used the indirect cooking method. Move the charcoals to either side of the place where you plan to " +
+							"cook the roast, and place a drip pan in the middle. If you have a gas grill where the coals are not " +
 							"movable, either turn off the middle burner or just put a drip pan made of aluminum foil directly over " +
-							"the center burner.  To make a foil drip pan, just tear 3 pieces of foil about 16 inches long, overlap them " +
+							"the center burner. To make a foil drip pan, just tear 3 pieces of foil about 16 inches long, overlap them " +
 							"so they are the width you want, then fold the edges up about 2 inches to form a make-shift drip pan.",
-						"After setting up the grill, preheat it on high.  Turn the grill down and place the roast over the drip " +
-							"pan.  Adjust heat or coals so the internal temperature rests at about 350 F.  This will ensure nice " +
-							"browning without burning, and should result in a cook time of about 2 hours.  Turn the meat occasionally " +
+						"After setting up the grill, preheat it on high. Turn the grill down and place the roast over the drip " +
+							"pan. Adjust heat or coals so the internal temperature rests at about 350 F. This will ensure nice " +
+							"browning without burning, and should result in a cook time of about 2 hours. Turn the meat occasionally " +
 							"during cooking so all sides get equally browned, and rub on additional spice mixture if any.",
 						"Transfer roast to cutting board or platter and let stand for 10 minutes before removing strings and " +
 							"cutting into thin slices to serve.",

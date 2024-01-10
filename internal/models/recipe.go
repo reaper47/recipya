@@ -81,12 +81,7 @@ func (r *Recipe) ConvertMeasurementSystem(to units.System) (*Recipe, error) {
 
 	instructions := make([]string, len(r.Instructions))
 	for i, s := range r.Instructions {
-		v, err := units.ConvertSentence(s, currentSystem, to)
-		if err != nil {
-			instructions[i] = s
-			continue
-		}
-		instructions[i] = v
+		instructions[i] = units.ConvertParagraph(s, currentSystem, to)
 	}
 
 	recipe := r.Copy()

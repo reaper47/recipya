@@ -133,7 +133,7 @@ func TestScraper_M(t *testing.T) {
 					Values: []string{
 						"Tænd ovnen på over og undervarm, 200 grader.",
 						"Smelt 100 g smør i en lille gryde. Hæld dernæst 2 dl mælk mælk i gryden sammen med smørret, og sæt til side.",
-						"Pisk 250 g rørsukker  og 4 æg  luftig i en skål.",
+						"Pisk 250 g rørsukker og 4 æg luftig i en skål.",
 						"I en anden skål blandes 300 g hvedemel, 3 tsk bagepulver , 1 knivspids salt og 2 tsk vaniljesukker sammen. Sigt det hele over i den luftige æggemasser, og vend det forsigtigt sammen med en dejskraber, så du ikke slår luften ud af æggemassen.",
 						"Til slut hælder du smør- og mælkeblandingen i kagedejsmassen og vender det forsigtigt i dejen med en dejskraber til massen er homogen.Til sidst vendes smøren og mælken i massen og det røres igen forsigtigt sammen med en dejskraber, til dejen er ensartet.",
 						"Læg et stykke bagepapir i bradepanden (tip: krøl bagepapiret sammen først, så er det nemmere at lægge ud i bradepanden bagefter).",

@@ -775,10 +775,12 @@ func TestNewMeasurement(t *testing.T) {
 		{quantity: 21, unit: "yards", want: units.Measurement{Quantity: 21, Unit: units.Yard}},
 
 		{quantity: 22, unit: "°C", want: units.Measurement{Quantity: 22, Unit: units.Celsius}},
+		{quantity: 22, unit: "° C", want: units.Measurement{Quantity: 22, Unit: units.Celsius}},
 		{quantity: 22, unit: "degrees celsius", want: units.Measurement{Quantity: 22, Unit: units.Celsius}},
 		{quantity: 22, unit: "degree celsius", want: units.Measurement{Quantity: 22, Unit: units.Celsius}},
 
 		{quantity: 23, unit: "°F", want: units.Measurement{Quantity: 23, Unit: units.Fahrenheit}},
+		{quantity: 23, unit: "° F", want: units.Measurement{Quantity: 23, Unit: units.Fahrenheit}},
 		{quantity: 23, unit: "degrees Farenheit", want: units.Measurement{Quantity: 23, Unit: units.Fahrenheit}},
 		{quantity: 23, unit: "degree Farenheit", want: units.Measurement{Quantity: 23, Unit: units.Fahrenheit}},
 		{quantity: 23, unit: "degree Fahrenheit", want: units.Measurement{Quantity: 23, Unit: units.Fahrenheit}},

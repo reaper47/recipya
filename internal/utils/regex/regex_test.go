@@ -294,6 +294,7 @@ func TestRegex_Units(t *testing.T) {
 		{name: "celsius", in: "1 degree celsius"},
 		{name: "celsius", in: "1°c"},
 		{name: "celsius", in: "1c"},
+		{name: "celsius", in: "1° c"},
 
 		{name: "fahrenheit", in: "1 °F"},
 		{name: "fahrenheit", in: "1 F"},
@@ -302,6 +303,7 @@ func TestRegex_Units(t *testing.T) {
 		{name: "fahrenheit", in: "1 degree fahrenheit"},
 		{name: "fahrenheit", in: "1°f"},
 		{name: "fahrenheit", in: "1F"},
+		{name: "fahrenheit", in: "1° f"},
 
 		{name: "mm", in: "1 mM"},
 		{name: "mm", in: "1 MM"},

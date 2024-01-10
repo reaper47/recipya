@@ -485,7 +485,7 @@ func TestScraper_F(t *testing.T) {
 							"cook for another minute. Add 1/2 cup of the chicken broth and cook until broth is almost completely absorbed.",
 						"Remove the middle stems from the kale and roughly chop the leaves. Add kale to butternut " +
 							"squash and stir until kale has softened. Add caramelized red onions.",
-						"Add white wine and cook for 2 minutes. Add remaining chicken broth and reduce, about 10 minutes. ",
+						"Add white wine and cook for 2 minutes. Add remaining chicken broth and reduce, about 10 minutes.",
 						"Turn heat to low and add the heavy cream. When the pasta is al dente, add it to the pan with the " +
 							"sauce. Add the roasted butternut squash.",
 						"Loosen sauce with pasta water if needed. Sprinkle with goat cheese (optional), sage, and Parmesan cheese.",

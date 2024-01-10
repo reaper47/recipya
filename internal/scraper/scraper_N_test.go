@@ -112,7 +112,7 @@ func TestScraper_N(t *testing.T) {
 				},
 				Instructions: models.Instructions{
 					Values: []string{
-						"Preheat oven to 350ºF. Line an 8×8-inch baking pan with parchment paper.",
+						"Preheat oven to 350°F. Line an 8×8-inch baking pan with parchment paper.",
 						"In a large bowl, combine tahini, maple syrup, eggs, and vanilla; whisk well to combine. The mixture will " +
 							"thicken quite a bit. Add cocoa powder, baking soda, and salt. Continue to mix until the mixture is smooth.",
 						"Melt the chocolate chips in the microwave for 90 seconds, stopping every 30 seconds to mix (this can also " +

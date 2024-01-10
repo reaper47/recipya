@@ -208,7 +208,7 @@ func TestScraper_P(t *testing.T) {
 				},
 				Instructions: models.Instructions{
 					Values: []string{
-						"Cube the bread into approximately 1&quot; pieces and spread onto a lipped baking sheet. Bake in a 170°F preheated oven for 30-60 minutes, or until dry. Alternatively, you can cube the bread and let it sit out overnight to stale.",
+						`Cube the bread into approximately 1" pieces and spread onto a lipped baking sheet. Bake in a 170°F preheated oven for 30-60 minutes, or until dry. Alternatively, you can cube the bread and let it sit out overnight to stale.`,
 						"In a large mixing bowl, whisk together the eggs, milk, vanilla, and 1 teaspoon of the cinnamon.",
 						"Add the stale cubed bread to the egg mixture and stir so all pieces of the bread are fully coated. Cover the bowl with plastic wrap and move it to the fridge for 4-8 hours.",
 						"In a small mixing bowl, use a pastry cutter or a fork to cut together the butter, brown sugar, and remaining cinnamon. Cover and put in the fridge as well.",
