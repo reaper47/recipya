@@ -160,7 +160,7 @@ func Init() {
 // NewConfig initializes the global Config. It can either be populated from environment variables or the configuration file.
 func NewConfig(r io.Reader) {
 	if r == nil {
-		port, _ := strconv.ParseInt(os.Getenv("RECIPYA_SERVER_PORT"), 10, 64)
+		port, _ := strconv.ParseInt(os.Getenv("RECIPYA_SERVER_PORT"), 10, 32)
 		Config = ConfigFile{
 			Email: ConfigEmail{
 				From:           os.Getenv("RECIPYA_EMAIL"),
