@@ -12,7 +12,7 @@ You do not need to create this file if you do not use Docker because it will be 
 
 - **email**
   - **from**: The administrator's email address. It is usually the email address of your [SendGrid](https://sendgrid.com/) account.
-  - **sendGridAPIKey**: Your [SendGrid](https://sendgrid.com/) API key. The free tier should be sufficient for your needs.
+  - **sendGridAPIKey**: Your [SendGrid](https://app.sendgrid.com/settings/api_keys) API key. The free tier should be sufficient for your needs.
 - **integrations**
   - **azureComputerVision**
     - **resourceKey**: The *KEY 1* variable displayed on the *Keys and endpoint* tab of your Computer vision resource in the [Azure Portal](https://portal.azure.com/#home).

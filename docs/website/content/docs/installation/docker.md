@@ -17,23 +17,46 @@ You first have to fetch it.
 docker pull reaper99/recipya:nightly
 ```
 
-Then, run the image. You must pass your [config.json](/guide/docs/installation/config-file) file to the container.
+Then, run the image. The `-e` environment variables are described below.
 
 ```bash
-docker run -v path/to/config.json:/app/config.json -p [host port]:[port specified in config.json] -d reaper99/recipya:nightly reaper99/recipya:nightly
+docker run -d \
+  path/to/config.json:/app/config.json \
+  -p [host port]:[port specified in config.json] \
+  -e RECIPYA_EMAIL=my@email.com \
+  -e RECIPYA_EMAIL_SENDGRID=API_KEY \
+  -e RECIPYA_VISION_KEY=KEY_1 \
+  -e RECIPYA_VISION_ENDPOINT=https://{resource}.cognitiveservices.azure.com \
+  -e RECIPYA_SERVER_IS_DEMO=false \
+  -e RECIPYA_SERVER_IS_PROD=false \
+  -e RECIPYA_SERVER_PORT=8078 \
+  -e RECIPYA_SERVER_URL=http://0.0.0.0 \
+  reaper99/recipya:nightly reaper99/recipya:nightly
 ```
 
 ## Using Docker Compose
 
-You can use Docker Compose to run the container. First, you need to modify the ports and the path to your local
-[config.json](/guide/docs/installation/config-file) in the [compose.yaml](https://github.com/reaper47/recipya/blob/main/deploy/compose.yaml).
-Then, start the application.
+You can use Docker Compose to run the container. First, download the [compose.yaml](https://github.com/reaper47/recipya/blob/main/deploy/compose.yaml) file. 
+Modify the `environment` and `ports` sections. The environment variables are described below. Then, start the application.
 
 ```bash
 docker-compose up -d
 ```
 
-Access the app through your browser at `http://localhost:[host's port]`.
+Access the app through your browser at `http://localhost:[host port]`.
 
 If you are using Windows and you intend to access the app on other devices within your home network, please ensure to `Allow the connection` of the `Docker Desktop Backend`
 inbound Windows Defender Firewall rule.
+
+## Environment Variables
+
+| Variable                | Description                                                                                                                                           |       Required       |
+|-------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------:|
+| RECIPYA_EMAIL           | The administrator’s email address. It is usually the email address of your [SendGrid](https://sendgrid.com/) account.                                 |   {{< icon "x" >}}   |
+| RECIPYA_EMAIL_SENDGRID  | Your [SendGrid](https://app.sendgrid.com/settings/api_keys) API key. The free tier should be sufficient for your needs.                               |   {{< icon "x" >}}   |
+| RECIPYA_VISION_KEY      | The **KEY 1** variable displayed on the Keys and endpoint tab of your Computer vision resource in the [Azure Portal](https://portal.azure.com/#home). |   {{< icon "x" >}}   |
+| RECIPYA_VISION_ENDPOINT | The Endpoint variable displayed on the Keys and endpoint tab of your Computer vision resource in the [Azure Portal](https://portal.azure.com/#home).  |   {{< icon "x" >}}   |
+| RECIPYA_SERVER_IS_DEMO  | Whether the app is a demo version. Its value can be either true or false.                                                                             | {{< icon "check" >}} |
+| RECIPYA_SERVER_IS_PROD  | Whether the app is in production. Its value can be either true or false.                                                                              | {{< icon "check" >}} |
+| RECIPYA_SERVER_PORT     | The port the app will be served through if localhost.                                                                                                 | {{< icon "check" >}} |
+| RECIPYA_SERVER_URL      | The website the app is served on. This URL will serve as the base link in the emails.                                                                 | {{< icon "check" >}} |

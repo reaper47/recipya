@@ -3,6 +3,7 @@ package app
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net"
 	"net/url"
 	"os"
@@ -13,9 +14,12 @@ import (
 )
 
 const (
-	Version        = "1.0.0" // Version represents the current version of the application.
+	Version        = "1.1.0" // Version represents the current version of the application.
 	configFileName = "config.json"
 )
+
+// ImagesDir is the directory where user images are stored.
+var ImagesDir string
 
 // Config references a global ConfigFile.
 var Config ConfigFile
@@ -124,9 +128,6 @@ type ConfigServer struct {
 	URL          string `json:"url"`
 }
 
-// ImagesDir is the directory where user images are stored.
-var ImagesDir string
-
 // Init initializes the app. This function must be called when the app starts.
 // Its name is not *init* so that the function is not executed during the tests.
 func Init() {
@@ -138,16 +139,11 @@ func Init() {
 	}
 	dir := filepath.Dir(exe)
 
-	xb, err := os.ReadFile(filepath.Join(dir, configFileName))
-	if err != nil {
-		fmt.Println("The configuration file must be present.")
-		os.Exit(1)
-	}
+	f, _ := os.Open(filepath.Join(dir, configFileName))
+	NewConfig(f)
+	_ = f.Close()
 
-	err = json.Unmarshal(xb, &Config)
-	if err != nil {
-		panic(err)
-	}
+	fmt.Printf("%+v\n", Config)
 
 	ImagesDir = filepath.Join(dir, "data", "images")
 	_, err = os.Stat(ImagesDir)
@@ -156,5 +152,43 @@ func Init() {
 		if err != nil {
 			panic(err)
 		}
+	}
+}
+
+// NewConfig initializes the global Config. It can either be populated from environment variables or the configuration file.
+func NewConfig(r io.Reader) {
+	if r == nil {
+		port, _ := strconv.ParseInt(os.Getenv("RECIPYA_SERVER_PORT"), 10, 64)
+		Config = ConfigFile{
+			Email: ConfigEmail{
+				From:           os.Getenv("RECIPYA_EMAIL"),
+				SendGridAPIKey: os.Getenv("RECIPYA_EMAIL_SENDGRID"),
+			},
+			Integrations: ConfigIntegrations{
+				AzureComputerVision: AzureComputerVision{
+					ResourceKey:    os.Getenv("RECIPYA_VISION_KEY"),
+					VisionEndpoint: os.Getenv("RECIPYA_VISION_ENDPOINT"),
+				},
+			},
+			Server: ConfigServer{
+				IsDemo:       os.Getenv("RECIPYA_SERVER_IS_DEMO") == "true",
+				IsProduction: os.Getenv("RECIPYA_SERVER_IS_PROD") == "true",
+				Port:         int(port),
+				URL:          os.Getenv("RECIPYA_SERVER_URL"),
+			},
+		}
+	} else {
+		err := json.NewDecoder(r).Decode(&Config)
+		if err != nil {
+			fmt.Println("The configuration file must be present.")
+			os.Exit(1)
+		}
+	}
+
+	if Config.Server.URL == "" {
+		fmt.Println("Missing 'server.url' in the configuration.")
+		fmt.Println("If you use Docker, please pass the `RECIPYA_SERVER_URL` environment variable.")
+		fmt.Println("Otherwise, please double-check your configuration file.")
+		os.Exit(1)
 	}
 }

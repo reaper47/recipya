@@ -1,7 +1,11 @@
 package app_test
 
 import (
+	"bytes"
+	"encoding/json"
+	"github.com/google/go-cmp/cmp"
 	"github.com/reaper47/recipya/internal/app"
+	"os"
 	"strconv"
 	"strings"
 	"testing"
@@ -103,4 +107,69 @@ func TestConfigServer_IsCookieSecure(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestNewConfig(t *testing.T) {
+	base := app.ConfigFile{
+		Email: app.ConfigEmail{
+			From:           "my@email.com",
+			SendGridAPIKey: "API_KEY",
+		},
+		Integrations: app.ConfigIntegrations{
+			AzureComputerVision: app.AzureComputerVision{
+				ResourceKey:    "KEY_1",
+				VisionEndpoint: "https://{resource}.cognitiveservices.azure.com/",
+			},
+		},
+		Server: app.ConfigServer{
+			IsDemo:       false,
+			IsProduction: false,
+			Port:         8078,
+			URL:          "http://0.0.0.0",
+		},
+	}
+
+	env := map[string]string{
+		"RECIPYA_EMAIL":           "my@email.com",
+		"RECIPYA_EMAIL_SENDGRID":  "API_KEY",
+		"RECIPYA_VISION_KEY":      "KEY_1",
+		"RECIPYA_VISION_ENDPOINT": "https://{resource}.cognitiveservices.azure.com/",
+		"RECIPYA_SERVER_IS_DEMO":  "false",
+		"RECIPYA_SERVER_IS_PROD":  "false",
+		"RECIPYA_SERVER_PORT":     "8078",
+		"RECIPYA_SERVER_URL":      "http://0.0.0.0",
+	}
+
+	t.Run("load from config file", func(t *testing.T) {
+		defer func() {
+			app.Config = app.ConfigFile{}
+		}()
+		xb, _ := json.Marshal(&base)
+
+		app.NewConfig(bytes.NewBuffer(xb))
+		got := app.Config
+
+		if !cmp.Equal(got, base) {
+			t.Log(cmp.Diff(got, base))
+			t.Fail()
+		}
+	})
+
+	t.Run("load from env", func(t *testing.T) {
+		defer func() {
+			app.Config = app.ConfigFile{}
+			os.Clearenv()
+		}()
+		for k, v := range env {
+			_ = os.Setenv(k, v)
+		}
+
+		app.NewConfig(nil)
+		got := app.Config
+
+		if !cmp.Equal(got, base) {
+			t.Log(cmp.Diff(got, base))
+			t.Fail()
+		}
+	})
 }
