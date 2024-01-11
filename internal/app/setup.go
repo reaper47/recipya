@@ -111,6 +111,24 @@ func downloadFile(path, url string) error {
 }
 
 func setupConfigFile(exeDir string) {
+	if isRunningInDocker() {
+		isEnvOk := true
+		xenv := []string{"RECIPYA_SERVER_PORT", "RECIPYA_SERVER_URL"}
+		for _, env := range xenv {
+			if os.Getenv(env) == "" {
+				isEnvOk = false
+				fmt.Println("Missing required env variable:", env)
+			}
+		}
+
+		if !isEnvOk {
+			fmt.Println("Application setup will terminate")
+			os.Exit(1)
+		}
+
+		return
+	}
+
 	configFilePath := filepath.Join(exeDir, "config.json")
 	_, err := os.Stat(configFilePath)
 	if err != nil {

@@ -139,11 +139,13 @@ func Init() {
 	}
 	dir := filepath.Dir(exe)
 
-	f, _ := os.Open(filepath.Join(dir, configFileName))
-	NewConfig(f)
+	f, err := os.Open(filepath.Join(dir, configFileName))
+	if err != nil {
+		NewConfig(nil)
+	} else {
+		NewConfig(f)
+	}
 	_ = f.Close()
-
-	fmt.Printf("%+v\n", Config)
 
 	ImagesDir = filepath.Join(dir, "data", "images")
 	_, err = os.Stat(ImagesDir)

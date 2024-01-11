@@ -13,5 +13,3 @@ services:
       RECIPYA_SERVER_URL: "http://0.0.0.0"
     ports:
       - "[host port]:[port specified in config.json]"
-    volumes:
-      - path/to/config.json:/app/config.json
