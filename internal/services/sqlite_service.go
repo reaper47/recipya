@@ -8,13 +8,13 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/pressly/goose/v3"
+	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services/statements"
 	"github.com/reaper47/recipya/internal/units"
 	"log"
 	_ "modernc.org/sqlite" // Blank import to initialize the SQL driver.
-	"os"
 	"path/filepath"
 	"slices"
 	"strings"
@@ -26,8 +26,6 @@ import (
 var embedMigrations embed.FS
 
 const (
-	fdcDB            = "fdc.db"
-	recipyaDB        = "recipya.db"
 	shortCtxTimeout  = 3 * time.Second
 	longerCtxTimeout = 1 * time.Minute
 )
@@ -41,13 +39,7 @@ type SQLiteService struct {
 
 // NewSQLiteService creates an SQLiteService object.
 func NewSQLiteService() *SQLiteService {
-	exe, err := os.Executable()
-	if err != nil {
-		panic(err)
-	}
-
-	path := filepath.Join(filepath.Dir(exe), recipyaDB)
-	dsnURI := "file:" + path + "?" +
+	dsnURI := "file:" + filepath.Join(app.DBBasePath, app.RecipyaDB) + "?" +
 		"_pragma=foreign_keys(1)" +
 		"&_pragma=journal_mode(wal)" +
 		"&_pragma=synchronous(normal)" +
@@ -83,12 +75,7 @@ func NewSQLiteService() *SQLiteService {
 }
 
 func openFdcDB() *sql.DB {
-	exe, err := os.Executable()
-	if err != nil {
-		panic(err)
-	}
-
-	path := filepath.Join(filepath.Dir(exe), fdcDB)
+	path := filepath.Join(app.DBBasePath, app.FdcDB)
 	db, err := sql.Open("sqlite", "file:"+path)
 	if err != nil {
 		panic(err)

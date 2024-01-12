@@ -2,6 +2,8 @@
 services:
   web:
     image: reaper99/recipya:nightly
+    container_name: recipya
+    restart: unless-stopped
     environment:
       RECIPYA_EMAIL: "my@email.com"
       RECIPYA_EMAIL_SENDGRID: "API_KEY"
@@ -14,4 +16,8 @@ services:
     ports:
       - "<host-port>:<RECIPYA_SERVER_PORT>"
     volumes:
-      - "<host-path>:/app/recipya.db"
+      - "recipya-backup:/app/data/backup"
+      - "recipya-data:/app/data"
+
+volumes:
+  recipya-data:
