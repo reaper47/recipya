@@ -111,98 +111,6 @@ func TestHandlers_Settings_ConvertAutomatically(t *testing.T) {
 	})
 }
 
-func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
-	srv, ts, c := createWSServer()
-	defer func() {
-		_ = c.Close()
-	}()
-
-	originalRepo := srv.Repository
-
-	f := &mockFiles{}
-	srv.Files = f
-
-	uri := ts.URL + "/settings/export/recipes"
-
-	validExportTypes := []string{"json", "pdf"}
-
-	t.Run("must be logged in", func(t *testing.T) {
-		for _, q := range validExportTypes {
-			assertMustBeLoggedIn(t, srv, http.MethodGet, uri+"?type="+q)
-		}
-	})
-
-	t.Run("lost socket connection", func(t *testing.T) {
-		brokers := maps.Clone(srv.Brokers)
-		srv.Brokers = nil
-		defer func() {
-			srv.Brokers = brokers
-		}()
-
-		rr := sendRequestAsLoggedIn(srv, http.MethodGet, "/settings/export/recipes", noHeader, nil)
-
-		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Connection lost. Please reload page.\",\"backgroundColor\":\"bg-orange-500\"}"}`)
-	})
-
-	t.Run("invalid file type", func(t *testing.T) {
-		_ = c.SetReadDeadline(time.Now().Add(2 * time.Second))
-
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
-
-		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Invalid export file format.\",\"backgroundColor\":\"bg-red-500\"}"}`)
-	})
-
-	t.Run("no export if no recipes", func(t *testing.T) {
-		for _, q := range validExportTypes {
-			t.Run(q, func(t *testing.T) {
-				_ = c.SetReadDeadline(time.Now().Add(2 * time.Second))
-				originalHitCount := f.exportHitCount
-
-				rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?type="+q, noHeader, nil)
-
-				assertStatus(t, rr.Code, http.StatusAccepted)
-				want := `{"type":"toast","fileName":"","data":"{\"message\":\"No recipes in database.\",\"background\":\"bg-orange-500\"}"}`
-				assertWebsocket(t, c, 3, want)
-				if originalHitCount != f.exportHitCount {
-					t.Fatalf("expected the export function not to be called")
-				}
-			})
-		}
-	})
-
-	t.Run("have recipes", func(t *testing.T) {
-		repo := &mockRepository{
-			RecipesRegistered: map[int64]models.Recipes{
-				1: {{ID: 1, Name: "Chicken"}, {ID: 3, Name: "Jersey"}},
-				2: {{ID: 2, Name: "BBQ"}},
-			},
-			UsersRegistered: srv.Repository.Users(),
-		}
-		srv.Repository = repo
-		defer func() {
-			srv.Repository = originalRepo
-		}()
-
-		for _, q := range validExportTypes {
-			t.Run(q, func(t *testing.T) {
-				_ = c.SetReadDeadline(time.Now().Add(2 * time.Second))
-				originalHitCount := f.exportHitCount
-
-				rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?type="+q, noHeader, nil)
-
-				assertStatus(t, rr.Code, http.StatusAccepted)
-				want := `{"type":"file","fileName":"recipes_` + q + `.zip","data":"Q2hpY2tlbi1KZXJzZXkt"}`
-				assertWebsocket(t, c, 3, want)
-				if f.exportHitCount != originalHitCount+1 {
-					t.Fatalf("expected the export function to be called")
-				}
-			})
-		}
-	})
-}
-
 func TestHandlers_Settings_MeasurementSystems(t *testing.T) {
 	srv := newServerTest()
 
@@ -400,6 +308,133 @@ func TestHandlers_Settings_MeasurementSystems(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
+	srv, ts, c := createWSServer()
+	defer func() {
+		_ = c.Close()
+	}()
+
+	originalRepo := srv.Repository
+
+	f := &mockFiles{}
+	srv.Files = f
+
+	uri := ts.URL + "/settings/export/recipes"
+
+	validExportTypes := []string{"json", "pdf"}
+
+	t.Run("must be logged in", func(t *testing.T) {
+		for _, q := range validExportTypes {
+			assertMustBeLoggedIn(t, srv, http.MethodGet, uri+"?type="+q)
+		}
+	})
+
+	t.Run("lost socket connection", func(t *testing.T) {
+		brokers := maps.Clone(srv.Brokers)
+		srv.Brokers = nil
+		defer func() {
+			srv.Brokers = brokers
+		}()
+
+		rr := sendRequestAsLoggedIn(srv, http.MethodGet, "/settings/export/recipes", noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Connection lost. Please reload page.\",\"backgroundColor\":\"bg-orange-500\"}"}`)
+	})
+
+	t.Run("invalid file type", func(t *testing.T) {
+		_ = c.SetReadDeadline(time.Now().Add(2 * time.Second))
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Invalid export file format.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+	})
+
+	t.Run("no export if no recipes", func(t *testing.T) {
+		for _, q := range validExportTypes {
+			t.Run(q, func(t *testing.T) {
+				_ = c.SetReadDeadline(time.Now().Add(2 * time.Second))
+				originalHitCount := f.exportHitCount
+
+				rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?type="+q, noHeader, nil)
+
+				assertStatus(t, rr.Code, http.StatusAccepted)
+				want := `{"type":"toast","fileName":"","data":"{\"message\":\"No recipes in database.\",\"background\":\"bg-orange-500\"}"}`
+				assertWebsocket(t, c, 3, want)
+				if originalHitCount != f.exportHitCount {
+					t.Fatalf("expected the export function not to be called")
+				}
+			})
+		}
+	})
+
+	t.Run("have recipes", func(t *testing.T) {
+		repo := &mockRepository{
+			RecipesRegistered: map[int64]models.Recipes{
+				1: {{ID: 1, Name: "Chicken"}, {ID: 3, Name: "Jersey"}},
+				2: {{ID: 2, Name: "BBQ"}},
+			},
+			UsersRegistered: srv.Repository.Users(),
+		}
+		srv.Repository = repo
+		defer func() {
+			srv.Repository = originalRepo
+		}()
+
+		for _, q := range validExportTypes {
+			t.Run(q, func(t *testing.T) {
+				_ = c.SetReadDeadline(time.Now().Add(2 * time.Second))
+				originalHitCount := f.exportHitCount
+
+				rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?type="+q, noHeader, nil)
+
+				assertStatus(t, rr.Code, http.StatusAccepted)
+				want := `{"type":"file","fileName":"recipes_` + q + `.zip","data":"Q2hpY2tlbi1KZXJzZXkt"}`
+				assertWebsocket(t, c, 3, want)
+				if f.exportHitCount != originalHitCount+1 {
+					t.Fatalf("expected the export function to be called")
+				}
+			})
+		}
+	})
+}
+
+func TestHandlers_Settings_BackupsRestore(t *testing.T) {
+	srv := newServerTest()
+
+	uri := "/settings/backups/restore"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
+	})
+}
+
+func TestHandlers_Settings_TabsAdvanced(t *testing.T) {
+	srv := newServerTest()
+
+	uri := "/settings/tabs/advanced"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
+	})
+
+	t.Run("successful request", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		want := []string{
+			`<p class="grid justify-end font-semibold">Change password:</p>`,
+			`<form class="h-fit w-fit border p-4 rounded-lg dark:border-none dark:bg-gray-600" hx-post="/auth/change-password" hx-indicator="#fullscreen-loader" hx-swap="none">`,
+			`<input class="text-input" id="password-current" name="password-current" placeholder="Enter current password" required type="password"/>`,
+			`<input class="text-input" id="password-new" name="password-new" placeholder="Enter new password" required type="password"/>`,
+			`<input class="text-input" id="password-confirm" name="password-confirm" placeholder="Retype new password" required type="password"/>`,
+			`<button type="submit" class="w-full p-2 font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-800"> Update </button>`,
+		}
+		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
 }
 
 func TestHandlers_Settings_TabsProfile(t *testing.T) {

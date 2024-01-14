@@ -276,7 +276,7 @@
     <title hx-swap-oob="true">Settings | Recipya</title>
 
     <div class="grid grid-flow-col h-full" style="grid-template-columns: min-content">
-        <div class="text-sm md:text-base grid bg-gray-200 max-w-[5rem] mt-[1px] dark:bg-gray-600 dark:border-r dark:border-r-gray-500"
+        <div class="text-sm md:text-base grid bg-gray-200 max-w-[6rem] mt-[1px] dark:bg-gray-600 dark:border-r dark:border-r-gray-500"
              role="tablist">
             <button class="px-2 bg-gray-300 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-800"
                     hx-get="/settings/tabs/profile"
@@ -284,11 +284,19 @@
                     _="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800">
                 Profile
             </button>
-            <button class="px-2 hover:bg-gray-300 dark:hover:bg-gray-800" hx-get="/settings/tabs/recipes"
+            <button class="px-2 hover:bg-gray-300 dark:hover:bg-gray-800"
+                    hx-get="/settings/tabs/recipes"
                     hx-target="#settings-tab-content"
                     role="tab" aria-selected="false" aria-controls="tab-content"
                     _="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800">
                 Recipes
+            </button>
+            <button class="px-2 hover:bg-gray-300 dark:hover:bg-gray-800"
+                    hx-get="/settings/tabs/advanced"
+                    hx-target="#settings-tab-content"
+                    role="tab" aria-selected="false" aria-controls="tab-content"
+                    _="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800">
+                Advanced
             </button>
         </div>
 
@@ -296,6 +304,29 @@
              class="text-sm md:text-base p-4 auto-rows-min">
             {{template "settings-tabs-profile"}}
         </div>
+    </div>
+{{end}}
+
+{{define "settings-tabs-advanced"}}
+    <div class="grid grid-cols-2 gap-4 mb-2">
+        <p class="text-end font-semibold select-none">Restore backup:</p>
+        <form class="grid gap-1 grid-flow-col w-fit"
+              hx-post="/settings/backups/restore"
+              hx-include="select[name='date']"
+              hx-swap="none"
+              hx-indicator="#fullscreen-loader">
+            <label>
+                <select required id="file-type" name="date"
+                        class="bg-gray-50 border border-gray-300 rounded-lg p-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    {{range .}}
+                        <option value="." selected>{{.}}</option>
+                    {{end}}
+                </select>
+            </label>
+            <button class="bg-white border border-gray-300 rounded-lg py-2 px-4 justify-start hover:bg-gray-100 h-fit focus:ring-2 focus:ring-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                {{template "icon-rocket-launch"}}
+            </button>
+        </form>
     </div>
 {{end}}
 

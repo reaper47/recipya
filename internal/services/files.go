@@ -15,12 +15,14 @@ import (
 	"image"
 	"image/jpeg"
 	"io"
+	"io/fs"
 	"log"
 	"mime/multipart"
 	"net/url"
 	"os"
 	"path/filepath"
 	"slices"
+	"sort"
 	"strconv"
 	"strings"
 	"sync"
@@ -47,16 +49,208 @@ type exportData struct {
 	data        []byte
 }
 
+// BackupDB backs up the whole database to the backup directory.
+func (f *Files) BackupDB() error {
+	name := fmt.Sprintf("recipya-%s.zip", time.Now().Format(time.DateOnly))
+	target := filepath.Join(app.BackupPath, "all", name)
+
+	err := os.MkdirAll(filepath.Dir(target), os.ModePerm)
+	if err != nil {
+		return fmt.Errorf("could not create backup dir: %q", err)
+	}
+
+	zf, err := os.Create(target)
+	if err != nil {
+		return fmt.Errorf("could not create backup %q", name)
+	}
+	defer func() {
+		_ = zf.Close()
+	}()
+
+	zw := zip.NewWriter(zf)
+	defer func() {
+		_ = zw.Close()
+	}()
+
+	source := filepath.Dir(app.DBBasePath)
+	backupBase := filepath.Base(app.BackupPath)
+
+	err = filepath.WalkDir(source, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		info, err := d.Info()
+		if err != nil {
+			return err
+		}
+
+		omit := []string{"backup", "all", "fdc.db", app.RecipyaDB + "-wal", app.RecipyaDB + "-shm"}
+		base := filepath.Base(filepath.Dir(path))
+		if base == backupBase || base == "all" || slices.Contains(omit, info.Name()) {
+			return nil
+		}
+
+		h, err := zip.FileInfoHeader(info)
+		if err != nil {
+			return err
+		}
+
+		h.Method = zip.Deflate
+		h.Name, err = filepath.Rel(filepath.Dir(source), path)
+		if err != nil {
+			return err
+		}
+		if info.IsDir() {
+			h.Name += "/"
+		}
+
+		w, err := zw.CreateHeader(h)
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			return nil
+		}
+
+		f, err := os.Open(path)
+		if err != nil {
+			return err
+		}
+		defer func() {
+			_ = f.Close()
+		}()
+
+		_, err = io.Copy(w, f)
+		return err
+	})
+	if err != nil {
+		return fmt.Errorf("could not assemble backup %q", name)
+	}
+
+	cleanBackups(filepath.Dir(target))
+	return nil
+}
+
+// Backups gets the list of backup dates sorted in descending order for the given user.
+func (f *Files) Backups(userID int64) []time.Time {
+	var backups []time.Time
+	root := filepath.Join(app.BackupPath, strconv.FormatInt(userID, 64))
+	_ = filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
+		if d.IsDir() {
+			return nil
+		}
+
+		info, err := d.Info()
+		if err != nil {
+			return err
+		}
+
+		name := info.Name()
+		ext := filepath.Ext(name)
+		if ext != ".bak" {
+			return nil
+		}
+
+		_, after, found := strings.Cut(strings.TrimSuffix(name, ext), ".")
+		if found {
+			parsed, err := time.Parse("", after)
+			if err == nil {
+				backups = append(backups, parsed)
+			}
+		}
+		return nil
+	})
+
+	sort.Slice(backups, func(i, j int) bool {
+		return backups[i].After(backups[j])
+	})
+	return backups
+}
+
+func (f *Files) BackupUserData(repo RepositoryService) error {
+	for _, user := range repo.Users() {
+		err := backupUserData(repo, f, user.ID)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func backupUserData(repo RepositoryService, files *Files, userID int64) error {
+	name := fmt.Sprintf("recipya-%s.zip", time.Now().Format(time.DateOnly))
+	target := filepath.Join(app.BackupPath, "users", strconv.FormatInt(userID, 10), name)
+
+	err := os.MkdirAll(filepath.Dir(target), os.ModePerm)
+	if err != nil {
+		return fmt.Errorf("could not create backup dir: %q", err)
+	}
+
+	zf, err := os.Create(target)
+	if err != nil {
+		return fmt.Errorf("could not create backup %q", name)
+	}
+	defer func() {
+		_ = zf.Close()
+	}()
+
+	zw := zip.NewWriter(zf)
+	defer zw.Close()
+
+	w, err := zw.CreateHeader(&zip.FileHeader{
+		Name:   "recipes.zip",
+		Method: zip.Store,
+	})
+	if err != nil {
+		return err
+	}
+
+	recipes := repo.RecipesAll(userID)
+	buf, err := files.ExportRecipes(recipes, models.JSON, nil)
+	if err != nil {
+		return err
+	}
+
+	_, err = io.Copy(w, buf)
+	return err
+}
+
+func cleanBackups(root string) {
+	files, err := os.ReadDir(root)
+	if err != nil {
+		log.Printf("cleanBackups for %q error: %q", root, err)
+		return
+	}
+
+	sort.Slice(files, func(i, j int) bool {
+		aInfo, err1 := files[i].Info()
+		bInfo, err2 := files[j].Info()
+		if err1 != nil || err2 != nil {
+			return false
+		}
+		return bInfo.ModTime().Before(aInfo.ModTime())
+	})
+
+	if len(files) > 10 {
+		for _, file := range files[10:] {
+			_ = os.Remove(filepath.Join(root, file.Name()))
+		}
+	}
+}
+
 // ExportRecipes creates a zip containing the recipes to export in the desired file type.
-// It returns the name of file in the temporary directory.
-func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType, iter chan int) (*bytes.Buffer, error) {
+func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType, progress chan int) (*bytes.Buffer, error) {
 	buf := new(bytes.Buffer)
 	writer := zip.NewWriter(buf)
 
 	switch fileType {
 	case models.JSON:
 		for i, e := range exportRecipesJSON(recipes) {
-			iter <- i
+			if progress != nil {
+				progress <- i
+			}
 
 			out, err := writer.Create(e.recipeName + "/recipe" + fileType.Ext())
 			if err != nil {
@@ -93,7 +287,9 @@ func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType, 
 	case models.PDF:
 		processed := make(map[string]struct{})
 		for i, e := range exportRecipesPDF(recipes) {
-			iter <- i
+			if progress != nil {
+				progress <- i
+			}
 
 			name := strings.ReplaceAll(e.recipeName+fileType.Ext(), "/", "_")
 

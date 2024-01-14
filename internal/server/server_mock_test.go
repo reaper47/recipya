@@ -15,6 +15,7 @@ import (
 	"mime/multipart"
 	"slices"
 	"strings"
+	"time"
 )
 
 func newServerTest() *server.Server {
@@ -432,6 +433,10 @@ func (m *mockRepository) ReorderCookbookRecipes(_ int64, _ []uint64, _ int64) er
 	return nil
 }
 
+func (m *mockRepository) RestoreBackup(_ string) error {
+	return nil
+}
+
 func (m *mockRepository) SearchRecipes(query string, _ models.SearchOptionsRecipes, userID int64) (models.Recipes, error) {
 	recipes, ok := m.RecipesRegistered[userID]
 	if !ok {
@@ -725,6 +730,18 @@ type mockFiles struct {
 	ReadTempFileFunc    func(name string) ([]byte, error)
 	uploadImageHitCount int
 	uploadImageFunc     func(rc io.ReadCloser) (uuid.UUID, error)
+}
+
+func (m *mockFiles) BackupDB() error {
+	return nil
+}
+
+func (m *mockFiles) Backups(userID int64) []time.Time {
+	return nil
+}
+
+func (m *mockFiles) BackupUserData(repo services.RepositoryService) error {
+	return nil
 }
 
 func (m *mockFiles) ExportCookbook(cookbook models.Cookbook, fileType models.FileType) (string, error) {

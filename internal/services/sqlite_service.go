@@ -925,6 +925,11 @@ func (s *SQLiteService) ReorderCookbookRecipes(cookbookID int64, recipeIDs []uin
 	return tx.Commit()
 }
 
+// RestoreBackup restores the app's state to that of the backup's.
+func (s *SQLiteService) RestoreBackup(name string) error {
+	return errors.New("not implemented")
+}
+
 // SearchRecipes searches for recipes based on the configuration.
 func (s *SQLiteService) SearchRecipes(query string, options models.SearchOptionsRecipes, userID int64) (models.Recipes, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)

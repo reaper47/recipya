@@ -9,6 +9,7 @@ import (
 	"github.com/reaper47/recipya/internal/units"
 	"io"
 	"mime/multipart"
+	"time"
 )
 
 // RepositoryService is the interface that describes the methods required for managing the main data store.
@@ -113,6 +114,9 @@ type RepositoryService interface {
 	// ReorderCookbookRecipes reorders the recipe indices of a cookbook.
 	ReorderCookbookRecipes(cookbookID int64, recipeIDs []uint64, userID int64) error
 
+	// RestoreBackup restores the app's state to that of the backup's.
+	RestoreBackup(name string) error
+
 	// SearchRecipes searches for recipes based on the configuration.
 	SearchRecipes(query string, options models.SearchOptionsRecipes, userID int64) (models.Recipes, error)
 
@@ -174,12 +178,20 @@ type EmailService interface {
 
 // FilesService is the interface that describes the methods required for manipulating files.
 type FilesService interface {
+	// BackupDB backs up the whole database to the backup directory.
+	BackupDB() error
+
+	// Backups gets the list of backup dates sorted in descending order for the given user.
+	Backups(userID int64) []time.Time
+
+	// BackupUserData backs up each user's data to the backup directory.
+	BackupUserData(repo RepositoryService) error
+
 	// ExportCookbook exports the cookbook in the desired file type.
 	// It returns the name of file in the temporary directory.
 	ExportCookbook(cookbook models.Cookbook, fileType models.FileType) (string, error)
 
 	// ExportRecipes creates a zip containing the recipes to export in the desired file type.
-	// It returns the name of file in the temporary directory.
 	ExportRecipes(recipes models.Recipes, fileType models.FileType, progress chan int) (*bytes.Buffer, error)
 
 	// ExtractRecipes extracts the recipes from the HTTP files.

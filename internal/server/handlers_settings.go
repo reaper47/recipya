@@ -157,6 +157,19 @@ func (s *Server) settingsMeasurementSystemsPostHandler(w http.ResponseWriter, r 
 	w.WriteHeader(http.StatusNoContent)
 }
 
+func (s *Server) settingsBackupRestoreHandler(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func (s *Server) settingsTabsAdvancedHandler(w http.ResponseWriter, r *http.Request) {
+	backups := s.Files.Backups(getUserID(r))
+	dates := make([]string, 0, len(backups))
+	for _, backup := range backups {
+		dates = append(dates, backup.Format("02 Jan 2006"))
+	}
+	templates.RenderComponent(w, "core", "settings-tabs-profile", dates)
+}
+
 func settingsTabsProfileHandler(w http.ResponseWriter, _ *http.Request) {
 	templates.RenderComponent(w, "core", "settings-tabs-profile", nil)
 }
