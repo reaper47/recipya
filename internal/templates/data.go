@@ -91,8 +91,15 @@ type RegisterData struct {
 
 // SettingsData holds template data related to the user settings.
 type SettingsData struct {
+	Backups            []Backup
 	MeasurementSystems []units.System
 	UserSettings       models.UserSettings
+}
+
+// Backup holds data related to backups.
+type Backup struct {
+	Display string
+	Value   string
 }
 
 // ScraperData holds template data related to the recipe scraper.

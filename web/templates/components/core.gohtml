@@ -314,12 +314,13 @@
               hx-post="/settings/backups/restore"
               hx-include="select[name='date']"
               hx-swap="none"
-              hx-indicator="#fullscreen-loader">
+              hx-indicator="#fullscreen-loader"
+              hx-confirm="Continue with this backup? Today's data will be backed up if not already done.">
             <label>
                 <select required id="file-type" name="date"
                         class="bg-gray-50 border border-gray-300 rounded-lg p-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    {{range .}}
-                        <option value="." selected>{{.}}</option>
+                    {{range .Backups}}
+                        <option value="{{.Value}}" selected>{{.Display}}</option>
                     {{end}}
                 </select>
             </label>

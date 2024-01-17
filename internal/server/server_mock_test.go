@@ -2,6 +2,7 @@ package server_test
 
 import (
 	"bytes"
+	"context"
 	"database/sql"
 	"errors"
 	"github.com/google/uuid"
@@ -39,12 +40,28 @@ type mockRepository struct {
 	MeasurementSystemsFunc      func(userID int64) ([]units.System, models.UserSettings, error)
 	RecipeFunc                  func(id, userID int64) (*models.Recipe, error)
 	RecipesRegistered           map[int64]models.Recipes
+	restoreUserBackupFunc       func(backup *models.UserBackup) error
 	ShareLinks                  map[string]models.Share
 	SwitchMeasurementSystemFunc func(system units.System, userID int64) error
 	UpdateCookbookImageFunc     func(id int64, image uuid.UUID, userID int64) error
 	UserSettingsRegistered      map[int64]*models.UserSettings
 	UsersRegistered             []models.User
 	UsersUpdated                []int64
+}
+
+func (m *mockRepository) AddRecipeTx(ctx context.Context, tx *sql.Tx, r *models.Recipe, userID int64) (int64, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (m *mockRepository) CookbooksShared(userID int64) ([]models.Share, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (m *mockRepository) CookbooksUser(userID int64) ([]models.Cookbook, error) {
+	//TODO implement me
+	panic("implement me")
 }
 
 func (m *mockRepository) AddAuthToken(selector, validator string, userID int64) error {
@@ -72,6 +89,7 @@ func (m *mockRepository) AddCookbook(title string, userID int64) (int64, error) 
 		return -1, errors.New("cookbook exists")
 	}
 
+	cookbook.ID = int64(len(cookbooks) + 1)
 	m.CookbooksRegistered[userID] = append(m.CookbooksRegistered[userID], cookbook)
 	return 1, nil
 }
@@ -180,7 +198,7 @@ func (m *mockRepository) Confirm(userID int64) error {
 	return nil
 }
 
-func (m *mockRepository) Cookbook(id, userID int64, _ uint64) (models.Cookbook, error) {
+func (m *mockRepository) Cookbook(id, userID int64) (models.Cookbook, error) {
 	cookbooks, ok := m.CookbooksRegistered[userID]
 	if !ok {
 		return models.Cookbook{}, errors.New("user does not have cookbooks")
@@ -194,10 +212,6 @@ func (m *mockRepository) Cookbook(id, userID int64, _ uint64) (models.Cookbook, 
 	}
 
 	return cookbooks[i], nil
-}
-
-func (m *mockRepository) CookbookByID(id int64, userID int64) (models.Cookbook, error) {
-	return m.Cookbook(id, userID, 1)
 }
 
 func (m *mockRepository) CookbookRecipe(id int64, cookbookID int64) (recipe *models.Recipe, userID int64, err error) {
@@ -433,7 +447,19 @@ func (m *mockRepository) ReorderCookbookRecipes(_ int64, _ []uint64, _ int64) er
 	return nil
 }
 
+func (m *mockRepository) RecipesShared(userID int64) ([]models.Share, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (m *mockRepository) RestoreBackup(_ string) error {
+	return nil
+}
+
+func (m *mockRepository) RestoreUserBackup(backup *models.UserBackup) error {
+	if m.restoreUserBackupFunc != nil {
+		return m.restoreUserBackupFunc(backup)
+	}
 	return nil
 }
 
@@ -725,22 +751,44 @@ func (m *mockEmail) Send(_ string, _ templates.EmailTemplate, _ any) error {
 }
 
 type mockFiles struct {
-	exportHitCount      int
-	extractRecipesFunc  func(fileHeaders []*multipart.FileHeader) models.Recipes
-	ReadTempFileFunc    func(name string) ([]byte, error)
-	uploadImageHitCount int
-	uploadImageFunc     func(rc io.ReadCloser) (uuid.UUID, error)
+	backupUserDataFunc    func(repo services.RepositoryService, userID int64) error
+	exportHitCount        int
+	extractRecipesFunc    func(fileHeaders []*multipart.FileHeader) models.Recipes
+	extractUserBackupFunc func(date string, userID int64) (*models.UserBackup, error)
+	ReadTempFileFunc      func(name string) ([]byte, error)
+	uploadImageHitCount   int
+	uploadImageFunc       func(rc io.ReadCloser) (uuid.UUID, error)
 }
 
-func (m *mockFiles) BackupDB() error {
+func (m *mockFiles) ExtractUserBackup(date string, userID int64) (*models.UserBackup, error) {
+	if m.extractUserBackupFunc != nil {
+		return m.extractUserBackupFunc(date, userID)
+	}
+	return &models.UserBackup{
+		DeleteSQL:  "delete SQL",
+		ImagesPath: "/path/to/images",
+		InsertSQL:  "insert SQL",
+		Recipes:    make(models.Recipes, 0),
+		UserID:     userID,
+	}, nil
+}
+
+func (m *mockFiles) BackupGlobal() error {
 	return nil
 }
 
-func (m *mockFiles) Backups(userID int64) []time.Time {
+func (m *mockFiles) Backups(_ int64) []time.Time {
 	return nil
 }
 
-func (m *mockFiles) BackupUserData(repo services.RepositoryService) error {
+func (m *mockFiles) BackupUserData(repo services.RepositoryService, userID int64) error {
+	if m.backupUserDataFunc != nil {
+		return m.backupUserDataFunc(repo, userID)
+	}
+	return nil
+}
+
+func (m *mockFiles) BackupUsersData(_ services.RepositoryService) error {
 	return nil
 }
 

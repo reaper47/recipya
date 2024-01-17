@@ -2,6 +2,8 @@ package services
 
 import (
 	"bytes"
+	"context"
+	"database/sql"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
@@ -26,6 +28,9 @@ type RepositoryService interface {
 	// AddRecipe adds a recipe to the user's collection.
 	AddRecipe(r *models.Recipe, userID int64, settings models.UserSettings) (int64, error)
 
+	// AddRecipeTx adds a recipe to the user's collection using an existing database transaction.
+	AddRecipeTx(ctx context.Context, tx *sql.Tx, r *models.Recipe, userID int64) (int64, error)
+
 	// AddShareLink adds a share link for the recipe.
 	AddShareLink(share models.Share) (string, error)
 
@@ -39,11 +44,8 @@ type RepositoryService interface {
 	// Confirm confirms the user's account.
 	Confirm(userID int64) error
 
-	// Cookbook gets a cookbook belonging to a user.
-	Cookbook(id, userID int64, page uint64) (models.Cookbook, error)
-
-	// CookbookByID gets a cookbook by its ID.
-	CookbookByID(id, userID int64) (models.Cookbook, error)
+	// Cookbook gets a cookbook by its ID.
+	Cookbook(id, userID int64) (models.Cookbook, error)
 
 	// CookbookRecipe gets a recipe from a cookbook.
 	CookbookRecipe(id, cookbookID int64) (recipe *models.Recipe, userID int64, err error)
@@ -54,6 +56,12 @@ type RepositoryService interface {
 
 	// Cookbooks gets a limited number of cookbooks belonging to the user.
 	Cookbooks(userID int64, page uint64) ([]models.Cookbook, error)
+
+	// CookbooksShared gets the user's shared cookbooks.
+	CookbooksShared(userID int64) ([]models.Share, error)
+
+	// CookbooksUser gets all the user's cookbooks.
+	CookbooksUser(userID int64) ([]models.Cookbook, error)
 
 	// Counts gets the models.Counts for the user.
 	Counts(userID int64) (models.Counts, error)
@@ -105,6 +113,9 @@ type RepositoryService interface {
 	// It returns a models.Share. Otherwise, an error.
 	RecipeShared(id string) (*models.Share, error)
 
+	// RecipesShared gets all the user's shared recipes.
+	RecipesShared(userID int64) ([]models.Share, error)
+
 	// RecipeUser gets the user for which the recipe belongs to.
 	RecipeUser(recipeID int64) int64
 
@@ -114,8 +125,8 @@ type RepositoryService interface {
 	// ReorderCookbookRecipes reorders the recipe indices of a cookbook.
 	ReorderCookbookRecipes(cookbookID int64, recipeIDs []uint64, userID int64) error
 
-	// RestoreBackup restores the app's state to that of the backup's.
-	RestoreBackup(name string) error
+	// RestoreUserBackup restores the user's data.
+	RestoreUserBackup(backup *models.UserBackup) error
 
 	// SearchRecipes searches for recipes based on the configuration.
 	SearchRecipes(query string, options models.SearchOptionsRecipes, userID int64) (models.Recipes, error)
@@ -178,14 +189,17 @@ type EmailService interface {
 
 // FilesService is the interface that describes the methods required for manipulating files.
 type FilesService interface {
-	// BackupDB backs up the whole database to the backup directory.
-	BackupDB() error
+	// BackupGlobal backs up the whole database to the backup directory.
+	BackupGlobal() error
 
 	// Backups gets the list of backup dates sorted in descending order for the given user.
 	Backups(userID int64) []time.Time
 
-	// BackupUserData backs up each user's data to the backup directory.
-	BackupUserData(repo RepositoryService) error
+	// BackupUserData backs up a specific user's data to the backup directory.
+	BackupUserData(repo RepositoryService, userID int64) error
+
+	// BackupUsersData backs up each user's data to the backup directory.
+	BackupUsersData(repo RepositoryService) error
 
 	// ExportCookbook exports the cookbook in the desired file type.
 	// It returns the name of file in the temporary directory.
@@ -196,6 +210,9 @@ type FilesService interface {
 
 	// ExtractRecipes extracts the recipes from the HTTP files.
 	ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recipes
+
+	// ExtractUserBackup extracts data from the user backup for restoration.
+	ExtractUserBackup(date string, userID int64) (*models.UserBackup, error)
 
 	// ReadTempFile gets the content of a file in the temporary directory.
 	ReadTempFile(name string) ([]byte, error)

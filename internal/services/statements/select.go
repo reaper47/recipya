@@ -136,18 +136,8 @@ const SelectCategories = `
 	WHERE uc.user_id = ?
 	ORDER BY name`
 
-// SelectCookbook is the query to get a user's cookbook.
+// SelectCookbook is the query to get a user's cookbook by cookbook ID.
 const SelectCookbook = `
-	SELECT c.id, c.title, c.count
-	FROM cookbooks AS c
-	WHERE id = (SELECT id
-				 FROM (SELECT id, ROW_NUMBER() OVER (ORDER BY id) AS row_num
-					   FROM cookbooks
-					   WHERE user_id = ?)
-				 WHERE row_num > (? - 1) *` + templates.ResultsPerPageStr + " + ?)"
-
-// SelectCookbookByID is the query to get a user's cookbook by cookbook ID.
-const SelectCookbookByID = `
 	SELECT c.id, c.title, c.image, c.count
 	FROM cookbooks AS c
 	WHERE id = ?
@@ -196,6 +186,12 @@ const SelectCookbookSharedLink = `
 	WHERE cookbook_id = ?
 		AND user_id = ?`
 
+// SelectCookbooksShared is the query to get the user's shared cookbooks.
+const SelectCookbooksShared = `
+	SELECT link, cookbook_id
+	FROM share_cookbooks
+	WHERE user_id = ?`
+
 // SelectCookbookUser is the query to get the ID of the user who has the cookbook ID.
 const SelectCookbookUser = `
 	SELECT user_id
@@ -213,6 +209,11 @@ var SelectCookbooks = `
 				 WHERE row_num > (? - 1) *` + templates.ResultsPerPageStr + " + " + templates.ResultsPerPageStr + `)
 		AND user_id = ?
 	LIMIT ` + templates.ResultsPerPageStr
+
+const SelectCookbooksUser = `
+	SELECT id, title, image, count
+	FROM cookbooks
+	WHERE user_id = 2`
 
 // SelectCounts is the query to get the number of recipes and cookbooks belonging to the user.
 const SelectCounts = `
@@ -332,6 +333,12 @@ const SelectRecipeShared = `
 	SELECT recipe_id, user_id
 	FROM share_recipes
 	WHERE link = ?`
+
+// SelectRecipesShared gets the recipes the user shared.
+const SelectRecipesShared = `
+	SELECT link, recipe_id
+	FROM share_recipes
+	WHERE user_id = ?`
 
 // SelectRecipeUser fetches the user whose recipe belongs to.
 const SelectRecipeUser = `

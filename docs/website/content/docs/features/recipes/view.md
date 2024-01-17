@@ -5,12 +5,12 @@ weight: 2
 
 To view a recipe, you first need to view your collection of recipes.
 
-![](view-recipe-enter.webp)
+![](images/view-recipe-enter.webp)
 
 You will then be presented with the recipe's information for you
 to follow while cooking. 
 
-![](view-recipe.webp)
+![](images/view-recipe.webp)
 
 {{< callout type="info" >}}
 You can click or tap on the ingredients
@@ -27,7 +27,7 @@ If you want to make fewer servings, enter a lower number.
 For example, the recipe above yields 6 servings. To double the recipe, set the number of servings to 12.
 The recipe will then be automatically scaled to make 12 servings of oven roasted potatoes, as shown below.
 
-![](view-recipe-scale.webp)
+![](images/view-recipe-scale.webp)
 
 {{< callout type="warning" >}}
 The scaling feature currently only scales ingredients, leaving instructions untouched. This

@@ -23,7 +23,7 @@ It is focused on simplicity for the whole family to enjoy.
 
 ## Getting Started
 
-The installation instructions are written in the [installation section](https://recipes.musicavis.ca/guide/docs/installation/) of the documentation.
+The installation instructions are written in the [installation section](/guide/docs/installation/) of the documentation.
 
 ## Contributing
 

@@ -14,15 +14,8 @@ The user will be able to filter and order recipes by category, alphabetically, e
 The user will be able to create grocery shopping lists from the application.
 [Issue](https://github.com/reaper47/recipya/issues/103).
 
-**Environment Variables**
-Pass configuration file variables as environment ones. This will be useful for Docker users.
-[Issue](https://github.com/reaper47/recipya/issues/174).
-
 **Import Text Files**
 Support importing recipes in text files. [Issue](https://github.com/reaper47/recipya/issues/182).
-
-**Database Backup and Restore**
-Implement an automated method of backing up the database. [Issue](https://github.com/reaper47/recipya/issues/185).
 
 **Improve UI**
 The UI can be improved tremendously. [Issue](https://github.com/reaper47/recipya/issues/173).

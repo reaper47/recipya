@@ -202,7 +202,7 @@ func (s *Server) mountHandlers() {
 			r.Post("/measurement-system", s.settingsMeasurementSystemsPostHandler)
 
 			r.Route("/backups", func(r chi.Router) {
-				r.Post("/restore", s.settingsBackupRestoreHandler)
+				r.Post("/restore", s.settingsBackupsRestoreHandler)
 			})
 
 			r.Route("/tabs", func(r chi.Router) {

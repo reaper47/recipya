@@ -43,13 +43,13 @@ func ScheduleCronJobs(repo services.RepositoryService, files services.FilesServi
 	})
 
 	_, _ = scheduler.Every(3).Days().Do(func() {
-		err := files.BackupDB()
+		err := files.BackupGlobal()
 		if err != nil {
-			log.Printf("Database backup failed: %q", err)
+			log.Printf("Global backup failed: %q", err)
 			return
 		}
 
-		err = files.BackupUserData(repo)
+		err = files.BackupUsersData(repo)
 		if err != nil {
 			log.Printf("User backups failed: %q", err)
 			return

@@ -14,7 +14,7 @@ All options related to this are found under the **Recipes** side tab in the sett
 To access your settings, click on your avatar in the top right corner of any page within Recipya.
 Then, select the **Settings** option.
 
-![](settings-access.webp)
+![](images/settings-access.webp)
 
 ## Changing System
 
@@ -25,7 +25,7 @@ the **Measurement system** setting.
 The default measurement system is imperial.
 {{< /callout >}}
 
-![](settings-measurement-system.webp)
+![](images/settings-measurement-system.webp)
 
 All of your recipes in your collection will be converted to the measurement system you selected. 
 This process is automatic.
@@ -38,4 +38,4 @@ For instance, let's assume you prefer the metric measurement system, and you wan
 American website. The website employs the imperial system. On import, the recipe will be automatically converted to metric
 if the **Convert automatically** checkbox is checked. Otherwise, the recipe will remain in the imperial system.
 
-![](settings-convert-automatically.webp)
+![](images/settings-convert-automatically.webp)
