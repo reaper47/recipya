@@ -572,6 +572,9 @@ func (s *SQLiteService) CookbooksShared(userID int64) ([]models.Share, error) {
 	for rows.Next() {
 		share := models.Share{UserID: userID}
 		err = rows.Scan(&share.Link, &share.CookbookID)
+		if err != nil {
+			return shares, err
+		}
 		shares = append(shares, share)
 	}
 	return shares, rows.Err()
