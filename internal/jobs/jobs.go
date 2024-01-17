@@ -2,6 +2,7 @@ package jobs
 
 import (
 	"github.com/go-co-op/gocron"
+	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/services"
 	"io/fs"
 	"log"
@@ -18,14 +19,16 @@ import (
 // - Clean Images: Removes unreferenced images from the data/img folder to save space.
 //
 // - Send Queued Emails
-func ScheduleCronJobs(repo services.RepositoryService, imagesDir string, email services.EmailService) {
+//
+// - Backup data
+func ScheduleCronJobs(repo services.RepositoryService, files services.FilesService, email services.EmailService) {
 	scheduler := gocron.NewScheduler(time.UTC)
 
 	_, _ = scheduler.Every(1).MonthLastDay().Do(func() {
 		rmFunc := func(file string) error {
-			return os.Remove(filepath.Join(imagesDir, file))
+			return os.Remove(filepath.Join(app.ImagesDir, file))
 		}
-		numFiles, numBytes := cleanImages(os.DirFS(imagesDir), repo.Images(), rmFunc)
+		numFiles, numBytes := cleanImages(os.DirFS(app.ImagesDir), repo.Images(), rmFunc)
 
 		var s string
 		if numBytes > 0 {
@@ -37,6 +40,22 @@ func ScheduleCronJobs(repo services.RepositoryService, imagesDir string, email s
 	_, _ = scheduler.Every(1).Day().At("00:00").Do(func() {
 		sent, remaining, err := email.SendQueue()
 		log.Printf("SendQueuedEmails: Sent %d | Remaining %d | Error: %q", sent, remaining, err)
+	})
+
+	_, _ = scheduler.Every(3).Days().Do(func() {
+		err := files.BackupGlobal()
+		if err != nil {
+			log.Printf("Global backup failed: %q", err)
+			return
+		}
+
+		err = files.BackupUsersData(repo)
+		if err != nil {
+			log.Printf("User backups failed: %q", err)
+			return
+		}
+
+		log.Println("Backup successful")
 	})
 
 	scheduler.StartAsync()

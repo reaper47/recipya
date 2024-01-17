@@ -11,16 +11,19 @@ import (
 	"github.com/jung-kurt/gofpdf"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/services/statements"
 	"github.com/reaper47/recipya/internal/templates"
 	"image"
 	"image/jpeg"
 	"io"
+	"io/fs"
 	"log"
 	"mime/multipart"
 	"net/url"
 	"os"
 	"path/filepath"
 	"slices"
+	"sort"
 	"strconv"
 	"strings"
 	"sync"
@@ -47,16 +50,404 @@ type exportData struct {
 	data        []byte
 }
 
+// BackupGlobal backs up the whole database to the backup directory.
+func (f *Files) BackupGlobal() error {
+	name := fmt.Sprintf("recipya.%s.zip", time.Now().Format(time.DateOnly))
+	target := filepath.Join(app.BackupPath, "global", name)
+
+	err := os.MkdirAll(filepath.Dir(target), os.ModePerm)
+	if err != nil {
+		return fmt.Errorf("could not create backup dir: %q", err)
+	}
+
+	zf, err := os.Create(target)
+	if err != nil {
+		return fmt.Errorf("could not create backup %q", name)
+	}
+	defer func() {
+		_ = zf.Close()
+	}()
+
+	zw := zip.NewWriter(zf)
+	defer func() {
+		_ = zw.Close()
+	}()
+
+	source := filepath.Dir(app.DBBasePath)
+
+	err = filepath.WalkDir(source, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		info, err := d.Info()
+		if err != nil {
+			return err
+		}
+
+		omitFiles := []string{"fdc.db", app.RecipyaDB + "-wal", app.RecipyaDB + "-shm"}
+		if strings.Contains(path, "backup") ||
+			slices.Contains(omitFiles, info.Name()) {
+			return nil
+		}
+
+		h, err := zip.FileInfoHeader(info)
+		if err != nil {
+			return err
+		}
+
+		h.Method = zip.Deflate
+		h.Name, err = filepath.Rel(filepath.Dir(source), path)
+		if err != nil {
+			return err
+		}
+		if info.IsDir() {
+			h.Name += "/"
+		}
+
+		w, err := zw.CreateHeader(h)
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			return nil
+		}
+
+		f, err := os.Open(path)
+		if err != nil {
+			return err
+		}
+		defer func() {
+			_ = f.Close()
+		}()
+
+		_, err = io.Copy(w, f)
+		return err
+	})
+	if err != nil {
+		return fmt.Errorf("could not assemble backup %q", name)
+	}
+
+	cleanBackups(filepath.Dir(target))
+	return nil
+}
+
+// Backups gets the list of backup dates sorted in descending order for the given user.
+func (f *Files) Backups(userID int64) []time.Time {
+	root := filepath.Join(app.BackupPath, "users", strconv.FormatInt(userID, 10))
+	_, err := os.Stat(root)
+	if err != nil {
+		return nil
+	}
+
+	backups := make([]time.Time, 0)
+	_ = filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if d.IsDir() {
+			return nil
+		}
+
+		info, err := d.Info()
+		if err != nil {
+			return err
+		}
+
+		name := info.Name()
+		ext := filepath.Ext(name)
+		if ext != ".zip" {
+			return nil
+		}
+
+		_, after, found := strings.Cut(strings.TrimSuffix(name, ext), ".")
+		if found {
+			parsed, err := time.Parse(time.DateOnly, after)
+			if err == nil {
+				backups = append(backups, parsed)
+			}
+		}
+		return nil
+	})
+
+	sort.Slice(backups, func(i, j int) bool { return backups[i].After(backups[j]) })
+	return backups
+}
+
+// BackupUserData backs up a specific user's data to the backup directory.
+func (f *Files) BackupUserData(repo RepositoryService, userID int64) error {
+	return f.backupUserData(repo, userID)
+}
+
+// BackupUsersData backs up each user's data to the backup directory.
+func (f *Files) BackupUsersData(repo RepositoryService) error {
+	for _, user := range repo.Users() {
+		err := f.backupUserData(repo, user.ID)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (f *Files) backupUserData(repo RepositoryService, userID int64) error {
+	userIDStr := strconv.FormatInt(userID, 10)
+	name := fmt.Sprintf("recipya.%s.zip", time.Now().Format(time.DateOnly))
+	target := filepath.Join(app.BackupPath, "users", userIDStr, name)
+
+	_, err := os.Stat(target)
+	if err == nil {
+		return nil
+	}
+
+	err = os.MkdirAll(filepath.Dir(target), os.ModePerm)
+	if err != nil {
+		return fmt.Errorf("could not create backup dir: %q", err)
+	}
+
+	zf, err := os.Create(target)
+	if err != nil {
+		return fmt.Errorf("could not create backup %q", name)
+	}
+	defer func() {
+		_ = zf.Close()
+	}()
+
+	zw := zip.NewWriter(zf)
+	defer func() {
+		_ = zw.Close()
+	}()
+
+	var (
+		deleteStatements []string
+		insertStatements []string
+	)
+
+	deletesSQL, insertsSQL, err := f.backupUserRecipes(zw, repo.RecipesAll(userID), userIDStr)
+	if err != nil {
+		return err
+	}
+	deleteStatements = append(deleteStatements, deletesSQL...)
+	insertStatements = append(insertStatements, insertsSQL...)
+
+	deletesSQL, insertsSQL, err = backupUserCookbooks(zw, repo, userID)
+	if err != nil {
+		return err
+	}
+	deleteStatements = append(deleteStatements, deletesSQL...)
+	insertStatements = append(insertStatements, insertsSQL...)
+
+	if len(deleteStatements) > 0 {
+		w, err := zw.CreateHeader(&zip.FileHeader{
+			Name:     "backup-deletes.sql",
+			Method:   zip.Deflate,
+			Modified: time.Now(),
+		})
+		if err != nil {
+			return err
+		}
+
+		_, err = io.Copy(w, bytes.NewBufferString(strings.Join(deleteStatements, ";\n")+";"))
+		if err != nil {
+			return err
+		}
+	}
+
+	if len(insertStatements) > 0 {
+		w, err := zw.CreateHeader(&zip.FileHeader{
+			Name:     "backup-inserts.sql",
+			Method:   zip.Deflate,
+			Modified: time.Now(),
+		})
+		if err != nil {
+			return err
+		}
+
+		_, err = io.Copy(w, bytes.NewBufferString(strings.Join(insertStatements, ";\n")+";"))
+		if err != nil {
+			return err
+		}
+	}
+
+	cleanBackups(filepath.Dir(target))
+	return nil
+}
+
+func (f *Files) backupUserRecipes(zw *zip.Writer, recipes models.Recipes, userID string) (deletesSQL []string, insertsSQL []string, err error) {
+	if len(recipes) > 0 {
+		deleteRecipesStatement := strings.TrimSpace(strings.Replace(statements.DeleteRecipesUser, "?", userID, 1))
+		deleteRecipesStatement = strings.ReplaceAll(deleteRecipesStatement, "\n", " ")
+		deleteRecipesStatement = strings.ReplaceAll(deleteRecipesStatement, "\t", "")
+		deletesSQL = append(deletesSQL, deleteRecipesStatement)
+
+		w, err := zw.CreateHeader(&zip.FileHeader{
+			Name:     "recipes.zip",
+			Method:   zip.Store,
+			Modified: time.Now(),
+		})
+		if err != nil {
+			return nil, nil, err
+		}
+
+		buf, err := f.ExportRecipes(recipes, models.JSON, nil)
+		if err != nil {
+			return nil, nil, err
+		}
+
+		_, err = io.Copy(w, buf)
+		if err != nil {
+			return nil, nil, err
+		}
+	}
+	return deletesSQL, insertsSQL, nil
+}
+
+func backupUserCookbooks(zw *zip.Writer, repo RepositoryService, userID int64) (deletesSQL []string, insertsSQL []string, err error) {
+	cookbooks, err := repo.CookbooksUser(userID)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	n := len(cookbooks)
+	if n == 0 {
+		return nil, nil, err
+	}
+
+	deleteCookbooksStatement := strings.TrimSpace(strings.Replace(statements.DeleteCookbooks, "?", strconv.FormatInt(userID, 10), 1))
+	deletesSQL = append(deletesSQL, strings.Join(strings.Fields(deleteCookbooksStatement), " "))
+
+	var inserts []string
+	for _, c := range cookbooks {
+		err = addImageToZip(zw, c.Image)
+		if err != nil {
+			return nil, nil, err
+		}
+
+		stmt := strings.Replace(statements.InsertCookbook, "(?, ?, ?)", fmt.Sprintf("('%s', '%s', %d)", c.Title, c.Image, userID), 1)
+		inserts = append(inserts, strings.Join(strings.Fields(stmt), " "))
+
+		for _, r := range c.Recipes {
+			cookbookIDStmt := fmt.Sprintf("(SELECT id FROM cookbooks WHERE title = '%s' AND user_id = %d)", c.Title, userID)
+			stmt = strings.Replace(statements.InsertCookbookRecipe, "?", cookbookIDStmt, 1)
+			stmt = strings.Replace(stmt, "?", fmt.Sprintf("(SELECT id FROM recipes WHERE name = '%s')", r.Name), 1)
+			stmt = strings.Replace(stmt, "?", cookbookIDStmt, 1)
+			stmt = strings.Replace(stmt, "?", strconv.FormatInt(userID, 10), 1)
+			inserts = append(inserts, strings.Join(strings.Fields(stmt), " "))
+		}
+	}
+	insertsSQL = append(insertsSQL, inserts...)
+
+	sharedCookbooks, err := repo.CookbooksShared(userID)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	sharedRecipes, err := repo.RecipesShared(userID)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	for _, share := range sharedCookbooks {
+		i := slices.IndexFunc(cookbooks, func(c models.Cookbook) bool { return c.ID == share.CookbookID })
+		if i == -1 {
+			continue
+		}
+
+		values := fmt.Sprintf("('%s', (SELECT id FROM cookbooks WHERE title = '%s'), %d)", share.Link, cookbooks[i].Title, userID)
+		stmt := strings.Replace(statements.InsertShareLinkCookbook, "(?, ?, ?)", values, 1)
+		insertsSQL = append(insertsSQL, strings.Join(strings.Fields(stmt), " "))
+	}
+
+	for _, share := range sharedRecipes {
+		var name string
+		for _, c := range cookbooks {
+			i := slices.IndexFunc(c.Recipes, func(r models.Recipe) bool { return r.ID == share.RecipeID })
+			if i == -1 {
+				continue
+			}
+			name = c.Recipes[i].Name
+			break
+		}
+
+		values := fmt.Sprintf("('%s', (SELECT id FROM recipes WHERE name = '%s'), %d)", share.Link, name, userID)
+		stmt := strings.Replace(statements.InsertShareLink, "(?, ?, ?)", values, 1)
+		insertsSQL = append(insertsSQL, strings.Join(strings.Fields(stmt), " "))
+	}
+
+	return deletesSQL, insertsSQL, nil
+}
+
+func addImageToZip(zw *zip.Writer, img uuid.UUID) error {
+	if img == uuid.Nil {
+		return nil
+	}
+
+	file, err := os.Open(filepath.Join(app.ImagesDir, img.String()+".jpg"))
+	if err != nil {
+		return err
+	}
+	defer func() {
+		_ = file.Close()
+	}()
+
+	info, err := file.Stat()
+	if err != nil {
+		return err
+	}
+
+	h, err := zip.FileInfoHeader(info)
+	if err != nil {
+		return err
+	}
+
+	h.Name = filepath.Join("images", info.Name())
+	h.Method = zip.Deflate
+
+	w, err := zw.CreateHeader(h)
+	if err != nil {
+		return err
+	}
+
+	_, err = io.Copy(w, file)
+	return err
+}
+
+func cleanBackups(root string) {
+	files, err := os.ReadDir(root)
+	if err != nil {
+		log.Printf("cleanBackups for %q error: %q", root, err)
+		return
+	}
+
+	sort.Slice(files, func(i, j int) bool {
+		aInfo, err1 := files[i].Info()
+		bInfo, err2 := files[j].Info()
+		if err1 != nil || err2 != nil {
+			return false
+		}
+		return bInfo.ModTime().Before(aInfo.ModTime())
+	})
+
+	if len(files) > 10 {
+		for _, file := range files[10:] {
+			_ = os.Remove(filepath.Join(root, file.Name()))
+		}
+	}
+}
+
 // ExportRecipes creates a zip containing the recipes to export in the desired file type.
-// It returns the name of file in the temporary directory.
-func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType, iter chan int) (*bytes.Buffer, error) {
+func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType, progress chan int) (*bytes.Buffer, error) {
 	buf := new(bytes.Buffer)
 	writer := zip.NewWriter(buf)
 
 	switch fileType {
 	case models.JSON:
 		for i, e := range exportRecipesJSON(recipes) {
-			iter <- i
+			if progress != nil {
+				progress <- i
+			}
 
 			out, err := writer.Create(e.recipeName + "/recipe" + fileType.Ext())
 			if err != nil {
@@ -93,7 +484,9 @@ func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType, 
 	case models.PDF:
 		processed := make(map[string]struct{})
 		for i, e := range exportRecipesPDF(recipes) {
-			iter <- i
+			if progress != nil {
+				progress <- i
+			}
 
 			name := strings.ReplaceAll(e.recipeName+fileType.Ext(), "/", "_")
 
@@ -457,12 +850,10 @@ func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recip
 }
 
 func (f *Files) processZip(file *multipart.FileHeader) models.Recipes {
-	recipes := make(models.Recipes, 0)
-
 	openFile, err := file.Open()
 	if err != nil {
 		log.Println(err)
-		return recipes
+		return make(models.Recipes, 0)
 	}
 	defer func() {
 		_ = openFile.Close()
@@ -472,21 +863,26 @@ func (f *Files) processZip(file *multipart.FileHeader) models.Recipes {
 	fileSize, err := io.Copy(buf, openFile)
 	if err != nil {
 		log.Println(err)
-		return recipes
+		return make(models.Recipes, 0)
 	}
 
 	z, err := zip.NewReader(bytes.NewReader(buf.Bytes()), fileSize)
 	if err != nil {
 		log.Println(err)
-		return recipes
+		return make(models.Recipes, 0)
 	}
 
+	return f.processRecipeFiles(z.File)
+}
+
+func (f *Files) processRecipeFiles(files []*zip.File) models.Recipes {
 	var (
 		imageUUID    uuid.UUID
 		recipeNumber int
+		recipes      = make(models.Recipes, 0)
 	)
 
-	for _, zf := range z.File {
+	for _, zf := range files {
 		if imageUUID != uuid.Nil && (zf.FileInfo().IsDir() || (recipeNumber > 0 && recipes[recipeNumber-1].Image == uuid.Nil)) {
 			recipes[recipeNumber-1].Image = imageUUID
 			imageUUID = uuid.Nil
@@ -714,6 +1110,111 @@ func pdfToBytes(pdf *gofpdf.Fpdf, name string) []byte {
 		return []byte{}
 	}
 	return buf.Bytes()
+}
+
+// ExtractUserBackup extracts data from the user backup for restoration.
+func (f *Files) ExtractUserBackup(date string, userID int64) (*models.UserBackup, error) {
+	userIDStr := strconv.FormatInt(userID, 10)
+	src := filepath.Join(app.BackupPath, "users", userIDStr, fmt.Sprintf("recipya.%s.zip", date))
+
+	r, err := zip.OpenReader(src)
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		_ = r.Close()
+	}()
+
+	imagesPath := filepath.Join(app.BackupPath, "restore", userIDStr, "images")
+	err = os.MkdirAll(imagesPath, os.ModePerm)
+	if err != nil {
+		return nil, err
+	}
+
+	var (
+		recipesFile    *zip.File
+		deletesSQLFile *zip.File
+		insertsSQLFile *zip.File
+	)
+
+	for _, file := range r.File {
+		switch file.Name {
+		case "recipes.zip":
+			recipesFile = file
+		case "backup-deletes.sql":
+			deletesSQLFile = file
+		case "backup-inserts.sql":
+			insertsSQLFile = file
+		default:
+			rc, err := file.Open()
+			if err != nil {
+				return nil, err
+			}
+
+			img, err := os.Create(filepath.Join(imagesPath, filepath.Base(file.Name)))
+			if err != nil {
+				_ = rc.Close()
+				return nil, err
+			}
+
+			_, err = io.Copy(img, rc)
+			_ = img.Close()
+			_ = rc.Close()
+			if err != nil {
+				return nil, err
+			}
+		}
+	}
+
+	rc, err := deletesSQLFile.Open()
+	if err != nil {
+		return nil, err
+	}
+
+	deletes, err := io.ReadAll(rc)
+	if err != nil {
+		_ = rc.Close()
+		return nil, err
+	}
+	_ = rc.Close()
+
+	rc, err = insertsSQLFile.Open()
+	if err != nil {
+		return nil, err
+	}
+
+	inserts, err := io.ReadAll(rc)
+	if err != nil {
+		_ = rc.Close()
+		return nil, err
+	}
+	_ = rc.Close()
+
+	rc, err = recipesFile.Open()
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		_ = rc.Close()
+	}()
+
+	data, err := io.ReadAll(rc)
+	if err != nil {
+		return nil, err
+	}
+
+	zr, err := zip.NewReader(bytes.NewReader(data), int64(len(data)))
+	if err != nil {
+		return nil, err
+	}
+
+	return &models.UserBackup{
+		DeleteSQL:  string(deletes),
+		ImagesPath: imagesPath,
+		InsertSQL:  string(inserts),
+		Recipes:    f.processRecipeFiles(zr.File),
+		UserID:     userID,
+	}, nil
 }
 
 // ReadTempFile gets the content of a file in the temporary directory.

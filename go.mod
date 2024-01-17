@@ -23,14 +23,15 @@ require (
 	github.com/pressly/goose/v3 v3.17.0
 	github.com/sendgrid/sendgrid-go v3.14.0+incompatible
 	github.com/urfave/cli/v2 v2.27.1
-	golang.org/x/crypto v0.17.0
-	golang.org/x/net v0.19.0
+	golang.org/x/crypto v0.18.0
+	golang.org/x/net v0.20.0
+	golang.org/x/text v0.14.0
 	jaytaylor.com/html2text v0.0.0-20230321000545-74c2419ad056
 	modernc.org/sqlite v1.28.0
 )
 
 require (
-	github.com/andybalholm/brotli v1.0.6 // indirect
+	github.com/andybalholm/brotli v1.1.0 // indirect
 	github.com/andybalholm/cascadia v1.3.2 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.3 // indirect
 	github.com/deckarep/golang-set v1.8.0 // indirect
@@ -45,7 +46,7 @@ require (
 	github.com/lestrrat-go/httpcc v1.0.1 // indirect
 	github.com/lestrrat-go/httprc v1.0.4 // indirect
 	github.com/lestrrat-go/iter v1.0.2 // indirect
-	github.com/lestrrat-go/jwx/v2 v2.0.18 // indirect
+	github.com/lestrrat-go/jwx/v2 v2.0.19 // indirect
 	github.com/lestrrat-go/option v1.0.1 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
@@ -72,14 +73,14 @@ require (
 	golang.org/x/sync v0.6.0 // indirect
 	golang.org/x/sys v0.16.0 // indirect
 	golang.org/x/term v0.16.0 // indirect
-	golang.org/x/tools v0.16.1 // indirect
+	golang.org/x/tools v0.17.0 // indirect
 	gonum.org/v1/gonum v0.14.0 // indirect
 	gopkg.in/neurosnap/sentences.v1 v1.0.7 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	lukechampine.com/uint128 v1.3.0 // indirect
 	modernc.org/cc/v3 v3.41.0 // indirect
 	modernc.org/ccgo/v3 v3.16.15 // indirect
-	modernc.org/libc v1.38.1 // indirect
+	modernc.org/libc v1.40.2 // indirect
 	modernc.org/mathutil v1.6.0 // indirect
 	modernc.org/memory v1.7.2 // indirect
 	modernc.org/opt v0.1.3 // indirect

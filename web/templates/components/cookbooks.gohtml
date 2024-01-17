@@ -28,9 +28,9 @@
                 </span>
             </div>
             <button class="w-full border-2 border-gray-800 rounded-lg center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600"
-                    hx-get="/cookbooks/{{.PageItemID}}?page={{.PageNumber}}"
+                    hx-get="/cookbooks/{{.ID}}?page={{.PageNumber}}"
                     hx-target="#content"
-                    hx-push-url="/cookbooks/{{.PageItemID}}">
+                    hx-push-url="/cookbooks/{{.ID}}">
                 Open
             </button>
         </div>
@@ -370,9 +370,9 @@
             </div>
         </div>
         <button class="w-full border-t center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600 hover:rounded-b-md"
-                hx-get="/cookbooks/{{.PageItemID}}?page={{.PageNumber}}"
+                hx-get="/cookbooks/{{.ID}}?page={{.PageNumber}}"
                 hx-target="#content"
-                hx-push-url="/cookbooks/{{.PageItemID}}">
+                hx-push-url="/cookbooks/{{.ID}}">
             Open
         </button>
     </li>

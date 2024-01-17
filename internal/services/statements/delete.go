@@ -6,21 +6,27 @@ const DeleteAuthToken = `
 	FROM auth_tokens
 	WHERE user_id = ?`
 
-// DeleteCookbook is the query to delete a user's cookbook.
+// DeleteCookbook deletes a user's cookbook.
 const DeleteCookbook = `
 	DELETE
 	FROM cookbooks
 	WHERE id = ?
 		AND user_id = ?`
 
-// DeleteCookbookRecipe is the query to delete a recipe from a user's cookbook.
+// DeleteCookbookRecipe deletes a recipe from a user's cookbook.
 const DeleteCookbookRecipe = `
 	DELETE
 	FROM cookbook_recipes
 	WHERE cookbook_id = (SELECT id FROM cookbooks WHERE id = ? AND user_id = ?)
 		AND recipe_id = ?`
 
-// DeleteRecipe is the query to delete a user's recipe and the recipe itself.
+// DeleteCookbooks deletes all the user's cookbooks.
+const DeleteCookbooks = `
+	DELETE
+	FROM cookbooks
+	WHERE user_id = ?`
+
+// DeleteRecipe deletes a user's recipe and the recipe itself.
 const DeleteRecipe = `
 	DELETE
 	FROM recipes
@@ -29,19 +35,27 @@ const DeleteRecipe = `
 						WHERE user_id = ?
 							AND recipe_id = ?)`
 
-// DeleteRecipeIngredients is the query for deleting all ingredients from a recipe.
+// DeleteRecipeIngredients deletes all ingredients from a recipe.
 const DeleteRecipeIngredients = `
 	DELETE
 	FROM ingredient_recipe
 	WHERE recipe_id = ?`
 
-// DeleteRecipeInstructions is the query for deleting all instructions from a recipe.
+// DeleteRecipeInstructions deletes all instructions from a recipe.
 const DeleteRecipeInstructions = `
 	DELETE
 	FROM instruction_recipe
 	WHERE recipe_id = ?`
 
-// DeleteUser is the query to delete a user from the users table.
+// DeleteRecipesUser deletes the user's recipes.
+const DeleteRecipesUser = `
+	DELETE
+	FROM recipes
+	WHERE id IN (SELECT recipe_id
+				 FROM user_recipe
+				 WHERE user_id = ?)`
+
+// DeleteUser deletes a user from the users table.
 const DeleteUser = `
 	DELETE
 	FROM users

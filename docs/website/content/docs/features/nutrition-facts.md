@@ -9,7 +9,7 @@ Recipya can calculate the nutrition facts for you automatically when adding a re
 To enable this feature, access your settings via your avatar, click the `Recipes` tab on the left, and 
 check the **Calculate nutrition facts** setting's checkbox. 
 
-![](settings-nutrition-facts.webp)
+![](images/settings-nutrition-facts.webp)
 
 This setting is initially disabled because adding a recipe will take up to a few additional seconds. This happens
 because querying the nutritional database for every ingredient takes time. The processing is done in the background 

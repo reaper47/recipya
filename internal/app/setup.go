@@ -17,34 +17,51 @@ import (
 	"time"
 )
 
-func setup() {
-	exe, err := os.Executable()
-	if err != nil {
-		panic(err)
+func setup(exeDir string) {
+	oldPaths := []string{
+		filepath.Join(exeDir, RecipyaDB),
+		filepath.Join(exeDir, RecipyaDB+"-shm"),
+		filepath.Join(exeDir, RecipyaDB+"-wal"),
+		filepath.Join(exeDir, FdcDB),
 	}
-	dir := filepath.Dir(exe)
+	for _, path := range oldPaths {
+		_, err := os.Stat(path)
+		if errors.Is(err, os.ErrNotExist) {
+			continue
+		} else if err != nil {
+			panic(err)
+		}
 
-	setupFDC(dir)
-	setupConfigFile(dir)
+		newPath := filepath.Join(DBBasePath, filepath.Base(path))
+		err = os.Rename(path, newPath)
+		if err != nil {
+			fmt.Printf("Error moving %q to %q: %q\n", path, newPath, err)
+			continue
+		}
+		fmt.Printf("Moved %q to %q\n", filepath.Base(path), filepath.Dir(newPath))
+	}
+
+	setupFDC()
+	setupConfigFile(exeDir)
 
 	fmt.Println("Recipya is properly set up.")
 }
 
-func setupFDC(exeDir string) {
-	_, err := os.Stat(filepath.Join(exeDir, "fdc.db"))
+func setupFDC() {
+	_, err := os.Stat(filepath.Join(DBBasePath, "fdc.db"))
 	if errors.Is(err, os.ErrNotExist) {
 		s := spinner.New(spinner.CharSets[9], 100*time.Millisecond)
 		s.Prefix = "Fetching the FDC database... "
 		s.FinalMSG = "Fetching the FDC database... " + greenText("Success") + "\n"
 		s.Start()
-		err = downloadFile(filepath.Join(exeDir, "fdc.db.zip"), "https://raw.githubusercontent.com/reaper47/recipya/main/deploy/fdc.db.zip")
+		err = downloadFile(filepath.Join(DBBasePath, "fdc.db.zip"), "https://raw.githubusercontent.com/reaper47/recipya/main/deploy/fdc.db.zip")
 		if err != nil {
 			fmt.Printf("\n"+redText("Error downloading FDC database")+": %s\n", err)
 			fmt.Println("Application setup will terminate")
 			os.Exit(1)
 		}
 		s.Stop()
-		_ = os.Remove(filepath.Join(exeDir, "fdc.db.zip"))
+		_ = os.Remove(filepath.Join(DBBasePath, "fdc.db.zip"))
 	} else {
 		fmt.Println(greenText("OK") + " FDC database")
 	}

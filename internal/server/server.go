@@ -201,7 +201,12 @@ func (s *Server) mountHandlers() {
 			r.Post("/convert-automatically", s.settingsConvertAutomaticallyPostHandler)
 			r.Post("/measurement-system", s.settingsMeasurementSystemsPostHandler)
 
+			r.Route("/backups", func(r chi.Router) {
+				r.Post("/restore", s.settingsBackupsRestoreHandler)
+			})
+
 			r.Route("/tabs", func(r chi.Router) {
+				r.Get("/advanced", s.settingsTabsAdvancedHandler)
 				r.Get("/profile", settingsTabsProfileHandler)
 				r.Get("/recipes", s.settingsTabsRecipesHandler)
 			})
@@ -252,7 +257,7 @@ func (s *Server) Run() {
 		serverStopCtx()
 	}()
 
-	jobs.ScheduleCronJobs(s.Repository, imagesDir, s.Email)
+	jobs.ScheduleCronJobs(s.Repository, s.Files, s.Email)
 
 	fmt.Printf("Serving on %s\n", app.Config.Address())
 	err := httpServer.ListenAndServe()

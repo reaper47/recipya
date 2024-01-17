@@ -18,8 +18,15 @@ const (
 	configFileName = "config.json"
 )
 
-// ImagesDir is the directory where user images are stored.
-var ImagesDir string
+var (
+	BackupPath string // BackupPath is the directory where the data is backed up.
+	DBBasePath string // DBBasePath is the directory where the database files are stored.
+	ImagesDir  string // ImagesDir is the directory where user images are stored.
+
+	FdcDB     = "fdc.db"     // FdcDB is the name of the FDC database.
+	RecipyaDB = "recipya.db" // RecipyaDB is the name of Recipya's main database.
+
+)
 
 // Config references a global ConfigFile.
 var Config ConfigFile
@@ -131,13 +138,25 @@ type ConfigServer struct {
 // Init initializes the app. This function must be called when the app starts.
 // Its name is not *init* so that the function is not executed during the tests.
 func Init() {
-	setup()
-
 	exe, err := os.Executable()
 	if err != nil {
 		panic(err)
 	}
 	dir := filepath.Dir(exe)
+
+	BackupPath = filepath.Join(dir, "data", "backup")
+	DBBasePath = filepath.Join(dir, "data", "database")
+	ImagesDir = filepath.Join(dir, "data", "images")
+
+	xs := []string{BackupPath, DBBasePath, ImagesDir}
+	for _, s := range xs {
+		err = os.MkdirAll(s, os.ModePerm)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	setup(dir)
 
 	f, err := os.Open(filepath.Join(dir, configFileName))
 	if err != nil {
@@ -146,15 +165,6 @@ func Init() {
 		NewConfig(f)
 	}
 	_ = f.Close()
-
-	ImagesDir = filepath.Join(dir, "data", "images")
-	_, err = os.Stat(ImagesDir)
-	if os.IsNotExist(err) {
-		err = os.MkdirAll(ImagesDir, os.ModePerm)
-		if err != nil {
-			panic(err)
-		}
-	}
 }
 
 // NewConfig initializes the global Config. It can either be populated from environment variables or the configuration file.

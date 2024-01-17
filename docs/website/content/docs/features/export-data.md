@@ -6,12 +6,12 @@ weight: 7
 It is possible to download your data through the settings. To access them, click on your avatar in the top right
 corner of any page within Recipya. Then, select the **Settings** option.
 
-![](settings-access.webp)
+![](images/settings-access.webp)
 
 Finally, click the `Recipes` settings tab on the left. You can select the data you want to export from the dropdown
 to the right of the `Export data` setting.
 
-![](settings-export.webp)
+![](images/settings-export.webp)
 
 The dropdown is organized in groups. Let's go over them.
 

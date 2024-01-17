@@ -77,6 +77,7 @@ This project was mainly coded to blasting the following albums:
 - [Cattle Decapitation - Terrasite](https://www.youtube.com/watch?v=x6rEDMqM36I)
 - [Mozart - Requiem Dm](https://www.youtube.com/watch?v=pBGVfwOLU1w0)
 - [Ensiferum - From Afar](https://www.youtube.com/watch?v=6r8OPu3SRSM)
+- [Wintersun - Wintersun](https://www.youtube.com/watch?v=W0M3HAMus7g&pp=ygUPd2ludGVyc3VuIGFsYnVt)
 - [Pain - You Only Live Twice](https://www.youtube.com/watch?v=obgCEoLzLs4)
 - [Abysmal Dawn - Phylogenesis](https://www.youtube.com/watch?v=xJMybqRMedk&pp=ygUMYWJ5c21hbCBkYXdu)
 - [Lofi Girl - lofi hip hop radio](https://www.youtube.com/watch?v=jfKfPfyJRdk)

@@ -21,7 +21,7 @@ func (s *Server) cookbookShareHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cookbook, err := s.Repository.CookbookByID(share.CookbookID, share.UserID)
+	cookbook, err := s.Repository.Cookbook(share.CookbookID, share.UserID)
 	if err != nil {
 		notFoundHandler(w, r)
 		return
@@ -77,8 +77,7 @@ func (s *Server) cookbooksHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pageStr := query.Get("page")
-	page, err := strconv.ParseUint(pageStr, 10, 64)
+	page, err := strconv.ParseUint(query.Get("page"), 10, 64)
 	if err != nil {
 		page = 1
 	}
@@ -285,7 +284,7 @@ func (s *Server) cookbooksDeleteCookbookRecipeHandler(w http.ResponseWriter, r *
 
 func (s *Server) cookbooksDownloadCookbookHandler(w http.ResponseWriter, r *http.Request) {
 	cookbookIDStr := chi.URLParam(r, "id")
-	cookbookID, err := strconv.ParseUint(cookbookIDStr, 10, 64)
+	cookbookID, err := strconv.ParseInt(cookbookIDStr, 10, 64)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not parse cookbook ID.", errorToast))
 		w.WriteHeader(http.StatusBadRequest)
@@ -293,7 +292,7 @@ func (s *Server) cookbooksDownloadCookbookHandler(w http.ResponseWriter, r *http
 	}
 
 	userID := getUserID(r)
-	cookbook, err := s.Repository.CookbookByID(int64(cookbookID), userID)
+	cookbook, err := s.Repository.Cookbook(cookbookID, userID)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not fetch cookbook.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)
@@ -319,8 +318,7 @@ func (s *Server) cookbooksGetCookbookHandler(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	idStr := chi.URLParam(r, "id")
-	id, err := strconv.ParseInt(idStr, 10, 64)
+	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -328,9 +326,7 @@ func (s *Server) cookbooksGetCookbookHandler(w http.ResponseWriter, r *http.Requ
 
 	isHxRequest := r.Header.Get("Hx-Request") == "true"
 
-	userID := getUserID(r)
-	pageStr := query.Get("page")
-	page, err := strconv.ParseUint(pageStr, 10, 64)
+	page, err := strconv.ParseUint(query.Get("page"), 10, 64)
 	if err != nil {
 		if !isHxRequest {
 			http.Redirect(w, r, "/cookbooks", http.StatusSeeOther)
@@ -342,7 +338,7 @@ func (s *Server) cookbooksGetCookbookHandler(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	cookbook, err := s.Repository.Cookbook(id, userID, page)
+	cookbook, err := s.Repository.Cookbook(id, getUserID(r))
 	if err != nil {
 		// TODO: Create an error type to differentiate between http.StatusNotFound and http.StatusInternalServerError
 		http.NotFound(w, r)
@@ -456,8 +452,7 @@ func (s *Server) cookbooksRecipesSearchPostHandler(w http.ResponseWriter, r *htt
 		return
 	}
 
-	pageNumber := r.FormValue("page")
-	page, err := strconv.ParseUint(pageNumber, 10, 64)
+	page, err := strconv.ParseUint(r.FormValue("page"), 10, 64)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Missing page number in body.", errorToast))
 		w.WriteHeader(http.StatusBadRequest)
@@ -466,7 +461,7 @@ func (s *Server) cookbooksRecipesSearchPostHandler(w http.ResponseWriter, r *htt
 
 	userID := getUserID(r)
 
-	cookbook, err := s.Repository.Cookbook(id, userID, page)
+	cookbook, err := s.Repository.Cookbook(id, userID)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Error getting cookbooks.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)

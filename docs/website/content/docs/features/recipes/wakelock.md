@@ -21,11 +21,11 @@ The wakelock is turned on automatically when viewing a recipe.
 On supported browsers, you will notice a light bulb icon to the far left of a recipe's title. When the light bulb 
 is on, the wakelock is enabled and the screen will not sleep.
 
-![](wakelock-on.webp)
+![](images/wakelock-on.webp)
 
 When turned off, the wakelock is disabled and the screen will eventually sleep.
 
-![](wakelock-off.webp)
+![](images/wakelock-off.webp)
 
 {{< callout type="warning" >}}
 The wakelock feature is not supported on the following platforms:

@@ -7,8 +7,12 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
 	"github.com/reaper47/recipya/internal/units"
+	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 	"slices"
+	"time"
 )
 
 func (s *Server) settingsHandler(w http.ResponseWriter, r *http.Request) {
@@ -155,6 +159,60 @@ func (s *Server) settingsMeasurementSystemsPostHandler(w http.ResponseWriter, r 
 
 	w.Header().Set("HX-Trigger", makeToast("Measurement system set to "+system.String()+".", infoToast))
 	w.WriteHeader(http.StatusNoContent)
+}
+
+func (s *Server) settingsBackupsRestoreHandler(w http.ResponseWriter, r *http.Request) {
+	dateStr := r.FormValue("date")
+	_, err := time.Parse(time.DateOnly, dateStr)
+	if err != nil {
+		log.Println("settingsBackupRestoreHandler.Parse:", err)
+		w.Header().Set("HX-Trigger", makeToast(dateStr+" is an invalid backup.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	userID := getUserID(r)
+	err = s.Files.BackupUserData(s.Repository, userID)
+	if err != nil {
+		log.Printf("settingsBackupRestoreHandler.BackupUserData: %q", err)
+		w.Header().Set("HX-Trigger", makeToast("Failed to backup current data.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	backup, err := s.Files.ExtractUserBackup(dateStr, userID)
+	if err != nil {
+		log.Printf("settingsBackupRestoreHandler.ExtractUserBackup: %q", err)
+		w.Header().Set("HX-Trigger", makeToast("Failed to extract backup.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	defer func() {
+		_ = os.RemoveAll(filepath.Dir(backup.ImagesPath))
+	}()
+
+	err = s.Repository.RestoreUserBackup(backup)
+	if err != nil {
+		log.Printf("settingsBackupRestoreHandler.RestoreUserBackup: %q", err)
+		w.Header().Set("HX-Trigger", makeToast("Failed to restore backup.", errorToast))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("HX-Trigger", makeToast("Backup restored successfully.", infoToast))
+	w.WriteHeader(http.StatusOK)
+}
+
+func (s *Server) settingsTabsAdvancedHandler(w http.ResponseWriter, r *http.Request) {
+	backups := s.Files.Backups(getUserID(r))
+	dates := make([]templates.Backup, 0, len(backups))
+	for _, backup := range backups {
+		dates = append(dates, templates.Backup{
+			Display: backup.Format("02 Jan 2006"),
+			Value:   backup.Format(time.DateOnly),
+		})
+	}
+	templates.RenderComponent(w, "core", "settings-tabs-advanced", templates.SettingsData{Backups: dates})
 }
 
 func settingsTabsProfileHandler(w http.ResponseWriter, _ *http.Request) {

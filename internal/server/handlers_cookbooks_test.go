@@ -175,9 +175,9 @@ func TestHandlers_Cookbooks(t *testing.T) {
 		}
 		want := []string{
 			`<section id="cookbook-1" class="cookbook relative col-span-1 bg-white rounded-lg shadow-md dark:bg-neutral-700">`,
-			`<img class="rounded-t-lg w-full border-b dark:border-b-gray-800 h-32 md:h-48 text-center hover:bg-gray-100 dark:hover:bg-blue-100 hover:opacity-80" src="/static/img/cookbooks-new/placeholder.webp" alt="Cookbook image"><form id="cookbook-image-form-0" enctype="multipart/form-data" hx-put="/cookbooks/0/image" hx-trigger="change from:#cookbook-image-0" hx-swap="none">`,
-			`<form id="cookbook-image-form-0" enctype="multipart/form-data" hx-put="/cookbooks/0/image" hx-trigger="change from:#cookbook-image-0" hx-swap="none"><input id="cookbook-image-0" type="file" accept="image/*" name="image" required class="hidden" _="on drop or change make an FileReader called reader then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then set {src: window.URL.createObjectURL(it)} on previous <img/> then remove .hidden from next <button/>"></form>`,
-			`<div class="relative" onclick="document.querySelector('#cookbook-image-0').click()">`,
+			`<img class="rounded-t-lg w-full border-b dark:border-b-gray-800 h-32 md:h-48 text-center hover:bg-gray-100 dark:hover:bg-blue-100 hover:opacity-80" src="/static/img/cookbooks-new/placeholder.webp" alt="Cookbook image">`,
+			`<form id="cookbook-image-form-1" enctype="multipart/form-data" hx-put="/cookbooks/1/image" hx-trigger="change from:#cookbook-image-1" hx-swap="none"><input id="cookbook-image-1" type="file" accept="image/*" name="image" required class="hidden" _="on drop or change make an FileReader called reader then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then set {src: window.URL.createObjectURL(it)} on previous <img/> then remove .hidden from next <button/>"></form>`,
+			`<div class="relative" onclick="document.querySelector('#cookbook-image-1').click()">`,
 			`<p class="font-semibold">Lovely America</p>`,
 			`<span class="grid justify-self-end text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg px-2 h-fit"> 0 </span>`,
 			`<button class="w-full border-2 border-gray-800 rounded-lg center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/cookbooks/1?page=1" hx-target="#content" hx-push-url="/cookbooks/1"> Open </button>`,

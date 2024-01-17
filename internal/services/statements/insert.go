@@ -14,8 +14,8 @@ const InsertCategory = `
 
 // InsertCookbook is the query to add a cookbook to the database.
 const InsertCookbook = `
-	INSERT INTO cookbooks (title, user_id) 
-	VALUES (?, ?)
+	INSERT INTO cookbooks (title, image, user_id) 
+	VALUES (?, ?, ?)
 	RETURNING id`
 
 // InsertCookbookRecipe is the query to add a recipe to a cookbook.
