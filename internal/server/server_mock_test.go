@@ -50,18 +50,15 @@ type mockRepository struct {
 }
 
 func (m *mockRepository) AddRecipeTx(ctx context.Context, tx *sql.Tx, r *models.Recipe, userID int64) (int64, error) {
-	//TODO implement me
-	panic("implement me")
+	return 0, nil
 }
 
 func (m *mockRepository) CookbooksShared(userID int64) ([]models.Share, error) {
-	//TODO implement me
-	panic("implement me")
+	return make([]models.Share, 0), nil
 }
 
 func (m *mockRepository) CookbooksUser(userID int64) ([]models.Cookbook, error) {
-	//TODO implement me
-	panic("implement me")
+	return make([]models.Cookbook, 0), nil
 }
 
 func (m *mockRepository) AddAuthToken(selector, validator string, userID int64) error {
@@ -448,8 +445,7 @@ func (m *mockRepository) ReorderCookbookRecipes(_ int64, _ []uint64, _ int64) er
 }
 
 func (m *mockRepository) RecipesShared(userID int64) ([]models.Share, error) {
-	//TODO implement me
-	panic("implement me")
+	return make([]models.Share, 0), nil
 }
 
 func (m *mockRepository) RestoreBackup(_ string) error {
