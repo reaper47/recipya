@@ -16,7 +16,6 @@ services:
     ports:
       - "<host-port>:<RECIPYA_SERVER_PORT>"
     volumes:
-      - "recipya-backup:/app/data/backup"
       - "recipya-data:/app/data"
 
 volumes:
