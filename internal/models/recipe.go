@@ -1,6 +1,7 @@
 package models
 
 import (
+	"bufio"
 	"bytes"
 	"errors"
 	"github.com/donna-legal/word2number"
@@ -10,6 +11,8 @@ import (
 	"github.com/reaper47/recipya/internal/utils/extensions"
 	"github.com/reaper47/recipya/internal/utils/regex"
 	"io"
+	"net/url"
+	"slices"
 	"strconv"
 	"strings"
 	"sync"
@@ -30,6 +33,17 @@ func (r Recipes) Categories() []string {
 		xs[i] = recipe.Category
 	}
 	return extensions.Unique(xs)
+}
+
+// NewBaseRecipe creates a new, empty Recipe.
+func NewBaseRecipe() Recipe {
+	return Recipe{
+		Image:        uuid.Nil,
+		Ingredients:  make([]string, 0),
+		Instructions: make([]string, 0),
+		Keywords:     make([]string, 0),
+		Tools:        make([]string, 0),
+	}
 }
 
 // Recipe is the struct that holds a recipe's information.
@@ -490,6 +504,350 @@ func (n NutrientFDC) Value() float64 {
 type SearchOptionsRecipes struct {
 	ByName     bool
 	FullSearch bool
+}
+
+// NewRecipeFromTextFile extracts the recipe from a text file.
+func NewRecipeFromTextFile(r io.Reader) (Recipe, error) {
+	recipe := NewBaseRecipe()
+	blocks := extractBlocks(r)
+
+	var (
+		isDescriptionBlock      = true
+		isMetaDataBlock         bool
+		isIngredientsBlock      bool
+		isInstructionsBlock     bool
+		isPostInstructionsBlock bool
+	)
+
+	lines := bytes.Split(blocks[0], []byte("\n"))
+	if len(lines) > 1 {
+		recipe.Name = string(lines[0])
+		recipe.Description = string(lines[1])
+	} else {
+		recipe.Name = string(blocks[0])
+	}
+
+	for i, block := range blocks[1:] {
+		if bytes.Contains(block, []byte("•\t")) {
+			block = bytes.ReplaceAll(block, []byte("•\t"), []byte(""))
+		}
+
+		isKeyValue, isURL := isBlockKeyValues(block, &recipe)
+		if isURL {
+			continue
+		}
+
+		if (recipe.Description != "" && isDescriptionBlock) || (recipe.Description == "" && len(block) < 50 && regex.Digit.Match(block)) {
+			isDescriptionBlock = false
+			isMetaDataBlock = true
+
+			if recipe.Description != "" {
+				lines := bytes.Split(block, []byte("\n"))
+				if !isKeyValue && bytes.Contains(block, []byte(":")) || isBlockMostlyIngredients(block) {
+					isMetaDataBlock = false
+					isIngredientsBlock = true
+				} else if len(lines) > 0 && len(lines[0]) > 50 || (len(lines) == 1 && !regex.Digit.Match(lines[0])) {
+					isDescriptionBlock = true
+					isMetaDataBlock = false
+					recipe.Description += "\n\n"
+				}
+			}
+		} else if isMetaDataBlock {
+			isMetaDataBlock = false
+			isIngredientsBlock = true
+		} else if isBlockMostlyIngredients(block) {
+			isDescriptionBlock = false
+			isMetaDataBlock = false
+			isIngredientsBlock = true
+		} else if isBlockInstructions(block) || (isIngredientsBlock && !isBlockMostlyIngredients(block)) || (isDescriptionBlock && regex.Unit.Match(block)) {
+			isDescriptionBlock = false
+			isIngredientsBlock = false
+			isInstructionsBlock = true
+		} else if isInstructionsBlock {
+			isInstructionsBlock = false
+			isPostInstructionsBlock = true
+		}
+
+		if isDescriptionBlock {
+			recipe.Description += string(block)
+		} else if isMetaDataBlock {
+			for _, line := range bytes.Split(block, []byte("\n")) {
+				processMetaData(line, &recipe)
+			}
+		} else if isIngredientsBlock {
+			lines := strings.Split(string(block), "\n")
+			if len(lines) < 3 && regex.Unit.Match(blocks[i+1]) {
+				continue
+			}
+			recipe.Ingredients = append(recipe.Ingredients, lines...)
+		} else if isInstructionsBlock {
+			dotIndex := bytes.Index(block, []byte("."))
+			lines := strings.Split(string(block), "\n")
+			numSentences := len(strings.Split(lines[len(lines)-1], "."))
+			if len(lines) < 3 && (dotIndex == -1 || dotIndex > 4) && numSentences < 3 {
+				isIngredientsBlock = true
+				recipe.Ingredients = append(recipe.Ingredients, string(bytes.TrimSpace(block)))
+				continue
+			}
+
+			numWords := len(strings.Split(lines[0], " "))
+			if numWords > 1 && numWords < 4 && !strings.Contains(strings.ToLower(lines[0]), "prep") && !strings.Contains(strings.ToLower(lines[0]), "step") && !strings.Contains(strings.ToLower(lines[0]), "slik") {
+				isInstructionsBlock = false
+				isIngredientsBlock = true
+				recipe.Ingredients = append(recipe.Ingredients, lines...)
+				continue
+			}
+
+			for _, line := range strings.Split(string(block), "\n") {
+				before, after, found := strings.Cut(line, ".")
+				if found {
+					_, err := strconv.ParseInt(before, 10, 64)
+					if err == nil {
+						recipe.Instructions = append(recipe.Instructions, strings.TrimSpace(after))
+					} else {
+						recipe.Instructions = append(recipe.Instructions, strings.TrimSpace(line))
+					}
+				} else {
+					recipe.Instructions = append(recipe.Instructions, strings.TrimSpace(line))
+				}
+			}
+		} else if isPostInstructionsBlock {
+			parse, err := url.Parse(string(block))
+			if err == nil && bytes.HasPrefix(block, []byte("http")) {
+				recipe.URL = parse.String()
+			} else {
+				lines := strings.Split(strings.TrimSpace(string(block)), "\n")
+				for i, line := range lines {
+					lines[i] = strings.TrimSpace(line)
+				}
+				recipe.Instructions = append(recipe.Instructions, lines...)
+			}
+		}
+	}
+
+	if recipe.Category == "" {
+		recipe.Category = "uncategorized"
+	}
+
+	recipe.Ingredients = slices.DeleteFunc(recipe.Ingredients, func(s string) bool {
+		s = strings.ToLower(s)
+		return strings.HasPrefix(s, "prep") || strings.HasPrefix(s, "ingredien") || strings.HasPrefix(s, "slik") || strings.HasPrefix(s, "tilbe")
+	})
+
+	recipe.Instructions = slices.DeleteFunc(recipe.Instructions, func(s string) bool {
+		if s == "" {
+			return true
+		}
+
+		s = strings.ToLower(s)
+		words := []string{"instr", "method", "recipe", "direction", "step by step", "slik", "fremg", "framg"}
+		for _, word := range words {
+			if strings.HasPrefix(s, word) || len(word) == 0 {
+				return true
+			}
+		}
+		return false
+	})
+
+	if recipe.Yield == 0 {
+		recipe.Yield = 1
+	}
+
+	return recipe, nil
+}
+
+func extractBlocks(r io.Reader) [][]byte {
+	scanner := bufio.NewScanner(r)
+	i := 0
+	blocks := make([][]byte, 0)
+
+	for scanner.Scan() {
+		line := scanner.Bytes()
+		if bytes.Equal(line, []byte("")) {
+			blocks[i] = bytes.TrimSpace(blocks[i])
+			i++
+		}
+
+		if len(blocks) <= i {
+			blocks = append(blocks, make([]byte, 0))
+		}
+		blocks[i] = append(blocks[i], append(line, '\n')...)
+	}
+
+	blocks[len(blocks)-1] = bytes.TrimSpace(blocks[len(blocks)-1])
+	return blocks
+}
+
+func isBlockKeyValues(block []byte, recipe *Recipe) (isKeyValue, isURL bool) {
+	colonIndex := bytes.Index(block, []byte(":"))
+	isKeyValue = colonIndex >= 0
+
+	if colonIndex >= 0 {
+		parse, err := url.Parse(string(bytes.TrimSpace(block)))
+		if bytes.HasPrefix(block, []byte("http")) && err == nil {
+			recipe.URL = parse.String()
+			return false, true
+		}
+
+		_, _, found := bytes.Cut(block[colonIndex:], []byte("\n"))
+		if found {
+			_, after, _ := bytes.Cut(block[colonIndex:], []byte(":"))
+			if found {
+				l := bytes.Split(after, []byte("\n"))[0]
+				isKeyValue = len(bytes.TrimSpace(l)) != 0
+			}
+		}
+	}
+
+	return isKeyValue, false
+}
+
+func isBlockMostlyIngredients(block []byte) bool {
+	lines := bytes.Split(block, []byte("\n"))
+	numLines := len(lines)
+	if numLines < 2 {
+		return false
+	}
+	numLines--
+
+	hits := 0.
+	for _, line := range lines[1:] {
+		if len(line) == 0 {
+			continue
+		}
+
+		dotIndex := bytes.IndexByte(line, '.')
+
+		_, err := strconv.ParseInt(string(line[0]), 10, 64)
+		if err == nil && (dotIndex == -1 || dotIndex > 4) {
+			hits++
+		}
+	}
+
+	threshold := 0.6
+	if numLines < 4 {
+		threshold = 0.3
+	}
+	return hits/float64(numLines) >= threshold
+}
+
+func isBlockInstructions(block []byte) bool {
+	lines := bytes.Split(block, []byte("\n"))
+	hits := 0.
+	for _, line := range lines {
+		dotIndex := bytes.IndexByte(line, '.')
+		before, _, found := bytes.Cut(line, []byte("."))
+		if found && dotIndex >= 0 && dotIndex < 4 {
+			_, err := strconv.ParseInt(string(before), 10, 64)
+			if err == nil && dotIndex != -1 && dotIndex < 4 {
+				hits++
+			}
+		}
+	}
+	return hits/float64(len(lines)) >= 0.8
+}
+
+func processMetaData(line []byte, recipe *Recipe) {
+	line = bytes.ToLower(line)
+	if bytes.HasPrefix(line, []byte("course")) || bytes.HasPrefix(line, []byte("type")) {
+		_, after, found := bytes.Cut(line, []byte(":"))
+		if found {
+			before, _, found := bytes.Cut(after, []byte("/"))
+			if found {
+				recipe.Category = strings.TrimSpace(string(before))
+			} else {
+				recipe.Category = strings.TrimSpace(string(after))
+			}
+		}
+	} else if bytes.HasPrefix(line, []byte("cuisine")) || bytes.HasPrefix(line, []byte("opprin")) {
+		_, after, found := bytes.Cut(line, []byte(":"))
+		if found {
+			recipe.Cuisine = strings.TrimSpace(string(after))
+		}
+	} else if bytes.Contains(line, []byte("time")) || bytes.HasPrefix(line, []byte("prep")) || bytes.HasPrefix(line, []byte("cook")) ||
+		bytes.HasPrefix(line, []byte("stek")) || bytes.Contains(line, []byte("min")) || bytes.HasPrefix(line, []byte("tilber")) {
+		before, after, found := bytes.Cut(line, []byte("-"))
+		if found && bytes.Contains(after, []byte("min")) && regex.Digit.MatchString(string(before)) {
+			dur, err := time.ParseDuration(regex.Digit.FindString(string(before)) + "m")
+			if err == nil {
+				if recipe.Times.Prep == 0 {
+					recipe.Times.Prep += dur
+				} else {
+					recipe.Times.Cook += dur
+				}
+			}
+			return
+		}
+
+		var (
+			dur time.Duration
+			err error
+		)
+
+		matches := regex.Digit.FindAllString(string(line), 2)
+		if len(matches) == 1 && bytes.Contains(line, []byte("min")) {
+			dur, err = time.ParseDuration(matches[0] + "m")
+		} else if len(matches) == 1 && bytes.Contains(line, []byte("hour")) {
+			dur, err = time.ParseDuration(matches[0] + "h")
+		} else if len(matches) == 2 {
+			h, _ := time.ParseDuration(matches[0] + "h")
+			m, _ := time.ParseDuration(matches[1] + "m")
+			dur = h + m
+		}
+
+		if err == nil && dur > 0 {
+			if bytes.HasPrefix(line, []byte("prep")) || bytes.HasPrefix(line, []byte("hands")) {
+				recipe.Times.Prep += dur
+			} else if bytes.HasPrefix(line, []byte("cook")) || bytes.HasPrefix(line, []byte("oven")) ||
+				bytes.HasPrefix(line, []byte("simmer")) || bytes.HasPrefix(line, []byte("stek")) {
+				recipe.Times.Cook += dur
+			} else if bytes.HasPrefix(line, []byte("total")) || bytes.Contains(line, []byte("timer")) {
+				recipe.Times.Cook = dur - recipe.Times.Prep
+			} else if recipe.Times.Prep == 0 && recipe.Times.Cook == 0 {
+				recipe.Times.Prep += dur
+			}
+		}
+	} else if bytes.Contains(line, []byte("serv")) || bytes.HasPrefix(line, []byte("yield")) || bytes.Contains(line, []byte("portion")) ||
+		bytes.Contains(line, []byte("stk")) || bytes.HasPrefix(line, []byte("makes")) || bytes.Contains(line, []byte("pers")) ||
+		bytes.Contains(line, []byte("porsjoner")) || bytes.Contains(line, []byte("person")) || bytes.Contains(line, []byte("voksne")) ||
+		bytes.Contains(line, []byte("styk")) || bytes.Contains(line, []byte("til")) {
+		yield, err := strconv.ParseInt(regex.Digit.FindString(string(line)), 10, 16)
+		if err == nil {
+			recipe.Yield = int16(yield)
+		}
+	} else if recipe.Times.Prep == 0 && recipe.Times.Cook == 0 && (bytes.HasPrefix(line, []byte("total")) || bytes.HasPrefix(line, []byte("tid"))) {
+		before, after, found := bytes.Cut(line, []byte(","))
+		if found {
+			dur, err := time.ParseDuration(regex.Digit.FindString(string(before)) + "h")
+			if err == nil {
+				recipe.Times.Prep += dur
+			}
+
+			dur, err = time.ParseDuration(regex.Digit.FindString(string(after)) + "m")
+			if err == nil {
+				recipe.Times.Prep += dur
+			}
+		} else if bytes.Contains(line, []byte("min")) {
+			dur, err := time.ParseDuration(regex.Digit.FindString(string(line)) + "m")
+			if err == nil {
+				recipe.Times.Prep += dur
+			}
+		}
+	} else if bytes.HasPrefix(line, []byte("keyword")) || bytes.HasPrefix(line, []byte("hove")) || bytes.HasPrefix(line, []byte("anle")) || bytes.HasPrefix(line, []byte("karak")) {
+		_, after, found := strings.Cut(string(line), ":")
+		if found {
+			for _, s := range strings.Split(after, ",") {
+				recipe.Keywords = append(recipe.Keywords, strings.TrimSpace(s))
+			}
+		}
+	} else if bytes.HasPrefix(line, []byte("tool")) {
+		_, after, found := strings.Cut(string(line), ":")
+		if found {
+			for _, s := range strings.Split(after, ",") {
+				recipe.Tools = append(recipe.Tools, strings.TrimSpace(s))
+			}
+		}
+	}
 }
 
 // NewRecipesFromMasterCook extracts the recipes from a MasterCook file.
