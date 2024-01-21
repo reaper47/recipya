@@ -96,7 +96,8 @@ func recipesAddHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request) {
-	r.Body = http.MaxBytesReader(w, r.Body, 128<<20)
+	const maxSize = 512 << 20
+	r.Body = http.MaxBytesReader(w, r.Body, maxSize)
 
 	userID := getUserID(r)
 	_, found := s.Brokers[userID]
@@ -108,7 +109,7 @@ func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request)
 
 	s.Brokers[userID].SendProgressStatus("Preparing...", true, 0, -1)
 
-	err := r.ParseMultipartForm(128 << 20)
+	err := r.ParseMultipartForm(maxSize)
 	form := r.MultipartForm
 	if err != nil || form == nil || form.File == nil {
 		s.Brokers[userID].HideNotification()

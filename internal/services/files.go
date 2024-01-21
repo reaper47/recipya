@@ -908,40 +908,40 @@ func (f *Files) processRecipeFiles(files []*zip.File) models.Recipes {
 			_ = imageFile.Close()
 		}
 
+		openedFile, err := zf.Open()
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+
 		switch strings.ToLower(filepath.Ext(zf.Name)) {
 		case models.JSON.Ext():
-			jsonFile, err := zf.Open()
-			if err != nil {
-				log.Println(err)
-				continue
-			}
-
-			r, err := extractRecipe(jsonFile)
+			r, err := extractRecipe(openedFile)
 			if err != nil {
 				log.Printf("could not extract %s: %q", zf.Name, err.Error())
-				_ = jsonFile.Close()
+				_ = openedFile.Close()
 				continue
 			}
-			r.Image = uuid.Nil
 
 			recipes = append(recipes, *r)
 			recipeNumber++
-			_ = jsonFile.Close()
 		case models.MXP.Ext():
-			mxpFile, err := zf.Open()
-			if err != nil {
-				log.Println(err)
-				continue
-			}
-
-			xr := models.NewRecipesFromMasterCook(mxpFile)
+			xr := models.NewRecipesFromMasterCook(openedFile)
 			if len(xr) > 0 {
 				recipes = append(recipes, xr...)
 				recipeNumber += len(xr)
 			}
-
-			_ = mxpFile.Close()
+		case models.TXT.Ext():
+			recipe, err := models.NewRecipeFromTextFile(openedFile)
+			if err != nil {
+				log.Printf("Could not create recipe from text file %q: %q", zf.Name, err)
+				continue
+			}
+			recipes = append(recipes, recipe)
+			recipeNumber++
 		}
+
+		_ = openedFile.Close()
 	}
 
 	n := len(recipes)
