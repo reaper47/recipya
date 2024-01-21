@@ -579,10 +579,7 @@ func NewRecipeFromTextFile(r io.Reader) (Recipe, error) {
 			if len(lines) < 3 && regex.Unit.Match(blocks[i+1]) {
 				continue
 			}
-
-			for _, line := range lines {
-				recipe.Ingredients = append(recipe.Ingredients, line)
-			}
+			recipe.Ingredients = append(recipe.Ingredients, lines...)
 		} else if isInstructionsBlock {
 			dotIndex := bytes.Index(block, []byte("."))
 			lines := strings.Split(string(block), "\n")
@@ -597,9 +594,7 @@ func NewRecipeFromTextFile(r io.Reader) (Recipe, error) {
 			if numWords > 1 && numWords < 4 && !strings.Contains(strings.ToLower(lines[0]), "prep") && !strings.Contains(strings.ToLower(lines[0]), "step") && !strings.Contains(strings.ToLower(lines[0]), "slik") {
 				isInstructionsBlock = false
 				isIngredientsBlock = true
-				for _, line := range lines {
-					recipe.Ingredients = append(recipe.Ingredients, line)
-				}
+				recipe.Ingredients = append(recipe.Ingredients, lines...)
 				continue
 			}
 
