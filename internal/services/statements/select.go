@@ -128,7 +128,7 @@ const SelectAuthToken = `
 	WHERE selector = ?
 	AND expires > unixepoch('now')`
 
-// SelectCategories is the query to fetch a user's recipe categories.
+// SelectCategories fetches a user's recipe categories.
 const SelectCategories = `
 	SELECT c.name
 	FROM user_category AS uc
@@ -136,21 +136,21 @@ const SelectCategories = `
 	WHERE uc.user_id = ?
 	ORDER BY name`
 
-// SelectCookbook is the query to get a user's cookbook by cookbook ID.
+// SelectCookbook gets a user's cookbook by cookbook ID.
 const SelectCookbook = `
 	SELECT c.id, c.title, c.image, c.count
 	FROM cookbooks AS c
 	WHERE id = ?
 		AND user_id = ?`
 
-// SelectCookbookExists is the query to verify whether the cookbook belongs to the user.
+// SelectCookbookExists verifies whether the cookbook belongs to the user.
 const SelectCookbookExists = `
 	SELECT EXISTS (SELECT c.id
 				   FROM cookbooks AS c
 				   WHERE id = ?
 					 AND user_id = ?)`
 
-// SelectCookbookRecipeExists is the query to verify whether the recipe and the cookbook belongs to a user.
+// SelectCookbookRecipeExists verifies whether the recipe and the cookbook belongs to a user.
 const SelectCookbookRecipeExists = `
 	SELECT EXISTS (SELECT c.id
 				   FROM cookbooks AS c
@@ -159,46 +159,46 @@ const SelectCookbookRecipeExists = `
 					 AND c.user_id = ?
 					 AND ur.recipe_id = ?);`
 
-// SelectCookbookRecipe is the query to fetch a recipe from a cookbook.
+// SelectCookbookRecipe fetches a recipe from a cookbook.
 const SelectCookbookRecipe = baseSelectRecipe + `
 	JOIN cookbook_recipes AS cr ON recipes.id = cr.recipe_id
 	WHERE cr.cookbook_id = ?
 		AND cr.recipe_id = ?
 	GROUP BY recipes.id`
 
-// SelectCookbookRecipes is the query to fetch the recipes in a cookbook.
+// SelectCookbookRecipes fetches the recipes in a cookbook.
 const SelectCookbookRecipes = baseSelectRecipe + `
 	JOIN cookbook_recipes AS cr ON recipes.id = cr.recipe_id
 	WHERE cr.cookbook_id = ?
 	GROUP BY recipes.id
 	ORDER BY cr.order_index`
 
-// SelectCookbookShared is the query to get a shared cookbook link.
+// SelectCookbookShared gets a shared cookbook link.
 const SelectCookbookShared = `
 	SELECT cookbook_id, user_id
 	FROM share_cookbooks
 	WHERE link = ?`
 
-// SelectCookbookSharedLink is the query to get the link of a shared cookbook.
+// SelectCookbookSharedLink gets the link of a shared cookbook.
 const SelectCookbookSharedLink = `
 	SELECT link 
 	FROM share_cookbooks
 	WHERE cookbook_id = ?
 		AND user_id = ?`
 
-// SelectCookbooksShared is the query to get the user's shared cookbooks.
+// SelectCookbooksShared gets the user's shared cookbooks.
 const SelectCookbooksShared = `
 	SELECT link, cookbook_id
 	FROM share_cookbooks
 	WHERE user_id = ?`
 
-// SelectCookbookUser is the query to get the ID of the user who has the cookbook ID.
+// SelectCookbookUser gets the ID of the user who has the cookbook ID.
 const SelectCookbookUser = `
 	SELECT user_id
 	FROM cookbooks
 	WHERE id = ?`
 
-// SelectCookbooks is the query to get a limited number of cookbooks belonging to the user.
+// SelectCookbooks gets a limited number of cookbooks belonging to the user.
 var SelectCookbooks = `
 	SELECT id, image, title, count
 	FROM cookbooks
@@ -210,12 +210,13 @@ var SelectCookbooks = `
 		AND user_id = ?
 	LIMIT ` + templates.ResultsPerPageStr
 
+// SelectCookbooksUser gets all cookbooks belonging to the user.
 const SelectCookbooksUser = `
 	SELECT id, title, image, count
 	FROM cookbooks
 	WHERE user_id = 2`
 
-// SelectCounts is the query to get the number of recipes and cookbooks belonging to the user.
+// SelectCounts gets the number of recipes and cookbooks belonging to the user.
 const SelectCounts = `
 	SELECT cookbooks, recipes
 	FROM counts 
@@ -226,13 +227,13 @@ const SelectCountWebsites = `
 	SELECT COUNT(id)
 	FROM websites`
 
-// SelectCuisineID is the query to get the ID of the specified cuisine.
+// SelectCuisineID gets the ID of the specified cuisine.
 const SelectCuisineID = `
 	SELECT id 
 	FROM cuisines 
 	WHERE name = ?`
 
-// SelectDistinctImages is the query to get all distinct image UUIDs from the recipes table.
+// SelectDistinctImages gets all distinct image UUIDs from the recipes table.
 const SelectDistinctImages = `
 	SELECT DISTINCT image 
 	FROM recipes`
@@ -311,12 +312,12 @@ const SelectRecipe = baseSelectRecipe + `
 		AND ur.user_id = ?
 	LIMIT 1`
 
-// SelectRecipesAll is the query to fetch all the user's recipes.
+// SelectRecipesAll fetches all the user's recipes.
 const SelectRecipesAll = baseSelectRecipe + `
 	WHERE recipes.id IN (SELECT recipe_id FROM user_recipe WHERE user_id = ?)
 	GROUP BY recipes.id`
 
-// SelectRecipes is the query to fetch a chunk of the user's recipes.
+// SelectRecipes fetches a chunk of the user's recipes.
 const SelectRecipes = baseSelectRecipe + `
 	LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id
 	WHERE recipes.id >= (SELECT id
@@ -366,7 +367,7 @@ const SelectUserID = `
 	FROM users
 	WHERE email = ?`
 
-// SelectUserSettings is the query to fetch a user's settings.
+// SelectUserSettings fetchs a user's settings.
 const SelectUserSettings = `
 	SELECT MS.name, convert_automatically, cookbooks_view, calculate_nutrition
 	FROM user_settings
@@ -379,7 +380,7 @@ const SelectUserPassword = `
 	FROM users
 	WHERE email = ?`
 
-// SelectUserPasswordByID is the query to fetch the user's hashed password by their id.
+// SelectUserPasswordByID fetches the user's hashed password by their id.
 const SelectUserPasswordByID = `
 	SELECT hashed_password
 	FROM users
