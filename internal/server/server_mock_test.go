@@ -353,6 +353,10 @@ func (m *mockRepository) Images() []string {
 	return make([]string, 0)
 }
 
+func (m *mockRepository) InitAutologin() error {
+	return nil
+}
+
 func (m *mockRepository) IsUserExist(email string) bool {
 	return slices.ContainsFunc(m.UsersRegistered, func(user models.User) bool {
 		return user.Email == email

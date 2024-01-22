@@ -18,6 +18,7 @@ You do not need to create this file if you do not use Docker because it will be 
     - **resourceKey**: The *KEY 1* variable displayed on the *Keys and endpoint* tab of your Computer vision resource in the [Azure Portal](https://portal.azure.com/#home).
     - **visionEndpoint**: The *Endpoint* variable displayed on the *Keys and endpoint* tab of your Computer vision resource in the [Azure Portal](https://portal.azure.com/#home).
 - **server**
+  - **autologin**: Whether to login automatically into the application. Useful when you don't need user accounts. Its value can be either *true* or *false*.
   - **isDemo**: Whether the app is a demo version. Its value can be either *true* or *false*.
   - **isProduction**: Whether the app is in production. Its value can be either *true* or *false*.
   - **port**: The port the app will be served through if localhost.

@@ -46,6 +46,7 @@ func (s *Server) recipesHandler(w http.ResponseWriter, r *http.Request) {
 			Version: app.Version,
 		},
 		Functions:   templates.NewFunctionsData(),
+		IsAutologin: app.Config.Server.IsAutologin,
 		IsHxRequest: isHxRequest,
 		Pagination:  p,
 		Recipes:     s.Repository.Recipes(userID, pageNumber),

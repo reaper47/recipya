@@ -2,6 +2,7 @@ package server_test
 
 import (
 	"errors"
+	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"net/http"
 	"strings"
@@ -67,6 +68,21 @@ func TestHandlers_General_Index(t *testing.T) {
 			`<li id="recipes-sidebar-recipes" class="p-2 hover:bg-red-600 hover:text-white" hx-get="/recipes" hx-target="#content" hx-push-url="true" hx-swap-oob="true"> Recipes </li>`,
 		}
 		assertStringsNotInHTML(t, got, notWant)
+	})
+
+	t.Run("hide elements on main page when autologin enabled", func(t *testing.T) {
+		app.Config.Server.IsAutologin = true
+		defer func() {
+			app.Config.Server.IsAutologin = false
+		}()
+		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		got := getBodyHTML(rr)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		want := []string{
+			`<li class="border-2 rounded-b-lg hover:bg-blue-100 dark:border-gray-500 dark:hover:bg-blue-600"><a hx-post="/auth/logout" class="flex" href="#"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-0 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg><span class="pl-1 align-bottom">Log out</span></a></li>`,
+		}
+		assertStringsNotInHTML(t, got, want)
 	})
 
 	t.Run("logged in basic access", func(t *testing.T) {

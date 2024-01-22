@@ -3,6 +3,7 @@ package server
 import (
 	"github.com/go-chi/chi/v5"
 	"github.com/gorilla/websocket"
+	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
 	"net/http"
@@ -32,7 +33,7 @@ func (s *Server) downloadHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) indexHandler(w http.ResponseWriter, r *http.Request) {
-	if isAuthenticated(r, s.Repository.GetAuthToken) {
+	if app.Config.Server.IsAutologin || isAuthenticated(r, s.Repository.GetAuthToken) {
 		middleware := s.mustBeLoggedInMiddleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			s.recipesHandler(w, r)
 		}))

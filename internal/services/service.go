@@ -88,6 +88,9 @@ type RepositoryService interface {
 	// An empty slice is returned when an error occurred.
 	Images() []string
 
+	// InitAutologin creates a default user for the autologin feature if no users are present.
+	InitAutologin() error
+
 	// IsUserExist checks whether the user is present in the database.
 	IsUserExist(email string) bool
 

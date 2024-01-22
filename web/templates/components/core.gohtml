@@ -178,12 +178,14 @@
                         <span class="pl-1 align-bottom">About</span>
                     </div>
                 </li>
+                {{- if not .IsAutologin -}}
                 <li class="border-2 rounded-b-lg hover:bg-blue-100 dark:border-gray-500 dark:hover:bg-blue-600">
                     <a hx-post="/auth/logout" class="flex" href="#">
                         {{template "icon-logout"}}
                         <span class="pl-1 align-bottom">Log out</span>
                     </a>
                 </li>
+                {{- end -}}
             </ul>
         </div>
     </div>
@@ -278,13 +280,15 @@
     <div class="grid grid-flow-col h-full" style="grid-template-columns: min-content">
         <div class="text-sm md:text-base grid bg-gray-200 max-w-[6rem] mt-[1px] dark:bg-gray-600 dark:border-r dark:border-r-gray-500"
              role="tablist">
-            <button class="px-2 bg-gray-300 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-800"
+            {{- if not .IsAutologin -}}
+                <button class="px-2 bg-gray-300 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-800"
                     hx-get="/settings/tabs/profile"
                     hx-target="#settings-tab-content" role="tab" aria-selected="false" aria-controls="tab-content"
                     _="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800">
                 Profile
             </button>
-            <button class="px-2 hover:bg-gray-300 dark:hover:bg-gray-800"
+            {{- end -}}
+            <button class="px-2 {{if .IsAutologin}}bg-gray-300{{end}} hover:bg-gray-300 dark:hover:bg-gray-800"
                     hx-get="/settings/tabs/recipes"
                     hx-target="#settings-tab-content"
                     role="tab" aria-selected="false" aria-controls="tab-content"
@@ -302,7 +306,11 @@
 
         <div id="settings-tab-content" role="tabpanel"
              class="text-sm md:text-base p-4 auto-rows-min">
-            {{template "settings-tabs-profile"}}
+            {{- if .IsAutologin -}}
+                {{template "settings-tabs-recipes" .}}
+            {{- else -}}
+                {{template "settings-tabs-profile"}}
+            {{- end -}}
         </div>
     </div>
 {{end}}

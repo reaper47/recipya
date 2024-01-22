@@ -16,15 +16,32 @@ import (
 )
 
 func (s *Server) settingsHandler(w http.ResponseWriter, r *http.Request) {
+	var settingsData templates.SettingsData
+	if app.Config.Server.IsAutologin {
+		systems, settings, err := s.Repository.MeasurementSystems(getUserID(r))
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Error fetching units systems.", errorToast))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		settingsData.UserSettings = settings
+		settingsData.MeasurementSystems = systems
+	}
+
 	if r.Header.Get("Hx-Request") == "true" {
-		templates.RenderComponent(w, "core", "settings", nil)
+		templates.RenderComponent(w, "core", "settings", templates.Data{
+			IsAutologin: app.Config.Server.IsAutologin,
+			Settings:    settingsData,
+		})
 	} else {
 		page := templates.SettingsPage
 		templates.Render(w, page, templates.Data{
 			About: templates.AboutData{
 				Version: app.Version,
 			},
+			IsAutologin:     app.Config.Server.IsAutologin,
 			IsAuthenticated: true,
+			Settings:        settingsData,
 			Title:           page.Title(),
 		})
 	}
@@ -220,8 +237,7 @@ func settingsTabsProfileHandler(w http.ResponseWriter, _ *http.Request) {
 }
 
 func (s *Server) settingsTabsRecipesHandler(w http.ResponseWriter, r *http.Request) {
-	userID := getUserID(r)
-	systems, settings, err := s.Repository.MeasurementSystems(userID)
+	systems, settings, err := s.Repository.MeasurementSystems(getUserID(r))
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Error fetching units systems.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)

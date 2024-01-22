@@ -10,6 +10,7 @@
 		}
 	},
 	"server": {
+		"autologin": false,
 		"isDemo": false,
 		"isProduction": false,
 		"port": 8078,

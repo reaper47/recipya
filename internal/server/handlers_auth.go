@@ -16,6 +16,11 @@ import (
 )
 
 func (s *Server) changePasswordHandler(w http.ResponseWriter, r *http.Request) {
+	if app.Config.Server.IsAutologin {
+		w.WriteHeader(http.StatusForbidden)
+		return
+	}
+
 	currentPassword := r.FormValue("password-current")
 	newPassword := r.FormValue("password-new")
 	if currentPassword == newPassword {
@@ -102,6 +107,11 @@ func (s *Server) confirmHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) deleteUserHandler(w http.ResponseWriter, r *http.Request) {
+	if app.Config.Server.IsAutologin {
+		w.WriteHeader(http.StatusForbidden)
+		return
+	}
+
 	if app.Config.Server.IsDemo && s.Repository.UserID("demo@demo.com") == getUserID(r) {
 		w.Header().Set("HX-Trigger", makeToast("Your savings account has been deleted.", errorToast))
 		w.WriteHeader(http.StatusTeapot)
@@ -288,6 +298,11 @@ func registerHandler(w http.ResponseWriter, _ *http.Request) {
 }
 
 func (s *Server) logoutHandler(w http.ResponseWriter, r *http.Request) {
+	if app.Config.Server.IsAutologin {
+		w.WriteHeader(http.StatusForbidden)
+		return
+	}
+
 	userID := getUserIDFromSessionCookie(r)
 	if userID == -1 {
 		userID = getUserIDFromRememberMeCookie(r, s.Repository.GetAuthToken)

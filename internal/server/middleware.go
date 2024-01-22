@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/utils/regex"
 	"net/http"
 	"strings"
@@ -42,6 +43,12 @@ var excludedURIs = map[string]struct{}{
 
 func (s *Server) redirectIfLoggedInMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if app.Config.Server.IsAutologin {
+			ctx := context.WithValue(r.Context(), UserIDKey, int64(1))
+			http.Redirect(w, r.WithContext(ctx), "/recipes", http.StatusSeeOther)
+			return
+		}
+
 		userID := getUserIDFromSessionCookie(r)
 		if userID != -1 {
 			ctx := context.WithValue(r.Context(), UserIDKey, userID)
@@ -63,6 +70,12 @@ func (s *Server) redirectIfLoggedInMiddleware(next http.Handler) http.Handler {
 
 func (s *Server) mustBeLoggedInMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if app.Config.Server.IsAutologin {
+			ctx := context.WithValue(r.Context(), UserIDKey, int64(1))
+			next.ServeHTTP(w, r.WithContext(ctx))
+			return
+		}
+
 		uri := r.RequestURI
 		_, found := excludedURIs[r.RequestURI]
 		if found || regex.WildcardURL.MatchString(r.RequestURI) {

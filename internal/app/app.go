@@ -129,6 +129,7 @@ type AzureComputerVision struct {
 
 // ConfigServer holds configuration data for the server.
 type ConfigServer struct {
+	IsAutologin  bool   `json:"autologin"`
 	IsDemo       bool   `json:"isDemo"`
 	IsProduction bool   `json:"isProduction"`
 	Port         int    `json:"port"`
@@ -183,6 +184,7 @@ func NewConfig(r io.Reader) {
 				},
 			},
 			Server: ConfigServer{
+				IsAutologin:  os.Getenv("RECIPYA_SERVER_AUTOLOGIN") == "true",
 				IsDemo:       os.Getenv("RECIPYA_SERVER_IS_DEMO") == "true",
 				IsProduction: os.Getenv("RECIPYA_SERVER_IS_PROD") == "true",
 				Port:         int(port),
