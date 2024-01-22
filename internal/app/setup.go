@@ -183,6 +183,9 @@ func createConfigFile(path string) error {
 		c.Integrations.AzureComputerVision.VisionEndpoint = promptUser(r, "\tWhat is your vision API endpoint?", "")
 	}
 
+	isAutologin := promptUser(r, "Do you wish to autologin? [y/N]", "N")
+	c.Server.IsAutologin = isYes(isAutologin)
+
 	isInProd := promptUser(r, "Is your application in production? [y/N]", "N")
 	c.Server.IsProduction = isYes(isInProd)
 

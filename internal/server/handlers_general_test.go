@@ -70,7 +70,7 @@ func TestHandlers_General_Index(t *testing.T) {
 		assertStringsNotInHTML(t, got, notWant)
 	})
 
-	t.Run("logged in autologin enabled", func(t *testing.T) {
+	t.Run("hide elements on main page when autologin enabled", func(t *testing.T) {
 		app.Config.Server.IsAutologin = true
 		defer func() {
 			app.Config.Server.IsAutologin = false

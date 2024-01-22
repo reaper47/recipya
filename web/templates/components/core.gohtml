@@ -288,7 +288,7 @@
                 Profile
             </button>
             {{- end -}}
-            <button class="px-2 hover:bg-gray-300 dark:hover:bg-gray-800"
+            <button class="px-2 {{if .IsAutologin}}bg-gray-300{{end}} hover:bg-gray-300 dark:hover:bg-gray-800"
                     hx-get="/settings/tabs/recipes"
                     hx-target="#settings-tab-content"
                     role="tab" aria-selected="false" aria-controls="tab-content"
@@ -306,7 +306,11 @@
 
         <div id="settings-tab-content" role="tabpanel"
              class="text-sm md:text-base p-4 auto-rows-min">
-            {{template "settings-tabs-profile"}}
+            {{- if .IsAutologin -}}
+                {{template "settings-tabs-recipes" .}}
+            {{- else -}}
+                {{template "settings-tabs-profile"}}
+            {{- end -}}
         </div>
     </div>
 {{end}}
