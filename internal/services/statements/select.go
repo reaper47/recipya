@@ -386,6 +386,12 @@ const SelectUserPasswordByID = `
 	FROM users
 	WHERE id = ?`
 
+// SelectUserOne fetches the first user.
+const SelectUserOne = `
+	SELECT id
+	FROM users
+	WHERE id = 1`
+
 // SelectUsers fetches all users from the database.
 const SelectUsers = `
 	SELECT id, email 

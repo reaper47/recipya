@@ -743,6 +743,34 @@ func (s *SQLiteService) Images() []string {
 	return xs
 }
 
+// InitAutologin creates a default user for the autologin feature if no users are present.
+func (s *SQLiteService) InitAutologin() error {
+	ctx, cancel := context.WithTimeout(context.Background(), longerCtxTimeout)
+	defer cancel()
+
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	var id int64
+	err := s.DB.QueryRowContext(ctx, statements.SelectUserOne).Scan(&id)
+	if errors.Is(err, sql.ErrNoRows) {
+		hashPassword, err := auth.HashPassword("admin")
+		if err != nil {
+			return err
+		}
+
+		_, err = s.DB.ExecContext(ctx, statements.InsertUser, "admin@autologin.com", hashPassword)
+		if err != nil {
+			return err
+		}
+	} else if err != nil {
+		return err
+	}
+
+	log.Println("Created user for autologin with email 'admin@autologin.com' and password 'admin'")
+	return nil
+}
+
 // IsUserExist checks whether the user is present in the database.
 func (s *SQLiteService) IsUserExist(email string) bool {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
