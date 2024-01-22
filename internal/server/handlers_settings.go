@@ -17,13 +17,16 @@ import (
 
 func (s *Server) settingsHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Header.Get("Hx-Request") == "true" {
-		templates.RenderComponent(w, "core", "settings", nil)
+		templates.RenderComponent(w, "core", "settings", templates.Data{
+			IsAutologin: app.Config.Server.IsAutologin,
+		})
 	} else {
 		page := templates.SettingsPage
 		templates.Render(w, page, templates.Data{
 			About: templates.AboutData{
 				Version: app.Version,
 			},
+			IsAutologin:     app.Config.Server.IsAutologin,
 			IsAuthenticated: true,
 			Title:           page.Title(),
 		})

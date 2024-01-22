@@ -12,6 +12,7 @@ import (
 // Data holds data to pass on to the templates.
 type Data struct {
 	IsAuthenticated  bool // IsAuthenticated indicates whether the user is authenticated.
+	IsAutologin      bool // IsAutologin indicates whether the user enabled autologin.
 	IsDemo           bool // IsDemo indicates whether running instance is the demo version.
 	IsHxRequest      bool // IsHxRequest indicates whether the request is an HX one. It is used for oop swaps.
 	IsToastWSVisible bool // IsToastWSVisible indicates whether to display the notification for websocket tasks.

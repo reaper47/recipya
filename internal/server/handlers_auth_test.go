@@ -43,7 +43,17 @@ func TestHandlers_Auth_ChangePassword(t *testing.T) {
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
 		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"New password is same as current.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+	})
 
+	t.Run("cannot change password if autologin", func(t *testing.T) {
+		app.Config.Server.IsAutologin = true
+		defer func() {
+			app.Config.Server.IsAutologin = false
+		}()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("password-current=test2&password-new=test2&password-confirm=test2"))
+
+		assertStatus(t, rr.Code, http.StatusForbidden)
 	})
 
 	t.Run("valid form", func(t *testing.T) {
@@ -155,6 +165,17 @@ func TestHandlers_Auth_DeleteUser(t *testing.T) {
 
 		assertStatus(t, rr.Code, http.StatusTeapot)
 		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Your savings account has been deleted.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+	})
+
+	t.Run("cannot delete user if autologin", func(t *testing.T) {
+		app.Config.Server.IsAutologin = true
+		defer func() {
+			app.Config.Server.IsAutologin = false
+		}()
+
+		rr := sendRequestAsLoggedIn(srv, http.MethodDelete, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusForbidden)
 	})
 
 	t.Run("user cannot delete other user", func(t *testing.T) {
@@ -402,6 +423,17 @@ func TestHandlers_Auth_Login(t *testing.T) {
 		assertHeader(t, rr, "HX-Redirect", otherURI)
 	})
 
+	t.Run("redirect to index if autologin enabled", func(t *testing.T) {
+		app.Config.Server.IsAutologin = true
+		defer func() {
+			app.Config.Server.IsAutologin = false
+		}()
+
+		rr := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email=test@example.com&password=123&remember-me=false"))
+
+		assertStatus(t, rr.Code, http.StatusSeeOther)
+	})
+
 	t.Run("login  successful", func(t *testing.T) {
 		clear(server.SessionData)
 
@@ -507,6 +539,17 @@ func TestHandlers_Auth_Logout(t *testing.T) {
 		}
 	})
 
+	t.Run("cannot logout when autologin enabled", func(t *testing.T) {
+		app.Config.Server.IsAutologin = true
+		defer func() {
+			app.Config.Server.IsAutologin = false
+		}()
+
+		rr := repo.sendRequestAsLoggedInRememberMe(srv, http.MethodPost, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusForbidden)
+	})
+
 	t.Run("remember me user has its token deleted on logout", func(t *testing.T) {
 		originalNumAuthTokens := len(repo.AuthTokens) + 1
 
@@ -565,6 +608,19 @@ func TestHandlers_Auth_Register(t *testing.T) {
 		if len(srv.Repository.Users()) != originalNumUsers {
 			t.Fatalf("expected no user to be added to the db of %d users", originalNumUsers)
 		}
+	})
+
+	t.Run("redirect to index autologin enabled", func(t *testing.T) {
+		app.Config.Server.IsAutologin = true
+		defer func() {
+			app.Config.Server.IsAutologin = false
+		}()
+
+		rrGet := sendRequest(srv, http.MethodGet, uri, noHeader, nil)
+		rrPost := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email=test@test.com&password=test123&password-confirm=test123"))
+
+		assertStatus(t, rrGet.Code, http.StatusSeeOther)
+		assertStatus(t, rrPost.Code, http.StatusSeeOther)
 	})
 
 	t.Run("valid registration for new user", func(t *testing.T) {

@@ -58,7 +58,8 @@ func getUserIDFromSessionCookie(r *http.Request) int64 {
 		return -1
 	}
 
-	if userID, ok := SessionData[sid]; ok {
+	userID, ok := SessionData[sid]
+	if ok {
 		return userID
 	}
 	return -1

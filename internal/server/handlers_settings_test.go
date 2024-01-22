@@ -3,6 +3,7 @@ package server_test
 import (
 	"errors"
 	"fmt"
+	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services"
 	"github.com/reaper47/recipya/internal/units"
@@ -21,6 +22,21 @@ func TestHandlers_Settings(t *testing.T) {
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
+	})
+
+	t.Run("profile tab not displayed when autologin", func(t *testing.T) {
+		app.Config.Server.IsAutologin = true
+		defer func() {
+			app.Config.Server.IsAutologin = false
+		}()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		notWant := []string{
+			`<button class="px-2 bg-gray-300 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-800" hx-get="/settings/tabs/profile" hx-target="#settings-tab-content" role="tab" aria-selected="false" aria-controls="tab-content" _="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800"> Profile </button>`,
+		}
+		assertStringsNotInHTML(t, getBodyHTML(rr), notWant)
 	})
 
 	t.Run("display settings", func(t *testing.T) {
@@ -522,6 +538,10 @@ func TestHandlers_Settings_TabsProfile(t *testing.T) {
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
+	})
+
+	t.Run("redirect to recipes tab when autologin enabled", func(t *testing.T) {
+		t.Fail()
 	})
 
 	t.Run("successful request", func(t *testing.T) {
