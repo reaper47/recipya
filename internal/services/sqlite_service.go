@@ -69,8 +69,6 @@ func NewSQLiteService() *SQLiteService {
 		panic(err)
 	}
 
-	// TODO: create default user if autologin enabled
-
 	return &SQLiteService{
 		DB:    db,
 		FdcDB: openFdcDB(),
