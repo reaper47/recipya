@@ -18,11 +18,11 @@ func makeToast(message string, toastType toast) string {
 	var backgroundColor string
 	switch toastType {
 	case infoToast:
-		backgroundColor = "bg-blue-500"
+		backgroundColor = "alert-info"
 	case warningToast:
-		backgroundColor = "bg-orange-500"
+		backgroundColor = "alert-warning"
 	case errorToast:
-		backgroundColor = "bg-red-500"
+		backgroundColor = "alert-error"
 	default:
 	}
 
@@ -41,9 +41,8 @@ func getUserID(r *http.Request) int64 {
 }
 
 func (s *Server) findUserID(r *http.Request) (int64, bool) {
-	var userID int64
 	isLoggedIn := true
-	userID = getUserIDFromSessionCookie(r)
+	userID := getUserIDFromSessionCookie(r)
 	if userID == -1 {
 		userID = getUserIDFromRememberMeCookie(r, s.Repository.GetAuthToken)
 		if userID == -1 {

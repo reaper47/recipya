@@ -926,6 +926,7 @@ func (s *Server) recipesViewHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := templates.Data{
+		About:           templates.AboutData{Version: app.Version},
 		IsAuthenticated: true,
 		Title:           recipe.Name,
 		View:            templates.NewViewRecipeData(id, recipe, true, false),

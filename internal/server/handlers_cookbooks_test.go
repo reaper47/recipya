@@ -574,6 +574,21 @@ func TestHandlers_Cookbooks_DownloadCookbook(t *testing.T) {
 		}
 	})
 
+	t.Run("cannot download a cookbook with no recipes", func(t *testing.T) {
+		_, _, revert := prepareCookbook(srv)
+		files := &mockFiles{}
+		srv.Files = files
+		defer revert()
+
+		rr := sendHxRequestAsLoggedInOther(srv, http.MethodGet, uri(4), noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Cookbook is empty.\",\"backgroundColor\":\"alert-error\"}"}`)
+		if files.exportHitCount > 0 {
+			t.Fatal("export function must not have been called")
+		}
+	})
+
 	t.Run("valid request", func(t *testing.T) {
 		_, _, revert := prepareCookbook(srv)
 		files := &mockFiles{}

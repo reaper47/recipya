@@ -2,15 +2,11 @@ package templates
 
 import (
 	"bytes"
-	"context"
 	"fmt"
-	"github.com/Boostport/mjml-go"
 	"github.com/reaper47/recipya/web"
 	"html/template"
 	"io/fs"
-	"log"
 	"net/http"
-	"path/filepath"
 	"slices"
 	"strings"
 )
@@ -67,7 +63,7 @@ func init() {
 func initEmailTemplates() {
 	templatesEmail = make(map[string]*template.Template)
 
-	emailDir, err := fs.ReadDir(web.FS, "emails")
+	emailDir, err := fs.ReadDir(web.FS, "emails/transpiled")
 	if err != nil {
 		panic(err)
 	}
@@ -75,22 +71,18 @@ func initEmailTemplates() {
 	for _, entry := range emailDir {
 		n := entry.Name()
 
-		if filepath.Ext(n) == ".mjml" {
-			tmpl := template.Must(template.New(n).ParseFS(web.FS, "emails/"+n))
-
-			if tmpl == nil || tmpl.Tree == nil || tmpl.Tree.Root == nil {
-				panic("template or tree or root of " + entry.Name() + " is nil")
-			}
-
-			html, err := mjml.ToHTML(context.Background(), tmpl.Tree.Root.String(), mjml.WithMinify(true))
-			if err != nil {
-				log.Fatal(err)
-			}
-			html = strings.ReplaceAll(html, "[[", "{{")
-			html = strings.ReplaceAll(html, "]]", "}}")
-
-			templatesEmail[n] = template.Must(template.New(n).Funcs(emailsFuncMap).Parse(html))
+		data, err := fs.ReadFile(web.FS, "emails/transpiled/"+n)
+		if err != nil {
+			panic(err)
 		}
+		data = bytes.ReplaceAll(data, []byte("[["), []byte("{{"))
+		data = bytes.ReplaceAll(data, []byte("]]"), []byte("}}"))
+
+		tmpl := template.Must(template.New(n).Parse(string(data)))
+		if tmpl == nil || tmpl.Tree == nil || tmpl.Tree.Root == nil {
+			panic("template or tree or root of " + entry.Name() + " is nil")
+		}
+		templatesEmail[n] = tmpl
 	}
 }
 

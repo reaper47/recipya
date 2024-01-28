@@ -1,72 +1,108 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en" class="h-full"
+      _="on htmx:afterSwap
+            if location.pathname is '/recipes' or location.pathname is '/' then
+                add .active to first <button/> in mobile_nav then
+                remove .active from last <button/> in mobile_nav then
+                remove .md:hidden from desktop_nav then
+                remove .hidden from mobile_nav then
+                remove .active from first <a/> in recipes_sidebar_cookbooks then
+                add .active to first <a/> in recipes_sidebar_recipes
+            else if location.pathname is '/cookbooks' then
+                add .active to last <button/> in mobile_nav then
+                remove .active from first <button/> in mobile_nav then
+                remove .md:hidden from desktop_nav then
+                remove .hidden from mobile_nav then
+                remove .active from first <a/> in recipes_sidebar_recipes then
+                add .active to first <a/> in recipes_sidebar_cookbooks
+            else if location.pathname is '/settings' or location.pathname is '/recipes/add' then
+                add .md:hidden to desktop_nav then
+                add .hidden to mobile_nav">
 {{- template "head" .}}
-<body class="min-h-full text-gray-900 dark:text-white dark:bg-gray-800">
-<header hx-boost="true"
-        class="flex h-12 w-full items-center justify-between bg-gray-100 dark:bg-black shadow-sm shadow-gray-600 print:hidden">
-    <div class="flex h-full items-center">
-        <button hx-get="/" hx-push-url="true" hx-target="{{if .IsAuthenticated}}#content{{else}}body{{end}}" class="pl-4 font-semibold hover:text-red-600">
+<body class="min-h-full">
+<header class="navbar bg-base-200 shadow-sm print:hidden">
+    <div class="navbar-start">
+        <a class="btn btn-ghost text-lg" {{if .IsAuthenticated}}hx-get="/" hx-push-url="true" hx-target="#content"
+           {{else}}href="/"{{end}}>
             Recipya
-        </button>
+        </a>
     </div>
-    {{- if .IsAuthenticated -}}
-        <div class="flex flex-1 justify-center">
+    <div class="navbar-center">
+        {{- if .IsAuthenticated -}}
             <div id="content-title" class="font-semibold hidden md:block md:text-xl">{{.Title}}</div>
-            <button id="add-recipe" class="app-bar-center-button"
-                    hx-get="/recipes/add"
-                    hx-target="#content"
-                    hx-push-url="true">
+            <button id="add_recipe" class="btn btn-primary btn-sm hover:btn-accent"
+                    hx-get="/recipes/add" hx-target="#content" hx-push-url="true">
                 Add recipe
             </button>
-            <button id="add-cookbook" class="app-bar-center-button"
-                    hx-post="/cookbooks"
-                    hx-prompt="Enter the name of your cookbook"
-                    hx-target=".cookbooks-display"
-                    hx-swap="beforeend">
+            <button id="add_cookbook" class="btn btn-primary btn-sm hover:btn-accent"
+                    hx-post="/cookbooks" hx-prompt="Enter the name of your cookbook"
+                    hx-target=".cookbooks-display" hx-swap="beforeend">
                 Add cookbook
             </button>
-        </div>
-        <div class="flex">
-            {{template "avatar" .}}
-        </div>
-    {{- else -}}
-        <div class="flex">
-            <a href="/auth/login"
-               class="flex-auto mr-2 rounded-lg px-2 py-1 hover:text-white hover:bg-green-600">
-                Log In
-            </a>
-            <a href="/auth/register"
-               class="flex-auto mr-4 rounded-lg px-2 py-1 bg-amber-300 dark:bg-orange-600 hover:text-white hover:bg-red-600">
-                Sign Up
-            </a>
-        </div>
-    {{- end -}}
+        {{- end -}}
+    </div>
+    <div class="navbar-end">
+        {{- if .IsAuthenticated -}}
+            <div class="dropdown dropdown-end" hx-get="/user-initials" hx-trigger="load" hx-target="#user-initials">
+                <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar placeholder">
+                    <div class="bg-neutral text-neutral-content w-10 rounded-full">
+                        <span id="user-initials">A</span>
+                    </div>
+                </div>
+                <ul tabindex="0" id="avatar_dropdown"
+                    class="menu menu-sm dropdown-content mt-3 z-10 p-2 shadow bg-base-100 rounded-box before:content-[''] before:absolute before:right-2 before:top-[-9px] before:border-x-[15px] before:border-x-transparent before:border-b-[8px] before:border-b-[#333] dark:before:border-b-[gray]">
+                    <li onclick="document.activeElement?.blur()">
+                        <a href="/settings" hx-get="/settings" hx-target="#content" hx-push-url="true">
+                            {{template "icon-gear"}} Settings
+                        </a>
+                    </li>
+                    <li onclick="about_dialog.showModal()">
+                        <a>{{template "icon-help"}} About</a>
+                    </li>
+                    <li>
+                        <a hx-post="/auth/logout">
+                            {{template "icon-logout"}} Log out
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            {{template "about-dialog" .}}
+        {{- else -}}
+            <a href="/auth/login" class="btn btn-ghost">Log In</a>
+            <a href="/auth/register" class="btn btn-ghost">Sign Up</a>
+        {{- end -}}
+    </div>
 </header>
 <div id="fullscreen-loader" class="htmx-indicator"></div>
-<main class="inline-flex min-h-[95vh] w-full">
+<main class="inline-flex w-full">
     {{- if .IsAuthenticated -}}
-        <aside id="recipes-sidebar" class="hidden border-r bg-gray-300 mt-[0.04rem] dark:bg-gray-900">
-            <ul>
-                <li id="recipes-sidebar-recipes"
-                    class="recipes-sidebar-selected"
-                    hx-get="/recipes" hx-target="#content"
-                    hx-push-url="true" hx-swap-oob="true"
-                    _="on load if location.pathname is '/recipes' or location.pathname is '/' then add .recipes-sidebar-selected else remove .recipes-sidebar-selected then add .recipes-sidebar-not-selected">
-                    <img src="/static/img/cherries.svg" alt="">
-                    <span class="hidden lg:block ml-1">Recipes</span>
+        <aside id="desktop_nav" class="hidden md:block">
+            <ul class="menu menu-sm bg-base-300 rounded-box h-full" style="border-radius: 0">
+                <li id="recipes_sidebar_recipes" hx-get="/recipes"
+                    hx-target="#content" hx-push-url="true" hx-swap-oob="true">
+                    <a class="tooltip tooltip-right active" data-tip="Recipes">
+                        {{template "icon-cube-transparent"}}
+                    </a>
                 </li>
-                <li id="recipes-sidebar-cookbooks"
-                    class="recipes-sidebar-not-selected"
-                    hx-get="/cookbooks" hx-target="#content"
-                    hx-push-url="true" hx-swap-oob="true"
-                    _="on load if location.pathname is '/cookbooks' then remove .recipes-sidebar-not-selected add .recipes-sidebar-selected">
-                    <img src="/static/img/cookbook.svg" alt="">
-                    <span class="hidden lg:block ml-1">Cookbooks</span>
+                <li id="recipes_sidebar_cookbooks" hx-get="/cookbooks"
+                    hx-target="#content" hx-push-url="true" hx-swap-oob="true">
+                    <a class="tooltip tooltip-right" data-tip="Cookbooks">
+                        {{template "icon-book"}}
+                    </a>
                 </li>
             </ul>
         </aside>
+
+        <aside id="mobile_nav" class="btm-nav btm-nav-xs md:hidden z-20">
+            <button hx-get="/recipes" hx-target="#content" hx-push-url="true" hx-swap-oob="true">
+                {{template "icon-cube-transparent"}}
+            </button>
+            <button hx-get="/cookbooks" hx-target="#content" hx-push-url="true" hx-swap-oob="true">
+                {{template "icon-book"}}
+            </button>
+        </aside>
     {{- end -}}
-    <div id="content" class="w-full" hx-ext="ws" ws-connect="/ws">
+    <div id="content" class="min-h-[92.5vh] w-full" hx-ext="ws" ws-connect="/ws">
         {{- template "content" .}}
     </div>
 </main>

@@ -1,7 +1,7 @@
 {{define "toast"}}
-    <div id="toast-container" class="z-20 fixed top-0 right-0 p-6 cursor-default hidden"
+    <div id="toast_container" class="toast toast-top toast-end hidden z-20 cursor-default"
          _="on click add .hidden then call clearTimeout(timeoutToast) then set timeoutToast to null then log timeoutToast">
-        <div class="hidden bg-blue-500 bg-orange-500 bg-red-500 text-white px-6 py-4 rounded shadow-md"></div>
+        <div class="hidden alert alert-error alert-info alert-success alert-warning"></div>
     </div>
 
     <script defer>
@@ -12,22 +12,21 @@
         });
 
         function showToast(message, backgroundColor) {
-            const toastContainer = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            toast.classList.add('text-white', 'px-6', 'py-4', 'rounded', 'shadow-md', backgroundColor);
+            toast.classList.add('alert', backgroundColor);
             toast.textContent = message;
 
-            if (toastContainer.firstChild) {
-                toastContainer.replaceChild(toast, toastContainer.firstChild);
+            if (toast_container.firstChild) {
+                toast_container.replaceChild(toast, toast_container.firstChild);
             } else {
-                toastContainer.appendChild(toast);
+                toast_container.appendChild(toast);
             }
 
-            toastContainer.classList.remove('hidden');
+            toast_container.classList.remove('hidden');
 
             timeoutToast = setTimeout(function () {
-                toastContainer.classList.add('hidden');
-                toastContainer?.removeChild(toast);
+                toast_container.classList.add('hidden');
+                toast_container?.removeChild(toast);
             }, 5000);
         }
     </script>

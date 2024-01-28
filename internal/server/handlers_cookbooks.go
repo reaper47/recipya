@@ -291,11 +291,16 @@ func (s *Server) cookbooksDownloadCookbookHandler(w http.ResponseWriter, r *http
 		return
 	}
 
-	userID := getUserID(r)
-	cookbook, err := s.Repository.Cookbook(cookbookID, userID)
+	cookbook, err := s.Repository.Cookbook(cookbookID, getUserID(r))
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not fetch cookbook.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	if len(cookbook.Recipes) == 0 {
+		w.Header().Set("HX-Trigger", makeToast("Cookbook is empty.", errorToast))
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
