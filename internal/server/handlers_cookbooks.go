@@ -283,8 +283,7 @@ func (s *Server) cookbooksDeleteCookbookRecipeHandler(w http.ResponseWriter, r *
 }
 
 func (s *Server) cookbooksDownloadCookbookHandler(w http.ResponseWriter, r *http.Request) {
-	cookbookIDStr := chi.URLParam(r, "id")
-	cookbookID, err := strconv.ParseInt(cookbookIDStr, 10, 64)
+	cookbookID, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Could not parse cookbook ID.", errorToast))
 		w.WriteHeader(http.StatusBadRequest)

@@ -1,6 +1,5 @@
 {{define "cookbooks-grid"}}
-    <div class="cookbooks-display grid grid-flow-row gap-4 p-2 text-sm md:grid-cols-3 lg:grid-cols-4 md:text-base">
-        {{- $page := .Pagination.Selected -}}
+         {{- $page := .Pagination.Selected -}}
         {{- $feature := .CookbookFeature -}}
         {{ range $i, $book := $feature.Cookbooks }}
             {{template "cookbook-grid" (call $feature.MakeCookbook $i $book $page)}}
@@ -20,7 +19,9 @@
         <div class="card-body" lang="en">
             <div class="flex">
                 <p class="font-semibold w-[18ch] break-words">{{.Title}}</p>
-                <span class="float-right">{{template "cookbook-options" .}}</span>
+                <span class="three-dots-container cursor-pointer float-right" _="on click openCookbookOptionsMenu(event)">
+                    {{template "icon-dots-vertical"}}
+                </span>
             </div>
             <div class="card-actions h-full flex-col-reverse">
                 <button class="btn btn-block btn-sm btn-outline" hx-get="/cookbooks/{{.ID}}?page={{.PageNumber}}"
@@ -177,8 +178,7 @@
                                     {{- if $feature.ShareData.IsFromHost -}}
                                         <span title="Remove recipe from cookbook"
                                               hx-delete="/cookbooks/{{$cookbook.ID}}/recipes/{{$r.ID}}"
-                                              hx-swap="outerHTML"
-                                              hx-target="closest .recipe"
+                                              hx-swap="outerHTML" hx-target="closest .recipe"
                                               hx-confirm="Are you sure you want to remove this recipe from the cookbook?"
                                               hx-indicator="#fullscreen-loader">
                                       {{template "icon-delete"}}
@@ -197,18 +197,14 @@
                 <div class="flex border-t dark:border-gray-800">
                     {{- if $feature.ShareData.IsFromHost -}}
                         <button class="w-full center hover:bg-gray-800 hover:text-white hover:dark:bg-neutral-600 hover:rounded-b-md"
-                                hx-get="/recipes/{{.ID}}"
-                                hx-target="#content"
-                                hx-swap="innerHTML"
-                                hx-push-url="true">
+                                hx-get="/recipes/{{.ID}}" hx-target="#content"
+                                hx-swap="innerHTML" hx-push-url="true">
                             View
                         </button>
                     {{- else -}}
                         <button class="w-full center hover:bg-gray-800 hover:text-white hover:dark:bg-neutral-600 hover:rounded-b-md"
-                                hx-get="/r/{{.ID}}?cookbook={{$cookbook.ID}}"
-                                hx-target="#content"
-                                hx-swap="innerHTML"
-                                hx-push-url="true">
+                                hx-get="/r/{{.ID}}?cookbook={{$cookbook.ID}}" hx-target="#content"
+                                hx-swap="innerHTML" hx-push-url="true">
                             View
                         </button>
                     {{- end -}}
@@ -282,10 +278,8 @@
             <div class="p-4 md:p-0">
                 <p class="pb-2">Your cookbooks collection looks a bit empty at the moment.</p>
                 <p>Why not start by creating a cookbook by clicking the
-                    <a class="underline font-semibold cursor-pointer"
-                       hx-post="/cookbooks"
-                       hx-prompt="Enter the name of your cookbook"
-                       hx-target="#content">Add cookbook</a>
+                    <a class="underline font-semibold cursor-pointer" hx-post="/cookbooks"
+                       hx-prompt="Enter the name of your cookbook" hx-target="#content">Add cookbook</a>
                     button at the top?
                 </p>
             </div>
@@ -294,61 +288,73 @@
     {{- end -}}
     {{template "pagination" .Pagination}}
     {{template "cookbook-menu" .Title}}
+    <script type="text/hyperscript">
+        def openCookbookOptionsMenu(evt)
+          set cookbook_menu_container.style.left to (evt.pageX - 104) +'px'
+          set cookbook_menu_container.style.top to (evt.pageY + 24)+'px'
+          set $li to closest .cookbook to evt.target
+          set $id to $li.id.split('-')[1]
+
+          js
+              cookbook_menu_share.setAttribute('hx-post', `/cookbooks/${$id}/share`)
+              cookbook_menu_download.setAttribute('hx-get', `/cookbooks/${$id}/download`)
+              cookbook_menu_delete.setAttribute('hx-delete', `/cookbooks/${$id}`)
+              cookbook_menu_delete.setAttribute('hx-target', `#${$li.id}`)
+          end
+
+          toggle .hidden on cookbook_menu_container
+          htmx.process(cookbook_menu_container)
+        end
+    </script>
     <script defer>
         document.addEventListener('click', (event) => {
-            const cookbookContainers = document.querySelectorAll(".cookbook-menu");
-            cookbookContainers.forEach(c => {
-                if (c && !c.classList.contains("hidden") &&
-                    !event.target.classList.contains("three-dots-container") &&
-                    !["svg", "path"].includes(event.target.tagName)) {
-                    c.classList.add("hidden");
+            if (cookbook_menu_container){
+                if (event.target.classList.contains('three-dots-container') || ["svg", "path"].includes(event.target.tagName)) {
+                    return;
                 }
-            });
+                cookbook_menu_container.classList.add("hidden");
+                htmx.process(cookbook_menu_container);
+            }
         });
     </script>
 {{end}}
 
 {{define "cookbooks-list"}}
-    <ul class="cookbooks-display grid gap-2 p-2 text-sm md:text-base">
+    <div class="cookbooks-display grid gap-4 p-2 text-sm md:text-base place-items-center">
         {{- $page := .Pagination.Selected -}}
         {{- $feature := .CookbookFeature -}}
         {{ range $i, $book := $feature.Cookbooks }}
             {{template "cookbook-list" (call $feature.MakeCookbook $i $book $page)}}
         {{end}}
-    </ul>
+    </div>
 {{end}}
 
 {{define "cookbook-list"}}
-    <li id="cookbook-{{.PageItemID}}"
-        class="cookbook relative grid max-w-[30rem] border bg-white rounded-md shadow-md md:min-w-[30rem] dark:bg-neutral-700 dark:border-slate-600">
-        <div class="grid grid-cols-4">
-            <div onclick="document.querySelector('#cookbook-image-{{.ID}}').click()">
-                <img class="col-span-1 border-r hover:opacity-70"
-                     src="{{if .IsUUIDValid}}/data/images/{{.Image}}.jpg{{else}}/static/img/cookbooks-new/placeholder.webp{{end}}"
-                     alt="Cookbook image">
+    <div id="cookbook-{{.ID}}" class="cookbook card sm:card-side card-compact bg-base-100 shadow-md max-w-[30rem] border indicator dark:border-slate-600">
+        <span class="indicator-item indicator-start badge badge-primary select-none">{{.NumRecipes}}</span>
+        <span class="three-dots-container indicator-item indicator-end badge badge-neutral rounded-md p-1 select-none cursor-pointer hover:bg-secondary"
+              _="on click openCookbookOptionsMenu(event)">
+            {{template "icon-dots-vertical"}}
+        </span>
+        <figure class="relative hover:opacity-70" onclick="document.querySelector('#cookbook-image-{{.ID}}').click()">
+            <img class="w-28 h-fulll object-cover"
+                 src="{{if .IsUUIDValid}}/data/images/{{.Image}}.jpg{{else}}/static/img/cookbooks-new/placeholder.webp{{end}}"
+                 alt="Cookbook image"/>
+            <span class="absolute">
                 {{template "cookbook-image-form" .ID}}
-            </div>
-            <div class="grid col-span-3 gap-1 p-2">
-                <div class="grid grid-flow-col">
-                    <p class="font-semibold">
-                        {{.Title}}
-                    </p>
-                    <div class="grid justify-end">
-                        <div class="pb-4 pl-4">
-                            {{template "cookbook-options" .}}
-                        </div>
-                        <span class="w-fit h-fit text-xs text-center font-medium select-none py-1 px-2 bg-indigo-700 text-white self-end justify-self-end">
-                            {{.NumRecipes}}
-                        </span>
-                    </div>
-                </div>
+            </span>
+        </figure>
+        <div class="card-body">
+            <h2 class="card-title text-base w-[29ch] break-words md:text-xl">{{.Title}}</h2>
+            <p></p>
+            <div class="card-actions justify-end">
+                <button class="btn btn-outline btn-sm" hx-get="/cookbooks/{{.ID}}?page={{.PageNumber}}"
+                        hx-target="#content" hx-push-url="/cookbooks/{{.ID}}">
+                    Open
+                </button>
             </div>
         </div>
-        <button class="w-full border-t center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600 hover:rounded-b-md"
-                hx-get="/cookbooks/{{.ID}}?page={{.PageNumber}}" hx-target="#content" hx-push-url="/cookbooks/{{.ID}}">
-            Open
-        </button>
-    </li>
+    </div>
 {{end}}
 
 {{define "cookbook-list-add"}}
@@ -357,25 +363,25 @@
 {{end}}
 
 {{define "cookbook-menu"}}
-    <div id="cookbook-menu-container"
-         class="cookbook-menu hidden absolute w-fit bg-white rounded-lg z-10 dark:bg-gray-900">
-        <ul id="cookbook-menu" class="menu menu-sm bg-base-200 rounded-box">
+    <div id="cookbook_menu_container"
+         class="absolute hidden w-fit bg-white rounded-lg z-10 dark:bg-gray-900">
+        <ul id="cookbook_menu" class="menu menu-sm bg-base-200 rounded-box">
             <li>
-                <a id="cookbook-menu-share" hx-post="/cookbooks/1/share"
+                <a id="cookbook_menu_share" hx-post="/cookbooks/1/share"
                    hx-target="#share-dialog-result"
-                   _="on htmx:afterRequest from me if event.detail.successful call #share-dialog.showModal()">
+                   _="on htmx:afterRequest from me if event.detail.successful call share_dialog.showModal()">
                     {{template "icon-share"}}
                     Share
                 </a>
             </li>
             <li>
-                <a id="cookbook-menu-download" hx-get="/cookbooks/1/download">
+                <a id="cookbook_menu_download" hx-get="/cookbooks/1/download">
                     {{template "icon-download"}}
                     Download
                 </a>
             </li>
             <li>
-                <a id="cookbook-menu-delete" hx-delete="/cookbooks/1"
+                <a id="cookbook_menu_delete" hx-delete="/cookbooks/1"
                    hx-swap="outerHTML" hx-target="closest .cookbook"
                    hx-confirm="Are you sure you want to delete '{{.}}'? Its recipes will not be deleted.">
                     {{template "icon-delete"}}
@@ -397,28 +403,4 @@
                     then set {src: window.URL.createObjectURL(it)} on previous <img/>
                     then remove .hidden from next <button/>">
     </form>
-{{end}}
-
-{{define "cookbook-options"}}
-    <div class="three-dots-container cursor-pointer justify-self-end hover:text-red-600"
-         _="on click if menuOpen add .hidden to menuOpen end then
-               set $menuOpen to #cookbook-menu-container then
-               set $menuOpen.style.left to (event.pageX - 104) +'px' then
-               set $menuOpen.style.top to (event.pageY + 24)+'px' then
-               set $li to closest <li/> to event.target then
-               if not $li set $li to closest <section/> end then
-               set $deleteOption to #cookbook-menu-delete then
-               set $downloadOption to #cookbook-menu-download then
-               set $shareOption to #cookbook-menu-share then
-               set $addButton to #add_cookbook then
-               js
-                   $shareOption.setAttribute('hx-post', '/cookbooks/{{.ID}}/share');
-                   $downloadOption.setAttribute('hx-get', '/cookbooks/{{.ID}}/download');
-                   $deleteOption.setAttribute('hx-delete', `/cookbooks/{{.ID}}`);
-                   $deleteOption.setAttribute('hx-target', `#${$li.id}`);
-               end then
-               call htmx.process($menuOpen) then
-               toggle .hidden on #cookbook-menu-container">
-        {{template "icon-dots-vertical"}}
-    </div>
 {{end}}

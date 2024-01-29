@@ -83,6 +83,14 @@
                 } else {
                     sidebar?.classList.add("hidden");
                 }
+
+                if (recipesPattern.test(location.pathname)) {
+                    desktop_nav.firstElementChild.classList.add("hidden");
+                    mobile_nav.classList.add("hidden");
+                } else {
+                    desktop_nav.firstElementChild.classList.remove("hidden");
+                    mobile_nav.classList.remove("hidden");
+                }
             }
 
             window.addEventListener("DOMContentLoaded", () => {
