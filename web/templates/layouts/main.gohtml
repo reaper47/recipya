@@ -15,7 +15,7 @@
                 remove .hidden from mobile_nav then
                 remove .active from first <a/> in recipes_sidebar_recipes then
                 add .active to first <a/> in recipes_sidebar_cookbooks
-            else if location.pathname is '/settings' or location.pathname is '/recipes/add' then
+            else if location.pathname is '/settings' or location.pathname.startsWith('/recipes/add') then
                 add .md:hidden to desktop_nav then
                 add .hidden to mobile_nav">
 {{- template "head" .}}
@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <ul tabindex="0" id="avatar_dropdown"
-                    class="menu menu-sm dropdown-content mt-3 z-10 p-2 shadow bg-base-100 rounded-box before:content-[''] before:absolute before:right-2 before:top-[-9px] before:border-x-[15px] before:border-x-transparent before:border-b-[8px] before:border-b-[#333] dark:before:border-b-[gray]">
+                    class="menu dropdown-content mt-3 z-10 p-2 shadow bg-base-100 rounded-box before:content-[''] before:absolute before:right-2 before:top-[-9px] before:border-x-[15px] before:border-x-transparent before:border-b-[8px] before:border-b-[#333] dark:before:border-b-[gray]">
                     <li onclick="document.activeElement?.blur()">
                         <a href="/settings" hx-get="/settings" hx-target="#content" hx-push-url="true">
                             {{template "icon-gear"}} Settings

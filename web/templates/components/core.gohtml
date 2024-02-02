@@ -77,11 +77,12 @@
             }
 
             function showRecipesSidebar() {
-                const sidebar = document.querySelector("#recipes-sidebar");
                 if (pathsShowRecipesSidebar.includes(location.pathname) || cookbooksPattern.test(location.pathname)) {
-                    sidebar?.classList.remove("hidden");
+                    desktop_nav.firstElementChild.classList.remove("hidden");
+                    mobile_nav.classList.remove("hidden");
                 } else {
-                    sidebar?.classList.add("hidden");
+                    desktop_nav.firstElementChild.classList.add("hidden");
+                    mobile_nav.classList.add("hidden");
                 }
 
                 if (recipesPattern.test(location.pathname)) {

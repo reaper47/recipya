@@ -1,10 +1,9 @@
 {{define "cookbooks-grid"}}
-         {{- $page := .Pagination.Selected -}}
-        {{- $feature := .CookbookFeature -}}
-        {{ range $i, $book := $feature.Cookbooks }}
-            {{template "cookbook-grid" (call $feature.MakeCookbook $i $book $page)}}
-        {{end}}
-    </div>
+    {{- $page := .Pagination.Selected -}}
+    {{- $feature := .CookbookFeature -}}
+    {{ range $i, $book := $feature.Cookbooks }}
+        {{template "cookbook-grid" (call $feature.MakeCookbook $i $book $page)}}
+    {{end}}
 {{end}}
 
 {{define "cookbook-grid"}}

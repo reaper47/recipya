@@ -230,6 +230,229 @@
 {{define "add-recipe-manual"}}
     <title hx-swap-oob="true">Manual | Recipya</title>
 
+    <section class="p-2">
+        <div class="flex justify-center">
+            <div class="card card-bordered bg-base-100 shadow-none w-full border-gray-700 xl:w-[72rem]">
+                <form class="card-body" style="padding: 0" enctype="multipart/form-data"
+                      hx-post="/recipes/add/manual" hx-indicator="#fullscreen-loader">
+                    <h2 class="card-title bg-base-200 place-content-center rounded-t-2xl">
+                        <label class="w-full">
+                            <input required type="text" name="title" placeholder="Title of the recipe*"
+                                   autocomplete="off" class="input w-full btn-ghost text-center">
+                        </label>
+                    </h2>
+                    <div>
+                        <div class="grid md:grid-flow-col md:grid-cols-6">
+                            <div class="w-full text-center border-b border-gray-700 md:col-span-3 md:border-r md:border-b-0">
+                                <img id="output" style="object-fit: cover" alt="Image of the recipe"
+                                     class="w-full"
+                                     src="">
+                            </div>
+                            <div class="grid grid-cols-3 col-span-3 text-sm md:grid-flow-row md:grid-rows-4">
+                                <div class="grid grid-flow-col col-span-6 md:row-span-1 md:border-y md:border-gray-700">
+                                    <div class="col-span-2 grid place-items-center md:col-span-1">
+                                        <label class="form-control">
+                                            <div class="label">
+                                                <span class="label-text">Category*</span>
+                                            </div>
+                                            <input required type="text" list="categories" name="category"
+                                                   class="input input-bordered input-sm" placeholder="Breakfast">
+                                            <datalist id="categories">
+                                                {{- range .View.Categories -}}
+                                                    <option>{{.}}</option>
+                                                {{- end -}}
+                                            </datalist>
+                                        </label>
+                                    </div>
+                                    <div class="grid col-span-2 border-gray-700 place-items-center border-x justify-center md:col-span-1 md:p-0">
+                                        <label class="form-control w-full">
+                                            <div class="label">
+                                                <span class="label-text">Servings</span>
+                                            </div>
+                                            <input type="number" min="1" name="yield" value="1"
+                                                   class="input input-bordered input-sm w-24">
+                                        </label>
+                                    </div>
+                                    <div class="relative grid col-span-2 place-items-center justify-center md:col-span-1 md:p-0">
+                                        <label class="form-control w-full">
+                                            <div class="label">
+                                                <span class="label-text">Source*</span>
+                                            </div>
+                                            <input required type="text" placeholder="Source" name="source"
+                                                   class="input input-bordered input-sm">
+                                        </label>
+                                        <button type="button" class="tooltip tooltip-left absolute top-2 right-2"
+                                                _="on click toggle .tooltip-open"
+                                                data-tip="The source can be a website, name of a cookbook, from a relative or friend, a magazine, etc.">
+                                            {{template "icon-information"}}
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="grid grid-flow-col col-span-6 border-gray-700 border-y md:border-t-0 md:grid-cols-2 md:row-span-2">
+                                    <div class="border-r border-gray-700">
+                                        <table class="table table-zebra table-xs md:h-fit">
+                                            <thead>
+                                            <tr>
+                                                <th>Time</th>
+                                                <th>h:m:s</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>Prep</td>
+                                                <td>
+                                                    <label>
+                                                        <input type="text" name="time-preparation" value="00:15:00"
+                                                               class="input input-bordered input-xs max-w-24 html-duration-picker">
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Cooking</td>
+                                                <td>
+                                                    <label>
+                                                        <input type="text" name="time-cooking" value="00:30:00"
+                                                               class="input input-bordered input-xs max-w-24 html-duration-picker">
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <table class="table table-zebra table-xs">
+                                        <thead>
+                                        <tr>
+                                            <th>Nutrition (per 100g)</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>Calories</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="calories"
+                                                           autocomplete="off" placeholder="368kcal"
+                                                           class="input input-bordered input-xs max-w-24">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total carbs</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="total-carbohydrates"
+                                                           autocomplete="off" placeholder="35g"
+                                                           class="input input-bordered input-xs max-w-24">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sugars</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="sugars"
+                                                           autocomplete="off" placeholder="3g"
+                                                           class="input input-bordered input-xs max-w-24">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Protein</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="protein"
+                                                           autocomplete="off" placeholder="21g"
+                                                           class="input input-bordered input-xs max-w-24">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total fat</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="total-fat"
+                                                           autocomplete="off" placeholder="15g"
+                                                           class="input input-bordered input-xs max-w-24">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Saturated fat</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="saturated-fat"
+                                                           autocomplete="off" placeholder="1.8g"
+                                                           class="input input-bordered input-xs max-w-24">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cholesterol</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="cholesterol"
+                                                           autocomplete="off" placeholder="1.1mg"
+                                                           class="input input-bordered input-xs max-w-24">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sodium</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="sodium"
+                                                           autocomplete="off" placeholder="100mg"
+                                                           class="input input-bordered input-xs max-w-24">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Fiber</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="fiber"
+                                                           autocomplete="off" placeholder="8g"
+                                                           class="input input-bordered input-xs max-w-24">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-span-3 h-40 md:h-full md:row-span-1">
+                                    <label>
+                                        <textarea required name="description"
+                                                  placeholder="This Thai curry chicken will make you drool."
+                                                  class="textarea w-full h-full resize-none"></textarea>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="ingredients-instructions-container"
+                         class="border-gray-700 md:border-t grid text-sm md:grid-flow-col md:col-span-6">
+                        <div class="col-span-6 border-gray-700 px-4 py-2 border-y md:col-span-2 md:border-r md:border-y-0">
+                            <h2 class="font-semibold text-center underline md:pb-2">Ingredients</h2>
+                            <ol id="ingredients-list" class="pl-4 list-decimal">
+                                {{template "add-ingredient" 1}}
+                            </ol>
+                        </div>
+                        <div class="col-span-6 px-8 py-2 border-gray-700 md:rounded-bl-none md:col-span-4">
+                            <h2 class="font-semibold text-center underline md:pb-2">Instructions</h2>
+                            <ol id="instructions-list" class="grid list-decimal">
+                                {{template "add-instruction" 1}}
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="card-actions justify-end">
+                        <button class="btn btn-primary btn-block btn-sm">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
     <form enctype="multipart/form-data"
           class="grid max-w-6xl grid-cols-6 m-auto mt-4 mb-4 dark:bg-gray-600 dark:rounded-t-lg"
           hx-post="/recipes/add/manual"
@@ -445,6 +668,9 @@
                                 <label for="time-preparation" class="hidden"></label>
                                 <input type="text" id="time-preparation" name="time-preparation" value="00:15:00"
                                        class="w-full p-1 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker dark:bg-gray-900 dark:text-gray-200">
+
+                                <input type="text" placeholder="Type here"
+                                       class="input input-bordered w-full max-w-xs"/>
                             </td>
                         </tr>
                         <tr class="bg-gray-100 dark:bg-slate-700">
@@ -873,31 +1099,28 @@
 {{end}}
 
 {{define "ingredients-instructions"}}
-    <div id="ingredients-instructions-container" class="grid col-span-6 grid-flow-col">
-        <div class="col-span-6 py-2 border-b border-x border-black md:col-span-2 md:border-r-0 dark:border-gray-800 print:hidden">
-            <h2 class="pb-2 m-auto text-sm font-semibold text-center text-gray-600 underline dark:text-gray-200">
-                Ingredients
-            </h2>
-            <ul class="grid px-6 columns-2">
+    <div id="ingredients-instructions-container" class="grid text-sm md:grid-flow-col md:col-span-6">
+        <div class="col-span-6 border-gray-700 px-4 py-2 border-y md:col-span-2 md:border-r md:border-y-0 print:hidden">
+            <h2 class="font-semibold text-center underline md:pb-2">Ingredients</h2>
+            <ul>
                 {{$len := len .Ingredients}}
                 {{- range $i, $e := .Ingredients -}}
-                    <li class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200 dark:hover:bg-gray-800"
-                        _="on mousedown toggle @checked on first <input/> in me">
-                        <label for="ingredient-{{$i}}"></label>
-                        <input type="checkbox" id="ingredient-{{$i}}" class="mt-1">
-                        <span class="pl-2">{{$e}}</span>
+                    <li class="form-control hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <label class="label justify-start">
+                            <input type="checkbox" class="checkbox"/>
+                            <span class="label-text pl-2">{{$e}}</span>
+                        </label>
                     </li>
                 {{- end -}}
             </ul>
         </div>
 
-        <div class="col-span-6 py-2 pb-8 border-b border-x border-black rounded-bl-lg md:rounded-bl-none md:col-span-4 dark:border-gray-800 print:hidden">
-            <h2 class="pb-2 m-auto text-sm font-semibold text-center text-gray-600 underline dark:text-gray-200">
-                Instructions</h2>
-            <ol class="grid px-6 list-decimal">
+        <div class="col-span-6 px-8 py-2 border-gray-700 md:rounded-bl-none md:col-span-4 print:hidden">
+            <h2 class="font-semibold text-center underline md:pb-2">Instructions</h2>
+            <ol class="grid list-decimal">
                 {{$len = len .Instructions}}
                 {{- range $i, $e := .Instructions -}}
-                    <li class="min-w-full py-2 text-sm select-none hover:bg-gray-200 dark:hover:bg-gray-800"
+                    <li class="min-w-full py-2 select-none hover:bg-gray-100 dark:hover:bg-gray-700"
                         _="on mousedown toggle .line-through">
                         <span class="whitespace-pre-line">{{$e}}</span>
                     </li>
@@ -1047,16 +1270,15 @@
 {{define "share-link"}}
     <div class="grid grid-flow-col gap-2">
         <label>
-            <input type="url" value="{{.Content}}" class="text-input" readonly="readonly">
+            <input type="url" value="{{.Content}}" class="input input-bordered w-full" readonly="readonly">
         </label>
-        <button class="w-24 font-semibold p-2 bg-gray-300 rounded-lg hover:bg-gray-400" title="Copy to clipboard"
+        <button class="btn btn-neutral" title="Copy to clipboard"
                 _="on click
            if window.navigator.clipboard then
-             call navigator.clipboard.writeText('{{.Content}}')
-             then put 'Copied!' into me
-             then add @title='Copied to clipboard!'
-             then toggle @disabled on me
-             then toggle .cursor-not-allowed .bg-green-600 .text-white .hover:bg-gray-400 on me
+             call navigator.clipboard.writeText('{{.Content}}') then
+             put 'Copied!' into me then
+             toggle @disabled on me then
+             toggle .btn-disabled on me
            else
              call alert('Your browser does not support the clipboard feature. Please copy the link manually.')
            end">
@@ -1100,377 +1322,262 @@
 
     {{- if not .View.Share.IsShared -}}
         <dialog id="share_dialog" class="modal">
-            <div class="modal-box">
+            <div class="modal-box w-96">
                 <div id="share-dialog-result"></div>
-                <div class="modal-action pt-2">
+                <div class="modal-action block mt-4">
                     <form method="dialog">
-                        <button class="btn btn-primary btn-sm btn-block">OK</button>
+                        <button class="btn btn-block btn-outline btn-sm">Close</button>
                     </form>
                 </div>
             </div>
         </dialog>
-        <!--<dialog id="share-dialog" class="p-4 border-4 border-black min-w-[15rem]">
-            <div id="share-dialog-result" class="pb-4"></div>
-            <form method="dialog">
-                <button class="btn btn-primary btn-block">OK</button>
-            </form>
-        </dialog>-->
     {{- end -}}
 
-    <div class="card card-compact card-bordered bg-base-100 shadow-lg">
-        <div class="card-body">
-            <h2 class="card-title bg-base-200 p-2 place-content-center" style="justify-content: space-between">
-                <span class="grid grid-flow-col place-items-center">
-                    <button title="Toggle screen lock"
-                            _="on load if not navigator.wakeLock hide me end
-                               on click
-                               if wakeLock wakeLock.release() then
-                                    add @d='M 12.276 18.55 v -0.748 a 4.79 4.79 0 0 1 1.463 -3.458 a 5.763 5.763 0 0 0 1.804 -4.21 a 5.821 5.821 0 0 0 -6.475 -5.778 c -2.779 0.307 -4.99 2.65 -5.146 5.448 a 5.82 5.82 0 0 0 1.757 4.503 a 4.906 4.906 0 0 1 1.5 3.495 v 0.747 a 1.44 1.44 0 0 0 1.44 1.439 h 2.218 a 1.44 1.44 0 0 0 1.44 -1.439 z m -1.058 0 c 0 0.209 -0.17 0.38 -0.38 0.38 h -2.22 c -0.21 0 -0.38 -0.171 -0.38 -0.38 v -0.748 c 0 -1.58 -0.664 -3.13 -1.822 -4.254 A 4.762 4.762 0 0 1 4.98 9.863 c 0.127 -2.289 1.935 -4.204 4.205 -4.455 a 4.762 4.762 0 0 1 5.3 4.727 a 4.714 4.714 0 0 1 -1.474 3.443 a 5.853 5.853 0 0 0 -1.791 4.225 v 0.746 z M 11.45 20.51 H 8.006 a 0.397 0.397 0 1 0 0 0.795 h 3.444 a 0.397 0.397 0 1 0 0 -0.794 z M 11.847 22.162 a 0.397 0.397 0 0 0 -0.397 -0.397 H 8.006 a 0.397 0.397 0 1 0 0 0.794 h 3.444 c 0.22 0 0.397 -0.178 0.397 -0.397 z z z z z z z z M 10.986 23.416 H 8.867 a 0.397 0.397 0 1 0 0 0.794 h 1.722 c 0.22 0 0.397 -0.178 0.397 -0.397 z' to #icon-bulb
-                               else
-                                    call initWakeLock() then
-                                    add @d='M12.276 18.55v-.748a4.79 4.79 0 0 1 1.463-3.458 5.763 5.763 0 0 0 1.804-4.21 5.821 5.821 0 0 0-6.475-5.778c-2.779.307-4.99 2.65-5.146 5.448a5.82 5.82 0 0 0 1.757 4.503 4.906 4.906 0 0 1 1.5 3.495v.747a1.44 1.44 0 0 0 1.44 1.439h2.218a1.44 1.44 0 0 0 1.44-1.439zm-1.058 0c0 .209-.17.38-.38.38h-2.22c-.21 0-.38-.171-.38-.38v-.748c0-1.58-.664-3.13-1.822-4.254A4.762 4.762 0 0 1 4.98 9.863c.127-2.289 1.935-4.204 4.205-4.455a4.762 4.762 0 0 1 5.3 4.727 4.714 4.714 0 0 1-1.474 3.443 5.853 5.853 0 0 0-1.791 4.225v.746zM11.45 20.51H8.006a.397.397 0 1 0 0 .795h3.444a.397.397 0 1 0 0-.794zM11.847 22.162a.397.397 0 0 0-.397-.397H8.006a.397.397 0 1 0 0 .794h3.444c.22 0 .397-.178.397-.397zM.397 10.125h2.287a.397.397 0 1 0 0-.794H.397a.397.397 0 1 0 0 .794zM19.456 9.728a.397.397 0 0 0-.397-.397h-2.287a.397.397 0 1 0 0 .794h2.287c.22 0 .397-.178.397-.397zM9.331.397v2.287a.397.397 0 1 0 .794 0V.397a.397.397 0 1 0-.794 0zM16.045 2.85 14.43 4.465a.397.397 0 1 0 .561.561l1.617-1.617a.397.397 0 1 0-.562-.56zM5.027 14.429a.397.397 0 0 0-.56 0l-1.618 1.616a.397.397 0 1 0 .562.562l1.617-1.617a.397.397 0 0 0 0-.561zM4.466 5.027a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.56L3.41 2.848a.397.397 0 1 0-.561.561zM16.045 16.607a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.562L14.99 14.43a.397.397 0 1 0-.561.56zM10.986 23.416a.397.397 0 0 0-.397-.397H8.867a.397.397 0 1 0 0 .794h1.722c.22 0 .397-.178.397-.397z' to #icon-bulb
-                               end">
-                        {{template "icon-bulb-on"}}
-                    </button>
-                    {{- if and .IsAuthenticated .View.Share.IsFromHost -}}
-                        <button class="ml-2" title="Edit recipe" hx-get="/recipes/{{.View.ID}}/edit"
-                                hx-push-url="true" hx-target="#content">
-                            {{template "icon-edit"}}
-                        </button>
-                    {{- end -}}
-                </span>
-                <span class="text-center">{{.View.Recipe.Name}}</span>
-                <span class="grid grid-flow-col place-items-center">
-                    {{- if .View.Share.IsShared -}}
-                        {{- if not .View.Share.IsFromHost -}}
-                            <button class="mr-2" title="Add recipe to collection"
-                                    hx-post="/recipes/{{.View.ID}}/share/add">
-                                {{template "icon-plus-circle"}}
+    <section class="p-2">
+        <div class="flex justify-center">
+            <div class="card card-bordered bg-base-100 shadow-none w-full border-gray-700 xl:w-[72rem]">
+                <div class="card-body" style="padding: 0">
+                    <h2 class="card-title bg-base-200 px-2 pt-2 place-content-center rounded-t-2xl"
+                        style="justify-content: space-between">
+                        <span class="grid grid-flow-col place-items-center pb-2 print:hidden">
+                            <button title="Toggle screen lock"
+                                    _="on load if not navigator.wakeLock hide me end
+                                       on click
+                                       if wakeLock wakeLock.release() then
+                                            add @d='M 12.276 18.55 v -0.748 a 4.79 4.79 0 0 1 1.463 -3.458 a 5.763 5.763 0 0 0 1.804 -4.21 a 5.821 5.821 0 0 0 -6.475 -5.778 c -2.779 0.307 -4.99 2.65 -5.146 5.448 a 5.82 5.82 0 0 0 1.757 4.503 a 4.906 4.906 0 0 1 1.5 3.495 v 0.747 a 1.44 1.44 0 0 0 1.44 1.439 h 2.218 a 1.44 1.44 0 0 0 1.44 -1.439 z m -1.058 0 c 0 0.209 -0.17 0.38 -0.38 0.38 h -2.22 c -0.21 0 -0.38 -0.171 -0.38 -0.38 v -0.748 c 0 -1.58 -0.664 -3.13 -1.822 -4.254 A 4.762 4.762 0 0 1 4.98 9.863 c 0.127 -2.289 1.935 -4.204 4.205 -4.455 a 4.762 4.762 0 0 1 5.3 4.727 a 4.714 4.714 0 0 1 -1.474 3.443 a 5.853 5.853 0 0 0 -1.791 4.225 v 0.746 z M 11.45 20.51 H 8.006 a 0.397 0.397 0 1 0 0 0.795 h 3.444 a 0.397 0.397 0 1 0 0 -0.794 z M 11.847 22.162 a 0.397 0.397 0 0 0 -0.397 -0.397 H 8.006 a 0.397 0.397 0 1 0 0 0.794 h 3.444 c 0.22 0 0.397 -0.178 0.397 -0.397 z z z z z z z z M 10.986 23.416 H 8.867 a 0.397 0.397 0 1 0 0 0.794 h 1.722 c 0.22 0 0.397 -0.178 0.397 -0.397 z' to #icon-bulb
+                                       else
+                                            call initWakeLock() then
+                                            add @d='M12.276 18.55v-.748a4.79 4.79 0 0 1 1.463-3.458 5.763 5.763 0 0 0 1.804-4.21 5.821 5.821 0 0 0-6.475-5.778c-2.779.307-4.99 2.65-5.146 5.448a5.82 5.82 0 0 0 1.757 4.503 4.906 4.906 0 0 1 1.5 3.495v.747a1.44 1.44 0 0 0 1.44 1.439h2.218a1.44 1.44 0 0 0 1.44-1.439zm-1.058 0c0 .209-.17.38-.38.38h-2.22c-.21 0-.38-.171-.38-.38v-.748c0-1.58-.664-3.13-1.822-4.254A4.762 4.762 0 0 1 4.98 9.863c.127-2.289 1.935-4.204 4.205-4.455a4.762 4.762 0 0 1 5.3 4.727 4.714 4.714 0 0 1-1.474 3.443 5.853 5.853 0 0 0-1.791 4.225v.746zM11.45 20.51H8.006a.397.397 0 1 0 0 .795h3.444a.397.397 0 1 0 0-.794zM11.847 22.162a.397.397 0 0 0-.397-.397H8.006a.397.397 0 1 0 0 .794h3.444c.22 0 .397-.178.397-.397zM.397 10.125h2.287a.397.397 0 1 0 0-.794H.397a.397.397 0 1 0 0 .794zM19.456 9.728a.397.397 0 0 0-.397-.397h-2.287a.397.397 0 1 0 0 .794h2.287c.22 0 .397-.178.397-.397zM9.331.397v2.287a.397.397 0 1 0 .794 0V.397a.397.397 0 1 0-.794 0zM16.045 2.85 14.43 4.465a.397.397 0 1 0 .561.561l1.617-1.617a.397.397 0 1 0-.562-.56zM5.027 14.429a.397.397 0 0 0-.56 0l-1.618 1.616a.397.397 0 1 0 .562.562l1.617-1.617a.397.397 0 0 0 0-.561zM4.466 5.027a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.56L3.41 2.848a.397.397 0 1 0-.561.561zM16.045 16.607a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.562L14.99 14.43a.397.397 0 1 0-.561.56zM10.986 23.416a.397.397 0 0 0-.397-.397H8.867a.397.397 0 1 0 0 .794h1.722c.22 0 .397-.178.397-.397z' to #icon-bulb
+                                       end">
+                                {{template "icon-bulb-on"}}
                             </button>
-                        {{- end -}}
-                    {{else}}
-                        <button class="mr-2" title="Share recipe" hx-post="/recipes/{{.View.ID}}/share"
-                                hx-target="#share-dialog-result"
-                                _="on htmx:afterRequest from me if event.detail.successful call share_dialog.showModal()">
-                                {{template "icon-share"}}
-                            </button>
-                    {{- end -}}
-                        <button class="mr-2" onclick="print()" title="Print recipe">
-                            {{template "icon-print"}}
-                        </button>
-                        {{- if .View.Share.IsFromHost -}}
-                            <button class="mr-2" hx-delete="/recipes/{{.View.Recipe.ID}}" hx-swap="none"
-                                    title="Delete recipe" hx-confirm="Are you sure you wish to delete this recipe?"
-                                    hx-indicator="#fullscreen-loader">
-                                {{template "icon-delete"}}
-                            </button>
-                        {{- end -}}
-                </span>
-            </h2>
-            <p>If a dog chews shoes whose shoes does he choose?</p>
-        </div>
-    </div>
-
-    <div class="grid grid-cols-6 max-w-6xl m-auto mt-4 p-2 prose dark:bg-gray-600 dark:rounded-t-lg print:m-0 print:p-0">
-        <div class="grid grid-cols-6 col-span-6 text-lg bg-gray-50 border border-gray-900 rounded-t-md md:text-xl dark:border-gray-800 dark:bg-gray-900 print:rounded-t-none">
-            {{- if .IsAuthenticated -}}
-                <div class="grid justify-start col-span-1 place-content-center print:invisible">
-                    <div class="grid grid-flow-col">
-                        <button class="ml-2" title="Toggle screen lock"
-                                _="on load if not navigator.wakeLock hide me end
-                                   on click
-                                   if wakeLock wakeLock.release() then
-                                        add @d='M 12.276 18.55 v -0.748 a 4.79 4.79 0 0 1 1.463 -3.458 a 5.763 5.763 0 0 0 1.804 -4.21 a 5.821 5.821 0 0 0 -6.475 -5.778 c -2.779 0.307 -4.99 2.65 -5.146 5.448 a 5.82 5.82 0 0 0 1.757 4.503 a 4.906 4.906 0 0 1 1.5 3.495 v 0.747 a 1.44 1.44 0 0 0 1.44 1.439 h 2.218 a 1.44 1.44 0 0 0 1.44 -1.439 z m -1.058 0 c 0 0.209 -0.17 0.38 -0.38 0.38 h -2.22 c -0.21 0 -0.38 -0.171 -0.38 -0.38 v -0.748 c 0 -1.58 -0.664 -3.13 -1.822 -4.254 A 4.762 4.762 0 0 1 4.98 9.863 c 0.127 -2.289 1.935 -4.204 4.205 -4.455 a 4.762 4.762 0 0 1 5.3 4.727 a 4.714 4.714 0 0 1 -1.474 3.443 a 5.853 5.853 0 0 0 -1.791 4.225 v 0.746 z M 11.45 20.51 H 8.006 a 0.397 0.397 0 1 0 0 0.795 h 3.444 a 0.397 0.397 0 1 0 0 -0.794 z M 11.847 22.162 a 0.397 0.397 0 0 0 -0.397 -0.397 H 8.006 a 0.397 0.397 0 1 0 0 0.794 h 3.444 c 0.22 0 0.397 -0.178 0.397 -0.397 z z z z z z z z M 10.986 23.416 H 8.867 a 0.397 0.397 0 1 0 0 0.794 h 1.722 c 0.22 0 0.397 -0.178 0.397 -0.397 z' to #icon-bulb
-                                   else
-                                        call initWakeLock() then
-                                        add @d='M12.276 18.55v-.748a4.79 4.79 0 0 1 1.463-3.458 5.763 5.763 0 0 0 1.804-4.21 5.821 5.821 0 0 0-6.475-5.778c-2.779.307-4.99 2.65-5.146 5.448a5.82 5.82 0 0 0 1.757 4.503 4.906 4.906 0 0 1 1.5 3.495v.747a1.44 1.44 0 0 0 1.44 1.439h2.218a1.44 1.44 0 0 0 1.44-1.439zm-1.058 0c0 .209-.17.38-.38.38h-2.22c-.21 0-.38-.171-.38-.38v-.748c0-1.58-.664-3.13-1.822-4.254A4.762 4.762 0 0 1 4.98 9.863c.127-2.289 1.935-4.204 4.205-4.455a4.762 4.762 0 0 1 5.3 4.727 4.714 4.714 0 0 1-1.474 3.443 5.853 5.853 0 0 0-1.791 4.225v.746zM11.45 20.51H8.006a.397.397 0 1 0 0 .795h3.444a.397.397 0 1 0 0-.794zM11.847 22.162a.397.397 0 0 0-.397-.397H8.006a.397.397 0 1 0 0 .794h3.444c.22 0 .397-.178.397-.397zM.397 10.125h2.287a.397.397 0 1 0 0-.794H.397a.397.397 0 1 0 0 .794zM19.456 9.728a.397.397 0 0 0-.397-.397h-2.287a.397.397 0 1 0 0 .794h2.287c.22 0 .397-.178.397-.397zM9.331.397v2.287a.397.397 0 1 0 .794 0V.397a.397.397 0 1 0-.794 0zM16.045 2.85 14.43 4.465a.397.397 0 1 0 .561.561l1.617-1.617a.397.397 0 1 0-.562-.56zM5.027 14.429a.397.397 0 0 0-.56 0l-1.618 1.616a.397.397 0 1 0 .562.562l1.617-1.617a.397.397 0 0 0 0-.561zM4.466 5.027a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.56L3.41 2.848a.397.397 0 1 0-.561.561zM16.045 16.607a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.562L14.99 14.43a.397.397 0 1 0-.561.56zM10.986 23.416a.397.397 0 0 0-.397-.397H8.867a.397.397 0 1 0 0 .794h1.722c.22 0 .397-.178.397-.397z' to #icon-bulb
-                                   end">
-                            {{template "icon-bulb-on"}}
-                        </button>
-                        {{- if .View.Share.IsFromHost -}}
-                            <button class="ml-2" title="Edit recipe"
-                                    hx-get="/recipes/{{.View.ID}}/edit"
-                                    hx-push-url="true"
-                                    hx-target="#content">
-                                {{template "icon-edit"}}
-                            </button>
-                        {{- end -}}
-                    </div>
-                </div>
-                <h1 class="grid col-span-4 py-2 font-semibold place-content-center">{{.View.Recipe.Name}}</h1>
-                <div class="grid justify-end col-span-1 place-content-center print:invisible">
-                    <div class="grid grid-flow-col">
-                        {{- if .View.Share.IsShared -}}
-                            {{- if not .View.Share.IsFromHost -}}
-                                <button class="mr-2" title="Add recipe to collection"
-                                        hx-post="/recipes/{{.View.ID}}/share/add">
-                                    {{template "icon-plus-circle"}}
+                            {{- if and .IsAuthenticated .View.Share.IsFromHost -}}
+                                <button class="ml-2" title="Edit recipe" hx-get="/recipes/{{.View.ID}}/edit"
+                                        hx-push-url="true" hx-target="#content">
+                                    {{template "icon-edit"}}
                                 </button>
                             {{- end -}}
-                        {{else}}
-                            <button class="mr-2" title="Share recipe" hx-post="/recipes/{{.View.ID}}/share"
-                                    hx-target="#share-dialog-result"
-                                    _="on htmx:afterRequest from me if event.detail.successful call share_dialog.showModal()">
-                                {{template "icon-share"}}
+                        </span>
+                        <span class="text-center pb-2">{{.View.Recipe.Name}}</span>
+                        <span class="grid grid-flow-col place-items-center pb-2 print:hidden">
+                            {{- if .View.Share.IsShared -}}
+                                {{- if not .View.Share.IsFromHost -}}
+                                    <button class="mr-2" title="Add recipe to collection"
+                                            hx-post="/recipes/{{.View.ID}}/share/add">
+                                        {{template "icon-plus-circle"}}
+                                    </button>
+                                {{- end -}}
+                            {{else}}
+                                <button class="mr-2" title="Share recipe" hx-post="/recipes/{{.View.ID}}/share"
+                                        hx-target="#share-dialog-result"
+                                        _="on htmx:afterRequest from me if event.detail.successful call share_dialog.showModal()">
+                                        {{template "icon-share"}}
+                                </button>
+                            {{- end -}}
+                            <button class="mr-2" onclick="print()" title="Print recipe">
+                                {{template "icon-print"}}
                             </button>
-                        {{- end -}}
-                        <button class="mr-2" onclick="print()" title="Print recipe">
-                            {{template "icon-print"}}
-                        </button>
-                        {{- if .View.Share.IsFromHost -}}
-                            <button class="mr-2" hx-delete="/recipes/{{.View.Recipe.ID}}" hx-swap="none"
-                                    title="Delete recipe" hx-confirm="Are you sure you wish to delete this recipe?"
-                                    hx-indicator="#fullscreen-loader">
-                                {{template "icon-delete"}}
-                            </button>
+                            {{- if .View.Share.IsFromHost -}}
+                                <button class="mr-2" hx-delete="/recipes/{{.View.Recipe.ID}}" hx-swap="none"
+                                        title="Delete recipe" hx-confirm="Are you sure you wish to delete this recipe?"
+                                        hx-indicator="#fullscreen-loader">
+                                    {{template "icon-delete"}}
+                                </button>
+                            {{- end -}}
+                        </span>
+                    </h2>
+                    <div class="grid md:grid-flow-col md:grid-cols-6">
+                        <div class="w-full text-center border-b border-gray-700 md:col-span-3 md:border-r md:border-b-0 print:hidden">
+                            <img id="output" style="object-fit: cover" alt="Image of the recipe"
+                                 class="w-full"
+                                 src="{{- if .View.IsUUIDValid -}}/data/images/{{.View.Recipe.Image}}.jpg{{else}}/static/img/recipes/placeholder.webp{{end}}">
+
+                        </div>
+                        <div class="grid grid-cols-3 col-span-3 md:grid-flow-row md:grid-rows-4 print:grid-rows-2">
+                            <div class="grid grid-flow-col col-span-6 md:row-span-1 md:border-y md:border-gray-700 print:row-span-1">
+                                <div class="col-span-2 grid place-items-center md:col-span-1">
+                                    <div class="badge badge-primary badge-outline">{{.View.Recipe.Category}}</div>
+                                </div>
+                                <div class="grid col-span-2 border-gray-700 place-items-center text-sm border-x p-2 md:col-span-1 md:p-0 print:hidden">
+                                    {{- if .IsAuthenticated -}}
+                                        <form autocomplete="off" _="on submit halt the event" class="print:hidden">
+                                            <label class="form-control w-full">
+                                                <div class="label p-0">
+                                                    <span class="label-text">Servings</span>
+                                                </div>
+                                                <input id="yield" type="number" min="1" name="yield"
+                                                       value="{{if eq .View.Recipe.Yield 0}}1{{else}}{{.View.Recipe.Yield}}{{end}}"
+                                                       class="input input-bordered input-sm w-24"
+                                                       hx-get="/recipes/{{.View.ID}}/scale" hx-trigger="input"
+                                                       hx-target="#ingredients-instructions-container"> </label>
+                                        </form>
+                                    {{- else -}}
+                                        <p class="text-sm text-center">{{.View.Recipe.Yield}} servings</p>
+                                    {{- end -}}
+                                </div>
+                                <p class="hidden p-0 pt-2 print:block">{{.View.Recipe.Yield}} servings</p>
+                                <div class="flex items-center justify-center col-span-2 text-sm md:col-span-1 print:hidden">
+                                    {{- if .View.IsURL -}}
+                                        <a class="btn btn-sm btn-outline no-underline print:hidden"
+                                           href="{{.View.Recipe.URL}}" target="_blank">
+                                            Source
+                                        </a>
+                                        <p class="hidden print:block print:whitespace-nowrap print:overflow-hidden print:text-ellipsis print:max-w-xs">{{.View.Recipe.URL}}</p>
+                                    {{- else -}}
+                                        <p>Source: {{if .View.Recipe.URL}}{{.View.Recipe.URL}}{{else}}Unknown{{end}}</p>
+                                    {{- end -}}
+                                </div>
+                            </div>
+                            <div class="grid grid-flow-col col-span-6 border-gray-700 border-y md:border-t-0 md:grid-cols-2 md:row-span-2">
+                                <div class="border-r border-gray-700">
+                                    <table class="table table-zebra table-xs md:h-fit print:hidden">
+                                        <thead>
+                                        <tr>
+                                            <th>Time</th>
+                                            <th>h:m:s</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>Prep:</td>
+                                            <td>
+                                                <time datetime="{{.View.FormattedTimes.PrepDateTime}}">{{.View.FormattedTimes.Prep}}</time>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cooking:</td>
+                                            <td>
+                                                <time datetime="{{.View.FormattedTimes.CookDateTime}}">{{.View.FormattedTimes.Cook}}</time>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total:</td>
+                                            <td>
+                                                <time datetime="{{.View.FormattedTimes.TotalDateTime}}">{{.View.FormattedTimes.Total}}</time>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {{with .View.Recipe.Nutrition}}
+                                    <table class="table table-zebra table-xs print:hidden">
+                                        <thead>
+                                        <tr>
+                                            <th>Nutrition (per {{if .IsPerServing}}serving{{else}}100g{{end}})</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>Calories:</td>
+                                            <td>{{if eq .Calories ""}}-{{else}}{{.Calories}}{{end}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total carbs:</td>
+                                            <td>{{if eq .TotalCarbohydrates ""}}-{{else}}{{.TotalCarbohydrates}}{{end}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sugars:</td>
+                                            <td>{{if eq .Sugars ""}}-{{else}}{{.Sugars}}{{end}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Protein:</td>
+                                            <td>{{if eq .Protein ""}}-{{else}}{{.Protein}}{{end}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total fat:</td>
+                                            <td>{{if eq .TotalFat ""}}-{{else}}{{.TotalFat}}{{end}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Saturated fat:</td>
+                                            <td>{{if eq .SaturatedFat ""}}-{{else}}{{.SaturatedFat}}{{end}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cholesterol:</td>
+                                            <td>{{if eq .Cholesterol ""}}-{{else}}{{.Cholesterol}}{{end}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sodium:</td>
+                                            <td>{{if eq .Sodium ""}}-{{else}}{{.Sodium}}{{end}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Fiber:</td>
+                                            <td>{{if eq .Fiber ""}}-{{else}}{{.Fiber}}{{end}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                {{- end -}}
+                                <div class="hidden pt-2 print:block">
+                                    <h1 class="text-sm"><b>Nutrition Facts</b></h1>
+                                    <p class="text-xs">
+                                        {{- with .View.Recipe.Nutrition -}}
+                                            Per 100g: {{.Calories}} calories;
+                                            total carbohydrates {{.TotalCarbohydrates}};
+                                            sugars {{.Sugars}};
+                                            protein {{.Protein}};
+                                            total fat {{.TotalFat}};
+                                            saturated fat {{.SaturatedFat}};
+                                            cholesterol {{.Cholesterol}};
+                                            sodium {{.Sodium}};
+                                            fiber {{.Fiber}}.
+                                        {{- end -}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-span-3 h-40 md:h-full md:row-span-1 print:hidden">
+                                <label>
+                                    <textarea class="textarea w-full h-full resize-none"
+                                              readonly>{{.View.Recipe.Description}}</textarea>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden print:block">
+                        <h1 class="text-sm"><b>Description</b></h1>
+                        {{.View.Recipe.Description}}
+                    </div>
+                    <div class="border-gray-700 md:border-t">
+                        {{template "ingredients-instructions" .View.Recipe}}
+
+                        <div class="hidden print:grid col-span-6 ml-2 mt-2 mb-4">
+                            <h1 class="text-sm"><b>Ingredients</b></h1>
+                            <ol class="col-span-6 w-full"
+                                style="column-count: {{if gt (len .View.Recipe.Ingredients) 10}}2{{else}}1{{end}}">
+                                {{- range $i, $e := .View.Recipe.Ingredients -}}
+                                    <li class="text-sm">
+                                        <label>
+                                            <input type="checkbox">
+                                        </label>
+                                        <span class="pl-2">{{$e}}</span>
+                                    </li>
+                                {{- end -}}
+                            </ol>
+                        </div>
+
+                        <div class="hidden print:grid col-span-5">
+                            <h1 class="text-sm"><b>Instructions</b></h1>
+                            <ol class="col-span-6 list-decimal w-full ml-6"
+                                style="column-count: {{if gt (len .View.Recipe.Instructions) 2}}2{{else}}1{{end}}; column-gap: 2.5rem">
+                                {{- range $i, $e := .View.Recipe.Instructions -}}
+                                    <li>
+                                        <span class="text-sm whitespace-pre-line">{{$e}}</span>
+                                    </li>
+                                {{- end -}}
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="hidden print:block">
+                        <h1><b>Source</b></h1>
+                        {{- if .View.IsURL -}}
+                            <p class="print:overflow-hidden">{{.View.Recipe.URL}}</p>
+                        {{- else -}}
+                            <p>Source: {{if .View.Recipe.URL}}{{.View.Recipe.URL}}{{else}}Unknown{{end}}</p>
                         {{- end -}}
                     </div>
                 </div>
-            {{- else -}}
-                <div class="grid justify-start col-span-1 place-content-center print:invisible">
-                    <button class="ml-2" title="Toggle screen lock"
-                            _="on load if not navigator.wakeLock hide me end
-                                   on click
-                                   if
-                                        wakeLock wakeLock.release() then
-                                        add @d='M 12.276 18.55 v -0.748 a 4.79 4.79 0 0 1 1.463 -3.458 a 5.763 5.763 0 0 0 1.804 -4.21 a 5.821 5.821 0 0 0 -6.475 -5.778 c -2.779 0.307 -4.99 2.65 -5.146 5.448 a 5.82 5.82 0 0 0 1.757 4.503 a 4.906 4.906 0 0 1 1.5 3.495 v 0.747 a 1.44 1.44 0 0 0 1.44 1.439 h 2.218 a 1.44 1.44 0 0 0 1.44 -1.439 z m -1.058 0 c 0 0.209 -0.17 0.38 -0.38 0.38 h -2.22 c -0.21 0 -0.38 -0.171 -0.38 -0.38 v -0.748 c 0 -1.58 -0.664 -3.13 -1.822 -4.254 A 4.762 4.762 0 0 1 4.98 9.863 c 0.127 -2.289 1.935 -4.204 4.205 -4.455 a 4.762 4.762 0 0 1 5.3 4.727 a 4.714 4.714 0 0 1 -1.474 3.443 a 5.853 5.853 0 0 0 -1.791 4.225 v 0.746 z M 11.45 20.51 H 8.006 a 0.397 0.397 0 1 0 0 0.795 h 3.444 a 0.397 0.397 0 1 0 0 -0.794 z M 11.847 22.162 a 0.397 0.397 0 0 0 -0.397 -0.397 H 8.006 a 0.397 0.397 0 1 0 0 0.794 h 3.444 c 0.22 0 0.397 -0.178 0.397 -0.397 z z z z z z z z M 10.986 23.416 H 8.867 a 0.397 0.397 0 1 0 0 0.794 h 1.722 c 0.22 0 0.397 -0.178 0.397 -0.397 z' to first <path/>
-                                   else
-                                        call initWakeLock() then
-                                        add @d='M12.276 18.55v-.748a4.79 4.79 0 0 1 1.463-3.458 5.763 5.763 0 0 0 1.804-4.21 5.821 5.821 0 0 0-6.475-5.778c-2.779.307-4.99 2.65-5.146 5.448a5.82 5.82 0 0 0 1.757 4.503 4.906 4.906 0 0 1 1.5 3.495v.747a1.44 1.44 0 0 0 1.44 1.439h2.218a1.44 1.44 0 0 0 1.44-1.439zm-1.058 0c0 .209-.17.38-.38.38h-2.22c-.21 0-.38-.171-.38-.38v-.748c0-1.58-.664-3.13-1.822-4.254A4.762 4.762 0 0 1 4.98 9.863c.127-2.289 1.935-4.204 4.205-4.455a4.762 4.762 0 0 1 5.3 4.727 4.714 4.714 0 0 1-1.474 3.443 5.853 5.853 0 0 0-1.791 4.225v.746zM11.45 20.51H8.006a.397.397 0 1 0 0 .795h3.444a.397.397 0 1 0 0-.794zM11.847 22.162a.397.397 0 0 0-.397-.397H8.006a.397.397 0 1 0 0 .794h3.444c.22 0 .397-.178.397-.397zM.397 10.125h2.287a.397.397 0 1 0 0-.794H.397a.397.397 0 1 0 0 .794zM19.456 9.728a.397.397 0 0 0-.397-.397h-2.287a.397.397 0 1 0 0 .794h2.287c.22 0 .397-.178.397-.397zM9.331.397v2.287a.397.397 0 1 0 .794 0V.397a.397.397 0 1 0-.794 0zM16.045 2.85 14.43 4.465a.397.397 0 1 0 .561.561l1.617-1.617a.397.397 0 1 0-.562-.56zM5.027 14.429a.397.397 0 0 0-.56 0l-1.618 1.616a.397.397 0 1 0 .562.562l1.617-1.617a.397.397 0 0 0 0-.561zM4.466 5.027a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.56L3.41 2.848a.397.397 0 1 0-.561.561zM16.045 16.607a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.562L14.99 14.43a.397.397 0 1 0-.561.56zM10.986 23.416a.397.397 0 0 0-.397-.397H8.867a.397.397 0 1 0 0 .794h1.722c.22 0 .397-.178.397-.397z' to first <path/>
-                                   end">
-                        {{template "icon-bulb-on"}}
-                    </button>
-                </div>
-                <h1 class="grid col-span-4 py-2 font-semibold place-content-center">{{.View.Recipe.Name}}</h1>
-                <div class="grid justify-end col-span-1 place-content-center print:invisible">
-                    <button class="mr-2" onclick="print()" title="Print recipe">
-                        {{template "icon-print"}}
-                    </button>
-                </div>
-            {{- end -}}
-        </div>
-
-        <div class="w-full grid grid-flow-col col-span-6 border-b border-x border-black place-items-center md:border-r-0 md:col-span-4 md:border-b-0 dark:border-gray-800 print:hidden">
-            <img id="output" class="w-full text-center h-96" alt="Image of the recipe"
-                 style="object-fit: scale-down"
-                 src="{{- if .View.IsUUIDValid -}}/data/images/{{.View.Recipe.Image}}.jpg{{else}}/static/img/recipes/placeholder.webp{{end}}">
-        </div>
-
-        <div class="grid grid-flow-col col-span-6 border-b border-l border-black md:border-l md:grid-flow-row md:col-span-2 md:grid md:border-r md:border-b-0 dark:border-gray-800 print:border-b">
-            <div class="col-span-2 p-2 border-r border-black grid place-items-center md:col-span-3 md:border-r-0 dark:border-gray-800">
-                <div class="badge badge-primary badge-outline">{{.View.Recipe.Category}}</div>
-            </div>
-
-            <div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t dark:border-gray-800">
-                {{- if .IsAuthenticated -}}
-                    <form autocomplete="off" _="on submit halt the event" class="print:hidden">
-                        <input id="yield" type="number" min="1" name="yield"
-                               value="{{if eq .View.Recipe.Yield 0}}1{{else}}{{.View.Recipe.Yield}}{{end}}"
-                               class="w-16 text-center rounded bg-gray-100 p-2 grid self-end dark:bg-gray-900"
-                               hx-get="/recipes/{{.View.ID}}/scale"
-                               hx-trigger="input"
-                               hx-target="#ingredients-instructions-container">
-                        <label for="yield" class="grid self-start">servings</label>
-                    </form>
-                    <p class="hidden print:block">{{.View.Recipe.Yield}} servings</p>
-                {{- else -}}
-                    <p class="text-sm text-center">{{.View.Recipe.Yield}} servings</p>
-                {{- end -}}
-            </div>
-
-            <div class="flex items-center justify-center col-span-2 border-x border-black text-sm md:border-l-0 md:border-r-0 md:border-b md:col-span-3 md:border-t md:py-2 dark:border-gray-800">
-                {{- if .View.IsURL -}}
-                    <a class="p-1 border rounded-lg center hover:bg-gray-800 hover:text-white dark:border-gray-800 print:hidden"
-                       href="{{.View.Recipe.URL}}" target="_blank">
-                        Source
-                    </a>
-                    <p class="hidden print:block print:whitespace-nowrap print:overflow-hidden print:text-ellipsis print:max-w-xs">{{.View.Recipe.URL}}</p>
-                {{- else -}}
-                    <p>Source: {{if .View.Recipe.URL}}{{.View.Recipe.URL}}{{else}}Unknown{{end}}</p>
-                {{- end -}}
             </div>
         </div>
-
-        <div class="col-span-6 border-b border-x border-black md:col-span-4 md:border-r-0 dark:border-gray-800 print:col-span-5 print:border-r print:border-t-0 md:border-t">
-            <p class="p-2 text-sm whitespace-pre-line">{{.View.Recipe.Description}}</p>
-            <div class="hidden print:block print:p-2">
-                <h1 class="text-sm"><b>Nutrition Facts</b></h1>
-                <p class="text-xs">
-                    {{- with .View.Recipe.Nutrition -}}
-                        Per 100g: {{.Calories}} calories;
-                        total carbohydrates {{.TotalCarbohydrates}};
-                        sugars {{.Sugars}};
-                        protein {{.Protein}};
-                        total fat {{.TotalFat}};
-                        saturated fat {{.SaturatedFat}};
-                        cholesterol {{.Cholesterol}};
-                        sodium {{.Sodium}};
-                        fiber {{.Fiber}}.
-                    {{- end -}}
-                </p>
-            </div>
-        </div>
-
-        {{with .View.Recipe.Nutrition}}
-            <div class="col-span-3 border-b border-x border-black md:col-span-1 dark:border-gray-800 print:hidden">
-                <div class="inline-block min-w-full overflow-x-auto align-middle">
-                    <div class="overflow-hidden border-gray-200">
-                        <table class="min-w-full text-xs divide-y divide-gray-200 table-auto dark:text-gray-200 dark:divide-slate-600">
-                            <thead class="h-12 font-medium tracking-wider text-white bg-gray-800">
-                            <tr>
-                                <th scope="col" class="text-right">
-                                    <p class="text-center">
-                                        Nutrition<br>(per {{if .IsPerServing}}serving{{else}}100g{{end}})</p>
-                                </th>
-                                <th scope="col" class="text-center">
-                                    <p>Amount</p>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600">
-                            <tr>
-                                <td class="py-2 dark:border-gray-800">
-                                    <p>Calories:</p>
-                                </td>
-                                <td class="text-center dark:border-gray-800">
-                                    {{if eq .Calories ""}}-{{else}}{{.Calories}}{{end}}
-                                </td>
-                            </tr>
-                            <tr class="bg-gray-100 dark:bg-slate-700">
-                                <td class="py-2 dark:border-gray-800">
-                                    <p>Total carbs:</p>
-                                </td>
-                                <td class="text-center dark:border-gray-800">
-                                    {{if eq .TotalCarbohydrates ""}}-{{else}}{{.TotalCarbohydrates}}{{end}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 dark:border-gray-800">
-                                    <p>Sugars:</p>
-                                </td>
-                                <td class="text-center dark:border-gray-800">
-                                    {{if eq .Sugars ""}}-{{else}}{{.Sugars}}{{end}}
-                                </td>
-                            </tr>
-                            <tr class="bg-gray-100 dark:bg-slate-700">
-                                <td class="py-2 dark:border-gray-800">
-                                    <p>Protein:</p>
-                                </td>
-                                <td class="text-center dark:border-gray-800">
-                                    {{if eq .Protein ""}}-{{else}}{{.Protein}}{{end}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 dark:border-gray-800">
-                                    <p>Total fat:</p>
-                                </td>
-                                <td class="text-center dark:border-gray-800">
-                                    {{if eq .TotalFat ""}}-{{else}}{{.TotalFat}}{{end}}
-                                </td>
-                            </tr>
-                            <tr class="bg-gray-100 dark:bg-slate-700">
-                                <td class="py-2 dark:border-gray-800">
-                                    <p>Saturated fat:</p>
-                                </td>
-                                <td class="text-center dark:border-gray-800">
-                                    {{if eq .SaturatedFat ""}}-{{else}}{{.SaturatedFat}}{{end}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 dark:border-gray-800">
-                                    <p>Cholesterol:</p>
-                                </td>
-                                <td class="text-center dark:border-gray-800">
-                                    {{if eq .Cholesterol ""}}-{{else}}{{.Cholesterol}}{{end}}
-                                </td>
-                            </tr>
-                            <tr class="bg-gray-100 dark:bg-slate-700">
-                                <td class="py-2 dark:border-gray-800">
-                                    <p>Sodium:</p>
-                                </td>
-                                <td class="text-center dark:border-gray-800">
-                                    {{if eq .Sodium ""}}-{{else}}{{.Sodium}}{{end}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 dark:border-gray-800">
-                                    <p>Fiber:</p>
-                                </td>
-                                <td class="text-center dark:border-gray-800">
-                                    {{if eq .Fiber ""}}-{{else}}{{.Fiber}}{{end}}
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        {{- end -}}
-
-        <div class="col-span-3 border-b border-r border-black md:col-span-1 print:col-span-1">
-            <div class="inline-block min-w-full overflow-x-auto align-middle">
-                <div class="overflow-hidden border-gray-200">
-                    <table class="min-w-full text-xs divide-y divide-gray-200 dark:text-gray-200 dark:divide-slate-600">
-                        <thead class="h-12 font-medium tracking-wider text-white bg-gray-800 border-l dark:border-l-gray-600 print:h-1 print:text-black print:bg-gray-200">
-                        <tr>
-                            <th scope="col" class="text-right">Time</th>
-                            <th scope="col" class="text-center">h:m:s</th>
-                        </tr>
-                        </thead>
-                        <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600 print:text-gray-700">
-                        <tr>
-                            <td class="py-2">Prep:</td>
-                            <td class="text-center print:py-0">
-                                <time datetime="{{.View.FormattedTimes.PrepDateTime}}">{{.View.FormattedTimes.Prep}}</time>
-                            </td>
-                        </tr>
-                        <tr class="bg-gray-100 dark:bg-slate-700">
-                            <td class="py-2">Cooking:</td>
-                            <td class="w-1/2 text-center print:py-0">
-                                <time datetime="{{.View.FormattedTimes.CookDateTime}}">{{.View.FormattedTimes.Cook}}</time>
-                            </td>
-                        </tr>
-                        <tr class="font-semibold">
-                            <td class="py-2">Total:</td>
-                            <td class="w-1/2 text-center print:py-0">
-                                <time datetime="{{.View.FormattedTimes.TotalDateTime}}">{{.View.FormattedTimes.Total}}</time>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        {{template "ingredients-instructions" .View.Recipe}}
-
-        <div class="hidden print:grid col-span-6 ml-2 mt-2 mb-4">
-            <h1 class="text-sm"><b>Ingredients</b></h1>
-            <ol class="col-span-6 w-full"
-                style="column-count: {{if gt (len .View.Recipe.Ingredients) 10}}2{{else}}1{{end}}">
-                {{- range $i, $e := .View.Recipe.Ingredients -}}
-                    <li class="text-sm">
-                        <label>
-                            <input type="checkbox">
-                        </label>
-                        <span class="pl-2">{{$e}}</span>
-                    </li>
-                {{- end -}}
-            </ol>
-        </div>
-
-        <div class="hidden print:grid col-span-5">
-            <h1 class="text-sm"><b>Instructions</b></h1>
-            <ol class="col-span-6 list-decimal w-full ml-6"
-                style="column-count: {{if gt (len .View.Recipe.Instructions) 2}}2{{else}}1{{end}}; column-gap: 2.5rem">
-                {{- range $i, $e := .View.Recipe.Instructions -}}
-                    <li>
-                        <span class="text-sm whitespace-pre-line">{{$e}}</span>
-                    </li>
-                {{- end -}}
-            </ol>
-        </div>
-    </div>
+    </section>
     <script>
         var wakeLock = null;
         initWakeLock();
