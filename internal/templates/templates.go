@@ -14,11 +14,6 @@ import (
 var (
 	templates      map[string]*template.Template
 	templatesEmail map[string]*template.Template
-	emailsFuncMap  = template.FuncMap{
-		"nl2br": func(text string) template.HTML {
-			return template.HTML(strings.ReplaceAll(template.HTMLEscapeString(text), "\n", "<br />"))
-		},
-	}
 )
 
 func init() {
