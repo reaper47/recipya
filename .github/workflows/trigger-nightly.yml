@@ -48,8 +48,14 @@ jobs:
           hugo-version: "latest"
           extended: true
 
-      - name: Build
-        run: make build
+      - name: Install Task
+        uses: arduino/setup-task@v1
+        with:
+          version: 3.x
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and test
+        run: task test
 
       - name: Build nightly builds
         run: |

@@ -400,12 +400,12 @@ func recipeAddManualIngredientDeleteHandler(w http.ResponseWriter, r *http.Reque
 
 		currStr := strconv.Itoa(curr)
 		xs := []string{
-			`<li class="pb-2">`,
-			`<label><input type="text" name="ingredient-` + currStr + `" placeholder="Ingredient #` + currStr + `" required class="w-8/12 py-1 pl-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-900 dark:border-none dark:text-gray-200" ` + `value="` + form.Get(key) + `" _="on keydown if event.key is 'Enter' then halt the event then get next <button/> from the parentElement of me then call htmx.trigger(it, 'click')"></label>`,
-			`&nbsp;<button type="button" class="w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-green-600 hover:text-white center dark:bg-green-500" title="Shortcut: Enter" hx-post="/recipes/add/manual/ingredient" hx-target="#ingredients-list" hx-swap="beforeend" hx-include="[name^='ingredient']">+</button>`,
-			`&nbsp;<button type="button" class="delete-button w-10 h-10 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center dark:bg-red-500" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/` + currStr + `" hx-include="[name^='ingredient']">-</button>`,
+			`<li class="pb-2"><div class="grid grid-flow-col items-center">`,
+			`<label><input required type="text" name="ingredient-` + currStr + `" placeholder="Ingredient #` + currStr + `" class="input input-bordered input-sm w-full" ` + `value="` + form.Get(key) + `" _="on keydown if event.key is 'Enter' then halt the event then get next <button/> from the parentElement of me then call htmx.trigger(it, 'click')"></label>`,
+			`<div class="ml-2">&nbsp;<button type="button" class="btn btn-square btn-sm btn-outline btn-success" title="Shortcut: Enter" hx-post="/recipes/add/manual/ingredient" hx-target="#ingredients-list" hx-swap="beforeend" hx-include="[name^='ingredient']">+</button>`,
+			`&nbsp;<button type="button" class="delete-button btn btn-square btn-sm btn-outline btn-error" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/` + currStr + `" hx-include="[name^='ingredient']">-</button>`,
 			`&nbsp;<div class="inline-block h-4 cursor-move handle"><svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg></div>`,
-			`</li>`,
+			`</div></div></li>`,
 		}
 		for _, x := range xs {
 			sb.WriteString(x)
@@ -491,11 +491,11 @@ func recipeAddManualInstructionDeleteHandler(w http.ResponseWriter, r *http.Requ
 
 		xs := []string{
 			`<li class="pt-2 md:pl-0"><div class="flex">`,
-			`<label class="w-[95%]"><textarea required name="instruction-` + currStr + `" rows="3" class="w-[97%] border border-gray-300 pl-1 dark:bg-gray-900 dark:border-none" placeholder="Instruction #` + currStr + `" _="on keydown if event.ctrlKey and event.key === 'Enter' then halt the event then get next <div/> from the parentElement of me then get first <button/> in it then call htmx.trigger(it, 'click')">` + value + `</textarea>&nbsp;</label>`,
-			`<div class="grid">`,
+			`<label class="w-11/12"><textarea required name="instruction-` + currStr + `" rows="3" class="textarea textarea-bordered w-full" placeholder="Instruction #` + currStr + `" _="on keydown if event.ctrlKey and event.key === 'Enter' then halt the event then get next <div/> from the parentElement of me then get first <button/> in it then call htmx.trigger(it, 'click')">` + value + `</textarea>&nbsp;</label>`,
+			`<div class="grid ml-2">`,
+			`<button type="button" class="btn btn-square btn-sm btn-outline btn-success" title="Shortcut: CTRL + Enter" hx-post="/recipes/add/manual/instruction" hx-target="#instructions-list" hx-swap="beforeend" hx-include="[name^='instruction']">+</button>`,
+			`<button type="button" class="delete-button btn btn-square btn-sm btn-outline btn-error" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/` + currStr + `" hx-include="[name^='instruction']">-</button>`,
 			`<div class="h-4 cursor-move handle grid place-content-center"><svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg></div>`,
-			`<button type="button" class="md:w-7 md:h-7 md:right-auto w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center dark:bg-green-500" title="Shortcut: CTRL + Enter" hx-post="/recipes/add/manual/instruction" hx-target="#instructions-list" hx-swap="beforeend" hx-include="[name^='instruction']">+</button>`,
-			`<button type="button" class="delete-button w-10 h-10 md:w-7 md:h-7 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center dark:bg-red-500" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/` + currStr + `" hx-include="[name^='instruction']">-</button>`,
 			`</div></div></li>`,
 		}
 		for _, x := range xs {

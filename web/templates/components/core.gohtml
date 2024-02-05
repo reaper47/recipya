@@ -99,9 +99,9 @@
                 document.addEventListener("htmx:pushedIntoHistory", showAll);
             });
 
-            /*document.addEventListener("htmx:beforeProcessNode", () => {
+            document.addEventListener("htmx:beforeProcessNode", () => {
                 adjustAddCookbookTarget();
-            });*/
+            });
 
             htmx.on('htmx:pushedIntoHistory', () => {
                 showAll();
@@ -117,7 +117,7 @@
                         add_cookbook.setAttribute("hx-target", ".cookbooks-display");
                         add_cookbook.setAttribute("hx-swap", "beforeend");
 
-                        if (pagination && pagination.querySelector("button:nth-last-child(2)")) {
+                        if (pagination && !pagination.querySelector("button:nth-last-child(2)").classList.contains('btn-active')) {
                             add_cookbook.setAttribute("hx-swap", "none");
                         }
                     }

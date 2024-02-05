@@ -1,33 +1,31 @@
 {{define "cookbooks-search-results-recipes"}}
     {{- if .Recipes -}}
         {{- $cookbook := .CookbookFeature.Cookbook -}}
-        <article class="grid gap-4 p-4 text-sm justify-center md:p-0 md:text-base">
+        <article class="grid gap-8 p-4 text-sm justify-center md:p-0 md:text-base">
             <ul class="cookbooks-display grid gap-2 p-2 md:p-0 text-sm md:text-base">
                 {{ range .Recipes }}
-                    <li class="recipe cookbook relative grid max-w-[30rem] border bg-white rounded-md shadow-md md:min-w-[30rem] dark:bg-neutral-700">
-                        <div class="grid grid-cols-4">
-                            <img class="col-span-1 border-r" src="/data/images/{{.Image}}.jpg"
-                                 alt="Recipe image">
-                            <div class="grid col-span-3 gap-1 p-2">
-                                <div class="grid grid-flow-col">
-                                    <p class="font-semibold">{{.Name}}</p>
-                                    <div class="grid justify-end">
-                                        <div class="pb-4 pl-4 text-xs">
-                                           <span class="w-fit leading-none flex items-center justify-center p-2 text-blue-700 bg-blue-100 border border-blue-300 rounded-full dark:border-gray-800">
-                                              {{.Category}}
-                                            </span>
-                                        </div>
-                                    </div>
+                    <li class="indicator recipe cookbook">
+                        <div class="card card-side card-bordered card-compact bg-base-100 shadow-lg w-[30rem]">
+                            <figure class="w-32">
+                                <img src="/data/images/{{.Image}}.jpg" alt="Recipe image" class="object-cover"/>
+                            </figure>
+                            <div class="card-body">
+                                <h2 class="card-title">{{.Name}}</h2>
+                                <p></p>
+                                <div>
+                                    <p class="text-sm pb-1">Category:</p>
+                                    <div class="badge badge-primary badge-">{{.Category}}</div>
+                                </div>
+                                <div class="card-actions justify-end">
+                                    <button class="btn btn-outline btn-sm"
+                                            hx-post="/cookbooks/{{$cookbook.ID}}"
+                                            hx-vals='{"cookbookId": {{$cookbook.ID}}, "recipeId": {{.ID}}}'
+                                            hx-swap="outerHTML" hx-target="closest .recipe">
+                                        Add
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        <button class="w-full border-t center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600 hover:rounded-b-md"
-                                hx-post="/cookbooks/{{$cookbook.PageItemID}}"
-                                hx-vals='{"cookbookId": {{$cookbook.ID}}, "recipeId": {{.ID}}}'
-                                hx-swap="outerHTML"
-                                hx-target="closest .recipe">
-                            Add
-                        </button>
                     </li>
                 {{end}}
             </ul>

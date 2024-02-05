@@ -12,7 +12,7 @@ cd recipya
 Build the project.
 
 ```bash
-make
+task build
 ```
 
 Start the server. You will go through the interactive setup process if 

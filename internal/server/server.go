@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/docs"
 	"github.com/reaper47/recipya/internal/app"
@@ -62,7 +61,6 @@ type Server struct {
 func (s *Server) mountHandlers() {
 	r := chi.NewRouter()
 
-	r.Mount("/debug", middleware.Profiler())
 	r.Get("/", s.indexHandler)
 
 	subFS, _ := fs.Sub(docs.FS, "website/public")

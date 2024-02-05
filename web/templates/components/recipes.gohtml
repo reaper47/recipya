@@ -1,31 +1,35 @@
 {{define "add-ingredient"}}
     <li class="pb-2">
-        <label>
-            <input type="text" name="ingredient-{{.}}" placeholder="Ingredient #{{.}}" required
-                   {{if gt . 1}}autofocus{{end}}
-                   class="w-8/12 py-1 pl-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-900 dark:border-none dark:text-gray-200"
-                   _="on keydown if event.key is 'Enter'
+        <div class="grid grid-flow-col items-center">
+            <label>
+                <input required type="text" name="ingredient-{{.}}" placeholder="Ingredient #{{.}}"
+                       {{if gt . 1}}autofocus{{end}}
+                       class="input input-bordered input-sm w-full"
+                       _="on keydown if event.key is 'Enter'
                         then halt the event then get next <button/> from the parentElement of me
                         then call htmx.trigger(it, 'click')">
-        </label>
-        <button type="button"
-                class="w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-green-600 hover:text-white center dark:bg-green-500"
-                title="Shortcut: Enter"
-                hx-post="/recipes/add/manual/ingredient"
-                hx-target="#ingredients-list"
-                hx-swap="beforeend"
-                hx-include="[name^='ingredient']">
-            +
-        </button>
-        <button type="button"
-                class="delete-button w-10 h-10 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center dark:bg-red-500"
-                hx-target="#ingredients-list"
-                hx-post="/recipes/add/manual/ingredient/{{.}}"
-                hx-include="[name^='ingredient']">
-            -
-        </button>
-        <div class="inline-block h-4 cursor-move handle">
-            {{template "icon-reorder"}}
+            </label>
+            <div class="ml-2">
+                <button type="button"
+                        class="btn btn-square btn-sm btn-outline btn-success"
+                        title="Shortcut: Enter"
+                        hx-post="/recipes/add/manual/ingredient"
+                        hx-target="#ingredients-list"
+                        hx-swap="beforeend"
+                        hx-include="[name^='ingredient']">
+                    +
+                </button>
+                <button type="button"
+                        class="delete-button btn btn-square btn-sm btn-outline btn-error"
+                        hx-target="#ingredients-list"
+                        hx-post="/recipes/add/manual/ingredient/{{.}}"
+                        hx-include="[name^='ingredient']">
+                    -
+                </button>
+                <div class="inline-block h-4 cursor-move handle">
+                    {{template "icon-reorder"}}
+                </div>
+            </div>
         </div>
     </li>
 {{end}}
@@ -33,10 +37,10 @@
 {{define "add-instruction"}}
     <li class="pt-2 md:pl-0">
         <div class="flex">
-            <label class="w-[95%]">
+            <label class="w-11/12">
                 <textarea required name="instruction-{{.}}" rows="3"
                           {{if gt . 1}}autofocus{{end}}
-                          class="w-[97%] border border-gray-300 pl-1 dark:bg-gray-900 dark:border-none"
+                          class="textarea textarea-bordered w-full"
                           placeholder="Instruction #{{.}}"
                           _="on keydown if event.ctrlKey and event.key === 'Enter'
                             then halt the event
@@ -44,12 +48,9 @@
                             then get first <button/> in it
                             then call htmx.trigger(it, 'click')"></textarea>
             </label>
-            <div class="grid">
-                <div class="h-4 cursor-move handle grid place-content-center">
-                    {{template "icon-reorder"}}
-                </div>
+            <div class="grid ml-2">
                 <button type="button"
-                        class="md:w-7 md:h-7 md:right-auto w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center dark:bg-green-500"
+                        class="btn btn-square btn-sm btn-outline btn-success"
                         title="Shortcut: CTRL + Enter"
                         hx-post="/recipes/add/manual/instruction"
                         hx-target="#instructions-list"
@@ -58,12 +59,15 @@
                     +
                 </button>
                 <button type="button"
-                        class="delete-button w-10 h-10 md:w-7 md:h-7 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center dark:bg-red-500"
+                        class="delete-button btn btn-square btn-sm btn-outline btn-error"
                         hx-target="#instructions-list"
                         hx-post="/recipes/add/manual/instruction/{{.}}"
                         hx-include="[name^='instruction']">
                     -
                 </button>
+                <div class="h-4 cursor-move handle grid place-content-center">
+                    {{template "icon-reorder"}}
+                </div>
             </div>
         </div>
     </li>
@@ -243,43 +247,67 @@
                     </h2>
                     <div>
                         <div class="grid md:grid-flow-col md:grid-cols-6">
-                            <div class="w-full text-center border-b border-gray-700 md:col-span-3 md:border-r md:border-b-0">
-                                <img id="output" style="object-fit: cover" alt="Image of the recipe"
-                                     class="w-full"
-                                     src="">
+                            <div class="w-full text-center border-gray-700 md:col-span-3 md:border-r">
+                                <label class="grid gap-2 col-span-6 place-content-center w-full h-full md:col-span-4 text-sm">
+                                    <img src="" alt="Image preview of the recipe." class="object-cover">
+                                    <span>
+                                        <input type="file" accept="image/*" name="image"
+                                               class="file-input file-input-sm w-full max-w-xs"
+                                               _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
+                                              on dragleave or drop set the target's style.background to ''
+                                              on drop or change
+                                                make an FileReader called reader
+                                                then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end
+                                                then set {src: window.URL.createObjectURL(it)} on previous <img/>
+                                                then remove .hidden from next <button/>">
+                                        <button type="button"
+                                                class="hidden btn btn-sm btn-error btn-outline"
+                                                _="on click
+                                                    set {value: ''} on previous <input/> then
+                                                    set {src: ''} on previous <img/> then
+                                                    add .hidden">
+                                            Delete
+                                        </button>
+                                    </span>
+                                </label>
                             </div>
                             <div class="grid grid-cols-3 col-span-3 text-sm md:grid-flow-row md:grid-rows-4">
-                                <div class="grid grid-flow-col col-span-6 md:row-span-1 md:border-y md:border-gray-700">
-                                    <div class="col-span-2 grid place-items-center md:col-span-1">
-                                        <label class="form-control">
-                                            <div class="label">
-                                                <span class="label-text">Category*</span>
-                                            </div>
-                                            <input required type="text" list="categories" name="category"
-                                                   class="input input-bordered input-sm" placeholder="Breakfast">
-                                            <datalist id="categories">
-                                                {{- range .View.Categories -}}
-                                                    <option>{{.}}</option>
-                                                {{- end -}}
-                                            </datalist>
-                                        </label>
+                                <div class="grid col-span-6 pb-2 md:grid-cols-3 md:pb-0 md:border-gray-700 md:border-t">
+                                    <div style="display: grid;grid-auto-flow: column;"
+                                         class="grid grid-flow-col grid-cols-3 gap-2 border-b border-t border-gray-700 px-2 md:col-span-2 md:border-b-0 md:border-r md:border-t-0 md:px-0">
+                                        <div class="col-span-2 border-r border-gray-700 pb-2 md:pb-0 md:grid md:place-content-center">
+                                            <label class="form-control">
+                                                <div class="label">
+                                                    <span class="label-text">Category<sup
+                                                                class="text-red-600">*</sup></span>
+                                                </div>
+                                                <input required type="text" list="categories" name="category"
+                                                       class="input input-bordered input-sm w-48 md:w-36 lg:w-48"
+                                                       placeholder="Breakfast">
+                                                <datalist id="categories">
+                                                    {{- range .View.Categories -}}
+                                                        <option>{{.}}</option>
+                                                    {{- end -}}
+                                                </datalist>
+                                            </label>
+                                        </div>
+                                        <div class="col-span-1 grid place-content-center pb-2 md:pb-0 md:content-center lg:md:place-content-center">
+                                            <label class="form-control w-full">
+                                                <div class="label">
+                                                    <span class="label-text">Servings</span>
+                                                </div>
+                                                <input type="number" min="1" name="yield" value="1"
+                                                       class="input input-bordered input-sm w-24 md:w-20 lg:w-24">
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div class="grid col-span-2 border-gray-700 place-items-center border-x justify-center md:col-span-1 md:p-0">
+                                    <div class="relative px-2 md:grid md:content-center md:pr-0">
                                         <label class="form-control w-full">
                                             <div class="label">
-                                                <span class="label-text">Servings</span>
-                                            </div>
-                                            <input type="number" min="1" name="yield" value="1"
-                                                   class="input input-bordered input-sm w-24">
-                                        </label>
-                                    </div>
-                                    <div class="relative grid col-span-2 place-items-center justify-center md:col-span-1 md:p-0">
-                                        <label class="form-control w-full">
-                                            <div class="label">
-                                                <span class="label-text">Source*</span>
+                                                <span class="label-text">Source<sup class="text-red-600">*</sup></span>
                                             </div>
                                             <input required type="text" placeholder="Source" name="source"
-                                                   class="input input-bordered input-sm">
+                                                   class="input input-bordered input-sm md:w-28 lg:w-40 xl:w-44">
                                         </label>
                                         <button type="button" class="tooltip tooltip-left absolute top-2 right-2"
                                                 _="on click toggle .tooltip-open"
@@ -288,7 +316,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="grid grid-flow-col col-span-6 border-gray-700 border-y md:border-t-0 md:grid-cols-2 md:row-span-2">
+                                <div class="grid grid-flow-col col-span-6 border-gray-700 border-y md:grid-cols-2 md:row-span-2">
                                     <div class="border-r border-gray-700">
                                         <table class="table table-zebra table-xs md:h-fit">
                                             <thead>
@@ -322,7 +350,7 @@
                                     <table class="table table-zebra table-xs">
                                         <thead>
                                         <tr>
-                                            <th>Nutrition (per 100g)</th>
+                                            <th>Nutrition<br>(per 100g)</th>
                                             <th>Amount</th>
                                         </tr>
                                         </thead>
@@ -432,14 +460,16 @@
                     </div>
                     <div id="ingredients-instructions-container"
                          class="border-gray-700 md:border-t grid text-sm md:grid-flow-col md:col-span-6">
-                        <div class="col-span-6 border-gray-700 px-4 py-2 border-y md:col-span-2 md:border-r md:border-y-0">
-                            <h2 class="font-semibold text-center underline md:pb-2">Ingredients</h2>
+                        <div class="col-span-6 border-gray-700 px-2 py-2 border-y md:col-span-2 md:border-r md:border-y-0">
+                            <h2 class="font-semibold text-center pb-2"><span class="underline">Ingredients</span><sup
+                                        class="text-red-600">*</sup></h2>
                             <ol id="ingredients-list" class="pl-4 list-decimal">
                                 {{template "add-ingredient" 1}}
                             </ol>
                         </div>
-                        <div class="col-span-6 px-8 py-2 border-gray-700 md:rounded-bl-none md:col-span-4">
-                            <h2 class="font-semibold text-center underline md:pb-2">Instructions</h2>
+                        <div class="col-span-6 px-6 py-2 border-gray-700 md:rounded-bl-none md:col-span-4">
+                            <h2 class="font-semibold text-center pb-2"><span class="underline">Instructions</span><sup
+                                        class="text-red-600">*</sup></h2>
                             <ol id="instructions-list" class="grid list-decimal">
                                 {{template "add-instruction" 1}}
                             </ol>
@@ -452,649 +482,363 @@
             </div>
         </div>
     </section>
-
-    <form enctype="multipart/form-data"
-          class="grid max-w-6xl grid-cols-6 m-auto mt-4 mb-4 dark:bg-gray-600 dark:rounded-t-lg"
-          hx-post="/recipes/add/manual"
-          hx-indicator="#fullscreen-loader">
-        <div class="col-span-6 text-lg border border-gray-900 rounded-t-lg md:text-xl dark:border-gray-800">
-            <label for="title" class="hidden"></label>
-            <input type="text" name="title" id="title" placeholder="Title of the recipe*" required autocomplete="off"
-                   class="w-full py-2 bg-gray-50 font-semibold text-center text-gray-600 placeholder-gray-400 rounded-t-lg dark:bg-gray-900 dark:text-gray-200">
-        </div>
-
-        <label class="grid col-span-6 place-content-center w-full h-96 border-b border-x border-black md:border-r-0 md:col-span-4 text-sm dark:border-gray-800">
-            <img src="" alt="Image preview of the recipe." class="h-full">
-            <span>
-                <input type="file" accept="image/*" name="image"
-                       _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
-                      on dragleave or drop set the target's style.background to ''
-                      on drop or change
-                        make an FileReader called reader
-                        then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end
-                        then set {src: window.URL.createObjectURL(it)} on previous <img/>
-                        then remove .hidden from next <button/>">
-                <button type="button"
-                        class="px-2 bg-red-300 border border-gray-800 rounded-lg hidden hover:bg-red-600 hover:text-white dark:border-gray-800 dark:bg-red-600 dark:hover:bg-red-700"
-                        _="on click
-                            set {value: ''} on previous <input/>
-                            then set {src: ''} on previous <img/>
-                            then add .hidden">
-                    Delete
-                </button>
-            </span>
-        </label>
-
-        <div class="grid grid-flow-col col-span-6 border-b border-l border-black md:border-l md:grid-flow-row md:col-span-2 md:grid md:border-r md:border-b-0 dark:border-gray-800 print:border-b">
-            <div class="col-span-2 p-2 border-r border-black md:col-span-3 md:grid md:place-items-center md:border-r-0 dark:border-gray-800">
-                <label class="grid place-content-center p-2 font-medium text-sm text-gray-900 bg-blue-100 border border-blue-300 rounded-full w-fit">
-                    <input type="text" list="categories" name="category"
-                           class="bg-transparent text-center focus:outline-none" placeholder="Breakfast*" required>
-                    <datalist id="categories">
-                        {{- range .View.Categories -}}
-                            <option>{{.}}</option>
-                        {{- end -}}
-                    </datalist>
-                </label>
-            </div>
-
-            <div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t dark:border-gray-800">
-                <div>
-                    <label for="yield">Yields</label>
-                    <input id="yield" type="number" min="1" name="yield" value="4"
-                           class="w-24 rounded bg-gray-100 p-2 dark:bg-gray-900">
-                    <span>servings</span>
-                </div>
-            </div>
-
-            <div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t dark:border-gray-800">
-                <label class="w-4/5">
-                    <input id="source" type="text" placeholder="Source*" name="source"
-                           class="w-full rounded bg-gray-100 p-2 dark:bg-gray-900" required>
-                </label>
-                <p class="px-4">
-                    The source can be a website, name of a cookbook, from a relative or friend, a magazine, etc.
-                </p>
-            </div>
-        </div>
-
-        <div class="col-span-6 border-b border-x border-black md:col-span-4 dark:border-gray-800">
-            <div class="flex flex-col p-2">
-                <label for="description" class="text-sm font-semibold text-gray-600 dark:text-gray-200">
-                    Description <sup class="text-red-600">*</sup>
-                </label>
-                <textarea id="description" name="description" rows="10"
-                          placeholder="This Thai curry chicken will make you drool." required
-                          class="p-2 border border-gray-300 rounded-t-lg dark:bg-gray-800 dark:border-none"
-                ></textarea>
-            </div>
-        </div>
-
-        <div class="col-span-3 border border-black md:border-l-0 md:col-span-1 dark:border-gray-800">
-            <div class="inline-block min-w-full overflow-x-auto align-middle">
-                <div class="overflow-hidden border-gray-200">
-                    <table class="min-w-full text-xs divide-y divide-gray-200 dark:text-gray-200 dark:divide-slate-600">
-                        <thead class="h-12 font-medium tracking-wider text-white bg-gray-800">
-                        <tr>
-                            <th scope="col" class="text-right md:text-center">
-                                <p>Nutrition<br>(per 100g)</p>
-                            </th>
-                            <th scope="col" class="text-center">
-                                <p>Amount<br>(optional)</p>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600">
-                        <tr>
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Calories:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="calories" class="hidden"></label>
-                                <input type="text" id="calories" name="calories"
-                                       autocomplete="off" placeholder="368kcal"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr class="bg-gray-100 dark:bg-slate-700">
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Total carbs:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="total-carbohydrates" class="hidden"></label>
-                                <input type="text" id="total-carbohydrates" name="total-carbohydrates"
-                                       autocomplete="off" placeholder="35g"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Sugars:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="sugars" class="hidden"></label>
-                                <input type="text" id="sugars" name="sugars"
-                                       autocomplete="off" placeholder="3g"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr class="bg-gray-100 dark:bg-slate-700">
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Protein:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="protein" class="hidden"></label>
-                                <input type="text" id="protein" name="protein"
-                                       autocomplete="off" placeholder="21g"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Total fat:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="total-fat" class="hidden"></label>
-                                <input type="text" id="total-fat" name="total-fat"
-                                       autocomplete="off" placeholder="15g"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr class="bg-gray-100 dark:bg-slate-700">
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Saturated fat:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="saturated-fat" class="hidden"></label>
-                                <input type="text" id="saturated-fat" name="saturated-fat"
-                                       autocomplete="off" placeholder="1.8g"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Cholesterol:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="cholesterol" class="hidden"></label>
-                                <input type="text" id="cholesterol" name="cholesterol"
-                                       autocomplete="off" placeholder="1.1mg"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr class="bg-gray-100 dark:bg-slate-700">
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Sodium:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="sodium" class="hidden"></label>
-                                <input type="text" id="sodium" name="sodium"
-                                       autocomplete="off" placeholder="100mg"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Fiber:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="fiber" class="hidden"></label>
-                                <input type="text" id="fiber" name="fiber"
-                                       autocomplete="off" placeholder="8g"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-span-3 border-b border-r border-black md:col-span-1">
-            <div class="inline-block min-w-full overflow-x-auto align-middle">
-                <div class="overflow-hidden border-gray-200">
-                    <table id="times-table"
-                           class="min-w-full text-xs divide-y divide-gray-200 dark:text-gray-200 dark:divide-slate-600">
-                        <thead class="h-12 font-medium tracking-wider text-white bg-gray-800 border-l dark:border-l-gray-600">
-                        <tr>
-                            <th scope="col" class="text-right">Time</th>
-                            <th scope="col" class="text-center">h:m:s</th>
-                        </tr>
-                        </thead>
-                        <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600">
-                        <tr>
-                            <td class="py-2">Preparation:</td>
-                            <td class="text-center">
-                                <label for="time-preparation" class="hidden"></label>
-                                <input type="text" id="time-preparation" name="time-preparation" value="00:15:00"
-                                       class="w-full p-1 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker dark:bg-gray-900 dark:text-gray-200">
-
-                                <input type="text" placeholder="Type here"
-                                       class="input input-bordered w-full max-w-xs"/>
-                            </td>
-                        </tr>
-                        <tr class="bg-gray-100 dark:bg-slate-700">
-                            <td class="py-2">Cooking:</td>
-                            <td class="w-1/2 text-center">
-                                <label for="time-cooking" class="hidden"></label>
-                                <input type="text" id="time-cooking" name="time-cooking" value="00:30:00"
-                                       class="w-full p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker dark:bg-gray-900 dark:text-gray-200"
-                                       _="on load get <button/> in #times-table then add .dark:bg-gray-200 to it">
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-span-6 py-2 border-b border-x border-black md:col-span-2 md:border-r-0">
-            <fieldset class="text-center border-none">
-                <legend class="pb-2 m-auto text-sm font-semibold text-gray-600 dark:text-gray-200">
-                    <span class="underline">Ingredients</span> <sup class="text-red-600 no-underline">*</sup>
-                </legend>
-                <ol id="ingredients-list" class="pl-8 list-decimal">
-                    {{template "add-ingredient" 1}}
-                </ol>
-            </fieldset>
-        </div>
-        <div class="col-span-6 py-2 pb-8 pl-2 border-b border-x border-black md:col-span-4">
-            <fieldset class="text-center border-none">
-                <legend class="m-auto text-sm font-semibold text-gray-600 dark:text-gray-200">
-                    <span class="underline">Instructions</span> <sup class="text-red-600">*</sup>
-                </legend>
-                <ol id="instructions-list" class="pl-4 list-decimal">
-                    {{template "add-instruction" 1}}
-                </ol>
-            </fieldset>
-        </div>
-        <button type="submit"
-                class="col-span-6 p-2 font-semibold text-white bg-blue-500 hover:bg-blue-800">
-            Submit
-        </button>
-    </form>
     {{template "load-recipes-manual-scripts"}}
 {{end}}
 
 {{define "edit-recipe"}}
     <title hx-swap-oob="true">Edit {{.View.Recipe.Name}} | Recipya</title>
 
-    <form hx-put="/recipes/{{.View.ID}}/edit" enctype="multipart/form-data"
-          class="grid max-w-6xl grid-cols-6 m-auto mt-4 pb-4 dark:bg-gray-600 dark:rounded-t-lg">
-        <div class="col-span-6 text-lg border border-gray-900 rounded-t-lg md:text-xl dark:border-gray-800 relative">
-            <button class="ml-2 absolute text-2xl top-[0.25rem] hover:text-red-600" title="Back to view recipe"
-                    type="button"
-                    _="on click if confirm('Are you sure you wish to go back? Changes will not be saved.') then call history.back()">
-                &larr;
-            </button>
-            <label for="title" class="hidden"></label>
-            <input type="text" name="title" id="title" placeholder="Title of the recipe*"
-                   required autocomplete="off" value="{{.View.Recipe.Name}}"
-                   class="w-full py-2 bg-gray-50 font-semibold text-center text-gray-600 placeholder-gray-400 rounded-t-lg dark:bg-gray-900 dark:text-gray-200">
-        </div>
-
-        <label class="grid col-span-6 place-content-center w-full h-96 border-b border-x border-black md:border-r-0 md:col-span-4 text-sm dark:border-gray-800">
-            {{- if .View.IsUUIDValid -}}
-                <img src="/data/images/{{.View.Recipe.Image}}.jpg" alt="Image preview of the recipe." class="h-full">
-                <span>
-                    <input type="file" accept="image/*" name="image"
-                           value="/data/images/{{.View.Recipe.Image}}.jpg"
-                           _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
-                          on dragleave or drop set the target's style.background to ''
-                          on drop or change
-                            make an FileReader called reader
-                            then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end
-                            then set {src: window.URL.createObjectURL(it)} on previous <img/>
-                            then remove .hidden from next <button/>">
-                    <button type="button"
-                            class="px-2 bg-red-300 border border-gray-800 rounded-lg hover:bg-red-600 hover:text-white dark:border-gray-800 dark:bg-red-600 dark:hover:bg-red-700"
-                            _="on click
-                                set {value: ''} on previous <input/>
-                                then set {src: ''} on previous <img/>
-                                then add .hidden">
-                        Delete
-                    </button>
-                </span>
-            {{- else -}}
-                <img src="" alt="Image preview of the recipe." class="h-full">
-                <span>
-                    <input type="file" accept="image/*" name="image"
-                           _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
-                          on dragleave or drop set the target's style.background to ''
-                          on drop or change
-                            make an FileReader called reader
-                            then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end
-                            then set {src: window.URL.createObjectURL(it)} on previous <img/>
-                            then remove .hidden from next <button/>">
-                    <button type="button"
-                            class="px-2 bg-red-300 border border-gray-800 rounded-lg hidden hover:bg-red-600 hover:text-white dark:border-gray-800 dark:bg-red-600 dark:hover:bg-red-700"
-                            _="on click
-                                set {value: ''} on previous <input/>
-                                then set {src: ''} on previous <img/>
-                                then add .hidden">
-                        Delete
-                    </button>
-                </span>
-            {{- end -}}
-        </label>
-
-        <div class="grid grid-flow-col col-span-6 border-b border-l border-black md:border-l md:grid-flow-row md:col-span-2 md:grid md:border-r md:border-b-0 dark:border-gray-800 print:border-b">
-            <div class="col-span-2 p-2 border-r border-black md:col-span-3 md:grid md:place-items-center md:border-r-0 dark:border-gray-800">
-                <label class="grid place-content-center p-2 font-medium text-sm text-gray-900 bg-blue-100 border border-blue-300 rounded-full w-fit">
-                    <input type="text" list="categories" name="category" value="{{.View.Recipe.Category}}"
-                           class="bg-transparent text-center focus:outline-none" placeholder="Breakfast*" required>
-                    <datalist id="categories">
-                        {{- range .View.Categories -}}
-                            <option>{{.}}</option>
-                        {{- end -}}
-                    </datalist>
-                </label>
-            </div>
-
-            <div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t dark:border-gray-800">
-                <div>
-                    <label for="yield">Yields</label>
-                    <input id="yield" type="number" min="1" name="yield"
-                           value="{{if eq .View.Recipe.Yield 0}}4{{else}}{{.View.Recipe.Yield}}{{end}}"
-                           class="w-24 rounded bg-gray-100 p-2 dark:bg-gray-900">
-                    <span>servings</span>
-                </div>
-            </div>
-
-            <div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t dark:border-gray-800">
-                <label class="w-4/5">
-                    <input id="source" type="text" placeholder="Source*" name="source"
-                           value="{{.View.Recipe.URL}}" class="w-full rounded bg-gray-100 p-2 dark:bg-gray-900">
-                </label>
-                <p class="px-4">
-                    The source can be a website, name of a cookbook, from a relative or friend, a magazine, etc.
-                </p>
-            </div>
-        </div>
-
-        <div class="col-span-6 border-b border-x border-black md:col-span-4 dark:border-gray-800">
-            <div class="flex flex-col p-2">
-                <label for="description" class="text-sm font-semibold text-gray-600 dark:text-gray-200">
-                    Description <sup class="text-red-600">*</sup>
-                </label>
-                <textarea id="description" name="description" rows="10"
-                          placeholder="This Thai curry chicken will make you drool." required
-                          class="p-2 border border-gray-300 rounded-t-lg dark:bg-gray-800 dark:border-none"
-                >{{- if not (eq .View.Recipe.Description "") -}}{{.View.Recipe.Description}}{{- end -}}</textarea>
-            </div>
-        </div>
-
-        <div class="col-span-3 border border-black md:border-l-0 md:col-span-1 dark:border-gray-800">
-            <div class="inline-block min-w-full overflow-x-auto align-middle">
-                <div class="overflow-hidden border-gray-200">
-                    <table class="min-w-full text-xs divide-y divide-gray-200 dark:text-gray-200 dark:divide-slate-600">
-                        <thead class="h-12 font-medium tracking-wider text-white bg-gray-800">
-                        <tr>
-                            <th scope="col" class="text-right md:text-center">
-                                <p>
-                                    Nutrition<br>(per {{if .View.Recipe.Nutrition.IsPerServing}}serving{{else}}100g{{end}}
-                                    )</p>
-                            </th>
-                            <th scope="col" class="text-center">
-                                <p>Amount<br>(optional)</p>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600">
-                        <tr>
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Calories:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="calories" class="hidden"></label>
-                                <input type="text" id="calories" name="calories"
-                                       autocomplete="off" placeholder="368kcal"
-                                       value="{{.View.Recipe.Nutrition.Calories}}"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr class="bg-gray-100 dark:bg-slate-700">
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Total carbs:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="total-carbohydrates" class="hidden"></label>
-                                <input type="text" id="total-carbohydrates" name="total-carbohydrates"
-                                       autocomplete="off" placeholder="35g"
-                                       value="{{.View.Recipe.Nutrition.TotalCarbohydrates}}"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Sugars:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="sugars" class="hidden"></label>
-                                <input type="text" id="sugars" name="sugars"
-                                       autocomplete="off" placeholder="3g"
-                                       value="{{.View.Recipe.Nutrition.Sugars}}"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr class="bg-gray-100 dark:bg-slate-700">
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Protein:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="protein" class="hidden"></label>
-                                <input type="text" id="protein" name="protein"
-                                       autocomplete="off" placeholder="21g"
-                                       value="{{.View.Recipe.Nutrition.Protein}}"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Total fat:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="total-fat" class="hidden"></label>
-                                <input type="text" id="total-fat" name="total-fat"
-                                       autocomplete="off" placeholder="15g"
-                                       value="{{.View.Recipe.Nutrition.TotalFat}}"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr class="bg-gray-100 dark:bg-slate-700">
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Saturated fat:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="saturated-fat" class="hidden"></label>
-                                <input type="text" id="saturated-fat" name="saturated-fat"
-                                       autocomplete="off" placeholder="1.8g"
-                                       value="{{.View.Recipe.Nutrition.SaturatedFat}}"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Cholesterol:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="cholesterol" class="hidden"></label>
-                                <input type="text" id="cholesterol" name="cholesterol"
-                                       autocomplete="off" placeholder="1.1mg"
-                                       value="{{.View.Recipe.Nutrition.Cholesterol}}"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr class="bg-gray-100 dark:bg-slate-700">
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Sodium:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="sodium" class="hidden"></label>
-                                <input type="text" id="sodium" name="sodium"
-                                       autocomplete="off" placeholder="100mg"
-                                       value="{{.View.Recipe.Nutrition.Sodium}}"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Fiber:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="fiber" class="hidden"></label>
-                                <input type="text" id="fiber" name="fiber"
-                                       autocomplete="off" placeholder="8g"
-                                       value="{{.View.Recipe.Nutrition.Fiber}}"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-span-3 border-b border-r border-black md:col-span-1">
-            <div class="inline-block min-w-full overflow-x-auto align-middle">
-                <div class="overflow-hidden border-gray-200">
-                    <table id="times-table"
-                           class="min-w-full text-xs divide-y divide-gray-200 dark:text-gray-200 dark:divide-slate-600">
-                        <thead class="h-12 font-medium tracking-wider text-white bg-gray-800 border-l dark:border-l-gray-600">
-                        <tr>
-                            <th scope="col" class="text-right">Time</th>
-                            <th scope="col" class="text-center">h:m:s</th>
-                        </tr>
-                        </thead>
-                        <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600">
-                        <tr>
-                            <td class="py-2">Preparation:</td>
-                            <td class="text-center">
-                                <label for="time-preparation" class="hidden"></label>
-                                <input type="text" id="time-preparation" name="time-preparation"
-                                       value="{{if .View.FormattedTimes.PrepEdit}}{{.View.FormattedTimes.PrepEdit}}{{else}}00:15:00{{end}}"
-                                       class="w-full p-1 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker dark:bg-gray-900 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr class="bg-gray-100 dark:bg-slate-700">
-                            <td class="py-2">Cooking:</td>
-                            <td class="w-1/2 text-center">
-                                <label for="time-cooking" class="hidden"></label>
-                                <input type="text" id="time-cooking" name="time-cooking"
-                                       value="{{if .View.FormattedTimes.CookEdit}}{{.View.FormattedTimes.CookEdit}}{{else}}00:30:00{{end}}"
-                                       class="w-full p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker dark:bg-gray-900 dark:text-gray-200"
-                                       _="on load get <button/> in #times-table then add .dark:bg-gray-200 to it">
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-span-6 py-2 border-b border-x border-black md:col-span-2 md:border-r-0">
-            <fieldset class="text-center border-none">
-                <legend class="pb-2 m-auto text-sm font-semibold text-gray-600 dark:text-gray-200">
-                    <span class="underline">Ingredients</span> <sup class="text-red-600 no-underline">*</sup>
-                </legend>
-                <ol id="ingredients-list" class="pl-8 list-decimal">
-                    {{- if eq (len .View.Recipe.Ingredients) 0 -}}
-                        {{template "add-ingredient" 1}}
-                    {{- else -}}
-                        {{$inc := .View.Inc}}
-                        {{ range $i, $v := .View.Recipe.Ingredients }}
-                            {{$num := call $inc $i}}
-                            <li class="pb-2">
-                                <label>
-                                    <input type="text" name="ingredient-{{$num}}" placeholder="Ingredient #{{$num}}"
-                                           required
-                                           class="w-8/12 py-1 pl-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-900 dark:border-none dark:text-gray-200"
-                                           value="{{$v}}"
-                                           _="on keydown if event.key is 'Enter'
-                                                then halt the event then get next <button/> from the parentElement of me
-                                                then call htmx.trigger(it, 'click')">
-                                </label>
-                                <button type="button"
-                                        class="w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-green-600 hover:text-white center dark:bg-green-500"
-                                        title="Shortcut: Enter"
-                                        hx-post="/recipes/add/manual/ingredient"
-                                        hx-target="#ingredients-list"
-                                        hx-swap="beforeend"
-                                        hx-include="[name^='ingredient']">
-                                    +
-                                </button>
-                                <button type="button"
-                                        class="delete-button w-10 h-10 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center dark:bg-red-500"
-                                        hx-target="#ingredients-list"
-                                        hx-post="/recipes/add/manual/ingredient/{{$num}}"
-                                        hx-include="[name^='ingredient']">
-                                    -
-                                </button>
-                                <div class="inline-block h-4 cursor-move handle">
-                                    {{template "icon-reorder"}}
-                                </div>
-                            </li>
-                        {{- end -}}
-                    {{- end -}}
-                </ol>
-            </fieldset>
-        </div>
-        <div class="col-span-6 py-2 pb-8 pl-2 border-b border-x border-black md:col-span-4">
-            <fieldset class="text-center border-none">
-                <legend class="m-auto text-sm font-semibold text-gray-600 dark:text-gray-200">
-                    <span class="underline">Instructions</span> <sup class="text-red-600">*</sup>
-                </legend>
-                <ol id="instructions-list" class="pl-4 list-decimal">
-                    {{- if eq (len .View.Recipe.Instructions) 0 -}}
-                        {{template "add-instruction" 1}}
-                    {{- else -}}
-                        {{$inc := .View.Inc}}
-                        {{ range $i, $v := .View.Recipe.Instructions }}
-                            {{$num := call $inc $i}}
-                            <li class="pt-2 md:pl-0">
-                                <div class="flex">
-                                    <label class="w-[95%]">
-                                        <textarea required name="instruction-{{$num}}" rows="3"
-                                                  class="w-[97%] border border-gray-300 pl-1 dark:bg-gray-900 dark:border-none"
-                                                  placeholder="Instruction #{{$num}}"
-                                                  _="on keydown if event.ctrlKey and event.key === 'Enter'
-                                                        then halt the event
-                                                        then get next <div/> from the parentElement of me
-                                                        then get first <button/> in it
-                                                        then call htmx.trigger(it, 'click')">{{- $v -}}</textarea>
-                                    </label>
-                                    <div class="grid">
-                                        <div class="h-4 cursor-move handle grid place-content-center">
-                                            {{template "icon-reorder"}}
-                                        </div>
+    <section class="p-2">
+        <div class="flex justify-center">
+            <div class="card card-bordered bg-base-100 shadow-none w-full border-gray-700 xl:w-[72rem]">
+                <form class="card-body" style="padding: 0" hx-put="/recipes/{{.View.ID}}/edit"
+                      enctype="multipart/form-data">
+                    <h2 class="card-title bg-base-200 place-content-center rounded-t-2xl">
+                        <button class="btn btn-ghost"
+                                title="Back to view recipe"
+                                type="button"
+                                _="on click if confirm('Are you sure you wish to go back? Changes will not be saved.') then call history.back()">
+                            &larr;
+                        </button>
+                        <label class="w-full">
+                            <input required type="text" name="title" placeholder="Title of the recipe*"
+                                   autocomplete="off" class="input w-full btn-ghost text-center"
+                                   value="{{.View.Recipe.Name}}">
+                        </label>
+                    </h2>
+                    <div>
+                        <div class="grid md:grid-flow-col md:grid-cols-6">
+                            <div class="w-full text-center border-gray-700 md:col-span-3 md:border-r">
+                                <label class="grid gap-2 col-span-6 place-content-center w-full h-full md:col-span-4 text-sm">
+                                    <img src="/data/images/{{.View.Recipe.Image}}.jpg" alt="Image preview of the recipe." class="object-cover">
+                                    <span>
+                                        <input type="file" accept="image/*" name="image"
+                                               class="file-input file-input-sm w-full max-w-xs"
+                                               value="/data/images/{{.View.Recipe.Image}}.jpg"
+                                               _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
+                                              on dragleave or drop set the target's style.background to ''
+                                              on drop or change
+                                                make an FileReader called reader
+                                                then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end
+                                                then set {src: window.URL.createObjectURL(it)} on previous <img/>
+                                                then remove .hidden from next <button/>">
                                         <button type="button"
-                                                class="md:w-7 md:h-7 md:right-auto w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center dark:bg-green-500"
-                                                title="Shortcut: CTRL + Enter"
-                                                hx-post="/recipes/add/manual/instruction"
-                                                hx-target="#instructions-list"
-                                                hx-swap="beforeend"
-                                                hx-include="[name^='instruction']">
-                                            +
+                                                class="hidden btn btn-sm btn-error btn-outline"
+                                                _="on click
+                                                    set {value: ''} on previous <input/> then
+                                                    set {src: ''} on previous <img/> then
+                                                    add .hidden">
+                                            Delete
                                         </button>
-                                        <button type="button"
-                                                class="delete-button w-10 h-10 md:w-7 md:h-7 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center dark:bg-red-500"
-                                                hx-target="#instructions-list"
-                                                hx-post="/recipes/add/manual/instruction/{{$num}}"
-                                                hx-include="[name^='instruction']">
-                                            -
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="grid grid-cols-3 col-span-3 text-sm md:grid-flow-row md:grid-rows-4">
+                                <div class="grid col-span-6 pb-2 md:grid-cols-3 md:pb-0 md:border-gray-700 md:border-t">
+                                    <div style="display: grid;grid-auto-flow: column;"
+                                         class="grid grid-flow-col grid-cols-3 gap-2 border-b border-t border-gray-700 px-2 md:col-span-2 md:border-b-0 md:border-r md:border-t-0 md:px-0">
+                                        <div class="col-span-2 border-r border-gray-700 pb-2 md:pb-0 md:grid md:place-content-center">
+                                            <label class="form-control">
+                                                <div class="label">
+                                                    <span class="label-text">Category<sup
+                                                                class="text-red-600">*</sup></span>
+                                                </div>
+                                                <input required type="text" list="categories" name="category"
+                                                       class="input input-bordered input-sm w-48 md:w-36 lg:w-48"
+                                                       placeholder="Breakfast" value="{{.View.Recipe.Category}}">
+                                                <datalist id="categories">
+                                                    {{- range .View.Categories -}}
+                                                        <option>{{.}}</option>
+                                                    {{- end -}}
+                                                </datalist>
+                                            </label>
+                                        </div>
+                                        <div class="col-span-1 grid place-content-center pb-2 md:pb-0 md:content-center lg:md:place-content-center">
+                                            <label class="form-control w-full">
+                                                <div class="label">
+                                                    <span class="label-text">Servings</span>
+                                                </div>
+                                                <input type="number" min="1" name="yield"
+                                                       class="input input-bordered input-sm w-24 md:w-20 lg:w-24"
+                                                       value="{{if eq .View.Recipe.Yield 0}}4{{else}}{{.View.Recipe.Yield}}{{end}}">
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="relative px-2 md:grid md:content-center md:pr-0">
+                                        <label class="form-control w-full">
+                                            <div class="label">
+                                                <span class="label-text">Source<sup class="text-red-600">*</sup></span>
+                                            </div>
+                                            <input required type="text" placeholder="Source" name="source"
+                                                   class="input input-bordered input-sm md:w-28 lg:w-40 xl:w-44"
+                                                   value="{{.View.Recipe.URL}}">
+                                        </label>
+                                        <button type="button" class="tooltip tooltip-left absolute top-2 right-2"
+                                                _="on click toggle .tooltip-open"
+                                                data-tip="The source can be a website, name of a cookbook, from a relative or friend, a magazine, etc.">
+                                            {{template "icon-information"}}
                                         </button>
                                     </div>
                                 </div>
-                            </li>
-                        {{- end -}}
-                    {{- end -}}
-                </ol>
-            </fieldset>
+                                <div class="grid grid-flow-col col-span-6 border-gray-700 border-y md:grid-cols-2 md:row-span-2">
+                                    <div class="border-r border-gray-700">
+                                        <table class="table table-zebra table-xs md:h-fit">
+                                            <thead>
+                                            <tr>
+                                                <th>Time</th>
+                                                <th>h:m:s</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>Prep</td>
+                                                <td>
+                                                    <label>
+                                                        <input type="text" name="time-preparation"
+                                                               class="input input-bordered input-xs max-w-24 html-duration-picker"
+                                                               value="{{if .View.FormattedTimes.PrepEdit}}{{.View.FormattedTimes.PrepEdit}}{{else}}00:15:00{{end}}">
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Cooking</td>
+                                                <td>
+                                                    <label>
+                                                        <input type="text" name="time-cooking"
+                                                               class="input input-bordered input-xs max-w-24 html-duration-picker"
+                                                               value="{{if .View.FormattedTimes.CookEdit}}{{.View.FormattedTimes.CookEdit}}{{else}}00:30:00{{end}}">
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <table class="table table-zebra table-xs">
+                                        <thead>
+                                        <tr>
+                                            <th>Nutrition<br>(per 100g)</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>Calories</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="calories"
+                                                           autocomplete="off" placeholder="368kcal"
+                                                           class="input input-bordered input-xs max-w-24"
+                                                           value="{{.View.Recipe.Nutrition.Calories}}">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total carbs</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="total-carbohydrates"
+                                                           autocomplete="off" placeholder="35g"
+                                                           class="input input-bordered input-xs max-w-24"
+                                                           value="{{.View.Recipe.Nutrition.TotalCarbohydrates}}">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sugars</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="sugars"
+                                                           autocomplete="off" placeholder="3g"
+                                                           class="input input-bordered input-xs max-w-24"
+                                                           value="{{.View.Recipe.Nutrition.Sugars}}">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Protein</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="protein"
+                                                           autocomplete="off" placeholder="21g"
+                                                           class="input input-bordered input-xs max-w-24"
+                                                           value="{{.View.Recipe.Nutrition.Protein}}">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total fat</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="total-fat"
+                                                           autocomplete="off" placeholder="15g"
+                                                           class="input input-bordered input-xs max-w-24"
+                                                           value="{{.View.Recipe.Nutrition.TotalFat}}">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Saturated fat</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="saturated-fat"
+                                                           autocomplete="off" placeholder="1.8g"
+                                                           class="input input-bordered input-xs max-w-24"
+                                                           value="{{.View.Recipe.Nutrition.SaturatedFat}}">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cholesterol</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="cholesterol"
+                                                           autocomplete="off" placeholder="1.1mg"
+                                                           class="input input-bordered input-xs max-w-24"
+                                                           value="{{.View.Recipe.Nutrition.Cholesterol}}">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sodium</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="sodium"
+                                                           autocomplete="off" placeholder="100mg"
+                                                           class="input input-bordered input-xs max-w-24"
+                                                           value="{{.View.Recipe.Nutrition.Sodium}}">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Fiber</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="fiber"
+                                                           autocomplete="off" placeholder="8g"
+                                                           class="input input-bordered input-xs max-w-24"
+                                                           value="{{.View.Recipe.Nutrition.Fiber}}">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-span-3 h-40 md:h-full md:row-span-1">
+                                    <label>
+                                        <textarea required name="description"
+                                                  placeholder="This Thai curry chicken will make you drool."
+                                                  class="textarea w-full h-full resize-none">{{- if not (eq .View.Recipe.Description "") -}}{{.View.Recipe.Description}}{{- end -}}</textarea>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="ingredients-instructions-container"
+                         class="border-gray-700 md:border-t grid text-sm md:grid-flow-col md:col-span-6">
+                        <div class="col-span-6 border-gray-700 px-2 py-2 border-y md:col-span-2 md:border-r md:border-y-0">
+                            <h2 class="font-semibold text-center pb-2"><span class="underline">Ingredients</span><sup
+                                        class="text-red-600">*</sup></h2>
+                            <ol id="ingredients-list" class="pl-4 list-decimal">
+                                {{- if eq (len .View.Recipe.Ingredients) 0 -}}
+                                    {{template "add-ingredient" 1}}
+                                {{- else -}}
+                                    {{$inc := .View.Inc}}
+                                    {{ range $i, $v := .View.Recipe.Ingredients }}
+                                        {{$num := call $inc $i}}
+                                        <li class="pb-2">
+                                            <div class="grid grid-flow-col items-center">
+                                                <label>
+                                                    <input required type="text" name="ingredient-{{$num}}" placeholder="Ingredient #{{$num}}"
+                                                           class="input input-bordered input-sm w-full"
+                                                           value="{{$v}}"
+                                                           _="on keydown if event.key is 'Enter' then
+                                                                halt the event then get next <button/> from the parentElement of me then
+                                                                call htmx.trigger(it, 'click')">
+                                                </label>
+                                                <div class="ml-2">
+                                                    <button type="button"
+                                                            class="btn btn-square btn-sm btn-outline btn-success"
+                                                            title="Shortcut: Enter"
+                                                            hx-post="/recipes/add/manual/ingredient"
+                                                            hx-target="#ingredients-list"
+                                                            hx-swap="beforeend"
+                                                            hx-include="[name^='ingredient']">
+                                                        +
+                                                    </button>
+                                                    <button type="button"
+                                                            class="delete-button btn btn-square btn-sm btn-outline btn-error"
+                                                            hx-target="#ingredients-list"
+                                                            hx-post="/recipes/add/manual/ingredient/{{$num}}"
+                                                            hx-include="[name^='ingredient']">
+                                                        -
+                                                    </button>
+                                                    <div class="inline-block h-4 cursor-move handle">
+                                                        {{template "icon-reorder"}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {{- end -}}
+                                {{- end -}}
+                            </ol>
+                        </div>
+                        <div class="col-span-6 px-6 py-2 border-gray-700 md:rounded-bl-none md:col-span-4">
+                            <h2 class="font-semibold text-center pb-2"><span class="underline">Instructions</span><sup
+                                        class="text-red-600">*</sup></h2>
+                            <ol id="instructions-list" class="grid list-decimal">
+                                {{- if eq (len .View.Recipe.Instructions) 0 -}}
+                                    {{template "add-instruction" 1}}
+                                {{- else -}}
+                                    {{$inc := .View.Inc}}
+                                    {{ range $i, $v := .View.Recipe.Instructions }}
+                                        {{$num := call $inc $i}}
+                                        <li class="pt-2 md:pl-0">
+                                            <div class="flex">
+                                                <label class="w-11/12">
+                                                    <textarea required name="instruction-{{$num}}" rows="3"
+                                                              class="textarea textarea-bordered w-full"
+                                                              placeholder="Instruction #{{$num}}"
+                                                              _="on keydown if event.ctrlKey and event.key === 'Enter'
+                                                                then halt the event
+                                                                then get next <div/> from the parentElement of me
+                                                                then get first <button/> in it
+                                                                then call htmx.trigger(it, 'click')">{{- $v -}}</textarea>
+                                                </label>
+                                                <div class="grid ml-2">
+                                                    <button type="button"
+                                                            class="btn btn-square btn-sm btn-outline btn-success"
+                                                            title="Shortcut: CTRL + Enter"
+                                                            hx-post="/recipes/add/manual/instruction"
+                                                            hx-target="#instructions-list"
+                                                            hx-swap="beforeend"
+                                                            hx-include="[name^='instruction']">
+                                                        +
+                                                    </button>
+                                                    <button type="button"
+                                                            class="delete-button btn btn-square btn-sm btn-outline btn-error"
+                                                            hx-target="#instructions-list"
+                                                            hx-post="/recipes/add/manual/instruction/{{$num}}"
+                                                            hx-include="[name^='instruction']">
+                                                        -
+                                                    </button>
+                                                    <div class="h-4 cursor-move handle grid place-content-center">
+                                                        {{template "icon-reorder"}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {{- end -}}
+                                {{- end -}}
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="card-actions justify-end">
+                        <button type="submit" class="btn btn-primary btn-block btn-sm">Submit</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <button type="submit" class="col-span-6 p-2 font-semibold text-white bg-blue-500 hover:bg-blue-800">
-            Update
-        </button>
-    </form>
+    </section>
     {{template "load-recipes-manual-scripts"}}
 {{end}}
 
@@ -1391,7 +1135,6 @@
                             <img id="output" style="object-fit: cover" alt="Image of the recipe"
                                  class="w-full"
                                  src="{{- if .View.IsUUIDValid -}}/data/images/{{.View.Recipe.Image}}.jpg{{else}}/static/img/recipes/placeholder.webp{{end}}">
-
                         </div>
                         <div class="grid grid-cols-3 col-span-3 md:grid-flow-row md:grid-rows-4 print:grid-rows-2">
                             <div class="grid grid-flow-col col-span-6 md:row-span-1 md:border-y md:border-gray-700 print:row-span-1">
@@ -1424,7 +1167,8 @@
                                         </a>
                                         <p class="hidden print:block print:whitespace-nowrap print:overflow-hidden print:text-ellipsis print:max-w-xs">{{.View.Recipe.URL}}</p>
                                     {{- else -}}
-                                        <p>Source: {{if .View.Recipe.URL}}{{.View.Recipe.URL}}{{else}}Unknown{{end}}</p>
+                                        <p class="text-center">
+                                            Source: {{if .View.Recipe.URL}}{{.View.Recipe.URL}}{{else}}Unknown{{end}}</p>
                                     {{- end -}}
                                 </div>
                             </div>

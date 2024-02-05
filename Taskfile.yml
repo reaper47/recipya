@@ -1,0 +1,44 @@
+version: '3'
+tasks:
+  build:
+    cmds:
+      - cmd: go generate ./...
+      - cmd: go build -ldflags="-s -w" -o bin/recipya.exe main.go
+        platforms: [ windows ]
+      - cmd: go build -ldflags="-s -w" -o bin/recipya main.go
+        platforms: [ linux, darwin ]
+
+  cover:
+    cmds:
+      - cmd: go test ./... -coverprofile=coverage.out
+      - cmd: go tool cover -html=coverage.out -o coverage.html
+      - cmd: rm coverage.out
+
+  release:
+    deps:
+      - test
+      - build
+    requires:
+      vars: [ tag ]
+    cmds:
+      - go run ./releases/main.go -package github.com/reaper47/heavy-metal-notifier -tag {{.tag}}
+      - gh release create {{.tag}} ./releases/{{.tag}}/*
+
+  run:
+    deps:
+      - build
+    cmd: ./bin/recipya serve
+
+  sponsors:
+    cmds:
+      - cmd: cd ./scripts/sponsors
+      - cmd: npm install sponsorkit@0.6.1
+      - cmd: npx sponsorkit -o ../../docs/website/static/img/
+
+  test:
+    deps:
+      - build
+    cmd: go test ./...
+
+  test-no-build:
+    cmd: go test ./...

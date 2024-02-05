@@ -37,7 +37,7 @@ func TestHandlers_Integrations_Nextcloud(t *testing.T) {
 			rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uriImport, formHeader, strings.NewReader(tc.in))
 
 			assertStatus(t, rr.Code, http.StatusBadRequest)
-			assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Invalid username, password or URL.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+			assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Invalid username, password or URL.\",\"backgroundColor\":\"alert-error\"}"}`)
 		})
 	}
 

@@ -11,7 +11,7 @@ when you open a pull request against the main branch.
 Execute the following when you wish to run all the tests locally.
 
 ```bash
-make test
+task test-no-build
 ```
 
 ## Writing Tests

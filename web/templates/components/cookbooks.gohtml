@@ -7,7 +7,7 @@
 {{end}}
 
 {{define "cookbook-grid"}}
-    <section id="cookbook-{{.PageItemID}}" class="cookbook card card-compact bg-base-100 shadow-lg indicator">
+    <section id="cookbook-{{.ID}}" class="cookbook card card-compact bg-base-100 shadow-lg indicator">
         <span class="indicator-item badge badge-primary">{{.NumRecipes}}</span>
         <figure>
             <img class="rounded-t-lg w-full border-b h-32 text-center object-cover max-w-48 md:h-48 hover:bg-gray-100 hover:opacity-80"
@@ -18,7 +18,8 @@
         <div class="card-body" lang="en">
             <div class="flex">
                 <p class="font-semibold w-[18ch] break-words">{{.Title}}</p>
-                <span class="three-dots-container cursor-pointer float-right" _="on click openCookbookOptionsMenu(event)">
+                <span class="three-dots-container cursor-pointer float-right"
+                      _="on click openCookbookOptionsMenu(event)">
                     {{template "icon-dots-vertical"}}
                 </span>
             </div>
@@ -95,10 +96,9 @@
                     </p>
                 </section>
             </div>
-            <form class="sortable" hx-put="/cookbooks/{{$cookbook.PageItemID}}/reorder"
-                  hx-trigger="end" hx-swap="none">
+            <form class="sortable" hx-put="/cookbooks/{{$cookbook.ID}}/reorder" hx-trigger="end" hx-swap="none">
                 <input type='hidden' name='cookbook-id' value='{{$cookbook.ID}}'/>
-                <ul id="search-results" class="cookbooks-display grid gap-2 p-2 md:p-0 text-sm md:text-base">
+                <ul id="search-results" class="cookbooks-display grid gap-8 p-2 md:p-0 text-sm md:text-base">
                     {{template "cookbook-recipes" .}}
                 </ul>
             </form>
@@ -164,53 +164,49 @@
         {{- $cookbook := $feature.Cookbook -}}
         {{- $funcs := .Functions -}}
         {{- range $i, $r := .CookbookFeature.Cookbook.Recipes -}}
-            <li class="recipe cookbook relative grid max-w-[30rem] border bg-white rounded-md shadow-md md:min-w-[30rem] dark:bg-neutral-700">
+            <li class="indicator recipe cookbook">
                 <input type='hidden' name='recipe-id' value='{{$r.ID}}'/>
-                <div class="grid grid-cols-4">
-                    <img class="w-fit col-span-1 border-r h-[90px]" src="/data/images/{{$r.Image}}.jpg"
-                         alt="Recipe image">
-                    <div class="grid col-span-3 gap-1 p-2">
-                        <div class="grid grid-flow-col">
-                            <p class="font-semibold">{{$r.Name}}</p>
-                            <div class="grid justify-end">
-                                <div class="pb-4 pl-4 text-xs">
-                                    {{- if $feature.ShareData.IsFromHost -}}
-                                        <span title="Remove recipe from cookbook"
-                                              hx-delete="/cookbooks/{{$cookbook.ID}}/recipes/{{$r.ID}}"
-                                              hx-swap="outerHTML" hx-target="closest .recipe"
-                                              hx-confirm="Are you sure you want to remove this recipe from the cookbook?"
-                                              hx-indicator="#fullscreen-loader">
-                                      {{template "icon-delete"}}
-                                    </span>
-                                    {{- end -}}
-                                </div>
-                            </div>
+                <div class="indicator-item indicator-bottom badge badge-secondary {{if $feature.ShareData.IsFromHost}}cursor-move handle{{else}}cursor-none{{end}}">
+                    {{call $funcs.Inc $i}}
+                </div>
+                {{- if $feature.ShareData.IsFromHost -}}
+                    <div class="indicator-item badge badge-neutral h-6">
+                        <button title="Remove recipe from cookbook" class="btn btn-ghost btn-xs p-0"
+                                hx-delete="/cookbooks/{{$cookbook.ID}}/recipes/{{$r.ID}}"
+                                hx-swap="outerHTML" hx-target="closest .recipe"
+                                hx-confirm="Are you sure you want to remove this recipe from the cookbook?"
+                                hx-indicator="#fullscreen-loader">
+                            {{template "icon-delete-sm"}}
+                        </button>
+                    </div>
+                {{- end -}}
+                <div class="card card-side card-bordered card-compact bg-base-100 shadow-lg w-[30rem]">
+                    <figure class="w-32">
+                        <img src="/data/images/{{$r.Image}}.jpg" alt="Recipe image" class="object-cover"/>
+                    </figure>
+                    <div class="card-body">
+                        <h2 class="card-title">{{$r.Name}}</h2>
+                        <p></p>
+                        <div>
+                            <p class="text-sm pb-1">Category:</p>
+                            <div class="badge badge-primary badge-">{{$r.Category}}</div>
                         </div>
-                        <div class="text-xs">
-                           <span class="w-fit leading-none flex items-center justify-center p-2 text-blue-700 bg-blue-100 border border-blue-300 rounded-full dark:border-gray-800">
-                              {{$r.Category}}
-                           </span>
+                        <div class="card-actions justify-end">
+                            {{- if $feature.ShareData.IsFromHost -}}
+                                <button class="btn btn-outline btn-sm"
+                                        hx-get="/recipes/{{.ID}}" hx-target="#content"
+                                        hx-swap="innerHTML" hx-push-url="true">
+                                    View
+                                </button>
+                            {{- else -}}
+                                <button class="btn btn-outline btn-sm"
+                                        hx-get="/r/{{.ID}}?cookbook={{$cookbook.ID}}" hx-target="#content"
+                                        hx-swap="innerHTML" hx-push-url="true">
+                                    View
+                                </button>
+                            {{- end -}}
                         </div>
                     </div>
-                </div>
-                <div class="flex border-t dark:border-gray-800">
-                    {{- if $feature.ShareData.IsFromHost -}}
-                        <button class="w-full center hover:bg-gray-800 hover:text-white hover:dark:bg-neutral-600 hover:rounded-b-md"
-                                hx-get="/recipes/{{.ID}}" hx-target="#content"
-                                hx-swap="innerHTML" hx-push-url="true">
-                            View
-                        </button>
-                    {{- else -}}
-                        <button class="w-full center hover:bg-gray-800 hover:text-white hover:dark:bg-neutral-600 hover:rounded-b-md"
-                                hx-get="/r/{{.ID}}?cookbook={{$cookbook.ID}}" hx-target="#content"
-                                hx-swap="innerHTML" hx-push-url="true">
-                            View
-                        </button>
-                    {{- end -}}
-
-                    <p class="justify-self-end px-4 select-none {{if $feature.ShareData.IsFromHost}}cursor-move handle{{else}}cursor-none{{end}}">
-                        {{call $funcs.Inc $i}}
-                    </p>
                 </div>
             </li>
         {{end}}
@@ -233,7 +229,7 @@
 {{define "cookbooks-index"}}
     <title hx-swap-oob="true">Cookbooks | Recipya</title>
 
-    <dialog id="share-dialog" class="p-4 border-4 border-black min-w-[15rem]">
+    <dialog id="share_dialog" class="p-4 border-4 border-black min-w-[15rem]">
         <div id="share-dialog-result" class="pb-4"></div>
         <form method="dialog">
             <button class="w-full p-1 font-semibold text-white bg-blue-500 border-2 border-black rounded-lg hover:bg-blue-800">
@@ -264,7 +260,8 @@
             {{- end -}}
         </div>
         <div class="min-h-[79vh]">
-            <div id="cookbooks-container" class="grid justify-center">
+            <div id="cookbooks-container"
+                 class="cookbooks-display grid justify-center {{if $isViewModeGrid}}grid gap-4 p-4 text-sm place-items-center md:m-auto md:max-w-7xl sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5{{end}}">
                 {{- if $isViewModeGrid -}}
                     {{template "cookbooks-grid" .}}
                 {{- else -}}
@@ -307,19 +304,20 @@
     </script>
     <script defer>
         document.addEventListener('click', (event) => {
-            if (cookbook_menu_container){
+            const container = document.querySelector('#cookbook_menu_container');
+            if (container) {
                 if (event.target.classList.contains('three-dots-container') || ["svg", "path"].includes(event.target.tagName)) {
                     return;
                 }
-                cookbook_menu_container.classList.add("hidden");
-                htmx.process(cookbook_menu_container);
+                container.classList.add("hidden");
+                htmx.process(container);
             }
         });
     </script>
 {{end}}
 
 {{define "cookbooks-list"}}
-    <div class="cookbooks-display grid gap-4 p-2 text-sm md:text-base place-items-center">
+    <div class="cookbooks-display grid gap-8 p-2 text-sm md:text-base place-items-center">
         {{- $page := .Pagination.Selected -}}
         {{- $feature := .CookbookFeature -}}
         {{ range $i, $book := $feature.Cookbooks }}
@@ -329,7 +327,8 @@
 {{end}}
 
 {{define "cookbook-list"}}
-    <div id="cookbook-{{.ID}}" class="cookbook card sm:card-side card-compact bg-base-100 shadow-md max-w-[30rem] border indicator dark:border-slate-600">
+    <div id="cookbook-{{.ID}}"
+         class="cookbook card sm:card-side card-compact bg-base-100 shadow-md max-w-[30rem] border indicator dark:border-slate-600">
         <span class="indicator-item indicator-start badge badge-primary select-none">{{.NumRecipes}}</span>
         <span class="three-dots-container indicator-item indicator-end badge badge-neutral rounded-md p-1 select-none cursor-pointer hover:bg-secondary"
               _="on click openCookbookOptionsMenu(event)">
