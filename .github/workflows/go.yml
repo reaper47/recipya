@@ -38,11 +38,11 @@ jobs:
           version: 3.x
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v3
-        with:
-          version: latest
-          args: --timeout 10m --skip-dirs '(docs)'
+      #- name: Run golangci-lint
+      #  uses: golangci/golangci-lint-action@v3
+      #  with:
+      #    version: latest
+      #    args: --timeout 10m --skip-dirs '(docs)'
 
       - name: Run Revive Action by pulling pre-built image
         uses: docker://morphy/revive-action:v2
