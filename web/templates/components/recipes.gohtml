@@ -1,31 +1,35 @@
 {{define "add-ingredient"}}
     <li class="pb-2">
-        <label>
-            <input type="text" name="ingredient-{{.}}" placeholder="Ingredient #{{.}}" required
-                   {{if gt . 1}}autofocus{{end}}
-                   class="w-8/12 py-1 pl-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-900 dark:border-none dark:text-gray-200"
-                   _="on keydown if event.key is 'Enter'
+        <div class="grid grid-flow-col items-center">
+            <label>
+                <input required type="text" name="ingredient-{{.}}" placeholder="Ingredient #{{.}}"
+                       {{if gt . 1}}autofocus{{end}}
+                       class="input input-bordered input-sm w-full"
+                       _="on keydown if event.key is 'Enter'
                         then halt the event then get next <button/> from the parentElement of me
                         then call htmx.trigger(it, 'click')">
-        </label>
-        <button type="button"
-                class="w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-green-600 hover:text-white center dark:bg-green-500"
-                title="Shortcut: Enter"
-                hx-post="/recipes/add/manual/ingredient"
-                hx-target="#ingredients-list"
-                hx-swap="beforeend"
-                hx-include="[name^='ingredient']">
-            +
-        </button>
-        <button type="button"
-                class="delete-button w-10 h-10 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center dark:bg-red-500"
-                hx-target="#ingredients-list"
-                hx-post="/recipes/add/manual/ingredient/{{.}}"
-                hx-include="[name^='ingredient']">
-            -
-        </button>
-        <div class="inline-block h-4 cursor-move handle">
-            {{template "icon-reorder"}}
+            </label>
+            <div class="ml-2">
+                <button type="button"
+                        class="btn btn-square btn-sm btn-outline btn-success"
+                        title="Shortcut: Enter"
+                        hx-post="/recipes/add/manual/ingredient"
+                        hx-target="#ingredients-list"
+                        hx-swap="beforeend"
+                        hx-include="[name^='ingredient']">
+                    +
+                </button>
+                <button type="button"
+                        class="delete-button btn btn-square btn-sm btn-outline btn-error"
+                        hx-target="#ingredients-list"
+                        hx-post="/recipes/add/manual/ingredient/{{.}}"
+                        hx-include="[name^='ingredient']">
+                    -
+                </button>
+                <div class="inline-block h-4 cursor-move handle">
+                    {{template "icon-reorder"}}
+                </div>
+            </div>
         </div>
     </li>
 {{end}}
@@ -33,10 +37,10 @@
 {{define "add-instruction"}}
     <li class="pt-2 md:pl-0">
         <div class="flex">
-            <label class="w-[95%]">
+            <label class="w-11/12">
                 <textarea required name="instruction-{{.}}" rows="3"
                           {{if gt . 1}}autofocus{{end}}
-                          class="w-[97%] border border-gray-300 pl-1 dark:bg-gray-900 dark:border-none"
+                          class="textarea textarea-bordered w-full"
                           placeholder="Instruction #{{.}}"
                           _="on keydown if event.ctrlKey and event.key === 'Enter'
                             then halt the event
@@ -44,12 +48,9 @@
                             then get first <button/> in it
                             then call htmx.trigger(it, 'click')"></textarea>
             </label>
-            <div class="grid">
-                <div class="h-4 cursor-move handle grid place-content-center">
-                    {{template "icon-reorder"}}
-                </div>
+            <div class="grid ml-2">
                 <button type="button"
-                        class="md:w-7 md:h-7 md:right-auto w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center dark:bg-green-500"
+                        class="btn btn-square btn-sm btn-outline btn-success"
                         title="Shortcut: CTRL + Enter"
                         hx-post="/recipes/add/manual/instruction"
                         hx-target="#instructions-list"
@@ -58,12 +59,15 @@
                     +
                 </button>
                 <button type="button"
-                        class="delete-button w-10 h-10 md:w-7 md:h-7 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center dark:bg-red-500"
+                        class="delete-button btn btn-square btn-sm btn-outline btn-error"
                         hx-target="#instructions-list"
                         hx-post="/recipes/add/manual/instruction/{{.}}"
                         hx-include="[name^='instruction']">
                     -
                 </button>
+                <div class="h-4 cursor-move handle grid place-content-center">
+                    {{template "icon-reorder"}}
+                </div>
             </div>
         </div>
     </li>
@@ -73,164 +77,154 @@
     <title hx-swap-oob="true">Add Recipe | Recipya</title>
 
     <div class="grid w-full h-full grid-cols-1 gap-4 p-4 md:grid-cols-2 md:grid-rows-2 xl:m-auto xl:max-w-6xl md:grid-flow-col">
-        <div class="shadow-lg rounded-xl h-96 dark:shadow-none dark:bg-gray-600">
-            <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes/new/manual.webp"
-                 alt="Writing on a piece of paper with a traditional pen."/>
-            <div class="h-40 px-6 py-4">
-                <div class="mb-2 text-xl font-semibold">Manual</div>
+        <div class="card card-compact shadow-lg rounded-xl h-96 bg-base-100">
+            <figure>
+                <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes/new/manual.webp"
+                     alt="Writing on a piece of paper with a traditional pen."/>
+            </figure>
+            <div class="card-body">
+                <h2 class="card-title">Manual</h2>
                 <p>Add a new recipe by filling out its content manually.</p>
-            </div>
-            <hr class="dark:border dark:border-gray-800">
-            <div class="px-6 pt-4 pb-2">
-                <button class="w-full border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
-                        hx-get="/recipes/add/manual" hx-target="#content" hx-push-url="true">
-                    Fill In
-                </button>
+                <hr class="dark:border dark:border-gray-800">
+                <div class="card-actions justify-end">
+                    <button class="btn btn-outline btn-sm btn-block"
+                            hx-get="/recipes/add/manual" hx-target="#content" hx-push-url="true">
+                        Fill In
+                    </button>
+                </div>
             </div>
         </div>
 
-        <div class="shadow-lg rounded-xl h-96 dark:shadow-none dark:bg-gray-600">
-            <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes/new/import.webp"
-                 alt="Writing on a piece of paper with a traditional pen."/>
-            <div class="h-40 px-6 py-4">
-                <div class="mb-2 text-xl font-semibold">Website</div>
+        <div class="card card-compact shadow-lg rounded-xl h-96 bg-base-100">
+            <figure>
+                <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes/new/import.webp"
+                     alt="Writing on a piece of paper with a traditional pen."/>
+            </figure>
+            <div class="card-body">
+                <h2 class="card-title">Website</h2>
                 <p>
                     Fetch a recipe from one of the
-                    <button id="search-button" class="underline"
-                            hx-get="/recipes/supported-websites"
-                            hx-target="#search-results"
-                            onclick="document.querySelector('#supported-websites-dialog').showModal()"
-                    >
-                        supported
+                    <button class="underline" hx-get="/recipes/supported-websites" hx-target="#search-results"
+                            onclick="supported_websites_dialog.showModal()">supported
                     </button>
                     websites. If the website is unsupported, the software will try to extract the recipe, but there
                     is no guarantee of success.
                 </p>
-            </div>
-            <hr class="dark:border dark:border-gray-800">
-            <div class="px-6 pt-4 pb-2">
-                <button class="w-full border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
-                        hx-target="#content"
-                        hx-push-url="/recipes/add/unsupported-website"
-                        hx-prompt="Enter the recipe's URL"
-                        hx-post="/recipes/add/website"
-                        hx-indicator="#fullscreen-loader">
-                    Fetch
-                </button>
+                <hr class="dark:border dark:border-gray-800">
+                <div class="card-actions justify-end">
+                    <button class="btn btn-outline btn-sm btn-block"
+                            hx-target="#content" hx-push-url="/recipes/add/unsupported-website"
+                            hx-prompt="Enter the recipe's URL" hx-post="/recipes/add/website"
+                            hx-indicator="#fullscreen-loader">
+                        Fetch
+                    </button>
+                </div>
             </div>
         </div>
 
-        <dialog id="supported-websites-dialog" class="p-4 h-2/3 dark:bg-gray-600 rounded-lg">
-            <h3 class="flex justify-between items-center mb-1 dark:text-gray-200">
-                <label class="w-11/12">
-                    <input class="text-input"
-                           type="search" name="search" placeholder="Search a website" autocomplete="off"
-                           _="on input
-                            show <tbody>tr/> in next <table/>
-                            when its textContent.toLowerCase() contains my value.toLowerCase()">
-                </label>
-                <button type="button" class="hover:bg-gray-800 hover:text-white px-2 border rounded"
-                        onclick="document.querySelector('#supported-websites-dialog').close()">
-                    X
-                </button>
-            </h3>
-
-            <table class="border-collapse mt-2 dark:text-gray-200">
-                <thead class="dark:text-gray-900">
-                <tr class="bg-blue-100 text-center">
-                    <th class="border px-4 py-1 w-4 dark:border-gray-800">Number</th>
-                    <th class="border px-4 py-1 w-72">Website</th>
-                </tr>
-                </thead>
-                <tbody id="search-results"></tbody>
-            </table>
+        <dialog id="supported_websites_dialog" class="modal">
+            <div class="modal-box h-2/3">
+                <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                </form>
+                <h3 class="mb-1">
+                    <label>
+                        <input type="search" placeholder="Search a website" class="input input-bordered w-11/12"
+                               _="on input show <tbody>tr/> in next <table/> when its textContent.toLowerCase() contains my value.toLowerCase()">
+                    </label>
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="table table-zebra table-sm">
+                        <thead>
+                        <tr class="bg-blue-100 text-center">
+                            <th class="border py-1">Number</th>
+                            <th class="border py-1">Website</th>
+                        </tr>
+                        </thead>
+                        <tbody id="search-results"></tbody>
+                    </table>
+                </div>
+            </div>
         </dialog>
 
-        <div class="shadow-lg rounded-xl h-96 dark:shadow-none dark:bg-gray-600">
-            <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes/new/camera.webp"
-                 alt="Writing on a piece of paper with a traditional pen."/>
-            <div class="h-40 px-6 py-4">
-                <div class="mb-2 text-xl font-semibold">Scan</div>
-                <p>
-                    Upload an image of the recipe you want to add or take a picture using
-                    your device's camera.
-                </p>
-            </div>
-            <hr class="dark:border dark:border-gray-800">
-            <form id="ocr-form" class="px-6 pt-4 pb-2"
-                  hx-post="/recipes/add/ocr"
-                  hx-encoding="multipart/form-data"
-                  hx-indicator="#fullscreen-loader"
-                  hx-swap="none">
-                <input hidden type="file" id="ocr-file-picker" name="image">
-                <button class="w-full border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
-                        type="button"
-                        onclick="handleOCR()">
-                    Upload
-                </button>
-            </form>
-        </div>
-
-        <div class="shadow-lg rounded-xl h-96 dark:shadow-none dark:bg-gray-600">
-            <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes/new/schema.webp"
-                 alt="Writing on a piece of paper with a traditional pen."/>
-            <div class="h-40 px-6 py-4">
-                <div class="mb-2 text-xl font-semibold">Import</div>
-                <p>
-                    Import recipes that adhere to the <a href="https://schema.org/Recipe" target="_blank" class="link">recipe schema</a>
-                    standard, the <a href="https://www.mastercook.com/" target="_blank" class="link">MasterCook</a> file format, or as plain
-                    text files.
-                </p>
-            </div>
-            <hr class="dark:border dark:border-gray-800">
-            <div class="px-6 pt-4 pb-2">
-                <button class="flex justify-center w-full border-2 border-gray-800 rounded-lg hover:bg-gray-800 hover:text-white center"
-                        hx-indicator="#fullscreen-loader"
-                        onclick="document.querySelector('#import-recipes-dialog').showModal()">
-                    Import
-                </button>
-            </div>
-        </div>
-
-        <dialog id="import-recipes-dialog" class="p-4 dark:bg-gray-600 rounded-lg dark:text-gray-200">
-            <h3 class="flex justify-between items-center mb-4">
-                <span class="flex font-semibold">Import Recipes</span>
-                <button type="button" class="hover:bg-gray-800 hover:text-white px-2 border rounded"
-                        onclick="document.querySelector('#import-recipes-dialog').close()">
-                    X
-                </button>
-            </h3>
-
-            <form hx-post="/recipes/add/import" enctype="multipart/form-data"
-                  hx-indicator="#fullscreen-loader"
-                  hx-swap="none">
-                <div class="grid mb-4">
-                    <label for="import-dialog-file" class="text-sm font-semibold mb-1">
-                        Choose files in the .json, .mxp or .zip format.
-                    </label>
-                    <input id="import-dialog-file" type="file" name="files" accept=".json,.zip,.mxp" multiple
-                           class="p-2 border border-gray-300 rounded-lg shadow focus:ring-2 focus:ring-purple-600 dark:bg-gray-900 dark:border-none">
+        <div class="card card-compact shadow-lg rounded-xl h-96 bg-base-100">
+            <figure>
+                <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes/new/camera.webp"
+                     alt="Writing on a piece of paper with a traditional pen."/>
+            </figure>
+            <div class="card-body">
+                <h2 class="card-title">Scan</h2>
+                <p>Upload an image of the recipe you want to add or take a picture using your device's camera.</p>
+                <hr class="dark:border dark:border-gray-800">
+                <div class="card-actions">
+                    <form id="ocr-form" class="w-full" hx-post="/recipes/add/ocr"
+                          hx-encoding="multipart/form-data" hx-indicator="#fullscreen-loader" hx-swap="none">
+                        <input hidden type="file" id="ocr_file_picker" name="image">
+                        <button class="btn btn-outline btn-sm btn-block" type="button" onclick="handleOCR()">
+                            Upload
+                        </button>
+                    </form>
                 </div>
-                <button type="submit"
-                        class="w-full p-2 font-semibold text-white bg-blue-500 border rounded-lg hover:bg-blue-800 dark:border-gray-800"
-                        onclick="document.querySelector('#import-recipes-dialog').close()"
-                >
-                    Submit
-                </button>
-            </form>
+            </div>
+        </div>
+
+        <div class="card card-compact shadow-lg rounded-xl h-96 bg-base-100">
+            <figure>
+                <img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes/new/schema.webp"
+                     alt="Writing on a piece of paper with a traditional pen."/>
+            </figure>
+            <div class="card-body">
+                <h2 class="card-title">Import</h2>
+                <p>
+                    Import recipes that adhere to the
+                    <a href="https://schema.org/Recipe" target="_blank" class="link">recipe schema</a>
+                    standard, the <a href="https://www.mastercook.com/" target="_blank" class="link">MasterCook</a> file
+                    format, or as plain text files.
+                </p>
+                <hr class="dark:border dark:border-gray-800">
+                <div class="card-actions">
+                    <button class="btn btn-outline btn-sm btn-block" onclick="import_recipes_dialog.showModal()">
+                        Import
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <dialog id="import_recipes_dialog" class="modal">
+            <div class="modal-box">
+                <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                </form>
+                <h3 class="font-bold text-lg">Import Recipes</h3>
+                <form class="py-4" hx-post="/recipes/add/import" enctype="multipart/form-data"
+                      hx-indicator="#fullscreen-loader" hx-swap="none">
+                    <div class="grid mb-4">
+                        <label for="import-dialog-file" class="text-sm font-semibold mb-1">
+                            Choose files in the .json, .mxp or .zip format.
+                        </label>
+                        <input id="import-dialog-file" type="file" name="files" accept=".json,.zip,.mxp" multiple
+                               class="p-2 border border-gray-300 rounded-lg shadow focus:ring-2 focus:ring-purple-600 dark:bg-gray-900 dark:border-none">
+                    </div>
+                    <button type="submit"
+                            class="w-full p-2 font-semibold text-white bg-blue-500 border rounded-lg hover:bg-blue-800 dark:border-gray-800"
+                            onclick="import_recipes_dialog.close()"
+                    >
+                        Submit
+                    </button>
+                </form>
+            </div>
         </dialog>
     </div>
+
     <script defer>
         async function handleOCR() {
-            const input = document.querySelector("#ocr-file-picker");
-
             const filePromise = new Promise((resolve) => {
-                input.addEventListener("change", () => {
-                    resolve(input.files[0]);
+                ocr_file_picker.addEventListener("change", () => {
+                    resolve(ocr_file_picker.files[0]);
                 }, {once: true});
             });
 
-            input.click();
+            ocr_file_picker.click();
             await filePromise;
             htmx.trigger("#ocr-form", "submit");
         }
@@ -240,672 +234,637 @@
 {{define "add-recipe-manual"}}
     <title hx-swap-oob="true">Manual | Recipya</title>
 
-    <form enctype="multipart/form-data"
-          class="grid max-w-6xl grid-cols-6 m-auto mt-4 mb-4 dark:bg-gray-600 dark:rounded-t-lg"
-          hx-post="/recipes/add/manual"
-          hx-indicator="#fullscreen-loader">
-        <div class="col-span-6 text-lg border border-gray-900 rounded-t-lg md:text-xl dark:border-gray-800">
-            <label for="title" class="hidden"></label>
-            <input type="text" name="title" id="title" placeholder="Title of the recipe*" required autocomplete="off"
-                   class="w-full py-2 bg-gray-50 font-semibold text-center text-gray-600 placeholder-gray-400 rounded-t-lg dark:bg-gray-900 dark:text-gray-200">
-        </div>
-
-        <label class="grid col-span-6 place-content-center w-full h-96 border-b border-x border-black md:border-r-0 md:col-span-4 text-sm dark:border-gray-800">
-            <img src="" alt="Image preview of the recipe." class="h-full">
-            <span>
-                <input type="file" accept="image/*" name="image"
-                       _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
-                      on dragleave or drop set the target's style.background to ''
-                      on drop or change
-                        make an FileReader called reader
-                        then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end
-                        then set {src: window.URL.createObjectURL(it)} on previous <img/>
-                        then remove .hidden from next <button/>">
-                <button type="button"
-                        class="px-2 bg-red-300 border border-gray-800 rounded-lg hidden hover:bg-red-600 hover:text-white dark:border-gray-800 dark:bg-red-600 dark:hover:bg-red-700"
-                        _="on click
-                            set {value: ''} on previous <input/>
-                            then set {src: ''} on previous <img/>
-                            then add .hidden">
-                    Delete
-                </button>
-            </span>
-        </label>
-
-        <div class="grid grid-flow-col col-span-6 border-b border-l border-black md:border-l md:grid-flow-row md:col-span-2 md:grid md:border-r md:border-b-0 dark:border-gray-800 print:border-b">
-            <div class="col-span-2 p-2 border-r border-black md:col-span-3 md:grid md:place-items-center md:border-r-0 dark:border-gray-800">
-                <label class="grid place-content-center p-2 font-medium text-sm text-gray-900 bg-blue-100 border border-blue-300 rounded-full w-fit">
-                    <input type="text" list="categories" name="category"
-                           class="bg-transparent text-center focus:outline-none" placeholder="Breakfast*" required>
-                    <datalist id="categories">
-                        {{- range .View.Categories -}}
-                            <option>{{.}}</option>
-                        {{- end -}}
-                    </datalist>
-                </label>
+    <section class="p-2">
+        <div class="flex justify-center">
+            <div class="card card-bordered bg-base-100 shadow-none w-full border-gray-700 xl:w-[72rem]">
+                <form class="card-body" style="padding: 0" enctype="multipart/form-data"
+                      hx-post="/recipes/add/manual" hx-indicator="#fullscreen-loader">
+                    <h2 class="card-title bg-base-200 place-content-center rounded-t-2xl">
+                        <label class="w-full">
+                            <input required type="text" name="title" placeholder="Title of the recipe*"
+                                   autocomplete="off" class="input w-full btn-ghost text-center">
+                        </label>
+                    </h2>
+                    <div>
+                        <div class="grid md:grid-flow-col md:grid-cols-6">
+                            <div class="w-full text-center border-gray-700 md:col-span-3 md:border-r">
+                                <label class="grid gap-2 col-span-6 place-content-center w-full h-full md:col-span-4 text-sm">
+                                    <img src="" alt="Image preview of the recipe." class="object-cover">
+                                    <span>
+                                        <input type="file" accept="image/*" name="image"
+                                               class="file-input file-input-sm w-full max-w-xs"
+                                               _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
+                                              on dragleave or drop set the target's style.background to ''
+                                              on drop or change
+                                                make an FileReader called reader
+                                                then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end
+                                                then set {src: window.URL.createObjectURL(it)} on previous <img/>
+                                                then remove .hidden from next <button/>">
+                                        <button type="button"
+                                                class="hidden btn btn-sm btn-error btn-outline"
+                                                _="on click
+                                                    set {value: ''} on previous <input/> then
+                                                    set {src: ''} on previous <img/> then
+                                                    add .hidden">
+                                            Delete
+                                        </button>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="grid grid-cols-3 col-span-3 text-sm md:grid-flow-row md:grid-rows-4">
+                                <div class="grid col-span-6 pb-2 md:grid-cols-3 md:pb-0 md:border-gray-700 md:border-t">
+                                    <div style="display: grid;grid-auto-flow: column;"
+                                         class="grid grid-flow-col grid-cols-3 gap-2 border-b border-t border-gray-700 px-2 md:col-span-2 md:border-b-0 md:border-r md:border-t-0 md:px-0">
+                                        <div class="col-span-2 border-r border-gray-700 pb-2 md:pb-0 md:grid md:place-content-center">
+                                            <label class="form-control">
+                                                <div class="label">
+                                                    <span class="label-text">Category<sup
+                                                                class="text-red-600">*</sup></span>
+                                                </div>
+                                                <input required type="text" list="categories" name="category"
+                                                       class="input input-bordered input-sm w-48 md:w-36 lg:w-48"
+                                                       placeholder="Breakfast">
+                                                <datalist id="categories">
+                                                    {{- range .View.Categories -}}
+                                                        <option>{{.}}</option>
+                                                    {{- end -}}
+                                                </datalist>
+                                            </label>
+                                        </div>
+                                        <div class="col-span-1 grid place-content-center pb-2 md:pb-0 md:content-center lg:md:place-content-center">
+                                            <label class="form-control w-full">
+                                                <div class="label">
+                                                    <span class="label-text">Servings</span>
+                                                </div>
+                                                <input type="number" min="1" name="yield" value="1"
+                                                       class="input input-bordered input-sm w-24 md:w-20 lg:w-24">
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="relative px-2 md:grid md:content-center md:pr-0">
+                                        <label class="form-control w-full">
+                                            <div class="label">
+                                                <span class="label-text">Source<sup class="text-red-600">*</sup></span>
+                                            </div>
+                                            <input required type="text" placeholder="Source" name="source"
+                                                   class="input input-bordered input-sm md:w-28 lg:w-40 xl:w-44">
+                                        </label>
+                                        <button type="button" class="tooltip tooltip-left absolute top-2 right-2"
+                                                _="on click toggle .tooltip-open"
+                                                data-tip="The source can be a website, name of a cookbook, from a relative or friend, a magazine, etc.">
+                                            {{template "icon-information"}}
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="grid grid-flow-col col-span-6 border-gray-700 border-y md:grid-cols-2 md:row-span-2">
+                                    <div class="border-r border-gray-700">
+                                        <table class="table table-zebra table-xs md:h-fit">
+                                            <thead>
+                                            <tr>
+                                                <th>Time</th>
+                                                <th>h:m:s</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>Prep</td>
+                                                <td>
+                                                    <label>
+                                                        <input type="text" name="time-preparation" value="00:15:00"
+                                                               class="input input-bordered input-xs max-w-24 html-duration-picker">
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Cooking</td>
+                                                <td>
+                                                    <label>
+                                                        <input type="text" name="time-cooking" value="00:30:00"
+                                                               class="input input-bordered input-xs max-w-24 html-duration-picker">
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <table class="table table-zebra table-xs">
+                                        <thead>
+                                        <tr>
+                                            <th>Nutrition<br>(per 100g)</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>Calories</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="calories"
+                                                           autocomplete="off" placeholder="368kcal"
+                                                           class="input input-bordered input-xs max-w-24">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total carbs</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="total-carbohydrates"
+                                                           autocomplete="off" placeholder="35g"
+                                                           class="input input-bordered input-xs max-w-24">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sugars</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="sugars"
+                                                           autocomplete="off" placeholder="3g"
+                                                           class="input input-bordered input-xs max-w-24">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Protein</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="protein"
+                                                           autocomplete="off" placeholder="21g"
+                                                           class="input input-bordered input-xs max-w-24">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total fat</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="total-fat"
+                                                           autocomplete="off" placeholder="15g"
+                                                           class="input input-bordered input-xs max-w-24">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Saturated fat</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="saturated-fat"
+                                                           autocomplete="off" placeholder="1.8g"
+                                                           class="input input-bordered input-xs max-w-24">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cholesterol</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="cholesterol"
+                                                           autocomplete="off" placeholder="1.1mg"
+                                                           class="input input-bordered input-xs max-w-24">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sodium</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="sodium"
+                                                           autocomplete="off" placeholder="100mg"
+                                                           class="input input-bordered input-xs max-w-24">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Fiber</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="fiber"
+                                                           autocomplete="off" placeholder="8g"
+                                                           class="input input-bordered input-xs max-w-24">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-span-3 h-40 md:h-full md:row-span-1">
+                                    <label>
+                                        <textarea required name="description"
+                                                  placeholder="This Thai curry chicken will make you drool."
+                                                  class="textarea w-full h-full resize-none"></textarea>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="ingredients-instructions-container"
+                         class="border-gray-700 md:border-t grid text-sm md:grid-flow-col md:col-span-6">
+                        <div class="col-span-6 border-gray-700 px-2 py-2 border-y md:col-span-2 md:border-r md:border-y-0">
+                            <h2 class="font-semibold text-center pb-2"><span class="underline">Ingredients</span><sup
+                                        class="text-red-600">*</sup></h2>
+                            <ol id="ingredients-list" class="pl-4 list-decimal">
+                                {{template "add-ingredient" 1}}
+                            </ol>
+                        </div>
+                        <div class="col-span-6 px-6 py-2 border-gray-700 md:rounded-bl-none md:col-span-4">
+                            <h2 class="font-semibold text-center pb-2"><span class="underline">Instructions</span><sup
+                                        class="text-red-600">*</sup></h2>
+                            <ol id="instructions-list" class="grid list-decimal">
+                                {{template "add-instruction" 1}}
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="card-actions justify-end">
+                        <button class="btn btn-primary btn-block btn-sm">Submit</button>
+                    </div>
+                </form>
             </div>
-
-            <div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t dark:border-gray-800">
-                <div>
-                    <label for="yield">Yields</label>
-                    <input id="yield" type="number" min="1" name="yield" value="4"
-                           class="w-24 rounded bg-gray-100 p-2 dark:bg-gray-900">
-                    <span>servings</span>
-                </div>
-            </div>
-
-            <div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t dark:border-gray-800">
-                <label class="w-4/5">
-                    <input id="source" type="text" placeholder="Source*" name="source"
-                           class="w-full rounded bg-gray-100 p-2 dark:bg-gray-900" required>
-                </label>
-                <p class="px-4">
-                    The source can be a website, name of a cookbook, from a relative or friend, a magazine, etc.
-                </p>
-            </div>
         </div>
-
-        <div class="col-span-6 border-b border-x border-black md:col-span-4 dark:border-gray-800">
-            <div class="flex flex-col p-2">
-                <label for="description" class="text-sm font-semibold text-gray-600 dark:text-gray-200">
-                    Description <sup class="text-red-600">*</sup>
-                </label>
-                <textarea id="description" name="description" rows="10"
-                          placeholder="This Thai curry chicken will make you drool." required
-                          class="p-2 border border-gray-300 rounded-t-lg dark:bg-gray-800 dark:border-none"
-                ></textarea>
-            </div>
-        </div>
-
-        <div class="col-span-3 border border-black md:border-l-0 md:col-span-1 dark:border-gray-800">
-            <div class="inline-block min-w-full overflow-x-auto align-middle">
-                <div class="overflow-hidden border-gray-200">
-                    <table class="min-w-full text-xs divide-y divide-gray-200 dark:text-gray-200 dark:divide-slate-600">
-                        <thead class="h-12 font-medium tracking-wider text-white bg-gray-800">
-                        <tr>
-                            <th scope="col" class="text-right md:text-center">
-                                <p>Nutrition<br>(per 100g)</p>
-                            </th>
-                            <th scope="col" class="text-center">
-                                <p>Amount<br>(optional)</p>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600">
-                        <tr>
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Calories:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="calories" class="hidden"></label>
-                                <input type="text" id="calories" name="calories"
-                                       autocomplete="off" placeholder="368kcal"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr class="bg-gray-100 dark:bg-slate-700">
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Total carbs:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="total-carbohydrates" class="hidden"></label>
-                                <input type="text" id="total-carbohydrates" name="total-carbohydrates"
-                                       autocomplete="off" placeholder="35g"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Sugars:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="sugars" class="hidden"></label>
-                                <input type="text" id="sugars" name="sugars"
-                                       autocomplete="off" placeholder="3g"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr class="bg-gray-100 dark:bg-slate-700">
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Protein:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="protein" class="hidden"></label>
-                                <input type="text" id="protein" name="protein"
-                                       autocomplete="off" placeholder="21g"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Total fat:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="total-fat" class="hidden"></label>
-                                <input type="text" id="total-fat" name="total-fat"
-                                       autocomplete="off" placeholder="15g"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr class="bg-gray-100 dark:bg-slate-700">
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Saturated fat:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="saturated-fat" class="hidden"></label>
-                                <input type="text" id="saturated-fat" name="saturated-fat"
-                                       autocomplete="off" placeholder="1.8g"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Cholesterol:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="cholesterol" class="hidden"></label>
-                                <input type="text" id="cholesterol" name="cholesterol"
-                                       autocomplete="off" placeholder="1.1mg"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr class="bg-gray-100 dark:bg-slate-700">
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Sodium:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="sodium" class="hidden"></label>
-                                <input type="text" id="sodium" name="sodium"
-                                       autocomplete="off" placeholder="100mg"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Fiber:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="fiber" class="hidden"></label>
-                                <input type="text" id="fiber" name="fiber"
-                                       autocomplete="off" placeholder="8g"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-span-3 border-b border-r border-black md:col-span-1">
-            <div class="inline-block min-w-full overflow-x-auto align-middle">
-                <div class="overflow-hidden border-gray-200">
-                    <table id="times-table"
-                           class="min-w-full text-xs divide-y divide-gray-200 dark:text-gray-200 dark:divide-slate-600">
-                        <thead class="h-12 font-medium tracking-wider text-white bg-gray-800 border-l dark:border-l-gray-600">
-                        <tr>
-                            <th scope="col" class="text-right">Time</th>
-                            <th scope="col" class="text-center">h:m:s</th>
-                        </tr>
-                        </thead>
-                        <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600">
-                        <tr>
-                            <td class="py-2">Preparation:</td>
-                            <td class="text-center">
-                                <label for="time-preparation" class="hidden"></label>
-                                <input type="text" id="time-preparation" name="time-preparation" value="00:15:00"
-                                       class="w-full p-1 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker dark:bg-gray-900 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr class="bg-gray-100 dark:bg-slate-700">
-                            <td class="py-2">Cooking:</td>
-                            <td class="w-1/2 text-center">
-                                <label for="time-cooking" class="hidden"></label>
-                                <input type="text" id="time-cooking" name="time-cooking" value="00:30:00"
-                                       class="w-full p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker dark:bg-gray-900 dark:text-gray-200"
-                                       _="on load get <button/> in #times-table then add .dark:bg-gray-200 to it">
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-span-6 py-2 border-b border-x border-black md:col-span-2 md:border-r-0">
-            <fieldset class="text-center border-none">
-                <legend class="pb-2 m-auto text-sm font-semibold text-gray-600 dark:text-gray-200">
-                    <span class="underline">Ingredients</span> <sup class="text-red-600 no-underline">*</sup>
-                </legend>
-                <ol id="ingredients-list" class="pl-8 list-decimal">
-                    {{template "add-ingredient" 1}}
-                </ol>
-            </fieldset>
-        </div>
-        <div class="col-span-6 py-2 pb-8 pl-2 border-b border-x border-black md:col-span-4">
-            <fieldset class="text-center border-none">
-                <legend class="m-auto text-sm font-semibold text-gray-600 dark:text-gray-200">
-                    <span class="underline">Instructions</span> <sup class="text-red-600">*</sup>
-                </legend>
-                <ol id="instructions-list" class="pl-4 list-decimal">
-                    {{template "add-instruction" 1}}
-                </ol>
-            </fieldset>
-        </div>
-        <button type="submit"
-                class="col-span-6 p-2 font-semibold text-white bg-blue-500 hover:bg-blue-800">
-            Submit
-        </button>
-    </form>
+    </section>
     {{template "load-recipes-manual-scripts"}}
 {{end}}
 
 {{define "edit-recipe"}}
     <title hx-swap-oob="true">Edit {{.View.Recipe.Name}} | Recipya</title>
 
-    <form hx-put="/recipes/{{.View.ID}}/edit" enctype="multipart/form-data"
-          class="grid max-w-6xl grid-cols-6 m-auto mt-4 pb-4 dark:bg-gray-600 dark:rounded-t-lg">
-        <div class="col-span-6 text-lg border border-gray-900 rounded-t-lg md:text-xl dark:border-gray-800 relative">
-            <button class="ml-2 absolute text-2xl top-[0.25rem] hover:text-red-600" title="Back to view recipe"
-                    type="button"
-                    _="on click if confirm('Are you sure you wish to go back? Changes will not be saved.') then call history.back()">
-                &larr;
-            </button>
-            <label for="title" class="hidden"></label>
-            <input type="text" name="title" id="title" placeholder="Title of the recipe*"
-                   required autocomplete="off" value="{{.View.Recipe.Name}}"
-                   class="w-full py-2 bg-gray-50 font-semibold text-center text-gray-600 placeholder-gray-400 rounded-t-lg dark:bg-gray-900 dark:text-gray-200">
-        </div>
-
-        <label class="grid col-span-6 place-content-center w-full h-96 border-b border-x border-black md:border-r-0 md:col-span-4 text-sm dark:border-gray-800">
-            {{- if .View.IsUUIDValid -}}
-                <img src="/data/images/{{.View.Recipe.Image}}.jpg" alt="Image preview of the recipe." class="h-full">
-                <span>
-                    <input type="file" accept="image/*" name="image"
-                           value="/data/images/{{.View.Recipe.Image}}.jpg"
-                           _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
-                          on dragleave or drop set the target's style.background to ''
-                          on drop or change
-                            make an FileReader called reader
-                            then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end
-                            then set {src: window.URL.createObjectURL(it)} on previous <img/>
-                            then remove .hidden from next <button/>">
-                    <button type="button"
-                            class="px-2 bg-red-300 border border-gray-800 rounded-lg hover:bg-red-600 hover:text-white dark:border-gray-800 dark:bg-red-600 dark:hover:bg-red-700"
-                            _="on click
-                                set {value: ''} on previous <input/>
-                                then set {src: ''} on previous <img/>
-                                then add .hidden">
-                        Delete
-                    </button>
-                </span>
-            {{- else -}}
-                <img src="" alt="Image preview of the recipe." class="h-full">
-                <span>
-                    <input type="file" accept="image/*" name="image"
-                           _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
-                          on dragleave or drop set the target's style.background to ''
-                          on drop or change
-                            make an FileReader called reader
-                            then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end
-                            then set {src: window.URL.createObjectURL(it)} on previous <img/>
-                            then remove .hidden from next <button/>">
-                    <button type="button"
-                            class="px-2 bg-red-300 border border-gray-800 rounded-lg hidden hover:bg-red-600 hover:text-white dark:border-gray-800 dark:bg-red-600 dark:hover:bg-red-700"
-                            _="on click
-                                set {value: ''} on previous <input/>
-                                then set {src: ''} on previous <img/>
-                                then add .hidden">
-                        Delete
-                    </button>
-                </span>
-            {{- end -}}
-        </label>
-
-        <div class="grid grid-flow-col col-span-6 border-b border-l border-black md:border-l md:grid-flow-row md:col-span-2 md:grid md:border-r md:border-b-0 dark:border-gray-800 print:border-b">
-            <div class="col-span-2 p-2 border-r border-black md:col-span-3 md:grid md:place-items-center md:border-r-0 dark:border-gray-800">
-                <label class="grid place-content-center p-2 font-medium text-sm text-gray-900 bg-blue-100 border border-blue-300 rounded-full w-fit">
-                    <input type="text" list="categories" name="category" value="{{.View.Recipe.Category}}"
-                           class="bg-transparent text-center focus:outline-none" placeholder="Breakfast*" required>
-                    <datalist id="categories">
-                        {{- range .View.Categories -}}
-                            <option>{{.}}</option>
-                        {{- end -}}
-                    </datalist>
-                </label>
-            </div>
-
-            <div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t dark:border-gray-800">
-                <div>
-                    <label for="yield">Yields</label>
-                    <input id="yield" type="number" min="1" name="yield"
-                           value="{{if eq .View.Recipe.Yield 0}}4{{else}}{{.View.Recipe.Yield}}{{end}}"
-                           class="w-24 rounded bg-gray-100 p-2 dark:bg-gray-900">
-                    <span>servings</span>
-                </div>
-            </div>
-
-            <div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t dark:border-gray-800">
-                <label class="w-4/5">
-                    <input id="source" type="text" placeholder="Source*" name="source"
-                           value="{{.View.Recipe.URL}}" class="w-full rounded bg-gray-100 p-2 dark:bg-gray-900">
-                </label>
-                <p class="px-4">
-                    The source can be a website, name of a cookbook, from a relative or friend, a magazine, etc.
-                </p>
-            </div>
-        </div>
-
-        <div class="col-span-6 border-b border-x border-black md:col-span-4 dark:border-gray-800">
-            <div class="flex flex-col p-2">
-                <label for="description" class="text-sm font-semibold text-gray-600 dark:text-gray-200">
-                    Description <sup class="text-red-600">*</sup>
-                </label>
-                <textarea id="description" name="description" rows="10"
-                          placeholder="This Thai curry chicken will make you drool." required
-                          class="p-2 border border-gray-300 rounded-t-lg dark:bg-gray-800 dark:border-none"
-                >{{- if not (eq .View.Recipe.Description "") -}}{{.View.Recipe.Description}}{{- end -}}</textarea>
-            </div>
-        </div>
-
-        <div class="col-span-3 border border-black md:border-l-0 md:col-span-1 dark:border-gray-800">
-            <div class="inline-block min-w-full overflow-x-auto align-middle">
-                <div class="overflow-hidden border-gray-200">
-                    <table class="min-w-full text-xs divide-y divide-gray-200 dark:text-gray-200 dark:divide-slate-600">
-                        <thead class="h-12 font-medium tracking-wider text-white bg-gray-800">
-                        <tr>
-                            <th scope="col" class="text-right md:text-center">
-                                <p>Nutrition<br>(per {{if .View.Recipe.Nutrition.IsPerServing}}serving{{else}}100g{{end}})</p>
-                            </th>
-                            <th scope="col" class="text-center">
-                                <p>Amount<br>(optional)</p>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600">
-                        <tr>
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Calories:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="calories" class="hidden"></label>
-                                <input type="text" id="calories" name="calories"
-                                       autocomplete="off" placeholder="368kcal"
-                                       value="{{.View.Recipe.Nutrition.Calories}}"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr class="bg-gray-100 dark:bg-slate-700">
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Total carbs:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="total-carbohydrates" class="hidden"></label>
-                                <input type="text" id="total-carbohydrates" name="total-carbohydrates"
-                                       autocomplete="off" placeholder="35g"
-                                       value="{{.View.Recipe.Nutrition.TotalCarbohydrates}}"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Sugars:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="sugars" class="hidden"></label>
-                                <input type="text" id="sugars" name="sugars"
-                                       autocomplete="off" placeholder="3g"
-                                       value="{{.View.Recipe.Nutrition.Sugars}}"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr class="bg-gray-100 dark:bg-slate-700">
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Protein:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="protein" class="hidden"></label>
-                                <input type="text" id="protein" name="protein"
-                                       autocomplete="off" placeholder="21g"
-                                       value="{{.View.Recipe.Nutrition.Protein}}"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Total fat:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="total-fat" class="hidden"></label>
-                                <input type="text" id="total-fat" name="total-fat"
-                                       autocomplete="off" placeholder="15g"
-                                       value="{{.View.Recipe.Nutrition.TotalFat}}"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr class="bg-gray-100 dark:bg-slate-700">
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Saturated fat:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="saturated-fat" class="hidden"></label>
-                                <input type="text" id="saturated-fat" name="saturated-fat"
-                                       autocomplete="off" placeholder="1.8g"
-                                       value="{{.View.Recipe.Nutrition.SaturatedFat}}"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Cholesterol:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="cholesterol" class="hidden"></label>
-                                <input type="text" id="cholesterol" name="cholesterol"
-                                       autocomplete="off" placeholder="1.1mg"
-                                       value="{{.View.Recipe.Nutrition.Cholesterol}}"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr class="bg-gray-100 dark:bg-slate-700">
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Sodium:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="sodium" class="hidden"></label>
-                                <input type="text" id="sodium" name="sodium"
-                                       autocomplete="off" placeholder="100mg"
-                                       value="{{.View.Recipe.Nutrition.Sodium}}"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 dark:border-gray-800">
-                                <p>Fiber:</p>
-                            </td>
-                            <td class="text-center dark:border-gray-800">
-                                <label for="fiber" class="hidden"></label>
-                                <input type="text" id="fiber" name="fiber"
-                                       autocomplete="off" placeholder="8g"
-                                       value="{{.View.Recipe.Nutrition.Fiber}}"
-                                       class="w-3/4 p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-span-3 border-b border-r border-black md:col-span-1">
-            <div class="inline-block min-w-full overflow-x-auto align-middle">
-                <div class="overflow-hidden border-gray-200">
-                    <table id="times-table"
-                           class="min-w-full text-xs divide-y divide-gray-200 dark:text-gray-200 dark:divide-slate-600">
-                        <thead class="h-12 font-medium tracking-wider text-white bg-gray-800 border-l dark:border-l-gray-600">
-                        <tr>
-                            <th scope="col" class="text-right">Time</th>
-                            <th scope="col" class="text-center">h:m:s</th>
-                        </tr>
-                        </thead>
-                        <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600">
-                        <tr>
-                            <td class="py-2">Preparation:</td>
-                            <td class="text-center">
-                                <label for="time-preparation" class="hidden"></label>
-                                <input type="text" id="time-preparation" name="time-preparation"
-                                       value="{{if .View.FormattedTimes.PrepEdit}}{{.View.FormattedTimes.PrepEdit}}{{else}}00:15:00{{end}}"
-                                       class="w-full p-1 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker dark:bg-gray-900 dark:text-gray-200">
-                            </td>
-                        </tr>
-                        <tr class="bg-gray-100 dark:bg-slate-700">
-                            <td class="py-2">Cooking:</td>
-                            <td class="w-1/2 text-center">
-                                <label for="time-cooking" class="hidden"></label>
-                                <input type="text" id="time-cooking" name="time-cooking"
-                                       value="{{if .View.FormattedTimes.CookEdit}}{{.View.FormattedTimes.CookEdit}}{{else}}00:30:00{{end}}"
-                                       class="w-full p-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 html-duration-picker dark:bg-gray-900 dark:text-gray-200"
-                                       _="on load get <button/> in #times-table then add .dark:bg-gray-200 to it">
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-span-6 py-2 border-b border-x border-black md:col-span-2 md:border-r-0">
-            <fieldset class="text-center border-none">
-                <legend class="pb-2 m-auto text-sm font-semibold text-gray-600 dark:text-gray-200">
-                    <span class="underline">Ingredients</span> <sup class="text-red-600 no-underline">*</sup>
-                </legend>
-                <ol id="ingredients-list" class="pl-8 list-decimal">
-                    {{- if eq (len .View.Recipe.Ingredients) 0 -}}
-                        {{template "add-ingredient" 1}}
-                    {{- else -}}
-                        {{$inc := .View.Inc}}
-                        {{ range $i, $v := .View.Recipe.Ingredients }}
-                            {{$num := call $inc $i}}
-                            <li class="pb-2">
-                                <label>
-                                    <input type="text" name="ingredient-{{$num}}" placeholder="Ingredient #{{$num}}"
-                                           required
-                                           class="w-8/12 py-1 pl-1 text-gray-600 placeholder-gray-400 bg-white border border-gray-400 dark:bg-gray-900 dark:border-none dark:text-gray-200"
-                                           value="{{$v}}"
-                                           _="on keydown if event.key is 'Enter'
-                                                then halt the event then get next <button/> from the parentElement of me
-                                                then call htmx.trigger(it, 'click')">
-                                </label>
-                                <button type="button"
-                                        class="w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-green-600 hover:text-white center dark:bg-green-500"
-                                        title="Shortcut: Enter"
-                                        hx-post="/recipes/add/manual/ingredient"
-                                        hx-target="#ingredients-list"
-                                        hx-swap="beforeend"
-                                        hx-include="[name^='ingredient']">
-                                    +
-                                </button>
-                                <button type="button"
-                                        class="delete-button w-10 h-10 bg-red-300 border border-gray-800 rounded-lg md:w-7 md:h-7 hover:bg-red-600 hover:text-white center dark:bg-red-500"
-                                        hx-target="#ingredients-list"
-                                        hx-post="/recipes/add/manual/ingredient/{{$num}}"
-                                        hx-include="[name^='ingredient']">
-                                    -
-                                </button>
-                                <div class="inline-block h-4 cursor-move handle">
-                                    {{template "icon-reorder"}}
-                                </div>
-                            </li>
-                        {{- end -}}
-                    {{- end -}}
-                </ol>
-            </fieldset>
-        </div>
-        <div class="col-span-6 py-2 pb-8 pl-2 border-b border-x border-black md:col-span-4">
-            <fieldset class="text-center border-none">
-                <legend class="m-auto text-sm font-semibold text-gray-600 dark:text-gray-200">
-                    <span class="underline">Instructions</span> <sup class="text-red-600">*</sup>
-                </legend>
-                <ol id="instructions-list" class="pl-4 list-decimal">
-                    {{- if eq (len .View.Recipe.Instructions) 0 -}}
-                        {{template "add-instruction" 1}}
-                    {{- else -}}
-                        {{$inc := .View.Inc}}
-                        {{ range $i, $v := .View.Recipe.Instructions }}
-                            {{$num := call $inc $i}}
-                            <li class="pt-2 md:pl-0">
-                                <div class="flex">
-                                    <label class="w-[95%]">
-                                        <textarea required name="instruction-{{$num}}" rows="3"
-                                                  class="w-[97%] border border-gray-300 pl-1 dark:bg-gray-900 dark:border-none"
-                                                  placeholder="Instruction #{{$num}}"
-                                                  _="on keydown if event.ctrlKey and event.key === 'Enter'
-                                                        then halt the event
-                                                        then get next <div/> from the parentElement of me
-                                                        then get first <button/> in it
-                                                        then call htmx.trigger(it, 'click')">{{- $v -}}</textarea>
-                                    </label>
-                                    <div class="grid">
-                                        <div class="h-4 cursor-move handle grid place-content-center">
-                                            {{template "icon-reorder"}}
-                                        </div>
+    <section class="p-2">
+        <div class="flex justify-center">
+            <div class="card card-bordered bg-base-100 shadow-none w-full border-gray-700 xl:w-[72rem]">
+                <form class="card-body" style="padding: 0" hx-put="/recipes/{{.View.ID}}/edit"
+                      enctype="multipart/form-data">
+                    <h2 class="card-title bg-base-200 place-content-center rounded-t-2xl">
+                        <button class="btn btn-ghost"
+                                title="Back to view recipe"
+                                type="button"
+                                _="on click if confirm('Are you sure you wish to go back? Changes will not be saved.') then call history.back()">
+                            &larr;
+                        </button>
+                        <label class="w-full">
+                            <input required type="text" name="title" placeholder="Title of the recipe*"
+                                   autocomplete="off" class="input w-full btn-ghost text-center"
+                                   value="{{.View.Recipe.Name}}">
+                        </label>
+                    </h2>
+                    <div>
+                        <div class="grid md:grid-flow-col md:grid-cols-6">
+                            <div class="w-full text-center border-gray-700 md:col-span-3 md:border-r">
+                                <label class="grid gap-2 col-span-6 place-content-center w-full h-full md:col-span-4 text-sm">
+                                    <img src="/data/images/{{.View.Recipe.Image}}.jpg" alt="Image preview of the recipe." class="object-cover">
+                                    <span>
+                                        <input type="file" accept="image/*" name="image"
+                                               class="file-input file-input-sm w-full max-w-xs"
+                                               value="/data/images/{{.View.Recipe.Image}}.jpg"
+                                               _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
+                                              on dragleave or drop set the target's style.background to ''
+                                              on drop or change
+                                                make an FileReader called reader
+                                                then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end
+                                                then set {src: window.URL.createObjectURL(it)} on previous <img/>
+                                                then remove .hidden from next <button/>">
                                         <button type="button"
-                                                class="md:w-7 md:h-7 md:right-auto w-10 h-10 text-center bg-green-300 border border-gray-800 rounded-lg hover:bg-green-600 hover:text-white center dark:bg-green-500"
-                                                title="Shortcut: CTRL + Enter"
-                                                hx-post="/recipes/add/manual/instruction"
-                                                hx-target="#instructions-list"
-                                                hx-swap="beforeend"
-                                                hx-include="[name^='instruction']">
-                                            +
+                                                class="hidden btn btn-sm btn-error btn-outline"
+                                                _="on click
+                                                    set {value: ''} on previous <input/> then
+                                                    set {src: ''} on previous <img/> then
+                                                    add .hidden">
+                                            Delete
                                         </button>
-                                        <button type="button"
-                                                class="delete-button w-10 h-10 md:w-7 md:h-7 bg-red-300 border border-gray-800 rounded-lg top-3 hover:bg-red-600 hover:text-white center dark:bg-red-500"
-                                                hx-target="#instructions-list"
-                                                hx-post="/recipes/add/manual/instruction/{{$num}}"
-                                                hx-include="[name^='instruction']">
-                                            -
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="grid grid-cols-3 col-span-3 text-sm md:grid-flow-row md:grid-rows-4">
+                                <div class="grid col-span-6 pb-2 md:grid-cols-3 md:pb-0 md:border-gray-700 md:border-t">
+                                    <div style="display: grid;grid-auto-flow: column;"
+                                         class="grid grid-flow-col grid-cols-3 gap-2 border-b border-t border-gray-700 px-2 md:col-span-2 md:border-b-0 md:border-r md:border-t-0 md:px-0">
+                                        <div class="col-span-2 border-r border-gray-700 pb-2 md:pb-0 md:grid md:place-content-center">
+                                            <label class="form-control">
+                                                <div class="label">
+                                                    <span class="label-text">Category<sup
+                                                                class="text-red-600">*</sup></span>
+                                                </div>
+                                                <input required type="text" list="categories" name="category"
+                                                       class="input input-bordered input-sm w-48 md:w-36 lg:w-48"
+                                                       placeholder="Breakfast" value="{{.View.Recipe.Category}}">
+                                                <datalist id="categories">
+                                                    {{- range .View.Categories -}}
+                                                        <option>{{.}}</option>
+                                                    {{- end -}}
+                                                </datalist>
+                                            </label>
+                                        </div>
+                                        <div class="col-span-1 grid place-content-center pb-2 md:pb-0 md:content-center lg:md:place-content-center">
+                                            <label class="form-control w-full">
+                                                <div class="label">
+                                                    <span class="label-text">Servings</span>
+                                                </div>
+                                                <input type="number" min="1" name="yield"
+                                                       class="input input-bordered input-sm w-24 md:w-20 lg:w-24"
+                                                       value="{{if eq .View.Recipe.Yield 0}}4{{else}}{{.View.Recipe.Yield}}{{end}}">
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="relative px-2 md:grid md:content-center md:pr-0">
+                                        <label class="form-control w-full">
+                                            <div class="label">
+                                                <span class="label-text">Source<sup class="text-red-600">*</sup></span>
+                                            </div>
+                                            <input required type="text" placeholder="Source" name="source"
+                                                   class="input input-bordered input-sm md:w-28 lg:w-40 xl:w-44"
+                                                   value="{{.View.Recipe.URL}}">
+                                        </label>
+                                        <button type="button" class="tooltip tooltip-left absolute top-2 right-2"
+                                                _="on click toggle .tooltip-open"
+                                                data-tip="The source can be a website, name of a cookbook, from a relative or friend, a magazine, etc.">
+                                            {{template "icon-information"}}
                                         </button>
                                     </div>
                                 </div>
-                            </li>
-                        {{- end -}}
-                    {{- end -}}
-                </ol>
-            </fieldset>
+                                <div class="grid grid-flow-col col-span-6 border-gray-700 border-y md:grid-cols-2 md:row-span-2">
+                                    <div class="border-r border-gray-700">
+                                        <table class="table table-zebra table-xs md:h-fit">
+                                            <thead>
+                                            <tr>
+                                                <th>Time</th>
+                                                <th>h:m:s</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>Prep</td>
+                                                <td>
+                                                    <label>
+                                                        <input type="text" name="time-preparation"
+                                                               class="input input-bordered input-xs max-w-24 html-duration-picker"
+                                                               value="{{if .View.FormattedTimes.PrepEdit}}{{.View.FormattedTimes.PrepEdit}}{{else}}00:15:00{{end}}">
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Cooking</td>
+                                                <td>
+                                                    <label>
+                                                        <input type="text" name="time-cooking"
+                                                               class="input input-bordered input-xs max-w-24 html-duration-picker"
+                                                               value="{{if .View.FormattedTimes.CookEdit}}{{.View.FormattedTimes.CookEdit}}{{else}}00:30:00{{end}}">
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <table class="table table-zebra table-xs">
+                                        <thead>
+                                        <tr>
+                                            <th>Nutrition<br>(per 100g)</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>Calories</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="calories"
+                                                           autocomplete="off" placeholder="368kcal"
+                                                           class="input input-bordered input-xs max-w-24"
+                                                           value="{{.View.Recipe.Nutrition.Calories}}">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total carbs</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="total-carbohydrates"
+                                                           autocomplete="off" placeholder="35g"
+                                                           class="input input-bordered input-xs max-w-24"
+                                                           value="{{.View.Recipe.Nutrition.TotalCarbohydrates}}">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sugars</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="sugars"
+                                                           autocomplete="off" placeholder="3g"
+                                                           class="input input-bordered input-xs max-w-24"
+                                                           value="{{.View.Recipe.Nutrition.Sugars}}">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Protein</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="protein"
+                                                           autocomplete="off" placeholder="21g"
+                                                           class="input input-bordered input-xs max-w-24"
+                                                           value="{{.View.Recipe.Nutrition.Protein}}">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total fat</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="total-fat"
+                                                           autocomplete="off" placeholder="15g"
+                                                           class="input input-bordered input-xs max-w-24"
+                                                           value="{{.View.Recipe.Nutrition.TotalFat}}">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Saturated fat</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="saturated-fat"
+                                                           autocomplete="off" placeholder="1.8g"
+                                                           class="input input-bordered input-xs max-w-24"
+                                                           value="{{.View.Recipe.Nutrition.SaturatedFat}}">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cholesterol</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="cholesterol"
+                                                           autocomplete="off" placeholder="1.1mg"
+                                                           class="input input-bordered input-xs max-w-24"
+                                                           value="{{.View.Recipe.Nutrition.Cholesterol}}">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sodium</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="sodium"
+                                                           autocomplete="off" placeholder="100mg"
+                                                           class="input input-bordered input-xs max-w-24"
+                                                           value="{{.View.Recipe.Nutrition.Sodium}}">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Fiber</td>
+                                            <td>
+                                                <label>
+                                                    <input type="text" name="fiber"
+                                                           autocomplete="off" placeholder="8g"
+                                                           class="input input-bordered input-xs max-w-24"
+                                                           value="{{.View.Recipe.Nutrition.Fiber}}">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-span-3 h-40 md:h-full md:row-span-1">
+                                    <label>
+                                        <textarea required name="description"
+                                                  placeholder="This Thai curry chicken will make you drool."
+                                                  class="textarea w-full h-full resize-none">{{- if not (eq .View.Recipe.Description "") -}}{{.View.Recipe.Description}}{{- end -}}</textarea>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="ingredients-instructions-container"
+                         class="border-gray-700 md:border-t grid text-sm md:grid-flow-col md:col-span-6">
+                        <div class="col-span-6 border-gray-700 px-2 py-2 border-y md:col-span-2 md:border-r md:border-y-0">
+                            <h2 class="font-semibold text-center pb-2"><span class="underline">Ingredients</span><sup
+                                        class="text-red-600">*</sup></h2>
+                            <ol id="ingredients-list" class="pl-4 list-decimal">
+                                {{- if eq (len .View.Recipe.Ingredients) 0 -}}
+                                    {{template "add-ingredient" 1}}
+                                {{- else -}}
+                                    {{$inc := .View.Inc}}
+                                    {{ range $i, $v := .View.Recipe.Ingredients }}
+                                        {{$num := call $inc $i}}
+                                        <li class="pb-2">
+                                            <div class="grid grid-flow-col items-center">
+                                                <label>
+                                                    <input required type="text" name="ingredient-{{$num}}" placeholder="Ingredient #{{$num}}"
+                                                           class="input input-bordered input-sm w-full"
+                                                           value="{{$v}}"
+                                                           _="on keydown if event.key is 'Enter' then
+                                                                halt the event then get next <button/> from the parentElement of me then
+                                                                call htmx.trigger(it, 'click')">
+                                                </label>
+                                                <div class="ml-2">
+                                                    <button type="button"
+                                                            class="btn btn-square btn-sm btn-outline btn-success"
+                                                            title="Shortcut: Enter"
+                                                            hx-post="/recipes/add/manual/ingredient"
+                                                            hx-target="#ingredients-list"
+                                                            hx-swap="beforeend"
+                                                            hx-include="[name^='ingredient']">
+                                                        +
+                                                    </button>
+                                                    <button type="button"
+                                                            class="delete-button btn btn-square btn-sm btn-outline btn-error"
+                                                            hx-target="#ingredients-list"
+                                                            hx-post="/recipes/add/manual/ingredient/{{$num}}"
+                                                            hx-include="[name^='ingredient']">
+                                                        -
+                                                    </button>
+                                                    <div class="inline-block h-4 cursor-move handle">
+                                                        {{template "icon-reorder"}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {{- end -}}
+                                {{- end -}}
+                            </ol>
+                        </div>
+                        <div class="col-span-6 px-6 py-2 border-gray-700 md:rounded-bl-none md:col-span-4">
+                            <h2 class="font-semibold text-center pb-2"><span class="underline">Instructions</span><sup
+                                        class="text-red-600">*</sup></h2>
+                            <ol id="instructions-list" class="grid list-decimal">
+                                {{- if eq (len .View.Recipe.Instructions) 0 -}}
+                                    {{template "add-instruction" 1}}
+                                {{- else -}}
+                                    {{$inc := .View.Inc}}
+                                    {{ range $i, $v := .View.Recipe.Instructions }}
+                                        {{$num := call $inc $i}}
+                                        <li class="pt-2 md:pl-0">
+                                            <div class="flex">
+                                                <label class="w-11/12">
+                                                    <textarea required name="instruction-{{$num}}" rows="3"
+                                                              class="textarea textarea-bordered w-full"
+                                                              placeholder="Instruction #{{$num}}"
+                                                              _="on keydown if event.ctrlKey and event.key === 'Enter'
+                                                                then halt the event
+                                                                then get next <div/> from the parentElement of me
+                                                                then get first <button/> in it
+                                                                then call htmx.trigger(it, 'click')">{{- $v -}}</textarea>
+                                                </label>
+                                                <div class="grid ml-2">
+                                                    <button type="button"
+                                                            class="btn btn-square btn-sm btn-outline btn-success"
+                                                            title="Shortcut: CTRL + Enter"
+                                                            hx-post="/recipes/add/manual/instruction"
+                                                            hx-target="#instructions-list"
+                                                            hx-swap="beforeend"
+                                                            hx-include="[name^='instruction']">
+                                                        +
+                                                    </button>
+                                                    <button type="button"
+                                                            class="delete-button btn btn-square btn-sm btn-outline btn-error"
+                                                            hx-target="#instructions-list"
+                                                            hx-post="/recipes/add/manual/instruction/{{$num}}"
+                                                            hx-include="[name^='instruction']">
+                                                        -
+                                                    </button>
+                                                    <div class="h-4 cursor-move handle grid place-content-center">
+                                                        {{template "icon-reorder"}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {{- end -}}
+                                {{- end -}}
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="card-actions justify-end">
+                        <button type="submit" class="btn btn-primary btn-block btn-sm">Submit</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <button type="submit" class="col-span-6 p-2 font-semibold text-white bg-blue-500 hover:bg-blue-800">
-            Update
-        </button>
-    </form>
+    </section>
     {{template "load-recipes-manual-scripts"}}
 {{end}}
 
 {{define "ingredients-instructions"}}
-    <div id="ingredients-instructions-container" class="grid col-span-6 grid-flow-col">
-        <div class="col-span-6 py-2 border-b border-x border-black md:col-span-2 md:border-r-0 dark:border-gray-800 print:hidden">
-            <h2 class="pb-2 m-auto text-sm font-semibold text-center text-gray-600 underline dark:text-gray-200">
-                Ingredients
-            </h2>
-            <ul class="grid px-6 columns-2">
+    <div id="ingredients-instructions-container" class="grid text-sm md:grid-flow-col md:col-span-6">
+        <div class="col-span-6 border-gray-700 px-4 py-2 border-y md:col-span-2 md:border-r md:border-y-0 print:hidden">
+            <h2 class="font-semibold text-center underline md:pb-2">Ingredients</h2>
+            <ul>
                 {{$len := len .Ingredients}}
                 {{- range $i, $e := .Ingredients -}}
-                    <li class="min-w-full py-2 pl-4 text-sm select-none hover:bg-gray-200 dark:hover:bg-gray-800"
-                        _="on mousedown toggle @checked on first <input/> in me">
-                        <label for="ingredient-{{$i}}"></label>
-                        <input type="checkbox" id="ingredient-{{$i}}" class="mt-1">
-                        <span class="pl-2">{{$e}}</span>
+                    <li class="form-control hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <label class="label justify-start">
+                            <input type="checkbox" class="checkbox"/>
+                            <span class="label-text pl-2">{{$e}}</span>
+                        </label>
                     </li>
                 {{- end -}}
             </ul>
         </div>
 
-        <div class="col-span-6 py-2 pb-8 border-b border-x border-black rounded-bl-lg md:rounded-bl-none md:col-span-4 dark:border-gray-800 print:hidden">
-            <h2 class="pb-2 m-auto text-sm font-semibold text-center text-gray-600 underline dark:text-gray-200">
-                Instructions</h2>
-            <ol class="grid px-6 list-decimal">
+        <div class="col-span-6 px-8 py-2 border-gray-700 md:rounded-bl-none md:col-span-4 print:hidden">
+            <h2 class="font-semibold text-center underline md:pb-2">Instructions</h2>
+            <ol class="grid list-decimal">
                 {{$len = len .Instructions}}
                 {{- range $i, $e := .Instructions -}}
-                    <li class="min-w-full py-2 text-sm select-none hover:bg-gray-200 dark:hover:bg-gray-800"
+                    <li class="min-w-full py-2 select-none hover:bg-gray-100 dark:hover:bg-gray-700"
                         _="on mousedown toggle .line-through">
                         <span class="whitespace-pre-line">{{$e}}</span>
                     </li>
@@ -918,37 +877,18 @@
 {{define "recipes-index"}}
     <title hx-swap-oob="true">Home | Recipya</title>
 
-    {{- if .IsHxRequest -}}
-        <li id="recipes-sidebar-recipes"
-            class="recipes-sidebar-selected"
-            hx-get="/recipes" hx-target="#content"
-            hx-push-url="true" hx-swap-oob="true">
-            <img src="/static/img/cherries.svg" alt="">
-            <span class="hidden lg:block ml-1">Recipes</span>
-        </li>
-        <li id="recipes-sidebar-cookbooks"
-            class="recipes-sidebar-not-selected"
-            hx-get="/cookbooks" hx-target="#content"
-            hx-push-url="true" hx-swap-oob="true">
-            <img src="/static/img/cookbook.svg" alt="">
-            <span class="hidden lg:block ml-1">Cookbooks</span>
-        </li>
-    {{- end -}}
-
     {{- if .Recipes -}}
         <div class="flex flex-col">
             <section class="grid justify-center px-4 pt-4">
                 <search class="relative">
-                    <form class="w-72 md:w-96"
-                          hx-post="/recipes/search"
-                          hx-vals='{"page": {{.Pagination.Selected}}}'
-                          hx-target="#list-recipes"
+                    <form class="w-72 md:w-96" hx-post="/recipes/search"
+                          hx-vals='{"page": {{.Pagination.Selected}}}' hx-target="#list-recipes"
                           _="on submit if #search-recipes.value is not '' then add .hidden to #pagination else remove .hidden from #pagination end">
                         <div class="flex">
                             <div class="relative w-full">
                                 <label>
                                     <input type="search" id="search-recipes" name="q"
-                                           class="block z-20 p-2.5 w-full text-sm bg-gray-50 rounded-r-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                           class="input input-bordered input-sm w-full z-20"
                                            placeholder="Search for recipes..."
                                            _="on keyup
                                                if event.target.value !== '' then
@@ -961,13 +901,13 @@
                                                end">
                                 </label>
                                 <kbd id="search-shortcut"
-                                     class="hidden absolute top-2 right-12 font-sans font-semibold select-none dark:text-slate-500 md:block">
+                                     class="hidden absolute top-1 right-12 font-sans font-semibold select-none dark:text-slate-500 md:block">
                                     <abbr title="Control"
                                           class="no-underline text-slate-300 dark:text-slate-500">Ctrl </abbr>
                                     /
                                 </kbd>
                                 <button type="submit"
-                                        class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700">
+                                        class="absolute top-0 right-0 px-2 text-sm font-medium h-full text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700">
                                     {{template "icon-maginifying-glass"}}
                                     <span class="sr-only">Search</span>
                                 </button>
@@ -977,7 +917,7 @@
                 </search>
             </section>
         </div>
-        <div id="list-recipes">
+        <div id="list-recipes" class="md:min-h-[79vh]">
             {{template "list-recipes" .}}
         </div>
         {{template "pagination" .Pagination}}
@@ -991,43 +931,47 @@
         </script>
     {{- else -}}
         <div class="grid place-content-center text-sm h-full text-center md:text-base">
-            <p>Your recipe collection looks a bit empty at the moment.</p>
-            <p>
-                Why not start adding some of your favorite recipes by clicking the
-                <a class="underline font-semibold cursor-pointer" hx-get="/recipes/add" hx-target="#content"
-                   hx-push-url="true">Add recipe</a>
-                button at the top?
-            </p>
+            <div class="p-4 md:p-0">
+                <p class="pb-2">Your recipe collection looks a bit empty at the moment.</p>
+                <p>
+                    Why not start adding recipes by clicking the
+                    <a class="underline font-semibold cursor-pointer" hx-get="/recipes/add" hx-target="#content"
+                       hx-push-url="true">Add recipe</a>
+                    button at the top?
+                </p>
+            </div>
+
         </div>
     {{- end -}}
 {{end}}
 
 {{define "list-recipes"}}
-    <article class="grid gap-4 p-4 text-sm grid-cols-4 md:m-auto md:max-w-7xl md:text-base md:grid-cols-10">
+    <article
+            class="grid gap-4 p-4 text-sm place-items-center md:m-auto md:max-w-7xl sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:text-base">
         {{ $funcs := .Functions}}
         {{- range $i, $r := .Recipes -}}
-            <div class="relative col-span-2 bg-white rounded-lg shadow-lg dark:bg-neutral-700">
+            <section class="card card-compact bg-base-100 shadow-lg indicator">
                 {{ $isUUIDValid := call $funcs.IsUUIDValid .Image}}
-                <img class="rounded-t-lg cursor-pointer w-full hover:opacity-80 border-b dark:border-b-gray-800 h-48 {{if not $isUUIDValid}}px-4 pt-4{{end}}"
-                     src="{{if $isUUIDValid}}/data/images/{{$r.Image}}.jpg{{else}}/static/img/recipes/placeholder.webp{{end}}"
-                     alt="Image for the {{$r.Name}} recipe"
-                     hx-get="/recipes/{{$r.ID}}" hx-target="#content" hx-push-url="true">
-                <div class="py-2 px-3">
-                    <div class="grid grid-flow-col gap-1 pb-2">
-                        <p class="font-semibold">{{$r.Name}}</p>
-                        <span class="grid place-content-center text-xs text-center font-medium select-none p-[0.25rem] bg-indigo-700 text-white rounded-lg h-fit">
-                            {{$r.Category}}
-                        </span>
+                <span class="indicator-item indicator-center badge badge-primary select-none">{{$r.Category}}</span>
+                <figure class="relative cursor-pointer" hx-get="/recipes/{{$r.ID}}" hx-target="#content"
+                        hx-push-url="true">
+                    <img class="h-48 max-w-48 w-full object-cover rounded-t-lg"
+                         src="{{if $isUUIDValid}}/data/images/{{$r.Image}}.jpg{{else}}/static/img/recipes/placeholder.webp{{end}}"
+                         alt="Image for the {{$r.Name}} recipe">
+                    <div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg">
+                        <p class="p-2 text-sm">{{call $funcs.CutString $r.Description 127}}</p>
                     </div>
-
-                    <p class="pb-8 text-justify text-sm">{{call $funcs.CutString $r.Description 127}}</p>
-
-                    <button class="absolute bottom-2 border-2 border-gray-800 rounded-lg center w-[90%] hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600"
-                            hx-get="/recipes/{{$r.ID}}" hx-target="#content" hx-push-url="true">
-                        View
-                    </button>
+                </figure>
+                <div class="card-body" lang="en">
+                    <h2 class="font-semibold w-[25ch] break-words">{{$r.Name}}</h2>
+                    <div class="card-actions h-full flex-col-reverse">
+                        <button class="btn btn-block btn-sm btn-outline" hx-get="/recipes/{{$r.ID}}"
+                                hx-target="#content" hx-push-url="true">
+                            View
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </section>
         {{end}}
     </article>
 {{end}}
@@ -1070,16 +1014,15 @@
 {{define "share-link"}}
     <div class="grid grid-flow-col gap-2">
         <label>
-            <input type="url" value="{{.Content}}" class="text-input" readonly="readonly">
+            <input type="url" value="{{.Content}}" class="input input-bordered w-full" readonly="readonly">
         </label>
-        <button class="w-24 font-semibold p-2 bg-gray-300 rounded-lg hover:bg-gray-400" title="Copy to clipboard"
+        <button class="btn btn-neutral" title="Copy to clipboard"
                 _="on click
            if window.navigator.clipboard then
-             call navigator.clipboard.writeText('{{.Content}}')
-             then put 'Copied!' into me
-             then add @title='Copied to clipboard!'
-             then toggle @disabled on me
-             then toggle .cursor-not-allowed .bg-green-600 .text-white .hover:bg-gray-400 on me
+             call navigator.clipboard.writeText('{{.Content}}') then
+             put 'Copied!' into me then
+             toggle @disabled on me then
+             toggle .btn-disabled on me
            else
              call alert('Your browser does not support the clipboard feature. Please copy the link manually.')
            end">
@@ -1122,319 +1065,263 @@
     <title hx-swap-oob="true">{{.Title}} | Recipya</title>
 
     {{- if not .View.Share.IsShared -}}
-        <dialog id="share-dialog" class="p-4 border-4 border-black min-w-[15rem]">
-            <div id="share-dialog-result" class="pb-4"></div>
-            <form method="dialog">
-                <button class="w-full p-1 font-semibold text-white bg-blue-500 border-2 border-black rounded-lg hover:bg-blue-800">
-                    OK
-                </button>
-            </form>
+        <dialog id="share_dialog" class="modal">
+            <div class="modal-box w-96">
+                <div id="share-dialog-result"></div>
+                <div class="modal-action block mt-4">
+                    <form method="dialog">
+                        <button class="btn btn-block btn-outline btn-sm">Close</button>
+                    </form>
+                </div>
+            </div>
         </dialog>
     {{- end -}}
 
-    <div class="grid grid-cols-6 max-w-6xl m-auto mt-4 pb-4 dark:bg-gray-600 dark:rounded-t-lg print:m-0 print:p-0">
-        <div class="grid grid-cols-6 col-span-6 text-lg bg-gray-50 border border-gray-900 rounded-t-md md:text-xl dark:border-gray-800 dark:bg-gray-900 print:rounded-t-none">
-            {{- if .IsAuthenticated -}}
-                <div class="grid justify-start col-span-1 place-content-center print:invisible">
-                    <div class="grid grid-flow-col">
-                        <button class="ml-2" title="Toggle screen lock"
-                                _="on load if not navigator.wakeLock hide me end
-                                   on click
-                                   if wakeLock wakeLock.release() then
-                                        add @d='M 12.276 18.55 v -0.748 a 4.79 4.79 0 0 1 1.463 -3.458 a 5.763 5.763 0 0 0 1.804 -4.21 a 5.821 5.821 0 0 0 -6.475 -5.778 c -2.779 0.307 -4.99 2.65 -5.146 5.448 a 5.82 5.82 0 0 0 1.757 4.503 a 4.906 4.906 0 0 1 1.5 3.495 v 0.747 a 1.44 1.44 0 0 0 1.44 1.439 h 2.218 a 1.44 1.44 0 0 0 1.44 -1.439 z m -1.058 0 c 0 0.209 -0.17 0.38 -0.38 0.38 h -2.22 c -0.21 0 -0.38 -0.171 -0.38 -0.38 v -0.748 c 0 -1.58 -0.664 -3.13 -1.822 -4.254 A 4.762 4.762 0 0 1 4.98 9.863 c 0.127 -2.289 1.935 -4.204 4.205 -4.455 a 4.762 4.762 0 0 1 5.3 4.727 a 4.714 4.714 0 0 1 -1.474 3.443 a 5.853 5.853 0 0 0 -1.791 4.225 v 0.746 z M 11.45 20.51 H 8.006 a 0.397 0.397 0 1 0 0 0.795 h 3.444 a 0.397 0.397 0 1 0 0 -0.794 z M 11.847 22.162 a 0.397 0.397 0 0 0 -0.397 -0.397 H 8.006 a 0.397 0.397 0 1 0 0 0.794 h 3.444 c 0.22 0 0.397 -0.178 0.397 -0.397 z z z z z z z z M 10.986 23.416 H 8.867 a 0.397 0.397 0 1 0 0 0.794 h 1.722 c 0.22 0 0.397 -0.178 0.397 -0.397 z' to #icon-bulb
-                                   else
-                                        call initWakeLock() then
-                                        add @d='M12.276 18.55v-.748a4.79 4.79 0 0 1 1.463-3.458 5.763 5.763 0 0 0 1.804-4.21 5.821 5.821 0 0 0-6.475-5.778c-2.779.307-4.99 2.65-5.146 5.448a5.82 5.82 0 0 0 1.757 4.503 4.906 4.906 0 0 1 1.5 3.495v.747a1.44 1.44 0 0 0 1.44 1.439h2.218a1.44 1.44 0 0 0 1.44-1.439zm-1.058 0c0 .209-.17.38-.38.38h-2.22c-.21 0-.38-.171-.38-.38v-.748c0-1.58-.664-3.13-1.822-4.254A4.762 4.762 0 0 1 4.98 9.863c.127-2.289 1.935-4.204 4.205-4.455a4.762 4.762 0 0 1 5.3 4.727 4.714 4.714 0 0 1-1.474 3.443 5.853 5.853 0 0 0-1.791 4.225v.746zM11.45 20.51H8.006a.397.397 0 1 0 0 .795h3.444a.397.397 0 1 0 0-.794zM11.847 22.162a.397.397 0 0 0-.397-.397H8.006a.397.397 0 1 0 0 .794h3.444c.22 0 .397-.178.397-.397zM.397 10.125h2.287a.397.397 0 1 0 0-.794H.397a.397.397 0 1 0 0 .794zM19.456 9.728a.397.397 0 0 0-.397-.397h-2.287a.397.397 0 1 0 0 .794h2.287c.22 0 .397-.178.397-.397zM9.331.397v2.287a.397.397 0 1 0 .794 0V.397a.397.397 0 1 0-.794 0zM16.045 2.85 14.43 4.465a.397.397 0 1 0 .561.561l1.617-1.617a.397.397 0 1 0-.562-.56zM5.027 14.429a.397.397 0 0 0-.56 0l-1.618 1.616a.397.397 0 1 0 .562.562l1.617-1.617a.397.397 0 0 0 0-.561zM4.466 5.027a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.56L3.41 2.848a.397.397 0 1 0-.561.561zM16.045 16.607a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.562L14.99 14.43a.397.397 0 1 0-.561.56zM10.986 23.416a.397.397 0 0 0-.397-.397H8.867a.397.397 0 1 0 0 .794h1.722c.22 0 .397-.178.397-.397z' to #icon-bulb
-                                   end">
-                            {{template "icon-bulb-on"}}
-                        </button>
-                        {{- if .View.Share.IsFromHost -}}
-                            <button class="ml-2" title="Edit recipe"
-                                    hx-get="/recipes/{{.View.ID}}/edit"
-                                    hx-push-url="true"
-                                    hx-target="#content">
-                                {{template "icon-edit"}}
+    <section class="p-2">
+        <div class="flex justify-center">
+            <div class="card card-bordered bg-base-100 shadow-none w-full border-gray-700 xl:w-[72rem]">
+                <div class="card-body" style="padding: 0">
+                    <h2 class="card-title bg-base-200 px-2 pt-2 place-content-center rounded-t-2xl"
+                        style="justify-content: space-between">
+                        <span class="grid grid-flow-col place-items-center pb-2 print:hidden">
+                            <button title="Toggle screen lock"
+                                    _="on load if not navigator.wakeLock hide me end
+                                       on click
+                                       if wakeLock wakeLock.release() then
+                                            add @d='M 12.276 18.55 v -0.748 a 4.79 4.79 0 0 1 1.463 -3.458 a 5.763 5.763 0 0 0 1.804 -4.21 a 5.821 5.821 0 0 0 -6.475 -5.778 c -2.779 0.307 -4.99 2.65 -5.146 5.448 a 5.82 5.82 0 0 0 1.757 4.503 a 4.906 4.906 0 0 1 1.5 3.495 v 0.747 a 1.44 1.44 0 0 0 1.44 1.439 h 2.218 a 1.44 1.44 0 0 0 1.44 -1.439 z m -1.058 0 c 0 0.209 -0.17 0.38 -0.38 0.38 h -2.22 c -0.21 0 -0.38 -0.171 -0.38 -0.38 v -0.748 c 0 -1.58 -0.664 -3.13 -1.822 -4.254 A 4.762 4.762 0 0 1 4.98 9.863 c 0.127 -2.289 1.935 -4.204 4.205 -4.455 a 4.762 4.762 0 0 1 5.3 4.727 a 4.714 4.714 0 0 1 -1.474 3.443 a 5.853 5.853 0 0 0 -1.791 4.225 v 0.746 z M 11.45 20.51 H 8.006 a 0.397 0.397 0 1 0 0 0.795 h 3.444 a 0.397 0.397 0 1 0 0 -0.794 z M 11.847 22.162 a 0.397 0.397 0 0 0 -0.397 -0.397 H 8.006 a 0.397 0.397 0 1 0 0 0.794 h 3.444 c 0.22 0 0.397 -0.178 0.397 -0.397 z z z z z z z z M 10.986 23.416 H 8.867 a 0.397 0.397 0 1 0 0 0.794 h 1.722 c 0.22 0 0.397 -0.178 0.397 -0.397 z' to #icon-bulb
+                                       else
+                                            call initWakeLock() then
+                                            add @d='M12.276 18.55v-.748a4.79 4.79 0 0 1 1.463-3.458 5.763 5.763 0 0 0 1.804-4.21 5.821 5.821 0 0 0-6.475-5.778c-2.779.307-4.99 2.65-5.146 5.448a5.82 5.82 0 0 0 1.757 4.503 4.906 4.906 0 0 1 1.5 3.495v.747a1.44 1.44 0 0 0 1.44 1.439h2.218a1.44 1.44 0 0 0 1.44-1.439zm-1.058 0c0 .209-.17.38-.38.38h-2.22c-.21 0-.38-.171-.38-.38v-.748c0-1.58-.664-3.13-1.822-4.254A4.762 4.762 0 0 1 4.98 9.863c.127-2.289 1.935-4.204 4.205-4.455a4.762 4.762 0 0 1 5.3 4.727 4.714 4.714 0 0 1-1.474 3.443 5.853 5.853 0 0 0-1.791 4.225v.746zM11.45 20.51H8.006a.397.397 0 1 0 0 .795h3.444a.397.397 0 1 0 0-.794zM11.847 22.162a.397.397 0 0 0-.397-.397H8.006a.397.397 0 1 0 0 .794h3.444c.22 0 .397-.178.397-.397zM.397 10.125h2.287a.397.397 0 1 0 0-.794H.397a.397.397 0 1 0 0 .794zM19.456 9.728a.397.397 0 0 0-.397-.397h-2.287a.397.397 0 1 0 0 .794h2.287c.22 0 .397-.178.397-.397zM9.331.397v2.287a.397.397 0 1 0 .794 0V.397a.397.397 0 1 0-.794 0zM16.045 2.85 14.43 4.465a.397.397 0 1 0 .561.561l1.617-1.617a.397.397 0 1 0-.562-.56zM5.027 14.429a.397.397 0 0 0-.56 0l-1.618 1.616a.397.397 0 1 0 .562.562l1.617-1.617a.397.397 0 0 0 0-.561zM4.466 5.027a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.56L3.41 2.848a.397.397 0 1 0-.561.561zM16.045 16.607a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.562L14.99 14.43a.397.397 0 1 0-.561.56zM10.986 23.416a.397.397 0 0 0-.397-.397H8.867a.397.397 0 1 0 0 .794h1.722c.22 0 .397-.178.397-.397z' to #icon-bulb
+                                       end">
+                                {{template "icon-bulb-on"}}
                             </button>
-                        {{- end -}}
-                    </div>
-                </div>
-                <h1 class="grid col-span-4 py-2 font-semibold place-content-center">{{.View.Recipe.Name}}</h1>
-                <div class="grid justify-end col-span-1 place-content-center print:invisible">
-                    <div class="grid grid-flow-col">
-                        {{- if .View.Share.IsShared -}}
-                            {{- if not .View.Share.IsFromHost -}}
-                                <button class="mr-2" title="Add recipe to collection"
-                                        hx-post="/recipes/{{.View.ID}}/share/add">
-                                    {{template "icon-plus-circle"}}
+                            {{- if and .IsAuthenticated .View.Share.IsFromHost -}}
+                                <button class="ml-2" title="Edit recipe" hx-get="/recipes/{{.View.ID}}/edit"
+                                        hx-push-url="true" hx-target="#content">
+                                    {{template "icon-edit"}}
                                 </button>
                             {{- end -}}
-                        {{else}}
-                            <button class="mr-2" title="Share recipe" hx-post="/recipes/{{.View.ID}}/share"
-                                    hx-target="#share-dialog-result"
-                                    _="on htmx:afterRequest from me if event.detail.successful call #share-dialog.showModal()">
-                                {{template "icon-share"}}
+                        </span>
+                        <span class="text-center pb-2">{{.View.Recipe.Name}}</span>
+                        <span class="grid grid-flow-col place-items-center pb-2 print:hidden">
+                            {{- if .View.Share.IsShared -}}
+                                {{- if not .View.Share.IsFromHost -}}
+                                    <button class="mr-2" title="Add recipe to collection"
+                                            hx-post="/recipes/{{.View.ID}}/share/add">
+                                        {{template "icon-plus-circle"}}
+                                    </button>
+                                {{- end -}}
+                            {{else}}
+                                <button class="mr-2" title="Share recipe" hx-post="/recipes/{{.View.ID}}/share"
+                                        hx-target="#share-dialog-result"
+                                        _="on htmx:afterRequest from me if event.detail.successful call share_dialog.showModal()">
+                                        {{template "icon-share"}}
+                                </button>
+                            {{- end -}}
+                            <button class="mr-2" onclick="print()" title="Print recipe">
+                                {{template "icon-print"}}
                             </button>
-                        {{- end -}}
-                        <button class="mr-2" onclick="print()" title="Print recipe">
-                            {{template "icon-print"}}
-                        </button>
-                        {{- if .View.Share.IsFromHost -}}
-                            <button class="mr-2" hx-delete="/recipes/{{.View.Recipe.ID}}"
-                                    hx-swap="none"
-                                    title="Delete recipe"
-                                    hx-confirm="Are you sure you wish to delete this recipe?"
-                                    hx-indicator="#fullscreen-loader">
-                                {{template "icon-delete"}}
-                            </button>
+                            {{- if .View.Share.IsFromHost -}}
+                                <button class="mr-2" hx-delete="/recipes/{{.View.Recipe.ID}}" hx-swap="none"
+                                        title="Delete recipe" hx-confirm="Are you sure you wish to delete this recipe?"
+                                        hx-indicator="#fullscreen-loader">
+                                    {{template "icon-delete"}}
+                                </button>
+                            {{- end -}}
+                        </span>
+                    </h2>
+                    <div class="grid md:grid-flow-col md:grid-cols-6">
+                        <div class="w-full text-center border-b border-gray-700 md:col-span-3 md:border-r md:border-b-0 print:hidden">
+                            <img id="output" style="object-fit: cover" alt="Image of the recipe"
+                                 class="w-full"
+                                 src="{{- if .View.IsUUIDValid -}}/data/images/{{.View.Recipe.Image}}.jpg{{else}}/static/img/recipes/placeholder.webp{{end}}">
+                        </div>
+                        <div class="grid grid-cols-3 col-span-3 md:grid-flow-row md:grid-rows-4 print:grid-rows-2">
+                            <div class="grid grid-flow-col col-span-6 md:row-span-1 md:border-y md:border-gray-700 print:row-span-1">
+                                <div class="col-span-2 grid place-items-center md:col-span-1">
+                                    <div class="badge badge-primary badge-outline">{{.View.Recipe.Category}}</div>
+                                </div>
+                                <div class="grid col-span-2 border-gray-700 place-items-center text-sm border-x p-2 md:col-span-1 md:p-0 print:hidden">
+                                    {{- if .IsAuthenticated -}}
+                                        <form autocomplete="off" _="on submit halt the event" class="print:hidden">
+                                            <label class="form-control w-full">
+                                                <div class="label p-0">
+                                                    <span class="label-text">Servings</span>
+                                                </div>
+                                                <input id="yield" type="number" min="1" name="yield"
+                                                       value="{{if eq .View.Recipe.Yield 0}}1{{else}}{{.View.Recipe.Yield}}{{end}}"
+                                                       class="input input-bordered input-sm w-24"
+                                                       hx-get="/recipes/{{.View.ID}}/scale" hx-trigger="input"
+                                                       hx-target="#ingredients-instructions-container"> </label>
+                                        </form>
+                                    {{- else -}}
+                                        <p class="text-sm text-center">{{.View.Recipe.Yield}} servings</p>
+                                    {{- end -}}
+                                </div>
+                                <p class="hidden p-0 pt-2 print:block">{{.View.Recipe.Yield}} servings</p>
+                                <div class="flex items-center justify-center col-span-2 text-sm md:col-span-1 print:hidden">
+                                    {{- if .View.IsURL -}}
+                                        <a class="btn btn-sm btn-outline no-underline print:hidden"
+                                           href="{{.View.Recipe.URL}}" target="_blank">
+                                            Source
+                                        </a>
+                                        <p class="hidden print:block print:whitespace-nowrap print:overflow-hidden print:text-ellipsis print:max-w-xs">{{.View.Recipe.URL}}</p>
+                                    {{- else -}}
+                                        <p class="text-center">
+                                            Source: {{if .View.Recipe.URL}}{{.View.Recipe.URL}}{{else}}Unknown{{end}}</p>
+                                    {{- end -}}
+                                </div>
+                            </div>
+                            <div class="grid grid-flow-col col-span-6 border-gray-700 border-y md:border-t-0 md:grid-cols-2 md:row-span-2">
+                                <div class="border-r border-gray-700">
+                                    <table class="table table-zebra table-xs md:h-fit print:hidden">
+                                        <thead>
+                                        <tr>
+                                            <th>Time</th>
+                                            <th>h:m:s</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>Prep:</td>
+                                            <td>
+                                                <time datetime="{{.View.FormattedTimes.PrepDateTime}}">{{.View.FormattedTimes.Prep}}</time>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cooking:</td>
+                                            <td>
+                                                <time datetime="{{.View.FormattedTimes.CookDateTime}}">{{.View.FormattedTimes.Cook}}</time>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total:</td>
+                                            <td>
+                                                <time datetime="{{.View.FormattedTimes.TotalDateTime}}">{{.View.FormattedTimes.Total}}</time>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {{with .View.Recipe.Nutrition}}
+                                    <table class="table table-zebra table-xs print:hidden">
+                                        <thead>
+                                        <tr>
+                                            <th>Nutrition (per {{if .IsPerServing}}serving{{else}}100g{{end}})</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>Calories:</td>
+                                            <td>{{if eq .Calories ""}}-{{else}}{{.Calories}}{{end}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total carbs:</td>
+                                            <td>{{if eq .TotalCarbohydrates ""}}-{{else}}{{.TotalCarbohydrates}}{{end}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sugars:</td>
+                                            <td>{{if eq .Sugars ""}}-{{else}}{{.Sugars}}{{end}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Protein:</td>
+                                            <td>{{if eq .Protein ""}}-{{else}}{{.Protein}}{{end}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total fat:</td>
+                                            <td>{{if eq .TotalFat ""}}-{{else}}{{.TotalFat}}{{end}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Saturated fat:</td>
+                                            <td>{{if eq .SaturatedFat ""}}-{{else}}{{.SaturatedFat}}{{end}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cholesterol:</td>
+                                            <td>{{if eq .Cholesterol ""}}-{{else}}{{.Cholesterol}}{{end}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sodium:</td>
+                                            <td>{{if eq .Sodium ""}}-{{else}}{{.Sodium}}{{end}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Fiber:</td>
+                                            <td>{{if eq .Fiber ""}}-{{else}}{{.Fiber}}{{end}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                {{- end -}}
+                                <div class="hidden pt-2 print:block">
+                                    <h1 class="text-sm"><b>Nutrition Facts</b></h1>
+                                    <p class="text-xs">
+                                        {{- with .View.Recipe.Nutrition -}}
+                                            Per 100g: {{.Calories}} calories;
+                                            total carbohydrates {{.TotalCarbohydrates}};
+                                            sugars {{.Sugars}};
+                                            protein {{.Protein}};
+                                            total fat {{.TotalFat}};
+                                            saturated fat {{.SaturatedFat}};
+                                            cholesterol {{.Cholesterol}};
+                                            sodium {{.Sodium}};
+                                            fiber {{.Fiber}}.
+                                        {{- end -}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-span-3 h-40 md:h-full md:row-span-1 print:hidden">
+                                <label>
+                                    <textarea class="textarea w-full h-full resize-none"
+                                              readonly>{{.View.Recipe.Description}}</textarea>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden print:block">
+                        <h1 class="text-sm"><b>Description</b></h1>
+                        {{.View.Recipe.Description}}
+                    </div>
+                    <div class="border-gray-700 md:border-t">
+                        {{template "ingredients-instructions" .View.Recipe}}
+
+                        <div class="hidden print:grid col-span-6 ml-2 mt-2 mb-4">
+                            <h1 class="text-sm"><b>Ingredients</b></h1>
+                            <ol class="col-span-6 w-full"
+                                style="column-count: {{if gt (len .View.Recipe.Ingredients) 10}}2{{else}}1{{end}}">
+                                {{- range $i, $e := .View.Recipe.Ingredients -}}
+                                    <li class="text-sm">
+                                        <label>
+                                            <input type="checkbox">
+                                        </label>
+                                        <span class="pl-2">{{$e}}</span>
+                                    </li>
+                                {{- end -}}
+                            </ol>
+                        </div>
+
+                        <div class="hidden print:grid col-span-5">
+                            <h1 class="text-sm"><b>Instructions</b></h1>
+                            <ol class="col-span-6 list-decimal w-full ml-6"
+                                style="column-count: {{if gt (len .View.Recipe.Instructions) 2}}2{{else}}1{{end}}; column-gap: 2.5rem">
+                                {{- range $i, $e := .View.Recipe.Instructions -}}
+                                    <li>
+                                        <span class="text-sm whitespace-pre-line">{{$e}}</span>
+                                    </li>
+                                {{- end -}}
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="hidden print:block">
+                        <h1><b>Source</b></h1>
+                        {{- if .View.IsURL -}}
+                            <p class="print:overflow-hidden">{{.View.Recipe.URL}}</p>
+                        {{- else -}}
+                            <p>Source: {{if .View.Recipe.URL}}{{.View.Recipe.URL}}{{else}}Unknown{{end}}</p>
                         {{- end -}}
                     </div>
                 </div>
-            {{- else -}}
-                <div class="grid justify-start col-span-1 place-content-center print:invisible">
-                    <button class="ml-2" title="Toggle screen lock"
-                            _="on load if not navigator.wakeLock hide me end
-                                   on click
-                                   if
-                                        wakeLock wakeLock.release() then
-                                        add @d='M 12.276 18.55 v -0.748 a 4.79 4.79 0 0 1 1.463 -3.458 a 5.763 5.763 0 0 0 1.804 -4.21 a 5.821 5.821 0 0 0 -6.475 -5.778 c -2.779 0.307 -4.99 2.65 -5.146 5.448 a 5.82 5.82 0 0 0 1.757 4.503 a 4.906 4.906 0 0 1 1.5 3.495 v 0.747 a 1.44 1.44 0 0 0 1.44 1.439 h 2.218 a 1.44 1.44 0 0 0 1.44 -1.439 z m -1.058 0 c 0 0.209 -0.17 0.38 -0.38 0.38 h -2.22 c -0.21 0 -0.38 -0.171 -0.38 -0.38 v -0.748 c 0 -1.58 -0.664 -3.13 -1.822 -4.254 A 4.762 4.762 0 0 1 4.98 9.863 c 0.127 -2.289 1.935 -4.204 4.205 -4.455 a 4.762 4.762 0 0 1 5.3 4.727 a 4.714 4.714 0 0 1 -1.474 3.443 a 5.853 5.853 0 0 0 -1.791 4.225 v 0.746 z M 11.45 20.51 H 8.006 a 0.397 0.397 0 1 0 0 0.795 h 3.444 a 0.397 0.397 0 1 0 0 -0.794 z M 11.847 22.162 a 0.397 0.397 0 0 0 -0.397 -0.397 H 8.006 a 0.397 0.397 0 1 0 0 0.794 h 3.444 c 0.22 0 0.397 -0.178 0.397 -0.397 z z z z z z z z M 10.986 23.416 H 8.867 a 0.397 0.397 0 1 0 0 0.794 h 1.722 c 0.22 0 0.397 -0.178 0.397 -0.397 z' to first <path/>
-                                   else
-                                        call initWakeLock() then
-                                        add @d='M12.276 18.55v-.748a4.79 4.79 0 0 1 1.463-3.458 5.763 5.763 0 0 0 1.804-4.21 5.821 5.821 0 0 0-6.475-5.778c-2.779.307-4.99 2.65-5.146 5.448a5.82 5.82 0 0 0 1.757 4.503 4.906 4.906 0 0 1 1.5 3.495v.747a1.44 1.44 0 0 0 1.44 1.439h2.218a1.44 1.44 0 0 0 1.44-1.439zm-1.058 0c0 .209-.17.38-.38.38h-2.22c-.21 0-.38-.171-.38-.38v-.748c0-1.58-.664-3.13-1.822-4.254A4.762 4.762 0 0 1 4.98 9.863c.127-2.289 1.935-4.204 4.205-4.455a4.762 4.762 0 0 1 5.3 4.727 4.714 4.714 0 0 1-1.474 3.443 5.853 5.853 0 0 0-1.791 4.225v.746zM11.45 20.51H8.006a.397.397 0 1 0 0 .795h3.444a.397.397 0 1 0 0-.794zM11.847 22.162a.397.397 0 0 0-.397-.397H8.006a.397.397 0 1 0 0 .794h3.444c.22 0 .397-.178.397-.397zM.397 10.125h2.287a.397.397 0 1 0 0-.794H.397a.397.397 0 1 0 0 .794zM19.456 9.728a.397.397 0 0 0-.397-.397h-2.287a.397.397 0 1 0 0 .794h2.287c.22 0 .397-.178.397-.397zM9.331.397v2.287a.397.397 0 1 0 .794 0V.397a.397.397 0 1 0-.794 0zM16.045 2.85 14.43 4.465a.397.397 0 1 0 .561.561l1.617-1.617a.397.397 0 1 0-.562-.56zM5.027 14.429a.397.397 0 0 0-.56 0l-1.618 1.616a.397.397 0 1 0 .562.562l1.617-1.617a.397.397 0 0 0 0-.561zM4.466 5.027a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.56L3.41 2.848a.397.397 0 1 0-.561.561zM16.045 16.607a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.562L14.99 14.43a.397.397 0 1 0-.561.56zM10.986 23.416a.397.397 0 0 0-.397-.397H8.867a.397.397 0 1 0 0 .794h1.722c.22 0 .397-.178.397-.397z' to first <path/>
-                                   end">
-                        {{template "icon-bulb-on"}}
-                    </button>
-                </div>
-                <h1 class="grid col-span-4 py-2 font-semibold place-content-center">{{.View.Recipe.Name}}</h1>
-                <div class="grid justify-end col-span-1 place-content-center print:invisible">
-                    <button class="mr-2" onclick="print()" title="Print recipe">
-                        {{template "icon-print"}}
-                    </button>
-                </div>
-            {{- end -}}
-        </div>
-
-        <div class="w-full grid grid-flow-col col-span-6 border-b border-x border-black place-items-center md:border-r-0 md:col-span-4 md:border-b-0 dark:border-gray-800 print:hidden">
-            <img id="output" class="w-full text-center h-96" alt="Image of the recipe"
-                 style="object-fit: scale-down"
-                 src="{{- if .View.IsUUIDValid -}}/data/images/{{.View.Recipe.Image}}.jpg{{else}}/static/img/recipes/placeholder.webp{{end}}">
-        </div>
-
-        <div class="grid grid-flow-col col-span-6 border-b border-l border-black md:border-l md:grid-flow-row md:col-span-2 md:grid md:border-r md:border-b-0 dark:border-gray-800 print:border-b">
-            <div class="col-span-2 p-2 border-r border-black md:col-span-3 md:grid md:place-items-center md:border-r-0 dark:border-gray-800">
-                <span class="flex items-center justify-center p-2 font-medium text-blue-700 bg-blue-100 border border-blue-300 rounded-full md:w-1/3 dark:border-gray-800 print:border-none print:text-black print:bg-transparent">
-                  <span class="text-sm font-normal leading-none">{{.View.Recipe.Category}}</span>
-                </span>
-            </div>
-
-            <div class="grid col-span-2 py-2 border-black place-items-center text-sm md:col-span-3 md:border-t dark:border-gray-800">
-                {{- if .IsAuthenticated -}}
-                    <form autocomplete="off" _="on submit halt the event" class="print:hidden">
-                        <input id="yield" type="number" min="1" name="yield"
-                               value="{{if eq .View.Recipe.Yield 0}}1{{else}}{{.View.Recipe.Yield}}{{end}}"
-                               class="w-16 text-center rounded bg-gray-100 p-2 grid self-end dark:bg-gray-900"
-                               hx-get="/recipes/{{.View.ID}}/scale"
-                               hx-trigger="input"
-                               hx-target="#ingredients-instructions-container">
-                        <label for="yield" class="grid self-start">servings</label>
-                    </form>
-                    <p class="hidden print:block">{{.View.Recipe.Yield}} servings</p>
-                {{- else -}}
-                    <p class="text-sm text-center">{{.View.Recipe.Yield}} servings</p>
-                {{- end -}}
-            </div>
-
-            <div class="flex items-center justify-center col-span-2 border-x border-black text-sm md:border-l-0 md:border-r-0 md:border-b md:col-span-3 md:border-t md:py-2 dark:border-gray-800">
-                {{- if .View.IsURL -}}
-                    <a class="p-1 border rounded-lg center hover:bg-gray-800 hover:text-white dark:border-gray-800 print:hidden"
-                       href="{{.View.Recipe.URL}}" target="_blank">
-                        Source
-                    </a>
-                    <p class="hidden print:block print:whitespace-nowrap print:overflow-hidden print:text-ellipsis print:max-w-xs">{{.View.Recipe.URL}}</p>
-                {{- else -}}
-                    <p>Source: {{if .View.Recipe.URL}}{{.View.Recipe.URL}}{{else}}Unknown{{end}}</p>
-                {{- end -}}
             </div>
         </div>
-
-        <div class="col-span-6 border-b border-x border-black md:col-span-4 md:border-r-0 dark:border-gray-800 print:col-span-5 print:border-r print:border-t-0 md:border-t">
-            <p class="p-2 text-sm whitespace-pre-line">{{.View.Recipe.Description}}</p>
-            <div class="hidden print:block print:p-2">
-                <h1 class="text-sm"><b>Nutrition Facts</b></h1>
-                <p class="text-xs">
-                    {{- with .View.Recipe.Nutrition -}}
-                        Per 100g: {{.Calories}} calories;
-                        total carbohydrates {{.TotalCarbohydrates}};
-                        sugars {{.Sugars}};
-                        protein {{.Protein}};
-                        total fat {{.TotalFat}};
-                        saturated fat {{.SaturatedFat}};
-                        cholesterol {{.Cholesterol}};
-                        sodium {{.Sodium}};
-                        fiber {{.Fiber}}.
-                    {{- end -}}
-                </p>
-            </div>
-        </div>
-
-        {{with .View.Recipe.Nutrition}}
-            <div class="col-span-3 border-b border-x border-black md:col-span-1 dark:border-gray-800 print:hidden">
-                <div class="inline-block min-w-full overflow-x-auto align-middle">
-                    <div class="overflow-hidden border-gray-200">
-                        <table class="min-w-full text-xs divide-y divide-gray-200 table-auto dark:text-gray-200 dark:divide-slate-600">
-                            <thead class="h-12 font-medium tracking-wider text-white bg-gray-800">
-                            <tr>
-                                <th scope="col" class="text-right">
-                                    <p class="text-center">Nutrition<br>(per {{if .IsPerServing}}serving{{else}}100g{{end}})</p>
-                                </th>
-                                <th scope="col" class="text-center">
-                                    <p>Amount</p>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600">
-                            <tr>
-                                <td class="py-2 dark:border-gray-800">
-                                    <p>Calories:</p>
-                                </td>
-                                <td class="text-center dark:border-gray-800">
-                                    {{if eq .Calories ""}}-{{else}}{{.Calories}}{{end}}
-                                </td>
-                            </tr>
-                            <tr class="bg-gray-100 dark:bg-slate-700">
-                                <td class="py-2 dark:border-gray-800">
-                                    <p>Total carbs:</p>
-                                </td>
-                                <td class="text-center dark:border-gray-800">
-                                    {{if eq .TotalCarbohydrates ""}}-{{else}}{{.TotalCarbohydrates}}{{end}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 dark:border-gray-800">
-                                    <p>Sugars:</p>
-                                </td>
-                                <td class="text-center dark:border-gray-800">
-                                    {{if eq .Sugars ""}}-{{else}}{{.Sugars}}{{end}}
-                                </td>
-                            </tr>
-                            <tr class="bg-gray-100 dark:bg-slate-700">
-                                <td class="py-2 dark:border-gray-800">
-                                    <p>Protein:</p>
-                                </td>
-                                <td class="text-center dark:border-gray-800">
-                                    {{if eq .Protein ""}}-{{else}}{{.Protein}}{{end}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 dark:border-gray-800">
-                                    <p>Total fat:</p>
-                                </td>
-                                <td class="text-center dark:border-gray-800">
-                                    {{if eq .TotalFat ""}}-{{else}}{{.TotalFat}}{{end}}
-                                </td>
-                            </tr>
-                            <tr class="bg-gray-100 dark:bg-slate-700">
-                                <td class="py-2 dark:border-gray-800">
-                                    <p>Saturated fat:</p>
-                                </td>
-                                <td class="text-center dark:border-gray-800">
-                                    {{if eq .SaturatedFat ""}}-{{else}}{{.SaturatedFat}}{{end}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 dark:border-gray-800">
-                                    <p>Cholesterol:</p>
-                                </td>
-                                <td class="text-center dark:border-gray-800">
-                                    {{if eq .Cholesterol ""}}-{{else}}{{.Cholesterol}}{{end}}
-                                </td>
-                            </tr>
-                            <tr class="bg-gray-100 dark:bg-slate-700">
-                                <td class="py-2 dark:border-gray-800">
-                                    <p>Sodium:</p>
-                                </td>
-                                <td class="text-center dark:border-gray-800">
-                                    {{if eq .Sodium ""}}-{{else}}{{.Sodium}}{{end}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 dark:border-gray-800">
-                                    <p>Fiber:</p>
-                                </td>
-                                <td class="text-center dark:border-gray-800">
-                                    {{if eq .Fiber ""}}-{{else}}{{.Fiber}}{{end}}
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        {{- end -}}
-
-        <div class="col-span-3 border-b border-r border-black md:col-span-1 print:col-span-1">
-            <div class="inline-block min-w-full overflow-x-auto align-middle">
-                <div class="overflow-hidden border-gray-200">
-                    <table class="min-w-full text-xs divide-y divide-gray-200 dark:text-gray-200 dark:divide-slate-600">
-                        <thead class="h-12 font-medium tracking-wider text-white bg-gray-800 border-l dark:border-l-gray-600 print:h-1 print:text-black print:bg-gray-200">
-                        <tr>
-                            <th scope="col" class="text-right">Time</th>
-                            <th scope="col" class="text-center">h:m:s</th>
-                        </tr>
-                        </thead>
-                        <tbody class="text-right text-gray-500 bg-white divide-y divide-gray-200 dark:text-gray-200 dark:bg-slate-800 dark:divide-slate-600 print:text-gray-700">
-                        <tr>
-                            <td class="py-2">Prep:</td>
-                            <td class="text-center print:py-0">
-                                <time datetime="{{.View.FormattedTimes.PrepDateTime}}">{{.View.FormattedTimes.Prep}}</time>
-                            </td>
-                        </tr>
-                        <tr class="bg-gray-100 dark:bg-slate-700">
-                            <td class="py-2">Cooking:</td>
-                            <td class="w-1/2 text-center print:py-0">
-                                <time datetime="{{.View.FormattedTimes.CookDateTime}}">{{.View.FormattedTimes.Cook}}</time>
-                            </td>
-                        </tr>
-                        <tr class="font-semibold">
-                            <td class="py-2">Total:</td>
-                            <td class="w-1/2 text-center print:py-0">
-                                <time datetime="{{.View.FormattedTimes.TotalDateTime}}">{{.View.FormattedTimes.Total}}</time>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        {{template "ingredients-instructions" .View.Recipe}}
-
-        <div class="hidden print:grid col-span-6 ml-2 mt-2 mb-4">
-            <h1 class="text-sm"><b>Ingredients</b></h1>
-            <ol class="col-span-6 w-full"
-                style="column-count: {{if gt (len .View.Recipe.Ingredients) 10}}2{{else}}1{{end}}">
-                {{- range $i, $e := .View.Recipe.Ingredients -}}
-                    <li class="text-sm">
-                        <label>
-                            <input type="checkbox">
-                        </label>
-                        <span class="pl-2">{{$e}}</span>
-                    </li>
-                {{- end -}}
-            </ol>
-        </div>
-
-        <div class="hidden print:grid col-span-5">
-            <h1 class="text-sm"><b>Instructions</b></h1>
-            <ol class="col-span-6 list-decimal w-full ml-6"
-                style="column-count: {{if gt (len .View.Recipe.Instructions) 2}}2{{else}}1{{end}}; column-gap: 2.5rem">
-                {{- range $i, $e := .View.Recipe.Instructions -}}
-                    <li>
-                        <span class="text-sm whitespace-pre-line">{{$e}}</span>
-                    </li>
-                {{- end -}}
-            </ol>
-        </div>
-    </div>
+    </section>
     <script>
         var wakeLock = null;
         initWakeLock();

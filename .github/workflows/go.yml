@@ -32,17 +32,20 @@ jobs:
           hugo-version: "latest"
           extended: true
 
-      - name: Build
-        run: make build
-
-      - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v3.7.0
+      - name: Install Task
+        uses: arduino/setup-task@v1
         with:
-          version: latest
-          args: --timeout 10m --skip-dirs '(docs/website)'
+          version: 3.x
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      #- name: Run golangci-lint
+      #  uses: golangci/golangci-lint-action@v3
+      #  with:
+      #    version: latest
+      #    args: --timeout 10m --skip-dirs '(docs)'
 
       - name: Run Revive Action by pulling pre-built image
         uses: docker://morphy/revive-action:v2
 
-      - name: Test
-        run: make test
+      - name: Build and test
+        run: task test

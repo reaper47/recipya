@@ -34,25 +34,31 @@ func TestHandlers_Settings(t *testing.T) {
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
+			`<title hx-swap-oob="true">Settings | Recipya</title>`,
+			`<div class="grid place-content-center md:place-content-stretch md:grid-flow-col md:h-full" style="grid-template-columns: min-content">`,
+			`<div class="hidden md:grid text-sm md:text-base bg-gray-200 max-w-[6rem] mt-[1px] dark:bg-gray-600 dark:border-r dark:border-r-gray-500" role="tablist">`,
 			`<button class="px-2 bg-gray-300 hover:bg-gray-300 dark:hover:bg-gray-800" hx-get="/settings/tabs/recipes" hx-target="#settings-tab-content" role="tab" aria-selected="false" aria-controls="tab-content" _="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800"> Recipes </button>`,
-			`<p class="text-end font-semibold select-none">Export data:<br><span class="font-light text-sm">Download your recipes in the selected file format.</span></p>`,
-			`<form method="dialog" hx-post="/integrations/import/nextcloud" hx-swap="none" onsubmit="document.querySelector('#integrations-nextcloud-dialog').close()"><div class="block"><label for="integrations-nextcloud-dialog-url" class="font-medium">Nextcloud URL</label><input id="integrations-nextcloud-dialog-url" type="url" name="url" placeholder="https://nextcloud.mydomain.com" class="text-input"></div><div class="block mt-3"><label for="integrations-nextcloud-dialog-username" class="font-medium">Username</label><input id="integrations-nextcloud-dialog-username" type="text" name="username" placeholder="Enter your Nextcloud username" class="text-input"></div><div class="block mt-3"><label for="integrations-nextcloud-dialog-password" class="font-medium">Password</label><input id="integrations-nextcloud-dialog-password" type="password" name="password" placeholder="Enter your Nextcloud password" class="text-input"></div><button class="mt-3 w-full rounded-lg bg-indigo-600 px-4 py-2 text-lg font-semibold tracking-wide text-white hover:bg-green-600"> Import </button></form>`,
-			`<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1" fill="black" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 11v5H2v-5H0v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5z"/><path d="m9 14 5-6h-4V0H8v8H4z"/></svg>`,
-			`<label for="systems" class="text-end font-semibold">Measurement system:</label>`,
-			`<select id="systems" name="system" hx-post="/settings/measurement-system" hx-swap="none" class="h-fit w-fit bg-gray-50 border border-gray-300 rounded-lg p-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500"><option value="imperial" >imperial</option><option value="metric" selected>metric</option></select>`,
-			`<input type="checkbox" name="convert" id="convert" class="w-fit h-fit mt-1" hx-post="/settings/convert-automatically" hx-trigger="click">`,
-			`<div class="grid grid-cols-2 gap-4 mb-2"><label for="integrations" class="text-end font-semibold">Integrations:<br><span class="font-light text-sm">Import recipes from the selected solution.</span></label><div class="grid gap-1 grid-flow-col w-fit h-fit"><label><select id="integrations" name="integrations" hx-post="/settings/measurement-system" hx-swap="none" class="h-fit w-fit bg-gray-50 border border-gray-300 rounded-lg p-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500"><option value="nextcloud" selected>Nextcloud</option></select></label><button class="bg-white border border-gray-300 rounded-lg py-1 px-2 hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" onmousedown="document.querySelector('#integrations-nextcloud-dialog').showModal()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-cloud-arrow-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.646 10.854a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2z"/><path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/></svg></button></div></div>`,
-			`<dialog id="integrations-nextcloud-dialog" class="p-4 dark:bg-gray-600 rounded-lg dark:text-gray-200"><h3 class="flex justify-between mb-4"><span class="flex font-semibold underline">Import from Nextcloud</span><button type="button" class="hover:bg-gray-800 hover:text-white px-2 border rounded" onclick="document.querySelector('#integrations-nextcloud-dialog').close()"> X </button></h3><form method="dialog" hx-post="/integrations/import/nextcloud" hx-swap="none" onsubmit="document.querySelector('#integrations-nextcloud-dialog').close()"><div class="block"><label for="integrations-nextcloud-dialog-url" class="font-medium">Nextcloud URL</label><input id="integrations-nextcloud-dialog-url" type="url" name="url" placeholder="https://nextcloud.mydomain.com" class="text-input"></div><div class="block mt-3"><label for="integrations-nextcloud-dialog-username" class="font-medium">Username</label><input id="integrations-nextcloud-dialog-username" type="text" name="username" placeholder="Enter your Nextcloud username" class="text-input"></div><div class="block mt-3"><label for="integrations-nextcloud-dialog-password" class="font-medium">Password</label><input id="integrations-nextcloud-dialog-password" type="password" name="password" placeholder="Enter your Nextcloud password" class="text-input"></div><button class="mt-3 w-full rounded-lg bg-indigo-600 px-4 py-2 text-lg font-semibold tracking-wide text-white hover:bg-green-600"> Import </button></form></dialog>`,
+			`<button class="px-2 hover:bg-gray-300" hx-get="/settings/tabs/advanced" hx-target="#settings-tab-content" role="tab" aria-selected="false" aria-controls="tab-content" _="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800"> Advanced </button>`,
+			`<div id="settings_bottom_tabs" class="btm-nav btm-nav-sm z-20 md:hidden" _="on click remove .active from <button/> in settings_bottom_tabs then add .active to event.srcElement">`,
+			`<button class="active" hx-get="/settings/tabs/profile" hx-target="#settings-tab-content"> Profile </button>`,
+			`<button hx-get="/settings/tabs/recipes" hx-target="#settings-tab-content"> Recipes </button>`,
+			`<button hx-get="/settings/tabs/advanced" hx-target="#settings-tab-content"> Advanced </button>`,
+			`<div id="settings-tab-content" role="tabpanel" class="w-[90vw] text-sm md:text-base p-4 auto-rows-min md:w-full">`,
+			`<div class="mb-4 md:mb-2 md:grid md:grid-cols-2 md:gap-4"><p class="mb-1 font-semibold md:text-end">Export data:<br><span class="font-light text-sm">Download your recipes in the selected file format.</span></p><form class="grid gap-1 grid-flow-col w-fit" hx-get="/settings/export/recipes" hx-include="select[name='type']" hx-swap="none">`,
+			`<label class="form-control w-full"><div class="label"><span class="label-text font-medium">Nextcloud URL</span></div><input type="url" name="url" placeholder="https://nextcloud.mydomain.com" class="input input-bordered w-full" required></label>`,
+			`<label class="form-control w-full"><div class="label"><span class="label-text font-medium">Username</span></div><input type="text" name="username" placeholder="Enter your Nextcloud username" class="input input-bordered w-full" required></label>`,
+			`<label class="form-control w-full pb-2"><div class="label"><span class="label-text font-medium">Password</span></div><input type="password" name="password" placeholder="Enter your Nextcloud password" class="input input-bordered w-full" required></label>`,
+			`<button class="btn btn-block btn-primary btn-sm mt-2"> Import </button></form>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 		notWant := []string{
-			`<button class="px-2 bg-gray-300 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-800" hx-get="/settings/tabs/profile" hx-target="#settings-tab-content" role="tab" aria-selected="false" aria-controls="tab-content" _="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800"> Profile </button>`,
-			`<p class="grid justify-end font-semibold">Change password:</p>`,
-			`<form class="h-fit w-fit border p-4 rounded-lg dark:border-none dark:bg-gray-600" hx-post="/auth/change-password" hx-indicator="#fullscreen-loader" hx-swap="none">`,
-			`<input class="text-input" id="password-current" name="password-current" placeholder="Enter current password" required type="password"/>`,
-			`<input class="text-input" id="password-new" name="password-new" placeholder="Enter new password" required type="password"/>`,
-			`<input class="text-input" id="password-confirm" name="password-confirm" placeholder="Retype new password" required type="password"/>`,
-			`<button type="submit" class="w-full p-2 font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-800"> Update </button>`,
+			`hx-get="/settings/tabs/profile"`,
+			`Change password:`,
+			`hx-post="/auth/change-password"`,
+			`Enter current password`,
+			`Enter new password`,
+			`Retype new password`,
+			`Update`,
 		}
 		assertStringsNotInHTML(t, getBodyHTML(rr), notWant)
 	})
@@ -63,16 +69,22 @@ func TestHandlers_Settings(t *testing.T) {
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
 			`<title hx-swap-oob="true">Settings | Recipya</title>`,
+			`<div class="grid place-content-center md:place-content-stretch md:grid-flow-col md:h-full" style="grid-template-columns: min-content">`,
+			`<div class="hidden md:grid text-sm md:text-base bg-gray-200 max-w-[6rem] mt-[1px] dark:bg-gray-600 dark:border-r dark:border-r-gray-500" role="tablist">`,
 			`<button class="px-2 bg-gray-300 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-800" hx-get="/settings/tabs/profile" hx-target="#settings-tab-content" role="tab" aria-selected="false" aria-controls="tab-content" _="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800"> Profile </button>`,
 			`<button class="px-2 hover:bg-gray-300 dark:hover:bg-gray-800" hx-get="/settings/tabs/recipes" hx-target="#settings-tab-content" role="tab" aria-selected="false" aria-controls="tab-content" _="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800"> Recipes </button>`,
-			`<button class="px-2 hover:bg-gray-300 dark:hover:bg-gray-800" hx-get="/settings/tabs/advanced" hx-target="#settings-tab-content" role="tab" aria-selected="false" aria-controls="tab-content" _="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800"> Advanced </button>`,
-			`<div id="settings-tab-content" role="tabpanel" class="text-sm md:text-base p-4 auto-rows-min">`,
-			`<p class="grid justify-end font-semibold">Change password:</p>`,
-			`<form class="h-fit w-fit border p-4 rounded-lg dark:border-none dark:bg-gray-600" hx-post="/auth/change-password" hx-indicator="#fullscreen-loader" hx-swap="none">`,
-			`<input class="text-input" id="password-current" name="password-current" placeholder="Enter current password" required type="password"/>`,
-			`<input class="text-input" id="password-new" name="password-new" placeholder="Enter new password" required type="password"/>`,
-			`<input class="text-input" id="password-confirm" name="password-confirm" placeholder="Retype new password" required type="password"/>`,
-			`<button type="submit" class="w-full p-2 font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-800"> Update </button>`,
+			`<button class="px-2 hover:bg-gray-300" hx-get="/settings/tabs/advanced" hx-target="#settings-tab-content" role="tab" aria-selected="false" aria-controls="tab-content" _="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800"> Advanced </button>`,
+			`<div id="settings_bottom_tabs" class="btm-nav btm-nav-sm z-20 md:hidden" _="on click remove .active from <button/> in settings_bottom_tabs then add .active to event.srcElement">`,
+			`<button class="active" hx-get="/settings/tabs/profile" hx-target="#settings-tab-content"> Profile </button>`,
+			`<button hx-get="/settings/tabs/recipes" hx-target="#settings-tab-content"> Recipes </button>`,
+			`<button hx-get="/settings/tabs/advanced" hx-target="#settings-tab-content"> Advanced </button>`,
+			`<div id="settings-tab-content" role="tabpanel" class="w-[90vw] text-sm md:text-base p-4 auto-rows-min md:w-full">`,
+			`<div class="mb-4 md:mb-2 md:grid md:grid-cols-2 md:gap-4"><p class="mb-1 font-semibold md:text-end">Change password:</p><div class="card card-bordered card-compact w-96 bg-base-100 max-w-xs"><div class="card-body pt-2"><form hx-post="/auth/change-password" hx-indicator="#fullscreen-loader" hx-swap="none">`,
+			`<label class="form-control w-full"><div class="label"><span class="label-text">Current password?</span></div><input type="password" placeholder="Enter current password" class="input input-bordered input-sm w-full max-w-xs" name="password-current" required/></label>`,
+			`<label class="form-control w-full"><div class="label"><span class="label-text">New password?</span></div><input type="password" placeholder="Enter new password" class="input input-bordered input-sm w-full max-w-xs" name="password-new" required/></label>`,
+			`<label class="form-control w-full"><div class="label"><span class="label-text">Confirm password?</span></div><input type="password" placeholder="Retype new password" class="input input-bordered input-sm w-full max-w-xs" name="password-confirm" required/></label>`,
+			`<div type="submit" class="card-actions justify-end mt-2"><button class="btn btn-primary btn-block btn-sm">Update</button></div></form></div></div></div>`,
+			`<div class="mb-2 grid grid-cols-2 gap-4"><p class="mb-1 font-semibold md:text-end">Delete Account:<br><span class="font-light text-sm">This will delete all your data.</span></p><button type="submit" hx-delete="/auth/user" hx-confirm="Are you sure you want to delete your account? This action is irreversible." class="btn btn-error w-28"> Delete </button></div>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
@@ -104,7 +116,7 @@ func TestHandlers_Settings_BackupsRestore(t *testing.T) {
 
 			assertStatus(t, rr.Code, http.StatusBadRequest)
 			_, after, _ := strings.Cut(tc.in, "=")
-			message := fmt.Sprintf("{\"showToast\":\"{\\\"message\\\":\\\"%s is an invalid backup.\\\",\\\"backgroundColor\\\":\\\"bg-red-500\\\"}\"}", after)
+			message := fmt.Sprintf("{\"showToast\":\"{\\\"message\\\":\\\"%s is an invalid backup.\\\",\\\"backgroundColor\\\":\\\"alert-error\\\"}\"}", after)
 			assertHeader(t, rr, "HX-Trigger", message)
 		})
 	}
@@ -122,7 +134,7 @@ func TestHandlers_Settings_BackupsRestore(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("date=2006-01-02"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Failed to backup current data.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Failed to backup current data.\",\"backgroundColor\":\"alert-error\"}"}`)
 	})
 
 	t.Run("extract user backup failed", func(t *testing.T) {
@@ -138,7 +150,7 @@ func TestHandlers_Settings_BackupsRestore(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("date=2006-01-02"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Failed to extract backup.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Failed to extract backup.\",\"backgroundColor\":\"alert-error\"}"}`)
 	})
 
 	t.Run("restore backup failed", func(t *testing.T) {
@@ -154,14 +166,14 @@ func TestHandlers_Settings_BackupsRestore(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("date=2006-01-02"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Failed to restore backup.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Failed to restore backup.\",\"backgroundColor\":\"alert-error\"}"}`)
 	})
 
 	t.Run("valid request", func(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("date=2006-01-02"))
 
 		assertStatus(t, rr.Code, http.StatusOK)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Backup restored successfully.\",\"backgroundColor\":\"bg-blue-500\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Backup restored successfully.\",\"backgroundColor\":\"alert-info\"}"}`)
 	})
 }
 
@@ -182,7 +194,7 @@ func TestHandlers_Settings_CalculateNutrition(t *testing.T) {
 		rr := sendHxRequestAsLoggedInOther(srv, http.MethodPost, uri, formHeader, strings.NewReader("calculate-nutrition=off"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Failed to set setting.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Failed to set setting.\",\"backgroundColor\":\"alert-error\"}"}`)
 	})
 
 	t.Run("unchecked does not convert new recipes", func(t *testing.T) {
@@ -219,7 +231,7 @@ func TestHandlers_Settings_ConvertAutomatically(t *testing.T) {
 		rr := sendHxRequestAsLoggedInOther(srv, http.MethodPost, uri, formHeader, strings.NewReader("convert=off"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Failed to set setting.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Failed to set setting.\",\"backgroundColor\":\"alert-error\"}"}`)
 	})
 
 	t.Run("unchecked does not convert new recipes", func(t *testing.T) {
@@ -260,14 +272,14 @@ func TestHandlers_Settings_MeasurementSystems(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("system=imperial"))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"System already set to imperial.\",\"backgroundColor\":\"bg-orange-500\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"System already set to imperial.\",\"backgroundColor\":\"alert-warning\"}"}`)
 	})
 
 	t.Run("system does not exist", func(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("system=peanuts"))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Measurement system does not exist.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Measurement system does not exist.\",\"backgroundColor\":\"alert-error\"}"}`)
 	})
 
 	t.Run("failed to switch system", func(t *testing.T) {
@@ -283,7 +295,7 @@ func TestHandlers_Settings_MeasurementSystems(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("system=imperial"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Error switching units system.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Error switching units system.\",\"backgroundColor\":\"alert-error\"}"}`)
 	})
 
 	testcases := []struct {
@@ -465,7 +477,7 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 		rr := sendRequestAsLoggedIn(srv, http.MethodGet, "/settings/export/recipes", noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Connection lost. Please reload page.\",\"backgroundColor\":\"bg-orange-500\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Connection lost. Please reload page.\",\"backgroundColor\":\"alert-warning\"}"}`)
 	})
 
 	t.Run("invalid file type", func(t *testing.T) {
@@ -474,7 +486,7 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Invalid export file format.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Invalid export file format.\",\"backgroundColor\":\"alert-error\"}"}`)
 	})
 
 	t.Run("no export if no recipes", func(t *testing.T) {
@@ -540,10 +552,7 @@ func TestHandlers_Settings_TabsAdvanced(t *testing.T) {
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
-			`<p class="text-end font-semibold select-none">Restore backup:</p>`,
-			`<form class="grid gap-1 grid-flow-col w-fit" hx-post="/settings/backups/restore" hx-include="select[name='date']" hx-swap="none" hx-indicator="#fullscreen-loader" hx-confirm="Continue with this backup? Today's data will be backed up if not already done.">`,
-			`<label><select required id="file-type" name="date" class="bg-gray-50 border border-gray-300 rounded-lg p-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500"></select></label>`,
-			`<button class="bg-white border border-gray-300 rounded-lg py-2 px-4 justify-start hover:bg-gray-100 h-fit focus:ring-2 focus:ring-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/></svg></button>`,
+			`<div class="mb-2 md:grid md:grid-cols-2 md:gap-4"><p class="mb-1 font-semibold select-none md:text-end md:mb-0">Restore backup:</p><form class="grid gap-1 grid-flow-col w-fit" hx-post="/settings/backups/restore" hx-include="select[name='date']" hx-swap="none" hx-indicator="#fullscreen-loader" hx-confirm="Continue with this backup? Today's data will be backed up if not already done."><label><select required id="file-type" name="date" class="select select-bordered select-sm"></select></label><button class="btn btn-sm btn-outline"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/></svg></button></form></div>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
@@ -563,12 +572,8 @@ func TestHandlers_Settings_TabsProfile(t *testing.T) {
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
-			`<p class="grid justify-end font-semibold">Change password:</p>`,
-			`<form class="h-fit w-fit border p-4 rounded-lg dark:border-none dark:bg-gray-600" hx-post="/auth/change-password" hx-indicator="#fullscreen-loader" hx-swap="none">`,
-			`<input class="text-input" id="password-current" name="password-current" placeholder="Enter current password" required type="password"/>`,
-			`<input class="text-input" id="password-new" name="password-new" placeholder="Enter new password" required type="password"/>`,
-			`<input class="text-input" id="password-confirm" name="password-confirm" placeholder="Retype new password" required type="password"/>`,
-			`<button type="submit" class="w-full p-2 font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-800"> Update </button>`,
+			`<div class="mb-4 md:mb-2 md:grid md:grid-cols-2 md:gap-4"><p class="mb-1 font-semibold md:text-end">Change password:</p><div class="card card-bordered card-compact w-96 bg-base-100 max-w-xs"><div class="card-body pt-2"><form hx-post="/auth/change-password" hx-indicator="#fullscreen-loader" hx-swap="none"><label class="form-control w-full"><div class="label"><span class="label-text">Current password?</span></div><input type="password" placeholder="Enter current password" class="input input-bordered input-sm w-full max-w-xs" name="password-current" required/></label><label class="form-control w-full"><div class="label"><span class="label-text">New password?</span></div><input type="password" placeholder="Enter new password" class="input input-bordered input-sm w-full max-w-xs" name="password-new" required/></label><label class="form-control w-full"><div class="label"><span class="label-text">Confirm password?</span></div><input type="password" placeholder="Retype new password" class="input input-bordered input-sm w-full max-w-xs" name="password-confirm" required/></label><div type="submit" class="card-actions justify-end mt-2"><button class="btn btn-primary btn-block btn-sm">Update</button></div></form></div></div></div>`,
+			`<div class="mb-2 grid grid-cols-2 gap-4"><p class="mb-1 font-semibold md:text-end">Delete Account:<br><span class="font-light text-sm">This will delete all your data.</span></p><button type="submit" hx-delete="/auth/user" hx-confirm="Are you sure you want to delete your account? This action is irreversible." class="btn btn-error w-28"> Delete </button></div>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
@@ -596,7 +601,7 @@ func TestHandlers_Settings_TabsRecipes(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Error fetching units systems.\",\"backgroundColor\":\"bg-red-500\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Error fetching units systems.\",\"backgroundColor\":\"alert-error\"}"}`)
 	})
 
 	t.Run("successful request", func(t *testing.T) {
@@ -604,14 +609,11 @@ func TestHandlers_Settings_TabsRecipes(t *testing.T) {
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
-			`<p class="text-end font-semibold select-none">Export data:<br><span class="font-light text-sm">Download your recipes in the selected file format.</span></p>`,
-			`<form method="dialog" hx-post="/integrations/import/nextcloud" hx-swap="none" onsubmit="document.querySelector('#integrations-nextcloud-dialog').close()"><div class="block"><label for="integrations-nextcloud-dialog-url" class="font-medium">Nextcloud URL</label><input id="integrations-nextcloud-dialog-url" type="url" name="url" placeholder="https://nextcloud.mydomain.com" class="text-input"></div><div class="block mt-3"><label for="integrations-nextcloud-dialog-username" class="font-medium">Username</label><input id="integrations-nextcloud-dialog-username" type="text" name="username" placeholder="Enter your Nextcloud username" class="text-input"></div><div class="block mt-3"><label for="integrations-nextcloud-dialog-password" class="font-medium">Password</label><input id="integrations-nextcloud-dialog-password" type="password" name="password" placeholder="Enter your Nextcloud password" class="text-input"></div><button class="mt-3 w-full rounded-lg bg-indigo-600 px-4 py-2 text-lg font-semibold tracking-wide text-white hover:bg-green-600"> Import </button></form>`,
-			`<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1" fill="black" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 11v5H2v-5H0v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5z"/><path d="m9 14 5-6h-4V0H8v8H4z"/></svg>`,
-			`<label for="systems" class="text-end font-semibold">Measurement system:</label>`,
-			`<select id="systems" name="system" hx-post="/settings/measurement-system" hx-swap="none" class="h-fit w-fit bg-gray-50 border border-gray-300 rounded-lg p-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500"><option value="imperial" >imperial</option><option value="metric" selected>metric</option></select>`,
-			`<input type="checkbox" name="convert" id="convert" class="w-fit h-fit mt-1" hx-post="/settings/convert-automatically" hx-trigger="click">`,
-			`<div class="grid grid-cols-2 gap-4 mb-2"><label for="integrations" class="text-end font-semibold">Integrations:<br><span class="font-light text-sm">Import recipes from the selected solution.</span></label><div class="grid gap-1 grid-flow-col w-fit h-fit"><label><select id="integrations" name="integrations" hx-post="/settings/measurement-system" hx-swap="none" class="h-fit w-fit bg-gray-50 border border-gray-300 rounded-lg p-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500"><option value="nextcloud" selected>Nextcloud</option></select></label><button class="bg-white border border-gray-300 rounded-lg py-1 px-2 hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" onmousedown="document.querySelector('#integrations-nextcloud-dialog').showModal()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-cloud-arrow-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.646 10.854a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2z"/><path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/></svg></button></div></div>`,
-			`<dialog id="integrations-nextcloud-dialog" class="p-4 dark:bg-gray-600 rounded-lg dark:text-gray-200"><h3 class="flex justify-between mb-4"><span class="flex font-semibold underline">Import from Nextcloud</span><button type="button" class="hover:bg-gray-800 hover:text-white px-2 border rounded" onclick="document.querySelector('#integrations-nextcloud-dialog').close()"> X </button></h3><form method="dialog" hx-post="/integrations/import/nextcloud" hx-swap="none" onsubmit="document.querySelector('#integrations-nextcloud-dialog').close()"><div class="block"><label for="integrations-nextcloud-dialog-url" class="font-medium">Nextcloud URL</label><input id="integrations-nextcloud-dialog-url" type="url" name="url" placeholder="https://nextcloud.mydomain.com" class="text-input"></div><div class="block mt-3"><label for="integrations-nextcloud-dialog-username" class="font-medium">Username</label><input id="integrations-nextcloud-dialog-username" type="text" name="username" placeholder="Enter your Nextcloud username" class="text-input"></div><div class="block mt-3"><label for="integrations-nextcloud-dialog-password" class="font-medium">Password</label><input id="integrations-nextcloud-dialog-password" type="password" name="password" placeholder="Enter your Nextcloud password" class="text-input"></div><button class="mt-3 w-full rounded-lg bg-indigo-600 px-4 py-2 text-lg font-semibold tracking-wide text-white hover:bg-green-600"> Import </button></form></dialog>`,
+			`<div class="mb-4 md:mb-2 md:grid md:grid-cols-2 md:gap-4"><p class="mb-1 font-semibold md:text-end">Export data:<br><span class="font-light text-sm">Download your recipes in the selected file format.</span></p><form class="grid gap-1 grid-flow-col w-fit" hx-get="/settings/export/recipes" hx-include="select[name='type']" hx-swap="none"><label class="form-control w-full max-w-xs"><select required id="file-type" name="type" class="w-fit select select-bordered select-sm"><optgroup label="Recipes"><option value="json" selected>JSON</option><option value="pdf">PDF</option></optgroup></select></label><button class="btn btn-outline btn-sm"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1" fill="black" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 11v5H2v-5H0v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5z"/><path d="m9 14 5-6h-4V0H8v8H4z"/></svg></button></form></div>`,
+			`<div class="mb-4 md:mb-2 md:grid md:grid-cols-2 md:gap-4"><p class="mb-1 font-semibold md:text-end">Measurement system:</p><label class="form-control w-full max-w-xs"><select name="system" hx-post="/settings/measurement-system" hx-swap="none" class="w-fit select select-bordered select-sm"><option value="imperial" >imperial</option><option value="metric" selected>metric</option></select></label></div>`,
+			`<div class="flex mb-4 md:mb-2 md:grid md:grid-cols-2 md:gap-4"><label for="convert" class="mb-1 font-semibold md:text-end">Convert automatically:<br><span class="font-light text-sm">Convert new recipes to your preferred measurement system.</span></label><input type="checkbox" name="convert" id="convert" class="checkbox" hx-post="/settings/convert-automatically" hx-trigger="click"></div>`,
+			`<div class="flex mb-4 md:mb-2 md:grid md:grid-cols-2 md:gap-4"><label for="calculate-nutrition" class="mb-1 font-semibold md:text-end">Calculate nutrition facts:<br><span class="font-light text-sm md:max-w-96 md:inline-block"> Calculate the nutrition facts automatically when adding a recipe. The processing will be done in the background. </span></label><input id="calculate-nutrition" type="checkbox" name="calculate-nutrition" class="checkbox" hx-post="/settings/calculate-nutrition" hx-trigger="click"/></div>`,
+			`<div class="md:grid md:grid-cols-2 md:gap-4"><label class="font-semibold md:text-end">Integrations:<br><span class="font-light text-sm">Import recipes from the selected solution.</span></label><div class="grid gap-1 grid-flow-col w-fit h-fit mt-1 md:mt-0"><label class="form-control w-full max-w-xs"><select name="integrations" class="w-fit select select-bordered select-sm"><option value="nextcloud" selected>Nextcloud</option></select></label><button class="btn btn-outline btn-sm" onmousedown="integrations_nextcloud_dialog.showModal()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-cloud-arrow-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.646 10.854a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2z"/><path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/></svg></button></div></div><dialog id="integrations_nextcloud_dialog" class="modal"><div class="modal-box"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="font-semibold underline text-center">Import from Nextcloud</h3><form method="dialog" hx-post="/integrations/import/nextcloud" hx-swap="none" onsubmit="integrations_nextcloud_dialog.close()"><label class="form-control w-full"><div class="label"><span class="label-text font-medium">Nextcloud URL</span></div><input type="url" name="url" placeholder="https://nextcloud.mydomain.com" class="input input-bordered w-full" required></label><label class="form-control w-full"><div class="label"><span class="label-text font-medium">Username</span></div><input type="text" name="username" placeholder="Enter your Nextcloud username" class="input input-bordered w-full" required></label><label class="form-control w-full pb-2"><div class="label"><span class="label-text font-medium">Password</span></div><input type="password" name="password" placeholder="Enter your Nextcloud password" class="input input-bordered w-full" required></label><button class="btn btn-block btn-primary btn-sm mt-2"> Import </button></form></div></dialog>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})

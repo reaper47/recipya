@@ -15,51 +15,33 @@ import (
 func assertCookbooksViewMode(tb testing.TB, mode models.ViewMode, got string) {
 	tb.Helper()
 
-	var (
-		want    []string
-		notWant []string
-	)
-
+	var want []string
 	if mode == models.GridViewMode {
 		want = []string{
 			`<title hx-swap-oob="true">Cookbooks | Recipya</title>`,
-			`<li id="recipes-sidebar-recipes" class="recipes-sidebar-not-selected" hx-get="/recipes" hx-target="#content" hx-push-url="true" hx-swap-oob="true"><img src="/static/img/cherries.svg" alt=""><span class="hidden lg:block ml-1">Recipes</span></li>`,
-			`<li id="recipes-sidebar-cookbooks" class="recipes-sidebar-selected" hx-get="/cookbooks" hx-target="#content" hx-push-url="true" hx-swap-oob="true"><img src="/static/img/cookbook.svg" alt=""><span class="hidden lg:block ml-1">Cookbooks</span></li>`,
-			`<div class="grid grid-flow-col place-content-end p-1">`,
-			`<div class="p-2 bg-blue-600 text-white" title="Display as grid"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor"><path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z"/></svg></div>`,
-			`<div class="p-2 hover:bg-red-600 hover:text-white" title="Display as list" hx-get="/cookbooks?view=list" hx-target="#content"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor"><path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg></div>`,
-			`<div id="cookbooks-container" class="grid justify-center"><div class="cookbooks-display grid grid-cols-2 md:grid-cols-5 gap-4 p-2 text-sm md:text-base">`,
-			`<button class="w-full border-2 border-gray-800 rounded-lg center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/cookbooks/1?page=1" hx-target="#content" hx-push-url="/cookbooks/1"> Open </button>`,
-			`<button class="w-full border-2 border-gray-800 rounded-lg center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/cookbooks/2?page=1" hx-target="#content" hx-push-url="/cookbooks/2"> Open </button>`,
-			`<button class="w-full border-2 border-gray-800 rounded-lg center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600" hx-get="/cookbooks/3?page=1" hx-target="#content" hx-push-url="/cookbooks/3"> Open </button>`,
-		}
-
-		notWant = []string{
-			`<div class="grid place-content-center text-sm h-full text-center md:text-base">`,
-			`<p>Your cookbooks collection looks a bit empty at the moment.</p>`,
-			`<p>Why not start by creating a cookbook by clicking the <a class="underline font-semibold cursor-pointer" hx-post="/cookbooks" hx-prompt="Enter the name of your cookbook" hx-target="#content" hx-push-url="true">Add cookbook</a> button at the top? </p>`,
+			`<div class="p-2 hover:bg-red-600 hover:text-white" title="Display as list" hx-get="/cookbooks?view=list" hx-target="#content">`,
+			`<section id="cookbook-1" class="cookbook card card-compact bg-base-100 shadow-lg indicator">`,
+			`<button class="btn btn-block btn-sm btn-outline" hx-get="/cookbooks/1?page=1" hx-target="#content" hx-push-url="/cookbooks/1"> Open </button>`,
+			`<button class="btn btn-block btn-sm btn-outline" hx-get="/cookbooks/2?page=1" hx-target="#content" hx-push-url="/cookbooks/2"> Open </button>`,
+			`<button class="btn btn-block btn-sm btn-outline" hx-get="/cookbooks/3?page=1" hx-target="#content" hx-push-url="/cookbooks/3"> Open </button>`,
 		}
 	} else {
 		want = []string{
 			`<title hx-swap-oob="true">Cookbooks | Recipya</title>`,
-			`<li id="recipes-sidebar-recipes" class="recipes-sidebar-not-selected" hx-get="/recipes" hx-target="#content" hx-push-url="true" hx-swap-oob="true"><img src="/static/img/cherries.svg" alt=""><span class="hidden lg:block ml-1">Recipes</span></li>`,
-			`<li id="recipes-sidebar-cookbooks" class="recipes-sidebar-selected" hx-get="/cookbooks" hx-target="#content" hx-push-url="true" hx-swap-oob="true"><img src="/static/img/cookbook.svg" alt=""><span class="hidden lg:block ml-1">Cookbooks</span></li>`,
-			`<div class="grid grid-flow-col place-content-end p-1">`,
-			`<div class="p-2 hover:bg-red-600 hover:text-white" title="Display as grid" hx-get="/cookbooks?view=grid" hx-target="#content"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor"><path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z"/></svg></div>`,
-			`<div class="p-2 bg-blue-600 text-white" title="Display as list"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor"><path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg></div>`,
-			`<div id="cookbooks-container" class="grid justify-center">`,
-			`<button class="w-full border-t center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600 hover:rounded-b-md" hx-get="/cookbooks/1?page=1" hx-target="#content" hx-push-url="/cookbooks/1"> Open </button>`,
-			`<button class="w-full border-t center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600 hover:rounded-b-md" hx-get="/cookbooks/2?page=1" hx-target="#content" hx-push-url="/cookbooks/2"> Open </button>`,
-			`<button class="w-full border-t center hover:bg-gray-800 hover:text-white dark:border-gray-800 hover:dark:bg-neutral-600 hover:rounded-b-md" hx-get="/cookbooks/3?page=1" hx-target="#content" hx-push-url="/cookbooks/3"> Open </button>`,
-		}
-		notWant = []string{
-			`<div class="grid place-content-center text-sm h-full text-center md:text-base">`,
-			`<p>Your cookbooks collection looks a bit empty at the moment.</p>`,
-			`<p>Why not start by creating a cookbook by clicking the <a class="underline font-semibold cursor-pointer" hx-post="/cookbooks" hx-prompt="Enter the name of your cookbook" hx-target="#content" hx-push-url="true">Add cookbook</a> button at the top? </p>`,
+			`<div class="p-2 bg-blue-600 text-white" title="Display as list">`,
+			`<div class="p-2 hover:bg-red-600 hover:text-white" title="Display as grid" hx-get="/cookbooks?view=grid" hx-target="#content">`,
+			`<div id="cookbook-1" class="cookbook card sm:card-side card-compact bg-base-100 shadow-md max-w-[30rem] border indicator dark:border-slate-600">`,
+			`<button class="btn btn-outline btn-sm" hx-get="/cookbooks/1?page=1" hx-target="#content" hx-push-url="/cookbooks/1"> Open </button>`,
+			`<button class="btn btn-outline btn-sm" hx-get="/cookbooks/2?page=1" hx-target="#content" hx-push-url="/cookbooks/2"> Open </button>`,
+			`<button class="btn btn-outline btn-sm" hx-get="/cookbooks/3?page=1" hx-target="#content" hx-push-url="/cookbooks/3"> Open </button>`,
 		}
 	}
 
 	assertStringsInHTML(tb, got, want)
+	notWant := []string{
+		`Your cookbooks collection looks a bit empty at the moment.`,
+		`<p>Why not start by creating a cookbook by clicking the <a class="underline font-semibold cursor-pointer" hx-post="/cookbooks" hx-prompt="Enter the name of your cookbook" hx-target="#content" hx-push-url="true">Add cookbook</a> button at the top? </p>`,
+	}
 	assertStringsNotInHTML(tb, got, notWant)
 }
 

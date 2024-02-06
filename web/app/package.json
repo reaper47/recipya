@@ -5,18 +5,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build:css && npm run build:js",
+    "build": "npm run build:css && npm run build:mjml",
     "build:css": "tailwind -m -i ../../static/css/tailwind-custom.css --output ../../static/css/tailwind.css",
-    "build:js": "esbuild index.js --bundle --minify --outfile=../../static/js/bundle.js",
-    "watch:css": "tailwind -m --output ../../../static/css/tailwind.css -w",
-    "watch:js": "esbuild index.js --bundle --minify --outfile=../../static/js/bundle.js --watch"
+    "build:mjml": "mjml ../emails/error-admin.mjml -o ../emails/transpiled/error-admin.gohtml --config.minify && mjml ../emails/forgot-password.mjml -o ../emails/transpiled/forgot-password.gohtml --config.minify && mjml ../emails/intro.mjml -o ../emails/transpiled/intro.gohtml --config.minify && mjml ../emails/request-website.mjml -o ../emails/transpiled/request-website.gohtml --config.minify"
   },
   "license": "MIT",
   "devDependencies": {
-    "tailwindcss": "^3.4.1"
-  },
-  "dependencies": {
+    "@tailwindcss/typography": "^0.5.10",
     "copyfiles": "^2.4.1",
-    "esbuild": "^0.19.11"
+    "daisyui": "^4.6.1",
+    "esbuild": "^0.20.0",
+    "mjml": "^4.15.2",
+    "tailwindcss": "^3.4.1"
   }
 }
