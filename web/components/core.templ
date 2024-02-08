@@ -1,0 +1,58 @@
+package components
+
+import (
+	"github.com/reaper47/recipya/internal/templates"
+)
+
+templ HomePage(data templates.Data) {
+	@layoutMain("Home", data) {
+		@RecipesIndex(data)
+	}
+}
+
+templ aboutDialog(version string) {
+	<dialog id="about_dialog" class="modal">
+		<div class="modal-box">
+			<div class="overflow-x-auto">
+				<table class="table table-zebra">
+					<tbody>
+						<tr>
+							<th scope="row" class="text-right">Application Name:</th>
+							<td class="">Recipya</td>
+						</tr>
+						<tr>
+							<th scope="row" class="text-right">Version:</th>
+							<td>{ version }</td>
+						</tr>
+						<tr>
+							<th scope="row" class="text-right">Guide:</th>
+							<td>
+								<a href="/guide" hx-boost="false" class="link">Access</a>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row" class="text-right">Repository:</th>
+							<td>
+								<a href="https://github.com/reaper47/recipya" target="_blank" class="link">reaper47/recipya</a>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row" class="text-right">Support Channel:</th>
+							<td>
+								<a href="https://app.element.io/#/room/#recipya:matrix.org" target="_blank" class="link">Matrix Space</a>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row" class="text-right">License:</th>
+							<td>GPLv3</td>
+						</tr>
+					</tbody>
+				</table>
+				<button class="btn btn-neutral btn-block btn-sm rounded-t-none" onclick="about_dialog.close()">Close</button>
+			</div>
+		</div>
+		<div class="modal-backdrop">
+			<button class="cursor-auto" onclick="about_dialog.close()"></button>
+		</div>
+	</dialog>
+}

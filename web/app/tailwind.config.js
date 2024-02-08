@@ -2,7 +2,7 @@
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["../**/*.gohtml"],
+  content: ["../components/*.templ"],
   theme: {
     extend: {},
   },

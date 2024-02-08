@@ -7,6 +7,7 @@ import (
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/templates"
 	"github.com/reaper47/recipya/internal/utils/regex"
+	"github.com/reaper47/recipya/web/components"
 	"log"
 	"maps"
 	"net/http"
@@ -91,7 +92,8 @@ func (s *Server) confirmHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("[error] confirmHandler.ParseToken (token: %s): %q", token, err)
 		w.WriteHeader(http.StatusBadRequest)
-		templates.Render(w, templates.SimplePage, templates.ErrorTokenExpired)
+
+		_ = components.SimplePage(templates.ErrorTokenExpired.Title, templates.ErrorTokenExpired.Content).Render(r.Context(), w)
 		return
 	}
 
@@ -99,11 +101,15 @@ func (s *Server) confirmHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("[error] confirmHandler.Confirm (token: %s): %q", token, err)
 		w.WriteHeader(http.StatusNotFound)
-		templates.Render(w, templates.SimplePage, templates.ErrorConfirm)
+
+		const content = `An error occurred when you requested to confirm your account.
+				The problem has been forwarded to our team automatically. We will look into it and come
+                back to you. We apologise for this inconvenience.`
+		_ = components.SimplePage("Confirm Error", content).Render(r.Context(), w)
 		return
 	}
 
-	templates.Render(w, templates.SimplePage, templates.SuccessConfirm)
+	_ = components.SimplePage("Success", "Your account has been confirmed.").Render(r.Context(), w)
 }
 
 func (s *Server) deleteUserHandler(w http.ResponseWriter, r *http.Request) {
@@ -133,8 +139,7 @@ func (s *Server) forgotPasswordHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	page := templates.ForgotPasswordPage
-	templates.Render(w, page, templates.Data{Title: page.Title()})
+	_ = components.ForgotPasswordPage().Render(r.Context(), w)
 }
 
 func (s *Server) forgotPasswordPostHandler(w http.ResponseWriter, r *http.Request) {
@@ -170,34 +175,37 @@ func (s *Server) forgotPasswordPostHandler(w http.ResponseWriter, r *http.Reques
 		if err != nil {
 			log.Printf("[error] forgotPasswordPostHandler.SendEmail (data: %+v): %q", data, err)
 			s.Email.Queue(email, templates.EmailForgotPassword, data)
-			templates.Render(w, templates.SimplePage, templates.EmailQuotaReached)
+
+			const content = "The email could not be sent because the SendGrid daily sent email quota has been reached. " +
+				"The action has been logged. The next batch of emails will be sent tomorrow. " +
+				"You can sponsor the author of this project or buy him a coffee for him to have enough money to purchase the paid SendGrid plan to increase the limit. " +
+				"You will find the details here: https://github.com/reaper47/heavy-metal-notifier?tab=readme-ov-file#sponsors."
+
+			_ = components.SimplePage("Email Quota Reached", content).Render(r.Context(), w)
 			return
 		}
 	}
 
-	templates.RenderComponent(w, "login", "forgot-password-requested", templates.ForgotPasswordSuccess)
+	const content = "An email with instructions on how to reset your password has been sent to you. Please check your inbox and follow the provided steps to regain access to your account."
+	_ = components.SimplePage("Password Reset Requested", content).Render(r.Context(), w)
 }
 
 func forgotPasswordResetHandler(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	if query == nil {
 		w.WriteHeader(http.StatusBadRequest)
-		templates.Render(w, templates.SimplePage, templates.ErrorTokenExpired)
+		_ = components.SimplePage(templates.ErrorTokenExpired.Title, templates.ErrorTokenExpired.Content).Render(r.Context(), w)
 		return
 	}
 
 	userID, err := auth.ParseToken(query.Get("token"))
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		templates.Render(w, templates.SimplePage, templates.ErrorTokenExpired)
+		_ = components.SimplePage(templates.ErrorTokenExpired.Title, templates.ErrorTokenExpired.Content).Render(r.Context(), w)
 		return
 	}
 
-	page := templates.ForgotPasswordResetPage
-	templates.Render(w, page, templates.Data{
-		Title:   page.Title(),
-		Content: strconv.FormatInt(userID, 10),
-	})
+	_ = components.ForgotPasswordResetPage(strconv.FormatInt(userID, 10)).Render(r.Context(), w)
 }
 
 func (s *Server) forgotPasswordResetPostHandler(w http.ResponseWriter, r *http.Request) {
@@ -238,12 +246,8 @@ func (s *Server) forgotPasswordResetPostHandler(w http.ResponseWriter, r *http.R
 	w.WriteHeader(http.StatusSeeOther)
 }
 
-func loginHandler(w http.ResponseWriter, _ *http.Request) {
-	page := templates.LoginPage
-	templates.Render(w, page, templates.Data{
-		IsDemo: app.Config.Server.IsDemo,
-		Title:  page.Title(),
-	})
+func loginHandler(w http.ResponseWriter, r *http.Request) {
+	_ = components.LoginPage(app.Config.Server.IsDemo, app.Config.Server.IsNoSignups).Render(r.Context(), w)
 }
 
 func (s *Server) loginPostHandler(w http.ResponseWriter, r *http.Request) {
@@ -292,9 +296,8 @@ func guideLoginHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/auth/login", http.StatusSeeOther)
 }
 
-func registerHandler(w http.ResponseWriter, _ *http.Request) {
-	page := templates.RegisterPage
-	templates.Render(w, page, templates.Data{Title: page.Title()})
+func registerHandler(w http.ResponseWriter, r *http.Request) {
+	_ = components.RegisterPage().Render(r.Context(), w)
 }
 
 func (s *Server) logoutHandler(w http.ResponseWriter, r *http.Request) {
@@ -336,20 +339,6 @@ func (s *Server) logoutHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("HX-Redirect", "/")
 	w.WriteHeader(http.StatusSeeOther)
-}
-
-func (s *Server) registerPostPasswordHandler(w http.ResponseWriter, r *http.Request) {
-	password := r.FormValue("password")
-	password2 := r.FormValue("password-confirm")
-	if password != password2 {
-		templates.RenderComponent(w, "registration", "password-invalid", templates.RegisterData{Email: r.FormValue("email")})
-		return
-	}
-
-	templates.RenderComponent(w, "registration", "password-valid", templates.RegisterData{
-		Email:           r.FormValue("email"),
-		PasswordConfirm: password,
-	})
 }
 
 func (s *Server) registerPostHandler(w http.ResponseWriter, r *http.Request) {

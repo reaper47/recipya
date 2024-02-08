@@ -21,5 +21,6 @@ You do not need to create this file if you do not use Docker because it will be 
   - **autologin**: Whether to login automatically into the application. Useful when you don't need user accounts. Its value can be either *true* or *false*.
   - **isDemo**: Whether the app is a demo version. Its value can be either *true* or *false*.
   - **isProduction**: Whether the app is in production. Its value can be either *true* or *false*.
+  - **noSignups**: Whether to disable user account registrations. Set to *true* when you don't want people to create accounts. Otherwise, *false*.
   - **port**: The port the app will be served through if localhost.
   - **url**: The website the app is served on. This URL will serve as the base link in the emails.

@@ -68,6 +68,16 @@ func (s *Server) redirectIfLoggedInMiddleware(next http.Handler) http.Handler {
 	})
 }
 
+func redirectIfNoSignupsMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if app.Config.Server.IsNoSignups {
+			http.Redirect(w, r, "/auth/login", http.StatusSeeOther)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
 func (s *Server) mustBeLoggedInMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if app.Config.Server.IsAutologin {

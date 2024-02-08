@@ -111,7 +111,7 @@ func TestHandlers_Auth_Confirm(t *testing.T) {
 
 		assertStatus(t, rr.Code, http.StatusNotFound)
 		want := []string{
-			`<title hx-swap-oob="true">Confirm | Recipya</title>`,
+			`<title hx-swap-oob="true">Confirm Error | Recipya</title>`,
 			"An error occurred when you requested to confirm your account.",
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
@@ -124,7 +124,7 @@ func TestHandlers_Auth_Confirm(t *testing.T) {
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
-			`<title hx-swap-oob="true">Confirm | Recipya</title>`,
+			`<title hx-swap-oob="true">Success | Recipya</title>`,
 			"Your account has been confirmed.",
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
@@ -247,8 +247,8 @@ func TestHandlers_Auth_ForgotPassword(t *testing.T) {
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
 			`<title hx-swap-oob="true">Forgot Password | Recipya</title>`,
-			`<input type="email" class="text-input" id="email" name="email" placeholder="Enter your email address" required/>`,
-			`<button class="mt-3 w-full rounded-lg bg-indigo-600 px-4 py-2 text-lg font-semibold tracking-wide text-white hover:bg-green-600"> Reset password </button>`,
+			`<input required type="email" placeholder="Enter your email address" class="input input-bordered w-full" name="email">`,
+			`<button class="btn btn-primary btn-block btn-sm">Reset password</button>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
@@ -300,9 +300,9 @@ func TestHandlers_Auth_ForgotPassword(t *testing.T) {
 				t.Fatal("an email should not have been sent")
 			}
 			want := []string{
-				`<h1 class="mb-6 text-2xl font-semibold text-center underline">Password Reset Requested</h1>`,
-				`<p class="block mb-3"> An email with instructions on how to reset your password has been sent to you. Please check your inbox and follow the provided steps to regain access to your account. </p>`,
-				`<a href="/" hx-boost="true" class="w-full block text-center px-4 py-2 mt-3 text-lg font-semibold tracking-wide text-white bg-indigo-600 rounded-lg hover:bg-green-600"> Back Home </a>`,
+				`<h2 class="card-title underline self-center">Password Reset Requested</h2>`,
+				`An email with instructions on how to reset your password has been sent to you. Please check your inbox and follow the provided steps to regain access to your account.`,
+				`<a href="/" class="btn btn-primary btn-block btn-sm">Back Home</a>`,
 			}
 			assertStringsInHTML(t, getBodyHTML(rr), want)
 		})
@@ -344,9 +344,10 @@ func TestHandlers_Auth_ForgotPassword(t *testing.T) {
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
 			`<title hx-swap-oob="true">Reset Password | Recipya</title>`,
-			`<input name="user-id" type="hidden" value="1"/>`,
-			`<input class="text-input" id="password" name="password" placeholder="Enter your new password" required type="password"/>`,
-			`<input class="text-input" id="password-confirm" name="password-confirm" placeholder="Retype your password" required type="password"/>`,
+			`<input name="user-id" type="hidden" value="1">`,
+			`<input required type="password" placeholder="Enter your new password" class="input input-bordered w-full" name="password">`,
+			`<input required type="password" placeholder="Retype your password" class="input input-bordered w-full" name="password-confirm">`,
+			`<button class="btn btn-primary btn-block btn-sm">Change</button>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
@@ -432,6 +433,29 @@ func TestHandlers_Auth_Login(t *testing.T) {
 		rr := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email=test@example.com&password=123&remember-me=false"))
 
 		assertStatus(t, rr.Code, http.StatusSeeOther)
+	})
+
+	t.Run("hide signup button when registrations disabled", func(t *testing.T) {
+		app.Config.Server.IsNoSignups = true
+		defer func() {
+			app.Config.Server.IsNoSignups = false
+		}()
+
+		rr := sendRequest(srv, http.MethodGet, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		body := getBodyHTML(rr)
+		assertStringsInHTML(t, body, []string{
+			`<input required type="email" placeholder="Enter your email address" class="input input-bordered w-full" name="email">`,
+			`<input required type="password" placeholder="Enter your password" class="input input-bordered w-full" name="password">`,
+			`<input type="checkbox" class="checkbox checkbox-primary" name="remember-me" value="yes">`,
+			`<button class="btn btn-primary btn-block btn-sm">Log In</button>`,
+			`<a class="btn btn-sm btn-ghost" href="/auth/forgot-password">Forgot your password?</a>`,
+		})
+		assertStringsNotInHTML(t, body, []string{
+			`<p class="text-center">Don't have an account?</p>`,
+			`<a class="btn btn-sm btn-block btn-outline" href="/auth/register">Sign Up</a>`,
+		})
 	})
 
 	t.Run("login  successful", func(t *testing.T) {
@@ -576,20 +600,6 @@ func TestHandlers_Auth_Register(t *testing.T) {
 
 	const uri = "/auth/register"
 
-	t.Run("valid passwords", func(t *testing.T) {
-		rr := sendRequest(srv, http.MethodPost, uri+"/validate-password", formHeader, strings.NewReader("email=invalid-email&password=test123&password-confirm=test123"))
-
-		want := []string{`<input class="text-input border border-green-500" id="password-confirm" name="password-confirm"`}
-		assertStringsInHTML(t, getBodyHTML(rr), want)
-	})
-
-	t.Run("invalid password", func(t *testing.T) {
-		rr := sendRequest(srv, http.MethodPost, uri+"/validate-password", formHeader, strings.NewReader("email=test@example.com&password=test123&password-confirm=test"))
-
-		want := []string{`<div class="text-red-500 text-xs">Passwords do not match.</div>`}
-		assertStringsInHTML(t, getBodyHTML(rr), want)
-	})
-
 	t.Run("redirect to home when logged in", func(t *testing.T) {
 		rr := sendRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, nil)
 
@@ -621,6 +631,24 @@ func TestHandlers_Auth_Register(t *testing.T) {
 
 		assertStatus(t, rrGet.Code, http.StatusSeeOther)
 		assertStatus(t, rrPost.Code, http.StatusSeeOther)
+	})
+
+	t.Run("cannot register when no signups disabled", func(t *testing.T) {
+		originalNumUsers := len(srv.Repository.Users())
+		app.Config.Server.IsNoSignups = true
+		defer func() {
+			app.Config.Server.IsNoSignups = false
+		}()
+
+		rrGet := sendRequest(srv, http.MethodGet, uri, noHeader, nil)
+		rrPost := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email=test@test.com&password=test123&password-confirm=test123"))
+
+		assertStatus(t, rrGet.Code, http.StatusSeeOther)
+		assertHeader(t, rrGet, "Location", "/auth/login")
+		assertStatus(t, rrPost.Code, http.StatusSeeOther)
+		if len(srv.Repository.Users()) != originalNumUsers {
+			t.Fatal("expected no users to be registered")
+		}
 	})
 
 	t.Run("valid registration for new user", func(t *testing.T) {

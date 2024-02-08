@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/websocket"
-	"html/template"
 	"log"
 	"sync"
 	"time"
@@ -14,11 +13,10 @@ import (
 
 // Broker represents a client connection and its associated information.
 type Broker struct {
-	brokers      map[int64]*Broker
-	conn         *websocket.Conn
-	mu           sync.Mutex
-	notification *template.Template
-	userID       int64
+	brokers map[int64]*Broker
+	conn    *websocket.Conn
+	mu      sync.Mutex
+	userID  int64
 }
 
 // Progress represents a current value and the total number of values.
@@ -35,12 +33,6 @@ type Message struct {
 	Data     string `json:"data"`     // Message data to pass. Base64-encoded if type is "file".
 }
 
-type wsTemplateData struct {
-	ContentHTML      template.HTML
-	IsToastWSVisible bool
-	Title            string
-}
-
 type toast struct {
 	Message    string `json:"message"`
 	Background string `json:"background"`
@@ -48,12 +40,11 @@ type toast struct {
 
 // NewBroker creates a new Broker instance for a specific user and adds it to the brokers map.
 // The userID is used for identification and cleanup purposes.
-func NewBroker(userID int64, brokers map[int64]*Broker, conn *websocket.Conn, notification *template.Template) *Broker {
+func NewBroker(userID int64, brokers map[int64]*Broker, conn *websocket.Conn) *Broker {
 	b := &Broker{
-		brokers:      brokers,
-		conn:         conn,
-		notification: notification,
-		userID:       userID,
+		brokers: brokers,
+		conn:    conn,
+		userID:  userID,
 	}
 	go b.ping()
 	return b
@@ -92,17 +83,18 @@ func (b *Broker) SendProgress(title string, value, numValues int) {
 		return
 	}
 
-	var buf bytes.Buffer
-	_ = b.notification.ExecuteTemplate(&buf, "toast-ws", wsTemplateData{
-		IsToastWSVisible: true,
-		ContentHTML:      template.HTML(fmt.Sprintf(`<div id="export-progress"><progress max="100" value="%f"></progress></div>`, float64(value)/float64(numValues)*100)),
-		Title:            title,
-	})
+	content := fmt.Sprintf(`
+		<div id="ws-notification-container" class="z-20 fixed bottom-0 right-0 p-6 cursor-default">
+			<div class="bg-blue-500 text-white px-4 py-2 rounded shadow-md">
+				<p class="font-medium text-center pb-1">%s</p>
+				<div id="export-progress"><progress max="100" value="%f"></progress></div>
+			</div>
+		</div>`, title, float64(value)/float64(numValues)*100)
 
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
-	err := b.conn.WriteMessage(websocket.TextMessage, buf.Bytes())
+	err := b.conn.WriteMessage(websocket.TextMessage, []byte(content))
 	if err != nil {
 		log.Printf("Broker.SendProgress: %q", err)
 	}
@@ -115,17 +107,24 @@ func (b *Broker) SendProgressStatus(title string, isToastVisible bool, value, nu
 		return
 	}
 
-	var buf bytes.Buffer
-	_ = b.notification.ExecuteTemplate(&buf, "toast-ws", wsTemplateData{
-		IsToastWSVisible: isToastVisible,
-		ContentHTML:      template.HTML(fmt.Sprintf(`<div id="export-progress"><progress max="100" value="%f"></progress></div>`, float64(value)/float64(numValues)*100)),
-		Title:            title,
-	})
+	content := `
+		<div id="ws-notification-container" class="z-20 fixed bottom-0 right-0 p-6 cursor-default %s">
+			<div class="bg-blue-500 text-white px-4 py-2 rounded shadow-md">
+				<p class="font-medium text-center pb-1">%s</p>
+				<div id="export-progress"><progress max="100" value="%f"></progress></div>
+			</div>
+		</div>`
+
+	if isToastVisible {
+		content = fmt.Sprintf(content, "", title, float64(value)/float64(numValues)*100)
+	} else {
+		content = fmt.Sprintf(content, "hidden", title, float64(value)/float64(numValues)*100)
+	}
 
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
-	err := b.conn.WriteMessage(websocket.TextMessage, buf.Bytes())
+	err := b.conn.WriteMessage(websocket.TextMessage, []byte(content))
 	if err != nil {
 		log.Printf("Broker.SendProgressStatus: %q", err)
 	}

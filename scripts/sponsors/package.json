@@ -2,7 +2,7 @@
   "name": "sponsors",
   "version": "1.0.0",
   "license": "MIT",
-  "dependencies": {
-    "sponsorkit": "^0.9.0"
+  "devDependencies": {
+    "sponsorkit": "^0.9.1"
   }
 }

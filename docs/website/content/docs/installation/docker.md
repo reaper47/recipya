@@ -30,6 +30,7 @@ docker run -d \
   -e RECIPYA_SERVER_AUTOLOGIN=false \
   -e RECIPYA_SERVER_IS_DEMO=false \
   -e RECIPYA_SERVER_IS_PROD=false \
+  -e RECIPYA_SERVER_NO_SIGNUPS=false \
   -e RECIPYA_SERVER_PORT=8078 \
   -e RECIPYA_SERVER_URL=http://0.0.0.0 \
   reaper99/recipya:nightly
@@ -51,15 +52,15 @@ inbound Windows Defender Firewall rule.
 
 ## Environment Variables
 
-| Variable                 | Description                                                                                                                                           |       Required       |
-|--------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------:|
-| RECIPYA_EMAIL            | The administrator’s email address. It is usually the email address of your [SendGrid](https://sendgrid.com/) account.                                 |   {{< icon "x" >}}   |
-| RECIPYA_EMAIL_SENDGRID   | Your [SendGrid](https://app.sendgrid.com/settings/api_keys) API key. The free tier should be sufficient for your needs.                               |   {{< icon "x" >}}   |
-| RECIPYA_SERVER_AUTOLOGIN | Whether to login automatically into the application. Set to `true` when you don't need user accounts.                                                 |   {{< icon "x" >}}   |
-| RECIPYA_SERVER_IS_DEMO   | Whether the app is a demo version. Its value can be either `true` or `false`.                                                                         |   {{< icon "x" >}}   |
-| RECIPYA_SERVER_IS_PROD   | Whether the app is in production. Its value can be either `true` or `false`.                                                                          |   {{< icon "x" >}}   |
-| RECIPYA_SERVER_PORT      | The port the app will be served through if localhost.                                                                                                 | {{< icon "check" >}} |
-| RECIPYA_SERVER_URL       | The website the app is served on. This URL will serve as the base link in the emails. <br/>                                                           | {{< icon "check" >}} |
-| RECIPYA_VISION_KEY       | The **KEY 1** variable displayed on the Keys and endpoint tab of your Computer vision resource in the [Azure Portal](https://portal.azure.com/#home). |   {{< icon "x" >}}   |
-| RECIPYA_VISION_ENDPOINT  | The Endpoint variable displayed on the Keys and endpoint tab of your Computer vision resource in the [Azure Portal](https://portal.azure.com/#home).  |   {{< icon "x" >}}   |
-
+| Variable                  | Description                                                                                                                                           |       Required       |
+|---------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------:|
+| RECIPYA_EMAIL             | The administrator’s email address. It is usually the email address of your [SendGrid](https://sendgrid.com/) account.                                 |   {{< icon "x" >}}   |
+| RECIPYA_EMAIL_SENDGRID    | Your [SendGrid](https://app.sendgrid.com/settings/api_keys) API key. The free tier should be sufficient for your needs.                               |   {{< icon "x" >}}   |
+| RECIPYA_SERVER_AUTOLOGIN  | Whether to login automatically into the application. Set to `true` when you don't need user accounts.                                                 |   {{< icon "x" >}}   |
+| RECIPYA_SERVER_IS_DEMO    | Whether the app is a demo version. Its value can be either `true` or `false`.                                                                         |   {{< icon "x" >}}   |
+| RECIPYA_SERVER_IS_PROD    | Whether the app is in production. Its value can be either `true` or `false`.                                                                          |   {{< icon "x" >}}   |
+| RECIPYA_SERVER_NO_SIGNUPS | Whether to disable user account registrations. Set to `true` when you don't want people to create accounts.                                           |   {{< icon "x" >}}   |
+| RECIPYA_SERVER_PORT       | The port the app will be served through if localhost.                                                                                                 | {{< icon "check" >}} |
+| RECIPYA_SERVER_URL        | The website the app is served on. This URL will serve as the base link in the emails. <br/>                                                           | {{< icon "check" >}} |
+| RECIPYA_VISION_KEY        | The **KEY 1** variable displayed on the Keys and endpoint tab of your Computer vision resource in the [Azure Portal](https://portal.azure.com/#home). |   {{< icon "x" >}}   |
+| RECIPYA_VISION_ENDPOINT   | The Endpoint variable displayed on the Keys and endpoint tab of your Computer vision resource in the [Azure Portal](https://portal.azure.com/#home).  |   {{< icon "x" >}}   |

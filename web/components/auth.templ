@@ -1,0 +1,171 @@
+package components
+
+templ ForgotPasswordPage() {
+	@layoutAuth("Forgot Password") {
+		<div id="container">
+			<form
+				class="card w-80 sm:w-96 bg-base-100 shadow-xl"
+				hx-boost="true"
+				hx-target="#container"
+				hx-push-url="/auth/forgot-password/requested"
+				hx-post="/auth/forgot-password"
+			>
+				<div class="card-body">
+					<h2 class="card-title underline self-center">Forgot Password</h2>
+					<label class="form-control w-full">
+						<div class="label">
+							<span class="label-text font-semibold">Email</span>
+						</div>
+						<input required type="email" placeholder="Enter your email address" class="input input-bordered w-full" name="email"/>
+					</label>
+					<div class="card-actions justify-end">
+						<button class="btn btn-primary btn-block btn-sm">Reset password</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	}
+}
+
+templ ForgotPasswordResetPage(userID string) {
+	@layoutAuth("Reset Password") {
+		<div id="container">
+			<form
+				class="card w-80 sm:w-96 bg-base-100 shadow-xl"
+				hx-boost="true"
+				hx-target="#container"
+				hx-swap="none"
+				hx-post="/auth/forgot-password/reset"
+			>
+				<div class="card-body">
+					<h2 class="card-title underline self-center">Change Password</h2>
+					<input name="user-id" type="hidden" { templ.Attributes{"value": userID}... }/>
+					<label class="form-control w-full">
+						<div class="label">
+							<span class="label-text font-semibold">New Password</span>
+						</div>
+						<input required type="password" placeholder="Enter your new password" class="input input-bordered w-full" name="password"/>
+					</label>
+					<label class="form-control w-full">
+						<div class="label pt-0">
+							<span class="label-text font-semibold">Confirm password</span>
+						</div>
+						<input required type="password" placeholder="Retype your password" class="input input-bordered w-full" name="password-confirm"/>
+					</label>
+					<div class="card-actions justify-end">
+						<button class="btn btn-primary btn-block btn-sm">Change</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	}
+}
+
+templ LoginPage(isDemo, isNoSignups bool) {
+	@layoutAuth("Login") {
+		<form class="card w-80 sm:w-96 bg-base-100 shadow-xl" hx-boost="true" hx-post="/auth/login">
+			<div class="card-body">
+				<h2 class="card-title underline self-center">Log In</h2>
+				<label class="form-control w-full">
+					<div class="label">
+						<span class="label-text font-semibold">Email</span>
+					</div>
+					<input
+						required
+						type="email"
+						placeholder="Enter your email address"
+						class="input input-bordered w-full"
+						name="email"
+						if isDemo {
+							value="demo@demo.com"
+						}
+					/>
+				</label>
+				<label class="form-control w-full">
+					<div class="label pt-0">
+						<span class="label-text font-semibold">Password</span>
+					</div>
+					<input
+						required
+						type="password"
+						placeholder="Enter your password"
+						class="input input-bordered w-full"
+						name="password"
+						if isDemo {
+							value="demo"
+						}
+					/>
+				</label>
+				<div class="form-control grid place-content-center">
+					<label class="label cursor-pointer gap-2">
+						<span class="label-text">Remember me</span>
+						<input type="checkbox" class="checkbox checkbox-primary" name="remember-me" value="yes"/>
+					</label>
+				</div>
+				<div class="card-actions justify-end">
+					<button class="btn btn-primary btn-block btn-sm">Log In</button>
+				</div>
+				<div class="grid place-content-center text-center gap-2">
+					if !isNoSignups {
+						<div>
+							<p class="text-center">Don't have an account?</p>
+							<a class="btn btn-sm btn-block btn-outline" href="/auth/register">Sign Up</a>
+						</div>
+					}
+					<a class="btn btn-sm btn-ghost" href="/auth/forgot-password">Forgot your password?</a>
+				</div>
+			</div>
+		</form>
+	}
+}
+
+templ RegisterPage() {
+	@layoutAuth("Register") {
+		<form class="card w-80 sm:w-96 bg-base-100 shadow-xl" hx-boost="true" hx-post="/auth/register" hx-target="body">
+			<div class="card-body">
+				<h2 class="card-title underline self-center">Create your Account</h2>
+				<label class="form-control w-full">
+					<div class="label">
+						<span class="label-text font-semibold">Email</span>
+					</div>
+					<input required type="email" placeholder="Enter your email address" class="input input-bordered w-full" name="email"/>
+				</label>
+				<label class="form-control w-full">
+					<div class="label pt-0">
+						<span class="label-text font-semibold">Password</span>
+					</div>
+					<input required type="password" placeholder="Enter your password" class="input input-bordered w-full" name="password"/>
+				</label>
+				<label class="form-control w-full">
+					<div class="label pt-0">
+						<span class="label-text font-semibold">Confirm password</span>
+					</div>
+					<input required type="password" placeholder="Enter your password" class="input input-bordered w-full" name="password-confirm"/>
+				</label>
+				<div class="card-actions justify-end">
+					<button class="btn btn-primary btn-block btn-sm">Sign Up</button>
+				</div>
+				<div class="grid place-content-center text-center gap-2">
+					<div>
+						<p class="text-center">Already have an account?</p>
+						<a class="btn btn-sm btn-block btn-outline" href="/auth/login">Log In</a>
+					</div>
+				</div>
+			</div>
+		</form>
+	}
+}
+
+templ SimplePage(title, content string) {
+	@layoutAuth(title) {
+		<div class="card w-80 sm:w-96 bg-base-100 shadow-xl">
+			<div class="card-body">
+				<h2 class="card-title underline self-center">{ title }</h2>
+				<p>{ content }</p>
+				<div class="card-actions justify-end">
+					<a href="/" class="btn btn-primary btn-block btn-sm">Back Home</a>
+				</div>
+			</div>
+		</div>
+	}
+}

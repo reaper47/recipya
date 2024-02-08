@@ -99,11 +99,10 @@ func (s *Server) mountHandlers() {
 		})
 
 		r.Route("/register", func(r chi.Router) {
-			r.Use(s.redirectIfLoggedInMiddleware)
+			r.Use(s.redirectIfLoggedInMiddleware, redirectIfNoSignupsMiddleware)
 
 			r.Get("/", registerHandler)
 			r.Post("/", s.registerPostHandler)
-			r.Post("/validate-password", s.registerPostPasswordHandler)
 		})
 
 		r.Post("/logout", s.logoutHandler)

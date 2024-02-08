@@ -1,0 +1,140 @@
+package components
+
+import (
+	"fmt"
+	"github.com/reaper47/recipya/internal/templates"
+)
+
+templ Pagination(p templates.Pagination) {
+	<footer
+		id="pagination"
+		class={ "footer footer-center bg-base-200 pb-12 p-2 md:pb-2 text-base-content gap-2", templ.KV("hidden", p.IsHidden) }
+		hx-swap-oob?={ p.IsSwap }
+		onload={ updateAddCookbookURL(p.Selected) }
+	>
+		<div class="join gap-0">
+			if p.Selected == 1 {
+				<button class="join-item btn btn-disabled">«</button>
+			} else {
+				<button
+					class="join-item btn"
+					hx-get={ fmt.Sprintf("%s?page=%d", p.URL, p.Prev) }
+					hx-target="#content"
+					hx-push-url={ fmt.Sprintf("%s?page=%d", p.URL, p.Prev) }
+				>
+					«
+				</button>
+			}
+			<!-- Left Section -->
+			for _, l := range p.Left {
+				if p.Selected == l {
+					<button aria-current="page" class="join-item btn btn-active">{ fmt.Sprint(l) }</button>
+				} else {
+					<button
+						class="join-item btn"
+						hx-get={ fmt.Sprintf("%s?page=%d", p.URL, l) }
+						hx-target="#content"
+						hx-push-url={ fmt.Sprintf("%s?page=%d", p.URL, l) }
+					>
+						{ fmt.Sprint(l) }
+					</button>
+				}
+			}
+			<!-- Middle Section -->
+			if len(p.Middle) > 0 {
+				<button class="join-item btn btn-disabled">...</button>
+			}
+			for _, m := range p.Middle {
+				if p.Selected == m {
+					<button
+						class="join-item btn btn-active"
+						aria-current="page"
+						hx-get={ fmt.Sprintf("%s?page=%d", p.URL, m) }
+						hx-target="#content"
+						hx-push-url={ fmt.Sprintf("%s?page=%d", p.URL, m) }
+					>
+						{ fmt.Sprint(m) }
+					</button>
+				} else {
+					<button
+						class="join-item btn"
+						hx-get={ fmt.Sprintf("%s?page=%d", p.URL, m) }
+						hx-target="#content"
+						hx-push-url={ fmt.Sprintf("%s?page=%d", p.URL, m) }
+					>
+						{ fmt.Sprint(m) }
+					</button>
+				}
+			}
+			if len(p.Middle) > 0 {
+				<button class="join-item btn btn-disabled">...</button>
+			}
+			<!-- Right Section -->
+			if len(p.Right) > 0 && len(p.Middle) == 0 {
+				<button class="join-item btn btn-disabled">...</button>
+			}
+			for _, r := range p.Right {
+				if p.Selected == r {
+					<button
+						class="join-item btn btn-active"
+						aria-current="page"
+						hx-get={ fmt.Sprintf("%s?page=%d", p.URL, r) }
+						hx-target="#content"
+						hx-push-url={ fmt.Sprintf("%s?page=%d", p.URL, r) }
+					>
+						{ fmt.Sprint(r) }
+					</button>
+				} else {
+					<button
+						class="join-item btn"
+						hx-get={ fmt.Sprintf("%s?page=%d", p.URL, r) }
+						hx-target="#content"
+						hx-push-url={ fmt.Sprintf("%s?page=%d", p.URL, r) }
+					>
+						{ fmt.Sprint(r) }
+					</button>
+				}
+			}
+			if p.Selected == p.NumPages {
+				<button class="join-item btn btn-disabled">»</button>
+			} else {
+				<button
+					class="join-item btn"
+					hx-get={ fmt.Sprintf("%s?page=%d", p.URL, p.Next) }
+					hx-target="#content"
+					hx-push-url={ fmt.Sprintf("%s?page=%d", p.URL, p.Next) }
+				>
+					»
+				</button>
+			}
+		</div>
+		<div class="text-center">
+			<p class="text-sm">
+				Showing
+				<span class="font-medium">
+					if p.Selected == p.Prev {
+						{ fmt.Sprint(p.Selected) }
+					} else {
+						{ fmt.Sprint(p.Functions.MulAll(p.Selected - 1, p.ResultsPerPage) + 1) }
+					}
+				</span>
+				to
+				<span class="font-medium">
+					if p.Selected == p.NumPages {
+						{ fmt.Sprint(p.NumResults) }
+					} else {
+						{ fmt.Sprint(p.Functions.MulAll(p.Selected, p.ResultsPerPage)) }
+					}
+				</span>
+				of <span class="font-medium">{ fmt.Sprint(p.NumResults) }</span> results
+			</p>
+		</div>
+	</footer>
+}
+
+script updateAddCookbookURL(selected uint64) {
+    if (add_cookbook) {
+        add_cookbook.setAttribute("hx-post", `/cookbooks?page=${selected}`);
+        htmx.process(add_cookbook);
+    }
+}

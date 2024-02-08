@@ -4,6 +4,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/templates"
 	"slices"
 	"testing"
 )
@@ -83,8 +84,8 @@ func TestCookbook_MakeView(t *testing.T) {
 		Title:   "Lovely Ukraine",
 	}
 
-	got := cookbook.MakeView(1, 1)
-	want := models.CookbookView{
+	got := templates.MakeCookbookView(cookbook, 1, 1)
+	want := templates.CookbookView{
 		ID:          1,
 		Image:       uuid.Nil,
 		IsUUIDValid: false,

@@ -12,10 +12,11 @@ services:
       RECIPYA_SERVER_AUTOLOGIN: false
       RECIPYA_SERVER_IS_DEMO: false
       RECIPYA_SERVER_IS_PROD: false
+      RECIPYA_SERVER_NO_SIGNUPS: false
       RECIPYA_SERVER_PORT: 8078
       RECIPYA_SERVER_URL: "http://0.0.0.0"
     ports:
-      - "<host-port>:<RECIPYA_SERVER_PORT>"
+      - "<host-port>:8125"
     volumes:
       - "recipya-data:/app/data"
 

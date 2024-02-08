@@ -16,7 +16,7 @@ import (
 
 // ScheduleCronJobs schedules cron jobs for the web app. It starts the following jobs:
 //
-// - Clean Images: Removes unreferenced images from the data/img folder to save space.
+// - Clean Images: Removes unreferenced images from the data/images folder to save space.
 //
 // - Send Queued Emails
 //

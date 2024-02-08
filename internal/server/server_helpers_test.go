@@ -210,6 +210,10 @@ func getBodyHTML(rr *httptest.ResponseRecorder) string {
 	bodyStr := strings.ReplaceAll(string(body), "\n", "")
 	bodyStr = regexOneLine.ReplaceAllString(bodyStr, " ")
 	bodyStr = regexRmSpaces.ReplaceAllString(bodyStr, "><")
+	bodyStr = strings.ReplaceAll(bodyStr, "&#39;", "'")
+	bodyStr = strings.ReplaceAll(bodyStr, "&#34;", `"`)
+	bodyStr = strings.ReplaceAll(bodyStr, "&lt;", "<")
+	bodyStr = strings.ReplaceAll(bodyStr, "&gt;", ">")
 	return bodyStr
 }
 

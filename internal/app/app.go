@@ -131,6 +131,7 @@ type AzureComputerVision struct {
 type ConfigServer struct {
 	IsAutologin  bool   `json:"autologin"`
 	IsDemo       bool   `json:"isDemo"`
+	IsNoSignups  bool   `json:"noSignups"`
 	IsProduction bool   `json:"isProduction"`
 	Port         int    `json:"port"`
 	URL          string `json:"url"`
@@ -186,6 +187,7 @@ func NewConfig(r io.Reader) {
 			Server: ConfigServer{
 				IsAutologin:  os.Getenv("RECIPYA_SERVER_AUTOLOGIN") == "true",
 				IsDemo:       os.Getenv("RECIPYA_SERVER_IS_DEMO") == "true",
+				IsNoSignups:  os.Getenv("RECIPYA_SERVER_NO_SIGNUPS") == "true",
 				IsProduction: os.Getenv("RECIPYA_SERVER_IS_PROD") == "true",
 				Port:         int(port),
 				URL:          os.Getenv("RECIPYA_SERVER_URL"),
