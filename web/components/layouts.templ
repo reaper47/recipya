@@ -93,12 +93,22 @@ templ layoutMain(title string, data templates.Data) {
 								id="avatar_dropdown"
 								class="menu dropdown-content mt-3 z-10 p-2 shadow bg-base-100 rounded-box before:content-[''] before:absolute before:right-2 before:top-[-9px] before:border-x-[15px] before:border-x-transparent before:border-b-[8px] before:border-b-[#333] dark:before:border-b-[gray]"
 							>
+								if data.IsAdmin {
+									<li onclick="document.activeElement?.blur()">
+										<a href="/admin" hx-get="/admin" hx-target="#content" hx-push-url="true">
+											@iconBuildingLibrary()
+											Admin
+										</a>
+									</li>
+									<div class="divider m-0"></div>
+								}
 								<li onclick="document.activeElement?.blur()">
 									<a href="/settings" hx-get="/settings" hx-target="#content" hx-push-url="true">
 										@iconGear()
 										Settings
 									</a>
 								</li>
+								<div class="divider m-0"></div>
 								<li onclick="about_dialog.showModal()">
 									<a>
 										@iconHelp()
@@ -214,6 +224,7 @@ templ head(title string) {
             ];
 
             const pathsHideAddRecipeButton = [
+                "/admin",
                 "/cookbooks",
                 "/settings",
                 "/recipes/add",
@@ -272,7 +283,7 @@ templ head(title string) {
                     mobile_nav.classList.add("hidden");
                 }
 
-                if (recipesPattern.test(location.pathname) || recipesSharePattern.test(location.pathname)) {
+                if (recipesPattern.test(location.pathname) || recipesSharePattern.test(location.pathname) || location.pathname === "/admin") {
                     desktop_nav.firstElementChild.classList.add("hidden");
                     mobile_nav.classList.add("hidden");
                 } else {

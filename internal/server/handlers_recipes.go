@@ -43,6 +43,7 @@ func (s *Server) recipesHandler(w http.ResponseWriter, r *http.Request) {
 	_ = components.RecipesIndex(templates.Data{
 		About:           templates.NewAboutData(),
 		Functions:       templates.NewFunctionsData[int64](),
+		IsAdmin:         userID == 1,
 		IsAutologin:     app.Config.Server.IsAutologin,
 		IsAuthenticated: true,
 		IsHxRequest:     r.Header.Get("HX-Request") == "true",
@@ -76,6 +77,7 @@ func recipesAddHandler(w http.ResponseWriter, r *http.Request) {
 
 	_ = components.AddRecipe(templates.Data{
 		About:           templates.NewAboutData(),
+		IsAdmin:         getUserID(r) == 1,
 		IsAuthenticated: true,
 		IsHxRequest:     isHxRequest,
 	}).Render(r.Context(), w)
@@ -181,6 +183,7 @@ func (s *Server) recipeAddManualHandler(w http.ResponseWriter, r *http.Request) 
 
 	_ = components.AddRecipeManual(templates.Data{
 		About:           templates.NewAboutData(),
+		IsAdmin:         userID == 1,
 		IsAuthenticated: true,
 		IsHxRequest:     r.Header.Get("Hx-Request") == "true",
 		View:            &templates.ViewRecipeData{Categories: categories},
@@ -638,6 +641,7 @@ func (s *Server) recipesEditHandler(w http.ResponseWriter, r *http.Request) {
 
 	_ = components.EditRecipe(templates.Data{
 		About:           templates.NewAboutData(),
+		IsAdmin:         userID == 1,
 		IsAuthenticated: true,
 		IsHxRequest:     r.Header.Get("HX-Request") == "true",
 		View:            templates.NewViewRecipeData(id, recipe, true, false),
@@ -764,6 +768,7 @@ func (s *Server) recipeShareHandler(w http.ResponseWriter, r *http.Request) {
 
 	_ = components.ViewRecipe(templates.Data{
 		About:           templates.NewAboutData(),
+		IsAdmin:         userID == 1,
 		IsAuthenticated: isLoggedIn,
 		IsHxRequest:     r.Header.Get("Hx-Request") == "true",
 		View:            templates.NewViewRecipeData(share.RecipeID, recipe, userID == share.UserID, true),
@@ -897,6 +902,7 @@ func (s *Server) recipesViewHandler(w http.ResponseWriter, r *http.Request) {
 
 	_ = components.ViewRecipe(templates.Data{
 		About:           templates.NewAboutData(),
+		IsAdmin:         userID == 1,
 		IsAuthenticated: true,
 		IsHxRequest:     r.Header.Get("Hx-Request") == "true",
 		View:            templates.NewViewRecipeData(id, recipe, true, false),
@@ -935,6 +941,7 @@ func (s *Server) recipesViewShareHandler(w http.ResponseWriter, r *http.Request)
 
 	_ = components.ViewRecipe(templates.Data{
 		About:           templates.NewAboutData(),
+		IsAdmin:         userID == 1,
 		IsAuthenticated: isLoggedIn,
 		IsHxRequest:     r.Header.Get("Hx-Request") == "true",
 		View:            templates.NewViewRecipeData(id, recipe, cookbookUserID == userID, true),

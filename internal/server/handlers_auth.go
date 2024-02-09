@@ -118,13 +118,14 @@ func (s *Server) deleteUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if app.Config.Server.IsDemo && s.Repository.UserID("demo@demo.com") == getUserID(r) {
+	userID := getUserID(r)
+	if app.Config.Server.IsDemo && s.Repository.UserID("demo@demo.com") == userID {
 		w.Header().Set("HX-Trigger", makeToast("Your savings account has been deleted.", errorToast))
 		w.WriteHeader(http.StatusTeapot)
 		return
 	}
 
-	err := s.Repository.DeleteUser(getUserID(r))
+	err := s.Repository.DeleteUser(userID)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return

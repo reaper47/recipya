@@ -33,6 +33,7 @@ func (s *Server) settingsHandler(w http.ResponseWriter, r *http.Request) {
 		About: templates.AboutData{
 			Version: app.Version,
 		},
+		IsAdmin:         getUserID(r) == 1,
 		IsAutologin:     app.Config.Server.IsAutologin,
 		IsAuthenticated: true,
 		IsHxRequest:     r.Header.Get("Hx-Request") == "true",

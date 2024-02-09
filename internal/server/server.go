@@ -77,6 +77,18 @@ func (s *Server) mountHandlers() {
 	})
 	r.Get("/c/{id:^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$}", s.cookbookShareHandler)
 
+	r.Route("/admin", func(r chi.Router) {
+		r.Use(s.mustBeLoggedInMiddleware, s.onlyAdminMiddleware)
+
+		r.Get("/", s.adminHandler)
+
+		r.Route("/users", func(r chi.Router) {
+			r.Post("/", s.adminUsersPostHandler)
+			r.Delete("/{email}", s.adminUsersDeleteHandler)
+		})
+
+	})
+
 	r.Route("/auth", func(r chi.Router) {
 		r.With(s.mustBeLoggedInMiddleware).Post("/change-password", s.changePasswordHandler)
 		r.Get("/confirm", s.confirmHandler)

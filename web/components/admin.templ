@@ -1,0 +1,92 @@
+package components
+
+import (
+	"fmt"
+	"github.com/reaper47/recipya/internal/templates"
+)
+
+templ Admin(data templates.Data) {
+	if data.IsHxRequest {
+		<title hx-swap-oob="true">Admin | Recipya</title>
+		@admin(data)
+	} else {
+		@layoutMain("Admin", data) {
+			@admin(data)
+		}
+	}
+}
+
+templ admin(data templates.Data) {
+	<div class="grid justify-center">
+		<div class="card card-compact card-bordered mt-4">
+			<div class="card-body">
+				<h2 class="card-title">Users</h2>
+				<div class="overflow-x-auto max-w-96 sm:w-full">
+					<table class="table table-zebra">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Password</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							for i, u := range data.Admin.Users {
+								@AdminUserRow(u.Email, i > 0, i == len(data.Admin.Users) - 1)
+							}
+						</tbody>
+					</table>
+				</div>
+				<div class="card-actions justify-end"></div>
+			</div>
+		</div>
+	</div>
+}
+
+templ AdminUserRow(email string, isDeleteButtonVisible, isAddNewRow bool) {
+	<tr>
+		<td>{ email }</td>
+		<td>*****</td>
+		<th>
+			if isDeleteButtonVisible {
+				<button
+					class="btn btn-ghost btn-xs"
+					title="Delete user"
+					hx-delete={ fmt.Sprintf("/admin/users/%s", email) }
+					hx-target="closest tr"
+					hx-swap="outerHTML"
+					hx-confirm="Are you sure you wish to delete this user?"
+					hx-indicator="#fullscreen-loader"
+				>
+					@iconDelete()
+				</button>
+			}
+		</th>
+	</tr>
+	if isAddNewRow {
+	    @adminUserRowNew()
+	}
+}
+
+templ adminUserRowNew() {
+	<tr>
+		<td>
+			<input type="text" name="email" placeholder="Enter new email" class="input input-sm input-bordered w-full"/>
+		</td>
+		<td>
+			<input type="password" name="password" placeholder="Enter new password" class="input input-sm input-bordered w-full"/>
+		</td>
+		<th>
+			<button
+				class="btn btn-ghost btn-xs"
+				hx-post="/admin/users"
+				hx-include="[name='email'], [name='password']"
+				hx-target="closest tr"
+				hx-swap="outerHTML"
+				hx-indicator="#fullscreen-loader"
+			>
+				@iconPlusCircle()
+			</button>
+		</th>
+	</tr>
+}

@@ -12,6 +12,7 @@ import (
 
 // Data holds data to pass on to the templates.
 type Data struct {
+	IsAdmin          bool // IsAdmin indicates whether the user is an administration.
 	IsAuthenticated  bool // IsAuthenticated indicates whether the user is authenticated.
 	IsAutologin      bool // IsAutologin indicates whether the user enabled autologin.
 	IsDemo           bool // IsDemo indicates whether running instance is the demo version.
@@ -27,6 +28,7 @@ type Data struct {
 	Functions FunctionsData[int64]
 
 	About           AboutData
+	Admin           AdminData
 	CookbookFeature CookbookFeature
 	Pagination      Pagination
 	Recipes         models.Recipes
@@ -45,6 +47,10 @@ func NewAboutData() AboutData {
 // AboutData holds general application data.
 type AboutData struct {
 	Version string
+}
+
+type AdminData struct {
+	Users []models.User
 }
 
 // CookbookFeature is the data to pass related to the cookbook feature.

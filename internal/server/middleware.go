@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/utils/regex"
 	"net/http"
@@ -39,6 +40,23 @@ var excludedURIs = map[string]struct{}{
 	"/settings/tabs/recipes":             {},
 	"/user-initials":                     {},
 	"/ws":                                {},
+}
+
+func (s *Server) onlyAdminMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		userID := getUserIDFromSessionCookie(r)
+		if userID == -1 {
+			userID = getUserIDFromRememberMeCookie(r, s.Repository.GetAuthToken)
+		}
+
+		if userID != 1 {
+			w.WriteHeader(http.StatusForbidden)
+			fmt.Fprint(w, "Access denied: You are not an admin.")
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
 }
 
 func (s *Server) redirectIfLoggedInMiddleware(next http.Handler) http.Handler {

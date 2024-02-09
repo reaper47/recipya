@@ -32,6 +32,7 @@ func (s *Server) cookbookShareHandler(w http.ResponseWriter, r *http.Request) {
 		About: templates.AboutData{
 			Version: app.Version,
 		},
+		IsAdmin:         userID == 1,
 		IsAuthenticated: isLoggedIn,
 		IsHxRequest:     r.Header.Get("Hx-Request") == "true",
 		Title:           cookbook.Title,
@@ -104,6 +105,7 @@ func (s *Server) cookbooksHandler(w http.ResponseWriter, r *http.Request) {
 			ShareData: templates.ShareData{IsFromHost: true},
 			ViewMode:  settings.CookbooksViewMode,
 		},
+		IsAdmin:         userID == 1,
 		IsAuthenticated: true,
 		IsHxRequest:     r.Header.Get("Hx-Request") == "true",
 		Title:           "Cookbooks",
@@ -341,6 +343,7 @@ func (s *Server) cookbooksGetCookbookHandler(w http.ResponseWriter, r *http.Requ
 
 	_ = components.CookbookIndex(templates.Data{
 		About:           templates.NewAboutData(),
+		IsAdmin:         getUserID(r) == 1,
 		IsAuthenticated: true,
 		IsHxRequest:     isHxRequest,
 		Functions:       templates.NewFunctionsData[int64](),
