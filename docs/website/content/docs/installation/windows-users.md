@@ -4,6 +4,8 @@ weight: 5
 next: /docs/deployment
 ---
 
+Please follow these [instructions](/guide/docs/installation/build/) to install Recipya without Docker.
+
 ## Network-Wide Access
 
 If you intend to access the website on other devices within your home network, please ensure that the program is permitted through the firewall. To verify:

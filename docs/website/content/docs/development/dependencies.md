@@ -9,7 +9,7 @@ The following software is required to build the project.
 |-------------------------------------------|----------|
 | [Go](https://go.dev/dl)                   | 1.21+    |
 | [Node.js](https://nodejs.org/en/download) | 20.10.0+ |
-| [Task](https://taskfile.dev/)             | any      |
+| [Task](https://taskfile.dev/)             | latest   |
  | [Hugo](https://gohugo.io/installation/)   | latest   |
 
 ## Recommended CLI Programs 
