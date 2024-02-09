@@ -2,10 +2,9 @@ module github.com/reaper47/recipya
 
 go 1.21.0
 
-toolchain go1.21.4
-
 require (
 	github.com/PuerkitoBio/goquery v1.8.1
+	github.com/a-h/templ v0.2.543
 	github.com/briandowns/spinner v1.23.0
 	github.com/disintegration/imaging v1.6.2
 	github.com/donna-legal/word2number v0.0.0-20180823152447-90bc2b233105

@@ -1,6 +1,6 @@
 ---
 title: Backups
-weight: 9
+weight: 10
 ---
 
 There are two types of data backups, each done once every three days.

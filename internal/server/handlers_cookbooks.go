@@ -6,6 +6,7 @@ import (
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
+	"github.com/reaper47/recipya/web/components"
 	"net/http"
 	"slices"
 	"strconv"
@@ -27,27 +28,23 @@ func (s *Server) cookbookShareHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := templates.Data{
+	_ = components.CookbookIndex(templates.Data{
 		About: templates.AboutData{
 			Version: app.Version,
 		},
+		IsAdmin:         userID == 1,
 		IsAuthenticated: isLoggedIn,
+		IsHxRequest:     r.Header.Get("Hx-Request") == "true",
 		Title:           cookbook.Title,
-		Functions:       templates.NewFunctionsData(),
+		Functions:       templates.NewFunctionsData[int64](),
 		CookbookFeature: templates.CookbookFeature{
-			Cookbook: cookbook.MakeView(1, 1),
+			Cookbook: templates.MakeCookbookView(cookbook, 1, 1),
 			ShareData: templates.ShareData{
 				IsFromHost: userID == share.UserID,
 				IsShared:   true,
 			},
 		},
-	}
-
-	if r.Header.Get("Hx-Request") == "true" {
-		templates.RenderComponent(w, "cookbooks", "cookbook-index", data)
-	} else {
-		templates.Render(w, templates.CookbookPage, data)
-	}
+	}).Render(r.Context(), w)
 }
 
 func (s *Server) cookbooksHandler(w http.ResponseWriter, r *http.Request) {
@@ -96,31 +93,24 @@ func (s *Server) cookbooksHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	isHxRequest := r.Header.Get("Hx-Request") == "true"
-
-	data := templates.Data{
+	_ = components.CookbooksIndex(templates.Data{
 		About: templates.AboutData{
 			Version: app.Version,
 		},
 		CookbookFeature: templates.CookbookFeature{
 			Cookbooks: cookbooks,
-			MakeCookbook: func(index int64, cookbook models.Cookbook, page uint64) models.CookbookView {
-				return cookbook.MakeView(index, page)
+			MakeCookbook: func(index int64, cookbook models.Cookbook, page uint64) templates.CookbookView {
+				return templates.MakeCookbookView(cookbook, index, page)
 			},
 			ShareData: templates.ShareData{IsFromHost: true},
 			ViewMode:  settings.CookbooksViewMode,
 		},
+		IsAdmin:         userID == 1,
 		IsAuthenticated: true,
-		IsHxRequest:     isHxRequest,
+		IsHxRequest:     r.Header.Get("Hx-Request") == "true",
 		Title:           "Cookbooks",
 		Pagination:      p,
-	}
-
-	if isHxRequest {
-		templates.RenderComponent(w, "cookbooks", "cookbooks-index", data)
-	} else {
-		templates.Render(w, templates.CookbooksPage, data)
-	}
+	}).Render(r.Context(), w)
 }
 
 func (s *Server) cookbooksPostHandler(w http.ResponseWriter, r *http.Request) {
@@ -171,15 +161,11 @@ func (s *Server) cookbooksPostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tmpl := "cookbook-grid"
-	if settings.CookbooksViewMode == models.ListViewMode {
-		tmpl = "cookbook-list"
-	}
-
 	w.WriteHeader(http.StatusCreated)
-	templates.RenderComponent(w, "cookbooks", tmpl+"-add", templates.Data{
+
+	data := templates.Data{
 		CookbookFeature: templates.CookbookFeature{
-			Cookbook: models.CookbookView{
+			Cookbook: templates.CookbookView{
 				ID:         cookbookID,
 				PageItemID: int64(p.NumResults),
 				PageNumber: page,
@@ -188,7 +174,13 @@ func (s *Server) cookbooksPostHandler(w http.ResponseWriter, r *http.Request) {
 			ShareData: templates.ShareData{IsFromHost: true},
 		},
 		Pagination: p,
-	})
+	}
+
+	if settings.CookbooksViewMode == models.GridViewMode {
+		_ = components.CookbookGridAdd(data).Render(r.Context(), w)
+	} else {
+		_ = components.CookbookListAdd(data).Render(r.Context(), w)
+	}
 }
 
 func (s *Server) cookbooksDeleteCookbookHandler(w http.ResponseWriter, r *http.Request) {
@@ -232,7 +224,7 @@ func (s *Server) cookbooksDeleteCookbookHandler(w http.ResponseWriter, r *http.R
 		return
 	}
 
-	templates.RenderComponent(w, "cookbooks", "pagination", p)
+	_ = components.Pagination(p).Render(r.Context(), w)
 }
 
 func newCookbooksPagination(srv *Server, w http.ResponseWriter, userID int64, page uint64, isSwap bool) (templates.Pagination, error) {
@@ -278,7 +270,7 @@ func (s *Server) cookbooksDeleteCookbookRecipeHandler(w http.ResponseWriter, r *
 	}
 
 	if numRecipes == 0 {
-		templates.RenderComponent(w, "cookbooks", "cookbook-index-no-recipes", true)
+		_ = components.CookbookIndexNoRecipes(true).Render(r.Context(), w)
 	}
 }
 
@@ -349,22 +341,18 @@ func (s *Server) cookbooksGetCookbookHandler(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	data := templates.Data{
+	_ = components.CookbookIndex(templates.Data{
+		About:           templates.NewAboutData(),
+		IsAdmin:         getUserID(r) == 1,
 		IsAuthenticated: true,
 		IsHxRequest:     isHxRequest,
-		Functions:       templates.NewFunctionsData(),
+		Functions:       templates.NewFunctionsData[int64](),
 		CookbookFeature: templates.CookbookFeature{
-			Cookbook:  cookbook.MakeView(id-1, page),
+			Cookbook:  templates.MakeCookbookView(cookbook, id-1, page),
 			ShareData: templates.ShareData{IsFromHost: true},
 		},
 		Title: cookbook.Title,
-	}
-
-	if isHxRequest {
-		templates.RenderComponent(w, "cookbooks", "cookbook-index", data)
-	} else {
-		templates.Render(w, templates.CookbookPage, data)
-	}
+	}).Render(r.Context(), w)
 }
 
 func (s *Server) cookbooksImagePostCookbookHandler(w http.ResponseWriter, r *http.Request) {
@@ -475,13 +463,10 @@ func (s *Server) cookbooksRecipesSearchPostHandler(w http.ResponseWriter, r *htt
 	q := r.FormValue("q")
 	q = strings.TrimSpace(q)
 	if q == "" {
-		templates.RenderComponent(w, "cookbooks", "cookbook-recipes", templates.Data{
-			Functions: templates.NewFunctionsData(),
-			CookbookFeature: templates.CookbookFeature{
-				Cookbook:  cookbook.MakeView(1, page),
-				ShareData: templates.ShareData{IsFromHost: true},
-			},
-		})
+		_ = components.CookbookRecipes(templates.CookbookFeature{
+			Cookbook:  templates.MakeCookbookView(cookbook, 1, page),
+			ShareData: templates.ShareData{IsFromHost: true},
+		}).Render(r.Context(), w)
 		return
 	}
 
@@ -499,21 +484,18 @@ func (s *Server) cookbooksRecipesSearchPostHandler(w http.ResponseWriter, r *htt
 	})
 
 	if len(recipes) == 0 {
-		templates.RenderComponent(w, "search", "no-result", nil)
+		_ = components.SearchNoResult().Render(r.Context(), w)
 		return
 	}
 
-	templates.RenderComponent(w, "search", "cookbooks-search-results-recipes", templates.Data{
-		CookbookFeature: templates.CookbookFeature{
-			Cookbook: models.CookbookView{
-				ID:         cookbook.ID,
-				PageItemID: id,
-				PageNumber: page,
-			},
-			ShareData: templates.ShareData{IsFromHost: true},
+	_ = components.CookbooksSearchResultsRecipes(templates.CookbookFeature{
+		Cookbook: templates.CookbookView{
+			ID:         cookbook.ID,
+			PageItemID: id,
+			PageNumber: page,
+			Recipes:    recipes,
 		},
-		Recipes: recipes,
-	})
+	}).Render(r.Context(), w)
 }
 
 func (s *Server) cookbooksPostCookbookReorderHandler(w http.ResponseWriter, r *http.Request) {
@@ -574,7 +556,7 @@ func (s *Server) cookbookSharePostHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	templates.RenderComponent(w, "recipes", "share-link", templates.Data{
+	_ = components.ShareLink(templates.Data{
 		Content: r.Host + link,
-	})
+	}).Render(r.Context(), w)
 }

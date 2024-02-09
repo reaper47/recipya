@@ -1,0 +1,404 @@
+package components
+
+import (
+	"github.com/reaper47/recipya/internal/templates"
+)
+
+templ layoutAuth(title string) {
+	<!DOCTYPE html>
+	<html lang="en" class="h-full bg-indigo-100 dark:bg-gray-800">
+		@head(title)
+		<body class="h-full grid place-content-center">
+			{ children... }
+			@toast()
+		</body>
+	</html>
+}
+
+templ layoutMain(title string, data templates.Data) {
+	<!DOCTYPE html>
+	<html
+		lang="en"
+		class="h-full"
+		_="on htmx:afterSwap
+                if location.pathname is '/recipes' or location.pathname is '/' then
+                    add .active to first <button/> in mobile_nav then
+                    remove .active from last <button/> in mobile_nav then
+                    remove .md:hidden from desktop_nav then
+                    remove .hidden from mobile_nav then
+                    remove .active from first <a/> in recipes_sidebar_cookbooks then
+                    add .active to first <a/> in recipes_sidebar_recipes
+                else if location.pathname is '/cookbooks' then
+                    add .active to last <button/> in mobile_nav then
+                    remove .active from first <button/> in mobile_nav then
+                    remove .md:hidden from desktop_nav then
+                    remove .hidden from mobile_nav then
+                    remove .active from first <a/> in recipes_sidebar_recipes then
+                    add .active to first <a/> in recipes_sidebar_cookbooks
+                else if location.pathname is '/settings' or location.pathname.startsWith('/recipes/add') then
+                    add .md:hidden to desktop_nav then
+                    add .hidden to mobile_nav"
+	>
+		@head(title)
+		<body class="min-h-full">
+			<header class="navbar bg-base-200 shadow-sm print:hidden">
+				<div class="navbar-start">
+					<a
+						class="btn btn-ghost text-lg"
+						if data.IsAuthenticated {
+							hx-get="/"
+							hx-push-url="true"
+							hx-target="#content"
+						} else {
+							href="/"
+						}
+					>
+						Recipya
+					</a>
+				</div>
+				<div class="navbar-center">
+					if data.IsAuthenticated {
+						<div id="content-title" class="font-semibold hidden md:block md:text-xl">{ title }</div>
+						<button
+							id="add_recipe"
+							class="btn btn-primary btn-sm hover:btn-accent"
+							hx-get="/recipes/add"
+							hx-target="#content"
+							hx-push-url="true"
+						>
+							Add recipe
+						</button>
+						<button
+							id="add_cookbook"
+							class="btn btn-primary btn-sm hover:btn-accent"
+							hx-post="/cookbooks"
+							hx-prompt="Enter the name of your cookbook"
+							hx-target=".cookbooks-display"
+							hx-swap="beforeend"
+						>
+							Add cookbook
+						</button>
+					}
+				</div>
+				<div class="navbar-end">
+					if data.IsAuthenticated {
+						<div class="dropdown dropdown-end" hx-get="/user-initials" hx-trigger="load" hx-target="#user-initials">
+							<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar placeholder">
+								<div class="bg-neutral text-neutral-content w-10 rounded-full">
+									<span id="user-initials">A</span>
+								</div>
+							</div>
+							<ul
+								tabindex="0"
+								id="avatar_dropdown"
+								class="menu dropdown-content mt-3 z-10 p-2 shadow bg-base-100 rounded-box before:content-[''] before:absolute before:right-2 before:top-[-9px] before:border-x-[15px] before:border-x-transparent before:border-b-[8px] before:border-b-[#333] dark:before:border-b-[gray]"
+							>
+								if data.IsAdmin {
+									<li onclick="document.activeElement?.blur()">
+										<a href="/admin" hx-get="/admin" hx-target="#content" hx-push-url="true">
+											@iconBuildingLibrary()
+											Admin
+										</a>
+									</li>
+									<div class="divider m-0"></div>
+								}
+								<li onclick="document.activeElement?.blur()">
+									<a href="/settings" hx-get="/settings" hx-target="#content" hx-push-url="true">
+										@iconGear()
+										Settings
+									</a>
+								</li>
+								<div class="divider m-0"></div>
+								<li onclick="about_dialog.showModal()">
+									<a>
+										@iconHelp()
+										About
+									</a>
+								</li>
+								<li>
+									<a hx-post="/auth/logout">
+										@iconLogout()
+										Log out
+									</a>
+								</li>
+							</ul>
+						</div>
+						@aboutDialog(data.About.Version)
+					} else {
+						<a href="/auth/login" class="btn btn-ghost">Log In</a>
+						<a href="/auth/register" class="btn btn-ghost">Sign Up</a>
+					}
+				</div>
+			</header>
+			<div id="fullscreen-loader" class="htmx-indicator"></div>
+			<main class="inline-flex w-full">
+				if data.IsAuthenticated {
+					<aside id="desktop_nav" class="hidden md:block">
+						<ul class="menu menu-sm bg-base-300 rounded-box h-full" style="border-radius: 0">
+							<li id="recipes_sidebar_recipes" hx-get="/recipes" hx-target="#content" hx-push-url="true" hx-swap-oob="true">
+								<a class="tooltip tooltip-right active" data-tip="Recipes">
+									@iconCubeTransparent()
+								</a>
+							</li>
+							<li
+								id="recipes_sidebar_cookbooks"
+								hx-get="/cookbooks"
+								hx-target="#content"
+								hx-push-url="true"
+								hx-swap-oob="true"
+							>
+								<a class="tooltip tooltip-right" data-tip="Cookbooks">
+									@iconBook()
+								</a>
+							</li>
+						</ul>
+					</aside>
+					<aside id="mobile_nav" class="btm-nav btm-nav-xs md:hidden z-20">
+						<button hx-get="/recipes" hx-target="#content" hx-push-url="true" hx-swap-oob="true">Recipes</button>
+						<button hx-get="/cookbooks" hx-target="#content" hx-push-url="true" hx-swap-oob="true">Cookbooks</button>
+					</aside>
+				}
+				<div id="content" class="min-h-[92.5vh] w-full" hx-ext="ws" ws-connect="/ws">
+					{ children... }
+				</div>
+			</main>
+			@toast()
+			@toastWS("", "", false)
+			<script defer>
+        document.addEventListener("htmx:wsBeforeMessage", (event) => {
+            try {
+                const {type, data, fileName} = JSON.parse(event.detail.message);
+                switch (type) {
+                    case "toast":
+                        const {message, background} = JSON.parse(data);
+                        showToast(message, background);
+                        break;
+                    case "file":
+                        const decoded = atob(data);
+                        const bytes = new Uint8Array(decoded.length);
+                        for (let i = 0; i < decoded.length; i++) {
+                            bytes[i] = decoded.charCodeAt(i);
+                        }
+                        const blob = new Blob([bytes], {type: "application/zip"});
+                        downloadFile(blob, fileName, "application/zip");
+                        event.preventDefault();
+                        break;
+                }
+            } catch (_) {}
+        });
+    </script>
+		</body>
+	</html>
+}
+
+templ head(title string) {
+	<head>
+		if title == "" {
+			<title hx-swap-oob="true">Recipya</title>
+		} else {
+			<title hx-swap-oob="true">{ title } | Recipya</title>
+		}
+		<meta charset="UTF-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta name="description" content="The ultimate recipes manager for you and your family."/>
+		<meta name="keywords" content="Cooking, Lifestyle, Recipes, Groceries, Fast"/>
+		<link rel="canonical" href="https://recipes.musicavis.com/"/>
+		<link rel="stylesheet" href="/static/css/tailwind.css"/>
+		<link rel="stylesheet" href="/static/css/app.css"/>
+		<link rel="icon" href="/static/favicon.ico"/>
+		<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+		<script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
+		<script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
+		<script defer>
+            const cookbooksPattern = new RegExp("^/cookbooks/\\d+$");
+            const cookbooksSharePattern = new RegExp("^/c/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$");
+
+            const recipesPattern = new RegExp("^/recipes/\\d+(/edit)?$");
+            const recipesSharePattern = new RegExp("^/r/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$");
+
+            const pathsShowRecipesSidebar = [
+                "/",
+                "/cookbooks",
+                "/recipes",
+            ];
+
+            const pathsHideAddRecipeButton = [
+                "/admin",
+                "/cookbooks",
+                "/settings",
+                "/recipes/add",
+                "/recipes/add/manual",
+            ];
+
+            function showAll() {
+                showAddRecipeButton();
+                showAddCookbookButton();
+                showCookbookTitle();
+                showRecipesSidebar();
+            }
+
+            function showAddRecipeButton() {
+                const isRecipe = recipesPattern.test(location.pathname) || recipesSharePattern.test(location.pathname);
+                if (isRecipe ||
+                    pathsHideAddRecipeButton.some(path => path === location.pathname) ||
+                    cookbooksPattern.test(location.pathname) ||
+                    cookbooksSharePattern.test(location.pathname)) {
+                    add_recipe?.classList.add("hidden");
+                } else {
+                    add_recipe?.classList.remove("hidden");
+                }
+            }
+
+            function showAddCookbookButton() {
+                if (add_cookbook) {
+                    add_cookbook.setAttribute("hx-target", "#content");
+                    add_cookbook.setAttribute("hx-swap", "innerHTML")
+                    htmx.process(add_cookbook);
+                }
+
+                if (location.pathname === "/cookbooks") {
+                    add_cookbook?.classList.remove("hidden");
+                } else {
+                    add_cookbook?.classList.add("hidden");
+                }
+            }
+
+            function showCookbookTitle() {
+                const cookbookTitleDiv = document.querySelector("#content-title");
+                if (cookbooksPattern.test(location.pathname) ||
+                    cookbooksSharePattern.test(location.pathname)) {
+                    cookbookTitleDiv?.classList.add("md:block");
+                } else {
+                    cookbookTitleDiv?.classList.remove("md:block");
+                }
+            }
+
+            function showRecipesSidebar() {
+                if (pathsShowRecipesSidebar.includes(location.pathname) || cookbooksPattern.test(location.pathname)) {
+                    desktop_nav.firstElementChild.classList.remove("hidden");
+                    mobile_nav.classList.remove("hidden");
+                } else {
+                    desktop_nav.firstElementChild.classList.add("hidden");
+                    mobile_nav.classList.add("hidden");
+                }
+
+                if (recipesPattern.test(location.pathname) || recipesSharePattern.test(location.pathname) || location.pathname === "/admin") {
+                    desktop_nav.firstElementChild.classList.add("hidden");
+                    mobile_nav.classList.add("hidden");
+                } else {
+                    desktop_nav.firstElementChild.classList.remove("hidden");
+                    mobile_nav.classList.remove("hidden");
+                }
+            }
+
+            window.addEventListener("DOMContentLoaded", () => {
+                showAll();
+                document.addEventListener("htmx:pushedIntoHistory", showAll);
+            });
+
+            document.addEventListener("htmx:beforeProcessNode", () => {
+                adjustAddCookbookTarget();
+            });
+
+            htmx.on('htmx:pushedIntoHistory', () => {
+                showAll();
+                document.addEventListener("htmx:pushedIntoHistory", showAll);
+            });
+
+            function adjustAddCookbookTarget() {
+                if (add_cookbook) {
+                    if (document.querySelector(".cookbooks-display") === null) {
+                        add_cookbook.setAttribute("hx-target", "#content");
+                        add_cookbook.setAttribute("hx-swap", "innerHTML");
+                    } else {
+                        add_cookbook.setAttribute("hx-target", ".cookbooks-display");
+                        add_cookbook.setAttribute("hx-swap", "beforeend");
+
+                        if (pagination && !pagination.querySelector("button:nth-last-child(2)").classList.contains('btn-active')) {
+                            add_cookbook.setAttribute("hx-swap", "none");
+                        }
+                    }
+                    htmx.process(add_cookbook);
+                }
+            }
+
+            function loadSortableJS() {
+                return loadScript("https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js")
+            }
+
+            function loadScript(url) {
+                const script = document.createElement("script");
+                script.src = url;
+                document.body.appendChild(script);
+
+                return new Promise((res, rej) => {
+                    script.onload = () => res();
+                    script.onerror = () => rej();
+                });
+            }
+
+            function downloadFile(data, filename, mime) {
+                const blobURL = window.URL.createObjectURL(data);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobURL;
+                a.setAttribute('download', filename);
+                if (typeof a.download === 'undefined') {
+                    a.setAttribute('target', '_blank');
+                }
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                setTimeout(() => {
+                    window.URL.revokeObjectURL(blobURL);
+                }, 100);
+            }
+        </script>
+	</head>
+}
+
+templ toast() {
+	<div
+		id="toast_container"
+		class="toast toast-top toast-end hidden z-20 cursor-default"
+		_="on click add .hidden then call clearTimeout(timeoutToast) then set timeoutToast to null then log timeoutToast"
+	>
+		<div class="hidden alert alert-error alert-info alert-success alert-warning"></div>
+	</div>
+	<script defer>
+        var timeoutToast = timeoutToast || null;
+        htmx.on('showToast', function (event) {
+            const {message, backgroundColor} = JSON.parse(event.detail.value);
+            showToast(message, backgroundColor);
+        });
+
+        function showToast(message, backgroundColor) {
+            const toast = document.createElement('div');
+            toast.classList.add('alert', backgroundColor);
+            toast.textContent = message;
+
+            if (toast_container.firstChild) {
+                toast_container.replaceChild(toast, toast_container.firstChild);
+            } else {
+                toast_container.appendChild(toast);
+            }
+
+            toast_container.classList.remove('hidden');
+
+            timeoutToast = setTimeout(function () {
+                toast_container.classList.add('hidden');
+                toast_container?.removeChild(toast);
+            }, 5000);
+        }
+    </script>
+}
+
+templ toastWS(title, content string, isToastWSVisible bool) {
+	<div id="ws-notification-container" class={ "z-20 fixed bottom-0 right-0 p-6 cursor-default", templ.KV("hidden", !isToastWSVisible) }>
+		<div class="bg-blue-500 text-white px-4 py-2 rounded shadow-md">
+			<p class="font-medium text-center pb-1">{ title }</p>
+			@templ.Raw(content)
+		</div>
+	</div>
+}

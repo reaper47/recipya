@@ -761,12 +761,11 @@ func (s *SQLiteService) InitAutologin() error {
 		if err != nil {
 			return err
 		}
-	} else if err != nil {
-		return err
+
+		log.Println("Created user for autologin with email 'admin@autologin.com' and password 'admin'")
 	}
 
-	log.Println("Created user for autologin with email 'admin@autologin.com' and password 'admin'")
-	return nil
+	return err
 }
 
 // IsUserExist checks whether the user is present in the database.

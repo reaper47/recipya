@@ -5,7 +5,7 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
-	"github.com/reaper47/recipya/internal/templates"
+	"github.com/reaper47/recipya/web/components"
 	"net/http"
 	"strconv"
 )
@@ -44,9 +44,9 @@ func (s *Server) indexHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/guide", http.StatusSeeOther)
 }
 
-func notFoundHandler(w http.ResponseWriter, _ *http.Request) {
+func notFoundHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotFound)
-	templates.Render(w, templates.SimplePage, templates.PageNotFound)
+	_ = components.SimplePage("Page Not Found", "The page you requested to view is not found. Please go back to the main page.").Render(r.Context(), w)
 }
 
 func (s *Server) userInitialsHandler(w http.ResponseWriter, r *http.Request) {
@@ -66,6 +66,6 @@ func (s *Server) wsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	userID := getUserID(r)
-	broker := models.NewBroker(userID, s.Brokers, ws, templates.ToastWS())
+	broker := models.NewBroker(userID, s.Brokers, ws)
 	s.Brokers[userID] = broker
 }

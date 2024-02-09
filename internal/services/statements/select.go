@@ -235,8 +235,11 @@ const SelectCuisineID = `
 
 // SelectDistinctImages gets all distinct image UUIDs from the recipes table.
 const SelectDistinctImages = `
-	SELECT DISTINCT image 
-	FROM recipes`
+	SELECT DISTINCT image
+	FROM recipes
+	UNION
+	SELECT DISTINCT image
+	FROM cookbooks`
 
 // SelectMeasurementSystems fetches the units systems along with the user's selected system and settings.
 const SelectMeasurementSystems = `

@@ -1,0 +1,1798 @@
+package components
+
+import (
+	"fmt"
+	"github.com/reaper47/recipya/internal/templates"
+)
+
+templ AddRecipe(data templates.Data) {
+	if data.IsHxRequest {
+		<title hx-swap-oob="true">Add Recipe | Recipya</title>
+		@addRecipe()
+	} else {
+		@layoutMain("Add Recipe", data) {
+			@addRecipe()
+		}
+	}
+}
+
+templ addRecipe() {
+	<div class="grid w-full h-full grid-cols-1 gap-4 p-4 md:grid-cols-2 md:grid-rows-2 xl:m-auto xl:max-w-6xl md:grid-flow-col">
+		<div class="card card-compact shadow-lg rounded-xl h-96 bg-base-100">
+			<figure>
+				<img
+					class="object-cover w-full h-40 rounded-t-xl"
+					src="/static/img/recipes/new/manual.webp"
+					alt="Writing on a piece of paper with a traditional pen."
+				/>
+			</figure>
+			<div class="card-body">
+				<h2 class="card-title">Manual</h2>
+				<p>Add a new recipe by filling out its content manually.</p>
+				<hr class="dark:border dark:border-gray-800"/>
+				<div class="card-actions justify-end">
+					<button
+						class="btn btn-outline btn-sm btn-block"
+						hx-get="/recipes/add/manual"
+						hx-target="#content"
+						hx-push-url="true"
+					>
+						Fill In
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="card card-compact shadow-lg rounded-xl h-96 bg-base-100">
+			<figure>
+				<img
+					class="object-cover w-full h-40 rounded-t-xl"
+					src="/static/img/recipes/new/import.webp"
+					alt="Writing on a piece of paper with a traditional pen."
+				/>
+			</figure>
+			<div class="card-body">
+				<h2 class="card-title">Website</h2>
+				<p>
+					Fetch a recipe from one of the
+					<button
+						class="underline"
+						hx-get="/recipes/supported-websites"
+						hx-target="#search-results"
+						onclick="supported_websites_dialog.showModal()"
+					>
+						supported
+					</button>
+					websites. If the website is unsupported, the software will try to extract the recipe, but there
+					is no guarantee of success.
+				</p>
+				<hr class="dark:border dark:border-gray-800"/>
+				<div class="card-actions justify-end">
+					<button
+						class="btn btn-outline btn-sm btn-block"
+						hx-target="#content"
+						hx-push-url="/recipes/add/unsupported-website"
+						hx-prompt="Enter the recipe's URL"
+						hx-post="/recipes/add/website"
+						hx-indicator="#fullscreen-loader"
+					>
+						Fetch
+					</button>
+				</div>
+			</div>
+		</div>
+		<dialog id="supported_websites_dialog" class="modal">
+			<div class="modal-box h-2/3">
+				<form method="dialog">
+					<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+				</form>
+				<h3 class="mb-1">
+					<label>
+						<input
+							type="search"
+							placeholder="Search a website"
+							class="input input-bordered w-11/12"
+							_="on input show <tbody>tr/> in next <table/> when its textContent.toLowerCase() contains my value.toLowerCase()"
+						/>
+					</label>
+				</h3>
+				<div class="overflow-x-auto">
+					<table class="table table-zebra table-sm">
+						<thead>
+							<tr class="bg-blue-100 text-center">
+								<th class="border py-1">Number</th>
+								<th class="border py-1">Website</th>
+							</tr>
+						</thead>
+						<tbody id="search-results"></tbody>
+					</table>
+				</div>
+			</div>
+		</dialog>
+		<div class="card card-compact shadow-lg rounded-xl h-96 bg-base-100">
+			<figure>
+				<img
+					class="object-cover w-full h-40 rounded-t-xl"
+					src="/static/img/recipes/new/camera.webp"
+					alt="Writing on a piece of paper with a traditional pen."
+				/>
+			</figure>
+			<div class="card-body">
+				<h2 class="card-title">Scan</h2>
+				<p>Upload an image of the recipe you want to add or take a picture using your device's camera.</p>
+				<hr class="dark:border dark:border-gray-800"/>
+				<div class="card-actions">
+					<form
+						id="ocr-form"
+						class="w-full"
+						hx-post="/recipes/add/ocr"
+						hx-encoding="multipart/form-data"
+						hx-indicator="#fullscreen-loader"
+						hx-swap="none"
+					>
+						<input hidden type="file" id="ocr_file_picker" name="image"/>
+						<button class="btn btn-outline btn-sm btn-block" type="button" onClick={ handleOCR() }>
+							Upload
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="card card-compact shadow-lg rounded-xl h-96 bg-base-100">
+			<figure>
+				<img
+					class="object-cover w-full h-40 rounded-t-xl"
+					src="/static/img/recipes/new/schema.webp"
+					alt="Writing on a piece of paper with a traditional pen."
+				/>
+			</figure>
+			<div class="card-body">
+				<h2 class="card-title">Import</h2>
+				<p>
+					Import recipes that adhere to the
+					<a href="https://schema.org/Recipe" target="_blank" class="link">recipe schema</a>
+					standard, the <a href="https://www.mastercook.com/" target="_blank" class="link">MasterCook</a> file
+					format, or as plain text files.
+				</p>
+				<hr class="dark:border dark:border-gray-800"/>
+				<div class="card-actions">
+					<button class="btn btn-outline btn-sm btn-block" onclick="import_recipes_dialog.showModal()">
+						Import
+					</button>
+				</div>
+			</div>
+		</div>
+		<dialog id="import_recipes_dialog" class="modal">
+			<div class="modal-box">
+				<form method="dialog">
+					<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+				</form>
+				<h3 class="font-bold text-lg">Import Recipes</h3>
+				<form
+					class="py-4"
+					hx-post="/recipes/add/import"
+					enctype="multipart/form-data"
+					hx-indicator="#fullscreen-loader"
+					hx-swap="none"
+				>
+					<div class="grid mb-4">
+						<label for="import-dialog-file" class="text-sm font-semibold mb-1">
+							Choose files in the .json, .mxp or .zip format.
+						</label>
+						<input
+							id="import-dialog-file"
+							type="file"
+							name="files"
+							accept=".json,.zip,.mxp"
+							multiple
+							class="p-2 border border-gray-300 rounded-lg shadow focus:ring-2 focus:ring-purple-600 dark:bg-gray-900 dark:border-none"
+						/>
+					</div>
+					<button
+						type="submit"
+						class="w-full p-2 font-semibold text-white bg-blue-500 border rounded-lg hover:bg-blue-800 dark:border-gray-800"
+						onclick="import_recipes_dialog.close()"
+					>
+						Submit
+					</button>
+				</form>
+			</div>
+		</dialog>
+	</div>
+}
+
+script handleOCR() {
+    const filePromise = new Promise((resolve) => {
+        ocr_file_picker.addEventListener("change", () => {
+            resolve(ocr_file_picker.files[0]);
+        }, {once: true});
+    });
+
+    ocr_file_picker.click();
+    await filePromise;
+    htmx.trigger("#ocr-form", "submit");
+}
+
+templ AddRecipeManual(data templates.Data) {
+	if data.IsHxRequest {
+		<title hx-swap-oob="true">Add Manual | Recipya</title>
+		@addRecipeManual(data.View)
+	} else {
+		@layoutMain("Add Manual", data) {
+			@addRecipeManual(data.View)
+		}
+	}
+}
+
+templ addRecipeManual(data *templates.ViewRecipeData) {
+	<section class="p-2">
+		<div class="flex justify-center">
+			<div class="card card-bordered bg-base-100 shadow-none w-full border-gray-700 xl:w-[72rem]">
+				<form
+					class="card-body"
+					style="padding: 0"
+					enctype="multipart/form-data"
+					hx-post="/recipes/add/manual"
+					hx-indicator="#fullscreen-loader"
+				>
+					<h2 class="card-title bg-base-200 place-content-center rounded-t-2xl">
+						<label class="w-full">
+							<input
+								required
+								type="text"
+								name="title"
+								placeholder="Title of the recipe*"
+								autocomplete="off"
+								class="input w-full btn-ghost text-center"
+							/>
+						</label>
+					</h2>
+					<div>
+						<div class="grid md:grid-flow-col md:grid-cols-6">
+							<div class="w-full text-center border-gray-700 md:col-span-3 md:border-r">
+								<label class="grid gap-2 col-span-6 place-content-center w-full h-full md:col-span-4 text-sm">
+									<img src="" alt="Image preview of the recipe." class="object-cover"/>
+									<span>
+										<input
+											type="file"
+											accept="image/*"
+											name="image"
+											class="file-input file-input-sm w-full max-w-xs"
+											_="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
+                                              on dragleave or drop set the target's style.background to ''
+                                              on drop or change
+                                                make an FileReader called reader
+                                                then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end
+                                                then set {src: window.URL.createObjectURL(it)} on previous <img/>
+                                                then remove .hidden from next <button/>"
+										/>
+										<button
+											type="button"
+											class="hidden btn btn-sm btn-error btn-outline"
+											_="on click
+                                                    set {value: ''} on previous <input/> then
+                                                    set {src: ''} on previous <img/> then
+                                                    add .hidden"
+										>
+											Delete
+										</button>
+									</span>
+								</label>
+							</div>
+							<div class="grid grid-cols-3 col-span-3 text-sm md:grid-flow-row md:grid-rows-4">
+								<div class="grid col-span-6 pb-2 md:grid-cols-3 md:pb-0 md:border-gray-700 md:border-t">
+									<div
+										style="display: grid;grid-auto-flow: column;"
+										class="grid grid-flow-col grid-cols-3 gap-2 border-b border-t border-gray-700 px-2 md:col-span-2 md:border-b-0 md:border-r md:border-t-0 md:px-0"
+									>
+										<div class="col-span-2 border-r border-gray-700 pb-2 md:pb-0 md:grid md:place-content-center">
+											<label class="form-control">
+												<div class="label">
+													<span class="label-text">
+														Category
+														<sup class="text-red-600">*</sup>
+													</span>
+												</div>
+												<input
+													required
+													type="text"
+													list="categories"
+													name="category"
+													class="input input-bordered input-sm w-48 md:w-36 lg:w-48"
+													placeholder="Breakfast"
+												/>
+												<datalist id="categories">
+													for _, c := range data.Categories {
+														<option>{ c }</option>
+													}
+												</datalist>
+											</label>
+										</div>
+										<div class="col-span-1 grid place-content-center pb-2 md:pb-0 md:content-center lg:md:place-content-center">
+											<label class="form-control w-full">
+												<div class="label">
+													<span class="label-text">Servings</span>
+												</div>
+												<input
+													type="number"
+													min="1"
+													name="yield"
+													value="1"
+													class="input input-bordered input-sm w-24 md:w-20 lg:w-24"
+												/>
+											</label>
+										</div>
+									</div>
+									<div class="relative px-2 md:grid md:content-center md:pr-0">
+										<label class="form-control w-full">
+											<div class="label">
+												<span class="label-text">Source<sup class="text-red-600">*</sup></span>
+											</div>
+											<input
+												required
+												type="text"
+												placeholder="Source"
+												name="source"
+												class="input input-bordered input-sm md:w-28 lg:w-40 xl:w-44"
+											/>
+										</label>
+										<button
+											type="button"
+											class="tooltip tooltip-left absolute top-2 right-2"
+											_="on click toggle .tooltip-open"
+											data-tip="The source can be a website, name of a cookbook, from a relative or friend, a magazine, etc."
+										>
+											@iconHelp()
+										</button>
+									</div>
+								</div>
+								<div class="grid grid-flow-col col-span-6 border-gray-700 border-y md:grid-cols-2 md:row-span-2">
+									<div class="border-r border-gray-700">
+										<table class="table table-zebra table-xs md:h-fit">
+											<thead>
+												<tr>
+													<th>Time</th>
+													<th>h:m:s</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>Prep</td>
+													<td>
+														<label>
+															<input
+																type="text"
+																name="time-preparation"
+																value="00:15:00"
+																class="input input-bordered input-xs max-w-24 html-duration-picker"
+															/>
+														</label>
+													</td>
+												</tr>
+												<tr>
+													<td>Cooking</td>
+													<td>
+														<label>
+															<input
+																type="text"
+																name="time-cooking"
+																value="00:30:00"
+																class="input input-bordered input-xs max-w-24 html-duration-picker"
+															/>
+														</label>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<table class="table table-zebra table-xs">
+										<thead>
+											<tr>
+												<th>Nutrition<br/>(per 100g)</th>
+												<th>Amount</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>Calories</td>
+												<td>
+													<label>
+														<input
+															type="text"
+															name="calories"
+															autocomplete="off"
+															placeholder="368kcal"
+															class="input input-bordered input-xs max-w-24"
+														/>
+													</label>
+												</td>
+											</tr>
+											<tr>
+												<td>Total carbs</td>
+												<td>
+													<label>
+														<input
+															type="text"
+															name="total-carbohydrates"
+															autocomplete="off"
+															placeholder="35g"
+															class="input input-bordered input-xs max-w-24"
+														/>
+													</label>
+												</td>
+											</tr>
+											<tr>
+												<td>Sugars</td>
+												<td>
+													<label>
+														<input
+															type="text"
+															name="sugars"
+															autocomplete="off"
+															placeholder="3g"
+															class="input input-bordered input-xs max-w-24"
+														/>
+													</label>
+												</td>
+											</tr>
+											<tr>
+												<td>Protein</td>
+												<td>
+													<label>
+														<input
+															type="text"
+															name="protein"
+															autocomplete="off"
+															placeholder="21g"
+															class="input input-bordered input-xs max-w-24"
+														/>
+													</label>
+												</td>
+											</tr>
+											<tr>
+												<td>Total fat</td>
+												<td>
+													<label>
+														<input
+															type="text"
+															name="total-fat"
+															autocomplete="off"
+															placeholder="15g"
+															class="input input-bordered input-xs max-w-24"
+														/>
+													</label>
+												</td>
+											</tr>
+											<tr>
+												<td>Saturated fat</td>
+												<td>
+													<label>
+														<input
+															type="text"
+															name="saturated-fat"
+															autocomplete="off"
+															placeholder="1.8g"
+															class="input input-bordered input-xs max-w-24"
+														/>
+													</label>
+												</td>
+											</tr>
+											<tr>
+												<td>Cholesterol</td>
+												<td>
+													<label>
+														<input
+															type="text"
+															name="cholesterol"
+															autocomplete="off"
+															placeholder="1.1mg"
+															class="input input-bordered input-xs max-w-24"
+														/>
+													</label>
+												</td>
+											</tr>
+											<tr>
+												<td>Sodium</td>
+												<td>
+													<label>
+														<input
+															type="text"
+															name="sodium"
+															autocomplete="off"
+															placeholder="100mg"
+															class="input input-bordered input-xs max-w-24"
+														/>
+													</label>
+												</td>
+											</tr>
+											<tr>
+												<td>Fiber</td>
+												<td>
+													<label>
+														<input
+															type="text"
+															name="fiber"
+															autocomplete="off"
+															placeholder="8g"
+															class="input input-bordered input-xs max-w-24"
+														/>
+													</label>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="col-span-3 h-40 md:h-full md:row-span-1">
+									<label>
+										<textarea
+											required
+											name="description"
+											placeholder="This Thai curry chicken will make you drool."
+											class="textarea w-full h-full resize-none"
+										></textarea>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div
+						id="ingredients-instructions-container"
+						class="border-gray-700 md:border-t grid text-sm md:grid-flow-col md:col-span-6"
+					>
+						<div class="col-span-6 border-gray-700 px-2 py-2 border-y md:col-span-2 md:border-r md:border-y-0">
+							<h2 class="font-semibold text-center pb-2">
+								<span class="underline">Ingredients</span>
+								<sup class="text-red-600">*</sup>
+							</h2>
+							<ol id="ingredients-list" class="pl-4 list-decimal">
+								@AddIngredient(1)
+							</ol>
+						</div>
+						<div class="col-span-6 px-6 py-2 border-gray-700 md:rounded-bl-none md:col-span-4">
+							<h2 class="font-semibold text-center pb-2">
+								<span class="underline">Instructions</span>
+								<sup class="text-red-600">*</sup>
+							</h2>
+							<ol id="instructions-list" class="grid list-decimal">
+								@AddInstruction(1)
+							</ol>
+						</div>
+					</div>
+					<div class="card-actions justify-end">
+						<button class="btn btn-primary btn-block btn-sm">Submit</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+	@loadRecipesManualScripts()
+}
+
+templ AddIngredient(num int) {
+	<li class="pb-2">
+		<div class="grid grid-flow-col items-center">
+			<label>
+				<input
+					required
+					type="text"
+					name={ fmt.Sprintf("ingredient-%d", num) }
+					placeholder={ fmt.Sprintf("Ingredient #%d", num) }
+					if num > 1 {
+						autofocus
+					}
+					class="input input-bordered input-sm w-full"
+					_="on keydown if event.key is 'Enter'
+                        then halt the event then get next <button/> from the parentElement of me
+                        then call htmx.trigger(it, 'click')"
+				/>
+			</label>
+			<div class="ml-2">
+				<button
+					type="button"
+					class="btn btn-square btn-sm btn-outline btn-success"
+					title="Shortcut: Enter"
+					hx-post="/recipes/add/manual/ingredient"
+					hx-target="#ingredients-list"
+					hx-swap="beforeend"
+					hx-include="[name^='ingredient']"
+				>
+					+
+				</button>
+				<button
+					type="button"
+					class="delete-button btn btn-square btn-sm btn-outline btn-error"
+					hx-target="#ingredients-list"
+					hx-post={ fmt.Sprintf("/recipes/add/manual/ingredient/%d", num) }
+					hx-include="[name^='ingredient']"
+				>
+					-
+				</button>
+				<div class="inline-block h-4 cursor-move handle">
+					@iconReorder()
+				</div>
+			</div>
+		</div>
+	</li>
+}
+
+templ AddInstruction(num int) {
+	<li class="pt-2 md:pl-0">
+		<div class="flex">
+			<label class="w-11/12">
+				<textarea
+					required
+					name={ fmt.Sprintf("instruction-%d", num) }
+					rows="3"
+					if num > 1 {
+						autofocus
+					}
+					class="textarea textarea-bordered w-full"
+					placeholder={ fmt.Sprintf("Instruction #%d", num) }
+					_="on keydown if event.ctrlKey and event.key === 'Enter'
+                            then halt the event
+                            then get next <div/> from the parentElement of me
+                            then get first <button/> in it
+                            then call htmx.trigger(it, 'click')"
+				></textarea>
+			</label>
+			<div class="grid ml-2">
+				<button
+					type="button"
+					class="btn btn-square btn-sm btn-outline btn-success"
+					title="Shortcut: CTRL + Enter"
+					hx-post="/recipes/add/manual/instruction"
+					hx-target="#instructions-list"
+					hx-swap="beforeend"
+					hx-include="[name^='instruction']"
+				>
+					+
+				</button>
+				<button
+					type="button"
+					class="delete-button btn btn-square btn-sm btn-outline btn-error"
+					hx-target="#instructions-list"
+					hx-post={ fmt.Sprintf("/recipes/add/manual/instruction/%d", num) }
+					hx-include="[name^='instruction']"
+				>
+					-
+				</button>
+				<div class="h-4 cursor-move handle grid place-content-center">
+					@iconReorder()
+				</div>
+			</div>
+		</div>
+	</li>
+}
+
+templ loadRecipesManualScripts() {
+	<script defer>
+        loadScript("https://cdn.jsdelivr.net/npm/html-duration-picker@latest/dist/html-duration-picker.min.js")
+            .then(() => HtmlDurationPicker.init())
+
+        loadScript("https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js")
+            .then(() => {
+                const inputs = [
+                    {name: 'ingredient', type: 'input'},
+                    {name: 'instruction', type: 'textarea'},
+                ];
+                inputs.forEach(({name, type}) => {
+                    const list = document.querySelector(`#${name}s-list`);
+                    if (list) {
+                        new Sortable.create(list, {
+                            handle: '.handle',
+                            animation: 150,
+                            onEnd: function () {
+                                Array.from(document.querySelectorAll(`${type}[name^='${name}']`)).forEach((d, i) => {
+                                    const n = i + 1;
+                                    d.name = `${name}-${n}`;
+                                    d.placeholder = `${name.substring(0, 1).toUpperCase() + name.substring(1)} #${n}`;
+
+                                    const deleteButton = d.parentElement.parentElement.querySelector(".delete-button");
+                                    deleteButton.setAttribute('hx-post', `/recipes/add/manual/${name}/${n}`);
+                                    htmx.process(deleteButton);
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+    </script>
+}
+
+templ EditRecipe(data templates.Data) {
+	if data.IsHxRequest {
+		<title hx-swap-oob="true">Edit { data.View.Recipe.Name } | Recipya</title>
+		@editRecipe(data.View)
+	} else {
+		@layoutMain(fmt.Sprintf("Edit %s", data.View.Recipe.Name), data) {
+			@editRecipe(data.View)
+		}
+	}
+}
+
+templ editRecipe(data *templates.ViewRecipeData) {
+	<section class="p-2">
+		<div class="flex justify-center">
+			<div class="card card-bordered bg-base-100 shadow-none w-full border-gray-700 xl:w-[72rem]">
+				<form
+					class="card-body"
+					style="padding: 0"
+					hx-put={ fmt.Sprintf("/recipes/%d/edit", data.ID) }
+					enctype="multipart/form-data"
+				>
+					<h2 class="card-title bg-base-200 place-content-center rounded-t-2xl">
+						<button
+							class="btn btn-ghost"
+							title="Back to view recipe"
+							type="button"
+							_="on click if confirm('Are you sure you wish to go back? Changes will not be saved.') then call history.back()"
+						>
+							&larr;
+						</button>
+						<label class="w-full">
+							<input
+								required
+								type="text"
+								name="title"
+								placeholder="Title of the recipe*"
+								autocomplete="off"
+								class="input w-full btn-ghost text-center"
+								value={ data.Recipe.Name }
+							/>
+						</label>
+					</h2>
+					<div>
+						<div class="grid md:grid-flow-col md:grid-cols-6">
+							<div class="w-full text-center border-gray-700 md:col-span-3 md:border-r">
+								<label class="grid gap-2 col-span-6 place-content-center w-full h-full md:col-span-4 text-sm">
+									<img src={ fmt.Sprintf("/data/images/%s.jpg", data.Recipe.Image) } alt="Image preview of the recipe." class="object-cover"/>
+									<span>
+										<input
+											type="file"
+											accept="image/*"
+											name="image"
+											class="file-input file-input-sm w-full max-w-xs"
+											value={ fmt.Sprintf("/data/images/%s.jpg", data.Recipe.Image) }
+											_="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
+                                              on dragleave or drop set the target's style.background to ''
+                                              on drop or change
+                                                make an FileReader called reader
+                                                then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end
+                                                then set {src: window.URL.createObjectURL(it)} on previous <img/>
+                                                then remove .hidden from next <button/>"
+										/>
+										<button
+											type="button"
+											class="hidden btn btn-sm btn-error btn-outline"
+											_="on click
+                                                    set {value: ''} on previous <input/> then
+                                                    set {src: ''} on previous <img/> then
+                                                    add .hidden"
+										>
+											Delete
+										</button>
+									</span>
+								</label>
+							</div>
+							<div class="grid grid-cols-3 col-span-3 text-sm md:grid-flow-row md:grid-rows-4">
+								<div class="grid col-span-6 pb-2 md:grid-cols-3 md:pb-0 md:border-gray-700 md:border-t">
+									<div
+										style="display: grid;grid-auto-flow: column;"
+										class="grid grid-flow-col grid-cols-3 gap-2 border-b border-t border-gray-700 px-2 md:col-span-2 md:border-b-0 md:border-r md:border-t-0 md:px-0"
+									>
+										<div class="col-span-2 border-r border-gray-700 pb-2 md:pb-0 md:grid md:place-content-center">
+											<label class="form-control">
+												<div class="label">
+													<span class="label-text">
+														Category
+														<sup class="text-red-600">*</sup>
+													</span>
+												</div>
+												<input
+													required
+													type="text"
+													list="categories"
+													name="category"
+													class="input input-bordered input-sm w-48 md:w-36 lg:w-48"
+													placeholder="Breakfast"
+													value={ data.Recipe.Category }
+												/>
+												<datalist id="categories">
+													for _, c := range data.Categories {
+														<option>{ c }</option>
+													}
+												</datalist>
+											</label>
+										</div>
+										<div class="col-span-1 grid place-content-center pb-2 md:pb-0 md:content-center lg:md:place-content-center">
+											<label class="form-control w-full">
+												<div class="label">
+													<span class="label-text">Servings</span>
+												</div>
+												<input
+													type="number"
+													min="1"
+													name="yield"
+													class="input input-bordered input-sm w-24 md:w-20 lg:w-24"
+													if data.Recipe.Yield == 0 {
+														value="4"
+													} else {
+														value={ fmt.Sprint(data.Recipe.Yield) }
+													}
+												/>
+											</label>
+										</div>
+									</div>
+									<div class="relative px-2 md:grid md:content-center md:pr-0">
+										<label class="form-control w-full">
+											<div class="label">
+												<span class="label-text">
+													Source
+													<sup class="text-red-600">*</sup>
+												</span>
+											</div>
+											<input
+												required
+												type="text"
+												placeholder="Source"
+												name="source"
+												class="input input-bordered input-sm md:w-28 lg:w-40 xl:w-44"
+												value={ data.Recipe.URL }
+											/>
+										</label>
+										<button
+											type="button"
+											class="tooltip tooltip-left absolute top-2 right-2"
+											_="on click toggle .tooltip-open"
+											data-tip="The source can be a website, name of a cookbook, from a relative or friend, a magazine, etc."
+										>
+											@iconInformation()
+										</button>
+									</div>
+								</div>
+								<div class="grid grid-flow-col col-span-6 border-gray-700 border-y md:grid-cols-2 md:row-span-2">
+									<div class="border-r border-gray-700">
+										<table class="table table-zebra table-xs md:h-fit">
+											<thead>
+												<tr>
+													<th>Time</th>
+													<th>h:m:s</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>Prep</td>
+													<td>
+														<label>
+															<input
+																type="text"
+																name="time-preparation"
+																class="input input-bordered input-xs max-w-24 html-duration-picker"
+																if data.FormattedTimes.PrepEdit != "" {
+																	value={ data.FormattedTimes.PrepEdit }
+																} else {
+																	value="00:15:00"
+																}
+															/>
+														</label>
+													</td>
+												</tr>
+												<tr>
+													<td>Cooking</td>
+													<td>
+														<label>
+															<input
+																type="text"
+																name="time-cooking"
+																class="input input-bordered input-xs max-w-24 html-duration-picker"
+																if data.FormattedTimes.CookEdit != "" {
+																	value={ data.FormattedTimes.CookEdit }
+																} else {
+																	value="00:30:00"
+																}
+															/>
+														</label>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<table class="table table-zebra table-xs">
+										<thead>
+											<tr>
+												<th>Nutrition<br/>(per 100g)</th>
+												<th>Amount</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>Calories</td>
+												<td>
+													<label>
+														<input
+															type="text"
+															name="calories"
+															autocomplete="off"
+															placeholder="368kcal"
+															class="input input-bordered input-xs max-w-24"
+															value={ data.Recipe.Nutrition.Calories }
+														/>
+													</label>
+												</td>
+											</tr>
+											<tr>
+												<td>Total carbs</td>
+												<td>
+													<label>
+														<input
+															type="text"
+															name="total-carbohydrates"
+															autocomplete="off"
+															placeholder="35g"
+															class="input input-bordered input-xs max-w-24"
+															value={ data.Recipe.Nutrition.TotalCarbohydrates }
+														/>
+													</label>
+												</td>
+											</tr>
+											<tr>
+												<td>Sugars</td>
+												<td>
+													<label>
+														<input
+															type="text"
+															name="sugars"
+															autocomplete="off"
+															placeholder="3g"
+															class="input input-bordered input-xs max-w-24"
+															value={ data.Recipe.Nutrition.Sugars }
+														/>
+													</label>
+												</td>
+											</tr>
+											<tr>
+												<td>Protein</td>
+												<td>
+													<label>
+														<input
+															type="text"
+															name="protein"
+															autocomplete="off"
+															placeholder="21g"
+															class="input input-bordered input-xs max-w-24"
+															value={ data.Recipe.Nutrition.Protein }
+														/>
+													</label>
+												</td>
+											</tr>
+											<tr>
+												<td>Total fat</td>
+												<td>
+													<label>
+														<input
+															type="text"
+															name="total-fat"
+															autocomplete="off"
+															placeholder="15g"
+															class="input input-bordered input-xs max-w-24"
+															value={ data.Recipe.Nutrition.TotalFat }
+														/>
+													</label>
+												</td>
+											</tr>
+											<tr>
+												<td>Saturated fat</td>
+												<td>
+													<label>
+														<input
+															type="text"
+															name="saturated-fat"
+															autocomplete="off"
+															placeholder="1.8g"
+															class="input input-bordered input-xs max-w-24"
+															value={ data.Recipe.Nutrition.SaturatedFat }
+														/>
+													</label>
+												</td>
+											</tr>
+											<tr>
+												<td>Cholesterol</td>
+												<td>
+													<label>
+														<input
+															type="text"
+															name="cholesterol"
+															autocomplete="off"
+															placeholder="1.1mg"
+															class="input input-bordered input-xs max-w-24"
+															value={ data.Recipe.Nutrition.Cholesterol }
+														/>
+													</label>
+												</td>
+											</tr>
+											<tr>
+												<td>Sodium</td>
+												<td>
+													<label>
+														<input
+															type="text"
+															name="sodium"
+															autocomplete="off"
+															placeholder="100mg"
+															class="input input-bordered input-xs max-w-24"
+															value={ data.Recipe.Nutrition.Sodium }
+														/>
+													</label>
+												</td>
+											</tr>
+											<tr>
+												<td>Fiber</td>
+												<td>
+													<label>
+														<input
+															type="text"
+															name="fiber"
+															autocomplete="off"
+															placeholder="8g"
+															class="input input-bordered input-xs max-w-24"
+															value={ data.Recipe.Nutrition.Fiber }
+														/>
+													</label>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="col-span-3 h-40 md:h-full md:row-span-1">
+									<label>
+										<textarea
+											required
+											name="description"
+											placeholder="This Thai curry chicken will make you drool."
+											class="textarea w-full h-full resize-none"
+										>{ data.Recipe.Description }</textarea>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div
+						id="ingredients-instructions-container"
+						class="border-gray-700 md:border-t grid text-sm md:grid-flow-col md:col-span-6"
+					>
+						<div class="col-span-6 border-gray-700 px-2 py-2 border-y md:col-span-2 md:border-r md:border-y-0">
+							<h2 class="font-semibold text-center pb-2">
+								<span class="underline">Ingredients</span>
+								<sup class="text-red-600">*</sup>
+							</h2>
+							<ol id="ingredients-list" class="pl-4 list-decimal">
+								if len(data.Recipe.Ingredients) == 0 {
+									@AddIngredient(1)
+								} else {
+									for i, v := range data.Recipe.Ingredients {
+										<li class="pb-2">
+											<div class="grid grid-flow-col items-center">
+												<label>
+													<input
+														required
+														type="text"
+														name={ fmt.Sprintf("ingredient-%d", i+1) }
+														placeholder={ fmt.Sprintf("Ingredient #%d", i+1) }
+														class="input input-bordered input-sm w-full"
+														value={ v }
+														_="on keydown if event.key is 'Enter' then
+                                                                halt the event then get next <button/> from the parentElement of me then
+                                                                call htmx.trigger(it, 'click')"
+													/>
+												</label>
+												<div class="ml-2">
+													<button
+														type="button"
+														class="btn btn-square btn-sm btn-outline btn-success"
+														title="Shortcut: Enter"
+														hx-post="/recipes/add/manual/ingredient"
+														hx-target="#ingredients-list"
+														hx-swap="beforeend"
+														hx-include="[name^='ingredient']"
+													>
+														+
+													</button>
+													<button
+														type="button"
+														class="delete-button btn btn-square btn-sm btn-outline btn-error"
+														hx-target="#ingredients-list"
+														hx-post={ fmt.Sprintf("/recipes/add/manual/ingredient/%d", i+1) }
+														hx-include="[name^='ingredient']"
+													>
+														-
+													</button>
+													<div class="inline-block h-4 cursor-move handle">
+														@iconReorder()
+													</div>
+												</div>
+											</div>
+										</li>
+									}
+								}
+							</ol>
+						</div>
+						<div class="col-span-6 px-6 py-2 border-gray-700 md:rounded-bl-none md:col-span-4">
+							<h2 class="font-semibold text-center pb-2">
+								<span class="underline">Instructions</span>
+								<sup class="text-red-600">*</sup>
+							</h2>
+							<ol id="instructions-list" class="grid list-decimal">
+								if len(data.Recipe.Instructions) == 0 {
+									@AddInstruction(1)
+								} else {
+									for i, v := range data.Recipe.Instructions {
+										<li class="pt-2 md:pl-0">
+											<div class="flex">
+												<label class="w-11/12">
+													<textarea
+														required
+														name={ fmt.Sprintf("instruction-%d", i+1) }
+														rows="3"
+														class="textarea textarea-bordered w-full"
+														placeholder={ fmt.Sprintf("Instruction #%d", i+1) }
+														_="on keydown if event.ctrlKey and event.key === 'Enter'
+                                                                then halt the event
+                                                                then get next <div/> from the parentElement of me
+                                                                then get first <button/> in it
+                                                                then call htmx.trigger(it, 'click')"
+													>{ v }</textarea>
+												</label>
+												<div class="grid ml-2">
+													<button
+														type="button"
+														class="btn btn-square btn-sm btn-outline btn-success"
+														title="Shortcut: CTRL + Enter"
+														hx-post="/recipes/add/manual/instruction"
+														hx-target="#instructions-list"
+														hx-swap="beforeend"
+														hx-include="[name^='instruction']"
+													>
+														+
+													</button>
+													<button
+														type="button"
+														class="delete-button btn btn-square btn-sm btn-outline btn-error"
+														hx-target="#instructions-list"
+														hx-post={ fmt.Sprintf("/recipes/add/manual/instruction/%d", i+1) }
+														hx-include="[name^='instruction']"
+													>
+														-
+													</button>
+													<div class="h-4 cursor-move handle grid place-content-center">
+														@iconReorder()
+													</div>
+												</div>
+											</div>
+										</li>
+									}
+								}
+							</ol>
+						</div>
+					</div>
+					<div class="card-actions justify-end">
+						<button type="submit" class="btn btn-primary btn-block btn-sm">Submit</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+	@loadRecipesManualScripts()
+}
+
+templ RecipesIndex(data templates.Data) {
+	if data.IsHxRequest {
+		<title hx-swap-oob="true">Recipes | Recipya</title>
+		@recipesIndex(data)
+	} else {
+		@layoutMain("Recipes", data) {
+			@recipesIndex(data)
+		}
+	}
+}
+
+templ recipesIndex(data templates.Data) {
+	if len(data.Recipes) > 0 {
+		<div class="flex flex-col">
+			<section class="grid justify-center px-4 pt-4">
+				<search class="relative">
+					<form
+						class="w-72 md:w-96"
+						hx-post="/recipes/search"
+						hx-vals={ fmt.Sprintf(`{"page": %d}`, data.Pagination.Selected) }
+						hx-target="#list-recipes"
+						_="on submit if #search-recipes.value is not '' then add .hidden to #pagination else remove .hidden from #pagination end"
+					>
+						<div class="flex">
+							<div class="relative w-full">
+								<label>
+									<input
+										type="search"
+										id="search-recipes"
+										name="q"
+										class="input input-bordered input-sm w-full z-20"
+										placeholder="Search for recipes..."
+										_="on keyup
+                                               if event.target.value !== '' then
+                                                   remove .md:block from #search-shortcut
+                                               else
+                                                   add .md:block to #search-shortcut
+                                               end then
+                                               if event.key === 'Backspace' and event.target.value === '' then
+                                                   send submit to closest <form/>
+                                               end"
+									/>
+								</label>
+								<kbd id="search-shortcut" class="hidden absolute top-1 right-12 font-sans font-semibold select-none dark:text-slate-500 md:block">
+									<abbr title="Control" class="no-underline text-slate-300 dark:text-slate-500">Ctrl </abbr>
+									/
+								</kbd>
+								<button type="submit" class="absolute top-0 right-0 px-2 text-sm font-medium h-full text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700">
+									@iconMagnifyingGlass()
+									<span class="sr-only">Search</span>
+								</button>
+							</div>
+						</div>
+					</form>
+				</search>
+			</section>
+		</div>
+		<div id="list-recipes" class="md:min-h-[79vh]">
+			@ListRecipes(data)
+		</div>
+		@Pagination(data.Pagination)
+		<script defer>
+            document.addEventListener("keydown", (event) => {
+                if (event.ctrlKey && event.key === "/") {
+                    event.preventDefault();
+                    document.querySelector("#search-recipes").focus();
+                }
+            });
+        </script>
+	} else {
+		<div class="grid place-content-center text-sm h-full text-center md:text-base">
+			<div class="p-4 md:p-0">
+				<p class="pb-2">Your recipe collection looks a bit empty at the moment.</p>
+				<p>
+					Why not start adding recipes by clicking the
+					<a class="underline font-semibold cursor-pointer" hx-get="/recipes/add" hx-target="#content" hx-push-url="true">Add recipe</a>
+					button at the top?
+				</p>
+			</div>
+		</div>
+	}
+}
+
+templ ListRecipes(data templates.Data) {
+	<article class="grid gap-4 p-4 text-sm place-items-center md:m-auto md:max-w-7xl sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:text-base">
+		for _, r := range data.Recipes {
+			<section class="card card-compact bg-base-100 shadow-lg indicator">
+				<span class="indicator-item indicator-center badge badge-primary select-none">{ r.Category }</span>
+				<figure class="relative cursor-pointer" hx-get={ fmt.Sprintf("/recipes/%d", r.ID) } hx-target="#content" hx-push-url="true">
+					<img
+						class="h-48 max-w-48 w-full object-cover rounded-t-lg"
+						if data.Functions.IsUUIDValid(r.Image) {
+							src={ fmt.Sprintf("/data/images/%s.jpg", r.Image) }
+						} else {
+							src="/static/img/recipes/placeholder.webp"
+						}
+						alt={ "Image for the " + r.Name + " recipe" }
+					/>
+					<div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg">
+						<p class="p-2 text-sm">{ data.Functions.CutString(r.Description, 127) }</p>
+					</div>
+				</figure>
+				<div class="card-body" lang="en">
+					<h2 class="font-semibold w-[25ch] break-words">{ r.Name }</h2>
+					<div class="card-actions h-full flex-col-reverse">
+						<button class="btn btn-block btn-sm btn-outline" hx-get={ fmt.Sprintf("/recipes/%d", r.ID) } hx-target="#content" hx-push-url="true">
+							View
+						</button>
+					</div>
+				</div>
+			</section>
+		}
+	</article>
+}
+
+templ ViewRecipe(data templates.Data) {
+	if data.IsHxRequest {
+		<title hx-swap-oob="true">{ data.View.Recipe.Name } | Recipya</title>
+		@viewRecipe(data.View, data.IsAuthenticated)
+	} else {
+		@layoutMain(data.View.Recipe.Name, data) {
+			@viewRecipe(data.View, data.IsAuthenticated)
+		}
+	}
+}
+
+templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
+	if !data.Share.IsShared {
+		<dialog id="share_dialog" class="modal">
+			<div class="modal-box w-96">
+				<div id="share-dialog-result"></div>
+				<div class="modal-action block mt-4">
+					<form method="dialog">
+						<button class="btn btn-block btn-outline btn-sm">Close</button>
+					</form>
+				</div>
+			</div>
+		</dialog>
+	}
+	<section class="p-2">
+		<div class="flex justify-center">
+			<div class="card card-bordered bg-base-100 shadow-none w-full border-gray-700 xl:w-[72rem]">
+				<div class="card-body" style="padding: 0">
+					<h2
+						class="card-title bg-base-200 px-2 pt-2 place-content-center rounded-t-2xl"
+						style="justify-content: space-between"
+					>
+						<span class="grid grid-flow-col place-items-center pb-2 print:hidden">
+							<button
+								title="Toggle screen lock"
+								_="on load if not navigator.wakeLock hide me end
+                                       on click
+                                       if wakeLock wakeLock.release() then
+                                            add @d='M 12.276 18.55 v -0.748 a 4.79 4.79 0 0 1 1.463 -3.458 a 5.763 5.763 0 0 0 1.804 -4.21 a 5.821 5.821 0 0 0 -6.475 -5.778 c -2.779 0.307 -4.99 2.65 -5.146 5.448 a 5.82 5.82 0 0 0 1.757 4.503 a 4.906 4.906 0 0 1 1.5 3.495 v 0.747 a 1.44 1.44 0 0 0 1.44 1.439 h 2.218 a 1.44 1.44 0 0 0 1.44 -1.439 z m -1.058 0 c 0 0.209 -0.17 0.38 -0.38 0.38 h -2.22 c -0.21 0 -0.38 -0.171 -0.38 -0.38 v -0.748 c 0 -1.58 -0.664 -3.13 -1.822 -4.254 A 4.762 4.762 0 0 1 4.98 9.863 c 0.127 -2.289 1.935 -4.204 4.205 -4.455 a 4.762 4.762 0 0 1 5.3 4.727 a 4.714 4.714 0 0 1 -1.474 3.443 a 5.853 5.853 0 0 0 -1.791 4.225 v 0.746 z M 11.45 20.51 H 8.006 a 0.397 0.397 0 1 0 0 0.795 h 3.444 a 0.397 0.397 0 1 0 0 -0.794 z M 11.847 22.162 a 0.397 0.397 0 0 0 -0.397 -0.397 H 8.006 a 0.397 0.397 0 1 0 0 0.794 h 3.444 c 0.22 0 0.397 -0.178 0.397 -0.397 z z z z z z z z M 10.986 23.416 H 8.867 a 0.397 0.397 0 1 0 0 0.794 h 1.722 c 0.22 0 0.397 -0.178 0.397 -0.397 z' to #icon-bulb
+                                       else
+                                            call initWakeLock() then
+                                            add @d='M12.276 18.55v-.748a4.79 4.79 0 0 1 1.463-3.458 5.763 5.763 0 0 0 1.804-4.21 5.821 5.821 0 0 0-6.475-5.778c-2.779.307-4.99 2.65-5.146 5.448a5.82 5.82 0 0 0 1.757 4.503 4.906 4.906 0 0 1 1.5 3.495v.747a1.44 1.44 0 0 0 1.44 1.439h2.218a1.44 1.44 0 0 0 1.44-1.439zm-1.058 0c0 .209-.17.38-.38.38h-2.22c-.21 0-.38-.171-.38-.38v-.748c0-1.58-.664-3.13-1.822-4.254A4.762 4.762 0 0 1 4.98 9.863c.127-2.289 1.935-4.204 4.205-4.455a4.762 4.762 0 0 1 5.3 4.727 4.714 4.714 0 0 1-1.474 3.443 5.853 5.853 0 0 0-1.791 4.225v.746zM11.45 20.51H8.006a.397.397 0 1 0 0 .795h3.444a.397.397 0 1 0 0-.794zM11.847 22.162a.397.397 0 0 0-.397-.397H8.006a.397.397 0 1 0 0 .794h3.444c.22 0 .397-.178.397-.397zM.397 10.125h2.287a.397.397 0 1 0 0-.794H.397a.397.397 0 1 0 0 .794zM19.456 9.728a.397.397 0 0 0-.397-.397h-2.287a.397.397 0 1 0 0 .794h2.287c.22 0 .397-.178.397-.397zM9.331.397v2.287a.397.397 0 1 0 .794 0V.397a.397.397 0 1 0-.794 0zM16.045 2.85 14.43 4.465a.397.397 0 1 0 .561.561l1.617-1.617a.397.397 0 1 0-.562-.56zM5.027 14.429a.397.397 0 0 0-.56 0l-1.618 1.616a.397.397 0 1 0 .562.562l1.617-1.617a.397.397 0 0 0 0-.561zM4.466 5.027a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.56L3.41 2.848a.397.397 0 1 0-.561.561zM16.045 16.607a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.562L14.99 14.43a.397.397 0 1 0-.561.56zM10.986 23.416a.397.397 0 0 0-.397-.397H8.867a.397.397 0 1 0 0 .794h1.722c.22 0 .397-.178.397-.397z' to #icon-bulb
+                                       end"
+							>
+								@iconBulbOn()
+							</button>
+							if isAuthenticated && data.Share.IsFromHost {
+								<button
+									class="ml-2"
+									title="Edit recipe"
+									hx-get={ fmt.Sprintf("/recipes/%d/edit", data.ID) }
+									hx-push-url="true"
+									hx-target="#content"
+								>
+									@iconEdit()
+								</button>
+							}
+						</span>
+						<span class="text-center pb-2">{ data.Recipe.Name }</span>
+						<span class="grid grid-flow-col place-items-center pb-2 print:hidden">
+							if data.Share.IsShared {
+								if !data.Share.IsFromHost {
+									<button
+										class="mr-2"
+										title="Add recipe to collection"
+										hx-post={ fmt.Sprintf("/recipes/%d/share/add", data.ID) }
+									>
+										@iconPlusCircle()
+									</button>
+								}
+							} else {
+								<button
+									class="mr-2"
+									title="Share recipe"
+									hx-post={ fmt.Sprintf("/recipes/%d/share", data.ID) }
+									hx-target="#share-dialog-result"
+									_="on htmx:afterRequest from me if event.detail.successful call share_dialog.showModal()"
+								>
+									@iconShare()
+								</button>
+							}
+							<button class="mr-2" title="Print recipe" _="on click print()">
+								@iconPrint()
+							</button>
+							if data.Share.IsFromHost {
+								<button
+									class="mr-2"
+									hx-delete={ fmt.Sprintf("/recipes/%d", data.Recipe.ID) }
+									hx-swap="none"
+									title="Delete recipe"
+									hx-confirm="Are you sure you wish to delete this recipe?"
+									hx-indicator="#fullscreen-loader"
+								>
+									@iconDelete()
+								</button>
+							}
+						</span>
+					</h2>
+					<div class="grid md:grid-flow-col md:grid-cols-6">
+						<div class="w-full text-center border-b border-gray-700 md:col-span-3 md:border-r md:border-b-0 print:hidden">
+							<img
+								id="output"
+								style="object-fit: cover"
+								alt="Image of the recipe"
+								class="w-full"
+								if data.IsUUIDValid {
+									src={ fmt.Sprintf("/data/images/%s.jpg", data.Recipe.Image) }
+								} else {
+									src="/static/img/recipes/placeholder.webp"
+								}
+							/>
+						</div>
+						<div class="grid grid-cols-3 col-span-3 md:grid-flow-row md:grid-rows-4 print:grid-rows-2">
+							<div class="grid grid-flow-col col-span-6 md:row-span-1 md:border-y md:border-gray-700 print:row-span-1">
+								<div class="col-span-2 grid place-items-center md:col-span-1">
+									<div class="badge badge-primary badge-outline">{ data.Recipe.Category }</div>
+								</div>
+								<div class="grid col-span-2 border-gray-700 place-items-center text-sm border-x p-2 md:col-span-1 md:p-0 print:hidden">
+									if isAuthenticated {
+										<form autocomplete="off" _="on submit halt the event" class="print:hidden">
+											<label class="form-control w-full">
+												<div class="label p-0">
+													<span class="label-text">Servings</span>
+												</div>
+												<input
+													id="yield"
+													type="number"
+													min="1"
+													name="yield"
+													if data.Recipe.Yield == 0 {
+														value="1"
+													} else {
+														value={ fmt.Sprint(data.Recipe.Yield) }
+													}
+													class="input input-bordered input-sm w-24"
+													hx-get={ fmt.Sprintf("/recipes/%d/scale", data.ID) }
+													hx-trigger="input"
+													hx-target="#ingredients-instructions-container"
+												/>
+											</label>
+										</form>
+									} else {
+										<p class="text-sm text-center">{ fmt.Sprint(data.Recipe.Yield) } servings</p>
+									}
+								</div>
+								<p class="hidden p-0 pt-2 print:block">{ fmt.Sprint(data.Recipe.Yield) } servings</p>
+								<div class="flex items-center justify-center col-span-2 text-sm md:col-span-1 print:hidden">
+									if data.IsURL {
+										<a
+											class="btn btn-sm btn-outline no-underline print:hidden"
+											href={ templ.URL(data.Recipe.URL) }
+											target="_blank"
+										>
+											Source
+										</a>
+										<p class="hidden print:block print:whitespace-nowrap print:overflow-hidden print:text-ellipsis print:max-w-xs">{ data.Recipe.URL }</p>
+									} else {
+										<p class="text-center">
+											Source:
+											if data.Recipe.URL != "" {
+												{ data.Recipe.URL }
+											} else {
+												Unknown
+											}
+										</p>
+									}
+								</div>
+							</div>
+							<div class="grid grid-flow-col col-span-6 border-gray-700 border-y md:border-t-0 md:grid-cols-2 md:row-span-2">
+								<div class="border-r border-gray-700">
+									<table class="table table-zebra table-xs md:h-fit print:hidden">
+										<thead>
+											<tr>
+												<th>Time</th>
+												<th>h:m:s</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>Prep:</td>
+												<td>
+													<time datetime={ data.FormattedTimes.PrepDateTime }>{ data.FormattedTimes.Prep }</time>
+												</td>
+											</tr>
+											<tr>
+												<td>Cooking:</td>
+												<td>
+													<time datetime={ data.FormattedTimes.CookDateTime }>{ data.FormattedTimes.Cook }</time>
+												</td>
+											</tr>
+											<tr>
+												<td>Total:</td>
+												<td>
+													<time datetime={ data.FormattedTimes.TotalDateTime }>{ data.FormattedTimes.Total }</time>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<table class="table table-zebra table-xs print:hidden">
+									<thead>
+										<tr>
+											<th>
+												Nutrition (per
+												if data.Recipe.Nutrition.IsPerServing {
+													serving
+												} else {
+													100g
+												}
+											</th>
+											<th>Amount</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>Calories:</td>
+											<td>
+												if data.Recipe.Nutrition.Calories == "" {
+													-
+												} else {
+													{ data.Recipe.Nutrition.Calories }
+												}
+											</td>
+										</tr>
+										<tr>
+											<td>Total carbs:</td>
+											<td>
+												if data.Recipe.Nutrition.TotalCarbohydrates == "" {
+													-
+												} else {
+													{ data.Recipe.Nutrition.TotalCarbohydrates }
+												}
+											</td>
+										</tr>
+										<tr>
+											<td>Sugars:</td>
+											<td>
+												if data.Recipe.Nutrition.Sugars == "" {
+													-
+												} else {
+													{ data.Recipe.Nutrition.Sugars }
+												}
+											</td>
+										</tr>
+										<tr>
+											<td>Protein:</td>
+											<td>
+												if data.Recipe.Nutrition.Protein == "" {
+													-
+												} else {
+													{ data.Recipe.Nutrition.Protein }
+												}
+											</td>
+										</tr>
+										<tr>
+											<td>Total fat:</td>
+											<td>
+												if data.Recipe.Nutrition.TotalFat == "" {
+													-
+												} else {
+													{ data.Recipe.Nutrition.TotalFat }
+												}
+											</td>
+										</tr>
+										<tr>
+											<td>Saturated fat:</td>
+											<td>
+												if data.Recipe.Nutrition.SaturatedFat == "" {
+													-
+												} else {
+													{ data.Recipe.Nutrition.SaturatedFat }
+												}
+											</td>
+										</tr>
+										<tr>
+											<td>Cholesterol:</td>
+											<td>
+												if data.Recipe.Nutrition.Cholesterol == "" {
+													-
+												} else {
+													{ data.Recipe.Nutrition.Cholesterol }
+												}
+											</td>
+										</tr>
+										<tr>
+											<td>Sodium:</td>
+											<td>
+												if data.Recipe.Nutrition.Sodium == "" {
+													-
+												} else {
+													{ data.Recipe.Nutrition.Sodium }
+												}
+											</td>
+										</tr>
+										<tr>
+											<td>Fiber:</td>
+											<td>
+												if data.Recipe.Nutrition.Fiber == "" {
+													-
+												} else {
+													{ data.Recipe.Nutrition.Fiber }
+												}
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<div class="hidden pt-2 print:block">
+									<h1 class="text-sm"><b>Nutrition Facts</b></h1>
+									<p class="text-xs">
+										Per 100g: { data.Recipe.Nutrition.Calories } calories;
+										total carbohydrates { data.Recipe.Nutrition.TotalCarbohydrates };
+										sugars { data.Recipe.Nutrition.Sugars };
+										protein { data.Recipe.Nutrition.Protein };
+										total fat { data.Recipe.Nutrition.TotalFat };
+										saturated fat { data.Recipe.Nutrition.SaturatedFat };
+										cholesterol { data.Recipe.Nutrition.Cholesterol };
+										sodium { data.Recipe.Nutrition.Sodium };
+										fiber { data.Recipe.Nutrition.Fiber }.
+									</p>
+								</div>
+							</div>
+							<div class="col-span-3 h-40 md:h-full md:row-span-1 print:hidden">
+								<label>
+									<textarea
+										class="textarea w-full h-full resize-none"
+										readonly
+									>{ data.Recipe.Description }</textarea>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="hidden print:block">
+						<h1 class="text-sm"><b>Description</b></h1>
+						{ data.Recipe.Description }
+					</div>
+					<div class="border-gray-700 md:border-t">
+						@IngredientsInstructions(data)
+						<div class="hidden print:grid col-span-6 ml-2 mt-2 mb-4">
+							<h1 class="text-sm"><b>Ingredients</b></h1>
+							<ol
+								class="col-span-6 w-full"
+								if len(data.Recipe.Ingredients) > 10 {
+									style="column-count: 2"
+								} else {
+									style="column-count: 1"
+								}
+							>
+								for _, e := range data.Recipe.Ingredients {
+									<li class="text-sm">
+										<label><input type="checkbox"/></label>
+										<span class="pl-2">{ e }</span>
+									</li>
+								}
+							</ol>
+						</div>
+						<div class="hidden print:grid col-span-5">
+							<h1 class="text-sm"><b>Instructions</b></h1>
+							<ol
+								class="col-span-6 list-decimal w-full ml-6"
+								if len(data.Recipe.Instructions) > 2 {
+									style="column-count: 2; column-gap: 2.5rem"
+								} else {
+									style="column-count: 1; column-gap: 2.5rem"
+								}
+							>
+								for _, e := range data.Recipe.Instructions {
+									<li>
+										<span class="text-sm whitespace-pre-line">{ e }</span>
+									</li>
+								}
+							</ol>
+						</div>
+					</div>
+					<div class="hidden print:block">
+						<h1><b>Source</b></h1>
+						if data.IsURL {
+							<p class="print:overflow-hidden">{ data.Recipe.URL }</p>
+						} else {
+							<p>
+								Source:
+								if data.Recipe.URL != "" {
+									{ data.Recipe.URL }
+								} else {
+									Unknown
+								}
+							</p>
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<script>
+        var wakeLock = null;
+        initWakeLock();
+
+        function initWakeLock() {
+            navigator.wakeLock?.request("screen")
+                .then((lock) => {
+                    wakeLock = lock;
+                    wakeLock.onrelease = () => {
+                        wakeLock = null;
+                        console.info("Screen lock deactivated.");
+                    }
+                    console.info("Screen lock activated.");
+                })
+                .catch((err) => {
+                    console.log(`Screen lock error: ${err.name}, ${err.message}`)
+                });
+        }
+    </script>
+}
+
+templ IngredientsInstructions(data *templates.ViewRecipeData) {
+	<div id="ingredients-instructions-container" class="grid text-sm md:grid-flow-col md:col-span-6">
+		<div class="col-span-6 border-gray-700 px-4 py-2 border-y md:col-span-2 md:border-r md:border-y-0 print:hidden">
+			<h2 class="font-semibold text-center underline md:pb-2">Ingredients</h2>
+			<ul>
+				for _, e := range data.Recipe.Ingredients {
+					<li class="form-control hover:bg-gray-100 dark:hover:bg-gray-700">
+						<label class="label justify-start">
+							<input type="checkbox" class="checkbox"/>
+							<span class="label-text pl-2">{ e }</span>
+						</label>
+					</li>
+				}
+			</ul>
+		</div>
+		<div class="col-span-6 px-8 py-2 border-gray-700 md:rounded-bl-none md:col-span-4 print:hidden">
+			<h2 class="font-semibold text-center underline md:pb-2">Instructions</h2>
+			<ol class="grid list-decimal">
+				for _, e := range data.Recipe.Instructions {
+					<li
+						class="min-w-full py-2 select-none hover:bg-gray-100 dark:hover:bg-gray-700"
+						_="on mousedown toggle .line-through"
+					>
+						<span class="whitespace-pre-line">{ e }</span>
+					</li>
+				}
+			</ol>
+		</div>
+	</div>
+}
+
+templ ShareLink(data templates.Data) {
+	<div class="grid grid-flow-col gap-2">
+		<label>
+			<input type="url" value={ data.Content } class="input input-bordered w-full" readonly="readonly"/>
+		</label>
+		<button id="copy_button" class="btn btn-neutral" title="Copy to clipboard" onClick={ copyToClipboard(data.Content) }>
+			Copy
+		</button>
+	</div>
+}
+
+script copyToClipboard(text string) {
+    if (window.navigator.clipboard) {
+        navigator.clipboard.writeText(text);
+        copy_button.textContent = "Copied!";
+        copy_button.setAttribute("disabled", true);
+        copy_button.classList.toggle(".btn-disabled");
+    } else {
+        alert('Your browser does not support the clipboard feature. Please copy the link manually.');
+    }
+}
+
+templ UnsupportedWebsite(url string) {
+	<title hx-swap-oob="true">Unsupported Website | Recipya</title>
+	<div class="flex h-[95vh] items-center justify-center">
+		<article class="p-5 max-w-sm bg-white border border-gray-200 rounded-lg shadow-md md:max-w-md">
+			<h3 class="mb-2 text-2xl font-semibold tracking-tight">
+				This website is not supported
+			</h3>
+			<p class="mb-3 text-gray-700">
+				Unfortunately, we could not extract the recipe from this link. You can either request that our
+				team support this website or go back to the previous page.
+			</p>
+			<form hx-post="/recipes/add/request-website" hx-target="#content" class="mt-4">
+				<div class="grid grid-flow-col col-span-5 columns-4">
+					<a
+						href="javascript:history.back()"
+						class="inline-flex items-center w-full col-span-1 p-2 font-semibold text-white bg-red-600 hover:bg-red-800"
+					>
+						@iconArrowLeftCircle()
+						Go back
+					</a>
+					<button
+						name="website"
+						value={ url }
+						class="w-full col-span-4 ml-2 p-2 font-semibold text-white bg-blue-500 hover:bg-blue-800"
+					>
+						Request
+					</button>
+				</div>
+			</form>
+		</article>
+	</div>
+}

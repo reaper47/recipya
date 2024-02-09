@@ -8,6 +8,7 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/scraper"
 	"github.com/reaper47/recipya/internal/templates"
+	"github.com/reaper47/recipya/web/components"
 	"log"
 	"net/http"
 	"net/url"
@@ -32,42 +33,28 @@ func (s *Server) recipesHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	userID := getUserID(r)
-	p, err := newRecipesPagination(s, w, userID, pageNumber, false)
+	p, err := newRecipesPagination(s, userID, pageNumber, false)
 	if err != nil {
 		w.Header().Set("HX-Trigger", makeToast("Error updating pagination.", errorToast))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	isHxRequest := r.Header.Get("HX-Request") == "true"
-
-	baseData := templates.Data{
-		About: templates.AboutData{
-			Version: app.Version,
-		},
-		Functions:   templates.NewFunctionsData(),
-		IsAutologin: app.Config.Server.IsAutologin,
-		IsHxRequest: isHxRequest,
-		Pagination:  p,
-		Recipes:     s.Repository.Recipes(userID, pageNumber),
-	}
-
-	if isHxRequest {
-		templates.RenderComponent(w, "recipes", "recipes-index", baseData)
-		return
-	}
-
-	page := templates.HomePage
-	baseData.IsAuthenticated = true
-	baseData.Title = page.Title()
-	templates.Render(w, page, baseData)
+	_ = components.RecipesIndex(templates.Data{
+		About:           templates.NewAboutData(),
+		Functions:       templates.NewFunctionsData[int64](),
+		IsAdmin:         userID == 1,
+		IsAutologin:     app.Config.Server.IsAutologin,
+		IsAuthenticated: true,
+		IsHxRequest:     r.Header.Get("HX-Request") == "true",
+		Pagination:      p,
+		Recipes:         s.Repository.Recipes(userID, pageNumber),
+	}).Render(r.Context(), w)
 }
 
-func newRecipesPagination(srv *Server, w http.ResponseWriter, userID int64, page uint64, isSwap bool) (templates.Pagination, error) {
+func newRecipesPagination(srv *Server, userID int64, page uint64, isSwap bool) (templates.Pagination, error) {
 	counts, err := srv.Repository.Counts(userID)
 	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Error getting counts.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
 		return templates.Pagination{}, err
 	}
 
@@ -80,20 +67,20 @@ func newRecipesPagination(srv *Server, w http.ResponseWriter, userID int64, page
 }
 
 func recipesAddHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Header.Get("Hx-Request") == "true" {
+	isHxRequest := r.Header.Get("Hx-Request") == "true"
+	if isHxRequest {
 		parsedURL, err := url.Parse(r.Header.Get("HX-Current-Url"))
 		if err == nil && parsedURL.Path == "/recipes/add/unsupported-website" {
 			w.Header().Set("HX-Trigger", makeToast("Website requested.", infoToast))
 		}
-
-		templates.RenderComponent(w, "recipes", "add-recipe", nil)
-	} else {
-		page := templates.AddRecipePage
-		templates.Render(w, page, templates.Data{
-			IsAuthenticated: true,
-			Title:           page.Title(),
-		})
 	}
+
+	_ = components.AddRecipe(templates.Data{
+		About:           templates.NewAboutData(),
+		IsAdmin:         getUserID(r) == 1,
+		IsAuthenticated: true,
+		IsHxRequest:     isHxRequest,
+	}).Render(r.Context(), w)
 }
 
 func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request) {
@@ -194,20 +181,13 @@ func (s *Server) recipeAddManualHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	viewData := &templates.ViewRecipeData{Categories: categories}
-
-	if r.Header.Get("Hx-Request") == "true" {
-		templates.RenderComponent(w, "recipes", "add-recipe-manual", templates.Data{
-			View: viewData,
-		})
-	} else {
-		page := templates.AddRecipeManualPage
-		templates.Render(w, page, templates.Data{
-			IsAuthenticated: true,
-			Title:           page.Title(),
-			View:            viewData,
-		})
-	}
+	_ = components.AddRecipeManual(templates.Data{
+		About:           templates.NewAboutData(),
+		IsAdmin:         userID == 1,
+		IsAuthenticated: true,
+		IsHxRequest:     r.Header.Get("Hx-Request") == "true",
+		View:            &templates.ViewRecipeData{Categories: categories},
+	}).Render(r.Context(), w)
 }
 
 func (s *Server) recipeAddManualPostHandler(w http.ResponseWriter, r *http.Request) {
@@ -353,7 +333,7 @@ func recipeAddManualIngredientHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	templates.RenderComponent(w, "recipes", "add-ingredient", i)
+	_ = components.AddIngredient(i).Render(r.Context(), w)
 }
 
 func recipeAddManualIngredientDeleteHandler(w http.ResponseWriter, r *http.Request) {
@@ -441,7 +421,7 @@ func recipeAddManualInstructionHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	templates.RenderComponent(w, "recipes", "add-instruction", i)
+	_ = components.AddInstruction(i).Render(r.Context(), w)
 }
 
 func recipeAddManualInstructionDeleteHandler(w http.ResponseWriter, r *http.Request) {
@@ -587,12 +567,7 @@ func (s *Server) recipesAddWebsiteHandler(w http.ResponseWriter, r *http.Request
 
 	rs, err := scraper.Scrape(rawURL, s.Files)
 	if err != nil {
-		templates.RenderComponent(w, "recipes", "unsupported-website", templates.Data{
-			IsAuthenticated: true,
-			Scraper: templates.ScraperData{
-				UnsupportedWebsite: rawURL,
-			},
-		})
+		_ = components.UnsupportedWebsite(rawURL).Render(r.Context(), w)
 		return
 	}
 
@@ -664,9 +639,13 @@ func (s *Server) recipesEditHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	templates.RenderComponent(w, "recipes", "edit-recipe", templates.Data{
-		View: templates.NewViewRecipeData(id, recipe, true, false),
-	})
+	_ = components.EditRecipe(templates.Data{
+		About:           templates.NewAboutData(),
+		IsAdmin:         userID == 1,
+		IsAuthenticated: true,
+		IsHxRequest:     r.Header.Get("HX-Request") == "true",
+		View:            templates.NewViewRecipeData(id, recipe, true, false),
+	}).Render(r.Context(), w)
 }
 
 func (s *Server) recipesEditPostHandler(w http.ResponseWriter, r *http.Request) {
@@ -787,17 +766,13 @@ func (s *Server) recipeShareHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := templates.Data{
+	_ = components.ViewRecipe(templates.Data{
+		About:           templates.NewAboutData(),
+		IsAdmin:         userID == 1,
 		IsAuthenticated: isLoggedIn,
-		Title:           recipe.Name,
+		IsHxRequest:     r.Header.Get("Hx-Request") == "true",
 		View:            templates.NewViewRecipeData(share.RecipeID, recipe, userID == share.UserID, true),
-	}
-
-	if r.Header.Get("Hx-Request") == "true" {
-		templates.RenderComponent(w, "recipes", "view-recipe", data)
-	} else {
-		templates.Render(w, templates.ViewRecipePage, data)
-	}
+	}).Render(r.Context(), w)
 }
 
 func (s *Server) recipeScaleHandler(w http.ResponseWriter, r *http.Request) {
@@ -837,7 +812,7 @@ func (s *Server) recipeScaleHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	recipe.Scale(int16(yield))
 
-	templates.RenderComponent(w, "recipes", "ingredients-instructions", recipe)
+	_ = components.IngredientsInstructions(&templates.ViewRecipeData{Recipe: recipe}).Render(r.Context(), w)
 }
 
 func (s *Server) recipeSharePostHandler(w http.ResponseWriter, r *http.Request) {
@@ -856,9 +831,9 @@ func (s *Server) recipeSharePostHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	templates.RenderComponent(w, "recipes", "share-link", templates.Data{
+	_ = components.ShareLink(templates.Data{
 		Content: r.Host + link,
-	})
+	}).Render(r.Context(), w)
 }
 
 func (s *Server) recipesSearchHandler(w http.ResponseWriter, r *http.Request) {
@@ -895,14 +870,14 @@ func (s *Server) recipesSearchHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if len(recipes) == 0 {
-		templates.RenderComponent(w, "search", "no-result", nil)
+		_ = components.SearchNoResult().Render(r.Context(), w)
 		return
 	}
 
-	templates.RenderComponent(w, "recipes", "list-recipes", templates.Data{
-		Functions: templates.NewFunctionsData(),
+	_ = components.ListRecipes(templates.Data{
+		Functions: templates.NewFunctionsData[int64](),
 		Recipes:   recipes,
-	})
+	}).Render(r.Context(), w)
 }
 
 func (s *Server) recipesSupportedWebsitesHandler(w http.ResponseWriter, _ *http.Request) {
@@ -925,18 +900,13 @@ func (s *Server) recipesViewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := templates.Data{
-		About:           templates.AboutData{Version: app.Version},
+	_ = components.ViewRecipe(templates.Data{
+		About:           templates.NewAboutData(),
+		IsAdmin:         userID == 1,
 		IsAuthenticated: true,
-		Title:           recipe.Name,
+		IsHxRequest:     r.Header.Get("Hx-Request") == "true",
 		View:            templates.NewViewRecipeData(id, recipe, true, false),
-	}
-
-	if r.Header.Get("Hx-Request") == "true" {
-		templates.RenderComponent(w, "recipes", "view-recipe", data)
-	} else {
-		templates.Render(w, templates.ViewRecipePage, data)
-	}
+	}).Render(r.Context(), w)
 }
 
 func (s *Server) recipesViewShareHandler(w http.ResponseWriter, r *http.Request) {
@@ -969,15 +939,11 @@ func (s *Server) recipesViewShareHandler(w http.ResponseWriter, r *http.Request)
 
 	userID, isLoggedIn := s.findUserID(r)
 
-	data := templates.Data{
+	_ = components.ViewRecipe(templates.Data{
+		About:           templates.NewAboutData(),
+		IsAdmin:         userID == 1,
 		IsAuthenticated: isLoggedIn,
-		Title:           recipe.Name,
+		IsHxRequest:     r.Header.Get("Hx-Request") == "true",
 		View:            templates.NewViewRecipeData(id, recipe, cookbookUserID == userID, true),
-	}
-
-	if r.Header.Get("Hx-Request") == "true" {
-		templates.RenderComponent(w, "recipes", "view-recipe", data)
-	} else {
-		templates.Render(w, templates.ViewRecipePage, data)
-	}
+	}).Render(r.Context(), w)
 }

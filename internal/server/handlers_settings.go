@@ -7,6 +7,7 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
 	"github.com/reaper47/recipya/internal/units"
+	"github.com/reaper47/recipya/web/components"
 	"log"
 	"net/http"
 	"os"
@@ -16,7 +17,7 @@ import (
 )
 
 func (s *Server) settingsHandler(w http.ResponseWriter, r *http.Request) {
-	var settingsData templates.SettingsData
+	var data templates.SettingsData
 	if app.Config.Server.IsAutologin {
 		systems, settings, err := s.Repository.MeasurementSystems(getUserID(r))
 		if err != nil {
@@ -24,27 +25,20 @@ func (s *Server) settingsHandler(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		settingsData.UserSettings = settings
-		settingsData.MeasurementSystems = systems
+		data.UserSettings = settings
+		data.MeasurementSystems = systems
 	}
 
-	if r.Header.Get("Hx-Request") == "true" {
-		templates.RenderComponent(w, "core", "settings", templates.Data{
-			IsAutologin: app.Config.Server.IsAutologin,
-			Settings:    settingsData,
-		})
-	} else {
-		page := templates.SettingsPage
-		templates.Render(w, page, templates.Data{
-			About: templates.AboutData{
-				Version: app.Version,
-			},
-			IsAutologin:     app.Config.Server.IsAutologin,
-			IsAuthenticated: true,
-			Settings:        settingsData,
-			Title:           page.Title(),
-		})
-	}
+	_ = components.Settings(templates.Data{
+		About: templates.AboutData{
+			Version: app.Version,
+		},
+		IsAdmin:         getUserID(r) == 1,
+		IsAutologin:     app.Config.Server.IsAutologin,
+		IsAuthenticated: true,
+		IsHxRequest:     r.Header.Get("Hx-Request") == "true",
+		Settings:        data,
+	}).Render(r.Context(), w)
 }
 
 func (s *Server) settingsCalculateNutritionPostHandler(w http.ResponseWriter, r *http.Request) {
@@ -229,11 +223,11 @@ func (s *Server) settingsTabsAdvancedHandler(w http.ResponseWriter, r *http.Requ
 			Value:   backup.Format(time.DateOnly),
 		})
 	}
-	templates.RenderComponent(w, "core", "settings-tabs-advanced", templates.SettingsData{Backups: dates})
+	_ = components.SettingsTabsAdvanced(templates.SettingsData{Backups: dates}).Render(r.Context(), w)
 }
 
-func settingsTabsProfileHandler(w http.ResponseWriter, _ *http.Request) {
-	templates.RenderComponent(w, "core", "settings-tabs-profile", nil)
+func settingsTabsProfileHandler(w http.ResponseWriter, r *http.Request) {
+	_ = components.SettingsTabsProfile().Render(r.Context(), w)
 }
 
 func (s *Server) settingsTabsRecipesHandler(w http.ResponseWriter, r *http.Request) {
@@ -244,10 +238,8 @@ func (s *Server) settingsTabsRecipesHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	templates.RenderComponent(w, "core", "settings-tabs-recipes", templates.Data{
-		Settings: templates.SettingsData{
-			MeasurementSystems: systems,
-			UserSettings:       settings,
-		},
-	})
+	_ = components.SettingsTabsRecipes(templates.SettingsData{
+		MeasurementSystems: systems,
+		UserSettings:       settings,
+	}).Render(r.Context(), w)
 }

@@ -1,0 +1,497 @@
+package components
+
+import (
+	"fmt"
+	"github.com/reaper47/recipya/internal/templates"
+)
+
+templ CookbookIndex(data templates.Data) {
+	if data.IsHxRequest {
+		<title hx-swap-oob="true">{ data.CookbookFeature.Cookbook.Title } | Recipya</title>
+		<div id="content-title" hx-swap-oob="innerHTML">{ data.CookbookFeature.Cookbook.Title }</div>
+		@cookbookIndex(data)
+	} else {
+		@layoutMain(data.CookbookFeature.Cookbook.Title, data) {
+			@cookbookIndex(data)
+		}
+	}
+}
+
+templ cookbookIndex(data templates.Data) {
+	if data.CookbookFeature.ShareData.IsFromHost {
+		<script defer>
+            function initReorder() {
+                document.querySelectorAll("#search-results").forEach(sortable => {
+                    const sortableInstance = new Sortable(sortable, {
+                        animation: 150,
+                        ghostClass: 'blue-background-class',
+                        handle: '.handle',
+                        onEnd: function () {
+                            Array.from(document.querySelector('#search-results').children).forEach((c, i) => {
+                                const p = c.querySelector('.handle');
+                                p.innerText = i + 1;
+                            });
+                        },
+                    });
+
+                    sortable.addEventListener("htmx:afterSwap", function () {
+                        sortableInstance.option("disabled", false);
+                    });
+                });
+            }
+
+            document.addEventListener("keydown", (event) => {
+                if (event.ctrlKey && event.key === "/") {
+                    event.preventDefault();
+                    document.querySelector("#search-recipes").focus();
+                }
+            });
+
+            loadSortableJS().then(initReorder);
+        </script>
+	}
+	if len(data.CookbookFeature.Cookbook.Recipes) > 0 {
+		<section class="grid gap-4 text-sm justify-center md:p-4 md:text-base">
+			<div class="flex flex-col h-full">
+				<section class="grid justify-center md:p-4">
+					if data.CookbookFeature.ShareData.IsFromHost {
+						<div class="relative">
+							@cookbookRecipesSearchForm(data.CookbookFeature.Cookbook.PageItemID, data.CookbookFeature.Cookbook.PageNumber)
+						</div>
+					}
+					<p class={ "grid justify-center font-semibold underline mt-4 md:mt-0 md:text-xl", templ.KV("md:hidden", data.CookbookFeature.ShareData.IsFromHost) }>
+						{ data.CookbookFeature.Cookbook.Title }
+					</p>
+				</section>
+			</div>
+			<form class="sortable" hx-put={ fmt.Sprintf("/cookbooks/%d/reorder", data.CookbookFeature.Cookbook.ID) } hx-trigger="end" hx-swap="none">
+				<input type="hidden" name="cookbook-id" value={ fmt.Sprint(data.CookbookFeature.Cookbook.ID) }/>
+				<ul id="search-results" class="cookbooks-display grid gap-8 p-2 place-items-center text-sm md:p-0 md:text-base">
+					@CookbookRecipes(data.CookbookFeature)
+				</ul>
+			</form>
+		</section>
+	} else {
+		<div class="flex flex-col h-full">
+			<section class="grid justify-center md:p-4">
+				if data.CookbookFeature.ShareData.IsFromHost {
+					<div class="relative">
+						@cookbookRecipesSearchForm(data.CookbookFeature.Cookbook.PageItemID, data.CookbookFeature.Cookbook.PageNumber)
+					</div>
+				}
+				<p class="grid justify-center font-semibold underline mt-4 md:hidden">
+					{ data.CookbookFeature.Cookbook.Title }
+				</p>
+			</section>
+			<section id="search-results" class="justify-center grid">
+				@CookbookIndexNoRecipes(data.CookbookFeature.ShareData.IsFromHost)
+			</section>
+		</div>
+	}
+}
+
+templ CookbookIndexNoRecipes(isHost bool) {
+	<div class="grid place-content-center text-sm text-center md:text-base" style="height: 50vh">
+		if isHost {
+			<p>Your cookbook looks a bit empty at the moment.</p>
+			<p>Why not add recipes to your cookbook by searching for recipes in the search box above?</p>
+		} else {
+			<p>The user has not added recipes to this cookbook yet.</p>
+		}
+	</div>
+}
+
+templ CookbookRecipes(data templates.CookbookFeature) {
+	if len(data.Cookbook.Recipes) > 0 {
+		for i, r := range data.Cookbook.Recipes {
+			<li class="indicator recipe cookbook">
+				<input type="hidden" name="recipe-id" value={ fmt.Sprint(r.ID) }/>
+				<div class={ "indicator-item indicator-bottom badge badge-secondary", templ.KV("cursor-move handle", data.ShareData.IsFromHost), templ.KV("cursor-none", !data.ShareData.IsFromHost) }>
+					{ fmt.Sprint(i+1) }
+				</div>
+				if data.ShareData.IsFromHost {
+					<div class="indicator-item badge badge-neutral h-6">
+						<button
+							title="Remove recipe from cookbook"
+							class="btn btn-ghost btn-xs p-0"
+							hx-delete={ fmt.Sprintf("/cookbooks/%d/recipes/%d", data.Cookbook.ID, r.ID) }
+							hx-swap="outerHTML"
+							hx-target="closest .recipe"
+							hx-confirm="Are you sure you want to remove this recipe from the cookbook?"
+							hx-indicator="#fullscreen-loader"
+						>
+							@iconDeleteSmall()
+						</button>
+					</div>
+				}
+				<div class="card card-side card-bordered card-compact bg-base-100 shadow-lg sm:w-[30rem]">
+					<figure class="w-28 sm:w-32">
+						<img src={ fmt.Sprintf("/data/images/%s.jpg", r.Image) } alt="Recipe image" class="object-cover"/>
+					</figure>
+					<div class="card-body">
+						<h2 class="card-title text-base w-[20ch] sm:w-full break-words md:text-xl">{ r.Name }</h2>
+						<p></p>
+						<div>
+							<p class="text-sm pb-1">Category:</p>
+							<div class="badge badge-primary badge-">{ r.Category }</div>
+						</div>
+						<div class="card-actions justify-end">
+							if data.ShareData.IsFromHost {
+								<button
+									class="btn btn-outline btn-sm"
+									hx-get={ fmt.Sprintf("/recipes/%d", r.ID) }
+									hx-target="#content"
+									hx-swap="innerHTML"
+									hx-push-url="true"
+								>
+									View
+								</button>
+							} else {
+								<button
+									class="btn btn-outline btn-sm"
+									hx-get={ fmt.Sprintf("/r/%d?cookbook=%d", r.ID, data.Cookbook.ID) }
+									hx-target="#content"
+									hx-swap="innerHTML"
+									hx-push-url="true"
+								>
+									View
+								</button>
+							}
+						</div>
+					</div>
+				</div>
+			</li>
+		}
+	} else {
+		@CookbookIndexNoRecipes(data.ShareData.IsFromHost)
+	}
+}
+
+templ CookbooksIndex(data templates.Data) {
+	if data.IsHxRequest {
+		<title hx-swap-oob="true">Cookbooks | Recipya</title>
+		@cookbooksIndex(data)
+	} else {
+		@layoutMain("Cookbooks", data) {
+			@cookbooksIndex(data)
+		}
+	}
+}
+
+templ cookbooksIndex(data templates.Data) {
+	<dialog id="share_dialog" class="p-4 border-4 border-black min-w-[15rem]">
+		<div id="share-dialog-result" class="pb-4"></div>
+		<form method="dialog">
+			<button class="w-full p-1 font-semibold text-white bg-blue-500 border-2 border-black rounded-lg hover:bg-blue-800">
+				OK
+			</button>
+		</form>
+	</dialog>
+	if len(data.CookbookFeature.Cookbooks) > 0 {
+		<div class="grid grid-flow-col place-content-end p-1">
+			if data.CookbookFeature.ViewMode == 0 {
+				<div class="p-2 bg-blue-600 text-white" title="Display as grid">
+					@iconGrid()
+				</div>
+				<div
+					class="p-2 hover:bg-red-600 hover:text-white"
+					title="Display as list"
+					hx-get="/cookbooks?view=list"
+					hx-target="#content"
+				>
+					@iconList()
+				</div>
+			} else {
+				<div
+					class="p-2 hover:bg-red-600 hover:text-white"
+					title="Display as grid"
+					hx-get="/cookbooks?view=grid"
+					hx-target="#content"
+				>
+					@iconGrid()
+				</div>
+				<div class="p-2 bg-blue-600 text-white" title="Display as list">
+					@iconList()
+				</div>
+			}
+		</div>
+		<div class="min-h-[79vh]">
+			<div
+				id="cookbooks-container"
+				class={ "cookbooks-display grid justify-center", templ.KV("grid gap-4 p-4 text-sm place-items-center md:m-auto md:max-w-7xl sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5", data.CookbookFeature.ViewMode == 0) }
+			>
+				if data.CookbookFeature.ViewMode == 0 {
+					@cookbooksGrid(data)
+				} else {
+					@cookbooksList(data)
+				}
+			</div>
+		</div>
+	} else {
+		<div class="grid place-content-center text-sm h-full text-center md:text-base">
+			<div class="p-4 md:p-0">
+				<p class="pb-2">Your cookbooks collection looks a bit empty at the moment.</p>
+				<p>
+					Why not start by creating a cookbook by clicking the
+					<a
+						class="underline font-semibold cursor-pointer"
+						hx-post="/cookbooks"
+						hx-prompt="Enter the name of your cookbook"
+						hx-target="#content"
+					>Add cookbook</a>
+					button at the top?
+				</p>
+			</div>
+			<div id="new-cookbook-placeholder" class="hidden"></div>
+		</div>
+	}
+	@Pagination(data.Pagination)
+	<div
+		id="cookbook_menu_container"
+		class="absolute hidden w-fit bg-white rounded-lg z-10 dark:bg-gray-900"
+	>
+		<ul id="cookbook_menu" class="menu menu-sm bg-base-200 rounded-box">
+			<li>
+				<a
+					id="cookbook_menu_share"
+					hx-post="/cookbooks/1/share"
+					hx-target="#share-dialog-result"
+					_="on htmx:afterRequest from me if event.detail.successful call share_dialog.showModal()"
+				>
+					@iconShare()
+					Share
+				</a>
+			</li>
+			<li>
+				<a id="cookbook_menu_download" hx-get="/cookbooks/1/download">
+					@iconDownload()
+					Download
+				</a>
+			</li>
+			<li>
+				<a
+					id="cookbook_menu_delete"
+					hx-delete="/cookbooks/1"
+					hx-swap="outerHTML"
+					hx-target="closest .cookbook"
+					hx-confirm="Are you sure you want to delete this cookbook? Its recipes will not be deleted."
+				>
+					@iconDelete()
+					Delete
+				</a>
+			</li>
+		</ul>
+	</div>
+	<script type="text/hyperscript">
+        def openCookbookOptionsMenu(evt)
+          set cookbook_menu_container.style.left to (evt.pageX - 104) +'px'
+          set cookbook_menu_container.style.top to (evt.pageY + 24)+'px'
+          set $li to closest .cookbook to evt.target
+          set $id to $li.id.split('-')[1]
+
+          js
+              cookbook_menu_share.setAttribute('hx-post', `/cookbooks/${$id}/share`)
+              cookbook_menu_download.setAttribute('hx-get', `/cookbooks/${$id}/download`)
+              cookbook_menu_delete.setAttribute('hx-delete', `/cookbooks/${$id}`)
+              cookbook_menu_delete.setAttribute('hx-target', `#${$li.id}`)
+          end
+
+          toggle .hidden on cookbook_menu_container
+          htmx.process(cookbook_menu_container)
+        end
+    </script>
+	<script defer>
+        document.addEventListener('click', (event) => {
+            const container = document.querySelector('#cookbook_menu_container');
+            if (container) {
+                if (event.target.classList.contains('three-dots-container') || ["svg", "path"].includes(event.target.tagName)) {
+                    return;
+                }
+                container.classList.add("hidden");
+                htmx.process(container);
+            }
+        });
+    </script>
+}
+
+templ cookbooksGrid(data templates.Data) {
+	for i, c := range data.CookbookFeature.Cookbooks {
+		@cookbookGrid(data.CookbookFeature.MakeCookbook(int64(i), c, data.Pagination.Selected))
+	}
+}
+
+templ cookbookGrid(cookbook templates.CookbookView) {
+	<section id={ fmt.Sprintf("cookbook-%d", cookbook.ID) } class="cookbook card card-compact bg-base-100 shadow-lg indicator">
+		<span class="indicator-item badge badge-primary">{ fmt.Sprint(cookbook.NumRecipes) }</span>
+		<figure>
+			<img
+				class="rounded-t-lg w-full border-b h-32 text-center object-cover max-w-48 md:h-48 hover:bg-gray-100 hover:opacity-80"
+				if cookbook.IsUUIDValid {
+					src={ fmt.Sprintf("/data/images/%s.jpg", cookbook.Image) }
+				} else {
+					src="/static/img/cookbooks-new/placeholder.webp"
+				}
+				onClick={ cookbookImageClick(cookbook.ID) }
+				alt="Cookbook image"
+			/>
+			@cookbookImageForm(cookbook.ID)
+		</figure>
+		<div class="card-body" lang="en">
+			<div class="flex">
+				<p class="font-semibold w-[18ch] break-words">{ cookbook.Title }</p>
+				<span
+					class="three-dots-container cursor-pointer float-right"
+					_="on click openCookbookOptionsMenu(event)"
+				>
+					@iconDotsVertical()
+				</span>
+			</div>
+			<div class="card-actions h-full flex-col-reverse">
+				<button
+					class="btn btn-block btn-sm btn-outline"
+					hx-get={ fmt.Sprintf("/cookbooks/%d?page=%d", cookbook.ID, cookbook.PageNumber) }
+					hx-target="#content"
+					hx-push-url={ fmt.Sprintf("/cookbooks/%d", cookbook.ID) }
+				>
+					Open
+				</button>
+			</div>
+		</div>
+	</section>
+}
+
+templ cookbooksList(data templates.Data) {
+	<div class="cookbooks-display grid gap-8 p-2 text-sm md:text-base place-items-center">
+		for i, c := range data.CookbookFeature.Cookbooks {
+			@cookbookList(data.CookbookFeature.MakeCookbook(int64(i), c, data.Pagination.Selected))
+		}
+	</div>
+}
+
+templ cookbookList(cookbook templates.CookbookView) {
+	<div
+		id={ fmt.Sprintf("cookbook-%d", cookbook.ID) }
+		class="cookbook card card-side card-compact bg-base-100 shadow-md max-w-[30rem] border indicator dark:border-slate-600"
+	>
+		<span class="indicator-item indicator-start badge badge-primary select-none">{ fmt.Sprint(cookbook.NumRecipes) }</span>
+		<span
+			class="three-dots-container indicator-item indicator-end badge badge-neutral rounded-md p-1 select-none cursor-pointer hover:bg-secondary"
+			_="on click openCookbookOptionsMenu(event)"
+		>
+			@iconDotsVertical()
+		</span>
+		<figure class="relative hover:opacity-70" onClick={ cookbookImageClick(cookbook.ID) }>
+			<img
+				class="w-28 h-full object-cover"
+				if cookbook.IsUUIDValid {
+					src={ fmt.Sprintf("/data/images/%d.jpg", cookbook.Image) }
+				} else {
+					src="/static/img/cookbooks-new/placeholder.webp"
+				}
+				alt="Cookbook image"
+			/>
+			<span class="absolute">
+				@cookbookImageForm(cookbook.ID)
+			</span>
+		</figure>
+		<div class="card-body">
+			<h2 class="card-title text-base w-[20ch] sm:w-[29ch] break-words md:text-xl">{ cookbook.Title }</h2>
+			<p></p>
+			<div class="card-actions justify-end">
+				<button
+					class="btn btn-outline btn-sm"
+					hx-get={ fmt.Sprintf("/cookbooks/%d?page=%d", cookbook.ID, cookbook.PageNumber) }
+					hx-target="#content"
+					hx-push-url={ fmt.Sprintf("/cookbooks/%d", cookbook.ID) }
+				>
+					Open
+				</button>
+			</div>
+		</div>
+	</div>
+}
+
+script cookbookImageClick(id int64) {
+    document.querySelector(fmt.Sprintf("#cookbook-image-%d", id)).click()
+}
+
+templ cookbookImageForm(id int64) {
+	<form
+		id={ fmt.Sprintf("cookbook-image-form-%d", id) }
+		enctype="multipart/form-data"
+		hx-swap="none"
+		hx-put={ fmt.Sprintf("/cookbooks/%d/image", id) }
+		hx-trigger={ fmt.Sprintf("change from:#cookbook-image-%d", id) }
+	>
+		<input
+			id={ fmt.Sprintf("cookbook-image-%d", id) }
+			type="file"
+			accept="image/*"
+			name="image"
+			required
+			class="hidden"
+			_="on drop or change
+                    make an FileReader called reader
+                    then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end
+                    then set {src: window.URL.createObjectURL(it)} on previous <img/>
+                    then remove .hidden from next <button/>"
+		/>
+	</form>
+}
+
+templ cookbookRecipesSearchForm(pageItemID int64, pageNumber uint64) {
+	<search>
+		<form
+			class="w-72 md:w-96"
+			hx-post="/cookbooks/recipes/search"
+			hx-target="#search-results"
+			hx-vals={ fmt.Sprintf(`{"id": %d, "page": %d}`, pageItemID, pageNumber) }
+		>
+			<div class="flex">
+				<div class="relative w-full">
+					<label>
+						<input
+							type="search"
+							id="search-recipes"
+							name="q"
+							class="input input-bordered input-sm w-full z-20"
+							placeholder="Search for recipes..."
+							_="on keyup
+                               if event.target.value !== '' then
+                                   remove .md:block from #search-shortcut
+                               else
+                                   add .md:block to #search-shortcut
+                               end then
+                               if event.key === 'Backspace' and event.target.value === '' then
+                                   send submit to closest <form/>
+                               end"
+						/>
+					</label>
+					<kbd
+						id="search-shortcut"
+						class="hidden absolute top-1 right-12 font-sans font-semibold select-none dark:text-slate-500 md:block"
+					>
+						<abbr title="Control" class="no-underline text-slate-300 dark:text-slate-500">Ctrl </abbr> /
+					</kbd>
+					<button
+						type="submit"
+						class="absolute top-0 right-0 px-2 text-sm font-medium h-full text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700"
+					>
+						@iconMagnifyingGlass()
+						<span class="sr-only">Search</span>
+					</button>
+				</div>
+			</div>
+		</form>
+	</search>
+}
+
+templ CookbookGridAdd(data templates.Data) {
+	@cookbookGrid(data.CookbookFeature.Cookbook)
+	@Pagination(data.Pagination)
+}
+
+templ CookbookListAdd(data templates.Data) {
+	@cookbookList(data.CookbookFeature.Cookbook)
+	@Pagination(data.Pagination)
+}
