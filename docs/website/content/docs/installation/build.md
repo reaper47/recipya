@@ -3,6 +3,8 @@ title: Release Build
 weight: 4
 ---
 
+This section targets an installation without Docker.
+
 The portable and standalone release builds are available on the [releases page](https://github.com/reaper47/recipya/releases) on GitHub.
 The [nightly build](https://github.com/reaper47/recipya/releases/tag/nightly) is updated nightly if the main branch 
 has new commits.

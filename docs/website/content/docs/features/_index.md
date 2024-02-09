@@ -32,6 +32,10 @@ Overview of Recipya's features.
             title="Integrations"
             subtitle="The application offers integrations with other recipe manager applications."
             icon="newspaper" >}}
+    {{< card link="/guide/docs/features/admin/"
+        title="Admin"
+        subtitle="Learn about the administration page."
+        icon="newspaper" >}}
     {{< card link="/guide/docs/features/backups/"
         title="Backups"
         subtitle="Learn how backups work and how to restore your data."
