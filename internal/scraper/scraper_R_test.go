@@ -697,6 +697,52 @@ func TestScraper_R(t *testing.T) {
 				Yield:    models.Yield{Value: 1},
 			},
 		},
+		{
+			name: "recipecommunity.com.au",
+			in:   "https://www.recipecommunity.com.au/baking-sweet-recipes/flourless-refined-sugar-free-chocolate-cake/1te0mta9-5d0d3-705689-cfcd2-7zd1b4nd",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        models.SchemaType{Value: "Recipe"},
+				Name:          "Flourless refined sugar free chocolate cake",
+				DatePublished: "2016/06/08",
+				DateModified:  "2016/06/11",
+				Description: models.Description{
+					Value: "Recipe Flourless refined sugar free chocolate cake by Mixing Adventures, learn to make this recipe easily in your kitchen machine and discover other Thermomix recipes in Baking - sweet.",
+				},
+				Keywords: models.Keywords{Values: "Baking - sweet, recipes, Dessert, Gluten free, Lactose free, Non-dairy"},
+				Image: models.Image{
+					Value: "https://d2mkh7ukbp9xav.cloudfront.net/recipeimage/1te0mta9-5d0d3-705689-cfcd2-7zd1b4nd/fd1b729e-862e-4c96-b038-18cf8656a293/large/flourless-refined-sugar-free-chocolate-cake.jpg",
+				},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"270 g Dates (pitted)",
+						"125 g Boiling water",
+						"1/2 teaspoon Bi-carbonate of Soda",
+						"250 g almonds",
+						"3 eggs",
+						"60 g coconut oil",
+						"2 teaspoons vanilla essence",
+						"50 g cocoa",
+						"1 teaspoon baking powder",
+						"pinch salt",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Pre-heat oven to 180 degrees C.  Grease and line a 20 cm round cake pan (I used a silicone ring tin)Mix dates and bi-carb soda in boiling water and leave to soak for a few minutes while you do the next step.",
+						"Grind almonds for 10 seconds, speed 9.Set aside.",
+						"Put dates, water and bi-carb into mixing bowl, and blend for 30 seconds, speed 6.  You may need to stop and scrape the sides a couple of times, and maybe reduce the speed a little after the first few seconds if necessary.   ",
+						"Add eggs, oil, vanilla essence and blend for 20 seconds, speed 6.  Scrape down bowl.",
+						"Add almonds, baking powder, cocoa and salt and mix for 20 seconds, speed 6.  Scrape down bowl and repeat. ",
+						"Pour into prepared cake tin and bake at 180 degrees for 30 minutes, or until a skewer comes out clean.  Leave until cool before turning onto a serving plate. I covered mine with chocolate ganache and served with whipped cream and raspberry coulis.  ",
+					},
+				},
+				PrepTime: "PT10M",
+				CookTime: "PT40M",
+				URL:      "https://www.recipecommunity.com.au/baking-sweet-recipes/flourless-refined-sugar-free-chocolate-cake/1te0mta9-5d0d3-705689-cfcd2-7zd1b4nd",
+				Yield:    models.Yield{Value: 8},
+			},
+		},
 	}
 	for _, tc := range testcases {
 		tc := tc
