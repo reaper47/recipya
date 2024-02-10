@@ -4,6 +4,7 @@ FROM golang:1.21.5-alpine AS build-stage
 WORKDIR /app
 
 RUN apk add --update nodejs npm gcc g++ musl-dev git
+RUN go install github.com/a-h/templ/cmd/templ@latest
 RUN CGO_ENABLED=1 go install -tags extended github.com/gohugoio/hugo@latest
 ENV PATH="/go/bin:${PATH}"
 
