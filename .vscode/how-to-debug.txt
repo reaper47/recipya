@@ -1,0 +1,7 @@
+For VS Code users.
+
+To debug:
+1. Build the debug recipya: task build-debug
+2. Start recipya: ./bin/recipya_debug serve
+3. Press F5 to start the VS Code debugger
+4. Select the recipya_debug process from the list
