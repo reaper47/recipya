@@ -8,3 +8,4 @@ scripts/sponsors/node_modules/
 static/css/tailwind.css
 web/app/node_modules/
 releases/v*
+data/
