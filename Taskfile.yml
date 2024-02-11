@@ -8,6 +8,14 @@ tasks:
       - cmd: go build -ldflags="-s -w" -o bin/recipya main.go
         platforms: [ linux, darwin ]
 
+  build-debug:
+    cmds:
+      - cmd: go generate ./...
+      - cmd: go build -gcflags=all="-N -l" -o bin/recipya_debug.exe main.go
+        platforms: [ windows ]
+      - cmd: go build -gcflags=all="-N -l" -o bin/recipya_debug main.go
+        platforms: [ linux, darwin ]
+
   cover:
     cmds:
       - cmd: go test ./... -coverprofile=coverage.out
