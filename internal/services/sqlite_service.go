@@ -29,7 +29,7 @@ var embedMigrations embed.FS
 
 const (
 	shortCtxTimeout  = 3 * time.Second
-	longerCtxTimeout = 1 * time.Minute
+	longerCtxTimeout = 5 * time.Minute
 )
 
 // SQLiteService represents the Service implemented with SQLite.
@@ -765,7 +765,7 @@ func (s *SQLiteService) InitAutologin() error {
 		log.Println("Created user for autologin with email 'admin@autologin.com' and password 'admin'")
 	}
 
-	return err
+	return nil
 }
 
 // IsUserExist checks whether the user is present in the database.

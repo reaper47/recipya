@@ -168,7 +168,6 @@ func (s *Server) settingsMeasurementSystemsPostHandler(w http.ResponseWriter, r 
 		return
 	}
 
-	w.Header().Set("HX-Trigger", makeToast("Measurement system set to "+system.String()+".", infoToast))
 	w.WriteHeader(http.StatusNoContent)
 }
 

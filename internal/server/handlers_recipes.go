@@ -148,7 +148,7 @@ func (s *Server) recipesAddImportHandler(w http.ResponseWriter, r *http.Request)
 
 				id, err := s.Repository.AddRecipe(&r, userID, settings)
 				if err != nil {
-					fmt.Println(err)
+					fmt.Println(r.Name, err)
 					return
 				}
 
