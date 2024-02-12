@@ -174,6 +174,16 @@ templ addRecipe() {
 					standard, the <a href="https://www.mastercook.com/" target="_blank" class="link">MasterCook</a> file
 					format, or as plain text files.
 				</p>
+				<p>
+					You can also download recipe schema files directly using the
+					<a
+						href="javascript:c=0; scr=([...document.querySelectorAll('script[type=%22application/ld+json%22]')]); for (const i of scr) { const j = JSON.parse(i.innerHTML); if (j['@type'] != 'Recipe') { continue; } const url = URL.createObjectURL(new Blob([JSON.stringify(j)], {type: 'application/json'})); const a=document.createElement('a'); a.href = url; a.download = j.name ? `${j.name}.json` : 'recipe.json'; a.click(); URL.revokeObjectURL(url); c++; } if(c === 0) { alert('Unable to find Recipe schema on this site!'); }"
+						class="link tooltip"
+						data-tip="Simply drag this link to your bookmarks bar, and click the bookmark while on a recipe website.  If a recipe schema downloads successfully, you can import it here."
+					>
+						Recipya Bookmarklet
+					</a>.
+				</p>
 				<hr class="dark:border dark:border-gray-800"/>
 				<div class="card-actions">
 					<button class="btn btn-outline btn-sm btn-block" onclick="import_recipes_dialog.showModal()">
