@@ -1,0 +1,27 @@
+{
+	"name": "Go",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"forwardPorts": [
+		8078
+	],
+	"postCreateCommand": "git submodule update --init && go mod download && go mod tidy",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-vscode.go",
+				"davidanson.vscode-markdownlint",
+				"shardulm94.trailing-spaces",
+				"IBM.output-colorizer",
+				"golang.go",
+				"budparr.language-hugo-vscode",
+				"a-h.templ"
+			],
+			"settings": {
+				"go.useLanguageServer": true
+			}
+		}
+	},
+	"remoteUser": "root"
+}

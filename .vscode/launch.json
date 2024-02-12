@@ -2,6 +2,32 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Debug",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            // Note: Make sure you've built first (Tasks > Build or `task build-debug` at the cmd line), or this will fail.
+            // "preLaunchTask": "Build",
+            "cwd": "${workspaceFolder}/bin",
+            "program": "${workspaceFolder}/main.go",
+            "args": [
+                "serve",
+            ],
+            "env": {
+                "RECIPYA_SERVER_URL": "localhost",
+                "RECIPYA_SERVER_PORT": "8079",
+                "RECIPYA_SERVER_AUTOLOGIN": "true",
+                "RECIPYA_SERVER_IS_DEMO": "true",
+                "RECIPYA_SERVER_NO_SIGNUPS": "true",
+            },
+
+            "serverReadyAction": {
+                "pattern": "Serving on localhost:8079",
+                "uriFormat": "http://localhost:8079",
+                "action": "openExternally",
+            },
+        },
+        {
             "name": "Attach to Process",
             "type": "go",
             "request": "attach",
