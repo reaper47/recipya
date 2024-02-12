@@ -308,14 +308,14 @@ func TestHandlers_Recipes_AddManualIngredient(t *testing.T) {
 func TestHandlers_Recipes_AddManualIngredientDelete(t *testing.T) {
 	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{}, &mockIntegrations{})
 
-	uri := "/recipes/add/manual/ingredient/"
+	uri := "/recipes/add/manual/ingredient"
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
 	})
 
 	t.Run("does not yield input when only one input left", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri+"1", formHeader, strings.NewReader("ingredient-1="))
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri+"/1", formHeader, strings.NewReader("ingredient-1="))
 
 		assertStatus(t, rr.Code, http.StatusUnprocessableEntity)
 	})
@@ -355,7 +355,7 @@ func TestHandlers_Recipes_AddManualIngredientDelete(t *testing.T) {
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri+strconv.Itoa(tc.entry), formHeader, strings.NewReader("ingredient-1=one&ingredient-2=two&ingredient-3=three&ingredient-4=''"))
+			rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri+"/"+strconv.Itoa(tc.entry), formHeader, strings.NewReader("ingredient-1=one&ingredient-2=two&ingredient-3=three&ingredient-4=''"))
 
 			assertStatus(t, rr.Code, http.StatusOK)
 			tc.want = append(tc.want, []string{
@@ -399,14 +399,14 @@ func TestHandlers_Recipes_AddManualInstruction(t *testing.T) {
 func TestHandlers_Recipes_AddManualInstructionDelete(t *testing.T) {
 	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{}, &mockIntegrations{})
 
-	uri := "/recipes/add/manual/instruction/"
+	uri := "/recipes/add/manual/instruction"
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
 	})
 
 	t.Run("does not yield input when only one input left", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri+"1", formHeader, strings.NewReader("instruction-1="))
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri+"/1", formHeader, strings.NewReader("instruction-1="))
 
 		assertStatus(t, rr.Code, http.StatusUnprocessableEntity)
 	})
@@ -446,7 +446,7 @@ func TestHandlers_Recipes_AddManualInstructionDelete(t *testing.T) {
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri+strconv.Itoa(tc.entry), formHeader, strings.NewReader("instruction-1=One&instruction-2=Two&instruction-3=Three&instruction-4=''"))
+			rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri+"/"+strconv.Itoa(tc.entry), formHeader, strings.NewReader("instruction-1=One&instruction-2=Two&instruction-3=Three&instruction-4=''"))
 
 			assertStatus(t, rr.Code, http.StatusOK)
 			tc.want = append(tc.want, []string{

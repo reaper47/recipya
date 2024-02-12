@@ -80,7 +80,7 @@ func CookbooksSearchResultsRecipes(data templates.CookbookFeature) templ.Compone
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(fmt.Sprintf(`{"cookbookId": %d, "recipeId": %d}`, data.Cookbook.ID, r.ID)))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(fmt.Sprintf(`{ "recipeId": %d}`, data.Cookbook.ID, r.ID)))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

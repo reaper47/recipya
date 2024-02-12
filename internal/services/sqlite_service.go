@@ -667,7 +667,7 @@ func (s *SQLiteService) DeleteRecipe(id, userID int64) (int64, error) {
 }
 
 // DeleteRecipeFromCookbook deletes a recipe from a cookbook. It returns the number of recipes in the cookbook.
-func (s *SQLiteService) DeleteRecipeFromCookbook(recipeID, cookbookID uint64, userID int64) (int64, error) {
+func (s *SQLiteService) DeleteRecipeFromCookbook(recipeID, cookbookID int64, userID int64) (int64, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 

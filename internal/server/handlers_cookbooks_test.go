@@ -371,30 +371,12 @@ func TestHandlers_Cookbooks_AddRecipe(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodPost, uri(1))
 	})
 
-	testcases := []struct {
-		name      string
-		form      string
-		wantToast string
-	}{
-		{
-			name:      "cookbookID missing in form",
-			form:      "recipeId=1",
-			wantToast: "Missing 'cookbookId' in body.",
-		},
-		{
-			name:      "recipeID missing in form",
-			form:      "cookbookId=1",
-			wantToast: "Missing 'recipeId' in body.",
-		},
-	}
-	for _, tc := range testcases {
-		t.Run(tc.name, func(t *testing.T) {
-			rr := sendRequestAsLoggedIn(srv, http.MethodPost, uri(1), formHeader, strings.NewReader(tc.form))
+	t.Run("recipeID missing in form", func(t *testing.T) {
+		rr := sendRequestAsLoggedIn(srv, http.MethodPost, uri(1), formHeader, strings.NewReader("cookbookId=1"))
 
-			assertStatus(t, rr.Code, http.StatusBadRequest)
-			assertHeader(t, rr, "HX-Trigger", fmt.Sprintf(`{"showToast":"{\"message\":\"%s\",\"backgroundColor\":\"alert-error\"}"}`, tc.wantToast))
-		})
-	}
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Missing 'recipeId' in body.\",\"backgroundColor\":\"alert-error\"}"}`)
+	})
 
 	t.Run("valid request", func(t *testing.T) {
 		recipes := models.Recipes{
@@ -414,7 +396,7 @@ func TestHandlers_Cookbooks_AddRecipe(t *testing.T) {
 		srv.Repository = repo
 		defer revert()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri(1), formHeader, strings.NewReader("cookbookId=2&recipeId=2"))
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri(2), formHeader, strings.NewReader("recipeId=2"))
 
 		assertStatus(t, rr.Code, http.StatusCreated)
 		want := []models.Cookbook{
@@ -618,7 +600,7 @@ func TestHandlers_Cookbooks_Image(t *testing.T) {
 	}
 
 	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, http.MethodDelete, uri(1))
+		assertMustBeLoggedIn(t, srv, http.MethodPut, uri(1))
 	})
 
 	t.Run("empty image in form", func(t *testing.T) {
@@ -801,18 +783,13 @@ func TestHandlers_Cookbooks_ReorderRecipes(t *testing.T) {
 		wantToast string
 	}{
 		{
-			name:      "missing cookbook ID",
-			form:      "recipe-id=8&recipe-id=3",
-			wantToast: "Missing cookbook ID in body.",
-		},
-		{
 			name:      "missing recipe IDs",
 			form:      "cookbook-id=1",
 			wantToast: "Missing recipe IDs in body.",
 		},
 		{
 			name:      "invalid recipe IDs",
-			form:      "cookbook-id=1&recipe-id=8&recipe-id=3&recipe-id=0&recipe-id=-1",
+			form:      "recipe-id=8&recipe-id=3&recipe-id=0&recipe-id=-1",
 			wantToast: `Recipe ID \"-1\" is invalid.`,
 		},
 	}
@@ -826,7 +803,7 @@ func TestHandlers_Cookbooks_ReorderRecipes(t *testing.T) {
 	}
 
 	t.Run("valid request", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, uri, formHeader, strings.NewReader("cookbook-id=1&recipe-id=1"))
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, uri, formHeader, strings.NewReader("recipe-id=1"))
 
 		assertStatus(t, rr.Code, http.StatusNoContent)
 	})

@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/docs"
 	"github.com/reaper47/recipya/internal/app"
@@ -51,7 +50,7 @@ func NewServer(repository services.RepositoryService, email services.EmailServic
 // Server is the web application's configuration object.
 type Server struct {
 	Brokers      map[int64]*models.Broker
-	Router       *chi.Mux
+	Router       *http.ServeMux
 	Repository   services.RepositoryService
 	Email        services.EmailService
 	Files        services.FilesService
@@ -59,176 +58,101 @@ type Server struct {
 }
 
 func (s *Server) mountHandlers() {
-	r := chi.NewRouter()
+	mux := http.NewServeMux()
 
-	r.Get("/", s.indexHandler)
-
+	// Static files routes
 	subFS, _ := fs.Sub(docs.FS, "website/public")
-	r.Get("/guide*", http.StripPrefix("/guide", http.FileServer(http.FS(subFS))).ServeHTTP)
-	r.Get("/guide/login", guideLoginHandler)
-	r.Get("/static/*", http.StripPrefix("/static", http.FileServer(http.FS(static.FS))).ServeHTTP)
-	r.Get("/data/images/*", http.StripPrefix("/data/images", http.FileServer(http.Dir(imagesDir))).ServeHTTP)
+	mux.HandleFunc("GET /guide", http.StripPrefix("/guide", http.FileServerFS(subFS)).ServeHTTP)
+	mux.HandleFunc("GET /guide/*", http.StripPrefix("/guide", http.FileServerFS(subFS)).ServeHTTP)
+	mux.HandleFunc("GET /guide/login", guideLoginHandler)
+	mux.HandleFunc("GET /static/*", http.StripPrefix("/static", http.FileServerFS(static.FS)).ServeHTTP)
+	mux.HandleFunc("GET /data/images/*", http.StripPrefix("/data/images", http.FileServer(http.Dir(imagesDir))).ServeHTTP)
+	mux.HandleFunc("GET /*", notFoundHandler)
 
-	r.NotFound(notFoundHandler)
+	// General routes
+	mux.HandleFunc("GET /{$}", s.indexHandler)
+	mux.Handle("GET /download/{tmpFile}", s.mustBeLoggedInMiddleware(s.downloadHandler()))
+	mux.Handle("GET /user-initials", s.mustBeLoggedInMiddleware(s.userInitialsHandler()))
+	mux.Handle("GET /ws", s.mustBeLoggedInMiddleware(s.wsHandler()))
 
-	r.Route("/r", func(r chi.Router) {
-		r.Get("/{id:[1-9]([0-9])*}", s.recipesViewShareHandler)
-		r.Get("/{id:^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$}", s.recipeShareHandler)
-	})
-	r.Get("/c/{id:^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$}", s.cookbookShareHandler)
+	// Admin routes
+	adminMiddleware := func(next http.Handler) http.Handler { return s.mustBeLoggedInMiddleware(s.onlyAdminMiddleware(next)) }
+	mux.Handle("GET /admin", adminMiddleware(s.adminHandler()))
+	mux.Handle("POST /admin/users", adminMiddleware(s.adminUsersPostHandler()))
+	mux.Handle("DELETE /admin/users/{email}", adminMiddleware(s.adminUsersDeleteHandler()))
 
-	r.Route("/admin", func(r chi.Router) {
-		r.Use(s.mustBeLoggedInMiddleware, s.onlyAdminMiddleware)
+	// Auth routes
+	authRegisterMiddleware := func(next http.Handler) http.Handler {
+		return s.redirectIfLoggedInMiddleware(redirectIfNoSignupsMiddleware(next))
+	}
+	mux.Handle("POST /auth/change-password", s.mustBeLoggedInMiddleware(s.changePasswordHandler()))
+	mux.HandleFunc("GET /auth/confirm", s.confirmHandler)
 
-		r.Get("/", s.adminHandler)
+	mux.HandleFunc("GET /auth/forgot-password", s.forgotPasswordHandler)
+	mux.HandleFunc("POST /auth/forgot-password", s.forgotPasswordPostHandler)
+	mux.HandleFunc("GET /auth/forgot-password/reset", forgotPasswordResetHandler)
+	mux.HandleFunc("POST /auth/forgot-password/reset", s.forgotPasswordResetPostHandler)
+	mux.Handle("GET /auth/login", s.redirectIfLoggedInMiddleware(loginHandler()))
+	mux.Handle("POST /auth/login", s.redirectIfLoggedInMiddleware(s.loginPostHandler()))
+	mux.Handle("GET /auth/register", authRegisterMiddleware(registerHandler()))
+	mux.Handle("POST /auth/register", authRegisterMiddleware(s.registerPostHandler()))
+	mux.HandleFunc("POST /auth/logout", s.logoutHandler)
+	mux.Handle("DELETE /auth/user", s.mustBeLoggedInMiddleware(s.deleteUserHandler()))
 
-		r.Route("/users", func(r chi.Router) {
-			r.Post("/", s.adminUsersPostHandler)
-			r.Delete("/{email}", s.adminUsersDeleteHandler)
-		})
+	// Cookbooks routes
+	mux.Handle("GET /cookbooks", s.mustBeLoggedInMiddleware(s.cookbooksHandler()))
+	mux.Handle("POST /cookbooks", s.mustBeLoggedInMiddleware(s.cookbooksPostHandler()))
+	mux.Handle("POST /cookbooks/recipes/search", s.mustBeLoggedInMiddleware(s.cookbooksRecipesSearchPostHandler()))
+	mux.Handle("GET /cookbooks/{id}", s.mustBeLoggedInMiddleware(s.cookbooksGetCookbookHandler()))
+	mux.Handle("POST /cookbooks/{id}", s.mustBeLoggedInMiddleware(s.cookbookPostCookbookHandler()))
+	mux.Handle("DELETE /cookbooks/{id}", s.mustBeLoggedInMiddleware(s.cookbooksDeleteCookbookHandler()))
+	mux.Handle("GET /cookbooks/{id}/download", s.mustBeLoggedInMiddleware(s.cookbooksDownloadCookbookHandler()))
+	mux.Handle("PUT /cookbooks/{id}/image", s.mustBeLoggedInMiddleware(s.cookbooksImagePostCookbookHandler()))
+	mux.Handle("PUT /cookbooks/{id}/reorder", s.mustBeLoggedInMiddleware(s.cookbooksPostCookbookReorderHandler()))
+	mux.Handle("DELETE /cookbooks/{id}/recipes/{recipeID}", s.mustBeLoggedInMiddleware(s.cookbooksDeleteCookbookRecipeHandler()))
+	mux.Handle("POST /cookbooks/{id}/share", s.mustBeLoggedInMiddleware(s.cookbookSharePostHandler()))
 
-	})
+	// Integrations routes
+	mux.Handle("POST /integrations/import/nextcloud", s.mustBeLoggedInMiddleware(s.integrationsImportNextcloud()))
 
-	r.Route("/auth", func(r chi.Router) {
-		r.With(s.mustBeLoggedInMiddleware).Post("/change-password", s.changePasswordHandler)
-		r.Get("/confirm", s.confirmHandler)
+	// Share routes
+	mux.HandleFunc("GET /r/{id}", s.recipeShareHandler)
+	mux.HandleFunc("GET /c/{id}", s.cookbookShareHandler)
 
-		r.Route("/forgot-password", func(r chi.Router) {
-			r.Get("/", s.forgotPasswordHandler)
-			r.Post("/", s.forgotPasswordPostHandler)
+	// Recipes routes
+	mux.Handle("GET /recipes", s.mustBeLoggedInMiddleware(s.recipesHandler()))
+	mux.Handle("GET /recipes/{id}", s.mustBeLoggedInMiddleware(s.recipesViewHandler()))
+	mux.Handle("DELETE /recipes/{id}", s.mustBeLoggedInMiddleware(s.recipeDeleteHandler()))
+	mux.Handle("GET /recipes/{id}/scale", s.mustBeLoggedInMiddleware(s.recipeScaleHandler()))
+	mux.Handle("POST /recipes/{id}/share", s.mustBeLoggedInMiddleware(s.recipeSharePostHandler()))
+	mux.Handle("GET /recipes/{id}/edit", s.mustBeLoggedInMiddleware(s.recipesEditHandler()))
+	mux.Handle("PUT /recipes/{id}/edit", s.mustBeLoggedInMiddleware(s.recipesEditPostHandler()))
+	mux.Handle("GET /recipes/add", s.mustBeLoggedInMiddleware(recipesAddHandler()))
+	mux.Handle("POST /recipes/add/import", s.mustBeLoggedInMiddleware(s.recipesAddImportHandler()))
+	mux.Handle("GET /recipes/add/manual", s.mustBeLoggedInMiddleware(s.recipeAddManualHandler()))
+	mux.Handle("POST /recipes/add/manual", s.mustBeLoggedInMiddleware(s.recipeAddManualPostHandler()))
+	mux.Handle("POST /recipes/add/manual/ingredient", s.mustBeLoggedInMiddleware(recipeAddManualIngredientHandler()))
+	mux.Handle("POST /recipes/add/manual/ingredient/{entry}", s.mustBeLoggedInMiddleware(recipeAddManualIngredientDeleteHandler()))
+	mux.Handle("POST /recipes/add/manual/instruction", s.mustBeLoggedInMiddleware(recipeAddManualInstructionHandler()))
+	mux.Handle("POST /recipes/add/manual/instruction/{entry}", s.mustBeLoggedInMiddleware(recipeAddManualInstructionDeleteHandler()))
+	mux.Handle("POST /recipes/add/ocr", s.mustBeLoggedInMiddleware(s.recipesAddOCRHandler()))
+	mux.Handle("POST /recipes/add/request-website", s.mustBeLoggedInMiddleware(s.recipesAddRequestWebsiteHandler()))
+	mux.Handle("POST /recipes/add/website", s.mustBeLoggedInMiddleware(s.recipesAddWebsiteHandler()))
+	mux.Handle("POST /recipes/search", s.mustBeLoggedInMiddleware(s.recipesSearchHandler()))
+	mux.Handle("GET /recipes/supported-websites", s.mustBeLoggedInMiddleware(s.recipesSupportedWebsitesHandler()))
 
-			r.Route("/reset", func(r chi.Router) {
-				r.Get("/", forgotPasswordResetHandler)
-				r.Post("/", s.forgotPasswordResetPostHandler)
-			})
-		})
+	// Settings routes
+	mux.Handle("GET /settings", s.mustBeLoggedInMiddleware(s.settingsHandler()))
+	mux.Handle("GET /settings/export/recipes", s.mustBeLoggedInMiddleware(s.settingsExportRecipesHandler()))
+	mux.Handle("POST /settings/calculate-nutrition", s.mustBeLoggedInMiddleware(s.settingsCalculateNutritionPostHandler()))
+	mux.Handle("POST /settings/convert-automatically", s.mustBeLoggedInMiddleware(s.settingsConvertAutomaticallyPostHandler()))
+	mux.Handle("POST /settings/measurement-system", s.mustBeLoggedInMiddleware(s.settingsMeasurementSystemsPostHandler()))
+	mux.Handle("POST /settings/backups/restore", s.mustBeLoggedInMiddleware(s.settingsBackupsRestoreHandler()))
+	mux.Handle("GET /settings/tabs/advanced", s.mustBeLoggedInMiddleware(s.settingsTabsAdvancedHandler()))
+	mux.Handle("GET /settings/tabs/profile", s.mustBeLoggedInMiddleware(settingsTabsProfileHandler()))
+	mux.Handle("GET /settings/tabs/recipes", s.mustBeLoggedInMiddleware(s.settingsTabsRecipesHandler()))
 
-		r.Route("/login", func(r chi.Router) {
-			r.Use(s.redirectIfLoggedInMiddleware)
-
-			r.Get("/", loginHandler)
-			r.Post("/", s.loginPostHandler)
-		})
-
-		r.Route("/register", func(r chi.Router) {
-			r.Use(s.redirectIfLoggedInMiddleware, redirectIfNoSignupsMiddleware)
-
-			r.Get("/", registerHandler)
-			r.Post("/", s.registerPostHandler)
-		})
-
-		r.Post("/logout", s.logoutHandler)
-
-		r.Group(func(r chi.Router) {
-			r.Use(s.mustBeLoggedInMiddleware)
-
-			r.Delete("/user", s.deleteUserHandler)
-		})
-	})
-
-	r.Route("/cookbooks", func(r chi.Router) {
-		r.Use(s.mustBeLoggedInMiddleware)
-
-		r.Get("/", s.cookbooksHandler)
-		r.Post("/", s.cookbooksPostHandler)
-		r.Post("/recipes/search", s.cookbooksRecipesSearchPostHandler)
-
-		r.Route("/{id:[1-9]([0-9])*}", func(r chi.Router) {
-			r.Get("/", s.cookbooksGetCookbookHandler)
-			r.Delete("/", s.cookbooksDeleteCookbookHandler)
-			r.Post("/", s.cookbookPostCookbookHandler)
-			r.Get("/download", s.cookbooksDownloadCookbookHandler)
-			r.Put("/image", s.cookbooksImagePostCookbookHandler)
-			r.Put("/reorder", s.cookbooksPostCookbookReorderHandler)
-			r.Delete("/recipes/{recipeID:[1-9]([0-9])*}", s.cookbooksDeleteCookbookRecipeHandler)
-			r.Post("/share", s.cookbookSharePostHandler)
-		})
-	})
-
-	r.Route("/integrations", func(r chi.Router) {
-		r.Use(s.mustBeLoggedInMiddleware)
-
-		r.Route("/import", func(r chi.Router) {
-			r.Post("/nextcloud", s.integrationsImportNextcloud)
-		})
-	})
-
-	r.Route("/recipes", func(r chi.Router) {
-		r.Use(s.mustBeLoggedInMiddleware)
-
-		r.Get("/", s.recipesHandler)
-
-		r.Route("/{id:[1-9]([0-9])*}", func(r chi.Router) {
-			r.Get("/", s.recipesViewHandler)
-			r.Delete("/", s.recipeDeleteHandler)
-			r.Get("/scale", s.recipeScaleHandler)
-			r.Post("/share", s.recipeSharePostHandler)
-
-			r.Route("/edit", func(r chi.Router) {
-				r.Get("/", s.recipesEditHandler)
-				r.Put("/", s.recipesEditPostHandler)
-			})
-		})
-
-		r.Route("/add", func(r chi.Router) {
-			r.Get("/", recipesAddHandler)
-			r.Post("/import", s.recipesAddImportHandler)
-
-			r.Route("/manual", func(r chi.Router) {
-				r.Get("/", s.recipeAddManualHandler)
-				r.Post("/", s.recipeAddManualPostHandler)
-
-				r.Route("/ingredient", func(r chi.Router) {
-					r.Post("/", recipeAddManualIngredientHandler)
-					r.Post("/{entry:[1-9]([0-9])*}", recipeAddManualIngredientDeleteHandler)
-				})
-
-				r.Route("/instruction", func(r chi.Router) {
-					r.Post("/", recipeAddManualInstructionHandler)
-					r.Post("/{entry:[1-9]([0-9])*}", recipeAddManualInstructionDeleteHandler)
-				})
-			})
-
-			r.Post("/ocr", s.recipesAddOCRHandler)
-			r.Post("/request-website", s.recipesAddRequestWebsiteHandler)
-			r.Post("/website", s.recipesAddWebsiteHandler)
-		})
-
-		r.Post("/search", s.recipesSearchHandler)
-		r.Get("/supported-websites", s.recipesSupportedWebsitesHandler)
-	})
-
-	r.Group(func(r chi.Router) {
-		r.Use(s.mustBeLoggedInMiddleware)
-
-		r.Route("/settings", func(r chi.Router) {
-			r.Get("/", s.settingsHandler)
-
-			r.Route("/export", func(r chi.Router) {
-				r.Get("/recipes", s.settingsExportRecipesHandler)
-			})
-
-			r.Post("/calculate-nutrition", s.settingsCalculateNutritionPostHandler)
-			r.Post("/convert-automatically", s.settingsConvertAutomaticallyPostHandler)
-			r.Post("/measurement-system", s.settingsMeasurementSystemsPostHandler)
-
-			r.Route("/backups", func(r chi.Router) {
-				r.Post("/restore", s.settingsBackupsRestoreHandler)
-			})
-
-			r.Route("/tabs", func(r chi.Router) {
-				r.Get("/advanced", s.settingsTabsAdvancedHandler)
-				r.Get("/profile", settingsTabsProfileHandler)
-				r.Get("/recipes", s.settingsTabsRecipesHandler)
-			})
-		})
-
-		r.Get("/download/{tmpFile}", s.downloadHandler)
-		r.Get("/user-initials", s.userInitialsHandler)
-		r.Get("/ws", s.wsHandler)
-	})
-
-	s.Router = r
+	s.Router = mux
 }
 
 // Run starts the web server.

@@ -26,7 +26,7 @@ templ CookbooksSearchResultsRecipes(data templates.CookbookFeature) {
 									<button
 										class="btn btn-outline btn-sm"
 										hx-post={ fmt.Sprintf("/cookbooks/%d", data.Cookbook.ID) }
-										hx-vals={ fmt.Sprintf(`{"cookbookId": %d, "recipeId": %d}`, data.Cookbook.ID, r.ID) }
+										hx-vals={ fmt.Sprintf(`{ "recipeId": %d}`, data.Cookbook.ID, r.ID) }
 										hx-swap="outerHTML"
 										hx-target="closest .recipe"
 									>

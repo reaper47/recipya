@@ -142,7 +142,7 @@ func (f *Files) Backups(userID int64) []time.Time {
 	}
 
 	backups := make([]time.Time, 0)
-	_ = filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
+	_ = filepath.WalkDir(root, func(_ string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}

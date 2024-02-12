@@ -17,7 +17,7 @@ func main() {
 				Name:    "serve",
 				Aliases: []string{"s"},
 				Usage:   "starts the web server",
-				Action: func(ctx *cli.Context) error {
+				Action: func(_ *cli.Context) error {
 					app.Init()
 					srv := server.NewServer(
 						services.NewSQLiteService(),

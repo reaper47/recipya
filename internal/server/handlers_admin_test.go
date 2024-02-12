@@ -44,11 +44,11 @@ func TestHandlers_Admin_AddUser(t *testing.T) {
 	const uri = "/admin/users"
 
 	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, http.MethodDelete, uri)
+		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
 	})
 
 	t.Run("other users cannot access", func(t *testing.T) {
-		rr := sendRequestAsLoggedInOther(srv, http.MethodDelete, uri, noHeader, nil)
+		rr := sendRequestAsLoggedInOther(srv, http.MethodPost, uri, noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusForbidden)
 		assertStringsInHTML(t, getBodyHTML(rr), []string{"Access denied: You are not an admin."})
