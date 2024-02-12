@@ -704,8 +704,8 @@ func TestScraper_R(t *testing.T) {
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Name:          "Flourless refined sugar free chocolate cake",
-				DatePublished: "2016/06/08",
-				DateModified:  "2016/06/11",
+				DatePublished: "2016-06-08",
+				DateModified:  "2016-06-11",
 				Description: models.Description{
 					Value: "Recipe Flourless refined sugar free chocolate cake by Mixing Adventures, learn to make this recipe easily in your kitchen machine and discover other Thermomix recipes in Baking - sweet.",
 				},

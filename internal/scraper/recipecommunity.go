@@ -15,9 +15,15 @@ func scrapeRecipeCommunity(root *goquery.Document) (models.RecipeSchema, error) 
 	if strings.Contains(datePublished, ":") {
 		datePublished = strings.Trim(strings.Split(datePublished, ":")[1], " ")
 	}
+	if strings.Contains(datePublished, "/") {
+		datePublished = strings.ReplaceAll(datePublished, "/", "-")
+	}
 	dateModified := root.Find(".recipe-summary .changed-date").Text()
 	if strings.Contains(dateModified, ":") {
 		dateModified = strings.Trim(strings.Split(dateModified, ":")[1], " ")
+	}
+	if strings.Contains(dateModified, "/") {
+		dateModified = strings.ReplaceAll(dateModified, "/", "-")
 	}
 	image, _ := root.Find("meta[property='og:image']").Attr("content")
 
