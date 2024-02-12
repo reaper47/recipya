@@ -2,12 +2,69 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "Install Go packages",
+            "type": "shell",
+            "command": "go",
+            "args": [
+                "mod",
+                "tidy",
+            ]
+        },
+        {
             "label": "Build",
             "type": "shell",
+            "dependsOn": "Install Go packages",
             "command": "task",
             "args": [
                 "build-debug"
             ]
+        },
+        {
+            "label": "Test",
+            "type": "shell",
+            "command": "task",
+            "args": [
+                "test-no-build"
+            ]
+        },
+        {
+            "label": "Install NPM packages",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "i",
+            ]
+        },
+        {
+            "label": "Build Javascript",
+            "type": "shell",
+            "dependsOn": "Install NPM packages",
+            "command": "npm",
+            "args": [
+                "run",
+                "build"
+            ]
+        },
+        {
+            "label": "Templ: Watch",
+            "type": "shell",
+            "command": "templ",
+            "args": [
+                "generate",
+                "-watch",
+            ]
+        },
+        {
+            "label": "Hugo: Dev Mode",
+            "type": "shell",
+            "command": "hugo",
+            "args": [
+                "server",
+                "--navigateToChanged",
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/docs/website"
+            },
         }
     ]
 }

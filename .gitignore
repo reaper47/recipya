@@ -9,3 +9,5 @@ static/css/tailwind.css
 web/app/node_modules/
 releases/v*
 data/
+web/components/*_templ.go
+web/components/*_templ.txt
