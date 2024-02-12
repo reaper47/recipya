@@ -29,7 +29,7 @@ var embedMigrations embed.FS
 
 const (
 	shortCtxTimeout  = 3 * time.Second
-	longerCtxTimeout = 1 * time.Minute
+	longerCtxTimeout = 5 * time.Minute
 )
 
 // SQLiteService represents the Service implemented with SQLite.
@@ -143,6 +143,9 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64, settings model
 	ctx, cancel := context.WithTimeout(context.Background(), longerCtxTimeout)
 	defer cancel()
 
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
 	var isRecipeExists bool
 	err := s.DB.QueryRowContext(ctx, statements.IsRecipeForUserExist, userID, r.Name, r.Description, r.Yield, r.URL).Scan(&isRecipeExists)
 	if err != nil {
@@ -150,7 +153,7 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64, settings model
 	}
 
 	if isRecipeExists {
-		return 0, fmt.Errorf("recipe %q exists for user %d", r.Name, userID)
+		return 0, fmt.Errorf("recipe exists for user %d", userID)
 	}
 
 	if settings.ConvertAutomatically {
@@ -159,9 +162,6 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64, settings model
 			r = converted
 		}
 	}
-
-	s.Mutex.Lock()
-	defer s.Mutex.Unlock()
 
 	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{})
 	if err != nil {
@@ -765,7 +765,7 @@ func (s *SQLiteService) InitAutologin() error {
 		log.Println("Created user for autologin with email 'admin@autologin.com' and password 'admin'")
 	}
 
-	return err
+	return nil
 }
 
 // IsUserExist checks whether the user is present in the database.
