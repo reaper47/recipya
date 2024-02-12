@@ -268,16 +268,18 @@ func (s *Server) Run() {
 		serverStopCtx()
 	}()
 
-	err := s.Repository.InitAutologin()
-	if err != nil {
-		fmt.Printf("Could not initialize the autologin feature: %q\n", err)
-		os.Exit(1)
+	if app.Config.Server.IsAutologin {
+		err := s.Repository.InitAutologin()
+		if err != nil {
+			fmt.Printf("Could not initialize the autologin feature: %q\n", err)
+			os.Exit(1)
+		}
 	}
 
 	jobs.ScheduleCronJobs(s.Repository, s.Files, s.Email)
 
 	fmt.Printf("Serving on %s\n", app.Config.Address())
-	err = httpServer.ListenAndServe()
+	err := httpServer.ListenAndServe()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
