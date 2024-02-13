@@ -46,7 +46,7 @@ func (s *Server) adminUsersPostHandler() http.HandlerFunc {
 			return
 		}
 
-		userID, err = s.Repository.Register(email, hashPassword)
+		_, err = s.Repository.Register(email, hashPassword)
 		if err != nil {
 			w.Header().Set("HX-Trigger", makeToast("Failed to add user.", errorToast))
 			w.WriteHeader(http.StatusUnprocessableEntity)

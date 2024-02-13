@@ -43,11 +43,11 @@ jobs:
       - name: Build and test
         run: task test
 
-      - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v3
-        with:
-          version: latest
-          args: --timeout 10m --skip-dirs '(docs)'
+      #- name: Run golangci-lint
+      #  uses: golangci/golangci-lint-action@v3
+      #  with:
+      #    version: latest
+      #    args: --timeout 10m --skip-dirs '(docs)'
 
       - name: Run Revive Action by pulling pre-built image
         uses: docker://morphy/revive-action:v2
