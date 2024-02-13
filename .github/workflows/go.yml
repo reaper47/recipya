@@ -15,7 +15,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
           fetch-depth: 0
@@ -23,8 +23,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: "1.21"
-          cache: false
+          go-version: 1.22
 
       - name: Install templ
         run: go install github.com/a-h/templ/cmd/templ@latest
@@ -41,6 +40,9 @@ jobs:
           version: 3.x
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Build and test
+        run: task test
+
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
@@ -49,6 +51,3 @@ jobs:
 
       - name: Run Revive Action by pulling pre-built image
         uses: docker://morphy/revive-action:v2
-
-      - name: Build and test
-        run: task test

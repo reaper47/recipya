@@ -64,7 +64,7 @@ func ScheduleCronJobs(repo services.RepositoryService, files services.FilesServi
 func cleanImages(dir fs.FS, usedImages []string, rmFileFunc func(path string) error) (numFilesDeleted, numBytesDeleted int64) {
 	sort.Strings(usedImages)
 
-	_ = fs.WalkDir(dir, ".", func(path string, d fs.DirEntry, err error) error {
+	_ = fs.WalkDir(dir, ".", func(path string, d fs.DirEntry, _ error) error {
 		if path == "." {
 			return nil
 		}

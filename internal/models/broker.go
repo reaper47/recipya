@@ -147,7 +147,7 @@ func (b *Broker) ping() {
 }
 
 func (b *Broker) setPingPongHandlers() {
-	b.conn.SetPingHandler(func(message string) error {
+	b.conn.SetPingHandler(func(_ string) error {
 		return b.conn.SetReadDeadline(time.Now().Add(1 * time.Minute))
 	})
 

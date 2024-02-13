@@ -312,7 +312,7 @@ func (m *mockRepository) DeleteRecipe(id, userID int64) (int64, error) {
 	return rowsAffected, nil
 }
 
-func (m *mockRepository) DeleteRecipeFromCookbook(recipeID, cookbookID uint64, userID int64) (int64, error) {
+func (m *mockRepository) DeleteRecipeFromCookbook(recipeID, cookbookID int64, userID int64) (int64, error) {
 	cookbooks, ok := m.CookbooksRegistered[userID]
 	if !ok {
 		return -1, nil
@@ -323,7 +323,7 @@ func (m *mockRepository) DeleteRecipeFromCookbook(recipeID, cookbookID uint64, u
 	}
 
 	i := slices.IndexFunc(cookbooks, func(c models.Cookbook) bool {
-		return uint64(c.ID) == cookbookID
+		return c.ID == cookbookID
 	})
 	if i == -1 {
 		return -1, nil
@@ -331,7 +331,7 @@ func (m *mockRepository) DeleteRecipeFromCookbook(recipeID, cookbookID uint64, u
 	cookbook := cookbooks[i]
 
 	cookbook.Recipes = slices.DeleteFunc(cookbook.Recipes, func(r models.Recipe) bool {
-		return uint64(r.ID) == recipeID
+		return r.ID == recipeID
 	})
 
 	cookbooks[i] = cookbook

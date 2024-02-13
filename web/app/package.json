@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run build:css && npm run build:mjml",
-    "build:css": "tailwind -m -i ../../static/css/tailwind-custom.css --output ../../static/css/tailwind.css",
+    "build:css": "tailwind -m -i ../static/css/tailwind-custom.css --output ../static/css/tailwind.css",
     "build:mjml": "mjml ../emails/error-admin.mjml -o ../emails/transpiled/error-admin.gohtml --config.minify && mjml ../emails/forgot-password.mjml -o ../emails/transpiled/forgot-password.gohtml --config.minify && mjml ../emails/intro.mjml -o ../emails/transpiled/intro.gohtml --config.minify && mjml ../emails/request-website.mjml -o ../emails/transpiled/request-website.gohtml --config.minify"
   },
   "license": "MIT",

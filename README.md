@@ -72,14 +72,15 @@ This project is supported by these kind people:
 # Inspiration
 
 This project was mainly coded to blasting the following albums:
-- [Archspire - Bleed the Future](https://www.youtube.com/watch?v=o8H9ahswldM)
-- [Sonata Arctica - Talviyö](https://www.youtube.com/watch?v=x6rEDMqM36I)
-- [Cattle Decapitation - Terrasite](https://www.youtube.com/watch?v=x6rEDMqM36I)
-- [Mozart - Requiem Dm](https://www.youtube.com/watch?v=pBGVfwOLU1w0)
-- [Ensiferum - From Afar](https://www.youtube.com/watch?v=6r8OPu3SRSM)
-- [Wintersun - Wintersun](https://www.youtube.com/watch?v=W0M3HAMus7g&pp=ygUPd2ludGVyc3VuIGFsYnVt)
-- [Pain - You Only Live Twice](https://www.youtube.com/watch?v=obgCEoLzLs4)
+- [4am](https://www.youtube.com/watch?v=tBcPji_jRDc)
 - [Abysmal Dawn - Phylogenesis](https://www.youtube.com/watch?v=xJMybqRMedk&pp=ygUMYWJ5c21hbCBkYXdu)
+- [Archspire - Bleed the Future](https://www.youtube.com/watch?v=o8H9ahswldM)
+- [Beast In Black - Dark Connection](https://www.youtube.com/watch?v=7NyON-NzBr4)
+- [Cattle Decapitation - Terrasite](https://www.youtube.com/watch?v=x6rEDMqM36I)
+- [Ensiferum - From Afar](https://www.youtube.com/watch?v=6r8OPu3SRSM)
 - [Lofi Girl - lofi hip hop radio](https://www.youtube.com/watch?v=jfKfPfyJRdk)
 - [Lofi Girl - synthwave radio](https://www.youtube.com/watch?v=4xDzrJKXOOY)
-- [4am](https://www.youtube.com/watch?v=tBcPji_jRDc)
+- [Mozart - Requiem Dm](https://www.youtube.com/watch?v=pBGVfwOLU1w0)
+- [Pain - You Only Live Twice](https://www.youtube.com/watch?v=obgCEoLzLs4)
+- [Sonata Arctica - Talviyö](https://www.youtube.com/watch?v=x6rEDMqM36I)
+- [Wintersun - Wintersun](https://www.youtube.com/watch?v=W0M3HAMus7g&pp=ygUPd2ludGVyc3VuIGFsYnVt)

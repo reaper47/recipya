@@ -49,6 +49,7 @@ type AboutData struct {
 	Version string
 }
 
+// AdminData holds data for the admin page.
 type AdminData struct {
 	Users []models.User
 }
