@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/reaper47/recipya/internal/models"
 	"net/http"
+	"strconv"
 )
 
 type toast string
@@ -50,4 +51,12 @@ func (s *Server) findUserID(r *http.Request) (int64, bool) {
 		}
 	}
 	return userID, isLoggedIn
+}
+
+func parsePathPositiveID(value string) (int64, error) {
+	id, err := strconv.ParseInt(value, 10, 64)
+	if err != nil || id <= 0 {
+		return 0, err
+	}
+	return id, nil
 }

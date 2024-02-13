@@ -76,7 +76,7 @@ type RepositoryService interface {
 	DeleteRecipe(id, userID int64) (int64, error)
 
 	// DeleteRecipeFromCookbook deletes a recipe from a cookbook. It returns the number of recipes in the cookbook.
-	DeleteRecipeFromCookbook(recipeID, cookbookID uint64, userID int64) (int64, error)
+	DeleteRecipeFromCookbook(recipeID, cookbookID int64, userID int64) (int64, error)
 
 	// DeleteUser deletes a user and his or her data.
 	DeleteUser(id int64) error

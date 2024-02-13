@@ -60,7 +60,7 @@ func NextcloudImport(baseURL, username, password string, uploadImageFunc func(rc
 			}()
 
 			url := fmt.Sprintf("%s%s/recipes/%d", baseURL, baseURLNextcloud, r.ID)
-			res, err := sendBasicAuthRequest(client, url, header)
+			res, err := sendBasicAuthRequest(client, url, authHeader)
 			if err != nil {
 				return
 			}
@@ -82,7 +82,7 @@ func NextcloudImport(baseURL, username, password string, uploadImageFunc func(rc
 			recipes[i] = *recipe
 
 			url = fmt.Sprintf("%s/image?size=thumb", url)
-			imageRes, err := sendBasicAuthRequest(client, url, header)
+			imageRes, err := sendBasicAuthRequest(client, url, authHeader)
 			if err != nil {
 				return
 			}

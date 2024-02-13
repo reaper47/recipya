@@ -2,7 +2,6 @@ package server
 
 import (
 	"fmt"
-	"github.com/go-chi/chi/v5"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
@@ -47,184 +46,189 @@ func (s *Server) cookbookShareHandler(w http.ResponseWriter, r *http.Request) {
 	}).Render(r.Context(), w)
 }
 
-func (s *Server) cookbooksHandler(w http.ResponseWriter, r *http.Request) {
-	query := r.URL.Query()
-	if query == nil {
-		w.Header().Set("HX-Trigger", makeToast("Could not parse query.", errorToast))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
+func (s *Server) cookbooksHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		query := r.URL.Query()
+		if query == nil {
+			w.Header().Set("HX-Trigger", makeToast("Could not parse query.", errorToast))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
 
-	userID := getUserID(r)
-	view := query.Get("view")
-	if view != "" {
-		mode := models.ViewModeFromString(view)
-		err := s.Repository.UpdateUserSettingsCookbooksViewMode(userID, mode)
+		userID := getUserID(r)
+		view := query.Get("view")
+		if view != "" {
+			mode := models.ViewModeFromString(view)
+			err := s.Repository.UpdateUserSettingsCookbooksViewMode(userID, mode)
+			if err != nil {
+				w.Header().Set("HX-Trigger", makeToast("Error updating user settings.", errorToast))
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
+		}
+
+		settings, err := s.Repository.UserSettings(userID)
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Error updating user settings.", errorToast))
+			w.Header().Set("HX-Trigger", makeToast("Could not get user settings.", errorToast))
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-	}
 
-	settings, err := s.Repository.UserSettings(userID)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Could not get user settings.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
+		page, err := strconv.ParseUint(query.Get("page"), 10, 64)
+		if err != nil {
+			page = 1
+		}
 
-	page, err := strconv.ParseUint(query.Get("page"), 10, 64)
-	if err != nil {
-		page = 1
-	}
+		cookbooks, err := s.Repository.Cookbooks(userID, page)
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Error getting cookbooks.", errorToast))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 
-	cookbooks, err := s.Repository.Cookbooks(userID, page)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Error getting cookbooks.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
+		p, err := newCookbooksPagination(s, w, userID, page, false)
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Error updating pagination.", errorToast))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 
-	p, err := newCookbooksPagination(s, w, userID, page, false)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Error updating pagination.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	_ = components.CookbooksIndex(templates.Data{
-		About: templates.AboutData{
-			Version: app.Version,
-		},
-		CookbookFeature: templates.CookbookFeature{
-			Cookbooks: cookbooks,
-			MakeCookbook: func(index int64, cookbook models.Cookbook, page uint64) templates.CookbookView {
-				return templates.MakeCookbookView(cookbook, index, page)
+		_ = components.CookbooksIndex(templates.Data{
+			About: templates.AboutData{
+				Version: app.Version,
 			},
-			ShareData: templates.ShareData{IsFromHost: true},
-			ViewMode:  settings.CookbooksViewMode,
-		},
-		IsAdmin:         userID == 1,
-		IsAuthenticated: true,
-		IsHxRequest:     r.Header.Get("Hx-Request") == "true",
-		Title:           "Cookbooks",
-		Pagination:      p,
-	}).Render(r.Context(), w)
-}
-
-func (s *Server) cookbooksPostHandler(w http.ResponseWriter, r *http.Request) {
-	title := r.Header.Get("HX-Prompt")
-	if title == "" {
-		w.Header().Set("HX-Trigger", makeToast("Title must not be empty.", errorToast))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	userID := getUserID(r)
-	cookbookID, err := s.Repository.AddCookbook(title, userID)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Could not create cookbook.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	settings, err := s.Repository.UserSettings(userID)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Could not get user settings.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	query := r.URL.Query()
-	if query == nil {
-		w.Header().Set("HX-Trigger", makeToast("Query is empty.", errorToast))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	pageStr := query.Get("page")
-	page, err := strconv.ParseUint(pageStr, 10, 64)
-	if err != nil {
-		page = 1
-	}
-
-	p, err := newCookbooksPagination(s, w, userID, page, true)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Error updating pagination.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	if p.NumResults == 1 {
-		s.cookbooksHandler(w, r)
-		return
-	}
-
-	w.WriteHeader(http.StatusCreated)
-
-	data := templates.Data{
-		CookbookFeature: templates.CookbookFeature{
-			Cookbook: templates.CookbookView{
-				ID:         cookbookID,
-				PageItemID: int64(p.NumResults),
-				PageNumber: page,
-				Title:      title,
+			CookbookFeature: templates.CookbookFeature{
+				Cookbooks: cookbooks,
+				MakeCookbook: func(index int64, cookbook models.Cookbook, page uint64) templates.CookbookView {
+					return templates.MakeCookbookView(cookbook, index, page)
+				},
+				ShareData: templates.ShareData{IsFromHost: true},
+				ViewMode:  settings.CookbooksViewMode,
 			},
-			ShareData: templates.ShareData{IsFromHost: true},
-		},
-		Pagination: p,
-	}
-
-	if settings.CookbooksViewMode == models.GridViewMode {
-		_ = components.CookbookGridAdd(data).Render(r.Context(), w)
-	} else {
-		_ = components.CookbookListAdd(data).Render(r.Context(), w)
+			IsAdmin:         userID == 1,
+			IsAuthenticated: true,
+			IsHxRequest:     r.Header.Get("Hx-Request") == "true",
+			Title:           "Cookbooks",
+			Pagination:      p,
+		}).Render(r.Context(), w)
 	}
 }
 
-func (s *Server) cookbooksDeleteCookbookHandler(w http.ResponseWriter, r *http.Request) {
-	cookbookIDStr := chi.URLParam(r, "id")
-	cookbookID, err := strconv.ParseInt(cookbookIDStr, 10, 64)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
+func (s *Server) cookbooksPostHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		title := r.Header.Get("HX-Prompt")
+		if title == "" {
+			w.Header().Set("HX-Trigger", makeToast("Title must not be empty.", errorToast))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
 
-	query := r.URL.Query()
-	if query == nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
+		userID := getUserID(r)
+		cookbookID, err := s.Repository.AddCookbook(title, userID)
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Could not create cookbook.", errorToast))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 
-	userID := getUserID(r)
-	pageStr := query.Get("page")
-	page, err := strconv.ParseUint(pageStr, 10, 64)
-	if err != nil {
-		page = 1
-	}
+		settings, err := s.Repository.UserSettings(userID)
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Could not get user settings.", errorToast))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 
-	err = s.Repository.DeleteCookbook(cookbookID, userID)
-	if err != nil {
-		// TODO: Log it with slog
-		w.Header().Set("HX-Trigger", makeToast("Error deleting cookbook.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
+		query := r.URL.Query()
+		if query == nil {
+			w.Header().Set("HX-Trigger", makeToast("Query is empty.", errorToast))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
 
-	p, err := newCookbooksPagination(s, w, userID, page, true)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Error updating pagination.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
+		pageStr := query.Get("page")
+		page, err := strconv.ParseUint(pageStr, 10, 64)
+		if err != nil {
+			page = 1
+		}
 
-	if p.NumResults == 0 {
-		w.Header().Set("HX-Refresh", "true")
-		return
-	}
+		p, err := newCookbooksPagination(s, w, userID, page, true)
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Error updating pagination.", errorToast))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 
-	_ = components.Pagination(p).Render(r.Context(), w)
+		if p.NumResults == 1 {
+			s.cookbooksHandler().ServeHTTP(w, r)
+			return
+		}
+
+		w.WriteHeader(http.StatusCreated)
+
+		data := templates.Data{
+			CookbookFeature: templates.CookbookFeature{
+				Cookbook: templates.CookbookView{
+					ID:         cookbookID,
+					PageItemID: int64(p.NumResults),
+					PageNumber: page,
+					Title:      title,
+				},
+				ShareData: templates.ShareData{IsFromHost: true},
+			},
+			Pagination: p,
+		}
+
+		if settings.CookbooksViewMode == models.GridViewMode {
+			_ = components.CookbookGridAdd(data).Render(r.Context(), w)
+		} else {
+			_ = components.CookbookListAdd(data).Render(r.Context(), w)
+		}
+	}
+}
+
+func (s *Server) cookbooksDeleteCookbookHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		cookbookID, err := parsePathPositiveID(r.PathValue("id"))
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		query := r.URL.Query()
+		if query == nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		userID := getUserID(r)
+		pageStr := query.Get("page")
+		page, err := strconv.ParseUint(pageStr, 10, 64)
+		if err != nil {
+			page = 1
+		}
+
+		err = s.Repository.DeleteCookbook(cookbookID, userID)
+		if err != nil {
+			// TODO: Log it with slog
+			w.Header().Set("HX-Trigger", makeToast("Error deleting cookbook.", errorToast))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		p, err := newCookbooksPagination(s, w, userID, page, true)
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Error updating pagination.", errorToast))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		if p.NumResults == 0 {
+			w.Header().Set("HX-Refresh", "true")
+			return
+		}
+
+		_ = components.Pagination(p).Render(r.Context(), w)
+	}
 }
 
 func newCookbooksPagination(srv *Server, w http.ResponseWriter, userID int64, page uint64, isSwap bool) (templates.Pagination, error) {
@@ -243,320 +247,333 @@ func newCookbooksPagination(srv *Server, w http.ResponseWriter, userID int64, pa
 	return templates.NewPagination(page, numPages, counts.Cookbooks, templates.ResultsPerPage, "/cookbooks", isSwap), nil
 }
 
-func (s *Server) cookbooksDeleteCookbookRecipeHandler(w http.ResponseWriter, r *http.Request) {
-	cookbookIDStr := chi.URLParam(r, "id")
-	cookbookID, err := strconv.ParseUint(cookbookIDStr, 10, 64)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Cookbook ID in the URL must be >= 0.", errorToast))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	recipeIDStr := chi.URLParam(r, "recipeID")
-	recipeID, err := strconv.ParseUint(recipeIDStr, 10, 64)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Recipe ID in the URL must be >= 0.", errorToast))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	userID := getUserID(r)
-
-	numRecipes, err := s.Repository.DeleteRecipeFromCookbook(recipeID, cookbookID, userID)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Error deleting recipe from cookbook.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	if numRecipes == 0 {
-		_ = components.CookbookIndexNoRecipes(true).Render(r.Context(), w)
-	}
-}
-
-func (s *Server) cookbooksDownloadCookbookHandler(w http.ResponseWriter, r *http.Request) {
-	cookbookID, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Could not parse cookbook ID.", errorToast))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	cookbook, err := s.Repository.Cookbook(cookbookID, getUserID(r))
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Could not fetch cookbook.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	if len(cookbook.Recipes) == 0 {
-		w.Header().Set("HX-Trigger", makeToast("Cookbook is empty.", errorToast))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	fileName, err := s.Files.ExportCookbook(cookbook, models.PDF)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Failed to export cookbook.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("HX-Redirect", "/download/"+fileName)
-	w.WriteHeader(http.StatusSeeOther)
-}
-
-func (s *Server) cookbooksGetCookbookHandler(w http.ResponseWriter, r *http.Request) {
-	query := r.URL.Query()
-	if query == nil {
-		w.Header().Set("HX-Trigger", makeToast("Could not parse query.", errorToast))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	isHxRequest := r.Header.Get("Hx-Request") == "true"
-
-	page, err := strconv.ParseUint(query.Get("page"), 10, 64)
-	if err != nil {
-		if !isHxRequest {
-			http.Redirect(w, r, "/cookbooks", http.StatusSeeOther)
-			return
-		}
-
-		w.Header().Set("HX-Trigger", makeToast("Missing page query parameter.", errorToast))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	cookbook, err := s.Repository.Cookbook(id, getUserID(r))
-	if err != nil {
-		// TODO: Create an error type to differentiate between http.StatusNotFound and http.StatusInternalServerError
-		http.NotFound(w, r)
-		return
-	}
-
-	_ = components.CookbookIndex(templates.Data{
-		About:           templates.NewAboutData(),
-		IsAdmin:         getUserID(r) == 1,
-		IsAuthenticated: true,
-		IsHxRequest:     isHxRequest,
-		Functions:       templates.NewFunctionsData[int64](),
-		CookbookFeature: templates.CookbookFeature{
-			Cookbook:  templates.MakeCookbookView(cookbook, id-1, page),
-			ShareData: templates.ShareData{IsFromHost: true},
-		},
-		Title: cookbook.Title,
-	}).Render(r.Context(), w)
-}
-
-func (s *Server) cookbooksImagePostCookbookHandler(w http.ResponseWriter, r *http.Request) {
-	cookbookIDStr := chi.URLParam(r, "id")
-	cookbookID, err := strconv.ParseInt(cookbookIDStr, 10, 64)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	r.Body = http.MaxBytesReader(w, r.Body, 128<<20)
-
-	err = r.ParseMultipartForm(128 << 20)
-	form := r.MultipartForm
-	if err != nil || form == nil || form.File == nil {
-		w.Header().Set("HX-Trigger", makeToast("Could not parse the uploaded image.", errorToast))
-		return
-	}
-
-	imageFile, ok := form.File["image"]
-	if !ok {
-		w.Header().Set("HX-Trigger", makeToast("Could not retrieve the image from the form.", errorToast))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	f, err := imageFile[0].Open()
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Could not open the image from the form.", errorToast))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	defer func() {
-		_ = f.Close()
-	}()
-
-	imageUUID, err := s.Files.UploadImage(f)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Error uploading image.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	userID := getUserID(r)
-	err = s.Repository.UpdateCookbookImage(cookbookID, imageUUID, userID)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Error updating the cookbook's image.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	w.WriteHeader(http.StatusCreated)
-}
-
-func (s *Server) cookbookPostCookbookHandler(w http.ResponseWriter, r *http.Request) {
-	cookbookIDStr := r.FormValue("cookbookId")
-	cookbookID, err := strconv.ParseInt(cookbookIDStr, 10, 64)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Missing 'cookbookId' in body.", errorToast))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	recipeIDStr := r.FormValue("recipeId")
-	recipeID, err := strconv.ParseInt(recipeIDStr, 10, 64)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Missing 'recipeId' in body.", errorToast))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	userID := getUserID(r)
-	err = s.Repository.AddCookbookRecipe(cookbookID, recipeID, userID)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Could not add recipe to cookbook.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	w.WriteHeader(http.StatusCreated)
-}
-
-func (s *Server) cookbooksRecipesSearchPostHandler(w http.ResponseWriter, r *http.Request) {
-	cookbookID := r.FormValue("id")
-	id, err := strconv.ParseInt(cookbookID, 10, 64)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Missing cookbook ID in body.", errorToast))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	page, err := strconv.ParseUint(r.FormValue("page"), 10, 64)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Missing page number in body.", errorToast))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	userID := getUserID(r)
-
-	cookbook, err := s.Repository.Cookbook(id, userID)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Error getting cookbooks.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	q := r.FormValue("q")
-	q = strings.TrimSpace(q)
-	if q == "" {
-		_ = components.CookbookRecipes(templates.CookbookFeature{
-			Cookbook:  templates.MakeCookbookView(cookbook, 1, page),
-			ShareData: templates.ShareData{IsFromHost: true},
-		}).Render(r.Context(), w)
-		return
-	}
-
-	recipes, err := s.Repository.SearchRecipes(q, models.SearchOptionsRecipes{ByName: true}, userID)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Error searching recipes.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	recipes = slices.DeleteFunc(recipes, func(r1 models.Recipe) bool {
-		return slices.ContainsFunc(cookbook.Recipes, func(r2 models.Recipe) bool {
-			return r1.ID == r2.ID
-		})
-	})
-
-	if len(recipes) == 0 {
-		_ = components.SearchNoResult().Render(r.Context(), w)
-		return
-	}
-
-	_ = components.CookbooksSearchResultsRecipes(templates.CookbookFeature{
-		Cookbook: templates.CookbookView{
-			ID:         cookbook.ID,
-			PageItemID: id,
-			PageNumber: page,
-			Recipes:    recipes,
-		},
-	}).Render(r.Context(), w)
-}
-
-func (s *Server) cookbooksPostCookbookReorderHandler(w http.ResponseWriter, r *http.Request) {
-	cookbookIDStr := r.FormValue("cookbook-id")
-	cookbookID, err := strconv.ParseInt(cookbookIDStr, 10, 64)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Missing cookbook ID in body.", errorToast))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	userID := getUserID(r)
-
-	recipeIDsStr := r.Form["recipe-id"]
-	if len(recipeIDsStr) == 0 {
-		w.Header().Set("HX-Trigger", makeToast("Missing recipe IDs in body.", errorToast))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	recipeIDs := make([]uint64, len(recipeIDsStr))
-	for i, s := range recipeIDsStr {
-		id, err := strconv.ParseUint(s, 10, 64)
+func (s *Server) cookbooksDeleteCookbookRecipeHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		cookbookID, err := parsePathPositiveID(r.PathValue("id"))
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast(fmt.Sprintf("Recipe ID %q is invalid.", s), errorToast))
+			w.Header().Set("HX-Trigger", makeToast("Cookbook ID in the URL must be >= 0.", errorToast))
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		recipeIDs[i] = id
-	}
 
-	err = s.Repository.ReorderCookbookRecipes(cookbookID, recipeIDs, userID)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Failed to update indices.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
+		recipeID, err := parsePathPositiveID(r.PathValue("recipeID"))
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Recipe ID in the URL must be >= 0.", errorToast))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
 
-	w.WriteHeader(http.StatusNoContent)
+		userID := getUserID(r)
+
+		numRecipes, err := s.Repository.DeleteRecipeFromCookbook(recipeID, cookbookID, userID)
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Error deleting recipe from cookbook.", errorToast))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		if numRecipes == 0 {
+			_ = components.CookbookIndexNoRecipes(true).Render(r.Context(), w)
+		}
+	}
 }
 
-func (s *Server) cookbookSharePostHandler(w http.ResponseWriter, r *http.Request) {
-	cookbookIDStr := chi.URLParam(r, "id")
-	cookbookID, err := strconv.ParseInt(cookbookIDStr, 10, 64)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Cookbook ID must be positive.", errorToast))
-		w.WriteHeader(http.StatusBadRequest)
-		return
+func (s *Server) cookbooksDownloadCookbookHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		cookbookID, err := parsePathPositiveID(r.PathValue("id"))
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Could not parse cookbook ID.", errorToast))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		cookbook, err := s.Repository.Cookbook(cookbookID, getUserID(r))
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Could not fetch cookbook.", errorToast))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		if len(cookbook.Recipes) == 0 {
+			w.Header().Set("HX-Trigger", makeToast("Cookbook is empty.", errorToast))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		fileName, err := s.Files.ExportCookbook(cookbook, models.PDF)
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Failed to export cookbook.", errorToast))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("HX-Redirect", "/download/"+fileName)
+		w.WriteHeader(http.StatusSeeOther)
 	}
+}
 
-	userID := getUserID(r)
-	share := models.Share{CookbookID: cookbookID, RecipeID: -1, UserID: userID}
+func (s *Server) cookbooksGetCookbookHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		query := r.URL.Query()
+		if query == nil {
+			w.Header().Set("HX-Trigger", makeToast("Could not parse query.", errorToast))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
 
-	link, err := s.Repository.AddShareLink(share)
-	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Failed to create share link.", errorToast))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
+		id, err := parsePathPositiveID(r.PathValue("id"))
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		isHxRequest := r.Header.Get("Hx-Request") == "true"
+
+		page, err := strconv.ParseUint(query.Get("page"), 10, 64)
+		if err != nil {
+			if !isHxRequest {
+				http.Redirect(w, r, "/cookbooks", http.StatusSeeOther)
+				return
+			}
+
+			w.Header().Set("HX-Trigger", makeToast("Missing page query parameter.", errorToast))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		cookbook, err := s.Repository.Cookbook(id, getUserID(r))
+		if err != nil {
+			// TODO: Create an error type to differentiate between http.StatusNotFound and http.StatusInternalServerError
+			http.NotFound(w, r)
+			return
+		}
+
+		_ = components.CookbookIndex(templates.Data{
+			About:           templates.NewAboutData(),
+			IsAdmin:         getUserID(r) == 1,
+			IsAuthenticated: true,
+			IsHxRequest:     isHxRequest,
+			Functions:       templates.NewFunctionsData[int64](),
+			CookbookFeature: templates.CookbookFeature{
+				Cookbook:  templates.MakeCookbookView(cookbook, id-1, page),
+				ShareData: templates.ShareData{IsFromHost: true},
+			},
+			Title: cookbook.Title,
+		}).Render(r.Context(), w)
 	}
+}
 
-	_ = components.ShareLink(templates.Data{
-		Content: r.Host + link,
-	}).Render(r.Context(), w)
+func (s *Server) cookbooksImagePostCookbookHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		cookbookID, err := parsePathPositiveID(r.PathValue("id"))
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		r.Body = http.MaxBytesReader(w, r.Body, 128<<20)
+
+		err = r.ParseMultipartForm(128 << 20)
+		form := r.MultipartForm
+		if err != nil || form == nil || form.File == nil {
+			w.Header().Set("HX-Trigger", makeToast("Could not parse the uploaded image.", errorToast))
+			return
+		}
+
+		imageFile, ok := form.File["image"]
+		if !ok {
+			w.Header().Set("HX-Trigger", makeToast("Could not retrieve the image from the form.", errorToast))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		f, err := imageFile[0].Open()
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Could not open the image from the form.", errorToast))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		defer func() {
+			_ = f.Close()
+		}()
+
+		imageUUID, err := s.Files.UploadImage(f)
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Error uploading image.", errorToast))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		userID := getUserID(r)
+		err = s.Repository.UpdateCookbookImage(cookbookID, imageUUID, userID)
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Error updating the cookbook's image.", errorToast))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		w.WriteHeader(http.StatusCreated)
+	}
+}
+
+func (s *Server) cookbookPostCookbookHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		cookbookID, err := parsePathPositiveID(r.PathValue("id"))
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Missing 'cookbookId' in body.", errorToast))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		recipeIDStr := r.FormValue("recipeId")
+		recipeID, err := strconv.ParseInt(recipeIDStr, 10, 64)
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Missing 'recipeId' in body.", errorToast))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		userID := getUserID(r)
+		err = s.Repository.AddCookbookRecipe(cookbookID, recipeID, userID)
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Could not add recipe to cookbook.", errorToast))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		w.WriteHeader(http.StatusCreated)
+	}
+}
+
+func (s *Server) cookbooksRecipesSearchPostHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		cookbookID := r.FormValue("id")
+		id, err := strconv.ParseInt(cookbookID, 10, 64)
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Missing cookbook ID in body.", errorToast))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		page, err := strconv.ParseUint(r.FormValue("page"), 10, 64)
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Missing page number in body.", errorToast))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		userID := getUserID(r)
+
+		cookbook, err := s.Repository.Cookbook(id, userID)
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Error getting cookbooks.", errorToast))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		q := r.FormValue("q")
+		q = strings.TrimSpace(q)
+		if q == "" {
+			_ = components.CookbookRecipes(templates.CookbookFeature{
+				Cookbook:  templates.MakeCookbookView(cookbook, 1, page),
+				ShareData: templates.ShareData{IsFromHost: true},
+			}).Render(r.Context(), w)
+			return
+		}
+
+		recipes, err := s.Repository.SearchRecipes(q, models.SearchOptionsRecipes{ByName: true}, userID)
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Error searching recipes.", errorToast))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		recipes = slices.DeleteFunc(recipes, func(r1 models.Recipe) bool {
+			return slices.ContainsFunc(cookbook.Recipes, func(r2 models.Recipe) bool {
+				return r1.ID == r2.ID
+			})
+		})
+
+		if len(recipes) == 0 {
+			_ = components.SearchNoResult().Render(r.Context(), w)
+			return
+		}
+
+		_ = components.CookbooksSearchResultsRecipes(templates.CookbookFeature{
+			Cookbook: templates.CookbookView{
+				ID:         cookbook.ID,
+				PageItemID: id,
+				PageNumber: page,
+				Recipes:    recipes,
+			},
+		}).Render(r.Context(), w)
+	}
+}
+
+func (s *Server) cookbooksPostCookbookReorderHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		cookbookID, err := parsePathPositiveID(r.PathValue("id"))
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Missing cookbook ID in body.", errorToast))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		err = r.ParseForm()
+		if err != nil {
+			return
+		}
+
+		recipeIDsStr := r.Form["recipe-id"]
+		if len(recipeIDsStr) == 0 {
+			w.Header().Set("HX-Trigger", makeToast("Missing recipe IDs in body.", errorToast))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		recipeIDs := make([]uint64, len(recipeIDsStr))
+		for i, s := range recipeIDsStr {
+			id, err := strconv.ParseUint(s, 10, 64)
+			if err != nil {
+				w.Header().Set("HX-Trigger", makeToast(fmt.Sprintf("Recipe ID %q is invalid.", s), errorToast))
+				w.WriteHeader(http.StatusBadRequest)
+				return
+			}
+			recipeIDs[i] = id
+		}
+
+		err = s.Repository.ReorderCookbookRecipes(cookbookID, recipeIDs, getUserID(r))
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Failed to update indices.", errorToast))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		w.WriteHeader(http.StatusNoContent)
+	}
+}
+
+func (s *Server) cookbookSharePostHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		cookbookID, err := parsePathPositiveID(r.PathValue("id"))
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Cookbook ID must be positive.", errorToast))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		userID := getUserID(r)
+		share := models.Share{CookbookID: cookbookID, RecipeID: -1, UserID: userID}
+
+		link, err := s.Repository.AddShareLink(share)
+		if err != nil {
+			w.Header().Set("HX-Trigger", makeToast("Failed to create share link.", errorToast))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		_ = components.ShareLink(templates.Data{
+			Content: r.Host + link,
+		}).Render(r.Context(), w)
+	}
 }

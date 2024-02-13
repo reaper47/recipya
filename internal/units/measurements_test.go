@@ -830,7 +830,6 @@ func TestNewScaledMeasurementFromString(t *testing.T) {
 		},
 	}
 	for _, tc := range testcases {
-		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
@@ -1151,7 +1150,6 @@ func TestNewTokenizedIngredientFromText(t *testing.T) {
 		},
 	}
 	for _, tc := range testcases {
-		tc := tc
 		t.Run(tc.sentence, func(t *testing.T) {
 			t.Parallel()
 

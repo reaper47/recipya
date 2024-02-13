@@ -25,7 +25,7 @@ func scrapeWoop(root *goquery.Document) (rs models.RecipeSchema, err error) {
 	})
 
 	instructions := make([]string, 0)
-	root.Find(".cooking-instructions li").Each(func(i int, s *goquery.Selection) {
+	root.Find(".cooking-instructions li").Each(func(_ int, s *goquery.Selection) {
 		v := strings.TrimSpace(s.Text())
 		if v != "" {
 			instructions = append(instructions, v)

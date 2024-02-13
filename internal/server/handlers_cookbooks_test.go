@@ -371,30 +371,12 @@ func TestHandlers_Cookbooks_AddRecipe(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodPost, uri(1))
 	})
 
-	testcases := []struct {
-		name      string
-		form      string
-		wantToast string
-	}{
-		{
-			name:      "cookbookID missing in form",
-			form:      "recipeId=1",
-			wantToast: "Missing 'cookbookId' in body.",
-		},
-		{
-			name:      "recipeID missing in form",
-			form:      "cookbookId=1",
-			wantToast: "Missing 'recipeId' in body.",
-		},
-	}
-	for _, tc := range testcases {
-		t.Run(tc.name, func(t *testing.T) {
-			rr := sendRequestAsLoggedIn(srv, http.MethodPost, uri(1), formHeader, strings.NewReader(tc.form))
+	t.Run("recipeID missing in form", func(t *testing.T) {
+		rr := sendRequestAsLoggedIn(srv, http.MethodPost, uri(1), formHeader, strings.NewReader("cookbookId=1"))
 
-			assertStatus(t, rr.Code, http.StatusBadRequest)
-			assertHeader(t, rr, "HX-Trigger", fmt.Sprintf(`{"showToast":"{\"message\":\"%s\",\"backgroundColor\":\"alert-error\"}"}`, tc.wantToast))
-		})
-	}
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Missing 'recipeId' in body.\",\"backgroundColor\":\"alert-error\"}"}`)
+	})
 
 	t.Run("valid request", func(t *testing.T) {
 		recipes := models.Recipes{
@@ -414,7 +396,7 @@ func TestHandlers_Cookbooks_AddRecipe(t *testing.T) {
 		srv.Repository = repo
 		defer revert()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri(1), formHeader, strings.NewReader("cookbookId=2&recipeId=2"))
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri(2), formHeader, strings.NewReader("recipeId=2"))
 
 		assertStatus(t, rr.Code, http.StatusCreated)
 		want := []models.Cookbook{
@@ -618,7 +600,7 @@ func TestHandlers_Cookbooks_Image(t *testing.T) {
 	}
 
 	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, http.MethodDelete, uri(1))
+		assertMustBeLoggedIn(t, srv, http.MethodPut, uri(1))
 	})
 
 	t.Run("empty image in form", func(t *testing.T) {
@@ -757,19 +739,19 @@ func TestHandlers_Cookbooks_RecipesSearch(t *testing.T) {
 		{
 			query: "lov",
 			want: []string{
-				`<article class="grid gap-8 p-4 text-sm justify-center md:p-0 md:text-base"><ul class="cookbooks-display grid gap-2 p-2 md:p-0 text-sm md:text-base"><li class="indicator recipe cookbook"><div class="card card-side card-bordered card-compact bg-base-100 shadow-lg w-[30rem]"><figure class="w-32"><img src="/data/images/00000000-0000-0000-0000-000000000000.jpg" alt="Recipe image" class="object-cover"></figure><div class="card-body"><h2 class="card-title">Lovely Xenophobia</h2><p></p><div><p class="text-sm pb-1">Category:</p><div class="badge badge-primary badge-"></div></div><div class="card-actions justify-end"><button class="btn btn-outline btn-sm" hx-post="/cookbooks/1" hx-vals="{"cookbookId": 1, "recipeId": 2}" hx-swap="outerHTML" hx-target="closest .recipe">Add</button></div></div></div></li></ul></article>`,
+				`<article class="grid gap-8 p-4 text-sm justify-center md:p-0 md:text-base"><ul class="cookbooks-display grid gap-2 p-2 md:p-0 text-sm md:text-base"><li class="indicator recipe cookbook"><div class="card card-side card-bordered card-compact bg-base-100 shadow-lg w-[30rem]"><figure class="w-32"><img src="/data/images/00000000-0000-0000-0000-000000000000.jpg" alt="Recipe image" class="object-cover"></figure><div class="card-body"><h2 class="card-title">Lovely Xenophobia</h2><p></p><div><p class="text-sm pb-1">Category:</p><div class="badge badge-primary badge-"></div></div><div class="card-actions justify-end"><button class="btn btn-outline btn-sm" hx-post="/cookbooks/1" hx-vals="{"recipeId": 2}" hx-swap="outerHTML" hx-target="closest .recipe">Add</button></div></div></div></li></ul></article>`,
 			},
 		},
 		{
 			query: "chi",
 			want: []string{
-				`<article class="grid gap-8 p-4 text-sm justify-center md:p-0 md:text-base"><ul class="cookbooks-display grid gap-2 p-2 md:p-0 text-sm md:text-base"><li class="indicator recipe cookbook"><div class="card card-side card-bordered card-compact bg-base-100 shadow-lg w-[30rem]"><figure class="w-32"><img src="/data/images/00000000-0000-0000-0000-000000000000.jpg" alt="Recipe image" class="object-cover"></figure><div class="card-body"><h2 class="card-title">Chicken</h2><p></p><div><p class="text-sm pb-1">Category:</p><div class="badge badge-primary badge-"></div></div><div class="card-actions justify-end"><button class="btn btn-outline btn-sm" hx-post="/cookbooks/1" hx-vals="{"cookbookId": 1, "recipeId": 1}" hx-swap="outerHTML" hx-target="closest .recipe">Add</button></div></div></div></li></ul></article>`,
+				`<article class="grid gap-8 p-4 text-sm justify-center md:p-0 md:text-base"><ul class="cookbooks-display grid gap-2 p-2 md:p-0 text-sm md:text-base"><li class="indicator recipe cookbook"><div class="card card-side card-bordered card-compact bg-base-100 shadow-lg w-[30rem]"><figure class="w-32"><img src="/data/images/00000000-0000-0000-0000-000000000000.jpg" alt="Recipe image" class="object-cover"></figure><div class="card-body"><h2 class="card-title">Chicken</h2><p></p><div><p class="text-sm pb-1">Category:</p><div class="badge badge-primary badge-"></div></div><div class="card-actions justify-end"><button class="btn btn-outline btn-sm" hx-post="/cookbooks/1" hx-vals="{"recipeId": 1}" hx-swap="outerHTML" hx-target="closest .recipe">Add</button></div></div></div></li></ul></article>`,
 			},
 		},
 		{
 			query: "lovely xenophobia",
 			want: []string{
-				`<article class="grid gap-8 p-4 text-sm justify-center md:p-0 md:text-base"><ul class="cookbooks-display grid gap-2 p-2 md:p-0 text-sm md:text-base"><li class="indicator recipe cookbook"><div class="card card-side card-bordered card-compact bg-base-100 shadow-lg w-[30rem]"><figure class="w-32"><img src="/data/images/00000000-0000-0000-0000-000000000000.jpg" alt="Recipe image" class="object-cover"></figure><div class="card-body"><h2 class="card-title">Lovely Xenophobia</h2><p></p><div><p class="text-sm pb-1">Category:</p><div class="badge badge-primary badge-"></div></div><div class="card-actions justify-end"><button class="btn btn-outline btn-sm" hx-post="/cookbooks/1" hx-vals="{"cookbookId": 1, "recipeId": 2}" hx-swap="outerHTML" hx-target="closest .recipe">Add</button></div></div></div></li></ul></article>`,
+				`<article class="grid gap-8 p-4 text-sm justify-center md:p-0 md:text-base"><ul class="cookbooks-display grid gap-2 p-2 md:p-0 text-sm md:text-base"><li class="indicator recipe cookbook"><div class="card card-side card-bordered card-compact bg-base-100 shadow-lg w-[30rem]"><figure class="w-32"><img src="/data/images/00000000-0000-0000-0000-000000000000.jpg" alt="Recipe image" class="object-cover"></figure><div class="card-body"><h2 class="card-title">Lovely Xenophobia</h2><p></p><div><p class="text-sm pb-1">Category:</p><div class="badge badge-primary badge-"></div></div><div class="card-actions justify-end"><button class="btn btn-outline btn-sm" hx-post="/cookbooks/1" hx-vals="{"recipeId": 2}" hx-swap="outerHTML" hx-target="closest .recipe">Add</button></div></div></div></li></ul></article>`,
 			},
 		},
 	}
@@ -801,18 +783,13 @@ func TestHandlers_Cookbooks_ReorderRecipes(t *testing.T) {
 		wantToast string
 	}{
 		{
-			name:      "missing cookbook ID",
-			form:      "recipe-id=8&recipe-id=3",
-			wantToast: "Missing cookbook ID in body.",
-		},
-		{
 			name:      "missing recipe IDs",
 			form:      "cookbook-id=1",
 			wantToast: "Missing recipe IDs in body.",
 		},
 		{
 			name:      "invalid recipe IDs",
-			form:      "cookbook-id=1&recipe-id=8&recipe-id=3&recipe-id=0&recipe-id=-1",
+			form:      "recipe-id=8&recipe-id=3&recipe-id=0&recipe-id=-1",
 			wantToast: `Recipe ID \"-1\" is invalid.`,
 		},
 	}
@@ -826,7 +803,7 @@ func TestHandlers_Cookbooks_ReorderRecipes(t *testing.T) {
 	}
 
 	t.Run("valid request", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, uri, formHeader, strings.NewReader("cookbook-id=1&recipe-id=1"))
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, uri, formHeader, strings.NewReader("recipe-id=1"))
 
 		assertStatus(t, rr.Code, http.StatusNoContent)
 	})
