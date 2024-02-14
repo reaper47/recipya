@@ -15,7 +15,6 @@ COPY ./.git ./.git
 COPY ./.gitmodules ./.gitmodules
 COPY ./internal ./internal
 COPY ./main.go ./
-COPY ./static ./static
 COPY ./docs ./docs
 COPY ./web ./web
 
