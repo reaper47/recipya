@@ -1,5 +1,5 @@
 # Build the application from source
-FROM golang:1.21.5-alpine AS build-stage
+FROM golang:1.22.0-alpine AS build-stage
 
 WORKDIR /app
 
@@ -15,7 +15,6 @@ COPY ./.git ./.git
 COPY ./.gitmodules ./.gitmodules
 COPY ./internal ./internal
 COPY ./main.go ./
-COPY ./static ./static
 COPY ./docs ./docs
 COPY ./web ./web
 
