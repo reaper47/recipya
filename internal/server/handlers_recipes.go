@@ -132,6 +132,11 @@ func (s *Server) recipesAddImportHandler() http.HandlerFunc {
 				processed int
 				progress  = make(chan models.Progress)
 				recipes   = s.Files.ExtractRecipes(files)
+				report    = models.Report{
+					CreatedAt: time.Now(),
+					Logs:      make([]models.ReportLog, 0),
+					Type:      models.ImportReportType,
+				}
 				total     = len(recipes)
 				recipeIDs = make([]int64, 0, total)
 			)
@@ -144,6 +149,7 @@ func (s *Server) recipesAddImportHandler() http.HandlerFunc {
 
 			s.Brokers[userID].SendProgress(fmt.Sprintf("Importing 1/%d", total), 1, total)
 
+			now := time.Now()
 			for i, recipe := range recipes {
 				go func(index int, r models.Recipe) {
 					defer func() {
@@ -152,8 +158,14 @@ func (s *Server) recipesAddImportHandler() http.HandlerFunc {
 
 					id, err := s.Repository.AddRecipe(&r, userID, settings)
 					if err != nil {
-						fmt.Println(err)
+						report.Logs = append(report.Logs, models.ReportLog{
+							Error:     err.Error(),
+							IsSuccess: false,
+							Title:     r.Name,
+						})
 						return
+					} else {
+						report.Logs = append(report.Logs, models.ReportLog{IsSuccess: true, Title: r.Name})
 					}
 
 					recipeIDs = append(recipeIDs, id)
@@ -169,6 +181,9 @@ func (s *Server) recipesAddImportHandler() http.HandlerFunc {
 				}
 			}
 
+			report.ExecTime = time.Since(now)
+
+			s.Repository.AddReport(report, userID)
 			s.Repository.CalculateNutrition(userID, recipeIDs, settings)
 			s.Brokers[userID].HideNotification()
 			s.Brokers[userID].SendToast(fmt.Sprintf("Imported %d recipes. %d skipped", count.Load(), int64(len(recipes))-count.Load()), "bg-blue-500")

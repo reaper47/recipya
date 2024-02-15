@@ -316,6 +316,43 @@ func (s *SQLiteService) AddRecipeTx(ctx context.Context, tx *sql.Tx, r *models.R
 	return recipeID, nil
 }
 
+func (s *SQLiteService) AddReport(report models.Report, userID int64) {
+	// TODO: Short
+	ctx, cancel := context.WithTimeout(context.Background(), longerCtxTimeout)
+	defer cancel()
+
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{})
+	if err != nil {
+		log.Printf("AddReport.BeginTx: %q", err)
+		return
+	}
+	defer func() {
+		_ = tx.Rollback()
+	}()
+
+	err = tx.QueryRowContext(ctx, statements.InsertReport, report.Type, report.CreatedAt, report.ExecTime, userID).Scan(&report.ID)
+	if err != nil {
+		log.Printf("AddReport.InsertReport %#v: %q", report, err)
+		return
+	}
+
+	for _, l := range report.Logs {
+		_, err = tx.ExecContext(ctx, statements.InsertReportLog, report.ID, l.Title, l.IsSuccess, l.Error)
+		if err != nil {
+			log.Printf("AddReport.InsertReportLog %#v: %q", l, err)
+			continue
+		}
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		log.Printf("AddReport.Commit: %q", err)
+	}
+}
+
 // AddShareLink adds a share link for the recipe.
 func (s *SQLiteService) AddShareLink(share models.Share) (string, error) {
 	s.Mutex.Lock()
@@ -1018,7 +1055,7 @@ func (s *SQLiteService) ReorderCookbookRecipes(cookbookID int64, recipeIDs []uin
 
 	for i, recipeID := range recipeIDs {
 		var exists int64
-		err := s.DB.QueryRowContext(ctx, statements.SelectCookbookRecipeExists, cookbookID, userID, recipeID).Scan(&exists)
+		err = s.DB.QueryRowContext(ctx, statements.SelectCookbookRecipeExists, cookbookID, userID, recipeID).Scan(&exists)
 		if err != nil {
 			return err
 		}
@@ -1031,6 +1068,74 @@ func (s *SQLiteService) ReorderCookbookRecipes(cookbookID int64, recipeIDs []uin
 		}
 	}
 	return tx.Commit()
+}
+
+func (s *SQLiteService) Report(id, userID int64) ([]models.ReportLog, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	rows, err := s.DB.QueryContext(ctx, statements.SelectReport, id, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		_ = rows.Close()
+	}()
+
+	var logs []models.ReportLog
+	for rows.Next() {
+		var (
+			l         models.ReportLog
+			isSuccess int64
+		)
+
+		err = rows.Scan(&l.ID, &l.Title, &isSuccess, &l.Error)
+		if err != nil {
+			return nil, err
+		}
+		l.IsSuccess = isSuccess == 1
+
+		logs = append(logs, l)
+	}
+
+	return logs, nil
+}
+
+func (s *SQLiteService) ReportsImport(userID int64) ([]models.Report, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	rows, err := s.DB.QueryContext(ctx, statements.SelectReports, models.ImportReportType, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		_ = rows.Close()
+	}()
+
+	var reports []models.Report
+	for rows.Next() {
+		var (
+			report models.Report
+			ns     int64
+			logIDs string
+		)
+
+		err = rows.Scan(&report.ID, &report.CreatedAt, &ns, &logIDs)
+		if err != nil {
+			return nil, err
+		}
+
+		report.ExecTime, err = time.ParseDuration(fmt.Sprintf("%dns", ns))
+		if err != nil {
+			return nil, err
+		}
+
+		report.Logs = make([]models.ReportLog, len(strings.Split(logIDs, ";")))
+		reports = append(reports, report)
+	}
+
+	return reports, rows.Err()
 }
 
 // RestoreUserBackup restores the user's data at the specified date.

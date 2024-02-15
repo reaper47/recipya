@@ -31,6 +31,9 @@ type RepositoryService interface {
 	// AddRecipeTx adds a recipe to the user's collection using an existing database transaction.
 	AddRecipeTx(ctx context.Context, tx *sql.Tx, r *models.Recipe, userID int64) (int64, error)
 
+	// AddReport adds a report to the database.
+	AddReport(report models.Report, userID int64)
+
 	// AddShareLink adds a share link for the recipe.
 	AddShareLink(share models.Share) (string, error)
 
@@ -127,6 +130,12 @@ type RepositoryService interface {
 
 	// ReorderCookbookRecipes reorders the recipe indices of a cookbook.
 	ReorderCookbookRecipes(cookbookID int64, recipeIDs []uint64, userID int64) error
+
+	// Report gets a report of any type belonging to the user.
+	Report(id, userID int64) ([]models.ReportLog, error)
+
+	// ReportsImport gets all import reports.
+	ReportsImport(userID int64) ([]models.Report, error)
 
 	// RestoreUserBackup restores the user's data.
 	RestoreUserBackup(backup *models.UserBackup) error

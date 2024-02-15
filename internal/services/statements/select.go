@@ -350,6 +350,26 @@ const SelectRecipeUser = `
 	FROM user_recipe
 	WHERE recipe_id = ?`
 
+// SelectReport fetches the report of the given ID belonging to the user.
+const SelectReport = `
+	SELECT id, title, success, error_reason
+	FROM report_logs
+	WHERE report_id = (SELECT id FROM reports WHERE id = ? AND user_id = ?)`
+
+// SelectReports fetches the import reports for the user.
+const SelectReports = `
+	SELECT 
+    r.id,  
+    r.created_at,  
+    r.exec_time_ns,  
+    GROUP_CONCAT(l.id, ';') AS log_ids
+FROM  
+    reports r
+LEFT JOIN  
+    report_logs l ON r.id = l.report_id
+WHERE r.report_type = ? AND r.user_id = ?
+GROUP BY r.id`
+
 // SelectUserExist checks whether the user is present.
 const SelectUserExist = `
 	SELECT EXISTS(

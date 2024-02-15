@@ -40,6 +40,8 @@ type mockRepository struct {
 	MeasurementSystemsFunc      func(userID int64) ([]units.System, models.UserSettings, error)
 	RecipeFunc                  func(id, userID int64) (*models.Recipe, error)
 	RecipesRegistered           map[int64]models.Recipes
+	Reports                     map[int64][]models.Report
+	ReportsFunc                 func(userID int64) ([]models.Report, error)
 	restoreUserBackupFunc       func(backup *models.UserBackup) error
 	ShareLinks                  map[string]models.Share
 	SwitchMeasurementSystemFunc func(system units.System, userID int64) error
@@ -51,6 +53,10 @@ type mockRepository struct {
 
 func (m *mockRepository) AddRecipeTx(ctx context.Context, tx *sql.Tx, r *models.Recipe, userID int64) (int64, error) {
 	return 0, nil
+}
+
+func (m *mockRepository) AddReport(report models.Report, userID int64) {
+
 }
 
 func (m *mockRepository) CookbooksShared(userID int64) ([]models.Share, error) {
@@ -448,8 +454,34 @@ func (m *mockRepository) ReorderCookbookRecipes(_ int64, _ []uint64, _ int64) er
 	return nil
 }
 
-func (m *mockRepository) RecipesShared(userID int64) ([]models.Share, error) {
+func (m *mockRepository) RecipesShared(_ int64) ([]models.Share, error) {
 	return make([]models.Share, 0), nil
+}
+
+func (m *mockRepository) Report(id, userID int64) ([]models.ReportLog, error) {
+	reports, ok := m.Reports[userID]
+	if !ok {
+		return []models.ReportLog{}, nil
+	}
+
+	i := slices.IndexFunc(reports, func(r models.Report) bool { return r.ID == id })
+	if i == -1 {
+		return []models.ReportLog{}, errors.New("report not found")
+	}
+
+	return reports[i].Logs, nil
+}
+
+func (m *mockRepository) ReportsImport(userID int64) ([]models.Report, error) {
+	if m.ReportsFunc != nil {
+		return m.ReportsFunc(userID)
+	}
+
+	reports, ok := m.Reports[userID]
+	if !ok {
+		return []models.Report{}, nil
+	}
+	return reports, nil
 }
 
 func (m *mockRepository) RestoreBackup(_ string) error {

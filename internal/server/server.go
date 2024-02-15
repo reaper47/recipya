@@ -87,7 +87,6 @@ func (s *Server) mountHandlers() {
 	}
 	mux.Handle("POST /auth/change-password", s.mustBeLoggedInMiddleware(s.changePasswordHandler()))
 	mux.HandleFunc("GET /auth/confirm", s.confirmHandler)
-
 	mux.HandleFunc("GET /auth/forgot-password", s.forgotPasswordHandler)
 	mux.HandleFunc("POST /auth/forgot-password", s.forgotPasswordPostHandler)
 	mux.HandleFunc("GET /auth/forgot-password/reset", forgotPasswordResetHandler)
@@ -115,10 +114,6 @@ func (s *Server) mountHandlers() {
 	// Integrations routes
 	mux.Handle("POST /integrations/import/nextcloud", s.mustBeLoggedInMiddleware(s.integrationsImportNextcloud()))
 
-	// Share routes
-	mux.HandleFunc("GET /r/{id}", s.recipeShareHandler)
-	mux.HandleFunc("GET /c/{id}", s.cookbookShareHandler)
-
 	// Recipes routes
 	mux.Handle("GET /recipes", s.mustBeLoggedInMiddleware(s.recipesHandler()))
 	mux.Handle("GET /recipes/{id}", s.mustBeLoggedInMiddleware(s.recipesViewHandler()))
@@ -141,6 +136,10 @@ func (s *Server) mountHandlers() {
 	mux.Handle("POST /recipes/search", s.mustBeLoggedInMiddleware(s.recipesSearchHandler()))
 	mux.Handle("GET /recipes/supported-websites", s.mustBeLoggedInMiddleware(s.recipesSupportedWebsitesHandler()))
 
+	// Reports routes
+	mux.Handle("GET /reports", s.mustBeLoggedInMiddleware(s.reportsHandler()))
+	mux.Handle("GET /reports/{id}", s.mustBeLoggedInMiddleware(s.reportsReportHandler()))
+
 	// Settings routes
 	mux.Handle("GET /settings", s.mustBeLoggedInMiddleware(s.settingsHandler()))
 	mux.Handle("GET /settings/export/recipes", s.mustBeLoggedInMiddleware(s.settingsExportRecipesHandler()))
@@ -151,6 +150,10 @@ func (s *Server) mountHandlers() {
 	mux.Handle("GET /settings/tabs/advanced", s.mustBeLoggedInMiddleware(s.settingsTabsAdvancedHandler()))
 	mux.Handle("GET /settings/tabs/profile", s.mustBeLoggedInMiddleware(settingsTabsProfileHandler()))
 	mux.Handle("GET /settings/tabs/recipes", s.mustBeLoggedInMiddleware(s.settingsTabsRecipesHandler()))
+
+	// Share routes
+	mux.HandleFunc("GET /r/{id}", s.recipeShareHandler)
+	mux.HandleFunc("GET /c/{id}", s.cookbookShareHandler)
 
 	s.Router = mux
 }

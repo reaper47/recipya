@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/json"
+	"errors"
 	"github.com/reaper47/recipya/internal/models"
 	"net/http"
 	"strconv"
@@ -55,8 +56,13 @@ func (s *Server) findUserID(r *http.Request) (int64, bool) {
 
 func parsePathPositiveID(value string) (int64, error) {
 	id, err := strconv.ParseInt(value, 10, 64)
-	if err != nil || id <= 0 {
+	if err != nil {
 		return 0, err
 	}
+
+	if id <= 0 {
+		return 0, errors.New("value must be > 0")
+	}
+
 	return id, nil
 }

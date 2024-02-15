@@ -32,7 +32,7 @@ templ admin(data templates.Data) {
 						</thead>
 						<tbody>
 							for i, u := range data.Admin.Users {
-								@AdminUserRow(u.Email, i > 0, i == len(data.Admin.Users) - 1)
+								@AdminUserRow(u.Email, i > 0, i == len(data.Admin.Users)-1)
 							}
 						</tbody>
 					</table>
@@ -64,7 +64,7 @@ templ AdminUserRow(email string, isDeleteButtonVisible, isAddNewRow bool) {
 		</th>
 	</tr>
 	if isAddNewRow {
-	    @adminUserRowNew()
+		@adminUserRowNew()
 	}
 }
 

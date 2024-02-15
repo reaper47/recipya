@@ -229,6 +229,7 @@ templ head(title string) {
                 "/settings",
                 "/recipes/add",
                 "/recipes/add/manual",
+                "/reports",
             ];
 
             function showAll() {
@@ -283,7 +284,7 @@ templ head(title string) {
                     mobile_nav.classList.add("hidden");
                 }
 
-                if (recipesPattern.test(location.pathname) || recipesSharePattern.test(location.pathname) || location.pathname === "/admin") {
+                if (recipesPattern.test(location.pathname) || recipesSharePattern.test(location.pathname) || location.pathname === "/admin" || location.pathname.startsWith("/reports")) {
                     desktop_nav.firstElementChild.classList.add("hidden");
                     mobile_nav.classList.add("hidden");
                 } else {

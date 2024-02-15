@@ -1,6 +1,6 @@
 ---
 title: Build
-weight: 3
+weight: 4
 ---
 
 Go to the project directory.
