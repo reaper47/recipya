@@ -70,7 +70,7 @@ func TestHandlers_Reports(t *testing.T) {
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		body := getBodyHTML(rr)
-		t.Log(body)
+		t.Log(body[987:])
 		assertStringsInHTML(t, body, []string{
 			`<title hx-swap-oob="true">Reports | Recipya</title>`,
 			`<button class="active" hx-get="/reports?tab=imports" hx-target="#tab-content">Imports</button>`,
