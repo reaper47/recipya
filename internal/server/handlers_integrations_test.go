@@ -37,7 +37,7 @@ func TestHandlers_Integrations_Nextcloud(t *testing.T) {
 			rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uriImport, formHeader, strings.NewReader(tc.in))
 
 			assertStatus(t, rr.Code, http.StatusBadRequest)
-			assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Invalid username, password or URL.\",\"backgroundColor\":\"alert-error\"}"}`)
+			assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Invalid username, password or URL.\",\"title\":\"\"}"}`)
 		})
 	}
 
@@ -55,7 +55,7 @@ func TestHandlers_Integrations_Nextcloud(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uriImport, formHeader, strings.NewReader("username=admin&password=admin&url=http://localhost:8080"))
 
 		assertStatus(t, rr.Code, http.StatusAccepted)
-		want := `{"type":"toast","fileName":"","data":"{\"message\":\"Failed to import Nextcloud recipes.\",\"background\":\"bg-error-500\"}"}`
+		want := `{"type":"toast","fileName":"","data":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to import Nextcloud recipes.\",\"title\":\"\"}"}`
 		assertWebsocket(t, c, 3, want)
 	})
 
@@ -81,7 +81,7 @@ func TestHandlers_Integrations_Nextcloud(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uriImport, formHeader, strings.NewReader("username=admin&password=admin&url=http://localhost:8080"))
 
 		assertStatus(t, rr.Code, http.StatusAccepted)
-		want := "{\"type\":\"toast\",\"fileName\":\"\",\"data\":\"{\\\"message\\\":\\\"Imported 2 recipes. Skipped 0.\\\",\\\"background\\\":\\\"bg-blue-500\\\"}\"}"
+		want := `{"type":"toast","fileName":"","data":"{\"action\":\"\",\"background\":\"alert-info\",\"message\":\"Imported 2 recipes. Skipped 0.\",\"title\":\"\"}"}`
 		assertWebsocket(t, c, 5, want)
 		if len(repo.RecipesRegistered[1]) != 2 {
 			t.Fatal("expected 2 recipes in the repo")

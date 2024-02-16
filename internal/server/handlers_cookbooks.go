@@ -50,7 +50,7 @@ func (s *Server) cookbooksHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		query := r.URL.Query()
 		if query == nil {
-			w.Header().Set("HX-Trigger", makeToast("Could not parse query.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse query.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -61,7 +61,7 @@ func (s *Server) cookbooksHandler() http.HandlerFunc {
 			mode := models.ViewModeFromString(view)
 			err := s.Repository.UpdateUserSettingsCookbooksViewMode(userID, mode)
 			if err != nil {
-				w.Header().Set("HX-Trigger", makeToast("Error updating user settings.", errorToast))
+				w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error updating user settings.", "").Render())
 				w.WriteHeader(http.StatusInternalServerError)
 				return
 			}
@@ -69,7 +69,7 @@ func (s *Server) cookbooksHandler() http.HandlerFunc {
 
 		settings, err := s.Repository.UserSettings(userID)
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Could not get user settings.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not get user settings.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -81,14 +81,14 @@ func (s *Server) cookbooksHandler() http.HandlerFunc {
 
 		cookbooks, err := s.Repository.Cookbooks(userID, page)
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Error getting cookbooks.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error getting cookbooks.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
 		p, err := newCookbooksPagination(s, w, userID, page, false)
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Error updating pagination.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error updating pagination.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -118,7 +118,7 @@ func (s *Server) cookbooksPostHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		title := r.Header.Get("HX-Prompt")
 		if title == "" {
-			w.Header().Set("HX-Trigger", makeToast("Title must not be empty.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Title must not be empty.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -126,21 +126,21 @@ func (s *Server) cookbooksPostHandler() http.HandlerFunc {
 		userID := getUserID(r)
 		cookbookID, err := s.Repository.AddCookbook(title, userID)
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Could not create cookbook.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not create cookbook.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
 		settings, err := s.Repository.UserSettings(userID)
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Could not get user settings.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not get user settings.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
 		query := r.URL.Query()
 		if query == nil {
-			w.Header().Set("HX-Trigger", makeToast("Query is empty.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Query is empty.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -153,7 +153,7 @@ func (s *Server) cookbooksPostHandler() http.HandlerFunc {
 
 		p, err := newCookbooksPagination(s, w, userID, page, true)
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Error updating pagination.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error updating pagination.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -210,14 +210,14 @@ func (s *Server) cookbooksDeleteCookbookHandler() http.HandlerFunc {
 		err = s.Repository.DeleteCookbook(cookbookID, userID)
 		if err != nil {
 			// TODO: Log it with slog
-			w.Header().Set("HX-Trigger", makeToast("Error deleting cookbook.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error deleting cookbook.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
 		p, err := newCookbooksPagination(s, w, userID, page, true)
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Error updating pagination.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error updating pagination.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -234,7 +234,7 @@ func (s *Server) cookbooksDeleteCookbookHandler() http.HandlerFunc {
 func newCookbooksPagination(srv *Server, w http.ResponseWriter, userID int64, page uint64, isSwap bool) (templates.Pagination, error) {
 	counts, err := srv.Repository.Counts(userID)
 	if err != nil {
-		w.Header().Set("HX-Trigger", makeToast("Error getting counts.", errorToast))
+		w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error getting counts.", "").Render())
 		w.WriteHeader(http.StatusInternalServerError)
 		return templates.Pagination{}, err
 	}
@@ -251,14 +251,14 @@ func (s *Server) cookbooksDeleteCookbookRecipeHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cookbookID, err := parsePathPositiveID(r.PathValue("id"))
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Cookbook ID in the URL must be >= 0.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Cookbook ID in the URL must be >= 0.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		recipeID, err := parsePathPositiveID(r.PathValue("recipeID"))
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Recipe ID in the URL must be >= 0.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Recipe ID in the URL must be >= 0.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -267,7 +267,7 @@ func (s *Server) cookbooksDeleteCookbookRecipeHandler() http.HandlerFunc {
 
 		numRecipes, err := s.Repository.DeleteRecipeFromCookbook(recipeID, cookbookID, userID)
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Error deleting recipe from cookbook.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error deleting recipe from cookbook.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -282,27 +282,27 @@ func (s *Server) cookbooksDownloadCookbookHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cookbookID, err := parsePathPositiveID(r.PathValue("id"))
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Could not parse cookbook ID.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse cookbook ID.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		cookbook, err := s.Repository.Cookbook(cookbookID, getUserID(r))
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Could not fetch cookbook.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not fetch cookbook.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
 		if len(cookbook.Recipes) == 0 {
-			w.Header().Set("HX-Trigger", makeToast("Cookbook is empty.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Cookbook is empty.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		fileName, err := s.Files.ExportCookbook(cookbook, models.PDF)
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Failed to export cookbook.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Failed to export cookbook.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -316,7 +316,7 @@ func (s *Server) cookbooksGetCookbookHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		query := r.URL.Query()
 		if query == nil {
-			w.Header().Set("HX-Trigger", makeToast("Could not parse query.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse query.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -336,7 +336,7 @@ func (s *Server) cookbooksGetCookbookHandler() http.HandlerFunc {
 				return
 			}
 
-			w.Header().Set("HX-Trigger", makeToast("Missing page query parameter.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Missing page query parameter.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -376,20 +376,20 @@ func (s *Server) cookbooksImagePostCookbookHandler() http.HandlerFunc {
 		err = r.ParseMultipartForm(128 << 20)
 		form := r.MultipartForm
 		if err != nil || form == nil || form.File == nil {
-			w.Header().Set("HX-Trigger", makeToast("Could not parse the uploaded image.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse the uploaded image.", "").Render())
 			return
 		}
 
 		imageFile, ok := form.File["image"]
 		if !ok {
-			w.Header().Set("HX-Trigger", makeToast("Could not retrieve the image from the form.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not retrieve the image from the form.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		f, err := imageFile[0].Open()
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Could not open the image from the form.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not open the image from the form.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -399,7 +399,7 @@ func (s *Server) cookbooksImagePostCookbookHandler() http.HandlerFunc {
 
 		imageUUID, err := s.Files.UploadImage(f)
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Error uploading image.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error uploading image.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -407,7 +407,7 @@ func (s *Server) cookbooksImagePostCookbookHandler() http.HandlerFunc {
 		userID := getUserID(r)
 		err = s.Repository.UpdateCookbookImage(cookbookID, imageUUID, userID)
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Error updating the cookbook's image.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error updating the cookbook's image.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -420,7 +420,7 @@ func (s *Server) cookbookPostCookbookHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cookbookID, err := parsePathPositiveID(r.PathValue("id"))
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Missing 'cookbookId' in body.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Missing 'cookbookId' in body.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -428,7 +428,7 @@ func (s *Server) cookbookPostCookbookHandler() http.HandlerFunc {
 		recipeIDStr := r.FormValue("recipeId")
 		recipeID, err := strconv.ParseInt(recipeIDStr, 10, 64)
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Missing 'recipeId' in body.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Missing 'recipeId' in body.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -436,7 +436,7 @@ func (s *Server) cookbookPostCookbookHandler() http.HandlerFunc {
 		userID := getUserID(r)
 		err = s.Repository.AddCookbookRecipe(cookbookID, recipeID, userID)
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Could not add recipe to cookbook.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not add recipe to cookbook.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -450,14 +450,14 @@ func (s *Server) cookbooksRecipesSearchPostHandler() http.HandlerFunc {
 		cookbookID := r.FormValue("id")
 		id, err := strconv.ParseInt(cookbookID, 10, 64)
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Missing cookbook ID in body.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Missing cookbook ID in body.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		page, err := strconv.ParseUint(r.FormValue("page"), 10, 64)
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Missing page number in body.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Missing page number in body.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -466,7 +466,7 @@ func (s *Server) cookbooksRecipesSearchPostHandler() http.HandlerFunc {
 
 		cookbook, err := s.Repository.Cookbook(id, userID)
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Error getting cookbooks.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error getting cookbooks.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -483,7 +483,7 @@ func (s *Server) cookbooksRecipesSearchPostHandler() http.HandlerFunc {
 
 		recipes, err := s.Repository.SearchRecipes(q, models.SearchOptionsRecipes{ByName: true}, userID)
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Error searching recipes.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error searching recipes.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -514,7 +514,7 @@ func (s *Server) cookbooksPostCookbookReorderHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cookbookID, err := parsePathPositiveID(r.PathValue("id"))
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Missing cookbook ID in body.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Missing cookbook ID in body.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -526,7 +526,7 @@ func (s *Server) cookbooksPostCookbookReorderHandler() http.HandlerFunc {
 
 		recipeIDsStr := r.Form["recipe-id"]
 		if len(recipeIDsStr) == 0 {
-			w.Header().Set("HX-Trigger", makeToast("Missing recipe IDs in body.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Missing recipe IDs in body.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -535,7 +535,7 @@ func (s *Server) cookbooksPostCookbookReorderHandler() http.HandlerFunc {
 		for i, s := range recipeIDsStr {
 			id, err := strconv.ParseUint(s, 10, 64)
 			if err != nil {
-				w.Header().Set("HX-Trigger", makeToast(fmt.Sprintf("Recipe ID %q is invalid.", s), errorToast))
+				w.Header().Set("HX-Trigger", models.NewErrorToast("", fmt.Sprintf("Recipe ID %q is invalid.", s), "").Render())
 				w.WriteHeader(http.StatusBadRequest)
 				return
 			}
@@ -544,7 +544,7 @@ func (s *Server) cookbooksPostCookbookReorderHandler() http.HandlerFunc {
 
 		err = s.Repository.ReorderCookbookRecipes(cookbookID, recipeIDs, getUserID(r))
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Failed to update indices.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Failed to update indices.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -557,7 +557,7 @@ func (s *Server) cookbookSharePostHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cookbookID, err := parsePathPositiveID(r.PathValue("id"))
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Cookbook ID must be positive.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Cookbook ID must be positive.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -567,7 +567,7 @@ func (s *Server) cookbookSharePostHandler() http.HandlerFunc {
 
 		link, err := s.Repository.AddShareLink(share)
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Failed to create share link.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Failed to create share link.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}

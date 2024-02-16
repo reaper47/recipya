@@ -33,11 +33,6 @@ type Message struct {
 	Data     string `json:"data"`     // Message data to pass. Base64-encoded if type is "file".
 }
 
-type toast struct {
-	Message    string `json:"message"`
-	Background string `json:"background"`
-}
-
 // NewBroker creates a new Broker instance for a specific user and adds it to the brokers map.
 // The userID is used for identification and cleanup purposes.
 func NewBroker(userID int64, brokers map[int64]*Broker, conn *websocket.Conn) *Broker {
@@ -167,16 +162,13 @@ func (b *Broker) setPingPongHandlers() {
 }
 
 // SendToast sends a toast notification to the user.
-func (b *Broker) SendToast(message, background string) {
+func (b *Broker) SendToast(toast Toast) {
 	if b == nil {
 		log.Printf("ws connection nil")
 		return
 	}
 
-	xb, err := json.Marshal(toast{
-		Message:    message,
-		Background: background,
-	})
+	xb, err := json.Marshal(toast)
 	if err != nil {
 		log.Printf("Boker.SendToast.Marshal: %q", err)
 		return

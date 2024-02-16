@@ -100,8 +100,14 @@ templ layoutMain(title string, data templates.Data) {
 											Admin
 										</a>
 									</li>
-									<div class="divider m-0"></div>
 								}
+								<li onclick="document.activeElement?.blur()">
+                                    <a href="/reports" hx-get="/reports" hx-target="#content" hx-push-url="true">
+                                        @iconFlag()
+                                        Reports
+                                    </a>
+                                </li>
+								<div class="divider m-0"></div>
 								<li onclick="document.activeElement?.blur()">
 									<a href="/settings" hx-get="/settings" hx-target="#content" hx-push-url="true">
 										@iconGear()
@@ -115,12 +121,14 @@ templ layoutMain(title string, data templates.Data) {
 										About
 									</a>
 								</li>
-								<li>
-									<a hx-post="/auth/logout">
-										@iconLogout()
-										Log out
-									</a>
-								</li>
+								if !data.IsAutologin {
+									<li>
+										<a hx-post="/auth/logout">
+											@iconLogout()
+											Log out
+										</a>
+									</li>
+								}
 							</ul>
 						</div>
 						@aboutDialog(data.About.Version)
@@ -165,27 +173,27 @@ templ layoutMain(title string, data templates.Data) {
 			@toast()
 			@toastWS("", "", false)
 			<script defer>
-        document.addEventListener("htmx:wsBeforeMessage", (event) => {
-            try {
-                const {type, data, fileName} = JSON.parse(event.detail.message);
-                switch (type) {
-                    case "toast":
-                        const {message, background} = JSON.parse(data);
-                        showToast(message, background);
-                        break;
-                    case "file":
-                        const decoded = atob(data);
-                        const bytes = new Uint8Array(decoded.length);
-                        for (let i = 0; i < decoded.length; i++) {
-                            bytes[i] = decoded.charCodeAt(i);
+                document.addEventListener("htmx:wsBeforeMessage", (event) => {
+                    try {
+                        const {type, data, fileName} = JSON.parse(event.detail.message);
+                        switch (type) {
+                            case "toast":
+                                const {title, message, background, action} = JSON.parse(data);
+                                showToast(title, message, background, action);
+                                break;
+                            case "file":
+                                const decoded = atob(data);
+                                const bytes = new Uint8Array(decoded.length);
+                                for (let i = 0; i < decoded.length; i++) {
+                                    bytes[i] = decoded.charCodeAt(i);
+                                }
+                                const blob = new Blob([bytes], {type: "application/zip"});
+                                downloadFile(blob, fileName, "application/zip");
+                                event.preventDefault();
+                                break;
                         }
-                        const blob = new Blob([bytes], {type: "application/zip"});
-                        downloadFile(blob, fileName, "application/zip");
-                        event.preventDefault();
-                        break;
-                }
-            } catch (_) {}
-        });
+                    } catch (_) {}
+                });
     </script>
 		</body>
 	</html>
@@ -217,6 +225,8 @@ templ head(title string) {
             const recipesPattern = new RegExp("^/recipes/\\d+(/edit)?$");
             const recipesSharePattern = new RegExp("^/r/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$");
 
+            const reportsPattern = new RegExp("^/reports(/\\d+)?$");
+
             const pathsShowRecipesSidebar = [
                 "/",
                 "/cookbooks",
@@ -243,7 +253,8 @@ templ head(title string) {
                 if (isRecipe ||
                     pathsHideAddRecipeButton.some(path => path === location.pathname) ||
                     cookbooksPattern.test(location.pathname) ||
-                    cookbooksSharePattern.test(location.pathname)) {
+                    cookbooksSharePattern.test(location.pathname) ||
+                    reportsPattern.test(location.pathname)) {
                     add_recipe?.classList.add("hidden");
                 } else {
                     add_recipe?.classList.remove("hidden");
@@ -283,7 +294,7 @@ templ head(title string) {
                     mobile_nav.classList.add("hidden");
                 }
 
-                if (recipesPattern.test(location.pathname) || recipesSharePattern.test(location.pathname) || location.pathname === "/admin") {
+                if (recipesPattern.test(location.pathname) || recipesSharePattern.test(location.pathname) || location.pathname === "/admin" || reportsPattern.test(location.pathname)) {
                     desktop_nav.firstElementChild.classList.add("hidden");
                     mobile_nav.classList.add("hidden");
                 } else {
@@ -362,34 +373,64 @@ templ toast() {
 	<div
 		id="toast_container"
 		class="toast toast-top toast-end hidden z-20 cursor-default"
-		_="on click add .hidden then call clearTimeout(timeoutToast) then set timeoutToast to null then log timeoutToast"
+        _="on click add .hidden then call clearTimeout(timeoutToast) then set timeoutToast to null"
 	>
-		<div class="hidden alert alert-error alert-info alert-success alert-warning"></div>
+	    <div class="hidden alert-error alert-info alert-success alert-warning"></div>
+        <div id="toast_alert" role="alert" class="alert shadow-lg">
+          <svg id="toast_icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"></svg>
+          <div>
+            <h3 id="toast_title" class="font-bold"></h3>
+            <div id="toast_message" class="text-xs"></div>
+          </div>
+          <button id="toast_button" class="btn btn-sm" _="on click log 'meow'">See</button>
+        </div>
 	</div>
 	<script defer>
         var timeoutToast = timeoutToast || null;
         htmx.on('showToast', function (event) {
-            const {message, backgroundColor} = JSON.parse(event.detail.value);
-            showToast(message, backgroundColor);
+            const {title, message, background, action} = JSON.parse(event.detail.value);
+            showToast(title, message, background, action);
         });
 
-        function showToast(message, backgroundColor) {
-            const toast = document.createElement('div');
-            toast.classList.add('alert', backgroundColor);
-            toast.textContent = message;
+        function showToast(title, message, background, action) {
+            toast_alert.classList.remove("alert-error", "alert-info", "alert-success", "alert-warning", background);
+            toast_alert.classList.add(background);
 
-            if (toast_container.firstChild) {
-                toast_container.replaceChild(toast, toast_container.firstChild);
+            toast_title.textContent = title;
+            toast_message.textContent = message;
+            switch (background) {
+                case "alert-error":
+                    toast_icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>`;
+                    break;
+                case "alert-info":
+                    toast_icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>`;
+                    break;
+                case "alert-warning":
+                    toast_icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />`;
+                    break;
+            }
+
+            if (action) {
+                const split = action.split(" ");
+                if (split.length == 2) {
+                    toast_button.setAttribute("hx-get", split[1]);
+                    toast_button.setAttribute("hx-target", "#content");
+                    toast_button.setAttribute("hx-push-url", split[1]);
+                    htmx.process(document.querySelector("#toast_button"));
+                }
+                toast_button.innerText = split[0];
+                toast_button.classList.remove("hidden");
             } else {
-                toast_container.appendChild(toast);
+                toast_button.removeAttribute("hx-get");
+                toast_button.removeAttribute("hx-target");
+                toast_button.removeAttribute("hx-push-url");
+                htmx.process(document.querySelector("#toast_button"));
+
+                timeoutToast = setTimeout(() => toast_container.classList.add('hidden'), 5000);
+                toast_button.classList.add("hidden");
             }
 
             toast_container.classList.remove('hidden');
-
-            timeoutToast = setTimeout(function () {
-                toast_container.classList.add('hidden');
-                toast_container?.removeChild(toast);
-            }, 5000);
         }
     </script>
 }

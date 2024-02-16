@@ -38,7 +38,7 @@ templ settings(data templates.Data) {
 				</button>
 			}
 			<button
-				class={ "px-2 hover:bg-gray-300 dark:hover:bg-gray-800", templ.KV("bg-gray-300", data.IsAutologin) }
+				class={ "px-2 hover:bg-gray-300 dark:hover:bg-gray-800", templ.KV("bg-gray-300 dark:bg-gray-800", data.IsAutologin) }
 				hx-get="/settings/tabs/recipes"
 				hx-target="#settings-tab-content"
 				role="tab"
@@ -49,7 +49,7 @@ templ settings(data templates.Data) {
 				Recipes
 			</button>
 			<button
-				class="px-2 hover:bg-gray-300"
+				class="px-2 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-800"
 				hx-get="/settings/tabs/advanced"
 				hx-target="#settings-tab-content"
 				role="tab"
@@ -65,8 +65,10 @@ templ settings(data templates.Data) {
 			class="btm-nav btm-nav-sm z-20 md:hidden"
 			_="on click remove .active from <button/> in settings_bottom_tabs then add .active to event.srcElement"
 		>
-			<button class="active" hx-get="/settings/tabs/profile" hx-target="#settings-tab-content">Profile</button>
-			<button hx-get="/settings/tabs/recipes" hx-target="#settings-tab-content">Recipes</button>
+			if !data.IsAutologin {
+				<button class="active" hx-get="/settings/tabs/profile" hx-target="#settings-tab-content">Profile</button>
+			}
+			<button class={ templ.KV("active", data.IsAutologin) } hx-get="/settings/tabs/recipes" hx-target="#settings-tab-content">Recipes</button>
 			<button hx-get="/settings/tabs/advanced" hx-target="#settings-tab-content">Advanced</button>
 		</div>
 		<div id="settings-tab-content" role="tabpanel" class="w-[90vw] text-sm md:text-base p-4 auto-rows-min md:w-full">

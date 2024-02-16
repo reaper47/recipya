@@ -40,4 +40,8 @@ Overview of Recipya's features.
         title="Backups"
         subtitle="Learn how backups work and how to restore your data."
         icon="newspaper" >}}
+    {{< card link="/guide/docs/features/reports/"
+        title="Reports"
+        subtitle="Learn what the reports module is about."
+        icon="newspaper" >}}
 {{< /cards >}}

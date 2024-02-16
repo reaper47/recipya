@@ -3,6 +3,7 @@ package server
 import (
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/auth"
+	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
 	"github.com/reaper47/recipya/internal/utils/regex"
 	"github.com/reaper47/recipya/web/components"
@@ -24,31 +25,37 @@ func (s *Server) adminHandler() http.HandlerFunc {
 
 func (s *Server) adminUsersPostHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		if app.Config.Server.IsDemo {
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Every day is Christmas.", "OK").Render())
+			w.WriteHeader(http.StatusTeapot)
+			return
+		}
+
 		email := r.FormValue("email")
 		password := r.FormValue("password")
 		if !regex.Email.MatchString(email) || password == "" {
-			w.Header().Set("HX-Trigger", makeToast("Email and/or password is invalid.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Email and/or password is invalid.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		userID := s.Repository.UserID(email)
 		if userID != -1 {
-			w.Header().Set("HX-Trigger", makeToast("User exists.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "User exists.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		hashPassword, err := auth.HashPassword(password)
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Error encoding your password.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error encoding your password.", "").Render())
 			w.WriteHeader(http.StatusUnprocessableEntity)
 			return
 		}
 
 		_, err = s.Repository.Register(email, hashPassword)
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Failed to add user.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Failed to add user.", "").Render())
 			w.WriteHeader(http.StatusUnprocessableEntity)
 			return
 		}
@@ -65,14 +72,14 @@ func (s *Server) adminUsersDeleteHandler() http.HandlerFunc {
 			return
 		}
 
-		if app.Config.Server.IsDemo && s.Repository.UserID("demo@demo.com") == userID {
-			w.Header().Set("HX-Trigger", makeToast("Don't look up.", errorToast))
+		if app.Config.Server.IsDemo {
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Who do you think you are, eh?", "").Render())
 			w.WriteHeader(http.StatusTeapot)
 			return
 		}
 
 		if userID == 1 {
-			w.Header().Set("HX-Trigger", makeToast("Cannot delete admin.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Cannot delete admin.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}

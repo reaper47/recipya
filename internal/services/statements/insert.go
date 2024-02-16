@@ -32,6 +32,17 @@ const InsertCuisine = `
 	INSERT OR IGNORE INTO cuisines (name)
 	VALUES (?)`
 
+// InsertReport is the query to add a report without logs into the database
+const InsertReport = `
+	INSERT INTO reports (report_type, created_at, exec_time_ns, user_id) 
+	VALUES (?, ?, ?, ?)
+	RETURNING id`
+
+// InsertReportLog is the query to add a log to a report.
+const InsertReportLog = `
+	INSERT INTO report_logs (report_id, title, success, error_reason) 
+	VALUES (?, ?, ?, ?)`
+
 // InsertIngredient is the query to add an ingredient.
 const InsertIngredient = `
 	INSERT INTO ingredients (name)

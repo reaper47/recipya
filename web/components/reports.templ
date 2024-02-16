@@ -1,0 +1,172 @@
+package components
+
+import (
+	"fmt"
+	"time"
+	"github.com/reaper47/recipya/internal/templates"
+)
+
+templ ReportsIndex(data templates.Data, isHighlightFirst bool) {
+	if data.IsHxRequest {
+		<title hx-swap-oob="true">Reports | Recipya</title>
+		@reportsIndex(data, isHighlightFirst)
+	} else {
+		@layoutMain("Reports", data) {
+			@reportsIndex(data, isHighlightFirst)
+		}
+	}
+}
+
+templ reportsIndex(data templates.Data, isHighlightFirst bool) {
+	<div
+		class="grid place-content-center md:place-content-stretch md:grid-flow-col md:h-full"
+		style="grid-template-columns: min-content"
+	>
+		<div
+			class="hidden md:grid text-sm md:text-base bg-gray-200 max-w-[6rem] mt-[1px] dark:bg-gray-600 dark:border-r dark:border-r-gray-500"
+			role="tablist"
+		>
+			<button
+				class={ "px-2 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-800", templ.KV("bg-gray-300", data.IsAutologin) }
+				hx-get="/reports?tab=imports"
+				hx-target="#tab-content"
+				role="tab"
+				aria-selected="false"
+				aria-controls="tab-content"
+				_="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800"
+			>
+				Imports
+			</button>
+		</div>
+		<div
+			id="settings_bottom_tabs"
+			class="btm-nav btm-nav-sm z-20 md:hidden"
+			_="on click remove .active from <button/> in settings_bottom_tabs then add .active to event.srcElement"
+		>
+			<button class="active" hx-get="/reports?tab=imports" hx-target="#tab-content">Imports</button>
+		</div>
+		<div id="tab-content" role="tabpanel" class="w-[90vw] text-sm md:text-base p-4 auto-rows-min md:w-full">
+		    if len(data.Reports.CurrentReport) > 0 && data.Reports.CurrentReport[0].ID != 0 {
+		        @ReportsTabImports(data, true)
+		    } else {
+		        @ReportsTabImports(data, false)
+		    }
+		</div>
+	</div>
+}
+
+templ ReportsTabImports(data templates.Data, isHighlightFirst bool) {
+	<div class="h-full max-h-[89vh] border rounded-lg sm:grid sm:gap-4 sm:grid-cols-4 dark:border-gray-800">
+		<ul class="col-span-1 border-r overflow-auto max-h-44 border-b md:border-b-0 sm:max-h-full dark:border-r-gray-800">
+			for i, r := range data.Reports.Imports {
+				<li
+					class={ "item p-2 hover:bg-slate-200 cursor-default dark:hover:bg-slate-700", templ.KV("bg-slate-200 dark:bg-slate-700", i == 0 && isHighlightFirst) }
+					hx-get={ fmt.Sprintf("/reports/%d", r.ID) }
+					hx-target="#report-view-pane"
+					hx-swap="outerHTML"
+					hx-push-url="true"
+					_="on click remove .bg-slate-200 .dark:bg-slate-700 from .item then add .bg-slate-200 .dark:bg-slate-700"
+				>
+					<span>
+						<b>{ fmt.Sprint(r.CreatedAt.Format(time.RFC822)) }</b>
+						<br/>
+						<span class="text-sm">
+							Execution time:
+							{ r.ExecTime.Round(time.Millisecond).String() }
+						</span>
+					</span>
+					<span class="badge badge-primary float-right select-none">{ fmt.Sprint(len(r.Logs)) }</span>
+				</li>
+			}
+		</ul>
+		if len(data.Reports.CurrentReport) > 0 && data.Reports.CurrentReport[0].ID != 0 {
+            @Report(data)
+        } else {
+            <div id="report-view-pane" class="grid col-span-3 place-content-center">
+                <p class="p-4 sm:p-0">No report selected. Please select a report to view its content.</p>
+            </div>
+        }
+	</div>
+}
+
+templ Report(data templates.Data) {
+	<div id="report-view-pane" class="col-span-3">
+		<div class="overflow-auto h-[89vh]">
+			<table class="table table-xs sm:table-md">
+				<thead>
+					<tr>
+						switch data.Reports.Sort {
+							case "id":
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=id-reverse" hx-target="#report-view-pane">ID <span>▾</span></th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=title" hx-target="#report-view-pane">Title</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=success" hx-target="#report-view-pane">Success</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=error" hx-target="#report-view-pane">Error</th>
+							case "title":
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=id" hx-target="#report-view-pane">ID</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=title-reverse" hx-target="#report-view-pane">Title <span>▾</span></th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=success" hx-target="#report-view-pane">Success</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=error" hx-target="#report-view-pane">Error</th>
+							case "success":
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=id" hx-target="#report-view-pane">ID</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=title" hx-target="#report-view-pane">Title</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=success-reverse" hx-target="#report-view-pane">Success <span>▾</span></th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=error" hx-target="#report-view-pane">Error</th>
+							case "error":
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=id" hx-target="#report-view-pane">ID</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=title" hx-target="#report-view-pane">Title</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=success" hx-target="#report-view-pane">Success</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=error-reverse" hx-target="#report-view-pane">Error <span>▾</span></th>
+							case "error-reverse":
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=id" hx-target="#report-view-pane">ID</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=title" hx-target="#report-view-pane">Title</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=success" hx-target="#report-view-pane">Success</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=error" hx-target="#report-view-pane">Error <span>▴</span></th>
+							case "success-reverse":
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=id" hx-target="#report-view-pane">ID</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=title" hx-target="#report-view-pane">Title</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=success" hx-target="#report-view-pane">Success <span>▴</span></th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=error" hx-target="#report-view-pane">Error</th>
+							case "title-reverse":
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=id" hx-target="#report-view-pane">ID</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=title" hx-target="#report-view-pane">Title <span>▴</span></th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=success" hx-target="#report-view-pane">Success</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=error" hx-target="#report-view-pane">Error</th>
+							case "id-reverse":
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=id" hx-target="#report-view-pane">ID <span>▴</span></th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=title" hx-target="#report-view-pane">Title</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=success" hx-target="#report-view-pane">Success</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=error" hx-target="#report-view-pane">Error</th>
+							default:
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=id-reverse" hx-target="#report-view-pane">ID <span>▾</span></th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=title" hx-target="#report-view-pane">Title</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=success" hx-target="#report-view-pane">Success</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=error" hx-target="#report-view-pane">Error</th>
+						}
+					</tr>
+				</thead>
+				<tbody>
+					for _, log := range data.Reports.CurrentReport {
+						<tr class={ templ.KV("bg-red-200 dark:bg-red-700", !log.IsSuccess) }>
+							<th>{ fmt.Sprint(log.ID) }</th>
+							<td>{ log.Title }</td>
+							<td>
+								if log.IsSuccess {
+									&#x2713;
+								} else {
+									X
+								}
+							</td>
+							<td>
+								if log.Error == "" {
+									-
+								} else {
+									{ log.Error }
+								}
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+}

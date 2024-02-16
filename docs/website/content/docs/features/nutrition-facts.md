@@ -1,5 +1,5 @@
 ---
-title: "Nutrition Facts"
+title: Nutrition Facts
 weight: 6
 ---
 

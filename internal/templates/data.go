@@ -32,6 +32,7 @@ type Data struct {
 	CookbookFeature CookbookFeature
 	Pagination      Pagination
 	Recipes         models.Recipes
+	Reports         ReportsData
 	Settings        SettingsData
 	Scraper         ScraperData
 	View            *ViewRecipeData
@@ -226,6 +227,13 @@ type formattedTimes struct {
 	PrepEdit      string
 	Total         string
 	TotalDateTime string
+}
+
+// ReportsData holds data related to reports.
+type ReportsData struct {
+	CurrentReport []models.ReportLog
+	Imports       []models.Report
+	Sort          string
 }
 
 // ShareData holds information on the entity being shared.

@@ -207,9 +207,11 @@ script handleOCR() {
         }, {once: true});
     });
 
-    ocr_file_picker.click();
-    await filePromise;
-    htmx.trigger("#ocr-form", "submit");
+    (async function() {
+        ocr_file_picker.click();
+        await filePromise;
+        htmx.trigger("#ocr-form", "submit");
+    })()
 }
 
 templ AddRecipeManual(data templates.Data) {

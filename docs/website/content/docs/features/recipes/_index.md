@@ -1,8 +1,8 @@
 ---
 title: Recipes
-weight: 1
+weight: 7
 next: /docs/features/recipes/add
-prev: /docs/features
+prev: /docs/features/nutrition-facts
 ---
 
 You can add, view, edit, and delete any recipe in your collection.

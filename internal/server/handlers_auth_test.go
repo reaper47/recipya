@@ -28,21 +28,21 @@ func TestHandlers_Auth_ChangePassword(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("password-current=test1&password-new=test2&password-confirm=test"))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Passwords do not match.\",\"backgroundColor\":\"alert-error\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Passwords do not match.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("Wrong current password", func(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("password-current=cat&password-new=test2&password-confirm=test2"))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Current password is incorrect.\",\"backgroundColor\":\"alert-error\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Current password is incorrect.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("new password same as current", func(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("password-current=test2&password-new=test2&password-confirm=test2"))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"New password is same as current.\",\"backgroundColor\":\"alert-error\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"New password is same as current.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("cannot change password if autologin", func(t *testing.T) {
@@ -67,7 +67,7 @@ func TestHandlers_Auth_ChangePassword(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("password-current=test1&password-new=test2&password-confirm=test2"))
 
 		assertStatus(t, rr.Code, http.StatusNoContent)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Password updated.\",\"backgroundColor\":\"alert-info\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-info\",\"message\":\"Password updated.\",\"title\":\"\"}"}`)
 		if !slices.Contains(repo.UsersUpdated, 1) {
 			t.Fatal("must have called UpdatePassword on the user")
 		}
@@ -164,7 +164,7 @@ func TestHandlers_Auth_DeleteUser(t *testing.T) {
 		rr := sendRequestAsLoggedIn(srv, http.MethodDelete, uri, noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusTeapot)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Your savings account has been deleted.\",\"backgroundColor\":\"alert-error\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Your savings account has been deleted.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("cannot delete user if autologin", func(t *testing.T) {
@@ -356,14 +356,14 @@ func TestHandlers_Auth_ForgotPassword(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri+"/reset", formHeader, strings.NewReader("user-id=1&password=test&password-confirm=test2"))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Password is invalid.\",\"backgroundColor\":\"alert-error\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Password is invalid.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("reset password valid", func(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri+"/reset", formHeader, strings.NewReader("user-id=1&password=test&password-confirm=test"))
 
 		assertStatus(t, rr.Code, http.StatusSeeOther)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Password updated.\",\"backgroundColor\":\"alert-info\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-info\",\"message\":\"Password updated.\",\"title\":\"\"}"}`)
 		assertHeader(t, rr, "HX-Redirect", "/auth/login")
 		if !slices.Contains(repo.UsersUpdated, 1) {
 			t.Fatal("must have called UpdatePassword on the user")
@@ -397,9 +397,9 @@ func TestHandlers_Auth_Login(t *testing.T) {
 			assertStatus(t, rr.Code, http.StatusNoContent)
 			var got map[string]string
 			_ = json.Unmarshal([]byte(rr.Header().Get("HX-Trigger")), &got)
-			wantHeader := `{"message":"Credentials are invalid.","backgroundColor":"alert-error"}`
+			wantHeader := `{"action":"","background":"alert-error","message":"Credentials are invalid.","title":""}`
 			if got["showToast"] != wantHeader {
-				t.Fatalf("got\n%q\nbut want\n%q", got, wantHeader)
+				t.Fatalf("got\n%q\nbut want\n%q", got["showToast"], wantHeader)
 			}
 		})
 	}
@@ -614,7 +614,7 @@ func TestHandlers_Auth_Register(t *testing.T) {
 		rr := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email="+email+"&password=test123&password-confirm=test123"))
 
 		assertStatus(t, rr.Code, http.StatusUnprocessableEntity)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Registration failed. User might be registered or password invalid.\",\"backgroundColor\":\"alert-error\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Registration failed. User might be registered or password invalid.\",\"title\":\"\"}"}`)
 		if len(srv.Repository.Users()) != originalNumUsers {
 			t.Fatalf("expected no user to be added to the db of %d users", originalNumUsers)
 		}
