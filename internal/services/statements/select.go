@@ -418,7 +418,8 @@ const SelectUserOne = `
 // SelectUsers fetches all users from the database.
 const SelectUsers = `
 	SELECT id, email 
-	FROM users`
+	FROM users
+	ORDER BY id`
 
 // SelectWebsites fetches all websites from the database.
 const SelectWebsites = `

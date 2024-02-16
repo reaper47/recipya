@@ -316,6 +316,7 @@ func (s *SQLiteService) AddRecipeTx(ctx context.Context, tx *sql.Tx, r *models.R
 	return recipeID, nil
 }
 
+// AddReport adds a report to the database.
 func (s *SQLiteService) AddReport(report models.Report, userID int64) {
 	// TODO: Short
 	ctx, cancel := context.WithTimeout(context.Background(), longerCtxTimeout)
@@ -1070,6 +1071,7 @@ func (s *SQLiteService) ReorderCookbookRecipes(cookbookID int64, recipeIDs []uin
 	return tx.Commit()
 }
 
+// Report gets a report of any type belonging to the user.
 func (s *SQLiteService) Report(id, userID int64) ([]models.ReportLog, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
@@ -1101,6 +1103,7 @@ func (s *SQLiteService) Report(id, userID int64) ([]models.ReportLog, error) {
 	return logs, nil
 }
 
+// ReportsImport gets all import reports.
 func (s *SQLiteService) ReportsImport(userID int64) ([]models.Report, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()

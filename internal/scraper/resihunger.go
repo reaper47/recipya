@@ -19,7 +19,7 @@ func scrapeReisHunger(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	var instructions []string
-	root.Find("#zubereitung").Next().Find("div").Each(func(i int, s *goquery.Selection) {
+	root.Find("#zubereitung").Next().Find("div").Each(func(_ int, s *goquery.Selection) {
 		v := strings.TrimFunc(s.Text(), func(r rune) bool { return r == '\n' })
 		if !strings.HasPrefix(v, "Schritt") {
 			instructions = append(instructions, v)

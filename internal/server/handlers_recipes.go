@@ -164,10 +164,9 @@ func (s *Server) recipesAddImportHandler() http.HandlerFunc {
 							Title:     r.Name,
 						})
 						return
-					} else {
-						report.Logs = append(report.Logs, models.ReportLog{IsSuccess: true, Title: r.Name})
 					}
 
+					report.Logs = append(report.Logs, models.ReportLog{IsSuccess: true, Title: r.Name})
 					recipeIDs = append(recipeIDs, id)
 					count.Add(1)
 				}(i, recipe)
