@@ -1,8 +1,8 @@
 ---
 title: "Cookbooks"
-weight: 2
+weight: 3
 next: /docs/features/cookbooks/add
-prev: /docs/features/recipes/wakelock
+prev: /docs/features/backups
 ---
 
 A cookbook is a collection of recipes. You can access this feature from 'Cookbook' tab of the sidebar.

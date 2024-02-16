@@ -1,6 +1,6 @@
 ---
 title: Admin
-weight: 9
+weight: 1
 ---
 
 An administrator is defined as the initial user, typically the one who set up Recipya.

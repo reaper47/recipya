@@ -1,6 +1,6 @@
 ---
 title: Integrations
-weight: 8
+weight: 4
 next: /docs/installation
 ---
 

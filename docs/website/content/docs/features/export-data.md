@@ -1,6 +1,7 @@
 ---
 title: "Export Data"
-weight: 7
+weight: 3
+prev: /docs/features/cookbooks
 ---
 
 It is possible to download your data through the settings. To access them, click on your avatar in the top right

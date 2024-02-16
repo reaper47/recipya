@@ -187,7 +187,7 @@ func (s *Server) recipesAddImportHandler() http.HandlerFunc {
 			s.Repository.CalculateNutrition(userID, recipeIDs, settings)
 			s.Brokers[userID].HideNotification()
 			message := fmt.Sprintf("Imported %d recipes. %d skipped", count.Load(), int64(len(recipes))-count.Load())
-			s.Brokers[userID].SendToast(models.NewInfoToast("Operation Successful", message, "See /reports?view=latest"))
+			s.Brokers[userID].SendToast(models.NewInfoToast("Operation Successful", message, "View /reports?view=latest"))
 		}()
 
 		w.WriteHeader(http.StatusAccepted)
