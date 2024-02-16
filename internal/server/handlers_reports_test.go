@@ -69,7 +69,9 @@ func TestHandlers_Reports(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?view=latest", noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusOK)
-		assertStringsInHTML(t, getBodyHTML(rr), []string{
+		body := getBodyHTML(rr)
+		t.Log(body)
+		assertStringsInHTML(t, body, []string{
 			`<title hx-swap-oob="true">Reports | Recipya</title>`,
 			`<button class="active" hx-get="/reports?tab=imports" hx-target="#tab-content">Imports</button>`,
 			`<ul class="col-span-1 border-r overflow-auto max-h-44 border-b md:border-b-0 sm:max-h-full dark:border-r-gray-800"><li class="item p-2 hover:bg-slate-200 cursor-default dark:hover:bg-slate-700 bg-slate-200 dark:bg-slate-700" hx-get="/reports/1" hx-target="#report-view-pane" hx-swap="outerHTML" hx-push-url="true" _="on click remove .bg-slate-200 .dark:bg-slate-700 from .item then add .bg-slate-200 .dark:bg-slate-700"><span><b>14 Mar 20 01:06 CET</b><br><span class="text-sm">Execution time: 3s</span></span><span class="badge badge-primary float-right select-none">2</span></li><li class="item p-2 hover:bg-slate-200 cursor-default dark:hover:bg-slate-700" hx-get="/reports/2" hx-target="#report-view-pane" hx-swap="outerHTML" hx-push-url="true" _="on click remove .bg-slate-200 .dark:bg-slate-700 from .item then add .bg-slate-200 .dark:bg-slate-700"><span><b>15 Mar 20 04:09 CET</b><br><span class="text-sm">Execution time: 9s</span></span><span class="badge badge-primary float-right select-none">1</span></li></ul>`,
