@@ -37,9 +37,9 @@ func NewWarningToast(title, message, action string) Toast {
 // Toast holds data related to a notification toast.
 type Toast struct {
 	Action     string `json:"action"`
-	Background string `json:"background" json:"background"`
-	Message    string `json:"message" json:"message"`
-	Title      string `json:"title" json:"title"`
+	Background string `json:"background"`
+	Message    string `json:"message"`
+	Title      string `json:"title"`
 }
 
 // Render returns the JSON encoding of the toast.
