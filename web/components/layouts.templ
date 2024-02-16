@@ -100,8 +100,14 @@ templ layoutMain(title string, data templates.Data) {
 											Admin
 										</a>
 									</li>
-									<div class="divider m-0"></div>
 								}
+								<li onclick="document.activeElement?.blur()">
+                                    <a href="/reports" hx-get="/reports" hx-target="#content" hx-push-url="true">
+                                        @iconFlag()
+                                        Reports
+                                    </a>
+                                </li>
+								<div class="divider m-0"></div>
 								<li onclick="document.activeElement?.blur()">
 									<a href="/settings" hx-get="/settings" hx-target="#content" hx-push-url="true">
 										@iconGear()
@@ -115,12 +121,14 @@ templ layoutMain(title string, data templates.Data) {
 										About
 									</a>
 								</li>
-								<li>
-									<a hx-post="/auth/logout">
-										@iconLogout()
-										Log out
-									</a>
-								</li>
+								if !data.IsAutologin {
+									<li>
+										<a hx-post="/auth/logout">
+											@iconLogout()
+											Log out
+										</a>
+									</li>
+								}
 							</ul>
 						</div>
 						@aboutDialog(data.About.Version)
@@ -370,13 +378,13 @@ templ toast() {
 	<script defer>
         var timeoutToast = timeoutToast || null;
         htmx.on('showToast', function (event) {
-            const {message, backgroundColor} = JSON.parse(event.detail.value);
-            showToast(message, backgroundColor);
+            const {title, message, background} = JSON.parse(event.detail.value);
+            showToast(message, background);
         });
 
-        function showToast(message, backgroundColor) {
+        function showToast(message, background) {
             const toast = document.createElement('div');
-            toast.classList.add('alert', backgroundColor);
+            toast.classList.add('alert', background);
             toast.textContent = message;
 
             if (toast_container.firstChild) {

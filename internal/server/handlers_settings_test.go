@@ -37,11 +37,10 @@ func TestHandlers_Settings(t *testing.T) {
 			`<title hx-swap-oob="true">Settings | Recipya</title>`,
 			`<div class="grid place-content-center md:place-content-stretch md:grid-flow-col md:h-full" style="grid-template-columns: min-content">`,
 			`<div class="hidden md:grid text-sm md:text-base bg-gray-200 max-w-[6rem] mt-[1px] dark:bg-gray-600 dark:border-r dark:border-r-gray-500" role="tablist">`,
-			`<button class="px-2 hover:bg-gray-300 dark:hover:bg-gray-800 bg-gray-300" hx-get="/settings/tabs/recipes" hx-target="#settings-tab-content" role="tab" aria-selected="false" aria-controls="tab-content" _="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800">Recipes</button>`,
-			`<button class="px-2 hover:bg-gray-300" hx-get="/settings/tabs/advanced" hx-target="#settings-tab-content" role="tab" aria-selected="false" aria-controls="tab-content" _="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800">Advanced</button>`,
+			`<button class="px-2 hover:bg-gray-300 dark:hover:bg-gray-800 bg-gray-300 dark:bg-gray-800" hx-get="/settings/tabs/recipes" hx-target="#settings-tab-content" role="tab" aria-selected="false" aria-controls="tab-content" _="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800">Recipes</button>`,
+			`<button class="px-2 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-800" hx-get="/settings/tabs/advanced" hx-target="#settings-tab-content" role="tab" aria-selected="false" aria-controls="tab-content" _="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800">Advanced</button>`,
 			`<div id="settings_bottom_tabs" class="btm-nav btm-nav-sm z-20 md:hidden" _="on click remove .active from <button/> in settings_bottom_tabs then add .active to event.srcElement">`,
-			`<button class="active" hx-get="/settings/tabs/profile" hx-target="#settings-tab-content">Profile</button>`,
-			`<button hx-get="/settings/tabs/recipes" hx-target="#settings-tab-content">Recipes</button>`,
+			`<button class="active" hx-get="/settings/tabs/recipes" hx-target="#settings-tab-content">Recipes</button>`,
 			`<button hx-get="/settings/tabs/advanced" hx-target="#settings-tab-content">Advanced</button>`,
 			`<div id="settings-tab-content" role="tabpanel" class="w-[90vw] text-sm md:text-base p-4 auto-rows-min md:w-full">`,
 			`<div class="mb-4 md:mb-2 md:grid md:grid-cols-2 md:gap-4"><p class="mb-1 font-semibold md:text-end">Export data:<br><span class="font-light text-sm">Download your recipes in the selected file format.</span></p><form class="grid gap-1 grid-flow-col w-fit" hx-get="/settings/export/recipes" hx-include="select[name='type']" hx-swap="none">`,
@@ -73,10 +72,10 @@ func TestHandlers_Settings(t *testing.T) {
 			`<div class="hidden md:grid text-sm md:text-base bg-gray-200 max-w-[6rem] mt-[1px] dark:bg-gray-600 dark:border-r dark:border-r-gray-500" role="tablist">`,
 			`<button class="px-2 bg-gray-300 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-800" hx-get="/settings/tabs/profile" hx-target="#settings-tab-content" role="tab" aria-selected="false" aria-controls="tab-content" _="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800">Profile</button>`,
 			`<button class="px-2 hover:bg-gray-300 dark:hover:bg-gray-800" hx-get="/settings/tabs/recipes" hx-target="#settings-tab-content" role="tab" aria-selected="false" aria-controls="tab-content" _="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800">Recipes</button>`,
-			`<button class="px-2 hover:bg-gray-300" hx-get="/settings/tabs/advanced" hx-target="#settings-tab-content" role="tab" aria-selected="false" aria-controls="tab-content" _="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800">Advanced</button>`,
+			`<button class="px-2 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-800" hx-get="/settings/tabs/advanced" hx-target="#settings-tab-content" role="tab" aria-selected="false" aria-controls="tab-content" _="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800">Advanced</button>`,
 			`<div id="settings_bottom_tabs" class="btm-nav btm-nav-sm z-20 md:hidden" _="on click remove .active from <button/> in settings_bottom_tabs then add .active to event.srcElement">`,
 			`<button class="active" hx-get="/settings/tabs/profile" hx-target="#settings-tab-content">Profile</button>`,
-			`<button hx-get="/settings/tabs/recipes" hx-target="#settings-tab-content">Recipes</button>`,
+			`<button class="" hx-get="/settings/tabs/recipes" hx-target="#settings-tab-content">Recipes</button>`,
 			`<button hx-get="/settings/tabs/advanced" hx-target="#settings-tab-content">Advanced</button>`,
 			`<div id="settings-tab-content" role="tabpanel" class="w-[90vw] text-sm md:text-base p-4 auto-rows-min md:w-full">`,
 			`<div class="mb-4 md:mb-2 md:grid md:grid-cols-2 md:gap-4"><p class="mb-1 font-semibold md:text-end">Change password:</p><div class="card card-bordered card-compact w-96 bg-base-100 max-w-xs"><div class="card-body pt-2"><form hx-post="/auth/change-password" hx-indicator="#fullscreen-loader" hx-swap="none">`,
@@ -116,7 +115,7 @@ func TestHandlers_Settings_BackupsRestore(t *testing.T) {
 
 			assertStatus(t, rr.Code, http.StatusBadRequest)
 			_, after, _ := strings.Cut(tc.in, "=")
-			message := fmt.Sprintf("{\"showToast\":\"{\\\"message\\\":\\\"%s is an invalid backup.\\\",\\\"backgroundColor\\\":\\\"alert-error\\\"}\"}", after)
+			message := fmt.Sprintf(`{"showToast":"{\"background\":\"alert-error\",\"message\":\"%s is an invalid backup.\",\"title\":\"\"}"}`, after)
 			assertHeader(t, rr, "HX-Trigger", message)
 		})
 	}
@@ -134,7 +133,7 @@ func TestHandlers_Settings_BackupsRestore(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("date=2006-01-02"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Failed to backup current data.\",\"backgroundColor\":\"alert-error\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-error\",\"message\":\"Failed to backup current data.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("extract user backup failed", func(t *testing.T) {
@@ -150,7 +149,7 @@ func TestHandlers_Settings_BackupsRestore(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("date=2006-01-02"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Failed to extract backup.\",\"backgroundColor\":\"alert-error\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-error\",\"message\":\"Failed to extract backup.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("restore backup failed", func(t *testing.T) {
@@ -166,14 +165,14 @@ func TestHandlers_Settings_BackupsRestore(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("date=2006-01-02"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Failed to restore backup.\",\"backgroundColor\":\"alert-error\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-error\",\"message\":\"Failed to restore backup.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("valid request", func(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("date=2006-01-02"))
 
 		assertStatus(t, rr.Code, http.StatusOK)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Backup restored successfully.\",\"backgroundColor\":\"alert-info\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-info\",\"message\":\"Backup restored successfully.\",\"title\":\"\"}"}`)
 	})
 }
 
@@ -194,7 +193,7 @@ func TestHandlers_Settings_CalculateNutrition(t *testing.T) {
 		rr := sendHxRequestAsLoggedInOther(srv, http.MethodPost, uri, formHeader, strings.NewReader("calculate-nutrition=off"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Failed to set setting.\",\"backgroundColor\":\"alert-error\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-error\",\"message\":\"Failed to set setting.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("unchecked does not convert new recipes", func(t *testing.T) {
@@ -231,7 +230,7 @@ func TestHandlers_Settings_ConvertAutomatically(t *testing.T) {
 		rr := sendHxRequestAsLoggedInOther(srv, http.MethodPost, uri, formHeader, strings.NewReader("convert=off"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Failed to set setting.\",\"backgroundColor\":\"alert-error\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-error\",\"message\":\"Failed to set setting.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("unchecked does not convert new recipes", func(t *testing.T) {
@@ -272,14 +271,14 @@ func TestHandlers_Settings_MeasurementSystems(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("system=imperial"))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"System already set to imperial.\",\"backgroundColor\":\"alert-warning\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-warning\",\"message\":\"System already set to imperial.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("system does not exist", func(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("system=peanuts"))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Measurement system does not exist.\",\"backgroundColor\":\"alert-error\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-error\",\"message\":\"Measurement system does not exist.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("failed to switch system", func(t *testing.T) {
@@ -295,7 +294,7 @@ func TestHandlers_Settings_MeasurementSystems(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("system=imperial"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Error switching units system.\",\"backgroundColor\":\"alert-error\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-error\",\"message\":\"Error switching units system.\",\"title\":\"\"}"}`)
 	})
 
 	testcases := []struct {
@@ -477,7 +476,7 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 		rr := sendRequestAsLoggedIn(srv, http.MethodGet, "/settings/export/recipes", noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Connection lost. Please reload page.\",\"backgroundColor\":\"alert-warning\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-warning\",\"message\":\"Connection lost. Please reload page.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("invalid file type", func(t *testing.T) {
@@ -486,7 +485,7 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Invalid export file format.\",\"backgroundColor\":\"alert-error\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-error\",\"message\":\"Invalid export file format.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("no export if no recipes", func(t *testing.T) {
@@ -498,7 +497,7 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 				rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?type="+q, noHeader, nil)
 
 				assertStatus(t, rr.Code, http.StatusAccepted)
-				want := `{"type":"toast","fileName":"","data":"{\"message\":\"No recipes in database.\",\"background\":\"bg-orange-500\"}"}`
+				want := `{"type":"toast","fileName":"","data":"{\"background\":\"alert-warning\",\"message\":\"No recipes in database.\",\"title\":\"\"}"}`
 				assertWebsocket(t, c, 3, want)
 				if originalHitCount != f.exportHitCount {
 					t.Fatalf("expected the export function not to be called")
@@ -601,7 +600,7 @@ func TestHandlers_Settings_TabsRecipes(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"message\":\"Error fetching units systems.\",\"backgroundColor\":\"alert-error\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-error\",\"message\":\"Error fetching units systems.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("successful request", func(t *testing.T) {

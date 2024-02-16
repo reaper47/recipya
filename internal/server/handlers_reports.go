@@ -2,6 +2,7 @@ package server
 
 import (
 	"cmp"
+	"github.com/a-h/templ"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
@@ -14,19 +15,29 @@ func (s *Server) reportsHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		reports, err := s.Repository.ReportsImport(getUserID(r))
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Failed to fetch reports.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Failed to fetch reports.").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
-		_ = components.ReportsIndex(templates.Data{
+		data := templates.Data{
 			About:           templates.NewAboutData(),
 			IsAdmin:         getUserID(r) == 1,
 			IsAutologin:     app.Config.Server.IsAutologin,
 			IsAuthenticated: true,
 			IsHxRequest:     r.Header.Get("Hx-Request") == "true",
 			Reports:         templates.ReportsData{Imports: reports},
-		}).Render(r.Context(), w)
+		}
+
+		var c templ.Component
+		switch r.URL.Query().Get("tab") {
+		case "imports":
+			c = components.ReportsTabImports(data)
+		default:
+			c = components.ReportsIndex(data)
+		}
+
+		_ = c.Render(r.Context(), w)
 	}
 }
 
@@ -40,14 +51,14 @@ func (s *Server) reportsReportHandler() http.HandlerFunc {
 
 		id, err := parsePathPositiveID(r.PathValue("id"))
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Report ID must be positive.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Report ID must be positive.").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		report, err := s.Repository.Report(id, getUserID(r))
 		if err != nil {
-			w.Header().Set("HX-Trigger", makeToast("Failed to fetch report.", errorToast))
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Failed to fetch report.").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}

@@ -28,7 +28,7 @@ templ reportsIndex(data templates.Data) {
 		>
 			<button
 				class={ "px-2 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-800", templ.KV("bg-gray-300", data.IsAutologin) }
-				hx-get="/reports/imports"
+				hx-get="/reports?tab=imports"
 				hx-target="#tab-content"
 				role="tab"
 				aria-selected="false"
@@ -43,16 +43,16 @@ templ reportsIndex(data templates.Data) {
 			class="btm-nav btm-nav-sm z-20 md:hidden"
 			_="on click remove .active from <button/> in settings_bottom_tabs then add .active to event.srcElement"
 		>
-			<button hx-get="/settings/tabs/recipes" hx-target="#tab-content">Imports</button>
+			<button class="active" hx-get="/reports?tab=imports" hx-target="#tab-content">Imports</button>
 		</div>
 		<div id="tab-content" role="tabpanel" class="w-[90vw] text-sm md:text-base p-4 auto-rows-min md:w-full">
-			@reportsTabImports(data)
+			@ReportsTabImports(data)
 		</div>
 	</div>
 }
 
-templ reportsTabImports(data templates.Data) {
-	<div class="h-full max-h-[89vh] grid gap-4 grid-cols-4 border rounded-lg dark:border-gray-800">
+templ ReportsTabImports(data templates.Data) {
+	<div class="h-full max-h-[89vh] border rounded-lg sm:grid sm:gap-4 sm:grid-cols-4 dark:border-gray-800">
 		<ul class="col-span-1 border-r overflow-auto dark:border-r-gray-800">
 			for _, r := range data.Reports.Imports {
 				<li
@@ -76,7 +76,7 @@ templ reportsTabImports(data templates.Data) {
 			}
 		</ul>
 		<div id="report-view-pane" class="grid col-span-3 place-content-center">
-			<p>No report selected. Please select a report from the left pane to view its content.</p>
+			<p>No report selected. Please select a report to view its content.</p>
 		</div>
 	</div>
 }
@@ -84,61 +84,61 @@ templ reportsTabImports(data templates.Data) {
 templ Report(data templates.Data) {
 	<div id="report-view-pane" class="col-span-3">
 		<div class="overflow-auto h-[89vh]">
-			<table class="table table-zebra">
+			<table class="table table-xs sm:table-md">
 				<thead>
 					<tr>
 						switch data.Reports.Sort {
 							case "id":
-								<th class="cursor-default" hx-get="?sort=id-reverse" hx-target="#report-view-pane">ID <span>▾</span></th>
-								<th class="cursor-default" hx-get="?sort=title" hx-target="#report-view-pane">Title</th>
-								<th class="cursor-default" hx-get="?sort=success" hx-target="#report-view-pane">Success</th>
-								<th class="cursor-default" hx-get="?sort=error" hx-target="#report-view-pane">Error</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=id-reverse" hx-target="#report-view-pane">ID <span>▾</span></th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=title" hx-target="#report-view-pane">Title</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=success" hx-target="#report-view-pane">Success</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=error" hx-target="#report-view-pane">Error</th>
 							case "title":
-								<th class="cursor-default" hx-get="?sort=id" hx-target="#report-view-pane">ID</th>
-								<th class="cursor-default" hx-get="?sort=title-reverse" hx-target="#report-view-pane">Title <span>▾</span></th>
-								<th class="cursor-default" hx-get="?sort=success" hx-target="#report-view-pane">Success</th>
-								<th class="cursor-default" hx-get="?sort=error" hx-target="#report-view-pane">Error</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=id" hx-target="#report-view-pane">ID</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=title-reverse" hx-target="#report-view-pane">Title <span>▾</span></th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=success" hx-target="#report-view-pane">Success</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=error" hx-target="#report-view-pane">Error</th>
 							case "success":
-								<th class="cursor-default" hx-get="?sort=id" hx-target="#report-view-pane">ID</th>
-								<th class="cursor-default" hx-get="?sort=title" hx-target="#report-view-pane">Title</th>
-								<th class="cursor-default" hx-get="?sort=success-reverse" hx-target="#report-view-pane">Success <span>▾</span></th>
-								<th class="cursor-default" hx-get="?sort=error" hx-target="#report-view-pane">Error</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=id" hx-target="#report-view-pane">ID</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=title" hx-target="#report-view-pane">Title</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=success-reverse" hx-target="#report-view-pane">Success <span>▾</span></th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=error" hx-target="#report-view-pane">Error</th>
 							case "error":
-								<th class="cursor-default" hx-get="?sort=id" hx-target="#report-view-pane">ID</th>
-								<th class="cursor-default" hx-get="?sort=title" hx-target="#report-view-pane">Title</th>
-								<th class="cursor-default" hx-get="?sort=success" hx-target="#report-view-pane">Success</th>
-								<th class="cursor-default" hx-get="?sort=error-reverse" hx-target="#report-view-pane">Error <span>▾</span></th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=id" hx-target="#report-view-pane">ID</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=title" hx-target="#report-view-pane">Title</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=success" hx-target="#report-view-pane">Success</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=error-reverse" hx-target="#report-view-pane">Error <span>▾</span></th>
 							case "error-reverse":
-								<th class="cursor-default" hx-get="?sort=id" hx-target="#report-view-pane">ID</th>
-								<th class="cursor-default" hx-get="?sort=title" hx-target="#report-view-pane">Title</th>
-								<th class="cursor-default" hx-get="?sort=success" hx-target="#report-view-pane">Success</th>
-								<th class="cursor-default" hx-get="?sort=error" hx-target="#report-view-pane">Error <span>▴</span></th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=id" hx-target="#report-view-pane">ID</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=title" hx-target="#report-view-pane">Title</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=success" hx-target="#report-view-pane">Success</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=error" hx-target="#report-view-pane">Error <span>▴</span></th>
 							case "success-reverse":
-								<th class="cursor-default" hx-get="?sort=id" hx-target="#report-view-pane">ID</th>
-								<th class="cursor-default" hx-get="?sort=title" hx-target="#report-view-pane">Title</th>
-								<th class="cursor-default" hx-get="?sort=success" hx-target="#report-view-pane">Success <span>▴</span></th>
-								<th class="cursor-default" hx-get="?sort=error" hx-target="#report-view-pane">Error</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=id" hx-target="#report-view-pane">ID</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=title" hx-target="#report-view-pane">Title</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=success" hx-target="#report-view-pane">Success <span>▴</span></th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=error" hx-target="#report-view-pane">Error</th>
 							case "title-reverse":
-								<th class="cursor-default" hx-get="?sort=id" hx-target="#report-view-pane">ID</th>
-								<th class="cursor-default" hx-get="?sort=title" hx-target="#report-view-pane">Title <span>▴</span></th>
-								<th class="cursor-default" hx-get="?sort=success" hx-target="#report-view-pane">Success</th>
-								<th class="cursor-default" hx-get="?sort=error" hx-target="#report-view-pane">Error</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=id" hx-target="#report-view-pane">ID</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=title" hx-target="#report-view-pane">Title <span>▴</span></th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=success" hx-target="#report-view-pane">Success</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=error" hx-target="#report-view-pane">Error</th>
 							case "id-reverse":
-								<th class="cursor-default" hx-get="?sort=id" hx-target="#report-view-pane">ID <span>▴</span></th>
-								<th class="cursor-default" hx-get="?sort=title" hx-target="#report-view-pane">Title</th>
-								<th class="cursor-default" hx-get="?sort=success" hx-target="#report-view-pane">Success</th>
-								<th class="cursor-default" hx-get="?sort=error" hx-target="#report-view-pane">Error</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=id" hx-target="#report-view-pane">ID <span>▴</span></th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=title" hx-target="#report-view-pane">Title</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=success" hx-target="#report-view-pane">Success</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=error" hx-target="#report-view-pane">Error</th>
 							default:
-								<th class="cursor-default" hx-get="?sort=id-reverse" hx-target="#report-view-pane">ID <span>▾</span></th>
-								<th class="cursor-default" hx-get="?sort=title" hx-target="#report-view-pane">Title</th>
-								<th class="cursor-default" hx-get="?sort=success" hx-target="#report-view-pane">Success</th>
-								<th class="cursor-default" hx-get="?sort=error" hx-target="#report-view-pane">Error</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=id-reverse" hx-target="#report-view-pane">ID <span>▾</span></th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=title" hx-target="#report-view-pane">Title</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=success" hx-target="#report-view-pane">Success</th>
+								<th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=error" hx-target="#report-view-pane">Error</th>
 						}
 					</tr>
 				</thead>
 				<tbody>
 					for _, log := range data.Reports.CurrentReport {
-						<tr class={ templ.KV("bg-red-100", !log.IsSuccess) }>
+						<tr class={ templ.KV("bg-red-200 dark:bg-red-700", !log.IsSuccess) }>
 							<th>{ fmt.Sprint(log.ID) }</th>
 							<td>{ log.Title }</td>
 							<td>

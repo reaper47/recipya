@@ -1135,6 +1135,16 @@ func (s *SQLiteService) ReportsImport(userID int64) ([]models.Report, error) {
 		reports = append(reports, report)
 	}
 
+	slices.SortFunc(reports, func(a, b models.Report) int {
+		if b.CreatedAt.Before(a.CreatedAt) {
+			return -1
+		}
+		if a.CreatedAt.After(a.CreatedAt) {
+			return +1
+		}
+		return 0
+	})
+
 	return reports, rows.Err()
 }
 

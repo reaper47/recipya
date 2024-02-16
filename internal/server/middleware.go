@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
+	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/utils/regex"
 	"net/http"
@@ -100,6 +101,11 @@ func (s *Server) mustBeLoggedInMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if app.Config.Server.IsAutologin {
 			ctx := context.WithValue(r.Context(), UserIDKey, int64(1))
+
+			sid := uuid.New()
+			SessionData[sid] = 1
+			http.SetCookie(w, NewSessionCookie(sid.String()))
+
 			next.ServeHTTP(w, r.WithContext(ctx))
 			return
 		}
