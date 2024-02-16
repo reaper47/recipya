@@ -69,17 +69,50 @@ templ addRecipe() {
 				<div class="card-actions justify-end">
 					<button
 						class="btn btn-outline btn-sm btn-block"
-						hx-target="#content"
-						hx-push-url="/recipes/add/unsupported-website"
-						hx-prompt="Enter the recipe's URL"
-						hx-post="/recipes/add/website"
-						hx-indicator="#fullscreen-loader"
+						onclick="websites_dialog.showModal()"
 					>
 						Fetch
 					</button>
 				</div>
 			</div>
 		</div>
+		<!-- TODO: If import one URL, display toast with View recipe action -->
+		<!-- TODO: If multiple URLs, display toast like import with View report action -->
+		<dialog id="websites_dialog" class="modal">
+            <div class="modal-box">
+                <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                </form>
+                <h3 class="font-bold text-lg">Fetch Websites</h3>
+                <form
+                    class="py-4"
+                    hx-post="/recipes/add/website"
+                    hx-indicator="#fullscreen-loader"
+                    hx-swap="none"
+                >
+                    <div class="grid mb-4">
+                        <label for="import-dialog-file" class="text-sm font-semibold mb-1">
+                            Choose files in the .json, .mxp or .zip format.
+                        </label>
+                        <input
+                            id="import-dialog-file"
+                            type="file"
+                            name="files"
+                            accept=".json,.zip,.mxp"
+                            multiple
+                            class="p-2 border border-gray-300 rounded-lg shadow focus:ring-2 focus:ring-purple-600 dark:bg-gray-900 dark:border-none"
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        class="w-full p-2 font-semibold text-white bg-blue-500 border rounded-lg hover:bg-blue-800 dark:border-gray-800"
+                        onclick="websites_dialog.close()"
+                    >
+                        Submit
+                    </button>
+                </form>
+            </div>
+        </dialog>
 		<dialog id="supported_websites_dialog" class="modal">
 			<div class="modal-box h-2/3">
 				<form method="dialog">
