@@ -27,14 +27,14 @@ func (s *Server) changePasswordHandler() http.HandlerFunc {
 		currentPassword := r.FormValue("password-current")
 		newPassword := r.FormValue("password-new")
 		if currentPassword == newPassword {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "New password is same as current.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "New password is same as current.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		confirmPassword := r.FormValue("password-confirm")
 		if confirmPassword != newPassword {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Passwords do not match.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Passwords do not match.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -42,32 +42,32 @@ func (s *Server) changePasswordHandler() http.HandlerFunc {
 		userID := getUserID(r)
 
 		if app.Config.Server.IsDemo && s.Repository.UserID("demo@demo.com") == userID {
-			w.Header().Set("HX-Trigger", models.NewInfoToast("", "Your Facebook password has been changed.").Render())
+			w.Header().Set("HX-Trigger", models.NewInfoToast("", "Your Facebook password has been changed.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		if !s.Repository.IsUserPassword(userID, currentPassword) {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Current password is incorrect.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Current password is incorrect.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		hashPassword, err := auth.HashPassword(newPassword)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error encoding your password.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error encoding your password.", "").Render())
 			w.WriteHeader(http.StatusUnprocessableEntity)
 			return
 		}
 
 		err = s.Repository.UpdatePassword(userID, hashPassword)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Failed to update password.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Failed to update password.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
-		w.Header().Set("HX-Trigger", models.NewInfoToast("", "Password updated.").Render())
+		w.Header().Set("HX-Trigger", models.NewInfoToast("", "Password updated.", "").Render())
 		w.WriteHeader(http.StatusNoContent)
 	}
 }
@@ -124,7 +124,7 @@ func (s *Server) deleteUserHandler() http.HandlerFunc {
 
 		userID := getUserID(r)
 		if app.Config.Server.IsDemo && s.Repository.UserID("demo@demo.com") == userID {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Your savings account has been deleted.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Your savings account has been deleted.", "").Render())
 			w.WriteHeader(http.StatusTeapot)
 			return
 		}
@@ -160,7 +160,7 @@ func (s *Server) forgotPasswordPostHandler(w http.ResponseWriter, r *http.Reques
 		token, err := auth.CreateToken(map[string]any{"userID": userID}, 1*time.Hour)
 		if err != nil {
 			log.Printf("[error] forgotPasswordPostHandler.CreateToken: %q", err)
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Forgot password failed.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Forgot password failed.", "").Render())
 			w.WriteHeader(http.StatusUnprocessableEntity)
 			return
 		}
@@ -219,7 +219,7 @@ func (s *Server) forgotPasswordResetPostHandler(w http.ResponseWriter, r *http.R
 	password := r.FormValue("password")
 	confirm := r.FormValue("password-confirm")
 	if userIDStr == "" || password == "" || password != confirm {
-		w.Header().Set("HX-Trigger", models.NewErrorToast("", "Password is invalid.").Render())
+		w.Header().Set("HX-Trigger", models.NewErrorToast("", "Password is invalid.", "").Render())
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -227,14 +227,14 @@ func (s *Server) forgotPasswordResetPostHandler(w http.ResponseWriter, r *http.R
 	userID, err := strconv.ParseInt(userIDStr, 10, 64)
 	if err != nil {
 		log.Printf("[error] forgotPasswordResetPostHandler.ParseInt for (%d): %q", userID, err)
-		w.Header().Set("HX-Trigger", models.NewErrorToast("", "Password is invalid.").Render())
+		w.Header().Set("HX-Trigger", models.NewErrorToast("", "Password is invalid.", "").Render())
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	hashPassword, err := auth.HashPassword(password)
 	if err != nil {
-		w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error encoding your password.").Render())
+		w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error encoding your password.", "").Render())
 		w.WriteHeader(http.StatusUnprocessableEntity)
 		return
 	}
@@ -242,13 +242,13 @@ func (s *Server) forgotPasswordResetPostHandler(w http.ResponseWriter, r *http.R
 	err = s.Repository.UpdatePassword(userID, hashPassword)
 	if err != nil {
 		log.Printf("[error] forgotPasswordResetPostHandler.UpdatePassword for %d: %q", userID, err)
-		w.Header().Set("HX-Trigger", models.NewErrorToast("", "Updating password failed.").Render())
+		w.Header().Set("HX-Trigger", models.NewErrorToast("", "Updating password failed.", "").Render())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("HX-Redirect", "/auth/login")
-	w.Header().Set("HX-Trigger", models.NewInfoToast("", "Password updated.").Render())
+	w.Header().Set("HX-Trigger", models.NewInfoToast("", "Password updated.", "").Render())
 	w.WriteHeader(http.StatusSeeOther)
 }
 
@@ -263,14 +263,14 @@ func (s *Server) loginPostHandler() http.HandlerFunc {
 		email := r.FormValue("email")
 		password := r.FormValue("password")
 		if !regex.Email.MatchString(email) || password == "" {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Credentials are invalid.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Credentials are invalid.", "").Render())
 			w.WriteHeader(http.StatusNoContent)
 			return
 		}
 
 		userID := s.Repository.VerifyLogin(email, password)
 		if userID == -1 {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Credentials are invalid.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Credentials are invalid.", "").Render())
 			w.WriteHeader(http.StatusNoContent)
 			return
 		}
@@ -356,21 +356,21 @@ func (s *Server) registerPostHandler() http.HandlerFunc {
 		password := r.FormValue("password")
 
 		if !regex.Email.MatchString(email) || password != r.FormValue("password-confirm") {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Registration failed. User might be registered or password invalid.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Registration failed. User might be registered or password invalid.", "").Render())
 			w.WriteHeader(http.StatusUnprocessableEntity)
 			return
 		}
 
 		hashPassword, err := auth.HashPassword(password)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error encoding your password.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error encoding your password.", "").Render())
 			w.WriteHeader(http.StatusUnprocessableEntity)
 			return
 		}
 
 		userID, err := s.Repository.Register(email, hashPassword)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Registration failed. User might be registered or password invalid.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Registration failed. User might be registered or password invalid.", "").Render())
 			w.WriteHeader(http.StatusUnprocessableEntity)
 			return
 		}
@@ -378,7 +378,7 @@ func (s *Server) registerPostHandler() http.HandlerFunc {
 		token, err := auth.CreateToken(map[string]any{"userID": userID}, 14*24*time.Hour)
 		if err != nil {
 			log.Printf("[error] registerPostHandler.CreateToken: %q", err)
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Registration failed. User might be registered or password invalid.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Registration failed. User might be registered or password invalid.", "").Render())
 			w.WriteHeader(http.StatusUnprocessableEntity)
 			return
 		}

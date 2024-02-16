@@ -5,8 +5,9 @@ import (
 )
 
 // NewErrorToast creates a new error notification.
-func NewErrorToast(title, message string) Toast {
+func NewErrorToast(title, message, action string) Toast {
 	return Toast{
+		Action:     action,
 		Background: "alert-error",
 		Message:    message,
 		Title:      title,
@@ -14,8 +15,9 @@ func NewErrorToast(title, message string) Toast {
 }
 
 // NewInfoToast creates a new info notification.
-func NewInfoToast(title, message string) Toast {
+func NewInfoToast(title, message, action string) Toast {
 	return Toast{
+		Action:     action,
 		Background: "alert-info",
 		Message:    message,
 		Title:      title,
@@ -23,8 +25,9 @@ func NewInfoToast(title, message string) Toast {
 }
 
 // NewWarningToast creates a new warning notification.
-func NewWarningToast(title, message string) Toast {
+func NewWarningToast(title, message, action string) Toast {
 	return Toast{
+		Action:     action,
 		Background: "alert-warning",
 		Message:    message,
 		Title:      title,
@@ -33,9 +36,10 @@ func NewWarningToast(title, message string) Toast {
 
 // Toast holds data related to a notification toast.
 type Toast struct {
-	Background string `json:"background"`
-	Message    string `json:"message"`
-	Title      string `json:"title"`
+	Action     string `json:"action"`
+	Background string `json:"background" json:"background"`
+	Message    string `json:"message" json:"message"`
+	Title      string `json:"title" json:"title"`
 }
 
 // Render returns the JSON encoding of the toast.

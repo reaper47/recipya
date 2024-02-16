@@ -21,7 +21,7 @@ func (s *Server) recipesHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		query := r.URL.Query()
 		if query == nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse query.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse query.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -35,7 +35,7 @@ func (s *Server) recipesHandler() http.HandlerFunc {
 		userID := getUserID(r)
 		p, err := newRecipesPagination(s, userID, pageNumber, false)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error updating pagination.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error updating pagination.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -73,7 +73,7 @@ func recipesAddHandler() http.HandlerFunc {
 		if isHxRequest {
 			parsedURL, err := url.Parse(r.Header.Get("HX-Current-Url"))
 			if err == nil && parsedURL.Path == "/recipes/add/unsupported-website" {
-				w.Header().Set("HX-Trigger", models.NewInfoToast("", "Website requested.").Render())
+				w.Header().Set("HX-Trigger", models.NewInfoToast("", "Website requested.", "").Render())
 			}
 		}
 
@@ -94,7 +94,7 @@ func (s *Server) recipesAddImportHandler() http.HandlerFunc {
 		userID := getUserID(r)
 		_, found := s.Brokers[userID]
 		if !found {
-			w.Header().Set("HX-Trigger", models.NewWarningToast("", "Connection lost. Please reload page.").Render())
+			w.Header().Set("HX-Trigger", models.NewWarningToast("", "Connection lost. Please reload page.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -105,7 +105,7 @@ func (s *Server) recipesAddImportHandler() http.HandlerFunc {
 		form := r.MultipartForm
 		if err != nil || form == nil || form.File == nil {
 			s.Brokers[userID].HideNotification()
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse the uploaded files.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse the uploaded files.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -113,7 +113,7 @@ func (s *Server) recipesAddImportHandler() http.HandlerFunc {
 		files, filesOk := form.File["files"]
 		if !filesOk {
 			s.Brokers[userID].HideNotification()
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not retrieve the files or the directory from the form.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not retrieve the files or the directory from the form.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -121,7 +121,7 @@ func (s *Server) recipesAddImportHandler() http.HandlerFunc {
 		settings, err := s.Repository.UserSettings(userID)
 		if err != nil {
 			s.Brokers[userID].HideNotification()
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error getting user settings.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error getting user settings.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -143,7 +143,7 @@ func (s *Server) recipesAddImportHandler() http.HandlerFunc {
 
 			if total == 0 {
 				s.Brokers[userID].HideNotification()
-				s.Brokers[userID].SendToast(models.NewWarningToast("No recipes found.", "bg-orange-500"))
+				s.Brokers[userID].SendToast(models.NewWarningToast("No recipes found.", "bg-orange-500", ""))
 				return
 			}
 
@@ -186,7 +186,8 @@ func (s *Server) recipesAddImportHandler() http.HandlerFunc {
 			s.Repository.AddReport(report, userID)
 			s.Repository.CalculateNutrition(userID, recipeIDs, settings)
 			s.Brokers[userID].HideNotification()
-			s.Brokers[userID].SendToast(models.NewInfoToast("", fmt.Sprintf("Imported %d recipes. %d skipped", count.Load(), int64(len(recipes))-count.Load())))
+			message := fmt.Sprintf("Imported %d recipes. %d skipped", count.Load(), int64(len(recipes))-count.Load())
+			s.Brokers[userID].SendToast(models.NewInfoToast("Operation Successful", message, "See /reports?view=latest"))
 		}()
 
 		w.WriteHeader(http.StatusAccepted)
@@ -219,7 +220,7 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 		multipartForm := r.MultipartForm
 		form := r.Form
 		if err != nil || form == nil || multipartForm == nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse the form.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse the form.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -229,7 +230,7 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 		if ok {
 			f, err := imageFile[0].Open()
 			if err != nil {
-				w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not open the image from the form.").Render())
+				w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not open the image from the form.", "").Render())
 				w.WriteHeader(http.StatusBadRequest)
 				return
 			}
@@ -239,7 +240,7 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 
 			imageUUID, err = s.Files.UploadImage(f)
 			if err != nil {
-				w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error uploading image.").Render())
+				w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error uploading image.", "").Render())
 				w.WriteHeader(http.StatusBadRequest)
 				return
 			}
@@ -271,14 +272,14 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 
 		times, err := models.NewTimes(r.FormValue("time-preparation"), r.FormValue("time-cooking"))
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error parsing times.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error parsing times.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		yield, err := strconv.ParseInt(r.FormValue("yield"), 10, 16)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error parsing yield.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error parsing yield.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -316,14 +317,14 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 		settings, err := s.Repository.UserSettings(userID)
 		if err != nil {
 			log.Printf("recipeAddManualPostHandler.UserSettings error: %q", err)
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error getting user settings.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error getting user settings.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
 		recipeNumber, err := s.Repository.AddRecipe(recipe, userID, settings)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not add recipe.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not add recipe.", "").Render())
 			w.WriteHeader(http.StatusNoContent)
 			return
 		}
@@ -339,7 +340,7 @@ func recipeAddManualIngredientHandler() http.HandlerFunc {
 		err := r.ParseForm()
 		form := r.Form
 		if err != nil || form == nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse the form.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse the form.", "").Render())
 			w.WriteHeader(http.StatusNoContent)
 			return
 		}
@@ -367,14 +368,14 @@ func recipeAddManualIngredientDeleteHandler() http.HandlerFunc {
 		err := r.ParseForm()
 		form := r.Form
 		if err != nil || form == nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse the form.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse the form.", "").Render())
 			w.WriteHeader(http.StatusNoContent)
 			return
 		}
 
 		entry, err := parsePathPositiveID(r.PathValue("entry"))
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Ingredient entry must be >= 1.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Ingredient entry must be >= 1.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -436,7 +437,7 @@ func recipeAddManualInstructionHandler() http.HandlerFunc {
 		err := r.ParseForm()
 		form := r.Form
 		if err != nil || form == nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse the form.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse the form.", "").Render())
 			w.WriteHeader(http.StatusNoContent)
 			return
 		}
@@ -464,14 +465,14 @@ func recipeAddManualInstructionDeleteHandler() http.HandlerFunc {
 		err := r.ParseForm()
 		form := r.Form
 		if err != nil || form == nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse the form.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse the form.", "").Render())
 			w.WriteHeader(http.StatusNoContent)
 			return
 		}
 
 		entry, err := parsePathPositiveID(r.PathValue("entry"))
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Ingredient entry must be >= 1.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Ingredient entry must be >= 1.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -537,21 +538,21 @@ func (s *Server) recipesAddOCRHandler() http.HandlerFunc {
 		err := r.ParseMultipartForm(1 << 24)
 		form := r.MultipartForm
 		if err != nil || form == nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse the form.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse the form.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		images, ok := form.File["image"]
 		if !ok {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not retrieve the image from the form.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not retrieve the image from the form.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		f, err := images[0].Open()
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not open the image from the form.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not open the image from the form.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -561,7 +562,7 @@ func (s *Server) recipesAddOCRHandler() http.HandlerFunc {
 
 		recipe, err := s.Integrations.ProcessImageOCR(f)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not process OCR.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not process OCR.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -570,20 +571,20 @@ func (s *Server) recipesAddOCRHandler() http.HandlerFunc {
 		settings, err := s.Repository.UserSettings(userID)
 		if err != nil {
 			log.Printf("recipesAddOCRHandler.UserSettings error: %q", err)
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error getting user settings.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error getting user settings.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
 		id, err := s.Repository.AddRecipe(&recipe, userID, settings)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Recipe could not be added.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Recipe could not be added.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
 		s.Repository.CalculateNutrition(userID, []int64{id}, settings)
-		w.Header().Set("HX-Trigger", models.NewInfoToast("", "Recipe scanned and uploaded.").Render())
+		w.Header().Set("HX-Trigger", models.NewInfoToast("", "Recipe scanned and uploaded.", "").Render())
 		w.WriteHeader(http.StatusCreated)
 	}
 }
@@ -592,7 +593,7 @@ func (s *Server) recipesAddRequestWebsiteHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("[info] Website Request: Please support %s", r.FormValue("website"))
 		w.Header().Set("HX-Redirect", "/recipes/add")
-		w.Header().Set("HX-Trigger", models.NewInfoToast("", "I love chicken").Render())
+		w.Header().Set("HX-Trigger", models.NewInfoToast("", "I love chicken", "").Render())
 		http.Redirect(w, r, "/recipes/add", http.StatusSeeOther)
 	}
 }
@@ -607,7 +608,7 @@ func (s *Server) recipesAddWebsiteHandler() http.HandlerFunc {
 
 		_, err := url.ParseRequestURI(rawURL)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Invalid URI.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Invalid URI.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -620,7 +621,7 @@ func (s *Server) recipesAddWebsiteHandler() http.HandlerFunc {
 
 		recipe, err := rs.Recipe()
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Recipe schema is invalid.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Recipe schema is invalid.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -629,14 +630,14 @@ func (s *Server) recipesAddWebsiteHandler() http.HandlerFunc {
 		settings, err := s.Repository.UserSettings(userID)
 		if err != nil {
 			log.Printf("recipesAddWebsiteHandler.UserSettings error: %q", err)
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error getting user settings.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error getting user settings.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
 		id, err := s.Repository.AddRecipe(recipe, userID, settings)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Recipe could not be added.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Recipe could not be added.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -658,13 +659,13 @@ func (s *Server) recipeDeleteHandler() http.HandlerFunc {
 
 		rowsAffected, err := s.Repository.DeleteRecipe(id, userID)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Recipe could not be deleted.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Recipe could not be deleted.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
 		if rowsAffected == 0 {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Recipe not found.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Recipe not found.", "").Render())
 			w.WriteHeader(http.StatusNotFound)
 			return
 		}
@@ -685,7 +686,7 @@ func (s *Server) recipesEditHandler() http.HandlerFunc {
 		userID := getUserID(r)
 		recipe, err := s.Repository.Recipe(id, userID)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Failed to retrieve recipe.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Failed to retrieve recipe.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -708,7 +709,7 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 		form := r.Form
 		multipartForm := r.MultipartForm
 		if err != nil || form == nil || multipartForm == nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse the form.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse the form.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -737,7 +738,7 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 		if ok {
 			f, err := imageFile[0].Open()
 			if err != nil {
-				w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not open the image from the form.").Render())
+				w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not open the image from the form.", "").Render())
 				w.WriteHeader(http.StatusBadRequest)
 				return
 			}
@@ -747,7 +748,7 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 
 			imageUUID, err := s.Files.UploadImage(f)
 			if err != nil {
-				w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error uploading image.").Render())
+				w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error uploading image.", "").Render())
 				w.WriteHeader(http.StatusBadRequest)
 				return
 			}
@@ -794,7 +795,7 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 
 		err = s.Repository.UpdateRecipe(&updatedRecipe, getUserID(r), recipeNum)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error updating recipe.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error updating recipe.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -838,20 +839,20 @@ func (s *Server) recipeScaleHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		query := r.URL.Query()
 		if query == nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse query.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse query.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		yield, err := strconv.ParseInt(query.Get("yield"), 10, 16)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "No yield in the query.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "No yield in the query.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		if yield <= 0 {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Yield must be greater than zero.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Yield must be greater than zero.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -865,7 +866,7 @@ func (s *Server) recipeScaleHandler() http.HandlerFunc {
 
 		recipe, err := s.Repository.Recipe(id, userID)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Recipe not found.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Recipe not found.", "").Render())
 			w.WriteHeader(http.StatusNotFound)
 			return
 		}
@@ -886,7 +887,7 @@ func (s *Server) recipeSharePostHandler() http.HandlerFunc {
 
 		link, err := s.Repository.AddShareLink(share)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Failed to create share link.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Failed to create share link.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -901,7 +902,7 @@ func (s *Server) recipesSearchHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		query := r.URL.Query()
 		if query == nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse query.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse query.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -925,7 +926,7 @@ func (s *Server) recipesSearchHandler() http.HandlerFunc {
 			var err error
 			recipes, err = s.Repository.SearchRecipes(q, models.SearchOptionsRecipes{FullSearch: true}, userID)
 			if err != nil {
-				w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error searching recipes.").Render())
+				w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error searching recipes.", "").Render())
 				w.WriteHeader(http.StatusInternalServerError)
 				return
 			}
@@ -986,7 +987,7 @@ func (s *Server) recipesViewShareHandler() http.HandlerFunc {
 
 		query := r.URL.Query()
 		if query == nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse query.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse query.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -994,7 +995,7 @@ func (s *Server) recipesViewShareHandler() http.HandlerFunc {
 		cookbookIDStr := query.Get("cookbook")
 		cookbookID, err := strconv.ParseInt(cookbookIDStr, 10, 64)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse cookbookID query parameter.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse cookbookID query parameter.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}

@@ -15,7 +15,7 @@ func (s *Server) reportsHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		reports, err := s.Repository.ReportsImport(getUserID(r))
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Failed to fetch reports.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Failed to fetch reports.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -32,9 +32,19 @@ func (s *Server) reportsHandler() http.HandlerFunc {
 		var c templ.Component
 		switch r.URL.Query().Get("tab") {
 		case "imports":
-			c = components.ReportsTabImports(data)
+			c = components.ReportsTabImports(data, false)
 		default:
-			c = components.ReportsIndex(data)
+			var isHighlightFirst bool
+			if r.URL.Query().Get("view") == "latest" {
+				data.Reports.CurrentReport, err = s.Repository.Report(reports[0].ID, getUserID(r))
+				if err != nil {
+					w.Header().Set("HX-Trigger", models.NewErrorToast("", "Failed to fetch report.", "").Render())
+					w.WriteHeader(http.StatusInternalServerError)
+					return
+				}
+				isHighlightFirst = true
+			}
+			c = components.ReportsIndex(data, isHighlightFirst)
 		}
 
 		_ = c.Render(r.Context(), w)
@@ -51,14 +61,14 @@ func (s *Server) reportsReportHandler() http.HandlerFunc {
 
 		id, err := parsePathPositiveID(r.PathValue("id"))
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Report ID must be positive.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Report ID must be positive.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		report, err := s.Repository.Report(id, getUserID(r))
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Failed to fetch report.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Failed to fetch report.", "").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}

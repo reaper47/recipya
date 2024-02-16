@@ -6,18 +6,18 @@ import (
 	"github.com/reaper47/recipya/internal/templates"
 )
 
-templ ReportsIndex(data templates.Data) {
+templ ReportsIndex(data templates.Data, isHighlightFirst bool) {
 	if data.IsHxRequest {
 		<title hx-swap-oob="true">Reports | Recipya</title>
-		@reportsIndex(data)
+		@reportsIndex(data, isHighlightFirst)
 	} else {
 		@layoutMain("Reports", data) {
-			@reportsIndex(data)
+			@reportsIndex(data, isHighlightFirst)
 		}
 	}
 }
 
-templ reportsIndex(data templates.Data) {
+templ reportsIndex(data templates.Data, isHighlightFirst bool) {
 	<div
 		class="grid place-content-center md:place-content-stretch md:grid-flow-col md:h-full"
 		style="grid-template-columns: min-content"
@@ -46,17 +46,21 @@ templ reportsIndex(data templates.Data) {
 			<button class="active" hx-get="/reports?tab=imports" hx-target="#tab-content">Imports</button>
 		</div>
 		<div id="tab-content" role="tabpanel" class="w-[90vw] text-sm md:text-base p-4 auto-rows-min md:w-full">
-			@ReportsTabImports(data)
+		    if len(data.Reports.CurrentReport) > 0 && data.Reports.CurrentReport[0].ID != 0 {
+		        @ReportsTabImports(data, true)
+		    } else {
+		        @ReportsTabImports(data, false)
+		    }
 		</div>
 	</div>
 }
 
-templ ReportsTabImports(data templates.Data) {
+templ ReportsTabImports(data templates.Data, isHighlightFirst bool) {
 	<div class="h-full max-h-[89vh] border rounded-lg sm:grid sm:gap-4 sm:grid-cols-4 dark:border-gray-800">
-		<ul class="col-span-1 border-r overflow-auto dark:border-r-gray-800">
-			for _, r := range data.Reports.Imports {
+		<ul class="col-span-1 border-r overflow-auto max-h-44 border-b md:border-b-0 sm:max-h-full dark:border-r-gray-800">
+			for i, r := range data.Reports.Imports {
 				<li
-					class="item p-2 hover:bg-slate-200 cursor-default dark:hover:bg-slate-700"
+					class={ "item p-2 hover:bg-slate-200 cursor-default dark:hover:bg-slate-700", templ.KV("bg-slate-200 dark:bg-slate-700", i == 0 && isHighlightFirst) }
 					hx-get={ fmt.Sprintf("/reports/%d", r.ID) }
 					hx-target="#report-view-pane"
 					hx-swap="outerHTML"
@@ -75,9 +79,13 @@ templ ReportsTabImports(data templates.Data) {
 				</li>
 			}
 		</ul>
-		<div id="report-view-pane" class="grid col-span-3 place-content-center">
-			<p>No report selected. Please select a report to view its content.</p>
-		</div>
+		if len(data.Reports.CurrentReport) > 0 && data.Reports.CurrentReport[0].ID != 0 {
+            @Report(data)
+        } else {
+            <div id="report-view-pane" class="grid col-span-3 place-content-center">
+                <p class="p-4 sm:p-0">No report selected. Please select a report to view its content.</p>
+            </div>
+        }
 	</div>
 }
 

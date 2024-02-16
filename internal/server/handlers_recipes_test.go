@@ -123,7 +123,7 @@ func TestHandlers_Recipes_AddImport(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-warning\",\"message\":\"Connection lost. Please reload page.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-warning\",\"message\":\"Connection lost. Please reload page.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("payload too big", func(t *testing.T) {
@@ -131,7 +131,7 @@ func TestHandlers_Recipes_AddImport(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formData, strings.NewReader(b.String()))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-error\",\"message\":\"Could not parse the uploaded files.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not parse the uploaded files.\",\"title\":\"\"}"}`)
 		want := `<div id="ws-notification-container" class="z-20 fixed bottom-0 right-0 p-6 cursor-default hidden"> <div class="bg-blue-500 text-white px-4 py-2 rounded shadow-md"> <p class="font-medium text-center pb-1"></p> <div id="export-progress"><progress max="100" value="100.000000"></progress></div> </div> </div>`
 		assertWebsocket(t, c, 2, want)
 	})
@@ -141,7 +141,7 @@ func TestHandlers_Recipes_AddImport(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-error\",\"message\":\"Could not retrieve the files or the directory from the form.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not retrieve the files or the directory from the form.\",\"title\":\"\"}"}`)
 		want := `<div id="ws-notification-container" class="z-20 fixed bottom-0 right-0 p-6 cursor-default hidden"> <div class="bg-blue-500 text-white px-4 py-2 rounded shadow-md"> <p class="font-medium text-center pb-1"></p> <div id="export-progress"><progress max="100" value="100.000000"></progress></div> </div> </div>`
 		assertWebsocket(t, c, 2, want)
 	})
@@ -480,7 +480,7 @@ func TestHandlers_Recipes_AddOCR(t *testing.T) {
 		rr := sendReq("")
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-error\",\"message\":\"Could not retrieve the image from the form.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not retrieve the image from the form.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("processing OCR failed", func(t *testing.T) {
@@ -496,7 +496,7 @@ func TestHandlers_Recipes_AddOCR(t *testing.T) {
 		rr := sendReq("hello.jpg")
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-error\",\"message\":\"Could not process OCR.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not process OCR.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("valid request", func(t *testing.T) {
@@ -512,7 +512,7 @@ func TestHandlers_Recipes_AddOCR(t *testing.T) {
 		rr := sendReq("hello.jpg")
 
 		assertStatus(t, rr.Code, http.StatusCreated)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-info\",\"message\":\"Recipe scanned and uploaded.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-info\",\"message\":\"Recipe scanned and uploaded.\",\"title\":\"\"}"}`)
 		if len(repo.RecipesRegistered[1]) != 1 && repo.RecipesRegistered[1][0].ID != 1 {
 			t.Fatal("expected the recipe to be added")
 		}
@@ -550,7 +550,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, promptHeader, strings.NewReader("I love chicken"))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-error\",\"message\":\"Invalid URI.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Invalid URI.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("add recipe from an unsupported website", func(t *testing.T) {
@@ -580,7 +580,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, promptHeader, strings.NewReader("https://www.eatingbirdfood.com/cinnamon-rolls/"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-error\",\"message\":\"Recipe could not be added.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Recipe could not be added.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("add recipe from a supported website", func(t *testing.T) {
@@ -623,7 +623,7 @@ func TestHandlers_Recipes_Delete(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri+"/5", noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusNotFound)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-error\",\"message\":\"Recipe not found.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Recipe not found.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("can delete user's recipe", func(t *testing.T) {
@@ -698,7 +698,7 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, fmt.Sprintf(uri, 1), noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-error\",\"message\":\"Failed to retrieve recipe.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to retrieve recipe.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("successful request", func(t *testing.T) {
@@ -866,7 +866,7 @@ func TestHandlers_Recipes_Scale(t *testing.T) {
 			rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?yield="+tc.in, noHeader, nil)
 
 			assertStatus(t, rr.Code, http.StatusBadRequest)
-			assertHeader(t, rr, "HX-Trigger", fmt.Sprintf(`{"showToast":"{\"background\":\"alert-error\",\"message\":\"%s\",\"title\":\"\"}"}`, tc.want))
+			assertHeader(t, rr, "HX-Trigger", fmt.Sprintf(`{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"%s\",\"title\":\"\"}"}`, tc.want))
 
 		})
 	}
@@ -882,7 +882,7 @@ func TestHandlers_Recipes_Scale(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?yield=6", noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusNotFound)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-error\",\"message\":\"Recipe not found.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Recipe not found.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("valid request double yield", func(t *testing.T) {
@@ -1078,7 +1078,7 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri(10), noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"background\":\"alert-error\",\"message\":\"Failed to create share link.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to create share link.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("access share link anonymous", func(t *testing.T) {

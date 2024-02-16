@@ -9,12 +9,13 @@ import (
 var (
 	title   = "Chicken"
 	message = "Jersey is great."
+	action  = "Dismiss"
 )
 
 func TestNewErrorToast(t *testing.T) {
-	got := models.NewErrorToast(title, message)
+	got := models.NewErrorToast(title, message, action)
 
-	want := models.NewErrorToast(title, message)
+	want := models.NewErrorToast(title, message, action)
 	if !cmp.Equal(got, want) {
 		t.Log(cmp.Diff(got, want))
 		t.Fail()
@@ -22,9 +23,9 @@ func TestNewErrorToast(t *testing.T) {
 }
 
 func TestNewInfoToast(t *testing.T) {
-	got := models.NewInfoToast(title, message)
+	got := models.NewInfoToast(title, message, action)
 
-	want := models.NewInfoToast(title, message)
+	want := models.NewInfoToast(title, message, action)
 	if !cmp.Equal(got, want) {
 		t.Log(cmp.Diff(got, want))
 		t.Fail()
@@ -32,9 +33,9 @@ func TestNewInfoToast(t *testing.T) {
 }
 
 func TestNewWarningToast(t *testing.T) {
-	got := models.NewWarningToast(title, message)
+	got := models.NewWarningToast(title, message, action)
 
-	want := models.NewWarningToast(title, message)
+	want := models.NewWarningToast(title, message, action)
 	if !cmp.Equal(got, want) {
 		t.Log(cmp.Diff(got, want))
 		t.Fail()
@@ -42,9 +43,9 @@ func TestNewWarningToast(t *testing.T) {
 }
 
 func TestToast_Render(t *testing.T) {
-	got := models.NewWarningToast(title, message).Render()
+	got := models.NewWarningToast(title, message, action).Render()
 
-	want := `{"showToast":"{\"background\":\"alert-warning\",\"message\":\"Jersey is great.\",\"title\":\"Chicken\"}"}`
+	want := `{"showToast":"{\"action\":\"Dismiss\",\"background\":\"alert-warning\",\"message\":\"Jersey is great.\",\"title\":\"Chicken\"}"}`
 	if got != want {
 		t.Fatalf("got %s but want %s", got, want)
 	}

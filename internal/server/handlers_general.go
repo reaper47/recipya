@@ -60,7 +60,7 @@ func (s *Server) wsHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ws, err := upgrader.Upgrade(w, r, nil)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewWarningToast("", "Could not upgrade connection.").Render())
+			w.Header().Set("HX-Trigger", models.NewWarningToast("", "Could not upgrade connection.", "").Render())
 			return
 		}
 

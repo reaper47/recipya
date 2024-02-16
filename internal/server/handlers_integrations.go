@@ -12,7 +12,7 @@ func (s *Server) integrationsImportNextcloud() http.HandlerFunc {
 		userID := getUserID(r)
 		_, found := s.Brokers[userID]
 		if !found {
-			w.Header().Set("HX-Trigger", models.NewWarningToast("", "Connection lost. Please reload page.").Render())
+			w.Header().Set("HX-Trigger", models.NewWarningToast("", "Connection lost. Please reload page.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -21,7 +21,7 @@ func (s *Server) integrationsImportNextcloud() http.HandlerFunc {
 		password := r.FormValue("password")
 		baseURL := r.FormValue("url")
 		if username == "" || password == "" || baseURL == "" {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Invalid username, password or URL.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Invalid username, password or URL.", "").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -30,7 +30,7 @@ func (s *Server) integrationsImportNextcloud() http.HandlerFunc {
 		if err != nil {
 			fmt.Println(err)
 			s.Brokers[userID].HideNotification()
-			s.Brokers[userID].SendToast(models.NewErrorToast("", "Failed to get user settings."))
+			s.Brokers[userID].SendToast(models.NewErrorToast("", "Failed to get user settings.", ""))
 			return
 		}
 
@@ -60,7 +60,7 @@ func (s *Server) integrationsImportNextcloud() http.HandlerFunc {
 			case err = <-errs:
 				fmt.Println(err)
 				s.Brokers[id].HideNotification()
-				s.Brokers[id].SendToast(models.NewErrorToast("", "Failed to import Nextcloud recipes."))
+				s.Brokers[id].SendToast(models.NewErrorToast("", "Failed to import Nextcloud recipes.", ""))
 				return
 			case <-progress:
 				for p := range progress {
@@ -88,7 +88,7 @@ func (s *Server) integrationsImportNextcloud() http.HandlerFunc {
 
 			s.Repository.CalculateNutrition(userID, recipeIDs, settings)
 			s.Brokers[id].HideNotification()
-			s.Brokers[id].SendToast(models.NewInfoToast("", fmt.Sprintf("Imported %d recipes. Skipped %d.", count, skipped)))
+			s.Brokers[id].SendToast(models.NewInfoToast("", fmt.Sprintf("Imported %d recipes. Skipped %d.", count, skipped), ""))
 		}(userID, settings)
 
 		w.WriteHeader(http.StatusAccepted)
