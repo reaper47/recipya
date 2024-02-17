@@ -3,7 +3,6 @@ package models
 import (
 	"bytes"
 	"encoding/base64"
-	"encoding/json"
 	"fmt"
 	"github.com/gorilla/websocket"
 	"log"
@@ -168,19 +167,10 @@ func (b *Broker) SendToast(toast Toast) {
 		return
 	}
 
-	xb, err := json.Marshal(toast)
-	if err != nil {
-		log.Printf("Boker.SendToast.Marshal: %q", err)
-		return
-	}
-
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
-	err = b.conn.WriteJSON(Message{
-		Type: "toast",
-		Data: string(xb),
-	})
+	err := b.conn.WriteJSON(Message{Type: "toast", Data: toast.Render()})
 	if err != nil {
 		log.Printf("Boker.SendToast: %q", err)
 	}

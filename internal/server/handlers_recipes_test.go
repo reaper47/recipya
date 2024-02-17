@@ -538,12 +538,29 @@ func TestHandlers_Recipes_AddRequestWebsite(t *testing.T) {
 }
 
 func TestHandlers_Recipes_AddWebsite(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer func() {
+		_ = c.Close()
+	}()
 
-	uri := "/recipes/add/website"
+	originalBrokers := maps.Clone(srv.Brokers)
+
+	uri := ts.URL + "/recipes/add/website"
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
+	})
+
+	t.Run("no ws connection", func(t *testing.T) {
+		srv.Brokers = map[int64]*models.Broker{}
+		defer func() {
+			srv.Brokers = originalBrokers
+		}()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-warning\",\"message\":\"Connection lost. Please reload page.\",\"title\":\"\"}"}`)
 	})
 
 	t.Run("no input", func(t *testing.T) {
@@ -560,7 +577,12 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 	})
 
 	t.Run("add one valid URL from unsupported websites", func(t *testing.T) {
-		t.Fail()
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("urls=https://www.example.com"))
+
+		assertStatus(t, rr.Code, http.StatusAccepted)
+		//assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not retrieve the files or the directory from the form.\",\"title\":\"\"}"}`)
+		want := `<div id="ws-notification-container" class="z-20 fixed bottom-0 right-0 p-6 cursor-default hidden"> <div class="bg-blue-500 text-white px-4 py-2 rounded shadow-md"> <p class="font-medium text-center pb-1"></p> <div id="export-progress"><progress max="100" value="100.000000"></progress></div> </div> </div>`
+		assertWebsocket(t, c, 1, want)
 	})
 
 	t.Run("add one valid URL from supported websites", func(t *testing.T) {

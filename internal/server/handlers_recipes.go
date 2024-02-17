@@ -596,6 +596,14 @@ func (s *Server) recipesAddRequestWebsiteHandler() http.HandlerFunc {
 
 func (s *Server) recipesAddWebsiteHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		userID := getUserID(r)
+		_, found := s.Brokers[userID]
+		if !found {
+			w.Header().Set("HX-Trigger", models.NewWarningToast("", "Connection lost. Please reload page.", "").Render())
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
 		urls := strings.Split(r.FormValue("urls"), "\n")
 		if len(urls) == 0 {
 			w.WriteHeader(http.StatusBadRequest)
@@ -625,7 +633,6 @@ func (s *Server) recipesAddWebsiteHandler() http.HandlerFunc {
 			return
 		}
 
-		userID := getUserID(r)
 		settings, err := s.Repository.UserSettings(userID)
 		if err != nil {
 			log.Printf("recipesAddWebsiteHandler.UserSettings error: %q", err)
@@ -685,7 +692,6 @@ func (s *Server) recipesAddWebsiteHandler() http.HandlerFunc {
 
 					count.Add(1)
 				}(i, rawURL)
-
 			}
 
 			for p := range progress {
