@@ -18,6 +18,7 @@ import (
 	"os/signal"
 	"path/filepath"
 	"strconv"
+	"sync"
 	"syscall"
 	"time"
 )
@@ -55,6 +56,7 @@ type Server struct {
 	Email        services.EmailService
 	Files        services.FilesService
 	Integrations services.IntegrationsService
+	Mutex        *sync.Mutex
 }
 
 func (s *Server) mountHandlers() {

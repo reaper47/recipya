@@ -53,7 +53,7 @@ templ addRecipe() {
 			<div class="card-body">
 				<h2 class="card-title">Website</h2>
 				<p>
-					Fetch a recipe from one of the
+					Fetch a recipe or recipes from
 					<button
 						class="underline"
 						hx-get="/recipes/supported-websites"
@@ -76,32 +76,20 @@ templ addRecipe() {
 				</div>
 			</div>
 		</div>
-		<!-- TODO: If import one URL, display toast with View recipe action -->
-		<!-- TODO: If multiple URLs, display toast like import with View report action -->
 		<dialog id="websites_dialog" class="modal">
             <div class="modal-box">
                 <form method="dialog">
                     <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                 </form>
-                <h3 class="font-bold text-lg">Fetch Websites</h3>
-                <form
-                    class="py-4"
-                    hx-post="/recipes/add/website"
-                    hx-indicator="#fullscreen-loader"
-                    hx-swap="none"
-                >
+                <h3 class="font-bold text-lg">Fetch recipes from websites</h3>
+                <form class="py-4" hx-post="/recipes/add/website" hx-indicator="#fullscreen-loader" hx-swap="none">
                     <div class="grid mb-4">
-                        <label for="import-dialog-file" class="text-sm font-semibold mb-1">
-                            Choose files in the .json, .mxp or .zip format.
+                        <label class="form-control">
+                          <div class="label">
+                            <span class="label-text">Enter one or more URLs, each on a new line.</span>
+                          </div>
+                          <textarea class="textarea textarea-bordered h-24 whitespace-pre-line" placeholder="URL 1\nURL 2\nURL 3\nURL 4\netc..." name="websites" rows="10"></textarea>
                         </label>
-                        <input
-                            id="import-dialog-file"
-                            type="file"
-                            name="files"
-                            accept=".json,.zip,.mxp"
-                            multiple
-                            class="p-2 border border-gray-300 rounded-lg shadow focus:ring-2 focus:ring-purple-600 dark:bg-gray-900 dark:border-none"
-                        />
                     </div>
                     <button
                         type="submit"

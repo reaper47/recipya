@@ -5,8 +5,18 @@ import "time"
 // ReportType represents
 type ReportType int64
 
-// ImportReportType is the ReportType for an import report.
-const ImportReportType ReportType = 1
+const (
+	ImportReportType ReportType = 1
+)
+
+// NewReport creates a new, initialized and empty Report of the given ReportType.
+func NewReport(reportType ReportType) Report {
+	return Report{
+		CreatedAt: time.Now(),
+		Logs:      make([]ReportLog, 0),
+		Type:      reportType,
+	}
+}
 
 // Report holds information on a report.
 type Report struct {
