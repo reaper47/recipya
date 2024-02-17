@@ -46,11 +46,11 @@ templ reportsIndex(data templates.Data, isHighlightFirst bool) {
 			<button class="active" hx-get="/reports?tab=imports" hx-target="#tab-content">Imports</button>
 		</div>
 		<div id="tab-content" role="tabpanel" class="w-[90vw] text-sm md:text-base p-4 auto-rows-min md:w-full">
-		    if len(data.Reports.CurrentReport) > 0 && data.Reports.CurrentReport[0].ID != 0 {
-		        @ReportsTabImports(data, true)
-		    } else {
-		        @ReportsTabImports(data, false)
-		    }
+			if len(data.Reports.CurrentReport) > 0 && data.Reports.CurrentReport[0].ID != 0 {
+				@ReportsTabImports(data, true)
+			} else {
+				@ReportsTabImports(data, false)
+			}
 		</div>
 	</div>
 }
@@ -80,12 +80,12 @@ templ ReportsTabImports(data templates.Data, isHighlightFirst bool) {
 			}
 		</ul>
 		if len(data.Reports.CurrentReport) > 0 && data.Reports.CurrentReport[0].ID != 0 {
-            @Report(data)
-        } else {
-            <div id="report-view-pane" class="grid col-span-3 place-content-center">
-                <p class="p-4 sm:p-0">No report selected. Please select a report to view its content.</p>
-            </div>
-        }
+			@Report(data)
+		} else {
+			<div id="report-view-pane" class="grid col-span-3 place-content-center">
+				<p class="p-4 sm:p-0">No report selected. Please select a report to view its content.</p>
+			</div>
+		}
 	</div>
 }
 

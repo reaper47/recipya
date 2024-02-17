@@ -34,7 +34,6 @@ type Data struct {
 	Recipes         models.Recipes
 	Reports         ReportsData
 	Settings        SettingsData
-	Scraper         ScraperData
 	View            *ViewRecipeData
 }
 
@@ -137,11 +136,6 @@ type SettingsData struct {
 type Backup struct {
 	Display string
 	Value   string
-}
-
-// ScraperData holds template data related to the recipe scraper.
-type ScraperData struct {
-	UnsupportedWebsite string
 }
 
 // NewViewRecipeData creates and populates a new ViewRecipeData.

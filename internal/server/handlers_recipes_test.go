@@ -546,11 +546,29 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
 	})
 
-	t.Run("add recipe from wrong URL", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, promptHeader, strings.NewReader("I love chicken"))
+	t.Run("no input", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("websites="))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Invalid URI.\",\"title\":\"\"}"}`)
+	})
+
+	t.Run("no valid URLs", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("urls=I am a pig\noink oink"))
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"No valid URLs found.\",\"title\":\"\"}"}`)
+	})
+
+	t.Run("add one valid URL from unsupported websites", func(t *testing.T) {
+		t.Fail()
+	})
+
+	t.Run("add one valid URL from supported websites", func(t *testing.T) {
+		t.Fail()
+	})
+
+	t.Run("add many valid URLs from supported websites", func(t *testing.T) {
+		t.Fail()
 	})
 
 	t.Run("add recipe from an unsupported website", func(t *testing.T) {

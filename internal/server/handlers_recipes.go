@@ -11,7 +11,6 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"runtime"
 	"strconv"
 	"strings"
 	"sync/atomic"
@@ -597,12 +596,7 @@ func (s *Server) recipesAddRequestWebsiteHandler() http.HandlerFunc {
 
 func (s *Server) recipesAddWebsiteHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		delim := "\n"
-		if runtime.GOOS == "windows" {
-			delim = "\r\n"
-		}
-
-		urls := strings.Split(r.FormValue("websites"), delim)
+		urls := strings.Split(r.FormValue("urls"), "\n")
 		if len(urls) == 0 {
 			w.WriteHeader(http.StatusBadRequest)
 			return
