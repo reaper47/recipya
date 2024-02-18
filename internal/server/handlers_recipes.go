@@ -154,16 +154,12 @@ func (s *Server) recipesAddImportHandler() http.HandlerFunc {
 
 					id, err := s.Repository.AddRecipe(&r, userID, settings)
 					if err != nil {
-						s.Mutex.Lock()
 						report.Logs = append(report.Logs, models.ReportLog{Error: err.Error(), Title: r.Name})
-						s.Mutex.Unlock()
 						return
 					}
 
 					report.Logs = append(report.Logs, models.ReportLog{IsSuccess: true, Title: r.Name})
 					recipeIDs = append(recipeIDs, id)
-					s.Mutex.Unlock()
-
 					count.Add(1)
 				}(i, recipe)
 			}
@@ -663,32 +659,24 @@ func (s *Server) recipesAddWebsiteHandler() http.HandlerFunc {
 
 					rs, err := s.Scraper.Scrape(u, s.Files)
 					if err != nil {
-						s.Mutex.Lock()
 						report.Logs = append(report.Logs, models.ReportLog{Error: err.Error(), Title: u})
-						s.Mutex.Unlock()
 						return
 					}
 
 					recipe, err := rs.Recipe()
 					if err != nil {
-						s.Mutex.Lock()
 						report.Logs = append(report.Logs, models.ReportLog{Error: err.Error(), Title: u})
-						s.Mutex.Unlock()
 						return
 					}
 
 					id, err := s.Repository.AddRecipe(recipe, userID, settings)
 					if err != nil {
-						s.Mutex.Lock()
 						report.Logs = append(report.Logs, models.ReportLog{Error: err.Error(), Title: u})
-						s.Mutex.Unlock()
 						return
 					}
 
-					s.Mutex.Lock()
 					report.Logs = append(report.Logs, models.ReportLog{IsSuccess: true, Title: u})
 					recipeIDs = append(recipeIDs, id)
-					s.Mutex.Unlock()
 
 					count.Add(1)
 				}(i, rawURL)

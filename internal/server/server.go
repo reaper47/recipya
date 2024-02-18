@@ -19,7 +19,6 @@ import (
 	"os/signal"
 	"path/filepath"
 	"strconv"
-	"sync"
 	"syscall"
 	"time"
 )
@@ -47,7 +46,6 @@ func NewServer(
 		Email:        email,
 		Files:        files,
 		Integrations: integrations,
-		Mutex:        &sync.Mutex{},
 		Repository:   repository,
 		Scraper:      scraper,
 	}
@@ -61,7 +59,6 @@ type Server struct {
 	Email        services.EmailService
 	Files        services.FilesService
 	Integrations services.IntegrationsService
-	Mutex        *sync.Mutex
 	Repository   services.RepositoryService
 	Router       *http.ServeMux
 	Scraper      scraper.IScraper
