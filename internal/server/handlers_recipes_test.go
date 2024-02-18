@@ -156,8 +156,9 @@ func TestHandlers_Recipes_AddImport(t *testing.T) {
 }
 
 func TestHandlers_Recipes_AddManual(t *testing.T) {
+	srv := newServerTest()
 	repo := &mockRepository{}
-	srv := server.NewServer(repo, &mockEmail{}, &mockFiles{}, &mockIntegrations{}, &mockScraper{})
+	srv.Repository = repo
 
 	uri := "/recipes/add/manual"
 
@@ -279,7 +280,7 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 }
 
 func TestHandlers_Recipes_AddManualIngredient(t *testing.T) {
-	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{}, &mockIntegrations{}, &mockScraper{})
+	srv := newServerTest()
 
 	uri := "/recipes/add/manual/ingredient"
 
@@ -307,7 +308,7 @@ func TestHandlers_Recipes_AddManualIngredient(t *testing.T) {
 }
 
 func TestHandlers_Recipes_AddManualIngredientDelete(t *testing.T) {
-	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{}, &mockIntegrations{}, &mockScraper{})
+	srv := newServerTest()
 
 	uri := "/recipes/add/manual/ingredient"
 
@@ -370,7 +371,7 @@ func TestHandlers_Recipes_AddManualIngredientDelete(t *testing.T) {
 }
 
 func TestHandlers_Recipes_AddManualInstruction(t *testing.T) {
-	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{}, &mockIntegrations{}, &mockScraper{})
+	srv := newServerTest()
 
 	uri := "/recipes/add/manual/instruction"
 
@@ -398,7 +399,7 @@ func TestHandlers_Recipes_AddManualInstruction(t *testing.T) {
 }
 
 func TestHandlers_Recipes_AddManualInstructionDelete(t *testing.T) {
-	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{}, &mockIntegrations{}, &mockScraper{})
+	srv := newServerTest()
 
 	uri := "/recipes/add/manual/instruction"
 
@@ -521,8 +522,9 @@ func TestHandlers_Recipes_AddOCR(t *testing.T) {
 }
 
 func TestHandlers_Recipes_AddRequestWebsite(t *testing.T) {
+	srv := newServerTest()
 	emailMock := &mockEmail{}
-	srv := server.NewServer(&mockRepository{}, emailMock, &mockFiles{}, &mockIntegrations{}, &mockScraper{})
+	srv.Email = emailMock
 
 	uri := "/recipes/add/request-website"
 

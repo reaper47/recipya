@@ -526,8 +526,9 @@ func TestHandlers_Auth_Login(t *testing.T) {
 }
 
 func TestHandlers_Auth_Logout(t *testing.T) {
+	srv := newServerTest()
 	repo := &mockRepository{}
-	srv := server.NewServer(repo, &mockEmail{}, &mockFiles{}, &mockIntegrations{}, &mockScraper{})
+	srv.Repository = repo
 
 	const uri = "/auth/logout"
 
