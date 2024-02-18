@@ -51,15 +51,16 @@ You must have an [Azure AI Vision](/guide/docs/installation/system-requirements#
 ### Website
 
 You can import any recipe from the supported websites. To do so, click the **Fetch** button, 
-paste the recipe's URL or URLs, each on a new line, and click *Submit*. 
+paste the recipe's URL or URLs, each on a new line, and click *Submit*. A notification will 
+appear when the operation finished. 
 
-The application will display the recipe if the request is successful. Otherwise, you will be 
-presented with a message asking you to either go back to the previous page or request the Recipya 
-developers to support the website.
+Its action button performs an action based on the outcome. When you imported one URL and the 
+operation succeeds, the action will redirect you to the recipe. Otherwise, you will be redirected
+to the latest report.
 
-To view all supported websites, please click on the <ins>supported</ins> word.
-You can scrape a website not in the supported list, but recipe extraction may fail. If it does, you can 
-request support for the website by clicking the button that appears.
+To view all supported websites, please click on the <ins>supported</ins> word. You can scrape a 
+website not in the supported list, but recipe extraction may fail. If it does, you can request 
+support for the website by clicking the button that appears.
 
 ![](images/add-recipe-website.gif)
 
