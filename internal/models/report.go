@@ -5,9 +5,8 @@ import "time"
 // ReportType represents
 type ReportType int64
 
-const (
-	ImportReportType ReportType = 1
-)
+// ImportReportType is the ReportType for importing recipes, either from files or the web.
+const ImportReportType ReportType = 1
 
 // NewReport creates a new, initialized and empty Report of the given ReportType.
 func NewReport(reportType ReportType) Report {
