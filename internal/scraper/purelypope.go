@@ -25,7 +25,7 @@ func scrapePurelyPope(root *goquery.Document) (models.RecipeSchema, error) {
 	cookTime, _ := root.Find("time[itemprop='cookTime']").Attr("datetime")
 	cookTime = strings.ReplaceAll(cookTime, " ", "")
 
-	nodes := root.Find("span[itemprop='recipeIngredient']").FilterFunction(func(i int, s *goquery.Selection) bool {
+	nodes := root.Find("span[itemprop='recipeIngredient']").FilterFunction(func(_ int, s *goquery.Selection) bool {
 		return strings.TrimSpace(s.Text()) != ""
 	})
 	ingredients := make([]string, nodes.Length())

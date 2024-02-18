@@ -131,7 +131,6 @@ func (s *Server) mustBeLoggedInMiddleware(next http.Handler) http.Handler {
 		userID = getUserIDFromRememberMeCookie(r, s.Repository.GetAuthToken)
 		if userID != -1 {
 			ctx := context.WithValue(r.Context(), UserIDKey, userID)
-			w.Header().Set("HX-Redirect", "/")
 			next.ServeHTTP(w, r.WithContext(ctx))
 			return
 		}

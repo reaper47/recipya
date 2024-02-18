@@ -21,14 +21,14 @@ func scrapeRosannapansino(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes := content.Find("ul li")
 	ingredients := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		ingredients = append(ingredients, s)
 	})
 
 	nodes = content.Find("ol li")
 	instructions := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
 		instructions = append(instructions, s)
 	})

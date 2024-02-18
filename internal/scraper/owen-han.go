@@ -16,14 +16,14 @@ func scrapeOwenhan(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes := content.Find("ul p")
 	ingredients := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		ingredients = append(ingredients, s)
 	})
 
 	nodes = content.Find("ol p")
 	instructions := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		instructions = append(instructions, s)
 	})

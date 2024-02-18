@@ -13,7 +13,7 @@ func scrapeValdemarsro(root *goquery.Document) (models.RecipeSchema, error) {
 	image, _ := root.Find("meta[property='og:image']").Attr("content")
 
 	start := root.Find("div[itemprop='description']").Children().First()
-	description := start.NextUntil(".post-recipe").FilterFunction(func(i int, selection *goquery.Selection) bool {
+	description := start.NextUntil(".post-recipe").FilterFunction(func(_ int, selection *goquery.Selection) bool {
 		return selection.Nodes[0].Data == "p"
 	}).Text()
 

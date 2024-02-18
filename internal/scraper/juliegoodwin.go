@@ -63,7 +63,7 @@ func scrapeJuliegoodwin(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes := root.Find("h4:contains('Method')").Parent().Find("p")
 	instructions := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		_, err := strconv.ParseInt(s[:1], 10, 64)
 		if err == nil {

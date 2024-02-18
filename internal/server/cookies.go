@@ -90,7 +90,7 @@ func getUserIDFromRememberMeCookie(r *http.Request, getAuthToken func(selector, 
 	}
 
 	token, err := getAuthToken(parts[0], parts[1])
-	if err != nil {
+	if err != nil || token.IsExpired() {
 		return -1
 	}
 	return token.UserID

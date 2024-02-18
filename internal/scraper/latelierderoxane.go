@@ -53,14 +53,14 @@ func scrapeLatelierderoxane(root *goquery.Document) (models.RecipeSchema, error)
 
 	nodes := root.Find(".ingredient")
 	ingredients := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
 		ingredients = append(ingredients, s)
 	})
 
 	nodes = root.Find(".bloc_texte_simple li")
 	instructions := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
 		instructions = append(instructions, s)
 	})

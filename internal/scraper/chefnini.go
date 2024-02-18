@@ -10,7 +10,7 @@ import (
 func scrapeChefnini(root *goquery.Document) (models.RecipeSchema, error) {
 	nodes := root.Find("meta[property='article:tag']")
 	xk := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s, _ := sel.Attr("content")
 		xk = append(xk, s)
 	})
@@ -40,14 +40,14 @@ func scrapeChefnini(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes = root.Find("li[itemprop='ingredients']")
 	ingredients := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		ingredients = append(ingredients, s)
 	})
 
 	nodes = root.Find("div[itemprop='recipeInstructions'] p")
 	instructions := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		if s == "" {
 			return

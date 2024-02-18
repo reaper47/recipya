@@ -19,14 +19,14 @@ func scrapeCoop(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes := root.Find(".IngredientList-content")
 	ingredients := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		ingredients = append(ingredients, s)
 	})
 
 	nodes = root.Find("ol.List--orderedRecipe")
 	var instructions []string
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		instructions = append(instructions, s)
 	})

@@ -25,14 +25,14 @@ func scrapeUsapears(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes := root.Find("li[itemprop='ingredients']")
 	ingredients := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.Join(strings.Fields(sel.Text()), " ")
 		ingredients = append(ingredients, s)
 	})
 
 	nodes = root.Find("div[itemprop='recipeInstructions'] ol li")
 	instructions := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
 		s = strings.Join(strings.Fields(s), " ")
 		instructions = append(instructions, s)

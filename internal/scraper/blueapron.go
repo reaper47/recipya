@@ -18,7 +18,7 @@ func scrapeBlueapron(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes := root.Find("li[itemprop='recipeIngredient']")
 	ingredients := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.Trim(sel.Text(), "\n")
 		s = strings.ReplaceAll(s, "\n", " ")
 		s = strings.Join(strings.Fields(s), " ")
@@ -27,7 +27,7 @@ func scrapeBlueapron(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes = root.Find("div[itemprop='recipeInstructions'] .step-txt")
 	instructions := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		instructions = append(instructions, strings.TrimSpace(strings.Trim(sel.Text(), "\n")))
 	})
 

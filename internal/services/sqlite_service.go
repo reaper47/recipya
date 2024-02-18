@@ -741,12 +741,15 @@ func (s *SQLiteService) GetAuthToken(selector, validator string) (models.AuthTok
 
 	token := models.AuthToken{Selector: selector}
 	row := s.DB.QueryRowContext(ctx, statements.SelectAuthToken, selector)
-	err := row.Scan(&token.ID, &token.HashValidator, &token.Expires, &token.UserID)
+
+	var expiresInt int64
+	err := row.Scan(&token.ID, &token.HashValidator, &expiresInt, &token.UserID)
 	if errors.Is(err, sql.ErrNoRows) {
 		return models.AuthToken{}, err
 	}
+	token.Expires = time.Unix(expiresInt, 0)
 
-	if auth.HashValidator(validator) != token.HashValidator {
+	if auth.DecodeHashValidator(validator) != auth.DecodeHashValidator(token.HashValidator) {
 		return models.AuthToken{}, errors.New("unequal hashes")
 	}
 

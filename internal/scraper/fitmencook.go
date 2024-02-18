@@ -42,7 +42,7 @@ func scrapeFitMenCook(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	ingredients := make([]string, 0)
-	root.Find(".fmc_ingredients ul li").Each(func(i int, s *goquery.Selection) {
+	root.Find(".fmc_ingredients ul li").Each(func(_ int, s *goquery.Selection) {
 		ing := strings.ReplaceAll(s.Text(), "\t", "")
 		if !strings.Contains(ing, "\n\n") {
 			return
@@ -62,7 +62,7 @@ func scrapeFitMenCook(root *goquery.Document) (models.RecipeSchema, error) {
 	nutritionNodes := root.Find(".fmc_macro_cals")
 	nutrition.Calories = nutritionNodes.First().Find("span").Text()
 
-	nutritionNodes.NextAll().Each(func(i int, s *goquery.Selection) {
+	nutritionNodes.NextAll().Each(func(_ int, s *goquery.Selection) {
 		switch strings.ToLower(s.Nodes[0].FirstChild.Data) {
 		case "protein":
 			nutrition.Protein = s.Find("span").Text()

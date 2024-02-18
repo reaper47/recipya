@@ -23,7 +23,7 @@ func scrapeNinjatestkitchen(root *goquery.Document) (models.RecipeSchema, error)
 
 	nodes := root.Find(".single-method__method li p")
 	instructions := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		instructions = append(instructions, sel.Text())
 	})
 

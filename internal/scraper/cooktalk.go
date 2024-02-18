@@ -30,7 +30,7 @@ func scrapeCooktalk(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes = root.Find("p[itemprop='recipeInstructions']")
 	instructions := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		s = strings.TrimSpace(s)
 		instructions = append(instructions, s)

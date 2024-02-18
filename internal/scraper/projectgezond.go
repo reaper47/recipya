@@ -22,7 +22,7 @@ func scrapeProjectgezond(root *goquery.Document) (models.RecipeSchema, error) {
 	nodes := root.Find("h2").First().NextUntil("h2")
 	ingredientNodes := nodes.Find("ul li")
 	ingredients := make([]string, 0, ingredientNodes.Length())
-	ingredientNodes.Each(func(i int, sel *goquery.Selection) {
+	ingredientNodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		ingredients = append(ingredients, s)
 	})
@@ -30,7 +30,7 @@ func scrapeProjectgezond(root *goquery.Document) (models.RecipeSchema, error) {
 	nodes = nodes.Next().NextUntil("h2")
 	instructionNodes := nodes.Find("ul li")
 	instructions := make([]string, 0, instructionNodes.Length())
-	instructionNodes.Each(func(i int, sel *goquery.Selection) {
+	instructionNodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		instructions = append(instructions, s)
 	})
