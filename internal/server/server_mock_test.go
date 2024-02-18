@@ -358,7 +358,7 @@ func (m *mockRepository) DeleteUser(id int64) error {
 }
 
 func (m *mockRepository) GetAuthToken(_, _ string) (models.AuthToken, error) {
-	return models.AuthToken{UserID: 1}, nil
+	return models.AuthToken{UserID: 1, Expires: time.Now().Add(1 * time.Hour)}, nil
 }
 
 func (m *mockRepository) Images() []string {

@@ -22,6 +22,18 @@ The following table lists the supported platforms and devices.
 
 In addition, you must have at least 300 MB of free space.
 
+## Browsers
+
+| Browser  |  Version  |     Compatibility      |
+|----------|:---------:|:----------------------:|
+| Brave    |    37+    |  {{< icon "check" >}}  |
+| Chrome   |    37+    |  {{< icon "check" >}}  |
+| Edge     |    79+    |  {{< icon "check" >}}  |
+| Firefox  |    98+    |  {{< icon "check" >}}  |
+| IE       |    N/A    |    {{< icon "x" >}}    |
+| Safari   |   15.4+   |  {{< icon "check" >}}  |
+| Vanadium |    37+    |  {{< icon "check" >}}  |
+
 ## Third-party Services
 
 Recipya uses the following third-party services to enhance the product.

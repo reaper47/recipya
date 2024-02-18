@@ -512,7 +512,7 @@ func TestHandlers_Auth_Login(t *testing.T) {
 		rr := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email=test@example.com&password=123&remember-me=yes"))
 		r := httptest.NewRequest(http.MethodGet, uri, nil)
 		for _, c := range rr.Result().Cookies() {
-			if c.Name != "session" {
+			if c.Name == "remember_me" {
 				r.AddCookie(c)
 			}
 		}

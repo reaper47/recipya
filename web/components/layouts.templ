@@ -250,28 +250,31 @@ templ head(title string) {
 
             function showAddRecipeButton() {
                 const isRecipe = recipesPattern.test(location.pathname) || recipesSharePattern.test(location.pathname);
+                const el = document.querySelector("#add_recipe");
+
                 if (isRecipe ||
                     pathsHideAddRecipeButton.some(path => path === location.pathname) ||
                     cookbooksPattern.test(location.pathname) ||
                     cookbooksSharePattern.test(location.pathname) ||
                     reportsPattern.test(location.pathname)) {
-                    add_recipe?.classList.add("hidden");
+                    el?.classList.add("hidden");
                 } else {
-                    add_recipe?.classList.remove("hidden");
+                    el?.classList.remove("hidden");
                 }
             }
 
             function showAddCookbookButton() {
-                if (add_cookbook) {
+                const el = document.querySelector("#add_cookbook");
+                if (el) {
                     add_cookbook.setAttribute("hx-target", "#content");
                     add_cookbook.setAttribute("hx-swap", "innerHTML")
                     htmx.process(add_cookbook);
                 }
 
                 if (location.pathname === "/cookbooks") {
-                    add_cookbook?.classList.remove("hidden");
+                    el?.classList.remove("hidden");
                 } else {
-                    add_cookbook?.classList.add("hidden");
+                    el?.classList.add("hidden");
                 }
             }
 
@@ -286,20 +289,23 @@ templ head(title string) {
             }
 
             function showRecipesSidebar() {
+                const desktop = document.querySelector("#desktop_nav");
+                const mobile = document.querySelector("#mobile_nav");
+
                 if (pathsShowRecipesSidebar.includes(location.pathname) || cookbooksPattern.test(location.pathname)) {
-                    desktop_nav.firstElementChild.classList.remove("hidden");
-                    mobile_nav.classList.remove("hidden");
+                    desktop.firstElementChild.classList.remove("hidden");
+                    mobile.classList.remove("hidden");
                 } else {
-                    desktop_nav.firstElementChild.classList.add("hidden");
-                    mobile_nav.classList.add("hidden");
+                    desktop?.firstElementChild.classList.add("hidden");
+                    mobile?.classList.add("hidden");
                 }
 
                 if (recipesPattern.test(location.pathname) || recipesSharePattern.test(location.pathname) || location.pathname === "/admin" || reportsPattern.test(location.pathname)) {
-                    desktop_nav.firstElementChild.classList.add("hidden");
-                    mobile_nav.classList.add("hidden");
+                    desktop.firstElementChild.classList.add("hidden");
+                    mobile.classList.add("hidden");
                 } else {
-                    desktop_nav.firstElementChild.classList.remove("hidden");
-                    mobile_nav.classList.remove("hidden");
+                    desktop?.firstElementChild.classList.remove("hidden");
+                    mobile?.classList.remove("hidden");
                 }
             }
 
@@ -318,7 +324,8 @@ templ head(title string) {
             });
 
             function adjustAddCookbookTarget() {
-                if (add_cookbook) {
+                const el = document.querySelector("#add_cookbook");
+                if (el) {
                     if (document.querySelector(".cookbooks-display") === null) {
                         add_cookbook.setAttribute("hx-target", "#content");
                         add_cookbook.setAttribute("hx-swap", "innerHTML");
