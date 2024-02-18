@@ -41,7 +41,7 @@ func scrapeGrandfrais(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes = root.Find("div[itemprop='recipeInstructions'] li")
 	instructions := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		instructions = append(instructions, s)
 	})

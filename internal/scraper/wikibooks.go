@@ -19,7 +19,7 @@ func scrapeWikiBooks(root *goquery.Document) (models.RecipeSchema, error) {
 		start = root.Find("#mf-section-0").Children().First()
 	}
 	nodes := start.NextUntil("h2")
-	nodes = nodes.FilterFunction(func(i int, s *goquery.Selection) bool {
+	nodes = nodes.FilterFunction(func(_ int, s *goquery.Selection) bool {
 		return s.Nodes[0].Data == "p"
 	})
 	description := nodes.Slice(1, nodes.Length()).Text()

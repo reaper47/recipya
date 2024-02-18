@@ -42,7 +42,7 @@ func scrapeBriceletbaklava(root *goquery.Document) (models.RecipeSchema, error) 
 
 	nodes = content.Last().Find("ul li")
 	instructions := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		instructions = append(instructions, strings.TrimSpace(s))
 	})

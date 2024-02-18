@@ -22,7 +22,7 @@ func scrapeSallysblog(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes := root.Find(".recipe-description").Next().Find(".hidden").First().Prev().Find("div.text-lg")
 	ingredients := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		s = strings.TrimSpace(s)
 		if s != "" {
@@ -32,7 +32,7 @@ func scrapeSallysblog(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes = root.Find(".recipe-description div p")
 	instructions := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		instructions = append(instructions, s)
 	})
