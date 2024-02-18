@@ -15,20 +15,20 @@ func scrapeMeljoulwan(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes := root.Find("h5:contains('Ingredients')").Parent().Find("li")
 	ingredients := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		ingredients = append(ingredients, strings.TrimSpace(s))
 	})
 
 	nodes = root.Find("h5:contains('Directions')").Parent().Find("p")
 	instructions := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		instructions = append(instructions, s)
 	})
 
 	var category string
-	root.Find("div.post-category a").Each(func(i int, sel *goquery.Selection) {
+	root.Find("div.post-category a").Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
 		if s != "Blog" && category == "" {
 			category = s

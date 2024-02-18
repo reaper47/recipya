@@ -24,7 +24,7 @@ func scrapeRecettesDuQuebec(root *goquery.Document) (models.RecipeSchema, error)
 		cookTime string
 		yield    int16
 	)
-	root.Find("span.cat").Each(func(i int, sel *goquery.Selection) {
+	root.Find("span.cat").Each(func(_ int, sel *goquery.Selection) {
 		switch sel.Text() {
 		case "Préparation":
 			prepTime = "PT"
