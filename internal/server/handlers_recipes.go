@@ -5,8 +5,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
-	"github.com/reaper47/recipya/internal/scraper"
 	"github.com/reaper47/recipya/internal/templates"
+	"github.com/reaper47/recipya/internal/utils/extensions"
 	"github.com/reaper47/recipya/web/components"
 	"log"
 	"net/http"
@@ -609,6 +609,7 @@ func (s *Server) recipesAddWebsiteHandler() http.HandlerFunc {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
+		urls = extensions.Unique(urls)
 
 		invalid := make(map[int]struct{})
 		for i, rawURL := range urls {
@@ -661,7 +662,7 @@ func (s *Server) recipesAddWebsiteHandler() http.HandlerFunc {
 						progress <- models.Progress{Total: total, Value: index}
 					}()
 
-					rs, err := scraper.Scrape(u, s.Files)
+					rs, err := s.Scraper.Scrape(u, s.Files)
 					if err != nil {
 						s.Mutex.Lock()
 						report.Logs = append(report.Logs, models.ReportLog{Error: err.Error(), Title: u})

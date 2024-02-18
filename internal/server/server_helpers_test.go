@@ -15,6 +15,7 @@ import (
 	"net/http/httptest"
 	"regexp"
 	"strings"
+	"sync"
 )
 
 type header string
@@ -42,6 +43,7 @@ func createWSServer() (*server.Server, *httptest.Server, *websocket.Conn) {
 		},
 	}
 	srv.Repository = repo
+	srv.Mutex = &sync.Mutex{}
 
 	ts := httptest.NewServer(srv.Router)
 

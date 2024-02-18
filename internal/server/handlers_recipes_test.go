@@ -9,6 +9,7 @@ import (
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
+	"github.com/reaper47/recipya/internal/services"
 	"io"
 	"maps"
 	"net/http"
@@ -93,7 +94,7 @@ func TestHandlers_Recipes_New(t *testing.T) {
 				`<title hx-swap-oob="true">Add Recipe | Recipya</title>`,
 				`<img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes/new/import.webp" alt="Writing on a piece of paper with a traditional pen.">`,
 				`<button class="underline" hx-get="/recipes/supported-websites" hx-target="#search-results" onclick="supported_websites_dialog.showModal()">supported</button>`,
-				`<button class="btn btn-outline btn-sm btn-block" hx-target="#content" hx-push-url="/recipes/add/unsupported-website" hx-prompt="Enter the recipe's URL" hx-post="/recipes/add/website" hx-indicator="#fullscreen-loader">Fetch</button>`,
+				`<dialog id="websites_dialog" class="modal"><div class="modal-box"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="font-bold text-lg">Fetch recipes from websites</h3><form class="py-4" hx-post="/recipes/add/website" hx-indicator="#fullscreen-loader" hx-swap="none"><div class="grid mb-4"><label class="form-control"><div class="label"><span class="label-text">Enter one or more URLs, each on a new line.</span></div><textarea class="textarea textarea-bordered h-24 whitespace-pre-line" placeholder="URL 1URL 2URL 3URL 4etc..." name="urls" rows="10"></textarea></label></div><button type="submit" class="w-full p-2 font-semibold text-white bg-blue-500 border rounded-lg hover:bg-blue-800 dark:border-gray-800" onclick="websites_dialog.close()">Submit</button></form></div></dialog>`,
 			}
 			assertStringsInHTML(t, getBodyHTML(rr), want)
 		})
@@ -156,7 +157,7 @@ func TestHandlers_Recipes_AddImport(t *testing.T) {
 
 func TestHandlers_Recipes_AddManual(t *testing.T) {
 	repo := &mockRepository{}
-	srv := server.NewServer(repo, &mockEmail{}, &mockFiles{}, &mockIntegrations{})
+	srv := server.NewServer(repo, &mockEmail{}, &mockFiles{}, &mockIntegrations{}, &mockScraper{})
 
 	uri := "/recipes/add/manual"
 
@@ -278,7 +279,7 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 }
 
 func TestHandlers_Recipes_AddManualIngredient(t *testing.T) {
-	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{}, &mockIntegrations{})
+	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{}, &mockIntegrations{}, &mockScraper{})
 
 	uri := "/recipes/add/manual/ingredient"
 
@@ -306,7 +307,7 @@ func TestHandlers_Recipes_AddManualIngredient(t *testing.T) {
 }
 
 func TestHandlers_Recipes_AddManualIngredientDelete(t *testing.T) {
-	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{}, &mockIntegrations{})
+	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{}, &mockIntegrations{}, &mockScraper{})
 
 	uri := "/recipes/add/manual/ingredient"
 
@@ -369,7 +370,7 @@ func TestHandlers_Recipes_AddManualIngredientDelete(t *testing.T) {
 }
 
 func TestHandlers_Recipes_AddManualInstruction(t *testing.T) {
-	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{}, &mockIntegrations{})
+	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{}, &mockIntegrations{}, &mockScraper{})
 
 	uri := "/recipes/add/manual/instruction"
 
@@ -397,7 +398,7 @@ func TestHandlers_Recipes_AddManualInstruction(t *testing.T) {
 }
 
 func TestHandlers_Recipes_AddManualInstructionDelete(t *testing.T) {
-	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{}, &mockIntegrations{})
+	srv := server.NewServer(&mockRepository{}, &mockEmail{}, &mockFiles{}, &mockIntegrations{}, &mockScraper{})
 
 	uri := "/recipes/add/manual/instruction"
 
@@ -521,7 +522,7 @@ func TestHandlers_Recipes_AddOCR(t *testing.T) {
 
 func TestHandlers_Recipes_AddRequestWebsite(t *testing.T) {
 	emailMock := &mockEmail{}
-	srv := server.NewServer(&mockRepository{}, emailMock, &mockFiles{}, &mockIntegrations{})
+	srv := server.NewServer(&mockRepository{}, emailMock, &mockFiles{}, &mockIntegrations{}, &mockScraper{})
 
 	uri := "/recipes/add/request-website"
 
@@ -544,8 +545,20 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 	}()
 
 	originalBrokers := maps.Clone(srv.Brokers)
+	originalRepo := srv.Repository
+	originalScraper := srv.Scraper
 
 	uri := ts.URL + "/recipes/add/website"
+
+	prepare := func() *mockRepository {
+		repo := &mockRepository{
+			RecipesRegistered:      map[int64]models.Recipes{1: make(models.Recipes, 0)},
+			Reports:                map[int64][]models.Report{1: make([]models.Report, 0)},
+			UserSettingsRegistered: map[int64]*models.UserSettings{1: {}},
+		}
+		srv.Repository = repo
+		return repo
+	}
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
@@ -577,71 +590,82 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 	})
 
 	t.Run("add one valid URL from unsupported websites", func(t *testing.T) {
+		repo := prepare()
+		srv.Scraper = &mockScraper{
+			scraperFunc: func(_ string, _ services.FilesService) (models.RecipeSchema, error) {
+				return models.RecipeSchema{}, errors.New("unsupported website")
+			},
+		}
+		defer func() {
+			srv.Repository = originalRepo
+			srv.Scraper = originalScraper
+		}()
+
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("urls=https://www.example.com"))
 
 		assertStatus(t, rr.Code, http.StatusAccepted)
-		//assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not retrieve the files or the directory from the form.\",\"title\":\"\"}"}`)
-		want := `<div id="ws-notification-container" class="z-20 fixed bottom-0 right-0 p-6 cursor-default hidden"> <div class="bg-blue-500 text-white px-4 py-2 rounded shadow-md"> <p class="font-medium text-center pb-1"></p> <div id="export-progress"><progress max="100" value="100.000000"></progress></div> </div> </div>`
-		assertWebsocket(t, c, 1, want)
+		want := `{"type":"toast","fileName":"","data":"","toast":{"action":"View /reports?view=latest","background":"alert-error","message":"Fetching the recipe failed.","title":"Operation Failed"}}`
+		assertWebsocket(t, c, 4, want)
+		if len(repo.Reports[1]) != 1 {
+			t.Fatalf("got reports %v but want one report added", repo.Reports[1])
+		}
 	})
 
 	t.Run("add one valid URL from supported websites", func(t *testing.T) {
-		t.Fail()
+		repo := prepare()
+		defer func() {
+			srv.Repository = repo
+		}()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("urls=https://www.example.com"))
+
+		assertStatus(t, rr.Code, http.StatusAccepted)
+		want := `{"type":"toast","fileName":"","data":"","toast":{"action":"View /recipes/1","background":"alert-info","message":"Recipe has been added to your collection.","title":"Operation Successful"}}`
+		assertWebsocket(t, c, 4, want)
+		if len(repo.Reports[1]) != 1 {
+			t.Fatalf("got reports %v but want one report added", repo.Reports[1])
+		}
+		if len(repo.RecipesRegistered[1]) != 1 {
+			t.Fatal("expected 3 recipes")
+		}
+	})
+
+	t.Run("add duplicates", func(t *testing.T) {
+		repo := prepare()
+		defer func() {
+			srv.Repository = repo
+		}()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("urls=https://www.example.com\nhttps://www.example.com"))
+
+		assertStatus(t, rr.Code, http.StatusAccepted)
+		want := `{"type":"toast","fileName":"","data":"","toast":{"action":"View /recipes/1","background":"alert-info","message":"Recipe has been added to your collection.","title":"Operation Successful"}}`
+		assertWebsocket(t, c, 4, want)
+		if len(repo.Reports[1]) != 1 {
+			t.Fatalf("got reports %v but want one report added", repo.Reports[1])
+		}
+		if len(repo.RecipesRegistered[1]) != 1 {
+			t.Fatal("expected 3 recipes")
+		}
 	})
 
 	t.Run("add many valid URLs from supported websites", func(t *testing.T) {
-		t.Fail()
-	})
+		repo := prepare()
+		defer func() {
+			srv.Repository = repo
+		}()
 
-	t.Run("add recipe from an unsupported website", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, promptHeader, strings.NewReader("https://www.example.com"))
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("urls=https://www.example.com\nhttps://www.hello.com\nhttp://helloiam.bob.com\njesus.com"))
 
-		assertStatus(t, rr.Code, http.StatusOK)
-		assertHeader(t, rr, "Content-Type", "text/html; charset=utf-8")
-		want := []string{
-			`<title hx-swap-oob="true">Unsupported Website | Recipya</title>`,
-			`<h3 class="mb-2 text-2xl font-semibold tracking-tight">This website is not supported</h3>`,
-			`<p class="mb-3 text-gray-700">Unfortunately, we could not extract the recipe from this link. You can either request that our team support this website or go back to the previous page.</p>`,
-			`<button name="website" value="https://www.example.com" class="w-full col-span-4 ml-2 p-2 font-semibold text-white bg-blue-500 hover:bg-blue-800">Request</button>`,
+		assertStatus(t, rr.Code, http.StatusAccepted)
+		want := `{"type":"toast","fileName":"","data":"","toast":{"action":"View /reports?view=latest","background":"alert-info","message":"Fetched 3 recipes. 0 skipped","title":"Operation Successful"}}`
+		assertWebsocket(t, c, 6, want)
+		if len(repo.Reports[1]) != 1 {
+			t.Fatalf("got reports %v but want one report added", repo.Reports[1])
 		}
-		assertStringsInHTML(t, getBodyHTML(rr), want)
-	})
-
-	t.Run("add recipe from supported website error", func(t *testing.T) {
-		repo := &mockRepository{
-			RecipesRegistered:      make(map[int64]models.Recipes),
-			UserSettingsRegistered: map[int64]*models.UserSettings{1: {}},
+		if len(repo.RecipesRegistered[1]) != 3 {
+			t.Fatal("expected 3 recipes")
 		}
-		repo.AddRecipeFunc = func(r *models.Recipe, userID int64, _ models.UserSettings) (int64, error) {
-			return 0, errors.New("add recipe error")
-		}
-		srv.Repository = repo
-
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, promptHeader, strings.NewReader("https://www.eatingbirdfood.com/cinnamon-rolls/"))
-
-		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Recipe could not be added.\",\"title\":\"\"}"}`)
-	})
-
-	t.Run("add recipe from a supported website", func(t *testing.T) {
-		repo := &mockRepository{
-			RecipesRegistered:      make(map[int64]models.Recipes),
-			UserSettingsRegistered: map[int64]*models.UserSettings{1: {}},
-		}
-		called := 0
-		repo.AddRecipeFunc = func(r *models.Recipe, userID int64, _ models.UserSettings) (int64, error) {
-			called++
-			return 1, nil
-		}
-		srv.Repository = repo
-
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, promptHeader, strings.NewReader("https://www.eatingbirdfood.com/cinnamon-rolls/"))
-
-		assertStatus(t, rr.Code, http.StatusSeeOther)
-		if called != 1 {
-			t.Fatal("recipe must have been added to the user's database")
-		}
-		assertHeader(t, rr, "HX-Redirect", "/recipes/1")
 	})
 }
 

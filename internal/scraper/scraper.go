@@ -14,9 +14,19 @@ import (
 
 const atContext = "https://schema.org"
 
+type IScraper interface {
+	Scrape(url string, files services.FilesService) (models.RecipeSchema, error)
+}
+
+type Scraper struct{}
+
+func NewScraper() *Scraper {
+	return &Scraper{}
+}
+
 // Scrape extracts the recipe from the given URL. An error will be
 // returned when the URL cannot be parsed.
-func Scrape(url string, files services.FilesService) (models.RecipeSchema, error) {
+func (s *Scraper) Scrape(url string, files services.FilesService) (models.RecipeSchema, error) {
 	var rs models.RecipeSchema
 
 	res, err := http.Get(url)

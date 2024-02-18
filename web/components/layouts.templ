@@ -175,10 +175,10 @@ templ layoutMain(title string, data templates.Data) {
 			<script defer>
                 document.addEventListener("htmx:wsBeforeMessage", (event) => {
                     try {
-                        const {type, data, fileName} = JSON.parse(event.detail.message);
+                        const {type, data, fileName, toast} = JSON.parse(event.detail.message);
                         switch (type) {
                             case "toast":
-                                const {title, message, background, action} = JSON.parse(data);
+                                const {title, message, background, action} = toast;
                                 showToast(title, message, background, action);
                                 break;
                             case "file":

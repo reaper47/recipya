@@ -30,6 +30,7 @@ type Message struct {
 	Type     string `json:"type"`     // Message type, e.g. file.
 	FileName string `json:"fileName"` // File name (applicable for "file" type).
 	Data     string `json:"data"`     // Message data to pass. Base64-encoded if type is "file".
+	Toast    Toast  `json:"toast"`    // Toast to display to the user.
 }
 
 // NewBroker creates a new Broker instance for a specific user and adds it to the brokers map.
@@ -170,7 +171,7 @@ func (b *Broker) SendToast(toast Toast) {
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
-	err := b.conn.WriteJSON(Message{Type: "toast", Data: toast.Render()})
+	err := b.conn.WriteJSON(Message{Type: "toast", Toast: toast})
 	if err != nil {
 		log.Printf("Boker.SendToast: %q", err)
 	}
