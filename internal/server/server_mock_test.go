@@ -23,12 +23,13 @@ func newServerTest() *server.Server {
 	repo := &mockRepository{
 		AuthTokens:             make([]models.AuthToken, 0),
 		RecipesRegistered:      make(map[int64]models.Recipes),
+		Reports:                make(map[int64][]models.Report),
 		ShareLinks:             make(map[string]models.Share),
 		UserSettingsRegistered: make(map[int64]*models.UserSettings),
 		UsersRegistered:        make([]models.User, 0),
 		UsersUpdated:           make([]int64, 0),
 	}
-	return server.NewServer(repo, &mockEmail{}, &mockFiles{}, &mockIntegrations{})
+	return server.NewServer(repo, &mockEmail{}, &mockFiles{}, &mockIntegrations{}, &mockScraper{})
 }
 
 type mockRepository struct {
@@ -51,12 +52,17 @@ type mockRepository struct {
 	UsersUpdated                []int64
 }
 
-func (m *mockRepository) AddRecipeTx(ctx context.Context, tx *sql.Tx, r *models.Recipe, userID int64) (int64, error) {
+func (m *mockRepository) AddRecipeTx(_ context.Context, _ *sql.Tx, _ *models.Recipe, _ int64) (int64, error) {
 	return 0, nil
 }
 
 func (m *mockRepository) AddReport(report models.Report, userID int64) {
+	_, ok := m.Reports[userID]
+	if !ok {
+		panic("reports for user not initialized")
+	}
 
+	m.Reports[userID] = append(m.Reports[userID], report)
 }
 
 func (m *mockRepository) CookbooksShared(userID int64) ([]models.Share, error) {
@@ -144,7 +150,7 @@ func (m *mockRepository) AddRecipe(r *models.Recipe, userID int64, settings mode
 	}
 
 	if !slices.ContainsFunc(m.RecipesRegistered[userID], func(recipe models.Recipe) bool {
-		return recipe.ID == r.ID
+		return recipe.Name == r.Name
 	}) {
 		m.RecipesRegistered[userID] = append(m.RecipesRegistered[userID], *r)
 	}
@@ -880,4 +886,21 @@ func (m *mockIntegrations) ProcessImageOCR(f io.Reader) (models.Recipe, error) {
 		return m.ProcessImageOCRFunc(f)
 	}
 	return models.Recipe{ID: 1}, nil
+}
+
+type mockScraper struct {
+	scraperFunc func(url string, files services.FilesService) (models.RecipeSchema, error)
+}
+
+func (m *mockScraper) Scrape(url string, files services.FilesService) (models.RecipeSchema, error) {
+	if m.scraperFunc != nil {
+		return m.scraperFunc(url, files)
+	}
+
+	return models.RecipeSchema{
+		AtContext: "https://schema.org",
+		AtType:    models.SchemaType{Value: "Recipe"},
+		Name:      url,
+		URL:       url,
+	}, nil
 }

@@ -9,6 +9,7 @@ import (
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/jobs"
 	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/scraper"
 	"github.com/reaper47/recipya/internal/services"
 	_ "github.com/reaper47/recipya/internal/templates" // Need to initialize the templates package.
 	"github.com/reaper47/recipya/web/static"
@@ -35,13 +36,18 @@ func init() {
 }
 
 // NewServer creates a Server.
-func NewServer(repository services.RepositoryService, email services.EmailService, files services.FilesService, integrations services.IntegrationsService) *Server {
+func NewServer(
+	repository services.RepositoryService, email services.EmailService,
+	files services.FilesService, integrations services.IntegrationsService,
+	scraper scraper.IScraper,
+) *Server {
 	srv := &Server{
 		Brokers:      make(map[int64]*models.Broker),
-		Repository:   repository,
 		Email:        email,
 		Files:        files,
 		Integrations: integrations,
+		Repository:   repository,
+		Scraper:      scraper,
 	}
 	srv.mountHandlers()
 	return srv
@@ -50,11 +56,12 @@ func NewServer(repository services.RepositoryService, email services.EmailServic
 // Server is the web application's configuration object.
 type Server struct {
 	Brokers      map[int64]*models.Broker
-	Router       *http.ServeMux
-	Repository   services.RepositoryService
 	Email        services.EmailService
 	Files        services.FilesService
 	Integrations services.IntegrationsService
+	Repository   services.RepositoryService
+	Router       *http.ServeMux
+	Scraper      scraper.IScraper
 }
 
 func (s *Server) mountHandlers() {

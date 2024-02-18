@@ -14,9 +14,22 @@ import (
 
 const atContext = "https://schema.org"
 
+// IScraper is the scraper's interface.
+type IScraper interface {
+	Scrape(url string, files services.FilesService) (models.RecipeSchema, error)
+}
+
+// Scraper represents the IScraper's implementation.
+type Scraper struct{}
+
+// NewScraper creates a new Scraper.
+func NewScraper() *Scraper {
+	return &Scraper{}
+}
+
 // Scrape extracts the recipe from the given URL. An error will be
 // returned when the URL cannot be parsed.
-func Scrape(url string, files services.FilesService) (models.RecipeSchema, error) {
+func (s *Scraper) Scrape(url string, files services.FilesService) (models.RecipeSchema, error) {
 	var rs models.RecipeSchema
 
 	res, err := http.Get(url)

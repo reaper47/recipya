@@ -497,7 +497,7 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 				rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?type="+q, noHeader, nil)
 
 				assertStatus(t, rr.Code, http.StatusAccepted)
-				want := `{"type":"toast","fileName":"","data":"{\"action\":\"\",\"background\":\"alert-warning\",\"message\":\"No recipes in database.\",\"title\":\"\"}"}`
+				want := `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-warning","message":"No recipes in database.","title":""}}`
 				assertWebsocket(t, c, 3, want)
 				if originalHitCount != f.exportHitCount {
 					t.Fatalf("expected the export function not to be called")
@@ -527,7 +527,7 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 				rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?type="+q, noHeader, nil)
 
 				assertStatus(t, rr.Code, http.StatusAccepted)
-				want := `{"type":"file","fileName":"recipes_` + q + `.zip","data":"Q2hpY2tlbi1KZXJzZXkt"}`
+				want := `{"type":"file","fileName":"recipes_` + q + `.zip","data":"Q2hpY2tlbi1KZXJzZXkt","toast":{"action":"","background":"","message":"","title":""}}`
 				assertWebsocket(t, c, 3, want)
 				if f.exportHitCount != originalHitCount+1 {
 					t.Fatalf("expected the export function to be called")

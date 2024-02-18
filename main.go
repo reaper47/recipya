@@ -3,6 +3,7 @@ package main
 
 import (
 	"github.com/reaper47/recipya/internal/app"
+	"github.com/reaper47/recipya/internal/scraper"
 	"github.com/reaper47/recipya/internal/server"
 	"github.com/reaper47/recipya/internal/services"
 	"github.com/urfave/cli/v2"
@@ -24,6 +25,7 @@ func main() {
 						services.NewEmailService(),
 						services.NewFilesService(),
 						services.NewIntegrationsService(),
+						scraper.NewScraper(),
 					)
 					srv.Run()
 					return nil

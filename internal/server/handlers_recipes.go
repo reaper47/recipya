@@ -5,8 +5,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
-	"github.com/reaper47/recipya/internal/scraper"
 	"github.com/reaper47/recipya/internal/templates"
+	"github.com/reaper47/recipya/internal/utils/extensions"
 	"github.com/reaper47/recipya/web/components"
 	"log"
 	"net/http"
@@ -132,11 +132,7 @@ func (s *Server) recipesAddImportHandler() http.HandlerFunc {
 				processed int
 				progress  = make(chan models.Progress)
 				recipes   = s.Files.ExtractRecipes(files)
-				report    = models.Report{
-					CreatedAt: time.Now(),
-					Logs:      make([]models.ReportLog, 0),
-					Type:      models.ImportReportType,
-				}
+				report    = models.NewReport(models.ImportReportType)
 				total     = len(recipes)
 				recipeIDs = make([]int64, 0, total)
 			)
@@ -158,11 +154,7 @@ func (s *Server) recipesAddImportHandler() http.HandlerFunc {
 
 					id, err := s.Repository.AddRecipe(&r, userID, settings)
 					if err != nil {
-						report.Logs = append(report.Logs, models.ReportLog{
-							Error:     err.Error(),
-							IsSuccess: false,
-							Title:     r.Name,
-						})
+						report.Logs = append(report.Logs, models.ReportLog{Error: err.Error(), Title: r.Name})
 						return
 					}
 
@@ -185,7 +177,7 @@ func (s *Server) recipesAddImportHandler() http.HandlerFunc {
 			s.Repository.AddReport(report, userID)
 			s.Repository.CalculateNutrition(userID, recipeIDs, settings)
 			s.Brokers[userID].HideNotification()
-			message := fmt.Sprintf("Imported %d recipes. %d skipped", count.Load(), int64(len(recipes))-count.Load())
+			message := fmt.Sprintf("Imported %d recipes. %d skipped", count.Load(), int64(total)-count.Load())
 			s.Brokers[userID].SendToast(models.NewInfoToast("Operation Successful", message, "View /reports?view=latest"))
 		}()
 
@@ -599,33 +591,44 @@ func (s *Server) recipesAddRequestWebsiteHandler() http.HandlerFunc {
 
 func (s *Server) recipesAddWebsiteHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		rawURL := r.Header.Get("HX-Prompt")
-		if rawURL == "" {
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-
-		_, err := url.ParseRequestURI(rawURL)
-		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Invalid URI.", "").Render())
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-
-		rs, err := scraper.Scrape(rawURL, s.Files)
-		if err != nil {
-			_ = components.UnsupportedWebsite(rawURL).Render(r.Context(), w)
-			return
-		}
-
-		recipe, err := rs.Recipe()
-		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Recipe schema is invalid.", "").Render())
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-
 		userID := getUserID(r)
+		_, found := s.Brokers[userID]
+		if !found {
+			w.Header().Set("HX-Trigger", models.NewWarningToast("", "Connection lost. Please reload page.", "").Render())
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		urls := strings.Split(r.FormValue("urls"), "\n")
+		if len(urls) == 0 {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		urls = extensions.Unique(urls)
+
+		invalid := make(map[int]struct{})
+		for i, rawURL := range urls {
+			_, err := url.ParseRequestURI(rawURL)
+			if err != nil {
+				invalid[i] = struct{}{}
+				continue
+			}
+		}
+
+		validURLs := make([]string, 0, len(urls)-len(invalid))
+		for i, rawURL := range urls {
+			_, ok := invalid[i]
+			if !ok {
+				validURLs = append(validURLs, rawURL)
+			}
+		}
+
+		if len(validURLs) == 0 {
+			w.Header().Set("HX-Trigger", models.NewErrorToast("", "No valid URLs found.", "").Render())
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
 		settings, err := s.Repository.UserSettings(userID)
 		if err != nil {
 			log.Printf("recipesAddWebsiteHandler.UserSettings error: %q", err)
@@ -634,16 +637,82 @@ func (s *Server) recipesAddWebsiteHandler() http.HandlerFunc {
 			return
 		}
 
-		id, err := s.Repository.AddRecipe(recipe, userID, settings)
-		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Recipe could not be added.", "").Render())
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
+		go func() {
+			var (
+				count     atomic.Int64
+				processed int
+				progress  = make(chan models.Progress)
+				report    = models.NewReport(models.ImportReportType)
+				total     = len(validURLs)
+				recipeIDs = make([]int64, 0, total)
+			)
 
-		s.Repository.CalculateNutrition(userID, []int64{id}, settings)
-		w.Header().Set("HX-Redirect", "/recipes/"+strconv.FormatInt(id, 10))
-		w.WriteHeader(http.StatusSeeOther)
+			s.Brokers[userID].SendProgress(fmt.Sprintf("Fetching 1/%d", total), 1, total)
+
+			now := time.Now()
+
+			for i, rawURL := range validURLs {
+				go func(index int, u string) {
+					defer func() {
+						progress <- models.Progress{Total: total, Value: index}
+					}()
+
+					rs, err := s.Scraper.Scrape(u, s.Files)
+					if err != nil {
+						report.Logs = append(report.Logs, models.ReportLog{Error: err.Error(), Title: u})
+						return
+					}
+
+					recipe, err := rs.Recipe()
+					if err != nil {
+						report.Logs = append(report.Logs, models.ReportLog{Error: err.Error(), Title: u})
+						return
+					}
+
+					id, err := s.Repository.AddRecipe(recipe, userID, settings)
+					if err != nil {
+						report.Logs = append(report.Logs, models.ReportLog{Error: err.Error(), Title: u})
+						return
+					}
+
+					report.Logs = append(report.Logs, models.ReportLog{IsSuccess: true, Title: u})
+					recipeIDs = append(recipeIDs, id)
+
+					count.Add(1)
+				}(i, rawURL)
+			}
+
+			for p := range progress {
+				processed++
+				s.Brokers[userID].SendProgress(fmt.Sprintf("Importing %d/%d", processed, p.Total), processed, p.Total)
+				if processed == total {
+					close(progress)
+				}
+			}
+
+			report.ExecTime = time.Since(now)
+
+			s.Repository.AddReport(report, userID)
+			s.Repository.CalculateNutrition(userID, recipeIDs, settings)
+			s.Brokers[userID].HideNotification()
+
+			var (
+				toast      models.Toast
+				numSuccess = count.Load()
+			)
+
+			if numSuccess == 0 && total == 1 {
+				toast = models.NewErrorToast("Operation Failed", "Fetching the recipe failed.", "View /reports?view=latest")
+			} else if numSuccess == 1 && total == 1 {
+				toast = models.NewInfoToast("Operation Successful", "Recipe has been added to your collection.", fmt.Sprintf("View /recipes/%d", recipeIDs[0]))
+			} else {
+				toast = models.NewInfoToast("Operation Successful", fmt.Sprintf("Fetched %d recipes. %d skipped", numSuccess, int64(total)-numSuccess), "View /reports?view=latest")
+			}
+
+			s.Brokers[userID].SendToast(toast)
+		}()
+
+		w.WriteHeader(http.StatusAccepted)
 	}
 }
 

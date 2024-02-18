@@ -102,11 +102,11 @@ templ layoutMain(title string, data templates.Data) {
 									</li>
 								}
 								<li onclick="document.activeElement?.blur()">
-                                    <a href="/reports" hx-get="/reports" hx-target="#content" hx-push-url="true">
-                                        @iconFlag()
-                                        Reports
-                                    </a>
-                                </li>
+									<a href="/reports" hx-get="/reports" hx-target="#content" hx-push-url="true">
+										@iconFlag()
+										Reports
+									</a>
+								</li>
 								<div class="divider m-0"></div>
 								<li onclick="document.activeElement?.blur()">
 									<a href="/settings" hx-get="/settings" hx-target="#content" hx-push-url="true">
@@ -175,10 +175,10 @@ templ layoutMain(title string, data templates.Data) {
 			<script defer>
                 document.addEventListener("htmx:wsBeforeMessage", (event) => {
                     try {
-                        const {type, data, fileName} = JSON.parse(event.detail.message);
+                        const {type, data, fileName, toast} = JSON.parse(event.detail.message);
                         switch (type) {
                             case "toast":
-                                const {title, message, background, action} = JSON.parse(data);
+                                const {title, message, background, action} = toast;
                                 showToast(title, message, background, action);
                                 break;
                             case "file":
@@ -373,17 +373,17 @@ templ toast() {
 	<div
 		id="toast_container"
 		class="toast toast-top toast-end hidden z-20 cursor-default"
-        _="on click add .hidden then call clearTimeout(timeoutToast) then set timeoutToast to null"
+		_="on click add .hidden then call clearTimeout(timeoutToast) then set timeoutToast to null"
 	>
-	    <div class="hidden alert-error alert-info alert-success alert-warning"></div>
-        <div id="toast_alert" role="alert" class="alert shadow-lg">
-          <svg id="toast_icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"></svg>
-          <div>
-            <h3 id="toast_title" class="font-bold"></h3>
-            <div id="toast_message" class="text-xs"></div>
-          </div>
-          <button id="toast_button" class="btn btn-sm" _="on click log 'meow'">See</button>
-        </div>
+		<div class="hidden alert-error alert-info alert-success alert-warning"></div>
+		<div id="toast_alert" role="alert" class="alert shadow-lg">
+			<svg id="toast_icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"></svg>
+			<div>
+				<h3 id="toast_title" class="font-bold"></h3>
+				<div id="toast_message" class="text-xs"></div>
+			</div>
+			<button id="toast_button" class="btn btn-sm" _="on click log 'meow'">See</button>
+		</div>
 	</div>
 	<script defer>
         var timeoutToast = timeoutToast || null;

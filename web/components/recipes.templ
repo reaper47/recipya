@@ -53,7 +53,7 @@ templ addRecipe() {
 			<div class="card-body">
 				<h2 class="card-title">Website</h2>
 				<p>
-					Fetch a recipe from one of the
+					Fetch a recipe or recipes from
 					<button
 						class="underline"
 						hx-get="/recipes/supported-websites"
@@ -69,17 +69,38 @@ templ addRecipe() {
 				<div class="card-actions justify-end">
 					<button
 						class="btn btn-outline btn-sm btn-block"
-						hx-target="#content"
-						hx-push-url="/recipes/add/unsupported-website"
-						hx-prompt="Enter the recipe's URL"
-						hx-post="/recipes/add/website"
-						hx-indicator="#fullscreen-loader"
+						onclick="websites_dialog.showModal()"
 					>
 						Fetch
 					</button>
 				</div>
 			</div>
 		</div>
+		<dialog id="websites_dialog" class="modal">
+			<div class="modal-box">
+				<form method="dialog">
+					<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+				</form>
+				<h3 class="font-bold text-lg">Fetch recipes from websites</h3>
+				<form class="py-4" hx-post="/recipes/add/website" hx-indicator="#fullscreen-loader" hx-swap="none">
+					<div class="grid mb-4">
+						<label class="form-control">
+							<div class="label">
+								<span class="label-text">Enter one or more URLs, each on a new line.</span>
+							</div>
+							<textarea class="textarea textarea-bordered h-24 whitespace-pre-line" placeholder="URL 1\nURL 2\nURL 3\nURL 4\netc..." name="urls" rows="10"></textarea>
+						</label>
+					</div>
+					<button
+						type="submit"
+						class="w-full p-2 font-semibold text-white bg-blue-500 border rounded-lg hover:bg-blue-800 dark:border-gray-800"
+						onclick="websites_dialog.close()"
+					>
+						Submit
+					</button>
+				</form>
+			</div>
+		</dialog>
 		<dialog id="supported_websites_dialog" class="modal">
 			<div class="modal-box h-2/3">
 				<form method="dialog">
@@ -1764,37 +1785,4 @@ script copyToClipboard(text string) {
     } else {
         alert('Your browser does not support the clipboard feature. Please copy the link manually.');
     }
-}
-
-templ UnsupportedWebsite(url string) {
-	<title hx-swap-oob="true">Unsupported Website | Recipya</title>
-	<div class="flex h-[95vh] items-center justify-center">
-		<article class="p-5 max-w-sm bg-white border border-gray-200 rounded-lg shadow-md md:max-w-md">
-			<h3 class="mb-2 text-2xl font-semibold tracking-tight">
-				This website is not supported
-			</h3>
-			<p class="mb-3 text-gray-700">
-				Unfortunately, we could not extract the recipe from this link. You can either request that our
-				team support this website or go back to the previous page.
-			</p>
-			<form hx-post="/recipes/add/request-website" hx-target="#content" class="mt-4">
-				<div class="grid grid-flow-col col-span-5 columns-4">
-					<a
-						href="javascript:history.back()"
-						class="inline-flex items-center w-full col-span-1 p-2 font-semibold text-white bg-red-600 hover:bg-red-800"
-					>
-						@iconArrowLeftCircle()
-						Go back
-					</a>
-					<button
-						name="website"
-						value={ url }
-						class="w-full col-span-4 ml-2 p-2 font-semibold text-white bg-blue-500 hover:bg-blue-800"
-					>
-						Request
-					</button>
-				</div>
-			</form>
-		</article>
-	</div>
 }
