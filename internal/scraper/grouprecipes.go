@@ -13,7 +13,7 @@ func scrapeGrouprecipes(root *goquery.Document) (models.RecipeSchema, error) {
 	cook, _ := root.Find(".cooktime .value-title").Attr("title")
 
 	var keywords strings.Builder
-	root.Find(".tags_text li").Each(func(i int, sel *goquery.Selection) {
+	root.Find(".tags_text li").Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		keywords.WriteString(",")
 		keywords.WriteString(s)
@@ -32,7 +32,7 @@ func scrapeGrouprecipes(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes = root.Find(".instructions li")
 	instructions := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		before, after, ok := strings.Cut(s, ".")
 		_, err := strconv.ParseInt(before[:1], 0, 64)
