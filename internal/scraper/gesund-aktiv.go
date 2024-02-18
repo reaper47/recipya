@@ -11,14 +11,14 @@ func scrapeGesundAktiv(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes := root.Find("div.field--name-field-zutaten .field--item")
 	ingredients := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
 		ingredients = append(ingredients, s)
 	})
 
 	nodes = root.Find("div.field--name-field-content-element p")
 	instructions := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
 		instructions = append(instructions, s)
 	})

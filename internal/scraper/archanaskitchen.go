@@ -16,7 +16,7 @@ func scrapeArchanasKitchen(root *goquery.Document) (models.RecipeSchema, error) 
 	image = "https://www.archanaskitchen.com" + image
 
 	var keywords string
-	root.Find("li[itemprop='keywords'] a").Each(func(i int, s *goquery.Selection) {
+	root.Find("li[itemprop='keywords'] a").Each(func(_ int, s *goquery.Selection) {
 		keywords += strings.TrimSpace(s.Text()) + ","
 	})
 	keywords = strings.TrimSuffix(keywords, ",")
