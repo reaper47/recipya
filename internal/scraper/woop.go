@@ -33,7 +33,7 @@ func scrapeWoop(root *goquery.Document) (rs models.RecipeSchema, err error) {
 	})
 
 	var nutrition models.NutritionSchema
-	root.Find(".nutritional-info li").Each(func(i int, s *goquery.Selection) {
+	root.Find(".nutritional-info li").Each(func(_ int, s *goquery.Selection) {
 		parts := strings.Split(s.Text(), ":")
 		val := strings.TrimSpace(strings.Join(parts[1:], " "))
 		switch parts[0] {

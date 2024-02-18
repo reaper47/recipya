@@ -160,7 +160,6 @@ func (s *Server) recipesAddImportHandler() http.HandlerFunc {
 						return
 					}
 
-					s.Mutex.Lock()
 					report.Logs = append(report.Logs, models.ReportLog{IsSuccess: true, Title: r.Name})
 					recipeIDs = append(recipeIDs, id)
 					s.Mutex.Unlock()

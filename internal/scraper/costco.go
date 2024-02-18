@@ -25,14 +25,14 @@ func scrapeCostco(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes := div.Find("ul li")
 	ingredients := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
 		ingredients = append(ingredients, s)
 	})
 
 	nodes = div.Find("p")
 	instructions := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
 		if s != "" {
 			instructions = append(instructions, s)
