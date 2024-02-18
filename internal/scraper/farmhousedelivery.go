@@ -22,7 +22,7 @@ func scrapeFarmhousedelivery(root *goquery.Document) (models.RecipeSchema, error
 
 	content := root.Find(".entry-content")
 	var ingredients []string
-	content.Find("ul li").Each(func(i int, sel *goquery.Selection) {
+	content.Find("ul li").Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		ingredients = append(ingredients, s)
 	})

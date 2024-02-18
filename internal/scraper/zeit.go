@@ -24,14 +24,14 @@ func scrapeZeit(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes := root.Find(".recipe-list-collection__list-item")
 	ingredients := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.Join(strings.Fields(sel.Text()), " ")
 		ingredients = append(ingredients, s)
 	})
 
 	nodes = root.Find(".paragraph.article__item")
 	instructions := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
 		s = strings.Join(strings.Fields(s), " ")
 		instructions = append(instructions, s)

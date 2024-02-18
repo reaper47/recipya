@@ -21,7 +21,7 @@ func scrapeBodybuilding(root *goquery.Document) (models.RecipeSchema, error) {
 
 	var nutrition models.NutritionSchema
 	nodes := root.Find(".bb-recipe__meta-nutrient-label")
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		switch sel.Text() {
 		case "Calories":
 			nutrition.Calories = sel.Prev().Text() + " kcal"
