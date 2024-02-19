@@ -73,7 +73,7 @@ templ layoutMain(title string, data templates.Data) {
 							class="btn btn-primary btn-sm hover:btn-accent"
 							hx-post="/cookbooks"
 							hx-prompt="Enter the name of your cookbook"
-							hx-target=".cookbooks-display"
+							hx-target="#cookbooks-display"
 							hx-swap="beforeend"
 						>
 							Add cookbook
@@ -383,9 +383,9 @@ templ toast() {
 		_="on click add .hidden then call clearTimeout(timeoutToast) then set timeoutToast to null"
 	>
 		<div class="hidden alert-error alert-info alert-success alert-warning"></div>
-		<div id="toast_alert" role="alert" class="alert shadow-lg">
+		<div id="toast_alert" role="alert" class="alert shadow-lg flex">
 			<svg id="toast_icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"></svg>
-			<div>
+			<div class="text-left">
 				<h3 id="toast_title" class="font-bold"></h3>
 				<div id="toast_message" class="text-xs"></div>
 			</div>
@@ -403,8 +403,8 @@ templ toast() {
             toast_alert.classList.remove("alert-error", "alert-info", "alert-success", "alert-warning", background);
             toast_alert.classList.add(background);
 
-            toast_title.textContent = title;
-            toast_message.textContent = message;
+            toast_title.innerHTML = title;
+            toast_message.innerText = message;
             switch (background) {
                 case "alert-error":
                     toast_icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>`;

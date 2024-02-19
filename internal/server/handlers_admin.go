@@ -26,7 +26,7 @@ func (s *Server) adminHandler() http.HandlerFunc {
 func (s *Server) adminUsersPostHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if app.Config.Server.IsDemo {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Every day is Christmas.", "OK").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorToast("Every day is Christmas.", "", "OK").Render())
 			w.WriteHeader(http.StatusTeapot)
 			return
 		}
@@ -34,28 +34,28 @@ func (s *Server) adminUsersPostHandler() http.HandlerFunc {
 		email := r.FormValue("email")
 		password := r.FormValue("password")
 		if !regex.Email.MatchString(email) || password == "" {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Email and/or password is invalid.", "").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorFormToast("Email and/or password is invalid.").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		userID := s.Repository.UserID(email)
 		if userID != -1 {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "User exists.", "").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorDBToast("User exists.").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		hashPassword, err := auth.HashPassword(password)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error encoding your password.", "").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorAuthToast("Error encoding your password.").Render())
 			w.WriteHeader(http.StatusUnprocessableEntity)
 			return
 		}
 
 		_, err = s.Repository.Register(email, hashPassword)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Failed to add user.", "").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorDBToast("Failed to add user.").Render())
 			w.WriteHeader(http.StatusUnprocessableEntity)
 			return
 		}
@@ -73,13 +73,13 @@ func (s *Server) adminUsersDeleteHandler() http.HandlerFunc {
 		}
 
 		if app.Config.Server.IsDemo {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Who do you think you are, eh?", "").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorGeneralToast("Who do you think you are, eh?").Render())
 			w.WriteHeader(http.StatusTeapot)
 			return
 		}
 
 		if userID == 1 {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Cannot delete admin.", "").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorGeneralToast("Cannot delete admin.").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}

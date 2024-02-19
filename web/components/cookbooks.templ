@@ -218,7 +218,7 @@ templ cookbooksIndex(data templates.Data) {
 		<div class="min-h-[79vh]">
 			<div
 				id="cookbooks-container"
-				class={ "cookbooks-display grid justify-center", templ.KV("grid gap-4 p-4 text-sm place-items-center md:m-auto md:max-w-7xl sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5", data.CookbookFeature.ViewMode == 0) }
+				class={ "cookbooks-display grid justify-center pb-4", templ.KV("grid gap-4 p-4 text-sm place-items-center md:m-auto md:max-w-7xl sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5", data.CookbookFeature.ViewMode == 0), templ.KV("grid gap-8 p-2 text-sm md:text-base place-items-center", data.CookbookFeature.ViewMode == 1) }
 			>
 				if data.CookbookFeature.ViewMode == 0 {
 					@cookbooksGrid(data)
@@ -237,7 +237,8 @@ templ cookbooksIndex(data templates.Data) {
 						class="underline font-semibold cursor-pointer"
 						hx-post="/cookbooks"
 						hx-prompt="Enter the name of your cookbook"
-						hx-target="#content"
+						hx-target=".cookbooks-display"
+						hx-swap="beforeend"
 					>Add cookbook</a>
 					button at the top?
 				</p>
@@ -361,11 +362,11 @@ templ cookbookGrid(cookbook templates.CookbookView) {
 }
 
 templ cookbooksList(data templates.Data) {
-	<div class="cookbooks-display grid gap-8 p-2 text-sm md:text-base place-items-center">
+	<!--<div class="cookbooks-display grid gap-8 p-2 text-sm md:text-base place-items-center">-->
 		for i, c := range data.CookbookFeature.Cookbooks {
 			@cookbookList(data.CookbookFeature.MakeCookbook(int64(i), c, data.Pagination.Selected))
 		}
-	</div>
+	<!--</div>-->
 }
 
 templ cookbookList(cookbook templates.CookbookView) {
