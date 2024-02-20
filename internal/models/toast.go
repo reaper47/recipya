@@ -29,26 +29,32 @@ func NewErrorToast(title, message, action string) Toast {
 	}
 }
 
+// NewErrorAuthToast creates an action-less error Toast with the title of "Auth Error".
 func NewErrorAuthToast(message string) Toast {
 	return NewErrorToast("Auth Error", message, "")
 }
 
+// NewErrorDBToast creates an action-less error Toast with the title of "Database Error".
 func NewErrorDBToast(message string) Toast {
 	return NewErrorToast("Database Error", message, "")
 }
 
+// NewErrorFilesToast creates an action-less error Toast with the title of "Files Error".
 func NewErrorFilesToast(message string) Toast {
 	return NewErrorToast("Files Error", message, "")
 }
 
+// NewErrorFormToast creates an action-less error Toast with the title of "Form Error".
 func NewErrorFormToast(message string) Toast {
 	return NewErrorToast("Form Error", message, "")
 }
 
+// NewErrorGeneralToast creates an action-less error Toast with the title of "General Error".
 func NewErrorGeneralToast(message string) Toast {
 	return NewErrorToast("General Error", message, "")
 }
 
+// NewErrorReqToast creates an action-less error Toast with the title of "Request Error".
 func NewErrorReqToast(message string) Toast {
 	return NewErrorToast("Request Error", message, "")
 }
@@ -73,6 +79,7 @@ func NewWarningToast(title, message, action string) Toast {
 	}
 }
 
+// NewWarningWSToast creates an action-less warning Toast with the title of "Websocket".
 func NewWarningWSToast(message string) Toast {
 	return NewWarningToast("Websocket", message, "")
 }

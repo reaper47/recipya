@@ -56,7 +56,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 		want := []string{
 			`<title hx-swap-oob="true">Cookbooks | Recipya</title>`,
 			`<p class="pb-2">Your cookbooks collection looks a bit empty at the moment.</p>`,
-			`<p>Why not start by creating a cookbook by clicking the <a class="underline font-semibold cursor-pointer" hx-post="/cookbooks" hx-prompt="Enter the name of your cookbook" hx-target="#content">Add cookbook</a> button at the top?</p>`,
+			`<p>Why not start by creating a cookbook by clicking the <a class="underline font-semibold cursor-pointer" hx-post="/cookbooks" hx-prompt="Enter the name of your cookbook" hx-target=".cookbooks-display" hx-swap="beforeend">Add cookbook</a> button at the top?</p>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
@@ -75,7 +75,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Error getting cookbooks.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Error getting cookbooks.\",\"title\":\"Database Error\"}"}`)
 	})
 
 	t.Run("have cookbooks grid preferred mode", func(t *testing.T) {
@@ -144,7 +144,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, promptHeader, strings.NewReader(""))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Title must not be empty.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Title must not be empty.\",\"title\":\"Request Error\"}"}`)
 	})
 
 	t.Run("create cookbook", func(t *testing.T) {
@@ -230,7 +230,7 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri(1), noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Error deleting cookbook.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Error deleting cookbook.\",\"title\":\"Database Error\"}"}`)
 		assertCookbooksEqual(t, originalCookbooks, repo.CookbooksRegistered[1])
 	})
 
@@ -272,7 +272,7 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri(1), noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Missing page query parameter.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Missing page query parameter.\",\"title\":\"Request Error\"}"}`)
 	})
 
 	t.Run("open cookbook page must be specified normal request", func(t *testing.T) {
@@ -375,7 +375,7 @@ func TestHandlers_Cookbooks_AddRecipe(t *testing.T) {
 		rr := sendRequestAsLoggedIn(srv, http.MethodPost, uri(1), formHeader, strings.NewReader("cookbookId=1"))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Missing 'recipeId' in body.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Missing 'recipeId' in body.\",\"title\":\"Form Error\"}"}`)
 	})
 
 	t.Run("valid request", func(t *testing.T) {
@@ -529,7 +529,7 @@ func TestHandlers_Cookbooks_DownloadCookbook(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri(10), noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not fetch cookbook.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not fetch cookbook.\",\"title\":\"Database Error\"}"}`)
 	})
 
 	t.Run("other user cannot download someone else's cookbook", func(t *testing.T) {
@@ -541,7 +541,7 @@ func TestHandlers_Cookbooks_DownloadCookbook(t *testing.T) {
 		rr := sendHxRequestAsLoggedInOther(srv, http.MethodGet, uri(1), noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not fetch cookbook.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not fetch cookbook.\",\"title\":\"Database Error\"}"}`)
 		if files.exportHitCount > 0 {
 			t.Fatal("export function must not have been called")
 		}
@@ -556,7 +556,7 @@ func TestHandlers_Cookbooks_DownloadCookbook(t *testing.T) {
 		rr := sendHxRequestAsLoggedInOther(srv, http.MethodGet, uri(5), noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Cookbook is empty.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Cookbook is empty.\",\"title\":\"Request Error\"}"}`)
 		if files.exportHitCount > 0 {
 			t.Fatal("export function must not have been called")
 		}
@@ -610,7 +610,7 @@ func TestHandlers_Cookbooks_Image(t *testing.T) {
 		rr := sendReq("")
 
 		assert(t, files, repo, rr.Code, http.StatusBadRequest, uuid.Nil, 0)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not retrieve the image from the form.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not retrieve the image from the form.\",\"title\":\"Form Error\"}"}`)
 	})
 
 	t.Run("upload image failed", func(t *testing.T) {
@@ -624,7 +624,7 @@ func TestHandlers_Cookbooks_Image(t *testing.T) {
 		rr := sendReq("eggs.jpg")
 
 		assert(t, files, repo, rr.Code, http.StatusInternalServerError, uuid.Nil, 0)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Error uploading image.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Error uploading image.\",\"title\":\"Files Error\"}"}`)
 	})
 
 	t.Run("updating image failed", func(t *testing.T) {
@@ -638,7 +638,7 @@ func TestHandlers_Cookbooks_Image(t *testing.T) {
 		rr := sendReq("eggs.jpg")
 
 		assert(t, files, repo, http.StatusInternalServerError, rr.Code, uuid.Nil, 1)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Error updating the cookbook's image.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Error updating image.\",\"title\":\"Database Error\"}"}`)
 	})
 
 	t.Run("upload image", func(t *testing.T) {
@@ -688,7 +688,7 @@ func TestHandlers_Cookbooks_RecipesSearch(t *testing.T) {
 			rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader(tc.body))
 
 			assertStatus(t, rr.Code, http.StatusBadRequest)
-			assertHeader(t, rr, "HX-Trigger", fmt.Sprintf(`{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"%s\",\"title\":\"\"}"}`, tc.wantToast))
+			assertHeader(t, rr, "HX-Trigger", fmt.Sprintf(`{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"%s\",\"title\":\"Form Error\"}"}`, tc.wantToast))
 		})
 	}
 
@@ -798,7 +798,7 @@ func TestHandlers_Cookbooks_ReorderRecipes(t *testing.T) {
 			rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, uri, formHeader, strings.NewReader(tc.form))
 
 			assertStatus(t, rr.Code, http.StatusBadRequest)
-			assertHeader(t, rr, "HX-Trigger", fmt.Sprintf(`{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"%s\",\"title\":\"\"}"}`, tc.wantToast))
+			assertHeader(t, rr, "HX-Trigger", fmt.Sprintf(`{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"%s\",\"title\":\"Form Error\"}"}`, tc.wantToast))
 		})
 	}
 
@@ -827,7 +827,7 @@ func TestHandlers_Cookbooks_Share(t *testing.T) {
 		rr := sendRequestAsLoggedIn(srv, http.MethodPost, uri(1), noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to create share link.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to create share link.\",\"title\":\"Database Error\"}"}`)
 	})
 
 	t.Run("create valid share link", func(t *testing.T) {

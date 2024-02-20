@@ -42,7 +42,7 @@ func TestHandlers_Reports(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to fetch reports.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to fetch reports.\",\"title\":\"Database Error\"}"}`)
 	})
 
 	t.Run("view latest report", func(t *testing.T) {
@@ -140,7 +140,7 @@ func TestHandlers_Reports_Report(t *testing.T) {
 			rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri(tc.id), noHeader, nil)
 
 			assertStatus(t, rr.Code, http.StatusBadRequest)
-			assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Report ID must be positive.\",\"title\":\"\"}"}`)
+			assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Report ID must be positive.\",\"title\":\"Request Error\"}"}`)
 		})
 	}
 
@@ -155,7 +155,7 @@ func TestHandlers_Reports_Report(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri("6"), noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to fetch report.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to fetch report.\",\"title\":\"Database Error\"}"}`)
 	})
 
 	t.Run("user cannot view report of other user", func(t *testing.T) {
@@ -172,7 +172,7 @@ func TestHandlers_Reports_Report(t *testing.T) {
 		rr := sendHxRequestAsLoggedInOther(srv, http.MethodGet, uri("1"), noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to fetch report.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to fetch report.\",\"title\":\"Database Error\"}"}`)
 	})
 
 	sortTestcases := []struct {

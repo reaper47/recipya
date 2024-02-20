@@ -36,7 +36,7 @@ func scrapeMeljoulwan(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	var sb strings.Builder
-	root.Find("div.post-tage a").Each(func(i int, sel *goquery.Selection) {
+	root.Find("div.post-tage a").Each(func(_ int, sel *goquery.Selection) {
 		sb.WriteString(sel.Text())
 		sb.WriteString(",")
 	})

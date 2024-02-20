@@ -21,7 +21,7 @@ func scrapeGrouprecipes(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes := root.Find(".ingredients li")
 	ingredients := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		before, _, ok := strings.Cut(s, "\t")
 		if ok {

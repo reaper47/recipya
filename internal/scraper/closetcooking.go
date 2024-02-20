@@ -24,14 +24,14 @@ func scrapeClosetcooking(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes = root.Find("li[itemprop='recipeInstructions']")
 	instructions := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		instructions = append(instructions, s)
 	})
 
 	nodes = root.Find(".entry-categories a")
 	xk := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		xk = append(xk, sel.Text())
 	})
 	keywords := strings.Join(xk, ",")
