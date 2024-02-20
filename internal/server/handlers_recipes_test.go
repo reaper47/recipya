@@ -686,10 +686,17 @@ func TestHandlers_Recipes_Delete(t *testing.T) {
 	})
 
 	t.Run("cannot delete recipe that does not exist", func(t *testing.T) {
+		numRecipesBefore := len(repo.RecipesRegistered)
+		defer func() {
+			srv.Repository = repo
+		}()
+
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri+"/5", noHeader, nil)
 
-		assertStatus(t, rr.Code, http.StatusNotFound)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Recipe not found.\",\"title\":\"Database Error\"}"}`)
+		assertStatus(t, rr.Code, http.StatusNoContent)
+		if numRecipesBefore != len(repo.RecipesRegistered) {
+			t.Fail()
+		}
 	})
 
 	t.Run("can delete user's recipe", func(t *testing.T) {

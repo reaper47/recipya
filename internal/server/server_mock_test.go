@@ -303,25 +303,21 @@ func (m *mockRepository) DeleteCookbook(id, userID int64) error {
 	return nil
 }
 
-func (m *mockRepository) DeleteRecipe(id, userID int64) (int64, error) {
+func (m *mockRepository) DeleteRecipe(id, userID int64) error {
 	recipes, ok := m.RecipesRegistered[userID]
 	if !ok {
-		return -1, errors.New("user not found")
+		return errors.New("user not found")
 	}
 
-	var rowsAffected int64
 	i := slices.IndexFunc(recipes, func(r models.Recipe) bool {
-		if r.ID == id {
-			rowsAffected++
-		}
 		return r.ID == id
 	})
 	if i == -1 {
-		return 0, nil
+		return nil
 	}
 
 	m.RecipesRegistered[userID] = slices.Delete(recipes, i, i+1)
-	return rowsAffected, nil
+	return nil
 }
 
 func (m *mockRepository) DeleteRecipeFromCookbook(recipeID, cookbookID int64, userID int64) (int64, error) {

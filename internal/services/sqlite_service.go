@@ -690,7 +690,7 @@ func (s *SQLiteService) DeleteCookbook(id, userID int64) error {
 }
 
 // DeleteRecipe deletes a user's recipe. It returns the number of rows affected.
-func (s *SQLiteService) DeleteRecipe(id, userID int64) (int64, error) {
+func (s *SQLiteService) DeleteRecipe(id, userID int64) error {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
@@ -699,9 +699,19 @@ func (s *SQLiteService) DeleteRecipe(id, userID int64) (int64, error) {
 
 	result, err := s.DB.ExecContext(ctx, statements.DeleteRecipe, userID, id)
 	if err != nil {
-		return -1, err
+		return err
 	}
-	return result.RowsAffected()
+
+	n, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if n == 0 {
+		return errors.New("recipe not found")
+	}
+
+	return nil
 }
 
 // DeleteRecipeFromCookbook deletes a recipe from a cookbook. It returns the number of recipes in the cookbook.

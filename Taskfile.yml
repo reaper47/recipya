@@ -22,6 +22,11 @@ tasks:
       - cmd: go tool cover -html=coverage.out -o coverage.html
       - cmd: rm coverage.out
 
+  new-migration:
+    requires:
+      vars: [ name ]
+    cmd: cd internal/services/migrations && goose create {{.name}} sql
+
   release:
     deps:
       - test

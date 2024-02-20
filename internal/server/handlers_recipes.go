@@ -725,16 +725,10 @@ func (s *Server) recipeDeleteHandler() http.HandlerFunc {
 		}
 		userID := getUserID(r)
 
-		rowsAffected, err := s.Repository.DeleteRecipe(id, userID)
+		err = s.Repository.DeleteRecipe(id, userID)
 		if err != nil {
 			w.Header().Set("HX-Trigger", models.NewErrorDBToast("Recipe could not be deleted.").Render())
 			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-
-		if rowsAffected == 0 {
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast("Recipe not found.").Render())
-			w.WriteHeader(http.StatusNotFound)
 			return
 		}
 
