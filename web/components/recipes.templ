@@ -177,10 +177,28 @@ templ addRecipe() {
 				<p>
 					You can also download recipe schema files directly using the
 					<a
-						href="javascript:c=0; scr=([...document.querySelectorAll('script[type=%22application/ld+json%22]')]); for (const i of scr) { const j = JSON.parse(i.innerHTML); if (j['@type'] != 'Recipe') { continue; } const url = URL.createObjectURL(new Blob([JSON.stringify(j)], {type: 'application/json'})); const a=document.createElement('a'); a.href = url; a.download = j.name ? `${j.name}.json` : 'recipe.json'; a.click(); URL.revokeObjectURL(url); c++; } if(c === 0) { alert('Unable to find Recipe schema on this site!'); }"
 						class="link tooltip"
 						data-tip="Simply drag this link to your bookmarks bar, and click the bookmark while on a recipe website.  If a recipe schema downloads successfully, you can import it here."
-					>
+						href="javascript:(function(){
+							const recipeCount = 0;
+							jsonSchemaScripts = ([...document.querySelectorAll('script[type=%22application/ld+json%22]')]);
+							for (const jsonSchemaScript of jsonSchemaScripts) {
+								const data = JSON.parse(jsonSchemaScript.innerHTML);
+								if (data['@type'] != 'Recipe') {
+									continue;
+								}
+								const blob = new Blob([JSON.stringify(data)]);
+								const url = URL.createObjectURL(blob, { type: 'application/json' });
+								const a = document.createElement('a');
+								a.href = url;
+								a.download = data.name ? data.name + '.json' : 'recipe.json';
+								a.click();
+								URL.revokeObjectURL(url);
+								recipeCount++;
+							} if (recipeCount === 0) {
+								alert('Unable to find a Recipe schema on this site!');
+							}
+						})()">
 						Recipya Bookmarklet
 					</a>.
 				</p>
