@@ -985,8 +985,12 @@ func (s *Server) recipesSearchHandler() http.HandlerFunc {
 			q = strings.ReplaceAll(q, ",", " ")
 			q = strings.Join(strings.Fields(q), " ")
 
-			var err error
-			recipes, err = s.Repository.SearchRecipes(q, models.SearchOptionsRecipes{FullSearch: true}, userID)
+			var (
+				opts = models.NewSearchOptionsRecipe(r.FormValue("search-method"))
+				err  error
+			)
+
+			recipes, err = s.Repository.SearchRecipes(q, opts, userID)
 			if err != nil {
 				w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error searching recipes.", "").Render())
 				w.WriteHeader(http.StatusInternalServerError)

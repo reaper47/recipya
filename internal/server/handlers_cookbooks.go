@@ -118,7 +118,7 @@ func (s *Server) cookbooksHandler() http.HandlerFunc {
 
 func (s *Server) cookbooksPostHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		title := []cases.Caser{cases.Title(language.Und, cases.NoLower)}[0].String(r.Header.Get("HX-Prompt"))
+		title := []cases.Caser{cases.Title(language.AmericanEnglish, cases.NoLower)}[0].String(r.Header.Get("HX-Prompt"))
 		if title == "" {
 			w.Header().Set("HX-Trigger", models.NewErrorReqToast("Title must not be empty.").Render())
 			w.WriteHeader(http.StatusBadRequest)
@@ -333,14 +333,7 @@ func (s *Server) cookbooksGetCookbookHandler() http.HandlerFunc {
 
 		page, err := strconv.ParseUint(query.Get("page"), 10, 64)
 		if err != nil {
-			if !isHxRequest {
-				http.Redirect(w, r, "/cookbooks", http.StatusSeeOther)
-				return
-			}
-
-			w.Header().Set("HX-Trigger", models.NewErrorReqToast("Missing page query parameter.").Render())
-			w.WriteHeader(http.StatusBadRequest)
-			return
+			page = 1
 		}
 
 		cookbook, err := s.Repository.Cookbook(id, getUserID(r))
@@ -483,7 +476,9 @@ func (s *Server) cookbooksRecipesSearchPostHandler() http.HandlerFunc {
 			return
 		}
 
-		recipes, err := s.Repository.SearchRecipes(q, models.SearchOptionsRecipes{ByName: true}, userID)
+		opts := models.NewSearchOptionsRecipe(r.FormValue("search-method"))
+
+		recipes, err := s.Repository.SearchRecipes(q, opts, userID)
 		if err != nil {
 			w.Header().Set("HX-Trigger", models.NewErrorDBToast("Error searching recipes.").Render())
 			w.WriteHeader(http.StatusInternalServerError)

@@ -25,7 +25,7 @@ func TestHandlers_Reports(t *testing.T) {
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertStringsInHTML(t, getBodyHTML(rr), []string{
 			`<title hx-swap-oob="true">Reports | Recipya</title>`,
-			`<button class="active" hx-get="/reports?tab=imports" hx-target="#tab-content">Imports</button>`,
+			`<button class="active" hx-get="/reports?tab=imports" hx-target="#tab-content" hx-push-url="true">Imports</button>`,
 			`<ul class="col-span-1 border-r overflow-auto max-h-44 border-b md:border-b-0 sm:max-h-full dark:border-r-gray-800"></ul>`,
 			`<p class="p-4 sm:p-0">No report selected. Please select a report to view its content.</p>`,
 		})
@@ -71,7 +71,7 @@ func TestHandlers_Reports(t *testing.T) {
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertStringsInHTML(t, getBodyHTML(rr), []string{
 			`<title hx-swap-oob="true">Reports | Recipya</title>`,
-			`<button class="active" hx-get="/reports?tab=imports" hx-target="#tab-content">Imports</button>`,
+			`<button class="active" hx-get="/reports?tab=imports" hx-target="#tab-content" hx-push-url="true">Imports</button>`,
 			`<ul class="col-span-1 border-r overflow-auto max-h-44 border-b md:border-b-0 sm:max-h-full dark:border-r-gray-800"><li class="item p-2 hover:bg-slate-200 cursor-default dark:hover:bg-slate-700 bg-slate-200 dark:bg-slate-700" hx-get="/reports/1" hx-target="#report-view-pane" hx-swap="outerHTML" hx-push-url="true" _="on click remove .bg-slate-200 .dark:bg-slate-700 from .item then add .bg-slate-200 .dark:bg-slate-700"><span><b>14 Mar 20 01:06 UTC</b><br><span class="text-sm">Execution time: 3s</span></span><span class="badge badge-primary float-right select-none">2</span></li><li class="item p-2 hover:bg-slate-200 cursor-default dark:hover:bg-slate-700" hx-get="/reports/2" hx-target="#report-view-pane" hx-swap="outerHTML" hx-push-url="true" _="on click remove .bg-slate-200 .dark:bg-slate-700 from .item then add .bg-slate-200 .dark:bg-slate-700"><span><b>15 Mar 20 04:09 UTC</b><br><span class="text-sm">Execution time: 9s</span></span><span class="badge badge-primary float-right select-none">1</span></li></ul>`,
 			`<div id="report-view-pane" class="col-span-3"><div class="overflow-auto h-[89vh]"><table class="table table-xs sm:table-md"><thead><tr><th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=id-reverse" hx-target="#report-view-pane">ID <span>▾</span></th><th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=title" hx-target="#report-view-pane">Title</th><th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=success" hx-target="#report-view-pane">Success</th><th class="cursor-default hover:bg-blue-50 dark:hover:bg-blue-700" hx-get="?sort=error" hx-target="#report-view-pane">Error</th></tr></thead><tbody><tr class="bg-red-200 dark:bg-red-700"><th>1</th><td></td><td>X</td><td>-</td></tr><tr class="bg-red-200 dark:bg-red-700"><th>2</th><td></td><td>X</td><td>-</td></tr></tbody></table></div></div>`,
 		})
@@ -103,7 +103,7 @@ func TestHandlers_Reports(t *testing.T) {
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertStringsInHTML(t, getBodyHTML(rr), []string{
 			`<title hx-swap-oob="true">Reports | Recipya</title>`,
-			`<button class="active" hx-get="/reports?tab=imports" hx-target="#tab-content">Imports</button>`,
+			`<button class="active" hx-get="/reports?tab=imports" hx-target="#tab-content" hx-push-url="true">Imports</button>`,
 			`<ul class="col-span-1 border-r overflow-auto max-h-44 border-b md:border-b-0 sm:max-h-full dark:border-r-gray-800"><li class="item p-2 hover:bg-slate-200 cursor-default dark:hover:bg-slate-700" hx-get="/reports/1" hx-target="#report-view-pane" hx-swap="outerHTML" hx-push-url="true" _="on click remove .bg-slate-200 .dark:bg-slate-700 from .item then add .bg-slate-200 .dark:bg-slate-700"><span><b>14 Mar 20 01:06 UTC</b><br><span class="text-sm">Execution time: 3s</span></span><span class="badge badge-primary float-right select-none">2</span></li><li class="item p-2 hover:bg-slate-200 cursor-default dark:hover:bg-slate-700" hx-get="/reports/2" hx-target="#report-view-pane" hx-swap="outerHTML" hx-push-url="true" _="on click remove .bg-slate-200 .dark:bg-slate-700 from .item then add .bg-slate-200 .dark:bg-slate-700"><span><b>15 Mar 20 04:09 UTC</b><br><span class="text-sm">Execution time: 9s</span></span><span class="badge badge-primary float-right select-none">1</span></li></ul>`,
 			`<div id="report-view-pane" class="grid col-span-3 place-content-center"><p class="p-4 sm:p-0">No report selected. Please select a report to view its content.</p></div>`,
 		})

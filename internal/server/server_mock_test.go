@@ -497,7 +497,7 @@ func (m *mockRepository) RestoreUserBackup(backup *models.UserBackup) error {
 	return nil
 }
 
-func (m *mockRepository) SearchRecipes(query string, _ models.SearchOptionsRecipes, userID int64) (models.Recipes, error) {
+func (m *mockRepository) SearchRecipes(query string, opts models.SearchOptionsRecipes, userID int64) (models.Recipes, error) {
 	recipes, ok := m.RecipesRegistered[userID]
 	if !ok {
 		return nil, errors.New("user not found")
@@ -505,7 +505,8 @@ func (m *mockRepository) SearchRecipes(query string, _ models.SearchOptionsRecip
 
 	var results models.Recipes
 	for _, r := range recipes {
-		if strings.Contains(strings.ToLower(r.Name), query) {
+		if (opts.ByName && strings.Contains(strings.ToLower(r.Name), query)) ||
+			(opts.FullSearch && (strings.Contains(strings.ToLower(r.Name), query) || strings.Contains(strings.ToLower(r.Category), query) || strings.Contains(strings.ToLower(r.Description), query))) {
 			results = append(results, r)
 		}
 	}

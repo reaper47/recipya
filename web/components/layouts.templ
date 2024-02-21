@@ -28,7 +28,7 @@ templ layoutMain(title string, data templates.Data) {
                     remove .hidden from mobile_nav then
                     remove .active from first <a/> in recipes_sidebar_cookbooks then
                     add .active to first <a/> in recipes_sidebar_recipes
-                else if location.pathname is '/cookbooks' then
+                else if location.pathname.startsWith('/cookbooks') then
                     add .active to last <button/> in mobile_nav then
                     remove .active from first <button/> in mobile_nav then
                     remove .md:hidden from desktop_nav then
@@ -333,7 +333,8 @@ templ head(title string) {
                         add_cookbook.setAttribute("hx-target", ".cookbooks-display");
                         add_cookbook.setAttribute("hx-swap", "beforeend");
 
-                        if (pagination && !pagination.querySelector("button:nth-last-child(2)").classList.contains('btn-active')) {
+                        const p = document.querySelector("#pagination");
+                        if (p && !p.querySelector("button:nth-last-child(2)").classList.contains('btn-active')) {
                             add_cookbook.setAttribute("hx-swap", "none");
                         }
                     }

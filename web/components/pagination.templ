@@ -10,7 +10,7 @@ templ Pagination(p templates.Pagination) {
 		id="pagination"
 		class={ "footer footer-center bg-base-200 pb-12 p-2 md:pb-2 text-base-content gap-2", templ.KV("hidden", p.IsHidden) }
 		if p.IsSwap {
-		    hx-swap-oob="true"
+			hx-swap-oob="true"
 		}
 		onload={ updateAddCookbookURL(p.Selected) }
 	>
