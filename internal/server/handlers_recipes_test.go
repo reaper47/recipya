@@ -58,7 +58,7 @@ func TestHandlers_Recipes(t *testing.T) {
 		got := getBodyHTML(rr)
 		want := []string{
 			`<title hx-swap-oob="true">Recipes | Recipya</title>`,
-			`<form class="w-72 md:w-96" hx-post="/recipes/search" hx-vals="{"page": 1}" hx-target="#list-recipes" _="on submit if #search-recipes.value is not '' then add .hidden to #pagination else remove .hidden from #pagination end"><div class="flex"><div class="relative w-full"><label><input type="search" id="search-recipes" name="q" class="input input-bordered input-sm w-full z-20" placeholder="Search for recipes..." _="on keyup if event.target.value !== '' then remove .md:block from #search-shortcut else add .md:block to #search-shortcut end then if event.key === 'Backspace' and event.target.value === '' then send submit to closest <form/> end"></label><kbd id="search-shortcut" class="hidden absolute top-1 right-12 font-sans font-semibold select-none dark:text-slate-500 md:block"><abbr title="Control" class="no-underline text-slate-300 dark:text-slate-500">Ctrl </abbr> /</kbd><button type="submit" class="absolute top-0 right-0 px-2 text-sm font-medium h-full text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700"><svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"></path></svg><span class="sr-only">Search</span></button></div></div></form>`,
+			`<form class="w-72 flex md:w-96" hx-post="/recipes/search" hx-vals="{"page": 1}" hx-target="#list-recipes" _="on submit if #search-recipes.value is not '' then add .hidden to #pagination else remove .hidden from #pagination end"><div class="relative w-full"><label><input type="search" id="search-recipes" name="q" class="input input-bordered input-sm w-full z-20" placeholder="Search for recipes..." _="on keyup if event.target.value !== '' then remove .md:block from #search-shortcut else add .md:block to #search-shortcut end then if event.key === 'Backspace' and event.target.value === '' then send submit to closest <form/> end"></label><kbd id="search-shortcut" class="hidden absolute top-1 right-12 font-sans font-semibold select-none dark:text-slate-500 md:block"><abbr title="Control" class="no-underline text-slate-300 dark:text-slate-500">Ctrl </abbr> /</kbd><button type="submit" class="absolute top-0 right-0 px-2 btn btn-sm btn-primary"><svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"></path></svg><span class="sr-only">Search</span></button></div><details class="dropdown dropdown-left"><summary class="btn btn-sm ml-1"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75a4.5 4.5 0 0 1-4.884 4.484c-1.076-.091-2.264.071-2.95.904l-7.152 8.684a2.548 2.548 0 1 1-3.586-3.586l8.684-7.152c.833-.686.995-1.874.904-2.95a4.5 4.5 0 0 1 6.336-4.486l-3.276 3.276a3.004 3.004 0 0 0 2.25 2.25l3.276-3.276c.256.565.398 1.192.398 1.852Z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M4.867 19.125h.008v.008h-.008v-.008Z"></path></svg></summary><div tabindex="0" class="dropdown-content z-10 menu menu-sm p-2 shadow bg-base-200 w-52 sm:menu-md prose"><h4>Search Method</h4><div class="form-control"><label class="label cursor-pointer"><span class="label-text">By name</span><input type="radio" name="search-method" class="radio radio-sm" checked value="name"></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Full search</span><input type="radio" name="search-method" class="radio radio-sm" value="full"></label></div></div></details></form>`,
 			`<img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Image for the One recipe">`,
 			`<div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg">`,
 			`<img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Image for the Two recipe">`,
@@ -124,7 +124,7 @@ func TestHandlers_Recipes_AddImport(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-warning\",\"message\":\"Connection lost. Please reload page.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-warning\",\"message\":\"Connection lost. Please reload page.\",\"title\":\"Websocket\"}"}`)
 	})
 
 	t.Run("payload too big", func(t *testing.T) {
@@ -132,7 +132,7 @@ func TestHandlers_Recipes_AddImport(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formData, strings.NewReader(b.String()))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not parse the uploaded files.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not parse the uploaded files.\",\"title\":\"Form Error\"}"}`)
 		want := `<div id="ws-notification-container" class="z-20 fixed bottom-0 right-0 p-6 cursor-default hidden"> <div class="bg-blue-500 text-white px-4 py-2 rounded shadow-md"> <p class="font-medium text-center pb-1"></p> <div id="export-progress"><progress max="100" value="100.000000"></progress></div> </div> </div>`
 		assertWebsocket(t, c, 2, want)
 	})
@@ -142,7 +142,7 @@ func TestHandlers_Recipes_AddImport(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not retrieve the files or the directory from the form.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not retrieve the files or the directory from the form.\",\"title\":\"Form Error\"}"}`)
 		want := `<div id="ws-notification-container" class="z-20 fixed bottom-0 right-0 p-6 cursor-default hidden"> <div class="bg-blue-500 text-white px-4 py-2 rounded shadow-md"> <p class="font-medium text-center pb-1"></p> <div id="export-progress"><progress max="100" value="100.000000"></progress></div> </div> </div>`
 		assertWebsocket(t, c, 2, want)
 	})
@@ -482,7 +482,7 @@ func TestHandlers_Recipes_AddOCR(t *testing.T) {
 		rr := sendReq("")
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not retrieve the image from the form.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not retrieve the image from the form.\",\"title\":\"Form Error\"}"}`)
 	})
 
 	t.Run("processing OCR failed", func(t *testing.T) {
@@ -498,7 +498,7 @@ func TestHandlers_Recipes_AddOCR(t *testing.T) {
 		rr := sendReq("hello.jpg")
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not process OCR.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not process OCR.\",\"title\":\"Integrations Error\"}"}`)
 	})
 
 	t.Run("valid request", func(t *testing.T) {
@@ -514,7 +514,7 @@ func TestHandlers_Recipes_AddOCR(t *testing.T) {
 		rr := sendReq("hello.jpg")
 
 		assertStatus(t, rr.Code, http.StatusCreated)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-info\",\"message\":\"Recipe scanned and uploaded.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-info\",\"message\":\"\",\"title\":\"Recipe scanned and uploaded.\"}"}`)
 		if len(repo.RecipesRegistered[1]) != 1 && repo.RecipesRegistered[1][0].ID != 1 {
 			t.Fatal("expected the recipe to be added")
 		}
@@ -575,7 +575,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-warning\",\"message\":\"Connection lost. Please reload page.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-warning\",\"message\":\"Connection lost. Please reload page.\",\"title\":\"Websocket\"}"}`)
 	})
 
 	t.Run("no input", func(t *testing.T) {
@@ -588,7 +588,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("urls=I am a pig\noink oink"))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"No valid URLs found.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"No valid URLs found.\",\"title\":\"Request Error\"}"}`)
 	})
 
 	t.Run("add one valid URL from unsupported websites", func(t *testing.T) {
@@ -686,10 +686,17 @@ func TestHandlers_Recipes_Delete(t *testing.T) {
 	})
 
 	t.Run("cannot delete recipe that does not exist", func(t *testing.T) {
+		numRecipesBefore := len(repo.RecipesRegistered)
+		defer func() {
+			srv.Repository = repo
+		}()
+
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri+"/5", noHeader, nil)
 
-		assertStatus(t, rr.Code, http.StatusNotFound)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Recipe not found.\",\"title\":\"\"}"}`)
+		assertStatus(t, rr.Code, http.StatusNoContent)
+		if numRecipesBefore != len(repo.RecipesRegistered) {
+			t.Fail()
+		}
 	})
 
 	t.Run("can delete user's recipe", func(t *testing.T) {
@@ -764,7 +771,7 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, fmt.Sprintf(uri, 1), noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to retrieve recipe.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to retrieve recipe.\",\"title\":\"Database Error\"}"}`)
 	})
 
 	t.Run("successful request", func(t *testing.T) {

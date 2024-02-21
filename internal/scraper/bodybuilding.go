@@ -36,7 +36,7 @@ func scrapeBodybuilding(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes = root.Find(".bb-recipe__ingredient-list-item")
 	ingredients := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.ReplaceAll(sel.Text(), "\n", "")
 		s = strings.Join(strings.Fields(s), " ")
 		ingredients = append(ingredients, s)
@@ -44,7 +44,7 @@ func scrapeBodybuilding(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes = root.Find(".bb-recipe__directions-list-item")
 	instructions := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.ReplaceAll(sel.Text(), "\n", "")
 		instructions = append(instructions, strings.TrimSpace(s))
 	})
@@ -57,7 +57,7 @@ func scrapeBodybuilding(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes = root.Find(".bb-recipe__topic")
 	xk := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		xk = append(xk, sel.Text())
 	})
 	keywords := strings.Join(extensions.Unique(xk), ",")

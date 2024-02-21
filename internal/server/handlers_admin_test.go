@@ -70,7 +70,7 @@ func TestHandlers_Admin_AddUser(t *testing.T) {
 			rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader(tc.input))
 
 			assertStatus(t, rr.Code, http.StatusBadRequest)
-			assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Email and/or password is invalid.\",\"title\":\"\"}"}`)
+			assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Email and/or password is invalid.\",\"title\":\"Form Error\"}"}`)
 		})
 	}
 
@@ -89,7 +89,7 @@ func TestHandlers_Admin_AddUser(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("email=chiccken@power.com&password=123"))
 
 		assertStatus(t, rr.Code, http.StatusTeapot)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"OK\",\"background\":\"alert-error\",\"message\":\"Every day is Christmas.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"OK\",\"background\":\"alert-error\",\"message\":\"\",\"title\":\"Every day is Christmas.\"}"}`)
 		if len(srv.Repository.Users()) != 1 {
 			t.Fail()
 		}
@@ -169,7 +169,7 @@ func TestHandlers_Admin_DeleteUser(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, fmt.Sprintf(uri, "chicken@power.com"), noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusTeapot)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Who do you think you are, eh?\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Who do you think you are, eh?\",\"title\":\"General Error\"}"}`)
 		if len(srv.Repository.Users()) != 2 {
 			t.Fail()
 		}
@@ -194,7 +194,7 @@ func TestHandlers_Admin_DeleteUser(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, fmt.Sprintf(uri, "admin@admin.com"), noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Cannot delete admin.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Cannot delete admin.\",\"title\":\"General Error\"}"}`)
 		if len(srv.Repository.Users()) != 1 {
 			t.Fail()
 		}

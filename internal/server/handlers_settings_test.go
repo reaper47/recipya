@@ -115,7 +115,7 @@ func TestHandlers_Settings_BackupsRestore(t *testing.T) {
 
 			assertStatus(t, rr.Code, http.StatusBadRequest)
 			_, after, _ := strings.Cut(tc.in, "=")
-			message := fmt.Sprintf(`{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"%s is an invalid backup.\",\"title\":\"\"}"}`, after)
+			message := fmt.Sprintf(`{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"%s is an invalid backup.\",\"title\":\"Form Error\"}"}`, after)
 			assertHeader(t, rr, "HX-Trigger", message)
 		})
 	}
@@ -133,7 +133,7 @@ func TestHandlers_Settings_BackupsRestore(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("date=2006-01-02"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to backup current data.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to backup current data.\",\"title\":\"Files Error\"}"}`)
 	})
 
 	t.Run("extract user backup failed", func(t *testing.T) {
@@ -149,7 +149,7 @@ func TestHandlers_Settings_BackupsRestore(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("date=2006-01-02"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to extract backup.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to extract backup.\",\"title\":\"Files Error\"}"}`)
 	})
 
 	t.Run("restore backup failed", func(t *testing.T) {
@@ -165,14 +165,14 @@ func TestHandlers_Settings_BackupsRestore(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("date=2006-01-02"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to restore backup.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to restore backup.\",\"title\":\"Database Error\"}"}`)
 	})
 
 	t.Run("valid request", func(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("date=2006-01-02"))
 
 		assertStatus(t, rr.Code, http.StatusOK)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-info\",\"message\":\"Backup restored successfully.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-info\",\"message\":\"\",\"title\":\"Backup restored successfully.\"}"}`)
 	})
 }
 
@@ -193,7 +193,7 @@ func TestHandlers_Settings_CalculateNutrition(t *testing.T) {
 		rr := sendHxRequestAsLoggedInOther(srv, http.MethodPost, uri, formHeader, strings.NewReader("calculate-nutrition=off"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to set setting.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to set setting.\",\"title\":\"Database Error\"}"}`)
 	})
 
 	t.Run("unchecked does not convert new recipes", func(t *testing.T) {
@@ -230,7 +230,7 @@ func TestHandlers_Settings_ConvertAutomatically(t *testing.T) {
 		rr := sendHxRequestAsLoggedInOther(srv, http.MethodPost, uri, formHeader, strings.NewReader("convert=off"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to set setting.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to set setting.\",\"title\":\"Database Error\"}"}`)
 	})
 
 	t.Run("unchecked does not convert new recipes", func(t *testing.T) {
@@ -271,14 +271,14 @@ func TestHandlers_Settings_MeasurementSystems(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("system=imperial"))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-warning\",\"message\":\"System already set to imperial.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-warning\",\"message\":\"\",\"title\":\"System already set to imperial.\"}"}`)
 	})
 
 	t.Run("system does not exist", func(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("system=peanuts"))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Measurement system does not exist.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Measurement system does not exist.\",\"title\":\"Form Error\"}"}`)
 	})
 
 	t.Run("failed to switch system", func(t *testing.T) {
@@ -294,7 +294,7 @@ func TestHandlers_Settings_MeasurementSystems(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("system=imperial"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Error switching units system.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Error switching units system.\",\"title\":\"Database Error\"}"}`)
 	})
 
 	testcases := []struct {
@@ -476,7 +476,7 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 		rr := sendRequestAsLoggedIn(srv, http.MethodGet, "/settings/export/recipes", noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-warning\",\"message\":\"Connection lost. Please reload page.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-warning\",\"message\":\"Connection lost. Please reload page.\",\"title\":\"Websocket\"}"}`)
 	})
 
 	t.Run("invalid file type", func(t *testing.T) {
@@ -485,7 +485,7 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Invalid export file format.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Invalid export file format.\",\"title\":\"Files Error\"}"}`)
 	})
 
 	t.Run("no export if no recipes", func(t *testing.T) {
@@ -497,7 +497,7 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 				rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?type="+q, noHeader, nil)
 
 				assertStatus(t, rr.Code, http.StatusAccepted)
-				want := `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-warning","message":"No recipes in database.","title":""}}`
+				want := `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-warning","message":"","title":"No recipes in database."}}`
 				assertWebsocket(t, c, 3, want)
 				if originalHitCount != f.exportHitCount {
 					t.Fatalf("expected the export function not to be called")
@@ -600,7 +600,7 @@ func TestHandlers_Settings_TabsRecipes(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Error fetching units systems.\",\"title\":\"\"}"}`)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Error fetching units systems.\",\"title\":\"Database Error\"}"}`)
 	})
 
 	t.Run("successful request", func(t *testing.T) {

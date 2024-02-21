@@ -9,7 +9,9 @@ templ Pagination(p templates.Pagination) {
 	<footer
 		id="pagination"
 		class={ "footer footer-center bg-base-200 pb-12 p-2 md:pb-2 text-base-content gap-2", templ.KV("hidden", p.IsHidden) }
-		hx-swap-oob?={ p.IsSwap }
+		if p.IsSwap {
+			hx-swap-oob="true"
+		}
 		onload={ updateAddCookbookURL(p.Selected) }
 	>
 		<div class="join gap-0">

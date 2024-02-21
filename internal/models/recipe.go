@@ -506,6 +506,20 @@ type SearchOptionsRecipes struct {
 	FullSearch bool
 }
 
+// NewSearchOptionsRecipe creates a SearchOptionsRecipe struct configured for the search method.
+func NewSearchOptionsRecipe(method string) SearchOptionsRecipes {
+	var opts SearchOptionsRecipes
+	switch method {
+	case "name":
+		opts.ByName = true
+	case "full":
+		opts.FullSearch = true
+	default:
+		opts.ByName = true
+	}
+	return opts
+}
+
 // NewRecipeFromTextFile extracts the recipe from a text file.
 func NewRecipeFromTextFile(r io.Reader) (Recipe, error) {
 	recipe := NewBaseRecipe()

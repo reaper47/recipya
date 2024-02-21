@@ -254,6 +254,35 @@ func TestRecipe_ConvertMeasurementSystem(t *testing.T) {
 	}
 }
 
+func TestNewSearchOptionsRecipe(t *testing.T) {
+	testcases := []struct {
+		name   string
+		method string
+		want   models.SearchOptionsRecipes
+	}{
+		{
+			name:   "empty defaults to name",
+			method: "",
+			want:   models.SearchOptionsRecipes{ByName: true},
+		},
+		{
+			name:   "name",
+			method: "name",
+			want:   models.SearchOptionsRecipes{ByName: true},
+		},
+		{
+			name:   "empty defaults to name",
+			method: "full",
+			want:   models.SearchOptionsRecipes{FullSearch: true},
+		},
+	}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			compare(t, models.NewSearchOptionsRecipe(tc.method), tc.want)
+		})
+	}
+}
+
 func TestRecipe_IsEmpty(t *testing.T) {
 	t.Run("is empty", func(t *testing.T) {
 		var r models.Recipe

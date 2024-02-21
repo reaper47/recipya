@@ -104,7 +104,7 @@ func TestHandlers_General_Index(t *testing.T) {
 			`<a class="tooltip tooltip-right active" data-tip="Recipes">`,
 			`<a class="tooltip tooltip-right" data-tip="Cookbooks"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">`,
 			`<button id="add_recipe" class="btn btn-primary btn-sm hover:btn-accent" hx-get="/recipes/add" hx-target="#content" hx-push-url="true">Add recipe</button>`,
-			`<button id="add_cookbook" class="btn btn-primary btn-sm hover:btn-accent" hx-post="/cookbooks" hx-prompt="Enter the name of your cookbook" hx-target=".cookbooks-display" hx-swap="beforeend">Add cookbook</button>`,
+			`<button id="add_cookbook" class="btn btn-primary btn-sm hover:btn-accent" hx-post="/cookbooks" hx-prompt="Enter the name of your cookbook" hx-target="#cookbooks-display" hx-swap="beforeend">Add cookbook</button>`,
 		}
 		assertStringsInHTML(t, got, want)
 		notWant := []string{`A powerful recipe manager that will blow your kitchen away`, `href="/auth/login"`}

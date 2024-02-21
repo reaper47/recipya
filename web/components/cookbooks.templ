@@ -53,11 +53,9 @@ templ cookbookIndex(data templates.Data) {
 	if len(data.CookbookFeature.Cookbook.Recipes) > 0 {
 		<section class="grid gap-4 text-sm justify-center md:p-4 md:text-base">
 			<div class="flex flex-col h-full">
-				<section class="grid justify-center md:p-4">
+				<section class="grid justify-center p-2 sm:p-4 sm:pb-0">
 					if data.CookbookFeature.ShareData.IsFromHost {
-						<div class="relative">
-							@cookbookRecipesSearchForm(data.CookbookFeature.Cookbook.PageItemID, data.CookbookFeature.Cookbook.PageNumber)
-						</div>
+						@cookbookRecipesSearchForm(data.CookbookFeature.Cookbook.PageItemID, data.CookbookFeature.Cookbook.PageNumber)
 					}
 					<p class={ "grid justify-center font-semibold underline mt-4 md:mt-0 md:text-xl", templ.KV("md:hidden", data.CookbookFeature.ShareData.IsFromHost) }>
 						{ data.CookbookFeature.Cookbook.Title }
@@ -73,11 +71,9 @@ templ cookbookIndex(data templates.Data) {
 		</section>
 	} else {
 		<div class="flex flex-col h-full">
-			<section class="grid justify-center md:p-4">
+			<section class="grid justify-center p-2 sm:p-4">
 				if data.CookbookFeature.ShareData.IsFromHost {
-					<div class="relative">
-						@cookbookRecipesSearchForm(data.CookbookFeature.Cookbook.PageItemID, data.CookbookFeature.Cookbook.PageNumber)
-					</div>
+					@cookbookRecipesSearchForm(data.CookbookFeature.Cookbook.PageItemID, data.CookbookFeature.Cookbook.PageNumber)
 				}
 				<p class="grid justify-center font-semibold underline mt-4 md:hidden">
 					{ data.CookbookFeature.Cookbook.Title }
@@ -218,12 +214,16 @@ templ cookbooksIndex(data templates.Data) {
 		<div class="min-h-[79vh]">
 			<div
 				id="cookbooks-container"
-				class={ "cookbooks-display grid justify-center", templ.KV("grid gap-4 p-4 text-sm place-items-center md:m-auto md:max-w-7xl sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5", data.CookbookFeature.ViewMode == 0) }
+				class={ "cookbooks-display grid justify-center pb-4", templ.KV("grid gap-4 p-4 text-sm place-items-center md:m-auto md:max-w-7xl sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5", data.CookbookFeature.ViewMode == 0), templ.KV("grid gap-8 p-2 text-sm md:text-base place-items-center", data.CookbookFeature.ViewMode == 1) }
 			>
 				if data.CookbookFeature.ViewMode == 0 {
-					@cookbooksGrid(data)
+					for i, c := range data.CookbookFeature.Cookbooks {
+						@cookbookGrid(data.CookbookFeature.MakeCookbook(int64(i), c, data.Pagination.Selected))
+					}
 				} else {
-					@cookbooksList(data)
+					for i, c := range data.CookbookFeature.Cookbooks {
+						@cookbookList(data.CookbookFeature.MakeCookbook(int64(i), c, data.Pagination.Selected))
+					}
 				}
 			</div>
 		</div>
@@ -237,7 +237,8 @@ templ cookbooksIndex(data templates.Data) {
 						class="underline font-semibold cursor-pointer"
 						hx-post="/cookbooks"
 						hx-prompt="Enter the name of your cookbook"
-						hx-target="#content"
+						hx-target=".cookbooks-display"
+						hx-swap="beforeend"
 					>Add cookbook</a>
 					button at the top?
 				</p>
@@ -314,12 +315,6 @@ templ cookbooksIndex(data templates.Data) {
     </script>
 }
 
-templ cookbooksGrid(data templates.Data) {
-	for i, c := range data.CookbookFeature.Cookbooks {
-		@cookbookGrid(data.CookbookFeature.MakeCookbook(int64(i), c, data.Pagination.Selected))
-	}
-}
-
 templ cookbookGrid(cookbook templates.CookbookView) {
 	<section id={ fmt.Sprintf("cookbook-%d", cookbook.ID) } class="cookbook card card-compact bg-base-100 shadow-lg indicator">
 		<span class="indicator-item badge badge-primary">{ fmt.Sprint(cookbook.NumRecipes) }</span>
@@ -358,14 +353,6 @@ templ cookbookGrid(cookbook templates.CookbookView) {
 			</div>
 		</div>
 	</section>
-}
-
-templ cookbooksList(data templates.Data) {
-	<div class="cookbooks-display grid gap-8 p-2 text-sm md:text-base place-items-center">
-		for i, c := range data.CookbookFeature.Cookbooks {
-			@cookbookList(data.CookbookFeature.MakeCookbook(int64(i), c, data.Pagination.Selected))
-		}
-	</div>
 }
 
 templ cookbookList(cookbook templates.CookbookView) {
@@ -442,46 +429,12 @@ templ cookbookImageForm(id int64) {
 templ cookbookRecipesSearchForm(pageItemID int64, pageNumber uint64) {
 	<search>
 		<form
-			class="w-72 md:w-96"
+			class="w-72 flex md:w-96"
 			hx-post="/cookbooks/recipes/search"
 			hx-target="#search-results"
 			hx-vals={ fmt.Sprintf(`{"id": %d, "page": %d}`, pageItemID, pageNumber) }
 		>
-			<div class="flex">
-				<div class="relative w-full">
-					<label>
-						<input
-							type="search"
-							id="search-recipes"
-							name="q"
-							class="input input-bordered input-sm w-full z-20"
-							placeholder="Search for recipes..."
-							_="on keyup
-                               if event.target.value !== '' then
-                                   remove .md:block from #search-shortcut
-                               else
-                                   add .md:block to #search-shortcut
-                               end then
-                               if event.key === 'Backspace' and event.target.value === '' then
-                                   send submit to closest <form/>
-                               end"
-						/>
-					</label>
-					<kbd
-						id="search-shortcut"
-						class="hidden absolute top-1 right-12 font-sans font-semibold select-none dark:text-slate-500 md:block"
-					>
-						<abbr title="Control" class="no-underline text-slate-300 dark:text-slate-500">Ctrl </abbr> /
-					</kbd>
-					<button
-						type="submit"
-						class="absolute top-0 right-0 px-2 text-sm font-medium h-full text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700"
-					>
-						@iconMagnifyingGlass()
-						<span class="sr-only">Search</span>
-					</button>
-				</div>
-			</div>
+			@searchbar()
 		</form>
 	</search>
 }

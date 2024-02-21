@@ -11,10 +11,6 @@ func isAuthenticated(r *http.Request, getAuthToken func(selector string, validat
 	return getUserIDFromSessionCookie(r) != -1 || getUserIDFromRememberMeCookie(r, getAuthToken) != -1
 }
 
-func getUserID(r *http.Request) int64 {
-	return r.Context().Value(UserIDKey).(int64)
-}
-
 func (s *Server) findUserID(r *http.Request) (int64, bool) {
 	isLoggedIn := true
 	userID := getUserIDFromSessionCookie(r)
@@ -25,6 +21,10 @@ func (s *Server) findUserID(r *http.Request) (int64, bool) {
 		}
 	}
 	return userID, isLoggedIn
+}
+
+func getUserID(r *http.Request) int64 {
+	return r.Context().Value(UserIDKey).(int64)
 }
 
 func parsePathPositiveID(value string) (int64, error) {

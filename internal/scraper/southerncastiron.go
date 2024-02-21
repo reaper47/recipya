@@ -33,7 +33,7 @@ func scrapeSoutherncastiron(root *goquery.Document) (models.RecipeSchema, error)
 
 	nodes := root.Find("li[itemprop='ingredients']")
 	ingredients := make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, sel *goquery.Selection) {
+	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.Join(strings.Fields(sel.Text()), " ")
 		ingredients = append(ingredients, s)
 	})

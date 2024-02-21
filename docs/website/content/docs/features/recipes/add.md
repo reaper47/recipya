@@ -6,7 +6,7 @@ prev: /docs/features/recipes
 
 You can add a recipe by clicking the blue **Add Recipe** in the middle of the application bar.
 
-![](images/add-recipe.webp)
+![](images/.webp)
 
 ## Adding Recipes
 
