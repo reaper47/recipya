@@ -6,7 +6,7 @@ prev: /docs/features/recipes
 
 You can add a recipe by clicking the blue **Add Recipe** in the middle of the application bar.
 
-![](images/.webp)
+![](images/add-recipe.webp)
 
 ## Adding Recipes
 
@@ -77,3 +77,24 @@ You can upload either a single file or a zip archive containing multiple recipes
 The recipes in a zip file may be organized by folder. Each folder may contain the `.json` recipe file and an image 
 file. All other files in a folder will be ignored during processing. Here is an 
 [example](https://sea.musicavis.ca/f/683b9b9a7cc84e1bac0c/?dl=1) of how such zip may look like.
+
+#### Recipya Bookmarklet
+
+The Recipya bookmarklet allows a user to run a JavaScript snippet from their browser that extracts a recipe from a webpage.
+
+It's for websites that both:
+- can't be scraped via a server request, i.e. have something like captcha or bot detection
+- that have json+ld recipe script snippets on their page
+
+To get the bookmarklet:
+1. Access `/recipes/add`
+2. Bookmark the `Recipya Bookmarklet` link in the `Import` card.
+
+To use it:
+1. Open a recipe webpage, e.g. [double banana nut bread](https://www.allrecipes.com/recipe/231961/double-banana-nut-bread/)
+2. Click the bookmarklet
+3. A JSON file is downloaded when it succeeds.
+
+You can then import the extracted recipe from `Add recipe -> Import`.
+
+![](images/recipya-bookmarklet.gif)
