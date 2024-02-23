@@ -326,7 +326,7 @@ templ cookbookGrid(cookbook templates.CookbookView) {
 				} else {
 					src="/static/img/cookbooks-new/placeholder.webp"
 				}
-				onClick={ cookbookImageClick(cookbook.ID) }
+				onClick={ cookbookImageClick(fmt.Sprintf("#cookbook-image-%d", cookbook.ID)) }
 				alt="Cookbook image"
 			/>
 			@cookbookImageForm(cookbook.ID)
@@ -367,11 +367,11 @@ templ cookbookList(cookbook templates.CookbookView) {
 		>
 			@iconDotsVertical()
 		</span>
-		<figure class="relative hover:opacity-70" onClick={ cookbookImageClick(cookbook.ID) }>
+		<figure class="relative hover:opacity-70" onClick={ cookbookImageClick(fmt.Sprintf("#cookbook-image-%d", cookbook.ID)) }>
 			<img
 				class="w-28 h-full object-cover"
 				if cookbook.IsUUIDValid {
-					src={ fmt.Sprintf("/data/images/%d.jpg", cookbook.Image) }
+					src={ fmt.Sprintf("/data/images/%s.jpg", cookbook.Image) }
 				} else {
 					src="/static/img/cookbooks-new/placeholder.webp"
 				}
@@ -398,8 +398,8 @@ templ cookbookList(cookbook templates.CookbookView) {
 	</div>
 }
 
-script cookbookImageClick(id int64) {
-    document.querySelector(fmt.Sprintf("#cookbook-image-%d", id)).click()
+script cookbookImageClick(selector string) {
+    document.querySelector(selector).click()
 }
 
 templ cookbookImageForm(id int64) {
