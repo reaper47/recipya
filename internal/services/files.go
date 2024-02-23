@@ -833,7 +833,7 @@ func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recip
 				mu.Unlock()
 			} else if strings.Contains(content, "json") {
 				mu.Lock()
-				recipes = append(recipes, *processJSON(fh))
+				recipes = append(recipes, *f.processJSON(fh))
 				mu.Unlock()
 			} else if content == "application/octet-stream" {
 				switch strings.ToLower(filepath.Ext(fh.Filename)) {
@@ -917,7 +917,7 @@ func (f *Files) processRecipeFiles(files []*zip.File) models.Recipes {
 
 		switch strings.ToLower(filepath.Ext(zf.Name)) {
 		case models.JSON.Ext():
-			r, err := extractRecipe(openedFile)
+			r, err := f.extractRecipe(openedFile)
 			if err != nil {
 				log.Printf("could not extract %s: %q", zf.Name, err.Error())
 				_ = openedFile.Close()
@@ -953,17 +953,17 @@ func (f *Files) processRecipeFiles(files []*zip.File) models.Recipes {
 	return recipes
 }
 
-func processJSON(file *multipart.FileHeader) *models.Recipe {
-	f, err := file.Open()
+func (f *Files) processJSON(file *multipart.FileHeader) *models.Recipe {
+	fi, err := file.Open()
 	if err != nil {
 		log.Printf("error opening file %s: %q", file.Filename, err.Error())
 		return nil
 	}
 	defer func() {
-		_ = f.Close()
+		_ = fi.Close()
 	}()
 
-	r, err := extractRecipe(f)
+	r, err := f.extractRecipe(fi)
 	if err != nil {
 		log.Printf("could not extract %s: %q", file.Filename, err.Error())
 		return nil
@@ -984,7 +984,7 @@ func processMasterCook(file *multipart.FileHeader) models.Recipes {
 	return models.NewRecipesFromMasterCook(f)
 }
 
-func extractRecipe(rd io.Reader) (*models.Recipe, error) {
+func (f *Files) extractRecipe(rd io.Reader) (*models.Recipe, error) {
 	buf, err := io.ReadAll(rd)
 	if err != nil {
 		log.Println(err)
@@ -1001,6 +1001,19 @@ func extractRecipe(rd io.Reader) (*models.Recipe, error) {
 	if err != nil {
 		return nil, fmt.Errorf("rs.Recipe() err: %w", err)
 	}
+
+	if rs.Image.Value != "" {
+		imageUUID, err := f.ScrapeAndStoreImage(rs.Image.Value)
+		if err != nil {
+			imageUUID = uuid.Nil.String()
+		}
+
+		r.Image, err = uuid.Parse(imageUUID)
+		if err != nil {
+			r.Image = uuid.Nil
+		}
+	}
+
 	return r, err
 }
 
