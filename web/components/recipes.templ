@@ -181,9 +181,12 @@ templ addRecipe() {
 						data-tip="Simply drag this link to your bookmarks bar, and click the bookmark while on a recipe website.  If a recipe schema downloads successfully, you can import it here."
 						href="javascript:(function(){
 							const recipeCount = 0;
-							jsonSchemaScripts = ([...document.querySelectorAll('script[type=%22application/ld+json%22]')]);
+							const jsonSchemaScripts = ([...document.querySelectorAll('script[type=%22application/ld+json%22]')]);
 							for (const jsonSchemaScript of jsonSchemaScripts) {
-								const data = JSON.parse(jsonSchemaScript.innerHTML);
+								let data = JSON.parse(jsonSchemaScript.innerHTML);
+								if (Array.isArray(data) &amp;&amp; data.length > 0) {
+									data = data[0];
+								}
 								if (data['@type'] != 'Recipe') {
 									continue;
 								}
