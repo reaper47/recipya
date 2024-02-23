@@ -19,6 +19,7 @@ import (
 	"io/fs"
 	"log"
 	"mime/multipart"
+	"net/http"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -1001,6 +1002,35 @@ func extractRecipe(rd io.Reader) (*models.Recipe, error) {
 		return nil, fmt.Errorf("rs.Recipe() err: %w", err)
 	}
 	return r, err
+}
+
+func (f *Files) ScrapeAndStoreImage(rawURL string) (string, error) {
+	if rawURL != "" {
+		resImage, err := http.Get(rawURL)
+		if err != nil {
+			return uuid.Nil.String(), err
+		}
+		defer func() {
+			_ = resImage.Body.Close()
+		}()
+
+		if resImage == nil {
+			return uuid.Nil.String(), errors.New("image response is nil")
+		}
+
+		if resImage.Body == nil {
+			return uuid.Nil.String(), errors.New("image response body is nil")
+		}
+
+		imageUUID, err := f.UploadImage(resImage.Body)
+		if err != nil {
+			return uuid.Nil.String(), nil
+		}
+
+		return imageUUID.String(), nil
+	}
+
+	return uuid.Nil.String(), nil
 }
 
 // ExportCookbook exports the cookbook in the desired file type.

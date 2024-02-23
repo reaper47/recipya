@@ -223,6 +223,8 @@ type FilesService interface {
 	// ExtractRecipes extracts the recipes from the HTTP files.
 	ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recipes
 
+	ScrapeAndStoreImage(rawURL string) (string, error)
+
 	// ExtractUserBackup extracts data from the user backup for restoration.
 	ExtractUserBackup(date string, userID int64) (*models.UserBackup, error)
 
