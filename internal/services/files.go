@@ -1003,12 +1003,7 @@ func (f *Files) extractRecipe(rd io.Reader) (*models.Recipe, error) {
 	}
 
 	if rs.Image.Value != "" {
-		imageUUID, err := f.ScrapeAndStoreImage(rs.Image.Value)
-		if err != nil {
-			imageUUID = uuid.Nil.String()
-		}
-
-		r.Image, err = uuid.Parse(imageUUID)
+		r.Image, err = f.ScrapeAndStoreImage(rs.Image.Value)
 		if err != nil {
 			r.Image = uuid.Nil
 		}
@@ -1017,33 +1012,34 @@ func (f *Files) extractRecipe(rd io.Reader) (*models.Recipe, error) {
 	return r, err
 }
 
-func (f *Files) ScrapeAndStoreImage(rawURL string) (string, error) {
+// ScrapeAndStoreImage takes a URL as input and will download and store the image, and return a UUID referencing the image's internal ID
+func (f *Files) ScrapeAndStoreImage(rawURL string) (uuid.UUID, error) {
 	if rawURL != "" {
 		resImage, err := http.Get(rawURL)
 		if err != nil {
-			return uuid.Nil.String(), err
+			return uuid.Nil, err
 		}
 		defer func() {
 			_ = resImage.Body.Close()
 		}()
 
 		if resImage == nil {
-			return uuid.Nil.String(), errors.New("image response is nil")
+			return uuid.Nil, errors.New("image response is nil")
 		}
 
 		if resImage.Body == nil {
-			return uuid.Nil.String(), errors.New("image response body is nil")
+			return uuid.Nil, errors.New("image response body is nil")
 		}
 
 		imageUUID, err := f.UploadImage(resImage.Body)
 		if err != nil {
-			return uuid.Nil.String(), nil
+			return uuid.Nil, nil
 		}
 
-		return imageUUID.String(), nil
+		return imageUUID, nil
 	}
 
-	return uuid.Nil.String(), nil
+	return uuid.Nil, nil
 }
 
 // ExportCookbook exports the cookbook in the desired file type.

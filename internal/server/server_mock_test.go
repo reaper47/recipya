@@ -863,8 +863,8 @@ func (m *mockFiles) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
 	return uuid.New(), nil
 }
 
-func (m *mockFiles) ScrapeAndStoreImage(rawURL string) (string, error) {
-	return uuid.New().String(), nil
+func (m *mockFiles) ScrapeAndStoreImage(rawURL string) (uuid.UUID, error) {
+	return uuid.New(), nil
 }
 
 type mockIntegrations struct {
