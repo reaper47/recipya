@@ -67,30 +67,12 @@ func (s *Scraper) Scrape(url string, files services.FilesService) (models.Recipe
 		rs.URL = url
 	}
 
-	if rs.Image.Value != "" {
-		resImage, err := http.Get(rs.Image.Value)
-		if err != nil {
-			return rs, err
-		}
-		defer func() {
-			_ = resImage.Body.Close()
-		}()
-
-		if resImage == nil {
-			return rs, errors.New("image response is nil")
-		}
-
-		body = resImage.Body
-		if body == nil {
-			return rs, errors.New("image response body is nil")
-		}
-
-		imageUUID, err := files.UploadImage(body)
-		if err != nil {
-			return rs, err
-		}
-		rs.Image.Value = imageUUID.String()
+	imageUUID, err := files.ScrapeAndStoreImage(rs.Image.Value)
+	if err != nil {
+		return rs, err
 	}
+
+	rs.Image.Value = imageUUID.String()
 	return rs, nil
 }
 

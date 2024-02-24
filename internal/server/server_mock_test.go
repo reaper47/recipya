@@ -863,6 +863,10 @@ func (m *mockFiles) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
 	return uuid.New(), nil
 }
 
+func (m *mockFiles) ScrapeAndStoreImage(rawURL string) (uuid.UUID, error) {
+	return uuid.New(), nil
+}
+
 type mockIntegrations struct {
 	NextcloudImportFunc func(baseURL, username, password string, files services.FilesService) (*models.Recipes, error)
 	ProcessImageOCRFunc func(file io.Reader) (models.Recipe, error)

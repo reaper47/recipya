@@ -549,6 +549,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 	originalBrokers := maps.Clone(srv.Brokers)
 	originalRepo := srv.Repository
 	originalScraper := srv.Scraper
+	originalFiles := srv.Files
 
 	uri := ts.URL + "/recipes/add/website"
 
@@ -593,6 +594,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 
 	t.Run("add one valid URL from unsupported websites", func(t *testing.T) {
 		repo := prepare()
+		srv.Files = &mockFiles{}
 		srv.Scraper = &mockScraper{
 			scraperFunc: func(_ string, _ services.FilesService) (models.RecipeSchema, error) {
 				return models.RecipeSchema{}, errors.New("unsupported website")
@@ -601,6 +603,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 		defer func() {
 			srv.Repository = originalRepo
 			srv.Scraper = originalScraper
+			srv.Files = originalFiles
 		}()
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("urls=https://www.example.com"))

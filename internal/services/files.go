@@ -19,6 +19,7 @@ import (
 	"io/fs"
 	"log"
 	"mime/multipart"
+	"net/http"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -832,7 +833,7 @@ func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recip
 				mu.Unlock()
 			} else if strings.Contains(content, "json") {
 				mu.Lock()
-				recipes = append(recipes, *processJSON(fh))
+				recipes = append(recipes, *f.processJSON(fh))
 				mu.Unlock()
 			} else if content == "application/octet-stream" {
 				switch strings.ToLower(filepath.Ext(fh.Filename)) {
@@ -916,7 +917,7 @@ func (f *Files) processRecipeFiles(files []*zip.File) models.Recipes {
 
 		switch strings.ToLower(filepath.Ext(zf.Name)) {
 		case models.JSON.Ext():
-			r, err := extractRecipe(openedFile)
+			r, err := f.extractRecipe(openedFile)
 			if err != nil {
 				log.Printf("could not extract %s: %q", zf.Name, err.Error())
 				_ = openedFile.Close()
@@ -952,17 +953,17 @@ func (f *Files) processRecipeFiles(files []*zip.File) models.Recipes {
 	return recipes
 }
 
-func processJSON(file *multipart.FileHeader) *models.Recipe {
-	f, err := file.Open()
+func (f *Files) processJSON(file *multipart.FileHeader) *models.Recipe {
+	fi, err := file.Open()
 	if err != nil {
 		log.Printf("error opening file %s: %q", file.Filename, err.Error())
 		return nil
 	}
 	defer func() {
-		_ = f.Close()
+		_ = fi.Close()
 	}()
 
-	r, err := extractRecipe(f)
+	r, err := f.extractRecipe(fi)
 	if err != nil {
 		log.Printf("could not extract %s: %q", file.Filename, err.Error())
 		return nil
@@ -983,7 +984,7 @@ func processMasterCook(file *multipart.FileHeader) models.Recipes {
 	return models.NewRecipesFromMasterCook(f)
 }
 
-func extractRecipe(rd io.Reader) (*models.Recipe, error) {
+func (f *Files) extractRecipe(rd io.Reader) (*models.Recipe, error) {
 	buf, err := io.ReadAll(rd)
 	if err != nil {
 		log.Println(err)
@@ -1000,7 +1001,45 @@ func extractRecipe(rd io.Reader) (*models.Recipe, error) {
 	if err != nil {
 		return nil, fmt.Errorf("rs.Recipe() err: %w", err)
 	}
+
+	if rs.Image.Value != "" {
+		r.Image, err = f.ScrapeAndStoreImage(rs.Image.Value)
+		if err != nil {
+			r.Image = uuid.Nil
+		}
+	}
+
 	return r, err
+}
+
+// ScrapeAndStoreImage takes a URL as input and will download and store the image, and return a UUID referencing the image's internal ID
+func (f *Files) ScrapeAndStoreImage(rawURL string) (uuid.UUID, error) {
+	if rawURL != "" {
+		resImage, err := http.Get(rawURL)
+		if err != nil {
+			return uuid.Nil, err
+		}
+		defer func() {
+			_ = resImage.Body.Close()
+		}()
+
+		if resImage == nil {
+			return uuid.Nil, errors.New("image response is nil")
+		}
+
+		if resImage.Body == nil {
+			return uuid.Nil, errors.New("image response body is nil")
+		}
+
+		imageUUID, err := f.UploadImage(resImage.Body)
+		if err != nil {
+			return uuid.Nil, nil
+		}
+
+		return imageUUID, nil
+	}
+
+	return uuid.Nil, nil
 }
 
 // ExportCookbook exports the cookbook in the desired file type.
