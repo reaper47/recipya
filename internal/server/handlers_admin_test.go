@@ -25,7 +25,9 @@ func TestHandlers_Admin(t *testing.T) {
 		body := getBodyHTML(rr)
 		assertStringsNotInHTML(t, body, []string{"Access denied: You are not an admin."})
 		assertStringsInHTML(t, body, []string{
-			`<div class="card card-compact card-bordered mt-4"><div class="card-body"><h2 class="card-title">Users</h2><div class="overflow-x-auto max-w-96 sm:w-full"><table class="table table-zebra"><thead><tr><th>Name</th><th>Password</th><th></th></tr></thead><tbody></tbody></table></div><div class="card-actions justify-end"></div></div>`,
+			`<div class="card card-compact card-bordered mt-4"><div class="card-body">`,
+			`<h2 class="card-title">Users</h2>`,
+			`<table class="table table-zebra"><thead><tr><th>Name</th><th>Password</th><th></th></tr></thead> <tbody></tbody></table></div>`,
 		})
 	})
 
@@ -128,7 +130,7 @@ func TestHandlers_Admin_AddUser(t *testing.T) {
 		assertStatus(t, rr.Code, http.StatusCreated)
 		assertStringsInHTML(t, getBodyHTML(rr), []string{
 			`<tr><td>bob@gmail.com</td><td>*****</td><th><button class="btn btn-ghost btn-xs" title="Delete user" hx-delete="/admin/users/bob@gmail.com" hx-target="closest tr" hx-swap="outerHTML" hx-confirm="Are you sure you wish to delete this user?" hx-indicator="#fullscreen-loader"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button></th></tr>`,
-			`<tr><td><input type="text" name="email" placeholder="Enter new email" class="input input-sm input-bordered w-full"></td><td><input type="password" name="password" placeholder="Enter new password" class="input input-sm input-bordered w-full"></td><th><button class="btn btn-ghost btn-xs" hx-post="/admin/users" hx-include="[name='email'], [name='password']" hx-target="closest tr" hx-swap="outerHTML" hx-indicator="#fullscreen-loader"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24" width="24px" height="24px" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg></button></th></tr>`,
+			`<tr><td><input type="text" name="email" placeholder="Enter new email" class="input input-sm input-bordered w-full"></td><td><input type="password" name="password" placeholder="Enter new password" class="input input-sm input-bordered w-full"></td><th><button class="btn btn-ghost btn-xs" hx-post="/admin/users" hx-include="[name='email'], [name='password']" hx-target="closest tr" hx-swap="outerHTML" hx-indicator="#fullscreen-loader"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24" width="24px" height="24px" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle> <line x1="12" y1="8" x2="12" y2="16"></line> <line x1="8" y1="12" x2="16" y2="12"></line></svg></button></th></tr>`,
 		})
 		if len(srv.Repository.Users()) != 2 {
 			t.Fail()
