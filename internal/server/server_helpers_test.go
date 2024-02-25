@@ -13,7 +13,6 @@ import (
 	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
-	"regexp"
 	"strings"
 )
 
@@ -24,11 +23,6 @@ const (
 	formHeader   header = "application/x-www-form-urlencoded"
 	noHeader     header = ""
 	promptHeader header = "prompt"
-)
-
-var (
-	regexRmSpaces = regexp.MustCompile(`>\s+<`)
-	regexOneLine  = regexp.MustCompile(`\s{2,}|\n`)
 )
 
 func createWSServer() (*server.Server, *httptest.Server, *websocket.Conn) {
@@ -207,14 +201,21 @@ func prepareRequestOther(method, target string, contentType header, body *string
 
 func getBodyHTML(rr *httptest.ResponseRecorder) string {
 	body, _ := io.ReadAll(rr.Body)
-	bodyStr := strings.ReplaceAll(string(body), "\n", "")
-	bodyStr = regexOneLine.ReplaceAllString(bodyStr, " ")
-	bodyStr = regexRmSpaces.ReplaceAllString(bodyStr, "><")
-	bodyStr = strings.ReplaceAll(bodyStr, "&#39;", "'")
-	bodyStr = strings.ReplaceAll(bodyStr, "&#34;", `"`)
-	bodyStr = strings.ReplaceAll(bodyStr, "&lt;", "<")
-	bodyStr = strings.ReplaceAll(bodyStr, "&gt;", ">")
-	return bodyStr
+
+	cases := []struct{ old, new string }{
+		{"\r\n", ""},
+		{"\n", ""},
+		{"\r", ""},
+		{"&#39;", "'"},
+		{"&#34;", `"`},
+		{"&lt;", "<"},
+		{"&gt;", ">"},
+	}
+	for _, c := range cases {
+		body = bytes.ReplaceAll(body, []byte(c.old), []byte(c.new))
+	}
+
+	return string(bytes.Join(bytes.Fields(body), []byte(" ")))
 }
 
 func readMessage(c *websocket.Conn, number int) (int, []byte) {
