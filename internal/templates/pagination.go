@@ -7,7 +7,7 @@ const (
 )
 
 // NewPagination initializes a pagination struct of n pages.
-func NewPagination(page, numPages, numResults uint64, resultsPerPage uint64, url string, isSwap bool) Pagination {
+func NewPagination(page, numPages, numResults uint64, resultsPerPage uint64, url, queries string, isSwap bool) Pagination {
 	p := Pagination{
 		Functions:      NewFunctionsData[uint64](),
 		IsHidden:       numResults == 0,
@@ -16,6 +16,7 @@ func NewPagination(page, numPages, numResults uint64, resultsPerPage uint64, url
 		NumResults:     numResults,
 		ResultsPerPage: resultsPerPage,
 		URL:            url,
+		URLQueries:     queries,
 	}
 
 	totalPages := numResults / resultsPerPage
@@ -81,8 +82,9 @@ type Pagination struct {
 	NumPages, NumResults uint64
 	ResultsPerPage       uint64
 
-	Functions FunctionsData[uint64]
-	IsHidden  bool
-	IsSwap    bool
-	URL       string
+	Functions  FunctionsData[uint64]
+	IsHidden   bool
+	IsSwap     bool
+	URL        string
+	URLQueries string
 }

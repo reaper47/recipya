@@ -40,23 +40,25 @@ templ searchbar() {
 		</button>
 	</div>
 	<details class="dropdown dropdown-left">
-      <summary class="btn btn-sm ml-1">@iconWrench()</summary>
-      <div tabindex="0" class="dropdown-content z-10 menu menu-sm p-2 shadow bg-base-200 w-52 sm:menu-md prose">
-          <h4>Search Method</h4>
-            <div class="form-control">
-                <label class="label cursor-pointer">
-                    <span class="label-text">By name</span>
-                    <input type="radio" name="search-method" class="radio radio-sm" checked value="name"/>
-                </label>
-            </div>
-            <div class="form-control">
-                <label class="label cursor-pointer">
-                    <span class="label-text">Full search</span>
-                    <input type="radio" name="search-method" class="radio radio-sm" value="full"/>
-                </label>
-            </div>
-        </div>
-    </details>
+		<summary class="btn btn-sm ml-1">
+			@iconWrench()
+		</summary>
+		<div tabindex="0" class="dropdown-content z-10 menu menu-sm p-2 shadow bg-base-200 w-52 sm:menu-md prose">
+			<h4>Search Method</h4>
+			<div class="form-control">
+				<label class="label cursor-pointer">
+					<span class="label-text">By name</span>
+					<input type="radio" name="search-method" class="radio radio-sm" checked value="name"/>
+				</label>
+			</div>
+			<div class="form-control">
+				<label class="label cursor-pointer">
+					<span class="label-text">Full search</span>
+					<input type="radio" name="search-method" class="radio radio-sm" value="full"/>
+				</label>
+			</div>
+		</div>
+	</details>
 }
 
 templ CookbooksSearchResultsRecipes(data templates.CookbookFeature) {

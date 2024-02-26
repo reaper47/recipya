@@ -3,6 +3,7 @@ package statements
 import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
+	"strconv"
 	"strings"
 )
 
@@ -10,9 +11,15 @@ import (
 var RecipesFTSFields = []string{"name", "description", "category", "ingredients", "instructions", "keywords", "source"}
 
 // BuildSearchRecipeQuery builds a SQL query for searching recipes.
-func BuildSearchRecipeQuery(queries []string, options models.SearchOptionsRecipes) string {
+func BuildSearchRecipeQuery(queries []string, page uint64, options models.SearchOptionsRecipes) string {
 	var sb strings.Builder
-	sb.WriteString(baseSelectRecipe)
+
+	isSort := options.Sort.IsSort()
+	if isSort {
+		sb.WriteString("SELECT * FROM (")
+	}
+
+	sb.WriteString("SELECT * FROM (" + BuildBaseSelectRecipe(options.Sort))
 	sb.WriteString(" WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ?")
 
 	n := len(queries)
@@ -60,7 +67,16 @@ func BuildSearchRecipeQuery(queries []string, options models.SearchOptionsRecipe
 		}
 	}
 
-	sb.WriteString(" ORDER BY rank) GROUP BY recipes.id LIMIT 30")
+	//where := "row_num BETWEEN " + strconv.FormatUint((page-1)*templates.ResultsPerPage+1, 10) + " AND " + strconv.FormatUint((page-1)*templates.ResultsPerPage+15, 10)
+	sb.WriteString(" ORDER BY rank) GROUP BY recipes.id) WHERE row_num BETWEEN ")
+	sb.WriteString(strconv.FormatUint((page-1)*templates.ResultsPerPage+1, 10))
+	sb.WriteString(" AND ")
+	sb.WriteString(strconv.FormatUint((page-1)*templates.ResultsPerPage+15, 10))
+	/*if isSort {
+		sb.WriteString(") WHERE ")
+		sb.WriteString(where)
+	}*/
+
 	return sb.String()
 }
 
@@ -252,6 +268,27 @@ const SelectMeasurementSystems = `
 			 JOIN user_settings AS us ON measurement_system_id = ms.id
 	WHERE user_id = ?`
 
+// BuildBaseSelectRecipe builds from the options.
+func BuildBaseSelectRecipe(sorts models.Sort) string {
+	var s string
+	if sorts.IsAToZ {
+		s = "recipes.name ASC"
+	} else if sorts.IsZToA {
+		s = "recipes.name DESC"
+	} else {
+		return baseSelectRecipe
+	}
+
+	before, after, _ := strings.Cut(baseSelectRecipe, "FROM recipes")
+	var sb strings.Builder
+	sb.WriteString(before)
+	if s != "" {
+		sb.WriteString(", ROW_NUMBER() OVER (ORDER BY " + s + ") AS row_num")
+	}
+	sb.WriteString(" FROM recipes" + after)
+	return sb.String()
+}
+
 const baseSelectRecipe = `
 	SELECT recipes.id                                                                      AS recipe_id,
 		   recipes.name                                                                    AS name,
@@ -290,7 +327,8 @@ const baseSelectRecipe = `
 		   nutrition.is_per_serving,
 		   times.prep_seconds,
 		   times.cook_seconds,
-		   times.total_seconds
+		   times.total_seconds,
+		   ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num
 	FROM recipes 
 			 LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id
 			 LEFT JOIN categories ON category_recipe.category_id = categories.id

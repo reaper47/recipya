@@ -246,7 +246,7 @@ func newCookbooksPagination(srv *Server, w http.ResponseWriter, userID int64, pa
 		numPages = 1
 	}
 
-	return templates.NewPagination(page, numPages, counts.Cookbooks, templates.ResultsPerPage, "/cookbooks", isSwap), nil
+	return templates.NewPagination(page, numPages, counts.Cookbooks, templates.ResultsPerPage, "/cookbooks", "", isSwap), nil
 }
 
 func (s *Server) cookbooksDeleteCookbookRecipeHandler() http.HandlerFunc {
@@ -476,9 +476,9 @@ func (s *Server) cookbooksRecipesSearchPostHandler() http.HandlerFunc {
 			return
 		}
 
-		opts := models.NewSearchOptionsRecipe(r.FormValue("search-method"))
+		opts := models.NewSearchOptionsRecipe(r.FormValue("search-method"), page)
 
-		recipes, err := s.Repository.SearchRecipes(q, opts, userID)
+		recipes, _, err := s.Repository.SearchRecipes(q, page, opts, userID)
 		if err != nil {
 			w.Header().Set("HX-Trigger", models.NewErrorDBToast("Error searching recipes.").Render())
 			w.WriteHeader(http.StatusInternalServerError)

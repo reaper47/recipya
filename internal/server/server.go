@@ -140,7 +140,8 @@ func (s *Server) mountHandlers() {
 	mux.Handle("POST /recipes/add/ocr", s.mustBeLoggedInMiddleware(s.recipesAddOCRHandler()))
 	mux.Handle("POST /recipes/add/request-website", s.mustBeLoggedInMiddleware(s.recipesAddRequestWebsiteHandler()))
 	mux.Handle("POST /recipes/add/website", s.mustBeLoggedInMiddleware(s.recipesAddWebsiteHandler()))
-	mux.Handle("POST /recipes/search", s.mustBeLoggedInMiddleware(s.recipesSearchHandler()))
+	mux.Handle("GET /recipes/search", s.mustBeLoggedInMiddleware(s.recipesSearchHandler()))
+	mux.Handle("POST /recipes/search", s.mustBeLoggedInMiddleware(s.recipesSearchPostHandler()))
 	mux.Handle("GET /recipes/supported-websites", s.mustBeLoggedInMiddleware(s.recipesSupportedWebsitesHandler()))
 
 	// Reports routes

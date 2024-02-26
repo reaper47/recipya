@@ -184,7 +184,7 @@ templ addRecipe() {
 							const jsonSchemaScripts = ([...document.querySelectorAll('script[type=%22application/ld+json%22]')]);
 							for (const jsonSchemaScript of jsonSchemaScripts) {
 								let data = JSON.parse(jsonSchemaScript.innerHTML);
-								if (Array.isArray(data) &amp;&amp; data.length > 0) {
+								if (Array.isArray(data) && data.length > 0) {
 									data = data[0];
 								}
 								if (data['@type'] != 'Recipe') {
@@ -201,7 +201,8 @@ templ addRecipe() {
 							} if (recipeCount === 0) {
 								alert('Unable to find a Recipe schema on this site!');
 							}
-						})()">
+						})()"
+					>
 						Recipya Bookmarklet
 					</a>.
 				</p>
@@ -1321,6 +1322,11 @@ templ ListRecipes(data templates.Data) {
 			</section>
 		}
 	</article>
+}
+
+templ ListRecipesSearch(data templates.Data) {
+	@ListRecipes(data)
+	@Pagination(data.Pagination)
 }
 
 templ ViewRecipe(data templates.Data) {

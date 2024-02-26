@@ -497,10 +497,10 @@ func (m *mockRepository) RestoreUserBackup(backup *models.UserBackup) error {
 	return nil
 }
 
-func (m *mockRepository) SearchRecipes(query string, opts models.SearchOptionsRecipes, userID int64) (models.Recipes, error) {
+func (m *mockRepository) SearchRecipes(query string, opts models.SearchOptionsRecipes, userID int64) (models.Recipes, uint64, error) {
 	recipes, ok := m.RecipesRegistered[userID]
 	if !ok {
-		return nil, errors.New("user not found")
+		return nil, 0, errors.New("user not found")
 	}
 
 	var results models.Recipes
@@ -510,7 +510,7 @@ func (m *mockRepository) SearchRecipes(query string, opts models.SearchOptionsRe
 			results = append(results, r)
 		}
 	}
-	return results, nil
+	return results, uint64(len(recipes)), nil
 }
 
 func (m *mockRepository) SwitchMeasurementSystem(system units.System, userID int64) error {

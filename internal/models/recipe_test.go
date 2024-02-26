@@ -2103,6 +2103,32 @@ func TestNewRecipesFromMasterCook(t *testing.T) {
 	}
 }
 
+func TestSort_IsSort(t *testing.T) {
+	t.Run("no sort", func(t *testing.T) {
+		s := models.Sort{}
+		if s.IsSort() {
+			t.Fail()
+		}
+	})
+
+	t.Run("is sort", func(t *testing.T) {
+		testcases := []struct {
+			name string
+			in   models.Sort
+		}{
+			{name: "A to Z enabled", in: models.Sort{IsAToZ: true}},
+			{name: "Z to A enabled", in: models.Sort{IsZToA: true}},
+		}
+		for _, tc := range testcases {
+			t.Run(tc.name, func(t *testing.T) {
+				if !tc.in.IsSort() {
+					t.Fail()
+				}
+			})
+		}
+	})
+}
+
 func assertNoError(tb testing.TB, got error) {
 	tb.Helper()
 	if got != nil {

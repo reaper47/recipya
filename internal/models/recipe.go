@@ -504,11 +504,24 @@ func (n NutrientFDC) Value() float64 {
 type SearchOptionsRecipes struct {
 	ByName     bool
 	FullSearch bool
+	Page       uint64
+	Sort       Sort
+}
+
+// Sort defines sorting options.
+type Sort struct {
+	IsAToZ bool
+	IsZToA bool
+}
+
+// IsSort verifies whether there is a sort option enabled.
+func (s *Sort) IsSort() bool {
+	return s.IsAToZ || s.IsZToA
 }
 
 // NewSearchOptionsRecipe creates a SearchOptionsRecipe struct configured for the search method.
-func NewSearchOptionsRecipe(method string) SearchOptionsRecipes {
-	var opts SearchOptionsRecipes
+func NewSearchOptionsRecipe(method string, page uint64) SearchOptionsRecipes {
+	opts := SearchOptionsRecipes{Page: page}
 	switch method {
 	case "name":
 		opts.ByName = true

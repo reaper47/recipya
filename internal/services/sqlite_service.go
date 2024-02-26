@@ -953,7 +953,7 @@ func (s *SQLiteService) Recipe(id, userID int64) (*models.Recipe, error) {
 
 // Recipes gets the user's recipes.
 func (s *SQLiteService) Recipes(userID int64, page uint64) models.Recipes {
-	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), longerCtxTimeout)
 	defer cancel()
 
 	stmt := statements.SelectRecipes
@@ -1237,12 +1237,16 @@ func (s *SQLiteService) RestoreUserBackup(backup *models.UserBackup) error {
 }
 
 // SearchRecipes searches for recipes based on the configuration.
-func (s *SQLiteService) SearchRecipes(query string, options models.SearchOptionsRecipes, userID int64) (models.Recipes, error) {
+// It returns the paginated search recipes, the total number of search results and an error.
+func (s *SQLiteService) SearchRecipes(query string, page uint64, options models.SearchOptionsRecipes, userID int64) (models.Recipes, uint64, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
 	queries := strings.Split(query, " ")
-	stmt := statements.BuildSearchRecipeQuery(queries, options)
+	stmt := statements.BuildSearchRecipeQuery(queries, page, options)
+
+	options.Sort = models.Sort{}
+	stmtNoSort := statements.BuildSearchRecipeQuery(queries, page, options)
 
 	if options.FullSearch {
 		for range statements.RecipesFTSFields {
@@ -1258,10 +1262,18 @@ func (s *SQLiteService) SearchRecipes(query string, options models.SearchOptions
 
 	rows, err := s.DB.QueryContext(ctx, stmt, xa...)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 
-	return scanRecipes(rows)
+	recipes, err := scanRecipes(rows)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	var totalCount uint64
+	options.Sort = models.Sort{}
+	err = s.DB.QueryRowContext(ctx, "SELECT COUNT(*) FROM ("+stmtNoSort+")", xa...).Scan(&totalCount)
+	return recipes, totalCount, err
 }
 
 func scanRecipes(rows *sql.Rows) (models.Recipes, error) {
@@ -1293,6 +1305,7 @@ func scanRecipe(sc scanner) (*models.Recipe, error) {
 		isPerServing int64
 		keywords     string
 		tools        string
+		count        int64
 	)
 
 	err := sc.Scan(
@@ -1300,6 +1313,7 @@ func scanRecipe(sc scanner) (*models.Recipe, error) {
 		&ingredients, &instructions, &keywords, &tools, &r.Nutrition.Calories, &r.Nutrition.TotalCarbohydrates,
 		&r.Nutrition.Sugars, &r.Nutrition.Protein, &r.Nutrition.TotalFat, &r.Nutrition.SaturatedFat, &r.Nutrition.UnsaturatedFat,
 		&r.Nutrition.Cholesterol, &r.Nutrition.Sodium, &r.Nutrition.Fiber, &isPerServing, &r.Times.Prep, &r.Times.Cook, &r.Times.Total,
+		&count,
 	)
 	if err != nil {
 		return nil, err
