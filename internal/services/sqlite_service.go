@@ -1243,10 +1243,8 @@ func (s *SQLiteService) SearchRecipes(query string, page uint64, options models.
 	defer cancel()
 
 	queries := strings.Split(query, " ")
-	stmt := statements.BuildSearchRecipeQuery(queries, page, options)
-
-	options.Sort = models.Sort{}
-	stmtNoSort := statements.BuildSearchRecipeQuery(queries, page, options)
+	originalQueries := make([]string, len(queries))
+	_ = copy(originalQueries, queries)
 
 	if options.FullSearch {
 		for range statements.RecipesFTSFields {
@@ -1260,7 +1258,7 @@ func (s *SQLiteService) SearchRecipes(query string, page uint64, options models.
 		xa[i+1] = q + "*"
 	}
 
-	rows, err := s.DB.QueryContext(ctx, stmt, xa...)
+	rows, err := s.DB.QueryContext(ctx, statements.BuildPaginatedResults(originalQueries, page, options), xa...)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -1271,8 +1269,7 @@ func (s *SQLiteService) SearchRecipes(query string, page uint64, options models.
 	}
 
 	var totalCount uint64
-	options.Sort = models.Sort{}
-	err = s.DB.QueryRowContext(ctx, "SELECT COUNT(*) FROM ("+stmtNoSort+")", xa...).Scan(&totalCount)
+	err = s.DB.QueryRowContext(ctx, statements.BuildSearchResultsCount(originalQueries, page, options), xa...).Scan(&totalCount)
 	return recipes, totalCount, err
 }
 
