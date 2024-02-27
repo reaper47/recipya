@@ -246,7 +246,11 @@ func newCookbooksPagination(srv *Server, w http.ResponseWriter, userID int64, pa
 		numPages = 1
 	}
 
-	return templates.NewPagination(page, numPages, counts.Cookbooks, templates.ResultsPerPage, "/cookbooks", "", isSwap), nil
+	htmx := templates.PaginationHtmx{
+		IsSwap: isSwap,
+		Target: "#content",
+	}
+	return templates.NewPagination(page, numPages, counts.Cookbooks, templates.ResultsPerPage, "/cookbooks", "", htmx), nil
 }
 
 func (s *Server) cookbooksDeleteCookbookRecipeHandler() http.HandlerFunc {
@@ -476,7 +480,7 @@ func (s *Server) cookbooksRecipesSearchPostHandler() http.HandlerFunc {
 			return
 		}
 
-		opts := models.NewSearchOptionsRecipe(r.FormValue("search-method"), page)
+		opts := models.NewSearchOptionsRecipe(r.FormValue("method"), page)
 
 		recipes, _, err := s.Repository.SearchRecipes(q, page, opts, userID)
 		if err != nil {

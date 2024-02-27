@@ -9,7 +9,7 @@ templ Pagination(p templates.Pagination) {
 	<footer
 		id="pagination"
 		class={ "footer footer-center bg-base-200 pb-12 p-2 md:pb-2 text-base-content gap-2", templ.KV("hidden", p.IsHidden) }
-		if p.IsSwap {
+		if p.Htmx.IsSwap {
 			hx-swap-oob="outerHTML:#pagination"
 		}
 		onload={ updateAddCookbookURL(p.Selected) }
@@ -20,8 +20,8 @@ templ Pagination(p templates.Pagination) {
 			} else {
 				<button
 					class="join-item btn"
-					hx-get={ fmt.Sprintf("%s?page=%d&%s", p.URL, p.Prev, p.URLQueries) }
-					hx-target="#content"
+					hx-get={ fmt.Sprintf("%s?page=%d%s", p.URL, p.Prev, p.URLQueries) }
+					hx-target={ p.Htmx.Target }
 					hx-push-url={ fmt.Sprintf("%s?page=%d", p.URL, p.Prev) }
 				>
 					«
@@ -34,9 +34,9 @@ templ Pagination(p templates.Pagination) {
 				} else {
 					<button
 						class="join-item btn"
-						hx-get={ fmt.Sprintf("%s?page=%d&%s", p.URL, l, p.URLQueries) }
-						hx-target="#content"
-						hx-push-url={ fmt.Sprintf("%s?page=%d&%s", p.URL, l, p.URLQueries) }
+						hx-get={ fmt.Sprintf("%s?page=%d%s", p.URL, l, p.URLQueries) }
+						hx-target={ p.Htmx.Target }
+						hx-push-url={ fmt.Sprintf("%s?page=%d%s", p.URL, l, p.URLQueries) }
 					>
 						{ fmt.Sprint(l) }
 					</button>
@@ -51,18 +51,18 @@ templ Pagination(p templates.Pagination) {
 					<button
 						class="join-item btn btn-active"
 						aria-current="page"
-						hx-get={ fmt.Sprintf("%s?page=%d&%s", p.URL, m,p.URLQueries) }
-						hx-target="#content"
-						hx-push-url={ fmt.Sprintf("%s?page=%d&%s", p.URL, m,p.URLQueries) }
+						hx-get={ fmt.Sprintf("%s?page=%d%s", p.URL, m, p.URLQueries) }
+						hx-target={ p.Htmx.Target }
+						hx-push-url={ fmt.Sprintf("%s?page=%d%s", p.URL, m, p.URLQueries) }
 					>
 						{ fmt.Sprint(m) }
 					</button>
 				} else {
 					<button
 						class="join-item btn"
-						hx-get={ fmt.Sprintf("%s?page=%d&%s", p.URL, m,p.URLQueries) }
-						hx-target="#content"
-						hx-push-url={ fmt.Sprintf("%s?page=%d&%s", p.URL, m,p.URLQueries) }
+						hx-get={ fmt.Sprintf("%s?page=%d%s", p.URL, m, p.URLQueries) }
+						hx-target={ p.Htmx.Target }
+						hx-push-url={ fmt.Sprintf("%s?page=%d%s", p.URL, m, p.URLQueries) }
 					>
 						{ fmt.Sprint(m) }
 					</button>
@@ -80,18 +80,18 @@ templ Pagination(p templates.Pagination) {
 					<button
 						class="join-item btn btn-active"
 						aria-current="page"
-						hx-get={ fmt.Sprintf("%s?page=%d&%s", p.URL, r,p.URLQueries) }
-						hx-target="#content"
-						hx-push-url={ fmt.Sprintf("%s?page=%d&%s", p.URL, r,p.URLQueries) }
+						hx-get={ fmt.Sprintf("%s?page=%d%s", p.URL, r, p.URLQueries) }
+						hx-target={ p.Htmx.Target }
+						hx-push-url={ fmt.Sprintf("%s?page=%d%s", p.URL, r, p.URLQueries) }
 					>
 						{ fmt.Sprint(r) }
 					</button>
 				} else {
 					<button
 						class="join-item btn"
-						hx-get={ fmt.Sprintf("%s?page=%d&%s", p.URL, r,p.URLQueries) }
-						hx-target="#content"
-						hx-push-url={ fmt.Sprintf("%s?page=%d&%s", p.URL, r,p.URLQueries) }
+						hx-get={ fmt.Sprintf("%s?page=%d%s", p.URL, r, p.URLQueries) }
+						hx-target={ p.Htmx.Target }
+						hx-push-url={ fmt.Sprintf("%s?page=%d%s", p.URL, r, p.URLQueries) }
 					>
 						{ fmt.Sprint(r) }
 					</button>
@@ -102,9 +102,9 @@ templ Pagination(p templates.Pagination) {
 			} else {
 				<button
 					class="join-item btn"
-					hx-get={ fmt.Sprintf("%s?page=%d&%s", p.URL, p.Next,p.URLQueries) }
-					hx-target="#content"
-					hx-push-url={ fmt.Sprintf("%s?page=%d&%s", p.URL, p.Next,p.URLQueries) }
+					hx-get={ fmt.Sprintf("%s?page=%d%s", p.URL, p.Next, p.URLQueries) }
+					hx-target={ p.Htmx.Target }
+					hx-push-url={ fmt.Sprintf("%s?page=%d%s", p.URL, p.Next, p.URLQueries) }
 				>
 					»
 				</button>

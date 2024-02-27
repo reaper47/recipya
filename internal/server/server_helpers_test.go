@@ -215,7 +215,8 @@ func getBodyHTML(rr *httptest.ResponseRecorder) string {
 		body = bytes.ReplaceAll(body, []byte(c.old), []byte(c.new))
 	}
 
-	return string(bytes.Join(bytes.Fields(body), []byte(" ")))
+	body = bytes.Join(bytes.Fields(body), []byte(" "))
+	return string(body)
 }
 
 func readMessage(c *websocket.Conn, number int) (int, []byte) {

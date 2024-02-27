@@ -497,7 +497,7 @@ func (m *mockRepository) RestoreUserBackup(backup *models.UserBackup) error {
 	return nil
 }
 
-func (m *mockRepository) SearchRecipes(query string, opts models.SearchOptionsRecipes, userID int64) (models.Recipes, uint64, error) {
+func (m *mockRepository) SearchRecipes(query string, _ uint64, options models.SearchOptionsRecipes, userID int64) (models.Recipes, uint64, error) {
 	recipes, ok := m.RecipesRegistered[userID]
 	if !ok {
 		return nil, 0, errors.New("user not found")
@@ -505,12 +505,12 @@ func (m *mockRepository) SearchRecipes(query string, opts models.SearchOptionsRe
 
 	var results models.Recipes
 	for _, r := range recipes {
-		if (opts.ByName && strings.Contains(strings.ToLower(r.Name), query)) ||
-			(opts.FullSearch && (strings.Contains(strings.ToLower(r.Name), query) || strings.Contains(strings.ToLower(r.Category), query) || strings.Contains(strings.ToLower(r.Description), query))) {
+		if (options.ByName && strings.Contains(strings.ToLower(r.Name), query)) ||
+			(options.FullSearch && (strings.Contains(strings.ToLower(r.Name), query) || strings.Contains(strings.ToLower(r.Category), query) || strings.Contains(strings.ToLower(r.Description), query))) {
 			results = append(results, r)
 		}
 	}
-	return results, uint64(len(recipes)), nil
+	return results, uint64(len(results)), nil
 }
 
 func (m *mockRepository) SwitchMeasurementSystem(system units.System, userID int64) error {

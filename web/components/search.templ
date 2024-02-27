@@ -5,7 +5,7 @@ import (
 	"github.com/reaper47/recipya/internal/templates"
 )
 
-templ searchbar() {
+templ searchbar(value string) {
 	<div class="relative w-full">
 		<label>
 			<input
@@ -14,13 +14,14 @@ templ searchbar() {
 				name="q"
 				class="input input-bordered input-sm w-full z-20"
 				placeholder="Search for recipes..."
+				value={ value }
 				_="on keyup
                    if event.target.value !== '' then
                        remove .md:block from #search-shortcut
                    else
                        add .md:block to #search-shortcut
                    end then
-                   if event.key === 'Backspace' and event.target.value === '' then
+                   if (event.key === 'Backspace' or event.key === 'Delete') and event.target.value === '' then
                        send submit to closest <form/>
                    end"
 			/>
@@ -48,13 +49,13 @@ templ searchbar() {
 			<div class="form-control">
 				<label class="label cursor-pointer">
 					<span class="label-text">By name</span>
-					<input type="radio" name="search-method" class="radio radio-sm" checked value="name"/>
+					<input type="radio" name="mode" class="radio radio-sm" checked value="name"/>
 				</label>
 			</div>
 			<div class="form-control">
 				<label class="label cursor-pointer">
 					<span class="label-text">Full search</span>
-					<input type="radio" name="search-method" class="radio radio-sm" value="full"/>
+					<input type="radio" name="mode" class="radio radio-sm" value="full"/>
 				</label>
 			</div>
 		</div>
@@ -97,6 +98,14 @@ templ CookbooksSearchResultsRecipes(data templates.CookbookFeature) {
 		</article>
 	} else {
 		@SearchNoResult()
+	}
+}
+
+templ RecipesSearch(data templates.Data) {
+	if data.IsHxRequest {
+		@ListRecipesSearch(data)
+	} else {
+		@RecipesIndex(data)
 	}
 }
 

@@ -81,9 +81,10 @@ func TestToast_Render(t *testing.T) {
 	}
 }
 
-func compare(t *testing.T, got, want any) {
+func compare(tb testing.TB, got, want any) {
+	tb.Helper()
 	if !cmp.Equal(got, want) {
-		t.Log(cmp.Diff(got, want))
-		t.Fail()
+		tb.Log(cmp.Diff(got, want))
+		tb.Fail()
 	}
 }

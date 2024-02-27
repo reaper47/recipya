@@ -10,9 +10,14 @@ import (
 // RecipesFTSFields lists all columns in the recipes_fts table.
 var RecipesFTSFields = []string{"name", "description", "category", "ingredients", "instructions", "keywords", "source"}
 
-func BuildPaginatedResults(queries []string, page uint64, options models.SearchOptionsRecipes) string {
+// BuildSelectPaginatedResults builds a SQL query for paginated search results.
+func BuildSelectPaginatedResults(queries []string, page uint64, options models.SearchOptionsRecipes) string {
+	if page == 0 {
+		page = 1
+	}
+
 	var sb strings.Builder
-	sb.WriteString(BuildPaginatedResultsQuery(queries, page, options))
+	sb.WriteString(buildSelectPaginatedResultsQuery(queries, options))
 	sb.WriteString(" SELECT * FROM results WHERE row_num BETWEEN ")
 	sb.WriteString(strconv.FormatUint((page-1)*templates.ResultsPerPage+1, 10))
 	sb.WriteString(" AND ")
@@ -20,24 +25,24 @@ func BuildPaginatedResults(queries []string, page uint64, options models.SearchO
 	return sb.String()
 }
 
-func BuildSearchResultsCount(queries []string, page uint64, options models.SearchOptionsRecipes) string {
+// BuildSelectSearchResultsCount builds a SQL query for fetching the number of paginated results.
+func BuildSelectSearchResultsCount(queries []string, options models.SearchOptionsRecipes) string {
 	var sb strings.Builder
-	sb.WriteString("SELECT COUNT(*) FROM ")
 	options.Sort = models.Sort{}
-	sb.WriteString(BuildPaginatedResultsQuery(queries, page, options))
+	sb.WriteString(buildSelectPaginatedResultsQuery(queries, options))
+	sb.WriteString("SELECT COUNT(*) FROM results")
 	return sb.String()
 }
 
-func BuildPaginatedResultsQuery(queries []string, page uint64, options models.SearchOptionsRecipes) string {
+func buildSelectPaginatedResultsQuery(queries []string, options models.SearchOptionsRecipes) string {
 	var sb strings.Builder
 	sb.WriteString("WITH results AS (")
-	sb.WriteString(BuildSearchRecipeQuery(queries, page, options))
+	sb.WriteString(buildSearchRecipeQuery(queries, options))
 	sb.WriteString(")")
 	return sb.String()
 }
 
-// BuildSearchRecipeQuery builds a SQL query for searching recipes.
-func BuildSearchRecipeQuery(queries []string, page uint64, options models.SearchOptionsRecipes) string {
+func buildSearchRecipeQuery(queries []string, options models.SearchOptionsRecipes) string {
 	var sb strings.Builder
 
 	isSort := options.Sort.IsSort()
@@ -93,16 +98,7 @@ func BuildSearchRecipeQuery(queries []string, page uint64, options models.Search
 		}
 	}
 
-	//where := "row_num BETWEEN " + strconv.FormatUint((page-1)*templates.ResultsPerPage+1, 10) + " AND " + strconv.FormatUint((page-1)*templates.ResultsPerPage+15, 10)
-	sb.WriteString(" ORDER BY rank) GROUP BY recipes.id)") // WHERE row_num BETWEEN ")
-	//sb.WriteString(strconv.FormatUint((page-1)*templates.ResultsPerPage+1, 10))
-	//sb.WriteString(" AND ")
-	//sb.WriteString(strconv.FormatUint((page-1)*templates.ResultsPerPage+15, 10))
-	/*if isSort {
-		sb.WriteString(") WHERE ")
-		sb.WriteString(where)
-	}*/
-
+	sb.WriteString(" ORDER BY rank) GROUP BY recipes.id)")
 	return sb.String()
 }
 

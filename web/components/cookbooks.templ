@@ -434,7 +434,7 @@ templ cookbookRecipesSearchForm(pageItemID int64, pageNumber uint64) {
 			hx-target="#search-results"
 			hx-vals={ fmt.Sprintf(`{"id": %d, "page": %d}`, pageItemID, pageNumber) }
 		>
-			@searchbar()
+			@searchbar("")
 		</form>
 	</search>
 }

@@ -1256,12 +1256,12 @@ templ recipesIndex(data templates.Data) {
 				<search>
 					<form
 						class="w-72 flex md:w-96"
-						hx-post="/recipes/search"
-						hx-vals={ fmt.Sprintf(`{"page": %d}`, data.Pagination.Selected) }
+						hx-get="/recipes/search"
+						hx-vals={ fmt.Sprintf(`{"page": %d}`, data.Pagination.Search.CurrentPage) }
 						hx-target="#list-recipes"
-						_="on submit if #search-recipes.value is not '' then add .hidden to #pagination else remove .hidden from #pagination end"
+						hx-push-url="true"
 					>
-						@searchbar()
+						@searchbar(data.Content)
 					</form>
 				</search>
 			</section>

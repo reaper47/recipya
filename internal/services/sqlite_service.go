@@ -956,9 +956,7 @@ func (s *SQLiteService) Recipes(userID int64, page uint64) models.Recipes {
 	ctx, cancel := context.WithTimeout(context.Background(), longerCtxTimeout)
 	defer cancel()
 
-	stmt := statements.SelectRecipes
-
-	rows, err := s.DB.QueryContext(ctx, stmt, userID, page, userID)
+	rows, err := s.DB.QueryContext(ctx, statements.SelectRecipes, userID, page, userID)
 	if err != nil {
 		return models.Recipes{}
 	}
@@ -1258,7 +1256,7 @@ func (s *SQLiteService) SearchRecipes(query string, page uint64, options models.
 		xa[i+1] = q + "*"
 	}
 
-	rows, err := s.DB.QueryContext(ctx, statements.BuildPaginatedResults(originalQueries, page, options), xa...)
+	rows, err := s.DB.QueryContext(ctx, statements.BuildSelectPaginatedResults(originalQueries, page, options), xa...)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -1269,7 +1267,7 @@ func (s *SQLiteService) SearchRecipes(query string, page uint64, options models.
 	}
 
 	var totalCount uint64
-	err = s.DB.QueryRowContext(ctx, statements.BuildSearchResultsCount(originalQueries, page, options), xa...).Scan(&totalCount)
+	err = s.DB.QueryRowContext(ctx, statements.BuildSelectSearchResultsCount(originalQueries, options), xa...).Scan(&totalCount)
 	return recipes, totalCount, err
 }
 
