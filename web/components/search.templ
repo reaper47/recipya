@@ -62,42 +62,62 @@ templ searchbar(value string) {
 	</details>
 }
 
-templ CookbooksSearchResultsRecipes(data templates.CookbookFeature) {
-	if len(data.Cookbook.Recipes) > 0 {
-		<article class="grid gap-8 p-4 text-sm justify-center md:p-0">
-			<ul class="cookbooks-display grid gap-2 p-2 md:p-0">
-				for _, r := range data.Cookbook.Recipes {
-					<li class="indicator recipe cookbook">
-						<div class="card card-side card-compact bg-base-100 shadow-md max-w-[30rem] border indicator dark:border-slate-600">
-							<figure class="relative">
-								<img src={ fmt.Sprintf("/data/images/%s.jpg", r.Image) } alt="Recipe image" class="w-28 h-full object-cover"/>
-							</figure>
-							<div class="card-body">
-								<h2 class="card-title text-base w-[20ch] sm:w-[29ch] break-words md:text-xl">{ r.Name }</h2>
-								<p></p>
-								<div class="text-sm sm:text-base">
-									<p class="text-sm pb-1">Category:</p>
-									<div class="badge badge-primary badge-">{ r.Category }</div>
-								</div>
-								<div class="card-actions justify-end">
-									<button
-										class="btn btn-outline btn-sm"
-										hx-post={ fmt.Sprintf("/cookbooks/%d", data.Cookbook.ID) }
-										hx-vals={ fmt.Sprintf(`{"recipeId": %d}`, r.ID) }
-										hx-swap="outerHTML"
-										hx-target="closest .recipe"
-									>
-										Add
-									</button>
-								</div>
+templ CookbookSearchRecipes(data templates.Data) {
+	if data.IsHxRequest {
+		@cookbookSearchRecipes(data)
+	} else {
+		@layoutMain(data.CookbookFeature.Cookbook.Title, data) {
+			@cookbookIndex(data) {
+				@cookbookSearchRecipes(data)
+			}
+		}
+	}
+}
+
+templ cookbookSearchRecipes(data templates.Data) {
+	<article class="grid gap-8 p-4 text-sm justify-center md:p-0">
+		<ul class="cookbooks-display grid gap-2 p-2 md:p-0">
+			for _, r := range data.CookbookFeature.Cookbook.Recipes {
+				<li class="indicator recipe cookbook">
+					<div class="card card-side card-compact bg-base-100 shadow-md max-w-[30rem] border indicator dark:border-slate-600">
+						<figure class="relative">
+							<img
+								if data.Functions.IsUUIDValid(r.Image) {
+									src={ fmt.Sprintf("/data/images/%s.jpg", r.Image) }
+								} else {
+									src="/static/img/recipes/placeholder.webp"
+								}
+								alt="Recipe image"
+								class="w-28 h-full object-cover"
+							/>
+						</figure>
+						<div class="card-body">
+							<h2 class="card-title text-base w-[20ch] sm:w-[29ch] break-words md:text-xl">{ r.Name }</h2>
+							<p></p>
+							<div class="text-sm sm:text-base">
+								<p class="text-sm pb-1">Category:</p>
+								<div class="badge badge-primary badge-">{ r.Category }</div>
+							</div>
+							<div class="card-actions justify-end">
+								<button
+									class="btn btn-outline btn-sm"
+									hx-post={ fmt.Sprintf("/cookbooks/%d", data.CookbookFeature.Cookbook.ID) }
+									hx-vals={ fmt.Sprintf(`{"recipeId": %d}`, r.ID) }
+									hx-swap="outerHTML"
+									hx-target="closest .recipe"
+									_="on click put (#search-count.textContent as Number) - 1 into #search-count"
+								>
+									Add
+								</button>
 							</div>
 						</div>
-					</li>
-				}
-			</ul>
-		</article>
-	} else {
-		@SearchNoResult()
+					</div>
+				</li>
+			}
+		</ul>
+	</article>
+	if data.Pagination.Htmx.IsSwap {
+		@Pagination(data.Pagination)
 	}
 }
 
@@ -107,6 +127,11 @@ templ RecipesSearch(data templates.Data) {
 	} else {
 		@RecipesIndex(data)
 	}
+}
+
+templ ListRecipesSearch(data templates.Data) {
+	@ListRecipes(data)
+	@Pagination(data.Pagination)
 }
 
 templ SearchNoResult() {

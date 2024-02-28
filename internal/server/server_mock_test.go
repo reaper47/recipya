@@ -505,8 +505,8 @@ func (m *mockRepository) SearchRecipes(query string, _ uint64, options models.Se
 
 	var results models.Recipes
 	for _, r := range recipes {
-		if (options.ByName && strings.Contains(strings.ToLower(r.Name), query)) ||
-			(options.FullSearch && (strings.Contains(strings.ToLower(r.Name), query) || strings.Contains(strings.ToLower(r.Category), query) || strings.Contains(strings.ToLower(r.Description), query))) {
+		if (options.IsByName && strings.Contains(strings.ToLower(r.Name), query)) ||
+			(options.IsFullSearch && (strings.Contains(strings.ToLower(r.Name), query) || strings.Contains(strings.ToLower(r.Category), query) || strings.Contains(strings.ToLower(r.Description), query))) {
 			results = append(results, r)
 		}
 	}

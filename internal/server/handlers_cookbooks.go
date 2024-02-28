@@ -9,9 +9,7 @@ import (
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 	"net/http"
-	"slices"
 	"strconv"
-	"strings"
 )
 
 func (s *Server) cookbookShareHandler(w http.ResponseWriter, r *http.Request) {
@@ -348,16 +346,17 @@ func (s *Server) cookbooksGetCookbookHandler() http.HandlerFunc {
 		}
 
 		_ = components.CookbookIndex(templates.Data{
-			About:           templates.NewAboutData(),
-			IsAdmin:         getUserID(r) == 1,
-			IsAuthenticated: true,
-			IsHxRequest:     isHxRequest,
-			Functions:       templates.NewFunctionsData[int64](),
+			About: templates.NewAboutData(),
 			CookbookFeature: templates.CookbookFeature{
 				Cookbook:  templates.MakeCookbookView(cookbook, id-1, page),
 				ShareData: templates.ShareData{IsFromHost: true},
 			},
-			Title: cookbook.Title,
+			IsAdmin:         getUserID(r) == 1,
+			IsAuthenticated: true,
+			IsHxRequest:     isHxRequest,
+			Functions:       templates.NewFunctionsData[int64](),
+			Pagination:      templates.Pagination{IsHidden: true},
+			Title:           cookbook.Title,
 		}).Render(r.Context(), w)
 	}
 }
@@ -444,21 +443,27 @@ func (s *Server) cookbookPostCookbookHandler() http.HandlerFunc {
 	}
 }
 
-func (s *Server) cookbooksRecipesSearchPostHandler() http.HandlerFunc {
+func (s *Server) cookbooksRecipesSearchHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		cookbookID := r.FormValue("id")
-		id, err := strconv.ParseInt(cookbookID, 10, 64)
-		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast("Missing cookbook ID in body.").Render())
+		query := r.URL.Query()
+
+		idStr := r.PathValue("id")
+		id, err := parsePathPositiveID(idStr)
+		if err != nil || id <= 0 {
 			w.WriteHeader(http.StatusBadRequest)
+			_, _ = w.Write([]byte("Cookbook ID in path must be > 0."))
 			return
 		}
 
-		page, err := strconv.ParseUint(r.FormValue("page"), 10, 64)
+		page, err := strconv.ParseUint(query.Get("page"), 10, 64)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast("Missing page number in body.").Render())
 			w.WriteHeader(http.StatusBadRequest)
+			_, _ = w.Write([]byte("Missing page number in query."))
 			return
+		}
+
+		if page == 0 {
+			page = 1
 		}
 
 		userID := getUserID(r)
@@ -470,43 +475,68 @@ func (s *Server) cookbooksRecipesSearchPostHandler() http.HandlerFunc {
 			return
 		}
 
-		q := r.FormValue("q")
-		q = strings.TrimSpace(q)
+		q := query.Get("q")
 		if q == "" {
-			_ = components.CookbookRecipes(templates.CookbookFeature{
-				Cookbook:  templates.MakeCookbookView(cookbook, 1, page),
-				ShareData: templates.ShareData{IsFromHost: true},
-			}).Render(r.Context(), w)
+			w.Header().Set("HX-Redirect", "/cookbooks/"+strconv.FormatInt(id, 10))
+			w.WriteHeader(http.StatusBadRequest)
+			_, _ = w.Write([]byte("Query parameter must not be 'q' empty."))
 			return
 		}
 
-		opts := models.NewSearchOptionsRecipe(r.FormValue("method"), page)
+		mode := query.Get("mode")
+		if mode == "" {
+			mode = "name"
+		}
 
-		recipes, _, err := s.Repository.SearchRecipes(q, page, opts, userID)
+		opts := models.NewSearchOptionsRecipe(mode, page)
+		opts.CookbookID = id
+
+		recipes, totalCount, err := s.Repository.SearchRecipes(q, page, opts, userID)
 		if err != nil {
 			w.Header().Set("HX-Trigger", models.NewErrorDBToast("Error searching recipes.").Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
-		recipes = slices.DeleteFunc(recipes, func(r1 models.Recipe) bool {
-			return slices.ContainsFunc(cookbook.Recipes, func(r2 models.Recipe) bool {
-				return r1.ID == r2.ID
-			})
-		})
-
 		if len(recipes) == 0 {
 			_ = components.SearchNoResult().Render(r.Context(), w)
 			return
 		}
 
-		_ = components.CookbooksSearchResultsRecipes(templates.CookbookFeature{
-			Cookbook: templates.CookbookView{
-				ID:         cookbook.ID,
-				PageItemID: id,
-				PageNumber: page,
-				Recipes:    recipes,
+		numPages := totalCount / templates.ResultsPerPage
+		if numPages == 0 {
+			numPages = 1
+		}
+
+		isHxReq := r.Header.Get("HX-Request") == "true"
+
+		params := "q=" + q + "&mode=" + mode
+		htmx := templates.PaginationHtmx{IsSwap: isHxReq, Target: "#search-results"}
+		p := templates.NewPagination(page, numPages, totalCount, templates.ResultsPerPage, "/cookbooks/"+idStr+"/recipes/search", params, htmx)
+		p.Search.CurrentPage = page
+
+		_ = components.CookbookSearchRecipes(templates.Data{
+			About:   templates.NewAboutData(),
+			Content: q,
+			CookbookFeature: templates.CookbookFeature{
+				Cookbook: templates.CookbookView{
+					ID:         cookbook.ID,
+					PageItemID: id,
+					PageNumber: page,
+					Recipes:    recipes,
+					Title:      cookbook.Title,
+				},
+				ShareData: templates.ShareData{
+					IsFromHost: true,
+					IsShared:   false,
+				},
 			},
+			IsAdmin:         userID == 1,
+			IsAutologin:     app.Config.Server.IsAutologin,
+			IsAuthenticated: true,
+			IsHxRequest:     isHxReq,
+			Functions:       templates.NewFunctionsData[int64](),
+			Pagination:      p,
 		}).Render(r.Context(), w)
 	}
 }

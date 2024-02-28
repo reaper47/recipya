@@ -976,7 +976,7 @@ func (s *Server) recipesSearchHandler() http.HandlerFunc {
 		if q == "" {
 			w.Header().Set("HX-Redirect", "/recipes")
 			w.WriteHeader(http.StatusBadRequest)
-			_, _ = w.Write([]byte("Query parameter 'q' is empty."))
+			_, _ = w.Write([]byte("Query parameter must not be 'q' empty."))
 			return
 		}
 		q = strings.ReplaceAll(q, ",", " ")
@@ -1001,31 +1001,31 @@ func (s *Server) recipesSearchHandler() http.HandlerFunc {
 			return
 		}
 
-		numPages := totalCount / templates.ResultsPerPage
-		if numPages == 0 {
-			numPages = 1
-		}
-
 		if len(recipes) == 0 {
 			_ = components.SearchNoResult().Render(r.Context(), w)
 			return
 		}
 
+		numPages := totalCount / templates.ResultsPerPage
+		if numPages == 0 {
+			numPages = 1
+		}
+
 		isHxReq := r.Header.Get("HX-Request") == "true"
 		params := "q=" + q + "&mode=" + mode
-
 		htmx := templates.PaginationHtmx{IsSwap: isHxReq, Target: "#list-recipes"}
+
 		p := templates.NewPagination(page, numPages, totalCount, templates.ResultsPerPage, "/recipes/search", params, htmx)
 		p.Search.CurrentPage = page
 
 		_ = components.RecipesSearch(templates.Data{
 			About:           templates.NewAboutData(),
 			Content:         q,
-			Functions:       templates.NewFunctionsData[int64](),
 			IsAdmin:         userID == 1,
 			IsAutologin:     app.Config.Server.IsAutologin,
 			IsAuthenticated: true,
 			IsHxRequest:     isHxReq,
+			Functions:       templates.NewFunctionsData[int64](),
 			Pagination:      p,
 			Recipes:         recipes,
 		}).Render(r.Context(), w)

@@ -56,7 +56,7 @@ func buildSearchRecipeQuery(queries []string, options models.SearchOptionsRecipe
 	n := len(queries)
 	if n > 0 {
 		sb.WriteString(" AND (")
-		if options.ByName {
+		if options.IsByName {
 			switch n {
 			case 1:
 				sb.WriteString("name MATCH ?)")
@@ -69,7 +69,7 @@ func buildSearchRecipeQuery(queries []string, options models.SearchOptionsRecipe
 				}
 				sb.WriteString(")")
 			}
-		} else if options.FullSearch {
+		} else if options.IsFullSearch {
 			nFields := len(RecipesFTSFields)
 			for i, field := range RecipesFTSFields {
 				if n == 1 {
@@ -98,7 +98,11 @@ func buildSearchRecipeQuery(queries []string, options models.SearchOptionsRecipe
 		}
 	}
 
-	sb.WriteString(" ORDER BY rank) GROUP BY recipes.id)")
+	sb.WriteString(" ORDER BY rank)")
+	if options.CookbookID > 0 {
+		sb.WriteString(" AND recipes.id NOT IN (SELECT recipe_id FROM cookbook_recipes WHERE cookbook_id = ?)")
+	}
+	sb.WriteString(" GROUP BY recipes.id)")
 	return sb.String()
 }
 

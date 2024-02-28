@@ -502,10 +502,11 @@ func (n NutrientFDC) Value() float64 {
 
 // SearchOptionsRecipes defines the options for searching recipes.
 type SearchOptionsRecipes struct {
-	ByName     bool
-	FullSearch bool
-	Page       uint64
-	Sort       Sort
+	CookbookID   int64
+	IsByName     bool
+	IsFullSearch bool
+	Page         uint64
+	Sort         Sort
 }
 
 // Sort defines sorting options.
@@ -520,15 +521,15 @@ func (s *Sort) IsSort() bool {
 }
 
 // NewSearchOptionsRecipe creates a SearchOptionsRecipe struct configured for the search method.
-func NewSearchOptionsRecipe(method string, page uint64) SearchOptionsRecipes {
+func NewSearchOptionsRecipe(mode string, page uint64) SearchOptionsRecipes {
 	opts := SearchOptionsRecipes{Page: page}
-	switch method {
+	switch mode {
 	case "name":
-		opts.ByName = true
+		opts.IsByName = true
 	case "full":
-		opts.FullSearch = true
+		opts.IsFullSearch = true
 	default:
-		opts.ByName = true
+		opts.IsByName = true
 	}
 	return opts
 }

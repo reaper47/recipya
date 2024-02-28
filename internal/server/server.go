@@ -108,7 +108,6 @@ func (s *Server) mountHandlers() {
 	// Cookbooks routes
 	mux.Handle("GET /cookbooks", s.mustBeLoggedInMiddleware(s.cookbooksHandler()))
 	mux.Handle("POST /cookbooks", s.mustBeLoggedInMiddleware(s.cookbooksPostHandler()))
-	mux.Handle("POST /cookbooks/recipes/search", s.mustBeLoggedInMiddleware(s.cookbooksRecipesSearchPostHandler()))
 	mux.Handle("GET /cookbooks/{id}", s.mustBeLoggedInMiddleware(s.cookbooksGetCookbookHandler()))
 	mux.Handle("POST /cookbooks/{id}", s.mustBeLoggedInMiddleware(s.cookbookPostCookbookHandler()))
 	mux.Handle("DELETE /cookbooks/{id}", s.mustBeLoggedInMiddleware(s.cookbooksDeleteCookbookHandler()))
@@ -116,6 +115,7 @@ func (s *Server) mountHandlers() {
 	mux.Handle("PUT /cookbooks/{id}/image", s.mustBeLoggedInMiddleware(s.cookbooksImagePostCookbookHandler()))
 	mux.Handle("PUT /cookbooks/{id}/reorder", s.mustBeLoggedInMiddleware(s.cookbooksPostCookbookReorderHandler()))
 	mux.Handle("DELETE /cookbooks/{id}/recipes/{recipeID}", s.mustBeLoggedInMiddleware(s.cookbooksDeleteCookbookRecipeHandler()))
+	mux.Handle("GET /cookbooks/{id}/recipes/search", s.mustBeLoggedInMiddleware(s.cookbooksRecipesSearchHandler()))
 	mux.Handle("POST /cookbooks/{id}/share", s.mustBeLoggedInMiddleware(s.cookbookSharePostHandler()))
 
 	// Integrations routes

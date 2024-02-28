@@ -1244,7 +1244,7 @@ func (s *SQLiteService) SearchRecipes(query string, page uint64, options models.
 	originalQueries := make([]string, len(queries))
 	_ = copy(originalQueries, queries)
 
-	if options.FullSearch {
+	if options.IsFullSearch {
 		for range statements.RecipesFTSFields {
 			queries = append(queries, queries...)
 		}
@@ -1254,6 +1254,10 @@ func (s *SQLiteService) SearchRecipes(query string, page uint64, options models.
 	xa[0] = userID
 	for i, q := range queries {
 		xa[i+1] = q + "*"
+	}
+
+	if options.CookbookID > 0 {
+		xa = append(xa, options.CookbookID)
 	}
 
 	rows, err := s.DB.QueryContext(ctx, statements.BuildSelectPaginatedResults(originalQueries, page, options), xa...)

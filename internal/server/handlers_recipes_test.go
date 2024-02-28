@@ -1050,7 +1050,7 @@ func TestHandlers_Recipes_Search(t *testing.T) {
 		assertStringsInHTML(t, getBodyHTML(rr), []string{
 			`<button class="join-item btn btn-disabled">«</button>`,
 			`<!-- Left Section --><button aria-current="page" class="join-item btn btn-active">1</button>`,
-			`<!-- Right Section --><button class="join-item btn btn-disabled">»</button></div><div class="text-center"><p class="text-sm">Showing <span class="font-medium">1</span> to <span class="font-medium">2</span> of <span class="font-medium">2</span> results</p></div>`,
+			`<!-- Right Section --><button class="join-item btn btn-disabled">»</button></div><div class="text-center"><p class="text-sm">Showing <span class="font-medium">1</span> to <span class="font-medium">2</span> of <span id="search-count" class="font-medium">2</span> results</p></div>`,
 		})
 	})
 
@@ -1059,7 +1059,7 @@ func TestHandlers_Recipes_Search(t *testing.T) {
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
 		assertHeader(t, rr, "HX-Redirect", "/recipes")
-		assertStringsInHTML(t, getBodyHTML(rr), []string{"Query parameter 'q' is empty."})
+		assertStringsInHTML(t, getBodyHTML(rr), []string{"Query parameter must not be 'q' empty."})
 	})
 
 	t.Run("empty method is invalid", func(t *testing.T) {

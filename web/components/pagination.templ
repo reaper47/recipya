@@ -128,7 +128,7 @@ templ Pagination(p templates.Pagination) {
 						{ fmt.Sprint(p.Functions.MulAll(p.Selected, p.ResultsPerPage)) }
 					}
 				</span>
-				of <span class="font-medium">{ fmt.Sprint(p.NumResults) }</span> results
+				of <span id="search-count" class="font-medium">{ fmt.Sprint(p.NumResults) }</span> results
 			</p>
 		</div>
 	</footer>

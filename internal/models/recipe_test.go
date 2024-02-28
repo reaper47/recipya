@@ -263,17 +263,17 @@ func TestNewSearchOptionsRecipe(t *testing.T) {
 		{
 			name:   "empty defaults to name",
 			method: "",
-			want:   models.SearchOptionsRecipes{ByName: true, Page: 1},
+			want:   models.SearchOptionsRecipes{IsByName: true, Page: 1},
 		},
 		{
 			name:   "name",
 			method: "name",
-			want:   models.SearchOptionsRecipes{ByName: true, Page: 1},
+			want:   models.SearchOptionsRecipes{IsByName: true, Page: 1},
 		},
 		{
 			name:   "empty defaults to name",
 			method: "full",
-			want:   models.SearchOptionsRecipes{FullSearch: true, Page: 1},
+			want:   models.SearchOptionsRecipes{IsFullSearch: true, Page: 1},
 		},
 	}
 	for _, tc := range testcases {

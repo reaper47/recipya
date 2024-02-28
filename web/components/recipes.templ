@@ -1324,11 +1324,6 @@ templ ListRecipes(data templates.Data) {
 	</article>
 }
 
-templ ListRecipesSearch(data templates.Data) {
-	@ListRecipes(data)
-	@Pagination(data.Pagination)
-}
-
 templ ViewRecipe(data templates.Data) {
 	if data.IsHxRequest {
 		<title hx-swap-oob="true">{ data.View.Recipe.Name } | Recipya</title>
