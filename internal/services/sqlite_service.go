@@ -510,7 +510,7 @@ func (s *SQLiteService) Cookbook(id, userID int64) (models.Cookbook, error) {
 	if err != nil {
 		return c, err
 	}
-	c.Recipes, err = scanRecipes(rows)
+	c.Recipes, err = scanRecipes(rows, false)
 	return c, err
 }
 
@@ -533,7 +533,7 @@ func (s *SQLiteService) CookbookByID(id, userID int64) (models.Cookbook, error) 
 		_ = rows.Close()
 	}()
 
-	c.Recipes, err = scanRecipes(rows)
+	c.Recipes, err = scanRecipes(rows, false)
 	return c, err
 }
 
@@ -548,7 +548,7 @@ func (s *SQLiteService) CookbookRecipe(id, cookbookID int64) (recipe *models.Rec
 	}
 
 	row := s.DB.QueryRowContext(ctx, statements.SelectCookbookRecipe, cookbookID, id)
-	recipe, err = scanRecipe(row)
+	recipe, err = scanRecipe(row, false)
 	return recipe, userID, err
 }
 
@@ -644,7 +644,7 @@ func (s *SQLiteService) CookbooksUser(userID int64) ([]models.Cookbook, error) {
 			return nil, err
 		}
 
-		c.Recipes, err = scanRecipes(recipeRows)
+		c.Recipes, err = scanRecipes(recipeRows, false)
 		if err != nil {
 			return nil, err
 		}
@@ -944,7 +944,7 @@ func (s *SQLiteService) Recipe(id, userID int64) (*models.Recipe, error) {
 	}()
 
 	row := tx.QueryRowContext(ctx, statements.SelectRecipe, id, userID)
-	r, err := scanRecipe(row)
+	r, err := scanRecipe(row, false)
 	if err != nil {
 		return nil, err
 	}
@@ -961,7 +961,7 @@ func (s *SQLiteService) Recipes(userID int64, page uint64) models.Recipes {
 		return models.Recipes{}
 	}
 
-	recipes, err := scanRecipes(rows)
+	recipes, err := scanRecipes(rows, false)
 	if err != nil {
 		return models.Recipes{}
 	}
@@ -979,7 +979,7 @@ func (s *SQLiteService) RecipesAll(userID int64) models.Recipes {
 		return nil
 	}
 
-	recipes, err := scanRecipes(rows)
+	recipes, err := scanRecipes(rows, false)
 	if err != nil {
 		return nil
 	}
@@ -1265,9 +1265,17 @@ func (s *SQLiteService) SearchRecipes(query string, page uint64, options models.
 		return nil, 0, err
 	}
 
-	recipes, err := scanRecipes(rows)
-	if err != nil {
-		return nil, 0, err
+	var recipes models.Recipes
+	for rows.Next() {
+		var (
+			r     models.Recipe
+			count int64
+		)
+		err = rows.Scan(&r.ID, &r.Name, &r.Description, &r.Image, &r.CreatedAt, &r.Category, &count)
+		if err != nil {
+			return models.Recipes{}, 0, err
+		}
+		recipes = append(recipes, r)
 	}
 
 	var totalCount uint64
@@ -1275,14 +1283,14 @@ func (s *SQLiteService) SearchRecipes(query string, page uint64, options models.
 	return recipes, totalCount, err
 }
 
-func scanRecipes(rows *sql.Rows) (models.Recipes, error) {
+func scanRecipes(rows *sql.Rows, isSearch bool) (models.Recipes, error) {
 	defer func() {
 		_ = rows.Close()
 	}()
 
 	var recipes models.Recipes
 	for rows.Next() {
-		r, err := scanRecipe(rows)
+		r, err := scanRecipe(rows, isSearch)
 		if err != nil {
 			return nil, err
 		}
@@ -1296,7 +1304,7 @@ type scanner interface {
 	Scan(dest ...any) error
 }
 
-func scanRecipe(sc scanner) (*models.Recipe, error) {
+func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 	var (
 		r            models.Recipe
 		ingredients  string
@@ -1305,29 +1313,32 @@ func scanRecipe(sc scanner) (*models.Recipe, error) {
 		keywords     string
 		tools        string
 		count        int64
+		err          error
 	)
 
-	err := sc.Scan(
-		&r.ID, &r.Name, &r.Description, &r.Image, &r.URL, &r.Yield, &r.CreatedAt, &r.UpdatedAt, &r.Category, &r.Cuisine,
-		&ingredients, &instructions, &keywords, &tools, &r.Nutrition.Calories, &r.Nutrition.TotalCarbohydrates,
-		&r.Nutrition.Sugars, &r.Nutrition.Protein, &r.Nutrition.TotalFat, &r.Nutrition.SaturatedFat, &r.Nutrition.UnsaturatedFat,
-		&r.Nutrition.Cholesterol, &r.Nutrition.Sodium, &r.Nutrition.Fiber, &isPerServing, &r.Times.Prep, &r.Times.Cook, &r.Times.Total,
-		&count,
-	)
-	if err != nil {
-		return nil, err
+	if isSearch {
+		err = sc.Scan(&r.ID, &r.Name, &r.Description, &r.Image, &r.CreatedAt, &r.Category, &count)
+	} else {
+		err = sc.Scan(
+			&r.ID, &r.Name, &r.Description, &r.Image, &r.URL, &r.Yield, &r.CreatedAt, &r.UpdatedAt, &r.Category, &r.Cuisine,
+			&ingredients, &instructions, &keywords, &tools, &r.Nutrition.Calories, &r.Nutrition.TotalCarbohydrates,
+			&r.Nutrition.Sugars, &r.Nutrition.Protein, &r.Nutrition.TotalFat, &r.Nutrition.SaturatedFat, &r.Nutrition.UnsaturatedFat,
+			&r.Nutrition.Cholesterol, &r.Nutrition.Sodium, &r.Nutrition.Fiber, &isPerServing, &r.Times.Prep, &r.Times.Cook, &r.Times.Total,
+			&count,
+		)
+
+		r.Ingredients = strings.Split(ingredients, "<!---->")
+		r.Instructions = strings.Split(instructions, "<!---->")
+		r.Keywords = strings.Split(keywords, ",")
+		r.Nutrition.IsPerServing = isPerServing == 1
+		r.Tools = strings.Split(tools, ",")
+
+		r.Times.Prep *= time.Second
+		r.Times.Cook *= time.Second
+		r.Times.Total *= time.Second
 	}
 
-	r.Ingredients = strings.Split(ingredients, "<!---->")
-	r.Instructions = strings.Split(instructions, "<!---->")
-	r.Keywords = strings.Split(keywords, ",")
-	r.Nutrition.IsPerServing = isPerServing == 1
-	r.Tools = strings.Split(tools, ",")
-
-	r.Times.Prep *= time.Second
-	r.Times.Cook *= time.Second
-	r.Times.Total *= time.Second
-	return &r, nil
+	return &r, err
 }
 
 // SwitchMeasurementSystem sets the user's units system to the desired one.

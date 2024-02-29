@@ -303,10 +303,10 @@ func BuildBaseSelectRecipe(sorts models.Sort) string {
 	} else if sorts.IsRandom {
 		s = "RANDOM()"
 	} else {
-		return baseSelectRecipe
+		return baseSelectSearchRecipe
 	}
 
-	before, after, _ := strings.Cut(baseSelectRecipe, "ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num")
+	before, after, _ := strings.Cut(baseSelectSearchRecipe, "ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num")
 	var sb strings.Builder
 	sb.WriteString(before)
 	if s != "" {
@@ -372,6 +372,18 @@ const baseSelectRecipe = `
 			 LEFT JOIN nutrition ON recipes.id = nutrition.recipe_id
 			 LEFT JOIN time_recipe ON recipes.id = time_recipe.recipe_id
 			 LEFT JOIN times ON time_recipe.time_id = times.id`
+
+const baseSelectSearchRecipe = `
+	SELECT recipes.id                                                                      AS recipe_id,
+		   recipes.name                                                                    AS name,
+		   recipes.description                                                             AS description,
+		   recipes.image                                                                   AS image,
+		   recipes.created_at                                                              AS created_at,
+		   categories.name                                                                 AS category,
+		   ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num
+	FROM recipes 
+			 LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id
+			 LEFT JOIN categories ON category_recipe.category_id = categories.id`
 
 // SelectRecipe fetches a user's recipe.
 const SelectRecipe = baseSelectRecipe + `
