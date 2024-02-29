@@ -45,11 +45,6 @@ func buildSelectPaginatedResultsQuery(queries []string, options models.SearchOpt
 func buildSearchRecipeQuery(queries []string, options models.SearchOptionsRecipes) string {
 	var sb strings.Builder
 
-	isSort := options.Sort.IsSort()
-	if isSort {
-		sb.WriteString("SELECT * FROM (")
-	}
-
 	sb.WriteString("SELECT * FROM (" + BuildBaseSelectRecipe(options.Sort))
 	sb.WriteString(" WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ?")
 
@@ -301,17 +296,23 @@ func BuildBaseSelectRecipe(sorts models.Sort) string {
 		s = "recipes.name ASC"
 	} else if sorts.IsZToA {
 		s = "recipes.name DESC"
+	} else if sorts.IsNewestToOldest {
+		s = "recipes.created_at ASC"
+	} else if sorts.IsOldestToNewest {
+		s = "recipes.created_at DESC"
+	} else if sorts.IsRandom {
+		s = "RANDOM()"
 	} else {
 		return baseSelectRecipe
 	}
 
-	before, after, _ := strings.Cut(baseSelectRecipe, "FROM recipes")
+	before, after, _ := strings.Cut(baseSelectRecipe, "ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num")
 	var sb strings.Builder
 	sb.WriteString(before)
 	if s != "" {
-		sb.WriteString(", ROW_NUMBER() OVER (ORDER BY " + s + ") AS row_num")
+		sb.WriteString(" ROW_NUMBER() OVER (ORDER BY " + s + ") AS row_num")
 	}
-	sb.WriteString(" FROM recipes" + after)
+	sb.WriteString(after)
 	return sb.String()
 }
 

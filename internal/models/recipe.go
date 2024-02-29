@@ -513,6 +513,12 @@ type SearchOptionsRecipes struct {
 type Sort struct {
 	IsAToZ bool
 	IsZToA bool
+
+	IsNewestToOldest bool
+	IsOldestToNewest bool
+
+	IsDefault bool
+	IsRandom  bool
 }
 
 // IsSort verifies whether there is a sort option enabled.
@@ -521,8 +527,9 @@ func (s *Sort) IsSort() bool {
 }
 
 // NewSearchOptionsRecipe creates a SearchOptionsRecipe struct configured for the search method.
-func NewSearchOptionsRecipe(mode string, page uint64) SearchOptionsRecipes {
+func NewSearchOptionsRecipe(mode, sort string, page uint64) SearchOptionsRecipes {
 	opts := SearchOptionsRecipes{Page: page}
+
 	switch mode {
 	case "name":
 		opts.IsByName = true
@@ -531,6 +538,22 @@ func NewSearchOptionsRecipe(mode string, page uint64) SearchOptionsRecipes {
 	default:
 		opts.IsByName = true
 	}
+
+	switch sort {
+	case "a-z":
+		opts.Sort.IsAToZ = true
+	case "z-a":
+		opts.Sort.IsZToA = true
+	case "new-old":
+		opts.Sort.IsNewestToOldest = true
+	case "old-new":
+		opts.Sort.IsOldestToNewest = true
+	case "random":
+		opts.Sort.IsRandom = true
+	default:
+		opts.Sort.IsDefault = true
+	}
+
 	return opts
 }
 

@@ -989,8 +989,10 @@ func (s *Server) recipesSearchHandler() http.HandlerFunc {
 			return
 		}
 
+		sort := query.Get("sort")
+
 		var (
-			opts   = models.NewSearchOptionsRecipe(mode, page)
+			opts   = models.NewSearchOptionsRecipe(mode, sort, page)
 			userID = getUserID(r)
 		)
 
@@ -1012,7 +1014,7 @@ func (s *Server) recipesSearchHandler() http.HandlerFunc {
 		}
 
 		isHxReq := r.Header.Get("HX-Request") == "true"
-		params := "q=" + q + "&mode=" + mode
+		params := "q=" + q + "&mode=" + mode + "&sort=" + sort
 		htmx := templates.PaginationHtmx{IsSwap: isHxReq, Target: "#list-recipes"}
 
 		p := templates.NewPagination(page, numPages, totalCount, templates.ResultsPerPage, "/recipes/search", params, htmx)

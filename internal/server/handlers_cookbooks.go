@@ -484,11 +484,9 @@ func (s *Server) cookbooksRecipesSearchHandler() http.HandlerFunc {
 		}
 
 		mode := query.Get("mode")
-		if mode == "" {
-			mode = "name"
-		}
+		sort := query.Get("sort")
 
-		opts := models.NewSearchOptionsRecipe(mode, page)
+		opts := models.NewSearchOptionsRecipe(mode, sort, page)
 		opts.CookbookID = id
 
 		recipes, totalCount, err := s.Repository.SearchRecipes(q, page, opts, userID)
@@ -510,7 +508,7 @@ func (s *Server) cookbooksRecipesSearchHandler() http.HandlerFunc {
 
 		isHxReq := r.Header.Get("HX-Request") == "true"
 
-		params := "q=" + q + "&mode=" + mode
+		params := "q=" + q + "&mode=" + mode + "&sort=" + sort
 		htmx := templates.PaginationHtmx{IsSwap: isHxReq, Target: "#search-results"}
 		p := templates.NewPagination(page, numPages, totalCount, templates.ResultsPerPage, "/cookbooks/"+idStr+"/recipes/search", params, htmx)
 		p.Search.CurrentPage = page

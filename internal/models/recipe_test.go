@@ -263,22 +263,22 @@ func TestNewSearchOptionsRecipe(t *testing.T) {
 		{
 			name:   "empty defaults to name",
 			method: "",
-			want:   models.SearchOptionsRecipes{IsByName: true, Page: 1},
+			want:   models.SearchOptionsRecipes{IsByName: true, Page: 1, Sort: models.Sort{IsDefault: true}},
 		},
 		{
 			name:   "name",
 			method: "name",
-			want:   models.SearchOptionsRecipes{IsByName: true, Page: 1},
+			want:   models.SearchOptionsRecipes{IsByName: true, Page: 1, Sort: models.Sort{IsDefault: true}},
 		},
 		{
 			name:   "empty defaults to name",
 			method: "full",
-			want:   models.SearchOptionsRecipes{IsFullSearch: true, Page: 1},
+			want:   models.SearchOptionsRecipes{IsFullSearch: true, Page: 1, Sort: models.Sort{IsDefault: true}},
 		},
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			compare(t, models.NewSearchOptionsRecipe(tc.method, 1), tc.want)
+			compare(t, models.NewSearchOptionsRecipe(tc.method, "", 1), tc.want)
 		})
 	}
 }
