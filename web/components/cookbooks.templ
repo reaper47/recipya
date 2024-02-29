@@ -25,22 +25,21 @@ templ cookbookIndex(data templates.Data) {
 	if data.CookbookFeature.ShareData.IsFromHost {
 		<script defer>
             function initReorder() {
-                document.querySelectorAll("#search-results").forEach(sortable => {
-                    const sortableInstance = new Sortable(sortable, {
-                        animation: 150,
-                        ghostClass: 'blue-background-class',
-                        handle: '.handle',
-                        onEnd: function () {
-                            Array.from(document.querySelector('#search-results').children).forEach((c, i) => {
-                                const p = c.querySelector('.handle');
-                                p.innerText = i + 1;
-                            });
-                        },
-                    });
+                const el = document.querySelector("#search-results ul");
+                const sortableInstance = new Sortable(el, {
+                    animation: 150,
+                    ghostClass: 'blue-background-class',
+                    handle: '.handle',
+                    onEnd: function () {
+                        Array.from(el.children).forEach((c, i) => {
+                            const p = c.querySelector('.handle');
+                            p.innerText = i + 1;
+                        });
+                    },
+                });
 
-                    sortable.addEventListener("htmx:afterSwap", function () {
-                        sortableInstance.option("disabled", false);
-                    });
+                el.addEventListener("htmx:afterSwap", function () {
+                    sortableInstance.option("disabled", false);
                 });
             }
 
@@ -67,7 +66,7 @@ templ cookbookIndex(data templates.Data) {
 				</section>
 			</div>
 			<div id="search-results" class="md:min-h-[79vh]">
-				<form class="sortable" hx-put={ fmt.Sprintf("/cookbooks/%d/reorder", data.CookbookFeature.Cookbook.ID) } hx-trigger="end" hx-swap="none">
+				<form hx-put={ fmt.Sprintf("/cookbooks/%d/reorder", data.CookbookFeature.Cookbook.ID) } hx-trigger="end" hx-swap="none">
 					<input type="hidden" name="cookbook-id" value={ fmt.Sprint(data.CookbookFeature.Cookbook.ID) }/>
 					<ul class="cookbooks-display grid gap-8 p-2 place-items-center text-sm md:p-0 md:text-base">
 						{ children... }
@@ -445,6 +444,7 @@ templ cookbookRecipesSearchForm(data templates.Data) {
 			}
 			hx-target="#search-results"
 			hx-push-url="true"
+			hx-trigger="submit, change target:.sort-option"
 		>
 			@searchbar(data.Content)
 		</form>

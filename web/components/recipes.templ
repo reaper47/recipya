@@ -1260,7 +1260,7 @@ templ recipesIndex(data templates.Data) {
 						hx-vals={ fmt.Sprintf(`{"page": %d}`, data.Pagination.Search.CurrentPage) }
 						hx-target="#list-recipes"
 						hx-push-url="true"
-						hx-trigger="submit, change target:.sort"
+						hx-trigger="submit, change target:.sort-option"
 					>
 						@searchbar(data.Content)
 					</form>
