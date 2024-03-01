@@ -403,7 +403,7 @@ func (m *mockRepository) Recipe(id, userID int64) (*models.Recipe, error) {
 	return nil, errors.New("recipe not found")
 }
 
-func (m *mockRepository) Recipes(userID int64, _ uint64) models.Recipes {
+func (m *mockRepository) Recipes(userID int64, _ uint64, _ string) models.Recipes {
 	if recipes, ok := m.RecipesRegistered[userID]; ok {
 		return recipes
 	}

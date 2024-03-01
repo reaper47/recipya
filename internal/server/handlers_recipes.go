@@ -24,8 +24,19 @@ func (s *Server) recipesHandler() http.HandlerFunc {
 			pageNumber = 1
 		}
 
+		sorts := r.URL.Query().Get("sort")
+		if sorts == "" {
+			sorts = "default"
+		}
+
+		mode := r.URL.Query().Get("mode")
+		if mode == "" {
+			mode = "name"
+		}
+
 		userID := getUserID(r)
-		p, err := newRecipesPagination(s, userID, pageNumber, false)
+
+		p, err := newRecipesPagination(s, userID, pageNumber, sorts, false)
 		if err != nil {
 			w.Header().Set("HX-Trigger", models.NewErrorGeneralToast("Error updating pagination.").Render())
 			w.WriteHeader(http.StatusInternalServerError)
@@ -40,12 +51,16 @@ func (s *Server) recipesHandler() http.HandlerFunc {
 			IsAuthenticated: true,
 			IsHxRequest:     r.Header.Get("HX-Request") == "true",
 			Pagination:      p,
-			Recipes:         s.Repository.Recipes(userID, pageNumber),
+			Recipes:         s.Repository.Recipes(userID, pageNumber, sorts),
+			Searchbar: templates.SearchbarData{
+				Mode: mode,
+				Sort: sorts,
+			},
 		}).Render(r.Context(), w)
 	}
 }
 
-func newRecipesPagination(srv *Server, userID int64, page uint64, isSwap bool) (templates.Pagination, error) {
+func newRecipesPagination(srv *Server, userID int64, page uint64, sorts string, isSwap bool) (templates.Pagination, error) {
 	counts, err := srv.Repository.Counts(userID)
 	if err != nil {
 		return templates.Pagination{}, err
@@ -60,7 +75,7 @@ func newRecipesPagination(srv *Server, userID int64, page uint64, isSwap bool) (
 		IsSwap: isSwap,
 		Target: "#content",
 	}
-	return templates.NewPagination(page, numPages, counts.Recipes, templates.ResultsPerPage, "/recipes", "", htmx), nil
+	return templates.NewPagination(page, numPages, counts.Recipes, templates.ResultsPerPage, "/recipes", "sort="+sorts, htmx), nil
 }
 
 func recipesAddHandler() http.HandlerFunc {
@@ -973,8 +988,10 @@ func (s *Server) recipesSearchHandler() http.HandlerFunc {
 		}
 
 		q := query.Get("q")
+		sorts := query.Get("sort")
+
 		if q == "" {
-			w.Header().Set("HX-Redirect", "/recipes")
+			w.Header().Set("HX-Redirect", "/recipes?sort="+sorts)
 			w.WriteHeader(http.StatusBadRequest)
 			_, _ = w.Write([]byte("Query parameter must not be 'q' empty."))
 			return
@@ -989,10 +1006,8 @@ func (s *Server) recipesSearchHandler() http.HandlerFunc {
 			return
 		}
 
-		sort := query.Get("sort")
-
 		var (
-			opts   = models.NewSearchOptionsRecipe(mode, sort, page)
+			opts   = models.NewSearchOptionsRecipe(mode, sorts, page)
 			userID = getUserID(r)
 		)
 
@@ -1014,7 +1029,7 @@ func (s *Server) recipesSearchHandler() http.HandlerFunc {
 		}
 
 		isHxReq := r.Header.Get("HX-Request") == "true"
-		params := "q=" + q + "&mode=" + mode + "&sort=" + sort
+		params := "q=" + q + "&mode=" + mode + "&sort=" + sorts
 		htmx := templates.PaginationHtmx{IsSwap: isHxReq, Target: "#list-recipes"}
 
 		p := templates.NewPagination(page, numPages, totalCount, templates.ResultsPerPage, "/recipes/search", params, htmx)
@@ -1022,7 +1037,6 @@ func (s *Server) recipesSearchHandler() http.HandlerFunc {
 
 		_ = components.RecipesSearch(templates.Data{
 			About:           templates.NewAboutData(),
-			Content:         q,
 			IsAdmin:         userID == 1,
 			IsAutologin:     app.Config.Server.IsAutologin,
 			IsAuthenticated: true,
@@ -1030,6 +1044,11 @@ func (s *Server) recipesSearchHandler() http.HandlerFunc {
 			Functions:       templates.NewFunctionsData[int64](),
 			Pagination:      p,
 			Recipes:         recipes,
+			Searchbar: templates.SearchbarData{
+				Mode: mode,
+				Sort: sorts,
+				Term: q,
+			},
 		}).Render(r.Context(), w)
 	}
 }

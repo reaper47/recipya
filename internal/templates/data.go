@@ -33,6 +33,7 @@ type Data struct {
 	Pagination      Pagination
 	Recipes         models.Recipes
 	Reports         ReportsData
+	Searchbar       SearchbarData
 	Settings        SettingsData
 	View            *ViewRecipeData
 }
@@ -228,6 +229,13 @@ type ReportsData struct {
 	CurrentReport []models.ReportLog
 	Imports       []models.Report
 	Sort          string
+}
+
+// SearchbarData holds data related to the searchbar.
+type SearchbarData struct {
+	Mode string
+	Sort string
+	Term string
 }
 
 // ShareData holds information on the entity being shared.

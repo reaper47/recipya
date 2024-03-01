@@ -952,16 +952,24 @@ func (s *SQLiteService) Recipe(id, userID int64) (*models.Recipe, error) {
 }
 
 // Recipes gets the user's recipes.
-func (s *SQLiteService) Recipes(userID int64, page uint64) models.Recipes {
+func (s *SQLiteService) Recipes(userID int64, page uint64, sorts string) models.Recipes {
 	ctx, cancel := context.WithTimeout(context.Background(), longerCtxTimeout)
 	defer cancel()
 
-	rows, err := s.DB.QueryContext(ctx, statements.SelectRecipes, userID, page, userID)
+	params := []any{userID, page, page}
+	stmt := statements.SelectRecipes
+	if sorts != "" && sorts != "default" {
+		params = []any{userID}
+		stmt = statements.BuildSelectPaginatedResults([]string{}, page, models.NewSearchOptionsRecipe("", sorts, 1))
+		stmt = strings.Replace(stmt, "WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? ORDER BY rank)", "WHERE user_id = ?", 1)
+	}
+
+	rows, err := s.DB.QueryContext(ctx, stmt, params...)
 	if err != nil {
 		return models.Recipes{}
 	}
 
-	recipes, err := scanRecipes(rows, false)
+	recipes, err := scanRecipes(rows, true)
 	if err != nil {
 		return models.Recipes{}
 	}

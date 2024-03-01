@@ -356,7 +356,11 @@ func (s *Server) cookbooksGetCookbookHandler() http.HandlerFunc {
 			IsHxRequest:     isHxRequest,
 			Functions:       templates.NewFunctionsData[int64](),
 			Pagination:      templates.Pagination{IsHidden: true},
-			Title:           cookbook.Title,
+			Searchbar: templates.SearchbarData{
+				Mode: query.Get("mode"),
+				Sort: query.Get("sort"),
+			},
+			Title: cookbook.Title,
 		}).Render(r.Context(), w)
 	}
 }
@@ -484,9 +488,9 @@ func (s *Server) cookbooksRecipesSearchHandler() http.HandlerFunc {
 		}
 
 		mode := query.Get("mode")
-		sort := query.Get("sort")
+		sorts := query.Get("sort")
 
-		opts := models.NewSearchOptionsRecipe(mode, sort, page)
+		opts := models.NewSearchOptionsRecipe(mode, sorts, page)
 		opts.CookbookID = id
 
 		recipes, totalCount, err := s.Repository.SearchRecipes(q, page, opts, userID)
@@ -508,14 +512,13 @@ func (s *Server) cookbooksRecipesSearchHandler() http.HandlerFunc {
 
 		isHxReq := r.Header.Get("HX-Request") == "true"
 
-		params := "q=" + q + "&mode=" + mode + "&sort=" + sort
+		params := "q=" + q + "&mode=" + mode + "&sort=" + sorts
 		htmx := templates.PaginationHtmx{IsSwap: isHxReq, Target: "#search-results"}
 		p := templates.NewPagination(page, numPages, totalCount, templates.ResultsPerPage, "/cookbooks/"+idStr+"/recipes/search", params, htmx)
 		p.Search.CurrentPage = page
 
 		_ = components.CookbookSearchRecipes(templates.Data{
-			About:   templates.NewAboutData(),
-			Content: q,
+			About: templates.NewAboutData(),
 			CookbookFeature: templates.CookbookFeature{
 				Cookbook: templates.CookbookView{
 					ID:         cookbook.ID,
@@ -535,6 +538,11 @@ func (s *Server) cookbooksRecipesSearchHandler() http.HandlerFunc {
 			IsHxRequest:     isHxReq,
 			Functions:       templates.NewFunctionsData[int64](),
 			Pagination:      p,
+			Searchbar: templates.SearchbarData{
+				Mode: mode,
+				Sort: sorts,
+				Term: q,
+			},
 		}).Render(r.Context(), w)
 	}
 }
