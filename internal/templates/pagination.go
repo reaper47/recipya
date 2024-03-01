@@ -7,15 +7,21 @@ const (
 )
 
 // NewPagination initializes a pagination struct of n pages.
-func NewPagination(page, numPages, numResults uint64, resultsPerPage uint64, url string, isSwap bool) Pagination {
+func NewPagination(page, numPages, numResults uint64, resultsPerPage uint64, url, queries string, htmx PaginationHtmx) Pagination {
+	if len(queries) > 0 {
+		queries = "&" + queries
+	}
+
 	p := Pagination{
 		Functions:      NewFunctionsData[uint64](),
 		IsHidden:       numResults == 0,
-		IsSwap:         isSwap,
+		Htmx:           htmx,
 		NumPages:       numPages,
 		NumResults:     numResults,
 		ResultsPerPage: resultsPerPage,
+		Search:         PaginationSearch{CurrentPage: 1},
 		URL:            url,
+		URLQueries:     queries,
 	}
 
 	totalPages := numResults / resultsPerPage
@@ -80,9 +86,21 @@ type Pagination struct {
 	Prev, Selected, Next uint64
 	NumPages, NumResults uint64
 	ResultsPerPage       uint64
+	Functions            FunctionsData[uint64]
+	IsHidden             bool
+	Htmx                 PaginationHtmx
+	Search               PaginationSearch
+	URL                  string
+	URLQueries           string
+}
 
-	Functions FunctionsData[uint64]
-	IsHidden  bool
-	IsSwap    bool
-	URL       string
+// PaginationHtmx holds data related to htmx for pagination.
+type PaginationHtmx struct {
+	IsSwap bool
+	Target string
+}
+
+// PaginationSearch holds search data for the pagination.
+type PaginationSearch struct {
+	CurrentPage uint64
 }

@@ -184,7 +184,7 @@ templ addRecipe() {
 							const jsonSchemaScripts = ([...document.querySelectorAll('script[type=%22application/ld+json%22]')]);
 							for (const jsonSchemaScript of jsonSchemaScripts) {
 								let data = JSON.parse(jsonSchemaScript.innerHTML);
-								if (Array.isArray(data) &amp;&amp; data.length > 0) {
+								if (Array.isArray(data) && data.length > 0) {
 									data = data[0];
 								}
 								if (data['@type'] != 'Recipe') {
@@ -201,7 +201,8 @@ templ addRecipe() {
 							} if (recipeCount === 0) {
 								alert('Unable to find a Recipe schema on this site!');
 							}
-						})()">
+						})()"
+					>
 						Recipya Bookmarklet
 					</a>.
 				</p>
@@ -1255,12 +1256,13 @@ templ recipesIndex(data templates.Data) {
 				<search>
 					<form
 						class="w-72 flex md:w-96"
-						hx-post="/recipes/search"
-						hx-vals={ fmt.Sprintf(`{"page": %d}`, data.Pagination.Selected) }
+						hx-get="/recipes/search"
+						hx-vals={ fmt.Sprintf(`{"page": %d}`, data.Pagination.Search.CurrentPage) }
 						hx-target="#list-recipes"
-						_="on submit if #search-recipes.value is not '' then add .hidden to #pagination else remove .hidden from #pagination end"
+						hx-push-url="true"
+						hx-trigger="submit, change target:.sort-option"
 					>
-						@searchbar()
+						@searchbar(data.Searchbar)
 					</form>
 				</search>
 			</section>

@@ -263,22 +263,22 @@ func TestNewSearchOptionsRecipe(t *testing.T) {
 		{
 			name:   "empty defaults to name",
 			method: "",
-			want:   models.SearchOptionsRecipes{ByName: true},
+			want:   models.SearchOptionsRecipes{IsByName: true, Page: 1, Sort: models.Sort{IsDefault: true}},
 		},
 		{
 			name:   "name",
 			method: "name",
-			want:   models.SearchOptionsRecipes{ByName: true},
+			want:   models.SearchOptionsRecipes{IsByName: true, Page: 1, Sort: models.Sort{IsDefault: true}},
 		},
 		{
 			name:   "empty defaults to name",
 			method: "full",
-			want:   models.SearchOptionsRecipes{FullSearch: true},
+			want:   models.SearchOptionsRecipes{IsFullSearch: true, Page: 1, Sort: models.Sort{IsDefault: true}},
 		},
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			compare(t, models.NewSearchOptionsRecipe(tc.method), tc.want)
+			compare(t, models.NewSearchOptionsRecipe(tc.method, "", 1), tc.want)
 		})
 	}
 }
@@ -2101,6 +2101,32 @@ func TestNewRecipesFromMasterCook(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestSort_IsSort(t *testing.T) {
+	t.Run("no sort", func(t *testing.T) {
+		s := models.Sort{}
+		if s.IsSort() {
+			t.Fail()
+		}
+	})
+
+	t.Run("is sort", func(t *testing.T) {
+		testcases := []struct {
+			name string
+			in   models.Sort
+		}{
+			{name: "A to Z enabled", in: models.Sort{IsAToZ: true}},
+			{name: "Z to A enabled", in: models.Sort{IsZToA: true}},
+		}
+		for _, tc := range testcases {
+			t.Run(tc.name, func(t *testing.T) {
+				if !tc.in.IsSort() {
+					t.Fail()
+				}
+			})
+		}
+	})
 }
 
 func assertNoError(tb testing.TB, got error) {

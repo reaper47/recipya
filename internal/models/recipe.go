@@ -502,21 +502,58 @@ func (n NutrientFDC) Value() float64 {
 
 // SearchOptionsRecipes defines the options for searching recipes.
 type SearchOptionsRecipes struct {
-	ByName     bool
-	FullSearch bool
+	CookbookID   int64
+	IsByName     bool
+	IsFullSearch bool
+	Page         uint64
+	Sort         Sort
+}
+
+// Sort defines sorting options.
+type Sort struct {
+	IsAToZ bool
+	IsZToA bool
+
+	IsNewestToOldest bool
+	IsOldestToNewest bool
+
+	IsDefault bool
+	IsRandom  bool
+}
+
+// IsSort verifies whether there is a sort option enabled.
+func (s *Sort) IsSort() bool {
+	return s.IsAToZ || s.IsZToA
 }
 
 // NewSearchOptionsRecipe creates a SearchOptionsRecipe struct configured for the search method.
-func NewSearchOptionsRecipe(method string) SearchOptionsRecipes {
-	var opts SearchOptionsRecipes
-	switch method {
+func NewSearchOptionsRecipe(mode, sort string, page uint64) SearchOptionsRecipes {
+	opts := SearchOptionsRecipes{Page: page}
+
+	switch mode {
 	case "name":
-		opts.ByName = true
+		opts.IsByName = true
 	case "full":
-		opts.FullSearch = true
+		opts.IsFullSearch = true
 	default:
-		opts.ByName = true
+		opts.IsByName = true
 	}
+
+	switch sort {
+	case "a-z":
+		opts.Sort.IsAToZ = true
+	case "z-a":
+		opts.Sort.IsZToA = true
+	case "new-old":
+		opts.Sort.IsNewestToOldest = true
+	case "old-new":
+		opts.Sort.IsOldestToNewest = true
+	case "random":
+		opts.Sort.IsRandom = true
+	default:
+		opts.Sort.IsDefault = true
+	}
+
 	return opts
 }
 

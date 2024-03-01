@@ -3,22 +3,55 @@ package statements
 import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
+	"strconv"
 	"strings"
 )
 
 // RecipesFTSFields lists all columns in the recipes_fts table.
 var RecipesFTSFields = []string{"name", "description", "category", "ingredients", "instructions", "keywords", "source"}
 
-// BuildSearchRecipeQuery builds a SQL query for searching recipes.
-func BuildSearchRecipeQuery(queries []string, options models.SearchOptionsRecipes) string {
+// BuildSelectPaginatedResults builds a SQL query for paginated search results.
+func BuildSelectPaginatedResults(queries []string, page uint64, options models.SearchOptionsRecipes) string {
+	if page == 0 {
+		page = 1
+	}
+
 	var sb strings.Builder
-	sb.WriteString(baseSelectRecipe)
+	sb.WriteString(buildSelectPaginatedResultsQuery(queries, options))
+	sb.WriteString(" SELECT * FROM results WHERE row_num BETWEEN ")
+	sb.WriteString(strconv.FormatUint((page-1)*templates.ResultsPerPage+1, 10))
+	sb.WriteString(" AND ")
+	sb.WriteString(strconv.FormatUint((page-1)*templates.ResultsPerPage+15, 10))
+	return sb.String()
+}
+
+// BuildSelectSearchResultsCount builds a SQL query for fetching the number of paginated results.
+func BuildSelectSearchResultsCount(queries []string, options models.SearchOptionsRecipes) string {
+	var sb strings.Builder
+	options.Sort = models.Sort{}
+	sb.WriteString(buildSelectPaginatedResultsQuery(queries, options))
+	sb.WriteString("SELECT COUNT(*) FROM results")
+	return sb.String()
+}
+
+func buildSelectPaginatedResultsQuery(queries []string, options models.SearchOptionsRecipes) string {
+	var sb strings.Builder
+	sb.WriteString("WITH results AS (")
+	sb.WriteString(buildSearchRecipeQuery(queries, options))
+	sb.WriteString(")")
+	return sb.String()
+}
+
+func buildSearchRecipeQuery(queries []string, options models.SearchOptionsRecipes) string {
+	var sb strings.Builder
+
+	sb.WriteString("SELECT recipe_id, name, description, image, created_at, category, row_num FROM (" + BuildBaseSelectRecipe(options.Sort))
 	sb.WriteString(" WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ?")
 
 	n := len(queries)
 	if n > 0 {
 		sb.WriteString(" AND (")
-		if options.ByName {
+		if options.IsByName {
 			switch n {
 			case 1:
 				sb.WriteString("name MATCH ?)")
@@ -31,7 +64,7 @@ func BuildSearchRecipeQuery(queries []string, options models.SearchOptionsRecipe
 				}
 				sb.WriteString(")")
 			}
-		} else if options.FullSearch {
+		} else if options.IsFullSearch {
 			nFields := len(RecipesFTSFields)
 			for i, field := range RecipesFTSFields {
 				if n == 1 {
@@ -60,7 +93,11 @@ func BuildSearchRecipeQuery(queries []string, options models.SearchOptionsRecipe
 		}
 	}
 
-	sb.WriteString(" ORDER BY rank) GROUP BY recipes.id LIMIT 30")
+	sb.WriteString(" ORDER BY rank)")
+	if options.CookbookID > 0 {
+		sb.WriteString(" AND recipes.id NOT IN (SELECT recipe_id FROM cookbook_recipes WHERE cookbook_id = ?)")
+	}
+	sb.WriteString(" GROUP BY recipes.id)")
 	return sb.String()
 }
 
@@ -77,34 +114,34 @@ func BuildSelectNutrientFDC(ingredients []string) string {
 	}
 
 	return `
-	SELECT food.fdc_id,
-		   nutrient.name,
-		   food_nutrient.amount,
-		   nutrient.unit_name
-	FROM food_nutrient
-			 INNER JOIN food ON food_nutrient.fdc_id = food.fdc_id
-			 INNER JOIN nutrient ON food_nutrient.nutrient_id = nutrient.id
-	WHERE food.fdc_id = (SELECT fdc_id
-						 FROM food
-						 WHERE ` + sb.String() + `
-                             AND ((data_type = 'sr_legacy_food' AND (food_category_id = 11 OR food_category_id = 2 OR food_category_id = 18)) OR data_type = 'survey_fndds_food' OR data_type = 'branded_food')
-						 ORDER BY 
-							 food_category_id DESC, 
-							 data_type DESC,
-							 description ASC
-						 LIMIT 1)
-	  AND nutrient.name IN (
-							'Energy',
-							'Cholesterol',
-							'Carbohydrate, by difference',
-							'Fiber, total dietary',
-							'Protein',
-							'Fatty acids, total monounsaturated',
-							'Fatty acids, total polyunsaturated',
-							'Fatty acids, total trans',
-							'Fatty acids, total saturated',
-							'Sodium, Na',
-							'Sugars, total including NLEA')`
+		SELECT food.fdc_id,
+			   nutrient.name,
+			   food_nutrient.amount,
+			   nutrient.unit_name
+		FROM food_nutrient
+				 INNER JOIN food ON food_nutrient.fdc_id = food.fdc_id
+				 INNER JOIN nutrient ON food_nutrient.nutrient_id = nutrient.id
+		WHERE food.fdc_id = (SELECT fdc_id
+							 FROM food
+							 WHERE ` + sb.String() + `
+								 AND ((data_type = 'sr_legacy_food' AND (food_category_id = 11 OR food_category_id = 2 OR food_category_id = 18)) OR data_type = 'survey_fndds_food' OR data_type = 'branded_food')
+							 ORDER BY 
+								 food_category_id DESC, 
+								 data_type DESC,
+								 description ASC
+							 LIMIT 1)
+		  AND nutrient.name IN (
+								'Energy',
+								'Cholesterol',
+								'Carbohydrate, by difference',
+								'Fiber, total dietary',
+								'Protein',
+								'Fatty acids, total monounsaturated',
+								'Fatty acids, total polyunsaturated',
+								'Fatty acids, total trans',
+								'Fatty acids, total saturated',
+								'Sodium, Na',
+								'Sugars, total including NLEA')`
 }
 
 // IsRecipeForUserExist checks whether the recipe belongs to the given user.
@@ -252,6 +289,33 @@ const SelectMeasurementSystems = `
 			 JOIN user_settings AS us ON measurement_system_id = ms.id
 	WHERE user_id = ?`
 
+// BuildBaseSelectRecipe builds from the options.
+func BuildBaseSelectRecipe(sorts models.Sort) string {
+	var s string
+	if sorts.IsAToZ {
+		s = "recipes.name ASC"
+	} else if sorts.IsZToA {
+		s = "recipes.name DESC"
+	} else if sorts.IsNewestToOldest {
+		s = "recipes.created_at ASC"
+	} else if sorts.IsOldestToNewest {
+		s = "recipes.created_at DESC"
+	} else if sorts.IsRandom {
+		s = "RANDOM()"
+	} else {
+		return baseSelectSearchRecipe
+	}
+
+	before, after, _ := strings.Cut(baseSelectSearchRecipe, "ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num")
+	var sb strings.Builder
+	sb.WriteString(before)
+	if s != "" {
+		sb.WriteString(" ROW_NUMBER() OVER (ORDER BY " + s + ") AS row_num")
+	}
+	sb.WriteString(after)
+	return sb.String()
+}
+
 const baseSelectRecipe = `
 	SELECT recipes.id                                                                      AS recipe_id,
 		   recipes.name                                                                    AS name,
@@ -290,7 +354,8 @@ const baseSelectRecipe = `
 		   nutrition.is_per_serving,
 		   times.prep_seconds,
 		   times.cook_seconds,
-		   times.total_seconds
+		   times.total_seconds,
+		   ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num
 	FROM recipes 
 			 LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id
 			 LEFT JOIN categories ON category_recipe.category_id = categories.id
@@ -308,6 +373,20 @@ const baseSelectRecipe = `
 			 LEFT JOIN time_recipe ON recipes.id = time_recipe.recipe_id
 			 LEFT JOIN times ON time_recipe.time_id = times.id`
 
+const baseSelectSearchRecipe = `
+	SELECT recipes.id                                                                      AS recipe_id,
+		   recipes.name                                                                    AS name,
+		   recipes.description                                                             AS description,
+		   recipes.image                                                                   AS image,
+		   recipes.created_at                                                              AS created_at,
+		   categories.name                                                                 AS category,
+		   user_id,
+		   ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num
+	FROM recipes 
+			 LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id
+			 LEFT JOIN categories ON category_recipe.category_id = categories.id
+			 LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id`
+
 // SelectRecipe fetches a user's recipe.
 const SelectRecipe = baseSelectRecipe + `
 	INNER JOIN user_recipe AS ur ON ur.recipe_id = recipes.id
@@ -321,16 +400,14 @@ const SelectRecipesAll = baseSelectRecipe + `
 	GROUP BY recipes.id`
 
 // SelectRecipes fetches a chunk of the user's recipes.
-const SelectRecipes = baseSelectRecipe + `
-	LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id
-	WHERE recipes.id >= (SELECT id
-			 FROM (SELECT id, ROW_NUMBER() OVER (ORDER BY id) AS row_num
-				   FROM user_recipe AS UR
-				   WHERE ur.user_id = ?)
-			 WHERE row_num > (? - 2) *` + templates.ResultsPerPageStr + " + " + templates.ResultsPerPageStr + `)
-	AND user_recipe.user_id = ?
-	GROUP BY recipes.id
-	LIMIT ` + templates.ResultsPerPageStr
+const SelectRecipes = `
+	WITh results AS (
+		SELECT recipe_id, name, description,image,created_at,category,row_num FROM (
+			` + baseSelectSearchRecipe + `
+			WHERE user_recipe.user_id = ?
+			GROUP BY recipes.id
+		)
+	) SELECT * FROM results WHERE row_num BETWEEN (?-1)*` + templates.ResultsPerPageStr + `+1 AND (?-1)*` + templates.ResultsPerPageStr + `+` + templates.ResultsPerPageStr
 
 // SelectRecipeShared checks whether the recipe is shared.
 const SelectRecipeShared = `

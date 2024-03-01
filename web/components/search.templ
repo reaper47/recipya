@@ -5,7 +5,7 @@ import (
 	"github.com/reaper47/recipya/internal/templates"
 )
 
-templ searchbar() {
+templ searchbar(data templates.SearchbarData) {
 	<div class="relative w-full">
 		<label>
 			<input
@@ -14,13 +14,14 @@ templ searchbar() {
 				name="q"
 				class="input input-bordered input-sm w-full z-20"
 				placeholder="Search for recipes..."
+				value={ data.Term }
 				_="on keyup
                    if event.target.value !== '' then
                        remove .md:block from #search-shortcut
                    else
                        add .md:block to #search-shortcut
                    end then
-                   if event.key === 'Backspace' and event.target.value === '' then
+                   if (event.key === 'Backspace' or event.key === 'Delete') and event.target.value === '' then
                        send submit to closest <form/>
                    end"
 			/>
@@ -40,62 +41,141 @@ templ searchbar() {
 		</button>
 	</div>
 	<details class="dropdown dropdown-left">
-      <summary class="btn btn-sm ml-1">@iconWrench()</summary>
-      <div tabindex="0" class="dropdown-content z-10 menu menu-sm p-2 shadow bg-base-200 w-52 sm:menu-md prose">
-          <h4>Search Method</h4>
-            <div class="form-control">
-                <label class="label cursor-pointer">
-                    <span class="label-text">By name</span>
-                    <input type="radio" name="search-method" class="radio radio-sm" checked value="name"/>
-                </label>
-            </div>
-            <div class="form-control">
-                <label class="label cursor-pointer">
-                    <span class="label-text">Full search</span>
-                    <input type="radio" name="search-method" class="radio radio-sm" value="full"/>
-                </label>
-            </div>
-        </div>
-    </details>
+		<summary class="btn btn-sm ml-1">
+			@iconWrench()
+		</summary>
+		<div tabindex="0" class="dropdown-content z-10 menu menu-sm p-2 shadow bg-base-200 w-52 sm:menu-md prose">
+			<h4>Search Method</h4>
+			<div class="form-control">
+				<label class="label cursor-pointer">
+					<span class="label-text">By name</span>
+					<input type="radio" name="mode" class="radio radio-sm" value="name" checked?={ data.Mode == "name" }/>
+				</label>
+			</div>
+			<div class="form-control">
+				<label class="label cursor-pointer">
+					<span class="label-text">Full search</span>
+					<input type="radio" name="mode" class="radio radio-sm" value="full" checked?={ data.Mode == "full" }/>
+				</label>
+			</div>
+		</div>
+	</details>
+	<details class="dropdown dropdown-left">
+		<summary class="btn btn-sm ml-1">
+			@iconSort()
+		</summary>
+		<div tabindex="0" class="dropdown-content z-10 menu menu-sm p-2 shadow bg-base-200 w-52 sm:menu-md prose">
+			<h4>Sort</h4>
+			<div class="form-control">
+				<label class="label cursor-pointer">
+					<span class="label-text">Default</span>
+					<input type="radio" name="sort" class="radio radio-sm sort-option" value="default" checked?={ data.Sort == "default" }/>
+				</label>
+			</div>
+			<div class="form-control">
+				<label class="label cursor-pointer">
+					<span class="label-text">Name:<br/>A to Z</span>
+					<input type="radio" name="sort" class="radio radio-sm sort-option" value="a-z" checked?={ data.Sort == "a-z" }/>
+				</label>
+			</div>
+			<div class="form-control">
+				<label class="label cursor-pointer">
+					<span class="label-text">Name:<br/>Z to A</span>
+					<input type="radio" name="sort" class="radio radio-sm sort-option" value="z-a" checked?={ data.Sort == "z-a" }/>
+				</label>
+			</div>
+			<div class="form-control">
+				<label class="label cursor-pointer">
+					<span class="label-text">Date created:<br/>Newest to oldest</span>
+					<input type="radio" name="sort" class="radio radio-sm sort-option" value="new-old" checked?={ data.Sort == "new-old" }/>
+				</label>
+			</div>
+			<div class="form-control">
+				<label class="label cursor-pointer">
+					<span class="label-text">Date created:<br/>Oldest to newest</span>
+					<input type="radio" name="sort" class="radio radio-sm sort-option" value="old-new" checked?={ data.Sort == "old-new" }/>
+				</label>
+			</div>
+			<div class="form-control">
+				<label class="label cursor-pointer">
+					<span class="label-text">Random</span>
+					<input type="radio" name="sort" class="radio radio-sm sort-option" value="random" checked?={ data.Sort == "random" }/>
+				</label>
+			</div>
+		</div>
+	</details>
 }
 
-templ CookbooksSearchResultsRecipes(data templates.CookbookFeature) {
-	if len(data.Cookbook.Recipes) > 0 {
-		<article class="grid gap-8 p-4 text-sm justify-center md:p-0">
-			<ul class="cookbooks-display grid gap-2 p-2 md:p-0">
-				for _, r := range data.Cookbook.Recipes {
-					<li class="indicator recipe cookbook">
-						<div class="card card-side card-compact bg-base-100 shadow-md max-w-[30rem] border indicator dark:border-slate-600">
-							<figure class="relative">
-								<img src={ fmt.Sprintf("/data/images/%s.jpg", r.Image) } alt="Recipe image" class="w-28 h-full object-cover"/>
-							</figure>
-							<div class="card-body">
-								<h2 class="card-title text-base w-[20ch] sm:w-[29ch] break-words md:text-xl">{ r.Name }</h2>
-								<p></p>
-								<div class="text-sm sm:text-base">
-									<p class="text-sm pb-1">Category:</p>
-									<div class="badge badge-primary badge-">{ r.Category }</div>
-								</div>
-								<div class="card-actions justify-end">
-									<button
-										class="btn btn-outline btn-sm"
-										hx-post={ fmt.Sprintf("/cookbooks/%d", data.Cookbook.ID) }
-										hx-vals={ fmt.Sprintf(`{"recipeId": %d}`, r.ID) }
-										hx-swap="outerHTML"
-										hx-target="closest .recipe"
-									>
-										Add
-									</button>
-								</div>
+templ CookbookSearchRecipes(data templates.Data) {
+	if data.IsHxRequest {
+		@cookbookSearchRecipes(data)
+	} else {
+		@layoutMain(data.CookbookFeature.Cookbook.Title, data) {
+			@cookbookIndex(data) {
+				@cookbookSearchRecipes(data)
+			}
+		}
+	}
+}
+
+templ cookbookSearchRecipes(data templates.Data) {
+	<article class="grid gap-8 p-4 text-sm justify-center md:p-0">
+		<ul class="cookbooks-display grid gap-2 p-2 md:p-0">
+			for _, r := range data.CookbookFeature.Cookbook.Recipes {
+				<li class="indicator recipe cookbook">
+					<div class="card card-side card-compact bg-base-100 shadow-md max-w-[30rem] border indicator dark:border-slate-600">
+						<figure class="relative">
+							<img
+								if data.Functions.IsUUIDValid(r.Image) {
+									src={ fmt.Sprintf("/data/images/%s.jpg", r.Image) }
+								} else {
+									src="/static/img/recipes/placeholder.webp"
+								}
+								alt="Recipe image"
+								class="w-28 h-full object-cover"
+							/>
+						</figure>
+						<div class="card-body">
+							<h2 class="card-title text-base w-[20ch] sm:w-[29ch] break-words md:text-xl">{ r.Name }</h2>
+							<p></p>
+							<div class="text-sm sm:text-base">
+								<p class="text-sm pb-1">Category:</p>
+								<div class="badge badge-primary badge-">{ r.Category }</div>
+							</div>
+							<div class="card-actions justify-end">
+								<button
+									class="btn btn-outline btn-sm"
+									hx-post={ fmt.Sprintf("/cookbooks/%d", data.CookbookFeature.Cookbook.ID) }
+									hx-vals={ fmt.Sprintf(`{"recipeId": %d}`, r.ID) }
+									hx-swap="outerHTML"
+									hx-target="closest .recipe"
+									_="on click put (#search-count.textContent as Number) - 1 into #search-count"
+								>
+									Add
+								</button>
 							</div>
 						</div>
-					</li>
-				}
-			</ul>
-		</article>
-	} else {
-		@SearchNoResult()
+					</div>
+				</li>
+			}
+		</ul>
+	</article>
+	if data.Pagination.Htmx.IsSwap {
+		@Pagination(data.Pagination)
 	}
+}
+
+templ RecipesSearch(data templates.Data) {
+	if data.IsHxRequest {
+		@ListRecipesSearch(data)
+	} else {
+		@RecipesIndex(data)
+	}
+}
+
+templ ListRecipesSearch(data templates.Data) {
+	@ListRecipes(data)
+	@Pagination(data.Pagination)
 }
 
 templ SearchNoResult() {

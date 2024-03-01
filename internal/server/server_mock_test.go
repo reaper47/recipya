@@ -403,7 +403,7 @@ func (m *mockRepository) Recipe(id, userID int64) (*models.Recipe, error) {
 	return nil, errors.New("recipe not found")
 }
 
-func (m *mockRepository) Recipes(userID int64, _ uint64) models.Recipes {
+func (m *mockRepository) Recipes(userID int64, _ uint64, _ string) models.Recipes {
 	if recipes, ok := m.RecipesRegistered[userID]; ok {
 		return recipes
 	}
@@ -497,20 +497,20 @@ func (m *mockRepository) RestoreUserBackup(backup *models.UserBackup) error {
 	return nil
 }
 
-func (m *mockRepository) SearchRecipes(query string, opts models.SearchOptionsRecipes, userID int64) (models.Recipes, error) {
+func (m *mockRepository) SearchRecipes(query string, _ uint64, options models.SearchOptionsRecipes, userID int64) (models.Recipes, uint64, error) {
 	recipes, ok := m.RecipesRegistered[userID]
 	if !ok {
-		return nil, errors.New("user not found")
+		return nil, 0, errors.New("user not found")
 	}
 
 	var results models.Recipes
 	for _, r := range recipes {
-		if (opts.ByName && strings.Contains(strings.ToLower(r.Name), query)) ||
-			(opts.FullSearch && (strings.Contains(strings.ToLower(r.Name), query) || strings.Contains(strings.ToLower(r.Category), query) || strings.Contains(strings.ToLower(r.Description), query))) {
+		if (options.IsByName && strings.Contains(strings.ToLower(r.Name), query)) ||
+			(options.IsFullSearch && (strings.Contains(strings.ToLower(r.Name), query) || strings.Contains(strings.ToLower(r.Category), query) || strings.Contains(strings.ToLower(r.Description), query))) {
 			results = append(results, r)
 		}
 	}
-	return results, nil
+	return results, uint64(len(results)), nil
 }
 
 func (m *mockRepository) SwitchMeasurementSystem(system units.System, userID int64) error {

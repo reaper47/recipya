@@ -99,7 +99,7 @@ func TestNewPagination(t *testing.T) {
 	}
 	for _, tc := range testcases {
 		t.Run("test pagination init "+tc.name, func(t *testing.T) {
-			got := templates.NewPagination(tc.in, tc.want.NumPages, tc.want.NumResults, 12, "/recipes", false)
+			got := templates.NewPagination(tc.in, tc.want.NumPages, tc.want.NumResults, 12, "/recipes", "", templates.PaginationHtmx{})
 
 			if !slices.Equal(got.Left, tc.want.Left) {
 				t.Errorf("Left: wanted %#v but got %#v", tc.want.Left, got.Left)

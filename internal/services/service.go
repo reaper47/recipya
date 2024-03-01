@@ -110,7 +110,7 @@ type RepositoryService interface {
 	Recipe(id, userID int64) (*models.Recipe, error)
 
 	// Recipes gets the user's recipes.
-	Recipes(userID int64, page uint64) models.Recipes
+	Recipes(userID int64, page uint64, sorts string) models.Recipes
 
 	// RecipesAll gets all the user's recipes.
 	RecipesAll(userID int64) models.Recipes
@@ -141,7 +141,8 @@ type RepositoryService interface {
 	RestoreUserBackup(backup *models.UserBackup) error
 
 	// SearchRecipes searches for recipes based on the configuration.
-	SearchRecipes(query string, options models.SearchOptionsRecipes, userID int64) (models.Recipes, error)
+	// It returns the paginated search recipes, the total number of search results and an error.
+	SearchRecipes(query string, page uint64, options models.SearchOptionsRecipes, userID int64) (models.Recipes, uint64, error)
 
 	// SwitchMeasurementSystem sets the user's units system to the desired one.
 	SwitchMeasurementSystem(system units.System, userID int64) error

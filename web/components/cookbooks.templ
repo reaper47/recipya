@@ -9,10 +9,14 @@ templ CookbookIndex(data templates.Data) {
 	if data.IsHxRequest {
 		<title hx-swap-oob="true">{ data.CookbookFeature.Cookbook.Title } | Recipya</title>
 		<div id="content-title" hx-swap-oob="innerHTML">{ data.CookbookFeature.Cookbook.Title }</div>
-		@cookbookIndex(data)
+		@cookbookIndex(data) {
+			@CookbookRecipes(data.CookbookFeature)
+		}
 	} else {
 		@layoutMain(data.CookbookFeature.Cookbook.Title, data) {
-			@cookbookIndex(data)
+			@cookbookIndex(data) {
+				@CookbookRecipes(data.CookbookFeature)
+			}
 		}
 	}
 }
@@ -21,22 +25,21 @@ templ cookbookIndex(data templates.Data) {
 	if data.CookbookFeature.ShareData.IsFromHost {
 		<script defer>
             function initReorder() {
-                document.querySelectorAll("#search-results").forEach(sortable => {
-                    const sortableInstance = new Sortable(sortable, {
-                        animation: 150,
-                        ghostClass: 'blue-background-class',
-                        handle: '.handle',
-                        onEnd: function () {
-                            Array.from(document.querySelector('#search-results').children).forEach((c, i) => {
-                                const p = c.querySelector('.handle');
-                                p.innerText = i + 1;
-                            });
-                        },
-                    });
+                const el = document.querySelector("#search-results ul");
+                const sortableInstance = new Sortable(el, {
+                    animation: 150,
+                    ghostClass: 'blue-background-class',
+                    handle: '.handle',
+                    onEnd: function () {
+                        Array.from(el.children).forEach((c, i) => {
+                            const p = c.querySelector('.handle');
+                            p.innerText = i + 1;
+                        });
+                    },
+                });
 
-                    sortable.addEventListener("htmx:afterSwap", function () {
-                        sortableInstance.option("disabled", false);
-                    });
+                el.addEventListener("htmx:afterSwap", function () {
+                    sortableInstance.option("disabled", false);
                 });
             }
 
@@ -55,25 +58,28 @@ templ cookbookIndex(data templates.Data) {
 			<div class="flex flex-col h-full">
 				<section class="grid justify-center p-2 sm:p-4 sm:pb-0">
 					if data.CookbookFeature.ShareData.IsFromHost {
-						@cookbookRecipesSearchForm(data.CookbookFeature.Cookbook.PageItemID, data.CookbookFeature.Cookbook.PageNumber)
+						@cookbookRecipesSearchForm(data)
 					}
 					<p class={ "grid justify-center font-semibold underline mt-4 md:mt-0 md:text-xl", templ.KV("md:hidden", data.CookbookFeature.ShareData.IsFromHost) }>
 						{ data.CookbookFeature.Cookbook.Title }
 					</p>
 				</section>
 			</div>
-			<form class="sortable" hx-put={ fmt.Sprintf("/cookbooks/%d/reorder", data.CookbookFeature.Cookbook.ID) } hx-trigger="end" hx-swap="none">
-				<input type="hidden" name="cookbook-id" value={ fmt.Sprint(data.CookbookFeature.Cookbook.ID) }/>
-				<ul id="search-results" class="cookbooks-display grid gap-8 p-2 place-items-center text-sm md:p-0 md:text-base">
-					@CookbookRecipes(data.CookbookFeature)
-				</ul>
-			</form>
+			<div id="search-results" class="md:min-h-[79vh]">
+				<form hx-put={ fmt.Sprintf("/cookbooks/%d/reorder", data.CookbookFeature.Cookbook.ID) } hx-trigger="end" hx-swap="none">
+					<input type="hidden" name="cookbook-id" value={ fmt.Sprint(data.CookbookFeature.Cookbook.ID) }/>
+					<ul class="cookbooks-display grid gap-8 p-2 place-items-center text-sm md:p-0 md:text-base">
+						{ children... }
+					</ul>
+				</form>
+			</div>
 		</section>
+		@Pagination(data.Pagination)
 	} else {
 		<div class="flex flex-col h-full">
 			<section class="grid justify-center p-2 sm:p-4">
 				if data.CookbookFeature.ShareData.IsFromHost {
-					@cookbookRecipesSearchForm(data.CookbookFeature.Cookbook.PageItemID, data.CookbookFeature.Cookbook.PageNumber)
+					@cookbookRecipesSearchForm(data)
 				}
 				<p class="grid justify-center font-semibold underline mt-4 md:hidden">
 					{ data.CookbookFeature.Cookbook.Title }
@@ -106,7 +112,7 @@ templ CookbookRecipes(data templates.CookbookFeature) {
 					{ fmt.Sprint(i+1) }
 				</div>
 				if data.ShareData.IsFromHost {
-					<div class="indicator-item badge badge-neutral h-6">
+					<div class="indicator-item badge badge-neutral h-6 w-8">
 						<button
 							title="Remove recipe from cookbook"
 							class="btn btn-ghost btn-xs p-0"
@@ -426,15 +432,21 @@ templ cookbookImageForm(id int64) {
 	</form>
 }
 
-templ cookbookRecipesSearchForm(pageItemID int64, pageNumber uint64) {
+templ cookbookRecipesSearchForm(data templates.Data) {
 	<search>
 		<form
 			class="w-72 flex md:w-96"
-			hx-post="/cookbooks/recipes/search"
+			hx-get={ fmt.Sprintf("/cookbooks/%d/recipes/search", data.CookbookFeature.Cookbook.PageItemID) }
+			if data.Pagination.Search.CurrentPage == 0 {
+				hx-vals={ fmt.Sprint(`{"page": 1}`) }
+			} else {
+				hx-vals={ fmt.Sprintf(`{"page": %d}`, data.Pagination.Search.CurrentPage) }
+			}
 			hx-target="#search-results"
-			hx-vals={ fmt.Sprintf(`{"id": %d, "page": %d}`, pageItemID, pageNumber) }
+			hx-push-url="true"
+			hx-trigger="submit, change target:.sort-option"
 		>
-			@searchbar()
+			@searchbar(data.Searchbar)
 		</form>
 	</search>
 }
