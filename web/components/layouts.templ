@@ -64,6 +64,7 @@ templ layoutMain(title string, data templates.Data) {
 							class="btn btn-primary btn-sm hover:btn-accent"
 							hx-get="/recipes/add"
 							hx-target="#content"
+							hx-trigger="mousedown"
 							hx-push-url="true"
 						>
 							Add recipe
@@ -74,6 +75,7 @@ templ layoutMain(title string, data templates.Data) {
 							hx-post="/cookbooks"
 							hx-prompt="Enter the name of your cookbook"
 							hx-target="#cookbooks-display"
+							hx-trigger="mousedown"
 							hx-swap="beforeend"
 						>
 							Add cookbook
@@ -143,7 +145,7 @@ templ layoutMain(title string, data templates.Data) {
 				if data.IsAuthenticated {
 					<aside id="desktop_nav" class="hidden md:block">
 						<ul class="menu menu-sm bg-base-300 rounded-box h-full" style="border-radius: 0">
-							<li id="recipes_sidebar_recipes" hx-get="/recipes" hx-target="#content" hx-push-url="true" hx-swap-oob="true">
+							<li id="recipes_sidebar_recipes" hx-get="/recipes" hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap-oob="true">
 								<a class="tooltip tooltip-right active" data-tip="Recipes">
 									@iconCubeTransparent()
 								</a>
@@ -152,6 +154,7 @@ templ layoutMain(title string, data templates.Data) {
 								id="recipes_sidebar_cookbooks"
 								hx-get="/cookbooks"
 								hx-target="#content"
+								hx-trigger="mousedown"
 								hx-push-url="true"
 								hx-swap-oob="true"
 							>

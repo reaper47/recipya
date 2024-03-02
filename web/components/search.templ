@@ -44,7 +44,7 @@ templ searchbar(data templates.SearchbarData) {
 		<summary class="btn btn-sm ml-1">
 			@iconWrench()
 		</summary>
-		<div tabindex="0" class="dropdown-content z-10 menu menu-sm p-2 shadow bg-base-200 w-52 sm:menu-md prose">
+		<div tabindex="0" class="dropdown-content z-10 menu menu-sm p-2 shadow bg-base-200 w-52 sm:menu-md prose" _="on click remove @open from closest <details/>">
 			<h4>Search Method</h4>
 			<div class="form-control">
 				<label class="label cursor-pointer">
@@ -60,11 +60,11 @@ templ searchbar(data templates.SearchbarData) {
 			</div>
 		</div>
 	</details>
-	<details class="dropdown dropdown-left">
+	<details id="fuck" class="dropdown dropdown-left">
 		<summary class="btn btn-sm ml-1">
 			@iconSort()
 		</summary>
-		<div tabindex="0" class="dropdown-content z-10 menu menu-sm p-2 shadow bg-base-200 w-52 sm:menu-md prose">
+		<div tabindex="0" class="dropdown-content z-10 menu menu-sm p-2 shadow bg-base-200 w-52 sm:menu-md prose" _="on click remove @open from closest <details/>">
 			<h4>Sort</h4>
 			<div class="form-control">
 				<label class="label cursor-pointer">

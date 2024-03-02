@@ -22,6 +22,7 @@ templ Pagination(p templates.Pagination) {
 					class="join-item btn"
 					hx-get={ fmt.Sprintf("%s?page=%d%s", p.URL, p.Prev, p.URLQueries) }
 					hx-target={ p.Htmx.Target }
+					hx-trigger="mousedown"
 					hx-push-url={ fmt.Sprintf("%s?page=%d", p.URL, p.Prev) }
 				>
 					«
@@ -36,6 +37,7 @@ templ Pagination(p templates.Pagination) {
 						class="join-item btn"
 						hx-get={ fmt.Sprintf("%s?page=%d%s", p.URL, l, p.URLQueries) }
 						hx-target={ p.Htmx.Target }
+						hx-trigger="mousedown"
 						hx-push-url={ fmt.Sprintf("%s?page=%d%s", p.URL, l, p.URLQueries) }
 					>
 						{ fmt.Sprint(l) }
@@ -53,6 +55,7 @@ templ Pagination(p templates.Pagination) {
 						aria-current="page"
 						hx-get={ fmt.Sprintf("%s?page=%d%s", p.URL, m, p.URLQueries) }
 						hx-target={ p.Htmx.Target }
+						hx-trigger="mousedown"
 						hx-push-url={ fmt.Sprintf("%s?page=%d%s", p.URL, m, p.URLQueries) }
 					>
 						{ fmt.Sprint(m) }
@@ -62,6 +65,7 @@ templ Pagination(p templates.Pagination) {
 						class="join-item btn"
 						hx-get={ fmt.Sprintf("%s?page=%d%s", p.URL, m, p.URLQueries) }
 						hx-target={ p.Htmx.Target }
+						hx-trigger="mousedown"
 						hx-push-url={ fmt.Sprintf("%s?page=%d%s", p.URL, m, p.URLQueries) }
 					>
 						{ fmt.Sprint(m) }
@@ -82,6 +86,7 @@ templ Pagination(p templates.Pagination) {
 						aria-current="page"
 						hx-get={ fmt.Sprintf("%s?page=%d%s", p.URL, r, p.URLQueries) }
 						hx-target={ p.Htmx.Target }
+						hx-trigger="mousedown"
 						hx-push-url={ fmt.Sprintf("%s?page=%d%s", p.URL, r, p.URLQueries) }
 					>
 						{ fmt.Sprint(r) }
@@ -91,6 +96,7 @@ templ Pagination(p templates.Pagination) {
 						class="join-item btn"
 						hx-get={ fmt.Sprintf("%s?page=%d%s", p.URL, r, p.URLQueries) }
 						hx-target={ p.Htmx.Target }
+						hx-trigger="mousedown"
 						hx-push-url={ fmt.Sprintf("%s?page=%d%s", p.URL, r, p.URLQueries) }
 					>
 						{ fmt.Sprint(r) }
@@ -104,6 +110,7 @@ templ Pagination(p templates.Pagination) {
 					class="join-item btn"
 					hx-get={ fmt.Sprintf("%s?page=%d%s", p.URL, p.Next, p.URLQueries) }
 					hx-target={ p.Htmx.Target }
+					hx-trigger="mousedown"
 					hx-push-url={ fmt.Sprintf("%s?page=%d%s", p.URL, p.Next, p.URLQueries) }
 				>
 					»

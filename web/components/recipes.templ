@@ -1298,7 +1298,7 @@ templ ListRecipes(data templates.Data) {
 		for _, r := range data.Recipes {
 			<section class="card card-compact bg-base-100 shadow-lg indicator">
 				<span class="indicator-item indicator-center badge badge-primary select-none">{ r.Category }</span>
-				<figure class="relative cursor-pointer" hx-get={ fmt.Sprintf("/recipes/%d", r.ID) } hx-target="#content" hx-push-url="true">
+				<figure class="relative cursor-pointer" hx-get={ fmt.Sprintf("/recipes/%d", r.ID) } hx-target="#content" hx-push-url="true" hx-trigger="mousedown">
 					<img
 						class="h-48 max-w-48 w-full object-cover rounded-t-lg"
 						if data.Functions.IsUUIDValid(r.Image) {
@@ -1315,7 +1315,7 @@ templ ListRecipes(data templates.Data) {
 				<div class="card-body" lang="en">
 					<h2 class="font-semibold w-[25ch] break-words">{ r.Name }</h2>
 					<div class="card-actions h-full flex-col-reverse">
-						<button class="btn btn-block btn-sm btn-outline" hx-get={ fmt.Sprintf("/recipes/%d", r.ID) } hx-target="#content" hx-push-url="true">
+						<button class="btn btn-block btn-sm btn-outline" hx-get={ fmt.Sprintf("/recipes/%d", r.ID) } hx-target="#content" hx-trigger="mousedown" hx-push-url="true">
 							View
 						</button>
 					</div>

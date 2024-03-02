@@ -10,12 +10,12 @@ templ CookbookIndex(data templates.Data) {
 		<title hx-swap-oob="true">{ data.CookbookFeature.Cookbook.Title } | Recipya</title>
 		<div id="content-title" hx-swap-oob="innerHTML">{ data.CookbookFeature.Cookbook.Title }</div>
 		@cookbookIndex(data) {
-			@CookbookRecipes(data.CookbookFeature)
+			@CookbookRecipes(data)
 		}
 	} else {
 		@layoutMain(data.CookbookFeature.Cookbook.Title, data) {
 			@cookbookIndex(data) {
-				@CookbookRecipes(data.CookbookFeature)
+				@CookbookRecipes(data)
 			}
 		}
 	}
@@ -103,20 +103,20 @@ templ CookbookIndexNoRecipes(isHost bool) {
 	</div>
 }
 
-templ CookbookRecipes(data templates.CookbookFeature) {
-	if len(data.Cookbook.Recipes) > 0 {
-		for i, r := range data.Cookbook.Recipes {
+templ CookbookRecipes(data templates.Data) {
+	if len(data.CookbookFeature.Cookbook.Recipes) > 0 {
+		for i, r := range data.CookbookFeature.Cookbook.Recipes {
 			<li class="indicator recipe cookbook">
 				<input type="hidden" name="recipe-id" value={ fmt.Sprint(r.ID) }/>
-				<div class={ "indicator-item indicator-bottom badge badge-secondary", templ.KV("cursor-move handle", data.ShareData.IsFromHost), templ.KV("cursor-none", !data.ShareData.IsFromHost) }>
+				<div class={ "indicator-item indicator-bottom badge badge-secondary", templ.KV("cursor-move handle", data.CookbookFeature.ShareData.IsFromHost), templ.KV("cursor-none", !data.CookbookFeature.ShareData.IsFromHost) }>
 					{ fmt.Sprint(i+1) }
 				</div>
-				if data.ShareData.IsFromHost {
+				if data.CookbookFeature.ShareData.IsFromHost {
 					<div class="indicator-item badge badge-neutral h-6 w-8">
 						<button
 							title="Remove recipe from cookbook"
 							class="btn btn-ghost btn-xs p-0"
-							hx-delete={ fmt.Sprintf("/cookbooks/%d/recipes/%d", data.Cookbook.ID, r.ID) }
+							hx-delete={ fmt.Sprintf("/cookbooks/%d/recipes/%d", data.CookbookFeature.Cookbook.ID, r.ID) }
 							hx-swap="outerHTML"
 							hx-target="closest .recipe"
 							hx-confirm="Are you sure you want to remove this recipe from the cookbook?"
@@ -128,7 +128,15 @@ templ CookbookRecipes(data templates.CookbookFeature) {
 				}
 				<div class="card card-side card-bordered card-compact bg-base-100 shadow-lg sm:w-[30rem]">
 					<figure class="w-28 sm:w-32">
-						<img src={ fmt.Sprintf("/data/images/%s.jpg", r.Image) } alt="Recipe image" class="object-cover"/>
+						<img
+							if data.Functions.IsUUIDValid(r.Image) {
+								src={ fmt.Sprintf("/data/images/%s.jpg", r.Image) }
+							} else {
+								src="/static/img/recipes/placeholder.webp"
+							}
+							alt="Recipe image"
+							class="object-cover"
+						/>
 					</figure>
 					<div class="card-body">
 						<h2 class="card-title text-base w-[20ch] sm:w-full break-words md:text-xl">{ r.Name }</h2>
@@ -138,11 +146,12 @@ templ CookbookRecipes(data templates.CookbookFeature) {
 							<div class="badge badge-primary badge-">{ r.Category }</div>
 						</div>
 						<div class="card-actions justify-end">
-							if data.ShareData.IsFromHost {
+							if data.CookbookFeature.ShareData.IsFromHost {
 								<button
 									class="btn btn-outline btn-sm"
 									hx-get={ fmt.Sprintf("/recipes/%d", r.ID) }
 									hx-target="#content"
+									hx-trigger="mousedown"
 									hx-swap="innerHTML"
 									hx-push-url="true"
 								>
@@ -151,8 +160,9 @@ templ CookbookRecipes(data templates.CookbookFeature) {
 							} else {
 								<button
 									class="btn btn-outline btn-sm"
-									hx-get={ fmt.Sprintf("/r/%d?cookbook=%d", r.ID, data.Cookbook.ID) }
+									hx-get={ fmt.Sprintf("/r/%d?cookbook=%d", r.ID, data.CookbookFeature.Cookbook.ID) }
 									hx-target="#content"
+									hx-trigger="mousedown"
 									hx-swap="innerHTML"
 									hx-push-url="true"
 								>
@@ -165,7 +175,7 @@ templ CookbookRecipes(data templates.CookbookFeature) {
 			</li>
 		}
 	} else {
-		@CookbookIndexNoRecipes(data.ShareData.IsFromHost)
+		@CookbookIndexNoRecipes(data.CookbookFeature.ShareData.IsFromHost)
 	}
 }
 
@@ -200,6 +210,7 @@ templ cookbooksIndex(data templates.Data) {
 					title="Display as list"
 					hx-get="/cookbooks?view=list"
 					hx-target="#content"
+					hx-trigger="mousedown"
 				>
 					@iconList()
 				</div>
@@ -209,6 +220,7 @@ templ cookbooksIndex(data templates.Data) {
 					title="Display as grid"
 					hx-get="/cookbooks?view=grid"
 					hx-target="#content"
+					hx-trigger="mousedown"
 				>
 					@iconGrid()
 				</div>
@@ -342,7 +354,7 @@ templ cookbookGrid(cookbook templates.CookbookView) {
 				<p class="font-semibold w-[18ch] break-words">{ cookbook.Title }</p>
 				<span
 					class="three-dots-container cursor-pointer float-right"
-					_="on click openCookbookOptionsMenu(event)"
+					_="on mousedown openCookbookOptionsMenu(event)"
 				>
 					@iconDotsVertical()
 				</span>
@@ -352,6 +364,7 @@ templ cookbookGrid(cookbook templates.CookbookView) {
 					class="btn btn-block btn-sm btn-outline"
 					hx-get={ fmt.Sprintf("/cookbooks/%d?page=%d", cookbook.ID, cookbook.PageNumber) }
 					hx-target="#content"
+					hx-trigger="mousedown"
 					hx-push-url={ fmt.Sprintf("/cookbooks/%d", cookbook.ID) }
 				>
 					Open
@@ -369,7 +382,7 @@ templ cookbookList(cookbook templates.CookbookView) {
 		<span class="indicator-item indicator-start badge badge-primary select-none">{ fmt.Sprint(cookbook.NumRecipes) }</span>
 		<span
 			class="three-dots-container indicator-item indicator-end badge badge-neutral rounded-md p-1 select-none cursor-pointer hover:bg-secondary"
-			_="on click openCookbookOptionsMenu(event)"
+			_="on mousedown openCookbookOptionsMenu(event)"
 		>
 			@iconDotsVertical()
 		</span>
@@ -395,6 +408,7 @@ templ cookbookList(cookbook templates.CookbookView) {
 					class="btn btn-outline btn-sm"
 					hx-get={ fmt.Sprintf("/cookbooks/%d?page=%d", cookbook.ID, cookbook.PageNumber) }
 					hx-target="#content"
+					hx-trigger="mousedown"
 					hx-push-url={ fmt.Sprintf("/cookbooks/%d", cookbook.ID) }
 				>
 					Open
