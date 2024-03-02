@@ -65,8 +65,9 @@ templ ReportsTabImports(data templates.Data, isHighlightFirst bool) {
 					hx-get={ fmt.Sprintf("/reports/%d", r.ID) }
 					hx-target="#report-view-pane"
 					hx-swap="outerHTML"
+					hx-trigger="mousedown"
 					hx-push-url="true"
-					_="on click remove .bg-slate-200 .dark:bg-slate-700 from .item then add .bg-slate-200 .dark:bg-slate-700"
+					_="on mousedown remove .bg-slate-200 .dark:bg-slate-700 from .item then add .bg-slate-200 .dark:bg-slate-700"
 				>
 					<span>
 						<b>{ fmt.Sprint(r.CreatedAt.Format(time.RFC822)) }</b>

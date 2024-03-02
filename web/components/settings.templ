@@ -29,10 +29,11 @@ templ settings(data templates.Data) {
 					class="px-2 bg-gray-300 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-800"
 					hx-get="/settings/tabs/profile"
 					hx-target="#settings-tab-content"
+					hx-trigger="mousedown"
 					role="tab"
 					aria-selected="false"
 					aria-controls="tab-content"
-					_="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800"
+					_="on mousedown remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800"
 				>
 					Profile
 				</button>
@@ -41,10 +42,11 @@ templ settings(data templates.Data) {
 				class={ "px-2 hover:bg-gray-300 dark:hover:bg-gray-800", templ.KV("bg-gray-300 dark:bg-gray-800", data.IsAutologin) }
 				hx-get="/settings/tabs/recipes"
 				hx-target="#settings-tab-content"
+				hx-trigger="mousedown"
 				role="tab"
 				aria-selected="false"
 				aria-controls="tab-content"
-				_="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800"
+				_="on mousedown remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800"
 			>
 				Recipes
 			</button>
@@ -52,10 +54,11 @@ templ settings(data templates.Data) {
 				class="px-2 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-800"
 				hx-get="/settings/tabs/advanced"
 				hx-target="#settings-tab-content"
+				hx-trigger="mousedown"
 				role="tab"
 				aria-selected="false"
 				aria-controls="tab-content"
-				_="on click remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800"
+				_="on mousedown remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800"
 			>
 				Advanced
 			</button>
