@@ -1429,7 +1429,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 								id="output"
 								style="object-fit: cover"
 								alt="Image of the recipe"
-								class="w-full"
+								class="w-full max-h-[34rem]"
 								if data.IsUUIDValid {
 									src={ fmt.Sprintf("/data/images/%s.jpg", data.Recipe.Image) }
 								} else {

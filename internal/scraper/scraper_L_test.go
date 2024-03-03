@@ -382,6 +382,58 @@ func TestScraper_L(t *testing.T) {
 			},
 		},
 		{
+			name: "livingthegreenlife.com",
+			in:   "https://livingthegreenlife.com/recepten/vegan-tikka-masala-met-rijst/",
+			want: models.RecipeSchema{
+				AtContext:     atContext,
+				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "Diner"},
+				CookTime:      "PT30M",
+				DateModified:  "2021-04-20T07:30:51+02:00",
+				DatePublished: "2020-03-30T08:06:37+02:00",
+				Description: models.Description{
+					Value: "Tikka masala is een mix van geroosterde kruiden en specerijen. Zowel India als Engeland beweren deze heerlijke kruidenmix uitgevonden te hebben. Wat voor ons het belangrijkste is, is dat we een vegan variant hebben gemaakt. Mega simpel en minstens net zo lekker als het origineel!",
+				},
+				Keywords: models.Keywords{Values: "Living the Green Life"},
+				Image: models.Image{
+					Value: "https://livingthegreenlife.com/wp-content/uploads/2020/03/2020_03_18-Tikka_masaka01_TW-scaled-1.jpg",
+				},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"0,75 st bloemkool",
+						"3 el plantaardige olie",
+						"3 tl garam masala",
+						"200 g zilvervliesrijst",
+						"1 st ui",
+						"3 teentje(s) knoflook",
+						"1 st  gemberwortel (1 x 1 cm)",
+						"1 tl kurkuma",
+						"1 tl gemalen komijn",
+						"1 tl gerookte-paprikapoeder",
+						"1 blik(ken) tomatenblokjes",
+						"1 snuf(jes) zout",
+						"1 blik(ken) linzen",
+						"2 el kokosyoghurt",
+						"1 el ahornsiroop",
+						"1 handje(s) cashewnoten",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Verwarm de oven voor op 180 ˚C en bekleed een bakplaat met bakpapier.",
+						"Snijd de bloemkool in kleine roosjes. Leg deze op de met bakpapier beklede bakplaat en schep ze om met 2 eetlepels olie en garam masala. Rooster de roosjes 25-30 minuten in de voorverwarmde oven.",
+						"Kook intussen de rijst volgens de instructies op de verpakking.",
+						"Snijd de ui, de knoflook en de gember fijn. Verwarm 1 eetlepel olie in de pan en fruit hierin de ui, knoflook en gember. Voeg de overige kruiden en de tomatenblokjes toe. Laat 15 minuten sudderen op laag vuur en breng op smaak met zout.",
+						"Voeg de geroosterde bloemkool en de linzen toe aan de saus en laat het nog 10 minuten sudderen.",
+						"Verdeel de rijst over 2 diepe borden en schep de saus ernaast. Maak swirls van kokosyoghurt en ahornsiroop, en voeg eventueel wat gehakte cashewnoten toe voor een extra bite.",
+					},
+				},
+				Name:  "Vegan tikka masala met rijst",
+				Yield: models.Yield{Value: 1},
+				URL:   "https://livingthegreenlife.com/recepten/vegan-tikka-masala-met-rijst/",
+			},
+		},
+		{
 			name: "lovingitvegan.com",
 			in:   "https://lovingitvegan.com/vegan-buffalo-chicken-dip/",
 			want: models.RecipeSchema{

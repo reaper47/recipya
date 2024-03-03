@@ -51,6 +51,53 @@ func TestScraper_M(t *testing.T) {
 			},
 		},
 		{
+			name: "maangchi2.com",
+			in:   "https://www.maangchi.com/recipe/dwaejigogi-bokkeum",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "Side dish"},
+				Cuisine:       models.Cuisine{Value: "Korean"},
+				DateCreated:   "2010-09-03T14:39:18+00:00",
+				DateModified:  "2021-08-11T00:50:16+00:00",
+				DatePublished: "2010-09-03T14:39:18+00:00",
+				Description: models.Description{
+					Value: "Dwaejigogibokkeum is sometimes called jeyuk bokkeum or even dwaejibulgogi bokkeum. This recipe is very easy, delicious, and fast! You can make a huge plate of dwaejigogibokkeum in 20 minutes!",
+				},
+				Keywords: models.Keywords{
+					Values: "doaejigogi bokkeum, doejigogi bokkeum, doejigogibokkeum, dwaeji-bulgogi, dwaejigogi bokkeum, 돼지고기볶음, gochujang doejigogi bokkeum, gochujang jeyukbokkeum, 제육볶음, jeyuk bokkeum, jeyukbokkeum, korean food, Korean kitchen, Korean spicy pork, Korean spicy stir-fried pork, pork recipe, recipe, spicy food, spicy pork, spicy stir-fried pork",
+				},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"1 pound pork belly, cut into bite size pieces (1/8 inch thick)",
+						"¼ cup hot pepper paste (gochujang)",
+						"1 tablespoon soy sauce",
+						"1 tablespoon sugar",
+						"2 tablespoons hot pepper flakes (gochu-garu)",
+						"¼ teaspoon ground black pepper",
+						"1 tablespoon toasted sesame oil",
+						"5 garlic cloves, minced",
+						"1 teaspoon ginger, minced",
+						"1 medium size onion, sliced",
+						"4 green onions, sliced",
+						"1 teaspoon toasted sesame seeds",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Heat up a large, thick skillet (or pan) over medium high heat.",
+						"Add pork, hot pepper paste, soy sauce, sugar, hot pepper flakes, black pepper, and toasted sesame oil.",
+						"Mix it well, stirring with a wooden spoon. Cook it for a few minutes until the pork is well mixed with the seasonings.",
+						"Add garlic, ginger, onion, and green onions. Stir and cook for 12 to 15 minutes until the pork is fully cooked and juicy and a little crispy.",
+						"Transfer to a serving plate and serve with rice, kimchi, lettuce, ssamjang, and more side dishes.",
+					},
+				},
+				Name:  "Spicy stir-fried pork (Dwaejigogi-bokkeum)",
+				Yield: models.Yield{Value: 1},
+				URL:   "https://www.maangchi.com/recipe/dwaejigogi-bokkeum",
+			},
+		},
+		{
 			name: "madensverden.dk",
 			in:   "https://madensverden.dk/durumboller-nemme-italienske-boller-med-durum-mel/",
 			want: models.RecipeSchema{

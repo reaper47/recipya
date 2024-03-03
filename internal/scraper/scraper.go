@@ -2,7 +2,6 @@ package scraper
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
@@ -40,16 +39,11 @@ func (s *Scraper) Scrape(url string, files services.FilesService) (models.Recipe
 		_ = res.Body.Close()
 	}()
 
-	if res == nil {
-		return rs, errors.New("scrape response is nil")
+	if res.StatusCode >= http.StatusBadRequest {
+		return rs, fmt.Errorf("could not fetch (%d), try the bookmarklet", res.StatusCode)
 	}
 
-	body := res.Body
-	if body == nil {
-		return rs, errors.New("scrape response body is nil")
-	}
-
-	doc, err := goquery.NewDocumentFromReader(body)
+	doc, err := goquery.NewDocumentFromReader(res.Body)
 	if err != nil {
 		return rs, fmt.Errorf("could not parse HTML: %w", err)
 	}
