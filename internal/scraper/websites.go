@@ -15,6 +15,10 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		switch host {
 		case "afghankitchenrecipes":
 			return scrapeAfghanKitchen(doc)
+		case "ah":
+			return scrapeAh(doc)
+		case "argiro":
+			return scrapeArgiro(doc)
 		case "archanaskitchen":
 			return scrapeArchanasKitchen(doc)
 		default:
@@ -78,6 +82,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeFarmhousedelivery(doc)
 		case "fitmencook":
 			return scrapeFitMenCook(doc)
+		case "foodnetwork":
+			return scrapeFoodNetwork(doc)
 		case "foodrepublic":
 			return scrapeFoodRepublic(doc)
 		case "forksoverknives":

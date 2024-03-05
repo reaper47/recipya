@@ -1,16 +1,25 @@
-package scraper
+package scraper_test
 
 import (
-	"github.com/PuerkitoBio/goquery"
+	"bytes"
 	"github.com/google/go-cmp/cmp"
+	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/scraper"
+	"github.com/reaper47/recipya/internal/services"
+	"io"
+	"mime/multipart"
+	"net/http"
 	"os"
 	"path"
 	"path/filepath"
 	"runtime"
 	"strings"
 	"testing"
+	"time"
 )
+
+const atContext = "https://schema.org"
 
 type testcase struct {
 	name string
@@ -40,30 +49,40 @@ func test(t *testing.T, tc testcase) {
 
 func testFile(t *testing.T, name, url string) models.RecipeSchema {
 	t.Helper()
-	host, _, _ := strings.Cut(name, ".")
-	_, fileName, _, _ := runtime.Caller(0)
-	f, err := os.Open(filepath.Join(path.Dir(fileName), "testdata", host+".html"))
-	if err != nil {
-		t.Fatalf("%s open file: %s", name, err)
-	}
-	defer f.Close()
 
-	doc, err := goquery.NewDocumentFromReader(f)
-	if err != nil {
-		t.Fatalf("%s could not parse HTML: %s", host, err)
-	}
+	scrape := scraper.NewScraper(&mockHTTPClient{
+		DoFunc: func(r *http.Request) (*http.Response, error) {
+			host, _, _ := strings.Cut(name, ".")
+			_, fileName, _, _ := runtime.Caller(0)
+			f, err := os.Open(filepath.Join(path.Dir(fileName), "testdata", host+".html"))
+			if err != nil {
+				t.Fatalf("%s open file: %s", name, err)
+			}
+			defer f.Close()
 
-	actual, err := scrapeWebsite(doc, getHost(url))
+			data, err := io.ReadAll(f)
+			if err != nil {
+				return nil, err
+			}
+
+			return &http.Response{
+				StatusCode: 200,
+				Body:       io.NopCloser(bytes.NewReader(data)),
+			}, nil
+		},
+	})
+
+	got, err := scrape.Scrape(url, &mockFiles{})
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if actual.URL == "" {
-		actual.URL = url
+	if got.URL == "" {
+		got.URL = url
 	}
 
-	actual.AtContext = atContext
-	return actual
+	got.AtContext = atContext
+	return got
 }
 
 /*func updateHTMLFile(t *testing.T, name, url string) {
@@ -99,7 +118,9 @@ func testFile(t *testing.T, name, url string) models.RecipeSchema {
 		t.Log(err)
 		return
 	}
-}
+}*/
+
+var anUploadedImage = uuid.New()
 
 type mockFiles struct {
 	exportHitCount      int
@@ -109,18 +130,43 @@ type mockFiles struct {
 	uploadImageFunc     func(rc io.ReadCloser) (uuid.UUID, error)
 }
 
+func (m *mockFiles) BackupGlobal() error {
+	panic("implement me")
+}
+
+func (m *mockFiles) Backups(userID int64) []time.Time {
+	panic("implement me")
+}
+
+func (m *mockFiles) BackupUserData(repo services.RepositoryService, userID int64) error {
+	panic("implement me")
+}
+
+func (m *mockFiles) BackupUsersData(repo services.RepositoryService) error {
+	panic("implement me")
+}
+
+func (m *mockFiles) ScrapeAndStoreImage(rawURL string) (uuid.UUID, error) {
+	return anUploadedImage, nil
+}
+
+func (m *mockFiles) ExtractUserBackup(date string, userID int64) (*models.UserBackup, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (m *mockFiles) ExportCookbook(cookbook models.Cookbook, fileType models.FileType) (string, error) {
 	m.exportHitCount++
 	return cookbook.Title + fileType.Ext(), nil
 }
 
-func (m *mockFiles) ExportRecipes(recipes models.Recipes, _ models.FileType) (string, error) {
-	var s string
+func (m *mockFiles) ExportRecipes(recipes models.Recipes, fileType models.FileType, progress chan int) (*bytes.Buffer, error) {
+	var sb strings.Builder
 	for _, recipe := range recipes {
-		s += recipe.Name + "-"
+		sb.WriteString(recipe.Name + "-")
 	}
 	m.exportHitCount++
-	return s, nil
+	return bytes.NewBufferString(sb.String()), nil
 }
 
 func (m *mockFiles) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recipes {
@@ -144,4 +190,3 @@ func (m *mockFiles) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
 	m.uploadImageHitCount++
 	return uuid.New(), nil
 }
-*/

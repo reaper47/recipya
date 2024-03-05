@@ -13,42 +13,41 @@ import (
 
 const atContext = "https://schema.org"
 
+type HTTPClient interface {
+	Do(req *http.Request) (*http.Response, error)
+}
+
 // IScraper is the scraper's interface.
 type IScraper interface {
 	Scrape(url string, files services.FilesService) (models.RecipeSchema, error)
 }
 
 // Scraper represents the IScraper's implementation.
-type Scraper struct{}
+type Scraper struct {
+	Client HTTPClient
+}
 
 // NewScraper creates a new Scraper.
-func NewScraper() *Scraper {
-	return &Scraper{}
+func NewScraper(client HTTPClient) *Scraper {
+	return &Scraper{
+		Client: client,
+	}
 }
 
 // Scrape extracts the recipe from the given URL. An error will be
 // returned when the URL cannot be parsed.
 func (s *Scraper) Scrape(url string, files services.FilesService) (models.RecipeSchema, error) {
-	var rs models.RecipeSchema
+	host := getHost(url)
+	if host == "bergamot" {
+		return s.scrapeBergamot(url)
+	}
 
-	res, err := http.Get(url)
+	doc, err := s.fetchDocument(url)
 	if err != nil {
-		return rs, fmt.Errorf("could not fetch the url: %w", err)
-	}
-	defer func() {
-		_ = res.Body.Close()
-	}()
-
-	if res.StatusCode >= http.StatusBadRequest {
-		return rs, fmt.Errorf("could not fetch (%d), try the bookmarklet", res.StatusCode)
+		return models.RecipeSchema{}, err
 	}
 
-	doc, err := goquery.NewDocumentFromReader(res.Body)
-	if err != nil {
-		return rs, fmt.Errorf("could not parse HTML: %w", err)
-	}
-
-	rs, err = scrapeWebsite(doc, getHost(url))
+	rs, err := scrapeWebsite(doc, host)
 	if err != nil {
 		return rs, ErrNotImplemented
 	}
@@ -70,6 +69,37 @@ func (s *Scraper) Scrape(url string, files services.FilesService) (models.Recipe
 	return rs, nil
 }
 
+func (s *Scraper) fetchDocument(url string) (*goquery.Document, error) {
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	const mozilla = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0"
+
+	switch getHost(url) {
+	case "aberlehome":
+		req.Header.Set("User-Agent", mozilla)
+	case "ah":
+		req.Header.Set("Accept-Language", "nl")
+		req.Header.Set("User-Agent", mozilla)
+	}
+
+	res, err := s.Client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		_ = res.Body.Close()
+	}()
+
+	if res.StatusCode >= http.StatusBadRequest {
+		return nil, fmt.Errorf("could not fetch (%d), try the bookmarklet", res.StatusCode)
+	}
+
+	return goquery.NewDocumentFromReader(res.Body)
+}
+
 func getHost(rawURL string) string {
 	u, err := url.Parse(rawURL)
 	if err != nil {
@@ -85,7 +115,7 @@ func getHost(rawURL string) string {
 		return parts[1]
 	case 3:
 		s := parts[0]
-		if s == "recipes" || s == "receitas" || s == "cooking" || s == "news" || s == "mobile" {
+		if s == "recipes" || s == "receitas" || s == "cooking" || s == "news" || s == "mobile" || s == "dashboard" {
 			return parts[1]
 		}
 

@@ -1,4 +1,4 @@
-package scraper
+package scraper_test
 
 import (
 	"github.com/reaper47/recipya/internal/models"
@@ -578,6 +578,17 @@ func TestScraper_F(t *testing.T) {
 						"1/2 cup red seedless grapes, halved",
 						"3 spring onions, whites and greens divided and chopped",
 						"8 hearts of romaine leaves",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Preheat the oven to 175°C.",
+						"For the dressing: Whisk together the yogurt, lemon juice, oil, vinegar, thyme, 1/2 teaspoon salt and 1/4 teaspoon pepper in a small bowl until combined; set aside.",
+						"For the salad: Spread the walnuts on a baking sheet, and toast until lightly browned and fragrant, 5 to 7 minutes. Let cool for 5 minutes, then break up into 1/4-inch pieces.",
+						"To assemble: Toss the walnuts, chicken, apples, grapes and scallion whites together with the dressing in a large bowl until everything is well coated; season with salt and pepper. Scoop a scant 1/2 cup of the salad into each romaine leaf, and arrange 2 on each serving plate. Garnish with the scallion greens, and serve.",
+						"Copyright 2015 Television Food Network, G.P. All rights reserved.",
+						"Note: Never leave a child unattended in the kitchen. Limit the child to tasks that are safe and age-appropriate.",
+						"From Food Network Kitchen",
 					},
 				},
 				Name:     "Waldorf Chicken Boats",

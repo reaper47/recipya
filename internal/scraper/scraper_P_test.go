@@ -1,4 +1,4 @@
-package scraper
+package scraper_test
 
 import (
 	"github.com/reaper47/recipya/internal/models"
@@ -24,9 +24,7 @@ func TestScraper_P(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "bars, egg-free, no-bake, nut butter, paleo, peanut butter, vegan",
 				},
-				Image: models.Image{
-					Value: "https://www.paleorunningmomma.com/wp-content/uploads/2021/03/peanut-butter-granola-bars-5.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 1/2 cups pecan halves ( or walnuts)",
@@ -96,9 +94,7 @@ func TestScraper_P(t *testing.T) {
 						"maçãs e especiarias, o frango segue macio, macio mesmo depois de requentado. Agora, o inegociável: investir " +
 						"em um curry de qualidade, já que é ele que dá todo o sabor ao preparo.",
 				},
-				Image: models.Image{
-					Value: "https://i.panelinha.com.br/i1/228-q-5378-frango-ao-curry-com-maca.webp",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 filés de peito de frango (cerca de 500g)",
@@ -147,9 +143,7 @@ func TestScraper_P(t *testing.T) {
 				Description: models.Description{
 					Value: "Because I’ve made them many times over the years and they’re the best pumpkin muffins I’ve tasted — fluffy, flavorful, unfussy, nice doming.\n\nBecause even though baking with pumpkin can be kind of a seasonal fad, it’s a delicious one, so pumpkin on!\n\nBecause now that it’s October you’re undoubtedly going to need to bring a crowd-pleasing, autumn-appropriate dish to school/work/church/soccer, etc. Or you’re simply going to want one at home on a brisk autumn afternoon.\n\nBecause you can easily double the recipe for a big group — in fact, the orignal recipe from Erin Cooks (one of my earliest favorite food blogs) makes a whole lot of muffins — or make them in mini muffin pans or mini loaf pans for lunch boxes or cute gifts.\n\nBecause pumpkin + cake mix does not equal a recipe (yeah, I said it — sorry, Pinterest!).\n\nBecause you probably have all the ingredients on hand already (especially in October, because pumpkin time).\n\nBecause they can pass for breakfast, dessert or even a side dish — versatility awaits!\n\nBecause friends love to receive the occasional pumpkin muffin surprise on their doorstep.\n\nBecause baking these muffins doubles as an awesome home fragrance for your kitchen.\n\nBecause…oh, just turn on the oven and make ’em!",
 				},
-				Image: models.Image{
-					Value: "https://paninihappy.com/wp-content/uploads/2014/10/pumpkin-muffins-490.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Yield: models.Yield{Value: 12},
 				Ingredients: models.Ingredients{
 					Values: []string{
@@ -195,9 +189,7 @@ func TestScraper_P(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "crockpot french toast casserole, overnight slow cooker french toast casserole, slow cooker french toast casserole",
 				},
-				Image: models.Image{
-					Value: "https://www.persnicketyplates.com/wp-content/uploads/2023/11/slow-cooker-french-toast-casserole-38-SQUARE.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 loaf Italian bread (cut into 1&quot; pieces. (This should be 6-7 cups of bread))",
@@ -253,9 +245,7 @@ func TestScraper_P(t *testing.T) {
 					Value: "To effortlessly serve up this dish that outshines takeout, the secret is having all your vegetables chopped and prepped. Once you begin cooking, this recipe comes together swiftly, and with everything ready, the entire meal flows seamlessly.",
 				},
 				Keywords: models.Keywords{Values: "peanut free, tree nut free, vegan, vegetarian, plant-based"},
-				Image: models.Image{
-					Value: "https://cdn.pickuplimes.com/cache/bb/4e/bb4e629665ff1fa30a02f7571a79655e.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3 Tbsp dark soy sauce", "2 Tbsp water", "2 Tbsp toasted sesame oil",
@@ -283,9 +273,7 @@ func TestScraper_P(t *testing.T) {
 					Value: "O alho-francês é um ingrediente muito versátil, que fica bem em várias receitas. Aqui, preparámos uma tarte de alho-francês caramelizado, com massa folhada e queijo. Experimente e delicie-se.",
 				},
 				Keywords: models.Keywords{Values: "alho-francês, tartes"},
-				Image: models.Image{
-					Value: "https://www.pingodoce.pt/wp-content/uploads/2021/08/tarte-de-alho-frances-caramelizado.jpeg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"800 g alho-francês", "1 c. de sopa azeite Pingo Doce",
@@ -333,9 +321,7 @@ func TestScraper_P(t *testing.T) {
 					Value: "This Cajun dirty rice dish is made with chopped veggies, cajun spices, and smoked sausage and is loaded with flavor! Serve this rice with chicken, fish, or shrimp to create the ultimate Cajun meal.",
 				},
 				Keywords: models.Keywords{Values: "cajun recipes, cajun rice, dirty rice, rice side dishes"},
-				Image: models.Image{
-					Value: "https://pinkowlkitchen.com/wp-content/uploads/2023/08/cajun-dirty-rice-with-smoked-sausage-featured-image.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 cup long-grain rice", "2 1/4 cups chicken stock (divided)",
@@ -392,9 +378,7 @@ func TestScraper_P(t *testing.T) {
 					Value: "With only 15 minutes of prep, this decadent, yet easy mushroom tart is ready in less than 30 minutes.",
 				},
 				Keywords: models.Keywords{Values: "mushroom flatbread, Mushroom Tart, Mushroom Tart recipe"},
-				Image: models.Image{
-					Value: "https://www.platingpixels.com/wp-content/uploads/2022/06/Mushroom-Tart-recipe-6.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 tablespoon olive oil", "1 medium yellow onion (diced)",

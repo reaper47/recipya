@@ -3,6 +3,7 @@ package models
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/reaper47/recipya/internal/utils/extensions"
 	"log"
 	"strconv"
 	"strings"
@@ -103,7 +104,7 @@ func (r *RecipeSchema) Recipe() (*Recipe, error) {
 		Image:        image,
 		Ingredients:  r.Ingredients.Values,
 		Instructions: r.Instructions.Values,
-		Keywords:     strings.Split(r.Keywords.Values, ","),
+		Keywords:     extensions.Unique(strings.Split(r.Keywords.Values, ",")),
 		Name:         r.Name,
 		Nutrition:    nutrition,
 		Times:        times,

@@ -1,4 +1,4 @@
-package scraper
+package scraper_test
 
 import (
 	"github.com/reaper47/recipya/internal/models"
@@ -295,6 +295,7 @@ func TestScraper_A(t *testing.T) {
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "hoofdgerecht"},
+				CookTime:      "PT3H",
 				DatePublished: "2022-09-30",
 				Description: models.Description{
 					Value: "Proef de authentieke Franse keuken met boeuf bourguignon oftewel: 'Rund op z'n Bourgondisch'. Rode wijn, laurierblad en mosterd zorgen voor diepe winterse smaken. Serveren met geroosterde spruiten.",
@@ -331,14 +332,15 @@ func TestScraper_A(t *testing.T) {
 				},
 				Name: "Boeuf bourguignon uit de oven met geroosterde spruiten",
 				NutritionSchema: models.NutritionSchema{
-					Calories:      "640 kcal energie",
-					Carbohydrates: "23 g koolhydraten",
-					Fat:           "33 g vet",
-					Protein:       "52 g eiwit",
-					SaturatedFat:  "12 g waarvan verzadigd",
+					Calories:      "640 kcal",
+					Carbohydrates: "23 g",
+					Fat:           "33 g",
+					Protein:       "52 g",
+					SaturatedFat:  "12 g",
 				},
-				Yield: models.Yield{Value: 4},
-				URL:   "https://www.ah.nl/allerhande/recept/R-R1197438/boeuf-bourguignon-uit-de-oven-met-geroosterde-spruiten",
+				PrepTime: "PT30M",
+				Yield:    models.Yield{Value: 4},
+				URL:      "https://www.ah.nl/allerhande/recept/R-R1197438/boeuf-bourguignon-uit-de-oven-met-geroosterde-spruiten",
 			},
 		},
 		{

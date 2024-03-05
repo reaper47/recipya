@@ -1,4 +1,4 @@
-package scraper
+package scraper_test
 
 import (
 	"github.com/reaper47/recipya/internal/models"
