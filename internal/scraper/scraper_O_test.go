@@ -24,9 +24,7 @@ func TestScraper_O(t *testing.T) {
 					Values: "Vegan, Gluten-Free, Soy-Free, Budget Friendly, Freezer Friendly, Kid Friendly, Make-Ahead, " +
 						"Party Favourite",
 				},
-				Image: models.Image{
-					Value: "https://ohsheglows.com/gs_images/2018/10/Bread-Free-Stuffing-Balls-00724.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 tablespoon (15 mL) extra-virgin olive oil",
@@ -113,9 +111,7 @@ func TestScraper_O(t *testing.T) {
 					Value: "Super crispy and flaky on the outside and slightly chewy inside, my dim sum favorite, scallion pancakes, make a wonderful snack that you’ll love! {Vegan}",
 				},
 				Keywords: models.Keywords{Values: "restaurant-style"},
-				Image: models.Image{
-					Value: "https://omnivorescookbook.com/wp-content/uploads/2020/08/200730_Scallion-Pancakes_550.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 cups (300 g) all-purpose flour", "1/2 teaspoon salt",
@@ -177,9 +173,7 @@ func TestScraper_O(t *testing.T) {
 					Value: "This recipe makes tender and fluffy basmati rice every time.",
 				},
 				Keywords: models.Keywords{Values: "All Seasons, Rice"},
-				Image: models.Image{
-					Value: "https://www.onceuponachef.com/images/2013/12/perfect-basmati-rice-1200x1496.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 cup basmati rice (preferably imported from India or Pakistan)",
@@ -232,9 +226,7 @@ func TestScraper_O(t *testing.T) {
 				Description: models.Description{
 					Value: "INGREDIENTS    6 tablespoons olive oil    3 tablespoons red wine vinegar    1 teaspoon Dijon mustard    1 teaspoon honey    1 teaspoon Italian seasoning    ¼ teaspoon kosher salt, plus more for seasoning    ¼ teaspoon freshly ground black pepper, plus more for seasoning    2 (4- or 5-ounce) thin-cut",
 				},
-				Image: models.Image{
-					Value: "http://static1.squarespace.com/static/627be79397093e2de753b260/627c408602fed77ca384eb11/62a755c0413fa263bac259a1/1657510744961/COBB+CHICKEN+SANDWICH.jpg?format=1500w",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"6 tablespoons olive oil", "3 tablespoons red wine vinegar",

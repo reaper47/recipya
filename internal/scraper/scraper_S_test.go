@@ -15,9 +15,7 @@ func TestScraper_S(t *testing.T) {
 				AtType:        models.SchemaType{Value: "Recipe"},
 				CookTime:      "PT15M",
 				DatePublished: "2023/11/17",
-				Image: models.Image{
-					Value: "https://www.saboresajinomoto.com.br/uploads/images/recipes/pizza-de-pao-amanhecido.webp",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{Values: []string{
 					"3 pães tipo francês amanhecidos e picados",
 					"meia xícara (chá) de água (100 ml)",
@@ -57,9 +55,7 @@ func TestScraper_S(t *testing.T) {
 						"of butter. Make sure the butter is very cold before beginning. This recipe yields 2 pounds of dough.",
 				},
 				Keywords: models.Keywords{Values: "breakfast pastries, danishes, pastry"},
-				Image: models.Image{
-					Value: "https://sallysbakingaddiction.com/wp-content/uploads/2020/06/breakfast-pastries-2-225x225.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1/4 cup (60ml) warm water (between 100-110°F, 38-43°C)",
@@ -155,6 +151,7 @@ func TestScraper_S(t *testing.T) {
 				Description: models.Description{
 					Value: "Dieses hübsche Dessert sieht nicht nur gut aus, sondern ist auch ganz schnell zubereitet, dann muss es nur noch gekühlt werden und ist bereit zum S",
 				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"200 g Zucker",
@@ -201,9 +198,7 @@ func TestScraper_S(t *testing.T) {
 					Value: "The creamiest, most luxurious and delicious mashed potatoes. A beloved side dish that can become the star of the meal.",
 				},
 				Keywords: models.Keywords{Values: "mashed potatoes"},
-				Image: models.Image{
-					Value: "https://saltpepperskillet.com/wp-content/uploads/creamy-mashed-potatoes-horizontal.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 lbs Yukon Gold potatoes", "1/4 lb unsalted butter ((room temperature))",
@@ -239,11 +234,9 @@ func TestScraper_S(t *testing.T) {
 					Value: "These sweet dumplings, known as pierogi in Poland and varenyky in Ukraine, are a staple of many Slavic cuisines.",
 				},
 				DatePublished: "2022-04-05 17:23:56",
-				Image: models.Image{
-					Value: "https://www.saveur.com/uploads/2022/04/HR-Pierogi-Saveur-08-scaled.jpg?auto=webp",
-				},
-				Yield: models.Yield{Value: 4},
-				URL:   "https://www.saveur.com/recipes/varenyky-pierogi-recipe/",
+				Image:         models.Image{Value: anUploadedImage.String()},
+				Yield:         models.Yield{Value: 4},
+				URL:           "https://www.saveur.com/recipes/varenyky-pierogi-recipe/",
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 cups all-purpose flour, plus more for dusting",
@@ -284,9 +277,7 @@ func TestScraper_S(t *testing.T) {
 					Value: "Tender seaweed and pieces of beef brisket come together in this warming, comforting, and nutritious " +
 						"Korean soup.",
 				},
-				Image: models.Image{
-					Value: "https://www.seriouseats.com/thmb/BkhWm33gH4ho1SSMFOLwfO8O6Ww=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__2020__02__20200128-miyeok-guk-korean-seaweed-soup-vicky-wasik-7-21447f5620914e4b9e19912a78b7306c.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 ounce (30g) dried miyeok seaweed (also sold under the Japanese name wakame )",
@@ -350,9 +341,7 @@ func TestScraper_S(t *testing.T) {
 				Description: models.Description{
 					Value: "With only 7 ingredients this flavorful vegan blackberry cobbler is a great way to use up the season's abundance of blackberries.",
 				},
-				Image: models.Image{
-					Value: "https://simple-veganista.com/wp-content/uploads/2016/06/best-vegan-blackberry-cobbler-9-225x225.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 cup flour", "1/2 cup sugar", "1 heaped teaspoon baking powder",
@@ -404,9 +393,7 @@ func TestScraper_S(t *testing.T) {
 					Value: "Deftiges, würziges Gulasch mit bunter Paprika - so wird die Sauce schön fruchtig.",
 				},
 				Keywords: models.Keywords{Values: "Fleisch & Geflügel"},
-				Image: models.Image{
-					Value: "https://www.simply-cookit.com/sites/default/files/styles/square/public/assets/image/2021/03/buntes-paprikagulasch_portrait.jpg?h=2e35897f&itok=MwyrxSek",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"300 g Zwiebeln", "20 ml Rapsöl", "750 g Gulasch, gemischt",
@@ -446,9 +433,7 @@ func TestScraper_S(t *testing.T) {
 						"super healthy, packed with protein, fermented veggies, and greens!",
 				},
 				Keywords: models.Keywords{Values: "egg, kimchi, quinoa bowl"},
-				Image: models.Image{
-					Value: "https://www.simplyquinoa.com/wp-content/uploads/2015/06/spicy-kimchi-quinoa-bowls-3.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 teaspoons toasted sesame oil",
@@ -514,9 +499,7 @@ func TestScraper_S(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "Comfort Food, Quick and Easy, Restaurant Favorite, British, Indian, Gluten-Free, Dinner",
 				},
-				Image: models.Image{
-					Value: "https://www.simplyrecipes.com/thmb/pYiHJojfyPYHFzhTQS8OU0GXUlE=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__simply_recipes__uploads__2017__02__2017-02-27-ChickenTikkaMasala-18-2b30d704a54e4620a0f17fd085afeef5.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"For the chicken:",
@@ -605,9 +588,7 @@ func TestScraper_S(t *testing.T) {
 					Values: "dill pickle pasta salad, pasta salad with pickles, dill pasta salad, pasta salad recipe, dairy free " +
 						"dill pickle pasta salad, dairy free pasta salad, dairy free macaroni salad",
 				},
-				Image: models.Image{
-					Value: "https://www.simplywhisked.com/wp-content/uploads/2022/01/Dairy-Free-Dill-Pickle-Pasta-Salad-3-225x225.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 pound pasta, cooked and cooled",
@@ -670,9 +651,7 @@ func TestScraper_S(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "Air Fryer Recipes, air fryer steak, sirloin",
 				},
-				Image: models.Image{
-					Value: "https://www.skinnytaste.com/wp-content/uploads/2022/03/Air-Fryer-Steak-6.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 teaspoon garlic powder",
@@ -727,9 +706,7 @@ func TestScraper_S(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "sós karamell,vegán,pohárkrém,tejmentes,narancsos mézeskalácsos pohárdesszert,karamellszósz,vegán desszert,sajttorta pohárdesszert,hamis karamell,karamelles sajttorta pohárdesszert",
 				},
-				Image: models.Image{
-					Value: "https://kep.cdn.index.hu/1/0/5187/51872/518723/51872395_3953787_76294cf7da02a7d922b6c376100fbca3_wm.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"150 ml vegán karamell a leírás szerint",
@@ -763,9 +740,7 @@ func TestScraper_S(t *testing.T) {
 				Description: models.Description{
 					Value: "The star of the Thanksgiving meal takes on a new life in this cozy and comforting Creamy Turkey and Wild Rice Soup.",
 				},
-				Image: models.Image{
-					Value: "https://southerncastiron.com/wp-content/uploads/2017/06/sthCastIron-logo-544x180.png",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"4 tablespoons unsalted butter", "½ cup sliced celery",
@@ -805,9 +780,7 @@ func TestScraper_S(t *testing.T) {
 					Value: "Great corn doesn&#39;t get much easier than our Oven-Roasted Corn on the Cob recipe. The trick? Flavored butter and foil. See how to bake corn on the cob in the oven.",
 				},
 				Yield: models.Yield{Value: 4},
-				Image: models.Image{
-					Value: "https://www.southernliving.com/thmb/-bpB7uavaEqLXMhmTD0mz3Fj9c0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/20220408_SL_OvenRoastedCornontheCobb_Beauty_1904-ed8011d403984f0aba111ec358359e02.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1/4 cup unsalted butter, softened",
@@ -847,9 +820,7 @@ func TestScraper_S(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "best recipe, ham and pea soup, how to make, leftover ham, split pea soup",
 				},
-				Image: models.Image{
-					Value: "https://www.spendwithpennies.com/wp-content/uploads/2023/10/1200-Split-Pea-Soup-SpendWithPennies.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 cups dried split peas (green or yellow (14 oz))",
@@ -909,9 +880,7 @@ func TestScraper_S(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "how to make seafood dressing, Louisiana seafood dressing, seafood cornbread dressing, seafood dressing, shrimp cornbread dressing",
 				},
-				Image: models.Image{
-					Value: "https://www.staysnatched.com/wp-content/uploads/2022/05/seafood-dressing-with-crab-and-shrimp-6-1.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"Cooked/Day Old Cornbread", "1 tablespoon olive oil",
@@ -970,9 +939,7 @@ func TestScraper_S(t *testing.T) {
 						"cucumber pickle like I have. The recipe for the quick cucumber pickle is below.",
 				},
 				Keywords: models.Keywords{Values: "korean bbq, taco"},
-				Image: models.Image{
-					Value: "https://steamykitchen.com/wp-content/uploads/2009/07/kogi-bbq-taco-151.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 pound cooked pulled pork or cooked shredded chicken",
@@ -1031,9 +998,7 @@ func TestScraper_S(t *testing.T) {
 				},
 				Name:  "Thai Red Duck Curry",
 				Yield: models.Yield{Value: 4},
-				Image: models.Image{
-					Value: "https://streetkitchen.co/wp-content/uploads/2022/10/Thai-Red-Duck-Curry-feature.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 tablespoons vegetable oil",
@@ -1069,9 +1034,7 @@ func TestScraper_S(t *testing.T) {
 					Value: "This is Sunbasket’s easy (and gluten-free!) spin on an American classic.",
 				},
 				Keywords: models.Keywords{Values: ""},
-				Image: models.Image{
-					Value: "https://cdn.sunbasket.com/c46a59d6-5745-4b86-9574-0e3e4ab4318b.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 cup milk",
@@ -1125,9 +1088,7 @@ func TestScraper_S(t *testing.T) {
 				CookTime:      "PT15M",
 				Cuisine:       models.Cuisine{Value: "Middelhavsmad"},
 				DatePublished: "2023-01-13T17:24:13+00:00",
-				Image: models.Image{
-					Value: "https://sundpaabudget.dk/wp-content/uploads/2023/01/20230113125804_IMG_1660-1.jpg",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 dl ris", "300 g kebab", "1 ds kikærter", "2 peberfrugter", "1 rødløg",
@@ -1171,9 +1132,7 @@ func TestScraper_S(t *testing.T) {
 				CookTime:      "PT0H0M",
 				DatePublished: "2019-02-25",
 				Description:   models.Description{Value: "Veggie Chili"},
-				Image: models.Image{
-					Value: "https://img.sunset02.com/sunsetm/wp-content-uploads/2019-03-29UTC04/veggie-chili-sun-61056-0219.jpg",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 cup each dried pinto beans and dried kidney beans, sorted of debris and rinsed, and soaked separately for two nights in 3 cups water each",
@@ -1227,9 +1186,7 @@ func TestScraper_S(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "pasta, sauce, tomato, italian, tomato sauce",
 				},
-				Image: models.Image{
-					Value: "https://sweetcsdesigns.com/wp-content/uploads/2022/03/roasted-tomato-marinara-sauce-recipe-picture-720x720.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 pounds roma tomatoes",
@@ -1295,9 +1252,7 @@ func TestScraper_S(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "cilantro lime chicken crockpot tacos, cilantro lime chicken tacos, crockpot tacos, meal prep tacos",
 				},
-				Image: models.Image{
-					Value: "https://sweetpeasandsaffron.com/wp-content/uploads/2017/08/Slow-Cooker-Cilantro-Lime-Chicken-Tacos.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"4 chicken breasts (roughly 2 lbs; boneless skinless chicken thighs may also be used * see note 1)",

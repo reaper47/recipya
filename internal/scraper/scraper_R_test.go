@@ -20,9 +20,7 @@ func TestScraper_R(t *testing.T) {
 						"" +
 						"is vegan, gluten-free and craveable.",
 				},
-				Image: models.Image{
-					Value: "https://rachlmansfield.com/wp-content/uploads/2022/03/IMG_8796-scaled.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1/2 cup basmati rice, uncooked",
@@ -77,9 +75,7 @@ func TestScraper_R(t *testing.T) {
 					Value: "These Tuscan Stewed Beans are the ultimate rustic Italian comfort food! Made with simple pantry-friendly ingredients like onions, garlic, tomato paste and white beans, but big on gourmet Italian flavor. It&#039;s cozy and indulgent yet wholesome, vegan, and gluten-free.",
 				},
 				Keywords: models.Keywords{Values: "italian beans, italian white bean stew, stewed beans, tuscan beans"},
-				Image: models.Image{
-					Value: "https://rainbowplantlife.com/wp-content/uploads/2022/01/Livornese-stewed-beans-5-of-5.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1/4 cup (56 mL) extra virgin olive oil",
@@ -151,9 +147,7 @@ func TestScraper_R(t *testing.T) {
 				Description: models.Description{
 					Value: "Get the recipe for Sheet Pan Chicken and Sweet Potatoes.",
 				},
-				Image: models.Image{
-					Value: "https://www.realsimple.com/thmb/8gMeQAdUxCc8bTx33CFY4cdH7PU=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/sheet-pan-chicken-sweet-potatoes_0-d610f954ea1e46179f961d536abc8f32.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"4 bone-in, skin-on chicken leg quarters (about 2 lb.)",
@@ -211,7 +205,7 @@ func TestScraper_R(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "Family Meals,Café da Tarde,Sobremesa,Local,New Years,Natal,Sem peixe,Sem crustáceos,Sem carne de porco,Pescador,receita com frutos do mar,receita com peixe,receita sem crustaceos,receita sem carne de porco,receita sem peixe,MyMenuPlan,leite moça,pavê,De outros,Fruta,Frio / montagem",
 				},
-				Image: models.Image{Value: "/sites/default/files/srh_recipes/38bca0566eef6fb1d272973f2ad9593a.jpg"},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 Lata Leite MOÇA® (lata ou caixinha) 395g",
@@ -258,9 +252,7 @@ func TestScraper_R(t *testing.T) {
 					Value: "Recette de Yakisoba (nouilles sautées à la japonaise)",
 				},
 				Keywords: models.Keywords{Values: "pates alimentaires"},
-				Image: models.Image{
-					Value: "https://m1.quebecormedia.com/emp/rqc_prod/recettes_du_quebec-_-45fe466bb6b64f799cc2ce9ab8db72f66d46ef08-_-yakisoba.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"250 g nouilles soba ou à ramen",
@@ -309,9 +301,7 @@ func TestScraper_R(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "cranberry apple sauce, cranberry sauce, cranberry applesauce, apple cranberry sauce",
 				},
-				Image: models.Image{
-					Value: "https://reciperunner.com/wp-content/uploads/2023/11/cranberry-apple-sauce-3-scaled-720x720.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"12 ounces fresh or frozen cranberries",
@@ -365,9 +355,7 @@ func TestScraper_R(t *testing.T) {
 						"flatbread laid out on a large platter, then let everyone make their own wraps!",
 				},
 				Keywords: models.Keywords{Values: "Chicken Shawarma, shawarma"},
-				Image: models.Image{
-					Value: "https://www.recipetineats.com/wp-content/uploads/2022/02/Chicken-Shawarma-Wrap_2-SQ.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 kg / 2 lb chicken thigh fillets (, skinless and boneless (Note 3))",
@@ -444,9 +432,7 @@ func TestScraper_R(t *testing.T) {
 						"and crunchy veggies coated with umami-filled seasoning.",
 				},
 				Keywords: models.Keywords{Values: "Pork, Rice, Stir-fry"},
-				Image: models.Image{
-					Value: "https://redhousespice.com/wp-content/uploads/2022/03/chinese-pork-fried-rice-1-scaled.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 tbsp oyster sauce (see note 1 for substitutes)",
@@ -507,9 +493,7 @@ func TestScraper_R(t *testing.T) {
 						"Reis und Minzjoghurt! Geflügel ist gerade im Sommer eine tolle Sache und dieses Gericht lässt " +
 						"sich problemlos für mehrere Personen kochen!",
 				},
-				Image: models.Image{
-					Value: "https://cdn.reishunger.com/chicken-tikka-masala.jpg?quality=85",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"200g Basmati Reis Pusa",
@@ -562,9 +546,7 @@ func TestScraper_R(t *testing.T) {
 				Description: models.Description{
 					Value: "Hähnchen-Nuggets, ein Rezept der Kategorie Vorspeisen/Salate. Mehr Thermomix ® Rezepte auf www.rezeptwelt.de",
 				},
-				Image: models.Image{
-					Value: "https://de.rc-cdn.community.thermomix.com/recipeimage/y3duba6e-e2d56-608317-cfcd2-vjez4wd6/57e6b699-53cb-4229-9398-1eb1ec70245e/main/haehnchen-nuggets.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"200 g Hähnchenbrust, ohne haut, in Stücken",
@@ -602,7 +584,7 @@ func TestScraper_R(t *testing.T) {
 				Description: models.Description{
 					Value: "Il Pan d'arancio è un dolce della tradizione siciliana caratterizzato da un intenso sapore agrumato, dato dall'utilizzo delle arance intere, buccia compresa.",
 				},
-				Image: models.Image{Value: "https://ricetta.it/Uploads/Imgs/pan-d-arancio_medium.jpg.webp"},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3 uova", "100 g di olio", "250 g di zucchero", "300 g di farina 00",
@@ -628,9 +610,7 @@ func TestScraper_R(t *testing.T) {
 				AtType:        models.SchemaType{Value: "Recipe"},
 				DatePublished: "2023-06-14T19:08:32Z",
 				Description:   models.Description{Value: "Check out these colorful and flavorful rainbow treats!"},
-				Image: models.Image{
-					Value: "https://cdn.shopify.com/s/files/1/0163/5948/9636/files/rainbow_treats_thumbnail_3_2048x2048.jpg?v=1686769264",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 stick (4 ounces) unsalted butter, room temperature", "1 cup sugar",
@@ -677,9 +657,7 @@ func TestScraper_R(t *testing.T) {
 				Description: models.Description{
 					Value: "Ben je aan het bakken geslagen met Oreo’s en zoek je een bijpassende vulling of topping? Deze crème is perfect als Oreo cupcake topping of als toppin",
 				},
-				Image: models.Image{
-					Value: "https://rutgerbakt.nl/wp-content/uploads/2022/01/oreo_topping-scaled-1920x1080-c-default.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"10 oreo koekjes", "150 gr boter, op kamertemperatuur", "150 gr poedersuiker",
@@ -710,9 +688,7 @@ func TestScraper_R(t *testing.T) {
 					Value: "Recipe Flourless refined sugar free chocolate cake by Mixing Adventures, learn to make this recipe easily in your kitchen machine and discover other Thermomix recipes in Baking - sweet.",
 				},
 				Keywords: models.Keywords{Values: "Baking - sweet, recipes, Dessert, Gluten free, Lactose free, Non-dairy"},
-				Image: models.Image{
-					Value: "https://d2mkh7ukbp9xav.cloudfront.net/recipeimage/1te0mta9-5d0d3-705689-cfcd2-7zd1b4nd/fd1b729e-862e-4c96-b038-18cf8656a293/large/flourless-refined-sugar-free-chocolate-cake.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"270 g Dates (pitted)",

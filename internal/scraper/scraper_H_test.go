@@ -21,9 +21,7 @@ func TestScraper_H(t *testing.T) {
 					Value: "One Skillet Louisiana Style Chicken and Rice: has a variety of flavors and textures, yet it&#39;s all made in ONE skillet with pantry staple ingredients!",
 				},
 				Keywords: models.Keywords{Values: "one skillet"},
-				Image: models.Image{
-					Value: "https://www.halfbakedharvest.com/wp-content/uploads/2022/03/One-Skillet-Louisiana-Style-Chicken-and-Rice-1.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 tablespoons extra virgin olive oil",
@@ -76,9 +74,7 @@ func TestScraper_H(t *testing.T) {
 					Value: "This homemade Peanut Butter Pie is made from scratch with just a few ingredients and will have everyone coming back for seconds! It's CRAZY good! With step-by-step video.",
 				},
 				Keywords: models.Keywords{Values: "peanut butter cups, peanut butter pie, peanut butter pie recipe"},
-				Image: models.Image{
-					Value: "https://handletheheat.com/wp-content/uploads/2020/03/homemade-peanut-butter-pie-SQUARE.png",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"14 whole chocolate graham crackers (196 grams)",
@@ -123,9 +119,7 @@ func TestScraper_H(t *testing.T) {
 					Value: "Dragon Chicken an appetizer or snacks of Indian Chinese cuisines where deep fried chicken strips are stir fried with a spicy combination of sauces and herbs",
 				},
 				Keywords: models.Keywords{Values: "Dragon Chicken"},
-				Image: models.Image{
-					Value: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjVPyaqbaCDbK5VdlCoe93-7wQjDmM4jVCrnuGlne0QDqUKlwfzat-Z2RS7GSFujClIpZUZIn7Q0-J75jr4LFCkJu_OwOc-YTIw30WnvpC0lH9vhMGjSDE-FmIvvg0m6dv2KlFRo1YcfA804XBHPp1AeOpf0tA0qoMFzWKHo4tSjUtrL_TJ5a7HP24w/s4623/IMG_20220906_222143.webp",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 large Chicken breast",
@@ -187,9 +181,7 @@ func TestScraper_H(t *testing.T) {
 				Description: models.Description{
 					Value: "A Keto version of a classic Filipino chicken adobo",
 				},
-				Image: models.Image{
-					Value: "https://headbangerskitchen.com/wp-content/uploads/2021/10/CHICKENADOBO-Vertical2.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"6 Chicken Thighs (Bone in and Skin On)",
@@ -243,10 +235,7 @@ func TestScraper_H(t *testing.T) {
 					Value: "Pronto! Pronto! You can make this dinner recipe with the lightning speed of an Italian race car. Thanks to fresh tagliatelle, which cooks faster than the dried kind, you arrive at al dente perfection in a matter of minutes. The shrimp and heirloom tomatoes only need a quick toss in the pan, too, becoming tender on the count of uno, due, tre.",
 				},
 				Keywords: models.Keywords{Values: "Spicy,Dinner Ideas"},
-				Image: models.Image{
-					Value: "https://img.hellofresh.com/f_auto,fl_lossy,h_640,q_auto,w_1200/hellofresh_s3/image/5a8f0fcbae08b52f" +
-						"161b5832-033c9a4a.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 clove Garlic",
@@ -306,11 +295,9 @@ func TestScraper_H(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
-				Image: models.Image{
-					Value: "https://homechef.imgix.net/https%3A%2F%2Fasset.homechef.com%2Fuploads%2Fmeal%2Fplated%2F2504%2F2504FarmhouseFriedChicken_Ecomm__1_of_1_.jpg?ixlib=rails-1.1.0&w=425&auto=format&s=2798fb1127a42f0f22143bb9de524a2b 425w, https://homechef.imgix.net/https%3A%2F%2Fasset.homechef.com%2Fuploads%2Fmeal%2Fplated%2F2504%2F2504FarmhouseFriedChicken_Ecomm__1_of_1_.jpg?ixlib=rails-1.1.0&w=850&auto=format&s=929c2a0fd6a88f5db8f293982e17217d 850w, https://homechef.imgix.net/https%3A%2F%2Fasset.homechef.com%2Fuploads%2Fmeal%2Fplated%2F2504%2F2504FarmhouseFriedChicken_Ecomm__1_of_1_.jpg?ixlib=rails-1.1.0&w=1700&auto=format&s=91707e47c37a4b7e5cee05289698ab8b 1700w",
-				},
-				Name: "Farmhouse Fried Chicken",
-				URL:  "https://www.homechef.com/meals/farmhouse-fried-chicken",
+				Image:     models.Image{Value: anUploadedImage.String()},
+				Name:      "Farmhouse Fried Chicken",
+				URL:       "https://www.homechef.com/meals/farmhouse-fried-chicken",
 				Description: models.Description{
 					Value: "This stick-to-your-ribs satisfying country classic is an indulgence you've earned. The crispy comfort that only fried chicken can supply is accompanied by mashed potatoes and sweet corn. While that “other” chicken has you eating out of a bucket, this homey treat transports you to an idyllic country farmhouse on the prairie. Yee-Haw! Tip: Make potatoes easier to cut by making a large slice that leaves a flat surface. Place the flat surface on the cutting board and get to dicing!",
 				},
@@ -347,9 +334,7 @@ func TestScraper_H(t *testing.T) {
 				AtType:        models.SchemaType{Value: "Recipe"},
 				CookTime:      "PT3H",
 				DatePublished: "2014-03-18",
-				Image: models.Image{
-					Value: "https://hostthetoast.com/wp-content/uploads/2014/03/Guinness-Beef-Stew-16-225x225.jpg",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"¼ pound bacon",

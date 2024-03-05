@@ -21,9 +21,7 @@ func TestScraper_C(t *testing.T) {
 					Value: "Butter Chicken is creamy and easy to make right at home in one pan with simple ingredients! Full of incredible flavours, it rivals any Indian restaurant! Aromatic golden chicken pieces in an incredible creamy curry sauce, this Butter Chicken recipe is one of the best you will try!",
 				},
 				Keywords: models.Keywords{Values: "butter chicken"},
-				Image: models.Image{
-					Value: "https://cafedelites.com/wp-content/uploads/2019/01/Butter-Chicken-IMAGE-64.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"28 oz (800g) boneless and skinless chicken thighs or breasts (cut into bite-sized pieces)",
@@ -94,10 +92,7 @@ func TestScraper_C(t *testing.T) {
 					Value: "This easy low-carb dinner is perfect for plant-based eaters or anyone looking to add more veggies " +
 						"to their diet!",
 				},
-				Image: models.Image{
-					Value: "https://www.castironketo.net/wp-content/uploads/2022/03/" +
-						"Balsamic-Mushrooms-with-Herbed-Veggie-Mash.jpg-p1ft8631n71uvu1giuf7n1i1b1hil-1-scaled.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"10 ounces cremini mushrooms",
@@ -163,6 +158,7 @@ func TestScraper_C(t *testing.T) {
 				Yield:    models.Yield{Value: 6},
 				CookTime: "PT1H20M",
 				Category: models.Category{Value: "stews"},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"5 tablespoons canola oil, divided",
@@ -227,10 +223,7 @@ func TestScraper_C(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "Backen,Vegetarisch,Saucen,Dips,Beilage,raffiniert oder preiswert,einfach,Kartoffel,Snack",
 				},
-				Image: models.Image{
-					Value: "https://img.chefkoch-cdn.de/rezepte/1064631211795001/bilder/1329056/crop-960x540/" +
-						"knusprige-ofenkartoffeln.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"10 m.-große Kartoffeln, festkochende",
@@ -288,9 +281,7 @@ func TestScraper_C(t *testing.T) {
 					Value: "Depuis le temps que je voulais vous partager ma recette de ramen que je fais depuis 1 an maintenant. Au fur et à mesure, j’ai amélioré la recette pour la faire à notre goût. Ce qu’on aime le plus dans cette recette, ce sont les œufs mollets marinés. 🤤",
 				},
 				Keywords: models.Keywords{Values: "carotte,champignon,courgette,oeuf"},
-				Image: models.Image{
-					Value: "https://static.chefnini.com/wp-content/uploads/2023/09/ramen-vegetarien7.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 oeufs", "3 cuillères à soupe de sauce soja (salée ou shoyu)",
@@ -342,7 +333,7 @@ func TestScraper_C(t *testing.T) {
 					Value: "Whether drenched in smoky barbecue, zesty buffalo, or a sweet and sour glaze, these Crispy Baked Chicken Wings are succulent on the inside and crispy on the outside for the perfect wing experience! Don&#39;t be fooled, the oven can make these wings just as tasty as deep frying!",
 				},
 				Keywords: models.Keywords{Values: "Baked Chicken Wings"},
-				Image:    models.Image{Value: "https://chefsavvy.com/wp-content/uploads/crispy-baked-chicken-wings.jpg"},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 1/2 lbs chicken wings", "1/2 tbsp baking powder", "1/2 tsp salt",
@@ -386,9 +377,7 @@ func TestScraper_C(t *testing.T) {
 				DatePublished: "2023-11-16T06:00:54+00:00",
 				Description:   models.Description{Value: "Tender roast sweet potatoes with smoky chipotle chili warmth!"},
 				Keywords:      models.Keywords{Values: "Food,Gluten-free,Recipe,Side Dish,Vegetable,Vegetarian"},
-				Image: models.Image{
-					Value: "https://www.closetcooking.com/wp-content/uploads/2023/11/Chipotle-Roast-Sweet-Potatoes-1200-0699.jpg",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 pounds sweet potatoes, washed, optionally peeled, and cut into 1 inch cubes",
@@ -442,9 +431,7 @@ func TestScraper_C(t *testing.T) {
 						"uma fonte de renda extra para você oferecer em seus serviços!",
 				},
 				Keywords: models.Keywords{Values: "Pudim no Copinho para Festa"},
-				Image: models.Image{
-					Value: "https://comidinhasdochef.com/wp-content/uploads/2022/03/Pudim-no-Copinho-para-Festa00.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{Values: []string{
 					"1 xícara (chá) de Água",
 					"2 xícaras (chá) de açúcar",
@@ -507,9 +494,7 @@ func TestScraper_C(t *testing.T) {
 						"roast with flavor.  Our guests raved...and were still going back for more even after dessert!  " +
 						"Make sure to serve the Balinese yellow rice.  A wonderful combination!",
 				},
-				Image: models.Image{
-					Value: "https://s3.amazonaws.com/grecipes/public/pictures/recipes/40375/balinese_pork.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 boneless pork shoulder roast, about 3 pounds (or bone in roast, about 3.5 pounds)",
@@ -591,9 +576,7 @@ func TestScraper_C(t *testing.T) {
 						"(see recipe notes for alternate baking vessel options).",
 				},
 				Keywords: models.Keywords{Values: "skillet cornbread"},
-				Image: models.Image{
-					Value: "https://cookieandkate.com/images/2020/03/skillet-cornbread-recipe-2-2-225x225.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1/2 cup (1 stick) unsalted butter",
@@ -660,9 +643,7 @@ func TestScraper_C(t *testing.T) {
 				Description: models.Description{
 					Value: "本格バターチキンカレーのレシピです。 おうちにある材料で作れるバターチキンカレーです(*´`*)♡とっても簡単♬すぐ出来るのでぜひお試しください♡ʾʾ",
 				},
-				Image: models.Image{
-					Value: "https://img.cpcdn.com/recipes/4610651/640x640c/6de3ac788480ce2787e5e39714ef0856?u=6992401&p=1519025894",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"♥鶏モモ肉 500g前後", "♥玉ねぎ 2個",
@@ -703,7 +684,7 @@ func TestScraper_C(t *testing.T) {
 				Description: models.Description{
 					Value: "Очень, очень вкусный салат. Там не только индейка, там еще сливочный сыр и орехи, полноценный ужин практически.",
 				},
-				Image: models.Image{Value: "https://cook-talk.com/archive/wp-content/uploads/2016/11/1-55.jpg"},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"400 г фельд-салата (он же маш, он же рапунцель, он же полевой салат)",
@@ -741,6 +722,7 @@ func TestScraper_C(t *testing.T) {
 				Description: models.Description{
 					Value: "Här hittar du ett recept på äppelkaka med havrygryn som är enkel att göra och så god. Mycket crunch och saftig!",
 				},
+				Image:       models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{Values: []string{}},
 				Name:        "Äppelkaka med havregryn",
 				URL:         "https://www.coop.se/recept/appelkaka-med-havregryn/",
@@ -761,9 +743,7 @@ func TestScraper_C(t *testing.T) {
 						"to making perfect egg rings for a breakfast sandwich.",
 				},
 				Keywords: models.Keywords{Values: "McDonald's Egg McMuffin"},
-				Image: models.Image{
-					Value: "https://copykat.com/wp-content/uploads/2020/04/McDonalds-Egg-McMuffin-Pin3.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"4 tablespoons softened butter (butter has divided uses)",
@@ -825,7 +805,7 @@ func TestScraper_C(t *testing.T) {
 				DatePublished: "",
 				Description:   models.Description{},
 				Keywords:      models.Keywords{},
-				Image:         models.Image{Value: "https://mobilecontent.costco.com/live/resource/img/static-us-connection-march-23/03_23_FTT_ChickenSaladRedGrapesWalnutsBlueCheese.jpg"},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"6 cups rotisserie chicken, shredded",
@@ -870,9 +850,7 @@ func TestScraper_C(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "American, Southern, Sunday lunch, comfort food, dinner",
 				},
-				Image: models.Image{
-					Value: "https://hips.hearstapps.com/hmg-prod/images/braised-turkey-wings-clx040122-1646247632.jpg?crop=0.878xw:0.585xh;0,0.223xh&resize=1200:*",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3 whole turkey wings (about 3 pounds total)",
@@ -922,9 +900,7 @@ func TestScraper_C(t *testing.T) {
 				Description: models.Description{
 					Value: "Caramelized onion jam is a unique savory jam that&#x27;s delicious no matter where you use it.",
 				},
-				Image: models.Image{
-					Value: "https://creativecanning.com/wp-content/uploads/2022/09/Caramelized-Onion-Jam-31-720x720.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 Tablespoon cooking oil, neutral, such as sunflower or grape seed",
@@ -971,9 +947,7 @@ func TestScraper_C(t *testing.T) {
 					Value: "Il baccalà in crosta&nbsp;senza glutine è un raffinato secondo di pesce ideale per le cene dei giorni di festa. Sotto uno strato di fragrante pasta sfoglia si nasconde un tenero filetto di baccalà, avvolto in un battuto a base di pomodori, olive e capperi che rende il risultato finale saporito e goloso.",
 				},
 				Keywords: models.Keywords{Values: "Baccalà in crosta senza glutine,al forno"},
-				Image: models.Image{
-					Value: "https://www.cucchiaio.it/content/cucchiaio/it/ricette/2021/11/baccala-in-crosta-senza-glutine/jcr:content/header-par/image-single.img10.jpg/1671010226009.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 filetto intero di baccalà già ammollato (di 600-700 g circa)",
@@ -1006,9 +980,7 @@ func TestScraper_C(t *testing.T) {
 				CookTime:      "PT15M",
 				Cuisine:       models.Cuisine{Value: "French"},
 				DatePublished: "2016-06-06T14:39:27+02:00",
-				Image: models.Image{
-					Value: "https://img.cuisineaz.com/660x660/2016/06/06/i75661-champignons-farcis-au-fromage-brie.jpg",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"16 Champignon(s) de paris",
@@ -1058,9 +1030,7 @@ func TestScraper_C(t *testing.T) {
 					Value: "Já experimentou essa deliciosa receita de Filé de Tilápia com Batatas? No CyberCook você encontra " +
 						"essa e outras receitas. Saiba mais!",
 				},
-				Image: models.Image{
-					Value: "https://img.cybercook.com.br/receitas/273/file-de-tilapia-com-batatas.jpeg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"Tilápia 500 gramas",

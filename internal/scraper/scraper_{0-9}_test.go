@@ -21,9 +21,7 @@ func TestScraper_0to9(t *testing.T) {
 				},
 				Category: models.Category{Value: "Appetizer"},
 				Cuisine:  models.Cuisine{Value: "Easy"},
-				Image: models.Image{
-					Value: "https://images.101cookbooks.com/bruschetta-recipe-h1.jpg?w=1200&auto=format",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3 fresh tomatoes, ripe",
@@ -81,9 +79,7 @@ func TestScraper_0to9(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "carbonara vegetarienne,carbonara aux légumes,pâtes carbonara sans lardons,spaghetti à la carbonara,pâtes à la carbonara,pâtes aux légumes,spaghetti,pâtes,carottes,courgettes,petits pois,plats végétariens,cuisine estivale,cuisine végétarienne,750green",
 				},
-				Image: models.Image{
-					Value: "https://static.750g.com/images/1200-675/4133b19abe72214a94b66780b61f3973/327789.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"500 g de spaghetti bio Barilla", "4 carottes", "2 courgettes", "2 oeufs",

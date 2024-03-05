@@ -16,6 +16,7 @@ func TestScraper_G(t *testing.T) {
 				Description: models.Description{
 					Value: "Die Antwort auf Herbstblues und Schmuddelwetter: Wärmender Genuss aus saisonalen Quitten, Pastinaken und milder Kokosmilch.",
 				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 Stück Quitten", "2 Stück Pastinaken", "1 Stück Möhre",
@@ -52,9 +53,7 @@ func TestScraper_G(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "recipes, recipe, italian cuisine, how to cook, Christmas spice cookies",
 				},
-				Image: models.Image{
-					Value: "https://www.giallozafferano.com/images/260-26068/Christmas-spice-cookies_1200x800.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"Flour 00 2 &frac14; cups",
@@ -106,9 +105,7 @@ func TestScraper_G(t *testing.T) {
 						"ridiculously delicious. See notes above for modifications to make this recipe gluten-free and/or vegan.",
 				},
 				Keywords: models.Keywords{Values: ""},
-				Image: models.Image{
-					Value: "https://www.gimmesomeoven.com/wp-content/uploads/2022/02/Peanut-Butter-Cornflake-Bars-8-1-225x225.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 tablespoon coconut oil",
@@ -163,9 +160,7 @@ func TestScraper_G(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "cheesecake, lanche da tarde, recepção, aniversário",
 				},
-				Image: models.Image{
-					Value: "https://s2-receitas.glbimg.com/XjnpBAqPQSKGTlZ6fYujfyRZ0lA=/1200x/smart/filters:cover():strip_icc()/i.s3.glbimg.com/v1/AUTH_1f540e0b94d8437dbbc39d567a1dee68/internal_photos/bs/2022/s/3/rsLexpSU6nXAgmuhfKNw/cheesecake-com-geleia-de-frutas-vermelhas-bbb22-1.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 pacote de biscoito maisena ",
@@ -218,9 +213,7 @@ func TestScraper_G(t *testing.T) {
 					Value: "Koteletter kler mange smaker, også pærer. Brunede koteletter, pærer og sjalottløk legges sammen i en ildfast form. Supergod og enkel kosemiddag!",
 				},
 				Keywords: models.Keywords{Values: "Svin, Helg, Rask, Enkel"},
-				Image: models.Image{
-					Value: "https://cdn-yams.godt.no/api/v1/godt-recipe/images/c2/c21206f6-7995-4d90-b669-7dd33a95cd34?rule=w2000_auto",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"4 - 6 stykker svinekoteletter", "4 stk pære", "4 - 6 stk sjalottløk",
@@ -258,9 +251,7 @@ func TestScraper_G(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "hunters chicken,chicken with bbq sauce,easy oven chicken recipes,easy chicken dinner,chicken with bacon",
 				},
-				Image: models.Image{
-					Value: "https://goodfooddiscoveries.com/wp-content/uploads/2023/11/hunters-chicken-5.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"4 boneless, skinless chicken breasts",
@@ -304,9 +295,7 @@ func TestScraper_G(t *testing.T) {
 					Value: "Balsamic Chicken Caprese is roasted to perfection and topped with melty mozzarella, fresh basil and ripe heirloom tomatoes.",
 				},
 				Keywords: models.Keywords{Values: "dinner, poultry"},
-				Image: models.Image{
-					Value: "https://hips.hearstapps.com/hmg-prod/images/balsamic-chicken-caprese-64c91c95d79f4.jpg?crop=1.00xw:0.668xh;0,0.192xh&resize=1200:*",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 tbsp. olive oil",
@@ -349,9 +338,7 @@ func TestScraper_G(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "beef soup recipes, ground beef recipes, ground beef soup recipes, macaroni soup recipes, tomato soup recipes",
 				},
-				Image: models.Image{
-					Value: "https://www.gonnawantseconds.com/wp-content/uploads/2022/03/Beef-and-Tomato-Macaroni-Soup-01.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 tablespoons vegetable oil",
@@ -414,9 +401,7 @@ func TestScraper_G(t *testing.T) {
 				Description: models.Description{
 					Value: "GRAND FRAIS vous propose cette délicieuse recette : Sauté de lapin sauce chasseur. Faites le plein d'idées et découvrez nos conseils et astuces pour une préparation inratable. Bon appétit !",
 				},
-				Image: models.Image{
-					Value: "https://www.grandfrais.com/images/institBackoffice/recette/desktop/gfr-20171011171655.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 lapin d'environ 1,8 kg coupé en morceaux", "200 g de lardons",
@@ -452,10 +437,8 @@ func TestScraper_G(t *testing.T) {
 				Description: models.Description{
 					Value: "Scott Hallsworth's tasty barbecued poussin recipe is packed with bold Japanese flavours.",
 				},
-				Name: "Barbecued miso poussin with lemon, garlic and chilli dip",
-				Image: models.Image{
-					Value: "https://media-cdn2.greatbritishchefs.com/media/hpsovny5/img68297.whqc_1426x713q80.jpg",
-				},
+				Name:     "Barbecued miso poussin with lemon, garlic and chilli dip",
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Category: models.Category{Value: "Main"},
 				CookTime: "PT60M",
 				Ingredients: models.Ingredients{
@@ -521,7 +504,7 @@ func TestScraper_G(t *testing.T) {
 				Description: models.Description{
 					Value: "A recipe we've prepared several times on long ocean passages, it's a one-pot recipe that is very versatile, filling and quick to prepare.How to serveWe sometimes just eat it as is, or serve it on top of pasta (as a sauce) or basmati rice. We also like to serve it with flat bread.This dish is also delicious with chili pepper flakes.Another alternative is to serve it as a side dish, to omit the lentils, add more vegetables and to cook them with the same spices in a pan. SubstitutionsThe recipe works well with most vegetables, it's easy to adapt and won't affect the taste or cooking time of the dish. Take note that adding red cabbage instead of green will alter the colour of the dish. Cooking the lentils with water instead of vegetable broth is possible, the spices add enough flavor. I also sometimes add konbu dashi as a more neutral base.For a more complex taste, add cardamom, fenugreek seeds and cinnamon.Only use shelled lentils, as whole lentils take longer to cook and the vegetables will soften too much. An alternative is to use sprouted whole brown lentils, they'll cook as quickly as red lentils and are more nutritious.",
 				},
-				Image: models.Image{Value: "https://grimgrains.com/media/interface/logo.png"},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"olive oil15 ml", "yellow onion1 medium", "black pepper1.25 g",
@@ -558,9 +541,7 @@ func TestScraper_G(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: ",ground beef,onion,salt and pepper,taco seasoning mix,cream of mushroom soup,french fried onions,bake,nothing specific",
 				},
-				Image: models.Image{
-					Value: "http://s2.grouprecipes.com/images/recipes/200/78953e17aaee3465369943d7057e7d91.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 to 1 1/2 pounds ground beef", "1 small or medium onion, diced",

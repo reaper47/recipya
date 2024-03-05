@@ -434,9 +434,7 @@ func TestScraper_P(t *testing.T) {
 					Value: "Are you craving a delicious chocolate cake? This is the BEST rich and moist chocolate cake from a box mix that is unbelievably EASY to make! This is a bakery quality cake that anyone can make at home with common ingredients!",
 				},
 				Keywords: models.Keywords{Values: "The Best Rich and Moist Chocolate Cake"},
-				Image: models.Image{
-					Value: "https://plowingthroughlife.com/wp-content/uploads/2019/01/chocolate-cake-FI.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 box Devil's food cake mix", "1 small package instant chocolate pudding",
@@ -486,9 +484,7 @@ func TestScraper_P(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "Christmas, Fall Food, Fall Recipes, Original Recipes, Side Dishes, Carrots, Autumn, Exclusive",
 				},
-				Image: models.Image{
-					Value: "https://media1.popsugar-assets.com/files/thumbor/w2SbXKQCo_24S1wE0XWtTAJniOg/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2016/10/19/737/n/35573265/b5db29624d9c2514_cinnamon-butter-baked-carrots-5.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"15 carrots, peeled and stems removed", "75g of butter, softened",
@@ -526,9 +522,7 @@ func TestScraper_P(t *testing.T) {
 					Value: "Zucchini relish is a flavorful topping for summer grilling, and the perfect way to use up extra " +
 						"zucchini from the garden.",
 				},
-				Image: models.Image{
-					Value: "https://creativecanning.com/wp-content/uploads/2021/02/Zucchini-Relish-61-720x720.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 cups zucchini, diced (about 3 medium)",
@@ -585,9 +579,7 @@ func TestScraper_P(t *testing.T) {
 					Value: "When I was in Valencia, Spain, I was taught how to make a Spanish omelette. It&#x27;s essentially pan-fried onions and potatoes coated with eggs, seasoned with the basics that are salt and pepper and then cooked in a skillet on both sides for a few minutes where it looks like a super thick, egg pancake. Truth be told, it is one of the most delicious egg dishes you&#x27;ll ever have. \n\nHOWEVER, as basic as it sounds, it can be a messy and somewhat cumbersomething to make with the flipping, removing a half-cooked, runny egg mound toa plate and then returning it to the pan to cook on the other side. At the class I took, three people who volunteered with flipping the half-cooked omelette had itspill onto the counter. So I decided to take the basics of a Spanish omelette, add some optional Spanish-favored cheese and meat and scramble itup to give you that flavor experience, but with a much simpler and fool-proof approach to making it.",
 				},
 				Keywords: models.Keywords{Values: "Spanish Omelette, Scrambled Eggs"},
-				Image: models.Image{
-					Value: "https://pressureluckcooking.com/wp-content/uploads/2023/10/Spanish-Omelette-IG-2-scaled-720x720.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1/2 cup extra virgin olive oil",
@@ -633,9 +625,7 @@ func TestScraper_P(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "Cheesy Ranch Chicken, Keto Crack Chicken, Slow Cooker Crack Chicken",
 				},
-				Image: models.Image{
-					Value: "https://www.primaledgehealth.com/wp-content/uploads/2022/03/crack-chicken.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3 pounds chicken thigh (or breast)",
@@ -697,7 +687,7 @@ func TestScraper_P(t *testing.T) {
 				Description: models.Description{
 					Value: "Ben je gek op kip pesto en valt een rollade ook altijd goed in de smaak? Maar vind je het op z’n tijd ook leuk en lekker om eens iets anders te proberen? Dan is dit recept echt iets voor jou! Een heerlijke zelfgemaakte kiprollade op Italiaanse wijze. De pesto vervang je door gremolata. Een …",
 				},
-				Image: models.Image{Value: "https://www.projectgezond.nl/wp-content/uploads/2023/09/Italiaanse-Kiprollade-Gremolata1600-810x1080.jpg"},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"400 gr kipfilet", "40 gr prosciutto", "40 gr zuivelspread",
@@ -746,9 +736,7 @@ func TestScraper_P(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "Na co dzień, Ziemniaki, Warzywa, Jajka, Łagodne, Bez mięsa",
 				},
-				Image: models.Image{
-					Value: "https://s3.przepisy.pl/przepisy3ii/img/variants/800x0/placki-ziemniaczane.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 kilogram ziemniaki",
@@ -786,9 +774,7 @@ func TestScraper_P(t *testing.T) {
 				Yield:         models.Yield{Value: 4},
 				PrepTime:      "PT10M",
 				CookTime:      "PT32M",
-				Image: models.Image{
-					Value: "https://i0.wp.com/purelypope.com/wp-content/uploads/2020/05/IMG_5412-1-scaled.jpg",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 cups brussel sprouts, stems removed & cut in half",
@@ -820,9 +806,7 @@ func TestScraper_P(t *testing.T) {
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				DatePublished: "2020-05-13T06:59:57.162-04:00",
-				Image: models.Image{
-					Value: "https://images.purplecarrot.com/uploads/product/image/2017/_1400_700_GnocchiAlPestowithCharredGreenBeans_LemonZucchini_WEBHERO-5d97b356980badd112987864879c4f71.jpg",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 zucchini, trimmed and peeled lengthwise into ribbons",

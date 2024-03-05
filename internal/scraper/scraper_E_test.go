@@ -23,9 +23,7 @@ func TestScraper_E(t *testing.T) {
 						"texture. Overnight instructions included.",
 				},
 				Keywords: models.Keywords{Values: "cinnamon rolls"},
-				Image: models.Image{
-					Value: "https://www.eatingbirdfood.com/wp-content/uploads/2022/12/fluffy-cinnamon-rolls-hero.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 0.25 oz. pkg. active dry yeast",
@@ -109,9 +107,7 @@ func TestScraper_E(t *testing.T) {
 				Description: models.Description{
 					Value: "This chicken piccata recipe has a bright, briny flavor, is made from ingredients you likely have on hand, and goes with everything from chicken to tofu to scallops. Bonus: It&#39;s lower in calories than a lot of other pan sauces.",
 				},
-				Image: models.Image{
-					Value: "https://www.eatingwell.com/thmb/vQS6R5pXm1TqsYvOvn2WW0UVrIw=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/chik-picatta-2000-872203d28060486397039a9ad5d2b118.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1.25 pounds boneless, skinless chicken breasts, trimmed",
@@ -164,10 +160,7 @@ func TestScraper_E(t *testing.T) {
 				Description: models.Description{
 					Value: "Light and refreshing Vietnamese Chicken Cabbage Salad with crunchy peanuts",
 				},
-				Image: models.Image{
-					Value: "https://images.eatsmarter.com/sites/default/files/styles/max_size/public/" +
-						"vietnamese-chicken-cabbage-salad-580858.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"24 ozs Chicken broth",
@@ -214,9 +207,7 @@ func TestScraper_E(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "Garlic Parmesan Marinated Mushrooms Recipe, Easy marinated Mushrooms, how to marinate mushrooms",
 				},
-				Image: models.Image{
-					Value: "https://www.eatwell101.com/wp-content/uploads/2023/06/Garlic-Parmesan-Marinated-Mushrooms-recipe-800x533.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 lb (450g) mushrooms, sliced", "1/3 cup grated parmesan",
@@ -248,9 +239,7 @@ func TestScraper_E(t *testing.T) {
 				DatePublished: "2021-11-30T13:14:26+08:00",
 				Description:   models.Description{Value: ""},
 				Keywords:      models.Keywords{Values: "Chicken"},
-				Image: models.Image{
-					Value: "http://eatwhattonight.com/wp-content/uploads/2021/11/Spicy-Chicken_1-scaled.jpg",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"150g diced boneless chicken leg, de-skinned",
@@ -303,9 +292,7 @@ func TestScraper_E(t *testing.T) {
 					Value: "Vegan moussaka with lentils and eggplant! This popular Greek dish can be easily made without meat and still tastes amazing. This healthy casserole is a wonderful comfort meal which is flavorful, satisfying, and very enjoyable. The recipe is plant-based, gluten-free, and fairly easy to make.",
 				},
 				Keywords: models.Keywords{Values: "eggplant casserole, lentil moussaka, vegan moussaka"},
-				Image: models.Image{
-					Value: "https://elavegan.com/wp-content/uploads/2023/11/featured-image-vegan-moussaka-on-plate.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 pounds potatoes (peeled)", "3 large eggplants", "Olive oil (to brush)",
@@ -369,9 +356,7 @@ func TestScraper_E(t *testing.T) {
 				Description: models.Description{
 					Value: "Das leckere Gratin aus Kartoffeln geht einfacher als man denkt und schmeckt als leckere Beilage zu Fleisch und Fisch oder als vegetarische Hauptspeise mit einem Salat.",
 				},
-				Image: models.Image{
-					Value: "https://emmikochteinfach.de/wp-content/uploads/2022/03/oes-Kartoffelgratin-Rezept-3.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"800 g mittelgroße, &quot;vorwiegend festkochende&quot; Kartoffeln (2-3 mm dicke Scheiben)",
@@ -419,9 +404,7 @@ func TestScraper_E(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "cake,amaretto,vermouth,grand marnier,italian,cake flour,almond flour,lemon,vanilla,snack,breakfast,nut free,baking,stand mixer,bon appétit,web",
 				},
-				Image: models.Image{
-					Value: "https://assets.epicurious.com/photos/5a05db121a9e232c87581a7f/16:9/w_2000,h_1125,c_limit/olive-oil-cake-recipe-BA-111017.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1¼ cups plus 2 tablespoons extra-virgin olive oil; plus more for pan",
@@ -484,9 +467,7 @@ func TestScraper_E(t *testing.T) {
 					Value: "A delightfully sweet and sticky dish, make sure you have napkins at hand!",
 				},
 				Keywords: models.Keywords{Values: "bbq ribs recipe, pork ribs recipe, ribs recipe"},
-				Image: models.Image{
-					Value: "https://www.errenskitchen.com/wp-content/uploads/2015/07/ribs-4-of-1-e1530056105396.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"4 lbs spare ribs (cut into individual ribs)", "⅛ cup smoked paprika",
@@ -543,9 +524,7 @@ func TestScraper_E(t *testing.T) {
 				Description: models.Description{
 					Value: `Goda små "fjärilsbullar" med choklad och krämig apelsinfyllning. För att få bullarnas fina fjärilsliknande form skärs degrullen i skivor som trycks ihop i mitten. Spritsa apelsinfyllningen i mitten av varje bulle. Supergott och lyxigt!`,
 				},
-				Image: models.Image{
-					Value: "https://static.cdn-expressen.se/images/45/cd/45cd6c5649004e1fa957e891d581fa49/1x1/1920@80.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"50 g jäst",

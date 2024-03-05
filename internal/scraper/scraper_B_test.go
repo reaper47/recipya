@@ -22,9 +22,7 @@ func TestScraper_B(t *testing.T) {
 						"and creamy centers, they make an easy side dish that everyone will love.",
 				},
 				Keywords: models.Keywords{Values: "Italian roasted potatoes"},
-				Image: models.Image{
-					Value: "https://bakingmischief.com/wp-content/uploads/2021/11/italian-roasted-potatoes-image-square-3.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 pounds red potatoes (*)", "3 tablespoons olive oil",
@@ -67,9 +65,7 @@ func TestScraper_B(t *testing.T) {
 					Value: "Have you heard of Irish Potato Farls? No? Well, if you love potato pancakes, you&#39;ll love " +
 						"potato farls. They&#39;re easy to make with fresh or left over potatoes.",
 				},
-				Image: models.Image{
-					Value: "https://www.baking-sense.com/wp-content/uploads/2022/02/potato-farls-featured.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"24 oz russet potatoes (peeled and cut into 1&quot; cubes.)",
@@ -129,9 +125,7 @@ func TestScraper_B(t *testing.T) {
 				Description: models.Description{
 					Value: "Brussels Sprouts Lardons from Barefoot Contessa.",
 				},
-				Image: models.Image{
-					Value: "https://d14iv1hjmfkv57.cloudfront.net/assets/recipes/brussels-sprouts-lardons/_1200x630_crop_center-center_82_none/155-web-horizon.jpg?v=1704301339",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 tablespoons good olive oil",
@@ -171,9 +165,7 @@ func TestScraper_B(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "absolute bangers, 400-calorie dinners, cheap stews , comfort food on a budget, easy healthy dinner ideas, easy sausage suppers , healthy and filling, healthy british classics, healthy comfort food, healthy dinner, healthy family meals, healthy meals on a budget, healthy winter food, low-calorie comfort food, low-calorie, making meat go further, sausage suppers, summery sausages, the best sausage, winter stew, autumn, bonfire night, easy family dinners, winter, sausage casserole, sausage, healthy",
 				},
-				Image: models.Image{
-					Value: "https://food-images.files.bbci.co.uk/food/recipes/healthy_sausage_16132_16x9.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 red peppers, seeds removed, cut into chunks",
@@ -233,9 +225,7 @@ func TestScraper_B(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "cheesy risotto, Indulgent, rice side dish, risotto side dish, Tom Kerridge, Winter",
 				},
-				Image: models.Image{
-					Value: "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/roast-poussin-with-wild-mushroom-sauce_0-8051af1.jpg?resize=768,574",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"25g butter",
@@ -292,9 +282,7 @@ func TestScraper_B(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "cheesy risotto, Indulgent, rice side dish, risotto side dish, Tom Kerridge, Winter",
 				},
-				Image: models.Image{
-					Value: "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/roast-poussin-with-wild-mushroom-sauce_0-8051af1.jpg?resize=768,574",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"25g butter",
@@ -350,9 +338,7 @@ func TestScraper_B(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "Dinner, Easy, easy salmon, Esther Clark, Fish, Gluten free, how to cook salmon, Omega 3, pan fried salmon recipe, Pan-fried salmon, Salmon, Salmon recipe",
 				},
-				Image: models.Image{
-					Value: "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/salmon-1547b3f.jpg?resize=768,574",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 x 150g salmon fillets (about 4cm thick), skin on",
@@ -398,9 +384,7 @@ func TestScraper_B(t *testing.T) {
 						"perfect if you love French cuisine.",
 				},
 				Keywords: models.Keywords{Values: "spinach mushroom quiche"},
-				Image: models.Image{
-					Value: "https://mojo.generalmills.com/api/public/content/MAHdJv1NBUeLl4-jtMq24g_gmi_hi_res_jpeg.jpeg?v=2e1b9203&t=b5673970ed9e41549a020b29d456506d",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 cup Bisquick™ Gluten Free mix",
@@ -469,9 +453,7 @@ func TestScraper_B(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "Mexican Rice, Mexican Stuffed Peppers, Stuffed Peppers, Vegan Stuffed Peppers",
 				},
-				Image: models.Image{
-					Value: "https://biancazapatka.com/wp-content/uploads/2022/03/stuffed-peppers.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"¾ cup brown rice (uncooked, or other rice or quinoa)",
@@ -534,9 +516,7 @@ func TestScraper_B(t *testing.T) {
 						"japanese,  qeethnic, contains white meat, nut free, contains gluten, red meat free, shellfish " +
 						"free, contains eggs, dairy free",
 				},
-				Image: models.Image{
-					Value: "https://bigoven-res.cloudinary.com/image/upload/h_320,w_320,c_fill/vegetable-tempura-japanese-e79b5b.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 cup All purpose flour sifted",
@@ -586,9 +566,7 @@ func TestScraper_B(t *testing.T) {
 				Cuisine:       models.Cuisine{Value: "Asian"},
 				DatePublished: "2023-07-26",
 				Description:   models.Description{Value: "Pork belly is an incredibly rich, delicious cut of meat (used to make bacon), whose high fat content allows the meat to turn perfectly tender and flavorful as it cooks and the fat renders. Here, we're coating it with a soy and gochujang glaze, then serving it over fried rice laden with bites of vibrant kimchi and tender bok choy."},
-				Image: models.Image{
-					Value: "https://media.blueapron.com/recipes/42230/c_main_dish_images/1698080306-30401-0011-1025/0529_FP11_Sweet-Spicy-Glazed-Crispy-Pork-Belly_462_Web_high_feature.jpg",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{Values: []string{
 					"8 oz No Added Hormones Cooked Pork Belly",
 					"2 Pasture-Raised Eggs",
@@ -636,7 +614,7 @@ func TestScraper_B(t *testing.T) {
 					Value: "This recipe for Apple Dutch Baby Pancake is easy to make in a cast iron pan, but be ready to eat it as soon as it comes out of the oven. It waits for no one and will fall quickly. That's ok - it tastes just as delicious.",
 				},
 				Keywords: models.Keywords{Values: "Breakfast/Brunch"},
-				Image:    models.Image{Value: "https://bluejeanchef.com/uploads/2023/07/Apple-Dutch-Baby-1280-9609.jpg"},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"4 eggs", "⅔ cup half-and-half", "1 teaspoon pure vanilla extract",
@@ -686,9 +664,7 @@ func TestScraper_B(t *testing.T) {
 					Value: "Il y a quelques temps je vous avais donné la recette du taillé au sel, celle de ma voisine Claudine, une spécialité vaudoise. Cette recette, je l’avais obtenue, un soir après un bon repas entre amis, chez Claudine. Elle m’avait gribouillé la liste des ingrédients sur un morceau de papier avec quelques explications orales. Quelques semaines plus tard je m’étais lancé et avais alors refait cette recette chez moi mais quelque peu adaptée à ma façon de faire. Après plusieurs essais et content du résultat, je l’avais alors publiée (recette ICI) et il a fait des émules ce taillé, presque le tour du monde, même jusqu’aux oreilles des producteurs de la TV suisse (Couleurs Locales). Ils m’ont contacté car ils désiraient en faire un petit reportage que voici: \n\ninfo : pour visualiser uniquement la petite séquence, allez à la minute 5:15\n\n\n\nAlors, j’ai aussitôt convoqué Claudine et devant les caméras, elle nous a réalisé son taillé, SA recette avec tous les détails qui me manquaient. Mais claudine a bien précisé que ce taillé est une spécialité du village où nous habitons, cette recette qui nous a été transmise de familles en familles et que nous avons envie de faire perdurer. \n\nSa confection est des plus simple et rapide à réaliser. Ici pas de robot, pas de levain et le pétrissage se fait à l’ancienne, c’est-à-dire à la main. Voilà ce que ça donne :",
 				},
 				Keywords: models.Keywords{Values: "Apéritifs,Boulangerie,Petit-déjeuner,Recettes suisses salées"},
-				Image: models.Image{
-					Value: "https://image.over-blog.com/xNKjelRLoiHpZIVbWXiqrgKklls=/filters:no_upscale()/image%2F3215825%2F20231014%2Fob_e40698_taille-au-sel-claudine-7874.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"Recette pour 1 taillé d’un diamètre de 26 cm, env. 800 g, 10 à 15 personnes en apéro",
@@ -744,6 +720,7 @@ func TestScraper_B(t *testing.T) {
 				Description: models.Description{
 					Value: "Our highest-quality Hawaiian teriyaki beef is doused in a special house teriyaki sauce and sliced into scrumptious bite-sized pieces. The beef is then seared on a hot flat griddle to lock in the flavors and create a caramelized coating.",
 				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 serving Hawaiian teriyaki beef", "½ cup brown rice",
@@ -791,9 +768,7 @@ func TestScraper_B(t *testing.T) {
 					Values: "main,dinner,quick,one-pot meals,easy,weeknight meals,healthyish,gluten-free,nut-free,ground " +
 						"chicken,ground turkey,feta,olive,rice,za'atar,spinach,kale,sauté,swiss chard,castelvetrano olive,web",
 				},
-				Image: models.Image{
-					Value: "https://assets.bonappetit.com/photos/6228bc8071b26c82f857f620/16:9/w_6208,h_3492,c_limit/Crispy-Chicken-With-Za%E2%80%99atar-Olive-Rice.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 lb. ground chicken or turkey",
@@ -847,9 +822,7 @@ func TestScraper_B(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "chinese chicken recipe, indo-chinese recipe, drums of heaven, chicken drumsticks, chicken lollipop",
 				},
-				Image: models.Image{
-					Value: "https://assets-global.website-files.com/60d34b8627f6e735cf28df18/62a95ea9075f335474fa40bc_Chicken%20Lollipop%20Hero%201.1.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"500 g chicken wings (6 whole wings) ", "\u200d6 g (1 tsp) soy sauce",
@@ -917,9 +890,7 @@ func TestScraper_B(t *testing.T) {
 						"made with oats instead of breadcrumbs.",
 				},
 				Keywords: models.Keywords{Values: "Mini meatloaves"},
-				Image: models.Image{
-					Value: "https://www.bowlofdelicious.com/wp-content/uploads/2014/09/Mini-Meatloaves-square.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 onion (grated)",
@@ -984,9 +955,7 @@ func TestScraper_B(t *testing.T) {
 						"great way to use up leftovers from your fridge!",
 				},
 				Keywords: models.Keywords{Values: "Stir Fry Recipe, vegetable stir fry"},
-				Image: models.Image{
-					Value: "https://www.budgetbytes.com/wp-content/uploads/2022/03/Easy-Vegetable-Stir-Fry-close.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1/4 cup soy sauce ($0.24)",

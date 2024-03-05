@@ -19,9 +19,7 @@ func TestScraper_Z(t *testing.T) {
 					Value: "Am besten lässt man den Kohlrabi roh und hobelt ihn in hauchdünne Scheiben. Für ein vegetarisches Carpaccio ganz in Weiß kommen dann noch Fenchel und Fior di Latte hinzu.",
 				},
 				Keywords: models.Keywords{Values: "Gemüse, Leichte Küche, Sommer, Salate"},
-				Image: models.Image{
-					Value: "https://img.zeit.de/zeit-magazin/wochenmarkt/2021-08/kohlrabi-fenchel-carpaccio/wide__1300x731",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 Kohlrabi (klein)", "1 Fenchelknolle", "1/2 Bund Basilikum",
@@ -51,9 +49,7 @@ func TestScraper_Z(t *testing.T) {
 				},
 				Category:      models.Category{Value: "beef"},
 				CookingMethod: models.CookingMethod{Value: "pressure cook"},
-				Image: models.Image{
-					Value: "https://www.zenbelly.com/wp-content/uploads/2020/08/short-ribs-1-scaled-225x225.jpg",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3.5 pounds bone-in short ribs (try to get ones that are at least 1.5 inches thick)",

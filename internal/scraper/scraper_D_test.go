@@ -19,9 +19,7 @@ func TestScraper_D(t *testing.T) {
 					Value: "There are a few Marcella Hazan Pasta Bolognese recipes out there. I tweaked a few of them to come up with this recipe, which is inspired and adapted by her. Note that this sauce will take a while to prepare. It&#39;s mostly downtime. At first, you&#39;re just sauteeing ingredients, stirring until they&#39;re combined, then adding wine and milk, simmering and stirring until those have been absorbed. Once the tomatoes have been added, that&#39;s when you let the sauce cook at the lowest heat possible, stirring every once in a while, until it&#39;s ready. Within an hour, it comes together into a nice paste, but if you cook it another hour, nursing it with water as you go, you&#39;ll get a sauce with a richer flavor. One of Hazan&#39;s recipes says to cook sauce Bolognese for up to 4 hours! In the untraditional category, some people like to grate from Parmesan cheese over finished bowls of pasta.",
 				},
 				Keywords: models.Keywords{Values: "mushrooms"},
-				Image: models.Image{
-					Value: "https://www.davidlebovitz.com/wp-content/uploads/2020/04/Pasta-Bolognese-recipe-Marcella-hazan-sauce-6.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3 tablespoons butter (salted or unsalted, plus 1 tablespoon for finishing the pasta)",
@@ -67,9 +65,7 @@ func TestScraper_D(t *testing.T) {
 					Values: "American, Asian, dinner, weeknight meals, beef and broccoli recipe, sirloin recipes, Chinese take " +
 						"out recipes, easy weeknight dinner recipes, stir-fry recipe, beef stir-fry",
 				},
-				Image: models.Image{
-					Value: "https://hips.hearstapps.com/hmg-prod/images/delish-230510-beef-broccoli-613-rv-index-646bca228a2b3.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=1200:*",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 tbsp. dry sherry or shaoxing wine",
@@ -133,9 +129,7 @@ func TestScraper_D(t *testing.T) {
 					Value: "Keto samosas is an Indian vegetarian dish perfect for appitizers, snacks, or even a meal.",
 				},
 				Keywords: models.Keywords{Values: "Keto Samosas"},
-				Image: models.Image{
-					Value: "https://thinlicious.com/wp-content/uploads/2022/02/Keto-Samosa-Featured-Image-Template-1200x1200-1.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 batch keto roti dough",
@@ -211,9 +205,7 @@ func TestScraper_D(t *testing.T) {
 					Value: "Made with muddled strawberries, thyme, lemon, vodka, and St. Germain, this refreshing Strawberry " +
 						"Thyme Cooler is perfect for all your summer celebrations!",
 				},
-				Image: models.Image{
-					Value: "https://domesticate-me.com/wp-content/uploads/2019/08/Strawberry-Thyme-Cooler-Cocktail-1.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1/3 cup hulled and diced strawberries",
@@ -256,9 +248,7 @@ func TestScraper_D(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "baked chicken, baked chicken breasts, baked chicken recipe",
 				},
-				Image: models.Image{
-					Value: "https://i2.wp.com/www.downshiftology.com/wp-content/uploads/2021/01/Baked-Chicken-Breasts-10.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"4 boneless skinless chicken breasts",
@@ -305,10 +295,7 @@ func TestScraper_D(t *testing.T) {
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Name:          "Nytårskage med champagne, kransekagebund, solbær og chokoladepynt",
 				DatePublished: "2022-01-01T21:00:00+00:00",
-				Image: models.Image{
-					Value: "https://asset.dr.dk/ImageScaler03/?url=http%3A%2F%2Fmad-recipe-pictures-dr-dk.s3.amazonaws.com%2F" +
-						"prod%2Frecipe%2Fnytarskage-anelise-169-1640951740.jpg",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Description: models.Description{
 					Value: "Smuk nytårskage med urvisere og masser af smag, der passer perfekt til nytårsaften.",
 				},

@@ -26,6 +26,7 @@ func TestScraper_M(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "cylinder shaped rice cake, ddeokbokki recipe, ddukbokki, 떡볶이 조리법, korean food, Korean recipes, korean snack, Korean spicy rice cake, Korean street snack, Maangchi recipes, spicy ricecake, topokki, tteokbokki, tteokbokki recipe",
 				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 pound of cylinder shaped rice cake, bought or homemade. (Use a little more if you’re not adding hard boiled eggs and fish cakes)",
@@ -67,6 +68,7 @@ func TestScraper_M(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "doaejigogi bokkeum, doejigogi bokkeum, doejigogibokkeum, dwaeji-bulgogi, dwaejigogi bokkeum, 돼지고기볶음, gochujang doejigogi bokkeum, gochujang jeyukbokkeum, 제육볶음, jeyuk bokkeum, jeyukbokkeum, korean food, Korean kitchen, Korean spicy pork, Korean spicy stir-fried pork, pork recipe, recipe, spicy food, spicy pork, spicy stir-fried pork",
 				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 pound pork belly, cut into bite size pieces (1/8 inch thick)",
@@ -112,9 +114,7 @@ func TestScraper_M(t *testing.T) {
 						"og som er gode til alt fra morgenbordet til en sandwich.",
 				},
 				Keywords: models.Keywords{Values: "boller, hjemmebagt"},
-				Image: models.Image{
-					Value: "https://madensverden.dk/wp-content/uploads/2019/01/durumboller-opskrift.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"50 gram gær",
@@ -165,9 +165,7 @@ func TestScraper_M(t *testing.T) {
 					Value: "Svampet drømmekage med masser af fyld (tro mig, der er ikke sparet på de gode sager).",
 				},
 				Keywords: models.Keywords{Values: "Drømmekage"},
-				Image: models.Image{
-					Value: "https://madsvin.com/wp-content/uploads/2023/10/Droemmekage-fra-brovst.jpeg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"300 g hvedemel", "100 g smør (stuetempereret)", "2 tsk vaniljesukker",
@@ -206,9 +204,7 @@ func TestScraper_M(t *testing.T) {
 					Value: "This sweet, tangy Lemon-Glazed Sheet Cake has a delicate crumb and serves a crowd.",
 				},
 				Keywords: models.Keywords{Values: "lemon-glazed sheet cake, cake, dessert, lemon"},
-				Image: models.Image{
-					Value: "https://www.marthastewart.com/thmb/qGEGYT4Q4D1RG7fxw3rl448Vax8=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/lemon-glazed-sheet-cake-0519-fe9760b1-horiz-365892a83bdb4ce3bae434e35f6656fe.jpgitok28jrW8YB",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"10 tablespoons unsalted butter, room temperature, plus more for pan",
@@ -268,7 +264,7 @@ func TestScraper_M(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "vafler, hvetemel, melk, egg, smør, sukker, malt kardemomme, vaffel, vaffelrøre, vafler, vafler, vafler med bær, vafler, vafler, vafler, vaffeloppskrifter, oppskrift på vafler, vaffel, vaffelkake, vaffler, vaffelrøre, den store vaffeldagen",
 				},
-				Image: models.Image{Value: "https://images.matprat.no/uveqekyypv"},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"4 dl hvetemel",
@@ -307,9 +303,7 @@ func TestScraper_M(t *testing.T) {
 					Value: "Tender & flavorful, these meatballs have the curry flavor in a friendly shape! A secret ingredient makes a snappy outside & tender inside.",
 				},
 				Keywords: models.Keywords{Values: "chicken,thai"},
-				Image: models.Image{
-					Value: "https://meljoulwan.com/wp-content/uploads/2019/04/thai-chicken-meatballs-15-Edit-16.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"4 scallions", "10-12 basil leaves", "1/4 cup canned unsweetened coconut milk",
@@ -350,9 +344,7 @@ func TestScraper_M(t *testing.T) {
 				AtType:        models.SchemaType{Value: "Recipe"},
 				CookTime:      "PT12M",
 				DatePublished: "2021-08-23T04:00:00+00:00",
-				Image: models.Image{
-					Value: "https://www.melskitchencafe.com/wp-content/uploads/2021/08/rosemary-ranch-chicken6.jpg",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1/4 cup olive oil",
@@ -409,9 +401,7 @@ func TestScraper_M(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "lávasüti,lávasütemény,recept,karamella,desszert,karamellás lávasüti",
 				},
-				Image: models.Image{
-					Value: "https://www.mindmegette.hu/images/219/O/karamelles_lava_sutik.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"0.66 bögre 1,5%-os tej",
@@ -452,9 +442,7 @@ func TestScraper_M(t *testing.T) {
 						"ashwagandha, and he shou wu. The perfect low-caffeine cozy beverage to replace coffee or matcha.",
 				},
 				Keywords: models.Keywords{Values: "hot chocolate mix"},
-				Image: models.Image{
-					Value: "https://minimalistbaker.com/wp-content/uploads/2020/01/Adaptogenic-Hot-Chocolate-Mix-SQUARE.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2/3 cup unsweetened cacao powder",
@@ -523,9 +511,7 @@ func TestScraper_M(t *testing.T) {
 					Value: "Hands-free 15-minute cranberry sauce recipe using only 4-ingredients is a perfect side dish for Thanksgiving feast",
 				},
 				Keywords: models.Keywords{Values: "cranberry sauce"},
-				Image: models.Image{
-					Value: "https://ministryofcurry.com/wp-content/uploads/2019/11/cranberry-sauce-2-1.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 12 oz cranberries (fresh or frozen)",
@@ -580,9 +566,7 @@ func TestScraper_M(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "grigliata di carne,ricetta grigliata di carne",
 				},
-				Image: models.Image{
-					Value: "https://www.misya.info/wp-content/uploads/2022/03/grigliata-di-carne.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"4 salsicce e/o spiedini",
@@ -637,9 +621,7 @@ func TestScraper_M(t *testing.T) {
 					Value: "Khinkali are super flavorful, meat-filled dumplings that are similar to soup dumplings. They reheat well, making them great for meal prep and can even be frozen! Both the dough and filling are easy to make and they’re fun to assemble.",
 				},
 				Keywords: models.Keywords{Values: "dumpling recipe, georgian dumplings, khinkali recipe"},
-				Image: models.Image{
-					Value: "https://cdn.momsdish.com/wp-content/uploads/2021/02/Khinkali-Recipe-Georgian-Dumplings-018-scaled.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"4 cups all-purpose flour",
@@ -700,9 +682,7 @@ func TestScraper_M(t *testing.T) {
 						"Comes out perfect every time!",
 				},
 				Keywords: models.Keywords{Values: "holiday"},
-				Image: models.Image{
-					Value: "https://momswithcrockpots.com/wp-content/uploads/2018/01/Crockpot-Cornbread-1-2.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 Cup Cornmeal",
@@ -743,9 +723,7 @@ func TestScraper_M(t *testing.T) {
 				CookTime:      "PT42M",
 				DatePublished: "2018-11-06",
 				DateCreated:   "2018-11-06",
-				Image: models.Image{
-					Value: "https://www.monsieur-cuisine.com/fileadmin/_processed_/d/7/csm_24979_Rezeptfoto_925b5_dec6d60bed.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"200 g dark chocolate",
@@ -793,9 +771,7 @@ func TestScraper_M(t *testing.T) {
 					Value: "Everything you love about a BLT tossed in this easy and delicious BLT Pasta Salad! If you like BLT's, " +
 						"you're going to love this!",
 				},
-				Image: models.Image{
-					Value: "https://www.motherthyme.com/wp-content/uploads/2018/06/BLT-PASTA-SALAD-4-225x225.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 pound bacon (cooked and crumbled)",
@@ -849,9 +825,7 @@ func TestScraper_M(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "bundt cake, Cake, cake mix, dessert, recipe, st patrick's day",
 				},
-				Image: models.Image{
-					Value: "https://www.mybakingaddiction.com/wp-content/uploads/2022/03/overhead-view-sliced-pistachio-cake.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 package yellow cake mix (15.25 ounces)",
@@ -913,9 +887,7 @@ func TestScraper_M(t *testing.T) {
 				Description: models.Description{
 					Value: "牛油蛋糕是许多烘培初学者必学的蛋糕。这个原味牛油蛋糕食谱没有添加任何人造香精，所以蛋糕有着浓郁的牛油香味。食谱采用的是分蛋法来制作，所以蛋糕的组织比较细腻。",
 				},
-				Image: models.Image{
-					Value: "https://mykitchen101.com/wp-content/uploads/2017/10/plain-butter-cake-mykitchen101-feature.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"250 g \u514b \u725b\u6cb9 (\u6709\u76d0\uff0c\u5ba4\u6e29)",
@@ -976,10 +948,8 @@ func TestScraper_M(t *testing.T) {
 					Value: "Butter cake is a popular recipe among baking beginners. This butter cake recipe does not have any artificial flavour added, thus the cake has a rich buttery flavour.",
 				},
 				Keywords: models.Keywords{Values: "butter cake, marble butter cake recipe, plain butter cake"},
-				Image: models.Image{
-					Value: "https://mykitchen101en.com/wp-content/uploads/2017/10/plain-butter-cake-mykitchen101en-feature.jpg",
-				},
-				URL: "https://mykitchen101en.com/plain-butter-cake/",
+				Image:    models.Image{Value: anUploadedImage.String()},
+				URL:      "https://mykitchen101en.com/plain-butter-cake/",
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"250 g butter ((salted, room temperature))",
@@ -1031,12 +1001,9 @@ func TestScraper_M(t *testing.T) {
 				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Name:      "20-Minute Chicken Creole",
-				Image: models.Image{
-					Value: "https://myplate-prod.azureedge.us/sites/default/files/styles/recipe_525_x_350_/public/2020-10/" +
-						"Chicken%20Creole.jpg?itok=IX9jnbBD",
-				},
-				Yield:    models.Yield{Value: 8},
-				CookTime: "PT20M",
+				Image:     models.Image{Value: anUploadedImage.String()},
+				Yield:     models.Yield{Value: 8},
+				CookTime:  "PT20M",
 				Description: models.Description{
 					Value: "This Creole-inspired dish uses chili sauce and cayenne pepper to spice it up. Tomatoes, green pepper, " +
 						"celery, onions and garlic spices also surround the chicken with delicious color. This main dish can " +
@@ -1099,9 +1066,7 @@ func TestScraper_M(t *testing.T) {
 				Description: models.Description{
 					Value: "These classic Tex-Mex nachos are loaded to the max! Avoid soggy nachos by briefly baking them before topping with cheese, seasoned beef, refried beans, guacamole, and salsa. They&#39;re a great snack, party appetizer, or even casual weeknight dinner.",
 				},
-				Image: models.Image{
-					Value: "https://www.simplyrecipes.com/thmb/_38VUZIotH7LHCImZlAMMtlBl50=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__simply_recipes__uploads__2019__04__Nachos-LEAD-5-ab0842bd5c3a492b989240cca869cefb.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"For the spice mix:",
