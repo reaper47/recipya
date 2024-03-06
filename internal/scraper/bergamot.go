@@ -34,25 +34,16 @@ type bergamot struct {
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
 	Photos    []struct {
-		ID                int       `json:"id"`
-		RecipeID          int       `json:"recipeId"`
-		Reference         string    `json:"reference"`
-		Order             int       `json:"order"`
-		Status            string    `json:"status"`
-		IsUserUploaded    int       `json:"isUserUploaded"`
-		SourceURL         string    `json:"sourceUrl"`
-		FilenameExtension string    `json:"filenameExtension"`
-		CreatedAt         time.Time `json:"createdAt"`
-		UpdatedAt         time.Time `json:"updatedAt"`
-		DeletedAt         any       `json:"deletedAt"`
-		PhotoURL          string    `json:"photoUrl"`
-		PhotoThumbURL     string    `json:"photoThumbUrl"`
+		SourceURL         string `json:"sourceUrl"`
+		FilenameExtension string `json:"filenameExtension"`
+		PhotoURL          string `json:"photoUrl"`
+		PhotoThumbURL     string `json:"photoThumbUrl"`
 	} `json:"photos"`
 	SourceDomain string `json:"sourceDomain"`
 }
 
-func (s *Scraper) scrapeBergamot(url string) (models.RecipeSchema, error) {
-	_, after, ok := strings.Cut(url, "https://dashboard.bergamot.app/shared/")
+func (s *Scraper) scrapeBergamot(rawURL string) (models.RecipeSchema, error) {
+	_, after, ok := strings.Cut(rawURL, "https://dashboard.bergamot.app/shared/")
 	if !ok {
 		return models.RecipeSchema{}, errors.New("could not find bergamot recipe ID")
 	}
@@ -114,9 +105,9 @@ func (s *Scraper) scrapeBergamot(url string) (models.RecipeSchema, error) {
 		AtContext:       atContext,
 		AtType:          models.SchemaType{Value: "Recipe"},
 		CookTime:        cook,
-		DateCreated:     b.CreatedAt.String(),
-		DateModified:    b.UpdatedAt.String(),
-		DatePublished:   b.CreatedAt.String(),
+		DateCreated:     b.CreatedAt.Format(time.DateOnly),
+		DateModified:    b.UpdatedAt.Format(time.DateOnly),
+		DatePublished:   b.CreatedAt.Format(time.DateOnly),
 		Description:     models.Description{Value: b.Description},
 		Image:           models.Image{Value: image},
 		Ingredients:     models.Ingredients{Values: ingredients},
@@ -125,6 +116,6 @@ func (s *Scraper) scrapeBergamot(url string) (models.RecipeSchema, error) {
 		NutritionSchema: models.NutritionSchema{},
 		PrepTime:        prep,
 		Yield:           models.Yield{Value: int16(b.Servings)},
-		URL:             url,
+		URL:             rawURL,
 	}, nil
 }

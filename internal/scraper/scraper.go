@@ -40,6 +40,8 @@ func (s *Scraper) Scrape(url string, files services.FilesService) (models.Recipe
 	host := getHost(url)
 	if host == "bergamot" {
 		return s.scrapeBergamot(url)
+	} else if host == "foodbag" {
+		return s.scrapeFoodbag(url)
 	}
 
 	doc, err := s.fetchDocument(url)
@@ -115,7 +117,7 @@ func getHost(rawURL string) string {
 		return parts[1]
 	case 3:
 		s := parts[0]
-		if s == "recipes" || s == "receitas" || s == "cooking" || s == "news" || s == "mobile" || s == "dashboard" {
+		if s == "recipes" || s == "receitas" || s == "cooking" || s == "news" || s == "mobile" || s == "dashboard" || s == "fr" {
 			return parts[1]
 		}
 

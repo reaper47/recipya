@@ -8,7 +8,6 @@ import (
 func TestScraper_0to9(t *testing.T) {
 	testcases := []testcase{
 		{
-
 			name: "101cookbooks.com",
 			in:   "https://www.101cookbooks.com/simple-bruschetta/",
 			want: models.RecipeSchema{
@@ -62,6 +61,46 @@ func TestScraper_0to9(t *testing.T) {
 				CookTime:      "PT5M",
 				DatePublished: "2022-06-29T14:40:39+00:00",
 				URL:           "https://www.101cookbooks.com/simple-bruschetta/",
+			},
+		},
+		{
+			name: "15gram.be",
+			in:   "https://15gram.be/recepten/mac-n-cheese-met-gehakt-en-pompoen",
+			want: models.RecipeSchema{
+				AtContext:   "https://schema.org",
+				AtType:      models.SchemaType{Value: "Recipe"},
+				CookTime:    "PT30M",
+				Description: models.Description{Value: "We nemen je mee op skivakantie! Of toch naar de après-ski maaltijd. De pompoenblokjes zijn al voorgesneden en mixen we door de saus. Daardoor kleurt die ook mooi oranje!"},
+				Image:       models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"400 gr pompoenblokjes",
+						"1 teentje knoflook",
+						"300 gr rund-varkensgehakt",
+						"200 gr tortiglioni pasta",
+						"150 gr zure room",
+						"75 gr geraspte cheddar",
+						"olijfolie",
+						"zout",
+						"zwarte peper",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Breng een ruime pot gezouten water aan de kook voor de pasta.",
+						"Verwarm de oven voor op 220°C en bedek een bakplaat met bakpapier.",
+						"Schik de pompoenblokjes op de bakplaat en pers de knoflook erbij. Hussel door elkaar met olijfolie, zout en zwarte peper. Rooster in 20 min. gaar in de oven.",
+						`Verhit een scheutje olijfolie in een pan op hoog vuur. Bak het gehakt in 6-8 min. Prak met een spatel in "chunks", het hoeft niet helemaal fijn te zijn.`,
+						"Kook de pasta volgens de instructies op de verpakking.",
+						"Schik de geroosterde pompoen in een blender of maatbeker en mix, samen met de zure room en de helft van de geraspte cheddar, tot een gladde saus. Proef en breng op smaak met extra zout of zwarte peper (zie tip).",
+						"Giet de pasta af en schik opnieuw in de pot. Meng met de roomsaus en het gehakt. Stort in een ovenschaal en strooi de rest van de kaas erover. Gratineer nog 5-10 min. in de oven voor een mooi kaaskorstje.",
+						"TIP: Geef de saus wat extra punch met paprikapoeder, chilivlokken of bouillon.",
+					},
+				},
+				Keywords: models.Keywords{Values: "Foodbag,gehakt,pasta,pompoen,skikost"},
+				Name:     "Mac 'n cheese met gehakt en pompoen",
+				Yield:    models.Yield{Value: 2},
+				URL:      "https://15gram.be/recepten/mac-n-cheese-met-gehakt-en-pompoen",
 			},
 		},
 		{

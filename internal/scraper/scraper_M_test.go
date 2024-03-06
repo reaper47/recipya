@@ -809,6 +809,47 @@ func TestScraper_M(t *testing.T) {
 			},
 		},
 		{
+			name: "moulinex.fr",
+			in:   "https://www.moulinex.fr/recette/detail/PRO/B%C5%93uf%20carottes%20fondant/249426",
+			want: models.RecipeSchema{
+				AtContext: atContext,
+				AtType:    models.SchemaType{Value: "Recipe"},
+				CookTime:  "PT1H2M",
+				Image:     models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"600g bœuf à bourguignon", "1 oignon", "1gousse ail",
+						"250g champignons de paris", "3 carottes (280g)",
+						"100g olives noires dénoyautées", "25cl vin blanc", "2càs huile d'olive",
+						"1càs maïzena",
+						"15cl eau ( dans lesquels nous diluerons les 2 càc de fond de veau , le sel , le poivre , le piment et les herbes de provence )",
+						"2càc fond de veau", "1càc herbes de provence", "Poivre", "Sel",
+						"Piment en poudre ( facultatif)",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Préparer tous les ingrédients : couper les carottes en rondelles, émincez les champignons et l,oignon, écrasez la gousse d'ail, coupez la viande en cubes de 3 cm",
+						"En mode dorer : mettre les deux cuillères à soupe d'huile d'olive",
+						"Sans attendre la fin du préchauffage, Ajouter l'oignon émincé : faire revenir 3 minutes",
+						"Ensuite ajoutez la viande + la gousse d'ail écrasée : faire revenir 3 minutes en remuant bien pour faire dorer la viande sur tous les côtés",
+						"Ajouter les olives noires",
+						"Toujours en mode dorer ajouter les champignons : faire revenir 3 minutes en mélangeant",
+						"Ajouter les carottes : faire revenir 3 minutes",
+						"Ajouter les 25 cl de vin blanc",
+						"Dans les 15 cl d'eau mélanger le fond de veau le sel , le poivre ,les herbes de Provence et le piment et versez le tout dans la cuve",
+						"Quitter le mode dorer et mettre en cuisson sous pression 50 minutes",
+						"En fin de cuisson , liez la sauce avec 1 càs de maïïzéa tamisée",
+						"Accompagnez votre plat avec des p&#226;tes alsaciennes (spaetzle) ou du riz",
+					},
+				},
+				Name:     "Bœuf carottes fondant",
+				PrepTime: "PT15M",
+				Yield:    models.Yield{Value: 4},
+				URL:      "https://www.moulinex.fr/recette/detail/PRO/B%C5%93uf%20carottes%20fondant/249426",
+			},
+		},
+		{
 			name: "mybakingaddiction.com",
 			in:   "https://www.mybakingaddiction.com/pistachio-pudding-cake/",
 			want: models.RecipeSchema{

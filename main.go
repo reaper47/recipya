@@ -8,6 +8,7 @@ import (
 	"github.com/reaper47/recipya/internal/services"
 	"github.com/urfave/cli/v2"
 	"log"
+	"net/http"
 	"os"
 )
 
@@ -25,7 +26,7 @@ func main() {
 						services.NewEmailService(),
 						services.NewFilesService(),
 						services.NewIntegrationsService(),
-						scraper.NewScraper(),
+						scraper.NewScraper(&http.Client{}),
 					)
 					srv.Run()
 					return nil

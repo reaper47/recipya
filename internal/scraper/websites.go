@@ -167,8 +167,10 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeMeljoulwan(doc)
 		case "mindmegette":
 			return scrapeMindMegette(doc)
-		case "monsieur-cuisine":
-			return scrapeMonsieurCuisine(doc)
+		/*case "monsieur-cuisine":
+		return scrapeMonsieurCuisine(doc)*/
+		case "moulinex":
+			return scrapeMoulinex(doc)
 		case "myplate":
 			return scrapeMyPlate(doc)
 		default:
@@ -286,6 +288,10 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return parseWebsite(doc)
 		}
 	default:
+		switch host {
+		case "15gram":
+			return scrape15gram(doc)
+		}
 		return parseWebsite(doc)
 	}
 	return models.RecipeSchema{}, ErrNotImplemented

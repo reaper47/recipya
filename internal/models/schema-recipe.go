@@ -433,6 +433,11 @@ func (i *Ingredients) UnmarshalJSON(data []byte) error {
 		{old: "&frac34;", new: "¾"},
 		{old: "&apos;", new: "'"},
 		{old: "&nbsp;", new: ""},
+		{old: "&#224;", new: "à"},
+		{old: "&#8217;", new: "'"},
+		{old: "&#339;", new: "œ"},
+		{old: "&#233;", new: "é"},
+		{old: "&#239;", new: "ï"},
 	}
 
 	for _, v := range xv {
@@ -519,13 +524,19 @@ func (i *Instructions) UnmarshalJSON(data []byte) error {
 	}
 
 	cases := map[string]string{
-		"\u00a0": " ",
-		"\u2009": "",
-		"&apos;": "'",
-		"&nbsp;": " ",
-		"<br>":   " ",
-		"&quot;": `"`,
-		"º":      "°",
+		"\u00a0":  " ",
+		"\u2009":  "",
+		"&apos;":  "'",
+		"&nbsp;":  " ",
+		"<br>":    " ",
+		"&quot;":  `"`,
+		"º":       "°",
+		"&#233;":  "é",
+		"&#232;":  "è",
+		"&#8217;": "'",
+		"&#224;":  "à",
+		"&#239;":  "ï",
+		"&#244;":  "ô",
 	}
 	for i2, value := range i.Values {
 		for old, newValue := range cases {
