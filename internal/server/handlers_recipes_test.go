@@ -521,25 +521,6 @@ func TestHandlers_Recipes_AddOCR(t *testing.T) {
 	})
 }
 
-func TestHandlers_Recipes_AddRequestWebsite(t *testing.T) {
-	srv := newServerTest()
-	emailMock := &mockEmail{}
-	srv.Email = emailMock
-
-	uri := "/recipes/add/request-website"
-
-	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
-	})
-
-	t.Run("request website successful", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader(`website=https://www.eatingbirdfood.com/cinnamon-rolls`))
-
-		assertStatus(t, rr.Code, http.StatusSeeOther)
-		assertHeader(t, rr, "HX-Redirect", "/recipes/add")
-	})
-}
-
 func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 	srv, ts, c := createWSServer()
 	defer func() {
@@ -1181,7 +1162,7 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 			`<a href="/auth/login" class="btn btn-ghost">Log In</a> <a href="/auth/register" class="btn btn-ghost">Sign Up</a>`,
 			`<span class="text-center pb-2">Chicken Jersey</span>`,
 			`<button class="mr-2" title="Print recipe" _="on click print()">`,
-			`<img id="output" style="object-fit: cover" alt="Image of the recipe" class="w-full" src="/data/images/` + recipe.Image.String() + `.jpg">`,
+			`<img id="output" style="object-fit: cover" alt="Image of the recipe" class="w-full max-h-[34rem]" src="/data/images/` + recipe.Image.String() + `.jpg">`,
 			`<div class="badge badge-primary badge-outline">American</div>`,
 			`<p class="text-sm text-center">2 servings</p>`,
 			`<a class="btn btn-sm btn-outline no-underline print:hidden" href="https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/" target="_blank">Source</a><p class="hidden print:block print:whitespace-nowrap print:overflow-hidden print:text-ellipsis print:max-w-xs">https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/</p>`,
@@ -1352,7 +1333,7 @@ func TestHandlers_Recipes_View(t *testing.T) {
 				`<button class="mr-2" title="Share recipe" hx-post="/recipes/1/share" hx-target="#share-dialog-result" _="on htmx:afterRequest from me if event.detail.successful call share_dialog.showModal()">`,
 				`<button class="mr-2" title="Print recipe" _="on click print()">`,
 				`<button class="mr-2" hx-delete="/recipes/1" hx-swap="none" title="Delete recipe" hx-confirm="Are you sure you wish to delete this recipe?" hx-indicator="#fullscreen-loader">`,
-				`<img id="output" style="object-fit: cover" alt="Image of the recipe" class="w-full" src="/data/images/e81ba735-a4af-4c66-8c17-2f2ccc1b1a95.jpg"></div><div class="grid grid-cols-3 col-span-3 md:grid-flow-row md:grid-rows-4 print:grid-rows-2">`,
+				`<img id="output" style="object-fit: cover" alt="Image of the recipe" class="w-full max-h-[34rem]" src="/data/images/e81ba735-a4af-4c66-8c17-2f2ccc1b1a95.jpg"></div><div class="grid grid-cols-3 col-span-3 md:grid-flow-row md:grid-rows-4 print:grid-rows-2">`,
 				`<div class="badge badge-primary badge-outline">American</div>`,
 				`<button class="mr-2" title="Share recipe" hx-post="/recipes/1/share" hx-target="#share-dialog-result" _="on htmx:afterRequest from me if event.detail.successful call share_dialog.showModal()"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24" width="24px" height="24px" stroke="currentColor">`,
 				`<form autocomplete="off" _="on submit halt the event" class="print:hidden"><label class="form-control w-full"><div class="label p-0"><span class="label-text">Servings</span></div><input id="yield" type="number" min="1" name="yield" value="2" class="input input-bordered input-sm w-24" hx-get="/recipes/1/scale" hx-trigger="input" hx-target="#ingredients-instructions-container"></label></form>`,

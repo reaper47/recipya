@@ -249,21 +249,21 @@ func TestScraper_V(t *testing.T) {
 						"30 g di olio di semi di girasole",
 						"1 cucchiaino di aceto di mele",
 						"Fragole",
-						"Sciroppo d&#8217;acero",
+						"Sciroppo d'acero",
 					},
 				},
 				Instructions: models.Instructions{
 					Values: []string{
 						"Mescolate la farina di semi di lino con 6 cucchiai di acqua e lasciate riposare 10 minuti fino a che si " +
-							"sarà formato un composto gelatinoso. In una ciotolina versate il latte di soia e l&#8217;aceto d" +
+							"sarà formato un composto gelatinoso. In una ciotolina versate il latte di soia e l'aceto d" +
 							"i mele e lasciate cagliare per 5 minuti. Riunite in una ciotola la farina di quinoa, la farina di " +
-							"cocco, l&#8217;amido di mais, lo zucchero di canna, il lievito e il bicarbonato e mescolate. " +
-							"Aggiungete agli ingredienti secchi il latte di soia, il composto di semi di lino e l&#8217;olio e " +
+							"cocco, l'amido di mais, lo zucchero di canna, il lievito e il bicarbonato e mescolate. " +
+							"Aggiungete agli ingredienti secchi il latte di soia, il composto di semi di lino e l'olio e " +
 							"amalgamate bene il tutto fino ad ottenere un composto omogeneo e abbastanza denso.",
 						"Scaldate una padella antiaderente e ungetela leggermente con un pezzo di carta assorbente imbevuto di " +
 							"olio di semi. Versate 1-2 cucchiaiate di impasto per ciascun pancake e lasciate cuocere a fiamma " +
 							"medio-bassa per 3-4 minuti per lato. Man mano che i vostri pancake saranno pronti disponeteli su un " +
-							"piatto, e completate poi ciascuna porzione con sciroppo d&#8217;acero a piacere, fragole fresche e cocco " +
+							"piatto, e completate poi ciascuna porzione con sciroppo d'acero a piacere, fragole fresche e cocco " +
 							"in scaglie.",
 					},
 				},

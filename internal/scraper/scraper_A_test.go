@@ -132,9 +132,9 @@ func TestScraper_A(t *testing.T) {
 							"side down and thinly slice cross-wise to create shreds. Separate the shreds with your " +
 							"fingers. Discard the root end.",
 						"With a food processor (fastest!): Use a food processor with the shredding disc attachment blade. " +
-							"(Here&#8217;s a video.)",
+							"(Here's a video.)",
 						"With a mandolin: Slice the whole Brussels sprouts with a mandolin, taking proper safety precautions " +
-							"to keep your fingers away from the blade. (Here&#8217;s a video.)",
+							"to keep your fingers away from the blade. (Here's a video.)",
 						"In a medium bowl, stir together the minced garlic, shallot, Parmesan cheese, and kosher salt.",
 						"In a large skillet, heat the olive oil over medium high heat. Add the Brussels sprouts and cook " +
 							"for 4 minutes, stirring only occasionally, until tender and browned. Stir in the Parmesan " +

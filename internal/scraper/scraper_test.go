@@ -28,6 +28,8 @@ type testcase struct {
 }
 
 func test(t *testing.T, tc testcase) {
+	t.Helper()
+
 	defer func() {
 		err := recover()
 		if err != nil {

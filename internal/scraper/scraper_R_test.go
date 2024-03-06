@@ -48,11 +48,11 @@ func TestScraper_R(t *testing.T) {
 						"Warm a large skillet with oil, garlic and onion and cook for 3-5 minutes or until fragrant",
 						"Add in the rice and press down to form a large &#8220;rice pancake&#8221; of sorts",
 						"Cook on medium heat for about 8 minutes then start to stir it to crisp the other side of the rice (do " +
-							"not cover the rice or it won&#8217;t crisp!)",
+							"not cover the rice or it won't crisp!)",
 						"Remove rice from pan once crisped and add to mixing bowl with the kale and add in the edamame, scallions, " +
 							"peppers, kimchi, peanuts and mix",
 						"Dress with coconut aminos and sesame oil and salt and pepper and enjoy!",
-						"You can also add some cooked salmon, chicken or any additional protein if you&#8217;d like",
+						"You can also add some cooked salmon, chicken or any additional protein if you'd like",
 					},
 				},
 				Name:     "Delicious Crispy Rice Salad (gluten-free)",

@@ -587,7 +587,7 @@ func TestScraper_C(t *testing.T) {
 						"1/2 teaspoon baking soda",
 						"3 large eggs, at room temperature**",
 						"2/3 cup honey or maple syrup",
-						"1 1/2 cups milk of choice (regular cow&#8217;s milk, almond or oat milk, etc.), at room temperature",
+						"1 1/2 cups milk of choice (regular cow's milk, almond or oat milk, etc.), at room temperature",
 						"Optional serving suggestions: additional butter, honey or jam",
 					},
 				},
@@ -599,7 +599,7 @@ func TestScraper_C(t *testing.T) {
 						"Meanwhile, in a large bowl, combine the cornmeal, flour, salt, baking powder and baking soda. Stir to " +
 							"combine, and set aside. In a medium bowl, whisk together the eggs and honey until fully blended. " +
 							"Add the milk and whisk until evenly combined.",
-						"Pour the liquid into the dry mixture, and stir just until moistened through (we&#8217;ll stir it more " +
+						"Pour the liquid into the dry mixture, and stir just until moistened through (we'll stir it more " +
 							"soon). When the butter is melted and golden, use oven mitts (the skillet is crazy hot!) to remove " +
 							"the skillet from the oven, and give it a gentle swirl to lightly coat about an inch up the sides.",
 						"Pour the melted butter into the batter and stir just until incorporated. Pour the batter back into the " +

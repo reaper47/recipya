@@ -71,8 +71,8 @@ func TestScraper_Z(t *testing.T) {
 					Values: []string{
 						"Liberally season the short ribs with salt and pepper &#8211; ideally a day in advance and refrigerated, " +
 							"but if not, up to two hours at room temperature.",
-						"Turn your Instant Pot on Sauté (high, if it&#8217;s an option). Once it reads HOT, add the oil. Brown " +
-							"the short ribs in batches, until well browned on the meaty side (you don&#8217;t " +
+						"Turn your Instant Pot on Sauté (high, if it's an option). Once it reads HOT, add the oil. Brown " +
+							"the short ribs in batches, until well browned on the meaty side (you don't " +
 							"need to brown them on all sides)",
 						"Remove the short ribs to a plate and add the onions. Sauté for 5-6 minutes, until browned and softened.",
 						"Add the garlic and saut\u00e9 for another minute, until fragrant.",
@@ -81,9 +81,9 @@ func TestScraper_Z(t *testing.T) {
 						"Hit Cancel on the Instant Pot. Lock on the lid, making sure the seal is in place. Set to cook for 40 " +
 							"minutes at high pressure, making sure the valve is set to sealing.",
 						"When the time is up, release the pressure and remove the lid once it unlocks. Remove the ribs to a " +
-							"platter and turn the Instant Pot back to Saut\u00e9. Reduce the sauce until it&#8217;s about 3 cups in volume.",
+							"platter and turn the Instant Pot back to Saut\u00e9. Reduce the sauce until it's about 3 cups in volume.",
 						"Pour the sauce over the ribs. Pour over the lemon juice and sprinkle with lemon zest and parsley.",
-						"Serve over polenta, mashed potatoes, or whatever you&#8217;d like."},
+						"Serve over polenta, mashed potatoes, or whatever you'd like."},
 				},
 				Keywords:      models.Keywords{Values: "short ribs"},
 				Yield:         models.Yield{Value: 4},

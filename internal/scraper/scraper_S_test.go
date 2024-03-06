@@ -79,24 +79,24 @@ func TestScraper_S(t *testing.T) {
 					Values: []string{
 						"To help guarantee success, I recommend reading through the recipe, watching the video tutorial, and " +
 							"reading the explanations below this recipe. (All answer many FAQs.) Do not use an electric mixer " +
-							"for this dough. It&#8217;s best if the dough is folded together with a wooden spoon or rubber spatula " +
+							"for this dough. It's best if the dough is folded together with a wooden spoon or rubber spatula " +
 							"since it is so sticky. There is very minimal mixing required.",
 						"Whisk the warm water, yeast, and 1 Tablespoon (6g) of sugar together in a large bowl. Cover and allow to " +
-							"rest until foamy on top, about 5 minutes. If the surface doesn&#8217;t have bubbles on top or look " +
-							"foamy after 15 minutes (it should if the yeast isn&#8217;t expired), start over with a fresh packet of" +
+							"rest until foamy on top, about 5 minutes. If the surface doesn't have bubbles on top or look " +
+							"foamy after 15 minutes (it should if the yeast isn't expired), start over with a fresh packet of" +
 							" yeast. Whisk in remaining sugar, the milk, egg, and salt. Once these wet ingredients are mixed together, " +
 							"lightly cover and set the bowl aside as you work on the next step.",
 						"Cut the cold butter into 1/4 inch slices and add to a food processor or blender. Top with 2 and 1/2 cups " +
 							"flour. Pulse the mixture 12-15 times, until butter is crumbled into pea-size bits. See photo below " +
 							"for a visual. Using a food processor or blender is best for this dough. Keeping that in mind, if you " +
-							"don&#8217;t have one, you can use a pastry cutter to work in the butter.",
+							"don't have one, you can use a pastry cutter to work in the butter.",
 						"Pour the flour mixture into the wet yeast mixture. Very gently fold everything together using a rubber " +
 							"spatula or wooden spoon. Fold *just until* the dry ingredients are moistened. The butter must remain " +
 							"in pieces and crumbles, which creates a flaky pastry. Turn the sticky dough out onto a large piece of " +
 							"plastic wrap, parchment paper, aluminum foil, or into any container you can tightly cover.",
 						"Wrap the dough/cover up tightly and refrigerate for at least 4 hours and up to 48 hours.",
 						"Take the dough out of the refrigerator to begin the “rolling and folding” process. If the dough sat for " +
-							"more than 4 hours, it may have slightly puffed up and that&#8217;s ok. (It will deflate as you shape " +
+							"more than 4 hours, it may have slightly puffed up and that's ok. (It will deflate as you shape " +
 							"it, which is also ok.) Very generously flour a work surface. The dough is very sticky, so make sure you " +
 							"have more flour nearby as you roll and fold. Using the palm of your hands, gently flatten the dough into " +
 							"a small square. Using a rolling pin, roll out into a 15&#215;8 inch rectangle. When needed, flour " +
@@ -107,8 +107,8 @@ func TestScraper_S(t *testing.T) {
 						"Wrap up/seal tightly and refrigerate for at least 1 hour and up to 24 hours. You can also freeze the dough " +
 							"at this point. See freezing instructions.",
 						"Line two large baking sheets with parchment paper or silicone baking mats. Rimmed baking sheets are best " +
-							"because butter may leak from the dough as it bakes. If you don&#8217;t have rimmed baking sheets, when " +
-							"it&#8217;s time to preheat the oven, place another baking sheet on the oven rack below to catch any butter " +
+							"because butter may leak from the dough as it bakes. If you don't have rimmed baking sheets, when " +
+							"it's time to preheat the oven, place another baking sheet on the oven rack below to catch any butter " +
 							"that may drip.",
 						"Take the dough out of the refrigerator and cut it in half. Wrap 1 half up and keep refrigerated as you " +
 							"work with the first half. (You can freeze half of the dough at this point, use the freezing instructions " +
@@ -125,9 +125,9 @@ func TestScraper_S(t *testing.T) {
 							"oven as they finish up chilling.",
 						"Preheat oven to 400°F (204°C).",
 						"Bake for 19-22 minutes or until golden brown around the edges. Some butter may leak from the dough, " +
-							"that&#8217;s completely normal and expected. Feel free to remove the baking sheets from the oven halfway " +
+							"that's completely normal and expected. Feel free to remove the baking sheets from the oven halfway " +
 							"through baking and brush the dough with any of the leaking butter, then place back in the oven to finish " +
-							"baking. (That&#8217;s what I do!)",
+							"baking. (That's what I do!)",
 						"Remove baked pastries from the oven. Cool for at least 5 minutes before icing/serving.",
 						"Whisk the icing ingredients together. If you want a thicker icing, whisk in more confectioners’ sugar. " +
 							"If you want a thinner icing, whisk in more milk or cream. Drizzle over warm pastries and serve.",

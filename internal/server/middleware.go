@@ -29,7 +29,6 @@ var excludedURIs = map[string]struct{}{
 	"/recipes/add/manual/ingredient/*":   {},
 	"/recipes/add/manual/instruction/*":  {},
 	"/recipes/add/ocr":                   {},
-	"/recipes/add/request-website":       {},
 	"/recipes/add/website":               {},
 	"/recipes/search":                    {},
 	"/recipes/supported-websites":        {},

@@ -128,7 +128,7 @@ func TestScraper_G(t *testing.T) {
 							"measuring cup) to press the mixture down firmly and evenly until it is very compact.",
 						"Heat the chocolate chips in a double boiler (or in the microwave in 10-second intervals) until completely " +
 							"melted, being careful not to overcook and burn the chocolate. Immediately spread the melted chocolate " +
-							"in an even layer over the cornflake mixture, using a spoon to create pretty swirls if you&#8217;d like.",
+							"in an even layer over the cornflake mixture, using a spoon to create pretty swirls if you'd like.",
 						"Refrigerate the bars for 2 to 3 hours or until firm.",
 						"Serve. When you’re ready to serve the bars, carefully lift up the parchment and transfer the entire batch " +
 							"to a cutting board. Use a chef’s knife to carefully cut the bars into squares. Serve immediately and enjoy!",
