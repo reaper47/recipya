@@ -13,6 +13,7 @@ import (
 
 const atContext = "https://schema.org"
 
+// HTTPClient is an interface for making HTTP requests.
 type HTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }

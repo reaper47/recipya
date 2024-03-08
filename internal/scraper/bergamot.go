@@ -74,16 +74,12 @@ func (s *Scraper) scrapeBergamot(rawURL string) (models.RecipeSchema, error) {
 
 	var ingredients []string
 	for _, d := range b.Ingredients {
-		for _, ing := range d.Data {
-			ingredients = append(ingredients, ing)
-		}
+		ingredients = append(ingredients, d.Data...)
 	}
 
 	var instructions []string
 	for _, d := range b.Instructions {
-		for _, ing := range d.Data {
-			instructions = append(instructions, ing)
-		}
+		instructions = append(instructions, d.Data...)
 	}
 
 	var prep string

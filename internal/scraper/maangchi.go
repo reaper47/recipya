@@ -15,7 +15,7 @@ func scrapeMaangchi(root *goquery.Document) (models.RecipeSchema, error) {
 	if len(rs.Ingredients.Values) == 0 {
 		nodes := root.Find("h2:contains('Ingredients') + ul li")
 		rs.Ingredients.Values = make([]string, 0, nodes.Length())
-		nodes.Each(func(i int, sel *goquery.Selection) {
+		nodes.Each(func(_ int, sel *goquery.Selection) {
 			rs.Ingredients.Values = append(rs.Ingredients.Values, sel.Text())
 		})
 	}
@@ -23,13 +23,13 @@ func scrapeMaangchi(root *goquery.Document) (models.RecipeSchema, error) {
 	if len(rs.Instructions.Values) == 0 {
 		nodes := root.Find("h2:contains('Directions') + ol li")
 		rs.Instructions.Values = make([]string, 0, nodes.Length())
-		nodes.Each(func(i int, sel *goquery.Selection) {
+		nodes.Each(func(_ int, sel *goquery.Selection) {
 			s := sel.Text()
 			before, _, ok := strings.Cut(s, "<img")
 			if ok {
 				s = before
 			}
-			rs.Instructions.Values = append(rs.Instructions.Values, before)
+			rs.Instructions.Values = append(rs.Instructions.Values, s)
 		})
 	}
 	return rs, nil
