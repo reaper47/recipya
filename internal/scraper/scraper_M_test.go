@@ -850,6 +850,48 @@ func TestScraper_M(t *testing.T) {
 			},
 		},
 		{
+			name: "mundodereceitasbimby.com.pt",
+			in:   "https://www.mundodereceitasbimby.com.pt/entradas-receitas/batatas-com-chourico/i1ggy3yl-6f492-260374-cfcd2-gzaqtn4i",
+			want: models.RecipeSchema{
+				AtContext:     atContext,
+				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "Entradas"},
+				DateCreated:   "2012-09-10",
+				DateModified:  "2015-11-06",
+				DatePublished: "2012-09-10",
+				Description:   models.Description{Value: "Batatas com Chouriço de Equipa Bimby. Receita Bimby<sup>®</sup> na categoria Entradas do %site-name%, A Comunidade de Receitas Bimby<sup>®</sup>."},
+				Image:         models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"800 g água",
+						"500 g batata miúda, inteira com casca",
+						"2 alho",
+						"40 g azeite",
+						"1 c. sopa de pimentão-doce",
+						"0.5 c. chá de tomilho fresco",
+						"1 c. chá de tabasco",
+						"1 chouriço de carne",
+						"sal, q.b.",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Pré aqueça o forno a 250°C.",
+						"Coloque no copo a água, a Varoma com as batatas e programe 20 min/Varoma/vel 1.",
+						"Retire a água do copo e reserve as batatas.",
+						"Coloque no copo os alhos, o azeite, o pimentão, o tomilho, o tabasco e triture 6 seg/vel 5.",
+						"Corte o chouriço em rodelas e as batatas ao meio, e com a ajuda de um palito coloque uma fatia de chouriço entre as duas metades de cada batata.",
+						"Coloque as batatas num prato de ir ao forno, regue com o molho e salpique com o sal.",
+						"Leve a dourar ao forno a 250° durante 7 minutos. Sirva de seguida.",
+					},
+				},
+				Name:     "Batatas com Chouriço",
+				PrepTime: "PT30M",
+				Yield:    models.Yield{Value: 8},
+				URL:      "https://www.mundodereceitasbimby.com.pt/entradas-receitas/batatas-com-chourico/i1ggy3yl-6f492-260374-cfcd2-gzaqtn4i",
+			},
+		},
+		{
 			name: "mybakingaddiction.com",
 			in:   "https://www.mybakingaddiction.com/pistachio-pudding-cake/",
 			want: models.RecipeSchema{

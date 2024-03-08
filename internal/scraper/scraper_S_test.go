@@ -1023,6 +1023,44 @@ func TestScraper_S(t *testing.T) {
 			},
 		},
 		{
+			name: "strongrfastr.com",
+			in:   "https://www.strongrfastr.com/recipes/96-latininspired_creamy_chicken_stew",
+			want: models.RecipeSchema{
+				AtContext:   "https://schema.org",
+				AtType:      models.SchemaType{Value: "Recipe"},
+				Category:    models.Category{Value: "dinner"},
+				Description: models.Description{Value: "crock pot, slow cooker"},
+				Image:       models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"4 dash ground cumin", "1/3 lbs boneless skinless chicken breast, raw",
+						"1/2 can(s) diced tomatoes", "1/6 can black beans",
+						"1/6 15oz can whole kernel corn", "1/6 packet taco seasoning mix",
+						"1/3 tsp cayenne pepper", "1/6 jar (~16 oz) green salsa",
+						"1/6 can (~16 oz) pinto beans", "4 tsp cream cheese",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Note: a slow cooker is recommended for extra juicy chicken, but to save time, you can also cook the stew in a large pot on the stove and keep it at a simmer until the chicken breasts are fully cooked, about 10-15 minutes, before taking them out to shred.",
+						"Place the chicken breasts into the bottom of a slow cooker, and pour tomatoes, green salsa, black beans, pinto beans, and corn over the chicken. Sprinkle taco seasoning, cayenne, cumin, and some salt over the mixture, and stir to combine. Cover the cooker, set on Low, and cook until chicken is very tender and the mixture has thickened, 8 to 10 hours.",
+						"After its finished cooking, remove the chicken breasts and shred them with two forks. Return the shredded chicken to the stew and stir.",
+						"Mix a few tablespoons of stew liquid with cream cheese in a bowl, stir until smooth, and mix the cream cheese into the cooker to make a creamy sauce. Continue to cook for 15 minutes, then serve.",
+					},
+				},
+				Name: "Latin-inspired creamy chicken stew",
+				NutritionSchema: models.NutritionSchema{
+					Calories:      "490 calories",
+					Carbohydrates: "36 g",
+					Fat:           "12 g",
+					Protein:       "47 g",
+				},
+				PrepTime: "",
+				Yield:    models.Yield{Value: 1},
+				URL:      "https://www.strongrfastr.com/recipes/96-latininspired_creamy_chicken_stew",
+			},
+		},
+		{
 			name: "sunbasket.com",
 			in:   "https://sunbasket.com/recipe/chicken-and-dumplings",
 			want: models.RecipeSchema{

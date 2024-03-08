@@ -340,6 +340,47 @@ func TestScraper_F(t *testing.T) {
 			},
 		},
 		{
+			name: "fitslowcookerqueen.com",
+			in:   "https://fitslowcookerqueen.com/easy-homemade-breakfast-sausage/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        models.SchemaType{Value: "Recipe"},
+				CookTime:      "PT10M",
+				DatePublished: "2022-07-15",
+				Image:         models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"1 pound ground pork", "1 teaspoon salt", "1/2 teaspoon ground sage",
+						"1/2 teaspoon black pepper", "1/4 teaspoon thyme", "1/4 teaspoon onion powder",
+						"1/4 teaspoon cayenne",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Combine all ingredients in a large mixing bowl. Divide the meat mixture into even portions and flatten into patties or form into links.",
+						"Add patties to the air fryer basket. Do not overlap. You may have to cook the sausage in batches depending on the size of your air fryer.",
+						"Cook 380 degrees for 12-15 minutes (see note below), flipping the sausage halfway through cooking. Make sure the internal temperature is at least 145 F.",
+					},
+				},
+				Name: "Air Fryer Homemade Breakfast Sausage ",
+				NutritionSchema: models.NutritionSchema{
+					Calories:      "150 calories",
+					Carbohydrates: "0.2 g",
+					Cholesterol:   "40.9 mg",
+					Fat:           "12.1 g",
+					Fiber:         "0.1 g",
+					Protein:       "9.6 g",
+					SaturatedFat:  "4.5 g",
+					Sodium:        "322.6 mg",
+					Sugar:         "0 g",
+					TransFat:      "0 g",
+				},
+				PrepTime: "PT5M",
+				Yield:    models.Yield{Value: 8},
+				URL:      "https://fitslowcookerqueen.com/easy-homemade-breakfast-sausage/",
+			},
+		},
+		{
 			name: "food.com",
 			in:   "https://www.food.com/recipe/jim-lahey-s-no-knead-pizza-margherita-382696",
 			want: models.RecipeSchema{

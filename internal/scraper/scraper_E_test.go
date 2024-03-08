@@ -149,6 +149,37 @@ func TestScraper_E(t *testing.T) {
 			},
 		},
 		{
+			name: "eatliverun.com",
+			in:   "https://www.eatliverun.com/dinner-cheap-garlickly-greens-beans/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "Main Course"},
+				CookTime:      "PT4M",
+				DatePublished: "2017-05-18T05:31:11+00:00",
+				Image:         models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"1 cup dried lima beans",
+						"1 large bunch dark leafy greens (such as collard greens or kale, roughly chopped)",
+						"4 tbsp extra virgin olive oil", "3 cloves garlic (minced)", "kosher salt",
+						"freshly ground black pepper",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"To quick soak your beans like I usually do, just place beans in a large pot and cover with water. Bring to a high boil and boil for 3 minutes. Turn off burner, cover pot and let beans rest for an hour. After an hour, drain beans and add fresh water with plenty of salt. Bring to a simmer and cook until beans are soft, about 40 minutes.",
+						"After your beans have cooked, drain them gently (lima beans get really soft so be careful not to crush them). Add three tablespoons of the olive oil in a large saute pan over medium heat.",
+						"Add minced garlic and saute for 30 seconds. Add leafy greens and saute for another minute. Stir in beans. Season to taste with salt and pepper and drizzle additional olive oil over top.",
+					},
+				},
+				Name:     "Garlicky Beans & Greens",
+				PrepTime: "PT90M",
+				Yield:    models.Yield{Value: 3},
+				URL:      "https://www.eatliverun.com/dinner-cheap-garlickly-greens-beans/",
+			},
+		},
+		{
 			name: "eatsmarter.com",
 			in:   "https://eatsmarter.com/recipes/vietnamese-chicken-cabbage-salad",
 			want: models.RecipeSchema{

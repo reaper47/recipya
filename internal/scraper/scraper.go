@@ -80,7 +80,7 @@ func (s *Scraper) fetchDocument(url string) (*goquery.Document, error) {
 	const mozilla = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0"
 
 	switch getHost(url) {
-	case "aberlehome":
+	case "aberlehome", "thepalatablelife":
 		req.Header.Set("User-Agent", mozilla)
 	case "ah":
 		req.Header.Set("Accept-Language", "nl")

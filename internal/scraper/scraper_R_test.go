@@ -603,6 +603,47 @@ func TestScraper_R(t *testing.T) {
 			},
 		},
 		{
+			name: "ricetteperbimby.it",
+			in:   "https://www.ricetteperbimby.it/ricette/dolcetti-mandorle-e-limone-bimby",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "Dolci e Dessert"},
+				CookTime:      "PT10M",
+				Cuisine:       models.Cuisine{Value: "Italiana"},
+				DateModified:  "2024-02-14",
+				DatePublished: "2024-03-03",
+				Description: models.Description{
+					Value: "Prepara dei golosi dolcetti mandorle e limone con il Bimby, dei deliziosi e profumati biscotti ottimi a colazione e a merenda. Ecco la ricetta veloce!",
+				},
+				Keywords: models.Keywords{Values: "Bambini,Forno,Vegetariana"},
+				Image:    models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"1 (scorza e succo) limone", "100 g (pelate) mandorle", "200 g farina 00",
+						"mezza bustina lievito per dolci", "90 g zucchero semolato",
+						"100 g (freddo) burro", "1 uova", "q.b. zucchero a velo",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Mettere nel boccale la scorza di limone e le mandorle: 10 sec. vel. 10.",
+						"Raccogliere sul fondo e aggiungere la farina, il lievito, lo zucchero e il burro a tocchetti: 40 sec. vel. 5.",
+						"Aggiungere l'uovo e 40 g di succo di limone: 30 sec. vel. 5.",
+						"Versare la frolla in una ciotola, coprire con pellicola e trasferire in frigorifero per 25 minuti.",
+						"Con l'aiuto di 2 cucchiaini prelevare piccole quantità di frolla (morbida), farle cadere in un piatto con dello zucchero a velo e rotolarle fino a ricoprirle completamente.",
+						"Disporre le palline su una teglia rivestita di carta forno.",
+						"Infornare in forno preriscaldato statico a 180° per 10 minuti.",
+						"Sfornare, lasciare raffreddare e servire.",
+					},
+				},
+				Name:     "Dolcetti mandorle e limone",
+				PrepTime: "PT20M",
+				Yield:    models.Yield{Value: 1},
+				URL:      "https://www.ricetteperbimby.it/ricette/dolcetti-mandorle-e-limone-bimby",
+			},
+		},
+		{
 			name: "rosannapansino.com",
 			in:   "https://rosannapansino.com/blogs/recipes/rainbow-treats",
 			want: models.RecipeSchema{
