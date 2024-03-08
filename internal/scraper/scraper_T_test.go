@@ -1,4 +1,4 @@
-package scraper
+package scraper_test
 
 import (
 	"github.com/reaper47/recipya/internal/models"
@@ -21,9 +21,7 @@ func TestScraper_T(t *testing.T) {
 					Value: `If you’ve never cooked steak at home before, it can be a little intimidating. That’s why I came up with this simple steak recipe that’s so easy, you could make it any day of the week. —<a href="https://www.tasteofhome.com/author/jschend/">James Schend</a>, <a href="https://www.dairyfreed.com/" target="_blank" rel="noopener">Dairy Freed</a>`,
 				},
 				Keywords: models.Keywords{Values: ""},
-				Image: models.Image{
-					Value: "https://www.tasteofhome.com/wp-content/uploads/2019/02/Cast-Iron-Skillet-Steak_EXPS_CIMZ19_235746_B01_15_10b-6.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 beef New York strip or ribeye steak (1 pound), 1 inch thick",
@@ -69,9 +67,7 @@ func TestScraper_T(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "apple crisp, Apple crisp ingredients, apple crisp recipe, Apple crisp recipe 9x9 pan, apple crisp recipe with oats, apple crisp topping, apple crisp with oats, Best apple crisp, easy apple crisp, Homemade apple crisp, how to make apple crisp, Old fashioned apple crisp recipe",
 				},
-				Image: models.Image{
-					Value: "https://tastesbetterfromscratch.com/wp-content/uploads/2017/11/Apple-Crisp-Web-19.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2/3 cup old-fashioned rolled oats", "1/2 cup all-purpose flour",
@@ -130,9 +126,7 @@ func TestScraper_T(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "breakfast and brunch, easter breakfast, leftover ham recipe",
 				},
-				Image: models.Image{
-					Value: "https://www.tastesoflizzyt.com/wp-content/uploads/2022/03/Easter-Ham-Pie-15.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"double pie dough for 9-inch pie pan",
@@ -201,10 +195,7 @@ func TestScraper_T(t *testing.T) {
 						"crispy. Once that’s done, you heat up and reduce some extra marinade to make a thick, to-die-for " +
 						"glaze to pour over your filet. Serve with your favorite veggies or rice and enjoy!",
 				},
-				Image: models.Image{
-					Value: "https://img.buzzfeed.com/video-api-prod/assets/04ff8cfcc4b5428a8bcc6b03099d4492/Thumb_A_FB.jpg?" +
-						"resize=1200:*",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"12 oz skinless salmon",
@@ -255,10 +246,7 @@ func TestScraper_T(t *testing.T) {
 					Value: "This shrimp scampi with angel hair pasta is a delicious dinner with plenty of cheese that you can " +
 						"make in just 15 minutes! ",
 				},
-				Image: models.Image{
-					Value: "https://tastykitchen.com/recipes/wp-content/uploads/sites/2/2020/09/SHRIMP-SCAMPI-WITH-ANGEL-HAIR-" +
-						"PASTA-15-410x308.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				PrepTime: "PT5M",
 				CookTime: "PT10M",
 				Ingredients: models.Ingredients{
@@ -317,10 +305,7 @@ func TestScraper_T(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "honey, lamb, easter, mother's Day, sunday roast, sunday lunch, roast dinner, veg, meat and two veg, potatoes, roast potatoes, roasted potatoes",
 				},
-				Image: models.Image{
-					Value: "https://realfood.tesco.com/media/images/1400x919-OneTrayEasterRoast-7f95aa82-f903-4339-ab87-" +
-						"6cffda6d26d8-0-1400x919.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Yield: models.Yield{Value: 6},
 				NutritionSchema: models.NutritionSchema{
 					Calories:      "855 calories",
@@ -386,9 +371,7 @@ func TestScraper_T(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "homemade, sourdough bread, breadcrumbs, Italian, seasoned bread crumbs",
 				},
-				Image: models.Image{
-					Value: "https://www.theclevercarrot.com/wp-content/uploads/2021/09/SOURDOUGH-BREADCRUMBS-2-225x225.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 tsp dried garlic powder",
@@ -422,6 +405,58 @@ func TestScraper_T(t *testing.T) {
 			},
 		},
 		{
+			name: "thecookingguy.com",
+			in:   "https://www.thecookingguy.com/recipes/funeral-sandwiches",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        models.SchemaType{Value: "Recipe"},
+				DatePublished: "2024-01-29",
+				Description:   models.Description{Value: "Super delicious roast, homemade brioche sliders, melty cheese and an amped up garlic butter - what could be better?"},
+				Keywords:      models.Keywords{Values: "Cooking, Guy, Grill, Grilling, Grilled, BBQ, Dinner, Family Meal, Chicken, Beef, Steak, Pork, Seafood, Fish, Lobster, Sauce, Tacos, Sam The Cooking Guy"},
+				Image:         models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"One 4-5 pound eye of round",
+						"1/4 cup yellow mustard",
+						"1/4 cup any all purpose seasoning, or make mine here",
+						"12 slider buns/rolls - or one batch homemade brioche buns, but separated into 12 and not 8 - and the recipe is right here",
+						"1/4 cup mayo",
+						"1/4 cup grainy mustard",
+						"3/4 pound sliced white American or white cheddar cheese",
+						"1/2 cup butter (1 stick), melted",
+						"2 tablespoons prepared horseradish",
+						"1 tablespoon garlic paste",
+						"1 tablespoon Cholula (or any hot sauce)",
+						"1/2 tablespoon Worcestershire",
+						"2 tablespoons finely chopped parsley",
+						"1 tablespoon soy sauce",
+						"1 tablespoon olive oil",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Preheat oven to 500",
+						"Remove any fat and silver-skin from the roast, brush with mustard and season well with the rub",
+						"Put on a rack covered baking sheet, and cook 15 minutes, turn down to 325 and continue to cook until 125 internally - remove and let cool",
+						"When it's cool, wrap tightly in saran, and refrigerate overnight",
+						"When ready to build, preheat oven to 350",
+						"Slice buns horizontally, butter a 9x13 baking dish and put bottoms side by side in the pan",
+						"Spread mayo and mustard across all the bottoms, top with half cheese",
+						"Remove refrigerated roast, unwrap, dry off and slice into the thinnest slices possible - you'll need between 1 and 1.25 pounds",
+						"Top cheese with roast, add another layer of cheese, then the top buns",
+						"Combine butter, horseradish, garlic, Cholula, Worcestershire, parsley, soy & olive oil - mix well to combine, then brush about half over the little sandos",
+						"Cover with foil, and bake 20 minutes",
+						"Remove foil, brush again and bake another 7-10 or until the cheese is bubbly",
+						"Remove, let cool slightly and away you go.",
+					},
+				},
+				Name:  "Funeral Sandwiches",
+				Tools: models.Tools{},
+				Yield: models.Yield{Value: 12},
+				URL:   "https://www.thecookingguy.com/recipes/funeral-sandwiches",
+			},
+		},
+		{
 			name: "theexpertguides.com",
 			in:   "https://theexpertguides.com/recipes/is-guacamole-vegan/",
 			want: models.RecipeSchema{
@@ -435,9 +470,7 @@ func TestScraper_T(t *testing.T) {
 					Value: "This vegan guacamole recipe yields a creamy and tangy dip that you can eat with tortilla chips, bread, or veggies. It's quick and requires a few basic ingredients.",
 				},
 				Keywords: models.Keywords{Values: "avocado guacamole recipe, guacamole, vegan guacamole, vegan salsa"},
-				Image: models.Image{
-					Value: "https://theexpertguides.com/wp-content/uploads/2022/09/homemade-vegan-guacamole.webp",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3 Avocados", "2 tbsp fresh lime juice", "2 garlic cloves (minced)",
@@ -474,9 +507,7 @@ func TestScraper_T(t *testing.T) {
 					Value: "A creamy, cheesy, and deeply comforting dish, Rukmini Iyer's one-tin vegetarian gratin also happens " +
 						"to be packed with nutritious Puy lentils.",
 				},
-				Image: models.Image{
-					Value: "https://thehappyfoodie.co.uk/wp-content/uploads/2022/02/Rukmini-Iyer-Leek-and-Lentil-Gratin-scaled.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				PrepTime: "PT10M",
 				CookTime: "PT40M",
 				Keywords: models.Keywords{
@@ -517,9 +548,7 @@ func TestScraper_T(t *testing.T) {
 				Description: models.Description{
 					Value: "Are you looking for a great way to use that leftover turkey from your holiday feast? Look no further – we have the perfect turkey salad recipe for you! This easy turkey salad is not only a delicious option, but it's also a fantastic way to ensure that none of your delicious turkey goes to",
 				},
-				Image: models.Image{
-					Value: "https://thekitchencommunity.org/wp-content/uploads/2023/11/Turkey-Salad-1200x800.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Name:  "Turkey Salad Recipe",
 				URL:   "https://thekitchencommunity.org/turkey-salad-recipe/",
 				Yield: models.Yield{Value: 1},
@@ -539,9 +568,7 @@ func TestScraper_T(t *testing.T) {
 						"dressing! The perfect side dish for BBQ&#039;s, or eat it as a meal!",
 				},
 				Keywords: models.Keywords{Values: "BLT pasta salad"},
-				Image: models.Image{
-					Value: "https://www.thekitchenmagpie.com/wp-content/uploads/images/2021/05/BLTpastasalad.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"one 454 gram box Farfalle pasta (bow-tie pasta cooked until al dente)",
@@ -603,9 +630,7 @@ func TestScraper_T(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "anheuser busch thanksgiving,butter,christmas,Cooking Lessons from The Kitchn,dinner,easy,Gluten-Free,How To,Ingredient,Lunch,Main Dish,Meat Tutorials,poultry,recipe,thanksgiving,Tips & Techniques,Turkey,Wellness,Dish Types,team:food,purpose:search,platform:email,platform:homepage,platform:newsfeeds,platform:search,platform:social,course:main dish,diet:under 500 calories,diet:gluten-free,diet:under 200 calories,diet:low-calorie,diet:under 400 calories,diet:low-fat,diet:under 300 calories,mainingredients:poultry,mainingredients:turkey,dishtype:poultry dish,meal:dinner,meal:lunch,updated:2023-10-24",
 				},
-				Image: models.Image{
-					Value: "https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_16:9/k%2Farchive%2F6cc517c3ad0e6cce62ca2954c6f6b400fca13bc1",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 pound cooked turkey (breast meat, thigh meat, or whole drumsticks)",
@@ -653,9 +678,7 @@ func TestScraper_T(t *testing.T) {
 					Value: "Give your pot roast a tasty upgrade by using apple cider - a taste the whole family is sure to enjoy.",
 				},
 				Keywords: models.Keywords{Values: "apple cider pot roast"},
-				Image: models.Image{
-					Value: "https://www.themagicalslowcooker.com/wp-content/uploads/2023/10/apple-cider-pot-roast-57.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3 lbs. beef chuck roast", "1 tsp. salt", "¼ tsp. pepper",
@@ -720,9 +743,7 @@ func TestScraper_T(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "paleo, pancakes, gluten-free, dairy-free",
 				},
-				Image: models.Image{
-					Value: "https://thenutritiouskitchen.co/wp-content/uploads/2022/04/paleoblueberrypancakes-225x225.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3/4 cup unsweetened apple sauce",
@@ -774,9 +795,7 @@ func TestScraper_T(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "turkey pozole rojo, fall recipe, thanksgiving recipe, winter recipe, diary-free recipe, gluten-free recipe, one-pot-meals",
 				},
-				Image: models.Image{
-					Value: "https://images.themodernproper.com/billowy-turkey/production/posts/TurkeyPozoleRojo_12.jpg?w=960&h=540&q=82&fm=jpg&fit=crop&dm=1700147273&s=7920925d561e1b3ec624e434447b8d39",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 tablespoon extra-virgin olive oil", "1 large yellow onion, diced",
@@ -832,6 +851,51 @@ func TestScraper_T(t *testing.T) {
 			},
 		},
 		{
+			name: "thepalatablelife.com",
+			in:   "https://www.thepalatablelife.com/cinnamon-toast-crunch-cookies-2",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "Dessert"},
+				CookTime:      "PT15M",
+				DatePublished: "2024-03-02T10:47:43+00:00",
+				Image:         models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"1/2 cup butter (softened)", "1/2 cup brown sugar", "1/4 cup white sugar",
+						"1 egg + 1 egg yolk", "1 tsp vanilla extract", "1 1/2 cups flour (195 grams)",
+						"1/2 tbsp cornstarch", "1/2 tsp cinnamon", "1/2 tsp baking soda",
+						"1/2 tsp salt", "1/2 cup white chocolate chips",
+						"1/4 cup cinnamon toast crunch", "1/4 cup butter (softened)",
+						"1/4 cup brown sugar", "1/2 cup cinnamon toast crunch", "1/2 cup flour",
+						"1/2 tsp cinnamon",
+						"pinch of salt",
+						"1/2 cup powdered sugar",
+						"1 tbsp milk",
+						"splash of vanilla extract",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Preheat the oven to 350F.",
+						"Begin by making the cinnamon cookies. Add the softened butter, brown sugar, and white sugar to a bowl. Use a stand mixer or hand mixer to mix for 3-4 minutes, until well combined.",
+						"Scrape down the sides and add the egg, egg yolk, and vanilla. Mix until well combined.",
+						"Add the flour, cornstarch, cinnamon, baking soda, and salt. Mix on low until just combined. Add the white chocolate chips and pulse until well distributed.",
+						"Set the dough aside and start on the streusel. For the streusel add the softened butter, brown sugar, cinnamon toast crunch, flour, cinnamon, and salt in a bowl. Use a stand mixer or hand mixer to mix until the streusel is well combined. The streusel should stick together when you squeeze it in your fist, but crumble when you run it through your fingers.",
+						"Add 1/4 cup of cinnamon toast crunch to a blender. Blend until its fine crumbs. Pour the crumbs into a bowl.",
+						"Use a large cookie scoop (about 1/4 cup) to scoop out the cinnamon dough. Roll the dough in your hands into a ball, then drop it into the bowl of cinnamon toast crunch crumbs. Roll the dough ball around in the crumbs until it is coated all over.",
+						"Use a spoon or the back side of the cookie scoop to make an indent in the top of the dough ball. Add about 2 tbsp of streusel on top of the dough ball, in the indent. Repeat this process with the remaining dough.",
+						"Add up to 6 dough balls on a parchment lined baking sheet then transfer to the oven. Bake for 8-9 minutes. Let the cookies cool on the baking sheet for 10 minutes, then transfer to a cooling rack to cool completely.",
+						"While the cookies are cooling, make the icing. Add the powdered sugar, milk, and vanilla extract to a bowl. Whisk until smooth. When the cookies are cool, drizzle icing on top of each one and enjoy!",
+					},
+				},
+				Name:     "cinnamon toast crunch cookies",
+				PrepTime: "PT30M",
+				Yield:    models.Yield{Value: 8},
+				URL:      "https://www.thepalatablelife.com/cinnamon-toast-crunch-cookies-2",
+			},
+		},
+		{
 			name: "thepioneerwoman.com",
 			in:   "https://www.thepioneerwoman.com/food-cooking/recipes/a8865/eggs-benedict/",
 			want: models.RecipeSchema{
@@ -846,9 +910,7 @@ func TestScraper_T(t *testing.T) {
 					Value: "Ree Drummond shares her secrets to making perfect eggs Benedict. From flawless poached eggs to velvety Hollandaise sauce, it's the best brunch recipe.",
 				},
 				Keywords: models.Keywords{Values: "Recipes, Cooking, Food"},
-				Image: models.Image{
-					Value: "https://hips.hearstapps.com/thepioneerwoman/wp-content/uploads/2007/10/1546875357_506daa8f1c.jpg?crop=0.664xw:1xh;center,top&resize=1200:*",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3 whole English muffins",
@@ -888,9 +950,7 @@ func TestScraper_T(t *testing.T) {
 				Description: models.Description{
 					Value: "Avocado Egg Rolls are crispy on the outside with an avocado mixture&nbsp;inside that is bursting with flavor!",
 				},
-				Image: models.Image{
-					Value: "https://therecipecritic.com/wp-content/uploads/2019/05/avocado_egg_roll7.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 cup vegetable oil (for frying)", "3 avocados (diced)",
@@ -941,9 +1001,7 @@ func TestScraper_T(t *testing.T) {
 						"breadcrumbs are the perfect finishing touch.",
 				},
 				Keywords: models.Keywords{Values: "anchovie pasta"},
-				Image: models.Image{
-					Value: "https://www.thespruceeats.com/thmb/_al2WJ0fr7Kt_LFIVpq-jQtimk0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/pasta-with-anchovies-and-breadcrumbs-recipe-5215384-Hero_01-a52a47010bd04ead814b972d518738ef.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"For the Breadcrumbs:",
@@ -1020,9 +1078,7 @@ func TestScraper_T(t *testing.T) {
 				Description: models.Description{
 					Value: "A seasonally fresh take on grilled cheese with asparagus.",
 				},
-				Image: models.Image{
-					Value: "http://d6h7vs5ykbiug.cloudfront.net/wp-content/uploads/2017/04/asparagus-grilled-cheese-9.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"6 spears of asparagus",
@@ -1067,9 +1123,7 @@ func TestScraper_T(t *testing.T) {
 						"about these fried wontons long after the party's over!",
 				},
 				Keywords: models.Keywords{Values: "fried wontons"},
-				Image: models.Image{
-					Value: "https://thewoksoflife.com/wp-content/uploads/2015/09/fried-wontons-6-1.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"12 oz. ground pork ((340g))",
@@ -1155,9 +1209,7 @@ func TestScraper_T(t *testing.T) {
 					Value: "This low-carb yogurt recipe is deliciously thick and creamy. Perfect for breakfast, snacks, or even cooking and baking.",
 				},
 				Keywords: models.Keywords{Values: "low-carb yogurt"},
-				Image: models.Image{
-					Value: "https://thinlicious.com/wp-content/uploads/2023/04/Low-Carb-Yogurt-Featured-Image-Template-1200x1200-1.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"½ gallon ultra-pasteurized whole milk",
@@ -1202,9 +1254,7 @@ func TestScraper_T(t *testing.T) {
 					Value: "MAKE-AHEAD MASHED POTATOES are perfect for busy holidays. They will keep up to two days in the refrigerator and come out creamy and buttery, with a slightly crunchy golden crust on top every time!",
 				},
 				Keywords: models.Keywords{Values: "potatoes, side dish, mashed"},
-				Image: models.Image{
-					Value: "https://tidymom.net/blog/wp-content/uploads/2021/11/make-ahead-mashed-potatoes-plated-image-480x480.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2½ pounds potatoes, peeled and cubed (Yukon Gold, Russet or combo of the two)",
@@ -1261,9 +1311,7 @@ func TestScraper_T(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "Beetroot Cold Soup recipe, Vegetarian, cook Beetroot Cold Soup",
 				},
-				Image: models.Image{
-					Value: "https://static.toiimg.com/thumb/90713582.cms?width=1200&height=900",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 Numbers egg",
@@ -1310,9 +1358,7 @@ func TestScraper_T(t *testing.T) {
 						"sender tankene til India.",
 				},
 				Keywords: models.Keywords{Values: "kylling"},
-				Image: models.Image{
-					Value: "https://www.tine.no/_/recipeimage/w_1080,h_1080,c_fill,x_2880,y_1920,g_xy_center/recipeimage/w1r3ydbmyeqcngqpxatv.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"4 dl basmatiris",
@@ -1364,9 +1410,7 @@ func TestScraper_T(t *testing.T) {
 					Value: "Descubra a receita de Rocambole de carne moída para fazer em 30 minutos. Em uma vasilha junte à carne, o pacote de creme de cebola e amasse bem até ficar homogêneo. Em seguida sobre um plástico abra a massa (carne moida com o creme de cebola) no tamanho do tabuleiro que irá assar. Sobre a massa coloque a cebola e o alho picados bem pequenos, a muss…",
 				},
 				Keywords: models.Keywords{Values: "Receita de Rocambole de carne moída"},
-				Image: models.Image{
-					Value: "https://static.itdg.com.br/images/1200-675/929a16753e9c9d22f04269c75ec17da7/353783-original.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 kg de carne moída", "1 pacote de creme de cebola", "1 cebola",
@@ -1402,9 +1446,7 @@ func TestScraper_T(t *testing.T) {
 						"chicken salad. It&#039;s made with basic ingredients, loaded with flavor, and perfect for picnics, " +
 						"work lunches, or a simple, healthy lunch at home.",
 				},
-				Image: models.Image{
-					Value: "https://www.twopeasandtheirpod.com/wp-content/uploads/2022/02/Chickpea-Salad-4.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 (15 oz) cans chickpeas, (drained and rinsed)",

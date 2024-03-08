@@ -1,4 +1,4 @@
-package scraper
+package scraper_test
 
 import (
 	"github.com/reaper47/recipya/internal/models"
@@ -20,9 +20,7 @@ func TestScraper_K(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "noodles, Soup, noodle soup, chicken, chicken noodle soup, chicken soup",
 				},
-				Image: models.Image{
-					Value: "https://i0.wp.com/kennymcgovern.com/wp-content/uploads/2022/03/chicken-noodle-soup.jpg?fit=685%2C643&ssl=1",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"40g thin lucky boat noodles (soaked and drained, drained weight)",
@@ -67,9 +65,7 @@ func TestScraper_K(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "Quick bread, Lemon, Raisin, Sourdough, Spice, Breakfast & brunch",
 				},
-				Image: models.Image{
-					Value: "https://www.kingarthurbaking.com/sites/default/files/2021-06/sourdough-zucchini-bread_0521.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3/4 cup (170g) sourdough starter fed (ripe) or unfed (discard)",
@@ -137,9 +133,7 @@ func TestScraper_K(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "kinderfreundlich,Brand Content,Alltagsgerichte,vegetarisch,vegan,Vorspeise,Beilagen,Hauptgericht,Party Food,street food,pescetarisch,Wohlfühlessen,laktosefrei,Gewürze,Fleischlos,Le Creuset,thermohauser,spanisch und portugiesisch,herzhaft,für vier,Alkohol,Kräuter,Gemüse,anschwitzen",
 				},
-				Image: models.Image{
-					Value: "https://images.kitchenstories.io/recipeImages/RP02_18_06_valencianPaella_titlePicture.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"100 g Oliven", "350 g Cherrytomaten", "2 Knoblauch", "2 Frühlingszwiebeln",
@@ -185,9 +179,7 @@ func TestScraper_K(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "Spargelsalat Fruchtig, Spargel grün frisch, Spargel weiss frisch, Mango frisch",
 				},
-				Image: models.Image{
-					Value: "https://ais.kochbar.de/kbrezept/465773_670587/1200x1200/spargelsalat-fruchtig-rezept.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 kg Spargel grün frisch",
@@ -234,9 +226,7 @@ func TestScraper_K(t *testing.T) {
 				Description: models.Description{
 					Value: "Zutaten : 200 g Schokolade, weiße 25 g Butter 125 g Mandel(n), gemahlene 75 ml Eierlikör Zubereitung : Arbeitszeit: ca. 1 Std. Ruhezeit: ca. 1 Tag Schwierigkeitsgrad: simpel Kalorien p. P.: keine Angabe Die Schokolade mit der Butter langsam schmelzen. Einen Teil der Mandeln mit unterheben, dann den Eierlikör unterrühren. Am besten über Nacht erkalten […]",
 				},
-				Image: models.Image{
-					Value: "https://kochbucher.com/wp-content/uploads/2023/11/1078890-420x280-fix-eierlikoer-pralinen-1.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"200 g Schokolade, weiße", "25 g Butter", "125 g Mandel(n), gemahlene",
@@ -265,9 +255,7 @@ func TestScraper_K(t *testing.T) {
 					Value: "Toast skagen är en klassisk förrätt på årets festdag - nyårsafton. Tommys variant görs med hemslagen " +
 						"majonnäs, pepparrot och löjrom.",
 				},
-				Image: models.Image{
-					Value: "https://img.koket.se/standard-mega/myllymakis-toast-skagen-2.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 kg räkor med skal (gärna färska av fin kvalitet)",
@@ -309,6 +297,7 @@ func TestScraper_K(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext: "https://schema.org",
 				AtType:    models.SchemaType{Value: "Recipe"},
+				Image:     models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"0 red onion", "1 chili pepper", "1 cup(s) cilantro, fresh", "1 lime",
@@ -340,9 +329,7 @@ func TestScraper_K(t *testing.T) {
 					Value: "Lekka surówka do obiadu ze świeżego ogórka, śmietany lub jogurtu oraz koperku. Bardzo prosta, idealnie nadająca się do wielu dań obiadowych. Mizeria najsmaczniejsza jest z ziemniakami najlepiej młodymi i jakimś mięsem np. kotletem mielonym lub schabowym.\nMy najbardziej lubimy kremową mizerię z miękkimi, cienkimi plasterkami ogórka doprawioną nie tylko solą i pieprzem, ale również (aby była słodko- winna) sokiem z cytryny i cukrem. A jak u Ciebie przygotowuje się mizerię?",
 				},
 				Keywords: models.Keywords{Values: "przepis, mizeria, surówka z ogórków, mizeria z octem i śmietaną, tradycyjna mizeria, klasyczna mizeria, domowa mizeria"},
-				Image: models.Image{
-					Value: "https://kuchnia-domowa.pl/images/content/548/mizeria.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"600 g świeżych ogórków gruntowych (lub długich, szklarniowych)*",
@@ -387,10 +374,7 @@ func TestScraper_K(t *testing.T) {
 						"najlepiej wypełniać foremki surowym ciastem do 2/3 ich objętości. Pozostawiamy w ten sposób miejsce " +
 						"na wyrośnięcie ciasta i otrzymamy kształtne babeczki.\n",
 				},
-				Image: models.Image{
-					Value: "https://www.kwestiasmaku.com/sites/v123.kwestiasmaku.com/files/muffiny-czekoladowe-z-maslem-" +
-						"orzechowym-00.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"150 g masła",
@@ -446,9 +430,7 @@ func TestScraper_K(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "instant pot pot roast, pot roast and potatoes",
 				},
-				Image: models.Image{
-					Value: "https://www.lecremedelacrumb.com/wp-content/uploads/2018/01/instant-pot-beef-roast-103.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3-5 pound beef chuck roast (see notes for instructions from frozen)",

@@ -1,4 +1,4 @@
-package scraper
+package scraper_test
 
 import (
 	"github.com/reaper47/recipya/internal/models"
@@ -24,9 +24,7 @@ func TestScraper_P(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "bars, egg-free, no-bake, nut butter, paleo, peanut butter, vegan",
 				},
-				Image: models.Image{
-					Value: "https://www.paleorunningmomma.com/wp-content/uploads/2021/03/peanut-butter-granola-bars-5.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 1/2 cups pecan halves ( or walnuts)",
@@ -96,9 +94,7 @@ func TestScraper_P(t *testing.T) {
 						"maçãs e especiarias, o frango segue macio, macio mesmo depois de requentado. Agora, o inegociável: investir " +
 						"em um curry de qualidade, já que é ele que dá todo o sabor ao preparo.",
 				},
-				Image: models.Image{
-					Value: "https://i.panelinha.com.br/i1/228-q-5378-frango-ao-curry-com-maca.webp",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 filés de peito de frango (cerca de 500g)",
@@ -147,9 +143,7 @@ func TestScraper_P(t *testing.T) {
 				Description: models.Description{
 					Value: "Because I’ve made them many times over the years and they’re the best pumpkin muffins I’ve tasted — fluffy, flavorful, unfussy, nice doming.\n\nBecause even though baking with pumpkin can be kind of a seasonal fad, it’s a delicious one, so pumpkin on!\n\nBecause now that it’s October you’re undoubtedly going to need to bring a crowd-pleasing, autumn-appropriate dish to school/work/church/soccer, etc. Or you’re simply going to want one at home on a brisk autumn afternoon.\n\nBecause you can easily double the recipe for a big group — in fact, the orignal recipe from Erin Cooks (one of my earliest favorite food blogs) makes a whole lot of muffins — or make them in mini muffin pans or mini loaf pans for lunch boxes or cute gifts.\n\nBecause pumpkin + cake mix does not equal a recipe (yeah, I said it — sorry, Pinterest!).\n\nBecause you probably have all the ingredients on hand already (especially in October, because pumpkin time).\n\nBecause they can pass for breakfast, dessert or even a side dish — versatility awaits!\n\nBecause friends love to receive the occasional pumpkin muffin surprise on their doorstep.\n\nBecause baking these muffins doubles as an awesome home fragrance for your kitchen.\n\nBecause…oh, just turn on the oven and make ’em!",
 				},
-				Image: models.Image{
-					Value: "https://paninihappy.com/wp-content/uploads/2014/10/pumpkin-muffins-490.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Yield: models.Yield{Value: 12},
 				Ingredients: models.Ingredients{
 					Values: []string{
@@ -195,9 +189,7 @@ func TestScraper_P(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "crockpot french toast casserole, overnight slow cooker french toast casserole, slow cooker french toast casserole",
 				},
-				Image: models.Image{
-					Value: "https://www.persnicketyplates.com/wp-content/uploads/2023/11/slow-cooker-french-toast-casserole-38-SQUARE.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 loaf Italian bread (cut into 1&quot; pieces. (This should be 6-7 cups of bread))",
@@ -253,9 +245,7 @@ func TestScraper_P(t *testing.T) {
 					Value: "To effortlessly serve up this dish that outshines takeout, the secret is having all your vegetables chopped and prepped. Once you begin cooking, this recipe comes together swiftly, and with everything ready, the entire meal flows seamlessly.",
 				},
 				Keywords: models.Keywords{Values: "peanut free, tree nut free, vegan, vegetarian, plant-based"},
-				Image: models.Image{
-					Value: "https://cdn.pickuplimes.com/cache/bb/4e/bb4e629665ff1fa30a02f7571a79655e.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3 Tbsp dark soy sauce", "2 Tbsp water", "2 Tbsp toasted sesame oil",
@@ -273,6 +263,61 @@ func TestScraper_P(t *testing.T) {
 			},
 		},
 		{
+			name: "pinchofyum.com",
+			in:   "https://pinchofyum.com/the-best-soft-chocolate-chip-cookies",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "Dessert"},
+				CookTime:      "PT10M",
+				CookingMethod: models.CookingMethod{Value: "Bake"},
+				Cuisine:       models.Cuisine{Value: "American"},
+				DatePublished: "2020-10-15",
+				Description: models.Description{
+					Value: "These are THE BEST soft chocolate chip cookies! No chilling required. Just ultra thick, soft, classic chocolate chip cookies!",
+				},
+				Keywords: models.Keywords{
+					Values: "chocolate chip cookies, best chocolate chip cookies, soft chocolate chip cookies, easy cookie recipe, small batch cookies",
+				},
+				Image: models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"8 tablespoons of salted butter",
+						"1/2 cup white sugar (I like to use raw cane sugar with a coarser texture)",
+						"1/4 cup packed light brown sugar", "1 teaspoon vanilla", "1 egg",
+						"1 1/2 cups all purpose flour (6.75 ounces)", "1/2 teaspoon baking soda",
+						"1/4 teaspoon salt (but I always add a little extra)",
+						"3/4 cup chocolate chips (I use a combination of chocolate chips and chocolate chunks)",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Preheat the oven to 350 degrees. Microwave the butter for about 40 seconds to just barely melt it. It shouldn't be hot &#8211; but it should be almost entirely in liquid form.",
+						"Using a stand mixer or electric beaters, beat the butter with the sugars until creamy. Add the vanilla and the egg; beat on low speed until just incorporated &#8211; 10-15 seconds or so (if you beat the egg for too long, the cookies will be stiff).",
+						"Add the flour, baking soda, and salt. Mix until crumbles form. Use your hands to press the crumbles together into a dough. It should form one large ball that is easy to handle (right at the stage between &#8220;wet&#8221; dough and &#8220;dry&#8221; dough). Add the chocolate chips and incorporate with your hands.",
+						"Roll the dough into 12 large balls (or 9 for HUGELY awesome cookies) and place on a cookie sheet. Bake for 9-11 minutes until the cookies look puffy and dry and just barely golden. Warning, friends: DO NOT OVERBAKE. This advice is probably written on every cookie recipe everywhere, but this is essential for keeping the cookies soft. Take them out even if they look like they're not done yet (see picture in the post). They'll be pale and puffy.",
+						"Let them cool on the pan for a good 30 minutes or so (I mean, okay, eat four or five but then let the rest of them cool). They will sink down and turn into these dense, buttery, soft cookies that are the best in all the land. These should stay soft for many days if kept in an airtight container. I also like to freeze them.",
+					},
+				},
+				Name: "The Best Soft Chocolate Chip Cookies",
+				NutritionSchema: models.NutritionSchema{
+					Calories:      "250 calories",
+					Carbohydrates: "33.4 g",
+					Cholesterol:   "35.9 mg",
+					Fat:           "12.2 g",
+					Fiber:         "1.4 g",
+					Protein:       "3.2 g",
+					SaturatedFat:  "7.5 g",
+					Sodium:        "169.3 mg",
+					Sugar:         "20.5 g",
+					TransFat:      "0.3 g",
+				},
+				PrepTime: "PT10M",
+				Yield:    models.Yield{Value: 12},
+				URL:      "https://pinchofyum.com/the-best-soft-chocolate-chip-cookies",
+			},
+		},
+		{
 			name: "pingodoce.pt",
 			in:   "https://www.pingodoce.pt/receitas/tarte-de-alho-frances-caramelizado/",
 			want: models.RecipeSchema{
@@ -283,9 +328,7 @@ func TestScraper_P(t *testing.T) {
 					Value: "O alho-francês é um ingrediente muito versátil, que fica bem em várias receitas. Aqui, preparámos uma tarte de alho-francês caramelizado, com massa folhada e queijo. Experimente e delicie-se.",
 				},
 				Keywords: models.Keywords{Values: "alho-francês, tartes"},
-				Image: models.Image{
-					Value: "https://www.pingodoce.pt/wp-content/uploads/2021/08/tarte-de-alho-frances-caramelizado.jpeg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"800 g alho-francês", "1 c. de sopa azeite Pingo Doce",
@@ -333,9 +376,7 @@ func TestScraper_P(t *testing.T) {
 					Value: "This Cajun dirty rice dish is made with chopped veggies, cajun spices, and smoked sausage and is loaded with flavor! Serve this rice with chicken, fish, or shrimp to create the ultimate Cajun meal.",
 				},
 				Keywords: models.Keywords{Values: "cajun recipes, cajun rice, dirty rice, rice side dishes"},
-				Image: models.Image{
-					Value: "https://pinkowlkitchen.com/wp-content/uploads/2023/08/cajun-dirty-rice-with-smoked-sausage-featured-image.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 cup long-grain rice", "2 1/4 cups chicken stock (divided)",
@@ -392,9 +433,7 @@ func TestScraper_P(t *testing.T) {
 					Value: "With only 15 minutes of prep, this decadent, yet easy mushroom tart is ready in less than 30 minutes.",
 				},
 				Keywords: models.Keywords{Values: "mushroom flatbread, Mushroom Tart, Mushroom Tart recipe"},
-				Image: models.Image{
-					Value: "https://www.platingpixels.com/wp-content/uploads/2022/06/Mushroom-Tart-recipe-6.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 tablespoon olive oil", "1 medium yellow onion (diced)",
@@ -437,6 +476,44 @@ func TestScraper_P(t *testing.T) {
 			},
 		},
 		{
+			name: "ploetzblog.de",
+			in:   "https://www.ploetzblog.de/rezepte/hartweizenbrot/id=61fbd728a672573b7a4f6e3e",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{},
+				CookTime:      "",
+				CookingMethod: models.CookingMethod{},
+				Cuisine:       models.Cuisine{},
+				DateCreated:   "",
+				DateModified:  "",
+				DatePublished: "",
+				Description:   models.Description{Value: "100 % Hartweizen, 100 % italienischer Geschmack.\n\nDie einen fühlen sich an Zimt erinnert, die anderen an Nudeln. Die Meinungen über reine Hartweizenbrote gehen auseinander. Mal geliebt, mal gehasst. Ich gehöre eher zur wohlmeinenden Gruppe.\n\nDieses Rezept arbeitet mit Vor- und Sauerteig. Die Krume ist mittelporig und offen, saftig und aromatisch, die Kruste kräftig ausgebacken."},
+				Keywords:      models.Keywords{},
+				Image:         models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"524 g Hartweizenmehl", "402 g Wasser", "50 g Weizenanstellgut", "12 g Salz",
+						"11 g Olivenöl", "0,33 g Frischhefe",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Weizensauerteig\n1. Die Zutaten in der genannten Reihenfolge in eine Schüssel wiegen.\n2. Mischen, bis sich die Zutaten zu einem festen Teig verbunden haben.\n3. Mit einer Abdeckhaube, einem Deckel oder etwas ähnlichem zudecken.\n4. 12 Stunden bei 20 °C reifen lassen.\n\n",
+						"Vorteig\n1. Die Zutaten in der genannten Reihenfolge in eine Schüssel wiegen.\n2. Mischen, bis sich die Zutaten zu einem festen Teig verbunden haben.\n3. Mit einer Abdeckhaube, einem Deckel oder etwas ähnlichem zudecken.\n4. 12 Stunden bei 20 °C reifen lassen.\n\n",
+						"Autolyseteig\n1. Die Zutaten in der genannten Reihenfolge in eine Schüssel wiegen.\n2. Mischen, bis sich die Zutaten zu einem mittelfesten Teig verbunden haben.\n3. Mit einer Abdeckhaube, einem Deckel oder etwas ähnlichem zudecken.\n4. 30 Minuten bei 20 °C quellen lassen.\n\n",
+						"Hauptteig\n1. Die Zutaten (außer Wasser B) in der genannten Reihenfolge in die Schüssel wiegen.\n2. Zu einem Teig vermischen.\n3. Kneten, bis sich eine dünne Teighaut ausziehen lässt (Fenstertest).\n4. Das Wasser B einarbeiten (gewünschte Teigtemperatur: ca. 27 °C).\n5. Mit einer Abdeckhaube, einem Deckel oder etwas ähnlichem zudecken.\n6. 3 Stunden bei 20 °C reifen lassen. Dabei nach 30 und 60 Minuten dehnen und falten.\n7. 30 Minuten bei 20 °C reifen lassen.\n8. Den Teig dehnen und falten.\n9. 30 Minuten bei 20 °C reifen lassen.\n10. Den Teig dehnen und falten.\n11. 2 Stunden bei 20 °C reifen lassen.\n12. Den Teig schonend aus der Schüssel oder Wanne auf die mit Hartweizenmehl bestreute Arbeitsfläche geben.\n13. Zwei gegenüberliegende Teigränder jeweils knapp über die Mitte legen (fast wie einen Geschäftsbrief falten), dann 90° versetzt dazu zu einem länglichen Laib aufwickeln. Auf das letzte Stückchen Teig Roggenmehl streuen, damit sich der Schluss beim Backen öffnet.\n14. 1 Stunde bei 20 °C mit Schluss nach unten im leicht bemehlten Gärkorb zugedeckt reifen lassen.\n15. Den Teigling aus dem Gärkorb auf Backpapier stürzen.\n16. Das Backpapier mit dem Teigling (Schluss nach oben) mithilfe eines flachen Bleches oder Brettes in den auf 280 °C vorgeheizten Ofen auf den Backstein befördern. Sofort kräftig bedampfen. Den Ofen sofort auf 220 °C herunterdrehen. Den Dampf nach 20 Minuten ablassen. Insgesamt 50 Minuten ausbacken.\n\n",
+						"Ähnliche Rezepte\n1. Weizensauerteig-Ciabatta\n\n",
+					},
+				},
+				Name:     "Hartweizenbrot",
+				PrepTime: "PT17H20M",
+				Tools:    models.Tools{},
+				Yield:    models.Yield{Value: 1},
+				URL:      "https://www.ploetzblog.de/rezepte/hartweizenbrot/id=61fbd728a672573b7a4f6e3e",
+			},
+		},
+		{
 			name: "plowingthroughlife.com",
 			in:   "https://plowingthroughlife.com/the-best-rich-and-moist-chocolate-cake/",
 			want: models.RecipeSchema{
@@ -450,9 +527,7 @@ func TestScraper_P(t *testing.T) {
 					Value: "Are you craving a delicious chocolate cake? This is the BEST rich and moist chocolate cake from a box mix that is unbelievably EASY to make! This is a bakery quality cake that anyone can make at home with common ingredients!",
 				},
 				Keywords: models.Keywords{Values: "The Best Rich and Moist Chocolate Cake"},
-				Image: models.Image{
-					Value: "https://plowingthroughlife.com/wp-content/uploads/2019/01/chocolate-cake-FI.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 box Devil's food cake mix", "1 small package instant chocolate pudding",
@@ -502,9 +577,7 @@ func TestScraper_P(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "Christmas, Fall Food, Fall Recipes, Original Recipes, Side Dishes, Carrots, Autumn, Exclusive",
 				},
-				Image: models.Image{
-					Value: "https://media1.popsugar-assets.com/files/thumbor/w2SbXKQCo_24S1wE0XWtTAJniOg/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2016/10/19/737/n/35573265/b5db29624d9c2514_cinnamon-butter-baked-carrots-5.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"15 carrots, peeled and stems removed", "75g of butter, softened",
@@ -542,9 +615,7 @@ func TestScraper_P(t *testing.T) {
 					Value: "Zucchini relish is a flavorful topping for summer grilling, and the perfect way to use up extra " +
 						"zucchini from the garden.",
 				},
-				Image: models.Image{
-					Value: "https://creativecanning.com/wp-content/uploads/2021/02/Zucchini-Relish-61-720x720.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 cups zucchini, diced (about 3 medium)",
@@ -601,9 +672,7 @@ func TestScraper_P(t *testing.T) {
 					Value: "When I was in Valencia, Spain, I was taught how to make a Spanish omelette. It&#x27;s essentially pan-fried onions and potatoes coated with eggs, seasoned with the basics that are salt and pepper and then cooked in a skillet on both sides for a few minutes where it looks like a super thick, egg pancake. Truth be told, it is one of the most delicious egg dishes you&#x27;ll ever have. \n\nHOWEVER, as basic as it sounds, it can be a messy and somewhat cumbersomething to make with the flipping, removing a half-cooked, runny egg mound toa plate and then returning it to the pan to cook on the other side. At the class I took, three people who volunteered with flipping the half-cooked omelette had itspill onto the counter. So I decided to take the basics of a Spanish omelette, add some optional Spanish-favored cheese and meat and scramble itup to give you that flavor experience, but with a much simpler and fool-proof approach to making it.",
 				},
 				Keywords: models.Keywords{Values: "Spanish Omelette, Scrambled Eggs"},
-				Image: models.Image{
-					Value: "https://pressureluckcooking.com/wp-content/uploads/2023/10/Spanish-Omelette-IG-2-scaled-720x720.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1/2 cup extra virgin olive oil",
@@ -649,9 +718,7 @@ func TestScraper_P(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "Cheesy Ranch Chicken, Keto Crack Chicken, Slow Cooker Crack Chicken",
 				},
-				Image: models.Image{
-					Value: "https://www.primaledgehealth.com/wp-content/uploads/2022/03/crack-chicken.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3 pounds chicken thigh (or breast)",
@@ -713,7 +780,7 @@ func TestScraper_P(t *testing.T) {
 				Description: models.Description{
 					Value: "Ben je gek op kip pesto en valt een rollade ook altijd goed in de smaak? Maar vind je het op z’n tijd ook leuk en lekker om eens iets anders te proberen? Dan is dit recept echt iets voor jou! Een heerlijke zelfgemaakte kiprollade op Italiaanse wijze. De pesto vervang je door gremolata. Een …",
 				},
-				Image: models.Image{Value: "https://www.projectgezond.nl/wp-content/uploads/2023/09/Italiaanse-Kiprollade-Gremolata1600-810x1080.jpg"},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"400 gr kipfilet", "40 gr prosciutto", "40 gr zuivelspread",
@@ -762,9 +829,7 @@ func TestScraper_P(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "Na co dzień, Ziemniaki, Warzywa, Jajka, Łagodne, Bez mięsa",
 				},
-				Image: models.Image{
-					Value: "https://s3.przepisy.pl/przepisy3ii/img/variants/800x0/placki-ziemniaczane.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 kilogram ziemniaki",
@@ -802,9 +867,7 @@ func TestScraper_P(t *testing.T) {
 				Yield:         models.Yield{Value: 4},
 				PrepTime:      "PT10M",
 				CookTime:      "PT32M",
-				Image: models.Image{
-					Value: "https://i0.wp.com/purelypope.com/wp-content/uploads/2020/05/IMG_5412-1-scaled.jpg",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 cups brussel sprouts, stems removed & cut in half",
@@ -836,9 +899,7 @@ func TestScraper_P(t *testing.T) {
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				DatePublished: "2020-05-13T06:59:57.162-04:00",
-				Image: models.Image{
-					Value: "https://images.purplecarrot.com/uploads/product/image/2017/_1400_700_GnocchiAlPestowithCharredGreenBeans_LemonZucchini_WEBHERO-5d97b356980badd112987864879c4f71.jpg",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 zucchini, trimmed and peeled lengthwise into ribbons",

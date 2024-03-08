@@ -1,4 +1,4 @@
-package scraper
+package scraper_test
 
 import (
 	"github.com/reaper47/recipya/internal/models"
@@ -28,10 +28,7 @@ func TestScraper_A(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "Estrogonofe de carne, Refogado, Dia a Dia, Carne, Brasileira, creme de leite, ketchup (ou catchup), pimenta-do-reino",
 				},
-				Image: models.Image{
-					Value: "https://claudia.abril.com.br/wp-content/uploads/2020/02/receita-estrogonofe-de-carne.jpg?" +
-						"quality=85&strip=info&w=620&h=372&crop=1",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"500 gramas de alcatra cortada em tirinhas",
@@ -70,9 +67,7 @@ func TestScraper_A(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "abuelau0026#039;s,cuban,easy recipes,healthy recipes,hosting,roasted carrot soup,soups,thanksgiving recipes,traditional",
 				},
-				Image: models.Image{
-					Value: "https://abuelascounter.com/wp-content/uploads/2023/10/Roasted-Carrot-Soup-Recipe.jpeg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3 cups of carrots, that have been peeled and diced",
@@ -117,10 +112,8 @@ func TestScraper_A(t *testing.T) {
 					Values: "Shaved Brussels sprouts, Shaved Brussels sprouts recipe, shredded Brussel sprouts, shredded " +
 						"Brussels sprouts",
 				},
-				Image: models.Image{
-					Value: "https://www.acouplecooks.com/wp-content/uploads/2022/03/Shredded-Brussels-Sprouts-001-225x225.jpg",
-				},
-				URL: "https://www.acouplecooks.com/shaved-brussels-sprouts/",
+				Image: models.Image{Value: anUploadedImage.String()},
+				URL:   "https://www.acouplecooks.com/shaved-brussels-sprouts/",
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 pound Brussels sprouts (off the stalk)",
@@ -139,9 +132,9 @@ func TestScraper_A(t *testing.T) {
 							"side down and thinly slice cross-wise to create shreds. Separate the shreds with your " +
 							"fingers. Discard the root end.",
 						"With a food processor (fastest!): Use a food processor with the shredding disc attachment blade. " +
-							"(Here&#8217;s a video.)",
+							"(Here's a video.)",
 						"With a mandolin: Slice the whole Brussels sprouts with a mandolin, taking proper safety precautions " +
-							"to keep your fingers away from the blade. (Here&#8217;s a video.)",
+							"to keep your fingers away from the blade. (Here's a video.)",
 						"In a medium bowl, stir together the minced garlic, shallot, Parmesan cheese, and kosher salt.",
 						"In a large skillet, heat the olive oil over medium high heat. Add the Brussels sprouts and cook " +
 							"for 4 minutes, stirring only occasionally, until tender and browned. Stir in the Parmesan " +
@@ -184,9 +177,7 @@ func TestScraper_A(t *testing.T) {
 					Value: "Grape Jelly Meatballs make the best appetizer recipe! It is a crowd favorite. Juicy meatballs are slow-cooked until tender in a sweet and spicy sauce. Made with three ingredients and a crowd favorite!",
 				},
 				Keywords: models.Keywords{Values: "grape jelly meatballs, grape jelly meatballs recipe"},
-				Image: models.Image{
-					Value: "https://addapinch.com/wp-content/uploads/2023/10/grape-jelly-meatballs-recipe-Grape-Jelly-Meatballs-Recipe-20230004-1.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 (32-ounce) package frozen meatballs", "1 cup grape jelly",
@@ -226,12 +217,10 @@ func TestScraper_A(t *testing.T) {
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Name:          "Norinj Palau (Rice with orange)",
 				DatePublished: "2015-01-01",
-				Image: models.Image{
-					Value: "http://www.afghankitchenrecipes.com/wp-content/uploads/2015/01/afghan_norinj_pilaw-250x212.jpg",
-				},
-				Yield:    models.Yield{Value: 4},
-				PrepTime: "PT10M",
-				CookTime: "PT2H0M",
+				Image:         models.Image{Value: anUploadedImage.String()},
+				Yield:         models.Yield{Value: 4},
+				PrepTime:      "PT10M",
+				CookTime:      "PT2H0M",
 				Description: models.Description{
 					Value: "Norinj Palau is one of traditional Afghan dishes and it has a lovely delicate flavour. " +
 						"This pilau is prepared with the peel of the bitter (or Seville) oranges. It is quite a sweet dish.",
@@ -295,11 +284,13 @@ func TestScraper_A(t *testing.T) {
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "hoofdgerecht"},
+				CookTime:      "PT3H",
 				DatePublished: "2022-09-30",
 				Description: models.Description{
 					Value: "Proef de authentieke Franse keuken met boeuf bourguignon oftewel: 'Rund op z'n Bourgondisch'. Rode wijn, laurierblad en mosterd zorgen voor diepe winterse smaken. Serveren met geroosterde spruiten.",
 				},
 				Keywords: models.Keywords{Values: "oven, hoofdgerecht, herfst, winter"},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3 tenen knoflook", "2 sjalotten", "300 g winterpeen",
@@ -331,14 +322,15 @@ func TestScraper_A(t *testing.T) {
 				},
 				Name: "Boeuf bourguignon uit de oven met geroosterde spruiten",
 				NutritionSchema: models.NutritionSchema{
-					Calories:      "640 kcal energie",
-					Carbohydrates: "23 g koolhydraten",
-					Fat:           "33 g vet",
-					Protein:       "52 g eiwit",
-					SaturatedFat:  "12 g waarvan verzadigd",
+					Calories:      "640 kcal",
+					Carbohydrates: "23 g",
+					Fat:           "33 g",
+					Protein:       "52 g",
+					SaturatedFat:  "12 g",
 				},
-				Yield: models.Yield{Value: 4},
-				URL:   "https://www.ah.nl/allerhande/recept/R-R1197438/boeuf-bourguignon-uit-de-oven-met-geroosterde-spruiten",
+				PrepTime: "PT30M",
+				Yield:    models.Yield{Value: 4},
+				URL:      "https://www.ah.nl/allerhande/recept/R-R1197438/boeuf-bourguignon-uit-de-oven-met-geroosterde-spruiten",
 			},
 		},
 		{
@@ -354,9 +346,7 @@ func TestScraper_A(t *testing.T) {
 					Value: "Εύκολος μπακλαβάς από τον Άκη Πετρετζίκη. Συνταγή για σιροπιαστό μπακλαβά με φύλλο κρούστας και γέμιση με καρύδια, κανέλα και γαρίφαλο!",
 				},
 				Keywords: models.Keywords{Values: "Εύκολος,μπακλαβάς"},
-				Image: models.Image{
-					Value: "https://akispetretzikis.com/photos/122904/eukolos-mpaklavas-26-7-22-ep1-site.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"450 γρ. φύλλα κρούστας για γλυκά",
@@ -409,9 +399,7 @@ func TestScraper_A(t *testing.T) {
 				Description: models.Description{
 					Value: "This chocolate chip cookie recipe makes delicious cookies with crisp edges and chewy middles. Try this wildly-popular cookie recipe for yourself!",
 				},
-				Image: models.Image{
-					Value: "https://www.allrecipes.com/thmb/8xwaWAHtl_QLij6D-G0Z4B1HDVA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/10813-best-chocolate-chip-cookies-mfs-146-4x3-b108aceffa6043a1ac81c3c5a9b034c8.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 cup butter, softened",
@@ -472,7 +460,7 @@ func TestScraper_A(t *testing.T) {
 					Value: "I can finally say, after tinkering with my original recipe on and off for a decade, this is the apple pie I want when I want apple pie, a craving that rises constant in me from the first rattle of fall leaves. We&#039;ve upped the grains of paradise (see note below), traded out the apple cider for apple cider vinegar, and enhanced the texture by inviting liquid pectin to the party, easily found in most mega marts. We&#039;ve also changed the apple mixture, replacing the original golden delicious with Pink Lady. I realize some of you may not be able to land these where you live, so feel free to replace whose with Winesaps, or just stick with Honeycrisps and Granny Smiths.Some of you will notice that I&#039;ve eschewed the pie bird relied upon in earlier iterations. As much as I dig their retro-homey vibe, truth is, slitting the top crust does as good a job of venting. Yes, the top crust does sometimes crack without the bird there to support the middle, but so what...I&#039;m going to eat it and I trust you will too.This recipe first appeared on altonbrown.com.Photo by Lynne Calamia",
 				},
 				Keywords: models.Keywords{Values: "Baking, Desserts, Fall, Fruit, Holidays, Thanksgiving, The Apple Pie"},
-				Image:    models.Image{Value: "https://altonbrown.com/wp-content/uploads/2020/08/IMG_1623-scaled.jpeg"},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 3/4 cups all-purpose flour, plus extra for dusting",
@@ -525,9 +513,7 @@ func TestScraper_A(t *testing.T) {
 					Values: "barbecue, buffalo chicken wings, Chicken, chicken wings, grill, grilled buffalo chicken wings, " +
 						"grilled chicken wings",
 				},
-				Image: models.Image{
-					Value: "https://amazingribs.com/wp-content/uploads/2020/10/buffalo-wings.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3 ounces cream cheese", "3 ounces quality blue cheese, crumbled",
@@ -599,9 +585,7 @@ func TestScraper_A(t *testing.T) {
 						"perfection. This flavorful lemon garlic salmon recipe makes a delicious, protein packed dinner served " +
 						"with your favorite salad or side dishes, and the marinade is perfect for your go-to proteins.",
 				},
-				Image: models.Image{
-					Value: "https://www.ambitiouskitchen.com/wp-content/uploads/2021/01/Lemon-Garlic-Salmon-5.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 pound salmon", "2 tablespoons butter, melted",
@@ -653,10 +637,7 @@ func TestScraper_A(t *testing.T) {
 				Description: models.Description{
 					Value: "Did you know that we can make a yummy curry out of Orange Peels? It is tangy, sweetish, spicy, slightly bitter and bursting with flavors. It is an unique recipe. So next time you have some guests at home, make this recipe and impress your friends and family. It is filled with flavours and tastes delicious with almost everything. Next time you eat an orange, don't throw the peels, make a curry out of it.\nServe Karnataka Style Orange Peels Curry along with Cabbage Thoran and Whole Wheat Lachha Paratha for your weekday meal. It even tastes great with Steamed Rice.\nIf you like this recipe, you can also try other Karnataka recipes such as\n\nMavina Hannina Gojju Recipe\nMavina Hannina Gojju Recipe\nKarnataka Style Bassaru Palya Recipe",
 				},
-				Image: models.Image{
-					Value: "https://www.archanaskitchen.com/images/archanaskitchen/1-Author/Smitha-Kalluraya/" +
-						"Karnataka_style_Orange_Peels_Curry_.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				PrepTime: "PT15M",
 				CookTime: "PT15M",
 				Yield:    models.Yield{Value: 4},
@@ -706,6 +687,55 @@ func TestScraper_A(t *testing.T) {
 			},
 		},
 		{
+			name: "argiro.gr",
+			in:   "https://www.argiro.gr/recipe/kotopoulo-ala-krem-me-ruzi/",
+			want: models.RecipeSchema{
+				AtContext: "https://schema.org",
+				AtType:    models.SchemaType{Value: "Recipe"},
+				Category: models.Category{
+					Value: "Μανιτάρια συνταγές,Φιλέτο κοτόπουλο συνταγές,Κοτόπουλο στο τηγάνι,Κοτόπουλο κατσαρόλας,Αγίου Βαλεντίνου - Ρομαντικό δείπνο για δυο,Συνταγές με κοτόπουλο,Εύκολες / Γρήγορες / Οικονομικές,Αλα κρεμ,Τι να μαγειρέψω σήμερα;,Συνταγές με ρύζι,Φαγητά,Video,",
+				},
+				CookTime:      "PT30M",
+				Cuisine:       models.Cuisine{Value: "Ελληνική"},
+				DatePublished: "2021-12-10",
+				Description: models.Description{
+					Value: "Κοτόπουλο αλά κρεμ από την Αργυρώ Μπαρμπαρίγου. Λαχταριστό και ζουμερό φαγητό με νόστιμη κρεμώδη σάλτσα αλά κρεμ.",
+				},
+				Image: models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"2 φιλέτα στήθος κοτόπουλο",
+						"4 κ.σ. ελαιόλαδο", "1 κρεμμύδι ψιλοκομμένο",
+						"1 σκελ. σκόρδο",
+						"300 γρ. μανιτάρια κομμένα σε φέτες",
+						"3 χρωματιστές πιπεριές ψιλοκομμένες",
+						"1 κ.σ. αλεύρι", "2 φλ. ζωμό κότας",
+						"1 φλ. κρέμα γάλακτος (ή γιαούρτι)", "Αλάτι",
+						"Πιπέρι (φρεσκοτριμμένο)",
+						"Λίγο μαϊντανό (ψιλοκομμένο)",
+						"2 φλ. ρύζι καρολινα", "2 κ.σ. ελαιόλαδο",
+						"4 φρέσκα ψιλοκομμένα κρεμμύδια",
+						"1 κ.σ. ψιλοκομμένο μαϊντανό",
+						"1 κ.σ. ψιλοκομμένο άνηθο",
+						"Αλάτι",
+						"Πιπέρι",
+						"4 φλ. ζωμό κότας",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Κόβουμε πρώτα το στήθος κοτόπουλο σε μεγάλα κομμάτια.Ζεσταίνουμε το ελαιόλαδο και το ροδίζουμε για 5 με 6 λεπτά.Προσθέτουμε το κρεμμύδι και το σκόρδο και αφήνουμε για 2 με 3 λεπτά να γίνει διάφανο.Προσθέτουμε τα μανιτάρια και τις πιπεριές και αφήνουμε να πιούν τα υγρά τους.Πασπαλίζουμε με το αλεύρι κι ανακατεύουμε να ψηθεί για 2 λεπτά.Τότε προσθέτουμε το ζωμό κι αφήνουμε σκεπασμένο να σιγοβράσει μέχρι να πιει τα υγρά του.Στο τέλος προσθέτουμε αλάτι και πιπέρι.Προσθέτουμε την κρέμα γάλακτος και σιγοβράζουμε να δέσει.Πασπαλίζουμε φρεσκοκομμένο μαϊντανό.",
+						"Ζεσταίνουμε το λάδι και σοτάρουμε το κρεμμύδι για 3 με 4 λεπτά.Προσθέτουμε το ρύζι και ανακατεύουμε να λαδωθεί και να γυαλίσει.Ρίχνουμε το ζωμό ζεστό και χαμηλώνουμε τη φωτιά.Προσθέτουμε αλάτι και πιπέρι και σκεπάζουμε την κατσαρόλα.Αφήνουμε να σιγοβράσει μέχρι να εμφανιστούν τρυπούλες στην επιφάνεια του ρυζιού.Τέλος προσθέτουμε τα ψιλοκομμένα μυρωδικά.Σερβίρουμε με ρύζι.",
+						"Αν θέλετε να αντικαταστήσετε την κρέμα γάλακτος, μπορείτε να βάλετε γιαούρτι, αριάνι ή κεφίρ.Θα πρέπει να έχετε όποιο από τα 3 υλικά θα χρησιμοποιήσετε, σε θερμοκρασία δωματίου.Αφού ολοκληρώσετε το μαγείρεμα και το φαγητό έχει μείνει με λίγη σάλτσα, τραβήξτε το σκεύος εκτός φωτιάς και προσθέστε ένα από τα παραπάνω υλικά.Ανακατέψτε ελαφρά.Με το γιαούρτι δένει πιο σωστά και βγαίνει πιο πυκνή σάλτσα όπως γίνεται με την κρέμα γάλακτος.Εάν χρησιμοποιήσετε το γιαούρτι, αφήστε τη σάλτσα να βράσει και να πυκνώσει, αποσύρετε από τη φωτιά και ανακατέψτε το στη σάλτσα.Στην γεύση είναι τέλεια και τα τρία υλικά.",
+					},
+				},
+				Name:     "Κοτόπουλο αλά κρεμ",
+				PrepTime: "PT10M",
+				Yield:    models.Yield{Value: 4},
+				URL:      "https://www.argiro.gr/recipe/kotopoulo-ala-krem-me-ruzi/",
+			},
+		},
+		{
 			name: "arla.se",
 			in:   "https://www.arla.se/recept/kycklingpasta-med-spenat-och-grillade-gronsaker/",
 			want: models.RecipeSchema{
@@ -716,9 +746,7 @@ func TestScraper_A(t *testing.T) {
 					Value: "Supersnabb vardagspasta med krämig sås. Vill du göra rätten vegetarisk, tillsätt färdigkokta bönor eller kikärtor istället för kyckling. Klart!",
 				},
 				Keywords: models.Keywords{Values: "Kyckling,Pasta"},
-				Image: models.Image{
-					Value: "https://cdn-rdb.arla.com/Files/arla-se/2485582835/17d593bd-6d99-44ab-a5f9-4649eb3b2972.jpg?w=1300&h=525&mode=crop&ak=f525e733&hm=697c0698",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"450 g kycklinglårfilé", "2 msk Arla Köket® Smör- & rapsolja",
@@ -754,7 +782,7 @@ func TestScraper_A(t *testing.T) {
 				Name:        "Bœuf bourguignon traditionnel",
 				CookTime:    "P0Y0M0DT0H0M10800S",
 				Description: models.Description{Value: "Une vraie recette de la tradition française: des morceaux de bœuf cuits longuement dans un bouillon au vin rouge."},
-				Image:       models.Image{Value: "https://adc-dev-images-recipes.s3.eu-west-1.amazonaws.com/bourguignon_3bd.jpg"},
+				Image:       models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1.5 kg Boeuf à braiser ( jumeau, collier, macreuse )",
@@ -800,9 +828,7 @@ func TestScraper_A(t *testing.T) {
 				Description: models.Description{
 					Value: "A comfort food classic that everyone in the family LOVES! Hearty chunks of beef, rich and flavorful beef gravy, and served over a bed of warm noodles to soak up all that goodness! The EASIEST recipe for beef stroganoff ever because your Crock-Pot truly does all the work! Set it and forget it!",
 				},
-				Image: models.Image{
-					Value: "https://www.averiecooks.com/wp-content/uploads/2022/03/beefstroganoff-13-480x480.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 pounds beef stew meat or beef chuck, diced into large bite-sized pieces or chunks",

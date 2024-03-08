@@ -1,4 +1,4 @@
-package scraper
+package scraper_test
 
 import (
 	"github.com/reaper47/recipya/internal/models"
@@ -20,9 +20,7 @@ func TestScraper_I(t *testing.T) {
 				Description: models.Description{
 					Value: "En krämig och god kycklinggryta är chicken a la king. Grytan görs av smakrika kycklinglårfiléer, champinjoner och paprika. Samt naturligtvis vispgrädde för den perfekta krämigheten. Servera gärna kycklinggrytan med ris och en grön sallad.",
 				},
-				Image: models.Image{
-					Value: "https://assets.icanet.se/t_ICAseAbsoluteUrl/imagevaultfiles/id_250717/cf_259/chicken_à_la_king.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"4 port ris", "1 gul lök", "250 g färska champinjoner",
@@ -72,9 +70,7 @@ func TestScraper_I(t *testing.T) {
 						"mangoes tempering spices and curry leaves. It tastes slightly tangy, hot and flavorful.",
 				},
 				Keywords: models.Keywords{Values: "mango rice, mango rice recipe"},
-				Image: models.Image{
-					Value: "https://www.indianhealthyrecipes.com/wp-content/uploads/2022/04/mango-rice-recipe.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 cups rice",
@@ -145,9 +141,7 @@ func TestScraper_I(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "energy balls, energy bites, mediterranean diet desserts, oatmeal energy balls",
 				},
-				Image: models.Image{
-					Value: "https://im-worthy.com/wp-content/uploads/2023/10/Oatmeal-Energy-Balls_blog-17.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3/4 cup raw walnuts", "1/2 cup sweetened dried cranberries",
@@ -182,10 +176,7 @@ func TestScraper_I(t *testing.T) {
 				Category:      models.Category{Value: "Salads and Sides"},
 				CookTime:      "PT7M",
 				DatePublished: "2022-02-12",
-				Image: models.Image{
-					Value: "https://www.innit.com/meal-service/en-US/images/Meal-Salad%3A%20Coconut_Pineapple_Salad_" +
-						"1529953193419_480x480.png",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 Fresh Mexican Limes",
@@ -239,9 +230,7 @@ func TestScraper_I(t *testing.T) {
 				Description: models.Description{
 					Value: "This chicken cordon bleu casserole has everything you love about the classic dish! It's creamy, savory, and full of delicious flavor.",
 				},
-				Image: models.Image{
-					Value: "https://insanelygoodrecipes.com/wp-content/uploads/2023/11/Homemade-Chicken-Cordon-Bleu-with-Egg-Noodles-Ham-and-Cheese.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 (8-ounce) package wide egg noodles", "2 cups chopped cooked chicken breast",
@@ -285,9 +274,7 @@ func TestScraper_I(t *testing.T) {
 					Value: "Make quick and healthy zucchini noodle pad thai with eggs, hoisin sauce, peanuts and spiralized " +
 						"zucchini for dinner tonight.",
 				},
-				Image: models.Image{
-					Value: "https://inspiralized.com/wp-content/uploads/2014/05/IMG_9863-copy-1.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 whole eggs",

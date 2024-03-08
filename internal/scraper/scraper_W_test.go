@@ -1,4 +1,4 @@
-package scraper
+package scraper_test
 
 import (
 	"github.com/reaper47/recipya/internal/models"
@@ -22,9 +22,7 @@ func TestScraper_W(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "Pasta, Quick and easy, Serves 6, Cheese, cheddar, c, Main meal, Graham Norton show, Mac And Cheese",
 				},
-				Image: models.Image{
-					Value: "https://waitrose-prod.scene7.com/is/image/waitroseprod/macaroni-cheese?uuid=ceb08341-8d96-45cc-a2f9-7427489eed93&$Waitrose-Default-Image-Preset$",
-				},
+				Image:       models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{Values: []string{"350 g De Cecco Chifferi Rigati, or similar pasta"}},
 				Instructions: models.Instructions{
 					Values: []string{
@@ -65,9 +63,7 @@ func TestScraper_W(t *testing.T) {
 						"vegetable fried rice recipe that is better than takeout.",
 				},
 				Keywords: models.Keywords{Values: "fried rice, healthy fried rice"},
-				Image: models.Image{
-					Value: "https://www.watchwhatueat.com/wp-content/uploads/2019/04/Healthy-Fried-Brown-Rice-6.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 cup Jasmine brown rice",
@@ -121,9 +117,7 @@ func TestScraper_W(t *testing.T) {
 					Value: "Start your day with a hearty and delicious Western Omelet, a breakfast that&#39;s easy enough to make on both weekends and weekday mornings. Packed with savory ham, green bell peppers, onions, and cheddar cheese, this omelet is sure to become a breakfast favorite in your house!",
 				},
 				Keywords: models.Keywords{Values: "Egg Recipes, Ham Recipe, Omelet Recipes"},
-				Image: models.Image{
-					Value: "https://wearenotmartha.com/wp-content/uploads/western-omelet-featured-2.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3 large eggs", "1/4 tsp salt, (divided)", "1/4 tsp pepper, (divided)",
@@ -157,9 +151,7 @@ func TestScraper_W(t *testing.T) {
 				AtContext: "https://schema.org",
 				AtType:    models.SchemaType{Value: "Recipe"},
 				CookTime:  "PT12M",
-				Image: models.Image{
-					Value: "https://cmx.weightwatchers.com/assets-proxy/weight-watchers/image/upload/t_WINE_EXTRALARGE/ewh3p3r7s8g3iwix6u9s.jpg",
-				},
+				Image:     models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 spray(s) Cooking spray",
@@ -199,9 +191,7 @@ func TestScraper_W(t *testing.T) {
 					Value: "The only Energy Ball recipe you'll ever need, plus six no-bake energy ball flavors! Start with this easy base recipe, then add any of your favorite mix-ins.",
 				},
 				Keywords: models.Keywords{Values: "Easy Snack Recipe, No Bake Oatmeal Energy Balls"},
-				Image: models.Image{
-					Value: "https://www.wellplated.com/wp-content/uploads/2017/09/How-to-Make-Energy-Balls-no-text.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 1/4 cups old fashioned rolled oats (you can also swap quick oats or a blend of half quick, half old fashioned)",
@@ -254,9 +244,7 @@ func TestScraper_W(t *testing.T) {
 					Value: "When in doubt of what to do with a bunch of fab farmers market produce, put it all on a pizza and " +
 						"slap an egg on it, duh!",
 				},
-				Image: models.Image{
-					Value: "https://whatsgabycooking.com/wp-content/uploads/2015/05/ALDI-Spring-Pea-Pizza-2-copy-2.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 recipe fresh pizza dough",
@@ -316,9 +304,7 @@ func TestScraper_W(t *testing.T) {
 				Description: models.Description{
 					Value: "Seared chicken on the bone, slow cooked onions &amp; whole cloves of garlic finished with white wine, rosemary &amp; tender, roasted new potatoes.",
 				},
-				Image: models.Image{
-					Value: "http://static1.squarespace.com/static/630492b401e7102ee99cc184/6332c38456a18f062e96eabd/648874cd317f411dacbbb426/1686845797937/CaptureGarlicChicken.PNG?format=1500w",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"100ml Olive oil", "1kg chicken drumsticks & thighs, skin on, bone in",
@@ -354,9 +340,7 @@ func TestScraper_W(t *testing.T) {
 				Description: models.Description{
 					Value: "Creamed spinach makes a nutritious sauce that goes well with fish and meat dishes. In Swedish cuisine it has traditionally been used with boiled potatoes and fish or with chipolata, the Swedish \"prince-sausage\". Creamed spinach can be done in two different ways: either with whole spinach or with chopped spinach.",
 				},
-				Image: models.Image{
-					Value: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Chipolata.jpg/300px-Chipolata.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Instructions: models.Instructions{
 					Values: []string{
 						"Boil the fresh spinach leaves and the salt in the water for about 5 minutes. If you use frozen spinach, follow the instructions on the box.",
@@ -398,9 +382,7 @@ func TestScraper_W(t *testing.T) {
 				Description: models.Description{
 					Value: "Creamed spinach makes a nutritious sauce that goes well with fish and meat dishes. In Swedish cuisine it has traditionally been used with boiled potatoes and fish or with chipolata, the Swedish \"prince-sausage\". Creamed spinach can be done in two different ways: either with whole spinach or with chopped spinach.",
 				},
-				Image: models.Image{
-					Value: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Chipolata.jpg/300px-Chipolata.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Instructions: models.Instructions{
 					Values: []string{
 						"Boil the fresh spinach leaves and the salt in the water for about 5 minutes. If you use frozen spinach, follow the instructions on the box.",
@@ -442,9 +424,7 @@ func TestScraper_W(t *testing.T) {
 					Value: "with crispy noodle salad",
 				},
 				Yield: models.Yield{Value: 2},
-				Image: models.Image{
-					Value: "https://woop.co.nz/media/catalog/product/f/-/f-marinated-thai-beef-sirloin_mrypusp3a6h8fzas.jpg?quality=80&bg-color=255,255,255&fit=bounds&height=&width=800",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 pack of marinated beef sirloin steak",

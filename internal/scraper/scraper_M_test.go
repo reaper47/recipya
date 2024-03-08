@@ -1,4 +1,4 @@
-package scraper
+package scraper_test
 
 import (
 	"github.com/reaper47/recipya/internal/models"
@@ -26,6 +26,7 @@ func TestScraper_M(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "cylinder shaped rice cake, ddeokbokki recipe, ddukbokki, 떡볶이 조리법, korean food, Korean recipes, korean snack, Korean spicy rice cake, Korean street snack, Maangchi recipes, spicy ricecake, topokki, tteokbokki, tteokbokki recipe",
 				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 pound of cylinder shaped rice cake, bought or homemade. (Use a little more if you’re not adding hard boiled eggs and fish cakes)",
@@ -51,6 +52,54 @@ func TestScraper_M(t *testing.T) {
 			},
 		},
 		{
+			name: "maangchi2.com",
+			in:   "https://www.maangchi.com/recipe/dwaejigogi-bokkeum",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "Side dish"},
+				Cuisine:       models.Cuisine{Value: "Korean"},
+				DateCreated:   "2010-09-03T14:39:18+00:00",
+				DateModified:  "2021-08-11T00:50:16+00:00",
+				DatePublished: "2010-09-03T14:39:18+00:00",
+				Description: models.Description{
+					Value: "Dwaejigogibokkeum is sometimes called jeyuk bokkeum or even dwaejibulgogi bokkeum. This recipe is very easy, delicious, and fast! You can make a huge plate of dwaejigogibokkeum in 20 minutes!",
+				},
+				Keywords: models.Keywords{
+					Values: "doaejigogi bokkeum, doejigogi bokkeum, doejigogibokkeum, dwaeji-bulgogi, dwaejigogi bokkeum, 돼지고기볶음, gochujang doejigogi bokkeum, gochujang jeyukbokkeum, 제육볶음, jeyuk bokkeum, jeyukbokkeum, korean food, Korean kitchen, Korean spicy pork, Korean spicy stir-fried pork, pork recipe, recipe, spicy food, spicy pork, spicy stir-fried pork",
+				},
+				Image: models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"1 pound pork belly, cut into bite size pieces (1/8 inch thick)",
+						"¼ cup hot pepper paste (gochujang)",
+						"1 tablespoon soy sauce",
+						"1 tablespoon sugar",
+						"2 tablespoons hot pepper flakes (gochu-garu)",
+						"¼ teaspoon ground black pepper",
+						"1 tablespoon toasted sesame oil",
+						"5 garlic cloves, minced",
+						"1 teaspoon ginger, minced",
+						"1 medium size onion, sliced",
+						"4 green onions, sliced",
+						"1 teaspoon toasted sesame seeds",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Heat up a large, thick skillet (or pan) over medium high heat.",
+						"Add pork, hot pepper paste, soy sauce, sugar, hot pepper flakes, black pepper, and toasted sesame oil.",
+						"Mix it well, stirring with a wooden spoon. Cook it for a few minutes until the pork is well mixed with the seasonings.",
+						"Add garlic, ginger, onion, and green onions. Stir and cook for 12 to 15 minutes until the pork is fully cooked and juicy and a little crispy.",
+						"Transfer to a serving plate and serve with rice, kimchi, lettuce, ssamjang, and more side dishes.",
+					},
+				},
+				Name:  "Spicy stir-fried pork (Dwaejigogi-bokkeum)",
+				Yield: models.Yield{Value: 1},
+				URL:   "https://www.maangchi.com/recipe/dwaejigogi-bokkeum",
+			},
+		},
+		{
 			name: "madensverden.dk",
 			in:   "https://madensverden.dk/durumboller-nemme-italienske-boller-med-durum-mel/",
 			want: models.RecipeSchema{
@@ -65,9 +114,7 @@ func TestScraper_M(t *testing.T) {
 						"og som er gode til alt fra morgenbordet til en sandwich.",
 				},
 				Keywords: models.Keywords{Values: "boller, hjemmebagt"},
-				Image: models.Image{
-					Value: "https://madensverden.dk/wp-content/uploads/2019/01/durumboller-opskrift.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"50 gram gær",
@@ -118,9 +165,7 @@ func TestScraper_M(t *testing.T) {
 					Value: "Svampet drømmekage med masser af fyld (tro mig, der er ikke sparet på de gode sager).",
 				},
 				Keywords: models.Keywords{Values: "Drømmekage"},
-				Image: models.Image{
-					Value: "https://madsvin.com/wp-content/uploads/2023/10/Droemmekage-fra-brovst.jpeg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"300 g hvedemel", "100 g smør (stuetempereret)", "2 tsk vaniljesukker",
@@ -159,9 +204,7 @@ func TestScraper_M(t *testing.T) {
 					Value: "This sweet, tangy Lemon-Glazed Sheet Cake has a delicate crumb and serves a crowd.",
 				},
 				Keywords: models.Keywords{Values: "lemon-glazed sheet cake, cake, dessert, lemon"},
-				Image: models.Image{
-					Value: "https://www.marthastewart.com/thmb/qGEGYT4Q4D1RG7fxw3rl448Vax8=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/lemon-glazed-sheet-cake-0519-fe9760b1-horiz-365892a83bdb4ce3bae434e35f6656fe.jpgitok28jrW8YB",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"10 tablespoons unsalted butter, room temperature, plus more for pan",
@@ -221,7 +264,7 @@ func TestScraper_M(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "vafler, hvetemel, melk, egg, smør, sukker, malt kardemomme, vaffel, vaffelrøre, vafler, vafler, vafler med bær, vafler, vafler, vafler, vaffeloppskrifter, oppskrift på vafler, vaffel, vaffelkake, vaffler, vaffelrøre, den store vaffeldagen",
 				},
-				Image: models.Image{Value: "https://images.matprat.no/uveqekyypv"},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"4 dl hvetemel",
@@ -260,9 +303,7 @@ func TestScraper_M(t *testing.T) {
 					Value: "Tender & flavorful, these meatballs have the curry flavor in a friendly shape! A secret ingredient makes a snappy outside & tender inside.",
 				},
 				Keywords: models.Keywords{Values: "chicken,thai"},
-				Image: models.Image{
-					Value: "https://meljoulwan.com/wp-content/uploads/2019/04/thai-chicken-meatballs-15-Edit-16.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"4 scallions", "10-12 basil leaves", "1/4 cup canned unsweetened coconut milk",
@@ -303,9 +344,7 @@ func TestScraper_M(t *testing.T) {
 				AtType:        models.SchemaType{Value: "Recipe"},
 				CookTime:      "PT12M",
 				DatePublished: "2021-08-23T04:00:00+00:00",
-				Image: models.Image{
-					Value: "https://www.melskitchencafe.com/wp-content/uploads/2021/08/rosemary-ranch-chicken6.jpg",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1/4 cup olive oil",
@@ -362,9 +401,7 @@ func TestScraper_M(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "lávasüti,lávasütemény,recept,karamella,desszert,karamellás lávasüti",
 				},
-				Image: models.Image{
-					Value: "https://www.mindmegette.hu/images/219/O/karamelles_lava_sutik.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"0.66 bögre 1,5%-os tej",
@@ -405,9 +442,7 @@ func TestScraper_M(t *testing.T) {
 						"ashwagandha, and he shou wu. The perfect low-caffeine cozy beverage to replace coffee or matcha.",
 				},
 				Keywords: models.Keywords{Values: "hot chocolate mix"},
-				Image: models.Image{
-					Value: "https://minimalistbaker.com/wp-content/uploads/2020/01/Adaptogenic-Hot-Chocolate-Mix-SQUARE.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2/3 cup unsweetened cacao powder",
@@ -476,9 +511,7 @@ func TestScraper_M(t *testing.T) {
 					Value: "Hands-free 15-minute cranberry sauce recipe using only 4-ingredients is a perfect side dish for Thanksgiving feast",
 				},
 				Keywords: models.Keywords{Values: "cranberry sauce"},
-				Image: models.Image{
-					Value: "https://ministryofcurry.com/wp-content/uploads/2019/11/cranberry-sauce-2-1.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 12 oz cranberries (fresh or frozen)",
@@ -533,9 +566,7 @@ func TestScraper_M(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "grigliata di carne,ricetta grigliata di carne",
 				},
-				Image: models.Image{
-					Value: "https://www.misya.info/wp-content/uploads/2022/03/grigliata-di-carne.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"4 salsicce e/o spiedini",
@@ -590,9 +621,7 @@ func TestScraper_M(t *testing.T) {
 					Value: "Khinkali are super flavorful, meat-filled dumplings that are similar to soup dumplings. They reheat well, making them great for meal prep and can even be frozen! Both the dough and filling are easy to make and they’re fun to assemble.",
 				},
 				Keywords: models.Keywords{Values: "dumpling recipe, georgian dumplings, khinkali recipe"},
-				Image: models.Image{
-					Value: "https://cdn.momsdish.com/wp-content/uploads/2021/02/Khinkali-Recipe-Georgian-Dumplings-018-scaled.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"4 cups all-purpose flour",
@@ -653,9 +682,7 @@ func TestScraper_M(t *testing.T) {
 						"Comes out perfect every time!",
 				},
 				Keywords: models.Keywords{Values: "holiday"},
-				Image: models.Image{
-					Value: "https://momswithcrockpots.com/wp-content/uploads/2018/01/Crockpot-Cornbread-1-2.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 Cup Cornmeal",
@@ -696,9 +723,7 @@ func TestScraper_M(t *testing.T) {
 				CookTime:      "PT42M",
 				DatePublished: "2018-11-06",
 				DateCreated:   "2018-11-06",
-				Image: models.Image{
-					Value: "https://www.monsieur-cuisine.com/fileadmin/_processed_/d/7/csm_24979_Rezeptfoto_925b5_dec6d60bed.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"200 g dark chocolate",
@@ -746,9 +771,7 @@ func TestScraper_M(t *testing.T) {
 					Value: "Everything you love about a BLT tossed in this easy and delicious BLT Pasta Salad! If you like BLT's, " +
 						"you're going to love this!",
 				},
-				Image: models.Image{
-					Value: "https://www.motherthyme.com/wp-content/uploads/2018/06/BLT-PASTA-SALAD-4-225x225.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 pound bacon (cooked and crumbled)",
@@ -786,6 +809,89 @@ func TestScraper_M(t *testing.T) {
 			},
 		},
 		{
+			name: "moulinex.fr",
+			in:   "https://www.moulinex.fr/recette/detail/PRO/B%C5%93uf%20carottes%20fondant/249426",
+			want: models.RecipeSchema{
+				AtContext: atContext,
+				AtType:    models.SchemaType{Value: "Recipe"},
+				CookTime:  "PT1H2M",
+				Image:     models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"600g bœuf à bourguignon", "1 oignon", "1gousse ail",
+						"250g champignons de paris", "3 carottes (280g)",
+						"100g olives noires dénoyautées", "25cl vin blanc", "2càs huile d'olive",
+						"1càs maïzena",
+						"15cl eau ( dans lesquels nous diluerons les 2 càc de fond de veau , le sel , le poivre , le piment et les herbes de provence )",
+						"2càc fond de veau", "1càc herbes de provence", "Poivre", "Sel",
+						"Piment en poudre ( facultatif)",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Préparer tous les ingrédients : couper les carottes en rondelles, émincez les champignons et l,oignon, écrasez la gousse d'ail, coupez la viande en cubes de 3 cm",
+						"En mode dorer : mettre les deux cuillères à soupe d'huile d'olive",
+						"Sans attendre la fin du préchauffage, Ajouter l'oignon émincé : faire revenir 3 minutes",
+						"Ensuite ajoutez la viande + la gousse d'ail écrasée : faire revenir 3 minutes en remuant bien pour faire dorer la viande sur tous les côtés",
+						"Ajouter les olives noires",
+						"Toujours en mode dorer ajouter les champignons : faire revenir 3 minutes en mélangeant",
+						"Ajouter les carottes : faire revenir 3 minutes",
+						"Ajouter les 25 cl de vin blanc",
+						"Dans les 15 cl d'eau mélanger le fond de veau le sel , le poivre ,les herbes de Provence et le piment et versez le tout dans la cuve",
+						"Quitter le mode dorer et mettre en cuisson sous pression 50 minutes",
+						"En fin de cuisson , liez la sauce avec 1 càs de maïïzéa tamisée",
+						"Accompagnez votre plat avec des p&#226;tes alsaciennes (spaetzle) ou du riz",
+					},
+				},
+				Name:     "Bœuf carottes fondant",
+				PrepTime: "PT15M",
+				Yield:    models.Yield{Value: 4},
+				URL:      "https://www.moulinex.fr/recette/detail/PRO/B%C5%93uf%20carottes%20fondant/249426",
+			},
+		},
+		{
+			name: "mundodereceitasbimby.com.pt",
+			in:   "https://www.mundodereceitasbimby.com.pt/entradas-receitas/batatas-com-chourico/i1ggy3yl-6f492-260374-cfcd2-gzaqtn4i",
+			want: models.RecipeSchema{
+				AtContext:     atContext,
+				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "Entradas"},
+				DateCreated:   "2012-09-10",
+				DateModified:  "2015-11-06",
+				DatePublished: "2012-09-10",
+				Description:   models.Description{Value: "Batatas com Chouriço de Equipa Bimby. Receita Bimby<sup>®</sup> na categoria Entradas do %site-name%, A Comunidade de Receitas Bimby<sup>®</sup>."},
+				Image:         models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"800 g água",
+						"500 g batata miúda, inteira com casca",
+						"2 alho",
+						"40 g azeite",
+						"1 c. sopa de pimentão-doce",
+						"0.5 c. chá de tomilho fresco",
+						"1 c. chá de tabasco",
+						"1 chouriço de carne",
+						"sal, q.b.",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Pré aqueça o forno a 250°C.",
+						"Coloque no copo a água, a Varoma com as batatas e programe 20 min/Varoma/vel 1.",
+						"Retire a água do copo e reserve as batatas.",
+						"Coloque no copo os alhos, o azeite, o pimentão, o tomilho, o tabasco e triture 6 seg/vel 5.",
+						"Corte o chouriço em rodelas e as batatas ao meio, e com a ajuda de um palito coloque uma fatia de chouriço entre as duas metades de cada batata.",
+						"Coloque as batatas num prato de ir ao forno, regue com o molho e salpique com o sal.",
+						"Leve a dourar ao forno a 250° durante 7 minutos. Sirva de seguida.",
+					},
+				},
+				Name:     "Batatas com Chouriço",
+				PrepTime: "PT30M",
+				Yield:    models.Yield{Value: 8},
+				URL:      "https://www.mundodereceitasbimby.com.pt/entradas-receitas/batatas-com-chourico/i1ggy3yl-6f492-260374-cfcd2-gzaqtn4i",
+			},
+		},
+		{
 			name: "mybakingaddiction.com",
 			in:   "https://www.mybakingaddiction.com/pistachio-pudding-cake/",
 			want: models.RecipeSchema{
@@ -802,9 +908,7 @@ func TestScraper_M(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "bundt cake, Cake, cake mix, dessert, recipe, st patrick's day",
 				},
-				Image: models.Image{
-					Value: "https://www.mybakingaddiction.com/wp-content/uploads/2022/03/overhead-view-sliced-pistachio-cake.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 package yellow cake mix (15.25 ounces)",
@@ -866,9 +970,7 @@ func TestScraper_M(t *testing.T) {
 				Description: models.Description{
 					Value: "牛油蛋糕是许多烘培初学者必学的蛋糕。这个原味牛油蛋糕食谱没有添加任何人造香精，所以蛋糕有着浓郁的牛油香味。食谱采用的是分蛋法来制作，所以蛋糕的组织比较细腻。",
 				},
-				Image: models.Image{
-					Value: "https://mykitchen101.com/wp-content/uploads/2017/10/plain-butter-cake-mykitchen101-feature.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"250 g \u514b \u725b\u6cb9 (\u6709\u76d0\uff0c\u5ba4\u6e29)",
@@ -929,10 +1031,8 @@ func TestScraper_M(t *testing.T) {
 					Value: "Butter cake is a popular recipe among baking beginners. This butter cake recipe does not have any artificial flavour added, thus the cake has a rich buttery flavour.",
 				},
 				Keywords: models.Keywords{Values: "butter cake, marble butter cake recipe, plain butter cake"},
-				Image: models.Image{
-					Value: "https://mykitchen101en.com/wp-content/uploads/2017/10/plain-butter-cake-mykitchen101en-feature.jpg",
-				},
-				URL: "https://mykitchen101en.com/plain-butter-cake/",
+				Image:    models.Image{Value: anUploadedImage.String()},
+				URL:      "https://mykitchen101en.com/plain-butter-cake/",
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"250 g butter ((salted, room temperature))",
@@ -984,12 +1084,9 @@ func TestScraper_M(t *testing.T) {
 				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Name:      "20-Minute Chicken Creole",
-				Image: models.Image{
-					Value: "https://myplate-prod.azureedge.us/sites/default/files/styles/recipe_525_x_350_/public/2020-10/" +
-						"Chicken%20Creole.jpg?itok=IX9jnbBD",
-				},
-				Yield:    models.Yield{Value: 8},
-				CookTime: "PT20M",
+				Image:     models.Image{Value: anUploadedImage.String()},
+				Yield:     models.Yield{Value: 8},
+				CookTime:  "PT20M",
 				Description: models.Description{
 					Value: "This Creole-inspired dish uses chili sauce and cayenne pepper to spice it up. Tomatoes, green pepper, " +
 						"celery, onions and garlic spices also surround the chicken with delicious color. This main dish can " +
@@ -1052,9 +1149,7 @@ func TestScraper_M(t *testing.T) {
 				Description: models.Description{
 					Value: "These classic Tex-Mex nachos are loaded to the max! Avoid soggy nachos by briefly baking them before topping with cheese, seasoned beef, refried beans, guacamole, and salsa. They&#39;re a great snack, party appetizer, or even casual weeknight dinner.",
 				},
-				Image: models.Image{
-					Value: "https://www.simplyrecipes.com/thmb/_38VUZIotH7LHCImZlAMMtlBl50=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__simply_recipes__uploads__2019__04__Nachos-LEAD-5-ab0842bd5c3a492b989240cca869cefb.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"For the spice mix:",

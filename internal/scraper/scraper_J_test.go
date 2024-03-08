@@ -1,4 +1,4 @@
-package scraper
+package scraper_test
 
 import (
 	"github.com/reaper47/recipya/internal/models"
@@ -23,9 +23,7 @@ func TestScraper_J(t *testing.T) {
 					Values: "chicken, mushroom, dairy-free, poultry, vegetable, thai green, curry, chicken thighs, paste, chicken " +
 						"curry, thai, thai green curry, vegetables, One-pan recipes, Curry, Chicken, Stewing, Dinner Party",
 				},
-				Image: models.Image{
-					Value: "https://img.jamieoliver.com/jamieoliver/recipe-database/oldImages/large/1575_2_1437576282.jpg?tr=w-800,h-800",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"750 g skinless free-range chicken thighs",
@@ -95,9 +93,7 @@ func TestScraper_J(t *testing.T) {
 				DatePublished: "2023-05-09T12:58:13+00:00",
 				Description:   models.Description{Value: "Quick easy and delicious"},
 				Keywords:      models.Keywords{Values: "#healthyrecipe"},
-				Image: models.Image{
-					Value: "https://jimcooksfoodgood.com/wp-content/uploads/2021/05/8DBE2045-ED9A-4B03-90F8-9B2114FC742C-scaled.jpeg",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"8 ounces rice noodles",
@@ -160,9 +156,7 @@ func TestScraper_J(t *testing.T) {
 					Values: "how to make peanut butter frosting, peanut butter buttercream, peanut butter frosting, peanut butter " +
 						"frosting recipe",
 				},
-				Image: models.Image{
-					Value: "https://joyfoodsunshine.com/wp-content/uploads/2022/02/peanut-butter-frosting-recipe-3.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"¾ cup creamy peanut butter",
@@ -216,9 +210,7 @@ func TestScraper_J(t *testing.T) {
 				Description: models.Description{
 					Value: "White Chocolate and Raspberry Muffins\u00a0| This is a very indulgent recipe, absolutely delicious, dense and moist. What I would call a “sometimes food” for sure – but every now and again, with a very good coffee, lovely.",
 				},
-				Image: models.Image{
-					Value: "https://juliegoodwin.com.au/wordpress/wp-content/uploads/2020/04/Muffins-4C.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"¾ cup white choc bits", "¾ cup caster sugar", "2 cups self-raising flour",
@@ -257,9 +249,7 @@ func TestScraper_J(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "cinnamon, doughnut, sour cream, sugar, vanilla extract",
 				},
-				Image: models.Image{
-					Value: "https://www.justataste.com/wp-content/uploads/2021/12/mini-sour-cream-doughnut-muffins.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"Cooking spray",
@@ -327,7 +317,7 @@ func TestScraper_J(t *testing.T) {
 				Description: models.Description{
 					Value: "Here is something that I had in my archives - a sushi roll bento, made with ingredients that you might not have thought belong in a sushi. Plus, how to make a fat sushi roll without a sushi mat!",
 				},
-				Image: models.Image{Value: "http://justbento.com/files/bento/images/sushiroll-bento.jpg"},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"A sheet of nori seaweed",
@@ -376,9 +366,7 @@ func TestScraper_J(t *testing.T) {
 					Value: "Smothered with sweet-savory homemade teriyaki sauce, this crispy Pan-Fried Teriyaki Tofu Bowl is amazingly easy and delicious!  It‘s also a great way to incorporate tofu into your weekly menu rotation.",
 				},
 				Keywords: models.Keywords{Values: "teriyaki sauce, tofu"},
-				Image: models.Image{
-					Value: "https://www.justonecookbook.com/wp-content/uploads/2022/03/Teriyaki-Tofu-Bowl-6768-I.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"14 oz medium-firm tofu (momen dofu) ((1 block))",

@@ -1,4 +1,4 @@
-package scraper
+package scraper_test
 
 import (
 	"github.com/reaper47/recipya/internal/models"
@@ -18,6 +18,7 @@ func TestScraper_L(t *testing.T) {
 				Description: models.Description{
 					Value: "Une recette facile, rapide et adorée des enfants : le cake marbré moelleux au chocolat façon Savane. Un cake parfumé à la vanille et au chocolat. ",
 				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3 œufs", "70 g de sucre", "70 g de beurre  fondu",
@@ -60,9 +61,7 @@ func TestScraper_L(t *testing.T) {
 				Description: models.Description{
 					Value: "<p>If you're not familiar with spaghetti squash then it's time you get acquainted! This simple to prepare Spaghetti Squash Lasagna recipe will have you wondering why you haven't been eating spaghetti this way your entire life. Light, delicious and 100% on plan!</p>\n<p> </p>\n<p>Tip: If you do not like spicy heat you can reduce or omit the crushed red pepper flakes. This recipe call for several of the spices to be divided.</p>",
 				},
-				Image: models.Image{
-					Value: "https://leanandgreenrecipes.net/sites/default/files/2021-03/Spaghetti-Squash-Lasagna.jpeg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 medium Spaghetti Squash", "4 tsp Olive Oil", "1 tsp Salt",
@@ -119,9 +118,7 @@ func TestScraper_L(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "Hähnchen,Geflügel,Fleisch,Zutaten,Mittagessen,Mahlzeit,Rezepte,Abendbrot,Low Carb,Gesundes Essen,Hauptgerichte,Menüs,Brokkoli,Kohl,Gemüse,Zuckerschoten,Gemüsepfanne,Pfannengerichte",
 				},
-				Image: models.Image{
-					Value: "https://images.lecker.de/gemusepfanne-mit-hahnchen-zuckerschoten-und-brokkoli/1x1,id=7e976162,b=lecker,w=1600,h=,ca=12.42,0,87.58,100,rm=sk.jpeg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 Brokkoli", "150 g Zuckerschoten", "2 Lauchzwiebeln", "Salz",
@@ -217,9 +214,7 @@ func TestScraper_L(t *testing.T) {
 					Value: "These Chick-Fil-A peppermint milkshakes are an easy and delicious way to enjoy your favorite holiday drink year round!",
 				},
 				Keywords: models.Keywords{Values: "chick fil a peppermint milkshake, peppermint milkshake"},
-				Image: models.Image{
-					Value: "https://lifestyleofafoodie.com/wp-content/uploads/2023/11/Chick-fil-a-peppermint-milkshake-5.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3 cups vanilla ice cream", "1/4 cup milk (whole or 2% for creamier results)",
@@ -272,9 +267,7 @@ func TestScraper_L(t *testing.T) {
 						"bread is studded with roasted pepitas and loaded with spices and so much pumpkin goodness!",
 				},
 				Keywords: models.Keywords{Values: ""},
-				Image: models.Image{
-					Value: "https://littlespicejar.com/wp-content/uploads/2021/11/Copycat-Starbucks-Pumpkin-Loaf-8-720x720.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3 ½ cups all-purpose flour",
@@ -331,9 +324,7 @@ func TestScraper_L(t *testing.T) {
 						"simple, delicious, and sure to please a crowd! (gluten-free, dairy-free, nut-free)",
 				},
 				Keywords: models.Keywords{Values: "BBQ ribs, ribs on the charcoal grill"},
-				Image: models.Image{
-					Value: "https://livelytable.com/wp-content/uploads/2019/07/ribs-on-charcoal-grill-2-225x225.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 rack baby back pork ribs",
@@ -382,6 +373,56 @@ func TestScraper_L(t *testing.T) {
 			},
 		},
 		{
+			name: "livingthegreenlife.com",
+			in:   "https://livingthegreenlife.com/recepten/vegan-tikka-masala-met-rijst/",
+			want: models.RecipeSchema{
+				AtContext:     atContext,
+				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "Diner"},
+				CookTime:      "PT30M",
+				DateModified:  "2021-04-20T07:30:51+02:00",
+				DatePublished: "2020-03-30T08:06:37+02:00",
+				Description: models.Description{
+					Value: "Tikka masala is een mix van geroosterde kruiden en specerijen. Zowel India als Engeland beweren deze heerlijke kruidenmix uitgevonden te hebben. Wat voor ons het belangrijkste is, is dat we een vegan variant hebben gemaakt. Mega simpel en minstens net zo lekker als het origineel!",
+				},
+				Keywords: models.Keywords{Values: "Living the Green Life"},
+				Image:    models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"0,75 st bloemkool",
+						"3 el plantaardige olie",
+						"3 tl garam masala",
+						"200 g zilvervliesrijst",
+						"1 st ui",
+						"3 teentje(s) knoflook",
+						"1 st  gemberwortel (1 x 1 cm)",
+						"1 tl kurkuma",
+						"1 tl gemalen komijn",
+						"1 tl gerookte-paprikapoeder",
+						"1 blik(ken) tomatenblokjes",
+						"1 snuf(jes) zout",
+						"1 blik(ken) linzen",
+						"2 el kokosyoghurt",
+						"1 el ahornsiroop",
+						"1 handje(s) cashewnoten",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Verwarm de oven voor op 180 ˚C en bekleed een bakplaat met bakpapier.",
+						"Snijd de bloemkool in kleine roosjes. Leg deze op de met bakpapier beklede bakplaat en schep ze om met 2 eetlepels olie en garam masala. Rooster de roosjes 25-30 minuten in de voorverwarmde oven.",
+						"Kook intussen de rijst volgens de instructies op de verpakking.",
+						"Snijd de ui, de knoflook en de gember fijn. Verwarm 1 eetlepel olie in de pan en fruit hierin de ui, knoflook en gember. Voeg de overige kruiden en de tomatenblokjes toe. Laat 15 minuten sudderen op laag vuur en breng op smaak met zout.",
+						"Voeg de geroosterde bloemkool en de linzen toe aan de saus en laat het nog 10 minuten sudderen.",
+						"Verdeel de rijst over 2 diepe borden en schep de saus ernaast. Maak swirls van kokosyoghurt en ahornsiroop, en voeg eventueel wat gehakte cashewnoten toe voor een extra bite.",
+					},
+				},
+				Name:  "Vegan tikka masala met rijst",
+				Yield: models.Yield{Value: 1},
+				URL:   "https://livingthegreenlife.com/recepten/vegan-tikka-masala-met-rijst/",
+			},
+		},
+		{
 			name: "lovingitvegan.com",
 			in:   "https://lovingitvegan.com/vegan-buffalo-chicken-dip/",
 			want: models.RecipeSchema{
@@ -398,9 +439,7 @@ func TestScraper_L(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "vegan buffalo chicken dip, vegan buffalo dip",
 				},
-				Image: models.Image{
-					Value: "https://lovingitvegan.com/wp-content/uploads/2022/01/Vegan-Buffalo-Chicken-Dip-Square.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 1/2 cups Raw Cashews ((225g) Soaked in hot water for 1 hour)",

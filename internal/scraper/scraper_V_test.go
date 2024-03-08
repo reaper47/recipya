@@ -1,4 +1,4 @@
-package scraper
+package scraper_test
 
 import (
 	"github.com/reaper47/recipya/internal/models"
@@ -20,9 +20,7 @@ func TestScraper_V(t *testing.T) {
 				Description: models.Description{
 					Value: "Krydret og lækker butter chicken med ris, indisk salat og godt brød til – det er virkelig en skøn ret.Selv om butter chicken måske umiddelbart tager lidt tid, så er det mest af alt tiden hvor kyllingen skal marinere, for selve arbejdstiden er hverdagsvenlig. Sæt evt kyllingen i marinade allerede aftenen før eller fra morgenstunden – det bliver den blot bedre af.Det er også en herlig weekendret og god til gæster, hvor man kan servere flere skål med lækkert indisk mad at samles om.Prøv også: min bedste opskrift på lækkert naan brød >>",
 				},
-				Image: models.Image{
-					Value: "https://www.valdemarsro.dk/wp-content/2014/06/butterchicken.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				PrepTime: "PT1H30M",
 				Yield:    models.Yield{Value: 4},
 				Ingredients: models.Ingredients{
@@ -83,9 +81,7 @@ func TestScraper_V(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "Carrot Cake Bread, Carrot Cake Loaf Recipe",
 				},
-				Image: models.Image{
-					Value: "https://vanillaandbean.com/wp-content/uploads/2022/04/CarrotCakeBreadFinal-5.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3/4 cup (80 grams) Pecans (or Walnuts)",
@@ -200,9 +196,7 @@ func TestScraper_V(t *testing.T) {
 				Cuisine:       models.Cuisine{Value: "amerikansk"},
 				DatePublished: "2023-07-15T11:33:37+00:00",
 				Keywords:      models.Keywords{Values: "peanøttkake"},
-				Image: models.Image{
-					Value: "https://www.vegetarbloggen.no/content/uploads/sites/7/2023/04/Peanøttkake-alternativ2.jpg",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"100 g vegansk margarin", "250 g peanøttsmør", "200 g melkefri sjokolade",
@@ -241,9 +235,7 @@ func TestScraper_V(t *testing.T) {
 						"a chi deve evitare il glutine di gustarsi dei morbidi e golosissimi pancake, completati in questo " +
 						"caso dall'immancabile sciroppo d'acero, fragole fresche e cocco in scaglie.",
 				},
-				Image: models.Image{
-					Value: "https://www.vegolosi.it/wp-content/uploads/2018/06/pancake-senza-glutine-cocco-quinoa_1592_650.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"120 g di farina di quinoa",
@@ -257,21 +249,21 @@ func TestScraper_V(t *testing.T) {
 						"30 g di olio di semi di girasole",
 						"1 cucchiaino di aceto di mele",
 						"Fragole",
-						"Sciroppo d&#8217;acero",
+						"Sciroppo d'acero",
 					},
 				},
 				Instructions: models.Instructions{
 					Values: []string{
 						"Mescolate la farina di semi di lino con 6 cucchiai di acqua e lasciate riposare 10 minuti fino a che si " +
-							"sarà formato un composto gelatinoso. In una ciotolina versate il latte di soia e l&#8217;aceto d" +
+							"sarà formato un composto gelatinoso. In una ciotolina versate il latte di soia e l'aceto d" +
 							"i mele e lasciate cagliare per 5 minuti. Riunite in una ciotola la farina di quinoa, la farina di " +
-							"cocco, l&#8217;amido di mais, lo zucchero di canna, il lievito e il bicarbonato e mescolate. " +
-							"Aggiungete agli ingredienti secchi il latte di soia, il composto di semi di lino e l&#8217;olio e " +
+							"cocco, l'amido di mais, lo zucchero di canna, il lievito e il bicarbonato e mescolate. " +
+							"Aggiungete agli ingredienti secchi il latte di soia, il composto di semi di lino e l'olio e " +
 							"amalgamate bene il tutto fino ad ottenere un composto omogeneo e abbastanza denso.",
 						"Scaldate una padella antiaderente e ungetela leggermente con un pezzo di carta assorbente imbevuto di " +
 							"olio di semi. Versate 1-2 cucchiaiate di impasto per ciascun pancake e lasciate cuocere a fiamma " +
 							"medio-bassa per 3-4 minuti per lato. Man mano che i vostri pancake saranno pronti disponeteli su un " +
-							"piatto, e completate poi ciascuna porzione con sciroppo d&#8217;acero a piacere, fragole fresche e cocco " +
+							"piatto, e completate poi ciascuna porzione con sciroppo d'acero a piacere, fragole fresche e cocco " +
 							"in scaglie.",
 					},
 				},
@@ -295,9 +287,7 @@ func TestScraper_V(t *testing.T) {
 					Value: "Paneer Butter Masala Recipe is one of India’s most popular paneer preparation. This restaurant style recipe with soft paneer cubes dunked in a creamy, lightly spiced tomato sauce or gravy is a best one that I have been making for a long time. This rich dish is best served with roti or chapati, paratha, naan or rumali roti.",
 				},
 				Keywords: models.Keywords{Values: "Paneer Butter Masala"},
-				Image: models.Image{
-					Value: "https://www.vegrecipesofindia.com/wp-content/uploads/2020/01/paneer-butter-masala-5.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"18 to 20 cashews (- whole)",

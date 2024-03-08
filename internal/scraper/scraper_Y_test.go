@@ -1,4 +1,4 @@
-package scraper
+package scraper_test
 
 import (
 	"github.com/reaper47/recipya/internal/models"
@@ -14,9 +14,7 @@ func TestScraper_Y(t *testing.T) {
 				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
 				Name:      "Walnut Turkish Baklava Recipe",
-				Image: models.Image{
-					Value: "https://cdn.ye-mek.com/img/f/hazir-yufkadan-buzme-burma-baklava.jpg",
-				},
+				Image:     models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"11-12 sheets filo pastry",

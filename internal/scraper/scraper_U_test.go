@@ -1,4 +1,4 @@
-package scraper
+package scraper_test
 
 import (
 	"github.com/reaper47/recipya/internal/models"
@@ -25,9 +25,7 @@ func TestScraper_U(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "Familie recepten, Brood en deeg, Noten recepten, Tomaat, Franse recepten, Italiaanse recepten, Kerst, Oud en nieuw, Pasen, Sinterklaas, Verjaardag, Oven, Vegetarische recepten, Herfst recepten, Lente recepten, Winter recepten, Zomer recepten, Borrelhapjes, Hoofdgerecht",
 				},
-				Image: models.Image{
-					Value: "https://uitpaulineskeuken.nl/wp-content/uploads/2023/09/Breekbrood-met-kaasfondue-2.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"bloem 50 + 450gr", "gist 7gr", "roomboter 100gr", "volle melk 200ml",
@@ -64,6 +62,7 @@ func TestScraper_U(t *testing.T) {
 				AtType:        models.SchemaType{Value: "Recipe"},
 				DatePublished: "2022-11-15T17:41:17+00:00",
 				Description:   models.Description{Value: "…"},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"pear scraps, peels, cores, and bruised bits",

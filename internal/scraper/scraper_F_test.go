@@ -1,4 +1,4 @@
-package scraper
+package scraper_test
 
 import (
 	"github.com/reaper47/recipya/internal/models"
@@ -19,9 +19,7 @@ func TestScraper_F(t *testing.T) {
 				Description: models.Description{
 					Value: "Who knew a recipe could get us all excited with just a word? Shakshuka is awfully fun to say, but even more fun when you realize how delicious it is. An easy way to make dinner out of a few Read on!",
 				},
-				Image: models.Image{
-					Value: "http://recipes.farmhousedelivery.com/wp-content/uploads/2020/04/no-blob_clean-handle.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 yellow onion, slivered",
@@ -59,9 +57,7 @@ func TestScraper_F(t *testing.T) {
 					Value: "The most delicious sourdough pretzel buns have a soft and fluffy interior with a deep brown exterior that tastes just like the soft pretzels you love.",
 				},
 				Keywords: models.Keywords{Values: "baking, bread, sourdough pretzel buns"},
-				Image: models.Image{
-					Value: "https://www.farmhouseonboone.com/wp-content/uploads/2023/11/sourdough-pretzel-buns-12-scaled-e1700074751305-720x720.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"½ cup sourdough starter, active and bubbly (113 grams)",
@@ -121,9 +117,7 @@ func TestScraper_F(t *testing.T) {
 				Description: models.Description{
 					Value: "La lasagna al pistacchio è una lasagna bianca gustosa, caratterizzata da un contrasto di sapori fantastico. Un piatto della domenica speciale!",
 				},
-				Image: models.Image{
-					Value: "https://www.fattoincasadabenedetta.it/wp-content/uploads/2021/05/sito-3-LASAGNA-AL-PISTACCHIO.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"pistacchi 150 g al naturale", "olio di semi di girasole 80 g",
@@ -163,9 +157,7 @@ func TestScraper_F(t *testing.T) {
 						"mashed avocados mixed with fresh lime juice, jalapeno, white onion, tomatoes, and cilantro.",
 				},
 				Keywords: models.Keywords{Values: "guacamole"},
-				Image: models.Image{
-					Value: "https://www.fifteenspatulas.com/wp-content/uploads/2013/06/Guacamole-Fifteen-Spatulas-8.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3 ripe avocados",
@@ -217,9 +209,7 @@ func TestScraper_F(t *testing.T) {
 				Description: models.Description{
 					Value: "Szechuan Chicken is a spicy, crispy chicken recipe from Sichuan Region in China: discover the original recipe and try to make it at home.",
 				},
-				Image: models.Image{
-					Value: "https://www.finedininglovers.com/sites/g/files/xknfdk626/files/2022-03/TP_SZECHUAN_CHICKEN_COM.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"Chicken",
@@ -295,9 +285,7 @@ func TestScraper_F(t *testing.T) {
 				DateModified:  "2023-05-16T19:59:35+00:00",
 				DatePublished: "2021-09-05T18:05:31+00:00",
 				Keywords:      models.Keywords{Values: "meal prep,meat,turkey"},
-				Image: models.Image{
-					Value: "https://fitmencook.com/wp-content/uploads/2021/09/Rosemary-Blue-Cheese-Turkey-Sliders-2.jpg",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"Meat",
@@ -352,6 +340,47 @@ func TestScraper_F(t *testing.T) {
 			},
 		},
 		{
+			name: "fitslowcookerqueen.com",
+			in:   "https://fitslowcookerqueen.com/easy-homemade-breakfast-sausage/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        models.SchemaType{Value: "Recipe"},
+				CookTime:      "PT10M",
+				DatePublished: "2022-07-15",
+				Image:         models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"1 pound ground pork", "1 teaspoon salt", "1/2 teaspoon ground sage",
+						"1/2 teaspoon black pepper", "1/4 teaspoon thyme", "1/4 teaspoon onion powder",
+						"1/4 teaspoon cayenne",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Combine all ingredients in a large mixing bowl. Divide the meat mixture into even portions and flatten into patties or form into links.",
+						"Add patties to the air fryer basket. Do not overlap. You may have to cook the sausage in batches depending on the size of your air fryer.",
+						"Cook 380 degrees for 12-15 minutes (see note below), flipping the sausage halfway through cooking. Make sure the internal temperature is at least 145 F.",
+					},
+				},
+				Name: "Air Fryer Homemade Breakfast Sausage ",
+				NutritionSchema: models.NutritionSchema{
+					Calories:      "150 calories",
+					Carbohydrates: "0.2 g",
+					Cholesterol:   "40.9 mg",
+					Fat:           "12.1 g",
+					Fiber:         "0.1 g",
+					Protein:       "9.6 g",
+					SaturatedFat:  "4.5 g",
+					Sodium:        "322.6 mg",
+					Sugar:         "0 g",
+					TransFat:      "0 g",
+				},
+				PrepTime: "PT5M",
+				Yield:    models.Yield{Value: 8},
+				URL:      "https://fitslowcookerqueen.com/easy-homemade-breakfast-sausage/",
+			},
+		},
+		{
 			name: "food.com",
 			in:   "https://www.food.com/recipe/jim-lahey-s-no-knead-pizza-margherita-382696",
 			want: models.RecipeSchema{
@@ -370,10 +399,7 @@ func TestScraper_F(t *testing.T) {
 					Values: "Cheese,Vegetable,European,Low Cholesterol,Healthy,Kid Friendly,Kosher,Broil/Grill,< 60 Mins," +
 						"Oven,Beginner Cook,Easy,Inexpensive",
 				},
-				Image: models.Image{
-					Value: "https://img.sndimg.com/food/image/upload/q_92,fl_progressive,w_1200,c_scale/v1/img/recipes/38/" +
-						"26/96/WW42zdf3SqiQ13mzb97U_0S9A9717.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"3  cups  all-purpose flour or 3  cups  bread flour, more for dusting",
@@ -447,11 +473,7 @@ func TestScraper_F(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "Onion, Kale, Goat Cheese, Butternut Squash, Sage, Milk/Cream, Nutmeg, Pasta, Fall",
 				},
-				Image: models.Image{
-					Value: "https://images.food52.com/DTUlTEnTqJKQiU_rOoW8NCh9Dhc=/1200x1200/" +
-						"7072c89a-4a7f-412b-b60e-f24d4fcdd1eb--2014-1014_orecchiette-with-roasted-" +
-						"butternut-squash-kale-carmelized-onion-012.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 large butternut squash, cut into small cubes, divided",
@@ -510,9 +532,7 @@ func TestScraper_F(t *testing.T) {
 				Description: models.Description{
 					Value: "For this sheet pan dinner, baby potatoes, red onion, and spring onions get a head start in a hot oven, before they are joined by a side of salmon, slathered with mustard and drizzled with toasted garlic oil, which cooks alongside the vegetables for a seamless final presentation. Sommelier Erin Miller, of Charlie Palmer&#39;s Dry Creek Kitchen in Healdsburg, California, who provided the inspiration for this dish, notes that it tastes even better when served with a great wine. She recommends a glass of Hirsch Vineyards Raschen Ridge Sonoma Coast Pinot Noir, noting, &#34;The bright acidity of the Hirsch Pinot Noir is a perfect foil for the fresh, fatty fish and flavors of garlic and lemon.&#34;",
 				},
-				Image: models.Image{
-					Value: "https://www.foodandwine.com/thmb/n_1_sUoINm5kjE771S6sKwU7Xw0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/sizzling-garlic-salmon-with-sheet-pan-potatoes-FT-RECIPE0422-eb5c9402ddd44d81aa471177c60bcfaa.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1.5 pounds baby yellow potatoes, halved lengthwise",
@@ -564,9 +584,7 @@ func TestScraper_F(t *testing.T) {
 				Description: models.Description{
 					Value: "Introduce the kids to salad with this one that's fun to assemble and eat.",
 				},
-				Image: models.Image{
-					Value: "https://d2vsf1hynzxim7.cloudfront.net/production/media/21756/conversions/foodnetwork-image-38d72f6a-8a49-46c2-a93e-39252efa8a7a-default.webp",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"For the dressing:", "1/2 cup low-fat Greek yogurt",
@@ -578,6 +596,17 @@ func TestScraper_F(t *testing.T) {
 						"1/2 cup red seedless grapes, halved",
 						"3 spring onions, whites and greens divided and chopped",
 						"8 hearts of romaine leaves",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Preheat the oven to 175°C.",
+						"For the dressing: Whisk together the yogurt, lemon juice, oil, vinegar, thyme, 1/2 teaspoon salt and 1/4 teaspoon pepper in a small bowl until combined; set aside.",
+						"For the salad: Spread the walnuts on a baking sheet, and toast until lightly browned and fragrant, 5 to 7 minutes. Let cool for 5 minutes, then break up into 1/4-inch pieces.",
+						"To assemble: Toss the walnuts, chicken, apples, grapes and scallion whites together with the dressing in a large bowl until everything is well coated; season with salt and pepper. Scoop a scant 1/2 cup of the salad into each romaine leaf, and arrange 2 on each serving plate. Garnish with the scallion greens, and serve.",
+						"Copyright 2015 Television Food Network, G.P. All rights reserved.",
+						"Note: Never leave a child unattended in the kitchen. Limit the child to tasks that are safe and age-appropriate.",
+						"From Food Network Kitchen",
 					},
 				},
 				Name:     "Waldorf Chicken Boats",
@@ -596,9 +625,7 @@ func TestScraper_F(t *testing.T) {
 				Description: models.Description{
 					Value: "When you don't have a meat grinder, but still want a nice, juicy burger, this recipe for a hand-cut burger has a trick you'll use over and over again.",
 				},
-				Image: models.Image{
-					Value: "https://www.foodrepublic.com/img/gallery/hand-cut-burger/intro-import.jpg",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				DateModified:  "2018-06-07T23:13:57+00:00",
 				DatePublished: "2018-06-08T15:00:40+00:00",
 				Ingredients: models.Ingredients{
@@ -648,9 +675,7 @@ func TestScraper_F(t *testing.T) {
 						"Dip. Note: The buffalo cauliflower bites will get softer once they are coated with " +
 						"the sauce, so hold off tossing until the very last minute",
 				},
-				Image: models.Image{
-					Value: "https://www.forksoverknives.com/uploads/FOK_Coliflower8384-WP.jpg?auto=webp",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"⅔ cup brown rice flour",
@@ -699,9 +724,7 @@ func TestScraper_F(t *testing.T) {
 					Value: "Air Fryer Blooming Onion Bites -- Step into a world of crispy, flavorful delight with our Air Fryer Blooming Onion Bites recipe!",
 				},
 				Keywords: models.Keywords{Values: "Air Fryer Blooming Onion Bites"},
-				Image: models.Image{
-					Value: "https://forktospoon.com/wp-content/uploads/2023/11/Air-Fryer-Blooming-Onion-Bites-1.png",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"12 ounces pearl onions (frozen)", "2 tablespoon olive oil",
@@ -748,9 +771,7 @@ func TestScraper_F(t *testing.T) {
 				DatePublished: "2022-03-09T15:14:09+02:00 ",
 				Description:   models.Description{Value: "Ein einfaches Rezept mit Schritt-für-Schritt-Fotos und vielen Tipps über das Thema: Navettes aus Marseille"},
 				Keywords:      models.Keywords{Values: "französisch,frankreich,Alte französische Rezepte,Einfachste Rezepte,In der Boulangerie,Kekse &amp; Plätzchen,Provence,Traditionelle Rezepte,Typisch französische Kuchen"},
-				Image: models.Image{
-					Value: "https://www.franzoesischkochen.de/wp-content/uploads/2022/03/navettes-aus-marseille.jpg",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 Ei",
@@ -788,7 +809,7 @@ func TestScraper_F(t *testing.T) {
 				DateModified:  "2023-01-07T09:01:57.000000Z",
 				DatePublished: "2020-08-27T17:18:00.000000Z",
 				Description:   models.Description{Value: "Godaste äppelpajen"},
-				Image:         models.Image{Value: "uploads/sites/87/2020/08/knackig-appelpaj-rakram-4.jpg"},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"5-6 äpplen som har fast fruktkött", "2 tsk kanel", "2 msk strösocker",

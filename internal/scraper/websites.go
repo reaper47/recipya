@@ -15,6 +15,10 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		switch host {
 		case "afghankitchenrecipes":
 			return scrapeAfghanKitchen(doc)
+		case "ah":
+			return scrapeAh(doc)
+		case "argiro":
+			return scrapeArgiro(doc)
 		case "archanaskitchen":
 			return scrapeArchanasKitchen(doc)
 		default:
@@ -30,6 +34,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeBettyCrocker(doc)
 		case "blueapron":
 			return scrapeBlueapron(doc)
+		case "brianlagerstrom":
+			return scrapeBrianLagerstrom(doc)
 		case "briceletbaklava":
 			return scrapeBriceletbaklava(doc)
 		case "bodybuilding":
@@ -78,6 +84,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeFarmhousedelivery(doc)
 		case "fitmencook":
 			return scrapeFitMenCook(doc)
+		case "foodnetwork":
+			return scrapeFoodNetwork(doc)
 		case "foodrepublic":
 			return scrapeFoodRepublic(doc)
 		case "forksoverknives":
@@ -108,6 +116,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		switch host {
 		case "halfbakedharvest":
 			return scrapeHalfBakedHarvest(doc)
+		case "heatherchristo":
+			return scrapeHeatherChristo(doc)
 		case "homechef":
 			return scrapeHomechef(doc)
 		default:
@@ -148,17 +158,25 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeLatelierderoxane(doc)
 		case "lekkerensimpel":
 			return scrapeLekkerenSimpel(doc)
+		case "livingthegreenlife":
+			return scrapeLivingTheGreenLife(doc)
 		default:
 			return parseWebsite(doc)
 		}
 	case 'm':
 		switch host {
+		case "maangchi":
+			return scrapeMaangchi(doc)
 		case "meljoulwan":
 			return scrapeMeljoulwan(doc)
 		case "mindmegette":
 			return scrapeMindMegette(doc)
-		case "monsieur-cuisine":
-			return scrapeMonsieurCuisine(doc)
+		/*case "monsieur-cuisine":
+		return scrapeMonsieurCuisine(doc)*/
+		case "moulinex":
+			return scrapeMoulinex(doc)
+		case "mundodereceitasbimby":
+			return scrapeMundodereceitasbimby(doc)
 		case "myplate":
 			return scrapeMyPlate(doc)
 		default:
@@ -184,6 +202,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapePanelinha(doc)
 		case "paninihappy":
 			return scrapePaniniHappy(doc)
+		case "ploetzblog":
+			return scrapePloetzblog(doc)
 		case "projectgezond":
 			return scrapeProjectgezond(doc)
 		case "przepisy":
@@ -229,6 +249,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeTastyKitchen(doc)
 		case "tesco":
 			return scrapeTesco(doc)
+		case "thecookingguy":
+			return scrapeTheCookingGuy(doc)
 		case "thehappyfoodie":
 			return scrapeTheHappyFoodie(doc)
 		default:
@@ -276,6 +298,10 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return parseWebsite(doc)
 		}
 	default:
+		switch host {
+		case "15gram":
+			return scrape15gram(doc)
+		}
 		return parseWebsite(doc)
 	}
 	return models.RecipeSchema{}, ErrNotImplemented

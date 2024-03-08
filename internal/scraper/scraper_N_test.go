@@ -1,4 +1,4 @@
-package scraper
+package scraper_test
 
 import (
 	"github.com/reaper47/recipya/internal/models"
@@ -19,9 +19,7 @@ func TestScraper_N(t *testing.T) {
 					Value: "These Vegan Dirt and Worm Brownies are a labour of love but well worth the effort for a deliciously show stopping Halloween dessert. Packed full of healthier, nutritious ingredients to conventional brownies, and naturally gluten and grain-free they'll be perfect for most dietary requirements.",
 				},
 				Keywords: models.Keywords{Values: "BN800UK, DT200UK, Halloween, Vegan"},
-				Image: models.Image{
-					Value: "https://sharkninja-cookingcircle.s3.eu-west-1.amazonaws.com/wp-content/uploads/2023/10/25152344/vegan-dirt-and-worm-brownies-landscape-2.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"2 tbsp milled flax or chia",
@@ -95,9 +93,7 @@ func TestScraper_N(t *testing.T) {
 					Value: "Rich and fudgy gluten-free tahini brownies that just happen to be also be grain-free and nut-free! " +
 						"These tahini brownies make for the perfect healthier chocolate dessert!",
 				},
-				Image: models.Image{
-					Value: "https://nourishedbynutrition.com/wp-content/uploads/2022/02/Fudgy-Tahini-Brownies-5-of-7.jpg",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"1 cup tahini",
@@ -145,9 +141,7 @@ func TestScraper_N(t *testing.T) {
 				Keywords: models.Keywords{
 					Values: "buli receptek, ebéd, vacsora, ovo-lakto vegetáriánus, lakto vegetáriánus, ovo vegetáriánus, vegetáriánus, tejmentes, tojásmentes, laktózmentes, vegán, Finomliszt, Élesztő, Víz, Cukor, Finomliszt, Olívaolaj, Só, közepes, gyors",
 				},
-				Image: models.Image{
-					Value: "https://image-api.nosalty.hu/nosalty/images/recipes/Fu/LX/kelt-pizzateszta.jpeg?w=1200&h=1200&s=03aa8d4022be858c546ff4c3e3ff9940",
-				},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"500 g Finomliszt", "3 dkg Élesztő",
@@ -198,7 +192,7 @@ func TestScraper_N(t *testing.T) {
 					Value: "Tamagoyaki er japansk rullet omelett. Den serveres oftest som smakfull siderett eller til frokost. Den lages ved å brette sammen tynne lag med krydret egg.",
 				},
 				Keywords: models.Keywords{Values: "Panne/wok, Egg"},
-				Image:    models.Image{Value: "https://gfx.nrk.no/tee1ZBan6v5rMrE39aNuygfHQ2NxNeZmFNctrASNIgbg.jpg"},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"8 egg", "30 g sukker", "1 ss mirin", "1 ss sake", "180 ml bonito dashi",
@@ -231,9 +225,7 @@ func TestScraper_N(t *testing.T) {
 				Cuisine:       models.Cuisine{Value: "American"},
 				DatePublished: "2023-10-15T10:46:53+00:00",
 				Keywords:      models.Keywords{Values: "Pumpkin Alfredo"},
-				Image: models.Image{
-					Value: "https://www.number-2-pencil.com/wp-content/uploads/2023/10/One-Pot-Pumpkin-Alfredo-3.jpg",
-				},
+				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"4 tablespoons butter", "2 cloves garlic (minced)",
@@ -281,7 +273,7 @@ func TestScraper_N(t *testing.T) {
 				Description: models.Description{
 					Value: "This Cinnamon Roll Oatmeal is a naturally sweet and delicious way to start your day. It’s a date-sweetened oatmeal paired with a creamy cashew drizzle that makes for a fancy, yet simple breakfast. Less than 3 percent of Americans meet the daily recommended fiber intake, despite research suggesting that high-fiber foods, such as whole grains, can affect the progression of coronary heart disease. The soluble fiber of oatmeal forms a gel in the stomach, delaying stomach emptying, making one feel full for a longer period.",
 				},
-				Image: models.Image{Value: "https://nutritionfacts.org/app/uploads/2023/09/cinnamon-roll-oats.jpg"},
+				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"4 cups water", "8 pitted dates", "2 teaspoons cinnamon",
@@ -317,9 +309,7 @@ func TestScraper_N(t *testing.T) {
 						"(Parmesan is a delicious, but optional, addition).",
 				},
 				Keywords: models.Keywords{Values: "egg, spaghetti, fall, vegetarian"},
-				Image: models.Image{
-					Value: "https://static01.nyt.com/images/2021/03/22/dining/spaghetti-with-fried-eggs/spaghetti-with-fried-eggs-square640.jpg",
-				},
+				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"Salt",

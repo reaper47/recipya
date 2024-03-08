@@ -598,15 +598,6 @@ func (s *Server) recipesAddOCRHandler() http.HandlerFunc {
 	}
 }
 
-func (s *Server) recipesAddRequestWebsiteHandler() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("[info] Website Request: Please support %s", r.FormValue("website"))
-		w.Header().Set("HX-Redirect", "/recipes/add")
-		w.Header().Set("HX-Trigger", models.NewInfoToast("I love chicken", "", "").Render())
-		http.Redirect(w, r, "/recipes/add", http.StatusSeeOther)
-	}
-}
-
 func (s *Server) recipesAddWebsiteHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		userID := getUserID(r)
