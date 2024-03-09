@@ -44,6 +44,10 @@ type RepositoryService interface {
 	// Categories gets all categories in the database.
 	Categories(userID int64) ([]string, error)
 
+	// CheckUpdate checks whether there is a new release for Recipya.
+	// It returns the latest information on the application.
+	CheckUpdate() (models.AppInfo, error)
+
 	// Confirm confirms the user's account.
 	Confirm(userID int64) error
 

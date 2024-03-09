@@ -3,6 +3,7 @@ package app
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/blang/semver"
 	"io"
 	"net"
 	"net/url"
@@ -11,11 +12,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
-)
-
-const (
-	Version        = "1.1.0" // Version represents the current version of the application.
-	configFileName = "config.json"
+	"time"
 )
 
 var (
@@ -23,10 +20,26 @@ var (
 	DBBasePath string // DBBasePath is the directory where the database files are stored.
 	ImagesDir  string // ImagesDir is the directory where user images are stored.
 
+	Info = GeneralInfo{
+		Version: semver.Version{
+			Major: 1,
+			Minor: 1,
+			Patch: 0,
+		},
+	}
+
 	FdcDB     = "fdc.db"     // FdcDB is the name of the FDC database.
 	RecipyaDB = "recipya.db" // RecipyaDB is the name of Recipya's main database.
 
 )
+
+// GeneralInfo holds information on the application.
+type GeneralInfo struct {
+	IsUpdateAvailable   bool
+	LastCheckedUpdateAt time.Time
+	LastUpdatedAt       time.Time
+	Version             semver.Version
+}
 
 // Config references a global ConfigFile.
 var Config ConfigFile
@@ -160,7 +173,7 @@ func Init() {
 
 	setup(dir)
 
-	f, err := os.Open(filepath.Join(dir, configFileName))
+	f, err := os.Open(filepath.Join(dir, "config.json"))
 	if err != nil {
 		NewConfig(nil)
 	} else {

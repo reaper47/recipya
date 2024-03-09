@@ -110,6 +110,10 @@ func TestHandlers_General_Index(t *testing.T) {
 		notWant := []string{`A powerful recipe manager that will blow your kitchen away`, `href="/auth/login"`}
 		assertStringsNotInHTML(t, got, notWant)
 	})
+
+	t.Run("application update available", func(t *testing.T) {
+		t.Fail()
+	})
 }
 
 func TestHandlers_General_NotFound(t *testing.T) {

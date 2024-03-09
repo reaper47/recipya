@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/google/uuid"
+	selfupdater "github.com/mJehanno/ghr-self-updater"
 	"github.com/pressly/goose/v3"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/auth"
@@ -397,6 +398,22 @@ func (s *SQLiteService) AddShareLink(share models.Share) (string, error) {
 	return link, err
 }
 
+// AppInfo gets general information on the application.
+func (s *SQLiteService) AppInfo() (models.AppInfo, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	var (
+		ai              models.AppInfo
+		updateAvailable int64
+	)
+
+	err := s.DB.QueryRowContext(ctx, statements.SelectAppInfo).Scan(&updateAvailable, &ai.LastUpdatedAt, &ai.LastCheckedUpdateAt)
+
+	ai.IsUpdateAvailable = updateAvailable == 1
+	return ai, err
+}
+
 // CalculateNutrition calculates the nutrition facts for the recipes.
 // It is best to in the background because it takes a while per recipe.
 func (s *SQLiteService) CalculateNutrition(userID int64, recipes []int64, settings models.UserSettings) {
@@ -469,6 +486,31 @@ func (s *SQLiteService) Categories(userID int64) ([]string, error) {
 	}
 
 	return categories, nil
+}
+
+// CheckUpdate checks whether there is a new release for Recipya.
+func (s *SQLiteService) CheckUpdate() (models.AppInfo, error) {
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	updater := selfupdater.New("reaper47", "recipya", app.Info.Version, selfupdater.WithContext(ctx))
+
+	isLatest, err := updater.CheckLatest()
+	if err != nil {
+		return models.AppInfo{}, err
+	}
+
+	latest := 1
+	if !isLatest {
+		latest = 0
+	}
+
+	ai := models.AppInfo{IsUpdateAvailable: isLatest}
+	err = s.DB.QueryRowContext(ctx, statements.UpdateIsUpdateAvailable, latest).Scan(&ai.LastUpdatedAt, &ai.LastCheckedUpdateAt)
+	return ai, err
 }
 
 // Confirm confirms the user's account.

@@ -65,11 +65,11 @@ func (m *mockRepository) AddReport(report models.Report, userID int64) {
 	m.Reports[userID] = append(m.Reports[userID], report)
 }
 
-func (m *mockRepository) CookbooksShared(userID int64) ([]models.Share, error) {
+func (m *mockRepository) CookbooksShared(_ int64) ([]models.Share, error) {
 	return make([]models.Share, 0), nil
 }
 
-func (m *mockRepository) CookbooksUser(userID int64) ([]models.Cookbook, error) {
+func (m *mockRepository) CookbooksUser(_ int64) ([]models.Cookbook, error) {
 	return make([]models.Cookbook, 0), nil
 }
 
@@ -196,6 +196,17 @@ func (m *mockRepository) CalculateNutrition(_ int64, _ []int64, _ models.UserSet
 
 func (m *mockRepository) Categories(_ int64) ([]string, error) {
 	return []string{"breakfast", "lunch", "dinner"}, nil
+}
+
+func (m *mockRepository) CheckUpdate() (models.AppInfo, error) {
+	lastCheckedAt, _ := time.Parse(time.DateTime, "2021-06-18 20:30:05")
+	lastUpdatedAt, _ := time.Parse(time.DateTime, "2021-02-24 15:04:05")
+
+	return models.AppInfo{
+		IsUpdateAvailable:   false,
+		LastUpdatedAt:       lastUpdatedAt,
+		LastCheckedUpdateAt: lastCheckedAt,
+	}, nil
 }
 
 func (m *mockRepository) Confirm(userID int64) error {
@@ -863,7 +874,7 @@ func (m *mockFiles) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
 	return uuid.New(), nil
 }
 
-func (m *mockFiles) ScrapeAndStoreImage(rawURL string) (uuid.UUID, error) {
+func (m *mockFiles) ScrapeAndStoreImage(_ string) (uuid.UUID, error) {
 	return uuid.New(), nil
 }
 

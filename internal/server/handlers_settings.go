@@ -31,9 +31,7 @@ func (s *Server) settingsHandler() http.HandlerFunc {
 		}
 
 		_ = components.Settings(templates.Data{
-			About: templates.AboutData{
-				Version: app.Version,
-			},
+			About:           templates.NewAboutData(),
 			IsAdmin:         getUserID(r) == 1,
 			IsAutologin:     app.Config.Server.IsAutologin,
 			IsAuthenticated: true,

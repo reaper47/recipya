@@ -97,3 +97,10 @@ const UpdateUserSettingsCookbooksViewMode = `
 	UPDATE user_settings
 	SET cookbooks_view = ?
 	WHERE user_id = ?`
+
+// UpdateIsUpdateAvailable is the query to flag whether a release update is available.
+const UpdateIsUpdateAvailable = `
+	UPDATE app
+	SET is_update_available = ?
+	WHERE id = 1
+	RETURNING updated_at, update_last_checked_at`

@@ -10,7 +10,7 @@ templ HomePage(data templates.Data) {
 	}
 }
 
-templ aboutDialog(version string) {
+templ aboutDialog(data templates.AboutData) {
 	<dialog id="about_dialog" class="modal">
 		<div class="modal-box">
 			<div class="overflow-x-auto">
@@ -22,7 +22,7 @@ templ aboutDialog(version string) {
 						</tr>
 						<tr>
 							<th scope="row" class="text-right">Version:</th>
-							<td>{ version }</td>
+							<td>{ data.Version.String() }</td>
 						</tr>
 						<tr>
 							<th scope="row" class="text-right">Guide:</th>
