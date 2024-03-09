@@ -503,13 +503,13 @@ func (s *SQLiteService) CheckUpdate() (models.AppInfo, error) {
 		return models.AppInfo{}, err
 	}
 
-	latest := 1
+	updateAvailable := 0
 	if !isLatest {
-		latest = 0
+		updateAvailable = 1
 	}
 
-	ai := models.AppInfo{IsUpdateAvailable: isLatest}
-	err = s.DB.QueryRowContext(ctx, statements.UpdateIsUpdateAvailable, latest).Scan(&ai.LastUpdatedAt, &ai.LastCheckedUpdateAt)
+	ai := models.AppInfo{IsUpdateAvailable: !isLatest}
+	err = s.DB.QueryRowContext(ctx, statements.UpdateIsUpdateAvailable, updateAvailable).Scan(&ai.LastUpdatedAt, &ai.LastCheckedUpdateAt)
 	return ai, err
 }
 
