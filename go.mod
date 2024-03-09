@@ -5,6 +5,7 @@ go 1.22.0
 require (
 	github.com/PuerkitoBio/goquery v1.9.1
 	github.com/a-h/templ v0.2.598
+	github.com/blang/semver v3.5.1+incompatible
 	github.com/briandowns/spinner v1.23.0
 	github.com/disintegration/imaging v1.6.2
 	github.com/donna-legal/word2number v0.0.0-20180823152447-90bc2b233105
@@ -16,6 +17,7 @@ require (
 	github.com/gorilla/websocket v1.5.1
 	github.com/jdkato/prose/v2 v2.0.0
 	github.com/jung-kurt/gofpdf v1.16.2
+	github.com/mJehanno/ghr-self-updater v1.0.1
 	github.com/neurosnap/sentences v1.1.2
 	github.com/pressly/goose/v3 v3.18.0
 	github.com/sendgrid/sendgrid-go v3.14.0+incompatible
@@ -30,8 +32,6 @@ require (
 require (
 	github.com/andybalholm/brotli v1.1.0 // indirect
 	github.com/andybalholm/cascadia v1.3.2 // indirect
-	github.com/blang/semver v3.5.1+incompatible // indirect
-	github.com/blang/semver/v4 v4.0.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.3 // indirect
 	github.com/deckarep/golang-set v1.8.0 // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.2.0 // indirect
@@ -49,7 +49,6 @@ require (
 	github.com/lestrrat-go/iter v1.0.2 // indirect
 	github.com/lestrrat-go/jwx/v2 v2.0.21 // indirect
 	github.com/lestrrat-go/option v1.0.1 // indirect
-	github.com/mJehanno/ghr-self-updater v1.0.1 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect

@@ -2,6 +2,7 @@ package templates
 
 import (
 	"fmt"
+	"github.com/blang/semver"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
@@ -41,7 +42,7 @@ func NewAboutData() AboutData {
 		IsUpdateAvailable:   app.Info.IsUpdateAvailable,
 		LastCheckedUpdateAt: app.Info.LastCheckedUpdateAt,
 		LastUpdatedAt:       app.Info.LastUpdatedAt,
-		Version:             app.Info.Version.String(),
+		Version:             app.Info.Version,
 	}
 }
 
@@ -50,7 +51,7 @@ type AboutData struct {
 	IsUpdateAvailable   bool
 	LastCheckedUpdateAt time.Time
 	LastUpdatedAt       time.Time
-	Version             string
+	Version             semver.Version
 }
 
 // AdminData holds data for the admin page.

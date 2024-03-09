@@ -84,7 +84,11 @@ templ layoutMain(title string, data templates.Data) {
 				</div>
 				<div class="navbar-end">
 					if data.IsAuthenticated {
-						<div class="dropdown dropdown-end" hx-get="/user-initials" hx-trigger="load" hx-target="#user-initials">
+						<div class={ "dropdown dropdown-end", templ.KV("indicator", data.About.IsUpdateAvailable) }
+						    hx-get="/user-initials" hx-trigger="load" hx-target="#user-initials">
+							if data.About.IsUpdateAvailable {
+							<span class="indicator-item badge badge-secondary"></span>
+							}
 							<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar placeholder">
 								<div class="bg-neutral text-neutral-content w-10 rounded-full">
 									<span id="user-initials">A</span>

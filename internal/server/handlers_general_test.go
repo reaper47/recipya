@@ -112,7 +112,18 @@ func TestHandlers_General_Index(t *testing.T) {
 	})
 
 	t.Run("application update available", func(t *testing.T) {
-		t.Fail()
+		app.Info.IsUpdateAvailable = true
+		defer func() {
+			app.Info.IsUpdateAvailable = false
+		}()
+
+		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		assertStringsInHTML(t, getBodyHTML(rr), []string{
+			`<div class="dropdown dropdown-end indicator"`,
+			`<span class="indicator-item badge badge-secondary"></span>`,
+		})
 	})
 }
 
