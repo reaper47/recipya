@@ -12,6 +12,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
@@ -54,7 +55,7 @@ func Update(current semver.Version) error {
 
 	// Find asset
 	name := fmt.Sprintf("recipya-%s-%s", runtime.GOOS, runtime.GOARCH)
-	i := slices.IndexFunc(rel.Assets, func(asset *github.ReleaseAsset) bool { return *asset.Name == name })
+	i := slices.IndexFunc(rel.Assets, func(asset *github.ReleaseAsset) bool { return *asset.Name == name+".zip" })
 	if i == -1 {
 		return fmt.Errorf("could not find asset %q", name)
 	}
@@ -82,6 +83,44 @@ func Update(current semver.Version) error {
 
 	err = unzip(rc, tempDir)
 	if err != nil {
+		return err
+	}
+
+	// Install
+	exe, err := os.Executable()
+	if err != nil {
+		return err
+	}
+
+	err = os.Rename(exe, exe+"-old")
+	if err != nil {
+		return err
+	}
+
+	err = os.Rename(filepath.Join(tempDir, name), exe)
+	if err != nil {
+		return err
+	}
+
+	if runtime.GOOS == "linux" {
+		err = os.Chmod(exe, 0775)
+		if err != nil {
+			return err
+		}
+	}
+
+	err = exec.Command(exe, "serve").Run()
+	if err != nil {
+		err1 := os.Remove(exe)
+		if err != nil {
+			return errors.Join(err, err1)
+		}
+
+		err1 = os.Rename(exe+"-old", exe)
+		if err != nil {
+			return errors.Join(err, err1)
+		}
+
 		return err
 	}
 

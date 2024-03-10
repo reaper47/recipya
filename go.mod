@@ -13,16 +13,17 @@ require (
 	github.com/go-chi/jwtauth/v5 v5.3.1
 	github.com/go-co-op/gocron v1.37.0
 	github.com/google/go-cmp v0.6.0
+	github.com/google/go-github/v59 v59.0.1-0.20240217151021-73422173c633
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.1
 	github.com/jdkato/prose/v2 v2.0.0
 	github.com/jung-kurt/gofpdf v1.16.2
-	github.com/mJehanno/ghr-self-updater v1.0.1
 	github.com/neurosnap/sentences v1.1.2
 	github.com/pressly/goose/v3 v3.18.0
 	github.com/sendgrid/sendgrid-go v3.14.0+incompatible
 	github.com/urfave/cli/v2 v2.27.1
 	golang.org/x/crypto v0.21.0
+	golang.org/x/exp v0.0.0-20231108232855-2478ac86f678
 	golang.org/x/net v0.22.0
 	golang.org/x/text v0.14.0
 	jaytaylor.com/html2text v0.0.0-20230321000545-74c2419ad056
@@ -39,7 +40,6 @@ require (
 	github.com/fatih/color v1.16.0 // indirect
 	github.com/go-chi/chi/v5 v5.0.11 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
-	github.com/google/go-github/v59 v59.0.1-0.20240217151021-73422173c633 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/hashicorp/golang-lru/v2 v2.0.7 // indirect
 	github.com/labstack/gommon v0.4.2 // indirect
