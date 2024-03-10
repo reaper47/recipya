@@ -80,6 +80,7 @@ func (s *Server) mountHandlers() {
 	mux.HandleFunc("GET /{$}", s.indexHandler)
 	mux.Handle("GET /download/{tmpFile}", s.mustBeLoggedInMiddleware(s.downloadHandler()))
 	mux.Handle("GET /user-initials", s.mustBeLoggedInMiddleware(s.userInitialsHandler()))
+	mux.Handle("GET /update", s.mustBeLoggedInMiddleware(s.updateHandler()))
 	mux.Handle("GET /ws", s.mustBeLoggedInMiddleware(s.wsHandler()))
 
 	// Admin routes

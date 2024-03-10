@@ -140,6 +140,28 @@ func TestHandlers_General_NotFound(t *testing.T) {
 	assertStringsInHTML(t, getBodyHTML(rr), want)
 }
 
+func TestHandlers_General_Update(t *testing.T) {
+	srv := newServerTest()
+
+	const uri = "/update"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
+	})
+
+	t.Run("error checcking update", func(t *testing.T) {
+		t.Fail()
+	})
+
+	t.Run("no update available", func(t *testing.T) {
+		t.Fail()
+	})
+
+	t.Run("update available", func(t *testing.T) {
+		t.Fail()
+	})
+}
+
 func TestHandlers_General_UserInitials(t *testing.T) {
 	srv := newServerTest()
 	srv.Repository = &mockRepository{

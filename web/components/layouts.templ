@@ -92,7 +92,7 @@ templ layoutMain(title string, data templates.Data) {
 						>
 							<div tabindex="0" role="button" class={ "btn btn-ghost btn-circle avatar placeholder", templ.KV("indicator", data.About.IsUpdateAvailable) }>
 								if data.About.IsUpdateAvailable {
-									<span class="indicator-item indicator-start badge badge-xs badge-secondary">New update</span>
+									<span class="indicator-item indicator-start badge badge-sm badge-secondary z-30">New update</span>
 								}
 								<div class="bg-neutral text-neutral-content w-10 rounded-full">
 									<span id="user-initials">A</span>
@@ -125,8 +125,11 @@ templ layoutMain(title string, data templates.Data) {
 									</a>
 								</li>
 								<div class="divider m-0"></div>
-								<li onclick="about_dialog.showModal()">
+								<li onclick="about_dialog.showModal()" class={ templ.KV("indicator", data.About.IsUpdateAvailable) }>
 									<a>
+										if data.About.IsUpdateAvailable {
+											<span class="indicator-item badge badge-xs badge-secondary"></span>
+										}
 										@iconHelp()
 										About
 									</a>

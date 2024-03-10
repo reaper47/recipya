@@ -496,7 +496,7 @@ func (s *SQLiteService) CheckUpdate() (models.AppInfo, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
-	updater := selfupdater.New("reaper47", "recipya", app.Info.Version, selfupdater.WithContext(ctx))
+	updater := selfupdater.New("reaper47", "recipya", app.Info.Version)
 
 	isLatest, err := updater.CheckLatest()
 	if err != nil {
@@ -508,7 +508,7 @@ func (s *SQLiteService) CheckUpdate() (models.AppInfo, error) {
 		updateAvailable = 1
 	}
 
-	ai := models.AppInfo{IsUpdateAvailable: !isLatest}
+	ai := models.AppInfo{IsUpdateAvailable: !isLatest, Updater: updater}
 	err = s.DB.QueryRowContext(ctx, statements.UpdateIsUpdateAvailable, updateAvailable).Scan(&ai.LastUpdatedAt, &ai.LastCheckedUpdateAt)
 	return ai, err
 }

@@ -5,6 +5,7 @@ import (
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/web/components"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -53,6 +54,28 @@ func notFoundHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) userInitialsHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		_, _ = w.Write([]byte(s.Repository.UserInitials(getUserID(r))))
+	}
+}
+
+func (s *Server) updateHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		info, err := s.Repository.CheckUpdate()
+		if err != nil || info.Updater == nil {
+			w.Header().Set("HX-Trigger", models.NewWarningToast("", "No update available.", "").Render())
+			return
+		}
+
+		err = info.Updater.Update()
+		if err != nil {
+			log.Printf("Error updating application: %q", err)
+			w.Header().Set("HX-Trigger", models.NewErrorGeneralToast("Failed to update.").Render())
+			return
+		}
+
+		//exec.Command("", os.Args[1:]...)
+
+		w.Header().Set("HX-Redirect", "/")
+		_, _ = w.Write([]byte("update"))
 	}
 }
 
