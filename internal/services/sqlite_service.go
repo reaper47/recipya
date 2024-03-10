@@ -7,13 +7,13 @@ import (
 	"errors"
 	"fmt"
 	"github.com/google/uuid"
-	selfupdater "github.com/mJehanno/ghr-self-updater"
 	"github.com/pressly/goose/v3"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services/statements"
 	"github.com/reaper47/recipya/internal/units"
+	"github.com/reaper47/recipya/internal/updater"
 	"io"
 	"log"
 	_ "modernc.org/sqlite" // Blank import to initialize the SQL driver.
@@ -496,9 +496,7 @@ func (s *SQLiteService) CheckUpdate() (models.AppInfo, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
-	updater := selfupdater.New("reaper47", "recipya", app.Info.Version)
-
-	isLatest, err := updater.CheckLatest()
+	isLatest, _, err := updater.IsLatest(app.Info.Version)
 	if err != nil {
 		return models.AppInfo{}, err
 	}
@@ -508,7 +506,7 @@ func (s *SQLiteService) CheckUpdate() (models.AppInfo, error) {
 		updateAvailable = 1
 	}
 
-	ai := models.AppInfo{IsUpdateAvailable: !isLatest, Updater: updater}
+	ai := models.AppInfo{IsUpdateAvailable: !isLatest}
 	err = s.DB.QueryRowContext(ctx, statements.UpdateIsUpdateAvailable, updateAvailable).Scan(&ai.LastUpdatedAt, &ai.LastCheckedUpdateAt)
 	return ai, err
 }

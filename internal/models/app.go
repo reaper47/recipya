@@ -1,7 +1,6 @@
 package models
 
 import (
-	selfupdater "github.com/mJehanno/ghr-self-updater"
 	"time"
 )
 
@@ -10,5 +9,4 @@ type AppInfo struct {
 	IsUpdateAvailable   bool
 	LastUpdatedAt       time.Time
 	LastCheckedUpdateAt time.Time
-	Updater             *selfupdater.Updater
 }

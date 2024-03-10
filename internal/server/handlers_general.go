@@ -4,6 +4,7 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/updater"
 	"github.com/reaper47/recipya/web/components"
 	"log"
 	"net/http"
@@ -59,13 +60,7 @@ func (s *Server) userInitialsHandler() http.HandlerFunc {
 
 func (s *Server) updateHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		info, err := s.Repository.CheckUpdate()
-		if err != nil || info.Updater == nil {
-			w.Header().Set("HX-Trigger", models.NewWarningToast("", "No update available.", "").Render())
-			return
-		}
-
-		err = info.Updater.Update()
+		err := updater.Update(app.Info.Version)
 		if err != nil {
 			log.Printf("Error updating application: %q", err)
 			w.Header().Set("HX-Trigger", models.NewErrorGeneralToast("Failed to update.").Render())
