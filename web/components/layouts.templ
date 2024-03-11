@@ -412,6 +412,10 @@ templ toast() {
         htmx.on('showToast', function (event) {
             const {title, message, background, action} = JSON.parse(event.detail.value);
             showToast(title, message, background, action);
+
+            if (title == "Software updated") {
+                setTimeout(() => window.location.reload(1), 6000);
+            }
         });
 
         function showToast(title, message, background, action) {

@@ -1,6 +1,7 @@
 package server
 
 import (
+	"errors"
 	"github.com/gorilla/websocket"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
@@ -8,7 +9,12 @@ import (
 	"github.com/reaper47/recipya/web/components"
 	"log"
 	"net/http"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"runtime"
 	"strconv"
+	"time"
 )
 
 var upgrader = websocket.Upgrader{
@@ -61,16 +67,59 @@ func (s *Server) userInitialsHandler() http.HandlerFunc {
 func (s *Server) updateHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		err := updater.Update(app.Info.Version)
-		if err != nil {
+		if errors.Is(err, updater.ErrNoUpdate) {
+			w.Header().Set("HX-Trigger", models.NewWarningToast("", "No update available.", "").Render())
+			return
+		} else if err != nil {
 			log.Printf("Error updating application: %q", err)
 			w.Header().Set("HX-Trigger", models.NewErrorGeneralToast("Failed to update.").Render())
 			return
 		}
 
-		//exec.Command("", os.Args[1:]...)
+		w.Header().Set("HX-Trigger", models.NewInfoToast("Software updated", "Application will reload in 5 seconds.", "").Render())
+		w.WriteHeader(http.StatusNoContent)
 
-		w.Header().Set("HX-Redirect", "/")
-		_, _ = w.Write([]byte("update"))
+		go func() {
+			log.Println("Application will restart and data backed up.")
+
+			err = s.Files.BackupGlobal()
+			if err != nil {
+				log.Printf("Error backing up global data: %q", err)
+				return
+			}
+
+			f, err := os.Create("sessions.csv")
+			if err != nil {
+				log.Fatal(err)
+			}
+			defer f.Close()
+			SessionData.Save(f)
+
+			exe, err := os.Executable()
+			if err != nil {
+				log.Printf("Error updating application: %q", err)
+				return
+			}
+
+			if runtime.GOOS == "windows" {
+				err = exec.Command(filepath.Join(filepath.Dir(exe), "updater.exe")).Start()
+				if err != nil {
+					log.Printf("Error starting application: %q", err)
+					return
+				}
+
+				log.Println("Started updater.exe. As you are on Windows, the running program can be found under Task Manager -> Details -> recipya.exe")
+			} else {
+				err = exec.Command(exe).Start()
+				if err != nil {
+					log.Printf("Error starting application: %q", err)
+					return
+				}
+			}
+
+			time.Sleep(250 * time.Millisecond)
+			os.Exit(0)
+		}()
 	}
 }
 

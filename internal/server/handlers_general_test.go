@@ -149,7 +149,7 @@ func TestHandlers_General_Update(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
 	})
 
-	t.Run("error checcking update", func(t *testing.T) {
+	t.Run("error checking update", func(t *testing.T) {
 		t.Fail()
 	})
 

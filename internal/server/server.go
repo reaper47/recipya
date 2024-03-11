@@ -14,6 +14,7 @@ import (
 	_ "github.com/reaper47/recipya/internal/templates" // Need to initialize the templates package.
 	"github.com/reaper47/recipya/web/static"
 	"io/fs"
+	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -50,6 +51,19 @@ func NewServer(
 		Scraper:      scraper,
 	}
 	srv.mountHandlers()
+
+	exe, err := os.Executable()
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	f, err := os.Open(filepath.Join(filepath.Dir(exe), "sessions.csv"))
+	if err == nil {
+		SessionData.Load(f)
+		_ = f.Close()
+		os.Remove(f.Name())
+	}
+
 	return srv
 }
 

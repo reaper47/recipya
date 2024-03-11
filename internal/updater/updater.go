@@ -2,7 +2,6 @@ package updater
 
 import (
 	"archive/zip"
-	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -12,13 +11,16 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
 	"time"
 )
 
+// ErrNoUpdate is the error for when no update is available.
+var ErrNoUpdate = errors.New("already latest version")
+
+// IsLatest checks whether there is a software update.
 func IsLatest(current semver.Version) (bool, *github.RepositoryRelease, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
@@ -42,6 +44,7 @@ func IsLatest(current semver.Version) (bool, *github.RepositoryRelease, error) {
 	return version.LTE(current), rel, nil
 }
 
+// Update updates the application to the latest version.
 func Update(current semver.Version) error {
 	// Check if latest
 	isLatest, rel, err := IsLatest(current)
@@ -50,7 +53,7 @@ func Update(current semver.Version) error {
 	}
 
 	if isLatest {
-		return errors.New("already latest version")
+		return ErrNoUpdate
 	}
 
 	// Find asset
@@ -73,6 +76,21 @@ func Update(current semver.Version) error {
 		_ = rc.Close()
 	}()
 
+	f, err := os.CreateTemp("", "*")
+	if err != nil {
+		return err
+	}
+	defer func() {
+		_ = os.Remove(f.Name())
+	}()
+
+	_, err = io.Copy(f, rc)
+	if err != nil {
+		_ = f.Close()
+		return err
+	}
+	_ = f.Close()
+
 	tempDir, err := os.MkdirTemp("", "*")
 	if err != nil {
 		return err
@@ -81,7 +99,7 @@ func Update(current semver.Version) error {
 		_ = os.RemoveAll(tempDir)
 	}()
 
-	err = unzip(rc, tempDir)
+	err = unzip(f.Name(), tempDir)
 	if err != nil {
 		return err
 	}
@@ -92,48 +110,44 @@ func Update(current semver.Version) error {
 		return err
 	}
 
-	err = os.Rename(exe, exe+"-old")
-	if err != nil {
-		return err
-	}
+	exeBak := exe + ".bak"
+	defer func() {
+		_ = os.Remove(exeBak)
+	}()
 
-	err = os.Rename(filepath.Join(tempDir, name), exe)
-	if err != nil {
-		return err
-	}
+	path := filepath.Join(tempDir, name)
+	if runtime.GOOS == "windows" {
+		err = copyFile(exe, exeBak)
+		if err != nil {
+			return err
+		}
 
-	if runtime.GOOS == "linux" {
+		err = copyFile(path+".exe", exe+".new")
+		if err != nil {
+			return err
+		}
+	} else {
+		err = os.Rename(exe, exeBak)
+		if err != nil {
+			return err
+		}
+
+		err = os.Rename(path, exe)
+		if err != nil {
+			return err
+		}
+
 		err = os.Chmod(exe, 0775)
 		if err != nil {
 			return err
 		}
 	}
 
-	err = exec.Command(exe, "serve").Run()
-	if err != nil {
-		err1 := os.Remove(exe)
-		if err != nil {
-			return errors.Join(err, err1)
-		}
-
-		err1 = os.Rename(exe+"-old", exe)
-		if err != nil {
-			return errors.Join(err, err1)
-		}
-
-		return err
-	}
-
 	return nil
 }
 
-func unzip(rc io.ReadCloser, dest string) error {
-	data, err := io.ReadAll(rc)
-	if err != nil {
-		return err
-	}
-
-	zr, err := zip.NewReader(bytes.NewReader(data), 9)
+func unzip(src, dest string) error {
+	zr, err := zip.OpenReader(src)
 	if err != nil {
 		return err
 	}
@@ -165,4 +179,12 @@ func unzip(rc io.ReadCloser, dest string) error {
 	}
 
 	return nil
+}
+
+func copyFile(src, dst string) error {
+	f, err := os.ReadFile(src)
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(dst, f, 0o644)
 }
