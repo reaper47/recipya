@@ -16,6 +16,12 @@ tasks:
       - cmd: go build -gcflags=all="-N -l" -o bin/recipya_debug main.go
         platforms: [ linux, darwin ]
 
+  build-updater:
+    platforms:
+      - windows
+    cmds:
+      - cd ./updater && go build -ldflags="-s -w" -o ../bin/updater.exe main.go
+
   cover:
     cmds:
       - cmd: go test ./... -coverprofile=coverage.out
@@ -31,6 +37,7 @@ tasks:
     deps:
       - test
       - build
+      - build-updater
     requires:
       vars: [ tag ]
     cmds:

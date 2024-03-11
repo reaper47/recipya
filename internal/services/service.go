@@ -48,7 +48,7 @@ type RepositoryService interface {
 
 	// CheckUpdate checks whether there is a new release for Recipya.
 	// It returns the latest information on the application.
-	CheckUpdate() (models.AppInfo, error)
+	CheckUpdate(files FilesService) (models.AppInfo, error)
 
 	// Confirm confirms the user's account.
 	Confirm(userID int64) error

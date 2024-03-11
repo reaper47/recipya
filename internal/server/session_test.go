@@ -10,6 +10,7 @@ import (
 )
 
 func TestSessionDataMap_Save(t *testing.T) {
+	clear(server.SessionData)
 	first := uuid.New()
 	second := uuid.New()
 	third := uuid.New()

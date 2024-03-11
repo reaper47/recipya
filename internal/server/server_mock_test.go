@@ -5,6 +5,8 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"github.com/blang/semver"
+	"github.com/google/go-github/v59/github"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
@@ -14,14 +16,14 @@ import (
 	"github.com/reaper47/recipya/internal/units"
 	"io"
 	"mime/multipart"
+	"os"
 	"slices"
 	"strings"
 	"time"
 )
 
 func newServerTest() *server.Server {
-	srv := server.NewServer()
-	srv.Repository = &mockRepository{
+	srv := server.NewServer(&mockRepository{
 		AuthTokens:             make([]models.AuthToken, 0),
 		RecipesRegistered:      make(map[int64]models.Recipes),
 		Reports:                make(map[int64][]models.Report),
@@ -29,11 +31,12 @@ func newServerTest() *server.Server {
 		UserSettingsRegistered: make(map[int64]*models.UserSettings),
 		UsersRegistered:        make([]models.User, 0),
 		UsersUpdated:           make([]int64, 0),
-	}
+	})
 	srv.Email = &mockEmail{}
 	srv.Files = &mockFiles{}
 	srv.Integrations = &mockIntegrations{}
 	srv.Scraper = &mockScraper{}
+	_ = os.Remove("sessions.csv")
 	return srv
 }
 
@@ -203,7 +206,7 @@ func (m *mockRepository) Categories(_ int64) ([]string, error) {
 	return []string{"breakfast", "lunch", "dinner"}, nil
 }
 
-func (m *mockRepository) CheckUpdate() (models.AppInfo, error) {
+func (m *mockRepository) CheckUpdate(_ services.FilesService) (models.AppInfo, error) {
 	lastCheckedAt, _ := time.Parse(time.DateTime, "2021-06-18 20:30:05")
 	lastUpdatedAt, _ := time.Parse(time.DateTime, "2021-02-24 15:04:05")
 
@@ -807,6 +810,7 @@ type mockFiles struct {
 	extractRecipesFunc    func(fileHeaders []*multipart.FileHeader) models.Recipes
 	extractUserBackupFunc func(date string, userID int64) (*models.UserBackup, error)
 	ReadTempFileFunc      func(name string) ([]byte, error)
+	updateAppFunc         func(current semver.Version) error
 	uploadImageHitCount   int
 	uploadImageFunc       func(rc io.ReadCloser) (uuid.UUID, error)
 }
@@ -864,11 +868,22 @@ func (m *mockFiles) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.R
 	return models.Recipes{}
 }
 
+func (m *mockFiles) IsAppLatest(current semver.Version) (bool, *github.RepositoryRelease, error) {
+	return true, nil, nil
+}
+
 func (m *mockFiles) ReadTempFile(name string) ([]byte, error) {
 	if m.ReadTempFileFunc != nil {
 		return m.ReadTempFileFunc(name)
 	}
 	return []byte(name), nil
+}
+
+func (m *mockFiles) UpdateApp(current semver.Version) error {
+	if m.updateAppFunc != nil {
+		return m.updateAppFunc(current)
+	}
+	return nil
 }
 
 func (m *mockFiles) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {

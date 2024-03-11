@@ -13,7 +13,6 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services/statements"
 	"github.com/reaper47/recipya/internal/units"
-	"github.com/reaper47/recipya/internal/updater"
 	"io"
 	"log"
 	_ "modernc.org/sqlite" // Blank import to initialize the SQL driver.
@@ -489,14 +488,14 @@ func (s *SQLiteService) Categories(userID int64) ([]string, error) {
 }
 
 // CheckUpdate checks whether there is a new release for Recipya.
-func (s *SQLiteService) CheckUpdate() (models.AppInfo, error) {
+func (s *SQLiteService) CheckUpdate(files FilesService) (models.AppInfo, error) {
 	s.Mutex.Lock()
 	defer s.Mutex.Unlock()
 
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
-	isLatest, _, err := updater.IsLatest(app.Info.Version)
+	isLatest, _, err := files.IsAppLatest(app.Info.Version)
 	if err != nil {
 		return models.AppInfo{}, err
 	}

@@ -2,6 +2,7 @@ package app
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/blang/semver"
 	"io"
@@ -31,6 +32,7 @@ var (
 	FdcDB     = "fdc.db"     // FdcDB is the name of the FDC database.
 	RecipyaDB = "recipya.db" // RecipyaDB is the name of Recipya's main database.
 
+	ErrNoUpdate = errors.New("already latest version")
 )
 
 // GeneralInfo holds information on the application.

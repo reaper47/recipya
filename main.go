@@ -4,6 +4,7 @@ package main
 import (
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/server"
+	"github.com/reaper47/recipya/internal/services"
 	"github.com/urfave/cli/v2"
 	"log"
 	"os"
@@ -18,7 +19,7 @@ func main() {
 				Usage:   "starts the web server",
 				Action: func(_ *cli.Context) error {
 					app.Init()
-					srv := server.NewServer()
+					srv := server.NewServer(services.NewSQLiteService())
 					srv.Run()
 					return nil
 				},
