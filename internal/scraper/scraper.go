@@ -92,9 +92,7 @@ func (s *Scraper) fetchDocument(url string) (*goquery.Document, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		_ = res.Body.Close()
-	}()
+	defer res.Body.Close()
 
 	if res.StatusCode >= http.StatusBadRequest {
 		return nil, fmt.Errorf("could not fetch (%d), try the bookmarklet", res.StatusCode)

@@ -103,9 +103,7 @@ func TestHandlers_Recipes_New(t *testing.T) {
 
 func TestHandlers_Recipes_AddImport(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer func() {
-		_ = c.Close()
-	}()
+	defer c.Close()
 
 	originalBrokers := maps.Clone(srv.Brokers)
 
@@ -523,9 +521,7 @@ func TestHandlers_Recipes_AddOCR(t *testing.T) {
 
 func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer func() {
-		_ = c.Close()
-	}()
+	defer c.Close()
 
 	originalBrokers := maps.Clone(srv.Brokers)
 	originalRepo := srv.Repository

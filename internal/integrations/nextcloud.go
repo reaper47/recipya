@@ -27,9 +27,7 @@ func NextcloudImport(baseURL, username, password string, uploadImageFunc func(rc
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		_ = resRecipes.Body.Close()
-	}()
+	defer resRecipes.Body.Close()
 
 	if resRecipes == nil {
 		return nil, errors.New("recipes response is nil")
@@ -64,9 +62,7 @@ func NextcloudImport(baseURL, username, password string, uploadImageFunc func(rc
 			if err != nil {
 				return
 			}
-			defer func() {
-				_ = res.Body.Close()
-			}()
+			defer res.Body.Close()
 
 			var rs models.RecipeSchema
 			err = json.NewDecoder(res.Body).Decode(&rs)
@@ -86,9 +82,7 @@ func NextcloudImport(baseURL, username, password string, uploadImageFunc func(rc
 			if err != nil {
 				return
 			}
-			defer func() {
-				_ = imageRes.Body.Close()
-			}()
+			defer imageRes.Body.Close()
 
 			imageUUID, err := uploadImageFunc(imageRes.Body)
 			if err != nil {

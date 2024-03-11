@@ -63,7 +63,6 @@ func waitForRecipyaToStop() {
 	}
 
 	var proc *process.Process = nil
-
 	for _, p := range processes {
 		name, _ := p.Name()
 		if strings.Contains(name, "recipya") {
@@ -77,7 +76,6 @@ func waitForRecipyaToStop() {
 		log.Printf("Recipya process %q found with pid %d", n, proc.Pid)
 
 		for {
-			log.Println(proc)
 			isRunning, err := proc.IsRunningWithContext(ctx)
 			if err != nil {
 				log.Fatalln("Error getting process running status: ", err)

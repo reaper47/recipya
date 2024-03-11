@@ -391,9 +391,7 @@ func (s *Server) cookbooksImagePostCookbookHandler() http.HandlerFunc {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		defer func() {
-			_ = f.Close()
-		}()
+		defer f.Close()
 
 		imageUUID, err := s.Files.UploadImage(f)
 		if err != nil {

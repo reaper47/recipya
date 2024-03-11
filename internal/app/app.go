@@ -107,9 +107,7 @@ func udpAddr() *net.UDPAddr {
 	if err != nil {
 		return nil
 	}
-	defer func() {
-		_ = conn.Close()
-	}()
+	defer conn.Close()
 
 	return conn.LocalAddr().(*net.UDPAddr)
 }

@@ -95,14 +95,10 @@ func zipFiles(destFile string, files ...string) error {
 	if err != nil {
 		return err
 	}
-	defer func() {
-		_ = zipFile.Close()
-	}()
+	defer zipFile.Close()
 
 	w := zip.NewWriter(zipFile)
-	defer func() {
-		_ = w.Close()
-	}()
+	defer w.Close()
 
 	for _, file := range files {
 		src, err := os.Open(file)

@@ -204,9 +204,7 @@ func (s *Server) settingsBackupsRestoreHandler() http.HandlerFunc {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		defer func() {
-			_ = os.RemoveAll(filepath.Dir(backup.ImagesPath))
-		}()
+		defer os.RemoveAll(filepath.Dir(backup.ImagesPath))
 
 		err = s.Repository.RestoreUserBackup(backup)
 		if err != nil {

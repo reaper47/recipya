@@ -44,9 +44,7 @@ func (i *Integrations) ProcessImageOCR(file io.Reader) (models.Recipe, error) {
 	if err != nil {
 		return models.Recipe{}, err
 	}
-	defer func() {
-		_ = res.Body.Close()
-	}()
+	defer res.Body.Close()
 
 	if res == nil {
 		return models.Recipe{}, errors.New("response is nil")

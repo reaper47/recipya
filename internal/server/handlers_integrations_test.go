@@ -11,9 +11,7 @@ import (
 
 func TestHandlers_Integrations_Nextcloud(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer func() {
-		_ = c.Close()
-	}()
+	defer c.Close()
 
 	originalRepo := srv.Repository
 	originalIntegrations := srv.Integrations

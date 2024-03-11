@@ -167,9 +167,7 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64, settings model
 	if err != nil {
 		return 0, err
 	}
-	defer func() {
-		_ = tx.Rollback()
-	}()
+	defer tx.Rollback()
 
 	recipeID, err := s.AddRecipeTx(ctx, tx, r, userID)
 	if err != nil {
@@ -330,9 +328,7 @@ func (s *SQLiteService) AddReport(report models.Report, userID int64) {
 		log.Printf("AddReport.BeginTx: %q", err)
 		return
 	}
-	defer func() {
-		_ = tx.Rollback()
-	}()
+	defer tx.Rollback()
 
 	err = tx.QueryRowContext(ctx, statements.InsertReport, report.Type, report.CreatedAt, report.ExecTime, userID).Scan(&report.ID)
 	if err != nil {
@@ -466,9 +462,7 @@ func (s *SQLiteService) Categories(userID int64) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		_ = rows.Close()
-	}()
+	defer rows.Close()
 
 	for rows.Next() {
 		var c string
@@ -568,9 +562,7 @@ func (s *SQLiteService) CookbookByID(id, userID int64) (models.Cookbook, error) 
 	if err != nil {
 		return models.Cookbook{}, err
 	}
-	defer func() {
-		_ = rows.Close()
-	}()
+	defer rows.Close()
 
 	c.Recipes, err = scanRecipes(rows, false)
 	return c, err
@@ -614,9 +606,7 @@ func (s *SQLiteService) Cookbooks(userID int64, page uint64) ([]models.Cookbook,
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		_ = rows.Close()
-	}()
+	defer rows.Close()
 
 	var cookbooks []models.Cookbook
 	for rows.Next() {
@@ -641,9 +631,7 @@ func (s *SQLiteService) CookbooksShared(userID int64) ([]models.Share, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		_ = rows.Close()
-	}()
+	defer rows.Close()
 
 	var shares []models.Share
 	for rows.Next() {
@@ -666,9 +654,7 @@ func (s *SQLiteService) CookbooksUser(userID int64) ([]models.Cookbook, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		_ = rows.Close()
-	}()
+	defer rows.Close()
 
 	var cookbooks []models.Cookbook
 	for rows.Next() {
@@ -817,9 +803,7 @@ func (s *SQLiteService) Images() []string {
 	if err != nil {
 		return xs
 	}
-	defer func() {
-		_ = rows.Close()
-	}()
+	defer rows.Close()
 
 	for rows.Next() {
 		var file string
@@ -978,9 +962,7 @@ func (s *SQLiteService) Recipe(id, userID int64) (*models.Recipe, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		_ = tx.Rollback()
-	}()
+	defer tx.Rollback()
 
 	row := tx.QueryRowContext(ctx, statements.SelectRecipe, id, userID)
 	r, err := scanRecipe(row, false)
@@ -1057,9 +1039,7 @@ func (s *SQLiteService) RecipesShared(userID int64) ([]models.Share, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		_ = rows.Close()
-	}()
+	defer rows.Close()
 
 	var shared []models.Share
 	for rows.Next() {
@@ -1108,9 +1088,7 @@ func (s *SQLiteService) ReorderCookbookRecipes(cookbookID int64, recipeIDs []uin
 	if err != nil {
 		return err
 	}
-	defer func() {
-		_ = tx.Rollback()
-	}()
+	defer tx.Rollback()
 
 	for i, recipeID := range recipeIDs {
 		var exists int64
@@ -1138,9 +1116,7 @@ func (s *SQLiteService) Report(id, userID int64) ([]models.ReportLog, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		_ = rows.Close()
-	}()
+	defer rows.Close()
 
 	var logs []models.ReportLog
 	for rows.Next() {
@@ -1170,9 +1146,7 @@ func (s *SQLiteService) ReportsImport(userID int64) ([]models.Report, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		_ = rows.Close()
-	}()
+	defer rows.Close()
 
 	var reports []models.Report
 	for rows.Next() {
@@ -1221,9 +1195,7 @@ func (s *SQLiteService) RestoreUserBackup(backup *models.UserBackup) error {
 	if err != nil {
 		return err
 	}
-	defer func() {
-		_ = tx.Rollback()
-	}()
+	defer tx.Rollback()
 
 	_, err = tx.ExecContext(ctx, backup.DeleteSQL)
 	if err != nil {
@@ -1253,17 +1225,13 @@ func (s *SQLiteService) RestoreUserBackup(backup *models.UserBackup) error {
 		if err != nil {
 			return err
 		}
-		defer func() {
-			_ = src.Close()
-		}()
+		defer src.Close()
 
 		dest, err := os.Open(destPath)
 		if err != nil {
 			return err
 		}
-		defer func() {
-			_ = dest.Close()
-		}()
+		defer dest.Close()
 
 		_, err = io.Copy(dest, src)
 		return err
@@ -1331,9 +1299,7 @@ func (s *SQLiteService) SearchRecipes(query string, page uint64, options models.
 }
 
 func scanRecipes(rows *sql.Rows, isSearch bool) (models.Recipes, error) {
-	defer func() {
-		_ = rows.Close()
-	}()
+	defer rows.Close()
 
 	var recipes models.Recipes
 	for rows.Next() {
@@ -1400,9 +1366,7 @@ func (s *SQLiteService) SwitchMeasurementSystem(system units.System, userID int6
 	if err != nil {
 		return err
 	}
-	defer func() {
-		_ = tx.Rollback()
-	}()
+	defer tx.Rollback()
 
 	_, err = tx.ExecContext(ctx, statements.UpdateMeasurementSystem, system.String(), userID)
 	if err != nil {
@@ -1517,9 +1481,7 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 	if err != nil {
 		return err
 	}
-	defer func() {
-		_ = tx.Rollback()
-	}()
+	defer tx.Rollback()
 
 	recipeID := oldRecipe.ID
 
@@ -1823,9 +1785,7 @@ func (s *SQLiteService) Users() []models.User {
 		log.Printf("error fetching users: %q", err)
 		return users
 	}
-	defer func() {
-		_ = rows.Close()
-	}()
+	defer rows.Close()
 
 	for rows.Next() {
 		var user models.User
@@ -1879,9 +1839,7 @@ func (s *SQLiteService) Websites() models.Websites {
 		log.Printf("websites count error: %q", err)
 		return websites
 	}
-	defer func() {
-		_ = rows.Close()
-	}()
+	defer rows.Close()
 
 	i := 0
 	for rows.Next() {

@@ -69,14 +69,10 @@ func (f *Files) BackupGlobal() error {
 	if err != nil {
 		return fmt.Errorf("could not create backup %q", name)
 	}
-	defer func() {
-		_ = zf.Close()
-	}()
+	defer zf.Close()
 
 	zw := zip.NewWriter(zf)
-	defer func() {
-		_ = zw.Close()
-	}()
+	defer zw.Close()
 
 	source := filepath.Dir(app.DBBasePath)
 
@@ -123,9 +119,7 @@ func (f *Files) BackupGlobal() error {
 		if err != nil {
 			return err
 		}
-		defer func() {
-			_ = f.Close()
-		}()
+		defer f.Close()
 
 		_, err = io.Copy(w, f)
 		return err
@@ -216,14 +210,10 @@ func (f *Files) backupUserData(repo RepositoryService, userID int64) error {
 	if err != nil {
 		return fmt.Errorf("could not create backup %q", name)
 	}
-	defer func() {
-		_ = zf.Close()
-	}()
+	defer zf.Close()
 
 	zw := zip.NewWriter(zf)
-	defer func() {
-		_ = zw.Close()
-	}()
+	defer zw.Close()
 
 	var (
 		deleteStatements []string
@@ -393,9 +383,7 @@ func addImageToZip(zw *zip.Writer, img uuid.UUID) error {
 	if err != nil {
 		return err
 	}
-	defer func() {
-		_ = file.Close()
-	}()
+	defer file.Close()
 
 	info, err := file.Stat()
 	if err != nil {
@@ -860,9 +848,7 @@ func (f *Files) processZip(file *multipart.FileHeader) models.Recipes {
 		log.Println(err)
 		return make(models.Recipes, 0)
 	}
-	defer func() {
-		_ = openFile.Close()
-	}()
+	defer openFile.Close()
 
 	buf := new(bytes.Buffer)
 	fileSize, err := io.Copy(buf, openFile)
@@ -963,9 +949,7 @@ func (f *Files) processJSON(file *multipart.FileHeader) *models.Recipe {
 		log.Printf("error opening file %s: %q", file.Filename, err.Error())
 		return nil
 	}
-	defer func() {
-		_ = fi.Close()
-	}()
+	defer fi.Close()
 
 	r, err := f.extractRecipe(fi)
 	if err != nil {
@@ -981,9 +965,7 @@ func processMasterCook(file *multipart.FileHeader) models.Recipes {
 		log.Printf("error opening file %s: %q", file.Filename, err.Error())
 		return nil
 	}
-	defer func() {
-		_ = f.Close()
-	}()
+	defer f.Close()
 
 	return models.NewRecipesFromMasterCook(f)
 }
@@ -1059,9 +1041,7 @@ func (f *Files) ScrapeAndStoreImage(rawURL string) (uuid.UUID, error) {
 	if err != nil {
 		return uuid.Nil, err
 	}
-	defer func() {
-		_ = resImage.Body.Close()
-	}()
+	defer resImage.Body.Close()
 
 	if resImage == nil {
 		return uuid.Nil, errors.New("image response is nil")
@@ -1101,9 +1081,7 @@ func (f *Files) ExportCookbook(cookbook models.Cookbook, fileType models.FileTyp
 	if err != nil {
 		return "", err
 	}
-	defer func() {
-		_ = out.Close()
-	}()
+	defer out.Close()
 
 	_, err = out.Write(buf.Bytes())
 	if err != nil {
@@ -1197,9 +1175,7 @@ func (f *Files) ExtractUserBackup(date string, userID int64) (*models.UserBackup
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		_ = r.Close()
-	}()
+	defer r.Close()
 
 	imagesPath := filepath.Join(app.BackupPath, "restore", userIDStr, "images")
 	err = os.MkdirAll(imagesPath, os.ModePerm)
@@ -1270,9 +1246,7 @@ func (f *Files) ExtractUserBackup(date string, userID int64) (*models.UserBackup
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		_ = rc.Close()
-	}()
+	defer rc.Close()
 
 	data, err := io.ReadAll(rc)
 	if err != nil {
@@ -1316,9 +1290,7 @@ func (f *Files) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
 	if err != nil {
 		return uuid.Nil, err
 	}
-	defer func() {
-		_ = out.Close()
-	}()
+	defer out.Close()
 
 	width := img.Bounds().Dx()
 	height := img.Bounds().Dy()
@@ -1361,17 +1333,13 @@ func (f *Files) UpdateApp(current semver.Version) error {
 	if err != nil {
 		return err
 	}
-	defer func() {
-		_ = rc.Close()
-	}()
+	defer rc.Close()
 
 	file, err := os.CreateTemp("", "*")
 	if err != nil {
 		return err
 	}
-	defer func() {
-		_ = os.Remove(file.Name())
-	}()
+	defer os.Remove(file.Name())
 
 	_, err = io.Copy(file, rc)
 	if err != nil {
@@ -1384,9 +1352,7 @@ func (f *Files) UpdateApp(current semver.Version) error {
 	if err != nil {
 		return err
 	}
-	defer func() {
-		_ = os.RemoveAll(tempDir)
-	}()
+	defer os.RemoveAll(tempDir)
 
 	err = unzip(file.Name(), tempDir)
 	if err != nil {
@@ -1400,9 +1366,7 @@ func (f *Files) UpdateApp(current semver.Version) error {
 	}
 
 	exeBak := exe + ".bak"
-	defer func() {
-		_ = os.Remove(exeBak)
-	}()
+	defer os.Remove(exeBak)
 
 	path := filepath.Join(tempDir, name)
 	if runtime.GOOS == "windows" {
