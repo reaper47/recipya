@@ -20,8 +20,20 @@ import (
 // ErrNoUpdate is the error for when no update is available.
 var ErrNoUpdate = errors.New("already latest version")
 
+// IUpdater is the updater's interface
+type IUpdater interface {
+	// IsLatest checks whether there is a software update.
+	IsLatest(current semver.Version) (bool, *github.RepositoryRelease, error)
+
+	// Update updates the application to the latest version.
+	Update(current semver.Version) error
+}
+
+// Updater is the main application's updater.
+type Updater struct{}
+
 // IsLatest checks whether there is a software update.
-func IsLatest(current semver.Version) (bool, *github.RepositoryRelease, error) {
+func (u *Updater) IsLatest(current semver.Version) (bool, *github.RepositoryRelease, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
 
@@ -45,9 +57,9 @@ func IsLatest(current semver.Version) (bool, *github.RepositoryRelease, error) {
 }
 
 // Update updates the application to the latest version.
-func Update(current semver.Version) error {
+func (u *Updater) Update(current semver.Version) error {
 	// Check if latest
-	isLatest, rel, err := IsLatest(current)
+	isLatest, rel, err := u.IsLatest(current)
 	if err != nil {
 		return err
 	}

@@ -20,7 +20,8 @@ import (
 )
 
 func newServerTest() *server.Server {
-	repo := &mockRepository{
+	srv := server.NewServer()
+	srv.Repository = &mockRepository{
 		AuthTokens:             make([]models.AuthToken, 0),
 		RecipesRegistered:      make(map[int64]models.Recipes),
 		Reports:                make(map[int64][]models.Report),
@@ -29,7 +30,11 @@ func newServerTest() *server.Server {
 		UsersRegistered:        make([]models.User, 0),
 		UsersUpdated:           make([]int64, 0),
 	}
-	return server.NewServer(repo, &mockEmail{}, &mockFiles{}, &mockIntegrations{}, &mockScraper{})
+	srv.Email = &mockEmail{}
+	srv.Files = &mockFiles{}
+	srv.Integrations = &mockIntegrations{}
+	srv.Scraper = &mockScraper{}
+	return srv
 }
 
 type mockRepository struct {
