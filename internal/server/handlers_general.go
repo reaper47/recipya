@@ -1,12 +1,20 @@
 package server
 
 import (
+	"errors"
 	"github.com/gorilla/websocket"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/web/components"
+	"log"
 	"net/http"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"runtime"
 	"strconv"
+	"syscall"
+	"time"
 )
 
 var upgrader = websocket.Upgrader{
@@ -53,6 +61,68 @@ func notFoundHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) userInitialsHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		_, _ = w.Write([]byte(s.Repository.UserInitials(getUserID(r))))
+	}
+}
+
+func (s *Server) updateHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, _ *http.Request) {
+		err := s.Files.UpdateApp(app.Info.Version)
+		if errors.Is(err, app.ErrNoUpdate) {
+			w.Header().Set("HX-Trigger", models.NewWarningToast("", "No update available.", "").Render())
+			w.WriteHeader(http.StatusNoContent)
+			return
+		} else if err != nil {
+			log.Printf("Error updating application: %q", err)
+			w.Header().Set("HX-Trigger", models.NewErrorGeneralToast("Failed to update.").Render())
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("HX-Trigger", models.NewInfoToast("Software updated", "Application will reload in 5 seconds.", "").Render())
+		w.WriteHeader(http.StatusNoContent)
+
+		go func() {
+			log.Println("Application will restart and data backed up.")
+
+			err = s.Files.BackupGlobal()
+			if err != nil {
+				log.Printf("Error backing up global data: %q", err)
+				return
+			}
+
+			f, err := os.Create("sessions.csv")
+			if err != nil {
+				log.Fatal(err)
+			}
+			defer f.Close()
+			SessionData.Save(f)
+
+			exe, err := os.Executable()
+			if err != nil {
+				log.Printf("Error updating application: %q", err)
+				return
+			}
+			dir := filepath.Dir(exe)
+
+			if runtime.GOOS == "windows" {
+				err = exec.Command(filepath.Join(dir, "updater.exe")).Start()
+				if err != nil {
+					log.Printf("Error starting application: %q", err)
+					return
+				}
+
+				log.Println("Started updater.exe. As you are on Windows, the running program can be found under Task Manager -> Details -> recipya.exe")
+			} else {
+				err = syscall.Exec(filepath.Join(dir, "recipya"), os.Args, os.Environ())
+				if err != nil {
+					log.Printf("Error starting application: %q", err)
+					return
+				}
+			}
+
+			time.Sleep(250 * time.Millisecond)
+			os.Exit(0)
+		}()
 	}
 }
 

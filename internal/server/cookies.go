@@ -16,9 +16,6 @@ const (
 	cookieNameSession    = "session"
 )
 
-// SessionData maps a UUID to a user id. It's used to track who is logged in session-wise.
-var SessionData map[uuid.UUID]int64
-
 // NewRedirectCookie creates a URL redirection cookie for an anonymous user.
 func NewRedirectCookie(uri string) *http.Cookie {
 	return &http.Cookie{

@@ -2,12 +2,13 @@ package templates
 
 import (
 	"fmt"
+	"github.com/blang/semver"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/units"
-	"html/template"
 	"strings"
+	"time"
 )
 
 // Data holds data to pass on to the templates.
@@ -20,16 +21,13 @@ type Data struct {
 	IsHxRequest      bool // IsHxRequest indicates whether the request is an HX one. It is used for oop swaps.
 	IsToastWSVisible bool // IsToastWSVisible indicates whether to display the notification for websocket tasks.
 
-	Title        string        // Title is the text inserted <title> tag's text.
-	Content      string        // Content is text to insert into the template.
-	ContentHTML  template.HTML // ContentHTML is the non-escaped HTML to insert into the template.
-	ContentTitle string        // ContentTitle is the header of the Content.
-
-	Functions FunctionsData[int64]
+	Title   string // Title is the text inserted <title> tag's text.
+	Content string // Content is text to insert into the template.
 
 	About           AboutData
 	Admin           AdminData
 	CookbookFeature CookbookFeature
+	Functions       FunctionsData[int64]
 	Pagination      Pagination
 	Recipes         models.Recipes
 	Reports         ReportsData
@@ -41,13 +39,19 @@ type Data struct {
 // NewAboutData creates a new instance of AboutData.
 func NewAboutData() AboutData {
 	return AboutData{
-		Version: app.Version,
+		IsUpdateAvailable:   app.Info.IsUpdateAvailable,
+		LastCheckedUpdateAt: app.Info.LastCheckedUpdateAt,
+		LastUpdatedAt:       app.Info.LastUpdatedAt,
+		Version:             app.Info.Version,
 	}
 }
 
 // AboutData holds general application data.
 type AboutData struct {
-	Version string
+	IsUpdateAvailable   bool
+	LastCheckedUpdateAt time.Time
+	LastUpdatedAt       time.Time
+	Version             semver.Version
 }
 
 // AdminData holds data for the admin page.

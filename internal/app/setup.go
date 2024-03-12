@@ -72,9 +72,7 @@ func downloadFile(path, url string) error {
 	if err != nil {
 		return err
 	}
-	defer func() {
-		_ = res.Body.Close()
-	}()
+	defer res.Body.Close()
 
 	if res == nil {
 		return errors.New("download file response is nil")
@@ -103,25 +101,19 @@ func downloadFile(path, url string) error {
 	if err != nil {
 		return err
 	}
-	defer func() {
-		_ = z.Close()
-	}()
+	defer z.Close()
 
 	destFile, err := os.OpenFile(filepath.Join(filepath.Dir(path), "fdc.db"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, z.File[0].Mode())
 	if err != nil {
 		return err
 	}
-	defer func() {
-		_ = destFile.Close()
-	}()
+	defer destFile.Close()
 
 	zippedFile, err := z.File[0].Open()
 	if err != nil {
 		return err
 	}
-	defer func() {
-		_ = zippedFile.Close()
-	}()
+	defer zippedFile.Close()
 
 	_, err = io.Copy(destFile, zippedFile)
 	return err
@@ -200,9 +192,7 @@ func createConfigFile(path string) error {
 		if err != nil {
 			panic(err)
 		}
-		defer func() {
-			_ = listener.Close()
-		}()
+		defer listener.Close()
 		c.Server.Port = listener.Addr().(*net.TCPAddr).Port
 	}
 

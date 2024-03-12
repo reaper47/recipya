@@ -447,9 +447,7 @@ func TestHandlers_Settings_MeasurementSystems(t *testing.T) {
 
 func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer func() {
-		_ = c.Close()
-	}()
+	defer c.Close()
 
 	originalRepo := srv.Repository
 

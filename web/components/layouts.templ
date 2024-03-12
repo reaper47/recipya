@@ -84,8 +84,16 @@ templ layoutMain(title string, data templates.Data) {
 				</div>
 				<div class="navbar-end">
 					if data.IsAuthenticated {
-						<div class="dropdown dropdown-end" hx-get="/user-initials" hx-trigger="load" hx-target="#user-initials">
-							<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar placeholder">
+						<div
+							class={ "dropdown dropdown-end", templ.KV("indicator", data.About.IsUpdateAvailable) }
+							hx-get="/user-initials"
+							hx-trigger="load"
+							hx-target="#user-initials"
+						>
+							<div tabindex="0" role="button" class={ "btn btn-ghost btn-circle avatar placeholder", templ.KV("indicator", data.About.IsUpdateAvailable) }>
+								if data.About.IsUpdateAvailable {
+									<span class="indicator-item indicator-start badge badge-sm badge-secondary z-30">New update</span>
+								}
 								<div class="bg-neutral text-neutral-content w-10 rounded-full">
 									<span id="user-initials">A</span>
 								</div>
@@ -117,8 +125,11 @@ templ layoutMain(title string, data templates.Data) {
 									</a>
 								</li>
 								<div class="divider m-0"></div>
-								<li onclick="about_dialog.showModal()">
+								<li onclick="about_dialog.showModal()" class={ templ.KV("indicator", data.About.IsUpdateAvailable) }>
 									<a>
+										if data.About.IsUpdateAvailable {
+											<span class="indicator-item badge badge-xs badge-secondary"></span>
+										}
 										@iconHelp()
 										About
 									</a>
@@ -133,7 +144,7 @@ templ layoutMain(title string, data templates.Data) {
 								}
 							</ul>
 						</div>
-						@aboutDialog(data.About.Version)
+						@aboutDialog(data.About)
 					} else {
 						<a href="/auth/login" class="btn btn-ghost">Log In</a>
 						<a href="/auth/register" class="btn btn-ghost">Sign Up</a>
@@ -401,6 +412,10 @@ templ toast() {
         htmx.on('showToast', function (event) {
             const {title, message, background, action} = JSON.parse(event.detail.value);
             showToast(title, message, background, action);
+
+            if (title == "Software updated") {
+                setTimeout(() => window.location.reload(1), 6000);
+            }
         });
 
         function showToast(title, message, background, action) {

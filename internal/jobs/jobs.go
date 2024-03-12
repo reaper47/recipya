@@ -18,12 +18,15 @@ import (
 //
 // - Clean Images: Removes unreferenced images from the data/images folder to save space.
 //
-// - Send Queued Emails
+// - Send queued emails
 //
 // - Backup data
+//
+// - Check for a new release
 func ScheduleCronJobs(repo services.RepositoryService, files services.FilesService, email services.EmailService) {
 	scheduler := gocron.NewScheduler(time.UTC)
 
+	// Clean Images
 	_, _ = scheduler.Every(1).MonthLastDay().Do(func() {
 		rmFunc := func(file string) error {
 			return os.Remove(filepath.Join(app.ImagesDir, file))
@@ -37,11 +40,13 @@ func ScheduleCronJobs(repo services.RepositoryService, files services.FilesServi
 		log.Printf("CleanImages: Removed %d unreferenced images %s", numFiles, s)
 	})
 
+	// Send queued emails
 	_, _ = scheduler.Every(1).Day().At("00:00").Do(func() {
 		sent, remaining, err := email.SendQueue()
 		log.Printf("SendQueuedEmails: Sent %d | Remaining %d | Error: %q", sent, remaining, err)
 	})
 
+	// Backup data
 	_, _ = scheduler.Every(3).Days().Do(func() {
 		err := files.BackupGlobal()
 		if err != nil {
@@ -56,6 +61,21 @@ func ScheduleCronJobs(repo services.RepositoryService, files services.FilesServi
 		}
 
 		log.Println("Backup successful")
+	})
+
+	// Check for a new release
+	_, _ = scheduler.Every(1).Week().Do(func() {
+		info, err := repo.CheckUpdate(files)
+		if err != nil {
+			log.Printf("Check for update failed: %q", err)
+			return
+		}
+
+		app.Info.IsUpdateAvailable = info.IsUpdateAvailable
+		app.Info.LastCheckedUpdateAt = info.LastCheckedUpdateAt
+		app.Info.LastUpdatedAt = info.LastUpdatedAt
+
+		log.Println("Checked for an application update")
 	})
 
 	scheduler.StartAsync()

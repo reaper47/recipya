@@ -31,9 +31,7 @@ func (s *Server) settingsHandler() http.HandlerFunc {
 		}
 
 		_ = components.Settings(templates.Data{
-			About: templates.AboutData{
-				Version: app.Version,
-			},
+			About:           templates.NewAboutData(),
 			IsAdmin:         getUserID(r) == 1,
 			IsAutologin:     app.Config.Server.IsAutologin,
 			IsAuthenticated: true,
@@ -206,9 +204,7 @@ func (s *Server) settingsBackupsRestoreHandler() http.HandlerFunc {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		defer func() {
-			_ = os.RemoveAll(filepath.Dir(backup.ImagesPath))
-		}()
+		defer os.RemoveAll(filepath.Dir(backup.ImagesPath))
 
 		err = s.Repository.RestoreUserBackup(backup)
 		if err != nil {

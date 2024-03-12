@@ -5,6 +5,8 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"github.com/blang/semver"
+	"github.com/google/go-github/v59/github"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
@@ -14,13 +16,14 @@ import (
 	"github.com/reaper47/recipya/internal/units"
 	"io"
 	"mime/multipart"
+	"os"
 	"slices"
 	"strings"
 	"time"
 )
 
 func newServerTest() *server.Server {
-	repo := &mockRepository{
+	srv := server.NewServer(&mockRepository{
 		AuthTokens:             make([]models.AuthToken, 0),
 		RecipesRegistered:      make(map[int64]models.Recipes),
 		Reports:                make(map[int64][]models.Report),
@@ -28,8 +31,13 @@ func newServerTest() *server.Server {
 		UserSettingsRegistered: make(map[int64]*models.UserSettings),
 		UsersRegistered:        make([]models.User, 0),
 		UsersUpdated:           make([]int64, 0),
-	}
-	return server.NewServer(repo, &mockEmail{}, &mockFiles{}, &mockIntegrations{}, &mockScraper{})
+	})
+	srv.Email = &mockEmail{}
+	srv.Files = &mockFiles{}
+	srv.Integrations = &mockIntegrations{}
+	srv.Scraper = &mockScraper{}
+	_ = os.Remove("sessions.csv")
+	return srv
 }
 
 type mockRepository struct {
@@ -65,11 +73,11 @@ func (m *mockRepository) AddReport(report models.Report, userID int64) {
 	m.Reports[userID] = append(m.Reports[userID], report)
 }
 
-func (m *mockRepository) CookbooksShared(userID int64) ([]models.Share, error) {
+func (m *mockRepository) CookbooksShared(_ int64) ([]models.Share, error) {
 	return make([]models.Share, 0), nil
 }
 
-func (m *mockRepository) CookbooksUser(userID int64) ([]models.Cookbook, error) {
+func (m *mockRepository) CookbooksUser(_ int64) ([]models.Cookbook, error) {
 	return make([]models.Cookbook, 0), nil
 }
 
@@ -196,6 +204,17 @@ func (m *mockRepository) CalculateNutrition(_ int64, _ []int64, _ models.UserSet
 
 func (m *mockRepository) Categories(_ int64) ([]string, error) {
 	return []string{"breakfast", "lunch", "dinner"}, nil
+}
+
+func (m *mockRepository) CheckUpdate(_ services.FilesService) (models.AppInfo, error) {
+	lastCheckedAt, _ := time.Parse(time.DateTime, "2021-06-18 20:30:05")
+	lastUpdatedAt, _ := time.Parse(time.DateTime, "2021-02-24 15:04:05")
+
+	return models.AppInfo{
+		IsUpdateAvailable:   false,
+		LastUpdatedAt:       lastUpdatedAt,
+		LastCheckedUpdateAt: lastCheckedAt,
+	}, nil
 }
 
 func (m *mockRepository) Confirm(userID int64) error {
@@ -791,6 +810,7 @@ type mockFiles struct {
 	extractRecipesFunc    func(fileHeaders []*multipart.FileHeader) models.Recipes
 	extractUserBackupFunc func(date string, userID int64) (*models.UserBackup, error)
 	ReadTempFileFunc      func(name string) ([]byte, error)
+	updateAppFunc         func(current semver.Version) error
 	uploadImageHitCount   int
 	uploadImageFunc       func(rc io.ReadCloser) (uuid.UUID, error)
 }
@@ -848,11 +868,22 @@ func (m *mockFiles) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.R
 	return models.Recipes{}
 }
 
+func (m *mockFiles) IsAppLatest(current semver.Version) (bool, *github.RepositoryRelease, error) {
+	return true, nil, nil
+}
+
 func (m *mockFiles) ReadTempFile(name string) ([]byte, error) {
 	if m.ReadTempFileFunc != nil {
 		return m.ReadTempFileFunc(name)
 	}
 	return []byte(name), nil
+}
+
+func (m *mockFiles) UpdateApp(current semver.Version) error {
+	if m.updateAppFunc != nil {
+		return m.updateAppFunc(current)
+	}
+	return nil
 }
 
 func (m *mockFiles) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
@@ -863,7 +894,7 @@ func (m *mockFiles) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
 	return uuid.New(), nil
 }
 
-func (m *mockFiles) ScrapeAndStoreImage(rawURL string) (uuid.UUID, error) {
+func (m *mockFiles) ScrapeAndStoreImage(_ string) (uuid.UUID, error) {
 	return uuid.New(), nil
 }
 

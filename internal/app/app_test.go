@@ -26,8 +26,8 @@ func TestConfigFile_Address(t *testing.T) {
 		},
 		{
 			name:           "with port",
-			in:             app.ConfigFile{Server: app.ConfigServer{URL: "https://127.0.0.1", Port: 8078}},
-			want:           "https://127.0.0.1:8078",
+			in:             app.ConfigFile{Server: app.ConfigServer{URL: "http://127.0.0.1", Port: 8078}},
+			want:           "http://127.0.0.1:8078",
 			wantRandomPort: false,
 		},
 		{

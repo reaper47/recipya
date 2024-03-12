@@ -57,9 +57,7 @@ func (s *Scraper) scrapeBergamot(rawURL string) (models.RecipeSchema, error) {
 	if err != nil {
 		return models.RecipeSchema{}, err
 	}
-	defer func() {
-		_ = res.Body.Close()
-	}()
+	defer res.Body.Close()
 
 	data, err := io.ReadAll(res.Body)
 	if err != nil {

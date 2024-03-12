@@ -2,7 +2,9 @@ package scraper_test
 
 import (
 	"bytes"
+	"github.com/blang/semver"
 	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-github/v59/github"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/scraper"
@@ -148,6 +150,10 @@ func (m *mockFiles) BackupUsersData(repo services.RepositoryService) error {
 	panic("implement me")
 }
 
+func (m *mockFiles) IsAppLatest(current semver.Version) (bool, *github.RepositoryRelease, error) {
+	return false, nil, nil
+}
+
 func (m *mockFiles) ScrapeAndStoreImage(rawURL string) (uuid.UUID, error) {
 	return anUploadedImage, nil
 }
@@ -183,6 +189,10 @@ func (m *mockFiles) ReadTempFile(name string) ([]byte, error) {
 		return m.ReadTempFileFunc(name)
 	}
 	return []byte(name), nil
+}
+
+func (m *mockFiles) UpdateApp(_ semver.Version) error {
+	return nil
 }
 
 func (m *mockFiles) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {

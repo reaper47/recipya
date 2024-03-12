@@ -28,9 +28,7 @@ func (s *Server) cookbookShareHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_ = components.CookbookIndex(templates.Data{
-		About: templates.AboutData{
-			Version: app.Version,
-		},
+		About:           templates.NewAboutData(),
 		IsAdmin:         userID == 1,
 		IsAuthenticated: isLoggedIn,
 		IsHxRequest:     r.Header.Get("Hx-Request") == "true",
@@ -94,9 +92,7 @@ func (s *Server) cookbooksHandler() http.HandlerFunc {
 		}
 
 		_ = components.CookbooksIndex(templates.Data{
-			About: templates.AboutData{
-				Version: app.Version,
-			},
+			About: templates.NewAboutData(),
 			CookbookFeature: templates.CookbookFeature{
 				Cookbooks: cookbooks,
 				MakeCookbook: func(index int64, cookbook models.Cookbook, page uint64) templates.CookbookView {
@@ -395,9 +391,7 @@ func (s *Server) cookbooksImagePostCookbookHandler() http.HandlerFunc {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		defer func() {
-			_ = f.Close()
-		}()
+		defer f.Close()
 
 		imageUUID, err := s.Files.UploadImage(f)
 		if err != nil {

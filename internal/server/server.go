@@ -14,6 +14,7 @@ import (
 	_ "github.com/reaper47/recipya/internal/templates" // Need to initialize the templates package.
 	"github.com/reaper47/recipya/web/static"
 	"io/fs"
+	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -36,20 +37,29 @@ func init() {
 }
 
 // NewServer creates a Server.
-func NewServer(
-	repository services.RepositoryService, email services.EmailService,
-	files services.FilesService, integrations services.IntegrationsService,
-	scraper scraper.IScraper,
-) *Server {
+func NewServer(repo services.RepositoryService) *Server {
 	srv := &Server{
 		Brokers:      make(map[int64]*models.Broker),
-		Email:        email,
-		Files:        files,
-		Integrations: integrations,
-		Repository:   repository,
-		Scraper:      scraper,
+		Email:        services.NewEmailService(),
+		Files:        services.NewFilesService(),
+		Integrations: services.NewIntegrationsService(),
+		Repository:   repo,
+		Scraper:      scraper.NewScraper(&http.Client{}),
 	}
 	srv.mountHandlers()
+
+	exe, err := os.Executable()
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	f, err := os.Open(filepath.Join(filepath.Dir(exe), "sessions.csv"))
+	if err == nil {
+		SessionData.Load(f)
+		_ = f.Close()
+		os.Remove(f.Name())
+	}
+
 	return srv
 }
 
@@ -80,6 +90,7 @@ func (s *Server) mountHandlers() {
 	mux.HandleFunc("GET /{$}", s.indexHandler)
 	mux.Handle("GET /download/{tmpFile}", s.mustBeLoggedInMiddleware(s.downloadHandler()))
 	mux.Handle("GET /user-initials", s.mustBeLoggedInMiddleware(s.userInitialsHandler()))
+	mux.Handle("GET /update", s.mustBeLoggedInMiddleware(s.updateHandler()))
 	mux.Handle("GET /ws", s.mustBeLoggedInMiddleware(s.wsHandler()))
 
 	// Admin routes

@@ -158,6 +158,12 @@ const IsRecipeForUserExist = `
 									 	AND url = ?)
 			   )`
 
+// SelectAppInfo fetches general information on the application.
+const SelectAppInfo = `
+	SELECT is_update_available, updated_at, update_last_checked_at
+	FROM app
+	WHERE id = 1`
+
 // SelectAuthToken fetches a non-expired auth token by the selector.
 const SelectAuthToken = `
 	SELECT id, hash_validator, expires, user_id

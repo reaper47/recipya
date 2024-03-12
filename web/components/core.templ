@@ -1,6 +1,7 @@
 package components
 
 import (
+	"time"
 	"github.com/reaper47/recipya/internal/templates"
 )
 
@@ -10,7 +11,7 @@ templ HomePage(data templates.Data) {
 	}
 }
 
-templ aboutDialog(version string) {
+templ aboutDialog(data templates.AboutData) {
 	<dialog id="about_dialog" class="modal">
 		<div class="modal-box">
 			<div class="overflow-x-auto">
@@ -21,8 +22,22 @@ templ aboutDialog(version string) {
 							<td class="">Recipya</td>
 						</tr>
 						<tr>
-							<th scope="row" class="text-right">Version:</th>
-							<td>{ version }</td>
+							<th scope="row" class="text-right">
+								Version:
+								<br/>
+								<span style="font-size: .75rem; font-weight: normal;">
+									Last checked: { data.LastCheckedUpdateAt.Format(time.DateOnly) }
+									<br/>
+									Last updated: { data.LastUpdatedAt.Format(time.DateOnly) }
+								</span>
+							</th>
+							<td>
+								{ data.Version.String() }
+								if data.IsUpdateAvailable {
+									<br/>
+									<button class="btn btn-secondary btn-sm" hx-get="/update" hx-swap="none" hx-indicator="#fullscreen-loader" _="on click call about_dialog.close()">Update</button>
+								}
+							</td>
 						</tr>
 						<tr>
 							<th scope="row" class="text-right">Guide:</th>

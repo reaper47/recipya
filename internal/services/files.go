@@ -3,10 +3,13 @@ package services
 import (
 	"archive/zip"
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/blang/semver"
 	"github.com/disintegration/imaging"
+	"github.com/google/go-github/v59/github"
 	"github.com/google/uuid"
 	"github.com/jung-kurt/gofpdf"
 	"github.com/reaper47/recipya/internal/app"
@@ -23,6 +26,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"runtime"
 	"slices"
 	"sort"
 	"strconv"
@@ -65,14 +69,10 @@ func (f *Files) BackupGlobal() error {
 	if err != nil {
 		return fmt.Errorf("could not create backup %q", name)
 	}
-	defer func() {
-		_ = zf.Close()
-	}()
+	defer zf.Close()
 
 	zw := zip.NewWriter(zf)
-	defer func() {
-		_ = zw.Close()
-	}()
+	defer zw.Close()
 
 	source := filepath.Dir(app.DBBasePath)
 
@@ -119,9 +119,7 @@ func (f *Files) BackupGlobal() error {
 		if err != nil {
 			return err
 		}
-		defer func() {
-			_ = f.Close()
-		}()
+		defer f.Close()
 
 		_, err = io.Copy(w, f)
 		return err
@@ -212,14 +210,10 @@ func (f *Files) backupUserData(repo RepositoryService, userID int64) error {
 	if err != nil {
 		return fmt.Errorf("could not create backup %q", name)
 	}
-	defer func() {
-		_ = zf.Close()
-	}()
+	defer zf.Close()
 
 	zw := zip.NewWriter(zf)
-	defer func() {
-		_ = zw.Close()
-	}()
+	defer zw.Close()
 
 	var (
 		deleteStatements []string
@@ -389,9 +383,7 @@ func addImageToZip(zw *zip.Writer, img uuid.UUID) error {
 	if err != nil {
 		return err
 	}
-	defer func() {
-		_ = file.Close()
-	}()
+	defer file.Close()
 
 	info, err := file.Stat()
 	if err != nil {
@@ -856,9 +848,7 @@ func (f *Files) processZip(file *multipart.FileHeader) models.Recipes {
 		log.Println(err)
 		return make(models.Recipes, 0)
 	}
-	defer func() {
-		_ = openFile.Close()
-	}()
+	defer openFile.Close()
 
 	buf := new(bytes.Buffer)
 	fileSize, err := io.Copy(buf, openFile)
@@ -959,9 +949,7 @@ func (f *Files) processJSON(file *multipart.FileHeader) *models.Recipe {
 		log.Printf("error opening file %s: %q", file.Filename, err.Error())
 		return nil
 	}
-	defer func() {
-		_ = fi.Close()
-	}()
+	defer fi.Close()
 
 	r, err := f.extractRecipe(fi)
 	if err != nil {
@@ -977,9 +965,7 @@ func processMasterCook(file *multipart.FileHeader) models.Recipes {
 		log.Printf("error opening file %s: %q", file.Filename, err.Error())
 		return nil
 	}
-	defer func() {
-		_ = f.Close()
-	}()
+	defer f.Close()
 
 	return models.NewRecipesFromMasterCook(f)
 }
@@ -1012,6 +998,30 @@ func (f *Files) extractRecipe(rd io.Reader) (*models.Recipe, error) {
 	return r, err
 }
 
+// IsAppLatest checks whether there is a software update.
+func (f *Files) IsAppLatest(current semver.Version) (bool, *github.RepositoryRelease, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
+	defer cancel()
+
+	gh := github.NewClient(http.DefaultClient)
+
+	rel, res, err := gh.Repositories.GetLatestRelease(ctx, "reaper47", "recipya")
+	if err != nil {
+		return false, nil, err
+	}
+
+	if res.StatusCode != http.StatusOK {
+		return false, nil, fmt.Errorf("got status code %d instead of 200 when fetching latest releases on GitHub", res.StatusCode)
+	}
+
+	version, err := semver.Parse(strings.Replace(rel.GetTagName(), "v", "", 1))
+	if err != nil {
+		return false, nil, err
+	}
+
+	return version.LTE(current), rel, nil
+}
+
 // ScrapeAndStoreImage takes a URL as input and will download and store the image, and return a UUID referencing the image's internal ID
 func (f *Files) ScrapeAndStoreImage(rawURL string) (uuid.UUID, error) {
 	if rawURL == "" {
@@ -1031,9 +1041,7 @@ func (f *Files) ScrapeAndStoreImage(rawURL string) (uuid.UUID, error) {
 	if err != nil {
 		return uuid.Nil, err
 	}
-	defer func() {
-		_ = resImage.Body.Close()
-	}()
+	defer resImage.Body.Close()
 
 	if resImage == nil {
 		return uuid.Nil, errors.New("image response is nil")
@@ -1073,9 +1081,7 @@ func (f *Files) ExportCookbook(cookbook models.Cookbook, fileType models.FileTyp
 	if err != nil {
 		return "", err
 	}
-	defer func() {
-		_ = out.Close()
-	}()
+	defer out.Close()
 
 	_, err = out.Write(buf.Bytes())
 	if err != nil {
@@ -1169,9 +1175,7 @@ func (f *Files) ExtractUserBackup(date string, userID int64) (*models.UserBackup
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		_ = r.Close()
-	}()
+	defer r.Close()
 
 	imagesPath := filepath.Join(app.BackupPath, "restore", userIDStr, "images")
 	err = os.MkdirAll(imagesPath, os.ModePerm)
@@ -1242,9 +1246,7 @@ func (f *Files) ExtractUserBackup(date string, userID int64) (*models.UserBackup
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		_ = rc.Close()
-	}()
+	defer rc.Close()
 
 	data, err := io.ReadAll(rc)
 	if err != nil {
@@ -1288,9 +1290,7 @@ func (f *Files) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
 	if err != nil {
 		return uuid.Nil, err
 	}
-	defer func() {
-		_ = out.Close()
-	}()
+	defer out.Close()
 
 	width := img.Bounds().Dx()
 	height := img.Bounds().Dy()
@@ -1303,4 +1303,142 @@ func (f *Files) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
 		return uuid.Nil, err
 	}
 	return imageUUID, nil
+}
+
+// UpdateApp updates the application to the latest version.
+func (f *Files) UpdateApp(current semver.Version) error {
+	// Check if latest
+	isLatest, rel, err := f.IsAppLatest(current)
+	if err != nil {
+		return err
+	}
+
+	if isLatest {
+		return app.ErrNoUpdate
+	}
+
+	// Find asset
+	name := fmt.Sprintf("recipya-%s-%s", runtime.GOOS, runtime.GOARCH)
+	i := slices.IndexFunc(rel.Assets, func(asset *github.ReleaseAsset) bool { return *asset.Name == name+".zip" })
+	if i == -1 {
+		return fmt.Errorf("could not find asset %q", name)
+	}
+
+	// Download asset
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
+	defer cancel()
+
+	gh := github.NewClient(http.DefaultClient)
+	rc, _, err := gh.Repositories.DownloadReleaseAsset(ctx, "reaper47", "recipya", rel.Assets[i].GetID(), gh.Client())
+	if err != nil {
+		return err
+	}
+	defer rc.Close()
+
+	file, err := os.CreateTemp("", "*")
+	if err != nil {
+		return err
+	}
+	defer os.Remove(file.Name())
+
+	_, err = io.Copy(file, rc)
+	if err != nil {
+		_ = file.Close()
+		return err
+	}
+	_ = file.Close()
+
+	tempDir, err := os.MkdirTemp("", "*")
+	if err != nil {
+		return err
+	}
+	defer os.RemoveAll(tempDir)
+
+	err = unzip(file.Name(), tempDir)
+	if err != nil {
+		return err
+	}
+
+	// Install
+	exe, err := os.Executable()
+	if err != nil {
+		return err
+	}
+
+	exeBak := exe + ".bak"
+	defer os.Remove(exeBak)
+
+	path := filepath.Join(tempDir, name)
+	if runtime.GOOS == "windows" {
+		err = copyFile(exe, exeBak)
+		if err != nil {
+			return err
+		}
+
+		err = copyFile(path+".exe", exe+".new")
+		if err != nil {
+			return err
+		}
+	} else {
+		err = os.Rename(exe, exeBak)
+		if err != nil {
+			return err
+		}
+
+		err = copyFile(path, exe)
+		if err != nil {
+			_ = os.Rename(exeBak, exe)
+			return err
+		}
+
+		err = os.Chmod(exe, 0775)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func unzip(src, dest string) error {
+	zr, err := zip.OpenReader(src)
+	if err != nil {
+		return err
+	}
+
+	for _, f := range zr.File {
+		rcFile, err := f.Open()
+		if err != nil {
+			return err
+		}
+
+		path := filepath.Join(dest, f.Name)
+		if f.FileInfo().IsDir() {
+			err = os.MkdirAll(path, f.Mode())
+			if err != nil {
+				return err
+			}
+			continue
+		}
+
+		dest, err := os.Create(path)
+		if err != nil {
+			return err
+		}
+
+		_, err = io.Copy(dest, rcFile)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func copyFile(src, dst string) error {
+	f, err := os.ReadFile(src)
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(dst, f, 0o644)
 }

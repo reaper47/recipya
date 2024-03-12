@@ -237,7 +237,9 @@ func TestHandlers_Auth_ForgotPassword(t *testing.T) {
 	repo := &mockRepository{
 		UsersRegistered: []models.User{{ID: 1, Email: "test@example.com"}},
 	}
-	srv := server.NewServer(repo, emailMock, &mockFiles{}, &mockIntegrations{}, &mockScraper{})
+	srv := newServerTest()
+	srv.Email = emailMock
+	srv.Repository = repo
 
 	uri := "/auth/forgot-password"
 

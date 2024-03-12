@@ -13,6 +13,7 @@
         <function importPath="os" name="Remove" />
         <function importPath="io" name="Copy" />
         <function importPath="fmt" name="Fprintf" />
+        <function importPath="os" name="RemoveAll" />
       </functions>
       <methods>
         <method importPath="hash" receiver="Hash" name="Write" />
@@ -37,6 +38,8 @@
         <method importPath="database/sql" receiver="*DB" name="Close" />
         <method importPath="archive/zip" receiver="*ReadCloser" name="Close" />
         <method importPath="net" receiver="Conn" name="Close" />
+        <method importPath="github.com/gorilla/websocket" receiver="*Conn" name="Close" />
+        <method importPath="net" receiver="Listener" name="Close" />
       </methods>
     </inspection_tool>
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">

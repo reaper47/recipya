@@ -2,6 +2,7 @@ package server_test
 
 import (
 	"errors"
+	"github.com/blang/semver"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"net/http"
@@ -98,7 +99,7 @@ func TestHandlers_General_Index(t *testing.T) {
 			`<li onclick="document.activeElement?.blur()"><a href="/admin" hx-get="/admin" hx-target="#content" hx-push-url="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z"></path></svg>Admin</a></li>`,
 			`<li onclick="document.activeElement?.blur()"><a href="/reports" hx-get="/reports" hx-target="#content" hx-push-url="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3v1.5M3 21v-6m0 0 2.77-.693a9 9 0 0 1 6.208.682l.108.054a9 9 0 0 0 6.086.71l3.114-.732a48.524 48.524 0 0 1-.005-10.499l-3.11.732a9 9 0 0 1-6.085-.711l-.108-.054a9 9 0 0 0-6.208-.682L3 4.5M3 15V4.5"></path></svg>Reports</a></li><div class="divider m-0"></div>`,
 			`<li onclick="document.activeElement?.blur()"><a href="/settings" hx-get="/settings" hx-target="#content" hx-push-url="true"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>Settings</a></li>`,
-			`<li onclick="about_dialog.showModal()"><a><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>About</a></li><li><a hx-post="/auth/logout"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-0 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>Log out</a></li></ul></div>`,
+			`<li onclick="about_dialog.showModal()" class=""><a><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>About</a></li><li><a hx-post="/auth/logout"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-0 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>Log out</a></li>`,
 			`<div id="ws-notification-container" class="z-20 fixed bottom-0 right-0 p-6 cursor-default hidden"><div class="bg-blue-500 text-white px-4 py-2 rounded shadow-md"><p class="font-medium text-center pb-1"></p></div></div>`,
 			"Add recipe",
 			`<a class="tooltip tooltip-right active" data-tip="Recipes">`,
@@ -109,6 +110,23 @@ func TestHandlers_General_Index(t *testing.T) {
 		assertStringsInHTML(t, got, want)
 		notWant := []string{`A powerful recipe manager that will blow your kitchen away`, `href="/auth/login"`}
 		assertStringsNotInHTML(t, got, notWant)
+	})
+
+	t.Run("application update available", func(t *testing.T) {
+		app.Info.IsUpdateAvailable = true
+		defer func() {
+			app.Info.IsUpdateAvailable = false
+		}()
+
+		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		assertStringsInHTML(t, getBodyHTML(rr), []string{
+			`<div class="dropdown dropdown-end indicator" hx-get="/user-initials" hx-trigger="load" hx-target="#user-initials">`,
+			`<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar placeholder indicator">`,
+			`<span class="indicator-item indicator-start badge badge-sm badge-secondary z-30">New update</span>`,
+			`<button class="btn btn-secondary btn-sm" hx-get="/update" hx-swap="none" hx-indicator="#fullscreen-loader" _="on click call about_dialog.close()">Update</button>`,
+		})
 	})
 }
 
@@ -123,6 +141,56 @@ func TestHandlers_General_NotFound(t *testing.T) {
 		"The page you requested to view is not found. Please go back to the main page.",
 	}
 	assertStringsInHTML(t, getBodyHTML(rr), want)
+}
+
+func TestHandlers_General_Update(t *testing.T) {
+	srv := newServerTest()
+	originalFiles := srv.Files
+
+	const uri = "/update"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
+	})
+
+	t.Run("error checking update", func(t *testing.T) {
+		srv.Files = &mockFiles{
+			updateAppFunc: func(_ semver.Version) error {
+				return errors.New("beautiful death")
+			},
+		}
+		defer func() {
+			srv.Files = originalFiles
+		}()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusInternalServerError)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to update.\",\"title\":\"General Error\"}"}`)
+	})
+
+	t.Run("no update available", func(t *testing.T) {
+		srv.Files = &mockFiles{
+			updateAppFunc: func(_ semver.Version) error {
+				return app.ErrNoUpdate
+			},
+		}
+		defer func() {
+			srv.Files = originalFiles
+		}()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusNoContent)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-warning\",\"message\":\"No update available.\",\"title\":\"\"}"}`)
+	})
+
+	t.Run("update available", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusNoContent)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-info\",\"message\":\"Application will reload in 5 seconds.\",\"title\":\"Software updated\"}"}`)
+	})
 }
 
 func TestHandlers_General_UserInitials(t *testing.T) {

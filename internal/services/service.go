@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"context"
 	"database/sql"
+	"github.com/blang/semver"
+	"github.com/google/go-github/v59/github"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
@@ -43,6 +45,10 @@ type RepositoryService interface {
 
 	// Categories gets all categories in the database.
 	Categories(userID int64) ([]string, error)
+
+	// CheckUpdate checks whether there is a new release for Recipya.
+	// It returns the latest information on the application.
+	CheckUpdate(files FilesService) (models.AppInfo, error)
 
 	// Confirm confirms the user's account.
 	Confirm(userID int64) error
@@ -224,14 +230,20 @@ type FilesService interface {
 	// ExtractRecipes extracts the recipes from the HTTP files.
 	ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recipes
 
-	// ScrapeAndStoreImage takes a URL as input and will download and store the image, and return a UUID referencing the image's internal ID
-	ScrapeAndStoreImage(rawURL string) (uuid.UUID, error)
-
 	// ExtractUserBackup extracts data from the user backup for restoration.
 	ExtractUserBackup(date string, userID int64) (*models.UserBackup, error)
 
+	// IsAppLatest checks whether there is a software update.
+	IsAppLatest(current semver.Version) (bool, *github.RepositoryRelease, error)
+
 	// ReadTempFile gets the content of a file in the temporary directory.
 	ReadTempFile(name string) ([]byte, error)
+
+	// ScrapeAndStoreImage takes a URL as input and will download and store the image, and return a UUID referencing the image's internal ID
+	ScrapeAndStoreImage(rawURL string) (uuid.UUID, error)
+
+	// UpdateApp updates the application to the latest version.
+	UpdateApp(current semver.Version) error
 
 	// UploadImage uploads an image to the server.
 	UploadImage(rc io.ReadCloser) (uuid.UUID, error)

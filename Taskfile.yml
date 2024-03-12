@@ -30,11 +30,10 @@ tasks:
   release:
     deps:
       - test
-      - build
     requires:
       vars: [ tag ]
     cmds:
-      - go run ./releases/main.go -package github.com/reaper47/heavy-metal-notifier -tag {{.tag}}
+      - go run ./releases/main.go -package github.com/reaper47/recipya -tag {{.tag}}
       - gh release create {{.tag}} ./releases/{{.tag}}/*
 
   run:

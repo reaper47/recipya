@@ -2,7 +2,9 @@ package app
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
+	"github.com/blang/semver"
 	"io"
 	"net"
 	"net/url"
@@ -11,11 +13,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
-)
-
-const (
-	Version        = "1.1.0" // Version represents the current version of the application.
-	configFileName = "config.json"
+	"time"
 )
 
 var (
@@ -23,10 +21,27 @@ var (
 	DBBasePath string // DBBasePath is the directory where the database files are stored.
 	ImagesDir  string // ImagesDir is the directory where user images are stored.
 
+	Info = GeneralInfo{
+		Version: semver.Version{
+			Major: 1,
+			Minor: 1,
+			Patch: 0,
+		},
+	} // Info stores general application information.
+
 	FdcDB     = "fdc.db"     // FdcDB is the name of the FDC database.
 	RecipyaDB = "recipya.db" // RecipyaDB is the name of Recipya's main database.
 
+	ErrNoUpdate = errors.New("already latest version") // ErrNoUpdate is the error for when the application is up-to-date.
 )
+
+// GeneralInfo holds information on the application.
+type GeneralInfo struct {
+	IsUpdateAvailable   bool
+	LastCheckedUpdateAt time.Time
+	LastUpdatedAt       time.Time
+	Version             semver.Version
+}
 
 // Config references a global ConfigFile.
 var Config ConfigFile
@@ -49,7 +64,11 @@ func (c *ConfigFile) Address() string {
 	}
 
 	if isLocalhost && c.Server.Port > 0 {
-		return c.Server.URL + ":" + strconv.Itoa(c.Server.Port)
+		baseURL := c.Server.URL
+		if runtime.GOOS == "windows" {
+			baseURL = "http://127.0.0.1"
+		}
+		return baseURL + ":" + strconv.Itoa(c.Server.Port)
 	}
 
 	localAddr := udpAddr()
@@ -61,10 +80,6 @@ func (c *ConfigFile) Address() string {
 		c.Server.Port = localAddr.Port
 	}
 	port := ":" + strconv.Itoa(c.Server.Port)
-
-	if runtime.GOOS == "windows" && isLocalhost {
-		return c.Server.URL + port
-	}
 
 	if isRunningInDocker() {
 		addr := c.Server.URL
@@ -92,9 +107,7 @@ func udpAddr() *net.UDPAddr {
 	if err != nil {
 		return nil
 	}
-	defer func() {
-		_ = conn.Close()
-	}()
+	defer conn.Close()
 
 	return conn.LocalAddr().(*net.UDPAddr)
 }
@@ -160,7 +173,7 @@ func Init() {
 
 	setup(dir)
 
-	f, err := os.Open(filepath.Join(dir, configFileName))
+	f, err := os.Open(filepath.Join(dir, "config.json"))
 	if err != nil {
 		NewConfig(nil)
 	} else {

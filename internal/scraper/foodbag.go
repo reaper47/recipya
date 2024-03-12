@@ -89,9 +89,7 @@ func (s *Scraper) scrapeFoodbag(rawURL string) (models.RecipeSchema, error) {
 	if err != nil {
 		return models.RecipeSchema{}, err
 	}
-	defer func() {
-		_ = res.Body.Close()
-	}()
+	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusOK {
 		return models.RecipeSchema{}, fmt.Errorf("got status code %d for %q", res.StatusCode, apiURL)
