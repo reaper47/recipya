@@ -24,7 +24,7 @@ var (
 	Info = GeneralInfo{
 		Version: semver.Version{
 			Major: 1,
-			Minor: 0,
+			Minor: 1,
 			Patch: 0,
 		},
 	}
@@ -64,7 +64,11 @@ func (c *ConfigFile) Address() string {
 	}
 
 	if isLocalhost && c.Server.Port > 0 {
-		return c.Server.URL + ":" + strconv.Itoa(c.Server.Port)
+		baseURL := c.Server.URL
+		if runtime.GOOS == "windows" {
+			baseURL = "http://127.0.0.1"
+		}
+		return baseURL + ":" + strconv.Itoa(c.Server.Port)
 	}
 
 	localAddr := udpAddr()
@@ -76,10 +80,6 @@ func (c *ConfigFile) Address() string {
 		c.Server.Port = localAddr.Port
 	}
 	port := ":" + strconv.Itoa(c.Server.Port)
-
-	if runtime.GOOS == "windows" && isLocalhost {
-		return c.Server.URL + port
-	}
 
 	if isRunningInDocker() {
 		addr := c.Server.URL
