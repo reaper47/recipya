@@ -62,16 +62,21 @@ func waitForRecipyaToStop() {
 		log.Fatalln(err)
 	}
 
-	var proc *process.Process = nil
+	var (
+		proc    *process.Process
+		isFound = false
+	)
+
 	for _, p := range processes {
 		name, _ := p.Name()
 		if strings.Contains(name, "recipya") {
 			proc = p
+			isFound = true
 			break
 		}
 	}
 
-	if proc != nil {
+	if isFound {
 		n, _ := proc.Name()
 		log.Printf("Recipya process %q found with pid %d", n, proc.Pid)
 

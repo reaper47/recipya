@@ -65,7 +65,7 @@ func (s *Server) userInitialsHandler() http.HandlerFunc {
 }
 
 func (s *Server) updateHandler() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, _ *http.Request) {
 		err := s.Files.UpdateApp(app.Info.Version)
 		if errors.Is(err, app.ErrNoUpdate) {
 			w.Header().Set("HX-Trigger", models.NewWarningToast("", "No update available.", "").Render())

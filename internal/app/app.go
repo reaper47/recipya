@@ -27,12 +27,12 @@ var (
 			Minor: 1,
 			Patch: 0,
 		},
-	}
+	} // Info stores general application information.
 
 	FdcDB     = "fdc.db"     // FdcDB is the name of the FDC database.
 	RecipyaDB = "recipya.db" // RecipyaDB is the name of Recipya's main database.
 
-	ErrNoUpdate = errors.New("already latest version")
+	ErrNoUpdate = errors.New("already latest version") // ErrNoUpdate is the error for when the application is up-to-date.
 )
 
 // GeneralInfo holds information on the application.
