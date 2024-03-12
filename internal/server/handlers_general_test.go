@@ -125,7 +125,7 @@ func TestHandlers_General_Index(t *testing.T) {
 			`<div class="dropdown dropdown-end indicator" hx-get="/user-initials" hx-trigger="load" hx-target="#user-initials">`,
 			`<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar placeholder indicator">`,
 			`<span class="indicator-item indicator-start badge badge-sm badge-secondary z-30">New update</span>`,
-			`<tr><th scope="row" class="text-right">Version:<br><span style="font-size: .75rem; font-weight: normal;">Last checked: 0001-01-01<br>Last updated: 0001-01-01</span></th><td>1.0.0 <br><button class="btn btn-secondary btn-sm" hx-get="/update" hx-swap="none" hx-indicator="#fullscreen-loader" _="on click call about_dialog.close()">Update</button></td></tr>`,
+			`<button class="btn btn-secondary btn-sm" hx-get="/update" hx-swap="none" hx-indicator="#fullscreen-loader" _="on click call about_dialog.close()">Update</button>`,
 		})
 	})
 }
