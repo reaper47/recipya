@@ -1385,8 +1385,9 @@ func (f *Files) UpdateApp(current semver.Version) error {
 			return err
 		}
 
-		err = os.Rename(path, exe)
+		err = copyFile(path, exe)
 		if err != nil {
+			_ = os.Rename(exeBak, exe)
 			return err
 		}
 

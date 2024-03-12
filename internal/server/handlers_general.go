@@ -13,6 +13,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strconv"
+	"syscall"
 	"time"
 )
 
@@ -101,9 +102,10 @@ func (s *Server) updateHandler() http.HandlerFunc {
 				log.Printf("Error updating application: %q", err)
 				return
 			}
+			dir := filepath.Dir(exe)
 
 			if runtime.GOOS == "windows" {
-				err = exec.Command(filepath.Join(filepath.Dir(exe), "updater.exe")).Start()
+				err = exec.Command(filepath.Join(dir, "updater.exe")).Start()
 				if err != nil {
 					log.Printf("Error starting application: %q", err)
 					return
@@ -111,7 +113,7 @@ func (s *Server) updateHandler() http.HandlerFunc {
 
 				log.Println("Started updater.exe. As you are on Windows, the running program can be found under Task Manager -> Details -> recipya.exe")
 			} else {
-				err = exec.Command(exe).Start()
+				err = syscall.Exec(filepath.Join(dir, "recipya"), os.Args, os.Environ())
 				if err != nil {
 					log.Printf("Error starting application: %q", err)
 					return
