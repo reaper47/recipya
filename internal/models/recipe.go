@@ -579,9 +579,8 @@ func NewRecipeFromTextFile(r io.Reader) (Recipe, error) {
 	}
 
 	for i, block := range blocks[1:] {
-		if bytes.Contains(block, []byte("•\t")) {
-			block = bytes.ReplaceAll(block, []byte("•\t"), []byte(""))
-		}
+		block = bytes.ReplaceAll(block, []byte("•\t"), []byte(""))
+		block = bytes.ReplaceAll(block, []byte("* "), []byte(""))
 
 		isKeyValue, isURL := isBlockKeyValues(block, &recipe)
 		if isURL {
@@ -636,8 +635,10 @@ func NewRecipeFromTextFile(r io.Reader) (Recipe, error) {
 			lines := strings.Split(string(block), "\n")
 			numSentences := len(strings.Split(lines[len(lines)-1], "."))
 			if len(lines) < 3 && (dotIndex == -1 || dotIndex > 4) && numSentences < 3 {
-				isIngredientsBlock = true
-				recipe.Ingredients = append(recipe.Ingredients, string(bytes.TrimSpace(block)))
+				if !bytes.Contains(block, []byte("Slik gjør du")) {
+					isIngredientsBlock = true
+					recipe.Ingredients = append(recipe.Ingredients, string(bytes.TrimSpace(block)))
+				}
 				continue
 			}
 
@@ -734,7 +735,12 @@ func isBlockKeyValues(block []byte, recipe *Recipe) (isKeyValue, isURL bool) {
 	isKeyValue = colonIndex >= 0
 
 	if colonIndex >= 0 {
-		parse, err := url.Parse(string(bytes.TrimSpace(block)))
+		rawURL := bytes.TrimSpace(block)
+		before, _, ok := bytes.Cut(rawURL, []byte("\n"))
+		if ok {
+			rawURL = before
+		}
+		parse, err := url.Parse(string(rawURL))
 		if bytes.HasPrefix(block, []byte("http")) && err == nil {
 			recipe.URL = parse.String()
 			return false, true
