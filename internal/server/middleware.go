@@ -101,6 +101,10 @@ func (s *Server) mustBeLoggedInMiddleware(next http.Handler) http.Handler {
 		if app.Config.Server.IsAutologin {
 			ctx := context.WithValue(r.Context(), UserIDKey, int64(1))
 
+			if SessionData == nil {
+				SessionData = make(SessionDataMap)
+			}
+
 			sid := uuid.New()
 			SessionData[sid] = 1
 			http.SetCookie(w, NewSessionCookie(sid.String()))

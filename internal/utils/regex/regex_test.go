@@ -2,6 +2,7 @@ package regex_test
 
 import (
 	"github.com/reaper47/recipya/internal/utils/regex"
+	"regexp"
 	"testing"
 )
 
@@ -13,13 +14,7 @@ func TestRegex_BeginsWithWord(t *testing.T) {
 			"one hundred thousand 23",
 			"Twenty eight giraffes on Mars.",
 		}
-		for _, s := range xs {
-			t.Run("regex is valid "+s, func(t *testing.T) {
-				if !regex.BeginsWithWord.MatchString(s) {
-					t.Fatal("got false when want true")
-				}
-			})
-		}
+		assertRegex(t, xs, regex.BeginsWithWord)
 	})
 
 	t.Run("invalid", func(t *testing.T) {
@@ -47,13 +42,7 @@ func TestRegex_Decimal(t *testing.T) {
 			"1024.6894578",
 			".3234234",
 		}
-		for _, s := range xs {
-			t.Run("regex is valid "+s, func(t *testing.T) {
-				if !regex.Decimal.MatchString(s) {
-					t.Fatal("got false when want true")
-				}
-			})
-		}
+		assertRegex(t, xs, regex.Decimal)
 	})
 
 	t.Run("invalid", func(t *testing.T) {
@@ -83,13 +72,7 @@ func TestRegex_Digit(t *testing.T) {
 			"apple number 48 and orange number 2391",
 			"2.3 tests",
 		}
-		for _, s := range xs {
-			t.Run("regex is valid "+s, func(t *testing.T) {
-				if !regex.Digit.MatchString(s) {
-					t.Fatal("got false when want true")
-				}
-			})
-		}
+		assertRegex(t, xs, regex.Digit)
 	})
 
 	t.Run("invalid", func(t *testing.T) {
@@ -116,13 +99,7 @@ func TestRegex_DimensionPattern(t *testing.T) {
 			"2x 150g salmon",
 			"2 x 150g salmon",
 		}
-		for _, s := range xs {
-			t.Run("regex is valid "+s, func(t *testing.T) {
-				if !regex.DimensionPattern.MatchString(s) {
-					t.Fatal("got false when want true")
-				}
-			})
-		}
+		assertRegex(t, xs, regex.DimensionPattern)
 	})
 
 	t.Run("invalid", func(t *testing.T) {
@@ -142,19 +119,13 @@ func TestRegex_DimensionPattern(t *testing.T) {
 
 func TestRegex_Email(t *testing.T) {
 	t.Run("valid", func(t *testing.T) {
-		emails := []string{
+		xs := []string{
 			"james@bond.com",
 			"hello@hello.ca",
 			"slave@ukrainia.ua",
 			"norway@rocks.no",
 		}
-		for _, email := range emails {
-			t.Run("regex is valid", func(t *testing.T) {
-				if !regex.Email.MatchString(email) {
-					t.Fatal("got false when want true")
-				}
-			})
-		}
+		assertRegex(t, xs, regex.Email)
 	})
 
 	t.Run("invalid", func(t *testing.T) {
@@ -178,48 +149,42 @@ func TestRegex_Email(t *testing.T) {
 }
 
 func TestRegex_Quantity(t *testing.T) {
-	testcasesValid := []struct{ quantity string }{
-		{quantity: "1ml"},
-		{quantity: "1mL"},
-		{quantity: "15 ml"},
-		{quantity: "16 mL"},
-		{quantity: "1l"},
-		{quantity: "1L"},
-		{quantity: "15 l"},
-		{quantity: "16 L"},
-		{quantity: "1°c"},
-		{quantity: "1°f"},
-		{quantity: "15 °c"},
-		{quantity: "16 °f"},
-		{quantity: "1°C"},
-		{quantity: "1°F"},
-		{quantity: "15 °C"},
-		{quantity: "16 °F"},
+	valid := []string{
+		"1ml",
+		"1mL",
+		"15 ml",
+		"16 mL",
+		"1l",
+		"1L",
+		"15 l",
+		"16 L",
+		"1°c",
+		"1°f",
+		"15 °c",
+		"16 °f",
+		"1°C",
+		"1°F",
+		"15 °C",
+		"16 °F",
 	}
-	for _, tc := range testcasesValid {
-		t.Run("regex is valid "+tc.quantity, func(t *testing.T) {
-			if !regex.Quantity.MatchString(tc.quantity) {
-				t.Error("got false when want true for")
-			}
-		})
-	}
+	assertRegex(t, valid, regex.Quantity)
 
-	testcasesInvalid := []struct{ quantity string }{
-		{quantity: "ml"},
-		{quantity: "mL"},
-		{quantity: "l"},
-		{quantity: "L"},
-		{quantity: "°c"},
-		{quantity: "°f"},
-		{quantity: "°C"},
-		{quantity: "°F"},
-		{quantity: "15 mX"},
-		{quantity: "\"15mx\""},
+	invalid := []string{
+		"ml",
+		"mL",
+		"l",
+		"L",
+		"°c",
+		"°f",
+		"°C",
+		"°F",
+		"15 mX",
+		"15mx",
 	}
-	for _, tc := range testcasesInvalid {
-		t.Run("regex is invalid "+tc.quantity, func(t *testing.T) {
-			if regex.Quantity.MatchString(tc.quantity) {
-				t.Errorf("got true when want false for %q", tc.quantity)
+	for _, s := range invalid {
+		t.Run("regex is invalid "+s, func(t *testing.T) {
+			if regex.Quantity.MatchString(s) {
+				t.Errorf("got true when want false for %q", s)
 			}
 		})
 	}
@@ -249,20 +214,14 @@ func TestRegex_Anchor(t *testing.T) {
 }
 
 func TestRegex_HourMinutes(t *testing.T) {
-	xs := []string{
+	valid := []string{
 		"45:23",
 		"45:00",
 		"120:59",
 	}
-	for _, s := range xs {
-		t.Run("regex is valid "+s, func(t *testing.T) {
-			if !regex.HourMinutes.MatchString(s) {
-				t.Error("got false but want true")
-			}
-		})
-	}
+	assertRegex(t, valid, regex.HourMinutes)
 
-	xs = []string{
+	invalid := []string{
 		":00",
 		"4500",
 		"120:60",
@@ -273,9 +232,32 @@ func TestRegex_HourMinutes(t *testing.T) {
 		"10:-43",
 		"10:80",
 	}
-	for _, s := range xs {
+	for _, s := range invalid {
 		t.Run("regex is invalid "+s, func(t *testing.T) {
 			if regex.HourMinutes.MatchString(s) {
+				t.Error("got true when want false")
+			}
+		})
+	}
+}
+
+func TestRegex_Time(t *testing.T) {
+	valid := []string{
+		"1 h 30 min",
+		"1h30min",
+		"30min",
+		"30 minutes",
+		"time: 1h",
+		"1 hour 30 minutes",
+	}
+	assertRegex(t, valid, regex.Time)
+
+	invalid := []string{
+		"4 mindre",
+	}
+	for _, s := range invalid {
+		t.Run("regex is invalid "+s, func(t *testing.T) {
+			if regex.Time.MatchString(s) {
 				t.Error("got true when want false")
 			}
 		})
@@ -471,90 +453,78 @@ func TestRegex_Units(t *testing.T) {
 }
 
 func TestRegex_UnitImperial(t *testing.T) {
-	valid := []struct{ in string }{
-		{"2 cups yay"}, {"1 cup yay"},
-		{"3 feet yay"}, {"1 foot yay"}, {"2 ft yay"}, {"3 ft. yay"}, {"3ft yay"}, {"3ft. yay"},
-		{"1 fluidounce"}, {"2 fluidounces"}, {"1 fluid oz."}, {"1 fluidoz."}, {"1 fl.oz."}, {"1 fl. oz."},
-		{"2 gallons"}, {"1 gallon"}, {"3 gals yay"}, {"1 gal yay"},
-		{"cut 1 in"}, {"cut 1 inch"}, {`cut 4"`}, {"cut 5 inches"}, {"cut 5 inche"},
-		{"5 ounces"}, {"6 ounce"}, {"5 oz"}, {"5 oz."},
-		{"1 pint"}, {"2 pints"}, {"3 pt"}, {"4 pt."},
-		{"2 pounds"}, {"1 pound"}, {"1 lb"}, {"1lb"}, {"2lbs"}, {"1lb"}, {"1#"}, {"4 #"},
-		{"1 quart"}, {"2 quarts"}, {"3 qt"}, {"4 qt."},
-		{"5 tablespoon"}, {"5 tablespoons"}, {"4 tbsp."}, {"4 tbsp"}, {"4tbsp."}, {"4tbsp"},
-		{"5 teaspoon"}, {"5 teaspoons"}, {"4 tsp."}, {"4 tsp"}, {"4tsp."}, {"4tsp"},
-		{"1 yard"}, {"1yard"}, {"5 yards"}, {"5yards"},
-		{"275°f"}, {"275 °f"}, {"275 degrees fahrenheit"}, {"275 fahrenheit"}, {"275 degree fahrenheit"},
+	valid := []string{
+		"2 cups yay", "1 cup yay",
+		"3 feet yay", "1 foot yay", "2 ft yay", "3 ft. yay", "3ft yay", "3ft. yay",
+		"1 fluidounce", "2 fluidounces", "1 fluid oz.", "1 fluidoz.", "1 fl.oz.", "1 fl. oz.",
+		"2 gallons", "1 gallon", "3 gals yay", "1 gal yay",
+		"cut 1 in", "cut 1 inch", `cut 4"`, "cut 5 inches", "cut 5 inche",
+		"5 ounces", "6 ounce", "5 oz", "5 oz.",
+		"1 pint", "2 pints", "3 pt", "4 pt.",
+		"2 pounds", "1 pound", "1 lb", "1lb", "2lbs", "1lb", "1#", "4 #",
+		"1 quart", "2 quarts", "3 qt", "4 qt.",
+		"5 tablespoon", "5 tablespoons", "4 tbsp.", "4 tbsp", "4tbsp.", "4tbsp",
+		"5 teaspoon", "5 teaspoons", "4 tsp.", "4 tsp", "4tsp.", "4tsp",
+		"1 yard", "1yard", "5 yards", "5yards",
+		"275°f", "275 °f", "275 degrees fahrenheit", "275 fahrenheit", "275 degree fahrenheit",
 	}
-	for _, tc := range valid {
-		t.Run(tc.in, func(t *testing.T) {
-			if !regex.UnitImperial.MatchString(tc.in) {
-				t.Fatal("got false when should match")
-			}
-		})
-	}
+	assertRegex(t, valid, regex.UnitImperial)
 
-	invalid := []struct{ in string }{
-		{"10 centimeters"}, {"1 centimeter"}, {"1cm"}, {"1 cm"},
-		{"10 decilitres"}, {"10 deciliters"}, {"1dl"}, {"10 dl"}, {"5 decilitre"}, {"5 decilitre"},
-		{"10 millilitres"}, {"10 milliliters"}, {"1 millilitre"}, {"1 milliliter"}, {"5ml"}, {"5 ml"},
-		{"10 millimetres"}, {"10 millimeters"}, {"1 millimetre"}, {"1 millimeter"}, {"5mm"}, {"5 mm"},
-		{"10 grams"}, {"10 grammes"}, {"1 gramme"}, {"10 gram"}, {"10 g"}, {"10g"},
-		{"10 kilograms"}, {"10 kilogrammes"}, {"1 kilogramme"}, {"10 kilogram"}, {"10 kg"}, {"10kg"},
-		{"10 milligrams"}, {"10 milligrammes"}, {"1 milligramme"}, {"10 milligram"}, {"10 mg"}, {"10mg"},
-		{"10 metres"}, {"10 meters"}, {"1 metre"}, {"1 meter"}, {"5m"}, {"5 m"},
-		{"10 litres"}, {"10 liters"}, {"1 litre"}, {"1 liter"}, {"5l"}, {"5 l"},
-		{"275°c"}, {"275 °c"}, {"275 degrees celsius"}, {"275 celsius"}, {"275 degree celsius"},
+	invalid := []string{
+		"10 centimeters", "1 centimeter", "1cm", "1 cm",
+		"10 decilitres", "10 deciliters", "1dl", "10 dl", "5 decilitre", "5 decilitre",
+		"10 millilitres", "10 milliliters", "1 millilitre", "1 milliliter", "5ml", "5 ml",
+		"10 millimetres", "10 millimeters", "1 millimetre", "1 millimeter", "5mm", "5 mm",
+		"10 grams", "10 grammes", "1 gramme", "10 gram", "10 g", "10g",
+		"10 kilograms", "10 kilogrammes", "1 kilogramme", "10 kilogram", "10 kg", "10kg",
+		"10 milligrams", "10 milligrammes", "1 milligramme", "10 milligram", "10 mg", "10mg",
+		"10 metres", "10 meters", "1 metre", "1 meter", "5m", "5 m",
+		"10 litres", "10 liters", "1 litre", "1 liter", "5l", "5 l",
+		"275°c", "275 °c", "275 degrees celsius", "275 celsius", "275 degree celsius",
 	}
-	for _, tc := range invalid {
-		t.Run(tc.in, func(t *testing.T) {
-			if regex.UnitImperial.MatchString(tc.in) {
-				t.Fatal("got a match when it should not have")
+	for _, s := range invalid {
+		t.Run(s, func(t *testing.T) {
+			if regex.UnitImperial.MatchString(s) {
+				t.Fatalf("%q matches when it should not have", s)
 			}
 		})
 	}
 }
 
 func TestRegex_UnitMetric(t *testing.T) {
-	valid := []struct{ in string }{
-		{"10 centimeters"}, {"1 centimeter"}, {"1cm"}, {"1 cm"},
-		{"10 decilitres"}, {"10 deciliters"}, {"1dl"}, {"10 dl"}, {"5 decilitre"}, {"5 decilitre"},
-		{"10 millilitres"}, {"10 milliliters"}, {"1 millilitre"}, {"1 milliliter"}, {"5ml"}, {"5 ml"},
-		{"10 millimetres"}, {"10 millimeters"}, {"1 millimetre"}, {"1 millimeter"}, {"5mm"}, {"5 mm"},
-		{"10 grams"}, {"10 grammes"}, {"1 gramme"}, {"10 gram"}, {"10 g"}, {"10g"},
-		{"10 kilograms"}, {"10 kilogrammes"}, {"1 kilogramme"}, {"10 kilogram"}, {"10 kg"}, {"10kg"},
-		{"10 milligrams"}, {"10 milligrammes"}, {"1 milligramme"}, {"10 milligram"}, {"10 mg"}, {"10mg"},
-		{"10 metres"}, {"10 meters"}, {"1 metre"}, {"1 meter"}, {"5m"}, {"5 m"},
-		{"10 litres"}, {"10 liters"}, {"1 litre"}, {"1 liter"}, {"5l"}, {"5 l"},
-		{"275°c"}, {"275 °c"}, {"275 degrees celsius"}, {"275 celsius"}, {"275 degree celsius"},
+	valid := []string{
+		"10 centimeters", "1 centimeter", "1cm", "1 cm",
+		"10 decilitres", "10 deciliters", "1dl", "10 dl", "5 decilitre", "5 decilitre",
+		"10 millilitres", "10 milliliters", "1 millilitre", "1 milliliter", "5ml", "5 ml",
+		"10 millimetres", "10 millimeters", "1 millimetre", "1 millimeter", "5mm", "5 mm",
+		"10 grams", "10 grammes", "1 gramme", "10 gram", "10 g", "10g",
+		"10 kilograms", "10 kilogrammes", "1 kilogramme", "10 kilogram", "10 kg", "10kg",
+		"10 milligrams", "10 milligrammes", "1 milligramme", "10 milligram", "10 mg", "10mg",
+		"10 metres", "10 meters", "1 metre", "1 meter", "5m", "5 m",
+		"10 litres", "10 liters", "1 litre", "1 liter", "5l", "5 l",
+		"275°c", "275 °c", "275 degrees celsius", "275 celsius", "275 degree celsius",
 	}
-	for _, tc := range valid {
-		t.Run(tc.in, func(t *testing.T) {
-			if !regex.UnitMetric.MatchString(tc.in) {
-				t.Fatal("got false when should match")
-			}
-		})
-	}
+	assertRegex(t, valid, regex.UnitMetric)
 
-	invalid := []struct{ in string }{
-		{"2 cups yay"}, {"1 cup yay"},
-		{"3 feet yay"}, {"1 foot yay"}, {"2 ft yay"}, {"3 ft. yay"}, {"3ft yay"}, {"3ft. yay"},
-		{"1 fluidounce"}, {"2 fluidounces"}, {"1 fluid oz."}, {"1 fluidoz."}, {"1 fl.oz."}, {"1 fl. oz."},
-		{"2 gallons"}, {"1 gallon"}, {"3 gals yay"}, {"1 gal yay"},
-		{"cut 1 in"}, {"cut 1 inch"}, {`cut 4"`}, {"cut 5 inches"}, {"cut 5 inche"},
-		{"5 ounces"}, {"6 ounce"}, {"5 oz"}, {"5 oz."},
-		{"1 pint"}, {"2 pints"}, {"3 pt"}, {"4 pt."},
-		{"2 pounds"}, {"1 pound"}, {"1 lb"}, {"1lb"}, {"2lbs"}, {"1lb"}, {"1#"}, {"4 #"},
-		{"1 quart"}, {"2 quarts"}, {"3 qt"}, {"4 qt."},
-		{"5 tablespoon"}, {"5 tablespoons"}, {"4 tbsp."}, {"4 tbsp"}, {"4tbsp."}, {"4tbsp"},
-		{"5 teaspoon"}, {"5 teaspoons"}, {"4 tsp."}, {"4 tsp"}, {"4tsp."}, {"4tsp"},
-		{"1 yard"}, {"1yard"}, {"5 yards"}, {"5yards"},
-		{"275°f"}, {"275 °f"}, {"275 degrees fahrenheit"}, {"275 fahrenheit"}, {"275 degree fahrenheit"},
+	invalid := []string{
+		"2 cups yay", "1 cup yay",
+		"3 feet yay", "1 foot yay", "2 ft yay", "3 ft. yay", "3ft yay", "3ft. yay",
+		"1 fluidounce", "2 fluidounces", "1 fluid oz.", "1 fluidoz.", "1 fl.oz.", "1 fl. oz.",
+		"2 gallons", "1 gallon", "3 gals yay", "1 gal yay",
+		"cut 1 in", "cut 1 inch", `cut 4"`, "cut 5 inches", "cut 5 inche",
+		"5 ounces", "6 ounce", "5 oz", "5 oz.",
+		"1 pint", "2 pints", "3 pt", "4 pt.",
+		"2 pounds", "1 pound", "1 lb", "1lb", "2lbs", "1lb", "1#", "4 #",
+		"1 quart", "2 quarts", "3 qt", "4 qt.",
+		"5 tablespoon", "5 tablespoons", "4 tbsp.", "4 tbsp", "4tbsp.", "4tbsp",
+		"5 teaspoon", "5 teaspoons", "4 tsp.", "4 tsp", "4tsp.", "4tsp",
+		"1 yard", "1yard", "5 yards", "5yards",
+		"275°f", "275 °f", "275 degrees fahrenheit", "275 fahrenheit", "275 degree fahrenheit",
 	}
-	for _, tc := range invalid {
-		t.Run(tc.in, func(t *testing.T) {
-			if regex.UnitMetric.MatchString(tc.in) {
-				t.Fatal("got a match when it should not have")
+	for _, s := range invalid {
+		t.Run(s, func(t *testing.T) {
+			if regex.UnitMetric.MatchString(s) {
+				t.Fatalf("%q a match when it should not have", s)
 			}
 		})
 	}
@@ -570,12 +540,7 @@ func TestRegex_Website(t *testing.T) {
 		"https://subdomain.example.com/path/to/page/subpage/subsubpage?key1=value1&key2=value2#fragment",
 		"https://realfood.tesco.com/recipes/salted-honey-and-rosemary-lamb-with-roasties-and-rainbow-carrots.html",
 	}
-
-	for _, url := range urls {
-		if !regex.URL.MatchString(url) {
-			t.Errorf("%v should match", url)
-		}
-	}
+	assertRegex(t, urls, regex.URL)
 }
 
 func TestRegex_WildcardURL(t *testing.T) {
@@ -590,10 +555,14 @@ func TestRegex_WildcardURL(t *testing.T) {
 		"/recipes/6/share",
 		"/download/656",
 	}
+	assertRegex(t, urls, regex.WildcardURL)
+}
 
-	for _, url := range urls {
-		if !regex.WildcardURL.MatchString(url) {
-			t.Errorf("%v should match", url)
+func assertRegex(tb testing.TB, testcases []string, r *regexp.Regexp) {
+	tb.Helper()
+	for _, tc := range testcases {
+		if !r.MatchString(tc) {
+			tb.Errorf("%v should match", tc)
 		}
 	}
 }

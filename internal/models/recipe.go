@@ -587,16 +587,28 @@ func NewRecipeFromTextFile(r io.Reader) (Recipe, error) {
 			continue
 		}
 
-		if (recipe.Description != "" && isDescriptionBlock) || (recipe.Description == "" && len(block) < 50 && regex.Digit.Match(block)) {
+		if (recipe.Description != "" && isDescriptionBlock) || (recipe.Description == "" && isDescriptionBlockWhenEmpty(block)) {
 			isDescriptionBlock = false
 			isMetaDataBlock = true
 
 			if recipe.Description != "" {
 				lines := bytes.Split(block, []byte("\n"))
-				if !isKeyValue && bytes.Contains(block, []byte(":")) || isBlockMostlyIngredients(block) {
+
+				numColons := 0
+				for _, line := range lines {
+					numColons += bytes.Count(line, []byte(":"))
+				}
+
+				matches := regex.Time.FindStringSubmatch(string(lines[0]))
+
+				switch {
+				case matches != nil && matches[0] != "" && len(matches) <= 3:
+				case len(lines) > 1 && numColons == len(lines):
+				case bytes.Contains(bytes.ToLower(block), []byte("porsjoner")):
+				case !isKeyValue && bytes.Contains(block, []byte(":")) || isBlockMostlyIngredients(block):
 					isMetaDataBlock = false
 					isIngredientsBlock = true
-				} else if len(lines) > 0 && len(lines[0]) > 50 || (len(lines) == 1 && !regex.Digit.Match(lines[0])) {
+				case len(lines) > 0 && len(lines[0]) > 50 || (len(lines) == 1 && !regex.Digit.Match(lines[0])):
 					isDescriptionBlock = true
 					isMetaDataBlock = false
 					recipe.Description += "\n\n"
@@ -609,7 +621,7 @@ func NewRecipeFromTextFile(r io.Reader) (Recipe, error) {
 			isDescriptionBlock = false
 			isMetaDataBlock = false
 			isIngredientsBlock = true
-		} else if isBlockInstructions(block) || (isIngredientsBlock && !isBlockMostlyIngredients(block)) || (isDescriptionBlock && regex.Unit.Match(block)) {
+		} else if isBlockInstructions(block) || (isIngredientsBlock && !isBlockMostlyIngredients(block)) || (isDescriptionBlock && regex.Unit.FindStringIndex(string(block)) != nil && regex.Unit.FindStringIndex(string(block))[0] < 50) {
 			isDescriptionBlock = false
 			isIngredientsBlock = false
 			isInstructionsBlock = true
@@ -621,20 +633,31 @@ func NewRecipeFromTextFile(r io.Reader) (Recipe, error) {
 		if isDescriptionBlock {
 			recipe.Description += string(block)
 		} else if isMetaDataBlock {
-			for _, line := range bytes.Split(block, []byte("\n")) {
+			parts := bytes.Split(block, []byte("\n"))
+			if len(parts) == 1 && len(bytes.Split(parts[0], []byte(";"))) > 1 {
+				parts = bytes.Split(parts[0], []byte(";"))
+			}
+
+			for _, line := range parts {
 				processMetaData(line, &recipe)
 			}
 		} else if isIngredientsBlock {
 			lines := strings.Split(string(block), "\n")
+			if len(lines) == 1 && !strings.Contains(strings.ToLower(lines[0]), "ingred") {
+				recipe.Description += lines[0]
+				continue
+			}
+
 			if len(lines) < 3 && regex.Unit.Match(blocks[i+1]) {
 				continue
 			}
+
 			recipe.Ingredients = append(recipe.Ingredients, lines...)
 		} else if isInstructionsBlock {
 			dotIndex := bytes.Index(block, []byte("."))
 			lines := strings.Split(string(block), "\n")
 			numSentences := len(strings.Split(lines[len(lines)-1], "."))
-			if len(lines) < 3 && (dotIndex == -1 || dotIndex > 4) && numSentences < 3 {
+			if !strings.Contains(lines[0], "Directions") && len(lines) < 3 && (dotIndex == -1 || dotIndex > 4) && numSentences < 3 {
 				if !bytes.Contains(block, []byte("Slik gjør du")) {
 					isIngredientsBlock = true
 					recipe.Ingredients = append(recipe.Ingredients, string(bytes.TrimSpace(block)))
@@ -681,6 +704,10 @@ func NewRecipeFromTextFile(r io.Reader) (Recipe, error) {
 		recipe.Category = "uncategorized"
 	}
 
+	for i, ing := range recipe.Ingredients {
+		recipe.Ingredients[i] = strings.TrimSpace(ing)
+	}
+
 	recipe.Ingredients = slices.DeleteFunc(recipe.Ingredients, func(s string) bool {
 		s = strings.ToLower(s)
 		return strings.HasPrefix(s, "prep") || strings.HasPrefix(s, "ingredien") || strings.HasPrefix(s, "slik") || strings.HasPrefix(s, "tilbe")
@@ -692,7 +719,7 @@ func NewRecipeFromTextFile(r io.Reader) (Recipe, error) {
 		}
 
 		s = strings.ToLower(s)
-		words := []string{"instr", "method", "recipe", "direction", "step by step", "slik", "fremg", "framg"}
+		words := []string{"instr", "method", "recipe", "direction", "step by step", "slik", "fremg", "framg", "preparation"}
 		for _, word := range words {
 			if strings.HasPrefix(s, word) || len(word) == 0 {
 				return true
@@ -759,6 +786,16 @@ func isBlockKeyValues(block []byte, recipe *Recipe) (isKeyValue, isURL bool) {
 	return isKeyValue, false
 }
 
+func isDescriptionBlockWhenEmpty(block []byte) bool {
+	//xi := regex.Digit.Find(block)
+	isSmall := len(block) < 50 && regex.Digit.Match(block)
+
+	lowerBlock := bytes.ToLower(block)
+	hasMetaKeyword := bytes.Contains(lowerBlock, []byte("yield")) || bytes.HasPrefix(lowerBlock, []byte("serves"))
+
+	return isSmall || hasMetaKeyword
+}
+
 func isBlockMostlyIngredients(block []byte) bool {
 	lines := bytes.Split(block, []byte("\n"))
 	numLines := len(lines)
@@ -773,11 +810,14 @@ func isBlockMostlyIngredients(block []byte) bool {
 			continue
 		}
 
-		dotIndex := bytes.IndexByte(line, '.')
-
-		_, err := strconv.ParseInt(string(line[0]), 10, 64)
-		if err == nil && (dotIndex == -1 || dotIndex > 4) {
-			hits++
+		lineStr := units.ReplaceVulgarFractions(string(line))
+		idx := regex.Digit.FindStringIndex(lineStr)
+		if len(idx) == 2 {
+			_, err := strconv.ParseInt(string(lineStr[idx[1]-1]), 10, 64)
+			if err == nil && idx[0] == 0 {
+				hits++
+				continue
+			}
 		}
 	}
 
@@ -841,14 +881,18 @@ func processMetaData(line []byte, recipe *Recipe) {
 			err error
 		)
 
-		matches := regex.Digit.FindAllString(string(line), 2)
-		if len(matches) == 1 && bytes.Contains(line, []byte("min")) {
-			dur, err = time.ParseDuration(matches[0] + "m")
-		} else if len(matches) == 1 && bytes.Contains(line, []byte("hour")) {
-			dur, err = time.ParseDuration(matches[0] + "h")
+		//matches2 := regex.Time.FindAllString(string(line), 2)
+
+		matches := regex.Time.FindAllString(string(line), 2)
+		if len(matches) == 1 && strings.Contains(matches[0], "h") {
+			dur, err = time.ParseDuration(regex.Digit.FindString(matches[0]) + "h")
+		} else if len(matches) == 1 && bytes.Contains(line, []byte("min")) {
+			dur, err = time.ParseDuration(regex.Digit.FindString(matches[0]) + "m")
+		} else if len(matches) == 1 && (bytes.Contains(line, []byte("hour")) || bytes.Contains(line, []byte("timer"))) {
+			dur, err = time.ParseDuration(regex.Digit.FindString(matches[0]) + "h")
 		} else if len(matches) == 2 {
-			h, _ := time.ParseDuration(matches[0] + "h")
-			m, _ := time.ParseDuration(matches[1] + "m")
+			h, _ := time.ParseDuration(regex.Digit.FindString(matches[0]) + "h")
+			m, _ := time.ParseDuration(regex.Digit.FindString(matches[1]) + "m")
 			dur = h + m
 		}
 
