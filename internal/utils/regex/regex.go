@@ -35,6 +35,9 @@ var (
 // Letters matches letters in the text.
 var Letters = regexp.MustCompile("[a-zA-Z]+")
 
+// Time matches time, such as 1h30min.
+var Time = regexp.MustCompile(`(?i)(\d+\s?h\s*)?(\d+\s?(?:min|minute|minutter|timer?)s?\b)|(\d+\s?h\s*)(\d+\s?mins?\b)?|(\d+\s?-\s?\d+\s*timer)`)
+
 // Unit matches a unit.
 var Unit = regexp.MustCompile(`(?i)((?:\d*\.?\d+\s*to\s*)?(?:\d*\s*\d+/)?(?:\d+-\d*/?)?\d*\.?\d+)-?\s*(centimeters?|centimetres?|cm\b|cups?|deciliters?|decilitres?|dl\b|feet|foot|ft\.?\b|′|fluid\s*ounces|fl\.?\s*oz\.*|fluid\s*oz\.?|gallons?|gals?\b|milliliters?|millilitres?|ml\b|millimeters?|millimetres?|mm\b|grams?|grammes?|\d*g\b|inches?|inch|in\b|["”]|kilograms?|kilogrammes?|kg|milligrams?|milligrammes?|mg\b|meters?|metres?|m\b|ounces?|oz\.?|pints?|fl\.?\s*pt\.?|pt\.?|pounds?|lbs?\.?\b|lb\.?\b|#|quarts?|fl\.?\s*qt\.?|qt\.?\b|liters?|litres?|l\b|tablespoons?|ss|tbsp\.?\w*|teaspoons?|ts\w?\.?|tsp\.?\w*|yards?|degrees?\s*celsius|degrees?\s*c|celsius|°?\s?c\b|degrees?\s*fahrenheit|degrees?\s*f|fahrenheit|°?\s?f\b)`)
 
