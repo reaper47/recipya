@@ -613,7 +613,7 @@ func NewRecipeFromTextFile(r io.Reader) (Recipe, error) {
 					recipe.Description += "\n\n"
 				case matches != nil && matches[0] != "" && len(matches) <= 3:
 				case len(lines) > 1 && numColons == len(lines):
-				case bytes.Contains(lower, []byte("porsjoner")):
+				case bytes.Contains(lower, []byte("porsjoner")) || bytes.HasPrefix(lower, []byte("tags")):
 				case !isKeyValue && bytes.Contains(block, []byte(":")) || isBlockMostlyIngredients(block):
 					isMetaDataBlock = false
 					isIngredientsBlock = true
@@ -668,7 +668,7 @@ func NewRecipeFromTextFile(r io.Reader) (Recipe, error) {
 			numSentences := len(strings.Split(lines[len(lines)-1], "."))
 			lower := strings.ToLower(lines[0])
 
-			if !strings.Contains(lower, "directions") && !strings.HasPrefix(lower, "fremgang") && len(lines) < 3 && (dotIndex == -1 || dotIndex > 4) && numSentences < 3 {
+			if !strings.HasPrefix(lower, "instruction") && !strings.HasPrefix(lower, "steps") && !strings.Contains(lower, "directions") && !strings.HasPrefix(lower, "fremgang") && len(lines) < 3 && (dotIndex == -1 || dotIndex > 4) && numSentences < 3 {
 				if len(lines) == 1 && bytes.Contains(block, []byte("personer")) {
 					processMetaData([]byte(lines[0]), &recipe)
 				} else if !bytes.Contains(block, []byte("Slik gjør du")) {
@@ -723,6 +723,10 @@ func NewRecipeFromTextFile(r io.Reader) (Recipe, error) {
 
 	recipe.Ingredients = slices.DeleteFunc(recipe.Ingredients, func(s string) bool {
 		s = strings.ToLower(s)
+		if s == "" {
+			return true
+		}
+
 		words := []string{"prep", "ingredien", "slik", "tilbe", "instruct", "method"}
 		for _, word := range words {
 			if strings.HasPrefix(s, word) || len(word) == 0 {
@@ -738,7 +742,7 @@ func NewRecipeFromTextFile(r io.Reader) (Recipe, error) {
 		}
 
 		s = strings.ToLower(s)
-		words := []string{"instr", "method", "recipe", "direction", "step by step", "slik", "fremg", "framg", "preparation"}
+		words := []string{"instr", "method", "recipe", "direction", "step by step", "slik", "fremg", "framg", "preparation", "steps"}
 		for _, word := range words {
 			if strings.HasPrefix(s, word) || len(word) == 0 {
 				return true
@@ -810,7 +814,8 @@ func isDescriptionBlockWhenEmpty(block []byte) bool {
 
 	lowerBlock := bytes.ToLower(block)
 	hasMetaKeyword := bytes.Contains(lowerBlock, []byte("yield")) || bytes.HasPrefix(lowerBlock, []byte("serves")) ||
-		bytes.Contains(lowerBlock, []byte("porsjoner")) || bytes.HasPrefix(lowerBlock, []byte("prep")) || bytes.HasPrefix(lowerBlock, []byte("course"))
+		bytes.Contains(lowerBlock, []byte("porsjoner")) || bytes.HasPrefix(lowerBlock, []byte("prep")) ||
+		bytes.HasPrefix(lowerBlock, []byte("course"))
 
 	return isSmall || hasMetaKeyword
 }
@@ -966,7 +971,8 @@ func processMetaData(line []byte, recipe *Recipe) {
 				recipe.Times.Prep += dur
 			}
 		}
-	} else if bytes.HasPrefix(line, []byte("keyword")) || bytes.HasPrefix(line, []byte("hove")) || bytes.HasPrefix(line, []byte("anle")) || bytes.HasPrefix(line, []byte("karak")) {
+	} else if bytes.HasPrefix(line, []byte("keyword")) || bytes.HasPrefix(line, []byte("hove")) || bytes.HasPrefix(line, []byte("anle")) ||
+		bytes.HasPrefix(line, []byte("karak")) || bytes.HasPrefix(line, []byte("tag")) {
 		_, after, found := strings.Cut(string(line), ":")
 		if found {
 			for _, s := range strings.Split(after, ",") {
