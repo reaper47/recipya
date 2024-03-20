@@ -29,12 +29,16 @@ templ Pagination(p templates.Pagination) {
 				</button>
 			}
 			<!-- Left Section -->
-			for _, l := range p.Left {
+			for i, l := range p.Left {
 				if p.Selected == l {
 					<button aria-current="page" class="join-item btn btn-active">{ fmt.Sprint(l) }</button>
 				} else {
 					<button
-						class="join-item btn"
+						if len(p.Left) > 3 {
+							class={ "join-item btn", templ.KV("hidden sm:block", i>3) }
+						} else {
+							class={ "join-item btn", templ.KV("hidden sm:block", i == 1 || i > 2) }
+						}
 						hx-get={ fmt.Sprintf("%s?page=%d%s", p.URL, l, p.URLQueries) }
 						hx-target={ p.Htmx.Target }
 						hx-trigger="mousedown"
@@ -46,9 +50,9 @@ templ Pagination(p templates.Pagination) {
 			}
 			<!-- Middle Section -->
 			if len(p.Middle) > 0 {
-				<button class="join-item btn btn-disabled">...</button>
+				<button class="hidden sm:block join-item btn btn-disabled">...</button>
 			}
-			for _, m := range p.Middle {
+			for i, m := range p.Middle {
 				if p.Selected == m {
 					<button
 						class="join-item btn btn-active"
@@ -62,7 +66,7 @@ templ Pagination(p templates.Pagination) {
 					</button>
 				} else {
 					<button
-						class="join-item btn"
+						class={ "join-item btn", templ.KV("hidden sm:block", i == 1 || i > 3) }
 						hx-get={ fmt.Sprintf("%s?page=%d%s", p.URL, m, p.URLQueries) }
 						hx-target={ p.Htmx.Target }
 						hx-trigger="mousedown"
@@ -73,13 +77,13 @@ templ Pagination(p templates.Pagination) {
 				}
 			}
 			if len(p.Middle) > 0 {
-				<button class="join-item btn btn-disabled">...</button>
+				<button class="hidden sm:block join-item btn btn-disabled">...</button>
 			}
 			<!-- Right Section -->
 			if len(p.Right) > 0 && len(p.Middle) == 0 {
-				<button class="join-item btn btn-disabled">...</button>
+				<button class="hidden sm:block join-item btn btn-disabled">...</button>
 			}
-			for _, r := range p.Right {
+			for i, r := range p.Right {
 				if p.Selected == r {
 					<button
 						class="join-item btn btn-active"
@@ -93,7 +97,11 @@ templ Pagination(p templates.Pagination) {
 					</button>
 				} else {
 					<button
-						class="join-item btn"
+						if len(p.Right) > 3 {
+							class={ "join-item btn", templ.KV("hidden sm:block", i>3) }
+						} else {
+							class={ "join-item btn", templ.KV("hidden sm:block", i == 1 || i > 2) }
+						}
 						hx-get={ fmt.Sprintf("%s?page=%d%s", p.URL, r, p.URLQueries) }
 						hx-target={ p.Htmx.Target }
 						hx-trigger="mousedown"
