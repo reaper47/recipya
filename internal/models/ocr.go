@@ -1,143 +1,193 @@
 package models
 
 import (
-	"github.com/jdkato/prose/v2"
-	"slices"
+	"github.com/reaper47/recipya/internal/units"
+	"github.com/reaper47/recipya/internal/utils/regex"
 	"strconv"
 	"strings"
 )
 
-// AzureVision holds the data contained in the response of a call to the
-// Computer Vision API's image analysis endpoint.
+// AzureVision holds the data contained in the response of a call to the Computer Vision API's image analysis endpoint.
 type AzureVision struct {
+	ModelVersion  string `json:"modelVersion"`
 	CaptionResult struct {
 		Text       string  `json:"text"`
 		Confidence float64 `json:"confidence"`
 	} `json:"captionResult"`
-	ReadResult struct {
-		StringIndexType string `json:"stringIndexType"`
-		Content         string `json:"content"`
-		Pages           []struct {
-			Height     float64 `json:"height"`
-			Width      float64 `json:"width"`
-			Angle      float64 `json:"angle"`
-			PageNumber int     `json:"pageNumber"`
-			Words      []struct {
-				Content     string    `json:"content"`
-				BoundingBox []float64 `json:"boundingBox"`
-				Confidence  float64   `json:"confidence"`
-				Span        struct {
-					Offset int `json:"offset"`
-					Length int `json:"length"`
-				} `json:"span"`
-			} `json:"words"`
-			Spans []struct {
-				Offset int `json:"offset"`
-				Length int `json:"length"`
-			} `json:"spans"`
-			Lines []struct {
-				Content     string    `json:"content"`
-				BoundingBox []float64 `json:"boundingBox"`
-				Spans       []struct {
-					Offset int `json:"offset"`
-					Length int `json:"length"`
-				} `json:"spans"`
-			} `json:"lines"`
-		} `json:"pages"`
-		Styles []struct {
-			IsHandwritten bool `json:"isHandwritten"`
-			Spans         []struct {
-				Offset int `json:"offset"`
-				Length int `json:"length"`
-			} `json:"spans"`
-			Confidence float64 `json:"confidence"`
-		} `json:"styles"`
-		ModelVersion string `json:"modelVersion"`
-	} `json:"readResult"`
-	ModelVersion string `json:"modelVersion"`
-	Metadata     struct {
-		Width  float64 `json:"width"`
-		Height float64 `json:"height"`
+	Metadata struct {
+		Width  int `json:"width"`
+		Height int `json:"height"`
 	} `json:"metadata"`
+	ReadResult struct {
+		Blocks []struct {
+			Lines []struct {
+				Text            string `json:"text"`
+				BoundingPolygon []struct {
+					X int `json:"x"`
+					Y int `json:"y"`
+				} `json:"boundingPolygon"`
+				Words []struct {
+					Text            string `json:"text"`
+					BoundingPolygon []struct {
+						X int `json:"x"`
+						Y int `json:"y"`
+					} `json:"boundingPolygon"`
+					Confidence float64 `json:"confidence"`
+				} `json:"words"`
+			} `json:"lines"`
+		} `json:"blocks"`
+	} `json:"readResult"`
 }
 
 // Recipe converts an AzureVision to a Recipe.
 func (a *AzureVision) Recipe() Recipe {
-	r := Recipe{
-		Category:    "uncategorized",
-		Description: a.CaptionResult.Text,
-		URL:         a.CaptionResult.Text,
-		Yield:       4,
+	recipe := Recipe{
+		Category: "uncategorized",
+		URL:      "OCR",
 	}
 
-	xs := strings.Split(a.ReadResult.Content, "\n")
-	if len(xs) == 0 {
-		return r
+	if len(a.ReadResult.Blocks) == 0 || (len(a.ReadResult.Blocks) > 0 && len(a.ReadResult.Blocks[0].Lines) <= 2) {
+		return Recipe{}
 	}
 
-	r.Name = xs[0]
-	var instructionsStartIndex int
+	var (
+		isDescription  = true
+		isIngredients  bool
+		isInstructions bool
 
-loop:
-	for i, s := range xs[1:] {
-		doc, err := prose.NewDocument(s)
-		if err != nil {
+		isDelimitedByAsterisk bool
+		isDelimitedByNothing  bool
+		isDelimitedByNumbers  bool
+	)
+
+	for _, line := range a.ReadResult.Blocks[0].Lines {
+		if recipe.Name == "" {
+			recipe.Name = line.Text
 			continue
 		}
 
-		tokens := doc.Tokens()
-		isAllOutside := true
-		var hasCD bool
-
-		_, err = strconv.ParseFloat(tokens[0].Text, 64)
-		if err == nil {
-			hasCD = true
+		lower := strings.ToLower(line.Text)
+		numWords := len(strings.Split(lower, " "))
+		if numWords < 3 && strings.HasPrefix(lower, "serve") {
+			processMetaData([]byte(lower), &recipe)
+			continue
 		}
 
-		for _, t := range tokens {
-			if t.Tag == "CD" {
-				hasCD = true
-			}
-
-			if !hasCD && ((len(tokens) > 4 && !hasCD && i > 1) || (t.Label != "O" && i > 2 && len(tokens) > 2)) {
-				isAllOutside = false
-				instructionsStartIndex = i + 1
-				if hasCD {
-					instructionsStartIndex++
-					r.Ingredients = append(r.Ingredients, doc.Text)
-					break
+		if isDescription || (isDescription && recipe.Description == "") {
+			replaced := units.ReplaceVulgarFractions(line.Text)
+			idx := regex.Digit.FindStringIndex(replaced)
+			if len(idx) == 2 {
+				_, err := strconv.ParseInt(string(replaced[idx[1]-1]), 10, 64)
+				if err == nil && idx[0] == 0 {
+					isDescription = false
+					isIngredients = true
+					recipe.Ingredients = append(recipe.Ingredients, line.Text)
+					continue
 				}
-				break loop
 			}
+
+			isDescription = true
+			recipe.Description += " " + line.Text
+			continue
 		}
 
-		if isAllOutside || hasCD {
-			r.Ingredients = append(r.Ingredients, doc.Text)
+		if isIngredients {
+			replaced := units.ReplaceVulgarFractions(line.Text)
+			idx := regex.Digit.FindStringIndex(replaced)
+			if len(idx) == 2 {
+				_, err := strconv.ParseInt(string(replaced[idx[1]-1]), 10, 64)
+				if err == nil && idx[0] == 0 {
+					recipe.Ingredients = append(recipe.Ingredients, line.Text)
+					continue
+				}
+			}
+
+			dotIndex := strings.IndexByte(line.Text, '.')
+			before, _, found := strings.Cut(line.Text, ".")
+			if found && dotIndex >= 0 && dotIndex < 4 && len(line.Text) > 25 {
+				_, err := strconv.ParseInt(before, 10, 64)
+				if err == nil && dotIndex != -1 && dotIndex < 4 {
+					isDelimitedByNumbers = true
+					isDelimitedByNothing = false
+					isIngredients = false
+					isInstructions = true
+					recipe.Instructions = append(recipe.Instructions, line.Text)
+					continue
+				}
+			}
+
+			if len(line.Text) >= 25 {
+				isIngredients = false
+				isInstructions = true
+
+				_, err := strconv.ParseInt(line.Text[:1], 10, 64)
+				if err != nil {
+					if line.Text[0] == '*' {
+						isDelimitedByAsterisk = true
+					} else {
+						isDelimitedByNothing = true
+					}
+				}
+
+				recipe.Instructions = append(recipe.Instructions, line.Text)
+				continue
+			}
+
+			recipe.Ingredients = append(recipe.Ingredients, line.Text)
+			continue
+		}
+
+		if isInstructions {
+			replaced := units.ReplaceVulgarFractions(line.Text)
+			idx := regex.Digit.FindStringIndex(replaced)
+			if len(idx) == 2 {
+				_, err := strconv.ParseInt(string(replaced[idx[1]-1]), 10, 64)
+				if err == nil && idx[0] == 0 && !regex.Time.MatchString(line.Text) {
+					isInstructions = false
+					isIngredients = true
+					recipe.Ingredients = append(recipe.Ingredients, line.Text)
+					continue
+				}
+			}
+
+			if line.Text[0] == '*' {
+				isDelimitedByAsterisk = true
+				recipe.Instructions = append(recipe.Instructions, line.Text)
+				continue
+			}
+
+			if isDelimitedByAsterisk {
+				recipe.Instructions[len(recipe.Instructions)-1] += " " + line.Text
+				continue
+			}
+
+			if isDelimitedByNumbers {
+
+			}
+
+			if isDelimitedByNothing {
+				recipe.Instructions = append(recipe.Instructions, line.Text)
+				continue
+			}
+
+			dotIndex := strings.IndexByte(line.Text, '.')
+			before, _, found := strings.Cut(line.Text, ".")
+			if found && dotIndex >= 0 && dotIndex < 4 {
+				_, err := strconv.ParseInt(before, 10, 64)
+				if err == nil && dotIndex != -1 && dotIndex < 4 {
+					recipe.Instructions = append(recipe.Instructions, line.Text)
+					continue
+				}
+			}
+
+			recipe.Instructions[len(recipe.Instructions)-1] += " " + line.Text
+			continue
 		}
 	}
 
-	if instructionsStartIndex < len(xs) {
-		joined := xs[instructionsStartIndex:]
-		var (
-			instructions *prose.Document
-			err          error
-		)
-		if slices.ContainsFunc(joined, func(s string) bool { return strings.Contains(s, ".") }) {
-			instructions, err = prose.NewDocument(strings.Join(joined, " "))
-		} else {
-			instructions, err = prose.NewDocument(strings.Join(joined, ". "))
-		}
-
-		if err != nil {
-			return r
-		}
-
-		sentences := instructions.Sentences()
-		r.Instructions = make([]string, len(sentences))
-		for i, s := range sentences {
-			r.Instructions[i] = s.Text
-		}
+	recipe.Description = strings.TrimSpace(recipe.Description)
+	if recipe.Yield == 0 {
+		recipe.Yield = 1
 	}
-
-	return r
+	return recipe
 }
