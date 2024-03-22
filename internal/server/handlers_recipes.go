@@ -31,7 +31,7 @@ func (s *Server) recipesHandler() http.HandlerFunc {
 
 		mode := r.URL.Query().Get("mode")
 		if mode == "" {
-			mode = "name"
+			mode = "full"
 		}
 
 		userID := getUserID(r)
@@ -589,7 +589,8 @@ func (s *Server) recipesAddOCRHandler() http.HandlerFunc {
 		}
 
 		s.Repository.CalculateNutrition(userID, []int64{id}, settings)
-		w.Header().Set("HX-Trigger", models.NewInfoToast("Recipe scanned and uploaded.", "", "").Render())
+
+		w.Header().Set("HX-Trigger", models.NewInfoToast("Operation Successful", "Recipe scanned and uploaded.", fmt.Sprintf("View /recipes/%d", id)).Render())
 		w.WriteHeader(http.StatusCreated)
 	}
 }

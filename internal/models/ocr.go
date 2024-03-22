@@ -57,7 +57,6 @@ func (a *AzureVision) Recipe() Recipe {
 
 		isDelimitedByAsterisk bool
 		isDelimitedByNothing  bool
-		isDelimitedByNumbers  bool
 	)
 
 	for _, line := range a.ReadResult.Blocks[0].Lines {
@@ -107,11 +106,10 @@ func (a *AzureVision) Recipe() Recipe {
 			if found && dotIndex >= 0 && dotIndex < 4 && len(line.Text) > 25 {
 				_, err := strconv.ParseInt(before, 10, 64)
 				if err == nil && dotIndex != -1 && dotIndex < 4 {
-					isDelimitedByNumbers = true
 					isDelimitedByNothing = false
 					isIngredients = false
 					isInstructions = true
-					recipe.Instructions = append(recipe.Instructions, line.Text)
+					recipe.Instructions = append(recipe.Instructions, strings.TrimSpace(line.Text[dotIndex+1:]))
 					continue
 				}
 			}
@@ -161,10 +159,6 @@ func (a *AzureVision) Recipe() Recipe {
 				continue
 			}
 
-			if isDelimitedByNumbers {
-
-			}
-
 			if isDelimitedByNothing {
 				recipe.Instructions = append(recipe.Instructions, line.Text)
 				continue
@@ -175,7 +169,7 @@ func (a *AzureVision) Recipe() Recipe {
 			if found && dotIndex >= 0 && dotIndex < 4 {
 				_, err := strconv.ParseInt(before, 10, 64)
 				if err == nil && dotIndex != -1 && dotIndex < 4 {
-					recipe.Instructions = append(recipe.Instructions, line.Text)
+					recipe.Instructions = append(recipe.Instructions, strings.TrimSpace(line.Text[dotIndex+1:]))
 					continue
 				}
 			}

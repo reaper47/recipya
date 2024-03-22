@@ -14,9 +14,9 @@ Click on the wrench icon to the right of the search bar to access the settings.
 
 ![](images/search-settings.webp)
 
-### Search Methods
+### Search Modes
 
-You can choose how the search is performed. The default is **By name**.
+You can choose how the search is performed. The default is **Full search**.
 
 #### By name 
 
