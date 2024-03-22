@@ -1351,10 +1351,10 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 	}
 	<section class="p-2">
 		<div class="flex justify-center">
-			<div class="card card-bordered bg-base-100 shadow-none w-full border-gray-700 xl:w-[72rem]">
+			<div class="card card-bordered bg-base-100 shadow-none w-full border-gray-700 xl:w-[72rem] print:rounded-none">
 				<div class="card-body" style="padding: 0">
 					<h2
-						class="card-title bg-base-200 px-2 pt-2 place-content-center rounded-t-2xl"
+						class="card-title bg-base-200 px-2 pt-2 place-content-center rounded-t-2xl print:border-b print:border-black"
 						style="justify-content: space-between"
 					>
 						<span class="grid grid-flow-col place-items-center pb-2 print:hidden">
@@ -1383,7 +1383,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 								</button>
 							}
 						</span>
-						<span class="text-center pb-2">{ data.Recipe.Name }</span>
+						<span class="text-center pb-2 print:w-full">{ data.Recipe.Name }</span>
 						<span class="grid grid-flow-col place-items-center pb-2 print:hidden">
 							if data.Share.IsShared {
 								if !data.Share.IsFromHost {
@@ -1438,8 +1438,8 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 							/>
 						</div>
 						<div class="grid grid-cols-3 col-span-3 md:grid-flow-row md:grid-rows-4 print:grid-rows-2">
-							<div class="grid grid-flow-col col-span-6 md:row-span-1 md:border-y md:border-gray-700 print:row-span-1">
-								<div class="col-span-2 grid place-items-center md:col-span-1">
+							<div class="grid grid-flow-col col-span-6 md:row-span-1 md:border-y md:border-gray-700 print:row-span-1 print:grid-cols-2">
+								<div class="col-span-2 grid place-items-center md:col-span-1 print:col-span-1 print:float-left print:ml-2 print:border-r print:border-black">
 									<div class="badge badge-primary badge-outline">{ data.Recipe.Category }</div>
 								</div>
 								<div class="grid col-span-2 border-gray-700 place-items-center text-sm border-x p-2 md:col-span-1 md:p-0 print:hidden">
@@ -1470,7 +1470,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 										<p class="text-sm text-center">{ fmt.Sprint(data.Recipe.Yield) } servings</p>
 									}
 								</div>
-								<p class="hidden p-0 pt-2 print:block">{ fmt.Sprint(data.Recipe.Yield) } servings</p>
+								<p class="hidden p-0 pt-2 print:grid print:text-center print:place-content-center">{ fmt.Sprint(data.Recipe.Yield) } servings</p>
 								<div class="flex items-center justify-center col-span-2 text-sm md:col-span-1 print:hidden">
 									if data.IsURL {
 										<a
@@ -1494,8 +1494,8 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 								</div>
 							</div>
 							<div class="grid grid-flow-col col-span-6 border-gray-700 border-y md:border-t-0 md:grid-cols-2 md:row-span-2">
-								<div class="border-r border-gray-700">
-									<table class="table table-zebra table-xs md:h-fit print:hidden">
+								<div class="border-r border-gray-700 print:hidden">
+									<table class="table table-zebra table-xs md:h-fit">
 										<thead>
 											<tr>
 												<th>Time</th>
@@ -1631,7 +1631,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 										</tr>
 									</tbody>
 								</table>
-								<div class="hidden pt-2 print:block">
+								<div class="hidden pt-2 print:block print:m-2">
 									<h1 class="text-sm"><b>Nutrition Facts</b></h1>
 									<p class="text-xs">
 										Per 100g: { data.Recipe.Nutrition.Calories } calories;
@@ -1656,7 +1656,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 							</div>
 						</div>
 					</div>
-					<div class="hidden print:block">
+					<div class="hidden print:block print:mx-2">
 						<h1 class="text-sm"><b>Description</b></h1>
 						{ data.Recipe.Description }
 					</div>
@@ -1680,25 +1680,18 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 								}
 							</ol>
 						</div>
-						<div class="hidden print:grid col-span-5">
-							<h1 class="text-sm"><b>Instructions</b></h1>
-							<ol
-								class="col-span-6 list-decimal w-full ml-6"
-								if len(data.Recipe.Instructions) > 2 {
-									style="column-count: 2; column-gap: 2.5rem"
-								} else {
-									style="column-count: 1; column-gap: 2.5rem"
-								}
-							>
+						<div class="hidden col-span-5 overflow-visible print:inline">
+							<h1 class="text-sm print:ml-2"><b>Instructions</b></h1>
+							<ol class="col-span-6 list-decimal w-full ml-6">
 								for _, e := range data.Recipe.Instructions {
-									<li>
+									<li class="print:mr-4">
 										<span class="text-sm whitespace-pre-line">{ e }</span>
 									</li>
 								}
 							</ol>
 						</div>
 					</div>
-					<div class="hidden print:block">
+					<div class="hidden print:block print:mx-2 print:mb-2 print:text-sm">
 						<h1><b>Source</b></h1>
 						if data.IsURL {
 							<p class="print:overflow-hidden">{ data.Recipe.URL }</p>

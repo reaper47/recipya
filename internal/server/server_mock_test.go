@@ -19,8 +19,15 @@ import (
 	"os"
 	"slices"
 	"strings"
+	"sync"
 	"time"
 )
+
+var mutex *sync.Mutex
+
+func init() {
+	mutex = &sync.Mutex{}
+}
 
 func newServerTest() *server.Server {
 	srv := server.NewServer(&mockRepository{
@@ -157,10 +164,10 @@ func (m *mockRepository) AddRecipe(r *models.Recipe, userID int64, settings mode
 		m.RecipesRegistered[userID] = make(models.Recipes, 0)
 	}
 
-	if !slices.ContainsFunc(m.RecipesRegistered[userID], func(recipe models.Recipe) bool {
-		return recipe.Name == r.Name
-	}) {
+	if !slices.ContainsFunc(m.RecipesRegistered[userID], func(recipe models.Recipe) bool { return recipe.Name == r.Name }) {
+		mutex.Lock()
 		m.RecipesRegistered[userID] = append(m.RecipesRegistered[userID], *r)
+		mutex.Unlock()
 	}
 	return int64(len(m.RecipesRegistered)), nil
 }

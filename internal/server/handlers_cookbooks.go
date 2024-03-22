@@ -341,6 +341,16 @@ func (s *Server) cookbooksGetCookbookHandler() http.HandlerFunc {
 			return
 		}
 
+		mode := query.Get("mode")
+		if mode == "" {
+			mode = "full"
+		}
+
+		sorts := query.Get("sort")
+		if sorts == "" {
+			sorts = "default"
+		}
+
 		_ = components.CookbookIndex(templates.Data{
 			About: templates.NewAboutData(),
 			CookbookFeature: templates.CookbookFeature{
@@ -353,8 +363,8 @@ func (s *Server) cookbooksGetCookbookHandler() http.HandlerFunc {
 			Functions:       templates.NewFunctionsData[int64](),
 			Pagination:      templates.Pagination{IsHidden: true},
 			Searchbar: templates.SearchbarData{
-				Mode: query.Get("mode"),
-				Sort: query.Get("sort"),
+				Mode: mode,
+				Sort: sorts,
 			},
 			Title: cookbook.Title,
 		}).Render(r.Context(), w)

@@ -32,7 +32,7 @@ func (i *Integrations) ProcessImageOCR(file io.Reader) (models.Recipe, error) {
 		return models.Recipe{}, err
 	}
 
-	url := app.Config.Integrations.AzureComputerVision.VisionEndpoint + "/computervision/imageanalysis:analyze?features=caption,read&model-version=latest&language=en&api-version=2023-02-01-preview"
+	url := app.Config.Integrations.AzureComputerVision.VisionEndpoint + "/computervision/imageanalysis:analyze?features=caption,read&model-version=latest&language=en&api-version=2024-02-01"
 	req, err := http.NewRequest(http.MethodPost, url, body)
 	if err != nil {
 		return models.Recipe{}, err
@@ -46,17 +46,8 @@ func (i *Integrations) ProcessImageOCR(file io.Reader) (models.Recipe, error) {
 	}
 	defer res.Body.Close()
 
-	if res == nil {
-		return models.Recipe{}, errors.New("response is nil")
-	}
-
-	resBody := res.Body
-	if resBody == nil {
-		return models.Recipe{}, errors.New("response body is nil")
-	}
-
 	var av models.AzureVision
-	err = json.NewDecoder(resBody).Decode(&av)
+	err = json.NewDecoder(res.Body).Decode(&av)
 	if err != nil {
 		return models.Recipe{}, err
 	}
