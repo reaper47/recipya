@@ -425,7 +425,7 @@ func TestScraper_R(t *testing.T) {
 		},
 		{
 			name: "reddit.com",
-			in:   "https://www.reddit.com/r/recipes/comments/1bhr8se/spicy_chilli_garlic_prawn_linguine_pasta/",
+			in:   "https://old.reddit.com/r/recipes/comments/1bhr8se/spicy_chilli_garlic_prawn_linguine_pasta/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},

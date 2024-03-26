@@ -87,7 +87,7 @@ func TestScraper_N(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
-				CookTime:      "PT-473507H35M45S",
+				CookTime:      "PT-475409H4M47S",
 				DatePublished: "2022-02-09",
 				Description: models.Description{
 					Value: "Rich and fudgy gluten-free tahini brownies that just happen to be also be grain-free and nut-free! " +
@@ -121,7 +121,7 @@ func TestScraper_N(t *testing.T) {
 				},
 				Name:      "Fudgy Tahini Brownies",
 				PrepTime:  "PT10M",
-				TotalTime: "PT45M",
+				TotalTime: "PT14M",
 				Yield:     models.Yield{Value: 12},
 				URL:       "https://nourishedbynutrition.com/fudgy-gluten-free-tahini-brownies/",
 			},

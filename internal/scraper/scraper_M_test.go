@@ -301,7 +301,7 @@ func TestScraper_M(t *testing.T) {
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Dessert"},
 				Cuisine:       models.Cuisine{Value: "Europa"},
-				DatePublished: "01.04.2014",
+				DatePublished: "2014-04-01",
 				Description: models.Description{
 					Value: "Vafler er alltid en suksess! Sett frem syltet&#248;y, r&#248;mme, sm&#248;r, sukker og brunost. Da  f&#229;r alle sine &#248;nsker oppfylt. Verdens beste vafler!",
 				},
@@ -322,8 +322,7 @@ func TestScraper_M(t *testing.T) {
 				},
 				Instructions: models.Instructions{
 					Values: []string{
-						"Ha alt det t&oslash;rre i en bolle og spe med litt av melken om gangen. R&oslash;r godt mellom hver gang " +
-							"for &aring; f&aring; en glatt r&oslash;re uten melklumper.",
+						"Ha alt det tørre i en bolle og spe med litt av melken om gangen. Rør godt mellom hver gang for å få en glatt røe uten melklumper.",
 						"R&oslash;r inn eggene og tilsett smeltet sm&oslash;r. La r&oslash;ren svelle i 1/2 time. Juster r&oslash;" +
 							"ren med litt vann eller melk om den er for tykk.",
 						"Stek vaflene og server dem gjerne varme.",
@@ -1185,10 +1184,10 @@ func TestScraper_M(t *testing.T) {
 				Category:      models.Category{Value: "Appetizer"},
 				CookTime:      "PT15M",
 				Cuisine:       models.Cuisine{Value: "TexMex"},
-				DateModified:  "2023-09-26T14:52:05.511-04:00",
+				DateModified:  "2024-01-16T18:17:10.231-05:00",
 				DatePublished: "2006-02-03T07:37:15.000-05:00",
 				Description: models.Description{
-					Value: "These classic Tex-Mex nachos are loaded to the max! Avoid soggy nachos by briefly baking them before topping with cheese, seasoned beef, refried beans, guacamole, and salsa. They&#39;re a great snack, party appetizer, or even casual weeknight dinner.",
+					Value: "These classic Tex-Mex nachos are loaded to the max with cheese, seasoned beef, refried beans, guacamole, and salsa. They make a great snack, party appetizer, or even casual weeknight dinner.",
 				},
 				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{

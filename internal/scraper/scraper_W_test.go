@@ -160,7 +160,7 @@ func TestScraper_W(t *testing.T) {
 						"1 piece(s) Damascus Bakeries All natural plain roll-ups",
 						"2 Tbsp Store-bought pizza sauce", "3 Tbsp Part skim mozzarella cheese",
 						"6 slice(s) Turkey pepperoni",
-						"3 item(s) Sweet mini baby bell peppers seeded and thinly sliced",
+						"3 item(s) Sweet mini peppers seeded and thinly sliced",
 						"1.5 tsp Grated Parmesan cheese",
 					},
 				},

@@ -15,10 +15,10 @@ func TestScraper_T(t *testing.T) {
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Dinner"},
 				CookTime:      "PT5M",
-				DateModified:  "2024-01-02",
+				DateModified:  "2024-03-06",
 				DatePublished: "2019-02-13",
 				Description: models.Description{
-					Value: `If you’ve never cooked steak at home before, it can be a little intimidating. That’s why I came up with this simple steak recipe that’s so easy, you could make it any day of the week. —<a href="https://www.tasteofhome.com/author/jschend/">James Schend</a>, <a href="https://www.dairyfreed.com/" target="_blank" rel="noopener">Dairy Freed</a>`,
+					Value: `If you’ve never cooked steak at home before, it can be a little intimidating. That’s why I came up with this simple steak recipe that’s so easy, you could make it any day of the week. —<a href="https://www.tasteofhome.com/author/jschend/">James Schend</a>, <a href="https://www.dairyfreed.com/" target="_blank">Dairy Freed</a>`,
 				},
 				Keywords: models.Keywords{Values: ""},
 				Image:    models.Image{Value: anUploadedImage.String()},
@@ -30,10 +30,10 @@ func TestScraper_T(t *testing.T) {
 				},
 				Instructions: models.Instructions{
 					Values: []string{
-						"To season, start by removing the steak from the refrigerator and generously sprinkle two teaspoons of kosher salt on all sides of the fillet. Let it stand for 45 to 60 minutes. This resting period gives the meat time to come up to room temperature, which helps the steak cook more evenly. It also gives the meat time to absorb some of the salt. Editor's Tip: Use this time to whip up a homemade steak seasoning blend to take it up a notch.",
-						"The other key to a delicious steak is heat. And since that signature sear comes from a sizzling hot pan, a cast-iron skillet is the way to go. This hearty pan gets extremely hot and also retains heat for a long time, making it the perfect vessel for steak. You'll want to preheat your pan over high heat for four to five minutes, or until very hot. Then, pat your steak dry with paper towels and sprinkle the remaining teaspoon of salt in the bottom of the skillet. Now you're ready to sear!",
-						"Place the steak into the skillet and cook until it's easily moved. This takes between one and two minutes. Carefully flip the steak, placing it in a different section of the skillet. Cook for 30 seconds, and then begin moving the steak around, occasionally pressing slightly to ensure even contact with the skillet. A grill press is great for this. Moving the steak around the pan helps it cook faster and more evenly. Editor's Tip: This step produces a lot of smoke, so make sure you're cooking in a well-ventilated space. It's also a good idea to turn your kitchen vent or fan on.",
-						"Continue turning and flipping the steak until it's cooked to your desired degree of doneness. A thermometer inserted in the thickest part of the meat should read: Medium-rare: 135°F Medium: 140°F Medium-well: 145°F Keep in mind that the steak will continue to cook a little bit after it's been removed from the pan, so aim for a few degrees shy of your desired temperature. Let it rest for 10 minutes before slicing.",
+						"Remove the steak from the refrigerator. Sprinkle it with 2 teaspoons salt, and let it stand at room temperature 45 for 60 minutes. Editor's Tip: The resting step here is essential for proper searing later! It also gives the meat time to absorb some of the salt.",
+						"Preheat a cast-iron skillet over high heat until it's extremely hot, four to five minutes. Sprinkle the remaining 1 teaspoon salt in the bottom of the skillet. Editor's Tip: The high heat produces a lot of smoke, so make sure you're cooking in a well-ventilated space. It's also a good idea to turn on your kitchen vent or fan.",
+						"Pat the steak dry with paper towels. Place the steak in the hot skillet. Cook until it can be easily moved, one to two minutes. Flip the steak, placing it in a different section of the skillet. Cook for 30 seconds, then begin moving the steak around the skillet, occasionally pressing on it slightly to ensure even contact with the skillet. Editor's Tip: Moving the steak around the hot skillet helps it get a better sear.",
+						"Continue turning and flipping for one to two minutes, until the steak is cooked to the desired degree of doneness. A thermometer inserted in the thickest part of the meat should read: Medium-rare: 135° Medium: 140° Medium-well: 145° Editor's Tip: Keep in mind that the steak will continue to cook after it's removed from the skillet. It's best to aim for a few degrees shy of your desired temperature. Then let it rest for 10 minutes, and slice the steak against the grain.",
 					},
 				},
 				Name: "Cast-Iron Skillet Steak",
@@ -122,8 +122,7 @@ func TestScraper_T(t *testing.T) {
 				Cuisine:       models.Cuisine{Value: "Italian"},
 				DatePublished: "2022-04-04T04:28:00+00:00",
 				Description: models.Description{
-					Value: "A midwestern take on Italian Easter Pie, this Easter Ham Pie is perfect for Sunday brunch. " +
-						"It&#039;s a great leftover ham recipe.",
+					Value: "A midwestern take on Italian Easter Pie, this Easter Ham Pie is perfect for Sunday brunch. It&#039;s the best way to use up leftover ham and will quickly become a family favorite.",
 				},
 				Keywords: models.Keywords{
 					Values: "breakfast and brunch, easter breakfast, leftover ham recipe",
@@ -144,23 +143,16 @@ func TestScraper_T(t *testing.T) {
 				},
 				Instructions: models.Instructions{
 					Values: []string{
-						"Place one of the pie crusts in the bottom of a greased 9” pie plate. Flute the edges.",
-						"Chill the pie crust for 30 minutes.",
-						"Preheat the oven to 375°F.",
-						"Place parchment paper in the bottom of the pie crust, then fill with pie weights or dry beans.",
-						"Blind bake the pie crust for 15 minutes or until the edges are starting to brown. Remove the crust " +
-							"from the oven and allow it to cool while you prepare the filling.",
-						"In a large bowl, whisk the eggs.",
-						"Then add the ham, ricotta, mozzarella, parmesan, oregano and garlic powder. Mix well.",
-						"Pour the mixture into the baked bottom crust.",
-						"Top with the second crust and flute the edges to seal.",
-						"Use a sharp knife to make 3 slits across the top of the pie crust.",
-						"Sprinkle with sea salt and freshly ground pepper.",
+						"Place one of the pie crusts in the bottom of a greased 9” pie plate. Flute the edges. Chill the pie crust for 30 minutes.",
+						"Preheat the oven to 375°F. Place parchment paper in the bottom of the pie crust, then fill with pie weights or dry beans. Blind bake the pie crust for 15 minutes or until the edges are starting to brown. Remove the crust from the oven and allow it to cool while you prepare the filling.",
+						"In a large bowl, whisk the eggs. Then add the ham, ricotta, mozzarella, parmesan, oregano and garlic powder. Mix well.",
+						"Pour the cheese and ham mixture into the baked bottom crust. Place the second pie crust on top and flute the edges to seal. (Set aside any excess pastry to make a cinnamon thing!)",
+						"Use a sharp knife to make 3 slits across the top of the pie crust. Sprinkle with sea salt and freshly ground pepper.",
 						"Bake at 350°F for one hour.",
-						"Store any leftoveres in the refrigerator in an airtight container.",
+						"Store any leftover ham pie in the refrigerator in an airtight container or covered with plastic wrap.",
 					},
 				},
-				Name: "Easter Ham Pie",
+				Name: "Ham Pie",
 				NutritionSchema: models.NutritionSchema{
 					Calories:       "474 kcal",
 					Carbohydrates:  "24 g",
@@ -300,7 +292,7 @@ func TestScraper_T(t *testing.T) {
 				Category:      models.Category{Value: "Dinner"},
 				CookTime:      "PT2H0M",
 				Cuisine:       models.Cuisine{Value: "British"},
-				DateModified:  "2022-04-06T10:26:45Z",
+				DateModified:  "2024-03-08T16:30:55Z",
 				DatePublished: "2022-03-23T14:55:51Z",
 				Description: models.Description{
 					Value: "This one-tray wonder is a great option for Sunday roast, Mother's Day or even Easter",
@@ -506,7 +498,7 @@ func TestScraper_T(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:    atContext,
 				AtType:       models.SchemaType{Value: "Recipe"},
-				DateModified: "2022-02-07T16:00:36+00:00",
+				DateModified: "2024-02-12T16:17:38+00:00",
 				Name:         "Leek and Puy Lentil Gratin with a Crunchy Feta Topping",
 				Yield:        models.Yield{Value: 4},
 				Description: models.Description{
@@ -517,7 +509,7 @@ func TestScraper_T(t *testing.T) {
 				PrepTime: "PT10M",
 				CookTime: "PT40M",
 				Keywords: models.Keywords{
-					Values: "Vegetarian, Feta, Leek, Lentil, One Pot, One-pot, Dinner, Main Course, Easy, Quick",
+					Values: "Vegetarian, Feta, Leek, Lentil, One Pot, One-pot, Valentine's Day, Dinner, Main Course, French, Easy, Quick",
 				},
 				Ingredients: models.Ingredients{
 					Values: []string{
@@ -796,6 +788,7 @@ func TestScraper_T(t *testing.T) {
 				Category:      models.Category{Value: "dinner, soup, diary-free, gluten-free, one-pot-meals"},
 				CookTime:      "PT1H",
 				Cuisine:       models.Cuisine{Value: "Mexican"},
+				DateCreated:   "2016-11-25T08:43:41-08:00",
 				DateModified:  "2023-11-23",
 				DatePublished: "2023-11-23",
 				Description: models.Description{
@@ -915,10 +908,10 @@ func TestScraper_T(t *testing.T) {
 				Category:      models.Category{Value: "brunch"},
 				CookTime:      "PT10M",
 				Cuisine:       models.Cuisine{Value: "American"},
-				DateModified:  "2023-03-22T14:48:00Z EST",
+				DateModified:  "2024-03-08T19:38:00Z EST",
 				DatePublished: "2007-10-12T09:33:50Z EST",
 				Description: models.Description{
-					Value: "Ree Drummond shares her secrets to making perfect eggs Benedict. From flawless poached eggs to velvety Hollandaise sauce, it's the best brunch recipe.",
+					Value: "Ree Drummond's fool-proof recipe for making eggs Benedict features perfectly poached eggs and a creamy, dreamy homemade Hollandaise sauce.",
 				},
 				Keywords: models.Keywords{Values: "Recipes, Cooking, Food"},
 				Image:    models.Image{Value: anUploadedImage.String()},
@@ -926,9 +919,9 @@ func TestScraper_T(t *testing.T) {
 					Values: []string{
 						"3 whole English muffins",
 						"6 slices Canadian bacon",
-						"2 sticks butter, plus more for the muffins",
+						"1 c. butter, plus more for the muffins",
 						"6 whole eggs (plus 3 egg yolks)",
-						"1 whole lemon, juiced",
+						"1 lemon, juiced",
 						"Cayenne pepper, to taste",
 						"Paprika, to garnish",
 						"Chopped chives, to garnish",

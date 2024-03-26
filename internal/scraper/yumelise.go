@@ -37,7 +37,8 @@ func scrapeYumelise(root *goquery.Document) (models.RecipeSchema, error) {
 	nodes = root.Find(".wprm-recipe-instruction-text")
 	instructions := make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		instructions = append(instructions, strings.TrimSpace(sel.Text()))
+		s := strings.ReplaceAll(strings.TrimSpace(sel.Text()), "\u00a0", " ")
+		instructions = append(instructions, s)
 	})
 
 	return models.RecipeSchema{

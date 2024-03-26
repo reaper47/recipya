@@ -92,7 +92,7 @@ func (s *Scraper) fetchDocument(url string) (*goquery.Document, error) {
 
 	host := getHost(url)
 	switch host {
-	case "aberlehome", "bettybossi", "marmiton", "puurgezond", "thepalatablelife":
+	case "aberlehome", "bettybossi", "marmiton", "puurgezond", "reddit", "thepalatablelife":
 		req.Header.Set("User-Agent", mozilla)
 	case "ah":
 		req.Header.Set("Accept-Language", "nl")
