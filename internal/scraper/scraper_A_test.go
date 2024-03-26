@@ -874,73 +874,59 @@ func TestScraper_A(t *testing.T) {
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Slow Cooker"},
-				CookTime:      "PT8H",
+				CookTime:      "PT480M",
 				Cuisine:       models.Cuisine{Value: "American"},
-				DatePublished: "2022-03-15",
+				DatePublished: "2022-03-21T00:01:48+00:00",
 				Description: models.Description{
 					Value: "A comfort food classic that everyone in the family LOVES! Hearty chunks of beef, rich and flavorful beef gravy, and served over a bed of warm noodles to soak up all that goodness! The EASIEST recipe for beef stroganoff ever because your Crock-Pot truly does all the work! Set it and forget it!",
 				},
 				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
-						"2 pounds beef stew meat or beef chuck, diced into large bite-sized pieces or chunks",
-						"1/2 cup white onion, diced small", "3 to 5 cloves garlic, finely minced",
+						"2 pounds beef stew meat or beef chuck (diced into large bite-sized pieces or chunks)",
+						"1/2 cup white onion (diced small)", "3 to 5 cloves garlic (finely minced)",
 						"1 teaspoon salt", "1 teaspoon freshly ground pepper",
 						"1 teaspoon beef bouillon",
 						"2 to 3 sprig fresh thyme OR 1/2 teaspoon dried thyme",
 						"two 10-ounce cans cream of mushroom soup",
-						"2 cups low sodium beef broth, plus more if desired",
-						"1 tablespoon Dijon mustard, optional", "1 tablespoon Worcestershire sauce",
-						"1/2 cup heavy cream, optional for a creamier sauce; at room temperature",
-						"12 ounces wide egg noodles, cooked according to package directions (or your favorite pasta or mashed potatoes)",
-						"Fresh parsley, finely minced; optional for garnishing",
+						"2 cups low sodium beef broth (plus more if desired)",
+						"1 tablespoon Dijon mustard (optional)", "1 tablespoon Worcestershire sauce",
+						"1/2 cup heavy cream (optional for a creamier sauce; at room temperature)",
+						"12 ounces wide egg noodles (cooked according to package directions (or your favorite pasta or mashed potatoes))",
+						"Fresh parsley (finely minced; optional for garnishing)",
 					},
 				},
 				Instructions: models.Instructions{
 					Values: []string{
-						"To a large 7 to 8-quart slow cooker, add the beef, onion, garlic, salt, pepper, beef bouillon, thyme, " +
-							"and stir to combine; set aside.",
-						"To a medium bowl, add the mushroom soup, beef broth, optional Dijon, Worcestershire sauce, and whisk " +
-							"to combine.",
-						"Pour the liquid over the contents in the slow cooker, stir to combine, cover the the lid, and cook on " +
-							"high for 4 to 5 hours OR on low for 7 to 8 hours, or until done. Tip - At any time the beef " +
-							"is slow cooking and you feel like it needs a bit more beef broth, it's fine to add a bit more, to taste.",
-						"In the last 15 minutes of slow cooking, cook the egg noodles in a pot of boiling water according to " +
-							"package directions; drain and set aside.* (See Notes about why I don't cook the noodles in " +
-							"the slow cooker and cook them separately.)",
-						"Optionally, if you want a creamier sauce, after the beef stroganoff has cooked and has cooled a bit " +
-							"meaning it's not boiling nor bubbling, slowly you can add 1/2-cup heavy cream at room temperature " +
-							"while whisking vigorously as you add it. Tip - Do NOT add cold cream to hot beef liquid because the " +
-							"dairy proteins can separate, or break, and you will end up with a horribly ugly looking sauce after hours " +
-							"and hours slow cooking. So make sure the cream is at room temp and the beef stroganoff has cooled a bit " +
-							"if you are adding cream.",
-						"Plate a bed of noodles, top with the beef and gravy mixture, and serve immediately. Extra beef " +
-							"stroganoff will keep airtight in the fridge for up to 5 days and in the freezer for up to 4 months. " +
-							"Tip - Because the noodles will continue to absorb moisture, including any of the beef gravy or sauce, " +
+						"To a large 7 to 8-quart slow cooker, add the beef, onion, garlic, salt, pepper, beef bouillon, thyme, and stir to combine; set aside.",
+						"To a medium bowl, add the mushroom soup, beef broth, optional Dijon, Worcestershire sauce, and whisk to combine.",
+						"Pour the liquid over the contents in the slow cooker, stir to combine, cover the the lid, and cook on high for 4 to 5 hours OR on low for 7 to 8 hours, or until done. Tip - At any time the beef is slow cooking and you feel like it needs a bit more beef broth, it's fine to add a bit more, to taste.",
+						"In the last 15 minutes of slow cooking, cook the egg noodles in a pot of boiling water according to package directions; drain and set aside.* (See Notes about why I don't cook the noodles in the slow cooker and cook them separately.)",
+						"Optionally, if you want a creamier sauce, after the beef stroganoff has cooked and has cooled a bit meaning it's not boiling nor bubbling, slowly you can add 1/2-cup heavy cream at room temperature while whisking vigorously as you add it. Tip - Do NOT add cold cream to hot beef liquid because the dairy proteins can separate, or break, and you will end up with a horribly ugly looking sauce after hours and hours slow cooking. So make sure the cream is at room temp and the beef stroganoff has cooled a bit if you are adding cream.",
+						"Plate a bed of noodles, top with the beef and gravy mixture, and serve immediately. Extra beef stroganoff will keep airtight in the fridge for up to 5 days and in the freezer for up to 4 months. Tip - Because the noodles will continue to absorb moisture, including any of the beef gravy or sauce, " +
 							"it's very important to store the beef mixture and the noodles separately in the fridge or freezer.",
 					},
 				},
+				Keywords: models.Keywords{
+					Values: "beef stroganoff with cream of mushroom soup, beef stroganoff with stew meat, easy beef stroganoff recipe, slow cooker beef stroganoff, slow cooker beef stroganoff recipe",
+				},
 				Name: "Slow Cooker Beef Stroganoff",
 				NutritionSchema: models.NutritionSchema{
-					Calories:       "575 calories",
-					Carbohydrates:  "30 grams carbohydrates",
-					Cholesterol:    "191 milligrams cholesterol",
-					Fat:            "23 grams fat",
-					Fiber:          "2 grams fiber",
-					Protein:        "62 grams protein",
-					SaturatedFat:   "11 grams saturated fat",
+					Calories:       "575 kcal",
+					Carbohydrates:  "30 g",
+					Cholesterol:    "191 mg",
+					Fat:            "23 g",
+					Fiber:          "2 g",
+					Protein:        "62 g",
+					SaturatedFat:   "11 g",
 					Servings:       "1",
-					Sodium:         "1288 milligrams sodium",
-					Sugar:          "6 grams sugar",
-					TransFat:       "1 grams trans fat",
-					UnsaturatedFat: "12 grams unsaturated fat",
-				},
-				Keywords: models.Keywords{
-					Values: "slow cooker beef stroganoff, easy beef stroganoff recipe, beef stroganoff with cream of mushroom " +
-						"soup, beef stroganoff with stew meat, slow cooker beef stroganoff recipe",
+					Sodium:         "1288 mg",
+					Sugar:          "6 g",
+					TransFat:       "1 g",
+					UnsaturatedFat: "12 g",
 				},
 				PrepTime:  "PT10M",
-				TotalTime: "PT8H10M",
+				TotalTime: "PT490M",
 				Yield:     models.Yield{Value: 6},
 				URL:       "https://www.averiecooks.com/slow-cooker-beef-stroganoff/",
 			},

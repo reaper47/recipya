@@ -220,7 +220,7 @@ func TestScraper_C(t *testing.T) {
 				CookTime:      "P0DT0H40M",
 				DatePublished: "2008-05-26",
 				Description: models.Description{
-					Value: "Knusprige Ofenkartoffeln. Über 231 Bewertungen und für raffiniert befunden. Mit ► Portionsrechner ► Kochbuch ► Video-Tipps! Jetzt entdecken und ausprobieren!",
+					Value: "Knusprige Ofenkartoffeln. Über 238 Bewertungen und für raffiniert befunden. Mit ► Portionsrechner ► Kochbuch ► Video-Tipps! Jetzt entdecken und ausprobieren!",
 				},
 				Keywords: models.Keywords{
 					Values: "Backen,Vegetarisch,Saucen,Dips,Beilage,raffiniert oder preiswert,einfach,Kartoffel,Snack",

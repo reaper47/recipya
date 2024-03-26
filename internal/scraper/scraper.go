@@ -90,8 +90,9 @@ func (s *Scraper) fetchDocument(url string) (*goquery.Document, error) {
 
 	const mozilla = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0"
 
-	switch getHost(url) {
-	case "aberlehome", "marmiton", "puurgezond", "thepalatablelife":
+	host := getHost(url)
+	switch host {
+	case "aberlehome", "bettybossi", "marmiton", "puurgezond", "thepalatablelife":
 		req.Header.Set("User-Agent", mozilla)
 	case "ah":
 		req.Header.Set("Accept-Language", "nl")
@@ -103,6 +104,15 @@ func (s *Scraper) fetchDocument(url string) (*goquery.Document, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
+
+	// Some websites require page reloads
+	if host == "bettybossi" {
+		res, err = s.Client.Do(req)
+		if err != nil {
+			return nil, err
+		}
+		defer res.Body.Close()
+	}
 
 	if res.StatusCode >= http.StatusBadRequest {
 		return nil, fmt.Errorf("could not fetch (%d), try the bookmarklet", res.StatusCode)

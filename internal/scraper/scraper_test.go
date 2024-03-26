@@ -40,6 +40,7 @@ func test(t *testing.T, tc testcase) {
 	}()
 
 	// Uncomment the two lines below to refresh the HTML files to test against any changes the sites have brought.
+	// Once the HTML files have been updated, comment the lines back and run the tests.
 	/*updateHTMLFile(t, tc.name, tc.in)
 	return*/
 
@@ -89,7 +90,7 @@ func testFile(t *testing.T, name, url string) models.RecipeSchema {
 	return got
 }
 
-/*func updateHTMLFile(t *testing.T, name, url string) {
+func updateHTMLFile(t *testing.T, name, url string) {
 	t.Helper()
 
 	c := http.Client{
@@ -122,7 +123,7 @@ func testFile(t *testing.T, name, url string) models.RecipeSchema {
 		t.Log(err)
 		return
 	}
-}*/
+}
 
 var anUploadedImage = uuid.New()
 

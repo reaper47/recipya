@@ -16,6 +16,7 @@ func TestScraper_B(t *testing.T) {
 				Category:      models.Category{Value: "Side"},
 				CookTime:      "PT40M",
 				Cuisine:       models.Cuisine{Value: "American"},
+				DateCreated:   "2016-07-20T14:21:47-04:00",
 				DatePublished: "2022-02-23T01:00:11+00:00",
 				Description: models.Description{
 					Value: "These 3-ingredient Italian roasted potatoes are quick and simple to prep. With crispy edges " +
@@ -333,7 +334,7 @@ func TestScraper_B(t *testing.T) {
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Dinner, Main course, Supper"},
 				CookTime:      "PT5M",
-				DateModified:  "2023-10-03T17:51:48+01:00",
+				DateModified:  "2024-01-25T12:09:21+00:00",
 				DatePublished: "2019-02-17T17:02:00+00:00",
 				Description: models.Description{
 					Value: "Have a perfectly cooked salmon fillet, complete with crisp skin, ready in under 10 minutes. Serve with a side of buttery, seasonal green veg for a filling supper",
