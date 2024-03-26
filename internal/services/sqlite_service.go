@@ -153,7 +153,7 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64, settings model
 	}
 
 	if isRecipeExists {
-		return 0, fmt.Errorf("recipe exists for user %d", userID)
+		return 0, errors.New("recipe exists")
 	}
 
 	if settings.ConvertAutomatically {

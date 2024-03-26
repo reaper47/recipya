@@ -60,6 +60,7 @@ func TestScraper_0to9(t *testing.T) {
 				PrepTime:      "PT15M",
 				CookTime:      "PT5M",
 				DatePublished: "2022-06-29T14:40:39+00:00",
+				TotalTime:     "PT20M",
 				URL:           "https://www.101cookbooks.com/simple-bruschetta/",
 			},
 		},

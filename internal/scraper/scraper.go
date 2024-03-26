@@ -43,6 +43,16 @@ func (s *Scraper) Scrape(url string, files services.FilesService) (models.Recipe
 		return s.scrapeBergamot(url)
 	} else if host == "foodbag" {
 		return s.scrapeFoodbag(url)
+	} else if host == "monsieur-cuisine" {
+		doc, err := s.fetchDocument(url)
+		if err != nil {
+			return models.RecipeSchema{}, err
+		}
+		return s.scrapeMonsieurCuisine(doc, url, files)
+	} else if host == "quitoque" {
+		return s.scrapeQuitoque(url)
+	} else if host == "reddit" {
+		url = strings.Replace(url, "www", "old", 1)
 	}
 
 	doc, err := s.fetchDocument(url)
@@ -81,7 +91,7 @@ func (s *Scraper) fetchDocument(url string) (*goquery.Document, error) {
 	const mozilla = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0"
 
 	switch getHost(url) {
-	case "aberlehome", "thepalatablelife":
+	case "aberlehome", "marmiton", "puurgezond", "thepalatablelife":
 		req.Header.Set("User-Agent", mozilla)
 	case "ah":
 		req.Header.Set("Accept-Language", "nl")
@@ -116,7 +126,7 @@ func getHost(rawURL string) string {
 		return parts[1]
 	case 3:
 		s := parts[0]
-		if s == "recipes" || s == "receitas" || s == "cooking" || s == "news" || s == "mobile" || s == "dashboard" || s == "fr" {
+		if s == "recipes" || s == "receitas" || s == "cooking" || s == "news" || s == "mobile" || s == "dashboard" || s == "fr" || s == "blog" {
 			return parts[1]
 		}
 

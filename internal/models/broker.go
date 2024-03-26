@@ -57,6 +57,11 @@ func (b *Broker) SendFile(fileName string, data *bytes.Buffer) {
 		return
 	}
 
+	if data == nil {
+		log.Println("SendFile data is nil")
+		return
+	}
+
 	b.mu.Lock()
 	defer b.mu.Unlock()
 

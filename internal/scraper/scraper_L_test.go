@@ -98,9 +98,10 @@ func TestScraper_L(t *testing.T) {
 					Fat:           "16",
 					Protein:       "26",
 				},
-				PrepTime: "P0Y0M0DT0H10M0S",
-				Yield:    models.Yield{Value: 4},
-				URL:      "https://leanandgreenrecipes.net/recipes/italian/spaghetti-squash-lasagna/",
+				PrepTime:  "P0Y0M0DT0H10M0S",
+				TotalTime: "P0Y0M0DT0H74M0S",
+				Yield:     models.Yield{Value: 4},
+				URL:       "https://leanandgreenrecipes.net/recipes/italian/spaghetti-squash-lasagna/",
 			},
 		},
 		{
@@ -143,9 +144,86 @@ func TestScraper_L(t *testing.T) {
 					Protein:       "38 g",
 					Servings:      "1",
 				},
-				PrepTime: "PT0M",
-				Yield:    models.Yield{Value: 4},
-				URL:      "https://www.lecker.de/gemuesepfanne-mit-haehnchen-zuckerschoten-und-brokkoli-79685.html",
+				PrepTime:  "PT0M",
+				TotalTime: "PT25M",
+				Yield:     models.Yield{Value: 4},
+				URL:       "https://www.lecker.de/gemuesepfanne-mit-haehnchen-zuckerschoten-und-brokkoli-79685.html",
+			},
+		},
+		{
+			name: "lecremedelacrumb.com",
+			in:   "https://www.lecremedelacrumb.com/instant-pot-pot-roast-potatoes/",
+			want: models.RecipeSchema{
+				AtContext:     atContext,
+				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "Main Course"},
+				CookTime:      "PT80M",
+				Cuisine:       models.Cuisine{Value: "American"},
+				DatePublished: "2018-01-19T11:11:53+00:00",
+				Description: models.Description{
+					Value: "Juicy and tender instant pot pot roast and potatoes with gravy makes the perfect family-friendly " +
+						"dinner. This easy one pot dinner recipe will please even the picky eaters!",
+				},
+				Keywords: models.Keywords{
+					Values: "instant pot pot roast, pot roast and potatoes",
+				},
+				Image: models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"3-5 pound beef chuck roast (see notes for instructions from frozen)",
+						"1 tablespoon oil",
+						"1 teaspoon salt",
+						"1 teaspoon onion powder",
+						"1 teaspoon garlic powder",
+						"½ teaspoon black pepper",
+						"½ teaspoon smoked paprika (optional)",
+						"1 pound baby red potatoes",
+						"4 large carrots (chopped into large chunks, see note for using baby carrots)",
+						"1 large yellow onion (chopped)",
+						"4 cups beef broth",
+						"2 tablespoons worcestershire sauce",
+						"¼ cup water",
+						"2 tablespoons corn starch",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Turn on your instant pot and set it to \"saute\". In a small bowl stir together salt, pepper, garlic " +
+							"powder, onion powder, and smoked paprika. Rub mixture all over the roast to coat all sides.",
+						"Drizzle oil in instant pot, wait about 30 seconds, then use tongs to place roast in the pot. Do not " +
+							"move it for 3-4 minutes until well-seared and browned. Use tongs to turn the roast onto another " +
+							"side for 3-4 minutes, repeating until all sides are browned.",
+						"Switch instant pot to \"pressure cook\" on high and set to 60-80 minutes (60 for a 3 pound roast, 80 " +
+							"for a 5 pound roast. see notes if using baby carrots). Add potatoes, onions, and carrots to pot " +
+							"(just arrange them around the roast) and pour beef broth and worcestershire sauce over everything. " +
+							"Place lid on the pot and turn to locked position. Make sure the vent is set to the sealed position.",
+						"When the cooking time is up, do a natural release for 10 minutes (don't touch anything on the pot, just " +
+							"let it de-pressurize on it's own for 10 minutes). After 10 minutes, turn vent to the venting " +
+							"release position and allow all of the steam to vent and the float valve to drop down before removing " +
+							"the lid.",
+						"Transfer the roast, potatoes, onions, and carrots to a platter and shred the roast with 2 forks into " +
+							"chunks. Use a handheld strainer to scoop out bits from the broth in the pot. Set instant pot to \"soup\" " +
+							"setting. Whisk together the water and corn starch. Once broth is boiling, stir in corn starch mixture " +
+							"until the gravy thickens. Add salt, pepper, and garlic powder to taste.",
+						"Serve gravy poured over roast and veggies and garnish with fresh thyme or parsley if desired.",
+					},
+				},
+				Name: "Instant Pot Pot Roast Recipe",
+				NutritionSchema: models.NutritionSchema{
+					Calories:      "133 kcal",
+					Carbohydrates: "23 g",
+					Fat:           "3 g",
+					Fiber:         "3 g",
+					Protein:       "4 g",
+					SaturatedFat:  "1 g",
+					Servings:      "1",
+					Sodium:        "1087 mg",
+					Sugar:         "5 g",
+				},
+				PrepTime:  "PT20M",
+				TotalTime: "PT100M",
+				Yield:     models.Yield{Value: 6},
+				URL:       "https://www.lecremedelacrumb.com/instant-pot-pot-roast-potatoes/",
 			},
 		},
 		/*{
@@ -202,6 +280,42 @@ func TestScraper_L(t *testing.T) {
 			},
 		},*/
 		{
+			name: "leukerecepten.nl",
+			in:   "https://www.leukerecepten.nl/recepten/pita-tandoori",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "Hoofdgerechten"},
+				CookTime:      "PT0M",
+				DatePublished: "2024-03-17T22:00:52+01:00",
+				Description: models.Description{
+					Value: "Dit recept voor pita tandoori is ideaal als je weinig tijd hebt en toch iets lekkers wil maken. Met kip, een kruidige tandoori marinade en verfrissende yoghurtsaus in een knapperig pitabroodje.",
+				},
+				Image: models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"250 gr kip (vega)", "5 grote pitabroodjes", "1 komkommer",
+						"1 eetlepel tandoori kruiden (pasta)", "50 gr yoghurt", "olie om te bakken",
+						"1 Bosje verse munt", "120 gr yoghurt", "1 Snuf peper", "1 limoen",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Meng de stukjes kip met de tandoori kruiden (dit kunnen droge kruiden zijn of een kruidenpasta) en de yoghurt in een kom. Dek af en laat ondertussen in de koelkast staan.",
+						"Ga verder met het afbakken van de pitabroodjes. Snijd de komkommer in plakjes.",
+						"Maak de saus: hak de munt fijn en rasp de limoen en pers het sap uit. Meng de munt en limoen met de yoghurt voor de saus en breng op smaak met een snufje peper.",
+						"Verhit een beetje olie in een koekenpan en bak de stukjes kip tandoori gaar.",
+						"Neem een pitabroodje en vul deze met plakjes komkommer, de kip tandoori en wat van de frisse yoghurtsaus.",
+					},
+				},
+				Name:      "Pita tandoori",
+				PrepTime:  "PT0H30M",
+				TotalTime: "PT0H30M",
+				Yield:     models.Yield{Value: 5},
+				URL:       "https://www.leukerecepten.nl/recepten/pita-tandoori",
+			},
+		},
+		{
 			name: "lifestyleofafoodie.com",
 			in:   "https://lifestyleofafoodie.com/chick-fil-a-peppermint-milkshake/",
 			want: models.RecipeSchema{
@@ -247,9 +361,51 @@ func TestScraper_L(t *testing.T) {
 					Sugar:          "76 g",
 					UnsaturatedFat: "7 g",
 				},
-				PrepTime: "PT1M",
-				Yield:    models.Yield{Value: 2},
-				URL:      "https://lifestyleofafoodie.com/chick-fil-a-peppermint-milkshake/",
+				PrepTime:  "PT1M",
+				TotalTime: "PT1M",
+				Yield:     models.Yield{Value: 2},
+				URL:       "https://lifestyleofafoodie.com/chick-fil-a-peppermint-milkshake/",
+			},
+		},
+		{
+			name: "lidl-kochen.de",
+			in:   "https://www.lidl-kochen.de/rezeptwelt/schweinemedaillons-mit-ofenkartoffeln-butterbohnen-und-rosmarinbroeseln-147914",
+			want: models.RecipeSchema{
+				AtContext: atContext,
+				AtType:    models.SchemaType{Value: "Recipe"},
+				Category:  models.Category{Value: "Mittagessen, Abendessen"},
+				Cuisine:   models.Cuisine{Value: "Deutschland"},
+				Description: models.Description{
+					Value: "Rezept für Schweinemedaillons mit Ofenkartoffeln, Butterbohnen und Rosmarinbröseln » Über 561x nachgekocht » 40min Zubereitung » 10 Zutaten » 558 kcal/Portion",
+				},
+				Keywords: models.Keywords{
+					Values: "Bohnen, Buschbohnen, Kartoffeln, Schwein, Schweinelende, Schweinefilet, einfach, lecker, leicht, Mittagessen, Abendessen, NährwertKompass 7-8, Deutschland, Gäste, Familie, Hauptspeise, Fleisch, Gemüse, Lidl Plus Coupons, Schweinefleisch, Einfaches Mittagessen, Einfaches Abendessen, Einfache Familienrezepte, Abendessen für Gäste, Familien Mittagessen",
+				},
+				Image: models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"Salz Prise", "Schweinefilet 600 g", "Kartoffeln, vorw. festk. 1 kg",
+						"Rosmarin, frisch 10 g", "Olivenöl 5 EL", "Buschbohnen 400 g",
+						"Schalotten 2 St.", "Pfeffer, schwarz Prise", "Paniermehl 3 EL", "Butter 3 EL",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Ofen auf 220 °C (Umluft) vorheizen. In einem Topf ca. 1 l Salzwasser zugedeckt aufkochen. Schweinefilets waschen, trocken tupfen, in Medaillons schneiden und zum Temperieren beiseitelegen. Kartoffeln gründlich waschen und längs vierteln. Rosmarin waschen, trocken schütteln, Nadeln von den Stielen streifen und sehr fein hacken.",
+						"Kartoffeln in einer Schüssel mit zwei Drittel vom Rosmarin, 1 EL Olivenöl und Salz vermengen. Mit der Hautseite nach unten auf ein Backblech legen und im Ofen ca. 25 Min. rösten.",
+						"Inzwischen Bohnen waschen, trocken tupfen, Enden dünn abschneiden und im kochenden Salzwasser ca. 4 Min. kochen. Bohnen anschließend in ein Sieb abgießen, unter kaltem Wasser abspülen und abtropfen lassen.",
+						"Derweil Schalotten halbieren, schälen und fein würfeln. In einer Pfanne 1 EL Olivenöl auf mittlerer bis hoher Stufe erhitzen, Medaillons salzen und im Öl von jeder Seite ca. 3 Min. anbraten. Fleisch pfeffern und in Alufolie gewickelt bis zum Anrichten durchziehen lassen. Pfanne nicht säubern.",
+						"2 EL Olivenöl und Paniermehl zum Bratensatz in die Pfanne geben und Brösel auf mittlerer Stufe ca. 2 Min. goldgelb rösten. Restlichen Rosmarin und Salz zugeben, kurz mitrösten und auf einem Teller beiseitestellen. Pfanne säubern.",
+						"1 EL Olivenöl in der gesäuberten Pfanne auf mittlerer Stufe erhitzen und Schalotten weitere ca. 2 Min. mitbraten. Abgetropfte Bohnen und 3 EL Butter zugeben, durchmischen, ca. 1 Min. erwärmen und mit Salz und Pfeffer abschmecken. Kartoffeln aus dem Ofen nehmen und mit Schweinemedaillons, Bohnen und Bröseln auf Tellern anrichten und servieren.\r\n\r\nGuten Appetit!",
+					},
+				},
+				Name: "Schweinemedaillons mit Ofenkartoffeln, Butterbohnen und Rosmarinbröseln",
+				NutritionSchema: models.NutritionSchema{
+					Calories: "558 Kalorie",
+				},
+				PrepTime: "PT40M",
+				Yield:    models.Yield{Value: 4},
+				URL:      "https://www.lidl-kochen.de/rezeptwelt/schweinemedaillons-mit-ofenkartoffeln-butterbohnen-und-rosmarinbroeseln-147914",
 			},
 		},
 		{
@@ -302,10 +458,11 @@ func TestScraper_L(t *testing.T) {
 							"wire baking rack for at least 10 minutes before removing from the pan and allowing the bread to cool further.",
 					},
 				},
-				Name:     "The Best Starbucks Pumpkin Loaf Recipe (Copycat)",
-				PrepTime: "PT15M",
-				Yield:    models.Yield{Value: 2},
-				URL:      "https://littlespicejar.com/starbucks-pumpkin-loaf/",
+				Name:      "The Best Starbucks Pumpkin Loaf Recipe (Copycat)",
+				PrepTime:  "PT15M",
+				TotalTime: "PT1H10M",
+				Yield:     models.Yield{Value: 2},
+				URL:       "https://littlespicejar.com/starbucks-pumpkin-loaf/",
 			},
 		},
 		{
@@ -367,9 +524,10 @@ func TestScraper_L(t *testing.T) {
 					Sugar:         "5.1 g",
 					TransFat:      "0.2 g",
 				},
-				PrepTime: "PT10M",
-				Yield:    models.Yield{Value: 1},
-				URL:      "https://livelytable.com/bbq-ribs-on-the-charcoal-grill/",
+				PrepTime:  "PT10M",
+				TotalTime: "PT2H40M",
+				Yield:     models.Yield{Value: 1},
+				URL:       "https://livelytable.com/bbq-ribs-on-the-charcoal-grill/",
 			},
 		},
 		{
@@ -482,9 +640,10 @@ func TestScraper_L(t *testing.T) {
 					Sugar:          "2 g",
 					UnsaturatedFat: "8 g",
 				},
-				PrepTime: "PT10M",
-				Yield:    models.Yield{Value: 8},
-				URL:      "https://lovingitvegan.com/vegan-buffalo-chicken-dip/",
+				PrepTime:  "PT10M",
+				TotalTime: "PT90M",
+				Yield:     models.Yield{Value: 8},
+				URL:       "https://lovingitvegan.com/vegan-buffalo-chicken-dip/",
 			},
 		},
 	}

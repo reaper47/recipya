@@ -32,6 +32,7 @@ type RecipeSchema struct {
 	NutritionSchema NutritionSchema `json:"nutrition"`
 	PrepTime        string          `json:"prepTime"`
 	Tools           Tools           `json:"tool"`
+	TotalTime       string          `json:"totalTime"`
 	Yield           Yield           `json:"recipeYield"`
 	URL             string          `json:"url"`
 }
