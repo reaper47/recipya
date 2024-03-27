@@ -16,7 +16,6 @@ func TestScraper_B(t *testing.T) {
 				Category:      models.Category{Value: "Side"},
 				CookTime:      "PT40M",
 				Cuisine:       models.Cuisine{Value: "American"},
-				DateCreated:   "2016-07-20T14:21:47-04:00",
 				DatePublished: "2022-02-23T01:00:11+00:00",
 				Description: models.Description{
 					Value: "These 3-ingredient Italian roasted potatoes are quick and simple to prep. With crispy edges " +
@@ -122,6 +121,7 @@ func TestScraper_B(t *testing.T) {
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "Sides"},
+				DateCreated:   "2016-07-20T14:21:47-04:00",
 				DateModified:  "2023-11-14T11:00:31-05:00",
 				DatePublished: "2016-07-20T14:17:00-04:00",
 				Description: models.Description{

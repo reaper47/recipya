@@ -237,8 +237,8 @@ func TestScraper_I(t *testing.T) {
 				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
-						"1 (8-ounce) package wide egg noodles", "2 cups chopped cooked chicken breast",
-						"8 ounces cooked ham, cubed", "8 ounces Swiss cheese, cubed",
+						"1 package (8-ounce) wide egg noodles", "2 cups chopped cooked chicken breast",
+						"8 ounces cooked ham, sliced or cubed", "8 ounces Swiss cheese, cubed",
 						"1 can cream of chicken soup", "1/2 cup 2% milk", "1/2 cup sour cream",
 						"2 tablespoons butter", "1/3 cup seasoned bread crumbs",
 						"1/4 cup grated Parmesan cheese",
@@ -246,14 +246,13 @@ func TestScraper_I(t *testing.T) {
 				},
 				Instructions: models.Instructions{
 					Values: []string{
-						"Gather all your ingredients. Preheat your oven to 350 degrees Fahrenheit (175°C) and lightly grease a 9x13-inch baking dish.",
-						"In a large pot, boil lightly salted water. Cook the egg noodles in boiling water, stirring occasionally. Let them cook until they're tender yet firm to bite for 7 to 9 minutes. Drain and set them aside.",
-						"Combine the cooked egg noodles, chopped chicken breast, cubed ham, and Swiss cheese in a large bowl. Set it aside.",
-						"Mix the cream of chicken soup, milk, and sour cream in a separate bowl until well combined. Pour this mixture over the chicken, ham, and cheese. Stir until everything is well-coated.",
-						"Transfer the noodle mixture to your prepared baking dish, spreading it out evenly.",
-						"In a small pan, melt the butter over medium heat. Add the seasoned bread crumbs and stir until they're coated in the butter. Cook them for 2 to 3 minutes.",
-						"Sprinkle the breadcrumb mixture evenly over the noodle mixture in the baking dish.",
-						"Place the casserole in the preheated oven. Bake it for 30 minutes until it's hot and bubbly and the breadcrumb topping is golden brown.",
+						"Preheat the oven to 350 degrees Fahrenheit (175°C) and lightly grease a 9x13-inch baking dish.",
+						"In a large pot of well-salted water, boil the egg noodles and cook to 2 minutes before al dente per the package instructions (usually about 5 minutes).",
+						"Drain the noodles then add them to a large bowl. Mix in the chopped chicken breast, ham, and Swiss cheese. Set aside.",
+						"In a separate bowl, mix the cream of chicken soup, milk, and sour cream until smooth. Pour this over the noodles and chicken and stir until everything is well-coated.",
+						"Transfer the noodle mixture to the prepared baking dish, spreading it out evenly.",
+						"In a small pan, melt the butter over medium heat. Add the seasoned bread crumbs and Parmesan cheese and stir until they're coated in the butter. Cook them for 2 to 3 minutes.",
+						"Sprinkle the breadcrumb mixture evenly over the noodles and bake for 30 minutes or until it's hot and bubbly and the breadcrumbs are golden brown.",
 						"Allow the casserole to cool for 10 minutes, serve, and enjoy!",
 					},
 				},

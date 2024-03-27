@@ -210,7 +210,7 @@ func TestScraper_J(t *testing.T) {
 						"½ teaspoon pure vanilla extract",
 						"¼ teaspoon fine sea salt",
 						"2 cups powdered sugar",
-						"1-2 tablespoons whole milk (room temperature)",
+						"1-2 Tablespoons whole milk (room temperature)",
 					},
 				},
 				Instructions: models.Instructions{

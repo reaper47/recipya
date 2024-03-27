@@ -270,7 +270,9 @@ func (s *Scraper) scrapeQuitoque(rawURL string) (models.RecipeSchema, error) {
 
 		instructions = make([]string, 0, len(m.Steps))
 		for _, step := range m.Steps {
-			instructions = append(instructions, step.Title+"\n"+step.Description)
+			ins := step.Title + "\n" + step.Description
+			ins = strings.ReplaceAll(ins, "\u00a0", " ")
+			instructions = append(instructions, ins)
 		}
 
 		ingredients = make([]string, 0, len(m.Stacks.Ingredients)+len(m.Stacks.Ingredients))

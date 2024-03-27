@@ -13,7 +13,7 @@ func scrapeReddit(root *goquery.Document) (models.RecipeSchema, error) {
 	datePub, _ := node.Find("time").First().Attr("datetime")
 	datePub, _, _ = strings.Cut(datePub, "T")
 
-	form := node.Find("form").First()
+	form := node.Find(".sitetable.nestedlisting form").First()
 	nodes := form.Find("ul").First().Find("li")
 	ingredients := make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {

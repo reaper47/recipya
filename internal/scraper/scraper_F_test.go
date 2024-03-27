@@ -60,9 +60,9 @@ func TestScraper_F(t *testing.T) {
 				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
-						"½ cup sourdough starter, active and bubbly (113 grams)",
+						"½ cup sourdough starter (active and bubbly (113 grams))",
 						"1 cup water (236 grams)", "2 teaspoons sugar (8 grams)",
-						"1/4 cup butter, softened (57 grams)", "2 teaspoons salt (10 grams)",
+						"1/4 cup butter (softened (57 grams))", "2 teaspoons salt (10 grams)",
 						"3 cups unbleached all purpose flour (420 grams)", "8 cups water", "1/2 cup baking soda",
 					},
 				},

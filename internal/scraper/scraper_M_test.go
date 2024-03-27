@@ -322,9 +322,8 @@ func TestScraper_M(t *testing.T) {
 				},
 				Instructions: models.Instructions{
 					Values: []string{
-						"Ha alt det tørre i en bolle og spe med litt av melken om gangen. Rør godt mellom hver gang for å få en glatt røe uten melklumper.",
-						"R&oslash;r inn eggene og tilsett smeltet sm&oslash;r. La r&oslash;ren svelle i 1/2 time. Juster r&oslash;" +
-							"ren med litt vann eller melk om den er for tykk.",
+						"Ha alt det tørre i en bolle og spe med litt av melken om gangen. Rør godt mellom hver gang for å få en glatt røre uten melklumper.",
+						"Rør inn eggene og tilsett smeltet smør. La røren svelle i 1/2 time. Juster røren med litt vann eller melk om den er for tykk.",
 						"Stek vaflene og server dem gjerne varme.",
 					},
 				},

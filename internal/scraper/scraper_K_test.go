@@ -36,12 +36,9 @@ func TestScraper_K(t *testing.T) {
 				},
 				Instructions: models.Instructions{
 					Values: []string{
-						"Prepare the noodles and place 40g of prepared noodles in a soup bowl. Set aside.",
-						"Put the light chicken stock, light soy sauce, sea salt, MSG and white pepper in a saucepan, bring to the " +
-							"boil then reduce to a simmer.",
-						"Add the sliced chicken to the soup and simmer for about 3 minutes until the chicken is cooked through. " +
-							"Pour the chicken soup over the prepared noodles in the bowl. Garnish with the sliced spring onion, " +
-							"drizzle with sesame oil (if using) and serve.",
+						"Put the noodle nest in a bowl and cover with boiling water. Let stand for 2 minutes, mix briefly and drain the water. Place 40g of prepared noodles in a soup bowl (one nest of lucky boat noodles will do about 4-5 takeaway sized portions of soup). Set aside.",
+						"Put the light chicken stock, light soy sauce, sea salt, MSG and white pepper in a saucepan, bring to the boil then reduce to a simmer. Add the sliced chicken and simmer for about 3 minutes until the chicken is cooked through.",
+						"Pour the chicken soup over the prepared noodles in the bowl. Garnish with the sliced spring onion, drizzle with sesame oil (if using) and serve.",
 					},
 				},
 				Name:      "Chicken Noodle Soup",
@@ -166,7 +163,7 @@ func TestScraper_K(t *testing.T) {
 				PrepTime:  "PT45M",
 				TotalTime: "PT45M",
 				URL:       "https://www.kitchenstories.com/de/rezepte/valencianische-paella",
-				Yield:     models.Yield{Value: 1},
+				Yield:     models.Yield{Value: 4},
 			},
 		},
 		{

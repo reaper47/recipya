@@ -376,10 +376,10 @@ func TestScraper_L(t *testing.T) {
 				Category:  models.Category{Value: "Mittagessen, Abendessen"},
 				Cuisine:   models.Cuisine{Value: "Deutschland"},
 				Description: models.Description{
-					Value: "Rezept für Schweinemedaillons mit Ofenkartoffeln, Butterbohnen und Rosmarinbröseln » Über 561x nachgekocht » 40min Zubereitung » 10 Zutaten » 558 kcal/Portion",
+					Value: "Rezept für Schweinemedaillons mit Ofenkartoffeln, Butterbohnen und Rosmarinbröseln » Über 562x nachgekocht » 40min Zubereitung » 10 Zutaten » 558 kcal/Portion",
 				},
 				Keywords: models.Keywords{
-					Values: "Bohnen, Buschbohnen, Kartoffeln, Schwein, Schweinelende, Schweinefilet, einfach, lecker, leicht, Mittagessen, Abendessen, NährwertKompass 7-8, Deutschland, Gäste, Familie, Hauptspeise, Fleisch, Gemüse, Lidl Plus Coupons, Schweinefleisch, Einfaches Mittagessen, Einfaches Abendessen, Einfache Familienrezepte, Abendessen für Gäste, Familien Mittagessen",
+					Values: "Bohnen, Buschbohnen, Kartoffeln, Schwein, Schweinelende, Schweinefilet, einfach, lecker, leicht, Mittagessen, Abendessen, NährwertKompass 7-8, Deutschland, Gäste, Familie, Hauptspeise, Fleisch, Gemüse, Schweinefleisch, Einfaches Mittagessen, Einfaches Abendessen, Einfache Familienrezepte, Abendessen für Gäste, Familien Mittagessen",
 				},
 				Image: models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{

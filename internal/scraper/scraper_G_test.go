@@ -248,12 +248,12 @@ func TestScraper_G(t *testing.T) {
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
 				Category:      models.Category{Value: "middag"},
-				DateModified:  "2023-10-30T14:27:09Z",
+				DateModified:  "2024-01-30T12:47:53Z",
 				DatePublished: "2023-10-30T14:26:58Z",
 				Description: models.Description{
 					Value: "Koteletter kler mange smaker, også pærer. Brunede koteletter, pærer og sjalottløk legges sammen i en ildfast form. Supergod og enkel kosemiddag!",
 				},
-				Keywords: models.Keywords{Values: "Svin, Helg, Rask, Enkel"},
+				Keywords: models.Keywords{Values: "Svin, Helgemat, Rask, Enkel"},
 				Image:    models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
@@ -375,7 +375,7 @@ func TestScraper_G(t *testing.T) {
 				Category:      models.Category{Value: "Soup"},
 				CookTime:      "PT30M",
 				Cuisine:       models.Cuisine{Value: "American"},
-				DatePublished: "2022-03-25T05:00:29+00:00",
+				DatePublished: "2024-01-21T05:00:29+00:00",
 				Description: models.Description{
 					Value: "This simple but satisfying, hearty Beef and Tomato MacaroniSoup will be a repeat visitor to your dining table when the temperatures drop and appetites grow.",
 				},
