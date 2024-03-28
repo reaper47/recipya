@@ -110,9 +110,10 @@ func TestScraper_D(t *testing.T) {
 					Sugar:         "9 g",
 					TransFat:      "1 g",
 				},
-				PrepTime: "PT10M",
-				Yield:    models.Yield{Value: 4},
-				URL:      "https://www.delish.com/cooking/recipe-ideas/a24489879/beef-and-broccoli-recipe/",
+				PrepTime:  "PT10M",
+				TotalTime: "PT40M",
+				Yield:     models.Yield{Value: 4},
+				URL:       "https://www.delish.com/cooking/recipe-ideas/a24489879/beef-and-broccoli-recipe/",
 			},
 		},
 		{
@@ -282,9 +283,10 @@ func TestScraper_D(t *testing.T) {
 					Sodium:        "713 mg",
 					Sugar:         "1 g",
 				},
-				PrepTime: "PT5M",
-				Yield:    models.Yield{Value: 4},
-				URL:      "https://downshiftology.com/recipes/baked-chicken-breasts/",
+				PrepTime:  "PT5M",
+				TotalTime: "PT25M",
+				Yield:     models.Yield{Value: 4},
+				URL:       "https://downshiftology.com/recipes/baked-chicken-breasts/",
 			},
 		},
 		{
@@ -414,6 +416,42 @@ func TestScraper_D(t *testing.T) {
 						"Pynt toppen med guldtal oven på små chokoladekugler og placere halvkuglen i midten af kagen",
 					},
 				},
+			},
+		},
+		{
+			name: "drinkoteket.se",
+			in:   "https://drinkoteket.se/recept/limoncello-spritz/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "Champagnedrinkar"},
+				CookTime:      "PT2M",
+				DatePublished: "2023-12-30",
+				Description: models.Description{
+					Value: "Limoncello Spritz Drinkrecept på Drinkoteket.se. Här hittar du en mängd recept på enkla och goda drinkar och cocktails online. Välkommen in!",
+				},
+				Image: models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"5 cl Limoncello", "10 cl Bubbel", "4 cl Sodavatten", "1 cl Citronjuice",
+						"Rekommenderat bubbel", "Prosecco",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Fyll ett glas med is.",
+						"Tillsätt ett torrt mousserande vin, förslagsvis prosecco.",
+						"Tillsätt limoncello och en skvätt citronjuice.", "Rör om lite lätt.",
+						"Garnera med en citronskiva.",
+					},
+				},
+				Name:     "Limoncello Spritz",
+				PrepTime: "PT1M",
+				Tools: models.Tools{
+					Values: []string{"Barset med shaker", "Shaker", "Jigger", "Citruspress", "Cocktailsil", "Barsked"},
+				},
+				Yield: models.Yield{Value: 1},
+				URL:   "https://drinkoteket.se/recept/limoncello-spritz/",
 			},
 		},
 	}

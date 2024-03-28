@@ -17,10 +17,10 @@
 <meta name="dc.date.issued" content="2023-06-14" />
 <meta property="article:modified_time" content="2023-06-14T11:18:23+02:00" />
 <meta property="article:section" content="mat" />
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://static.nrk.no/nrkno/serum/2.0.498/common/img/apple-touch-icon-114x114.png" />
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://static.nrk.no/nrkno/serum/2.0.498/common/img/apple-touch-icon-72x72.png" />
-<link rel="apple-touch-icon-precomposed" href="https://static.nrk.no/nrkno/serum/2.0.498/common/img/apple-touch-icon.png" />
-<link rel="shortcut icon" href="https://static.nrk.no/nrkno/serum/2.0.498/common/img/nrk.ico" />
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://static.nrk.no/nrkno/serum/2.0.502/common/img/apple-touch-icon-114x114.png" />
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://static.nrk.no/nrkno/serum/2.0.502/common/img/apple-touch-icon-72x72.png" />
+<link rel="apple-touch-icon-precomposed" href="https://static.nrk.no/nrkno/serum/2.0.502/common/img/apple-touch-icon.png" />
+<link rel="shortcut icon" href="https://static.nrk.no/nrkno/serum/2.0.502/common/img/nrk.ico" />
 <!-- Custom address bar color for Chrome, Firefox OS and Opera -->
 <meta name="theme-color" content="#eef5ff">
 <!-- Custom address bar color for Windows Phone -->
@@ -49,6 +49,7 @@ content="Tamagoyaki er japansk rullet omelett. Den serveres oftest som smakfull 
 <link rel="Help" title="Hjelp" href="https://www.nrk.no/hjelp/" />
 <link rel="Search" title="Søk" href="https://www.nrk.no/sok/" />
 <link rel="canonical" href="https://www.nrk.no/mat/japansk-omelett-_tamagoyaki_-1.16435297" />
+<meta property="k5a:cntTag" content="nob" />
 <script>
 (function () {
 var queryString = window.location.search,
@@ -92,8 +93,8 @@ if (variant) {
 var contentIdPattern = /(.*)(\d\.\d+)$/;
 var variantUrl = baseUrl.replace(contentIdPattern, "$1" + variant + "-$2");
 createMetaTag('k5a:url', variantUrl);
-createMetaTag('k5a:tag', 'ab-test');
-createMetaTag('k5a:tag', 'variant-' + variant);
+createMetaTag('k5a:cntTag', 'abtest');
+createMetaTag('k5a:cntTag', 'variant' + variant);
 var contentIdMatch = baseUrl.match(contentIdPattern);
 if (contentIdMatch && contentIdMatch.length >= 3) {
 createMetaTag('k5a:tag', 'content-id-' + contentIdMatch[2]);
@@ -120,15 +121,11 @@ window.history.replaceState({}, document.title, baseUrl + (query ? '?' + query :
 <link rel="stylesheet" href="https://static.nrk.no/core-fonts/major/2/core-fonts.min.css">
 <link rel="stylesheet" href="https://static.nrk.no/core-css/1.5.0/core-css.min.css">
 <link rel="stylesheet" href="https://static.nrk.no/nrk-sans/latest/nrk-sans.min.css">
-<link rel="preload" href="https://static.nrk.no/core-fonts/major/2/LFT_Etica_Bold.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="https://static.nrk.no/core-fonts/major/2/LFT_Etica_Semibold.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="https://static.nrk.no/core-fonts/major/2/NRK_Etica_Slab_Bold.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="https://static.nrk.no/core-fonts/major/2/LFT_Etica_Book.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" type="text/css" href="https://static.nrk.no/nrkno/serum/2.0.498/standard.css" />
+<link rel="stylesheet" type="text/css" href="https://static.nrk.no/nrkno/serum/2.0.502/standard.css" />
 <noscript id="injectStylesBefore">
-<link rel="stylesheet" type="text/css" href="https://static.nrk.no/nrkno/serum/2.0.498/widget.css" />
+<link rel="stylesheet" type="text/css" href="https://static.nrk.no/nrkno/serum/2.0.502/widget.css" />
 </noscript>
-<link rel="stylesheet" type="text/css" href="https://static.nrk.no/nrkno/serum/2.0.498/skin/food/food.css" />
+<link rel="stylesheet" type="text/css" href="https://static.nrk.no/nrkno/serum/2.0.502/skin/food/food.css" />
 <script async crossorigin="anonymous" src="https://static.nrk.no/core-icons/major/4/core-icons.min.js"></script>
 <script>
 var require={paths:{coreDatepicker:"https://static.nrk.no/core-components/major/5/core-datepicker/core-datepicker.min",coreToggle:"https://static.nrk.no/core-components/major/5/core-toggle/core-toggle.min",coreAnalytics:"https://static.nrk.no/core-analytics/major/6/core-analytics.min",jquery:"common/bower/jquery/dist/jquery.min",async:"common/js/lib/requirejs/plugins/async/async",signals:"common/js/lib/signals",moment:"common/js/lib/moment/moment",text:"common/bower/requirejs-text/text",twitter:"//platform.twitter.com/widgets",Pusher:"//js.pusher.com/3.0/pusher.min",highcharts:"//code.highcharts.com/highcharts","highcharts-data":"//code.highcharts.com/modules/data"},shim:{Tinycon:{exports:"Tinycon"},Pusher:{exports:"Pusher"},JSON:{exports:"JSON"},vkbeautify:{exports:"vkbeautify"}},waitSeconds:15,map:{"*":{Pubsub:"inline!standard:common/js/lib/Pubsub","Serum.Pubsub":"inline!standard:common/js/lib/Serum.Pubsub","Serum.Plugin":"inline!standard:type/plugin/Serum.Plugin","Serum.Profile":"inline!standard:common/js/lib/Serum.Profile","Serum.Asset.Img":"inline!standard:common/module/asset/Serum.Asset.Img","Serum.Date":"inline!standard:common/module/date/Serum.Date","Serum.ScrollTrigger":"inline!standard:common/js/lib/Serum.ScrollTrigger"}}};
@@ -154,7 +151,7 @@ return domainList.reduce(function (found, domain) {
 return found ? true : link.hostname.slice(-domain.length) === domain;
 }, false);
 }
-var a = "https://static.nrk.no/nrkno/serum/2.0.498";
+var a = "https://static.nrk.no/nrkno/serum/2.0.502";
 require.baseUrl = a;
 var gaCode = 
 'UA-3413696-1';
@@ -252,12 +249,20 @@ document.documentElement.className = document.documentElement.className.replace(
 </script></head>
 <body>
 <script>
-var darkmode = document.cookie.match('(^|;)\\s*nrkno-darkmode\\s*=\\s*([^;]+)')
+var darkmode = document.cookie.match(
+"(^|;)\\s*nrkno-darkmode\\s*=\\s*([^;]+)"
+);
 darkmode = darkmode && darkmode.pop();
-var htmlEl = document.querySelector('html')
-if (htmlEl && darkmode === 'on') {
-htmlEl.classList.add('darkmode');
-var darkModeThemeColor = '#0a2343';
+var htmlEl = document.querySelector("html");
+if (
+(htmlEl && darkmode === "on") ||
+(htmlEl &&
+darkmode === "auto" &&
+window.matchMedia &&
+window.matchMedia("(prefers-color-scheme: dark)").matches)
+) {
+htmlEl.classList.add("darkmode");
+var darkModeThemeColor = "#0a2343";
 var themeMetaTags = document.querySelectorAll(
 'meta[name="theme-color"], meta[name="msapplication-navbutton-color"], meta[name="apple-mobile-web-app-status-bar-style"]',
 );
@@ -376,21 +381,29 @@ tag.setAttribute('content', darkModeThemeColor);
           </div>
         </div>
 
-        <div class="nrk-masthead__search">
-          <form class="nrk-masthead__search-form" role="search" action="https://www.nrk.no/sok/">
-            <input type="search" name="q" aria-label="S&oslash;k i hele nrk-universet" placeholder="S&oslash;k" autoComplete="off">
-            <button type="submit" aria-label="S&oslash;k"><svg viewBox="0 0 24 24" class="nrk-search" width="1.500em" height="1.500em" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M10 19c4.9706 0 9-4.0294 9-9 0-4.97056-4.0294-9-9-9-4.97056 0-9 4.02944-9 9 0 4.9706 4.02944 9 9 9zm0-2.1176c-3.80102 0-6.88235-3.0814-6.88235-6.8824 0-3.80102 3.08133-6.88235 6.88235-6.88235 3.801 0 6.8824 3.08133 6.8824 6.88235 0 3.801-3.0814 6.8824-6.8824 6.8824zM15.8959 19l2.4263 4h2.3391l-2.4262-4h-2.3392z"/></svg></button>
-          </form>
+        <div class="nrk-masthead__user-and-search-wrapper">
+          <div class="nrk-masthead__user nrk-masthead__user--desktop">
+                <a href="https://www.nrk.no/logginn" hidden>
+                  <svg viewBox="0 0 24 24" class="nrk-user-notloggedin" width="1.500em" height="1.500em" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M3 12c0-4.97056 4.02944-9 9-9 4.9706 0 9 4.02944 9 9 0 4.9706-4.0294 9-9 9-4.97056 0-9-4.0294-9-9zm-2 0C1 5.92487 5.92487 1 12 1c6.0751 0 11 4.92487 11 11 0 6.0751-4.9249 11-11 11-6.07513 0-11-4.9249-11-11zm5 0c0 3.3137 2.68629 6 6 6 3.3137 0 6-2.6863 6-6h-2c0 2.2091-1.7909 4-4 4-2.20914 0-4-1.7909-4-4H6z"/></svg>
+                  <span>Logg på</span>
+                </a>
+                <script async src="/logginn.js"></script> 
+              </div>
+          <div class="nrk-masthead__search">
+                  <form class="nrk-masthead__search-form" role="search" action="https://www.nrk.no/sok/">
+                    <input type="search" name="q" aria-label="S&oslash;k i hele nrk-universet" placeholder="S&oslash;k" autoComplete="off">
+                    <button type="submit" aria-label="S&oslash;k"><svg viewBox="0 0 24 24" class="nrk-search" width="1.500em" height="1.500em" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M10 19c4.9706 0 9-4.0294 9-9 0-4.97056-4.0294-9-9-9-4.97056 0-9 4.02944-9 9 0 4.9706 4.02944 9 9 9zm0-2.1176c-3.80102 0-6.88235-3.0814-6.88235-6.8824 0-3.80102 3.08133-6.88235 6.88235-6.88235 3.801 0 6.8824 3.08133 6.8824 6.88235 0 3.801-3.0814 6.8824-6.8824 6.8824zM15.8959 19l2.4263 4h2.3391l-2.4262-4h-2.3392z"/></svg></button>
+                  </form>
+                </div>
         </div>
       </nav>
-
-      <div class="nrk-masthead__user">
-        <a href="https://www.nrk.no/logginn" hidden>
-          <svg viewBox="0 0 24 24" class="nrk-user-notloggedin" width="1.500em" height="1.500em" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M3 12c0-4.97056 4.02944-9 9-9 4.9706 0 9 4.02944 9 9 0 4.9706-4.0294 9-9 9-4.97056 0-9-4.0294-9-9zm-2 0C1 5.92487 5.92487 1 12 1c6.0751 0 11 4.92487 11 11 0 6.0751-4.9249 11-11 11-6.07513 0-11-4.9249-11-11zm5 0c0 3.3137 2.68629 6 6 6 3.3137 0 6-2.6863 6-6h-2c0 2.2091-1.7909 4-4 4-2.20914 0-4-1.7909-4-4H6z"/></svg>
-          <span>Logg på</span>
-        </a>
-        <script async src="/logginn.js"></script> 
-      </div>
+      <div class="nrk-masthead__user nrk-masthead__user--mobile">
+                      <a href="https://www.nrk.no/logginn" hidden>
+                        <svg viewBox="0 0 24 24" class="nrk-user-notloggedin" width="1.500em" height="1.500em" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M3 12c0-4.97056 4.02944-9 9-9 4.9706 0 9 4.02944 9 9 0 4.9706-4.0294 9-9 9-4.97056 0-9-4.0294-9-9zm-2 0C1 5.92487 5.92487 1 12 1c6.0751 0 11 4.92487 11 11 0 6.0751-4.9249 11-11 11-6.07513 0-11-4.9249-11-11zm5 0c0 3.3137 2.68629 6 6 6 3.3137 0 6-2.6863 6-6h-2c0 2.2091-1.7909 4-4 4-2.20914 0-4-1.7909-4-4H6z"/></svg>
+                        <span>Logg på</span>
+                      </a>
+                      <script async src="/logginn.js"></script> 
+                    </div>
   </header><script async src="https://static.nrk.no/nrkno-masthead/major/6/nrkno-masthead.min.js"></script></div><div class="g100 col fc sAUTO group-reference"><div class="group widget rich menu-bar cf container-widget"><div class="g100 col fc s18 sg6 sg9 sg12 group-reference"><div class="group widget rich cf container-widget"><div class="g100 col fl s18 sg6 sg9 sg12 menu-reference"><!-- include: /serum/render?id=1.11102001&amp;size=18&amp;perspective=RICH&amp;alignment=LEFT -->
 <nav class="menu widget rich">
 <h2 class="menu__title skin-text">
@@ -408,7 +421,12 @@ Mat
 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#nrk-chevron-right" />
 </svg>
 </div>
-<ul class="menu__list" id="miyLxfflMvRZ67QRv7CHHUIw">
+<ul class="menu__list" id="mi6zaM8hw2R3usS1bqDq9P5g">
+<li class="menu__item">
+<a class="menu__link skin-border-hover" data-id="1.16726972" href="https://www.nrk.no/mat/bakemesterskapet-1.16726972">
+Bakemesterskapet
+</a>
+</li>
 <li class="menu__item">
 <a class="menu__link skin-border-hover" data-id="1.14742636" href="https://www.nrk.no/mat/brodbakst-1.14742636">
 Brødbakst
@@ -424,16 +442,11 @@ Supper
 Asiatisk
 </a>
 </li>
-<li class="menu__item">
-<a class="menu__link skin-border-hover" data-id="1.16679185" href="https://www.nrk.no/mat/i-gryte-eller-form-1.16679185">
-I gryte eller form
-</a>
-</li>
 </ul>
 </nav>
 <script>
 require(['inline!standard:type/menu/Serum.MainMenu'], function(MainMenu) {
-MainMenu('#miyLxfflMvRZ67QRv7CHHUIw');
+MainMenu('#mi6zaM8hw2R3usS1bqDq9P5g');
 });
 </script>
 </div></div></div></div></div><div class="g100 col fc s18 sg6 sg9 sg12 group-reference"><div class="group widget rich cf container-widget"><div class="g100 col fl s18 sg6 sg9 sg12 remoterenderedcontent-reference"><!-- include: /serum/render?id=1.15681293&amp;size=18&amp;perspective=RICH&amp;alignment=LEFT -->
@@ -480,13 +493,14 @@ MainMenu('#miyLxfflMvRZ67QRv7CHHUIw');
 <div class="recipe-media recipe-no-print">
 <!-- include: /serum/render?id=1.16435334&amp;size=17&amp;perspective=RICH&amp;alignment=CENTER&amp;caption=En+lekker+og+kjempegod+omelett+fra+det+japanske+kj%C3%B8kken.&amp;type=image&amp;aspect=F169 --><!-- START: /templates/image/image-rich.jsp -->
 <figure class="image widget rich">
-<div class="responsive-img F169"><img id="tee1ZBan6v5rMrE39aNuyg" sizes="(min-width:1180px) 1086px, (min-width:720px) 94vw, 100vw" srcset="https://gfx.nrk.no/tee1ZBan6v5rMrE39aNuygKmj46ZBRynzj_0AvuMimAw.jpg 80w, https://gfx.nrk.no/tee1ZBan6v5rMrE39aNuyg7j_iQi8yRivj_0AvuMimAw.jpg 160w, https://gfx.nrk.no/tee1ZBan6v5rMrE39aNuygtZCTHJ6HaKjj_0AvuMimAw.jpg 350w, https://gfx.nrk.no/tee1ZBan6v5rMrE39aNuygFmPX5xxzYwXj_0AvuMimAw.jpg 450w, https://gfx.nrk.no/tee1ZBan6v5rMrE39aNuygggsT1m5dNFbj_0AvuMimAw.jpg 650w, https://gfx.nrk.no/tee1ZBan6v5rMrE39aNuyg_g65_hY55_nj_0AvuMimAw.jpg 1000w, https://gfx.nrk.no/tee1ZBan6v5rMrE39aNuygC_yM1Xypk1Dj_0AvuMimAw.jpg 1200w, https://gfx.nrk.no/tee1ZBan6v5rMrE39aNuyggCHHiFkVDVnj_0AvuMimAw.jpg 1600w, https://gfx.nrk.no/tee1ZBan6v5rMrE39aNuygsuFJkKsFof7j_0AvuMimAw.jpg 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Japansk omelett (Tamagoyaki) på en svart tallerken - fint oppskåret med svart bånd rundt og pyntet med purreløk." title="Foto: Jakob Snedevig / DR"></div>
+<div class="responsive-img F169"><img sizes="(min-width:1180px) 1086px, (min-width:720px) 94vw, 100vw" srcset="https://gfx.nrk.no/tee1ZBan6v5rMrE39aNuygKmj46ZBRynzj_0AvuMimAw.jpg 80w, https://gfx.nrk.no/tee1ZBan6v5rMrE39aNuyg7j_iQi8yRivj_0AvuMimAw.jpg 160w, https://gfx.nrk.no/tee1ZBan6v5rMrE39aNuygtZCTHJ6HaKjj_0AvuMimAw.jpg 350w, https://gfx.nrk.no/tee1ZBan6v5rMrE39aNuygFmPX5xxzYwXj_0AvuMimAw.jpg 450w, https://gfx.nrk.no/tee1ZBan6v5rMrE39aNuygggsT1m5dNFbj_0AvuMimAw.jpg 650w, https://gfx.nrk.no/tee1ZBan6v5rMrE39aNuyg_g65_hY55_nj_0AvuMimAw.jpg 1000w, https://gfx.nrk.no/tee1ZBan6v5rMrE39aNuygC_yM1Xypk1Dj_0AvuMimAw.jpg 1200w, https://gfx.nrk.no/tee1ZBan6v5rMrE39aNuyggCHHiFkVDVnj_0AvuMimAw.jpg 1600w, https://gfx.nrk.no/tee1ZBan6v5rMrE39aNuygsuFJkKsFof7j_0AvuMimAw.jpg 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Japansk omelett (Tamagoyaki) på en svart tallerken - fint oppskåret med svart bånd rundt og pyntet med purreløk." title="Foto: Jakob Snedevig / DR"></div>
 <figcaption>
-<p>En lekker og kjempegod omelett fra det japanske kjøkken.</p>
+<p class="">En lekker og kjempegod omelett fra det japanske kjøkken.</p>
 <small>Foto: Jakob Snedevig / DR</small>
 </figcaption>
 </figure>
 <!-- END: /templates/image/image-rich.jsp -->
+
 </div>
 <div class="g66 col fr s12 sl18 sg6 sg9 recipe-reference">
 <div class="article-header">
@@ -557,36 +571,6 @@ Middels
 <footer class="container-widget-content recipe-footer cf">
 <hr class="recipe-hr">
 <div class="favorite-button-placeholder__recipe"></div>
-<div class="nrkno-share nrkno-no-print recipe-share" data-share-url="https://www.nrk.no/mat/1.16435297">
-<a class="nrk-button nrk-button--o" data-share="Recipe:Pinterest" rel="noopener" target="_blank" href="https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fwww.nrk.no%2Fmat%2F1.16435297&amp;description=Japansk%20omelett%20(Tamagoyaki)&amp;media=https%3A%2F%2Fgfx.nrk.no%2Ftee1ZBan6v5rMrE39aNuygC_yM1Xypk1Dj_0AvuMimAw.jpg">
-<span class="nrk-sr">Del på Pinterest</span>
-<svg viewbox="0 0 15 15">
-<title>Del på Pinterest</title>
-<path d="M7.8 1C4.3 1 2.5 3.6 2.5 5.7 2.5 7 3 8 4 8.7c0 0 .3 0 .4-.2 0-.2 0-.6.2-.7v-.4C4 7 3.8 6.4 3.8 6c0-2 1.3-3.7 3.6-3.7s3 1.2 3 3c0 2-1 3.8-2.3 3.8C7.7 9 7 8.7 7 8v-.3c.3-1 .8-2 .8-2.7s-.3-1-1-1-1.5.8-1.5 2c0 .3 0 .7.2 1l-1 4.2c-.2 1-.2 2 0 3 0-.2.2-.2.2-.2s1-1.3 1.3-2.4l.5-2c.2.4 1 .8 1.8.8 2.4 0 4-2.2 4-5C12.6 3 10.7 1 7.8 1z"/>
-</svg>
-</a>
-<a class="nrk-button nrk-button--o" data-share="Recipe:Facebook" rel="noopener" target="_blank" href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fwww.nrk.no%2Fmat%2F1.16435297">
-<span class="nrk-sr">Del på Facebook</span>
-<svg viewBox="0 0 15 15">
-<title>Del på Facebook</title>
-<path d="M8.4 4.6c0-.5 0-.8.8-.8h1V2H8.7C7 2 6.2 3.2 6.2 4.6v1H4.7v2h1.5V13h2.2V7.5H10l.2-1.8H8.4v-1z"/>
-</svg>
-</a>
-<a class="nrk-button nrk-button--o" data-share="Recipe:Twitter" rel="noopener" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.nrk.no%2Fmat%2F1.16435297&amp;text=Japansk%20omelett%20(Tamagoyaki)">
-<span class="nrk-sr">Del på Twitter</span>
-<svg viewBox="0 0 15 15">
-<title>Del på Twitter</title>
-<path d="M14 4c-.4.3-1 .4-1.4.5.5-.3 1-.8 1-1.3-.4.3-1 .4-1.5.6-.3-.5-1-.8-1.7-.8C9 3 7.8 4 7.8 5.4V6C6 5.7 4 5 3 3.3l-.3 1.2c0 1 .4 1.6 1 2-.3 0-.7 0-1-.3 0 1.2.8 2.2 2 2.4h-.7-.5c.4 1 1.3 1.7 2.3 1.7-.8.6-2 1-3 1H2c1 .7 2.4 1 3.8 1 4.5 0 7-3.6 7-6.7v-.3c.5-.4 1-.8 1.2-1.3"/>
-</svg>
-</a>
-<a class="nrk-button nrk-button--o" data-share="Recipe:Epost" href="mailto:?subject=Japansk%20omelett%20(Tamagoyaki)&amp;body=Japansk%20omelett%20(Tamagoyaki)%0D%0A%0D%0ATamagoyaki%20er%20japansk%20rullet%20omelett.%20Den%20serveres%20oftest%20som%20smakfull%20siderett%20eller%20til%20frokost.%20Den%20lages%20ved%20%C3%A5%20brette%20sammen%20tynne%20lag%20med%20krydret%20egg.%0D%0A%0D%0ALes%20mer%3A%20https%3A%2F%2Fwww.nrk.no%2Fmat%2F1.16435297">
-<span class="nrk-sr">Del på epost</span>
-<svg viewBox="0 0 15 15">
-<title>Del på epost</title>
-<path d="M13 2H2c-.5 0-1 .5-1 1v8c0 .5.5 1 1 1h11c.6 0 1-.5 1-1V3c0-.5-.5-1-1-1zM2 3.6l3.6 3.6L2 10.8V3.6zM7.4 8L2.3 3h10.3l-5 5zm-1.7-.4L7.2 9l.2.2.2-.2L9 7.6l3.6 3.5H2.2l3.6-3.4zm3.7-.4l3.7-3.6v7.2L9.5 7.2z"/>
-</svg>
-</a>
-</div>
 <div class="recipe-shareurl recipe-no-print">
 <label>Kopier lenkeadresse:&nbsp;</label>
 <input type="text" value="https://www.nrk.no/mat/1.16435297" readonly>
@@ -594,7 +578,7 @@ Middels
 </footer>
 </div>
 <!-- include: /serum/render?id=panorama.singleton.favorittmarkering&amp;size=18&amp;perspective=RICH&amp;alignment=AUTO -->
-    <div class="min-side" data-state-id="9byzpaawhg" data-static-host="https://static.nrk.no/publisering/min-side"><link
+    <div class="min-side" data-state-id="m7mebxbuaw" data-static-host="https://static.nrk.no/publisering/min-side"><link
       rel="stylesheet"
       type="text/css"
       href="https://static.nrk.no/publisering/min-side/static/0-c2ddc9339a70fac9c76d.css"
@@ -603,7 +587,7 @@ Middels
       type="text/css"
       href="https://static.nrk.no/publisering/min-side/static/saveButton-62d288e344506c232def.css"
     /><script crossorigin="anonymous">
-        window['__clientConfig__9byzpaawhg__'] = {"analytics":{"gaPropertyId":"UA-3413696-1"},"errorTracking":{"enabled":1},"loginConfig":{"useMock":false,"loginUrl":"https:\u002F\u002Finnlogging.nrk.no","homeUrl":"https:\u002F\u002Fwww.nrk.no"},"favorites":{"articleBaseURL":"https:\u002F\u002Fwww.nrk.no\u002F","articlesPerPage":10},"statistics":{"snowplow":{"enabled":true,"host":"https:\u002F\u002Fdata.nrk.no","environment":"prod"}},"api":{"url":"https:\u002F\u002Fwww.nrk.no\u002Fminside\u002Fapi"},"link":{"url":"https:\u002F\u002Fwww.nrk.no\u002Fminside","base":"\u002Fminside"},"assets":{"url":"https:\u002F\u002Fstatic.nrk.no\u002Fpublisering\u002Fmin-side\u002Fstatic\u002Fassets"}};
+        window['__clientConfig__m7mebxbuaw__'] = {"analytics":{"gaPropertyId":"UA-3413696-1"},"errorTracking":{"enabled":1},"loginConfig":{"mock":false,"loginUrl":"https:\u002F\u002Finnlogging.nrk.no","homeUrl":"https:\u002F\u002Fwww.nrk.no"},"favorites":{"articleBaseURL":"https:\u002F\u002Fwww.nrk.no\u002F","articlesPerPage":10},"statistics":{"snowplow":{"enabled":true,"host":"https:\u002F\u002Fdata.nrk.no","environment":"prod"}},"api":{"url":"https:\u002F\u002Fwww.nrk.no\u002Fminside\u002Fapi"},"link":{"url":"https:\u002F\u002Fwww.nrk.no\u002Fminside","base":"\u002Fminside"},"assets":{"url":"https:\u002F\u002Fstatic.nrk.no\u002Fpublisering\u002Fmin-side\u002Fstatic\u002Fassets"}};
       </script><script id="boot-script" type="application/javascript"> 
        function detectIE() {
           var ua = window.navigator.userAgent;
@@ -634,7 +618,7 @@ Middels
         var ieVersion = detectIE(); 
         var modernBrowser = window.Promise && window.fetch && 'noModule' in HTMLScriptElement.prototype && (!ieVersion || ieVersion > 18);
         if(modernBrowser) {
-            ["https://static.nrk.no/publisering/min-side/static/vendor~nrk-60b9a028138aff773488.esm.js", "https://static.nrk.no/publisering/min-side/static/saveButton-d2b88c43ea3f03f881cd.esm.js"].forEach(function(src) {
+            ["https://static.nrk.no/publisering/min-side/static/vendor~nrk-9017580833016bb486e0.esm.js", "https://static.nrk.no/publisering/min-side/static/saveButton-59e6b6bde12b0ec6a46f.esm.js"].forEach(function(src) {
                 var script = document.createElement('script');
                 script.crossOrigin = 'anonymous';
                 script.async = false; 
@@ -681,7 +665,7 @@ data-fwdnav-collection-type="nrkno_universe">
 <a class="autonomous lp_plug" href="https://www.nrk.no/mat/fiesta-mexicana-med-kylling-flautas_-mole_-taco-barbacoa-og-corn-husk-meringue-1.16472123" data-id="1.16472123">
 <!-- include: /serum/render?id=1.16472637&amp;size=6&amp;perspective=LEAN&amp;alignment=AUTO&amp;type=image&amp;aspect=F169&amp;classes=plug-image --><!-- START: /templates/image/image-lean.jsp -->
 <figure class="image widget lean plug-image">
-<div class="responsive-img F169"><img id="tOV5J6qw6XblluKTZx7ogA" sizes="(min-width:1180px) 383px, (min-width:720px) 33vw, 100vw" srcset="https://gfx.nrk.no/tOV5J6qw6XblluKTZx7ogABMudMPPhPSyL_4BYQNqPpg.png 80w, https://gfx.nrk.no/tOV5J6qw6XblluKTZx7ogAafGORLetJCuL_4BYQNqPpg.png 160w, https://gfx.nrk.no/tOV5J6qw6XblluKTZx7ogAGKuk3NNpwO-L_4BYQNqPpg.png 350w, https://gfx.nrk.no/tOV5J6qw6XblluKTZx7ogAig5QJ93yC3CL_4BYQNqPpg.png 450w, https://gfx.nrk.no/tOV5J6qw6XblluKTZx7ogAKF5rpEXkiJiL_4BYQNqPpg.png 650w, https://gfx.nrk.no/tOV5J6qw6XblluKTZx7ogAWx8SxZAAB8SL_4BYQNqPpg.png 1000w, https://gfx.nrk.no/tOV5J6qw6XblluKTZx7ogAfPeO6bNXCkSL_4BYQNqPpg.png 1200w, https://gfx.nrk.no/tOV5J6qw6XblluKTZx7ogAfE1qYgaOdseL_4BYQNqPpg.png 1600w, https://gfx.nrk.no/tOV5J6qw6XblluKTZx7ogAE8Ow9RTYiu-L_4BYQNqPpg.png 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Fire meksikanske matretter, kylling mole, flautas, corn husk meringue og barbacoa" title="Foto: Fra TV-serien Munter mat / DR"></div>
+<div class="responsive-img F169"><img sizes="(min-width:1180px) 383px, (min-width:720px) 33vw, 100vw" srcset="https://gfx.nrk.no/tOV5J6qw6XblluKTZx7ogABMudMPPhPSyL_4BYQNqPpg.png 80w, https://gfx.nrk.no/tOV5J6qw6XblluKTZx7ogAafGORLetJCuL_4BYQNqPpg.png 160w, https://gfx.nrk.no/tOV5J6qw6XblluKTZx7ogAGKuk3NNpwO-L_4BYQNqPpg.png 350w, https://gfx.nrk.no/tOV5J6qw6XblluKTZx7ogAig5QJ93yC3CL_4BYQNqPpg.png 450w, https://gfx.nrk.no/tOV5J6qw6XblluKTZx7ogAKF5rpEXkiJiL_4BYQNqPpg.png 650w, https://gfx.nrk.no/tOV5J6qw6XblluKTZx7ogAWx8SxZAAB8SL_4BYQNqPpg.png 1000w, https://gfx.nrk.no/tOV5J6qw6XblluKTZx7ogAfPeO6bNXCkSL_4BYQNqPpg.png 1200w, https://gfx.nrk.no/tOV5J6qw6XblluKTZx7ogAfE1qYgaOdseL_4BYQNqPpg.png 1600w, https://gfx.nrk.no/tOV5J6qw6XblluKTZx7ogAE8Ow9RTYiu-L_4BYQNqPpg.png 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Fire meksikanske matretter, kylling mole, flautas, corn husk meringue og barbacoa" title="Foto: Fra TV-serien Munter mat / DR"></div>
 </figure>
 <!-- END: /templates/image/image-lean.jsp -->
 <div class="plug-teaser">
@@ -714,7 +698,7 @@ data-id="1.16461159"
 title="Flautas med kylling, guacamole og pico de gallo">
 <!-- include: /serum/render?id=1.16461175&amp;size=6&amp;perspective=LEAN&amp;alignment=CENTER&amp;caption=Meksikansk+mat+laget+fra+bunnen+smaker+%C2%ABklasse%C2%BB.&amp;type=image&amp;aspect=F169&amp;classes=plug-image --><!-- START: /templates/image/image-lean.jsp -->
 <figure class="image widget lean plug-image">
-<div class="responsive-img F169"><img id="31wVkS7tlcakU_epMzAbFQ" sizes="(min-width:1180px) 383px, (min-width:720px) 33vw, 100vw" srcset="https://gfx.nrk.no/31wVkS7tlcakU_epMzAbFQtx3wFUrY4z-T1GbKzZDcBw.jpg 80w, https://gfx.nrk.no/31wVkS7tlcakU_epMzAbFQrO6ub0Zh_KKT1GbKzZDcBw.jpg 160w, https://gfx.nrk.no/31wVkS7tlcakU_epMzAbFQg8IZbIw3NvCT1GbKzZDcBw.jpg 350w, https://gfx.nrk.no/31wVkS7tlcakU_epMzAbFQolRfY63AUviT1GbKzZDcBw.jpg 450w, https://gfx.nrk.no/31wVkS7tlcakU_epMzAbFQsOjKG9iGYp2T1GbKzZDcBw.jpg 650w, https://gfx.nrk.no/31wVkS7tlcakU_epMzAbFQhcDAkB_OWYOT1GbKzZDcBw.jpg 1000w, https://gfx.nrk.no/31wVkS7tlcakU_epMzAbFQGsNdhJUcbpqT1GbKzZDcBw.jpg 1200w, https://gfx.nrk.no/31wVkS7tlcakU_epMzAbFQAkIZH8S__bCT1GbKzZDcBw.jpg 1600w, https://gfx.nrk.no/31wVkS7tlcakU_epMzAbFQQHT1UxSbGW2T1GbKzZDcBw.jpg 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Flautas med kylling, guacamole og pico de gallo dandert 
+<div class="responsive-img F169"><img sizes="(min-width:1180px) 383px, (min-width:720px) 33vw, 100vw" srcset="https://gfx.nrk.no/31wVkS7tlcakU_epMzAbFQtx3wFUrY4z-T1GbKzZDcBw.jpg 80w, https://gfx.nrk.no/31wVkS7tlcakU_epMzAbFQrO6ub0Zh_KKT1GbKzZDcBw.jpg 160w, https://gfx.nrk.no/31wVkS7tlcakU_epMzAbFQg8IZbIw3NvCT1GbKzZDcBw.jpg 350w, https://gfx.nrk.no/31wVkS7tlcakU_epMzAbFQolRfY63AUviT1GbKzZDcBw.jpg 450w, https://gfx.nrk.no/31wVkS7tlcakU_epMzAbFQsOjKG9iGYp2T1GbKzZDcBw.jpg 650w, https://gfx.nrk.no/31wVkS7tlcakU_epMzAbFQhcDAkB_OWYOT1GbKzZDcBw.jpg 1000w, https://gfx.nrk.no/31wVkS7tlcakU_epMzAbFQGsNdhJUcbpqT1GbKzZDcBw.jpg 1200w, https://gfx.nrk.no/31wVkS7tlcakU_epMzAbFQAkIZH8S__bCT1GbKzZDcBw.jpg 1600w, https://gfx.nrk.no/31wVkS7tlcakU_epMzAbFQQHT1UxSbGW2T1GbKzZDcBw.jpg 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Flautas med kylling, guacamole og pico de gallo dandert 
 med meksikansk flagg." title="Foto: Jacob Snedevig / DR"></div>
 </figure>
 <!-- END: /templates/image/image-lean.jsp -->
@@ -746,7 +730,7 @@ data-id="1.16461253"
 title="Kylling-mole med meksikansk ris">
 <!-- include: /serum/render?id=1.16462892&amp;size=6&amp;perspective=LEAN&amp;alignment=CENTER&amp;caption=Mexican+mole+%E2%80%93+En+kyllingrett+med+smak+av+chili%2C+urter+og+sjokolade.&amp;type=image&amp;aspect=F169&amp;classes=plug-image --><!-- START: /templates/image/image-lean.jsp -->
 <figure class="image widget lean plug-image">
-<div class="responsive-img F169"><img id="u8NsZnjDjWJEebpzOhA8jA" sizes="(min-width:1180px) 383px, (min-width:720px) 33vw, 100vw" srcset="https://gfx.nrk.no/u8NsZnjDjWJEebpzOhA8jAIQWuCNGqe7eJ5YlBgsbJCw.jpg 80w, https://gfx.nrk.no/u8NsZnjDjWJEebpzOhA8jAzhcB-z9--xGJ5YlBgsbJCw.jpg 160w, https://gfx.nrk.no/u8NsZnjDjWJEebpzOhA8jAUhedHK-qZnSJ5YlBgsbJCw.jpg 350w, https://gfx.nrk.no/u8NsZnjDjWJEebpzOhA8jAh_YgBgfeQMqJ5YlBgsbJCw.jpg 450w, https://gfx.nrk.no/u8NsZnjDjWJEebpzOhA8jA4BL245d1sLGJ5YlBgsbJCw.jpg 650w, https://gfx.nrk.no/u8NsZnjDjWJEebpzOhA8jAyz8DvBlbqn6J5YlBgsbJCw.jpg 1000w, https://gfx.nrk.no/u8NsZnjDjWJEebpzOhA8jA2gsgF_MrEM6J5YlBgsbJCw.jpg 1200w, https://gfx.nrk.no/u8NsZnjDjWJEebpzOhA8jA8vbVW6JDE2eJ5YlBgsbJCw.jpg 1600w, https://gfx.nrk.no/u8NsZnjDjWJEebpzOhA8jAdu4nAoJF6_SJ5YlBgsbJCw.jpg 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Kylling med meksikansk saus og ris. " title="Foto: Jacob Snedevig / DR"></div>
+<div class="responsive-img F169"><img sizes="(min-width:1180px) 383px, (min-width:720px) 33vw, 100vw" srcset="https://gfx.nrk.no/u8NsZnjDjWJEebpzOhA8jAIQWuCNGqe7eJ5YlBgsbJCw.jpg 80w, https://gfx.nrk.no/u8NsZnjDjWJEebpzOhA8jAzhcB-z9--xGJ5YlBgsbJCw.jpg 160w, https://gfx.nrk.no/u8NsZnjDjWJEebpzOhA8jAUhedHK-qZnSJ5YlBgsbJCw.jpg 350w, https://gfx.nrk.no/u8NsZnjDjWJEebpzOhA8jAh_YgBgfeQMqJ5YlBgsbJCw.jpg 450w, https://gfx.nrk.no/u8NsZnjDjWJEebpzOhA8jA4BL245d1sLGJ5YlBgsbJCw.jpg 650w, https://gfx.nrk.no/u8NsZnjDjWJEebpzOhA8jAyz8DvBlbqn6J5YlBgsbJCw.jpg 1000w, https://gfx.nrk.no/u8NsZnjDjWJEebpzOhA8jA2gsgF_MrEM6J5YlBgsbJCw.jpg 1200w, https://gfx.nrk.no/u8NsZnjDjWJEebpzOhA8jA8vbVW6JDE2eJ5YlBgsbJCw.jpg 1600w, https://gfx.nrk.no/u8NsZnjDjWJEebpzOhA8jAdu4nAoJF6_SJ5YlBgsbJCw.jpg 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Kylling med meksikansk saus og ris. " title="Foto: Jacob Snedevig / DR"></div>
 </figure>
 <!-- END: /templates/image/image-lean.jsp -->
 <div class="plug-teaser">
@@ -806,7 +790,7 @@ data-id="1.16435356"
 title="Omelett Mont-Saint-Michel ">
 <!-- include: /serum/render?id=1.16435364&amp;size=6&amp;perspective=LEAN&amp;alignment=CENTER&amp;caption=Omeletten+er+h%C3%B8y+og+luftig+og+er+nesten+som+en+mellomting+av+suffl%C3%A9+og+omelett.%C2%A0&amp;type=image&amp;aspect=F169&amp;classes=plug-image --><!-- START: /templates/image/image-lean.jsp -->
 <figure class="image widget lean plug-image">
-<div class="responsive-img F169"><img id="zkm1JAS9ZSdfUET8Ws7kKA" sizes="(min-width:1180px) 383px, (min-width:720px) 33vw, 100vw" srcset="https://gfx.nrk.no/zkm1JAS9ZSdfUET8Ws7kKA2vKCBcCk5mC1cu13KAcnPQ.jpg 80w, https://gfx.nrk.no/zkm1JAS9ZSdfUET8Ws7kKAnbtuqmlaAji1cu13KAcnPQ.jpg 160w, https://gfx.nrk.no/zkm1JAS9ZSdfUET8Ws7kKA-ZEMc9NpA661cu13KAcnPQ.jpg 350w, https://gfx.nrk.no/zkm1JAS9ZSdfUET8Ws7kKA-LRy34eDDGC1cu13KAcnPQ.jpg 450w, https://gfx.nrk.no/zkm1JAS9ZSdfUET8Ws7kKABfGmsVPmXeq1cu13KAcnPQ.jpg 650w, https://gfx.nrk.no/zkm1JAS9ZSdfUET8Ws7kKAFzF4yiJ-O8u1cu13KAcnPQ.jpg 1000w, https://gfx.nrk.no/zkm1JAS9ZSdfUET8Ws7kKA4KVv74lAAHC1cu13KAcnPQ.jpg 1200w, https://gfx.nrk.no/zkm1JAS9ZSdfUET8Ws7kKAgs9MlGYuo8S1cu13KAcnPQ.jpg 1600w, https://gfx.nrk.no/zkm1JAS9ZSdfUET8Ws7kKAsRTVclO3c_21cu13KAcnPQ.jpg 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Høy og luftig omelett Mont-Saint-Michel på en hvit tallerken med salat ved siden av." title="Foto: Jakob Snedevig / DR"></div>
+<div class="responsive-img F169"><img sizes="(min-width:1180px) 383px, (min-width:720px) 33vw, 100vw" srcset="https://gfx.nrk.no/zkm1JAS9ZSdfUET8Ws7kKA2vKCBcCk5mC1cu13KAcnPQ.jpg 80w, https://gfx.nrk.no/zkm1JAS9ZSdfUET8Ws7kKAnbtuqmlaAji1cu13KAcnPQ.jpg 160w, https://gfx.nrk.no/zkm1JAS9ZSdfUET8Ws7kKA-ZEMc9NpA661cu13KAcnPQ.jpg 350w, https://gfx.nrk.no/zkm1JAS9ZSdfUET8Ws7kKA-LRy34eDDGC1cu13KAcnPQ.jpg 450w, https://gfx.nrk.no/zkm1JAS9ZSdfUET8Ws7kKABfGmsVPmXeq1cu13KAcnPQ.jpg 650w, https://gfx.nrk.no/zkm1JAS9ZSdfUET8Ws7kKAFzF4yiJ-O8u1cu13KAcnPQ.jpg 1000w, https://gfx.nrk.no/zkm1JAS9ZSdfUET8Ws7kKA4KVv74lAAHC1cu13KAcnPQ.jpg 1200w, https://gfx.nrk.no/zkm1JAS9ZSdfUET8Ws7kKAgs9MlGYuo8S1cu13KAcnPQ.jpg 1600w, https://gfx.nrk.no/zkm1JAS9ZSdfUET8Ws7kKAsRTVclO3c_21cu13KAcnPQ.jpg 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Høy og luftig omelett Mont-Saint-Michel på en hvit tallerken med salat ved siden av." title="Foto: Jakob Snedevig / DR"></div>
 </figure>
 <!-- END: /templates/image/image-lean.jsp -->
 <div class="plug-teaser">
@@ -837,7 +821,7 @@ data-id="1.16435411"
 title="Eggerøre på tre måter – amerikansk, fransk og à la Gordon Ramsay">
 <!-- include: /serum/render?id=1.16435415&amp;size=6&amp;perspective=LEAN&amp;alignment=CENTER&amp;caption=Hemmeligheten+er+ofte+%C3%A5+la+egger%C3%B8ren+f%C3%A5+god+tid.+Gi+den+en+kremet+konsistens%2C+og+den+blir+stjernen+p%C3%A5+frokostbordet.+&amp;type=image&amp;aspect=F169&amp;classes=plug-image --><!-- START: /templates/image/image-lean.jsp -->
 <figure class="image widget lean plug-image">
-<div class="responsive-img F169"><img id="x9Hmlt50pA_pA9Vq5OsHiw" sizes="(min-width:1180px) 383px, (min-width:720px) 33vw, 100vw" srcset="https://gfx.nrk.no/x9Hmlt50pA_pA9Vq5OsHiwwJmBC8uP8WFgMmZIH_-8Kw.jpg 80w, https://gfx.nrk.no/x9Hmlt50pA_pA9Vq5OsHiwKZkKK9CWRBNgMmZIH_-8Kw.jpg 160w, https://gfx.nrk.no/x9Hmlt50pA_pA9Vq5OsHiwrNxdroNPNIBgMmZIH_-8Kw.jpg 350w, https://gfx.nrk.no/x9Hmlt50pA_pA9Vq5OsHiwxqagpvYuFkRgMmZIH_-8Kw.jpg 450w, https://gfx.nrk.no/x9Hmlt50pA_pA9Vq5OsHiw3cJFtX8IGkxgMmZIH_-8Kw.jpg 650w, https://gfx.nrk.no/x9Hmlt50pA_pA9Vq5OsHiwGTekNiWSm05gMmZIH_-8Kw.jpg 1000w, https://gfx.nrk.no/x9Hmlt50pA_pA9Vq5OsHiwvquaHuYTpAVgMmZIH_-8Kw.jpg 1200w, https://gfx.nrk.no/x9Hmlt50pA_pA9Vq5OsHiw2iT2p5WHOF5gMmZIH_-8Kw.jpg 1600w, https://gfx.nrk.no/x9Hmlt50pA_pA9Vq5OsHiwulbHJGV-in9gMmZIH_-8Kw.jpg 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Tre ulike eggerører på tre hvite tallerkener: Amerikansk, fransk og Gordon Ramsay&#39;s." title="Foto: Jakob Snedevig / DR"></div>
+<div class="responsive-img F169"><img sizes="(min-width:1180px) 383px, (min-width:720px) 33vw, 100vw" srcset="https://gfx.nrk.no/x9Hmlt50pA_pA9Vq5OsHiwwJmBC8uP8WFgMmZIH_-8Kw.jpg 80w, https://gfx.nrk.no/x9Hmlt50pA_pA9Vq5OsHiwKZkKK9CWRBNgMmZIH_-8Kw.jpg 160w, https://gfx.nrk.no/x9Hmlt50pA_pA9Vq5OsHiwrNxdroNPNIBgMmZIH_-8Kw.jpg 350w, https://gfx.nrk.no/x9Hmlt50pA_pA9Vq5OsHiwxqagpvYuFkRgMmZIH_-8Kw.jpg 450w, https://gfx.nrk.no/x9Hmlt50pA_pA9Vq5OsHiw3cJFtX8IGkxgMmZIH_-8Kw.jpg 650w, https://gfx.nrk.no/x9Hmlt50pA_pA9Vq5OsHiwGTekNiWSm05gMmZIH_-8Kw.jpg 1000w, https://gfx.nrk.no/x9Hmlt50pA_pA9Vq5OsHiwvquaHuYTpAVgMmZIH_-8Kw.jpg 1200w, https://gfx.nrk.no/x9Hmlt50pA_pA9Vq5OsHiw2iT2p5WHOF5gMmZIH_-8Kw.jpg 1600w, https://gfx.nrk.no/x9Hmlt50pA_pA9Vq5OsHiwulbHJGV-in9gMmZIH_-8Kw.jpg 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Tre ulike eggerører på tre hvite tallerkener: Amerikansk, fransk og Gordon Ramsay&#39;s." title="Foto: Jakob Snedevig / DR"></div>
 </figure>
 <!-- END: /templates/image/image-lean.jsp -->
 <div class="plug-teaser">
@@ -868,7 +852,7 @@ data-id="1.15721793"
 title="Gresk bondeomelett">
 <!-- include: /serum/render?id=1.15722015&amp;size=6&amp;perspective=LEAN&amp;alignment=CENTER&amp;caption=Server+en+rustikk+bondeomelett+rett+fra+pannen.&amp;type=image&amp;aspect=F169&amp;classes=plug-image --><!-- START: /templates/image/image-lean.jsp -->
 <figure class="image widget lean plug-image">
-<div class="responsive-img F169"><img id="CPFWdgxRrhlLQydMlMxKNA" sizes="(min-width:1180px) 383px, (min-width:720px) 33vw, 100vw" srcset="https://gfx.nrk.no/CPFWdgxRrhlLQydMlMxKNA38QHXErBziaiRneEXZ6FQg.jpg 80w, https://gfx.nrk.no/CPFWdgxRrhlLQydMlMxKNAah-rbzFc1lWiRneEXZ6FQg.jpg 160w, https://gfx.nrk.no/CPFWdgxRrhlLQydMlMxKNAQHsoE3Jy0QWiRneEXZ6FQg.jpg 350w, https://gfx.nrk.no/CPFWdgxRrhlLQydMlMxKNAUC-mNS88s22iRneEXZ6FQg.jpg 450w, https://gfx.nrk.no/CPFWdgxRrhlLQydMlMxKNAkw7fe4zzwimiRneEXZ6FQg.jpg 650w, https://gfx.nrk.no/CPFWdgxRrhlLQydMlMxKNAXhQNRybIv22iRneEXZ6FQg.jpg 1000w, https://gfx.nrk.no/CPFWdgxRrhlLQydMlMxKNAsEunJhzvdN2iRneEXZ6FQg.jpg 1200w, https://gfx.nrk.no/CPFWdgxRrhlLQydMlMxKNAoJqdQs74d0miRneEXZ6FQg.jpg 1600w, https://gfx.nrk.no/CPFWdgxRrhlLQydMlMxKNAiKfD931-wTOiRneEXZ6FQg.jpg 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Gresk bondeomelett" title="Foto: Carina Ahlskog / YLE"></div>
+<div class="responsive-img F169"><img sizes="(min-width:1180px) 383px, (min-width:720px) 33vw, 100vw" srcset="https://gfx.nrk.no/CPFWdgxRrhlLQydMlMxKNA38QHXErBziaiRneEXZ6FQg.jpg 80w, https://gfx.nrk.no/CPFWdgxRrhlLQydMlMxKNAah-rbzFc1lWiRneEXZ6FQg.jpg 160w, https://gfx.nrk.no/CPFWdgxRrhlLQydMlMxKNAQHsoE3Jy0QWiRneEXZ6FQg.jpg 350w, https://gfx.nrk.no/CPFWdgxRrhlLQydMlMxKNAUC-mNS88s22iRneEXZ6FQg.jpg 450w, https://gfx.nrk.no/CPFWdgxRrhlLQydMlMxKNAkw7fe4zzwimiRneEXZ6FQg.jpg 650w, https://gfx.nrk.no/CPFWdgxRrhlLQydMlMxKNAXhQNRybIv22iRneEXZ6FQg.jpg 1000w, https://gfx.nrk.no/CPFWdgxRrhlLQydMlMxKNAsEunJhzvdN2iRneEXZ6FQg.jpg 1200w, https://gfx.nrk.no/CPFWdgxRrhlLQydMlMxKNAoJqdQs74d0miRneEXZ6FQg.jpg 1600w, https://gfx.nrk.no/CPFWdgxRrhlLQydMlMxKNAiKfD931-wTOiRneEXZ6FQg.jpg 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Gresk bondeomelett" title="Foto: Carina Ahlskog / YLE"></div>
 </figure>
 <!-- END: /templates/image/image-lean.jsp -->
 <div class="plug-teaser">
@@ -932,106 +916,25 @@ data-relation-limit="6">
 </div>
 <div class="cf flow-content container-widget lp_flow relations"><div
 class="g16 col fln s3 sl6 sl9 sl12 sl18 recipe-reference relation flow-relation"
-data-id="1.15487871"
-data-reference-id="1.11102025.body7688"
-data-fwdnav-id="1.15487871"
+data-id="1.16711625"
+data-reference-id="1.11102025.body7798"
+data-fwdnav-id="1.16711625"
 data-fwdnav-position="1"
 data-fwdnav-collection-id="1.11102025"
 data-fwdnav-collection-type="nrkno_flow"
-><!-- include: /serum/render?id=1.15487871&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO --><!-- START: /templates/recipe/recipe-brief.jsp -->
+><!-- include: /serum/render?id=1.16711625&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO --><!-- START: /templates/recipe/recipe-brief.jsp -->
 <article class="recipe widget lean plug cf">
 <a class="autonomous"
-href="https://www.nrk.no/mat/nordisk-quesadilla-1.15487871"
-data-id="1.15487871"
-title="Nordisk quesadilla">
-<!-- include: /serum/render?id=1.16701540&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO&amp;caption=Deilige+spr%C3%B8+quesadillas+med+masse+smeltet+ost+og+tomatsalsa.&amp;type=image&amp;aspect=F169&amp;classes=plug-image --><!-- START: /templates/image/image-lean.jsp -->
+href="https://www.nrk.no/mat/boller-med-to-farger_-vaniljekrem-og-solbaergele-fra-_bakemesterskapet_-1.16711625"
+data-id="1.16711625"
+title="Boller med to farger, vanilje­krem og solbærgelé fra «Bake­mester­skapet»">
+<!-- include: /serum/render?id=1.16711709&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO&amp;caption=Dette+er+boller+for+viderekomne.+Kjempegode+%E2%80%93+b%C3%A5de+for+%C3%B8ynene+og+ganen.&amp;type=image&amp;aspect=F169&amp;classes=plug-image --><!-- START: /templates/image/image-lean.jsp -->
 <figure class="image widget lean plug-image">
-<div class="responsive-img F169"><img id="E2u6u8hZc9djESibufhEwA" sizes="(min-width:1180px) 192px, (min-width:720px) 17vw, 50vw" srcset="https://gfx.nrk.no/E2u6u8hZc9djESibufhEwApP7G0LfdnKq7gxkKRQLv-Q.jpg 80w, https://gfx.nrk.no/E2u6u8hZc9djESibufhEwAxhFg_f-D5bq7gxkKRQLv-Q.jpg 160w, https://gfx.nrk.no/E2u6u8hZc9djESibufhEwAjHiYaJQu6bm7gxkKRQLv-Q.jpg 350w, https://gfx.nrk.no/E2u6u8hZc9djESibufhEwAChaGN4TV0fK7gxkKRQLv-Q.jpg 450w, https://gfx.nrk.no/E2u6u8hZc9djESibufhEwA1-qmNHmgxzO7gxkKRQLv-Q.jpg 650w, https://gfx.nrk.no/E2u6u8hZc9djESibufhEwA6O6d7L-inei7gxkKRQLv-Q.jpg 1000w, https://gfx.nrk.no/E2u6u8hZc9djESibufhEwAKocp142UJFO7gxkKRQLv-Q.jpg 1200w, https://gfx.nrk.no/E2u6u8hZc9djESibufhEwAW_ljfoJpt6a7gxkKRQLv-Q.jpg 1600w, https://gfx.nrk.no/E2u6u8hZc9djESibufhEwAsz4LpNBMQLG7gxkKRQLv-Q.jpg 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Quesadilla med vaffelmønster, to halve lime, en skål tomatsalsa og koriander til pynt." title="Foto: Vegard Blakstad / NRK"></div>
+<div class="responsive-img F169"><img sizes="(min-width:1180px) 192px, (min-width:720px) 17vw, 50vw" srcset="https://gfx.nrk.no/JXUHUyj8Ne5c0a4sIgYHzg-aCqExTY9Kwo2f13Z9P5uA.jpg 80w, https://gfx.nrk.no/JXUHUyj8Ne5c0a4sIgYHzg5sg1xnXeYUEo2f13Z9P5uA.jpg 160w, https://gfx.nrk.no/JXUHUyj8Ne5c0a4sIgYHzgj4LE4l-HgFco2f13Z9P5uA.jpg 350w, https://gfx.nrk.no/JXUHUyj8Ne5c0a4sIgYHzgmziXzaq-Du0o2f13Z9P5uA.jpg 450w, https://gfx.nrk.no/JXUHUyj8Ne5c0a4sIgYHzgNLBoLi52_iko2f13Z9P5uA.jpg 650w, https://gfx.nrk.no/JXUHUyj8Ne5c0a4sIgYHzg3RVVJeIXJBMo2f13Z9P5uA.jpg 1000w, https://gfx.nrk.no/JXUHUyj8Ne5c0a4sIgYHzgm4BtP8j5gOco2f13Z9P5uA.jpg 1200w, https://gfx.nrk.no/JXUHUyj8Ne5c0a4sIgYHzg1etarCozTREo2f13Z9P5uA.jpg 1600w, https://gfx.nrk.no/JXUHUyj8Ne5c0a4sIgYHzgtAiHVH2IyYgo2f13Z9P5uA.jpg 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Nybakte finaleboller på et fat Dette er søt gjærbakst med vaniljefyll og solbærgelé på toppen. " title="Foto: Bakemesterskapet / NRK"></div>
 </figure>
 <!-- END: /templates/image/image-lean.jsp -->
 <div class="plug-teaser">
-<h2 class="title recipe">Nordisk quesadilla</h2>
-<footer class="plug-footer">
-</footer>
-</div>
-</a>
-</article>
-<!-- END: /templates/recipe/recipe-brief.jsp -->
-</div><div
-class="g16 col fln s3 sl6 sl9 sl12 sl18 recipe-reference relation flow-relation"
-data-id="1.14099294"
-data-reference-id="1.11102025.body7687"
-data-fwdnav-id="1.14099294"
-data-fwdnav-position="2"
-data-fwdnav-collection-id="1.11102025"
-data-fwdnav-collection-type="nrkno_flow"
-><!-- include: /serum/render?id=1.14099294&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO --><!-- START: /templates/recipe/recipe-brief.jsp -->
-<article class="recipe widget lean plug cf">
-<a class="autonomous"
-href="https://www.nrk.no/mat/poke-_-ris_-ra-fisk_-frukt-og-gronnsaker-1.14099294"
-data-id="1.14099294"
-title="Poke – ris, rå fisk, frukt og grønnsaker">
-<!-- include: /serum/render?id=1.14099344&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO&amp;caption=Kokkene+s%C3%A5+med+en+gang+at+%C3%B8rreten+og+r%C3%B8dl%C3%B8ken+ikke+burde+ligge+ved+siden+av+hverandre.+Du+klarer+kanskje+%C3%A5+fordele+fargene+bedre.&amp;type=image&amp;aspect=F169&amp;classes=plug-image --><!-- START: /templates/image/image-lean.jsp -->
-<figure class="image widget lean plug-image">
-<div class="responsive-img F169"><img id="66a6G1ztKGR8oHnAWXGCPA" sizes="(min-width:1180px) 192px, (min-width:720px) 17vw, 50vw" srcset="https://gfx.nrk.no/66a6G1ztKGR8oHnAWXGCPAxggYkwiMFUboj3esNchP0w.jpg 80w, https://gfx.nrk.no/66a6G1ztKGR8oHnAWXGCPATEO4aG8ehlnoj3esNchP0w.jpg 160w, https://gfx.nrk.no/66a6G1ztKGR8oHnAWXGCPAEFZe1hPD5JXoj3esNchP0w.jpg 350w, https://gfx.nrk.no/66a6G1ztKGR8oHnAWXGCPASgzfmt2n4Qroj3esNchP0w.jpg 450w, https://gfx.nrk.no/66a6G1ztKGR8oHnAWXGCPAVFvncp99fPDoj3esNchP0w.jpg 650w, https://gfx.nrk.no/66a6G1ztKGR8oHnAWXGCPAn5tDfoiW6FHoj3esNchP0w.jpg 1000w, https://gfx.nrk.no/66a6G1ztKGR8oHnAWXGCPAz3AGYgh4tTnoj3esNchP0w.jpg 1200w, https://gfx.nrk.no/66a6G1ztKGR8oHnAWXGCPAw4rD8c37JKLoj3esNchP0w.jpg 1600w, https://gfx.nrk.no/66a6G1ztKGR8oHnAWXGCPA4hAwSsqGwbzoj3esNchP0w.jpg 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Pokebolle" title="Foto: Benjamin Fredriksen / NRK"></div>
-</figure>
-<!-- END: /templates/image/image-lean.jsp -->
-<div class="plug-teaser">
-<h2 class="title recipe">Poke – ris, rå fisk, frukt og grønnsaker</h2>
-<footer class="plug-footer">
-</footer>
-</div>
-</a>
-</article>
-<!-- END: /templates/recipe/recipe-brief.jsp -->
-</div><div
-class="g16 col fln s3 sl6 sl9 sl12 sl18 recipe-reference relation flow-relation"
-data-id="1.14761160"
-data-reference-id="1.11102025.body7686"
-data-fwdnav-id="1.14761160"
-data-fwdnav-position="3"
-data-fwdnav-collection-id="1.11102025"
-data-fwdnav-collection-type="nrkno_flow"
-><!-- include: /serum/render?id=1.14761160&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO --><!-- START: /templates/recipe/recipe-brief.jsp -->
-<article class="recipe widget lean plug cf">
-<a class="autonomous"
-href="https://www.nrk.no/mat/italiensk-tomatsuppe-med-gronnsaker_-bonner-og-pasta-1.14761160"
-data-id="1.14761160"
-title="Italiensk tomat­suppe med grønnsaker, bønner og pasta">
-<!-- include: /serum/render?id=1.14761240&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO&amp;caption=Gj%C3%B8r+tomatsuppa+til+en+restefest%2C+og+nyt+middagen+med+ekstra+god+samvittighet.&amp;type=image&amp;aspect=F169&amp;classes=plug-image --><!-- START: /templates/image/image-lean.jsp -->
-<figure class="image widget lean plug-image">
-<div class="responsive-img F169"><img id="vZcZCW-zPjDsI11Was-_OA" sizes="(min-width:1180px) 192px, (min-width:720px) 17vw, 50vw" srcset="https://gfx.nrk.no/vZcZCW-zPjDsI11Was-_OAN3LoESTHWEtEn4aoTBzIlA.jpg 80w, https://gfx.nrk.no/vZcZCW-zPjDsI11Was-_OA5BsWA4B38itEn4aoTBzIlA.jpg 160w, https://gfx.nrk.no/vZcZCW-zPjDsI11Was-_OAZseG7Lx7P2BEn4aoTBzIlA.jpg 350w, https://gfx.nrk.no/vZcZCW-zPjDsI11Was-_OAmCzGVVLfawJEn4aoTBzIlA.jpg 450w, https://gfx.nrk.no/vZcZCW-zPjDsI11Was-_OA1coBOhoIewVEn4aoTBzIlA.jpg 650w, https://gfx.nrk.no/vZcZCW-zPjDsI11Was-_OAsUOimU68xDZEn4aoTBzIlA.jpg 1000w, https://gfx.nrk.no/vZcZCW-zPjDsI11Was-_OAZNxvf4DoXgJEn4aoTBzIlA.jpg 1200w, https://gfx.nrk.no/vZcZCW-zPjDsI11Was-_OA8S10QnRCvW1En4aoTBzIlA.jpg 1600w, https://gfx.nrk.no/vZcZCW-zPjDsI11Was-_OAcVA594dnlABEn4aoTBzIlA.jpg 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Italiensk tomatsuppe med grønnsaker, bønner og pasta" title="Foto: Mia Frogner / Green Bonanza"></div>
-</figure>
-<!-- END: /templates/image/image-lean.jsp -->
-<div class="plug-teaser">
-<h2 class="title recipe">Italiensk tomat­suppe med grønnsaker, bønner og pasta</h2>
-<footer class="plug-footer">
-</footer>
-</div>
-</a>
-</article>
-<!-- END: /templates/recipe/recipe-brief.jsp -->
-</div><div
-class="g16 col fln s3 sl6 sl9 sl12 sl18 recipe-reference relation flow-relation"
-data-id="1.15332951"
-data-reference-id="1.11102025.body7685"
-data-fwdnav-id="1.15332951"
-data-fwdnav-position="4"
-data-fwdnav-collection-id="1.11102025"
-data-fwdnav-collection-type="nrkno_flow"
-><!-- include: /serum/render?id=1.15332951&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO --><!-- START: /templates/recipe/recipe-brief.jsp -->
-<article class="recipe widget lean plug cf">
-<a class="autonomous"
-href="https://www.nrk.no/mat/rugstykker-1.15332951"
-data-id="1.15332951"
-title="Rugstykker">
-<!-- include: /serum/render?id=1.15333174&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO&amp;caption=Nybakte+rugstykker+til+frokosten+eller+matpakken.&amp;type=image&amp;aspect=F169&amp;classes=plug-image --><!-- START: /templates/image/image-lean.jsp -->
-<figure class="image widget lean plug-image">
-<div class="responsive-img F169"><img id="toLb12XVDNrRyBlvnGRpZQ" sizes="(min-width:1180px) 192px, (min-width:720px) 17vw, 50vw" srcset="https://gfx.nrk.no/toLb12XVDNrRyBlvnGRpZQjVo3hTzgQ3B5OaMlIXVXOA.jpg 80w, https://gfx.nrk.no/toLb12XVDNrRyBlvnGRpZQPzJHt4TOqWd5OaMlIXVXOA.jpg 160w, https://gfx.nrk.no/toLb12XVDNrRyBlvnGRpZQmlXG77NoRDt5OaMlIXVXOA.jpg 350w, https://gfx.nrk.no/toLb12XVDNrRyBlvnGRpZQolKDuTgd6QN5OaMlIXVXOA.jpg 450w, https://gfx.nrk.no/toLb12XVDNrRyBlvnGRpZQkIOVEhzar8l5OaMlIXVXOA.jpg 650w, https://gfx.nrk.no/toLb12XVDNrRyBlvnGRpZQslPydSeObNt5OaMlIXVXOA.jpg 1000w, https://gfx.nrk.no/toLb12XVDNrRyBlvnGRpZQcrDhtJgUqlN5OaMlIXVXOA.jpg 1200w, https://gfx.nrk.no/toLb12XVDNrRyBlvnGRpZQKx0k18XByyF5OaMlIXVXOA.jpg 1600w, https://gfx.nrk.no/toLb12XVDNrRyBlvnGRpZQQCXYIIPFwdp5OaMlIXVXOA.jpg 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Rugstykker" title="Foto: Marit Hegle"></div>
-</figure>
-<!-- END: /templates/image/image-lean.jsp -->
-<div class="plug-teaser">
-<h2 class="title recipe">Rugstykker</h2>
+<h2 class="title recipe">Boller med to farger, vanilje­krem og gelé</h2>
 <footer class="plug-footer">
 </footer>
 </div>
@@ -1040,44 +943,115 @@ title="Rugstykker">
 <!-- END: /templates/recipe/recipe-brief.jsp -->
 </div><div
 class="g16 col fln s3 sl6 sl9 sl12 sl18 article-reference relation flow-relation"
-data-id="1.16678575"
-data-reference-id="1.11102025.body7682"
-data-fwdnav-id="1.16678575"
-data-fwdnav-position="5"
+data-id="1.16799828"
+data-reference-id="1.11102025.body7795"
+data-fwdnav-id="1.16799828"
+data-fwdnav-position="2"
 data-fwdnav-collection-id="1.11102025"
 data-fwdnav-collection-type="nrkno_flow"
-><!-- include: /serum/render?id=1.16678575&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO&amp;showDescription=false --><!-- START: /templates/article/article-lean.jsp -->
+><!-- include: /serum/render?id=1.16799828&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO&amp;showDescription=false --><!-- START: /templates/article/article-lean.jsp -->
 <article class="article widget lean plug-default plug lp_plug cf">
-<a class="autonomous" href="https://www.nrk.no/mat/arets-mest-populaere-middager---2023-1.16678575" data-id="1.16678575">
-<!-- include: /serum/render?id=1.16683771&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO&amp;caption=Hva+skal+vi+ha+til+middag%3F+Du+trenger+ikke+lure+lenger.+Dette+er+de+mest+popul%C3%A6re+middagene+v%C3%A5re+i+2023.&amp;type=image&amp;aspect=F169&amp;classes=plug-image --><!-- START: /templates/image/image-lean.jsp -->
+<a class="autonomous" href="https://www.nrk.no/mat/den-beste-maten-til-pasketuren.-snadder-turmat-1.16799828" data-id="1.16799828">
+<!-- include: /serum/render?id=1.12414136&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO&amp;caption=Maten+er+h%C3%B8gdepunktet+under+p%C3%A5sketuren.+At+den+smaker+nydeleg+er+viktigast.+Nesten+like+viktig+er+at+han+er+lett+%C3%A5+lage.+&amp;type=image&amp;aspect=F169&amp;classes=plug-image --><!-- START: /templates/image/image-lean.jsp -->
 <figure class="image widget lean plug-image">
-<div class="responsive-img F169"><img id="HFR2gNRV4MAVIwQPKICJWQ" sizes="(min-width:1180px) 192px, (min-width:720px) 17vw, 50vw" srcset="https://gfx.nrk.no/HFR2gNRV4MAVIwQPKICJWQ6dmh8tXTVP_wq8fbpMuVvg.png 80w, https://gfx.nrk.no/HFR2gNRV4MAVIwQPKICJWQh0ebQuWMyO_wq8fbpMuVvg.png 160w, https://gfx.nrk.no/HFR2gNRV4MAVIwQPKICJWQovoNEuwNpojwq8fbpMuVvg.png 350w, https://gfx.nrk.no/HFR2gNRV4MAVIwQPKICJWQ-sz5_cIIG5_wq8fbpMuVvg.png 450w, https://gfx.nrk.no/HFR2gNRV4MAVIwQPKICJWQpDdKIV2K_4_wq8fbpMuVvg.png 650w, https://gfx.nrk.no/HFR2gNRV4MAVIwQPKICJWQkSbtVzF2WfPwq8fbpMuVvg.png 1000w, https://gfx.nrk.no/HFR2gNRV4MAVIwQPKICJWQsLGSIFpbti3wq8fbpMuVvg.png 1200w, https://gfx.nrk.no/HFR2gNRV4MAVIwQPKICJWQJQOvx02R1lXwq8fbpMuVvg.png 1600w, https://gfx.nrk.no/HFR2gNRV4MAVIwQPKICJWQ1fct9t6rhJPwq8fbpMuVvg.png 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="EN collage bestående av 6 retter: Nachos, kyllingform med asiatiske retter, Koreansk sesamkylling, gryte med oksekjøtt, pasta carbonara og stekt kylling med ris." title="Foto: Elisabeth Le/Lise Finckenhagen/Rolf-Anders Vollan/SATT SAMMEN AV NRK"></div>
+<div class="responsive-img F169"><img sizes="(min-width:1180px) 192px, (min-width:720px) 17vw, 50vw" srcset="https://gfx.nrk.no/7pKbY-rHyKSbQVyhDFcJVgVOKu66x9dw8EYBQ9ZcZLLg.jpg 80w, https://gfx.nrk.no/7pKbY-rHyKSbQVyhDFcJVgPEo6mPY84LAEYBQ9ZcZLLg.jpg 160w, https://gfx.nrk.no/7pKbY-rHyKSbQVyhDFcJVgNP3Eng_-6w8EYBQ9ZcZLLg.jpg 350w, https://gfx.nrk.no/7pKbY-rHyKSbQVyhDFcJVgYsmTERWVAdMEYBQ9ZcZLLg.jpg 450w, https://gfx.nrk.no/7pKbY-rHyKSbQVyhDFcJVgbAoK1dvxBTIEYBQ9ZcZLLg.jpg 650w, https://gfx.nrk.no/7pKbY-rHyKSbQVyhDFcJVgZBNA2YXbcxMEYBQ9ZcZLLg.jpg 1000w, https://gfx.nrk.no/7pKbY-rHyKSbQVyhDFcJVg1y8tTqhhDRQEYBQ9ZcZLLg.jpg 1200w, https://gfx.nrk.no/7pKbY-rHyKSbQVyhDFcJVg6rNPBVLZ62UEYBQ9ZcZLLg.jpg 1600w, https://gfx.nrk.no/7pKbY-rHyKSbQVyhDFcJVgjl3emtM7_pEEYBQ9ZcZLLg.jpg 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Piknikpaier med karrikrydret potetfyll" title="Foto: Tone Rieber-Mohn / NRK"></div>
 </figure>
 <!-- END: /templates/image/image-lean.jsp -->
 <div class="plug-teaser">
-<h2 class="title">Våre mest populære middager i 2023</h2>
+<h2 class="title">Kongemat til påsketuren – 10 sterke forslag</h2>
 </div>
 </a>
 </article>
 <!-- END: /templates/article/article-lean.jsp -->
 </div><div
 class="g16 col fln s3 sl6 sl9 sl12 sl18 article-reference relation flow-relation"
-data-id="1.16659174"
-data-reference-id="1.11102025.body7676"
-data-fwdnav-id="1.16659174"
-data-fwdnav-position="6"
+data-id="1.16774216"
+data-reference-id="1.11102025.body7794"
+data-fwdnav-id="1.16774216"
+data-fwdnav-position="3"
 data-fwdnav-collection-id="1.11102025"
 data-fwdnav-collection-type="nrkno_flow"
-><!-- include: /serum/render?id=1.16659174&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO&amp;showDescription=false --><!-- START: /templates/article/article-lean.jsp -->
+><!-- include: /serum/render?id=1.16774216&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO&amp;showDescription=false --><!-- START: /templates/article/article-lean.jsp -->
 <article class="article widget lean plug-default plug lp_plug cf">
-<a class="autonomous" href="https://www.nrk.no/mat/lekker-snadder-med-julerestane-1.16659174" data-id="1.16659174">
-<!-- include: /serum/render?id=1.16659336&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO&amp;caption=Du+kan+lage+s%C3%A5+uendeleg+mykje+godt.+Vi+byr+p%C3%A5+v%C3%A5re+favorittoppskrifter+med+julerestar.&amp;type=image&amp;aspect=F169&amp;classes=plug-image --><!-- START: /templates/image/image-lean.jsp -->
+<a class="autonomous" href="https://www.nrk.no/mat/heimelaga-paskesnadder-1.16774216" data-id="1.16774216">
+<!-- include: /serum/render?id=1.14970561&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO&amp;caption=Boller+som+gjer+stor+lykke+hos+b%C3%A5de+sm%C3%A5+og+store.+Ha+konditorfargen+klar+og+boltre+deg+med+fargar+og+krem.&amp;type=image&amp;aspect=F169&amp;classes=plug-image --><!-- START: /templates/image/image-lean.jsp -->
 <figure class="image widget lean plug-image">
-<div class="responsive-img F169"><img id="9aPEVS1r_QfbBQ6mnED7cA" sizes="(min-width:1180px) 192px, (min-width:720px) 17vw, 50vw" srcset="https://gfx.nrk.no/9aPEVS1r_QfbBQ6mnED7cAfOmkHk-yPjtuerA-86xjxg.jpg 80w, https://gfx.nrk.no/9aPEVS1r_QfbBQ6mnED7cAbaIue5gIlQRuerA-86xjxg.jpg 160w, https://gfx.nrk.no/9aPEVS1r_QfbBQ6mnED7cATTcfdQUqmBxuerA-86xjxg.jpg 350w, https://gfx.nrk.no/9aPEVS1r_QfbBQ6mnED7cAEwdF72ndm7NuerA-86xjxg.jpg 450w, https://gfx.nrk.no/9aPEVS1r_QfbBQ6mnED7cA09JMXgdU0ghuerA-86xjxg.jpg 650w, https://gfx.nrk.no/9aPEVS1r_QfbBQ6mnED7cApVBIGH2No1NuerA-86xjxg.jpg 1000w, https://gfx.nrk.no/9aPEVS1r_QfbBQ6mnED7cAkav7zy83l_puerA-86xjxg.jpg 1200w, https://gfx.nrk.no/9aPEVS1r_QfbBQ6mnED7cAXdP_5viym1puerA-86xjxg.jpg 1600w, https://gfx.nrk.no/9aPEVS1r_QfbBQ6mnED7cAMzGn3cd60gRuerA-86xjxg.jpg 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Julekjøtt i tacolefser, i gryterett og i salat. Lekker og fargerik julemat av restene etter julemiddagen." title=""></div>
+<div class="responsive-img F169"><img sizes="(min-width:1180px) 192px, (min-width:720px) 17vw, 50vw" srcset="https://gfx.nrk.no/LTv_b0wDbw5T8LxfDwgxdAMRYAy0Plr3b-LqrgQWDtjA.jpg 80w, https://gfx.nrk.no/LTv_b0wDbw5T8LxfDwgxdAhVLGfamUoRb-LqrgQWDtjA.jpg 160w, https://gfx.nrk.no/LTv_b0wDbw5T8LxfDwgxdA_Li410mAUdL-LqrgQWDtjA.jpg 350w, https://gfx.nrk.no/LTv_b0wDbw5T8LxfDwgxdAK1b-V6Vc0Q7-LqrgQWDtjA.jpg 450w, https://gfx.nrk.no/LTv_b0wDbw5T8LxfDwgxdAN1UyOr_Lw2H-LqrgQWDtjA.jpg 650w, https://gfx.nrk.no/LTv_b0wDbw5T8LxfDwgxdApA8TpZtFye3-LqrgQWDtjA.jpg 1000w, https://gfx.nrk.no/LTv_b0wDbw5T8LxfDwgxdA2kv9S6U44if-LqrgQWDtjA.jpg 1200w, https://gfx.nrk.no/LTv_b0wDbw5T8LxfDwgxdA1w2Q1RffpWX-LqrgQWDtjA.jpg 1600w, https://gfx.nrk.no/LTv_b0wDbw5T8LxfDwgxdAWvLiaB_7xq3-LqrgQWDtjA.jpg 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Påskeboller" title="Foto: Marit Hegle"></div>
 </figure>
 <!-- END: /templates/image/image-lean.jsp -->
 <div class="plug-teaser">
-<h2 class="title">Lekker snadder med jule­restane</h2>
+<h2 class="title">Påske­snadder – åtte glade tips</h2>
+</div>
+</a>
+</article>
+<!-- END: /templates/article/article-lean.jsp -->
+</div><div
+class="g16 col fln s3 sl6 sl9 sl12 sl18 article-reference relation flow-relation"
+data-id="1.16714050"
+data-reference-id="1.11102025.body7793"
+data-fwdnav-id="1.16714050"
+data-fwdnav-position="4"
+data-fwdnav-collection-id="1.11102025"
+data-fwdnav-collection-type="nrkno_flow"
+><!-- include: /serum/render?id=1.16714050&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO&amp;showDescription=false --><!-- START: /templates/article/article-lean.jsp -->
+<article class="article widget lean plug-default plug lp_plug cf">
+<a class="autonomous" href="https://www.nrk.no/mat/afternoon-tea-fra-_bakemesterskapet_-1.16714050" data-id="1.16714050">
+<!-- include: /serum/render?id=1.16780636&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO&amp;caption=Afternoon+tea+fra+venstre%3A+Lukasz+og+Annikens+servering%2C+Tonje+og+Marlenes+og+s%C3%A5+Nils+og+Martins.&amp;type=image&amp;aspect=F169&amp;classes=plug-image --><!-- START: /templates/image/image-lean.jsp -->
+<figure class="image widget lean plug-image">
+<div class="responsive-img F169"><img sizes="(min-width:1180px) 192px, (min-width:720px) 17vw, 50vw" srcset="https://gfx.nrk.no/GxKGuhubYsh5XDqxEIadzQEC6EZi1yNDYAatsxDUX-wg.png 80w, https://gfx.nrk.no/GxKGuhubYsh5XDqxEIadzQKXLA26TmluYAatsxDUX-wg.png 160w, https://gfx.nrk.no/GxKGuhubYsh5XDqxEIadzQMfD1pZgDedoAatsxDUX-wg.png 350w, https://gfx.nrk.no/GxKGuhubYsh5XDqxEIadzQS6e7F-3vAz8AatsxDUX-wg.png 450w, https://gfx.nrk.no/GxKGuhubYsh5XDqxEIadzQwh0dI7gC6K4AatsxDUX-wg.png 650w, https://gfx.nrk.no/GxKGuhubYsh5XDqxEIadzQcpjjehc1RBYAatsxDUX-wg.png 1000w, https://gfx.nrk.no/GxKGuhubYsh5XDqxEIadzQfSeYlag932gAatsxDUX-wg.png 1200w, https://gfx.nrk.no/GxKGuhubYsh5XDqxEIadzQ_0q9jroY4VYAatsxDUX-wg.png 1600w, https://gfx.nrk.no/GxKGuhubYsh5XDqxEIadzQ_VfBaC8WUlYAatsxDUX-wg.png 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Tre etasjefat med serveringen til afternoon tea. " title="Foto: Bakemesterskapet / NRK"></div>
+</figure>
+<!-- END: /templates/image/image-lean.jsp -->
+<div class="plug-teaser">
+<h2 class="title">Inviter på delikat afternoon tea</h2>
+</div>
+</a>
+</article>
+<!-- END: /templates/article/article-lean.jsp -->
+</div><div
+class="g16 col fln s3 sl6 sl9 sl12 sl18 recipe-reference relation flow-relation"
+data-id="1.6134517"
+data-reference-id="1.11102025.body7796"
+data-fwdnav-id="1.6134517"
+data-fwdnav-position="5"
+data-fwdnav-collection-id="1.11102025"
+data-fwdnav-collection-type="nrkno_flow"
+><!-- include: /serum/render?id=1.6134517&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO --><!-- START: /templates/recipe/recipe-brief.jsp -->
+<article class="recipe widget lean plug cf">
+<a class="autonomous"
+href="https://www.nrk.no/mat/paskebrod-1.6134517"
+data-id="1.6134517"
+title="Påskebrød">
+<!-- include: /serum/render?id=1.13940214&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO&amp;caption=P%C3%A5skebr%C3%B8det+kan+du+selvsagt+forme+slik+du+vil.+Her+er+det+laget+en+eggeform+med+tvinnet+kant.+Oppi+er+det+lagt+flere+sm%C3%A5br%C3%B8d.+&amp;type=image&amp;aspect=F169&amp;classes=plug-image --><!-- START: /templates/image/image-lean.jsp -->
+<figure class="image widget lean plug-image">
+<div class="responsive-img F169"><img sizes="(min-width:1180px) 192px, (min-width:720px) 17vw, 50vw" srcset="https://gfx.nrk.no/P7dbG8D1S5VGZxmJK3CLaQN_H4WbbQt07FrbaXAzC01g.jpg 80w, https://gfx.nrk.no/P7dbG8D1S5VGZxmJK3CLaQSiaqq_N75P7FrbaXAzC01g.jpg 160w, https://gfx.nrk.no/P7dbG8D1S5VGZxmJK3CLaQbNsjRgLktPHFrbaXAzC01g.jpg 350w, https://gfx.nrk.no/P7dbG8D1S5VGZxmJK3CLaQC1j82bMu9L7FrbaXAzC01g.jpg 450w, https://gfx.nrk.no/P7dbG8D1S5VGZxmJK3CLaQ6C9sOKL-DojFrbaXAzC01g.jpg 650w, https://gfx.nrk.no/P7dbG8D1S5VGZxmJK3CLaQlX_Y0T4tCNHFrbaXAzC01g.jpg 1000w, https://gfx.nrk.no/P7dbG8D1S5VGZxmJK3CLaQxllpdE6PqBzFrbaXAzC01g.jpg 1200w, https://gfx.nrk.no/P7dbG8D1S5VGZxmJK3CLaQyGalTAo0XXjFrbaXAzC01g.jpg 1600w, https://gfx.nrk.no/P7dbG8D1S5VGZxmJK3CLaQBEiE8r3K2PfFrbaXAzC01g.jpg 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Påskebrød" title="Foto: Erik Waage / NRK"></div>
+</figure>
+<!-- END: /templates/image/image-lean.jsp -->
+<div class="plug-teaser">
+<h2 class="title recipe">Påskebrød</h2>
+<footer class="plug-footer">
+</footer>
+</div>
+</a>
+</article>
+<!-- END: /templates/recipe/recipe-brief.jsp -->
+</div><div
+class="g16 col fln s3 sl6 sl9 sl12 sl18 article-reference relation flow-relation"
+data-id="1.16726059"
+data-reference-id="1.11102025.body7789"
+data-fwdnav-id="1.16726059"
+data-fwdnav-position="6"
+data-fwdnav-collection-id="1.11102025"
+data-fwdnav-collection-type="nrkno_flow"
+><!-- include: /serum/render?id=1.16726059&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO&amp;showDescription=false --><!-- START: /templates/article/article-lean.jsp -->
+<article class="article widget lean plug-default plug lp_plug cf">
+<a class="autonomous" href="https://www.nrk.no/mat/smarte-tips-til-hvordan-bake-glutenfri-kake-enkelt-1.16726059" data-id="1.16726059">
+<!-- include: /serum/render?id=1.16726083&amp;size=3&amp;perspective=LEAN&amp;alignment=AUTO&amp;caption=Anita+Bach+er+deltager+i+Bakemesterskapet+p%C3%A5+NRK.+Hennes+spesialitet+er+gluten-+og+laktosefri+bakst.+&amp;type=image&amp;aspect=F169&amp;classes=plug-image --><!-- START: /templates/image/image-lean.jsp -->
+<figure class="image widget lean plug-image">
+<div class="responsive-img F169"><img sizes="(min-width:1180px) 192px, (min-width:720px) 17vw, 50vw" srcset="https://gfx.nrk.no/jfLy05YudWxFFU6Ts90mTgqRqemcrz1xy7UUBIj2VEuA.jpg 80w, https://gfx.nrk.no/jfLy05YudWxFFU6Ts90mTgvRgdpBwWPlW7UUBIj2VEuA.jpg 160w, https://gfx.nrk.no/jfLy05YudWxFFU6Ts90mTgZNgaCpGpcu67UUBIj2VEuA.jpg 350w, https://gfx.nrk.no/jfLy05YudWxFFU6Ts90mTgaWIMfy8NWe27UUBIj2VEuA.jpg 450w, https://gfx.nrk.no/jfLy05YudWxFFU6Ts90mTgG3H44dW3vIW7UUBIj2VEuA.jpg 650w, https://gfx.nrk.no/jfLy05YudWxFFU6Ts90mTgu8xQPLs7iYu7UUBIj2VEuA.jpg 1000w, https://gfx.nrk.no/jfLy05YudWxFFU6Ts90mTgIS1_ldlMu-C7UUBIj2VEuA.jpg 1200w, https://gfx.nrk.no/jfLy05YudWxFFU6Ts90mTg-A7ZBbiHx1W7UUBIj2VEuA.jpg 1600w, https://gfx.nrk.no/jfLy05YudWxFFU6Ts90mTg-xyi7ADL-xu7UUBIj2VEuA.jpg 2000w" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Anita Bach i Bakermesterskapet. " title="Foto: Bakemesterskapet / NRK"></div>
+</figure>
+<!-- END: /templates/image/image-lean.jsp -->
+<div class="plug-teaser">
+<h2 class="title">Hjelp, jeg skal bake gluten­fritt! </h2>
 </div>
 </a>
 </article>
@@ -1104,7 +1078,7 @@ PaginatedFlow.bootstrap($('.flow.js-initialize').removeClass('js-initialize'));
 html.no-header .nrk-bottommenu-footer {display: none;}
 .nrk-bottommenu-footer{padding:25px;background:#061629;color:#b2cff5;text-align:center;font-size:14px;line-height:1.2}
 </style>
-<link rel="stylesheet" href="https://static.nrk.no/nrkno/serum/2.0.498/singelton/bottommenu/bottommenu.css" />
+<link rel="stylesheet" href="https://static.nrk.no/nrkno/serum/2.0.502/singelton/bottommenu/bottommenu.css" />
 <link rel="stylesheet" href="https://static.nrk.no/nrk-sans/latest/nrk-sans.min.css" />
 <div class="nrk-bottommenu lp_globalfooter js-initialize">
 <!--[if gte IE 9]><!-->
@@ -1203,7 +1177,7 @@ Cecilie Berntsen Jåsund
 <li class="colophon-list-item"><a href="https://info.nrk.no/kontakt/">Kontakt NRK</a></li>
 <li class="colophon-list-item"><a href="https://www.nrk.no/lisens/">Lisens</a></li>
 <li class="colophon-list-item"><a href="https://www.nrk.no/publikum/">Publikum i NRK</a></li>
-<li class="colophon-list-item"><a href="https://www.nrk.no/delta/">Delta i NRK-programmer</a></li>
+<li class="colophon-list-item"><a href="https://www.nrk.no/deltaker/">Delta i NRK-programmer</a></li>
 <li class="colophon-list-item"><a href="https://info.nrk.no/stilling/">Jobb i NRK</a></li>
 <li class="colophon-list-item"><a href="https://www.nrk.no/presse/">Presse</a></li>
 </ul>
@@ -1262,10 +1236,10 @@ Til toppen
 </a>
 </div>
 </footer>
-<script async src="https://static.nrk.no/nrkno/serum/2.0.498/singelton/bottommenu/Serum.Bottommenu.js"></script>
+<script async src="https://static.nrk.no/nrkno/serum/2.0.502/singelton/bottommenu/Serum.Bottommenu.js"></script>
 </div></div>
 <script>
-loadCSS( 'https://static.nrk.no/nrkno/serum/2.0.498/widget.css', document.getElementById('injectStylesBefore') );
+loadCSS( 'https://static.nrk.no/nrkno/serum/2.0.502/widget.css', document.getElementById('injectStylesBefore') );
 </script>
 <script type="text/javascript">
 require(['common/js/lib/Serum.ForwardNavTracking']);

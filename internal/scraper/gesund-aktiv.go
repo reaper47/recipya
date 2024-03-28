@@ -9,14 +9,14 @@ import (
 func scrapeGesundAktiv(root *goquery.Document) (models.RecipeSchema, error) {
 	description, _ := root.Find("meta[name='description']").Attr("content")
 
-	nodes := root.Find("div.field--name-field-zutaten .field--item")
+	nodes := root.Find(".news-recipes-indgredients").Last().Find("ul li")
 	ingredients := make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
 		ingredients = append(ingredients, s)
 	})
 
-	nodes = root.Find("div.field--name-field-content-element p")
+	nodes = root.Find(".news-recipes-cookingsteps").Last().Find("ol li")
 	instructions := make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
@@ -29,6 +29,6 @@ func scrapeGesundAktiv(root *goquery.Document) (models.RecipeSchema, error) {
 		Description:  models.Description{Value: description},
 		Ingredients:  models.Ingredients{Values: ingredients},
 		Instructions: models.Instructions{Values: instructions},
-		Name:         strings.TrimSpace(root.Find("h1.page-header").Text()),
+		Name:         strings.TrimSpace(root.Find("h1[itemprop='headline']").Text()),
 	}, nil
 }

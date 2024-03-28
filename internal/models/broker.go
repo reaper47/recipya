@@ -57,6 +57,11 @@ func (b *Broker) SendFile(fileName string, data *bytes.Buffer) {
 		return
 	}
 
+	if data == nil {
+		log.Println("SendFile data is nil")
+		return
+	}
+
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
@@ -127,8 +132,10 @@ func (b *Broker) SendProgressStatus(title string, isToastVisible bool, value, nu
 
 func (b *Broker) ping() {
 	defer func() {
-		delete(b.brokers, b.userID)
-		_ = b.conn.Close()
+		if b != nil && b.conn != nil {
+			delete(b.brokers, b.userID)
+			_ = b.conn.Close()
+		}
 	}()
 
 	b.setPingPongHandlers()
@@ -142,6 +149,11 @@ func (b *Broker) ping() {
 }
 
 func (b *Broker) setPingPongHandlers() {
+	if b == nil || b.conn == nil {
+		log.Println("Broker or broker connection is nil")
+		return
+	}
+
 	b.conn.SetPingHandler(func(_ string) error {
 		return b.conn.SetReadDeadline(time.Now().Add(1 * time.Minute))
 	})

@@ -42,7 +42,7 @@ func scrapeFitMenCook(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	ingredients := make([]string, 0)
-	root.Find(".fmc_ingredients ul li").Each(func(_ int, s *goquery.Selection) {
+	root.Find(".fmc_ingredients").Last().Find("ul li").Each(func(_ int, s *goquery.Selection) {
 		ing := strings.ReplaceAll(s.Text(), "\t", "")
 		if !strings.Contains(ing, "\n\n") {
 			return

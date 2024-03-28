@@ -52,7 +52,7 @@
                 type: "POST",
                 url: "google_recaptcha.ashx",
                 data: {
-                    securityToken: '6952b71b-bf58-4179-8256-5d424399747b',
+                    securityToken: 'bc83c9dd-3b33-4427-ae95-794a4da785fe',
                     
                     name: name,
                     email: email,
@@ -763,7 +763,7 @@ p, .post-detail, .post-detail p { font-size: 16px!important; line-height: 175%;}
 
 <div class="col-sm-12 hidden-xs">
   <ul class="nav secondnav">
-    
+    <li><a href="/ricette-di-pasqua">Ricette di Pasqua</a></li>
     <li><a href="/ultime-ricette">Ultime ricette</a></li>
     <li><a href="/ricette-veloci">Ricette veloci</a></li>
     <li class="nn"><a href="/ricette-vegetariane">Ricette vegetariane</a></li>
@@ -805,6 +805,7 @@ p, .post-detail, .post-detail p { font-size: 16px!important; line-height: 175%;}
 		    </span>
 	    <ul class="sside-nav mb">
             <li class="dropdown"><a href="/cerca" title="Cerca una Ricetta"><div class="menu-content-wrapper">Cerca ricetta</div></a></li>
+            <li class="dropdown"><a href="/ricette-di-pasqua"><div class="menu-content-wrapper">Ricette di Pasqua</div></a></li>
 			<li class="dropdown"><a href="/dolci"><div class="menu-content-wrapper">Dolci</div></a></li>
   			<li class="dropdown"><a href="/ricette-primi"><div class="menu-content-wrapper">Primi</div></a></li>
             <li class="dropdown"><a href="/ricette-secondi"><div class="menu-content-wrapper">Secondi</div></a></li>
@@ -853,7 +854,7 @@ $( document ).ready(function() {
       "recipeCategory": "Torte",
       "recipeCuisine": "Italiana"
  
- ,"aggregateRating":{"@type":"AggregateRating","bestRating":5,"ratingCount":797,"ratingValue":4.6}
+ ,"aggregateRating":{"@type":"AggregateRating","bestRating":5,"ratingCount":801,"ratingValue":4.6}
  
  
      ,"video": {
@@ -861,7 +862,7 @@ $( document ).ready(function() {
     "name": "Pan d'arancio",
       "description": "Il Pan d'arancio è un dolce della tradizione siciliana caratterizzato da un intenso sapore agrumato, dato dall'utilizzo delle arance intere, buccia compresa.",
       "thumbnailUrl": "https://ricetta.it/Uploads/Imgs/pan-d-arancio_medium.jpg.webp",
-      "uploadDate": "21/11/2023 00:00:00+01:00",
+      "uploadDate": "11/21/2023 12:00:00 AM+01:00",
       "contentUrl": "https://cdn.video.ricetta.it/tutorial/320/pan-d-arancio.mp4"
     }
       
@@ -976,7 +977,7 @@ Vi consigliamo quindi di rifornirvi da un fruttivendolo di fiducia che possa gar
 <div class="cont-rating-top"  style="margin-top:0;width: 185px;height: 54px;overflow:hidden;padding-right:1px">
     	<img alt="Rating Star" src="/Uploads/Imgs/single-star.jpg" style="margin-top: -4px;width:21px; height:23px"/> <span style="color:#5a5a5a">4,6</span>/5 
         <a class="btn btn-red btn-small post-btn" style="margin-right: 0;display:inline; margin-top: 0px;font-weight: normal; text-decoration: none;margin-left: 3px;padding: 2px 12px;height:23px" href="#vota">Vota</a><br />
-        <em style="font-size:12px; color:#a19f9f;padding-right: 2px;">Su un totale di voti: <strong>797</strong></em>
+        <em style="font-size:12px; color:#a19f9f;padding-right: 2px;">Su un totale di voti: <strong>801</strong></em>
     </div>
 
                     <div class="row">
@@ -1362,7 +1363,7 @@ Mettiamola in un mixer e aggiungiamo il latte <strong>[2]</strong></p>
                             <strong>Esprimi il tuo Voto da 1 a 5:</strong>
                             <ul class="c-rating" style="margin-bottom: 6px; height: 24px; overflow: hidden;"></ul>
                                 <span class="grad-vot">1 2 3 4 5</span>
-                                <span class="res-vot"><em>Totale Voti: <strong>797</strong>, Media voti: <strong>4.6</strong></em></strong></span>
+                                <span class="res-vot"><em>Totale Voti: <strong>801</strong>, Media voti: <strong>4.6</strong></em></strong></span>
 
             <p style="text-align: center; margin-top: 25px;"><a class="btn btn-red btn-small post-btn vota-btn" href="#top">Torna alla Ricetta</a></p>
     </div>
@@ -1447,7 +1448,7 @@ Mettiamola in un mixer e aggiungiamo il latte <strong>[2]</strong></p>
                                 var formData = new FormData();
                                 formData.append('image', $('input[type=file]')[0].files[0]);
                                 $.ajax({
-                                    url: '/photoup.ashx?recipe=2982&title=' + $('#photoUploadModalCenterTitle').val() + '&securityToken=6952b71b-bf58-4179-8256-5d424399747b',
+                                    url: '/photoup.ashx?recipe=2982&title=' + $('#photoUploadModalCenterTitle').val() + '&securityToken=bc83c9dd-3b33-4427-ae95-794a4da785fe',
                                     data: formData,  // The form with the file inputs.
                                     cache: false,
                                     contentType: false,
@@ -2216,7 +2217,7 @@ appearance: none;
             var maxRating = 5;
             var callback = function (rating) {
                 jQuery.ajaxSetup({ async: false });
-                var result = $.post('/rating.ashx?securityToken=6952b71b-bf58-4179-8256-5d424399747b&recipe=2982&rating=' + rating);
+                var result = $.post('/rating.ashx?securityToken=bc83c9dd-3b33-4427-ae95-794a4da785fe&recipe=2982&rating=' + rating);
                 /* alert(result.responseText); */
                 ratingElement.innerHTML = "<strong>" + result.responseText + "</strong>";
                 resvot.innerHTML = "<span>&nbsp;</span> ";
@@ -2226,7 +2227,7 @@ appearance: none;
 
         function cookbook(id) {
         	jQuery.ajaxSetup({ async: false });
-        	var result = $.get('/cookbook.ashx?securityToken=6952b71b-bf58-4179-8256-5d424399747b&recipe=' + id);
+        	var result = $.get('/cookbook.ashx?securityToken=bc83c9dd-3b33-4427-ae95-794a4da785fe&recipe=' + id);
 			if(result.responseText == "")
 				document.location = '/users/login.aspx?ReturnUrl=%2fpan-d-arancio';
 			else {alert(result.responseText); $(".icon-login").fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200); }
@@ -2315,7 +2316,7 @@ $(document).ready(function(){
                          
                     </div>
                 <div class="col-xs-12 col-sm-7">
-                    <p style="font-size: 14px!important;">Copyright &copy; 2023 AlgorithMedia S.r.l. - P.IVA 02353940063  - Tutti i diritti riservati</p>
+                    <p style="font-size: 14px!important;">Copyright &copy; 2024 AlgorithMedia S.r.l. - P.IVA 02353940063  - Tutti i diritti riservati</p>
                 </div>
             </div>
             </div>
@@ -2367,7 +2368,7 @@ setTimeout(function() {
                 })
                 .then(function (token) {
                     var xhr = new XMLHttpRequest();
-                    xhr.open("GET", "/notifyToken.ashx?securityToken=yv3m3p2yogup0fhb5ulh3zt5&pageUrl=/pan-d-arancio&token=" + token, true);
+                    xhr.open("GET", "/notifyToken.ashx?securityToken=vdmo5dwqwvnlploey1k13xws&pageUrl=/pan-d-arancio&token=" + token, true);
                 xhr.send(null);
 
                 console.log(token);
@@ -2391,6 +2392,10 @@ setTimeout(function() {
     </script>
 </body>
 </html>
+
+
+
+
 
 
 

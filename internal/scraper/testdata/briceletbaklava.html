@@ -6,7 +6,7 @@
           
                                                                                                     
                                                                                                                                                                   
-    <script src="https://assets.over-blog-kiwi.com/b/blog/v2023.21.01/build/runtime.74a74554.js"></script><script src="https://assets.over-blog-kiwi.com/b/blog/v2023.21.01/build/ads.930ed0c8.js"></script>
+    <script src="https://assets.over-blog-kiwi.com/b/blog/v2024.04.02/build/runtime.d5be4c8d.js"></script><script src="https://assets.over-blog-kiwi.com/b/blog/v2024.04.02/build/ads.930ed0c8.js"></script>
   <script>
       dataLayer = [{
         'source'   : 'OVERBLOG',
@@ -153,7 +153,7 @@
       }
     }
   </script>
-  <link rel="stylesheet" href="https://assets.over-blog-kiwi.com/b/blog/v2023.21.01/build/main.0639ad90.css">
+  <link rel="stylesheet" href="https://assets.over-blog-kiwi.com/b/blog/v2024.04.02/build/main.90f9cf75.css">
           <!-- Basic theme id 90 [Noodle] - last modified : 2023-12-14T15:09:44+01:00 -->
                  
 
@@ -232,7 +232,7 @@ Il y a quelques temps je vous avais donné la recette du taillé au sel, celle d
       "url": "https:\/\/briceletbaklava.ch",
       "logo": {
         "@type": "ImageObject",
-        "url": "https:\/\/assets.over-blog-kiwi.com\/b\/blog\/v2023.21.01\/build\/images\/logo-overblog-big.png",
+        "url": "https:\/\/assets.over-blog-kiwi.com\/b\/blog\/v2024.04.02\/build\/images\/logo-overblog-big.png",
         "width": 550,
         "height": 210
       }
@@ -2023,83 +2023,54 @@ Il y a quelques temps je vous avais donné la recette du taillé au sel, celle d
             }
         </style>
          <script>
-  (function(){
-    var hasGABeenLoaded = false;
+  function loadGA() {
+    window.dataLayer = window.dataLayer || []
+    var s = document.createElement("script")
+    s.async = true
+    s.src = "https://cdn.lib.getjan.io/library/overblog.js"
+    s.setAttribute("importance", "high")
+    var g = document.getElementsByTagName("head")[0]
+    g.parentNode.insertBefore(s, g)
+    window.jan = window.jan || {}
+    jan.cmd = jan.cmd || []
+    jancmd = function(){jan.cmd.push(arguments);}
 
-    function loadGA(hasDidomiConsent){   
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-5354236-47', {
-        cookieDomain: 'briceletbaklava.ch',
-        cookieExpires: 34164000,
-        name: 'ob',
-        allowLinker: true
-      });
-
-      if(hasDidomiConsent){
-        ga('set', 'allowAdPersonalizationSignals', false)
-      }else{
-        ga('set', 'allowAdFeatures', false)
-      }
-
-      ga('ob.require', 'linkid', 'linkid.js');
-      ga('ob.set', 'anonymizeIp', true);
-      ga('ob.set', 'dimension1', '__ads_loaded__' in window ? '0' : '1');
-      ga('ob.set', 'dimension2', 'fr');
-      ga('ob.set', 'dimension3', 'BS');
-      ga('ob.set', 'dimension4', 'food-drink');
-      ga('ob.set', 'dimension5', '0');
-      ga('ob.set', 'dimension6', '0');
-      ga('ob.set', 'dimension7', '0');
-      ga('ob.set', 'dimension10', '3215825');
-      ga('ob.set', 'dimension11', '1');
-      ga('ob.set', 'dimension12', '2');
-      ga('ob.set', 'dimension13', '0');
-      ga('ob.set', 'dimension14', '__ads_loaded__' in window ? '1' : '0');
-      ga('ob.set', 'dimension15', '__ads_loaded__' in window ? '0' : '1');
-      ga('ob.set', 'dimension16', '3215825');
-      ga('ob.set', 'dimension17', "Bricelet & Baklava");
-              ga('ob.set', 'dimension18', 'article');
-        ga('ob.set', 'dimension19', '188216057');
-        ga('ob.set', 'dimension20', 'Apéritifs,Boulangerie,Petit-déjeuner,Recettes suisses salées');
-            if (location) {
-        ga('ob.set', 'dimension22', '' + location.hostname);
-      }
-      ga('ob.set', 'dimension23', hasDidomiConsent);
-      ga('ob.set', 'dimension24', '20190223');
-      ga('ob.send', 'pageview');
-
-      hasGABeenLoaded = true;
+    // TODO: Now, The wrapper handle didomi consent for us so we don't need anymore to wait didomi consent to load GA. The dimension23 is for didomi consent but it will be handle directly by the wrapper. We remove it from the code below.
+    var dimensions = {
+      dimension1: '__ads_loaded__' in window ? '0' : '1',
+      dimension2: 'fr',
+      dimension3: 'BS',
+      dimension4: 'food-drink',
+      dimension5: '0',
+      dimension6: '0',
+      dimension7: '0',
+      dimension10: '3215825',
+      dimension11: '1',
+      dimension12: '2',
+      dimension13: '0',
+      dimension14: '__ads_loaded__' in window ? '1' : '0',
+      dimension15: '__ads_loaded__' in window ? '0' : '1',
+      dimension16: '3215825',
+      dimension17: "Bricelet & Baklava",
+            dimension18: 'article',
+      dimension19: '188216057',
+      dimension20: 'Apéritifs,Boulangerie,Petit-déjeuner,Recettes suisses salées',
+            dimension24: '20190223',
+      dimension25: 'overblog',
     }
 
-    var loadGATimeoutID = setTimeout(function() {
-      loadGA();
-    }, 1000);
+    if (location) {
+      dimensions.dimension22 = '' + location.hostname
+    }
 
-    window.didomiOnReady = window.didomiOnReady || [];
-    window.didomiOnReady.push(function (Didomi) { 
-      clearTimeout(loadGATimeoutID);
-
-      function getDidomiConsent(didomiId){
-        var consents = false;
-        if (Didomi.isConsentRequired()) {
-          consents = Didomi.getUserConsentStatusForVendor(didomiId);
-        } else {
-          consents = true;
-        }
-        return consents;
-      }
-
-      var hasGADidomiConsent = getDidomiConsent("google") && getDidomiConsent("c:googleana-XMqagawa");
-
-      if(!hasGABeenLoaded){
-        loadGA(hasGADidomiConsent);
-      }
+    jancmd("setConfig", {
+      metadata: dimensions,
     });
-  })();
+
+    jancmd("sendEvent", "pageview");
+  }
+
+  loadGA()
 </script>
   
 <script>
@@ -2113,7 +2084,7 @@ Il y a quelques temps je vous avais donné la recette du taillé au sel, celle d
   }
 </script>
 <script src="//connect.over-blog.com/ping/3215825/isConnected" async></script>
-<script src="https://assets.over-blog-kiwi.com/b/blog/v2023.21.01/build/main.c15ef79c.js"></script>
+<script src="https://assets.over-blog-kiwi.com/b/blog/v2024.04.02/build/main.c15ef79c.js"></script>
 
  </head>
     <!-- Body -->
@@ -2125,16 +2096,16 @@ Il y a quelques temps je vous avais donné la recette du taillé au sel, celle d
 
                         
                                                                           
-              <img class="ob-ShareBar-brandingImg" src="https://assets.over-blog-kiwi.com/b/blog/v2023.21.01/build/images/shareicon-branding-750g--dark.png" alt="750 grammes">
+              <img class="ob-ShareBar-brandingImg" src="https://assets.over-blog-kiwi.com/b/blog/v2024.04.02/build/images/shareicon-branding-750g--dark.png" alt="750 grammes">
           </div>
 
     <div class="ob-ShareBar-container ob-ShareBar-container--right">
                         <a class="ob-ShareBar-food" href="https://www.over-blog.com/mag/cuisine-deco" target="_blank">
               Tous nos blogs cuisine
           </a>
-                <a href="#" data-href="https://www.facebook.com/sharer/sharer.php?u={referer}" title=" facebook"="FACEBOOK"|trans }}"" class="ob-ShareBar-share ob-ShareBar-share--facebook"></a>
-        <a href="#" data-href="https://twitter.com/intent/tweet?url={referer}&amp;text={title}" title=" twitter"="TWITTER"|trans }}"" class="ob-ShareBar-share ob-ShareBar-share--twitter"></a>
-        <a href="#" data-href="#" title=" pinterest"="PINTEREST"|trans }}"" class="ob-ShareBar-share ob-ShareBar-share--pinterest js-ob-ShareBar-share--pinterest"></a>
+                <a href="#" data-href="https://www.facebook.com/sharer/sharer.php?u={referer}" title=" facebook" class="ob-ShareBar-share ob-ShareBar-share--facebook"></a>
+        <a href="#" data-href="https://twitter.com/intent/tweet?url={referer}&amp;text={title}" title="X (Twitter)" class="ob-ShareBar-share ob-ShareBar-share--twitter"></a>
+        <a href="#" data-href="#" title=" pinterest" class="ob-ShareBar-share ob-ShareBar-share--pinterest js-ob-ShareBar-share--pinterest"></a>
 
         <form action="/search" method="post" accept-charset="utf-8" class="ob-ShareBar-search">
           <input type="text" name="q" value="" class="ob-ShareBar-input" placeholder="Rechercher">
@@ -2150,12 +2121,12 @@ Il y a quelques temps je vous avais donné la recette du taillé au sel, celle d
           </a>
         
         <a href="https://admin.over-blog.com/" class="ob-ShareBar-admin ob-ShareBar--connected">
-          <img src="https://assets.over-blog-kiwi.com/b/blog/v2023.21.01/build/images/lock-alt-dark.svg" class="ob-ShareBar-lock">
+          <img src="https://assets.over-blog-kiwi.com/b/blog/v2024.04.02/build/images/lock-alt-dark.svg" class="ob-ShareBar-lock">
           <span class="ob-ShareBar-text">Administration</span>
         </a>
       
       <a href="https://connect.over-blog.com/fr/login" class="ob-ShareBar-login ob-ShareBar--notconnected">
-        <img src="https://assets.over-blog-kiwi.com/b/blog/v2023.21.01/build/images/lock-alt-dark.svg" class="ob-ShareBar-lock">
+        <img src="https://assets.over-blog-kiwi.com/b/blog/v2024.04.02/build/images/lock-alt-dark.svg" class="ob-ShareBar-lock">
         <span class="ob-ShareBar-text">Connexion</span>
       </a>
             <a href="https://www.over-blog.com/creation" class="ob-ShareBar-create ob-ShareBar--notconnected">
@@ -2167,7 +2138,7 @@ Il y a quelques temps je vous avais donné la recette du taillé au sel, celle d
   </div>
 
   
-  <script src="https://assets.over-blog-kiwi.com/b/blog/v2023.21.01/build/sharebar.db8ff6e0.js"></script>
+  <script src="https://assets.over-blog-kiwi.com/b/blog/v2024.04.02/build/sharebar.db8ff6e0.js"></script>
   <script>
         var postTitle = "Taill\u00e9 au sel de Granges-Marnand "
         socialShare(document.querySelector('.ob-ShareBar-share--facebook'), postTitle)
@@ -2496,7 +2467,7 @@ Il y a quelques temps je vous avais donné la recette du taillé au sel, celle d
 </script>
     </div>
         <div class="ob-Shares-print" style="display:none">
-        <img src="https://assets.over-blog-kiwi.com/b/blog/v2023.21.01/build/images/printer.png">
+        <img src="https://assets.over-blog-kiwi.com/b/blog/v2024.04.02/build/images/printer.png">
     </div>
 </div>
 
@@ -2587,6 +2558,17 @@ Il y a quelques temps je vous avais donné la recette du taillé au sel, celle d
             <div class="ob-Related-posts">
                                 <div class="ob-Related-post">
                     <div class="ob-RelatedPost">
+  <a class="ob-RelatedPost-link" href="https://briceletbaklava.ch/2023/01/les-craquelets-au-sbrinz-aop.html" title="Les craquelets au Sbrinz AOP">
+          <img class="ob-RelatedPost-image" src="https://image.over-blog.com/FF2kt7tHFS2Bt3bD-QhegMNGWoo=/400x260/smart/filters:no_upscale()/image%2F3215825%2F20230118%2Fob_fd2f54_craquelets-au-sbrinz-3524.jpg" alt="Les craquelets au Sbrinz AOP"/>
+    
+    <div class="ob-RelatedPost-title" >
+              Les craquelets au Sbrinz AOP
+          </div>
+  </a>
+</div>
+                </div>
+                                <div class="ob-Related-post">
+                    <div class="ob-RelatedPost">
   <a class="ob-RelatedPost-link" href="https://briceletbaklava.ch/2022/12/taille-vaudois-au-sel.html" title="Taillé vaudois au sel ">
           <img class="ob-RelatedPost-image" src="https://image.over-blog.com/P3hzpVZkrUxCApmJQk_ZP8oc8ZI=/400x260/smart/filters:no_upscale()/image%2F3215825%2F20221227%2Fob_4644cf_taille-vaudois-au-sel-7320.jpg" alt="Taillé vaudois au sel "/>
     
@@ -2614,17 +2596,6 @@ Il y a quelques temps je vous avais donné la recette du taillé au sel, celle d
     
     <div class="ob-RelatedPost-title" >
               Bricelets salés, au gruyère de Gruyères en Gruyère
-          </div>
-  </a>
-</div>
-                </div>
-                                <div class="ob-Related-post">
-                    <div class="ob-RelatedPost">
-  <a class="ob-RelatedPost-link" href="https://briceletbaklava.ch/2022/07/cake-au-lard-du-gotteron-facon-cuchaule.html" title="Cake au lard du Gottéron, façon cuchaule">
-          <img class="ob-RelatedPost-image" src="https://image.over-blog.com/RfZTV_GG-OEDDwmU0U_X1zWgL68=/400x260/smart/filters:no_upscale()/image%2F3215825%2F20220728%2Fob_bf9c46_cake-au-lard-du-gotteron-7214.jpg" alt="Cake au lard du Gottéron, façon cuchaule"/>
-    
-    <div class="ob-RelatedPost-title" >
-              Cake au lard du Gottéron, façon cuchaule
           </div>
   </a>
 </div>
@@ -2892,6 +2863,43 @@ asdvadz mer hoquinere bahé
                                     </div>
                                                                                                             <div class="Sidebar-post">
                                         <div class="ob-h2 PostPreview-title">
+                                                                                                    <a href="https://briceletbaklava.ch/2023/01/les-craquelets-au-sbrinz-aop.html" title="Les craquelets au Sbrinz AOP">Les craquelets au Sbrinz AOP</a>
+                                                                                        </div>
+                                                                                <figure class="PostPreview-cover">
+                                            <a class="PostPreview-coverLink" href="https://briceletbaklava.ch/2023/01/les-craquelets-au-sbrinz-aop.html">
+                                                                                                <img class="PostPreview-coverImage" src="https://image.over-blog.com/sk1ooz4xoG-1tEs1QgCk3NRY_P8=/630x400/smart/filters:no_upscale()/image%2F3215825%2F20230118%2Fob_fd2f54_craquelets-au-sbrinz-3524.jpg" alt="Les craquelets au Sbrinz AOP"/>
+                                                                                            </a>
+                                        </figure>
+                                                                                <div class="PostPreview-content">
+                                            <p class="PostPreview-meta PostPreviewMeta">
+                                                                                                <span class="PostPreviewMeta-date">
+                                                    <span class="fa fa-fw fa-calendar-o"></span>
+                                                    12/03/2024
+                                                </span>
+                                                
+                                                <span class="PostPreviewMeta-comments">
+                                                    <span class="fa fa-comment-o"></span>
+                                                                                                            <span id="comment-count-187151161">…</span><script>
+  ob.commentCount(document.querySelector("#comment-count-187151161"), {
+    resource: "https://briceletbaklava.ch/api/comment-count/187151161",
+    format: (count) => {
+      const string = count === 0
+        ? "0"
+        : count === 1
+          ? "%c"
+          : "%c"
+
+      return string.replace("%c", count)
+    }
+  })
+</script>
+                                                                                                    </span>
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                                                        <div class="Sidebar-post">
+                                        <div class="ob-h2 PostPreview-title">
                                                                                                     <a href="https://briceletbaklava.ch/2022/12/taille-vaudois-au-sel.html" title="Taillé vaudois au sel ">Taillé vaudois au sel </a>
                                                                                         </div>
                                                                                 <figure class="PostPreview-cover">
@@ -2948,43 +2956,6 @@ asdvadz mer hoquinere bahé
                                                                                                             <span id="comment-count-186925615">…</span><script>
   ob.commentCount(document.querySelector("#comment-count-186925615"), {
     resource: "https://briceletbaklava.ch/api/comment-count/186925615",
-    format: (count) => {
-      const string = count === 0
-        ? "0"
-        : count === 1
-          ? "%c"
-          : "%c"
-
-      return string.replace("%c", count)
-    }
-  })
-</script>
-                                                                                                    </span>
-                                            </p>
-
-                                        </div>
-                                    </div>
-                                                                        <div class="Sidebar-post">
-                                        <div class="ob-h2 PostPreview-title">
-                                                                                                    <a href="https://briceletbaklava.ch/2023/01/bricelets-sales-au-gruyere-de-gruyeres-en-gruyere.html" title="Bricelets salés, au gruyère de Gruyères en Gruyère">Bricelets salés, au gruyère de Gruyères en Gruyère</a>
-                                                                                        </div>
-                                                                                <figure class="PostPreview-cover">
-                                            <a class="PostPreview-coverLink" href="https://briceletbaklava.ch/2023/01/bricelets-sales-au-gruyere-de-gruyeres-en-gruyere.html">
-                                                                                                <img class="PostPreview-coverImage" src="https://image.over-blog.com/Dq5ZnMjG1C0a35DHeX-eQx-z3tU=/630x400/smart/filters:no_upscale()/image%2F3215825%2F20230114%2Fob_4028e2_bricelet-au-fromage-7455.jpg" alt="Bricelets salés, au gruyère de Gruyères en Gruyère"/>
-                                                                                            </a>
-                                        </figure>
-                                                                                <div class="PostPreview-content">
-                                            <p class="PostPreview-meta PostPreviewMeta">
-                                                                                                <span class="PostPreviewMeta-date">
-                                                    <span class="fa fa-fw fa-calendar-o"></span>
-                                                    04/03/2023
-                                                </span>
-                                                
-                                                <span class="PostPreviewMeta-comments">
-                                                    <span class="fa fa-comment-o"></span>
-                                                                                                            <span id="comment-count-187137447">…</span><script>
-  ob.commentCount(document.querySelector("#comment-count-187137447"), {
-    resource: "https://briceletbaklava.ch/api/comment-count/187137447",
     format: (count) => {
       const string = count === 0
         ? "0"
@@ -3234,6 +3205,117 @@ asdvadz mer hoquinere bahé
                                 <div class="Sidebar-widget" data-order="">
                                                                                                             <div class="Sidebar-post">
                                         <div class="ob-h2 PostPreview-title">
+                                                                                                    <a href="https://briceletbaklava.ch/2023/01/les-craquelets-au-sbrinz-aop.html" title="Les craquelets au Sbrinz AOP">Les craquelets au Sbrinz AOP</a>
+                                                                                        </div>
+                                                                                <figure class="PostPreview-cover">
+                                            <a class="PostPreview-coverLink" href="https://briceletbaklava.ch/2023/01/les-craquelets-au-sbrinz-aop.html">
+                                                                                                <img class="PostPreview-coverImage" src="https://image.over-blog.com/sk1ooz4xoG-1tEs1QgCk3NRY_P8=/630x400/smart/filters:no_upscale()/image%2F3215825%2F20230118%2Fob_fd2f54_craquelets-au-sbrinz-3524.jpg" alt="Les craquelets au Sbrinz AOP"/>
+                                                                                            </a>
+                                        </figure>
+                                                                                <div class="PostPreview-content">
+                                            <p class="PostPreview-meta PostPreviewMeta">
+                                                                                                <span class="PostPreviewMeta-date">
+                                                    <span class="fa fa-fw fa-calendar-o"></span>
+                                                    12/03/2024
+                                                </span>
+                                                
+                                                <span class="PostPreviewMeta-comments">
+                                                    <span class="fa fa-comment-o"></span>
+                                                                                                            <span id="comment-count-187151161">…</span><script>
+  ob.commentCount(document.querySelector("#comment-count-187151161"), {
+    resource: "https://briceletbaklava.ch/api/comment-count/187151161",
+    format: (count) => {
+      const string = count === 0
+        ? "0"
+        : count === 1
+          ? "%c"
+          : "%c"
+
+      return string.replace("%c", count)
+    }
+  })
+</script>
+                                                                                                    </span>
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                                                        <div class="Sidebar-post">
+                                        <div class="ob-h2 PostPreview-title">
+                                                                                                    <a href="https://briceletbaklava.ch/2024/02/minestrone-alla-ticinese.html" title="Minestrone alla ticinese">Minestrone alla ticinese</a>
+                                                                                        </div>
+                                                                                <figure class="PostPreview-cover">
+                                            <a class="PostPreview-coverLink" href="https://briceletbaklava.ch/2024/02/minestrone-alla-ticinese.html">
+                                                                                                <img class="PostPreview-coverImage" src="https://image.over-blog.com/LKJ5yWbA7Cf6qWzoOz4954zEIfw=/630x400/smart/filters:no_upscale()/image%2F3215825%2F20240219%2Fob_04d5d4_minestrone-8044.jpg" alt="Minestrone alla ticinese"/>
+                                                                                            </a>
+                                        </figure>
+                                                                                <div class="PostPreview-content">
+                                            <p class="PostPreview-meta PostPreviewMeta">
+                                                                                                <span class="PostPreviewMeta-date">
+                                                    <span class="fa fa-fw fa-calendar-o"></span>
+                                                    26/02/2024
+                                                </span>
+                                                
+                                                <span class="PostPreviewMeta-comments">
+                                                    <span class="fa fa-comment-o"></span>
+                                                                                                            <span id="comment-count-188639795">…</span><script>
+  ob.commentCount(document.querySelector("#comment-count-188639795"), {
+    resource: "https://briceletbaklava.ch/api/comment-count/188639795",
+    format: (count) => {
+      const string = count === 0
+        ? "0"
+        : count === 1
+          ? "%c"
+          : "%c"
+
+      return string.replace("%c", count)
+    }
+  })
+</script>
+                                                                                                    </span>
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                                                        <div class="Sidebar-post">
+                                        <div class="ob-h2 PostPreview-title">
+                                                                                                    <a href="https://briceletbaklava.ch/2023/11/saucisse-de-veau-de-glaris-glarner-kalberwurst-igp.html" title="Saucisse de veau de Glaris (Glarner Kalberwurst IGP)">Saucisse de veau de Glaris (Glarner Kalberwurst IGP)</a>
+                                                                                        </div>
+                                                                                <figure class="PostPreview-cover">
+                                            <a class="PostPreview-coverLink" href="https://briceletbaklava.ch/2023/11/saucisse-de-veau-de-glaris-glarner-kalberwurst-igp.html">
+                                                                                                <img class="PostPreview-coverImage" src="https://image.over-blog.com/9elFc6VOfHBE7L1b8f1nOIiWEsE=/630x400/smart/filters:no_upscale()/image%2F3215825%2F20231101%2Fob_2101d5_saucisse-de-glaris-7888.jpg" alt="Saucisse de veau de Glaris (Glarner Kalberwurst IGP)"/>
+                                                                                            </a>
+                                        </figure>
+                                                                                <div class="PostPreview-content">
+                                            <p class="PostPreview-meta PostPreviewMeta">
+                                                                                                <span class="PostPreviewMeta-date">
+                                                    <span class="fa fa-fw fa-calendar-o"></span>
+                                                    29/01/2024
+                                                </span>
+                                                
+                                                <span class="PostPreviewMeta-comments">
+                                                    <span class="fa fa-comment-o"></span>
+                                                                                                            <span id="comment-count-188278355">…</span><script>
+  ob.commentCount(document.querySelector("#comment-count-188278355"), {
+    resource: "https://briceletbaklava.ch/api/comment-count/188278355",
+    format: (count) => {
+      const string = count === 0
+        ? "0"
+        : count === 1
+          ? "%c"
+          : "%c"
+
+      return string.replace("%c", count)
+    }
+  })
+</script>
+                                                                                                    </span>
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                                                        <div class="Sidebar-post">
+                                        <div class="ob-h2 PostPreview-title">
                                                                                                     <a href="https://briceletbaklava.ch/2023/12/bolleweggen-de-thurgovie-thurgauer-bolleweggen.html" title="Bölleweggen de Thurgovie (Thurgauer Bölleweggen)">Bölleweggen de Thurgovie (Thurgauer Bölleweggen)</a>
                                                                                         </div>
                                                                                 <figure class="PostPreview-cover">
@@ -3253,80 +3335,6 @@ asdvadz mer hoquinere bahé
                                                                                                             <span id="comment-count-188451834">…</span><script>
   ob.commentCount(document.querySelector("#comment-count-188451834"), {
     resource: "https://briceletbaklava.ch/api/comment-count/188451834",
-    format: (count) => {
-      const string = count === 0
-        ? "0"
-        : count === 1
-          ? "%c"
-          : "%c"
-
-      return string.replace("%c", count)
-    }
-  })
-</script>
-                                                                                                    </span>
-                                            </p>
-
-                                        </div>
-                                    </div>
-                                                                        <div class="Sidebar-post">
-                                        <div class="ob-h2 PostPreview-title">
-                                                                                                    <a href="https://briceletbaklava.ch/2023/04/brasato-al-merlot-del-ticino.html" title="Brasato al merlot del Ticino">Brasato al merlot del Ticino</a>
-                                                                                        </div>
-                                                                                <figure class="PostPreview-cover">
-                                            <a class="PostPreview-coverLink" href="https://briceletbaklava.ch/2023/04/brasato-al-merlot-del-ticino.html">
-                                                                                                <img class="PostPreview-coverImage" src="https://image.over-blog.com/2m0hgRE_k7jsxTXnz9H1KyQDjxA=/630x400/smart/filters:no_upscale()/image%2F3215825%2F20230401%2Fob_06bd7e_brasato-al-merlot-7721.jpg" alt="Brasato al merlot del Ticino"/>
-                                                                                            </a>
-                                        </figure>
-                                                                                <div class="PostPreview-content">
-                                            <p class="PostPreview-meta PostPreviewMeta">
-                                                                                                <span class="PostPreviewMeta-date">
-                                                    <span class="fa fa-fw fa-calendar-o"></span>
-                                                    31/07/2023
-                                                </span>
-                                                
-                                                <span class="PostPreviewMeta-comments">
-                                                    <span class="fa fa-comment-o"></span>
-                                                                                                            <span id="comment-count-187398797">…</span><script>
-  ob.commentCount(document.querySelector("#comment-count-187398797"), {
-    resource: "https://briceletbaklava.ch/api/comment-count/187398797",
-    format: (count) => {
-      const string = count === 0
-        ? "0"
-        : count === 1
-          ? "%c"
-          : "%c"
-
-      return string.replace("%c", count)
-    }
-  })
-</script>
-                                                                                                    </span>
-                                            </p>
-
-                                        </div>
-                                    </div>
-                                                                        <div class="Sidebar-post">
-                                        <div class="ob-h2 PostPreview-title">
-                                                                                                    <a href="https://briceletbaklava.ch/2022/12/taille-vaudois-au-sel.html" title="Taillé vaudois au sel ">Taillé vaudois au sel </a>
-                                                                                        </div>
-                                                                                <figure class="PostPreview-cover">
-                                            <a class="PostPreview-coverLink" href="https://briceletbaklava.ch/2022/12/taille-vaudois-au-sel.html">
-                                                                                                <img class="PostPreview-coverImage" src="https://image.over-blog.com/M74NqFXkj6F56_CLB2qFbj4IqLQ=/630x400/smart/filters:no_upscale()/image%2F3215825%2F20221227%2Fob_4644cf_taille-vaudois-au-sel-7320.jpg" alt="Taillé vaudois au sel "/>
-                                                                                            </a>
-                                        </figure>
-                                                                                <div class="PostPreview-content">
-                                            <p class="PostPreview-meta PostPreviewMeta">
-                                                                                                <span class="PostPreviewMeta-date">
-                                                    <span class="fa fa-fw fa-calendar-o"></span>
-                                                    18/06/2023
-                                                </span>
-                                                
-                                                <span class="PostPreviewMeta-comments">
-                                                    <span class="fa fa-comment-o"></span>
-                                                                                                            <span id="comment-count-187075172">…</span><script>
-  ob.commentCount(document.querySelector("#comment-count-187075172"), {
-    resource: "https://briceletbaklava.ch/api/comment-count/187075172",
     format: (count) => {
       const string = count === 0
         ? "0"
@@ -3372,22 +3380,22 @@ asdvadz mer hoquinere bahé
                         <ul class="Sidebar-list">
                                                                                                 <li >
                                         <a href="/tag/entrees/">
-                                            <span style="text-transform: capitalize;">Entrées</span> (92)
+                                            <span style="text-transform: capitalize;">Entrées</span> (93)
                                         </a>
                                     </li>
                                                                     <li >
                                         <a href="/tag/recettes%20suisses%20salees/">
-                                            <span style="text-transform: capitalize;">Recettes suisses salées</span> (78)
+                                            <span style="text-transform: capitalize;">Recettes suisses salées</span> (81)
                                         </a>
                                     </li>
                                                                     <li >
                                         <a href="/tag/plat%20principal/">
-                                            <span style="text-transform: capitalize;">Plat principal</span> (74)
+                                            <span style="text-transform: capitalize;">Plat principal</span> (77)
                                         </a>
                                     </li>
                                                                     <li >
                                         <a href="/tag/recettes%20armeniennes%20salees/">
-                                            <span style="text-transform: capitalize;">Recettes arméniennes salées</span> (64)
+                                            <span style="text-transform: capitalize;">Recettes arméniennes salées</span> (66)
                                         </a>
                                     </li>
                                                                     <li >
@@ -3397,7 +3405,7 @@ asdvadz mer hoquinere bahé
                                     </li>
                                                                     <li >
                                         <a href="/tag/aperitifs/">
-                                            <span style="text-transform: capitalize;">Apéritifs</span> (59)
+                                            <span style="text-transform: capitalize;">Apéritifs</span> (60)
                                         </a>
                                     </li>
                                                                     <li >
@@ -3407,12 +3415,12 @@ asdvadz mer hoquinere bahé
                                     </li>
                                                                     <li >
                                         <a href="/tag/desserts/">
-                                            <span style="text-transform: capitalize;">Desserts</span> (50)
+                                            <span style="text-transform: capitalize;">Desserts</span> (51)
                                         </a>
                                     </li>
                                                                     <li >
                                         <a href="/tag/recettes%20suisses%20sucrees/">
-                                            <span style="text-transform: capitalize;">Recettes suisses sucrées</span> (46)
+                                            <span style="text-transform: capitalize;">Recettes suisses sucrées</span> (47)
                                         </a>
                                     </li>
                                                                     <li >
@@ -3437,17 +3445,17 @@ asdvadz mer hoquinere bahé
                                     </li>
                                                                     <li >
                                         <a href="/tag/accompagnements/">
-                                            <span style="text-transform: capitalize;">Accompagnements</span> (21)
+                                            <span style="text-transform: capitalize;">Accompagnements</span> (22)
+                                        </a>
+                                    </li>
+                                                                    <li >
+                                        <a href="/tag/charcuterie/">
+                                            <span style="text-transform: capitalize;">Charcuterie</span> (14)
                                         </a>
                                     </li>
                                                                     <li >
                                         <a href="/tag/recettes%20armeniennes%20sucrees/">
                                             <span style="text-transform: capitalize;">Recettes arméniennes sucrées</span> (14)
-                                        </a>
-                                    </li>
-                                                                    <li >
-                                        <a href="/tag/charcuterie/">
-                                            <span style="text-transform: capitalize;">Charcuterie</span> (13)
                                         </a>
                                     </li>
                                                                     <li >

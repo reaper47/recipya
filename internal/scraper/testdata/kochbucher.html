@@ -34,72 +34,7 @@
             transform: rotate(45deg);
         }
     </style>
-    	<script id="wccp_pro_clear_body_at_all_for_extentions">
-	function clear_body_at_all_for_extentions()
-	{
-		wccp_pro_log_to_console_if_allowed("function", "clear_body_at_all_for_extentions");
-		
-		clearInterval(remove_ext_code);
-		clearInterval(disable_ext_code);
-		jQuery("body").empty();
-		div_style = 'style="margin: auto;width: 60%;border: 5px solid #ff0060a3;padding: 10px;"';
-		jQuery("body").append('<p>&nbsp;</p><p>&nbsp;</p><div ' + div_style + '><p style="text-align: center;"><b>Warning:</b> Unwanted <u>Copy/Paste</u> extension detected!</p><p style="text-align: center;">Please deactivate it and refresh</p></div>');
-	}
-
-	window.addEventListener('load', function (){
-		if(window.Zepto || !window.jQuery) jQuery =  $;
-		jQuery(document).ready(disable_ext_code);
-	});
-	function disable_ext_code(){
-		wccp_pro_log_to_console_if_allowed("function", "disable_ext_code");
-		/*PART-1: check for any extension fingrprint inside HTML */
-		var str = "";
-		var div_style = "";
-		setTimeout(() => {
-			  jQuery("script,style").each(function()
-				{
-					str = jQuery(this).attr("src") + " " + jQuery(this).attr("id");
-					if (str != "" && typeof str != 'undefined'){
-						if(str.includes("onepmapfbjohnegdmfhndpefjkppbjkm") || str.includes("allow-copy_style")) 
-						{
-							clear_body_at_all_for_extentions();
-						}
-					}
-				});
-			}, 2000);
-		
-		/*PART-2: check if the menu was canceled by any extension */
-		let timer2;
-		
-		window.addEventListener('contextmenu',
-		  e => { if (e.isTrusted) timer2 = setTimeout(detectCanceledMenu, 0, e.target); },
-		  true);
-
-		window.addEventListener('contextmenu', () => clearTimeout(timer2));
-
-		function detectCanceledMenu(el) {
-		  //console.log('the menu was canceled');
-		  clear_body_at_all_for_extentions();
-		}
-	}
-	setInterval(disable_ext_code,4000);
-
-	function remove_ext_code()
-	{
-		wccp_pro_log_to_console_if_allowed("function", "remove_ext_code " + jQuery("p").css("user-select").toString().toLowerCase());
-		
-		const TextSelectionType = jQuery("p").css("user-select").toString().toLowerCase();
-		
-		if(TextSelectionType == "text" || TextSelectionType == "auto") clear_body_at_all_for_extentions(); /* if selection still! kill the page content at all */
-	}
-	setInterval(remove_ext_code,1000);
-
-	const ultraPropagation = function(event) {
-		
-		if (ultraMode.toggle) event.stopPropagation();
-	};
-	</script>
-	<script id="wccp_pro_disable_selection">
+    <script id="wccp_pro_disable_selection">
 
 var image_save_msg = 'You are not allowed to save images!';
 
@@ -835,9 +770,7 @@ code,pre
 			-webkit-user-drag: none;
 		}
 	</style>
-<style>/* Start your code after this line */
- 
-/* End your code before this line */</style>	<script id="wccp_pro_css_disable_selection">
+	<script id="wccp_pro_css_disable_selection">
 	function wccp_pro_msieversion() 
 		{
 			var ua = window.navigator.userAgent;
@@ -1119,7 +1052,7 @@ function apply_class_exclusion(e)
 	{
 		wccp_pro_log_to_console_if_allowed("function", "show_wccp_pro_message" + smessage);
 				
-		timeout = 3000;
+		timeout = 0;
 		
 		if(style == "") style = "warning-wpcp";
 		
@@ -1229,7 +1162,7 @@ function apply_class_exclusion(e)
 <link rel="alternate" type="application/rss+xml" title="Kochbucher &raquo; Comments Feed" href="https://kochbucher.com/comments/feed/" />
 <script type="text/javascript">
 /* <![CDATA[ */
-window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/kochbucher.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.4.2"}};
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/kochbucher.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.4.3"}};
 /*! This file is auto-generated */
 !function(i,n){var o,s,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),r=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===r[t]})}function u(e,t,n){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\uddfa\ud83c\uddf3","\ud83c\uddfa\u200b\ud83c\uddf3")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!n(e,"\ud83e\udef1\ud83c\udffb\u200d\ud83e\udef2\ud83c\udfff","\ud83e\udef1\ud83c\udffb\u200b\ud83e\udef2\ud83c\udfff")}return!1}function f(e,t,n){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):i.createElement("canvas"),a=r.getContext("2d",{willReadFrequently:!0}),o=(a.textBaseline="top",a.font="600 32px Arial",{});return e.forEach(function(e){o[e]=t(a,e,n)}),o}function t(e){var t=i.createElement("script");t.src=e,t.defer=!0,i.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",s=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){i.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"}),a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=function(e){c(n=e.data),a.terminate(),t(n)})}catch(e){}c(n=f(s,u,p))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
 /* ]]> */
@@ -1248,7 +1181,7 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14
 		padding: 0 !important;
 	}
 </style>
-<link rel='stylesheet' id='wp-block-library-css' href='https://kochbucher.com/wp-includes/css/dist/block-library/style.min.css?ver=6.4.2' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-block-library-css' href='https://kochbucher.com/wp-includes/css/dist/block-library/style.min.css?ver=6.4.3' type='text/css' media='all' />
 <style id='classic-theme-styles-inline-css' type='text/css'>
 /*! This file is auto-generated */
 .wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
@@ -1260,21 +1193,21 @@ body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: 
 :where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
 .wp-block-pullquote{font-size: 1.5em;line-height: 1.6;}
 </style>
-<link rel='stylesheet' id='dashicons-css' href='https://kochbucher.com/wp-includes/css/dashicons.min.css?ver=6.4.2' type='text/css' media='all' />
+<link rel='stylesheet' id='dashicons-css' href='https://kochbucher.com/wp-includes/css/dashicons.min.css?ver=6.4.3' type='text/css' media='all' />
 <link rel='stylesheet' id='post-views-counter-frontend-css' href='https://kochbucher.com/wp-content/plugins/post-views-counter/css/frontend.min.css?ver=1.4.3' type='text/css' media='all' />
-<link rel='stylesheet' id='mvp-reset-css' href='https://kochbucher.com/wp-content/themes/flex-mag/css/reset.css?ver=6.4.2' type='text/css' media='all' />
-<link rel='stylesheet' id='mvp-fontawesome-css' href='//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css?ver=6.4.2' type='text/css' media='all' />
-<link rel='stylesheet' id='mvp-style-css' href='https://kochbucher.com/wp-content/themes/flex-mag/style.css?ver=6.4.2' type='text/css' media='all' />
+<link rel='stylesheet' id='mvp-reset-css' href='https://kochbucher.com/wp-content/themes/flex-mag/css/reset.css?ver=6.4.3' type='text/css' media='all' />
+<link rel='stylesheet' id='mvp-fontawesome-css' href='//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css?ver=6.4.3' type='text/css' media='all' />
+<link rel='stylesheet' id='mvp-style-css' href='https://kochbucher.com/wp-content/themes/flex-mag/style.css?ver=6.4.3' type='text/css' media='all' />
 <!--[if lt IE 10]>
-<link rel='stylesheet' id='mvp-iecss-css' href='https://kochbucher.com/wp-content/themes/flex-mag/css/iecss.css?ver=6.4.2' type='text/css' media='all' />
+<link rel='stylesheet' id='mvp-iecss-css' href='https://kochbucher.com/wp-content/themes/flex-mag/css/iecss.css?ver=6.4.3' type='text/css' media='all' />
 <![endif]-->
 <link rel='stylesheet' id='mvp-fonts-css' href='//fonts.googleapis.com/css?family=Oswald%3A400%2C700%7CLato%3A400%2C700%7CWork+Sans%3A900%7CMontserrat%3A400%2C700%7COpen+Sans%3A800%7CPlayfair+Display%3A400%2C700%2C900%7CQuicksand%7CRaleway%3A200%2C400%2C700%7CRoboto+Slab%3A400%2C700%7CWork+Sans%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800%2C900%7CMontserrat%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800%2C900%7CWork+Sans%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800%2C900%7CLato%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800%2C900%7CMontserrat%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800%2C900%26subset%3Dlatin%2Clatin-ext%2Ccyrillic%2Ccyrillic-ext%2Cgreek-ext%2Cgreek%2Cvietnamese' type='text/css' media='all' />
-<link rel='stylesheet' id='mvp-media-queries-css' href='https://kochbucher.com/wp-content/themes/flex-mag/css/media-queries.css?ver=6.4.2' type='text/css' media='all' />
-<link rel='stylesheet' id='css-protect.css-css' href='https://kochbucher.com/wp-content/plugins/wccp-pro/css-protect.css?wccp_ver_num=8&#038;ver=10.9.2' type='text/css' media='all' />
+<link rel='stylesheet' id='mvp-media-queries-css' href='https://kochbucher.com/wp-content/themes/flex-mag/css/media-queries.css?ver=6.4.3' type='text/css' media='all' />
+<link rel='stylesheet' id='css-protect.css-css' href='https://kochbucher.com/wp-content/plugins/wccp-pro/css-protect.css?wccp_ver_num=10&#038;ver=10.9.2' type='text/css' media='all' />
 <script type="text/javascript" src="https://kochbucher.com/wp-includes/js/jquery/jquery.min.js?ver=3.7.1" id="jquery-core-js"></script>
 <script type="text/javascript" src="https://kochbucher.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1" id="jquery-migrate-js"></script>
 <link rel="https://api.w.org/" href="https://kochbucher.com/wp-json/" /><link rel="alternate" type="application/json" href="https://kochbucher.com/wp-json/wp/v2/posts/4679" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://kochbucher.com/xmlrpc.php?rsd" />
-<meta name="generator" content="WordPress 6.4.2" />
+<meta name="generator" content="WordPress 6.4.3" />
 <link rel="canonical" href="https://kochbucher.com/eierlikor-pralinen/" />
 <link rel='shortlink' href='https://kochbucher.com/?p=4679' />
 <link rel="alternate" type="application/json+oembed" href="https://kochbucher.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fkochbucher.com%2Feierlikor-pralinen%2F" />
@@ -1709,7 +1642,7 @@ Kalorien p. P.: keine Angabe</p>
 <p>Mit Hilfe von einem Teelöffel kleine Mengen abstechen und zu Kugeln formen. Die Kugeln anschließend in den restlichen gemahlenen Mandeln wälzen und in Papierförmchen setzen. Kühl aufbewahren!</p>
 <p>Das Rezept ergibt ca. 24 Pralinen.</p>
 <div class="post-views content-post post-4679 entry-meta">
-				<span class="post-views-icon dashicons dashicons-chart-bar"></span> <span class="post-views-label">Post Views:</span> <span class="post-views-count">173</span>
+				<span class="post-views-icon dashicons dashicons-chart-bar"></span> <span class="post-views-label">Post Views:</span> <span class="post-views-count">205</span>
 			</div>																														<div class="mvp-org-wrap" itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
 											<div class="mvp-org-logo" itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
 																									<img src="https://kochbucher.com/wp-content/uploads/2023/04/logo3.png"/>
@@ -1747,7 +1680,7 @@ Kalorien p. P.: keine Angabe</p>
 									<div class="feat-widget-img left relative">
 						<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2023/05/60104595_659375171166688_4641797608937881600_n-300x180.jpeg" class="reg-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/05/60104595_659375171166688_4641797608937881600_n-300x180.jpeg 300w, https://kochbucher.com/wp-content/uploads/2023/05/60104595_659375171166688_4641797608937881600_n-1000x600.jpeg 1000w, https://kochbucher.com/wp-content/uploads/2023/05/60104595_659375171166688_4641797608937881600_n-450x270.jpeg 450w" sizes="(max-width: 300px) 100vw, 300px" />						<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2023/05/60104595_659375171166688_4641797608937881600_n-80x80.jpeg" class="mob-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/05/60104595_659375171166688_4641797608937881600_n-80x80.jpeg 80w, https://kochbucher.com/wp-content/uploads/2023/05/60104595_659375171166688_4641797608937881600_n-150x150.jpeg 150w" sizes="(max-width: 80px) 100vw, 80px" />													<div class="feat-info-wrap">
 								<div class="feat-info-views">
-									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">168.4K</span>
+									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">171.2K</span>
 								</div><!--feat-info-views-->
 															</div><!--feat-info-wrap-->
 																	</div><!--feat-widget-img-->
@@ -1762,7 +1695,7 @@ Kalorien p. P.: keine Angabe</p>
 									<div class="feat-widget-img left relative">
 						<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2023/05/246851788_4985938238101325_7631738250416500257_n-300x180.jpg" class="reg-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/05/246851788_4985938238101325_7631738250416500257_n-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2023/05/246851788_4985938238101325_7631738250416500257_n-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />						<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2023/05/246851788_4985938238101325_7631738250416500257_n-80x80.jpg" class="mob-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/05/246851788_4985938238101325_7631738250416500257_n-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2023/05/246851788_4985938238101325_7631738250416500257_n-150x150.jpg 150w" sizes="(max-width: 80px) 100vw, 80px" />													<div class="feat-info-wrap">
 								<div class="feat-info-views">
-									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">46.1K</span>
+									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">46.7K</span>
 								</div><!--feat-info-views-->
 															</div><!--feat-info-wrap-->
 																	</div><!--feat-widget-img-->
@@ -1773,26 +1706,11 @@ Kalorien p. P.: keine Angabe</p>
 				</a>
 			</div><!--feat-widget-wrap-->
 					<div class="feat-widget-wrap left relative">
-				<a href="https://kochbucher.com/pasta-mit-garnelen-in-knoblauch-sahnesauce/">
-									<div class="feat-widget-img left relative">
-						<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2023/05/290533033_5171126392981399_4135610114424805096_n-300x180.jpg" class="reg-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/05/290533033_5171126392981399_4135610114424805096_n-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2023/05/290533033_5171126392981399_4135610114424805096_n-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />						<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2023/05/290533033_5171126392981399_4135610114424805096_n-80x80.jpg" class="mob-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/05/290533033_5171126392981399_4135610114424805096_n-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2023/05/290533033_5171126392981399_4135610114424805096_n-150x150.jpg 150w" sizes="(max-width: 80px) 100vw, 80px" />													<div class="feat-info-wrap">
-								<div class="feat-info-views">
-									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">43.8K</span>
-								</div><!--feat-info-views-->
-															</div><!--feat-info-wrap-->
-																	</div><!--feat-widget-img-->
-								<div class="feat-widget-text">
-					<span class="side-list-cat">Salzige Gerichte</span>
-					<h2>Pasta mit Garnelen in Knoblauch-Sahnesauce</h2>
-				</div><!--feat-widget-text-->
-				</a>
-			</div><!--feat-widget-wrap-->
-					<div class="feat-widget-wrap left relative">
 				<a href="https://kochbucher.com/hahnchen-mit-mohren-und-porree-in-krauter-frischkase-sauce/">
 									<div class="feat-widget-img left relative">
 						<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2023/04/Screenshot_33-300x180.png" class="reg-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/04/Screenshot_33-300x180.png 300w, https://kochbucher.com/wp-content/uploads/2023/04/Screenshot_33-450x270.png 450w" sizes="(max-width: 300px) 100vw, 300px" />						<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2023/04/Screenshot_33-80x80.png" class="mob-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/04/Screenshot_33-80x80.png 80w, https://kochbucher.com/wp-content/uploads/2023/04/Screenshot_33-150x150.png 150w" sizes="(max-width: 80px) 100vw, 80px" />													<div class="feat-info-wrap">
 								<div class="feat-info-views">
-									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">43.4K</span>
+									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">44.7K</span>
 								</div><!--feat-info-views-->
 															</div><!--feat-info-wrap-->
 																	</div><!--feat-widget-img-->
@@ -1803,11 +1721,26 @@ Kalorien p. P.: keine Angabe</p>
 				</a>
 			</div><!--feat-widget-wrap-->
 					<div class="feat-widget-wrap left relative">
+				<a href="https://kochbucher.com/pasta-mit-garnelen-in-knoblauch-sahnesauce/">
+									<div class="feat-widget-img left relative">
+						<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2023/05/290533033_5171126392981399_4135610114424805096_n-300x180.jpg" class="reg-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/05/290533033_5171126392981399_4135610114424805096_n-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2023/05/290533033_5171126392981399_4135610114424805096_n-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />						<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2023/05/290533033_5171126392981399_4135610114424805096_n-80x80.jpg" class="mob-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/05/290533033_5171126392981399_4135610114424805096_n-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2023/05/290533033_5171126392981399_4135610114424805096_n-150x150.jpg 150w" sizes="(max-width: 80px) 100vw, 80px" />													<div class="feat-info-wrap">
+								<div class="feat-info-views">
+									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">44.6K</span>
+								</div><!--feat-info-views-->
+															</div><!--feat-info-wrap-->
+																	</div><!--feat-widget-img-->
+								<div class="feat-widget-text">
+					<span class="side-list-cat">Salzige Gerichte</span>
+					<h2>Pasta mit Garnelen in Knoblauch-Sahnesauce</h2>
+				</div><!--feat-widget-text-->
+				</a>
+			</div><!--feat-widget-wrap-->
+					<div class="feat-widget-wrap left relative">
 				<a href="https://kochbucher.com/reis-mit-brokkoli-zucchini-sauce-2/">
 									<div class="feat-widget-img left relative">
 						<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2023/05/345257867_910287533419011_4654662000376689831_n-1-300x180.jpg" class="reg-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/05/345257867_910287533419011_4654662000376689831_n-1-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2023/05/345257867_910287533419011_4654662000376689831_n-1-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2023/05/345257867_910287533419011_4654662000376689831_n-1-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />						<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2023/05/345257867_910287533419011_4654662000376689831_n-1-80x80.jpg" class="mob-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/05/345257867_910287533419011_4654662000376689831_n-1-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2023/05/345257867_910287533419011_4654662000376689831_n-1-150x150.jpg 150w" sizes="(max-width: 80px) 100vw, 80px" />													<div class="feat-info-wrap">
 								<div class="feat-info-views">
-									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">34.6K</span>
+									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">35.2K</span>
 								</div><!--feat-info-views-->
 															</div><!--feat-info-wrap-->
 																	</div><!--feat-widget-img-->
@@ -1822,7 +1755,7 @@ Kalorien p. P.: keine Angabe</p>
 									<div class="feat-widget-img left relative">
 						<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2023/04/331111344_740696667655596_1420262728121404536_n-300x180.jpg" class="reg-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/04/331111344_740696667655596_1420262728121404536_n-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2023/04/331111344_740696667655596_1420262728121404536_n-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2023/04/331111344_740696667655596_1420262728121404536_n-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />						<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2023/04/331111344_740696667655596_1420262728121404536_n-80x80.jpg" class="mob-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/04/331111344_740696667655596_1420262728121404536_n-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2023/04/331111344_740696667655596_1420262728121404536_n-300x300.jpg 300w, https://kochbucher.com/wp-content/uploads/2023/04/331111344_740696667655596_1420262728121404536_n-1024x1024.jpg 1024w, https://kochbucher.com/wp-content/uploads/2023/04/331111344_740696667655596_1420262728121404536_n-150x150.jpg 150w, https://kochbucher.com/wp-content/uploads/2023/04/331111344_740696667655596_1420262728121404536_n-768x768.jpg 768w, https://kochbucher.com/wp-content/uploads/2023/04/331111344_740696667655596_1420262728121404536_n.jpg 1080w" sizes="(max-width: 80px) 100vw, 80px" />													<div class="feat-info-wrap">
 								<div class="feat-info-views">
-									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">30.0K</span>
+									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">31.0K</span>
 								</div><!--feat-info-views-->
 															</div><!--feat-info-wrap-->
 																	</div><!--feat-widget-img-->
@@ -1837,7 +1770,7 @@ Kalorien p. P.: keine Angabe</p>
 									<div class="feat-widget-img left relative">
 						<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2023/05/315110851_201900935573766_3818715538137273320_n-300x180.jpg" class="reg-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/05/315110851_201900935573766_3818715538137273320_n-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2023/05/315110851_201900935573766_3818715538137273320_n-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2023/05/315110851_201900935573766_3818715538137273320_n-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />						<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2023/05/315110851_201900935573766_3818715538137273320_n-80x80.jpg" class="mob-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/05/315110851_201900935573766_3818715538137273320_n-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2023/05/315110851_201900935573766_3818715538137273320_n-300x300.jpg 300w, https://kochbucher.com/wp-content/uploads/2023/05/315110851_201900935573766_3818715538137273320_n-1024x1024.jpg 1024w, https://kochbucher.com/wp-content/uploads/2023/05/315110851_201900935573766_3818715538137273320_n-150x150.jpg 150w, https://kochbucher.com/wp-content/uploads/2023/05/315110851_201900935573766_3818715538137273320_n-768x768.jpg 768w, https://kochbucher.com/wp-content/uploads/2023/05/315110851_201900935573766_3818715538137273320_n.jpg 1080w" sizes="(max-width: 80px) 100vw, 80px" />													<div class="feat-info-wrap">
 								<div class="feat-info-views">
-									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">26.2K</span>
+									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">27.5K</span>
 								</div><!--feat-info-views-->
 															</div><!--feat-info-wrap-->
 																	</div><!--feat-widget-img-->
@@ -1852,7 +1785,7 @@ Kalorien p. P.: keine Angabe</p>
 									<div class="feat-widget-img left relative">
 						<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2023/06/351923359_1610861846089966_1251978635202117686_n-300x180.jpg" class="reg-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/06/351923359_1610861846089966_1251978635202117686_n-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2023/06/351923359_1610861846089966_1251978635202117686_n-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />						<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2023/06/351923359_1610861846089966_1251978635202117686_n-80x80.jpg" class="mob-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/06/351923359_1610861846089966_1251978635202117686_n-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2023/06/351923359_1610861846089966_1251978635202117686_n-150x150.jpg 150w" sizes="(max-width: 80px) 100vw, 80px" />													<div class="feat-info-wrap">
 								<div class="feat-info-views">
-									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">21.8K</span>
+									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">22.3K</span>
 								</div><!--feat-info-views-->
 															</div><!--feat-info-wrap-->
 																	</div><!--feat-widget-img-->
@@ -1867,7 +1800,7 @@ Kalorien p. P.: keine Angabe</p>
 									<div class="feat-widget-img left relative">
 						<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2023/04/Screenshot_15-300x180.png" class="reg-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/04/Screenshot_15-300x180.png 300w, https://kochbucher.com/wp-content/uploads/2023/04/Screenshot_15-450x270.png 450w" sizes="(max-width: 300px) 100vw, 300px" />						<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2023/04/Screenshot_15-80x80.png" class="mob-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/04/Screenshot_15-80x80.png 80w, https://kochbucher.com/wp-content/uploads/2023/04/Screenshot_15-150x150.png 150w" sizes="(max-width: 80px) 100vw, 80px" />													<div class="feat-info-wrap">
 								<div class="feat-info-views">
-									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">21.5K</span>
+									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">22.2K</span>
 								</div><!--feat-info-views-->
 															</div><!--feat-info-wrap-->
 																	</div><!--feat-widget-img-->
@@ -1882,7 +1815,7 @@ Kalorien p. P.: keine Angabe</p>
 									<div class="feat-widget-img left relative">
 						<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2023/05/314448415_3260457547602715_5185925697844252261_n-300x180.jpg" class="reg-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/05/314448415_3260457547602715_5185925697844252261_n-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2023/05/314448415_3260457547602715_5185925697844252261_n-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2023/05/314448415_3260457547602715_5185925697844252261_n-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />						<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2023/05/314448415_3260457547602715_5185925697844252261_n-80x80.jpg" class="mob-img wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2023/05/314448415_3260457547602715_5185925697844252261_n-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2023/05/314448415_3260457547602715_5185925697844252261_n-150x150.jpg 150w" sizes="(max-width: 80px) 100vw, 80px" />													<div class="feat-info-wrap">
 								<div class="feat-info-views">
-									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">19.9K</span>
+									<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">20.6K</span>
 								</div><!--feat-info-views-->
 															</div><!--feat-info-wrap-->
 																	</div><!--feat-widget-img-->
@@ -1923,86 +1856,86 @@ Kalorien p. P.: keine Angabe</p>
 				<ul class="blog-widget-list left relative">
 											<li>
 
-							<a href="https://kochbucher.com/rinderbraten-mit-spirellis/" rel="bookmark">
+							<a href="https://kochbucher.com/krummer-spargel-mit-einer-pastinake-sose-zum-mit-pakchoi-frischkase-gefullten-schweinefilet/" rel="bookmark">
 															<div class="blog-widget-img left relative">
-									<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_357430848_822132202881905_5065950440262940139_n_1080-300x180.jpg" class="widget-img-main wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_357430848_822132202881905_5065950440262940139_n_1080-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_357430848_822132202881905_5065950440262940139_n_1080-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_357430848_822132202881905_5065950440262940139_n_1080-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />									<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_357430848_822132202881905_5065950440262940139_n_1080-80x80.jpg" class="widget-img-side wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_357430848_822132202881905_5065950440262940139_n_1080-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_357430848_822132202881905_5065950440262940139_n_1080-300x300.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_357430848_822132202881905_5065950440262940139_n_1080-1024x1024.jpg 1024w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_357430848_822132202881905_5065950440262940139_n_1080-150x150.jpg 150w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_357430848_822132202881905_5065950440262940139_n_1080-768x768.jpg 768w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_357430848_822132202881905_5065950440262940139_n_1080.jpg 1080w" sizes="(max-width: 80px) 100vw, 80px" />																		<div class="feat-info-wrap">
+									<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_340966194_574134114694797_5826170906911287348_n_1080-300x180.jpg" class="widget-img-main wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_340966194_574134114694797_5826170906911287348_n_1080-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_340966194_574134114694797_5826170906911287348_n_1080-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_340966194_574134114694797_5826170906911287348_n_1080-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />									<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_340966194_574134114694797_5826170906911287348_n_1080-80x80.jpg" class="widget-img-side wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_340966194_574134114694797_5826170906911287348_n_1080-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_340966194_574134114694797_5826170906911287348_n_1080-150x150.jpg 150w" sizes="(max-width: 80px) 100vw, 80px" />																		<div class="feat-info-wrap">
 										<div class="feat-info-views">
-											<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">52</span>
+											<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">190</span>
 										</div><!--feat-info-views-->
 																			</div><!--feat-info-wrap-->
 																										</div><!--blog-widget-img-->
 														<div class="blog-widget-text left relative">
 																	<span class="side-list-cat">Salzige Gerichte</span>
-																<h2>Rinderbraten mit Spirellis</h2>
-								<p>Braten und Sauce: 800 g Rindfleisch (aus der Blume) 500 g weiße Zwiebeln 280...</p>
+																<h2>Krummer Spargel mit einer Pastinake-Soße zum mit PakChoi-Frischkäse gefüllten Schweinefilet</h2>
+								<p>Dazu gab es eine Pastinaken-Soße für die ich 👉🏻 eine Schalotte in etwas Öl...</p>
 							</div><!--blog-widget-text-->
 							</a>
 						</li>
 											<li>
 
-							<a href="https://kochbucher.com/bratwurst-mit-rosenkohl-und-bratkartoffeln/" rel="bookmark">
+							<a href="https://kochbucher.com/weiser-spargel-auf-buntem-salatmix-und-einem-joghurt-senf-parmesan-dressing/" rel="bookmark">
 															<div class="blog-widget-img left relative">
-									<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_398056387_630752685669242_6434606897893211566_n_1080-300x180.jpg" class="widget-img-main wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_398056387_630752685669242_6434606897893211566_n_1080-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_398056387_630752685669242_6434606897893211566_n_1080-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_398056387_630752685669242_6434606897893211566_n_1080-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />									<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_398056387_630752685669242_6434606897893211566_n_1080-80x80.jpg" class="widget-img-side wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_398056387_630752685669242_6434606897893211566_n_1080-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_398056387_630752685669242_6434606897893211566_n_1080-300x300.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_398056387_630752685669242_6434606897893211566_n_1080-1024x1024.jpg 1024w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_398056387_630752685669242_6434606897893211566_n_1080-150x150.jpg 150w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_398056387_630752685669242_6434606897893211566_n_1080-768x768.jpg 768w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_398056387_630752685669242_6434606897893211566_n_1080.jpg 1080w" sizes="(max-width: 80px) 100vw, 80px" />																		<div class="feat-info-wrap">
+									<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_350090308_1698343960625116_4837246317173855524_n_1080-300x180.jpg" class="widget-img-main wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_350090308_1698343960625116_4837246317173855524_n_1080-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_350090308_1698343960625116_4837246317173855524_n_1080-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_350090308_1698343960625116_4837246317173855524_n_1080-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />									<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_350090308_1698343960625116_4837246317173855524_n_1080-80x80.jpg" class="widget-img-side wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_350090308_1698343960625116_4837246317173855524_n_1080-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_350090308_1698343960625116_4837246317173855524_n_1080-150x150.jpg 150w" sizes="(max-width: 80px) 100vw, 80px" />																		<div class="feat-info-wrap">
 										<div class="feat-info-views">
-											<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">28</span>
+											<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">155</span>
 										</div><!--feat-info-views-->
 																			</div><!--feat-info-wrap-->
 																										</div><!--blog-widget-img-->
 														<div class="blog-widget-text left relative">
 																	<span class="side-list-cat">Salzige Gerichte</span>
-																<h2>Bratwurst mit Rosenkohl und Bratkartoffeln</h2>
-								<p>So sieht wohl ein ausgewogener Lunch-Teller aus: viel Gemüse, Kohlenhydrate in Form von Kartoffeln...</p>
+																<h2>Weißer Spargel auf buntem Salatmix und einem Joghurt-Senf-Parmesan Dressing</h2>
+								<p>Den Spargel habe ich über kochendem Zitronen-Salzwasser gedämpft Die Champignons mit einer Zwiebel in...</p>
 							</div><!--blog-widget-text-->
 							</a>
 						</li>
 											<li>
 
-							<a href="https://kochbucher.com/sauerkraut-und-puree/" rel="bookmark">
+							<a href="https://kochbucher.com/sanft-gegarter-lachs-auf-einem-erbsen-stampf-an-kartoffellockchen-und-einem-limettenschaum/" rel="bookmark">
 															<div class="blog-widget-img left relative">
-									<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_401838540_990884465344450_4610654777123301326_n_1080-300x180.jpg" class="widget-img-main wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_401838540_990884465344450_4610654777123301326_n_1080-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_401838540_990884465344450_4610654777123301326_n_1080-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_401838540_990884465344450_4610654777123301326_n_1080-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />									<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_401838540_990884465344450_4610654777123301326_n_1080-80x80.jpg" class="widget-img-side wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_401838540_990884465344450_4610654777123301326_n_1080-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_401838540_990884465344450_4610654777123301326_n_1080-300x300.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_401838540_990884465344450_4610654777123301326_n_1080-1024x1024.jpg 1024w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_401838540_990884465344450_4610654777123301326_n_1080-150x150.jpg 150w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_401838540_990884465344450_4610654777123301326_n_1080-768x768.jpg 768w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_401838540_990884465344450_4610654777123301326_n_1080.jpg 1080w" sizes="(max-width: 80px) 100vw, 80px" />																		<div class="feat-info-wrap">
+									<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_352797074_624384976297295_2636047509370354603_n_1080-300x180.jpg" class="widget-img-main wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_352797074_624384976297295_2636047509370354603_n_1080-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_352797074_624384976297295_2636047509370354603_n_1080-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_352797074_624384976297295_2636047509370354603_n_1080-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />									<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_352797074_624384976297295_2636047509370354603_n_1080-80x80.jpg" class="widget-img-side wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_352797074_624384976297295_2636047509370354603_n_1080-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_352797074_624384976297295_2636047509370354603_n_1080-150x150.jpg 150w" sizes="(max-width: 80px) 100vw, 80px" />																		<div class="feat-info-wrap">
 										<div class="feat-info-views">
-											<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">25</span>
+											<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">155</span>
 										</div><!--feat-info-views-->
 																			</div><!--feat-info-wrap-->
 																										</div><!--blog-widget-img-->
 														<div class="blog-widget-text left relative">
 																	<span class="side-list-cat">Salzige Gerichte</span>
-																<h2>Sauerkraut und Püree</h2>
-								<p>500 g Kasseler ohne Knochen 1 m.-große Zwiebel(n) 1 Zehe/n Knoblauch ⅛ Liter Wasser...</p>
+																<h2>Sanft gegarter Lachs auf einem Erbsen-Stampf an Kartoffellöckchen und einem Limettenschaum</h2>
+								<p>den Lachs von der Haut befreit und in Stücke (ca. 5 cm breit) scheiden...</p>
 							</div><!--blog-widget-text-->
 							</a>
 						</li>
 											<li>
 
-							<a href="https://kochbucher.com/sauerbraten-mit-rotkohl-und-klosen-2/" rel="bookmark">
+							<a href="https://kochbucher.com/gurkensalat-an-kottbullar-kartoffeln-und-gemuse/" rel="bookmark">
 															<div class="blog-widget-img left relative">
-									<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_403680632_291139883914019_6394368262596296427_n_1080-300x180.jpg" class="widget-img-main wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_403680632_291139883914019_6394368262596296427_n_1080-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_403680632_291139883914019_6394368262596296427_n_1080-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_403680632_291139883914019_6394368262596296427_n_1080-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />									<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_403680632_291139883914019_6394368262596296427_n_1080-80x80.jpg" class="widget-img-side wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_403680632_291139883914019_6394368262596296427_n_1080-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_403680632_291139883914019_6394368262596296427_n_1080-300x300.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_403680632_291139883914019_6394368262596296427_n_1080-1024x1024.jpg 1024w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_403680632_291139883914019_6394368262596296427_n_1080-150x150.jpg 150w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_403680632_291139883914019_6394368262596296427_n_1080-768x768.jpg 768w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_403680632_291139883914019_6394368262596296427_n_1080.jpg 1080w" sizes="(max-width: 80px) 100vw, 80px" />																		<div class="feat-info-wrap">
+									<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_357808047_248282474626435_2444488748278883072_n_1080-300x180.jpg" class="widget-img-main wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_357808047_248282474626435_2444488748278883072_n_1080-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_357808047_248282474626435_2444488748278883072_n_1080-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_357808047_248282474626435_2444488748278883072_n_1080-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />									<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_357808047_248282474626435_2444488748278883072_n_1080-80x80.jpg" class="widget-img-side wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_357808047_248282474626435_2444488748278883072_n_1080-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_357808047_248282474626435_2444488748278883072_n_1080-150x150.jpg 150w" sizes="(max-width: 80px) 100vw, 80px" />																		<div class="feat-info-wrap">
 										<div class="feat-info-views">
-											<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">15</span>
+											<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">253</span>
 										</div><!--feat-info-views-->
 																			</div><!--feat-info-wrap-->
 																										</div><!--blog-widget-img-->
 														<div class="blog-widget-text left relative">
 																	<span class="side-list-cat">Salzige Gerichte</span>
-																<h2>Sauerbraten mit Rotkohl und Klößen</h2>
-								<p>Rinderbraten 1 Kg Wacholderbeeren 8 Nelken 8 Loorbeerblätter 4 Tassen Essig 2 Wasser 500...</p>
+																<h2>Gurkensalat an Köttbullar, Kartoffeln und Gemüse</h2>
+								<p>Für die Köttbullar habe ich… eine in Würfel geschnittene Zwiebel in etwas Öl glasig...</p>
 							</div><!--blog-widget-text-->
 							</a>
 						</li>
 											<li>
 
-							<a href="https://kochbucher.com/fischstabchen-an-bratkartoffeln-romersalat-und-senfsosse/" rel="bookmark">
+							<a href="https://kochbucher.com/gulasch-mit-nudeln-2/" rel="bookmark">
 															<div class="blog-widget-img left relative">
-									<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_416287368_871876084606149_5181494578629101975_n_1080-300x180.jpg" class="widget-img-main wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_416287368_871876084606149_5181494578629101975_n_1080-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_416287368_871876084606149_5181494578629101975_n_1080-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_416287368_871876084606149_5181494578629101975_n_1080-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />									<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_416287368_871876084606149_5181494578629101975_n_1080-80x80.jpg" class="widget-img-side wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_416287368_871876084606149_5181494578629101975_n_1080-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2024/01/Snapinsta.app_416287368_871876084606149_5181494578629101975_n_1080-150x150.jpg 150w" sizes="(max-width: 80px) 100vw, 80px" />																		<div class="feat-info-wrap">
+									<img width="300" height="180" src="https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_431316400_358643930479693_1177957150586553292_n_1080-300x180.jpg" class="widget-img-main wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_431316400_358643930479693_1177957150586553292_n_1080-300x180.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_431316400_358643930479693_1177957150586553292_n_1080-1000x600.jpg 1000w, https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_431316400_358643930479693_1177957150586553292_n_1080-450x270.jpg 450w" sizes="(max-width: 300px) 100vw, 300px" />									<img width="80" height="80" src="https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_431316400_358643930479693_1177957150586553292_n_1080-80x80.jpg" class="widget-img-side wp-post-image" alt="" decoding="async" loading="lazy" srcset="https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_431316400_358643930479693_1177957150586553292_n_1080-80x80.jpg 80w, https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_431316400_358643930479693_1177957150586553292_n_1080-300x300.jpg 300w, https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_431316400_358643930479693_1177957150586553292_n_1080-1024x1024.jpg 1024w, https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_431316400_358643930479693_1177957150586553292_n_1080-150x150.jpg 150w, https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_431316400_358643930479693_1177957150586553292_n_1080-768x767.jpg 768w, https://kochbucher.com/wp-content/uploads/2024/03/Snapinsta.app_431316400_358643930479693_1177957150586553292_n_1080.jpg 1080w" sizes="(max-width: 80px) 100vw, 80px" />																		<div class="feat-info-wrap">
 										<div class="feat-info-views">
-											<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">88</span>
+											<i class="fa fa-eye fa-2"></i> <span class="feat-info-text">310</span>
 										</div><!--feat-info-views-->
 																			</div><!--feat-info-wrap-->
 																										</div><!--blog-widget-img-->
 														<div class="blog-widget-text left relative">
 																	<span class="side-list-cat">Salzige Gerichte</span>
-																<h2>FISCHSTÄBCHEN an BRATKARTOFFELN ,RÖMERSALAT und SENFSOSSE</h2>
-								<p>Die Bratkartoffeln sind zum Teil aus rohen Kartoffeln und aus Resten von Pellkartoffeln. Ganz...</p>
+																<h2>Gulasch mit Nudeln</h2>
+								<p>500 g Rindfleisch, zum Schmoren 1 Zwiebel(n) Paprikapulver Pfeffer Salz n. B. Wasser n....</p>
 							</div><!--blog-widget-text-->
 							</a>
 						</li>
@@ -2131,15 +2064,15 @@ jQuery(document).ready(function($) {
 
 </script>
 
-<script type="text/javascript" src="https://kochbucher.com/wp-includes/js/comment-reply.min.js?ver=6.4.2" id="comment-reply-js" async="async" data-wp-strategy="async"></script>
-<script type="text/javascript" src="https://kochbucher.com/wp-content/themes/flex-mag/js/scripts.js?ver=6.4.2" id="mvp-flexmag-js"></script>
-<script type="text/javascript" src="https://kochbucher.com/wp-content/themes/flex-mag/js/jquery.infinitescroll.min.js?ver=6.4.2" id="mvp-infinitescroll-js"></script>
-<script type="text/javascript" src="https://kochbucher.com/wp-content/themes/flex-mag/js/retina.js?ver=6.4.2" id="retina-js"></script>
+<script type="text/javascript" src="https://kochbucher.com/wp-includes/js/comment-reply.min.js?ver=6.4.3" id="comment-reply-js" async="async" data-wp-strategy="async"></script>
+<script type="text/javascript" src="https://kochbucher.com/wp-content/themes/flex-mag/js/scripts.js?ver=6.4.3" id="mvp-flexmag-js"></script>
+<script type="text/javascript" src="https://kochbucher.com/wp-content/themes/flex-mag/js/jquery.infinitescroll.min.js?ver=6.4.3" id="mvp-infinitescroll-js"></script>
+<script type="text/javascript" src="https://kochbucher.com/wp-content/themes/flex-mag/js/retina.js?ver=6.4.3" id="retina-js"></script>
 <script type="text/javascript" id="wccp_pro_admin_bar_ajax-js-extra">
 /* <![CDATA[ */
 var ajax_object = {"ajaxurl":"https:\/\/kochbucher.com\/wp-admin\/admin-ajax.php","link":"https:\/\/kochbucher.com\/eierlikor-pralinen\/"};
 /* ]]> */
 </script>
-<script type="text/javascript" src="https://kochbucher.com/wp-content/plugins/wccp-pro/js/admin_bar_ajax.js?ver=6.4.2" id="wccp_pro_admin_bar_ajax-js"></script>
+<script type="text/javascript" src="https://kochbucher.com/wp-content/plugins/wccp-pro/js/admin_bar_ajax.js?ver=6.4.3" id="wccp_pro_admin_bar_ajax-js"></script>
 </body>
 </html>

@@ -55,7 +55,7 @@ cd C:\path\to\recipya
 Then, run Recipya once your command prompt is in its folder.
 
 ```text
-.\recipya-{os}-{architecture} serve
+.\recipya serve
 ```
 
 ### Enjoy
