@@ -11,11 +11,11 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.12",
     "copyfiles": "^2.4.1",
-    "daisyui": "^4.7.3",
+    "daisyui": "^4.9.0",
     "esbuild": "^0.20.2",
     "mjml": "^4.15.3",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.4.3"
   }
 }

@@ -36,18 +36,16 @@ func TestScraper_K(t *testing.T) {
 				},
 				Instructions: models.Instructions{
 					Values: []string{
-						"Prepare the noodles and place 40g of prepared noodles in a soup bowl. Set aside.",
-						"Put the light chicken stock, light soy sauce, sea salt, MSG and white pepper in a saucepan, bring to the " +
-							"boil then reduce to a simmer.",
-						"Add the sliced chicken to the soup and simmer for about 3 minutes until the chicken is cooked through. " +
-							"Pour the chicken soup over the prepared noodles in the bowl. Garnish with the sliced spring onion, " +
-							"drizzle with sesame oil (if using) and serve.",
+						"Put the noodle nest in a bowl and cover with boiling water. Let stand for 2 minutes, mix briefly and drain the water. Place 40g of prepared noodles in a soup bowl (one nest of lucky boat noodles will do about 4-5 takeaway sized portions of soup). Set aside.",
+						"Put the light chicken stock, light soy sauce, sea salt, MSG and white pepper in a saucepan, bring to the boil then reduce to a simmer. Add the sliced chicken and simmer for about 3 minutes until the chicken is cooked through.",
+						"Pour the chicken soup over the prepared noodles in the bowl. Garnish with the sliced spring onion, drizzle with sesame oil (if using) and serve.",
 					},
 				},
-				Name:     "Chicken Noodle Soup",
-				PrepTime: "PT5M",
-				Yield:    models.Yield{Value: 1},
-				URL:      "https://kennymcgovern.com/chicken-noodle-soup",
+				Name:      "Chicken Noodle Soup",
+				PrepTime:  "PT5M",
+				TotalTime: "PT10M",
+				Yield:     models.Yield{Value: 1},
+				URL:       "https://kennymcgovern.com/chicken-noodle-soup",
 			},
 		},
 		{
@@ -112,10 +110,11 @@ func TestScraper_K(t *testing.T) {
 					TransFat:       "0g",
 					UnsaturatedFat: "",
 				},
-				PrepTime: "PT30M",
-				Tools:    models.Tools{Values: []string(nil)},
-				Yield:    models.Yield{Value: 16},
-				URL:      "https://www.kingarthurbaking.com/recipes/sourdough-zucchini-bread-recipe",
+				PrepTime:  "PT30M",
+				TotalTime: "PT1H30M",
+				Tools:     models.Tools{Values: []string(nil)},
+				Yield:     models.Yield{Value: 16},
+				URL:       "https://www.kingarthurbaking.com/recipes/sourdough-zucchini-bread-recipe",
 			},
 		},
 		{
@@ -161,9 +160,10 @@ func TestScraper_K(t *testing.T) {
 					Protein:       "15 g",
 					Servings:      "1",
 				},
-				PrepTime: "PT45M",
-				URL:      "https://www.kitchenstories.com/de/rezepte/valencianische-paella",
-				Yield:    models.Yield{Value: 1},
+				PrepTime:  "PT45M",
+				TotalTime: "PT45M",
+				URL:       "https://www.kitchenstories.com/de/rezepte/valencianische-paella",
+				Yield:     models.Yield{Value: 4},
 			},
 		},
 		{
@@ -286,9 +286,10 @@ func TestScraper_K(t *testing.T) {
 							"en citronskiva.",
 					},
 				},
-				Name:  "Myllymäkis toast skagen",
-				Yield: models.Yield{Value: 4},
-				URL:   "https://www.koket.se/mitt-kok/tommy-myllymaki/myllymakis-toast-skagen",
+				Name:      "Myllymäkis toast skagen",
+				TotalTime: "PT25M",
+				Yield:     models.Yield{Value: 4},
+				URL:       "https://www.koket.se/mitt-kok/tommy-myllymaki/myllymakis-toast-skagen",
 			},
 		},
 		{
@@ -358,6 +359,57 @@ func TestScraper_K(t *testing.T) {
 			},
 		},
 		{
+			name: "kuchynalidla.sk",
+			in:   "https://kuchynalidla.sk/recepty/bravcova-rolada-so-syrom-a-sunkou",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        models.SchemaType{Value: "Recipe"},
+				DatePublished: "2018-06-21T00:25:43+02:00",
+				Description: models.Description{
+					Value: "Zatočte s mäsom a zasýťte hladné bruchá svojich najmilších. Pripravte im na obed bravčovú roládu so syrom a šunkou s lahodným zemiakovým pyré podľa Marcela. Budú sa zalizovať až za ušami!",
+				},
+				Image: models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"10 plátkov bravčového karé", "morská soľ v mlynčeku Kania",
+						"čierne korenie v mlynčeku Kania", "200 g prosciutto cotto Dulano Selection",
+						"čerstvá šalvia", "150 g ementálu Milbona (plátky)",
+						"olivový olej Primadonna",
+						"hladká múka Castello (na obalenie a do výpeku)", "1 lyžica masla Pilos",
+						"100 ml suchého bieleho vína", "trochu vývaru alebo vody na podliatie",
+						"1 kg zemiakov", "300 ml plnotučného mlieka Pilos", "80 g masla Pilos",
+						"čerstvá pažítka", "125 g rukoly", "trochu citrónovej šťavy",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Postup",
+						"POTREBUJEME",
+						"Bravčové rolády",
+						"Bravčové karé prikryjeme fóliou a naklepeme na tenké plátky. Nožom narežeme okraje,",
+						"aby mäso počas opekania držalo svoj tvar. Ochutíme soľou a korením. Na každý plátok položíme plátok šunky, lístky šalvie a plátok syra. Zrolujeme a uzatvoríme pomocou špáradiel.",
+						"Pripravené rolády obalíme v hladkej múke a opečieme na rozohriatom olivovom oleji",
+						"po celom obvode do zlatohneda. K výpeku pridáme lyžicu masla, lyžicu hladkej múky, podlejeme vínom a\u00a0trochou vody. Varíme, kým sa z vína odparí alkohol. Potom pridáme nadrobno nasekané lístky šalvie a dochutíme soľou a korením. Stiahneme z ohňa, prikryjeme pokrievkou a necháme chvíľu odpočívať.",
+						"Zemiaková kaša",
+						"Umyté a očistené zemiaky nakrájame na menšie kúsky a uvaríme v osolenej vode domäkka. Potom ich scedíme. V kastróle zohrejeme mlieko spolu s maslom, ktoré postupne prilievame k uvareným",
+						"a scedeným zemiakom. Mixérom vymiešame hladkú kašu. Na záver dochutíme nadrobno nasekanou pažítkou.",
+						"Servírovanie",
+						"Na tanier naservírujeme zemiakovú kašu a rolády nakrájané na kolieska. Pokvapkáme výpekom. Podávame spolu s rukolou, ktorú ochutíme soľou, korením, olivovým olejom a citrónovou šťavou.",
+					},
+				},
+				Name:     "Bravčová roláda so syrom a šunkou",
+				PrepTime: "PT1H0M",
+				Tools: models.Tools{
+					Values: []string{
+						"tĺčik na mäso", "potravinovú fóliu", "špáradlá, mixér",
+						"panvicu s\u00a0pokrievkou",
+					},
+				},
+				Yield: models.Yield{Value: 5},
+				URL:   "https://kuchynalidla.sk/recepty/bravcova-rolada-so-syrom-a-sunkou",
+			},
+		},
+		{
 			name: "kwestiasmaku.com",
 			in:   "https://www.kwestiasmaku.com/przepis/muffiny-czekoladowe-z-maslem-orzechowym",
 			want: models.RecipeSchema{
@@ -411,81 +463,6 @@ func TestScraper_K(t *testing.T) {
 				Name:  "Muffiny czekoladowe z masłem orzechowym",
 				Yield: models.Yield{Value: 15},
 				URL:   "https://www.kwestiasmaku.com/przepis/muffiny-czekoladowe-z-maslem-orzechowym",
-			},
-		},
-		{
-			name: "lecremedelacrumb.com",
-			in:   "https://www.lecremedelacrumb.com/instant-pot-pot-roast-potatoes/",
-			want: models.RecipeSchema{
-				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Main Course"},
-				CookTime:      "PT80M",
-				Cuisine:       models.Cuisine{Value: "American"},
-				DatePublished: "2018-01-19T11:11:53+00:00",
-				Description: models.Description{
-					Value: "Juicy and tender instant pot pot roast and potatoes with gravy makes the perfect family-friendly " +
-						"dinner. This easy one pot dinner recipe will please even the picky eaters!",
-				},
-				Keywords: models.Keywords{
-					Values: "instant pot pot roast, pot roast and potatoes",
-				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
-					Values: []string{
-						"3-5 pound beef chuck roast (see notes for instructions from frozen)",
-						"1 tablespoon oil",
-						"1 teaspoon salt",
-						"1 teaspoon onion powder",
-						"1 teaspoon garlic powder",
-						"½ teaspoon black pepper",
-						"½ teaspoon smoked paprika (optional)",
-						"1 pound baby red potatoes",
-						"4 large carrots (chopped into large chunks, see note for using baby carrots)",
-						"1 large yellow onion (chopped)",
-						"4 cups beef broth",
-						"2 tablespoons worcestershire sauce",
-						"¼ cup water",
-						"2 tablespoons corn starch",
-					},
-				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Turn on your instant pot and set it to \"saute\". In a small bowl stir together salt, pepper, garlic " +
-							"powder, onion powder, and smoked paprika. Rub mixture all over the roast to coat all sides.",
-						"Drizzle oil in instant pot, wait about 30 seconds, then use tongs to place roast in the pot. Do not " +
-							"move it for 3-4 minutes until well-seared and browned. Use tongs to turn the roast onto another " +
-							"side for 3-4 minutes, repeating until all sides are browned.",
-						"Switch instant pot to \"pressure cook\" on high and set to 60-80 minutes (60 for a 3 pound roast, 80 " +
-							"for a 5 pound roast. see notes if using baby carrots). Add potatoes, onions, and carrots to pot " +
-							"(just arrange them around the roast) and pour beef broth and worcestershire sauce over everything. " +
-							"Place lid on the pot and turn to locked position. Make sure the vent is set to the sealed position.",
-						"When the cooking time is up, do a natural release for 10 minutes (don't touch anything on the pot, just " +
-							"let it de-pressurize on it's own for 10 minutes). After 10 minutes, turn vent to the venting " +
-							"release position and allow all of the steam to vent and the float valve to drop down before removing " +
-							"the lid.",
-						"Transfer the roast, potatoes, onions, and carrots to a platter and shred the roast with 2 forks into " +
-							"chunks. Use a handheld strainer to scoop out bits from the broth in the pot. Set instant pot to \"soup\" " +
-							"setting. Whisk together the water and corn starch. Once broth is boiling, stir in corn starch mixture " +
-							"until the gravy thickens. Add salt, pepper, and garlic powder to taste.",
-						"Serve gravy poured over roast and veggies and garnish with fresh thyme or parsley if desired.",
-					},
-				},
-				Name: "Instant Pot Pot Roast Recipe",
-				NutritionSchema: models.NutritionSchema{
-					Calories:      "133 kcal",
-					Carbohydrates: "23 g",
-					Fat:           "3 g",
-					Fiber:         "3 g",
-					Protein:       "4 g",
-					SaturatedFat:  "1 g",
-					Servings:      "1",
-					Sodium:        "1087 mg",
-					Sugar:         "5 g",
-				},
-				PrepTime: "PT20M",
-				Yield:    models.Yield{Value: 6},
-				URL:      "https://www.lecremedelacrumb.com/instant-pot-pot-roast-potatoes/",
 			},
 		},
 	}

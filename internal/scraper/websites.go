@@ -17,6 +17,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeAfghanKitchen(doc)
 		case "ah":
 			return scrapeAh(doc)
+		case "all-clad":
+			return scrapeAllClad(doc)
 		case "argiro":
 			return scrapeArgiro(doc)
 		case "archanaskitchen":
@@ -30,8 +32,12 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeBarefootcontessa(doc)
 		case "bbcgoodfood":
 			return scrapeBbcgoodfood(doc)
+		case "bettybossi":
+			return scrapeBettybossi(doc)
 		case "bettycrocker":
 			return scrapeBettyCrocker(doc)
+		case "bingingwithbabish":
+			return scrapeBingingWithBabish(doc)
 		case "blueapron":
 			return scrapeBlueapron(doc)
 		case "brianlagerstrom":
@@ -51,6 +57,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeCdKitchen(doc)
 		case "chefnini":
 			return scrapeChefnini(doc)
+		case "chuckycruz":
+			return scrapeChuckycruz(doc)
 		case "closetcooking":
 			return scrapeClosetcooking(doc)
 		case "cook-talk":
@@ -66,6 +74,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		switch host {
 		case "dr":
 			return scrapeDk(doc)
+		case "drinkoteket":
+			return scrapeDrinkoteket(doc)
 		default:
 			return parseWebsite(doc)
 		}
@@ -90,6 +100,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeFoodRepublic(doc)
 		case "forksoverknives":
 			return scrapeForksOverKnives(doc)
+		case "francescakookt":
+			return scrapeFrancescakookt(doc)
 		case "franzoesischkochen":
 			return parseWebsite(doc)
 		default:
@@ -99,6 +111,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		switch host {
 		case "gesund-aktiv":
 			return scrapeGesundAktiv(doc)
+		case "giallozafferano":
+			return scrapeGiallozafferano(doc)
 		case "globo":
 			return scrapeGlobo(doc)
 		case "grandfrais":
@@ -130,6 +144,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		}
 	case 'j':
 		switch host {
+		case "jaimyskitchen":
+			return scrapeJaimysKitchen(doc)
 		case "juliegoodwin":
 			return scrapeJuliegoodwin(doc)
 		case "justbento":
@@ -147,6 +163,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeKptncook(doc)
 		case "kuchnia-domowa":
 			return scrapeKuchniadomova(doc)
+		case "kuchynalidla":
+			return scrapeKuchynalidla(doc)
 		case "kwestiasmaku":
 			return scrapeKwestiasmaku(doc)
 		default:
@@ -158,6 +176,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeLatelierderoxane(doc)
 		case "lekkerensimpel":
 			return scrapeLekkerenSimpel(doc)
+		case "lidl-kochen":
+			return scrapeLidlKochen(doc)
 		case "livingthegreenlife":
 			return scrapeLivingTheGreenLife(doc)
 		default:
@@ -171,8 +191,6 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeMeljoulwan(doc)
 		case "mindmegette":
 			return scrapeMindMegette(doc)
-		/*case "monsieur-cuisine":
-		return scrapeMonsieurCuisine(doc)*/
 		case "moulinex":
 			return scrapeMoulinex(doc)
 		case "mundodereceitasbimby":
@@ -210,6 +228,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapePrzepisy(doc)
 		case "purelypope":
 			return scrapePurelyPope(doc)
+		case "puurgezond":
+			return scrapePuurgezond(doc)
 		default:
 			return parseWebsite(doc)
 		}
@@ -219,6 +239,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeRecettesDuQuebec(doc)
 		case "recipecommunity":
 			return scrapeRecipeCommunity(doc)
+		case "reddit":
+			return scrapeReddit(doc)
 		case "reishunger":
 			return scrapeReisHunger(doc)
 		case "rezeptwelt":
@@ -289,6 +311,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		switch host {
 		case "ye-mek":
 			return scrapeYemek(doc)
+		case "yumelise":
+			return scrapeYumelise(doc)
 		}
 	case 'z':
 		switch host {

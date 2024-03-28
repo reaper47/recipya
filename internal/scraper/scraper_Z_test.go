@@ -90,6 +90,7 @@ func TestScraper_Z(t *testing.T) {
 				PrepTime:      "PT20M",
 				CookTime:      "PT1H10M",
 				DatePublished: "2020-09-01",
+				TotalTime:     "PT-475409H3M24S",
 				URL:           "https://www.zenbelly.com/short-ribs/",
 			},
 		},

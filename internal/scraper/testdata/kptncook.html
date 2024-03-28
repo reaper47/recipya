@@ -50,8 +50,8 @@
              src="https://ct.pinterest.com/v3/?tid=2612972951045&noscript=1" />
     </noscript>
     <script>
-                pintrk('track', 'pagevisit');
-        </script>
+        pintrk('track', 'pagevisit');
+    </script>
 </head>
 <body class="kptn-pinteres-bg" itemscope itemtype="http://schema.org/Recipe">
 
@@ -88,7 +88,7 @@
                     
             </div>
         </div>
-        <img class="kptn-recipe-image" itemprop="image" src="https://d2am1qai33sroc.cloudfront.net/image/5b1e93ad280000370073b67f?kptnkey=6q7QNKy-oIgk-IMuWisJ-jfN7s6">
+        <img class="kptn-recipe-image" itemprop="image" src="https://images.kptncook.com/5b1e93ad280000370073b67f.jpg?kptnkey=6q7QNKy-oIgk-IMuWisJ-jfN7s6">
 
 
 
@@ -112,7 +112,7 @@
                     <img class="icon-img" src="/assets/images/recipeicons_new/Veggie.svg" style="width:30px;height:30px; margin-right:5px" alt="Veggie"/>
                     Veggie
                     <img class="icon-img" src="/assets/images/heart.svg" style="width:30px;height:30px;margin-right:5px" alt="Veggie"/>
-                    227520
+                    235125
                 </div>
             </div>
 
@@ -307,7 +307,7 @@
 
             <div class="row" style="margin-top: 24px;">
                 <div class="col-xs-12">
-                    <div class="kptn-recipe-step " style="background:url(https://d2am1qai33sroc.cloudfront.net/image/5b1e9353280000001173b673?kptnkey=6q7QNKy-oIgk-IMuWisJ-jfN7s6);background-repeat: no-repeat;background-position: center;background-size: cover;overflow: hidden;">
+                    <div class="kptn-recipe-step " style="background:url(https://images.kptncook.com/5b1e9353280000001173b673.jpg?kptnkey=6q7QNKy-oIgk-IMuWisJ-jfN7s6);background-repeat: no-repeat;background-position: center;background-size: cover;overflow: hidden;">
                     </div>
                 </div>
             </div>
@@ -326,7 +326,7 @@
 
             <div class="row" style="margin-top: 24px;">
                 <div class="col-xs-12">
-                    <div class="kptn-recipe-step " style="background:url(https://d2am1qai33sroc.cloudfront.net/image/5b1e93592800000d1173b674?kptnkey=6q7QNKy-oIgk-IMuWisJ-jfN7s6);background-repeat: no-repeat;background-position: center;background-size: cover;overflow: hidden;">
+                    <div class="kptn-recipe-step " style="background:url(https://images.kptncook.com/5b1e93592800000d1173b674.jpg?kptnkey=6q7QNKy-oIgk-IMuWisJ-jfN7s6);background-repeat: no-repeat;background-position: center;background-size: cover;overflow: hidden;">
                     </div>
                 </div>
             </div>
@@ -345,7 +345,7 @@
 
             <div class="row" style="margin-top: 24px;">
                 <div class="col-xs-12">
-                    <div class="kptn-recipe-step " style="background:url(https://d2am1qai33sroc.cloudfront.net/image/5b1e93602800000d1173b675?kptnkey=6q7QNKy-oIgk-IMuWisJ-jfN7s6);background-repeat: no-repeat;background-position: center;background-size: cover;overflow: hidden;  background: linear-gradient(to bottom, rgba(36, 35, 33, 0.3) 30%, #242321 100%),url(https://d2am1qai33sroc.cloudfront.net/image/5b1e93602800000d1173b675?kptnkey=6q7QNKy-oIgk-IMuWisJ-jfN7s6) no-repeat; background-position: center;background-size: cover;overflow: hidden; ">
+                    <div class="kptn-recipe-step " style="background:url(https://images.kptncook.com/5b1e93602800000d1173b675.jpg?kptnkey=6q7QNKy-oIgk-IMuWisJ-jfN7s6);background-repeat: no-repeat;background-position: center;background-size: cover;overflow: hidden;  background: linear-gradient(to bottom, rgba(36, 35, 33, 0.3) 30%, #242321 100%),url(https://images.kptncook.com/5b1e93602800000d1173b675.jpg?kptnkey=6q7QNKy-oIgk-IMuWisJ-jfN7s6) no-repeat; background-position: center;background-size: cover;overflow: hidden; ">
                     </div>
                 </div>
             </div>
@@ -373,7 +373,7 @@
 
 <div class="footer-container bottom-pos" >
 
-    <div id="footer-img" class="footer-img-col" style=" background: url('https://d2am1qai33sroc.cloudfront.net/image/5b1e93ad280000370073b67f?kptnkey=6q7QNKy-oIgk-IMuWisJ-jfN7s6');
+    <div id="footer-img" class="footer-img-col" style=" background: url('https://images.kptncook.com/5b1e93ad280000370073b67f.jpg?kptnkey=6q7QNKy-oIgk-IMuWisJ-jfN7s6');
   background-repeat: no-repeat;background-position: center;background-size: cover;overflow: hidden;">
     </div>
     <div class=" kptn-footer-card-col">
@@ -565,21 +565,24 @@ function detectOs(lang) {
 
 <script type="text/javascript">
     function copyURI() {
-    navigator.clipboard.writeText("https://sharing.kptncook.com/4T4TPmjWHFb").then(r => {
-      var x = document.getElementById("feedback");
+        navigator.clipboard
+                .writeText("https://mobile.kptncook.com/r/3f1e5736?lang=en")
+                .then(result => {
+                    var feedbackDiv = document.getElementById("feedback");
 
-  x.className = "show";
+                    feedbackDiv.className = "show";
 
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+                    setTimeout(function () {
+                        feedbackDiv.className = feedbackDiv.className.replace("show", "");
+                    }, 3000);
 
-    })
-    .catch(e=> {
-    console.log(e)
+                })
+                .catch(error => {
+                            console.log(error)
+                        }
+                );
     }
-    );
-}
 </script>
-
 
 </body>
 </html>

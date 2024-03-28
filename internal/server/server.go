@@ -16,6 +16,7 @@ import (
 	"io/fs"
 	"log"
 	"net/http"
+	"net/http/cookiejar"
 	"os"
 	"os/signal"
 	"path/filepath"
@@ -38,13 +39,20 @@ func init() {
 
 // NewServer creates a Server.
 func NewServer(repo services.RepositoryService) *Server {
+	jar, err := cookiejar.New(nil)
+	if err != nil {
+		panic("scraper not initialized")
+	}
+
 	srv := &Server{
 		Brokers:      make(map[int64]*models.Broker),
 		Email:        services.NewEmailService(),
 		Files:        services.NewFilesService(),
 		Integrations: services.NewIntegrationsService(),
 		Repository:   repo,
-		Scraper:      scraper.NewScraper(&http.Client{}),
+		Scraper: scraper.NewScraper(&http.Client{
+			Jar: jar,
+		}),
 	}
 	srv.mountHandlers()
 

@@ -35,19 +35,10 @@ jobs:
           extended: true
 
       - name: Install Task
-        uses: arduino/setup-task@v1
-        with:
-          version: 3.x
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+        uses: arduino/setup-task@v2
 
       - name: Build and test
         run: task test
-
-      #- name: Run golangci-lint
-      #  uses: golangci/golangci-lint-action@v3
-      #  with:
-      #    version: latest
-      #    args: --timeout 10m --skip-dirs '(docs)'
 
       - name: Run Revive Action by pulling pre-built image
         uses: docker://morphy/revive-action:v2

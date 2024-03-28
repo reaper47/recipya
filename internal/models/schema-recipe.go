@@ -32,6 +32,7 @@ type RecipeSchema struct {
 	NutritionSchema NutritionSchema `json:"nutrition"`
 	PrepTime        string          `json:"prepTime"`
 	Tools           Tools           `json:"tool"`
+	TotalTime       string          `json:"totalTime"`
 	Yield           Yield           `json:"recipeYield"`
 	URL             string          `json:"url"`
 }
@@ -537,6 +538,7 @@ func (i *Instructions) UnmarshalJSON(data []byte) error {
 		"&#224;":  "à",
 		"&#239;":  "ï",
 		"&#244;":  "ô",
+		"&#x27;":  "'",
 	}
 	for i2, value := range i.Values {
 		for old, newValue := range cases {

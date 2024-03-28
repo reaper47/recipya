@@ -11,7 +11,7 @@ you installed the application on.
 
 After [installing the Docker](/guide/docs/installation/docker) image, you can access the site network wide at http://[host computer IP]:[[port](/guide/docs/installation/config-file)].
 
-## Nightly Build
+## Release Build
 
 ### Linux
 
