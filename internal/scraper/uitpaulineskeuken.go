@@ -29,12 +29,10 @@ func scrapeUitpaulineskeuken(root *goquery.Document) (models.RecipeSchema, error
 			if err == nil {
 				right, err := strconv.Atoi(regex.Digit.FindString(parts[1]))
 				if err == nil {
-
-				}
-
-				rem := right - left
-				if rem > 0 {
-					cook = "PT" + strconv.Itoa(rem) + "M"
+					rem := right - left
+					if rem > 0 {
+						cook = "PT" + strconv.Itoa(rem) + "M"
+					}
 				}
 			}
 		}

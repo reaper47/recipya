@@ -40,6 +40,6 @@ func scrapeBingingWithBabish(root *goquery.Document) (models.RecipeSchema, error
 		Ingredients:   models.Ingredients{Values: ingredients},
 		Instructions:  models.Instructions{Values: instructions},
 		Name:          name,
-		Yield:         models.Yield{1},
+		Yield:         models.Yield{Value: 1},
 	}, nil
 }

@@ -3,7 +3,7 @@ title: Roadmap
 weight: 4
 ---
 
-{{< tabs items="v1.2.0,v2.0.0" >}}
+{{< tabs items="v1.2.0,v1.3.0" >}}
 
 {{< tab >}}
 **Add tags & icons for special diets**

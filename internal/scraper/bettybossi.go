@@ -61,7 +61,7 @@ func scrapeBettybossi(root *goquery.Document) (models.RecipeSchema, error) {
 
 	image, _ := root.Find("meta[property='og:image']").Attr("content")
 
-	root.Find("meta").Each(func(i int, s *goquery.Selection) {
+	root.Find("meta").Each(func(_ int, s *goquery.Selection) {
 		n, ok := s.Attr("data-rjson")
 		if ok {
 			err = json.Unmarshal([]byte(n), &b)
