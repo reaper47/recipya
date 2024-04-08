@@ -20,6 +20,7 @@ var (
 	BackupPath string // BackupPath is the directory where the data is backed up.
 	DBBasePath string // DBBasePath is the directory where the database files are stored.
 	ImagesDir  string // ImagesDir is the directory where user images are stored.
+	LogsDir    string // LogsDir is the directory where the logs are stored.
 
 	Info = GeneralInfo{
 		Version: semver.Version{
@@ -153,17 +154,18 @@ type ConfigServer struct {
 // Init initializes the app. This function must be called when the app starts.
 // Its name is not *init* so that the function is not executed during the tests.
 func Init() {
-	exe, err := os.Executable()
+	dir, err := os.UserConfigDir()
 	if err != nil {
 		panic(err)
 	}
-	dir := filepath.Dir(exe)
+	baseDir := filepath.Join(dir, "Recipya")
 
-	BackupPath = filepath.Join(dir, "data", "backup")
-	DBBasePath = filepath.Join(dir, "data", "database")
-	ImagesDir = filepath.Join(dir, "data", "images")
+	BackupPath = filepath.Join(baseDir, "Backup")
+	DBBasePath = filepath.Join(baseDir, "Database")
+	ImagesDir = filepath.Join(baseDir, "Images")
+	LogsDir = filepath.Join(baseDir, "Logs")
 
-	xs := []string{BackupPath, DBBasePath, ImagesDir}
+	xs := []string{BackupPath, DBBasePath, ImagesDir, LogsDir}
 	for _, s := range xs {
 		err = os.MkdirAll(s, os.ModePerm)
 		if err != nil {
@@ -171,15 +173,17 @@ func Init() {
 		}
 	}
 
-	setup(dir)
+	setup()
 
-	f, err := os.Open(filepath.Join(dir, "config.json"))
+	f, err := os.Open(filepath.Join(baseDir, "config.json"))
 	if err != nil {
 		NewConfig(nil)
 	} else {
 		NewConfig(f)
 	}
-	_ = f.Close()
+	defer f.Close()
+
+	fmt.Printf("File locations:\n\t- Backups: %s\n\t- Database: %s\n\t- Images: %s\n\t- Logs: %s\n", BackupPath, DBBasePath, ImagesDir, LogsDir)
 }
 
 // NewConfig initializes the global Config. It can either be populated from environment variables or the configuration file.

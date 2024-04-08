@@ -782,7 +782,7 @@ func TestHandlers_Cookbooks_ReorderRecipes(t *testing.T) {
 		{
 			name:      "invalid recipe IDs",
 			form:      "recipe-id=8&recipe-id=3&recipe-id=0&recipe-id=-1",
-			wantToast: `Recipe ID \\\"-1\\\" is invalid.`,
+			wantToast: "Recipe ID could not be parsed.",
 		},
 	}
 	for _, tc := range missingBodyPartsTestcases {

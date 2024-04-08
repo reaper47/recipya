@@ -6,7 +6,7 @@ import (
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/web/components"
-	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"os/exec"
@@ -72,8 +72,9 @@ func (s *Server) updateHandler() http.HandlerFunc {
 			w.WriteHeader(http.StatusNoContent)
 			return
 		} else if err != nil {
-			log.Printf("Error updating application: %q", err)
-			w.Header().Set("HX-Trigger", models.NewErrorGeneralToast("Failed to update.").Render())
+			msg := "Failed to update."
+			slog.Error(msg, "error", err)
+			w.Header().Set("HX-Trigger", models.NewErrorGeneralToast(msg).Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -82,24 +83,25 @@ func (s *Server) updateHandler() http.HandlerFunc {
 		w.WriteHeader(http.StatusNoContent)
 
 		go func() {
-			log.Println("Application will restart and data backed up.")
+			slog.Info("Application will restart and data backed up.")
 
 			err = s.Files.BackupGlobal()
 			if err != nil {
-				log.Printf("Error backing up global data: %q", err)
+				slog.Error("Backing up global data", "error", err)
 				return
 			}
 
 			f, err := os.Create("sessions.csv")
 			if err != nil {
-				log.Fatal(err)
+				slog.Error("Failed to create file", "error", err)
+				os.Exit(1)
 			}
 			defer f.Close()
 			SessionData.Save(f)
 
 			exe, err := os.Executable()
 			if err != nil {
-				log.Printf("Error updating application: %q", err)
+				slog.Error("Failed get executable path", "error", err)
 				return
 			}
 			dir := filepath.Dir(exe)
@@ -107,15 +109,15 @@ func (s *Server) updateHandler() http.HandlerFunc {
 			if runtime.GOOS == "windows" {
 				err = exec.Command(filepath.Join(dir, "updater.exe")).Start()
 				if err != nil {
-					log.Printf("Error starting application: %q", err)
+					slog.Error("Failed to start application", "error", err)
 					return
 				}
 
-				log.Println("Started updater.exe. As you are on Windows, the running program can be found under Task Manager -> Details -> recipya.exe")
+				slog.Info("Started updater.exe. As you are on Windows, the running program can be found under Task Manager -> Details -> recipya.exe")
 			} else {
 				err = syscall.Exec(filepath.Join(dir, "recipya"), os.Args, os.Environ())
 				if err != nil {
-					log.Printf("Error starting application: %q", err)
+					slog.Error("Failed to start application", "error", err)
 					return
 				}
 			}

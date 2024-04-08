@@ -13,8 +13,9 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services/statements"
 	"github.com/reaper47/recipya/internal/units"
+	"github.com/reaper47/recipya/internal/utils/regex"
 	"io"
-	"log"
+	"log/slog"
 	_ "modernc.org/sqlite" // Blank import to initialize the SQL driver.
 	"os"
 	"path/filepath"
@@ -316,8 +317,7 @@ func (s *SQLiteService) AddRecipeTx(ctx context.Context, tx *sql.Tx, r *models.R
 
 // AddReport adds a report to the database.
 func (s *SQLiteService) AddReport(report models.Report, userID int64) {
-	// TODO: Short
-	ctx, cancel := context.WithTimeout(context.Background(), longerCtxTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
 	s.Mutex.Lock()
@@ -325,28 +325,28 @@ func (s *SQLiteService) AddReport(report models.Report, userID int64) {
 
 	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{})
 	if err != nil {
-		log.Printf("AddReport.BeginTx: %q", err)
+		slog.Error("AddReport.BeginTx failed", "error", err)
 		return
 	}
 	defer tx.Rollback()
 
 	err = tx.QueryRowContext(ctx, statements.InsertReport, report.Type, report.CreatedAt, report.ExecTime, userID).Scan(&report.ID)
 	if err != nil {
-		log.Printf("AddReport.InsertReport %#v: %q", report, err)
+		slog.Error("AddReport.InsertReport failed", "report", report, "error", err)
 		return
 	}
 
 	for _, l := range report.Logs {
 		_, err = tx.ExecContext(ctx, statements.InsertReportLog, report.ID, l.Title, l.IsSuccess, l.Error)
 		if err != nil {
-			log.Printf("AddReport.InsertReportLog %#v: %q", l, err)
+			slog.Error("AddReport.InsertReportLog failed", "report", report, "log", l, "error", err)
 			continue
 		}
 	}
 
 	err = tx.Commit()
 	if err != nil {
-		log.Printf("AddReport.Commit: %q", err)
+		slog.Warn("AddReport.Commit failed", "report", report, "error", err)
 	}
 }
 
@@ -424,7 +424,7 @@ func (s *SQLiteService) CalculateNutrition(userID int64, recipes []int64, settin
 			s.Mutex.Lock()
 			recipe, err := s.Recipe(id, userID)
 			if err != nil {
-				log.Printf("CalculateNutrition.Recipe: %q", err)
+				slog.Error("CalculateNutrition.Recipe failed", "error", err)
 				continue
 			}
 			s.Mutex.Unlock()
@@ -435,7 +435,7 @@ func (s *SQLiteService) CalculateNutrition(userID int64, recipes []int64, settin
 
 			nutrients, weight, err := s.Nutrients(recipe.Ingredients)
 			if err != nil {
-				log.Printf("CalculateNutrition.Nutrients: %q", err)
+				slog.Error("CalculateNutrition.Nutrients failed", "error", err)
 				continue
 			}
 
@@ -445,7 +445,7 @@ func (s *SQLiteService) CalculateNutrition(userID int64, recipes []int64, settin
 			s.Mutex.Lock()
 			_, err = s.DB.ExecContext(ctx, statements.UpdateNutrition, n.Calories, n.TotalCarbohydrates, n.Sugars, n.Protein, n.TotalFat, n.SaturatedFat, n.UnsaturatedFat, n.Cholesterol, n.Sodium, n.Fiber, n.IsPerServing, id)
 			if err != nil {
-				log.Printf("CalculateNutrition.UpdateNutrition: %q", err)
+				slog.Error("CalculateNutrition.UpdateNutrition failed", "error", err)
 			}
 			s.Mutex.Unlock()
 		}
@@ -836,7 +836,7 @@ func (s *SQLiteService) InitAutologin() error {
 			return err
 		}
 
-		log.Println("Created user for autologin with email 'admin@autologin.com' and password 'admin'")
+		slog.Info("Created user for autologin with email 'admin@autologin.com' and password 'admin'")
 	}
 
 	return nil
@@ -1065,6 +1065,10 @@ func (s *SQLiteService) RecipeUser(recipeID int64) int64 {
 
 // Register adds a new user to the store.
 func (s *SQLiteService) Register(email string, hashedPassword auth.HashedPassword) (int64, error) {
+	if !regex.Email.MatchString(email) || hashedPassword == "" {
+		return -1, errors.New("credentials are invalid")
+	}
+
 	s.Mutex.Lock()
 	defer s.Mutex.Unlock()
 
@@ -1730,6 +1734,10 @@ func (s *SQLiteService) UpdateUserSettingsCookbooksViewMode(userID int64, mode m
 
 // UserID gets the user's id from the email. It returns -1 if user not found.
 func (s *SQLiteService) UserID(email string) int64 {
+	if !regex.Email.MatchString(email) {
+		return -1
+	}
+
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
@@ -1782,7 +1790,7 @@ func (s *SQLiteService) Users() []models.User {
 	var users []models.User
 	rows, err := s.DB.QueryContext(ctx, statements.SelectUsers)
 	if err != nil {
-		log.Printf("error fetching users: %q", err)
+		slog.Error("Failed to fetch users", "error", err)
 		return users
 	}
 	defer rows.Close()
@@ -1791,7 +1799,7 @@ func (s *SQLiteService) Users() []models.User {
 		var user models.User
 		err = rows.Scan(&user.ID, &user.Email)
 		if err != nil {
-			log.Printf("error scanning user: %q", err)
+			slog.Error("Failed to scan user: %q", "error", err)
 			return users
 		}
 		users = append(users, user)
@@ -1836,7 +1844,7 @@ func (s *SQLiteService) Websites() models.Websites {
 	websites := make(models.Websites, count)
 	rows, err := s.DB.QueryContext(ctx, statements.SelectWebsites)
 	if err != nil {
-		log.Printf("websites count error: %q", err)
+		slog.Error("Failed to count websites", "error", err)
 		return websites
 	}
 	defer rows.Close()
@@ -1846,7 +1854,7 @@ func (s *SQLiteService) Websites() models.Websites {
 		var w models.Website
 		err = rows.Scan(&w.ID, &w.Host, &w.URL)
 		if err != nil {
-			log.Printf("error scanning website: %q", err)
+			slog.Error("Failed to scan website", "error", err)
 			continue
 		}
 		websites[i] = w

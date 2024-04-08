@@ -194,8 +194,8 @@ func TestHandlers_Auth_DeleteUser(t *testing.T) {
 	})
 
 	t.Run("valid request", func(t *testing.T) {
-		clear(server.SessionData)
-		originalNumSessions := len(server.SessionData) + 1
+		clear(server.SessionData.Data)
+		originalNumSessions := len(server.SessionData.Data) + 1
 		repo := originalRepo
 		defer func() {
 			srv.Repository = originalRepo
@@ -208,7 +208,7 @@ func TestHandlers_Auth_DeleteUser(t *testing.T) {
 		if slices.ContainsFunc(repo.UsersRegistered, func(user models.User) bool { return user.ID == 1 }) {
 			t.Fatal("user 1 should have been deleted")
 		}
-		if len(server.SessionData) == originalNumSessions {
+		if len(server.SessionData.Data) == originalNumSessions {
 			t.Fatalf("expected one less number of sessions")
 		}
 	})
@@ -461,7 +461,7 @@ func TestHandlers_Auth_Login(t *testing.T) {
 	})
 
 	t.Run("login  successful", func(t *testing.T) {
-		clear(server.SessionData)
+		clear(server.SessionData.Data)
 
 		rr := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email=test@example.com&password=123&remember-me=false"))
 
@@ -471,7 +471,7 @@ func TestHandlers_Auth_Login(t *testing.T) {
 			isUserInSession   bool
 			isCookieStoresSID bool
 		)
-		for sid, userID := range server.SessionData {
+		for sid, userID := range server.SessionData.Data {
 			if userID == 1 {
 				isUserInSession = true
 				isCookieStoresSID = slices.ContainsFunc(rr.Result().Cookies(), func(cookie *http.Cookie) bool {
@@ -535,24 +535,24 @@ func TestHandlers_Auth_Logout(t *testing.T) {
 	const uri = "/auth/logout"
 
 	t.Run("cannot log out a user who is already logged out", func(t *testing.T) {
-		originalNumSessions := len(server.SessionData)
+		originalNumSessions := len(server.SessionData.Data)
 
 		rr := sendRequest(srv, http.MethodPost, uri, noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusNoContent)
-		if originalNumSessions != len(server.SessionData) {
+		if originalNumSessions != len(server.SessionData.Data) {
 			t.Fatalf("expected same number of sessions")
 		}
 	})
 
 	t.Run("valid logout for a logged-in user", func(t *testing.T) {
-		clear(server.SessionData)
-		originalNumSessions := len(server.SessionData) + 1
+		clear(server.SessionData.Data)
+		originalNumSessions := len(server.SessionData.Data) + 1
 
 		rr := sendRequestAsLoggedIn(srv, http.MethodPost, uri, noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusSeeOther)
-		if len(server.SessionData) != originalNumSessions-1 {
+		if len(server.SessionData.Data) != originalNumSessions-1 {
 			t.Fatalf("expected one less number of sessions")
 		}
 		var isCookieInvalid bool

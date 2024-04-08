@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/reaper47/recipya/internal/utils/extensions"
-	"log"
+	"log/slog"
 	"strconv"
 	"strings"
 	"time"
@@ -562,14 +562,14 @@ type section struct {
 func parseSections(part any, instructions *Instructions) {
 	b, err := json.Marshal(part)
 	if err != nil {
-		log.Println(err)
+		slog.Error("Marshal part failed", "error", err)
 		return
 	}
 
 	var sect section
 	err = json.Unmarshal(b, &sect)
 	if err != nil {
-		log.Println(err)
+		slog.Error("Marshal section failed", "error", err)
 		return
 	}
 

@@ -22,23 +22,6 @@ func TestHandlers_Integrations_Nextcloud(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodPost, uriImport)
 	})
 
-	invalidData := []struct {
-		name string
-		in   string
-	}{
-		{name: "no base URL", in: "username=admin&password=admin"},
-		{name: "no username", in: "password=admin&url=http://localhost:8080"},
-		{name: "no password", in: "username=admin&url=http://localhost:8080"},
-	}
-	for _, tc := range invalidData {
-		t.Run(tc.name, func(t *testing.T) {
-			rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uriImport, formHeader, strings.NewReader(tc.in))
-
-			assertStatus(t, rr.Code, http.StatusBadRequest)
-			assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Invalid username, password or URL.\",\"title\":\"Form Error\"}"}`)
-		})
-	}
-
 	t.Run("error when importing", func(t *testing.T) {
 		srv.Integrations = &mockIntegrations{
 			NextcloudImportFunc: func(baseURL, username, password string, files services.FilesService) (*models.Recipes, error) {

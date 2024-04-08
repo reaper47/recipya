@@ -17,34 +17,109 @@ import (
 	"time"
 )
 
-func setup(exeDir string) {
-	oldPaths := []string{
-		filepath.Join(exeDir, RecipyaDB),
-		filepath.Join(exeDir, RecipyaDB+"-shm"),
-		filepath.Join(exeDir, RecipyaDB+"-wal"),
-		filepath.Join(exeDir, FdcDB),
-	}
-	for _, path := range oldPaths {
-		_, err := os.Stat(path)
-		if errors.Is(err, os.ErrNotExist) {
-			continue
-		} else if err != nil {
-			panic(err)
-		}
-
-		newPath := filepath.Join(DBBasePath, filepath.Base(path))
-		err = os.Rename(path, newPath)
-		if err != nil {
-			fmt.Printf("Error moving %q to %q: %q\n", path, newPath, err)
-			continue
-		}
-		fmt.Printf("Moved %q to %q\n", filepath.Base(path), filepath.Dir(newPath))
-	}
-
+func setup() {
+	moveFileStructure()
 	setupFDC()
-	setupConfigFile(exeDir)
+	setupConfigFile()
 
 	fmt.Println("Recipya is properly set up.")
+}
+
+func moveFileStructure() {
+	exe, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
+	exeDir := filepath.Dir(exe)
+
+	// Move configuration file
+	configPathOld := filepath.Join(exeDir, "config.json")
+	configPathNew := filepath.Join(filepath.Dir(DBBasePath), "config.json")
+
+	_, err = os.Stat(configPathOld)
+	if err == nil {
+		temp, err := os.CreateTemp("", "*-config.json.bak")
+		if err != nil {
+			return
+		}
+		defer temp.Close()
+
+		src, err := os.Open(configPathOld)
+		if err != nil {
+			fmt.Println("Could not open config.json: ", err)
+		}
+
+		_, err = io.Copy(temp, src)
+		if err != nil {
+			fmt.Println("Could copy config.json to temporary file: ", err)
+		} else {
+			fmt.Println("Copied config.json to temporary file ", temp.Name())
+		}
+		_ = src.Close()
+
+		err = os.Rename(configPathOld, configPathNew)
+		if err != nil {
+			fmt.Printf("Could not move configuration file from %s to %s: %q", configPathOld, configPathNew, err)
+		} else {
+			fmt.Printf("Moved configuration file to new folder from %s to %s", configPathOld, configPathNew)
+		}
+	}
+
+	// Move data folders
+	dirs := map[string]string{"backup": BackupPath, "database": DBBasePath, "images": ImagesDir}
+	count := 0
+	for dir, newPath := range dirs {
+		oldPath := filepath.Join(exeDir, "data", dir)
+		_, err = os.Stat(oldPath)
+		if err == nil {
+			err = moveFiles(oldPath, newPath)
+			if err != nil {
+				fmt.Printf("Move %s folder to new location: %q", dir, err)
+				continue
+			}
+
+			err = os.RemoveAll(oldPath)
+			if err != nil {
+				fmt.Printf("Please delete the old %s folder (%s) manually: %q", dir, oldPath, err)
+			}
+
+			count++
+			fmt.Printf("Moved %s (%s) to new location %s", dir, oldPath, newPath)
+		}
+	}
+
+	if count == len(dirs) {
+		_ = os.RemoveAll(filepath.Join(exeDir, "data"))
+	}
+}
+
+func moveFiles(srcDir, destDir string) error {
+	dir, err := os.Open(srcDir)
+	if err != nil {
+		return err
+	}
+	defer dir.Close()
+
+	files, err := dir.Readdirnames(-1)
+	if err != nil {
+		return err
+	}
+
+	err = os.MkdirAll(destDir, os.ModePerm)
+	if err != nil {
+		return err
+	}
+
+	for _, f := range files {
+		src := filepath.Join(srcDir, f)
+		dest := filepath.Join(destDir, f)
+		err = os.Rename(src, dest)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func setupFDC() {
@@ -54,7 +129,7 @@ func setupFDC() {
 		s.Prefix = "Fetching the FDC database... "
 		s.FinalMSG = "Fetching the FDC database... " + greenText("Success") + "\n"
 		s.Start()
-		err = downloadFile(filepath.Join(DBBasePath, "fdc.db.zip"), "https://raw.githubusercontent.com/reaper47/recipya/main/deploy/fdc.db.zip")
+		err = downloadFile(filepath.Join(DBBasePath, "fdc.db.zip"), "fdc.db", "https://raw.githubusercontent.com/reaper47/recipya/main/deploy/fdc.db.zip")
 		if err != nil {
 			fmt.Printf("\n"+redText("Error downloading FDC database")+": %s\n", err)
 			fmt.Println("Application setup will terminate")
@@ -67,21 +142,12 @@ func setupFDC() {
 	}
 }
 
-func downloadFile(path, url string) error {
+func downloadFile(path, filename, url string) error {
 	res, err := http.Get(url)
 	if err != nil {
 		return err
 	}
 	defer res.Body.Close()
-
-	if res == nil {
-		return errors.New("download file response is nil")
-	}
-
-	body := res.Body
-	if body == nil {
-		return errors.New("download file response body is nil")
-	}
 
 	if res.StatusCode != http.StatusOK {
 		return fmt.Errorf("file not found at %q", url)
@@ -92,7 +158,7 @@ func downloadFile(path, url string) error {
 		return err
 	}
 
-	_, err = io.Copy(out, body)
+	_, err = io.Copy(out, res.Body)
 	if err != nil {
 		return err
 	}
@@ -103,7 +169,7 @@ func downloadFile(path, url string) error {
 	}
 	defer z.Close()
 
-	destFile, err := os.OpenFile(filepath.Join(filepath.Dir(path), "fdc.db"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, z.File[0].Mode())
+	destFile, err := os.OpenFile(filepath.Join(filepath.Dir(path), filename), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, z.File[0].Mode())
 	if err != nil {
 		return err
 	}
@@ -119,7 +185,7 @@ func downloadFile(path, url string) error {
 	return err
 }
 
-func setupConfigFile(exeDir string) {
+func setupConfigFile() {
 	if isRunningInDocker() {
 		isEnvOk := true
 		xenv := []string{"RECIPYA_SERVER_PORT", "RECIPYA_SERVER_URL"}
@@ -138,7 +204,7 @@ func setupConfigFile(exeDir string) {
 		return
 	}
 
-	configFilePath := filepath.Join(exeDir, "config.json")
+	configFilePath := filepath.Join(filepath.Dir(DBBasePath), "config.json")
 	_, err := os.Stat(configFilePath)
 	if err != nil {
 		fmt.Print("Creating the configuration file... ")
@@ -163,13 +229,13 @@ func createConfigFile(path string) error {
 	r := bufio.NewReader(os.Stdin)
 	fmt.Println()
 
-	hasSendGrid := promptUser(r, "Do you have a SendGrid account? If not, important emails will not be sent [Y/n]", "y")
+	hasSendGrid := promptUser(r, "Do you have a SendGrid account? If not, important emails will not be sent [Y/n]", "n")
 	if isYes(hasSendGrid) {
 		c.Email.From = promptUser(r, "\tWhat is the email address of your SendGrid account?", "")
 		c.Email.SendGridAPIKey = promptUser(r, "\tWhat is your SendGrid API key?", "")
 	}
 
-	hasVisionAPI := promptUser(r, "Do you have an Azure AI Vision account? If not, OCR features will be disabled. [Y/n]", "y")
+	hasVisionAPI := promptUser(r, "Do you have an Azure AI Vision account? If not, OCR features will be disabled. [Y/n]", "n")
 	if isYes(hasVisionAPI) {
 		c.Integrations.AzureComputerVision.ResourceKey = promptUser(r, "\tWhat is your resource key?", "")
 		c.Integrations.AzureComputerVision.VisionEndpoint = promptUser(r, "\tWhat is your vision API endpoint?", "")

@@ -5,7 +5,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"github.com/gorilla/websocket"
-	"log"
+	"log/slog"
 	"sync"
 	"time"
 )
@@ -52,13 +52,15 @@ func (b *Broker) HideNotification() {
 
 // SendFile sends a file to the connected client.
 func (b *Broker) SendFile(fileName string, data *bytes.Buffer) {
+	fileNameAttr := slog.String("fileName", fileName)
+
 	if b == nil {
-		log.Println("ws connection nil")
+		slog.Error("Websocket connection is nil", fileNameAttr)
 		return
 	}
 
 	if data == nil {
-		log.Println("SendFile data is nil")
+		slog.Error("Data is nil", fileNameAttr)
 		return
 	}
 
@@ -71,15 +73,19 @@ func (b *Broker) SendFile(fileName string, data *bytes.Buffer) {
 		Data:     base64.StdEncoding.EncodeToString(data.Bytes()),
 	})
 	if err != nil {
-		log.Printf("Broker.SendFile: %q", err)
+		slog.Error("Failed to send file", fileNameAttr, "error", err)
 	}
 }
 
 // SendProgress sends a progress update with a title and value to the client.
 // The isToastVisible parameter controls whether the progress bar is displayed in a toast notification.
 func (b *Broker) SendProgress(title string, value, numValues int) {
+	titleAttr := slog.String("title", title)
+	valueAttr := slog.Int("value", value)
+	numValuesAttr := slog.Int("numValues", numValues)
+
 	if b == nil {
-		log.Printf("ws connection nil")
+		slog.Error("Websocket connection is nil", titleAttr, valueAttr, numValuesAttr)
 		return
 	}
 
@@ -96,14 +102,18 @@ func (b *Broker) SendProgress(title string, value, numValues int) {
 
 	err := b.conn.WriteMessage(websocket.TextMessage, []byte(content))
 	if err != nil {
-		log.Printf("Broker.SendProgress: %q", err)
+		slog.Error("Broker.SendProgress failed", titleAttr, valueAttr, numValuesAttr, "error", err)
 	}
 }
 
 // SendProgressStatus sends a progress update with a title and value, optionally hiding the toast notification.
 func (b *Broker) SendProgressStatus(title string, isToastVisible bool, value, numValues int) {
+	titleAttr := slog.String("title", title)
+	valueAttr := slog.Int("value", value)
+	numValuesAttr := slog.Int("numValues", numValues)
+
 	if b == nil {
-		log.Printf("ws connection nil")
+		slog.Error("Websocket connection is nil", titleAttr, valueAttr, numValuesAttr)
 		return
 	}
 
@@ -126,7 +136,7 @@ func (b *Broker) SendProgressStatus(title string, isToastVisible bool, value, nu
 
 	err := b.conn.WriteMessage(websocket.TextMessage, []byte(content))
 	if err != nil {
-		log.Printf("Broker.SendProgressStatus: %q", err)
+		slog.Error("Broker.SendProgressStatus failed", titleAttr, valueAttr, numValuesAttr, "content", content, "error", err)
 	}
 }
 
@@ -150,7 +160,7 @@ func (b *Broker) ping() {
 
 func (b *Broker) setPingPongHandlers() {
 	if b == nil || b.conn == nil {
-		log.Println("Broker or broker connection is nil")
+		slog.Error("Broker or broker connection is nil")
 		return
 	}
 
@@ -175,8 +185,10 @@ func (b *Broker) setPingPongHandlers() {
 
 // SendToast sends a toast notification to the user.
 func (b *Broker) SendToast(toast Toast) {
+	toastAttr := slog.Any("toast", toast)
+
 	if b == nil {
-		log.Printf("ws connection nil")
+		slog.Error("Websocket connection is nil", toastAttr)
 		return
 	}
 
@@ -185,6 +197,6 @@ func (b *Broker) SendToast(toast Toast) {
 
 	err := b.conn.WriteJSON(Message{Type: "toast", Toast: toast})
 	if err != nil {
-		log.Printf("Boker.SendToast: %q", err)
+		slog.Error("Broker.SendToast failed", toastAttr, "error", err)
 	}
 }

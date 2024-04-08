@@ -18,7 +18,7 @@ services:
     ports:
       - "<host-port>:8125"
     volumes:
-      - "recipya-data:/app/data"
+      - "recipya-data:/root/.config/Recipya"
 
 volumes:
   recipya-data:

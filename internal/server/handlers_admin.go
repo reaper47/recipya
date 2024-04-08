@@ -5,7 +5,6 @@ import (
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
-	"github.com/reaper47/recipya/internal/utils/regex"
 	"github.com/reaper47/recipya/web/components"
 	"net/http"
 )
@@ -33,15 +32,10 @@ func (s *Server) adminUsersPostHandler() http.HandlerFunc {
 
 		email := r.FormValue("email")
 		password := r.FormValue("password")
-		if !regex.Email.MatchString(email) || password == "" {
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast("Email and/or password is invalid.").Render())
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
 
 		userID := s.Repository.UserID(email)
 		if userID != -1 {
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast("User exists.").Render())
+			w.Header().Set("HX-Trigger", models.NewErrorDBToast("Email and/or password is invalid.").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}

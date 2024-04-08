@@ -1,13 +1,19 @@
 package server
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/utils/regex"
+	"io"
+	"log/slog"
+	"maps"
 	"net/http"
+	"net/http/httptest"
 	"strings"
+	"time"
 )
 
 // Key is a type alias for a context key.
@@ -40,6 +46,71 @@ var excludedURIs = map[string]struct{}{
 	"/settings/tabs/recipes":             {},
 	"/user-initials":                     {},
 	"/ws":                                {},
+}
+
+func (s *Server) loggingMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		rec := httptest.NewRecorder()
+
+		now := time.Now()
+		next.ServeHTTP(rec, r)
+		elapsed := time.Since(now)
+
+		result := rec.Result()
+
+		var b bytes.Buffer
+		r.Body = io.NopCloser(io.TeeReader(r.Body, &b))
+		headers := map[string]string{
+			"HX-Trigger":  rec.Header().Get("HX-Trigger"),
+			"HX-Redirect": rec.Header().Get("HX-Redirect"),
+		}
+
+		s.Logger.LogAttrs(
+			context.Background(),
+			slog.LevelInfo,
+			"HTTP roundtrip",
+			slog.Int64("userID", getUserID(r)),
+			slog.Group(
+				"request",
+				slog.String("method", r.Method),
+				slog.String("uri", r.URL.EscapedPath()),
+				slog.String("referrer", r.Header.Get("Referer")),
+				slog.String("userAgent", r.Header.Get("User-Agent")),
+				slog.String("ipAddress", getRemoteAddress(r)),
+				slog.String("body", b.String()),
+				slog.String("form", r.Form.Encode()),
+			),
+			slog.Group(
+				"response",
+				slog.Int("code", rec.Code),
+				slog.String("duration", elapsed.String()),
+				slog.String("body", rec.Body.String()),
+				slog.Any("headers", headers),
+			),
+		)
+
+		maps.Copy(w.Header(), result.Header)
+		w.WriteHeader(rec.Code)
+		_, _ = rec.Body.WriteTo(w)
+	})
+}
+
+func getRemoteAddress(r *http.Request) string {
+	realIP := r.Header.Get("X-Real-Ip")
+	forwarded := r.Header.Get("X-Forwarded-For")
+	if realIP == "" && forwarded == "" {
+		i := strings.LastIndex(r.RemoteAddr, ":")
+		if i == -1 {
+			return r.RemoteAddr
+		}
+		return r.RemoteAddr[:i]
+	}
+
+	if forwarded != "" {
+		parts := strings.Split(forwarded, ",")
+		return strings.TrimSpace(parts[0])
+	}
+	return realIP
 }
 
 func (s *Server) onlyAdminMiddleware(next http.Handler) http.Handler {
@@ -101,12 +172,12 @@ func (s *Server) mustBeLoggedInMiddleware(next http.Handler) http.Handler {
 		if app.Config.Server.IsAutologin {
 			ctx := context.WithValue(r.Context(), UserIDKey, int64(1))
 
-			if SessionData == nil {
-				SessionData = make(SessionDataMap)
+			if SessionData.Data == nil {
+				SessionData.Data = make(map[uuid.UUID]int64)
 			}
 
 			sid := uuid.New()
-			SessionData[sid] = 1
+			SessionData.Data[sid] = 1
 			http.SetCookie(w, NewSessionCookie(sid.String()))
 
 			next.ServeHTTP(w, r.WithContext(ctx))

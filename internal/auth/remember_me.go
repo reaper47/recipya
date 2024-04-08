@@ -20,12 +20,6 @@ func GenerateSelectorAndValidator() (string, string) {
 	return base64.URLEncoding.EncodeToString(selector), base64.URLEncoding.EncodeToString(hash[:])
 }
 
-// HashValidator creates a hashed validator using SHA-256.
-func HashValidator(validator string) string {
-	hash := sha256.Sum256([]byte(validator))
-	return base64.URLEncoding.EncodeToString(hash[:])
-}
-
 // DecodeHashValidator decodes an encoded hashed validator using SHA-256.
 func DecodeHashValidator(validator string) string {
 	hash := sha256.Sum256([]byte(validator))

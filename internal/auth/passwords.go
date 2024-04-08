@@ -29,6 +29,10 @@ func (h HashedPassword) String() string {
 
 // HashPassword hashes a plain text password using argon2.
 func HashPassword(password string) (HashedPassword, error) {
+	if password == "" {
+		return "", errors.New("empty password")
+	}
+
 	p := &params{
 		memory:      64 * 1024,
 		iterations:  3,
