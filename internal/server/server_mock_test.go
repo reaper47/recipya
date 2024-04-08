@@ -911,9 +911,14 @@ type mockIntegrations struct {
 }
 
 func (m *mockIntegrations) NextcloudImport(baseURL, username, password string, files services.FilesService, _ chan models.Progress) (*models.Recipes, error) {
+	if username == "" || password == "" || baseURL == "" {
+		return nil, errors.New("invalid username, password or URL")
+	}
+
 	if m.NextcloudImportFunc != nil {
 		return m.NextcloudImportFunc(baseURL, username, password, files)
 	}
+
 	return &models.Recipes{
 		{ID: 1, Name: "One"},
 		{ID: 2, Name: "Two"},

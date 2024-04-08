@@ -28,6 +28,7 @@ const (
 func createWSServer() (*server.Server, *httptest.Server, *websocket.Conn) {
 	srv := newServerTest()
 	repo := &mockRepository{
+		RecipesRegistered: make(map[int64]models.Recipes),
 		UsersRegistered: []models.User{
 			{ID: 1, Email: "test@example.com"},
 		},
@@ -163,10 +164,10 @@ func prepareRequest(method, target string, contentType header, body *strings.Rea
 	}
 
 	sid := uuid.New()
-	if server.SessionData == nil {
-		server.SessionData = make(map[uuid.UUID]int64)
+	if server.SessionData.Data == nil {
+		server.SessionData.Data = make(map[uuid.UUID]int64)
 	}
-	server.SessionData[sid] = 1
+	server.SessionData.Data[sid] = 1
 
 	r := httptest.NewRequest(method, target, body)
 	r.AddCookie(server.NewSessionCookie(sid.String()))
@@ -184,10 +185,10 @@ func prepareRequestOther(method, target string, contentType header, body *string
 	}
 
 	sid := uuid.New()
-	if server.SessionData == nil {
-		server.SessionData = make(map[uuid.UUID]int64)
+	if server.SessionData.Data == nil {
+		server.SessionData.Data = make(map[uuid.UUID]int64)
 	}
-	server.SessionData[sid] = 2
+	server.SessionData.Data[sid] = 2
 
 	r := httptest.NewRequest(method, target, body)
 	r.AddCookie(server.NewSessionCookie(sid.String()))

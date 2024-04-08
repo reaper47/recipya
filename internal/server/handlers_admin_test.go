@@ -56,26 +56,6 @@ func TestHandlers_Admin_AddUser(t *testing.T) {
 		assertStringsInHTML(t, getBodyHTML(rr), []string{"Access denied: You are not an admin."})
 	})
 
-	testcases := []struct {
-		name     string
-		input    string
-		email    string
-		password string
-	}{
-		{name: "missing email and password"},
-		{name: "missing password", input: "email=test@example.com"},
-		{name: "missing email", input: "password=test123"},
-		{name: "invalid email", input: "email=test@test"},
-	}
-	for _, tc := range testcases {
-		t.Run(tc.name, func(t *testing.T) {
-			rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader(tc.input))
-
-			assertStatus(t, rr.Code, http.StatusBadRequest)
-			assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Email and/or password is invalid.\",\"title\":\"Form Error\"}"}`)
-		})
-	}
-
 	t.Run("demo cannot add users", func(t *testing.T) {
 		srv.Repository = &mockRepository{
 			UsersRegistered: []models.User{

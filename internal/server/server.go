@@ -14,6 +14,7 @@ import (
 	_ "github.com/reaper47/recipya/internal/templates" // Need to initialize the templates package.
 	"github.com/reaper47/recipya/web/static"
 	"gopkg.in/natefinch/lumberjack.v2"
+	"io"
 	"io/fs"
 	"log/slog"
 	"net/http"
@@ -27,7 +28,7 @@ import (
 )
 
 func init() {
-	SessionData = make(map[uuid.UUID]int64)
+	SessionData.Data = make(map[uuid.UUID]int64)
 }
 
 // NewServer creates a Server.
@@ -42,6 +43,7 @@ func NewServer(repo services.RepositoryService) *Server {
 		Email:        services.NewEmailService(),
 		Files:        services.NewFilesService(),
 		Integrations: services.NewIntegrationsService(),
+		Logger:       slog.New(slog.NewTextHandler(io.Discard, nil)),
 		Repository:   repo,
 		Scraper: scraper.NewScraper(&http.Client{
 			Jar: jar,
@@ -126,7 +128,7 @@ func (s *Server) mountHandlers() {
 	mux.Handle("GET /cookbooks/{id}/download", s.mustBeLoggedInMiddleware(s.cookbooksDownloadCookbookHandler()))
 	mux.Handle("PUT /cookbooks/{id}/image", withLog(s.cookbooksImagePostCookbookHandler()))
 	mux.Handle("PUT /cookbooks/{id}/reorder", withLog(s.cookbooksPostCookbookReorderHandler()))
-	mux.Handle("DELETE /cookbooks/{id}/recipes/{recipeID}", withAuthRegister(s.cookbooksDeleteCookbookRecipeHandler()))
+	mux.Handle("DELETE /cookbooks/{id}/recipes/{recipeID}", s.mustBeLoggedInMiddleware(s.cookbooksDeleteCookbookRecipeHandler()))
 	mux.Handle("GET /cookbooks/{id}/recipes/search", s.mustBeLoggedInMiddleware(s.cookbooksRecipesSearchHandler()))
 	mux.Handle("POST /cookbooks/{id}/share", withLog(s.cookbookSharePostHandler()))
 

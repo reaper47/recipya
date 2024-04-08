@@ -270,7 +270,7 @@ func (s *Server) loginPostHandler() http.HandlerFunc {
 		}
 
 		sid := uuid.New()
-		SessionData[sid] = userID
+		SessionData.Data[sid] = userID
 		http.SetCookie(w, NewSessionCookie(sid.String()))
 
 		if r.FormValue("remember-me") == "yes" {
@@ -325,7 +325,7 @@ func (s *Server) logoutHandler(w http.ResponseWriter, r *http.Request) {
 		c.MaxAge = -1
 		http.SetCookie(w, c)
 	}
-	maps.DeleteFunc(SessionData, func(_ uuid.UUID, id int64) bool { return id == userID })
+	maps.DeleteFunc(SessionData.Data, func(_ uuid.UUID, id int64) bool { return id == userID })
 
 	rememberMeCookie, err := r.Cookie(cookieNameRememberMe)
 	if rememberMeCookie != nil && !errors.Is(err, http.ErrNoCookie) {

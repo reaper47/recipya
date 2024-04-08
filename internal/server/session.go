@@ -7,23 +7,33 @@ import (
 	"io"
 	"log/slog"
 	"strconv"
+	"sync"
 )
 
 // SessionData maps a UUID to a user id. It's used to track who is logged in session-wise.
 var SessionData SessionDataMap
 
 // SessionDataMap is a type alias to map UUIDs to int64s.
-type SessionDataMap map[uuid.UUID]int64
+type SessionDataMap struct {
+	Data  map[uuid.UUID]int64
+	mutex sync.Mutex
+}
 
 // Save saves the SessionDataMap to the writer in the CSV format.
-func (s SessionDataMap) Save(w io.Writer) {
-	for k, v := range s {
+func (s *SessionDataMap) Save(w io.Writer) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	for k, v := range s.Data {
 		_, _ = w.Write([]byte(k.String() + "," + strconv.FormatInt(v, 10) + "\n"))
 	}
 }
 
 // Load populates the SessionDataMap from the reader.
-func (s SessionDataMap) Load(r io.Reader) {
+func (s *SessionDataMap) Load(r io.Reader) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
 	sc := bufio.NewScanner(r)
 	for sc.Scan() {
 		parts := bytes.Split(sc.Bytes(), []byte(","))
@@ -41,7 +51,7 @@ func (s SessionDataMap) Load(r io.Reader) {
 			continue
 		}
 
-		s[k] = v
+		s.Data[k] = v
 	}
 
 	slog.Info("User sessions restored")
