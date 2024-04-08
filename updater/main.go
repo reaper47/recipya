@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"github.com/shirou/gopsutil/v3/process"
-	"log"
+	"log/slog"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -12,45 +12,52 @@ import (
 	"time"
 )
 
+var logger *slog.Logger
+
 func main() {
 	file, err := os.Create("update.log")
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	defer file.Close()
 
-	log.SetOutput(file)
+	logger = slog.New(slog.NewTextHandler(file, nil))
 
 	if runtime.GOOS != "windows" {
-		log.Fatalln("This program may only be run on Windows.")
+		logger.Error("This program may only be run on Windows.")
+		os.Exit(1)
 	}
 
-	log.Println("Update process started")
+	logger.Info("Update process started")
 	waitForRecipyaToStop()
 
 	exe, err := os.Executable()
 	if err != nil {
-		log.Fatalln(err)
+		slog.Error("Failed to get executable path", "error", err)
+		os.Exit(1)
 	}
-	log.Println("Got updater executable path: ", exe)
+	logger.Info("Got updater executable path", "path", exe)
 
 	path := filepath.Join(filepath.Dir(exe), "recipya.exe")
-	log.Printf("Renaming %q to %q", path+".new", path)
+	logger.Info("Renaming files", "from", path+".new", "to", path)
 	err = os.Rename(path+".new", path)
 	if err != nil {
-		log.Fatalln(err)
+		logger.Error("Failed to rename files", "error", err)
+		os.Exit(1)
 	}
 
-	log.Println("Waiting 1s for rename to be done")
+	logger.Info("Waiting 1s for rename to be done")
 	time.Sleep(1 * time.Second)
 
-	log.Println("Starting 'recipya.exe serve'")
-	err = exec.Command(filepath.Join(filepath.Dir(exe), "recipya.exe"), "serve").Run()
+	logger.Info("Starting 'recipya.exe serve'")
+	cmd := exec.Command(filepath.Join(filepath.Dir(exe), "recipya.exe"), "serve")
+	err = cmd.Run()
 	if err != nil {
-		log.Fatalln(err)
+		logger.Error("Failed to run command", "command", cmd.Args, "error", err)
+		os.Exit(1)
 	}
 
-	log.Println("Software updated successfully")
+	logger.Info("Software updated successfully")
 }
 
 func waitForRecipyaToStop() {
@@ -59,7 +66,8 @@ func waitForRecipyaToStop() {
 
 	processes, err := process.Processes()
 	if err != nil {
-		log.Fatalln(err)
+		logger.Error("Failed to get processes", "error", err)
+		os.Exit(1)
 	}
 
 	var (
@@ -78,16 +86,17 @@ func waitForRecipyaToStop() {
 
 	if isFound {
 		n, _ := proc.Name()
-		log.Printf("Recipya process %q found with pid %d", n, proc.Pid)
+		logger.Info("Recipya process found", "name", n, "pid", proc.Pid)
 
 		for {
 			isRunning, err := proc.IsRunningWithContext(ctx)
 			if err != nil {
-				log.Fatalln("Error getting process running status: ", err)
+				logger.Error("Failed to get process with running status", "pid", proc.Pid, "error", err)
+				os.Exit(1)
 			}
 
 			if !isRunning {
-				log.Println("Process stopped running")
+				logger.Info("Process stopped running")
 				break
 			}
 		}

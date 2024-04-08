@@ -5,7 +5,7 @@ import (
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/services"
 	"io/fs"
-	"log"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"slices"
@@ -37,37 +37,37 @@ func ScheduleCronJobs(repo services.RepositoryService, files services.FilesServi
 		if numBytes > 0 {
 			s = "(" + strconv.FormatFloat(float64(numBytes)/(1<<20), 'f', 2, 64) + " MB)"
 		}
-		log.Printf("CleanImages: Removed %d unreferenced images %s", numFiles, s)
+		slog.Info("Ran CleanImages job", "numImagesRemoved", numFiles, "spaceReclaimed", s)
 	})
 
 	// Send queued emails
 	_, _ = scheduler.Every(1).Day().At("00:00").Do(func() {
 		sent, remaining, err := email.SendQueue()
-		log.Printf("SendQueuedEmails: Sent %d | Remaining %d | Error: %q", sent, remaining, err)
+		slog.Info("Ran SendQueuedEmails job", "sent", sent, "remaining", remaining, "error", err)
 	})
 
 	// Backup data
 	_, _ = scheduler.Every(3).Days().Do(func() {
 		err := files.BackupGlobal()
 		if err != nil {
-			log.Printf("Global backup failed: %q", err)
+			slog.Error("Global backup failed", "error", err)
 			return
 		}
 
 		err = files.BackupUsersData(repo)
 		if err != nil {
-			log.Printf("User backups failed: %q", err)
+			slog.Error("User backups failed", "error", err)
 			return
 		}
 
-		log.Println("Backup successful")
+		slog.Info("Backup successful")
 	})
 
 	// Check for a new release
 	_, _ = scheduler.Every(1).Week().Do(func() {
 		info, err := repo.CheckUpdate(files)
 		if err != nil {
-			log.Printf("Check for update failed: %q", err)
+			slog.Error("Check for update failed", "error", err)
 			return
 		}
 
@@ -75,7 +75,7 @@ func ScheduleCronJobs(repo services.RepositoryService, files services.FilesServi
 		app.Info.LastCheckedUpdateAt = info.LastCheckedUpdateAt
 		app.Info.LastUpdatedAt = info.LastUpdatedAt
 
-		log.Println("Checked for an application update")
+		slog.Info("Checked for an application update")
 	})
 
 	scheduler.StartAsync()
@@ -93,13 +93,13 @@ func cleanImages(dir fs.FS, usedImages []string, rmFileFunc func(path string) er
 		if !found {
 			info, err := d.Info()
 			if err != nil {
-				log.Printf("clean images dir walk error: %s", err)
+				slog.Error("Clean images dir walk", "error", err)
 				return err
 			}
 
 			err = rmFileFunc(path)
 			if err != nil {
-				log.Printf("clean images walk '%s': %s", path, err)
+				slog.Error("Clean images walk", "error", err, "path", path)
 				return err
 			}
 

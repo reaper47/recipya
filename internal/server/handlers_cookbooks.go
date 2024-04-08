@@ -1,13 +1,13 @@
 package server
 
 import (
-	"fmt"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
 	"github.com/reaper47/recipya/web/components"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
+	"log/slog"
 	"net/http"
 	"strconv"
 )
@@ -120,28 +120,27 @@ func (s *Server) cookbooksPostHandler() http.HandlerFunc {
 		}
 
 		userID := getUserID(r)
+		userIDAttr := slog.Int64("userID", userID)
+
 		cookbookID, err := s.Repository.AddCookbook(title, userID)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast("Could not create cookbook.").Render())
+			msg := "Could not create cookbook."
+			slog.Error(msg, userIDAttr, "error", err)
+			w.Header().Set("HX-Trigger", models.NewErrorDBToast(msg).Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
 		settings, err := s.Repository.UserSettings(userID)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast("Could not get user settings.").Render())
+			msg := "Could not get user settings."
+			slog.Error(msg, userIDAttr, "error", err)
+			w.Header().Set("HX-Trigger", models.NewErrorDBToast(msg).Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
-		query := r.URL.Query()
-		if query == nil {
-			w.Header().Set("HX-Trigger", models.NewErrorReqToast("Query is empty.").Render())
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-
-		pageStr := query.Get("page")
+		pageStr := r.URL.Query().Get("page")
 		page, err := strconv.ParseUint(pageStr, 10, 64)
 		if err != nil {
 			page = 1
@@ -149,7 +148,9 @@ func (s *Server) cookbooksPostHandler() http.HandlerFunc {
 
 		p, err := newCookbooksPagination(s, w, userID, page, true)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast("Error updating pagination.").Render())
+			msg := "Error updating pagination."
+			slog.Error(msg, userIDAttr, "page", page, "error", err)
+			w.Header().Set("HX-Trigger", models.NewErrorDBToast(msg).Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -158,6 +159,8 @@ func (s *Server) cookbooksPostHandler() http.HandlerFunc {
 			s.cookbooksHandler().ServeHTTP(w, r)
 			return
 		}
+
+		slog.Info("Created cookbook", userIDAttr, "cookbookID", cookbookID, "title", title)
 
 		w.WriteHeader(http.StatusCreated)
 
@@ -196,24 +199,31 @@ func (s *Server) cookbooksDeleteCookbookHandler() http.HandlerFunc {
 			return
 		}
 
-		userID := getUserID(r)
 		pageStr := query.Get("page")
 		page, err := strconv.ParseUint(pageStr, 10, 64)
 		if err != nil {
 			page = 1
 		}
 
+		userID := getUserID(r)
+		userIDAttr := slog.Int64("userID", userID)
+		cookbookIDAttr := slog.Int64("cookbookID", cookbookID)
+		pageAttr := slog.Uint64("page", page)
+
 		err = s.Repository.DeleteCookbook(cookbookID, userID)
 		if err != nil {
-			// TODO: Log it with slog
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast("Error deleting cookbook.").Render())
+			msg := "Error deleting cookbook."
+			slog.Error(msg, userIDAttr, cookbookIDAttr, pageAttr, "error", err)
+			w.Header().Set("HX-Trigger", models.NewErrorDBToast(msg).Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
 		p, err := newCookbooksPagination(s, w, userID, page, true)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorGeneralToast("Could not update pagination.").Render())
+			msg := "Could not update pagination."
+			slog.Error(msg, userIDAttr, cookbookIDAttr, pageAttr, "error", err)
+			w.Header().Set("HX-Trigger", models.NewErrorGeneralToast(msg).Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -223,6 +233,7 @@ func (s *Server) cookbooksDeleteCookbookHandler() http.HandlerFunc {
 			return
 		}
 
+		slog.Info("Deleted cookbook", userIDAttr, cookbookIDAttr)
 		_ = components.Pagination(p).Render(r.Context(), w)
 	}
 }
@@ -249,28 +260,40 @@ func newCookbooksPagination(srv *Server, w http.ResponseWriter, userID int64, pa
 
 func (s *Server) cookbooksDeleteCookbookRecipeHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		userID := getUserID(r)
+		userIDAttr := slog.Int64("userID", userID)
+
 		cookbookID, err := parsePathPositiveID(r.PathValue("id"))
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorReqToast("Cookbook ID must be >= 0.").Render())
+			msg := "Cookbook ID must be >= 0."
+			slog.Error(msg, userIDAttr)
+			w.Header().Set("HX-Trigger", models.NewErrorReqToast(msg).Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		recipeID, err := parsePathPositiveID(r.PathValue("recipeID"))
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorReqToast("Recipe ID must be >= 0.").Render())
+			msg := "Recipe ID must be >= 0."
+			slog.Error(msg, userIDAttr)
+			w.Header().Set("HX-Trigger", models.NewErrorReqToast(msg).Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
-		userID := getUserID(r)
+		cookbookIDAttr := slog.Int64("cookbookID", cookbookID)
+		recipeIDAttr := slog.Int64("recipeID", recipeID)
 
 		numRecipes, err := s.Repository.DeleteRecipeFromCookbook(recipeID, cookbookID, userID)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast("Error deleting recipe from cookbook.").Render())
+			msg := "Error deleting recipe from cookbook."
+			slog.Error(msg, userIDAttr, cookbookIDAttr, recipeIDAttr, "error", err)
+			w.Header().Set("HX-Trigger", models.NewErrorDBToast(msg).Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
+
+		slog.Info("Removed recipe from cookbook", userIDAttr, cookbookIDAttr, recipeIDAttr)
 
 		if numRecipes == 0 {
 			_ = components.CookbookIndexNoRecipes(true).Render(r.Context(), w)
@@ -379,25 +402,35 @@ func (s *Server) cookbooksImagePostCookbookHandler() http.HandlerFunc {
 			return
 		}
 
+		userID := getUserID(r)
+		userIDAttr := slog.Int64("userID", userID)
+		cookbookIDAttr := slog.Int64("cookbookID", cookbookID)
+
 		r.Body = http.MaxBytesReader(w, r.Body, 128<<20)
 
 		err = r.ParseMultipartForm(128 << 20)
 		form := r.MultipartForm
 		if err != nil || form == nil || form.File == nil {
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast("Could not parse the uploaded image.").Render())
+			msg := "Could not parse the uploaded image."
+			slog.Error(msg, userIDAttr, cookbookIDAttr, "error", err)
+			w.Header().Set("HX-Trigger", models.NewErrorFormToast(msg).Render())
 			return
 		}
 
 		imageFile, ok := form.File["image"]
 		if !ok {
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast("Could not retrieve the image from the form.").Render())
+			msg := "Could not retrieve the image from the form."
+			slog.Error(msg, userIDAttr, cookbookIDAttr, "error", err)
+			w.Header().Set("HX-Trigger", models.NewErrorFormToast(msg).Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		f, err := imageFile[0].Open()
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast("Could not open the image from the form.").Render())
+			msg := "Could not open the image from the form."
+			slog.Error(msg, userIDAttr, cookbookIDAttr, "error", err)
+			w.Header().Set("HX-Trigger", models.NewErrorFormToast(msg).Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -405,19 +438,24 @@ func (s *Server) cookbooksImagePostCookbookHandler() http.HandlerFunc {
 
 		imageUUID, err := s.Files.UploadImage(f)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorFilesToast("Error uploading image.").Render())
+			msg := "Error uploading image."
+			slog.Error(msg, userIDAttr, cookbookIDAttr, "error", err)
+			w.Header().Set("HX-Trigger", models.NewErrorFilesToast(msg).Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
+		imageUUIDAttr := slog.String("imageUUID", imageUUID.String())
 
-		userID := getUserID(r)
 		err = s.Repository.UpdateCookbookImage(cookbookID, imageUUID, userID)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast("Error updating image.").Render())
+			msg := "Error updating image."
+			slog.Error(msg, userIDAttr, cookbookIDAttr, imageUUIDAttr, "error", err)
+			w.Header().Set("HX-Trigger", models.NewErrorDBToast(msg).Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
+		slog.Info("Updated cookbook image", userIDAttr, cookbookIDAttr, imageUUIDAttr)
 		w.WriteHeader(http.StatusCreated)
 	}
 }
@@ -440,13 +478,21 @@ func (s *Server) cookbookPostCookbookHandler() http.HandlerFunc {
 		}
 
 		userID := getUserID(r)
+
+		userIDAttr := slog.Int64("userID", userID)
+		recipeIDAttr := slog.Int64("recipeID", recipeID)
+		cookbookIDAttr := slog.Int64("cookbookID", cookbookID)
+
 		err = s.Repository.AddCookbookRecipe(cookbookID, recipeID, userID)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast("Could not add recipe to cookbook.").Render())
+			msg := "Could not add recipe to cookbook."
+			slog.Error(msg, userIDAttr, cookbookIDAttr, recipeIDAttr)
+			w.Header().Set("HX-Trigger", models.NewErrorDBToast(msg).Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
+		slog.Info("Added recipe to cookbook", userIDAttr, cookbookIDAttr, recipeIDAttr)
 		w.WriteHeader(http.StatusCreated)
 	}
 }
@@ -553,65 +599,91 @@ func (s *Server) cookbooksRecipesSearchHandler() http.HandlerFunc {
 
 func (s *Server) cookbooksPostCookbookReorderHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		userID := getUserID(r)
+		userIDAttr := slog.Int64("userID", userID)
+
 		cookbookID, err := parsePathPositiveID(r.PathValue("id"))
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorReqToast("Missing cookbook ID in body.").Render())
+			msg := "Missing cookbook ID in body."
+			slog.Error(msg, userIDAttr, "error", err)
+			w.Header().Set("HX-Trigger", models.NewErrorReqToast(msg).Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		err = r.ParseForm()
 		if err != nil {
+			msg := "Form could not be parsed."
+			slog.Error(msg, userIDAttr, "error", err)
+			w.Header().Set("HX-Trigger", models.NewErrorReqToast(msg).Render())
+			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		recipeIDsStr := r.Form["recipe-id"]
 		if len(recipeIDsStr) == 0 {
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast("Missing recipe IDs in body.").Render())
+			msg := "Missing recipe IDs in body."
+			slog.Error(msg, userIDAttr, "error", err)
+			w.Header().Set("HX-Trigger", models.NewErrorFormToast(msg).Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
+		cookbookIDAttr := slog.Int64("cookbookID", cookbookID)
+
 		recipeIDs := make([]uint64, len(recipeIDsStr))
-		for i, s := range recipeIDsStr {
-			id, err := strconv.ParseUint(s, 10, 64)
+		for i, id := range recipeIDsStr {
+			id, err := strconv.ParseUint(id, 10, 64)
 			if err != nil {
-				w.Header().Set("HX-Trigger", models.NewErrorFormToast(fmt.Sprintf("Recipe ID %q is invalid.", s)).Render())
+				msg := "Recipe ID could not be parsed."
+				slog.Error(msg, userIDAttr, cookbookIDAttr, "id", id, "error", err)
+				w.Header().Set("HX-Trigger", models.NewErrorFormToast(msg).Render())
 				w.WriteHeader(http.StatusBadRequest)
 				return
 			}
 			recipeIDs[i] = id
 		}
 
-		err = s.Repository.ReorderCookbookRecipes(cookbookID, recipeIDs, getUserID(r))
+		err = s.Repository.ReorderCookbookRecipes(cookbookID, recipeIDs, userID)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast("Failed to update indices.").Render())
+			msg := "Failed to update indices."
+			slog.Error(msg, userIDAttr, cookbookIDAttr, "recipeIDs", recipeIDs, "error", err)
+			w.Header().Set("HX-Trigger", models.NewErrorDBToast(msg).Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
+		slog.Info("Reordered recipes in cookbook", userIDAttr, cookbookIDAttr, "recipeIDs", recipeIDs)
 		w.WriteHeader(http.StatusNoContent)
 	}
 }
 
 func (s *Server) cookbookSharePostHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		userID := getUserID(r)
+		userIDAttr := slog.Int64("user_id", userID)
+
 		cookbookID, err := parsePathPositiveID(r.PathValue("id"))
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorReqToast("Cookbook ID must be positive.").Render())
+			msg := "Cookbook ID must be positive."
+			slog.Error(msg, userIDAttr, "error", err)
+			w.Header().Set("HX-Trigger", models.NewErrorReqToast(msg).Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
-		userID := getUserID(r)
 		share := models.Share{CookbookID: cookbookID, RecipeID: -1, UserID: userID}
 
 		link, err := s.Repository.AddShareLink(share)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast("Failed to create share link.").Render())
+			msg := "Failed to create share link."
+			slog.Error(msg, userIDAttr, "share", share, "error", err)
+			w.Header().Set("HX-Trigger", models.NewErrorDBToast(msg).Render())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
+
+		slog.Info("Cookbook shared", userIDAttr, "share", share, "link", link)
 
 		_ = components.ShareLink(templates.Data{
 			Content: r.Host + link,

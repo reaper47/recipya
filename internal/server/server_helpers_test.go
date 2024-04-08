@@ -9,7 +9,7 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
 	"io"
-	"log"
+	"log/slog"
 	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
@@ -78,14 +78,14 @@ func createMultipartForm(fields map[string]string) (contentType string, body str
 		if strings.HasSuffix(value, ".jpg") {
 			field, _ := writer.CreateFormFile(name, value)
 			if field == nil {
-				log.Println("createMultipartForm.CreateFormField: field is nil after writer.CreateFormField")
+				slog.Error("createMultipartForm.CreateFormField: field is nil after writer.CreateFormField")
 				return
 			}
 			_, _ = field.Write([]byte("not a real file"))
 		} else {
 			field, _ := writer.CreateFormField(name)
 			if field == nil {
-				log.Println("createMultipartForm.CreateFormField: field is nil after writer.CreateFormField")
+				slog.Error("createMultipartForm.CreateFormField: field is nil after writer.CreateFormField")
 				return
 			}
 			_, _ = field.Write([]byte(value))

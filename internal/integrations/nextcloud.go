@@ -29,17 +29,8 @@ func NextcloudImport(baseURL, username, password string, uploadImageFunc func(rc
 	}
 	defer resRecipes.Body.Close()
 
-	if resRecipes == nil {
-		return nil, errors.New("recipes response is nil")
-	}
-
-	body := resRecipes.Body
-	if body == nil {
-		return nil, errors.New("recipes response body is nil")
-	}
-
 	var allRecipes []models.NextcloudRecipes
-	err = json.NewDecoder(body).Decode(&allRecipes)
+	err = json.NewDecoder(resRecipes.Body).Decode(&allRecipes)
 	if err != nil {
 		return nil, err
 	}

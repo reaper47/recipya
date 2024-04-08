@@ -21,6 +21,9 @@ type Integrations struct{}
 
 // NextcloudImport imports the recipes from a Nextcloud instance.
 func (i *Integrations) NextcloudImport(baseURL, username, password string, files FilesService, progress chan models.Progress) (*models.Recipes, error) {
+	if username == "" || password == "" || baseURL == "" {
+		return nil, errors.New("invalid username, password or URL")
+	}
 	return integrations.NextcloudImport(baseURL, username, password, files.UploadImage, progress)
 }
 

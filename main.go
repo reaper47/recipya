@@ -6,7 +6,7 @@ import (
 	"github.com/reaper47/recipya/internal/server"
 	"github.com/reaper47/recipya/internal/services"
 	"github.com/urfave/cli/v2"
-	"log"
+	"log/slog"
 	"os"
 )
 
@@ -30,6 +30,7 @@ func main() {
 
 	err := cliApp.Run(os.Args)
 	if err != nil {
-		log.Fatal(err)
+		slog.Error("could not run application", "error", err)
+		os.Exit(1)
 	}
 }

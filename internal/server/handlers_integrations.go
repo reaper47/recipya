@@ -4,12 +4,15 @@ import (
 	"errors"
 	"fmt"
 	"github.com/reaper47/recipya/internal/models"
+	"log/slog"
 	"net/http"
 )
 
 func (s *Server) integrationsImportNextcloud() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		userID := getUserID(r)
+		userIDAttr := slog.Int64("userID", userID)
+
 		_, found := s.Brokers[userID]
 		if !found {
 			w.Header().Set("HX-Trigger", models.NewWarningWSToast("Connection lost. Please reload page.").Render())
@@ -17,20 +20,12 @@ func (s *Server) integrationsImportNextcloud() http.HandlerFunc {
 			return
 		}
 
-		username := r.FormValue("username")
-		password := r.FormValue("password")
-		baseURL := r.FormValue("url")
-		if username == "" || password == "" || baseURL == "" {
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast("Invalid username, password or URL.").Render())
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-
 		settings, err := s.Repository.UserSettings(userID)
 		if err != nil {
-			fmt.Println(err)
+			msg := "Failed to get user settings."
+			slog.Error(msg, userIDAttr, "error", err)
 			s.Brokers[userID].HideNotification()
-			s.Brokers[userID].SendToast(models.NewErrorDBToast("Failed to get user settings."))
+			s.Brokers[userID].SendToast(models.NewErrorDBToast(msg))
 			return
 		}
 
@@ -46,7 +41,7 @@ func (s *Server) integrationsImportNextcloud() http.HandlerFunc {
 
 			go func() {
 				defer close(progress)
-				recipes, err = s.Integrations.NextcloudImport(baseURL, username, password, s.Files, progress)
+				recipes, err = s.Integrations.NextcloudImport(r.FormValue("url"), r.FormValue("username"), r.FormValue("password"), s.Files, progress)
 				if err != nil {
 					errs <- err
 				}
@@ -58,9 +53,10 @@ func (s *Server) integrationsImportNextcloud() http.HandlerFunc {
 
 			select {
 			case err = <-errs:
-				fmt.Println(err)
+				msg := "Failed to import Nextcloud recipes."
+				slog.Error(msg, userIDAttr, "processed", processed, "error", err)
 				s.Brokers[id].HideNotification()
-				s.Brokers[id].SendToast(models.NewErrorGeneralToast("Failed to import Nextcloud recipes."))
+				s.Brokers[id].SendToast(models.NewErrorGeneralToast(msg))
 				return
 			case <-progress:
 				for p := range progress {
@@ -79,6 +75,7 @@ func (s *Server) integrationsImportNextcloud() http.HandlerFunc {
 				c := recipe.Copy()
 				recipeID, err := s.Repository.AddRecipe(&c, id, us)
 				if err != nil {
+					slog.Warn("Skipped recipe", userIDAttr, "recipe", c, "error", err)
 					skipped++
 					continue
 				}
@@ -86,6 +83,7 @@ func (s *Server) integrationsImportNextcloud() http.HandlerFunc {
 				count++
 			}
 
+			slog.Info("Imported Nextcloud recipes", userIDAttr, "count", count, "skipped", skipped)
 			s.Repository.CalculateNutrition(userID, recipeIDs, settings)
 			s.Brokers[id].HideNotification()
 			s.Brokers[id].SendToast(models.NewInfoToast(fmt.Sprintf("Imported %d recipes. Skipped %d.", count, skipped), "", ""))

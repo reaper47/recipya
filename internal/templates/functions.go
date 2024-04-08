@@ -3,7 +3,7 @@ package templates
 import (
 	"fmt"
 	"github.com/google/uuid"
-	"log"
+	"log/slog"
 	"net/url"
 	"strings"
 	"time"
@@ -31,14 +31,14 @@ func isURL(s string) bool {
 	_, err := url.ParseRequestURI(s)
 	if err != nil {
 		if strings.HasPrefix(s, "http") {
-			log.Printf("isURL.ParseRequestURI error: %q", err)
+			slog.Info("Failed to parse request URI", "uri", s, "error", err)
 		}
 		return false
 	}
 
 	u, err := url.Parse(s)
 	if u == nil {
-		log.Printf("parsed URL %q is nil", s)
+		slog.Error("Parsed URL is nil", "url", s, "error", err)
 		return false
 	}
 	return err == nil && u.Scheme != "" && u.Host != ""

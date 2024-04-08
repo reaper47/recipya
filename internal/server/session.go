@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"github.com/google/uuid"
 	"io"
+	"log/slog"
 	"strconv"
 )
 
@@ -42,4 +43,6 @@ func (s SessionDataMap) Load(r io.Reader) {
 
 		s[k] = v
 	}
+
+	slog.Info("User sessions restored")
 }

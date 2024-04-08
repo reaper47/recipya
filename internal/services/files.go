@@ -20,7 +20,7 @@ import (
 	"image/jpeg"
 	"io"
 	"io/fs"
-	"log"
+	"log/slog"
 	"mime/multipart"
 	"net/http"
 	"net/url"
@@ -87,7 +87,7 @@ func (f *Files) BackupGlobal() error {
 		}
 
 		omitFiles := []string{"fdc.db", app.RecipyaDB + "-wal", app.RecipyaDB + "-shm"}
-		if strings.Contains(path, "backup") ||
+		if strings.Contains(path, "Backup") ||
 			slices.Contains(omitFiles, info.Name()) {
 			return nil
 		}
@@ -410,7 +410,7 @@ func addImageToZip(zw *zip.Writer, img uuid.UUID) error {
 func cleanBackups(root string) {
 	files, err := os.ReadDir(root)
 	if err != nil {
-		log.Printf("cleanBackups for %q error: %q", root, err)
+		slog.Error("Failed to clean backups", "root", root, "error", err)
 		return
 	}
 
@@ -804,7 +804,7 @@ func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recip
 	defer func() {
 		err := recover()
 		if err != nil {
-			log.Printf("ExtractRecipes recovered from panic for %#v file headers: %q", fileHeaders, err)
+			slog.Info("ExtractRecipes recovered from panic", "fileHeader", fileHeaders, "error", err)
 		}
 	}()
 
@@ -845,7 +845,7 @@ func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recip
 func (f *Files) processZip(file *multipart.FileHeader) models.Recipes {
 	openFile, err := file.Open()
 	if err != nil {
-		log.Println(err)
+		slog.Error("Failed to open file", "file", file, "error", err)
 		return make(models.Recipes, 0)
 	}
 	defer openFile.Close()
@@ -853,13 +853,13 @@ func (f *Files) processZip(file *multipart.FileHeader) models.Recipes {
 	buf := new(bytes.Buffer)
 	fileSize, err := io.Copy(buf, openFile)
 	if err != nil {
-		log.Println(err)
+		slog.Error("Failed to copy file to buffer", "error", err)
 		return make(models.Recipes, 0)
 	}
 
 	z, err := zip.NewReader(bytes.NewReader(buf.Bytes()), fileSize)
 	if err != nil {
-		log.Println(err)
+		slog.Error("Failed to create reader", "filesize", fileSize, "buffer", buf, "error", err)
 		return make(models.Recipes, 0)
 	}
 
@@ -883,7 +883,7 @@ func (f *Files) processRecipeFiles(files []*zip.File) models.Recipes {
 		if imageUUID == uuid.Nil && slices.Contains(validImageFormats, filepath.Ext(zf.Name)) {
 			imageFile, err := zf.Open()
 			if err != nil {
-				log.Printf("Error opening image file: %q", err)
+				slog.Error("Failed to open image file", "file", zf, "error", err)
 				continue
 			}
 
@@ -894,14 +894,14 @@ func (f *Files) processRecipeFiles(files []*zip.File) models.Recipes {
 
 			imageUUID, err = f.UploadImage(imageFile)
 			if err != nil {
-				log.Printf("Error uploading image: %q", err)
+				slog.Error("Failed to upload image", "file", zf, "error", err)
 			}
 			_ = imageFile.Close()
 		}
 
 		openedFile, err := zf.Open()
 		if err != nil {
-			log.Println(err)
+			slog.Error("Failed to open file", "file", zf, "error", err)
 			continue
 		}
 
@@ -909,7 +909,7 @@ func (f *Files) processRecipeFiles(files []*zip.File) models.Recipes {
 		case models.JSON.Ext():
 			r, err := f.extractRecipe(openedFile)
 			if err != nil {
-				log.Printf("could not extract %s: %q", zf.Name, err.Error())
+				slog.Error("Failed to extract", "file", zf, "error", err)
 				_ = openedFile.Close()
 				continue
 			}
@@ -925,7 +925,7 @@ func (f *Files) processRecipeFiles(files []*zip.File) models.Recipes {
 		case models.TXT.Ext():
 			recipe, err := models.NewRecipeFromTextFile(openedFile)
 			if err != nil {
-				log.Printf("Could not create recipe from text file %q: %q", zf.Name, err)
+				slog.Error("Could not create recipe from text file", "file", zf.Name, "error", err)
 				continue
 			}
 			recipes = append(recipes, recipe)
@@ -946,14 +946,14 @@ func (f *Files) processRecipeFiles(files []*zip.File) models.Recipes {
 func (f *Files) processJSON(file *multipart.FileHeader) *models.Recipe {
 	fi, err := file.Open()
 	if err != nil {
-		log.Printf("error opening file %s: %q", file.Filename, err.Error())
+		slog.Error("Failed to open file", "error", err, "file", file)
 		return nil
 	}
 	defer fi.Close()
 
 	r, err := f.extractRecipe(fi)
 	if err != nil {
-		log.Printf("could not extract %s: %q", file.Filename, err.Error())
+		slog.Error("Could not extract file", "file", file, "error", err)
 		return nil
 	}
 	return r
@@ -962,7 +962,7 @@ func (f *Files) processJSON(file *multipart.FileHeader) *models.Recipe {
 func processMasterCook(file *multipart.FileHeader) models.Recipes {
 	f, err := file.Open()
 	if err != nil {
-		log.Printf("error opening file %s: %q", file.Filename, err.Error())
+		slog.Error("Failed to open file", "file", file, "error", err)
 		return nil
 	}
 	defer f.Close()
@@ -973,7 +973,7 @@ func processMasterCook(file *multipart.FileHeader) models.Recipes {
 func (f *Files) extractRecipe(rd io.Reader) (*models.Recipe, error) {
 	buf, err := io.ReadAll(rd)
 	if err != nil {
-		log.Println(err)
+		slog.Error("Failed to read file", "reader", rd, "error", err)
 		return nil, err
 	}
 
@@ -1160,7 +1160,7 @@ func pdfToBytes(pdf *gofpdf.Fpdf, name string) []byte {
 	buf := &bytes.Buffer{}
 	err := pdf.Output(buf)
 	if err != nil {
-		log.Printf("could not create a pdf for %q", name)
+		slog.Error("Could not create PDF", "name", name)
 		return []byte{}
 	}
 	return buf.Bytes()

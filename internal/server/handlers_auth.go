@@ -9,7 +9,7 @@ import (
 	"github.com/reaper47/recipya/internal/templates"
 	"github.com/reaper47/recipya/internal/utils/regex"
 	"github.com/reaper47/recipya/web/components"
-	"log"
+	"log/slog"
 	"maps"
 	"net/http"
 	"strconv"
@@ -78,14 +78,7 @@ func (s *Server) confirmHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	query := r.URL.Query()
-	if query == nil {
-		log.Printf("confirmHandler.Query() returned nil")
-		http.Redirect(w, r, "/", http.StatusSeeOther)
-		return
-	}
-
-	token := query.Get("token")
+	token := r.URL.Query().Get("token")
 	if token == "" {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
@@ -93,16 +86,15 @@ func (s *Server) confirmHandler(w http.ResponseWriter, r *http.Request) {
 
 	userID, err := auth.ParseToken(token)
 	if err != nil {
-		log.Printf("[error] confirmHandler.ParseToken (token: %s): %q", token, err)
+		slog.Error("Failed to parse token", "token", token, "error", err)
 		w.WriteHeader(http.StatusBadRequest)
-
 		_ = components.SimplePage(templates.ErrorTokenExpired.Title, templates.ErrorTokenExpired.Content).Render(r.Context(), w)
 		return
 	}
 
 	err = s.Repository.Confirm(userID)
 	if err != nil {
-		log.Printf("[error] confirmHandler.Confirm (token: %s): %q", token, err)
+		slog.Error("Failed to confirm user", "token", token, "userID", userID, "error", err)
 		w.WriteHeader(http.StatusNotFound)
 
 		const content = `An error occurred when you requested to confirm your account.
@@ -159,7 +151,7 @@ func (s *Server) forgotPasswordPostHandler(w http.ResponseWriter, r *http.Reques
 		userID := s.Repository.UserID(email)
 		token, err := auth.CreateToken(map[string]any{"userID": userID}, 1*time.Hour)
 		if err != nil {
-			log.Printf("[error] forgotPasswordPostHandler.CreateToken: %q", err)
+			slog.Error("Failed to create token", "error", err)
 			w.Header().Set("HX-Trigger", models.NewErrorAuthToast("Forgot password failed.").Render())
 			w.WriteHeader(http.StatusUnprocessableEntity)
 			return
@@ -179,7 +171,7 @@ func (s *Server) forgotPasswordPostHandler(w http.ResponseWriter, r *http.Reques
 
 		err = s.Email.Send(email, templates.EmailForgotPassword, data)
 		if err != nil {
-			log.Printf("[error] forgotPasswordPostHandler.SendEmail (data: %+v): %q", data, err)
+			slog.Error("Failed to send email", "data", data, "error", err)
 			s.Email.Queue(email, templates.EmailForgotPassword, data)
 
 			const content = "The email could not be sent because the SendGrid daily sent email quota has been reached. " +
@@ -226,8 +218,9 @@ func (s *Server) forgotPasswordResetPostHandler(w http.ResponseWriter, r *http.R
 
 	userID, err := strconv.ParseInt(userIDStr, 10, 64)
 	if err != nil {
-		log.Printf("[error] forgotPasswordResetPostHandler.ParseInt for (%d): %q", userID, err)
-		w.Header().Set("HX-Trigger", models.NewErrorFormToast("UserID is not a number.").Render())
+		msg := "UserID is not a number."
+		slog.Error(msg, "userID", userIDStr, "error", err)
+		w.Header().Set("HX-Trigger", models.NewErrorFormToast(msg).Render())
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -241,8 +234,9 @@ func (s *Server) forgotPasswordResetPostHandler(w http.ResponseWriter, r *http.R
 
 	err = s.Repository.UpdatePassword(userID, hashPassword)
 	if err != nil {
-		log.Printf("[error] forgotPasswordResetPostHandler.UpdatePassword for %d: %q", userID, err)
-		w.Header().Set("HX-Trigger", models.NewErrorDBToast("Updating password failed.").Render())
+		msg := "Updating password failed."
+		slog.Error(msg, "userID", userID, "error", err)
+		w.Header().Set("HX-Trigger", models.NewErrorDBToast(msg).Render())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -284,7 +278,7 @@ func (s *Server) loginPostHandler() http.HandlerFunc {
 			http.SetCookie(w, NewRememberMeCookie(selector, validator))
 			err := s.Repository.AddAuthToken(selector, validator, userID)
 			if err != nil {
-				log.Printf("[error] loginPostHandler.AddAuthToken: %q", err)
+				slog.Error("Failed to add authentication token", "userID", userID, "error", err)
 			}
 		}
 
@@ -337,7 +331,7 @@ func (s *Server) logoutHandler(w http.ResponseWriter, r *http.Request) {
 	if rememberMeCookie != nil && !errors.Is(err, http.ErrNoCookie) {
 		err = s.Repository.DeleteAuthToken(userID)
 		if err != nil {
-			log.Printf("[error] logoutHandler.DeleteAuthToken: %q", err)
+			slog.Error("Failed to delete authentication token", "userID", userID, "error", err)
 		}
 
 		selector, validator, _ := strings.Cut(rememberMeCookie.Value, ":")
@@ -377,8 +371,9 @@ func (s *Server) registerPostHandler() http.HandlerFunc {
 
 		token, err := auth.CreateToken(map[string]any{"userID": userID}, 14*24*time.Hour)
 		if err != nil {
-			log.Printf("[error] registerPostHandler.CreateToken: %q", err)
-			w.Header().Set("HX-Trigger", models.NewErrorAuthToast("User might be registered or password invalid.").Render())
+			msg := "User might be registered or password invalid."
+			slog.Error(msg, "userID", userID, "error", err)
+			w.Header().Set("HX-Trigger", models.NewErrorAuthToast(msg).Render())
 			w.WriteHeader(http.StatusUnprocessableEntity)
 			return
 		}
@@ -397,7 +392,7 @@ func (s *Server) registerPostHandler() http.HandlerFunc {
 
 		err = s.Email.Send(email, templates.EmailIntro, data)
 		if err != nil {
-			log.Printf("[error] registerPostHandler.SendEmail (data: %+v): %q", data, err)
+			slog.Error("Failed to send email", "userID", userID, "data", data, "error", err)
 			s.Email.Queue(email, templates.EmailIntro, data)
 		}
 

@@ -21,8 +21,10 @@ Then, run the image. The `-e` environment variables are described below.
 
 ```bash
 docker run -d \
-  -p [host port]:[port specified in config.json] \
-  -v <host-path>:/app/recipya.db \
+  --name recipya
+  --restart unless-stopped
+  -p <host port>:<port specified by RECIPYA_SERVER_PORT> \
+  -v recipya-data:/root/.config/Recipya \
   -e RECIPYA_EMAIL=my@email.com \
   -e RECIPYA_EMAIL_SENDGRID=API_KEY \
   -e RECIPYA_VISION_KEY=KEY_1 \
