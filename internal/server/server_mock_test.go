@@ -875,7 +875,7 @@ func (m *mockFiles) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.R
 	return models.Recipes{}
 }
 
-func (m *mockFiles) IsAppLatest(current semver.Version) (bool, *github.RepositoryRelease, error) {
+func (m *mockFiles) IsAppLatest(_ semver.Version) (bool, *github.RepositoryRelease, error) {
 	return true, nil, nil
 }
 

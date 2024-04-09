@@ -30,6 +30,7 @@ Wants=network.target
 
 [Service]
 ExecStart=/path/to/binary/recipya serve
+Environment=HOME=/root
 
 [Install]
 WantedBy=multi-user.target

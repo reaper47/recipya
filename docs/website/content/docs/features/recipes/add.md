@@ -68,7 +68,8 @@ support for the website by clicking the button that appears.
 
 You can import recipes in the following formats:
 - `.json`: If they adhere to the [Recipe schema](https://schema.org/Recipe) standard
-- `.mxp`: Exported recipes from [MasterCook](https://www.mastercook.com)  
+- `.mxp`: Exported recipes from [MasterCook](https://www.mastercook.com)
+- `.paprikarecipes`: Exported recipes from [Paprika](https://www.paprikaapp.com) in the `Paprika Recipe Format`
 - `.txt`
 
 ![](images/add-recipe-import.webp)

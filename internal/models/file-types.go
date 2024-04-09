@@ -7,6 +7,7 @@ const (
 	JSON FileType = iota
 	PDF
 	MXP
+	Paprika
 	TXT
 	InvalidFileType
 )
@@ -19,10 +20,12 @@ func NewFileType(fileType string) FileType {
 	switch strings.ToLower(fileType) {
 	case "json":
 		return JSON
-	case "pdf":
-		return PDF
 	case "mxp":
 		return MXP
+	case "paprikarecipes":
+		return Paprika
+	case "pdf":
+		return PDF
 	case "txt":
 		return TXT
 	default:
@@ -35,10 +38,12 @@ func (f FileType) Ext() string {
 	switch f {
 	case JSON:
 		return ".json"
-	case PDF:
-		return ".pdf"
 	case MXP:
 		return ".mxp"
+	case Paprika:
+		return ".paprikarecipes"
+	case PDF:
+		return ".pdf"
 	case TXT:
 		return ".txt"
 	default:

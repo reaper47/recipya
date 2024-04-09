@@ -12,8 +12,9 @@ func TestFileType_Ext(t *testing.T) {
 		want string
 	}{
 		{name: "json", in: models.JSON, want: ".json"},
-		{name: "pdf", in: models.PDF, want: ".pdf"},
 		{name: "mxp", in: models.MXP, want: ".mxp"},
+		{name: "paprika", in: models.Paprika, want: ".paprikarecipes"},
+		{name: "pdf", in: models.PDF, want: ".pdf"},
 		{name: "txt", in: models.TXT, want: ".txt"},
 		{name: "invalid", in: models.InvalidFileType, want: ""},
 	}
@@ -34,8 +35,9 @@ func TestNewFileType(t *testing.T) {
 		want models.FileType
 	}{
 		{name: "json", in: "json", want: models.JSON},
-		{name: "pdf", in: "pdf", want: models.PDF},
 		{name: "mxp", in: "mxp", want: models.MXP},
+		{name: "paprikarecipes", in: "paprikarecipes", want: models.Paprika},
+		{name: "pdf", in: "pdf", want: models.PDF},
 		{name: "txt", in: "txt", want: models.TXT},
 		{name: "invalid", in: "", want: models.InvalidFileType},
 	}

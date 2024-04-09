@@ -7,7 +7,7 @@
             "command": "go",
             "args": [
                 "mod",
-                "tidy",
+                "tidy"
             ]
         },
         {
@@ -33,7 +33,7 @@
             "command": "templ",
             "args": [
                 "generate",
-                "-watch",
+                "-watch"
             ]
         },
         {
@@ -42,11 +42,11 @@
             "command": "hugo",
             "args": [
                 "server",
-                "--navigateToChanged",
+                "--navigateToChanged"
             ],
             "options": {
                 "cwd": "${workspaceFolder}/docs/website"
-            },
+            }
         }
     ]
 }

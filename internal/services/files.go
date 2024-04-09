@@ -3,7 +3,9 @@ package services
 import (
 	"archive/zip"
 	"bytes"
+	"compress/gzip"
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -834,6 +836,10 @@ func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recip
 					recipes = append(recipes, processMasterCook(fh)...)
 					mu.Unlock()
 				}
+			} else if content == "application/paprikarecipes" {
+				mu.Lock()
+				recipes = append(recipes, f.processPaprikaRecipes(nil, fh)...)
+				mu.Unlock()
 			}
 		}(file)
 	}
@@ -850,16 +856,8 @@ func (f *Files) processZip(file *multipart.FileHeader) models.Recipes {
 	}
 	defer openFile.Close()
 
-	buf := new(bytes.Buffer)
-	fileSize, err := io.Copy(buf, openFile)
+	z, err := unzipMem(openFile)
 	if err != nil {
-		slog.Error("Failed to copy file to buffer", "error", err)
-		return make(models.Recipes, 0)
-	}
-
-	z, err := zip.NewReader(bytes.NewReader(buf.Bytes()), fileSize)
-	if err != nil {
-		slog.Error("Failed to create reader", "filesize", fileSize, "buffer", buf, "error", err)
 		return make(models.Recipes, 0)
 	}
 
@@ -909,8 +907,8 @@ func (f *Files) processRecipeFiles(files []*zip.File) models.Recipes {
 		case models.JSON.Ext():
 			r, err := f.extractRecipe(openedFile)
 			if err != nil {
-				slog.Error("Failed to extract", "file", zf, "error", err)
 				_ = openedFile.Close()
+				slog.Error("Failed to extract", "file", zf, "error", err)
 				continue
 			}
 
@@ -922,9 +920,16 @@ func (f *Files) processRecipeFiles(files []*zip.File) models.Recipes {
 				recipes = append(recipes, xr...)
 				recipeNumber += len(xr)
 			}
+		case models.Paprika.Ext():
+			xr := f.processPaprikaRecipes(openedFile, nil)
+			if len(xr) > 0 {
+				recipes = append(recipes, xr...)
+				recipeNumber += len(xr)
+			}
 		case models.TXT.Ext():
 			recipe, err := models.NewRecipeFromTextFile(openedFile)
 			if err != nil {
+				_ = openedFile.Close()
 				slog.Error("Could not create recipe from text file", "file", zf.Name, "error", err)
 				continue
 			}
@@ -968,6 +973,67 @@ func processMasterCook(file *multipart.FileHeader) models.Recipes {
 	defer f.Close()
 
 	return models.NewRecipesFromMasterCook(f)
+}
+
+func (f *Files) processPaprikaRecipes(rc io.ReadCloser, file *multipart.FileHeader) models.Recipes {
+	if rc == nil {
+		openedFile, err := file.Open()
+		if err != nil {
+			slog.Error("Failed to open file", "file", file, "error", err)
+			return nil
+		}
+		defer openedFile.Close()
+		rc = openedFile
+	}
+
+	z, err := unzipMem(rc)
+	if err != nil {
+		return nil
+	}
+
+	recipes := make(models.Recipes, 0, len(z.File))
+	for _, zf := range z.File {
+		openFile, err := zf.Open()
+		if err != nil {
+			slog.Error("Could not open paprika recipe", "file", zf.Name, "error", err)
+			continue
+		}
+
+		data, err := unzipGzip(openFile)
+		if err != nil {
+			openFile.Close()
+			slog.Error("Could not unzip paprika recipe", "file", zf.Name, "error", err)
+			return nil
+		}
+		openFile.Close()
+
+		var p models.PaprikaRecipe
+		err = json.Unmarshal(data, &p)
+		if err != nil {
+			slog.Error("Could not unmarshal paprika recipe", "file", zf.Name, "data", string(data), "error", err)
+			continue
+		}
+
+		img := uuid.Nil
+		if p.PhotoData != "" {
+			decode, err := base64.StdEncoding.DecodeString(p.PhotoData)
+			if err == nil {
+				img, err = f.UploadImage(io.NopCloser(bytes.NewReader(decode)))
+				if err != nil {
+					slog.Error("Failed to upload Paprika image", "file", zf.Name, "error", err)
+				}
+			}
+		} else if p.ImageURL != "" {
+			img, err = f.ScrapeAndStoreImage(p.ImageURL)
+			if err != nil {
+				slog.Error("Failed to fetch and upload Paprika image", "file", zf.Name, "error", err)
+			}
+		}
+
+		recipes = append(recipes, p.Recipe(img))
+	}
+
+	return recipes
 }
 
 func (f *Files) extractRecipe(rd io.Reader) (*models.Recipe, error) {
@@ -1042,10 +1108,6 @@ func (f *Files) ScrapeAndStoreImage(rawURL string) (uuid.UUID, error) {
 		return uuid.Nil, err
 	}
 	defer resImage.Body.Close()
-
-	if resImage == nil {
-		return uuid.Nil, errors.New("image response is nil")
-	}
 
 	if resImage.Body == nil {
 		return uuid.Nil, errors.New("image response body is nil")
@@ -1441,4 +1503,36 @@ func copyFile(src, dst string) error {
 		return err
 	}
 	return os.WriteFile(dst, f, 0o644)
+}
+
+func unzipMem(src io.Reader) (*zip.Reader, error) {
+	buf := new(bytes.Buffer)
+	fileSize, err := io.Copy(buf, src)
+	if err != nil {
+		slog.Error("Failed to copy file to buffer", "error", err)
+		return nil, errors.New("failed to copy file to buffer")
+	}
+
+	z, err := zip.NewReader(bytes.NewReader(buf.Bytes()), fileSize)
+	if err != nil {
+		slog.Error("Failed to create reader", "filesize", fileSize, "buffer", buf, "error", err)
+		return nil, errors.New("failed to create reader")
+	}
+
+	return z, nil
+}
+
+func unzipGzip(src io.Reader) ([]byte, error) {
+	gz, err := gzip.NewReader(src)
+	if err != nil {
+		return nil, err
+	}
+	defer gz.Close()
+
+	content, err := io.ReadAll(gz)
+	if err != nil {
+		return nil, err
+	}
+
+	return content, nil
 }
