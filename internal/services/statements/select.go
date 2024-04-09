@@ -315,9 +315,7 @@ func BuildBaseSelectRecipe(sorts models.Sort) string {
 	before, after, _ := strings.Cut(baseSelectSearchRecipe, "ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num")
 	var sb strings.Builder
 	sb.WriteString(before)
-	if s != "" {
-		sb.WriteString(" ROW_NUMBER() OVER (ORDER BY " + s + ") AS row_num")
-	}
+	sb.WriteString(" ROW_NUMBER() OVER (ORDER BY " + s + ") AS row_num")
 	sb.WriteString(after)
 	return sb.String()
 }

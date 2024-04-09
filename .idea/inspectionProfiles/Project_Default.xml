@@ -40,6 +40,10 @@
         <method importPath="net" receiver="Conn" name="Close" />
         <method importPath="github.com/gorilla/websocket" receiver="*Conn" name="Close" />
         <method importPath="net" receiver="Listener" name="Close" />
+        <method importPath="compress/gzip" receiver="*Reader" name="Close" />
+        <method importPath="io" receiver="*PipeWriter" name="Close" />
+        <method importPath="io" receiver="*PipeWriter" name="CloseWithError" />
+        <method importPath="io" receiver="*PipeReader" name="Close" />
       </methods>
     </inspection_tool>
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
