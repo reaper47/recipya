@@ -15,6 +15,7 @@ import (
 	"github.com/reaper47/recipya/internal/templates"
 	"github.com/reaper47/recipya/internal/units"
 	"io"
+	"log/slog"
 	"mime/multipart"
 	"os"
 	"slices"
@@ -43,7 +44,9 @@ func newServerTest() *server.Server {
 	srv.Files = &mockFiles{}
 	srv.Integrations = &mockIntegrations{}
 	srv.Scraper = &mockScraper{}
+
 	_ = os.Remove("sessions.csv")
+	slog.SetDefault(slog.New(slog.NewTextHandler(io.Discard, nil)))
 	return srv
 }
 

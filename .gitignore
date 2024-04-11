@@ -1,6 +1,7 @@
 bin/
 coverage.html
 data/
+docs/website/.hugo_build.lock
 docs/website/public
 docs/website/themes/hextra
 releases/v*

@@ -1295,9 +1295,9 @@ templ recipesIndex(data templates.Data) {
 }
 
 templ ListRecipes(data templates.Data) {
-	<article class="grid gap-4 p-4 text-sm place-items-center md:m-auto md:max-w-7xl sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:text-base">
+	<article class="grid gap-4 p-4 text-sm place-items-center md:m-auto md:max-w-7xl grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:text-base">
 		for _, r := range data.Recipes {
-			<section class="card card-compact bg-base-100 shadow-lg indicator">
+			<section class="card card-compact bg-base-100 shadow-lg indicator w-full">
 				<span class="indicator-item indicator-center badge badge-primary select-none">{ r.Category }</span>
 				<figure class="relative cursor-pointer" hx-get={ fmt.Sprintf("/recipes/%d", r.ID) } hx-target="#content" hx-push-url="true" hx-trigger="mousedown">
 					<img
@@ -1314,7 +1314,7 @@ templ ListRecipes(data templates.Data) {
 					</div>
 				</figure>
 				<div class="card-body" lang="en">
-					<h2 class="font-semibold w-[25ch] break-words">{ r.Name }</h2>
+					<h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">{ r.Name }</h2>
 					<div class="card-actions h-full flex-col-reverse">
 						<button class="btn btn-block btn-sm btn-outline" hx-get={ fmt.Sprintf("/recipes/%d", r.ID) } hx-target="#content" hx-trigger="mousedown" hx-push-url="true">
 							View
@@ -1531,9 +1531,9 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 											<th>
 												Nutrition (per
 												if data.Recipe.Nutrition.IsPerServing {
-													serving
+													serving)
 												} else {
-													100g
+													100g)
 												}
 											</th>
 											<th>Amount</th>
