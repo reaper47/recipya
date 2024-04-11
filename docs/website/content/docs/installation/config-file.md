@@ -8,6 +8,8 @@ sets important variables for the application. Let's go over each of them.
 
 {{< callout type="info" >}}
 You do not need to create this file if you do not use Docker because it will be created during the one-time setup.
+
+The admin may change most of these options from the settings.
 {{< /callout >}}
 
 - **email**
@@ -24,3 +26,4 @@ You do not need to create this file if you do not use Docker because it will be 
   - **noSignups**: Whether to disable user account registrations. Set to *true* when you don't want people to create accounts. Otherwise, *false*.
   - **port**: The port the app will be served through if localhost.
   - **url**: The website the app is served on. This URL will serve as the base link in the emails.
+

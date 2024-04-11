@@ -133,6 +133,7 @@ type RegisterData struct {
 // SettingsData holds template data related to the user settings.
 type SettingsData struct {
 	Backups            []Backup
+	Config             app.ConfigFile
 	MeasurementSystems []units.System
 	UserSettings       models.UserSettings
 }

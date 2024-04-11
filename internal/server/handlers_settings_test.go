@@ -3,12 +3,14 @@ package server_test
 import (
 	"errors"
 	"fmt"
+	"github.com/google/go-cmp/cmp"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services"
 	"github.com/reaper47/recipya/internal/units"
 	"maps"
 	"net/http"
+	"os"
 	"slices"
 	"strings"
 	"testing"
@@ -206,6 +208,76 @@ func TestHandlers_Settings_CalculateNutrition(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("convert=on"))
 
 		assertStatus(t, rr.Code, http.StatusNoContent)
+	})
+}
+
+func TestHandlers_Settings_Config(t *testing.T) {
+	srv := newServerTest()
+
+	uri := "/settings/config"
+	fields := "email.from=test%40gmail.com&email.apikey=GHJ&integrations.ocr.key=JGKL&integrations.ocr.url=https%3A%2F%2Fwww.google.com&server.autologin=on&server.noSignups=on&server.production=on"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodPut, uri)
+	})
+
+	t.Run("only admin may update config", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedInOther(srv, http.MethodPut, uri, formHeader, strings.NewReader(fields))
+
+		assertStatus(t, rr.Code, http.StatusForbidden)
+		assertStringsInHTML(t, getBodyHTML(rr), []string{"Access denied: You are not an admin."})
+	})
+
+	t.Run("demo cannot update config", func(t *testing.T) {
+		app.Config.Server.IsDemo = true
+		defer func() {
+			app.Config.Server.IsDemo = false
+		}()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, uri, formHeader, strings.NewReader(fields))
+
+		assertStatus(t, rr.Code, http.StatusInternalServerError)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to update configuration.\",\"title\":\"Database Error\"}"}`)
+	})
+
+	t.Run("update all fields of the config", func(t *testing.T) {
+		_ = os.Setenv("RECIPYA_IS_TEST", "true")
+		original := app.Config
+		app.Config.Server.URL = "http://localhost"
+		app.Config.Server.Port = 8078
+		defer func() {
+			os.Clearenv()
+			app.Config = original
+		}()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, uri, formHeader, strings.NewReader(fields))
+
+		want := app.ConfigFile{
+			Email: app.ConfigEmail{
+				From:           "test@gmail.com",
+				SendGridAPIKey: "GHJ",
+			},
+			Integrations: app.ConfigIntegrations{
+				AzureComputerVision: app.AzureComputerVision{
+					ResourceKey:    "JGKL",
+					VisionEndpoint: "https://www.google.com",
+				},
+			},
+			Server: app.ConfigServer{
+				IsAutologin:  true,
+				IsDemo:       false,
+				IsNoSignups:  true,
+				IsProduction: true,
+				Port:         8078,
+				URL:          "http://localhost",
+			},
+		}
+		assertStatus(t, rr.Code, http.StatusNoContent)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-info\",\"message\":\"\",\"title\":\"Configuration updated.\"}"}`)
+		if !cmp.Equal(app.Config, want) {
+			t.Log(cmp.Diff(app.Config, want))
+			t.Fail()
+		}
 	})
 }
 
@@ -540,20 +612,61 @@ func TestHandlers_Settings_TabsAdvanced(t *testing.T) {
 
 	uri := "/settings/tabs/advanced"
 
+	configForm := []string{
+		`<form class="grid w-full max-w-sm" hx-put="/settings/config" hx-swap="none">`,
+		`<input name="email.from" type="text" placeholder="SendGrid email" value="test@gmail.com" autocomplete="off" class="input input-bordered input-sm w-full">`,
+		`<input name="email.apikey" type="text" placeholder="API key" value="1234" autocomplete="off" class="input input-bordered input-sm w-full">`,
+		`<input name="integrations.ocr.key" type="text" placeholder="Resource key 1" value="HJK1" autocomplete="off" class="input input-bordered input-sm w-full">`,
+		`<input name="integrations.ocr.url" type="url" placeholder="Vision endpoint URL" value="https://graph.microsoft.com/v1.0" autocomplete="off" class="input input-bordered input-sm w-full">`,
+		`<input name="server.autologin" type="checkbox" checked class="checkbox">`,
+		`<input name="server.noSignups" type="checkbox" class="checkbox">`,
+		`<input name="server.production" type="checkbox" class="checkbox">`,
+	}
+
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
 	})
 
+	t.Run("non-admin does not see config", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedInOther(srv, http.MethodGet, uri, noHeader, nil)
+
+		assertStringsNotInHTML(t, getBodyHTML(rr), configForm)
+	})
+
 	t.Run("successful request", func(t *testing.T) {
+		original := app.Config
+		app.Config = app.ConfigFile{
+			Email: app.ConfigEmail{
+				From:           "test@gmail.com",
+				SendGridAPIKey: "1234",
+			},
+			Integrations: app.ConfigIntegrations{
+				AzureComputerVision: app.AzureComputerVision{
+					ResourceKey:    "HJK1",
+					VisionEndpoint: "https://graph.microsoft.com/v1.0",
+				},
+			},
+			Server: app.ConfigServer{
+				IsAutologin:  true,
+				IsNoSignups:  false,
+				IsProduction: false,
+				Port:         1234,
+				URL:          "http://localhost",
+			},
+		}
+		defer func() {
+			app.Config = original
+		}()
+
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusOK)
-		want := []string{
+		want := slices.Concat(configForm, []string{
 			`<p class="mb-1 font-semibold select-none md:text-end md:mb-0">Restore backup:</p>`,
 			`<form class="grid gap-1 grid-flow-col w-fit" hx-post="/settings/backups/restore" hx-include="select[name='date']" hx-swap="none" hx-indicator="#fullscreen-loader" hx-confirm="Continue with this backup? Today's data will be backed up if not already done.">`,
 			`<label><select required id="file-type" name="date" class="select select-bordered select-sm"></select></label>`,
 			`<button class="btn btn-sm btn-outline"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"></path></svg></button>`,
-		}
+		})
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
 }

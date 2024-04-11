@@ -56,6 +56,38 @@ func (s *Server) settingsCalculateNutritionPostHandler() http.HandlerFunc {
 	}
 }
 
+func settingsConfigPutHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		err := app.Config.Update(app.ConfigFile{
+			Email: app.ConfigEmail{
+				From:           r.FormValue("email.from"),
+				SendGridAPIKey: r.FormValue("email.apikey"),
+			},
+			Integrations: app.ConfigIntegrations{
+				AzureComputerVision: app.AzureComputerVision{
+					ResourceKey:    r.FormValue("integrations.ocr.key"),
+					VisionEndpoint: r.FormValue("integrations.ocr.url"),
+				},
+			},
+			Server: app.ConfigServer{
+				IsAutologin:  r.FormValue("server.autologin") == "on",
+				IsNoSignups:  r.FormValue("server.noSignups") == "on",
+				IsProduction: r.FormValue("server.production") == "on",
+			},
+		})
+		if err != nil {
+			msg := "Failed to update configuration."
+			slog.Error(msg, "userID", getUserID(r), "error", err)
+			w.Header().Set("HX-Trigger", models.NewErrorDBToast(msg).Render())
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("HX-Trigger", models.NewInfoToast("Configuration updated.", "", "").Render())
+		w.WriteHeader(http.StatusNoContent)
+	}
+}
+
 func (s *Server) settingsConvertAutomaticallyPostHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		isConvert := r.FormValue("convert") == "on"
@@ -252,7 +284,11 @@ func (s *Server) settingsTabsAdvancedHandler() http.HandlerFunc {
 				Value:   backup.Format(time.DateOnly),
 			})
 		}
-		_ = components.SettingsTabsAdvanced(templates.SettingsData{Backups: dates}).Render(r.Context(), w)
+
+		_ = components.SettingsTabsAdvanced(templates.SettingsData{
+			Backups: dates,
+			Config:  app.Config,
+		}, getUserID(r) == 1).Render(r.Context(), w)
 	}
 }
 

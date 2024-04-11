@@ -2,6 +2,7 @@ package components
 
 import (
 	"github.com/reaper47/recipya/internal/templates"
+	"github.com/reaper47/recipya/internal/app"
 )
 
 templ Settings(data templates.Data) {
@@ -84,7 +85,71 @@ templ settings(data templates.Data) {
 	</div>
 }
 
-templ SettingsTabsAdvanced(data templates.SettingsData) {
+templ SettingsTabsAdvanced(data templates.SettingsData, isAdmin bool) {
+	if isAdmin {
+		<div class="mb-4 md:grid md:grid-cols-2 md:gap-4">
+			<p class="mb-1 font-semibold select-none md:text-end md:mb-0">Configuration:</p>
+			<form
+				class="grid w-full max-w-sm"
+				hx-put="/settings/config"
+				hx-swap="none"
+			>
+				<div class="mb-2">
+					<p class="font-semibold">Email</p>
+					<label class="form-control w-full">
+						<div class="label">
+							<span class="label-text">From</span>
+						</div>
+						<input name="email.from" type="text" placeholder="SendGrid email" value={ data.Config.Email.From } autocomplete="off" class="input input-bordered input-sm w-full"/>
+					</label>
+					<label class="form-control w-full">
+						<div class="label">
+							<span class="label-text">SendGrid API key</span>
+						</div>
+						<input name="email.apikey" type="text" placeholder="API key" value={ app.Config.Email.SendGridAPIKey } autocomplete="off" class="input input-bordered input-sm w-full"/>
+					</label>
+				</div>
+				<div class="mb-2">
+					<p class="mb-1 font-semibold">Integrations</p>
+					<p class="text-center text-sm underline">Azure Computer Vision</p>
+					<label class="form-control w-full">
+						<div class="label">
+							<span class="label-text">Resource key</span>
+						</div>
+						<input name="integrations.ocr.key" type="text" placeholder="Resource key 1" value={ data.Config.Integrations.AzureComputerVision.ResourceKey } autocomplete="off" class="input input-bordered input-sm w-full"/>
+					</label>
+					<label class="form-control w-full">
+						<div class="label">
+							<span class="label-text">Vision endpoint</span>
+						</div>
+						<input name="integrations.ocr.url" type="url" placeholder="Vision endpoint URL" value={ data.Config.Integrations.AzureComputerVision.VisionEndpoint } autocomplete="off" class="input input-bordered input-sm w-full"/>
+					</label>
+				</div>
+				<div>
+					<p class="font-semibold">Server</p>
+					<div class="form-control">
+						<label class="label cursor-pointer">
+							<span class="label-text">Autologin</span>
+							<input name="server.autologin" type="checkbox" checked?={ data.Config.Server.IsAutologin } class="checkbox"/>
+						</label>
+					</div>
+					<div class="form-control">
+						<label class="label cursor-pointer">
+							<span class="label-text">No signups</span>
+							<input name="server.noSignups" type="checkbox" checked?={ data.Config.Server.IsNoSignups } class="checkbox"/>
+						</label>
+					</div>
+					<div class="form-control">
+						<label class="label cursor-pointer">
+							<span class="label-text">Is production</span>
+							<input name="server.production" type="checkbox" checked?={ data.Config.Server.IsProduction } class="checkbox"/>
+						</label>
+					</div>
+				</div>
+				<button class="btn btn-sm btn-outline">Update</button>
+			</form>
+		</div>
+	}
 	<div class="mb-2 md:grid md:grid-cols-2 md:gap-4">
 		<p class="mb-1 font-semibold select-none md:text-end md:mb-0">Restore backup:</p>
 		<form

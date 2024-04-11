@@ -103,6 +103,62 @@ func (c *ConfigFile) Address() string {
 	return addr
 }
 
+// Update updates the application's configuration.
+func (c *ConfigFile) Update(updated ConfigFile) error {
+	if c.Server.IsDemo {
+		return errors.New("demo disabled")
+	}
+
+	c.Email.From = updated.Email.From
+	c.Email.SendGridAPIKey = updated.Email.SendGridAPIKey
+	c.Integrations.AzureComputerVision.ResourceKey = updated.Integrations.AzureComputerVision.ResourceKey
+	c.Integrations.AzureComputerVision.VisionEndpoint = updated.Integrations.AzureComputerVision.VisionEndpoint
+	c.Server.IsAutologin = updated.Server.IsAutologin
+	c.Server.IsNoSignups = updated.Server.IsNoSignups
+	c.Server.IsProduction = updated.Server.IsProduction
+
+	if os.Getenv("RECIPYA_IS_TEST") == "true" {
+		return nil
+	}
+
+	if isRunningInDocker() {
+		var (
+			autologin string
+			noSignups string
+			isProd    string
+		)
+
+		if c.Server.IsAutologin {
+			autologin = "true"
+		}
+
+		if c.Server.IsNoSignups {
+			noSignups = "true"
+		}
+
+		if c.Server.IsProduction {
+			isProd = "true"
+		}
+
+		_ = os.Setenv("RECIPYA_EMAIL", c.Email.From)
+		_ = os.Setenv("RECIPYA_EMAIL_SENDGRID", c.Email.SendGridAPIKey)
+		_ = os.Setenv("RECIPYA_VISION_KEY", c.Integrations.AzureComputerVision.ResourceKey)
+		_ = os.Setenv("RECIPYA_VISION_ENDPOINT", c.Integrations.AzureComputerVision.VisionEndpoint)
+		_ = os.Setenv("RECIPYA_SERVER_AUTOLOGIN", autologin)
+		_ = os.Setenv("RECIPYA_SERVER_NO_SIGNUPS", noSignups)
+		_ = os.Setenv("RECIPYA_SERVER_IS_PROD", isProd)
+
+		return nil
+	}
+
+	xb, err := json.MarshalIndent(c, "", "\t")
+	if err != nil {
+		return err
+	}
+
+	return os.WriteFile(filepath.Join(filepath.Dir(DBBasePath), "config.json"), xb, os.ModePerm)
+}
+
 func udpAddr() *net.UDPAddr {
 	conn, err := net.Dial("udp", "8.8.8.8:80")
 	if err != nil {
