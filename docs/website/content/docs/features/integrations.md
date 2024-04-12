@@ -11,10 +11,20 @@ in the settings.
 
 ## Compatibility
 
-| Integration                                                    |         Import         |       Export       |
-|----------------------------------------------------------------|:----------------------:|:------------------:|
-| [MasterCook](https://www.mastercook.com)                       |  {{< icon "check" >}}  |  {{< icon "x" >}}  |
-| [Nextcloud Cookbook](https://apps.nextcloud.com/apps/cookbook) |  {{< icon "check" >}}  |  {{< icon "x" >}}  |
+| Integration                                                    |        Import        |      Export      |
+|----------------------------------------------------------------|:--------------------:|:----------------:|
+| [MasterCook](https://www.mastercook.com)                       | {{< icon "check" >}} | {{< icon "x" >}} |
+| [Nextcloud Cookbook](https://apps.nextcloud.com/apps/cookbook) | {{< icon "check" >}} | {{< icon "x" >}} |
+ | [Paprika](https://www.paprikaapp.com)                          | {{< icon "check" >}} | {{< icon "x" >}} |
+| [Recipe Keeper](https://www.paprikaapp.com)                    | {{< icon "check" >}} | {{< icon "x" >}} |
+
+## MasterCook
+
+You can import your MasterCook recipes from the import button on the
+[add recipe page](/guide/docs/features/recipes/add#import). You can either upload a single `.mxp` file or a zip archive
+containing multiple `.mxp` files.
+
+This [website](https://www.grassrootsrecipes.com/) contains endless MasterCook recipe collections for you to try.
 
 ## Nextcloud Cookbook
 
@@ -29,10 +39,25 @@ Follow these steps to import your recipes from a Nextcloud Cookbook instance:
 
 Your recipes will be swiftly transferred from Nextcloud Cookbook to Recipya.
 
-## MasterCook
+## Paprika
 
-You can import your MasterCook recipes from the import button on the 
-[add recipe page](/guide/docs/features/recipes/add#import). You can either upload a single `.mxp` file or a zip archive 
-containing multiple `.mxp` files.
+Follow these steps to import recipes from Paprika.
 
-This [website](https://www.grassrootsrecipes.com/) contains endless MasterCook recipe collections for you to try.
+1. [Export](https://www.paprikaapp.com/help/windows/#exportrecipes) your Paprika recipes in the `Paprika Recipe Format`.
+2. Within Recipya, click the `Add recipe` button.
+3. Click the `Import` button.
+4. Select your `.paprikarecipes` file. You may also zip many `.paprikarecipes` together and select the resulting file.
+5. Click `Submit`.
+
+## Recipe Keeper
+
+Follow these steps to import recipes from Recipe Keeper.
+
+1. Access the settings within Recipe Keeper.
+2. Go to the `Import/Export` tab.
+3. Click the `Recipe Keeper .zip file` button at the top.
+4. Save the file.
+5. Within Recipya, click the `Add recipe` button.
+6. Click the `Import` button.
+7. Select the zip file you saved.
+8. Click `Submit`.

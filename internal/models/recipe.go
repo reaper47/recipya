@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"errors"
+	"github.com/PuerkitoBio/goquery"
 	"github.com/donna-legal/word2number"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/units"
@@ -1116,6 +1117,111 @@ func NewRecipesFromMasterCook(r io.Reader) Recipes {
 	}
 
 	recipes = append(recipes, recipe)
+	return recipes
+}
+
+// NewRecipesFromRecipeKeeper extracts the recipes from a Recipe Keeper export.
+func NewRecipesFromRecipeKeeper(root *goquery.Document) Recipes {
+	nodes := root.Find(".recipe-details")
+	recipes := make(Recipes, 0, nodes.Length())
+	nodes.Each(func(_ int, sel *goquery.Selection) {
+		nodes := sel.Find("meta[itemprop='recipeCategory']")
+		keywords := make([]string, 0, nodes.Length()+1)
+		nodes.Each(func(_ int, sub *goquery.Selection) {
+			s, _ := sub.Attr("content")
+			keywords = append(keywords, s)
+		})
+
+		course := sel.Find("span[itemprop='recipeCourse']").Text()
+		if course == "" {
+			course = "uncategorized"
+		}
+
+		var yield int16
+		parsed, err := strconv.ParseInt(regex.Digit.FindString(sel.Find("span[itemprop='recipeYield']").Text()), 10, 16)
+		if err == nil {
+			yield = int16(parsed)
+		}
+
+		var prep time.Duration
+		prepTime, _ := sel.Find("meta[itemprop='prepTime']").Attr("content")
+		_, after, ok := strings.Cut(prepTime, "PT")
+		if ok {
+			prep, _ = time.ParseDuration(strings.ToLower(after))
+		}
+
+		var cook time.Duration
+		cookTime, _ := sel.Find("meta[itemprop='cookTime']").Attr("content")
+		_, after, ok = strings.Cut(cookTime, "PT")
+		if ok {
+			cook, _ = time.ParseDuration(strings.ToLower(after))
+		}
+
+		nodes = sel.Find("div[itemprop='recipeIngredients'] p")
+		ingredients := make([]string, 0, nodes.Length())
+		nodes.Each(func(_ int, sub *goquery.Selection) {
+			s := strings.TrimSpace(sub.Text())
+			if s != "" {
+				ingredients = append(ingredients, s)
+			}
+		})
+
+		nodes = sel.Find("div[itemprop='recipeDirections'] p")
+		instructions := make([]string, 0, nodes.Length())
+		nodes.Each(func(_ int, sub *goquery.Selection) {
+			s := strings.TrimSpace(sub.Text())
+			if s == "" {
+				return
+			}
+
+			dotIndex := strings.Index(s, ".")
+			if dotIndex >= 0 && dotIndex < 5 {
+				s = strings.TrimSpace(s[dotIndex+1:])
+			}
+
+			instructions = append(instructions, s)
+		})
+
+		notes := strings.TrimSpace(sel.Find("div[itemprop='recipeNotes']").Text())
+		if notes != "" {
+			instructions = append(instructions, "Notes:\n"+notes)
+		}
+
+		extractNut := func(selector, unit string) string {
+			v, _ := sel.Find("meta[itemprop='" + selector + "']").Attr("content")
+			if v != "" {
+				v += unit
+			}
+			return v
+		}
+
+		recipes = append(recipes, Recipe{
+			Category:     course,
+			CreatedAt:    time.Time{},
+			Description:  "Imported from Recipe Keeper.",
+			Ingredients:  ingredients,
+			Instructions: instructions,
+			Keywords:     keywords,
+			Name:         sel.Find("h2[itemprop='name']").Text(),
+			Nutrition: Nutrition{
+				Calories:           extractNut("recipeNutCalories", " kcal"),
+				Cholesterol:        extractNut("recipeNutCholesterol", "mg"),
+				Fiber:              extractNut("recipeNutDietaryFiber", "g"),
+				IsPerServing:       true,
+				Protein:            extractNut("recipeNutProtein", "g"),
+				SaturatedFat:       extractNut("recipeNutSaturatedFat", "g"),
+				Sodium:             extractNut("recipeNutSodium", "mg"),
+				Sugars:             extractNut("recipeNutSugars", "g"),
+				TotalCarbohydrates: extractNut("recipeNutTotalCarbohydrate", "g"),
+				TotalFat:           extractNut("recipeNutTotalFat", "g"),
+			},
+			Times:     Times{Prep: prep, Cook: cook},
+			Tools:     make([]string, 0),
+			UpdatedAt: time.Time{},
+			URL:       "Recipe Keeper",
+			Yield:     yield,
+		})
+	})
 	return recipes
 }
 

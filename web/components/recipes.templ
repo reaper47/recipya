@@ -169,9 +169,15 @@ templ addRecipe() {
 			<div class="card-body">
 				<h2 class="card-title">Import</h2>
 				<p>
-					Import recipes from
-					<a href="https://www.paprikaapp.com/" target="_blank" class="link">Paprika</a>,
-					<a href="https://www.mastercook.com/" target="_blank" class="link">MasterCook</a>,
+					Import exported recipes from
+					<button
+						class="underline"
+						hx-get="/recipes/supported-applications"
+						hx-target="#application-results"
+						onclick="supported_apps_import_dialog.showModal()"
+					>
+						various apps,
+					</button>
 					plain text files
 					or files that adhere to the <a href="https://schema.org/Recipe" target="_blank" class="link">recipe schema</a> standard.
 				</p>
@@ -215,6 +221,34 @@ templ addRecipe() {
 				</div>
 			</div>
 		</div>
+		<dialog id="supported_apps_import_dialog" class="modal">
+			<div class="modal-box h-2/3">
+				<form method="dialog">
+					<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+				</form>
+				<h3 class="mb-1">
+					<label>
+						<input
+							type="search"
+							placeholder="Search an application"
+							class="input input-bordered w-11/12"
+							_="on input show <tbody>tr/> in next <table/> when its textContent.toLowerCase() contains my value.toLowerCase()"
+						/>
+					</label>
+				</h3>
+				<div class="overflow-x-auto">
+					<table class="table table-zebra table-sm">
+						<thead>
+							<tr class="bg-blue-100 text-center">
+								<th class="border py-1">Number</th>
+								<th class="border py-1">Application</th>
+							</tr>
+						</thead>
+						<tbody id="application-results"></tbody>
+					</table>
+				</div>
+			</div>
+		</dialog>
 		<dialog id="import_recipes_dialog" class="modal">
 			<div class="modal-box">
 				<form method="dialog">

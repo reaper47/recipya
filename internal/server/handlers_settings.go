@@ -285,6 +285,13 @@ func (s *Server) settingsTabsAdvancedHandler() http.HandlerFunc {
 			})
 		}
 
+		if app.Config.Server.IsDemo {
+			app.Config.Email.From = "demo@demo.com"
+			app.Config.Email.SendGridAPIKey = "demo"
+			app.Config.Integrations.AzureComputerVision.ResourceKey = "demo"
+			app.Config.Integrations.AzureComputerVision.VisionEndpoint = "https://www.example.com"
+		}
+
 		_ = components.SettingsTabsAdvanced(templates.SettingsData{
 			Backups: dates,
 			Config:  app.Config,
