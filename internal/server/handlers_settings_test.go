@@ -633,6 +633,17 @@ func TestHandlers_Settings_TabsAdvanced(t *testing.T) {
 		assertStringsNotInHTML(t, getBodyHTML(rr), configForm)
 	})
 
+	t.Run("demo sees fake data", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedInOther(srv, http.MethodGet, uri, noHeader, nil)
+
+		assertStringsNotInHTML(t, getBodyHTML(rr), []string{
+			`<input name="email.from" type="text" placeholder="SendGrid email" value="demo@demo.com" autocomplete="off" class="input input-bordered input-sm w-full">`,
+			`<input name="email.apikey" type="text" placeholder="API key" value="demo" autocomplete="off" class="input input-bordered input-sm w-full">`,
+			`<input name="integrations.ocr.key" type="text" placeholder="Resource key 1" value="demo" autocomplete="off" class="input input-bordered input-sm w-full">`,
+			`<input name="integrations.ocr.url" type="url" placeholder="Vision endpoint URL" value="https://www.example.com" autocomplete="off" class="input input-bordered input-sm w-full">`,
+		})
+	})
+
 	t.Run("successful request", func(t *testing.T) {
 		original := app.Config
 		app.Config = app.ConfigFile{

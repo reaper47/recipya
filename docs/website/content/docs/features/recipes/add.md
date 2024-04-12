@@ -71,13 +71,19 @@ You can import recipes in the following formats:
 - `.mxp`: Exported recipes from [MasterCook](https://www.mastercook.com)
 - `.paprikarecipes`: Exported recipes from [Paprika](https://www.paprikaapp.com) in the `Paprika Recipe Format`
 - `.txt`
+- `.zip`
 
 ![](images/add-recipe-import.webp)
 
-You can upload either a single file or a zip archive containing multiple recipes.
-The recipes in a zip file may be organized by folder. Each folder may contain the `.json` recipe file and an image 
-file. All other files in a folder will be ignored during processing. Here is an 
-[example](https://sea.musicavis.ca/f/683b9b9a7cc84e1bac0c/?dl=1) of how such zip may look like.
+You can upload either a single file or a zip archive containing multiple recipes. The recipes in a zip file may be 
+organized by folder. Each folder may contain the `.json` recipe file and an image file. All other files in a folder 
+will be ignored during processing. Here is an [example](https://sea.musicavis.ca/f/683b9b9a7cc84e1bac0c/?dl=1) of 
+how such zip may look like.
+
+You may also upload exported recipes from the following applications:
+- MasterCook
+- Paprika
+- Recipe Keeper
 
 #### Recipya Bookmarklet
 

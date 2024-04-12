@@ -1235,6 +1235,28 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 	}
 }
 
+func TestHandlers_Recipes_SupportedApplications(t *testing.T) {
+	srv := newServerTest()
+
+	uri := "/recipes/supported-applications"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
+	})
+
+	t.Run("returns list of applications to logged in user", func(t *testing.T) {
+		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		assertHeader(t, rr, "Content-Type", "text/html")
+		assertStringsInHTML(t, getBodyHTML(rr), []string{
+			`<tr class="border text-center"><td class="border dark:border-gray-800">1</td><td class="border py-1 dark:border-gray-800"><a class="underline" href="https://www.mastercook.com" target="_blank">MasterCook</a></td></tr>`,
+			`<tr class="border text-center"><td class="border dark:border-gray-800">2</td><td class="border py-1 dark:border-gray-800"><a class="underline" href="https://www.paprikaapp.com" target="_blank">Paprika</a></td></tr>`,
+			`<tr class="border text-center"><td class="border dark:border-gray-800">3</td><td class="border py-1 dark:border-gray-800"><a class="underline" href="https://recipekeeperonline.com" target="_blank">Recipe Keeper</a></td></tr>`,
+		})
+	})
+}
+
 func TestHandlers_Recipes_SupportedWebsites(t *testing.T) {
 	srv := newServerTest()
 

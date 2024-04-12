@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"compress/gzip"
 	"context"
-	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -820,23 +819,23 @@ func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recip
 	for _, file := range fileHeaders {
 		go func(fh *multipart.FileHeader) {
 			defer wg.Done()
-			content := fh.Header.Get("Content-Type")
-			if strings.Contains(content, "zip") {
+			switch fh.Header.Get("Content-Type") {
+			case "application/x-zip-compressed":
 				mu.Lock()
 				recipes = append(recipes, f.processZip(fh)...)
 				mu.Unlock()
-			} else if strings.Contains(content, "json") {
+			case "application/json":
 				mu.Lock()
 				recipes = append(recipes, *f.processJSON(fh))
 				mu.Unlock()
-			} else if content == "application/octet-stream" {
+			case "application/octet-stream":
 				switch strings.ToLower(filepath.Ext(fh.Filename)) {
 				case models.MXP.Ext():
 					mu.Lock()
 					recipes = append(recipes, processMasterCook(fh)...)
 					mu.Unlock()
 				}
-			} else if content == "application/paprikarecipes" {
+			case "application/paprikarecipes":
 				mu.Lock()
 				recipes = append(recipes, f.processPaprikaRecipes(nil, fh)...)
 				mu.Unlock()
@@ -846,222 +845,6 @@ func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recip
 
 	wg.Wait()
 	return recipes
-}
-
-func (f *Files) processZip(file *multipart.FileHeader) models.Recipes {
-	openFile, err := file.Open()
-	if err != nil {
-		slog.Error("Failed to open file", "file", file, "error", err)
-		return make(models.Recipes, 0)
-	}
-	defer openFile.Close()
-
-	z, err := unzipMem(openFile)
-	if err != nil {
-		return make(models.Recipes, 0)
-	}
-
-	return f.processRecipeFiles(z.File)
-}
-
-func (f *Files) processRecipeFiles(files []*zip.File) models.Recipes {
-	var (
-		imageUUID    uuid.UUID
-		recipeNumber int
-		recipes      = make(models.Recipes, 0)
-	)
-
-	for _, zf := range files {
-		if imageUUID != uuid.Nil && (zf.FileInfo().IsDir() || (recipeNumber > 0 && recipes[recipeNumber-1].Image == uuid.Nil)) {
-			recipes[recipeNumber-1].Image = imageUUID
-			imageUUID = uuid.Nil
-		}
-
-		validImageFormats := []string{".jpg", ".jpeg", ".png"}
-		if imageUUID == uuid.Nil && slices.Contains(validImageFormats, filepath.Ext(zf.Name)) {
-			imageFile, err := zf.Open()
-			if err != nil {
-				slog.Error("Failed to open image file", "file", zf, "error", err)
-				continue
-			}
-
-			if zf.FileInfo().Size() < 1<<12 {
-				_ = imageFile.Close()
-				continue
-			}
-
-			imageUUID, err = f.UploadImage(imageFile)
-			if err != nil {
-				slog.Error("Failed to upload image", "file", zf, "error", err)
-			}
-			_ = imageFile.Close()
-		}
-
-		openedFile, err := zf.Open()
-		if err != nil {
-			slog.Error("Failed to open file", "file", zf, "error", err)
-			continue
-		}
-
-		switch strings.ToLower(filepath.Ext(zf.Name)) {
-		case models.JSON.Ext():
-			r, err := f.extractRecipe(openedFile)
-			if err != nil {
-				_ = openedFile.Close()
-				slog.Error("Failed to extract", "file", zf, "error", err)
-				continue
-			}
-
-			recipes = append(recipes, *r)
-			recipeNumber++
-		case models.MXP.Ext():
-			xr := models.NewRecipesFromMasterCook(openedFile)
-			if len(xr) > 0 {
-				recipes = append(recipes, xr...)
-				recipeNumber += len(xr)
-			}
-		case models.Paprika.Ext():
-			xr := f.processPaprikaRecipes(openedFile, nil)
-			if len(xr) > 0 {
-				recipes = append(recipes, xr...)
-				recipeNumber += len(xr)
-			}
-		case models.TXT.Ext():
-			recipe, err := models.NewRecipeFromTextFile(openedFile)
-			if err != nil {
-				_ = openedFile.Close()
-				slog.Error("Could not create recipe from text file", "file", zf.Name, "error", err)
-				continue
-			}
-			recipes = append(recipes, recipe)
-			recipeNumber++
-		}
-
-		_ = openedFile.Close()
-	}
-
-	n := len(recipes)
-	if n > 0 && recipes[n-1].Image == uuid.Nil {
-		recipes[n-1].Image = imageUUID
-	}
-
-	return recipes
-}
-
-func (f *Files) processJSON(file *multipart.FileHeader) *models.Recipe {
-	fi, err := file.Open()
-	if err != nil {
-		slog.Error("Failed to open file", "error", err, "file", file)
-		return nil
-	}
-	defer fi.Close()
-
-	r, err := f.extractRecipe(fi)
-	if err != nil {
-		slog.Error("Could not extract file", "file", file, "error", err)
-		return nil
-	}
-	return r
-}
-
-func processMasterCook(file *multipart.FileHeader) models.Recipes {
-	f, err := file.Open()
-	if err != nil {
-		slog.Error("Failed to open file", "file", file, "error", err)
-		return nil
-	}
-	defer f.Close()
-
-	return models.NewRecipesFromMasterCook(f)
-}
-
-func (f *Files) processPaprikaRecipes(rc io.ReadCloser, file *multipart.FileHeader) models.Recipes {
-	if rc == nil {
-		openedFile, err := file.Open()
-		if err != nil {
-			slog.Error("Failed to open file", "file", file, "error", err)
-			return nil
-		}
-		defer openedFile.Close()
-		rc = openedFile
-	}
-
-	z, err := unzipMem(rc)
-	if err != nil {
-		return nil
-	}
-
-	recipes := make(models.Recipes, 0, len(z.File))
-	for _, zf := range z.File {
-		openFile, err := zf.Open()
-		if err != nil {
-			slog.Error("Could not open paprika recipe", "file", zf.Name, "error", err)
-			continue
-		}
-
-		data, err := unzipGzip(openFile)
-		if err != nil {
-			openFile.Close()
-			slog.Error("Could not unzip paprika recipe", "file", zf.Name, "error", err)
-			return nil
-		}
-		openFile.Close()
-
-		var p models.PaprikaRecipe
-		err = json.Unmarshal(data, &p)
-		if err != nil {
-			slog.Error("Could not unmarshal paprika recipe", "file", zf.Name, "data", string(data), "error", err)
-			continue
-		}
-
-		img := uuid.Nil
-		if p.PhotoData != "" {
-			decode, err := base64.StdEncoding.DecodeString(p.PhotoData)
-			if err == nil {
-				img, err = f.UploadImage(io.NopCloser(bytes.NewReader(decode)))
-				if err != nil {
-					slog.Error("Failed to upload Paprika image", "file", zf.Name, "error", err)
-				}
-			}
-		} else if p.ImageURL != "" {
-			img, err = f.ScrapeAndStoreImage(p.ImageURL)
-			if err != nil {
-				slog.Error("Failed to fetch and upload Paprika image", "file", zf.Name, "error", err)
-			}
-		}
-
-		recipes = append(recipes, p.Recipe(img))
-	}
-
-	return recipes
-}
-
-func (f *Files) extractRecipe(rd io.Reader) (*models.Recipe, error) {
-	buf, err := io.ReadAll(rd)
-	if err != nil {
-		slog.Error("Failed to read file", "reader", rd, "error", err)
-		return nil, err
-	}
-
-	var rs models.RecipeSchema
-	err = json.Unmarshal(buf, &rs)
-	if err != nil {
-		return nil, fmt.Errorf("extract recipe: %w", err)
-	}
-
-	r, err := rs.Recipe()
-	if err != nil {
-		return nil, fmt.Errorf("rs.Recipe() err: %w", err)
-	}
-
-	if rs.Image.Value != "" {
-		r.Image, err = f.ScrapeAndStoreImage(rs.Image.Value)
-		if err != nil {
-			r.Image = uuid.Nil
-		}
-	}
-
-	return r, err
 }
 
 // IsAppLatest checks whether there is a software update.
@@ -1324,7 +1107,7 @@ func (f *Files) ExtractUserBackup(date string, userID int64) (*models.UserBackup
 		DeleteSQL:  string(deletes),
 		ImagesPath: imagesPath,
 		InsertSQL:  string(inserts),
-		Recipes:    f.processRecipeFiles(zr.File),
+		Recipes:    f.processRecipeFiles(zr),
 		UserID:     userID,
 	}, nil
 }

@@ -1114,6 +1114,35 @@ func (s *Server) recipesSearchHandler() http.HandlerFunc {
 	}
 }
 
+func (s *Server) recipesSupportedApplicationsHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, _ *http.Request) {
+		applications := [][]string{
+			{"MasterCook", "https://www.mastercook.com"},
+			{"Paprika", "https://www.paprikaapp.com"},
+			{"Recipe Keeper", "https://recipekeeperonline.com"},
+		}
+
+		var sb strings.Builder
+		for i, application := range applications {
+			tr := `<tr class="border text-center">`
+			data1 := `<td class="border dark:border-gray-800">` + strconv.Itoa(i+1) + "</td>"
+			link := `<a class="underline" href="` + application[1] + `" target="_blank">` + application[0] + "</a>"
+			data2 := `<td class="border py-1 dark:border-gray-800">` + link + "</td>"
+			sb.WriteString(tr + data1 + data2 + "</tr>")
+		}
+
+		if sb.Len() == 0 {
+			tr := `<tr class="border px-8 py-2">`
+			data1 := `<td class="border dark:border-gray-800">-1</td>`
+			data2 := `<td class="border py-1 dark:border-gray-800">No result</td>`
+			sb.WriteString(tr + data1 + data2 + "</tr>")
+		}
+
+		w.Header().Set("Content-Type", "text/html")
+		_, _ = fmt.Fprint(w, sb.String())
+	}
+}
+
 func (s *Server) recipesSupportedWebsitesHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, _ *http.Request) {
 		websites := s.Repository.Websites()
