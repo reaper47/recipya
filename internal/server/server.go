@@ -42,7 +42,7 @@ func NewServer(repo services.RepositoryService) *Server {
 		Brokers:      make(map[int64]*models.Broker),
 		Email:        services.NewEmailService(),
 		Files:        services.NewFilesService(),
-		Integrations: services.NewIntegrationsService(),
+		Integrations: services.NewIntegrationsService(&http.Client{}),
 		Logger:       slog.New(slog.NewTextHandler(io.Discard, nil)),
 		Repository:   repo,
 		Scraper: scraper.NewScraper(&http.Client{
@@ -133,7 +133,7 @@ func (s *Server) mountHandlers() {
 	mux.Handle("POST /cookbooks/{id}/share", withLog(s.cookbookSharePostHandler()))
 
 	// Integrations routes
-	mux.Handle("POST /integrations/import/nextcloud", withLog(s.integrationsImportNextcloud()))
+	mux.Handle("POST /integrations/import", withLog(s.integrationsImport()))
 
 	// Recipes routes
 	mux.Handle("GET /recipes", s.mustBeLoggedInMiddleware(s.recipesHandler()))

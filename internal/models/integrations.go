@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/utils/duration"
 	"strconv"
 	"strings"
 	"time"
@@ -87,8 +88,8 @@ func (p PaprikaRecipe) Recipe(image uuid.UUID) Recipe {
 		Name:         p.Name,
 		Nutrition:    Nutrition{},
 		Times: Times{
-			Prep: calcDuration(p.PrepTime),
-			Cook: calcDuration(p.CookTime),
+			Prep: duration.From(p.PrepTime),
+			Cook: duration.From(p.CookTime),
 		},
 		Tools:     make([]string, 0),
 		UpdatedAt: dateCreated,

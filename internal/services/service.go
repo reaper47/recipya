@@ -251,8 +251,11 @@ type FilesService interface {
 
 // IntegrationsService is the interface that describes the methods required for various software integrations.
 type IntegrationsService interface {
+	// MealieImport imports the recipes from a Mealie instance.
+	MealieImport(baseURL, username, password string, files FilesService, progress chan models.Progress) (models.Recipes, error)
+
 	// NextcloudImport imports the recipes from a Nextcloud instance.
-	NextcloudImport(baseURL, username, password string, files FilesService, progress chan models.Progress) (*models.Recipes, error)
+	NextcloudImport(baseURL, username, password string, files FilesService, progress chan models.Progress) (models.Recipes, error)
 
 	// ProcessImageOCR processes an image using an OCR service to extract the recipe.
 	ProcessImageOCR(file io.Reader) (models.Recipe, error)

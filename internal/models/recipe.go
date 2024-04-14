@@ -908,7 +908,7 @@ func processMetaData(line []byte, recipe *Recipe) {
 			return
 		}
 
-		dur := calcDuration(string(line))
+		dur := duration.From(string(line))
 		if dur > 0 {
 			if bytes.HasPrefix(line, []byte("prep")) || bytes.HasPrefix(line, []byte("hands")) {
 				recipe.Times.Prep += dur
@@ -963,34 +963,6 @@ func processMetaData(line []byte, recipe *Recipe) {
 			}
 		}
 	}
-}
-
-func calcDuration(s string) time.Duration {
-	var dur time.Duration
-	matches := regex.Time.FindAllStringSubmatch(s, -1)
-	for _, match := range matches {
-		match = slices.DeleteFunc(match, func(s string) bool { return s == "" })
-
-		var d time.Duration
-
-		switch len(match) {
-		case 2:
-			if strings.Contains(match[1], "h") || strings.Contains(match[1], "time") {
-				d, _ = time.ParseDuration(regex.Digit.FindString(match[1]) + "h")
-			} else if strings.Contains(match[1], "min") {
-				d, _ = time.ParseDuration(regex.Digit.FindString(match[1]) + "m")
-			} else if strings.Contains(match[1], "hour") || strings.Contains(match[1], "timer") {
-				d, _ = time.ParseDuration(regex.Digit.FindString(match[1]) + "h")
-			}
-		case 3:
-			h, _ := time.ParseDuration(regex.Digit.FindString(match[1]) + "h")
-			m, _ := time.ParseDuration(regex.Digit.FindString(match[2]) + "m")
-			d = h + m
-		}
-
-		dur += d
-	}
-	return dur
 }
 
 // NewRecipesFromMasterCook extracts the recipes from a MasterCook file.

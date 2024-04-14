@@ -17,6 +17,7 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services/statements"
 	"github.com/reaper47/recipya/internal/templates"
+	_ "golang.org/x/image/webp" // Import the WebP package to decode the WebP format.
 	"image"
 	"image/jpeg"
 	"io"

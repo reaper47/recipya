@@ -909,11 +909,27 @@ func (m *mockFiles) ScrapeAndStoreImage(_ string) (uuid.UUID, error) {
 }
 
 type mockIntegrations struct {
-	NextcloudImportFunc func(baseURL, username, password string, files services.FilesService) (*models.Recipes, error)
+	MealieImportFunc    func(baseURL, username, password string, files services.FilesService) (models.Recipes, error)
+	NextcloudImportFunc func(baseURL, username, password string, files services.FilesService) (models.Recipes, error)
 	ProcessImageOCRFunc func(file io.Reader) (models.Recipe, error)
 }
 
-func (m *mockIntegrations) NextcloudImport(baseURL, username, password string, files services.FilesService, _ chan models.Progress) (*models.Recipes, error) {
+func (m *mockIntegrations) MealieImport(baseURL, username, password string, files services.FilesService, progress chan models.Progress) (models.Recipes, error) {
+	if username == "" || password == "" || baseURL == "" {
+		return nil, errors.New("invalid username, password or URL")
+	}
+
+	if m.MealieImportFunc != nil {
+		return m.MealieImportFunc(baseURL, username, password, files)
+	}
+
+	return models.Recipes{
+		{ID: 1, Name: "One"},
+		{ID: 2, Name: "Two"},
+	}, nil
+}
+
+func (m *mockIntegrations) NextcloudImport(baseURL, username, password string, files services.FilesService, _ chan models.Progress) (models.Recipes, error) {
 	if username == "" || password == "" || baseURL == "" {
 		return nil, errors.New("invalid username, password or URL")
 	}
@@ -922,7 +938,7 @@ func (m *mockIntegrations) NextcloudImport(baseURL, username, password string, f
 		return m.NextcloudImportFunc(baseURL, username, password, files)
 	}
 
-	return &models.Recipes{
+	return models.Recipes{
 		{ID: 1, Name: "One"},
 		{ID: 2, Name: "Two"},
 	}, nil

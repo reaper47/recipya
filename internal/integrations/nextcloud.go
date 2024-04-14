@@ -12,12 +12,10 @@ import (
 	"sync"
 )
 
-const (
-	baseURLNextcloud = "/apps/cookbook/api/v1"
-)
+const baseURLNextcloud = "/apps/cookbook/api/v1"
 
 // NextcloudImport imports recipes from a Nextcloud instance.
-func NextcloudImport(baseURL, username, password string, uploadImageFunc func(rc io.ReadCloser) (uuid.UUID, error), progress chan models.Progress) (*models.Recipes, error) {
+func NextcloudImport(baseURL, username, password string, uploadImageFunc func(rc io.ReadCloser) (uuid.UUID, error), progress chan models.Progress) (models.Recipes, error) {
 	auth := base64.StdEncoding.EncodeToString([]byte(username + ":" + password))
 	header := fmt.Sprintf("Basic %s", auth)
 
@@ -85,7 +83,7 @@ func NextcloudImport(baseURL, username, password string, uploadImageFunc func(rc
 	}
 	wg.Wait()
 
-	return &recipes, nil
+	return recipes, nil
 }
 
 func sendBasicAuthRequest(client *http.Client, url string, auth string) (*http.Response, error) {

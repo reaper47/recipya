@@ -4,7 +4,7 @@ go 1.22.0
 
 require (
 	github.com/PuerkitoBio/goquery v1.9.1
-	github.com/a-h/templ v0.2.648
+	github.com/a-h/templ v0.2.663
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/briandowns/spinner v1.23.0
 	github.com/disintegration/imaging v1.6.2
@@ -27,7 +27,7 @@ require (
 	golang.org/x/text v0.14.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	jaytaylor.com/html2text v0.0.0-20230321000545-74c2419ad056
-	modernc.org/sqlite v1.29.5
+	modernc.org/sqlite v1.29.6
 )
 
 require (
@@ -78,7 +78,7 @@ require (
 	gopkg.in/neurosnap/sentences.v1 v1.0.7 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	modernc.org/gc/v3 v3.0.0-20240304020402-f0dba7c97c2b // indirect
-	modernc.org/libc v1.49.2 // indirect
+	modernc.org/libc v1.49.3 // indirect
 	modernc.org/mathutil v1.6.0 // indirect
 	modernc.org/memory v1.8.0 // indirect
 	modernc.org/strutil v1.2.0 // indirect

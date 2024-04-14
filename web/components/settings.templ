@@ -248,39 +248,41 @@ templ SettingsTabsRecipes(data templates.SettingsData) {
 		</label>
 		<div class="grid gap-1 grid-flow-col w-fit h-fit mt-1 md:mt-0">
 			<label class="form-control w-full max-w-xs">
-				<select name="integrations" class="w-fit select select-bordered select-sm">
-					<option value="nextcloud" selected>Nextcloud</option>
+				<select name="integrations" class="w-fit select select-bordered select-sm" _="on change(target) set { value: target.value } on #integration-selected">
+					<option value="mealie" selected>Mealie</option>
+					<option value="nextcloud">Nextcloud</option>
 				</select>
 			</label>
-			<button class="btn btn-outline btn-sm" onmousedown="integrations_nextcloud_dialog.showModal()">
+			<button class="btn btn-outline btn-sm" onmousedown="integrations_dialog.showModal()">
 				@iconDownload2()
 			</button>
 		</div>
 	</div>
-	<dialog id="integrations_nextcloud_dialog" class="modal">
+	<dialog id="integrations_dialog" class="modal">
 		<div class="modal-box">
 			<form method="dialog">
 				<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 			</form>
-			<h3 class="font-semibold underline text-center">Import from Nextcloud</h3>
-			<form method="dialog" hx-post="/integrations/import/nextcloud" hx-swap="none" onsubmit="integrations_nextcloud_dialog.close()">
+			<h3 class="font-semibold underline text-center">Import from Integration</h3>
+			<form method="dialog" hx-post="/integrations/import" hx-swap="none" onsubmit="integrations_dialog.close()">
+				<input id="integration-selected" type="hidden" name="integration" value="mealie"/>
 				<label class="form-control w-full">
 					<div class="label">
-						<span class="label-text font-medium">Nextcloud URL</span>
+						<span class="label-text font-medium">Base URL</span>
 					</div>
-					<input type="url" name="url" placeholder="https://nextcloud.mydomain.com" class="input input-bordered w-full" required/>
+					<input type="url" name="url" placeholder="https://instance.mydomain.com" class="input input-bordered w-full" required/>
 				</label>
 				<label class="form-control w-full">
 					<div class="label">
 						<span class="label-text font-medium">Username</span>
 					</div>
-					<input type="text" name="username" placeholder="Enter your Nextcloud username" class="input input-bordered w-full" required/>
+					<input type="text" name="username" placeholder="Enter your username" class="input input-bordered w-full" required/>
 				</label>
 				<label class="form-control w-full pb-2">
 					<div class="label">
 						<span class="label-text font-medium">Password</span>
 					</div>
-					<input type="password" name="password" placeholder="Enter your Nextcloud password" class="input input-bordered w-full" required/>
+					<input type="password" name="password" placeholder="Enter your password" class="input input-bordered w-full" required/>
 				</label>
 				<button class="btn btn-block btn-primary btn-sm mt-2">Import</button>
 			</form>

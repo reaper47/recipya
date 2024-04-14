@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func (s *Server) integrationsImportNextcloud() http.HandlerFunc {
+func (s *Server) integrationsImport() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		userID := getUserID(r)
 		userIDAttr := slog.Int64("userID", userID)
@@ -33,27 +33,43 @@ func (s *Server) integrationsImportNextcloud() http.HandlerFunc {
 			s.Brokers[id].SendProgressStatus("Contacting server...", true, 0, -1)
 
 			var (
-				recipes   *models.Recipes
-				processed int
-				progress  = make(chan models.Progress)
-				errs      = make(chan error, 1)
+				integration = r.FormValue("integration")
+				recipes     models.Recipes
+				processed   int
+				progress    = make(chan models.Progress)
+				errs        = make(chan error, 1)
 			)
 
 			go func() {
 				defer close(progress)
-				recipes, err = s.Integrations.NextcloudImport(r.FormValue("url"), r.FormValue("username"), r.FormValue("password"), s.Files, progress)
-				if err != nil {
-					errs <- err
+
+				rawURL := r.FormValue("url")
+				username := r.FormValue("username")
+				password := r.FormValue("password")
+
+				switch integration {
+				case "mealie":
+					recipes, err = s.Integrations.MealieImport(rawURL, username, password, s.Files, progress)
+				case "nextcloud":
+					recipes, err = s.Integrations.NextcloudImport(rawURL, username, password, s.Files, progress)
+				default:
+					err = errors.New("no integration selected")
 				}
 
-				if recipes == nil {
-					errs <- errors.New("recipes from Nextcloud is nil")
+				if err != nil {
+					errs <- err
+				} else if recipes == nil {
+					errs <- errors.New("recipes from " + integration + " is nil")
 				}
 			}()
 
 			select {
 			case err = <-errs:
-				msg := "Failed to import Nextcloud recipes."
+				msg := "Failed to import " + integration + " recipes."
+				if integration == "" {
+					msg = "No integration selected."
+				}
+
 				slog.Error(msg, userIDAttr, "processed", processed, "error", err)
 				s.Brokers[id].HideNotification()
 				s.Brokers[id].SendToast(models.NewErrorGeneralToast(msg))
@@ -67,10 +83,10 @@ func (s *Server) integrationsImportNextcloud() http.HandlerFunc {
 
 			count := 0
 			skipped := 0
-			numRecipes := len(*recipes)
+			numRecipes := len(recipes)
 			recipeIDs := make([]int64, 0, numRecipes)
 
-			for i, recipe := range *recipes {
+			for i, recipe := range recipes {
 				s.Brokers[id].SendProgress("Adding to collection...", i+numRecipes, numRecipes*2)
 				c := recipe.Copy()
 				recipeID, err := s.Repository.AddRecipe(&c, id, us)
@@ -83,7 +99,7 @@ func (s *Server) integrationsImportNextcloud() http.HandlerFunc {
 				count++
 			}
 
-			slog.Info("Imported Nextcloud recipes", userIDAttr, "count", count, "skipped", skipped)
+			slog.Info("Imported recipes", "integration", integration, userIDAttr, "count", count, "skipped", skipped)
 			s.Repository.CalculateNutrition(userID, recipeIDs, settings)
 			s.Brokers[id].HideNotification()
 			s.Brokers[id].SendToast(models.NewInfoToast(fmt.Sprintf("Imported %d recipes. Skipped %d.", count, skipped), "", ""))
