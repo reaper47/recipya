@@ -9,26 +9,48 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"io"
 	"net/http"
+	"net/url"
 )
 
 // NewIntegrationsService creates a new Integrations that satisfies the IntegrationsService interface.
-func NewIntegrationsService() *Integrations {
-	return &Integrations{}
+func NewIntegrationsService(client *http.Client) Integrations {
+	return Integrations{
+		client: client,
+	}
 }
 
 // Integrations is the entity that manages software integrations.
-type Integrations struct{}
+type Integrations struct {
+	client *http.Client
+}
+
+// MealieImport imports the recipes from a Mealie instance.
+func (i Integrations) MealieImport(baseURL, username, password string, files FilesService, progress chan models.Progress) (models.Recipes, error) {
+	if !isCredentialsValid(baseURL, username, password) {
+		return nil, errors.New("invalid username, password or URL")
+	}
+	return integrations.MealieImport(baseURL, username, password, i.client, files.UploadImage, progress)
+}
 
 // NextcloudImport imports the recipes from a Nextcloud instance.
-func (i *Integrations) NextcloudImport(baseURL, username, password string, files FilesService, progress chan models.Progress) (*models.Recipes, error) {
-	if username == "" || password == "" || baseURL == "" {
+func (i Integrations) NextcloudImport(baseURL, username, password string, files FilesService, progress chan models.Progress) (models.Recipes, error) {
+	if !isCredentialsValid(baseURL, username, password) {
 		return nil, errors.New("invalid username, password or URL")
 	}
 	return integrations.NextcloudImport(baseURL, username, password, files.UploadImage, progress)
 }
 
+func isCredentialsValid(baseURL, username, password string) bool {
+	if username == "" || password == "" || baseURL == "" {
+		return false
+	}
+
+	_, err := url.Parse(baseURL)
+	return err == nil
+}
+
 // ProcessImageOCR processes an image using an OCR service to extract the recipe.
-func (i *Integrations) ProcessImageOCR(file io.Reader) (models.Recipe, error) {
+func (i Integrations) ProcessImageOCR(file io.Reader) (models.Recipe, error) {
 	body := &bytes.Buffer{}
 	_, err := io.Copy(body, file)
 	if err != nil {

@@ -24,8 +24,11 @@ package duration
 
 import (
 	"errors"
+	"github.com/reaper47/recipya/internal/utils/regex"
 	"math"
+	"slices"
 	"strconv"
+	"strings"
 	"time"
 	"unicode"
 )
@@ -47,6 +50,35 @@ const (
 )
 
 var errUnexpectedInput = errors.New("unexpected input")
+
+// From calculates the duration from a time string.
+func From(s string) time.Duration {
+	var dur time.Duration
+	matches := regex.Time.FindAllStringSubmatch(s, -1)
+	for _, match := range matches {
+		match = slices.DeleteFunc(match, func(s string) bool { return s == "" })
+
+		var d time.Duration
+
+		switch len(match) {
+		case 2:
+			if strings.Contains(match[1], "h") || strings.Contains(match[1], "time") {
+				d, _ = time.ParseDuration(regex.Digit.FindString(match[1]) + "h")
+			} else if strings.Contains(match[1], "min") {
+				d, _ = time.ParseDuration(regex.Digit.FindString(match[1]) + "m")
+			} else if strings.Contains(match[1], "hour") || strings.Contains(match[1], "timer") {
+				d, _ = time.ParseDuration(regex.Digit.FindString(match[1]) + "h")
+			}
+		case 3:
+			h, _ := time.ParseDuration(regex.Digit.FindString(match[1]) + "h")
+			m, _ := time.ParseDuration(regex.Digit.FindString(match[2]) + "m")
+			d = h + m
+		}
+
+		dur += d
+	}
+	return dur
+}
 
 // Parse attempts to parse the given duration string into a *Duration
 // if parsing fails an error is returned instead

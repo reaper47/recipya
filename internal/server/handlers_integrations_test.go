@@ -9,22 +9,30 @@ import (
 	"testing"
 )
 
-func TestHandlers_Integrations_Nextcloud(t *testing.T) {
+func TestHandlers_Integrations_Import(t *testing.T) {
 	srv, ts, c := createWSServer()
 	defer c.Close()
 
 	originalRepo := srv.Repository
 	originalIntegrations := srv.Integrations
 
-	uriImport := ts.URL + "/integrations/import/nextcloud"
+	uriImport := ts.URL + "/integrations/import"
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodPost, uriImport)
 	})
 
+	t.Run("missing integration", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uriImport, formHeader, strings.NewReader("username=admin&password=admin&url=http://localhost:8080"))
+
+		assertStatus(t, rr.Code, http.StatusAccepted)
+		want := `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"No integration selected.","title":"General Error"}}`
+		assertWebsocket(t, c, 3, want)
+	})
+
 	t.Run("error when importing", func(t *testing.T) {
 		srv.Integrations = &mockIntegrations{
-			NextcloudImportFunc: func(baseURL, username, password string, files services.FilesService) (*models.Recipes, error) {
+			NextcloudImportFunc: func(baseURL, username, password string, files services.FilesService) (models.Recipes, error) {
 				return nil, errors.New("import error")
 			},
 		}
@@ -33,10 +41,10 @@ func TestHandlers_Integrations_Nextcloud(t *testing.T) {
 			srv.Repository = originalRepo
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uriImport, formHeader, strings.NewReader("username=admin&password=admin&url=http://localhost:8080"))
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uriImport, formHeader, strings.NewReader("integration=nextcloud&username=admin&password=admin&url=http://localhost:8080"))
 
 		assertStatus(t, rr.Code, http.StatusAccepted)
-		want := `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Failed to import Nextcloud recipes.","title":"General Error"}}`
+		want := `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Failed to import nextcloud recipes.","title":"General Error"}}`
 		assertWebsocket(t, c, 3, want)
 	})
 
@@ -47,8 +55,8 @@ func TestHandlers_Integrations_Nextcloud(t *testing.T) {
 		}
 		srv.Repository = repo
 		srv.Integrations = &mockIntegrations{
-			NextcloudImportFunc: func(baseURL, username, password string, files services.FilesService) (*models.Recipes, error) {
-				return &models.Recipes{
+			NextcloudImportFunc: func(baseURL, username, password string, files services.FilesService) (models.Recipes, error) {
+				return models.Recipes{
 					{ID: 1, Name: "One"},
 					{ID: 2, Name: "Two"},
 				}, nil
@@ -59,7 +67,7 @@ func TestHandlers_Integrations_Nextcloud(t *testing.T) {
 			srv.Repository = originalRepo
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uriImport, formHeader, strings.NewReader("username=admin&password=admin&url=http://localhost:8080"))
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uriImport, formHeader, strings.NewReader("integration=nextcloud&username=admin&password=admin&url=http://localhost:8080"))
 
 		assertStatus(t, rr.Code, http.StatusAccepted)
 		want := `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-info","message":"","title":"Imported 2 recipes. Skipped 0."}}`

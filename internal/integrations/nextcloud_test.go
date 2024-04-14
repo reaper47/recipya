@@ -73,7 +73,7 @@ func TestNextcloudImport(t *testing.T) {
 
 	c := make(chan models.Progress)
 	var (
-		got *models.Recipes
+		got models.Recipes
 		err error
 	)
 	go func() {
@@ -159,12 +159,17 @@ func TestNextcloudImport(t *testing.T) {
 			Yield:     12,
 		},
 	}
+	assertRecipes(t, got, want, files)
+}
+
+func assertRecipes(tb testing.TB, got, want models.Recipes, files *mockFiles) {
+	tb.Helper()
 	if files.uploadImageHitCount != len(want) {
-		t.Fatalf("got %d but want %d upload image hits", files.uploadImageHitCount, len(want))
+		tb.Fatalf("got %d but want %d upload image hits", files.uploadImageHitCount, len(want))
 	}
-	if !cmp.Equal(*got, want) {
-		t.Log(cmp.Diff(*got, want))
-		t.Fail()
+	if !cmp.Equal(got, want) {
+		tb.Log(cmp.Diff(got, want))
+		tb.Fail()
 	}
 }
 
