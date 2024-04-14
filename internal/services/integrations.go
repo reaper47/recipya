@@ -9,6 +9,7 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"io"
 	"net/http"
+	"net/url"
 )
 
 // NewIntegrationsService creates a new Integrations that satisfies the IntegrationsService interface.
@@ -25,7 +26,7 @@ type Integrations struct {
 
 // MealieImport imports the recipes from a Mealie instance.
 func (i Integrations) MealieImport(baseURL, username, password string, files FilesService, progress chan models.Progress) (models.Recipes, error) {
-	if username == "" || password == "" || baseURL == "" {
+	if !isCredentialsValid(baseURL, username, password) {
 		return nil, errors.New("invalid username, password or URL")
 	}
 	return integrations.MealieImport(baseURL, username, password, i.client, files.UploadImage, progress)
@@ -33,10 +34,19 @@ func (i Integrations) MealieImport(baseURL, username, password string, files Fil
 
 // NextcloudImport imports the recipes from a Nextcloud instance.
 func (i Integrations) NextcloudImport(baseURL, username, password string, files FilesService, progress chan models.Progress) (models.Recipes, error) {
-	if username == "" || password == "" || baseURL == "" {
+	if !isCredentialsValid(baseURL, username, password) {
 		return nil, errors.New("invalid username, password or URL")
 	}
 	return integrations.NextcloudImport(baseURL, username, password, files.UploadImage, progress)
+}
+
+func isCredentialsValid(baseURL, username, password string) bool {
+	if username == "" || password == "" || baseURL == "" {
+		return false
+	}
+
+	_, err := url.Parse(baseURL)
+	return err == nil
 }
 
 // ProcessImageOCR processes an image using an OCR service to extract the recipe.
