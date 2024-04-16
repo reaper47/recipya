@@ -49,8 +49,6 @@ Follow these steps to import your recipes from a Mealie instance:
 3. In the dialog that appears, enter the URL and credentials of a Mealie instance.
 4. Click the **Import** button.
 
-Your recipes will be swiftly transferred from Mealie to Recipya.
-
 ## Nextcloud Cookbook
 
 [Nextcloud Cookbook](https://github.com/nextcloud/cookbook) is an app for [Nextcloud](https://nextcloud.com/). 
@@ -61,8 +59,6 @@ Follow these steps to import your recipes from a Nextcloud Cookbook instance:
 3. In the dialog that appears, enter the URL and credentials of your Nextcloud instance.
    ![](images/settings-integrations-nextcloud.webp)
 4. Click the **Import** button.
-
-Your recipes will be swiftly transferred from Nextcloud Cookbook to Recipya.
 
 ## Paprika
 
@@ -105,5 +101,3 @@ Follow these steps to import your recipes from a Tandoor instance:
 2. Click the adjacent button.
 3. In the dialog that appears, enter the URL and credentials of a Tandoor instance.
 4. Click the **Import** button.
-
-Your recipes will be transferred from Mealie to Recipya.

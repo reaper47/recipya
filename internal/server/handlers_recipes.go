@@ -1121,6 +1121,7 @@ func (s *Server) recipesSupportedApplicationsHandler() http.HandlerFunc {
 			{"MasterCook", "https://www.mastercook.com"},
 			{"Paprika", "https://www.paprikaapp.com"},
 			{"Recipe Keeper", "https://recipekeeperonline.com"},
+			{"RecipeSage", "https://recipesage.com"},
 		}
 
 		var sb strings.Builder
