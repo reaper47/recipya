@@ -99,11 +99,18 @@ type mealieRecipeResponse struct {
 
 // MealieImport imports recipes from a Mealie instance.
 func MealieImport(baseURL, username, password string, client *http.Client, uploadImageFunc func(rc io.ReadCloser) (uuid.UUID, error), progress chan models.Progress) (models.Recipes, error) {
+	usernameAttr := slog.String("username", username)
+
+	_, err := url.Parse(baseURL)
+	if err != nil {
+		slog.Error("Invalid base URL", "url", baseURL, usernameAttr, "error", err)
+		return nil, err
+	}
+
 	baseURL = strings.TrimSuffix(baseURL, "/")
 	if !strings.HasSuffix(baseURL, "/api") {
 		baseURL = baseURL + "/api"
 	}
-	usernameAttr := slog.String("username", username)
 
 	// 1. Login
 	data := url.Values{}

@@ -9,6 +9,7 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -79,8 +80,15 @@ type tandoorRecipe struct {
 
 // TandoorImport imports recipes from a Tandoor instance.
 func TandoorImport(baseURL, username, password string, client *http.Client, uploadImageFunc func(rc io.ReadCloser) (uuid.UUID, error), progress chan models.Progress) (models.Recipes, error) {
-	baseURL = strings.TrimSuffix(baseURL, "/")
 	usernameAttr := slog.String("username", username)
+
+	_, err := url.Parse(baseURL)
+	if err != nil {
+		slog.Error("Invalid base URL", "url", baseURL, usernameAttr, "error", err)
+		return nil, err
+	}
+
+	baseURL = strings.TrimSuffix(baseURL, "/")
 
 	// 1. Login
 	c := credentials{Username: username, Password: password}
