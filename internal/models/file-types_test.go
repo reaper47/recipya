@@ -11,6 +11,7 @@ func TestFileType_Ext(t *testing.T) {
 		in   models.FileType
 		want string
 	}{
+		{name: "crouton", in: models.Crumb, want: ".crumb"},
 		{name: "json", in: models.JSON, want: ".json"},
 		{name: "mxp", in: models.MXP, want: ".mxp"},
 		{name: "paprika", in: models.Paprika, want: ".paprikarecipes"},
@@ -34,6 +35,7 @@ func TestNewFileType(t *testing.T) {
 		in   string
 		want models.FileType
 	}{
+		{name: "crumb", in: "crumb", want: models.Crumb},
 		{name: "json", in: "json", want: models.JSON},
 		{name: "mxp", in: "mxp", want: models.MXP},
 		{name: "paprikarecipes", in: "paprikarecipes", want: models.Paprika},

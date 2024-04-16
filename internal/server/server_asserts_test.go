@@ -20,7 +20,7 @@ func assertCookbooksViewMode(tb testing.TB, mode models.ViewMode, got string) {
 		want = []string{
 			`<title hx-swap-oob="true">Cookbooks | Recipya</title>`,
 			`<div class="p-2 hover:bg-red-600 hover:text-white" title="Display as list" hx-get="/cookbooks?view=list" hx-target="#content" hx-trigger="mousedown">`,
-			`<section id="cookbook-1" class="cookbook card card-compact bg-base-100 shadow-lg indicator">`,
+			`<section id="cookbook-1" class="cookbook card card-compact bg-base-100 shadow-lg indicator w-full">`,
 			`<button class="btn btn-block btn-sm btn-outline" hx-get="/cookbooks/1?page=1" hx-target="#content" hx-trigger="mousedown" hx-push-url="/cookbooks/1">Open</button>`,
 			`<button class="btn btn-block btn-sm btn-outline" hx-get="/cookbooks/2?page=1" hx-target="#content" hx-trigger="mousedown" hx-push-url="/cookbooks/2">Open</button>`,
 			`<button class="btn btn-block btn-sm btn-outline" hx-get="/cookbooks/3?page=1" hx-target="#content" hx-trigger="mousedown" hx-push-url="/cookbooks/3">Open</button>`,

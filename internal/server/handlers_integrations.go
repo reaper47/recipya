@@ -6,6 +6,7 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"log/slog"
 	"net/http"
+	"slices"
 )
 
 func (s *Server) integrationsImport() http.HandlerFunc {
@@ -29,29 +30,31 @@ func (s *Server) integrationsImport() http.HandlerFunc {
 			return
 		}
 
+		integration := r.FormValue("integration")
+		rawURL := r.FormValue("url")
+		username := r.FormValue("username")
+		password := r.FormValue("password")
+
 		go func(id int64, us models.UserSettings) {
 			s.Brokers[id].SendProgressStatus("Contacting server...", true, 0, -1)
 
 			var (
-				integration = r.FormValue("integration")
-				recipes     models.Recipes
-				processed   int
-				progress    = make(chan models.Progress)
-				errs        = make(chan error, 1)
+				recipes   models.Recipes
+				processed int
+				progress  = make(chan models.Progress)
+				errs      = make(chan error, 1)
 			)
 
 			go func() {
 				defer close(progress)
-
-				rawURL := r.FormValue("url")
-				username := r.FormValue("username")
-				password := r.FormValue("password")
 
 				switch integration {
 				case "mealie":
 					recipes, err = s.Integrations.MealieImport(rawURL, username, password, s.Files, progress)
 				case "nextcloud":
 					recipes, err = s.Integrations.NextcloudImport(rawURL, username, password, s.Files, progress)
+				case "tandoor":
+					recipes, err = s.Integrations.TandoorImport(rawURL, username, password, s.Files, progress)
 				default:
 					err = errors.New("no integration selected")
 				}
@@ -80,6 +83,10 @@ func (s *Server) integrationsImport() http.HandlerFunc {
 					s.Brokers[id].SendProgress("Fetching recipes...", processed, p.Total*2)
 				}
 			}
+
+			recipes = slices.DeleteFunc(recipes, func(r models.Recipe) bool {
+				return len(r.Instructions) == 0 && len(r.Ingredients) == 0 && r.Description == ""
+			})
 
 			count := 0
 			skipped := 0

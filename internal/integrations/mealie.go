@@ -29,20 +29,24 @@ type mealieRecipesResponse struct {
 }
 
 type mealieRecipeResponse struct {
-	ID             string   `json:"id"`
-	UserID         string   `json:"userId"`
-	GroupID        string   `json:"groupId"`
-	Name           string   `json:"name"`
-	Slug           string   `json:"slug"`
-	Image          string   `json:"image"`
-	RecipeYield    string   `json:"recipeYield"`
-	TotalTime      string   `json:"totalTime"`
-	PrepTime       string   `json:"prepTime"`
-	CookTime       *string  `json:"cookTime"`
-	PerformTime    string   `json:"performTime"`
-	Description    string   `json:"description"`
-	RecipeCategory []string `json:"recipeCategory"`
-	Tags           []struct {
+	ID             string  `json:"id"`
+	UserID         string  `json:"userId"`
+	GroupID        string  `json:"groupId"`
+	Name           string  `json:"name"`
+	Slug           string  `json:"slug"`
+	Image          string  `json:"image"`
+	RecipeYield    string  `json:"recipeYield"`
+	TotalTime      string  `json:"totalTime"`
+	PrepTime       string  `json:"prepTime"`
+	CookTime       *string `json:"cookTime"`
+	PerformTime    string  `json:"performTime"`
+	Description    string  `json:"description"`
+	RecipeCategory []struct {
+		ID   string `json:"id"`
+		Name string `json:"name"`
+		Slug string `json:"slug"`
+	} `json:"recipeCategory"`
+	Tags []struct {
 		ID   string `json:"id"`
 		Name string `json:"name"`
 		Slug string `json:"slug"`
@@ -95,11 +99,18 @@ type mealieRecipeResponse struct {
 
 // MealieImport imports recipes from a Mealie instance.
 func MealieImport(baseURL, username, password string, client *http.Client, uploadImageFunc func(rc io.ReadCloser) (uuid.UUID, error), progress chan models.Progress) (models.Recipes, error) {
+	usernameAttr := slog.String("username", username)
+
+	_, err := url.Parse(baseURL)
+	if err != nil {
+		slog.Error("Invalid base URL", "url", baseURL, usernameAttr, "error", err)
+		return nil, err
+	}
+
 	baseURL = strings.TrimSuffix(baseURL, "/")
 	if !strings.HasSuffix(baseURL, "/api") {
 		baseURL = baseURL + "/api"
 	}
-	usernameAttr := slog.String("username", username)
 
 	// 1. Login
 	data := url.Values{}
@@ -152,7 +163,7 @@ func MealieImport(baseURL, username, password string, client *http.Client, uploa
 
 		req, err = http.NewRequest(http.MethodGet, rawURL, nil)
 		if err != nil {
-			slog.Error("Couldn't create new request for fetch recipes", "url", rawURL, usernameAttr, rawURLAttr, "error", err)
+			slog.Error("Couldn't create new request for fetch recipes", usernameAttr, rawURLAttr, "error", err)
 			return nil, err
 		}
 		req.Header.Add("Authorization", authHeader)
@@ -214,7 +225,7 @@ func MealieImport(baseURL, username, password string, client *http.Client, uploa
 
 			req, err := http.NewRequest(http.MethodGet, rawURL, nil)
 			if err != nil {
-				slog.Error("Couldn't create new request", "url", req.URL.String(), usernameAttr, rawURLAttr, "error", err)
+				slog.Error("Couldn't create new request", "url", rawURL, usernameAttr, rawURLAttr, "error", err)
 				return
 			}
 
@@ -245,7 +256,7 @@ func MealieImport(baseURL, username, password string, client *http.Client, uploa
 
 			category := "uncategorized"
 			if len(m.RecipeCategory) > 0 {
-				category = m.RecipeCategory[0]
+				category = m.RecipeCategory[0].Name
 			}
 
 			source := m.OrgURL

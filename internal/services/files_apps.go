@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/google/uuid"
@@ -25,7 +26,7 @@ const (
 	recipya
 )
 
-func (f *Files) processJSON(file *multipart.FileHeader) *models.Recipe {
+func (f *Files) processCrouton(file *multipart.FileHeader) *models.Recipe {
 	fi, err := file.Open()
 	if err != nil {
 		slog.Error("Failed to open file", "error", err, "file", file)
@@ -33,12 +34,24 @@ func (f *Files) processJSON(file *multipart.FileHeader) *models.Recipe {
 	}
 	defer fi.Close()
 
-	r, err := f.extractRecipe(fi)
+	r := models.NewRecipeFromCrouton(fi, f.UploadImage)
+	return &r
+}
+
+func (f *Files) processJSON(file *multipart.FileHeader) models.Recipes {
+	fi, err := file.Open()
+	if err != nil {
+		slog.Error("Failed to open file", "error", err, "file", file)
+		return nil
+	}
+	defer fi.Close()
+
+	xr, err := f.extractJSONRecipes(fi)
 	if err != nil {
 		slog.Error("Could not extract file", "file", file, "error", err)
 		return nil
 	}
-	return r
+	return xr
 }
 
 func processMasterCook(file *multipart.FileHeader) models.Recipes {
@@ -160,6 +173,10 @@ func (f *Files) processRecipeFiles(zr *zip.Reader) models.Recipes {
 	)
 
 	for _, zf := range zr.File {
+		if strings.Contains(zf.Name, "__MACOSX") {
+			continue
+		}
+
 		if imageUUID != uuid.Nil && (zf.FileInfo().IsDir() || (recipeNumber > 0 && recipes[recipeNumber-1].Image == uuid.Nil)) {
 			recipes[recipeNumber-1].Image = imageUUID
 			imageUUID = uuid.Nil
@@ -192,16 +209,19 @@ func (f *Files) processRecipeFiles(zr *zip.Reader) models.Recipes {
 		}
 
 		switch strings.ToLower(filepath.Ext(zf.Name)) {
+		case models.Crumb.Ext():
+			recipes = append(recipes, models.NewRecipeFromCrouton(openedFile, f.UploadImage))
+			recipeNumber++
 		case models.JSON.Ext():
-			r, err := f.extractRecipe(openedFile)
+			xr, err := f.extractJSONRecipes(openedFile)
 			if err != nil {
 				_ = openedFile.Close()
 				slog.Error("Failed to extract", "file", zf, "error", err)
 				continue
 			}
 
-			recipes = append(recipes, *r)
-			recipeNumber++
+			recipes = append(recipes, xr...)
+			recipeNumber += len(xr)
 		case models.MXP.Ext():
 			xr := models.NewRecipesFromMasterCook(openedFile)
 			if len(xr) > 0 {
@@ -236,7 +256,52 @@ func (f *Files) processRecipeFiles(zr *zip.Reader) models.Recipes {
 	return recipes
 }
 
-func (f *Files) extractRecipe(rd io.Reader) (*models.Recipe, error) {
+func (f *Files) extractJSONRecipes(rd io.Reader) (models.Recipes, error) {
+	buf, err := io.ReadAll(rd)
+	if err != nil {
+		slog.Error("Failed to read file", "reader", rd, "error", err)
+		return nil, err
+	}
+
+	if len(buf) == 0 {
+		return nil, errors.New("no bytes to unmarshal")
+	}
+
+	var xrs []models.RecipeSchema
+
+	switch buf[0] {
+	case '{':
+		var rs models.RecipeSchema
+		err = json.Unmarshal(buf, &rs)
+		xrs = append(xrs, rs)
+	case '[':
+		err = json.Unmarshal(buf, &xrs)
+	default:
+		err = errors.New("unexpected JSON format")
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	xr := make(models.Recipes, 0, len(xrs))
+	for _, rs := range xrs {
+		r, err := rs.Recipe()
+		if err != nil {
+			return nil, fmt.Errorf("rs.Recipe() err: %w", err)
+		}
+
+		if rs.Image.Value != "" {
+			r.Image, _ = f.ScrapeAndStoreImage(rs.Image.Value)
+		}
+
+		xr = append(xr, *r)
+	}
+
+	return xr, nil
+}
+
+func (f *Files) parseJSONRecipe(rd io.Reader) (*models.Recipe, error) {
 	buf, err := io.ReadAll(rd)
 	if err != nil {
 		slog.Error("Failed to read file", "reader", rd, "error", err)

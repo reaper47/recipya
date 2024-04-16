@@ -170,7 +170,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 			t.Fatal("cookbook must have been added to the user's collection")
 		}
 		want := []string{
-			`<section id="cookbook-1" class="cookbook card card-compact bg-base-100 shadow-lg indicator">`,
+			`<section id="cookbook-1" class="cookbook card card-compact bg-base-100 shadow-lg indicator w-full">`,
 			`<img class="rounded-t-lg w-full border-b h-32 text-center object-cover max-w-48 md:h-48 hover:bg-gray-100 hover:opacity-80" src="/static/img/cookbooks-new/placeholder.webp" onClick="__templ_cookbookImageClick`,
 			`<form id="cookbook-image-form-1" enctype="multipart/form-data" hx-swap="none" hx-put="/cookbooks/1/image" hx-trigger="change from:#cookbook-image-1"><input id="cookbook-image-1" type="file" accept="image/*" name="image" required class="hidden" _="on drop or change make an FileReader called reader then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then set {src: window.URL.createObjectURL(it)} on previous <img/> then remove .hidden from next <button/>"></form>`,
 			`<p class="font-semibold w-[18ch] break-words">Lovely America</p>`,

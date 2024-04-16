@@ -4,7 +4,8 @@ import "strings"
 
 // These constants enumerate all possible file types used by the software.
 const (
-	JSON FileType = iota
+	Crumb FileType = iota
+	JSON
 	PDF
 	MXP
 	Paprika
@@ -18,6 +19,8 @@ type FileType int64
 // NewFileType creates a FileType from the file type name.
 func NewFileType(fileType string) FileType {
 	switch strings.ToLower(fileType) {
+	case "crumb":
+		return Crumb
 	case "json":
 		return JSON
 	case "mxp":
@@ -36,6 +39,8 @@ func NewFileType(fileType string) FileType {
 // Ext returns the FileType's extension.
 func (f FileType) Ext() string {
 	switch f {
+	case Crumb:
+		return ".crumb"
 	case JSON:
 		return ".json"
 	case MXP:

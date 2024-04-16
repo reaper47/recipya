@@ -40,6 +40,13 @@ func (i Integrations) NextcloudImport(baseURL, username, password string, files 
 	return integrations.NextcloudImport(baseURL, username, password, files.UploadImage, progress)
 }
 
+func (i Integrations) TandoorImport(baseURL, username, password string, files FilesService, progress chan models.Progress) (models.Recipes, error) {
+	if !isCredentialsValid(baseURL, username, password) {
+		return nil, errors.New("invalid username, password or URL")
+	}
+	return integrations.TandoorImport(baseURL, username, password, i.client, files.UploadImage, progress)
+}
+
 func isCredentialsValid(baseURL, username, password string) bool {
 	if username == "" || password == "" || baseURL == "" {
 		return false

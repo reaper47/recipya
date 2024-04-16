@@ -259,4 +259,7 @@ type IntegrationsService interface {
 
 	// ProcessImageOCR processes an image using an OCR service to extract the recipe.
 	ProcessImageOCR(file io.Reader) (models.Recipe, error)
+
+	// TandoorImport imports the recipes from a Tandoor Recipes instance.
+	TandoorImport(baseURL, username, password string, files FilesService, progress chan models.Progress) (models.Recipes, error)
 }
