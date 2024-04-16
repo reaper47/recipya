@@ -11,13 +11,26 @@ in the settings.
 
 ## Compatibility
 
-| Integration                                                    |        Import        |      Export      |
-|----------------------------------------------------------------|:--------------------:|:----------------:|
-| [MasterCook](https://www.mastercook.com)                       | {{< icon "check" >}} | {{< icon "x" >}} |
- | [Mealie](https://mealie.io)                                    | {{< icon "check" >}} | {{< icon "x" >}} |
+| Integration                                                   |        Import        |      Export      |
+|---------------------------------------------------------------|:--------------------:|:----------------:|
+ | [Crouton](https://crouton.app)                                | {{< icon "check" >}} | {{< icon "x" >}} |
+| [MasterCook](https://www.mastercook.com)                      | {{< icon "check" >}} | {{< icon "x" >}} |
+ | [Mealie](https://mealie.io)                                   | {{< icon "check" >}} | {{< icon "x" >}} |
 | [Nextcloud Cookbook](https://apps.nextcloud.com/apps/cookbook) | {{< icon "check" >}} | {{< icon "x" >}} |
- | [Paprika](https://www.paprikaapp.com)                          | {{< icon "check" >}} | {{< icon "x" >}} |
-| [Recipe Keeper](https://www.paprikaapp.com)                    | {{< icon "check" >}} | {{< icon "x" >}} |
+ | [Paprika](https://www.paprikaapp.com)                         | {{< icon "check" >}} | {{< icon "x" >}} |
+| [Recipe Keeper](https://www.paprikaapp.com)                   | {{< icon "check" >}} | {{< icon "x" >}} |
+| [RecipeSage](https://recipesage.com/#/welcome)                | {{< icon "check" >}} | {{< icon "x" >}} |
+| [Tandoor](https://tandoor.dev) |{{< icon "check" >}} | {{< icon "x" >}} |
+
+## Crouton
+
+Follow these steps to import your recipes from Crouton:
+
+1. Export your recipes in `Crouton`.
+2. Within Recipya, click the `Add recipe` button.
+3. Click the `Import` button.
+4. Select the exported `.zip` file.
+5. Click `Submit`.
 
 ## MasterCook
 
@@ -32,7 +45,7 @@ This [website](https://www.grassrootsrecipes.com/) contains endless MasterCook r
 Follow these steps to import your recipes from a Mealie instance:
 
 1. Go to the **Integrations** setting and select the **Mealie** option.
-2. Click the button adjacent to the menu of options.
+2. Click the adjacent button.
 3. In the dialog that appears, enter the URL and credentials of a Mealie instance.
 4. Click the **Import** button.
 
@@ -44,7 +57,7 @@ Your recipes will be swiftly transferred from Mealie to Recipya.
 Follow these steps to import your recipes from a Nextcloud Cookbook instance:
 
 1. Go to the **Integrations** setting and select the **Nextcloud** option.
-2. Click the button adjacent to the menu of options.
+2. Click the adjacent button.
 3. In the dialog that appears, enter the URL and credentials of your Nextcloud instance.
    ![](images/settings-integrations-nextcloud.webp)
 4. Click the **Import** button.
@@ -73,3 +86,24 @@ Follow these steps to import recipes from Recipe Keeper.
 6. Click the `Import` button.
 7. Select the zip file you saved.
 8. Click `Submit`.
+
+#### RecipeSage
+
+Follow these steps to import recipes from RecipeSage.
+
+1. Export your [RecipeSage](https://docs.recipesage.com/docs/tutorials/settings/export/) recipes in the `JSON-LD` format.
+2. Within Recipya, click the `Add recipe` button.
+3. Click the `Import` button.
+4. Select the exported file.
+5. Click `Submit`.
+
+## Tandoor
+
+Follow these steps to import your recipes from a Tandoor instance:
+
+1. Go to the **Integrations** setting and select the **Tandoor** option.
+2. Click the adjacent button.
+3. In the dialog that appears, enter the URL and credentials of a Tandoor instance.
+4. Click the **Import** button.
+
+Your recipes will be transferred from Mealie to Recipya.

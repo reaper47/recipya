@@ -1117,6 +1117,7 @@ func (s *Server) recipesSearchHandler() http.HandlerFunc {
 func (s *Server) recipesSupportedApplicationsHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, _ *http.Request) {
 		applications := [][]string{
+			{"Crouton", "https://crouton.app"},
 			{"MasterCook", "https://www.mastercook.com"},
 			{"Paprika", "https://www.paprikaapp.com"},
 			{"Recipe Keeper", "https://recipekeeperonline.com"},

@@ -493,7 +493,6 @@ func (i *Instructions) UnmarshalJSON(data []byte) error {
 			}
 		}
 	case []any:
-
 		for _, part := range x {
 			switch y := part.(type) {
 			case string:

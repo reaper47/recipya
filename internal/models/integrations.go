@@ -77,10 +77,15 @@ func (p PaprikaRecipe) Recipe(image uuid.UUID) Recipe {
 		source = p.Source
 	}
 
+	description := p.Description
+	if description == "" {
+		description = "Imported from Paprika"
+	}
+
 	return Recipe{
 		Category:     category,
 		CreatedAt:    dateCreated,
-		Description:  p.Description,
+		Description:  description,
 		Image:        image,
 		Ingredients:  strings.Split(p.Ingredients, "\n"),
 		Instructions: strings.Split(p.Directions, "\n\n"),

@@ -231,7 +231,7 @@ templ cookbooksIndex(data templates.Data) {
 		<div class="min-h-[79vh]">
 			<div
 				id="cookbooks-container"
-				class={ "cookbooks-display grid justify-center pb-4", templ.KV("grid gap-4 p-4 text-sm place-items-center md:m-auto md:max-w-7xl sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5", data.CookbookFeature.ViewMode == 0), templ.KV("grid gap-8 p-2 text-sm md:text-base place-items-center", data.CookbookFeature.ViewMode == 1) }
+				class={ "cookbooks-display grid justify-center pb-4", templ.KV("grid gap-4 p-4 text-sm place-items-center md:m-auto md:max-w-7xl grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5", data.CookbookFeature.ViewMode == 0), templ.KV("grid gap-8 p-2 text-sm md:text-base place-items-center", data.CookbookFeature.ViewMode == 1) }
 			>
 				if data.CookbookFeature.ViewMode == 0 {
 					for i, c := range data.CookbookFeature.Cookbooks {
@@ -333,7 +333,7 @@ templ cookbooksIndex(data templates.Data) {
 }
 
 templ cookbookGrid(cookbook templates.CookbookView) {
-	<section id={ fmt.Sprintf("cookbook-%d", cookbook.ID) } class="cookbook card card-compact bg-base-100 shadow-lg indicator">
+	<section id={ fmt.Sprintf("cookbook-%d", cookbook.ID) } class="cookbook card card-compact bg-base-100 shadow-lg indicator w-full">
 		<span class="indicator-item badge badge-primary">{ fmt.Sprint(cookbook.NumRecipes) }</span>
 		<figure>
 			<img

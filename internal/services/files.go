@@ -820,27 +820,31 @@ func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recip
 	for _, file := range fileHeaders {
 		go func(fh *multipart.FileHeader) {
 			defer wg.Done()
-			switch fh.Header.Get("Content-Type") {
+
+			var (
+				content = fh.Header.Get("Content-Type")
+				toAdd   models.Recipes
+			)
+
+			switch content {
 			case "application/x-zip-compressed":
-				mu.Lock()
-				recipes = append(recipes, f.processZip(fh)...)
-				mu.Unlock()
+				toAdd = f.processZip(fh)
 			case "application/json":
-				mu.Lock()
-				recipes = append(recipes, *f.processJSON(fh))
-				mu.Unlock()
+				toAdd = f.processJSON(fh)
 			case "application/octet-stream":
 				switch strings.ToLower(filepath.Ext(fh.Filename)) {
+				case models.Crumb.Ext():
+					toAdd = models.Recipes{*f.processCrouton(fh)}
 				case models.MXP.Ext():
-					mu.Lock()
-					recipes = append(recipes, processMasterCook(fh)...)
-					mu.Unlock()
+					toAdd = processMasterCook(fh)
 				}
 			case "application/paprikarecipes":
-				mu.Lock()
-				recipes = append(recipes, f.processPaprikaRecipes(nil, fh)...)
-				mu.Unlock()
+				toAdd = f.processPaprikaRecipes(nil, fh)
 			}
+
+			mu.Lock()
+			recipes = append(recipes, toAdd...)
+			mu.Unlock()
 		}(file)
 	}
 

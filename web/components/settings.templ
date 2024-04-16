@@ -251,6 +251,7 @@ templ SettingsTabsRecipes(data templates.SettingsData) {
 				<select name="integrations" class="w-fit select select-bordered select-sm" _="on change(target) set { value: target.value } on #integration-selected">
 					<option value="mealie" selected>Mealie</option>
 					<option value="nextcloud">Nextcloud</option>
+					<option value="tandoor">Tandoor</option>
 				</select>
 			</label>
 			<button class="btn btn-outline btn-sm" onmousedown="integrations_dialog.showModal()">

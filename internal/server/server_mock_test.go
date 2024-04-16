@@ -909,33 +909,29 @@ func (m *mockFiles) ScrapeAndStoreImage(_ string) (uuid.UUID, error) {
 }
 
 type mockIntegrations struct {
-	MealieImportFunc    func(baseURL, username, password string, files services.FilesService) (models.Recipes, error)
-	NextcloudImportFunc func(baseURL, username, password string, files services.FilesService) (models.Recipes, error)
+	ImportFunc          func(baseURL, username, password string, files services.FilesService) (models.Recipes, error)
 	ProcessImageOCRFunc func(file io.Reader) (models.Recipe, error)
 }
 
 func (m *mockIntegrations) MealieImport(baseURL, username, password string, files services.FilesService, progress chan models.Progress) (models.Recipes, error) {
-	if username == "" || password == "" || baseURL == "" {
-		return nil, errors.New("invalid username, password or URL")
-	}
-
-	if m.MealieImportFunc != nil {
-		return m.MealieImportFunc(baseURL, username, password, files)
-	}
-
-	return models.Recipes{
-		{ID: 1, Name: "One"},
-		{ID: 2, Name: "Two"},
-	}, nil
+	return m.importIntegration(baseURL, username, password, files)
 }
 
 func (m *mockIntegrations) NextcloudImport(baseURL, username, password string, files services.FilesService, _ chan models.Progress) (models.Recipes, error) {
+	return m.importIntegration(baseURL, username, password, files)
+}
+
+func (m *mockIntegrations) TandoorImport(baseURL, username, password string, files services.FilesService, _ chan models.Progress) (models.Recipes, error) {
+	return m.importIntegration(baseURL, username, password, files)
+}
+
+func (m *mockIntegrations) importIntegration(baseURL, username, password string, files services.FilesService) (models.Recipes, error) {
 	if username == "" || password == "" || baseURL == "" {
 		return nil, errors.New("invalid username, password or URL")
 	}
 
-	if m.NextcloudImportFunc != nil {
-		return m.NextcloudImportFunc(baseURL, username, password, files)
+	if m.ImportFunc != nil {
+		return m.ImportFunc(baseURL, username, password, files)
 	}
 
 	return models.Recipes{
