@@ -24,6 +24,9 @@ var (
 	wordConverter *word2number.Converter
 )
 
+// ErrIsAccuChef is the error for when a file is an AccuChef one.
+var ErrIsAccuChef = errors.New("accuchef") // TODO: Place errors somewhere else.
+
 // Recipes is the type for a slice of recipes.
 type Recipes []Recipe
 
@@ -563,6 +566,13 @@ func NewRecipeFromTextFile(r io.Reader) (Recipe, error) {
 	recipe := NewBaseRecipe()
 	blocks := extractBlocks(r)
 
+	if len(blocks) == 1 {
+		if bytes.HasPrefix(blocks[0], []byte("*****AccuChef Import File")) {
+			return Recipe{}, ErrIsAccuChef
+		}
+		return parseSaffron(blocks[0])
+	}
+
 	var (
 		isDescriptionBlock      = true
 		isMetaDataBlock         bool
@@ -760,12 +770,22 @@ func NewRecipeFromTextFile(r io.Reader) (Recipe, error) {
 }
 
 func extractBlocks(r io.Reader) [][]byte {
-	scanner := bufio.NewScanner(r)
-	i := 0
-	blocks := make([][]byte, 0)
+	var (
+		scanner     = bufio.NewScanner(r)
+		i           = 0
+		blocks      = make([][]byte, 0)
+		isFirstLine = true
+	)
 
 	for scanner.Scan() {
 		line := bytes.TrimSpace(scanner.Bytes())
+		isEmpty := bytes.Equal(line, []byte(""))
+
+		if isFirstLine && i == 0 && isEmpty {
+			continue
+		}
+		isFirstLine = false
+
 		if bytes.Equal(line, []byte("")) {
 			blocks[i] = bytes.TrimSpace(blocks[i])
 			i++
@@ -1194,6 +1214,221 @@ func NewRecipesFromRecipeKeeper(root *goquery.Document) Recipes {
 			Yield:     yield,
 		})
 	})
+	return recipes
+}
+
+func parseSaffron(block []byte) (Recipe, error) {
+	var (
+		isIngredients  bool
+		isInstructions bool
+		isYield        bool
+
+		recipe = Recipe{Category: "uncategorized", Yield: 1}
+	)
+
+	for _, b := range bytes.Split(block, []byte("\n")) {
+		before, after, ok := bytes.Cut(b, []byte(":"))
+		before = bytes.TrimSpace(before)
+		after = bytes.TrimSpace(after)
+
+		if !ok {
+			v := strings.TrimSpace(string(before))
+			if isIngredients {
+				recipe.Ingredients = append(recipe.Ingredients, v)
+			} else if isInstructions {
+				recipe.Instructions = append(recipe.Instructions, v)
+			}
+			continue
+		}
+
+		v := strings.TrimSpace(string(after))
+		if strings.TrimSpace(v) == "" {
+			if bytes.Equal(before, []byte("Ingredients")) {
+				isIngredients = true
+			} else if bytes.Equal(before, []byte("Instructions")) {
+				isIngredients = false
+				isInstructions = true
+			}
+			continue
+		}
+
+		if isYield {
+			t := duration.From(v)
+			if t > 0 && recipe.Times.Prep == 0 {
+				recipe.Times.Prep = t
+			} else if t > 0 && recipe.Times.Cook == 0 {
+				recipe.Times.Cook = t
+			}
+		}
+
+		switch string(before) {
+		case "Title":
+			recipe.Name = v
+		case "Description":
+			recipe.Description = v
+		case "Source", "Original URL":
+			recipe.URL = v
+		case "Yield":
+			isYield = true
+			parsed, err := strconv.ParseInt(v, 10, 16)
+			if err == nil {
+				recipe.Yield = int16(parsed)
+			}
+		case "Cookbook":
+			isYield = false
+		}
+	}
+
+	return recipe, nil
+}
+
+// NewRecipesFromAccuChef extracts all recipes from an exported Accuchef file.
+func NewRecipesFromAccuChef(r io.Reader) Recipes {
+	blocks := extractBlocks(r)
+	if len(blocks) == 0 {
+		return nil
+	}
+
+	parts := bytes.Split(blocks[0], []byte("*****AccuChef Import File (C)SIVART Software http://www.AccuChef.com"))
+	recipes := make(Recipes, 0, len(parts))
+
+	for _, b := range parts[1:] {
+		b = bytes.TrimSpace(b)
+
+		var (
+			ingredient  string
+			instruction string
+
+			isNutrition bool
+			nutrition   string
+
+			notes  string
+			recipe = Recipe{
+				Category: "uncategorized",
+				Keywords: make([]string, 0),
+				URL:      "From AccuChef",
+				Yield:    1,
+			}
+		)
+
+		for _, line := range bytes.Split(b, []byte("\n")) {
+			if len(line) <= 1 {
+				continue
+			}
+
+			c := line[0]
+			content := string(bytes.TrimSpace(line[1:]))
+
+			switch c {
+			case 'A':
+				recipe.Name = content
+			case 'B':
+				recipe.Category = strings.Split(content, ",")[0]
+			case 'C':
+				recipe.Keywords = append(recipe.Keywords, content)
+			case 'D':
+				parsed, err := strconv.ParseInt(content, 10, 16)
+				if err == nil {
+					recipe.Yield = int16(parsed)
+				}
+			case 'P':
+				split := strings.Split(content, ":")
+				if len(split) == 2 {
+					h := strings.TrimSpace(split[0])
+					m := strings.TrimSpace(split[1])
+					recipe.Times.Prep, _ = time.ParseDuration(h + "h" + m + "m")
+				}
+			case 'F':
+				notes += content + " "
+			case 'H':
+				if ingredient != "" {
+					recipe.Ingredients = append(recipe.Ingredients, ingredient)
+				}
+				ingredient = content
+			case 'I':
+				ingredient += " " + content
+			case 'K':
+				ingredient += " (" + content + ")"
+			case 'J':
+				if isNutrition {
+					if strings.HasSuffix(content, "~") {
+						goto Break
+					}
+					nutrition += content + " "
+					continue
+				}
+
+				if ingredient != "" {
+					recipe.Ingredients = append(recipe.Ingredients, ingredient)
+					ingredient = ""
+				}
+
+				if strings.HasPrefix(content, "Per ") {
+					instruction = strings.TrimSuffix(strings.TrimSpace(instruction), "~")
+					recipe.Instructions = append(recipe.Instructions, strings.Join(strings.Fields(instruction), " "))
+					instruction = ""
+
+					_, after, _ := strings.Cut(content, ":")
+					isNutrition = true
+					nutrition += after + " "
+					continue
+				}
+
+				if content == "~" {
+					instruction = strings.TrimSuffix(strings.TrimSpace(instruction), "~")
+					recipe.Instructions = append(recipe.Instructions, strings.Join(strings.Fields(instruction), " "))
+					instruction = ""
+					continue
+				}
+
+				instruction += content + " "
+			}
+		}
+
+	Break:
+		if instruction != "" {
+			instruction = strings.TrimSuffix(strings.TrimSpace(instruction), "~")
+			recipe.Instructions = append(recipe.Instructions, strings.Join(strings.Fields(instruction), " "))
+		}
+
+		split := strings.Split(strings.TrimSpace(nutrition), ";")
+		for i, s := range split {
+			all := strings.Split(strings.TrimSpace(s), " ")
+			if all[0] == "0" || all[0] == "" || len(all) <= 2 {
+				continue
+			}
+
+			v := all[0] + " " + all[1]
+
+			if i == 0 && len(all) > 3 {
+				recipe.Nutrition.Calories = v
+				continue
+			}
+
+			switch all[2] {
+			case "protein":
+				recipe.Nutrition.Protein = v
+			case "tot":
+				recipe.Nutrition.TotalFat = v
+			case "sat":
+				recipe.Nutrition.SaturatedFat = v
+			case "carb":
+				recipe.Nutrition.TotalCarbohydrates = v
+			case "fiber":
+				recipe.Nutrition.Fiber = v
+			case "sodium":
+				recipe.Nutrition.Sodium = v
+			case "cholesterol":
+				recipe.Nutrition.Cholesterol = v
+			}
+		}
+
+		recipe.Instructions = append(recipe.Instructions, strings.TrimSpace(notes))
+		recipe.Instructions = slices.DeleteFunc(recipe.Instructions, func(s string) bool { return s == "" })
+
+		recipes = append(recipes, recipe)
+	}
+
 	return recipes
 }
 

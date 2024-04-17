@@ -840,6 +840,8 @@ func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recip
 				}
 			case "application/paprikarecipes":
 				toAdd = f.processPaprikaRecipes(nil, fh)
+			case "text/plain":
+				toAdd = f.processTxt(fh)
 			}
 
 			mu.Lock()

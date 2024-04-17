@@ -126,6 +126,32 @@ func (f *Files) processPaprikaRecipes(rc io.ReadCloser, file *multipart.FileHead
 	return recipes
 }
 
+func (f *Files) processTxt(file *multipart.FileHeader) models.Recipes {
+	openFile, err := file.Open()
+	if err != nil {
+		slog.Error("Failed to open file", "file", file, "error", err)
+		return make(models.Recipes, 0)
+	}
+	defer openFile.Close()
+
+	data, err := io.ReadAll(openFile)
+	if err != nil {
+		slog.Error("Failed to read file", "file", file.Filename, "error", err)
+		return make(models.Recipes, 0)
+	}
+
+	recipe, err := models.NewRecipeFromTextFile(bytes.NewBuffer(data))
+	if errors.Is(err, models.ErrIsAccuChef) {
+		return models.NewRecipesFromAccuChef(bytes.NewBuffer(data))
+	}
+
+	if err != nil {
+		slog.Error("Could not create recipe from text file", "file", file.Filename, "error", err)
+		return nil
+	}
+	return models.Recipes{recipe}
+}
+
 func (f *Files) processZip(file *multipart.FileHeader) models.Recipes {
 	openFile, err := file.Open()
 	if err != nil {
@@ -236,7 +262,13 @@ func (f *Files) processRecipeFiles(zr *zip.Reader) models.Recipes {
 			}
 		case models.TXT.Ext():
 			recipe, err := models.NewRecipeFromTextFile(openedFile)
-			if err != nil {
+			if errors.Is(err, models.ErrIsAccuChef) {
+				_ = openedFile.Close()
+				xr := models.NewRecipesFromAccuChef(openedFile)
+				recipes = append(recipes, xr...)
+				recipeNumber += len(xr)
+				continue
+			} else if err != nil {
 				_ = openedFile.Close()
 				slog.Error("Could not create recipe from text file", "file", zf.Name, "error", err)
 				continue
