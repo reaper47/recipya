@@ -11,16 +11,18 @@ in the settings.
 
 ## Compatibility
 
-| Integration                                                   |        Import        |      Export      |
-|---------------------------------------------------------------|:--------------------:|:----------------:|
- | [Crouton](https://crouton.app)                                | {{< icon "check" >}} | {{< icon "x" >}} |
-| [MasterCook](https://www.mastercook.com)                      | {{< icon "check" >}} | {{< icon "x" >}} |
- | [Mealie](https://mealie.io)                                   | {{< icon "check" >}} | {{< icon "x" >}} |
+| Integration                                                    |        Import        |      Export      |
+|----------------------------------------------------------------|:--------------------:|:----------------:|
+ | [AccuChef](https://www.accuchef.com)                           | {{< icon "check" >}} | {{< icon "x" >}} |
+| [Crouton](https://crouton.app)                                 | {{< icon "check" >}} | {{< icon "x" >}} |
+| [MasterCook](https://www.mastercook.com)                       | {{< icon "check" >}} | {{< icon "x" >}} |
+ | [Mealie](https://mealie.io)                                    | {{< icon "check" >}} | {{< icon "x" >}} |
 | [Nextcloud Cookbook](https://apps.nextcloud.com/apps/cookbook) | {{< icon "check" >}} | {{< icon "x" >}} |
- | [Paprika](https://www.paprikaapp.com)                         | {{< icon "check" >}} | {{< icon "x" >}} |
-| [Recipe Keeper](https://www.paprikaapp.com)                   | {{< icon "check" >}} | {{< icon "x" >}} |
-| [RecipeSage](https://recipesage.com/#/welcome)                | {{< icon "check" >}} | {{< icon "x" >}} |
-| [Tandoor](https://tandoor.dev) |{{< icon "check" >}} | {{< icon "x" >}} |
+ | [Paprika](https://www.paprikaapp.com)                          | {{< icon "check" >}} | {{< icon "x" >}} |
+| [Recipe Keeper](https://www.paprikaapp.com)                    | {{< icon "check" >}} | {{< icon "x" >}} |
+| [RecipeSage](https://recipesage.com/#/welcome)                 | {{< icon "check" >}} | {{< icon "x" >}} |
+ | [Saffron](https://www.mysaffronapp.com)                        | {{< icon "check" >}} | {{< icon "x" >}} |
+ | [Tandoor](https://tandoor.dev)                                 | {{< icon "check" >}} | {{< icon "x" >}} |
 
 ## Crouton
 
@@ -91,6 +93,16 @@ Follow these steps to import recipes from RecipeSage.
 2. Within Recipya, click the `Add recipe` button.
 3. Click the `Import` button.
 4. Select the exported file.
+5. Click `Submit`.
+
+## Saffron
+
+Follow these steps to import recipes from Saffron.
+
+1. Export your [Saffron](https://www.mysaffronapp.com/account) recipes.
+2. Within Recipya, click the `Add recipe` button.
+3. Click the `Import` button.
+4. Select the exported `.zip` file.
 5. Click `Submit`.
 
 ## Tandoor

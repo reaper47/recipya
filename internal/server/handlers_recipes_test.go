@@ -1245,16 +1245,25 @@ func TestHandlers_Recipes_SupportedApplications(t *testing.T) {
 	})
 
 	t.Run("returns list of applications to logged in user", func(t *testing.T) {
+		var want []string
+		applications := [][]string{
+			{"AccuChef", "https://www.accuchef.com"},
+			{"Crouton", "https://crouton.app"},
+			{"MasterCook", "https://www.mastercook.com"},
+			{"Paprika", "https://www.paprikaapp.com"},
+			{"Recipe Keeper", "https://recipekeeperonline.com"},
+			{"RecipeSage", "https://recipesage.com"},
+			{"Saffron", "https://www.mysaffronapp.com"},
+		}
+		for i, a := range applications {
+			want = append(want, `<tr class="border text-center"><td class="border dark:border-gray-800">`+strconv.Itoa(i+1)+`</td><td class="border py-1 dark:border-gray-800"><a class="underline" href="`+a[1]+`" target="_blank">`+a[0]+`</a></td></tr>`)
+		}
+
 		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertHeader(t, rr, "Content-Type", "text/html")
-		assertStringsInHTML(t, getBodyHTML(rr), []string{
-			`<tr class="border text-center"><td class="border dark:border-gray-800">1</td><td class="border py-1 dark:border-gray-800"><a class="underline" href="https://crouton.app" target="_blank">Crouton</a></td></tr>`,
-			`<tr class="border text-center"><td class="border dark:border-gray-800">2</td><td class="border py-1 dark:border-gray-800"><a class="underline" href="https://www.mastercook.com" target="_blank">MasterCook</a></td></tr>`,
-			`<tr class="border text-center"><td class="border dark:border-gray-800">3</td><td class="border py-1 dark:border-gray-800"><a class="underline" href="https://www.paprikaapp.com" target="_blank">Paprika</a></td></tr>`,
-			`<tr class="border text-center"><td class="border dark:border-gray-800">4</td><td class="border py-1 dark:border-gray-800"><a class="underline" href="https://recipekeeperonline.com" target="_blank">Recipe Keeper</a></td></tr>`,
-		})
+		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
 }
 
