@@ -1313,7 +1313,7 @@ func NewRecipesFromAccuChef(r io.Reader) Recipes {
 			recipe = Recipe{
 				Category: "uncategorized",
 				Keywords: make([]string, 0),
-				URL:      "From AccuChef",
+				URL:      "AccuChef",
 				Yield:    1,
 			}
 		)

@@ -36,7 +36,7 @@ func TestNewFileType(t *testing.T) {
 		in   string
 		want models.FileType
 	}{
-		{name: "cml", in: ".cml", want: models.CML},
+		{name: "cml", in: "cml", want: models.CML},
 		{name: "crumb", in: "crumb", want: models.Crumb},
 		{name: "json", in: "json", want: models.JSON},
 		{name: "mxp", in: "mxp", want: models.MXP},
