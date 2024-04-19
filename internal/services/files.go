@@ -833,6 +833,8 @@ func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recip
 				toAdd = f.processJSON(fh)
 			case "application/octet-stream":
 				switch strings.ToLower(filepath.Ext(fh.Filename)) {
+				case models.CML.Ext():
+					toAdd = models.NewRecipesFromCML(nil, fh, f.UploadImage)
 				case models.Crumb.Ext():
 					toAdd = models.Recipes{*f.processCrouton(fh)}
 				case models.MXP.Ext():
@@ -1012,7 +1014,7 @@ func pdfToBytes(pdf *gofpdf.Fpdf, name string) []byte {
 	buf := &bytes.Buffer{}
 	err := pdf.Output(buf)
 	if err != nil {
-		slog.Error("Could not create PDF", "name", name)
+		slog.Error("Could not create PDF", "name", name, "error", err)
 		return []byte{}
 	}
 	return buf.Bytes()

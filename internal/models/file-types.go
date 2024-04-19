@@ -4,7 +4,8 @@ import "strings"
 
 // These constants enumerate all possible file types used by the software.
 const (
-	Crumb FileType = iota
+	CML FileType = iota
+	Crumb
 	JSON
 	PDF
 	MXP
@@ -19,6 +20,8 @@ type FileType int64
 // NewFileType creates a FileType from the file type name.
 func NewFileType(fileType string) FileType {
 	switch strings.ToLower(fileType) {
+	case "cml":
+		return CML
 	case "crumb":
 		return Crumb
 	case "json":
@@ -39,6 +42,8 @@ func NewFileType(fileType string) FileType {
 // Ext returns the FileType's extension.
 func (f FileType) Ext() string {
 	switch f {
+	case CML:
+		return ".cml"
 	case Crumb:
 		return ".crumb"
 	case JSON:

@@ -1118,7 +1118,10 @@ func (s *Server) recipesSupportedApplicationsHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, _ *http.Request) {
 		applications := [][]string{
 			{"AccuChef", "https://www.accuchef.com"},
+			{"ChefTap", "https://cheftap.com"},
 			{"Crouton", "https://crouton.app"},
+			{"Easy Recipe Deluxe", "https://easy-recipe-deluxe.software.informer.com"},
+			{"Kalorio", "https://www.kalorio.de"},
 			{"MasterCook", "https://www.mastercook.com"},
 			{"Paprika", "https://www.paprikaapp.com"},
 			{"Recipe Keeper", "https://recipekeeperonline.com"},

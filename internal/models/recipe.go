@@ -24,8 +24,11 @@ var (
 	wordConverter *word2number.Converter
 )
 
-// ErrIsAccuChef is the error for when a file is an AccuChef one.
-var ErrIsAccuChef = errors.New("accuchef") // TODO: Place errors somewhere else.
+// Errors to signal specific applications.
+var (
+	ErrIsAccuChef         = errors.New("accuchef") // TODO: Place errors somewhere else.
+	ErrIsEasyRecipeDeluxe = errors.New("easy recipe deluxe")
+)
 
 // Recipes is the type for a slice of recipes.
 type Recipes []Recipe
@@ -571,6 +574,10 @@ func NewRecipeFromTextFile(r io.Reader) (Recipe, error) {
 			return Recipe{}, ErrIsAccuChef
 		}
 		return parseSaffron(blocks[0])
+	} else if len(blocks) > 1 {
+		if bytes.HasSuffix(blocks[0], []byte("___________________________________________________________________________")) {
+			return Recipe{}, ErrIsEasyRecipeDeluxe
+		}
 	}
 
 	var (
@@ -1306,7 +1313,7 @@ func NewRecipesFromAccuChef(r io.Reader) Recipes {
 			recipe = Recipe{
 				Category: "uncategorized",
 				Keywords: make([]string, 0),
-				URL:      "From AccuChef",
+				URL:      "AccuChef",
 				Yield:    1,
 			}
 		)
@@ -1430,6 +1437,173 @@ func NewRecipesFromAccuChef(r io.Reader) Recipes {
 	}
 
 	return recipes
+}
+
+func NewRecipesFromEasyRecipeDeluxe(r io.Reader) Recipes {
+	scanner := bufio.NewScanner(r)
+
+	var (
+		isIngredients  bool
+		isInstructions bool
+		isNewRecipe    bool
+		isMetadata     = true
+		isNotes        bool
+
+		delim        = []byte("___________________________________________________________________________")
+		previousLine []byte
+		numNewLines  = 0
+
+		recipe  = Recipe{URL: "Easy Recipe Deluxe"}
+		recipes Recipes
+	)
+
+	for scanner.Scan() {
+		line := bytes.TrimSpace(scanner.Bytes())
+		if numNewLines == 2 {
+			isNewRecipe = len(recipe.Instructions) > 0
+			numNewLines = 0
+		}
+
+		if isMetadata {
+			if bytes.Equal(line, delim) && bytes.HasPrefix(previousLine, []byte("Cooking Time:")) {
+				isMetadata = false
+				continue
+			} else if bytes.HasPrefix(line, []byte("Category:")) {
+				_, after, _ := bytes.Cut(line, []byte("Category:"))
+				recipe.Category = string(bytes.TrimSpace(after))
+			} else if bytes.HasPrefix(line, []byte("Main Ingredient:")) {
+				_, after, _ := bytes.Cut(line, []byte("Main Ingredient:"))
+				recipe.Keywords = []string{string(bytes.TrimSpace(after))}
+			} else if bytes.HasPrefix(line, []byte("Cuisine Style:")) {
+				_, after, _ := bytes.Cut(line, []byte("Cuisine Style:"))
+				recipe.Cuisine = string(bytes.TrimSpace(after))
+			} else if bytes.HasPrefix(line, []byte("Yield:")) {
+				_, after, _ := bytes.Cut(line, []byte("Yield:"))
+				for _, b := range bytes.Split(after, []byte(" ")) {
+					parsed, err := strconv.ParseInt(string(b), 10, 16)
+					if err == nil {
+						recipe.Yield = int16(parsed)
+						break
+					}
+				}
+			} else if bytes.HasPrefix(line, []byte("Preparation Time:")) {
+				_, after, _ := bytes.Cut(line, []byte("Preparation Time:"))
+				after = bytes.TrimSpace(after)
+				if !bytes.Equal(after, []byte("")) {
+					parts := strings.Split(string(after), ":")
+					var t string
+					if parts[0] != "" {
+						t += parts[0] + "h"
+					}
+					if parts[1] != "" {
+						t += parts[1] + "m"
+					}
+					recipe.Times.Prep, _ = time.ParseDuration(t)
+				}
+			} else if bytes.HasPrefix(line, []byte("Cooking Time:")) {
+				_, after, _ := bytes.Cut(line, []byte("Cooking Time:"))
+				after = bytes.TrimSpace(after)
+				if !bytes.Equal(after, []byte("")) {
+					parts := strings.Split(string(after), ":")
+					var t string
+					if parts[0] != "" {
+						t += parts[0] + "h"
+					}
+					if parts[1] != "" {
+						t += parts[1] + "m"
+					}
+					recipe.Times.Cook, _ = time.ParseDuration(t)
+				}
+			} else if bytes.Equal(line, delim) && !bytes.HasPrefix(previousLine, []byte("Cooking Time:")) {
+				recipe.Name = string(previousLine)
+			}
+
+			previousLine = line
+			continue
+		} else if bytes.Equal(line, []byte("[Ingredients]")) {
+			isMetadata = false
+			isIngredients = true
+			numNewLines = 0
+			continue
+		} else if !isInstructions && bytes.Equal(line, []byte("[Instruction]")) {
+			isIngredients = false
+			isInstructions = true
+			numNewLines = 0
+			continue
+		} else if isInstructions && bytes.Equal(line, []byte("[Note]")) {
+			isInstructions = false
+			isNotes = true
+			numNewLines = 0
+			continue
+		} else if bytes.Equal(line, []byte("")) {
+			previousLine = line
+			numNewLines++
+			continue
+		}
+
+		if isNewRecipe {
+			isNewRecipe = false
+			isInstructions = false
+			isMetadata = true
+
+			recipes = append(recipes, recipe)
+			recipe = Recipe{Name: string(line), URL: "Easy Recipe Deluxe"}
+			numNewLines = 0
+		} else if isIngredients {
+			recipe.Ingredients = append(recipe.Ingredients, string(line))
+			numNewLines = 0
+			continue
+		} else if isInstructions {
+			dotIndex := bytes.Index(line, []byte("."))
+			if dotIndex >= 0 && dotIndex < 5 {
+				line = bytes.TrimSpace(line[dotIndex+1:])
+			}
+			recipe.Instructions = append(recipe.Instructions, string(line))
+			numNewLines = 0
+			continue
+		} else if isNotes {
+			if bytes.Contains(line, []byte("Calories;")) {
+				parts := bytes.Split(line, []byte(";"))
+				for _, part := range parts {
+					sub := bytes.Split(part, []byte(" "))
+					v := strings.TrimSpace(string(sub[0])) + " " + strings.TrimSpace(string(sub[1]))
+
+					if bytes.HasSuffix(part, []byte("Calories")) {
+						recipe.Nutrition.Calories = strings.TrimSpace(string(sub[len(sub)-1])) + " kcal"
+					} else if bytes.HasSuffix(part, []byte("Sat Fat")) {
+						recipe.Nutrition.SaturatedFat = v
+					} else if bytes.HasSuffix(part, []byte("Fat")) {
+						recipe.Nutrition.TotalFat = v
+					} else if bytes.HasSuffix(part, []byte("Cholesterol")) {
+						recipe.Nutrition.Cholesterol = v
+					} else if bytes.HasSuffix(part, []byte("Sodium")) {
+						recipe.Nutrition.Sodium = v
+					} else if bytes.HasSuffix(part, []byte("Carb")) {
+						recipe.Nutrition.TotalCarbohydrates = v
+					} else if bytes.HasSuffix(part, []byte("Fiber")) {
+						recipe.Nutrition.Fiber = v
+					} else if bytes.HasSuffix(part, []byte("Protein.")) {
+						recipe.Nutrition.Protein = v
+					}
+				}
+			} else if !bytes.Equal(line, delim) {
+				recipe.Instructions = append(recipe.Instructions, string(line))
+			}
+		}
+
+		if bytes.Equal(line, delim) && !bytes.HasPrefix(previousLine, []byte("Cooking Time:")) {
+			isNewRecipe = len(recipe.Ingredients) > 0
+			recipe.Name = string(previousLine)
+			previousLine = line
+			numNewLines = 0
+			continue
+		}
+
+		previousLine = line
+		numNewLines = 0
+	}
+
+	return append(recipes, recipe)
 }
 
 func init() {
