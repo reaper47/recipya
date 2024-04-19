@@ -235,6 +235,12 @@ func (f *Files) processRecipeFiles(zr *zip.Reader) models.Recipes {
 		}
 
 		switch strings.ToLower(filepath.Ext(zf.Name)) {
+		case models.CML.Ext():
+			xr := models.NewRecipesFromCML(openedFile, nil, f.UploadImage)
+			if len(xr) > 0 {
+				recipes = append(recipes, xr...)
+				recipeNumber += len(xr)
+			}
 		case models.Crumb.Ext():
 			recipes = append(recipes, models.NewRecipeFromCrouton(openedFile, f.UploadImage))
 			recipeNumber++

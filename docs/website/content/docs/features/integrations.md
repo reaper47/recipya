@@ -11,18 +11,21 @@ in the settings.
 
 ## Compatibility
 
-| Integration                                                    |        Import        |      Export      |
-|----------------------------------------------------------------|:--------------------:|:----------------:|
- | [AccuChef](https://www.accuchef.com)                           | {{< icon "check" >}} | {{< icon "x" >}} |
-| [Crouton](https://crouton.app)                                 | {{< icon "check" >}} | {{< icon "x" >}} |
-| [MasterCook](https://www.mastercook.com)                       | {{< icon "check" >}} | {{< icon "x" >}} |
- | [Mealie](https://mealie.io)                                    | {{< icon "check" >}} | {{< icon "x" >}} |
-| [Nextcloud Cookbook](https://apps.nextcloud.com/apps/cookbook) | {{< icon "check" >}} | {{< icon "x" >}} |
- | [Paprika](https://www.paprikaapp.com)                          | {{< icon "check" >}} | {{< icon "x" >}} |
-| [Recipe Keeper](https://www.paprikaapp.com)                    | {{< icon "check" >}} | {{< icon "x" >}} |
-| [RecipeSage](https://recipesage.com/#/welcome)                 | {{< icon "check" >}} | {{< icon "x" >}} |
- | [Saffron](https://www.mysaffronapp.com)                        | {{< icon "check" >}} | {{< icon "x" >}} |
- | [Tandoor](https://tandoor.dev)                                 | {{< icon "check" >}} | {{< icon "x" >}} |
+| Integration                                                            |        Import        |      Export      |
+|------------------------------------------------------------------------|:--------------------:|:----------------:|
+ | [AccuChef](https://www.accuchef.com)                                   | {{< icon "check" >}} | {{< icon "x" >}} |
+| [ChefTap](https://cheftap.com)                                         | {{< icon "check" >}} | {{< icon "x" >}} |
+| [Crouton](https://crouton.app)                                         | {{< icon "check" >}} | {{< icon "x" >}} |
+| [Easy Recipe Deluxe](https://easy-recipe-deluxe.software.informer.com) | {{< icon "check" >}} | {{< icon "x" >}} |
+ | [Kalorio](https://www.kalorio.de)                                      | {{< icon "check" >}} | {{< icon "x" >}} |
+| [MasterCook](https://www.mastercook.com)                               | {{< icon "check" >}} | {{< icon "x" >}} |
+ | [Mealie](https://mealie.io)                                            | {{< icon "check" >}} | {{< icon "x" >}} |
+| [Nextcloud Cookbook](https://apps.nextcloud.com/apps/cookbook)         | {{< icon "check" >}} | {{< icon "x" >}} |
+ | [Paprika](https://www.paprikaapp.com)                                  | {{< icon "check" >}} | {{< icon "x" >}} |
+| [Recipe Keeper](https://www.paprikaapp.com)                            | {{< icon "check" >}} | {{< icon "x" >}} |
+| [RecipeSage](https://recipesage.com/#/welcome)                         | {{< icon "check" >}} | {{< icon "x" >}} |
+ | [Saffron](https://www.mysaffronapp.com)                                | {{< icon "check" >}} | {{< icon "x" >}} |
+ | [Tandoor](https://tandoor.dev)                                         | {{< icon "check" >}} | {{< icon "x" >}} |
 
 ## Crouton
 
@@ -32,6 +35,36 @@ Follow these steps to import your recipes from Crouton:
 2. Within Recipya, click the `Add recipe` button.
 3. Click the `Import` button.
 4. Select the exported `.zip` file.
+5. Click `Submit`.
+
+## ChefTap
+
+Follow these steps to import your recipes from ChefTap:
+
+1. From the `ChefTap` mobile application, export your recipes in the text format.
+2. Within Recipya, click the `Add recipe` button.
+3. Click the `Import` button.
+4. Select the exported `.zip` file.
+5. Click `Submit`.
+
+## Easy Recipe Deluxe
+
+Follow these steps to import your recipes from Easy Recipe Deluxe:
+
+1. Export your recipes in `Easy Recipe Deluxe`: Publish -> Text.
+2. Within Recipya, click the `Add recipe` button.
+3. Click the `Import` button.
+4. Select the exported `.txt` file.
+5. Click `Submit`.
+
+#### Kalorio
+
+Follow these steps to import recipes from Kalorio.
+
+1. Export your [Kalorio](https://www.kalorio.de) recipes in the `CookML` format.
+2. Within Recipya, click the `Add recipe` button.
+3. Click the `Import` button.
+4. Select the exported file.
 5. Click `Submit`.
 
 ## MasterCook
