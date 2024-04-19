@@ -61,7 +61,7 @@ Follow these steps to import your recipes from Easy Recipe Deluxe:
 
 Follow these steps to import recipes from Kalorio.
 
-1. Export your [Kalorio](https://www.kalorio.de) recipes in the `CookML` format.
+1. Export your [Kalorio](https://www.kalorio.de/index.php?Mod=Ka&Cap=EI&SCa=kal_export) recipes in the `CookML` format.
 2. Within Recipya, click the `Add recipe` button.
 3. Click the `Import` button.
 4. Select the exported file.
