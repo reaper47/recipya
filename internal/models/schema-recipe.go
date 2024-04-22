@@ -72,7 +72,7 @@ func (r *RecipeSchema) Recipe() (*Recipe, error) {
 			before, _, _ = strings.Cut(created, " ")
 		}
 
-		createdAt, err = time.Parse(time.DateOnly, before)
+		createdAt, err = time.Parse(time.DateOnly, strings.ReplaceAll(before, "/", "-"))
 		if err != nil {
 			return nil, fmt.Errorf("could not parse createdAt date %s: %w", created, err)
 		}
@@ -90,9 +90,9 @@ func (r *RecipeSchema) Recipe() (*Recipe, error) {
 			before, _, _ = strings.Cut(r.DateModified, " ")
 		}
 
-		updatedAt, err = time.Parse(time.DateOnly, before)
+		updatedAt, err = time.Parse(time.DateOnly, strings.ReplaceAll(before, "/", "-"))
 		if err != nil {
-			return nil, fmt.Errorf("could not parse modifiedAt date %s: %w", r.DateModified, err)
+			return nil, fmt.Errorf("could not parse modifiedAt date %q: %w", r.DateModified, err)
 		}
 	}
 

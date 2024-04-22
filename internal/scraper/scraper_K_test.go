@@ -54,9 +54,8 @@ func TestScraper_K(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: ""},
 				CookTime:      "PT1H5M",
-				DatePublished: "June 3, 2021 at 2:13pm",
+				DatePublished: "2021-06-03",
 				Description: models.Description{
 					Value: "This delicious whole grain zucchini bread makes wonderful use of excess sourdough starter you might otherwise discard. Paired with summer’s avalanche of zucchini, it’s one loaf that solves two kitchen conundrums!",
 				},

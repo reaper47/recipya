@@ -50,6 +50,10 @@ func test(t *testing.T, tc testcase) {
 		t.Logf(cmp.Diff(actual, tc.want))
 		t.Fatal()
 	}
+	_, err := actual.Recipe()
+	if err != nil {
+		t.Fatal(err)
+	}
 }
 
 func testFile(t *testing.T, name, url string) models.RecipeSchema {
