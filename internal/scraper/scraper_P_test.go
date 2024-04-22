@@ -236,12 +236,11 @@ func TestScraper_P(t *testing.T) {
 			name: "pickuplimes.com",
 			in:   "https://www.pickuplimes.com/recipe/the-best-vegan-chow-mein-800",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Main"},
-				CookTime:      "PT15M",
-				Cuisine:       models.Cuisine{Value: "Asian-inspired"},
-				DatePublished: "Sept. 10, 2023, 3:54 p.m.",
+				AtContext: "https://schema.org",
+				AtType:    models.SchemaType{Value: "Recipe"},
+				Category:  models.Category{Value: "Main"},
+				CookTime:  "PT15M",
+				Cuisine:   models.Cuisine{Value: "Asian-inspired"},
 				Description: models.Description{
 					Value: "To effortlessly serve up this dish that outshines takeout, the secret is having all your vegetables chopped and prepped. Once you begin cooking, this recipe comes together swiftly, and with everything ready, the entire meal flows seamlessly.",
 				},

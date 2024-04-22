@@ -64,7 +64,7 @@ func ScheduleCronJobs(repo services.RepositoryService, files services.FilesServi
 	})
 
 	// Check for a new release
-	_, _ = scheduler.Every(1).Week().Do(func() {
+	_, _ = scheduler.Every(3).Days().Do(func() {
 		info, err := repo.CheckUpdate(files)
 		if err != nil {
 			slog.Error("Check for update failed", "error", err)

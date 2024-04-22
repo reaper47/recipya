@@ -12,6 +12,7 @@ import (
 	"github.com/reaper47/recipya/internal/utils/extensions"
 	"github.com/reaper47/recipya/internal/utils/regex"
 	"io"
+	"log/slog"
 	"net/url"
 	"slices"
 	"strconv"
@@ -278,7 +279,7 @@ type Times struct {
 	Total time.Duration
 }
 
-// Equal verifies whether the Times is equal to the other Times.
+// Equal verifies whether the Times struct is equal to the other Times.
 func (t Times) Equal(other Times) bool {
 	return t.Prep == other.Prep && t.Cook == other.Cook && t.Total == other.Total
 }
@@ -287,12 +288,14 @@ func (t Times) Equal(other Times) bool {
 func NewTimes(prep, cook string) (Times, error) {
 	p, err := parseDuration(prep)
 	if err != nil {
-		return Times{}, err
+		slog.Error("Could not parse duration", "prep", prep, "error", err)
+		p = 0
 	}
 
 	c, err := parseDuration(cook)
 	if err != nil {
-		return Times{}, err
+		slog.Error("Could not parse duration", "cook", cook, "error", err)
+		c = 0
 	}
 
 	return Times{Prep: p, Cook: c, Total: p + c}, nil

@@ -1105,7 +1105,7 @@ func TestScraper_B(t *testing.T) {
 				Category:      models.Category{Value: "appetizer"},
 				CookTime:      "PT30M",
 				Cuisine:       models.Cuisine{Value: "Indian"},
-				DatePublished: "Feb 23, 2019",
+				DatePublished: "2019-02-23",
 				Description: models.Description{
 					Value: "Learn how to easily make lollipops from chicken wings, then turn them into the hot-sour-crunchy appetiser, drums of heaven",
 				},
