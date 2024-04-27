@@ -19,14 +19,13 @@ type SessionDataMap struct {
 	mutex sync.Mutex
 }
 
-// Save saves the SessionDataMap to the writer in the CSV format.
-func (s *SessionDataMap) Save(w io.Writer) {
+// Get safely gets a value from the SessionDataMap.
+func (s *SessionDataMap) Get(sid uuid.UUID) (int64, bool) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
-	for k, v := range s.Data {
-		_, _ = w.Write([]byte(k.String() + "," + strconv.FormatInt(v, 10) + "\n"))
-	}
+	k, ok := s.Data[sid]
+	return k, ok
 }
 
 // Load populates the SessionDataMap from the reader.
@@ -55,4 +54,21 @@ func (s *SessionDataMap) Load(r io.Reader) {
 	}
 
 	slog.Info("User sessions restored")
+}
+
+// Save saves the SessionDataMap to the writer in the CSV format.
+func (s *SessionDataMap) Save(w io.Writer) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	for k, v := range s.Data {
+		_, _ = w.Write([]byte(k.String() + "," + strconv.FormatInt(v, 10) + "\n"))
+	}
+}
+
+// Set safely adds an entry to SessionDataMap.
+func (s *SessionDataMap) Set(sid uuid.UUID, userID int64) {
+	s.mutex.Lock()
+	SessionData.Data[sid] = userID
+	s.mutex.Unlock()
 }

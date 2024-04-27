@@ -4,9 +4,9 @@
 		"sendGridAPIKey": "API_KEY"
 	},
 	"integrations": {
-		"azureComputerVision": {
-			"resourceKey": "KEY_1",
-			"visionEndpoint": "https://{resource}.cognitiveservices.azure.com/"
+		"azureDocumentIntelligence": {
+			"endpoint": "https://{resource_name}.cognitiveservices.azure.com/",
+			"key": "KEY_1"
 		}
 	},
 	"server": {

@@ -236,6 +236,9 @@ type FilesService interface {
 	// IsAppLatest checks whether there is a software update.
 	IsAppLatest(current semver.Version) (bool, *github.RepositoryRelease, error)
 
+	// MergeImagesToPDF merges images to a PDF file.
+	MergeImagesToPDF(images []io.Reader) io.ReadWriter
+
 	// ReadTempFile gets the content of a file in the temporary directory.
 	ReadTempFile(name string) ([]byte, error)
 
@@ -258,8 +261,11 @@ type IntegrationsService interface {
 	NextcloudImport(baseURL, username, password string, files FilesService, progress chan models.Progress) (models.Recipes, error)
 
 	// ProcessImageOCR processes an image using an OCR service to extract the recipe.
-	ProcessImageOCR(file io.Reader) (models.Recipe, error)
+	ProcessImageOCR(files []io.Reader) (models.Recipes, error)
 
 	// TandoorImport imports the recipes from a Tandoor Recipes instance.
 	TandoorImport(baseURL, username, password string, files FilesService, progress chan models.Progress) (models.Recipes, error)
+
+	// TestConnection tests the connection of an integration. No error is returned on success.
+	TestConnection(api string) error
 }

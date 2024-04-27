@@ -55,7 +55,7 @@ func getUserIDFromSessionCookie(r *http.Request) int64 {
 		return -1
 	}
 
-	userID, ok := SessionData.Data[sid]
+	userID, ok := SessionData.Get(sid)
 	if ok {
 		return userID
 	}

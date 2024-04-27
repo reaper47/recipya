@@ -115,3 +115,30 @@ func (s *Server) integrationsImport() http.HandlerFunc {
 		w.WriteHeader(http.StatusAccepted)
 	}
 }
+
+func (s *Server) integrationTestConnectionHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var (
+			api = r.URL.Query().Get("api")
+			err = s.Integrations.TestConnection(api)
+			msg string
+		)
+
+		switch api {
+		case "azure-di":
+			msg = "Azure AI Document Intelligence"
+		case "sg":
+			msg = "Twilio SendGrid"
+		default:
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		if err != nil {
+			w.Header().Set("HX-Trigger", models.NewErrorGeneralToast("Connection failed. Please verify credentials.").Render())
+			w.WriteHeader(http.StatusUnauthorized)
+		} else {
+			w.Header().Set("HX-Trigger", models.NewInfoToast("Connection successful", msg+" "+"server connection verified.", "").Render())
+		}
+	}
+}

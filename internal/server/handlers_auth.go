@@ -270,7 +270,7 @@ func (s *Server) loginPostHandler() http.HandlerFunc {
 		}
 
 		sid := uuid.New()
-		SessionData.Data[sid] = userID
+		SessionData.Set(sid, userID)
 		http.SetCookie(w, NewSessionCookie(sid.String()))
 
 		if r.FormValue("remember-me") == "yes" {

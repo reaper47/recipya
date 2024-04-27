@@ -1,12 +1,15 @@
 package app
 
 import (
+	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/blang/semver"
 	"io"
 	"net"
+	"net/http"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -25,7 +28,7 @@ var (
 	Info = GeneralInfo{
 		Version: semver.Version{
 			Major: 1,
-			Minor: 1,
+			Minor: 2,
 			Patch: 0,
 		},
 	} // Info stores general application information.
@@ -111,8 +114,8 @@ func (c *ConfigFile) Update(updated ConfigFile) error {
 
 	c.Email.From = updated.Email.From
 	c.Email.SendGridAPIKey = updated.Email.SendGridAPIKey
-	c.Integrations.AzureComputerVision.ResourceKey = updated.Integrations.AzureComputerVision.ResourceKey
-	c.Integrations.AzureComputerVision.VisionEndpoint = updated.Integrations.AzureComputerVision.VisionEndpoint
+	c.Integrations.AzureDI.Endpoint = updated.Integrations.AzureDI.Endpoint
+	c.Integrations.AzureDI.Key = updated.Integrations.AzureDI.Key
 	c.Server.IsAutologin = updated.Server.IsAutologin
 	c.Server.IsNoSignups = updated.Server.IsNoSignups
 	c.Server.IsProduction = updated.Server.IsProduction
@@ -140,10 +143,10 @@ func (c *ConfigFile) Update(updated ConfigFile) error {
 			isProd = "true"
 		}
 
+		_ = os.Setenv("RECIPYA_DI_ENDPOINT", c.Integrations.AzureDI.Endpoint)
+		_ = os.Setenv("RECIPYA_DI_KEY", c.Integrations.AzureDI.Key)
 		_ = os.Setenv("RECIPYA_EMAIL", c.Email.From)
 		_ = os.Setenv("RECIPYA_EMAIL_SENDGRID", c.Email.SendGridAPIKey)
-		_ = os.Setenv("RECIPYA_VISION_KEY", c.Integrations.AzureComputerVision.ResourceKey)
-		_ = os.Setenv("RECIPYA_VISION_ENDPOINT", c.Integrations.AzureComputerVision.VisionEndpoint)
 		_ = os.Setenv("RECIPYA_SERVER_AUTOLOGIN", autologin)
 		_ = os.Setenv("RECIPYA_SERVER_NO_SIGNUPS", noSignups)
 		_ = os.Setenv("RECIPYA_SERVER_IS_PROD", isProd)
@@ -188,13 +191,44 @@ type ConfigEmail struct {
 
 // ConfigIntegrations holds configuration data for 3rd-party services.
 type ConfigIntegrations struct {
-	AzureComputerVision AzureComputerVision `json:"azureComputerVision"`
+	AzureDI AzureDI `json:"azureDocumentIntelligence"`
 }
 
-// AzureComputerVision holds configuration data for the Azure Computer Vision API.
-type AzureComputerVision struct {
-	ResourceKey    string `json:"resourceKey"`
-	VisionEndpoint string `json:"visionEndpoint"`
+// AzureDI holds configuration data for the Azure AI Document Intelligence integration.
+type AzureDI struct {
+	Endpoint string `json:"endpoint"`
+	Key      string `json:"key"`
+}
+
+// PrepareRequest prepares the HTTP request to analyze a document.
+func (a AzureDI) PrepareRequest(file io.Reader) (*http.Request, error) {
+	all, err := io.ReadAll(file)
+	if err != nil {
+		return nil, err
+	}
+
+	body := map[string]string{
+		"base64Source": base64.StdEncoding.EncodeToString(all),
+	}
+
+	xb, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, a.Endpoint+"/documentintelligence/documentModels/prebuilt-layout:analyze", bytes.NewBuffer(xb))
+	if err != nil {
+		return nil, err
+	}
+
+	q := req.URL.Query()
+	q.Add("_overload", "analyzeDocument")
+	q.Add("api-version", "2024-02-29-preview")
+	req.URL.RawQuery = q.Encode()
+
+	req.Header.Set("Ocp-Apim-Subscription-Key", a.Key)
+	req.Header.Set("Content-Type", "application/json")
+	return req, nil
 }
 
 // ConfigServer holds configuration data for the server.
@@ -246,15 +280,24 @@ func Init() {
 func NewConfig(r io.Reader) {
 	if r == nil {
 		port, _ := strconv.ParseInt(os.Getenv("RECIPYA_SERVER_PORT"), 10, 32)
+
+		// TODO: Remove in v1.3.0
+		if os.Getenv("RECIPYA_VISION_ENDPOINT") != "" {
+			fmt.Println("The 'RECIPYA_VISION_ENDPOINT' is deprecated. Please use 'RECIPYA_DI_ENDPOINT'.")
+		}
+		if os.Getenv("RECIPYA_VISION_KEY") != "" {
+			fmt.Println("The 'RECIPYA_VISION_KEY' is deprecated. Please use 'RECIPYA_DI_KEY'.")
+		}
+
 		Config = ConfigFile{
 			Email: ConfigEmail{
 				From:           os.Getenv("RECIPYA_EMAIL"),
 				SendGridAPIKey: os.Getenv("RECIPYA_EMAIL_SENDGRID"),
 			},
 			Integrations: ConfigIntegrations{
-				AzureComputerVision: AzureComputerVision{
-					ResourceKey:    os.Getenv("RECIPYA_VISION_KEY"),
-					VisionEndpoint: os.Getenv("RECIPYA_VISION_ENDPOINT"),
+				AzureDI: AzureDI{
+					Endpoint: strings.TrimSuffix(os.Getenv("RECIPYA_DI_ENDPOINT"), "/"),
+					Key:      os.Getenv("RECIPYA_DI_KEY"),
 				},
 			},
 			Server: ConfigServer{

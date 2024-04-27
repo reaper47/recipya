@@ -33,34 +33,3 @@ In addition, you must have at least 300 MB of free space.
 | IE       |    N/A    |    {{< icon "x" >}}    |
 | Safari   |   15.4+   |  {{< icon "check" >}}  |
 | Vanadium |    37+    |  {{< icon "check" >}}  |
-
-## Third-party Services
-
-Recipya uses the following third-party services to enhance the product.
-
-### SendGrid
-
-[SendGrid](https://sendgrid.com) provides a cloud-based service that assists businesses with email delivery.
-They offer a [free plan](https://sendgrid.com/en-us/pricing) that allows you to send up to 100 emails per day.
-
-Within Recipya, the email module is used for the following events:
-- Send a confirmation email to a user who registered.
-- Send a forgot password email
-
-If none of these reasons persuade you to use this service, then leave the `email.from` and `email.sendGridAPIKey` fields
-in the [configuration file](https://github.com/reaper47/recipya/blob/main/deploy/config.example.json) empty. No emails
-will then be sent.
-
-### Azure AI Vision
-
-[Azure AI Vision](https://azure.microsoft.com/en-us/products/ai-services/ai-vision) is a unified service that offers 
-innovative computer vision capabilities. It gives apps the ability to analyze images, read text, and detect faces 
-with prebuilt image tagging, text extraction with optical character recognition (OCR), and responsible facial 
-recognition. Microsoft offers a [free plan](https://azure.microsoft.com/en-us/pricing/details/cognitive-services/computer-vision/)
-that allows you to perform 5000 transactions per month.
-
-Within Recipya, this service is used to [digitize recipes](/guide/docs/features/recipes/add#scan).
-
-If you do not plan on digitizing paper recipes, then leave the `integrations.azureComputerVision.resourceKey` and
-`integrations.azureComputerVision.visionEndpoint` fields in the [configuration file](https://github.com/reaper47/recipya/blob/main/deploy/config.example.json) 
-empty. This feature will then be disabled.

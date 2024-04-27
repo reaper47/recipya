@@ -13,6 +13,7 @@ import (
 	"github.com/google/go-github/v59/github"
 	"github.com/google/uuid"
 	"github.com/jung-kurt/gofpdf"
+	"github.com/pdfcpu/pdfcpu/pkg/api"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services/statements"
@@ -1119,6 +1120,20 @@ func (f *Files) ExtractUserBackup(date string, userID int64) (*models.UserBackup
 		Recipes:    f.processRecipeFiles(zr),
 		UserID:     userID,
 	}, nil
+}
+
+// MergeImagesToPDF merges images to a PDF file.
+func (f *Files) MergeImagesToPDF(images []io.Reader) io.ReadWriter {
+	if len(images) == 0 {
+		return nil
+	}
+
+	buf := bytes.NewBuffer(nil)
+	err := api.ImportImages(nil, buf, images, nil, nil)
+	if err != nil {
+		return nil
+	}
+	return buf
 }
 
 // ReadTempFile gets the content of a file in the temporary directory.

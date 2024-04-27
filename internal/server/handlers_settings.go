@@ -64,9 +64,9 @@ func settingsConfigPutHandler() http.HandlerFunc {
 				SendGridAPIKey: r.FormValue("email.apikey"),
 			},
 			Integrations: app.ConfigIntegrations{
-				AzureComputerVision: app.AzureComputerVision{
-					ResourceKey:    r.FormValue("integrations.ocr.key"),
-					VisionEndpoint: r.FormValue("integrations.ocr.url"),
+				AzureDI: app.AzureDI{
+					Key:      r.FormValue("integrations.ocr.key"),
+					Endpoint: r.FormValue("integrations.ocr.url"),
 				},
 			},
 			Server: app.ConfigServer{
@@ -285,16 +285,17 @@ func (s *Server) settingsTabsAdvancedHandler() http.HandlerFunc {
 			})
 		}
 
+		c := app.Config
 		if app.Config.Server.IsDemo {
-			app.Config.Email.From = "demo@demo.com"
-			app.Config.Email.SendGridAPIKey = "demo"
-			app.Config.Integrations.AzureComputerVision.ResourceKey = "demo"
-			app.Config.Integrations.AzureComputerVision.VisionEndpoint = "https://www.example.com"
+			c.Email.From = "demo@demo.com"
+			c.Email.SendGridAPIKey = "demo"
+			c.Integrations.AzureDI.Key = "demo"
+			c.Integrations.AzureDI.Endpoint = "https://www.example.com"
 		}
 
 		_ = components.SettingsTabsAdvanced(templates.SettingsData{
 			Backups: dates,
-			Config:  app.Config,
+			Config:  c,
 		}, getUserID(r) == 1).Render(r.Context(), w)
 	}
 }

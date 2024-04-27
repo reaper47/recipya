@@ -76,59 +76,6 @@ templ addRecipe() {
 				</div>
 			</div>
 		</div>
-		<dialog id="websites_dialog" class="modal">
-			<div class="modal-box">
-				<form method="dialog">
-					<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-				</form>
-				<h3 class="font-bold text-lg">Fetch recipes from websites</h3>
-				<form class="py-4" hx-post="/recipes/add/website" hx-indicator="#fullscreen-loader" hx-swap="none">
-					<div class="grid mb-4">
-						<label class="form-control">
-							<div class="label">
-								<span class="label-text">Enter one or more URLs, each on a new line.</span>
-							</div>
-							<textarea class="textarea textarea-bordered h-24 whitespace-pre-line" placeholder="URL 1\nURL 2\nURL 3\nURL 4\netc..." name="urls" rows="10"></textarea>
-						</label>
-					</div>
-					<button
-						type="submit"
-						class="w-full p-2 font-semibold text-white bg-blue-500 border rounded-lg hover:bg-blue-800 dark:border-gray-800"
-						onclick="websites_dialog.close()"
-					>
-						Submit
-					</button>
-				</form>
-			</div>
-		</dialog>
-		<dialog id="supported_websites_dialog" class="modal">
-			<div class="modal-box h-2/3">
-				<form method="dialog">
-					<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-				</form>
-				<h3 class="mb-1">
-					<label>
-						<input
-							type="search"
-							placeholder="Search a website"
-							class="input input-bordered input-sm w-11/12"
-							_="on input show <tbody>tr/> in next <table/> when its textContent.toLowerCase() contains my value.toLowerCase()"
-						/>
-					</label>
-				</h3>
-				<div class="overflow-x-auto">
-					<table class="table table-zebra table-sm">
-						<thead>
-							<tr class="text-center">
-								<th class="py-1">Number</th>
-								<th class="py-1">Website</th>
-							</tr>
-						</thead>
-						<tbody id="search-results"></tbody>
-					</table>
-				</div>
-			</div>
-		</dialog>
 		<div class="card card-compact shadow-lg rounded-xl h-96 bg-base-100">
 			<figure>
 				<img
@@ -142,19 +89,9 @@ templ addRecipe() {
 				<p>Upload an image of the recipe you want to add or take a picture using your device's camera.</p>
 				<hr class="dark:border dark:border-gray-800"/>
 				<div class="card-actions">
-					<form
-						id="ocr-form"
-						class="w-full"
-						hx-post="/recipes/add/ocr"
-						hx-encoding="multipart/form-data"
-						hx-indicator="#fullscreen-loader"
-						hx-swap="none"
-					>
-						<input hidden type="file" id="ocr_file_picker" name="image"/>
-						<button class="btn btn-outline btn-sm btn-block" type="button" onClick={ handleOCR() }>
-							Upload
-						</button>
-					</form>
+					<button class="btn btn-outline btn-sm btn-block" type="button" onclick="add_ocr_dialog.showModal()">
+						Upload
+					</button>
 				</div>
 			</div>
 		</div>
@@ -221,6 +158,55 @@ templ addRecipe() {
 				</div>
 			</div>
 		</div>
+		<dialog id="websites_dialog" class="modal">
+			<div class="modal-box">
+				<form method="dialog">
+					<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+				</form>
+				<h3 class="font-bold text-lg">Fetch recipes from websites</h3>
+				<form class="py-4" hx-post="/recipes/add/website" hx-indicator="#fullscreen-loader" hx-swap="none">
+					<div class="grid mb-4">
+						<label class="form-control">
+							<div class="label">
+								<span class="label-text">Enter one or more URLs, each on a new line.</span>
+							</div>
+							<textarea class="textarea textarea-bordered h-24 whitespace-pre-line" placeholder="URL 1\nURL 2\nURL 3\nURL 4\netc..." name="urls" rows="10"></textarea>
+						</label>
+					</div>
+					<button type="submit" class="btn btn-block btn-primary btn-sm" onclick="websites_dialog.close()">
+						Submit
+					</button>
+				</form>
+			</div>
+		</dialog>
+		<dialog id="supported_websites_dialog" class="modal">
+			<div class="modal-box h-2/3">
+				<form method="dialog">
+					<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+				</form>
+				<h3 class="mb-1">
+					<label>
+						<input
+							type="search"
+							placeholder="Search a website"
+							class="input input-bordered input-sm w-11/12"
+							_="on input show <tbody>tr/> in next <table/> when its textContent.toLowerCase() contains my value.toLowerCase()"
+						/>
+					</label>
+				</h3>
+				<div class="overflow-x-auto">
+					<table class="table table-zebra table-sm">
+						<thead>
+							<tr class="text-center">
+								<th class="py-1">Number</th>
+								<th class="py-1">Website</th>
+							</tr>
+						</thead>
+						<tbody id="search-results"></tbody>
+					</table>
+				</div>
+			</div>
+		</dialog>
 		<dialog id="supported_apps_import_dialog" class="modal">
 			<div class="modal-box h-2/3">
 				<form method="dialog">
@@ -249,6 +235,38 @@ templ addRecipe() {
 				</div>
 			</div>
 		</dialog>
+		<dialog id="add_ocr_dialog" class="modal">
+			<div class="modal-box">
+				<form method="dialog">
+					<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+				</form>
+				<h3 class="font-bold text-lg">Scan Recipe</h3>
+				<form
+					class="py-4"
+					hx-post="/recipes/add/ocr"
+					hx-encoding="multipart/form-data"
+					hx-indicator="#fullscreen-loader"
+					hx-swap="none"
+				>
+					<div class="grid mb-4">
+						<label for="add-ocr-files-input" class="text-sm font-medium mb-1">
+							Select your	recipe's images	ordered by page or a recipe document in the PDF, Word or PowerPoint format.
+						</label>
+						<input
+							id="add-ocr-files-input"
+							type="file"
+							name="files"
+							accept=".jpg, .jpeg, .png, .bmp, .tiff, .heif, .pdf, .docx, .pptx"
+							multiple
+							class="p-2 border border-gray-300 rounded-lg shadow focus:ring-2 focus:ring-purple-600 dark:bg-gray-900 dark:border-none"
+						/>
+					</div>
+					<button class="btn btn-block btn-primary btn-sm">
+						Submit
+					</button>
+				</form>
+			</div>
+		</dialog>
 		<dialog id="import_recipes_dialog" class="modal">
 			<div class="modal-box">
 				<form method="dialog">
@@ -264,7 +282,7 @@ templ addRecipe() {
 				>
 					<div class="grid mb-4">
 						<label for="import-dialog-file" class="text-sm font-semibold mb-1">
-							Choose a file in the .json, .txt, .zip or other application format.
+							Choose files in the .json, .txt, .zip or other application format.
 						</label>
 						<input
 							id="import-dialog-file"
@@ -275,31 +293,13 @@ templ addRecipe() {
 							class="p-2 border border-gray-300 rounded-lg shadow focus:ring-2 focus:ring-purple-600 dark:bg-gray-900 dark:border-none"
 						/>
 					</div>
-					<button
-						type="submit"
-						class="w-full p-2 font-semibold text-white bg-blue-500 border rounded-lg hover:bg-blue-800 dark:border-gray-800"
-						onclick="import_recipes_dialog.close()"
-					>
+					<button type="submit" class="btn btn-block btn-primary btn-sm" onclick="import_recipes_dialog.close()">
 						Submit
 					</button>
 				</form>
 			</div>
 		</dialog>
 	</div>
-}
-
-script handleOCR() {
-    const filePromise = new Promise((resolve) => {
-        ocr_file_picker.addEventListener("change", () => {
-            resolve(ocr_file_picker.files[0]);
-        }, {once: true});
-    });
-
-    (async function() {
-        ocr_file_picker.click();
-        await filePromise;
-        htmx.trigger("#ocr-form", "submit");
-    })()
 }
 
 templ AddRecipeManual(data templates.Data) {
@@ -1333,7 +1333,7 @@ templ ListRecipes(data templates.Data) {
 		for _, r := range data.Recipes {
 			<section class="card card-compact bg-base-100 shadow-lg indicator w-full">
 				<span class="indicator-item indicator-center badge badge-primary select-none">{ r.Category }</span>
-				<figure class="relative cursor-pointer" hx-get={ fmt.Sprintf("/recipes/%d", r.ID) } hx-target="#content" hx-push-url="true" hx-trigger="mousedown">
+				<figure class="relative cursor-pointer" hx-get={ fmt.Sprintf("/recipes/%d", r.ID) } hx-target="#content" hx-push-url="true" hx-trigger="mousedown" hx-swap="innerHTML show:window:top transition:true">
 					<img
 						class="h-48 max-w-48 w-full object-cover rounded-t-lg"
 						if data.Functions.IsUUIDValid(r.Image) {
@@ -1350,7 +1350,7 @@ templ ListRecipes(data templates.Data) {
 				<div class="card-body" lang="en">
 					<h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">{ r.Name }</h2>
 					<div class="card-actions h-full flex-col-reverse">
-						<button class="btn btn-block btn-sm btn-outline" hx-get={ fmt.Sprintf("/recipes/%d", r.ID) } hx-target="#content" hx-trigger="mousedown" hx-push-url="true">
+						<button class="btn btn-block btn-sm btn-outline" hx-get={ fmt.Sprintf("/recipes/%d", r.ID) } hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap="innerHTML show:window:top transition:true">
 							View
 						</button>
 					</div>

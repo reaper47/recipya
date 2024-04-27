@@ -1,0 +1,2106 @@
+{
+  "status": "succeeded",
+  "createdDateTime": "2024-04-26T15:09:16Z",
+  "lastUpdatedDateTime": "2024-04-26T15:09:17Z",
+  "analyzeResult": {
+    "apiVersion": "2024-02-29-preview",
+    "modelId": "prebuilt-layout",
+    "stringIndexType": "textElements",
+    "content": "Tamace Die\n2 cups cream corn\n1 kg. onion, choppe\n2 cups TOMATOES\n1 gr. pepper,\n8.02 con tomato Sauce\n3eggs, besten\n1/2cups pitted olives\n1 cup MILK.\n3/4 cup olive oil\n1 cup cornmeal\n/ T. sacr 1/2 tspcumin\nSimmer the first 9 ingredients for 20 minutes. Stie often - the cream corn tends to want To make it stick. add the next 4 ingredients. 9x 13 pan 325° for 1 hour.",
+    "pages": [
+      {
+        "pageNumber": 1,
+        "angle": 0,
+        "width": 400,
+        "height": 233,
+        "unit": "pixel",
+        "words": [
+          {
+            "content": "Tamace",
+            "polygon": [
+              127,
+              8,
+              193,
+              7,
+              193,
+              21,
+              127,
+              22
+            ],
+            "confidence": 0.834,
+            "span": {
+              "offset": 0,
+              "length": 6
+            }
+          },
+          {
+            "content": "Die",
+            "polygon": [
+              202,
+              6,
+              242,
+              3,
+              242,
+              20,
+              201,
+              21
+            ],
+            "confidence": 0.306,
+            "span": {
+              "offset": 7,
+              "length": 3
+            }
+          },
+          {
+            "content": "2",
+            "polygon": [
+              92,
+              29,
+              101,
+              29,
+              101,
+              40,
+              92,
+              40
+            ],
+            "confidence": 0.964,
+            "span": {
+              "offset": 11,
+              "length": 1
+            }
+          },
+          {
+            "content": "cups",
+            "polygon": [
+              103,
+              29,
+              134,
+              29,
+              134,
+              40,
+              103,
+              40
+            ],
+            "confidence": 0.982,
+            "span": {
+              "offset": 13,
+              "length": 4
+            }
+          },
+          {
+            "content": "cream",
+            "polygon": [
+              141,
+              29,
+              185,
+              28,
+              184,
+              40,
+              141,
+              40
+            ],
+            "confidence": 0.573,
+            "span": {
+              "offset": 18,
+              "length": 5
+            }
+          },
+          {
+            "content": "corn",
+            "polygon": [
+              198,
+              28,
+              236,
+              28,
+              235,
+              39,
+              198,
+              40
+            ],
+            "confidence": 0.719,
+            "span": {
+              "offset": 24,
+              "length": 4
+            }
+          },
+          {
+            "content": "1",
+            "polygon": [
+              288,
+              26,
+              293,
+              26,
+              293,
+              37,
+              288,
+              37
+            ],
+            "confidence": 0.53,
+            "span": {
+              "offset": 29,
+              "length": 1
+            }
+          },
+          {
+            "content": "kg.",
+            "polygon": [
+              300,
+              26,
+              317,
+              25,
+              317,
+              38,
+              300,
+              37
+            ],
+            "confidence": 0.111,
+            "span": {
+              "offset": 31,
+              "length": 3
+            }
+          },
+          {
+            "content": "onion,",
+            "polygon": [
+              319,
+              25,
+              361,
+              25,
+              361,
+              38,
+              319,
+              38
+            ],
+            "confidence": 0.901,
+            "span": {
+              "offset": 35,
+              "length": 6
+            }
+          },
+          {
+            "content": "choppe",
+            "polygon": [
+              363,
+              25,
+              398,
+              26,
+              398,
+              38,
+              363,
+              38
+            ],
+            "confidence": 0.85,
+            "span": {
+              "offset": 42,
+              "length": 6
+            }
+          },
+          {
+            "content": "2",
+            "polygon": [
+              88,
+              43,
+              98,
+              43,
+              98,
+              54,
+              88,
+              54
+            ],
+            "confidence": 0.979,
+            "span": {
+              "offset": 49,
+              "length": 1
+            }
+          },
+          {
+            "content": "cups",
+            "polygon": [
+              106,
+              43,
+              139,
+              43,
+              139,
+              54,
+              106,
+              54
+            ],
+            "confidence": 0.095,
+            "span": {
+              "offset": 51,
+              "length": 4
+            }
+          },
+          {
+            "content": "TOMATOES",
+            "polygon": [
+              149,
+              43,
+              211,
+              44,
+              211,
+              54,
+              148,
+              54
+            ],
+            "confidence": 0.856,
+            "span": {
+              "offset": 56,
+              "length": 8
+            }
+          },
+          {
+            "content": "1",
+            "polygon": [
+              285,
+              41,
+              291,
+              42,
+              290,
+              53,
+              284,
+              53
+            ],
+            "confidence": 0.574,
+            "span": {
+              "offset": 65,
+              "length": 1
+            }
+          },
+          {
+            "content": "gr.",
+            "polygon": [
+              295,
+              42,
+              312,
+              42,
+              311,
+              54,
+              295,
+              53
+            ],
+            "confidence": 0.875,
+            "span": {
+              "offset": 67,
+              "length": 3
+            }
+          },
+          {
+            "content": "pepper,",
+            "polygon": [
+              314,
+              42,
+              365,
+              42,
+              365,
+              52,
+              314,
+              54
+            ],
+            "confidence": 0.823,
+            "span": {
+              "offset": 71,
+              "length": 7
+            }
+          },
+          {
+            "content": "8.02",
+            "polygon": [
+              73,
+              58,
+              106,
+              59,
+              107,
+              69,
+              74,
+              69
+            ],
+            "confidence": 0.826,
+            "span": {
+              "offset": 79,
+              "length": 4
+            }
+          },
+          {
+            "content": "con",
+            "polygon": [
+              120,
+              59,
+              143,
+              59,
+              143,
+              69,
+              120,
+              69
+            ],
+            "confidence": 0.608,
+            "span": {
+              "offset": 84,
+              "length": 3
+            }
+          },
+          {
+            "content": "tomato",
+            "polygon": [
+              155,
+              59,
+              203,
+              59,
+              203,
+              69,
+              155,
+              69
+            ],
+            "confidence": 0.657,
+            "span": {
+              "offset": 88,
+              "length": 6
+            }
+          },
+          {
+            "content": "Sauce",
+            "polygon": [
+              211,
+              59,
+              250,
+              59,
+              250,
+              69,
+              210,
+              69
+            ],
+            "confidence": 0.976,
+            "span": {
+              "offset": 95,
+              "length": 5
+            }
+          },
+          {
+            "content": "3eggs,",
+            "polygon": [
+              274,
+              54,
+              332,
+              58,
+              332,
+              69,
+              274,
+              65
+            ],
+            "confidence": 0.639,
+            "span": {
+              "offset": 101,
+              "length": 6
+            }
+          },
+          {
+            "content": "besten",
+            "polygon": [
+              337,
+              58,
+              387,
+              59,
+              387,
+              69,
+              337,
+              69
+            ],
+            "confidence": 0.754,
+            "span": {
+              "offset": 108,
+              "length": 6
+            }
+          },
+          {
+            "content": "1/2cups",
+            "polygon": [
+              57,
+              72,
+              108,
+              72,
+              107,
+              85,
+              56,
+              84
+            ],
+            "confidence": 0.064,
+            "span": {
+              "offset": 115,
+              "length": 7
+            }
+          },
+          {
+            "content": "pitted",
+            "polygon": [
+              122,
+              73,
+              156,
+              72,
+              156,
+              85,
+              122,
+              85
+            ],
+            "confidence": 0.864,
+            "span": {
+              "offset": 123,
+              "length": 6
+            }
+          },
+          {
+            "content": "olives",
+            "polygon": [
+              166,
+              72,
+              210,
+              72,
+              210,
+              84,
+              166,
+              85
+            ],
+            "confidence": 0.978,
+            "span": {
+              "offset": 130,
+              "length": 6
+            }
+          },
+          {
+            "content": "1",
+            "polygon": [
+              281,
+              73,
+              286,
+              73,
+              286,
+              84,
+              281,
+              84
+            ],
+            "confidence": 0.837,
+            "span": {
+              "offset": 137,
+              "length": 1
+            }
+          },
+          {
+            "content": "cup",
+            "polygon": [
+              292,
+              73,
+              318,
+              73,
+              318,
+              84,
+              292,
+              84
+            ],
+            "confidence": 0.123,
+            "span": {
+              "offset": 139,
+              "length": 3
+            }
+          },
+          {
+            "content": "MILK.",
+            "polygon": [
+              327,
+              74,
+              361,
+              73,
+              361,
+              83,
+              327,
+              84
+            ],
+            "confidence": 0.621,
+            "span": {
+              "offset": 143,
+              "length": 5
+            }
+          },
+          {
+            "content": "3/4",
+            "polygon": [
+              51,
+              88,
+              69,
+              88,
+              68,
+              100,
+              51,
+              100
+            ],
+            "confidence": 0.907,
+            "span": {
+              "offset": 149,
+              "length": 3
+            }
+          },
+          {
+            "content": "cup",
+            "polygon": [
+              79,
+              88,
+              103,
+              88,
+              103,
+              100,
+              78,
+              100
+            ],
+            "confidence": 0.992,
+            "span": {
+              "offset": 153,
+              "length": 3
+            }
+          },
+          {
+            "content": "olive",
+            "polygon": [
+              117,
+              88,
+              150,
+              88,
+              150,
+              100,
+              117,
+              100
+            ],
+            "confidence": 0.926,
+            "span": {
+              "offset": 157,
+              "length": 5
+            }
+          },
+          {
+            "content": "oil",
+            "polygon": [
+              160,
+              88,
+              180,
+              87,
+              180,
+              99,
+              159,
+              100
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 163,
+              "length": 3
+            }
+          },
+          {
+            "content": "1",
+            "polygon": [
+              276,
+              90,
+              282,
+              90,
+              282,
+              100,
+              276,
+              100
+            ],
+            "confidence": 0.901,
+            "span": {
+              "offset": 167,
+              "length": 1
+            }
+          },
+          {
+            "content": "cup",
+            "polygon": [
+              289,
+              90,
+              317,
+              89,
+              317,
+              100,
+              289,
+              100
+            ],
+            "confidence": 0.644,
+            "span": {
+              "offset": 169,
+              "length": 3
+            }
+          },
+          {
+            "content": "cornmeal",
+            "polygon": [
+              324,
+              89,
+              387,
+              89,
+              387,
+              99,
+              324,
+              100
+            ],
+            "confidence": 0.729,
+            "span": {
+              "offset": 173,
+              "length": 8
+            }
+          },
+          {
+            "content": "/",
+            "polygon": [
+              27,
+              105,
+              32,
+              105,
+              31,
+              114,
+              26,
+              114
+            ],
+            "confidence": 0.393,
+            "span": {
+              "offset": 182,
+              "length": 1
+            }
+          },
+          {
+            "content": "T.",
+            "polygon": [
+              42,
+              105,
+              52,
+              105,
+              51,
+              114,
+              41,
+              114
+            ],
+            "confidence": 0.922,
+            "span": {
+              "offset": 184,
+              "length": 2
+            }
+          },
+          {
+            "content": "sacr",
+            "polygon": [
+              64,
+              105,
+              93,
+              105,
+              93,
+              115,
+              63,
+              114
+            ],
+            "confidence": 0.731,
+            "span": {
+              "offset": 187,
+              "length": 4
+            }
+          },
+          {
+            "content": "1/2",
+            "polygon": [
+              24,
+              119,
+              37,
+              119,
+              37,
+              131,
+              24,
+              131
+            ],
+            "confidence": 0.73,
+            "span": {
+              "offset": 192,
+              "length": 3
+            }
+          },
+          {
+            "content": "tspcumin",
+            "polygon": [
+              42,
+              119,
+              106,
+              120,
+              106,
+              131,
+              42,
+              131
+            ],
+            "confidence": 0.729,
+            "span": {
+              "offset": 196,
+              "length": 8
+            }
+          },
+          {
+            "content": "Simmer",
+            "polygon": [
+              20,
+              150,
+              77,
+              149,
+              76,
+              163,
+              19,
+              164
+            ],
+            "confidence": 0.972,
+            "span": {
+              "offset": 205,
+              "length": 6
+            }
+          },
+          {
+            "content": "the",
+            "polygon": [
+              89,
+              149,
+              116,
+              149,
+              115,
+              163,
+              89,
+              163
+            ],
+            "confidence": 0.99,
+            "span": {
+              "offset": 212,
+              "length": 3
+            }
+          },
+          {
+            "content": "first",
+            "polygon": [
+              123,
+              149,
+              159,
+              149,
+              159,
+              163,
+              122,
+              163
+            ],
+            "confidence": 0.743,
+            "span": {
+              "offset": 216,
+              "length": 5
+            }
+          },
+          {
+            "content": "9",
+            "polygon": [
+              168,
+              149,
+              179,
+              149,
+              179,
+              163,
+              168,
+              163
+            ],
+            "confidence": 0.961,
+            "span": {
+              "offset": 222,
+              "length": 1
+            }
+          },
+          {
+            "content": "ingredients",
+            "polygon": [
+              189,
+              149,
+              266,
+              149,
+              266,
+              162,
+              189,
+              163
+            ],
+            "confidence": 0.99,
+            "span": {
+              "offset": 224,
+              "length": 11
+            }
+          },
+          {
+            "content": "for",
+            "polygon": [
+              275,
+              149,
+              296,
+              149,
+              295,
+              162,
+              275,
+              162
+            ],
+            "confidence": 0.963,
+            "span": {
+              "offset": 236,
+              "length": 3
+            }
+          },
+          {
+            "content": "20",
+            "polygon": [
+              307,
+              149,
+              323,
+              150,
+              323,
+              162,
+              307,
+              162
+            ],
+            "confidence": 0.968,
+            "span": {
+              "offset": 240,
+              "length": 2
+            }
+          },
+          {
+            "content": "minutes.",
+            "polygon": [
+              328,
+              150,
+              391,
+              150,
+              391,
+              162,
+              328,
+              162
+            ],
+            "confidence": 0.916,
+            "span": {
+              "offset": 243,
+              "length": 8
+            }
+          },
+          {
+            "content": "Stie",
+            "polygon": [
+              13,
+              165,
+              42,
+              165,
+              42,
+              177,
+              13,
+              177
+            ],
+            "confidence": 0.666,
+            "span": {
+              "offset": 252,
+              "length": 4
+            }
+          },
+          {
+            "content": "often",
+            "polygon": [
+              57,
+              165,
+              96,
+              165,
+              96,
+              177,
+              57,
+              177
+            ],
+            "confidence": 0.944,
+            "span": {
+              "offset": 257,
+              "length": 5
+            }
+          },
+          {
+            "content": "-",
+            "polygon": [
+              110,
+              165,
+              116,
+              165,
+              116,
+              177,
+              110,
+              177
+            ],
+            "confidence": 0.933,
+            "span": {
+              "offset": 263,
+              "length": 1
+            }
+          },
+          {
+            "content": "the",
+            "polygon": [
+              122,
+              165,
+              146,
+              165,
+              146,
+              177,
+              121,
+              177
+            ],
+            "confidence": 0.995,
+            "span": {
+              "offset": 265,
+              "length": 3
+            }
+          },
+          {
+            "content": "cream",
+            "polygon": [
+              159,
+              165,
+              208,
+              166,
+              208,
+              177,
+              159,
+              177
+            ],
+            "confidence": 0.742,
+            "span": {
+              "offset": 269,
+              "length": 5
+            }
+          },
+          {
+            "content": "corn",
+            "polygon": [
+              214,
+              166,
+              246,
+              166,
+              246,
+              177,
+              214,
+              177
+            ],
+            "confidence": 0.956,
+            "span": {
+              "offset": 275,
+              "length": 4
+            }
+          },
+          {
+            "content": "tends",
+            "polygon": [
+              262,
+              166,
+              298,
+              166,
+              298,
+              177,
+              261,
+              177
+            ],
+            "confidence": 0.945,
+            "span": {
+              "offset": 280,
+              "length": 5
+            }
+          },
+          {
+            "content": "to",
+            "polygon": [
+              312,
+              166,
+              327,
+              165,
+              327,
+              176,
+              312,
+              176
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 286,
+              "length": 2
+            }
+          },
+          {
+            "content": "want",
+            "polygon": [
+              334,
+              165,
+              368,
+              165,
+              368,
+              176,
+              334,
+              176
+            ],
+            "confidence": 0.896,
+            "span": {
+              "offset": 289,
+              "length": 4
+            }
+          },
+          {
+            "content": "To",
+            "polygon": [
+              375,
+              165,
+              391,
+              165,
+              391,
+              176,
+              375,
+              176
+            ],
+            "confidence": 0.991,
+            "span": {
+              "offset": 294,
+              "length": 2
+            }
+          },
+          {
+            "content": "make",
+            "polygon": [
+              15,
+              181,
+              51,
+              181,
+              51,
+              192,
+              15,
+              192
+            ],
+            "confidence": 0.543,
+            "span": {
+              "offset": 297,
+              "length": 4
+            }
+          },
+          {
+            "content": "it",
+            "polygon": [
+              65,
+              180,
+              76,
+              180,
+              76,
+              192,
+              65,
+              192
+            ],
+            "confidence": 0.962,
+            "span": {
+              "offset": 302,
+              "length": 2
+            }
+          },
+          {
+            "content": "stick.",
+            "polygon": [
+              88,
+              180,
+              125,
+              180,
+              125,
+              191,
+              88,
+              192
+            ],
+            "confidence": 0.87,
+            "span": {
+              "offset": 305,
+              "length": 6
+            }
+          },
+          {
+            "content": "add",
+            "polygon": [
+              143,
+              180,
+              167,
+              180,
+              167,
+              191,
+              142,
+              191
+            ],
+            "confidence": 0.773,
+            "span": {
+              "offset": 312,
+              "length": 3
+            }
+          },
+          {
+            "content": "the",
+            "polygon": [
+              178,
+              180,
+              200,
+              180,
+              200,
+              191,
+              178,
+              191
+            ],
+            "confidence": 0.993,
+            "span": {
+              "offset": 316,
+              "length": 3
+            }
+          },
+          {
+            "content": "next",
+            "polygon": [
+              213,
+              180,
+              243,
+              180,
+              242,
+              191,
+              213,
+              191
+            ],
+            "confidence": 0.965,
+            "span": {
+              "offset": 320,
+              "length": 4
+            }
+          },
+          {
+            "content": "4",
+            "polygon": [
+              261,
+              180,
+              270,
+              180,
+              269,
+              191,
+              261,
+              191
+            ],
+            "confidence": 0.925,
+            "span": {
+              "offset": 325,
+              "length": 1
+            }
+          },
+          {
+            "content": "ingredients.",
+            "polygon": [
+              283,
+              180,
+              363,
+              180,
+              362,
+              191,
+              282,
+              191
+            ],
+            "confidence": 0.925,
+            "span": {
+              "offset": 327,
+              "length": 12
+            }
+          },
+          {
+            "content": "9x",
+            "polygon": [
+              23,
+              196,
+              39,
+              196,
+              38,
+              207,
+              22,
+              207
+            ],
+            "confidence": 0.877,
+            "span": {
+              "offset": 340,
+              "length": 2
+            }
+          },
+          {
+            "content": "13",
+            "polygon": [
+              47,
+              196,
+              58,
+              196,
+              58,
+              208,
+              46,
+              207
+            ],
+            "confidence": 0.995,
+            "span": {
+              "offset": 343,
+              "length": 2
+            }
+          },
+          {
+            "content": "pan",
+            "polygon": [
+              71,
+              197,
+              100,
+              197,
+              100,
+              207,
+              71,
+              208
+            ],
+            "confidence": 0.624,
+            "span": {
+              "offset": 346,
+              "length": 3
+            }
+          },
+          {
+            "content": "325°",
+            "polygon": [
+              177,
+              194,
+              211,
+              194,
+              211,
+              207,
+              177,
+              206
+            ],
+            "confidence": 0.666,
+            "span": {
+              "offset": 350,
+              "length": 4
+            }
+          },
+          {
+            "content": "for",
+            "polygon": [
+              224,
+              194,
+              250,
+              194,
+              250,
+              207,
+              224,
+              207
+            ],
+            "confidence": 0.978,
+            "span": {
+              "offset": 355,
+              "length": 3
+            }
+          },
+          {
+            "content": "1",
+            "polygon": [
+              274,
+              194,
+              279,
+              194,
+              279,
+              207,
+              274,
+              207
+            ],
+            "confidence": 0.687,
+            "span": {
+              "offset": 359,
+              "length": 1
+            }
+          },
+          {
+            "content": "hour.",
+            "polygon": [
+              288,
+              194,
+              329,
+              194,
+              329,
+              206,
+              287,
+              207
+            ],
+            "confidence": 0.776,
+            "span": {
+              "offset": 361,
+              "length": 5
+            }
+          }
+        ],
+        "lines": [
+          {
+            "content": "Tamace Die",
+            "polygon": [
+              127,
+              7,
+              241,
+              3,
+              241,
+              19,
+              127,
+              22
+            ],
+            "spans": [
+              {
+                "offset": 0,
+                "length": 10
+              }
+            ]
+          },
+          {
+            "content": "2 cups cream corn",
+            "polygon": [
+              92,
+              28,
+              235,
+              27,
+              235,
+              39,
+              92,
+              40
+            ],
+            "spans": [
+              {
+                "offset": 11,
+                "length": 17
+              }
+            ]
+          },
+          {
+            "content": "1 kg. onion, choppe",
+            "polygon": [
+              287,
+              25,
+              397,
+              25,
+              397,
+              37,
+              287,
+              37
+            ],
+            "spans": [
+              {
+                "offset": 29,
+                "length": 19
+              }
+            ]
+          },
+          {
+            "content": "2 cups TOMATOES",
+            "polygon": [
+              88,
+              43,
+              210,
+              43,
+              210,
+              54,
+              88,
+              54
+            ],
+            "spans": [
+              {
+                "offset": 49,
+                "length": 15
+              }
+            ]
+          },
+          {
+            "content": "1 gr. pepper,",
+            "polygon": [
+              284,
+              41,
+              365,
+              41,
+              365,
+              53,
+              284,
+              53
+            ],
+            "spans": [
+              {
+                "offset": 65,
+                "length": 13
+              }
+            ]
+          },
+          {
+            "content": "8.02 con tomato Sauce",
+            "polygon": [
+              73,
+              58,
+              249,
+              58,
+              249,
+              69,
+              73,
+              69
+            ],
+            "spans": [
+              {
+                "offset": 79,
+                "length": 21
+              }
+            ]
+          },
+          {
+            "content": "3eggs, besten",
+            "polygon": [
+              273,
+              53,
+              386,
+              58,
+              386,
+              70,
+              273,
+              66
+            ],
+            "spans": [
+              {
+                "offset": 101,
+                "length": 13
+              }
+            ]
+          },
+          {
+            "content": "1/2cups pitted olives",
+            "polygon": [
+              56,
+              71,
+              209,
+              71,
+              209,
+              84,
+              56,
+              84
+            ],
+            "spans": [
+              {
+                "offset": 115,
+                "length": 21
+              }
+            ]
+          },
+          {
+            "content": "1 cup MILK.",
+            "polygon": [
+              281,
+              73,
+              360,
+              73,
+              360,
+              83,
+              281,
+              84
+            ],
+            "spans": [
+              {
+                "offset": 137,
+                "length": 11
+              }
+            ]
+          },
+          {
+            "content": "3/4 cup olive oil",
+            "polygon": [
+              50,
+              88,
+              179,
+              87,
+              179,
+              99,
+              50,
+              100
+            ],
+            "spans": [
+              {
+                "offset": 149,
+                "length": 17
+              }
+            ]
+          },
+          {
+            "content": "1 cup cornmeal",
+            "polygon": [
+              275,
+              89,
+              386,
+              88,
+              386,
+              99,
+              275,
+              100
+            ],
+            "spans": [
+              {
+                "offset": 167,
+                "length": 14
+              }
+            ]
+          },
+          {
+            "content": "/ T. sacr",
+            "polygon": [
+              26,
+              104,
+              92,
+              104,
+              92,
+              114,
+              26,
+              114
+            ],
+            "spans": [
+              {
+                "offset": 182,
+                "length": 9
+              }
+            ]
+          },
+          {
+            "content": "1/2 tspcumin",
+            "polygon": [
+              24,
+              119,
+              105,
+              119,
+              105,
+              131,
+              24,
+              130
+            ],
+            "spans": [
+              {
+                "offset": 192,
+                "length": 12
+              }
+            ]
+          },
+          {
+            "content": "Simmer the first 9 ingredients for 20 minutes.",
+            "polygon": [
+              19,
+              149,
+              390,
+              148,
+              390,
+              162,
+              19,
+              163
+            ],
+            "spans": [
+              {
+                "offset": 205,
+                "length": 46
+              }
+            ]
+          },
+          {
+            "content": "Stie often - the cream corn tends to want To",
+            "polygon": [
+              12,
+              164,
+              390,
+              164,
+              390,
+              176,
+              12,
+              176
+            ],
+            "spans": [
+              {
+                "offset": 252,
+                "length": 44
+              }
+            ]
+          },
+          {
+            "content": "make it stick. add the next 4 ingredients.",
+            "polygon": [
+              12,
+              180,
+              362,
+              179,
+              362,
+              191,
+              12,
+              192
+            ],
+            "spans": [
+              {
+                "offset": 297,
+                "length": 42
+              }
+            ]
+          },
+          {
+            "content": "9x 13 pan",
+            "polygon": [
+              22,
+              195,
+              99,
+              196,
+              99,
+              207,
+              22,
+              207
+            ],
+            "spans": [
+              {
+                "offset": 340,
+                "length": 9
+              }
+            ]
+          },
+          {
+            "content": "325° for 1 hour.",
+            "polygon": [
+              176,
+              194,
+              328,
+              194,
+              328,
+              206,
+              176,
+              206
+            ],
+            "spans": [
+              {
+                "offset": 350,
+                "length": 16
+              }
+            ]
+          }
+        ],
+        "spans": [
+          {
+            "offset": 0,
+            "length": 366
+          }
+        ]
+      }
+    ],
+    "tables": [],
+    "paragraphs": [
+      {
+        "spans": [
+          {
+            "offset": 0,
+            "length": 10
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              127,
+              6,
+              241,
+              3,
+              241,
+              19,
+              127,
+              22
+            ]
+          }
+        ],
+        "role": "title",
+        "content": "Tamace Die"
+      },
+      {
+        "spans": [
+          {
+            "offset": 11,
+            "length": 17
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              92,
+              28,
+              235,
+              27,
+              235,
+              39,
+              92,
+              40
+            ]
+          }
+        ],
+        "content": "2 cups cream corn"
+      },
+      {
+        "spans": [
+          {
+            "offset": 29,
+            "length": 19
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              287,
+              25,
+              397,
+              25,
+              397,
+              37,
+              287,
+              37
+            ]
+          }
+        ],
+        "content": "1 kg. onion, choppe"
+      },
+      {
+        "spans": [
+          {
+            "offset": 49,
+            "length": 15
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              88,
+              43,
+              210,
+              43,
+              210,
+              54,
+              88,
+              54
+            ]
+          }
+        ],
+        "content": "2 cups TOMATOES"
+      },
+      {
+        "spans": [
+          {
+            "offset": 65,
+            "length": 13
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              284,
+              41,
+              365,
+              41,
+              365,
+              53,
+              284,
+              53
+            ]
+          }
+        ],
+        "content": "1 gr. pepper,"
+      },
+      {
+        "spans": [
+          {
+            "offset": 79,
+            "length": 21
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              73,
+              58,
+              249,
+              58,
+              249,
+              69,
+              73,
+              69
+            ]
+          }
+        ],
+        "content": "8.02 con tomato Sauce"
+      },
+      {
+        "spans": [
+          {
+            "offset": 101,
+            "length": 13
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              273,
+              53,
+              386,
+              58,
+              386,
+              70,
+              273,
+              66
+            ]
+          }
+        ],
+        "content": "3eggs, besten"
+      },
+      {
+        "spans": [
+          {
+            "offset": 115,
+            "length": 21
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              56,
+              71,
+              209,
+              71,
+              209,
+              84,
+              56,
+              84
+            ]
+          }
+        ],
+        "content": "1/2cups pitted olives"
+      },
+      {
+        "spans": [
+          {
+            "offset": 137,
+            "length": 11
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              281,
+              73,
+              360,
+              73,
+              360,
+              83,
+              281,
+              84
+            ]
+          }
+        ],
+        "content": "1 cup MILK."
+      },
+      {
+        "spans": [
+          {
+            "offset": 149,
+            "length": 17
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              50,
+              88,
+              179,
+              87,
+              179,
+              99,
+              50,
+              100
+            ]
+          }
+        ],
+        "content": "3/4 cup olive oil"
+      },
+      {
+        "spans": [
+          {
+            "offset": 167,
+            "length": 14
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              275,
+              89,
+              386,
+              88,
+              386,
+              99,
+              275,
+              100
+            ]
+          }
+        ],
+        "content": "1 cup cornmeal"
+      },
+      {
+        "spans": [
+          {
+            "offset": 182,
+            "length": 22
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              24,
+              103,
+              105,
+              104,
+              105,
+              131,
+              24,
+              130
+            ]
+          }
+        ],
+        "content": "/ T. sacr 1/2 tspcumin"
+      },
+      {
+        "spans": [
+          {
+            "offset": 205,
+            "length": 161
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              12,
+              149,
+              390,
+              148,
+              390,
+              206,
+              12,
+              207
+            ]
+          }
+        ],
+        "content": "Simmer the first 9 ingredients for 20 minutes. Stie often - the cream corn tends to want To make it stick. add the next 4 ingredients. 9x 13 pan 325° for 1 hour."
+      }
+    ],
+    "styles": [
+      {
+        "confidence": 1,
+        "spans": [
+          {
+            "offset": 0,
+            "length": 181
+          },
+          {
+            "offset": 192,
+            "length": 174
+          }
+        ],
+        "isHandwritten": true
+      },
+      {
+        "confidence": 0.7,
+        "spans": [
+          {
+            "offset": 182,
+            "length": 9
+          }
+        ],
+        "isHandwritten": true
+      }
+    ],
+    "contentFormat": "text",
+    "sections": [
+      {
+        "spans": [
+          {
+            "offset": 0,
+            "length": 0
+          },
+          {
+            "offset": 0,
+            "length": 366
+          }
+        ],
+        "elements": [
+          "/sections/1",
+          "/sections/2"
+        ]
+      },
+      {
+        "spans": [
+          {
+            "offset": 0,
+            "length": 0
+          }
+        ],
+        "elements": [
+          "/figures/0"
+        ]
+      },
+      {
+        "spans": [
+          {
+            "offset": 0,
+            "length": 366
+          }
+        ],
+        "elements": [
+          "/paragraphs/0",
+          "/paragraphs/1",
+          "/paragraphs/2",
+          "/paragraphs/3",
+          "/paragraphs/4",
+          "/paragraphs/5",
+          "/paragraphs/6",
+          "/paragraphs/7",
+          "/paragraphs/8",
+          "/paragraphs/9",
+          "/paragraphs/10",
+          "/paragraphs/11",
+          "/paragraphs/12"
+        ]
+      }
+    ],
+    "figures": [
+      {
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              5,
+              3,
+              70,
+              3,
+              70,
+              112,
+              5,
+              112
+            ]
+          }
+        ],
+        "spans": [
+          {
+            "offset": 0,
+            "length": 0
+          }
+        ]
+      }
+    ]
+  }
+}

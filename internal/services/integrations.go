@@ -1,15 +1,18 @@
 package services
 
 import (
-	"bytes"
 	"encoding/json"
 	"errors"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/integrations"
 	"github.com/reaper47/recipya/internal/models"
+	"github.com/sendgrid/sendgrid-go"
+	"github.com/sendgrid/sendgrid-go/helpers/mail"
 	"io"
+	"log/slog"
 	"net/http"
 	"net/url"
+	"time"
 )
 
 // NewIntegrationsService creates a new Integrations that satisfies the IntegrationsService interface.
@@ -57,36 +60,139 @@ func isCredentialsValid(baseURL, username, password string) bool {
 }
 
 // ProcessImageOCR processes an image using an OCR service to extract the recipe.
-func (i Integrations) ProcessImageOCR(file io.Reader) (models.Recipe, error) {
-	body := &bytes.Buffer{}
-	_, err := io.Copy(body, file)
-	if err != nil {
-		return models.Recipe{}, err
+func (i Integrations) ProcessImageOCR(files []io.Reader) (models.Recipes, error) {
+	locations := make([]string, 0, len(files))
+	for _, file := range files {
+		req, err := app.Config.Integrations.AzureDI.PrepareRequest(file)
+		if err != nil {
+			slog.Error("Failed to prepare request", "error", err)
+			continue
+		}
+
+		res, err := http.DefaultClient.Do(req)
+		if err != nil {
+			slog.Error("Failed to execute request", "req", req, "err", err)
+			continue
+		}
+
+		if res.StatusCode == http.StatusAccepted {
+			locations = append(locations, res.Header.Get("Operation-Location"))
+		} else {
+			slog.Warn("Failed to execute request", "req", req, "status", res.StatusCode)
+		}
+
+		_ = res.Body.Close()
 	}
 
-	url := app.Config.Integrations.AzureComputerVision.VisionEndpoint + "/computervision/imageanalysis:analyze?features=caption,read&model-version=latest&language=en&api-version=2024-02-01"
-	req, err := http.NewRequest(http.MethodPost, url, body)
-	if err != nil {
-		return models.Recipe{}, err
-	}
-	req.Header.Set("Ocp-Apim-Subscription-Key", app.Config.Integrations.AzureComputerVision.ResourceKey)
-	req.Header.Set("Content-Type", "application/octet-stream")
+	var (
+		recipes  = make(models.Recipes, 0, len(locations))
+		idx      = 0
+		maxTries = 0
+	)
 
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return models.Recipe{}, err
-	}
-	defer res.Body.Close()
+	for idx < len(locations) {
+		if maxTries > 10 {
+			slog.Warn("Too many tries", "loc", locations[idx], "maxTries", maxTries)
+			idx++
+			maxTries = 0
+			continue
+		}
 
-	var av models.AzureVision
-	err = json.NewDecoder(res.Body).Decode(&av)
-	if err != nil {
-		return models.Recipe{}, err
+		req, err := http.NewRequest(http.MethodGet, locations[idx], nil)
+		if err != nil {
+			slog.Warn("Failed to prepare request", "location", locations[idx], "err", err)
+			idx++
+			continue
+		}
+		req.Header.Set("Ocp-Apim-Subscription-Key", app.Config.Integrations.AzureDI.Key)
+
+		res, err := i.client.Do(req)
+		if err != nil {
+			slog.Warn("Failed to execute request", "loc", locations[idx], "err", err)
+			idx++
+			maxTries = 0
+			continue
+		}
+
+		if res.StatusCode != http.StatusOK {
+			var adi models.AzureDIError
+			_ = json.NewDecoder(res.Body).Decode(&adi)
+			slog.Warn("Undesirable status code", "loc", locations[idx], "status", res.StatusCode, "data", adi)
+			_ = res.Body.Close()
+			idx++
+			maxTries = 0
+			continue
+		}
+
+		var adi models.AzureDILayout
+		err = json.NewDecoder(res.Body).Decode(&adi)
+		if err != nil {
+			slog.Warn("Failed to decode response body", "loc", locations[idx], "err", err)
+			_ = res.Body.Close()
+			idx++
+			maxTries = 0
+			continue
+		}
+
+		if adi.Status != "succeeded" {
+			time.Sleep(1 * time.Second)
+			maxTries++
+			continue
+		}
+
+		recipe := adi.Recipe()
+		if recipe.IsEmpty() {
+			slog.Warn("OCR recipe is empty", "loc", locations[idx], "azure response", adi)
+		} else {
+			recipes = append(recipes, recipe)
+		}
+
+		_ = res.Body.Close()
+		idx++
+		maxTries = 0
 	}
 
-	recipe := av.Recipe()
-	if recipe.IsEmpty() {
-		return recipe, errors.New("recipe is empty")
+	return recipes, nil
+}
+
+func (i Integrations) TestConnection(api string) error {
+	var (
+		apiAttr       = slog.String("api", api)
+		errConnFailed = errors.New("connection failed")
+	)
+
+	switch api {
+	case "azure-di":
+		req, err := app.Config.Integrations.AzureDI.PrepareRequest(nil)
+		if err != nil {
+			slog.Error("Failed to prepare request", apiAttr, "error", err)
+			return err
+		}
+
+		res, err := http.DefaultClient.Do(req)
+		if err != nil {
+			slog.Error("Failed to send request", "req", req, apiAttr, "error", err)
+			return err
+		}
+		defer res.Body.Close()
+
+		if res.StatusCode == http.StatusUnauthorized || res.StatusCode == http.StatusNotFound {
+			return errConnFailed
+		}
+		return nil
+	case "sg":
+		client := sendgrid.NewSendClient(app.Config.Email.SendGridAPIKey)
+		res, err := client.Send(mail.NewSingleEmail(mail.NewEmail("", ""), "", mail.NewEmail("", ""), "", ""))
+		if err != nil {
+			slog.Error("Failed to send request", apiAttr, "error", err)
+			return err
+		}
+
+		if res.StatusCode == http.StatusUnauthorized || res.StatusCode == http.StatusNotFound {
+			return errConnFailed
+		}
+		return nil
+	default:
+		return errors.New("invalid api")
 	}
-	return recipe, nil
 }

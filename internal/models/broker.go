@@ -170,7 +170,13 @@ func (b *Broker) setPingPongHandlers() {
 
 	go func() {
 		ticker := time.NewTicker(30 * time.Second)
-		defer ticker.Stop()
+		defer func() {
+			ticker.Stop()
+			err := recover()
+			if err != nil {
+				slog.Error("Websocket ping pong panic", "error", err)
+			}
+		}()
 
 		for range ticker.C {
 			b.mu.Lock()

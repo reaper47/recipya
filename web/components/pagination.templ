@@ -24,6 +24,7 @@ templ Pagination(p templates.Pagination) {
 					hx-target={ p.Htmx.Target }
 					hx-trigger="mousedown"
 					hx-push-url={ fmt.Sprintf("%s?page=%d", p.URL, p.Prev) }
+					hx-swap="innerHTML show:window:top transition:true"
 				>
 					«
 				</button>
@@ -43,6 +44,7 @@ templ Pagination(p templates.Pagination) {
 						hx-target={ p.Htmx.Target }
 						hx-trigger="mousedown"
 						hx-push-url={ fmt.Sprintf("%s?page=%d%s", p.URL, l, p.URLQueries) }
+						hx-swap="innerHTML show:window:top transition:true"
 					>
 						{ fmt.Sprint(l) }
 					</button>
@@ -61,6 +63,7 @@ templ Pagination(p templates.Pagination) {
 						hx-target={ p.Htmx.Target }
 						hx-trigger="mousedown"
 						hx-push-url={ fmt.Sprintf("%s?page=%d%s", p.URL, m, p.URLQueries) }
+						hx-swap="innerHTML show:window:top transition:true"
 					>
 						{ fmt.Sprint(m) }
 					</button>
@@ -71,6 +74,7 @@ templ Pagination(p templates.Pagination) {
 						hx-target={ p.Htmx.Target }
 						hx-trigger="mousedown"
 						hx-push-url={ fmt.Sprintf("%s?page=%d%s", p.URL, m, p.URLQueries) }
+						hx-swap="innerHTML show:window:top transition:true"
 					>
 						{ fmt.Sprint(m) }
 					</button>
@@ -92,6 +96,7 @@ templ Pagination(p templates.Pagination) {
 						hx-target={ p.Htmx.Target }
 						hx-trigger="mousedown"
 						hx-push-url={ fmt.Sprintf("%s?page=%d%s", p.URL, r, p.URLQueries) }
+						hx-swap="innerHTML show:window:top transition:true"
 					>
 						{ fmt.Sprint(r) }
 					</button>
@@ -106,6 +111,7 @@ templ Pagination(p templates.Pagination) {
 						hx-target={ p.Htmx.Target }
 						hx-trigger="mousedown"
 						hx-push-url={ fmt.Sprintf("%s?page=%d%s", p.URL, r, p.URLQueries) }
+						hx-swap="innerHTML show:window:top transition:true"
 					>
 						{ fmt.Sprint(r) }
 					</button>
@@ -120,6 +126,7 @@ templ Pagination(p templates.Pagination) {
 					hx-target={ p.Htmx.Target }
 					hx-trigger="mousedown"
 					hx-push-url={ fmt.Sprintf("%s?page=%d%s", p.URL, p.Next, p.URLQueries) }
+					hx-swap="innerHTML show:window:top transition:true"
 				>
 					»
 				</button>

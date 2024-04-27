@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"github.com/google/go-cmp/cmp"
 	"github.com/reaper47/recipya/internal/app"
+	"io"
+	"net/http"
 	"os"
 	"strconv"
 	"strings"
@@ -116,9 +118,9 @@ func TestNewConfig(t *testing.T) {
 			SendGridAPIKey: "API_KEY",
 		},
 		Integrations: app.ConfigIntegrations{
-			AzureComputerVision: app.AzureComputerVision{
-				ResourceKey:    "KEY_1",
-				VisionEndpoint: "https://{resource}.cognitiveservices.azure.com/",
+			AzureDI: app.AzureDI{
+				Endpoint: "https://{resource_di}.cognitiveservices.azure.com",
+				Key:      "KEY_1",
 			},
 		},
 		Server: app.ConfigServer{
@@ -130,14 +132,14 @@ func TestNewConfig(t *testing.T) {
 	}
 
 	env := map[string]string{
-		"RECIPYA_EMAIL":           "my@email.com",
-		"RECIPYA_EMAIL_SENDGRID":  "API_KEY",
-		"RECIPYA_VISION_KEY":      "KEY_1",
-		"RECIPYA_VISION_ENDPOINT": "https://{resource}.cognitiveservices.azure.com/",
-		"RECIPYA_SERVER_IS_DEMO":  "false",
-		"RECIPYA_SERVER_IS_PROD":  "false",
-		"RECIPYA_SERVER_PORT":     "8078",
-		"RECIPYA_SERVER_URL":      "http://0.0.0.0",
+		"RECIPYA_DI_ENDPOINT":    "https://{resource_di}.cognitiveservices.azure.com",
+		"RECIPYA_DI_KEY":         "KEY_1",
+		"RECIPYA_EMAIL":          "my@email.com",
+		"RECIPYA_EMAIL_SENDGRID": "API_KEY",
+		"RECIPYA_SERVER_IS_DEMO": "false",
+		"RECIPYA_SERVER_IS_PROD": "false",
+		"RECIPYA_SERVER_PORT":    "8078",
+		"RECIPYA_SERVER_URL":     "http://0.0.0.0",
 	}
 
 	t.Run("load from config file", func(t *testing.T) {
@@ -172,4 +174,41 @@ func TestNewConfig(t *testing.T) {
 			t.Fail()
 		}
 	})
+}
+
+func TestAzureDI_PrepareRequest(t *testing.T) {
+	c := app.AzureDI{
+		Endpoint: "https://di-rocks.cognitiveservices.azure.com",
+		Key:      "trump-farts-in-court",
+	}
+	body := "Hello"
+
+	got, _ := c.PrepareRequest(strings.NewReader(body))
+
+	if got.Method != http.MethodPost {
+		t.Fatalf("got method %q but want POST", got.Method)
+	}
+	if got.Host != "di-rocks.cognitiveservices.azure.com" {
+		t.Fatalf("got url.host %q but want https://di-rocks.cognitiveservices.azure.com", got.Host)
+	}
+	if got.URL.Path != "/documentintelligence/documentModels/prebuilt-layout:analyze" {
+		t.Fatalf("got url.path %q but want /documentintelligence/documentModels/prebuilt-layout:analyze", got.URL.Path)
+	}
+	if got.URL.RawQuery != "_overload=analyzeDocument&api-version=2024-02-29-preview" {
+		t.Fatalf("got url.rawquery %q but want _overload=analyzeDocument&api-version=2024-02-29-preview", got.URL.RawQuery)
+	}
+	b, _ := io.ReadAll(got.Body)
+	if string(b) != `{"base64Source":"SGVsbG8="}` {
+		t.Fatalf("got content %q, but want %q", b, body)
+	}
+	headers := map[string]string{
+		"Ocp-Apim-Subscription-Key": "trump-farts-in-court",
+		"Content-Type":              "application/json",
+	}
+	for k, v := range headers {
+		actual := got.Header.Get(k)
+		if actual != v {
+			t.Errorf("got header %q but want header %q", actual, k)
+		}
+	}
 }

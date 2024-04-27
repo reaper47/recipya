@@ -134,6 +134,7 @@ func (s *Server) mountHandlers() {
 
 	// Integrations routes
 	mux.Handle("POST /integrations/import", withLog(s.integrationsImport()))
+	mux.Handle("GET /integrations/test-connection", withLog(s.integrationTestConnectionHandler()))
 
 	// Recipes routes
 	mux.Handle("GET /recipes", s.mustBeLoggedInMiddleware(s.recipesHandler()))

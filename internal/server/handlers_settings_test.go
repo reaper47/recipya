@@ -256,9 +256,9 @@ func TestHandlers_Settings_Config(t *testing.T) {
 				SendGridAPIKey: "GHJ",
 			},
 			Integrations: app.ConfigIntegrations{
-				AzureComputerVision: app.AzureComputerVision{
-					ResourceKey:    "JGKL",
-					VisionEndpoint: "https://www.google.com",
+				AzureDI: app.AzureDI{
+					Key:      "JGKL",
+					Endpoint: "https://www.google.com",
 				},
 			},
 			Server: app.ConfigServer{
@@ -650,9 +650,9 @@ func TestHandlers_Settings_TabsAdvanced(t *testing.T) {
 				SendGridAPIKey: "1234",
 			},
 			Integrations: app.ConfigIntegrations{
-				AzureComputerVision: app.AzureComputerVision{
-					ResourceKey:    "HJK1",
-					VisionEndpoint: "https://graph.microsoft.com/v1.0",
+				AzureDI: app.AzureDI{
+					Key:      "HJK1",
+					Endpoint: "https://graph.microsoft.com/v1.0",
 				},
 			},
 			Server: app.ConfigServer{

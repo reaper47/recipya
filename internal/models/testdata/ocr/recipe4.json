@@ -1,0 +1,1509 @@
+{
+  "status": "succeeded",
+  "createdDateTime": "2024-04-26T15:08:39Z",
+  "lastUpdatedDateTime": "2024-04-26T15:08:40Z",
+  "analyzeResult": {
+    "apiVersion": "2024-02-29-preview",
+    "modelId": "prebuilt-layout",
+    "stringIndexType": "textElements",
+    "content": "Xenia's Polish Cookies\n2 cups flour 1/2 cup sugar\n1 cup walnuts and pecans (chopped) 1 tsp vanilla\n2 sticks butter\nmelt butter and pour over dry ingredients. Spoon drop onto cookie sheet. (They don't Spread)\nBake at 350° for 15-20 min. Cool completely. Coat with powdered sugar.\nKeep in airtight container. Do not refrigerate.",
+    "pages": [
+      {
+        "pageNumber": 1,
+        "angle": -0.6255000233650208,
+        "width": 474,
+        "height": 974,
+        "unit": "pixel",
+        "words": [
+          {
+            "content": "Xenia's",
+            "polygon": [
+              133,
+              119,
+              206,
+              114,
+              207,
+              141,
+              133,
+              145
+            ],
+            "confidence": 0.925,
+            "span": {
+              "offset": 0,
+              "length": 7
+            }
+          },
+          {
+            "content": "Polish",
+            "polygon": [
+              223,
+              113,
+              278,
+              109,
+              279,
+              135,
+              224,
+              140
+            ],
+            "confidence": 0.989,
+            "span": {
+              "offset": 8,
+              "length": 6
+            }
+          },
+          {
+            "content": "Cookies",
+            "polygon": [
+              291,
+              108,
+              369,
+              103,
+              369,
+              127,
+              292,
+              134
+            ],
+            "confidence": 0.973,
+            "span": {
+              "offset": 15,
+              "length": 7
+            }
+          },
+          {
+            "content": "2",
+            "polygon": [
+              65,
+              187,
+              81,
+              187,
+              82,
+              213,
+              66,
+              214
+            ],
+            "confidence": 0.992,
+            "span": {
+              "offset": 23,
+              "length": 1
+            }
+          },
+          {
+            "content": "cups",
+            "polygon": [
+              96,
+              186,
+              146,
+              184,
+              147,
+              210,
+              97,
+              212
+            ],
+            "confidence": 0.942,
+            "span": {
+              "offset": 25,
+              "length": 4
+            }
+          },
+          {
+            "content": "flour",
+            "polygon": [
+              161,
+              184,
+              227,
+              180,
+              227,
+              207,
+              162,
+              209
+            ],
+            "confidence": 0.995,
+            "span": {
+              "offset": 30,
+              "length": 5
+            }
+          },
+          {
+            "content": "1/2",
+            "polygon": [
+              68,
+              223,
+              93,
+              222,
+              94,
+              251,
+              69,
+              253
+            ],
+            "confidence": 0.965,
+            "span": {
+              "offset": 36,
+              "length": 3
+            }
+          },
+          {
+            "content": "cup",
+            "polygon": [
+              104,
+              222,
+              146,
+              221,
+              147,
+              248,
+              105,
+              250
+            ],
+            "confidence": 0.998,
+            "span": {
+              "offset": 40,
+              "length": 3
+            }
+          },
+          {
+            "content": "sugar",
+            "polygon": [
+              168,
+              220,
+              238,
+              218,
+              239,
+              246,
+              169,
+              248
+            ],
+            "confidence": 0.996,
+            "span": {
+              "offset": 44,
+              "length": 5
+            }
+          },
+          {
+            "content": "1",
+            "polygon": [
+              66,
+              264,
+              75,
+              264,
+              74,
+              291,
+              66,
+              292
+            ],
+            "confidence": 0.569,
+            "span": {
+              "offset": 50,
+              "length": 1
+            }
+          },
+          {
+            "content": "cup",
+            "polygon": [
+              100,
+              262,
+              142,
+              260,
+              142,
+              288,
+              100,
+              290
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 52,
+              "length": 3
+            }
+          },
+          {
+            "content": "walnuts",
+            "polygon": [
+              169,
+              258,
+              250,
+              253,
+              250,
+              283,
+              169,
+              287
+            ],
+            "confidence": 0.982,
+            "span": {
+              "offset": 56,
+              "length": 7
+            }
+          },
+          {
+            "content": "and",
+            "polygon": [
+              264,
+              252,
+              299,
+              250,
+              300,
+              280,
+              265,
+              282
+            ],
+            "confidence": 0.996,
+            "span": {
+              "offset": 64,
+              "length": 3
+            }
+          },
+          {
+            "content": "pecans",
+            "polygon": [
+              305,
+              250,
+              369,
+              245,
+              370,
+              276,
+              306,
+              279
+            ],
+            "confidence": 0.97,
+            "span": {
+              "offset": 68,
+              "length": 6
+            }
+          },
+          {
+            "content": "(chopped)",
+            "polygon": [
+              375,
+              244,
+              465,
+              237,
+              465,
+              270,
+              376,
+              275
+            ],
+            "confidence": 0.913,
+            "span": {
+              "offset": 75,
+              "length": 9
+            }
+          },
+          {
+            "content": "1",
+            "polygon": [
+              69,
+              303,
+              76,
+              302,
+              76,
+              330,
+              69,
+              331
+            ],
+            "confidence": 0.682,
+            "span": {
+              "offset": 85,
+              "length": 1
+            }
+          },
+          {
+            "content": "tsp",
+            "polygon": [
+              97,
+              302,
+              137,
+              300,
+              138,
+              327,
+              98,
+              329
+            ],
+            "confidence": 0.438,
+            "span": {
+              "offset": 87,
+              "length": 3
+            }
+          },
+          {
+            "content": "vanilla",
+            "polygon": [
+              163,
+              299,
+              248,
+              295,
+              248,
+              323,
+              164,
+              326
+            ],
+            "confidence": 0.993,
+            "span": {
+              "offset": 91,
+              "length": 7
+            }
+          },
+          {
+            "content": "2",
+            "polygon": [
+              68,
+              350,
+              86,
+              350,
+              87,
+              377,
+              68,
+              377
+            ],
+            "confidence": 0.969,
+            "span": {
+              "offset": 99,
+              "length": 1
+            }
+          },
+          {
+            "content": "sticks",
+            "polygon": [
+              104,
+              349,
+              184,
+              345,
+              184,
+              371,
+              104,
+              376
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 101,
+              "length": 6
+            }
+          },
+          {
+            "content": "butter",
+            "polygon": [
+              204,
+              343,
+              289,
+              336,
+              289,
+              363,
+              204,
+              370
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 108,
+              "length": 6
+            }
+          },
+          {
+            "content": "melt",
+            "polygon": [
+              50,
+              426,
+              109,
+              424,
+              109,
+              449,
+              50,
+              450
+            ],
+            "confidence": 0.966,
+            "span": {
+              "offset": 115,
+              "length": 4
+            }
+          },
+          {
+            "content": "butter",
+            "polygon": [
+              126,
+              423,
+              201,
+              421,
+              201,
+              448,
+              126,
+              449
+            ],
+            "confidence": 0.982,
+            "span": {
+              "offset": 120,
+              "length": 6
+            }
+          },
+          {
+            "content": "and",
+            "polygon": [
+              214,
+              420,
+              261,
+              420,
+              261,
+              447,
+              213,
+              448
+            ],
+            "confidence": 0.995,
+            "span": {
+              "offset": 127,
+              "length": 3
+            }
+          },
+          {
+            "content": "pour",
+            "polygon": [
+              275,
+              419,
+              327,
+              419,
+              326,
+              446,
+              275,
+              447
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 131,
+              "length": 4
+            }
+          },
+          {
+            "content": "over",
+            "polygon": [
+              344,
+              419,
+              402,
+              419,
+              402,
+              446,
+              344,
+              446
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 136,
+              "length": 4
+            }
+          },
+          {
+            "content": "dry",
+            "polygon": [
+              56,
+              452,
+              103,
+              451,
+              102,
+              482,
+              56,
+              484
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 141,
+              "length": 3
+            }
+          },
+          {
+            "content": "ingredients.",
+            "polygon": [
+              123,
+              451,
+              279,
+              449,
+              278,
+              480,
+              122,
+              482
+            ],
+            "confidence": 0.846,
+            "span": {
+              "offset": 145,
+              "length": 12
+            }
+          },
+          {
+            "content": "Spoon",
+            "polygon": [
+              299,
+              449,
+              378,
+              450,
+              378,
+              479,
+              299,
+              480
+            ],
+            "confidence": 0.976,
+            "span": {
+              "offset": 158,
+              "length": 5
+            }
+          },
+          {
+            "content": "drop",
+            "polygon": [
+              49,
+              490,
+              108,
+              489,
+              107,
+              519,
+              48,
+              519
+            ],
+            "confidence": 0.993,
+            "span": {
+              "offset": 164,
+              "length": 4
+            }
+          },
+          {
+            "content": "onto",
+            "polygon": [
+              129,
+              489,
+              186,
+              488,
+              186,
+              518,
+              128,
+              519
+            ],
+            "confidence": 0.982,
+            "span": {
+              "offset": 169,
+              "length": 4
+            }
+          },
+          {
+            "content": "cookie",
+            "polygon": [
+              205,
+              488,
+              287,
+              487,
+              287,
+              516,
+              205,
+              518
+            ],
+            "confidence": 0.911,
+            "span": {
+              "offset": 174,
+              "length": 6
+            }
+          },
+          {
+            "content": "sheet.",
+            "polygon": [
+              303,
+              487,
+              378,
+              487,
+              378,
+              513,
+              303,
+              516
+            ],
+            "confidence": 0.992,
+            "span": {
+              "offset": 181,
+              "length": 6
+            }
+          },
+          {
+            "content": "(They",
+            "polygon": [
+              57,
+              522,
+              124,
+              523,
+              124,
+              552,
+              57,
+              550
+            ],
+            "confidence": 0.888,
+            "span": {
+              "offset": 188,
+              "length": 5
+            }
+          },
+          {
+            "content": "don't",
+            "polygon": [
+              135,
+              523,
+              192,
+              523,
+              193,
+              552,
+              136,
+              552
+            ],
+            "confidence": 0.942,
+            "span": {
+              "offset": 194,
+              "length": 5
+            }
+          },
+          {
+            "content": "Spread)",
+            "polygon": [
+              198,
+              523,
+              286,
+              518,
+              286,
+              548,
+              199,
+              552
+            ],
+            "confidence": 0.958,
+            "span": {
+              "offset": 200,
+              "length": 7
+            }
+          },
+          {
+            "content": "Bake",
+            "polygon": [
+              30,
+              581,
+              97,
+              581,
+              96,
+              612,
+              30,
+              612
+            ],
+            "confidence": 0.993,
+            "span": {
+              "offset": 208,
+              "length": 4
+            }
+          },
+          {
+            "content": "at",
+            "polygon": [
+              112,
+              581,
+              147,
+              581,
+              147,
+              612,
+              112,
+              612
+            ],
+            "confidence": 0.995,
+            "span": {
+              "offset": 213,
+              "length": 2
+            }
+          },
+          {
+            "content": "350°",
+            "polygon": [
+              167,
+              581,
+              236,
+              581,
+              236,
+              612,
+              167,
+              612
+            ],
+            "confidence": 0.858,
+            "span": {
+              "offset": 216,
+              "length": 4
+            }
+          },
+          {
+            "content": "for",
+            "polygon": [
+              243,
+              581,
+              288,
+              580,
+              288,
+              611,
+              243,
+              612
+            ],
+            "confidence": 0.996,
+            "span": {
+              "offset": 221,
+              "length": 3
+            }
+          },
+          {
+            "content": "15-20",
+            "polygon": [
+              313,
+              580,
+              380,
+              580,
+              380,
+              609,
+              313,
+              611
+            ],
+            "confidence": 0.719,
+            "span": {
+              "offset": 225,
+              "length": 5
+            }
+          },
+          {
+            "content": "min.",
+            "polygon": [
+              387,
+              580,
+              438,
+              580,
+              438,
+              607,
+              387,
+              609
+            ],
+            "confidence": 0.974,
+            "span": {
+              "offset": 231,
+              "length": 4
+            }
+          },
+          {
+            "content": "Cool",
+            "polygon": [
+              21,
+              623,
+              79,
+              623,
+              78,
+              654,
+              19,
+              652
+            ],
+            "confidence": 0.995,
+            "span": {
+              "offset": 236,
+              "length": 4
+            }
+          },
+          {
+            "content": "completely.",
+            "polygon": [
+              104,
+              624,
+              253,
+              624,
+              253,
+              657,
+              103,
+              655
+            ],
+            "confidence": 0.922,
+            "span": {
+              "offset": 241,
+              "length": 11
+            }
+          },
+          {
+            "content": "Coat",
+            "polygon": [
+              283,
+              624,
+              348,
+              623,
+              349,
+              656,
+              284,
+              657
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 253,
+              "length": 4
+            }
+          },
+          {
+            "content": "with",
+            "polygon": [
+              368,
+              623,
+              429,
+              622,
+              429,
+              655,
+              369,
+              656
+            ],
+            "confidence": 0.993,
+            "span": {
+              "offset": 258,
+              "length": 4
+            }
+          },
+          {
+            "content": "powdered",
+            "polygon": [
+              23,
+              658,
+              142,
+              661,
+              142,
+              689,
+              23,
+              687
+            ],
+            "confidence": 0.973,
+            "span": {
+              "offset": 263,
+              "length": 8
+            }
+          },
+          {
+            "content": "sugar.",
+            "polygon": [
+              170,
+              662,
+              261,
+              664,
+              261,
+              691,
+              170,
+              690
+            ],
+            "confidence": 0.951,
+            "span": {
+              "offset": 272,
+              "length": 6
+            }
+          },
+          {
+            "content": "Keep",
+            "polygon": [
+              39,
+              723,
+              97,
+              723,
+              97,
+              761,
+              38,
+              760
+            ],
+            "confidence": 0.856,
+            "span": {
+              "offset": 279,
+              "length": 4
+            }
+          },
+          {
+            "content": "in",
+            "polygon": [
+              118,
+              724,
+              139,
+              724,
+              139,
+              762,
+              117,
+              761
+            ],
+            "confidence": 0.995,
+            "span": {
+              "offset": 284,
+              "length": 2
+            }
+          },
+          {
+            "content": "airtight",
+            "polygon": [
+              154,
+              724,
+              265,
+              726,
+              266,
+              762,
+              154,
+              762
+            ],
+            "confidence": 0.959,
+            "span": {
+              "offset": 287,
+              "length": 8
+            }
+          },
+          {
+            "content": "container.",
+            "polygon": [
+              286,
+              726,
+              427,
+              730,
+              427,
+              761,
+              286,
+              762
+            ],
+            "confidence": 0.876,
+            "span": {
+              "offset": 296,
+              "length": 10
+            }
+          },
+          {
+            "content": "Do",
+            "polygon": [
+              123,
+              764,
+              168,
+              764,
+              167,
+              799,
+              123,
+              797
+            ],
+            "confidence": 0.995,
+            "span": {
+              "offset": 307,
+              "length": 2
+            }
+          },
+          {
+            "content": "not",
+            "polygon": [
+              188,
+              764,
+              243,
+              765,
+              243,
+              801,
+              188,
+              800
+            ],
+            "confidence": 0.996,
+            "span": {
+              "offset": 310,
+              "length": 3
+            }
+          },
+          {
+            "content": "refrigerate.",
+            "polygon": [
+              254,
+              765,
+              431,
+              764,
+              431,
+              800,
+              254,
+              801
+            ],
+            "confidence": 0.941,
+            "span": {
+              "offset": 314,
+              "length": 12
+            }
+          }
+        ],
+        "lines": [
+          {
+            "content": "Xenia's Polish Cookies",
+            "polygon": [
+              132,
+              118,
+              366,
+              102,
+              368,
+              128,
+              133,
+              145
+            ],
+            "spans": [
+              {
+                "offset": 0,
+                "length": 22
+              }
+            ]
+          },
+          {
+            "content": "2 cups flour",
+            "polygon": [
+              65,
+              187,
+              225,
+              180,
+              226,
+              206,
+              66,
+              213
+            ],
+            "spans": [
+              {
+                "offset": 23,
+                "length": 12
+              }
+            ]
+          },
+          {
+            "content": "1/2 cup sugar",
+            "polygon": [
+              67,
+              222,
+              237,
+              218,
+              238,
+              246,
+              68,
+              252
+            ],
+            "spans": [
+              {
+                "offset": 36,
+                "length": 13
+              }
+            ]
+          },
+          {
+            "content": "1 cup walnuts and pecans (chopped)",
+            "polygon": [
+              65,
+              261,
+              463,
+              237,
+              465,
+              269,
+              66,
+              292
+            ],
+            "spans": [
+              {
+                "offset": 50,
+                "length": 34
+              }
+            ]
+          },
+          {
+            "content": "1 tsp vanilla",
+            "polygon": [
+              68,
+              302,
+              246,
+              294,
+              247,
+              322,
+              68,
+              330
+            ],
+            "spans": [
+              {
+                "offset": 85,
+                "length": 13
+              }
+            ]
+          },
+          {
+            "content": "2 sticks butter",
+            "polygon": [
+              67,
+              350,
+              287,
+              336,
+              289,
+              363,
+              67,
+              377
+            ],
+            "spans": [
+              {
+                "offset": 99,
+                "length": 15
+              }
+            ]
+          },
+          {
+            "content": "melt butter and pour over",
+            "polygon": [
+              50,
+              423,
+              401,
+              418,
+              401,
+              445,
+              50,
+              450
+            ],
+            "spans": [
+              {
+                "offset": 115,
+                "length": 25
+              }
+            ]
+          },
+          {
+            "content": "dry ingredients. Spoon",
+            "polygon": [
+              55,
+              451,
+              377,
+              449,
+              377,
+              479,
+              55,
+              483
+            ],
+            "spans": [
+              {
+                "offset": 141,
+                "length": 22
+              }
+            ]
+          },
+          {
+            "content": "drop onto cookie sheet.",
+            "polygon": [
+              48,
+              489,
+              377,
+              486,
+              378,
+              515,
+              48,
+              519
+            ],
+            "spans": [
+              {
+                "offset": 164,
+                "length": 23
+              }
+            ]
+          },
+          {
+            "content": "(They don't Spread)",
+            "polygon": [
+              56,
+              521,
+              285,
+              518,
+              285,
+              550,
+              56,
+              552
+            ],
+            "spans": [
+              {
+                "offset": 188,
+                "length": 19
+              }
+            ]
+          },
+          {
+            "content": "Bake at 350° for 15-20 min.",
+            "polygon": [
+              29,
+              580,
+              437,
+              579,
+              437,
+              610,
+              29,
+              612
+            ],
+            "spans": [
+              {
+                "offset": 208,
+                "length": 27
+              }
+            ]
+          },
+          {
+            "content": "Cool completely. Coat with",
+            "polygon": [
+              19,
+              622,
+              428,
+              622,
+              428,
+              656,
+              19,
+              655
+            ],
+            "spans": [
+              {
+                "offset": 236,
+                "length": 26
+              }
+            ]
+          },
+          {
+            "content": "powdered sugar.",
+            "polygon": [
+              23,
+              658,
+              260,
+              663,
+              259,
+              691,
+              23,
+              686
+            ],
+            "spans": [
+              {
+                "offset": 263,
+                "length": 15
+              }
+            ]
+          },
+          {
+            "content": "Keep in airtight container.",
+            "polygon": [
+              38,
+              723,
+              426,
+              726,
+              426,
+              762,
+              38,
+              759
+            ],
+            "spans": [
+              {
+                "offset": 279,
+                "length": 27
+              }
+            ]
+          },
+          {
+            "content": "Do not refrigerate.",
+            "polygon": [
+              122,
+              763,
+              431,
+              764,
+              430,
+              801,
+              122,
+              799
+            ],
+            "spans": [
+              {
+                "offset": 307,
+                "length": 19
+              }
+            ]
+          }
+        ],
+        "spans": [
+          {
+            "offset": 0,
+            "length": 326
+          }
+        ]
+      }
+    ],
+    "tables": [],
+    "paragraphs": [
+      {
+        "spans": [
+          {
+            "offset": 0,
+            "length": 22
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              131,
+              118,
+              366,
+              101,
+              368,
+              128,
+              133,
+              145
+            ]
+          }
+        ],
+        "role": "title",
+        "content": "Xenia's Polish Cookies"
+      },
+      {
+        "spans": [
+          {
+            "offset": 23,
+            "length": 26
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              65,
+              186,
+              236,
+              180,
+              238,
+              246,
+              68,
+              253
+            ]
+          }
+        ],
+        "content": "2 cups flour 1/2 cup sugar"
+      },
+      {
+        "spans": [
+          {
+            "offset": 50,
+            "length": 48
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              64,
+              261,
+              463,
+              237,
+              467,
+              309,
+              68,
+              333
+            ]
+          }
+        ],
+        "content": "1 cup walnuts and pecans (chopped) 1 tsp vanilla"
+      },
+      {
+        "spans": [
+          {
+            "offset": 99,
+            "length": 15
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              65,
+              350,
+              287,
+              336,
+              289,
+              363,
+              67,
+              377
+            ]
+          }
+        ],
+        "content": "2 sticks butter"
+      },
+      {
+        "spans": [
+          {
+            "offset": 115,
+            "length": 92
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              47,
+              423,
+              401,
+              418,
+              403,
+              548,
+              48,
+              553
+            ]
+          }
+        ],
+        "content": "melt butter and pour over dry ingredients. Spoon drop onto cookie sheet. (They don't Spread)"
+      },
+      {
+        "spans": [
+          {
+            "offset": 208,
+            "length": 70
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              19,
+              580,
+              437,
+              579,
+              437,
+              691,
+              19,
+              692
+            ]
+          }
+        ],
+        "content": "Bake at 350° for 15-20 min. Cool completely. Coat with powdered sugar."
+      },
+      {
+        "spans": [
+          {
+            "offset": 279,
+            "length": 47
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              38,
+              723,
+              431,
+              726,
+              431,
+              801,
+              37,
+              798
+            ]
+          }
+        ],
+        "content": "Keep in airtight container. Do not refrigerate."
+      }
+    ],
+    "styles": [
+      {
+        "confidence": 1,
+        "spans": [
+          {
+            "offset": 0,
+            "length": 326
+          }
+        ],
+        "isHandwritten": true
+      }
+    ],
+    "contentFormat": "text",
+    "sections": [
+      {
+        "spans": [
+          {
+            "offset": 0,
+            "length": 326
+          }
+        ],
+        "elements": [
+          "/paragraphs/0",
+          "/paragraphs/1",
+          "/paragraphs/2",
+          "/paragraphs/3",
+          "/paragraphs/4",
+          "/paragraphs/5",
+          "/paragraphs/6"
+        ]
+      }
+    ]
+  }
+}

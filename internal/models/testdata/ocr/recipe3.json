@@ -1,0 +1,2353 @@
+{
+  "status": "succeeded",
+  "createdDateTime": "2024-04-26T15:08:01Z",
+  "lastUpdatedDateTime": "2024-04-26T15:08:03Z",
+  "analyzeResult": {
+    "apiVersion": "2024-02-29-preview",
+    "modelId": "prebuilt-layout",
+    "stringIndexType": "textElements",
+    "content": "Kentucky Pudding\nfrom Shaker Museum -N.Y\n1c. butter\n1 T. flour\n21/2 c. sugar\nIT. old bourbon\n1 c. heavy cream\nI un baked 8\"pie shell\n4 egg yolks, well beat\nIn small saucepan melt butter, add\nsugar and cream. Bring just to the\nbail. In mixing bowl beat eggs,\nstir in flour and first mixture.\nadd old bourbon and pour into\npastry lined pietin. Bake at 375'\nfor 35 minutes or until set,\nServes 4-6.\nYu-spolu 0x\nthe to Honig",
+    "pages": [
+      {
+        "pageNumber": 1,
+        "angle": 0,
+        "width": 735,
+        "height": 749,
+        "unit": "pixel",
+        "words": [
+          {
+            "content": "Kentucky",
+            "polygon": [
+              159,
+              82,
+              316,
+              83,
+              315,
+              122,
+              158,
+              126
+            ],
+            "confidence": 0.881,
+            "span": {
+              "offset": 0,
+              "length": 8
+            }
+          },
+          {
+            "content": "Pudding",
+            "polygon": [
+              325,
+              84,
+              459,
+              85,
+              459,
+              120,
+              324,
+              122
+            ],
+            "confidence": 0.956,
+            "span": {
+              "offset": 9,
+              "length": 7
+            }
+          },
+          {
+            "content": "from",
+            "polygon": [
+              70,
+              141,
+              129,
+              142,
+              128,
+              177,
+              69,
+              177
+            ],
+            "confidence": 0.995,
+            "span": {
+              "offset": 17,
+              "length": 4
+            }
+          },
+          {
+            "content": "Shaker",
+            "polygon": [
+              138,
+              143,
+              224,
+              144,
+              223,
+              177,
+              137,
+              177
+            ],
+            "confidence": 0.955,
+            "span": {
+              "offset": 22,
+              "length": 6
+            }
+          },
+          {
+            "content": "Museum",
+            "polygon": [
+              231,
+              144,
+              329,
+              146,
+              328,
+              176,
+              230,
+              177
+            ],
+            "confidence": 0.97,
+            "span": {
+              "offset": 29,
+              "length": 6
+            }
+          },
+          {
+            "content": "-N.Y",
+            "polygon": [
+              349,
+              146,
+              419,
+              147,
+              419,
+              175,
+              348,
+              176
+            ],
+            "confidence": 0.878,
+            "span": {
+              "offset": 36,
+              "length": 4
+            }
+          },
+          {
+            "content": "1c.",
+            "polygon": [
+              66,
+              202,
+              100,
+              202,
+              99,
+              230,
+              65,
+              230
+            ],
+            "confidence": 0.787,
+            "span": {
+              "offset": 41,
+              "length": 3
+            }
+          },
+          {
+            "content": "butter",
+            "polygon": [
+              109,
+              203,
+              197,
+              204,
+              197,
+              231,
+              109,
+              230
+            ],
+            "confidence": 0.64,
+            "span": {
+              "offset": 45,
+              "length": 6
+            }
+          },
+          {
+            "content": "1",
+            "polygon": [
+              389,
+              204,
+              407,
+              204,
+              407,
+              230,
+              389,
+              230
+            ],
+            "confidence": 0.082,
+            "span": {
+              "offset": 52,
+              "length": 1
+            }
+          },
+          {
+            "content": "T.",
+            "polygon": [
+              420,
+              204,
+              443,
+              204,
+              443,
+              230,
+              420,
+              230
+            ],
+            "confidence": 0.785,
+            "span": {
+              "offset": 54,
+              "length": 2
+            }
+          },
+          {
+            "content": "flour",
+            "polygon": [
+              450,
+              204,
+              537,
+              204,
+              537,
+              231,
+              450,
+              230
+            ],
+            "confidence": 0.768,
+            "span": {
+              "offset": 57,
+              "length": 5
+            }
+          },
+          {
+            "content": "21/2",
+            "polygon": [
+              52,
+              236,
+              107,
+              235,
+              107,
+              262,
+              52,
+              262
+            ],
+            "confidence": 0.9,
+            "span": {
+              "offset": 63,
+              "length": 4
+            }
+          },
+          {
+            "content": "c.",
+            "polygon": [
+              117,
+              235,
+              144,
+              235,
+              144,
+              263,
+              117,
+              262
+            ],
+            "confidence": 0.993,
+            "span": {
+              "offset": 68,
+              "length": 2
+            }
+          },
+          {
+            "content": "sugar",
+            "polygon": [
+              157,
+              235,
+              235,
+              238,
+              235,
+              263,
+              157,
+              263
+            ],
+            "confidence": 0.839,
+            "span": {
+              "offset": 71,
+              "length": 5
+            }
+          },
+          {
+            "content": "IT.",
+            "polygon": [
+              383,
+              235,
+              436,
+              235,
+              436,
+              260,
+              383,
+              260
+            ],
+            "confidence": 0.415,
+            "span": {
+              "offset": 77,
+              "length": 3
+            }
+          },
+          {
+            "content": "old",
+            "polygon": [
+              445,
+              235,
+              491,
+              234,
+              491,
+              261,
+              445,
+              260
+            ],
+            "confidence": 0.955,
+            "span": {
+              "offset": 81,
+              "length": 3
+            }
+          },
+          {
+            "content": "bourbon",
+            "polygon": [
+              499,
+              234,
+              631,
+              233,
+              631,
+              259,
+              499,
+              261
+            ],
+            "confidence": 0.922,
+            "span": {
+              "offset": 85,
+              "length": 7
+            }
+          },
+          {
+            "content": "1",
+            "polygon": [
+              52,
+              263,
+              65,
+              263,
+              64,
+              289,
+              51,
+              289
+            ],
+            "confidence": 0.589,
+            "span": {
+              "offset": 93,
+              "length": 1
+            }
+          },
+          {
+            "content": "c.",
+            "polygon": [
+              70,
+              263,
+              88,
+              264,
+              87,
+              289,
+              69,
+              289
+            ],
+            "confidence": 0.726,
+            "span": {
+              "offset": 95,
+              "length": 2
+            }
+          },
+          {
+            "content": "heavy",
+            "polygon": [
+              93,
+              264,
+              176,
+              264,
+              175,
+              290,
+              92,
+              289
+            ],
+            "confidence": 0.696,
+            "span": {
+              "offset": 98,
+              "length": 5
+            }
+          },
+          {
+            "content": "cream",
+            "polygon": [
+              184,
+              264,
+              279,
+              264,
+              279,
+              289,
+              184,
+              290
+            ],
+            "confidence": 0.648,
+            "span": {
+              "offset": 104,
+              "length": 5
+            }
+          },
+          {
+            "content": "I",
+            "polygon": [
+              374,
+              264,
+              387,
+              264,
+              387,
+              289,
+              374,
+              289
+            ],
+            "confidence": 0.188,
+            "span": {
+              "offset": 110,
+              "length": 1
+            }
+          },
+          {
+            "content": "un",
+            "polygon": [
+              393,
+              264,
+              430,
+              264,
+              430,
+              289,
+              393,
+              289
+            ],
+            "confidence": 0.969,
+            "span": {
+              "offset": 112,
+              "length": 2
+            }
+          },
+          {
+            "content": "baked",
+            "polygon": [
+              442,
+              264,
+              518,
+              264,
+              518,
+              290,
+              443,
+              289
+            ],
+            "confidence": 0.942,
+            "span": {
+              "offset": 115,
+              "length": 5
+            }
+          },
+          {
+            "content": "8\"pie",
+            "polygon": [
+              537,
+              264,
+              609,
+              264,
+              610,
+              290,
+              538,
+              290
+            ],
+            "confidence": 0.686,
+            "span": {
+              "offset": 121,
+              "length": 5
+            }
+          },
+          {
+            "content": "shell",
+            "polygon": [
+              629,
+              264,
+              695,
+              263,
+              695,
+              290,
+              629,
+              290
+            ],
+            "confidence": 0.857,
+            "span": {
+              "offset": 127,
+              "length": 5
+            }
+          },
+          {
+            "content": "4",
+            "polygon": [
+              53,
+              292,
+              70,
+              292,
+              70,
+              324,
+              53,
+              324
+            ],
+            "confidence": 0.987,
+            "span": {
+              "offset": 133,
+              "length": 1
+            }
+          },
+          {
+            "content": "egg",
+            "polygon": [
+              77,
+              292,
+              121,
+              292,
+              120,
+              323,
+              76,
+              324
+            ],
+            "confidence": 0.968,
+            "span": {
+              "offset": 135,
+              "length": 3
+            }
+          },
+          {
+            "content": "yolks,",
+            "polygon": [
+              128,
+              292,
+              219,
+              292,
+              218,
+              321,
+              128,
+              323
+            ],
+            "confidence": 0.865,
+            "span": {
+              "offset": 139,
+              "length": 6
+            }
+          },
+          {
+            "content": "well",
+            "polygon": [
+              224,
+              292,
+              286,
+              292,
+              286,
+              318,
+              224,
+              321
+            ],
+            "confidence": 0.981,
+            "span": {
+              "offset": 146,
+              "length": 4
+            }
+          },
+          {
+            "content": "beat",
+            "polygon": [
+              293,
+              292,
+              351,
+              291,
+              351,
+              316,
+              292,
+              318
+            ],
+            "confidence": 0.993,
+            "span": {
+              "offset": 151,
+              "length": 4
+            }
+          },
+          {
+            "content": "In",
+            "polygon": [
+              79,
+              348,
+              118,
+              348,
+              117,
+              377,
+              78,
+              377
+            ],
+            "confidence": 0.96,
+            "span": {
+              "offset": 156,
+              "length": 2
+            }
+          },
+          {
+            "content": "small",
+            "polygon": [
+              139,
+              347,
+              226,
+              346,
+              225,
+              374,
+              138,
+              376
+            ],
+            "confidence": 0.92,
+            "span": {
+              "offset": 159,
+              "length": 5
+            }
+          },
+          {
+            "content": "saucepan",
+            "polygon": [
+              240,
+              346,
+              371,
+              345,
+              370,
+              373,
+              239,
+              374
+            ],
+            "confidence": 0.888,
+            "span": {
+              "offset": 165,
+              "length": 8
+            }
+          },
+          {
+            "content": "melt",
+            "polygon": [
+              396,
+              345,
+              475,
+              345,
+              475,
+              373,
+              396,
+              373
+            ],
+            "confidence": 0.791,
+            "span": {
+              "offset": 174,
+              "length": 4
+            }
+          },
+          {
+            "content": "butter,",
+            "polygon": [
+              493,
+              345,
+              599,
+              346,
+              599,
+              374,
+              493,
+              373
+            ],
+            "confidence": 0.719,
+            "span": {
+              "offset": 179,
+              "length": 7
+            }
+          },
+          {
+            "content": "add",
+            "polygon": [
+              605,
+              346,
+              664,
+              347,
+              664,
+              375,
+              604,
+              374
+            ],
+            "confidence": 0.986,
+            "span": {
+              "offset": 187,
+              "length": 3
+            }
+          },
+          {
+            "content": "sugar",
+            "polygon": [
+              64,
+              381,
+              155,
+              379,
+              154,
+              406,
+              63,
+              407
+            ],
+            "confidence": 0.878,
+            "span": {
+              "offset": 191,
+              "length": 5
+            }
+          },
+          {
+            "content": "and",
+            "polygon": [
+              164,
+              379,
+              220,
+              378,
+              219,
+              406,
+              163,
+              406
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 197,
+              "length": 3
+            }
+          },
+          {
+            "content": "cream.",
+            "polygon": [
+              241,
+              378,
+              342,
+              377,
+              341,
+              405,
+              240,
+              406
+            ],
+            "confidence": 0.655,
+            "span": {
+              "offset": 201,
+              "length": 6
+            }
+          },
+          {
+            "content": "Bring",
+            "polygon": [
+              352,
+              377,
+              435,
+              377,
+              434,
+              405,
+              351,
+              405
+            ],
+            "confidence": 0.926,
+            "span": {
+              "offset": 208,
+              "length": 5
+            }
+          },
+          {
+            "content": "just",
+            "polygon": [
+              456,
+              377,
+              521,
+              378,
+              520,
+              405,
+              455,
+              405
+            ],
+            "confidence": 0.828,
+            "span": {
+              "offset": 214,
+              "length": 4
+            }
+          },
+          {
+            "content": "to",
+            "polygon": [
+              538,
+              378,
+              564,
+              379,
+              563,
+              405,
+              537,
+              405
+            ],
+            "confidence": 0.987,
+            "span": {
+              "offset": 219,
+              "length": 2
+            }
+          },
+          {
+            "content": "the",
+            "polygon": [
+              577,
+              379,
+              620,
+              380,
+              620,
+              406,
+              577,
+              406
+            ],
+            "confidence": 0.995,
+            "span": {
+              "offset": 222,
+              "length": 3
+            }
+          },
+          {
+            "content": "bail.",
+            "polygon": [
+              72,
+              406,
+              151,
+              406,
+              151,
+              432,
+              72,
+              432
+            ],
+            "confidence": 0.836,
+            "span": {
+              "offset": 226,
+              "length": 5
+            }
+          },
+          {
+            "content": "In",
+            "polygon": [
+              175,
+              406,
+              200,
+              406,
+              200,
+              432,
+              174,
+              432
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 232,
+              "length": 2
+            }
+          },
+          {
+            "content": "mixing",
+            "polygon": [
+              234,
+              406,
+              354,
+              406,
+              354,
+              433,
+              234,
+              432
+            ],
+            "confidence": 0.886,
+            "span": {
+              "offset": 235,
+              "length": 6
+            }
+          },
+          {
+            "content": "bowl",
+            "polygon": [
+              374,
+              406,
+              445,
+              407,
+              445,
+              434,
+              374,
+              433
+            ],
+            "confidence": 0.403,
+            "span": {
+              "offset": 242,
+              "length": 4
+            }
+          },
+          {
+            "content": "beat",
+            "polygon": [
+              468,
+              407,
+              529,
+              408,
+              529,
+              435,
+              468,
+              434
+            ],
+            "confidence": 0.92,
+            "span": {
+              "offset": 247,
+              "length": 4
+            }
+          },
+          {
+            "content": "eggs,",
+            "polygon": [
+              542,
+              408,
+              624,
+              409,
+              624,
+              437,
+              542,
+              435
+            ],
+            "confidence": 0.886,
+            "span": {
+              "offset": 252,
+              "length": 5
+            }
+          },
+          {
+            "content": "stir",
+            "polygon": [
+              68,
+              435,
+              128,
+              435,
+              127,
+              462,
+              67,
+              463
+            ],
+            "confidence": 0.843,
+            "span": {
+              "offset": 258,
+              "length": 4
+            }
+          },
+          {
+            "content": "in",
+            "polygon": [
+              148,
+              435,
+              180,
+              435,
+              179,
+              462,
+              147,
+              462
+            ],
+            "confidence": 0.991,
+            "span": {
+              "offset": 263,
+              "length": 2
+            }
+          },
+          {
+            "content": "flour",
+            "polygon": [
+              211,
+              435,
+              285,
+              435,
+              284,
+              462,
+              210,
+              462
+            ],
+            "confidence": 0.877,
+            "span": {
+              "offset": 266,
+              "length": 5
+            }
+          },
+          {
+            "content": "and",
+            "polygon": [
+              294,
+              435,
+              357,
+              435,
+              357,
+              462,
+              293,
+              462
+            ],
+            "confidence": 0.995,
+            "span": {
+              "offset": 272,
+              "length": 3
+            }
+          },
+          {
+            "content": "first",
+            "polygon": [
+              381,
+              435,
+              462,
+              436,
+              461,
+              462,
+              380,
+              462
+            ],
+            "confidence": 0.889,
+            "span": {
+              "offset": 276,
+              "length": 5
+            }
+          },
+          {
+            "content": "mixture.",
+            "polygon": [
+              481,
+              436,
+              617,
+              438,
+              617,
+              463,
+              481,
+              462
+            ],
+            "confidence": 0.911,
+            "span": {
+              "offset": 282,
+              "length": 8
+            }
+          },
+          {
+            "content": "add",
+            "polygon": [
+              59,
+              464,
+              125,
+              464,
+              125,
+              491,
+              59,
+              491
+            ],
+            "confidence": 0.913,
+            "span": {
+              "offset": 291,
+              "length": 3
+            }
+          },
+          {
+            "content": "old",
+            "polygon": [
+              131,
+              464,
+              175,
+              463,
+              175,
+              490,
+              131,
+              491
+            ],
+            "confidence": 0.957,
+            "span": {
+              "offset": 295,
+              "length": 3
+            }
+          },
+          {
+            "content": "bourbon",
+            "polygon": [
+              191,
+              463,
+              296,
+              464,
+              296,
+              490,
+              191,
+              490
+            ],
+            "confidence": 0.905,
+            "span": {
+              "offset": 299,
+              "length": 7
+            }
+          },
+          {
+            "content": "and",
+            "polygon": [
+              318,
+              464,
+              380,
+              465,
+              379,
+              490,
+              318,
+              490
+            ],
+            "confidence": 0.989,
+            "span": {
+              "offset": 307,
+              "length": 3
+            }
+          },
+          {
+            "content": "pour",
+            "polygon": [
+              402,
+              465,
+              470,
+              466,
+              470,
+              490,
+              402,
+              490
+            ],
+            "confidence": 0.963,
+            "span": {
+              "offset": 311,
+              "length": 4
+            }
+          },
+          {
+            "content": "into",
+            "polygon": [
+              490,
+              467,
+              557,
+              468,
+              557,
+              490,
+              489,
+              490
+            ],
+            "confidence": 0.975,
+            "span": {
+              "offset": 316,
+              "length": 4
+            }
+          },
+          {
+            "content": "pastry",
+            "polygon": [
+              67,
+              494,
+              162,
+              493,
+              162,
+              520,
+              67,
+              521
+            ],
+            "confidence": 0.924,
+            "span": {
+              "offset": 321,
+              "length": 6
+            }
+          },
+          {
+            "content": "lined",
+            "polygon": [
+              182,
+              493,
+              263,
+              492,
+              263,
+              520,
+              182,
+              520
+            ],
+            "confidence": 0.942,
+            "span": {
+              "offset": 328,
+              "length": 5
+            }
+          },
+          {
+            "content": "pietin.",
+            "polygon": [
+              274,
+              492,
+              383,
+              492,
+              383,
+              519,
+              274,
+              520
+            ],
+            "confidence": 0.85,
+            "span": {
+              "offset": 334,
+              "length": 7
+            }
+          },
+          {
+            "content": "Bake",
+            "polygon": [
+              399,
+              492,
+              462,
+              492,
+              462,
+              518,
+              399,
+              518
+            ],
+            "confidence": 0.942,
+            "span": {
+              "offset": 342,
+              "length": 4
+            }
+          },
+          {
+            "content": "at",
+            "polygon": [
+              478,
+              492,
+              514,
+              492,
+              514,
+              517,
+              478,
+              518
+            ],
+            "confidence": 0.993,
+            "span": {
+              "offset": 347,
+              "length": 2
+            }
+          },
+          {
+            "content": "375'",
+            "polygon": [
+              534,
+              492,
+              607,
+              492,
+              607,
+              516,
+              534,
+              517
+            ],
+            "confidence": 0.543,
+            "span": {
+              "offset": 350,
+              "length": 4
+            }
+          },
+          {
+            "content": "for",
+            "polygon": [
+              71,
+              521,
+              109,
+              521,
+              109,
+              548,
+              71,
+              549
+            ],
+            "confidence": 0.949,
+            "span": {
+              "offset": 355,
+              "length": 3
+            }
+          },
+          {
+            "content": "35",
+            "polygon": [
+              155,
+              521,
+              182,
+              521,
+              182,
+              547,
+              154,
+              548
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 359,
+              "length": 2
+            }
+          },
+          {
+            "content": "minutes",
+            "polygon": [
+              204,
+              521,
+              328,
+              521,
+              327,
+              546,
+              204,
+              547
+            ],
+            "confidence": 0.975,
+            "span": {
+              "offset": 362,
+              "length": 7
+            }
+          },
+          {
+            "content": "or",
+            "polygon": [
+              340,
+              521,
+              368,
+              521,
+              367,
+              545,
+              340,
+              545
+            ],
+            "confidence": 0.83,
+            "span": {
+              "offset": 370,
+              "length": 2
+            }
+          },
+          {
+            "content": "until",
+            "polygon": [
+              383,
+              521,
+              464,
+              520,
+              463,
+              544,
+              383,
+              545
+            ],
+            "confidence": 0.954,
+            "span": {
+              "offset": 373,
+              "length": 5
+            }
+          },
+          {
+            "content": "set,",
+            "polygon": [
+              483,
+              520,
+              539,
+              520,
+              539,
+              544,
+              482,
+              544
+            ],
+            "confidence": 0.563,
+            "span": {
+              "offset": 379,
+              "length": 4
+            }
+          },
+          {
+            "content": "Serves",
+            "polygon": [
+              72,
+              572,
+              163,
+              576,
+              163,
+              603,
+              71,
+              600
+            ],
+            "confidence": 0.979,
+            "span": {
+              "offset": 384,
+              "length": 6
+            }
+          },
+          {
+            "content": "4-6.",
+            "polygon": [
+              169,
+              576,
+              232,
+              577,
+              232,
+              605,
+              169,
+              603
+            ],
+            "confidence": 0.949,
+            "span": {
+              "offset": 391,
+              "length": 4
+            }
+          },
+          {
+            "content": "Yu-spolu",
+            "polygon": [
+              194,
+              660,
+              327,
+              658,
+              327,
+              689,
+              194,
+              688
+            ],
+            "confidence": 0.021,
+            "span": {
+              "offset": 396,
+              "length": 8
+            }
+          },
+          {
+            "content": "0x",
+            "polygon": [
+              346,
+              657,
+              380,
+              656,
+              381,
+              689,
+              346,
+              689
+            ],
+            "confidence": 0,
+            "span": {
+              "offset": 405,
+              "length": 2
+            }
+          },
+          {
+            "content": "the",
+            "polygon": [
+              105,
+              719,
+              154,
+              718,
+              155,
+              744,
+              106,
+              745
+            ],
+            "confidence": 0.532,
+            "span": {
+              "offset": 408,
+              "length": 3
+            }
+          },
+          {
+            "content": "to",
+            "polygon": [
+              164,
+              718,
+              194,
+              718,
+              194,
+              743,
+              164,
+              744
+            ],
+            "confidence": 0.875,
+            "span": {
+              "offset": 412,
+              "length": 2
+            }
+          },
+          {
+            "content": "Honig",
+            "polygon": [
+              205,
+              718,
+              273,
+              718,
+              273,
+              744,
+              205,
+              743
+            ],
+            "confidence": 0.145,
+            "span": {
+              "offset": 415,
+              "length": 5
+            }
+          }
+        ],
+        "lines": [
+          {
+            "content": "Kentucky Pudding",
+            "polygon": [
+              157,
+              81,
+              458,
+              81,
+              459,
+              123,
+              157,
+              125
+            ],
+            "spans": [
+              {
+                "offset": 0,
+                "length": 16
+              }
+            ]
+          },
+          {
+            "content": "from Shaker Museum -N.Y",
+            "polygon": [
+              69,
+              141,
+              418,
+              143,
+              418,
+              177,
+              68,
+              176
+            ],
+            "spans": [
+              {
+                "offset": 17,
+                "length": 23
+              }
+            ]
+          },
+          {
+            "content": "1c. butter",
+            "polygon": [
+              65,
+              202,
+              196,
+              203,
+              196,
+              230,
+              65,
+              229
+            ],
+            "spans": [
+              {
+                "offset": 41,
+                "length": 10
+              }
+            ]
+          },
+          {
+            "content": "1 T. flour",
+            "polygon": [
+              388,
+              203,
+              536,
+              203,
+              536,
+              230,
+              388,
+              229
+            ],
+            "spans": [
+              {
+                "offset": 52,
+                "length": 10
+              }
+            ]
+          },
+          {
+            "content": "21/2 c. sugar",
+            "polygon": [
+              51,
+              234,
+              234,
+              235,
+              234,
+              262,
+              51,
+              261
+            ],
+            "spans": [
+              {
+                "offset": 63,
+                "length": 13
+              }
+            ]
+          },
+          {
+            "content": "IT. old bourbon",
+            "polygon": [
+              383,
+              234,
+              630,
+              233,
+              630,
+              259,
+              383,
+              260
+            ],
+            "spans": [
+              {
+                "offset": 77,
+                "length": 15
+              }
+            ]
+          },
+          {
+            "content": "1 c. heavy cream",
+            "polygon": [
+              51,
+              263,
+              278,
+              263,
+              278,
+              289,
+              51,
+              289
+            ],
+            "spans": [
+              {
+                "offset": 93,
+                "length": 16
+              }
+            ]
+          },
+          {
+            "content": "I un baked 8\"pie shell",
+            "polygon": [
+              373,
+              263,
+              694,
+              263,
+              694,
+              289,
+              373,
+              289
+            ],
+            "spans": [
+              {
+                "offset": 110,
+                "length": 22
+              }
+            ]
+          },
+          {
+            "content": "4 egg yolks, well beat",
+            "polygon": [
+              52,
+              291,
+              350,
+              290,
+              350,
+              319,
+              52,
+              323
+            ],
+            "spans": [
+              {
+                "offset": 133,
+                "length": 22
+              }
+            ]
+          },
+          {
+            "content": "In small saucepan melt butter, add",
+            "polygon": [
+              77,
+              345,
+              663,
+              344,
+              663,
+              374,
+              77,
+              376
+            ],
+            "spans": [
+              {
+                "offset": 156,
+                "length": 34
+              }
+            ]
+          },
+          {
+            "content": "sugar and cream. Bring just to the",
+            "polygon": [
+              62,
+              377,
+              619,
+              376,
+              619,
+              405,
+              62,
+              406
+            ],
+            "spans": [
+              {
+                "offset": 191,
+                "length": 34
+              }
+            ]
+          },
+          {
+            "content": "bail. In mixing bowl beat eggs,",
+            "polygon": [
+              72,
+              405,
+              623,
+              407,
+              623,
+              436,
+              71,
+              432
+            ],
+            "spans": [
+              {
+                "offset": 226,
+                "length": 31
+              }
+            ]
+          },
+          {
+            "content": "stir in flour and first mixture.",
+            "polygon": [
+              66,
+              434,
+              616,
+              435,
+              616,
+              463,
+              66,
+              462
+            ],
+            "spans": [
+              {
+                "offset": 258,
+                "length": 32
+              }
+            ]
+          },
+          {
+            "content": "add old bourbon and pour into",
+            "polygon": [
+              59,
+              463,
+              556,
+              464,
+              556,
+              491,
+              59,
+              490
+            ],
+            "spans": [
+              {
+                "offset": 291,
+                "length": 29
+              }
+            ]
+          },
+          {
+            "content": "pastry lined pietin. Bake at 375'",
+            "polygon": [
+              67,
+              493,
+              606,
+              492,
+              606,
+              517,
+              67,
+              520
+            ],
+            "spans": [
+              {
+                "offset": 321,
+                "length": 33
+              }
+            ]
+          },
+          {
+            "content": "for 35 minutes or until set,",
+            "polygon": [
+              70,
+              521,
+              538,
+              519,
+              539,
+              545,
+              70,
+              548
+            ],
+            "spans": [
+              {
+                "offset": 355,
+                "length": 28
+              }
+            ]
+          },
+          {
+            "content": "Serves 4-6.",
+            "polygon": [
+              71,
+              572,
+              231,
+              576,
+              230,
+              604,
+              71,
+              599
+            ],
+            "spans": [
+              {
+                "offset": 384,
+                "length": 11
+              }
+            ]
+          },
+          {
+            "content": "Yu-spolu 0x",
+            "polygon": [
+              194,
+              657,
+              379,
+              655,
+              380,
+              688,
+              194,
+              689
+            ],
+            "spans": [
+              {
+                "offset": 396,
+                "length": 11
+              }
+            ]
+          },
+          {
+            "content": "the to Honig",
+            "polygon": [
+              105,
+              718,
+              272,
+              717,
+              273,
+              743,
+              105,
+              744
+            ],
+            "spans": [
+              {
+                "offset": 408,
+                "length": 12
+              }
+            ]
+          }
+        ],
+        "spans": [
+          {
+            "offset": 0,
+            "length": 420
+          }
+        ]
+      }
+    ],
+    "tables": [],
+    "paragraphs": [
+      {
+        "spans": [
+          {
+            "offset": 0,
+            "length": 16
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              157,
+              81,
+              459,
+              81,
+              459,
+              125,
+              157,
+              125
+            ]
+          }
+        ],
+        "role": "title",
+        "content": "Kentucky Pudding"
+      },
+      {
+        "spans": [
+          {
+            "offset": 17,
+            "length": 23
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              68,
+              141,
+              418,
+              142,
+              418,
+              177,
+              68,
+              176
+            ]
+          }
+        ],
+        "content": "from Shaker Museum -N.Y"
+      },
+      {
+        "spans": [
+          {
+            "offset": 41,
+            "length": 10
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              65,
+              202,
+              196,
+              203,
+              196,
+              230,
+              65,
+              229
+            ]
+          }
+        ],
+        "content": "1c. butter"
+      },
+      {
+        "spans": [
+          {
+            "offset": 52,
+            "length": 10
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              388,
+              203,
+              536,
+              203,
+              536,
+              230,
+              388,
+              229
+            ]
+          }
+        ],
+        "content": "1 T. flour"
+      },
+      {
+        "spans": [
+          {
+            "offset": 63,
+            "length": 13
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              51,
+              234,
+              234,
+              235,
+              234,
+              262,
+              51,
+              261
+            ]
+          }
+        ],
+        "content": "21/2 c. sugar"
+      },
+      {
+        "spans": [
+          {
+            "offset": 77,
+            "length": 15
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              383,
+              234,
+              630,
+              233,
+              630,
+              259,
+              383,
+              260
+            ]
+          }
+        ],
+        "content": "IT. old bourbon"
+      },
+      {
+        "spans": [
+          {
+            "offset": 93,
+            "length": 16
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              51,
+              263,
+              278,
+              263,
+              278,
+              289,
+              51,
+              289
+            ]
+          }
+        ],
+        "content": "1 c. heavy cream"
+      },
+      {
+        "spans": [
+          {
+            "offset": 110,
+            "length": 22
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              373,
+              263,
+              694,
+              263,
+              694,
+              289,
+              373,
+              289
+            ]
+          }
+        ],
+        "content": "I un baked 8\"pie shell"
+      },
+      {
+        "spans": [
+          {
+            "offset": 133,
+            "length": 22
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              52,
+              291,
+              350,
+              290,
+              350,
+              319,
+              52,
+              323
+            ]
+          }
+        ],
+        "content": "4 egg yolks, well beat"
+      },
+      {
+        "spans": [
+          {
+            "offset": 156,
+            "length": 34
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              77,
+              345,
+              663,
+              344,
+              663,
+              374,
+              77,
+              376
+            ]
+          }
+        ],
+        "content": "In small saucepan melt butter, add"
+      },
+      {
+        "spans": [
+          {
+            "offset": 191,
+            "length": 34
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              62,
+              377,
+              619,
+              376,
+              619,
+              405,
+              62,
+              406
+            ]
+          }
+        ],
+        "content": "sugar and cream. Bring just to the"
+      },
+      {
+        "spans": [
+          {
+            "offset": 226,
+            "length": 31
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              72,
+              405,
+              623,
+              407,
+              623,
+              436,
+              71,
+              432
+            ]
+          }
+        ],
+        "content": "bail. In mixing bowl beat eggs,"
+      },
+      {
+        "spans": [
+          {
+            "offset": 258,
+            "length": 32
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              66,
+              434,
+              616,
+              435,
+              616,
+              463,
+              66,
+              462
+            ]
+          }
+        ],
+        "content": "stir in flour and first mixture."
+      },
+      {
+        "spans": [
+          {
+            "offset": 291,
+            "length": 29
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              59,
+              463,
+              556,
+              464,
+              556,
+              491,
+              59,
+              490
+            ]
+          }
+        ],
+        "content": "add old bourbon and pour into"
+      },
+      {
+        "spans": [
+          {
+            "offset": 321,
+            "length": 33
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              67,
+              493,
+              606,
+              492,
+              606,
+              517,
+              67,
+              520
+            ]
+          }
+        ],
+        "content": "pastry lined pietin. Bake at 375'"
+      },
+      {
+        "spans": [
+          {
+            "offset": 355,
+            "length": 28
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              70,
+              521,
+              538,
+              519,
+              539,
+              545,
+              70,
+              548
+            ]
+          }
+        ],
+        "content": "for 35 minutes or until set,"
+      },
+      {
+        "spans": [
+          {
+            "offset": 384,
+            "length": 11
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              71,
+              572,
+              231,
+              576,
+              230,
+              604,
+              70,
+              600
+            ]
+          }
+        ],
+        "content": "Serves 4-6."
+      },
+      {
+        "spans": [
+          {
+            "offset": 396,
+            "length": 11
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              194,
+              656,
+              380,
+              655,
+              380,
+              688,
+              194,
+              689
+            ]
+          }
+        ],
+        "content": "Yu-spolu 0x"
+      },
+      {
+        "spans": [
+          {
+            "offset": 408,
+            "length": 12
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              105,
+              718,
+              273,
+              717,
+              273,
+              743,
+              105,
+              744
+            ]
+          }
+        ],
+        "role": "pageFooter",
+        "content": "the to Honig"
+      }
+    ],
+    "styles": [
+      {
+        "confidence": 1,
+        "spans": [
+          {
+            "offset": 0,
+            "length": 420
+          }
+        ],
+        "isHandwritten": true
+      }
+    ],
+    "contentFormat": "text",
+    "sections": [
+      {
+        "spans": [
+          {
+            "offset": 0,
+            "length": 407
+          }
+        ],
+        "elements": [
+          "/paragraphs/0",
+          "/paragraphs/1",
+          "/paragraphs/2",
+          "/paragraphs/3",
+          "/paragraphs/4",
+          "/paragraphs/5",
+          "/paragraphs/6",
+          "/paragraphs/7",
+          "/paragraphs/8",
+          "/paragraphs/9",
+          "/paragraphs/10",
+          "/paragraphs/11",
+          "/paragraphs/12",
+          "/paragraphs/13",
+          "/paragraphs/14",
+          "/paragraphs/15",
+          "/paragraphs/16",
+          "/paragraphs/17"
+        ]
+      }
+    ]
+  }
+}

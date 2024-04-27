@@ -125,6 +125,13 @@ templ layoutMain(title string, data templates.Data) {
 									</a>
 								</li>
 								<div class="divider m-0"></div>
+								<li onclick="document.activeElement?.blur()">
+									<a href="/guide/docs" target="_blank">
+										@iconBook()
+										Guide
+									</a>
+								</li>
+								<div class="divider m-0"></div>
 								<li onclick="about_dialog.showModal()" class={ templ.KV("indicator", data.About.IsUpdateAvailable) }>
 									<a>
 										if data.About.IsUpdateAvailable {
@@ -156,7 +163,7 @@ templ layoutMain(title string, data templates.Data) {
 				if data.IsAuthenticated {
 					<aside id="desktop_nav" class="hidden md:block">
 						<ul class="menu menu-sm bg-base-300 rounded-box h-full" style="border-radius: 0">
-							<li id="recipes_sidebar_recipes" hx-get="/recipes" hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap-oob="true">
+							<li id="recipes_sidebar_recipes" hx-get="/recipes" hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap-oob="true" hx-swap="innerHTML transition:true">
 								<a class="tooltip tooltip-right active" data-tip="Recipes">
 									@iconCubeTransparent()
 								</a>
@@ -168,6 +175,7 @@ templ layoutMain(title string, data templates.Data) {
 								hx-trigger="mousedown"
 								hx-push-url="true"
 								hx-swap-oob="true"
+								hx-swap="innerHTML transition:true"
 							>
 								<a class="tooltip tooltip-right" data-tip="Cookbooks">
 									@iconBook()
@@ -176,8 +184,8 @@ templ layoutMain(title string, data templates.Data) {
 						</ul>
 					</aside>
 					<aside id="mobile_nav" class="btm-nav btm-nav-sm md:hidden z-20">
-						<button hx-get="/recipes" hx-target="#content" hx-push-url="true" hx-swap-oob="true">Recipes</button>
-						<button hx-get="/cookbooks" hx-target="#content" hx-push-url="true" hx-swap-oob="true">Cookbooks</button>
+						<button hx-get="/recipes" hx-target="#content" hx-push-url="true" hx-swap-oob="true" hx-swap="innerHTML transition:true">Recipes</button>
+						<button hx-get="/cookbooks" hx-target="#content" hx-push-url="true" hx-swap-oob="true" hx-swap="innerHTML transition:true">Cookbooks</button>
 					</aside>
 				}
 				<div id="content" class="min-h-[92.5vh] w-full" hx-ext="ws" ws-connect="/ws">
@@ -229,7 +237,7 @@ templ head(title string) {
 		<link rel="stylesheet" href="/static/css/tailwind.css"/>
 		<link rel="stylesheet" href="/static/css/app.css"/>
 		<link rel="icon" href="/static/favicon.ico"/>
-		<script src="https://unpkg.com/htmx.org@1.9.11"></script>
+		<script src="https://unpkg.com/htmx.org@1.9.12"></script>
 		<script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
 		<script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
 		<script defer>
@@ -392,13 +400,9 @@ templ head(title string) {
 }
 
 templ toast() {
-	<div
-		id="toast_container"
-		class="toast toast-top toast-end hidden z-20 cursor-default"
-		_="on click add .hidden then call clearTimeout(timeoutToast) then set timeoutToast to null"
-	>
+	<div id="toast_container" class="toast toast-top toast-end hidden z-20 cursor-default">
 		<div class="hidden alert-error alert-info alert-success alert-warning"></div>
-		<div id="toast_alert" role="alert" class="alert shadow-lg flex">
+		<div id="toast_alert" role="alert" class="alert shadow-lg hidden">
 			<svg id="toast_icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"></svg>
 			<div class="text-left">
 				<h3 id="toast_title" class="font-bold"></h3>
@@ -419,44 +423,60 @@ templ toast() {
         });
 
         function showToast(title, message, background, action) {
-            toast_alert.classList.remove("alert-error", "alert-info", "alert-success", "alert-warning", background);
-            toast_alert.classList.add(background);
+            const toast = document.querySelector("#toast_alert").cloneNode(true);
+            toast.classList.remove("alert-error", "alert-info", "alert-success", "alert-warning", background, "hidden");
+            toast.classList.add(background);
 
-            toast_title.innerHTML = title;
-            toast_message.innerText = message;
+            toast.querySelector("#toast_title").innerHTML = title;
+            toast.querySelector("#toast_message").innerText = message;
             switch (background) {
                 case "alert-error":
-                    toast_icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>`;
+                    toast.querySelector("#toast_icon").innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>`;
                     break;
                 case "alert-info":
-                    toast_icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>`;
+                    toast.querySelector("#toast_icon").innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>`;
                     break;
                 case "alert-warning":
-                    toast_icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />`;
+                    toast.querySelector("#toast_icon").innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />`;
                     break;
             }
 
+            const button = toast.querySelector("#toast_button");
             if (action) {
                 const split = action.split(" ");
                 if (split.length == 2) {
-                    toast_button.setAttribute("hx-get", split[1]);
-                    toast_button.setAttribute("hx-target", "#content");
-                    toast_button.setAttribute("hx-push-url", split[1]);
+                    button.setAttribute("hx-get", split[1]);
+                    button.setAttribute("hx-target", "#content");
+                    button.setAttribute("hx-push-url", split[1]);
+                    button.setAttribute("onclick", "event.target.closest('#toast_alert').classList.add('hidden')")
                     htmx.process(document.querySelector("#toast_button"));
                 }
-                toast_button.innerText = split[0];
-                toast_button.classList.remove("hidden");
+                button.innerText = split[0];
+                button.classList.remove("hidden");
             } else {
-                toast_button.removeAttribute("hx-get");
-                toast_button.removeAttribute("hx-target");
-                toast_button.removeAttribute("hx-push-url");
+                button.removeAttribute("hx-get");
+                button.removeAttribute("hx-target");
+                button.removeAttribute("hx-push-url");
                 htmx.process(document.querySelector("#toast_button"));
 
-                timeoutToast = setTimeout(() => toast_container.classList.add('hidden'), 5000);
-                toast_button.classList.add("hidden");
+                timeoutToast = setTimeout(() => {
+                    let opacity = 1;
+                    const id = setInterval(function() {
+                        if (opacity <= 0.1) {
+                            clearInterval(id);
+                            toast.parentNode.removeChild(toast);
+                        } else {
+                            opacity -= 0.1;
+                            toast.style.opacity = opacity;
+                        }
+                    }, 25)
+                }, 5000);
+                button.classList.add("hidden");
             }
 
             toast_container.classList.remove('hidden');
+            htmx.process(toast);
+            toast_container.append(toast);
         }
     </script>
 }
