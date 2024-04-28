@@ -44,8 +44,13 @@ To do so, click the *Upload* button and select an image in your computer.
 
 ![](images/add-recipe-scan.webp)
 
+You can upload files in the following formats:
+- Images (JPEG/JPG, PNG, BMP, HEIF)
+- PDF
+- TIFF
+
 {{< callout type="warning" >}}
-You must have an [Azure AI Vision](/guide/docs/installation/system-requirements#azure-ai-vision) account to use this feature.
+You must have an [Azure AI Document Intelligence](/guide/docs/installation/integrations#azure-AI Document Intelligence) instance to use this feature.
 {{< /callout >}}
 
 ### Website

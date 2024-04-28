@@ -889,6 +889,10 @@ func (m *mockFiles) ReadTempFile(name string) ([]byte, error) {
 	return []byte(name), nil
 }
 
+func (m *mockFiles) MergeImagesToPDF(images []io.Reader) io.ReadWriter {
+	return nil
+}
+
 func (m *mockFiles) UpdateApp(current semver.Version) error {
 	if m.updateAppFunc != nil {
 		return m.updateAppFunc(current)
@@ -909,8 +913,9 @@ func (m *mockFiles) ScrapeAndStoreImage(_ string) (uuid.UUID, error) {
 }
 
 type mockIntegrations struct {
-	ImportFunc          func(baseURL, username, password string, files services.FilesService) (models.Recipes, error)
-	ProcessImageOCRFunc func(file io.Reader) (models.Recipe, error)
+	importFunc          func(baseURL, username, password string, files services.FilesService) (models.Recipes, error)
+	processImageOCRFunc func(file []io.Reader) (models.Recipes, error)
+	testConnectionFunc  func(api string) error
 }
 
 func (m *mockIntegrations) MealieImport(baseURL, username, password string, files services.FilesService, progress chan models.Progress) (models.Recipes, error) {
@@ -930,8 +935,8 @@ func (m *mockIntegrations) importIntegration(baseURL, username, password string,
 		return nil, errors.New("invalid username, password or URL")
 	}
 
-	if m.ImportFunc != nil {
-		return m.ImportFunc(baseURL, username, password, files)
+	if m.importFunc != nil {
+		return m.importFunc(baseURL, username, password, files)
 	}
 
 	return models.Recipes{
@@ -940,11 +945,25 @@ func (m *mockIntegrations) importIntegration(baseURL, username, password string,
 	}, nil
 }
 
-func (m *mockIntegrations) ProcessImageOCR(f io.Reader) (models.Recipe, error) {
-	if m.ProcessImageOCRFunc != nil {
-		return m.ProcessImageOCRFunc(f)
+func (m *mockIntegrations) ProcessImageOCR(f []io.Reader) (models.Recipes, error) {
+	if m.processImageOCRFunc != nil {
+		return m.processImageOCRFunc(f)
 	}
-	return models.Recipe{ID: 1}, nil
+	return models.Recipes{{ID: 1}}, nil
+}
+
+// TestConnection tests the connection of an integration. No error is returned on success.
+func (m *mockIntegrations) TestConnection(api string) error {
+	if m.testConnectionFunc != nil {
+		return m.testConnectionFunc(api)
+	}
+
+	switch api {
+	case "azure-di", "sg":
+		return nil
+	default:
+		return errors.New("invalid api")
+	}
 }
 
 type mockScraper struct {

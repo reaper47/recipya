@@ -1,0 +1,1522 @@
+{
+  "status": "succeeded",
+  "createdDateTime": "2024-04-26T15:07:18Z",
+  "lastUpdatedDateTime": "2024-04-26T15:07:20Z",
+  "analyzeResult": {
+    "apiVersion": "2024-02-29-preview",
+    "modelId": "prebuilt-layout",
+    "stringIndexType": "textElements",
+    "content": "Oven-Baked Potatoes\n1 cup of potatoes 1/2 tbsp salt (table) 2 tsp curmin spices 2.5 cups flour\n1/2 cup olive oil\nMix all ingredients together except for olive oil Heat a pan on the oven Pour the olive oil in the pan Add the mix and potatoes to the pan Grill for 20m until the potatoes are crispy and brown Serve hot",
+    "pages": [
+      {
+        "pageNumber": 1,
+        "angle": -0.37290000915527344,
+        "width": 963,
+        "height": 1280,
+        "unit": "pixel",
+        "words": [
+          {
+            "content": "Oven-Baked",
+            "polygon": [
+              292,
+              134,
+              551,
+              126,
+              551,
+              183,
+              292,
+              183
+            ],
+            "confidence": 0.847,
+            "span": {
+              "offset": 0,
+              "length": 10
+            }
+          },
+          {
+            "content": "Potatoes",
+            "polygon": [
+              590,
+              126,
+              754,
+              126,
+              754,
+              182,
+              590,
+              183
+            ],
+            "confidence": 0.773,
+            "span": {
+              "offset": 11,
+              "length": 8
+            }
+          },
+          {
+            "content": "1",
+            "polygon": [
+              18,
+              210,
+              32,
+              210,
+              31,
+              254,
+              17,
+              254
+            ],
+            "confidence": 0.592,
+            "span": {
+              "offset": 20,
+              "length": 1
+            }
+          },
+          {
+            "content": "cup",
+            "polygon": [
+              65,
+              210,
+              121,
+              211,
+              121,
+              254,
+              64,
+              254
+            ],
+            "confidence": 0.995,
+            "span": {
+              "offset": 22,
+              "length": 3
+            }
+          },
+          {
+            "content": "of",
+            "polygon": [
+              157,
+              212,
+              188,
+              212,
+              187,
+              254,
+              157,
+              254
+            ],
+            "confidence": 0.995,
+            "span": {
+              "offset": 26,
+              "length": 2
+            }
+          },
+          {
+            "content": "potatoes",
+            "polygon": [
+              227,
+              212,
+              357,
+              210,
+              357,
+              253,
+              227,
+              254
+            ],
+            "confidence": 0.898,
+            "span": {
+              "offset": 29,
+              "length": 8
+            }
+          },
+          {
+            "content": "1/2",
+            "polygon": [
+              14,
+              277,
+              66,
+              279,
+              66,
+              321,
+              13,
+              320
+            ],
+            "confidence": 0.942,
+            "span": {
+              "offset": 38,
+              "length": 3
+            }
+          },
+          {
+            "content": "tbsp",
+            "polygon": [
+              102,
+              280,
+              168,
+              281,
+              168,
+              322,
+              102,
+              321
+            ],
+            "confidence": 0.568,
+            "span": {
+              "offset": 42,
+              "length": 4
+            }
+          },
+          {
+            "content": "salt",
+            "polygon": [
+              229,
+              281,
+              297,
+              281,
+              297,
+              322,
+              229,
+              322
+            ],
+            "confidence": 0.992,
+            "span": {
+              "offset": 47,
+              "length": 4
+            }
+          },
+          {
+            "content": "(table)",
+            "polygon": [
+              330,
+              280,
+              434,
+              278,
+              434,
+              321,
+              330,
+              322
+            ],
+            "confidence": 0.915,
+            "span": {
+              "offset": 52,
+              "length": 7
+            }
+          },
+          {
+            "content": "2",
+            "polygon": [
+              13,
+              350,
+              46,
+              351,
+              45,
+              389,
+              12,
+              389
+            ],
+            "confidence": 0.567,
+            "span": {
+              "offset": 60,
+              "length": 1
+            }
+          },
+          {
+            "content": "tsp",
+            "polygon": [
+              99,
+              351,
+              150,
+              351,
+              149,
+              389,
+              98,
+              389
+            ],
+            "confidence": 0.979,
+            "span": {
+              "offset": 62,
+              "length": 3
+            }
+          },
+          {
+            "content": "curmin",
+            "polygon": [
+              228,
+              351,
+              344,
+              350,
+              344,
+              387,
+              228,
+              389
+            ],
+            "confidence": 0.981,
+            "span": {
+              "offset": 66,
+              "length": 6
+            }
+          },
+          {
+            "content": "spices",
+            "polygon": [
+              379,
+              349,
+              491,
+              347,
+              491,
+              384,
+              380,
+              387
+            ],
+            "confidence": 0.982,
+            "span": {
+              "offset": 73,
+              "length": 6
+            }
+          },
+          {
+            "content": "2.5",
+            "polygon": [
+              20,
+              419,
+              89,
+              419,
+              88,
+              456,
+              19,
+              455
+            ],
+            "confidence": 0.993,
+            "span": {
+              "offset": 80,
+              "length": 3
+            }
+          },
+          {
+            "content": "cups",
+            "polygon": [
+              140,
+              419,
+              211,
+              417,
+              210,
+              455,
+              139,
+              456
+            ],
+            "confidence": 0.995,
+            "span": {
+              "offset": 84,
+              "length": 4
+            }
+          },
+          {
+            "content": "flour",
+            "polygon": [
+              263,
+              415,
+              347,
+              409,
+              346,
+              450,
+              262,
+              454
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 89,
+              "length": 5
+            }
+          },
+          {
+            "content": "1/2",
+            "polygon": [
+              45,
+              483,
+              96,
+              483,
+              94,
+              520,
+              43,
+              520
+            ],
+            "confidence": 0.873,
+            "span": {
+              "offset": 95,
+              "length": 3
+            }
+          },
+          {
+            "content": "cup",
+            "polygon": [
+              145,
+              482,
+              196,
+              481,
+              195,
+              519,
+              144,
+              520
+            ],
+            "confidence": 0.996,
+            "span": {
+              "offset": 99,
+              "length": 3
+            }
+          },
+          {
+            "content": "olive",
+            "polygon": [
+              245,
+              480,
+              316,
+              477,
+              316,
+              518,
+              244,
+              519
+            ],
+            "confidence": 0.972,
+            "span": {
+              "offset": 103,
+              "length": 5
+            }
+          },
+          {
+            "content": "oil",
+            "polygon": [
+              351,
+              476,
+              394,
+              474,
+              394,
+              517,
+              350,
+              517
+            ],
+            "confidence": 0.992,
+            "span": {
+              "offset": 109,
+              "length": 3
+            }
+          },
+          {
+            "content": "Mix",
+            "polygon": [
+              36,
+              613,
+              109,
+              612,
+              109,
+              653,
+              36,
+              654
+            ],
+            "confidence": 0.99,
+            "span": {
+              "offset": 113,
+              "length": 3
+            }
+          },
+          {
+            "content": "all",
+            "polygon": [
+              155,
+              611,
+              191,
+              611,
+              190,
+              652,
+              154,
+              652
+            ],
+            "confidence": 0.995,
+            "span": {
+              "offset": 117,
+              "length": 3
+            }
+          },
+          {
+            "content": "ingredients",
+            "polygon": [
+              236,
+              610,
+              396,
+              608,
+              396,
+              650,
+              236,
+              651
+            ],
+            "confidence": 0.97,
+            "span": {
+              "offset": 121,
+              "length": 11
+            }
+          },
+          {
+            "content": "together",
+            "polygon": [
+              432,
+              608,
+              551,
+              607,
+              551,
+              649,
+              432,
+              650
+            ],
+            "confidence": 0.969,
+            "span": {
+              "offset": 133,
+              "length": 8
+            }
+          },
+          {
+            "content": "except",
+            "polygon": [
+              578,
+              607,
+              690,
+              606,
+              690,
+              649,
+              577,
+              649
+            ],
+            "confidence": 0.991,
+            "span": {
+              "offset": 142,
+              "length": 6
+            }
+          },
+          {
+            "content": "for",
+            "polygon": [
+              719,
+              606,
+              773,
+              606,
+              773,
+              649,
+              719,
+              649
+            ],
+            "confidence": 0.993,
+            "span": {
+              "offset": 149,
+              "length": 3
+            }
+          },
+          {
+            "content": "olive",
+            "polygon": [
+              806,
+              606,
+              879,
+              606,
+              879,
+              649,
+              805,
+              649
+            ],
+            "confidence": 0.932,
+            "span": {
+              "offset": 153,
+              "length": 5
+            }
+          },
+          {
+            "content": "oil",
+            "polygon": [
+              899,
+              606,
+              951,
+              606,
+              951,
+              649,
+              899,
+              649
+            ],
+            "confidence": 0.972,
+            "span": {
+              "offset": 159,
+              "length": 3
+            }
+          },
+          {
+            "content": "Heat",
+            "polygon": [
+              30,
+              683,
+              110,
+              679,
+              110,
+              718,
+              30,
+              720
+            ],
+            "confidence": 0.985,
+            "span": {
+              "offset": 163,
+              "length": 4
+            }
+          },
+          {
+            "content": "a",
+            "polygon": [
+              136,
+              678,
+              162,
+              677,
+              162,
+              717,
+              137,
+              717
+            ],
+            "confidence": 0.982,
+            "span": {
+              "offset": 168,
+              "length": 1
+            }
+          },
+          {
+            "content": "pan",
+            "polygon": [
+              189,
+              676,
+              234,
+              675,
+              234,
+              716,
+              189,
+              716
+            ],
+            "confidence": 0.979,
+            "span": {
+              "offset": 170,
+              "length": 3
+            }
+          },
+          {
+            "content": "on",
+            "polygon": [
+              270,
+              674,
+              304,
+              673,
+              304,
+              715,
+              271,
+              715
+            ],
+            "confidence": 0.995,
+            "span": {
+              "offset": 174,
+              "length": 2
+            }
+          },
+          {
+            "content": "the",
+            "polygon": [
+              336,
+              673,
+              385,
+              673,
+              385,
+              715,
+              337,
+              715
+            ],
+            "confidence": 0.993,
+            "span": {
+              "offset": 177,
+              "length": 3
+            }
+          },
+          {
+            "content": "oven",
+            "polygon": [
+              426,
+              673,
+              510,
+              674,
+              510,
+              715,
+              426,
+              715
+            ],
+            "confidence": 0.92,
+            "span": {
+              "offset": 181,
+              "length": 4
+            }
+          },
+          {
+            "content": "Pour",
+            "polygon": [
+              28,
+              742,
+              112,
+              738,
+              111,
+              780,
+              27,
+              782
+            ],
+            "confidence": 0.973,
+            "span": {
+              "offset": 186,
+              "length": 4
+            }
+          },
+          {
+            "content": "the",
+            "polygon": [
+              161,
+              736,
+              209,
+              734,
+              207,
+              778,
+              159,
+              779
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 191,
+              "length": 3
+            }
+          },
+          {
+            "content": "olive",
+            "polygon": [
+              265,
+              733,
+              332,
+              732,
+              331,
+              776,
+              264,
+              777
+            ],
+            "confidence": 0.928,
+            "span": {
+              "offset": 195,
+              "length": 5
+            }
+          },
+          {
+            "content": "oil",
+            "polygon": [
+              378,
+              731,
+              424,
+              731,
+              422,
+              776,
+              377,
+              776
+            ],
+            "confidence": 0.979,
+            "span": {
+              "offset": 201,
+              "length": 3
+            }
+          },
+          {
+            "content": "in",
+            "polygon": [
+              456,
+              731,
+              482,
+              731,
+              481,
+              776,
+              455,
+              776
+            ],
+            "confidence": 0.995,
+            "span": {
+              "offset": 205,
+              "length": 2
+            }
+          },
+          {
+            "content": "the",
+            "polygon": [
+              525,
+              732,
+              581,
+              733,
+              579,
+              776,
+              524,
+              776
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 208,
+              "length": 3
+            }
+          },
+          {
+            "content": "pan",
+            "polygon": [
+              621,
+              734,
+              681,
+              736,
+              681,
+              777,
+              619,
+              776
+            ],
+            "confidence": 0.993,
+            "span": {
+              "offset": 212,
+              "length": 3
+            }
+          },
+          {
+            "content": "Add",
+            "polygon": [
+              35,
+              806,
+              101,
+              803,
+              102,
+              842,
+              35,
+              843
+            ],
+            "confidence": 0.987,
+            "span": {
+              "offset": 216,
+              "length": 3
+            }
+          },
+          {
+            "content": "the",
+            "polygon": [
+              164,
+              800,
+              211,
+              799,
+              211,
+              841,
+              164,
+              841
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 220,
+              "length": 3
+            }
+          },
+          {
+            "content": "mix",
+            "polygon": [
+              255,
+              798,
+              317,
+              797,
+              317,
+              840,
+              255,
+              840
+            ],
+            "confidence": 0.995,
+            "span": {
+              "offset": 224,
+              "length": 3
+            }
+          },
+          {
+            "content": "and",
+            "polygon": [
+              344,
+              797,
+              406,
+              797,
+              406,
+              839,
+              344,
+              839
+            ],
+            "confidence": 0.996,
+            "span": {
+              "offset": 228,
+              "length": 3
+            }
+          },
+          {
+            "content": "potatoes",
+            "polygon": [
+              447,
+              797,
+              585,
+              799,
+              584,
+              839,
+              447,
+              839
+            ],
+            "confidence": 0.896,
+            "span": {
+              "offset": 232,
+              "length": 8
+            }
+          },
+          {
+            "content": "to",
+            "polygon": [
+              620,
+              800,
+              653,
+              801,
+              652,
+              840,
+              619,
+              840
+            ],
+            "confidence": 0.995,
+            "span": {
+              "offset": 241,
+              "length": 2
+            }
+          },
+          {
+            "content": "the",
+            "polygon": [
+              701,
+              803,
+              744,
+              805,
+              743,
+              841,
+              700,
+              841
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 244,
+              "length": 3
+            }
+          },
+          {
+            "content": "pan",
+            "polygon": [
+              777,
+              807,
+              826,
+              809,
+              826,
+              843,
+              775,
+              842
+            ],
+            "confidence": 0.971,
+            "span": {
+              "offset": 248,
+              "length": 3
+            }
+          },
+          {
+            "content": "Grill",
+            "polygon": [
+              33,
+              873,
+              111,
+              869,
+              113,
+              907,
+              35,
+              909
+            ],
+            "confidence": 0.978,
+            "span": {
+              "offset": 252,
+              "length": 5
+            }
+          },
+          {
+            "content": "for",
+            "polygon": [
+              156,
+              867,
+              207,
+              865,
+              208,
+              905,
+              158,
+              906
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 258,
+              "length": 3
+            }
+          },
+          {
+            "content": "20m",
+            "polygon": [
+              256,
+              864,
+              328,
+              862,
+              329,
+              903,
+              258,
+              904
+            ],
+            "confidence": 0.951,
+            "span": {
+              "offset": 262,
+              "length": 3
+            }
+          },
+          {
+            "content": "until",
+            "polygon": [
+              360,
+              862,
+              435,
+              862,
+              436,
+              902,
+              361,
+              903
+            ],
+            "confidence": 0.965,
+            "span": {
+              "offset": 266,
+              "length": 5
+            }
+          },
+          {
+            "content": "the",
+            "polygon": [
+              463,
+              862,
+              511,
+              862,
+              512,
+              903,
+              464,
+              902
+            ],
+            "confidence": 0.989,
+            "span": {
+              "offset": 272,
+              "length": 3
+            }
+          },
+          {
+            "content": "potatoes",
+            "polygon": [
+              542,
+              862,
+              678,
+              866,
+              678,
+              905,
+              542,
+              903
+            ],
+            "confidence": 0.942,
+            "span": {
+              "offset": 276,
+              "length": 8
+            }
+          },
+          {
+            "content": "are",
+            "polygon": [
+              703,
+              867,
+              751,
+              870,
+              751,
+              907,
+              703,
+              905
+            ],
+            "confidence": 0.992,
+            "span": {
+              "offset": 285,
+              "length": 3
+            }
+          },
+          {
+            "content": "crispy",
+            "polygon": [
+              788,
+              871,
+              894,
+              878,
+              894,
+              911,
+              788,
+              908
+            ],
+            "confidence": 0.976,
+            "span": {
+              "offset": 289,
+              "length": 6
+            }
+          },
+          {
+            "content": "and",
+            "polygon": [
+              38,
+              937,
+              107,
+              930,
+              109,
+              967,
+              41,
+              973
+            ],
+            "confidence": 0.996,
+            "span": {
+              "offset": 296,
+              "length": 3
+            }
+          },
+          {
+            "content": "brown",
+            "polygon": [
+              164,
+              926,
+              259,
+              925,
+              259,
+              958,
+              166,
+              963
+            ],
+            "confidence": 0.981,
+            "span": {
+              "offset": 300,
+              "length": 5
+            }
+          },
+          {
+            "content": "Serve",
+            "polygon": [
+              47,
+              998,
+              138,
+              988,
+              140,
+              1028,
+              49,
+              1037
+            ],
+            "confidence": 0.99,
+            "span": {
+              "offset": 306,
+              "length": 5
+            }
+          },
+          {
+            "content": "hot",
+            "polygon": [
+              190,
+              984,
+              252,
+              982,
+              252,
+              1024,
+              192,
+              1025
+            ],
+            "confidence": 0.955,
+            "span": {
+              "offset": 312,
+              "length": 3
+            }
+          }
+        ],
+        "lines": [
+          {
+            "content": "Oven-Baked Potatoes",
+            "polygon": [
+              292,
+              128,
+              753,
+              125,
+              753,
+              180,
+              292,
+              183
+            ],
+            "spans": [
+              {
+                "offset": 0,
+                "length": 19
+              }
+            ]
+          },
+          {
+            "content": "1 cup of potatoes",
+            "polygon": [
+              15,
+              209,
+              356,
+              209,
+              356,
+              253,
+              15,
+              253
+            ],
+            "spans": [
+              {
+                "offset": 20,
+                "length": 17
+              }
+            ]
+          },
+          {
+            "content": "1/2 tbsp salt (table)",
+            "polygon": [
+              13,
+              277,
+              433,
+              278,
+              433,
+              322,
+              13,
+              321
+            ],
+            "spans": [
+              {
+                "offset": 38,
+                "length": 21
+              }
+            ]
+          },
+          {
+            "content": "2 tsp curmin spices",
+            "polygon": [
+              12,
+              350,
+              489,
+              347,
+              490,
+              386,
+              12,
+              389
+            ],
+            "spans": [
+              {
+                "offset": 60,
+                "length": 19
+              }
+            ]
+          },
+          {
+            "content": "2.5 cups flour",
+            "polygon": [
+              18,
+              417,
+              346,
+              409,
+              347,
+              451,
+              18,
+              456
+            ],
+            "spans": [
+              {
+                "offset": 80,
+                "length": 14
+              }
+            ]
+          },
+          {
+            "content": "1/2 cup olive oil",
+            "polygon": [
+              43,
+              480,
+              393,
+              473,
+              393,
+              516,
+              43,
+              520
+            ],
+            "spans": [
+              {
+                "offset": 95,
+                "length": 17
+              }
+            ]
+          },
+          {
+            "content": "Mix all ingredients together except for olive oil",
+            "polygon": [
+              35,
+              609,
+              950,
+              606,
+              950,
+              648,
+              35,
+              654
+            ],
+            "spans": [
+              {
+                "offset": 113,
+                "length": 49
+              }
+            ]
+          },
+          {
+            "content": "Heat a pan on the oven",
+            "polygon": [
+              29,
+              677,
+              509,
+              672,
+              509,
+              714,
+              30,
+              720
+            ],
+            "spans": [
+              {
+                "offset": 163,
+                "length": 22
+              }
+            ]
+          },
+          {
+            "content": "Pour the olive oil in the pan",
+            "polygon": [
+              26,
+              734,
+              680,
+              730,
+              680,
+              776,
+              26,
+              782
+            ],
+            "spans": [
+              {
+                "offset": 186,
+                "length": 29
+              }
+            ]
+          },
+          {
+            "content": "Add the mix and potatoes to the pan",
+            "polygon": [
+              34,
+              796,
+              825,
+              797,
+              825,
+              843,
+              34,
+              842
+            ],
+            "spans": [
+              {
+                "offset": 216,
+                "length": 35
+              }
+            ]
+          },
+          {
+            "content": "Grill for 20m until the potatoes are crispy",
+            "polygon": [
+              32,
+              861,
+              893,
+              863,
+              893,
+              911,
+              32,
+              908
+            ],
+            "spans": [
+              {
+                "offset": 252,
+                "length": 43
+              }
+            ]
+          },
+          {
+            "content": "and brown",
+            "polygon": [
+              37,
+              934,
+              257,
+              924,
+              259,
+              958,
+              40,
+              972
+            ],
+            "spans": [
+              {
+                "offset": 296,
+                "length": 9
+              }
+            ]
+          },
+          {
+            "content": "Serve hot",
+            "polygon": [
+              46,
+              994,
+              249,
+              981,
+              252,
+              1023,
+              49,
+              1037
+            ],
+            "spans": [
+              {
+                "offset": 306,
+                "length": 9
+              }
+            ]
+          }
+        ],
+        "spans": [
+          {
+            "offset": 0,
+            "length": 315
+          }
+        ]
+      }
+    ],
+    "tables": [],
+    "paragraphs": [
+      {
+        "spans": [
+          {
+            "offset": 0,
+            "length": 19
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              292,
+              128,
+              753,
+              125,
+              753,
+              180,
+              292,
+              183
+            ]
+          }
+        ],
+        "role": "title",
+        "content": "Oven-Baked Potatoes"
+      },
+      {
+        "spans": [
+          {
+            "offset": 20,
+            "length": 74
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              12,
+              209,
+              490,
+              209,
+              490,
+              456,
+              12,
+              456
+            ]
+          }
+        ],
+        "content": "1 cup of potatoes 1/2 tbsp salt (table) 2 tsp curmin spices 2.5 cups flour"
+      },
+      {
+        "spans": [
+          {
+            "offset": 95,
+            "length": 17
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              43,
+              477,
+              393,
+              473,
+              393,
+              516,
+              43,
+              520
+            ]
+          }
+        ],
+        "content": "1/2 cup olive oil"
+      },
+      {
+        "spans": [
+          {
+            "offset": 113,
+            "length": 202
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              25,
+              609,
+              950,
+              606,
+              951,
+              1034,
+              27,
+              1037
+            ]
+          }
+        ],
+        "content": "Mix all ingredients together except for olive oil Heat a pan on the oven Pour the olive oil in the pan Add the mix and potatoes to the pan Grill for 20m until the potatoes are crispy and brown Serve hot"
+      }
+    ],
+    "styles": [
+      {
+        "confidence": 1,
+        "spans": [
+          {
+            "offset": 0,
+            "length": 315
+          }
+        ],
+        "isHandwritten": true
+      }
+    ],
+    "contentFormat": "text",
+    "sections": [
+      {
+        "spans": [
+          {
+            "offset": 0,
+            "length": 315
+          }
+        ],
+        "elements": [
+          "/paragraphs/0",
+          "/paragraphs/1",
+          "/paragraphs/2",
+          "/paragraphs/3"
+        ]
+      }
+    ]
+  }
+}

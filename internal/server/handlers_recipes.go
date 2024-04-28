@@ -1,6 +1,7 @@
 package server
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
@@ -8,9 +9,13 @@ import (
 	"github.com/reaper47/recipya/internal/templates"
 	"github.com/reaper47/recipya/internal/utils/extensions"
 	"github.com/reaper47/recipya/web/components"
+	"io"
 	"log/slog"
+	"mime/multipart"
 	"net/http"
 	"net/url"
+	"path/filepath"
+	"slices"
 	"strconv"
 	"strings"
 	"sync/atomic"
@@ -564,6 +569,13 @@ func recipeAddManualInstructionDeleteHandler() http.HandlerFunc {
 
 func (s *Server) recipesAddOCRHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		if app.Config.Integrations.AzureDI.Key == "" || app.Config.Integrations.AzureDI.Endpoint == "" {
+			w.Header().Set("HX-Trigger", models.NewWarningToast("Feature Disabled", "Please consult the docs to enable OCR.", "").Render())
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		// 1. Retrieve the files from the body.
 		r.Body = http.MaxBytesReader(w, r.Body, 1<<24)
 
 		userID := getUserID(r)
@@ -578,7 +590,7 @@ func (s *Server) recipesAddOCRHandler() http.HandlerFunc {
 			return
 		}
 
-		images, ok := r.MultipartForm.File["image"]
+		files, ok := r.MultipartForm.File["files"]
 		if !ok {
 			msg := "Could not retrieve the image from the form."
 			slog.Error(msg, userIDAttr, "error", err)
@@ -587,23 +599,83 @@ func (s *Server) recipesAddOCRHandler() http.HandlerFunc {
 			return
 		}
 
-		f, err := images[0].Open()
-		if err != nil {
-			msg := "Could not open the image from the form."
-			slog.Error(msg, userIDAttr, "image", images[0], "error", err)
+		// 2. Filter the files.
+		var (
+			validImageFormats = []string{".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".heif"}
+			validDocFormats   = []string{".pdf"}
+		)
+
+		files = slices.DeleteFunc(files, func(fh *multipart.FileHeader) bool {
+			return !slices.Contains(slices.Concat(validImageFormats, validDocFormats), filepath.Ext(fh.Filename))
+		})
+
+		if len(files) == 0 {
+			msg := "No valid files found in request."
+			slog.Error(msg, userIDAttr, "error", err)
 			w.Header().Set("HX-Trigger", models.NewErrorFormToast(msg).Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		defer f.Close()
 
-		recipe, err := s.Integrations.ProcessImageOCR(f)
-		if err != nil {
-			msg := "Could not process OCR."
-			slog.Error(msg, userIDAttr, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorToast("Integrations Error", msg, "").Render())
-			w.WriteHeader(http.StatusInternalServerError)
-			return
+		// 3. Compartmentalize the files.
+		var (
+			imageFiles []*multipart.FileHeader
+			docFiles   []io.Reader
+		)
+
+		for _, fh := range files {
+			ext := filepath.Ext(fh.Filename)
+			if slices.Contains(validImageFormats, ext) {
+				imageFiles = append(imageFiles, fh)
+			} else if slices.Contains(validDocFormats, ext) {
+				open, err := fh.Open()
+				if err != nil {
+					continue
+				}
+
+				xb, err := io.ReadAll(open)
+				if err != nil {
+					continue
+				}
+
+				docFiles = append(docFiles, bytes.NewBuffer(xb))
+			}
+		}
+
+		// 4. Merge images to one PDF file, if applicable.
+		if len(imageFiles) > 1 {
+			openImages := make([]io.Reader, 0, len(imageFiles))
+			for _, file := range imageFiles[1:] {
+				f, err := file.Open()
+				if err != nil {
+					continue
+				}
+
+				buf := bytes.NewBuffer(nil)
+				_, err = io.Copy(buf, f)
+				if err != nil {
+					_ = f.Close()
+					continue
+				}
+				_ = f.Close()
+
+				openImages = append(openImages, buf)
+			}
+
+			imagePDF := s.Files.MergeImagesToPDF(openImages)
+			if imagePDF != nil {
+				docFiles = append(docFiles, imagePDF)
+			}
+		} else if len(imageFiles) == 1 {
+			f, err := imageFiles[0].Open()
+			if err == nil {
+				buf := bytes.NewBuffer(nil)
+				_, err = io.Copy(buf, f)
+				if err == nil {
+					docFiles = append(docFiles, buf)
+				}
+				_ = f.Close()
+			}
 		}
 
 		settings, err := s.Repository.UserSettings(userID)
@@ -615,21 +687,54 @@ func (s *Server) recipesAddOCRHandler() http.HandlerFunc {
 			return
 		}
 
-		id, err := s.Repository.AddRecipe(&recipe, userID, settings)
-		if err != nil {
-			msg := "Recipe could not be added."
-			slog.Error(msg, userIDAttr, "recipe", recipe, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast(msg).Render())
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
+		// 5. Process the files.
+		go func(id int64, us models.UserSettings, data []io.Reader) {
+			idAttr := slog.Int64("id", id)
+			s.Brokers[id].SendProgressStatus("Analyzing...", true, 0, -1)
 
-		s.Repository.CalculateNutrition(userID, []int64{id}, settings)
+			recipes, err := s.Integrations.ProcessImageOCR(data)
+			if err != nil {
+				msg := "Could not process OCR."
+				slog.Error(msg, idAttr, "error", err)
+				s.Brokers[id].HideNotification()
+				s.Brokers[id].SendToast(models.NewErrorToast("Integrations Error", msg, ""))
+				return
+			}
 
-		msg := "Recipe scanned and uploaded."
-		slog.Info(msg, userIDAttr, "recipe", recipe)
-		w.Header().Set("HX-Trigger", models.NewInfoToast("Operation Successful", msg, fmt.Sprintf("View /recipes/%d", id)).Render())
-		w.WriteHeader(http.StatusCreated)
+			ids := make([]int64, 0, len(recipes))
+			for _, recipe := range recipes {
+				recipeID, err := s.Repository.AddRecipe(&recipe, id, us)
+				if err != nil {
+					msg := "Recipe could not be added."
+					slog.Error(msg, idAttr, "recipe", recipe, "error", err)
+					s.Brokers[id].HideNotification()
+					s.Brokers[id].SendToast(models.NewErrorDBToast(msg))
+					return
+				}
+
+				s.Repository.CalculateNutrition(userID, []int64{recipeID}, us)
+				ids = append(ids, recipeID)
+			}
+
+			s.Brokers[id].HideNotification()
+
+			switch len(recipes) {
+			case 0:
+				slog.Error("No recipes saved in database.")
+				s.Brokers[id].SendToast(models.NewErrorReqToast("Failed to process. Please check logs."))
+
+			case 1:
+				msg := "Recipe scanned and uploaded."
+				slog.Info(msg, "id", ids[0])
+				s.Brokers[id].SendToast(models.NewInfoToast("Operation Successful", msg, fmt.Sprintf("View /recipes/%d", ids[0])))
+			default:
+				msg := "Recipes scanned and uploaded."
+				slog.Info(msg, "ids", ids)
+				s.Brokers[id].SendToast(models.NewInfoToast("Operation Successful", msg, ""))
+			}
+		}(userID, settings, docFiles)
+
+		w.WriteHeader(http.StatusAccepted)
 	}
 }
 

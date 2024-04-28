@@ -94,8 +94,13 @@ templ SettingsTabsAdvanced(data templates.SettingsData, isAdmin bool) {
 				hx-put="/settings/config"
 				hx-swap="none"
 			>
-				<div class="mb-2">
-					<p class="font-semibold">Email</p>
+				<div class="mb-4">
+					<p class="font-semibold">
+						Email
+						<button type="button" title="Test connection" class="btn btn-xs float-right" hx-get="/integrations/test-connection?api=sg" hx-swap="none">
+							@iconArrowPath()
+						</button>
+					</p>
 					<label class="form-control w-full">
 						<div class="label">
 							<span class="label-text">From</span>
@@ -109,20 +114,25 @@ templ SettingsTabsAdvanced(data templates.SettingsData, isAdmin bool) {
 						<input name="email.apikey" type="text" placeholder="API key" value={ app.Config.Email.SendGridAPIKey } autocomplete="off" class="input input-bordered input-sm w-full"/>
 					</label>
 				</div>
-				<div class="mb-2">
+				<div class="mb-4">
 					<p class="mb-1 font-semibold">Integrations</p>
-					<p class="text-center text-sm underline">Azure Computer Vision</p>
+					<p class="mt-2 text-center text-sm underline">
+						Azure AI Document Intelligence
+						<button type="button" title="Test connection" class="btn btn-xs float-right" hx-get="/integrations/test-connection?api=azure-di" hx-swap="none">
+							@iconArrowPath()
+						</button>
+					</p>
 					<label class="form-control w-full">
 						<div class="label">
 							<span class="label-text">Resource key</span>
 						</div>
-						<input name="integrations.ocr.key" type="text" placeholder="Resource key 1" value={ data.Config.Integrations.AzureComputerVision.ResourceKey } autocomplete="off" class="input input-bordered input-sm w-full"/>
+						<input name="integrations.ocr.key" type="text" placeholder="Resource key 1" value={ data.Config.Integrations.AzureDI.Key } autocomplete="off" class="input input-bordered input-sm w-full"/>
 					</label>
 					<label class="form-control w-full">
 						<div class="label">
-							<span class="label-text">Vision endpoint</span>
+							<span class="label-text">Endpoint</span>
 						</div>
-						<input name="integrations.ocr.url" type="url" placeholder="Vision endpoint URL" value={ data.Config.Integrations.AzureComputerVision.VisionEndpoint } autocomplete="off" class="input input-bordered input-sm w-full"/>
+						<input name="integrations.ocr.url" type="url" placeholder="Vision endpoint URL" value={ data.Config.Integrations.AzureDI.Endpoint } autocomplete="off" class="input input-bordered input-sm w-full"/>
 					</label>
 				</div>
 				<div>

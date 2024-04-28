@@ -176,9 +176,19 @@ func (s *Server) mustBeLoggedInMiddleware(next http.Handler) http.Handler {
 				SessionData.Data = make(map[uuid.UUID]int64)
 			}
 
-			sid := uuid.New()
-			SessionData.Data[sid] = 1
-			http.SetCookie(w, NewSessionCookie(sid.String()))
+			var isFound bool
+			for _, v := range SessionData.Data {
+				if v == 1 {
+					isFound = true
+					break
+				}
+			}
+
+			if !isFound {
+				sid := uuid.New()
+				SessionData.Set(sid, 1)
+				http.SetCookie(w, NewSessionCookie(sid.String()))
+			}
 
 			next.ServeHTTP(w, r.WithContext(ctx))
 			return

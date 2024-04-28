@@ -143,6 +143,8 @@ func (f *Files) processTxt(file *multipart.FileHeader) models.Recipes {
 	recipe, err := models.NewRecipeFromTextFile(bytes.NewBuffer(data))
 	if errors.Is(err, models.ErrIsAccuChef) {
 		return models.NewRecipesFromAccuChef(bytes.NewBuffer(data))
+	} else if errors.Is(err, models.ErrIsEasyRecipeDeluxe) {
+		return models.NewRecipesFromEasyRecipeDeluxe(bytes.NewBuffer(data))
 	}
 
 	if err != nil {
@@ -271,6 +273,12 @@ func (f *Files) processRecipeFiles(zr *zip.Reader) models.Recipes {
 			if errors.Is(err, models.ErrIsAccuChef) {
 				_ = openedFile.Close()
 				xr := models.NewRecipesFromAccuChef(openedFile)
+				recipes = append(recipes, xr...)
+				recipeNumber += len(xr)
+				continue
+			} else if errors.Is(err, models.ErrIsEasyRecipeDeluxe) {
+				_ = openedFile.Close()
+				xr := models.NewRecipesFromEasyRecipeDeluxe(openedFile)
 				recipes = append(recipes, xr...)
 				recipeNumber += len(xr)
 				continue

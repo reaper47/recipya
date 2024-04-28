@@ -143,27 +143,31 @@ func (m *mockFiles) BackupGlobal() error {
 	panic("implement me")
 }
 
-func (m *mockFiles) Backups(userID int64) []time.Time {
+func (m *mockFiles) Backups(_ int64) []time.Time {
 	panic("implement me")
 }
 
-func (m *mockFiles) BackupUserData(repo services.RepositoryService, userID int64) error {
+func (m *mockFiles) BackupUserData(_ services.RepositoryService, _ int64) error {
 	panic("implement me")
 }
 
-func (m *mockFiles) BackupUsersData(repo services.RepositoryService) error {
+func (m *mockFiles) BackupUsersData(_ services.RepositoryService) error {
 	panic("implement me")
 }
 
-func (m *mockFiles) IsAppLatest(current semver.Version) (bool, *github.RepositoryRelease, error) {
+func (m *mockFiles) IsAppLatest(_ semver.Version) (bool, *github.RepositoryRelease, error) {
 	return false, nil, nil
 }
 
-func (m *mockFiles) ScrapeAndStoreImage(rawURL string) (uuid.UUID, error) {
+func (m *mockFiles) MergeImagesToPDF(_ []io.Reader) io.ReadWriter {
+	panic("implement me")
+}
+
+func (m *mockFiles) ScrapeAndStoreImage(_ string) (uuid.UUID, error) {
 	return anUploadedImage, nil
 }
 
-func (m *mockFiles) ExtractUserBackup(date string, userID int64) (*models.UserBackup, error) {
+func (m *mockFiles) ExtractUserBackup(_ string, _ int64) (*models.UserBackup, error) {
 	//TODO implement me
 	panic("implement me")
 }
@@ -173,7 +177,7 @@ func (m *mockFiles) ExportCookbook(cookbook models.Cookbook, fileType models.Fil
 	return cookbook.Title + fileType.Ext(), nil
 }
 
-func (m *mockFiles) ExportRecipes(recipes models.Recipes, fileType models.FileType, progress chan int) (*bytes.Buffer, error) {
+func (m *mockFiles) ExportRecipes(recipes models.Recipes, _ models.FileType, _ chan int) (*bytes.Buffer, error) {
 	var sb strings.Builder
 	for _, recipe := range recipes {
 		sb.WriteString(recipe.Name + "-")

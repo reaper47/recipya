@@ -32,7 +32,7 @@ func TestHandlers_Integrations_Import(t *testing.T) {
 
 	t.Run("error when importing", func(t *testing.T) {
 		srv.Integrations = &mockIntegrations{
-			ImportFunc: func(baseURL, username, password string, files services.FilesService) (models.Recipes, error) {
+			importFunc: func(baseURL, username, password string, files services.FilesService) (models.Recipes, error) {
 				return nil, errors.New("import error")
 			},
 		}
@@ -55,7 +55,7 @@ func TestHandlers_Integrations_Import(t *testing.T) {
 		}
 		srv.Repository = repo
 		srv.Integrations = &mockIntegrations{
-			ImportFunc: func(baseURL, username, password string, files services.FilesService) (models.Recipes, error) {
+			importFunc: func(baseURL, username, password string, files services.FilesService) (models.Recipes, error) {
 				return models.Recipes{
 					{ID: 1, Name: "One", Ingredients: []string{"one"}},
 					{ID: 2, Name: "Two", Ingredients: []string{"two"}},
@@ -76,4 +76,70 @@ func TestHandlers_Integrations_Import(t *testing.T) {
 			t.Fatal("expected 2 recipes in the repo")
 		}
 	})
+}
+
+func TestHandlers_Integrations_TestConnection(t *testing.T) {
+	srv := newServerTest()
+	original := srv.Integrations
+
+	uri := "/integrations/test-connection"
+
+	type testcase struct {
+		name string
+		api  string
+	}
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
+	})
+
+	testcases := []testcase{
+		{name: "empty", api: ""},
+		{name: "random", api: "random"},
+	}
+	for _, tc := range testcases {
+		t.Run("invalid api "+tc.name, func(t *testing.T) {
+			rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?api="+tc.api, noHeader, nil)
+
+			assertStatus(t, rr.Code, http.StatusBadRequest)
+		})
+	}
+
+	testcases2 := []testcase{
+		{name: "azure document intelligence", api: "azure-di"},
+		{name: "sendgrid", api: "sg"},
+	}
+	for _, tc := range testcases2 {
+		t.Run("invalid credentials "+tc.name, func(t *testing.T) {
+			srv.Integrations = &mockIntegrations{
+				testConnectionFunc: func(api string) error {
+					return errors.New("connection failed")
+				},
+			}
+			defer func() {
+				srv.Integrations = original
+			}()
+			rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?api="+tc.api, noHeader, nil)
+
+			assertStatus(t, rr.Code, http.StatusUnauthorized)
+			assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Connection failed. Please verify credentials.\",\"title\":\"General Error\"}"}`)
+		})
+	}
+
+	testcases3 := []struct {
+		name  string
+		api   string
+		toast string
+	}{
+		{name: "azure document intelligence", api: "azure-di", toast: "Azure AI Document Intelligence server connection verified."},
+		{name: "sendgrid", api: "sg", toast: "Twilio SendGrid server connection verified."},
+	}
+	for _, tc := range testcases3 {
+		t.Run("valid credentials "+tc.name, func(t *testing.T) {
+			rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?api="+tc.api, noHeader, nil)
+
+			assertStatus(t, rr.Code, http.StatusOK)
+			assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-info\",\"message\":\"`+tc.toast+`\",\"title\":\"Connection successful\"}"}`)
+		})
+	}
 }

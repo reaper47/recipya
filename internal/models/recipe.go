@@ -1442,6 +1442,7 @@ func NewRecipesFromAccuChef(r io.Reader) Recipes {
 	return recipes
 }
 
+// NewRecipesFromEasyRecipeDeluxe extracts the recipes from a MasterCook file.
 func NewRecipesFromEasyRecipeDeluxe(r io.Reader) Recipes {
 	scanner := bufio.NewScanner(r)
 

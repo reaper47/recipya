@@ -1,0 +1,3279 @@
+{
+  "status": "succeeded",
+  "createdDateTime": "2024-04-26T05:42:33Z",
+  "lastUpdatedDateTime": "2024-04-26T05:42:35Z",
+  "analyzeResult": {
+    "apiVersion": "2024-02-29-preview",
+    "modelId": "prebuilt-layout",
+    "stringIndexType": "textElements",
+    "content": "Zuppa Pavese (Pavia Soup)\n3 Tbs. butter\n6 slices firm, course-textured bread 6 c. meat or chicken broth salt\n6 eggs freshly ground pepper 6 Tbs. freshly grated Parmesan cheese\n* melt butter in a saucepan and fry the bread slices on both sides until golden brown. Divide among 6 soup bowls. Place bowls in are over which has been pre heated to 350ºF and turned off.\n* Meanwhile, Uring wroth to a boil, adding pal if necessary. Break an egg on to each slice of bread, pour the boiling broth over it an add pepper to taste. Sprinkle with Parme cheese. Harrish w/parsley nut meg.\nsagt\nell\nFax\neat\n(Serves 6)\n\"A loaf of bread\" the Walrus said, \"Is what we chiefly need.\"\nLEWIS CARROLL (1832-1898) English writer and mathematician",
+    "pages": [
+      {
+        "pageNumber": 1,
+        "angle": -3.4560000896453857,
+        "width": 2448,
+        "height": 3264,
+        "unit": "pixel",
+        "words": [
+          {
+            "content": "Zuppa",
+            "polygon": [
+              567,
+              330,
+              849,
+              322,
+              850,
+              421,
+              568,
+              419
+            ],
+            "confidence": 0.844,
+            "span": {
+              "offset": 0,
+              "length": 5
+            }
+          },
+          {
+            "content": "Pavese",
+            "polygon": [
+              885,
+              321,
+              1148,
+              324,
+              1148,
+              428,
+              886,
+              421
+            ],
+            "confidence": 0.657,
+            "span": {
+              "offset": 6,
+              "length": 6
+            }
+          },
+          {
+            "content": "(Pavia",
+            "polygon": [
+              1201,
+              325,
+              1457,
+              339,
+              1455,
+              443,
+              1200,
+              430
+            ],
+            "confidence": 0.722,
+            "span": {
+              "offset": 13,
+              "length": 6
+            }
+          },
+          {
+            "content": "Soup)",
+            "polygon": [
+              1476,
+              340,
+              1705,
+              360,
+              1705,
+              459,
+              1475,
+              445
+            ],
+            "confidence": 0.86,
+            "span": {
+              "offset": 20,
+              "length": 5
+            }
+          },
+          {
+            "content": "3",
+            "polygon": [
+              283,
+              520,
+              339,
+              514,
+              341,
+              589,
+              285,
+              590
+            ],
+            "confidence": 0.993,
+            "span": {
+              "offset": 26,
+              "length": 1
+            }
+          },
+          {
+            "content": "Tbs.",
+            "polygon": [
+              394,
+              508,
+              584,
+              492,
+              587,
+              580,
+              396,
+              587
+            ],
+            "confidence": 0.955,
+            "span": {
+              "offset": 28,
+              "length": 4
+            }
+          },
+          {
+            "content": "butter",
+            "polygon": [
+              603,
+              490,
+              836,
+              480,
+              836,
+              566,
+              606,
+              579
+            ],
+            "confidence": 0.872,
+            "span": {
+              "offset": 33,
+              "length": 6
+            }
+          },
+          {
+            "content": "6",
+            "polygon": [
+              291,
+              626,
+              344,
+              622,
+              343,
+              715,
+              290,
+              718
+            ],
+            "confidence": 0.878,
+            "span": {
+              "offset": 40,
+              "length": 1
+            }
+          },
+          {
+            "content": "slices",
+            "polygon": [
+              387,
+              618,
+              616,
+              600,
+              615,
+              694,
+              386,
+              711
+            ],
+            "confidence": 0.728,
+            "span": {
+              "offset": 42,
+              "length": 6
+            }
+          },
+          {
+            "content": "firm,",
+            "polygon": [
+              638,
+              599,
+              859,
+              587,
+              859,
+              681,
+              637,
+              693
+            ],
+            "confidence": 0.942,
+            "span": {
+              "offset": 49,
+              "length": 5
+            }
+          },
+          {
+            "content": "course-textured",
+            "polygon": [
+              884,
+              585,
+              1519,
+              577,
+              1519,
+              674,
+              883,
+              680
+            ],
+            "confidence": 0.838,
+            "span": {
+              "offset": 55,
+              "length": 15
+            }
+          },
+          {
+            "content": "bread",
+            "polygon": [
+              1579,
+              578,
+              1833,
+              586,
+              1833,
+              684,
+              1579,
+              675
+            ],
+            "confidence": 0.83,
+            "span": {
+              "offset": 71,
+              "length": 5
+            }
+          },
+          {
+            "content": "6",
+            "polygon": [
+              316,
+              768,
+              374,
+              760,
+              378,
+              842,
+              320,
+              847
+            ],
+            "confidence": 0.257,
+            "span": {
+              "offset": 77,
+              "length": 1
+            }
+          },
+          {
+            "content": "c.",
+            "polygon": [
+              399,
+              757,
+              494,
+              744,
+              497,
+              831,
+              402,
+              840
+            ],
+            "confidence": 0.921,
+            "span": {
+              "offset": 79,
+              "length": 2
+            }
+          },
+          {
+            "content": "meat",
+            "polygon": [
+              540,
+              739,
+              750,
+              719,
+              752,
+              813,
+              543,
+              827
+            ],
+            "confidence": 0.977,
+            "span": {
+              "offset": 82,
+              "length": 4
+            }
+          },
+          {
+            "content": "or",
+            "polygon": [
+              781,
+              716,
+              865,
+              710,
+              867,
+              806,
+              783,
+              811
+            ],
+            "confidence": 0.555,
+            "span": {
+              "offset": 87,
+              "length": 2
+            }
+          },
+          {
+            "content": "chicken",
+            "polygon": [
+              896,
+              709,
+              1232,
+              697,
+              1233,
+              797,
+              898,
+              805
+            ],
+            "confidence": 0.951,
+            "span": {
+              "offset": 90,
+              "length": 7
+            }
+          },
+          {
+            "content": "broth",
+            "polygon": [
+              1303,
+              697,
+              1525,
+              701,
+              1525,
+              801,
+              1304,
+              797
+            ],
+            "confidence": 0.667,
+            "span": {
+              "offset": 98,
+              "length": 5
+            }
+          },
+          {
+            "content": "salt",
+            "polygon": [
+              327,
+              872,
+              547,
+              855,
+              549,
+              932,
+              331,
+              952
+            ],
+            "confidence": 0.605,
+            "span": {
+              "offset": 104,
+              "length": 4
+            }
+          },
+          {
+            "content": "6",
+            "polygon": [
+              331,
+              981,
+              383,
+              978,
+              383,
+              1066,
+              331,
+              1067
+            ],
+            "confidence": 0.99,
+            "span": {
+              "offset": 109,
+              "length": 1
+            }
+          },
+          {
+            "content": "eggs",
+            "polygon": [
+              428,
+              976,
+              637,
+              969,
+              639,
+              1062,
+              429,
+              1064
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 111,
+              "length": 4
+            }
+          },
+          {
+            "content": "freshly",
+            "polygon": [
+              334,
+              1101,
+              632,
+              1066,
+              639,
+              1158,
+              342,
+              1186
+            ],
+            "confidence": 0.71,
+            "span": {
+              "offset": 116,
+              "length": 7
+            }
+          },
+          {
+            "content": "ground",
+            "polygon": [
+              679,
+              1062,
+              993,
+              1035,
+              1000,
+              1135,
+              686,
+              1155
+            ],
+            "confidence": 0.942,
+            "span": {
+              "offset": 124,
+              "length": 6
+            }
+          },
+          {
+            "content": "pepper",
+            "polygon": [
+              1079,
+              1030,
+              1397,
+              1015,
+              1397,
+              1120,
+              1084,
+              1130
+            ],
+            "confidence": 0.932,
+            "span": {
+              "offset": 131,
+              "length": 6
+            }
+          },
+          {
+            "content": "6",
+            "polygon": [
+              341,
+              1246,
+              398,
+              1240,
+              403,
+              1324,
+              346,
+              1327
+            ],
+            "confidence": 0.942,
+            "span": {
+              "offset": 138,
+              "length": 1
+            }
+          },
+          {
+            "content": "Tbs.",
+            "polygon": [
+              428,
+              1236,
+              626,
+              1214,
+              630,
+              1307,
+              433,
+              1322
+            ],
+            "confidence": 0.92,
+            "span": {
+              "offset": 140,
+              "length": 4
+            }
+          },
+          {
+            "content": "freshly",
+            "polygon": [
+              648,
+              1212,
+              941,
+              1186,
+              944,
+              1286,
+              652,
+              1306
+            ],
+            "confidence": 0.811,
+            "span": {
+              "offset": 145,
+              "length": 7
+            }
+          },
+          {
+            "content": "grated",
+            "polygon": [
+              984,
+              1182,
+              1255,
+              1164,
+              1258,
+              1268,
+              987,
+              1284
+            ],
+            "confidence": 0.915,
+            "span": {
+              "offset": 153,
+              "length": 6
+            }
+          },
+          {
+            "content": "Parmesan",
+            "polygon": [
+              1296,
+              1162,
+              1695,
+              1147,
+              1697,
+              1247,
+              1299,
+              1266
+            ],
+            "confidence": 0.717,
+            "span": {
+              "offset": 160,
+              "length": 8
+            }
+          },
+          {
+            "content": "cheese",
+            "polygon": [
+              1739,
+              1145,
+              1996,
+              1142,
+              1996,
+              1236,
+              1741,
+              1245
+            ],
+            "confidence": 0.846,
+            "span": {
+              "offset": 169,
+              "length": 6
+            }
+          },
+          {
+            "content": "*",
+            "polygon": [
+              310,
+              1417,
+              369,
+              1413,
+              370,
+              1501,
+              311,
+              1502
+            ],
+            "confidence": 0.972,
+            "span": {
+              "offset": 176,
+              "length": 1
+            }
+          },
+          {
+            "content": "melt",
+            "polygon": [
+              396,
+              1411,
+              609,
+              1397,
+              610,
+              1492,
+              397,
+              1500
+            ],
+            "confidence": 0.661,
+            "span": {
+              "offset": 178,
+              "length": 4
+            }
+          },
+          {
+            "content": "butter",
+            "polygon": [
+              631,
+              1395,
+              888,
+              1379,
+              890,
+              1480,
+              633,
+              1491
+            ],
+            "confidence": 0.762,
+            "span": {
+              "offset": 183,
+              "length": 6
+            }
+          },
+          {
+            "content": "in",
+            "polygon": [
+              912,
+              1378,
+              1031,
+              1371,
+              1034,
+              1473,
+              914,
+              1479
+            ],
+            "confidence": 0.992,
+            "span": {
+              "offset": 190,
+              "length": 2
+            }
+          },
+          {
+            "content": "a",
+            "polygon": [
+              1068,
+              1369,
+              1127,
+              1366,
+              1129,
+              1469,
+              1070,
+              1472
+            ],
+            "confidence": 0.991,
+            "span": {
+              "offset": 193,
+              "length": 1
+            }
+          },
+          {
+            "content": "saucepan",
+            "polygon": [
+              1151,
+              1364,
+              1567,
+              1342,
+              1571,
+              1444,
+              1153,
+              1467
+            ],
+            "confidence": 0.738,
+            "span": {
+              "offset": 195,
+              "length": 8
+            }
+          },
+          {
+            "content": "and",
+            "polygon": [
+              1602,
+              1340,
+              1762,
+              1333,
+              1765,
+              1432,
+              1606,
+              1442
+            ],
+            "confidence": 0.977,
+            "span": {
+              "offset": 204,
+              "length": 3
+            }
+          },
+          {
+            "content": "fry",
+            "polygon": [
+              1789,
+              1332,
+              1949,
+              1324,
+              1953,
+              1419,
+              1792,
+              1430
+            ],
+            "confidence": 0.863,
+            "span": {
+              "offset": 208,
+              "length": 3
+            }
+          },
+          {
+            "content": "the",
+            "polygon": [
+              1981,
+              1323,
+              2096,
+              1318,
+              2096,
+              1408,
+              1985,
+              1417
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 212,
+              "length": 3
+            }
+          },
+          {
+            "content": "bread",
+            "polygon": [
+              273,
+              1545,
+              567,
+              1518,
+              569,
+              1614,
+              276,
+              1633
+            ],
+            "confidence": 0.648,
+            "span": {
+              "offset": 216,
+              "length": 5
+            }
+          },
+          {
+            "content": "slices",
+            "polygon": [
+              605,
+              1515,
+              880,
+              1493,
+              882,
+              1593,
+              607,
+              1611
+            ],
+            "confidence": 0.754,
+            "span": {
+              "offset": 222,
+              "length": 6
+            }
+          },
+          {
+            "content": "on",
+            "polygon": [
+              908,
+              1491,
+              1004,
+              1484,
+              1007,
+              1584,
+              910,
+              1591
+            ],
+            "confidence": 0.979,
+            "span": {
+              "offset": 229,
+              "length": 2
+            }
+          },
+          {
+            "content": "both",
+            "polygon": [
+              1040,
+              1482,
+              1209,
+              1471,
+              1211,
+              1571,
+              1042,
+              1582
+            ],
+            "confidence": 0.736,
+            "span": {
+              "offset": 232,
+              "length": 4
+            }
+          },
+          {
+            "content": "sides",
+            "polygon": [
+              1243,
+              1469,
+              1497,
+              1455,
+              1499,
+              1552,
+              1245,
+              1569
+            ],
+            "confidence": 0.712,
+            "span": {
+              "offset": 237,
+              "length": 5
+            }
+          },
+          {
+            "content": "until",
+            "polygon": [
+              1543,
+              1453,
+              1780,
+              1442,
+              1782,
+              1534,
+              1545,
+              1549
+            ],
+            "confidence": 0.835,
+            "span": {
+              "offset": 243,
+              "length": 5
+            }
+          },
+          {
+            "content": "golden",
+            "polygon": [
+              1826,
+              1441,
+              2112,
+              1431,
+              2112,
+              1513,
+              1829,
+              1531
+            ],
+            "confidence": 0.744,
+            "span": {
+              "offset": 249,
+              "length": 6
+            }
+          },
+          {
+            "content": "brown.",
+            "polygon": [
+              306,
+              1636,
+              657,
+              1617,
+              660,
+              1714,
+              310,
+              1730
+            ],
+            "confidence": 0.659,
+            "span": {
+              "offset": 256,
+              "length": 6
+            }
+          },
+          {
+            "content": "Divide",
+            "polygon": [
+              705,
+              1614,
+              1014,
+              1596,
+              1017,
+              1695,
+              709,
+              1711
+            ],
+            "confidence": 0.693,
+            "span": {
+              "offset": 263,
+              "length": 6
+            }
+          },
+          {
+            "content": "among",
+            "polygon": [
+              1038,
+              1595,
+              1319,
+              1577,
+              1323,
+              1676,
+              1042,
+              1693
+            ],
+            "confidence": 0.902,
+            "span": {
+              "offset": 270,
+              "length": 5
+            }
+          },
+          {
+            "content": "6",
+            "polygon": [
+              1359,
+              1574,
+              1407,
+              1571,
+              1411,
+              1671,
+              1363,
+              1674
+            ],
+            "confidence": 0.473,
+            "span": {
+              "offset": 276,
+              "length": 1
+            }
+          },
+          {
+            "content": "soup",
+            "polygon": [
+              1472,
+              1567,
+              1669,
+              1554,
+              1673,
+              1654,
+              1476,
+              1667
+            ],
+            "confidence": 0.544,
+            "span": {
+              "offset": 278,
+              "length": 4
+            }
+          },
+          {
+            "content": "bowls.",
+            "polygon": [
+              1703,
+              1551,
+              2020,
+              1529,
+              2023,
+              1628,
+              1707,
+              1651
+            ],
+            "confidence": 0.543,
+            "span": {
+              "offset": 283,
+              "length": 6
+            }
+          },
+          {
+            "content": "Place",
+            "polygon": [
+              2042,
+              1527,
+              2268,
+              1510,
+              2268,
+              1609,
+              2046,
+              1626
+            ],
+            "confidence": 0.959,
+            "span": {
+              "offset": 290,
+              "length": 5
+            }
+          },
+          {
+            "content": "bowls",
+            "polygon": [
+              325,
+              1756,
+              567,
+              1739,
+              574,
+              1836,
+              333,
+              1851
+            ],
+            "confidence": 0.797,
+            "span": {
+              "offset": 296,
+              "length": 5
+            }
+          },
+          {
+            "content": "in",
+            "polygon": [
+              616,
+              1736,
+              734,
+              1728,
+              741,
+              1825,
+              623,
+              1833
+            ],
+            "confidence": 0.976,
+            "span": {
+              "offset": 302,
+              "length": 2
+            }
+          },
+          {
+            "content": "are",
+            "polygon": [
+              775,
+              1725,
+              912,
+              1716,
+              919,
+              1814,
+              782,
+              1822
+            ],
+            "confidence": 0.747,
+            "span": {
+              "offset": 305,
+              "length": 3
+            }
+          },
+          {
+            "content": "over",
+            "polygon": [
+              945,
+              1713,
+              1143,
+              1700,
+              1149,
+              1799,
+              951,
+              1812
+            ],
+            "confidence": 0.979,
+            "span": {
+              "offset": 309,
+              "length": 4
+            }
+          },
+          {
+            "content": "which",
+            "polygon": [
+              1192,
+              1697,
+              1444,
+              1681,
+              1449,
+              1781,
+              1198,
+              1796
+            ],
+            "confidence": 1,
+            "span": {
+              "offset": 314,
+              "length": 5
+            }
+          },
+          {
+            "content": "has",
+            "polygon": [
+              1493,
+              1677,
+              1663,
+              1667,
+              1668,
+              1768,
+              1498,
+              1778
+            ],
+            "confidence": 1,
+            "span": {
+              "offset": 320,
+              "length": 3
+            }
+          },
+          {
+            "content": "been",
+            "polygon": [
+              1707,
+              1664,
+              1883,
+              1653,
+              1887,
+              1755,
+              1712,
+              1765
+            ],
+            "confidence": 1,
+            "span": {
+              "offset": 324,
+              "length": 4
+            }
+          },
+          {
+            "content": "pre",
+            "polygon": [
+              1905,
+              1651,
+              2023,
+              1644,
+              2028,
+              1747,
+              1910,
+              1753
+            ],
+            "confidence": 0.611,
+            "span": {
+              "offset": 329,
+              "length": 3
+            }
+          },
+          {
+            "content": "heated",
+            "polygon": [
+              2043,
+              1643,
+              2328,
+              1625,
+              2329,
+              1729,
+              2047,
+              1745
+            ],
+            "confidence": 0.95,
+            "span": {
+              "offset": 333,
+              "length": 6
+            }
+          },
+          {
+            "content": "to",
+            "polygon": [
+              361,
+              1875,
+              428,
+              1868,
+              432,
+              1963,
+              365,
+              1967
+            ],
+            "confidence": 0.999,
+            "span": {
+              "offset": 340,
+              "length": 2
+            }
+          },
+          {
+            "content": "350ºF",
+            "polygon": [
+              473,
+              1864,
+              792,
+              1838,
+              796,
+              1940,
+              477,
+              1960
+            ],
+            "confidence": 0.363,
+            "span": {
+              "offset": 343,
+              "length": 5
+            }
+          },
+          {
+            "content": "and",
+            "polygon": [
+              813,
+              1836,
+              983,
+              1826,
+              987,
+              1930,
+              817,
+              1939
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 349,
+              "length": 3
+            }
+          },
+          {
+            "content": "turned",
+            "polygon": [
+              1003,
+              1824,
+              1316,
+              1811,
+              1321,
+              1916,
+              1007,
+              1929
+            ],
+            "confidence": 0.927,
+            "span": {
+              "offset": 353,
+              "length": 6
+            }
+          },
+          {
+            "content": "off.",
+            "polygon": [
+              1344,
+              1811,
+              1493,
+              1807,
+              1496,
+              1911,
+              1349,
+              1915
+            ],
+            "confidence": 0.074,
+            "span": {
+              "offset": 360,
+              "length": 4
+            }
+          },
+          {
+            "content": "*",
+            "polygon": [
+              346,
+              2040,
+              406,
+              2034,
+              409,
+              2127,
+              349,
+              2131
+            ],
+            "confidence": 0.942,
+            "span": {
+              "offset": 365,
+              "length": 1
+            }
+          },
+          {
+            "content": "Meanwhile,",
+            "polygon": [
+              426,
+              2032,
+              955,
+              1981,
+              957,
+              2087,
+              429,
+              2126
+            ],
+            "confidence": 0.873,
+            "span": {
+              "offset": 367,
+              "length": 10
+            }
+          },
+          {
+            "content": "Uring",
+            "polygon": [
+              974,
+              1979,
+              1236,
+              1956,
+              1238,
+              2065,
+              977,
+              2086
+            ],
+            "confidence": 0.463,
+            "span": {
+              "offset": 378,
+              "length": 5
+            }
+          },
+          {
+            "content": "wroth",
+            "polygon": [
+              1272,
+              1953,
+              1489,
+              1936,
+              1491,
+              2045,
+              1275,
+              2062
+            ],
+            "confidence": 0.401,
+            "span": {
+              "offset": 384,
+              "length": 5
+            }
+          },
+          {
+            "content": "to",
+            "polygon": [
+              1525,
+              1933,
+              1590,
+              1928,
+              1593,
+              2036,
+              1528,
+              2042
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 390,
+              "length": 2
+            }
+          },
+          {
+            "content": "a",
+            "polygon": [
+              1627,
+              1925,
+              1673,
+              1921,
+              1676,
+              2029,
+              1629,
+              2033
+            ],
+            "confidence": 0.987,
+            "span": {
+              "offset": 393,
+              "length": 1
+            }
+          },
+          {
+            "content": "boil,",
+            "polygon": [
+              1693,
+              1920,
+              1900,
+              1904,
+              1902,
+              2010,
+              1696,
+              2027
+            ],
+            "confidence": 0.524,
+            "span": {
+              "offset": 395,
+              "length": 5
+            }
+          },
+          {
+            "content": "adding",
+            "polygon": [
+              1928,
+              1902,
+              2243,
+              1881,
+              2245,
+              1979,
+              1931,
+              2007
+            ],
+            "confidence": 0.929,
+            "span": {
+              "offset": 401,
+              "length": 6
+            }
+          },
+          {
+            "content": "pal",
+            "polygon": [
+              2280,
+              1879,
+              2443,
+              1868,
+              2443,
+              1960,
+              2282,
+              1976
+            ],
+            "confidence": 0.457,
+            "span": {
+              "offset": 408,
+              "length": 3
+            }
+          },
+          {
+            "content": "if",
+            "polygon": [
+              357,
+              2146,
+              455,
+              2137,
+              464,
+              2254,
+              366,
+              2260
+            ],
+            "confidence": 0.865,
+            "span": {
+              "offset": 412,
+              "length": 2
+            }
+          },
+          {
+            "content": "necessary.",
+            "polygon": [
+              483,
+              2134,
+              1019,
+              2086,
+              1026,
+              2206,
+              492,
+              2251
+            ],
+            "confidence": 0.766,
+            "span": {
+              "offset": 415,
+              "length": 10
+            }
+          },
+          {
+            "content": "Break",
+            "polygon": [
+              1100,
+              2079,
+              1368,
+              2056,
+              1375,
+              2176,
+              1107,
+              2199
+            ],
+            "confidence": 0.898,
+            "span": {
+              "offset": 426,
+              "length": 5
+            }
+          },
+          {
+            "content": "an",
+            "polygon": [
+              1391,
+              2054,
+              1507,
+              2045,
+              1514,
+              2163,
+              1398,
+              2173
+            ],
+            "confidence": 0.952,
+            "span": {
+              "offset": 432,
+              "length": 2
+            }
+          },
+          {
+            "content": "egg",
+            "polygon": [
+              1549,
+              2041,
+              1718,
+              2027,
+              1724,
+              2143,
+              1555,
+              2159
+            ],
+            "confidence": 0.636,
+            "span": {
+              "offset": 435,
+              "length": 3
+            }
+          },
+          {
+            "content": "on",
+            "polygon": [
+              1758,
+              2024,
+              1827,
+              2018,
+              1833,
+              2133,
+              1764,
+              2140
+            ],
+            "confidence": 0.655,
+            "span": {
+              "offset": 439,
+              "length": 2
+            }
+          },
+          {
+            "content": "to",
+            "polygon": [
+              1850,
+              2016,
+              1959,
+              2008,
+              1964,
+              2120,
+              1855,
+              2131
+            ],
+            "confidence": 0.963,
+            "span": {
+              "offset": 442,
+              "length": 2
+            }
+          },
+          {
+            "content": "each",
+            "polygon": [
+              1985,
+              2006,
+              2185,
+              1990,
+              2190,
+              2098,
+              1991,
+              2118
+            ],
+            "confidence": 0.955,
+            "span": {
+              "offset": 445,
+              "length": 4
+            }
+          },
+          {
+            "content": "slice",
+            "polygon": [
+              2226,
+              1987,
+              2445,
+              1970,
+              2445,
+              2072,
+              2231,
+              2094
+            ],
+            "confidence": 0.812,
+            "span": {
+              "offset": 450,
+              "length": 5
+            }
+          },
+          {
+            "content": "of",
+            "polygon": [
+              399,
+              2287,
+              497,
+              2277,
+              508,
+              2375,
+              411,
+              2383
+            ],
+            "confidence": 0.842,
+            "span": {
+              "offset": 456,
+              "length": 2
+            }
+          },
+          {
+            "content": "bread,",
+            "polygon": [
+              546,
+              2271,
+              874,
+              2237,
+              883,
+              2339,
+              557,
+              2370
+            ],
+            "confidence": 0.746,
+            "span": {
+              "offset": 459,
+              "length": 6
+            }
+          },
+          {
+            "content": "pour",
+            "polygon": [
+              910,
+              2233,
+              1109,
+              2213,
+              1117,
+              2316,
+              919,
+              2335
+            ],
+            "confidence": 0.901,
+            "span": {
+              "offset": 466,
+              "length": 4
+            }
+          },
+          {
+            "content": "the",
+            "polygon": [
+              1149,
+              2209,
+              1291,
+              2195,
+              1298,
+              2299,
+              1157,
+              2312
+            ],
+            "confidence": 0.981,
+            "span": {
+              "offset": 471,
+              "length": 3
+            }
+          },
+          {
+            "content": "boiling",
+            "polygon": [
+              1340,
+              2191,
+              1679,
+              2159,
+              1684,
+              2261,
+              1347,
+              2294
+            ],
+            "confidence": 0.585,
+            "span": {
+              "offset": 475,
+              "length": 7
+            }
+          },
+          {
+            "content": "broth",
+            "polygon": [
+              1724,
+              2155,
+              1951,
+              2135,
+              1954,
+              2235,
+              1729,
+              2257
+            ],
+            "confidence": 0.644,
+            "span": {
+              "offset": 483,
+              "length": 5
+            }
+          },
+          {
+            "content": "over",
+            "polygon": [
+              1996,
+              2132,
+              2190,
+              2115,
+              2193,
+              2211,
+              2000,
+              2230
+            ],
+            "confidence": 0.732,
+            "span": {
+              "offset": 489,
+              "length": 4
+            }
+          },
+          {
+            "content": "it",
+            "polygon": [
+              2213,
+              2114,
+              2321,
+              2105,
+              2322,
+              2199,
+              2215,
+              2209
+            ],
+            "confidence": 0.875,
+            "span": {
+              "offset": 494,
+              "length": 2
+            }
+          },
+          {
+            "content": "an",
+            "polygon": [
+              2343,
+              2103,
+              2447,
+              2094,
+              2447,
+              2186,
+              2345,
+              2197
+            ],
+            "confidence": 0.562,
+            "span": {
+              "offset": 497,
+              "length": 2
+            }
+          },
+          {
+            "content": "add",
+            "polygon": [
+              403,
+              2430,
+              610,
+              2404,
+              614,
+              2525,
+              408,
+              2546
+            ],
+            "confidence": 0.959,
+            "span": {
+              "offset": 500,
+              "length": 3
+            }
+          },
+          {
+            "content": "pepper",
+            "polygon": [
+              641,
+              2400,
+              1008,
+              2356,
+              1011,
+              2482,
+              645,
+              2522
+            ],
+            "confidence": 0.641,
+            "span": {
+              "offset": 504,
+              "length": 6
+            }
+          },
+          {
+            "content": "to",
+            "polygon": [
+              1053,
+              2350,
+              1147,
+              2339,
+              1150,
+              2468,
+              1056,
+              2478
+            ],
+            "confidence": 0.994,
+            "span": {
+              "offset": 511,
+              "length": 2
+            }
+          },
+          {
+            "content": "taste.",
+            "polygon": [
+              1205,
+              2333,
+              1478,
+              2302,
+              1481,
+              2433,
+              1207,
+              2461
+            ],
+            "confidence": 0.875,
+            "span": {
+              "offset": 514,
+              "length": 6
+            }
+          },
+          {
+            "content": "Sprinkle",
+            "polygon": [
+              1510,
+              2298,
+              1891,
+              2258,
+              1892,
+              2390,
+              1512,
+              2429
+            ],
+            "confidence": 0.656,
+            "span": {
+              "offset": 521,
+              "length": 8
+            }
+          },
+          {
+            "content": "with",
+            "polygon": [
+              1916,
+              2255,
+              2142,
+              2233,
+              2143,
+              2364,
+              1917,
+              2387
+            ],
+            "confidence": 0.926,
+            "span": {
+              "offset": 530,
+              "length": 4
+            }
+          },
+          {
+            "content": "Parme",
+            "polygon": [
+              2169,
+              2230,
+              2439,
+              2204,
+              2439,
+              2333,
+              2170,
+              2361
+            ],
+            "confidence": 0.726,
+            "span": {
+              "offset": 535,
+              "length": 5
+            }
+          },
+          {
+            "content": "cheese.",
+            "polygon": [
+              391,
+              2565,
+              750,
+              2529,
+              754,
+              2632,
+              393,
+              2665
+            ],
+            "confidence": 0.877,
+            "span": {
+              "offset": 541,
+              "length": 7
+            }
+          },
+          {
+            "content": "Harrish",
+            "polygon": [
+              774,
+              2527,
+              1213,
+              2483,
+              1218,
+              2587,
+              777,
+              2630
+            ],
+            "confidence": 0.617,
+            "span": {
+              "offset": 549,
+              "length": 7
+            }
+          },
+          {
+            "content": "w/parsley",
+            "polygon": [
+              1250,
+              2480,
+              1746,
+              2430,
+              1752,
+              2532,
+              1255,
+              2583
+            ],
+            "confidence": 0.445,
+            "span": {
+              "offset": 557,
+              "length": 9
+            }
+          },
+          {
+            "content": "nut",
+            "polygon": [
+              1792,
+              2425,
+              1972,
+              2407,
+              1979,
+              2507,
+              1799,
+              2527
+            ],
+            "confidence": 0.758,
+            "span": {
+              "offset": 567,
+              "length": 3
+            }
+          },
+          {
+            "content": "meg.",
+            "polygon": [
+              1992,
+              2405,
+              2202,
+              2383,
+              2208,
+              2482,
+              1999,
+              2505
+            ],
+            "confidence": 0.595,
+            "span": {
+              "offset": 571,
+              "length": 4
+            }
+          },
+          {
+            "content": "sagt",
+            "polygon": [
+              30,
+              1353,
+              122,
+              1397,
+              100,
+              1447,
+              6,
+              1402
+            ],
+            "confidence": 0.329,
+            "span": {
+              "offset": 576,
+              "length": 4
+            }
+          },
+          {
+            "content": "ell",
+            "polygon": [
+              1,
+              1604,
+              95,
+              1613,
+              95,
+              1698,
+              0,
+              1689
+            ],
+            "confidence": 0.989,
+            "span": {
+              "offset": 581,
+              "length": 3
+            }
+          },
+          {
+            "content": "Fax",
+            "polygon": [
+              27,
+              2073,
+              117,
+              2074,
+              117,
+              2162,
+              26,
+              2161
+            ],
+            "confidence": 0.154,
+            "span": {
+              "offset": 585,
+              "length": 3
+            }
+          },
+          {
+            "content": "eat",
+            "polygon": [
+              0,
+              2248,
+              112,
+              2247,
+              112,
+              2337,
+              1,
+              2340
+            ],
+            "confidence": 0.993,
+            "span": {
+              "offset": 589,
+              "length": 3
+            }
+          },
+          {
+            "content": "(Serves",
+            "polygon": [
+              1709,
+              2558,
+              2054,
+              2525,
+              2064,
+              2666,
+              1731,
+              2698
+            ],
+            "confidence": 0.551,
+            "span": {
+              "offset": 593,
+              "length": 7
+            }
+          },
+          {
+            "content": "6)",
+            "polygon": [
+              2082,
+              2524,
+              2222,
+              2521,
+              2222,
+              2655,
+              2091,
+              2664
+            ],
+            "confidence": 0.902,
+            "span": {
+              "offset": 601,
+              "length": 2
+            }
+          },
+          {
+            "content": "\"A",
+            "polygon": [
+              585,
+              2728,
+              663,
+              2724,
+              664,
+              2789,
+              585,
+              2792
+            ],
+            "confidence": 0.935,
+            "span": {
+              "offset": 604,
+              "length": 2
+            }
+          },
+          {
+            "content": "loaf",
+            "polygon": [
+              689,
+              2723,
+              810,
+              2716,
+              811,
+              2781,
+              690,
+              2788
+            ],
+            "confidence": 0.988,
+            "span": {
+              "offset": 607,
+              "length": 4
+            }
+          },
+          {
+            "content": "of",
+            "polygon": [
+              830,
+              2715,
+              895,
+              2711,
+              896,
+              2775,
+              831,
+              2780
+            ],
+            "confidence": 0.997,
+            "span": {
+              "offset": 612,
+              "length": 2
+            }
+          },
+          {
+            "content": "bread\"",
+            "polygon": [
+              918,
+              2710,
+              1118,
+              2695,
+              1120,
+              2759,
+              919,
+              2774
+            ],
+            "confidence": 0.978,
+            "span": {
+              "offset": 615,
+              "length": 6
+            }
+          },
+          {
+            "content": "the",
+            "polygon": [
+              1140,
+              2694,
+              1230,
+              2686,
+              1232,
+              2750,
+              1142,
+              2757
+            ],
+            "confidence": 0.999,
+            "span": {
+              "offset": 622,
+              "length": 3
+            }
+          },
+          {
+            "content": "Walrus",
+            "polygon": [
+              1260,
+              2684,
+              1460,
+              2665,
+              1464,
+              2728,
+              1262,
+              2747
+            ],
+            "confidence": 0.995,
+            "span": {
+              "offset": 626,
+              "length": 6
+            }
+          },
+          {
+            "content": "said,",
+            "polygon": [
+              1482,
+              2663,
+              1618,
+              2648,
+              1618,
+              2711,
+              1486,
+              2726
+            ],
+            "confidence": 0.968,
+            "span": {
+              "offset": 633,
+              "length": 5
+            }
+          },
+          {
+            "content": "\"Is",
+            "polygon": [
+              586,
+              2812,
+              670,
+              2808,
+              673,
+              2878,
+              588,
+              2879
+            ],
+            "confidence": 0.949,
+            "span": {
+              "offset": 639,
+              "length": 3
+            }
+          },
+          {
+            "content": "what",
+            "polygon": [
+              685,
+              2807,
+              838,
+              2798,
+              842,
+              2872,
+              688,
+              2877
+            ],
+            "confidence": 0.993,
+            "span": {
+              "offset": 643,
+              "length": 4
+            }
+          },
+          {
+            "content": "we",
+            "polygon": [
+              862,
+              2796,
+              951,
+              2790,
+              956,
+              2865,
+              866,
+              2870
+            ],
+            "confidence": 0.992,
+            "span": {
+              "offset": 648,
+              "length": 2
+            }
+          },
+          {
+            "content": "chiefly",
+            "polygon": [
+              970,
+              2789,
+              1173,
+              2773,
+              1179,
+              2847,
+              975,
+              2864
+            ],
+            "confidence": 0.993,
+            "span": {
+              "offset": 651,
+              "length": 7
+            }
+          },
+          {
+            "content": "need.\"",
+            "polygon": [
+              1195,
+              2770,
+              1392,
+              2752,
+              1398,
+              2822,
+              1201,
+              2844
+            ],
+            "confidence": 0.989,
+            "span": {
+              "offset": 659,
+              "length": 6
+            }
+          },
+          {
+            "content": "LEWIS",
+            "polygon": [
+              1046,
+              2920,
+              1172,
+              2905,
+              1175,
+              2952,
+              1049,
+              2964
+            ],
+            "confidence": 0.993,
+            "span": {
+              "offset": 666,
+              "length": 5
+            }
+          },
+          {
+            "content": "CARROLL",
+            "polygon": [
+              1188,
+              2903,
+              1379,
+              2884,
+              1382,
+              2931,
+              1191,
+              2950
+            ],
+            "confidence": 0.995,
+            "span": {
+              "offset": 672,
+              "length": 7
+            }
+          },
+          {
+            "content": "(1832-1898)",
+            "polygon": [
+              1394,
+              2883,
+              1596,
+              2867,
+              1598,
+              2910,
+              1396,
+              2930
+            ],
+            "confidence": 0.957,
+            "span": {
+              "offset": 680,
+              "length": 11
+            }
+          },
+          {
+            "content": "English",
+            "polygon": [
+              1051,
+              2976,
+              1179,
+              2963,
+              1183,
+              3011,
+              1056,
+              3026
+            ],
+            "confidence": 0.995,
+            "span": {
+              "offset": 692,
+              "length": 7
+            }
+          },
+          {
+            "content": "writer",
+            "polygon": [
+              1194,
+              2962,
+              1301,
+              2951,
+              1305,
+              2997,
+              1199,
+              3009
+            ],
+            "confidence": 0.99,
+            "span": {
+              "offset": 700,
+              "length": 6
+            }
+          },
+          {
+            "content": "and",
+            "polygon": [
+              1313,
+              2950,
+              1379,
+              2943,
+              1384,
+              2988,
+              1318,
+              2995
+            ],
+            "confidence": 0.999,
+            "span": {
+              "offset": 707,
+              "length": 3
+            }
+          },
+          {
+            "content": "mathematician",
+            "polygon": [
+              1393,
+              2942,
+              1649,
+              2918,
+              1651,
+              2958,
+              1397,
+              2986
+            ],
+            "confidence": 0.99,
+            "span": {
+              "offset": 711,
+              "length": 13
+            }
+          }
+        ],
+        "lines": [
+          {
+            "content": "Zuppa Pavese (Pavia Soup)",
+            "polygon": [
+              567,
+              320,
+              1705,
+              341,
+              1702,
+              458,
+              566,
+              422
+            ],
+            "spans": [
+              {
+                "offset": 0,
+                "length": 25
+              }
+            ]
+          },
+          {
+            "content": "3 Tbs. butter",
+            "polygon": [
+              283,
+              509,
+              830,
+              480,
+              836,
+              565,
+              285,
+              590
+            ],
+            "spans": [
+              {
+                "offset": 26,
+                "length": 13
+              }
+            ]
+          },
+          {
+            "content": "6 slices firm, course-textured bread",
+            "polygon": [
+              289,
+              598,
+              1831,
+              575,
+              1833,
+              681,
+              289,
+              718
+            ],
+            "spans": [
+              {
+                "offset": 40,
+                "length": 36
+              }
+            ]
+          },
+          {
+            "content": "6 c. meat or chicken broth",
+            "polygon": [
+              316,
+              735,
+              1523,
+              696,
+              1525,
+              798,
+              320,
+              847
+            ],
+            "spans": [
+              {
+                "offset": 77,
+                "length": 26
+              }
+            ]
+          },
+          {
+            "content": "salt",
+            "polygon": [
+              327,
+              873,
+              538,
+              855,
+              548,
+              931,
+              331,
+              952
+            ],
+            "spans": [
+              {
+                "offset": 104,
+                "length": 4
+              }
+            ]
+          },
+          {
+            "content": "6 eggs",
+            "polygon": [
+              331,
+              977,
+              635,
+              968,
+              638,
+              1060,
+              331,
+              1067
+            ],
+            "spans": [
+              {
+                "offset": 109,
+                "length": 6
+              }
+            ]
+          },
+          {
+            "content": "freshly ground pepper",
+            "polygon": [
+              333,
+              1082,
+              1390,
+              1015,
+              1397,
+              1118,
+              340,
+              1186
+            ],
+            "spans": [
+              {
+                "offset": 116,
+                "length": 21
+              }
+            ]
+          },
+          {
+            "content": "6 Tbs. freshly grated Parmesan cheese",
+            "polygon": [
+              341,
+              1218,
+              1992,
+              1142,
+              1996,
+              1234,
+              346,
+              1327
+            ],
+            "spans": [
+              {
+                "offset": 138,
+                "length": 37
+              }
+            ]
+          },
+          {
+            "content": "* melt butter in a saucepan and fry the",
+            "polygon": [
+              309,
+              1409,
+              2090,
+              1318,
+              2096,
+              1414,
+              311,
+              1502
+            ],
+            "spans": [
+              {
+                "offset": 176,
+                "length": 39
+              }
+            ]
+          },
+          {
+            "content": "bread slices on both sides until golden",
+            "polygon": [
+              273,
+              1530,
+              2107,
+              1431,
+              2112,
+              1515,
+              275,
+              1632
+            ],
+            "spans": [
+              {
+                "offset": 216,
+                "length": 39
+              }
+            ]
+          },
+          {
+            "content": "brown. Divide among 6 soup bowls. Place",
+            "polygon": [
+              277,
+              1635,
+              2264,
+              1510,
+              2268,
+              1615,
+              281,
+              1730
+            ],
+            "spans": [
+              {
+                "offset": 256,
+                "length": 39
+              }
+            ]
+          },
+          {
+            "content": "bowls in are over which has been pre heated",
+            "polygon": [
+              324,
+              1751,
+              2324,
+              1625,
+              2329,
+              1727,
+              331,
+              1851
+            ],
+            "spans": [
+              {
+                "offset": 296,
+                "length": 43
+              }
+            ]
+          },
+          {
+            "content": "to 350ºF and turned off.",
+            "polygon": [
+              361,
+              1860,
+              1490,
+              1807,
+              1496,
+              1909,
+              365,
+              1967
+            ],
+            "spans": [
+              {
+                "offset": 340,
+                "length": 24
+              }
+            ]
+          },
+          {
+            "content": "* Meanwhile, Uring wroth to a boil, adding pal",
+            "polygon": [
+              346,
+              2029,
+              2439,
+              1868,
+              2443,
+              1964,
+              349,
+              2131
+            ],
+            "spans": [
+              {
+                "offset": 365,
+                "length": 46
+              }
+            ]
+          },
+          {
+            "content": "if necessary. Break an egg on to each slice",
+            "polygon": [
+              357,
+              2144,
+              2439,
+              1970,
+              2445,
+              2079,
+              366,
+              2260
+            ],
+            "spans": [
+              {
+                "offset": 412,
+                "length": 43
+              }
+            ]
+          },
+          {
+            "content": "of bread, pour the boiling broth over it an",
+            "polygon": [
+              399,
+              2280,
+              2444,
+              2094,
+              2447,
+              2187,
+              408,
+              2383
+            ],
+            "spans": [
+              {
+                "offset": 456,
+                "length": 43
+              }
+            ]
+          },
+          {
+            "content": "add pepper to taste. Sprinkle with Parme",
+            "polygon": [
+              403,
+              2420,
+              2437,
+              2204,
+              2439,
+              2329,
+              408,
+              2546
+            ],
+            "spans": [
+              {
+                "offset": 500,
+                "length": 40
+              }
+            ]
+          },
+          {
+            "content": "cheese. Harrish w/parsley nut meg.",
+            "polygon": [
+              390,
+              2565,
+              2199,
+              2383,
+              2208,
+              2484,
+              393,
+              2665
+            ],
+            "spans": [
+              {
+                "offset": 541,
+                "length": 34
+              }
+            ]
+          },
+          {
+            "content": "sagt",
+            "polygon": [
+              32,
+              1353,
+              121,
+              1396,
+              99,
+              1448,
+              6,
+              1403
+            ],
+            "spans": [
+              {
+                "offset": 576,
+                "length": 4
+              }
+            ]
+          },
+          {
+            "content": "ell",
+            "polygon": [
+              1,
+              1604,
+              94,
+              1613,
+              85,
+              1697,
+              0,
+              1690
+            ],
+            "spans": [
+              {
+                "offset": 581,
+                "length": 3
+              }
+            ]
+          },
+          {
+            "content": "Fax",
+            "polygon": [
+              1,
+              2073,
+              116,
+              2076,
+              116,
+              2161,
+              0,
+              2161
+            ],
+            "spans": [
+              {
+                "offset": 585,
+                "length": 3
+              }
+            ]
+          },
+          {
+            "content": "eat",
+            "polygon": [
+              0,
+              2248,
+              111,
+              2247,
+              111,
+              2336,
+              1,
+              2340
+            ],
+            "spans": [
+              {
+                "offset": 589,
+                "length": 3
+              }
+            ]
+          },
+          {
+            "content": "(Serves 6)",
+            "polygon": [
+              1709,
+              2546,
+              2215,
+              2521,
+              2222,
+              2658,
+              1720,
+              2698
+            ],
+            "spans": [
+              {
+                "offset": 593,
+                "length": 10
+              }
+            ]
+          },
+          {
+            "content": "\"A loaf of bread\" the Walrus said,",
+            "polygon": [
+              584,
+              2727,
+              1613,
+              2648,
+              1618,
+              2718,
+              585,
+              2792
+            ],
+            "spans": [
+              {
+                "offset": 604,
+                "length": 34
+              }
+            ]
+          },
+          {
+            "content": "\"Is what we chiefly need.\"",
+            "polygon": [
+              585,
+              2811,
+              1392,
+              2752,
+              1398,
+              2831,
+              588,
+              2879
+            ],
+            "spans": [
+              {
+                "offset": 639,
+                "length": 26
+              }
+            ]
+          },
+          {
+            "content": "LEWIS CARROLL (1832-1898)",
+            "polygon": [
+              1045,
+              2916,
+              1594,
+              2867,
+              1598,
+              2909,
+              1049,
+              2963
+            ],
+            "spans": [
+              {
+                "offset": 666,
+                "length": 25
+              }
+            ]
+          },
+          {
+            "content": "English writer and mathematician",
+            "polygon": [
+              1051,
+              2976,
+              1646,
+              2918,
+              1651,
+              2962,
+              1055,
+              3025
+            ],
+            "spans": [
+              {
+                "offset": 692,
+                "length": 32
+              }
+            ]
+          }
+        ],
+        "spans": [
+          {
+            "offset": 0,
+            "length": 724
+          }
+        ]
+      }
+    ],
+    "tables": [],
+    "paragraphs": [
+      {
+        "spans": [
+          {
+            "offset": 0,
+            "length": 25
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              567,
+              312,
+              1705,
+              341,
+              1702,
+              458,
+              564,
+              429
+            ]
+          }
+        ],
+        "role": "title",
+        "content": "Zuppa Pavese (Pavia Soup)"
+      },
+      {
+        "spans": [
+          {
+            "offset": 26,
+            "length": 13
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              281,
+              505,
+              832,
+              480,
+              836,
+              565,
+              285,
+              590
+            ]
+          }
+        ],
+        "content": "3 Tbs. butter"
+      },
+      {
+        "spans": [
+          {
+            "offset": 40,
+            "length": 68
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              287,
+              598,
+              1831,
+              575,
+              1837,
+              930,
+              293,
+              953
+            ]
+          }
+        ],
+        "content": "6 slices firm, course-textured bread 6 c. meat or chicken broth salt"
+      },
+      {
+        "spans": [
+          {
+            "offset": 109,
+            "length": 66
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              326,
+              977,
+              1977,
+              884,
+              1997,
+              1234,
+              346,
+              1327
+            ]
+          }
+        ],
+        "content": "6 eggs freshly ground pepper 6 Tbs. freshly grated Parmesan cheese"
+      },
+      {
+        "spans": [
+          {
+            "offset": 176,
+            "length": 188
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              264,
+              1411,
+              2308,
+              1307,
+              2336,
+              1866,
+              292,
+              1971
+            ]
+          }
+        ],
+        "content": "* melt butter in a saucepan and fry the bread slices on both sides until golden brown. Divide among 6 soup bowls. Place bowls in are over which has been pre heated to 350ºF and turned off."
+      },
+      {
+        "spans": [
+          {
+            "offset": 365,
+            "length": 210
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              341,
+              2029,
+              2439,
+              1868,
+              2443,
+              2504,
+              390,
+              2665
+            ]
+          }
+        ],
+        "content": "* Meanwhile, Uring wroth to a boil, adding pal if necessary. Break an egg on to each slice of bread, pour the boiling broth over it an add pepper to taste. Sprinkle with Parme cheese. Harrish w/parsley nut meg."
+      },
+      {
+        "spans": [
+          {
+            "offset": 576,
+            "length": 4
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              31,
+              1352,
+              124,
+              1397,
+              99,
+              1448,
+              6,
+              1403
+            ]
+          }
+        ],
+        "content": "sagt"
+      },
+      {
+        "spans": [
+          {
+            "offset": 581,
+            "length": 3
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              1,
+              1604,
+              94,
+              1613,
+              86,
+              1698,
+              0,
+              1689
+            ]
+          }
+        ],
+        "content": "ell"
+      },
+      {
+        "spans": [
+          {
+            "offset": 585,
+            "length": 3
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              0,
+              2073,
+              116,
+              2073,
+              116,
+              2161,
+              0,
+              2161
+            ]
+          }
+        ],
+        "content": "Fax"
+      },
+      {
+        "spans": [
+          {
+            "offset": 589,
+            "length": 3
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              0,
+              2248,
+              111,
+              2247,
+              112,
+              2339,
+              1,
+              2340
+            ]
+          }
+        ],
+        "content": "eat"
+      },
+      {
+        "spans": [
+          {
+            "offset": 593,
+            "length": 10
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              1709,
+              2546,
+              2214,
+              2509,
+              2225,
+              2661,
+              1720,
+              2698
+            ]
+          }
+        ],
+        "content": "(Serves 6)"
+      },
+      {
+        "spans": [
+          {
+            "offset": 604,
+            "length": 61
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              576,
+              2728,
+              1613,
+              2648,
+              1626,
+              2814,
+              589,
+              2893
+            ]
+          }
+        ],
+        "content": "\"A loaf of bread\" the Walrus said, \"Is what we chiefly need.\""
+      },
+      {
+        "spans": [
+          {
+            "offset": 666,
+            "length": 58
+          }
+        ],
+        "boundingRegions": [
+          {
+            "pageNumber": 1,
+            "polygon": [
+              1043,
+              2916,
+              1639,
+              2853,
+              1651,
+              2962,
+              1055,
+              3025
+            ]
+          }
+        ],
+        "content": "LEWIS CARROLL (1832-1898) English writer and mathematician"
+      }
+    ],
+    "styles": [
+      {
+        "confidence": 1,
+        "spans": [
+          {
+            "offset": 0,
+            "length": 25
+          },
+          {
+            "offset": 40,
+            "length": 540
+          }
+        ],
+        "isHandwritten": true
+      },
+      {
+        "confidence": 0.95,
+        "spans": [
+          {
+            "offset": 26,
+            "length": 13
+          }
+        ],
+        "isHandwritten": true
+      },
+      {
+        "confidence": 0.9,
+        "spans": [
+          {
+            "offset": 581,
+            "length": 22
+          }
+        ],
+        "isHandwritten": true
+      }
+    ],
+    "contentFormat": "text",
+    "sections": [
+      {
+        "spans": [
+          {
+            "offset": 0,
+            "length": 724
+          }
+        ],
+        "elements": [
+          "/paragraphs/0",
+          "/paragraphs/1",
+          "/paragraphs/2",
+          "/paragraphs/3",
+          "/paragraphs/4",
+          "/paragraphs/5",
+          "/paragraphs/6",
+          "/paragraphs/7",
+          "/paragraphs/8",
+          "/paragraphs/9",
+          "/paragraphs/10",
+          "/paragraphs/11",
+          "/paragraphs/12"
+        ]
+      }
+    ]
+  }
+}

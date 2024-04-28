@@ -184,6 +184,10 @@ func NewRecipesFromCML(r io.Reader, file *multipart.FileHeader, uploadImageFunc 
 			category = keywords[0]
 		}
 
+		if category == "" {
+			category = "uncategorized"
+		}
+
 		var img uuid.UUID
 		decode, err := base64.StdEncoding.DecodeString(recipe.Head.PicBin.Text)
 		if err == nil {

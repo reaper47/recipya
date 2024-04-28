@@ -235,10 +235,10 @@ func createConfigFile(path string) error {
 		c.Email.SendGridAPIKey = promptUser(r, "\tWhat is your SendGrid API key?", "")
 	}
 
-	hasVisionAPI := promptUser(r, "Do you have an Azure AI Vision account? If not, OCR features will be disabled. [Y/n]", "n")
-	if isYes(hasVisionAPI) {
-		c.Integrations.AzureComputerVision.ResourceKey = promptUser(r, "\tWhat is your resource key?", "")
-		c.Integrations.AzureComputerVision.VisionEndpoint = promptUser(r, "\tWhat is your vision API endpoint?", "")
+	hasOCR := promptUser(r, "Do you have an Azure AI Document Intelligence account? If not, OCR features will be disabled. [Y/n]", "n")
+	if isYes(hasOCR) {
+		c.Integrations.AzureDI.Key = promptUser(r, "\tWhat is your resource key?", "")
+		c.Integrations.AzureDI.Endpoint = promptUser(r, "\tWhat is your endpoint?", "")
 	}
 
 	isAutologin := promptUser(r, "Do you wish to autologin? [y/N]", "N")

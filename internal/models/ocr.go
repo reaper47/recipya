@@ -1,187 +1,255 @@
 package models
 
 import (
-	"github.com/reaper47/recipya/internal/units"
+	"github.com/jdkato/prose/v2"
+	"github.com/reaper47/recipya/internal/utils/duration"
+	"github.com/reaper47/recipya/internal/utils/extensions"
 	"github.com/reaper47/recipya/internal/utils/regex"
+	"slices"
 	"strconv"
 	"strings"
+	"time"
 )
 
-// AzureVision holds the data contained in the response of a call to the Computer Vision API's image analysis endpoint.
-type AzureVision struct {
-	ModelVersion  string `json:"modelVersion"`
-	CaptionResult struct {
-		Text       string  `json:"text"`
-		Confidence float64 `json:"confidence"`
-	} `json:"captionResult"`
-	Metadata struct {
-		Width  int `json:"width"`
-		Height int `json:"height"`
-	} `json:"metadata"`
-	ReadResult struct {
-		Blocks []struct {
+// AzureDILayout holds the data contained in the response of a call to the Azure AI Document Intelligence layout analysis endpoint.
+type AzureDILayout struct {
+	Status              string    `json:"status"`
+	CreatedDateTime     time.Time `json:"createdDateTime"`
+	LastUpdatedDateTime time.Time `json:"lastUpdatedDateTime"`
+	AnalyzeResult       struct {
+		APIVersion      string `json:"apiVersion"`
+		ModelID         string `json:"modelId"`
+		StringIndexType string `json:"stringIndexType"`
+		Content         string `json:"content"`
+		Pages           []struct {
+			PageNumber int     `json:"pageNumber"`
+			Angle      float64 `json:"angle"`
+			Width      float64 `json:"width"`
+			Height     float64 `json:"height"`
+			Unit       string  `json:"unit"`
+			Words      []struct {
+				Content    string    `json:"content"`
+				Polygon    []float64 `json:"polygon"`
+				Confidence float64   `json:"confidence"`
+				Span       struct {
+					Offset int `json:"offset"`
+					Length int `json:"length"`
+				} `json:"span"`
+			} `json:"words"`
 			Lines []struct {
-				Text            string `json:"text"`
-				BoundingPolygon []struct {
-					X int `json:"x"`
-					Y int `json:"y"`
-				} `json:"boundingPolygon"`
-				Words []struct {
-					Text            string `json:"text"`
-					BoundingPolygon []struct {
-						X int `json:"x"`
-						Y int `json:"y"`
-					} `json:"boundingPolygon"`
-					Confidence float64 `json:"confidence"`
-				} `json:"words"`
+				Content string    `json:"content"`
+				Polygon []float64 `json:"polygon"`
+				Spans   []struct {
+					Offset int `json:"offset"`
+					Length int `json:"length"`
+				} `json:"spans"`
 			} `json:"lines"`
-		} `json:"blocks"`
-	} `json:"readResult"`
+			Spans []struct {
+				Offset int `json:"offset"`
+				Length int `json:"length"`
+			} `json:"spans"`
+		} `json:"pages"`
+		Tables     []interface{}      `json:"tables"`
+		Paragraphs []azureDIParagraph `json:"paragraphs"`
+		Styles     []struct {
+			Confidence float64 `json:"confidence"`
+			Spans      []struct {
+				Offset int `json:"offset"`
+				Length int `json:"length"`
+			} `json:"spans"`
+			IsHandwritten bool `json:"isHandwritten"`
+		} `json:"styles"`
+		ContentFormat string `json:"contentFormat"`
+		Sections      []struct {
+			Spans []struct {
+				Offset int `json:"offset"`
+				Length int `json:"length"`
+			} `json:"spans"`
+			Elements []string `json:"elements"`
+		} `json:"sections"`
+	} `json:"analyzeResult"`
 }
 
-// Recipe converts an AzureVision to a Recipe.
-func (a *AzureVision) Recipe() Recipe {
+type azureDIParagraph struct {
+	Spans []struct {
+		Offset int `json:"offset"`
+		Length int `json:"length"`
+	} `json:"spans"`
+	BoundingRegions []struct {
+		PageNumber int       `json:"pageNumber"`
+		Polygon    []float64 `json:"polygon"`
+	} `json:"boundingRegions"`
+	Role    string `json:"role,omitempty"`
+	Content string `json:"content"`
+}
+
+// Recipe converts an AzureDILayout to a Recipe.
+func (a *AzureDILayout) Recipe() Recipe {
 	recipe := Recipe{
 		Category: "uncategorized",
 		URL:      "OCR",
+		Yield:    1,
 	}
 
-	if len(a.ReadResult.Blocks) == 0 || (len(a.ReadResult.Blocks) > 0 && len(a.ReadResult.Blocks[0].Lines) <= 2) {
+	if len(a.AnalyzeResult.Pages) == 0 {
 		return Recipe{}
 	}
 
-	var (
-		isDescription  = true
-		isIngredients  bool
-		isInstructions bool
+	for i := 0; i < len(a.AnalyzeResult.Paragraphs); i++ {
+		p := a.AnalyzeResult.Paragraphs[i]
 
-		isDelimitedByAsterisk bool
-		isDelimitedByNothing  bool
-	)
+		if p.Role == "sectionHeading" && strings.HasPrefix(strings.ToLower(p.Content), "utens") {
+			if i > 1 {
+				recipe.Name = a.AnalyzeResult.Paragraphs[i-1].Content
 
-	for _, line := range a.ReadResult.Blocks[0].Lines {
+				_, after, ok := strings.Cut(strings.ToUpper(recipe.Name), "ZUBEREITUNG")
+				if ok {
+					recipe.Times.Prep = duration.From(strings.ToLower(after))
+				}
+
+				_, after, ok = strings.Cut(strings.ToUpper(after), "ETWA")
+				if ok {
+					parsed, err := strconv.ParseInt(regex.Digit.FindString(after), 10, 16)
+					if err == nil {
+						recipe.Yield = int16(parsed)
+					}
+				}
+			}
+
+			for i2, p2 := range a.AnalyzeResult.Paragraphs[i+1:] {
+				if strings.HasPrefix(strings.ToLower(p2.Content), "zutaten") {
+					i += i2 + 1
+					break
+				}
+				recipe.Tools = append(recipe.Tools, p2.Content)
+			}
+			continue
+		}
+
 		if recipe.Name == "" {
-			recipe.Name = line.Text
+			if p.Role == "title" || p.Role == "sectionHeading" {
+				recipe.Name = p.Content
+				continue
+			}
 			continue
 		}
 
-		lower := strings.ToLower(line.Text)
-		numWords := len(strings.Split(lower, " "))
-		if numWords < 3 && strings.HasPrefix(lower, "serve") {
-			processMetaData([]byte(lower), &recipe)
+		if strings.Contains(strings.ToLower(p.Content), "serve") && len(p.Content) < 20 {
+			_, after, _ := strings.Cut(strings.ToLower(p.Content), "serve")
+			if regex.Digit.MatchString(after) {
+				parsed, _ := strconv.ParseInt(regex.Digit.FindString(after), 10, 16)
+				recipe.Yield = int16(parsed)
+				continue
+			}
+		}
+
+		if len(recipe.Ingredients) == 0 && isIngredient(p.Content) {
+			var isFound bool
+			for _, line := range a.AnalyzeResult.Pages[p.BoundingRegions[0].PageNumber-1].Lines {
+				if strings.Contains(p.Content, line.Content) {
+					isFound = true
+					recipe.Ingredients = append(recipe.Ingredients, line.Content)
+					continue
+				} else if !isFound {
+					continue
+				} else if !isIngredient(line.Content) {
+					i = slices.IndexFunc(a.AnalyzeResult.Paragraphs, func(paragraph azureDIParagraph) bool {
+						return strings.Contains(paragraph.Content, line.Content)
+					}) - 1
+					break
+				}
+
+				recipe.Ingredients = append(recipe.Ingredients, line.Content)
+			}
+			continue
+		} else if len(recipe.Ingredients) == 0 && strings.HasPrefix(strings.ToUpper(p.Content), "FÜR DIE") {
+			for i2, p2 := range a.AnalyzeResult.Paragraphs[i:] {
+				diff := len(p2.Content) - len(recipe.Name)
+				if p2.Role == "title" && (diff < -3 || diff > 3) {
+					i += i2
+					break
+				}
+				recipe.Ingredients = append(recipe.Ingredients, p2.Content)
+			}
 			continue
 		}
 
-		if isDescription || (isDescription && recipe.Description == "") {
-			replaced := units.ReplaceVulgarFractions(line.Text)
-			idx := regex.Digit.FindStringIndex(replaced)
-			if len(idx) == 2 {
-				_, err := strconv.ParseInt(string(replaced[idx[1]-1]), 10, 64)
-				if err == nil && idx[0] == 0 {
-					isDescription = false
-					isIngredients = true
-					recipe.Ingredients = append(recipe.Ingredients, line.Text)
-					continue
-				}
-			}
-
-			isDescription = true
-			recipe.Description += " " + line.Text
+		if len(recipe.Ingredients) == 0 {
+			recipe.Description = p.Content
 			continue
 		}
 
-		if isIngredients {
-			replaced := units.ReplaceVulgarFractions(line.Text)
-			idx := regex.Digit.FindStringIndex(replaced)
-			if len(idx) == 2 {
-				_, err := strconv.ParseInt(string(replaced[idx[1]-1]), 10, 64)
-				if err == nil && idx[0] == 0 {
-					recipe.Ingredients = append(recipe.Ingredients, line.Text)
-					continue
-				}
-			}
-
-			dotIndex := strings.IndexByte(line.Text, '.')
-			before, _, found := strings.Cut(line.Text, ".")
-			if found && dotIndex >= 0 && dotIndex < 4 && len(line.Text) > 25 {
-				_, err := strconv.ParseInt(before, 10, 64)
-				if err == nil && dotIndex != -1 && dotIndex < 4 {
-					isDelimitedByNothing = false
-					isIngredients = false
-					isInstructions = true
-					recipe.Instructions = append(recipe.Instructions, strings.TrimSpace(line.Text[dotIndex+1:]))
-					continue
-				}
-			}
-
-			if len(line.Text) >= 25 {
-				isIngredients = false
-				isInstructions = true
-
-				_, err := strconv.ParseInt(line.Text[:1], 10, 64)
-				if err != nil {
-					if line.Text[0] == '*' {
-						isDelimitedByAsterisk = true
-					} else {
-						isDelimitedByNothing = true
+		if len(recipe.Instructions) == 0 {
+			for i2, p2 := range a.AnalyzeResult.Paragraphs[i:] {
+				if len(strings.Split(p2.Content, " ")) < 2 {
+					_, err := strconv.ParseInt(p2.Content, 10, 64)
+					if err == nil {
+						continue
+					}
+					i += i2
+					break
+				} else if strings.Contains(strings.ToLower(p2.Content), "serve") && len(p2.Content) < 20 {
+					_, after, _ := strings.Cut(strings.ToLower(p2.Content), "serve")
+					if regex.Digit.MatchString(after) {
+						parsed, _ := strconv.ParseInt(regex.Digit.FindString(after), 10, 16)
+						recipe.Yield = int16(parsed)
+						i += i2
+						break
 					}
 				}
 
-				recipe.Instructions = append(recipe.Instructions, line.Text)
-				continue
-			}
+				s := p2.Content
+				dotIndex := strings.IndexByte(s, '.')
+				if dotIndex != -1 && dotIndex < 4 {
+					_, s, _ = strings.Cut(s, ".")
+				}
 
-			recipe.Ingredients = append(recipe.Ingredients, line.Text)
+				recipe.Instructions = append(recipe.Instructions, strings.TrimSpace(s))
+			}
 			continue
 		}
 
-		if isInstructions {
-			replaced := units.ReplaceVulgarFractions(line.Text)
-			idx := regex.Digit.FindStringIndex(replaced)
-			if len(idx) == 2 {
-				_, err := strconv.ParseInt(string(replaced[idx[1]-1]), 10, 64)
-				if err == nil && idx[0] == 0 && !regex.Time.MatchString(line.Text) {
-					isInstructions = false
-					isIngredients = true
-					recipe.Ingredients = append(recipe.Ingredients, line.Text)
-					continue
-				}
+		if strings.Contains(strings.ToLower(p.Content), "serve") {
+			parsed, err := strconv.ParseInt(regex.Digit.FindString(p.Content), 10, 16)
+			if err == nil {
+				recipe.Yield = int16(parsed)
 			}
-
-			if line.Text[0] == '*' {
-				isDelimitedByAsterisk = true
-				recipe.Instructions = append(recipe.Instructions, line.Text)
-				continue
-			}
-
-			if isDelimitedByAsterisk {
-				recipe.Instructions[len(recipe.Instructions)-1] += " " + line.Text
-				continue
-			}
-
-			if isDelimitedByNothing {
-				recipe.Instructions = append(recipe.Instructions, line.Text)
-				continue
-			}
-
-			dotIndex := strings.IndexByte(line.Text, '.')
-			before, _, found := strings.Cut(line.Text, ".")
-			if found && dotIndex >= 0 && dotIndex < 4 {
-				_, err := strconv.ParseInt(before, 10, 64)
-				if err == nil && dotIndex != -1 && dotIndex < 4 {
-					recipe.Instructions = append(recipe.Instructions, strings.TrimSpace(line.Text[dotIndex+1:]))
-					continue
-				}
-			}
-
-			recipe.Instructions[len(recipe.Instructions)-1] += " " + line.Text
-			continue
 		}
 	}
 
-	recipe.Description = strings.TrimSpace(recipe.Description)
-	if recipe.Yield == 0 {
-		recipe.Yield = 1
+	if recipe.Description == "" {
+		recipe.Description = "Recipe created using Azure AI Document Intelligence."
 	}
+
+	recipe.Ingredients = extensions.Unique(recipe.Ingredients)
 	return recipe
+}
+
+// AzureDIError holds the data of an Azure AI Document Intelligence error.
+type AzureDIError struct {
+	Error struct {
+		Code    string `json:"code"`
+		Message string `json:"message"`
+	} `json:"error"`
+}
+
+func isIngredient(s string) bool {
+	if s == "" {
+		return false
+	}
+
+	_, err := strconv.ParseFloat(string([]rune(s)[0]), 64)
+	dotIndex := strings.Index(s, ".")
+
+	idx := regex.Unit.FindStringIndex(s)
+	isAtStart := idx != nil && idx[0] < 8
+
+	if idx == nil {
+		doc, _ := prose.NewDocument(s)
+		if doc.Tokens()[0].Tag == "IN" {
+			return false
+		}
+	}
+
+	return isAtStart || (err == nil && (dotIndex == -1 || dotIndex > 3)) || len(s) < 25
 }

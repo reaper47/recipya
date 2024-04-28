@@ -167,7 +167,7 @@ func prepareRequest(method, target string, contentType header, body *strings.Rea
 	if server.SessionData.Data == nil {
 		server.SessionData.Data = make(map[uuid.UUID]int64)
 	}
-	server.SessionData.Data[sid] = 1
+	server.SessionData.Set(sid, 1)
 
 	r := httptest.NewRequest(method, target, body)
 	r.AddCookie(server.NewSessionCookie(sid.String()))
@@ -188,7 +188,7 @@ func prepareRequestOther(method, target string, contentType header, body *string
 	if server.SessionData.Data == nil {
 		server.SessionData.Data = make(map[uuid.UUID]int64)
 	}
-	server.SessionData.Data[sid] = 2
+	server.SessionData.Set(sid, 2)
 
 	r := httptest.NewRequest(method, target, body)
 	r.AddCookie(server.NewSessionCookie(sid.String()))

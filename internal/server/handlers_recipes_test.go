@@ -94,7 +94,11 @@ func TestHandlers_Recipes_New(t *testing.T) {
 				`<title hx-swap-oob="true">Add Recipe | Recipya</title>`,
 				`<img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes/new/import.webp" alt="Writing on a piece of paper with a traditional pen.">`,
 				`<button class="underline" hx-get="/recipes/supported-websites" hx-target="#search-results" onclick="supported_websites_dialog.showModal()">supported</button>`,
-				`<dialog id="websites_dialog" class="modal"><div class="modal-box"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="font-bold text-lg">Fetch recipes from websites</h3><form class="py-4" hx-post="/recipes/add/website" hx-indicator="#fullscreen-loader" hx-swap="none"><div class="grid mb-4"><label class="form-control"><div class="label"><span class="label-text">Enter one or more URLs, each on a new line.</span></div><textarea class="textarea textarea-bordered h-24 whitespace-pre-line" placeholder="URL 1URL 2URL 3URL 4etc..." name="urls" rows="10"></textarea></label></div><button type="submit" class="w-full p-2 font-semibold text-white bg-blue-500 border rounded-lg hover:bg-blue-800 dark:border-gray-800" onclick="websites_dialog.close()">Submit</button></form></div></dialog>`,
+				`<dialog id="websites_dialog" class="modal"><div class="modal-box"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="font-bold text-lg">Fetch recipes from websites</h3><form class="py-4" hx-post="/recipes/add/website" hx-indicator="#fullscreen-loader" hx-swap="none"><div class="grid mb-4"><label class="form-control"><div class="label"><span class="label-text">Enter one or more URLs, each on a new line.</span></div><textarea class="textarea textarea-bordered h-24 whitespace-pre-line" placeholder="URL 1URL 2URL 3URL 4etc..." name="urls" rows="10"></textarea></label></div><button type="submit" class="btn btn-block btn-primary btn-sm" onclick="websites_dialog.close()">Submit</button></form></div></dialog>`,
+				`<dialog id="supported_websites_dialog" class="modal"><div class="modal-box h-2/3"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="mb-1"><label><input type="search" placeholder="Search a website" class="input input-bordered input-sm w-11/12" _="on input show <tbody>tr/> in next <table/> when its textContent.toLowerCase() contains my value.toLowerCase()"></label></h3><div class="overflow-x-auto"><table class="table table-zebra table-sm"><thead><tr class="text-center"><th class="py-1">Number</th><th class="py-1">Website</th></tr></thead> <tbody id="search-results"></tbody></table></div></div></dialog>`,
+				`<dialog id="supported_apps_import_dialog" class="modal"><div class="modal-box h-2/3"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="mb-1"><label><input type="search" placeholder="Search an application" class="input input-bordered input-sm w-11/12" _="on input show <tbody>tr/> in next <table/> when its textContent.toLowerCase() contains my value.toLowerCase()"></label></h3><div class="overflow-x-auto"><table class="table table-zebra table-sm"><thead><tr class="text-center"><th class="py-1">Number</th><th class="py-1">Application</th></tr></thead> <tbody id="application-results"></tbody></table></div></div></dialog>`,
+				`<dialog id="add_ocr_dialog" class="modal"><div class="modal-box"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="font-bold text-lg">Scan Recipe</h3><form class="py-4" hx-post="/recipes/add/ocr" hx-encoding="multipart/form-data" hx-indicator="#fullscreen-loader" hx-swap="none" _="on submit add_ocr_dialog.close()"><div class="grid mb-4"><label for="add-ocr-files-input" class="text-sm font-medium mb-1">Select your recipe's images ordered by page or a recipe document in the PDF format.</label> <input id="add-ocr-files-input" type="file" name="files" accept=".jpg, .jpeg, .png, .bmp, .tiff, .heif, .pdf" multiple class="p-2 border border-gray-300 rounded-lg shadow focus:ring-2 focus:ring-purple-600 dark:bg-gray-900 dark:border-none"></div><button class="btn btn-block btn-primary btn-sm">Submit</button></form></div></dialog>`,
+				`<dialog id="import_recipes_dialog" class="modal"><div class="modal-box"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="font-bold text-lg">Import Recipes</h3><form class="py-4" hx-post="/recipes/add/import" enctype="multipart/form-data" hx-indicator="#fullscreen-loader" hx-swap="none"><div class="grid mb-4"><label for="import-dialog-file" class="text-sm font-semibold mb-1">Choose files in the .json, .txt, .zip or other application format.</label> <input id="import-dialog-file" type="file" name="files" accept=".cml,.crumb,.json,.mxp,.paprikarecipes,.txt,.zip" multiple class="p-2 border border-gray-300 rounded-lg shadow focus:ring-2 focus:ring-purple-600 dark:bg-gray-900 dark:border-none"></div><button type="submit" class="btn btn-block btn-primary btn-sm" onclick="import_recipes_dialog.close()">Submit</button></form></div></dialog>`,
 			}
 			assertStringsInHTML(t, getBodyHTML(rr), want)
 		})
@@ -460,14 +464,18 @@ func TestHandlers_Recipes_AddManualInstructionDelete(t *testing.T) {
 }
 
 func TestHandlers_Recipes_AddOCR(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer c.Close()
+
 	originalIntegrations := srv.Integrations
 	originalRepo := srv.Repository
+	app.Config.Integrations.AzureDI.Key = "chicken"
+	app.Config.Integrations.AzureDI.Endpoint = "kyiv"
 
-	uri := "/recipes/add/ocr"
+	uri := ts.URL + "/recipes/add/ocr"
 
-	sendReq := func(image string) *httptest.ResponseRecorder {
-		fields := map[string]string{"image": image}
+	sendReq := func(files string) *httptest.ResponseRecorder {
+		fields := map[string]string{"files": files}
 		contentType, body := createMultipartForm(fields)
 		return sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
 	}
@@ -476,7 +484,21 @@ func TestHandlers_Recipes_AddOCR(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
 	})
 
-	t.Run("image file must not be empty", func(t *testing.T) {
+	t.Run("warn user when feature disabled", func(t *testing.T) {
+		original := app.Config
+		app.Config.Integrations.AzureDI.Key = ""
+		app.Config.Integrations.AzureDI.Endpoint = ""
+		defer func() {
+			app.Config = original
+		}()
+
+		rr := sendReq("hello.jpg")
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-warning\",\"message\":\"Please consult the docs to enable OCR.\",\"title\":\"Feature Disabled\"}"}`)
+	})
+
+	t.Run("files must not be empty", func(t *testing.T) {
 		rr := sendReq("")
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
@@ -485,8 +507,8 @@ func TestHandlers_Recipes_AddOCR(t *testing.T) {
 
 	t.Run("processing OCR failed", func(t *testing.T) {
 		srv.Integrations = &mockIntegrations{
-			ProcessImageOCRFunc: func(_ io.Reader) (models.Recipe, error) {
-				return models.Recipe{}, errors.New("error")
+			processImageOCRFunc: func(_ []io.Reader) (models.Recipes, error) {
+				return models.Recipes{}, errors.New("error")
 			},
 		}
 		defer func() {
@@ -495,8 +517,28 @@ func TestHandlers_Recipes_AddOCR(t *testing.T) {
 
 		rr := sendReq("hello.jpg")
 
-		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not process OCR.\",\"title\":\"Integrations Error\"}"}`)
+		assertStatus(t, rr.Code, http.StatusAccepted)
+		want := `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Could not process OCR.","title":"Integrations Error"}}`
+		assertWebsocket(t, c, 3, want)
+	})
+
+	t.Run("adding processed recipe failed", func(t *testing.T) {
+		srv.Repository = &mockRepository{
+			AddRecipeFunc: func(_ *models.Recipe, _ int64, _ models.UserSettings) (int64, error) {
+				return -1, errors.New("oops")
+			},
+			UsersRegistered:        originalRepo.Users(),
+			UserSettingsRegistered: map[int64]*models.UserSettings{1: {}},
+		}
+		defer func() {
+			srv.Repository = originalRepo
+		}()
+
+		rr := sendReq("hello.jpg")
+
+		assertStatus(t, rr.Code, http.StatusAccepted)
+		want := `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Recipe could not be added.","title":"Database Error"}}`
+		assertWebsocket(t, c, 3, want)
 	})
 
 	t.Run("valid request", func(t *testing.T) {
@@ -511,8 +553,9 @@ func TestHandlers_Recipes_AddOCR(t *testing.T) {
 
 		rr := sendReq("hello.jpg")
 
-		assertStatus(t, rr.Code, http.StatusCreated)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"View /recipes/1\",\"background\":\"alert-info\",\"message\":\"Recipe scanned and uploaded.\",\"title\":\"Operation Successful\"}"}`)
+		assertStatus(t, rr.Code, http.StatusAccepted)
+		want := `{"type":"toast","fileName":"","data":"","toast":{"action":"View /recipes/1","background":"alert-info","message":"Recipe scanned and uploaded.","title":"Operation Successful"}}`
+		assertWebsocket(t, c, 3, want)
 		if len(repo.RecipesRegistered[1]) != 1 && repo.RecipesRegistered[1][0].ID != 1 {
 			t.Fatal("expected the recipe to be added")
 		}
@@ -1063,21 +1106,21 @@ func TestHandlers_Recipes_Search(t *testing.T) {
 		{
 			query: "lov",
 			want: []string{
-				`<section class="card card-compact bg-base-100 shadow-lg indicator w-full"><span class="indicator-item indicator-center badge badge-primary select-none"></span><figure class="relative cursor-pointer" hx-get="/recipes/2" hx-target="#content" hx-push-url="true" hx-trigger="mousedown"><img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Image for the Lovely Canada recipe"><div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg"><p class="p-2 text-sm"></p></div></figure><div class="card-body" lang="en"><h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">Lovely Canada</h2><div class="card-actions h-full flex-col-reverse"><button class="btn btn-block btn-sm btn-outline" hx-get="/recipes/2" hx-target="#content" hx-trigger="mousedown" hx-push-url="true">View</button></div></div></section>`,
-				`<section class="card card-compact bg-base-100 shadow-lg indicator w-full"><span class="indicator-item indicator-center badge badge-primary select-none"></span><figure class="relative cursor-pointer" hx-get="/recipes/3" hx-target="#content" hx-push-url="true" hx-trigger="mousedown"><img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Image for the Lovely Ukraine recipe"><div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg"><p class="p-2 text-sm"></p></div></figure><div class="card-body" lang="en"><h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">Lovely Ukraine</h2><div class="card-actions h-full flex-col-reverse"><button class="btn btn-block btn-sm btn-outline" hx-get="/recipes/3" hx-target="#content" hx-trigger="mousedown" hx-push-url="true">View</button></div></div></section>`,
+				`<section class="card card-compact bg-base-100 shadow-lg indicator w-full"><span class="indicator-item indicator-center badge badge-primary select-none"></span><figure class="relative cursor-pointer" hx-get="/recipes/2" hx-target="#content" hx-push-url="true" hx-trigger="mousedown" hx-swap="innerHTML show:window:top transition:true"><img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Image for the Lovely Canada recipe"><div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg"><p class="p-2 text-sm"></p></div></figure><div class="card-body" lang="en"><h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">Lovely Canada</h2><div class="card-actions h-full flex-col-reverse"><button class="btn btn-block btn-sm btn-outline" hx-get="/recipes/2" hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap="innerHTML show:window:top transition:true">View</button></div></div></section>`,
+				`<section class="card card-compact bg-base-100 shadow-lg indicator w-full"><span class="indicator-item indicator-center badge badge-primary select-none"></span><figure class="relative cursor-pointer" hx-get="/recipes/3" hx-target="#content" hx-push-url="true" hx-trigger="mousedown" hx-swap="innerHTML show:window:top transition:true"><img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Image for the Lovely Ukraine recipe"><div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg"><p class="p-2 text-sm"></p></div></figure><div class="card-body" lang="en"><h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">Lovely Ukraine</h2><div class="card-actions h-full flex-col-reverse"><button class="btn btn-block btn-sm btn-outline" hx-get="/recipes/3" hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap="innerHTML show:window:top transition:true">View</button></div></div></section>`,
 			},
 		},
 		{
 			query: "chi",
 			want: []string{
-				`<section class="card card-compact bg-base-100 shadow-lg indicator w-full"><span class="indicator-item indicator-center badge badge-primary select-none"></span><figure class="relative cursor-pointer" hx-get="/recipes/1" hx-target="#content" hx-push-url="true" hx-trigger="mousedown"><img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Image for the Chinese Firmware recipe"><div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg"><p class="p-2 text-sm"></p></div></figure><div class="card-body" lang="en"><h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">Chinese Firmware</h2><div class="card-actions h-full flex-col-reverse"><button class="btn btn-block btn-sm btn-outline" hx-get="/recipes/1" hx-target="#content" hx-trigger="mousedown" hx-push-url="true">View</button></div></div></section>`,
+				`<section class="card card-compact bg-base-100 shadow-lg indicator w-full"><span class="indicator-item indicator-center badge badge-primary select-none"></span><figure class="relative cursor-pointer" hx-get="/recipes/1" hx-target="#content" hx-push-url="true" hx-trigger="mousedown" hx-swap="innerHTML show:window:top transition:true"><img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Image for the Chinese Firmware recipe"><div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg"><p class="p-2 text-sm"></p></div></figure><div class="card-body" lang="en"><h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">Chinese Firmware</h2><div class="card-actions h-full flex-col-reverse"><button class="btn btn-block btn-sm btn-outline" hx-get="/recipes/1" hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap="innerHTML show:window:top transition:true">View</button></div></div></section>`,
 			},
 		},
 		{
 			query: "lovely",
 			want: []string{
-				`<section class="card card-compact bg-base-100 shadow-lg indicator w-full"><span class="indicator-item indicator-center badge badge-primary select-none"></span><figure class="relative cursor-pointer" hx-get="/recipes/2" hx-target="#content" hx-push-url="true" hx-trigger="mousedown"><img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Image for the Lovely Canada recipe"><div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg"><p class="p-2 text-sm"></p></div></figure><div class="card-body" lang="en"><h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">Lovely Canada</h2><div class="card-actions h-full flex-col-reverse"><button class="btn btn-block btn-sm btn-outline" hx-get="/recipes/2" hx-target="#content" hx-trigger="mousedown" hx-push-url="true">View</button></div></div></section>`,
-				`<section class="card card-compact bg-base-100 shadow-lg indicator w-full"><span class="indicator-item indicator-center badge badge-primary select-none"></span><figure class="relative cursor-pointer" hx-get="/recipes/3" hx-target="#content" hx-push-url="true" hx-trigger="mousedown"><img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Image for the Lovely Ukraine recipe"><div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg"><p class="p-2 text-sm"></p></div></figure><div class="card-body" lang="en"><h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">Lovely Ukraine</h2><div class="card-actions h-full flex-col-reverse"><button class="btn btn-block btn-sm btn-outline" hx-get="/recipes/3" hx-target="#content" hx-trigger="mousedown" hx-push-url="true">View</button></div></div></section>`,
+				`<section class="card card-compact bg-base-100 shadow-lg indicator w-full"><span class="indicator-item indicator-center badge badge-primary select-none"></span><figure class="relative cursor-pointer" hx-get="/recipes/2" hx-target="#content" hx-push-url="true" hx-trigger="mousedown" hx-swap="innerHTML show:window:top transition:true"><img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Image for the Lovely Canada recipe"><div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg"><p class="p-2 text-sm"></p></div></figure><div class="card-body" lang="en"><h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">Lovely Canada</h2><div class="card-actions h-full flex-col-reverse"><button class="btn btn-block btn-sm btn-outline" hx-get="/recipes/2" hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap="innerHTML show:window:top transition:true">View</button></div></div></section>`,
+				`<section class="card card-compact bg-base-100 shadow-lg indicator w-full"><span class="indicator-item indicator-center badge badge-primary select-none"></span><figure class="relative cursor-pointer" hx-get="/recipes/3" hx-target="#content" hx-push-url="true" hx-trigger="mousedown" hx-swap="innerHTML show:window:top transition:true"><img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Image for the Lovely Ukraine recipe"><div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg"><p class="p-2 text-sm"></p></div></figure><div class="card-body" lang="en"><h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">Lovely Ukraine</h2><div class="card-actions h-full flex-col-reverse"><button class="btn btn-block btn-sm btn-outline" hx-get="/recipes/3" hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap="innerHTML show:window:top transition:true">View</button></div></div></section>`,
 			},
 		},
 	}
