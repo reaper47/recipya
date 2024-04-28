@@ -48,8 +48,6 @@ You can upload files in the following formats:
 - Images (JPEG/JPG, PNG, BMP, HEIF)
 - PDF
 - TIFF
-- Word (DOCX)
-- PowerPoint (PPTX)
 
 {{< callout type="warning" >}}
 You must have an [Azure AI Document Intelligence](/guide/docs/installation/integrations#azure-AI Document Intelligence) instance to use this feature.

@@ -569,6 +569,12 @@ func recipeAddManualInstructionDeleteHandler() http.HandlerFunc {
 
 func (s *Server) recipesAddOCRHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		if app.Config.Integrations.AzureDI.Key == "" || app.Config.Integrations.AzureDI.Endpoint == "" {
+			w.Header().Set("HX-Trigger", models.NewWarningToast("Feature Disabled", "Please consult the docs to enable OCR.", "").Render())
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
 		// 1. Retrieve the files from the body.
 		r.Body = http.MaxBytesReader(w, r.Body, 1<<24)
 
@@ -596,7 +602,7 @@ func (s *Server) recipesAddOCRHandler() http.HandlerFunc {
 		// 2. Filter the files.
 		var (
 			validImageFormats = []string{".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".heif"}
-			validDocFormats   = []string{".pdf", ".docx", ".pptx"}
+			validDocFormats   = []string{".pdf"}
 		)
 
 		files = slices.DeleteFunc(files, func(fh *multipart.FileHeader) bool {
@@ -660,7 +666,7 @@ func (s *Server) recipesAddOCRHandler() http.HandlerFunc {
 			if imagePDF != nil {
 				docFiles = append(docFiles, imagePDF)
 			}
-		} else {
+		} else if len(imageFiles) == 1 {
 			f, err := imageFiles[0].Open()
 			if err == nil {
 				buf := bytes.NewBuffer(nil)
@@ -672,16 +678,6 @@ func (s *Server) recipesAddOCRHandler() http.HandlerFunc {
 			}
 		}
 
-		// 5. Process the files.
-		recipes, err := s.Integrations.ProcessImageOCR(docFiles)
-		if err != nil {
-			msg := "Could not process OCR."
-			slog.Error(msg, userIDAttr, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorToast("Integrations Error", msg, "").Render())
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-
 		settings, err := s.Repository.UserSettings(userID)
 		if err != nil {
 			msg := "Error getting user settings."
@@ -691,33 +687,54 @@ func (s *Server) recipesAddOCRHandler() http.HandlerFunc {
 			return
 		}
 
-		ids := make([]int64, len(recipes))
-		for _, recipe := range recipes {
-			id, err := s.Repository.AddRecipe(&recipe, userID, settings)
+		// 5. Process the files.
+		go func(id int64, us models.UserSettings, data []io.Reader) {
+			idAttr := slog.Int64("id", id)
+			s.Brokers[id].SendProgressStatus("Analyzing...", true, 0, -1)
+
+			recipes, err := s.Integrations.ProcessImageOCR(data)
 			if err != nil {
-				msg := "Recipe could not be added."
-				slog.Error(msg, userIDAttr, "recipe", recipe, "error", err)
-				w.Header().Set("HX-Trigger", models.NewErrorDBToast(msg).Render())
-				w.WriteHeader(http.StatusInternalServerError)
+				msg := "Could not process OCR."
+				slog.Error(msg, idAttr, "error", err)
+				s.Brokers[id].HideNotification()
+				s.Brokers[id].SendToast(models.NewErrorToast("Integrations Error", msg, ""))
 				return
 			}
 
-			s.Repository.CalculateNutrition(userID, []int64{id}, settings)
-			ids = append(ids, id)
-		}
+			ids := make([]int64, 0, len(recipes))
+			for _, recipe := range recipes {
+				recipeID, err := s.Repository.AddRecipe(&recipe, id, us)
+				if err != nil {
+					msg := "Recipe could not be added."
+					slog.Error(msg, idAttr, "recipe", recipe, "error", err)
+					s.Brokers[id].HideNotification()
+					s.Brokers[id].SendToast(models.NewErrorDBToast(msg))
+					return
+				}
 
-		if len(recipes) == 1 {
-			msg := "Recipe scanned and uploaded."
-			slog.Info(msg, "id", ids[0])
-			w.Header().Set("HX-Trigger", models.NewInfoToast("Operation Successful", msg, fmt.Sprintf("View /recipes/%d", ids[0])).Render())
-		} else {
-			msg := "Recipes scanned and uploaded."
-			slog.Info(msg, "ids", ids)
-			w.Header().Set("HX-Trigger", models.NewInfoToast("Operation Successful", msg, "OK").Render())
+				s.Repository.CalculateNutrition(userID, []int64{recipeID}, us)
+				ids = append(ids, recipeID)
+			}
 
-		}
+			s.Brokers[id].HideNotification()
 
-		w.WriteHeader(http.StatusCreated)
+			switch len(recipes) {
+			case 0:
+				slog.Error("No recipes saved in database.")
+				s.Brokers[id].SendToast(models.NewErrorReqToast("Failed to process. Please check logs."))
+
+			case 1:
+				msg := "Recipe scanned and uploaded."
+				slog.Info(msg, "id", ids[0])
+				s.Brokers[id].SendToast(models.NewInfoToast("Operation Successful", msg, fmt.Sprintf("View /recipes/%d", ids[0])))
+			default:
+				msg := "Recipes scanned and uploaded."
+				slog.Info(msg, "ids", ids)
+				s.Brokers[id].SendToast(models.NewInfoToast("Operation Successful", msg, ""))
+			}
+		}(userID, settings, docFiles)
+
+		w.WriteHeader(http.StatusAccepted)
 	}
 }
 

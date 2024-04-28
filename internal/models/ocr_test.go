@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 )
 
 func TestAzureVision_Recipe(t *testing.T) {
@@ -192,6 +193,70 @@ func TestAzureVision_Recipe(t *testing.T) {
 				Name:  "Sautéed Chicken with Cherry Tomato and Roasted Corn Salsa",
 				URL:   "OCR",
 				Yield: 4,
+			},
+		},
+		{
+			name: "recipe8.pdf",
+			file: "recipe8.json",
+			want: models.Recipe{
+				Category:    "uncategorized",
+				Description: "Recipe created using Azure AI Document Intelligence.",
+				Ingredients: []string{
+					"FÜR DIE SPRINGFORM (Ø 20 CM)",
+					"etwas Fett",
+					"BISKUITTEIG",
+					"4 Eier (Größe M)",
+					"60 g Zucker 8 BI. Dr. Oetker Gelatine weiß 1 Pck. Dr. Oetker Vanillin-Zucker 150 g Dr. Oetker Kuvertüre Weiß 400 ml Kokosmilch",
+					"80 g Weizenmehl 1 gestr. TL Dr. Oetker Original Backin 20 g Dr. Oetker Gustin Feine Speisestärke",
+					"MÜRBETEIG",
+					"100 g Weizenmehl",
+					"70 g",
+					"weiche Butter oder Margarine",
+					"40 g",
+					"Zucker",
+					"1 EL",
+					"Wasser",
+					"KOKOSCREME",
+					"300 g",
+					"kalte Schlagsahne",
+					"ZUM BESTREICHEN",
+					"3 EL helle Konfitüre , z.B. Marille-Maracuja",
+					"Dr.Oetker",
+					"Himmlische Kokoscreme-Torte ZUBEREITUNG: 60 MIN . ETWAS ÜBUNG ERFORDERLICH . ETWA 12 STÜCK",
+					"ZUM TRÄNKEN",
+					"etwa 4 EL Kokoslikör",
+					"ZUM VERZIEREN",
+					"etwa 50 g Kokosraspel",
+					"PRODUKTE ANSEHEN",
+					"Dr Oetker",
+					"Vanillin Zucker",
+					"Dr. Oetker Backpulver Original Backin",
+					"Gustin",
+					"DrOetker",
+					"helene Speise- stärke",
+					"Blatt Gelatine Qualsiz Gold extre",
+					"Kuvertüre",
+				},
+				Instructions: []string{
+					"1 Vorbereiten",
+					"Backblech mit Backpapier belegen. Springformboden fetten und mit Backpapier belegen. Backofen vorheizen.",
+					"Ober- und Unterhitze: etwa 180 ℃ Heißluft: etwa 160 ℃",
+					"Biskuitteig zubereiten",
+					"Eier in einer Rührschüssel mit einem Mixer (Rührstäbe) auf höchster Stufe 1 Min. schaumig schlagen. Mit Vanillin-Zucker gemischten Zucker unter Rühren in 1 Min. einstreuen und die Masse weitere 2 Min. schlagen. Mehl mit Backin und Gustin mischen und kurz auf niedrigster Stufe unterrühren. Teig in der Form glatt streichen. Form auf dem Rost in den Backofen schieben.",
+					"Einschub: Mitte",
+					"Backzeit: etwa 20 Min.",
+					"Springformrand lösen und entfernen. Biskuit auf einen mit Backpapier belegten Kuchenrost stürzen und erkalten lassen. Springform säubern und Boden fetten. Backofentemperatur erhöhen.",
+					"Ober- und Unterhitze: etwa 200 ℃",
+				},
+				Name:  "Himmlische Kokoscreme-Torte ZUBEREITUNG:60 MIN . ETWAS ÜBUNG ERFORDERLICH · ETWA 12 STÜCK",
+				Times: models.Times{Prep: 1 * time.Hour},
+				Tools: []string{
+					"FÜR DAS BACKBLECH",
+					"Backpapier",
+					"FÜR DIE SPRINGFORM (Ø 20 CM) Backpapier",
+				},
+				URL:   "OCR",
+				Yield: 12,
 			},
 		},
 	}

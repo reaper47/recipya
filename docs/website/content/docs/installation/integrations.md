@@ -36,6 +36,13 @@ Follow these steps to use this integration.
 1. Get an Azure subscription. You can [create one for free]((https://azure.microsoft.com/free/cognitive-services/).
 2. Add a [Document Intelligence instance](https://portal.azure.com/#create/Microsoft.CognitiveServicesFormRecognizer) in the Azure portal. You can use the free pricing tier (F0) to try the service.
 3. After your resource deploys, select *Keys and Endpoint* under *Resource Management* in the sidebar.
+   ![alt text](https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/media/containers/keys-and-endpoint.png?view=doc-intel-3.1.0)
 4. Copy *KEY 1* to the respective field in Recipya's setting. Alternatively, you may copy it to your configuration file's **integrations.azureDocumentIntelligence.key** field or `RECIPYA_DI_KEY` environment variable if you use Docker.
 5. Copy *Endpoint* to the respective field in Recipya's setting. Alternatively, you may copy it to your configuration file's **integrations.azureDocumentIntelligence.endpoint** field or `RECIPYA_DI_ENDPOINT` environment variable if you use Docker.
 6. Restart Recipya and test the *Azure AI Document Intelligence* connection from the settings.
+
+### Limitations
+
+- For PDF and TIFF, up to 2000 pages can be processed (with a free tier subscription, only the first two pages are processed).
+- The file size for analyzing documents is 500 MB for paid (S0) tier and 4 MB for free (F0) tier.
+- If your PDFs are password-locked, you must remove the lock before submission.

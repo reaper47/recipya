@@ -86,7 +86,7 @@ templ addRecipe() {
 			</figure>
 			<div class="card-body">
 				<h2 class="card-title">Scan</h2>
-				<p>Upload an image of the recipe you want to add or take a picture using your device's camera.</p>
+				<p>Upload the image files or PDF of the recipe you want to add or take a picture using your device's camera.</p>
 				<hr class="dark:border dark:border-gray-800"/>
 				<div class="card-actions">
 					<button class="btn btn-outline btn-sm btn-block" type="button" onclick="add_ocr_dialog.showModal()">
@@ -247,16 +247,17 @@ templ addRecipe() {
 					hx-encoding="multipart/form-data"
 					hx-indicator="#fullscreen-loader"
 					hx-swap="none"
+					_="on submit add_ocr_dialog.close()"
 				>
 					<div class="grid mb-4">
 						<label for="add-ocr-files-input" class="text-sm font-medium mb-1">
-							Select your	recipe's images	ordered by page or a recipe document in the PDF, Word or PowerPoint format.
+							Select your	recipe's images	ordered by page or a recipe document in the PDF format.
 						</label>
 						<input
 							id="add-ocr-files-input"
 							type="file"
 							name="files"
-							accept=".jpg, .jpeg, .png, .bmp, .tiff, .heif, .pdf, .docx, .pptx"
+							accept=".jpg, .jpeg, .png, .bmp, .tiff, .heif, .pdf"
 							multiple
 							class="p-2 border border-gray-300 rounded-lg shadow focus:ring-2 focus:ring-purple-600 dark:bg-gray-900 dark:border-none"
 						/>

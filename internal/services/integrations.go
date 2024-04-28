@@ -1,6 +1,7 @@
 package services
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"github.com/reaper47/recipya/internal/app"
@@ -91,8 +92,10 @@ func (i Integrations) ProcessImageOCR(files []io.Reader) (models.Recipes, error)
 	)
 
 	for idx < len(locations) {
+		locAttr := slog.String("loc", locations[idx])
+
 		if maxTries > 10 {
-			slog.Warn("Too many tries", "loc", locations[idx], "maxTries", maxTries)
+			slog.Warn("Too many tries", locAttr, "maxTries", maxTries)
 			idx++
 			maxTries = 0
 			continue
@@ -108,7 +111,7 @@ func (i Integrations) ProcessImageOCR(files []io.Reader) (models.Recipes, error)
 
 		res, err := i.client.Do(req)
 		if err != nil {
-			slog.Warn("Failed to execute request", "loc", locations[idx], "err", err)
+			slog.Warn("Failed to execute request", locAttr, "err", err)
 			idx++
 			maxTries = 0
 			continue
@@ -117,17 +120,23 @@ func (i Integrations) ProcessImageOCR(files []io.Reader) (models.Recipes, error)
 		if res.StatusCode != http.StatusOK {
 			var adi models.AzureDIError
 			_ = json.NewDecoder(res.Body).Decode(&adi)
-			slog.Warn("Undesirable status code", "loc", locations[idx], "status", res.StatusCode, "data", adi)
+			slog.Warn("Undesirable status code", locAttr, "status", res.StatusCode, "data", adi)
 			_ = res.Body.Close()
 			idx++
 			maxTries = 0
 			continue
 		}
 
-		var adi models.AzureDILayout
-		err = json.NewDecoder(res.Body).Decode(&adi)
+		body, err := io.ReadAll(res.Body)
 		if err != nil {
-			slog.Warn("Failed to decode response body", "loc", locations[idx], "err", err)
+			slog.Warn("Failed to read response body", locAttr, "err", err)
+		}
+		slog.Info("Processed Azure AI DI response", locAttr, "body", string(body))
+
+		var adi models.AzureDILayout
+		err = json.NewDecoder(bytes.NewBuffer(body)).Decode(&adi)
+		if err != nil {
+			slog.Warn("Failed to decode response body", locAttr, "err", err)
 			_ = res.Body.Close()
 			idx++
 			maxTries = 0
@@ -142,7 +151,7 @@ func (i Integrations) ProcessImageOCR(files []io.Reader) (models.Recipes, error)
 
 		recipe := adi.Recipe()
 		if recipe.IsEmpty() {
-			slog.Warn("OCR recipe is empty", "loc", locations[idx], "azure response", adi)
+			slog.Warn("OCR recipe is empty", locAttr, "azure response", adi)
 		} else {
 			recipes = append(recipes, recipe)
 		}
