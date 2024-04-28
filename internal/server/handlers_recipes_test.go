@@ -469,6 +469,8 @@ func TestHandlers_Recipes_AddOCR(t *testing.T) {
 
 	originalIntegrations := srv.Integrations
 	originalRepo := srv.Repository
+	app.Config.Integrations.AzureDI.Key = "chicken"
+	app.Config.Integrations.AzureDI.Endpoint = "kyiv"
 
 	uri := ts.URL + "/recipes/add/ocr"
 
