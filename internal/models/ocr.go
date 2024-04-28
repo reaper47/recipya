@@ -17,8 +17,8 @@ type AzureDILayout struct {
 	CreatedDateTime     time.Time `json:"createdDateTime"`
 	LastUpdatedDateTime time.Time `json:"lastUpdatedDateTime"`
 	AnalyzeResult       struct {
-		ApiVersion      string `json:"apiVersion"`
-		ModelId         string `json:"modelId"`
+		APIVersion      string `json:"apiVersion"`
+		ModelID         string `json:"modelId"`
 		StringIndexType string `json:"stringIndexType"`
 		Content         string `json:"content"`
 		Pages           []struct {

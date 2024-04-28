@@ -116,6 +116,7 @@ func (s *Server) integrationsImport() http.HandlerFunc {
 	}
 }
 
+// TestConnection tests the connection of an integration. No error is returned on success.
 func (s *Server) integrationTestConnectionHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
