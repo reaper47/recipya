@@ -385,7 +385,6 @@ func recipeAddManualIngredientHandler() http.HandlerFunc {
 			if !r.Form.Has("ingredient-" + strconv.Itoa(i)) {
 				break
 			}
-
 			i++
 		}
 
