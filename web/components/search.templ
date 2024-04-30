@@ -126,8 +126,8 @@ templ cookbookSearchRecipes(data templates.Data) {
 					<div class="card card-side card-compact bg-base-100 shadow-md max-w-[30rem] border indicator dark:border-slate-600">
 						<figure class="relative">
 							<img
-								if data.Functions.IsUUIDValid(r.Image) {
-									src={ fmt.Sprintf("/data/images/%s.jpg", r.Image) }
+								if len(r.Images) > 0 && data.Functions.IsUUIDValid(r.Images[0]) {
+									src={ fmt.Sprintf("/data/images/%s.jpg", r.Images[0]) }
 								} else {
 									src="/static/img/recipes/placeholder.webp"
 								}

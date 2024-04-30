@@ -46,11 +46,13 @@ func (r Recipes) Categories() []string {
 // NewBaseRecipe creates a new, empty Recipe.
 func NewBaseRecipe() Recipe {
 	return Recipe{
-		Image:        uuid.Nil,
+		Category:     "uncategorized",
+		Images:       make([]uuid.UUID, 0),
 		Ingredients:  make([]string, 0),
 		Instructions: make([]string, 0),
 		Keywords:     make([]string, 0),
 		Tools:        make([]string, 0),
+		Yield:        1,
 	}
 }
 
@@ -61,7 +63,7 @@ type Recipe struct {
 	Cuisine      string
 	Description  string
 	ID           int64
-	Image        uuid.UUID
+	Images       []uuid.UUID
 	Ingredients  []string
 	Instructions []string
 	Keywords     []string
@@ -133,7 +135,7 @@ func (r *Recipe) Copy() Recipe {
 		Cuisine:      r.Cuisine,
 		Description:  r.Description,
 		ID:           r.ID,
-		Image:        r.Image,
+		Images:       r.Images,
 		Ingredients:  ingredients,
 		Instructions: instructions,
 		Keywords:     keywords,
@@ -165,7 +167,7 @@ func (r *Recipe) Copy() Recipe {
 // IsEmpty verifies whether all the Recipe fields are empty.
 func (r *Recipe) IsEmpty() bool {
 	return r.Category == "" && r.CreatedAt.Equal(time.Time{}) && r.Cuisine == "" && r.Description == "" &&
-		r.ID == 0 && r.Image == uuid.Nil && len(r.Ingredients) == 0 && len(r.Instructions) == 0 &&
+		r.ID == 0 && len(r.Images) == 0 && len(r.Ingredients) == 0 && len(r.Instructions) == 0 &&
 		len(r.Keywords) == 0 && r.Name == "" && r.Nutrition.Equal(Nutrition{}) &&
 		r.Times.Equal(Times{}) && len(r.Tools) == 0 && r.UpdatedAt.Equal(time.Time{}) &&
 		r.URL == "" && r.Yield == 0
@@ -249,6 +251,11 @@ func (r *Recipe) Scale(yield int16) {
 
 // Schema creates the schema representation of the Recipe.
 func (r *Recipe) Schema() RecipeSchema {
+	var img string
+	if len(r.Images) > 0 {
+		img = r.Images[0].String() + ".jpg"
+	}
+
 	return RecipeSchema{
 		AtContext:       "https://schema.org",
 		AtType:          SchemaType{Value: "Recipe"},
@@ -260,7 +267,7 @@ func (r *Recipe) Schema() RecipeSchema {
 		DatePublished:   r.CreatedAt.Format(time.DateOnly),
 		Description:     Description{Value: r.Description},
 		Keywords:        Keywords{Values: strings.Join(r.Keywords, ",")},
-		Image:           Image{Value: r.Image.String()},
+		Image:           Image{Value: img},
 		Ingredients:     Ingredients{Values: r.Ingredients},
 		Instructions:    Instructions{Values: r.Instructions},
 		Name:            r.Name,
@@ -1233,7 +1240,7 @@ func parseSaffron(block []byte) (Recipe, error) {
 		isInstructions bool
 		isYield        bool
 
-		recipe = Recipe{Category: "uncategorized", Yield: 1}
+		recipe = NewBaseRecipe()
 	)
 
 	for _, b := range bytes.Split(block, []byte("\n")) {
@@ -1308,18 +1315,13 @@ func NewRecipesFromAccuChef(r io.Reader) Recipes {
 		var (
 			ingredient  string
 			instruction string
-
 			isNutrition bool
 			nutrition   string
-
-			notes  string
-			recipe = Recipe{
-				Category: "uncategorized",
-				Keywords: make([]string, 0),
-				URL:      "AccuChef",
-				Yield:    1,
-			}
+			notes       string
 		)
+
+		recipe := NewBaseRecipe()
+		recipe.URL = "AccuChef"
 
 		for _, line := range bytes.Split(b, []byte("\n")) {
 			if len(line) <= 1 {

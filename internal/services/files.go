@@ -523,7 +523,7 @@ func exportRecipesJSON(recipes models.Recipes) []exportData {
 		}
 		data[i] = exportData{
 			recipeName:  r.Name,
-			recipeImage: r.Image,
+			recipeImage: r.Images,
 			data:        xb,
 		}
 	}
@@ -535,7 +535,7 @@ func exportRecipesPDF(recipes models.Recipes) []exportData {
 	for i, r := range recipes {
 		data[i] = exportData{
 			recipeName:  r.Name,
-			recipeImage: r.Image,
+			recipeImage: r.Images,
 			data:        recipeToPDF(&r),
 		}
 	}

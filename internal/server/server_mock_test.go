@@ -651,8 +651,8 @@ func (m *mockRepository) UpdateRecipe(updatedRecipe *models.Recipe, userID int64
 		newRecipe.Description = updatedRecipe.Description
 	}
 
-	if updatedRecipe.Image != uuid.Nil && oldRecipe.Image != updatedRecipe.Image {
-		newRecipe.Image = updatedRecipe.Image
+	if updatedRecipe.Images != uuid.Nil && oldRecipe.Images != updatedRecipe.Images {
+		newRecipe.Images = updatedRecipe.Images
 	}
 
 	if newRecipe.Ingredients != nil && len(oldRecipe.Ingredients) == len(updatedRecipe.Ingredients) {

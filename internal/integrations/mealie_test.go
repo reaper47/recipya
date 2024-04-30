@@ -58,7 +58,7 @@ func TestMealieImport(t *testing.T) {
 		Category:    "uncategorized",
 		CreatedAt:   time.Date(2024, 4, 12, 0, 0, 0, 0, time.UTC),
 		Description: "Roasted Vegetable Bowls! Crispy tender roasted veggies, buttery avocado, all together in a bowl with a drizzle of green tahini sauce.",
-		Image:       img,
+		Images:      []uuid.UUID{img},
 		Ingredients: []string{
 			"8 large carrots, peeled and chopped", "3 golden potatoes, chopped",
 			"1 head of broccoli, cut into florets",

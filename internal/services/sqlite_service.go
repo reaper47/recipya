@@ -182,7 +182,7 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64, settings model
 func (s *SQLiteService) AddRecipeTx(ctx context.Context, tx *sql.Tx, r *models.Recipe, userID int64) (int64, error) {
 	// Insert recipe
 	var recipeID int64
-	err := tx.QueryRowContext(ctx, statements.InsertRecipe, r.Name, r.Description, r.Image, r.Yield, r.URL).Scan(&recipeID)
+	err := tx.QueryRowContext(ctx, statements.InsertRecipe, r.Name, r.Description, r.Images, r.Yield, r.URL).Scan(&recipeID)
 	if err != nil {
 		return 0, err
 	}
@@ -1290,7 +1290,7 @@ func (s *SQLiteService) SearchRecipes(query string, page uint64, options models.
 			r     models.Recipe
 			count int64
 		)
-		err = rows.Scan(&r.ID, &r.Name, &r.Description, &r.Image, &r.CreatedAt, &r.Category, &count)
+		err = rows.Scan(&r.ID, &r.Name, &r.Description, &r.Images, &r.CreatedAt, &r.Category, &count)
 		if err != nil {
 			return models.Recipes{}, 0, err
 		}
@@ -1334,10 +1334,10 @@ func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 	)
 
 	if isSearch {
-		err = sc.Scan(&r.ID, &r.Name, &r.Description, &r.Image, &r.CreatedAt, &r.Category, &count)
+		err = sc.Scan(&r.ID, &r.Name, &r.Description, &r.Images, &r.CreatedAt, &r.Category, &count)
 	} else {
 		err = sc.Scan(
-			&r.ID, &r.Name, &r.Description, &r.Image, &r.URL, &r.Yield, &r.CreatedAt, &r.UpdatedAt, &r.Category, &r.Cuisine,
+			&r.ID, &r.Name, &r.Description, &r.Images, &r.URL, &r.Yield, &r.CreatedAt, &r.UpdatedAt, &r.Category, &r.Cuisine,
 			&ingredients, &instructions, &keywords, &tools, &r.Nutrition.Calories, &r.Nutrition.TotalCarbohydrates,
 			&r.Nutrition.Sugars, &r.Nutrition.Protein, &r.Nutrition.TotalFat, &r.Nutrition.SaturatedFat, &r.Nutrition.UnsaturatedFat,
 			&r.Nutrition.Cholesterol, &r.Nutrition.Sodium, &r.Nutrition.Fiber, &isPerServing, &r.Times.Prep, &r.Times.Cook, &r.Times.Total,
@@ -1604,8 +1604,8 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 		updateFields["description"] = updatedRecipe.Description
 	}
 
-	if updatedRecipe.Image != uuid.Nil && updatedRecipe.Image != oldRecipe.Image {
-		updateFields["image"] = updatedRecipe.Image.String()
+	if updatedRecipe.Images != uuid.Nil && updatedRecipe.Images != oldRecipe.Images {
+		updateFields["image"] = updatedRecipe.Images.String()
 	}
 
 	if updatedRecipe.Name != oldRecipe.Name {

@@ -205,8 +205,8 @@ func (f *Files) processRecipeFiles(zr *zip.Reader) models.Recipes {
 			continue
 		}
 
-		if imageUUID != uuid.Nil && (zf.FileInfo().IsDir() || (recipeNumber > 0 && recipes[recipeNumber-1].Image == uuid.Nil)) {
-			recipes[recipeNumber-1].Image = imageUUID
+		if imageUUID != uuid.Nil && (zf.FileInfo().IsDir() || (recipeNumber > 0 && len(recipes[recipeNumber-1].Images) == 0)) {
+			recipes[recipeNumber-1].Images = append(recipes[recipeNumber-1].Images, imageUUID)
 			imageUUID = uuid.Nil
 		}
 
@@ -295,8 +295,8 @@ func (f *Files) processRecipeFiles(zr *zip.Reader) models.Recipes {
 	}
 
 	n := len(recipes)
-	if n > 0 && recipes[n-1].Image == uuid.Nil {
-		recipes[n-1].Image = imageUUID
+	if n > 0 && len(recipes[n-1].Images) == 0 {
+		recipes[n-1].Images = append(recipes[n-1].Images, imageUUID)
 	}
 
 	return recipes
@@ -338,7 +338,15 @@ func (f *Files) extractJSONRecipes(rd io.Reader) (models.Recipes, error) {
 		}
 
 		if rs.Image.Value != "" {
-			r.Image, _ = f.ScrapeAndStoreImage(rs.Image.Value)
+			img, err := f.ScrapeAndStoreImage(rs.Image.Value)
+			if err != nil {
+				slog.Error("Could not scrape and store image", "image", rs.Image.Value, "error", err)
+				continue
+			}
+
+			if img != uuid.Nil {
+				r.Images = []uuid.UUID{img}
+			}
 		}
 
 		xr = append(xr, *r)
@@ -366,9 +374,13 @@ func (f *Files) parseJSONRecipe(rd io.Reader) (*models.Recipe, error) {
 	}
 
 	if rs.Image.Value != "" {
-		r.Image, err = f.ScrapeAndStoreImage(rs.Image.Value)
+		img, err := f.ScrapeAndStoreImage(rs.Image.Value)
 		if err != nil {
-			r.Image = uuid.Nil
+			slog.Error("Could not scrape and store image", "image", rs.Image.Value, "error", err)
+		}
+
+		if img != uuid.Nil {
+			r.Images = []uuid.UUID{img}
 		}
 	}
 
@@ -402,7 +414,15 @@ func (f *Files) processRecipeKeeper(zr *zip.Reader) models.Recipes {
 
 			open, err := imgFile.Open()
 			if err == nil {
-				recipes[i].Image, _ = f.UploadImage(open)
+				img, _ := f.UploadImage(open)
+				if err != nil {
+					slog.Error("Could not scrape and store image", "image", imgFile.Name, "error", err)
+				}
+
+				if img != uuid.Nil {
+					recipes[i].Images = []uuid.UUID{img}
+				}
+
 				_ = open.Close()
 			}
 		}

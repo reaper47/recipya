@@ -252,26 +252,27 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 			return
 		}
 
-		var imageUUID uuid.UUID
-		imageFile, ok := r.MultipartForm.File["image"]
+		var imageUUIDs []uuid.UUID
+		imageFiles, ok := r.MultipartForm.File["images"]
 		if ok {
-			f, err := imageFile[0].Open()
-			if err != nil {
-				msg := "Could not open the image from the form."
-				slog.Error(msg, userIDAttr, "error", err)
-				w.Header().Set("HX-Trigger", models.NewErrorFormToast(msg).Render())
-				w.WriteHeader(http.StatusBadRequest)
-				return
-			}
-			defer f.Close()
+			for _, file := range imageFiles {
+				fileAttr := slog.String("file", file.Filename)
 
-			imageUUID, err = s.Files.UploadImage(f)
-			if err != nil {
-				msg := "Error uploading image."
-				slog.Error(msg, userIDAttr, "error", err)
-				w.Header().Set("HX-Trigger", models.NewErrorFormToast(msg).Render())
-				w.WriteHeader(http.StatusBadRequest)
-				return
+				f, err := file.Open()
+				if err != nil {
+					slog.Error("Could not open the image from the form.", userIDAttr, fileAttr, "error", err)
+					continue
+				}
+
+				imageUUID, err := s.Files.UploadImage(f)
+				if err != nil {
+					_ = f.Close()
+					slog.Error("Error uploading image.", userIDAttr, fileAttr, "error", err)
+					continue
+				}
+				imageUUIDs = append(imageUUIDs, imageUUID)
+
+				_ = f.Close()
 			}
 		}
 
@@ -322,7 +323,7 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 			CreatedAt:    time.Time{},
 			Cuisine:      "",
 			Description:  r.FormValue("description"),
-			Image:        imageUUID,
+			Images:       imageUUIDs,
 			Ingredients:  ingredients,
 			Instructions: instructions,
 			Keywords:     nil,
@@ -985,7 +986,12 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 				return
 			}
 
-			updatedRecipe.Image = imageUUID
+			var images []uuid.UUID
+			if imageUUID != uuid.Nil {
+				images = append(images, imageUUID)
+			}
+
+			updatedRecipe.Images = images
 		}
 
 		times, err := models.NewTimes(r.FormValue("time-preparation"), r.FormValue("time-cooking"))

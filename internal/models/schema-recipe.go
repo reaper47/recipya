@@ -78,9 +78,10 @@ func (r *RecipeSchema) Recipe() (*Recipe, error) {
 		}
 	}
 
-	image, err := uuid.Parse(r.Image.Value)
-	if err != nil {
-		image = uuid.Nil
+	var images []uuid.UUID
+	img, err := uuid.Parse(r.Image.Value)
+	if err != nil && img != uuid.Nil {
+		images = append(images, img)
 	}
 
 	updatedAt := createdAt
@@ -102,7 +103,7 @@ func (r *RecipeSchema) Recipe() (*Recipe, error) {
 		Cuisine:      r.Cuisine.Value,
 		Description:  r.Description.Value,
 		ID:           0,
-		Image:        image,
+		Images:       images,
 		Ingredients:  r.Ingredients.Values,
 		Instructions: r.Instructions.Values,
 		Keywords:     extensions.Unique(strings.Split(r.Keywords.Values, ",")),

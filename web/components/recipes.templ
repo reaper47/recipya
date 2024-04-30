@@ -342,7 +342,7 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 							<div id="images-container" class="grid grid-flow-col grid-cols-7 w-full text-center border-gray-700 md:grid-cols-6 md:col-span-3 md:border-r">
 								<div class="buttons-container flex flex-col gap-1 col-span-2 md:col-span-1 p-1">
 									<button
-									    id="image-button-1"
+										id="image-button-1"
 										type="button"
 										class="btn btn-sm btn-ghost btn-active"
 										onclick="switchImage(event)"
@@ -361,12 +361,12 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 								</div>
 								<div id="images" class="col-span-5">
 									<label id="image-1">
-										<img  src="" alt="Image preview of the recipe." class="object-cover mb-2"/>
+										<img src="" alt="Image preview of the recipe." class="object-cover mb-2"/>
 										<span class="grid gap-1 max-w-sm" style="margin: auto auto 0.25rem;">
 											<input
 												type="file"
 												accept="image/*"
-												name="image-1"
+												name="images"
 												class="file-input file-input-sm file-input-bordered w-full max-w-sm"
 												_="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
                                                           on dragleave or drop set the target's style.background to ''
@@ -911,14 +911,26 @@ templ editRecipe(data *templates.ViewRecipeData) {
 						<div class="grid md:grid-flow-col md:grid-cols-6">
 							<div class="w-full text-center border-gray-700 md:col-span-3 md:border-r">
 								<label class="grid gap-2 col-span-6 place-content-center w-full h-full md:col-span-4 text-sm">
-									<img src={ fmt.Sprintf("/data/images/%s.jpg", data.Recipe.Image) } alt="Image preview of the recipe." class="object-cover"/>
+									<img
+										class="object-cover"
+										alt="Image preview of the recipe."
+										if len(data.IsUUIDsValid) > 0 && data.IsUUIDsValid[0] {
+											src={ fmt.Sprintf("/data/images/%s.jpg", data.Recipe.Images[0]) }
+										} else {
+											src=""
+										}
+									/>
 									<span>
 										<input
 											type="file"
 											accept="image/*"
 											name="image"
 											class="file-input file-input-sm w-full max-w-xs"
-											value={ fmt.Sprintf("/data/images/%s.jpg", data.Recipe.Image) }
+											if len(data.IsUUIDsValid) > 0 && data.IsUUIDsValid[0] {
+												value={ fmt.Sprintf("/data/images/%s.jpg", data.Recipe.Images[0]) }
+											} else {
+												value=""
+											}
 											_="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
                                               on dragleave or drop set the target's style.background to ''
                                               on drop or change
@@ -1413,8 +1425,8 @@ templ ListRecipes(data templates.Data) {
 				<figure class="relative cursor-pointer" hx-get={ fmt.Sprintf("/recipes/%d", r.ID) } hx-target="#content" hx-push-url="true" hx-trigger="mousedown" hx-swap="innerHTML show:window:top transition:true">
 					<img
 						class="h-48 max-w-48 w-full object-cover rounded-t-lg"
-						if data.Functions.IsUUIDValid(r.Image) {
-							src={ fmt.Sprintf("/data/images/%s.jpg", r.Image) }
+						if len(r.Images) > 0 && data.Functions.IsUUIDValid(r.Images[0]) {
+							src={ fmt.Sprintf("/data/images/%s.jpg", r.Images[0]) }
 						} else {
 							src="/static/img/recipes/placeholder.webp"
 						}
@@ -1542,8 +1554,8 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 								style="object-fit: cover"
 								alt="Image of the recipe"
 								class="w-full max-h-[34rem]"
-								if data.IsUUIDValid {
-									src={ fmt.Sprintf("/data/images/%s.jpg", data.Recipe.Image) }
+								if len(data.IsUUIDsValid) > 0 && data.IsUUIDsValid[0] {
+									src={ fmt.Sprintf("/data/images/%s.jpg", data.Recipe.Images[0]) }
 								} else {
 									src="/static/img/recipes/placeholder.webp"
 								}

@@ -56,7 +56,7 @@ func TestTemplatesFunctions(t *testing.T) {
 	}
 	for _, tc := range testcases3 {
 		t.Run("UUID is "+tc.name, func(t *testing.T) {
-			actual := isUUIDValid(tc.in)
+			actual := isUUIDsValid(tc.in)
 
 			expected := tc.want
 			if actual != expected {

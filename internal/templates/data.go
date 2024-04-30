@@ -152,9 +152,9 @@ func NewViewRecipeData(id int64, recipe *models.Recipe, isFromHost, isShared boo
 		Inc: func(n int) int {
 			return n + 1
 		},
-		IsURL:       isURL(recipe.URL),
-		IsUUIDValid: isUUIDValid(recipe.Image),
-		Recipe:      recipe,
+		IsURL:        isURL(recipe.URL),
+		IsUUIDsValid: isUUIDsValid(recipe.Images),
+		Recipe:       recipe,
 		Share: ShareData{
 			IsFromHost: isFromHost,
 			IsShared:   isShared,
@@ -169,7 +169,7 @@ type ViewRecipeData struct {
 	ID             int64
 	Inc            func(n int) int
 	IsURL          bool
-	IsUUIDValid    bool
+	IsUUIDsValid   []bool
 	Recipe         *models.Recipe
 	Share          ShareData
 }

@@ -73,12 +73,13 @@ func NextcloudImport(baseURL, username, password string, uploadImageFunc func(rc
 			}
 			defer imageRes.Body.Close()
 
+			var images []uuid.UUID
 			imageUUID, err := uploadImageFunc(imageRes.Body)
-			if err != nil {
-				return
+			if err != nil && imageUUID != uuid.Nil {
+				images = append(images, imageUUID)
 			}
 
-			recipes[i].Image = imageUUID
+			recipes[i].Images = images
 		}(i, r, header)
 	}
 	wg.Wait()
