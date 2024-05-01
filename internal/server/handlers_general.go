@@ -6,6 +6,7 @@ import (
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/web/components"
+	"io"
 	"log/slog"
 	"net/http"
 	"os"
@@ -139,5 +140,19 @@ func (s *Server) wsHandler() http.HandlerFunc {
 		userID := getUserID(r)
 		broker := models.NewBroker(userID, s.Brokers, ws)
 		s.Brokers[userID] = broker
+	}
+}
+
+func dlHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		res, err := http.Get(r.URL.Query().Get("url"))
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		defer res.Body.Close()
+
+		w.Header().Set("Content-Type", res.Header.Get("Content-Type"))
+		io.Copy(w, res.Body)
 	}
 }

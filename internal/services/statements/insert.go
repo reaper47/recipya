@@ -1,5 +1,10 @@
 package statements
 
+// InsertAdditionalImageRecipe is the query to add an image to a recipe.
+const InsertAdditionalImageRecipe = `
+	INSERT INTO additional_images_recipe (recipe_id, image)
+	VALUES (?, ?)`
+
 // InsertAuthToken is the query to add an authentication token to the database.
 const InsertAuthToken = `
 	INSERT INTO auth_tokens (selector, hash_validator, user_id)

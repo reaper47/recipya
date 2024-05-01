@@ -3,6 +3,7 @@ package components
 import (
 	"fmt"
 	"github.com/reaper47/recipya/internal/templates"
+	"strconv"
 )
 
 templ AddRecipe(data templates.Data) {
@@ -361,28 +362,52 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 								</div>
 								<div id="images" class="col-span-5">
 									<label id="image-1">
-										<img src="" alt="Image preview of the recipe." class="object-cover mb-2"/>
+										<img src="" alt="Image preview of the recipe." class="object-cover mb-2 w-full max-h-[39rem]"/>
 										<span class="grid gap-1 max-w-sm" style="margin: auto auto 0.25rem;">
-											<input
-												type="file"
-												accept="image/*"
-												name="images"
-												class="file-input file-input-sm file-input-bordered w-full max-w-sm"
-												_="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
+											<div class="mr-1">
+												<input
+													type="file"
+													accept="image/*"
+													name="images"
+													class="file-input file-input-sm file-input-bordered w-full max-w-sm"
+													_="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
                                                           on dragleave or drop set the target's style.background to ''
                                                           on drop or change
-                                                            make an FileReader called reader
-                                                            then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end
-                                                            then set {src: window.URL.createObjectURL(it)} on previous <img/>
-                                                            then remove .hidden from next <button/>"
-											/>
+                                                            make an FileReader called reader then
+                                                            if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then
+                                                            set {src: window.URL.createObjectURL(it)} on previous <img/> then
+                                                            remove .hidden from me.parentElement.parentElement.querySelectorAll('button') then
+                                                            add .hidden to the parentElement of me"
+												/>
+												<div class="divider">OR</div>
+												<span class="hidden input-error"></span>
+												<div class="flex">
+													<input type="url" placeholder="Enter the URL of an image" class="input input-bordered input-sm w-full max-w-sm mr-1"/>
+													<button
+														type="button"
+														class="btn btn-sm"
+														hx-get="/dl"
+														hx-vals="js:{url: event.target.previousElementSibling.value}"
+														hx-swap="none"
+														_="on htmx:afterRequest
+														    if event.detail.successful then
+														        set a to first in event.target.parentElement.parentElement.children then
+														        call updateImageFromFetch(a, event.detail.xhr.responseURL)
+														    end"
+													>
+														Fetch
+													</button>
+												</div>
+											</div>
 											<button
 												type="button"
 												class="hidden btn btn-sm btn-error btn-outline"
 												_="on click
-                                                        set {value: ''} on previous <input/> then
-                                                        set {src: ''} on previous <img/> then
-                                                        add .hidden"
+                                                    set {value: ''} on me.parentElement.children[0].children[0] then
+                                                    set {src: ''} on previous <img/> then
+                                                    set {value: ''} on the first in (last in me.parentElement.children[0].children) then
+                                                    remove .hidden from the first in me.parentElement.children then
+                                                    add .hidden"
 											>
 												Delete
 											</button>
@@ -695,6 +720,7 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 	        cloneImage.querySelector("input").value = '';
 	        cloneImage.id = `image-${images.length+1}`;
 	        cloneImage.querySelector("img").src = "";
+	        cloneImage.querySelector("div").classList.remove("hidden");
 	        const subButtons = cloneImage.querySelectorAll("button");
 	        subButtons[subButtons.length-1].classList.add("hidden");
 	        document.querySelector("#images").appendChild(cloneImage);
@@ -730,6 +756,34 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
                     return;
                 }
             }
+	    }
+
+        function isUrl(event) {
+            let url;
+            try {
+                url = new URL(event.target.previousElementSibling.value);
+            } catch (_) {
+                return false;
+            }
+            return url.protocol === "http:" || url.protocol === "https:";
+        }
+
+	    function updateImageFromFetch(input, url) {
+	        const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                 const r = Math.random() * 16 | 0;
+                 const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                 return v.toString(16);
+             });
+
+	        fetch(url)
+                .then(response => response.blob())
+                .then(blob => {
+                    const file = new File([blob], uuid, { type: blob.type });
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    input.files = dataTransfer.files;
+                    input.dispatchEvent(new Event('change'));
+                });
 	    }
 	</script>
 }
@@ -1549,17 +1603,62 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 					</h2>
 					<div class="grid md:grid-flow-col md:grid-cols-6">
 						<div class="w-full text-center border-b border-gray-700 md:col-span-3 md:border-r md:border-b-0 print:hidden">
-							<img
-								id="output"
-								style="object-fit: cover"
-								alt="Image of the recipe"
-								class="w-full max-h-[34rem]"
-								if len(data.IsUUIDsValid) > 0 && data.IsUUIDsValid[0] {
-									src={ fmt.Sprintf("/data/images/%s.jpg", data.Recipe.Images[0]) }
-								} else {
-									src="/static/img/recipes/placeholder.webp"
-								}
-							/>
+							switch len(data.Recipe.Images) {
+								case 0:
+									<img
+										style="object-fit: cover"
+										alt="Image of the recipe"
+										class="w-full max-h-[34rem]"
+										src="/static/img/recipes/placeholder.webp"
+									/>
+								case 1:
+									<img
+										id="output"
+										style="object-fit: cover"
+										alt="Image of the recipe"
+										class="w-full max-h-[34rem]"
+										if data.IsUUIDsValid[0] {
+											src={ fmt.Sprintf("/data/images/%s.jpg", data.Recipe.Images[0]) }
+										} else {
+											src="/static/img/recipes/placeholder.webp"
+										}
+									/>
+								default:
+									<div class="carousel w-full">
+										for i := 0; i < len(data.Recipe.Images); i++ {
+											<div id={ "image-" + strconv.Itoa(i) } class="carousel-item relative w-full">
+												<img
+													style="object-fit: cover"
+													alt="Image of the recipe"
+													class="w-full max-h-[34rem]"
+													if data.IsUUIDsValid[i] {
+														src={ fmt.Sprintf("/data/images/%s.jpg", data.Recipe.Images[i]) }
+													} else {
+														src="/static/img/recipes/placeholder.webp"
+													}
+												/>
+												<div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
+													<a
+														class="btn btn-circle"
+														if i == 0 {
+															href={ templ.URL("#image-" + strconv.Itoa(len(data.Recipe.Images)-1)) }
+														} else {
+															href={ templ.URL("#image-" + strconv.Itoa(i-1)) }
+														}
+													>❮</a>
+													<a
+														class="btn btn-circle"
+														if i == len(data.Recipe.Images) - 1 {
+															href="#image-0"
+														} else {
+															href={ templ.URL("#image-" + strconv.Itoa(i+1)) }
+														}
+													>❯</a>
+												</div>
+											</div>
+										}
+									</div>
+							}
 						</div>
 						<div class="grid grid-cols-3 col-span-3 md:grid-flow-row md:grid-rows-4 print:grid-rows-2">
 							<div class="grid grid-flow-col col-span-6 md:row-span-1 md:border-y md:border-gray-700 print:row-span-1 print:grid-cols-2">
