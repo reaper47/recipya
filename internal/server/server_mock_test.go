@@ -651,8 +651,8 @@ func (m *mockRepository) UpdateRecipe(updatedRecipe *models.Recipe, userID int64
 		newRecipe.Description = updatedRecipe.Description
 	}
 
-	if updatedRecipe.Image != uuid.Nil && oldRecipe.Image != updatedRecipe.Image {
-		newRecipe.Image = updatedRecipe.Image
+	if len(updatedRecipe.Images) > 0 && !slices.Equal(oldRecipe.Images, updatedRecipe.Images) {
+		newRecipe.Images = updatedRecipe.Images
 	}
 
 	if newRecipe.Ingredients != nil && len(oldRecipe.Ingredients) == len(updatedRecipe.Ingredients) {
@@ -952,7 +952,6 @@ func (m *mockIntegrations) ProcessImageOCR(f []io.Reader) (models.Recipes, error
 	return models.Recipes{{ID: 1}}, nil
 }
 
-// TestConnection tests the connection of an integration. No error is returned on success.
 func (m *mockIntegrations) TestConnection(api string) error {
 	if m.testConnectionFunc != nil {
 		return m.testConnectionFunc(api)

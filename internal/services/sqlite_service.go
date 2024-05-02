@@ -181,8 +181,13 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64, settings model
 // AddRecipeTx adds a recipe to the user's collection using an existing database transaction.
 func (s *SQLiteService) AddRecipeTx(ctx context.Context, tx *sql.Tx, r *models.Recipe, userID int64) (int64, error) {
 	// Insert recipe
+	var mainImage uuid.UUID
+	if len(r.Images) > 0 {
+		mainImage = r.Images[0]
+	}
+
 	var recipeID int64
-	err := tx.QueryRowContext(ctx, statements.InsertRecipe, r.Name, r.Description, r.Image, r.Yield, r.URL).Scan(&recipeID)
+	err := tx.QueryRowContext(ctx, statements.InsertRecipe, r.Name, r.Description, mainImage, r.Yield, r.URL).Scan(&recipeID)
 	if err != nil {
 		return 0, err
 	}
@@ -191,6 +196,16 @@ func (s *SQLiteService) AddRecipeTx(ctx context.Context, tx *sql.Tx, r *models.R
 	_, err = tx.ExecContext(ctx, statements.InsertUserRecipe, userID, recipeID)
 	if err != nil {
 		return 0, err
+	}
+
+	// Insert additional images
+	if len(r.Images) > 1 {
+		for _, u := range r.Images[1:] {
+			_, err = tx.ExecContext(ctx, statements.InsertAdditionalImageRecipe, recipeID, u)
+			if err != nil {
+				return 0, err
+			}
+		}
 	}
 
 	// Insert category
@@ -1290,7 +1305,7 @@ func (s *SQLiteService) SearchRecipes(query string, page uint64, options models.
 			r     models.Recipe
 			count int64
 		)
-		err = rows.Scan(&r.ID, &r.Name, &r.Description, &r.Image, &r.CreatedAt, &r.Category, &count)
+		err = rows.Scan(&r.ID, &r.Name, &r.Description, &r.Images, &r.CreatedAt, &r.Category, &count)
 		if err != nil {
 			return models.Recipes{}, 0, err
 		}
@@ -1323,21 +1338,23 @@ type scanner interface {
 
 func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 	var (
-		r            models.Recipe
-		ingredients  string
-		instructions string
-		isPerServing int64
-		keywords     string
-		tools        string
-		count        int64
-		err          error
+		r              = models.NewBaseRecipe()
+		mainImage      uuid.UUID
+		otherImagesStr string
+		ingredients    string
+		instructions   string
+		isPerServing   int64
+		keywords       string
+		tools          string
+		count          int64
+		err            error
 	)
 
 	if isSearch {
-		err = sc.Scan(&r.ID, &r.Name, &r.Description, &r.Image, &r.CreatedAt, &r.Category, &count)
+		err = sc.Scan(&r.ID, &r.Name, &r.Description, &mainImage, &r.CreatedAt, &r.Category, &count)
 	} else {
 		err = sc.Scan(
-			&r.ID, &r.Name, &r.Description, &r.Image, &r.URL, &r.Yield, &r.CreatedAt, &r.UpdatedAt, &r.Category, &r.Cuisine,
+			&r.ID, &r.Name, &r.Description, &mainImage, &otherImagesStr, &r.URL, &r.Yield, &r.CreatedAt, &r.UpdatedAt, &r.Category, &r.Cuisine,
 			&ingredients, &instructions, &keywords, &tools, &r.Nutrition.Calories, &r.Nutrition.TotalCarbohydrates,
 			&r.Nutrition.Sugars, &r.Nutrition.Protein, &r.Nutrition.TotalFat, &r.Nutrition.SaturatedFat, &r.Nutrition.UnsaturatedFat,
 			&r.Nutrition.Cholesterol, &r.Nutrition.Sodium, &r.Nutrition.Fiber, &isPerServing, &r.Times.Prep, &r.Times.Cook, &r.Times.Total,
@@ -1353,6 +1370,20 @@ func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 		r.Times.Prep *= time.Second
 		r.Times.Cook *= time.Second
 		r.Times.Total *= time.Second
+	}
+
+	if mainImage != uuid.Nil {
+		split := strings.Split(otherImagesStr, ";")
+		other := make([]uuid.UUID, 0, len(split))
+		for _, s := range split {
+			parsed, err := uuid.Parse(s)
+			if err != nil {
+				slog.Warn("Couldn't parse image ID", "recipeID", r.ID, "imageID", s)
+				continue
+			}
+			other = append(other, parsed)
+		}
+		r.Images = slices.Concat([]uuid.UUID{mainImage}, other)
 	}
 
 	return &r, err
@@ -1604,8 +1635,27 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 		updateFields["description"] = updatedRecipe.Description
 	}
 
-	if updatedRecipe.Image != uuid.Nil && updatedRecipe.Image != oldRecipe.Image {
-		updateFields["image"] = updatedRecipe.Image.String()
+	userIDAttr := slog.Int64("userID", userID)
+	recipeIDAttr := slog.Int64("recipeID", recipeID)
+
+	_, err = tx.ExecContext(ctx, statements.DeleteRecipeImages, recipeID, userID)
+	if err != nil {
+		slog.Error("Failed to delete images.", userIDAttr, recipeIDAttr, "error", err)
+		return err
+	}
+
+	if len(updatedRecipe.Images) > 0 {
+		updateFields["image"] = updatedRecipe.Images[0].String()
+
+		if len(updatedRecipe.Images) > 1 {
+			for _, u := range updatedRecipe.Images[1:] {
+				_, err = tx.ExecContext(ctx, statements.InsertRecipeImage, recipeID, u)
+				if err != nil {
+					slog.Warn("Error inserting recipe image", userIDAttr, recipeIDAttr, "image", u, "err", err)
+					continue
+				}
+			}
+		}
 	}
 
 	if updatedRecipe.Name != oldRecipe.Name {

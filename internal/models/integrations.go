@@ -82,11 +82,16 @@ func (p PaprikaRecipe) Recipe(image uuid.UUID) Recipe {
 		description = "Imported from Paprika"
 	}
 
+	images := make([]uuid.UUID, 0)
+	if image != uuid.Nil {
+		images = append(images, image)
+	}
+
 	return Recipe{
 		Category:     category,
 		CreatedAt:    dateCreated,
 		Description:  description,
-		Image:        image,
+		Images:       images,
 		Ingredients:  strings.Split(p.Ingredients, "\n"),
 		Instructions: strings.Split(p.Directions, "\n\n"),
 		Keywords:     append(p.Categories, "paprika"),

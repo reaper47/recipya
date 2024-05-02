@@ -188,12 +188,16 @@ func NewRecipesFromCML(r io.Reader, file *multipart.FileHeader, uploadImageFunc 
 			category = "uncategorized"
 		}
 
-		var img uuid.UUID
+		var images []uuid.UUID
 		decode, err := base64.StdEncoding.DecodeString(recipe.Head.PicBin.Text)
 		if err == nil {
-			img, err = uploadImageFunc(io.NopCloser(bytes.NewReader(decode)))
+			img, err := uploadImageFunc(io.NopCloser(bytes.NewReader(decode)))
 			if err != nil {
 				slog.Error("Failed to upload CML image", "src", recipe.Head.PicBin.Text, "error", err)
+			}
+
+			if img != uuid.Nil {
+				images = append(images, img)
 			}
 		}
 
@@ -242,7 +246,7 @@ func NewRecipesFromCML(r io.Reader, file *multipart.FileHeader, uploadImageFunc 
 			Category:    category,
 			CreatedAt:   dateCreated,
 			Description: "Imported from a CookML file.",
-			Image:       img,
+			Images:      images,
 			Ingredients: slices.DeleteFunc(ingredients, func(s string) bool {
 				return s == ""
 			}),
@@ -272,13 +276,17 @@ func NewRecipeFromCrouton(r io.Reader, uploadImageFunc func(rc io.ReadCloser) (u
 		src = "Crouton"
 	}
 
-	var img uuid.UUID
+	var images []uuid.UUID
 	if len(c.Images) > 0 {
 		decode, err := base64.StdEncoding.DecodeString(c.Images[0])
 		if err == nil {
-			img, err = uploadImageFunc(io.NopCloser(bytes.NewReader(decode)))
+			img, err := uploadImageFunc(io.NopCloser(bytes.NewReader(decode)))
 			if err != nil {
 				slog.Error("Failed to upload Crouton image", "src", c.SourceImage, "file", c.Name, "error", err)
+			}
+
+			if img != uuid.Nil {
+				images = append(images, img)
 			}
 		}
 	}
@@ -337,7 +345,7 @@ func NewRecipeFromCrouton(r io.Reader, uploadImageFunc func(rc io.ReadCloser) (u
 	return Recipe{
 		Category:     category,
 		Description:  "Imported from Crouton",
-		Image:        img,
+		Images:       images,
 		Ingredients:  ingredients,
 		Instructions: instructions,
 		Keywords:     keywords,

@@ -47,6 +47,12 @@ const DeleteRecipeInstructions = `
 	FROM instruction_recipe
 	WHERE recipe_id = ?`
 
+// DeleteRecipeImages deletes the images of user's recipe.
+const DeleteRecipeImages = `
+	DELETE
+	FROM additional_images_recipe
+	WHERE recipe_id = (SELECT recipe_id FROM user_recipe WHERE recipe_id = ? AND user_id = ?)`
+
 // DeleteRecipesUser deletes the user's recipes.
 const DeleteRecipesUser = `
 	DELETE

@@ -521,9 +521,15 @@ func exportRecipesJSON(recipes models.Recipes) []exportData {
 		if err != nil {
 			continue
 		}
+
+		var img uuid.UUID
+		if len(r.Images) > 0 {
+			img = r.Images[0]
+		}
+
 		data[i] = exportData{
 			recipeName:  r.Name,
-			recipeImage: r.Image,
+			recipeImage: img,
 			data:        xb,
 		}
 	}
@@ -533,9 +539,14 @@ func exportRecipesJSON(recipes models.Recipes) []exportData {
 func exportRecipesPDF(recipes models.Recipes) []exportData {
 	data := make([]exportData, len(recipes))
 	for i, r := range recipes {
+		var img uuid.UUID
+		if len(r.Images) > 0 {
+			img = r.Images[0]
+		}
+
 		data[i] = exportData{
 			recipeName:  r.Name,
-			recipeImage: r.Image,
+			recipeImage: img,
 			data:        recipeToPDF(&r),
 		}
 	}

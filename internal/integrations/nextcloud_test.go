@@ -89,7 +89,7 @@ func TestNextcloudImport(t *testing.T) {
 	t1, _ := time.Parse("2006-01-02 15:04:05 +0000 UTC", "2023-09-26 00:00:00 +0000 UTC")
 	createdAt1, _ := time.Parse("2006-01-02 15:04:05 +0000 UTC", "1998-04-18 00:00:00 +0000 UTC")
 	t2, _ := time.Parse("2006-01-02 15:04:05 +0000 UTC", "2023-09-27 00:00:00 +0000 UTC")
-	image, _ := uuid.Parse("f2f4b3aa-1e04-42a2-a581-607bf84f6800")
+	img, _ := uuid.Parse("f2f4b3aa-1e04-42a2-a581-607bf84f6800")
 	times, _ := models.NewTimes("PT2H15M", "PT1H30M")
 
 	want := models.Recipes{
@@ -98,7 +98,7 @@ func TestNextcloudImport(t *testing.T) {
 			CreatedAt:   createdAt1,
 			Cuisine:     "American",
 			Description: "This chocolate chip cookie recipe makes delicious cookies with crisp edges and chewy middles. Try this wildly-popular cookie recipe for yourself!",
-			Image:       image,
+			Images:      []uuid.UUID{img},
 			Ingredients: []string{
 				"1 cup butter, softened", "1 cup white sugar", "1 cup packed brown sugar",
 				"2 eggs", "2 teaspoons vanilla extract", "1 teaspoon baking soda",
@@ -139,7 +139,7 @@ func TestNextcloudImport(t *testing.T) {
 			Category:    "breakfast",
 			CreatedAt:   t2,
 			Description: "The best recipes approved by Jesus",
-			Image:       image,
+			Images:      []uuid.UUID{img},
 			Ingredients: []string{"1 apple", "2 cups chocolate", "1 cup flour"},
 			Instructions: []string{
 				"Mix everything in a big bowl", "Preheat oven at 350 f",

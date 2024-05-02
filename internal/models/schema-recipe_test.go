@@ -56,7 +56,7 @@ func TestRecipeSchema_Recipe(t *testing.T) {
 		CreatedAt:    created,
 		Cuisine:      "american",
 		Description:  "description",
-		Image:        imageID,
+		Images:       []uuid.UUID{imageID},
 		Ingredients:  []string{"ing1", "ing2", "ing3"},
 		Instructions: []string{"ins1", "ins2", "ins3"},
 		Keywords:     []string{"kw1", "kw2", "kw3"},

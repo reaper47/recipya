@@ -20,7 +20,7 @@ func TestPaprikaRecipe_Recipe(t *testing.T) {
 		Category:    "uncategorized",
 		CreatedAt:   got.CreatedAt,
 		Description: "Imported from Paprika",
-		Image:       uuid.Nil,
+		Images:      []uuid.UUID{},
 		Ingredients: []string{
 			"For the goja dough:", "2 cups (240g) all-purpose flour",
 			"2 teaspoons (8g) granulated sugar", "1/2 teaspoon (2g) instant yeast",

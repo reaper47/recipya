@@ -3,6 +3,7 @@ package models_test
 import (
 	"encoding/json"
 	"github.com/google/go-cmp/cmp"
+	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/models"
 	"os"
 	"path/filepath"
@@ -22,6 +23,7 @@ func TestAzureVision_Recipe(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "Recipe created using Azure AI Document Intelligence.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"3 Tbs. butter",
 					"6 slices firm, course-textured bread",
@@ -35,9 +37,11 @@ func TestAzureVision_Recipe(t *testing.T) {
 					"* melt butter in a saucepan and fry the bread slices on both sides until golden brown. Divide among 6 soup bowls. Place bowls in are over which has been pre heated to 350ºF and turned off.",
 					"* Meanwhile, Uring wroth to a boil, adding pal if necessary. Break an egg on to each slice of bread, pour the boiling broth over it an add pepper to taste. Sprinkle with Parme cheese. Harrish w/parsley nut meg.",
 				},
-				Name:  "Zuppa Pavese (Pavia Soup)",
-				URL:   "OCR",
-				Yield: 6,
+				Keywords: []string{},
+				Name:     "Zuppa Pavese (Pavia Soup)",
+				Tools:    []string{},
+				URL:      "OCR",
+				Yield:    6,
 			},
 		},
 		{
@@ -46,7 +50,7 @@ func TestAzureVision_Recipe(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "Recipe created using Azure AI Document Intelligence.",
-				Name:        "Oven-Baked Potatoes",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"1 cup of potatoes",
 					"1/2 tbsp salt (table)",
@@ -57,8 +61,11 @@ func TestAzureVision_Recipe(t *testing.T) {
 				Instructions: []string{
 					"Mix all ingredients together except for olive oil Heat a pan on the oven Pour the olive oil in the pan Add the mix and potatoes to the pan Grill for 20m until the potatoes are crispy and brown Serve hot",
 				},
-				URL:   "OCR",
-				Yield: 1,
+				Keywords: []string{},
+				Name:     "Oven-Baked Potatoes",
+				Tools:    []string{},
+				URL:      "OCR",
+				Yield:    1,
 			},
 		},
 		{
@@ -67,6 +74,7 @@ func TestAzureVision_Recipe(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "from Shaker Museum -N.Y",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"1c. butter",
 					"1 T. flour",
@@ -85,9 +93,11 @@ func TestAzureVision_Recipe(t *testing.T) {
 					"pastry lined pietin. Bake at 375'",
 					"for 35 minutes or until set,",
 				},
-				Name:  "Kentucky Pudding",
-				URL:   "OCR",
-				Yield: 4,
+				Keywords: []string{},
+				Name:     "Kentucky Pudding",
+				Tools:    []string{},
+				URL:      "OCR",
+				Yield:    4,
 			},
 		},
 		{
@@ -96,6 +106,7 @@ func TestAzureVision_Recipe(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "Recipe created using Azure AI Document Intelligence.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"2 cups flour",
 					"1/2 cup sugar",
@@ -108,9 +119,11 @@ func TestAzureVision_Recipe(t *testing.T) {
 					"Bake at 350° for 15-20 min. Cool completely. Coat with powdered sugar.",
 					"Keep in airtight container. Do not refrigerate.",
 				},
-				Name:  "Xenia's Polish Cookies",
-				URL:   "OCR",
-				Yield: 1,
+				Keywords: []string{},
+				Name:     "Xenia's Polish Cookies",
+				Tools:    []string{},
+				URL:      "OCR",
+				Yield:    1,
 			},
 		},
 		{
@@ -119,6 +132,7 @@ func TestAzureVision_Recipe(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "Recipe created using Azure AI Document Intelligence.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"2 cups cream corn",
 					"1 kg. onion, choppe",
@@ -136,9 +150,11 @@ func TestAzureVision_Recipe(t *testing.T) {
 				Instructions: []string{
 					"Simmer the first 9 ingredients for 20 minutes. Stie often - the cream corn tends to want To make it stick. add the next 4 ingredients. 9x 13 pan 325° for 1 hour.",
 				},
-				Name:  "Tamace Die",
-				URL:   "OCR",
-				Yield: 1,
+				Keywords: []string{},
+				Name:     "Tamace Die",
+				Tools:    []string{},
+				URL:      "OCR",
+				Yield:    1,
 			},
 		},
 		{
@@ -147,6 +163,7 @@ func TestAzureVision_Recipe(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: ":selected: WHY THIS RECIPE WORKS: For a fast and easy meal with plenty of Mexican-inspired flavor, we turned to quick-cooking boneless chicken breasts. First, we gave the mild chicken a layer of spicy flavor by seasoning it with chili powder as well as salt and pepper. Next, we dredged the breasts in flour, which served two purposes: It created a barrier between the fat in the pan and the moisture in the cutlet so that the fat \"spit\" less, and it helped to produce a consistently brown and crispy crust. We used the same pan to whip up a simple and flavorful side dish from common Mexican ingredients. We toasted corn kernels in a bit of oil, which brought out their sweetness nicely. We then softened some tomatoes (cherry tomatoes were our favorite) and brightened up our salsa with cilantro and fresh lime juice. Garlic and shallot rounded out the flavor of the salsa. The bright salsa perfectly complemented our crispy chicken breasts. Be sure not to stir the corn when cooking in step 4 or it will not brown well. If using fresh corn, you will need three to four ears in order to yield 3 cups of kernels. See the sidebar that follows the recipe.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"1/2 cup all-purpose flour",
 					"4 (6- to 8-ounce) boneless, skinless chicken breasts, trimmed and pounded to 1/2-inch thickness",
@@ -164,9 +181,11 @@ func TestAzureVision_Recipe(t *testing.T) {
 					"TEST KITCHEN TIP: CUTTING KERNELS OFF THE COB",
 					"After removing husk and silk, stand ear upright in large bowl and use paring knife to slice kernels off cob.",
 				},
-				Name:  "Sauteed Chicken with Cherry Tomato and Roasted Corn Salsa",
-				URL:   "OCR",
-				Yield: 4,
+				Keywords: []string{},
+				Name:     "Sauteed Chicken with Cherry Tomato and Roasted Corn Salsa",
+				Tools:    []string{},
+				URL:      "OCR",
+				Yield:    4,
 			},
 		},
 		{
@@ -175,6 +194,7 @@ func TestAzureVision_Recipe(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: ":selected: WHY THIS RECIPE WORKS: For a fast and easy meal with plenty of Mexican-inspired flavor, we turned to quick-cooking boneless chicken breasts. First, we gave the mild chicken a layer of spicy flavor by seasoning it with chili powder as well as salt and pepper. Next, we dredged the breasts in flour, which served two purposes: It created a barrier between the fat in the pan and the moisture in the cutlet so that the fat \"spit\" less, and it helped to produce a consistently brown and crispy crust. We used the same pan to whip up a simple and flavorful side dish from common Mexican ingredients. We toasted corn kernels in a bit of oil, which brought out their sweetness nicely. We then softened some tomatoes (cherry tomatoes were our favorite) and brightened up our salsa with cilantro and fresh lime juice. Garlic and shallot rounded out the flavor of the salsa. The bright salsa perfectly complemented our crispy chicken breasts. Be sure not to stir the corn when cooking in step 4 or it will not brown well. If using fresh corn, you will need three to four ears in order to yield 3 cups of kernels. See the sidebar that follows the recipe.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"1/2 cup all-purpose flour",
 					"4 (6- to 8-ounce) boneless, skinless chicken breasts, trimmed and pounded to 1/2-inch thickness",
@@ -190,9 +210,11 @@ func TestAzureVision_Recipe(t *testing.T) {
 					"Add remaining 1 tablespoon oil to now-empty skillet and place over medium-high heat until shimmering. Add corn and cook, without stirring, until well browned and roasted, 8 to 10 minutes. Stir in shallot and garlic and cook until fragrant, about 30 seconds. Stir in tomatoes, scraping up any browned bits, and cook until just softened, about 2 minutes.",
 					"Off heat, stir in cilantro and lime juice and season with salt and pepper to taste. Transfer vegetables to platter and serve with chicken.",
 				},
-				Name:  "Sautéed Chicken with Cherry Tomato and Roasted Corn Salsa",
-				URL:   "OCR",
-				Yield: 4,
+				Keywords: []string{},
+				Name:     "Sautéed Chicken with Cherry Tomato and Roasted Corn Salsa",
+				Tools:    []string{},
+				URL:      "OCR",
+				Yield:    4,
 			},
 		},
 		{
@@ -201,6 +223,7 @@ func TestAzureVision_Recipe(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "Recipe created using Azure AI Document Intelligence.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"FÜR DIE SPRINGFORM (Ø 20 CM)",
 					"etwas Fett",
@@ -248,8 +271,9 @@ func TestAzureVision_Recipe(t *testing.T) {
 					"Springformrand lösen und entfernen. Biskuit auf einen mit Backpapier belegten Kuchenrost stürzen und erkalten lassen. Springform säubern und Boden fetten. Backofentemperatur erhöhen.",
 					"Ober- und Unterhitze: etwa 200 ℃",
 				},
-				Name:  "Himmlische Kokoscreme-Torte ZUBEREITUNG:60 MIN . ETWAS ÜBUNG ERFORDERLICH · ETWA 12 STÜCK",
-				Times: models.Times{Prep: 1 * time.Hour},
+				Keywords: []string{},
+				Name:     "Himmlische Kokoscreme-Torte ZUBEREITUNG:60 MIN . ETWAS ÜBUNG ERFORDERLICH · ETWA 12 STÜCK",
+				Times:    models.Times{Prep: 1 * time.Hour},
 				Tools: []string{
 					"FÜR DAS BACKBLECH",
 					"Backpapier",

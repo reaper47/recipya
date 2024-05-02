@@ -85,11 +85,8 @@ type azureDIParagraph struct {
 
 // Recipe converts an AzureDILayout to a Recipe.
 func (a *AzureDILayout) Recipe() Recipe {
-	recipe := Recipe{
-		Category: "uncategorized",
-		URL:      "OCR",
-		Yield:    1,
-	}
+	recipe := NewBaseRecipe()
+	recipe.URL = "OCR"
 
 	if len(a.AnalyzeResult.Pages) == 0 {
 		return Recipe{}

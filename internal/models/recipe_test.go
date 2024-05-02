@@ -302,7 +302,7 @@ func TestRecipe_IsEmpty(t *testing.T) {
 		{name: "has cuisine only", recipe: models.Recipe{Cuisine: "american"}},
 		{name: "has description only", recipe: models.Recipe{Description: "american"}},
 		{name: "has ID only", recipe: models.Recipe{ID: 1}},
-		{name: "has image only", recipe: models.Recipe{Image: uuid.New()}},
+		{name: "has image only", recipe: models.Recipe{Images: []uuid.UUID{uuid.New()}}},
 		{name: "has Ingredients only", recipe: models.Recipe{Ingredients: []string{"one"}}},
 		{name: "has Instructions only", recipe: models.Recipe{Instructions: []string{"one"}}},
 		{name: "has Keywords only", recipe: models.Recipe{Keywords: []string{"one"}}},
@@ -421,7 +421,7 @@ func TestRecipe_Copy(t *testing.T) {
 		Cuisine:     "American",
 		Description: "The best American breakfast you could ever have.",
 		ID:          1,
-		Image:       uuid.Nil,
+		Images:      make([]uuid.UUID, 0),
 		Ingredients: []string{
 			"2 eggs",
 			"3 cups maple syrup",
@@ -608,7 +608,7 @@ func TestRecipe_Schema(t *testing.T) {
 		Cuisine:      "american",
 		Description:  "description",
 		ID:           1,
-		Image:        imageUUID,
+		Images:       []uuid.UUID{imageUUID},
 		Ingredients:  []string{"ing1", "ing2", "ing3"},
 		Instructions: []string{"ins1", "ins2", "ins3"},
 		Keywords:     []string{"kw1", "kw2", "kw3"},
@@ -674,8 +674,8 @@ func TestRecipe_Schema(t *testing.T) {
 		t.Errorf("wanted keywords 'kw1,kw2,kw3' but got %q", schema.Keywords)
 	}
 	v = imageUUID.String()
-	if schema.Image.Value != v {
-		t.Errorf("wanted uuid %q but got %q", v, schema.Image)
+	if schema.Image.Value != v+".jpg" {
+		t.Errorf("wanted uuid %q but got %q", v, schema.Image.Value)
 	}
 
 	if !slices.Equal(schema.Ingredients.Values, []string{"ing1", "ing2", "ing3"}) {

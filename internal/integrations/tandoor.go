@@ -226,10 +226,13 @@ func TandoorImport(baseURL, username, password string, client *http.Client, uplo
 			yield = 1
 		}
 
-		var img uuid.UUID
+		var images []uuid.UUID
 		resImage, err := client.Get(t.Image)
 		if err == nil {
-			img, _ = uploadImageFunc(resImage.Body)
+			img, _ := uploadImageFunc(resImage.Body)
+			if img != uuid.Nil {
+				images = append(images, img)
+			}
 			_ = resImage.Body.Close()
 		}
 
@@ -276,7 +279,7 @@ func TandoorImport(baseURL, username, password string, client *http.Client, uplo
 			Category:     category,
 			CreatedAt:    t.CreatedAt.UTC(),
 			Description:  t.Description,
-			Image:        img,
+			Images:       images,
 			Ingredients:  ingredients,
 			Instructions: instructions,
 			Keywords:     keywords,

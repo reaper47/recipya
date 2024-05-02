@@ -336,11 +336,16 @@ func MealieImport(baseURL, username, password string, client *http.Client, uploa
 				slog.Error("Couldn't upload image", "url", req.URL.String(), usernameAttr, rawURLAttr, "error", err)
 			}
 
+			var images []uuid.UUID
+			if img != uuid.Nil {
+				images = append(images, img)
+			}
+
 			recipe := models.Recipe{
 				Category:     category,
 				CreatedAt:    dateCreated,
 				Description:  m.Description,
-				Image:        img,
+				Images:       images,
 				Ingredients:  ingredients,
 				Instructions: instructions,
 				Keywords:     keywords,

@@ -950,7 +950,7 @@ func prepareCookbook(srv *server.Server) (*mockFiles, *mockRepository, func()) {
 		Category:     "American",
 		Description:  "This is the most delicious recipe!",
 		ID:           3,
-		Image:        uuid.Nil,
+		Images:       []uuid.UUID{uuid.Nil},
 		Ingredients:  []string{"Ing1", "Ing2", "Ing3"},
 		Instructions: []string{"Ins1", "Ins2", "Ins3"},
 		Name:         "Gotcha",

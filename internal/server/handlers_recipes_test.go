@@ -14,6 +14,7 @@ import (
 	"maps"
 	"net/http"
 	"net/http/httptest"
+	"slices"
 	"strconv"
 	"strings"
 	"testing"
@@ -183,7 +184,7 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 				`<title hx-swap-oob="true">Add Manual | Recipya</title>`,
 				`<form class="card-body" style="padding: 0" enctype="multipart/form-data" hx-post="/recipes/add/manual" hx-indicator="#fullscreen-loader">`,
 				`<input required type="text" name="title" placeholder="Title of the recipe*" autocomplete="off" class="input w-full btn-ghost text-center">`,
-				`<img src="" alt="Image preview of the recipe." class="object-cover"> <span><input type="file" accept="image/*" name="image" class="file-input file-input-sm w-full max-w-xs" _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray' on dragleave or drop set the target's style.background to '' on drop or change make an FileReader called reader then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then set {src: window.URL.createObjectURL(it)} on previous <img/> then remove .hidden from next <button/>">`,
+				`<img src="" alt="Image preview of the recipe." class="object-cover mb-2 w-full max-h-[39rem]"> <span class="grid gap-1 max-w-sm" style="margin: auto auto 0.25rem;"><div class="mr-1"><input type="file" accept="image/*" name="images" class="file-input file-input-sm file-input-bordered w-full max-w-sm" _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray' on dragleave or drop set the target's style.background to '' on drop or change make an FileReader called reader then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then set {src: window.URL.createObjectURL(it)} on previous <img/> then remove .hidden from me.parentElement.parentElement.querySelectorAll('button') then add .hidden to the parentElement of me">`,
 				`<input type="number" min="1" name="yield" value="1" class="input input-bordered input-sm w-24 md:w-20 lg:w-24">`,
 				`<input required type="text" list="categories" name="category" class="input input-bordered input-sm w-48 md:w-36 lg:w-48" placeholder="Breakfast"> <datalist id="categories"><option>breakfast</option><option>lunch</option><option>dinner</option></datalist>`,
 				`<textarea required name="description" placeholder="This Thai curry chicken will make you drool." class="textarea w-full h-full resize-none"></textarea>`,
@@ -208,7 +209,7 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 
 		fields := map[string]string{
 			"title":               "Salsa",
-			"image":               "eggs.jpg",
+			"images":              "eggs.jpg",
 			"category":            "appetizers",
 			"source":              "Mommy",
 			"description":         "The best",
@@ -240,13 +241,10 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 		gotRecipe := repo.RecipesRegistered[1][id-1]
 		want := models.Recipe{
 			Category:     "appetizers",
-			CreatedAt:    time.Time{},
-			Cuisine:      "",
 			Description:  "The best",
-			Image:        gotRecipe.Image,
+			Images:       gotRecipe.Images,
 			Ingredients:  []string{"ing1", "ing2"},
 			Instructions: []string{"ins1", "ins2"},
-			Keywords:     nil,
 			Name:         "Salsa",
 			Nutrition: models.Nutrition{
 				Calories:           "666",
@@ -265,13 +263,12 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 				Cook:  30*time.Minute + 15*time.Second,
 				Total: 45*time.Minute + 45*time.Second,
 			},
-			Tools:     nil,
-			UpdatedAt: time.Time{},
-			URL:       "Mommy",
-			Yield:     4,
+			Tools: nil,
+			URL:   "Mommy",
+			Yield: 4,
 		}
-		if gotRecipe.Image == uuid.Nil {
-			t.Fatal("got nil UUID image when want something other than nil")
+		if len(gotRecipe.Images) == 0 {
+			t.Fatal("got no images when want images")
 		}
 		if !cmp.Equal(want, gotRecipe) {
 			t.Log(cmp.Diff(want, gotRecipe))
@@ -742,7 +739,7 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 		Cuisine:      "indonesian",
 		Description:  "A delicious recipe!",
 		ID:           1,
-		Image:        uuid.New(),
+		Images:       []uuid.UUID{uuid.New()},
 		Ingredients:  []string{"ing1", "ing2", "ing3"},
 		Instructions: []string{"ins1", "ins2", "ins3"},
 		Keywords:     []string{"chicken", "big", "marinade"},
@@ -803,7 +800,7 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 		want := []string{
 			`<title hx-swap-oob="true">Edit Chicken Jersey | Recipya</title>`,
 			`<input required type="text" name="title" placeholder="Title of the recipe*" autocomplete="off" class="input w-full btn-ghost text-center" value="Chicken Jersey">`,
-			`<img src="/data/images/` + baseRecipe.Image.String() + `.jpg" alt="Image preview of the recipe." class="object-cover"> <span><input type="file" accept="image/*" name="image" class="file-input file-input-sm w-full max-w-xs" value="/data/images/` + baseRecipe.Image.String() + `.jpg" _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray' on dragleave or drop set the target's style.background to '' on drop or change make an FileReader called reader then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then set {src: window.URL.createObjectURL(it)} on previous <img/> then remove .hidden from next <button/>">`,
+			`<img alt="Image preview of the recipe." class="object-cover mb-2 w-full max-h-[39rem]" src="/data/images/` + baseRecipe.Images[0].String() + `.jpg"> <span class="grid gap-1 max-w-sm" style="margin: auto auto 0.25rem;"><div class="mr-1"><input type="file" accept="image/*" name="images" class="file-input file-input-sm file-input-bordered w-full max-w-sm" value="/data/images/` + baseRecipe.Images[0].String() + `.jpg" _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray' on dragleave or drop set the target's style.background to '' on drop or change make an FileReader called reader then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then set {src: window.URL.createObjectURL(it)} on previous <img/> then remove .hidden from me.parentElement.parentElement.querySelectorAll('button') then add .hidden to the parentElement of me">`,
 			`<input required type="text" list="categories" name="category" class="input input-bordered input-sm w-48 md:w-36 lg:w-48" placeholder="Breakfast" value="american"> <datalist id="categories"></datalist>`,
 			`<input type="number" min="1" name="yield" class="input input-bordered input-sm w-24 md:w-20 lg:w-24" value="12">`,
 			`<input required type="text" placeholder="Source" name="source" class="input input-bordered input-sm md:w-28 lg:w-40 xl:w-44" value="https://example.com/recipes/yummy"`,
@@ -821,13 +818,13 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 		files := &mockFiles{}
 		srv.Files = files
 		srv.Repository = &mockRepository{RecipesRegistered: map[int64]models.Recipes{1: {baseRecipe}}}
-		contentType, body := createMultipartForm(map[string]string{"image": ""})
+		contentType, body := createMultipartForm(map[string]string{})
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, fmt.Sprintf(uri, 1), header(contentType), strings.NewReader(body))
 
 		assertStatus(t, rr.Code, http.StatusNoContent)
 		got, _ := srv.Repository.Recipe(baseRecipe.ID, 1)
-		if got.Image != baseRecipe.Image {
+		if !slices.Equal(got.Images, baseRecipe.Images) {
 			t.Fatal("image should not have been updated")
 		}
 		if files.uploadImageHitCount > 0 {
@@ -839,13 +836,13 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 		files := &mockFiles{}
 		srv.Files = files
 		srv.Repository = &mockRepository{RecipesRegistered: map[int64]models.Recipes{1: {baseRecipe}}}
-		contentType, body := createMultipartForm(map[string]string{"image": "eggs.jpg"})
+		contentType, body := createMultipartForm(map[string]string{"images": "eggs.jpg"})
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, fmt.Sprintf(uri, 1), header(contentType), strings.NewReader(body))
 
 		assertStatus(t, rr.Code, http.StatusNoContent)
 		got, _ := srv.Repository.Recipe(baseRecipe.ID, 1)
-		if got.Image == baseRecipe.Image {
+		if slices.Equal(got.Images, baseRecipe.Images) {
 			t.Fatal("image should have been updated")
 		}
 		if files.uploadImageHitCount == 0 {
@@ -892,7 +889,7 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 			CreatedAt:    baseRecipe.CreatedAt,
 			Description:  "The best",
 			ID:           baseRecipe.ID,
-			Image:        got.Image,
+			Images:       got.Images,
 			Ingredients:  []string{"cheese", "avocado"},
 			Instructions: []string{"mix", "eat"},
 			Keywords:     []string{"chicken", "big", "marinade"},
@@ -1146,7 +1143,7 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 		Category:     "American",
 		Description:  "This is the most delicious recipe!",
 		ID:           1,
-		Image:        uuid.New(),
+		Images:       []uuid.UUID{uuid.New()},
 		Ingredients:  []string{"Ing1", "Ing2", "Ing3"},
 		Instructions: []string{"Ins1", "Ins2", "Ins3"},
 		Name:         "Chicken Jersey",
@@ -1201,7 +1198,7 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 			`<a href="/auth/login" class="btn btn-ghost">Log In</a> <a href="/auth/register" class="btn btn-ghost">Sign Up</a>`,
 			`<span class="text-center pb-2 print:w-full">Chicken Jersey</span>`,
 			`<button class="mr-2" title="Print recipe" _="on click print()">`,
-			`<img id="output" style="object-fit: cover" alt="Image of the recipe" class="w-full max-h-[34rem]" src="/data/images/` + recipe.Image.String() + `.jpg">`,
+			`<img id="output" style="object-fit: cover" alt="Image of the recipe" class="w-full max-h-[34rem]" src="/data/images/` + recipe.Images[0].String() + `.jpg">`,
 			`<div class="badge badge-primary badge-outline">American</div>`,
 			`<p class="text-sm text-center">2 servings</p>`,
 			`<a class="btn btn-sm btn-outline no-underline print:hidden" href="https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/" target="_blank">Source</a><p class="hidden print:block print:whitespace-nowrap print:overflow-hidden print:text-ellipsis print:max-w-xs">https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/</p>`,
@@ -1370,7 +1367,7 @@ func TestHandlers_Recipes_View(t *testing.T) {
 				Category:     "American",
 				Description:  "This is the most delicious recipe!",
 				ID:           1,
-				Image:        image,
+				Images:       []uuid.UUID{image},
 				Ingredients:  []string{"Ing1", "Ing2", "Ing3"},
 				Instructions: []string{"Ins1", "Ins2", "Ins3"},
 				Name:         "Chicken Jersey",
