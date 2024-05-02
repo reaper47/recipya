@@ -851,6 +851,7 @@ templ loadRecipesManualScripts() {
             cloneImage.id = `image-${images.length+1}`;
             cloneImage.querySelector("img").src = "";
             cloneImage.querySelector("div").classList.remove("hidden");
+            cloneImage.querySelector("input[type='url']").value = '';
             const subButtons = cloneImage.querySelectorAll("button");
             subButtons[subButtons.length-1].classList.add("hidden");
             document.querySelector("#images").appendChild(cloneImage);
@@ -868,6 +869,7 @@ templ loadRecipesManualScripts() {
             cloneButton.setAttribute("onclick", "switchImage(event)");
             target.previousElementSibling.parentNode.insertBefore(cloneButton, target);
             _hyperscript.processNode(cloneButton);
+            htmx.process(cloneImage);
         }
 
         function switchImage(event) {
