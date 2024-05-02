@@ -92,6 +92,7 @@ const InsertRecipeCuisine = `
 	INSERT INTO cuisine_recipe (cuisine_id, recipe_id)
 	VALUES (?, ?)`
 
+// InsertRecipeImage is the query to insert a recipe's image.
 const InsertRecipeImage = `
 	INSERT INTO additional_images_recipe (recipe_id, image)
 	VALUES (?, ?)`

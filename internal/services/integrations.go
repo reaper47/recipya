@@ -165,6 +165,7 @@ func (i Integrations) ProcessImageOCR(files []io.Reader) (models.Recipes, error)
 	return recipes, nil
 }
 
+// TestConnection tests the connection of an integration. No error is returned on success.
 func (i Integrations) TestConnection(api string) error {
 	var (
 		apiAttr       = slog.String("api", api)

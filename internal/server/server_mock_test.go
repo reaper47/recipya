@@ -952,7 +952,6 @@ func (m *mockIntegrations) ProcessImageOCR(f []io.Reader) (models.Recipes, error
 	return models.Recipes{{ID: 1}}, nil
 }
 
-// TestConnection tests the connection of an integration. No error is returned on success.
 func (m *mockIntegrations) TestConnection(api string) error {
 	if m.testConnectionFunc != nil {
 		return m.testConnectionFunc(api)
