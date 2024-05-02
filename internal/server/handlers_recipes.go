@@ -965,33 +965,44 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 		userID := getUserID(r)
 		userIDAttr := slog.Int64("userID", userID)
 
-		imageFile, ok := r.MultipartForm.File["image"]
+		recipeNumStr := r.PathValue("id")
+		recipeNumAttr := slog.String("recipeID", recipeNumStr)
+
+		recipeNum, err := parsePathPositiveID(recipeNumStr)
+		if err != nil {
+			slog.Error("Failed to parse id", userIDAttr, recipeNumAttr, "error", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		imageFiles, ok := r.MultipartForm.File["images"]
 		if ok {
-			f, err := imageFile[0].Open()
-			if err != nil {
-				msg := "Could not open the image from the form."
-				slog.Error(msg, userIDAttr, "error", err)
-				w.Header().Set("HX-Trigger", models.NewErrorToast("", msg, "").Render())
-				w.WriteHeader(http.StatusBadRequest)
-				return
-			}
-			defer f.Close()
+			for _, imageFile := range imageFiles {
+				file, err := imageFile.Open()
+				if err != nil {
+					msg := "Could not open the image from the form."
+					slog.Error(msg, userIDAttr, recipeNumAttr, "error", err)
+					w.Header().Set("HX-Trigger", models.NewErrorGeneralToast(msg).Render())
+					w.WriteHeader(http.StatusBadRequest)
+					return
+				}
 
-			imageUUID, err := s.Files.UploadImage(f)
-			if err != nil {
-				msg := "Error uploading image."
-				slog.Error(msg, userIDAttr, "error", err)
-				w.Header().Set("HX-Trigger", models.NewErrorToast("", msg, "").Render())
-				w.WriteHeader(http.StatusBadRequest)
-				return
-			}
+				imageUUID, err := s.Files.UploadImage(file)
+				if err != nil {
+					_ = file.Close()
+					msg := "Error uploading image."
+					slog.Error(msg, userIDAttr, "error", err)
+					w.Header().Set("HX-Trigger", models.NewErrorGeneralToast(msg).Render())
+					w.WriteHeader(http.StatusBadRequest)
+					return
+				}
 
-			var images []uuid.UUID
-			if imageUUID != uuid.Nil {
-				images = append(images, imageUUID)
-			}
+				_ = file.Close()
 
-			updatedRecipe.Images = images
+				if imageUUID != uuid.Nil {
+					updatedRecipe.Images = append(updatedRecipe.Images, imageUUID)
+				}
+			}
 		}
 
 		times, err := models.NewTimes(r.FormValue("time-preparation"), r.FormValue("time-cooking"))
@@ -1022,14 +1033,6 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 		yield, err := strconv.ParseInt(r.FormValue("yield"), 10, 16)
 		if err == nil {
 			updatedRecipe.Yield = int16(yield)
-		}
-
-		recipeNumStr := r.PathValue("id")
-		recipeNum, err := parsePathPositiveID(recipeNumStr)
-		if err != nil {
-			slog.Error("Failed to parse id", userIDAttr, "recipeNum", recipeNumStr, "error", err)
-			w.WriteHeader(http.StatusInternalServerError)
-			return
 		}
 
 		err = s.Repository.UpdateRecipe(&updatedRecipe, userID, recipeNum)

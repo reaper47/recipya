@@ -1635,10 +1635,28 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 		updateFields["description"] = updatedRecipe.Description
 	}
 
-	// TODO: Update recipe images
-	/*if updatedRecipe.Images != uuid.Nil && updatedRecipe.Images != oldRecipe.Images {
-		updateFields["image"] = updatedRecipe.Images.String()
-	}*/
+	userIDAttr := slog.Int64("userID", userID)
+	recipeIDAttr := slog.Int64("recipeID", recipeID)
+
+	_, err = tx.ExecContext(ctx, statements.DeleteRecipeImages, recipeID, userID)
+	if err != nil {
+		slog.Error("Failed to delete images.", userIDAttr, recipeIDAttr, "error", err)
+		return err
+	}
+
+	if len(updatedRecipe.Images) > 0 {
+		updateFields["image"] = updatedRecipe.Images[0].String()
+
+		if len(updatedRecipe.Images) > 1 {
+			for _, u := range updatedRecipe.Images[1:] {
+				_, err = tx.ExecContext(ctx, statements.InsertRecipeImage, recipeID, u)
+				if err != nil {
+					slog.Warn("Error inserting recipe image", userIDAttr, recipeIDAttr, "image", u, "err", err)
+					continue
+				}
+			}
+		}
+	}
 
 	if updatedRecipe.Name != oldRecipe.Name {
 		updateFields["name"] = updatedRecipe.Name

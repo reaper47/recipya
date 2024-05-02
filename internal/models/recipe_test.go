@@ -674,8 +674,8 @@ func TestRecipe_Schema(t *testing.T) {
 		t.Errorf("wanted keywords 'kw1,kw2,kw3' but got %q", schema.Keywords)
 	}
 	v = imageUUID.String()
-	if schema.Image.Value != v {
-		t.Errorf("wanted uuid %q but got %q", v, schema.Image)
+	if schema.Image.Value != v+".jpg" {
+		t.Errorf("wanted uuid %q but got %q", v, schema.Image.Value)
 	}
 
 	if !slices.Equal(schema.Ingredients.Values, []string{"ing1", "ing2", "ing3"}) {

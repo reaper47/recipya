@@ -22,6 +22,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			buf:  bytes.NewBufferString("Bailey's Irish Cream Chocolate Cake with Kahlua Buttercream\n\nMakes: 12 slices\n\nIngredients\nCake\n1 cup unsalted butter, softened to room temperature\n2 1/2 cups granulated sugar\n4 large eggs, room temperature\n2 teaspoons vanilla extract\n3 cups all-purpose flour\n1 1/2 teaspoons baking soda\n1 1/2 teaspoon baking powder\n1/2 teaspoon salt\n1 cup unsweetened cocoa powder\n2 1/4 cups Baileys Irish Cream\nKahlua Buttercream Frosting\n1 cup unsalted butter, softened to room temperature\n4 cups powdered sugar\n1 teaspoon vanilla\n3 tablespoons kahlua\n\nInstructions\nPreheat oven to 350 degrees.\nGrease and flour the cake pans and then line the bottom of the pans with round parchment paper for easier removal.\nCream the butter and sugars in a large mixing bowl. Add in the eggs one at a time and blend with a handheld mixer.\nAdd in the vanilla and mix to combine.\nCombine flour, baking soda, baking powder, salt and cocoa powder in a large bowl.\nAlternating between the two, slowly add the dry ingredient mixture and Baileys to the bowl with the butter and sugar. Mix on low speed to combine ingredients.\nDivide the cake batter evenly between the three cake pans.\nBake 22-28 minutes or until a toothpick inserted in the center of the cake comes out clean.\nCool and then remove the top of each cake with a cake leveler.\nMix the frosting by creaming the butter and powdered sugar. Add in the vanilla and kahlua, mixing with a hand-held mixer on low speed.\nENJOY!\n\nhttps://myincrediblerecipes.com/baileys-irish-cream-chocolate-cake-with-kahlua-buttercream-frosting/"),
 			want: models.Recipe{
 				Category: "uncategorized",
+				Images:   []uuid.UUID{},
 				Ingredients: []string{
 					"Cake",
 					"1 cup unsalted butter, softened to room temperature",
@@ -66,6 +67,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "This hearty beef stew is made with lean boneless chuck that's cooked with carrots, parsnips and turnips and flavored with dark beer. Simmering it in a Dutch oven for about 2 hours makes the meat and vegetables fork tender and delicious.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"3 tablespoons canola oil, divided",
 					"1/4 cup all-purpose flour $",
@@ -104,6 +106,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 				Category:    "soup",
 				Cuisine:     "american",
 				Description: "Cauliflower Jalapeno Popper Soup is a rich and creamy low carb soup full of cauliflower, bacon, and jalapenos. This soup really packs the heat.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"6 slices bacon",
 					"1 cup (150 g) diced onion",
@@ -150,6 +153,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "A classic roast chicken recipe should be in everyone's repertoire. Make this oven baked chicken with gravy for a satisfying Sunday lunch.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"1 onion, roughly chopped",
 					"2 carrots, roughly chopped",
@@ -198,6 +202,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "The crispy bits are the key to this pork’s deliciousness. Use a wide, flat spatula for the best effect.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"1/2 English hothouse cucumber, halved lengthwise, thinly sliced crosswise",
 					"1 shallot, thinly sliced",
@@ -238,6 +243,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 				Category:    "uncategorized",
 				Cuisine:     "african",
 				Description: "The national dish of Gambia. A thick, saucy stew served over rice.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"1 lb beef steak or 1 lb chicken breast, cut into ½ inch chunks (or use bone-in chicken pieces and simmer them in the sauce; once cooked leave the pieces whole or remove the meat from the bones and add it back to the stew.)",
 					"1 large onion, diced",
@@ -275,6 +281,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 				Category:    "uncategorized",
 				CreatedAt:   time.Time{},
 				Description: "A few tablespoons of duck fat and a very hot oven are all you need to turn some sleepy Brussels sprouts into something much more special.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"2 tablespoons duck fat, or more as needed",
 					"2 pounds Brussels sprouts, trimmed and halved lengthwise",
@@ -305,6 +312,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "This easy no-bake cheesecake is subtly infused with the flavours of gin, lemon and lime for a deliciously zesty and zingy dessert.\nThe beauty of this pudding (apart from being so easy to make - you don’t even need to turn the oven on!) is that you can make it the day before you want to eat it, and it keeps in the fridge for second servings the next day - if it lasts that long, of course!\nThis fabulous gin and tonic cheesecake is best served with - what else? - a refreshing G&T, in the garden, in the sunshine. Bliss!",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"For the base:",
 					"200g digestive biscuits",
@@ -342,6 +350,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "“In the end isn’t a roast all about the roast potatoes? While we all love a roast, I reckon that deep down we all have this secret shared belief that the best bit of any roast is the roast potato. Of course, there’s a majesty to a tender, juicy, aromatic bird with a lovely browned skin. Of course, a big-flavoured gravy makes a difference. But no matter how delicious everything else is, if the roasties aren’t quite there, then we’re not quite satisfied. That’s probably part of the reason I got a little bit obsessed about getting roast potatoes with exactly the texture I wanted: crispy and crunchy on the outside; soft and fluffy on the inside. So, if that’s how you like your potatoes, you’re in for a treat.”",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"2kg maris piper potatoes",
 					"Vegetable oil or melted goose fat, duck fat or lard to roast",
@@ -383,6 +392,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "A ridiculously simple ice cream recipe that is also ridiculously delicious! This mango ice cream is done in a blitz (literally!) using only a blender and 3-4 simple ingredients. Trust me, you’ll be amazed, as I was, at how good this ice cream is given how easy and quick it is to make! Now every time good sweet mango goes on sale I buy a whole bunch and freeze them just for this occasion! Just one note: mango makes up a very large proportion of this recipe so it’s really important that you use good, ripe mango for this! Enjoy!",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"300 g sweet, ripe mango, cut into small cubes and freeze, you will need about 1½ – 2 mangoes (see note)",
 					"¼ cup (60 mL) honey (may need more if your mango isn’t very sweet)",
@@ -410,6 +420,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "Most tourists visiting Thailand remain entirely unaware of just how good Thai Sausages can be. The reason for this is that they seldom find their way onto a restaurant menu. Instead, they are usually purchased from a food market, or from a street vendor, to be eaten as a snack. This is truly a shame, as a good quality Thai Sausage can be very tasty.\nUsually the sausage will be served cut into thin slices, and eaten with a small amount of greens such as cabbage leaves, whole garlic cloves, whole chilli and cucumber. Sometimes the Thai Sausage will also be dipped into a sweet chilli sauce.\nMost Thai Sausages are made from pork, but they can also be made from beef, chicken, or even fish. Depending upon the region in which they were made, they tend to exhibit a slightly different taste. In Bangkok and Central Thailand they will be quite meaty tasting, with a lot of garlic present, in the North East (Isan), more chilli is added, and the quality of the meat, and quantity added, tends to be less, making for a more fatty sausage. In the South of Thailand, they tend to be much more sweat in taste, with sugar added to the recipe.\nWhat really separates a Thai Sausage from its western counterparts is the sheer variety of herbs and spices added to the sausage mix. Typically a Thai Sausage will contain galangal, lemon grass, garlic, coriander, chilli, kaffir lime leaves, white pepper and fish sauce. As we can see, this is quite a mixture of flavours, making the Thai Sausage something quite special.\nThe major difference between a Thai Sausage and Western Sausage is in the form of the filler content, which is mixed with the meat. In the West we tend to add things like bran, corn, or similar crops, whereas a Thai Sausage uses sticky rice instead. This makes for a very heavy, filling sausage, one of the reasons it is so popular as a snack food, as a couple of them can fill you up nicely.\nThai Sausages can be fried, but they tend to taste so much better when they have been barbequed over charcoal. They need to be cooked very slowly, to allow the flavours of the herbs and spices to mix with the meat fat as it cooks, spreading flavours into the whole sausage.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"150g Minced Pork",
 					"½ Cup Sticky Rice",
@@ -449,6 +460,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "A flavourful beef stew that won’t leave you feeling heavy at the end of the meal! The super tender beef is stewed in a broth infused with lots of herbs and spices. You’ll learn about my favourite cut of beef for stew that I promise will become your favourite too. If you’ve got a slow cooker or a crockpot, this is the perfect dish for it!",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"700 g (1½ lb) beef “digital muscle” (see note) or other stew-friendly beef such as shank, round or chuck, cut into 1-inch thick pieces.",
 					"2 generous pinches of salt",
@@ -496,6 +508,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			buf:  bytes.NewBufferString("Thai Tea Ice Cream (No Machine Method) ไอติมชาเย็น\n\nMakes 1 quart\n\nINGREDIENTS\n1 1/2 cup whipping cream\n1/4 cup Thai tea leaves\nA pinch of salt\n1/2 can sweetened condensed milk (150 ml)\n1.5 Tbsp Irish cream liqueur such as Bailey’s (optional)\nOptional Topping\n3 Tbsp sweetened condensed milk\n3 Tbsp evaporated milk\n\nINSTRUCTIONS\nHeat whipping cream in a small pot over medium heat, stirring occasionally, until the cream is steaming. Add tea leaves and a small pinch of salt, and stir just until the cream boils. Remove from heat and steep for 5 minutes (don’t leave it sitting until it cools down or it’ll be really hard to strain!). Strain the cream using a fine mesh strainer into a 2-cup measuring cup*, pressing out as much liquid as you can—you should have about 1 1/4 cup of cream, if you have too little, add more fresh cream until you have 1 1/4 cup; if you have a little more, don’t worry about it. Once the cream is cool enough to go into the fridge, refrigerate for at least 4 hours or until completely cold; I like to do this step 1 day in advance.\n*Note: If you don’t have a 2-cup measure, you can strain it into a 1-cup measure and another ¼ cup measure. Just make sure you don’t let the first cup overflow!\nWhile the cream is cooling, make the topping by stirring the evaporated milk and condensed milk together. Refrigerate until ready to use.\nOnce the cream is chilled completely, whip the cream to soft-peak stage using a stand mixer with a whisk attachment or a hand mixer. (When the beaters start leaving a trail that doesn’t immediately disappear, you’re at soft peaks.) Add condensed milk and the Irish cream liqueur and continue whipping until stiff peaks (when you lift your whisk, the peak that forms maintains its shape).\nTransfer the ice cream into a metal container and freeze for 2-3 hours or until solid. Alternatively, put the ice cream in between your favourite cookies to make an ice cream sandwich!\n\nhttp://hot-thai-kitchen.com/thai-tea-ice-cream/"),
 			want: models.Recipe{
 				Category: "uncategorized",
+				Images:   []uuid.UUID{},
 				Ingredients: []string{
 					"1 1/2 cup whipping cream",
 					"1/4 cup Thai tea leaves",
@@ -526,6 +539,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "Chef Margot Henderson shares her recipe for roast chicken. She says: 'A simple roast chicken is one of my all-time favourite dishes. If it comes wrapped in plastic, it’s best to take it out as soon as possible and cover it in paper instead. I like the bird to be dry as possible, for the crispiest skin'",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"1 Taste the Difference free-range whole chicken, about 1.7kg",
 					"1 garlic bulb, unpeeled, halved horizontally",
@@ -562,6 +576,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "One of the loveliest puddings, if it quite counts as that, to order in restaurants in Tuscany, is a glass of vin santo, that resinous, intense, amber-coloured holy wine, with a few almond-studded biscuits to dunk in. The idea for this comes purely from that: the ice cream is further deepened by the addition of treacly muscovado sugar, and the wine in it keeps it voluptuously velvety, even after being frozen. You don't absolutely need to serve the cantuccini biscuits with it, but the combination is pretty well unbeatable.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"584 millilitres double cream",
 					"200 millilitres vin santo",
@@ -587,6 +602,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "middag",
 				Description: "Når kjøttet skal koke lenge blir det en typisk søndagsmiddag. Lise Finckenhagen serverer bestefars bankekjøtt med gulrøtter, purre og potetstappe.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"800 - 1000 g bankekjøtt, flatbiff eller rundstek",
 					"4 løk",
@@ -620,6 +636,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "En frisk og god kake og en fryd for øyet!",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"Sukkerbrød",
 					"7.5 stk egg",
@@ -665,6 +682,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "søtt",
 				Description: "Hva er vel ikke bedre enn å kunne servere ei frisk og god kake med nøttebunn til påskekosen? Den hvite sjokolademoussen blir balansert med den friske pasjonsfrukten.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"Mandelbunn",
 					"4 eggehviter, mellomstore/store",
@@ -717,6 +735,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			buf:  bytes.NewBufferString("Grove polarbrød\n\n18 stk.\n\nIngredienser:\n350 g sammalt hvete, fin\n50 g sammalt hvete, grov\n300 g hvetemel\n2 ts sukker\n1 ts salt\n25 g gjær\n2 ss nøytral olje\n3 dl melk\n2 dl vann\n\nFramgangsmåte:\n1. Bland sammen alt det tørre. Varm melk og vann til det når cirka 37 grader, og rør ut gjæren i væsken.\n2. Elt sammen væske, gjær, olje og melblandingen. Kjør det gjerne i kjøkkenmaskin en stund. La deigen heve i ca 45 minutter.\n3. Del deigen i 18 emner, og form disse til boller før de trykkes eller kjevles flate. Legg på bakepapir, og lag små hull med enden av en skje eller en annen passende gjenstand.\n4. La polarbrødene etterheve i omlag 15 minutter. Stek på 225 grader i ca 9 minutter, og legg deretter til avkjøling på en bakerist.\n\nhttps://coop.no/extra/mat--trender/hjemmelagde-grove-polarbrod/"),
 			want: models.Recipe{
 				Category: "uncategorized",
+				Images:   []uuid.UUID{},
 				Ingredients: []string{
 					"350 g sammalt hvete, fin",
 					"50 g sammalt hvete, grov",
@@ -746,6 +765,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			buf:  bytes.NewBufferString("Hellstrøms asiatisk ribbe\n\n1 - 2 timer\n4 Voksne\n\nIngredienser\nEtt ribbestykke ca.3-4 kilo, med ben og svor\n1/2 liter appelsinjuice, fersk presset\n1/4 liter mangojuice eller 2 mango\n1/4 liter ananasjuice eller 1 ananas\n1/4 liter soyasaus\nEn flaske tørr hvitvin\n1/4 liter hønsebuljong/vann\n50 gr fersk ingefær\n2 hvitløk delt i to\n1 purreløk\n1 liten selleristang\n1 ss korianderfrø\n1 ss kummin\n1 ss sechuanpepper\n2 små kanelstenger\n6 stjerneanis\n2 ss honning\n2 røde chilipepper\n2 ss asiatisk østerssaus/oystersauce fra flaske\nSalt og pepper\n\nSalte og pepre ribben gjerne et par døgn i forkant, og lag fine ruter i svoren med en skarp kniv eller et barberblad. Rens frukten og kjør i en blender til juice/pure (hvis du ikke bruker ferdig juice).\nKutt purreløk og selleristang i biter, del en hel hvitløk i to og riv ingefæren på et lite rivjern. Fres de oppkuttede grønnsakene i en stor jerngryte i litt olivenolje. Tilsett resten av ingrediensene og kok opp.\nLegg ribbestykket med svorsiden ned i jerngryta, og sett jerngryta i ovnen på 180grader. Vi steker i cirka 1 time, snur kjøttet, fortsetter nok en time, siler sjyen og øser den over kjøttet den siste halvtimen, slik at vi får et glansfullt, lakkert aspekt, som en pekingand. \nSjyen koker vi litt inn, og øser den over kjøttet, som vi har delt i passende store serveringstykker. Server gjerne med spinat, ananas og bok shoy.\nGod fornøyelse!\n\nhttp://mat.tv3.no/oppskrifter/jul-med-hellstrom/hellstroms-asiatisk-ribbe"),
 			want: models.Recipe{
 				Category: "uncategorized",
+				Images:   []uuid.UUID{},
 				Ingredients: []string{
 					"Ett ribbestykke ca.3-4 kilo, med ben og svor",
 					"1/2 liter appelsinjuice, fersk presset",
@@ -791,6 +811,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "Supergodt brød etter oppskriften til Olympiatoppens egen kokk Harald Haugen. Brødet blir ekstra godt og saftig med Biola®. Ingenting slår fersk brød med brunost!\n\nTIPS!: Denne oppskriften gir 2 store eller 3 mindre brød. Lager du 3 små brød stekes de i ca. 40 minutter. 2 større brød trenger ca. 50 minutter i ovnen.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"4 dl vann",
 					"1 dl solsikkekjerner",
@@ -830,6 +851,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "søtt",
 				Description: "Marit Hegles ostekake har smaker som minner om jul. Kaken er et godt alternativ til dessert.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"Pepperkakebunn",
 					"50 g søte havrekjeks (Digestive)",
@@ -876,6 +898,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "søtt",
 				Description: "Nå kan du lage en kake som har fått VM-gull. Ostekaken til Sverre Sætre var med da han sammen med kokkelandslaget vant VM-gull for noen år tilbake. Oppskriften er en forenklet utgave av Sommerkaken med friske bær og krystalliserte roseblader.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"Kjeksbunn",
 					"100 g havrekjeks",
@@ -927,6 +950,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			buf:  bytes.NewBufferString("Ostekake med rømme\n\nBunn:\n•\t200gr bixit, digestive eller annen kjeks (eller pepperkaker)\n•\t100gr smør\n\n1.\tKnus kjeksen. Smelt smøret. Bland sammen, og fordel oppå bakepapir i en form på ca 25cm.\n2.\tSett i kjøleskap mens du lager ostekrem.\n\nOstekrem:\n•\t1 liten kremfløte\n•\t1liten (200g) Philadelphia-ost eller annen naturell kremost,\n•\t1 beger lettrømme\n•\t1ts vaniljesukker\n•\t120gr melis\n•\tSaften av en sitron\n•\t1 pk sitron eller appelsin-gelé til ostekremen\n•\t1 pk gele til lokket\n\n1.\tLag 1 pakke gelé som på pakken, men bruk halv mengde vann. Kjøl ned, men ikke la den bli stiv.\n2.\tBland rømme, ost, sitronsaft, melis og vaniljesukker.\n3.\tPisk kremen.\n4.\tBland kremen i ostebandingen. Forsiktig så du ikke rører ut luften. \n5.\tHell i geleen og bland.\n6.\tHell blandingen over bunnen.\n7.\tLa stivne i kjøleskap.\n8.\tKok rød (eller annen gelé) som på pakken, men bruk igjen halv mengde vann. La avkjøles men ikke stivne.\n9.\tSleng på det du ønsker av frukt og bær (men ikke kiwi eller ananas, for da stivner ikke geleen). Hell forsiktig kald gelé over. \n10.\tLa stivne i kjøleskap.\n\nVoila! Da er det bare å forsyne seg \uF04A Er lurt å starte kvelden før, for hver gelé trenger 4-6 timer på å stivne."),
 			want: models.Recipe{
 				Category: "uncategorized",
+				Images:   []uuid.UUID{},
 				Ingredients: []string{
 					"Bunn:",
 					"200gr bixit, digestive eller annen kjeks (eller pepperkaker)",
@@ -968,6 +992,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "Har du prøvd hjemmelaget påleggssalat? Prøv denne enkle og gode påleggssalaten med kyllingpålegg og karri. Masse smak til brødskiven! Serveres på godt brød eller grove rundstykker. Holder seg fint 2-3 dager i kjøleskapet.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"220 g kyllingfilet",
 					"2 dl Lettrømme",
@@ -1005,6 +1030,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 				Category:    "middag",
 				Cuisine:     "thailand",
 				Description: "Panang er en storfavoritt i Thailand. I en kald årstid er det lite som gir mer sol og varme enn denne bollen med curry fra Østen. Oppskriften er med svin, men den er like god med kylling.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"Curry",
 					"500 g nakkekoteletter uten bein",
@@ -1050,6 +1076,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "En enkel potetmos på mandelpoteter.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"700 g mandelpotet",
 					"1 dl melk",
@@ -1072,6 +1099,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "frokost",
 				Description: "Hemmeligheten bak dette brødet er at kornet bløtlegges i forkant, da blir brødet veldig saftig og får lang holdbarhet. Det er enkelt å lage, men det krever at du bruker et par minutter kvelden før du skal bake.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"Steg 1",
 					"70 g havregryn, lettkokte",
@@ -1114,6 +1142,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "Salsiccia er en italiensk pølse med svinekjøtt og urter. Hvis du ikke vil lage pølser kan du like gjerne bruke det malte kjøttet til biffer eller farse. Paul Svensson anbefaler at du nyter denne delikatessen med en herlig grønn salat og sylteagurk.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"1 kg svinekam",
 					"3 sjalottløk",
@@ -1149,6 +1178,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			buf:  bytes.NewBufferString("Sitronpotetmos\n\nDette trenger du til 4 personer:\n\n1 kg poteter\n100 g smør\n3 dl melk\nsalt og pepper\n1 knivspiss revet muskat\n1 ss finhakket timian\n2 ts finrevet sitronskall\n\nSlik gjør du:\nSkrell potetene og del dem i store terninger. Kok dem i usaltet vann.\nSmelt smør i en gryte og hell på melk. Krydre med salt, pepper og muskat. Når potetene er ferdigkokte, helles vannet av og de moses sammen med smørmelken.\nTilsett hakket timian og sitronskall rett før servering.\n\nhttps://coop.no/mega/hjemmerestauranten/fransk-gryterett-med-sitronpotetmos/"),
 			want: models.Recipe{
 				Category: "uncategorized",
+				Images:   []uuid.UUID{},
 				Ingredients: []string{
 					"1 kg poteter",
 					"100 g smør",
@@ -1176,6 +1206,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "middag",
 				Description: "Biffsalat med asiatiske thaismaker som får fram solskinnet. Lise Finckenhagen tilsetter lime, ingefær, chili, fiskesaus, koriander, mynte og peanøtter til sprø grønnsaker.\n\nOm oppskriften",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"2 møre biffer à ca. 150 g",
 					"1 papaya eller mango",
@@ -1217,6 +1248,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			buf:  bytes.NewBufferString("Vaffelpoteter\n\nTilberedningstid 20 minutter\nAntall porsjoner 4\n\nIngredienser\n4 store poteter\n2 ss finhakket frisk kruspersille\n2 ss finskåret frisk gressløk\n30 g smør\nsmak til med salt og pepper\n\nFremgangsmåte\nSkrell potetene før de finrives på råkostjern. Ha raspet potet over i en bolle. Tilsett persille og gressløk. Bland alt godt sammen. Smak til med salt og hvit pepper. Smelt smøret og bland det i potetblandingen. Stek potetene i et vaffeljern.\n\nTips:\nGrønnsaker som gulrot, persillerot, knollselleri og kålrot, m.m. kan blandes med potetene. Vaffelpoteter serveres til stekt kjøtt eller fisk.\n\nhttp://www.aperitif.no/oppskrifter/oppskrift/vaffelpoteter/1991837"),
 			want: models.Recipe{
 				Category: "uncategorized",
+				Images:   []uuid.UUID{},
 				Ingredients: []string{
 					"4 store poteter",
 					"2 ss finhakket frisk kruspersille",
@@ -1247,6 +1279,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 				Category:    "uncategorized",
 				Cuisine:     "",
 				Description: "This classic sandwich bread recipe is simple to make and perfect for your dream panino!\nMakes 2 ciabatta sandwich loaves.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"For this recipe, you will need:", "1 1/2 tsp. (5g) active dry yeast",
 					"A pinch of granulated sugar", "6.75 oz. (200ml) water",
@@ -1277,6 +1310,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "Hva er vel en bedre start på dagen enn duften av fersk gjærbakst? I dag kan jeg friste med deilige grove speltrundstykker som smaker godt enten det er til frokost, brunsj eller lunsj. Disse rundstykkene er laget av sammalt speltmel og er å anse som grove etter brødskalaen (65%).\nDet er slett ikke så arbeidskrevende, men krever litt planlegging. Du rører deigen kjapt sammen for hånd på ca. to minutter kvelden før, og så fikser du resten på morgenkvisten mens du pusler med andre ting.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"375 g sammalt speltmel", "200 g siktet speltmel", "1/2 ts tørrgjær",
 					"2 ts flaksalt", "1/2 ts sukker", "5 dl vann",
@@ -1304,6 +1338,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			buf:  bytes.NewBufferString("Brød uten å kna\n\nIngredienser\n* 390 gram hvetemel\n* 300 gram vann\n* 7 gram salt\n* 1-3 gram frisk gjær\n\nFramgangsmåte\nBland alt til melet er helt fuktet. Dekk til og la stå i 15-25 timer.\nHell på et melet bakebord, brett deigen 3-4 ganger, form raskt til en bolle, ha den på et håndkle med mye mel med sømsiden ned. Heves til dobbel størrelse (~ 2 timer).\nHa deigen over i en jerngryte som er forvarmet til 230 °C og stek med lokket på i 30 min. Ta lokket av og stek til skorpen har en mørk gyllen farge - ca 15 min til.\n\nhttp://www.nrk.no/mat/brod-uten-a-kna-1.7508550"),
 			want: models.Recipe{
 				Category: "uncategorized",
+				Images:   []uuid.UUID{},
 				Ingredients: []string{
 					"390 gram hvetemel",
 					"300 gram vann",
@@ -1328,6 +1363,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "Eltefritt brød er nok et av de enkleste brødene du kan bake - her er det bakt i form!\nPakk brødet inn i klede for å bevare sprøheten i skorpen, pakker du det i plast blir skorpen myk. Det er veldig godt å tilsett litt tørket frukt i små biter eller tørkede bær i deigen. Prøv for eksempel tørkede tyttebær og tørkede eplebiter.\nMerk at dette brødet krever cirka 14 timers hevetid. Denne oppskriften gir ett brød.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"400 g hvetemel, gjerne steinmalt",
 					"50 g hvetegrøpp",
@@ -1359,6 +1395,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "Det er nesten ingenting som slår rykende ferskt, hjemmebakt brød til frokost! Lager du et eltefritt brød er det ikke store innsatsen du må legge i selv. Det eneste du må gjøre er å sette deigen kvelden før og du kan ved noen enkle grep dagen etter spise fantastisk godt brød; saftig og deilig inni, med sprø skorpe utenpå.\nDenne oppskriften gir ett brød.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"600 g hvetemel", "200 g fint sammalt hvetemel",
 					"80 g solsikkekjerner", "2 ts salt", "0.5 ts tørrgjær",
@@ -1388,6 +1425,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 				Category:    "dessert",
 				Cuisine:     "american",
 				Description: "A make ahead mix for when you need pudding",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"1 cup granulated sugar", "¾ cup cornstarch", "¾ cup nonfat dry milk powder",
 					"1 teaspoon kosher salt", "2 whole vanilla beans",
@@ -1414,6 +1452,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			buf:  bytes.NewBufferString("Kao Soi Curry Paste พริกแกงข้าวซอย\n\nINGREDIENTS\n10 large dried chilies, seeds removed, cut into 1″ chunks, and soaked in water to re-hydrate\n1 tsp coarse sea salt\nGinger, peeled and sliced into rounds, 10 pieces\nFresh turmeric, peeled and sliced into rounds, 8 pieces\n½ cup chopped shallots\n1.5 Tbsp coriander seeds, toasted\n3 pods black cardamom, seeds removed from pods and toasted\n\nINSTRUCTIONS\nChar the ginger, shallots and turmeric slightly by searing, broiling or grilling. Set aside.\nGrind the toasted black cardamom seeds and coriander seeds in a mortar and pestle, remove and set aside.\nDrain the dried chilies well and pound together with the salt in the mortar and pestle. Add the ginger, shallots, and turmeric, and the dry spices. Pound to a fine paste.\n\nhttp://hot-thai-kitchen.com/kao-soi-curry-paste/"),
 			want: models.Recipe{
 				Category: "uncategorized",
+				Images:   []uuid.UUID{},
 				Ingredients: []string{
 					"10 large dried chilies, seeds removed, cut into 1″ chunks, and soaked in water to re-hydrate",
 					"1 tsp coarse sea salt",
@@ -1441,6 +1480,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "Fruity and yummy! I have made pitchers of this stuff for the pool. This is just the single drink recipe. Enjoy!",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"1 1/2 oz Bacardi 151", "1 1/2 oz coconut malibu rum",
 					"1/2 cup pineapple juice", "grenadine",
@@ -1458,6 +1498,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "The best! Homemade Chocolate Babka is such a baking project.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"For the Streusel Topping:", "1 and 2/3 cups confectioners' sugar",
 					"1 and 1/3 cups all-purpose flour",
@@ -1502,6 +1543,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "frokost",
 				Description: "Butterdeig er en veldig godt kjevlet grunndeig som kan brukes til så mye: Tarte tatin, wienerbrød eller croissanter.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"450 g hvetemel", "45 g sukker", "10 g salt", "1 egg", "10 g fersk gjær",
 					"175 g melk", "50 g usaltet smør, til deigen",
@@ -1527,6 +1569,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"3 cups all-purpose flour", "1 sweet onion, chopped or sliced",
 					"1 cup warm water", "5 tablespoons olive oil, divided",
@@ -1556,6 +1599,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "Hei, alle sammen😊\nEi som lurte på oppskrift på gode brød😊😊påstår at dette er verdens beste😊😊\nDet sei mannen min, naboer, og slekt😊😊Oppskrifta passer til 3 store brød.\nVi er berre 2 stk i husholdninga no, så bruker 4 brødformer, på 1.5 liter😊😊",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"1 pk gjær",
 					"12 dl lunka vatn.",
@@ -1595,6 +1639,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "Har du grunndeigen i orden er det bare fantasien som setter grenser for hvilken gjærbakst du kan trylle frem. Denne deigen lager du helst på kjøkkenmaskin, for det skal mye elting til.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"5 dl melk, romtemperert", "50 g gjær", "1 kg hvetemel",
 					"200 g sukker", "0.5 ts salt", "200 g smør, romtemperert", "20 g kardemomme",
@@ -1619,6 +1664,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"1 batch pizza dough",
 					"1 stick butter",
@@ -1645,6 +1691,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			buf:  bytes.NewBufferString("Sveitsisk bondebrød\n\nAntall porsjoner: 2\nTilberedningstid: 2 timer\n\nIngredienser:\n\n5 dl skummet melk\n½ pk. (25 g) gjær\n1 ss smeltet smør\n5 dl rugmel, fint siktet\nca. 10 dl hvetemel\n2 ts salt\n\nFremgangsmåte:\n\nStekes ved 200 °C i 25-30 minutter.\n\nSmuldre gjæren i bakebollen og slå over lunken melk.\nRør ut gjæren, ha i smør, rugmel, salt og så mye hvetemel at deigen blir passe fast og slipper bollen.\nLa den heve under plast på lunt sted va. ¾ time.\nHa deigen på bakebordet og del den i to biter.\nForm brødene til avlange eller runde brød alt etter hvilke former/kurver du har.\nHa godt med mel i kurvene. La brødene heve i kurvene i ca. 50 minutter på lunt sted.\nSett ovnen på 250 °C.\nHvelv de ferdig hevede brødene på stekeplate med bakepapir.\nSett dem i ovnen hvor du senker varmen til 200 °C.\nStek brødene, avkjøl dem på rist utildekket.\nDa holder skorpen seg sprø.\n\nhttp://www.aperitif.no/Oppskrifter2/mat/Med-disse-broedoppskriftene-faar-du-suksess"),
 			want: models.Recipe{
 				Category: "uncategorized",
+				Images:   []uuid.UUID{},
 				Ingredients: []string{
 					"5 dl skummet melk",
 					"½ pk. (25 g) gjær",
@@ -1680,6 +1727,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			buf:  bytes.NewBufferString("Pariserloff\n\nAntall porsjoner: 1\nTilberedningstid: 1 time 30 min\n\nIngredienser:\n\nca. 350 g hvetemel\n1 ts salt\n3 ss smør\n2 dl vann\n½ pk. (25 g ) gjær\n\nTil pensling:\n1 eggehvite\n1-2 ss vann\n\nFremgangsmåte:\n\nStekes ved 220°C i ca. 10 minutter. Deretter ved 190°C i ca. 40 minutter.\n\nSmuldre gjæren i bakebollen. Smelt smøret og bland det med vann slik at det blir lunkent. Rør ut gjæren i væsken. Tilsett salt og så mye mel at deigen blir passe fast og ikke klisser, men slipper bollen. Sett deigen til heving under plast på lunt sted ca. 30 minutter. Elt deigen om en gang under hevingen.\n\nHa deigen på bakebordet og kjevle den ut til en leiv, ca. 25x35 cm. Rull den fast sammen fra langsiden. Trill den slik at den blir ca. 60 cm lang og 5 cm tykk, noe smalere mot endene.\n\nLegg loffen på bakepapir eller smurt stekeplate. Pensle den med sammenvispet eggehvite og vann. La den etterheve litt. Lag noen skråsnitt i den med ca. 6-7 cm mellomrom, eller snitt den langsetter. La loffen etterheve videre utildekket, ikke for raskt. Pensle den en gang til mens den hever ferdig. Pensle deigen for tredje gang rett før den settes i ovnen. Stek den først ca. 10 minutter, pensle den, skru ned varmen litt og stek videre. Stekes til den pent gyllen og gjennomstekt.\n\nhttp://www.aperitif.no/Oppskrifter2/mat/Med-disse-broedoppskriftene-faar-du-suksess"),
 			want: models.Recipe{
 				Category: "uncategorized",
+				Images:   []uuid.UUID{},
 				Ingredients: []string{
 					"ca. 350 g hvetemel", "1 ts salt", "3 ss smør", "2 dl vann",
 					"½ pk. (25 g ) gjær", "Til pensling:", "1 eggehvite", "1-2 ss vann",
@@ -1703,6 +1751,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			buf:  bytes.NewBufferString("Jalapeno Beer Bread\n\nPrep time: 10 mins\nCook time: 50 mins\nTotal time: 1 hour\n \nRecipe type: Bread\nServes: 10\n\nIngredients\n3 cups all-purpose flour\n1 tablespoon baking powder\n1 teaspoon salt\n3 tablespoons sugar\n¼ teaspoon cayenne pepper (optional)\n1 cup shredded Cheddar cheese, divided\n1 (12-ounce) bottle good quality beer or ale\n½ cup butter (1 stick), melted\n1 jalapeno pepper, thinly sliced\n\nInstructions\nPreheat oven to 350 degrees. Grease a 9X5-inch loaf pan.\nIn a medium bowl, mix together flour, baking powder, salt, sugar, and cayenne pepper.\nAdd ¾ cup Cheddar cheese and beer and stir just until incorporated.\nPour half the melted butter into the prepared pan. Add batter. Pour remaining butter on top of batter.\nSprinkle remaining cheese on top and scatter jalapeno slices on top of cheese.\nBake 50 to 60 minutes, until golden brown on top.\nServe warm.\n\nhttp://spicysouthernkitchen.com/jalapeno-beer-bread/"),
 			want: models.Recipe{
 				Category: "uncategorized",
+				Images:   []uuid.UUID{},
 				Ingredients: []string{
 					"3 cups all-purpose flour", "1 tablespoon baking powder", "1 teaspoon salt",
 					"3 tablespoons sugar", "¼ teaspoon cayenne pepper (optional)",
@@ -1732,6 +1781,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category: "appetizer",
 				Cuisine:  "british",
+				Images:   []uuid.UUID{},
 				Ingredients: []string{
 					"250 g all-purpose flour (can substitute half bread flour)", "1 teaspoon salt",
 					"244 ml warm milk", "1 tablespoon dried active yeast", "1 teaspoon cane sugar",
@@ -1762,6 +1812,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			buf:  bytes.NewBufferString("Fresh Orange Scones\n\nPrep Time 10 mins\nCook Time 15 mins\nTotal Time 25 mins\nServings 8 scones\n\nIngredients\n\nOrange Scones\n1/3 cup sugar\nzest of one large orange or two medium oranges\n2 cups all-purpose flour\n1 tsp baking powder\n1/4 tsp baking soda\n1/2 tsp salt\n1/2 cup unsalted butter frozen\n1/2 cup sour cream\n1 large egg\n\nOrange Glaze\n3 tbs unsalted butter melted\n1 cup confectioners’ sugar\n1/2 tsp vanilla extract\n2-4 tbs freshly squeezed orange juice\n\nInstructions\n\nPreheat oven to 400 degrees and set oven rack to the middle position. Line a baking sheet with parchment paper, set aside.\nIn a medium-sized bowl, gently toss flour, baking powder, baking soda and salt. Set aside. In a separate small bowl, whisk sour cream and egg until completely smooth. Set aside.\nIn a large bowl, stir sugar and orange zest together until sugar is moistened and zest is evenly distributed. Pour in flour mixture and toss to combine. Grate frozen butter into mixture. Using your hands, work in the butter until the mixture resembles a coarse meal. Gently stir in sour cream mixture until just about combined. Do not over work the dough! Again, very gently press the dough against the sides of the bowl a few times and form a ball. The dough will be sticky at first but will come together as you form it.\nPlace dough on a lightly floured surface and lightly pat into an 8\" circle about 3/4\" thick. Use a very sharp knife to cut into 8 triangles (like a pizza). Transfer triangles onto prepared baking sheet. You can arrange them in two rows, 4 in each row, or arrange them in a circle shape - leaving about 1\" between each one.\nBake scones for 15-17 minutes or until the tops begin to golden. Don't take them out too early or they will be too soft. Allow them to cool for 10 minutes on the pan before transferring onto a wire rack to finish cooling completely. During this time, prepare glaze. Stir together melted butter, confectioner's sugar, vanilla and orange juice until smooth. Once completely cooled, go ahead and either dip the tops of the scones into the glaze or drizzle it on top with a spoon.\n\nhttps://www.sprinklesomesugar.com/fresh-orange-scones/"),
 			want: models.Recipe{
 				Category: "uncategorized",
+				Images:   []uuid.UUID{},
 				Ingredients: []string{
 					"Orange Scones", "1/3 cup sugar",
 					"zest of one large orange or two medium oranges", "2 cups all-purpose flour",
@@ -1791,6 +1842,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "Introduction\nHowever much people have eaten, there is always, I've noticed, room for a brownie. This is a different kind of a brownie, most definitely for party-pudding, melting, fudgy and damply rich. I compound these qualities by serving it with ice cream and the hot chocolate sauce, but there is no need. Need is not really what we're talking about here, though, is it?",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"For the brownies",
 					"225 grams dark chocolate (minimum 70% cocoa solids)",
@@ -1831,6 +1883,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "Det er en av de eldste kjente brødoppskrifter i Frankrike, så det er kanskje på tide vi oppdager den også.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"1 kg hvetemel", "1 pakke tørrgjær",
 					"1.5 dl olivenolje", "4 hvitløksfedd", "4 dl vann", "2 ts salt",
@@ -1861,6 +1914,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			buf:  bytes.NewBufferString("Simple Amish White Bread Recipe\n\nmakes 2-9x5” loaves or 16 big hamburger buns\n\n1 ½ tablespoons active dry yeast (2 packets)\n2 ½ cup warm water (110° to 120°)\n2/3 cup granulated sugar\n8 tablespoons (1/2 cup) unsalted butter, divided\n1 tablespoon kosher salt\n6-7 cups bread flour\n\nEquipment Needed\nStand Mixer\nBread Pans\nLarge Mixing Bowl \n\n\nMelt 4 tablespoons butter.  I microwave on high for 30 seconds at a time until it is mostly melted.  I recommend covering with a paper towel to avoid messes.  Set aside.\n\nIn the bowl of a stand mixer add sugar and water.  Sprinkle yeast over top and swirl with spoon or fingers to combine.  Allow to sit for about 5-10 minutes while the yeast bloom and become aromatic.\n\nAdd melted butter, 4 cups flour and salt.  Mix on low, using dough hook, until smooth.  Add remaining flour 1 cup at a time until a soft dough ball forms (I use the entire 7 cups).  Turn to medium and knead for 5 minutes.  Your ball of dough should be tacky (not sticky).  If it is sticky, add a little more flour 1 tablespoon at a time until it becomes tacky (does not leave dough on your fingers when you touch it).\n\nTurn onto a floured board; knead about 10 turns. Place 1 tablespoon butter in a large microwave safe bowl.  Heat butter in the microwave until butter is melted.  Place dough into bowl, turning once to grease top. Loosely cover with plastic wrap and a cloth over top and let rise in a warm place until doubled in size, about 1 hour.\n\nPunch dough down and shape into two loaves (or 16 hamburger buns).  I like to make half and half.  Place loaves in greased 9-in. x 5-in loaf pans.  For hamburger buns, grease a cookie sheet.  Divide dough and roll into balls.  Gently press on dough balls with the palm of your hand (creating a bun shape).  Cover and let rise until doubled, about 45-60 minutes.  Preheat oven to 350°.  Bake for 30-35 minutes or until golden brown.\n\nIf bread starts to brown too quickly, cover with aluminum foil.  When bread is removed from the oven, brush with remaining butter.  Serve and enjoy!\n\nCOOK'S NOTES: Bread flour will achieve the highest possible rise and a chewier crumb, however you can substitute all-purpose flour.  \n\nYou can make this recipe without a stand mixer.  Add water, yeast and sugar to a large bowl.  Once the yeast blooms stir in the salt and the flour using a wooden spoon. Turn dough out onto floured counter top and knead for 10-12 minutes until dough is no longer sticky and holds its shape (when you poke it, it springs back).  Proceed with remaining instructions.\n\nhttp://www.theslowroasteditalian.com/2013/06/simple-amish-white-bread-recipe.html"),
 			want: models.Recipe{
 				Category: "uncategorized",
+				Images:   []uuid.UUID{},
 				Ingredients: []string{
 					"1 ½ tablespoons active dry yeast (2 packets)",
 					"2 ½ cup warm water (110° to 120°)", "2/3 cup granulated sugar",
@@ -1891,6 +1945,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "Chinese egg rolls are a popular snack and appetizer, not just in China and Taiwan but all over the world. The dough is made of egg and flour and can be made with a variety of fillings such as meat and seafood, as well as vegetarian versions. The size can also vary—Chinese and Taiwanese people like their rolls quite small, but if you order an egg roll in a Chinese restaurant in the U.S., they are often much larger.\nAlthough you can find egg roll wrappers in the supermarket fairly easily, making this ingredient is not tough to pull off at home. This recipe includes an uncooked version that's typically used for fried or baked egg rolls, as well as a cooked wrapper that is cooked like a French crepe.\n\nWhat Is the Difference Between Spring Roll and Egg Roll Wrappers?\nSpring roll wrappers are typically smaller, smoother, and thinner, and do not usually contain egg. They are crispy and break easily when you bite them.\nEgg roll wrappers are typically larger, thicker, and have a surface that is more pebbly. They are made with egg and offer a chewier bite.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"Uncooked Wrapper Version:",
 					"2 cups/240 grams all-purpose flour, plus more for rolling",
@@ -1946,6 +2001,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "INGREDIENTS:",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"Traditional Buttermilk Pancake",
 					"1 cup (240ml) buttermilk",
@@ -2074,6 +2130,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			want: models.Recipe{
 				Category:    "uncategorized",
 				Description: "Apples are baked into an oven-puffed pancake for breakfast. This is so delicious that you don't need to add any syrup. A great alternative to regular pancakes.",
+				Images:      []uuid.UUID{},
 				Ingredients: []string{
 					"6 eggs",
 					"1.5 cups milk",
@@ -2092,11 +2149,13 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 					"Melt butter in a 9x9-inch square pan. Arrange apple slices in the bottom of the pan; pour batter over them. Sprinkle brown sugar on top.",
 					"Bake in the preheated oven until puffed and lightly browned, about 20 minutes.",
 				},
-				Name: "Apple Puff Pancake",
+				Keywords: []string{},
+				Name:     "Apple Puff Pancake",
 				Times: models.Times{
 					Prep: 15 * time.Minute,
 					Cook: 30 * time.Minute,
 				},
+				Tools: []string{},
 				URL:   "https://www.allrecipes.com/recipe/50936/apple-puff-pancake/",
 				Yield: 9,
 			},
@@ -2106,6 +2165,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 			buf:  bytes.NewBufferString("Cookies\n\nhttps://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/\n\n\nIngredients\n1 cup butter, softened\n1 cup white sugar\n1 cup packed brown sugar\n2 eggs\n2 teaspoons vanilla extract\n1 teaspoon baking soda\n2 teaspoons hot water\n½ teaspoon salt\n3 cups all-purpose flour\n2 cups semisweet chocolate chips\n1 cup chopped walnuts\n\nDirections\n\nGather your ingredients, making sure your butter is softened, and your eggs are room temperature.\n\nDotdash Meredith Food Studios\n\nPreheat the oven to 350 degrees F (175 degrees C).\n\nBeat butter, white sugar, and brown sugar with an electric mixer in a large bowl until smooth.\n\nDotdash Meredith Food Studios\n\nBeat in eggs, one at a time, then stir in vanilla.\n\n"),
 			want: models.Recipe{
 				Category: "uncategorized",
+				Images:   []uuid.UUID{},
 				Ingredients: []string{
 					"1 cup butter, softened", "1 cup white sugar", "1 cup packed brown sugar",
 					"2 eggs", "2 teaspoons vanilla extract", "1 teaspoon baking soda",
@@ -2217,6 +2277,7 @@ func TestNewRecipesFromAccuChef(t *testing.T) {
 
 		want := models.Recipes{models.Recipe{
 			Category: "Sauce/Gravy",
+			Images:   []uuid.UUID{},
 			Ingredients: []string{
 				"2 Tbl Olive Oil",
 				"2 Garlic Cloves (Minced)",
@@ -2242,6 +2303,7 @@ func TestNewRecipesFromAccuChef(t *testing.T) {
 			Times: models.Times{
 				Prep: 1*time.Hour + 15*time.Minute,
 			},
+			Tools: []string{},
 			URL:   "AccuChef",
 			Yield: 10,
 		}}

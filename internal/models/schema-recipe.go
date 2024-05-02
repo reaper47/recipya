@@ -80,7 +80,7 @@ func (r *RecipeSchema) Recipe() (*Recipe, error) {
 
 	var images []uuid.UUID
 	img, err := uuid.Parse(r.Image.Value)
-	if err != nil && img != uuid.Nil {
+	if err == nil && img != uuid.Nil {
 		images = append(images, img)
 	}
 

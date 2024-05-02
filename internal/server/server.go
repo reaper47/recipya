@@ -89,10 +89,10 @@ func (s *Server) mountHandlers() {
 	// General routes
 	mux.HandleFunc("GET /{$}", s.indexHandler)
 	mux.Handle("GET /download/{tmpFile}", s.mustBeLoggedInMiddleware(s.downloadHandler()))
+	mux.Handle("GET /fetch", s.mustBeLoggedInMiddleware(fetchHandler()))
 	mux.Handle("GET /user-initials", s.mustBeLoggedInMiddleware(s.userInitialsHandler()))
 	mux.Handle("GET /update", s.mustBeLoggedInMiddleware(s.updateHandler()))
 	mux.Handle("GET /ws", s.mustBeLoggedInMiddleware(s.wsHandler()))
-	mux.Handle("GET /dl", s.mustBeLoggedInMiddleware(dlHandler()))
 
 	// Admin routes
 	adminMiddleware := func(next http.Handler) http.Handler { return s.mustBeLoggedInMiddleware(s.onlyAdminMiddleware(next)) }

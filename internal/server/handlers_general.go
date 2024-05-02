@@ -9,10 +9,12 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"slices"
 	"strconv"
 	"syscall"
 	"time"
@@ -39,6 +41,30 @@ func (s *Server) downloadHandler() http.HandlerFunc {
 		w.Header().Set("Content-Disposition", `attachment; filename="`+file+`"`)
 		w.Header().Set("Content-Length", strconv.Itoa(len(data)))
 		_, _ = w.Write(data)
+	}
+}
+
+func fetchHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		rawURL := r.URL.Query().Get("url")
+
+		parsed, err := url.Parse(rawURL)
+		if err != nil || rawURL == "" || !slices.Contains([]string{"http", "https"}, parsed.Scheme) {
+			w.Header().Set("HX-Trigger", models.NewErrorGeneralToast("Invalid URL.").Render())
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		res, err := http.Get(rawURL)
+		if err != nil {
+			w.Header().Set("HX-Trigger", models.NewErrorGeneralToast("Could not fetch URL.").Render())
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		defer res.Body.Close()
+
+		w.Header().Set("Content-Type", res.Header.Get("Content-Type"))
+		io.Copy(w, res.Body)
 	}
 }
 
@@ -140,19 +166,5 @@ func (s *Server) wsHandler() http.HandlerFunc {
 		userID := getUserID(r)
 		broker := models.NewBroker(userID, s.Brokers, ws)
 		s.Brokers[userID] = broker
-	}
-}
-
-func dlHandler() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		res, err := http.Get(r.URL.Query().Get("url"))
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-		defer res.Body.Close()
-
-		w.Header().Set("Content-Type", res.Header.Get("Content-Type"))
-		io.Copy(w, res.Body)
 	}
 }

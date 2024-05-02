@@ -60,10 +60,10 @@ func TestHandlers_Recipes(t *testing.T) {
 		want := []string{
 			`<title hx-swap-oob="true">Recipes | Recipya</title>`,
 			`<form class="w-72 flex md:w-96" hx-get="/recipes/search" hx-vals="{"page": 1}" hx-target="#list-recipes" hx-push-url="true" hx-trigger="submit, change target:.sort-option"><div class="relative w-full"><label><input type="search" id="search-recipes" name="q" class="input input-bordered input-sm w-full z-20" placeholder="Search for recipes..." value="" _="on keyup if event.target.value !== '' then remove .md:block from #search-shortcut else add .md:block to #search-shortcut end then if (event.key === 'Backspace' or event.key === 'Delete') and event.target.value === '' then send submit to closest <form/> end"></label> <kbd id="search-shortcut" class="hidden absolute top-1 right-12 font-sans font-semibold select-none dark:text-slate-500 md:block"><abbr title="Control" class="no-underline text-slate-300 dark:text-slate-500">Ctrl </abbr> /</kbd> <button type="submit" class="absolute top-0 right-0 px-2 btn btn-sm btn-primary"><svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"></path></svg><span class="sr-only">Search</span></button></div><details class="dropdown dropdown-left"><summary class="btn btn-sm ml-1"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75a4.5 4.5 0 0 1-4.884 4.484c-1.076-.091-2.264.071-2.95.904l-7.152 8.684a2.548 2.548 0 1 1-3.586-3.586l8.684-7.152c.833-.686.995-1.874.904-2.95a4.5 4.5 0 0 1 6.336-4.486l-3.276 3.276a3.004 3.004 0 0 0 2.25 2.25l3.276-3.276c.256.565.398 1.192.398 1.852Z"></path> <path stroke-linecap="round" stroke-linejoin="round" d="M4.867 19.125h.008v.008h-.008v-.008Z"></path></svg></summary><div tabindex="0" class="dropdown-content z-10 menu menu-sm p-2 shadow bg-base-200 w-52 sm:menu-md prose" _="on click remove @open from closest <details/>"><h4>Search Method</h4><div class="form-control"><label class="label cursor-pointer"><span class="label-text">By name</span> <input type="radio" name="mode" class="radio radio-sm" value="name"></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Full search</span> <input type="radio" name="mode" class="radio radio-sm" value="full" checked></label></div></div></details> <details class="dropdown dropdown-left"><summary class="btn btn-sm ml-1"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"></path></svg></summary><div tabindex="0" class="dropdown-content z-10 menu menu-sm p-2 shadow bg-base-200 w-52 sm:menu-md prose" _="on click remove @open from closest <details/>"><h4>Sort</h4><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Default</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="default" checked></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Name:<br>A to Z</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="a-z"></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Name:<br>Z to A</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="z-a"></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Date created:<br>Newest to oldest</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="new-old"></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Date created:<br>Oldest to newest</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="old-new"></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Random</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="random"></label></div></div></details></form>`,
-			`<img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Images for the One recipe">`,
+			`<img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Image for the One recipe">`,
 			`<div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg">`,
-			`<img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Images for the Two recipe">`,
-			`<img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Images for the Three recipe">`,
+			`<img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Image for the Two recipe">`,
+			`<img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Image for the Three recipe">`,
 		}
 		assertStringsInHTML(t, got, want)
 		notWant := []string{`Your recipe collection looks a bit empty at the moment.`}
@@ -184,7 +184,7 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 				`<title hx-swap-oob="true">Add Manual | Recipya</title>`,
 				`<form class="card-body" style="padding: 0" enctype="multipart/form-data" hx-post="/recipes/add/manual" hx-indicator="#fullscreen-loader">`,
 				`<input required type="text" name="title" placeholder="Title of the recipe*" autocomplete="off" class="input w-full btn-ghost text-center">`,
-				`<img src="" alt="Images preview of the recipe." class="object-cover"> <span><input type="file" accept="image/*" name="image" class="file-input file-input-sm w-full max-w-xs" _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray' on dragleave or drop set the target's style.background to '' on drop or change make an FileReader called reader then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then set {src: window.URL.createObjectURL(it)} on previous <img/> then remove .hidden from next <button/>">`,
+				`<img src="" alt="Image preview of the recipe." class="object-cover mb-2 w-full max-h-[39rem]"> <span class="grid gap-1 max-w-sm" style="margin: auto auto 0.25rem;"><div class="mr-1"><input type="file" accept="image/*" name="images" class="file-input file-input-sm file-input-bordered w-full max-w-sm" _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray' on dragleave or drop set the target's style.background to '' on drop or change make an FileReader called reader then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then set {src: window.URL.createObjectURL(it)} on previous <img/> then remove .hidden from me.parentElement.parentElement.querySelectorAll('button') then add .hidden to the parentElement of me">`,
 				`<input type="number" min="1" name="yield" value="1" class="input input-bordered input-sm w-24 md:w-20 lg:w-24">`,
 				`<input required type="text" list="categories" name="category" class="input input-bordered input-sm w-48 md:w-36 lg:w-48" placeholder="Breakfast"> <datalist id="categories"><option>breakfast</option><option>lunch</option><option>dinner</option></datalist>`,
 				`<textarea required name="description" placeholder="This Thai curry chicken will make you drool." class="textarea w-full h-full resize-none"></textarea>`,
@@ -209,7 +209,7 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 
 		fields := map[string]string{
 			"title":               "Salsa",
-			"image":               "eggs.jpg",
+			"images":              "eggs.jpg",
 			"category":            "appetizers",
 			"source":              "Mommy",
 			"description":         "The best",
@@ -268,7 +268,7 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 			Yield: 4,
 		}
 		if len(gotRecipe.Images) == 0 {
-			t.Fatal("got nil UUID image when want something other than nil")
+			t.Fatal("got no images when want images")
 		}
 		if !cmp.Equal(want, gotRecipe) {
 			t.Log(cmp.Diff(want, gotRecipe))
@@ -739,7 +739,7 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 		Cuisine:      "indonesian",
 		Description:  "A delicious recipe!",
 		ID:           1,
-		Images:       make([]uuid.UUID, 0),
+		Images:       []uuid.UUID{uuid.New()},
 		Ingredients:  []string{"ing1", "ing2", "ing3"},
 		Instructions: []string{"ins1", "ins2", "ins3"},
 		Keywords:     []string{"chicken", "big", "marinade"},
@@ -800,7 +800,7 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 		want := []string{
 			`<title hx-swap-oob="true">Edit Chicken Jersey | Recipya</title>`,
 			`<input required type="text" name="title" placeholder="Title of the recipe*" autocomplete="off" class="input w-full btn-ghost text-center" value="Chicken Jersey">`,
-			`<img src="/data/images/` + baseRecipe.Images[0].String() + `.jpg" alt="Images preview of the recipe." class="object-cover"> <span><input type="file" accept="image/*" name="image" class="file-input file-input-sm w-full max-w-xs" value="/data/images/` + baseRecipe.Images[0].String() + `.jpg" _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray' on dragleave or drop set the target's style.background to '' on drop or change make an FileReader called reader then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then set {src: window.URL.createObjectURL(it)} on previous <img/> then remove .hidden from next <button/>">`,
+			`<img alt="Image preview of the recipe." class="object-cover mb-2 w-full max-h-[39rem]" src="/data/images/` + baseRecipe.Images[0].String() + `.jpg"> <span class="grid gap-1 max-w-sm" style="margin: auto auto 0.25rem;"><div class="mr-1"><input type="file" accept="image/*" name="images" class="file-input file-input-sm file-input-bordered w-full max-w-sm" value="/data/images/` + baseRecipe.Images[0].String() + `.jpg" _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray' on dragleave or drop set the target's style.background to '' on drop or change make an FileReader called reader then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then set {src: window.URL.createObjectURL(it)} on previous <img/> then remove .hidden from me.parentElement.parentElement.querySelectorAll('button') then add .hidden to the parentElement of me">`,
 			`<input required type="text" list="categories" name="category" class="input input-bordered input-sm w-48 md:w-36 lg:w-48" placeholder="Breakfast" value="american"> <datalist id="categories"></datalist>`,
 			`<input type="number" min="1" name="yield" class="input input-bordered input-sm w-24 md:w-20 lg:w-24" value="12">`,
 			`<input required type="text" placeholder="Source" name="source" class="input input-bordered input-sm md:w-28 lg:w-40 xl:w-44" value="https://example.com/recipes/yummy"`,
@@ -818,7 +818,7 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 		files := &mockFiles{}
 		srv.Files = files
 		srv.Repository = &mockRepository{RecipesRegistered: map[int64]models.Recipes{1: {baseRecipe}}}
-		contentType, body := createMultipartForm(map[string]string{"image": ""})
+		contentType, body := createMultipartForm(map[string]string{})
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, fmt.Sprintf(uri, 1), header(contentType), strings.NewReader(body))
 
@@ -836,13 +836,13 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 		files := &mockFiles{}
 		srv.Files = files
 		srv.Repository = &mockRepository{RecipesRegistered: map[int64]models.Recipes{1: {baseRecipe}}}
-		contentType, body := createMultipartForm(map[string]string{"image": "eggs.jpg"})
+		contentType, body := createMultipartForm(map[string]string{"images": "eggs.jpg"})
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, fmt.Sprintf(uri, 1), header(contentType), strings.NewReader(body))
 
 		assertStatus(t, rr.Code, http.StatusNoContent)
 		got, _ := srv.Repository.Recipe(baseRecipe.ID, 1)
-		if !slices.Equal(got.Images, baseRecipe.Images) {
+		if slices.Equal(got.Images, baseRecipe.Images) {
 			t.Fatal("image should have been updated")
 		}
 		if files.uploadImageHitCount == 0 {
@@ -1103,21 +1103,21 @@ func TestHandlers_Recipes_Search(t *testing.T) {
 		{
 			query: "lov",
 			want: []string{
-				`<section class="card card-compact bg-base-100 shadow-lg indicator w-full"><span class="indicator-item indicator-center badge badge-primary select-none"></span><figure class="relative cursor-pointer" hx-get="/recipes/2" hx-target="#content" hx-push-url="true" hx-trigger="mousedown" hx-swap="innerHTML show:window:top transition:true"><img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Images for the Lovely Canada recipe"><div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg"><p class="p-2 text-sm"></p></div></figure><div class="card-body" lang="en"><h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">Lovely Canada</h2><div class="card-actions h-full flex-col-reverse"><button class="btn btn-block btn-sm btn-outline" hx-get="/recipes/2" hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap="innerHTML show:window:top transition:true">View</button></div></div></section>`,
-				`<section class="card card-compact bg-base-100 shadow-lg indicator w-full"><span class="indicator-item indicator-center badge badge-primary select-none"></span><figure class="relative cursor-pointer" hx-get="/recipes/3" hx-target="#content" hx-push-url="true" hx-trigger="mousedown" hx-swap="innerHTML show:window:top transition:true"><img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Images for the Lovely Ukraine recipe"><div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg"><p class="p-2 text-sm"></p></div></figure><div class="card-body" lang="en"><h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">Lovely Ukraine</h2><div class="card-actions h-full flex-col-reverse"><button class="btn btn-block btn-sm btn-outline" hx-get="/recipes/3" hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap="innerHTML show:window:top transition:true">View</button></div></div></section>`,
+				`<section class="card card-compact bg-base-100 shadow-lg indicator w-full"><span class="indicator-item indicator-center badge badge-primary select-none"></span><figure class="relative cursor-pointer" hx-get="/recipes/2" hx-target="#content" hx-push-url="true" hx-trigger="mousedown" hx-swap="innerHTML show:window:top transition:true"><img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Image for the Lovely Canada recipe"><div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg"><p class="p-2 text-sm"></p></div></figure><div class="card-body" lang="en"><h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">Lovely Canada</h2><div class="card-actions h-full flex-col-reverse"><button class="btn btn-block btn-sm btn-outline" hx-get="/recipes/2" hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap="innerHTML show:window:top transition:true">View</button></div></div></section>`,
+				`<section class="card card-compact bg-base-100 shadow-lg indicator w-full"><span class="indicator-item indicator-center badge badge-primary select-none"></span><figure class="relative cursor-pointer" hx-get="/recipes/3" hx-target="#content" hx-push-url="true" hx-trigger="mousedown" hx-swap="innerHTML show:window:top transition:true"><img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Image for the Lovely Ukraine recipe"><div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg"><p class="p-2 text-sm"></p></div></figure><div class="card-body" lang="en"><h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">Lovely Ukraine</h2><div class="card-actions h-full flex-col-reverse"><button class="btn btn-block btn-sm btn-outline" hx-get="/recipes/3" hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap="innerHTML show:window:top transition:true">View</button></div></div></section>`,
 			},
 		},
 		{
 			query: "chi",
 			want: []string{
-				`<section class="card card-compact bg-base-100 shadow-lg indicator w-full"><span class="indicator-item indicator-center badge badge-primary select-none"></span><figure class="relative cursor-pointer" hx-get="/recipes/1" hx-target="#content" hx-push-url="true" hx-trigger="mousedown" hx-swap="innerHTML show:window:top transition:true"><img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Images for the Chinese Firmware recipe"><div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg"><p class="p-2 text-sm"></p></div></figure><div class="card-body" lang="en"><h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">Chinese Firmware</h2><div class="card-actions h-full flex-col-reverse"><button class="btn btn-block btn-sm btn-outline" hx-get="/recipes/1" hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap="innerHTML show:window:top transition:true">View</button></div></div></section>`,
+				`<section class="card card-compact bg-base-100 shadow-lg indicator w-full"><span class="indicator-item indicator-center badge badge-primary select-none"></span><figure class="relative cursor-pointer" hx-get="/recipes/1" hx-target="#content" hx-push-url="true" hx-trigger="mousedown" hx-swap="innerHTML show:window:top transition:true"><img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Image for the Chinese Firmware recipe"><div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg"><p class="p-2 text-sm"></p></div></figure><div class="card-body" lang="en"><h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">Chinese Firmware</h2><div class="card-actions h-full flex-col-reverse"><button class="btn btn-block btn-sm btn-outline" hx-get="/recipes/1" hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap="innerHTML show:window:top transition:true">View</button></div></div></section>`,
 			},
 		},
 		{
 			query: "lovely",
 			want: []string{
-				`<section class="card card-compact bg-base-100 shadow-lg indicator w-full"><span class="indicator-item indicator-center badge badge-primary select-none"></span><figure class="relative cursor-pointer" hx-get="/recipes/2" hx-target="#content" hx-push-url="true" hx-trigger="mousedown" hx-swap="innerHTML show:window:top transition:true"><img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Images for the Lovely Canada recipe"><div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg"><p class="p-2 text-sm"></p></div></figure><div class="card-body" lang="en"><h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">Lovely Canada</h2><div class="card-actions h-full flex-col-reverse"><button class="btn btn-block btn-sm btn-outline" hx-get="/recipes/2" hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap="innerHTML show:window:top transition:true">View</button></div></div></section>`,
-				`<section class="card card-compact bg-base-100 shadow-lg indicator w-full"><span class="indicator-item indicator-center badge badge-primary select-none"></span><figure class="relative cursor-pointer" hx-get="/recipes/3" hx-target="#content" hx-push-url="true" hx-trigger="mousedown" hx-swap="innerHTML show:window:top transition:true"><img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Images for the Lovely Ukraine recipe"><div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg"><p class="p-2 text-sm"></p></div></figure><div class="card-body" lang="en"><h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">Lovely Ukraine</h2><div class="card-actions h-full flex-col-reverse"><button class="btn btn-block btn-sm btn-outline" hx-get="/recipes/3" hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap="innerHTML show:window:top transition:true">View</button></div></div></section>`,
+				`<section class="card card-compact bg-base-100 shadow-lg indicator w-full"><span class="indicator-item indicator-center badge badge-primary select-none"></span><figure class="relative cursor-pointer" hx-get="/recipes/2" hx-target="#content" hx-push-url="true" hx-trigger="mousedown" hx-swap="innerHTML show:window:top transition:true"><img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Image for the Lovely Canada recipe"><div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg"><p class="p-2 text-sm"></p></div></figure><div class="card-body" lang="en"><h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">Lovely Canada</h2><div class="card-actions h-full flex-col-reverse"><button class="btn btn-block btn-sm btn-outline" hx-get="/recipes/2" hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap="innerHTML show:window:top transition:true">View</button></div></div></section>`,
+				`<section class="card card-compact bg-base-100 shadow-lg indicator w-full"><span class="indicator-item indicator-center badge badge-primary select-none"></span><figure class="relative cursor-pointer" hx-get="/recipes/3" hx-target="#content" hx-push-url="true" hx-trigger="mousedown" hx-swap="innerHTML show:window:top transition:true"><img class="h-48 max-w-48 w-full object-cover rounded-t-lg" src="/static/img/recipes/placeholder.webp" alt="Image for the Lovely Ukraine recipe"><div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg"><p class="p-2 text-sm"></p></div></figure><div class="card-body" lang="en"><h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">Lovely Ukraine</h2><div class="card-actions h-full flex-col-reverse"><button class="btn btn-block btn-sm btn-outline" hx-get="/recipes/3" hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap="innerHTML show:window:top transition:true">View</button></div></div></section>`,
 			},
 		},
 	}
@@ -1143,7 +1143,7 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 		Category:     "American",
 		Description:  "This is the most delicious recipe!",
 		ID:           1,
-		Images:       make([]uuid.UUID, 0),
+		Images:       []uuid.UUID{uuid.New()},
 		Ingredients:  []string{"Ing1", "Ing2", "Ing3"},
 		Instructions: []string{"Ins1", "Ins2", "Ins3"},
 		Name:         "Chicken Jersey",
@@ -1198,7 +1198,7 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 			`<a href="/auth/login" class="btn btn-ghost">Log In</a> <a href="/auth/register" class="btn btn-ghost">Sign Up</a>`,
 			`<span class="text-center pb-2 print:w-full">Chicken Jersey</span>`,
 			`<button class="mr-2" title="Print recipe" _="on click print()">`,
-			`<img id="output" style="object-fit: cover" alt="Images of the recipe" class="w-full max-h-[34rem]" src="/data/images/` + recipe.Images[0].String() + `.jpg">`,
+			`<img id="output" style="object-fit: cover" alt="Image of the recipe" class="w-full max-h-[34rem]" src="/data/images/` + recipe.Images[0].String() + `.jpg">`,
 			`<div class="badge badge-primary badge-outline">American</div>`,
 			`<p class="text-sm text-center">2 servings</p>`,
 			`<a class="btn btn-sm btn-outline no-underline print:hidden" href="https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/" target="_blank">Source</a><p class="hidden print:block print:whitespace-nowrap print:overflow-hidden print:text-ellipsis print:max-w-xs">https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/</p>`,
@@ -1404,7 +1404,7 @@ func TestHandlers_Recipes_View(t *testing.T) {
 				`<button class="mr-2" title="Share recipe" hx-post="/recipes/1/share" hx-target="#share-dialog-result" _="on htmx:afterRequest from me if event.detail.successful call share_dialog.showModal()">`,
 				`<button class="mr-2" title="Print recipe" _="on click print()">`,
 				`<button class="mr-2" hx-delete="/recipes/1" hx-swap="none" title="Delete recipe" hx-confirm="Are you sure you wish to delete this recipe?" hx-indicator="#fullscreen-loader">`,
-				`<img id="output" style="object-fit: cover" alt="Images of the recipe" class="w-full max-h-[34rem]" src="/data/images/e81ba735-a4af-4c66-8c17-2f2ccc1b1a95.jpg"></div><div class="grid grid-cols-3 col-span-3 md:grid-flow-row md:grid-rows-4 print:grid-rows-2">`,
+				`<img id="output" style="object-fit: cover" alt="Image of the recipe" class="w-full max-h-[34rem]" src="/data/images/e81ba735-a4af-4c66-8c17-2f2ccc1b1a95.jpg"></div><div class="grid grid-cols-3 col-span-3 md:grid-flow-row md:grid-rows-4 print:grid-rows-2">`,
 				`<div class="badge badge-primary badge-outline">American</div>`,
 				`<button class="mr-2" title="Share recipe" hx-post="/recipes/1/share" hx-target="#share-dialog-result" _="on htmx:afterRequest from me if event.detail.successful call share_dialog.showModal()"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24" width="24px" height="24px" stroke="currentColor">`,
 				`<form autocomplete="off" _="on submit halt the event" class="print:hidden"><label class="form-control w-full"><div class="label p-0"><span class="label-text">Servings</span></div><input id="yield" type="number" min="1" name="yield" value="2" class="input input-bordered input-sm w-24" hx-get="/recipes/1/scale" hx-trigger="input" hx-target="#ingredients-instructions-container"></label></form>`,

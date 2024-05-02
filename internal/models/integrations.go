@@ -82,7 +82,7 @@ func (p PaprikaRecipe) Recipe(image uuid.UUID) Recipe {
 		description = "Imported from Paprika"
 	}
 
-	var images []uuid.UUID
+	images := make([]uuid.UUID, 0)
 	if image != uuid.Nil {
 		images = append(images, image)
 	}

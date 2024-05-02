@@ -75,7 +75,7 @@ func NextcloudImport(baseURL, username, password string, uploadImageFunc func(rc
 
 			var images []uuid.UUID
 			imageUUID, err := uploadImageFunc(imageRes.Body)
-			if err != nil && imageUUID != uuid.Nil {
+			if err == nil && imageUUID != uuid.Nil {
 				images = append(images, imageUUID)
 			}
 

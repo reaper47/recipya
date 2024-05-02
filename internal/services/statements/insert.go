@@ -92,6 +92,10 @@ const InsertRecipeCuisine = `
 	INSERT INTO cuisine_recipe (cuisine_id, recipe_id)
 	VALUES (?, ?)`
 
+const InsertRecipeImage = `
+	INSERT INTO additional_images_recipe (recipe_id, image)
+	VALUES (?, ?)`
+
 // InsertRecipeIngredient is the query to associate a recipe with an ingredient.
 const InsertRecipeIngredient = `
 	INSERT INTO ingredient_recipe (ingredient_id, recipe_id, ingredient_order)

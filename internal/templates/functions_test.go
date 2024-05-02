@@ -2,6 +2,7 @@ package templates
 
 import (
 	"github.com/google/uuid"
+	"slices"
 	"testing"
 	"time"
 )
@@ -56,10 +57,10 @@ func TestTemplatesFunctions(t *testing.T) {
 	}
 	for _, tc := range testcases3 {
 		t.Run("UUID is "+tc.name, func(t *testing.T) {
-			actual := isUUIDsValid(tc.in)
+			actual := isUUIDsValid([]uuid.UUID{tc.in})
 
 			expected := tc.want
-			if actual != expected {
+			if !slices.Equal(actual, []bool{expected}) {
 				t.Fatalf("wanted %t but got %t", expected, actual)
 			}
 		})

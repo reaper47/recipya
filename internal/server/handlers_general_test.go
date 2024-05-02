@@ -44,6 +44,30 @@ func TestHandlers_General_Download(t *testing.T) {
 	})
 }
 
+func TestHandlers_General_Fetch(t *testing.T) {
+	srv := newServerTest()
+
+	uri := "/fetch"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
+	})
+
+	t.Run("no url to fetch", func(t *testing.T) {
+		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Invalid URL.\",\"title\":\"General Error\"}"}`)
+	})
+
+	t.Run("malformed url", func(t *testing.T) {
+		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri+"?url=slava-ukraini", noHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Invalid URL.\",\"title\":\"General Error\"}"}`)
+	})
+}
+
 func TestHandlers_General_Index(t *testing.T) {
 	srv := newServerTest()
 	srv.Repository = &mockRepository{
