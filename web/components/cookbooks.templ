@@ -161,7 +161,6 @@ templ CookbookRecipes(data templates.Data) {
 									class="btn btn-outline btn-sm"
 									hx-get={ fmt.Sprintf("/r/%d?cookbook=%d", r.ID, data.CookbookFeature.Cookbook.ID) }
 									hx-target="#content"
-									hx-trigger="mousedown"
 									hx-swap="innerHTML"
 									hx-push-url="true"
 								>
