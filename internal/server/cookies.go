@@ -90,5 +90,11 @@ func getUserIDFromRememberMeCookie(r *http.Request, getAuthToken func(selector, 
 	if err != nil || token.IsExpired() {
 		return -1
 	}
-	return token.UserID
+
+	for _, id := range SessionData.Data {
+		if id == token.UserID {
+			return token.UserID
+		}
+	}
+	return -1
 }

@@ -38,31 +38,17 @@ func createWSServer() (*server.Server, *httptest.Server, *websocket.Conn) {
 	}
 	srv.Repository = repo
 
-	ts := httptest.NewServer(srv.Router)
-
-	req, _ := http.NewRequest(http.MethodPost, ts.URL+"/auth/login", strings.NewReader("email=test@example.com&password=123&remember-me=true"))
-	if req == nil {
-		panic("could not create new request")
+	sid := uuid.New()
+	if server.SessionData.Data == nil {
+		server.SessionData.Data = make(map[uuid.UUID]int64)
 	}
+	server.SessionData.Set(sid, 1)
 
-	req.Header.Set("Content-Type", string(formHeader))
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		panic(err)
-	}
-	defer res.Body.Close()
-
-	var sessionCookie *http.Cookie
-	for _, cookie := range res.Cookies() {
-		if cookie.Name == "session" {
-			sessionCookie = cookie
-			break
-		}
-	}
-
-	u := strings.Replace(ts.URL, "http", "ws", 1)
 	h := http.Header{}
-	h.Add("Cookie", sessionCookie.String())
+	h.Add("Cookie", server.NewSessionCookie(sid.String()).String())
+
+	ts := httptest.NewServer(srv.Router)
+	u := strings.Replace(ts.URL, "http", "ws", 1)
 
 	c, _, err := websocket.DefaultDialer.Dial(u+"/ws", h)
 	if err != nil {
