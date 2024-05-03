@@ -1303,11 +1303,16 @@ func (s *SQLiteService) SearchRecipes(query string, page uint64, options models.
 	for rows.Next() {
 		var (
 			r     models.Recipe
+			img   uuid.UUID
 			count int64
 		)
-		err = rows.Scan(&r.ID, &r.Name, &r.Description, &r.Images, &r.CreatedAt, &r.Category, &count)
+		err = rows.Scan(&r.ID, &r.Name, &r.Description, &img, &r.CreatedAt, &r.Category, &count)
 		if err != nil {
 			return models.Recipes{}, 0, err
+		}
+
+		if img != uuid.Nil {
+			r.Images = []uuid.UUID{img}
 		}
 		recipes = append(recipes, r)
 	}
