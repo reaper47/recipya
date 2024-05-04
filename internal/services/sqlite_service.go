@@ -139,8 +139,54 @@ func (s *SQLiteService) AddCookbookRecipe(cookbookID, recipeID, userID int64) er
 	return err
 }
 
-// AddRecipe adds a recipe to the user's collection.
-func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64, settings models.UserSettings) (int64, error) {
+// AddRecipes adds recipes to the user's collection.
+// It returns the IDs of these that were successful and the error.
+func (s *SQLiteService) AddRecipes(recipes models.Recipes, userID int64, progress chan models.Progress) ([]int64, []models.ReportLog, error) {
+	n := len(recipes)
+	if n == 0 {
+		return nil, nil, errors.New("no recipes to add")
+	}
+
+	settings, err := s.UserSettings(userID)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var (
+		errs       []error
+		logs       = make([]models.ReportLog, 0, n)
+		ids        = make([]int64, 0, n)
+		userIDAttr = slog.Int64("userID", userID)
+	)
+
+	for i, r := range recipes {
+		if progress != nil {
+			progress <- models.Progress{Value: i, Total: n}
+		}
+
+		id, err := s.addRecipe(r, userID, settings)
+		logs = append(logs, models.NewReportLog(r.Name, err))
+		if err != nil {
+			errs = append(errs, err)
+			slog.Error("Skipped recipe", "recipe", r, userIDAttr, "error", err)
+			continue
+		}
+
+		ids = append(ids, id)
+	}
+
+	if len(ids) == 0 {
+		if len(errs) > 0 {
+			return nil, nil, errs[0]
+		}
+		return nil, nil, errors.New("no recipes to add")
+	}
+
+	s.calculateNutrition(userID, ids, settings, false)
+	return ids, logs, nil
+}
+
+func (s *SQLiteService) addRecipe(r models.Recipe, userID int64, settings models.UserSettings) (int64, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), longerCtxTimeout)
 	defer cancel()
 
@@ -160,7 +206,7 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64, settings model
 	if settings.ConvertAutomatically {
 		converted, _ := r.ConvertMeasurementSystem(settings.MeasurementSystem)
 		if converted != nil {
-			r = converted
+			r = *converted
 		}
 	}
 
@@ -170,7 +216,7 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64, settings model
 	}
 	defer tx.Rollback()
 
-	recipeID, err := s.AddRecipeTx(ctx, tx, r, userID)
+	recipeID, err := s.addRecipeTx(ctx, tx, r, userID)
 	if err != nil {
 		return 0, err
 	}
@@ -178,8 +224,7 @@ func (s *SQLiteService) AddRecipe(r *models.Recipe, userID int64, settings model
 	return recipeID, tx.Commit()
 }
 
-// AddRecipeTx adds a recipe to the user's collection using an existing database transaction.
-func (s *SQLiteService) AddRecipeTx(ctx context.Context, tx *sql.Tx, r *models.Recipe, userID int64) (int64, error) {
+func (s *SQLiteService) addRecipeTx(ctx context.Context, tx *sql.Tx, r models.Recipe, userID int64) (int64, error) {
 	// Insert recipe
 	var mainImage uuid.UUID
 	if len(r.Images) > 0 {
@@ -249,6 +294,7 @@ func (s *SQLiteService) AddRecipeTx(ctx context.Context, tx *sql.Tx, r *models.R
 
 	// Insert nutrition
 	n := r.Nutrition
+	n.Clean()
 	_, err = tx.ExecContext(ctx, statements.InsertNutrition, recipeID, n.Calories, n.TotalCarbohydrates, n.Sugars, n.Protein, n.TotalFat, n.SaturatedFat, n.UnsaturatedFat, n.Cholesterol, n.Sodium, n.Fiber, n.IsPerServing)
 	if err != nil {
 		return 0, err
@@ -332,6 +378,14 @@ func (s *SQLiteService) AddRecipeTx(ctx context.Context, tx *sql.Tx, r *models.R
 
 // AddReport adds a report to the database.
 func (s *SQLiteService) AddReport(report models.Report, userID int64) {
+	userIDAttr := slog.Int64("userID", userID)
+	reportAttr := slog.Any("report", report)
+
+	if len(report.Logs) == 0 {
+		slog.Warn("No report to insert into the database", userIDAttr, reportAttr)
+		return
+	}
+
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
@@ -340,28 +394,28 @@ func (s *SQLiteService) AddReport(report models.Report, userID int64) {
 
 	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{})
 	if err != nil {
-		slog.Error("AddReport.BeginTx failed", "error", err)
+		slog.Error("AddReport.BeginTx failed", userIDAttr, reportAttr, "error", err)
 		return
 	}
 	defer tx.Rollback()
 
 	err = tx.QueryRowContext(ctx, statements.InsertReport, report.Type, report.CreatedAt, report.ExecTime, userID).Scan(&report.ID)
 	if err != nil {
-		slog.Error("AddReport.InsertReport failed", "report", report, "error", err)
+		slog.Error("AddReport.InsertReport failed", userIDAttr, reportAttr, "error", err)
 		return
 	}
 
 	for _, l := range report.Logs {
 		_, err = tx.ExecContext(ctx, statements.InsertReportLog, report.ID, l.Title, l.IsSuccess, l.Error)
 		if err != nil {
-			slog.Error("AddReport.InsertReportLog failed", "report", report, "log", l, "error", err)
+			slog.Error("AddReport.InsertReportLog failed", userIDAttr, reportAttr, "log", l, "error", err)
 			continue
 		}
 	}
 
 	err = tx.Commit()
 	if err != nil {
-		slog.Warn("AddReport.Commit failed", "report", report, "error", err)
+		slog.Warn("AddReport.Commit failed", userIDAttr, reportAttr, "error", err)
 	}
 }
 
@@ -424,9 +478,9 @@ func (s *SQLiteService) AppInfo() (models.AppInfo, error) {
 	return ai, err
 }
 
-// CalculateNutrition calculates the nutrition facts for the recipes.
-// It is best to in the background because it takes a while per recipe.
-func (s *SQLiteService) CalculateNutrition(userID int64, recipes []int64, settings models.UserSettings) {
+// calculateNutrition calculates the nutrition facts for the recipes.
+// It is best to run this function in the background because it takes a while per recipe.
+func (s *SQLiteService) calculateNutrition(userID int64, recipes []int64, settings models.UserSettings, force bool) {
 	if !settings.CalculateNutritionFact {
 		return
 	}
@@ -444,7 +498,7 @@ func (s *SQLiteService) CalculateNutrition(userID int64, recipes []int64, settin
 			}
 			s.Mutex.Unlock()
 
-			if !recipe.Nutrition.Equal(models.Nutrition{}) {
+			if !force && !recipe.Nutrition.Equal(models.Nutrition{}) {
 				continue
 			}
 
@@ -1222,7 +1276,7 @@ func (s *SQLiteService) RestoreUserBackup(backup *models.UserBackup) error {
 	}
 
 	for _, r := range backup.Recipes {
-		_, err = s.AddRecipeTx(ctx, tx, &r, backup.UserID)
+		_, err = s.addRecipeTx(ctx, tx, r, backup.UserID)
 		if err != nil {
 			return err
 		}
@@ -1383,7 +1437,9 @@ func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 		for _, s := range split {
 			parsed, err := uuid.Parse(s)
 			if err != nil {
-				slog.Warn("Couldn't parse image ID", "recipeID", r.ID, "imageID", s)
+				if s != "" {
+					slog.Warn("Couldn't parse image ID", "recipeID", r.ID, "imageID", s)
+				}
 				continue
 			}
 			other = append(other, parsed)
@@ -1543,7 +1599,8 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 		}
 	}
 
-	if !slices.Equal(updatedRecipe.Ingredients, oldRecipe.Ingredients) {
+	isIngredientsUpdated := !slices.Equal(updatedRecipe.Ingredients, oldRecipe.Ingredients)
+	if isIngredientsUpdated {
 		ids := make([]int64, len(updatedRecipe.Ingredients))
 		for i, v := range updatedRecipe.Ingredients {
 			var id int64
@@ -1772,7 +1829,21 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 		}
 	}
 
-	return tx.Commit()
+	err = tx.Commit()
+	if err != nil {
+		return err
+	}
+
+	if isIngredientsUpdated {
+		settings, err := s.UserSettings(userID)
+		if err != nil {
+			slog.Warn("Could not calculate nutrition", userIDAttr, recipeIDAttr, "error", err)
+		} else {
+			s.calculateNutrition(userID, []int64{recipeID}, settings, true)
+		}
+	}
+
+	return nil
 }
 
 // UpdateUserSettingsCookbooksViewMode updates the user's preferred cookbooks viewing mode.

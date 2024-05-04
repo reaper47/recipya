@@ -2,8 +2,6 @@ package services
 
 import (
 	"bytes"
-	"context"
-	"database/sql"
 	"github.com/blang/semver"
 	"github.com/google/go-github/v59/github"
 	"github.com/google/uuid"
@@ -27,21 +25,14 @@ type RepositoryService interface {
 	// AddCookbookRecipe adds a recipe to the cookbook.
 	AddCookbookRecipe(cookbookID, recipeID, userID int64) error
 
-	// AddRecipe adds a recipe to the user's collection.
-	AddRecipe(r *models.Recipe, userID int64, settings models.UserSettings) (int64, error)
-
-	// AddRecipeTx adds a recipe to the user's collection using an existing database transaction.
-	AddRecipeTx(ctx context.Context, tx *sql.Tx, r *models.Recipe, userID int64) (int64, error)
+	// AddRecipes adds recipes to the user's collection.
+	AddRecipes(recipes models.Recipes, userID int64, progress chan models.Progress) ([]int64, []models.ReportLog, error)
 
 	// AddReport adds a report to the database.
 	AddReport(report models.Report, userID int64)
 
 	// AddShareLink adds a share link for the recipe.
 	AddShareLink(share models.Share) (string, error)
-
-	// CalculateNutrition calculates the nutrition facts for the recipes.
-	// It is best to in the background because it takes a while per recipe.
-	CalculateNutrition(userID int64, recipes []int64, settings models.UserSettings)
 
 	// Categories gets all categories in the database.
 	Categories(userID int64) ([]string, error)

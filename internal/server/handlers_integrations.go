@@ -21,21 +21,15 @@ func (s *Server) integrationsImport() http.HandlerFunc {
 			return
 		}
 
-		settings, err := s.Repository.UserSettings(userID)
-		if err != nil {
-			msg := "Failed to get user settings."
-			slog.Error(msg, userIDAttr, "error", err)
-			s.Brokers[userID].HideNotification()
-			s.Brokers[userID].SendToast(models.NewErrorDBToast(msg))
-			return
-		}
+		var (
+			err         error
+			integration = r.FormValue("integration")
+			rawURL      = r.FormValue("url")
+			username    = r.FormValue("username")
+			password    = r.FormValue("password")
+		)
 
-		integration := r.FormValue("integration")
-		rawURL := r.FormValue("url")
-		username := r.FormValue("username")
-		password := r.FormValue("password")
-
-		go func(id int64, us models.UserSettings) {
+		go func(id int64) {
 			s.Brokers[id].SendProgressStatus("Contacting server...", true, 0, -1)
 
 			var (
@@ -81,6 +75,7 @@ func (s *Server) integrationsImport() http.HandlerFunc {
 				for p := range progress {
 					processed++
 					s.Brokers[id].SendProgress("Fetching recipes...", processed, p.Total*2)
+					close(progress)
 				}
 			}
 
@@ -88,29 +83,33 @@ func (s *Server) integrationsImport() http.HandlerFunc {
 				return len(r.Instructions) == 0 && len(r.Ingredients) == 0 && r.Description == ""
 			})
 
-			count := 0
-			skipped := 0
-			numRecipes := len(recipes)
-			recipeIDs := make([]int64, 0, numRecipes)
+			var (
+				progress2 = make(chan models.Progress)
+				recipeIDs []int64
+			)
 
-			for i, recipe := range recipes {
-				s.Brokers[id].SendProgress("Adding to collection...", i+numRecipes, numRecipes*2)
-				c := recipe.Copy()
-				recipeID, err := s.Repository.AddRecipe(&c, id, us)
+			go func() {
+				defer close(progress2)
+
+				recipeIDs, _, err = s.Repository.AddRecipes(recipes, id, progress2)
 				if err != nil {
-					slog.Warn("Skipped recipe", userIDAttr, "recipe", c, "error", err)
-					skipped++
-					continue
+					slog.Error("Failed to add recipes", userIDAttr, "error", err)
 				}
-				recipeIDs = append(recipeIDs, recipeID)
-				count++
+			}()
+
+			for p := range progress2 {
+				s.Brokers[id].SendProgress("Adding to collection...", p.Value+p.Total, p.Total*2)
 			}
 
+			var (
+				count   = len(recipeIDs)
+				skipped = len(recipes) - count
+			)
+
 			slog.Info("Imported recipes", "integration", integration, userIDAttr, "count", count, "skipped", skipped)
-			s.Repository.CalculateNutrition(userID, recipeIDs, settings)
 			s.Brokers[id].HideNotification()
 			s.Brokers[id].SendToast(models.NewInfoToast(fmt.Sprintf("Imported %d recipes. Skipped %d.", count, skipped), "", ""))
-		}(userID, settings)
+		}(userID)
 
 		w.WriteHeader(http.StatusAccepted)
 	}

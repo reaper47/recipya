@@ -171,7 +171,7 @@ templ addRecipe() {
 							<div class="label">
 								<span class="label-text">Enter one or more URLs, each on a new line.</span>
 							</div>
-							<textarea class="textarea textarea-bordered h-24 whitespace-pre-line" placeholder="URL 1\nURL 2\nURL 3\nURL 4\netc..." name="urls" rows="10"></textarea>
+							<textarea class="textarea textarea-bordered whitespace-pre-line" placeholder="URL 1\nURL 2\nURL 3\nURL 4\netc..." name="urls" rows="5"></textarea>
 						</label>
 					</div>
 					<button type="submit" class="btn btn-block btn-primary btn-sm" onclick="websites_dialog.close()">
@@ -1092,10 +1092,10 @@ templ editRecipe(data *templates.ViewRecipeData) {
 																hx-vals="js:{url: event.target.previousElementSibling.value}"
 																hx-swap="none"
 																_="on htmx:afterRequest
-                                                                if event.detail.successful then
-                                                                    set a to first in event.target.parentElement.parentElement.children then
-                                                                    call updateImageFromFetch(a, event.detail.xhr.responseURL)
-                                                                end"
+                                                                    if event.detail.successful then
+                                                                        set a to first in event.target.parentElement.parentElement.children then
+                                                                        call updateImageFromFetch(a, event.detail.xhr.responseURL)
+                                                                    end"
 															>
 																Fetch
 															</button>
@@ -1105,11 +1105,11 @@ templ editRecipe(data *templates.ViewRecipeData) {
 														type="button"
 														class={ "btn btn-sm btn-error btn-outline", templ.KV("hidden", !data.IsUUIDsValid[i]) }
 														_="on click
-                                                        set {value: ''} on me.parentElement.children[0].children[0] then
-                                                        set {src: ''} on previous <img/> then
-                                                        set {value: ''} on the first in (last in me.parentElement.children[0].children) then
-                                                        remove .hidden from the first in me.parentElement.children then
-                                                        add .hidden"
+                                                            set {value: ''} on me.parentElement.children[0].children[0] then
+                                                            set {src: ''} on previous <img/> then
+                                                            set {value: ''} on the first in (last in me.parentElement.children[0].children) then
+                                                            remove .hidden from the first in me.parentElement.children then
+                                                            add .hidden"
 													>
 														Delete
 													</button>
@@ -1574,9 +1574,9 @@ templ recipesIndex(data templates.Data) {
 		<script defer>
             document.addEventListener("keydown", (event) => {
                 if (event.ctrlKey && event.key === "/") {
-                    event.preventDefault();
-                    document.querySelector("#search-recipes").focus();
-                }
+                     event.preventDefault();
+                     document.querySelector("#search-recipes").focus();
+                 }
             });
         </script>
 	} else {

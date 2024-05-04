@@ -340,6 +340,49 @@ type Nutrition struct {
 	UnsaturatedFat     string
 }
 
+// Clean empties any negligent field of the Nutrition.
+func (n *Nutrition) Clean() {
+	if strings.HasPrefix(n.Calories, "0") {
+		n.Calories = ""
+	}
+
+	if strings.HasPrefix(n.Cholesterol, "0") {
+		n.Cholesterol = ""
+	}
+
+	if strings.HasPrefix(n.Fiber, "0") {
+		n.Fiber = ""
+	}
+
+	if strings.HasPrefix(n.Protein, "0") {
+		n.Protein = ""
+	}
+
+	if strings.HasPrefix(n.SaturatedFat, "0") {
+		n.SaturatedFat = ""
+	}
+
+	if strings.HasPrefix(n.Sodium, "0") {
+		n.Sodium = ""
+	}
+
+	if strings.HasPrefix(n.Sugars, "0") {
+		n.Sugars = ""
+	}
+
+	if strings.HasPrefix(n.TotalCarbohydrates, "0") {
+		n.TotalCarbohydrates = ""
+	}
+
+	if strings.HasPrefix(n.TotalFat, "0") {
+		n.TotalFat = ""
+	}
+
+	if strings.HasPrefix(n.UnsaturatedFat, "0") {
+		n.UnsaturatedFat = ""
+	}
+}
+
 // Equal verifies whether the Nutrition struct is equal to the other.
 func (n *Nutrition) Equal(other Nutrition) bool {
 	return n.Calories == other.Calories &&
