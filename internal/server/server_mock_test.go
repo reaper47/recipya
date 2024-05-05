@@ -2,7 +2,6 @@ package server_test
 
 import (
 	"bytes"
-	"context"
 	"database/sql"
 	"errors"
 	"github.com/blang/semver"
@@ -52,7 +51,7 @@ func newServerTest() *server.Server {
 
 type mockRepository struct {
 	AuthTokens                  []models.AuthToken
-	AddRecipeFunc               func(recipe *models.Recipe, userID int64, settings models.UserSettings) (int64, error)
+	AddRecipesFunc              func(recipes models.Recipes, userID int64, progress chan models.Progress) ([]int64, []models.ReportLog, error)
 	CookbooksFunc               func(userID int64) ([]models.Cookbook, error)
 	CookbooksRegistered         map[int64][]models.Cookbook
 	DeleteCookbookFunc          func(id, userID int64) error
@@ -70,8 +69,68 @@ type mockRepository struct {
 	UsersUpdated                []int64
 }
 
-func (m *mockRepository) AddRecipeTx(_ context.Context, _ *sql.Tx, _ *models.Recipe, _ int64) (int64, error) {
-	return 0, nil
+func (m *mockRepository) AddRecipes(xr models.Recipes, userID int64, progress chan models.Progress) ([]int64, []models.ReportLog, error) {
+	if xr == nil {
+		return nil, nil, errors.New("recipe is nil")
+	}
+
+	if m.AddRecipesFunc != nil {
+		return m.AddRecipesFunc(xr, userID, progress)
+	}
+
+	if m.RecipesRegistered[userID] == nil {
+		m.RecipesRegistered[userID] = make(models.Recipes, 0)
+	}
+
+	recipeIDs := make([]int64, 0, len(xr))
+	for i, recipe := range xr {
+		if !slices.ContainsFunc(m.RecipesRegistered[userID], func(r models.Recipe) bool { return recipe.Name == r.Name }) {
+			mutex.Lock()
+			recipe.ID = int64(i + 1)
+			m.RecipesRegistered[userID] = append(m.RecipesRegistered[userID], recipe)
+			recipeIDs = append(recipeIDs, recipe.ID)
+			mutex.Unlock()
+		}
+
+		if progress != nil {
+			progress <- models.Progress{Value: i, Total: len(xr)}
+		}
+	}
+
+	return recipeIDs, nil, nil
+}
+
+func (m *mockRepository) AddShareLink(share models.Share) (string, error) {
+	if share.CookbookID != -1 {
+		for _, cookbooks := range m.CookbooksRegistered {
+			if slices.ContainsFunc(cookbooks, func(c models.Cookbook) bool { return c.ID == share.CookbookID }) {
+				for link, s := range m.ShareLinks {
+					if s.CookbookID == share.CookbookID && s.UserID == share.UserID {
+						return link, nil
+					}
+				}
+
+				link := "/c/33320755-82f9-47e5-bb0a-d1b55cbd3f7b"
+				m.ShareLinks[link] = share
+				return link, nil
+			}
+		}
+	} else if share.RecipeID != -1 {
+		for _, recipes := range m.RecipesRegistered {
+			if slices.ContainsFunc(recipes, func(r models.Recipe) bool { return r.ID == share.RecipeID }) {
+				for link, s := range m.ShareLinks {
+					if s.RecipeID == share.RecipeID && s.UserID == share.UserID {
+						return link, nil
+					}
+				}
+
+				link := "/r/33320755-82f9-47e5-bb0a-d1b55cbd3f7b"
+				m.ShareLinks[link] = share
+				return link, nil
+			}
+		}
+	}
+	return "", errors.New("cookbook or recipe not found")
 }
 
 func (m *mockRepository) AddReport(report models.Report, userID int64) {
@@ -152,64 +211,6 @@ func (m *mockRepository) AddCookbookRecipe(cookbookID, recipeID, userID int64) e
 
 	cookbooks[cookbookIndex].Recipes = append(cookbooks[cookbookIndex].Recipes, recipes[recipeID])
 	return nil
-}
-
-func (m *mockRepository) AddRecipe(r *models.Recipe, userID int64, settings models.UserSettings) (int64, error) {
-	if r == nil {
-		return 0, errors.New("recipe is nil")
-	}
-
-	if m.AddRecipeFunc != nil {
-		return m.AddRecipeFunc(r, userID, settings)
-	}
-
-	if m.RecipesRegistered[userID] == nil {
-		m.RecipesRegistered[userID] = make(models.Recipes, 0)
-	}
-
-	if !slices.ContainsFunc(m.RecipesRegistered[userID], func(recipe models.Recipe) bool { return recipe.Name == r.Name }) {
-		mutex.Lock()
-		m.RecipesRegistered[userID] = append(m.RecipesRegistered[userID], *r)
-		mutex.Unlock()
-	}
-	return int64(len(m.RecipesRegistered)), nil
-}
-
-func (m *mockRepository) AddShareLink(share models.Share) (string, error) {
-	if share.CookbookID != -1 {
-		for _, cookbooks := range m.CookbooksRegistered {
-			if slices.ContainsFunc(cookbooks, func(c models.Cookbook) bool { return c.ID == share.CookbookID }) {
-				for link, s := range m.ShareLinks {
-					if s.CookbookID == share.CookbookID && s.UserID == share.UserID {
-						return link, nil
-					}
-				}
-
-				link := "/c/33320755-82f9-47e5-bb0a-d1b55cbd3f7b"
-				m.ShareLinks[link] = share
-				return link, nil
-			}
-		}
-	} else if share.RecipeID != -1 {
-		for _, recipes := range m.RecipesRegistered {
-			if slices.ContainsFunc(recipes, func(r models.Recipe) bool { return r.ID == share.RecipeID }) {
-				for link, s := range m.ShareLinks {
-					if s.RecipeID == share.RecipeID && s.UserID == share.UserID {
-						return link, nil
-					}
-				}
-
-				link := "/r/33320755-82f9-47e5-bb0a-d1b55cbd3f7b"
-				m.ShareLinks[link] = share
-				return link, nil
-			}
-		}
-	}
-	return "", errors.New("cookbook or recipe not found")
-}
-
-func (m *mockRepository) CalculateNutrition(_ int64, _ []int64, _ models.UserSettings) {
-
 }
 
 func (m *mockRepository) Categories(_ int64) ([]string, error) {

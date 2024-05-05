@@ -17,6 +17,20 @@ func NewReport(reportType ReportType) Report {
 	}
 }
 
+// NewReportLog creates a new ReportLog from the title and error.
+func NewReportLog(title string, err error) ReportLog {
+	var errStr string
+	if err != nil {
+		errStr = err.Error()
+	}
+
+	return ReportLog{
+		Error:     errStr,
+		IsSuccess: err == nil,
+		Title:     title,
+	}
+}
+
 // Report holds information on a report.
 type Report struct {
 	CreatedAt time.Time

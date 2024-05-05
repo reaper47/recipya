@@ -45,6 +45,11 @@ func NewBroker(userID int64, brokers map[int64]*Broker, conn *websocket.Conn) *B
 	return b
 }
 
+// Close closes the broker's websocket connection.
+func (b *Broker) Close() {
+	b.conn.Close()
+}
+
 // HideNotification hides the websocket's frontend notification.
 func (b *Broker) HideNotification() {
 	b.SendProgressStatus("", false, -1, -1)

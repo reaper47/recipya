@@ -40,7 +40,7 @@ templ layoutMain(title string, data templates.Data) {
                     add .hidden to mobile_nav"
 	>
 		@head(title)
-		<body class="min-h-full">
+		<body class="min-h-full" hx-ext="ws" ws-connect="/ws">
 			<header class="navbar bg-base-200 shadow-sm print:hidden">
 				<div class="navbar-start">
 					<a
@@ -188,35 +188,12 @@ templ layoutMain(title string, data templates.Data) {
 						<button hx-get="/cookbooks" hx-target="#content" hx-push-url="true" hx-swap-oob="true" hx-swap="innerHTML transition:true">Cookbooks</button>
 					</aside>
 				}
-				<div id="content" class="min-h-[92.5vh] w-full" hx-ext="ws" ws-connect="/ws">
+				<div id="content" class="min-h-[92.5vh] w-full">
 					{ children... }
 				</div>
 			</main>
 			@toast()
 			@toastWS("", "", false)
-			<script defer>
-                document.addEventListener("htmx:wsBeforeMessage", (event) => {
-                    try {
-                        const {type, data, fileName, toast} = JSON.parse(event.detail.message);
-                        switch (type) {
-                            case "toast":
-                                const {title, message, background, action} = toast;
-                                showToast(title, message, background, action);
-                                break;
-                            case "file":
-                                const decoded = atob(data);
-                                const bytes = new Uint8Array(decoded.length);
-                                for (let i = 0; i < decoded.length; i++) {
-                                    bytes[i] = decoded.charCodeAt(i);
-                                }
-                                const blob = new Blob([bytes], {type: "application/zip"});
-                                downloadFile(blob, fileName, "application/zip");
-                                event.preventDefault();
-                                break;
-                        }
-                    } catch (_) {}
-                });
-    </script>
 		</body>
 	</html>
 }
@@ -331,39 +308,6 @@ templ head(title string) {
                 }
             }
 
-            window.addEventListener("DOMContentLoaded", () => {
-                showAll();
-                document.addEventListener("htmx:pushedIntoHistory", showAll);
-            });
-
-            document.addEventListener("htmx:beforeProcessNode", () => {
-                adjustAddCookbookTarget();
-            });
-
-            htmx.on('htmx:pushedIntoHistory', () => {
-                showAll();
-                document.addEventListener("htmx:pushedIntoHistory", showAll);
-            });
-
-            function adjustAddCookbookTarget() {
-                const el = document.querySelector("#add_cookbook");
-                if (el) {
-                    if (document.querySelector(".cookbooks-display") === null) {
-                        add_cookbook.setAttribute("hx-target", "#content");
-                        add_cookbook.setAttribute("hx-swap", "innerHTML");
-                    } else {
-                        add_cookbook.setAttribute("hx-target", ".cookbooks-display");
-                        add_cookbook.setAttribute("hx-swap", "beforeend");
-
-                        const p = document.querySelector("#pagination");
-                        if (p && !p.querySelector("button:nth-last-child(2)").classList.contains('btn-active')) {
-                            add_cookbook.setAttribute("hx-swap", "none");
-                        }
-                    }
-                    htmx.process(add_cookbook);
-                }
-            }
-
             function loadSortableJS() {
                 return loadScript("https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js")
             }
@@ -395,6 +339,57 @@ templ head(title string) {
                     window.URL.revokeObjectURL(blobURL);
                 }, 100);
             }
+
+            window.addEventListener("DOMContentLoaded", () => {
+                showAll();
+                document.addEventListener("htmx:pushedIntoHistory", showAll);
+            });
+
+            document.addEventListener("htmx:beforeProcessNode", () => {
+                const el = document.querySelector("#add_cookbook");
+                if (el) {
+                    if (document.querySelector(".cookbooks-display") === null) {
+                        add_cookbook.setAttribute("hx-target", "#content");
+                        add_cookbook.setAttribute("hx-swap", "innerHTML");
+                    } else {
+                        add_cookbook.setAttribute("hx-target", ".cookbooks-display");
+                        add_cookbook.setAttribute("hx-swap", "beforeend");
+
+                        const p = document.querySelector("#pagination");
+                        if (p && !p.querySelector("button:nth-last-child(2)").classList.contains('btn-active')) {
+                            add_cookbook.setAttribute("hx-swap", "none");
+                        }
+                    }
+                    htmx.process(add_cookbook);
+                }
+            });
+
+            htmx.on('htmx:pushedIntoHistory', () => {
+                showAll();
+                document.addEventListener("htmx:pushedIntoHistory", showAll);
+            });
+
+            document.addEventListener("htmx:wsBeforeMessage", (event) => {
+                try {
+                      const {type, data, fileName, toast} = JSON.parse(event.detail.message);
+                      switch (type) {
+                          case "toast":
+                              const {title, message, background, action} = toast;
+                              showToast(title, message, background, action);
+                              break;
+                          case "file":
+                              const decoded = atob(data);
+                              const bytes = new Uint8Array(decoded.length);
+                              for (let i = 0; i < decoded.length; i++) {
+                                  bytes[i] = decoded.charCodeAt(i);
+                              }
+                              const blob = new Blob([bytes], {type: "application/zip"});
+                              downloadFile(blob, fileName, "application/zip");
+                              event.preventDefault();
+                              break;
+                      }
+                  } catch (_) {}
+            });
         </script>
 	</head>
 }
@@ -413,19 +408,21 @@ templ toast() {
 	</div>
 	<script defer>
         var timeoutToast = timeoutToast || null;
-        htmx.on('showToast', function (event) {
+
+        function receiveToastMessage(event) {
             const {title, message, background, action} = JSON.parse(event.detail.value);
             showToast(title, message, background, action);
 
             if (title == "Software updated") {
                 setTimeout(() => window.location.reload(1), 6000);
             }
-        });
+        }
 
         function showToast(title, message, background, action) {
             const toast = document.querySelector("#toast_alert").cloneNode(true);
             toast.classList.remove("alert-error", "alert-info", "alert-success", "alert-warning", background, "hidden");
-            toast.classList.add(background);
+            toast.classList.add(background, "toast-displayed");
+            toast.id = "";
 
             toast.querySelector("#toast_title").innerHTML = title;
             toast.querySelector("#toast_message").innerText = message;
@@ -448,11 +445,11 @@ templ toast() {
                     button.setAttribute("hx-get", split[1]);
                     button.setAttribute("hx-target", "#content");
                     button.setAttribute("hx-push-url", split[1]);
-                    button.setAttribute("onclick", "event.target.closest('#toast_alert').classList.add('hidden')")
                     htmx.process(document.querySelector("#toast_button"));
                 }
                 button.innerText = split[0];
                 button.classList.remove("hidden");
+                toast.setAttribute("_", "on click remove me")
             } else {
                 button.removeAttribute("hx-get");
                 button.removeAttribute("hx-target");
@@ -476,6 +473,7 @@ templ toast() {
 
             toast_container.classList.remove('hidden');
             htmx.process(toast);
+            _hyperscript.processNode(toast);
             toast_container.append(toast);
         }
     </script>

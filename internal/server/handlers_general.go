@@ -164,6 +164,9 @@ func (s *Server) wsHandler() http.HandlerFunc {
 		}
 
 		userID := getUserID(r)
+		if s.Brokers[userID] != nil {
+			s.Brokers[userID].Close()
+		}
 		broker := models.NewBroker(userID, s.Brokers, ws)
 		s.Brokers[userID] = broker
 	}

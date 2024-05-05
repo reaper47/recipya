@@ -95,7 +95,7 @@ func TestHandlers_Recipes_New(t *testing.T) {
 				`<title hx-swap-oob="true">Add Recipe | Recipya</title>`,
 				`<img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes/new/import.webp" alt="Writing on a piece of paper with a traditional pen.">`,
 				`<button class="underline" hx-get="/recipes/supported-websites" hx-target="#search-results" onclick="supported_websites_dialog.showModal()">supported</button>`,
-				`<dialog id="websites_dialog" class="modal"><div class="modal-box"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="font-bold text-lg">Fetch recipes from websites</h3><form class="py-4" hx-post="/recipes/add/website" hx-indicator="#fullscreen-loader" hx-swap="none"><div class="grid mb-4"><label class="form-control"><div class="label"><span class="label-text">Enter one or more URLs, each on a new line.</span></div><textarea class="textarea textarea-bordered h-24 whitespace-pre-line" placeholder="URL 1URL 2URL 3URL 4etc..." name="urls" rows="10"></textarea></label></div><button type="submit" class="btn btn-block btn-primary btn-sm" onclick="websites_dialog.close()">Submit</button></form></div></dialog>`,
+				`<dialog id="websites_dialog" class="modal"><div class="modal-box"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="font-bold text-lg">Fetch recipes from websites</h3><form class="py-4" hx-post="/recipes/add/website" hx-indicator="#fullscreen-loader" hx-swap="none"><div class="grid mb-4"><label class="form-control"><div class="label"><span class="label-text">Enter one or more URLs, each on a new line.</span></div><textarea class="textarea textarea-bordered whitespace-pre-line" placeholder="URL 1URL 2URL 3URL 4etc..." name="urls" rows="5"></textarea></label></div><button type="submit" class="btn btn-block btn-primary btn-sm" onclick="websites_dialog.close()">Submit</button></form></div></dialog>`,
 				`<dialog id="supported_websites_dialog" class="modal"><div class="modal-box h-2/3"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="mb-1"><label><input type="search" placeholder="Search a website" class="input input-bordered input-sm w-11/12" _="on input show <tbody>tr/> in next <table/> when its textContent.toLowerCase() contains my value.toLowerCase()"></label></h3><div class="overflow-x-auto"><table class="table table-zebra table-sm"><thead><tr class="text-center"><th class="py-1">Number</th><th class="py-1">Website</th></tr></thead> <tbody id="search-results"></tbody></table></div></div></dialog>`,
 				`<dialog id="supported_apps_import_dialog" class="modal"><div class="modal-box h-2/3"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="mb-1"><label><input type="search" placeholder="Search an application" class="input input-bordered input-sm w-11/12" _="on input show <tbody>tr/> in next <table/> when its textContent.toLowerCase() contains my value.toLowerCase()"></label></h3><div class="overflow-x-auto"><table class="table table-zebra table-sm"><thead><tr class="text-center"><th class="py-1">Number</th><th class="py-1">Application</th></tr></thead> <tbody id="application-results"></tbody></table></div></div></dialog>`,
 				`<dialog id="add_ocr_dialog" class="modal"><div class="modal-box"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="font-bold text-lg">Scan Recipe</h3><form class="py-4" hx-post="/recipes/add/ocr" hx-encoding="multipart/form-data" hx-indicator="#fullscreen-loader" hx-swap="none" _="on submit add_ocr_dialog.close()"><div class="grid mb-4"><label for="add-ocr-files-input" class="text-sm font-medium mb-1">Select your recipe's images ordered by page or a recipe document in the PDF format.</label> <input id="add-ocr-files-input" type="file" name="files" accept=".jpg, .jpeg, .png, .bmp, .tiff, .heif, .pdf" multiple class="p-2 border border-gray-300 rounded-lg shadow focus:ring-2 focus:ring-purple-600 dark:bg-gray-900 dark:border-none"></div><button class="btn btn-block btn-primary btn-sm">Submit</button></form></div></dialog>`,
@@ -207,7 +207,7 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 		srv.Repository = repo
 		originalNumRecipes := len(repo.RecipesRegistered)
 
-		fields := map[string]string{
+		contentType, body := createMultipartForm(map[string]string{
 			"title":               "Salsa",
 			"images":              "eggs.jpg",
 			"category":            "appetizers",
@@ -229,8 +229,7 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 			"instruction-1":       "ins1",
 			"instruction-2":       "ins2",
 			"yield":               "4",
-		}
-		contentType, body := createMultipartForm(fields)
+		})
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
 
 		assertStatus(t, rr.Code, http.StatusCreated)
@@ -242,6 +241,7 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 		want := models.Recipe{
 			Category:     "appetizers",
 			Description:  "The best",
+			ID:           1,
 			Images:       gotRecipe.Images,
 			Ingredients:  []string{"ing1", "ing2"},
 			Instructions: []string{"ins1", "ins2"},
@@ -521,8 +521,8 @@ func TestHandlers_Recipes_AddOCR(t *testing.T) {
 
 	t.Run("adding processed recipe failed", func(t *testing.T) {
 		srv.Repository = &mockRepository{
-			AddRecipeFunc: func(_ *models.Recipe, _ int64, _ models.UserSettings) (int64, error) {
-				return -1, errors.New("oops")
+			AddRecipesFunc: func(_ models.Recipes, _ int64, _ chan models.Progress) ([]int64, []models.ReportLog, error) {
+				return nil, nil, errors.New("oops")
 			},
 			UsersRegistered:        originalRepo.Users(),
 			UserSettingsRegistered: map[int64]*models.UserSettings{1: {}},
@@ -534,7 +534,7 @@ func TestHandlers_Recipes_AddOCR(t *testing.T) {
 		rr := sendReq("hello.jpg")
 
 		assertStatus(t, rr.Code, http.StatusAccepted)
-		want := `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Recipe could not be added.","title":"Database Error"}}`
+		want := `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Recipes could not be added.","title":"Database Error"}}`
 		assertWebsocket(t, c, 3, want)
 	})
 
@@ -720,8 +720,7 @@ func TestHandlers_Recipes_Delete(t *testing.T) {
 	})
 
 	t.Run("can delete user's recipe", func(t *testing.T) {
-		r := &models.Recipe{ID: 1, Name: "Chicken"}
-		_, _ = srv.Repository.AddRecipe(r, 1, models.UserSettings{})
+		_, _, _ = srv.Repository.AddRecipes(models.Recipes{{ID: 1, Name: "Chicken"}}, 1, nil)
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri+"/1", noHeader, nil)
 
@@ -1139,7 +1138,7 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 	}
 
 	app.Config.Server.URL = "https://www.recipya.com"
-	recipe := &models.Recipe{
+	recipe := models.Recipe{
 		Category:     "American",
 		Description:  "This is the most delicious recipe!",
 		ID:           1,
@@ -1167,7 +1166,7 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 		URL:   "https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/",
 		Yield: 2,
 	}
-	_, _ = srv.Repository.AddRecipe(recipe, 1, models.UserSettings{})
+	_, _, _ = srv.Repository.AddRecipes(models.Recipes{recipe}, 1, nil)
 	link, _ := srv.Repository.AddShareLink(models.Share{RecipeID: 1, CookbookID: -1, UserID: 1})
 
 	t.Run("create valid share link", func(t *testing.T) {
@@ -1363,7 +1362,7 @@ func TestHandlers_Recipes_View(t *testing.T) {
 	for _, tc := range testcases {
 		t.Run("recipe is in user's collection when "+tc.name, func(t *testing.T) {
 			image, _ := uuid.Parse("e81ba735-a4af-4c66-8c17-2f2ccc1b1a95")
-			r := &models.Recipe{
+			r := models.Recipe{
 				Category:     "American",
 				Description:  "This is the most delicious recipe!",
 				ID:           1,
@@ -1391,7 +1390,7 @@ func TestHandlers_Recipes_View(t *testing.T) {
 				URL:   "https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/",
 				Yield: 2,
 			}
-			_, _ = srv.Repository.AddRecipe(r, 1, models.UserSettings{})
+			_, _, _ = srv.Repository.AddRecipes(models.Recipes{r}, 1, nil)
 
 			rr := tc.sendFunc(srv, http.MethodGet, uri+"/1", noHeader, nil)
 

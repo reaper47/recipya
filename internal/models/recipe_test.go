@@ -1044,6 +1044,27 @@ func TestNewRecipesFromRecipeKeeper(t *testing.T) {
 	}
 }
 
+func TestNutrition_Clean(t *testing.T) {
+	got := models.Nutrition{
+		Calories:           "0 calories",
+		Cholesterol:        "0mg",
+		Fiber:              "0 g fibre",
+		Protein:            "0 g protein",
+		SaturatedFat:       "0 g saturated fat",
+		Sodium:             "0 g salt",
+		Sugars:             "0 g sugar",
+		TotalCarbohydrates: "0 g carbohydrate",
+		TotalFat:           "0 g fat",
+		UnsaturatedFat:     "0g",
+	}
+	got.Clean()
+
+	want := models.Nutrition{}
+	if !got.Equal(want) {
+		t.Fatalf("got %+v but want %+v", got, want)
+	}
+}
+
 func TestSort_IsSort(t *testing.T) {
 	t.Run("no sort", func(t *testing.T) {
 		s := models.Sort{}
