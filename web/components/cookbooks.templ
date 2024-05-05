@@ -44,10 +44,10 @@ templ cookbookIndex(data templates.Data) {
             }
 
             document.addEventListener("keydown", (event) => {
-                 if (event.ctrlKey && event.key === "/") {
-                     event.preventDefault();
-                     document.querySelector("#search-recipes").focus();
-                 }
+                if (event.ctrlKey && event.key === "/") {
+                    event.preventDefault();
+                    document.querySelector("#search-recipes").focus();
+                }
              });
 
             loadSortableJS().then(initReorder);
@@ -320,13 +320,13 @@ templ cookbooksIndex(data templates.Data) {
 	<script defer>
         document.addEventListener('click', (event) => {
             const container = document.querySelector('#cookbook_menu_container');
-               if (container) {
-                   if (event.target.classList.contains('three-dots-container') || ["svg", "path"].includes(event.target.tagName)) {
-                       return;
-                   }
-                   container.classList.add("hidden");
-                   htmx.process(container);
-               }
+            if (container) {
+            	if (event.target.classList.contains('three-dots-container') || ["svg", "path"].includes(event.target.tagName)) {
+                    return;
+                }
+                container.classList.add("hidden");
+                htmx.process(container);
+            }
         });
     </script>
 }
