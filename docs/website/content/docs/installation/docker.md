@@ -3,7 +3,8 @@ title: Docker
 weight: 3
 ---
 
-A Docker image named [reaper99/recipya](https://hub.docker.com/layers/reaper99/recipya/nightly/images/sha256-b2238a11a53982953df5bbcfd7796a19fa382abf75d316b62fa05ac1c867332c?context=repo)
+A [stable]([reaper99/recipya](https://hub.docker.com/layers/reaper99/recipya/v1.1.0/images/sha256-fb1457919f132ebf6969f9c155d81bb60b0d6b0b1610bc692259b6b9c287479e?context=repo) Docker
+is produced on every release. An [unstable](https://hub.docker.com/layers/reaper99/recipya/nightly/images/sha256-b2238a11a53982953df5bbcfd7796a19fa382abf75d316b62fa05ac1c867332c?context=repo) one 
 is produced nightly whenever the `main` branch has new commits.
 
 You can either install the application using [Docker](https://www.docker.com/) or

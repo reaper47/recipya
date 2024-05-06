@@ -33,7 +33,7 @@ empty. Leave the `RECIPYA_DI_ENDPOINT` and `RECIPYA_DI_KEY` environment variable
 This feature will then be disabled.
 
 Follow these steps to use this integration.
-1. Get an Azure subscription. You can [create one for free]((https://azure.microsoft.com/free/cognitive-services/).
+1. Get an Azure subscription. You can [create one for free](https://azure.microsoft.com/free/cognitive-services/).
 2. Add a [Document Intelligence instance](https://portal.azure.com/#create/Microsoft.CognitiveServicesFormRecognizer) in the Azure portal. You can use the free pricing tier (F0) to try the service.
 3. After your resource deploys, select *Keys and Endpoint* under *Resource Management* in the sidebar.
    ![alt text](https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/media/containers/keys-and-endpoint.png?view=doc-intel-3.1.0)
