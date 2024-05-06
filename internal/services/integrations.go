@@ -188,6 +188,8 @@ func (i Integrations) TestConnection(api string) error {
 		defer res.Body.Close()
 
 		if res.StatusCode == http.StatusUnauthorized || res.StatusCode == http.StatusNotFound {
+			xb, _ := io.ReadAll(res.Body)
+			slog.Error(errConnFailed.Error(), apiAttr, "res", string(xb))
 			return errConnFailed
 		}
 		return nil

@@ -7,8 +7,8 @@ services:
     environment:
       RECIPYA_EMAIL: "my@email.com"
       RECIPYA_EMAIL_SENDGRID: "API_KEY"
-      RECIPYA_VISION_KEY: "KEY_1"
-      RECIPYA_VISION_ENDPOINT: "https://{resource}.cognitiveservices.azure.com/"
+      RECIPYA_DI_KEY: "KEY_1"
+      RECIPYA_DI_ENDPOINT: "https://{resource}.cognitiveservices.azure.com/"
       RECIPYA_SERVER_AUTOLOGIN: false
       RECIPYA_SERVER_IS_DEMO: false
       RECIPYA_SERVER_IS_PROD: false

@@ -202,18 +202,21 @@ type AzureDI struct {
 
 // PrepareRequest prepares the HTTP request to analyze a document.
 func (a AzureDI) PrepareRequest(file io.Reader) (*http.Request, error) {
-	all, err := io.ReadAll(file)
-	if err != nil {
-		return nil, err
-	}
+	var xb []byte
+	if file != nil {
+		all, err := io.ReadAll(file)
+		if err != nil {
+			return nil, err
+		}
 
-	body := map[string]string{
-		"base64Source": base64.StdEncoding.EncodeToString(all),
-	}
+		body := map[string]string{
+			"base64Source": base64.StdEncoding.EncodeToString(all),
+		}
 
-	xb, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
+		xb, err = json.Marshal(body)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	req, err := http.NewRequest(http.MethodPost, a.Endpoint+"/documentintelligence/documentModels/prebuilt-layout:analyze", bytes.NewBuffer(xb))

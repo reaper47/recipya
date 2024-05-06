@@ -476,6 +476,8 @@ templ toast() {
             _hyperscript.processNode(toast);
             toast_container.append(toast);
         }
+
+        htmx.on('showToast', receiveToastMessage)
     </script>
 }
 
