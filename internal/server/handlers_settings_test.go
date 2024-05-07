@@ -8,7 +8,6 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services"
 	"github.com/reaper47/recipya/internal/units"
-	"maps"
 	"net/http"
 	"os"
 	"slices"
@@ -18,12 +17,52 @@ import (
 )
 
 func TestHandlers_Settings(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer c.Close()
 
-	uri := "/settings"
+	var (
+		uri                = ts.URL + "/settings"
+		originalRepo       = srv.Repository
+		measurementErrFunc = func(_ int64) ([]units.System, models.UserSettings, error) {
+			return nil, models.UserSettings{}, errors.New("kerch bridge on fire... Your defence is terrified")
+		}
+	)
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
+	})
+
+	t.Run("error fetch measurement systems with htmx", func(t *testing.T) {
+		app.Config.Server.IsAutologin = true
+		srv.Repository = &mockRepository{
+			MeasurementSystemsFunc: measurementErrFunc,
+		}
+		defer func() {
+			app.Config.Server.IsAutologin = false
+			srv.Repository = originalRepo
+		}()
+
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
+
+		assertStatus(t, rr.Code, http.StatusInternalServerError)
+		want := `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Error fetching unit systems: kerch bridge on fire... Your defence is terrified","title":"Database Error"}}`
+		assertWebsocket(t, c, 1, want)
+	})
+
+	t.Run("error fetch measurement systems without htmx", func(t *testing.T) {
+		app.Config.Server.IsAutologin = true
+		srv.Repository = &mockRepository{
+			MeasurementSystemsFunc: measurementErrFunc,
+		}
+		defer func() {
+			app.Config.Server.IsAutologin = false
+			srv.Repository = originalRepo
+		}()
+
+		rr := sendRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
+
+		assertStatus(t, rr.Code, http.StatusInternalServerError)
+		assertStringsInHTML(t, getBodyHTML(rr), []string{"Error fetching unit systems: kerch bridge on fire... Your defence is terrified"})
 	})
 
 	t.Run("profile tab not displayed when autologin", func(t *testing.T) {
@@ -177,23 +216,37 @@ func TestHandlers_Settings_BackupsRestore(t *testing.T) {
 }
 
 func TestHandlers_Settings_CalculateNutrition(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer c.Close()
+
 	srv.Repository = &mockRepository{
 		UserSettingsRegistered: map[int64]*models.UserSettings{
-			1: {CalculateNutritionFact: false}},
+			1: {CalculateNutritionFact: false},
+		},
 	}
 
-	uri := "/settings/calculate-nutrition"
+	uri := ts.URL + "/settings/calculate-nutrition"
+	originalRepo := srv.Repository
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
 	})
 
 	t.Run("error updating the setting", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedInOther(srv, http.MethodPost, uri, formHeader, strings.NewReader("calculate-nutrition=off"))
+		srv.Repository = &mockRepository{
+			updateCalculateNutritionFunc: func(userID int64, isEnabled bool) error {
+				return errors.New("whoops")
+			},
+		}
+		defer func() {
+			srv.Repository = originalRepo
+		}()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("calculate-nutrition=off"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to set setting.\",\"title\":\"Database Error\"}"}`)
+		want := `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Failed to set setting.","title":"Database Error"}}`
+		assertWebsocket(t, c, 1, want)
 	})
 
 	t.Run("unchecked does not convert new recipes", func(t *testing.T) {
@@ -535,7 +588,7 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 	})
 
 	t.Run("lost socket connection", func(t *testing.T) {
-		brokers := maps.Clone(srv.Brokers)
+		brokers := srv.Brokers.Clone()
 		srv.Brokers = nil
 		defer func() {
 			srv.Brokers = brokers

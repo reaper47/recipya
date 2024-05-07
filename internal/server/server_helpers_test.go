@@ -98,6 +98,10 @@ func sendRequest(srv *server.Server, method, target string, contentType header, 
 	return rr
 }
 
+func sendRequestAsLoggedInNoBody(srv *server.Server, method, target string) *httptest.ResponseRecorder {
+	return sendRequestAsLoggedIn(srv, method, target, noHeader, nil)
+}
+
 func sendRequestAsLoggedIn(srv *server.Server, method, target string, contentType header, body *strings.Reader) *httptest.ResponseRecorder {
 	rr := httptest.NewRecorder()
 	srv.Router.ServeHTTP(rr, prepareRequest(method, target, contentType, body))
@@ -108,6 +112,10 @@ func sendRequestAsLoggedInOther(srv *server.Server, method, target string, conte
 	rr := httptest.NewRecorder()
 	srv.Router.ServeHTTP(rr, prepareRequestOther(method, target, contentType, body))
 	return rr
+}
+
+func sendHxRequestAsLoggedInNoBody(srv *server.Server, method, target string) *httptest.ResponseRecorder {
+	return sendHxRequestAsLoggedIn(srv, method, target, noHeader, nil)
 }
 
 func sendHxRequestAsLoggedIn(srv *server.Server, method, target string, contentType header, body *strings.Reader) *httptest.ResponseRecorder {

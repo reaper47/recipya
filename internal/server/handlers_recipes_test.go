@@ -11,7 +11,6 @@ import (
 	"github.com/reaper47/recipya/internal/server"
 	"github.com/reaper47/recipya/internal/services"
 	"io"
-	"maps"
 	"net/http"
 	"net/http/httptest"
 	"slices"
@@ -110,7 +109,7 @@ func TestHandlers_Recipes_AddImport(t *testing.T) {
 	srv, ts, c := createWSServer()
 	defer c.Close()
 
-	originalBrokers := maps.Clone(srv.Brokers)
+	originalBrokers := srv.Brokers.Clone()
 
 	uri := ts.URL + "/recipes/add/import"
 
@@ -119,7 +118,7 @@ func TestHandlers_Recipes_AddImport(t *testing.T) {
 	})
 
 	t.Run("no ws connection", func(t *testing.T) {
-		srv.Brokers = map[int64]*models.Broker{}
+		srv.Brokers = models.NewBroker()
 		defer func() {
 			srv.Brokers = originalBrokers
 		}()
@@ -563,7 +562,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 	srv, ts, c := createWSServer()
 	defer c.Close()
 
-	originalBrokers := maps.Clone(srv.Brokers)
+	originalBrokers := srv.Brokers.Clone()
 	originalRepo := srv.Repository
 	originalScraper := srv.Scraper
 	originalFiles := srv.Files
@@ -585,7 +584,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 	})
 
 	t.Run("no ws connection", func(t *testing.T) {
-		srv.Brokers = map[int64]*models.Broker{}
+		srv.Brokers = models.NewBroker()
 		defer func() {
 			srv.Brokers = originalBrokers
 		}()

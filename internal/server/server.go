@@ -39,7 +39,7 @@ func NewServer(repo services.RepositoryService) *Server {
 	}
 
 	srv := &Server{
-		Brokers:      make(map[int64]*models.Broker),
+		Brokers:      models.NewBroker(),
 		Email:        services.NewEmailService(),
 		Files:        services.NewFilesService(),
 		Integrations: services.NewIntegrationsService(&http.Client{}),
@@ -64,7 +64,7 @@ func NewServer(repo services.RepositoryService) *Server {
 
 // Server is the web application's configuration object.
 type Server struct {
-	Brokers      map[int64]*models.Broker
+	Brokers      *models.Broker
 	Email        services.EmailService
 	Files        services.FilesService
 	Integrations services.IntegrationsService
