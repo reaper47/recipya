@@ -2,20 +2,22 @@ package models
 
 import (
 	"bytes"
+	"context"
 	"encoding/base64"
 	"fmt"
-	"github.com/gorilla/websocket"
 	"log/slog"
+	"maps"
+	"nhooyr.io/websocket"
+	"nhooyr.io/websocket/wsjson"
+	"slices"
 	"sync"
 	"time"
 )
 
-// Broker represents a client connection and its associated information.
+// Broker...
 type Broker struct {
-	brokers map[int64]*Broker
-	conn    *websocket.Conn
-	mu      sync.Mutex
-	userID  int64
+	subscribers map[int64][]*websocket.Conn
+	mu          sync.Mutex
 }
 
 // Progress represents a current value and the total number of values.
@@ -33,64 +35,150 @@ type Message struct {
 	Toast    Toast  `json:"toast"`    // Toast to display to the user.
 }
 
-// NewBroker creates a new Broker instance for a specific user and adds it to the brokers map.
-// The userID is used for identification and cleanup purposes.
-func NewBroker(userID int64, brokers map[int64]*Broker, conn *websocket.Conn) *Broker {
+// NewBroker creates a subscribes a new Broker for a specific user.
+func NewBroker() *Broker {
 	b := &Broker{
-		brokers: brokers,
-		conn:    conn,
-		userID:  userID,
+		subscribers: make(map[int64][]*websocket.Conn),
+		mu:          sync.Mutex{},
 	}
-	go b.ping()
+	b.Monitor()
 	return b
 }
 
-// Close closes the broker's websocket connection.
-func (b *Broker) Close() {
-	b.conn.Close()
+// Add adds a connection to the subscriber.
+func (b *Broker) Add(userID int64, c *websocket.Conn) {
+	b.mu.Lock()
+	b.subscribers[userID] = append(b.subscribers[userID], c)
+	b.mu.Unlock()
+
+	go func(id int64, conn *websocket.Conn) {
+		for {
+			_, _, err := conn.Read(context.Background())
+			if err != nil {
+				return
+			}
+		}
+	}(userID, c)
+}
+
+// Clone...
+func (b *Broker) Clone() *Broker {
+	return &Broker{
+		subscribers: maps.Clone(b.subscribers),
+		mu:          sync.Mutex{},
+	}
+}
+
+// Has...
+func (b *Broker) Has(userID int64) bool {
+	_, ok := b.subscribers[userID]
+	return ok
 }
 
 // HideNotification hides the websocket's frontend notification.
-func (b *Broker) HideNotification() {
-	b.SendProgressStatus("", false, -1, -1)
+func (b *Broker) HideNotification(userID int64) {
+	b.SendProgressStatus("", false, -1, -1, userID)
+}
+
+// Monitor monitors the websocket connections to clean those closed.
+func (b *Broker) Monitor() {
+	go func() {
+		ticker := time.NewTicker(1 * time.Minute)
+
+		defer func() {
+			ticker.Stop()
+			err := recover()
+			if err != nil {
+				slog.Error("Websocket ping pong panic", "error", err)
+			}
+		}()
+
+		for range ticker.C {
+			for userID, connections := range b.subscribers {
+				connectionsCopy := make([]*websocket.Conn, len(connections))
+				copy(connectionsCopy, connections)
+
+				for i, c := range connectionsCopy {
+					ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+
+					err := c.Ping(ctx)
+					if err != nil {
+						b.mu.Lock()
+						b.subscribers[userID] = slices.Delete(b.subscribers[userID], i, i+1)
+						b.mu.Unlock()
+					}
+
+					cancel()
+				}
+			}
+		}
+	}()
+}
+
+// SendToast sends a toast notification to the user.
+func (b *Broker) SendToast(toast Toast, userID int64) {
+	userIDAttr := slog.Int64("userID", userID)
+	toastAttr := slog.Any("toast", toast)
+
+	xc, ok := b.subscribers[userID]
+	if !ok || len(xc) == 0 {
+		slog.Warn("User does not have any websocket connections", userIDAttr, toastAttr)
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	for i, c := range xc {
+		err := wsjson.Write(ctx, c, Message{Type: "toast", Toast: toast})
+		if err != nil {
+			slog.Error("Failed to send toast", userIDAttr, toastAttr, "i", i, "error", err)
+		}
+	}
 }
 
 // SendFile sends a file to the connected client.
-func (b *Broker) SendFile(fileName string, data *bytes.Buffer) {
+func (b *Broker) SendFile(fileName string, data *bytes.Buffer, userID int64) {
 	fileNameAttr := slog.String("fileName", fileName)
+	userIDAttr := slog.Int64("userID", userID)
 
-	if b == nil {
-		slog.Error("Websocket connection is nil", fileNameAttr)
+	xc, ok := b.subscribers[userID]
+	if !ok || len(xc) == 0 {
+		slog.Warn("User does not have any websocket connections", userIDAttr, fileNameAttr)
 		return
 	}
 
 	if data == nil {
-		slog.Error("Data is nil", fileNameAttr)
+		slog.Error("Data is nil", userIDAttr, fileNameAttr)
 		return
 	}
 
-	b.mu.Lock()
-	defer b.mu.Unlock()
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
 
-	err := b.conn.WriteJSON(Message{
-		Type:     "file",
-		FileName: fileName,
-		Data:     base64.StdEncoding.EncodeToString(data.Bytes()),
-	})
-	if err != nil {
-		slog.Error("Failed to send file", fileNameAttr, "error", err)
+	for i, c := range xc {
+		err := wsjson.Write(ctx, c, Message{
+			Type:     "file",
+			FileName: fileName,
+			Data:     base64.StdEncoding.EncodeToString(data.Bytes()),
+		})
+		if err != nil {
+			slog.Error("Failed to send file through websocket", userIDAttr, fileNameAttr, "i", i, "file", fileName, "error", err)
+		}
 	}
 }
 
 // SendProgress sends a progress update with a title and value to the client.
 // The isToastVisible parameter controls whether the progress bar is displayed in a toast notification.
-func (b *Broker) SendProgress(title string, value, numValues int) {
+func (b *Broker) SendProgress(title string, value, numValues int, userID int64) {
+	userIDAttr := slog.Int64("userID", userID)
 	titleAttr := slog.String("title", title)
 	valueAttr := slog.Int("value", value)
 	numValuesAttr := slog.Int("numValues", numValues)
 
-	if b == nil {
-		slog.Error("Websocket connection is nil", titleAttr, valueAttr, numValuesAttr)
+	xc, ok := b.subscribers[userID]
+	if !ok || len(xc) == 0 {
+		slog.Warn("User does not have any websocket connections", userIDAttr, titleAttr, valueAttr, numValuesAttr)
 		return
 	}
 
@@ -102,23 +190,27 @@ func (b *Broker) SendProgress(title string, value, numValues int) {
 			</div>
 		</div>`, title, float64(value)/float64(numValues)*100)
 
-	b.mu.Lock()
-	defer b.mu.Unlock()
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
 
-	err := b.conn.WriteMessage(websocket.TextMessage, []byte(content))
-	if err != nil {
-		slog.Error("Broker.SendProgress failed", titleAttr, valueAttr, numValuesAttr, "error", err)
+	for i, c := range xc {
+		err := c.Write(ctx, websocket.MessageText, []byte(content))
+		if err != nil {
+			slog.Error("Failed to send progress through websocket", titleAttr, valueAttr, numValuesAttr, "content", content, "i", i, "error", err)
+		}
 	}
 }
 
 // SendProgressStatus sends a progress update with a title and value, optionally hiding the toast notification.
-func (b *Broker) SendProgressStatus(title string, isToastVisible bool, value, numValues int) {
+func (b *Broker) SendProgressStatus(title string, isToastVisible bool, value, numValues int, userID int64) {
+	userIDAttr := slog.Int64("userID", userID)
 	titleAttr := slog.String("title", title)
 	valueAttr := slog.Int("value", value)
 	numValuesAttr := slog.Int("numValues", numValues)
 
-	if b == nil {
-		slog.Error("Websocket connection is nil", titleAttr, valueAttr, numValuesAttr)
+	xc, ok := b.subscribers[userID]
+	if !ok || len(xc) == 0 {
+		slog.Warn("User does not have any websocket connections", userIDAttr, titleAttr, valueAttr, numValuesAttr)
 		return
 	}
 
@@ -136,78 +228,13 @@ func (b *Broker) SendProgressStatus(title string, isToastVisible bool, value, nu
 		content = fmt.Sprintf(content, "hidden", title, float64(value)/float64(numValues)*100)
 	}
 
-	b.mu.Lock()
-	defer b.mu.Unlock()
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
 
-	err := b.conn.WriteMessage(websocket.TextMessage, []byte(content))
-	if err != nil {
-		slog.Error("Broker.SendProgressStatus failed", titleAttr, valueAttr, numValuesAttr, "content", content, "error", err)
-	}
-}
-
-func (b *Broker) ping() {
-	defer func() {
-		if b != nil && b.conn != nil {
-			delete(b.brokers, b.userID)
-			_ = b.conn.Close()
-		}
-	}()
-
-	b.setPingPongHandlers()
-
-	for {
-		_, _, err := b.conn.ReadMessage()
+	for i, c := range xc {
+		err := c.Write(ctx, websocket.MessageText, []byte(content))
 		if err != nil {
-			return
+			slog.Error("Failed to send progress status through websocket", userIDAttr, titleAttr, valueAttr, numValuesAttr, "i", i, "content", content, "error", err)
 		}
-	}
-}
-
-func (b *Broker) setPingPongHandlers() {
-	if b == nil || b.conn == nil {
-		slog.Error("Broker or broker connection is nil")
-		return
-	}
-
-	b.conn.SetPingHandler(func(_ string) error {
-		return b.conn.SetReadDeadline(time.Now().Add(1 * time.Minute))
-	})
-
-	go func() {
-		ticker := time.NewTicker(30 * time.Second)
-		defer func() {
-			ticker.Stop()
-			err := recover()
-			if err != nil {
-				slog.Error("Websocket ping pong panic", "error", err)
-			}
-		}()
-
-		for range ticker.C {
-			b.mu.Lock()
-			err := b.conn.WriteMessage(websocket.PingMessage, []byte{})
-			b.mu.Unlock()
-			if err != nil {
-				return
-			}
-		}
-	}()
-}
-
-// SendToast sends a toast notification to the user.
-func (b *Broker) SendToast(toast Toast) {
-	toastAttr := slog.Any("toast", toast)
-
-	if b == nil {
-		slog.Error("Websocket connection is nil", toastAttr)
-		return
-	}
-
-	b.mu.Lock()
-	defer b.mu.Unlock()
-
-	err := b.conn.WriteJSON(Message{Type: "toast", Toast: toast})
-	if err != nil {
-		slog.Error("Broker.SendToast failed", toastAttr, "error", err)
 	}
 }

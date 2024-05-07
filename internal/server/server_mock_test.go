@@ -50,23 +50,24 @@ func newServerTest() *server.Server {
 }
 
 type mockRepository struct {
-	AuthTokens                  []models.AuthToken
-	AddRecipesFunc              func(recipes models.Recipes, userID int64, progress chan models.Progress) ([]int64, []models.ReportLog, error)
-	CookbooksFunc               func(userID int64) ([]models.Cookbook, error)
-	CookbooksRegistered         map[int64][]models.Cookbook
-	DeleteCookbookFunc          func(id, userID int64) error
-	MeasurementSystemsFunc      func(userID int64) ([]units.System, models.UserSettings, error)
-	RecipeFunc                  func(id, userID int64) (*models.Recipe, error)
-	RecipesRegistered           map[int64]models.Recipes
-	Reports                     map[int64][]models.Report
-	ReportsFunc                 func(userID int64) ([]models.Report, error)
-	restoreUserBackupFunc       func(backup *models.UserBackup) error
-	ShareLinks                  map[string]models.Share
-	SwitchMeasurementSystemFunc func(system units.System, userID int64) error
-	UpdateCookbookImageFunc     func(id int64, image uuid.UUID, userID int64) error
-	UserSettingsRegistered      map[int64]*models.UserSettings
-	UsersRegistered             []models.User
-	UsersUpdated                []int64
+	AuthTokens                   []models.AuthToken
+	AddRecipesFunc               func(recipes models.Recipes, userID int64, progress chan models.Progress) ([]int64, []models.ReportLog, error)
+	CookbooksFunc                func(userID int64) ([]models.Cookbook, error)
+	CookbooksRegistered          map[int64][]models.Cookbook
+	DeleteCookbookFunc           func(id, userID int64) error
+	MeasurementSystemsFunc       func(userID int64) ([]units.System, models.UserSettings, error)
+	RecipeFunc                   func(id, userID int64) (*models.Recipe, error)
+	RecipesRegistered            map[int64]models.Recipes
+	Reports                      map[int64][]models.Report
+	ReportsFunc                  func(userID int64) ([]models.Report, error)
+	restoreUserBackupFunc        func(backup *models.UserBackup) error
+	ShareLinks                   map[string]models.Share
+	SwitchMeasurementSystemFunc  func(system units.System, userID int64) error
+	UpdateCookbookImageFunc      func(id int64, image uuid.UUID, userID int64) error
+	updateCalculateNutritionFunc func(userID int64, isEnabled bool) error
+	UserSettingsRegistered       map[int64]*models.UserSettings
+	UsersRegistered              []models.User
+	UsersUpdated                 []int64
 }
 
 func (m *mockRepository) AddRecipes(xr models.Recipes, userID int64, progress chan models.Progress) ([]int64, []models.ReportLog, error) {
@@ -564,6 +565,10 @@ func (m *mockRepository) SwitchMeasurementSystem(system units.System, userID int
 }
 
 func (m *mockRepository) UpdateCalculateNutrition(userID int64, isEnabled bool) error {
+	if m.updateCalculateNutritionFunc != nil {
+		return m.updateCalculateNutritionFunc(userID, isEnabled)
+	}
+
 	settings, ok := m.UserSettingsRegistered[userID]
 	if !ok {
 		return errors.New("user not found")

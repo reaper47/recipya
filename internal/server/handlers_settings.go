@@ -18,12 +18,22 @@ import (
 
 func (s *Server) settingsHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var data templates.SettingsData
+		var (
+			data        templates.SettingsData
+			isHxRequest = r.Header.Get("Hx-Request") == "true"
+			userID      = getUserID(r)
+		)
+
 		if app.Config.Server.IsAutologin {
-			systems, settings, err := s.Repository.MeasurementSystems(getUserID(r))
+			systems, settings, err := s.Repository.MeasurementSystems(userID)
 			if err != nil {
-				w.Header().Set("HX-Trigger", models.NewErrorDBToast("Error fetching units systems.").Render())
+				msg := "Error fetching unit systems: " + err.Error()
 				w.WriteHeader(http.StatusInternalServerError)
+				if isHxRequest {
+					s.Brokers.SendToast(models.NewErrorDBToast(msg), userID)
+				} else {
+					w.Write([]byte(msg))
+				}
 				return
 			}
 			data.UserSettings = settings
@@ -32,10 +42,10 @@ func (s *Server) settingsHandler() http.HandlerFunc {
 
 		_ = components.Settings(templates.Data{
 			About:           templates.NewAboutData(),
-			IsAdmin:         getUserID(r) == 1,
+			IsAdmin:         userID == 1,
 			IsAutologin:     app.Config.Server.IsAutologin,
 			IsAuthenticated: true,
-			IsHxRequest:     r.Header.Get("Hx-Request") == "true",
+			IsHxRequest:     isHxRequest,
 			Settings:        data,
 		}).Render(r.Context(), w)
 	}
@@ -48,7 +58,7 @@ func (s *Server) settingsCalculateNutritionPostHandler() http.HandlerFunc {
 		if err != nil {
 			msg := "Failed to set setting."
 			slog.Error(msg, "userID", getUserID(r), "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast(msg).Render())
+			s.Brokers.SendToast(models.NewErrorDBToast(msg), getUserID(r))
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -106,8 +116,8 @@ func (s *Server) settingsConvertAutomaticallyPostHandler() http.HandlerFunc {
 func (s *Server) settingsExportRecipesHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		userID := getUserID(r)
-		_, found := s.Brokers[userID]
-		if !found {
+
+		if !s.Brokers.Has(userID) {
 			w.Header().Set("HX-Trigger", models.NewWarningWSToast("Connection lost. Please reload page.").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
@@ -129,12 +139,12 @@ func (s *Server) settingsExportRecipesHandler() http.HandlerFunc {
 		}
 
 		go func() {
-			s.Brokers[userID].SendProgressStatus("Preparing...", true, 0, -1)
+			s.Brokers.SendProgressStatus("Preparing...", true, 0, -1, userID)
 
 			recipes := s.Repository.RecipesAll(userID)
 			if len(recipes) == 0 {
-				s.Brokers[userID].HideNotification()
-				s.Brokers[userID].SendToast(models.NewWarningToast("No recipes in database.", "", ""))
+				s.Brokers.HideNotification(userID)
+				s.Brokers.SendToast(models.NewWarningToast("No recipes in database.", "", ""), userID)
 				return
 			}
 
@@ -158,17 +168,17 @@ func (s *Server) settingsExportRecipesHandler() http.HandlerFunc {
 			select {
 			case err := <-errors:
 				fmt.Println(err)
-				s.Brokers[userID].HideNotification()
-				s.Brokers[userID].SendToast(models.NewErrorFilesToast("Failed to export recipes."))
+				s.Brokers.HideNotification(userID)
+				s.Brokers.SendToast(models.NewErrorFilesToast("Failed to export recipes."), userID)
 				return
 			case <-iter:
 				for value := range iter {
-					s.Brokers[userID].SendProgress("Exporting recipes...", value, numRecipes)
+					s.Brokers.SendProgress("Exporting recipes...", value, numRecipes, userID)
 				}
 			}
 
-			s.Brokers[userID].HideNotification()
-			s.Brokers[userID].SendFile("recipes_"+qType+".zip", data)
+			s.Brokers.HideNotification(userID)
+			s.Brokers.SendFile("recipes_"+qType+".zip", data, userID)
 			if err != nil {
 				fmt.Println(err)
 				return

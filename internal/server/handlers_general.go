@@ -2,7 +2,6 @@ package server
 
 import (
 	"errors"
-	"github.com/gorilla/websocket"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/web/components"
@@ -10,6 +9,7 @@ import (
 	"log/slog"
 	"net/http"
 	"net/url"
+	"nhooyr.io/websocket"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -19,14 +19,6 @@ import (
 	"syscall"
 	"time"
 )
-
-var upgrader = websocket.Upgrader{
-	CheckOrigin: func(_ *http.Request) bool {
-		return true
-	},
-	ReadBufferSize:  1024,
-	WriteBufferSize: 1024,
-}
 
 func (s *Server) downloadHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -157,17 +149,12 @@ func (s *Server) updateHandler() http.HandlerFunc {
 
 func (s *Server) wsHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		ws, err := upgrader.Upgrade(w, r, nil)
+		c, err := websocket.Accept(w, r, nil)
 		if err != nil {
 			w.Header().Set("HX-Trigger", models.NewWarningToast("", "Could not upgrade connection.", "").Render())
 			return
 		}
 
-		userID := getUserID(r)
-		if s.Brokers[userID] != nil {
-			s.Brokers[userID].Close()
-		}
-		broker := models.NewBroker(userID, s.Brokers, ws)
-		s.Brokers[userID] = broker
+		s.Brokers.Add(getUserID(r), c)
 	}
 }

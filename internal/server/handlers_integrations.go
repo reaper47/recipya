@@ -14,8 +14,7 @@ func (s *Server) integrationsImport() http.HandlerFunc {
 		userID := getUserID(r)
 		userIDAttr := slog.Int64("userID", userID)
 
-		_, found := s.Brokers[userID]
-		if !found {
+		if !s.Brokers.Has(userID) {
 			w.Header().Set("HX-Trigger", models.NewWarningWSToast("Connection lost. Please reload page.").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
@@ -30,7 +29,7 @@ func (s *Server) integrationsImport() http.HandlerFunc {
 		)
 
 		go func(id int64) {
-			s.Brokers[id].SendProgressStatus("Contacting server...", true, 0, -1)
+			s.Brokers.SendProgressStatus("Contacting server...", true, 0, -1, id)
 
 			var (
 				recipes   models.Recipes
@@ -68,13 +67,13 @@ func (s *Server) integrationsImport() http.HandlerFunc {
 				}
 
 				slog.Error(msg, userIDAttr, "processed", processed, "error", err)
-				s.Brokers[id].HideNotification()
-				s.Brokers[id].SendToast(models.NewErrorGeneralToast(msg))
+				s.Brokers.HideNotification(id)
+				s.Brokers.SendToast(models.NewErrorGeneralToast(msg), id)
 				return
 			case <-progress:
 				for p := range progress {
 					processed++
-					s.Brokers[id].SendProgress("Fetching recipes...", processed, p.Total*2)
+					s.Brokers.SendProgress("Fetching recipes...", processed, p.Total*2, id)
 					close(progress)
 				}
 			}
@@ -98,7 +97,7 @@ func (s *Server) integrationsImport() http.HandlerFunc {
 			}()
 
 			for p := range progress2 {
-				s.Brokers[id].SendProgress("Adding to collection...", p.Value+p.Total, p.Total*2)
+				s.Brokers.SendProgress("Adding to collection...", p.Value+p.Total, p.Total*2, id)
 			}
 
 			var (
@@ -107,8 +106,8 @@ func (s *Server) integrationsImport() http.HandlerFunc {
 			)
 
 			slog.Info("Imported recipes", "integration", integration, userIDAttr, "count", count, "skipped", skipped)
-			s.Brokers[id].HideNotification()
-			s.Brokers[id].SendToast(models.NewInfoToast(fmt.Sprintf("Imported %d recipes. Skipped %d.", count, skipped), "", ""))
+			s.Brokers.HideNotification(id)
+			s.Brokers.SendToast(models.NewInfoToast(fmt.Sprintf("Imported %d recipes. Skipped %d.", count, skipped), "", ""), id)
 		}(userID)
 
 		w.WriteHeader(http.StatusAccepted)
@@ -135,10 +134,10 @@ func (s *Server) integrationTestConnectionHandler() http.HandlerFunc {
 		}
 
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorGeneralToast("Connection failed. Please verify credentials.").Render())
+			s.Brokers.SendToast(models.NewErrorGeneralToast("Connection failed. Please verify credentials."), getUserID(r))
 			w.WriteHeader(http.StatusUnauthorized)
 		} else {
-			w.Header().Set("HX-Trigger", models.NewInfoToast("Connection successful", msg+" "+"server connection verified.", "").Render())
+			s.Brokers.SendToast(models.NewInfoToast("Connection successful", msg+" "+"server connection verified.", ""), getUserID(r))
 		}
 	}
 }
