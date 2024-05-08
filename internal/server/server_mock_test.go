@@ -50,24 +50,26 @@ func newServerTest() *server.Server {
 }
 
 type mockRepository struct {
-	AuthTokens                   []models.AuthToken
-	AddRecipesFunc               func(recipes models.Recipes, userID int64, progress chan models.Progress) ([]int64, []models.ReportLog, error)
-	CookbooksFunc                func(userID int64) ([]models.Cookbook, error)
-	CookbooksRegistered          map[int64][]models.Cookbook
-	DeleteCookbookFunc           func(id, userID int64) error
-	MeasurementSystemsFunc       func(userID int64) ([]units.System, models.UserSettings, error)
-	RecipeFunc                   func(id, userID int64) (*models.Recipe, error)
-	RecipesRegistered            map[int64]models.Recipes
-	Reports                      map[int64][]models.Report
-	ReportsFunc                  func(userID int64) ([]models.Report, error)
-	restoreUserBackupFunc        func(backup *models.UserBackup) error
-	ShareLinks                   map[string]models.Share
-	SwitchMeasurementSystemFunc  func(system units.System, userID int64) error
-	UpdateCookbookImageFunc      func(id int64, image uuid.UUID, userID int64) error
-	updateCalculateNutritionFunc func(userID int64, isEnabled bool) error
-	UserSettingsRegistered       map[int64]*models.UserSettings
-	UsersRegistered              []models.User
-	UsersUpdated                 []int64
+	AuthTokens                         []models.AuthToken
+	AddRecipesFunc                     func(recipes models.Recipes, userID int64, progress chan models.Progress) ([]int64, []models.ReportLog, error)
+	CookbooksFunc                      func(userID int64) ([]models.Cookbook, error)
+	CookbooksRegistered                map[int64][]models.Cookbook
+	DeleteCookbookFunc                 func(id, userID int64) error
+	isUserPasswordFunc                 func(userID int64, password string) bool
+	MeasurementSystemsFunc             func(userID int64) ([]units.System, models.UserSettings, error)
+	RecipeFunc                         func(id, userID int64) (*models.Recipe, error)
+	RecipesRegistered                  map[int64]models.Recipes
+	Reports                            map[int64][]models.Report
+	ReportsFunc                        func(userID int64) ([]models.Report, error)
+	restoreUserBackupFunc              func(backup *models.UserBackup) error
+	ShareLinks                         map[string]models.Share
+	SwitchMeasurementSystemFunc        func(system units.System, userID int64) error
+	UpdateCookbookImageFunc            func(id int64, image uuid.UUID, userID int64) error
+	updateConvertMeasurementSystemFunc func(userID int64, isEnabled bool) error
+	updateCalculateNutritionFunc       func(userID int64, isEnabled bool) error
+	UserSettingsRegistered             map[int64]*models.UserSettings
+	UsersRegistered                    []models.User
+	UsersUpdated                       []int64
 }
 
 func (m *mockRepository) AddRecipes(xr models.Recipes, userID int64, progress chan models.Progress) ([]int64, []models.ReportLog, error) {
@@ -123,6 +125,10 @@ func (m *mockRepository) AddShareLink(share models.Share) (string, error) {
 					if s.RecipeID == share.RecipeID && s.UserID == share.UserID {
 						return link, nil
 					}
+				}
+
+				if m.ShareLinks == nil {
+					m.ShareLinks = make(map[string]models.Share)
 				}
 
 				link := "/r/33320755-82f9-47e5-bb0a-d1b55cbd3f7b"
@@ -402,7 +408,10 @@ func (m *mockRepository) IsUserExist(email string) bool {
 	})
 }
 
-func (m *mockRepository) IsUserPassword(id int64, _ string) bool {
+func (m *mockRepository) IsUserPassword(id int64, password string) bool {
+	if m.isUserPasswordFunc != nil {
+		return m.isUserPasswordFunc(id, password)
+	}
 	return slices.IndexFunc(m.UsersRegistered, func(user models.User) bool { return user.ID == id }) != -1
 }
 
@@ -583,6 +592,10 @@ func (m *mockRepository) UpdateCalculateNutrition(userID int64, isEnabled bool) 
 }
 
 func (m *mockRepository) UpdateConvertMeasurementSystem(userID int64, isEnabled bool) error {
+	if m.updateConvertMeasurementSystemFunc != nil {
+		return m.updateConvertMeasurementSystemFunc(userID, isEnabled)
+	}
+
 	settings, ok := m.UserSettingsRegistered[userID]
 	if !ok {
 		return errors.New("user not found")

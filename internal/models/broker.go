@@ -71,6 +71,10 @@ func (b *Broker) Clone() *Broker {
 
 // Has...
 func (b *Broker) Has(userID int64) bool {
+	if b == nil {
+		return false
+	}
+
 	_, ok := b.subscribers[userID]
 	return ok
 }
@@ -98,13 +102,15 @@ func (b *Broker) Monitor() {
 				connectionsCopy := make([]*websocket.Conn, len(connections))
 				copy(connectionsCopy, connections)
 
-				for i, c := range connectionsCopy {
+				for _, c := range connectionsCopy {
 					ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 
 					err := c.Ping(ctx)
 					if err != nil {
 						b.mu.Lock()
-						b.subscribers[userID] = slices.Delete(b.subscribers[userID], i, i+1)
+						b.subscribers[userID] = slices.DeleteFunc(b.subscribers[userID], func(conn *websocket.Conn) bool {
+							return conn == c
+						})
 						b.mu.Unlock()
 					}
 

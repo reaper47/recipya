@@ -71,7 +71,7 @@ func TestHandlers_Settings(t *testing.T) {
 			app.Config.Server.IsAutologin = false
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
@@ -102,7 +102,7 @@ func TestHandlers_Settings(t *testing.T) {
 	})
 
 	t.Run("display settings", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
@@ -129,11 +129,13 @@ func TestHandlers_Settings(t *testing.T) {
 }
 
 func TestHandlers_Settings_BackupsRestore(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer c.Close()
+
 	originalFiles := srv.Files
 	originalRepo := srv.Repository
 
-	uri := "/settings/backups/restore"
+	uri := ts.URL + "/settings/backups/restore"
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
@@ -154,8 +156,8 @@ func TestHandlers_Settings_BackupsRestore(t *testing.T) {
 
 			assertStatus(t, rr.Code, http.StatusBadRequest)
 			_, after, _ := strings.Cut(tc.in, "=")
-			message := fmt.Sprintf(`{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"%s is an invalid backup.\",\"title\":\"Form Error\"}"}`, after)
-			assertHeader(t, rr, "HX-Trigger", message)
+			message := fmt.Sprintf(`{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"%s is an invalid backup.","title":"Form Error"}}`, after)
+			assertWebsocket(t, c, 1, message)
 		})
 	}
 
@@ -172,7 +174,7 @@ func TestHandlers_Settings_BackupsRestore(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("date=2006-01-02"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to backup current data.\",\"title\":\"Files Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Failed to backup current data.","title":"Files Error"}}`)
 	})
 
 	t.Run("extract user backup failed", func(t *testing.T) {
@@ -188,7 +190,7 @@ func TestHandlers_Settings_BackupsRestore(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("date=2006-01-02"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to extract backup.\",\"title\":\"Files Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Failed to extract backup.","title":"Files Error"}}`)
 	})
 
 	t.Run("restore backup failed", func(t *testing.T) {
@@ -204,14 +206,14 @@ func TestHandlers_Settings_BackupsRestore(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("date=2006-01-02"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to restore backup.\",\"title\":\"Database Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Failed to restore backup.","title":"Database Error"}}`)
 	})
 
 	t.Run("valid request", func(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("date=2006-01-02"))
 
 		assertStatus(t, rr.Code, http.StatusOK)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-info\",\"message\":\"\",\"title\":\"Backup restored successfully.\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-info","message":"","title":"Backup restored successfully."}}`)
 	})
 }
 
@@ -263,9 +265,10 @@ func TestHandlers_Settings_CalculateNutrition(t *testing.T) {
 }
 
 func TestHandlers_Settings_Config(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer c.Close()
 
-	uri := "/settings/config"
+	uri := ts.URL + "/settings/config"
 	fields := "email.from=test%40gmail.com&email.apikey=GHJ&integrations.ocr.key=JGKL&integrations.ocr.url=https%3A%2F%2Fwww.google.com&server.autologin=on&server.noSignups=on&server.production=on"
 
 	t.Run("must be logged in", func(t *testing.T) {
@@ -288,7 +291,7 @@ func TestHandlers_Settings_Config(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, uri, formHeader, strings.NewReader(fields))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to update configuration.\",\"title\":\"Database Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Failed to update configuration.","title":"Database Error"}}`)
 	})
 
 	t.Run("update all fields of the config", func(t *testing.T) {
@@ -324,7 +327,7 @@ func TestHandlers_Settings_Config(t *testing.T) {
 			},
 		}
 		assertStatus(t, rr.Code, http.StatusNoContent)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-info\",\"message\":\"\",\"title\":\"Configuration updated.\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-info","message":"","title":"Configuration updated."}}`)
 		if !cmp.Equal(app.Config, want) {
 			t.Log(cmp.Diff(app.Config, want))
 			t.Fail()
@@ -333,27 +336,43 @@ func TestHandlers_Settings_Config(t *testing.T) {
 }
 
 func TestHandlers_Settings_ConvertAutomatically(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer c.Close()
+
 	srv.Repository = &mockRepository{
 		UserSettingsRegistered: map[int64]*models.UserSettings{
 			1: {
 				ConvertAutomatically: false,
 				MeasurementSystem:    units.ImperialSystem,
 			},
+			2: {
+				ConvertAutomatically: false,
+				MeasurementSystem:    units.ImperialSystem,
+			},
 		},
 	}
 
-	uri := "/settings/convert-automatically"
+	uri := ts.URL + "/settings/convert-automatically"
+	originalRepo := srv.Repository
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
 	})
 
 	t.Run("error updating the setting", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedInOther(srv, http.MethodPost, uri, formHeader, strings.NewReader("convert=off"))
+		srv.Repository = &mockRepository{
+			updateConvertMeasurementSystemFunc: func(_ int64, _ bool) error {
+				return errors.New("muga ftw")
+			},
+		}
+		defer func() {
+			srv.Repository = originalRepo
+		}()
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("convert=off"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to set setting.\",\"title\":\"Database Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Failed to set setting.","title":"Database Error"}}`)
 	})
 
 	t.Run("unchecked does not convert new recipes", func(t *testing.T) {
@@ -369,10 +388,97 @@ func TestHandlers_Settings_ConvertAutomatically(t *testing.T) {
 	})
 }
 
-func TestHandlers_Settings_MeasurementSystems(t *testing.T) {
-	srv := newServerTest()
+func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
+	srv, ts, c := createWSServer()
+	defer c.Close()
 
-	uri := "/settings/measurement-system"
+	f := &mockFiles{}
+	srv.Files = f
+	originalRepo := srv.Repository
+
+	uri := ts.URL + "/settings/export/recipes"
+	validExportTypes := []string{"json", "pdf"}
+
+	t.Run("must be logged in", func(t *testing.T) {
+		for _, q := range validExportTypes {
+			assertMustBeLoggedIn(t, srv, http.MethodGet, uri+"?type="+q)
+		}
+	})
+
+	t.Run("lost socket connection", func(t *testing.T) {
+		brokers := srv.Brokers.Clone()
+		srv.Brokers = nil
+		defer func() {
+			srv.Brokers = brokers
+		}()
+
+		rr := sendRequestAsLoggedInNoBody(srv, http.MethodGet, "/settings/export/recipes")
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-warning\",\"message\":\"Connection lost. Please reload page.\",\"title\":\"Websocket\"}"}`)
+	})
+
+	t.Run("invalid file type", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Invalid export file format.","title":"Files Error"}}`)
+	})
+
+	t.Run("no export if no recipes", func(t *testing.T) {
+		for _, q := range validExportTypes {
+			t.Run(q, func(t *testing.T) {
+				_ = c.SetReadDeadline(time.Now().Add(2 * time.Second))
+				originalHitCount := f.exportHitCount
+
+				rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"?type="+q)
+
+				assertStatus(t, rr.Code, http.StatusAccepted)
+				want := `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-warning","message":"","title":"No recipes in database."}}`
+				assertWebsocket(t, c, 3, want)
+				if originalHitCount != f.exportHitCount {
+					t.Fatalf("expected the export function not to be called")
+				}
+			})
+		}
+	})
+
+	t.Run("have recipes", func(t *testing.T) {
+		repo := &mockRepository{
+			RecipesRegistered: map[int64]models.Recipes{
+				1: {{ID: 1, Name: "Chicken"}, {ID: 3, Name: "Jersey"}},
+				2: {{ID: 2, Name: "BBQ"}},
+			},
+			UsersRegistered: srv.Repository.Users(),
+		}
+		srv.Repository = repo
+		defer func() {
+			srv.Repository = originalRepo
+		}()
+
+		for _, q := range validExportTypes {
+			t.Run(q, func(t *testing.T) {
+				_ = c.SetReadDeadline(time.Now().Add(2 * time.Second))
+				originalHitCount := f.exportHitCount
+
+				rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"?type="+q)
+
+				assertStatus(t, rr.Code, http.StatusAccepted)
+				want := `{"type":"file","fileName":"recipes_` + q + `.zip","data":"Q2hpY2tlbi1KZXJzZXkt","toast":{"action":"","background":"","message":"","title":""}}`
+				assertWebsocket(t, c, 3, want)
+				if f.exportHitCount != originalHitCount+1 {
+					t.Fatalf("expected the export function to be called")
+				}
+			})
+		}
+	})
+}
+
+func TestHandlers_Settings_MeasurementSystems(t *testing.T) {
+	srv, ts, c := createWSServer()
+	defer c.Close()
+
+	uri := ts.URL + "/settings/measurement-system"
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
@@ -394,14 +500,14 @@ func TestHandlers_Settings_MeasurementSystems(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("system=imperial"))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-warning\",\"message\":\"\",\"title\":\"System already set to imperial.\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-warning","message":"","title":"System already set to imperial."}}`)
 	})
 
 	t.Run("system does not exist", func(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("system=peanuts"))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Measurement system does not exist.\",\"title\":\"Form Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Measurement system does not exist.","title":"Form Error"}}`)
 	})
 
 	t.Run("failed to switch system", func(t *testing.T) {
@@ -417,7 +523,7 @@ func TestHandlers_Settings_MeasurementSystems(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("system=imperial"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Error switching units system.\",\"title\":\"Database Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Error switching units system.","title":"Database Error"}}`)
 	})
 
 	testcases := []struct {
@@ -568,96 +674,6 @@ func TestHandlers_Settings_MeasurementSystems(t *testing.T) {
 	}
 }
 
-func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
-	srv, ts, c := createWSServer()
-	defer c.Close()
-
-	originalRepo := srv.Repository
-
-	f := &mockFiles{}
-	srv.Files = f
-
-	uri := ts.URL + "/settings/export/recipes"
-
-	validExportTypes := []string{"json", "pdf"}
-
-	t.Run("must be logged in", func(t *testing.T) {
-		for _, q := range validExportTypes {
-			assertMustBeLoggedIn(t, srv, http.MethodGet, uri+"?type="+q)
-		}
-	})
-
-	t.Run("lost socket connection", func(t *testing.T) {
-		brokers := srv.Brokers.Clone()
-		srv.Brokers = nil
-		defer func() {
-			srv.Brokers = brokers
-		}()
-
-		rr := sendRequestAsLoggedIn(srv, http.MethodGet, "/settings/export/recipes", noHeader, nil)
-
-		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-warning\",\"message\":\"Connection lost. Please reload page.\",\"title\":\"Websocket\"}"}`)
-	})
-
-	t.Run("invalid file type", func(t *testing.T) {
-		_ = c.SetReadDeadline(time.Now().Add(2 * time.Second))
-
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
-
-		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Invalid export file format.\",\"title\":\"Files Error\"}"}`)
-	})
-
-	t.Run("no export if no recipes", func(t *testing.T) {
-		for _, q := range validExportTypes {
-			t.Run(q, func(t *testing.T) {
-				_ = c.SetReadDeadline(time.Now().Add(2 * time.Second))
-				originalHitCount := f.exportHitCount
-
-				rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?type="+q, noHeader, nil)
-
-				assertStatus(t, rr.Code, http.StatusAccepted)
-				want := `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-warning","message":"","title":"No recipes in database."}}`
-				assertWebsocket(t, c, 3, want)
-				if originalHitCount != f.exportHitCount {
-					t.Fatalf("expected the export function not to be called")
-				}
-			})
-		}
-	})
-
-	t.Run("have recipes", func(t *testing.T) {
-		repo := &mockRepository{
-			RecipesRegistered: map[int64]models.Recipes{
-				1: {{ID: 1, Name: "Chicken"}, {ID: 3, Name: "Jersey"}},
-				2: {{ID: 2, Name: "BBQ"}},
-			},
-			UsersRegistered: srv.Repository.Users(),
-		}
-		srv.Repository = repo
-		defer func() {
-			srv.Repository = originalRepo
-		}()
-
-		for _, q := range validExportTypes {
-			t.Run(q, func(t *testing.T) {
-				_ = c.SetReadDeadline(time.Now().Add(2 * time.Second))
-				originalHitCount := f.exportHitCount
-
-				rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?type="+q, noHeader, nil)
-
-				assertStatus(t, rr.Code, http.StatusAccepted)
-				want := `{"type":"file","fileName":"recipes_` + q + `.zip","data":"Q2hpY2tlbi1KZXJzZXkt","toast":{"action":"","background":"","message":"","title":""}}`
-				assertWebsocket(t, c, 3, want)
-				if f.exportHitCount != originalHitCount+1 {
-					t.Fatalf("expected the export function to be called")
-				}
-			})
-		}
-	})
-}
-
 func TestHandlers_Settings_TabsAdvanced(t *testing.T) {
 	srv := newServerTest()
 
@@ -679,13 +695,13 @@ func TestHandlers_Settings_TabsAdvanced(t *testing.T) {
 	})
 
 	t.Run("non-admin does not see config", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedInOther(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendHxRequestAsLoggedInOtherNoBody(srv, http.MethodGet, uri)
 
 		assertStringsNotInHTML(t, getBodyHTML(rr), configForm)
 	})
 
 	t.Run("demo sees fake data", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedInOther(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendHxRequestAsLoggedInOtherNoBody(srv, http.MethodGet, uri)
 
 		assertStringsNotInHTML(t, getBodyHTML(rr), []string{
 			`<input name="email.from" type="text" placeholder="SendGrid email" value="demo@demo.com" autocomplete="off" class="input input-bordered input-sm w-full">`,
@@ -720,7 +736,7 @@ func TestHandlers_Settings_TabsAdvanced(t *testing.T) {
 			app.Config = original
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := slices.Concat(configForm, []string{
@@ -743,7 +759,7 @@ func TestHandlers_Settings_TabsProfile(t *testing.T) {
 	})
 
 	t.Run("successful request", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
@@ -760,9 +776,10 @@ func TestHandlers_Settings_TabsProfile(t *testing.T) {
 }
 
 func TestHandlers_Settings_TabsRecipes(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer c.Close()
 
-	uri := "/settings/tabs/recipes"
+	uri := ts.URL + "/settings/tabs/recipes"
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
@@ -778,14 +795,14 @@ func TestHandlers_Settings_TabsRecipes(t *testing.T) {
 			srv.Repository = &mockRepository{}
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Error fetching units systems.\",\"title\":\"Database Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Error fetching units systems.","title":"Database Error"}}`)
 	})
 
 	t.Run("successful request", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{

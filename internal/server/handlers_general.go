@@ -36,20 +36,21 @@ func (s *Server) downloadHandler() http.HandlerFunc {
 	}
 }
 
-func fetchHandler() http.HandlerFunc {
+func (s *Server) fetchHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		rawURL := r.URL.Query().Get("url")
+		userID := getUserID(r)
 
 		parsed, err := url.Parse(rawURL)
 		if err != nil || rawURL == "" || !slices.Contains([]string{"http", "https"}, parsed.Scheme) {
-			w.Header().Set("HX-Trigger", models.NewErrorGeneralToast("Invalid URL.").Render())
+			s.Brokers.SendToast(models.NewErrorGeneralToast("Invalid URL."), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		res, err := http.Get(rawURL)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorGeneralToast("Could not fetch URL.").Render())
+			s.Brokers.SendToast(models.NewErrorGeneralToast("Could not fetch URL."), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -84,21 +85,23 @@ func (s *Server) userInitialsHandler() http.HandlerFunc {
 }
 
 func (s *Server) updateHandler() http.HandlerFunc {
-	return func(w http.ResponseWriter, _ *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		userID := getUserID(r)
+
 		err := s.Files.UpdateApp(app.Info.Version)
 		if errors.Is(err, app.ErrNoUpdate) {
-			w.Header().Set("HX-Trigger", models.NewWarningToast("", "No update available.", "").Render())
+			s.Brokers.SendToast(models.NewWarningToast("", "No update available.", ""), userID)
 			w.WriteHeader(http.StatusNoContent)
 			return
 		} else if err != nil {
 			msg := "Failed to update."
 			slog.Error(msg, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorGeneralToast(msg).Render())
+			s.Brokers.SendToast(models.NewErrorGeneralToast(msg), userID)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
-		w.Header().Set("HX-Trigger", models.NewInfoToast("Software updated", "Application will reload in 5 seconds.", "").Render())
+		s.Brokers.SendToast(models.NewInfoToast("Software updated", "Application will reload in 5 seconds.", ""), userID)
 		w.WriteHeader(http.StatusNoContent)
 
 		go func() {

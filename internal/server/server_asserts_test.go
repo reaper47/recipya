@@ -69,7 +69,7 @@ func assertImageNotNil(tb testing.TB, got uuid.UUID) {
 
 func assertMustBeLoggedIn(tb testing.TB, srv *server.Server, method string, uri string) {
 	tb.Helper()
-	rr := sendRequest(srv, method, uri, noHeader, nil)
+	rr := sendRequestNoBody(srv, method, uri)
 
 	assertStatus(tb, rr.Code, http.StatusSeeOther)
 	assertHeader(tb, rr, "Location", "/auth/login")
@@ -127,6 +127,6 @@ func assertWebsocket(tb testing.TB, conn *websocket.Conn, message int, want stri
 	mt, got := readMessage(conn, message)
 	got = bytes.Join(bytes.Fields(bytes.ReplaceAll(got, []byte("\r\n"), []byte(""))), []byte(" "))
 	if mt != websocket.TextMessage || string(got) != want {
-		tb.Errorf("got:\n%s\nbut want:\n%s", got, want)
+		tb.Fatalf("got:\n%s\nbut want:\n%s", got, want)
 	}
 }

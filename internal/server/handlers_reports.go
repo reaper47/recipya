@@ -13,16 +13,18 @@ import (
 
 func (s *Server) reportsHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		userID := getUserID(r)
+
 		reports, err := s.Repository.ReportsImport(getUserID(r))
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast("Failed to fetch reports.").Render())
+			s.Brokers.SendToast(models.NewErrorDBToast("Failed to fetch reports."), userID)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
 		data := templates.Data{
 			About:           templates.NewAboutData(),
-			IsAdmin:         getUserID(r) == 1,
+			IsAdmin:         userID == 1,
 			IsAutologin:     app.Config.Server.IsAutologin,
 			IsAuthenticated: true,
 			IsHxRequest:     r.Header.Get("Hx-Request") == "true",
@@ -38,7 +40,7 @@ func (s *Server) reportsHandler() http.HandlerFunc {
 			if r.URL.Query().Get("view") == "latest" {
 				data.Reports.CurrentReport, err = s.Repository.Report(reports[0].ID, getUserID(r))
 				if err != nil {
-					w.Header().Set("HX-Trigger", models.NewErrorDBToast("Failed to fetch report.").Render())
+					s.Brokers.SendToast(models.NewErrorDBToast("Failed to fetch report."), userID)
 					w.WriteHeader(http.StatusInternalServerError)
 					return
 				}
@@ -59,16 +61,18 @@ func (s *Server) reportsReportHandler() http.HandlerFunc {
 			return
 		}
 
+		userID := getUserID(r)
+
 		id, err := parsePathPositiveID(r.PathValue("id"))
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorReqToast("Report ID must be positive.").Render())
+			s.Brokers.SendToast(models.NewErrorReqToast("Report ID must be positive."), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		report, err := s.Repository.Report(id, getUserID(r))
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast("Failed to fetch report.").Render())
+			s.Brokers.SendToast(models.NewErrorDBToast("Failed to fetch report."), userID)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -127,7 +131,7 @@ func (s *Server) reportsReportHandler() http.HandlerFunc {
 
 		_ = components.Report(templates.Data{
 			About:           templates.NewAboutData(),
-			IsAdmin:         getUserID(r) == 1,
+			IsAdmin:         userID == 1,
 			IsAutologin:     app.Config.Server.IsAutologin,
 			IsAuthenticated: true,
 			IsHxRequest:     isHxRequest,

@@ -79,10 +79,11 @@ func TestHandlers_Integrations_Import(t *testing.T) {
 }
 
 func TestHandlers_Integrations_TestConnection(t *testing.T) {
-	srv := newServerTest()
-	original := srv.Integrations
+	srv, ts, c := createWSServer()
+	defer c.Close()
 
-	uri := "/integrations/test-connection"
+	original := srv.Integrations
+	uri := ts.URL + "/integrations/test-connection"
 
 	type testcase struct {
 		name string
@@ -99,7 +100,7 @@ func TestHandlers_Integrations_TestConnection(t *testing.T) {
 	}
 	for _, tc := range testcases {
 		t.Run("invalid api "+tc.name, func(t *testing.T) {
-			rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?api="+tc.api, noHeader, nil)
+			rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"?api="+tc.api)
 
 			assertStatus(t, rr.Code, http.StatusBadRequest)
 		})
@@ -119,10 +120,10 @@ func TestHandlers_Integrations_TestConnection(t *testing.T) {
 			defer func() {
 				srv.Integrations = original
 			}()
-			rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?api="+tc.api, noHeader, nil)
+			rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"?api="+tc.api)
 
 			assertStatus(t, rr.Code, http.StatusUnauthorized)
-			assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Connection failed. Please verify credentials.\",\"title\":\"General Error\"}"}`)
+			assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Connection failed. Please verify credentials.","title":"General Error"}}`)
 		})
 	}
 
@@ -136,10 +137,10 @@ func TestHandlers_Integrations_TestConnection(t *testing.T) {
 	}
 	for _, tc := range testcases3 {
 		t.Run("valid credentials "+tc.name, func(t *testing.T) {
-			rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?api="+tc.api, noHeader, nil)
+			rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"?api="+tc.api)
 
 			assertStatus(t, rr.Code, http.StatusOK)
-			assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-info\",\"message\":\"`+tc.toast+`\",\"title\":\"Connection successful\"}"}`)
+			assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-info","message":"`+tc.toast+`","title":"Connection successful"}}`)
 		})
 	}
 }

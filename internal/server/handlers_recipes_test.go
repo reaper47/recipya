@@ -30,7 +30,7 @@ func TestHandlers_Recipes(t *testing.T) {
 	})
 
 	t.Run("user has no recipes", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		want := []string{
 			`<title hx-swap-oob="true">Recipes | Recipya</title>`,
@@ -53,7 +53,7 @@ func TestHandlers_Recipes(t *testing.T) {
 			srv.Repository = &mockRepository{}
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		got := getBodyHTML(rr)
 		want := []string{
@@ -81,20 +81,20 @@ func TestHandlers_Recipes_New(t *testing.T) {
 
 	testcases := []struct {
 		name     string
-		sendFunc func(server *server.Server, target, uri string, contentType header, body *strings.Reader) *httptest.ResponseRecorder
+		sendFunc func(server *server.Server, target, uri string) *httptest.ResponseRecorder
 	}{
-		{name: "is logged in Hx-Request", sendFunc: sendHxRequestAsLoggedIn},
-		{name: "is logged in no Hx-Request", sendFunc: sendRequestAsLoggedIn},
+		{name: "is logged in Hx-Request", sendFunc: sendHxRequestAsLoggedInNoBody},
+		{name: "is logged in no Hx-Request", sendFunc: sendRequestAsLoggedInNoBody},
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			rr := tc.sendFunc(srv, http.MethodGet, uri, noHeader, nil)
+			rr := tc.sendFunc(srv, http.MethodGet, uri)
 
 			want := []string{
 				`<title hx-swap-oob="true">Add Recipe | Recipya</title>`,
 				`<img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes/new/import.webp" alt="Writing on a piece of paper with a traditional pen.">`,
 				`<button class="underline" hx-get="/recipes/supported-websites" hx-target="#search-results" onclick="supported_websites_dialog.showModal()">supported</button>`,
-				`<dialog id="websites_dialog" class="modal"><div class="modal-box"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="font-bold text-lg">Fetch recipes from websites</h3><form class="py-4" hx-post="/recipes/add/website" hx-indicator="#fullscreen-loader" hx-swap="none"><div class="grid mb-4"><label class="form-control"><div class="label"><span class="label-text">Enter one or more URLs, each on a new line.</span></div><textarea class="textarea textarea-bordered whitespace-pre-line" placeholder="URL 1\nURL 2\nURL 3\nURL 4\netc..." name="urls" rows="5"></textarea></label></div><button type="submit" class="btn btn-block btn-primary btn-sm" onclick="websites_dialog.close()">Submit</button></form></div></dialog>`,
+				`<dialog id="websites_dialog" class="modal"><div class="modal-box"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="font-bold text-lg">Fetch recipes from websites</h3><form class="py-4" hx-post="/recipes/add/website" hx-indicator="#fullscreen-loader" hx-swap="none"><div class="grid mb-4"><label class="form-control"><div class="label"><span class="label-text">Enter one or more URLs, each on a new line.</span></div><textarea class="textarea textarea-bordered whitespace-pre-line" placeholder="URL 1URL 2URL 3URL 4etc..." name="urls" rows="5"></textarea></label></div><button type="submit" class="btn btn-block btn-primary btn-sm" onclick="websites_dialog.close()">Submit</button></form></div></dialog>`,
 				`<dialog id="supported_websites_dialog" class="modal"><div class="modal-box h-2/3"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="mb-1"><label><input type="search" placeholder="Search a website" class="input input-bordered input-sm w-11/12" _="on input show <tbody>tr/> in next <table/> when its textContent.toLowerCase() contains my value.toLowerCase()"></label></h3><div class="overflow-x-auto"><table class="table table-zebra table-sm"><thead><tr class="text-center"><th class="py-1">Number</th><th class="py-1">Website</th></tr></thead> <tbody id="search-results"></tbody></table></div></div></dialog>`,
 				`<dialog id="supported_apps_import_dialog" class="modal"><div class="modal-box h-2/3"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="mb-1"><label><input type="search" placeholder="Search an application" class="input input-bordered input-sm w-11/12" _="on input show <tbody>tr/> in next <table/> when its textContent.toLowerCase() contains my value.toLowerCase()"></label></h3><div class="overflow-x-auto"><table class="table table-zebra table-sm"><thead><tr class="text-center"><th class="py-1">Number</th><th class="py-1">Application</th></tr></thead> <tbody id="application-results"></tbody></table></div></div></dialog>`,
 				`<dialog id="add_ocr_dialog" class="modal"><div class="modal-box"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="font-bold text-lg">Scan Recipe</h3><form class="py-4" hx-post="/recipes/add/ocr" hx-encoding="multipart/form-data" hx-indicator="#fullscreen-loader" hx-swap="none" _="on submit add_ocr_dialog.close()"><div class="grid mb-4"><label for="add-ocr-files-input" class="text-sm font-medium mb-1">Select your recipe's images ordered by page or a recipe document in the PDF format.</label> <input id="add-ocr-files-input" type="file" name="files" accept=".jpg, .jpeg, .png, .bmp, .tiff, .heif, .pdf" multiple class="p-2 border border-gray-300 rounded-lg shadow focus:ring-2 focus:ring-purple-600 dark:bg-gray-900 dark:border-none"></div><button class="btn btn-block btn-primary btn-sm">Submit</button></form></div></dialog>`,
@@ -109,24 +109,10 @@ func TestHandlers_Recipes_AddImport(t *testing.T) {
 	srv, ts, c := createWSServer()
 	defer c.Close()
 
-	originalBrokers := srv.Brokers.Clone()
-
 	uri := ts.URL + "/recipes/add/import"
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
-	})
-
-	t.Run("no ws connection", func(t *testing.T) {
-		srv.Brokers = models.NewBroker()
-		defer func() {
-			srv.Brokers = originalBrokers
-		}()
-
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, noHeader, nil)
-
-		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-warning\",\"message\":\"Connection lost. Please reload page.\",\"title\":\"Websocket\"}"}`)
 	})
 
 	t.Run("payload too big", func(t *testing.T) {
@@ -134,9 +120,7 @@ func TestHandlers_Recipes_AddImport(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formData, strings.NewReader(b.String()))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not parse the uploaded files.\",\"title\":\"Form Error\"}"}`)
-		want := `<div id="ws-notification-container" class="z-20 fixed bottom-0 right-0 p-6 cursor-default hidden"> <div class="bg-blue-500 text-white px-4 py-2 rounded shadow-md"> <p class="font-medium text-center pb-1"></p> <div id="export-progress"><progress max="100" value="100.000000"></progress></div> </div> </div>`
-		assertWebsocket(t, c, 2, want)
+		assertWebsocket(t, c, 3, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Could not parse the uploaded files.","title":"Form Error"}}`)
 	})
 
 	t.Run("error parsing files", func(t *testing.T) {
@@ -144,9 +128,7 @@ func TestHandlers_Recipes_AddImport(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not retrieve the files or the directory from the form.\",\"title\":\"Form Error\"}"}`)
-		want := `<div id="ws-notification-container" class="z-20 fixed bottom-0 right-0 p-6 cursor-default hidden"> <div class="bg-blue-500 text-white px-4 py-2 rounded shadow-md"> <p class="font-medium text-center pb-1"></p> <div id="export-progress"><progress max="100" value="100.000000"></progress></div> </div> </div>`
-		assertWebsocket(t, c, 2, want)
+		assertWebsocket(t, c, 3, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Could not retrieve the files or the directory from the form.","title":"Form Error"}}`)
 	})
 
 	t.Run("valid request", func(t *testing.T) {
@@ -170,14 +152,14 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 
 	testcases := []struct {
 		name     string
-		sendFunc func(server *server.Server, target, uri string, contentType header, body *strings.Reader) *httptest.ResponseRecorder
+		sendFunc func(server *server.Server, target, uri string) *httptest.ResponseRecorder
 	}{
-		{name: "is logged in Hx-Request", sendFunc: sendHxRequestAsLoggedIn},
-		{name: "is logged in no Hx-Request", sendFunc: sendRequestAsLoggedIn},
+		{name: "is logged in Hx-Request", sendFunc: sendHxRequestAsLoggedInNoBody},
+		{name: "is logged in no Hx-Request", sendFunc: sendRequestAsLoggedInNoBody},
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			rr := tc.sendFunc(srv, http.MethodGet, uri, noHeader, nil)
+			rr := tc.sendFunc(srv, http.MethodGet, uri)
 
 			want := []string{
 				`<title hx-swap-oob="true">Add Manual | Recipya</title>`,
@@ -491,14 +473,14 @@ func TestHandlers_Recipes_AddOCR(t *testing.T) {
 		rr := sendReq("hello.jpg")
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-warning\",\"message\":\"Please consult the docs to enable OCR.\",\"title\":\"Feature Disabled\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-warning","message":"Please consult the docs to enable OCR.","title":"Feature Disabled"}}`)
 	})
 
 	t.Run("files must not be empty", func(t *testing.T) {
 		rr := sendReq("")
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not retrieve the image from the form.\",\"title\":\"Form Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Could not retrieve the image from the form.","title":"Form Error"}}`)
 	})
 
 	t.Run("processing OCR failed", func(t *testing.T) {
@@ -514,8 +496,7 @@ func TestHandlers_Recipes_AddOCR(t *testing.T) {
 		rr := sendReq("hello.jpg")
 
 		assertStatus(t, rr.Code, http.StatusAccepted)
-		want := `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Could not process OCR.","title":"Integrations Error"}}`
-		assertWebsocket(t, c, 3, want)
+		assertWebsocket(t, c, 3, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Could not process OCR.","title":"Integrations Error"}}`)
 	})
 
 	t.Run("adding processed recipe failed", func(t *testing.T) {
@@ -562,7 +543,6 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 	srv, ts, c := createWSServer()
 	defer c.Close()
 
-	originalBrokers := srv.Brokers.Clone()
 	originalRepo := srv.Repository
 	originalScraper := srv.Scraper
 	originalFiles := srv.Files
@@ -583,18 +563,6 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
 	})
 
-	t.Run("no ws connection", func(t *testing.T) {
-		srv.Brokers = models.NewBroker()
-		defer func() {
-			srv.Brokers = originalBrokers
-		}()
-
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, noHeader, nil)
-
-		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-warning\",\"message\":\"Connection lost. Please reload page.\",\"title\":\"Websocket\"}"}`)
-	})
-
 	t.Run("no input", func(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("websites="))
 
@@ -605,7 +573,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("urls=I am a pig\noink oink"))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"No valid URLs found.\",\"title\":\"Request Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"No valid URLs found.","title":"Request Error"}}`)
 	})
 
 	t.Run("add one valid URL from unsupported websites", func(t *testing.T) {
@@ -679,8 +647,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("urls=https://www.example.com\nhttps://www.hello.com\nhttp://helloiam.bob.com\njesus.com"))
 
 		assertStatus(t, rr.Code, http.StatusAccepted)
-		want := `{"type":"toast","fileName":"","data":"","toast":{"action":"View /reports?view=latest","background":"alert-info","message":"Fetched 3 recipes. 0 skipped","title":"Operation Successful"}}`
-		assertWebsocket(t, c, 6, want)
+		assertWebsocket(t, c, 6, `{"type":"toast","fileName":"","data":"","toast":{"action":"View /reports?view=latest","background":"alert-info","message":"Fetched 3 recipes. 0 skipped","title":"Operation Successful"}}`)
 		if len(repo.Reports[1]) != 1 {
 			t.Fatalf("got reports %v but want one report added", repo.Reports[1])
 		}
@@ -710,7 +677,7 @@ func TestHandlers_Recipes_Delete(t *testing.T) {
 			srv.Repository = repo
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri+"/5", noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodDelete, uri+"/5")
 
 		assertStatus(t, rr.Code, http.StatusNoContent)
 		if numRecipesBefore != len(repo.RecipesRegistered) {
@@ -721,7 +688,7 @@ func TestHandlers_Recipes_Delete(t *testing.T) {
 	t.Run("can delete user's recipe", func(t *testing.T) {
 		_, _, _ = srv.Repository.AddRecipes(models.Recipes{{ID: 1, Name: "Chicken"}}, 1, nil)
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri+"/1", noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodDelete, uri+"/1")
 
 		assertStatus(t, rr.Code, http.StatusNoContent)
 		assertHeader(t, rr, "HX-Redirect", "/")
@@ -729,7 +696,8 @@ func TestHandlers_Recipes_Delete(t *testing.T) {
 }
 
 func TestHandlers_Recipes_Edit(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer c.Close()
 
 	baseRecipe := models.Recipe{
 		Category:     "american",
@@ -768,7 +736,7 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 		RecipesRegistered: map[int64]models.Recipes{1: {baseRecipe}},
 	}
 
-	uri := "/recipes/%d/edit"
+	uri := ts.URL + "/recipes/%d/edit"
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodGet, fmt.Sprintf(uri, 5))
@@ -786,14 +754,14 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 			srv.Repository = &mockRepository{RecipesRegistered: map[int64]models.Recipes{1: {baseRecipe}}}
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, fmt.Sprintf(uri, 1), noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, fmt.Sprintf(uri, 1))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to retrieve recipe.\",\"title\":\"Database Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Failed to retrieve recipe.","title":"Database Error"}}`)
 	})
 
 	t.Run("successful request", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, fmt.Sprintf(uri, 1), noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, fmt.Sprintf(uri, 1))
 
 		want := []string{
 			`<title hx-swap-oob="true">Edit Chicken Jersey | Recipya</title>`,
@@ -922,10 +890,12 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 }
 
 func TestHandlers_Recipes_Scale(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer c.Close()
+
 	originalRepo := srv.Repository
 
-	uri := "/recipes/1/scale"
+	uri := ts.URL + "/recipes/1/scale"
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
@@ -954,11 +924,10 @@ func TestHandlers_Recipes_Scale(t *testing.T) {
 	}
 	for _, tc := range yieldTestcases {
 		t.Run(tc.name, func(t *testing.T) {
-			rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?yield="+tc.in, noHeader, nil)
+			rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"?yield="+tc.in)
 
 			assertStatus(t, rr.Code, http.StatusBadRequest)
-			assertHeader(t, rr, "HX-Trigger", fmt.Sprintf(`{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"%s\",\"title\":\"\"}"}`, tc.want))
-
+			assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"`+tc.want+`","title":"General Error"}}`)
 		})
 	}
 
@@ -970,10 +939,10 @@ func TestHandlers_Recipes_Scale(t *testing.T) {
 			srv.Repository = originalRepo
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?yield=6", noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"?yield=6")
 
 		assertStatus(t, rr.Code, http.StatusNotFound)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Recipe not found.\",\"title\":\"\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Recipe not found.","title":"General Error"}}`)
 	})
 
 	t.Run("valid request double yield", func(t *testing.T) {
@@ -1013,7 +982,7 @@ func TestHandlers_Recipes_Scale(t *testing.T) {
 			srv.Repository = originalRepo
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?yield=8", noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"?yield=8")
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
@@ -1041,7 +1010,9 @@ func TestHandlers_Recipes_Scale(t *testing.T) {
 }
 
 func TestHandlers_Recipes_Search(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer c.Close()
+
 	srv.Repository = &mockRepository{
 		RecipesRegistered: map[int64]models.Recipes{
 			1: {
@@ -1052,14 +1023,14 @@ func TestHandlers_Recipes_Search(t *testing.T) {
 		},
 	}
 
-	uri := "/recipes/search"
+	uri := ts.URL + "/recipes/search"
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
 	})
 
 	t.Run("page below 1 returns recipes from first page", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?q=lovely&page=0&mode=name", noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"?q=lovely&page=0&mode=name")
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertStringsInHTML(t, getBodyHTML(rr), []string{
@@ -1070,7 +1041,7 @@ func TestHandlers_Recipes_Search(t *testing.T) {
 	})
 
 	t.Run("empty query cannot be empty", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?q=&page=0&mode=name&sort=a-z", noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"?q=&page=0&mode=name&sort=a-z")
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
 		assertHeader(t, rr, "HX-Redirect", "/recipes?sort=a-z")
@@ -1078,14 +1049,14 @@ func TestHandlers_Recipes_Search(t *testing.T) {
 	})
 
 	t.Run("empty method is invalid", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?q=hello&page=0&mode=", noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"?q=hello&page=0&mode=")
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Missing query parameter 'method'. Valid values are 'name' or 'full'.\",\"title\":\"\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Missing query parameter 'method'. Valid values are 'name' or 'full'.","title":"General Error"}}`)
 	})
 
 	t.Run("no results", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?q=kool-aid&mode=name", noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"?q=kool-aid&mode=name")
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
@@ -1130,10 +1101,11 @@ func TestHandlers_Recipes_Search(t *testing.T) {
 }
 
 func TestHandlers_Recipes_Share(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer c.Close()
 
 	uri := func(id int64) string {
-		return fmt.Sprintf("/recipes/%d/share", id)
+		return fmt.Sprintf("%s/recipes/%d/share", ts.URL, id)
 	}
 
 	app.Config.Server.URL = "https://www.recipya.com"
@@ -1169,25 +1141,25 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 	link, _ := srv.Repository.AddShareLink(models.Share{RecipeID: 1, CookbookID: -1, UserID: 1})
 
 	t.Run("create valid share link", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri(1), noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodPost, uri(1))
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
-			`<input type="url" value="example.com/r/33320755-82f9-47e5-bb0a-d1b55cbd3f7b" class="input input-bordered w-full" readonly="readonly"></label>`,
+			`<input type="url" value="` + strings.TrimPrefix(ts.URL, "http://") + `/r/33320755-82f9-47e5-bb0a-d1b55cbd3f7b" class="input input-bordered w-full" readonly="readonly"></label>`,
 			`<button id="copy_button" class="btn btn-neutral" title="Copy to clipboard" onClick="__templ_copyToClipboard`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
 
 	t.Run("create invalid share link", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri(10), noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodPost, uri(10))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to create share link.\",\"title\":\"\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Failed to create share link.","title":"General Error"}}`)
 	})
 
 	t.Run("access share link anonymous", func(t *testing.T) {
-		rr := sendRequest(srv, http.MethodGet, link, noHeader, nil)
+		rr := sendRequestNoBody(srv, http.MethodGet, link)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
@@ -1217,14 +1189,14 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 
 	testcases := []struct {
 		name     string
-		sendFunc func(server *server.Server, target, uri string, contentType header, body *strings.Reader) *httptest.ResponseRecorder
+		sendFunc func(server *server.Server, target, uri string) *httptest.ResponseRecorder
 	}{
-		{name: "other user Hx-Request", sendFunc: sendHxRequestAsLoggedInOther},
-		{name: "other user no Hx-Request", sendFunc: sendRequestAsLoggedInOther},
+		{name: "other user Hx-Request", sendFunc: sendHxRequestAsLoggedInOtherNoBody},
+		{name: "other user no Hx-Request", sendFunc: sendRequestAsLoggedInOtherNoBody},
 	}
 	for _, tc := range testcases {
 		t.Run("access share link logged in "+tc.name, func(t *testing.T) {
-			rr := tc.sendFunc(srv, http.MethodGet, link, noHeader, nil)
+			rr := tc.sendFunc(srv, http.MethodGet, link)
 
 			assertStatus(t, rr.Code, http.StatusOK)
 			want := []string{
@@ -1244,14 +1216,14 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 
 	testcases2 := []struct {
 		name     string
-		sendFunc func(server *server.Server, target, uri string, contentType header, body *strings.Reader) *httptest.ResponseRecorder
+		sendFunc func(server *server.Server, target, uri string) *httptest.ResponseRecorder
 	}{
-		{name: "host user Hx-Request", sendFunc: sendHxRequestAsLoggedIn},
-		{name: "host user no Hx-Request", sendFunc: sendRequestAsLoggedIn},
+		{name: "host user Hx-Request", sendFunc: sendHxRequestAsLoggedInNoBody},
+		{name: "host user no Hx-Request", sendFunc: sendRequestAsLoggedInNoBody},
 	}
 	for _, tc := range testcases2 {
 		t.Run("access share link logged "+tc.name, func(t *testing.T) {
-			rr := tc.sendFunc(srv, http.MethodGet, link, noHeader, nil)
+			rr := tc.sendFunc(srv, http.MethodGet, link)
 
 			assertStatus(t, rr.Code, http.StatusOK)
 			want := []string{
@@ -1300,7 +1272,7 @@ func TestHandlers_Recipes_SupportedApplications(t *testing.T) {
 			want = append(want, `<tr class="border text-center"><td class="border dark:border-gray-800">`+strconv.Itoa(i+1)+`</td><td class="border py-1 dark:border-gray-800"><a class="underline" href="`+a[1]+`" target="_blank">`+a[0]+`</a></td></tr>`)
 		}
 
-		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertHeader(t, rr, "Content-Type", "text/html")
@@ -1321,7 +1293,7 @@ func TestHandlers_Recipes_SupportedWebsites(t *testing.T) {
 	})
 
 	t.Run("returns list of websites to logged in user", func(t *testing.T) {
-		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertHeader(t, rr, "Content-Type", "text/html")
@@ -1340,7 +1312,7 @@ func TestHandlers_Recipes_View(t *testing.T) {
 	})
 
 	t.Run("recipe is not in user collection", func(t *testing.T) {
-		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri+"/999", noHeader, nil)
+		rr := sendRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"/999")
 
 		assertStatus(t, rr.Code, http.StatusNotFound)
 		want := []string{
@@ -1353,10 +1325,10 @@ func TestHandlers_Recipes_View(t *testing.T) {
 
 	testcases := []struct {
 		name     string
-		sendFunc func(server *server.Server, target, uri string, contentType header, body *strings.Reader) *httptest.ResponseRecorder
+		sendFunc func(server *server.Server, target, uri string) *httptest.ResponseRecorder
 	}{
-		{name: "logged in Hx-Request", sendFunc: sendHxRequestAsLoggedIn},
-		{name: "logged in no Hx-Request", sendFunc: sendRequestAsLoggedIn},
+		{name: "logged in Hx-Request", sendFunc: sendHxRequestAsLoggedInNoBody},
+		{name: "logged in no Hx-Request", sendFunc: sendRequestAsLoggedInNoBody},
 	}
 	for _, tc := range testcases {
 		t.Run("recipe is in user's collection when "+tc.name, func(t *testing.T) {
@@ -1391,7 +1363,7 @@ func TestHandlers_Recipes_View(t *testing.T) {
 			}
 			_, _, _ = srv.Repository.AddRecipes(models.Recipes{r}, 1, nil)
 
-			rr := tc.sendFunc(srv, http.MethodGet, uri+"/1", noHeader, nil)
+			rr := tc.sendFunc(srv, http.MethodGet, uri+"/1")
 
 			assertStatus(t, rr.Code, http.StatusOK)
 			want := []string{

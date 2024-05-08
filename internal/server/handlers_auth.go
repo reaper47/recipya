@@ -24,50 +24,52 @@ func (s *Server) changePasswordHandler() http.HandlerFunc {
 			return
 		}
 
-		currentPassword := r.FormValue("password-current")
-		newPassword := r.FormValue("password-new")
+		var (
+			userID          = getUserID(r)
+			currentPassword = r.FormValue("password-current")
+			newPassword     = r.FormValue("password-new")
+		)
+
 		if currentPassword == newPassword {
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast("New password is same as current.").Render())
+			s.Brokers.SendToast(models.NewErrorFormToast("New password is same as current."), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		confirmPassword := r.FormValue("password-confirm")
 		if confirmPassword != newPassword {
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast("Passwords do not match.").Render())
+			s.Brokers.SendToast(models.NewErrorFormToast("Passwords do not match."), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
-		userID := getUserID(r)
-
 		if app.Config.Server.IsDemo && s.Repository.UserID("demo@demo.com") == userID {
-			w.Header().Set("HX-Trigger", models.NewInfoToast("Your Facebook password has been changed.", "", "").Render())
+			s.Brokers.SendToast(models.NewInfoToast("Your Facebook password has been changed.", "", ""), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		if !s.Repository.IsUserPassword(userID, currentPassword) {
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast("Current password is incorrect.").Render())
+			s.Brokers.SendToast(models.NewErrorFormToast("Current password is incorrect."), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		hashPassword, err := auth.HashPassword(newPassword)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorAuthToast("Error encoding your password.").Render())
+			s.Brokers.SendToast(models.NewErrorAuthToast("Error encoding your password."), userID)
 			w.WriteHeader(http.StatusUnprocessableEntity)
 			return
 		}
 
 		err = s.Repository.UpdatePassword(userID, hashPassword)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast("Failed to update password.").Render())
+			s.Brokers.SendToast(models.NewErrorDBToast("Failed to update password."), userID)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
-		w.Header().Set("HX-Trigger", models.NewInfoToast("Password updated.", "", "").Render())
+		s.Brokers.SendToast(models.NewInfoToast("Password updated.", "", ""), userID)
 		w.WriteHeader(http.StatusNoContent)
 	}
 }
@@ -116,7 +118,7 @@ func (s *Server) deleteUserHandler() http.HandlerFunc {
 
 		userID := getUserID(r)
 		if app.Config.Server.IsDemo && s.Repository.UserID("demo@demo.com") == userID {
-			w.Header().Set("HX-Trigger", models.NewErrorGeneralToast("Your savings account has been deleted.").Render())
+			s.Brokers.SendToast(models.NewErrorGeneralToast("Your savings account has been deleted."), userID)
 			w.WriteHeader(http.StatusTeapot)
 			return
 		}
@@ -126,6 +128,7 @@ func (s *Server) deleteUserHandler() http.HandlerFunc {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
+
 		s.logoutHandler(w, r)
 	}
 }

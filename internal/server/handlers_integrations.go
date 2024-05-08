@@ -11,15 +11,6 @@ import (
 
 func (s *Server) integrationsImport() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		userID := getUserID(r)
-		userIDAttr := slog.Int64("userID", userID)
-
-		if !s.Brokers.Has(userID) {
-			w.Header().Set("HX-Trigger", models.NewWarningWSToast("Connection lost. Please reload page.").Render())
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-
 		var (
 			err         error
 			integration = r.FormValue("integration")
@@ -29,6 +20,8 @@ func (s *Server) integrationsImport() http.HandlerFunc {
 		)
 
 		go func(id int64) {
+			userIDAttr := slog.Int64("userID", id)
+
 			s.Brokers.SendProgressStatus("Contacting server...", true, 0, -1, id)
 
 			var (
@@ -108,7 +101,7 @@ func (s *Server) integrationsImport() http.HandlerFunc {
 			slog.Info("Imported recipes", "integration", integration, userIDAttr, "count", count, "skipped", skipped)
 			s.Brokers.HideNotification(id)
 			s.Brokers.SendToast(models.NewInfoToast(fmt.Sprintf("Imported %d recipes. Skipped %d.", count, skipped), "", ""), id)
-		}(userID)
+		}(getUserID(r))
 
 		w.WriteHeader(http.StatusAccepted)
 	}

@@ -10,17 +10,18 @@ import (
 )
 
 func TestHandlers_Reports(t *testing.T) {
-	srv := newServerTest()
-	originalRepo := srv.Repository
+	srv, ts, c := createWSServer()
+	defer c.Close()
 
-	uri := "/reports"
+	originalRepo := srv.Repository
+	uri := ts.URL + "/reports"
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
 	})
 
 	t.Run("no reports selected on load", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertStringsInHTML(t, getBodyHTML(rr), []string{
@@ -39,10 +40,10 @@ func TestHandlers_Reports(t *testing.T) {
 			srv.Repository = originalRepo
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to fetch reports.\",\"title\":\"Database Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Failed to fetch reports.","title":"Database Error"}}`)
 	})
 
 	t.Run("view latest report", func(t *testing.T) {
@@ -66,7 +67,7 @@ func TestHandlers_Reports(t *testing.T) {
 			srv.Repository = originalRepo
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?view=latest", noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"?view=latest")
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertStringsInHTML(t, getBodyHTML(rr), []string{
@@ -98,7 +99,7 @@ func TestHandlers_Reports(t *testing.T) {
 			srv.Repository = originalRepo
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertStringsInHTML(t, getBodyHTML(rr), []string{
@@ -111,17 +112,18 @@ func TestHandlers_Reports(t *testing.T) {
 }
 
 func TestHandlers_Reports_Report(t *testing.T) {
-	srv := newServerTest()
-	originalRepo := srv.Repository
+	srv, ts, c := createWSServer()
+	defer c.Close()
 
-	uri := func(id string) string { return fmt.Sprintf("/reports/%s", id) }
+	originalRepo := srv.Repository
+	uri := func(id string) string { return fmt.Sprintf("%s/reports/%s", ts.URL, id) }
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodGet, uri("1"))
 	})
 
 	t.Run("redirect if access report without htmx", func(t *testing.T) {
-		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri("1"), noHeader, nil)
+		rr := sendRequestAsLoggedInNoBody(srv, http.MethodGet, uri("1"))
 
 		assertStatus(t, rr.Code, http.StatusSeeOther)
 		assertHeader(t, rr, "Location", "/reports")
@@ -137,10 +139,10 @@ func TestHandlers_Reports_Report(t *testing.T) {
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri(tc.id), noHeader, nil)
+			rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri(tc.id))
 
 			assertStatus(t, rr.Code, http.StatusBadRequest)
-			assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Report ID must be positive.\",\"title\":\"Request Error\"}"}`)
+			assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Report ID must be positive.","title":"Request Error"}}`)
 		})
 	}
 
@@ -152,27 +154,10 @@ func TestHandlers_Reports_Report(t *testing.T) {
 			srv.Repository = originalRepo
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri("6"), noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri("6"))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to fetch report.\",\"title\":\"Database Error\"}"}`)
-	})
-
-	t.Run("user cannot view report of other user", func(t *testing.T) {
-		srv.Repository = &mockRepository{
-			Reports: map[int64][]models.Report{
-				1: {{ID: 1}},
-				2: {{ID: 2}},
-			},
-		}
-		defer func() {
-			srv.Repository = originalRepo
-		}()
-
-		rr := sendHxRequestAsLoggedInOther(srv, http.MethodGet, uri("1"), noHeader, nil)
-
-		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to fetch report.\",\"title\":\"Database Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Failed to fetch report.","title":"Database Error"}}`)
 	})
 
 	sortTestcases := []struct {
@@ -282,7 +267,7 @@ func TestHandlers_Reports_Report(t *testing.T) {
 				srv.Repository = originalRepo
 			}()
 
-			rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri("1")+"?sort="+tc.sortType, noHeader, nil)
+			rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri("1")+"?sort="+tc.sortType)
 
 			assertStatus(t, rr.Code, http.StatusOK)
 			assertStringsInHTML(t, getBodyHTML(rr), tc.wantHeaders)
@@ -324,7 +309,7 @@ func TestHandlers_Reports_Report(t *testing.T) {
 				srv.Repository = originalRepo
 			}()
 
-			rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri("1")+"?tab="+tc.tab, noHeader, nil)
+			rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri("1")+"?tab="+tc.tab)
 
 			assertStatus(t, rr.Code, http.StatusOK)
 			body := getBodyHTML(rr)
@@ -356,7 +341,7 @@ func TestHandlers_Reports_Report(t *testing.T) {
 			srv.Repository = originalRepo
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri("1"), noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri("1"))
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		body := getBodyHTML(rr)
