@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-// Broker...
+// Broker represents a message broker that manages WebSocket connections for subscribers.
 type Broker struct {
 	subscribers map[int64][]*websocket.Conn
 	mu          sync.Mutex
@@ -51,7 +51,7 @@ func (b *Broker) Add(userID int64, c *websocket.Conn) {
 	b.subscribers[userID] = append(b.subscribers[userID], c)
 	b.mu.Unlock()
 
-	go func(id int64, conn *websocket.Conn) {
+	go func(_ int64, conn *websocket.Conn) {
 		for {
 			_, _, err := conn.Read(context.Background())
 			if err != nil {
@@ -61,7 +61,7 @@ func (b *Broker) Add(userID int64, c *websocket.Conn) {
 	}(userID, c)
 }
 
-// Clone...
+// Clone creates a deep copy of the Broker.
 func (b *Broker) Clone() *Broker {
 	return &Broker{
 		subscribers: maps.Clone(b.subscribers),
@@ -69,7 +69,7 @@ func (b *Broker) Clone() *Broker {
 	}
 }
 
-// Has...
+// Has checks whether a subscriber with the given userID exists in the Broker's subscribers map.
 func (b *Broker) Has(userID int64) bool {
 	if b == nil {
 		return false
