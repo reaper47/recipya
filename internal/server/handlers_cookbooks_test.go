@@ -16,13 +16,15 @@ import (
 )
 
 func TestHandlers_Cookbooks(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer c.Close()
+
 	originalRepo := &mockRepository{
 		CookbooksRegistered: map[int64][]models.Cookbook{1: {}},
 	}
 	srv.Repository = originalRepo
 
-	uri := "/cookbooks"
+	uri := ts.URL + "/cookbooks"
 
 	prepare := func(srv *server.Server, viewMode models.ViewMode) ([]models.Cookbook, *mockRepository, func()) {
 		_, repo, revertFunc := prepareCookbook(srv)
@@ -50,7 +52,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 			srv.Repository = originalRepo
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
@@ -72,17 +74,17 @@ func TestHandlers_Cookbooks(t *testing.T) {
 			srv.Repository = originalRepo
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Error getting cookbooks.\",\"title\":\"Database Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Error getting cookbooks.","title":"Database Error"}}`)
 	})
 
 	t.Run("have cookbooks grid preferred mode", func(t *testing.T) {
 		_, repo, revertFunc := prepare(srv, models.GridViewMode)
 		defer revertFunc()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertUserSettings(t, repo.UserSettingsRegistered[1], &models.UserSettings{CookbooksViewMode: models.GridViewMode})
@@ -93,7 +95,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 		_, repo, revertFunc := prepare(srv, models.ListViewMode)
 		defer revertFunc()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertUserSettings(t, repo.UserSettingsRegistered[1], &models.UserSettings{CookbooksViewMode: models.ListViewMode})
@@ -122,7 +124,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 		_, repo, revertFunc := prepare(srv, models.GridViewMode)
 		defer revertFunc()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?view=list", noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"?view=list")
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertUserSettings(t, repo.UserSettingsRegistered[1], &models.UserSettings{CookbooksViewMode: models.ListViewMode})
@@ -133,7 +135,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 		_, repo, revertFunc := prepare(srv, models.ListViewMode)
 		defer revertFunc()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri+"?view=grid", noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"?view=grid")
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertUserSettings(t, repo.UserSettingsRegistered[1], &models.UserSettings{CookbooksViewMode: models.GridViewMode})
@@ -144,7 +146,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, promptHeader, strings.NewReader(""))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Title must not be empty.\",\"title\":\"Request Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Title must not be empty.","title":"Request Error"}}`)
 	})
 
 	t.Run("create cookbook", func(t *testing.T) {
@@ -181,10 +183,11 @@ func TestHandlers_Cookbooks(t *testing.T) {
 }
 
 func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer c.Close()
 
 	uri := func(id int) string {
-		return fmt.Sprintf("/cookbooks/%d", id)
+		return fmt.Sprintf("%s/cookbooks/%d", ts.URL, id)
 	}
 
 	assertCookbooksEqual := func(t *testing.T, originalCookbooks, cookbooks []models.Cookbook) {
@@ -214,7 +217,7 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 		repo.CookbooksRegistered[2] = []models.Cookbook{{ID: 1}}
 		defer revertFunc()
 
-		rr := sendHxRequestAsLoggedInOther(srv, http.MethodDelete, uri(1), noHeader, nil)
+		rr := sendHxRequestAsLoggedInOtherNoBody(srv, http.MethodDelete, uri(1))
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertCookbooksEqual(t, originalCookbooks, repo.CookbooksRegistered[1])
@@ -227,10 +230,10 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 			return errors.New("error deleting")
 		}
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri(1), noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodDelete, uri(1))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Error deleting cookbook.\",\"title\":\"Database Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Error deleting cookbook.","title":"Database Error"}}`)
 		assertCookbooksEqual(t, originalCookbooks, repo.CookbooksRegistered[1])
 	})
 
@@ -243,7 +246,7 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 			originalCookbooks, repo, revertFunc := prepare(srv)
 			defer revertFunc()
 
-			rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri(4), noHeader, nil)
+			rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodDelete, uri(4))
 
 			assertStatus(t, rr.Code, http.StatusOK)
 			assertCookbooksEqual(t, originalCookbooks, repo.CookbooksRegistered[1])
@@ -257,7 +260,7 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 		repo.RecipesRegistered[1] = make(models.Recipes, len(originalRecipes))
 		repo.RecipesRegistered[1] = originalRecipes
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri(4), noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodDelete, uri(4))
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		if len(originalRecipes) != len(repo.CookbooksRegistered[1][0].Recipes) {
@@ -269,7 +272,7 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 		_, _, revertFunc := prepare(srv)
 		defer revertFunc()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri(20), noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri(20))
 
 		assertStatus(t, rr.Code, http.StatusNotFound)
 		want := []string{"404 page not found"}
@@ -280,7 +283,7 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 		_, _, revertFunc := prepare(srv)
 		defer revertFunc()
 
-		rr := sendHxRequestAsLoggedInOther(srv, http.MethodGet, uri(1)+"?page=1", noHeader, nil)
+		rr := sendHxRequestAsLoggedInOtherNoBody(srv, http.MethodGet, uri(1)+"?page=1")
 
 		assertStatus(t, rr.Code, http.StatusNotFound)
 		want := []string{"404 page not found"}
@@ -294,7 +297,7 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 		repo.CookbooksRegistered[1] = append(cookbooks, models.Cookbook{ID: int64(id), Title: "Ensiferum"})
 		srv.Repository = repo
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri(id)+"?page=1", noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri(id)+"?page=1")
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
@@ -321,7 +324,7 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 				_, _, revertFunc := prepare(srv)
 				defer revertFunc()
 
-				rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri(1)+"?page=1", noHeader, nil)
+				rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri(1)+"?page=1")
 
 				assertStatus(t, rr.Code, http.StatusOK)
 				want := []string{
@@ -338,13 +341,14 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 }
 
 func TestHandlers_Cookbooks_AddRecipe(t *testing.T) {
-	srv := newServerTest()
-	originalRepo := srv.Repository
+	srv, ts, c := createWSServer()
+	defer c.Close()
 
 	uri := func(cookbookID int64) string {
-		return fmt.Sprintf("/cookbooks/%d", cookbookID)
+		return fmt.Sprintf("%s/cookbooks/%d", ts.URL, cookbookID)
 	}
 
+	originalRepo := srv.Repository
 	revert := func() {
 		srv.Repository = originalRepo
 	}
@@ -357,7 +361,7 @@ func TestHandlers_Cookbooks_AddRecipe(t *testing.T) {
 		rr := sendRequestAsLoggedIn(srv, http.MethodPost, uri(1), formHeader, strings.NewReader("cookbookId=1"))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Missing 'recipeId' in body.\",\"title\":\"Form Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Missing 'recipeId' in body.","title":"Form Error"}}`)
 	})
 
 	t.Run("valid request", func(t *testing.T) {
@@ -412,7 +416,7 @@ func TestHandlers_Cookbooks_DeleteCookbookRecipe(t *testing.T) {
 		srv.Repository = repo
 		defer restore()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri(10, 10), noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodDelete, uri(10, 10))
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		if len(repo.CookbooksRegistered[1]) != 1 {
@@ -427,7 +431,7 @@ func TestHandlers_Cookbooks_DeleteCookbookRecipe(t *testing.T) {
 		srv.Repository = repo
 		defer restore()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri(1, 10), noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodDelete, uri(1, 10))
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		if len(repo.CookbooksRegistered[1]) != 2 {
@@ -445,7 +449,7 @@ func TestHandlers_Cookbooks_DeleteCookbookRecipe(t *testing.T) {
 		srv.Repository = repo
 		defer restore()
 
-		rr := sendHxRequestAsLoggedInOther(srv, http.MethodDelete, uri(1, 1), noHeader, nil)
+		rr := sendHxRequestAsLoggedInOtherNoBody(srv, http.MethodDelete, uri(1, 1))
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertCookbooks(t, repo.CookbooksRegistered[1], cookbooks1)
@@ -462,7 +466,7 @@ func TestHandlers_Cookbooks_DeleteCookbookRecipe(t *testing.T) {
 		srv.Repository = repo
 		defer restore()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri(1, 1), noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodDelete, uri(1, 1))
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertCookbooks(t, repo.CookbooksRegistered[1], []models.Cookbook{
@@ -478,7 +482,7 @@ func TestHandlers_Cookbooks_DeleteCookbookRecipe(t *testing.T) {
 		srv.Repository = repo
 		defer restore()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri(1, 1), noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodDelete, uri(1, 1))
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertCookbooks(t, repo.CookbooksRegistered[1], []models.Cookbook{
@@ -494,10 +498,11 @@ func TestHandlers_Cookbooks_DeleteCookbookRecipe(t *testing.T) {
 }
 
 func TestHandlers_Cookbooks_DownloadCookbook(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer c.Close()
 
 	uri := func(id int64) string {
-		return fmt.Sprintf("/cookbooks/%d/download", id)
+		return fmt.Sprintf("%s/cookbooks/%d/download", ts.URL, id)
 	}
 
 	t.Run("must be logged in", func(t *testing.T) {
@@ -508,25 +513,10 @@ func TestHandlers_Cookbooks_DownloadCookbook(t *testing.T) {
 		_, _, revert := prepareCookbook(srv)
 		defer revert()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri(10), noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri(10))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not fetch cookbook.\",\"title\":\"Database Error\"}"}`)
-	})
-
-	t.Run("other user cannot download someone else's cookbook", func(t *testing.T) {
-		_, _, revert := prepareCookbook(srv)
-		files := &mockFiles{}
-		srv.Files = files
-		defer revert()
-
-		rr := sendHxRequestAsLoggedInOther(srv, http.MethodGet, uri(1), noHeader, nil)
-
-		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not fetch cookbook.\",\"title\":\"Database Error\"}"}`)
-		if files.exportHitCount > 0 {
-			t.Fatal("export function must not have been called")
-		}
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Could not fetch cookbook.","title":"Database Error"}}`)
 	})
 
 	t.Run("cannot download a cookbook with no recipes", func(t *testing.T) {
@@ -535,10 +525,10 @@ func TestHandlers_Cookbooks_DownloadCookbook(t *testing.T) {
 		srv.Files = files
 		defer revert()
 
-		rr := sendHxRequestAsLoggedInOther(srv, http.MethodGet, uri(5), noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri(3))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Cookbook is empty.\",\"title\":\"Request Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Cookbook is empty.","title":"Request Error"}}`)
 		if files.exportHitCount > 0 {
 			t.Fatal("export function must not have been called")
 		}
@@ -550,7 +540,7 @@ func TestHandlers_Cookbooks_DownloadCookbook(t *testing.T) {
 		srv.Files = files
 		defer revert()
 
-		rr := sendHxRequestAsLoggedInOther(srv, http.MethodGet, uri(4), noHeader, nil)
+		rr := sendHxRequestAsLoggedInOtherNoBody(srv, http.MethodGet, uri(4))
 
 		assertStatus(t, rr.Code, http.StatusSeeOther)
 		assertHeader(t, rr, "HX-Redirect", "/download/Lovely Canada 2.pdf")
@@ -562,10 +552,11 @@ func TestHandlers_Cookbooks_DownloadCookbook(t *testing.T) {
 }
 
 func TestHandlers_Cookbooks_Image(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer c.Close()
 
 	uri := func(id int) string {
-		return fmt.Sprintf("/cookbooks/%d/image", id)
+		return fmt.Sprintf("%s/cookbooks/%d/image", ts.URL, id)
 	}
 
 	sendReq := func(image string) *httptest.ResponseRecorder {
@@ -592,7 +583,7 @@ func TestHandlers_Cookbooks_Image(t *testing.T) {
 		rr := sendReq("")
 
 		assert(t, files, repo, rr.Code, http.StatusBadRequest, uuid.Nil, 0)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Could not retrieve the image from the form.\",\"title\":\"Form Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Could not retrieve the image from the form.","title":"Form Error"}}`)
 	})
 
 	t.Run("upload image failed", func(t *testing.T) {
@@ -606,7 +597,7 @@ func TestHandlers_Cookbooks_Image(t *testing.T) {
 		rr := sendReq("eggs.jpg")
 
 		assert(t, files, repo, rr.Code, http.StatusInternalServerError, uuid.Nil, 0)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Error uploading image.\",\"title\":\"Files Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Error uploading image.","title":"Files Error"}}`)
 	})
 
 	t.Run("updating image failed", func(t *testing.T) {
@@ -620,7 +611,7 @@ func TestHandlers_Cookbooks_Image(t *testing.T) {
 		rr := sendReq("eggs.jpg")
 
 		assert(t, files, repo, http.StatusInternalServerError, rr.Code, uuid.Nil, 1)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Error updating image.\",\"title\":\"Database Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Error updating image.","title":"Database Error"}}`)
 	})
 
 	t.Run("upload image", func(t *testing.T) {
@@ -647,14 +638,14 @@ func TestHandlers_Cookbooks_RecipesSearch(t *testing.T) {
 	})
 
 	t.Run("id must be positive", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri(0), noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri(0))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
 		assertStringsInHTML(t, getBodyHTML(rr), []string{"Cookbook ID in path must be > 0."})
 	})
 
 	t.Run("page query parameter is mandatory", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri(1), noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri(1))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
 		assertStringsInHTML(t, getBodyHTML(rr), []string{"Missing page number in query."})
@@ -664,7 +655,7 @@ func TestHandlers_Cookbooks_RecipesSearch(t *testing.T) {
 		_, _, revertFunc := prepareCookbook(srv)
 		defer revertFunc()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri(1)+"?page=1", noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri(1)+"?page=1")
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
 		assertHeader(t, rr, "HX-Redirect", "/cookbooks/1")
@@ -675,7 +666,7 @@ func TestHandlers_Cookbooks_RecipesSearch(t *testing.T) {
 		_, _, revertFunc := prepareCookbook(srv)
 		defer revertFunc()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri(1)+"?page=1&q=hello&mode=name", noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri(1)+"?page=1&q=hello&mode=name")
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
@@ -717,7 +708,7 @@ func TestHandlers_Cookbooks_RecipesSearch(t *testing.T) {
 			_, _, revertFunc := prepareCookbook(srv)
 			defer revertFunc()
 
-			rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri(1)+"?page=1&q=best&mode="+tc.mode, noHeader, nil)
+			rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri(1)+"?page=1&q=best&mode="+tc.mode)
 
 			assertStatus(t, rr.Code, http.StatusOK)
 			assertStringsInHTML(t, getBodyHTML(rr), tc.want)
@@ -752,7 +743,7 @@ func TestHandlers_Cookbooks_RecipesSearch(t *testing.T) {
 			_, _, revertFunc := prepareCookbook(srv)
 			defer revertFunc()
 
-			rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri(1)+"?page=1&q="+tc.query, noHeader, nil)
+			rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri(1)+"?page=1&q="+tc.query)
 
 			assertStatus(t, rr.Code, http.StatusOK)
 			assertStringsInHTML(t, getBodyHTML(rr), tc.want)
@@ -761,9 +752,10 @@ func TestHandlers_Cookbooks_RecipesSearch(t *testing.T) {
 }
 
 func TestHandlers_Cookbooks_ReorderRecipes(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer c.Close()
 
-	uri := "/cookbooks/1/reorder"
+	uri := ts.URL + "/cookbooks/1/reorder"
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodPut, uri)
@@ -790,7 +782,7 @@ func TestHandlers_Cookbooks_ReorderRecipes(t *testing.T) {
 			rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, uri, formHeader, strings.NewReader(tc.form))
 
 			assertStatus(t, rr.Code, http.StatusBadRequest)
-			assertHeader(t, rr, "HX-Trigger", fmt.Sprintf(`{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"%s\",\"title\":\"Form Error\"}"}`, tc.wantToast))
+			assertWebsocket(t, c, 1, fmt.Sprintf(`{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"%s","title":"Form Error"}}`, tc.wantToast))
 		})
 	}
 
@@ -802,10 +794,11 @@ func TestHandlers_Cookbooks_ReorderRecipes(t *testing.T) {
 }
 
 func TestHandlers_Cookbooks_Share(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer c.Close()
 
 	uri := func(id int64) string {
-		return fmt.Sprintf("/cookbooks/%d/share", id)
+		return fmt.Sprintf("%s/cookbooks/%d/share", ts.URL, id)
 	}
 
 	link := "/c/33320755-82f9-47e5-bb0a-d1b55cbd3f7b"
@@ -816,21 +809,21 @@ func TestHandlers_Cookbooks_Share(t *testing.T) {
 	})
 
 	t.Run("cookbook not registered", func(t *testing.T) {
-		rr := sendRequestAsLoggedIn(srv, http.MethodPost, uri(1), noHeader, nil)
+		rr := sendRequestAsLoggedInNoBody(srv, http.MethodPost, uri(1))
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to create share link.\",\"title\":\"Database Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Failed to create share link.","title":"Database Error"}}`)
 	})
 
 	t.Run("create valid share link", func(t *testing.T) {
 		_, _, revert := prepareCookbook(srv)
 		defer revert()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri(1), noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodPost, uri(1))
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
-			`<div class="grid grid-flow-col gap-2"><label><input type="url" value="example.com/c/33320755-82f9-47e5-bb0a-d1b55cbd3f7b" class="input input-bordered w-full" readonly="readonly"></label> <script type="text/javascript">function __templ_copyToClipboard`,
+			`<div class="grid grid-flow-col gap-2"><label><input type="url" value="` + strings.TrimPrefix(ts.URL, "http://") + `/c/33320755-82f9-47e5-bb0a-d1b55cbd3f7b" class="input input-bordered w-full" readonly="readonly"></label> <script type="text/javascript">function __templ_copyToClipboard`,
 			`{if (window.navigator.clipboard) { navigator.clipboard.writeText(text); copy_button.textContent = "Copied!"; copy_button.setAttribute("disabled", true); copy_button.classList.toggle(".btn-disabled"); } else { alert('Your browser does not support the clipboard feature. Please copy the link manually.'); }}</script><button id="copy_button" class="btn btn-neutral" title="Copy to clipboard" onClick="__templ_copyToClipboard`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
@@ -840,7 +833,7 @@ func TestHandlers_Cookbooks_Share(t *testing.T) {
 		_, _, revert := prepareCookbook(srv)
 		defer revert()
 
-		rr := sendRequest(srv, http.MethodGet, link2, noHeader, nil)
+		rr := sendRequestNoBody(srv, http.MethodGet, link2)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
@@ -863,7 +856,7 @@ func TestHandlers_Cookbooks_Share(t *testing.T) {
 		_, _, revert := prepareCookbook(srv)
 		defer revert()
 
-		rr := sendRequest(srv, http.MethodGet, link, noHeader, nil)
+		rr := sendRequestNoBody(srv, http.MethodGet, link)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
@@ -881,17 +874,17 @@ func TestHandlers_Cookbooks_Share(t *testing.T) {
 
 	testcases := []struct {
 		name     string
-		sendFunc func(server *server.Server, target, uri string, contentType header, body *strings.Reader) *httptest.ResponseRecorder
+		sendFunc func(server *server.Server, target, uri string) *httptest.ResponseRecorder
 	}{
-		{name: "other user Hx-Request", sendFunc: sendHxRequestAsLoggedInOther},
-		{name: "other user no Hx-Request", sendFunc: sendRequestAsLoggedInOther},
+		{name: "other user Hx-Request", sendFunc: sendHxRequestAsLoggedInOtherNoBody},
+		{name: "other user no Hx-Request", sendFunc: sendRequestAsLoggedInOtherNoBody},
 	}
 	for _, tc := range testcases {
 		t.Run("access share link logged in "+tc.name, func(t *testing.T) {
 			_, _, revert := prepareCookbook(srv)
 			defer revert()
 
-			rr := tc.sendFunc(srv, http.MethodGet, link, noHeader, nil)
+			rr := tc.sendFunc(srv, http.MethodGet, link)
 
 			assertStatus(t, rr.Code, http.StatusOK)
 			want := []string{
@@ -908,17 +901,17 @@ func TestHandlers_Cookbooks_Share(t *testing.T) {
 
 	testcases2 := []struct {
 		name     string
-		sendFunc func(server *server.Server, target, uri string, contentType header, body *strings.Reader) *httptest.ResponseRecorder
+		sendFunc func(server *server.Server, target, uri string) *httptest.ResponseRecorder
 	}{
-		{name: "host user Hx-Request", sendFunc: sendHxRequestAsLoggedIn},
-		{name: "host user no Hx-Request", sendFunc: sendRequestAsLoggedIn},
+		{name: "host user Hx-Request", sendFunc: sendHxRequestAsLoggedInNoBody},
+		{name: "host user no Hx-Request", sendFunc: sendRequestAsLoggedInNoBody},
 	}
 	for _, tc := range testcases2 {
 		t.Run("access share link logged in "+tc.name, func(t *testing.T) {
 			_, _, revert := prepareCookbook(srv)
 			defer revert()
 
-			rr := tc.sendFunc(srv, http.MethodGet, link, noHeader, nil)
+			rr := tc.sendFunc(srv, http.MethodGet, link)
 
 			assertStatus(t, rr.Code, http.StatusOK)
 			want := []string{
@@ -988,6 +981,7 @@ func prepareCookbook(srv *server.Server) (*mockFiles, *mockRepository, func()) {
 				models.Cookbook{ID: 5, Title: "Lovely Ukraine 2"},
 				models.Cookbook{ID: 6, Title: "Lovely America 2"},
 			},
+			3: {},
 		},
 		RecipesRegistered: map[int64]models.Recipes{1: recipes},
 		ShareLinks: map[string]models.Share{

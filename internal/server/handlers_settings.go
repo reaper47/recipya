@@ -2,7 +2,6 @@ package server
 
 import (
 	"bytes"
-	"fmt"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
@@ -18,12 +17,22 @@ import (
 
 func (s *Server) settingsHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var data templates.SettingsData
+		var (
+			data        templates.SettingsData
+			isHxRequest = r.Header.Get("Hx-Request") == "true"
+			userID      = getUserID(r)
+		)
+
 		if app.Config.Server.IsAutologin {
-			systems, settings, err := s.Repository.MeasurementSystems(getUserID(r))
+			systems, settings, err := s.Repository.MeasurementSystems(userID)
 			if err != nil {
-				w.Header().Set("HX-Trigger", models.NewErrorDBToast("Error fetching units systems.").Render())
+				msg := "Error fetching unit systems: " + err.Error()
 				w.WriteHeader(http.StatusInternalServerError)
+				if isHxRequest {
+					s.Brokers.SendToast(models.NewErrorDBToast(msg), userID)
+				} else {
+					w.Write([]byte(msg))
+				}
 				return
 			}
 			data.UserSettings = settings
@@ -32,12 +41,62 @@ func (s *Server) settingsHandler() http.HandlerFunc {
 
 		_ = components.Settings(templates.Data{
 			About:           templates.NewAboutData(),
-			IsAdmin:         getUserID(r) == 1,
+			IsAdmin:         userID == 1,
 			IsAutologin:     app.Config.Server.IsAutologin,
 			IsAuthenticated: true,
-			IsHxRequest:     r.Header.Get("Hx-Request") == "true",
+			IsHxRequest:     isHxRequest,
 			Settings:        data,
 		}).Render(r.Context(), w)
+	}
+}
+
+func (s *Server) settingsBackupsRestoreHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		userID := getUserID(r)
+		userIDAttr := slog.Int64("userID", userID)
+
+		dateStr := r.FormValue("date")
+		_, err := time.Parse(time.DateOnly, dateStr)
+		if err != nil {
+			msg := dateStr + " is an invalid backup."
+			slog.Error(msg, userIDAttr, "error", err)
+			s.Brokers.SendToast(models.NewErrorFormToast(msg), userID)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		err = s.Files.BackupUserData(s.Repository, userID)
+		if err != nil {
+			msg := "Failed to backup current data."
+			slog.Error(msg, userIDAttr, "error", err)
+			s.Brokers.SendToast(models.NewErrorFilesToast(msg), userID)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		backup, err := s.Files.ExtractUserBackup(dateStr, userID)
+		if err != nil {
+			msg := "Failed to extract backup."
+			slog.Error(msg, userIDAttr, "date", dateStr, "error", err)
+			s.Brokers.SendToast(models.NewErrorFilesToast(msg), userID)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		defer os.RemoveAll(filepath.Dir(backup.ImagesPath))
+
+		err = s.Repository.RestoreUserBackup(backup)
+		if err != nil {
+			msg := "Failed to restore backup."
+			slog.Error(msg, userIDAttr, "error", err)
+			s.Brokers.SendToast(models.NewErrorDBToast(msg), userID)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		msg := "Backup restored successfully."
+		slog.Info(msg, userIDAttr, "date", dateStr)
+		s.Brokers.SendToast(models.NewInfoToast(msg, "", ""), userID)
+		w.WriteHeader(http.StatusOK)
 	}
 }
 
@@ -48,7 +107,7 @@ func (s *Server) settingsCalculateNutritionPostHandler() http.HandlerFunc {
 		if err != nil {
 			msg := "Failed to set setting."
 			slog.Error(msg, "userID", getUserID(r), "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast(msg).Render())
+			s.Brokers.SendToast(models.NewErrorDBToast(msg), getUserID(r))
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -56,7 +115,7 @@ func (s *Server) settingsCalculateNutritionPostHandler() http.HandlerFunc {
 	}
 }
 
-func settingsConfigPutHandler() http.HandlerFunc {
+func (s *Server) settingsConfigPutHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		err := app.Config.Update(app.ConfigFile{
 			Email: app.ConfigEmail{
@@ -78,27 +137,32 @@ func settingsConfigPutHandler() http.HandlerFunc {
 		if err != nil {
 			msg := "Failed to update configuration."
 			slog.Error(msg, "userID", getUserID(r), "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast(msg).Render())
+			s.Brokers.SendToast(models.NewErrorDBToast(msg), getUserID(r))
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
-		w.Header().Set("HX-Trigger", models.NewInfoToast("Configuration updated.", "", "").Render())
+		s.Brokers.SendToast(models.NewInfoToast("Configuration updated.", "", ""), getUserID(r))
 		w.WriteHeader(http.StatusNoContent)
 	}
 }
 
 func (s *Server) settingsConvertAutomaticallyPostHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		isConvert := r.FormValue("convert") == "on"
-		err := s.Repository.UpdateConvertMeasurementSystem(getUserID(r), isConvert)
+		var (
+			isConvert = r.FormValue("convert") == "on"
+			userID    = getUserID(r)
+		)
+
+		err := s.Repository.UpdateConvertMeasurementSystem(userID, isConvert)
 		if err != nil {
 			msg := "Failed to set setting."
-			slog.Error(msg, "userID", getUserID(r), "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast(msg).Render())
+			slog.Error(msg, "userID", userID, "error", err)
+			s.Brokers.SendToast(models.NewErrorDBToast(msg), userID)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
+
 		w.WriteHeader(http.StatusNoContent)
 	}
 }
@@ -106,35 +170,28 @@ func (s *Server) settingsConvertAutomaticallyPostHandler() http.HandlerFunc {
 func (s *Server) settingsExportRecipesHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		userID := getUserID(r)
-		_, found := s.Brokers[userID]
-		if !found {
+
+		if !s.Brokers.Has(userID) {
 			w.Header().Set("HX-Trigger", models.NewWarningWSToast("Connection lost. Please reload page.").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
-		query := r.URL.Query()
-		if query == nil {
-			w.Header().Set("HX-Trigger", models.NewErrorReqToast("Could not parse query.").Render())
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-
-		qType := query.Get("type")
+		qType := r.URL.Query().Get("type")
 		fileType := models.NewFileType(qType)
 		if fileType == models.InvalidFileType {
-			w.Header().Set("HX-Trigger", models.NewErrorFilesToast("Invalid export file format.").Render())
+			s.Brokers.SendToast(models.NewErrorFilesToast("Invalid export file format."), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		go func() {
-			s.Brokers[userID].SendProgressStatus("Preparing...", true, 0, -1)
+			s.Brokers.SendProgressStatus("Preparing...", true, 0, -1, userID)
 
 			recipes := s.Repository.RecipesAll(userID)
 			if len(recipes) == 0 {
-				s.Brokers[userID].HideNotification()
-				s.Brokers[userID].SendToast(models.NewWarningToast("No recipes in database.", "", ""))
+				s.Brokers.HideNotification(userID)
+				s.Brokers.SendToast(models.NewWarningToast("No recipes in database.", "", ""), userID)
 				return
 			}
 
@@ -156,21 +213,21 @@ func (s *Server) settingsExportRecipesHandler() http.HandlerFunc {
 			}()
 
 			select {
-			case err := <-errors:
-				fmt.Println(err)
-				s.Brokers[userID].HideNotification()
-				s.Brokers[userID].SendToast(models.NewErrorFilesToast("Failed to export recipes."))
+			case err = <-errors:
+				slog.Error("Failed to export recipes", "userID", userID, "error", err)
+				s.Brokers.HideNotification(userID)
+				s.Brokers.SendToast(models.NewErrorFilesToast("Failed to export recipes."), userID)
 				return
 			case <-iter:
 				for value := range iter {
-					s.Brokers[userID].SendProgress("Exporting recipes...", value, numRecipes)
+					s.Brokers.SendProgress("Exporting recipes...", value, numRecipes, userID)
 				}
 			}
 
-			s.Brokers[userID].HideNotification()
-			s.Brokers[userID].SendFile("recipes_"+qType+".zip", data)
+			s.Brokers.HideNotification(userID)
+			s.Brokers.SendFile("recipes_"+qType+".zip", data, userID)
 			if err != nil {
-				fmt.Println(err)
+				slog.Error("Could not send file", "userID", userID, "file", "recipes_"+qType+".zip", "error", err)
 				return
 			}
 		}()
@@ -188,7 +245,7 @@ func (s *Server) settingsMeasurementSystemsPostHandler() http.HandlerFunc {
 		if err != nil {
 			msg := "Error fetching units systems."
 			slog.Error(msg, "userID", userIDAttr, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast(msg).Render())
+			s.Brokers.SendToast(models.NewErrorDBToast(msg), userID)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -197,7 +254,7 @@ func (s *Server) settingsMeasurementSystemsPostHandler() http.HandlerFunc {
 		if !slices.Contains(systems, system) {
 			msg := "Measurement system does not exist."
 			slog.Error(msg, userIDAttr, "systems", systems, "settings", settings, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast(msg).Render())
+			s.Brokers.SendToast(models.NewErrorFormToast(msg), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -205,7 +262,7 @@ func (s *Server) settingsMeasurementSystemsPostHandler() http.HandlerFunc {
 		if settings.MeasurementSystem == system {
 			msg := "System already set to " + system.String() + "."
 			slog.Warn(msg, userIDAttr, "currentSystem", settings.MeasurementSystem, "system", system, "systems", systems)
-			w.Header().Set("HX-Trigger", models.NewWarningToast(msg, "", "").Render())
+			s.Brokers.SendToast(models.NewWarningToast(msg, "", ""), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -214,63 +271,13 @@ func (s *Server) settingsMeasurementSystemsPostHandler() http.HandlerFunc {
 		if err != nil {
 			msg := "Error switching units system."
 			slog.Error(msg, userIDAttr, "system", system, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast(msg).Render())
+			s.Brokers.SendToast(models.NewErrorDBToast(msg), userID)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
 		slog.Info("Switched measurement system", "from", settings.MeasurementSystem, "to", system)
 		w.WriteHeader(http.StatusNoContent)
-	}
-}
-
-func (s *Server) settingsBackupsRestoreHandler() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		userID := getUserID(r)
-		userIDAttr := slog.Int64("userID", userID)
-
-		dateStr := r.FormValue("date")
-		_, err := time.Parse(time.DateOnly, dateStr)
-		if err != nil {
-			msg := dateStr + " is an invalid backup."
-			slog.Error(msg, userIDAttr, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast(msg).Render())
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-
-		err = s.Files.BackupUserData(s.Repository, userID)
-		if err != nil {
-			msg := "Failed to backup current data."
-			slog.Error(msg, userIDAttr, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorFilesToast(msg).Render())
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-
-		backup, err := s.Files.ExtractUserBackup(dateStr, userID)
-		if err != nil {
-			msg := "Failed to extract backup."
-			slog.Error(msg, userIDAttr, "date", dateStr, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorFilesToast(msg).Render())
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-		defer os.RemoveAll(filepath.Dir(backup.ImagesPath))
-
-		err = s.Repository.RestoreUserBackup(backup)
-		if err != nil {
-			msg := "Failed to restore backup."
-			slog.Error(msg, userIDAttr, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast(msg).Render())
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-
-		msg := "Backup restored successfully."
-		slog.Info(msg, userIDAttr, "date", dateStr)
-		w.Header().Set("HX-Trigger", models.NewInfoToast(msg, "", "").Render())
-		w.WriteHeader(http.StatusOK)
 	}
 }
 
@@ -310,7 +317,7 @@ func (s *Server) settingsTabsRecipesHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		systems, settings, err := s.Repository.MeasurementSystems(getUserID(r))
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast("Error fetching units systems.").Render())
+			s.Brokers.SendToast(models.NewErrorDBToast("Error fetching units systems."), getUserID(r))
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}

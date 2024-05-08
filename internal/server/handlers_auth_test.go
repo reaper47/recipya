@@ -16,9 +16,11 @@ import (
 )
 
 func TestHandlers_Auth_ChangePassword(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer c.Close()
 
-	const uri = "/auth/change-password"
+	uri := ts.URL + "/auth/change-password"
+	originalRepo := srv.Repository
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
@@ -28,21 +30,28 @@ func TestHandlers_Auth_ChangePassword(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("password-current=test1&password-new=test2&password-confirm=test"))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Passwords do not match.\",\"title\":\"Form Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Passwords do not match.","title":"Form Error"}}`)
 	})
 
 	t.Run("Wrong current password", func(t *testing.T) {
+		srv.Repository = &mockRepository{
+			isUserPasswordFunc: func(_ int64, _ string) bool { return false },
+		}
+		defer func() {
+			srv.Repository = originalRepo
+		}()
+
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("password-current=cat&password-new=test2&password-confirm=test2"))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Current password is incorrect.\",\"title\":\"Form Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Current password is incorrect.","title":"Form Error"}}`)
 	})
 
 	t.Run("new password same as current", func(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("password-current=test2&password-new=test2&password-confirm=test2"))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"New password is same as current.\",\"title\":\"Form Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"New password is same as current.","title":"Form Error"}}`)
 	})
 
 	t.Run("cannot change password if autologin", func(t *testing.T) {
@@ -67,7 +76,7 @@ func TestHandlers_Auth_ChangePassword(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("password-current=test1&password-new=test2&password-confirm=test2"))
 
 		assertStatus(t, rr.Code, http.StatusNoContent)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-info\",\"message\":\"\",\"title\":\"Password updated.\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-info","message":"","title":"Password updated."}}`)
 		if !slices.Contains(repo.UsersUpdated, 1) {
 			t.Fatal("must have called UpdatePassword on the user")
 		}
@@ -85,7 +94,7 @@ func TestHandlers_Auth_Confirm(t *testing.T) {
 	const uri = "/auth/confirm"
 
 	t.Run("missing token", func(t *testing.T) {
-		rr := sendRequest(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendRequestNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusSeeOther)
 		assertHeader(t, rr, "Location", "/")
@@ -94,7 +103,7 @@ func TestHandlers_Auth_Confirm(t *testing.T) {
 	t.Run("invalid token for existing user", func(t *testing.T) {
 		token, _ := auth.CreateToken(map[string]any{"userID": 2}, 1*time.Nanosecond)
 
-		rr := sendRequest(srv, http.MethodGet, uri+"?token="+token, noHeader, nil)
+		rr := sendRequestNoBody(srv, http.MethodGet, uri+"?token="+token)
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
 		want := []string{
@@ -107,7 +116,7 @@ func TestHandlers_Auth_Confirm(t *testing.T) {
 	t.Run("user does not exist", func(t *testing.T) {
 		token, _ := auth.CreateToken(map[string]any{"userID": 2}, 1*time.Hour)
 
-		rr := sendRequest(srv, http.MethodGet, uri+"?token="+token, noHeader, nil)
+		rr := sendRequestNoBody(srv, http.MethodGet, uri+"?token="+token)
 
 		assertStatus(t, rr.Code, http.StatusNotFound)
 		want := []string{
@@ -120,7 +129,7 @@ func TestHandlers_Auth_Confirm(t *testing.T) {
 	t.Run("valid confirmation token for existing user", func(t *testing.T) {
 		token, _ := auth.CreateToken(map[string]any{"userID": 1}, 1*time.Hour)
 
-		rr := sendRequest(srv, http.MethodGet, uri+"?token="+token, noHeader, nil)
+		rr := sendRequestNoBody(srv, http.MethodGet, uri+"?token="+token)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
@@ -132,7 +141,9 @@ func TestHandlers_Auth_Confirm(t *testing.T) {
 }
 
 func TestHandlers_Auth_DeleteUser(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer c.Close()
+
 	originalRepo := &mockRepository{
 		UsersRegistered: []models.User{
 			{ID: 1},
@@ -141,7 +152,7 @@ func TestHandlers_Auth_DeleteUser(t *testing.T) {
 	}
 	srv.Repository = originalRepo
 
-	uri := "/auth/user"
+	uri := ts.URL + "/auth/user"
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodDelete, uri)
@@ -161,10 +172,10 @@ func TestHandlers_Auth_DeleteUser(t *testing.T) {
 			srv.Repository = originalRepo
 		}()
 
-		rr := sendRequestAsLoggedIn(srv, http.MethodDelete, uri, noHeader, nil)
+		rr := sendRequestAsLoggedInNoBody(srv, http.MethodDelete, uri)
 
 		assertStatus(t, rr.Code, http.StatusTeapot)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Your savings account has been deleted.\",\"title\":\"General Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Your savings account has been deleted.","title":"General Error"}}`)
 	})
 
 	t.Run("cannot delete user if autologin", func(t *testing.T) {
@@ -173,7 +184,7 @@ func TestHandlers_Auth_DeleteUser(t *testing.T) {
 			app.Config.Server.IsAutologin = false
 		}()
 
-		rr := sendRequestAsLoggedIn(srv, http.MethodDelete, uri, noHeader, nil)
+		rr := sendRequestAsLoggedInNoBody(srv, http.MethodDelete, uri)
 
 		assertStatus(t, rr.Code, http.StatusForbidden)
 	})
@@ -184,7 +195,7 @@ func TestHandlers_Auth_DeleteUser(t *testing.T) {
 			srv.Repository = originalRepo
 		}()
 
-		rr := sendHxRequestAsLoggedInOther(srv, http.MethodDelete, uri, noHeader, nil)
+		rr := sendHxRequestAsLoggedInOtherNoBody(srv, http.MethodDelete, uri)
 
 		assertStatus(t, rr.Code, http.StatusSeeOther)
 		assertHeader(t, rr, "HX-Redirect", "/")
@@ -201,7 +212,7 @@ func TestHandlers_Auth_DeleteUser(t *testing.T) {
 			srv.Repository = originalRepo
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri, noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodDelete, uri)
 
 		assertStatus(t, rr.Code, http.StatusSeeOther)
 		assertHeader(t, rr, "HX-Redirect", "/")
@@ -244,7 +255,7 @@ func TestHandlers_Auth_ForgotPassword(t *testing.T) {
 	uri := "/auth/forgot-password"
 
 	t.Run("anonymous user accesses forgot password", func(t *testing.T) {
-		rr := sendRequest(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendRequestNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
@@ -256,7 +267,7 @@ func TestHandlers_Auth_ForgotPassword(t *testing.T) {
 	})
 
 	t.Run("logged-in user cannot access forgot password form", func(t *testing.T) {
-		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusSeeOther)
 		assertHeader(t, rr, "HX-Redirect", "/settings")
@@ -327,7 +338,7 @@ func TestHandlers_Auth_ForgotPassword(t *testing.T) {
 				token = "hello"
 			}
 
-			rr := sendRequest(srv, http.MethodGet, fmt.Sprintf("%s/reset?token=%s", uri, token), noHeader, nil)
+			rr := sendRequestNoBody(srv, http.MethodGet, fmt.Sprintf("%s/reset?token=%s", uri, token))
 
 			assertStatus(t, rr.Code, http.StatusBadRequest)
 			want := []string{
@@ -341,7 +352,7 @@ func TestHandlers_Auth_ForgotPassword(t *testing.T) {
 	t.Run("reset password link is valid", func(t *testing.T) {
 		token, _ := auth.CreateToken(map[string]any{"userID": 1}, 1*time.Second)
 
-		rr := sendRequest(srv, http.MethodGet, fmt.Sprintf("%s/reset?token=%s", uri, token), noHeader, nil)
+		rr := sendRequestNoBody(srv, http.MethodGet, fmt.Sprintf("%s/reset?token=%s", uri, token))
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
@@ -443,7 +454,7 @@ func TestHandlers_Auth_Login(t *testing.T) {
 			app.Config.Server.IsNoSignups = false
 		}()
 
-		rr := sendRequest(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendRequestNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		body := getBodyHTML(rr)
@@ -537,7 +548,7 @@ func TestHandlers_Auth_Logout(t *testing.T) {
 	t.Run("cannot log out a user who is already logged out", func(t *testing.T) {
 		originalNumSessions := len(server.SessionData.Data)
 
-		rr := sendRequest(srv, http.MethodPost, uri, noHeader, nil)
+		rr := sendRequestNoBody(srv, http.MethodPost, uri)
 
 		assertStatus(t, rr.Code, http.StatusNoContent)
 		if originalNumSessions != len(server.SessionData.Data) {
@@ -549,7 +560,7 @@ func TestHandlers_Auth_Logout(t *testing.T) {
 		clear(server.SessionData.Data)
 		originalNumSessions := len(server.SessionData.Data) + 1
 
-		rr := sendRequestAsLoggedIn(srv, http.MethodPost, uri, noHeader, nil)
+		rr := sendRequestAsLoggedInNoBody(srv, http.MethodPost, uri)
 
 		assertStatus(t, rr.Code, http.StatusSeeOther)
 		if len(server.SessionData.Data) != originalNumSessions-1 {
@@ -629,7 +640,7 @@ func TestHandlers_Auth_Register(t *testing.T) {
 			app.Config.Server.IsAutologin = false
 		}()
 
-		rrGet := sendRequest(srv, http.MethodGet, uri, noHeader, nil)
+		rrGet := sendRequestNoBody(srv, http.MethodGet, uri)
 		rrPost := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email=test@test.com&password=test123&password-confirm=test123"))
 
 		assertStatus(t, rrGet.Code, http.StatusSeeOther)
@@ -643,7 +654,7 @@ func TestHandlers_Auth_Register(t *testing.T) {
 			app.Config.Server.IsNoSignups = false
 		}()
 
-		rrGet := sendRequest(srv, http.MethodGet, uri, noHeader, nil)
+		rrGet := sendRequestNoBody(srv, http.MethodGet, uri)
 		rrPost := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email=test@test.com&password=test123&password-confirm=test123"))
 
 		assertStatus(t, rrGet.Code, http.StatusSeeOther)

@@ -29,13 +29,13 @@ func TestHandlers_General_Download(t *testing.T) {
 			srv.Files = &mockFiles{}
 		}()
 
-		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri+"/does-not-exists", noHeader, nil)
+		rr := sendRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"/does-not-exists")
 
 		assertStatus(t, rr.Code, http.StatusNotFound)
 	})
 
 	t.Run("file exists", func(t *testing.T) {
-		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri+"/exists", noHeader, nil)
+		rr := sendRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"/exists")
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertHeader(t, rr, "Content-Type", "text/plain; charset=utf-8")
@@ -45,26 +45,27 @@ func TestHandlers_General_Download(t *testing.T) {
 }
 
 func TestHandlers_General_Fetch(t *testing.T) {
-	srv := newServerTest()
+	srv, ts, c := createWSServer()
+	defer c.Close()
 
-	uri := "/fetch"
+	uri := ts.URL + "/fetch"
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
 	})
 
 	t.Run("no url to fetch", func(t *testing.T) {
-		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Invalid URL.\",\"title\":\"General Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Invalid URL.","title":"General Error"}}`)
 	})
 
 	t.Run("malformed url", func(t *testing.T) {
-		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri+"?url=slava-ukraini", noHeader, nil)
+		rr := sendRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"?url=slava-ukraini")
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Invalid URL.\",\"title\":\"General Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Invalid URL.","title":"General Error"}}`)
 	})
 }
 
@@ -79,7 +80,7 @@ func TestHandlers_General_Index(t *testing.T) {
 	const uri = "/"
 
 	t.Run("anonymous access", func(t *testing.T) {
-		rr := sendRequest(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendRequestNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusSeeOther)
 		got := getBodyHTML(rr)
@@ -100,7 +101,7 @@ func TestHandlers_General_Index(t *testing.T) {
 		defer func() {
 			app.Config.Server.IsAutologin = false
 		}()
-		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 		got := getBodyHTML(rr)
 
 		assertStatus(t, rr.Code, http.StatusOK)
@@ -111,7 +112,7 @@ func TestHandlers_General_Index(t *testing.T) {
 	})
 
 	t.Run("logged in basic access", func(t *testing.T) {
-		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 		got := getBodyHTML(rr)
 
 		assertStatus(t, rr.Code, http.StatusOK)
@@ -142,7 +143,7 @@ func TestHandlers_General_Index(t *testing.T) {
 			app.Info.IsUpdateAvailable = false
 		}()
 
-		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertStringsInHTML(t, getBodyHTML(rr), []string{
@@ -157,7 +158,7 @@ func TestHandlers_General_Index(t *testing.T) {
 func TestHandlers_General_NotFound(t *testing.T) {
 	srv := newServerTest()
 
-	rr := sendRequestAsLoggedIn(srv, http.MethodGet, "/i-dont-exist-haha", noHeader, nil)
+	rr := sendRequestAsLoggedInNoBody(srv, http.MethodGet, "/i-dont-exist-haha")
 
 	assertStatus(t, rr.Code, http.StatusNotFound)
 	want := []string{
@@ -168,10 +169,11 @@ func TestHandlers_General_NotFound(t *testing.T) {
 }
 
 func TestHandlers_General_Update(t *testing.T) {
-	srv := newServerTest()
-	originalFiles := srv.Files
+	srv, ts, c := createWSServer()
+	defer c.Close()
 
-	const uri = "/update"
+	originalFiles := srv.Files
+	uri := ts.URL + "/update"
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
@@ -187,10 +189,10 @@ func TestHandlers_General_Update(t *testing.T) {
 			srv.Files = originalFiles
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Failed to update.\",\"title\":\"General Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Failed to update.","title":"General Error"}}`)
 	})
 
 	t.Run("no update available", func(t *testing.T) {
@@ -203,17 +205,17 @@ func TestHandlers_General_Update(t *testing.T) {
 			srv.Files = originalFiles
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusNoContent)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-warning\",\"message\":\"No update available.\",\"title\":\"\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-warning","message":"No update available.","title":""}}`)
 	})
 
 	t.Run("update available", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusNoContent)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-info\",\"message\":\"Application will reload in 5 seconds.\",\"title\":\"Software updated\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-info","message":"Application will reload in 5 seconds.","title":"Software updated"}}`)
 	})
 }
 
@@ -232,7 +234,7 @@ func TestHandlers_General_UserInitials(t *testing.T) {
 	})
 
 	t.Run("logged in user has initials", func(t *testing.T) {
-		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		body := getBodyHTML(rr)

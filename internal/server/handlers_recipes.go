@@ -43,7 +43,7 @@ func (s *Server) recipesHandler() http.HandlerFunc {
 
 		p, err := newRecipesPagination(s, userID, pageNumber, sorts, false)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorGeneralToast("Error updating pagination.").Render())
+			s.Brokers.SendToast(models.NewErrorGeneralToast("Error updating pagination."), userID)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -110,31 +110,30 @@ func (s *Server) recipesAddImportHandler() http.HandlerFunc {
 		userID := getUserID(r)
 		userIDAttr := slog.Int64("userID", userID)
 
-		_, found := s.Brokers[userID]
-		if !found {
+		if !s.Brokers.Has(userID) {
 			w.Header().Set("HX-Trigger", models.NewWarningWSToast("Connection lost. Please reload page.").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
-		s.Brokers[userID].SendProgressStatus("Preparing...", true, 0, -1)
+		s.Brokers.SendProgressStatus("Preparing...", true, 0, -1, userID)
 
 		err := r.ParseMultipartForm(maxSize)
 		if err != nil {
-			s.Brokers[userID].HideNotification()
+			s.Brokers.HideNotification(userID)
 			msg := "Could not parse the uploaded files."
 			slog.Error(msg, userIDAttr, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast(msg).Render())
+			s.Brokers.SendToast(models.NewErrorFormToast(msg), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		files, filesOk := r.MultipartForm.File["files"]
 		if !filesOk {
-			s.Brokers[userID].HideNotification()
+			s.Brokers.HideNotification(userID)
 			msg := "Could not retrieve the files or the directory from the form."
 			slog.Error(msg, userIDAttr, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast(msg).Render())
+			s.Brokers.SendToast(models.NewErrorFormToast(msg), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -149,12 +148,12 @@ func (s *Server) recipesAddImportHandler() http.HandlerFunc {
 			)
 
 			if total == 0 {
-				s.Brokers[userID].HideNotification()
-				s.Brokers[userID].SendToast(models.NewWarningToast("No recipes found.", "", ""))
+				s.Brokers.HideNotification(userID)
+				s.Brokers.SendToast(models.NewWarningToast("No recipes found.", "", ""), userID)
 				return
 			}
 
-			s.Brokers[userID].SendProgress(fmt.Sprintf("Importing 1/%d", total), 1, total)
+			s.Brokers.SendProgress(fmt.Sprintf("Importing 1/%d", total), 1, total, userID)
 			now := time.Now()
 
 			go func() {
@@ -167,12 +166,12 @@ func (s *Server) recipesAddImportHandler() http.HandlerFunc {
 			}()
 
 			for p := range progress {
-				s.Brokers[userID].SendProgress(fmt.Sprintf("Importing %d/%d", p.Value, p.Total), p.Value, p.Total)
+				s.Brokers.SendProgress(fmt.Sprintf("Importing %d/%d", p.Value, p.Total), p.Value, p.Total, userID)
 			}
 
 			report.ExecTime = time.Since(now)
 			s.Repository.AddReport(report, userID)
-			s.Brokers[userID].HideNotification()
+			s.Brokers.HideNotification(userID)
 
 			numSuccess := len(recipeIDs)
 			skipped := total - numSuccess
@@ -183,7 +182,7 @@ func (s *Server) recipesAddImportHandler() http.HandlerFunc {
 			}
 
 			slog.Info("Imported recipes", userIDAttr, "imported", numSuccess, "skipped", skipped, "total", total)
-			s.Brokers[userID].SendToast(models.NewInfoToast("Operation Successful", fmt.Sprintf("Imported %d recipes. %d skipped", numSuccess, skipped), "View "+redirect))
+			s.Brokers.SendToast(models.NewInfoToast("Operation Successful", fmt.Sprintf("Imported %d recipes. %d skipped", numSuccess, skipped), "View "+redirect), userID)
 		}()
 
 		w.WriteHeader(http.StatusAccepted)
@@ -220,7 +219,7 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 		if err != nil {
 			msg := "Could not parse the form."
 			slog.Error(msg, userIDAttr, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast(msg).Render())
+			s.Brokers.SendToast(models.NewErrorFormToast(msg), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -277,7 +276,7 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 		if err != nil {
 			msg := "Error parsing times."
 			slog.Error(msg, userIDAttr, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast(msg).Render())
+			s.Brokers.SendToast(models.NewErrorFormToast(msg), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -286,7 +285,7 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 		if err != nil {
 			msg := "Error parsing yield."
 			slog.Error(msg, userIDAttr, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast(msg).Render())
+			s.Brokers.SendToast(models.NewErrorFormToast(msg), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -324,7 +323,7 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 		if err != nil {
 			msg := "Could not add recipe."
 			slog.Error(msg, userIDAttr, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast(msg).Render())
+			s.Brokers.SendToast(models.NewErrorDBToast(msg), userID)
 			w.WriteHeader(http.StatusNoContent)
 			return
 		}
@@ -532,8 +531,11 @@ func recipeAddManualInstructionDeleteHandler() http.HandlerFunc {
 
 func (s *Server) recipesAddOCRHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		userID := getUserID(r)
+		userIDAttr := slog.Int64("userID", userID)
+
 		if app.Config.Integrations.AzureDI.Key == "" || app.Config.Integrations.AzureDI.Endpoint == "" {
-			w.Header().Set("HX-Trigger", models.NewWarningToast("Feature Disabled", "Please consult the docs to enable OCR.", "").Render())
+			s.Brokers.SendToast(models.NewWarningToast("Feature Disabled", "Please consult the docs to enable OCR.", ""), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -541,14 +543,11 @@ func (s *Server) recipesAddOCRHandler() http.HandlerFunc {
 		// 1. Retrieve the files from the body.
 		r.Body = http.MaxBytesReader(w, r.Body, 1<<24)
 
-		userID := getUserID(r)
-		userIDAttr := slog.Int64("userID", userID)
-
 		err := r.ParseMultipartForm(1 << 24)
 		if err != nil {
 			msg := "Could not parse the form."
 			slog.Error(msg, userIDAttr, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast(msg).Render())
+			s.Brokers.SendToast(models.NewErrorFormToast(msg), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -557,7 +556,7 @@ func (s *Server) recipesAddOCRHandler() http.HandlerFunc {
 		if !ok {
 			msg := "Could not retrieve the image from the form."
 			slog.Error(msg, userIDAttr, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast(msg).Render())
+			s.Brokers.SendToast(models.NewErrorFormToast(msg), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -575,7 +574,7 @@ func (s *Server) recipesAddOCRHandler() http.HandlerFunc {
 		if len(files) == 0 {
 			msg := "No valid files found in request."
 			slog.Error(msg, userIDAttr, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast(msg).Render())
+			s.Brokers.SendToast(models.NewErrorFormToast(msg), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -644,39 +643,39 @@ func (s *Server) recipesAddOCRHandler() http.HandlerFunc {
 		// 5. Process the files.
 		go func(id int64, data []io.Reader) {
 			idAttr := slog.Int64("id", id)
-			s.Brokers[id].SendProgressStatus("Analyzing...", true, 0, -1)
+			s.Brokers.SendProgressStatus("Analyzing...", true, 0, -1, id)
 
 			recipes, err := s.Integrations.ProcessImageOCR(data)
 			if err != nil {
 				msg := "Could not process OCR."
 				slog.Error(msg, idAttr, "error", err)
-				s.Brokers[id].HideNotification()
-				s.Brokers[id].SendToast(models.NewErrorToast("Integrations Error", msg, ""))
+				s.Brokers.HideNotification(id)
+				s.Brokers.SendToast(models.NewErrorToast("Integrations Error", msg, ""), id)
 				return
 			}
 
 			recipeIDs, _, err := s.Repository.AddRecipes(recipes, id, nil)
 			if err != nil {
-				s.Brokers[id].HideNotification()
-				s.Brokers[id].SendToast(models.NewErrorDBToast("Recipes could not be added."))
+				s.Brokers.HideNotification(id)
+				s.Brokers.SendToast(models.NewErrorDBToast("Recipes could not be added."), id)
 				return
 			}
 
-			s.Brokers[id].HideNotification()
+			s.Brokers.HideNotification(id)
 
 			switch len(recipeIDs) {
 			case 0:
 				slog.Error("No recipes saved in database.")
-				s.Brokers[id].SendToast(models.NewErrorReqToast("Failed to process. Please check logs."))
+				s.Brokers.SendToast(models.NewErrorReqToast("Failed to process. Please check logs."), id)
 
 			case 1:
 				msg := "Recipe scanned and uploaded."
 				slog.Info(msg, "id", recipeIDs[0])
-				s.Brokers[id].SendToast(models.NewInfoToast("Operation Successful", msg, fmt.Sprintf("View /recipes/%d", recipeIDs[0])))
+				s.Brokers.SendToast(models.NewInfoToast("Operation Successful", msg, fmt.Sprintf("View /recipes/%d", recipeIDs[0])), id)
 			default:
 				msg := "Recipes scanned and uploaded."
 				slog.Info(msg, "ids", recipeIDs)
-				s.Brokers[id].SendToast(models.NewInfoToast("Operation Successful", msg, ""))
+				s.Brokers.SendToast(models.NewInfoToast("Operation Successful", msg, ""), id)
 			}
 		}(userID, docFiles)
 
@@ -689,8 +688,7 @@ func (s *Server) recipesAddWebsiteHandler() http.HandlerFunc {
 		userID := getUserID(r)
 		userIDAttr := slog.Int64("userID", userID)
 
-		_, found := s.Brokers[userID]
-		if !found {
+		if !s.Brokers.Has(userID) {
 			w.Header().Set("HX-Trigger", models.NewWarningWSToast("Connection lost. Please reload page.").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
@@ -730,7 +728,7 @@ func (s *Server) recipesAddWebsiteHandler() http.HandlerFunc {
 		if len(validURLs) == 0 {
 			msg := "No valid URLs found."
 			slog.Error(msg, userIDAttr, "urls", urls)
-			w.Header().Set("HX-Trigger", models.NewErrorReqToast(msg).Render())
+			s.Brokers.SendToast(models.NewErrorReqToast(msg), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -745,7 +743,7 @@ func (s *Server) recipesAddWebsiteHandler() http.HandlerFunc {
 				recipeIDs = make([]int64, 0, total)
 			)
 
-			s.Brokers[userID].SendProgress(fmt.Sprintf("Fetching 1/%d", total), 1, total)
+			s.Brokers.SendProgress(fmt.Sprintf("Fetching 1/%d", total), 1, total, userID)
 
 			now := time.Now()
 
@@ -784,7 +782,7 @@ func (s *Server) recipesAddWebsiteHandler() http.HandlerFunc {
 
 			for p := range progress {
 				processed++
-				s.Brokers[userID].SendProgress(fmt.Sprintf("Fetching %d/%d", processed, p.Total), processed, p.Total)
+				s.Brokers.SendProgress(fmt.Sprintf("Fetching %d/%d", processed, p.Total), processed, p.Total, userID)
 				if processed == total {
 					close(progress)
 				}
@@ -793,7 +791,7 @@ func (s *Server) recipesAddWebsiteHandler() http.HandlerFunc {
 			report.ExecTime = time.Since(now)
 
 			s.Repository.AddReport(report, userID)
-			s.Brokers[userID].HideNotification()
+			s.Brokers.HideNotification(userID)
 
 			var (
 				toast      models.Toast
@@ -814,7 +812,7 @@ func (s *Server) recipesAddWebsiteHandler() http.HandlerFunc {
 				slog.Info("Fetched recipes", userIDAttr, "recipes", recipeIDs, "fetched", numSuccess, "skipped", skipped, "total", total)
 			}
 
-			s.Brokers[userID].SendToast(toast)
+			s.Brokers.SendToast(toast, userID)
 		}()
 
 		w.WriteHeader(http.StatusAccepted)
@@ -838,7 +836,7 @@ func (s *Server) recipeDeleteHandler() http.HandlerFunc {
 		if err != nil {
 			msg := "Recipe could not be deleted."
 			slog.Error(msg, userIDAttr, idAttr, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast(msg).Render())
+			s.Brokers.SendToast(models.NewErrorDBToast(msg), userID)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -860,7 +858,7 @@ func (s *Server) recipesEditHandler() http.HandlerFunc {
 		userID := getUserID(r)
 		recipe, err := s.Repository.Recipe(id, userID)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorDBToast("Failed to retrieve recipe.").Render())
+			s.Brokers.SendToast(models.NewErrorDBToast("Failed to retrieve recipe."), userID)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -877,10 +875,13 @@ func (s *Server) recipesEditHandler() http.HandlerFunc {
 
 func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		userID := getUserID(r)
+		userIDAttr := slog.Int64("userID", userID)
 		r.Body = http.MaxBytesReader(w, r.Body, 128<<20)
 
 		err := r.ParseMultipartForm(128 << 20)
 		if err != nil {
+			s.Brokers.SendToast(models.NewErrorFormToast("Could not parse the form."), userID)
 			w.Header().Set("HX-Trigger", models.NewErrorFormToast("Could not parse the form.").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
@@ -906,9 +907,6 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 			URL: r.FormValue("source"),
 		}
 
-		userID := getUserID(r)
-		userIDAttr := slog.Int64("userID", userID)
-
 		recipeNumStr := r.PathValue("id")
 		recipeNumAttr := slog.String("recipeID", recipeNumStr)
 
@@ -926,7 +924,7 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 				if err != nil {
 					msg := "Could not open the image from the form."
 					slog.Error(msg, userIDAttr, recipeNumAttr, "error", err)
-					w.Header().Set("HX-Trigger", models.NewErrorGeneralToast(msg).Render())
+					s.Brokers.SendToast(models.NewErrorGeneralToast(msg), userID)
 					w.WriteHeader(http.StatusBadRequest)
 					return
 				}
@@ -936,7 +934,7 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 					_ = file.Close()
 					msg := "Error uploading image."
 					slog.Error(msg, userIDAttr, "error", err)
-					w.Header().Set("HX-Trigger", models.NewErrorGeneralToast(msg).Render())
+					s.Brokers.SendToast(models.NewErrorGeneralToast(msg), userID)
 					w.WriteHeader(http.StatusBadRequest)
 					return
 				}
@@ -983,7 +981,7 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 		if err != nil {
 			msg := "Error updating recipe."
 			slog.Error(msg, userIDAttr, "updatedRecipe", updatedRecipe, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", msg, "").Render())
+			s.Brokers.SendToast(models.NewErrorGeneralToast(msg), userID)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -1026,22 +1024,17 @@ func (s *Server) recipeShareHandler(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) recipeScaleHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		query := r.URL.Query()
-		if query == nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse query.", "").Render())
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
+		userID := getUserID(r)
 
-		yield, err := strconv.ParseInt(query.Get("yield"), 10, 16)
+		yield, err := strconv.ParseInt(r.URL.Query().Get("yield"), 10, 16)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "No yield in the query.", "").Render())
+			s.Brokers.SendToast(models.NewErrorGeneralToast("No yield in the query."), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		if yield <= 0 {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Yield must be greater than zero.", "").Render())
+			s.Brokers.SendToast(models.NewErrorGeneralToast("Yield must be greater than zero."), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -1051,11 +1044,10 @@ func (s *Server) recipeScaleHandler() http.HandlerFunc {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		userID := getUserID(r)
 
 		recipe, err := s.Repository.Recipe(id, userID)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Recipe not found.", "").Render())
+			s.Brokers.SendToast(models.NewErrorGeneralToast("Recipe not found."), userID)
 			w.WriteHeader(http.StatusNotFound)
 			return
 		}
@@ -1083,7 +1075,7 @@ func (s *Server) recipeSharePostHandler() http.HandlerFunc {
 		if err != nil {
 			msg := "Failed to create share link."
 			slog.Error(msg, userIDAttr, "share", share, "error", err)
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", msg, "").Render())
+			s.Brokers.SendToast(models.NewErrorGeneralToast(msg), userID)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -1117,21 +1109,20 @@ func (s *Server) recipesSearchHandler() http.HandlerFunc {
 		q = strings.ReplaceAll(q, ",", " ")
 		q = strings.Join(strings.Fields(q), " ")
 
+		userID := getUserID(r)
+
 		mode := query.Get("mode")
 		if mode == "" {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Missing query parameter 'method'. Valid values are 'name' or 'full'.", "").Render())
+			s.Brokers.SendToast(models.NewErrorGeneralToast("Missing query parameter 'method'. Valid values are 'name' or 'full'."), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
-		var (
-			opts   = models.NewSearchOptionsRecipe(mode, sorts, page)
-			userID = getUserID(r)
-		)
+		opts := models.NewSearchOptionsRecipe(mode, sorts, page)
 
 		recipes, totalCount, err := s.Repository.SearchRecipes(q, page, opts, userID)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Error searching recipes.", "").Render())
+			s.Brokers.SendToast(models.NewErrorGeneralToast("Error searching recipes."), userID)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -1248,17 +1239,10 @@ func (s *Server) recipesViewShareHandler() http.HandlerFunc {
 			return
 		}
 
-		query := r.URL.Query()
-		if query == nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse query.", "").Render())
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-
-		cookbookIDStr := query.Get("cookbook")
+		cookbookIDStr := r.URL.Query().Get("cookbook")
 		cookbookID, err := strconv.ParseInt(cookbookIDStr, 10, 64)
 		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorToast("", "Could not parse cookbookID query parameter.", "").Render())
+			s.Brokers.SendToast(models.NewErrorGeneralToast("Could not parse cookbookID query parameter."), getUserID(r))
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}

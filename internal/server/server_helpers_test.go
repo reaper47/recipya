@@ -14,6 +14,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"strings"
+	"time"
 )
 
 type header string
@@ -32,16 +33,15 @@ func createWSServer() (*server.Server, *httptest.Server, *websocket.Conn) {
 		UsersRegistered: []models.User{
 			{ID: 1, Email: "test@example.com"},
 		},
-		UserSettingsRegistered: map[int64]*models.UserSettings{
-			1: {},
-		},
+		UserSettingsRegistered: map[int64]*models.UserSettings{1: {}},
 	}
 	srv.Repository = repo
 
-	sid := uuid.New()
 	if server.SessionData.Data == nil {
 		server.SessionData.Data = make(map[uuid.UUID]int64)
 	}
+
+	sid := uuid.New()
 	server.SessionData.Set(sid, 1)
 
 	h := http.Header{}
@@ -83,6 +83,10 @@ func createMultipartForm(fields map[string]string) (contentType string, body str
 	return writer.FormDataContentType(), buf.String()
 }
 
+func sendRequestNoBody(srv *server.Server, method, target string) *httptest.ResponseRecorder {
+	return sendRequest(srv, method, target, noHeader, nil)
+}
+
 func sendRequest(srv *server.Server, method, target string, contentType header, body *strings.Reader) *httptest.ResponseRecorder {
 	if body == nil {
 		body = strings.NewReader("")
@@ -98,16 +102,28 @@ func sendRequest(srv *server.Server, method, target string, contentType header, 
 	return rr
 }
 
+func sendRequestAsLoggedInNoBody(srv *server.Server, method, target string) *httptest.ResponseRecorder {
+	return sendRequestAsLoggedIn(srv, method, target, noHeader, nil)
+}
+
 func sendRequestAsLoggedIn(srv *server.Server, method, target string, contentType header, body *strings.Reader) *httptest.ResponseRecorder {
 	rr := httptest.NewRecorder()
 	srv.Router.ServeHTTP(rr, prepareRequest(method, target, contentType, body))
 	return rr
 }
 
+func sendRequestAsLoggedInOtherNoBody(srv *server.Server, method, target string) *httptest.ResponseRecorder {
+	return sendRequestAsLoggedInOther(srv, method, target, noHeader, nil)
+}
+
 func sendRequestAsLoggedInOther(srv *server.Server, method, target string, contentType header, body *strings.Reader) *httptest.ResponseRecorder {
 	rr := httptest.NewRecorder()
 	srv.Router.ServeHTTP(rr, prepareRequestOther(method, target, contentType, body))
 	return rr
+}
+
+func sendHxRequestAsLoggedInNoBody(srv *server.Server, method, target string) *httptest.ResponseRecorder {
+	return sendHxRequestAsLoggedIn(srv, method, target, noHeader, nil)
 }
 
 func sendHxRequestAsLoggedIn(srv *server.Server, method, target string, contentType header, body *strings.Reader) *httptest.ResponseRecorder {
@@ -120,6 +136,10 @@ func sendHxRequestAsLoggedIn(srv *server.Server, method, target string, contentT
 	r.Header.Set("HX-Request", "true")
 	srv.Router.ServeHTTP(rr, r)
 	return rr
+}
+
+func sendHxRequestAsLoggedInOtherNoBody(srv *server.Server, method, target string) *httptest.ResponseRecorder {
+	return sendHxRequestAsLoggedInOther(srv, method, target, noHeader, nil)
 }
 
 func sendHxRequestAsLoggedInOther(srv *server.Server, method, target string, contentType header, body *strings.Reader) *httptest.ResponseRecorder {
@@ -207,6 +227,11 @@ func getBodyHTML(rr *httptest.ResponseRecorder) string {
 }
 
 func readMessage(c *websocket.Conn, number int) (int, []byte) {
+	err := c.SetReadDeadline(time.Now().Add(3 * time.Second))
+	if err != nil {
+		return 0, nil
+	}
+
 	var (
 		mt   int
 		data []byte

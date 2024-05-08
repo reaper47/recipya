@@ -19,7 +19,7 @@ func TestHandlers_Admin(t *testing.T) {
 	})
 
 	t.Run("admin is user with ID 1", func(t *testing.T) {
-		rr := sendRequestAsLoggedIn(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		body := getBodyHTML(rr)
@@ -32,7 +32,7 @@ func TestHandlers_Admin(t *testing.T) {
 	})
 
 	t.Run("other users cannot access", func(t *testing.T) {
-		rr := sendRequestAsLoggedInOther(srv, http.MethodGet, uri, noHeader, nil)
+		rr := sendRequestAsLoggedInOtherNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusForbidden)
 		assertStringsInHTML(t, getBodyHTML(rr), []string{"Access denied: You are not an admin."})
@@ -40,17 +40,18 @@ func TestHandlers_Admin(t *testing.T) {
 }
 
 func TestHandlers_Admin_AddUser(t *testing.T) {
-	srv := newServerTest()
-	originalRepo := srv.Repository
+	srv, ts, c := createWSServer()
+	defer c.Close()
 
-	const uri = "/admin/users"
+	uri := ts.URL + "/admin/users"
+	originalRepo := srv.Repository
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
 	})
 
 	t.Run("other users cannot access", func(t *testing.T) {
-		rr := sendRequestAsLoggedInOther(srv, http.MethodPost, uri, noHeader, nil)
+		rr := sendRequestAsLoggedInOtherNoBody(srv, http.MethodPost, uri)
 
 		assertStatus(t, rr.Code, http.StatusForbidden)
 		assertStringsInHTML(t, getBodyHTML(rr), []string{"Access denied: You are not an admin."})
@@ -71,7 +72,7 @@ func TestHandlers_Admin_AddUser(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("email=chiccken@power.com&password=123"))
 
 		assertStatus(t, rr.Code, http.StatusTeapot)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"OK\",\"background\":\"alert-error\",\"message\":\"\",\"title\":\"Every day is Christmas.\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"OK","background":"alert-error","message":"","title":"Every day is Christmas."}}`)
 		if len(srv.Repository.Users()) != 1 {
 			t.Fail()
 		}
@@ -90,6 +91,7 @@ func TestHandlers_Admin_AddUser(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("email=demo@demo.com&password=123"))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Email and/or password is invalid.","title":"Database Error"}}`)
 		if len(srv.Repository.Users()) != 1 {
 			t.Fail()
 		}
@@ -119,17 +121,18 @@ func TestHandlers_Admin_AddUser(t *testing.T) {
 }
 
 func TestHandlers_Admin_DeleteUser(t *testing.T) {
-	srv := newServerTest()
-	originalRepo := srv.Repository
+	srv, ts, c := createWSServer()
+	defer c.Close()
 
-	const uri = "/admin/users/%s"
+	uri := ts.URL + "/admin/users/%s"
+	originalRepo := srv.Repository
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodDelete, fmt.Sprintf(uri, "example@example.com"))
 	})
 
 	t.Run("other users cannot access", func(t *testing.T) {
-		rr := sendRequestAsLoggedInOther(srv, http.MethodDelete, fmt.Sprintf(uri, "example@example.com"), noHeader, nil)
+		rr := sendRequestAsLoggedInOtherNoBody(srv, http.MethodDelete, fmt.Sprintf(uri, "example@example.com"))
 
 		assertStatus(t, rr.Code, http.StatusForbidden)
 		assertStringsInHTML(t, getBodyHTML(rr), []string{"Access denied: You are not an admin."})
@@ -148,17 +151,17 @@ func TestHandlers_Admin_DeleteUser(t *testing.T) {
 			srv.Repository = originalRepo
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, fmt.Sprintf(uri, "chicken@power.com"), noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodDelete, fmt.Sprintf(uri, "chicken@power.com"))
 
 		assertStatus(t, rr.Code, http.StatusTeapot)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Who do you think you are, eh?\",\"title\":\"General Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Who do you think you are, eh?","title":"General Error"}}`)
 		if len(srv.Repository.Users()) != 2 {
 			t.Fail()
 		}
 	})
 
 	t.Run("delete invalid user succeeds", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, fmt.Sprintf(uri, "hello@bye.com"), noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodDelete, fmt.Sprintf(uri, "hello@bye.com"))
 
 		assertStatus(t, rr.Code, http.StatusOK)
 	})
@@ -173,10 +176,10 @@ func TestHandlers_Admin_DeleteUser(t *testing.T) {
 			srv.Repository = originalRepo
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, fmt.Sprintf(uri, "admin@admin.com"), noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodDelete, fmt.Sprintf(uri, "admin@admin.com"))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertHeader(t, rr, "HX-Trigger", `{"showToast":"{\"action\":\"\",\"background\":\"alert-error\",\"message\":\"Cannot delete admin.\",\"title\":\"General Error\"}"}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Cannot delete admin.","title":"General Error"}}`)
 		if len(srv.Repository.Users()) != 1 {
 			t.Fail()
 		}
@@ -193,7 +196,7 @@ func TestHandlers_Admin_DeleteUser(t *testing.T) {
 			srv.Repository = originalRepo
 		}()
 
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, fmt.Sprintf(uri, "yay@nay.com"), noHeader, nil)
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodDelete, fmt.Sprintf(uri, "yay@nay.com"))
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		if len(srv.Repository.Users()) != 1 {

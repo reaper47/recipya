@@ -39,7 +39,7 @@ func NewServer(repo services.RepositoryService) *Server {
 	}
 
 	srv := &Server{
-		Brokers:      make(map[int64]*models.Broker),
+		Brokers:      models.NewBroker(),
 		Email:        services.NewEmailService(),
 		Files:        services.NewFilesService(),
 		Integrations: services.NewIntegrationsService(&http.Client{}),
@@ -64,7 +64,7 @@ func NewServer(repo services.RepositoryService) *Server {
 
 // Server is the web application's configuration object.
 type Server struct {
-	Brokers      map[int64]*models.Broker
+	Brokers      *models.Broker
 	Email        services.EmailService
 	Files        services.FilesService
 	Integrations services.IntegrationsService
@@ -89,7 +89,7 @@ func (s *Server) mountHandlers() {
 	// General routes
 	mux.HandleFunc("GET /{$}", s.indexHandler)
 	mux.Handle("GET /download/{tmpFile}", s.mustBeLoggedInMiddleware(s.downloadHandler()))
-	mux.Handle("GET /fetch", s.mustBeLoggedInMiddleware(fetchHandler()))
+	mux.Handle("GET /fetch", s.mustBeLoggedInMiddleware(s.fetchHandler()))
 	mux.Handle("GET /user-initials", s.mustBeLoggedInMiddleware(s.userInitialsHandler()))
 	mux.Handle("GET /update", s.mustBeLoggedInMiddleware(s.updateHandler()))
 	mux.Handle("GET /ws", s.mustBeLoggedInMiddleware(s.wsHandler()))
@@ -167,7 +167,7 @@ func (s *Server) mountHandlers() {
 	mux.Handle("GET /settings", s.mustBeLoggedInMiddleware(s.settingsHandler()))
 	mux.Handle("GET /settings/export/recipes", s.mustBeLoggedInMiddleware(s.settingsExportRecipesHandler()))
 	mux.Handle("POST /settings/calculate-nutrition", withLog(s.settingsCalculateNutritionPostHandler()))
-	mux.Handle("PUT /settings/config", withLog(s.onlyAdminMiddleware(settingsConfigPutHandler())))
+	mux.Handle("PUT /settings/config", withLog(s.onlyAdminMiddleware(s.settingsConfigPutHandler())))
 	mux.Handle("POST /settings/convert-automatically", withLog(s.settingsConvertAutomaticallyPostHandler()))
 	mux.Handle("POST /settings/measurement-system", withLog(s.settingsMeasurementSystemsPostHandler()))
 	mux.Handle("POST /settings/backups/restore", withLog(s.settingsBackupsRestoreHandler()))
