@@ -33,15 +33,30 @@ It is focused on simplicity for the whole family to enjoy.
 
 ## Getting Started
 
+### Installation
+
 The installation instructions are written in the [installation section](https://recipes.musicavis.ca/guide/docs/installation/) of the documentation.
+
+### Building the Project
+
+Follow these steps to build the project yourself:
+1. Clone the project.
+   ```bash
+   git clone --recurse-submodules https://github.com/reaper47/recipya.git
+   ```
+2. Install the required [dependencies](https://recipes.musicavis.ca/guide/docs/development/intro/#dependencies).
+3. [Build](https://recipes.musicavis.ca/guide/docs/development/build/) the project.
+
+Alternatively, you may use the [development container](https://recipes.musicavis.ca/guide/docs/development/devcontainer/).
+Recipya's Docker [container](https://github.com/reaper47/recipya/tree/main/.devcontainer) includes all the necessary tools and dependencies 
+you need to start writing code quickly. 
 
 ## Contributing
 
 Contributions are always welcome! Please open an issue, start a [discussion](https://github.com/reaper47/recipya/discussions), open a pull request or send an email 
-at macpoule@gmail.com. The same applies if you have any feedback or need support. 
+at macpoule@gmail.com. The same applies if you have any feedback or need support.
 
-You can also join our development and support channel on 
-the [Matrix space: #recipya:matrix.org](https://app.element.io/#/room/#recipya:matrix.org).
+You can also join our development and support channel on the [Matrix space: #recipya:matrix.org](https://app.element.io/#/room/#recipya:matrix.org).
 Matrix is similar to Discord but is open source.
 
 ## Sponsors
