@@ -1,10 +1,10 @@
 ---
 title: Test
-weight: 5
+weight: 4
 next: /docs/development/workflow
 ---
 
-Recipya has an extensive test suites to ensure the software works as expected. 
+Recipya has extensive test suites to ensure the software works as expected. 
 The tests are run during the [Go workflow](https://github.com/reaper47/recipya/blob/main/.github/workflows/go.yml)
 when you open a pull request against the main branch.
 
