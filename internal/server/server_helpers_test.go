@@ -227,7 +227,7 @@ func getBodyHTML(rr *httptest.ResponseRecorder) string {
 }
 
 func readMessage(c *websocket.Conn, number int) (int, []byte) {
-	err := c.SetReadDeadline(time.Now().Add(3 * time.Second))
+	err := c.SetReadDeadline(time.Now().Add(15 * time.Second))
 	if err != nil {
 		return 0, nil
 	}

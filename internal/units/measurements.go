@@ -632,10 +632,10 @@ func (m Measurement) Scale(multiplier float64) Measurement {
 		}
 		return Measurement{Quantity: q * 1000, Unit: Milligram}
 	case Inch:
-		if q >= 12 {
+		if q >= 36 {
+			return Measurement{Quantity: q * 0.02777778, Unit: Yard}
+		} else if q >= 12 {
 			return Measurement{Quantity: q * 0.08333333333, Unit: Feet}
-		} else if q >= 3 {
-			return Measurement{Quantity: q * 0.3333333, Unit: Yard}
 		}
 		return Measurement{Quantity: q, Unit: Inch}
 	case Kilogram:

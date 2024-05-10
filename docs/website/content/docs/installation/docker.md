@@ -33,6 +33,15 @@ docker run -d \
 
 Recipya can be accessed from your host machine at [http://localhost:8085](http://localhost:8085).
 
+### Updating your container
+
+Run the command below for a quick update with Watchtower. 
+Remember to replace `recipya` with your actual container name if it differs and to back up your volume data..
+
+```bash
+docker run --rm --volume /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower --run-once recipya
+```
+
 ## Using Docker Compose
 
 You can use Docker Compose to run the container. First, download the [compose.yaml](https://github.com/reaper47/recipya/blob/main/deploy/compose.yaml) file. 
@@ -46,6 +55,19 @@ Access the app through your browser at `http://localhost:[host port]`.
 
 If you are using Windows and you intend to access the app on other devices within your home network, please ensure to `Allow the connection` of the `Docker Desktop Backend`
 inbound Windows Defender Firewall rule.
+
+### Updating your container
+
+Follow these steps to update Recipya. Remember to back up your volume data in case something goes south.
+
+1. Pull the latest image 
+```bash
+docker compose pull
+```
+2. Recreate the container with the latest image
+```bash
+docker compose up -d
+```
 
 ## Environment Variables
 

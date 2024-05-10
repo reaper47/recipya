@@ -2276,8 +2276,8 @@ func TestMeasurement_Scale(t *testing.T) {
 		{
 			name:       "in to in",
 			in:         units.Measurement{Quantity: 1, Unit: units.Inch},
-			multiplier: 2,
-			want:       units.Measurement{Quantity: 2, Unit: units.Inch},
+			multiplier: 3,
+			want:       units.Measurement{Quantity: 3, Unit: units.Inch},
 		},
 		{
 			name:       "in to ft",
@@ -2287,9 +2287,9 @@ func TestMeasurement_Scale(t *testing.T) {
 		},
 		{
 			name:       "in to yard",
-			in:         units.Measurement{Quantity: 3, Unit: units.Inch},
-			multiplier: 3,
-			want:       units.Measurement{Quantity: 3, Unit: units.Yard},
+			in:         units.Measurement{Quantity: 12, Unit: units.Inch},
+			multiplier: 4,
+			want:       units.Measurement{Quantity: 1.333, Unit: units.Yard},
 		},
 		{
 			name:       "kg to g",
@@ -2532,7 +2532,7 @@ func assertEqual[T string | units.System | units.Unit](t *testing.T, got, want T
 func assertFloats(tb testing.TB, got, want, threshold float64) {
 	tb.Helper()
 	if math.Abs(got-want) > threshold {
-		tb.Fatalf("got %.3f but want %.3f", got, want)
+		tb.Errorf("got %.3f but want %.3f", got, want)
 	}
 }
 
@@ -2540,7 +2540,7 @@ func assertMeasurementsEqual(tb testing.TB, got, want units.Measurement) {
 	tb.Helper()
 	assertFloats(tb, got.Quantity, want.Quantity, 1e-3)
 	if got.Unit != want.Unit {
-		tb.Fatalf("got unit %s but want %s", got.Unit, want.Unit)
+		tb.Errorf("got unit %s but want %s", got.Unit, want.Unit)
 	}
 }
 

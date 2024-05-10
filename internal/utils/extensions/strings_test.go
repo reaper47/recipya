@@ -139,6 +139,16 @@ func TestSumString(t *testing.T) {
 			in:   "1 1/2 apples 1/2",
 			want: 1.5,
 		},
+		{
+			name: "range",
+			in:   "150 -350 g Asian chives (buchu), Chopped",
+			want: 150,
+		},
+		{
+			name: "range",
+			in:   "1/4-1/2 teaspoon salt",
+			want: 0.25,
+		},
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {

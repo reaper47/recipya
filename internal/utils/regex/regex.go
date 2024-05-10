@@ -35,6 +35,9 @@ var (
 // Letters matches letters in the text.
 var Letters = regexp.MustCompile("[a-zA-Z]+")
 
+// RangePattern matches numerical ranges.
+var RangePattern = regexp.MustCompile(`(\d+(?:/\d+)?)\s*-\s*(\d+(?:/\d+)?)`)
+
 // Time matches time, such as 1h30min.
 var Time = regexp.MustCompile(`(?i)(\d+\s?h\s*)?(\d+\s?(?:m\b|min|minute|minutter|minuten|timer?)s?\b)|(\d+\s?h\s*)(\d+\s?mins?\b)?|(\d+\s?-\s?\d+\s*timer)`)
 

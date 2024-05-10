@@ -541,6 +541,7 @@ func TestRecipe_Scale(t *testing.T) {
 			"Un sac de chips de 1kg",
 			"Two 15-ounce can Goya beans",
 			"1 c. soupe bovril boeuf",
+			"150-350g Asian chives (buchu), Chopped",
 		},
 		Instructions: nil,
 		Name:         "Sauce",
@@ -568,6 +569,7 @@ func TestRecipe_Scale(t *testing.T) {
 			"Un sac de chips de 1kg",
 			"4 15-ounce can Goya beans",
 			"2 cups. soupe bovril boeuf",
+			"300 g Asian chives (buchu), Chopped",
 		}
 		want.Yield = 8
 		assertStructsEqual(t, got, want)
@@ -585,15 +587,16 @@ func TestRecipe_Scale(t *testing.T) {
 			"0.583 cans of bamboo sticks",
 			"3/8 can of tomato paste",
 			"1.687 peanut butter jars",
-			"1.880 mL of whiskey",
+			"1.88 mL of whiskey",
 			"1/2 tsp lemon juice",
 			"Ground ginger",
 			"3/4 Large or 1 medium ripe Hass avocados",
-			"0.060 tsp salt plus more for seasoning",
+			"0.06 tsp salt plus more for seasoning",
 			"1/8 fresh pineapple, cored and cut into 3/8-inch pieces",
 			"Un sac de chips de 1kg",
 			"0.5 15-ounce can Goya beans",
 			"4 tbsp. soupe bovril boeuf",
+			"37 1/2 g Asian chives (buchu), Chopped",
 		}
 		want.Yield = 1
 		assertStructsEqual(t, got, want)

@@ -244,6 +244,16 @@ func (r *Recipe) Scale(yield int16) {
 	}
 	wg.Wait()
 
+	for i, ingredient := range scaledIngredients {
+		scaledIngredients[i] = regex.Digit.ReplaceAllStringFunc(ingredient, func(s string) string {
+			f, err := strconv.ParseFloat(s, 64)
+			if err == nil {
+				return strconv.FormatFloat(f, 'f', -1, 64)
+			}
+			return s
+		})
+	}
+
 	r.Ingredients = scaledIngredients
 	r.Yield = yield
 	r.Normalize()
