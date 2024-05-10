@@ -241,6 +241,28 @@ func TestRegex_HourMinutes(t *testing.T) {
 	}
 }
 
+func TestRegex_RangePattern(t *testing.T) {
+	valid := []string{
+		"1-2",
+		"1 - 2",
+		"1 -2",
+		"1  -  43",
+		"1/4-1/2",
+	}
+	assertRegex(t, valid, regex.RangePattern)
+
+	invalid := []string{
+		"4 mindre",
+	}
+	for _, s := range invalid {
+		t.Run("regex is invalid "+s, func(t *testing.T) {
+			if regex.Time.MatchString(s) {
+				t.Error("got true when want false")
+			}
+		})
+	}
+}
+
 func TestRegex_Time(t *testing.T) {
 	valid := []string{
 		"1 h 30 min",

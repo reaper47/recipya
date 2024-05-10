@@ -28,7 +28,11 @@ func ScaleString(s string, scale float64) string {
 func SumString(s string) float64 {
 	sum := 0.
 
+	s = regex.RangePattern.ReplaceAllStringFunc(s, func(sub string) string {
+		return strings.TrimSpace(strings.Split(sub, "-")[0])
+	})
 	matches := regex.DimensionPattern.FindAllStringSubmatch(s, -1)
+
 	if len(matches) > 0 {
 		for _, match := range matches {
 			l, err := strconv.ParseFloat(match[1], 64)
