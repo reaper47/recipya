@@ -22,7 +22,7 @@ func setup() {
 	setupFDC()
 	setupConfigFile()
 
-	fmt.Println("Recipya is properly set up.")
+	fmt.Println("Recipya is properly set up")
 }
 
 func moveFileStructure() {
@@ -125,6 +125,10 @@ func moveFiles(srcDir, destDir string) error {
 func setupFDC() {
 	_, err := os.Stat(filepath.Join(DBBasePath, "fdc.db"))
 	if errors.Is(err, os.ErrNotExist) {
+		if isRunningInDocker() {
+			fmt.Println("Fetching the FDC database (62.6 MB)")
+		}
+
 		s := spinner.New(spinner.CharSets[9], 100*time.Millisecond)
 		s.Prefix = "Fetching the FDC database... "
 		s.FinalMSG = "Fetching the FDC database... " + greenText("Success") + "\n"
@@ -201,6 +205,7 @@ func setupConfigFile() {
 			os.Exit(1)
 		}
 
+		fmt.Println("Environment variables ok")
 		return
 	}
 
