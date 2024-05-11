@@ -2,7 +2,6 @@ package components
 
 import (
 	"github.com/reaper47/recipya/internal/templates"
-	"github.com/reaper47/recipya/internal/app"
 )
 
 templ Settings(data templates.Data) {
@@ -111,7 +110,7 @@ templ SettingsTabsAdvanced(data templates.SettingsData, isAdmin bool) {
 						<div class="label">
 							<span class="label-text">SendGrid API key</span>
 						</div>
-						<input name="email.apikey" type="text" placeholder="API key" value={ app.Config.Email.SendGridAPIKey } autocomplete="off" class="input input-bordered input-sm w-full"/>
+						<input name="email.apikey" type="text" placeholder="API key" value={ data.Config.Email.SendGridAPIKey } autocomplete="off" class="input input-bordered input-sm w-full"/>
 					</label>
 				</div>
 				<div class="mb-4">
