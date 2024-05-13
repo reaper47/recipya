@@ -14,6 +14,7 @@ import (
 	"mime/multipart"
 	"net/http"
 	"net/url"
+	"os"
 	"path/filepath"
 	"slices"
 	"strconv"
@@ -919,6 +920,11 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 
 		imageFiles, ok := r.MultipartForm.File["images"]
 		if ok {
+			imageFiles = slices.DeleteFunc(imageFiles, func(fh *multipart.FileHeader) bool {
+				_, err = os.Stat(filepath.Join(app.ImagesDir, fh.Filename+".jpg"))
+				return err == nil
+			})
+
 			for _, imageFile := range imageFiles {
 				file, err := imageFile.Open()
 				if err != nil {
