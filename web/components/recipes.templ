@@ -915,11 +915,19 @@ templ loadRecipesManualScripts() {
                 return;
             }
 
-            const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                 const r = Math.random() * 16 | 0;
-                 const v = c === 'x' ? r : (r & 0x3 | 0x8);
-                 return v.toString(16);
-             });
+            const pathRegex = /^\/data\/images\/([\da-z]{8}-([\da-z]{4}-){3}[\da-z]{12}).jpg$/;
+            const urlObject = new URL(url);
+
+            let uuid;
+            if (pathRegex.test(urlObject.pathname)) {
+                uuid = urlObject.pathname.match(pathRegex)[1];
+            } else {
+                uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                     const r = Math.random() * 16 | 0;
+                     const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                     return v.toString(16);
+                 });
+            }
 
             fetch(url)
                 .then(response => response.blob())
@@ -980,7 +988,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 						<div class="grid md:grid-flow-col md:grid-cols-6">
 							<div id="images-container" class="grid grid-flow-col grid-cols-7 w-full text-center border-gray-700 md:grid-cols-6 md:col-span-3 md:border-r">
 								<div class="buttons-container flex flex-col gap-1 col-span-2 md:col-span-1 p-1">
-									if len(data.Recipe.Images)==0 {
+									if len(data.Recipe.Images) == 0 {
 										<button
 											id="image-button-1"
 											type="button"
