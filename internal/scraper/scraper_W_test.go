@@ -152,6 +152,7 @@ func TestScraper_W(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext: "https://schema.org",
 				AtType:    models.SchemaType{Value: "Recipe"},
+				Category:  models.Category{Value: "uncategorized"},
 				CookTime:  "PT12M",
 				Image:     models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
@@ -304,6 +305,7 @@ func TestScraper_W(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				DateModified:  "2023-06-15T17:16:37+0100",
 				DatePublished: "2023-06-13T15:12:14+0100",
 				Description: models.Description{
@@ -424,6 +426,7 @@ func TestScraper_W(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
+				Category:  models.Category{Value: "uncategorized"},
 				Name:      "Thai marinated beef sirlion",
 				Description: models.Description{
 					Value: "with crispy noodle salad",

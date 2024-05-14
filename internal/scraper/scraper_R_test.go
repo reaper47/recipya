@@ -13,6 +13,7 @@ func TestScraper_R(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				CookTime:      "PT15M",
 				DatePublished: "2022-04-03",
 				Description: models.Description{
@@ -144,6 +145,7 @@ func TestScraper_R(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				DateModified:  "2018-07-05T14:07:52.000-04:00",
 				DatePublished: "2016-12-07T11:48:40.000-05:00",
 				Description: models.Description{
@@ -429,6 +431,7 @@ func TestScraper_R(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				DatePublished: "2024-03-18",
 				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
@@ -584,6 +587,7 @@ func TestScraper_R(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				Cuisine:       models.Cuisine{Value: "Europäisch, Spanisch"},
 				Name:          "Hähnchen-Nuggets",
 				DateModified:  "2014-05-28",
@@ -696,6 +700,7 @@ func TestScraper_R(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				DatePublished: "2023-06-14T19:08:32Z",
 				Description:   models.Description{Value: "Check out these colorful and flavorful rainbow treats!"},
 				Image:         models.Image{Value: anUploadedImage.String()},
@@ -740,6 +745,7 @@ func TestScraper_R(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				DateModified:  "2023/09/19",
 				DatePublished: "2022/01/28",
 				Description: models.Description{
@@ -769,6 +775,7 @@ func TestScraper_R(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				Name:          "Flourless refined sugar free chocolate cake",
 				DatePublished: "2016-06-08",
 				DateModified:  "2016-06-11",

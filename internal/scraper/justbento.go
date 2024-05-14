@@ -48,8 +48,6 @@ func scrapeJustbento(root *goquery.Document) (models.RecipeSchema, error) {
 	image, _ := root.Find(".field-name-body img").First().Attr("src")
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		Category:      models.Category{Value: category},
 		Cuisine:       models.Cuisine{Value: "Japanese"},
 		DateModified:  dateModified,

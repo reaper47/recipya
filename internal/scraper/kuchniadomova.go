@@ -37,8 +37,6 @@ func scrapeKuchniadomova(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	return models.RecipeSchema{
-		AtContext:    atContext,
-		AtType:       models.SchemaType{Value: "Recipe"},
 		Name:         name,
 		Category:     models.Category{Value: category},
 		Cuisine:      models.Cuisine{Value: root.Find("p[itemprop='recipeCuisine']").Text()},

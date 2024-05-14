@@ -13,6 +13,7 @@ func TestScraper_V(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				Name:          "Butter chicken",
 				CookTime:      "PT30M",
 				DateModified:  "2023-03-30T10:56:42+00:00",
@@ -231,6 +232,7 @@ func TestScraper_V(t *testing.T) {
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
 				CookTime:      "PT15M",
+				Category:      models.Category{Value: "uncategorized"},
 				DatePublished: "2018-08-02",
 				Description: models.Description{
 					Value: "I pancake vegani senza glutine alla quinoa e cocco sono una deliziosa colazione che permette anche " +

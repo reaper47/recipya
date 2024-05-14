@@ -314,6 +314,7 @@ func TestScraper_M(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				DateModified:  "2020-11-17T14:30:47.000-05:00",
 				DatePublished: "2019-05-13T17:09:07.000-04:00",
 				Description: models.Description{
@@ -458,6 +459,7 @@ func TestScraper_M(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				CookTime:      "PT12M",
 				DatePublished: "2021-08-23T04:00:00+00:00",
 				Image:         models.Image{Value: anUploadedImage.String()},
@@ -839,6 +841,7 @@ func TestScraper_M(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				DatePublished: "2018-06-29",
 				Description: models.Description{
 					Value: "Everything you love about a BLT tossed in this easy and delicious BLT Pasta Salad! If you like BLT's, " +
@@ -887,6 +890,7 @@ func TestScraper_M(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
+				Category:  models.Category{Value: "uncategorized"},
 				CookTime:  "PT1H2M",
 				Image:     models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
@@ -1195,6 +1199,7 @@ func TestScraper_M(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
+				Category:  models.Category{Value: "uncategorized"},
 				Name:      "20-Minute Chicken Creole",
 				Image:     models.Image{Value: anUploadedImage.String()},
 				Yield:     models.Yield{Value: 8},

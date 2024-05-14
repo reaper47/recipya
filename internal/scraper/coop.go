@@ -35,8 +35,6 @@ func scrapeCoop(root *goquery.Document) (models.RecipeSchema, error) {
 	image = strings.TrimPrefix(image, "//")
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		DateCreated:   dateCreated,
 		DatePublished: dateCreated,
 		Description:   models.Description{Value: strings.TrimSpace(description)},

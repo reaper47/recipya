@@ -54,6 +54,7 @@ func TestScraper_K(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				CookTime:      "PT1H5M",
 				DatePublished: "2021-06-03",
 				Description: models.Description{
@@ -222,6 +223,7 @@ func TestScraper_K(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext: "https://schema.org",
 				AtType:    models.SchemaType{Value: "Recipe"},
+				Category:  models.Category{Value: "uncategorized"},
 				Description: models.Description{
 					Value: "Zutaten : 200 g Schokolade, weiße 25 g Butter 125 g Mandel(n), gemahlene 75 ml Eierlikör Zubereitung : Arbeitszeit: ca. 1 Std. Ruhezeit: ca. 1 Tag Schwierigkeitsgrad: simpel Kalorien p. P.: keine Angabe Die Schokolade mit der Butter langsam schmelzen. Einen Teil der Mandeln mit unterheben, dann den Eierlikör unterrühren. Am besten über Nacht erkalten […]",
 				},
@@ -250,6 +252,7 @@ func TestScraper_K(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
+				Category:  models.Category{Value: "uncategorized"},
 				Description: models.Description{
 					Value: "Toast skagen är en klassisk förrätt på årets festdag - nyårsafton. Tommys variant görs med hemslagen " +
 						"majonnäs, pepparrot och löjrom.",
@@ -297,6 +300,7 @@ func TestScraper_K(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext: "https://schema.org",
 				AtType:    models.SchemaType{Value: "Recipe"},
+				Category:  models.Category{Value: "uncategorized"},
 				Image:     models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
@@ -363,6 +367,7 @@ func TestScraper_K(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				DatePublished: "2018-06-21T00:25:43+02:00",
 				Description: models.Description{
 					Value: "Zatočte s mäsom a zasýťte hladné bruchá svojich najmilších. Pripravte im na obed bravčovú roládu so syrom a šunkou s lahodným zemiakovým pyré podľa Marcela. Budú sa zalizovať až za ušami!",
@@ -414,6 +419,7 @@ func TestScraper_K(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				DateModified:  "2022-11-05T09:43:22+01:00",
 				DatePublished: "2022-03-24T19:55:17+01:00",
 				Description: models.Description{

@@ -47,8 +47,6 @@ func scrapeSoutherncastiron(root *goquery.Document) (models.RecipeSchema, error)
 	})
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		Category:      models.Category{Value: category},
 		DateModified:  dateModified,
 		DatePublished: datePublished,

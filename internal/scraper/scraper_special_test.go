@@ -45,6 +45,7 @@ func TestScraper_Bergamot(t *testing.T) {
 	want := models.RecipeSchema{
 		AtContext:     "https://schema.org",
 		AtType:        models.SchemaType{Value: "Recipe"},
+		Category:      models.Category{Value: "uncategorized"},
 		CookTime:      "PT30M",
 		CookingMethod: models.CookingMethod{},
 		Cuisine:       models.Cuisine{},
@@ -100,6 +101,7 @@ func TestScraper_Foodbag(t *testing.T) {
 	want := models.RecipeSchema{
 		AtContext:   "https://schema.org",
 		AtType:      models.SchemaType{Value: "Recipe"},
+		Category:    models.Category{Value: "uncategorized"},
 		CookTime:    "PT30M",
 		Description: models.Description{Value: "Deze week neem ik je nog een keertje mee op skivakantie! Of toch naar de après-ski maaltijd. De pompoenblokjes zijn al voorgesneden en mixen we door de saus. Daardoor kleurt die ook mooi oranje!"},
 		Image: models.Image{

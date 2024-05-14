@@ -302,22 +302,15 @@ func (s *Scraper) scrapeQuitoque(rawURL string) (models.RecipeSchema, error) {
 	return models.RecipeSchema{
 		AtContext:       atContext,
 		AtType:          models.SchemaType{Value: "Recipe"},
-		Category:        models.Category{},
+		Category:        models.Category{Value: "uncategorized"},
 		CookTime:        cook,
-		CookingMethod:   models.CookingMethod{},
-		Cuisine:         models.Cuisine{},
-		DateCreated:     "",
-		DateModified:    "",
-		DatePublished:   "",
 		Description:     models.Description{Value: q.Data.Recipe.ShortDescription},
-		Keywords:        models.Keywords{},
 		Image:           models.Image{Value: q.Data.Recipe.Image},
 		Ingredients:     models.Ingredients{Values: ingredients},
 		Instructions:    models.Instructions{Values: instructions},
 		Name:            q.Data.Recipe.Name,
 		NutritionSchema: ns,
 		PrepTime:        prep,
-		Tools:           models.Tools{},
 		Yield:           models.Yield{Value: yield},
 	}, nil
 }

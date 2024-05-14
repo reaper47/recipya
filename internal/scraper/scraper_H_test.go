@@ -232,6 +232,7 @@ func TestScraper_H(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:   atContext,
 				AtType:      models.SchemaType{Value: "Recipe"},
+				Category:    models.Category{Value: "uncategorized"},
 				CookTime:    "PT12M",
 				Description: models.Description{Value: "Good morning! I am up early on a Sunday morning of what has not really been my finest week. This quarantine thing has definitely been fascinating and I am sure each and every household could be really and truly great control groups for different psychological experiments at this point LOL! But after a few gloomy …"},
 				Image:       models.Image{Value: anUploadedImage.String()},
@@ -346,6 +347,7 @@ func TestScraper_H(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
+				Category:  models.Category{Value: "uncategorized"},
 				Image:     models.Image{Value: anUploadedImage.String()},
 				Name:      "Farmhouse Fried Chicken",
 				URL:       "https://www.homechef.com/meals/farmhouse-fried-chicken",
@@ -383,6 +385,7 @@ func TestScraper_H(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				CookTime:      "PT3H",
 				DatePublished: "2014-03-18",
 				Image:         models.Image{Value: anUploadedImage.String()},

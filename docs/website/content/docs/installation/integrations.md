@@ -35,11 +35,12 @@ This feature will then be disabled.
 Follow these steps to use this integration.
 1. Get an Azure subscription. You can [create one for free](https://azure.microsoft.com/free/cognitive-services/).
 2. Add a [Document Intelligence instance](https://portal.azure.com/#create/Microsoft.CognitiveServicesFormRecognizer) in the Azure portal. You can use the free pricing tier (F0) to try the service.
-3. After your resource deploys, select *Keys and Endpoint* under *Resource Management* in the sidebar.
+3. Under __Instance details__, select __Region__ _East US_, _West US2_ or _West Europe_. Other regions are incompatible with this resource.
+4. After your resource deploys, select *Keys and Endpoint* under *Resource Management* in the sidebar.
    ![alt text](https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/media/containers/keys-and-endpoint.png?view=doc-intel-3.1.0)
-4. Copy *KEY 1* to the respective field in Recipya's setting. Alternatively, you may copy it to your configuration file's **integrations.azureDocumentIntelligence.key** field or `RECIPYA_DI_KEY` environment variable if you use Docker.
-5. Copy *Endpoint* to the respective field in Recipya's setting. Alternatively, you may copy it to your configuration file's **integrations.azureDocumentIntelligence.endpoint** field or `RECIPYA_DI_ENDPOINT` environment variable if you use Docker.
-6. Restart Recipya and test the *Azure AI Document Intelligence* connection from the settings.
+5. Copy *KEY 1* to the respective field in Recipya's setting. Alternatively, you may copy it to your configuration file's **integrations.azureDocumentIntelligence.key** field or `RECIPYA_DI_KEY` environment variable if you use Docker.
+6. Copy *Endpoint* to the respective field in Recipya's setting. Alternatively, you may copy it to your configuration file's **integrations.azureDocumentIntelligence.endpoint** field or `RECIPYA_DI_ENDPOINT` environment variable if you use Docker.
+7. Restart Recipya and test the *Azure AI Document Intelligence* connection from the settings.
 
 ### Limitations
 

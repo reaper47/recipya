@@ -295,6 +295,7 @@ func TestScraper_D(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				Name:          "Nytårskage med champagne, kransekagebund, solbær og chokoladepynt",
 				DatePublished: "2022-01-01T21:00:00+00:00",
 				Image:         models.Image{Value: anUploadedImage.String()},

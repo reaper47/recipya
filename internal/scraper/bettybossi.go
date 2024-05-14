@@ -172,8 +172,6 @@ func scrapeBettybossi(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	return models.RecipeSchema{
-		AtContext:       atContext,
-		AtType:          models.SchemaType{Value: "Recipe"},
 		Category:        models.Category{Value: category},
 		CookTime:        cook,
 		DateCreated:     b.RezeptKopf.ErstellungsDatum,

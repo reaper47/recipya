@@ -63,8 +63,6 @@ func scrapeBodybuilding(root *goquery.Document) (models.RecipeSchema, error) {
 	keywords := strings.Join(extensions.Unique(xk), ",")
 
 	return models.RecipeSchema{
-		AtContext:       atContext,
-		AtType:          models.SchemaType{Value: "Recipe"},
 		Category:        models.Category{},
 		CookTime:        cook,
 		CookingMethod:   models.CookingMethod{},

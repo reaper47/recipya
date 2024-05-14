@@ -407,6 +407,7 @@ func TestScraper_T(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				DatePublished: "2024-01-29",
 				Description:   models.Description{Value: "Super delicious roast, homemade brioche sliders, melty cheese and an amped up garlic butter - what could be better?"},
 				Keywords:      models.Keywords{Values: "Cooking, Guy, Grill, Grilling, Grilled, BBQ, Dinner, Family Meal, Chicken, Beef, Steak, Pork, Seafood, Fish, Lobster, Sauce, Tacos, Sam The Cooking Guy"},
@@ -498,6 +499,7 @@ func TestScraper_T(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:    atContext,
 				AtType:       models.SchemaType{Value: "Recipe"},
+				Category:     models.Category{Value: "uncategorized"},
 				DateModified: "2024-02-12T16:17:38+00:00",
 				Name:         "Leek and Puy Lentil Gratin with a Crunchy Feta Topping",
 				Yield:        models.Yield{Value: 4},
@@ -541,6 +543,7 @@ func TestScraper_T(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				DateModified:  "2023-12-08T11:47:42-05:00",
 				DatePublished: "2023-11-23T12:23:49-05:00",
 				Description: models.Description{

@@ -3,7 +3,7 @@ title: Docker
 weight: 3
 ---
 
-A [stable]([reaper99/recipya](https://hub.docker.com/layers/reaper99/recipya/v1.1.0/images/sha256-fb1457919f132ebf6969f9c155d81bb60b0d6b0b1610bc692259b6b9c287479e?context=repo) Docker
+A [stable](https://hub.docker.com/layers/reaper99/recipya/v1.1.0/images/sha256-fb1457919f132ebf6969f9c155d81bb60b0d6b0b1610bc692259b6b9c287479e?context=repo) Docker
 is produced on every release. An [unstable](https://hub.docker.com/layers/reaper99/recipya/nightly/images/sha256-b2238a11a53982953df5bbcfd7796a19fa382abf75d316b62fa05ac1c867332c?context=repo) one 
 is produced nightly whenever the `main` branch has new commits.
 
@@ -36,7 +36,8 @@ Recipya can be accessed from your host machine at [http://localhost:8085](http:/
 ### Updating your container
 
 Run the command below for a quick update with Watchtower. 
-Remember to replace `recipya` with your actual container name if it differs and to back up your volume data..
+
+Remember to replace `recipya` with your actual container name if it differs and to [back up your volume data](#back-up-a-volume).
 
 ```bash
 docker run --rm --volume /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower --run-once recipya
@@ -53,12 +54,12 @@ docker-compose up -d
 
 Access the app through your browser at `http://localhost:[host port]`.
 
-If you are using Windows and you intend to access the app on other devices within your home network, please ensure to `Allow the connection` of the `Docker Desktop Backend`
-inbound Windows Defender Firewall rule.
+If you are using Windows and you intend to access the app on other devices within your home network, please ensure to 
+`Allow the connection` of the `Docker Desktop Backend` inbound Windows Defender Firewall rule.
 
 ### Updating your container
 
-Follow these steps to update Recipya. Remember to back up your volume data in case something goes south.
+Follow these steps to update Recipya. Remember to [back up your volume data](#back-up-a-volume) in case something goes south.
 
 1. Pull the latest image 
 ```bash
@@ -92,3 +93,44 @@ The following table lists deprecated environment variables in v1.2.0. They will 
 |---------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | RECIPYA_VISION_ENDPOINT   | Replaced the use of [Azure AI Vision](https://azure.microsoft.com/en-us/products/ai-services/ai-vision) to digitize recipes in favor of [Azure AI Document Intelligence](https://azure.microsoft.com/en-us/products/ai-services/ai-document-intelligence).     |
 | RECIPYA_VISION_KEY        | Same as above.                                                                                                                                                                                                                                                 |
+
+## Back up a Volume
+
+It is of vital importance to back up your volume data before updating the software in case something goes south, and 
+you lose your database.
+
+### Docker Desktop
+
+If you use Docker Desktop, then 
+1. Select the `Volumes` tab to the left
+2. Identify the `recipya-data` volume
+3. Click the `Export` action button
+4. Select `Local file`, select the target directory and click `Export`
+
+### Terminal
+
+Otherwise, run to following command:
+```bash
+docker run --rm --volumes-from recipya -v $(pwd):/backup ubuntu tar cvf /backup/recipya-volume-backup.tar /root/.config/Recipya
+```
+
+## Restore Volume from Backup
+
+Let's say you updated the Docker image and as a result lost your data. Thanks to you having an external backup, the day
+will be saved. 
+
+### Docker Desktop
+
+Follow these steps to restore your data using Docker desktop:
+1. Select the `Volumes` tab to the left
+2. Identify the `recipya-data` volume
+3. Click the `Import` action button
+4. Select the backed up volume and click `Import`
+
+### Terminal
+
+Otherwise, run the following command:
+
+```bash
+docker run --rm --volumes-from recipya -v $(pwd):/backup ubuntu bash -c "cd /root && tar xvf /backup/recipya-volume-backup.tar --strip 1"
+```

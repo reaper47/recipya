@@ -39,23 +39,13 @@ func scrapeWholefoodsmarket(root *goquery.Document) (models.RecipeSchema, error)
 	})
 
 	return models.RecipeSchema{
-		AtContext:       atContext,
-		AtType:          models.SchemaType{Value: "Recipe"},
-		Category:        models.Category{},
-		CookTime:        "",
-		CookingMethod:   models.CookingMethod{},
-		Cuisine:         models.Cuisine{},
-		DateModified:    dateModified,
-		DatePublished:   datePublished,
-		Description:     models.Description{Value: description},
-		Keywords:        models.Keywords{},
-		Image:           models.Image{Value: image},
-		Ingredients:     models.Ingredients{Values: ingredients},
-		Instructions:    models.Instructions{Values: instructions},
-		Name:            name,
-		NutritionSchema: models.NutritionSchema{},
-		PrepTime:        "",
-		Tools:           models.Tools{},
-		Yield:           models.Yield{Value: findYield(yield)},
+		DateModified:  dateModified,
+		DatePublished: datePublished,
+		Description:   models.Description{Value: description},
+		Image:         models.Image{Value: image},
+		Ingredients:   models.Ingredients{Values: ingredients},
+		Instructions:  models.Instructions{Values: instructions},
+		Name:          name,
+		Yield:         models.Yield{Value: findYield(yield)},
 	}, nil
 }

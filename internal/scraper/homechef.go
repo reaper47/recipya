@@ -34,8 +34,6 @@ func scrapeHomechef(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	return models.RecipeSchema{
-		AtContext:    atContext,
-		AtType:       models.SchemaType{Value: "Recipe"},
 		Description:  models.Description{Value: description},
 		Image:        models.Image{Value: image},
 		Ingredients:  models.Ingredients{Values: ingredients},

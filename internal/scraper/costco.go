@@ -40,8 +40,6 @@ func scrapeCostco(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	return models.RecipeSchema{
-		AtContext:    atContext,
-		AtType:       models.SchemaType{Value: "Recipe"},
 		Description:  models.Description{Value: description},
 		Keywords:     models.Keywords{Values: keywords.String()},
 		Image:        models.Image{Value: image},

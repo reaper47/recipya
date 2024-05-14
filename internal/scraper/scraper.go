@@ -69,6 +69,14 @@ func (s *Scraper) Scrape(url string, files services.FilesService) (models.Recipe
 		rs.AtContext = atContext
 	}
 
+	if rs.Category.Value == "" {
+		rs.Category.Value = "uncategorized"
+	}
+
+	if rs.AtType.Value == "" {
+		rs.AtType.Value = "Recipe"
+	}
+
 	if rs.URL == "" {
 		rs.URL = url
 	}

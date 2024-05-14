@@ -23,8 +23,6 @@ func scrapeYemek(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	return models.RecipeSchema{
-		AtContext:    atContext,
-		AtType:       models.SchemaType{Value: "Recipe"},
 		Image:        models.Image{Value: image},
 		Ingredients:  models.Ingredients{Values: ingredients},
 		Instructions: models.Instructions{Values: instructions},

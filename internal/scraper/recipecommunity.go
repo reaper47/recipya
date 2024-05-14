@@ -52,8 +52,6 @@ func scrapeRecipeCommunity(root *goquery.Document) (models.RecipeSchema, error) 
 	})
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		Name:          name,
 		DatePublished: datePublished,
 		DateModified:  dateModified,

@@ -48,8 +48,6 @@ func scrapeFoodRepublic(root *goquery.Document) (models.RecipeSchema, error) {
 	name = strings.TrimSpace(name)
 
 	return models.RecipeSchema{
-		AtContext:       atContext,
-		AtType:          models.SchemaType{Value: "Recipe"},
 		CookTime:        cookTime,
 		DateModified:    dateModified,
 		DatePublished:   datePublished,

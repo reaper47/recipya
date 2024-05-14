@@ -13,6 +13,7 @@ func TestScraper_Q(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
+				Category:  models.Category{Value: "uncategorized"},
 				CookTime:  "PT20M",
 				Description: models.Description{
 					Value: "Le teriyaki, au Japon, désigne un plat poêlé ou grillé et caramélisé dans son assaisonnement. Ici, on l'utilise en sauce douce et enveloppante !",

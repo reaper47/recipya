@@ -98,6 +98,7 @@ func (s *Scraper) scrapeBergamot(rawURL string) (models.RecipeSchema, error) {
 	return models.RecipeSchema{
 		AtContext:       atContext,
 		AtType:          models.SchemaType{Value: "Recipe"},
+		Category:        models.Category{Value: "uncategorized"},
 		CookTime:        cook,
 		DateCreated:     b.CreatedAt.Format(time.DateOnly),
 		DateModified:    b.UpdatedAt.Format(time.DateOnly),

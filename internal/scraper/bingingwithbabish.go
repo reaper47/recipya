@@ -31,8 +31,6 @@ func scrapeBingingWithBabish(root *goquery.Document) (models.RecipeSchema, error
 	})
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		DateModified:  dateMod,
 		DatePublished: datePub,
 		Description:   models.Description{Value: description},

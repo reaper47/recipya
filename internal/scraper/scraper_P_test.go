@@ -137,6 +137,7 @@ func TestScraper_P(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
+				Category:  models.Category{Value: "uncategorized"},
 				Name:      "My Favorite Pumpkin Muffins",
 				PrepTime:  "PT10M",
 				CookTime:  "PT20M",
@@ -325,6 +326,7 @@ func TestScraper_P(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				DatePublished: "2021-09-01",
 				Description: models.Description{
 					Value: "O alho-francês é um ingrediente muito versátil, que fica bem em várias receitas. Aqui, preparámos uma tarte de alho-francês caramelizado, com massa folhada e queijo. Experimente e delicie-se.",
@@ -484,18 +486,11 @@ func TestScraper_P(t *testing.T) {
 			name: "ploetzblog.de",
 			in:   "https://www.ploetzblog.de/rezepte/hartweizenbrot/id=61fbd728a672573b7a4f6e3e",
 			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{},
-				CookTime:      "",
-				CookingMethod: models.CookingMethod{},
-				Cuisine:       models.Cuisine{},
-				DateCreated:   "",
-				DateModified:  "",
-				DatePublished: "",
-				Description:   models.Description{Value: "100 % Hartweizen, 100 % italienischer Geschmack.\n\nDie einen fühlen sich an Zimt erinnert, die anderen an Nudeln. Die Meinungen über reine Hartweizenbrote gehen auseinander. Mal geliebt, mal gehasst. Ich gehöre eher zur wohlmeinenden Gruppe.\n\nDieses Rezept arbeitet mit Vor- und Sauerteig. Die Krume ist mittelporig und offen, saftig und aromatisch, die Kruste kräftig ausgebacken."},
-				Keywords:      models.Keywords{},
-				Image:         models.Image{Value: anUploadedImage.String()},
+				AtContext:   "https://schema.org",
+				AtType:      models.SchemaType{Value: "Recipe"},
+				Category:    models.Category{Value: "uncategorized"},
+				Description: models.Description{Value: "100 % Hartweizen, 100 % italienischer Geschmack.\n\nDie einen fühlen sich an Zimt erinnert, die anderen an Nudeln. Die Meinungen über reine Hartweizenbrote gehen auseinander. Mal geliebt, mal gehasst. Ich gehöre eher zur wohlmeinenden Gruppe.\n\nDieses Rezept arbeitet mit Vor- und Sauerteig. Die Krume ist mittelporig und offen, saftig und aromatisch, die Kruste kräftig ausgebacken."},
+				Image:       models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
 					Values: []string{
 						"524 g Hartweizenmehl", "402 g Wasser", "50 g Weizenanstellgut", "12 g Salz",
@@ -513,7 +508,6 @@ func TestScraper_P(t *testing.T) {
 				},
 				Name:     "Hartweizenbrot",
 				PrepTime: "PT17H20M",
-				Tools:    models.Tools{},
 				Yield:    models.Yield{Value: 1},
 				URL:      "https://www.ploetzblog.de/rezepte/hartweizenbrot/id=61fbd728a672573b7a4f6e3e",
 			},
@@ -618,6 +612,7 @@ func TestScraper_P(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				CookTime:      "PT10M",
 				DatePublished: "2022-08-08",
 				Description: models.Description{
@@ -874,6 +869,7 @@ func TestScraper_P(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				DateModified:  "2020-09-17T22:05:26+00:00",
 				DatePublished: "2020-05-21T00:35:12+00:00",
 				Name:          "Sweet Chili Brussel Sprouts",
@@ -911,6 +907,7 @@ func TestScraper_P(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				DatePublished: "2020-05-13T06:59:57.162-04:00",
 				Image:         models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
@@ -954,6 +951,7 @@ func TestScraper_P(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:   atContext,
 				AtType:      models.SchemaType{Value: "Recipe"},
+				Category:    models.Category{Value: "uncategorized"},
 				CookTime:    "PT15M",
 				Description: models.Description{Value: "Sperziebonen laten zich heel goed combineren met vis. Neem dit recept met zalm"},
 				Keywords:    models.Keywords{Values: "zalm, sperziebonen, cashew, hoofdgerecht, saus"},

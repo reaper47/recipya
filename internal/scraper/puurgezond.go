@@ -83,8 +83,6 @@ func scrapePuurgezond(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	return models.RecipeSchema{
-		AtContext:    atContext,
-		AtType:       models.SchemaType{Value: "Recipe"},
 		CookTime:     cookTime,
 		Description:  models.Description{Value: description},
 		Keywords:     models.Keywords{Values: keywords},

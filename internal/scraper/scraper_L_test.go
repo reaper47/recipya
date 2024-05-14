@@ -13,6 +13,7 @@ func TestScraper_L(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				CookTime:      "PT45M",
 				DatePublished: "2023-11-12T07:54:40+01:00",
 				Description: models.Description{

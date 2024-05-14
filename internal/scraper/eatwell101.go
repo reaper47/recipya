@@ -59,8 +59,6 @@ func scrapeEatwell101(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		CookTime:      cook,
 		DateModified:  dateModified,
 		DatePublished: datePublished,

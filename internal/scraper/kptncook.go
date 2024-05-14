@@ -52,23 +52,11 @@ func scrapeKptncook(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	return models.RecipeSchema{
-		AtContext:       atContext,
-		AtType:          models.SchemaType{Value: "Recipe"},
-		Category:        models.Category{},
-		CookingMethod:   models.CookingMethod{},
-		Cuisine:         models.Cuisine{},
-		DateCreated:     "",
-		DateModified:    "",
-		DatePublished:   "",
-		Description:     models.Description{},
-		Keywords:        models.Keywords{},
-		Image:           models.Image{Value: image},
-		Ingredients:     models.Ingredients{Values: ingredients},
-		Instructions:    models.Instructions{Values: instructions},
-		Name:            root.Find("title").Text(),
-		NutritionSchema: models.NutritionSchema{},
-		PrepTime:        prep,
-		Tools:           models.Tools{},
-		Yield:           models.Yield{Value: findYield(root.Find(".kptn-person-count").Text())},
+		Image:        models.Image{Value: image},
+		Ingredients:  models.Ingredients{Values: ingredients},
+		Instructions: models.Instructions{Values: instructions},
+		Name:         root.Find("title").Text(),
+		PrepTime:     prep,
+		Yield:        models.Yield{Value: findYield(root.Find(".kptn-person-count").Text())},
 	}, nil
 }

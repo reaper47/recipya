@@ -36,8 +36,6 @@ func scrapeReddit(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		DatePublished: datePub,
 		Ingredients:   models.Ingredients{Values: ingredients},
 		Instructions:  models.Instructions{Values: instructions},

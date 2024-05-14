@@ -30,8 +30,6 @@ func scrape15gram(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	return models.RecipeSchema{
-		AtContext:    atContext,
-		AtType:       models.SchemaType{Value: "Recipe"},
 		CookTime:     cook,
 		Description:  models.Description{Value: strings.TrimSpace(root.Find("p[itemprop='description']").Text())},
 		Keywords:     models.Keywords{Values: strings.Join(keywords, ",")},
