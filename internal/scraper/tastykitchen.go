@@ -32,8 +32,6 @@ func scrapeTastyKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	return models.RecipeSchema{
-		AtContext:    atContext,
-		AtType:       models.SchemaType{Value: "Recipe"},
 		Name:         name,
 		Category:     models.Category{Value: category},
 		Description:  models.Description{Value: description},

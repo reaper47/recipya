@@ -42,8 +42,6 @@ func scrapeYumelise(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	return models.RecipeSchema{
-		AtContext:    atContext,
-		AtType:       models.SchemaType{Value: "Recipe"},
 		Category:     models.Category{Value: root.Find(".wprm-recipe-course-container").First().Children().Last().Text()},
 		CookTime:     cook,
 		Cuisine:      models.Cuisine{Value: root.Find(".wprm-recipe-cuisine-container").First().Children().Last().Text()},

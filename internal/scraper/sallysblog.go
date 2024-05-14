@@ -38,8 +38,6 @@ func scrapeSallysblog(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	return models.RecipeSchema{
-		AtContext:    atContext,
-		AtType:       models.SchemaType{Value: "Recipe"},
 		Description:  models.Description{Value: description},
 		Ingredients:  models.Ingredients{Values: ingredients},
 		Instructions: models.Instructions{Values: instructions},

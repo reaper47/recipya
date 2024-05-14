@@ -37,8 +37,6 @@ func scrapeClosetcooking(root *goquery.Document) (models.RecipeSchema, error) {
 	keywords := strings.Join(xk, ",")
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		CookTime:      cook,
 		DateModified:  dateModified,
 		DatePublished: datePublished,

@@ -26,8 +26,6 @@ func scrapeKochbucher(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		DateCreated:   "",
 		DateModified:  "",
 		DatePublished: "",

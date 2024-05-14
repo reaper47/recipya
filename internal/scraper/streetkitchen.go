@@ -33,8 +33,6 @@ func scrapeStreetKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 	image, _ := article.Find("img").First().Attr("src")
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		DateModified:  dateModified,
 		DatePublished: datePublished,
 		Description:   models.Description{Value: description},

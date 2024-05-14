@@ -75,8 +75,6 @@ func scrapeJuliegoodwin(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		Category:      models.Category{Value: root.Find(".meta-category a").First().Text()},
 		CookTime:      cook,
 		DateModified:  dateModified,

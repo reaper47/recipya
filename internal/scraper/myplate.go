@@ -43,8 +43,6 @@ func scrapeMyPlate(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	return models.RecipeSchema{
-		AtContext:    atContext,
-		AtType:       models.SchemaType{Value: "Recipe"},
 		CookTime:     cookTime,
 		Description:  models.Description{Value: description},
 		Image:        models.Image{Value: image},
@@ -62,7 +60,6 @@ func scrapeMyPlate(root *goquery.Document) (models.RecipeSchema, error) {
 			Sodium:        root.Find(".sodium td").Last().Text(),
 			Sugar:         root.Find(".total_sugars td").Last().Text(),
 		},
-		PrepTime: "",
-		Yield:    models.Yield{Value: yield},
+		Yield: models.Yield{Value: yield},
 	}, nil
 }

@@ -285,6 +285,7 @@ func TestScraper_F(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				CookTime:      "PT20M",
 				DateModified:  "2023-05-16T19:59:35+00:00",
 				DatePublished: "2021-09-05T18:05:31+00:00",
@@ -349,6 +350,7 @@ func TestScraper_F(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				CookTime:      "PT10M",
 				DatePublished: "2022-07-15",
 				Image:         models.Image{Value: anUploadedImage.String()},
@@ -584,6 +586,7 @@ func TestScraper_F(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				CookTime:      "PT10M",
 				DateCreated:   "2015-11-30T11:55:59+00:00",
 				DateModified:  "2020-09-29T11:10:46+00:00",
@@ -628,6 +631,7 @@ func TestScraper_F(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
+				Category:  models.Category{Value: "uncategorized"},
 				Name:      "How To Cook A Hand-Cut Burger",
 				Description: models.Description{
 					Value: "When you don't have a meat grinder, but still want a nice, juicy burger, this recipe for a hand-cut burger has a trick you'll use over and over again.",

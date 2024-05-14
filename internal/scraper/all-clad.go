@@ -62,8 +62,6 @@ func scrapeAllClad(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		Category:      models.Category{Value: category},
 		CookTime:      cook,
 		DatePublished: datePub,

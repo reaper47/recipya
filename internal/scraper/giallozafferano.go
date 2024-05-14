@@ -49,8 +49,6 @@ func scrapeGiallozafferano(root *goquery.Document) (models.RecipeSchema, error) 
 	}
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		Category:      models.Category{Value: root.Find("a[rel='category tag']").First().Text()},
 		DatePublished: datePub,
 		Description:   models.Description{Value: description},

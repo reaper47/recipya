@@ -165,6 +165,7 @@ func (s *Scraper) scrapeFoodbag(rawURL string) (models.RecipeSchema, error) {
 	return models.RecipeSchema{
 		AtContext:       atContext,
 		AtType:          models.SchemaType{Value: "Recipe"},
+		Category:        models.Category{Value: "uncategorized"},
 		CookTime:        cook,
 		Description:     models.Description{Value: fb.DishRecipe.Description},
 		Keywords:        models.Keywords{Values: strings.Join(keywords, ",")},

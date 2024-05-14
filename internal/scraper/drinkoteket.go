@@ -35,8 +35,6 @@ func scrapeDrinkoteket(root *goquery.Document) (models.RecipeSchema, error) {
 	cook, _ := root.Find("meta[itemprop='cookTime']").Attr("content")
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		Category:      models.Category{Value: category},
 		CookTime:      cook,
 		DatePublished: datePub,

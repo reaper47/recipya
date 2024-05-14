@@ -29,8 +29,6 @@ func scrapeOwenhan(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		Category:      models.Category{Value: root.Find(".blog-item-category").First().Text()},
 		DateModified:  dateModified,
 		DatePublished: datePublished,

@@ -13,6 +13,7 @@ func TestScraper_G(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext: "https://schema.org",
 				AtType:    models.SchemaType{Value: "Recipe"},
+				Category:  models.Category{Value: "uncategorized"},
 				Description: models.Description{
 					Value: "Die Antwort auf Herbstblues und Schmuddelwetter: Wärmender Genuss aus saisonalen Quitten, Pastinaken und milder Kokosmilch.",
 				},
@@ -139,6 +140,7 @@ func TestScraper_G(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				DatePublished: "2022-02-18",
 				Description: models.Description{
 					Value: "These no-bake miso chocolate peanut butter cornflake bars are quick and easy to whip up and " +
@@ -442,6 +444,7 @@ func TestScraper_G(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext: "https://schema.org",
 				AtType:    models.SchemaType{Value: "Recipe"},
+				Category:  models.Category{Value: "uncategorized"},
 				CookTime:  "PT55M",
 				Description: models.Description{
 					Value: "GRAND FRAIS vous propose cette délicieuse recette : Sauté de lapin sauce chasseur. Faites le plein d'idées et découvrez nos conseils et astuces pour une préparation inratable. Bon appétit !",
@@ -547,6 +550,7 @@ func TestScraper_G(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext: "https://schema.org",
 				AtType:    models.SchemaType{Value: "Recipe"},
+				Category:  models.Category{Value: "uncategorized"},
 				Description: models.Description{
 					Value: "A recipe we've prepared several times on long ocean passages, it's a one-pot recipe that is very versatile, filling and quick to prepare.How to serveWe sometimes just eat it as is, or serve it on top of pasta (as a sauce) or basmati rice. We also like to serve it with flat bread.This dish is also delicious with chili pepper flakes.Another alternative is to serve it as a side dish, to omit the lentils, add more vegetables and to cook them with the same spices in a pan. SubstitutionsThe recipe works well with most vegetables, it's easy to adapt and won't affect the taste or cooking time of the dish. Take note that adding red cabbage instead of green will alter the colour of the dish. Cooking the lentils with water instead of vegetable broth is possible, the spices add enough flavor. I also sometimes add konbu dashi as a more neutral base.For a more complex taste, add cardamom, fenugreek seeds and cinnamon.Only use shelled lentils, as whole lentils take longer to cook and the vegetables will soften too much. An alternative is to use sprouted whole brown lentils, they'll cook as quickly as red lentils and are more nutritious.",
 				},
@@ -580,6 +584,7 @@ func TestScraper_G(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext: "https://schema.org",
 				AtType:    models.SchemaType{Value: "Recipe"},
+				Category:  models.Category{Value: "uncategorized"},
 				CookTime:  "PT30M",
 				Description: models.Description{
 					Value: "My sister made this couple days ago and invited me over for supper. I thought it turned out pretty good. I got my sister's approval to share this. My sister didn't have french fried onions and use cheese since my sister was out of french fried onions. My sister has been struggling financially and it's unable to buy a lot of food since my sister's been struggling.",

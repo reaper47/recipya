@@ -30,8 +30,6 @@ func scrapeNinjatestkitchen(root *goquery.Document) (models.RecipeSchema, error)
 	recipeYield, _ := root.Find("meta[itemprop='recipeYield']").Attr("content")
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		Category:      models.Category{Value: recipeCategory},
 		DatePublished: datePublished,
 		Description:   models.Description{Value: strings.TrimSpace(description)},

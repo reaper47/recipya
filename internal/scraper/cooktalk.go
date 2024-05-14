@@ -37,8 +37,6 @@ func scrapeCooktalk(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		Category:      models.Category{Value: xc[0]},
 		DatePublished: datePublished,
 		Description:   models.Description{Value: description},

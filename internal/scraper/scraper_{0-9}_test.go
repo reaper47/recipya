@@ -70,6 +70,7 @@ func TestScraper_0to9(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:   "https://schema.org",
 				AtType:      models.SchemaType{Value: "Recipe"},
+				Category:    models.Category{Value: "uncategorized"},
 				CookTime:    "PT30M",
 				Description: models.Description{Value: "We nemen je mee op skivakantie! Of toch naar de après-ski maaltijd. De pompoenblokjes zijn al voorgesneden en mixen we door de saus. Daardoor kleurt die ook mooi oranje!"},
 				Image:       models.Image{Value: anUploadedImage.String()},

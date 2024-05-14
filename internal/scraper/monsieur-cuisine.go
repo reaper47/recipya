@@ -175,8 +175,6 @@ func (s *Scraper) scrapeMonsieurCuisine(root *goquery.Document, rawURL string, f
 	}
 
 	rs := models.RecipeSchema{
-		AtContext:       atContext,
-		AtType:          models.SchemaType{Value: "Recipe"},
 		Category:        models.Category{Value: category},
 		CookTime:        cook,
 		DateCreated:     m.Data.Recipe.CreatedDate,

@@ -52,8 +52,6 @@ func scrapeGrandfrais(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	return models.RecipeSchema{
-		AtContext:    atContext,
-		AtType:       models.SchemaType{Value: "Recipe"},
 		CookTime:     cook,
 		Description:  models.Description{Value: description},
 		Image:        models.Image{Value: image},

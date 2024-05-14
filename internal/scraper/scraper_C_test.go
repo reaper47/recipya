@@ -376,6 +376,7 @@ func TestScraper_C(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:   "https://schema.org",
 				AtType:      models.SchemaType{Value: "Recipe"},
+				Category:    models.Category{Value: "uncategorized"},
 				Description: models.Description{Value: "with yuzu ranch"},
 				Image:       models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{
@@ -429,6 +430,7 @@ func TestScraper_C(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				CookTime:      "PT20M",
 				DateModified:  "2023-11-12T11:20:22+00:00",
 				DatePublished: "2023-11-16T06:00:54+00:00",
@@ -777,6 +779,7 @@ func TestScraper_C(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				DateCreated:   "2019-03-21 10:14:50",
 				DatePublished: "2019-03-21 10:14:50",
 				Description: models.Description{
@@ -856,7 +859,7 @@ func TestScraper_C(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{},
+				Category:      models.Category{Value: "uncategorized"},
 				CookTime:      "",
 				CookingMethod: models.CookingMethod{},
 				Cuisine:       models.Cuisine{},
@@ -955,6 +958,7 @@ func TestScraper_C(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				CookTime:      "PT1H15M",
 				DatePublished: "2022-09-05",
 				Description: models.Description{

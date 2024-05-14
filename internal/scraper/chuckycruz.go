@@ -48,8 +48,6 @@ func scrapeChuckycruz(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		DatePublished: datePub,
 		Description:   models.Description{Value: description},
 		Image:         models.Image{Value: image},

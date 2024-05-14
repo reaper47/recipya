@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/reaper47/recipya/internal/utils/extensions"
 	"log/slog"
+	"math"
 	"strconv"
 	"strings"
 	"time"
@@ -637,12 +638,21 @@ func (y *Yield) UnmarshalJSON(data []byte) error {
 			break
 		}
 
-		split := strings.Split(x[0].(string), " ")
-		if len(split) > 0 {
-			v := split[0]
-			i, err := strconv.ParseInt(v, 10, 16)
-			if err == nil {
-				y.Value = int16(i)
+		switch t := x[0].(type) {
+		case float64:
+			if t >= math.MinInt16 && t <= math.MaxInt16 {
+				y.Value = int16(t)
+			} else {
+				y.Value = int16(4)
+			}
+		case string:
+			split := strings.Split(t, " ")
+			if len(split) > 0 {
+				v := split[0]
+				i, err := strconv.ParseInt(v, 10, 16)
+				if err == nil {
+					y.Value = int16(i)
+				}
 			}
 		}
 	case map[string]any:

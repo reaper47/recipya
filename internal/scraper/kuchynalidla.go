@@ -71,11 +71,8 @@ func scrapeKuchynalidla(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		DatePublished: datePub,
 		Description:   models.Description{Value: description},
-		Keywords:      models.Keywords{},
 		Image:         models.Image{Value: image},
 		Ingredients:   models.Ingredients{Values: ingredients},
 		Instructions:  models.Instructions{Values: instructions},

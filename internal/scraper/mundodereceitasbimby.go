@@ -54,17 +54,11 @@ func scrapeMundodereceitasbimby(root *goquery.Document) (models.RecipeSchema, er
 	}
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		Category:      models.Category{Value: root.Find("span[itemprop='recipeCategory']").First().Text()},
-		CookTime:      "",
-		CookingMethod: models.CookingMethod{},
-		Cuisine:       models.Cuisine{},
 		DateCreated:   dateCreated,
 		DateModified:  dateModified,
 		DatePublished: dateCreated,
 		Description:   models.Description{Value: description},
-		Keywords:      models.Keywords{},
 		Image:         models.Image{Value: image},
 		Ingredients:   models.Ingredients{Values: ingredients},
 		Instructions:  models.Instructions{Values: instructions},

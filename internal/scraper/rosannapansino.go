@@ -36,8 +36,6 @@ func scrapeRosannapansino(root *goquery.Document) (models.RecipeSchema, error) {
 	image, _ := root.Find("div.article__body img").First().Attr("src")
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		DatePublished: datePublished,
 		Description:   models.Description{Value: description},
 		Image:         models.Image{Value: image},

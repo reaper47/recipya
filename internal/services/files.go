@@ -195,6 +195,12 @@ func (f *Files) BackupUsersData(repo RepositoryService) error {
 }
 
 func (f *Files) backupUserData(repo RepositoryService, userID int64) error {
+	allRecipes := repo.RecipesAll(userID)
+	if len(allRecipes) == 0 {
+		slog.Warn("Skipping user backup because user has no recipes", "userID", userID, "data", time.Now().Format(time.DateOnly))
+		return nil
+	}
+
 	userIDStr := strconv.FormatInt(userID, 10)
 	name := fmt.Sprintf("recipya.%s.zip", time.Now().Format(time.DateOnly))
 	target := filepath.Join(app.BackupPath, "users", userIDStr, name)
@@ -223,7 +229,7 @@ func (f *Files) backupUserData(repo RepositoryService, userID int64) error {
 		insertStatements []string
 	)
 
-	deletesSQL, insertsSQL, err := f.backupUserRecipes(zw, repo.RecipesAll(userID), userIDStr)
+	deletesSQL, insertsSQL, err := f.backupUserRecipes(zw, allRecipes, userIDStr)
 	if err != nil {
 		return err
 	}

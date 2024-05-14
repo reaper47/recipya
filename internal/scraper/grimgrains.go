@@ -55,8 +55,6 @@ func scrapeGrimGrains(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	return models.RecipeSchema{
-		AtContext:    atContext,
-		AtType:       models.SchemaType{Value: "Recipe"},
 		Description:  models.Description{Value: col2},
 		Image:        models.Image{Value: image},
 		Ingredients:  models.Ingredients{Values: ingredients},

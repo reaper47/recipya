@@ -380,7 +380,7 @@ func TestScraper_B(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{},
+				Category:      models.Category{Value: "uncategorized"},
 				CookTime:      "PT30M",
 				CookingMethod: models.CookingMethod{},
 				Cuisine:       models.Cuisine{},
@@ -624,6 +624,7 @@ func TestScraper_B(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				DateModified:  "2023-05-12T11:28:56-0500",
 				DatePublished: "2023-04-17T14:51:26-0500",
 				Description: models.Description{
@@ -815,7 +816,7 @@ func TestScraper_B(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{},
+				Category:      models.Category{Value: "uncategorized"},
 				CookTime:      "",
 				CookingMethod: models.CookingMethod{},
 				Cuisine:       models.Cuisine{},
@@ -865,7 +866,7 @@ func TestScraper_B(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{},
+				Category:      models.Category{Value: "uncategorized"},
 				CookTime:      "",
 				CookingMethod: models.CookingMethod{},
 				Cuisine:       models.Cuisine{},
@@ -950,6 +951,7 @@ func TestScraper_B(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext: "https://schema.org",
 				AtType:    models.SchemaType{Value: "Recipe"},
+				Category:  models.Category{Value: "uncategorized"},
 				Description: models.Description{
 					Value: "Il y a quelques temps je vous avais donné la recette du taillé au sel, celle de ma voisine Claudine, une spécialité vaudoise. Cette recette, je l’avais obtenue, un soir après un bon repas entre amis, chez Claudine. Elle m’avait gribouillé la liste des ingrédients sur un morceau de papier avec quelques explications orales. Quelques semaines plus tard je m’étais lancé et avais alors refait cette recette chez moi mais quelque peu adaptée à ma façon de faire. Après plusieurs essais et content du résultat, je l’avais alors publiée (recette ICI) et il a fait des émules ce taillé, presque le tour du monde, même jusqu’aux oreilles des producteurs de la TV suisse (Couleurs Locales). Ils m’ont contacté car ils désiraient en faire un petit reportage que voici: \n\ninfo : pour visualiser uniquement la petite séquence, allez à la minute 5:15\n\n\n\nAlors, j’ai aussitôt convoqué Claudine et devant les caméras, elle nous a réalisé son taillé, SA recette avec tous les détails qui me manquaient. Mais claudine a bien précisé que ce taillé est une spécialité du village où nous habitons, cette recette qui nous a été transmise de familles en familles et que nous avons envie de faire perdurer. \n\nSa confection est des plus simple et rapide à réaliser. Ici pas de robot, pas de levain et le pétrissage se fait à l’ancienne, c’est-à-dire à la main. Voilà ce que ça donne :",
 				},
@@ -1004,6 +1006,7 @@ func TestScraper_B(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				CookTime:      "PT2M",
 				DateModified:  "2023-11-07T15:51:57Z",
 				DatePublished: "2023-10-02T00:00:00Z",
@@ -1049,6 +1052,7 @@ func TestScraper_B(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				DateModified:  "2022-03-15T05:00:00.000-04:00",
 				DatePublished: "2022-03-15T05:00:00.000-04:00",
 				Description: models.Description{

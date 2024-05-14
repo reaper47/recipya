@@ -13,6 +13,7 @@ func TestScraper_Y(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
+				Category:  models.Category{Value: "uncategorized"},
 				Name:      "Walnut Turkish Baklava Recipe",
 				Image:     models.Image{Value: anUploadedImage.String()},
 				Ingredients: models.Ingredients{

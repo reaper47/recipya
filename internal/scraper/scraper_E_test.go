@@ -102,6 +102,7 @@ func TestScraper_E(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				Cuisine:       models.Cuisine{Value: ""},
 				DateModified:  "2023-09-19T12:07:24.154-04:00",
 				DatePublished: "2021-02-04T15:20:10.000-05:00",
@@ -234,6 +235,7 @@ func TestScraper_E(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				DateModified:  "2023-06-18T14:01:38+00:00",
 				DatePublished: "2023-06-16T22:24:57+00:00",
 				Description: models.Description{
@@ -388,6 +390,7 @@ func TestScraper_E(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				CookTime:      "PT45M",
 				DatePublished: "2022-03-16T18:00:40+00:00",
 				Description: models.Description{
@@ -430,6 +433,7 @@ func TestScraper_E(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				DateModified:  "2017-11-01T10:56:00.000-04:00",
 				DatePublished: "2017-11-01T10:56:00.000-04:00",
 				Description: models.Description{
@@ -558,6 +562,7 @@ func TestScraper_E(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext: atContext,
 				AtType:    models.SchemaType{Value: "Recipe"},
+				Category:  models.Category{Value: "uncategorized"},
 				Name:      "Saftiga choklad- och apelsinbullar",
 				Description: models.Description{
 					Value: `Goda små "fjärilsbullar" med choklad och krämig apelsinfyllning. För att få bullarnas fina fjärilsliknande form skärs degrullen i skivor som trycks ihop i mitten. Spritsa apelsinfyllningen i mitten av varje bulle. Supergott och lyxigt!`,

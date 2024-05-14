@@ -67,6 +67,7 @@ func TestScraper_U(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				DatePublished: "2022-11-15T17:41:17+00:00",
 				Description:   models.Description{Value: "…"},
 				Image:         models.Image{Value: anUploadedImage.String()},

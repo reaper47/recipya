@@ -43,8 +43,6 @@ func scrapeMeljoulwan(root *goquery.Document) (models.RecipeSchema, error) {
 	keywords := strings.TrimSuffix(sb.String(), ",")
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		Category:      models.Category{Value: category},
 		DateModified:  dateModified,
 		DatePublished: datePublished,

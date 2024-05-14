@@ -66,8 +66,6 @@ func scrapeLatelierderoxane(root *goquery.Document) (models.RecipeSchema, error)
 	})
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		CookTime:      cook,
 		DatePublished: datePublished,
 		Description:   models.Description{Value: description},

@@ -60,8 +60,6 @@ func scrapePaniniHappy(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	return models.RecipeSchema{
-		AtContext:    atContext,
-		AtType:       models.SchemaType{Value: "Recipe"},
 		Name:         recipe.Find("h2").Last().Text(),
 		Description:  models.Description{Value: description},
 		Image:        models.Image{Value: image},

@@ -344,6 +344,7 @@ func TestScraper_A(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        models.SchemaType{Value: "Recipe"},
+				Category:      models.Category{Value: "uncategorized"},
 				CookTime:      "PT120M",
 				Cuisine:       models.Cuisine{Value: "Greek"},
 				DatePublished: "2022-09-26T10:02:10.000000Z",
@@ -674,6 +675,60 @@ func TestScraper_A(t *testing.T) {
 			},
 		},
 		{
+			name: "americastestkitchen.com",
+			in:   "https://www.americastestkitchen.com/recipes/7390-marbled-blueberry-bundt-cake",
+			want: models.RecipeSchema{
+				AtContext: "https://schema.org",
+				AtType:    models.SchemaType{Value: "Recipe"},
+				Category:  models.Category{Value: "Desserts or Baked Goods, Fruit Desserts, Cakes"},
+				Description: models.Description{
+					Value: "Tossing large, cultivated blueberries into a Bundt cake gave us big blue blowouts and little fresh flavor. We looked for a way to make the star of the show less of a problem. Switching from flavor-packed wild Maine blueberries to oversized, bland cultivated blueberries wreaks havoc in a cake. The berries refuse to stay suspended in the batter and burst into bland, soggy pockets in the heat of the oven. We solved these problems by pureeing the fruit, seasoning it with sugar and lemon, and bumping up its natural pectin content with low-sugar pectin for a thickened, fresh tasting filling that can be marbled throughout the cake.",
+				},
+				Keywords: models.Keywords{Values: "Desserts or Baked Goods, Fruit, Fruit Desserts, Cakes"},
+				Image:    models.Image{Value: anUploadedImage.String()},
+				Ingredients: models.Ingredients{
+					Values: []string{
+						"3 cups (15 ounces/425 grams), all-purpose flour",
+						"1 1/2 teaspoons, baking powder", "3/4 teaspoon, baking soda",
+						"1 teaspoon, salt", "1/2 teaspoon, ground cinnamon", "3/4 cup, buttermilk",
+						"2 teaspoons, grated lemon zest plus 3 tablespoons juice",
+						"2 teaspoons, vanilla extract",
+						"3 large, eggs plus 1 large yolk, room temperature",
+						"18 tablespoons (2 1/4 sticks), unsalted butter, softened",
+						"2 cups (14 ounces/397 grams), sugar",
+						"3/4 cup (5 1/4 ounces/149 grams), sugar",
+						"3 tablespoons low- or no-sugar-needed, fruit pectin", "Pinch, salt",
+						"10 ounces (283 grams/2 cups) fresh or thawed, frozen blueberries",
+						"1 teaspoon, grated lemon zest plus 1 tablespoons juice",
+					},
+				},
+				Instructions: models.Instructions{
+					Values: []string{
+						"Spray the pan well in step 1 to prevent sticking. If you don’t have nonstick baking spray with flour, mix 1 tablespoon melted butter and 1 tablespoon flour into a paste and brush inside the pan. For fruit pectin we recommend Sure-Jell for Less or No Sugar Needed Recipes. Ball Fruit Pectin will not work. If using frozen berries, thaw them before blending in step 3. This cake can be served plain or with Lemon Glaze or Cinnamon Whipped Cream .",
+						"FOR THE CAKE: Adjust oven rack to lower-middle position and heat oven to 325 degrees. Heavily spray 12-cup nonstick Bundt pan with baking spray with flour. Whisk flour, baking powder, baking soda, salt, and cinnamon together in large bowl. Whisk buttermilk, lemon zest and juice, and vanilla together in medium bowl. Gently whisk eggs and yolk to combine in third bowl.",
+						"Using stand mixer fitted with paddle, beat butter and sugar on medium-high speed until pale and fluffy, about 3 minutes, scraping down bowl as needed. Reduce speed to medium and beat in half of eggs until incorporated, about 15 seconds. Repeat with remaining eggs, scraping down bowl after incorporating. Reduce speed to low and add one-third of flour mixture, followed by half of buttermilk mixture, mixing until just incorporated after each addition, about 5 seconds. Repeat using half of remaining flour mixture and all of remaining buttermilk mixture. Scrape down bowl, add remaining flour mixture, and mix at medium-low speed until batter is thoroughly combined, about 15 seconds. Remove bowl from mixer and fold batter once or twice with rubber spatula to incorporate any remaining flour. Cover bowl with plastic wrap and set aside while preparing filling (batter will inflate a bit).",
+						"FOR THE FILLING: Whisk sugar, pectin, and salt together in small saucepan. Process blueberries in blender until mostly smooth, about 1 minute. Transfer 1/4 cup puree and lemon zest to saucepan with sugar mixture and stir to thoroughly combine. Heat sugar-blueberry mixture over medium heat until just simmering, about 3 minutes, stirring frequently to dissolve sugar and pectin. Transfer mixture to medium bowl and let cool for 5 minutes. Add remaining puree and lemon juice to cooled mixture and whisk to combine. Let sit until slightly set, about 8 minutes.",
+						"Spoon half of batter into prepared pan and smooth top. Using back of spoon, create 1/2-inch-deep channel in center of batter. Spoon half of filling into channel. Using butter knife or small offset spatula, thoroughly swirl filling into batter (there should be no large pockets of filling remaining). Repeat swirling step with remaining batter and filling.",
+						"Bake until top is golden brown and skewer inserted in center comes out with no crumbs attached, 60 to 70 minutes. Let cake cool in pan on wire rack for 10 minutes, then invert cake directly onto wire rack. Let cake cool for at least 3 hours before serving.",
+					},
+				},
+				Name: "Marbled Blueberry Bundt Cake",
+				NutritionSchema: models.NutritionSchema{
+					Carbohydrates:  "76 grams",
+					Cholesterol:    "93 miligrams",
+					Fat:            "19 grams",
+					Protein:        "6 grams",
+					SaturatedFat:   "11 grams",
+					Sodium:         "375 miligrams",
+					Sugar:          "49 grams",
+					TransFat:       "0 grams",
+					UnsaturatedFat: "6 grams",
+				},
+				Yield: models.Yield{Value: 12},
+				URL:   "https://www.americastestkitchen.com/recipes/7390-marbled-blueberry-bundt-cake",
+			},
+		},
+		{
 			name: "archanaskitchen.com",
 			in:   "https://www.archanaskitchen.com/karnataka-style-orange-peels-curry-recipe",
 			want: models.RecipeSchema{
@@ -830,6 +885,7 @@ func TestScraper_A(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:   atContext,
 				AtType:      models.SchemaType{Value: "Recipe"},
+				Category:    models.Category{Value: "uncategorized"},
 				Name:        "Bœuf bourguignon traditionnel",
 				CookTime:    "P0Y0M0DT0H0M10800S",
 				Description: models.Description{Value: "Une vraie recette de la tradition française: des morceaux de bœuf cuits longuement dans un bouillon au vin rouge."},

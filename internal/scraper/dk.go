@@ -65,8 +65,6 @@ func scrapeDk(root *goquery.Document) (models.RecipeSchema, error) {
 	datePublished, _ := content.Find("meta[itemprop='datePublished']").Attr("content")
 
 	return models.RecipeSchema{
-		AtContext:     atContext,
-		AtType:        models.SchemaType{Value: "Recipe"},
 		Name:          content.Find("h1[itemprop='name']").Text(),
 		Image:         models.Image{Value: image},
 		DatePublished: datePublished,
