@@ -23,29 +23,43 @@ func (s *Server) settingsHandler() http.HandlerFunc {
 			userID      = getUserID(r)
 		)
 
-		if app.Config.Server.IsAutologin {
-			systems, settings, err := s.Repository.MeasurementSystems(userID)
-			if err != nil {
-				msg := "Error fetching unit systems: " + err.Error()
-				w.WriteHeader(http.StatusInternalServerError)
-				if isHxRequest {
-					s.Brokers.SendToast(models.NewErrorDBToast(msg), userID)
-				} else {
-					w.Write([]byte(msg))
-				}
-				return
+		systems, settings, err := s.Repository.MeasurementSystems(userID)
+		if err != nil {
+			msg := "Error fetching unit systems: " + err.Error()
+			w.WriteHeader(http.StatusInternalServerError)
+			if isHxRequest {
+				s.Brokers.SendToast(models.NewErrorDBToast(msg), userID)
+			} else {
+				w.Write([]byte(msg))
 			}
-			data.UserSettings = settings
-			data.MeasurementSystems = systems
+			return
 		}
 
-		_ = components.Settings(templates.Data{
-			About:           templates.NewAboutData(),
-			IsAdmin:         userID == 1,
-			IsAutologin:     app.Config.Server.IsAutologin,
-			IsAuthenticated: true,
-			IsHxRequest:     isHxRequest,
-			Settings:        data,
+		data.UserSettings = settings
+		data.MeasurementSystems = systems
+
+		c := app.Config
+		if app.Config.Server.IsDemo {
+			c.Email.From = "demo@demo.com"
+			c.Email.SendGridAPIKey = "demo"
+			c.Integrations.AzureDI.Key = "demo"
+			c.Integrations.AzureDI.Endpoint = "https://www.example.com"
+		}
+		data.Config = c
+
+		backups := s.Files.Backups(getUserID(r))
+		data.Backups = make([]templates.Backup, 0, len(backups))
+		for _, backup := range backups {
+			data.Backups = append(data.Backups, templates.Backup{
+				Display: backup.Format("02 Jan 2006"),
+				Value:   backup.Format(time.DateOnly),
+			})
+		}
+
+		_ = components.SettingsDialogContent(templates.Data{
+			About:    templates.NewAboutData(),
+			IsAdmin:  userID == 1,
+			Settings: data,
 		}).Render(r.Context(), w)
 	}
 }
@@ -117,23 +131,35 @@ func (s *Server) settingsCalculateNutritionPostHandler() http.HandlerFunc {
 
 func (s *Server) settingsConfigPutHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		err := app.Config.Update(app.ConfigFile{
-			Email: app.ConfigEmail{
-				From:           r.FormValue("email.from"),
-				SendGridAPIKey: r.FormValue("email.apikey"),
-			},
-			Integrations: app.ConfigIntegrations{
-				AzureDI: app.AzureDI{
-					Key:      r.FormValue("integrations.ocr.key"),
-					Endpoint: r.FormValue("integrations.ocr.url"),
-				},
-			},
-			Server: app.ConfigServer{
-				IsAutologin:  r.FormValue("server.autologin") == "on",
-				IsNoSignups:  r.FormValue("server.noSignups") == "on",
-				IsProduction: r.FormValue("server.production") == "on",
-			},
-		})
+		userID := getUserID(r)
+
+		err := r.ParseForm()
+		if err != nil {
+			msg := "Could not parse form."
+			slog.Error(msg, "userID", userID, "error", err)
+			s.Brokers.SendToast(models.NewErrorFormToast(msg), userID)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		c := app.Config
+		if r.Form.Has("server.autologin") {
+			c.Server.IsAutologin = r.FormValue("server.autologin") == "on"
+			c.Server.IsNoSignups = r.FormValue("server.noSignups") == "on"
+			c.Server.IsProduction = r.FormValue("server.production") == "on"
+		}
+
+		if r.Form.Has("integrations.ocr.key") {
+			c.Integrations.AzureDI.Key = r.FormValue("integrations.ocr.key")
+			c.Integrations.AzureDI.Endpoint = r.FormValue("integrations.ocr.url")
+		}
+
+		if r.Form.Has("email.from") {
+			c.Email.From = r.FormValue("email.from")
+			c.Email.SendGridAPIKey = r.FormValue("email.apikey")
+		}
+
+		err = app.Config.Update(c)
 		if err != nil {
 			msg := "Failed to update configuration."
 			slog.Error(msg, "userID", getUserID(r), "error", err)
@@ -142,7 +168,7 @@ func (s *Server) settingsConfigPutHandler() http.HandlerFunc {
 			return
 		}
 
-		s.Brokers.SendToast(models.NewInfoToast("Configuration updated.", "", ""), getUserID(r))
+		s.Brokers.SendToast(models.NewInfoToast("Operation Successful", "Configuration updated.", ""), userID)
 		w.WriteHeader(http.StatusNoContent)
 	}
 }
@@ -278,53 +304,5 @@ func (s *Server) settingsMeasurementSystemsPostHandler() http.HandlerFunc {
 
 		slog.Info("Switched measurement system", "from", settings.MeasurementSystem, "to", system)
 		w.WriteHeader(http.StatusNoContent)
-	}
-}
-
-func (s *Server) settingsTabsAdvancedHandler() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		backups := s.Files.Backups(getUserID(r))
-		dates := make([]templates.Backup, 0, len(backups))
-		for _, backup := range backups {
-			dates = append(dates, templates.Backup{
-				Display: backup.Format("02 Jan 2006"),
-				Value:   backup.Format(time.DateOnly),
-			})
-		}
-
-		c := app.Config
-		if app.Config.Server.IsDemo {
-			c.Email.From = "demo@demo.com"
-			c.Email.SendGridAPIKey = "demo"
-			c.Integrations.AzureDI.Key = "demo"
-			c.Integrations.AzureDI.Endpoint = "https://www.example.com"
-		}
-
-		_ = components.SettingsTabsAdvanced(templates.SettingsData{
-			Backups: dates,
-			Config:  c,
-		}, getUserID(r) == 1).Render(r.Context(), w)
-	}
-}
-
-func settingsTabsProfileHandler() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		_ = components.SettingsTabsProfile().Render(r.Context(), w)
-	}
-}
-
-func (s *Server) settingsTabsRecipesHandler() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		systems, settings, err := s.Repository.MeasurementSystems(getUserID(r))
-		if err != nil {
-			s.Brokers.SendToast(models.NewErrorDBToast("Error fetching units systems."), getUserID(r))
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-
-		_ = components.SettingsTabsRecipes(templates.SettingsData{
-			MeasurementSystems: systems,
-			UserSettings:       settings,
-		}).Render(r.Context(), w)
 	}
 }

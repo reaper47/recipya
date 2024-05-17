@@ -92,6 +92,7 @@ func (s *Server) mountHandlers() {
 	mux.Handle("GET /fetch", s.mustBeLoggedInMiddleware(s.fetchHandler()))
 	mux.Handle("GET /user-initials", s.mustBeLoggedInMiddleware(s.userInitialsHandler()))
 	mux.Handle("GET /update", s.mustBeLoggedInMiddleware(s.updateHandler()))
+	mux.Handle("GET /update/check", s.mustBeLoggedInMiddleware(s.updateCheckHandler()))
 	mux.Handle("GET /ws", s.mustBeLoggedInMiddleware(s.wsHandler()))
 
 	// Admin routes
@@ -171,9 +172,6 @@ func (s *Server) mountHandlers() {
 	mux.Handle("POST /settings/convert-automatically", withLog(s.settingsConvertAutomaticallyPostHandler()))
 	mux.Handle("POST /settings/measurement-system", withLog(s.settingsMeasurementSystemsPostHandler()))
 	mux.Handle("POST /settings/backups/restore", withLog(s.settingsBackupsRestoreHandler()))
-	mux.Handle("GET /settings/tabs/advanced", s.mustBeLoggedInMiddleware(s.settingsTabsAdvancedHandler()))
-	mux.Handle("GET /settings/tabs/profile", s.mustBeLoggedInMiddleware(settingsTabsProfileHandler()))
-	mux.Handle("GET /settings/tabs/recipes", s.mustBeLoggedInMiddleware(s.settingsTabsRecipesHandler()))
 
 	// Share routes
 	mux.HandleFunc("GET /r/{id}", s.recipeShareHandler)

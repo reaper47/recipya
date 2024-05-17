@@ -49,8 +49,19 @@
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="1">
+          <list size="12">
             <item index="0" class="java.lang.String" itemvalue="_" />
+            <item index="1" class="java.lang.String" itemvalue="hx-post" />
+            <item index="2" class="java.lang.String" itemvalue="hx-put" />
+            <item index="3" class="java.lang.String" itemvalue="hx-confirm" />
+            <item index="4" class="java.lang.String" itemvalue="hx-swap" />
+            <item index="5" class="java.lang.String" itemvalue="hx-get" />
+            <item index="6" class="java.lang.String" itemvalue="hx-include" />
+            <item index="7" class="java.lang.String" itemvalue="hx-indicator" />
+            <item index="8" class="java.lang.String" itemvalue="hx-delete" />
+            <item index="9" class="java.lang.String" itemvalue="hx-target" />
+            <item index="10" class="java.lang.String" itemvalue="hx-trigger" />
+            <item index="11" class="java.lang.String" itemvalue="hx-push-url" />
           </list>
         </value>
       </option>

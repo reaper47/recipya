@@ -21,7 +21,7 @@ templ layoutMain(title string, data templates.Data) {
 		lang="en"
 		class="h-full"
 		_="on htmx:afterSwap
-                if location.pathname is '/recipes' or location.pathname is '/' then
+		        if location.pathname is '/recipes' or location.pathname is '/' then
                     add .active to first <button/> in mobile_nav then
                     remove .active from last <button/> in mobile_nav then
                     remove .md:hidden from desktop_nav then
@@ -37,7 +37,8 @@ templ layoutMain(title string, data templates.Data) {
                     add .active to first <a/> in recipes_sidebar_cookbooks
                 else if location.pathname is '/settings' or location.pathname.startsWith('/recipes/add') then
                     add .md:hidden to desktop_nav then
-                    add .hidden to mobile_nav"
+                    add .hidden to mobile_nav
+                end"
 	>
 		@head(title)
 		<body class="min-h-full" hx-ext="ws" ws-connect="/ws">
@@ -84,8 +85,11 @@ templ layoutMain(title string, data templates.Data) {
 				</div>
 				<div class="navbar-end">
 					if data.IsAuthenticated {
-						<div
-							class={ "dropdown dropdown-end", templ.KV("indicator", data.About.IsUpdateAvailable) }
+						<button
+							title="Open avatar menu"
+							popovertarget="avatar_menu"
+							popovertargetaction="toggle"
+							class={ templ.KV("indicator", data.About.IsUpdateAvailable) }
 							hx-get="/user-initials"
 							hx-trigger="load"
 							hx-target="#user-initials"
@@ -98,11 +102,15 @@ templ layoutMain(title string, data templates.Data) {
 									<span id="user-initials">A</span>
 								</div>
 							</div>
-							<ul
-								tabindex="0"
-								id="avatar_dropdown"
-								class="menu dropdown-content mt-3 z-10 p-2 shadow bg-base-100 rounded-box before:content-[''] before:absolute before:right-2 before:top-[-9px] before:border-x-[15px] before:border-x-transparent before:border-b-[8px] before:border-b-[#333] dark:before:border-b-[gray]"
-							>
+						</button>
+						<div
+							popover
+							id="avatar_menu"
+							style="inset: unset; top: 3.5rem; right: 0.5rem;"
+							class="rounded-box z-10 shadow bg-base-200"
+							_="on click if avatar_menu.matches(':popover-open') then avatar_menu.hidePopover()"
+						>
+							<ul tabindex="0" class="menu">
 								if data.IsAdmin {
 									<li onclick="document.activeElement?.blur()">
 										<a href="/admin" hx-get="/admin" hx-target="#content" hx-push-url="true">
@@ -119,29 +127,19 @@ templ layoutMain(title string, data templates.Data) {
 								</li>
 								<div class="divider m-0"></div>
 								<li onclick="document.activeElement?.blur()">
-									<a href="/settings" hx-get="/settings" hx-target="#content" hx-push-url="true">
-										@iconGear()
-										Settings
-									</a>
-								</li>
-								<div class="divider m-0"></div>
-								<li onclick="document.activeElement?.blur()">
 									<a href="/guide/docs" target="_blank">
 										@iconBook()
 										Guide
 									</a>
 								</li>
-								<div class="divider m-0"></div>
-								<li onclick="about_dialog.showModal()" class={ templ.KV("indicator", data.About.IsUpdateAvailable) }>
-									<a>
-										if data.About.IsUpdateAvailable {
-											<span class="indicator-item badge badge-xs badge-secondary"></span>
-										}
-										@iconHelp()
-										About
+								<li class="cursor-pointer" onclick="settings_dialog.showModal()">
+									<a hx-get="/settings" hx-target="#settings_dialog_content">
+										@iconGear()
+										Settings
 									</a>
 								</li>
 								if !data.IsAutologin {
+									<div class="divider m-0"></div>
 									<li>
 										<a hx-post="/auth/logout">
 											@iconLogout()
@@ -151,7 +149,21 @@ templ layoutMain(title string, data templates.Data) {
 								}
 							</ul>
 						</div>
-						@aboutDialog(data.About)
+						<dialog id="settings_dialog" class="modal">
+							<div class="toast-container-dialog toast toast-top toast-end hidden z-20 cursor-default"></div>
+							<div class="modal-box p-1 max-w-lg w-[95%] h-3/5 md:h-[unset] md:max-w-3xl">
+								<form method="dialog">
+									<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+								</form>
+								<h4 class="font-semibold text-lg p-4">Settings</h4>
+								<div id="settings_dialog_content">
+									<p class="grid place-items-center p-12">Content is loading...</p>
+								</div>
+							</div>
+							<form method="dialog" class="modal-backdrop">
+								<button class="cursor-auto"></button>
+							</form>
+						</dialog>
 					} else {
 						<a href="/auth/login" class="btn btn-ghost">Log In</a>
 						<a href="/auth/register" class="btn btn-ghost">Sign Up</a>
@@ -438,6 +450,12 @@ templ toast() {
                     break;
             }
 
+            const dialogs = document.querySelectorAll('dialog[open]');
+            let container = document.querySelector('#toast_container');
+            if (dialogs.length > 0) {
+                container = dialogs[0].querySelector('.toast-container-dialog');
+            }
+
             const button = toast.querySelector("#toast_button");
             if (action) {
                 const split = action.split(" ");
@@ -467,14 +485,19 @@ templ toast() {
                             toast.style.opacity = opacity;
                         }
                     }, 25)
+
+                    if (container.childElementCount <= 1) {
+                        container.classList.add('hidden');
+                    }
                 }, 5000);
                 button.classList.add("hidden");
             }
 
-            toast_container.classList.remove('hidden');
             htmx.process(toast);
             _hyperscript.processNode(toast);
-            toast_container.append(toast);
+
+            container.classList.remove('hidden');
+            container.append(toast);
         }
 
         htmx.on('showToast', receiveToastMessage)

@@ -48,6 +48,7 @@ func NewAboutData() AboutData {
 
 // AboutData holds general application data.
 type AboutData struct {
+	IsCheckUpdate       bool
 	IsUpdateAvailable   bool
 	LastCheckedUpdateAt time.Time
 	LastUpdatedAt       time.Time

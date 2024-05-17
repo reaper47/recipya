@@ -111,12 +111,13 @@ func (s *Server) confirmHandler(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) deleteUserHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		userID := getUserID(r)
 		if app.Config.Server.IsAutologin {
+			s.Brokers.SendToast(models.NewWarningToast("Forbidden Action", "This account cannot be deleted.", ""), userID)
 			w.WriteHeader(http.StatusForbidden)
 			return
 		}
 
-		userID := getUserID(r)
 		if app.Config.Server.IsDemo && s.Repository.UserID("demo@demo.com") == userID {
 			s.Brokers.SendToast(models.NewErrorGeneralToast("Your savings account has been deleted."), userID)
 			w.WriteHeader(http.StatusTeapot)

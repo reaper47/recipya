@@ -11,57 +11,400 @@ templ HomePage(data templates.Data) {
 	}
 }
 
-templ aboutDialog(data templates.AboutData) {
-	<dialog id="about_dialog" class="modal">
-		<div class="modal-box">
-			<div class="overflow-x-auto">
-				<table class="table table-zebra">
-					<tbody>
-						<tr>
-							<th scope="row" class="text-right">Application Name:</th>
-							<td class="">Recipya</td>
-						</tr>
-						<tr>
-							<th scope="row" class="text-right">
-								Version:
-								<br/>
-								<span style="font-size: .75rem; font-weight: normal;">
-									Last checked: { data.LastCheckedUpdateAt.Format(time.DateOnly) }
-									<br/>
-									Last updated: { data.LastUpdatedAt.Format(time.DateOnly) }
-								</span>
-							</th>
-							<td>
-								{ data.Version.String() }
-								if data.IsUpdateAvailable {
-									<br/>
-									<button class="btn btn-secondary btn-sm" hx-get="/update" hx-swap="none" hx-indicator="#fullscreen-loader" _="on click call about_dialog.close()">Update</button>
-								}
-							</td>
-						</tr>
-						<tr>
-							<th scope="row" class="text-right">Repository:</th>
-							<td>
-								<a href="https://github.com/reaper47/recipya" target="_blank" class="link">reaper47/recipya</a>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row" class="text-right">Support Channel:</th>
-							<td>
-								<a href="https://app.element.io/#/room/#recipya:matrix.org" target="_blank" class="link">Matrix Space</a>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row" class="text-right">License:</th>
-							<td>GPLv3</td>
-						</tr>
-					</tbody>
-				</table>
-				<button class="btn btn-neutral btn-block btn-sm rounded-t-none" onclick="about_dialog.close()">Close</button>
+templ SettingsDialogContent(data templates.Data) {
+	<div class="flex flex-col menu-sm sm:flex-row sm:menu-md">
+		<ul
+			class="menu menu-horizontal pt-0 flex-nowrap overflow-x-auto sm:overflow-x-clip sm:flex-wrap sm:menu sm:menu-vertical"
+			_="on click remove .active from .setting-tab then add .active to closest <a/> to event.target"
+		>
+			<li>
+				<a class="setting-tab active" _="on click add .hidden to the children of #settings_blocks then remove .hidden from #settings_recipes">
+					@iconCubeTransparent()
+					Recipes
+				</a>
+			</li>
+			if data.IsAdmin {
+				<li>
+					<a class="setting-tab" _="on click add .hidden to the children of #settings_blocks then remove .hidden from #settings_connections">
+						@iconCloud()
+						Connections
+					</a>
+				</li>
+			}
+			<li>
+				<a class="setting-tab" _="on click add .hidden to the children of #settings_blocks then remove .hidden from #settings_data">
+					@iconCircleStack()
+					Data
+				</a>
+			</li>
+			if data.IsAdmin {
+				<li>
+					<a class="setting-tab" _="on click add .hidden to the children of #settings_blocks then remove .hidden from #settings_server">
+						@iconServer()
+						Server
+					</a>
+				</li>
+			}
+			<li>
+				<a class="setting-tab" _="on click add .hidden to the children of #settings_blocks then remove .hidden from #settings_account">
+					@iconUserCircle()
+					Account
+				</a>
+			</li>
+			<li>
+				<a class="setting-tab" _="on click add .hidden to the children of #settings_blocks then remove .hidden from #settings_about">
+					@iconInformation()
+					About
+				</a>
+			</li>
+		</ul>
+		<div id="settings_blocks" class="w-full md:h-[26rem] md:max-h-[26rem]" style="padding-right: 1rem">
+			@settingsRecipes(data)
+			if data.IsAdmin {
+				@settingsConnections(data)
+			}
+			@settingsData(data)
+			@settingsServer(data)
+			@settingsAccount()
+			@SettingsAbout(data)
+		</div>
+	</div>
+}
+
+templ settingsRecipes(data templates.Data) {
+	<div id="settings_recipes" class="p-3 md:p-0 md:pr-4 md:max-h-96 overflow-y-auto">
+		<div class="flex justify-between items-center text-sm">
+			<label for="settings_recipes_measurement_system" class="font-semibold">Measurement system</label>
+			<select id="settings_recipes_measurement_system" name="system" class="w-fit select select-bordered select-sm" hx-post="/settings/measurement-system" hx-swap="none">
+				for _, system := range data.Settings.MeasurementSystems {
+					<option value={ system.String() } selected?={ system == data.Settings.UserSettings.MeasurementSystem }>{ system.String() }</option>
+				}
+			</select>
+		</div>
+		<div class="flex justify-between items-center text-sm mt-2">
+			<label for="settings_recipes_convert">
+				<span class="font-semibold">Convert automatically</span>
+				<br/>
+				<span class="text-xs">Convert new recipes to your preferred measurement system.</span>
+			</label>
+			<input
+				type="checkbox"
+				name="convert"
+				id="settings_recipes_convert"
+				checked?={ data.Settings.UserSettings.ConvertAutomatically }
+				class="checkbox"
+				hx-post="/settings/convert-automatically"
+				hx-trigger="click"
+			/>
+		</div>
+		<div class="flex justify-between items-center text-sm mt-2">
+			<label for="settings_recipes_calc_nutrition">
+				<span class="font-semibold">Calculate nutrition facts</span>
+				<br/>
+				<span class="text-xs block max-w-[45ch]">Calculate the nutrition facts automatically when adding a recipe. The processing will be done in the background.</span>
+			</label>
+			<input
+				id="settings_recipes_calc_nutrition"
+				type="checkbox"
+				name="calculate-nutrition"
+				checked?={ data.Settings.UserSettings.CalculateNutritionFact }
+				class="checkbox"
+				hx-post="/settings/calculate-nutrition"
+				hx-trigger="click"
+			/>
+		</div>
+	</div>
+}
+
+templ settingsConnections(data templates.Data) {
+	<div id="settings_connections" class="p-3 overflow-y-auto max-h-96 hidden md:p-0 md:pr-4">
+		<div class="flex justify-between items-center text-sm">
+			<details class="w-full">
+				<summary class="font-semibold cursor-default">
+					Twilio SendGrid
+					<br/>
+					<span class="text-xs font-normal">This connection is used to send emails.</span>
+				</summary>
+				<form class="grid w-full" hx-put="/settings/config" hx-swap="none">
+					<label class="form-control w-full">
+						<span class="label">
+							<span class="label-text text-sm">From</span>
+						</span>
+						<input name="email.from" type="text" placeholder="SendGrid email" value={ data.Settings.Config.Email.From } autocomplete="off" class="input input-bordered input-sm w-full"/>
+					</label>
+					<label class="form-control w-full">
+						<span class="label">
+							<span class="label-text text-sm">SendGrid API key</span>
+						</span>
+						<input name="email.apikey" type="text" placeholder="API key" value={ data.Settings.Config.Email.SendGridAPIKey } autocomplete="off" class="input input-bordered input-sm w-full"/>
+					</label>
+					<button class="btn btn-sm mt-2">Update</button>
+				</form>
+			</details>
+			<button type="button" title="Test connection" class="btn btn-xs float-right self-baseline" hx-get="/integrations/test-connection?api=sg" hx-swap="none">
+				@iconArrowPath()
+			</button>
+		</div>
+		<div class="divider m-0"></div>
+		<div class="flex justify-between items-center text-sm">
+			<details class="w-full">
+				<summary class="font-semibold cursor-default">
+					Azure AI Document Intelligence
+					<br/>
+					<span class="text-xs font-normal">This connection is used to digitize recipe images.</span>
+				</summary>
+				<form class="grid w-full" hx-put="/settings/config" hx-swap="none">
+					<label class="form-control w-full">
+						<span class="label">
+							<span class="label-text text-sm">Resource key</span>
+						</span>
+						<input name="integrations.ocr.key" type="text" placeholder="Resource key 1" value={ data.Settings.Config.Integrations.AzureDI.Key } autocomplete="off" class="input input-bordered input-sm w-full"/>
+					</label>
+					<label class="form-control w-full">
+						<span class="label">
+							<span class="label-text text-sm">Endpoint</span>
+						</span>
+						<input name="integrations.ocr.url" type="url" placeholder="Vision endpoint URL" value={ data.Settings.Config.Integrations.AzureDI.Endpoint } autocomplete="off" class="input input-bordered input-sm w-full"/>
+					</label>
+					<button class="btn btn-sm mt-2">Update</button>
+				</form>
+			</details>
+			<button type="button" title="Test connection" class="btn btn-xs float-right self-baseline" hx-get="/integrations/test-connection?api=azure-di" hx-swap="none">
+				@iconArrowPath()
+			</button>
+		</div>
+	</div>
+}
+
+templ settingsData(data templates.Data) {
+	<div id="settings_data" class="hidden p-3 md:p-0 md:pr-4">
+		<div class="flex justify-between items-center text-sm">
+			<details class="w-full">
+				<summary class="font-semibold cursor-default">
+					Import data
+					<br/>
+					<span class="text-xs font-normal">Import from Mealie, Tandoor, Nextcloud, etc.</span>
+				</summary>
+				<form class="flex flex-col text-sm" hx-post="/auth/change-password" hx-indicator="#fullscreen-loader" hx-swap="none">
+					<label class="form-control w-full">
+						<span class="label">
+							<span class="label-text text-sm">Solution</span>
+						</span>
+						<select name="integrations" class="w-fit select select-bordered select-sm">
+							<option value="mealie" selected>Mealie</option>
+							<option value="nextcloud">Nextcloud</option>
+							<option value="tandoor">Tandoor</option>
+						</select>
+					</label>
+					<label class="form-control w-full">
+						<span class="label">
+							<span class="label-text text-sm">Base URL</span>
+						</span>
+						<input type="url" name="url" placeholder="https://instance.mydomain.com" class="input input-bordered input-sm w-full" required/>
+					</label>
+					<label class="form-control w-full">
+						<span class="label">
+							<span class="label-text text-sm">Username</span>
+						</span>
+						<input type="text" name="username" placeholder="Enter your username" class="input input-bordered input-sm w-full" required/>
+					</label>
+					<label class="form-control w-full">
+						<span class="label">
+							<span class="label-text text-sm">Password</span>
+						</span>
+						<input type="password" name="password" placeholder="Enter your password" class="input input-bordered input-sm w-full" required/>
+					</label>
+					<button class="btn btn-sm mt-2">
+						@iconDownload2()
+						Import
+					</button>
+				</form>
+			</details>
+		</div>
+		<div class="divider m-0"></div>
+		<div class="flex justify-between items-center text-sm">
+			<div>
+				<p class="font-semibold">Export data</p>
+				<p class="text-xs">Download your data in the selected file format.</p>
+			</div>
+			<form class="grid gap-1 grid-flow-col w-fit" hx-get="/settings/export/recipes" hx-include="select[name='type']" hx-swap="none">
+				<label class="form-control w-full max-w-xs">
+					<select required id="file-type" name="type" class="w-fit select select-bordered select-sm">
+						<optgroup label="Recipes">
+							<option value="json" selected>JSON</option>
+							<option value="pdf">PDF</option>
+						</optgroup>
+					</select>
+				</label>
+				<button class="btn btn-outline btn-sm">
+					@iconDownload()
+				</button>
+			</form>
+		</div>
+		if len(data.Settings.Backups) > 0 {
+			<div class="divider m-0"></div>
+			<div class="flex justify-between items-center text-sm">
+				<div>
+					<p class="font-semibold">Restore from backup</p>
+					<p class="text-xs  block max-w-[45ch]">This restores your user data from an automatic backup.</p>
+				</div>
+				<form
+					class="grid gap-1 grid-flow-col w-fit"
+					hx-post="/settings/backups/restore"
+					hx-include="select[name='date']"
+					hx-swap="none"
+					hx-indicator="#fullscreen-loader"
+					hx-confirm="Continue with this backup? Today's data will be backed up if not already done."
+				>
+					<label>
+						<select required id="file-type" name="date" class="select select-bordered select-sm">
+							for _, b := range data.Settings.Backups {
+								<option value={ b.Value } selected>{ b.Display }</option>
+							}
+						</select>
+					</label>
+					<button class="btn btn-sm btn-outline">
+						@iconRocketLaunch()
+					</button>
+				</form>
+			</div>
+		}
+	</div>
+}
+
+templ settingsServer(data templates.Data) {
+	<div id="settings_server" class="hidden p-3 md:p-0 md:pr-4 md:max-h-96">
+		<div class="flex justify-between items-center text-sm">
+			<form class="grid w-full" hx-put="/settings/config" hx-swap="none">
+				<p class="font-semibold">Configuration</p>
+				<div class="form-control">
+					<label class="label cursor-pointer">
+						<span class="label-text">Autologin</span>
+						<input name="server.autologin" type="checkbox" checked?={ data.Settings.Config.Server.IsAutologin } class="checkbox"/>
+					</label>
+				</div>
+				<div class="form-control">
+					<label class="label cursor-pointer">
+						<span class="label-text">No signups</span>
+						<input name="server.noSignups" type="checkbox" checked?={ data.Settings.Config.Server.IsNoSignups } class="checkbox"/>
+					</label>
+				</div>
+				<div class="form-control">
+					<label class="label cursor-pointer">
+						<span class="label-text">Is production</span>
+						<input name="server.production" type="checkbox" checked?={ data.Settings.Config.Server.IsProduction } class="checkbox"/>
+					</label>
+				</div>
+				<button class="btn btn-sm mt-2">Update</button>
+			</form>
+		</div>
+	</div>
+}
+
+templ settingsAccount() {
+	<div id="settings_account" class="hidden p-3 md:p-0 md:pr-4 md:max-h-96">
+		<div class="flex justify-between items-center text-sm">
+			<details class="w-full">
+				<summary class="font-semibold cursor-default">Change password</summary>
+				<form class="flex flex-col text-sm" hx-post="/auth/change-password" hx-indicator="#fullscreen-loader" hx-swap="none">
+					<label class="form-control w-full">
+						<span class="label">
+							<span class="label-text text-sm">Current password</span>
+						</span>
+						<input
+							type="password"
+							placeholder="Enter current password"
+							class="input input-bordered input-sm w-full"
+							name="password-current"
+							required
+						/>
+					</label>
+					<label class="form-control w-full">
+						<span class="label">
+							<span class="label-text text-sm">New password</span>
+						</span>
+						<input
+							type="password"
+							placeholder="Enter new password"
+							class="input input-bordered input-sm w-full"
+							name="password-new"
+							required
+						/>
+					</label>
+					<label class="form-control w-full">
+						<span class="label">
+							<span class="label-text text-sm">Confirm password</span>
+						</span>
+						<input
+							type="password"
+							placeholder="Retype new password"
+							class="input input-bordered input-sm w-full"
+							name="password-confirm"
+							required
+						/>
+					</label>
+					<button class="btn btn-sm mt-2">Update password</button>
+				</form>
+			</details>
+		</div>
+		<div class="divider m-0"></div>
+		<div>
+			<div class="flex justify-between items-center text-sm">
+				<div>
+					<p class="font-semibold">Delete Account</p>
+					<p class="font-normal text-sm">This will delete all your data.</p>
+				</div>
+				<button
+					type="submit"
+					class="btn btn-sm"
+					hx-delete="/auth/user"
+					hx-confirm="Are you sure you want to delete your account? This action is irreversible."
+				>
+					Delete
+				</button>
 			</div>
 		</div>
-		<div class="modal-backdrop">
-			<button class="cursor-auto" onclick="about_dialog.close()"></button>
+	</div>
+}
+
+templ SettingsAbout(data templates.Data) {
+	<div id="settings_about" class={ "p-3 md:p-0 md:pr-4", templ.KV("hidden", !data.About.IsCheckUpdate) }>
+		<div>
+			<div class="flex justify-between items-center text-sm">
+				<div>
+					<p class="font-semibold">Recipya Version</p>
+					<p class="text-sm mt-2">
+						v{ data.About.Version.String() }
+						if data.About.IsUpdateAvailable {
+							(update available)
+						} else {
+							(latest)
+						}
+					</p>
+					<p class="text-xs">
+						Last checked: { data.About.LastCheckedUpdateAt.Format(time.DateOnly) }
+						<br/>
+						Last updated: { data.About.LastUpdatedAt.Format(time.DateOnly) }
+					</p>
+				</div>
+				if data.About.IsUpdateAvailable {
+					<button class="btn btn-sm" hx-get="/update" hx-swap="none" hx-indicator="#fullscreen-loader">Update</button>
+				} else {
+					<button class="btn btn-sm" hx-get="/update/check" hx-target="#settings_about" hx-swap="outerHTML">
+						Check for updates
+						<img class="htmx-indicator" src="/static/img/bars.svg"/>
+					</button>
+				}
+			</div>
 		</div>
-	</dialog>
+		<div class="divider m-0"></div>
+		<div class="flex space-x-1">
+			<a href="https://app.element.io/#/room/#recipya:matrix.org">
+				<img alt="Support" src="https://img.shields.io/badge/Element-Recipya-blue?logo=element&logoColor=white"/>
+			</a>
+			<a href="https://github.com/reaper47/recipya" target="_blank">
+				<img alt="Github Repo" src="https://img.shields.io/github/stars/reaper47/recipya?style=social&label=Star on Github"/>
+			</a>
+		</div>
+	</div>
 }

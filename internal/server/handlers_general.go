@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/templates"
 	"github.com/reaper47/recipya/web/components"
 	"io"
 	"log/slog"
@@ -147,6 +148,28 @@ func (s *Server) updateHandler() http.HandlerFunc {
 			time.Sleep(250 * time.Millisecond)
 			os.Exit(0)
 		}()
+	}
+}
+
+func (s *Server) updateCheckHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		userID := getUserID(r)
+
+		_, err := s.Repository.CheckUpdate(s.Files)
+		if errors.Is(err, app.ErrNoUpdate) {
+			s.Brokers.SendToast(models.NewWarningToast("", "No update available.", ""), userID)
+		} else if err != nil {
+			msg := "Failed to check update."
+			slog.Error(msg, "error", err)
+			s.Brokers.SendToast(models.NewErrorGeneralToast(msg), userID)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		about := templates.NewAboutData()
+		about.IsCheckUpdate = true
+
+		_ = components.SettingsAbout(templates.Data{About: about}).Render(r.Context(), w)
 	}
 }
 

@@ -46,7 +46,7 @@ templ reportsIndex(data templates.Data, isHighlightFirst bool) {
 		>
 			<button class="active" hx-get="/reports?tab=imports" hx-target="#tab-content" hx-push-url="true">Imports</button>
 		</div>
-		<div id="tab-content" role="tabpanel" class="w-[90vw] text-sm md:text-base p-4 auto-rows-min md:w-full">
+		<div id="tab-content" role="tabpanel" class="w-[90vw] text-sm md:max-h-full md:text-base p-4 auto-rows-min md:w-full">
 			if len(data.Reports.CurrentReport) > 0 && data.Reports.CurrentReport[0].ID != 0 {
 				@ReportsTabImports(data, true)
 			} else {
@@ -57,8 +57,8 @@ templ reportsIndex(data templates.Data, isHighlightFirst bool) {
 }
 
 templ ReportsTabImports(data templates.Data, isHighlightFirst bool) {
-	<div class="h-full max-h-[89vh] border rounded-lg sm:grid sm:gap-4 sm:grid-cols-4 dark:border-gray-800">
-		<ul class="col-span-1 border-r overflow-auto max-h-44 border-b md:border-b-0 sm:max-h-full dark:border-r-gray-800">
+	<div class="h-full max-h-[84vh] border rounded-lg md:max-h-[89vh] md:grid md:gap-4 md:grid-cols-4 dark:border-gray-800">
+		<ul class="col-span-1 border-r overflow-auto max-h-44 border-b md:border-b-0 md:max-h-full dark:border-r-gray-800">
 			for i, r := range data.Reports.Imports {
 				<li
 					class={ "item p-2 hover:bg-slate-200 cursor-default dark:hover:bg-slate-700", templ.KV("bg-slate-200 dark:bg-slate-700", i == 0 && isHighlightFirst) }
@@ -66,7 +66,6 @@ templ ReportsTabImports(data templates.Data, isHighlightFirst bool) {
 					hx-target="#report-view-pane"
 					hx-swap="outerHTML"
 					hx-trigger="mousedown"
-					hx-push-url="true"
 					_="on mousedown remove .bg-slate-200 .dark:bg-slate-700 from .item then add .bg-slate-200 .dark:bg-slate-700"
 				>
 					<span>
@@ -85,7 +84,7 @@ templ ReportsTabImports(data templates.Data, isHighlightFirst bool) {
 			@Report(data)
 		} else {
 			<div id="report-view-pane" class="grid col-span-3 place-content-center">
-				<p class="p-4 sm:p-0">No report selected. Please select a report to view its content.</p>
+				<p class="p-4 md:p-0">No report selected. Please select a report to view its content.</p>
 			</div>
 		}
 	</div>
@@ -93,8 +92,8 @@ templ ReportsTabImports(data templates.Data, isHighlightFirst bool) {
 
 templ Report(data templates.Data) {
 	<div id="report-view-pane" class="col-span-3">
-		<div class="overflow-auto h-[89vh]">
-			<table class="table table-xs sm:table-md">
+		<div class="overflow-auto h-[77vh] md:h-[89vh]">
+			<table class="table table-xs md:table-md">
 				<thead>
 					<tr>
 						switch data.Reports.Sort {
