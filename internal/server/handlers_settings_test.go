@@ -28,6 +28,8 @@ func TestHandlers_Settings(t *testing.T) {
 		}
 	)
 
+	app.Config = app.ConfigFile{}
+
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
 	})
@@ -65,40 +67,58 @@ func TestHandlers_Settings(t *testing.T) {
 		assertStringsInHTML(t, getBodyHTML(rr), []string{"Error fetching unit systems: kerch bridge on fire... Your defence is terrified"})
 	})
 
-	t.Run("profile tab not displayed when autologin", func(t *testing.T) {
-		app.Config.Server.IsAutologin = true
+	t.Run("server and connections settings not displayed when not admin", func(t *testing.T) {
+		srv.Repository = &mockRepository{
+			UsersRegistered: []models.User{
+				{ID: 1, Email: "admin@admin.com"},
+				{ID: 2, Email: "yay@nay.com"},
+			},
+		}
 		defer func() {
-			app.Config.Server.IsAutologin = false
+			srv.Repository = originalRepo
 		}()
 
-		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
+		rr := sendHxRequestAsLoggedInOtherNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusOK)
-		want := []string{
-			`<title hx-swap-oob="true">Settings | Recipya</title>`,
-			`<div class="grid place-content-center md:place-content-stretch md:grid-flow-col md:h-full" style="grid-template-columns: min-content">`,
-			`<div class="hidden md:grid text-sm md:text-base bg-gray-200 max-w-[6rem] mt-[1px] dark:bg-gray-600 dark:border-r dark:border-r-gray-500" role="tablist">`,
-			`<button class="px-2 hover:bg-gray-300 dark:hover:bg-gray-800 bg-gray-300 dark:bg-gray-800" hx-get="/settings/tabs/recipes" hx-target="#settings-tab-content" hx-trigger="mousedown" role="tab" aria-selected="false" aria-controls="tab-content" _="on mousedown remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800">Recipes</button>`,
-			`<button class="px-2 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-800" hx-get="/settings/tabs/advanced" hx-target="#settings-tab-content" hx-trigger="mousedown" role="tab" aria-selected="false" aria-controls="tab-content" _="on mousedown remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800">Advanced</button>`,
-			`<div id="settings_bottom_tabs" class="btm-nav btm-nav-sm z-20 md:hidden" _="on click remove .active from <button/> in settings_bottom_tabs then add .active to event.srcElement">`,
-			`<button class="active" hx-get="/settings/tabs/recipes" hx-target="#settings-tab-content">Recipes</button>`,
-			`<button hx-get="/settings/tabs/advanced" hx-target="#settings-tab-content">Advanced</button>`,
-			`<div id="settings-tab-content" role="tabpanel" class="w-[90vw] text-sm md:text-base p-4 auto-rows-min md:w-full">`,
-			`<div class="mb-4 md:mb-2 md:grid md:grid-cols-2 md:gap-4"><p class="mb-1 font-semibold md:text-end">Export data:<br><span class="font-light text-sm">Download your recipes in the selected file format.</span></p><form class="grid gap-1 grid-flow-col w-fit" hx-get="/settings/export/recipes" hx-include="select[name='type']" hx-swap="none">`,
-			`<form method="dialog" hx-post="/integrations/import" hx-swap="none" onsubmit="integrations_dialog.close()"><input id="integration-selected" type="hidden" name="integration" value="mealie"> <label class="form-control w-full"><div class="label"><span class="label-text font-medium">Base URL</span></div><input type="url" name="url" placeholder="https://instance.mydomain.com" class="input input-bordered w-full" required></label> <label class="form-control w-full"><div class="label"><span class="label-text font-medium">Username</span></div><input type="text" name="username" placeholder="Enter your username" class="input input-bordered w-full" required></label> <label class="form-control w-full pb-2"><div class="label"><span class="label-text font-medium">Password</span></div><input type="password" name="password" placeholder="Enter your password" class="input input-bordered w-full" required></label> <button class="btn btn-block btn-primary btn-sm mt-2">Import</button></form>`,
-			`<button class="btn btn-block btn-primary btn-sm mt-2">Import</button></form>`,
-		}
-		assertStringsInHTML(t, getBodyHTML(rr), want)
-		notWant := []string{
-			`hx-get="/settings/tabs/profile"`,
-			`Change password:`,
-			`hx-post="/auth/change-password"`,
-			`Enter current password`,
-			`Enter new password`,
-			`Retype new password`,
-			`Update`,
-		}
-		assertStringsNotInHTML(t, getBodyHTML(rr), notWant)
+		body := getBodyHTML(rr)
+		assertStringsInHTML(t, body, []string{
+			`<div id="settings_recipes"`,
+			`<div id="settings_data"`,
+			`<div id="settings_account"`,
+			`<div id="settings_about"`,
+		})
+		assertStringsNotInHTML(t, body, []string{
+			`<a class="setting-tab" _="on click add .hidden to the children of #settings_blocks then remove .hidden from #settings_server">`,
+			`<a class="setting-tab" _="on click add .hidden to the children of #settings_blocks then remove .hidden from #settings_connections">`,
+			`<div id="settings_server"`,
+			`<div id="settings_connections"`,
+		})
+	})
+
+	t.Run("demo sees fake connections data", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedInOtherNoBody(srv, http.MethodGet, uri)
+
+		assertStringsNotInHTML(t, getBodyHTML(rr), []string{
+			`<input name="email.from" type="text" placeholder="SendGrid email" value="demo@demo.com" autocomplete="off" class="input input-bordered input-sm w-full">`,
+			`<input name="email.apikey" type="text" placeholder="API key" value="demo" autocomplete="off" class="input input-bordered input-sm w-full">`,
+			`<input name="integrations.ocr.key" type="text" placeholder="Resource key 1" value="demo" autocomplete="off" class="input input-bordered input-sm w-full">`,
+			`<input name="integrations.ocr.url" type="url" placeholder="Vision endpoint URL" value="https://www.example.com" autocomplete="off" class="input input-bordered input-sm w-full">`,
+		})
+	})
+
+	t.Run("application update available", func(t *testing.T) {
+		app.Info.IsUpdateAvailable = true
+		defer func() {
+			app.Info.IsUpdateAvailable = false
+		}()
+
+		rr := sendRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		assertStringsInHTML(t, getBodyHTML(rr), []string{
+			`<div><p class="font-semibold">Recipya Version</p><p class="text-sm mt-2">v1.2.0 (update available)</p><p class="text-xs">Last checked: 0001-01-01<br>Last updated: 0001-01-01</p></div><button class="btn btn-sm" hx-get="/update" hx-swap="none" hx-indicator="#fullscreen-loader">Update</button></div></div>`,
+		})
 	})
 
 	t.Run("display settings", func(t *testing.T) {
@@ -106,23 +126,21 @@ func TestHandlers_Settings(t *testing.T) {
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
-			`<title hx-swap-oob="true">Settings | Recipya</title>`,
-			`<div class="grid place-content-center md:place-content-stretch md:grid-flow-col md:h-full" style="grid-template-columns: min-content">`,
-			`<div class="hidden md:grid text-sm md:text-base bg-gray-200 max-w-[6rem] mt-[1px] dark:bg-gray-600 dark:border-r dark:border-r-gray-500" role="tablist">`,
-			`<button class="px-2 bg-gray-300 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-800" hx-get="/settings/tabs/profile" hx-target="#settings-tab-content" hx-trigger="mousedown" role="tab" aria-selected="false" aria-controls="tab-content" _="on mousedown remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800">Profile</button>`,
-			`<button class="px-2 hover:bg-gray-300 dark:hover:bg-gray-800" hx-get="/settings/tabs/recipes" hx-target="#settings-tab-content" hx-trigger="mousedown" role="tab" aria-selected="false" aria-controls="tab-content" _="on mousedown remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800">Recipes</button>`,
-			`<button class="px-2 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-800" hx-get="/settings/tabs/advanced" hx-target="#settings-tab-content" hx-trigger="mousedown" role="tab" aria-selected="false" aria-controls="tab-content" _="on mousedown remove .bg-gray-300 .dark:bg-gray-800 from <div[role='tablist'] button/> then add .bg-gray-300 .dark:bg-gray-800">Advanced</button>`,
-			`<div id="settings_bottom_tabs" class="btm-nav btm-nav-sm z-20 md:hidden" _="on click remove .active from <button/> in settings_bottom_tabs then add .active to event.srcElement">`,
-			`<button class="active" hx-get="/settings/tabs/profile" hx-target="#settings-tab-content">Profile</button>`,
-			`<button class="" hx-get="/settings/tabs/recipes" hx-target="#settings-tab-content">Recipes</button>`,
-			`<button hx-get="/settings/tabs/advanced" hx-target="#settings-tab-content">Advanced</button>`,
-			`<div id="settings-tab-content" role="tabpanel" class="w-[90vw] text-sm md:text-base p-4 auto-rows-min md:w-full">`,
-			`<div class="mb-4 md:mb-2 md:grid md:grid-cols-2 md:gap-4"><p class="mb-1 font-semibold md:text-end">Change password:</p><div class="card card-bordered card-compact w-96 bg-base-100 max-w-xs"><div class="card-body pt-2"><form hx-post="/auth/change-password" hx-indicator="#fullscreen-loader" hx-swap="none">`,
-			`<label class="form-control w-full"><div class="label"><span class="label-text">Current password?</span></div><input type="password" placeholder="Enter current password" class="input input-bordered input-sm w-full max-w-xs" name="password-current" required></label>`,
-			`<label class="form-control w-full"><div class="label"><span class="label-text">New password?</span></div><input type="password" placeholder="Enter new password" class="input input-bordered input-sm w-full max-w-xs" name="password-new" required></label>`,
-			`<label class="form-control w-full"><div class="label"><span class="label-text">Confirm password?</span></div><input type="password" placeholder="Retype new password" class="input input-bordered input-sm w-full max-w-xs" name="password-confirm" required></label>`,
-			`<div type="submit" class="card-actions justify-end mt-2"><button class="btn btn-primary btn-block btn-sm">Update</button></div></form></div></div></div>`,
-			`<div class="mb-2 grid grid-cols-2 gap-4"><p class="mb-1 font-semibold md:text-end">Delete Account:<br><span class="font-light text-sm">This will delete all your data.</span></p><button type="submit" hx-delete="/auth/user" hx-confirm="Are you sure you want to delete your account? This action is irreversible." class="btn btn-error w-28">Delete</button></div>`,
+			`<div class="flex flex-col menu-sm sm:flex-row sm:menu-md">`,
+			`<ul class="menu menu-horizontal pt-0 flex-nowrap overflow-x-auto sm:overflow-x-clip sm:flex-wrap sm:menu sm:menu-vertical" _="on click remove .active from .setting-tab then add .active to closest <a/> to event.target">`,
+			`<li><a class="setting-tab active" _="on click add .hidden to the children of #settings_blocks then remove .hidden from #settings_recipes"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="m21 7.5-2.25-1.313M21 7.5v2.25m0-2.25-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3 2.25-1.313M12 12.75l-2.25-1.313M12 12.75V15m0 6.75 2.25-1.313M12 21.75V19.5m0 2.25-2.25-1.313m0-16.875L12 2.25l2.25 1.313M21 14.25v2.25l-2.25 1.313m-13.5 0L3 16.5v-2.25"></path></svg>Recipes</a></li>`,
+			`<li><a class="setting-tab" _="on click add .hidden to the children of #settings_blocks then remove .hidden from #settings_connections"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 0 0 4.5 4.5H18a3.75 3.75 0 0 0 1.332-7.257 3 3 0 0 0-3.758-3.848 5.25 5.25 0 0 0-10.233 2.33A4.502 4.502 0 0 0 2.25 15Z"></path></svg>Connections</a></li>`,
+			`<li><a class="setting-tab" _="on click add .hidden to the children of #settings_blocks then remove .hidden from #settings_data"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"></path></svg>Data</a></li>`,
+			`<li><a class="setting-tab" _="on click add .hidden to the children of #settings_blocks then remove .hidden from #settings_server"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 17.25v-.228a4.5 4.5 0 0 0-.12-1.03l-2.268-9.64a3.375 3.375 0 0 0-3.285-2.602H7.923a3.375 3.375 0 0 0-3.285 2.602l-2.268 9.64a4.5 4.5 0 0 0-.12 1.03v.228m19.5 0a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3m19.5 0a3 3 0 0 0-3-3H5.25a3 3 0 0 0-3 3m16.5 0h.008v.008h-.008v-.008Zm-3 0h.008v.008h-.008v-.008Z"></path></svg>Server</a></li>`,
+			`<li><a class="setting-tab" _="on click add .hidden to the children of #settings_blocks then remove .hidden from #settings_account"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path></svg>Account</a></li>`,
+			`<li><a class="setting-tab" _="on click add .hidden to the children of #settings_blocks then remove .hidden from #settings_about"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"></path></svg>About</a></li></ul>`,
+			`<div id="settings_blocks" class="w-full md:h-[26rem] md:max-h-[26rem]" style="padding-right: 1rem">`,
+			`<div id="settings_recipes" class="p-3 md:p-0 md:pr-4 md:max-h-96 overflow-y-auto"><div class="flex justify-between items-center text-sm"><label for="settings_recipes_measurement_system" class="font-semibold">Measurement system</label> <select id="settings_recipes_measurement_system" name="system" class="w-fit select select-bordered select-sm" hx-post="/settings/measurement-system" hx-swap="none"><option value="imperial">imperial</option><option value="metric" selected>metric</option></select></div><div class="flex justify-between items-center text-sm mt-2"><label for="settings_recipes_convert"><span class="font-semibold">Convert automatically</span><br><span class="text-xs">Convert new recipes to your preferred measurement system.</span></label> <input type="checkbox" name="convert" id="settings_recipes_convert" class="checkbox" hx-post="/settings/convert-automatically" hx-trigger="click"></div><div class="flex justify-between items-center text-sm mt-2"><label for="settings_recipes_calc_nutrition"><span class="font-semibold">Calculate nutrition facts</span><br><span class="text-xs block max-w-[45ch]">Calculate the nutrition facts automatically when adding a recipe. The processing will be done in the background.</span></label> <input id="settings_recipes_calc_nutrition" type="checkbox" name="calculate-nutrition" class="checkbox" hx-post="/settings/calculate-nutrition" hx-trigger="click"></div></div>`,
+			`<div id="settings_connections" class="p-3 overflow-y-auto max-h-96 hidden md:p-0 md:pr-4"><div class="flex justify-between items-center text-sm"><details class="w-full"><summary class="font-semibold cursor-default">Twilio SendGrid<br><span class="text-xs font-normal">This connection is used to send emails.</span></summary><form class="grid w-full" hx-put="/settings/config" hx-swap="none"><label class="form-control w-full"><span class="label"><span class="label-text text-sm">From</span></span> <input name="email.from" type="text" placeholder="SendGrid email" value="" autocomplete="off" class="input input-bordered input-sm w-full"></label> <label class="form-control w-full"><span class="label"><span class="label-text text-sm">SendGrid API key</span></span> <input name="email.apikey" type="text" placeholder="API key" value="" autocomplete="off" class="input input-bordered input-sm w-full"></label> <button class="btn btn-sm mt-2">Update</button></form></details> <button type="button" title="Test connection" class="btn btn-xs float-right self-baseline" hx-get="/integrations/test-connection?api=sg" hx-swap="none"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"></path></svg></button></div><div class="divider m-0"></div><div class="flex justify-between items-center text-sm"><details class="w-full"><summary class="font-semibold cursor-default">Azure AI Document Intelligence<br><span class="text-xs font-normal">This connection is used to digitize recipe images.</span></summary><form class="grid w-full" hx-put="/settings/config" hx-swap="none"><label class="form-control w-full"><span class="label"><span class="label-text text-sm">Resource key</span></span> <input name="integrations.ocr.key" type="text" placeholder="Resource key 1" value="" autocomplete="off" class="input input-bordered input-sm w-full"></label> <label class="form-control w-full"><span class="label"><span class="label-text text-sm">Endpoint</span></span> <input name="integrations.ocr.url" type="url" placeholder="Vision endpoint URL" value="" autocomplete="off" class="input input-bordered input-sm w-full"></label> <button class="btn btn-sm mt-2">Update</button></form></details> <button type="button" title="Test connection" class="btn btn-xs float-right self-baseline" hx-get="/integrations/test-connection?api=azure-di" hx-swap="none"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"></path></svg></button></div></div>`,
+			`<div id="settings_server" class="hidden p-3 md:p-0 md:pr-4 md:max-h-96"><div class="flex justify-between items-center text-sm"><form class="grid w-full" hx-put="/settings/config" hx-swap="none"><p class="font-semibold">Configuration</p><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Autologin</span> <input name="server.autologin" type="checkbox" class="checkbox"></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">No signups</span> <input name="server.noSignups" type="checkbox" class="checkbox"></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Is production</span> <input name="server.production" type="checkbox" class="checkbox"></label></div><button class="btn btn-sm mt-2">Update</button></form></div></div>`,
+			`<div id="settings_data" class="hidden p-3 md:p-0 md:pr-4"><div class="flex justify-between items-center text-sm"><details class="w-full"><summary class="font-semibold cursor-default">Import data<br><span class="text-xs font-normal">Import from Mealie, Tandoor, Nextcloud, etc.</span></summary><form class="flex flex-col text-sm" hx-post="/auth/change-password" hx-indicator="#fullscreen-loader" hx-swap="none"><label class="form-control w-full"><span class="label"><span class="label-text text-sm">Solution</span></span> <select name="integrations" class="w-fit select select-bordered select-sm"><option value="mealie" selected>Mealie</option> <option value="nextcloud">Nextcloud</option> <option value="tandoor">Tandoor</option></select></label> <label class="form-control w-full"><span class="label"><span class="label-text text-sm">Base URL</span></span> <input type="url" name="url" placeholder="https://instance.mydomain.com" class="input input-bordered input-sm w-full" required></label> <label class="form-control w-full"><span class="label"><span class="label-text text-sm">Username</span></span> <input type="text" name="username" placeholder="Enter your username" class="input input-bordered input-sm w-full" required></label> <label class="form-control w-full"><span class="label"><span class="label-text text-sm">Password</span></span> <input type="password" name="password" placeholder="Enter your password" class="input input-bordered input-sm w-full" required></label> <button class="btn btn-sm mt-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-cloud-arrow-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.646 10.854a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2z"></path> <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"></path></svg>Import</button></form></details></div><div class="divider m-0"></div><div class="flex justify-between items-center text-sm"><div><p class="font-semibold">Export data</p><p class="text-xs">Download your data in the selected file format.</p></div><form class="grid gap-1 grid-flow-col w-fit" hx-get="/settings/export/recipes" hx-include="select[name='type']" hx-swap="none"><label class="form-control w-full max-w-xs"><select required id="file-type" name="type" class="w-fit select select-bordered select-sm"><optgroup label="Recipes"><option value="json" selected>JSON</option> <option value="pdf">PDF</option></optgroup></select></label> <button class="btn btn-outline btn-sm"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1" fill="black" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 11v5H2v-5H0v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5z"></path> <path d="m9 14 5-6h-4V0H8v8H4z"></path></svg></button></form></div></div>`,
+			`<div id="settings_account" class="hidden p-3 md:p-0 md:pr-4 md:max-h-96"><div class="flex justify-between items-center text-sm"><details class="w-full"><summary class="font-semibold cursor-default">Change password</summary><form class="flex flex-col text-sm" hx-post="/auth/change-password" hx-indicator="#fullscreen-loader" hx-swap="none"><label class="form-control w-full"><span class="label"><span class="label-text text-sm">Current password</span></span> <input type="password" placeholder="Enter current password" class="input input-bordered input-sm w-full" name="password-current" required></label> <label class="form-control w-full"><span class="label"><span class="label-text text-sm">New password</span></span> <input type="password" placeholder="Enter new password" class="input input-bordered input-sm w-full" name="password-new" required></label> <label class="form-control w-full"><span class="label"><span class="label-text text-sm">Confirm password</span></span> <input type="password" placeholder="Retype new password" class="input input-bordered input-sm w-full" name="password-confirm" required></label> <button class="btn btn-sm mt-2">Update password</button></form></details></div><div class="divider m-0"></div><div><div class="flex justify-between items-center text-sm"><div><p class="font-semibold">Delete Account</p><p class="font-normal text-sm">This will delete all your data.</p></div><button type="submit" class="btn btn-sm" hx-delete="/auth/user" hx-confirm="Are you sure you want to delete your account? This action is irreversible.">Delete</button></div></div></div>`,
+			`<div id="settings_about" class="p-3 md:p-0 md:pr-4 hidden"><div><div class="flex justify-between items-center text-sm"><div><p class="font-semibold">Recipya Version</p><p class="text-sm mt-2">v1.2.0 (latest)</p><p class="text-xs">Last checked: 0001-01-01<br>Last updated: 0001-01-01</p></div><div class="flex flex-row"><img id="settings_about_update_check" class="htmx-indicator mr-1" src="/static/img/bars.svg" alt="Checking..."> <button class="btn btn-sm" hx-get="/update/check" hx-target="#settings_about" hx-swap="outerHTML" hx-indicator="#settings_about_update_check">Check for updates</button></div></div></div><div class="divider m-0"></div><div class="flex space-x-1"><a href="https://app.element.io/#/room/#recipya:matrix.org"><img alt="Support" src="https://img.shields.io/badge/Element-Recipya-blue?logo=element&amp;logoColor=white"></a> <a href="https://github.com/reaper47/recipya" target="_blank"><img alt="Github Repo" src="https://img.shields.io/github/stars/reaper47/recipya?style=social&amp;label=Star on Github"></a></div></div></div></div>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
@@ -327,7 +345,7 @@ func TestHandlers_Settings_Config(t *testing.T) {
 			},
 		}
 		assertStatus(t, rr.Code, http.StatusNoContent)
-		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-info","message":"","title":"Configuration updated."}}`)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-info","message":"Configuration updated.","title":"Operation Successful"}}`)
 		if !cmp.Equal(app.Config, want) {
 			t.Log(cmp.Diff(app.Config, want))
 			t.Fail()
@@ -672,146 +690,4 @@ func TestHandlers_Settings_MeasurementSystems(t *testing.T) {
 			}
 		})
 	}
-}
-
-func TestHandlers_Settings_TabsAdvanced(t *testing.T) {
-	srv := newServerTest()
-
-	uri := "/settings/tabs/advanced"
-
-	configForm := []string{
-		`<form class="grid w-full max-w-sm" hx-put="/settings/config" hx-swap="none">`,
-		`<input name="email.from" type="text" placeholder="SendGrid email" value="test@gmail.com" autocomplete="off" class="input input-bordered input-sm w-full">`,
-		`<input name="email.apikey" type="text" placeholder="API key" value="1234" autocomplete="off" class="input input-bordered input-sm w-full">`,
-		`<input name="integrations.ocr.key" type="text" placeholder="Resource key 1" value="HJK1" autocomplete="off" class="input input-bordered input-sm w-full">`,
-		`<input name="integrations.ocr.url" type="url" placeholder="Vision endpoint URL" value="https://graph.microsoft.com/v1.0" autocomplete="off" class="input input-bordered input-sm w-full">`,
-		`<input name="server.autologin" type="checkbox" checked class="checkbox">`,
-		`<input name="server.noSignups" type="checkbox" class="checkbox">`,
-		`<input name="server.production" type="checkbox" class="checkbox">`,
-	}
-
-	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
-	})
-
-	t.Run("non-admin does not see config", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedInOtherNoBody(srv, http.MethodGet, uri)
-
-		assertStringsNotInHTML(t, getBodyHTML(rr), configForm)
-	})
-
-	t.Run("demo sees fake data", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedInOtherNoBody(srv, http.MethodGet, uri)
-
-		assertStringsNotInHTML(t, getBodyHTML(rr), []string{
-			`<input name="email.from" type="text" placeholder="SendGrid email" value="demo@demo.com" autocomplete="off" class="input input-bordered input-sm w-full">`,
-			`<input name="email.apikey" type="text" placeholder="API key" value="demo" autocomplete="off" class="input input-bordered input-sm w-full">`,
-			`<input name="integrations.ocr.key" type="text" placeholder="Resource key 1" value="demo" autocomplete="off" class="input input-bordered input-sm w-full">`,
-			`<input name="integrations.ocr.url" type="url" placeholder="Vision endpoint URL" value="https://www.example.com" autocomplete="off" class="input input-bordered input-sm w-full">`,
-		})
-	})
-
-	t.Run("successful request", func(t *testing.T) {
-		original := app.Config
-		app.Config = app.ConfigFile{
-			Email: app.ConfigEmail{
-				From:           "test@gmail.com",
-				SendGridAPIKey: "1234",
-			},
-			Integrations: app.ConfigIntegrations{
-				AzureDI: app.AzureDI{
-					Key:      "HJK1",
-					Endpoint: "https://graph.microsoft.com/v1.0",
-				},
-			},
-			Server: app.ConfigServer{
-				IsAutologin:  true,
-				IsNoSignups:  false,
-				IsProduction: false,
-				Port:         1234,
-				URL:          "http://localhost",
-			},
-		}
-		defer func() {
-			app.Config = original
-		}()
-
-		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
-
-		assertStatus(t, rr.Code, http.StatusOK)
-		want := slices.Concat(configForm, []string{
-			`<p class="mb-1 font-semibold select-none md:text-end md:mb-0">Restore backup:</p>`,
-			`<form class="grid gap-1 grid-flow-col w-fit" hx-post="/settings/backups/restore" hx-include="select[name='date']" hx-swap="none" hx-indicator="#fullscreen-loader" hx-confirm="Continue with this backup? Today's data will be backed up if not already done.">`,
-			`<label><select required id="file-type" name="date" class="select select-bordered select-sm"></select></label>`,
-			`<button class="btn btn-sm btn-outline"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"></path></svg></button>`,
-		})
-		assertStringsInHTML(t, getBodyHTML(rr), want)
-	})
-}
-
-func TestHandlers_Settings_TabsProfile(t *testing.T) {
-	srv := newServerTest()
-
-	uri := "/settings/tabs/profile"
-
-	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
-	})
-
-	t.Run("successful request", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
-
-		assertStatus(t, rr.Code, http.StatusOK)
-		want := []string{
-			`<p class="mb-1 font-semibold md:text-end">Change password:</p>`,
-			`<form hx-post="/auth/change-password" hx-indicator="#fullscreen-loader" hx-swap="none">`,
-			`<label class="form-control w-full"><div class="label"><span class="label-text">Current password?</span></div><input type="password" placeholder="Enter current password" class="input input-bordered input-sm w-full max-w-xs" name="password-current" required></label>`,
-			`<label class="form-control w-full"><div class="label"><span class="label-text">New password?</span></div><input type="password" placeholder="Enter new password" class="input input-bordered input-sm w-full max-w-xs" name="password-new" required></label>`,
-			`<label class="form-control w-full"><div class="label"><span class="label-text">Confirm password?</span></div><input type="password" placeholder="Retype new password" class="input input-bordered input-sm w-full max-w-xs" name="password-confirm" required></label>`,
-			`<div type="submit" class="card-actions justify-end mt-2"><button class="btn btn-primary btn-block btn-sm">Update</button>`,
-			`<div class="mb-2 grid grid-cols-2 gap-4"><p class="mb-1 font-semibold md:text-end">Delete Account:<br><span class="font-light text-sm">This will delete all your data.</span></p><button type="submit" hx-delete="/auth/user" hx-confirm="Are you sure you want to delete your account? This action is irreversible." class="btn btn-error w-28">Delete</button></div>`,
-		}
-		assertStringsInHTML(t, getBodyHTML(rr), want)
-	})
-}
-
-func TestHandlers_Settings_TabsRecipes(t *testing.T) {
-	srv, ts, c := createWSServer()
-	defer c.Close()
-
-	uri := ts.URL + "/settings/tabs/recipes"
-
-	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
-	})
-
-	t.Run("error on getting units systems", func(t *testing.T) {
-		srv.Repository = &mockRepository{
-			MeasurementSystemsFunc: func(userID int64) ([]units.System, models.UserSettings, error) {
-				return nil, models.UserSettings{}, errors.New("error fetching systems")
-			},
-		}
-		defer func() {
-			srv.Repository = &mockRepository{}
-		}()
-
-		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
-
-		assertStatus(t, rr.Code, http.StatusInternalServerError)
-		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Error fetching units systems.","title":"Database Error"}}`)
-	})
-
-	t.Run("successful request", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
-
-		assertStatus(t, rr.Code, http.StatusOK)
-		want := []string{
-			`<div class="mb-4 md:mb-2 md:grid md:grid-cols-2 md:gap-4"><p class="mb-1 font-semibold md:text-end">Export data:<br><span class="font-light text-sm">Download your recipes in the selected file format.</span></p><form class="grid gap-1 grid-flow-col w-fit" hx-get="/settings/export/recipes" hx-include="select[name='type']" hx-swap="none"><label class="form-control w-full max-w-xs"><select required id="file-type" name="type" class="w-fit select select-bordered select-sm"><optgroup label="Recipes"><option value="json" selected>JSON</option> <option value="pdf">PDF</option></optgroup></select></label>`,
-			`<div class="mb-4 md:mb-2 md:grid md:grid-cols-2 md:gap-4"><p class="mb-1 font-semibold md:text-end">Measurement system:</p><label class="form-control w-full max-w-xs"><select name="system" hx-post="/settings/measurement-system" hx-swap="none" class="w-fit select select-bordered select-sm"><option value="imperial">imperial</option><option value="metric" selected>metric</option></select></label></div>`,
-			`<div class="flex mb-4 md:mb-2 md:grid md:grid-cols-2 md:gap-4"><label for="convert" class="mb-1 font-semibold md:text-end">Convert automatically:<br><span class="font-light text-sm">Convert new recipes to your preferred measurement system.</span></label> <input type="checkbox" name="convert" id="convert" class="checkbox" hx-post="/settings/convert-automatically" hx-trigger="click"></div>`,
-			`<div class="flex mb-4 md:mb-2 md:grid md:grid-cols-2 md:gap-4"><label for="calculate-nutrition" class="mb-1 font-semibold md:text-end">Calculate nutrition facts:<br><span class="font-light text-sm md:max-w-96 md:inline-block">Calculate the nutrition facts automatically when adding a recipe. The processing will be done in the background.</span></label> <input id="calculate-nutrition" type="checkbox" name="calculate-nutrition" class="checkbox" hx-post="/settings/calculate-nutrition" hx-trigger="click"></div>`,
-			`<div class="md:grid md:grid-cols-2 md:gap-4"><label class="font-semibold md:text-end">Integrations:<br><span class="font-light text-sm">Import recipes from the selected solution.</span></label><div class="grid gap-1 grid-flow-col w-fit h-fit mt-1 md:mt-0"><label class="form-control w-full max-w-xs"><select name="integrations" class="w-fit select select-bordered select-sm" _="on change(target) set { value: target.value } on #integration-selected"><option value="mealie" selected>Mealie</option> <option value="nextcloud">Nextcloud</option> <option value="tandoor">Tandoor</option></select></label> <button class="btn btn-outline btn-sm" onmousedown="integrations_dialog.showModal()">`,
-		}
-		assertStringsInHTML(t, getBodyHTML(rr), want)
-	})
 }

@@ -62,9 +62,9 @@ templ SettingsDialogContent(data templates.Data) {
 			@settingsRecipes(data)
 			if data.IsAdmin {
 				@settingsConnections(data)
+				@settingsServer(data)
 			}
 			@settingsData(data)
-			@settingsServer(data)
 			@settingsAccount()
 			@SettingsAbout(data)
 		</div>
@@ -390,10 +390,10 @@ templ SettingsAbout(data templates.Data) {
 				if data.About.IsUpdateAvailable {
 					<button class="btn btn-sm" hx-get="/update" hx-swap="none" hx-indicator="#fullscreen-loader">Update</button>
 				} else {
-					<button class="btn btn-sm" hx-get="/update/check" hx-target="#settings_about" hx-swap="outerHTML">
-						Check for updates
-						<img class="htmx-indicator" src="/static/img/bars.svg"/>
-					</button>
+					<div class="flex flex-row">
+						<img id="settings_about_update_check" class="htmx-indicator mr-1" src="/static/img/bars.svg" alt="Checking..."/>
+						<button class="btn btn-sm" hx-get="/update/check" hx-target="#settings_about" hx-swap="outerHTML" hx-indicator="#settings_about_update_check">Check for updates</button>
+					</div>
 				}
 			</div>
 		</div>

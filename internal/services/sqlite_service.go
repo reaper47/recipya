@@ -568,7 +568,10 @@ func (s *SQLiteService) CheckUpdate(files FilesService) (models.AppInfo, error) 
 		updateAvailable = 1
 	}
 
-	ai := models.AppInfo{IsUpdateAvailable: !isLatest}
+	ai := models.AppInfo{
+		IsUpdateAvailable:   !isLatest,
+		LastCheckedUpdateAt: time.Now(),
+	}
 	err = s.DB.QueryRowContext(ctx, statements.UpdateIsUpdateAvailable, updateAvailable).Scan(&ai.LastUpdatedAt, &ai.LastCheckedUpdateAt)
 	return ai, err
 }
