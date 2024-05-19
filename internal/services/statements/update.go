@@ -66,6 +66,17 @@ const UpdateRecipeCategory = `
 	SET category_id = ?
 	WHERE id = ?`
 
+// UpdateRecipeCategoryReset is the query to reset the category of the user's affected recipes.
+const UpdateRecipeCategoryReset = `
+	UPDATE category_recipe
+	SET category_id = 1
+	WHERE recipe_id IN ((SELECT r.id
+						 FROM recipes AS r
+								  INNER JOIN category_recipe AS cr ON cr.recipe_id = r.id
+								  INNER JOIN user_recipe AS ur ON ur.recipe_id = r.id
+						 WHERE cr.category_id = ?
+						   AND ur.user_id = ?))`
+
 // UpdateRecipeDescription is the query to update a recipe's description.
 const UpdateRecipeDescription = `
 	UPDATE recipes

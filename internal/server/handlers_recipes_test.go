@@ -13,6 +13,7 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"slices"
 	"strconv"
 	"strings"
@@ -94,7 +95,7 @@ func TestHandlers_Recipes_New(t *testing.T) {
 				`<title hx-swap-oob="true">Add Recipe | Recipya</title>`,
 				`<img class="object-cover w-full h-40 rounded-t-xl" src="/static/img/recipes/new/import.webp" alt="Writing on a piece of paper with a traditional pen.">`,
 				`<button class="underline" hx-get="/recipes/supported-websites" hx-target="#search-results" onclick="supported_websites_dialog.showModal()">supported</button>`,
-				`<dialog id="websites_dialog" class="modal"><div class="modal-box"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="font-bold text-lg">Fetch recipes from websites</h3><form class="py-4" hx-post="/recipes/add/website" hx-indicator="#fullscreen-loader" hx-swap="none"><div class="grid mb-4"><label class="form-control"><div class="label"><span class="label-text">Enter one or more URLs, each on a new line.</span></div><textarea class="textarea textarea-bordered whitespace-pre-line" placeholder="URL 1URL 2URL 3URL 4etc..." name="urls" rows="5"></textarea></label></div><button type="submit" class="btn btn-block btn-primary btn-sm" onclick="websites_dialog.close()">Submit</button></form></div></dialog>`,
+				`<dialog id="websites_dialog" class="modal"><div class="modal-box"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="font-bold text-lg">Fetch recipes from websites</h3><form class="py-4" hx-post="/recipes/add/website" hx-swap="none" _="on submit call websites_dialog.close() then set me.querySelector('textarea').value to ''"><div class="grid mb-4"><label class="form-control"><div class="label"><span class="label-text">Enter one or more URLs, each on a new line.</span></div><textarea class="textarea textarea-bordered whitespace-pre-line" placeholder="URL 1URL 2URL 3URL 4etc..." name="urls" rows="5"></textarea></label></div><button class="btn btn-block btn-primary btn-sm">Submit</button></form></div></dialog>`,
 				`<dialog id="supported_websites_dialog" class="modal"><div class="modal-box h-2/3"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="mb-1"><label><input type="search" placeholder="Search a website" class="input input-bordered input-sm w-11/12" _="on input show <tbody>tr/> in next <table/> when its textContent.toLowerCase() contains my value.toLowerCase()"></label></h3><div class="overflow-x-auto"><table class="table table-zebra table-sm"><thead><tr class="text-center"><th class="py-1">Number</th><th class="py-1">Website</th></tr></thead> <tbody id="search-results"></tbody></table></div></div></dialog>`,
 				`<dialog id="supported_apps_import_dialog" class="modal"><div class="modal-box h-2/3"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="mb-1"><label><input type="search" placeholder="Search an application" class="input input-bordered input-sm w-11/12" _="on input show <tbody>tr/> in next <table/> when its textContent.toLowerCase() contains my value.toLowerCase()"></label></h3><div class="overflow-x-auto"><table class="table table-zebra table-sm"><thead><tr class="text-center"><th class="py-1">Number</th><th class="py-1">Application</th></tr></thead> <tbody id="application-results"></tbody></table></div></div></dialog>`,
 				`<dialog id="add_ocr_dialog" class="modal"><div class="modal-box"><form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form><h3 class="font-bold text-lg">Scan Recipe</h3><form class="py-4" hx-post="/recipes/add/ocr" hx-encoding="multipart/form-data" hx-indicator="#fullscreen-loader" hx-swap="none" _="on submit add_ocr_dialog.close()"><div class="grid mb-4"><label for="add-ocr-files-input" class="text-sm font-medium mb-1">Select your recipe's images ordered by page or a recipe document in the PDF format.</label> <input id="add-ocr-files-input" type="file" name="files" accept=".jpg, .jpeg, .png, .bmp, .tiff, .heif, .pdf" multiple class="p-2 border border-gray-300 rounded-lg shadow focus:ring-2 focus:ring-purple-600 dark:bg-gray-900 dark:border-none"></div><button class="btn btn-block btn-primary btn-sm">Submit</button></form></div></dialog>`,
@@ -141,7 +142,9 @@ func TestHandlers_Recipes_AddImport(t *testing.T) {
 
 func TestHandlers_Recipes_AddManual(t *testing.T) {
 	srv := newServerTest()
-	repo := &mockRepository{}
+	repo := &mockRepository{
+		categories: map[int64][]string{1: {"breakfast", "lunch", "dinner"}},
+	}
 	srv.Repository = repo
 
 	uri := "/recipes/add/manual"
@@ -167,7 +170,7 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 				`<input required type="text" name="title" placeholder="Title of the recipe*" autocomplete="off" class="input w-full btn-ghost text-center">`,
 				`<img src="" alt="Image preview of the recipe." class="object-cover mb-2 w-full max-h-[39rem]"> <span class="grid gap-1 max-w-sm" style="margin: auto auto 0.25rem;"><div class="mr-1"><input type="file" accept="image/*" name="images" class="file-input file-input-sm file-input-bordered w-full max-w-sm" _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray' on dragleave or drop set the target's style.background to '' on drop or change make an FileReader called reader then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then set {src: window.URL.createObjectURL(it)} on previous <img/> then remove .hidden from me.parentElement.parentElement.querySelectorAll('button') then add .hidden to the parentElement of me">`,
 				`<input type="number" min="1" name="yield" value="1" class="input input-bordered input-sm w-24 md:w-20 lg:w-24">`,
-				`<input required type="text" list="categories" name="category" class="input input-bordered input-sm w-48 md:w-36 lg:w-48" placeholder="Breakfast"> <datalist id="categories"><option>breakfast</option><option>lunch</option><option>dinner</option></datalist>`,
+				`<input required type="text" list="categories" name="category" class="input input-bordered input-sm w-48 md:w-36 lg:w-48" placeholder="Breakfast" autocomplete="off"> <datalist id="categories"><option>breakfast</option><option>lunch</option><option>dinner</option></datalist>`,
 				`<textarea required name="description" placeholder="This Thai curry chicken will make you drool." class="textarea w-full h-full resize-none"></textarea>`,
 				`<table class="table table-zebra table-xs md:h-fit"><thead><tr><th>Time</th><th>h:m:s</th></tr></thead> <tbody><tr><td>Prep</td><td><label><input type="text" name="time-preparation" value="00:15:00" class="input input-bordered input-xs max-w-24 html-duration-picker"></label></td></tr><tr><td>Cooking</td><td><label><input type="text" name="time-cooking" value="00:30:00" class="input input-bordered input-xs max-w-24 html-duration-picker"></label></td></tr></tbody></table>`,
 				`<table class="table table-zebra table-xs"><thead><tr><th>Nutrition<br>(per 100g)</th><th>Amount</th></tr></thead> <tbody><tr><td>Calories</td><td><label><input type="text" name="calories" autocomplete="off" placeholder="368kcal" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Total carbs</td><td><label><input type="text" name="total-carbohydrates" autocomplete="off" placeholder="35g" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Sugars</td><td><label><input type="text" name="sugars" autocomplete="off" placeholder="3g" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Protein</td><td><label><input type="text" name="protein" autocomplete="off" placeholder="21g" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Total fat</td><td><label><input type="text" name="total-fat" autocomplete="off" placeholder="15g" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Saturated fat</td><td><label><input type="text" name="saturated-fat" autocomplete="off" placeholder="1.8g" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Cholesterol</td><td><label><input type="text" name="cholesterol" autocomplete="off" placeholder="1.1mg" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Sodium</td><td><label><input type="text" name="sodium" autocomplete="off" placeholder="100mg" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Fiber</td><td><label><input type="text" name="fiber" autocomplete="off" placeholder="8g" class="input input-bordered input-xs max-w-24"></label></td></tr></tbody></table>`,
@@ -732,9 +735,12 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 		URL:       "https://example.com/recipes/yummy",
 		Yield:     12,
 	}
+	xc, _ := srv.Repository.Categories(1)
 	srv.Repository = &mockRepository{
+		categories:        map[int64][]string{1: xc},
 		RecipesRegistered: map[int64]models.Recipes{1: {baseRecipe}},
 	}
+	originalRepo := srv.Repository
 
 	uri := ts.URL + "/recipes/%d/edit"
 
@@ -751,7 +757,7 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 			RecipesRegistered: map[int64]models.Recipes{1: {baseRecipe}},
 		}
 		defer func() {
-			srv.Repository = &mockRepository{RecipesRegistered: map[int64]models.Recipes{1: {baseRecipe}}}
+			srv.Repository = originalRepo
 		}()
 
 		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, fmt.Sprintf(uri, 1))
@@ -767,7 +773,7 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 			`<title hx-swap-oob="true">Edit Chicken Jersey | Recipya</title>`,
 			`<input required type="text" name="title" placeholder="Title of the recipe*" autocomplete="off" class="input w-full btn-ghost text-center" value="Chicken Jersey">`,
 			`<img alt="Image preview of the recipe." class="object-cover mb-2 w-full max-h-[39rem]" src="/data/images/` + baseRecipe.Images[0].String() + `.jpg"> <span class="grid gap-1 max-w-sm" style="margin: auto auto 0.25rem;"><div class="mr-1"><input type="file" accept="image/*" name="images" class="file-input file-input-sm file-input-bordered w-full max-w-sm" value="/data/images/` + baseRecipe.Images[0].String() + `.jpg" _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray' on dragleave or drop set the target's style.background to '' on drop or change make an FileReader called reader then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then set {src: window.URL.createObjectURL(it)} on previous <img/> then remove .hidden from me.parentElement.parentElement.querySelectorAll('button') then add .hidden to the parentElement of me">`,
-			`<input required type="text" list="categories" name="category" class="input input-bordered input-sm w-48 md:w-36 lg:w-48" placeholder="Breakfast" value="american"> <datalist id="categories"></datalist>`,
+			`<input required type="text" list="categories" name="category" class="input input-bordered input-sm w-48 md:w-36 lg:w-48" placeholder="Breakfast" autocomplete="off" value="american"> <datalist id="categories"><option>breakfast</option><option>lunch</option><option>dinner</option></datalist>`,
 			`<input type="number" min="1" name="yield" class="input input-bordered input-sm w-24 md:w-20 lg:w-24" value="12">`,
 			`<input required type="text" placeholder="Source" name="source" class="input input-bordered input-sm md:w-28 lg:w-40 xl:w-44" value="https://example.com/recipes/yummy"`,
 			`<textarea required name="description" placeholder="This Thai curry chicken will make you drool." class="textarea w-full h-full resize-none">A delicious recipe!</textarea>`,
@@ -1006,6 +1012,131 @@ func TestHandlers_Recipes_Scale(t *testing.T) {
 			`<label class="label justify-start"><input type="checkbox" class="checkbox"> <span class="label-text pl-2">4 15-ounce can Goya beans</span>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
+	})
+}
+
+func TestHandlers_Recipes_Categories(t *testing.T) {
+	srv, ts, c := createWSServer()
+	defer c.Close()
+
+	baseRecipes := map[int64]models.Recipes{
+		1: {
+			{ID: 1, Name: "Chinese Firmware", Category: "breakfast"},
+			{ID: 2, Name: "Lovely Canada", Category: "lunch"},
+			{ID: 3, Name: "Lovely Ukraine", Category: "dinner"},
+			{ID: 4, Name: "Space Disco", Category: "snack"},
+			{ID: 4, Name: "Maple Pancakes", Category: "breakfast"},
+		},
+	}
+	srv.Repository = &mockRepository{
+		categories:        map[int64][]string{1: {"uncategorized", "chicken"}},
+		RecipesRegistered: baseRecipes,
+	}
+	originalRepo := srv.Repository
+
+	uri := ts.URL + "/recipes/categories"
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
+	})
+
+	t.Run("delete category updates recipes", func(t *testing.T) {
+		d := url.Values{}
+		d.Add("category", "breakfast")
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri+"?"+d.Encode(), formHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		for _, r := range srv.Repository.RecipesAll(1) {
+			if r.Category == "breakfast" {
+				t.Fatal("expected recipes with category 'breakfast' to be updated")
+			}
+		}
+	})
+
+	t.Run("failed to delete category", func(t *testing.T) {
+		srv.Repository = &mockRepository{
+			DeleteCategoryFunc: func(_ string, _ int64) error {
+				return errors.New("that's some bad hat harry")
+			},
+			RecipesRegistered: baseRecipes,
+		}
+		defer func() {
+			srv.Repository = originalRepo
+		}()
+		d := url.Values{}
+		d.Add("category", "breakfast")
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri+"?"+d.Encode(), formHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusInternalServerError)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Failed to delete category.","title":"General Error"}}`)
+	})
+
+	t.Run("cannot delete uncategorized category", func(t *testing.T) {
+		d := url.Values{}
+		d.Add("category", "uncategorized")
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodDelete, uri+"?"+d.Encode(), formHeader, nil)
+
+		assertStatus(t, rr.Code, http.StatusInternalServerError)
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Failed to delete category.","title":"General Error"}}`)
+	})
+
+	t.Run("add new category", func(t *testing.T) {
+		categoriesBefore, _ := srv.Repository.Categories(1)
+		d := url.Values{}
+		d.Add("category", "uber chicken")
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader(d.Encode()))
+
+		assertStatus(t, rr.Code, http.StatusCreated)
+		categoriesAfter, _ := srv.Repository.Categories(1)
+		if len(categoriesBefore) == len(categoriesAfter) {
+			t.Fatal("categories should have been updated")
+		}
+		assertStringsInHTML(t, getBodyHTML(rr), []string{
+			`<div class="badge badge-outline p-3 pr-0"><form class="inline-flex" hx-delete="/recipes/categories" hx-target="closest <div/>" hx-swap="delete"><input type="hidden" name="category" value="uber chicken"> <span class="select-none">uber chicken</span> <button type="submit" class="btn btn-xs btn-ghost">X</button></form></div>`,
+			`<div class="badge badge-outline p-3 pr-0"><form class="inline-flex" hx-post="/recipes/categories" hx-target="closest <div/>" hx-swap="outerHTML"><label class="form-control"><input required type="text" placeholder="New category" class="input input-ghost input-xs w-[16ch] focus:outline-none" name="category" autocomplete="off"></label> <button class="btn btn-xs btn-ghost">&#10003;</button></form></div>`,
+		})
+	})
+
+	t.Run("cannot add existing category", func(t *testing.T) {
+		categoriesBefore, _ := srv.Repository.Categories(1)
+		d := url.Values{}
+		d.Add("category", "uncategorized")
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader(d.Encode()))
+
+		assertStatus(t, rr.Code, http.StatusInternalServerError)
+		categoriesAfter, _ := srv.Repository.Categories(1)
+		if len(categoriesBefore) != len(categoriesAfter) {
+			t.Fatal("categories should not have been updated")
+		}
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Failed to add category.","title":"General Error"}}`)
+	})
+
+	t.Run("failed to add category", func(t *testing.T) {
+		srv.Repository = &mockRepository{
+			AddRecipeCategoryFunc: func(_ string, _ int64) error {
+				return errors.New("that's very bad")
+			},
+		}
+		defer func() {
+			srv.Repository = originalRepo
+		}()
+		categoriesBefore, _ := srv.Repository.Categories(1)
+		d := url.Values{}
+		d.Add("category", "uber chicken")
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader(d.Encode()))
+
+		assertStatus(t, rr.Code, http.StatusInternalServerError)
+		categoriesAfter, _ := srv.Repository.Categories(1)
+		if len(categoriesBefore) != len(categoriesAfter) {
+			t.Fatal("categories should not have been updated")
+		}
+		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Failed to add category.","title":"General Error"}}`)
 	})
 }
 

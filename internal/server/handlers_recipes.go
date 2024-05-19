@@ -864,12 +864,19 @@ func (s *Server) recipesEditHandler() http.HandlerFunc {
 			return
 		}
 
+		categories, err := s.Repository.Categories(userID)
+		if err != nil {
+			s.Brokers.SendToast(models.NewErrorDBToast("Failed to retrieve categories."), userID)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
 		_ = components.EditRecipe(templates.Data{
 			About:           templates.NewAboutData(),
 			IsAdmin:         userID == 1,
 			IsAuthenticated: true,
 			IsHxRequest:     r.Header.Get("HX-Request") == "true",
-			View:            templates.NewViewRecipeData(id, recipe, true, false),
+			View:            templates.NewViewRecipeData(id, recipe, categories, true, false),
 		}).Render(r.Context(), w)
 	}
 }
@@ -1024,7 +1031,7 @@ func (s *Server) recipeShareHandler(w http.ResponseWriter, r *http.Request) {
 		IsAdmin:         userID == 1,
 		IsAuthenticated: isLoggedIn,
 		IsHxRequest:     r.Header.Get("Hx-Request") == "true",
-		View:            templates.NewViewRecipeData(share.RecipeID, recipe, userID == share.UserID, true),
+		View:            templates.NewViewRecipeData(share.RecipeID, recipe, nil, userID == share.UserID, true),
 	}).Render(r.Context(), w)
 }
 
@@ -1091,6 +1098,54 @@ func (s *Server) recipeSharePostHandler() http.HandlerFunc {
 		_ = components.ShareLink(templates.Data{
 			Content: r.Host + link,
 		}).Render(r.Context(), w)
+	}
+}
+
+func (s *Server) recipesCategoriesDeleteHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var (
+			category     = r.FormValue("category")
+			categoryAttr = slog.String("category", category)
+
+			userID     = getUserID(r)
+			userIDAttr = slog.Int64("userID", userID)
+		)
+
+		err := s.Repository.DeleteRecipeCategory(category, userID)
+		if err != nil {
+			msg := "Failed to delete category."
+			slog.Error(msg, userIDAttr, categoryAttr, "error", err)
+			s.Brokers.SendToast(models.NewErrorGeneralToast(msg), userID)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		slog.Info("Deleted category", userIDAttr, categoryAttr)
+	}
+}
+
+func (s *Server) recipesCategoriesPostHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var (
+			category     = r.FormValue("category")
+			categoryAttr = slog.String("category", category)
+
+			userID     = getUserID(r)
+			userIDAttr = slog.Int64("userID", userID)
+		)
+
+		err := s.Repository.AddRecipeCategory(category, userID)
+		if err != nil {
+			msg := "Failed to add category."
+			slog.Error(msg, userIDAttr, categoryAttr, "error", err)
+			s.Brokers.SendToast(models.NewErrorGeneralToast(msg), userID)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		slog.Info("Add category", userIDAttr, categoryAttr)
+		w.WriteHeader(http.StatusCreated)
+		_ = components.SettingsRecipesCategoryNew(category).Render(r.Context(), w)
 	}
 }
 
@@ -1232,7 +1287,7 @@ func (s *Server) recipesViewHandler() http.HandlerFunc {
 			IsAdmin:         userID == 1,
 			IsAuthenticated: true,
 			IsHxRequest:     r.Header.Get("Hx-Request") == "true",
-			View:            templates.NewViewRecipeData(id, recipe, true, false),
+			View:            templates.NewViewRecipeData(id, recipe, nil, true, false),
 		}).Render(r.Context(), w)
 	}
 }
@@ -1266,7 +1321,7 @@ func (s *Server) recipesViewShareHandler() http.HandlerFunc {
 			IsAdmin:         userID == 1,
 			IsAuthenticated: isLoggedIn,
 			IsHxRequest:     r.Header.Get("Hx-Request") == "true",
-			View:            templates.NewViewRecipeData(id, recipe, cookbookUserID == userID, true),
+			View:            templates.NewViewRecipeData(id, recipe, nil, cookbookUserID == userID, true),
 		}).Render(r.Context(), w)
 	}
 }

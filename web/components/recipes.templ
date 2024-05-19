@@ -165,7 +165,7 @@ templ addRecipe() {
 					<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 				</form>
 				<h3 class="font-bold text-lg">Fetch recipes from websites</h3>
-				<form class="py-4" hx-post="/recipes/add/website" hx-indicator="#fullscreen-loader" hx-swap="none">
+				<form class="py-4" hx-post="/recipes/add/website" hx-swap="none" _="on submit call websites_dialog.close() then set me.querySelector('textarea').value to ''">
 					<div class="grid mb-4">
 						<label class="form-control">
 							<div class="label">
@@ -183,9 +183,7 @@ etc..."
 							></textarea>
 						</label>
 					</div>
-					<button type="submit" class="btn btn-block btn-primary btn-sm" onclick="websites_dialog.close()">
-						Submit
-					</button>
+					<button class="btn btn-block btn-primary btn-sm">Submit</button>
 				</form>
 			</div>
 		</dialog>
@@ -445,6 +443,7 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 													name="category"
 													class="input input-bordered input-sm w-48 md:w-36 lg:w-48"
 													placeholder="Breakfast"
+													autocomplete="off"
 												/>
 												<datalist id="categories">
 													for _, c := range data.Categories {
@@ -1157,6 +1156,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 													name="category"
 													class="input input-bordered input-sm w-48 md:w-36 lg:w-48"
 													placeholder="Breakfast"
+													autocomplete="off"
 													value={ data.Recipe.Category }
 												/>
 												<datalist id="categories">

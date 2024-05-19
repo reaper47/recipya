@@ -66,3 +66,11 @@ const DeleteUser = `
 	DELETE
 	FROM users
 	WHERE id = ?`
+
+// DeleteUserCategory deletes a user's recipe category.
+const DeleteUserCategory = `
+	DELETE
+	FROM user_category
+	WHERE user_id = ?
+	  AND category_id = (SELECT id FROM categories WHERE name = ?)
+	RETURNING category_id`

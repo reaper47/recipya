@@ -21,6 +21,7 @@ func (s *Server) settingsHandler() http.HandlerFunc {
 			data        templates.SettingsData
 			isHxRequest = r.Header.Get("Hx-Request") == "true"
 			userID      = getUserID(r)
+			userIDAttr  = slog.Int64("userID", userID)
 		)
 
 		systems, settings, err := s.Repository.MeasurementSystems(userID)
@@ -56,10 +57,21 @@ func (s *Server) settingsHandler() http.HandlerFunc {
 			})
 		}
 
+		categories, err := s.Repository.Categories(userID)
+		if err != nil {
+			msg := "Failed to fetch categories."
+			slog.Error(msg, userIDAttr, "error", err)
+			s.Brokers.SendToast(models.NewErrorDBToast(msg), userID)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		categories = slices.DeleteFunc(categories, func(s string) bool { return s == "uncategorized" })
+
 		_ = components.SettingsDialogContent(templates.Data{
 			About:    templates.NewAboutData(),
 			IsAdmin:  userID == 1,
 			Settings: data,
+			View:     &templates.ViewRecipeData{Categories: categories},
 		}).Render(r.Context(), w)
 	}
 }

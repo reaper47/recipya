@@ -63,7 +63,7 @@ templ ForgotPasswordResetPage(userID string) {
 
 templ LoginPage(isDemo, isNoSignups bool) {
 	@layoutAuth("Login") {
-		<form class="card w-80 sm:w-96 bg-base-100 shadow-xl" action="/auth/login" method="post">
+		<form class="card w-80 sm:w-96 bg-base-100 shadow-xl" action="/auth/login" method="post" hx-post="/auth/login">
 			<div class="card-body">
 				<h2 class="card-title underline self-center">Log In</h2>
 				<label class="form-control w-full">

@@ -262,14 +262,14 @@ func (s *Server) loginPostHandler() http.HandlerFunc {
 		password := r.FormValue("password")
 		if !regex.Email.MatchString(email) || password == "" {
 			w.Header().Set("HX-Trigger", models.NewErrorFormToast("Credentials are invalid.").Render())
-			w.WriteHeader(http.StatusNoContent)
+			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		userID := s.Repository.VerifyLogin(email, password)
 		if userID == -1 {
 			w.Header().Set("HX-Trigger", models.NewErrorFormToast("Credentials are invalid.").Render())
-			w.WriteHeader(http.StatusNoContent)
+			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
@@ -294,7 +294,6 @@ func (s *Server) loginPostHandler() http.HandlerFunc {
 		}
 
 		w.Header().Set("HX-Redirect", redirectURI)
-		http.Redirect(w, r, redirectURI, http.StatusSeeOther)
 	}
 }
 

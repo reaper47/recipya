@@ -572,7 +572,7 @@ func recipeToPDF(r *models.Recipe) []byte {
 }
 
 func addRecipeToPDF(pdf *gofpdf.Fpdf, r *models.Recipe) *gofpdf.Fpdf {
-	viewData := templates.NewViewRecipeData(1, r, true, false)
+	viewData := templates.NewViewRecipeData(1, r, nil, true, false)
 
 	tr := pdf.UnicodeTranslatorFromDescriptor("")
 	marginLeft, marginTop, marginRight, _ := pdf.GetMargins()

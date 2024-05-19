@@ -14,7 +14,7 @@ templ HomePage(data templates.Data) {
 templ SettingsDialogContent(data templates.Data) {
 	<div class="flex flex-col menu-sm sm:flex-row sm:menu-md">
 		<ul
-			class="menu menu-horizontal pt-0 flex-nowrap overflow-x-auto sm:overflow-x-clip sm:flex-wrap sm:menu sm:menu-vertical"
+			class="menu menu-horizontal pt-0 flex-nowrap overflow-x-auto sm:w-56 sm:overflow-x-clip sm:flex-wrap sm:menu sm:menu-vertical"
 			_="on click remove .active from .setting-tab then add .active to closest <a/> to event.target"
 		>
 			<li>
@@ -74,6 +74,24 @@ templ SettingsDialogContent(data templates.Data) {
 templ settingsRecipes(data templates.Data) {
 	<div id="settings_recipes" class="p-3 md:p-0 md:pr-4 md:max-h-96 overflow-y-auto">
 		<div class="flex justify-between items-center text-sm">
+			<details class="w-full">
+				<summary class="font-semibold cursor-default">Categories</summary>
+				<div class="flex flex-wrap gap-2 p-2">
+					for _, c := range data.View.Categories {
+						<div class="badge badge-outline p-3 pr-0">
+							<form class="inline-flex" hx-delete="/recipes/categories" hx-target="closest <div/>" hx-swap="delete">
+								<input type="hidden" name="category" value={ c }/>
+								<span class="select-none">{ c }</span>
+								<button type="submit" class="btn btn-xs btn-ghost">X</button>
+							</form>
+						</div>
+					}
+					@settingsRecipesCategoryEmpty()
+				</div>
+			</details>
+		</div>
+		<div class="divider m-0"></div>
+		<div class="flex justify-between items-center text-sm">
 			<label for="settings_recipes_measurement_system" class="font-semibold">Measurement system</label>
 			<select id="settings_recipes_measurement_system" name="system" class="w-fit select select-bordered select-sm" hx-post="/settings/measurement-system" hx-swap="none">
 				for _, system := range data.Settings.MeasurementSystems {
@@ -97,6 +115,7 @@ templ settingsRecipes(data templates.Data) {
 				hx-trigger="click"
 			/>
 		</div>
+		<div class="divider m-0"></div>
 		<div class="flex justify-between items-center text-sm mt-2">
 			<label for="settings_recipes_calc_nutrition">
 				<span class="font-semibold">Calculate nutrition facts</span>
@@ -114,6 +133,28 @@ templ settingsRecipes(data templates.Data) {
 			/>
 		</div>
 	</div>
+}
+
+templ settingsRecipesCategoryEmpty() {
+	<div class="badge badge-outline p-3 pr-0">
+		<form class="inline-flex" hx-post="/recipes/categories" hx-target="closest <div/>" hx-swap="outerHTML">
+			<label class="form-control">
+				<input required type="text" placeholder="New category" class="input input-ghost input-xs w-[16ch] focus:outline-none" name="category" autocomplete="off"/>
+			</label>
+			<button class="btn btn-xs btn-ghost">&#10003;</button>
+		</form>
+	</div>
+}
+
+templ SettingsRecipesCategoryNew(name string) {
+	<div class="badge badge-outline p-3 pr-0">
+		<form class="inline-flex" hx-delete="/recipes/categories" hx-target="closest <div/>" hx-swap="delete">
+			<input type="hidden" name="category" value={ name }/>
+			<span class="select-none">{ name }</span>
+			<button type="submit" class="btn btn-xs btn-ghost">X</button>
+		</form>
+	</div>
+	@settingsRecipesCategoryEmpty()
 }
 
 templ settingsConnections(data templates.Data) {

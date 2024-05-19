@@ -156,6 +156,8 @@ func (s *Server) mountHandlers() {
 	mux.Handle("POST /recipes/add/manual/instruction/{entry}", s.mustBeLoggedInMiddleware(recipeAddManualInstructionDeleteHandler()))
 	mux.Handle("POST /recipes/add/ocr", withLog(s.recipesAddOCRHandler()))
 	mux.Handle("POST /recipes/add/website", withLog(s.recipesAddWebsiteHandler()))
+	mux.Handle("DELETE /recipes/categories", withLog(s.recipesCategoriesDeleteHandler()))
+	mux.Handle("POST /recipes/categories", withLog(s.recipesCategoriesPostHandler()))
 	mux.Handle("GET /recipes/search", s.mustBeLoggedInMiddleware(s.recipesSearchHandler()))
 	mux.Handle("GET /recipes/supported-applications", s.mustBeLoggedInMiddleware(s.recipesSupportedApplicationsHandler()))
 	mux.Handle("GET /recipes/supported-websites", s.mustBeLoggedInMiddleware(s.recipesSupportedWebsitesHandler()))

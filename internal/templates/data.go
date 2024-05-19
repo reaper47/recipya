@@ -146,8 +146,9 @@ type Backup struct {
 }
 
 // NewViewRecipeData creates and populates a new ViewRecipeData.
-func NewViewRecipeData(id int64, recipe *models.Recipe, isFromHost, isShared bool) *ViewRecipeData {
+func NewViewRecipeData(id int64, recipe *models.Recipe, categories []string, isFromHost, isShared bool) *ViewRecipeData {
 	return &ViewRecipeData{
+		Categories:     categories,
 		FormattedTimes: newFormattedTimes(recipe.Times),
 		ID:             id,
 		Inc: func(n int) int {
