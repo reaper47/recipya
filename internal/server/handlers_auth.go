@@ -111,12 +111,13 @@ func (s *Server) confirmHandler(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) deleteUserHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		userID := getUserID(r)
 		if app.Config.Server.IsAutologin {
+			s.Brokers.SendToast(models.NewWarningToast("Forbidden Action", "This account cannot be deleted.", ""), userID)
 			w.WriteHeader(http.StatusForbidden)
 			return
 		}
 
-		userID := getUserID(r)
 		if app.Config.Server.IsDemo && s.Repository.UserID("demo@demo.com") == userID {
 			s.Brokers.SendToast(models.NewErrorGeneralToast("Your savings account has been deleted."), userID)
 			w.WriteHeader(http.StatusTeapot)
@@ -261,14 +262,14 @@ func (s *Server) loginPostHandler() http.HandlerFunc {
 		password := r.FormValue("password")
 		if !regex.Email.MatchString(email) || password == "" {
 			w.Header().Set("HX-Trigger", models.NewErrorFormToast("Credentials are invalid.").Render())
-			w.WriteHeader(http.StatusNoContent)
+			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		userID := s.Repository.VerifyLogin(email, password)
 		if userID == -1 {
 			w.Header().Set("HX-Trigger", models.NewErrorFormToast("Credentials are invalid.").Render())
-			w.WriteHeader(http.StatusNoContent)
+			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
@@ -293,7 +294,6 @@ func (s *Server) loginPostHandler() http.HandlerFunc {
 		}
 
 		w.Header().Set("HX-Redirect", redirectURI)
-		http.Redirect(w, r, redirectURI, http.StatusSeeOther)
 	}
 }
 

@@ -9,7 +9,7 @@
     color: darkgray;
 }
 
-dialog::backdrop {
+::backdrop {
     background: rgba(0, 0, 0, 0.5);
 }
 

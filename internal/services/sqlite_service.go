@@ -376,6 +376,50 @@ func (s *SQLiteService) addRecipeTx(ctx context.Context, tx *sql.Tx, r models.Re
 	return recipeID, nil
 }
 
+// AddRecipeCategory adds a custom recipe category for the user.
+func (s *SQLiteService) AddRecipeCategory(name string, userID int64) error {
+	// 1. Verify whether category is ok.
+	name = strings.TrimSpace(strings.ToLower(name))
+	if name == "" {
+		return errors.New("category is invalid")
+	}
+
+	categories, err := s.Categories(userID)
+	if err != nil {
+		return err
+	}
+
+	if slices.Contains(categories, name) {
+		return errors.New("category is already in use")
+	}
+
+	// 2. Add new category
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{})
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	var categoryID int64
+	err = tx.QueryRowContext(ctx, statements.InsertCategory, name).Scan(&categoryID)
+	if err != nil {
+		return err
+	}
+
+	_, err = tx.ExecContext(ctx, statements.InsertUserCategory, userID, categoryID)
+	if err != nil {
+		return err
+	}
+
+	return tx.Commit()
+}
+
 // AddReport adds a report to the database.
 func (s *SQLiteService) AddReport(report models.Report, userID int64) {
 	userIDAttr := slog.Int64("userID", userID)
@@ -568,7 +612,10 @@ func (s *SQLiteService) CheckUpdate(files FilesService) (models.AppInfo, error) 
 		updateAvailable = 1
 	}
 
-	ai := models.AppInfo{IsUpdateAvailable: !isLatest}
+	ai := models.AppInfo{
+		IsUpdateAvailable:   !isLatest,
+		LastCheckedUpdateAt: time.Now(),
+	}
 	err = s.DB.QueryRowContext(ctx, statements.UpdateIsUpdateAvailable, updateAvailable).Scan(&ai.LastUpdatedAt, &ai.LastCheckedUpdateAt)
 	return ai, err
 }
@@ -769,6 +816,38 @@ func (s *SQLiteService) DeleteAuthToken(userID int64) error {
 
 	_, err := s.DB.ExecContext(ctx, statements.DeleteAuthToken, userID)
 	return err
+}
+
+// DeleteRecipeCategory deletes a user's recipe category.
+func (s *SQLiteService) DeleteRecipeCategory(name string, userID int64) error {
+	if name == "uncategorized" || name == "" {
+		return errors.New("category is invalid")
+	}
+
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{})
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	var categoryID int64
+	err = tx.QueryRowContext(ctx, statements.DeleteUserCategory, userID, name).Scan(&categoryID)
+	if err != nil {
+		return err
+	}
+
+	_, err = tx.ExecContext(ctx, statements.UpdateRecipeCategoryReset, categoryID, userID)
+	if err != nil {
+		return err
+	}
+
+	return tx.Commit()
 }
 
 // DeleteCookbook deletes a user's cookbook.
@@ -1594,6 +1673,11 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 		}
 
 		_, err = tx.ExecContext(ctx, statements.UpdateRecipeCategory, categoryID, recipeID)
+		if err != nil {
+			return err
+		}
+
+		_, err = tx.ExecContext(ctx, statements.InsertUserCategory, userID, categoryID)
 		if err != nil {
 			return err
 		}

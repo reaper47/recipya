@@ -29,6 +29,7 @@ const (
 func createWSServer() (*server.Server, *httptest.Server, *websocket.Conn) {
 	srv := newServerTest()
 	repo := &mockRepository{
+		categories:        map[int64][]string{1: {"breakfast", "lunch", "dinner"}},
 		RecipesRegistered: make(map[int64]models.Recipes),
 		UsersRegistered: []models.User{
 			{ID: 1, Email: "test@example.com"},

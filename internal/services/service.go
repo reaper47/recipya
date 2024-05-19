@@ -25,6 +25,9 @@ type RepositoryService interface {
 	// AddCookbookRecipe adds a recipe to the cookbook.
 	AddCookbookRecipe(cookbookID, recipeID, userID int64) error
 
+	// AddRecipeCategory adds a custom recipe category for the user.
+	AddRecipeCategory(name string, userID int64) error
+
 	// AddRecipes adds recipes to the user's collection.
 	AddRecipes(recipes models.Recipes, userID int64, progress chan models.Progress) ([]int64, []models.ReportLog, error)
 
@@ -74,6 +77,9 @@ type RepositoryService interface {
 
 	// DeleteRecipe deletes a user's recipe.
 	DeleteRecipe(id, userID int64) error
+
+	// DeleteRecipeCategory deletes a user's recipe category.
+	DeleteRecipeCategory(name string, userID int64) error
 
 	// DeleteRecipeFromCookbook deletes a recipe from a cookbook. It returns the number of recipes in the cookbook.
 	DeleteRecipeFromCookbook(recipeID, cookbookID int64, userID int64) (int64, error)

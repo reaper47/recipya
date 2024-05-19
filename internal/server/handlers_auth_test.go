@@ -35,7 +35,7 @@ func TestHandlers_Auth_ChangePassword(t *testing.T) {
 
 	t.Run("Wrong current password", func(t *testing.T) {
 		srv.Repository = &mockRepository{
-			isUserPasswordFunc: func(_ int64, _ string) bool { return false },
+			IsUserPasswordFunc: func(_ int64, _ string) bool { return false },
 		}
 		defer func() {
 			srv.Repository = originalRepo
@@ -407,7 +407,7 @@ func TestHandlers_Auth_Login(t *testing.T) {
 		t.Run("invalid credentials when "+tc.name, func(t *testing.T) {
 			rr := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader(tc.form))
 
-			assertStatus(t, rr.Code, http.StatusNoContent)
+			assertStatus(t, rr.Code, http.StatusBadRequest)
 			var got map[string]string
 			_ = json.Unmarshal([]byte(rr.Header().Get("HX-Trigger")), &got)
 			wantHeader := `{"action":"","background":"alert-error","message":"Credentials are invalid.","title":"Form Error"}`
@@ -433,7 +433,7 @@ func TestHandlers_Auth_Login(t *testing.T) {
 		rr := httptest.NewRecorder()
 		srv.Router.ServeHTTP(rr, r)
 
-		assertStatus(t, rr.Code, http.StatusSeeOther)
+		assertStatus(t, rr.Code, http.StatusOK)
 		assertHeader(t, rr, "HX-Redirect", otherURI)
 	})
 
@@ -476,7 +476,7 @@ func TestHandlers_Auth_Login(t *testing.T) {
 
 		rr := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email=test@example.com&password=123&remember-me=false"))
 
-		assertStatus(t, rr.Code, http.StatusSeeOther)
+		assertStatus(t, rr.Code, http.StatusOK)
 		assertHeader(t, rr, "HX-Redirect", "/")
 		var (
 			isUserInSession   bool
@@ -504,7 +504,7 @@ func TestHandlers_Auth_Login(t *testing.T) {
 
 		rr := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email=test@example.com&password=123&remember-me=yes"))
 
-		assertStatus(t, rr.Code, http.StatusSeeOther)
+		assertStatus(t, rr.Code, http.StatusOK)
 		assertHeader(t, rr, "HX-Redirect", "/")
 
 		cookies := rr.Result().Cookies()

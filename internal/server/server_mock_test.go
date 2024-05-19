@@ -32,6 +32,7 @@ func init() {
 func newServerTest() *server.Server {
 	srv := server.NewServer(&mockRepository{
 		AuthTokens:             make([]models.AuthToken, 0),
+		categories:             map[int64][]string{1: {"chicken"}},
 		RecipesRegistered:      make(map[int64]models.Recipes),
 		Reports:                make(map[int64][]models.Report),
 		ShareLinks:             make(map[string]models.Share),
@@ -51,22 +52,25 @@ func newServerTest() *server.Server {
 
 type mockRepository struct {
 	AuthTokens                         []models.AuthToken
+	AddRecipeCategoryFunc              func(name string, userID int64) error
 	AddRecipesFunc                     func(recipes models.Recipes, userID int64, progress chan models.Progress) ([]int64, []models.ReportLog, error)
+	categories                         map[int64][]string
 	CookbooksFunc                      func(userID int64) ([]models.Cookbook, error)
 	CookbooksRegistered                map[int64][]models.Cookbook
+	DeleteCategoryFunc                 func(name string, userID int64) error
 	DeleteCookbookFunc                 func(id, userID int64) error
-	isUserPasswordFunc                 func(userID int64, password string) bool
+	IsUserPasswordFunc                 func(userID int64, password string) bool
 	MeasurementSystemsFunc             func(userID int64) ([]units.System, models.UserSettings, error)
 	RecipeFunc                         func(id, userID int64) (*models.Recipe, error)
 	RecipesRegistered                  map[int64]models.Recipes
 	Reports                            map[int64][]models.Report
 	ReportsFunc                        func(userID int64) ([]models.Report, error)
-	restoreUserBackupFunc              func(backup *models.UserBackup) error
+	RestoreUserBackupFunc              func(backup *models.UserBackup) error
 	ShareLinks                         map[string]models.Share
 	SwitchMeasurementSystemFunc        func(system units.System, userID int64) error
 	UpdateCookbookImageFunc            func(id int64, image uuid.UUID, userID int64) error
-	updateConvertMeasurementSystemFunc func(userID int64, isEnabled bool) error
-	updateCalculateNutritionFunc       func(userID int64, isEnabled bool) error
+	UpdateConvertMeasurementSystemFunc func(userID int64, isEnabled bool) error
+	UpdateCalculateNutritionFunc       func(userID int64, isEnabled bool) error
 	UserSettingsRegistered             map[int64]*models.UserSettings
 	UsersRegistered                    []models.User
 	UsersUpdated                       []int64
@@ -138,6 +142,24 @@ func (m *mockRepository) AddShareLink(share models.Share) (string, error) {
 		}
 	}
 	return "", errors.New("cookbook or recipe not found")
+}
+
+func (m *mockRepository) AddRecipeCategory(name string, userID int64) error {
+	if m.AddRecipeCategoryFunc != nil {
+		return m.AddRecipeCategoryFunc(name, userID)
+	}
+
+	categories, err := m.Categories(userID)
+	if err != nil {
+		return err
+	}
+
+	if slices.Contains(categories, name) {
+		return errors.New("category in use")
+	}
+
+	m.categories[userID] = append(m.categories[userID], name)
+	return nil
 }
 
 func (m *mockRepository) AddReport(report models.Report, userID int64) {
@@ -220,8 +242,12 @@ func (m *mockRepository) AddCookbookRecipe(cookbookID, recipeID, userID int64) e
 	return nil
 }
 
-func (m *mockRepository) Categories(_ int64) ([]string, error) {
-	return []string{"breakfast", "lunch", "dinner"}, nil
+func (m *mockRepository) Categories(userID int64) ([]string, error) {
+	categories, ok := m.categories[userID]
+	if !ok {
+		return nil, errors.New("categories not found")
+	}
+	return categories, nil
 }
 
 func (m *mockRepository) CheckUpdate(_ services.FilesService) (models.AppInfo, error) {
@@ -329,6 +355,31 @@ func (m *mockRepository) DeleteAuthToken(userID int64) error {
 	return nil
 }
 
+func (m *mockRepository) DeleteRecipeCategory(name string, userID int64) error {
+	if m.DeleteCategoryFunc != nil {
+		return m.DeleteCategoryFunc(name, userID)
+	}
+
+	if name == "uncategorized" {
+		return errors.New("cannot delete 'uncategorized'")
+	}
+
+	recipes, ok := m.RecipesRegistered[userID]
+	if !ok {
+		return errors.New("user not registered")
+	}
+
+	for i, r := range recipes {
+		if r.Category == name {
+			r.Category = "uncategorized"
+		}
+		recipes[i] = r
+	}
+
+	m.RecipesRegistered[userID] = recipes
+	return nil
+}
+
 func (m *mockRepository) DeleteCookbook(id, userID int64) error {
 	if m.DeleteCookbookFunc != nil {
 		return m.DeleteCookbookFunc(id, userID)
@@ -409,8 +460,8 @@ func (m *mockRepository) IsUserExist(email string) bool {
 }
 
 func (m *mockRepository) IsUserPassword(id int64, password string) bool {
-	if m.isUserPasswordFunc != nil {
-		return m.isUserPasswordFunc(id, password)
+	if m.IsUserPasswordFunc != nil {
+		return m.IsUserPasswordFunc(id, password)
 	}
 	return slices.IndexFunc(m.UsersRegistered, func(user models.User) bool { return user.ID == id }) != -1
 }
@@ -531,8 +582,8 @@ func (m *mockRepository) RestoreBackup(_ string) error {
 }
 
 func (m *mockRepository) RestoreUserBackup(backup *models.UserBackup) error {
-	if m.restoreUserBackupFunc != nil {
-		return m.restoreUserBackupFunc(backup)
+	if m.RestoreUserBackupFunc != nil {
+		return m.RestoreUserBackupFunc(backup)
 	}
 	return nil
 }
@@ -574,8 +625,8 @@ func (m *mockRepository) SwitchMeasurementSystem(system units.System, userID int
 }
 
 func (m *mockRepository) UpdateCalculateNutrition(userID int64, isEnabled bool) error {
-	if m.updateCalculateNutritionFunc != nil {
-		return m.updateCalculateNutritionFunc(userID, isEnabled)
+	if m.UpdateCalculateNutritionFunc != nil {
+		return m.UpdateCalculateNutritionFunc(userID, isEnabled)
 	}
 
 	settings, ok := m.UserSettingsRegistered[userID]
@@ -592,8 +643,8 @@ func (m *mockRepository) UpdateCalculateNutrition(userID int64, isEnabled bool) 
 }
 
 func (m *mockRepository) UpdateConvertMeasurementSystem(userID int64, isEnabled bool) error {
-	if m.updateConvertMeasurementSystemFunc != nil {
-		return m.updateConvertMeasurementSystemFunc(userID, isEnabled)
+	if m.UpdateConvertMeasurementSystemFunc != nil {
+		return m.UpdateConvertMeasurementSystemFunc(userID, isEnabled)
 	}
 
 	settings, ok := m.UserSettingsRegistered[userID]
