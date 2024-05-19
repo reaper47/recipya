@@ -761,7 +761,12 @@ func addRecipeToPDF(pdf *gofpdf.Fpdf, r *models.Recipe) *gofpdf.Fpdf {
 	}
 	if len(nutrition) > 0 {
 		nutrition[0] = "  " + nutrition[0]
-		nutrition[len(nutrition)/2-1] += "\n"
+
+		newLineIdx := 0
+		if len(nutrition) > 1 {
+			newLineIdx = len(nutrition)/2 - 1
+		}
+		nutrition[newLineIdx] += "\n"
 
 		pdf.SetX(marginLeft + cellGap)
 		pdf.SetFont(fontFamily, "B", fontSizeSmall)
@@ -845,7 +850,7 @@ func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recip
 			)
 
 			switch content {
-			case "application/x-zip-compressed":
+			case "application/x-zip-compressed", "application/zip":
 				toAdd = f.processZip(fh)
 			case "application/json":
 				toAdd = f.processJSON(fh)
