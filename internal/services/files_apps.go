@@ -197,7 +197,7 @@ func (f *Files) processRecipeFiles(zr *zip.Reader) models.Recipes {
 	var (
 		imageUUID    uuid.UUID
 		recipeNumber int
-		recipes      = make(models.Recipes, 0)
+		recipes      = make(models.Recipes, 0, len(zr.File))
 	)
 
 	for _, zf := range zr.File {
@@ -227,7 +227,9 @@ func (f *Files) processRecipeFiles(zr *zip.Reader) models.Recipes {
 			if err != nil {
 				slog.Error("Failed to upload image", "file", zf, "error", err)
 			}
+
 			_ = imageFile.Close()
+			continue
 		}
 
 		openedFile, err := zf.Open()
@@ -338,10 +340,9 @@ func (f *Files) extractJSONRecipes(rd io.Reader) (models.Recipes, error) {
 		}
 
 		if rs.Image.Value != "" {
-			img, err := f.ScrapeAndStoreImage(rs.Image.Value)
+			img, err := uuid.Parse(filepath.Base(rs.Image.Value))
 			if err != nil {
-				slog.Error("Could not scrape and store image", "image", rs.Image.Value, "error", err)
-				continue
+				img, _ = f.ScrapeAndStoreImage(rs.Image.Value)
 			}
 
 			if img != uuid.Nil {
