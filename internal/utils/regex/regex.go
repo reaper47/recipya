@@ -51,4 +51,4 @@ var UnitImperial = regexp.MustCompile(`(?i)(cups?|feet|foot|ft\.?\b|′|fluid\s*
 var UnitMetric = regexp.MustCompile(`(?i)(centimeters?|centimetres?|cm\b|deciliters?|decilitres?|dl\b|millimeters?|millimetres?|mm\b|grams?|grammes?|\b\d*g\b|kilograms?|kilogrammes?|kg|milligrams?|milligrammes?|mg\b|meters?|metres?|\b\d*m\b|milliliters?|millilitres?|ml\b|liters?|litres?|\b\d*l\b|degrees?\s*celsius|degrees?\s*c|celsius|\b°?c\b)`)
 
 // WildcardURL matches a Recipya URL with wildcards.
-var WildcardURL = regexp.MustCompile(`/(cookbooks|recipes|download)/\d+(/\w+(/\d+)?)?`)
+var WildcardURL = regexp.MustCompile(`/(cookbooks|recipes|download)/\d+(/\w+(/\d+)?)?$`)

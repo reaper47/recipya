@@ -290,7 +290,6 @@ func (s *Server) loginPostHandler() http.HandlerFunc {
 		c, err := r.Cookie(cookieNameRedirect)
 		if c != nil && !errors.Is(err, http.ErrNoCookie) {
 			redirectURI = c.Value
-			http.SetCookie(w, c)
 		}
 
 		w.Header().Set("HX-Redirect", redirectURI)

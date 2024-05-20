@@ -506,6 +506,49 @@ func (s *SQLiteService) AddShareLink(share models.Share) (string, error) {
 	return link, err
 }
 
+// AddShareRecipe adds a shared recipe to the user's collection.
+func (s *SQLiteService) AddShareRecipe(recipeID, userID int64) (int64, error) {
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	ctx, cancel := context.WithTimeout(context.Background(), longerCtxTimeout)
+	defer cancel()
+
+	var otherUserID int64
+	err := s.DB.QueryRowContext(ctx, statements.SelectRecipeSharedFromRecipeID, recipeID).Scan(&otherUserID)
+	if err != nil {
+		return 0, err
+	}
+
+	r, err := s.Recipe(recipeID, otherUserID)
+	if err != nil {
+		return 0, err
+	}
+
+	var isRecipeExists bool
+	err = s.DB.QueryRowContext(ctx, statements.IsRecipeForUserExist, userID, r.Name, r.Description, r.Yield, r.URL).Scan(&isRecipeExists)
+	if err != nil {
+		return 0, err
+	}
+
+	if isRecipeExists {
+		return 0, errors.New("recipe exists")
+	}
+
+	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{})
+	if err != nil {
+		return 0, err
+	}
+	defer tx.Rollback()
+
+	newRecipeID, err := s.addRecipeTx(ctx, tx, *r, userID)
+	if err != nil {
+		return 0, err
+	}
+
+	return newRecipeID, tx.Commit()
+}
+
 // AppInfo gets general information on the application.
 func (s *SQLiteService) AppInfo() (models.AppInfo, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)

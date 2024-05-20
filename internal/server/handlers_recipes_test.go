@@ -1333,7 +1333,7 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 			want := []string{
 				`<title hx-swap-oob="true">` + recipe.Name + " | Recipya</title>",
 				`<button title="Toggle screen lock" _="on load if not navigator.wakeLock hide me end on click if wakeLock wakeLock.release() then add @d=`,
-				`<button class="mr-2" title="Add recipe to collection" hx-post="/recipes/1/share/add">`,
+				`<button class="mr-2" title="Add recipe to collection" hx-get="/recipes/1/share/add" hx-push-url="true">`,
 			}
 			notWant := []string{
 				`id="share-dialog"`,
@@ -1372,6 +1372,126 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 			body := getBodyHTML(rr)
 			assertStringsInHTML(t, body, want)
 			assertStringsNotInHTML(t, body, notWant)
+		})
+	}
+}
+
+func TestHandlers_Recipes_ShareAdd(t *testing.T) {
+	srv, ts, c := createWSServer()
+	defer c.Close()
+
+	uri := func(id int64) string {
+		return fmt.Sprintf("%s/recipes/%d/share/add", ts.URL, id)
+	}
+
+	originalRepo := srv.Repository
+
+	app.Config.Server.URL = "https://www.recipya.com"
+	recipe := models.Recipe{
+		Category:     "American",
+		Description:  "This is the most delicious recipe!",
+		ID:           1,
+		Images:       []uuid.UUID{uuid.New()},
+		Ingredients:  []string{"Ing1", "Ing2", "Ing3"},
+		Instructions: []string{"Ins1", "Ins2", "Ins3"},
+		Name:         "Chicken Jersey",
+		Times: models.Times{
+			Prep:  5 * time.Minute,
+			Cook:  1*time.Hour + 5*time.Minute,
+			Total: 1*time.Hour + 10*time.Minute,
+		},
+		URL:   "https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/",
+		Yield: 2,
+	}
+	_, _, _ = srv.Repository.AddRecipes(models.Recipes{recipe}, 1, nil)
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodGet, uri(1))
+	})
+
+	t.Run("recipe ID in path must be positive", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri(-1))
+
+		assertStatus(t, rr.Code, http.StatusBadRequest)
+	})
+
+	testcases := []struct {
+		name     string
+		sendFunc func(server *server.Server, target, uri string) *httptest.ResponseRecorder
+		isHxReq  bool
+	}{
+		{name: "is logged in Hx-Request", sendFunc: sendHxRequestAsLoggedInNoBody, isHxReq: true},
+		{name: "is logged in no Hx-Request", sendFunc: sendRequestAsLoggedInNoBody, isHxReq: false},
+	}
+	for _, tc := range testcases {
+		t.Run("failed to add shared recipe "+tc.name, func(t *testing.T) {
+			srv.Repository = &mockRepository{
+				AddShareRecipeFunc: func(_, _ int64) (int64, error) {
+					return 0, errors.New("failed to add shared recipe")
+				},
+			}
+			defer func() {
+				srv.Repository = originalRepo
+			}()
+
+			rr := tc.sendFunc(srv, http.MethodGet, uri(1))
+
+			if tc.isHxReq {
+				assertStatus(t, rr.Code, http.StatusInternalServerError)
+				assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Failed to add shared recipe to user's collection.","title":"General Error"}}`)
+			} else {
+				assertStatus(t, rr.Code, http.StatusSeeOther)
+				assertHeader(t, rr, "Location", "/recipes")
+			}
+		})
+	}
+
+	testcases2 := []struct {
+		name     string
+		sendFunc func(server *server.Server, target, uri string) *httptest.ResponseRecorder
+		isHxReq  bool
+	}{
+		{name: "is logged in Hx-Request", sendFunc: sendHxRequestAsLoggedInNoBody, isHxReq: true},
+		{name: "is logged in no Hx-Request", sendFunc: sendRequestAsLoggedInNoBody, isHxReq: false},
+	}
+	for _, tc := range testcases2 {
+		t.Run("recipe exists in collection"+tc.name, func(t *testing.T) {
+			_, _, _ = srv.Repository.AddRecipes(models.Recipes{recipe}, 1, nil)
+			defer func() {
+				srv.Repository = originalRepo
+			}()
+
+			rr := tc.sendFunc(srv, http.MethodGet, uri(1))
+
+			if tc.isHxReq {
+				assertStatus(t, rr.Code, http.StatusInternalServerError)
+				assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Failed to add shared recipe to user's collection.","title":"General Error"}}`)
+			} else {
+				assertStatus(t, rr.Code, http.StatusSeeOther)
+				assertHeader(t, rr, "Location", "/recipes")
+			}
+		})
+	}
+
+	testcases3 := []struct {
+		name     string
+		sendFunc func(server *server.Server, target, uri string) *httptest.ResponseRecorder
+		isHxReq  bool
+	}{
+		{name: "is logged in Hx-Request", sendFunc: sendHxRequestAsLoggedInNoBody, isHxReq: true},
+		{name: "is logged in no Hx-Request", sendFunc: sendRequestAsLoggedInNoBody, isHxReq: false},
+	}
+	for _, tc := range testcases3 {
+		t.Run("valid request"+tc.name, func(t *testing.T) {
+			rr := tc.sendFunc(srv, http.MethodGet, uri(8))
+
+			if tc.isHxReq {
+				assertStatus(t, rr.Code, http.StatusOK)
+				assertHeader(t, rr, "HX-Redirect", "/recipes/2")
+			} else {
+				assertStatus(t, rr.Code, http.StatusSeeOther)
+				assertHeader(t, rr, "Location", "/recipes/2")
+			}
 		})
 	}
 }
