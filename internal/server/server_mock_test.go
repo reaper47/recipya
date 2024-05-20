@@ -54,6 +54,7 @@ type mockRepository struct {
 	AuthTokens                         []models.AuthToken
 	AddRecipeCategoryFunc              func(name string, userID int64) error
 	AddRecipesFunc                     func(recipes models.Recipes, userID int64, progress chan models.Progress) ([]int64, []models.ReportLog, error)
+	AddShareRecipeFunc                 func(recipeID, userID int64) (int64, error)
 	categories                         map[int64][]string
 	CookbooksFunc                      func(userID int64) ([]models.Cookbook, error)
 	CookbooksRegistered                map[int64][]models.Cookbook
@@ -142,6 +143,26 @@ func (m *mockRepository) AddShareLink(share models.Share) (string, error) {
 		}
 	}
 	return "", errors.New("cookbook or recipe not found")
+}
+
+func (m *mockRepository) AddShareRecipe(recipeID, userID int64) (int64, error) {
+	if m.AddShareRecipeFunc != nil {
+		return m.AddShareRecipeFunc(recipeID, userID)
+	}
+
+	recipes, ok := m.RecipesRegistered[userID]
+	if !ok {
+		return 0, errors.New("user not registered")
+	}
+
+	okRecipe := slices.ContainsFunc(recipes, func(r models.Recipe) bool {
+		return r.ID == recipeID
+	})
+	if okRecipe {
+		return 0, errors.New("recipe exists")
+	}
+
+	return 2, nil
 }
 
 func (m *mockRepository) AddRecipeCategory(name string, userID int64) error {

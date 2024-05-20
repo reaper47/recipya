@@ -247,7 +247,6 @@ templ head(title string) {
             const pathsHideAddRecipeButton = [
                 "/admin",
                 "/cookbooks",
-                "/settings",
                 "/recipes/add",
                 "/recipes/add/manual",
             ];
@@ -304,16 +303,16 @@ templ head(title string) {
                 const mobile = document.querySelector("#mobile_nav");
 
                 if (pathsShowRecipesSidebar.includes(location.pathname) || cookbooksPattern.test(location.pathname)) {
-                    desktop.firstElementChild.classList.remove("hidden");
-                    mobile.classList.remove("hidden");
+                    desktop?.firstElementChild.classList.remove("hidden");
+                    mobile?.classList.remove("hidden");
                 } else {
                     desktop?.firstElementChild.classList.add("hidden");
                     mobile?.classList.add("hidden");
                 }
 
                 if (recipesPattern.test(location.pathname) || recipesSharePattern.test(location.pathname) || location.pathname === "/admin" || reportsPattern.test(location.pathname)) {
-                    desktop.firstElementChild.classList.add("hidden");
-                    mobile.classList.add("hidden");
+                    desktop?.firstElementChild.classList.add("hidden");
+                    mobile?.classList.add("hidden");
                 } else {
                     desktop?.firstElementChild.classList.remove("hidden");
                     mobile?.classList.remove("hidden");

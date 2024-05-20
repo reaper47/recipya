@@ -1101,6 +1101,44 @@ func (s *Server) recipeSharePostHandler() http.HandlerFunc {
 	}
 }
 
+func (s *Server) recipeShareAddHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var (
+			isHxRequest = r.Header.Get("Hx-Request") == "true"
+			userID      = getUserID(r)
+			userIDAttr  = slog.Int64("userID", userID)
+		)
+
+		recipeID, err := parsePathPositiveID(r.PathValue("id"))
+		if err != nil {
+			slog.Error("Failed to parse recipe ID", userIDAttr, "error", err)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		newRecipeID, err := s.Repository.AddShareRecipe(recipeID, userID)
+		if err != nil {
+			msg := "Failed to add shared recipe to user's collection."
+			slog.Error(msg, userIDAttr, "recipeID", recipeID, "error", err)
+
+			if isHxRequest {
+				s.Brokers.SendToast(models.NewErrorGeneralToast(msg), userID)
+				w.WriteHeader(http.StatusInternalServerError)
+			} else {
+				http.Redirect(w, r, "/recipes", http.StatusSeeOther)
+			}
+			return
+		}
+
+		redirect := "/recipes/" + strconv.FormatInt(newRecipeID, 10)
+		if isHxRequest {
+			w.Header().Set("HX-Redirect", redirect)
+		} else {
+			http.Redirect(w, r, redirect, http.StatusSeeOther)
+		}
+	}
+}
+
 func (s *Server) recipesCategoriesDeleteHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (

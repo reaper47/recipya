@@ -194,16 +194,14 @@ func (s *Server) mustBeLoggedInMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		uri := r.RequestURI
-		_, found := excludedURIs[r.RequestURI]
-		if found || regex.WildcardURL.MatchString(r.RequestURI) {
-			if strings.HasPrefix(r.RequestURI, "/settings") {
-				uri = "/settings"
-			} else {
+		uri := r.URL.Path
+		if uri != "/ws" {
+			_, found := excludedURIs[uri]
+			if found || regex.WildcardURL.MatchString(uri) {
 				uri = "/"
 			}
+			http.SetCookie(w, NewRedirectCookie(uri))
 		}
-		http.SetCookie(w, NewRedirectCookie(uri))
 
 		userID := getUserIDFromSessionCookie(r)
 		if userID != -1 {

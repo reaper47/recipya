@@ -37,6 +37,9 @@ type RepositoryService interface {
 	// AddShareLink adds a share link for the recipe.
 	AddShareLink(share models.Share) (string, error)
 
+	// AddShareRecipe adds a shared recipe to the user's collection.
+	AddShareRecipe(recipeID, userID int64) (int64, error)
+
 	// Categories gets all categories in the database.
 	Categories(userID int64) ([]string, error)
 

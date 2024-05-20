@@ -1707,7 +1707,8 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 									<button
 										class="mr-2"
 										title="Add recipe to collection"
-										hx-post={ fmt.Sprintf("/recipes/%d/share/add", data.ID) }
+										hx-get={ fmt.Sprintf("/recipes/%d/share/add", data.ID) }
+										hx-push-url="true"
 									>
 										@iconPlusCircle()
 									</button>

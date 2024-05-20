@@ -150,7 +150,7 @@ const IsRecipeForUserExist = `
 				   SELECT id
 				   FROM user_recipe
 				   WHERE user_id = ?
-					 AND recipe_id = (SELECT id
+					 AND recipe_id IN (SELECT id
 									  FROM recipes
 									  WHERE name = ?
 										AND description = ?
@@ -423,6 +423,12 @@ const SelectRecipeShared = `
 	FROM share_recipes
 	WHERE link = ?`
 
+// SelectRecipeSharedFromRecipeID gets the user the shared recipe belongs to.
+const SelectRecipeSharedFromRecipeID = `
+	SELECT user_id
+	FROM share_recipes
+	WHERE recipe_id = ?`
+
 // SelectRecipesShared gets the recipes the user shared.
 const SelectRecipesShared = `
 	SELECT link, recipe_id
@@ -434,6 +440,15 @@ const SelectRecipeUser = `
 	SELECT user_id
 	FROM user_recipe
 	WHERE recipe_id = ?`
+
+// SelectRecipeUserExist checks whether the shared recipe belongs to the current user.
+const SelectRecipeUserExist = `
+	SELECT EXISTS(
+		SELECT 1
+		FROM user_recipe
+		WHERE recipe_id = ?
+			AND user_id = ?
+	)`
 
 // SelectReport fetches the report of the given ID belonging to the user.
 const SelectReport = `
