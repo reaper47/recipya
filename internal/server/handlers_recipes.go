@@ -1085,7 +1085,6 @@ func (s *Server) recipeSharePostHandler() http.HandlerFunc {
 
 func (s *Server) recipeShareAddHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-<<<<<<< HEAD
 		var (
 			isHxRequest = r.Header.Get("Hx-Request") == "true"
 			userID      = getUserID(r)
@@ -1202,7 +1201,7 @@ func (s *Server) recipesSearchHandler() http.HandlerFunc {
 		}
 
 		htmx := templates.PaginationHtmx{IsSwap: r.Header.Get("HX-Request") == "true", Target: "#list-recipes"}
-		params := "q=" + opts.Query + "&sort=" + opts.Sort.String()
+		params := "q=" + r.URL.Query().Get("q") + "&sort=" + opts.Sort.String()
 		p := templates.NewPagination(opts.Page, numPages, totalCount, templates.ResultsPerPage, "/recipes/search", params, htmx)
 		p.Search.CurrentPage = opts.Page
 

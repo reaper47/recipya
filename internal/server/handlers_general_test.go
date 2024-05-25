@@ -119,7 +119,7 @@ func TestHandlers_General_Index(t *testing.T) {
 		want := []string{
 			`<title hx-swap-oob="true">Recipes | Recipya</title>`,
 			`<button title="Open avatar menu" popovertarget="avatar_menu" popovertargetaction="toggle" class="" hx-get="/user-initials" hx-trigger="load" hx-target="#user-initials"><div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar placeholder"><div class="bg-neutral text-neutral-content w-10 rounded-full"><span id="user-initials">A</span></div></div></button>`,
-			`<div popover id="avatar_menu" style="inset: unset; top: 3.5rem; right: 0.5rem;" class="rounded-box z-10 shadow bg-base-200" _="on click if avatar_menu.matches(':popover-open') then avatar_menu.hidePopover()">`,
+			`<div id="avatar_menu" popover style="inset: unset; top: 3.5rem; right: 0.5rem;" class="hidden rounded-box z-10 shadow bg-base-200">`,
 			`<div class="bg-neutral text-neutral-content w-10 rounded-full"><span id="user-initials">A</span></div>`,
 			`<ul tabindex="0" class="menu">`,
 			`<li onclick="document.activeElement?.blur()"><a href="/admin" hx-get="/admin" hx-target="#content" hx-push-url="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z"></path></svg>Admin</a></li>`,

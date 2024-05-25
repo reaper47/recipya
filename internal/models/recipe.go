@@ -657,7 +657,9 @@ func toArg(s, col string) string {
 
 // IsBasic verifies whether the search is basic.
 func (s *SearchOptionsRecipes) IsBasic() bool {
-	return s.Advanced == AdvancedSearch{}
+	return s.Advanced.Category == "" && s.Advanced.Cuisine == "" && s.Advanced.Description == "" &&
+		s.Advanced.Ingredients == "" && s.Advanced.Instructions == "" && s.Advanced.Keywords == "" && s.Advanced.Name == "" &&
+		s.Advanced.Source == ""
 }
 
 // AdvancedSearch stores the components of an advanced search query.

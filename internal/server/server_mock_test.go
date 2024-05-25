@@ -33,6 +33,7 @@ func newServerTest() *server.Server {
 	srv := server.NewServer(&mockRepository{
 		AuthTokens:             make([]models.AuthToken, 0),
 		categories:             map[int64][]string{1: {"chicken"}},
+		CookbooksRegistered:    map[int64][]models.Cookbook{1: {{ID: 1}}},
 		RecipesRegistered:      make(map[int64]models.Recipes),
 		Reports:                make(map[int64][]models.Report),
 		ShareLinks:             make(map[string]models.Share),
@@ -101,14 +102,6 @@ func (m *mockRepository) AddRecipes(xr models.Recipes, userID int64, progress ch
 					recipe.Category = strings.Split(recipe.Category, delim)[0]
 				}
 			}
-		}
-
-		if len(recipe.Ingredients) == 0 || len(recipe.Instructions) == 0 {
-			return nil, nil, errors.New("missing ingredients or instructions")
-		}
-
-		if recipe.Name == "" {
-			return nil, nil, errors.New("missing the name of the recipe")
 		}
 
 		if recipe.Yield == 0 {
@@ -790,7 +783,7 @@ func (m *mockRepository) UpdateRecipe(updatedRecipe *models.Recipe, userID int64
 		}
 	} else {
 		if len(updatedRecipe.Ingredients) == 0 {
-			return errors.New("missing ingredients")
+			updatedRecipe.Ingredients = newRecipe.Ingredients
 		}
 
 		cloned := slices.Clone(updatedRecipe.Ingredients)
@@ -807,7 +800,7 @@ func (m *mockRepository) UpdateRecipe(updatedRecipe *models.Recipe, userID int64
 		}
 	} else {
 		if len(updatedRecipe.Instructions) == 0 {
-			return errors.New("missing instructions")
+			updatedRecipe.Instructions = newRecipe.Instructions
 		}
 
 		cloned := slices.Clone(updatedRecipe.Instructions)
@@ -831,7 +824,7 @@ func (m *mockRepository) UpdateRecipe(updatedRecipe *models.Recipe, userID int64
 
 	if oldRecipe.Name != updatedRecipe.Name {
 		if updatedRecipe.Name == "" {
-			return errors.New("missing the name of the recipe")
+			updatedRecipe.Name = oldRecipe.Name
 		}
 		newRecipe.Name = updatedRecipe.Name
 	}
