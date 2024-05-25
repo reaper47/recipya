@@ -19,8 +19,10 @@ import (
 // Key is a type alias for a context key.
 type Key string
 
-// UserIDKey is the key to identify a user ID.
-const UserIDKey Key = "userID"
+const (
+	SearchOptsKey Key = "opts"   // SearchOptsKey is the key to identify a SearchOptionsRecipes struct.
+	UserIDKey     Key = "userID" // UserIDKey is the key to identify a user ID.
+)
 
 var excludedURIs = map[string]struct{}{
 	"/auth/change-password":              {},

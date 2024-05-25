@@ -26,7 +26,7 @@ import (
 
 func (s *Server) recipesHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		opts, ok := r.Context().Value("opts").(models.SearchOptionsRecipes)
+		opts, ok := r.Context().Value(SearchOptsKey).(models.SearchOptionsRecipes)
 		if !ok {
 			opts = models.NewSearchOptionsRecipe(r.URL.Query())
 		}
@@ -1173,7 +1173,7 @@ func (s *Server) recipesSearchHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		opts := models.NewSearchOptionsRecipe(r.URL.Query())
 		if opts.IsBasic() && opts.Query == "" {
-			r = r.WithContext(context.WithValue(r.Context(), "opts", opts))
+			r = r.WithContext(context.WithValue(r.Context(), SearchOptsKey, opts))
 			w.Header().Set("HX-Retarget", "#content")
 			s.recipesHandler().ServeHTTP(w, r)
 			return

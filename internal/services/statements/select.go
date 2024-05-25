@@ -44,28 +44,6 @@ func buildSearchRecipeQuery(opts models.SearchOptionsRecipes) string {
 	sb.WriteString("SELECT recipe_id, name, description, image, created_at, category, row_num FROM (" + BuildBaseSelectRecipe(opts.Sort))
 	sb.WriteString(" WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ?")
 
-	if !opts.IsBasic() {
-		/*if opts.Advanced.Category != "" {
-			parts := strings.Split(opts.Advanced.Category, ",")
-			if len(parts) == 1 {
-				sb.WriteString(" AND recipes_fts MATCH ?" + strings.Join(parts, "+"))
-			} else {
-				sb.WriteString(" AND ")
-				for i, s := range parts {
-					s = strings.TrimSpace(s)
-					if s == "" {
-						continue
-					}
-
-					sb.WriteString("recipes_fts MATCH ?")
-					if i < len(parts)-1 {
-						sb.WriteString(" OR ")
-					}
-				}
-			}
-		}*/
-	}
-
 	if opts.Query != "" || !opts.IsBasic() {
 		sb.WriteString(" AND recipes_fts MATCH ?")
 	}
