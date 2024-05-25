@@ -1085,6 +1085,7 @@ func (s *Server) recipeSharePostHandler() http.HandlerFunc {
 
 func (s *Server) recipeShareAddHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+<<<<<<< HEAD
 		var (
 			isHxRequest = r.Header.Get("Hx-Request") == "true"
 			userID      = getUserID(r)
