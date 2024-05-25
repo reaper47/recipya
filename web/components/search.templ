@@ -6,65 +6,39 @@ import (
 )
 
 templ searchbar(data templates.SearchbarData) {
-	<div class="relative w-full">
-		<label>
+	<div class="w-full">
+		<label class="input input-bordered input-sm flex justify-between px-0 gap-2 z-20">
+			<button type="button" id="search_shortcut" class="pl-2" popovertarget="search_help" _="on click toggle .hidden on #search_help">
+				@iconHelp()
+			</button>
 			<input
+				id="search_recipes"
+				class="w-full"
 				type="search"
-				id="search-recipes"
 				name="q"
-				class="input input-bordered input-sm w-full z-20"
 				placeholder="Search for recipes..."
 				value={ data.Term }
 				_="on keyup
-                   if event.target.value !== '' then
-                       remove .md:block from #search-shortcut
-                   else
-                       add .md:block to #search-shortcut
-                   end then
-                   if (event.key === 'Backspace' or event.key === 'Delete') and event.target.value === '' then
-                       send submit to closest <form/>
-                   end"
+                     if event.target.value !== '' then
+                         remove .md:block from #search_shortcut
+                     else
+                         add .md:block to #search_shortcut then
+                         if (event.key is not 'Delete' and not event.key.startsWith('Arrow')) then
+                             send submit to closest <form/> then
+                         end
+                     end"
 			/>
+			<button type="submit" class="px-2 btn btn-sm btn-primary">
+				@iconMagnifyingGlass()
+				<span class="sr-only">Search</span>
+			</button>
 		</label>
-		<kbd
-			id="search-shortcut"
-			class="hidden absolute top-1 right-12 font-sans font-semibold select-none dark:text-slate-500 md:block"
-		>
-			<abbr title="Control" class="no-underline text-slate-300 dark:text-slate-500">Ctrl </abbr> /
-		</kbd>
-		<button
-			type="submit"
-			class="absolute top-0 right-0 px-2 btn btn-sm btn-primary"
-		>
-			@iconMagnifyingGlass()
-			<span class="sr-only">Search</span>
-		</button>
 	</div>
-	<details class="dropdown dropdown-left">
-		<summary class="btn btn-sm ml-1">
-			@iconWrench()
-		</summary>
-		<div tabindex="0" class="dropdown-content z-10 menu menu-sm p-2 shadow bg-base-200 w-52 sm:menu-md prose" _="on click remove @open from closest <details/>">
-			<h4>Search Method</h4>
-			<div class="form-control">
-				<label class="label cursor-pointer">
-					<span class="label-text">By name</span>
-					<input type="radio" name="mode" class="radio radio-sm" value="name" checked?={ data.Mode == "name" }/>
-				</label>
-			</div>
-			<div class="form-control">
-				<label class="label cursor-pointer">
-					<span class="label-text">Full search</span>
-					<input type="radio" name="mode" class="radio radio-sm" value="full" checked?={ data.Mode == "full" }/>
-				</label>
-			</div>
-		</div>
-	</details>
-	<details class="dropdown dropdown-left">
-		<summary class="btn btn-sm ml-1">
+	<div class="dropdown dropdown-left ml-1">
+		<div tabindex="0" role="button" class="btn btn-sm p-1">
 			@iconSort()
-		</summary>
-		<div tabindex="0" class="dropdown-content z-10 menu menu-sm p-2 shadow bg-base-200 w-52 sm:menu-md prose" _="on click remove @open from closest <details/>">
+		</div>
+		<div tabindex="0" class="dropdown-content z-10 menu menu-sm p-2 shadow bg-base-200 w-52 sm:menu-md prose">
 			<h4>Sort</h4>
 			<div class="form-control">
 				<label class="label cursor-pointer">
@@ -103,7 +77,117 @@ templ searchbar(data templates.SearchbarData) {
 				</label>
 			</div>
 		</div>
-	</details>
+	</div>
+}
+
+templ searchHelp() {
+	<div id="search_help" popover class="hidden card w-[30rem] bg-base-100 shadow-xl max-h-96 z-20" style="position: fixed; inset: unset; bottom: 0.5rem; right: 0.5rem;">
+		<div class="card-body max-h-80 h-80">
+			<div class="card-actions justify-between">
+				<h2 class="card-title">Search Help</h2>
+				<button class="btn btn-square btn-sm" _="on click toggle .hidden on #search_help">
+					@iconClose()
+				</button>
+			</div>
+			<div>
+				<p class="text-xs mb-2">
+					The following table provide examples of how to perform various searches. You may combine any of the searches in any order.
+				</p>
+				<div class="overflow-x-auto h-52">
+					<table class="table table-xs table-pin-rows table-pin-cols">
+						<thead>
+							<tr>
+								<th>Search</th>
+								<th>Example</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th>Any field</th>
+								<td>big green squash</td>
+							</tr>
+							<tr>
+								<th>By category</th>
+								<td>cat:dinner</td>
+							</tr>
+							<tr>
+								<th>Multiple categories</th>
+								<td>cat:breakfast,dinner</td>
+							</tr>
+							<tr>
+								<th>Subcategory</th>
+								<td>cat:beverages:cocktails</td>
+							</tr>
+							<tr>
+								<th>Any field of category</th>
+								<td>chicken cat:dinner</td>
+							</tr>
+							<tr>
+								<th>By name</th>
+								<td>name:chicken kyiv</td>
+							</tr>
+							<tr>
+								<th>By name and category</th>
+								<td>name:chicken kyiv cat:lunch</td>
+							</tr>
+							<tr>
+								<th>Any field, name and category</th>
+								<td>best name:chicken kyiv cat:lunch</td>
+							</tr>
+							<tr>
+								<th>By description</th>
+								<td>desc:tender savory stacked</td>
+							</tr>
+							<tr>
+								<th>Multiple descriptions</th>
+								<td>desc:tender savory stacked,juicy crispy pieces chicken</td>
+							</tr>
+							<tr>
+								<th>By cuisine</th>
+								<td>cuisine:ukrainian</td>
+							</tr>
+							<tr>
+								<th>Multiple cuisines</th>
+								<td>cuisine:ukrainian,japanese</td>
+							</tr>
+							<tr>
+								<th>By ingredient</th>
+								<td>ing:onions</td>
+							</tr>
+							<tr>
+								<th>Multiple ingredients</th>
+								<td>ing:olive oil,thyme,butter</td>
+							</tr>
+							<tr>
+								<th>By instruction</th>
+								<td>ins:preheat oven 350</td>
+							</tr>
+							<tr>
+								<th>Multiple instructions</th>
+								<td>ins:preheat oven 350,melt butter</td>
+							</tr>
+							<tr>
+								<th>By keyword</th>
+								<td>tag:biscuits</td>
+							</tr>
+							<tr>
+								<th>Multiple keywords</th>
+								<td>tag:biscuits,mardi gras</td>
+							</tr>
+							<tr>
+								<th>By source</th>
+								<td>src:allrecipes.com</td>
+							</tr>
+							<tr>
+								<th>Multiple sources</th>
+								<td>src:allrecipes.com,tasteofhome.com</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 }
 
 templ CookbookSearchRecipes(data templates.Data) {

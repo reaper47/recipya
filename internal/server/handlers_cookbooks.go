@@ -336,11 +336,6 @@ func (s *Server) cookbooksGetCookbookHandler() http.HandlerFunc {
 			return
 		}
 
-		mode := query.Get("mode")
-		if mode == "" {
-			mode = "full"
-		}
-
 		sorts := query.Get("sort")
 		if sorts == "" {
 			sorts = "default"
@@ -357,11 +352,8 @@ func (s *Server) cookbooksGetCookbookHandler() http.HandlerFunc {
 			IsHxRequest:     isHxRequest,
 			Functions:       templates.NewFunctionsData[int64](),
 			Pagination:      templates.Pagination{IsHidden: true},
-			Searchbar: templates.SearchbarData{
-				Mode: mode,
-				Sort: sorts,
-			},
-			Title: cookbook.Title,
+			Searchbar:       templates.SearchbarData{Sort: sorts},
+			Title:           cookbook.Title,
 		}).Render(r.Context(), w)
 	}
 }
@@ -471,25 +463,12 @@ func (s *Server) cookbookPostCookbookHandler() http.HandlerFunc {
 
 func (s *Server) cookbooksRecipesSearchHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		query := r.URL.Query()
-
 		idStr := r.PathValue("id")
 		id, err := parsePathPositiveID(idStr)
 		if err != nil || id <= 0 {
 			w.WriteHeader(http.StatusBadRequest)
 			_, _ = w.Write([]byte("Cookbook ID in path must be > 0."))
 			return
-		}
-
-		page, err := strconv.ParseUint(query.Get("page"), 10, 64)
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			_, _ = w.Write([]byte("Missing page number in query."))
-			return
-		}
-
-		if page == 0 {
-			page = 1
 		}
 
 		userID := getUserID(r)
@@ -501,21 +480,10 @@ func (s *Server) cookbooksRecipesSearchHandler() http.HandlerFunc {
 			return
 		}
 
-		q := query.Get("q")
-		if q == "" {
-			w.Header().Set("HX-Redirect", "/cookbooks/"+strconv.FormatInt(id, 10))
-			w.WriteHeader(http.StatusBadRequest)
-			_, _ = w.Write([]byte("Query parameter must not be 'q' empty."))
-			return
-		}
-
-		mode := query.Get("mode")
-		sorts := query.Get("sort")
-
-		opts := models.NewSearchOptionsRecipe(mode, sorts, page)
+		opts := models.NewSearchOptionsRecipe(r.URL.Query())
 		opts.CookbookID = id
 
-		recipes, totalCount, err := s.Repository.SearchRecipes(q, page, opts, userID)
+		recipes, totalCount, err := s.Repository.SearchRecipes(opts, userID)
 		if err != nil {
 			s.Brokers.SendToast(models.NewErrorDBToast("Error searching recipes."), userID)
 			w.WriteHeader(http.StatusInternalServerError)
@@ -534,10 +502,10 @@ func (s *Server) cookbooksRecipesSearchHandler() http.HandlerFunc {
 
 		isHxReq := r.Header.Get("HX-Request") == "true"
 
-		params := "q=" + q + "&mode=" + mode + "&sort=" + sorts
+		params := "q=" + r.URL.Query().Get("q") + "&sort=" + opts.Sort.String()
 		htmx := templates.PaginationHtmx{IsSwap: isHxReq, Target: "#search-results"}
-		p := templates.NewPagination(page, numPages, totalCount, templates.ResultsPerPage, "/cookbooks/"+idStr+"/recipes/search", params, htmx)
-		p.Search.CurrentPage = page
+		p := templates.NewPagination(opts.Page, numPages, totalCount, templates.ResultsPerPage, "/cookbooks/"+idStr+"/recipes/search", params, htmx)
+		p.Search.CurrentPage = opts.Page
 
 		_ = components.CookbookSearchRecipes(templates.Data{
 			About: templates.NewAboutData(),
@@ -545,7 +513,7 @@ func (s *Server) cookbooksRecipesSearchHandler() http.HandlerFunc {
 				Cookbook: templates.CookbookView{
 					ID:         cookbook.ID,
 					PageItemID: id,
-					PageNumber: page,
+					PageNumber: opts.Page,
 					Recipes:    recipes,
 					Title:      cookbook.Title,
 				},
@@ -560,11 +528,7 @@ func (s *Server) cookbooksRecipesSearchHandler() http.HandlerFunc {
 			IsHxRequest:     isHxReq,
 			Functions:       templates.NewFunctionsData[int64](),
 			Pagination:      p,
-			Searchbar: templates.SearchbarData{
-				Mode: mode,
-				Sort: sorts,
-				Term: q,
-			},
+			Searchbar:       templates.SearchbarData{Sort: opts.Sort.String(), Term: r.URL.Query().Get("q")},
 		}).Render(r.Context(), w)
 	}
 }

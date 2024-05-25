@@ -1,6 +1,6 @@
 ---
 title: Integrations
-weight: 6
+weight: 5
 ---
 
 Recipya uses the following third-party services to enhance the product.

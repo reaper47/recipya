@@ -240,7 +240,6 @@ type ReportsData struct {
 
 // SearchbarData holds data related to the searchbar.
 type SearchbarData struct {
-	Mode string
 	Sort string
 	Term string
 }

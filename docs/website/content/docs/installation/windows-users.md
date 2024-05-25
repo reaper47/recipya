@@ -1,6 +1,6 @@
 ---
 title: Windows Users
-weight: 5
+weight: 4
 next: /docs/deployment
 ---
 

@@ -1,6 +1,7 @@
 ---
-title: Release Build
-weight: 4
+title: Install
+weight: 1
+prev: /docs/installation/build
 ---
 
 This section targets an installation without Docker.
@@ -20,11 +21,6 @@ The application will perform a one-time setup if not already done.
 ```
 
 You can now access the website at the address specified.
-
-{{< callout type="info" >}}
-The program cannot be updated within the interface yet. If you wish to update the app, please download the nightly
-build and replace your existing `recipya` executable with the one from the build zip.
-{{< /callout >}}
 
 ## Example
 
@@ -66,9 +62,13 @@ If you see the following output:
 ```text
 OK FDC database
 OK Configuration file
-Recipya is properly set up.
-2023/12/27 19:08:06 goose: no migrations to run. current version: 20231204185640
-Serving on http://127.0.0.1:8078
+Recipya is properly set up
+File locations:
+        - Backups: C:\Users\<user>\AppData\Roaming\Recipya\Backup
+        - Database: C:\Users\<user>\AppData\Roaming\Recipya\Database
+        - Images: C:\Users\<user>\AppData\Roaming\Recipya\Images
+        - Logs: C:\Users\<user>\AppData\Roaming\Recipya\Logs
+2024/05/23 07:46:46 goose: no migrations to run. current version: 20240522133726
 ```
 
 Then you would access `http://127.0.0.1:8078`.
