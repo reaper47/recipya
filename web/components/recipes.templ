@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/reaper47/recipya/internal/templates"
 	"strconv"
+	"strings"
 )
 
 templ AddRecipe(data templates.Data) {
@@ -431,13 +432,9 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 										<div class="col-span-2 border-r border-gray-700 pb-2 md:pb-0 md:grid md:place-content-center">
 											<label class="form-control">
 												<div class="label">
-													<span class="label-text">
-														Category
-														<sup class="text-red-600">*</sup>
-													</span>
+													<span class="label-text">Category</span>
 												</div>
 												<input
-													required
 													type="text"
 													list="categories"
 													name="category"
@@ -470,10 +467,9 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 									<div class="relative px-2 md:grid md:content-center md:pr-0">
 										<label class="form-control w-full">
 											<div class="label">
-												<span class="label-text">Source<sup class="text-red-600">*</sup></span>
+												<span class="label-text">Source</span>
 											</div>
 											<input
-												required
 												type="text"
 												placeholder="Source"
 												name="source"
@@ -669,7 +665,6 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 								<div class="col-span-3 h-40 md:h-full md:row-span-1">
 									<label>
 										<textarea
-											required
 											name="description"
 											placeholder="This Thai curry chicken will make you drool."
 											class="textarea w-full h-full resize-none"
@@ -1150,7 +1145,6 @@ templ editRecipe(data *templates.ViewRecipeData) {
 													</span>
 												</div>
 												<input
-													required
 													type="text"
 													list="categories"
 													name="category"
@@ -1194,7 +1188,6 @@ templ editRecipe(data *templates.ViewRecipeData) {
 												</span>
 											</div>
 											<input
-												required
 												type="text"
 												placeholder="Source"
 												name="source"
@@ -1408,7 +1401,6 @@ templ editRecipe(data *templates.ViewRecipeData) {
 								<div class="col-span-3 h-40 md:h-full md:row-span-1">
 									<label>
 										<textarea
-											required
 											name="description"
 											placeholder="This Thai curry chicken will make you drool."
 											class="textarea w-full h-full resize-none"
@@ -1588,14 +1580,6 @@ templ recipesIndex(data templates.Data) {
 			@ListRecipes(data)
 		</div>
 		@Pagination(data.Pagination)
-		<script defer>
-            document.addEventListener("keydown", (event) => {
-                if (event.ctrlKey && event.key === "/") {
-                     event.preventDefault();
-                     document.querySelector("#search-recipes").focus();
-                 }
-            });
-        </script>
 	} else {
 		<div class="grid place-content-center text-sm h-full text-center md:text-base">
 			<div class="p-4 md:p-0">
@@ -1611,10 +1595,57 @@ templ recipesIndex(data templates.Data) {
 }
 
 templ ListRecipes(data templates.Data) {
+	if data.IsHxRequest {
+		<input
+			hx-swap-oob="true"
+			type="search"
+			id="search_recipes"
+			name="q"
+			class="w-full"
+			placeholder="Search for recipes..."
+			value={ data.Searchbar.Term }
+			_="on keyup
+               if event.target.value !== '' then
+                   remove .md:block from #search_shortcut
+               else
+                   add .md:block to #search_shortcut then
+                   if (event.key is not 'Delete' and not event.key.startsWith('Arrow')) then
+                       send submit to closest <form/> then
+                   end
+               end"
+		/>
+	}
 	<article class="grid gap-4 p-4 text-sm place-items-center md:m-auto md:max-w-7xl grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:text-base">
 		for _, r := range data.Recipes {
 			<section class="card card-compact bg-base-100 shadow-lg indicator w-full">
-				<span class="indicator-item indicator-center badge badge-primary select-none">{ r.Category }</span>
+				if len(strings.Split(r.Category, ":")) == 1 {
+					<span
+						class="indicator-item indicator-center badge badge-primary select-none cursor-pointer hover:bg-neutral"
+						hx-get="/recipes/search"
+						hx-vals={ fmt.Sprintf(`{"q": "cat:%s"}`, r.Category) }
+						hx-target="#list-recipes"
+						hx-push-url="true"
+						_={ fmt.Sprintf("on click put 'cat:%s' into #search_recipes.value", r.Category) }
+					>
+						{ r.Category }
+					</span>
+				} else {
+					<span class="indicator-item indicator-center badge badge-primary select-none cursor-pointer">
+						for i, subCat := range strings.Split(r.Category, ":") {
+							if i > 0 {
+								:
+							}
+							<span
+								class="hover:bg-neutral"
+								hx-get="/recipes/search"
+								hx-vals={ fmt.Sprintf(`{"q": "cat:%s"}`, subCat) }
+								hx-target="#list-recipes"
+								hx-push-url="true"
+								_={ fmt.Sprintf("on click put 'cat:%s' into #search_recipes.value", subCat) }
+							>{ subCat }</span>
+						}
+					</span>
+				}
 				<figure class="relative cursor-pointer" hx-get={ fmt.Sprintf("/recipes/%d", r.ID) } hx-target="#content" hx-push-url="true" hx-trigger="mousedown" hx-swap="innerHTML show:window:top transition:true">
 					<img
 						class="h-48 max-w-48 w-full object-cover rounded-t-lg"

@@ -17,9 +17,11 @@ import (
 	"io"
 	"log/slog"
 	_ "modernc.org/sqlite" // Blank import to initialize the SQL driver.
+	"net/url"
 	"os"
 	"path/filepath"
 	"slices"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -225,6 +227,34 @@ func (s *SQLiteService) addRecipe(r models.Recipe, userID int64, settings models
 }
 
 func (s *SQLiteService) addRecipeTx(ctx context.Context, tx *sql.Tx, r models.Recipe, userID int64) (int64, error) {
+	// Verification
+	if r.Category == "" {
+		r.Category = "uncategorized"
+	} else {
+		delimiters := []string{",", ";", "|"}
+		for _, delim := range delimiters {
+			if strings.Contains(r.Category, delim) {
+				r.Category = strings.Split(r.Category, delim)[0]
+			}
+		}
+	}
+
+	if len(r.Ingredients) == 0 || len(r.Instructions) == 0 {
+		return 0, errors.New("missing ingredients or instructions")
+	}
+
+	if r.Name == "" {
+		return 0, errors.New("missing name of the recipe")
+	}
+
+	if r.Yield == 0 {
+		r.Yield = 1
+	}
+
+	if r.URL == "" {
+		r.URL = "Unknown"
+	}
+
 	// Insert recipe
 	var mainImage uuid.UUID
 	if len(r.Images) > 0 {
@@ -1164,15 +1194,20 @@ func (s *SQLiteService) Recipe(id, userID int64) (*models.Recipe, error) {
 }
 
 // Recipes gets the user's recipes.
-func (s *SQLiteService) Recipes(userID int64, page uint64, sorts string) models.Recipes {
+func (s *SQLiteService) Recipes(userID int64, opts models.SearchOptionsRecipes) models.Recipes {
 	ctx, cancel := context.WithTimeout(context.Background(), longerCtxTimeout)
 	defer cancel()
 
-	params := []any{userID, page, page}
+	params := []any{userID, opts.Page, opts.Page}
 	stmt := statements.SelectRecipes
-	if sorts != "" && sorts != "default" {
+	if !opts.Sort.IsDefault {
 		params = []any{userID}
-		stmt = statements.BuildSelectPaginatedResults([]string{}, page, models.NewSearchOptionsRecipe("", sorts, 1))
+
+		values := url.Values{}
+		values.Add("page", strconv.FormatUint(opts.Page, 10))
+		values.Add("sort", opts.Sort.String())
+
+		stmt = statements.BuildSelectPaginatedResults(models.NewSearchOptionsRecipe(values))
 		stmt = strings.Replace(stmt, "WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? ORDER BY rank)", "WHERE user_id = ?", 1)
 	}
 
@@ -1446,31 +1481,30 @@ func (s *SQLiteService) RestoreUserBackup(backup *models.UserBackup) error {
 
 // SearchRecipes searches for recipes based on the configuration.
 // It returns the paginated search recipes, the total number of search results and an error.
-func (s *SQLiteService) SearchRecipes(query string, page uint64, options models.SearchOptionsRecipes, userID int64) (models.Recipes, uint64, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+func (s *SQLiteService) SearchRecipes(opts models.SearchOptionsRecipes, userID int64) (models.Recipes, uint64, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), longerCtxTimeout)
 	defer cancel()
 
-	queries := strings.Split(query, " ")
-	originalQueries := make([]string, len(queries))
-	_ = copy(originalQueries, queries)
+	args := []any{userID}
 
-	if options.IsFullSearch {
-		for range statements.RecipesFTSFields {
-			queries = append(queries, queries...)
+	arg := opts.Arg()
+	if arg != "" {
+		var fts string
+		if opts.Query != "" {
+			fts += opts.Query + "* AND "
+		}
+		args = append(args, fts+arg)
+	} else {
+		if opts.Query != "" {
+			args = append(args, strings.Join(strings.Fields(opts.Query), " *")+"*")
 		}
 	}
 
-	xa := make([]any, len(queries)+1)
-	xa[0] = userID
-	for i, q := range queries {
-		xa[i+1] = q + "*"
+	if opts.CookbookID > 0 {
+		args = append(args, opts.CookbookID)
 	}
 
-	if options.CookbookID > 0 {
-		xa = append(xa, options.CookbookID)
-	}
-
-	rows, err := s.DB.QueryContext(ctx, statements.BuildSelectPaginatedResults(originalQueries, page, options), xa...)
+	rows, err := s.DB.QueryContext(ctx, statements.BuildSelectPaginatedResults(opts), args...)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -1494,7 +1528,7 @@ func (s *SQLiteService) SearchRecipes(query string, page uint64, options models.
 	}
 
 	var totalCount uint64
-	err = s.DB.QueryRowContext(ctx, statements.BuildSelectSearchResultsCount(originalQueries, options), xa...).Scan(&totalCount)
+	err = s.DB.QueryRowContext(ctx, statements.BuildSelectSearchResultsCount(opts), args...).Scan(&totalCount)
 	return recipes, totalCount, err
 }
 
@@ -1704,6 +1738,17 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 	recipeID := oldRecipe.ID
 
 	if updatedRecipe.Category != oldRecipe.Category {
+		if updatedRecipe.Category == "" {
+			updatedRecipe.Category = "uncategorized"
+		} else {
+			delimiters := []string{",", ";", "|"}
+			for _, delim := range delimiters {
+				if strings.Contains(updatedRecipe.Category, delim) {
+					updatedRecipe.Category = strings.Split(updatedRecipe.Category, delim)[0]
+				}
+			}
+		}
+
 		var categoryID int64
 		category := updatedRecipe.Category
 		before, _, found := strings.Cut(updatedRecipe.Category, ",")
@@ -1728,6 +1773,10 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 
 	isIngredientsUpdated := !slices.Equal(updatedRecipe.Ingredients, oldRecipe.Ingredients)
 	if isIngredientsUpdated {
+		if len(updatedRecipe.Ingredients) == 0 {
+			return errors.New("missing ingredients")
+		}
+
 		ids := make([]int64, len(updatedRecipe.Ingredients))
 		for i, v := range updatedRecipe.Ingredients {
 			var id int64
@@ -1752,6 +1801,10 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 	}
 
 	if !slices.Equal(updatedRecipe.Instructions, oldRecipe.Instructions) {
+		if len(updatedRecipe.Instructions) == 0 {
+			return errors.New("missing instructions")
+		}
+
 		ids := make([]int64, len(updatedRecipe.Instructions))
 		for i, v := range updatedRecipe.Instructions {
 			var id int64
@@ -1848,14 +1901,23 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 	}
 
 	if updatedRecipe.Name != oldRecipe.Name {
+		if updatedRecipe.Name == "" {
+			return errors.New("missing the name of the recipe")
+		}
 		updateFields["name"] = updatedRecipe.Name
 	}
 
 	if updatedRecipe.URL != oldRecipe.URL {
+		if updatedRecipe.URL == "" {
+			updatedRecipe.URL = "Unknown"
+		}
 		updateFields["url"] = updatedRecipe.URL
 	}
 
 	if updatedRecipe.Yield != oldRecipe.Yield {
+		if updatedRecipe.Yield == 0 {
+			updatedRecipe.Yield = 1
+		}
 		updateFields["yield"] = updatedRecipe.Yield
 	}
 
@@ -1954,6 +2016,11 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 		if err != nil {
 			return err
 		}
+	}
+
+	_, err = tx.ExecContext(ctx, statements.UpdateRecipeID, recipeID, recipeID)
+	if err != nil {
+		return err
 	}
 
 	err = tx.Commit()

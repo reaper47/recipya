@@ -43,13 +43,6 @@ templ cookbookIndex(data templates.Data) {
                 });
             }
 
-            document.addEventListener("keydown", (event) => {
-                if (event.ctrlKey && event.key === "/") {
-                    event.preventDefault();
-                    document.querySelector("#search-recipes").focus();
-                }
-             });
-
             loadSortableJS().then(initReorder);
         </script>
 	}

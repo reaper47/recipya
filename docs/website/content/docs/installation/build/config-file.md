@@ -1,13 +1,13 @@
 ---
 title: Configuration File
 weight: 2
+next: /docs/installation/docker
 ---
 
 The [configuration file](https://github.com/reaper47/recipya/blob/main/deploy/config.example.json)
 sets important variables for the application. Let's go over each of them. 
 
 {{< callout type="info" >}}
-You don't need to create this file if you don't use Docker because it will be created during the one-time setup.
 The admin may change most of these options from the settings.
 {{< /callout >}}
 
@@ -17,7 +17,7 @@ The admin may change most of these options from the settings.
 - **integrations**
   - **azureDocumentIntelligence**
     - **key**: The *KEY 1* variable displayed in the *Keys and endpoint* tab of your [Azure AI Document Intelligence](https://azure.microsoft.com/en-us/products/ai-services/ai-document-intelligence) resource in the [Azure Portal](https://portal.azure.com/#home). Default: `""`.
-    - **endpoint**: The *Endpoint* variable displayed in the *Keys and endpoint* tab of your *Document Intelligence* resource in the Azure Portal. Default: `""`.- **server**
+    - **endpoint**: The *Endpoint* variable displayed in the *Keys and endpoint* tab of your *Document Intelligence* resource in the Azure Portal. Default: `""`.
 - **server** 
   - **autologin**: Whether to login automatically into the application. Useful when you don't need user accounts. Can be `true` or `false`. Default: `false`.
   - **isDemo**: Whether the app is a demo version. Can be `true` or `false`. Default: `false`.

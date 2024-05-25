@@ -11,90 +11,67 @@ import (
 var RecipesFTSFields = []string{"name", "description", "category", "ingredients", "instructions", "keywords", "source"}
 
 // BuildSelectPaginatedResults builds a SQL query for paginated search results.
-func BuildSelectPaginatedResults(queries []string, page uint64, options models.SearchOptionsRecipes) string {
-	if page == 0 {
-		page = 1
-	}
-
+func BuildSelectPaginatedResults(opts models.SearchOptionsRecipes) string {
 	var sb strings.Builder
-	sb.WriteString(buildSelectPaginatedResultsQuery(queries, options))
+	sb.WriteString(buildSelectPaginatedResultsQuery(opts))
 	sb.WriteString(" SELECT * FROM results WHERE row_num BETWEEN ")
-	sb.WriteString(strconv.FormatUint((page-1)*templates.ResultsPerPage+1, 10))
+	sb.WriteString(strconv.FormatUint((opts.Page-1)*templates.ResultsPerPage+1, 10))
 	sb.WriteString(" AND ")
-	sb.WriteString(strconv.FormatUint((page-1)*templates.ResultsPerPage+15, 10))
+	sb.WriteString(strconv.FormatUint((opts.Page-1)*templates.ResultsPerPage+15, 10))
 	return sb.String()
 }
 
 // BuildSelectSearchResultsCount builds a SQL query for fetching the number of paginated results.
-func BuildSelectSearchResultsCount(queries []string, options models.SearchOptionsRecipes) string {
+func BuildSelectSearchResultsCount(options models.SearchOptionsRecipes) string {
 	var sb strings.Builder
 	options.Sort = models.Sort{}
-	sb.WriteString(buildSelectPaginatedResultsQuery(queries, options))
+	sb.WriteString(buildSelectPaginatedResultsQuery(options))
 	sb.WriteString("SELECT COUNT(*) FROM results")
 	return sb.String()
 }
 
-func buildSelectPaginatedResultsQuery(queries []string, options models.SearchOptionsRecipes) string {
+func buildSelectPaginatedResultsQuery(options models.SearchOptionsRecipes) string {
 	var sb strings.Builder
 	sb.WriteString("WITH results AS (")
-	sb.WriteString(buildSearchRecipeQuery(queries, options))
+	sb.WriteString(buildSearchRecipeQuery(options))
 	sb.WriteString(")")
 	return sb.String()
 }
 
-func buildSearchRecipeQuery(queries []string, options models.SearchOptionsRecipes) string {
+func buildSearchRecipeQuery(opts models.SearchOptionsRecipes) string {
 	var sb strings.Builder
 
-	sb.WriteString("SELECT recipe_id, name, description, image, created_at, category, row_num FROM (" + BuildBaseSelectRecipe(options.Sort))
+	sb.WriteString("SELECT recipe_id, name, description, image, created_at, category, row_num FROM (" + BuildBaseSelectRecipe(opts.Sort))
 	sb.WriteString(" WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ?")
 
-	n := len(queries)
-	if n > 0 {
-		sb.WriteString(" AND (")
-		if options.IsByName {
-			switch n {
-			case 1:
-				sb.WriteString("name MATCH ?)")
-			default:
-				sb.WriteString("name MATCH ?")
-				if len(queries) > 1 {
-					for range queries[1:] {
-						sb.WriteString(" AND name MATCH ?")
+	if !opts.IsBasic() {
+		/*if opts.Advanced.Category != "" {
+			parts := strings.Split(opts.Advanced.Category, ",")
+			if len(parts) == 1 {
+				sb.WriteString(" AND recipes_fts MATCH ?" + strings.Join(parts, "+"))
+			} else {
+				sb.WriteString(" AND ")
+				for i, s := range parts {
+					s = strings.TrimSpace(s)
+					if s == "" {
+						continue
 					}
-				}
-				sb.WriteString(")")
-			}
-		} else if options.IsFullSearch {
-			nFields := len(RecipesFTSFields)
-			for i, field := range RecipesFTSFields {
-				if n == 1 {
-					sb.WriteString(field + " MATCH ?")
-					if i < nFields-1 {
+
+					sb.WriteString("recipes_fts MATCH ?")
+					if i < len(parts)-1 {
 						sb.WriteString(" OR ")
 					}
-				} else {
-					sb.WriteString("(")
-					for j := range queries {
-						sb.WriteString(field + " MATCH ?")
-						if j < n-1 {
-							sb.WriteString(" AND ")
-						}
-					}
-
-					if i < nFields-1 {
-						sb.WriteString(") OR ")
-					} else {
-						sb.WriteString(")")
-					}
 				}
 			}
+		}*/
+	}
 
-			sb.WriteString(")")
-		}
+	if opts.Query != "" || !opts.IsBasic() {
+		sb.WriteString(" AND recipes_fts MATCH ?")
 	}
 
 	sb.WriteString(" ORDER BY rank)")
-	if options.CookbookID > 0 {
+	if opts.CookbookID > 0 {
 		sb.WriteString(" AND recipes.id NOT IN (SELECT recipe_id FROM cookbook_recipes WHERE cookbook_id = ?)")
 	}
 	sb.WriteString(" GROUP BY recipes.id)")

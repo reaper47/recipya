@@ -83,6 +83,12 @@ const UpdateRecipeDescription = `
 	SET description = ?
 	WHERE id = ?`
 
+// UpdateRecipeID is the query to update a recipe's ID to execute related triggers.
+const UpdateRecipeID = `
+	UPDATE recipes 
+	SET id = ?
+	WHERE id = ?`
+
 // UpdateRecipeIngredient is the query to update a recipe's ingredient.
 const UpdateRecipeIngredient = `
 	UPDATE ingredient_recipe

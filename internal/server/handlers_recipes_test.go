@@ -141,13 +141,22 @@ func TestHandlers_Recipes_AddImport(t *testing.T) {
 }
 
 func TestHandlers_Recipes_AddManual(t *testing.T) {
-	srv := newServerTest()
-	repo := &mockRepository{
-		categories: map[int64][]string{1: {"breakfast", "lunch", "dinner"}},
-	}
+	srv, ts, c := createWSServer()
+	defer c.Close()
+
+	repo := &mockRepository{}
 	srv.Repository = repo
 
-	uri := "/recipes/add/manual"
+	uri := ts.URL + "/recipes/add/manual"
+
+	resetRepo := func() int {
+		repo = &mockRepository{
+			RecipesRegistered:      map[int64]models.Recipes{1: make(models.Recipes, 0)},
+			UserSettingsRegistered: map[int64]*models.UserSettings{1: {}},
+		}
+		srv.Repository = repo
+		return len(repo.RecipesRegistered)
+	}
 
 	t.Run("must be logged in", func(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodGet, uri)
@@ -183,13 +192,138 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 		})
 	}
 
-	t.Run("submit recipe", func(t *testing.T) {
-		repo = &mockRepository{
-			RecipesRegistered:      make(map[int64]models.Recipes),
-			UserSettingsRegistered: map[int64]*models.UserSettings{1: {}},
+	testcases2 := []struct {
+		name       string
+		fieldToDel string
+		want       string
+	}{
+		{
+			name:       "missing title",
+			fieldToDel: "title",
+			want:       "missing the name of the recipe",
+		},
+		{
+			name:       "missing ingredients",
+			fieldToDel: "ingredient-1",
+			want:       "missing ingredients or instructions",
+		},
+		{
+			name:       "missing instructions",
+			fieldToDel: "instruction-1",
+			want:       "missing ingredients or instructions",
+		},
+	}
+	for _, tc := range testcases2 {
+		t.Run(tc.name, func(t *testing.T) {
+			originalNumRecipes := resetRepo()
+			form := map[string]string{
+				"title":         "title",
+				"category":      "appetizers",
+				"source":        "Mommy",
+				"ingredient-1":  "ing1",
+				"instruction-1": "ins1",
+			}
+			delete(form, tc.fieldToDel)
+
+			contentType, body := createMultipartForm(form)
+			rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
+
+			assertStatus(t, rr.Code, http.StatusInternalServerError)
+			if len(repo.RecipesRegistered) == originalNumRecipes+1 {
+				t.Fatal("expected no recipe to be added to the database")
+			}
+			assertWebsocket(t, c, 1, fmt.Sprintf(`{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Could not add recipe: %s.","title":"Database Error"}}`, tc.want))
+		})
+	}
+
+	t.Run("missing source defaults to unknown", func(t *testing.T) {
+		_ = resetRepo()
+		contentType, body := createMultipartForm(map[string]string{
+			"title":         "title",
+			"ingredient-1":  "ing1",
+			"instruction-1": "ins1",
+		})
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
+
+		assertStatus(t, rr.Code, http.StatusCreated)
+		if repo.RecipesRegistered[1][0].URL != "Unknown" {
+			t.Fatalf("got source %q; want 'unknown'", repo.RecipesRegistered[1][0].URL)
 		}
-		srv.Repository = repo
-		originalNumRecipes := len(repo.RecipesRegistered)
+	})
+
+	t.Run("missing category defaults to uncategorized", func(t *testing.T) {
+		_ = resetRepo()
+		contentType, body := createMultipartForm(map[string]string{
+			"title":         "title",
+			"source":        "Mommy",
+			"ingredient-1":  "ing1",
+			"instruction-1": "ins1",
+		})
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
+
+		assertStatus(t, rr.Code, http.StatusCreated)
+		if repo.RecipesRegistered[1][0].Category != "uncategorized" {
+			t.Fatalf("got category %q; want 'uncategorized'", repo.RecipesRegistered[1][0].Category)
+		}
+	})
+
+	t.Run("missing yield defaults to 1", func(t *testing.T) {
+		_ = resetRepo()
+		contentType, body := createMultipartForm(map[string]string{
+			"title":         "title",
+			"source":        "Mommy",
+			"ingredient-1":  "ing1",
+			"instruction-1": "ins1",
+		})
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
+
+		assertStatus(t, rr.Code, http.StatusCreated)
+		if repo.RecipesRegistered[1][0].Yield != 1 {
+			t.Fatalf("got yield %d; want 1", repo.RecipesRegistered[1][0].Yield)
+		}
+	})
+
+	t.Run("can only be one category", func(t *testing.T) {
+		_ = resetRepo()
+		contentType, body := createMultipartForm(map[string]string{
+			"title":         "title",
+			"category":      "dinner,lunch",
+			"source":        "Mommy",
+			"ingredient-1":  "ing1",
+			"instruction-1": "ins1",
+		})
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
+
+		assertStatus(t, rr.Code, http.StatusCreated)
+		if repo.RecipesRegistered[1][0].Category != "dinner" {
+			t.Fatalf("got category %s; want dinner", repo.RecipesRegistered[1][0].Category)
+		}
+	})
+
+	t.Run("subcategories are possible", func(t *testing.T) {
+		_ = resetRepo()
+		contentType, body := createMultipartForm(map[string]string{
+			"title":         "title",
+			"category":      "beverages:cocktails:vodka",
+			"source":        "Mommy",
+			"ingredient-1":  "ing1",
+			"instruction-1": "ins1",
+		})
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
+
+		assertStatus(t, rr.Code, http.StatusCreated)
+		if repo.RecipesRegistered[1][0].Category != "beverages:cocktails:vodka" {
+			t.Fatalf("got category %s; want beverages:cocktails:vodka", repo.RecipesRegistered[1][0].Category)
+		}
+	})
+
+	t.Run("submit recipe", func(t *testing.T) {
+		_ = resetRepo()
 
 		contentType, body := createMultipartForm(map[string]string{
 			"title":               "Salsa",
@@ -218,9 +352,6 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 
 		assertStatus(t, rr.Code, http.StatusCreated)
 		id := int64(len(repo.RecipesRegistered))
-		if len(repo.RecipesRegistered) != originalNumRecipes+1 {
-			t.Fatal("expected one more recipe to be added to the database")
-		}
 		gotRecipe := repo.RecipesRegistered[1][id-1]
 		want := models.Recipe{
 			Category:     "appetizers",
@@ -229,6 +360,7 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 			Images:       gotRecipe.Images,
 			Ingredients:  []string{"ing1", "ing2"},
 			Instructions: []string{"ins1", "ins2"},
+			Keywords:     make([]string, 0),
 			Name:         "Salsa",
 			Nutrition: models.Nutrition{
 				Calories:           "666",
@@ -247,7 +379,7 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 				Cook:  30*time.Minute + 15*time.Second,
 				Total: 45*time.Minute + 45*time.Second,
 			},
-			Tools: nil,
+			Tools: make([]string, 0),
 			URL:   "Mommy",
 			Yield: 4,
 		}
@@ -735,12 +867,27 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 		URL:       "https://example.com/recipes/yummy",
 		Yield:     12,
 	}
+
 	xc, _ := srv.Repository.Categories(1)
 	srv.Repository = &mockRepository{
 		categories:        map[int64][]string{1: xc},
 		RecipesRegistered: map[int64]models.Recipes{1: {baseRecipe}},
 	}
 	originalRepo := srv.Repository
+
+	repo := &mockRepository{
+		RecipesRegistered: map[int64]models.Recipes{1: {baseRecipe}},
+	}
+	srv.Repository = repo
+
+	resetRepo := func() int {
+		repo = &mockRepository{
+			RecipesRegistered:      map[int64]models.Recipes{1: {baseRecipe}},
+			UserSettingsRegistered: map[int64]*models.UserSettings{1: {}},
+		}
+		srv.Repository = repo
+		return len(repo.RecipesRegistered)
+	}
 
 	uri := ts.URL + "/recipes/%d/edit"
 
@@ -891,6 +1038,136 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 		if !cmp.Equal(*got, want) {
 			t.Log(cmp.Diff(*got, want))
 			t.Fail()
+		}
+	})
+
+	testcases := []struct {
+		name       string
+		fieldToDel string
+		want       string
+	}{
+		{
+			name:       "missing title",
+			fieldToDel: "title",
+			want:       "missing the name of the recipe",
+		},
+		{
+			name:       "missing ingredients",
+			fieldToDel: "ingredient-1",
+			want:       "missing ingredients",
+		},
+		{
+			name:       "missing instructions",
+			fieldToDel: "instruction-1",
+			want:       "missing instructions",
+		},
+	}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			originalNumRecipes := resetRepo()
+			form := map[string]string{
+				"title":         "title",
+				"category":      "appetizers",
+				"source":        "Mommy",
+				"ingredient-1":  "ing1",
+				"instruction-1": "ins1",
+			}
+			delete(form, tc.fieldToDel)
+
+			contentType, body := createMultipartForm(form)
+			rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, fmt.Sprintf(uri, 1), header(contentType), strings.NewReader(body))
+
+			assertStatus(t, rr.Code, http.StatusInternalServerError)
+			if len(repo.RecipesRegistered) == originalNumRecipes+1 {
+				t.Fatal("expected no recipe to be added to the database")
+			}
+			assertWebsocket(t, c, 1, fmt.Sprintf(`{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Error updating recipe: %s.","title":"Database Error"}}`, tc.want))
+		})
+	}
+
+	t.Run("missing source defaults to unknown", func(t *testing.T) {
+		_ = resetRepo()
+		contentType, body := createMultipartForm(map[string]string{
+			"title":         "title",
+			"ingredient-1":  "ing1",
+			"instruction-1": "ins1",
+		})
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, fmt.Sprintf(uri, 1), header(contentType), strings.NewReader(body))
+
+		assertStatus(t, rr.Code, http.StatusNoContent)
+		if repo.RecipesRegistered[1][0].URL != "Unknown" {
+			t.Fatalf("got source %q; want 'unknown'", repo.RecipesRegistered[1][0].URL)
+		}
+	})
+
+	t.Run("missing category defaults to uncategorized", func(t *testing.T) {
+		_ = resetRepo()
+		contentType, body := createMultipartForm(map[string]string{
+			"title":         "title",
+			"source":        "Mommy",
+			"ingredient-1":  "ing1",
+			"instruction-1": "ins1",
+		})
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, fmt.Sprintf(uri, 1), header(contentType), strings.NewReader(body))
+
+		assertStatus(t, rr.Code, http.StatusNoContent)
+		if repo.RecipesRegistered[1][0].Category != "uncategorized" {
+			t.Fatalf("got category %q; want 'uncategorized'", repo.RecipesRegistered[1][0].Category)
+		}
+	})
+
+	t.Run("missing yield defaults to 1", func(t *testing.T) {
+		_ = resetRepo()
+		contentType, body := createMultipartForm(map[string]string{
+			"title":         "title",
+			"source":        "Mommy",
+			"ingredient-1":  "ing1",
+			"instruction-1": "ins1",
+		})
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, fmt.Sprintf(uri, 1), header(contentType), strings.NewReader(body))
+
+		assertStatus(t, rr.Code, http.StatusNoContent)
+		if repo.RecipesRegistered[1][0].Yield != 1 {
+			t.Fatalf("got yield %d; want 1", repo.RecipesRegistered[1][0].Yield)
+		}
+	})
+
+	t.Run("can only be one category", func(t *testing.T) {
+		_ = resetRepo()
+		contentType, body := createMultipartForm(map[string]string{
+			"title":         "title",
+			"category":      "dinner,lunch",
+			"source":        "Mommy",
+			"ingredient-1":  "ing1",
+			"instruction-1": "ins1",
+		})
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, fmt.Sprintf(uri, 1), header(contentType), strings.NewReader(body))
+
+		assertStatus(t, rr.Code, http.StatusNoContent)
+		if repo.RecipesRegistered[1][0].Category != "dinner" {
+			t.Fatalf("got category %s; want dinner", repo.RecipesRegistered[1][0].Category)
+		}
+	})
+
+	t.Run("subcategories are possible", func(t *testing.T) {
+		_ = resetRepo()
+		contentType, body := createMultipartForm(map[string]string{
+			"title":         "title",
+			"category":      "beverages:cocktails:vodka",
+			"source":        "Mommy",
+			"ingredient-1":  "ing1",
+			"instruction-1": "ins1",
+		})
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, fmt.Sprintf(uri, 1), header(contentType), strings.NewReader(body))
+
+		assertStatus(t, rr.Code, http.StatusNoContent)
+		if repo.RecipesRegistered[1][0].Category != "beverages:cocktails:vodka" {
+			t.Fatalf("got category %s; want beverages:cocktails:vodka", repo.RecipesRegistered[1][0].Category)
 		}
 	})
 }
