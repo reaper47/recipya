@@ -10,6 +10,7 @@ import (
 	"github.com/reaper47/recipya/internal/units"
 	"io"
 	"math"
+	"net/url"
 	"slices"
 	"testing"
 	"time"
@@ -256,31 +257,329 @@ func TestRecipe_ConvertMeasurementSystem(t *testing.T) {
 	}
 }
 
-func TestNewSearchOptionsRecipe(t *testing.T) {
+func TestNewAdvancedSearch(t *testing.T) {
 	testcases := []struct {
-		name   string
-		method string
-		want   models.SearchOptionsRecipes
+		name  string
+		query string
+		want  models.AdvancedSearch
 	}{
 		{
-			name:   "empty defaults to name",
-			method: "",
-			want:   models.SearchOptionsRecipes{IsByName: true, Page: 1, Sort: models.Sort{IsDefault: true}},
+			name:  "with category no text",
+			query: "cat:breakfast",
+			want:  models.AdvancedSearch{Category: "breakfast"},
 		},
 		{
-			name:   "name",
-			method: "name",
-			want:   models.SearchOptionsRecipes{IsByName: true, Page: 1, Sort: models.Sort{IsDefault: true}},
+			name:  "with category",
+			query: "q=orange cat:big breakfast",
+			want:  models.AdvancedSearch{Category: "big breakfast", Text: "orange"},
 		},
 		{
-			name:   "empty defaults to name",
-			method: "full",
-			want:   models.SearchOptionsRecipes{IsFullSearch: true, Page: 1, Sort: models.Sort{IsDefault: true}},
+			name:  "with category",
+			query: "q=orange cat likes hot dogs",
+			want:  models.AdvancedSearch{Text: "orange cat likes hot dogs"},
+		},
+		{
+			name:  "with subcategories",
+			query: "q=cat:Beverages:Coctails:Vodka",
+			want: models.AdvancedSearch{
+				Category: "Beverages:Coctails:Vodka",
+			},
+		},
+		{
+			name:  "with name",
+			query: "q=name:chicken kyiv",
+			want: models.AdvancedSearch{
+				Name: "chicken kyiv",
+			},
+		},
+		{
+			name:  "with names",
+			query: "q=name:chicken,pork",
+			want: models.AdvancedSearch{
+				Name: "chicken,pork",
+			},
+		},
+		{
+			name:  "with names and categories",
+			query: "q=cat:Beverages:Coctails:Vodka,dinner name:chicken,pork",
+			want: models.AdvancedSearch{
+				Name:     "chicken,pork",
+				Category: "Beverages:Coctails:Vodka,dinner",
+			},
+		},
+		{
+			name:  "with description",
+			query: "q=desc:juicy spicy chicken",
+			want: models.AdvancedSearch{
+				Description: "juicy spicy chicken",
+			},
+		},
+		{
+			name:  "with descriptions",
+			query: "q=desc:juicy spicy chicken,great fat sodium pork",
+			want: models.AdvancedSearch{
+				Description: "juicy spicy chicken,great fat sodium pork",
+			},
+		},
+		{
+			name:  "with cuisine",
+			query: "q=cuisine:japanese",
+			want: models.AdvancedSearch{
+				Cuisine: "japanese",
+			},
+		},
+		{
+			name:  "with cuisines",
+			query: "q=cuisine:japanese,ukrainian",
+			want: models.AdvancedSearch{
+				Cuisine: "japanese,ukrainian",
+			},
+		},
+		{
+			name:  "with ingredient",
+			query: "q=ing:butter",
+			want: models.AdvancedSearch{
+				Ingredients: "butter",
+			},
+		},
+		{
+			name:  "with ingredients",
+			query: "q=ing:butter,thyme,pork",
+			want: models.AdvancedSearch{
+				Ingredients: "butter,thyme,pork",
+			},
+		},
+		{
+			name:  "with instruction",
+			query: "q=ins:preheat oven 350",
+			want: models.AdvancedSearch{
+				Instructions: "preheat oven 350",
+			},
+		},
+		{
+			name:  "with instructions",
+			query: "q=ins:preheat oven 350,mix all together",
+			want: models.AdvancedSearch{
+				Instructions: "preheat oven 350,mix all together",
+			},
+		},
+		{
+			name:  "with keywords",
+			query: "q=tag:biscuits",
+			want: models.AdvancedSearch{
+				Keywords: "biscuits",
+			},
+		},
+		{
+			name:  "with keywords",
+			query: "q=tag:biscuits,mardi gras",
+			want: models.AdvancedSearch{
+				Keywords: "biscuits,mardi gras",
+			},
+		},
+		{
+			name:  "with source",
+			query: "q=src:allrecipes.com",
+			want: models.AdvancedSearch{
+				Source: "allrecipes.com",
+			},
+		},
+		{
+			name:  "with sources",
+			query: "q=src:allrecipes.com,betterhelp.com",
+			want: models.AdvancedSearch{
+				Source: "allrecipes.com,betterhelp.com",
+			},
 		},
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			compare(t, models.NewSearchOptionsRecipe(tc.method, "", 1), tc.want)
+			got := models.NewAdvancedSearch(tc.query)
+
+			if !cmp.Equal(got, tc.want) {
+				t.Log(cmp.Diff(got, tc.want))
+				t.Fail()
+			}
+		})
+	}
+}
+
+func TestNewSearchOptionsRecipe(t *testing.T) {
+	testcases := []struct {
+		name  string
+		query url.Values
+		want  models.SearchOptionsRecipes
+	}{
+		{
+			name:  "empty defaults to page 1",
+			query: url.Values{},
+			want: models.SearchOptionsRecipes{
+				Page: 1,
+				Sort: models.Sort{IsDefault: true},
+			},
+		},
+		{
+			name:  "specified page is correct",
+			query: url.Values{"page": []string{"5"}},
+			want: models.SearchOptionsRecipes{
+				Page: 5,
+				Sort: models.Sort{IsDefault: true},
+			},
+		},
+		{
+			name:  "basic search query",
+			query: url.Values{"q": []string{"homemade bubble tea"}},
+			want: models.SearchOptionsRecipes{
+				Advanced: models.AdvancedSearch{Text: "homemade bubble tea"},
+				Query:    "homemade bubble tea",
+				Page:     1,
+				Sort:     models.Sort{IsDefault: true},
+			},
+		},
+	}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			compare(t, models.NewSearchOptionsRecipe(tc.query), tc.want)
+		})
+	}
+}
+
+func TestSearchOptionsRecipes_Args(t *testing.T) {
+	testcases := []struct {
+		name string
+		in   models.SearchOptionsRecipes
+		want string
+	}{
+		{
+			name: "no args",
+			in:   models.SearchOptionsRecipes{},
+			want: "",
+		},
+		{
+			name: "one category",
+			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Category: "dinner"}},
+			want: "(category:dinner*)",
+		},
+		{
+			name: "multiple categories",
+			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Category: "breakfast, dinner"}},
+			want: "(category:breakfast* OR category:dinner*)",
+		},
+		{
+			name: "one name",
+			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Name: "pasta"}},
+			want: "(name:pasta*)",
+		},
+		{
+			name: "multiple names",
+			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Name: "hamburger, pasta"}},
+			want: "(name:hamburger* OR name:pasta*)",
+		},
+		{
+			name: "one name and category",
+			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Name: "pasta", Category: "dinner"}},
+			want: "(name:pasta*) AND (category:dinner*)",
+		},
+		{
+			name: "one name and category",
+			in:   models.SearchOptionsRecipes{},
+			want: "",
+		},
+		{
+			name: "one description",
+			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Description: "tender savory stacked"}},
+			want: `(description:NEAR("tender" "savory" "stacked"))`,
+		},
+		{
+			name: "multiple descriptions",
+			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Description: "tender savory stacked,the juicy chicken kyiv"}},
+			want: `(description:NEAR("tender" "savory" "stacked") OR description:NEAR("the" "juicy" "chicken" "kyiv"))`,
+		},
+		{
+			name: "one cuisine",
+			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Cuisine: "japanese"}},
+			want: "(cuisine:japanese*)",
+		},
+		{
+			name: "multiple cuisines",
+			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Cuisine: "japanese,ukrainian"}},
+			want: "(cuisine:japanese* OR cuisine:ukrainian*)",
+		},
+		{
+			name: "one ingredient",
+			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Ingredients: "butter"}},
+			want: "(ingredients:butter*)",
+		},
+		{
+			name: "multiple ingredients",
+			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Ingredients: "butter,thyme,salt"}},
+			want: "(ingredients:butter* AND ingredients:thyme* AND ingredients:salt*)",
+		},
+		{
+			name: "one instruction",
+			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Instructions: "preheat oven 350"}},
+			want: `(instructions:NEAR("preheat" "oven" "350"))`,
+		},
+		{
+			name: "multiple instructions",
+			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Instructions: "preheat oven 350,mix all together"}},
+			want: `(instructions:NEAR("preheat" "oven" "350") AND instructions:NEAR("mix" "all" "together"))`,
+		},
+		{
+			name: "one keyword",
+			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Keywords: "biscuits"}},
+			want: "(keywords:biscuits*)",
+		},
+		{
+			name: "multiple keywords",
+			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Keywords: "biscuits,mardi gras"}},
+			want: "(keywords:biscuits* AND keywords:mardi gras*)",
+		},
+		{
+			name: "one source",
+			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Source: "allrecipes.com"}},
+			want: "(source:allrecipes.com*)",
+		},
+		{
+			name: "multiple sources",
+			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Source: "allrecipes.com,betterhelp.com"}},
+			want: "(source:allrecipes.com* OR source:betterhelp.com*)",
+		},
+	}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			got := tc.in.Arg()
+
+			if got != tc.want {
+				t.Fatalf("got %v; want %v", got, tc.want)
+			}
+		})
+	}
+}
+
+func TestSearchOptionsRecipes_IsBasicSearch(t *testing.T) {
+	t.Run("is basic", func(t *testing.T) {
+		s := models.NewSearchOptionsRecipe(url.Values{"q": []string{"homemade bubble tea"}})
+
+		if !s.IsBasic() {
+			t.Fail()
+		}
+	})
+
+	testcases := []struct {
+		name string
+		in   models.AdvancedSearch
+	}{
+		{name: "has category", in: models.AdvancedSearch{Category: "breakfast"}},
+	}
+	for _, tc := range testcases {
+		t.Run("not basic", func(t *testing.T) {
+			s := models.NewSearchOptionsRecipe(url.Values{})
+			s.Advanced = tc.in
+
+			if s.IsBasic() {
+				t.Fail()
+			}
 		})
 	}
 }
@@ -1092,6 +1391,58 @@ func TestSort_IsSort(t *testing.T) {
 			})
 		}
 	})
+}
+
+func TestSort_String(t *testing.T) {
+	testcases := []struct {
+		name string
+		in   models.Sort
+		want string
+	}{
+		{
+			name: "Default",
+			in:   models.Sort{IsDefault: true},
+			want: "a-z",
+		},
+		{
+			name: "A to Z",
+			in:   models.Sort{IsAToZ: true},
+			want: "a-z",
+		},
+		{
+			name: "Z to A",
+			in:   models.Sort{IsZToA: true},
+			want: "z-a",
+		},
+		{
+			name: "Newest to Oldest",
+			in:   models.Sort{IsNewestToOldest: true},
+			want: "new-old",
+		},
+		{
+			name: "Oldest to Newest",
+			in:   models.Sort{IsOldestToNewest: true},
+			want: "old-new",
+		},
+		{
+			name: "Random",
+			in:   models.Sort{IsRandom: true},
+			want: "random",
+		},
+		{
+			name: "None true (default to a-z)",
+			in:   models.Sort{},
+			want: "a-z",
+		},
+	}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			got := tc.in.String()
+			if got != tc.want {
+				t.Errorf("got %v; want %v", got, tc.want)
+			}
+		})
+	}
 }
 
 func assertNoError(tb testing.TB, got error) {

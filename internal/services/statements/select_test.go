@@ -8,7 +8,7 @@ import (
 
 func BenchmarkBuildPaginatedResultsQuery(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		got := buildSelectPaginatedResultsQuery([]string{"one", "two", "three", "four", "five"}, models.SearchOptionsRecipes{IsFullSearch: true})
+		got := buildSelectPaginatedResultsQuery(models.SearchOptionsRecipes{Query: "one two three four"})
 		_ = got
 	}
 }
@@ -109,50 +109,49 @@ func TestBuildSelectNutrientFDC(t *testing.T) {
 func TestSelectSearchRecipe(t *testing.T) {
 	testcases := []struct {
 		name    string
-		queries []string
 		options models.SearchOptionsRecipes
 		want    string
 	}{
 		{
-			name:    "no queries",
-			queries: []string{},
-			options: models.SearchOptionsRecipes{IsByName: true},
-			want:    "SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? ORDER BY rank) GROUP BY recipes.id)",
+			name: "no queries",
+			want: "SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? ORDER BY rank) GROUP BY recipes.id)",
 		},
 		{
-			name:    "many queries",
-			queries: []string{"one", "two", "tHrEe", "FOUR"},
-			options: models.SearchOptionsRecipes{IsByName: true},
-			want:    "SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? AND (name MATCH ? AND name MATCH ? AND name MATCH ? AND name MATCH ?) ORDER BY rank) GROUP BY recipes.id)",
+			name: "advanced category only",
+			options: models.SearchOptionsRecipes{
+				Advanced: models.AdvancedSearch{Category: "breakfast"},
+			},
+			want: "SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? AND category MATCH ? ORDER BY rank) GROUP BY recipes.id)",
 		},
 		{
-			name:    "full search one query",
-			queries: []string{"one"},
-			options: models.SearchOptionsRecipes{IsFullSearch: true},
+			name: "advanced multiple categories",
+			options: models.SearchOptionsRecipes{
+				Advanced: models.AdvancedSearch{Category: "breakfast,dinner"},
+			},
+			want: "SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? AND (category MATCH ? OR category MATCH ?) ORDER BY rank) GROUP BY recipes.id)",
+		},
+		{
+			name:    "one query",
+			options: models.SearchOptionsRecipes{Query: "one two three four"},
 			want:    "SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? AND (name MATCH ? OR description MATCH ? OR category MATCH ? OR ingredients MATCH ? OR instructions MATCH ? OR keywords MATCH ? OR source MATCH ?) ORDER BY rank) GROUP BY recipes.id)",
 		},
 		{
-			name:    "full search many queries",
-			queries: []string{"one", "two"},
-			options: models.SearchOptionsRecipes{IsFullSearch: true},
-			want:    "SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? AND ((name MATCH ? AND name MATCH ?) OR (description MATCH ? AND description MATCH ?) OR (category MATCH ? AND category MATCH ?) OR (ingredients MATCH ? AND ingredients MATCH ?) OR (instructions MATCH ? AND instructions MATCH ?) OR (keywords MATCH ? AND keywords MATCH ?) OR (source MATCH ? AND source MATCH ?)) ORDER BY rank) GROUP BY recipes.id)",
-		},
-		{
-			name:    "full search one query sort A-Z",
-			queries: []string{"one"},
-			options: models.SearchOptionsRecipes{IsByName: true, Sort: models.Sort{IsAToZ: true}},
-			want:    "SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.name ASC) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? AND (name MATCH ?) ORDER BY rank) GROUP BY recipes.id)",
+			name: "one query with advanced search",
+			options: models.SearchOptionsRecipes{
+				Advanced: models.AdvancedSearch{Category: "breakfast"},
+				Query:    "one two three four",
+			},
+			want: "SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? AND category = ? AND (name MATCH ? OR description MATCH ? OR category MATCH ? OR ingredients MATCH ? OR instructions MATCH ? OR keywords MATCH ? OR source MATCH ?) ORDER BY rank) GROUP BY recipes.id)",
 		},
 		{
 			name:    "cookbook search",
-			queries: []string{"choco"},
-			options: models.SearchOptionsRecipes{IsByName: true, CookbookID: 1},
-			want:    "SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? AND (name MATCH ?) ORDER BY rank) AND recipes.id NOT IN (SELECT recipe_id FROM cookbook_recipes WHERE cookbook_id = ?) GROUP BY recipes.id)",
+			options: models.SearchOptionsRecipes{Query: "choco", CookbookID: 1},
+			want:    "SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? AND (name MATCH ? OR description MATCH ? OR category MATCH ? OR ingredients MATCH ? OR instructions MATCH ? OR keywords MATCH ? OR source MATCH ?) ORDER BY rank) AND recipes.id NOT IN (SELECT recipe_id FROM cookbook_recipes WHERE cookbook_id = ?) GROUP BY recipes.id)",
 		},
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			got := buildSearchRecipeQuery(tc.queries, tc.options)
+			got := buildSearchRecipeQuery(tc.options)
 			compareSQL(t, got, tc.want)
 		})
 	}
@@ -161,47 +160,28 @@ func TestSelectSearchRecipe(t *testing.T) {
 func TestBuildSelectPaginatedResults(t *testing.T) {
 	testcases := []struct {
 		name    string
-		queries []string
-		page    uint64
 		options models.SearchOptionsRecipes
 		want    string
 	}{
 		{
 			name:    "empty query",
-			queries: make([]string, 0),
-			page:    1,
-			options: models.SearchOptionsRecipes{},
+			options: models.SearchOptionsRecipes{Page: 1},
 			want:    "WITH results AS (SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? ORDER BY rank) GROUP BY recipes.id)) SELECT * FROM results WHERE row_num BETWEEN 1 AND 15",
 		},
 		{
-			name:    "many queries",
-			queries: []string{"one", "two", "tHrEe", "FOUR"},
-			options: models.SearchOptionsRecipes{IsByName: true},
-			want:    "WITH results AS (SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? AND (name MATCH ? AND name MATCH ? AND name MATCH ? AND name MATCH ?) ORDER BY rank) GROUP BY recipes.id)) SELECT * FROM results WHERE row_num BETWEEN 1 AND 15",
-		},
-		{
 			name:    "full search one query",
-			queries: []string{"one"},
-			page:    2,
-			options: models.SearchOptionsRecipes{IsFullSearch: true},
+			options: models.SearchOptionsRecipes{Query: "one two three four", Page: 2},
 			want:    "WITH results AS (SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? AND (name MATCH ? OR description MATCH ? OR category MATCH ? OR ingredients MATCH ? OR instructions MATCH ? OR keywords MATCH ? OR source MATCH ?) ORDER BY rank) GROUP BY recipes.id)) SELECT * FROM results WHERE row_num BETWEEN 16 AND 30",
 		},
 		{
-			name:    "full search many queries",
-			queries: []string{"one", "two"},
-			options: models.SearchOptionsRecipes{IsFullSearch: true},
-			want:    "WITH results AS (SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? AND ((name MATCH ? AND name MATCH ?) OR (description MATCH ? AND description MATCH ?) OR (category MATCH ? AND category MATCH ?) OR (ingredients MATCH ? AND ingredients MATCH ?) OR (instructions MATCH ? AND instructions MATCH ?) OR (keywords MATCH ? AND keywords MATCH ?) OR (source MATCH ? AND source MATCH ?)) ORDER BY rank) GROUP BY recipes.id)) SELECT * FROM results WHERE row_num BETWEEN 1 AND 15",
-		},
-		{
-			name:    "full search one query sort A-Z",
-			queries: []string{"one"},
-			options: models.SearchOptionsRecipes{IsByName: true, Sort: models.Sort{IsAToZ: true}},
-			want:    "WITH results AS (SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.name ASC) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? AND (name MATCH ?) ORDER BY rank) GROUP BY recipes.id)) SELECT * FROM results WHERE row_num BETWEEN 1 AND 15",
+			name:    "with advanced",
+			options: models.SearchOptionsRecipes{Query: "one two", Page: 1, Advanced: models.AdvancedSearch{Category: "breakfast"}},
+			want:    "WITH results AS (SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? AND category = ? AND (name MATCH ? OR description MATCH ? OR category MATCH ? OR ingredients MATCH ? OR instructions MATCH ? OR keywords MATCH ? OR source MATCH ?) ORDER BY rank) GROUP BY recipes.id)) SELECT * FROM results WHERE row_num BETWEEN 1 AND 15",
 		},
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			got := BuildSelectPaginatedResults(tc.queries, tc.page, tc.options)
+			got := BuildSelectPaginatedResults(tc.options)
 			compareSQL(t, got, tc.want)
 		})
 	}
@@ -211,47 +191,28 @@ func TestBuildSelectSearchResultsCount(t *testing.T) {
 	testcases := []struct {
 		name    string
 		queries []string
-		page    uint64
 		options models.SearchOptionsRecipes
 		want    string
 	}{
 		{
 			name:    "empty query",
-			queries: make([]string, 0),
-			page:    1,
-			options: models.SearchOptionsRecipes{},
+			options: models.SearchOptionsRecipes{Page: 1},
 			want:    "WITH results AS (SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? ORDER BY rank) GROUP BY recipes.id))SELECT COUNT(*) FROM results",
 		},
 		{
-			name:    "many queries",
-			queries: []string{"one", "two", "tHrEe", "FOUR"},
-			page:    2,
-			options: models.SearchOptionsRecipes{IsByName: true},
-			want:    "WITH results AS (SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? AND (name MATCH ? AND name MATCH ? AND name MATCH ? AND name MATCH ?) ORDER BY rank) GROUP BY recipes.id))SELECT COUNT(*) FROM results",
-		},
-		{
 			name:    "full search one query",
-			queries: []string{"one"},
-			page:    3,
-			options: models.SearchOptionsRecipes{IsFullSearch: true},
+			options: models.SearchOptionsRecipes{Query: "one two three four", Page: 3},
 			want:    "WITH results AS (SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? AND (name MATCH ? OR description MATCH ? OR category MATCH ? OR ingredients MATCH ? OR instructions MATCH ? OR keywords MATCH ? OR source MATCH ?) ORDER BY rank) GROUP BY recipes.id))SELECT COUNT(*) FROM results",
 		},
 		{
-			name:    "full search many queries",
-			queries: []string{"one", "two"},
-			options: models.SearchOptionsRecipes{IsFullSearch: true},
-			want:    "WITH results AS (SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? AND ((name MATCH ? AND name MATCH ?) OR (description MATCH ? AND description MATCH ?) OR (category MATCH ? AND category MATCH ?) OR (ingredients MATCH ? AND ingredients MATCH ?) OR (instructions MATCH ? AND instructions MATCH ?) OR (keywords MATCH ? AND keywords MATCH ?) OR (source MATCH ? AND source MATCH ?)) ORDER BY rank) GROUP BY recipes.id))SELECT COUNT(*) FROM results",
-		},
-		{
-			name:    "full search one query sort A-Z",
-			queries: []string{"one"},
-			options: models.SearchOptionsRecipes{IsByName: true, Sort: models.Sort{IsAToZ: true}},
-			want:    "WITH results AS (SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? AND (name MATCH ?) ORDER BY rank) GROUP BY recipes.id))SELECT COUNT(*) FROM results",
+			name:    "with advanced",
+			options: models.SearchOptionsRecipes{Query: "one two three four", Page: 3, Advanced: models.AdvancedSearch{Category: "breakfast", Text: "one two three four"}},
+			want:    "WITH results AS (SELECT recipe_id, name, description, image, created_at, category, row_num FROM ( SELECT recipes.id AS recipe_id, recipes.name AS name, recipes.description AS description, recipes.image AS image, recipes.created_at AS created_at, categories.name AS category, user_id, ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num FROM recipes LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id LEFT JOIN categories ON category_recipe.category_id = categories.id LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ? AND category = ? AND (name MATCH ? OR description MATCH ? OR category MATCH ? OR ingredients MATCH ? OR instructions MATCH ? OR keywords MATCH ? OR source MATCH ?) ORDER BY rank) GROUP BY recipes.id))SELECT COUNT(*) FROM results",
 		},
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			got := BuildSelectSearchResultsCount(tc.queries, tc.options)
+			got := BuildSelectSearchResultsCount(tc.options)
 			compareSQL(t, got, tc.want)
 		})
 	}

@@ -87,6 +87,33 @@ func (m *mockRepository) AddRecipes(xr models.Recipes, userID int64, progress ch
 
 	recipeIDs := make([]int64, 0, len(xr))
 	for i, recipe := range xr {
+		if recipe.Category == "" {
+			recipe.Category = "uncategorized"
+		} else {
+			delimiters := []string{",", ";", "|"}
+			for _, delim := range delimiters {
+				if strings.Contains(recipe.Category, delim) {
+					recipe.Category = strings.Split(recipe.Category, delim)[0]
+				}
+			}
+		}
+
+		if len(recipe.Ingredients) == 0 || len(recipe.Instructions) == 0 {
+			return nil, nil, errors.New("missing ingredients or instructions")
+		}
+
+		if recipe.Name == "" {
+			return nil, nil, errors.New("missing the name of the recipe")
+		}
+
+		if recipe.Yield == 0 {
+			recipe.Yield = 1
+		}
+
+		if recipe.URL == "" {
+			recipe.URL = "Unknown"
+		}
+
 		if !slices.ContainsFunc(m.RecipesRegistered[userID], func(r models.Recipe) bool { return recipe.Name == r.Name }) {
 			mutex.Lock()
 			recipe.ID = int64(i + 1)
@@ -443,7 +470,7 @@ func (m *mockRepository) Recipe(id, userID int64) (*models.Recipe, error) {
 	return nil, errors.New("recipe not found")
 }
 
-func (m *mockRepository) Recipes(userID int64, _ uint64, _ string) models.Recipes {
+func (m *mockRepository) Recipes(userID int64, opts models.SearchOptionsRecipes) models.Recipes {
 	if recipes, ok := m.RecipesRegistered[userID]; ok {
 		return recipes
 	}
@@ -537,7 +564,7 @@ func (m *mockRepository) RestoreUserBackup(backup *models.UserBackup) error {
 	return nil
 }
 
-func (m *mockRepository) SearchRecipes(query string, _ uint64, options models.SearchOptionsRecipes, userID int64) (models.Recipes, uint64, error) {
+func (m *mockRepository) SearchRecipes(opts models.SearchOptionsRecipes, userID int64) (models.Recipes, uint64, error) {
 	recipes, ok := m.RecipesRegistered[userID]
 	if !ok {
 		return nil, 0, errors.New("user not found")
@@ -545,8 +572,7 @@ func (m *mockRepository) SearchRecipes(query string, _ uint64, options models.Se
 
 	var results models.Recipes
 	for _, r := range recipes {
-		if (options.IsByName && strings.Contains(strings.ToLower(r.Name), query)) ||
-			(options.IsFullSearch && (strings.Contains(strings.ToLower(r.Name), query) || strings.Contains(strings.ToLower(r.Category), query) || strings.Contains(strings.ToLower(r.Description), query))) {
+		if strings.Contains(strings.ToLower(r.Name), opts.Query) || strings.Contains(strings.ToLower(r.Category), opts.Query) || strings.Contains(strings.ToLower(r.Description), opts.Query) {
 			results = append(results, r)
 		}
 	}
@@ -659,6 +685,16 @@ func (m *mockRepository) UpdateRecipe(updatedRecipe *models.Recipe, userID int64
 	newRecipe := *oldRecipe
 
 	if oldRecipe.Category != updatedRecipe.Category {
+		if updatedRecipe.Category == "" {
+			updatedRecipe.Category = "uncategorized"
+		} else {
+			delimiters := []string{",", ";", "|"}
+			for _, delim := range delimiters {
+				if strings.Contains(updatedRecipe.Category, delim) {
+					updatedRecipe.Category = strings.Split(updatedRecipe.Category, delim)[0]
+				}
+			}
+		}
 		newRecipe.Category = updatedRecipe.Category
 	}
 
@@ -681,6 +717,10 @@ func (m *mockRepository) UpdateRecipe(updatedRecipe *models.Recipe, userID int64
 			}
 		}
 	} else {
+		if len(updatedRecipe.Ingredients) == 0 {
+			return errors.New("missing ingredients")
+		}
+
 		cloned := slices.Clone(updatedRecipe.Ingredients)
 		if cloned != nil {
 			newRecipe.Ingredients = cloned
@@ -694,6 +734,10 @@ func (m *mockRepository) UpdateRecipe(updatedRecipe *models.Recipe, userID int64
 			}
 		}
 	} else {
+		if len(updatedRecipe.Instructions) == 0 {
+			return errors.New("missing instructions")
+		}
+
 		cloned := slices.Clone(updatedRecipe.Instructions)
 		if cloned != nil {
 			newRecipe.Instructions = cloned
@@ -714,6 +758,9 @@ func (m *mockRepository) UpdateRecipe(updatedRecipe *models.Recipe, userID int64
 	}
 
 	if oldRecipe.Name != updatedRecipe.Name {
+		if updatedRecipe.Name == "" {
+			return errors.New("missing the name of the recipe")
+		}
 		newRecipe.Name = updatedRecipe.Name
 	}
 
@@ -733,10 +780,16 @@ func (m *mockRepository) UpdateRecipe(updatedRecipe *models.Recipe, userID int64
 	}
 
 	if oldRecipe.URL != updatedRecipe.URL {
+		if updatedRecipe.URL == "" {
+			updatedRecipe.URL = "Unknown"
+		}
 		newRecipe.URL = updatedRecipe.URL
 	}
 
 	if oldRecipe.Yield != updatedRecipe.Yield {
+		if updatedRecipe.Yield == 0 {
+			updatedRecipe.Yield = 1
+		}
 		newRecipe.Yield = updatedRecipe.Yield
 	}
 

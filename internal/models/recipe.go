@@ -572,11 +572,105 @@ func (n NutrientFDC) Value() float64 {
 
 // SearchOptionsRecipes defines the options for searching recipes.
 type SearchOptionsRecipes struct {
-	CookbookID   int64
-	IsByName     bool
-	IsFullSearch bool
-	Page         uint64
-	Sort         Sort
+	Advanced   AdvancedSearch
+	CookbookID int64
+	Query      string
+	Page       uint64
+	Sort       Sort
+}
+
+// Arg returns combines the field values of the struct, ready for FTS.
+func (s *SearchOptionsRecipes) Arg() string {
+	var args []string
+
+	fields := map[string]string{
+		"category":     s.Advanced.Category,
+		"cuisine":      s.Advanced.Cuisine,
+		"description":  s.Advanced.Description,
+		"ingredients":  s.Advanced.Ingredients,
+		"instructions": s.Advanced.Instructions,
+		"keywords":     s.Advanced.Keywords,
+		"name":         s.Advanced.Name,
+		"source":       s.Advanced.Source,
+	}
+	for col, field := range fields {
+		x := toArg(field, col)
+		if x != "" {
+			args = append(args, x)
+		}
+	}
+
+	return strings.Join(slices.DeleteFunc(args, func(s string) bool {
+		return s == ""
+	}), " AND ")
+}
+
+func toArg(s, col string) string {
+	parts := strings.Split(s, ",")
+	if len(parts) == 0 || (len(parts) == 1 && parts[0] == "") {
+		return ""
+	}
+
+	sep := " OR "
+	if col == "ingredients" || col == "instructions" || col == "keywords" {
+		sep = " AND "
+	}
+
+	var cat strings.Builder
+	cat.WriteString("(")
+	if col == "description" || col == "instructions" {
+		for i, part := range parts {
+			if i > 0 {
+				cat.WriteString(sep)
+			}
+
+			cat.WriteString(col + ":NEAR(")
+			subParts := strings.Split(part, " ")
+			for i, subPart := range subParts {
+				if i > 0 {
+					cat.WriteString(" ")
+				}
+				cat.WriteString(`"` + subPart + `"`)
+			}
+			cat.WriteString(")")
+		}
+	} else {
+		for i, part := range parts {
+			if i > 0 {
+				cat.WriteString(sep)
+			}
+
+			subcats := strings.Split(strings.TrimSpace(part), ":")
+			if len(subcats) > 0 {
+				cat.WriteString(col + ":")
+				cat.WriteString(strings.Join(subcats, "*+"))
+				cat.WriteString("*")
+			} else {
+				cat.WriteString(col + ":" + strings.TrimSpace(part) + "*")
+			}
+		}
+	}
+
+	cat.WriteString(")")
+	return cat.String()
+}
+
+// IsBasic verifies whether the search is basic.
+func (s *SearchOptionsRecipes) IsBasic() bool {
+	return s.Advanced == AdvancedSearch{}
+}
+
+// AdvancedSearch stores the components of an advanced search query.
+type AdvancedSearch struct {
+	Category     string
+	Cuisine      string
+	Description  string
+	Ingredients  string
+	Instructions string
+	Keywords     string
+	Name         string
+	Source       string
+	Text         string
 }
 
 // Sort defines sorting options.
@@ -596,20 +690,166 @@ func (s *Sort) IsSort() bool {
 	return s.IsAToZ || s.IsZToA
 }
 
-// NewSearchOptionsRecipe creates a SearchOptionsRecipe struct configured for the search method.
-func NewSearchOptionsRecipe(mode, sort string, page uint64) SearchOptionsRecipes {
-	opts := SearchOptionsRecipes{Page: page}
-
-	switch mode {
-	case "name":
-		opts.IsByName = true
-	case "full":
-		opts.IsFullSearch = true
+// String returns a string representation of the sorting order based on the Sort struct.
+func (s *Sort) String() string {
+	switch {
+	case s.IsAToZ, s.IsDefault:
+		return "a-z"
+	case s.IsZToA:
+		return "z-a"
+	case s.IsNewestToOldest:
+		return "new-old"
+	case s.IsOldestToNewest:
+		return "old-new"
+	case s.IsRandom:
+		return "random"
 	default:
-		opts.IsByName = true
+		return "a-z"
+	}
+}
+
+// NewAdvancedSearch creates an AdvancedSearch object from a search query.
+func NewAdvancedSearch(query string) AdvancedSearch {
+	var (
+		a              AdvancedSearch
+		isCat          bool
+		isCuisine      bool
+		isDescription  bool
+		isIngredients  bool
+		isInstructions bool
+		isKeywords     bool
+		isName         bool
+		isSource       bool
+	)
+
+	xs := strings.Fields(strings.TrimPrefix(query, "q="))
+	for _, s := range xs {
+		if strings.HasPrefix(s, "cat:") {
+			isCat = true
+			isCuisine = false
+			isDescription = false
+			isIngredients = false
+			isInstructions = false
+			isKeywords = false
+			isName = false
+			isSource = false
+
+			a.Category = strings.TrimPrefix(s, "cat:")
+		} else if strings.HasPrefix(s, "cuisine:") {
+			isCat = false
+			isCuisine = true
+			isDescription = false
+			isIngredients = false
+			isInstructions = false
+			isKeywords = false
+			isName = false
+			isSource = false
+
+			a.Cuisine = strings.TrimPrefix(s, "cuisine:")
+		} else if strings.HasPrefix(s, "desc:") {
+			isCat = false
+			isCuisine = false
+			isDescription = true
+			isIngredients = false
+			isInstructions = false
+			isKeywords = false
+			isName = false
+			isSource = false
+
+			a.Description = strings.TrimPrefix(s, "desc:")
+		} else if strings.HasPrefix(s, "ing:") {
+			isCat = false
+			isCuisine = false
+			isDescription = false
+			isIngredients = true
+			isKeywords = false
+			isName = false
+			isSource = false
+
+			a.Ingredients = strings.TrimPrefix(s, "ing:")
+		} else if strings.HasPrefix(s, "ins:") {
+			isCat = false
+			isCuisine = false
+			isDescription = false
+			isIngredients = false
+			isInstructions = true
+			isKeywords = false
+			isName = false
+			isSource = false
+
+			a.Instructions = strings.TrimPrefix(s, "ins:")
+		} else if strings.HasPrefix(s, "name:") {
+			isCat = false
+			isCuisine = false
+			isDescription = false
+			isIngredients = false
+			isInstructions = false
+			isKeywords = false
+			isName = true
+			isSource = false
+
+			a.Name = strings.TrimPrefix(s, "name:")
+		} else if strings.HasPrefix(s, "src:") {
+			isCat = false
+			isCuisine = false
+			isDescription = false
+			isIngredients = false
+			isInstructions = false
+			isKeywords = false
+			isName = false
+			isSource = true
+
+			a.Source = strings.TrimPrefix(s, "src:")
+		} else if strings.HasPrefix(s, "tag:") {
+			isCat = false
+			isCuisine = false
+			isDescription = false
+			isIngredients = false
+			isInstructions = false
+			isKeywords = true
+			isName = false
+			isSource = false
+
+			a.Keywords = strings.TrimPrefix(s, "tag:")
+		} else if isCat {
+			a.Category += " " + s
+		} else if isCuisine {
+			a.Cuisine += " " + s
+		} else if isDescription {
+			a.Description += " " + s
+		} else if isIngredients {
+			a.Ingredients += " " + s
+		} else if isInstructions {
+			a.Instructions += " " + s
+		} else if isName {
+			a.Name += " " + s
+		} else if isSource {
+			a.Source += " " + s
+		} else if isKeywords {
+			a.Keywords += " " + s
+		} else {
+			a.Text += " " + s
+		}
 	}
 
-	switch sort {
+	a.Text = strings.TrimSpace(a.Text)
+	return a
+}
+
+// NewSearchOptionsRecipe creates a SearchOptionsRecipe struct configured for the search method.
+func NewSearchOptionsRecipe(query url.Values) SearchOptionsRecipes {
+	page, err := strconv.ParseUint(query.Get("page"), 10, 64)
+	if err != nil || page <= 0 {
+		page = 1
+	}
+
+	opts := SearchOptionsRecipes{
+		Advanced: NewAdvancedSearch(query.Get("q")),
+		Page:     page,
+	}
+	opts.Query = opts.Advanced.Text
+
+	switch query.Get("sort") {
 	case "a-z":
 		opts.Sort.IsAToZ = true
 	case "z-a":

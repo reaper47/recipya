@@ -1,6 +1,8 @@
 ---
 title: Prerequisites
 weight: 1
+next: /docs/installation/build/
+prev: /docs/installation/
 ---
 
 ## System Requirements
@@ -24,12 +26,13 @@ In addition, you must have at least 300 MB of free space.
 
 ## Browsers
 
-| Browser  |  Version  |     Compatibility      |
-|----------|:---------:|:----------------------:|
-| Brave    |    37+    |  {{< icon "check" >}}  |
-| Chrome   |    37+    |  {{< icon "check" >}}  |
-| Edge     |    79+    |  {{< icon "check" >}}  |
-| Firefox  |    98+    |  {{< icon "check" >}}  |
-| IE       |    N/A    |    {{< icon "x" >}}    |
-| Safari   |   15.4+   |  {{< icon "check" >}}  |
-| Vanadium |    37+    |  {{< icon "check" >}}  |
+| Browser  | Version |     Compatibility      |
+|----------|:-------:|:----------------------:|
+| Brave    |   37+   |  {{< icon "check" >}}  |
+| Chrome   |  114+   |  {{< icon "check" >}}  |
+| Edge     |  114+   |  {{< icon "check" >}}  |
+| Firefox  |  125+   |  {{< icon "check" >}}  |
+| IE       |   N/A   |    {{< icon "x" >}}    |
+| Opera    |  100+   |  {{< icon "check" >}}  |
+| Safari   |   17+   |  {{< icon "check" >}}  |
+| Vanadium |  114+   |  {{< icon "check" >}}  |

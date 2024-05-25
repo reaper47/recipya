@@ -2,6 +2,7 @@ package server
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
@@ -25,24 +26,14 @@ import (
 
 func (s *Server) recipesHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		pageNumber, err := strconv.ParseUint(r.URL.Query().Get("page"), 10, 64)
-		if err != nil {
-			pageNumber = 1
-		}
-
-		sorts := r.URL.Query().Get("sort")
-		if sorts == "" {
-			sorts = "default"
-		}
-
-		mode := r.URL.Query().Get("mode")
-		if mode == "" {
-			mode = "full"
+		opts, ok := r.Context().Value("opts").(models.SearchOptionsRecipes)
+		if !ok {
+			opts = models.NewSearchOptionsRecipe(r.URL.Query())
 		}
 
 		userID := getUserID(r)
 
-		p, err := newRecipesPagination(s, userID, pageNumber, sorts, false)
+		p, err := newRecipesPagination(s, userID, opts.Page, opts.Sort.String(), false)
 		if err != nil {
 			s.Brokers.SendToast(models.NewErrorGeneralToast("Error updating pagination."), userID)
 			w.WriteHeader(http.StatusInternalServerError)
@@ -57,11 +48,8 @@ func (s *Server) recipesHandler() http.HandlerFunc {
 			IsAuthenticated: true,
 			IsHxRequest:     r.Header.Get("HX-Request") == "true",
 			Pagination:      p,
-			Recipes:         s.Repository.Recipes(userID, pageNumber, sorts),
-			Searchbar: templates.SearchbarData{
-				Mode: mode,
-				Sort: sorts,
-			},
+			Recipes:         s.Repository.Recipes(userID, models.NewSearchOptionsRecipe(url.Values{})),
+			Searchbar:       templates.SearchbarData{Sort: opts.Sort.String(), Term: opts.Query},
 		}).Render(r.Context(), w)
 	}
 }
@@ -284,11 +272,7 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 
 		yield, err := strconv.ParseInt(r.FormValue("yield"), 10, 16)
 		if err != nil {
-			msg := "Error parsing yield."
-			slog.Error(msg, userIDAttr, "error", err)
-			s.Brokers.SendToast(models.NewErrorFormToast(msg), userID)
-			w.WriteHeader(http.StatusBadRequest)
-			return
+			yield = 1
 		}
 
 		recipe := models.Recipe{
@@ -299,7 +283,7 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 			Images:       imageUUIDs,
 			Ingredients:  ingredients,
 			Instructions: instructions,
-			Keywords:     nil,
+			Keywords:     make([]string, 0),
 			Name:         r.FormValue("title"),
 			Nutrition: models.Nutrition{
 				Calories:           r.FormValue("calories"),
@@ -311,25 +295,23 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 				Sugars:             r.FormValue("sugars"),
 				TotalCarbohydrates: r.FormValue("total-carbohydrates"),
 				TotalFat:           r.FormValue("total-fat"),
-				UnsaturatedFat:     "",
 			},
-			Times:     times,
-			Tools:     nil,
-			UpdatedAt: time.Time{},
-			URL:       r.FormValue("source"),
-			Yield:     int16(yield),
+			Times: times,
+			Tools: make([]string, 0),
+			URL:   r.FormValue("source"),
+			Yield: int16(yield),
 		}
 
 		recipeIDs, _, err := s.Repository.AddRecipes(models.Recipes{recipe}, userID, nil)
 		if err != nil {
-			msg := "Could not add recipe."
-			slog.Error(msg, userIDAttr, "error", err)
-			s.Brokers.SendToast(models.NewErrorDBToast(msg), userID)
-			w.WriteHeader(http.StatusNoContent)
+			msg := "Could not add recipe"
+			slog.Error(msg, userIDAttr, "recipe", recipe, "error", err)
+			s.Brokers.SendToast(models.NewErrorDBToast(msg+": "+err.Error()+"."), userID)
+			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
-		slog.Info("Recipe added", userIDAttr, "recipeNumber", recipeIDs[0], "recipe", recipe)
+		slog.Info("Recipe added", userIDAttr, "recipeNumber", recipeIDs[0], "recipe", recipe.Name)
 		w.Header().Set("HX-Redirect", "/recipes/"+strconv.FormatInt(recipeIDs[0], 10))
 		w.WriteHeader(http.StatusCreated)
 	}
@@ -985,9 +967,9 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 
 		err = s.Repository.UpdateRecipe(&updatedRecipe, userID, recipeNum)
 		if err != nil {
-			msg := "Error updating recipe."
+			msg := "Error updating recipe"
 			slog.Error(msg, userIDAttr, "updatedRecipe", updatedRecipe, "error", err)
-			s.Brokers.SendToast(models.NewErrorGeneralToast(msg), userID)
+			s.Brokers.SendToast(models.NewErrorDBToast(msg+": "+err.Error()+"."), userID)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -1096,39 +1078,21 @@ func (s *Server) recipeSharePostHandler() http.HandlerFunc {
 
 func (s *Server) recipesSearchHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		query := r.URL.Query()
-
-		page, err := strconv.ParseUint(query.Get("page"), 10, 64)
-		if err != nil || page <= 0 {
-			page = 1
-		}
-
-		q := query.Get("q")
-		sorts := query.Get("sort")
-
-		if q == "" {
-			w.Header().Set("HX-Redirect", "/recipes?sort="+sorts)
-			w.WriteHeader(http.StatusBadRequest)
-			_, _ = w.Write([]byte("Query parameter must not be 'q' empty."))
+		opts := models.NewSearchOptionsRecipe(r.URL.Query())
+		if opts.IsBasic() && opts.Query == "" {
+			r = r.WithContext(context.WithValue(r.Context(), "opts", opts))
+			w.Header().Set("HX-Retarget", "#content")
+			s.recipesHandler().ServeHTTP(w, r)
 			return
 		}
-		q = strings.ReplaceAll(q, ",", " ")
-		q = strings.Join(strings.Fields(q), " ")
 
 		userID := getUserID(r)
 
-		mode := query.Get("mode")
-		if mode == "" {
-			s.Brokers.SendToast(models.NewErrorGeneralToast("Missing query parameter 'method'. Valid values are 'name' or 'full'."), userID)
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-
-		opts := models.NewSearchOptionsRecipe(mode, sorts, page)
-
-		recipes, totalCount, err := s.Repository.SearchRecipes(q, page, opts, userID)
+		recipes, totalCount, err := s.Repository.SearchRecipes(opts, userID)
 		if err != nil {
-			s.Brokers.SendToast(models.NewErrorGeneralToast("Error searching recipes."), userID)
+			msg := "Error searching recipes."
+			slog.Error(msg, "user", userID, "opts", opts, "error", err)
+			s.Brokers.SendToast(models.NewErrorGeneralToast(msg), userID)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -1143,27 +1107,21 @@ func (s *Server) recipesSearchHandler() http.HandlerFunc {
 			numPages = 1
 		}
 
-		isHxReq := r.Header.Get("HX-Request") == "true"
-		params := "q=" + q + "&mode=" + mode + "&sort=" + sorts
-		htmx := templates.PaginationHtmx{IsSwap: isHxReq, Target: "#list-recipes"}
-
-		p := templates.NewPagination(page, numPages, totalCount, templates.ResultsPerPage, "/recipes/search", params, htmx)
-		p.Search.CurrentPage = page
+		htmx := templates.PaginationHtmx{IsSwap: r.Header.Get("HX-Request") == "true", Target: "#list-recipes"}
+		params := "q=" + opts.Query + "&sort=" + opts.Sort.String()
+		p := templates.NewPagination(opts.Page, numPages, totalCount, templates.ResultsPerPage, "/recipes/search", params, htmx)
+		p.Search.CurrentPage = opts.Page
 
 		_ = components.RecipesSearch(templates.Data{
 			About:           templates.NewAboutData(),
 			IsAdmin:         userID == 1,
 			IsAutologin:     app.Config.Server.IsAutologin,
 			IsAuthenticated: true,
-			IsHxRequest:     isHxReq,
+			IsHxRequest:     htmx.IsSwap,
 			Functions:       templates.NewFunctionsData[int64](),
 			Pagination:      p,
 			Recipes:         recipes,
-			Searchbar: templates.SearchbarData{
-				Mode: mode,
-				Sort: sorts,
-				Term: q,
-			},
+			Searchbar:       templates.SearchbarData{Sort: opts.Sort.String(), Term: r.URL.Query().Get("q")},
 		}).Render(r.Context(), w)
 	}
 }

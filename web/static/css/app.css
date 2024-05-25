@@ -9,8 +9,13 @@
     color: darkgray;
 }
 
-::backdrop {
+dialog::backdrop,
+#avatar_menu::backdrop {
     background: rgba(0, 0, 0, 0.5);
+}
+
+#avatar_menu:popover-open {
+    display: block;
 }
 
 #fullscreen-loader.htmx-request {

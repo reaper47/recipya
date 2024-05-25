@@ -8,24 +8,13 @@ Type your keywords delimited by either a space, comma or both. Then press the en
 
 ![](images/recipes-search-view.webp)
 
-## Search Settings
+## Basic Search
 
-Click on the wrench icon to the right of the search bar to access the settings.
+The basic search is one where the user types something in the search box without using any
+of the advanced search concepts.
 
-![](images/search-settings.webp)
-
-### Search Modes
-
-You can choose how the search is performed. The default is **Full search**.
-
-#### By name 
-
-Your query will search the title field of the all recipes belonging to you and return all
-recipes that include the search term or terms.
-
-#### Full search
-
-Your query will search the following fields of all recipes belonging to you:
+The default search mode is __Full search__. In other words, your query will search the following fields of all 
+recipes belonging to you:
 - Title
 - Description
 - Category
@@ -37,3 +26,9 @@ Your query will search the following fields of all recipes belonging to you:
 The results will be ranked based on their relevance to the search terms.
 
 ![](images/recipes-search-query.webp)
+
+## Advanced Search
+
+The advanced search feature lets you tailor the search query to specific requirements. It is similar to using advanced
+search features in google. For example, searching for `magnetic declination site:.edu` in Google will yield results 
+containing the terms `magnetic declination` for websites of the `.edu` top-level domain.
