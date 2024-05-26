@@ -81,10 +81,10 @@ templ searchbar(data templates.SearchbarData) {
 }
 
 templ searchHelp() {
-	<div id="search_help" popover class="hidden card w-[30rem] bg-base-100 shadow-xl max-h-96 z-20" style="position: fixed; inset: unset; bottom: 0.5rem; right: 0.5rem;">
-		<div class="card-body max-h-80 h-80">
+	<div id="search_help" popover class="hidden card p-0 w-80 bg-base-100 shadow-xl max-h-[28rem] z-20 sm:w-[30rem] " style="position: fixed; inset: unset; bottom: 0.5rem; right: 0.5rem;">
+		<div class="card-body max-h-96 p-4">
 			<div class="card-actions justify-between">
-				<h2 class="card-title">Search Help</h2>
+				<h2 class="card-title ">Search Help</h2>
 				<button class="btn btn-square btn-sm" _="on click toggle .hidden on #search_help">
 					@iconClose()
 				</button>
@@ -93,8 +93,8 @@ templ searchHelp() {
 				<p class="text-xs mb-2">
 					The following table provide examples of how to perform various searches. You may combine any of the searches in any order.
 				</p>
-				<div class="overflow-x-auto h-52">
-					<table class="table table-xs table-pin-rows table-pin-cols">
+				<div class="overflow-x-auto max-h-64">
+					<table class="table table-xs table-pin-rows">
 						<thead>
 							<tr>
 								<th>Search</th>
