@@ -836,7 +836,7 @@ func TestHandlers_Cookbooks_Share(t *testing.T) {
 		assertStatus(t, rr.Code, http.StatusOK)
 		want := []string{
 			`<title hx-swap-oob="true">Lovely Ukraine | Recipya</title>`,
-			`<a class="btn btn-ghost text-lg" href="/">Recipya</a>`,
+			`<a class="btn btn-ghost text-lg" href="/"><img src="/static/favicon-32x32.png" alt="Logo"> Recipya</a>`,
 			`<a href="/auth/login" class="btn btn-ghost">Log In</a>`,
 			`<a href="/auth/register" class="btn btn-ghost">Sign Up</a>`,
 			`<section class="grid justify-center p-2 sm:p-4"><p class="grid justify-center font-semibold underline mt-4 md:hidden">Lovely Ukraine</p></section>`,
