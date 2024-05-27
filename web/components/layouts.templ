@@ -108,7 +108,8 @@ templ layoutMain(title string, data templates.Data) {
 							id="avatar_menu"
 							popover
 							style="inset: unset; top: 3.5rem; right: 0.5rem;"
-							class="hidden rounded-box z-10 shadow bg-base-200"
+							class="rounded-box z-10 shadow bg-base-200"
+							_="on click if me.matches(':popover-open') then me.hidePopover()"
 						>
 							<ul tabindex="0" class="menu">
 								if data.IsAdmin {
