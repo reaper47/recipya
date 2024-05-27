@@ -16,7 +16,7 @@ task build
 ```
 
 Start the server. You will go through the interactive setup process if 
-your [configuration file](/guide/docs/installation/config-file) is nonexistent.
+your [configuration file](/docs/installation/build/config-file) is nonexistent.
 
 ```bash
 ./bin/recipya serve

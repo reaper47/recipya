@@ -9,7 +9,7 @@ you installed the application on.
 
 ## Docker
 
-After [installing the Docker](/guide/docs/installation/docker) image, you can access the site network wide at http://[host computer IP]:[[port](/guide/docs/installation/config-file)].
+After [installing the Docker](/guide/docs/installation/docker) image, you can access the site network wide at http://<host computer IP>:[<port>](/guide/docs/installation/build/config-file/].
 
 ## Release Build
 
@@ -43,7 +43,7 @@ sudo systemctl start recipya.service
 sudo systemctl enable recipya.service
 ```
 
-You can now access the application on your local network at http://[host computer IP]:[[port](/guide/docs/installation/config-file)].
+You can now access the application on your local network at http://<host computer IP>:[<port>](/docs/installation/build/config-file)].
 
 ### Windows
 

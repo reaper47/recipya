@@ -54,6 +54,7 @@ templ layoutMain(title string, data templates.Data) {
 							href="/"
 						}
 					>
+						<img src="/static/favicon-32x32.png" alt="Logo"/>
 						Recipya
 					</a>
 				</div>
@@ -224,7 +225,10 @@ templ head(title string) {
 		<link rel="canonical" href="https://recipes.musicavis.com/"/>
 		<link rel="stylesheet" href="/static/css/tailwind.css"/>
 		<link rel="stylesheet" href="/static/css/app.css"/>
-		<link rel="icon" href="/static/favicon.ico"/>
+		<link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png"/>
+		<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png"/>
+		<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png"/>
+		<link rel="manifest" href="/static/site.webmanifest"/>
 		<script src="https://unpkg.com/htmx.org@2.0.0-alpha1/dist/htmx.min.js"></script>
 		<script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
 		<script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
