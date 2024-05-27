@@ -12,7 +12,7 @@ Learn how install Recipya.
             title="Prerequisites"
             icon="newspaper"
             subtitle="Discover what the system requirements are." >}}
-    {{< card link="/guide/docs/installation/config-file/"
+    {{< card link="/docs/installation/build/config-file/"
             title="Configuration File"
             subtitle="Explore the configuration file."
             icon="newspaper" >}}

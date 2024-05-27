@@ -9,7 +9,6 @@ var emailTemplates = []templates.EmailTemplate{
 	templates.EmailErrorAdmin,
 	templates.EmailForgotPassword,
 	templates.EmailIntro,
-	templates.EmailRequestWebsite,
 }
 
 func TestEmailTemplate_String(t *testing.T) {
@@ -17,7 +16,6 @@ func TestEmailTemplate_String(t *testing.T) {
 		"error-admin.mjml",
 		"forgot-password.mjml",
 		"intro.mjml",
-		"request-website.mjml",
 	}
 	for i, template := range emailTemplates {
 		got := template.String()
@@ -32,7 +30,6 @@ func TestEmailTemplate_Subject(t *testing.T) {
 		"Recipya Error",
 		"Forgot Password",
 		"Confirm Account",
-		"Request Website",
 	}
 	for i, template := range emailTemplates {
 		got := template.Subject()

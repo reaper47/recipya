@@ -1577,7 +1577,7 @@ templ recipesIndex(data templates.Data) {
 			</section>
 		</div>
 		@searchHelp()
-		<div id="list-recipes" class="md:min-h-[79vh]">
+		<div id="list-recipes" class="min-h-[79vh]">
 			@ListRecipes(data)
 		</div>
 		@Pagination(data.Pagination)
@@ -1616,40 +1616,15 @@ templ ListRecipes(data templates.Data) {
                end"
 		/>
 	}
-	<article class="grid gap-4 p-4 text-sm place-items-center md:m-auto md:max-w-7xl grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:text-base">
+	<article class="grid gap-4 p-4 text-sm place-items-center grid-cols-1 sm:grid-cols-2 md:m-auto md:max-w-7xl md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:text-base">
 		for _, r := range data.Recipes {
-			<section class="card card-compact bg-base-100 shadow-lg indicator w-full">
-				if len(strings.Split(r.Category, ":")) == 1 {
-					<span
-						class="indicator-item indicator-center badge badge-primary select-none cursor-pointer hover:bg-neutral"
-						hx-get="/recipes/search"
-						hx-vals={ fmt.Sprintf(`{"q": "cat:%s"}`, r.Category) }
-						hx-target="#list-recipes"
-						hx-push-url="true"
-						_={ fmt.Sprintf("on click put 'cat:%s' into #search_recipes.value", r.Category) }
-					>
-						{ r.Category }
-					</span>
-				} else {
-					<span class="indicator-item indicator-center badge badge-primary select-none cursor-pointer">
-						for i, subCat := range strings.Split(r.Category, ":") {
-							if i > 0 {
-								:
-							}
-							<span
-								class="hover:bg-neutral"
-								hx-get="/recipes/search"
-								hx-vals={ fmt.Sprintf(`{"q": "cat:%s"}`, subCat) }
-								hx-target="#list-recipes"
-								hx-push-url="true"
-								_={ fmt.Sprintf("on click put 'cat:%s' into #search_recipes.value", subCat) }
-							>{ subCat }</span>
-						}
-					</span>
-				}
+			<section class="card-side sm:card card-compact card-bordered bg-base-100 shadow-lg indicator w-full">
+				<span class="hidden sm:block">
+					@categoryBadge(r.Category, false)
+				</span>
 				<figure class="relative cursor-pointer" hx-get={ fmt.Sprintf("/recipes/%d", r.ID) } hx-target="#content" hx-push-url="true" hx-trigger="mousedown" hx-swap="innerHTML show:window:top transition:true">
 					<img
-						class="h-48 max-w-48 w-full object-cover rounded-t-lg"
+						class="h-28 w-24 object-cover rounded-t-lg sm:h-40 sm:min-w-full sm:w-full"
 						if len(r.Images) > 0 && data.Functions.IsUUIDValid(r.Images[0]) {
 							src={ fmt.Sprintf("/data/images/%s.jpg", r.Images[0]) }
 						} else {
@@ -1657,14 +1632,17 @@ templ ListRecipes(data templates.Data) {
 						}
 						alt={ "Image for the " + r.Name + " recipe" }
 					/>
-					<div class="absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 flex items-center justify-center text-white select-none rounded-t-lg">
+					<div class="hidden absolute inset-0 bg-black opacity-0 hover:opacity-80 transition-opacity duration-300 items-center justify-center text-white select-none rounded-t-lg sm:flex">
 						<p class="p-2 text-sm">{ data.Functions.CutString(r.Description, 127) }</p>
 					</div>
 				</figure>
-				<div class="card-body" lang="en">
-					<h2 class="font-semibold w-[15ch] sm:w-[25ch] break-words">{ r.Name }</h2>
-					<div class="card-actions h-full flex-col-reverse">
-						<button class="btn btn-block btn-sm btn-outline" hx-get={ fmt.Sprintf("/recipes/%d", r.ID) } hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap="innerHTML show:window:top transition:true">
+				<div class="card-body justify-between" lang="en">
+					<h2 class="sm:font-semibold sm:w-[25ch] sm:break-words sm:min-h-20">{ r.Name }</h2>
+					<div class="sm:hidden">
+						@categoryBadge(r.Category, true)
+					</div>
+					<div class="card-actions flex-col-reverse h-fit">
+						<button class="btn btn-block btn-xs btn-outline sm:btn-sm " hx-get={ fmt.Sprintf("/recipes/%d", r.ID) } hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap="innerHTML show:window:top transition:true">
 							View
 						</button>
 					</div>
@@ -1672,6 +1650,39 @@ templ ListRecipes(data templates.Data) {
 			</section>
 		}
 	</article>
+}
+
+templ categoryBadge(category string, isInCard bool) {
+	if len(strings.Split(category, ":")) == 1 {
+		<span
+			class={ "badge badge-primary select-none cursor-pointer hover:bg-neutral", templ.KV("indicator-item indicator-center", !isInCard) }
+			hx-get="/recipes/search"
+			hx-target="#list-recipes"
+			hx-push-url="true"
+			hx-swap="innerHTML show:window:top transition:true"
+			hx-vals={ fmt.Sprintf(`{"q": "cat:%s"}`, category) }
+			_={ fmt.Sprintf("on click put 'cat:%s' into #search_recipes.value", category) }
+		>
+			{ category }
+		</span>
+	} else {
+		<span class={ "badge badge-primary select-none cursor-pointer", templ.KV("indicator-item indicator-center", !isInCard) }>
+			for i, subCat := range strings.Split(category, ":") {
+				if i > 0 {
+					:
+				}
+				<span
+					class="hover:bg-neutral"
+					hx-get="/recipes/search"
+					hx-target="#list-recipes"
+					hx-push-url="true"
+					hx-swap="innerHTML show:window:top transition:true"
+					hx-vals={ fmt.Sprintf(`{"q": "cat:%s"}`, subCat) }
+					_={ fmt.Sprintf("on click put 'cat:%s' into #search_recipes.value", subCat) }
+				>{ subCat }</span>
+			}
+		</span>
+	}
 }
 
 templ ViewRecipe(data templates.Data) {
@@ -1774,13 +1785,13 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 						</span>
 					</h2>
 					<div class="grid md:grid-flow-col md:grid-cols-6">
-						<div class="w-full text-center border-b border-gray-700 md:col-span-3 md:border-r md:border-b-0 print:hidden">
+						<div class="w-[95vw] md:w-full text-center border-b border-gray-700 md:col-span-3 md:border-r md:border-b-0 print:hidden">
 							switch len(data.Recipe.Images) {
 								case 0:
 									<img
 										style="object-fit: cover"
 										alt="Image of the recipe"
-										class="w-full max-h-[34rem]"
+										class="w-full max-h-80 md:max-h-[34rem]"
 										src="/static/img/recipes/placeholder.webp"
 									/>
 								case 1:
@@ -1788,7 +1799,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 										id="output"
 										style="object-fit: cover"
 										alt="Image of the recipe"
-										class="w-full max-h-[34rem]"
+										class="w-full max-h-80  md:max-h-[34rem]"
 										if data.IsUUIDsValid[0] {
 											src={ fmt.Sprintf("/data/images/%s.jpg", data.Recipe.Images[0]) }
 										} else {
@@ -1802,7 +1813,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 												<img
 													style="object-fit: cover"
 													alt="Image of the recipe"
-													class="w-full max-h-[34rem]"
+													class="w-full max-h-80  md:max-h-[34rem]"
 													if data.IsUUIDsValid[i] {
 														src={ fmt.Sprintf("/data/images/%s.jpg", data.Recipe.Images[i]) }
 													} else {
