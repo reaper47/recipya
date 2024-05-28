@@ -119,7 +119,7 @@ func MealieImport(baseURL, username, password string, client *http.Client, uploa
 
 	req, err := http.NewRequest(http.MethodPost, baseURL+"/auth/token", strings.NewReader(data.Encode()))
 	if err != nil {
-		slog.Error("Couldn't create new request for auth", "url", req.URL.String(), usernameAttr, "error", err)
+		slog.Error("Couldn't create new request for auth", "url", baseURL+"/auth/token", usernameAttr, "error", err)
 		return nil, err
 	}
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")

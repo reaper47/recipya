@@ -67,7 +67,6 @@ func (s *Server) integrationsImport() http.HandlerFunc {
 				for p := range progress {
 					processed++
 					s.Brokers.SendProgress("Fetching recipes...", processed, p.Total*2, id)
-					close(progress)
 				}
 			}
 

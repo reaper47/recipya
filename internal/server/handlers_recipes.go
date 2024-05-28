@@ -33,7 +33,7 @@ func (s *Server) recipesHandler() http.HandlerFunc {
 
 		userID := getUserID(r)
 
-		p, err := newRecipesPagination(s, userID, opts.Page, opts.Sort.String(), false)
+		p, err := newRecipesPagination(s, userID, opts, false)
 		if err != nil {
 			s.Brokers.SendToast(models.NewErrorGeneralToast("Error updating pagination."), userID)
 			w.WriteHeader(http.StatusInternalServerError)
@@ -48,13 +48,13 @@ func (s *Server) recipesHandler() http.HandlerFunc {
 			IsAuthenticated: true,
 			IsHxRequest:     r.Header.Get("HX-Request") == "true",
 			Pagination:      p,
-			Recipes:         s.Repository.Recipes(userID, models.NewSearchOptionsRecipe(url.Values{})),
+			Recipes:         s.Repository.Recipes(userID, opts),
 			Searchbar:       templates.SearchbarData{Sort: opts.Sort.String(), Term: opts.Query},
 		}).Render(r.Context(), w)
 	}
 }
 
-func newRecipesPagination(srv *Server, userID int64, page uint64, sorts string, isSwap bool) (templates.Pagination, error) {
+func newRecipesPagination(srv *Server, userID int64, opts models.SearchOptionsRecipes, isSwap bool) (templates.Pagination, error) {
 	counts, err := srv.Repository.Counts(userID)
 	if err != nil {
 		return templates.Pagination{}, err
@@ -69,7 +69,7 @@ func newRecipesPagination(srv *Server, userID int64, page uint64, sorts string, 
 		IsSwap: isSwap,
 		Target: "#content",
 	}
-	return templates.NewPagination(page, numPages, counts.Recipes, templates.ResultsPerPage, "/recipes", "sort="+sorts, htmx), nil
+	return templates.NewPagination(opts.Page, numPages, counts.Recipes, templates.ResultsPerPage, "/recipes", "sort="+opts.Sort.String(), htmx), nil
 }
 
 func recipesAddHandler() http.HandlerFunc {

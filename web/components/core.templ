@@ -226,12 +226,12 @@ templ settingsData(data templates.Data) {
 					<br/>
 					<span class="text-xs font-normal">Import from Mealie, Tandoor, Nextcloud, etc.</span>
 				</summary>
-				<form class="flex flex-col text-sm" hx-post="/auth/change-password" hx-indicator="#fullscreen-loader" hx-swap="none">
+				<form class="flex flex-col text-sm" hx-post="/integrations/import" hx-swap="none">
 					<label class="form-control w-full">
 						<span class="label">
 							<span class="label-text text-sm">Solution</span>
 						</span>
-						<select name="integrations" class="w-fit select select-bordered select-sm">
+						<select name="integration" class="w-fit select select-bordered select-sm">
 							<option value="mealie" selected>Mealie</option>
 							<option value="nextcloud">Nextcloud</option>
 							<option value="tandoor">Tandoor</option>

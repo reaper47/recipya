@@ -27,7 +27,6 @@ docker run -d \
   -p 8085:8078 \
   -v recipya-data:/root/.config/Recipya \
   -e RECIPYA_SERVER_PORT=8078 \
-  -e RECIPYA_SERVER_URL=http://0.0.0.0 \
   reaper99/recipya:nightly
 ```
 
@@ -83,7 +82,7 @@ docker compose up -d
 | RECIPYA_SERVER_IS_PROD    | Whether the app is in production. Can be `true` or `false`.<br>Default: `false`.                                                                                                                                                             |
 | RECIPYA_SERVER_NO_SIGNUPS | Whether to disable user account registrations. Set to `true` when you don't want people to create accounts.<br>Default: `false`.                                                                                                             |
 | RECIPYA_SERVER_PORT       | The port the app will be served through if localhost.<br>**Is required**.                                                                                                                                                                    |
-| RECIPYA_SERVER_URL        | The website the app is served on. This URL will serve as the base link in the emails.<br>**Is required**.                                                                                                                                    |
+| RECIPYA_SERVER_URL        | The website the app is served on. This URL will serve as the base link in the emails.<br>Default: `http://0.0.0.0`.                                                                                                                          |
 
 ### Deprecations
 

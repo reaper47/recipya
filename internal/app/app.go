@@ -321,9 +321,6 @@ func NewConfig(r io.Reader) {
 	}
 
 	if Config.Server.URL == "" {
-		fmt.Println("Missing 'server.url' in the configuration.")
-		fmt.Println("If you use Docker, please pass the `RECIPYA_SERVER_URL` environment variable.")
-		fmt.Println("Otherwise, please double-check your configuration file.")
-		os.Exit(1)
+		Config.Server.URL = "http://0.0.0.0"
 	}
 }
