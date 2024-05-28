@@ -4,7 +4,7 @@ go 1.22.0
 
 require (
 	github.com/PuerkitoBio/goquery v1.9.2
-	github.com/a-h/templ v0.2.680
+	github.com/a-h/templ v0.2.707
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/briandowns/spinner v1.23.0
 	github.com/disintegration/imaging v1.6.2
@@ -29,7 +29,7 @@ require (
 	golang.org/x/text v0.15.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	jaytaylor.com/html2text v0.0.0-20230321000545-74c2419ad056
-	modernc.org/sqlite v1.29.9
+	modernc.org/sqlite v1.29.10
 	nhooyr.io/websocket v1.8.11
 )
 
@@ -41,7 +41,7 @@ require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fatih/color v1.17.0 // indirect
 	github.com/go-chi/chi/v5 v5.0.11 // indirect
-	github.com/goccy/go-json v0.10.2 // indirect
+	github.com/goccy/go-json v0.10.3 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/hashicorp/golang-lru/v2 v2.0.7 // indirect
 	github.com/hhrutter/lzw v1.0.0 // indirect
@@ -71,7 +71,7 @@ require (
 	github.com/ssor/bom v0.0.0-20170718123548-6386211fdfcf // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
-	github.com/xrash/smetrics v0.0.0-20240312152122-5f08fbb34913 // indirect
+	github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
@@ -81,7 +81,7 @@ require (
 	gopkg.in/neurosnap/sentences.v1 v1.0.7 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	modernc.org/gc/v3 v3.0.0-20240304020402-f0dba7c97c2b // indirect
-	modernc.org/libc v1.50.6 // indirect
+	modernc.org/libc v1.50.9 // indirect
 	modernc.org/mathutil v1.6.0 // indirect
 	modernc.org/memory v1.8.0 // indirect
 	modernc.org/strutil v1.2.0 // indirect

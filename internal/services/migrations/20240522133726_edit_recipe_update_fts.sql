@@ -14,7 +14,7 @@ BEGIN
                         WHERE cr.recipe_id = NEW.id),
         cuisine      = (SELECT c.name
                         FROM cuisine_recipe AS cr
-                                 JOIN cuisine AS c ON cr.cuisine_id = c.id
+                                 JOIN cuisines c ON cr.cuisine_id = c.id
                         WHERE cr.recipe_id = NEW.id),
         ingredients  = (SELECT COALESCE((SELECT GROUP_CONCAT(ingredient_name, '<!---->')
                                          FROM (SELECT DISTINCT ingredients.name AS ingredient_name

@@ -55,12 +55,11 @@ func TestHandlers_Cookbooks(t *testing.T) {
 		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri)
 
 		assertStatus(t, rr.Code, http.StatusOK)
-		want := []string{
+		assertStringsInHTML(t, getBodyHTML(rr), []string{
 			`<title hx-swap-oob="true">Cookbooks | Recipya</title>`,
 			`<p class="pb-2">Your cookbooks collection looks a bit empty at the moment.</p>`,
 			`<p>Why not start by creating a cookbook by clicking the <a class="underline font-semibold cursor-pointer" hx-post="/cookbooks" hx-prompt="Enter the name of your cookbook" hx-target=".cookbooks-display" hx-swap="beforeend">Add cookbook</a> button at the top?</p>`,
-		}
-		assertStringsInHTML(t, getBodyHTML(rr), want)
+		})
 	})
 
 	t.Run("get cookbooks error", func(t *testing.T) {
@@ -101,7 +100,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 		assertUserSettings(t, repo.UserSettingsRegistered[1], &models.UserSettings{CookbooksViewMode: models.ListViewMode})
 		body := getBodyHTML(rr)
 		assertCookbooksViewMode(t, models.ListViewMode, body)
-		want := []string{
+		assertStringsInHTML(t, body, []string{
 			`<div class="p-2 hover:bg-red-600 hover:text-white" title="Display as grid" hx-get="/cookbooks?view=grid" hx-target="#content" hx-trigger="mousedown">`,
 			`<h2 class="card-title text-base w-[20ch] sm:w-[29ch] break-words md:text-xl">Lovely Canada</h2>`,
 			`<h2 class="card-title text-base w-[20ch] sm:w-[29ch] break-words md:text-xl">Lovely America</h2>`,
@@ -116,8 +115,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 			`<button class="btn btn-outline btn-sm" hx-get="/cookbooks/1?page=1" hx-target="#content" hx-trigger="mousedown" hx-push-url="/cookbooks/1">Open</button>`,
 			`<footer id="pagination" class="footer footer-center bg-base-200 pb-12 p-2 md:pb-2 text-base-content gap-2" onload="__templ_updateAddCookbookURL`,
 			`<div class="join gap-0"><button class="join-item btn btn-disabled">«</button><!-- Left Section --><button aria-current="page" class="join-item btn btn-active">1</button><!-- Middle Section --><!-- Right Section --><button class="join-item btn btn-disabled">»</button></div><div class="text-center"><p class="text-sm">Showing <span class="font-medium">1</span> to <span class="font-medium">3</span> of <span id="search-count" class="font-medium">3</span> results</p></div></footer>`,
-		}
-		assertStringsInHTML(t, body, want)
+		})
 	})
 
 	t.Run("have cookbooks grid view select list", func(t *testing.T) {
@@ -171,14 +169,13 @@ func TestHandlers_Cookbooks(t *testing.T) {
 		if !isFound {
 			t.Fatal("cookbook must have been added to the user's collection")
 		}
-		want := []string{
+		assertStringsInHTML(t, getBodyHTML(rr), []string{
 			`<section id="cookbook-1" class="cookbook card card-compact bg-base-100 shadow-lg indicator w-full">`,
 			`<img class="rounded-t-lg w-full border-b h-32 text-center object-cover max-w-48 md:h-48 hover:bg-gray-100 hover:opacity-80" src="/static/img/cookbooks-new/placeholder.webp" onClick="__templ_cookbookImageClick`,
 			`<form id="cookbook-image-form-1" enctype="multipart/form-data" hx-swap="none" hx-put="/cookbooks/1/image" hx-trigger="change from:#cookbook-image-1"><input id="cookbook-image-1" type="file" accept="image/*" name="image" required class="hidden" _="on drop or change make an FileReader called reader then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then set {src: window.URL.createObjectURL(it)} on previous <img/> then remove .hidden from next <button/>"></form>`,
 			`<p class="font-semibold w-[18ch] break-words">Lovely America</p>`,
 			`<button class="btn btn-block btn-sm btn-outline" hx-get="/cookbooks/1?page=1" hx-target="#content" hx-trigger="mousedown" hx-push-url="/cookbooks/1">Open</button>`,
-		}
-		assertStringsInHTML(t, getBodyHTML(rr), want)
+		})
 	})
 }
 
@@ -275,8 +272,7 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri(20))
 
 		assertStatus(t, rr.Code, http.StatusNotFound)
-		want := []string{"404 page not found"}
-		assertStringsInHTML(t, getBodyHTML(rr), want)
+		assertStringsInHTML(t, getBodyHTML(rr), []string{"404 page not found"})
 	})
 
 	t.Run("cookbook does not belong to the user", func(t *testing.T) {
@@ -286,8 +282,7 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 		rr := sendHxRequestAsLoggedInOtherNoBody(srv, http.MethodGet, uri(1)+"?page=1")
 
 		assertStatus(t, rr.Code, http.StatusNotFound)
-		want := []string{"404 page not found"}
-		assertStringsInHTML(t, getBodyHTML(rr), want)
+		assertStringsInHTML(t, getBodyHTML(rr), []string{"404 page not found"})
 	})
 
 	t.Run("cookbook belongs to user and is empty", func(t *testing.T) {
@@ -300,14 +295,13 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri(id)+"?page=1")
 
 		assertStatus(t, rr.Code, http.StatusOK)
-		want := []string{
+		assertStringsInHTML(t, getBodyHTML(rr), []string{
 			`<title hx-swap-oob="true">Ensiferum | Recipya</title>`,
 			`<div id="content-title" hx-swap-oob="innerHTML">Ensiferum</div>`,
 			`<search><form class="w-72 flex md:w-96" hx-get="/cookbooks/4/recipes/search" hx-vals="{"page": 1}" hx-target="#search-results" hx-push-url="true" hx-trigger="submit, change target:.sort-option"><div class="w-full"><label class="input input-bordered input-sm flex justify-between px-0 gap-2 z-20"><button type="button" id="search_shortcut" class="pl-2" popovertarget="search_help" _="on click toggle .hidden on #search_help"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></button> <input id="search_recipes" class="w-full" type="search" name="q" placeholder="Search for recipes..." value="" _="on keyup if event.target.value !== '' then remove .md:block from #search_shortcut else add .md:block to #search_shortcut then if (event.key is not 'Delete' and not event.key.startsWith('Arrow')) then send submit to closest <form/> then end end"> <button type="submit" class="px-2 btn btn-sm btn-primary"><svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"></path></svg><span class="sr-only">Search</span></button></label></div><div class="dropdown dropdown-left ml-1"><div tabindex="0" role="button" class="btn btn-sm p-1"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"></path></svg></div><div tabindex="0" class="dropdown-content z-10 menu menu-sm p-2 shadow bg-base-200 w-52 sm:menu-md prose"><h4>Sort</h4><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Default</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="default" checked></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Name:<br>A to Z</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="a-z"></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Name:<br>Z to A</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="z-a"></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Date created:<br>Newest to oldest</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="new-old"></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Date created:<br>Oldest to newest</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="old-new"></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Random</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="random"></label></div></div></div></form></search>`,
 			`<div id="search_help" popover class="hidden card p-0 w-80 bg-base-100 shadow-xl max-h-[28rem] z-20 sm:w-[30rem] " style="position: fixed; inset: unset; bottom: 0.5rem; right: 0.5rem;"><div class="card-body max-h-96 p-4"><div class="card-actions justify-between"><h2 class="card-title ">Search Help</h2><button class="btn btn-square btn-sm" _="on click toggle .hidden on #search_help"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button></div><div><p class="text-xs mb-2">The following table provide examples of how to perform various searches. You may combine any of the searches in any order.</p><div class="overflow-x-auto max-h-64"><table class="table table-xs table-pin-rows"><thead><tr><th>Search</th><th>Example</th></tr></thead> <tbody><tr><th>Any field</th><td>big green squash</td></tr><tr><th>By category</th><td>cat:dinner</td></tr><tr><th>Multiple categories</th><td>cat:breakfast,dinner</td></tr><tr><th>Subcategory</th><td>cat:beverages:cocktails</td></tr><tr><th>Any field of category</th><td>chicken cat:dinner</td></tr><tr><th>By name</th><td>name:chicken kyiv</td></tr><tr><th>By name and category</th><td>name:chicken kyiv cat:lunch</td></tr><tr><th>Any field, name and category</th><td>best name:chicken kyiv cat:lunch</td></tr><tr><th>By description</th><td>desc:tender savory stacked</td></tr><tr><th>Multiple descriptions</th><td>desc:tender savory stacked,juicy crispy pieces chicken</td></tr><tr><th>By cuisine</th><td>cuisine:ukrainian</td></tr><tr><th>Multiple cuisines</th><td>cuisine:ukrainian,japanese</td></tr><tr><th>By ingredient</th><td>ing:onions</td></tr><tr><th>Multiple ingredients</th><td>ing:olive oil,thyme,butter</td></tr><tr><th>By instruction</th><td>ins:preheat oven 350</td></tr><tr><th>Multiple instructions</th><td>ins:preheat oven 350,melt butter</td></tr><tr><th>By keyword</th><td>tag:biscuits</td></tr><tr><th>Multiple keywords</th><td>tag:biscuits,mardi gras</td></tr><tr><th>By source</th><td>src:allrecipes.com</td></tr><tr><th>Multiple sources</th><td>src:allrecipes.com,tasteofhome.com</td></tr></tbody></table></div></div>`,
 			`<section id="search-results" class="justify-center grid"><div class="grid place-content-center text-sm text-center md:text-base" style="height: 50vh"><p>Your cookbook looks a bit empty at the moment.</p><p>Why not add recipes to your cookbook by searching for recipes in the search box above?</p></div></section>`,
-		}
-		assertStringsInHTML(t, getBodyHTML(rr), want)
+		})
 	})
 
 	requestTypes := []struct {
@@ -326,14 +320,13 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 				rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri(1)+"?page=1")
 
 				assertStatus(t, rr.Code, http.StatusOK)
-				want := []string{
+				assertStringsInHTML(t, getBodyHTML(rr), []string{
 					`<title hx-swap-oob="true">Lovely Canada | Recipya</title>`,
 					`<div id="content-title" hx-swap-oob="innerHTML">Lovely Canada</div>`,
 					`<script defer> function initReorder()`,
 					`<form class="w-72 flex md:w-96" hx-get="/cookbooks/1/recipes/search" hx-vals="{"page": 1}" hx-target="#search-results" hx-push-url="true" hx-trigger="submit, change target:.sort-option"><div class="w-full"><label class="input input-bordered input-sm flex justify-between px-0 gap-2 z-20"><button type="button" id="search_shortcut" class="pl-2" popovertarget="search_help" _="on click toggle .hidden on #search_help"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></button> <input id="search_recipes" class="w-full" type="search" name="q" placeholder="Search for recipes..." value="" _="on keyup if event.target.value !== '' then remove .md:block from #search_shortcut else add .md:block to #search_shortcut then if (event.key is not 'Delete' and not event.key.startsWith('Arrow')) then send submit to closest <form/> then end end"> <button type="submit" class="px-2 btn btn-sm btn-primary"><svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"></path></svg><span class="sr-only">Search</span></button></label></div><div class="dropdown dropdown-left ml-1"><div tabindex="0" role="button" class="btn btn-sm p-1"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"></path></svg></div><div tabindex="0" class="dropdown-content z-10 menu menu-sm p-2 shadow bg-base-200 w-52 sm:menu-md prose"><h4>Sort</h4><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Default</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="default" checked></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Name:<br>A to Z</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="a-z"></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Name:<br>Z to A</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="z-a"></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Date created:<br>Newest to oldest</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="new-old"></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Date created:<br>Oldest to newest</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="old-new"></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Random</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="random"></label></div></div></div></form>`,
 					`<div class="card card-side card-bordered card-compact bg-base-100 shadow-lg sm:w-[30rem]">`,
-				}
-				assertStringsInHTML(t, getBodyHTML(rr), want)
+				})
 			})
 		})
 	}
@@ -384,11 +377,10 @@ func TestHandlers_Cookbooks_AddRecipe(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri(2), formHeader, strings.NewReader("recipeId=2"))
 
 		assertStatus(t, rr.Code, http.StatusCreated)
-		want := []models.Cookbook{
+		assertCookbooks(t, repo.CookbooksRegistered[1], []models.Cookbook{
 			{ID: 1, Recipes: []models.Recipe{recipes[0]}},
 			{ID: 2, Recipes: []models.Recipe{recipes[1], recipes[2]}},
-		}
-		assertCookbooks(t, repo.CookbooksRegistered[1], want)
+		})
 	})
 }
 
@@ -487,12 +479,11 @@ func TestHandlers_Cookbooks_DeleteCookbookRecipe(t *testing.T) {
 		assertCookbooks(t, repo.CookbooksRegistered[1], []models.Cookbook{
 			{ID: 1, Recipes: []models.Recipe{}},
 		})
-		want := []string{
+		assertStringsInHTML(t, getBodyHTML(rr), []string{
 			`<div class="grid place-content-center text-sm text-center md:text-base" style="height: 50vh">`,
 			`<p>Your cookbook looks a bit empty at the moment.</p>`,
 			`<p>Why not add recipes to your cookbook by searching for recipes in the search box above?</p>`,
-		}
-		assertStringsInHTML(t, getBodyHTML(rr), want)
+		})
 	})
 }
 
@@ -820,11 +811,10 @@ func TestHandlers_Cookbooks_Share(t *testing.T) {
 		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodPost, uri(1))
 
 		assertStatus(t, rr.Code, http.StatusOK)
-		want := []string{
+		assertStringsInHTML(t, getBodyHTML(rr), []string{
 			`<div class="grid grid-flow-col gap-2"><label><input type="url" value="` + strings.TrimPrefix(ts.URL, "http://") + `/c/33320755-82f9-47e5-bb0a-d1b55cbd3f7b" class="input input-bordered w-full" readonly="readonly"></label> <script type="text/javascript">function __templ_copyToClipboard`,
 			`{if (window.navigator.clipboard) { navigator.clipboard.writeText(text); copy_button.textContent = "Copied!"; copy_button.setAttribute("disabled", true); copy_button.classList.toggle(".btn-disabled"); } else { alert('Your browser does not support the clipboard feature. Please copy the link manually.'); }}</script><button id="copy_button" class="btn btn-neutral" title="Copy to clipboard" onClick="__templ_copyToClipboard`,
-		}
-		assertStringsInHTML(t, getBodyHTML(rr), want)
+		})
 	})
 
 	t.Run("access share link anonymous no recipes", func(t *testing.T) {
@@ -834,20 +824,18 @@ func TestHandlers_Cookbooks_Share(t *testing.T) {
 		rr := sendRequestNoBody(srv, http.MethodGet, link2)
 
 		assertStatus(t, rr.Code, http.StatusOK)
-		want := []string{
+		body := getBodyHTML(rr)
+		assertStringsInHTML(t, body, []string{
 			`<title hx-swap-oob="true">Lovely Ukraine | Recipya</title>`,
-			`<a class="btn btn-ghost text-lg" href="/"><img src="/static/favicon-32x32.png" alt="Logo"> Recipya</a>`,
+			`<a class="btn btn-ghost text-lg" style="padding-left: 0" href="/"><img src="/static/android-chrome-192x192.png" alt="Logo" style="width: 2rem"> Recipya</a>`,
 			`<a href="/auth/login" class="btn btn-ghost">Log In</a>`,
 			`<a href="/auth/register" class="btn btn-ghost">Sign Up</a>`,
 			`<section class="grid justify-center p-2 sm:p-4"><p class="grid justify-center font-semibold underline mt-4 md:hidden">Lovely Ukraine</p></section>`,
 			`<p>The user has not added recipes to this cookbook yet.</p></div>`,
-		}
-		notWant := []string{
+		})
+		assertStringsNotInHTML(t, body, []string{
 			`id="share-dialog"`,
-		}
-		body := getBodyHTML(rr)
-		assertStringsInHTML(t, body, want)
-		assertStringsNotInHTML(t, body, notWant)
+		})
 	})
 
 	t.Run("access share link anonymous have recipes", func(t *testing.T) {
@@ -857,17 +845,15 @@ func TestHandlers_Cookbooks_Share(t *testing.T) {
 		rr := sendRequestNoBody(srv, http.MethodGet, link)
 
 		assertStatus(t, rr.Code, http.StatusOK)
-		want := []string{
+		body := getBodyHTML(rr)
+		assertStringsInHTML(t, body, []string{
 			`<title hx-swap-oob="true">Lovely Canada | Recipya</title>`,
 			`<a href="/auth/login" class="btn btn-ghost">Log In</a>`,
 			`<a href="/auth/register" class="btn btn-ghost">Sign Up</a>`,
 			`<section class="grid gap-4 text-sm justify-center md:p-4 md:text-base"><div class="flex flex-col h-full"><section class="grid justify-center p-2 sm:p-4 sm:pb-0"><p class="grid justify-center font-semibold underline mt-4 md:mt-0 md:text-xl">Lovely Canada</p></section>`,
 			`<form hx-put="/cookbooks/1/reorder" hx-trigger="end" hx-swap="none"><input type="hidden" name="cookbook-id" value="1"><ul class="cookbooks-display grid gap-8 p-2 place-items-center text-sm md:p-0 md:text-base"><li class="indicator recipe cookbook"><input type="hidden" name="recipe-id" value="3"><div class="indicator-item indicator-bottom badge badge-secondary cursor-none">1</div><div class="card card-side card-bordered card-compact bg-base-100 shadow-lg sm:w-[30rem]"><figure class="w-28 sm:w-32"><img src="/static/img/recipes/placeholder.webp" alt="Recipe image" class="object-cover"></figure><div class="card-body"><h2 class="card-title text-base w-[20ch] sm:w-full break-words md:text-xl">Gotcha</h2><p></p><div><p class="text-sm pb-1">Category:</p><div class="badge badge-primary badge-">American</div></div><div class="card-actions justify-end"><button class="btn btn-outline btn-sm" hx-get="/r/3?cookbook=1" hx-target="#content" hx-swap="innerHTML" hx-push-url="true">View</button></div></div></div></li></ul></form>`,
-		}
-		body := getBodyHTML(rr)
-		assertStringsInHTML(t, body, want)
-		notWant := []string{`id="share-dialog"`}
-		assertStringsNotInHTML(t, body, notWant)
+		})
+		assertStringsNotInHTML(t, body, []string{`id="share-dialog"`})
 	})
 
 	testcases := []struct {
@@ -885,15 +871,13 @@ func TestHandlers_Cookbooks_Share(t *testing.T) {
 			rr := tc.sendFunc(srv, http.MethodGet, link)
 
 			assertStatus(t, rr.Code, http.StatusOK)
-			want := []string{
+			body := getBodyHTML(rr)
+			assertStringsInHTML(t, body, []string{
 				`<title hx-swap-oob="true">Lovely Canada | Recipya</title>`,
 				`<section class="grid gap-4 text-sm justify-center md:p-4 md:text-base"><div class="flex flex-col h-full"><section class="grid justify-center p-2 sm:p-4 sm:pb-0"><p class="grid justify-center font-semibold underline mt-4 md:mt-0 md:text-xl">Lovely Canada</p></section>`,
 				`<form hx-put="/cookbooks/1/reorder" hx-trigger="end" hx-swap="none"><input type="hidden" name="cookbook-id" value="1"><ul class="cookbooks-display grid gap-8 p-2 place-items-center text-sm md:p-0 md:text-base"><li class="indicator recipe cookbook"><input type="hidden" name="recipe-id" value="3"><div class="indicator-item indicator-bottom badge badge-secondary cursor-none">1</div><div class="card card-side card-bordered card-compact bg-base-100 shadow-lg sm:w-[30rem]"><figure class="w-28 sm:w-32"><img src="/static/img/recipes/placeholder.webp" alt="Recipe image" class="object-cover"></figure><div class="card-body"><h2 class="card-title text-base w-[20ch] sm:w-full break-words md:text-xl">Gotcha</h2><p></p><div><p class="text-sm pb-1">Category:</p><div class="badge badge-primary badge-">American</div></div><div class="card-actions justify-end"><button class="btn btn-outline btn-sm" hx-get="/r/3?cookbook=1" hx-target="#content" hx-swap="innerHTML" hx-push-url="true">View</button></div></div></div></li></ul></form>`,
-			}
-			body := getBodyHTML(rr)
-			assertStringsInHTML(t, body, want)
-			notWant := []string{`id="share-dialog"`, `title="Share recipe"`}
-			assertStringsNotInHTML(t, body, notWant)
+			})
+			assertStringsNotInHTML(t, body, []string{`id="share-dialog"`, `title="Share recipe"`})
 		})
 	}
 
@@ -912,16 +896,14 @@ func TestHandlers_Cookbooks_Share(t *testing.T) {
 			rr := tc.sendFunc(srv, http.MethodGet, link)
 
 			assertStatus(t, rr.Code, http.StatusOK)
-			want := []string{
+			body := getBodyHTML(rr)
+			assertStringsInHTML(t, body, []string{
 				`<title hx-swap-oob="true">Lovely Canada | Recipya</title>`,
 				`<section class="grid gap-4 text-sm justify-center md:p-4 md:text-base"><div class="flex flex-col h-full"><section class="grid justify-center p-2 sm:p-4 sm:pb-0">`,
 				`<search><form class="w-72 flex md:w-96" hx-get="/cookbooks/2/recipes/search" hx-vals="{"page": 1}" hx-target="#search-results" hx-push-url="true" hx-trigger="submit, change target:.sort-option"><div class="w-full"><label class="input input-bordered input-sm flex justify-between px-0 gap-2 z-20"><button type="button" id="search_shortcut" class="pl-2" popovertarget="search_help" _="on click toggle .hidden on #search_help"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></button> <input id="search_recipes" class="w-full" type="search" name="q" placeholder="Search for recipes..." value="" _="on keyup if event.target.value !== '' then remove .md:block from #search_shortcut else add .md:block to #search_shortcut then if (event.key is not 'Delete' and not event.key.startsWith('Arrow')) then send submit to closest <form/> then end end"> <button type="submit" class="px-2 btn btn-sm btn-primary"><svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"></path></svg><span class="sr-only">Search</span></button></label></div><div class="dropdown dropdown-left ml-1"><div tabindex="0" role="button" class="btn btn-sm p-1"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"></path></svg></div><div tabindex="0" class="dropdown-content z-10 menu menu-sm p-2 shadow bg-base-200 w-52 sm:menu-md prose"><h4>Sort</h4><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Default</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="default"></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Name:<br>A to Z</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="a-z"></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Name:<br>Z to A</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="z-a"></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Date created:<br>Newest to oldest</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="new-old"></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Date created:<br>Oldest to newest</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="old-new"></label></div><div class="form-control"><label class="label cursor-pointer"><span class="label-text">Random</span> <input type="radio" name="sort" class="radio radio-sm sort-option" value="random"></label></div></div></div></form></search>`,
 				`<p class="grid justify-center font-semibold underline mt-4 md:mt-0 md:text-xl md:hidden">Lovely Canada</p></section></div><div id="search-results" class="md:min-h-[79vh]"><form hx-put="/cookbooks/1/reorder" hx-trigger="end" hx-swap="none"><input type="hidden" name="cookbook-id" value="1"><ul class="cookbooks-display grid gap-8 p-2 place-items-center text-sm md:p-0 md:text-base"><li class="indicator recipe cookbook"><input type="hidden" name="recipe-id" value="3"><div class="indicator-item indicator-bottom badge badge-secondary cursor-move handle">1</div><div class="indicator-item badge badge-neutral h-6 w-8"><button title="Remove recipe from cookbook" class="btn btn-ghost btn-xs p-0" hx-delete="/cookbooks/1/recipes/3" hx-swap="outerHTML" hx-target="closest .recipe" hx-confirm="Are you sure you want to remove this recipe from the cookbook?" hx-indicator="#fullscreen-loader"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 hover:text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button></div><div class="card card-side card-bordered card-compact bg-base-100 shadow-lg sm:w-[30rem]"><figure class="w-28 sm:w-32"><img src="/static/img/recipes/placeholder.webp" alt="Recipe image" class="object-cover"></figure><div class="card-body"><h2 class="card-title text-base w-[20ch] sm:w-full break-words md:text-xl">Gotcha</h2><p></p><div><p class="text-sm pb-1">Category:</p><div class="badge badge-primary badge-">American</div></div><div class="card-actions justify-end"><button class="btn btn-outline btn-sm" hx-get="/recipes/3" hx-target="#content" hx-swap="innerHTML" hx-push-url="true">View</button></div></div></div></li></ul></form></div>`,
-			}
-			body := getBodyHTML(rr)
-			assertStringsInHTML(t, body, want)
-			notWant := []string{`id="share-dialog"`, `title="Share recipe"`}
-			assertStringsNotInHTML(t, body, notWant)
+			})
+			assertStringsNotInHTML(t, body, []string{`id="share-dialog"`, `title="Share recipe"`})
 		})
 	}
 }

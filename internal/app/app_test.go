@@ -139,7 +139,6 @@ func TestNewConfig(t *testing.T) {
 		"RECIPYA_SERVER_IS_DEMO": "false",
 		"RECIPYA_SERVER_IS_PROD": "false",
 		"RECIPYA_SERVER_PORT":    "8078",
-		"RECIPYA_SERVER_URL":     "http://0.0.0.0",
 	}
 
 	t.Run("load from config file", func(t *testing.T) {

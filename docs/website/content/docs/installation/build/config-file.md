@@ -23,8 +23,8 @@ The admin may change most of these options from the settings.
   - **isDemo**: Whether the app is a demo version. Can be `true` or `false`. Default: `false`.
   - **isProduction**: Whether the app is in production. Can be `true` or `false`. Default: `false`.
   - **noSignups**: Whether to disable user account registrations. Set to `true` when you don't want people to create accounts. Default: `false`.
-  - **port**: The port the app will be served through if localhost. Is required.
-  - **url**: The website the app is served on. This URL will serve as the base link in the emails. Is required.
+  - **port**: The port the app will be served through if localhost. __Is required__.
+  - **url**: The website the app is served on. This URL will serve as the base link in the emails. Default: `http://0.0.0.0`.
 
 ### Deprecations
 

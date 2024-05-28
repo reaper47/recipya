@@ -695,7 +695,7 @@ func (s *Sort) IsSort() bool {
 // String returns a string representation of the sorting order based on the Sort struct.
 func (s *Sort) String() string {
 	switch {
-	case s.IsAToZ, s.IsDefault:
+	case s.IsAToZ:
 		return "a-z"
 	case s.IsZToA:
 		return "z-a"
@@ -706,7 +706,7 @@ func (s *Sort) String() string {
 	case s.IsRandom:
 		return "random"
 	default:
-		return "a-z"
+		return "default"
 	}
 }
 
