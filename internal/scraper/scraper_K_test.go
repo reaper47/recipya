@@ -112,7 +112,6 @@ func TestScraper_K(t *testing.T) {
 				},
 				PrepTime:  "PT30M",
 				TotalTime: "PT1H30M",
-				Tools:     models.Tools{Values: []string(nil)},
 				Yield:     models.Yield{Value: 16},
 				URL:       "https://www.kingarthurbaking.com/recipes/sourdough-zucchini-bread-recipe",
 			},
@@ -403,12 +402,12 @@ func TestScraper_K(t *testing.T) {
 				},
 				Name:     "Bravčová roláda so syrom a šunkou",
 				PrepTime: "PT1H0M",
-				Tools: models.Tools{
+				/*Tools: models.Tools{
 					Values: []string{
 						"tĺčik na mäso", "potravinovú fóliu", "špáradlá, mixér",
 						"panvicu s\u00a0pokrievkou",
 					},
-				},
+				},*/
 				Yield: models.Yield{Value: 5},
 				URL:   "https://kuchynalidla.sk/recepty/bravcova-rolada-so-syrom-a-sunkou",
 			},

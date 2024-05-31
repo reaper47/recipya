@@ -44,8 +44,8 @@ tasks:
   sponsors:
     cmds:
       - cmd: cd ./scripts/sponsors
-      - cmd: npm install sponsorkit@0.6.1
-      - cmd: npx sponsorkit -o ../../docs/website/static/img/
+      - cmd: npm i
+      - cmd: npx sponsorkit -o ../../docs/website/static/images/
 
   test:
     deps:

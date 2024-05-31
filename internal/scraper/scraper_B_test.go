@@ -1303,7 +1303,6 @@ func TestScraper_B(t *testing.T) {
 					TransFat:       "",
 					UnsaturatedFat: ""},
 				PrepTime:  "PT15M",
-				Tools:     models.Tools{Values: []string(nil)},
 				TotalTime: "PT25M",
 				Yield:     models.Yield{Value: 4},
 				URL:       "https://www.budgetbytes.com/easy-vegetable-stir-fry/"},

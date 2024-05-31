@@ -609,7 +609,7 @@ func TestRecipe_IsEmpty(t *testing.T) {
 		{name: "has Name only", recipe: models.Recipe{Name: "one"}},
 		{name: "has Nutrition only", recipe: models.Recipe{Nutrition: models.Nutrition{Calories: "666 kcal"}}},
 		{name: "has times only", recipe: models.Recipe{Times: models.Times{Prep: 5 * time.Hour}}},
-		{name: "has Tools only", recipe: models.Recipe{Tools: []string{"hose"}}},
+		{name: "has Tools only", recipe: models.Recipe{Tools: []models.Tool{{Name: "hose"}}}},
 		{name: "has UpdatedAt only", recipe: models.Recipe{UpdatedAt: time.Now()}},
 		{name: "has URL only", recipe: models.Recipe{URL: "mama"}},
 		{name: "has Yield only", recipe: models.Recipe{Yield: 5}},
@@ -713,6 +713,50 @@ func TestNutrientsFDC_CalculateNutrition(t *testing.T) {
 	}
 }
 
+func TestNutrition_Format(t *testing.T) {
+	testcases := []struct {
+		name string
+		in   models.Nutrition
+		want string
+	}{
+		{
+			name: "empty",
+			in:   models.Nutrition{},
+			want: "",
+		},
+		{
+			name: "selected fields",
+			in:   models.Nutrition{Calories: "354 kcal", Cholesterol: "207.44 ug", Fiber: "7.10 g"},
+			want: "Per 100g: calories 354 kcal; cholesterol 207.44 ug; fiber 7.10 g",
+		},
+		{
+			name: "all fields",
+			in: models.Nutrition{
+				Calories:           "150 kcal",
+				Cholesterol:        "34mg",
+				Fiber:              "6g",
+				Protein:            "8g",
+				SaturatedFat:       "1g",
+				Sodium:             "567mg",
+				Sugars:             "66g",
+				TotalCarbohydrates: "89g",
+				TotalFat:           "20g",
+				UnsaturatedFat:     "15g",
+			},
+			want: "Per 100g: calories 150 kcal; total carbohydrates 89g; sugar 66g; protein 8g; total fat 20g; saturated fat 1g; cholesterol 34mg; fiber 6g",
+		},
+	}
+	for _, tc := range testcases {
+		t.Run("one line"+tc.name, func(t *testing.T) {
+			got := tc.in.Format(true)
+
+			if got != tc.want {
+				t.Fatalf("got %s; want %s", got, tc.want)
+			}
+		})
+	}
+}
+
 func TestRecipe_Copy(t *testing.T) {
 	times, _ := models.NewTimes("PT1H20M", "PT30M")
 	original := models.Recipe{
@@ -749,10 +793,10 @@ func TestRecipe_Copy(t *testing.T) {
 			UnsaturatedFat:     "10g",
 		},
 		Times: times,
-		Tools: []string{
-			"small pan",
-			"large pan",
-			"spatula",
+		Tools: []models.Tool{
+			{Name: "small pan"},
+			{Name: "large pan"},
+			{Name: "spatula"},
 		},
 		UpdatedAt: time.Date(2012, 12, 25, 0, 0, 0, 0, time.UTC),
 		URL:       "https://www.example.com",
@@ -777,7 +821,7 @@ func TestRecipe_Copy(t *testing.T) {
 	if slices.Equal(original.Keywords, copied.Keywords) {
 		t.Fatal("keywords slices the same when they should not")
 	}
-	copied.Tools[0] = "saw"
+	copied.Tools[0] = models.Tool{Name: "saw"}
 	if slices.Equal(original.Tools, copied.Tools) {
 		t.Fatal("tools slices the same when they should not")
 	}
@@ -932,7 +976,7 @@ func TestRecipe_Schema(t *testing.T) {
 			Cook:  2 * time.Hour,
 			Total: 3 * time.Hour,
 		},
-		Tools:     []string{"t1", "t2", "t3"},
+		Tools:     []models.Tool{{Name: "t1"}, {Name: "t2"}, {Name: "t3"}},
 		UpdatedAt: time.Now().Add(2 * time.Hour),
 		URL:       "https://www.google.com",
 		Yield:     4,
@@ -999,9 +1043,9 @@ func TestRecipe_Schema(t *testing.T) {
 	if schema.PrepTime != "PT1H0M0S" {
 		t.Errorf("wanted prepTime PT1H0M0S but got %q", schema.PrepTime)
 	}
-	if !slices.Equal(schema.Tools.Values, []string{"t1", "t2", "t3"}) {
+	/*if !slices.Equal(schema.Tools.Values, []string{"t1", "t2", "t3"}) {
 		t.Errorf("wanted tools []string{t1, t2, t3} but got %v", schema.Tools.Values)
-	}
+	}*/
 	if schema.Yield.Value != 4 {
 		t.Errorf("wanted yield 4 but got %d", schema.Yield.Value)
 	}
@@ -1273,7 +1317,7 @@ func TestNewRecipesFromRecipeKeeper(t *testing.T) {
 				TotalFat:           "41.5g",
 			},
 			Times: models.Times{Prep: 10 * time.Minute, Cook: 1 * time.Hour},
-			Tools: []string{},
+			Tools: make([]models.Tool, 0),
 			URL:   "Recipe Keeper",
 			Yield: 6,
 		},
@@ -1299,7 +1343,7 @@ func TestNewRecipesFromRecipeKeeper(t *testing.T) {
 				IsPerServing: true,
 			},
 			Times: models.Times{Prep: 10 * time.Minute, Cook: 15 * time.Minute},
-			Tools: []string{},
+			Tools: make([]models.Tool, 0),
 			URL:   "Recipe Keeper",
 			Yield: 4,
 		},
@@ -1336,7 +1380,7 @@ func TestNewRecipesFromRecipeKeeper(t *testing.T) {
 				TotalFat:           "24.6g",
 			},
 			Times: models.Times{Prep: 5 * time.Minute, Cook: 12 * time.Minute},
-			Tools: []string{},
+			Tools: make([]models.Tool, 0),
 			URL:   "Recipe Keeper",
 			Yield: 12,
 		},

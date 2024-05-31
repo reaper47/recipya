@@ -550,8 +550,7 @@ func TestHandlers_Cookbooks_Image(t *testing.T) {
 	}
 
 	sendReq := func(image string) *httptest.ResponseRecorder {
-		fields := map[string]string{"image": image}
-		contentType, body := createMultipartForm(fields)
+		contentType, body := createMultipartForm(map[string][]string{"image": {image}})
 		return sendHxRequestAsLoggedIn(srv, http.MethodPut, uri(1), header(contentType), strings.NewReader(body))
 	}
 

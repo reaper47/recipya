@@ -302,8 +302,13 @@ const baseSelectRecipe = `
 									JOIN instructions ON instructions.id = instruction_recipe.instruction_id
 						   WHERE instruction_recipe.recipe_id = recipes.id
 						   ORDER BY instruction_order)), '')                            AS instructions,
-		   COALESCE(GROUP_CONCAT(DISTINCT keywords.name), '')                           AS keywords,
-		   COALESCE(GROUP_CONCAT(DISTINCT tools.name), '')                              AS tools,
+		   GROUP_CONCAT(DISTINCT keywords.name)                                         AS keywords,
+		   (SELECT GROUP_CONCAT(name)
+			FROM (SELECT tool_recipe.quantity || ' ' || tools.name AS name
+				  FROM tool_recipe
+						   JOIN tools ON tool_recipe.tool_id = tools.id
+				  WHERE tool_recipe.recipe_id = recipes.id
+				  ORDER BY tool_recipe.tool_order))                                     AS tools,
 		   nutrition.calories,
 		   nutrition.total_carbohydrates,
 		   nutrition.sugars,

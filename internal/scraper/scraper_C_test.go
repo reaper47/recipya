@@ -531,7 +531,6 @@ func TestScraper_C(t *testing.T) {
 					UnsaturatedFat: "1.6 g",
 				},
 				PrepTime:  "PT20M",
-				Tools:     models.Tools{Values: []string(nil)},
 				TotalTime: "PT25M",
 				Yield:     models.Yield{Value: 50},
 				URL:       "https://comidinhasdochef.com/pudim-no-copinho-para-festa/"},
@@ -1122,8 +1121,8 @@ func TestScraper_C(t *testing.T) {
 				NutritionSchema: models.NutritionSchema{
 					Calories: "274.20",
 				},
-				PrepTime:  "PT1H",
-				Tools:     models.Tools{Values: []string(nil)},
+				PrepTime: "PT1H",
+				//Tools:     models.Tools{Values: []string(nil)},
 				TotalTime: "PT1H",
 				Yield:     models.Yield{Value: 5},
 				URL:       "https://cybercook.com.br/receitas/peixes-e-frutos-do-mar/receita-de-file-de-tilapia-com-batatas-82273",

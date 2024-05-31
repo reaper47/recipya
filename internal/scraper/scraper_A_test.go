@@ -724,6 +724,13 @@ func TestScraper_A(t *testing.T) {
 					TransFat:       "0 grams",
 					UnsaturatedFat: "6 grams",
 				},
+				Tools: models.Tools{
+					Values: []models.Tool{
+						{AtType: "HowToTool", Name: "Stand Mixers (Inexpensive)"},
+						{AtType: "HowToTool", Name: "The Best Rasp-Style Graters"},
+						{AtType: "HowToTool", Name: "All-Purpose Whisks"},
+					},
+				},
 				Yield: models.Yield{Value: 12},
 				URL:   "https://www.americastestkitchen.com/recipes/7390-marbled-blueberry-bundt-cake",
 			},
