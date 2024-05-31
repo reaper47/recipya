@@ -405,8 +405,16 @@ func TestScraper_L(t *testing.T) {
 					Calories: "558 Kalorie",
 				},
 				PrepTime: "PT40M",
-				Yield:    models.Yield{Value: 4},
-				URL:      "https://www.lidl-kochen.de/rezeptwelt/schweinemedaillons-mit-ofenkartoffeln-butterbohnen-und-rosmarinbroeseln-147914",
+				Tools: models.Tools{
+					Values: []models.Tool{
+						{AtType: "HowToTool", Name: "große Schüssel", Quantity: 1},
+						{AtType: "HowToTool", Name: "mittlerer Topf", Quantity: 1},
+						{AtType: "HowToTool", Name: "mittlere Pfanne", Quantity: 1},
+						{AtType: "HowToTool", Name: "Backblech mit Backpapier", Quantity: 1},
+					},
+				},
+				Yield: models.Yield{Value: 4},
+				URL:   "https://www.lidl-kochen.de/rezeptwelt/schweinemedaillons-mit-ofenkartoffeln-butterbohnen-und-rosmarinbroeseln-147914",
 			},
 		},
 		{

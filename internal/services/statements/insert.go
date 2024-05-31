@@ -124,8 +124,8 @@ const InsertRecipeTime = `
 
 // InsertRecipeTool is the query to associate a recipe with a tool.
 const InsertRecipeTool = `
-	INSERT INTO tool_recipe (tool_id, recipe_id)
-	VALUES (?, ?)`
+	INSERT INTO tool_recipe (tool_id, recipe_id, quantity, tool_order)
+	VALUES (?, ?, ?, ?)`
 
 // InsertShareLink is the query to add a recipe share link to the database.
 const InsertShareLink = `

@@ -223,7 +223,6 @@ func TestScraper_E(t *testing.T) {
 					},
 				},
 				Name:      "Vietnamese Chicken Cabbage Salad",
-				Tools:     models.Tools{Values: []string(nil)},
 				TotalTime: "PT40M",
 				Yield:     models.Yield{Value: 4},
 				URL:       "https://eatsmarter.com/recipes/vietnamese-chicken-cabbage-salad",

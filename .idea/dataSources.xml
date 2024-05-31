@@ -8,11 +8,11 @@
       <jdbc-url>jdbc:sqlite:$USER_HOME$/AppData/Roaming/Recipya/Database/recipya.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="recipya.db" uuid="5ed4e33e-9f02-4be8-8c21-529b29535aae">
+    <data-source source="LOCAL" name="recipya.db" uuid="d0ead9a5-d62f-4fb3-b225-6dcb0c71f30c">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$USER_HOME$/.config/Recipya/Database/recipya.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:$USER_HOME$/AppData/Roaming/Recipya/Database/recipya.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

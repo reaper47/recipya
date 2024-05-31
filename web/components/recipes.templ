@@ -2,6 +2,7 @@ package components
 
 import (
 	"fmt"
+	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
 	"strconv"
 	"strings"
@@ -680,11 +681,18 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 					>
 						<div class="col-span-6 border-gray-700 px-2 py-2 border-y md:col-span-2 md:border-r md:border-y-0">
 							<h2 class="font-semibold text-center pb-2">
+								<span class="underline">Tools</span>
+							</h2>
+							<ol id="tools-list" class="pl-4 list-decimal">
+								@AddTool(models.Tool{})
+							</ol>
+							<div class="divider"></div>
+							<h2 class="font-semibold text-center pb-2">
 								<span class="underline">Ingredients</span>
 								<sup class="text-red-600">*</sup>
 							</h2>
 							<ol id="ingredients-list" class="pl-4 list-decimal">
-								@AddIngredient(1)
+								@AddIngredient("")
 							</ol>
 						</div>
 						<div class="col-span-6 px-6 py-2 border-gray-700 md:rounded-bl-none md:col-span-4">
@@ -693,7 +701,7 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 								<sup class="text-red-600">*</sup>
 							</h2>
 							<ol id="instructions-list" class="grid list-decimal">
-								@AddInstruction(1)
+								@AddInstruction("")
 							</ol>
 						</div>
 					</div>
@@ -707,46 +715,39 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 	@loadRecipesManualScripts()
 }
 
-templ AddIngredient(num int) {
+templ AddTool(tool models.Tool) {
 	<li class="pb-2">
 		<div class="grid grid-flow-col items-center">
 			<label>
 				<input
-					required
 					type="text"
-					name={ fmt.Sprintf("ingredient-%d", num) }
-					placeholder={ fmt.Sprintf("Ingredient #%d", num) }
-					if num > 1 {
-						autofocus
-					}
+					name="tools"
+					placeholder="1 frying pan"
 					class="input input-bordered input-sm w-full"
-					_="on keydown if event.key is 'Enter'
-                        then halt the event then get next <button/> from the parentElement of me
-                        then call htmx.trigger(it, 'click')"
+					if tool.Name != "" {
+						value={ tool.String() }
+					}
+					_="on keydown if event.key is 'Enter' halt the event then call addItem(event)"
 				/>
 			</label>
 			<div class="ml-2">
-				<button
-					type="button"
-					class="btn btn-square btn-sm btn-outline btn-success"
-					title="Shortcut: Enter"
-					hx-post="/recipes/add/manual/ingredient"
-					hx-target="#ingredients-list"
-					hx-swap="beforeend"
-					hx-include="[name^='ingredient']"
-				>
+				<button type="button" class="btn btn-square btn-sm btn-outline btn-success" title="Shortcut: Enter" onclick="addItem(event)">
 					+
 				</button>
 				<button
 					type="button"
 					class="delete-button btn btn-square btn-sm btn-outline btn-error"
-					hx-target="#ingredients-list"
-					hx-post={ fmt.Sprintf("/recipes/add/manual/ingredient/%d", num) }
-					hx-include="[name^='ingredient']"
+					_="on click
+					    if (closest <ol/>).childElementCount > 1
+					        remove closest <li/>
+					    else
+					        set input to (closest <li/>).querySelector('input') then
+					        set input.value to '' then
+					        input.focus()"
 				>
 					-
 				</button>
-				<div class="inline-block h-4 cursor-move handle">
+				<div class="inline-block h-4 cursor-move handle ml-2">
 					@iconReorder()
 				</div>
 			</div>
@@ -754,44 +755,72 @@ templ AddIngredient(num int) {
 	</li>
 }
 
-templ AddInstruction(num int) {
-	<li class="pt-2 md:pl-0">
-		<div class="flex">
-			<label class="w-11/12">
-				<textarea
+templ AddIngredient(name string) {
+	<li class="pb-2">
+		<div class="grid grid-flow-col items-center">
+			<label>
+				<input
 					required
-					name={ fmt.Sprintf("instruction-%d", num) }
-					rows="3"
-					if num > 1 {
-						autofocus
-					}
-					class="textarea textarea-bordered w-full"
-					placeholder={ fmt.Sprintf("Instruction #%d", num) }
-					_="on keydown if event.ctrlKey and event.key === 'Enter'
-                            then halt the event
-                            then get next <div/> from the parentElement of me
-                            then get first <button/> in it
-                            then call htmx.trigger(it, 'click')"
-				></textarea>
+					type="text"
+					name="ingredients"
+					value={ name }
+					placeholder="1 cup of chopped onions"
+					class="input input-bordered input-sm w-full"
+					_="on keydown if event.key is 'Enter' halt the event then call addItem(event)"
+				/>
 			</label>
-			<div class="grid ml-2">
-				<button
-					type="button"
-					class="btn btn-square btn-sm btn-outline btn-success"
-					title="Shortcut: CTRL + Enter"
-					hx-post="/recipes/add/manual/instruction"
-					hx-target="#instructions-list"
-					hx-swap="beforeend"
-					hx-include="[name^='instruction']"
-				>
+			<div class="ml-2">
+				<button type="button" class="btn btn-square btn-sm btn-outline btn-success" title="Shortcut: Enter" onclick="addItem(event)">
 					+
 				</button>
 				<button
 					type="button"
 					class="delete-button btn btn-square btn-sm btn-outline btn-error"
-					hx-target="#instructions-list"
-					hx-post={ fmt.Sprintf("/recipes/add/manual/instruction/%d", num) }
-					hx-include="[name^='instruction']"
+					_="on click
+                        if (closest <ol/>).childElementCount > 1
+                            remove closest <li/>
+                        else
+                            set input to (closest <li/>).querySelector('input') then
+                            set input.value to '' then
+                            input.focus()"
+				>
+					-
+				</button>
+				<div class="inline-block h-4 cursor-move handle ml-2">
+					@iconReorder()
+				</div>
+			</div>
+		</div>
+	</li>
+}
+
+templ AddInstruction(content string) {
+	<li class="pt-2 md:pl-0">
+		<div class="flex">
+			<label class="w-11/12">
+				<textarea
+					required
+					name="instructions"
+					rows="3"
+					class="textarea textarea-bordered w-full"
+					placeholder="Mix all ingredients together"
+					_="on keydown if event.key is 'Enter' halt the event then call addItem(event)"
+				>{ content }</textarea>
+			</label>
+			<div class="grid ml-2">
+				<button type="button" class="btn btn-square btn-sm btn-outline btn-success" title="Shortcut: CTRL + Enter" onclick="addItem(event)">
+					+
+				</button>
+				<button
+					type="button"
+					class="delete-button btn btn-square btn-sm btn-outline btn-error"
+					_="on click
+                        if (closest <ol/>).childElementCount > 1
+                            remove closest <li/>
+                        else
+                            set input to (closest <li/>).querySelector('textarea') then
+                            set input.value to '' then
+                            input.focus()"
 				>
 					-
 				</button>
@@ -811,6 +840,7 @@ templ loadRecipesManualScripts() {
         loadScript("https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js")
             .then(() => {
                 const inputs = [
+                    {name: 'tool', type: 'input'},
                     {name: 'ingredient', type: 'input'},
                     {name: 'instruction', type: 'textarea'},
                 ];
@@ -820,17 +850,6 @@ templ loadRecipesManualScripts() {
                         new Sortable.create(list, {
                             handle: '.handle',
                             animation: 150,
-                            onEnd: function () {
-                                Array.from(document.querySelectorAll(`${type}[name^='${name}']`)).forEach((d, i) => {
-                                    const n = i + 1;
-                                    d.name = `${name}-${n}`;
-                                    d.placeholder = `${name.substring(0, 1).toUpperCase() + name.substring(1)} #${n}`;
-
-                                    const deleteButton = d.parentElement.parentElement.querySelector(".delete-button");
-                                    deleteButton.setAttribute('hx-post', `/recipes/add/manual/${name}/${n}`);
-                                    htmx.process(deleteButton);
-                                });
-                            }
                         });
                     }
                 });
@@ -932,6 +951,38 @@ templ loadRecipesManualScripts() {
                     input.files = dataTransfer.files;
                     input.dispatchEvent(new Event('change'));
                 });
+        }
+
+        function addItem(event) {
+            const ol = event.target.closest('ol');
+            const items = ol.querySelectorAll('li');
+
+            for (let i = 0; i < items.length; i++) {
+                let input = items[i].querySelector('input');
+                if (!input) {
+                    input = items[i].querySelector('textarea');
+                }
+
+                if (input.value === '') {
+                    return;
+                }
+            }
+
+            const clone = event.target.closest('li').cloneNode(true);
+            let el = 'input';
+
+            try {
+                clone.querySelector(el).value = '';
+            } catch {
+                el = 'textarea';
+                clone.querySelector(el).value = '';
+            }
+
+            _hyperscript.processNode(clone);
+            htmx.process(clone);
+            ol.appendChild(clone);
+
+            clone.querySelector(el).focus();
         }
     </script>
 }
@@ -1415,57 +1466,26 @@ templ editRecipe(data *templates.ViewRecipeData) {
 						class="border-gray-700 md:border-t grid text-sm md:grid-flow-col md:col-span-6"
 					>
 						<div class="col-span-6 border-gray-700 px-2 py-2 border-y md:col-span-2 md:border-r md:border-y-0">
+							<h2 class="font-semibold text-center pb-2 underline">Tools</h2>
+							<ol id="tools-list" class="pl-4 list-decimal">
+								if len(data.Recipe.Tools) == 0 {
+									@AddTool(models.Tool{})
+								} else {
+									for _, t := range data.Recipe.Tools {
+										@AddTool(t)
+									}
+								}
+							</ol>
 							<h2 class="font-semibold text-center pb-2">
 								<span class="underline">Ingredients</span>
 								<sup class="text-red-600">*</sup>
 							</h2>
 							<ol id="ingredients-list" class="pl-4 list-decimal">
 								if len(data.Recipe.Ingredients) == 0 {
-									@AddIngredient(1)
+									@AddIngredient("")
 								} else {
-									for i, v := range data.Recipe.Ingredients {
-										<li class="pb-2">
-											<div class="grid grid-flow-col items-center">
-												<label>
-													<input
-														required
-														type="text"
-														name={ fmt.Sprintf("ingredient-%d", i+1) }
-														placeholder={ fmt.Sprintf("Ingredient #%d", i+1) }
-														class="input input-bordered input-sm w-full"
-														value={ v }
-														_="on keydown if event.key is 'Enter' then
-                                                                halt the event then get next <button/> from the parentElement of me then
-                                                                call htmx.trigger(it, 'click')"
-													/>
-												</label>
-												<div class="ml-2">
-													<button
-														type="button"
-														class="btn btn-square btn-sm btn-outline btn-success"
-														title="Shortcut: Enter"
-														hx-post="/recipes/add/manual/ingredient"
-														hx-target="#ingredients-list"
-														hx-swap="beforeend"
-														hx-include="[name^='ingredient']"
-													>
-														+
-													</button>
-													<button
-														type="button"
-														class="delete-button btn btn-square btn-sm btn-outline btn-error"
-														hx-target="#ingredients-list"
-														hx-post={ fmt.Sprintf("/recipes/add/manual/ingredient/%d", i+1) }
-														hx-include="[name^='ingredient']"
-													>
-														-
-													</button>
-													<div class="inline-block h-4 cursor-move handle">
-														@iconReorder()
-													</div>
-												</div>
-											</div>
-										</li>
+									for _, v := range data.Recipe.Ingredients {
+										@AddIngredient(v)
 									}
 								}
 							</ol>
@@ -1477,52 +1497,10 @@ templ editRecipe(data *templates.ViewRecipeData) {
 							</h2>
 							<ol id="instructions-list" class="grid list-decimal">
 								if len(data.Recipe.Instructions) == 0 {
-									@AddInstruction(1)
+									@AddInstruction("")
 								} else {
-									for i, v := range data.Recipe.Instructions {
-										<li class="pt-2 md:pl-0">
-											<div class="flex">
-												<label class="w-11/12">
-													<textarea
-														required
-														name={ fmt.Sprintf("instruction-%d", i+1) }
-														rows="3"
-														class="textarea textarea-bordered w-full"
-														placeholder={ fmt.Sprintf("Instruction #%d", i+1) }
-														_="on keydown if event.ctrlKey and event.key === 'Enter'
-                                                                then halt the event
-                                                                then get next <div/> from the parentElement of me
-                                                                then get first <button/> in it
-                                                                then call htmx.trigger(it, 'click')"
-													>{ v }</textarea>
-												</label>
-												<div class="grid ml-2">
-													<button
-														type="button"
-														class="btn btn-square btn-sm btn-outline btn-success"
-														title="Shortcut: CTRL + Enter"
-														hx-post="/recipes/add/manual/instruction"
-														hx-target="#instructions-list"
-														hx-swap="beforeend"
-														hx-include="[name^='instruction']"
-													>
-														+
-													</button>
-													<button
-														type="button"
-														class="delete-button btn btn-square btn-sm btn-outline btn-error"
-														hx-target="#instructions-list"
-														hx-post={ fmt.Sprintf("/recipes/add/manual/instruction/%d", i+1) }
-														hx-include="[name^='instruction']"
-													>
-														-
-													</button>
-													<div class="h-4 cursor-move handle grid place-content-center">
-														@iconReorder()
-													</div>
-												</div>
-											</div>
-										</li>
+									for _, v := range data.Recipe.Instructions {
+										@AddInstruction(v)
 									}
 								}
 							</ol>
@@ -1844,7 +1822,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 							}
 						</div>
 						<div class="grid grid-cols-3 col-span-3 md:grid-flow-row md:grid-rows-4 print:grid-rows-2">
-							<div class="grid grid-flow-col col-span-6 md:row-span-1 md:border-y md:border-gray-700 print:row-span-1 print:grid-cols-2">
+							<div class="grid grid-flow-col col-span-6 md:row-span-1 md:border-y md:border-gray-700 print:row-span-1 print:grid-cols-2 print:border-b-black print:border">
 								<div class="col-span-2 grid place-items-center md:col-span-1 print:col-span-1 print:float-left print:ml-2 print:border-r print:border-black">
 									<div class="badge badge-primary badge-outline">{ data.Recipe.Category }</div>
 								</div>
@@ -1899,7 +1877,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 									}
 								</div>
 							</div>
-							<div class="grid grid-flow-col col-span-6 border-gray-700 border-y md:border-t-0 md:grid-cols-2 md:row-span-2">
+							<div class={ "grid grid-flow-col border-gray-700 border-y col-span-6 md:border-t-0 md:grid-cols-2 md:row-span-2 print:border-none", templ.KV("print:hidden", data.Recipe.Nutrition.Equal(models.Nutrition{})) }>
 								<div class="border-r border-gray-700 print:hidden">
 									<table class="table table-zebra table-xs md:h-fit">
 										<thead>
@@ -2037,22 +2015,14 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 										</tr>
 									</tbody>
 								</table>
-								<div class="hidden pt-2 print:block print:m-2">
-									<h1 class="text-sm"><b>Nutrition Facts</b></h1>
-									<p class="text-xs">
-										Per 100g: { data.Recipe.Nutrition.Calories } calories;
-										total carbohydrates { data.Recipe.Nutrition.TotalCarbohydrates };
-										sugars { data.Recipe.Nutrition.Sugars };
-										protein { data.Recipe.Nutrition.Protein };
-										total fat { data.Recipe.Nutrition.TotalFat };
-										saturated fat { data.Recipe.Nutrition.SaturatedFat };
-										cholesterol { data.Recipe.Nutrition.Cholesterol };
-										sodium { data.Recipe.Nutrition.Sodium };
-										fiber { data.Recipe.Nutrition.Fiber }.
-									</p>
-								</div>
+								if !data.Recipe.Nutrition.Equal(models.Nutrition{}) {
+									<div class="hidden pt-2 print:block print:mx-2 print:my-1">
+										<h1 class="text-sm print:mb-1"><b>Nutrition Facts</b></h1>
+										<p class="text-xs">{ data.Recipe.Nutrition.Format(true) }</p>
+									</div>
+								}
 							</div>
-							<div class="col-span-3 h-40 md:h-full md:row-span-1 print:hidden">
+							<div class={ "col-span-3 h-40 md:h-full md:row-span-1 print:hidden", templ.KV("hidden", data.Recipe.Description == "") }>
 								<label>
 									<textarea
 										class="textarea w-full h-full resize-none"
@@ -2062,16 +2032,36 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 							</div>
 						</div>
 					</div>
-					<div class="hidden print:block print:mx-2">
-						<h1 class="text-sm"><b>Description</b></h1>
-						{ data.Recipe.Description }
-					</div>
+					if data.Recipe.Description != "" {
+						<div class="hidden print:block print:mx-2">
+							<h1 class="text-sm print:mb-1"><b>Description</b></h1>
+							{ data.Recipe.Description }
+						</div>
+					}
 					<div class="border-gray-700 md:border-t">
 						@IngredientsInstructions(data)
-						<div class="hidden print:grid col-span-6 ml-2 mt-2 mb-4">
-							<h1 class="text-sm"><b>Ingredients</b></h1>
+						<div class="hidden print:grid col-span-6 ml-2 my-1">
+							if len(data.Recipe.Tools) > 0 {
+								<h1 class="text-sm print:mb-1"><b>Tools</b></h1>
+								<ol
+									class="col-span-6 w-full mb-4"
+									if len(data.Recipe.Tools) > 10 {
+										style="column-count: 2"
+									} else {
+										style="column-count: 1"
+									}
+								>
+									for _, t := range data.Recipe.Tools {
+										<li class="text-sm">
+											<label><input type="checkbox"/></label>
+											<span class="pl-2">{ t.String() }</span>
+										</li>
+									}
+								</ol>
+							}
+							<h1 class="text-sm print:mb-1"><b>Ingredients</b></h1>
 							<ol
-								class="col-span-6 w-full"
+								class="col-span-6 w-full print:mb-2"
 								if len(data.Recipe.Ingredients) > 10 {
 									style="column-count: 2"
 								} else {
@@ -2087,7 +2077,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 							</ol>
 						</div>
 						<div class="hidden col-span-5 overflow-visible print:inline">
-							<h1 class="text-sm print:ml-2"><b>Instructions</b></h1>
+							<h1 class="text-sm print:ml-2 print:mb-1"><b>Instructions</b></h1>
 							<ol class="col-span-6 list-decimal w-full ml-6">
 								for _, e := range data.Recipe.Instructions {
 									<li class="print:mr-4">
@@ -2098,7 +2088,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 						</div>
 					</div>
 					<div class="hidden print:block print:mx-2 print:mb-2 print:text-sm">
-						<h1><b>Source</b></h1>
+						<h1 class="print:mb-1"><b>Source</b></h1>
 						if data.IsURL {
 							<p class="print:overflow-hidden">{ data.Recipe.URL }</p>
 						} else {
@@ -2140,7 +2130,22 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 templ IngredientsInstructions(data *templates.ViewRecipeData) {
 	<div id="ingredients-instructions-container" class="grid text-sm md:grid-flow-col md:col-span-6">
 		<div class="col-span-6 border-gray-700 px-4 py-2 border-y md:col-span-2 md:border-r md:border-y-0 print:hidden">
-			<h2 class="font-semibold text-center underline md:pb-2">Ingredients</h2>
+			if len(data.Recipe.Tools) > 0 {
+				<h2 class="font-semibold text-center underline">
+					<span class="underline">Tools</span>
+				</h2>
+				<ul class="md:pb-2">
+					for _, t := range data.Recipe.Tools {
+						<li class="form-control hover:bg-gray-100 dark:hover:bg-gray-700">
+							<label class="label justify-start">
+								<input type="checkbox" class="checkbox"/>
+								<span class="label-text pl-2">{ t.String() }</span>
+							</label>
+						</li>
+					}
+				</ul>
+			}
+			<h2 class="font-semibold text-center underline">Ingredients</h2>
 			<ul>
 				for _, e := range data.Recipe.Ingredients {
 					<li class="form-control hover:bg-gray-100 dark:hover:bg-gray-700">

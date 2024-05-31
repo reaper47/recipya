@@ -9,7 +9,7 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
 	"io"
-	"log/slog"
+	"log"
 	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
@@ -58,25 +58,27 @@ func createWSServer() (*server.Server, *httptest.Server, *websocket.Conn) {
 	return srv, ts, c
 }
 
-func createMultipartForm(fields map[string]string) (contentType string, body string) {
+func createMultipartForm(fields map[string][]string) (contentType string, body string) {
 	var buf bytes.Buffer
 	writer := multipart.NewWriter(&buf)
 
-	for name, value := range fields {
-		if strings.HasSuffix(value, ".jpg") {
-			field, _ := writer.CreateFormFile(name, value)
-			if field == nil {
-				slog.Error("createMultipartForm.CreateFormField: field is nil after writer.CreateFormField")
-				return
+	for name, values := range fields {
+		for _, value := range values {
+			if strings.HasSuffix(value, ".jpg") {
+				field, _ := writer.CreateFormFile(name, value)
+				if field == nil {
+					log.Println("createMultipartForm.CreateFormField: field is nil after writer.CreateFormField")
+					return "", ""
+				}
+				_, _ = field.Write([]byte("not a real file"))
+			} else {
+				field, _ := writer.CreateFormField(name)
+				if field == nil {
+					log.Println("createMultipartForm.CreateFormField: field is nil after writer.CreateFormField")
+					return "", ""
+				}
+				_, _ = field.Write([]byte(value))
 			}
-			_, _ = field.Write([]byte("not a real file"))
-		} else {
-			field, _ := writer.CreateFormField(name)
-			if field == nil {
-				slog.Error("createMultipartForm.CreateFormField: field is nil after writer.CreateFormField")
-				return
-			}
-			_, _ = field.Write([]byte(value))
 		}
 	}
 	_ = writer.Close()

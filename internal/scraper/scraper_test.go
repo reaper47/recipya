@@ -168,8 +168,7 @@ func (m *mockFiles) ScrapeAndStoreImage(_ string) (uuid.UUID, error) {
 }
 
 func (m *mockFiles) ExtractUserBackup(_ string, _ int64) (*models.UserBackup, error) {
-	//TODO implement me
-	panic("implement me")
+	return nil, nil
 }
 
 func (m *mockFiles) ExportCookbook(cookbook models.Cookbook, fileType models.FileType) (string, error) {

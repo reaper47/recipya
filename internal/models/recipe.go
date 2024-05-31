@@ -51,7 +51,7 @@ func NewBaseRecipe() Recipe {
 		Ingredients:  make([]string, 0),
 		Instructions: make([]string, 0),
 		Keywords:     make([]string, 0),
-		Tools:        make([]string, 0),
+		Tools:        make([]Tool, 0),
 		Yield:        1,
 	}
 }
@@ -70,7 +70,7 @@ type Recipe struct {
 	Name         string
 	Nutrition    Nutrition
 	Times        Times
-	Tools        []string
+	Tools        []Tool
 	UpdatedAt    time.Time
 	URL          string
 	Yield        int16
@@ -126,7 +126,7 @@ func (r *Recipe) Copy() Recipe {
 	keywords := make([]string, len(r.Keywords))
 	copy(keywords, r.Keywords)
 
-	tools := make([]string, len(r.Tools))
+	tools := make([]Tool, len(r.Tools))
 	copy(tools, r.Tools)
 
 	return Recipe{
@@ -283,9 +283,9 @@ func (r *Recipe) Schema() RecipeSchema {
 		Name:            r.Name,
 		NutritionSchema: r.Nutrition.Schema(strconv.Itoa(int(r.Yield))),
 		PrepTime:        formatDuration(r.Times.Prep),
-		Tools:           Tools{Values: r.Tools},
-		Yield:           Yield{Value: r.Yield},
-		URL:             r.URL,
+		//Tools:           Tools{Values: r.Tools},
+		Yield: Yield{Value: r.Yield},
+		URL:   r.URL,
 	}
 }
 
@@ -405,6 +405,62 @@ func (n *Nutrition) Equal(other Nutrition) bool {
 		n.TotalCarbohydrates == other.TotalCarbohydrates &&
 		n.TotalFat == other.TotalFat &&
 		n.UnsaturatedFat == other.UnsaturatedFat
+}
+
+// Format formats the nutrition.
+func (n *Nutrition) Format(isOneLine bool) string {
+	if n.Equal(Nutrition{}) {
+		return ""
+	}
+
+	var sb strings.Builder
+	if n.Calories != "" {
+		sb.WriteString("calories ")
+		sb.WriteString(n.Calories)
+		sb.WriteString("; ")
+	}
+
+	if n.TotalCarbohydrates != "" {
+		sb.WriteString("total carbohydrates ")
+		sb.WriteString(n.TotalCarbohydrates)
+		sb.WriteString("; ")
+	}
+
+	if n.Sugars != "" {
+		sb.WriteString("sugar ")
+		sb.WriteString(n.Sugars)
+		sb.WriteString("; ")
+	}
+	if n.Protein != "" {
+		sb.WriteString("protein ")
+		sb.WriteString(n.Protein)
+		sb.WriteString("; ")
+	}
+
+	if n.TotalFat != "" {
+		sb.WriteString("total fat ")
+		sb.WriteString(n.TotalFat)
+		sb.WriteString("; ")
+	}
+
+	if n.SaturatedFat != "" {
+		sb.WriteString("saturated fat ")
+		sb.WriteString(n.SaturatedFat)
+		sb.WriteString("; ")
+	}
+
+	if n.Cholesterol != "" {
+		sb.WriteString("cholesterol ")
+		sb.WriteString(n.Cholesterol)
+		sb.WriteString("; ")
+	}
+
+	if n.Fiber != "" {
+		sb.WriteString("fiber ")
+		sb.WriteString(n.Fiber)
+	}
+
+	return "Per 100g: " + sb.String()
 }
 
 // Scale scales the nutrition by the given multiplier.
@@ -1291,7 +1347,7 @@ func processMetaData(line []byte, recipe *Recipe) {
 		_, after, found := strings.Cut(string(line), ":")
 		if found {
 			for _, s := range strings.Split(after, ",") {
-				recipe.Tools = append(recipe.Tools, strings.TrimSpace(s))
+				recipe.Tools = append(recipe.Tools, Tool{Name: strings.TrimSpace(s)})
 			}
 		}
 	}
@@ -1520,7 +1576,7 @@ func NewRecipesFromRecipeKeeper(root *goquery.Document) Recipes {
 				TotalFat:           extractNut("recipeNutTotalFat", "g"),
 			},
 			Times:     Times{Prep: prep, Cook: cook},
-			Tools:     make([]string, 0),
+			Tools:     make([]Tool, 0),
 			UpdatedAt: time.Time{},
 			URL:       "Recipe Keeper",
 			Yield:     yield,

@@ -123,7 +123,7 @@ func TestHandlers_Recipes_AddImport(t *testing.T) {
 	})
 
 	t.Run("error parsing files", func(t *testing.T) {
-		contentType, body := createMultipartForm(map[string]string{"files": "file1"})
+		contentType, body := createMultipartForm(map[string][]string{"files": {"file1"}})
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
 
 		assertStatus(t, rr.Code, http.StatusBadRequest)
@@ -131,7 +131,7 @@ func TestHandlers_Recipes_AddImport(t *testing.T) {
 	})
 
 	t.Run("valid request", func(t *testing.T) {
-		contentType, body := createMultipartForm(map[string]string{"files": "file1.jpg"})
+		contentType, body := createMultipartForm(map[string][]string{"files": {"file1.jpg"}})
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
 
 		assertStatus(t, rr.Code, http.StatusAccepted)
@@ -191,9 +191,10 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 				`<textarea name="description" placeholder="This Thai curry chicken will make you drool." class="textarea w-full h-full resize-none"></textarea>`,
 				`<table class="table table-zebra table-xs md:h-fit"><thead><tr><th>Time</th><th>h:m:s</th></tr></thead> <tbody><tr><td>Prep</td><td><label><input type="text" name="time-preparation" value="00:15:00" class="input input-bordered input-xs max-w-24 html-duration-picker"></label></td></tr><tr><td>Cooking</td><td><label><input type="text" name="time-cooking" value="00:30:00" class="input input-bordered input-xs max-w-24 html-duration-picker"></label></td></tr></tbody></table>`,
 				`<table class="table table-zebra table-xs"><thead><tr><th>Nutrition<br>(per 100g)</th><th>Amount</th></tr></thead> <tbody><tr><td>Calories</td><td><label><input type="text" name="calories" autocomplete="off" placeholder="368kcal" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Total carbs</td><td><label><input type="text" name="total-carbohydrates" autocomplete="off" placeholder="35g" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Sugars</td><td><label><input type="text" name="sugars" autocomplete="off" placeholder="3g" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Protein</td><td><label><input type="text" name="protein" autocomplete="off" placeholder="21g" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Total fat</td><td><label><input type="text" name="total-fat" autocomplete="off" placeholder="15g" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Saturated fat</td><td><label><input type="text" name="saturated-fat" autocomplete="off" placeholder="1.8g" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Cholesterol</td><td><label><input type="text" name="cholesterol" autocomplete="off" placeholder="1.1mg" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Sodium</td><td><label><input type="text" name="sodium" autocomplete="off" placeholder="100mg" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Fiber</td><td><label><input type="text" name="fiber" autocomplete="off" placeholder="8g" class="input input-bordered input-xs max-w-24"></label></td></tr></tbody></table>`,
-				`<ol id="ingredients-list" class="pl-4 list-decimal"><li class="pb-2"><div class="grid grid-flow-col items-center"><label><input required type="text" name="ingredient-1" placeholder="Ingredient #1" class="input input-bordered input-sm w-full" _="on keydown if event.key is 'Enter' then halt the event then get next <button/> from the parentElement of me then call htmx.trigger(it, 'click')"></label><div class="ml-2"><button type="button" class="btn btn-square btn-sm btn-outline btn-success" title="Shortcut: Enter" hx-post="/recipes/add/manual/ingredient" hx-target="#ingredients-list" hx-swap="beforeend" hx-include="[name^='ingredient']">+</button> <button type="button" class="delete-button btn btn-square btn-sm btn-outline btn-error" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/1" hx-include="[name^='ingredient']">-</button><div class="inline-block h-4 cursor-move handle"><svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></div></div></div></li></ol>`,
+				`<ol id="tools-list" class="pl-4 list-decimal"><li class="pb-2"><div class="grid grid-flow-col items-center"><label><input type="text" name="tools" placeholder="1 frying pan" class="input input-bordered input-sm w-full" _="on keydown if event.key is 'Enter' halt the event then call addItem(event)"></label><div class="ml-2"><button type="button" class="btn btn-square btn-sm btn-outline btn-success" title="Shortcut: Enter" onclick="addItem(event)">+</button> <button type="button" class="delete-button btn btn-square btn-sm btn-outline btn-error" _="on click if (closest <ol/>).childElementCount > 1 remove closest <li/> else set input to (closest <li/>).querySelector('input') then set input.value to '' then input.focus()">-</button><div class="inline-block h-4 cursor-move handle ml-2"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></div></div></div></li></ol>`,
+				`<ol id="ingredients-list" class="pl-4 list-decimal"><li class="pb-2"><div class="grid grid-flow-col items-center"><label><input required type="text" name="ingredients" value="" placeholder="1 cup of chopped onions" class="input input-bordered input-sm w-full" _="on keydown if event.key is 'Enter' halt the event then call addItem(event)"></label><div class="ml-2"><button type="button" class="btn btn-square btn-sm btn-outline btn-success" title="Shortcut: Enter" onclick="addItem(event)">+</button> <button type="button" class="delete-button btn btn-square btn-sm btn-outline btn-error" _="on click if (closest <ol/>).childElementCount > 1 remove closest <li/> else set input to (closest <li/>).querySelector('input') then set input.value to '' then input.focus()">-</button><div class="inline-block h-4 cursor-move handle ml-2"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></div></div></div></li></ol></div><div class="col-span-6 px-6 py-2 border-gray-700 md:rounded-bl-none md:col-span-4"><h2 class="font-semibold text-center pb-2"><span class="underline">Instructions</span> <sup class="text-red-600">*</sup></h2><ol id="instructions-list" class="grid list-decimal"><li class="pt-2 md:pl-0"><div class="flex"><label class="w-11/12"><textarea required name="instructions" rows="3" class="textarea textarea-bordered w-full" placeholder="Mix all ingredients together" _="on keydown if event.key is 'Enter' halt the event then call addItem(event)"></textarea></label><div class="grid ml-2"><button type="button" class="btn btn-square btn-sm btn-outline btn-success" title="Shortcut: CTRL + Enter" onclick="addItem(event)">+</button> <button type="button" class="delete-button btn btn-square btn-sm btn-outline btn-error" _="on click if (closest <ol/>).childElementCount > 1 remove closest <li/> else set input to (closest <li/>).querySelector('textarea') then set input.value to '' then input.focus()">-</button><div class="h-4 cursor-move handle grid place-content-center"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></div></div></div></li></ol>`,
 				`<div class="col-span-6 px-6 py-2 border-gray-700 md:rounded-bl-none md:col-span-4"><h2 class="font-semibold text-center pb-2"><span class="underline">Instructions</span> <sup class="text-red-600">*</sup></h2>`,
-				`<ol id="instructions-list" class="grid list-decimal"><li class="pt-2 md:pl-0"><div class="flex"><label class="w-11/12"><textarea required name="instruction-1" rows="3" class="textarea textarea-bordered w-full" placeholder="Instruction #1" _="on keydown if event.ctrlKey and event.key === 'Enter' then halt the event then get next <div/> from the parentElement of me then get first <button/> in it then call htmx.trigger(it, 'click')"></textarea></label><div class="grid ml-2"><button type="button" class="btn btn-square btn-sm btn-outline btn-success" title="Shortcut: CTRL + Enter" hx-post="/recipes/add/manual/instruction" hx-target="#instructions-list" hx-swap="beforeend" hx-include="[name^='instruction']">+</button> <button type="button" class="delete-button btn btn-square btn-sm btn-outline btn-error" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/1" hx-include="[name^='instruction']">-</button><div class="h-4 cursor-move handle grid place-content-center"><svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></div></div></div></li></ol>`,
+				`<ol id="instructions-list" class="grid list-decimal"><li class="pt-2 md:pl-0"><div class="flex"><label class="w-11/12"><textarea required name="instructions" rows="3" class="textarea textarea-bordered w-full" placeholder="Mix all ingredients together" _="on keydown if event.key is 'Enter' halt the event then call addItem(event)"></textarea></label><div class="grid ml-2"><button type="button" class="btn btn-square btn-sm btn-outline btn-success" title="Shortcut: CTRL + Enter" onclick="addItem(event)">+</button> <button type="button" class="delete-button btn btn-square btn-sm btn-outline btn-error" _="on click if (closest <ol/>).childElementCount > 1 remove closest <li/> else set input to (closest <li/>).querySelector('textarea') then set input.value to '' then input.focus()">-</button><div class="h-4 cursor-move handle grid place-content-center"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></div></div></div></li></ol>`,
 				`<button class="btn btn-primary btn-block btn-sm">Submit</button>`,
 			}
 			assertStringsInHTML(t, getBodyHTML(rr), want)
@@ -202,10 +203,10 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 
 	t.Run("missing source defaults to unknown", func(t *testing.T) {
 		_ = resetRepo()
-		contentType, body := createMultipartForm(map[string]string{
-			"title":         "title",
-			"ingredient-1":  "ing1",
-			"instruction-1": "ins1",
+		contentType, body := createMultipartForm(map[string][]string{
+			"title":        {"title"},
+			"ingredients":  {"ing1"},
+			"instructions": {"ins1"},
 		})
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
@@ -218,11 +219,11 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 
 	t.Run("missing category defaults to uncategorized", func(t *testing.T) {
 		_ = resetRepo()
-		contentType, body := createMultipartForm(map[string]string{
-			"title":         "title",
-			"source":        "Mommy",
-			"ingredient-1":  "ing1",
-			"instruction-1": "ins1",
+		contentType, body := createMultipartForm(map[string][]string{
+			"title":        {"title"},
+			"source":       {"Mommy"},
+			"ingredients":  {"ing1"},
+			"instructions": {"ins1"},
 		})
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
@@ -235,11 +236,11 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 
 	t.Run("missing yield defaults to 1", func(t *testing.T) {
 		_ = resetRepo()
-		contentType, body := createMultipartForm(map[string]string{
-			"title":         "title",
-			"source":        "Mommy",
-			"ingredient-1":  "ing1",
-			"instruction-1": "ins1",
+		contentType, body := createMultipartForm(map[string][]string{
+			"title":        {"title"},
+			"source":       {"Mommy"},
+			"ingredients":  {"ing1"},
+			"instructions": {"ins1"},
 		})
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
@@ -252,12 +253,12 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 
 	t.Run("can only be one category", func(t *testing.T) {
 		_ = resetRepo()
-		contentType, body := createMultipartForm(map[string]string{
-			"title":         "title",
-			"category":      "dinner,lunch",
-			"source":        "Mommy",
-			"ingredient-1":  "ing1",
-			"instruction-1": "ins1",
+		contentType, body := createMultipartForm(map[string][]string{
+			"title":        {"title"},
+			"category":     {"dinner,lunch"},
+			"source":       {"Mommy"},
+			"ingredients":  {"ing1"},
+			"instructions": {"ins1"},
 		})
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
@@ -270,12 +271,12 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 
 	t.Run("subcategories are possible", func(t *testing.T) {
 		_ = resetRepo()
-		contentType, body := createMultipartForm(map[string]string{
-			"title":         "title",
-			"category":      "beverages:cocktails:vodka",
-			"source":        "Mommy",
-			"ingredient-1":  "ing1",
-			"instruction-1": "ins1",
+		contentType, body := createMultipartForm(map[string][]string{
+			"title":        {"title"},
+			"category":     {"beverages:cocktails:vodka"},
+			"source":       {"Mommy"},
+			"ingredients":  {"ing1"},
+			"instructions": {"ins1"},
 		})
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
@@ -289,28 +290,27 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 	t.Run("submit recipe", func(t *testing.T) {
 		_ = resetRepo()
 
-		contentType, body := createMultipartForm(map[string]string{
-			"title":               "Salsa",
-			"images":              "eggs.jpg",
-			"category":            "appetizers",
-			"source":              "Mommy",
-			"description":         "The best",
-			"calories":            "666",
-			"total-carbohydrates": "31g",
-			"sugars":              "0.1mg",
-			"protein":             "5g",
-			"total-fat":           "0g",
-			"saturated-fat":       "0g",
-			"cholesterol":         "256mg",
-			"sodium":              "777mg",
-			"fiber":               "2g",
-			"time-preparation":    "00:15:30",
-			"time-cooking":        "00:30:15",
-			"ingredient-1":        "ing1",
-			"ingredient-2":        "ing2",
-			"instruction-1":       "ins1",
-			"instruction-2":       "ins2",
-			"yield":               "4",
+		contentType, body := createMultipartForm(map[string][]string{
+			"title":               {"Salsa"},
+			"images":              {"eggs.jpg"},
+			"category":            {"appetizers"},
+			"source":              {"Mommy"},
+			"description":         {"The best"},
+			"calories":            {"666"},
+			"total-carbohydrates": {"31g"},
+			"sugars":              {"0.1mg"},
+			"protein":             {"5g"},
+			"total-fat":           {"0g"},
+			"saturated-fat":       {"0g"},
+			"cholesterol":         {"256mg"},
+			"sodium":              {"777mg"},
+			"fiber":               {"2g"},
+			"time-preparation":    {"00:15:30"},
+			"time-cooking":        {"00:30:15"},
+			"tools":               {"wok", "3 pan"},
+			"ingredients":         {"ing1", "ing2"},
+			"instructions":        {"ins1", "ins2"},
+			"yield":               {"4"},
 		})
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
 
@@ -343,7 +343,7 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 				Cook:  30*time.Minute + 15*time.Second,
 				Total: 45*time.Minute + 45*time.Second,
 			},
-			Tools: make([]string, 0),
+			Tools: []models.Tool{{Name: "wok", Quantity: 1}, {Name: "pan", Quantity: 3}},
 			URL:   "Mommy",
 			Yield: 4,
 		}
@@ -358,188 +358,6 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 	})
 }
 
-func TestHandlers_Recipes_AddManualIngredient(t *testing.T) {
-	srv := newServerTest()
-
-	uri := "/recipes/add/manual/ingredient"
-
-	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
-	})
-
-	t.Run("does not yield input when previous input empty", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("ingredient-1="))
-
-		assertStatus(t, rr.Code, http.StatusUnprocessableEntity)
-	})
-
-	t.Run("yields new ingredient input", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("ingredient-1=ingredient1"))
-
-		assertStatus(t, rr.Code, http.StatusOK)
-		want := []string{
-			`<input required type="text" name="ingredient-2" placeholder="Ingredient #2" autofocus class="input input-bordered input-sm w-full" _="on keydown if event.key is 'Enter' then halt the event then get next <button/> from the parentElement of me then call htmx.trigger(it, 'click')"></label>`,
-			`<button type="button" class="btn btn-square btn-sm btn-outline btn-success" title="Shortcut: Enter" hx-post="/recipes/add/manual/ingredient" hx-target="#ingredients-list" hx-swap="beforeend" hx-include="[name^='ingredient']">+</button>`,
-			`<button type="button" class="delete-button btn btn-square btn-sm btn-outline btn-error" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/2" hx-include="[name^='ingredient']">-</button>`,
-		}
-		assertStringsInHTML(t, getBodyHTML(rr), want)
-	})
-}
-
-func TestHandlers_Recipes_AddManualIngredientDelete(t *testing.T) {
-	srv := newServerTest()
-
-	uri := "/recipes/add/manual/ingredient"
-
-	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
-	})
-
-	t.Run("does not yield input when only one input left", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri+"/1", formHeader, strings.NewReader("ingredient-1="))
-
-		assertStatus(t, rr.Code, http.StatusUnprocessableEntity)
-	})
-
-	testcases := []struct {
-		name  string
-		entry int
-		want  []string
-	}{
-		{
-			name:  "delete last entry",
-			entry: 4,
-			want: []string{
-				`<input required type="text" name="ingredient-1" placeholder="Ingredient #1" class="input input-bordered input-sm w-full" value="one" _="on keydown if event.key is 'Enter' then halt the event then get next <button/> from the parentElement of me then call htmx.trigger(it, 'click')">`,
-				`<input required type="text" name="ingredient-2" placeholder="Ingredient #2" class="input input-bordered input-sm w-full" value="two" _="on keydown if event.key is 'Enter' then halt the event then get next <button/> from the parentElement of me then call htmx.trigger(it, 'click')">`,
-				`<input required type="text" name="ingredient-3" placeholder="Ingredient #3" class="input input-bordered input-sm w-full" value="three" _="on keydown if event.key is 'Enter' then halt the event then get next <button/> from the parentElement of me then call htmx.trigger(it, 'click')">`,
-			},
-		},
-		{
-			name:  "delete first entry",
-			entry: 1,
-			want: []string{
-				`<input required type="text" name="ingredient-1" placeholder="Ingredient #1" class="input input-bordered input-sm w-full" value="two" _="on keydown if event.key is 'Enter' then halt the event then get next <button/> from the parentElement of me then call htmx.trigger(it, 'click')">`,
-				`<input required type="text" name="ingredient-2" placeholder="Ingredient #2" class="input input-bordered input-sm w-full" value="three" _="on keydown if event.key is 'Enter' then halt the event then get next <button/> from the parentElement of me then call htmx.trigger(it, 'click')">`,
-				`<input required type="text" name="ingredient-3" placeholder="Ingredient #3" class="input input-bordered input-sm w-full" value="''" _="on keydown if event.key is 'Enter' then halt the event then get next <button/> from the parentElement of me then call htmx.trigger(it, 'click')">`,
-			},
-		},
-		{
-			name:  "delete middle entry",
-			entry: 3,
-			want: []string{
-				`<input required type="text" name="ingredient-1" placeholder="Ingredient #1" class="input input-bordered input-sm w-full" value="one" _="on keydown if event.key is 'Enter' then halt the event then get next <button/> from the parentElement of me then call htmx.trigger(it, 'click')">`,
-				`<input required type="text" name="ingredient-2" placeholder="Ingredient #2" class="input input-bordered input-sm w-full" value="two" _="on keydown if event.key is 'Enter' then halt the event then get next <button/> from the parentElement of me then call htmx.trigger(it, 'click')"`,
-				`<input required type="text" name="ingredient-3" placeholder="Ingredient #3" class="input input-bordered input-sm w-full" value="''" _="on keydown if event.key is 'Enter' then halt the event then get next <button/> from the parentElement of me then call htmx.trigger(it, 'click')">`,
-			},
-		},
-	}
-	for _, tc := range testcases {
-		t.Run(tc.name, func(t *testing.T) {
-			rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri+"/"+strconv.Itoa(tc.entry), formHeader, strings.NewReader("ingredient-1=one&ingredient-2=two&ingredient-3=three&ingredient-4=''"))
-
-			assertStatus(t, rr.Code, http.StatusOK)
-			tc.want = append(tc.want, []string{
-				`<button type="button" class="delete-button btn btn-square btn-sm btn-outline btn-error" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/1" hx-include="[name^='ingredient']">-</button>`,
-				`<button type="button" class="delete-button btn btn-square btn-sm btn-outline btn-error" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/2" hx-include="[name^='ingredient']">-</button>`,
-				`<button type="button" class="delete-button btn btn-square btn-sm btn-outline btn-error" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/3" hx-include="[name^='ingredient']">-</button>`,
-			}...)
-			assertStringsInHTML(t, getBodyHTML(rr), tc.want)
-		})
-	}
-}
-
-func TestHandlers_Recipes_AddManualInstruction(t *testing.T) {
-	srv := newServerTest()
-
-	uri := "/recipes/add/manual/instruction"
-
-	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
-	})
-
-	t.Run("does not yield input when previous input empty", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("instruction-1="))
-
-		assertStatus(t, rr.Code, http.StatusUnprocessableEntity)
-	})
-
-	t.Run("yields new instruction input", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("instruction-1=one"))
-
-		assertStatus(t, rr.Code, http.StatusOK)
-		want := []string{
-			`<textarea required name="instruction-2" rows="3" autofocus class="textarea textarea-bordered w-full" placeholder="Instruction #2" _="on keydown if event.ctrlKey and event.key === 'Enter' then halt the event then get next <div/> from the parentElement of me then get first <button/> in it then call htmx.trigger(it, 'click')"></textarea>`,
-			`<button type="button" class="delete-button btn btn-square btn-sm btn-outline btn-error" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/2" hx-include="[name^='instruction']">-</button>`,
-			`<button type="button" class="btn btn-square btn-sm btn-outline btn-success" title="Shortcut: CTRL + Enter" hx-post="/recipes/add/manual/instruction" hx-target="#instructions-list" hx-swap="beforeend" hx-include="[name^='instruction']">+</button>`,
-		}
-		assertStringsInHTML(t, getBodyHTML(rr), want)
-	})
-}
-
-func TestHandlers_Recipes_AddManualInstructionDelete(t *testing.T) {
-	srv := newServerTest()
-
-	uri := "/recipes/add/manual/instruction"
-
-	t.Run("must be logged in", func(t *testing.T) {
-		assertMustBeLoggedIn(t, srv, http.MethodPost, uri)
-	})
-
-	t.Run("does not yield input when only one input left", func(t *testing.T) {
-		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri+"/1", formHeader, strings.NewReader("instruction-1="))
-
-		assertStatus(t, rr.Code, http.StatusUnprocessableEntity)
-	})
-
-	testcases := []struct {
-		name  string
-		entry int
-		want  []string
-	}{
-		{
-			name:  "delete last entry",
-			entry: 4,
-			want: []string{
-				`<textarea required name="instruction-1" rows="3" class="textarea textarea-bordered w-full" placeholder="Instruction #1" _="on keydown if event.ctrlKey and event.key === 'Enter' then halt the event then get next <div/> from the parentElement of me then get first <button/> in it then call htmx.trigger(it, 'click')">One</textarea>`,
-				`<textarea required name="instruction-2" rows="3" class="textarea textarea-bordered w-full" placeholder="Instruction #2" _="on keydown if event.ctrlKey and event.key === 'Enter' then halt the event then get next <div/> from the parentElement of me then get first <button/> in it then call htmx.trigger(it, 'click')">Two</textarea>`,
-				`<textarea required name="instruction-3" rows="3" class="textarea textarea-bordered w-full" placeholder="Instruction #3" _="on keydown if event.ctrlKey and event.key === 'Enter' then halt the event then get next <div/> from the parentElement of me then get first <button/> in it then call htmx.trigger(it, 'click')">Three</textarea>`,
-			},
-		},
-		{
-			name:  "delete first entry",
-			entry: 1,
-			want: []string{
-				`<textarea required name="instruction-1" rows="3" class="textarea textarea-bordered w-full" placeholder="Instruction #1" _="on keydown if event.ctrlKey and event.key === 'Enter' then halt the event then get next <div/> from the parentElement of me then get first <button/> in it then call htmx.trigger(it, 'click')">Two</textarea>`,
-				`<textarea required name="instruction-2" rows="3" class="textarea textarea-bordered w-full" placeholder="Instruction #2" _="on keydown if event.ctrlKey and event.key === 'Enter' then halt the event then get next <div/> from the parentElement of me then get first <button/> in it then call htmx.trigger(it, 'click')">Three</textarea>`,
-				`<textarea required name="instruction-3" rows="3" class="textarea textarea-bordered w-full" placeholder="Instruction #3" _="on keydown if event.ctrlKey and event.key === 'Enter' then halt the event then get next <div/> from the parentElement of me then get first <button/> in it then call htmx.trigger(it, 'click')">''</textarea>`,
-			},
-		},
-		{
-			name:  "delete middle entry",
-			entry: 3,
-			want: []string{
-				`<textarea required name="instruction-1" rows="3" class="textarea textarea-bordered w-full" placeholder="Instruction #1" _="on keydown if event.ctrlKey and event.key === 'Enter' then halt the event then get next <div/> from the parentElement of me then get first <button/> in it then call htmx.trigger(it, 'click')">One</textarea>`,
-				`<textarea required name="instruction-2" rows="3" class="textarea textarea-bordered w-full" placeholder="Instruction #2" _="on keydown if event.ctrlKey and event.key === 'Enter' then halt the event then get next <div/> from the parentElement of me then get first <button/> in it then call htmx.trigger(it, 'click')">Two</textarea>`,
-				`<textarea required name="instruction-3" rows="3" class="textarea textarea-bordered w-full" placeholder="Instruction #3" _="on keydown if event.ctrlKey and event.key === 'Enter' then halt the event then get next <div/> from the parentElement of me then get first <button/> in it then call htmx.trigger(it, 'click')">''</textarea>`,
-			},
-		},
-	}
-	for _, tc := range testcases {
-		t.Run(tc.name, func(t *testing.T) {
-			rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri+"/"+strconv.Itoa(tc.entry), formHeader, strings.NewReader("instruction-1=One&instruction-2=Two&instruction-3=Three&instruction-4=''"))
-
-			assertStatus(t, rr.Code, http.StatusOK)
-			tc.want = append(tc.want, []string{
-				`<button type="button" class="delete-button btn btn-square btn-sm btn-outline btn-error" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/1" hx-include="[name^='instruction']">-</button>`,
-				`<button type="button" class="delete-button btn btn-square btn-sm btn-outline btn-error" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/2" hx-include="[name^='instruction']">-</button>`,
-				`<button type="button" class="delete-button btn btn-square btn-sm btn-outline btn-error" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/3" hx-include="[name^='instruction']">-</button>`,
-			}...)
-			assertStringsInHTML(t, getBodyHTML(rr), tc.want)
-		})
-	}
-}
-
 func TestHandlers_Recipes_AddOCR(t *testing.T) {
 	srv, ts, c := createWSServer()
 	defer c.Close()
@@ -552,8 +370,7 @@ func TestHandlers_Recipes_AddOCR(t *testing.T) {
 	uri := ts.URL + "/recipes/add/ocr"
 
 	sendReq := func(files string) *httptest.ResponseRecorder {
-		fields := map[string]string{"files": files}
-		contentType, body := createMultipartForm(fields)
+		contentType, body := createMultipartForm(map[string][]string{"files": {files}})
 		return sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, header(contentType), strings.NewReader(body))
 	}
 
@@ -826,7 +643,7 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 			Cook:  1 * time.Hour,
 			Total: 1*time.Hour + 30*time.Minute,
 		},
-		Tools:     []string{"spoons", "drill"},
+		Tools:     []models.Tool{{Name: "spoons"}, {Name: "drill"}},
 		UpdatedAt: time.Now(),
 		URL:       "https://example.com/recipes/yummy",
 		Yield:     12,
@@ -887,9 +704,10 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 			`<textarea name="description" placeholder="This Thai curry chicken will make you drool." class="textarea w-full h-full resize-none">A delicious recipe!</textarea>`,
 			`<tbody><tr><td>Prep</td><td><label><input type="text" name="time-preparation" class="input input-bordered input-xs max-w-24 html-duration-picker" value="00:30:00"></label></td></tr><tr><td>Cooking</td><td><label><input type="text" name="time-cooking" class="input input-bordered input-xs max-w-24 html-duration-picker" value="01:00:00"></label></td></tr></tbody>`,
 			`<tbody><tr><td>Calories</td><td><label><input type="text" name="calories" autocomplete="off" placeholder="368kcal" class="input input-bordered input-xs max-w-24" value="354"></label></td></tr><tr><td>Total carbs</td><td><label><input type="text" name="total-carbohydrates" autocomplete="off" placeholder="35g" class="input input-bordered input-xs max-w-24" value="7g"></label></td></tr><tr><td>Sugars</td><td><label><input type="text" name="sugars" autocomplete="off" placeholder="3g" class="input input-bordered input-xs max-w-24" value="6g"></label></td></tr><tr><td>Protein</td><td><label><input type="text" name="protein" autocomplete="off" placeholder="21g" class="input input-bordered input-xs max-w-24" value="3g"></label></td></tr><tr><td>Total fat</td><td><label><input type="text" name="total-fat" autocomplete="off" placeholder="15g" class="input input-bordered input-xs max-w-24" value="8g"></label></td></tr><tr><td>Saturated fat</td><td><label><input type="text" name="saturated-fat" autocomplete="off" placeholder="1.8g" class="input input-bordered input-xs max-w-24" value="4g"></label></td></tr><tr><td>Cholesterol</td><td><label><input type="text" name="cholesterol" autocomplete="off" placeholder="1.1mg" class="input input-bordered input-xs max-w-24" value="1g"></label></td></tr><tr><td>Sodium</td><td><label><input type="text" name="sodium" autocomplete="off" placeholder="100mg" class="input input-bordered input-xs max-w-24" value="5g"></label></td></tr><tr><td>Fiber</td><td><label><input type="text" name="fiber" autocomplete="off" placeholder="8g" class="input input-bordered input-xs max-w-24" value="2g"></label></td></tr></tbody>`,
+			`<input type="text" name="tools" placeholder="1 frying pan" class="input input-bordered input-sm w-full" value="0 spoons" _="on keydown if event.key is 'Enter' halt the event then call addItem(event)">`,
 			`<input type="text" name="time-preparation" class="input input-bordered input-xs max-w-24 html-duration-picker" value="00:30:00">`,
-			`<input required type="text" name="ingredient-1" placeholder="Ingredient #1" class="input input-bordered input-sm w-full" value="ing1" _="on keydown if event.key is 'Enter' then halt the event then get next <button/> from the parentElement of me then call htmx.trigger(it, 'click')">`,
-			`<textarea required name="instruction-1" rows="3" class="textarea textarea-bordered w-full" placeholder="Instruction #1" _="on keydown if event.ctrlKey and event.key === 'Enter' then halt the event then get next <div/> from the parentElement of me then get first <button/> in it then call htmx.trigger(it, 'click')">ins1</textarea>`,
+			`<input required type="text" name="ingredients" value="ing1" placeholder="1 cup of chopped onions" class="input input-bordered input-sm w-full" _="on keydown if event.key is 'Enter' halt the event then call addItem(event)">`,
+			`<textarea required name="instructions" rows="3" class="textarea textarea-bordered w-full" placeholder="Mix all ingredients together" _="on keydown if event.key is 'Enter' halt the event then call addItem(event)">ins1</textarea>`,
 		}
 		assertStringsInHTML(t, getBodyHTML(rr), want)
 	})
@@ -898,7 +716,7 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 		files := &mockFiles{}
 		srv.Files = files
 		srv.Repository = &mockRepository{RecipesRegistered: map[int64]models.Recipes{1: {baseRecipe}}}
-		contentType, body := createMultipartForm(map[string]string{})
+		contentType, body := createMultipartForm(map[string][]string{})
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, fmt.Sprintf(uri, 1), header(contentType), strings.NewReader(body))
 
@@ -916,7 +734,7 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 		files := &mockFiles{}
 		srv.Files = files
 		srv.Repository = &mockRepository{RecipesRegistered: map[int64]models.Recipes{1: {baseRecipe}}}
-		contentType, body := createMultipartForm(map[string]string{"images": "eggs.jpg"})
+		contentType, body := createMultipartForm(map[string][]string{"images": {"eggs.jpg"}})
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, fmt.Sprintf(uri, 1), header(contentType), strings.NewReader(body))
 
@@ -934,28 +752,26 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 		files := &mockFiles{}
 		srv.Files = files
 		srv.Repository = &mockRepository{RecipesRegistered: map[int64]models.Recipes{1: {baseRecipe}}}
-		fields := map[string]string{
-			"title":               "Salsa",
-			"image":               "jesus.jpg",
-			"category":            "appetizers",
-			"source":              "Mommy",
-			"description":         "The best",
-			"calories":            "666",
-			"total-carbohydrates": "31g",
-			"sugars":              "0.1mg",
-			"protein":             "5g",
-			"total-fat":           "24g",
-			"saturated-fat":       "58g",
-			"cholesterol":         "256mg",
-			"sodium":              "777mg",
-			"fiber":               "2g",
-			"time-preparation":    "00:15:30",
-			"time-cooking":        "00:30:15",
-			"ingredient-1":        "cheese",
-			"ingredient-2":        "avocado",
-			"instruction-1":       "mix",
-			"instruction-2":       "eat",
-			"yield":               "4",
+		fields := map[string][]string{
+			"title":               {"Salsa"},
+			"image":               {"jesus.jpg"},
+			"category":            {"appetizers"},
+			"source":              {"Mommy"},
+			"description":         {"The best"},
+			"calories":            {"666"},
+			"total-carbohydrates": {"31g"},
+			"sugars":              {"0.1mg"},
+			"protein":             {"5g"},
+			"total-fat":           {"24g"},
+			"saturated-fat":       {"58g"},
+			"cholesterol":         {"256mg"},
+			"sodium":              {"777mg"},
+			"fiber":               {"2g"},
+			"time-preparation":    {"00:15:30"},
+			"time-cooking":        {"00:30:15"},
+			"ingredients":         {"cheese", "avocado"},
+			"instructions":        {"mix", "eat"},
+			"yield":               {"4"},
 		}
 		contentType, body := createMultipartForm(fields)
 
@@ -1004,10 +820,10 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 
 	t.Run("missing source defaults to unknown", func(t *testing.T) {
 		_ = resetRepo()
-		contentType, body := createMultipartForm(map[string]string{
-			"title":         "title",
-			"ingredient-1":  "ing1",
-			"instruction-1": "ins1",
+		contentType, body := createMultipartForm(map[string][]string{
+			"title":        {"title"},
+			"ingredients":  {"ing1"},
+			"instructions": {"ins1"},
 		})
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, fmt.Sprintf(uri, 1), header(contentType), strings.NewReader(body))
@@ -1020,11 +836,11 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 
 	t.Run("missing category defaults to uncategorized", func(t *testing.T) {
 		_ = resetRepo()
-		contentType, body := createMultipartForm(map[string]string{
-			"title":         "title",
-			"source":        "Mommy",
-			"ingredient-1":  "ing1",
-			"instruction-1": "ins1",
+		contentType, body := createMultipartForm(map[string][]string{
+			"title":        {"title"},
+			"source":       {"Mommy"},
+			"ingredients":  {"ing1"},
+			"instructions": {"ins1"},
 		})
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, fmt.Sprintf(uri, 1), header(contentType), strings.NewReader(body))
@@ -1037,11 +853,11 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 
 	t.Run("missing yield defaults to 1", func(t *testing.T) {
 		_ = resetRepo()
-		contentType, body := createMultipartForm(map[string]string{
-			"title":         "title",
-			"source":        "Mommy",
-			"ingredient-1":  "ing1",
-			"instruction-1": "ins1",
+		contentType, body := createMultipartForm(map[string][]string{
+			"title":        {"title"},
+			"source":       {"Mommy"},
+			"ingredients":  {"ing1"},
+			"instructions": {"ins1"},
 		})
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, fmt.Sprintf(uri, 1), header(contentType), strings.NewReader(body))
@@ -1054,12 +870,12 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 
 	t.Run("can only be one category", func(t *testing.T) {
 		_ = resetRepo()
-		contentType, body := createMultipartForm(map[string]string{
-			"title":         "title",
-			"category":      "dinner,lunch",
-			"source":        "Mommy",
-			"ingredient-1":  "ing1",
-			"instruction-1": "ins1",
+		contentType, body := createMultipartForm(map[string][]string{
+			"title":        {"title"},
+			"category":     {"dinner,lunch"},
+			"source":       {"Mommy"},
+			"ingredients":  {"ing1"},
+			"instructions": {"ins1"},
 		})
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, fmt.Sprintf(uri, 1), header(contentType), strings.NewReader(body))
@@ -1072,12 +888,12 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 
 	t.Run("subcategories are possible", func(t *testing.T) {
 		_ = resetRepo()
-		contentType, body := createMultipartForm(map[string]string{
-			"title":         "title",
-			"category":      "beverages:cocktails:vodka",
-			"source":        "Mommy",
-			"ingredient-1":  "ing1",
-			"instruction-1": "ins1",
+		contentType, body := createMultipartForm(map[string][]string{
+			"title":        {"title"},
+			"category":     {"beverages:cocktails:vodka"},
+			"source":       {"Mommy"},
+			"ingredients":  {"ing1"},
+			"instructions": {"ins1"},
 		})
 
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPut, fmt.Sprintf(uri, 1), header(contentType), strings.NewReader(body))
@@ -1490,10 +1306,10 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 			`<p class="text-sm text-center">2 servings</p>`,
 			`<a class="btn btn-sm btn-outline no-underline print:hidden" href="https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/" target="_blank">Source</a><p class="hidden print:block print:whitespace-nowrap print:overflow-hidden print:text-ellipsis print:max-w-xs">https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/</p>`,
 			`<textarea class="textarea w-full h-full resize-none" readonly>This is the most delicious recipe!</textarea>`,
-			`<p class="text-xs">Per 100g: 500 calories; total carbohydrates 7g; sugars 6g; protein 3g; total fat 8g; saturated fat 4g; cholesterol 1g; sodium 5g; fiber 2g.</p>`,
+			`<p class="text-xs">Per 100g: calories 500; total carbohydrates 7g; sugar 6g; protein 3g; total fat 8g; saturated fat 4g; cholesterol 1g; fiber 2g</p>`,
 			`<table class="table table-zebra table-xs md:h-fit"><thead><tr><th>Time</th><th>h:m:s</th></tr></thead> <tbody><tr><td>Prep:</td><td><time datetime="PT05M">5m</time></td></tr><tr><td>Cooking:</td><td><time datetime="PT1H05M">1h05m</time></td></tr><tr><td>Total:</td><td><time datetime="PT1H10M">1h10m</time></td></tr></tbody></table>`,
 			`<table class="table table-zebra table-xs print:hidden"><thead><tr><th>Nutrition (per 100g)</th><th>Amount</th></tr></thead> <tbody><tr><td>Calories:</td><td>500</td></tr><tr><td>Total carbs:</td><td>7g</td></tr><tr><td>Sugars:</td><td>6g</td></tr><tr><td>Protein:</td><td>3g</td></tr><tr><td>Total fat:</td><td>8g</td></tr><tr><td>Saturated fat:</td><td>4g</td></tr><tr><td>Cholesterol:</td><td>1g</td></tr><tr><td>Sodium:</td><td>5g</td></tr><tr><td>Fiber:</td><td>2g</td></tr></tbody></table>`,
-			`<div id="ingredients-instructions-container" class="grid text-sm md:grid-flow-col md:col-span-6"><div class="col-span-6 border-gray-700 px-4 py-2 border-y md:col-span-2 md:border-r md:border-y-0 print:hidden"><h2 class="font-semibold text-center underline md:pb-2">Ingredients</h2><ul><li class="form-control hover:bg-gray-100 dark:hover:bg-gray-700"><label class="label justify-start"><input type="checkbox" class="checkbox"> <span class="label-text pl-2">Ing1</span></label></li><li class="form-control hover:bg-gray-100 dark:hover:bg-gray-700"><label class="label justify-start"><input type="checkbox" class="checkbox"> <span class="label-text pl-2">Ing2</span></label></li><li class="form-control hover:bg-gray-100 dark:hover:bg-gray-700"><label class="label justify-start"><input type="checkbox" class="checkbox"> <span class="label-text pl-2">Ing3</span></label></li></ul></div><div class="col-span-6 px-8 py-2 border-gray-700 md:rounded-bl-none md:col-span-4 print:hidden"><h2 class="font-semibold text-center underline md:pb-2">Instructions</h2><ol class="grid list-decimal"><li class="min-w-full py-2 select-none hover:bg-gray-100 dark:hover:bg-gray-700" _="on mousedown toggle .line-through"><span class="whitespace-pre-line">Ins1</span></li><li class="min-w-full py-2 select-none hover:bg-gray-100 dark:hover:bg-gray-700" _="on mousedown toggle .line-through"><span class="whitespace-pre-line">Ins2</span></li><li class="min-w-full py-2 select-none hover:bg-gray-100 dark:hover:bg-gray-700" _="on mousedown toggle .line-through"><span class="whitespace-pre-line">Ins3</span></li></ol></div></div>`,
+			`<div id="ingredients-instructions-container" class="grid text-sm md:grid-flow-col md:col-span-6"><div class="col-span-6 border-gray-700 px-4 py-2 border-y md:col-span-2 md:border-r md:border-y-0 print:hidden"><h2 class="font-semibold text-center underline">Ingredients</h2><ul><li class="form-control hover:bg-gray-100 dark:hover:bg-gray-700"><label class="label justify-start"><input type="checkbox" class="checkbox"> <span class="label-text pl-2">Ing1</span></label></li><li class="form-control hover:bg-gray-100 dark:hover:bg-gray-700"><label class="label justify-start"><input type="checkbox" class="checkbox"> <span class="label-text pl-2">Ing2</span></label></li><li class="form-control hover:bg-gray-100 dark:hover:bg-gray-700"><label class="label justify-start"><input type="checkbox" class="checkbox"> <span class="label-text pl-2">Ing3</span></label></li></ul></div><div class="col-span-6 px-8 py-2 border-gray-700 md:rounded-bl-none md:col-span-4 print:hidden"><h2 class="font-semibold text-center underline md:pb-2">Instructions</h2><ol class="grid list-decimal"><li class="min-w-full py-2 select-none hover:bg-gray-100 dark:hover:bg-gray-700" _="on mousedown toggle .line-through"><span class="whitespace-pre-line">Ins1</span></li><li class="min-w-full py-2 select-none hover:bg-gray-100 dark:hover:bg-gray-700" _="on mousedown toggle .line-through"><span class="whitespace-pre-line">Ins2</span></li><li class="min-w-full py-2 select-none hover:bg-gray-100 dark:hover:bg-gray-700" _="on mousedown toggle .line-through"><span class="whitespace-pre-line">Ins3</span></li></ol></div></div><div class="hidden print:grid col-span-6 ml-2 my-1"><h1 class="text-sm print:mb-1"><b>Ingredients</b></h1><ol class="col-span-6 w-full print:mb-2" style="column-count: 1"><li class="text-sm"><label><input type="checkbox"></label> <span class="pl-2">Ing1</span></li><li class="text-sm"><label><input type="checkbox"></label> <span class="pl-2">Ing2</span></li><li class="text-sm"><label><input type="checkbox"></label> <span class="pl-2">Ing3</span></li></ol></div><div class="hidden col-span-5 overflow-visible print:inline"><h1 class="text-sm print:ml-2 print:mb-1"><b>Instructions</b></h1><ol class="col-span-6 list-decimal w-full ml-6"><li class="print:mr-4"><span class="text-sm whitespace-pre-line">Ins1</span></li><li class="print:mr-4"><span class="text-sm whitespace-pre-line">Ins2</span></li><li class="print:mr-4"><span class="text-sm whitespace-pre-line">Ins3</span></li></ol></div></div>`,
 			`<h2 class="font-semibold text-center underline md:pb-2">Instructions</h2><ol class="grid list-decimal"><li class="min-w-full py-2 select-none hover:bg-gray-100 dark:hover:bg-gray-700" _="on mousedown toggle .line-through"><span class="whitespace-pre-line">Ins1</span></li><li class="min-w-full py-2 select-none hover:bg-gray-100 dark:hover:bg-gray-700" _="on mousedown toggle .line-through"><span class="whitespace-pre-line">Ins2</span></li><li class="min-w-full py-2 select-none hover:bg-gray-100 dark:hover:bg-gray-700" _="on mousedown toggle .line-through"><span class="whitespace-pre-line">Ins3</span></li></ol>`,
 		}
 		notWant := []string{
@@ -1817,7 +1633,7 @@ func TestHandlers_Recipes_View(t *testing.T) {
 				`<form autocomplete="off" _="on submit halt the event" class="print:hidden"><label class="form-control w-full"><div class="label p-0"><span class="label-text">Servings</span></div><input id="yield" type="number" min="1" name="yield" value="2" class="input input-bordered input-sm w-24" hx-get="/recipes/1/scale" hx-trigger="input" hx-target="#ingredients-instructions-container"></label></form>`,
 				`<a class="btn btn-sm btn-outline no-underline print:hidden" href="https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/" target="_blank">Source</a>`,
 				`<textarea class="textarea w-full h-full resize-none" readonly>This is the most delicious recipe!</textarea>`,
-				`<p class="text-xs">Per 100g: 500 calories; total carbohydrates 7g; sugars 6g; protein 3g; total fat 8g; saturated fat 4g; cholesterol 1g; sodium 5g; fiber 2g.</p>`,
+				`<p class="text-xs">Per 100g: calories 500; total carbohydrates 7g; sugar 6g; protein 3g; total fat 8g; saturated fat 4g; cholesterol 1g; fiber 2g</p>`,
 				`<table class="table table-zebra table-xs md:h-fit"><thead><tr><th>Time</th><th>h:m:s</th></tr></thead> <tbody><tr><td>Prep:</td><td><time datetime="PT05M">5m</time></td></tr><tr><td>Cooking:</td><td><time datetime="PT1H05M">1h05m</time></td></tr><tr><td>Total:</td><td><time datetime="PT1H10M">1h10m</time></td></tr></tbody></table>`,
 				`<table class="table table-zebra table-xs print:hidden"><thead><tr><th>Nutrition (per 100g)</th><th>Amount</th></tr></thead> <tbody><tr><td>Calories:</td><td>500</td></tr><tr><td>Total carbs:</td><td>7g</td></tr><tr><td>Sugars:</td><td>6g</td></tr><tr><td>Protein:</td><td>3g</td></tr><tr><td>Total fat:</td><td>8g</td></tr><tr><td>Saturated fat:</td><td>4g</td></tr><tr><td>Cholesterol:</td><td>1g</td></tr><tr><td>Sodium:</td><td>5g</td></tr><tr><td>Fiber:</td><td>2g</td></tr></tbody></table>`,
 			}

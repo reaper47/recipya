@@ -137,17 +137,7 @@ func (s *SchemaType) UnmarshalJSON(data []byte) error {
 	var v any
 	err := json.Unmarshal(data, &v)
 	if err != nil {
-		m := make(map[string]string)
-		err = json.Unmarshal(data, &m)
-		if err != nil {
-			return err
-		}
-
-		val, ok := m["Value"]
-		if !ok {
-			return fmt.Errorf("could not decode description %q", data)
-		}
-		v = val
+		return err
 	}
 
 	switch x := v.(type) {
@@ -300,13 +290,21 @@ func (d *Description) UnmarshalJSON(data []byte) error {
 	}
 
 	s = strings.TrimSpace(s)
-	s = strings.ReplaceAll(s, "\u202f", "")
-	s = strings.ReplaceAll(s, "\u00a0", "")
-	s = strings.ReplaceAll(s, "&quot;", "")
-	s = strings.ReplaceAll(s, "”", `"`)
-	s = strings.ReplaceAll(s, "\u00ad", "")
-	d.Value = s
+	replace := []struct {
+		old string
+		new string
+	}{
+		{old: "\u202f", new: ""},
+		{old: "\u00a0", new: ""},
+		{old: "&quot;", new: ""},
+		{old: "”", new: `"`},
+		{old: "\u00ad", new: ""},
+	}
+	for _, r := range replace {
+		s = strings.ReplaceAll(s, r.old, r.new)
+	}
 
+	d.Value = s
 	return nil
 }
 
@@ -389,11 +387,6 @@ func (i *Image) UnmarshalJSON(data []byte) error {
 		if ok {
 			i.Value = val.(string)
 		}
-	case any:
-		url, ok := v.(map[string]any)["url"]
-		if ok {
-			i.Value = url.(string)
-		}
 	}
 	return nil
 }
@@ -473,17 +466,7 @@ func (i *Instructions) UnmarshalJSON(data []byte) error {
 	var v any
 	err := json.Unmarshal(data, &v)
 	if err != nil {
-		m := make(map[string][]any)
-		err = json.Unmarshal(data, &m)
-		if err != nil {
-			return err
-		}
-
-		xv, ok := m["Values"]
-		if !ok {
-			return fmt.Errorf("could not decode description %q", data)
-		}
-		v = xv
+		return err
 	}
 
 	switch x := v.(type) {
@@ -646,12 +629,12 @@ func (y *Yield) UnmarshalJSON(data []byte) error {
 				y.Value = int16(4)
 			}
 		case string:
-			split := strings.Split(t, " ")
-			if len(split) > 0 {
-				v := split[0]
-				i, err := strconv.ParseInt(v, 10, 16)
+			parts := strings.Split(t, " ")
+			for _, part := range parts {
+				i, err := strconv.ParseInt(part, 10, 8)
 				if err == nil {
 					y.Value = int16(i)
+					break
 				}
 			}
 		}
@@ -716,8 +699,6 @@ func (n *NutritionSchema) UnmarshalJSON(data []byte) error {
 	}
 
 	switch x := v.(type) {
-	case []any:
-		break
 	case map[string]any:
 		if val, ok := x["calories"].(string); ok {
 			n.Calories = strings.TrimSpace(val)
@@ -777,13 +758,27 @@ func (n *NutritionSchema) UnmarshalJSON(data []byte) error {
 		if val, ok := x["unsaturatedFatContent"].(string); ok {
 			n.UnsaturatedFat = val
 		}
+	default:
+		slog.Warn("Could not parse nutrition schema", "schema", v, "type", x)
 	}
 	return nil
 }
 
 // Tools holds the list of tools used for a recipe.
 type Tools struct {
-	Values []string
+	Values []Tool
+}
+
+// Tool is a representation of the tool schema (https://schema.org/tool).
+type Tool struct {
+	AtType   string `json:"@type"`
+	Name     string `json:"name"`
+	Quantity int    `json:"requiredQuantity"`
+}
+
+// String stringifies the Tool as `{Quantity} {Name}`.
+func (t *Tool) String() string {
+	return strconv.Itoa(t.Quantity) + " " + t.Name
 }
 
 // MarshalJSON encodes the list of tools.
@@ -801,11 +796,69 @@ func (t *Tools) UnmarshalJSON(data []byte) error {
 
 	switch x := v.(type) {
 	case string:
-		t.Values = append(t.Values, x)
-	case []map[string]any:
-		for _, v := range x {
-			t.Values = append(t.Values, v["name"].(string))
+		delim := ","
+		if strings.Contains(x, "\n") {
+			delim = "\n"
 		}
+
+		parts := strings.Split(x, delim)
+		for _, s := range parts {
+			s = strings.TrimSpace(s)
+			if s == "" {
+				continue
+			}
+
+			var q int
+			subParts := strings.Split(s, " ")
+			if len(subParts) > 1 {
+				parsed, err := strconv.Atoi(subParts[0])
+				if err == nil {
+					q = parsed
+					s = strings.Join(subParts[1:], " ")
+				}
+			}
+
+			t.Values = append(t.Values, Tool{
+				AtType:   "HowToTool",
+				Name:     s,
+				Quantity: q,
+			})
+		}
+	case []any:
+		for _, a := range x {
+			switch x2 := a.(type) {
+			case map[string]any:
+				xb, err := json.Marshal(a)
+				if err != nil {
+					return err
+				}
+
+				var tool Tool
+				err = json.Unmarshal(xb, &tool)
+				if err != nil {
+					return err
+				}
+
+				if tool.Name == "" {
+					item, ok := x2["item"]
+					if ok {
+						tool.Name = item.(string)
+					}
+				}
+
+				t.Values = append(t.Values, tool)
+			}
+		}
+	case map[string]any:
+		var tool Tool
+		err = json.Unmarshal(data, &tool)
+		if err != nil {
+			return err
+		}
+		t.Values = append(t.Values, tool)
+	default:
+		slog.Warn("Could not parse Tool schema", "data", data)
 	}
+
 	return nil
 }

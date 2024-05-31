@@ -13,6 +13,7 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services/statements"
 	"github.com/reaper47/recipya/internal/units"
+	"github.com/reaper47/recipya/internal/utils/extensions"
 	"github.com/reaper47/recipya/internal/utils/regex"
 	"io"
 	"log/slog"
@@ -68,13 +69,6 @@ func NewSQLiteService() *SQLiteService {
 	}
 
 	err = goose.Up(db, "migrations")
-	if err != nil {
-		panic(err)
-	}
-
-	// TODO: Remove this statement before the release of v1.2 because it corrects a mistake I've done in the latest migration file.
-	fmt.Println("Redoing migration 20240522133726_edit_recipe_update_fts.sql...")
-	err = goose.Redo(db, "migrations")
 	if err != nil {
 		panic(err)
 	}
@@ -393,13 +387,19 @@ func (s *SQLiteService) addRecipeTx(ctx context.Context, tx *sql.Tx, r models.Re
 	}
 
 	// Insert tools
-	for _, tool := range r.Tools {
+	r.Tools = extensions.Unique(r.Tools)
+	for i, tool := range r.Tools {
 		var toolID int64
-		err = tx.QueryRowContext(ctx, statements.InsertTool, tool).Scan(&toolID)
+		err = tx.QueryRowContext(ctx, statements.InsertTool, tool.Name).Scan(&toolID)
 		if err != nil {
 			return 0, err
 		}
-		_, err = tx.ExecContext(ctx, statements.InsertRecipeTool, toolID, recipeID)
+
+		if tool.Quantity == 0 {
+			tool.Quantity = 1
+		}
+
+		_, err = tx.ExecContext(ctx, statements.InsertRecipeTool, toolID, recipeID, tool.Quantity, i)
 		if err != nil {
 			return 0, err
 		}
@@ -1566,8 +1566,8 @@ func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 		ingredients    string
 		instructions   string
 		isPerServing   int64
-		keywords       string
-		tools          string
+		keywords       sql.NullString
+		tools          sql.NullString
 		count          int64
 		err            error
 	)
@@ -1585,9 +1585,36 @@ func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 
 		r.Ingredients = strings.Split(ingredients, "<!---->")
 		r.Instructions = strings.Split(instructions, "<!---->")
-		r.Keywords = strings.Split(keywords, ",")
+		if keywords.Valid {
+			r.Keywords = strings.Split(keywords.String, ",")
+		}
 		r.Nutrition.IsPerServing = isPerServing == 1
-		r.Tools = strings.Split(tools, ",")
+
+		if tools.Valid {
+			parts := strings.Split(tools.String, ",")
+			r.Tools = make([]models.Tool, 0, len(parts))
+			for _, part := range parts {
+				var (
+					q    int
+					name string
+				)
+
+				before, after, ok := strings.Cut(part, " ")
+				if ok {
+					parsed, err := strconv.Atoi(before)
+					if err == nil {
+						q = parsed
+					}
+
+					name = strings.TrimSpace(after)
+				}
+
+				r.Tools = append(r.Tools, models.Tool{
+					Name:     name,
+					Quantity: q,
+				})
+			}
+		}
 
 		r.Times.Prep *= time.Second
 		r.Times.Cook *= time.Second
@@ -1784,14 +1811,14 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 			return errors.New("missing ingredients")
 		}
 
-		ids := make([]int64, len(updatedRecipe.Ingredients))
-		for i, v := range updatedRecipe.Ingredients {
+		ids := make([]int64, 0, len(updatedRecipe.Ingredients))
+		for _, v := range updatedRecipe.Ingredients {
 			var id int64
 			err = tx.QueryRowContext(ctx, statements.InsertIngredient, v).Scan(&id)
 			if err != nil {
 				return err
 			}
-			ids[i] = id
+			ids = append(ids, id)
 		}
 
 		_, err = tx.ExecContext(ctx, statements.DeleteRecipeIngredients, recipeID)
@@ -1812,14 +1839,14 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 			return errors.New("missing instructions")
 		}
 
-		ids := make([]int64, len(updatedRecipe.Instructions))
-		for i, v := range updatedRecipe.Instructions {
+		ids := make([]int64, 0, len(updatedRecipe.Instructions))
+		for _, v := range updatedRecipe.Instructions {
 			var id int64
 			err = tx.QueryRowContext(ctx, statements.InsertInstruction, v).Scan(&id)
 			if err != nil {
 				return err
 			}
-			ids[i] = id
+			ids = append(ids, id)
 		}
 
 		_, err = tx.ExecContext(ctx, statements.DeleteRecipeInstructions, recipeID)
@@ -1857,27 +1884,30 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 		}
 	}*/
 
-	/* TODO: Support editing tools
 	if !slices.Equal(updatedRecipe.Tools, oldRecipe.Tools) {
-		ids := make([]int64, len(updatedRecipe.Tools))
-		for i, v := range updatedRecipe.Tools {
+		ids := make([]int64, 0, len(updatedRecipe.Tools))
+		updatedRecipe.Tools = extensions.Unique(updatedRecipe.Tools)
+		for _, tool := range updatedRecipe.Tools {
 			var id int64
-			if err := tx.QueryRowContext(ctx, statements.InsertTool, v).Scan(&id); err != nil {
+			err = tx.QueryRowContext(ctx, statements.InsertTool, tool.Name).Scan(&id)
+			if err != nil {
 				return err
 			}
-			ids[i] = id
+			ids = append(ids, id)
 		}
 
-		if _, err := tx.ExecContext(ctx, statements.DeleteRecipeTools, recipeID); err != nil {
+		_, err = tx.ExecContext(ctx, statements.DeleteRecipeTools, recipeID)
+		if err != nil {
 			return err
 		}
 
-		for _, id := range ids {
-			if _, err := tx.ExecContext(ctx, statements.InsertRecipeTool, id, recipeID); err != nil {
+		for i, id := range ids {
+			_, err = tx.ExecContext(ctx, statements.InsertRecipeTool, id, recipeID, updatedRecipe.Tools[i].Quantity, i)
+			if err != nil {
 				return err
 			}
 		}
-	}*/
+	}
 
 	updateFields := make(map[string]any)
 	if updatedRecipe.Description != oldRecipe.Description {

@@ -237,27 +237,39 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 			}
 		}
 
-		ingredients := make([]string, 0)
-		i := 1
-		for {
-			key := fmt.Sprintf("ingredient-%d", i)
-			if r.Form.Has(key) {
-				ingredients = append(ingredients, r.FormValue(key))
-				i++
-			} else {
-				break
-			}
+		var ingredients []string
+		xs, ok := r.Form["ingredients"]
+		if ok {
+			ingredients = make([]string, 0, len(xs))
+			ingredients = append(ingredients, xs...)
 		}
 
-		instructions := make([]string, 0)
-		i = 1
-		for {
-			key := fmt.Sprintf("instruction-%d", i)
-			if r.Form.Has(key) {
-				instructions = append(instructions, r.FormValue(key))
-				i++
-			} else {
-				break
+		var instructions []string
+		xs, ok = r.Form["instructions"]
+		if ok {
+			instructions = make([]string, 0, len(xs))
+			instructions = append(instructions, xs...)
+		}
+
+		var tools []models.Tool
+		xs, ok = r.Form["tools"]
+		if ok {
+			tools = make([]models.Tool, 0, len(xs))
+
+			for _, tool := range xs {
+				quantity := 1
+				name := tool
+
+				before, after, found := strings.Cut(tool, " ")
+				if found {
+					parsed, err := strconv.Atoi(strings.TrimSpace(before))
+					if err == nil {
+						quantity = parsed
+						name = after
+					}
+				}
+
+				tools = append(tools, models.Tool{Name: name, Quantity: quantity})
 			}
 		}
 
@@ -297,7 +309,7 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 				TotalFat:           r.FormValue("total-fat"),
 			},
 			Times: times,
-			Tools: make([]string, 0),
+			Tools: tools,
 			URL:   r.FormValue("source"),
 			Yield: int16(yield),
 		}
@@ -314,201 +326,6 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 		slog.Info("Recipe added", userIDAttr, "recipeNumber", recipeIDs[0], "recipe", recipe.Name)
 		w.Header().Set("HX-Redirect", "/recipes/"+strconv.FormatInt(recipeIDs[0], 10))
 		w.WriteHeader(http.StatusCreated)
-	}
-}
-
-func recipeAddManualIngredientHandler() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		err := r.ParseForm()
-		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast("Could not parse the form.").Render())
-			w.WriteHeader(http.StatusNoContent)
-			return
-		}
-
-		i := 1
-		for {
-			if !r.Form.Has("ingredient-" + strconv.Itoa(i)) {
-				break
-			}
-			i++
-		}
-
-		if r.Form.Get(fmt.Sprintf("ingredient-%d", i-1)) == "" {
-			w.WriteHeader(http.StatusUnprocessableEntity)
-			return
-		}
-
-		_ = components.AddIngredient(i).Render(r.Context(), w)
-	}
-}
-
-func recipeAddManualIngredientDeleteHandler() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		err := r.ParseForm()
-		form := r.Form
-		if err != nil || form == nil {
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast("Could not parse the form.").Render())
-			w.WriteHeader(http.StatusNoContent)
-			return
-		}
-
-		entry, err := parsePathPositiveID(r.PathValue("entry"))
-		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorReqToast("Ingredient entry must be >= 1.").Render())
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-
-		count := 0
-		i := int64(1)
-		for {
-			if !form.Has(fmt.Sprintf("ingredient-%d", i)) {
-				break
-			}
-
-			i++
-			count++
-		}
-
-		if count == 1 {
-			w.WriteHeader(http.StatusUnprocessableEntity)
-			return
-		}
-
-		var sb strings.Builder
-
-		curr := 1
-		i = 1
-		for {
-			key := fmt.Sprintf("ingredient-%d", i)
-			if !form.Has(key) {
-				break
-			}
-
-			if entry == i {
-				i++
-				continue
-			}
-
-			currStr := strconv.Itoa(curr)
-			xs := []string{
-				`<li class="pb-2"><div class="grid grid-flow-col items-center">`,
-				`<label><input required type="text" name="ingredient-` + currStr + `" placeholder="Ingredient #` + currStr + `" class="input input-bordered input-sm w-full" ` + `value="` + form.Get(key) + `" _="on keydown if event.key is 'Enter' then halt the event then get next <button/> from the parentElement of me then call htmx.trigger(it, 'click')"></label>`,
-				`<div class="ml-2">&nbsp;<button type="button" class="btn btn-square btn-sm btn-outline btn-success" title="Shortcut: Enter" hx-post="/recipes/add/manual/ingredient" hx-target="#ingredients-list" hx-swap="beforeend" hx-include="[name^='ingredient']">+</button>`,
-				`&nbsp;<button type="button" class="delete-button btn btn-square btn-sm btn-outline btn-error" hx-target="#ingredients-list" hx-post="/recipes/add/manual/ingredient/` + currStr + `" hx-include="[name^='ingredient']">-</button>`,
-				`&nbsp;<div class="inline-block h-4 cursor-move handle"><svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg></div>`,
-				`</div></div></li>`,
-			}
-			for _, x := range xs {
-				sb.WriteString(x)
-			}
-
-			i++
-			curr++
-		}
-
-		_, _ = fmt.Fprint(w, sb.String())
-	}
-}
-
-func recipeAddManualInstructionHandler() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		err := r.ParseForm()
-		form := r.Form
-		if err != nil || form == nil {
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast("Could not parse the form.").Render())
-			w.WriteHeader(http.StatusNoContent)
-			return
-		}
-
-		i := 1
-		for {
-			if !form.Has("instruction-" + strconv.Itoa(i)) {
-				break
-			}
-
-			i++
-		}
-
-		if form.Get(fmt.Sprintf("instruction-%d", i-1)) == "" {
-			w.WriteHeader(http.StatusUnprocessableEntity)
-			return
-		}
-
-		_ = components.AddInstruction(i).Render(r.Context(), w)
-	}
-}
-
-func recipeAddManualInstructionDeleteHandler() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		err := r.ParseForm()
-		form := r.Form
-		if err != nil || form == nil {
-			w.Header().Set("HX-Trigger", models.NewErrorFormToast("Could not parse the form.").Render())
-			w.WriteHeader(http.StatusNoContent)
-			return
-		}
-
-		entry, err := parsePathPositiveID(r.PathValue("entry"))
-		if err != nil {
-			w.Header().Set("HX-Trigger", models.NewErrorReqToast("Ingredient entry must be >= 1.").Render())
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-
-		count := 0
-		i := int64(1)
-		for {
-			if !form.Has(fmt.Sprintf("instruction-%d", i)) {
-				break
-			}
-
-			i++
-			count++
-		}
-
-		if count == 1 {
-			w.WriteHeader(http.StatusUnprocessableEntity)
-			return
-		}
-
-		var sb strings.Builder
-
-		curr := 1
-		i = 1
-		for {
-			key := fmt.Sprintf("instruction-%d", i)
-			if !form.Has(key) {
-				break
-			}
-
-			if entry == i {
-				i++
-				continue
-			}
-
-			currStr := strconv.Itoa(curr)
-			value := form.Get(key)
-
-			xs := []string{
-				`<li class="pt-2 md:pl-0"><div class="flex">`,
-				`<label class="w-11/12"><textarea required name="instruction-` + currStr + `" rows="3" class="textarea textarea-bordered w-full" placeholder="Instruction #` + currStr + `" _="on keydown if event.ctrlKey and event.key === 'Enter' then halt the event then get next <div/> from the parentElement of me then get first <button/> in it then call htmx.trigger(it, 'click')">` + value + `</textarea>&nbsp;</label>`,
-				`<div class="grid ml-2">`,
-				`<button type="button" class="btn btn-square btn-sm btn-outline btn-success" title="Shortcut: CTRL + Enter" hx-post="/recipes/add/manual/instruction" hx-target="#instructions-list" hx-swap="beforeend" hx-include="[name^='instruction']">+</button>`,
-				`<button type="button" class="delete-button btn btn-square btn-sm btn-outline btn-error" hx-target="#instructions-list" hx-post="/recipes/add/manual/instruction/` + currStr + `" hx-include="[name^='instruction']">-</button>`,
-				`<div class="h-4 cursor-move handle grid place-content-center"><svg xmlns="http://www.w3.org/2000/svg" class="md:w-4 md:h-4 w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg></div>`,
-				`</div></div></li>`,
-			}
-			for _, x := range xs {
-				sb.WriteString(x)
-			}
-
-			i++
-			curr++
-		}
-
-		_, _ = fmt.Fprint(w, sb.String())
 	}
 }
 
@@ -947,24 +764,43 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 			updatedRecipe.Times = times
 		}
 
-		i := 1
-		for {
-			ing := "ingredient-" + strconv.Itoa(i)
-			if !r.Form.Has(ing) {
-				break
+		xs, ok := r.Form["tools"]
+		if ok {
+			for _, x := range xs {
+				quantity := 1
+				name := x
+
+				before, after, found := strings.Cut(x, " ")
+				if found {
+					parsed, err := strconv.Atoi(strings.TrimSpace(before))
+					if err == nil {
+						quantity = parsed
+						name = after
+					}
+				}
+
+				name = strings.TrimSpace(name)
+				if name != "" {
+					updatedRecipe.Tools = append(updatedRecipe.Tools, models.Tool{
+						Name:     name,
+						Quantity: quantity,
+					})
+				}
 			}
-			updatedRecipe.Ingredients = append(updatedRecipe.Ingredients, r.FormValue(ing))
-			i++
 		}
 
-		i = 1
-		for {
-			ing := "instruction-" + strconv.Itoa(i)
-			if !r.Form.Has(ing) {
-				break
+		xs, ok = r.Form["ingredients"]
+		if ok {
+			for _, x := range xs {
+				updatedRecipe.Ingredients = append(updatedRecipe.Ingredients, strings.TrimSpace(x))
 			}
-			updatedRecipe.Instructions = append(updatedRecipe.Instructions, r.FormValue(ing))
-			i++
+		}
+
+		xs, ok = r.Form["instructions"]
+		if ok {
+			for _, x := range xs {
+				updatedRecipe.Instructions = append(updatedRecipe.Instructions, strings.TrimSpace(x))
+			}
 		}
 
 		yield, err := strconv.ParseInt(r.FormValue("yield"), 10, 16)

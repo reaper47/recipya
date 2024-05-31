@@ -449,7 +449,14 @@ func TestScraper_D(t *testing.T) {
 				Name:     "Limoncello Spritz",
 				PrepTime: "PT1M",
 				Tools: models.Tools{
-					Values: []string{"Barset med shaker", "Shaker", "Jigger", "Citruspress", "Cocktailsil", "Barsked"},
+					Values: []models.Tool{
+						{Name: "Barset med shaker"},
+						{Name: "Shaker"},
+						{Name: "Jigger"},
+						{Name: "Citruspress"},
+						{Name: "Cocktailsil"},
+						{Name: "Barsked"},
+					},
 				},
 				Yield: models.Yield{Value: 1},
 				URL:   "https://drinkoteket.se/recept/limoncello-spritz/",

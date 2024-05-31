@@ -118,7 +118,7 @@ func (a *AzureDILayout) Recipe() Recipe {
 					i += i2 + 1
 					break
 				}
-				recipe.Tools = append(recipe.Tools, p2.Content)
+				recipe.Tools = append(recipe.Tools, Tool{Name: p2.Content})
 			}
 			continue
 		}

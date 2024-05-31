@@ -78,7 +78,7 @@ func scrapeKuchynalidla(root *goquery.Document) (models.RecipeSchema, error) {
 		Instructions:  models.Instructions{Values: instructions},
 		Name:          name,
 		PrepTime:      prep,
-		Tools:         models.Tools{Values: tools},
-		Yield:         models.Yield{Value: findYield(root.Find(".recipe-detail._servings").Text())},
+		//Tools:         models.Tools{Values: tools},
+		Yield: models.Yield{Value: findYield(root.Find(".recipe-detail._servings").Text())},
 	}, nil
 }

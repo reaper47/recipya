@@ -74,7 +74,7 @@ func TestPaprikaRecipe_Recipe(t *testing.T) {
 		Keywords:  []string{"paprika"},
 		Name:      "Guyanese Gojas",
 		Times:     models.Times{Prep: 1*time.Hour + 5*time.Minute, Cook: 35 * time.Minute},
-		Tools:     []string{},
+		Tools:     make([]models.Tool, 0),
 		UpdatedAt: got.UpdatedAt,
 		URL:       "https://www.simplyrecipes.com/guyanese-gojas-recipe-5221034",
 		Yield:     6,

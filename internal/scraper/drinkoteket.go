@@ -25,9 +25,9 @@ func scrapeDrinkoteket(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	nodes = root.Find("#recipe-utrustning .rbs-img-content")
-	tools := make([]string, 0, nodes.Length())
+	tools := make([]models.Tool, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		tools = append(tools, strings.TrimSpace(sel.Text()))
+		tools = append(tools, models.Tool{Name: strings.TrimSpace(sel.Text())})
 	})
 
 	datePub, _ := root.Find("meta[itemprop='datePublished']").Attr("content")

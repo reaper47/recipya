@@ -700,31 +700,34 @@ func addRecipeToPDF(pdf *gofpdf.Fpdf, r *models.Recipe) *gofpdf.Fpdf {
 	y += maxHt
 
 	// Description
-	lines := pdf.SplitLines([]byte(r.Description), 3*colWd)
-	height := float64(len(lines)) * lineHt
-	if height > maxHt {
-		maxHt = height
-	}
-	cellList[0] = cellType{
-		str:  r.Description,
-		list: lines,
-		ht:   height,
+	if r.Description != "" {
+		lines := pdf.SplitLines([]byte(r.Description), 3*colWd)
+		height := float64(len(lines)) * lineHt
+		if height > maxHt {
+			maxHt = height
+		}
+		cellList[0] = cellType{
+			str:  r.Description,
+			list: lines,
+			ht:   height,
+		}
+
+		x = marginLeft
+		pdf.Rect(x, y, 3*colWd, maxHt+cellGap+cellGap, "D")
+		cell = cellList[0]
+		cellY := y + cellGap + (maxHt-cell.ht)/2
+		for splitJ := 0; splitJ < len(cell.list); splitJ++ {
+			pdf.SetXY(x+cellGap, cellY)
+			pdf.CellFormat(marginLeft, lineHt, tr(string(cell.list[splitJ])), "", 0, "L", false, 0, "")
+			cellY += lineHt
+		}
+		y += maxHt + cellGap + cellGap
+
+		pdf.SetFont(fontFamily, "", fontSizeSmall)
+		pdf.SetY(originalY)
 	}
 
-	x = marginLeft
-	pdf.Rect(x, y, 3*colWd, maxHt+cellGap+cellGap, "D")
-	cell = cellList[0]
-	cellY := y + cellGap + (maxHt-cell.ht)/2
-	for splitJ := 0; splitJ < len(cell.list); splitJ++ {
-		pdf.SetXY(x+cellGap, cellY)
-		pdf.CellFormat(marginLeft, lineHt, tr(string(cell.list[splitJ])), "", 0, "L", false, 0, "")
-		cellY += lineHt
-	}
-	y += maxHt + cellGap + cellGap
-
-	pdf.SetFont(fontFamily, "", fontSizeSmall)
-	pdf.SetY(originalY)
-
+	// Nutrition
 	pdf.SetY(y)
 	pdf.Ln(1)
 	pdf.SetX(marginLeft)
@@ -776,9 +779,34 @@ func addRecipeToPDF(pdf *gofpdf.Fpdf, r *models.Recipe) *gofpdf.Fpdf {
 		pdf.MultiCell(pageWidth-2*marginLeft, 5, tr(strings.Join(nutrition, " ")), "B", "1", false)
 	}
 
+	var (
+		ingredientsX  = marginLeft + cellGap
+		ingredientsY  = pdf.GetY()
+		instructionsX = marginLeft + pageWidth/3
+		instructionsY = pdf.GetY()
+
+		maxWidthColumn      = pageWidth/3 - marginLeft/2
+		maxWidthInstruction = 2 * pageWidth / 3
+	)
+
+	if len(r.Tools) > 0 {
+		pdf.SetX(marginLeft + cellGap)
+		pdf.SetFont(fontFamily, "B", fontSizeSmall)
+		pdf.CellFormat(0, 6, "Tools", "", 1, "L", false, 0, "")
+		pdf.SetFont(fontFamily, "", fontSizeSmall)
+
+		for _, t := range r.Tools {
+			pdf.MultiCell(maxWidthColumn, 5, tr("-> "+t.String()), "", "L", false)
+		}
+
+		ingredientsX = pageWidth/3 - marginLeft/2
+		instructionsX = marginLeft + cellGap
+		instructionsY = pdf.GetY()
+		maxWidthInstruction = pageWidth
+	}
+
 	// Ingredients
-	ingredientsY := pdf.GetY()
-	pdf.SetX(marginLeft + cellGap)
+	pdf.SetXY(ingredientsX, ingredientsY)
 	pdf.SetFont(fontFamily, "B", fontSizeSmall)
 	pdf.CellFormat(0, 6, "Ingredients", "", 1, "L", false, 0, "")
 	pdf.SetFont(fontFamily, "", fontSizeSmall)
@@ -786,39 +814,41 @@ func addRecipeToPDF(pdf *gofpdf.Fpdf, r *models.Recipe) *gofpdf.Fpdf {
 	onNewPage := true
 	for _, ing := range r.Ingredients {
 		currY := pdf.GetY()
+		pdf.SetX(ingredientsX)
 		if currY > pageHeight-3*marginTop && onNewPage {
 			pdf.AddPage()
-			pdf.SetX(marginLeft + cellGap)
+			pdf.SetX(ingredientsX)
 			pdf.SetFont(fontFamily, "B", fontSizeSmall)
 			pdf.CellFormat(0, 7, "Ingredients (continued)", "", 1, "L", false, 0, "")
 			pdf.SetFont(fontFamily, "", fontSizeSmall)
 			onNewPage = false
 		}
-		pdf.MultiCell(pageWidth/3-marginLeft/2, 5, tr("-> "+ing), "", "L", false)
+		pdf.MultiCell(maxWidthColumn, 5, tr("-> "+ing), "", "L", false)
 	}
 
 	// Instructions
 	pdf.SetPage(pdf.PageNo())
-	pdf.SetXY(marginLeft+pageWidth/3, ingredientsY)
+	pdf.SetXY(instructionsX, instructionsY)
+
 	pdf.SetFont(fontFamily, "B", fontSizeSmall)
 	pdf.CellFormat(0, 6, "Instructions", "", 1, "L", false, 0, "")
 	pdf.SetFont(fontFamily, "", fontSizeSmall)
-	pdf.SetX(marginLeft + pageWidth/3)
 
 	_, f := pdf.GetPageSize()
 	for i, ins := range r.Instructions {
-		pdf.SetX(marginLeft + pageWidth/3)
+		pdf.SetX(instructionsX)
 		if pdf.GetY() > f-15 {
 			pdf.AddPage()
-			pdf.SetXY(marginLeft+pageWidth/3, 9+marginTop)
+			pdf.SetXY(instructionsX, 9+marginTop)
 			pdf.SetPage(pdf.PageNo())
 			pdf.SetFont(fontFamily, "B", fontSizeSmall)
 			pdf.CellFormat(0, 7, "Instructions (continued)", "", 1, "L", false, 0, "")
 			pdf.SetFont(fontFamily, "", fontSizeSmall)
 			pdf.SetX(marginLeft + pageWidth/3)
 		}
-		pdf.MultiCell(2*pageWidth/3-2*marginRight, 5, tr(strconv.Itoa(i+1)+". "+ins), "", "L", false)
+		pdf.MultiCell(maxWidthInstruction-2*marginRight, 5, tr(strconv.Itoa(i+1)+". "+ins), "", "L", false)
 	}
+
 	pdf.SetPage(pdf.PageNo())
 	pdf.Rect(marginLeft, marginTop, pageWidth-marginLeft-marginRight, pageHeight-3*marginTop, "D")
 	return pdf
