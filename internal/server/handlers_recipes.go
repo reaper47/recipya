@@ -779,10 +779,13 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 					}
 				}
 
-				updatedRecipe.Tools = append(updatedRecipe.Tools, models.Tool{
-					Name:     strings.TrimSpace(name),
-					Quantity: quantity,
-				})
+				name = strings.TrimSpace(name)
+				if name != "" {
+					updatedRecipe.Tools = append(updatedRecipe.Tools, models.Tool{
+						Name:     name,
+						Quantity: quantity,
+					})
+				}
 			}
 		}
 
