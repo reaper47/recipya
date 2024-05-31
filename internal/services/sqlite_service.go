@@ -73,13 +73,6 @@ func NewSQLiteService() *SQLiteService {
 		panic(err)
 	}
 
-	// TODO: Remove this statement before the release of v1.2 because it corrects a mistake I've done in the latest migration file.
-	fmt.Println("Redoing migration 20240522133726_edit_recipe_update_fts.sql...")
-	err = goose.Redo(db, "migrations")
-	if err != nil {
-		panic(err)
-	}
-
 	return &SQLiteService{
 		DB:    db,
 		FdcDB: openFdcDB(),
