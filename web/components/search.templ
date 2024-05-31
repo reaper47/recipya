@@ -91,7 +91,7 @@ templ searchHelp() {
 			</div>
 			<div>
 				<p class="text-xs mb-2">
-					The following table provide examples of how to perform various searches. You may combine any of the searches in any order.
+					The following table provide examples of how to perform various searches. You may combine any of these in any order.
 				</p>
 				<div class="overflow-x-auto max-h-64">
 					<table class="table table-xs table-pin-rows">
@@ -210,7 +210,7 @@ templ cookbookSearchRecipes(data templates.Data) {
 					<div class="card card-side card-compact bg-base-100 shadow-md max-w-[30rem] border indicator dark:border-slate-600">
 						<figure class="relative">
 							<img
-								if len(r.Images) > 0 && data.Functions.IsUUIDValid(r.Images[0]) {
+								if len(r.Images) > 0 && data.Functions.IsUUIDValid(r.Images[0]) && data.Functions.IsImageExists(r.Images[0]) {
 									src={ fmt.Sprintf("/data/images/%s.jpg", r.Images[0]) }
 								} else {
 									src="/static/img/recipes/placeholder.webp"
