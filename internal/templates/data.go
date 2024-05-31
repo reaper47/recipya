@@ -7,6 +7,8 @@ import (
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/units"
+	"os"
+	"path/filepath"
 	"strings"
 	"time"
 )
@@ -73,27 +75,30 @@ type CookbookFeature struct {
 // The index is the position of the cookbook in the list of cookbooks presented to the user.
 func MakeCookbookView(c models.Cookbook, index int64, page uint64) CookbookView {
 	return CookbookView{
-		ID:          c.ID,
-		Image:       c.Image,
-		IsUUIDValid: c.Image != uuid.Nil,
-		NumRecipes:  c.Count,
-		PageNumber:  page,
-		PageItemID:  index + 1,
-		Recipes:     c.Recipes,
-		Title:       c.Title,
+		ID:    c.ID,
+		Image: c.Image,
+		IsImageExists: func(u uuid.UUID) bool {
+			_, err := os.Stat(filepath.Join(app.ImagesDir, u.String()+".jpg"))
+			return err == nil
+		}(c.Image),
+		NumRecipes: c.Count,
+		PageNumber: page,
+		PageItemID: index + 1,
+		Recipes:    c.Recipes,
+		Title:      c.Title,
 	}
 }
 
 // CookbookView holds data related to viewing a cookbook.
 type CookbookView struct {
-	ID          int64
-	Image       uuid.UUID
-	IsUUIDValid bool
-	NumRecipes  int64
-	Recipes     models.Recipes
-	PageNumber  uint64
-	PageItemID  int64
-	Title       string
+	ID            int64
+	Image         uuid.UUID
+	IsImageExists bool
+	NumRecipes    int64
+	Recipes       models.Recipes
+	PageNumber    uint64
+	PageItemID    int64
+	Title         string
 }
 
 // NewFunctionsData initializes a new FunctionsData.
@@ -104,6 +109,10 @@ func NewFunctionsData[T int64 | uint64]() FunctionsData[T] {
 				return s
 			}
 			return s[:numCharacters] + "…"
+		},
+		IsImageExists: func(u uuid.UUID) bool {
+			_, err := os.Stat(filepath.Join(app.ImagesDir, u.String()+".jpg"))
+			return err == nil
 		},
 		IsUUIDValid: func(u uuid.UUID) bool {
 			return u != uuid.Nil
@@ -120,9 +129,10 @@ func NewFunctionsData[T int64 | uint64]() FunctionsData[T] {
 
 // FunctionsData provides functions for use in the templates.
 type FunctionsData[T int64 | uint64] struct {
-	CutString   func(s string, numCharacters int) string
-	IsUUIDValid func(u uuid.UUID) bool
-	MulAll      func(vals ...T) T
+	CutString     func(s string, numCharacters int) string
+	IsImageExists func(u uuid.UUID) bool
+	IsUUIDValid   func(u uuid.UUID) bool
+	MulAll        func(vals ...T) T
 }
 
 // RegisterData is the data to pass on to the user registration template.
@@ -154,9 +164,16 @@ func NewViewRecipeData(id int64, recipe *models.Recipe, categories []string, isF
 		Inc: func(n int) int {
 			return n + 1
 		},
-		IsURL:        isURL(recipe.URL),
-		IsUUIDsValid: isUUIDsValid(recipe.Images),
-		Recipe:       recipe,
+		IsImagesExist: func(xu []uuid.UUID) []bool {
+			xb := make([]bool, 0, len(xu))
+			for _, u := range xu {
+				_, err := os.Stat(filepath.Join(app.ImagesDir, u.String()+".jpg"))
+				xb = append(xb, err == nil)
+			}
+			return xb
+		}(recipe.Images),
+		IsURL:  isURL(recipe.URL),
+		Recipe: recipe,
 		Share: ShareData{
 			IsFromHost: isFromHost,
 			IsShared:   isShared,
@@ -170,8 +187,8 @@ type ViewRecipeData struct {
 	FormattedTimes formattedTimes
 	ID             int64
 	Inc            func(n int) int
+	IsImagesExist  []bool
 	IsURL          bool
-	IsUUIDsValid   []bool
 	Recipe         *models.Recipe
 	Share          ShareData
 }

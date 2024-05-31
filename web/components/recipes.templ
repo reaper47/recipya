@@ -1124,7 +1124,11 @@ templ editRecipe(data *templates.ViewRecipeData) {
 												<img
 													alt="Image preview of the recipe."
 													class="object-cover mb-2 w-full max-h-[39rem]"
-													src={ fmt.Sprintf("/data/images/%s.jpg", image) }
+													if data.IsImagesExist[i] {
+														src={ fmt.Sprintf("/data/images/%s.jpg", image) }
+													} else {
+														src=""
+													}
 												/>
 												<span class="grid gap-1 max-w-sm" style="margin: auto auto 0.25rem;">
 													<div class={ "mr-1", templ.KV("hidden", i > 0) }>
@@ -1165,7 +1169,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 													</div>
 													<button
 														type="button"
-														class={ "btn btn-sm btn-error btn-outline", templ.KV("hidden", !data.IsUUIDsValid[i]) }
+														class={ "btn btn-sm btn-error btn-outline", templ.KV("hidden", !data.IsImagesExist[i]) }
 														_="on click
                                                             set {value: ''} on me.parentElement.children[0].children[0] then
                                                             set {src: ''} on previous <img/> then
@@ -1603,7 +1607,7 @@ templ ListRecipes(data templates.Data) {
 				<figure class="relative cursor-pointer" hx-get={ fmt.Sprintf("/recipes/%d", r.ID) } hx-target="#content" hx-push-url="true" hx-trigger="mousedown" hx-swap="innerHTML show:window:top transition:true">
 					<img
 						class="h-28 w-24 object-cover rounded-t-lg sm:h-40 sm:min-w-full sm:w-full"
-						if len(r.Images) > 0 && data.Functions.IsUUIDValid(r.Images[0]) {
+						if len(r.Images) > 0 && data.Functions.IsUUIDValid(r.Images[0]) && data.Functions.IsImageExists(r.Images[0]) {
 							src={ fmt.Sprintf("/data/images/%s.jpg", r.Images[0]) }
 						} else {
 							src="/static/img/recipes/placeholder.webp"
@@ -1716,6 +1720,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 									hx-get={ fmt.Sprintf("/recipes/%d/edit", data.ID) }
 									hx-push-url="true"
 									hx-target="#content"
+									hx-swap="innerHTML transition:true"
 								>
 									@iconEdit()
 								</button>
@@ -1778,7 +1783,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 										style="object-fit: cover"
 										alt="Image of the recipe"
 										class="w-full max-h-80  md:max-h-[34rem]"
-										if data.IsUUIDsValid[0] {
+										if data.IsImagesExist[0] {
 											src={ fmt.Sprintf("/data/images/%s.jpg", data.Recipe.Images[0]) }
 										} else {
 											src="/static/img/recipes/placeholder.webp"
@@ -1792,7 +1797,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 													style="object-fit: cover"
 													alt="Image of the recipe"
 													class="w-full max-h-80  md:max-h-[34rem]"
-													if data.IsUUIDsValid[i] {
+													if data.IsImagesExist[i] {
 														src={ fmt.Sprintf("/data/images/%s.jpg", data.Recipe.Images[i]) }
 													} else {
 														src="/static/img/recipes/placeholder.webp"

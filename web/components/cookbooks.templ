@@ -122,7 +122,7 @@ templ CookbookRecipes(data templates.Data) {
 				<div class="card card-side card-bordered card-compact bg-base-100 shadow-lg sm:w-[30rem]">
 					<figure class="w-28 sm:w-32">
 						<img
-							if len(r.Images) > 0 && data.Functions.IsUUIDValid(r.Images[0]) {
+							if len(r.Images) > 0 && data.Functions.IsUUIDValid(r.Images[0]) && data.Functions.IsImageExists(r.Images[0]) {
 								src={ fmt.Sprintf("/data/images/%s.jpg", r.Images[0]) }
 							} else {
 								src="/static/img/recipes/placeholder.webp"
@@ -202,6 +202,7 @@ templ cookbooksIndex(data templates.Data) {
 					hx-get="/cookbooks?view=list"
 					hx-target="#content"
 					hx-trigger="mousedown"
+					hx-swap="innerHTML transition:true"
 				>
 					@iconList()
 				</div>
@@ -212,6 +213,7 @@ templ cookbooksIndex(data templates.Data) {
 					hx-get="/cookbooks?view=grid"
 					hx-target="#content"
 					hx-trigger="mousedown"
+					hx-swap="innerHTML transition:true"
 				>
 					@iconGrid()
 				</div>
@@ -304,10 +306,10 @@ templ cookbooksIndex(data templates.Data) {
               cookbook_menu_download.setAttribute('hx-get', `/cookbooks/${$id}/download`)
               cookbook_menu_delete.setAttribute('hx-delete', `/cookbooks/${$id}`)
               cookbook_menu_delete.setAttribute('hx-target', `#${$li.id}`)
+              htmx.process(cookbook_menu_container)
           end
 
           toggle .hidden on cookbook_menu_container
-          htmx.process(cookbook_menu_container)
         end
     </script>
 	<script defer>
@@ -330,7 +332,7 @@ templ cookbookGrid(cookbook templates.CookbookView) {
 		<figure>
 			<img
 				class="rounded-t-lg w-full border-b h-32 text-center object-cover max-w-48 md:h-48 hover:bg-gray-100 hover:opacity-80"
-				if cookbook.IsUUIDValid {
+				if cookbook.IsImageExists {
 					src={ fmt.Sprintf("/data/images/%s.jpg", cookbook.Image) }
 				} else {
 					src="/static/img/cookbooks-new/placeholder.webp"
@@ -357,6 +359,7 @@ templ cookbookGrid(cookbook templates.CookbookView) {
 					hx-target="#content"
 					hx-trigger="mousedown"
 					hx-push-url={ fmt.Sprintf("/cookbooks/%d", cookbook.ID) }
+					hx-swap="innerHTML show:window:top transition:true"
 				>
 					Open
 				</button>
@@ -380,7 +383,7 @@ templ cookbookList(cookbook templates.CookbookView) {
 		<figure class="relative hover:opacity-70" onClick={ cookbookImageClick(fmt.Sprintf("#cookbook-image-%d", cookbook.ID)) }>
 			<img
 				class="w-28 h-full object-cover"
-				if cookbook.IsUUIDValid {
+				if cookbook.IsImageExists {
 					src={ fmt.Sprintf("/data/images/%s.jpg", cookbook.Image) }
 				} else {
 					src="/static/img/cookbooks-new/placeholder.webp"
@@ -401,6 +404,7 @@ templ cookbookList(cookbook templates.CookbookView) {
 					hx-target="#content"
 					hx-trigger="mousedown"
 					hx-push-url={ fmt.Sprintf("/cookbooks/%d", cookbook.ID) }
+					hx-swap="innerHTML show:window:top transition:true"
 				>
 					Open
 				</button>

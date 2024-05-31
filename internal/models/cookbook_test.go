@@ -86,14 +86,14 @@ func TestCookbook_MakeView(t *testing.T) {
 
 	got := templates.MakeCookbookView(cookbook, 1, 1)
 	want := templates.CookbookView{
-		ID:          1,
-		Image:       uuid.Nil,
-		IsUUIDValid: false,
-		NumRecipes:  2,
-		Recipes:     models.Recipes{{ID: 1}, {ID: 2}},
-		PageNumber:  1,
-		PageItemID:  2,
-		Title:       "Lovely Ukraine",
+		ID:            1,
+		Image:         uuid.Nil,
+		IsImageExists: false,
+		NumRecipes:    2,
+		Recipes:       models.Recipes{{ID: 1}, {ID: 2}},
+		PageNumber:    1,
+		PageItemID:    2,
+		Title:         "Lovely Ukraine",
 	}
 
 	if !cmp.Equal(got, want) {

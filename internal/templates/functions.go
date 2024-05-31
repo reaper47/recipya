@@ -2,7 +2,6 @@ package templates
 
 import (
 	"fmt"
-	"github.com/google/uuid"
 	"log/slog"
 	"net/url"
 	"strings"
@@ -42,12 +41,4 @@ func isURL(s string) bool {
 		return false
 	}
 	return err == nil && u.Scheme != "" && u.Host != ""
-}
-
-func isUUIDsValid(xu []uuid.UUID) []bool {
-	xb := make([]bool, 0, len(xu))
-	for _, u := range xu {
-		xb = append(xb, u != uuid.Nil)
-	}
-	return xb
 }
