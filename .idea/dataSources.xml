@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="fdca.db" uuid="160f0be6-aea0-4eef-a580-e2880ca8b5dd">
+    <data-source source="LOCAL" name="fdc.db" uuid="160f0be6-aea0-4eef-a580-e2880ca8b5dd">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:$USER_HOME$/AppData/Roaming/Recipya/Database/recipya.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="recipya.db" uuid="d0ead9a5-d62f-4fb3-b225-6dcb0c71f30c">
+    <data-source source="LOCAL" name="recipya.db" uuid="ba9db696-6a30-43c1-b546-a12359d94c2b">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$USER_HOME$/AppData/Roaming/Recipya/Database/recipya.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:$USER_HOME$/.config/Recipya/Database/recipya.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

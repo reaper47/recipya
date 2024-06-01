@@ -7,9 +7,6 @@ import (
 	"strings"
 )
 
-// RecipesFTSFields lists all columns in the recipes_fts table.
-var RecipesFTSFields = []string{"name", "description", "category", "ingredients", "instructions", "keywords", "source"}
-
 // BuildSelectPaginatedResults builds a SQL query for paginated search results.
 func BuildSelectPaginatedResults(opts models.SearchOptionsRecipes) string {
 	var sb strings.Builder
