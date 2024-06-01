@@ -271,12 +271,12 @@ func TestNewAdvancedSearch(t *testing.T) {
 		{
 			name:  "with category",
 			query: "q=orange cat:big breakfast",
-			want:  models.AdvancedSearch{Category: "big breakfast", Text: "orange"},
+			want:  models.AdvancedSearch{Category: "big breakfast", Text: `"orange"`},
 		},
 		{
 			name:  "with category",
 			query: "q=orange cat likes hot dogs",
-			want:  models.AdvancedSearch{Text: "orange cat likes hot dogs"},
+			want:  models.AdvancedSearch{Text: `"orange cat likes hot dogs"`},
 		},
 		{
 			name:  "with subcategories",
@@ -430,8 +430,8 @@ func TestNewSearchOptionsRecipe(t *testing.T) {
 			name:  "basic search query",
 			query: url.Values{"q": []string{"homemade bubble tea"}},
 			want: models.SearchOptionsRecipes{
-				Advanced: models.AdvancedSearch{Text: "homemade bubble tea"},
-				Query:    "homemade bubble tea",
+				Advanced: models.AdvancedSearch{Text: `"homemade bubble tea"`},
+				Query:    `"homemade bubble tea"`,
 				Page:     1,
 				Sort:     models.Sort{IsDefault: true},
 			},
@@ -445,7 +445,7 @@ func TestNewSearchOptionsRecipe(t *testing.T) {
 }
 
 func TestSearchOptionsRecipes_Args(t *testing.T) {
-	testcases := []struct {
+	var testcases = []struct {
 		name string
 		in   models.SearchOptionsRecipes
 		want string
@@ -458,29 +458,29 @@ func TestSearchOptionsRecipes_Args(t *testing.T) {
 		{
 			name: "one category",
 			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Category: "dinner"}},
-			want: "(category:dinner*)",
+			want: `(category:"dinner*")`,
 		},
 		{
 			name: "multiple categories",
 			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Category: "breakfast, dinner"}},
-			want: "(category:breakfast* OR category:dinner*)",
+			want: `(category:"breakfast*" OR category:"dinner*")`,
 		},
 		{
 			name: "one name",
 			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Name: "pasta"}},
-			want: "(name:pasta*)",
+			want: `(name:"pasta*")`,
 		},
 		{
 			name: "multiple names",
 			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Name: "hamburger, pasta"}},
-			want: "(name:hamburger* OR name:pasta*)",
+			want: `(name:"hamburger*" OR name:"pasta*")`,
 		},
 		/* Disabling this test because the struct doesn't process in order. Sometimes, the output is (category:dinner*) AND (name:pasta*)
-		{
-			name: "one name and category",
-			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Name: "pasta", Category: "dinner"}},
-			want: "(name:pasta*) AND (category:dinner*)",
-		},*/
+		   {
+		   	name: "one name and category",
+		   	in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Name: "pasta", Category: "dinner"}},
+		   	want: "(name:\"pasta*\") AND (category:\"dinner*\")",
+		   },*/
 		{
 			name: "one name and category",
 			in:   models.SearchOptionsRecipes{},
@@ -499,22 +499,22 @@ func TestSearchOptionsRecipes_Args(t *testing.T) {
 		{
 			name: "one cuisine",
 			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Cuisine: "japanese"}},
-			want: "(cuisine:japanese*)",
+			want: `(cuisine:"japanese*")`,
 		},
 		{
 			name: "multiple cuisines",
 			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Cuisine: "japanese,ukrainian"}},
-			want: "(cuisine:japanese* OR cuisine:ukrainian*)",
+			want: `(cuisine:"japanese*" OR cuisine:"ukrainian*")`,
 		},
 		{
 			name: "one ingredient",
 			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Ingredients: "butter"}},
-			want: "(ingredients:butter*)",
+			want: `(ingredients:"butter*")`,
 		},
 		{
 			name: "multiple ingredients",
 			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Ingredients: "butter,thyme,salt"}},
-			want: "(ingredients:butter* AND ingredients:thyme* AND ingredients:salt*)",
+			want: `(ingredients:"butter*" AND ingredients:"thyme*" AND ingredients:"salt*")`,
 		},
 		{
 			name: "one instruction",
@@ -529,22 +529,32 @@ func TestSearchOptionsRecipes_Args(t *testing.T) {
 		{
 			name: "one keyword",
 			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Keywords: "biscuits"}},
-			want: "(keywords:biscuits*)",
+			want: `(keywords:"biscuits*")`,
 		},
 		{
 			name: "multiple keywords",
 			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Keywords: "biscuits,mardi gras"}},
-			want: "(keywords:biscuits* AND keywords:mardi gras*)",
+			want: `(keywords:"biscuits*" AND keywords:"mardi gras*")`,
 		},
 		{
 			name: "one source",
 			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Source: "allrecipes.com"}},
-			want: "(source:allrecipes.com*)",
+			want: `(source:"allrecipes.com*")`,
 		},
 		{
 			name: "multiple sources",
 			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Source: "allrecipes.com,betterhelp.com"}},
-			want: "(source:allrecipes.com* OR source:betterhelp.com*)",
+			want: `(source:"allrecipes.com*" OR source:"betterhelp.com*")`,
+		},
+		{
+			name: "one tool",
+			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Tools: "wok"}},
+			want: `(tools:"wok*")`,
+		},
+		{
+			name: "multiple tools",
+			in:   models.SearchOptionsRecipes{Advanced: models.AdvancedSearch{Tools: "wok, frying pan"}},
+			want: `(tools:"wok*" OR tools:"frying pan*")`,
 		},
 	}
 	for _, tc := range testcases {
@@ -572,6 +582,14 @@ func TestSearchOptionsRecipes_IsBasicSearch(t *testing.T) {
 		in   models.AdvancedSearch
 	}{
 		{name: "has category", in: models.AdvancedSearch{Category: "breakfast"}},
+		{name: "has cuisine", in: models.AdvancedSearch{Cuisine: "italian"}},
+		{name: "has description", in: models.AdvancedSearch{Description: "delicious"}},
+		{name: "has ingredients", in: models.AdvancedSearch{Ingredients: "tomatoes"}},
+		{name: "has instructions", in: models.AdvancedSearch{Instructions: "boil water"}},
+		{name: "has keywords", in: models.AdvancedSearch{Keywords: "easy"}},
+		{name: "has name", in: models.AdvancedSearch{Name: "pasta"}},
+		{name: "has source", in: models.AdvancedSearch{Source: "grandma"}},
+		{name: "has tools", in: models.AdvancedSearch{Tools: "pot"}},
 	}
 	for _, tc := range testcases {
 		t.Run("not basic", func(t *testing.T) {

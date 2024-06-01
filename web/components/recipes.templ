@@ -1643,7 +1643,7 @@ templ categoryBadge(category string, isInCard bool) {
 			hx-push-url="true"
 			hx-swap="innerHTML show:window:top transition:true"
 			hx-vals={ fmt.Sprintf(`{"q": "cat:%s"}`, category) }
-			_={ fmt.Sprintf("on click put 'cat:%s' into #search_recipes.value", category) }
+			_={ fmt.Sprintf("on click put \"cat:%s\" into #search_recipes.value", category) }
 		>
 			{ category }
 		</span>

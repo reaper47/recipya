@@ -648,6 +648,7 @@ func (s *SearchOptionsRecipes) Arg() string {
 		"keywords":     s.Advanced.Keywords,
 		"name":         s.Advanced.Name,
 		"source":       s.Advanced.Source,
+		"tools":        s.Advanced.Tools,
 	}
 	for col, field := range fields {
 		x := toArg(field, col)
@@ -698,11 +699,11 @@ func toArg(s, col string) string {
 
 			subcats := strings.Split(strings.TrimSpace(part), ":")
 			if len(subcats) > 0 {
-				cat.WriteString(col + ":")
+				cat.WriteString(col + `:"`)
 				cat.WriteString(strings.Join(subcats, "*+"))
-				cat.WriteString("*")
+				cat.WriteString(`*"`)
 			} else {
-				cat.WriteString(col + ":" + strings.TrimSpace(part) + "*")
+				cat.WriteString(col + `:"` + strings.TrimSpace(part) + `*"`)
 			}
 		}
 	}
@@ -715,7 +716,7 @@ func toArg(s, col string) string {
 func (s *SearchOptionsRecipes) IsBasic() bool {
 	return s.Advanced.Category == "" && s.Advanced.Cuisine == "" && s.Advanced.Description == "" &&
 		s.Advanced.Ingredients == "" && s.Advanced.Instructions == "" && s.Advanced.Keywords == "" && s.Advanced.Name == "" &&
-		s.Advanced.Source == ""
+		s.Advanced.Source == "" && s.Advanced.Tools == ""
 }
 
 // AdvancedSearch stores the components of an advanced search query.
@@ -729,6 +730,7 @@ type AdvancedSearch struct {
 	Name         string
 	Source       string
 	Text         string
+	Tools        string
 }
 
 // Sort defines sorting options.
@@ -778,97 +780,58 @@ func NewAdvancedSearch(query string) AdvancedSearch {
 		isKeywords     bool
 		isName         bool
 		isSource       bool
+		isTools        bool
 	)
+
+	reset := func() {
+		isCat = false
+		isCuisine = false
+		isDescription = false
+		isIngredients = false
+		isInstructions = false
+		isKeywords = false
+		isName = false
+		isSource = false
+		isTools = false
+	}
 
 	xs := strings.Fields(strings.TrimPrefix(query, "q="))
 	for _, s := range xs {
 		if strings.HasPrefix(s, "cat:") {
+			reset()
 			isCat = true
-			isCuisine = false
-			isDescription = false
-			isIngredients = false
-			isInstructions = false
-			isKeywords = false
-			isName = false
-			isSource = false
-
 			a.Category = strings.TrimPrefix(s, "cat:")
 		} else if strings.HasPrefix(s, "cuisine:") {
-			isCat = false
+			reset()
 			isCuisine = true
-			isDescription = false
-			isIngredients = false
-			isInstructions = false
-			isKeywords = false
-			isName = false
-			isSource = false
-
 			a.Cuisine = strings.TrimPrefix(s, "cuisine:")
 		} else if strings.HasPrefix(s, "desc:") {
-			isCat = false
-			isCuisine = false
+			reset()
 			isDescription = true
-			isIngredients = false
-			isInstructions = false
-			isKeywords = false
-			isName = false
-			isSource = false
-
 			a.Description = strings.TrimPrefix(s, "desc:")
 		} else if strings.HasPrefix(s, "ing:") {
-			isCat = false
-			isCuisine = false
-			isDescription = false
+			reset()
 			isIngredients = true
-			isKeywords = false
-			isName = false
-			isSource = false
-
 			a.Ingredients = strings.TrimPrefix(s, "ing:")
 		} else if strings.HasPrefix(s, "ins:") {
-			isCat = false
-			isCuisine = false
-			isDescription = false
-			isIngredients = false
+			reset()
 			isInstructions = true
-			isKeywords = false
-			isName = false
-			isSource = false
-
 			a.Instructions = strings.TrimPrefix(s, "ins:")
 		} else if strings.HasPrefix(s, "name:") {
-			isCat = false
-			isCuisine = false
-			isDescription = false
-			isIngredients = false
-			isInstructions = false
-			isKeywords = false
+			reset()
 			isName = true
-			isSource = false
-
 			a.Name = strings.TrimPrefix(s, "name:")
 		} else if strings.HasPrefix(s, "src:") {
-			isCat = false
-			isCuisine = false
-			isDescription = false
-			isIngredients = false
-			isInstructions = false
-			isKeywords = false
-			isName = false
-			isSource = true
-
+			reset()
 			a.Source = strings.TrimPrefix(s, "src:")
 		} else if strings.HasPrefix(s, "tag:") {
-			isCat = false
-			isCuisine = false
-			isDescription = false
-			isIngredients = false
-			isInstructions = false
+			reset()
 			isKeywords = true
-			isName = false
-			isSource = false
-
 			a.Keywords = strings.TrimPrefix(s, "tag:")
+		} else if strings.HasPrefix(s, "tool:") {
+			reset()
+			isTools = true
+			a.Tools = strings.TrimPrefix(s, "tool:")
 		} else if isCat {
 			a.Category += " " + s
 		} else if isCuisine {
@@ -879,19 +842,39 @@ func NewAdvancedSearch(query string) AdvancedSearch {
 			a.Ingredients += " " + s
 		} else if isInstructions {
 			a.Instructions += " " + s
+		} else if isKeywords {
+			a.Keywords += " " + s
 		} else if isName {
 			a.Name += " " + s
 		} else if isSource {
 			a.Source += " " + s
-		} else if isKeywords {
-			a.Keywords += " " + s
+		} else if isTools {
+			a.Tools += " " + s
 		} else {
 			a.Text += " " + s
 		}
 	}
 
-	a.Text = strings.TrimSpace(a.Text)
+	a.Text = normalizeFTSTerm(strings.TrimSpace(a.Text))
+	/*a.Category = normalizeFTSTerm(a.Category)
+	a.Cuisine = normalizeFTSTerm(a.Cuisine)
+	a.Description = normalizeFTSTerm(a.Description)
+	a.Ingredients = normalizeFTSTerm(a.Ingredients)
+	a.Instructions = normalizeFTSTerm(a.Instructions)
+	a.Keywords = normalizeFTSTerm(a.Keywords)
+	a.Name = normalizeFTSTerm(a.Name)
+	a.Source = normalizeFTSTerm(a.Source)
+	a.Text = normalizeFTSTerm(strings.TrimSpace(a.Text))
+	a.Tools = normalizeFTSTerm(a.Tools)*/
+
 	return a
+}
+
+func normalizeFTSTerm(s string) string {
+	if s == "" {
+		return ""
+	}
+	return `"` + strings.ReplaceAll(s, "'", "''") + `"`
 }
 
 // NewSearchOptionsRecipe creates a SearchOptionsRecipe struct configured for the search method.

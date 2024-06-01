@@ -635,9 +635,10 @@ func (m *mockRepository) SearchRecipes(opts models.SearchOptionsRecipes, userID 
 		return nil, 0, errors.New("user not found")
 	}
 
+	q := strings.ReplaceAll(opts.Query, `"`, "")
 	var results models.Recipes
 	for _, r := range recipes {
-		if strings.Contains(strings.ToLower(r.Name), opts.Query) || strings.Contains(strings.ToLower(r.Category), opts.Query) || strings.Contains(strings.ToLower(r.Description), opts.Query) {
+		if strings.Contains(strings.ToLower(r.Name), q) || strings.Contains(strings.ToLower(r.Category), q) || strings.Contains(strings.ToLower(r.Description), q) {
 			results = append(results, r)
 		}
 	}

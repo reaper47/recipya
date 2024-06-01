@@ -102,86 +102,35 @@ templ searchHelp() {
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<th>Any field</th>
-								<td>big green squash</td>
-							</tr>
-							<tr>
-								<th>By category</th>
-								<td>cat:dinner</td>
-							</tr>
-							<tr>
-								<th>Multiple categories</th>
-								<td>cat:breakfast,dinner</td>
-							</tr>
-							<tr>
-								<th>Subcategory</th>
-								<td>cat:beverages:cocktails</td>
-							</tr>
-							<tr>
-								<th>Any field of category</th>
-								<td>chicken cat:dinner</td>
-							</tr>
-							<tr>
-								<th>By name</th>
-								<td>name:chicken kyiv</td>
-							</tr>
-							<tr>
-								<th>By name and category</th>
-								<td>name:chicken kyiv cat:lunch</td>
-							</tr>
-							<tr>
-								<th>Any field, name and category</th>
-								<td>best name:chicken kyiv cat:lunch</td>
-							</tr>
-							<tr>
-								<th>By description</th>
-								<td>desc:tender savory stacked</td>
-							</tr>
-							<tr>
-								<th>Multiple descriptions</th>
-								<td>desc:tender savory stacked,juicy crispy pieces chicken</td>
-							</tr>
-							<tr>
-								<th>By cuisine</th>
-								<td>cuisine:ukrainian</td>
-							</tr>
-							<tr>
-								<th>Multiple cuisines</th>
-								<td>cuisine:ukrainian,japanese</td>
-							</tr>
-							<tr>
-								<th>By ingredient</th>
-								<td>ing:onions</td>
-							</tr>
-							<tr>
-								<th>Multiple ingredients</th>
-								<td>ing:olive oil,thyme,butter</td>
-							</tr>
-							<tr>
-								<th>By instruction</th>
-								<td>ins:preheat oven 350</td>
-							</tr>
-							<tr>
-								<th>Multiple instructions</th>
-								<td>ins:preheat oven 350,melt butter</td>
-							</tr>
-							<tr>
-								<th>By keyword</th>
-								<td>tag:biscuits</td>
-							</tr>
-							<tr>
-								<th>Multiple keywords</th>
-								<td>tag:biscuits,mardi gras</td>
-							</tr>
-							<tr>
-								<th>By source</th>
-								<td>src:allrecipes.com</td>
-							</tr>
-							<tr>
-								<th>Multiple sources</th>
-								<td>src:allrecipes.com,tasteofhome.com</td>
-							</tr>
+							for _, xv := range [][]string{
+                                {"Any field", "big green squash"},
+                                {"By category", "cat:dinner"},
+                                {"Multiple categories", "cat:breakfast,dinner"},
+                                {"Subcategory", "cat:beverages:cocktails"},
+                                {"Any field of category", "chicken cat:dinner"},
+                                {"By name", "name:chicken kyiv"},
+                                {"By name and category", "name:chicken kyiv cat:lunch"},
+                                {"Any field, name and category", "best name:chicken kyiv cat:lunch"},
+                                {"By description", "desc:tender savory stacked"},
+                                {"Multiple descriptions", "desc:tender savory stacked,juicy crispy pieces chicken"},
+                                {"By cuisine", "cuisine:ukrainian"},
+                                {"Multiple cuisines", "cuisine:ukrainian,japanese"},
+                                {"By ingredient", "ing:onions"},
+                                {"Multiple ingredients", "ing:olive oil,thyme,butter"},
+                                {"By instruction", "ins:preheat oven 350"},
+                                {"Multiple instructions", "ins:preheat oven 350,melt butter"},
+                                {"By keyword", "tag:biscuits"},
+                                {"Multiple keywords", "tag:biscuits,mardi gras"},
+                                {"By tool", "tool:wok"},
+                                {"Multiple tools", "tool:wok,blender"},
+                                {"By source", "src:allrecipes.com"},
+                                {"Multiple sources", "src:allrecipes.com,tasteofhome.com"},
+						    } {
+								<tr>
+									<th>{ xv[0] }</th>
+									<td>{ xv[1] }</td>
+								</tr>
+							}
 						</tbody>
 					</table>
 				</div>
