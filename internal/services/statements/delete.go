@@ -53,6 +53,12 @@ const DeleteRecipeImages = `
 	FROM additional_images_recipe
 	WHERE recipe_id = (SELECT recipe_id FROM user_recipe WHERE recipe_id = ? AND user_id = ?)`
 
+// DeleteRecipeKeywords deletes all keywords from a recipe.
+const DeleteRecipeKeywords = `
+	DELETE
+	FROM keyword_recipe
+	WHERE recipe_id = ?`
+
 // DeleteRecipeTools deletes all tools associated with a recipe.
 const DeleteRecipeTools = `
 	DELETE

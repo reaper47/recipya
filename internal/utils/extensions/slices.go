@@ -6,7 +6,8 @@ func Unique[T comparable](xt []T) []T {
 
 	var result []T
 	for _, t := range xt {
-		if _, isInSlice := m[t]; !isInSlice {
+		_, isInSlice := m[t]
+		if !isInSlice {
 			m[t] = true
 			result = append(result, t)
 		}

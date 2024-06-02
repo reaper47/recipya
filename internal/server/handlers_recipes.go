@@ -251,6 +251,13 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 			instructions = append(instructions, xs...)
 		}
 
+		var keywords []string
+		xs, ok = r.Form["keywords"]
+		if ok {
+			keywords = make([]string, 0, len(xs))
+			keywords = append(keywords, xs...)
+		}
+
 		var tools []models.Tool
 		xs, ok = r.Form["tools"]
 		if ok {
@@ -295,7 +302,7 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 			Images:       imageUUIDs,
 			Ingredients:  ingredients,
 			Instructions: instructions,
-			Keywords:     make([]string, 0),
+			Keywords:     keywords,
 			Name:         r.FormValue("title"),
 			Nutrition: models.Nutrition{
 				Calories:           r.FormValue("calories"),
@@ -699,6 +706,7 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 			Description:  r.FormValue("description"),
 			Ingredients:  make([]string, 0),
 			Instructions: make([]string, 0),
+			Keywords:     make([]string, 0),
 			Name:         r.FormValue("title"),
 			Nutrition: models.Nutrition{
 				Calories:           r.FormValue("calories"),
@@ -791,16 +799,17 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 
 		xs, ok = r.Form["ingredients"]
 		if ok {
-			for _, x := range xs {
-				updatedRecipe.Ingredients = append(updatedRecipe.Ingredients, strings.TrimSpace(x))
-			}
+			updatedRecipe.Ingredients = append(updatedRecipe.Ingredients, xs...)
 		}
 
 		xs, ok = r.Form["instructions"]
 		if ok {
-			for _, x := range xs {
-				updatedRecipe.Instructions = append(updatedRecipe.Instructions, strings.TrimSpace(x))
-			}
+			updatedRecipe.Instructions = append(updatedRecipe.Instructions, xs...)
+		}
+
+		xs, ok = r.Form["keywords"]
+		if ok {
+			updatedRecipe.Keywords = append(updatedRecipe.Keywords, xs...)
 		}
 
 		yield, err := strconv.ParseInt(r.FormValue("yield"), 10, 16)
@@ -1110,6 +1119,7 @@ func (s *Server) recipesViewHandler() http.HandlerFunc {
 		userID := getUserID(r)
 		recipe, err := s.Repository.Recipe(id, userID)
 		if err != nil {
+			slog.Error("Failed to fetch recipe", "error", err)
 			notFoundHandler(w, r)
 			return
 		}

@@ -856,17 +856,6 @@ func NewAdvancedSearch(query string) AdvancedSearch {
 	}
 
 	a.Text = normalizeFTSTerm(strings.TrimSpace(a.Text))
-	/*a.Category = normalizeFTSTerm(a.Category)
-	a.Cuisine = normalizeFTSTerm(a.Cuisine)
-	a.Description = normalizeFTSTerm(a.Description)
-	a.Ingredients = normalizeFTSTerm(a.Ingredients)
-	a.Instructions = normalizeFTSTerm(a.Instructions)
-	a.Keywords = normalizeFTSTerm(a.Keywords)
-	a.Name = normalizeFTSTerm(a.Name)
-	a.Source = normalizeFTSTerm(a.Source)
-	a.Text = normalizeFTSTerm(strings.TrimSpace(a.Text))
-	a.Tools = normalizeFTSTerm(a.Tools)*/
-
 	return a
 }
 
