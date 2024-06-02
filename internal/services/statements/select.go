@@ -38,7 +38,7 @@ func buildSelectPaginatedResultsQuery(options models.SearchOptionsRecipes) strin
 func buildSearchRecipeQuery(opts models.SearchOptionsRecipes) string {
 	var sb strings.Builder
 
-	sb.WriteString("SELECT recipe_id, name, description, image, created_at, category, row_num FROM (" + BuildBaseSelectRecipe(opts.Sort))
+	sb.WriteString("SELECT recipe_id, name, description, image, created_at, category, keywords, row_num FROM (" + BuildBaseSelectRecipe(opts.Sort))
 	sb.WriteString(" WHERE recipes.id IN (SELECT id FROM recipes_fts WHERE user_id = ?")
 
 	if opts.Query != "" || !opts.IsBasic() {
@@ -345,11 +345,14 @@ const baseSelectSearchRecipe = `
 		   recipes.image                                                                   AS image,
 		   recipes.created_at                                                              AS created_at,
 		   categories.name                                                                 AS category,
+		   GROUP_CONCAT(DISTINCT keywords.name)  AS keywords,
 		   user_id,
 		   ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num
 	FROM recipes 
 			 LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id
 			 LEFT JOIN categories ON category_recipe.category_id = categories.id
+	    	 LEFT JOIN keyword_recipe ON recipes.id = keyword_recipe.recipe_id
+			 LEFT JOIN keywords ON keyword_recipe.keyword_id = keywords.id
 			 LEFT JOIN user_recipe ON recipes.id = user_recipe.recipe_id`
 
 // SelectRecipe fetches a user's recipe.
@@ -367,7 +370,7 @@ const SelectRecipesAll = baseSelectRecipe + `
 // SelectRecipes fetches a chunk of the user's recipes.
 const SelectRecipes = `
 	WITh results AS (
-		SELECT recipe_id, name, description,image,created_at,category,row_num FROM (
+		SELECT recipe_id, name, description, image, created_at, category, keywords, row_num FROM (
 			` + baseSelectSearchRecipe + `
 			WHERE user_recipe.user_id = ?
 			GROUP BY recipes.id

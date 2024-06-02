@@ -344,6 +344,7 @@ func (s *SQLiteService) addRecipeTx(ctx context.Context, tx *sql.Tx, r models.Re
 	}
 
 	// Insert keywords
+	r.Keywords = slices.DeleteFunc(extensions.Unique(r.Keywords), func(s string) bool { return s == "" })
 	for _, keyword := range r.Keywords {
 		var keywordID int64
 		err = tx.QueryRowContext(ctx, statements.InsertKeyword, keyword).Scan(&keywordID)
@@ -358,6 +359,7 @@ func (s *SQLiteService) addRecipeTx(ctx context.Context, tx *sql.Tx, r models.Re
 	}
 
 	// Insert instructions
+	r.Instructions = slices.DeleteFunc(extensions.Unique(r.Instructions), func(s string) bool { return s == "" })
 	for i, instruction := range r.Instructions {
 		var instructionID int64
 		err = tx.QueryRowContext(ctx, statements.InsertInstruction, instruction).Scan(&instructionID)
@@ -372,6 +374,7 @@ func (s *SQLiteService) addRecipeTx(ctx context.Context, tx *sql.Tx, r models.Re
 	}
 
 	// Insert ingredients
+	r.Ingredients = slices.DeleteFunc(extensions.Unique(r.Ingredients), func(s string) bool { return s == "" })
 	for i, ingredient := range r.Ingredients {
 		var ingredientID int64
 		ingredient = units.ReplaceDecimalFractions(ingredient)
@@ -387,7 +390,7 @@ func (s *SQLiteService) addRecipeTx(ctx context.Context, tx *sql.Tx, r models.Re
 	}
 
 	// Insert tools
-	r.Tools = extensions.Unique(r.Tools)
+	r.Tools = slices.DeleteFunc(extensions.Unique(r.Tools), func(t models.Tool) bool { return t.Name == "" })
 	for i, tool := range r.Tools {
 		var toolID int64
 		err = tx.QueryRowContext(ctx, statements.InsertTool, tool.Name).Scan(&toolID)
@@ -1519,11 +1522,12 @@ func (s *SQLiteService) SearchRecipes(opts models.SearchOptionsRecipes, userID i
 	var recipes models.Recipes
 	for rows.Next() {
 		var (
-			r     models.Recipe
-			img   uuid.UUID
-			count int64
+			r        models.Recipe
+			img      uuid.UUID
+			count    int64
+			keywords sql.NullString
 		)
-		err = rows.Scan(&r.ID, &r.Name, &r.Description, &img, &r.CreatedAt, &r.Category, &count)
+		err = rows.Scan(&r.ID, &r.Name, &r.Description, &img, &r.CreatedAt, &r.Category, &keywords, &count)
 		if err != nil {
 			return models.Recipes{}, 0, err
 		}
@@ -1531,6 +1535,13 @@ func (s *SQLiteService) SearchRecipes(opts models.SearchOptionsRecipes, userID i
 		if img != uuid.Nil {
 			r.Images = []uuid.UUID{img}
 		}
+
+		if keywords.Valid && keywords.String != "" {
+			xk := strings.Split(keywords.String, ",")
+			slices.Sort(xk)
+			r.Keywords = xk
+		}
+
 		recipes = append(recipes, r)
 	}
 
@@ -1573,7 +1584,10 @@ func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 	)
 
 	if isSearch {
-		err = sc.Scan(&r.ID, &r.Name, &r.Description, &mainImage, &r.CreatedAt, &r.Category, &count)
+		err = sc.Scan(&r.ID, &r.Name, &r.Description, &mainImage, &r.CreatedAt, &r.Category, &keywords, &count)
+		if err != nil {
+			return nil, err
+		}
 	} else {
 		err = sc.Scan(
 			&r.ID, &r.Name, &r.Description, &mainImage, &otherImagesStr, &r.URL, &r.Yield, &r.CreatedAt, &r.UpdatedAt, &r.Category, &r.Cuisine,
@@ -1582,12 +1596,12 @@ func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 			&r.Nutrition.Cholesterol, &r.Nutrition.Sodium, &r.Nutrition.Fiber, &isPerServing, &r.Times.Prep, &r.Times.Cook, &r.Times.Total,
 			&count,
 		)
+		if err != nil {
+			return nil, err
+		}
 
 		r.Ingredients = strings.Split(ingredients, "<!---->")
 		r.Instructions = strings.Split(instructions, "<!---->")
-		if keywords.Valid {
-			r.Keywords = strings.Split(keywords.String, ",")
-		}
 		r.Nutrition.IsPerServing = isPerServing == 1
 
 		if tools.Valid {
@@ -1619,6 +1633,12 @@ func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 		r.Times.Prep *= time.Second
 		r.Times.Cook *= time.Second
 		r.Times.Total *= time.Second
+	}
+
+	if keywords.Valid && keywords.String != "" {
+		xk := strings.Split(keywords.String, ",")
+		slices.Sort(xk)
+		r.Keywords = xk
 	}
 
 	if mainImage != uuid.Nil {
@@ -1807,6 +1827,8 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 
 	isIngredientsUpdated := !slices.Equal(updatedRecipe.Ingredients, oldRecipe.Ingredients)
 	if isIngredientsUpdated {
+		updatedRecipe.Ingredients = slices.DeleteFunc(extensions.Unique(updatedRecipe.Ingredients), func(s string) bool { return s == "" })
+
 		if len(updatedRecipe.Ingredients) == 0 {
 			return errors.New("missing ingredients")
 		}
@@ -1835,6 +1857,8 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 	}
 
 	if !slices.Equal(updatedRecipe.Instructions, oldRecipe.Instructions) {
+		updatedRecipe.Instructions = slices.DeleteFunc(extensions.Unique(updatedRecipe.Instructions), func(s string) bool { return s == "" })
+
 		if len(updatedRecipe.Instructions) == 0 {
 			return errors.New("missing instructions")
 		}
@@ -1862,29 +1886,35 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 		}
 	}
 
-	/* TODO: Support editing keywords
 	if !slices.Equal(updatedRecipe.Keywords, oldRecipe.Keywords) {
+		updatedRecipe.Keywords = slices.DeleteFunc(updatedRecipe.Keywords, func(s string) bool { return s == "" })
+
 		ids := make([]int64, len(updatedRecipe.Keywords))
 		for i, v := range updatedRecipe.Keywords {
 			var id int64
-			if err := tx.QueryRowContext(ctx, statements.InsertKeyword, v).Scan(&id); err != nil {
+			err = tx.QueryRowContext(ctx, statements.InsertKeyword, v).Scan(&id)
+			if err != nil {
 				return err
 			}
 			ids[i] = id
 		}
 
-		if _, err := tx.ExecContext(ctx, statements.DeleteRecipeKeywords, recipeID); err != nil {
+		_, err = tx.ExecContext(ctx, statements.DeleteRecipeKeywords, recipeID)
+		if err != nil {
 			return err
 		}
 
 		for _, id := range ids {
-			if _, err := tx.ExecContext(ctx, statements.InsertRecipeKeyword, id, recipeID); err != nil {
+			_, err = tx.ExecContext(ctx, statements.InsertRecipeKeyword, id, recipeID)
+			if err != nil {
 				return err
 			}
 		}
-	}*/
+	}
 
 	if !slices.Equal(updatedRecipe.Tools, oldRecipe.Tools) {
+		updatedRecipe.Tools = slices.DeleteFunc(updatedRecipe.Tools, func(t models.Tool) bool { return t.Name == "" })
+
 		ids := make([]int64, 0, len(updatedRecipe.Tools))
 		updatedRecipe.Tools = extensions.Unique(updatedRecipe.Tools)
 		for _, tool := range updatedRecipe.Tools {
@@ -1965,7 +1995,7 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 			var args []any
 			for _, field := range fields {
 				if _, ok := updateFields[field]; ok {
-					xs = append(xs, field+" = ?")
+					xs = append(xs, field+" = trim(?)")
 					args = append(args, updateFields[field])
 				}
 			}

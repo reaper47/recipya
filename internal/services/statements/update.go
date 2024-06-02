@@ -41,16 +41,16 @@ const UpdateMeasurementSystem = `
 // UpdateNutrition updates the recipe's nutrition.
 const UpdateNutrition = `
 	UPDATE nutrition 
-	SET calories = ?,
-	    total_carbohydrates = ?,
-	    sugars = ?, 
-	    protein = ?, 
-	    total_fat = ?, 
-	    saturated_fat = ?, 
-	    unsaturated_fat = ?, 
-	    cholesterol = ?, 
-	    sodium = ?, 
-	    fiber = ?,
+	SET calories = trim(?),
+	    total_carbohydrates = trim(?),
+	    sugars = trim(?), 
+	    protein = trim(?), 
+	    total_fat = trim(?), 
+	    saturated_fat = trim(?), 
+	    unsaturated_fat = trim(?), 
+	    cholesterol = trim(?), 
+	    sodium = trim(?), 
+	    fiber = trim(?),
 	    is_per_serving = ?
 	WHERE recipe_id = ?`
 
@@ -80,7 +80,7 @@ const UpdateRecipeCategoryReset = `
 // UpdateRecipeDescription is the query to update a recipe's description.
 const UpdateRecipeDescription = `
 	UPDATE recipes
-	SET description = ?
+	SET description = trim(?)
 	WHERE id = ?`
 
 // UpdateRecipeID is the query to update a recipe's ID to execute related triggers.
@@ -93,14 +93,14 @@ const UpdateRecipeID = `
 const UpdateRecipeIngredient = `
 	UPDATE ingredient_recipe
 	SET ingredient_id = ?
-	WHERE ingredient_id = (SELECT id FROM ingredients WHERE name = ?)
+	WHERE ingredient_id = (SELECT id FROM ingredients WHERE name = trim(?))
 	  AND recipe_id = ?`
 
 // UpdateRecipeInstruction is the query to update a recipe's instruction.
 const UpdateRecipeInstruction = `
 	UPDATE instruction_recipe
 	SET instruction_id = ?
-	WHERE instruction_id = (SELECT id FROM instructions WHERE name = ?)
+	WHERE instruction_id = (SELECT id FROM instructions WHERE name = trim(?))
 	  AND recipe_id = ?`
 
 // UpdateRecipeTimes is the query to update a recipe's times.

@@ -424,13 +424,13 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 									</label>
 								</div>
 							</div>
-							<div class="grid grid-cols-3 col-span-3 text-sm md:grid-flow-row md:grid-rows-4">
+							<div class="grid grid-cols-3 col-span-3 text-sm md:grid-flow-row md:grid-rows-4" style="grid-template-rows: auto">
 								<div class="grid col-span-6 pb-2 md:grid-cols-3 md:pb-0 md:border-gray-700 md:border-t">
 									<div
 										style="display: grid;grid-auto-flow: column;"
 										class="grid grid-flow-col grid-cols-3 gap-2 border-b border-t border-gray-700 px-2 md:col-span-2 md:border-b-0 md:border-r md:border-t-0 md:px-0"
 									>
-										<div class="col-span-2 border-r border-gray-700 pb-2 md:pb-0 md:grid md:place-content-center">
+										<div class="col-span-2 border-r border-gray-700 pb-2 md:grid md:place-content-center">
 											<label class="form-control">
 												<div class="label">
 													<span class="label-text">Category</span>
@@ -450,7 +450,7 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 												</datalist>
 											</label>
 										</div>
-										<div class="col-span-1 grid place-content-center pb-2 md:pb-0 md:content-center lg:md:place-content-center">
+										<div class="col-span-1 grid place-content-center pb-2 md:content-center lg:md:place-content-center">
 											<label class="form-control w-full">
 												<div class="label">
 													<span class="label-text">Servings</span>
@@ -465,7 +465,7 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 											</label>
 										</div>
 									</div>
-									<div class="relative px-2 md:grid md:content-center md:pr-0">
+									<div class="relative px-2 pb-2 md:grid md:content-center md:pr-0">
 										<label class="form-control w-full">
 											<div class="label">
 												<span class="label-text">Source</span>
@@ -485,6 +485,11 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 										>
 											@iconHelp()
 										</button>
+									</div>
+								</div>
+								<div class="border-gray-700 border-y col-span-6 md:border-t md:border-b-0 md:grid-cols-3 print:border-none">
+									<div class="p-4 flex gap-2 flex-wrap">
+										@recipeKeywordEmpty()
 									</div>
 								</div>
 								<div class="grid grid-flow-col col-span-6 border-gray-700 border-y md:grid-cols-2 md:row-span-2">
@@ -663,7 +668,7 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 										</tbody>
 									</table>
 								</div>
-								<div class="col-span-3 h-40 md:h-full md:row-span-1">
+								<div class="col-span-3 min-h-40 md:h-full md:row-span-1">
 									<label>
 										<textarea
 											name="description"
@@ -892,6 +897,27 @@ templ loadRecipesManualScripts() {
             target.previousElementSibling.parentNode.insertBefore(cloneButton, target);
             _hyperscript.processNode(cloneButton);
             htmx.process(cloneImage);
+        }
+
+        function addKeyword(event) {
+            const input = document.querySelector("#new_keyword")
+            const keyword = input.value.trim();
+            if (keyword === "") {
+                return;
+            }
+
+            const div = document.querySelector("#hidden_keyword").cloneNode(true);
+            div.classList.remove("hidden");
+            div.querySelector("input").value = keyword;
+            div.querySelector("span").textContent = keyword;
+            _hyperscript.processNode(div);
+            htmx.process(div);
+
+            const container = document.querySelector("#empty_keyword");
+            container.parentNode.insertBefore(div, container);
+
+            input.value = '';
+            input.focus();
         }
 
         function switchImage(event) {
@@ -1185,7 +1211,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 									}
 								</div>
 							</div>
-							<div class="grid grid-cols-3 col-span-3 text-sm md:grid-flow-row md:grid-rows-4">
+							<div class="grid grid-cols-3 col-span-3 text-sm md:grid-flow-row md:grid-rows-4" style="grid-template-rows: auto">
 								<div class="grid col-span-6 pb-2 md:grid-cols-3 md:pb-0 md:border-gray-700 md:border-t">
 									<div
 										style="display: grid;grid-auto-flow: column;"
@@ -1215,7 +1241,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 												</datalist>
 											</label>
 										</div>
-										<div class="col-span-1 grid place-content-center pb-2 md:pb-0 md:content-center lg:md:place-content-center">
+										<div class="col-span-1 grid place-content-center pb-2 md:p-2 md:content-center lg:md:place-content-center">
 											<label class="form-control w-full">
 												<div class="label">
 													<span class="label-text">Servings</span>
@@ -1258,6 +1284,18 @@ templ editRecipe(data *templates.ViewRecipeData) {
 										>
 											@iconInformation()
 										</button>
+									</div>
+								</div>
+								<div class="border-gray-700 border-y col-span-6 md:border-t md:border-b-0 md:grid-cols-3 print:border-none">
+									<div class="p-4 flex gap-2 flex-wrap">
+										for _, kw := range data.Recipe.Keywords {
+											<div class="badge badge-sm badge-neutral p-3 pr-0">
+												<input type="hidden" name="keywords" value={ kw }/>
+												<span class="select-none">{ kw }</span>
+												<button type="button" class="btn btn-xs btn-ghost" _="on click remove closest <div/>">X</button>
+											</div>
+										}
+										@recipeKeywordEmpty()
 									</div>
 								</div>
 								<div class="grid grid-flow-col col-span-6 border-gray-700 border-y md:grid-cols-2 md:row-span-2">
@@ -1453,7 +1491,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 										</tbody>
 									</table>
 								</div>
-								<div class="col-span-3 h-40 md:h-full md:row-span-1">
+								<div class="col-span-3 min-h-40 md:h-full md:row-span-1">
 									<label>
 										<textarea
 											name="description"
@@ -1618,13 +1656,32 @@ templ ListRecipes(data templates.Data) {
 						<p class="p-2 text-sm">{ data.Functions.CutString(r.Description, 127) }</p>
 					</div>
 				</figure>
-				<div class="card-body justify-between" lang="en">
-					<h2 class="sm:font-semibold sm:w-[25ch] sm:break-words sm:min-h-20">{ r.Name }</h2>
-					<div class="sm:hidden">
-						@categoryBadge(r.Category, true)
+				<div class="card-body justify-between">
+					<h2 class={ "sm:font-semibold sm:w-[25ch] sm:break-words sm:min-h-12", templ.KV("sm:min-h-24", len(r.Keywords) == 0) }>
+						{ r.Name }
+					</h2>
+					<div class="sm:max-h-12 sm:overflow-y-auto">
+						<div class="flex flex-col flex-wrap overflow-x-auto max-h-12 pb-2 sm:pb-0 sm:max-h-none sm:content-end sm:flex-auto sm:flex-row">
+							<span class="sm:hidden">
+								@categoryBadge(r.Category, true)
+							</span>
+							for _, kw := range r.Keywords {
+								<span
+									class="badge badge-neutral badge-sm select-none p-2 m-1 cursor-pointer"
+									hx-get="/recipes/search"
+									hx-target="#list-recipes"
+									hx-push-url="true"
+									hx-swap="innerHTML show:window:top transition:true"
+									hx-vals={ fmt.Sprintf(`{"q": "tag:%s"}`, kw) }
+									_={ fmt.Sprintf("on click put \"tag:%s\" into #search_recipes.value", kw) }
+								>
+									{ kw }
+								</span>
+							}
+						</div>
 					</div>
 					<div class="card-actions flex-col-reverse h-fit">
-						<button class="btn btn-block btn-xs btn-outline sm:btn-sm " hx-get={ fmt.Sprintf("/recipes/%d", r.ID) } hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap="innerHTML show:window:top transition:true">
+						<button class="btn btn-block btn-xs btn-outline sm:btn-sm" hx-get={ fmt.Sprintf("/recipes/%d", r.ID) } hx-target="#content" hx-trigger="mousedown" hx-push-url="true" hx-swap="innerHTML show:window:top transition:true">
 							View
 						</button>
 					</div>
@@ -1637,7 +1694,7 @@ templ ListRecipes(data templates.Data) {
 templ categoryBadge(category string, isInCard bool) {
 	if len(strings.Split(category, ":")) == 1 {
 		<span
-			class={ "badge badge-primary select-none cursor-pointer hover:bg-neutral", templ.KV("indicator-item indicator-center", !isInCard) }
+			class={ "badge badge-primary select-none cursor-pointer badge-sm p-2 m-1 sm:badge-md sm:m-0 hover:bg-neutral", templ.KV("indicator-item indicator-center", !isInCard) }
 			hx-get="/recipes/search"
 			hx-target="#list-recipes"
 			hx-push-url="true"
@@ -1826,12 +1883,12 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 									</div>
 							}
 						</div>
-						<div class="grid grid-cols-3 col-span-3 md:grid-flow-row md:grid-rows-4 print:grid-rows-2">
+						<div class="grid grid-cols-3 col-span-3 md:grid-flow-row md:grid-rows-4 print:grid-rows-2" style="grid-template-rows: auto">
 							<div class="grid grid-flow-col col-span-6 md:row-span-1 md:border-y md:border-gray-700 print:row-span-1 print:grid-cols-2 print:border-b-black print:border">
 								<div class="col-span-2 grid place-items-center md:col-span-1 print:col-span-1 print:float-left print:ml-2 print:border-r print:border-black">
 									<div class="badge badge-primary badge-outline">{ data.Recipe.Category }</div>
 								</div>
-								<div class="grid col-span-2 border-gray-700 place-items-center text-sm border-x p-2 md:col-span-1 md:p-0 print:hidden">
+								<div class="grid col-span-2 border-gray-700 place-items-center text-sm border-x p-2 md:p-2 md:col-span-1 print:hidden">
 									if isAuthenticated {
 										<form autocomplete="off" _="on submit halt the event" class="print:hidden">
 											<label class="form-control w-full">
@@ -1882,6 +1939,15 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 									}
 								</div>
 							</div>
+							if len(data.Recipe.Keywords) > 0 {
+								<div class="border-gray-700 border-y col-span-6 md:border-t-0 md:grid-cols-3 print:border-none">
+									<div class="p-4">
+										for _, kw := range data.Recipe.Keywords {
+											<div class="badge badge-sm badge-neutral m-1 flex-auto">{ kw }</div>
+										}
+									</div>
+								</div>
+							}
 							<div class={ "grid grid-flow-col border-gray-700 border-y col-span-6 md:border-t-0 md:grid-cols-2 md:row-span-2 print:border-none", templ.KV("print:hidden", data.Recipe.Nutrition.Equal(models.Nutrition{})) }>
 								<div class="border-r border-gray-700 print:hidden">
 									<table class="table table-zebra table-xs md:h-fit">
@@ -2027,14 +2093,16 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 									</div>
 								}
 							</div>
-							<div class={ "col-span-3 h-40 md:h-full md:row-span-1 print:hidden", templ.KV("hidden", data.Recipe.Description == "") }>
-								<label>
-									<textarea
-										class="textarea w-full h-full resize-none"
-										readonly
-									>{ data.Recipe.Description }</textarea>
-								</label>
-							</div>
+							if data.Recipe.Description != "" {
+								<div class={ "col-span-3 min-h-40 md:h-full md:row-span-1 print:hidden", templ.KV("hidden", data.Recipe.Description == "") }>
+									<label>
+										<textarea
+											class="textarea w-full h-full resize-none"
+											readonly
+										>{ data.Recipe.Description }</textarea>
+									</label>
+								</div>
+							}
 						</div>
 					</div>
 					if data.Recipe.Description != "" {
@@ -2132,13 +2200,33 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
     </script>
 }
 
+templ recipeKeywordEmpty() {
+	<div id="hidden_keyword" class="hidden badge badge-sm badge-neutral p-3 pr-0">
+		<input type="hidden" name="keywords" value=""/>
+		<span class="select-none"></span>
+		<button type="button" class="btn btn-xs btn-ghost" _="on click remove closest <div/>">X</button>
+	</div>
+	<div
+		id="empty_keyword"
+		class="badge badge-sm badge-neutral badge-outline p-3 pr-0"
+		_="on keydown if event.key is 'Enter' halt the event then addKeyword(event)"
+	>
+		<label>
+			<input id="new_keyword" type="text" placeholder="New keyword" class="input input-ghost input-xs w-[16ch] focus:outline-none" autocomplete="off"/>
+		</label>
+		<button
+			type="button"
+			class="btn btn-xs btn-ghost"
+			_="on click addKeyword(event)"
+		>&#10003;</button>
+	</div>
+}
+
 templ IngredientsInstructions(data *templates.ViewRecipeData) {
 	<div id="ingredients-instructions-container" class="grid text-sm md:grid-flow-col md:col-span-6">
 		<div class="col-span-6 border-gray-700 px-4 py-2 border-y md:col-span-2 md:border-r md:border-y-0 print:hidden">
 			if len(data.Recipe.Tools) > 0 {
-				<h2 class="font-semibold text-center underline">
-					<span class="underline">Tools</span>
-				</h2>
+				<h2 class="font-semibold text-center underline pb-1">Tools</h2>
 				<ul class="md:pb-2">
 					for _, t := range data.Recipe.Tools {
 						<li class="form-control hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -2150,7 +2238,7 @@ templ IngredientsInstructions(data *templates.ViewRecipeData) {
 					}
 				</ul>
 			}
-			<h2 class="font-semibold text-center underline">Ingredients</h2>
+			<h2 class="font-semibold text-center underline pb-1">Ingredients</h2>
 			<ul>
 				for _, e := range data.Recipe.Ingredients {
 					<li class="form-control hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -2163,7 +2251,7 @@ templ IngredientsInstructions(data *templates.ViewRecipeData) {
 			</ul>
 		</div>
 		<div class="col-span-6 px-8 py-2 border-gray-700 md:rounded-bl-none md:col-span-4 print:hidden">
-			<h2 class="font-semibold text-center underline md:pb-2">Instructions</h2>
+			<h2 class="font-semibold text-center underline pb-1">Instructions</h2>
 			<ol class="grid list-decimal">
 				for _, e := range data.Recipe.Instructions {
 					<li

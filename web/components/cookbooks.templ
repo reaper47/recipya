@@ -120,7 +120,7 @@ templ CookbookRecipes(data templates.Data) {
 					</div>
 				}
 				<div class="card card-side card-bordered card-compact bg-base-100 shadow-lg sm:w-[30rem]">
-					<figure class="w-28 sm:w-32">
+					<figure class="w-28 min-w-28 sm:w-32 sm:min-w-32">
 						<img
 							if len(r.Images) > 0 && data.Functions.IsUUIDValid(r.Images[0]) && data.Functions.IsImageExists(r.Images[0]) {
 								src={ fmt.Sprintf("/data/images/%s.jpg", r.Images[0]) }
@@ -132,7 +132,9 @@ templ CookbookRecipes(data templates.Data) {
 						/>
 					</figure>
 					<div class="card-body">
-						<h2 class="card-title text-base w-[20ch] sm:w-full break-words md:text-xl">{ r.Name }</h2>
+						<h2 class="card-title text-base w-[20ch] sm:w-full break-words">
+							{ r.Name }
+						</h2>
 						<p></p>
 						<div>
 							<p class="text-sm pb-1">Category:</p>
@@ -144,7 +146,7 @@ templ CookbookRecipes(data templates.Data) {
 									class="btn btn-outline btn-sm"
 									hx-get={ fmt.Sprintf("/recipes/%d", r.ID) }
 									hx-target="#content"
-									hx-swap="innerHTML"
+									hx-swap="innerHTML transition:true"
 									hx-push-url="true"
 								>
 									View
@@ -154,7 +156,7 @@ templ CookbookRecipes(data templates.Data) {
 									class="btn btn-outline btn-sm"
 									hx-get={ fmt.Sprintf("/r/%d?cookbook=%d", r.ID, data.CookbookFeature.Cookbook.ID) }
 									hx-target="#content"
-									hx-swap="innerHTML"
+									hx-swap="innerHTML transition:true"
 									hx-push-url="true"
 								>
 									View
@@ -395,7 +397,7 @@ templ cookbookList(cookbook templates.CookbookView) {
 			</span>
 		</figure>
 		<div class="card-body">
-			<h2 class="card-title text-base w-[20ch] sm:w-[29ch] break-words md:text-xl">{ cookbook.Title }</h2>
+			<h2 class="card-title text-base w-[20ch] sm:w-[29ch] break-words">{ cookbook.Title }</h2>
 			<p></p>
 			<div class="card-actions justify-end">
 				<button

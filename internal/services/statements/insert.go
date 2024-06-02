@@ -13,14 +13,14 @@ const InsertAuthToken = `
 // InsertCategory is the query to add a category to the database.
 const InsertCategory = `
 	INSERT INTO categories (name)
-	VALUES (?)
+	VALUES (trim(?))
 	ON CONFLICT DO UPDATE SET name = EXCLUDED.name
 	RETURNING id`
 
 // InsertCookbook is the query to add a cookbook to the database.
 const InsertCookbook = `
 	INSERT INTO cookbooks (title, image, user_id) 
-	VALUES (?, ?, ?)
+	VALUES (trim(?), ?, ?)
 	RETURNING id`
 
 // InsertCookbookRecipe is the query to add a recipe to a cookbook.
@@ -35,7 +35,7 @@ const InsertCookbookRecipe = `
 // InsertCuisine is the query to add a cuisine to the database
 const InsertCuisine = `
 	INSERT OR IGNORE INTO cuisines (name)
-	VALUES (?)`
+	VALUES (trim(?))`
 
 // InsertReport is the query to add a report without logs into the database
 const InsertReport = `
@@ -51,14 +51,14 @@ const InsertReportLog = `
 // InsertIngredient is the query to add an ingredient.
 const InsertIngredient = `
 	INSERT INTO ingredients (name)
-	VALUES (?)
+	VALUES (trim(?))
 	ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name
 	RETURNING id`
 
 // InsertInstruction is the query to add an instruction.
 const InsertInstruction = `
 	INSERT INTO instructions (name)
-	VALUES (?)
+	VALUES (trim(?))
 	ON CONFLICT (name)
 		DO UPDATE SET name = EXCLUDED.name
 	RETURNING id`
@@ -66,7 +66,7 @@ const InsertInstruction = `
 // InsertKeyword is the query to add a keyword.
 const InsertKeyword = `
 	INSERT INTO keywords (name)
-	VALUES (?)
+	VALUES (trim(?))
 	ON CONFLICT (name)
 		DO UPDATE SET name = EXCLUDED.name
 	RETURNING id`
@@ -74,12 +74,12 @@ const InsertKeyword = `
 // InsertNutrition is the query to add a nutrition facts.
 const InsertNutrition = `
 	INSERT INTO nutrition (recipe_id, calories, total_carbohydrates, sugars, protein, total_fat, saturated_fat, unsaturated_fat, cholesterol, sodium, fiber, is_per_serving)
-	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+	VALUES (?, trim(?), trim(?), trim(?), trim(?), trim(?), trim(?), trim(?), trim(?), trim(?), trim(?), ?)`
 
 // InsertRecipe is the query to add a recipe to the database.
 const InsertRecipe = `
 	INSERT INTO recipes (name, description, image, yield, url)
-	VALUES (?, ?, ?, ?, ?)
+	VALUES (trim(?), trim(?), ?, ?, trim(?))
 	RETURNING id`
 
 // InsertRecipeCategory associates a recipe with a category.
@@ -115,7 +115,7 @@ const InsertRecipeKeyword = `
 // InsertRecipeShadow is the query to insert a recipe into the shadow table.
 const InsertRecipeShadow = `
 	INSERT OR REPLACE INTO shadow_last_inserted_recipe (row, id, name, description, source)
-	VALUES (1, ?, ?, ?, ?)`
+	VALUES (1, ?, trim(?), trim(?), trim(?))`
 
 // InsertRecipeTime is the query to associate a recipe with a time.
 const InsertRecipeTime = `
@@ -152,7 +152,7 @@ const InsertTimes = `
 // InsertTool is the query to add a tool.
 const InsertTool = `
 	INSERT INTO tools (name)
-	VALUES (?)
+	VALUES (trim(?))
 	ON CONFLICT (name)
 		DO UPDATE SET name = EXCLUDED.name
 	RETURNING id`
