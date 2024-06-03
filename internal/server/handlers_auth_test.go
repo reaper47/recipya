@@ -17,7 +17,7 @@ import (
 
 func TestHandlers_Auth_ChangePassword(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	uri := ts.URL + "/auth/change-password"
 	originalRepo := srv.Repository
@@ -142,7 +142,7 @@ func TestHandlers_Auth_Confirm(t *testing.T) {
 
 func TestHandlers_Auth_DeleteUser(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	originalRepo := &mockRepository{
 		UsersRegistered: []models.User{

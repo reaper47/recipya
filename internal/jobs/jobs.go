@@ -29,14 +29,17 @@ func ScheduleCronJobs(repo services.RepositoryService, files services.FilesServi
 	// Clean Images
 	_, _ = scheduler.Every(1).MonthLastDay().Do(func() {
 		rmFunc := func(file string) error {
+			_ = os.Remove(filepath.Join(app.ThumbnailsDir, file))
 			return os.Remove(filepath.Join(app.ImagesDir, file))
 		}
+
 		numFiles, numBytes := cleanImages(os.DirFS(app.ImagesDir), repo.Images(), rmFunc)
 
 		var s string
 		if numBytes > 0 {
 			s = "(" + strconv.FormatFloat(float64(numBytes)/(1<<20), 'f', 2, 64) + " MB)"
 		}
+
 		slog.Info("Ran CleanImages job", "numImagesRemoved", numFiles, "spaceReclaimed", s)
 	})
 
@@ -85,7 +88,7 @@ func cleanImages(dir fs.FS, usedImages []string, rmFileFunc func(path string) er
 	sort.Strings(usedImages)
 
 	_ = fs.WalkDir(dir, ".", func(path string, d fs.DirEntry, _ error) error {
-		if path == "." {
+		if path == "." || d.IsDir() {
 			return nil
 		}
 

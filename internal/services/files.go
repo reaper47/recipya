@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"github.com/blang/semver"
 	"github.com/disintegration/imaging"
+	"github.com/gen2brain/webp"
 	"github.com/google/go-github/v59/github"
 	"github.com/google/uuid"
 	"github.com/jung-kurt/gofpdf"
@@ -20,7 +21,6 @@ import (
 	"github.com/reaper47/recipya/internal/templates"
 	_ "golang.org/x/image/webp" // Import the WebP package to decode the WebP format.
 	"image"
-	"image/jpeg"
 	"io"
 	"io/fs"
 	"log/slog"
@@ -388,7 +388,7 @@ func addImageToZip(zw *zip.Writer, img uuid.UUID) error {
 		return nil
 	}
 
-	file, err := os.Open(filepath.Join(app.ImagesDir, img.String()+".jpg"))
+	file, err := os.Open(filepath.Join(app.ImagesDir, img.String()+app.ImageExt))
 	if err != nil {
 		return err
 	}
@@ -462,11 +462,11 @@ func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType, 
 			}
 
 			if e.recipeImage != uuid.Nil {
-				filePath := filepath.Join(app.ImagesDir, e.recipeImage.String()+".jpg")
+				filePath := filepath.Join(app.ImagesDir, e.recipeImage.String()+app.ImageExt)
 
 				_, err = os.Stat(filePath)
 				if err == nil {
-					out, err = writer.Create(e.recipeName + "/image.jpg")
+					out, err = writer.Create(e.recipeName + "/image.webp")
 					if err != nil {
 						return nil, err
 					}
@@ -941,7 +941,7 @@ func (f *Files) ScrapeAndStoreImage(rawURL string) (uuid.UUID, error) {
 
 	parsed, err := uuid.Parse(rawURL)
 	if err == nil {
-		_, err = os.Stat(filepath.Join(app.ImagesDir, rawURL+".jpg"))
+		_, err = os.Stat(filepath.Join(app.ImagesDir, rawURL+app.ImageExt))
 		if errors.Is(err, os.ErrExist) {
 			return parsed, err
 		}
@@ -1034,7 +1034,7 @@ func cookbookToPDF(cookbook *models.Cookbook) []byte {
 			return nil
 		}
 
-		imageFile := filepath.Join(filepath.Dir(exe), "data", "images", cookbook.Image.String()+".jpg")
+		imageFile := filepath.Join(filepath.Dir(exe), "data", "images", cookbook.Image.String()+app.ImageExt)
 		pdf.ImageOptions(imageFile, pdf.GetX()+pageWidth/2-4*marginLeft, pdf.GetY()+marginTop, 0, 0, false, gofpdf.ImageOptions{ImageType: "JPG", ReadDpi: true}, 0, "")
 	}
 
@@ -1201,28 +1201,49 @@ func (f *Files) ReadTempFile(name string) ([]byte, error) {
 
 // UploadImage uploads an image to the server.
 func (f *Files) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
-	img, _, err := image.Decode(rc)
+	origImg, _, err := image.Decode(rc)
 	if err != nil {
 		return uuid.Nil, err
 	}
 
 	imageUUID := uuid.New()
-	out, err := os.Create(filepath.Join(app.ImagesDir, imageUUID.String()+".jpg"))
+	origWidth := origImg.Bounds().Dx()
+	origHeight := origImg.Bounds().Dy()
+
+	// Thumbnail
+	out, err := os.Create(filepath.Join(app.ThumbnailsDir, imageUUID.String()+app.ImageExt))
 	if err != nil {
 		return uuid.Nil, err
 	}
 	defer out.Close()
 
-	width := img.Bounds().Dx()
-	height := img.Bounds().Dy()
-	if width > 800 || height > 800 {
-		img = imaging.Resize(img, width/2, height/2, imaging.NearestNeighbor)
+	img := origImg
+	if origWidth > 512 {
+		img = imaging.Resize(img, 384, int((float64(384)/float64(origWidth))*float64(origHeight)), imaging.Lanczos)
 	}
 
-	err = jpeg.Encode(out, img, &jpeg.Options{Quality: 33})
+	err = webp.Encode(out, img, webp.Options{Quality: 50})
 	if err != nil {
 		return uuid.Nil, err
 	}
+
+	// Normal image
+	out2, err := os.Create(filepath.Join(app.ImagesDir, imageUUID.String()+app.ImageExt))
+	if err != nil {
+		return uuid.Nil, err
+	}
+	defer out2.Close()
+
+	img = origImg
+	if origWidth > 1024 || origHeight > 1024 {
+		img = imaging.Resize(img, 768, int((768/float64(origWidth))*float64(origHeight)), imaging.Lanczos)
+	}
+
+	err = webp.Encode(out2, img, webp.Options{Quality: 33})
+	if err != nil {
+		return uuid.Nil, err
+	}
+
 	return imageUUID, nil
 }
 

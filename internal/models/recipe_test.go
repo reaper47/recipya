@@ -6,6 +6,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/units"
 	"io"
@@ -1039,7 +1040,7 @@ func TestRecipe_Schema(t *testing.T) {
 		t.Errorf("wanted keywords 'kw1,kw2,kw3' but got %q", schema.Keywords)
 	}
 	v = imageUUID.String()
-	if schema.Image.Value != v+".jpg" {
+	if schema.Image.Value != v+app.ImageExt {
 		t.Errorf("wanted uuid %q but got %q", v, schema.Image.Value)
 	}
 

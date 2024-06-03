@@ -366,7 +366,7 @@ func (i *Image) UnmarshalJSON(data []byte) error {
 		i.Value = x
 	case []any:
 		if len(x) > 0 {
-			switch y := x[0].(type) {
+			switch y := x[len(x)-1].(type) {
 			case string:
 				i.Value = y
 			case map[string]any:

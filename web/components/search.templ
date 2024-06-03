@@ -160,7 +160,7 @@ templ cookbookSearchRecipes(data templates.Data) {
 						<figure class="relative">
 							<img
 								if len(r.Images) > 0 && data.Functions.IsUUIDValid(r.Images[0]) && data.Functions.IsImageExists(r.Images[0]) {
-									src={ fmt.Sprintf("/data/images/%s.jpg", r.Images[0]) }
+									src={ fmt.Sprintf("/data/images/%s.webp", r.Images[0]) }
 								} else {
 									src="/static/img/recipes/placeholder.webp"
 								}

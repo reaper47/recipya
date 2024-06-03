@@ -123,7 +123,7 @@ templ CookbookRecipes(data templates.Data) {
 					<figure class="w-28 min-w-28 sm:w-32 sm:min-w-32">
 						<img
 							if len(r.Images) > 0 && data.Functions.IsUUIDValid(r.Images[0]) && data.Functions.IsImageExists(r.Images[0]) {
-								src={ fmt.Sprintf("/data/images/%s.jpg", r.Images[0]) }
+								src={ fmt.Sprintf("/data/images/%s.webp", r.Images[0]) }
 							} else {
 								src="/static/img/recipes/placeholder.webp"
 							}
@@ -335,7 +335,7 @@ templ cookbookGrid(cookbook templates.CookbookView) {
 			<img
 				class="rounded-t-lg w-full border-b h-32 text-center object-cover max-w-48 md:h-48 hover:bg-gray-100 hover:opacity-80"
 				if cookbook.IsImageExists {
-					src={ fmt.Sprintf("/data/images/%s.jpg", cookbook.Image) }
+					src={ fmt.Sprintf("/data/images/%s.webp", cookbook.Image) }
 				} else {
 					src="/static/img/cookbooks-new/placeholder.webp"
 				}
@@ -386,7 +386,7 @@ templ cookbookList(cookbook templates.CookbookView) {
 			<img
 				class="w-28 h-full object-cover"
 				if cookbook.IsImageExists {
-					src={ fmt.Sprintf("/data/images/%s.jpg", cookbook.Image) }
+					src={ fmt.Sprintf("/data/images/%s.webp", cookbook.Image) }
 				} else {
 					src="/static/img/cookbooks-new/placeholder.webp"
 				}

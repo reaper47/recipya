@@ -7,6 +7,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/donna-legal/word2number"
 	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/units"
 	"github.com/reaper47/recipya/internal/utils/duration"
 	"github.com/reaper47/recipya/internal/utils/extensions"
@@ -263,7 +264,7 @@ func (r *Recipe) Scale(yield int16) {
 func (r *Recipe) Schema() RecipeSchema {
 	var img string
 	if len(r.Images) > 0 {
-		img = r.Images[0].String() + ".jpg"
+		img = r.Images[0].String() + app.ImageExt
 	}
 
 	return RecipeSchema{

@@ -46,7 +46,7 @@ func TestHandlers_General_Download(t *testing.T) {
 
 func TestHandlers_General_Fetch(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	uri := ts.URL + "/fetch"
 
@@ -169,7 +169,7 @@ func TestHandlers_General_NotFound(t *testing.T) {
 
 func TestHandlers_General_Update(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	originalFiles := srv.Files
 	uri := ts.URL + "/update"

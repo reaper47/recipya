@@ -20,10 +20,13 @@ import (
 )
 
 var (
-	BackupPath string // BackupPath is the directory where the data is backed up.
-	DBBasePath string // DBBasePath is the directory where the database files are stored.
-	ImagesDir  string // ImagesDir is the directory where user images are stored.
-	LogsDir    string // LogsDir is the directory where the logs are stored.
+	BackupPath    string // BackupPath is the directory where the data is backed up.
+	DBBasePath    string // DBBasePath is the directory where the database files are stored.
+	ImagesDir     string // ImagesDir is the directory where user images are stored.
+	LogsDir       string // LogsDir is the directory where the logs are stored.
+	ThumbnailsDir string // ThumbnailsDir is the directory where the thumbnails of user images are stored.
+
+	ImageExt = ".webp"
 
 	Info = GeneralInfo{
 		Version: semver.Version{
@@ -257,8 +260,9 @@ func Init() {
 	DBBasePath = filepath.Join(baseDir, "Database")
 	ImagesDir = filepath.Join(baseDir, "Images")
 	LogsDir = filepath.Join(baseDir, "Logs")
+	ThumbnailsDir = filepath.Join(ImagesDir, "Thumbnails")
 
-	xs := []string{BackupPath, DBBasePath, ImagesDir, LogsDir}
+	xs := []string{BackupPath, DBBasePath, ImagesDir, ThumbnailsDir, LogsDir}
 	for _, s := range xs {
 		err = os.MkdirAll(s, os.ModePerm)
 		if err != nil {

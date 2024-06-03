@@ -7,6 +7,9 @@ import (
 	"errors"
 	"fmt"
 	"github.com/briandowns/spinner"
+	"github.com/disintegration/imaging"
+	"github.com/gen2brain/webp"
+	"image/jpeg"
 	"io"
 	"net"
 	"net/http"
@@ -21,6 +24,7 @@ func setup() {
 	moveFileStructure()
 	setupFDC()
 	setupConfigFile()
+	verifyMedia()
 
 	fmt.Println("Recipya is properly set up")
 }
@@ -300,4 +304,80 @@ func promptUser(r *bufio.Reader, question string, def string) string {
 
 		fmt.Println()
 	}
+}
+
+func verifyMedia() {
+	s := spinner.New(spinner.CharSets[9], 100*time.Millisecond)
+	msg := "Converting images to webp"
+	s.Prefix = msg + "... "
+	s.FinalMSG = greenText("OK ") + msg + "\n"
+	s.Start()
+
+	dir, err := os.ReadDir(ImagesDir)
+	if err != nil {
+		fmt.Printf(redText("Could not read images directory")+": %q\n", err)
+		return
+	}
+
+	for _, entry := range dir {
+		var (
+			name = entry.Name()
+			ext  = filepath.Ext(name)
+		)
+
+		if entry.IsDir() || ext != ".jpg" {
+			continue
+		}
+
+		path := filepath.Join(ImagesDir, name)
+		f, err := os.Open(path)
+		if err != nil {
+			fmt.Printf(redText("Could not open %q")+": %q\n", name, err)
+			continue
+		}
+
+		origImg, err := jpeg.Decode(f)
+		if err != nil {
+			_ = f.Close()
+			fmt.Printf(redText("Could not decode %q")+": %q\n", name, err)
+			continue
+		}
+		_ = f.Close()
+
+		origWidth := origImg.Bounds().Dx()
+		origHeight := origImg.Bounds().Dy()
+
+		// Thumbnail
+		thumbnail, err := os.Create(filepath.Join(ThumbnailsDir, strings.TrimSuffix(name, ext)+ImageExt))
+		if err != nil {
+			fmt.Printf(redText("Could not create file")+": %q\n", name, err)
+			continue
+		}
+
+		img := imaging.Resize(origImg, 384, int((float64(384)/float64(origWidth))*float64(origHeight)), imaging.NearestNeighbor)
+		err = webp.Encode(thumbnail, img, webp.Options{Quality: 33})
+		if err != nil {
+			fmt.Printf(redText("Could not encode thumbnail %q to webp")+": %q\n", name, err)
+			continue
+		}
+		_ = thumbnail.Close()
+
+		// Normal
+		webpFile, err := os.Create(filepath.Join(ImagesDir, strings.TrimSuffix(name, ext)+ImageExt))
+		if err != nil {
+			fmt.Printf(redText("Could not create file")+": %q\n", name, err)
+			continue
+		}
+
+		err = webp.Encode(webpFile, origImg, webp.Options{Quality: 50})
+		if err != nil {
+			_ = webpFile.Close()
+			fmt.Printf(redText("Could not encode %q to webp")+": %q\n", name, err)
+			continue
+		}
+
+		_ = webpFile.Close()
+		os.Remove(path)
+	}
+	s.Stop()
 }

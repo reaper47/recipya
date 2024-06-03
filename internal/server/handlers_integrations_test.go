@@ -11,7 +11,7 @@ import (
 
 func TestHandlers_Integrations_Import(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	originalRepo := srv.Repository
 	originalIntegrations := srv.Integrations
@@ -80,7 +80,7 @@ func TestHandlers_Integrations_Import(t *testing.T) {
 
 func TestHandlers_Integrations_TestConnection(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	original := srv.Integrations
 	uri := ts.URL + "/integrations/test-connection"
