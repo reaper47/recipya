@@ -17,7 +17,7 @@ import (
 
 func TestHandlers_Cookbooks(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	originalRepo := &mockRepository{
 		CookbooksRegistered: map[int64][]models.Cookbook{1: {}},
@@ -181,7 +181,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 
 func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	uri := func(id int) string {
 		return fmt.Sprintf("%s/cookbooks/%d", ts.URL, id)
@@ -334,7 +334,7 @@ func TestHandlers_Cookbooks_Cookbook(t *testing.T) {
 
 func TestHandlers_Cookbooks_AddRecipe(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	uri := func(cookbookID int64) string {
 		return fmt.Sprintf("%s/cookbooks/%d", ts.URL, cookbookID)
@@ -489,7 +489,7 @@ func TestHandlers_Cookbooks_DeleteCookbookRecipe(t *testing.T) {
 
 func TestHandlers_Cookbooks_DownloadCookbook(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	uri := func(id int64) string {
 		return fmt.Sprintf("%s/cookbooks/%d/download", ts.URL, id)
@@ -543,7 +543,7 @@ func TestHandlers_Cookbooks_DownloadCookbook(t *testing.T) {
 
 func TestHandlers_Cookbooks_Image(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	uri := func(id int) string {
 		return fmt.Sprintf("%s/cookbooks/%d/image", ts.URL, id)
@@ -741,7 +741,7 @@ func TestHandlers_Cookbooks_RecipesSearch(t *testing.T) {
 
 func TestHandlers_Cookbooks_ReorderRecipes(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	uri := ts.URL + "/cookbooks/1/reorder"
 
@@ -783,7 +783,7 @@ func TestHandlers_Cookbooks_ReorderRecipes(t *testing.T) {
 
 func TestHandlers_Cookbooks_Share(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	uri := func(id int64) string {
 		return fmt.Sprintf("%s/cookbooks/%d/share", ts.URL, id)

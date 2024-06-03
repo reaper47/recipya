@@ -11,7 +11,7 @@ import (
 
 func TestHandlers_Reports(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	originalRepo := srv.Repository
 	uri := ts.URL + "/reports"
@@ -113,7 +113,7 @@ func TestHandlers_Reports(t *testing.T) {
 
 func TestHandlers_Reports_Report(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	originalRepo := srv.Repository
 	uri := func(id string) string { return fmt.Sprintf("%s/reports/%s", ts.URL, id) }

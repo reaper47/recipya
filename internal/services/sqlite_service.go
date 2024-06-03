@@ -1040,7 +1040,7 @@ func (s *SQLiteService) Images() []string {
 		var file string
 		err = rows.Scan(&file)
 		if err == nil {
-			xs = append(xs, file+".jpg")
+			xs = append(xs, file+app.ImageExt)
 		}
 	}
 	return xs

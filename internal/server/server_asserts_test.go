@@ -3,11 +3,11 @@ package server_test
 import (
 	"bytes"
 	"github.com/google/uuid"
-	"github.com/gorilla/websocket"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
 	"net/http"
 	"net/http/httptest"
+	"nhooyr.io/websocket"
 	"strings"
 	"testing"
 )
@@ -124,9 +124,9 @@ func assertUserSettings(tb testing.TB, got, want *models.UserSettings) {
 
 func assertWebsocket(tb testing.TB, conn *websocket.Conn, message int, want string) {
 	tb.Helper()
-	mt, got := readMessage(conn, message)
+	mt, got := readMessage(tb, conn, message)
 	got = bytes.Join(bytes.Fields(bytes.ReplaceAll(got, []byte("\r\n"), []byte(""))), []byte(" "))
-	if mt != websocket.TextMessage || string(got) != want {
+	if mt != websocket.MessageText || string(got) != want {
 		tb.Fatalf("got:\n%s\nbut want:\n%s", got, want)
 	}
 }

@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"github.com/google/uuid"
-	"github.com/gorilla/websocket"
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
@@ -13,7 +12,9 @@ import (
 	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
+	"nhooyr.io/websocket"
 	"strings"
+	"testing"
 	"time"
 )
 
@@ -51,7 +52,10 @@ func createWSServer() (*server.Server, *httptest.Server, *websocket.Conn) {
 	ts := httptest.NewServer(srv.Router)
 	u := strings.Replace(ts.URL, "http", "ws", 1)
 
-	c, _, err := websocket.DefaultDialer.Dial(u+"/ws", h)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	c, _, err := websocket.Dial(ctx, u+"/ws", &websocket.DialOptions{HTTPHeader: h})
 	if err != nil {
 		panic(err)
 	}
@@ -229,18 +233,23 @@ func getBodyHTML(rr *httptest.ResponseRecorder) string {
 	return string(body)
 }
 
-func readMessage(c *websocket.Conn, number int) (int, []byte) {
-	err := c.SetReadDeadline(time.Now().Add(15 * time.Second))
-	if err != nil {
-		return 0, nil
-	}
+func readMessage(tb testing.TB, c *websocket.Conn, number int) (websocket.MessageType, []byte) {
+	tb.Helper()
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 
 	var (
-		mt   int
+		mt   websocket.MessageType
 		data []byte
+		err  error
 	)
+
 	for i := 0; i < number; i++ {
-		mt, data, _ = c.ReadMessage()
+		mt, data, err = c.Read(ctx)
+		if err != nil {
+			tb.Fatalf("failed to read message: %v", err)
+		}
 	}
+
 	return mt, data
 }

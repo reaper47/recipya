@@ -78,7 +78,7 @@ func MakeCookbookView(c models.Cookbook, index int64, page uint64) CookbookView 
 		ID:    c.ID,
 		Image: c.Image,
 		IsImageExists: func(u uuid.UUID) bool {
-			_, err := os.Stat(filepath.Join(app.ImagesDir, u.String()+".jpg"))
+			_, err := os.Stat(filepath.Join(app.ImagesDir, u.String()+app.ImageExt))
 			return err == nil
 		}(c.Image),
 		NumRecipes: c.Count,
@@ -111,7 +111,7 @@ func NewFunctionsData[T int64 | uint64]() FunctionsData[T] {
 			return s[:numCharacters] + "…"
 		},
 		IsImageExists: func(u uuid.UUID) bool {
-			_, err := os.Stat(filepath.Join(app.ImagesDir, u.String()+".jpg"))
+			_, err := os.Stat(filepath.Join(app.ImagesDir, u.String()+app.ImageExt))
 			return err == nil
 		},
 		IsUUIDValid: func(u uuid.UUID) bool {
@@ -167,7 +167,7 @@ func NewViewRecipeData(id int64, recipe *models.Recipe, categories []string, isF
 		IsImagesExist: func(xu []uuid.UUID) []bool {
 			xb := make([]bool, 0, len(xu))
 			for _, u := range xu {
-				_, err := os.Stat(filepath.Join(app.ImagesDir, u.String()+".jpg"))
+				_, err := os.Stat(filepath.Join(app.ImagesDir, u.String()+app.ImageExt))
 				xb = append(xb, err == nil)
 			}
 			return xb

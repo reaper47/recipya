@@ -13,12 +13,11 @@ import (
 	"slices"
 	"strings"
 	"testing"
-	"time"
 )
 
 func TestHandlers_Settings(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	var (
 		uri                = ts.URL + "/settings"
@@ -167,7 +166,7 @@ func TestHandlers_Settings(t *testing.T) {
 
 func TestHandlers_Settings_BackupsRestore(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	originalFiles := srv.Files
 	originalRepo := srv.Repository
@@ -256,7 +255,7 @@ func TestHandlers_Settings_BackupsRestore(t *testing.T) {
 
 func TestHandlers_Settings_CalculateNutrition(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	srv.Repository = &mockRepository{
 		UserSettingsRegistered: map[int64]*models.UserSettings{
@@ -303,7 +302,7 @@ func TestHandlers_Settings_CalculateNutrition(t *testing.T) {
 
 func TestHandlers_Settings_Config(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	uri := ts.URL + "/settings/config"
 	fields := "email.from=test%40gmail.com&email.apikey=GHJ&integrations.ocr.key=JGKL&integrations.ocr.url=https%3A%2F%2Fwww.google.com&server.autologin=on&server.noSignups=on&server.production=on"
@@ -374,7 +373,7 @@ func TestHandlers_Settings_Config(t *testing.T) {
 
 func TestHandlers_Settings_ConvertAutomatically(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	srv.Repository = &mockRepository{
 		UserSettingsRegistered: map[int64]*models.UserSettings{
@@ -427,7 +426,7 @@ func TestHandlers_Settings_ConvertAutomatically(t *testing.T) {
 
 func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	f := &mockFiles{}
 	srv.Files = f
@@ -465,7 +464,6 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 	t.Run("no export if no recipes", func(t *testing.T) {
 		for _, q := range validExportTypes {
 			t.Run(q, func(t *testing.T) {
-				_ = c.SetReadDeadline(time.Now().Add(2 * time.Second))
 				originalHitCount := f.exportHitCount
 
 				rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"?type="+q)
@@ -495,7 +493,6 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 
 		for _, q := range validExportTypes {
 			t.Run(q, func(t *testing.T) {
-				_ = c.SetReadDeadline(time.Now().Add(2 * time.Second))
 				originalHitCount := f.exportHitCount
 
 				rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"?type="+q)
@@ -513,7 +510,7 @@ func TestHandlers_Settings_Recipes_ExportSchema(t *testing.T) {
 
 func TestHandlers_Settings_MeasurementSystems(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	uri := ts.URL + "/settings/measurement-system"
 

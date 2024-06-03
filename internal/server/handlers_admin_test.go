@@ -41,7 +41,7 @@ func TestHandlers_Admin(t *testing.T) {
 
 func TestHandlers_Admin_AddUser(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	uri := ts.URL + "/admin/users"
 	originalRepo := srv.Repository
@@ -122,7 +122,7 @@ func TestHandlers_Admin_AddUser(t *testing.T) {
 
 func TestHandlers_Admin_DeleteUser(t *testing.T) {
 	srv, ts, c := createWSServer()
-	defer c.Close()
+	defer c.CloseNow()
 
 	uri := ts.URL + "/admin/users/%s"
 	originalRepo := srv.Repository

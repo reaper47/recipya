@@ -954,7 +954,7 @@ templ loadRecipesManualScripts() {
                 return;
             }
 
-            const pathRegex = /^\/data\/images\/([\da-z]{8}-([\da-z]{4}-){3}[\da-z]{12}).jpg$/;
+            const pathRegex = /^\/data\/images\/([\da-z]{8}-([\da-z]{4}-){3}[\da-z]{12}).webp$/;
             const urlObject = new URL(url);
 
             let uuid;
@@ -1151,7 +1151,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 													alt="Image preview of the recipe."
 													class="object-cover mb-2 w-full max-h-[39rem]"
 													if data.IsImagesExist[i] {
-														src={ fmt.Sprintf("/data/images/%s.jpg", image) }
+														src={ fmt.Sprintf("/data/images/%s.webp", image) }
 													} else {
 														src=""
 													}
@@ -1163,7 +1163,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															accept="image/*"
 															name="images"
 															class="file-input file-input-sm file-input-bordered w-full max-w-sm"
-															value={ fmt.Sprintf("/data/images/%s.jpg", image) }
+															value={ fmt.Sprintf("/data/images/%s.webp", image) }
 															_="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
                                                               on dragleave or drop set the target's style.background to ''
                                                               on drop or change
@@ -1646,7 +1646,7 @@ templ ListRecipes(data templates.Data) {
 					<img
 						class="h-28 w-24 object-cover rounded-t-lg sm:h-40 sm:min-w-full sm:w-full"
 						if len(r.Images) > 0 && data.Functions.IsUUIDValid(r.Images[0]) && data.Functions.IsImageExists(r.Images[0]) {
-							src={ fmt.Sprintf("/data/images/%s.jpg", r.Images[0]) }
+							src={ fmt.Sprintf("/data/images/thumbnails/%s.webp", r.Images[0]) }
 						} else {
 							src="/static/img/recipes/placeholder.webp"
 						}
@@ -1657,11 +1657,11 @@ templ ListRecipes(data templates.Data) {
 					</div>
 				</figure>
 				<div class="card-body justify-between">
-					<h2 class={ "sm:font-semibold sm:w-[25ch] sm:break-words sm:min-h-12", templ.KV("sm:min-h-24", len(r.Keywords) == 0) }>
+					<h2 class={ "sm:font-semibold sm:w-[25ch] sm:break-words sm:min-h-14", templ.KV("sm:min-h-28", len(r.Keywords) == 0) }>
 						{ r.Name }
 					</h2>
-					<div class="sm:max-h-12 sm:overflow-y-auto">
-						<div class="flex flex-col flex-wrap overflow-x-auto max-h-12 pb-2 sm:pb-0 sm:max-h-none sm:content-end sm:flex-auto sm:flex-row">
+					<div class={ "sm:max-h-14 sm:overflow-y-auto sm:content-end", templ.KV("sm:min-h-14", len(r.Keywords) > 0) }>
+						<div class="flex flex-col flex-wrap overflow-x-auto max-h-12 pb-2 sm:pb-0 sm:max-h-none sm:flex-auto sm:flex-row">
 							<span class="sm:hidden">
 								@categoryBadge(r.Category, true)
 							</span>
@@ -1841,7 +1841,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 										alt="Image of the recipe"
 										class="w-full max-h-80  md:max-h-[34rem]"
 										if data.IsImagesExist[0] {
-											src={ fmt.Sprintf("/data/images/%s.jpg", data.Recipe.Images[0]) }
+											src={ fmt.Sprintf("/data/images/%s.webp", data.Recipe.Images[0]) }
 										} else {
 											src="/static/img/recipes/placeholder.webp"
 										}
@@ -1855,7 +1855,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 													alt="Image of the recipe"
 													class="w-full max-h-80  md:max-h-[34rem]"
 													if data.IsImagesExist[i] {
-														src={ fmt.Sprintf("/data/images/%s.jpg", data.Recipe.Images[i]) }
+														src={ fmt.Sprintf("/data/images/%s.webp", data.Recipe.Images[i]) }
 													} else {
 														src="/static/img/recipes/placeholder.webp"
 													}

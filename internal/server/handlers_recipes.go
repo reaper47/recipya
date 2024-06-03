@@ -735,7 +735,7 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 		imageFiles, ok := r.MultipartForm.File["images"]
 		if ok {
 			imageFiles = slices.DeleteFunc(imageFiles, func(fh *multipart.FileHeader) bool {
-				_, err = os.Stat(filepath.Join(app.ImagesDir, fh.Filename+".jpg"))
+				_, err = os.Stat(filepath.Join(app.ImagesDir, fh.Filename+app.ImageExt))
 				return err == nil
 			})
 
