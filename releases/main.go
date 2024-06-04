@@ -35,12 +35,8 @@ func buildRelease(packageName, tag string) {
 	platforms := []string{
 		"darwin/amd64",
 		"darwin/arm64",
-		"linux/386",
 		"linux/amd64",
-		"linux/arm",
 		"linux/arm64",
-		"linux/riscv64",
-		"linux/s390x",
 		"windows/amd64",
 		"windows/arm64",
 	}
