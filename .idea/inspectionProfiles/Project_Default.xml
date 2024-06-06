@@ -44,6 +44,7 @@
         <method importPath="io" receiver="*PipeWriter" name="Close" />
         <method importPath="io" receiver="*PipeWriter" name="CloseWithError" />
         <method importPath="io" receiver="*PipeReader" name="Close" />
+        <method importPath="nhooyr.io/websocket" receiver="*Conn" name="CloseNow" />
       </methods>
     </inspection_tool>
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">

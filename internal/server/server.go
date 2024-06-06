@@ -84,6 +84,7 @@ func (s *Server) mountHandlers() {
 	mux.HandleFunc("GET /guide/login", guideLoginHandler)
 	mux.HandleFunc("GET /static/*", http.StripPrefix("/static", http.FileServerFS(static.FS)).ServeHTTP)
 	mux.HandleFunc("GET /data/images/*", http.StripPrefix("/data/images", http.FileServer(http.Dir(app.ImagesDir))).ServeHTTP)
+	mux.HandleFunc("GET /data/images/thumbnails/*", http.StripPrefix("/data/images/thumbnails", http.FileServer(http.Dir(app.ThumbnailsDir))).ServeHTTP)
 	mux.HandleFunc("GET /*", notFoundHandler)
 
 	// General routes

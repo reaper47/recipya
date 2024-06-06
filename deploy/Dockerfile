@@ -18,15 +18,11 @@ COPY ./main.go ./
 COPY ./docs ./docs
 COPY ./web ./web
 
-RUN go generate ./...
+RUN go test ./...
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /app/recipya main.go
 
-# Run the tests in the container
-FROM build-stage AS run-test-stage
-RUN go test -v ./...
-
 # Deploy the application binary into a lean image
-FROM istio/distroless AS build-release-stage
+FROM alpine AS build-release-stage
 
 WORKDIR /
 
