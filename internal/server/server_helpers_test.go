@@ -247,7 +247,7 @@ func readMessage(tb testing.TB, c *websocket.Conn, number int) (websocket.Messag
 	for i := 0; i < number; i++ {
 		mt, data, err = c.Read(ctx)
 		if err != nil {
-			tb.Fatalf("failed to read message, conn %+v: %v", c, err)
+			tb.Fatalf("failed to read message: %v", err)
 		}
 	}
 
