@@ -48,42 +48,33 @@ func scrapeGlobo(root *goquery.Document) (rs models.RecipeSchema, err error) {
 		yield = int16(i)
 	}()
 
-	chInstructions := make(chan []string)
+	chInstructions := make(chan []models.HowToStep)
 	go func() {
 		nodes := root.Find("li[itemprop='recipeInstructions']")
 
-		values := make([]string, nodes.Length())
+		values := make([]models.HowToStep, nodes.Length())
 		defer func() {
 			_ = recover()
 			chInstructions <- values
 		}()
 
 		nodes.Each(func(i int, s *goquery.Selection) {
-			values[i] = strings.TrimSpace(s.Find(".recipeInstruction__text").Text())
+			values[i] = models.NewHowToStep(strings.TrimSpace(s.Find(".recipeInstruction__text").Text()))
 		})
 	}()
 
-	name, _ := root.Find("meta[itemprop='name']").Attr("content")
-	image, _ := root.Find("meta[itemprop='image']").Attr("content")
-	dateModified, _ := root.Find("meta[itemprop='dateModified']").Attr("content")
-	datePublished, _ := root.Find("meta[itemprop='datePublished']").Attr("content")
-	keywords, _ := root.Find("meta[itemprop='keywords']").Attr("content")
-	category, _ := root.Find("meta[itemprop='recipeCategory']").Attr("content")
-	cookingMethod, _ := root.Find("meta[itemprop='recipeCuisine']").Attr("content")
-	cuisine, _ := root.Find("meta[itemprop='recipeCuisine']").Attr("content")
+	rs.Name, _ = root.Find("meta[itemprop='name']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[itemprop='image']").Attr("content")
+	rs.DateModified, _ = root.Find("meta[itemprop='dateModified']").Attr("content")
+	rs.DatePublished, _ = root.Find("meta[itemprop='datePublished']").Attr("content")
+	rs.Keywords.Values, _ = root.Find("meta[itemprop='keywords']").Attr("content")
+	rs.Category.Value, _ = root.Find("meta[itemprop='recipeCategory']").Attr("content")
+	rs.CookingMethod.Value, _ = root.Find("meta[itemprop='recipeCuisine']").Attr("content")
+	rs.Cuisine.Value, _ = root.Find("meta[itemprop='recipeCuisine']").Attr("content")
+	rs.Yield.Value = <-chYield
+	rs.Ingredients.Values = <-chIngredients
+	rs.Instructions.Values = <-chInstructions
+	rs.Description.Value = <-chDescription
 
-	return models.RecipeSchema{
-		Name:          name,
-		Image:         models.Image{Value: image},
-		Yield:         models.Yield{Value: <-chYield},
-		Keywords:      models.Keywords{Values: keywords},
-		Category:      models.Category{Value: category},
-		CookingMethod: models.CookingMethod{Value: cookingMethod},
-		Cuisine:       models.Cuisine{Value: cuisine},
-		DatePublished: datePublished,
-		DateModified:  dateModified,
-		Ingredients:   models.Ingredients{Values: <-chIngredients},
-		Instructions:  models.Instructions{Values: <-chInstructions},
-		Description:   models.Description{Value: <-chDescription},
-	}, err
+	return rs, err
 }

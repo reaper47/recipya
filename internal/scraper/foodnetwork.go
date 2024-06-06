@@ -41,7 +41,7 @@ func scrapeFoodNetwork(root *goquery.Document) (models.RecipeSchema, error) {
 			ins = strings.Replace(ins, "</p>", "", 1)
 			ins = strings.ReplaceAll(ins, "&deg;", "°")
 
-			rs.Instructions.Values = append(rs.Instructions.Values, strings.TrimSpace(ins))
+			rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(ins)))
 		}
 	}
 

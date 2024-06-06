@@ -257,7 +257,7 @@ func (s *Scraper) scrapeQuitoque(rawURL string) (models.RecipeSchema, error) {
 		cook         string
 		prep         string
 		ingredients  []string
-		instructions []string
+		instructions []models.HowToStep
 		yield        int16
 	)
 	if len(q.Data.Recipe.Pools) > 0 && len(q.Data.Recipe.Pools[0].CookingModes) > 0 {
@@ -268,11 +268,11 @@ func (s *Scraper) scrapeQuitoque(rawURL string) (models.RecipeSchema, error) {
 		prep = "PT" + strconv.Itoa(m.WaitingTime) + "M"
 		cook = "PT" + strconv.Itoa(m.CookingTime) + "M"
 
-		instructions = make([]string, 0, len(m.Steps))
+		instructions = make([]models.HowToStep, 0, len(m.Steps))
 		for _, step := range m.Steps {
 			ins := step.Title + "\n" + step.Description
 			ins = strings.ReplaceAll(ins, "\u00a0", " ")
-			instructions = append(instructions, ins)
+			instructions = append(instructions, models.NewHowToStep(ins))
 		}
 
 		ingredients = make([]string, 0, len(m.Stacks.Ingredients)+len(m.Stacks.Ingredients))
@@ -301,16 +301,16 @@ func (s *Scraper) scrapeQuitoque(rawURL string) (models.RecipeSchema, error) {
 
 	return models.RecipeSchema{
 		AtContext:       atContext,
-		AtType:          models.SchemaType{Value: "Recipe"},
-		Category:        models.Category{Value: "uncategorized"},
+		AtType:          &models.SchemaType{Value: "Recipe"},
+		Category:        &models.Category{Value: "uncategorized"},
 		CookTime:        cook,
-		Description:     models.Description{Value: q.Data.Recipe.ShortDescription},
-		Image:           models.Image{Value: q.Data.Recipe.Image},
-		Ingredients:     models.Ingredients{Values: ingredients},
-		Instructions:    models.Instructions{Values: instructions},
+		Description:     &models.Description{Value: q.Data.Recipe.ShortDescription},
+		Image:           &models.Image{Value: q.Data.Recipe.Image},
+		Ingredients:     &models.Ingredients{Values: ingredients},
+		Instructions:    &models.Instructions{Values: instructions},
 		Name:            q.Data.Recipe.Name,
-		NutritionSchema: ns,
+		NutritionSchema: &ns,
 		PrepTime:        prep,
-		Yield:           models.Yield{Value: yield},
+		Yield:           &models.Yield{Value: yield},
 	}, nil
 }

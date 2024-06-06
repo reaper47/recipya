@@ -10,15 +10,15 @@ import (
 )
 
 func scrapePuurgezond(root *goquery.Document) (models.RecipeSchema, error) {
-	description, _ := root.Find("meta[name='description']").Attr("content")
+	rs.Description.Value, _ = root.Find("meta[name='description']").Attr("content")
 	keywords, _ := root.Find("meta[name='keywords']").Attr("content")
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
 
 	var (
 		cookTime     string
 		prepTime     string
 		ingredients  []string
-		instructions []string
+		instructions []models.HowToStep
 		yield        int16
 
 		isIngredients  bool
@@ -76,7 +76,7 @@ func scrapePuurgezond(root *goquery.Document) (models.RecipeSchema, error) {
 			isIngredients = false
 		} else if isInstructions {
 			sel.Find("li").Each(func(_ int, li *goquery.Selection) {
-				instructions = append(instructions, strings.TrimSpace(li.Text()))
+				instructions = append(instructions, models.NewHowToStep(strings.TrimSpace(li.Text())))
 			})
 			isInstructions = false
 		}
@@ -84,13 +84,13 @@ func scrapePuurgezond(root *goquery.Document) (models.RecipeSchema, error) {
 
 	return models.RecipeSchema{
 		CookTime:     cookTime,
-		Description:  models.Description{Value: description},
-		Keywords:     models.Keywords{Values: keywords},
-		Image:        models.Image{Value: image},
-		Ingredients:  models.Ingredients{Values: ingredients},
-		Instructions: models.Instructions{Values: instructions},
+		Description:  &models.Description{Value: description},
+		Keywords:     &models.Keywords{Values: keywords},
+		Image:        &models.Image{Value: image},
+		Ingredients:  &models.Ingredients{Values: ingredients},
+		Instructions: &models.Instructions{Values: instructions},
 		Name:         root.Find("title").Text(),
 		PrepTime:     prepTime,
-		Yield:        models.Yield{Value: yield},
+		Yield:        &models.Yield{Value: yield},
 	}, nil
 }

@@ -9,8 +9,8 @@ import (
 )
 
 func scrapePloetzblog(root *goquery.Document) (models.RecipeSchema, error) {
-	name, _ := root.Find("meta[property='og:title']").Attr("content")
-	image, _ := root.Find("img.we2p-pb-recipe__thumbnail-image").Attr("src")
+	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
+	rs.Image.Value, _ = root.Find("img.we2p-pb-recipe__thumbnail-image").Attr("src")
 
 	var description strings.Builder
 	root.Find("div.we2p-pb-recipe__description p").Each(func(_ int, sel *goquery.Selection) {
@@ -38,7 +38,7 @@ func scrapePloetzblog(root *goquery.Document) (models.RecipeSchema, error) {
 		prep = "PT" + regex.Digit.FindString(before) + "H" + regex.Digit.FindString(after) + "M"
 	}
 
-	var instructions []string
+	var instructions []models.HowToStep
 	nodes = root.Find("h4")
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		n := sel.Next().Children().Last()
@@ -51,16 +51,16 @@ func scrapePloetzblog(root *goquery.Document) (models.RecipeSchema, error) {
 		n.Find("p").Each(func(i int, subSel *goquery.Selection) {
 			sb.WriteString(strconv.Itoa(i+1) + ". " + strings.Join(strings.Fields(subSel.Text()), " ") + "\n")
 		})
-		instructions = append(instructions, sb.String()+"\n")
+		instructions = append(instructions, models.NewHowToStep(sb.String()+"\n"))
 	})
 
 	return models.RecipeSchema{
-		Description:  models.Description{Value: strings.TrimSpace(description.String())},
-		Image:        models.Image{Value: image},
-		Ingredients:  models.Ingredients{Values: ingredients},
-		Instructions: models.Instructions{Values: instructions},
+		Description:  &models.Description{Value: strings.TrimSpace(description.String())},
+		Image:        &models.Image{Value: image},
+		Ingredients:  &models.Ingredients{Values: ingredients},
+		Instructions: &models.Instructions{Values: instructions},
 		Name:         name,
 		PrepTime:     prep,
-		Yield:        models.Yield{Value: findYield(yield)},
+		Yield:        &models.Yield{Value: findYield(yield)},
 	}, nil
 }

@@ -20,9 +20,9 @@ func scrapeLivingTheGreenLife(root *goquery.Document) (models.RecipeSchema, erro
 	}
 
 	nodes := root.Find(".wprm-recipe-instructions-container").First().Find("ul.wprm-recipe-instructions li")
-	rs.Instructions.Values = make([]string, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToStep, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Instructions.Values = append(rs.Instructions.Values, sel.Text())
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
 	})
 	return rs, nil
 }

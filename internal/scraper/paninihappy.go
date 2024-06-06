@@ -10,7 +10,7 @@ import (
 
 func scrapePaniniHappy(root *goquery.Document) (models.RecipeSchema, error) {
 	content := root.Find(".entry-content")
-	image, _ := content.Find("img").First().Attr("src")
+	rs.Image.Value, _ = content.Find("img").First().Attr("src")
 
 	recipe := content.Find(".hrecipe")
 
@@ -54,19 +54,19 @@ func scrapePaniniHappy(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	nodes = recipe.Find(".instruction")
-	instructions := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		instructions[i] = s.Text()
+	instructions := make([]models.HowToStep, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		instructions = append(instructions, models.NewHowToStep(s.Text()))
 	})
 
 	return models.RecipeSchema{
 		Name:         recipe.Find("h2").Last().Text(),
-		Description:  models.Description{Value: description},
-		Image:        models.Image{Value: image},
+		Description:  &models.Description{Value: description},
+		Image:        &models.Image{Value: image},
 		PrepTime:     prepTime,
 		CookTime:     cookTime,
-		Yield:        models.Yield{Value: yield},
-		Ingredients:  models.Ingredients{Values: ingredients},
-		Instructions: models.Instructions{Values: instructions},
+		Yield:        &models.Yield{Value: yield},
+		Ingredients:  &models.Ingredients{Values: ingredients},
+		Instructions: &models.Instructions{Values: instructions},
 	}, nil
 }

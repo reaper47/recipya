@@ -44,11 +44,11 @@ func scrapeMaangchi(root *goquery.Document) (models.RecipeSchema, error) {
 
 			switch c.Data {
 			case "h3":
-				rs.Instructions.Values = append(rs.Instructions.Values, strings.TrimSpace(c.FirstChild.Data))
+				rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(c.FirstChild.Data)))
 			case "p":
 				s := strings.TrimSpace(c.FirstChild.Data)
 				if s != "a" {
-					rs.Instructions.Values = append(rs.Instructions.Values, s)
+					rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
 				}
 			case "ol":
 				goquery.NewDocumentFromNode(c).Find("li").Each(func(_ int, sel *goquery.Selection) {
@@ -57,13 +57,13 @@ func scrapeMaangchi(root *goquery.Document) (models.RecipeSchema, error) {
 					if ok {
 						s = before
 					}
-					rs.Instructions.Values = append(rs.Instructions.Values, strings.TrimSpace(s))
+					rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(s)))
 				})
 			}
 		}
 	}
 
 	rs.Ingredients.Values = slices.DeleteFunc(rs.Ingredients.Values, func(s string) bool { return s == "" })
-	rs.Instructions.Values = slices.DeleteFunc(rs.Instructions.Values, func(s string) bool { return s == "" })
+	rs.Instructions.Values = slices.DeleteFunc(rs.Instructions.Values, func(s models.HowToStep) bool { return s.Text == "" })
 	return rs, nil
 }

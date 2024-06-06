@@ -7,10 +7,10 @@ import (
 )
 
 func scrapeNinjatestkitchen(root *goquery.Document) (models.RecipeSchema, error) {
-	name, _ := root.Find("meta[itemprop='name']").Attr("content")
-	description, _ := root.Find("meta[property='og:description']").Attr("content")
-	image, _ := root.Find("meta[itemprop='image']").Attr("content")
-	datePublished, _ := root.Find("meta[itemprop='datePublished']").Attr("content")
+	rs.Name, _ = root.Find("meta[itemprop='name']").Attr("content")
+	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[itemprop='image']").Attr("content")
+	rs.DatePublished, _ = root.Find("meta[itemprop='datePublished']").Attr("content")
 	keywords, _ := root.Find("meta[itemprop='keywords']").Attr("content")
 	prepTime, _ := root.Find("meta[itemprop='prepTime']").Attr("content")
 	recipeCategory, _ := root.Find("meta[itemprop='recipeCategory']").Attr("content")
@@ -22,23 +22,23 @@ func scrapeNinjatestkitchen(root *goquery.Document) (models.RecipeSchema, error)
 	}
 
 	nodes := root.Find(".single-method__method li p")
-	instructions := make([]string, 0, nodes.Length())
+	instructions := make([]models.HowToStep, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		instructions = append(instructions, sel.Text())
+		instructions = append(instructions, models.NewHowToStep(sel.Text()))
 	})
 
 	recipeYield, _ := root.Find("meta[itemprop='recipeYield']").Attr("content")
 
 	return models.RecipeSchema{
-		Category:      models.Category{Value: recipeCategory},
+		Category:      &models.Category{Value: recipeCategory},
 		DatePublished: datePublished,
-		Description:   models.Description{Value: strings.TrimSpace(description)},
-		Keywords:      models.Keywords{Values: keywords},
-		Image:         models.Image{Value: image},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
+		Description:   &models.Description{Value: strings.TrimSpace(description)},
+		Keywords:      &models.Keywords{Values: keywords},
+		Image:         &models.Image{Value: image},
+		Ingredients:   &models.Ingredients{Values: ingredients},
+		Instructions:  &models.Instructions{Values: instructions},
 		Name:          name,
 		PrepTime:      prepTime,
-		Yield:         models.Yield{Value: findYield(recipeYield)},
+		Yield:         &models.Yield{Value: findYield(recipeYield)},
 	}, nil
 }

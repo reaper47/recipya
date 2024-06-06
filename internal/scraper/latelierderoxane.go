@@ -8,16 +8,16 @@ import (
 )
 
 func scrapeLatelierderoxane(root *goquery.Document) (models.RecipeSchema, error) {
-	description, _ := root.Find("meta[name='description']").Attr("content")
+	rs.Description.Value, _ = root.Find("meta[name='description']").Attr("content")
 
-	name, _ := root.Find("meta[name='og:title']").Attr("content")
+	rs.Name, _ = root.Find("meta[name='og:title']").Attr("content")
 	before, _, found := strings.Cut(name, " - ")
 	if found {
 		name = strings.TrimSpace(before)
 	}
 
-	image, _ := root.Find("meta[name='image']").Attr("content")
-	datePublished, _ := root.Find("time[itemprop='datePublished']").Attr("datetime")
+	rs.Image.Value, _ = root.Find("meta[name='image']").Attr("content")
+	rs.DatePublished, _ = root.Find("time[itemprop='datePublished']").Attr("datetime")
 
 	prep := root.Find("span:contains('Préparation')").Next().Text()
 	if prep != "" {
@@ -59,21 +59,20 @@ func scrapeLatelierderoxane(root *goquery.Document) (models.RecipeSchema, error)
 	})
 
 	nodes = root.Find(".bloc_texte_simple li")
-	instructions := make([]string, 0, nodes.Length())
+	instructions := make([]models.HowToStep, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := strings.TrimSpace(sel.Text())
-		instructions = append(instructions, s)
+		instructions = append(instructions, models.NewHowToStep(strings.TrimSpace(sel.Text())))
 	})
 
 	return models.RecipeSchema{
 		CookTime:      cook,
 		DatePublished: datePublished,
-		Description:   models.Description{Value: description},
-		Image:         models.Image{Value: image},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
+		Description:   &models.Description{Value: description},
+		Image:         &models.Image{Value: image},
+		Ingredients:   &models.Ingredients{Values: ingredients},
+		Instructions:  &models.Instructions{Values: instructions},
 		Name:          name,
 		PrepTime:      prep,
-		Yield:         models.Yield{Value: findYield(yield)},
+		Yield:         &models.Yield{Value: findYield(yield)},
 	}, nil
 }

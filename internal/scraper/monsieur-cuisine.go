@@ -174,20 +174,26 @@ func (s *Scraper) scrapeMonsieurCuisine(root *goquery.Document, rawURL string, f
 		}
 	}
 
+	parts := strings.Split(block.Instruction, "\r\n\r\n")
+	instructions := make([]models.HowToStep, 0, len(parts))
+	for _, part := range parts {
+		instructions = append(instructions, models.NewHowToStep(part))
+	}
+
 	rs := models.RecipeSchema{
-		Category:        models.Category{Value: category},
+		Category:        &models.Category{Value: category},
 		CookTime:        cook,
 		DateCreated:     m.Data.Recipe.CreatedDate,
 		DateModified:    m.Data.Recipe.LastUpdated,
 		DatePublished:   m.Data.Recipe.PublishedDate,
-		Description:     models.Description{Value: description},
-		Keywords:        models.Keywords{Values: strings.Join(keywords, ",")},
-		Ingredients:     models.Ingredients{Values: ingredients},
-		Instructions:    models.Instructions{Values: strings.Split(block.Instruction, "\r\n\r\n")},
+		Description:     &models.Description{Value: description},
+		Keywords:        &models.Keywords{Values: strings.Join(keywords, ",")},
+		Ingredients:     &models.Ingredients{Values: ingredients},
+		Instructions:    &models.Instructions{Values: instructions},
 		Name:            m.Data.Recipe.Name,
-		NutritionSchema: ns,
+		NutritionSchema: &ns,
 		PrepTime:        prep,
-		Yield:           models.Yield{Value: int16(block.Amount)},
+		Yield:           &models.Yield{Value: int16(block.Amount)},
 		URL:             rawURL,
 	}
 

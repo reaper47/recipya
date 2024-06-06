@@ -9,8 +9,8 @@ import (
 )
 
 func scrapeMundodereceitasbimby(root *goquery.Document) (models.RecipeSchema, error) {
-	description, _ := root.Find("meta[name='og:description']").Attr("content")
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
+	rs.Description.Value, _ = root.Find("meta[name='og:description']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
 
 	var dateCreated string
 	_, after, ok := strings.Cut(root.Find("span.creation-date").First().Text(), ":")
@@ -39,9 +39,9 @@ func scrapeMundodereceitasbimby(root *goquery.Document) (models.RecipeSchema, er
 	})
 
 	nodes = root.Find("ol[itemprop='recipeInstructions'] div[itemprop='itemListElement']")
-	instructions := make([]string, 0, nodes.Length())
+	instructions := make([]models.HowToStep, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		instructions = append(instructions, strings.TrimSpace(sel.Text()))
+		instructions = append(instructions, models.NewHowToStep(strings.TrimSpace(sel.Text())))
 	})
 
 	var prep string
@@ -54,16 +54,16 @@ func scrapeMundodereceitasbimby(root *goquery.Document) (models.RecipeSchema, er
 	}
 
 	return models.RecipeSchema{
-		Category:      models.Category{Value: root.Find("span[itemprop='recipeCategory']").First().Text()},
+		Category:      &models.Category{Value: root.Find("span[itemprop='recipeCategory']").First().Text()},
 		DateCreated:   dateCreated,
 		DateModified:  dateModified,
 		DatePublished: dateCreated,
-		Description:   models.Description{Value: description},
-		Image:         models.Image{Value: image},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
+		Description:   &models.Description{Value: description},
+		Image:         &models.Image{Value: image},
+		Ingredients:   &models.Ingredients{Values: ingredients},
+		Instructions:  &models.Instructions{Values: instructions},
 		Name:          root.Find("a[itemprop='item'] span[itemprop='name']").Last().Text(),
 		PrepTime:      prep,
-		Yield:         models.Yield{Value: findYield(root.Find("span[itemprop='recipeYield']").Text())},
+		Yield:         &models.Yield{Value: findYield(root.Find("span[itemprop='recipeYield']").Text())},
 	}, nil
 }

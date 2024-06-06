@@ -1114,7 +1114,7 @@ func (m *mockScraper) Scrape(url string, files services.FilesService) (models.Re
 
 	return models.RecipeSchema{
 		AtContext: "https://schema.org",
-		AtType:    models.SchemaType{Value: "Recipe"},
+		AtType:    &models.SchemaType{Value: "Recipe"},
 		Name:      url,
 		URL:       url,
 	}, nil

@@ -12,15 +12,14 @@ func scrapeFitMenCook(root *goquery.Document) (models.RecipeSchema, error) {
 	if err != nil && !strings.HasPrefix(err.Error(), "@type must be Recipe") {
 		return rs, err
 	}
-	rs.AtType = models.SchemaType{Value: "Recipe"}
 
-	image, _ := root.Find("picture > img").Attr("data-lazy-src")
-	rs.Image = models.Image{Value: image}
+	rs.Image.Value, _ = root.Find("picture > img").Attr("data-lazy-src")
+	rs.Image = &models.Image{Value: image}
 
 	nodes := root.Find("a[rel='tag']")
-	keywords := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		keywords[i] = strings.ToLower(s.Text())
+	keywords := make([]string, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		keywords = append(keywords, strings.ToLower(s.Text()))
 	})
 
 	prepTimeNode := root.Find(".fmc_prep .fmc_amount")
@@ -41,45 +40,44 @@ func scrapeFitMenCook(root *goquery.Document) (models.RecipeSchema, error) {
 		}
 	}
 
-	ingredients := make([]string, 0)
-	root.Find(".fmc_ingredients").Last().Find("ul li").Each(func(_ int, s *goquery.Selection) {
+	rs.Ingredients.Values = make([]string, 0)
+	root.Find(".fmc_rs.Ingredients.Values").Last().Find("ul li").Each(func(_ int, s *goquery.Selection) {
 		ing := strings.ReplaceAll(s.Text(), "\t", "")
 		if !strings.Contains(ing, "\n\n") {
 			return
 		}
 
 		split := strings.Split(ing, "\n\n")
-		ingredients = append(ingredients, split[0])
+		rs.Ingredients.Values = append(rs.Ingredients.Values, split[0])
 		for _, s2 := range strings.Split(split[1], "\n") {
 			s2 = strings.ReplaceAll(s2, "\u00a0", " ")
-			ingredients = append(ingredients, strings.TrimSpace(s2))
+			rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(s2))
 		}
-		ingredients = append(ingredients, "\n")
+		rs.Ingredients.Values = append(rs.Ingredients.Values, "\n")
 	})
-	rs.Ingredients = models.Ingredients{Values: ingredients}
 
-	var nutrition models.NutritionSchema
-	nutritionNodes := root.Find(".fmc_macro_cals")
-	nutrition.Calories = nutritionNodes.First().Find("span").Text()
+	var n models.NutritionSchema
+	nNodes := root.Find(".fmc_macro_cals")
+	n.Calories = nNodes.First().Find("span").Text()
 
-	nutritionNodes.NextAll().Each(func(_ int, s *goquery.Selection) {
+	nNodes.NextAll().Each(func(_ int, s *goquery.Selection) {
 		switch strings.ToLower(s.Nodes[0].FirstChild.Data) {
 		case "protein":
-			nutrition.Protein = s.Find("span").Text()
+			n.Protein = s.Find("span").Text()
 		case "fats":
-			nutrition.Fat = s.Find("span").Text()
+			n.Fat = s.Find("span").Text()
 		case "carbs":
-			nutrition.Carbohydrates = s.Find("span").Text()
+			n.Carbohydrates = s.Find("span").Text()
 		case "sodium":
-			nutrition.Sodium = s.Find("span").Text()
+			n.Sodium = s.Find("span").Text()
 		case "fiber":
-			nutrition.Fiber = s.Find("span").Text()
+			n.Fiber = s.Find("span").Text()
 		case "sugar":
-			nutrition.Sugar = s.Find("span").Text()
+			n.Sugar = s.Find("span").Text()
 		}
 	})
-	rs.NutritionSchema = nutrition
+	rs.NutritionSchema = &n
 
-	rs.Keywords = models.Keywords{Values: strings.TrimSpace(strings.Join(keywords, ","))}
+	rs.Keywords = &models.Keywords{Values: strings.TrimSpace(strings.Join(keywords, ","))}
 	return rs, nil
 }

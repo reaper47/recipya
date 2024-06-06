@@ -9,10 +9,10 @@ import (
 )
 
 func scrapeUitpaulineskeuken(root *goquery.Document) (models.RecipeSchema, error) {
-	name, _ := root.Find("meta[property='og:title']").Attr("content")
-	description, _ := root.Find("meta[property='og:description']").Attr("content")
+	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
+	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
 	dateMod, _ := root.Find("meta[property='article:modified_time']").Attr("content")
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
 
 	var (
 		prep string
@@ -45,9 +45,9 @@ func scrapeUitpaulineskeuken(root *goquery.Document) (models.RecipeSchema, error
 	})
 
 	nodes = root.Find("#recept ol li")
-	instructions := make([]string, 0, nodes.Length())
+	instructions := make([]models.HowToStep, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		instructions = append(instructions, strings.TrimSpace(sel.Text()))
+		instructions = append(instructions, models.NewHowToStep(strings.TrimSpace(sel.Text())))
 	})
 
 	nodes = root.Find("#gerelateerd a")
@@ -57,16 +57,16 @@ func scrapeUitpaulineskeuken(root *goquery.Document) (models.RecipeSchema, error
 	})
 
 	return models.RecipeSchema{
-		Category:     models.Category{Value: "uncategorized"},
+		Category:     &models.Category{Value: "uncategorized"},
 		CookTime:     cook,
 		DateModified: dateMod,
-		Description:  models.Description{Value: description},
-		Keywords:     models.Keywords{Values: strings.Join(keywords, ",")},
-		Image:        models.Image{Value: image},
-		Ingredients:  models.Ingredients{Values: ingredients},
-		Instructions: models.Instructions{Values: instructions},
+		Description:  &models.Description{Value: description},
+		Keywords:     &models.Keywords{Values: strings.Join(keywords, ",")},
+		Image:        &models.Image{Value: image},
+		Ingredients:  &models.Ingredients{Values: ingredients},
+		Instructions: &models.Instructions{Values: instructions},
 		Name:         name,
 		PrepTime:     prep,
-		Yield:        models.Yield{Value: 1},
+		Yield:        &models.Yield{Value: 1},
 	}, nil
 }

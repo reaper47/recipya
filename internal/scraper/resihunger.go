@@ -18,15 +18,15 @@ func scrapeReisHunger(root *goquery.Document) (models.RecipeSchema, error) {
 		ingredients[i] = strings.TrimSpace(s.Parent().Text())
 	})
 
-	var instructions []string
+	var instructions []models.HowToStep
 	root.Find("#zubereitung").Next().Find("div").Each(func(_ int, s *goquery.Selection) {
 		v := strings.TrimFunc(s.Text(), func(r rune) bool { return r == '\n' })
 		if !strings.HasPrefix(v, "Schritt") {
-			instructions = append(instructions, v)
+			instructions = append(instructions, models.NewHowToStep(v))
 		}
 	})
 
-	rs.Instructions = models.Instructions{Values: instructions}
-	rs.Ingredients = models.Ingredients{Values: ingredients}
+	rs.Instructions = &models.Instructions{Values: instructions}
+	rs.Ingredients = &models.Ingredients{Values: ingredients}
 	return rs, nil
 }

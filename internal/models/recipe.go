@@ -267,26 +267,31 @@ func (r *Recipe) Schema() RecipeSchema {
 		img = r.Images[0].String() + app.ImageExt
 	}
 
+	instructions := make([]HowToStep, 0, len(r.Instructions))
+	for _, ins := range r.Instructions {
+		instructions = append(instructions, HowToStep{Text: ins})
+	}
+
 	return RecipeSchema{
 		AtContext:       "https://schema.org",
-		AtType:          SchemaType{Value: "Recipe"},
-		Category:        Category{Value: r.Category},
+		AtType:          &SchemaType{Value: "Recipe"},
+		Category:        &Category{Value: r.Category},
 		CookTime:        formatDuration(r.Times.Cook),
-		Cuisine:         Cuisine{Value: r.Cuisine},
+		Cuisine:         &Cuisine{Value: r.Cuisine},
 		DateCreated:     r.CreatedAt.Format(time.DateOnly),
 		DateModified:    r.UpdatedAt.Format(time.DateOnly),
 		DatePublished:   r.CreatedAt.Format(time.DateOnly),
-		Description:     Description{Value: r.Description},
-		Keywords:        Keywords{Values: strings.Join(r.Keywords, ",")},
-		Image:           Image{Value: img},
-		Ingredients:     Ingredients{Values: r.Ingredients},
-		Instructions:    Instructions{Values: r.Instructions},
+		Description:     &Description{Value: r.Description},
+		Keywords:        &Keywords{Values: strings.Join(r.Keywords, ",")},
+		Image:           &Image{Value: img},
+		Ingredients:     &Ingredients{Values: r.Ingredients},
+		Instructions:    &Instructions{Values: instructions},
 		Name:            r.Name,
 		NutritionSchema: r.Nutrition.Schema(strconv.Itoa(int(r.Yield))),
 		PrepTime:        formatDuration(r.Times.Prep),
-		//Tools:           Tools{Values: r.Tools},
-		Yield: Yield{Value: r.Yield},
-		URL:   r.URL,
+		Tools:           &Tools{Values: r.Tools},
+		Yield:           &Yield{Value: r.Yield},
+		URL:             r.URL,
 	}
 }
 
@@ -487,8 +492,8 @@ func (n *Nutrition) Scale(multiplier float64) {
 }
 
 // Schema creates the schema representation of the Nutrition.
-func (n *Nutrition) Schema(servings string) NutritionSchema {
-	return NutritionSchema{
+func (n *Nutrition) Schema(servings string) *NutritionSchema {
+	return &NutritionSchema{
 		Calories:       n.Calories,
 		Carbohydrates:  n.TotalCarbohydrates,
 		Cholesterol:    n.Cholesterol,

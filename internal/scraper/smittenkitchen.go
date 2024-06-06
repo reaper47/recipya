@@ -26,16 +26,16 @@ func scrapeSmittenKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes = root.Find(".jetpack-recipe-directions").Last()
 	children = nodes.Children()
-	instructions := make([]string, 0, children.Length())
+	instructions := make([]models.HowToStep, 0, children.Length())
 	children.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
 		if s != "" {
-			instructions = append(instructions, s)
+			instructions = append(instructions, models.NewHowToStep(s))
 		}
 	})
 
 	img, _ := root.Find(".post-thumbnail-container").First().Find("img").Attr("src")
-	datePub, _ := root.Find(".entry-date.published").First().Attr("datetime")
+	rs.DatePublished, _ = root.Find(".entry-date.published").First().Attr("datetime")
 	dateMod, _ := root.Find(".updated").First().Attr("datetime")
 
 	title := root.Find("h3[itemprop='name']").Text()
@@ -68,7 +68,7 @@ func scrapeSmittenKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 						ingredients = append(ingredients, strings.TrimSpace(x))
 					}
 				} else if len(ingredients) > 0 {
-					instructions = append(instructions, strings.TrimSpace(sel.Text()))
+					instructions = append(instructions, models.NewHowToStep(strings.TrimSpace(sel.Text())))
 				}
 			}
 		})
@@ -77,13 +77,13 @@ func scrapeSmittenKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 	return models.RecipeSchema{
 		DateModified:    dateMod,
 		DatePublished:   datePub,
-		Description:     models.Description{Value: root.Find(".smittenkitchen-print-hide p").First().Text()},
-		Image:           models.Image{Value: img},
-		Ingredients:     models.Ingredients{Values: ingredients},
-		Instructions:    models.Instructions{Values: instructions},
+		Description:     &models.Description{Value: root.Find(".smittenkitchen-print-hide p").First().Text()},
+		Image:           &models.Image{Value: img},
+		Ingredients:     &models.Ingredients{Values: ingredients},
+		Instructions:    &models.Instructions{Values: instructions},
 		Name:            title,
-		NutritionSchema: models.NutritionSchema{},
+		NutritionSchema: &models.NutritionSchema{},
 		PrepTime:        prepTime,
-		Yield:           models.Yield{Value: yield},
+		Yield:           &models.Yield{Value: yield},
 	}, nil
 }

@@ -8,11 +8,11 @@ import (
 )
 
 func scrapeTheHappyFoodie(root *goquery.Document) (models.RecipeSchema, error) {
-	name, _ := root.Find("meta[property='og:title']").Attr("content")
-	description, _ := root.Find("meta[property='og:description']").Attr("content")
-	datePublished, _ := root.Find("meta[property='article:published_time']").Attr("content")
-	dateModified, _ := root.Find("meta[property='article:modified_time']").Attr("content")
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
+	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
+	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
+	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
+	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
 
 	yield := findYield(root.Find(".hf-metadata__portions p").Text())
 
@@ -60,22 +60,22 @@ func scrapeTheHappyFoodie(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	nodes = root.Find(".hf-method__text p")
-	instructions := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		instructions[i] = s.Text()
+	instructions := make([]models.HowToStep, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		instructions = append(instructions, models.NewHowToStep(s.Text()))
 	})
 
 	return models.RecipeSchema{
 		Name:          name,
 		DatePublished: datePublished,
 		DateModified:  dateModified,
-		Description:   models.Description{Value: description},
-		Image:         models.Image{Value: image},
-		Yield:         models.Yield{Value: yield},
+		Description:   &models.Description{Value: description},
+		Image:         &models.Image{Value: image},
+		Yield:         &models.Yield{Value: yield},
 		PrepTime:      prepTime,
 		CookTime:      cookTime,
-		Keywords:      models.Keywords{Values: keywords},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
+		Keywords:      &models.Keywords{Values: keywords},
+		Ingredients:   &models.Ingredients{Values: ingredients},
+		Instructions:  &models.Instructions{Values: instructions},
 	}, nil
 }

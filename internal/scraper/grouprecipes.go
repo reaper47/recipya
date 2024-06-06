@@ -8,9 +8,13 @@ import (
 )
 
 func scrapeGrouprecipes(root *goquery.Document) (models.RecipeSchema, error) {
-	description, _ := root.Find("meta[name='description']").Attr("content")
-	image, _ := root.Find(".photos img").First().Attr("src")
-	cook, _ := root.Find(".cooktime .value-title").Attr("title")
+	rs := models.NewRecipeSchema()
+
+	rs.Description.Value, _ = root.Find("meta[name='description']").Attr("content")
+	rs.Image.Value, _ = root.Find(".photos img").First().Attr("src")
+	rs.CookTime, _ = root.Find(".cooktime .value-title").Attr("title")
+	rs.Name = root.Find("title").Text()
+	rs.Yield.Value = findYield(root.Find(".servings").Text())
 
 	var keywords strings.Builder
 	root.Find(".tags_text li").Each(func(_ int, sel *goquery.Selection) {
@@ -18,20 +22,21 @@ func scrapeGrouprecipes(root *goquery.Document) (models.RecipeSchema, error) {
 		keywords.WriteString(",")
 		keywords.WriteString(s)
 	})
+	rs.Keywords.Values = keywords.String()
 
 	nodes := root.Find(".ingredients li")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		before, _, ok := strings.Cut(s, "\t")
 		if ok {
 			s = strings.TrimSpace(before)
 		}
-		ingredients = append(ingredients, s)
+		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
 	})
 
 	nodes = root.Find(".instructions li")
-	instructions := make([]string, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToStep, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		before, after, ok := strings.Cut(s, ".")
@@ -39,17 +44,8 @@ func scrapeGrouprecipes(root *goquery.Document) (models.RecipeSchema, error) {
 		if ok && err == nil {
 			s = strings.TrimSpace(after)
 		}
-		instructions = append(instructions, s)
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
 	})
 
-	return models.RecipeSchema{
-		CookTime:     cook,
-		Description:  models.Description{Value: description},
-		Keywords:     models.Keywords{Values: keywords.String()},
-		Image:        models.Image{Value: image},
-		Ingredients:  models.Ingredients{Values: ingredients},
-		Instructions: models.Instructions{Values: instructions},
-		Name:         root.Find("title").Text(),
-		Yield:        models.Yield{Value: findYield(root.Find(".servings").Text())},
-	}, nil
+	return rs, nil
 }

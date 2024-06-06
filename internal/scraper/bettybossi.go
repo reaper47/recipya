@@ -57,9 +57,10 @@ func scrapeBettybossi(root *goquery.Document) (models.RecipeSchema, error) {
 	var (
 		b   bettibossi
 		err error
+		rs  = models.NewRecipeSchema()
 	)
 
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
 
 	root.Find("meta").Each(func(_ int, s *goquery.Selection) {
 		n, ok := s.Attr("data-rjson")
@@ -98,35 +99,32 @@ func scrapeBettybossi(root *goquery.Document) (models.RecipeSchema, error) {
 		}
 	}
 
-	var prep string
 	if prepDur > 0 {
-		prep = "PT" + strings.Replace(prepDur.String(), "h", "H", 1)
+		prep := "PT" + strings.Replace(prepDur.String(), "h", "H", 1)
 		prep = strings.Replace(prep, "m", "M", 1)
 		before, _, ok := strings.Cut(prep, "M")
 		if ok {
 			prep = before + "M"
 		}
+		rs.PrepTime = prep
 	}
 
-	var cook string
 	if cookDur > 0 {
-		cook = "PT" + strings.Replace(cookDur.String(), "h", "H", 1)
+		cook := "PT" + strings.Replace(cookDur.String(), "h", "H", 1)
 		cook = strings.Replace(cook, "m", "M", 1)
 		before, _, ok := strings.Cut(cook, "M")
 		if ok {
 			cook = before + "M"
 		}
+		rs.CookTime = cook
 	}
 
-	var (
-		category string
-		keywords []string
-	)
+	var keywords []string
 	for _, k := range b.Kategorisierungen {
 		if k.GrpBez == "Eigenschaft" || k.GrpBez == "Saison" {
 			keywords = append(keywords, k.Bez)
-		} else if k.Bez == "Gericht / Gang" && category == "" {
-			category = k.Bez
+		} else if k.Bez == "Gericht / Gang" && rs.Category.Value == "" {
+			rs.Category.Value = k.Bez
 		}
 	}
 
@@ -155,36 +153,26 @@ func scrapeBettybossi(root *goquery.Document) (models.RecipeSchema, error) {
 		}
 	}
 
-	var (
-		ingredients  []string
-		instructions []string
-	)
 	if len(b.Subrezepte) > 0 {
 		for _, s := range b.Subrezepte[0].Schritte {
 			for _, ins := range s.Anleitungen {
-				instructions = append(instructions, ins.Text)
+				rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(ins.Text))
 			}
 
 			for _, ing := range s.Zutaten {
-				ingredients = append(ingredients, strconv.Itoa(int(ing.Menge))+" "+ing.Einheit+" "+ing.Zutat)
+				rs.Ingredients.Values = append(rs.Ingredients.Values, strconv.Itoa(int(ing.Menge))+" "+ing.Einheit+" "+ing.Zutat)
 			}
 		}
 	}
 
-	return models.RecipeSchema{
-		Category:        models.Category{Value: category},
-		CookTime:        cook,
-		DateCreated:     b.RezeptKopf.ErstellungsDatum,
-		DateModified:    b.RezeptKopf.LiveDatum,
-		DatePublished:   b.RezeptKopf.LiveDatum,
-		Description:     models.Description{Value: b.RezeptKopf.Beschreibung},
-		Keywords:        models.Keywords{Values: strings.Join(keywords, ",")},
-		Image:           models.Image{Value: image},
-		Ingredients:     models.Ingredients{Values: ingredients},
-		Instructions:    models.Instructions{Values: instructions},
-		Name:            b.RezeptKopf.Titel,
-		NutritionSchema: ns,
-		PrepTime:        prep,
-		Yield:           models.Yield{Value: int16(b.RezeptKopf.Menge1)},
-	}, err
+	rs.DateCreated = b.RezeptKopf.ErstellungsDatum
+	rs.DateModified = b.RezeptKopf.LiveDatum
+	rs.DatePublished = b.RezeptKopf.LiveDatum
+	rs.Description = &models.Description{Value: b.RezeptKopf.Beschreibung}
+	rs.Keywords = &models.Keywords{Values: strings.Join(keywords, ",")}
+	rs.Name = b.RezeptKopf.Titel
+	rs.NutritionSchema = &ns
+	rs.Yield = &models.Yield{Value: int16(b.RezeptKopf.Menge1)}
+
+	return rs, err
 }

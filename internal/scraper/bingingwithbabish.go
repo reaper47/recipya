@@ -7,37 +7,34 @@ import (
 )
 
 func scrapeBingingWithBabish(root *goquery.Document) (models.RecipeSchema, error) {
-	name, _ := root.Find("meta[property='og:title']").Attr("content")
+	rs := models.NewRecipeSchema()
+
+	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
 	before, _, ok := strings.Cut(name, " — ")
 	if ok {
 		name = strings.TrimSpace(before)
 	}
+	rs.Name = name
 
-	description, _ := root.Find("meta[property='og:description']").Attr("content")
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
-	datePub, _ := root.Find("meta[itemprop='datePublished']").Attr("content")
-	dateMod, _ := root.Find("meta[itemprop='dateModified']").Attr("content")
+	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.DatePublished, _ = root.Find("meta[itemprop='datePublished']").Attr("content")
+	rs.DateModified, _ = root.Find("meta[itemprop='dateModified']").Attr("content")
 
 	nodes := root.Find("h3:contains('Ingredients')").First().Parent().Find("ul li")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		ingredients = append(ingredients, strings.TrimSpace(sel.Text()))
+		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(sel.Text()))
 	})
 
 	nodes = root.Find("h1:contains('Method')").First().Parent().Find("ol li")
-	instructions := make([]string, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToStep, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		instructions = append(instructions, strings.TrimSpace(sel.Text()))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(sel.Text())))
 	})
 
-	return models.RecipeSchema{
-		DateModified:  dateMod,
-		DatePublished: datePub,
-		Description:   models.Description{Value: description},
-		Image:         models.Image{Value: image},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
-		Name:          name,
-		Yield:         models.Yield{Value: 1},
-	}, nil
+	rs.Name = name
+	rs.Yield = &models.Yield{Value: 1}
+
+	return rs, nil
 }

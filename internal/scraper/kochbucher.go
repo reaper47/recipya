@@ -7,32 +7,25 @@ import (
 )
 
 func scrapeKochbucher(root *goquery.Document) (models.RecipeSchema, error) {
-	description, _ := root.Find("meta[property='og:description']").Attr("content")
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
+	rs := models.NewRecipeSchema()
 
-	ingredients := strings.Split(root.Find("p:contains('Zutaten')").First().Next().Text(), "\n")
-	for i, ingredient := range ingredients {
-		ingredients[i] = strings.TrimSpace(ingredient)
+	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.Name = root.Find("h1[itemprop='headline']").Text()
+
+	rs.Ingredients.Values = strings.Split(root.Find("p:contains('Zutaten')").First().Next().Text(), "\n")
+	for i, ingredient := range rs.Ingredients.Values {
+		rs.Ingredients.Values[i] = strings.TrimSpace(ingredient)
 	}
 
-	var instructions []string
 	node := root.Find("p:contains('Zubereitung')")
 	for {
 		node = node.Next()
 		if goquery.NodeName(node) != "p" {
 			break
 		}
-		instructions = append(instructions, strings.TrimSpace(node.Text()))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(node.Text())))
 	}
 
-	return models.RecipeSchema{
-		DateCreated:   "",
-		DateModified:  "",
-		DatePublished: "",
-		Description:   models.Description{Value: description},
-		Image:         models.Image{Value: image},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
-		Name:          root.Find("h1[itemprop='headline']").Text(),
-	}, nil
+	return rs, nil
 }

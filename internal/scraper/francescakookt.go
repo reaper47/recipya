@@ -8,9 +8,11 @@ import (
 )
 
 func scrapeFrancescakookt(root *goquery.Document) (models.RecipeSchema, error) {
-	description, _ := root.Find("meta[name='description']").Attr("content")
-	name, _ := root.Find("meta[property='og:title']").Attr("content")
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
+	rs := models.NewRecipeSchema()
+
+	rs.Description.Value, _ = root.Find("meta[name='description']").Attr("content")
+	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
 
 	nodes := root.Find("meta[property='article:tag']")
 	keywords := make([]string, 0, nodes.Length())
@@ -18,15 +20,17 @@ func scrapeFrancescakookt(root *goquery.Document) (models.RecipeSchema, error) {
 		v, _ := sel.Attr("content")
 		keywords = append(keywords, v)
 	})
+	rs.Keywords.Values = strings.ToLower(strings.Join(keywords, ","))
 
-	dateMod, _ := root.Find("meta[property='article:modified_time']").Attr("content")
-	datePub, _ := root.Find("meta[property='article:published_time']").Attr("content")
+	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
+	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
 
 	category := root.Find("h2:contains('Categorieën')").Next().Find("a").First().Text()
 	before, _, ok := strings.Cut(category, "recepten")
 	if ok {
 		category = strings.TrimSpace(before)
 	}
+	rs.Category.Value = category
 
 	var yield int16
 	root.Find("h3:contains('personen')").Each(func(_ int, sel *goquery.Selection) {
@@ -35,39 +39,27 @@ func scrapeFrancescakookt(root *goquery.Document) (models.RecipeSchema, error) {
 		}
 		yield = findYield(sel.Text())
 	})
+	rs.Yield.Value = yield
 
 	nodes = root.Find("div.dynamic-entry-content ul").Last().Find("li")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		ingredients = append(ingredients, strings.TrimSpace(sel.Text()))
+		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(sel.Text()))
 	})
 
-	var prep string
 	s := root.Find("p:contains('Bereidingstijd')").Text()
 	if s != "" {
 		parts := strings.Split(s, " ")
 		if len(parts) == 3 && strings.Contains(s, "minuten") {
-			prep = "PT" + regex.Digit.FindString(s) + "M"
+			rs.PrepTime = "PT" + regex.Digit.FindString(s) + "M"
 		}
 	}
 
 	nodes = root.Find("div.dynamic-entry-content ol").Last().Find("li")
-	instructions := make([]string, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToStep, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		instructions = append(instructions, strings.TrimSpace(sel.Text()))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(sel.Text())))
 	})
 
-	return models.RecipeSchema{
-		Category:      models.Category{Value: category},
-		DateModified:  dateMod,
-		DatePublished: datePub,
-		Description:   models.Description{Value: description},
-		Keywords:      models.Keywords{Values: strings.ToLower(strings.Join(keywords, ","))},
-		Image:         models.Image{Value: image},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
-		Name:          name,
-		PrepTime:      prep,
-		Yield:         models.Yield{Value: yield},
-	}, nil
+	return rs, nil
 }

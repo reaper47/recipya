@@ -7,7 +7,7 @@ import (
 )
 
 func scrapeYumelise(root *goquery.Document) (models.RecipeSchema, error) {
-	image, _ := root.Find(".wprm-recipe-image").First().Find("img").First().Attr("src")
+	rs.Image.Value, _ = root.Find(".wprm-recipe-image").First().Find("img").First().Attr("src")
 
 	prep := root.Find(".wprm-recipe-prep_time-minutes").First().Text()
 	if prep != "" {
@@ -35,23 +35,23 @@ func scrapeYumelise(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	nodes = root.Find(".wprm-recipe-instruction-text")
-	instructions := make([]string, 0, nodes.Length())
+	instructions := make([]models.HowToStep, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.ReplaceAll(strings.TrimSpace(sel.Text()), "\u00a0", " ")
-		instructions = append(instructions, s)
+		instructions = append(instructions, models.NewHowToStep(s))
 	})
 
 	return models.RecipeSchema{
-		Category:     models.Category{Value: root.Find(".wprm-recipe-course-container").First().Children().Last().Text()},
+		Category:     &models.Category{Value: root.Find(".wprm-recipe-course-container").First().Children().Last().Text()},
 		CookTime:     cook,
-		Cuisine:      models.Cuisine{Value: root.Find(".wprm-recipe-cuisine-container").First().Children().Last().Text()},
-		Description:  models.Description{Value: root.Find(".wprm-recipe-summary").First().Text()},
-		Keywords:     models.Keywords{Values: strings.Join(keywords, ",")},
-		Image:        models.Image{Value: image},
-		Ingredients:  models.Ingredients{Values: ingredients},
-		Instructions: models.Instructions{Values: instructions},
+		Cuisine:      &models.Cuisine{Value: root.Find(".wprm-recipe-cuisine-container").First().Children().Last().Text()},
+		Description:  &models.Description{Value: root.Find(".wprm-recipe-summary").First().Text()},
+		Keywords:     &models.Keywords{Values: strings.Join(keywords, ",")},
+		Image:        &models.Image{Value: image},
+		Ingredients:  &models.Ingredients{Values: ingredients},
+		Instructions: &models.Instructions{Values: instructions},
 		Name:         root.Find(".wprm-recipe-name").First().Text(),
 		PrepTime:     prep,
-		Yield:        models.Yield{Value: findYield(yield)},
+		Yield:        &models.Yield{Value: findYield(yield)},
 	}, nil
 }

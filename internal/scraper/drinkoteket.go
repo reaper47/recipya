@@ -7,44 +7,34 @@ import (
 )
 
 func scrapeDrinkoteket(root *goquery.Document) (models.RecipeSchema, error) {
-	name, _ := root.Find("meta[property='og:title']").Last().Attr("content")
-	description, _ := root.Find("meta[property='og:description']").Attr("content")
-	category, _ := root.Find("meta[property='article:section']").Attr("content")
-	image, _ := root.Find("meta[property='og:image']").Last().Attr("content")
+	rs := models.NewRecipeSchema()
+
+	rs.Name, _ = root.Find("meta[property='og:title']").Last().Attr("content")
+	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
+	rs.Category.Value, _ = root.Find("meta[property='article:section']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Last().Attr("content")
 
 	nodes := root.Find("ul.ingredients li")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		ingredients = append(ingredients, strings.TrimSpace(sel.Text()))
+		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(sel.Text()))
 	})
 
 	nodes = root.Find("div[itemprop='recipeInstructions'] li")
-	instructions := make([]string, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToStep, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		instructions = append(instructions, strings.TrimSpace(sel.Text()))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(sel.Text())))
 	})
 
 	nodes = root.Find("#recipe-utrustning .rbs-img-content")
-	tools := make([]models.Tool, 0, nodes.Length())
+	rs.Tools.Values = make([]models.Tool, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		tools = append(tools, models.Tool{Name: strings.TrimSpace(sel.Text())})
+		rs.Tools.Values = append(rs.Tools.Values, models.Tool{Name: strings.TrimSpace(sel.Text())})
 	})
 
-	datePub, _ := root.Find("meta[itemprop='datePublished']").Attr("content")
-	prep, _ := root.Find("meta[itemprop='prepTime']").Attr("content")
-	cook, _ := root.Find("meta[itemprop='cookTime']").Attr("content")
+	rs.DatePublished, _ = root.Find("meta[itemprop='datePublished']").Attr("content")
+	rs.PrepTime, _ = root.Find("meta[itemprop='prepTime']").Attr("content")
+	rs.CookTime, _ = root.Find("meta[itemprop='cookTime']").Attr("content")
 
-	return models.RecipeSchema{
-		Category:      models.Category{Value: category},
-		CookTime:      cook,
-		DatePublished: datePub,
-		Description:   models.Description{Value: description},
-		Image:         models.Image{Value: image},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
-		Name:          name,
-		PrepTime:      prep,
-		Tools:         models.Tools{Values: tools},
-		Yield:         models.Yield{Value: 1},
-	}, nil
+	return rs, nil
 }
