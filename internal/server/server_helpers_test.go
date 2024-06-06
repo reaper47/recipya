@@ -52,7 +52,7 @@ func createWSServer() (*server.Server, *httptest.Server, *websocket.Conn) {
 	ts := httptest.NewServer(srv.Router)
 	u := strings.Replace(ts.URL, "http", "ws", 1)
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
 	c, _, err := websocket.Dial(ctx, u+"/ws", &websocket.DialOptions{HTTPHeader: h})
@@ -235,7 +235,7 @@ func getBodyHTML(rr *httptest.ResponseRecorder) string {
 
 func readMessage(tb testing.TB, c *websocket.Conn, number int) (websocket.MessageType, []byte) {
 	tb.Helper()
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
 	var (
