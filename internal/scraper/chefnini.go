@@ -8,63 +8,56 @@ import (
 )
 
 func scrapeChefnini(root *goquery.Document) (models.RecipeSchema, error) {
+	rs := models.NewRecipeSchema()
+
 	nodes := root.Find("meta[property='article:tag']")
 	xk := make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s, _ := sel.Attr("content")
 		xk = append(xk, s)
 	})
-	keywords := strings.Join(extensions.Unique(xk), ",")
+	rs.Keywords.Values = strings.Join(extensions.Unique(xk), ",")
 
 	categories, _ := root.Find("meta[property='article:section']").Attr("content")
-	var category string
 	if categories != "" {
 		split := strings.Split(categories, ",")
 		if len(split) > 0 {
-			category = strings.TrimSpace(split[0])
+			rs.Category.Value = strings.TrimSpace(split[0])
 		}
 	}
 
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
-	dateModified, _ := root.Find("meta[property='article:modified_time']").Attr("content")
-	datePublished, _ := root.Find("meta[property='article:published_time']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
+	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
 
-	name, _ := root.Find("meta[property='og:title']").Attr("content")
+	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
 	before, _, ok := strings.Cut(name, " - ")
 	if ok {
 		name = strings.TrimSpace(before)
 	}
+	rs.Name = name
 
 	description := root.Find("p[itemprop='description']").Text()
-	description = strings.TrimSpace(description)
+	rs.Description.Value = strings.TrimSpace(description)
 
 	nodes = root.Find("li[itemprop='ingredients']")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
-		ingredients = append(ingredients, s)
+		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
 	})
 
 	nodes = root.Find("div[itemprop='recipeInstructions'] p")
-	instructions := make([]string, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToStep, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		if s == "" {
 			return
 		}
-		instructions = append(instructions, s)
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
 	})
 
-	return models.RecipeSchema{
-		Category:      models.Category{Value: category},
-		DateModified:  dateModified,
-		DatePublished: datePublished,
-		Description:   models.Description{Value: description},
-		Keywords:      models.Keywords{Values: keywords},
-		Image:         models.Image{Value: image},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
-		Name:          name,
-		Yield:         models.Yield{Value: findYield(root.Find("h3[itemprop='recipeYield']").Text())},
-	}, nil
+	rs.Yield.Value = findYield(root.Find("h3[itemprop='recipeYield']").Text())
+
+	return rs, nil
 }

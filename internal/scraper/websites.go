@@ -147,7 +147,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		case "jaimyskitchen":
 			return scrapeJaimysKitchen(doc)
 		case "juliegoodwin":
-			return scrapeJuliegoodwin(doc)
+			return
+			scrapeJuliegoodwin(doc)
 		case "justbento":
 			return scrapeJustbento(doc)
 		default:
@@ -346,7 +347,9 @@ func parseWebsite(doc *goquery.Document) (models.RecipeSchema, error) {
 		}
 	}
 
-	if rs.Yield.Value == 0 {
+	if rs.Yield == nil {
+		rs.Yield = &models.Yield{Value: 1}
+	} else if rs.Yield.Value == 0 {
 		rs.Yield.Value = 1
 	}
 

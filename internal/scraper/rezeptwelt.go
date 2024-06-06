@@ -7,12 +7,12 @@ import (
 )
 
 func scrapeRezeptwelt(root *goquery.Document) (models.RecipeSchema, error) {
-	name, _ := root.Find("meta[itemprop='name']").Attr("content")
+	rs.Name, _ = root.Find("meta[itemprop='name']").Attr("content")
 	category, _ := root.Find("span[itemprop='recipeCategory']").Attr("content")
-	description, _ := root.Find("meta[itemprop='description']").Attr("content")
-	image, _ := root.Find("img[itemprop='image']").Attr("src")
-	datePublished, _ := root.Find("meta[itemprop='datePublished']").Attr("content")
-	dateModified, _ := root.Find("meta[itemprop='dateModified']").Attr("content")
+	rs.Description.Value, _ = root.Find("meta[itemprop='description']").Attr("content")
+	rs.Image.Value, _ = root.Find("img[itemprop='image']").Attr("src")
+	rs.DatePublished, _ = root.Find("meta[itemprop='datePublished']").Attr("content")
+	rs.DateModified, _ = root.Find("meta[itemprop='dateModified']").Attr("content")
 
 	nodes := root.Find("li[itemprop='recipeIngredient']")
 	ingredients := make([]string, nodes.Length())
@@ -26,31 +26,31 @@ func scrapeRezeptwelt(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes = root.Find("meta[itemprop='tool']")
 	tools := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
+	nodes.Each(func(_ int, s *goquery.Selection) {
 		t, _ := s.Attr("content")
-		tools[i] = t
+		tools = append(tools, t)
 	})
 
 	nodes = root.Find("ol[itemprop='recipeInstructions'] li")
-	instructions := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		instructions[i] = s.Text()
+	instructions := make([]models.HowToStep, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		instructions = append(instructions, models.NewHowToStep(s.Text()))
 	})
 
 	yield := findYield(root.Find("span[itemprop='recipeYield']").Text())
 
 	return models.RecipeSchema{
 		Name:          name,
-		Category:      models.Category{Value: category},
-		Cuisine:       models.Cuisine{Value: cuisine},
+		Category:      &models.Category{Value: category},
+		Cuisine:       &models.Cuisine{Value: cuisine},
 		DatePublished: datePublished,
 		DateModified:  dateModified,
-		Description:   models.Description{Value: description},
-		Image:         models.Image{Value: image},
-		Keywords:      models.Keywords{Values: keywords},
+		Description:   &models.Description{Value: description},
+		Image:         &models.Image{Value: image},
+		Keywords:      &models.Keywords{Values: keywords},
 		PrepTime:      prepTime,
-		Yield:         models.Yield{Value: yield},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
+		Yield:         &models.Yield{Value: yield},
+		Ingredients:   &models.Ingredients{Values: ingredients},
+		Instructions:  &models.Instructions{Values: instructions},
 	}, nil
 }

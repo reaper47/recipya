@@ -12,7 +12,7 @@ func scrapeMyPlate(root *goquery.Document) (models.RecipeSchema, error) {
 	description := root.Find(".mp-recipe-full__description p").Text()
 
 	name := root.Find(".field--name-title").First().Text()
-	image, _ := root.Find(".field--name-field-recipe-image img").Attr("src")
+	rs.Image.Value, _ = root.Find(".field--name-field-recipe-image img").Attr("src")
 
 	yieldStr := root.Find(".mp-recipe-full__detail--yield .mp-recipe-full__detail--data").Text()
 	yieldStr = strings.ReplaceAll(yieldStr, "\n", "")
@@ -37,19 +37,19 @@ func scrapeMyPlate(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	nodes = root.Find(".field--name-field-instructions li")
-	instructions := make([]string, nodes.Length())
+	instructions := make([]models.HowToStep, nodes.Length())
 	nodes.Each(func(i int, s *goquery.Selection) {
-		instructions[i] = s.Text()
+		instructions[i] = models.NewHowToStep(s.Text())
 	})
 
 	return models.RecipeSchema{
 		CookTime:     cookTime,
-		Description:  models.Description{Value: description},
-		Image:        models.Image{Value: image},
-		Ingredients:  models.Ingredients{Values: ingredients},
-		Instructions: models.Instructions{Values: instructions},
+		Description:  &models.Description{Value: description},
+		Image:        &models.Image{Value: image},
+		Ingredients:  &models.Ingredients{Values: ingredients},
+		Instructions: &models.Instructions{Values: instructions},
 		Name:         name,
-		NutritionSchema: models.NutritionSchema{
+		NutritionSchema: &models.NutritionSchema{
 			Calories:      root.Find(".total_calories td").Last().Text(),
 			Carbohydrates: root.Find(".carbohydrates td").Last().Text(),
 			Cholesterol:   root.Find(".cholesterol td").Last().Text(),
@@ -60,6 +60,6 @@ func scrapeMyPlate(root *goquery.Document) (models.RecipeSchema, error) {
 			Sodium:        root.Find(".sodium td").Last().Text(),
 			Sugar:         root.Find(".total_sugars td").Last().Text(),
 		},
-		Yield: models.Yield{Value: yield},
+		Yield: &models.Yield{Value: yield},
 	}, nil
 }

@@ -8,9 +8,9 @@ import (
 )
 
 func scrapePurelyPope(root *goquery.Document) (models.RecipeSchema, error) {
-	dateModified, _ := root.Find("meta[property='article:modified_time']").Attr("content")
-	datePublished, _ := root.Find("meta[property='article:published_time']").Attr("content")
-	image, _ := root.Find("img[itemprop='image']").Attr("src")
+	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
+	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
+	rs.Image.Value, _ = root.Find("img[itemprop='image']").Attr("src")
 	split := strings.Split(image, "?")
 	if len(split) > 0 {
 		image = split[0]
@@ -28,26 +28,26 @@ func scrapePurelyPope(root *goquery.Document) (models.RecipeSchema, error) {
 	nodes := root.Find("span[itemprop='recipeIngredient']").FilterFunction(func(_ int, s *goquery.Selection) bool {
 		return strings.TrimSpace(s.Text()) != ""
 	})
-	ingredients := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		ingredients[i] = strings.TrimSpace(s.Text())
+	ingredients := make([]string, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		ingredients = append(ingredients, strings.TrimSpace(s.Text()))
 	})
 
 	nodes = root.Find("div[itemprop='recipeInstructions'] li")
-	instructions := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		instructions[i] = s.Text()
+	instructions := make([]models.HowToStep, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		instructions = append(instructions, models.NewHowToStep(s.Text()))
 	})
 
 	return models.RecipeSchema{
 		DateModified:  dateModified,
 		DatePublished: datePublished,
-		Image:         models.Image{Value: image},
+		Image:         &models.Image{Value: image},
 		Name:          name,
 		PrepTime:      prepTime,
 		CookTime:      cookTime,
-		Yield:         models.Yield{Value: yield},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
+		Yield:         &models.Yield{Value: yield},
+		Ingredients:   &models.Ingredients{Values: ingredients},
+		Instructions:  &models.Instructions{Values: instructions},
 	}, nil
 }

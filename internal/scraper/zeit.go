@@ -7,12 +7,12 @@ import (
 )
 
 func scrapeZeit(root *goquery.Document) (models.RecipeSchema, error) {
-	description, _ := root.Find("meta[name='description']").Attr("content")
-	dateModified, _ := root.Find("meta[name='last-modified']").Attr("content")
-	datePublished, _ := root.Find("meta[name='date']").Attr("content")
+	rs.Description.Value, _ = root.Find("meta[name='description']").Attr("content")
+	rs.DateModified, _ = root.Find("meta[name='last-modified']").Attr("content")
+	rs.DatePublished, _ = root.Find("meta[name='date']").Attr("content")
 	keywords, _ := root.Find("meta[name='keywords']").Attr("content")
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
-	name, _ := root.Find("meta[property='og:title']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
 
 	meta := root.Find(".recipe-list-meta")
 
@@ -30,22 +30,22 @@ func scrapeZeit(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	nodes = root.Find(".paragraph.article__item")
-	instructions := make([]string, 0, nodes.Length())
+	instructions := make([]models.HowToStep, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
 		s = strings.Join(strings.Fields(s), " ")
-		instructions = append(instructions, s)
+		instructions = append(instructions, models.NewHowToStep(s))
 	})
 
 	return models.RecipeSchema{
 		DateModified:  dateModified,
 		DatePublished: datePublished,
-		Description:   models.Description{Value: description},
-		Keywords:      models.Keywords{Values: keywords},
-		Image:         models.Image{Value: image},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
+		Description:   &models.Description{Value: description},
+		Keywords:      &models.Keywords{Values: keywords},
+		Image:         &models.Image{Value: image},
+		Ingredients:   &models.Ingredients{Values: ingredients},
+		Instructions:  &models.Instructions{Values: instructions},
 		Name:          name,
-		Yield:         models.Yield{Value: findYield(yield)},
+		Yield:         &models.Yield{Value: findYield(yield)},
 	}, nil
 }

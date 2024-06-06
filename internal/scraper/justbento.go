@@ -7,10 +7,12 @@ import (
 )
 
 func scrapeJustbento(root *goquery.Document) (models.RecipeSchema, error) {
-	name, _ := root.Find("meta[property='og:title']").Attr("content")
-	description, _ := root.Find("meta[property='og:description']").Attr("content")
-	dateModified, _ := root.Find("meta[property='og:updated_time']").Attr("content")
-	datePublished, _ := root.Find("meta[property='og:published_time']").Attr("content")
+	rs := models.NewRecipeSchema()
+
+	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
+	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
+	rs.DateModified, _ = root.Find("meta[property='og:updated_time']").Attr("content")
+	rs.DatePublished, _ = root.Find("meta[property='og:published_time']").Attr("content")
 
 	category := root.Find("nav.breadcrumb").Find("a:contains('Recipe collection:')").Text()
 	_, after, found := strings.Cut(category, ":")
@@ -21,13 +23,12 @@ func scrapeJustbento(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	nodes := root.Find(".field-name-body li")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
-		ingredients = append(ingredients, s)
+		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
 	})
 
-	var instructions []string
 	nodes = root.Find(".field-name-body ul").Last()
 	for {
 		nodes = nodes.Next()
@@ -41,22 +42,14 @@ func scrapeJustbento(root *goquery.Document) (models.RecipeSchema, error) {
 
 		s := strings.TrimSpace(nodes.Text())
 		if s != "" {
-			instructions = append(instructions, s)
+			rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
 		}
 	}
 
-	image, _ := root.Find(".field-name-body img").First().Attr("src")
+	rs.Image.Value, _ = root.Find(".field-name-body img").First().Attr("src")
+	rs.Cuisine.Value = "Japanese"
+	rs.Category.Value = category
+	rs.Yield.Value = findYield(root.Find("*:contains('portions')").Text())
 
-	return models.RecipeSchema{
-		Category:      models.Category{Value: category},
-		Cuisine:       models.Cuisine{Value: "Japanese"},
-		DateModified:  dateModified,
-		DatePublished: datePublished,
-		Description:   models.Description{Value: description},
-		Image:         models.Image{Value: image},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
-		Name:          name,
-		Yield:         models.Yield{Value: findYield(root.Find("*:contains('portions')").Text())},
-	}, nil
+	return rs, nil
 }

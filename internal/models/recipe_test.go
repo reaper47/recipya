@@ -1047,7 +1047,11 @@ func TestRecipe_Schema(t *testing.T) {
 	if !slices.Equal(schema.Ingredients.Values, []string{"ing1", "ing2", "ing3"}) {
 		t.Errorf("wanted ingredients []string{ing1, ing2, ing3} but got %v", schema.Ingredients)
 	}
-	if !slices.Equal(schema.Instructions.Values, []string{"ins1", "ins2", "ins3"}) {
+	if !slices.Equal(schema.Instructions.Values, []models.HowToStep{
+		{Text: "ins1"},
+		{Text: "ins2"},
+		{Text: "ins3"},
+	}) {
 		t.Errorf(
 			"wanted instructions []string{ins1, ins2, ins3} but got %v",
 			schema.Instructions.Values,

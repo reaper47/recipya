@@ -8,10 +8,10 @@ import (
 )
 
 func scrapeUsapears(root *goquery.Document) (models.RecipeSchema, error) {
-	description, _ := root.Find("meta[property='og:description']").Attr("content")
-	datePublished, _ := root.Find("meta[property='article:published_time']").Attr("content")
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
-	name, _ := root.Find("meta[property='og:title']").Attr("content")
+	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
+	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
 
 	prep := root.Find(".recipe-legend").First().Prev().Text()
 	split := strings.Split(prep, " ")
@@ -31,19 +31,19 @@ func scrapeUsapears(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	nodes = root.Find("div[itemprop='recipeInstructions'] ol li")
-	instructions := make([]string, 0, nodes.Length())
+	instructions := make([]models.HowToStep, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
 		s = strings.Join(strings.Fields(s), " ")
-		instructions = append(instructions, s)
+		instructions = append(instructions, models.NewHowToStep(s))
 	})
 
 	return models.RecipeSchema{
 		DatePublished: datePublished,
-		Description:   models.Description{Value: description},
-		Image:         models.Image{Value: image},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
+		Description:   &models.Description{Value: description},
+		Image:         &models.Image{Value: image},
+		Ingredients:   &models.Ingredients{Values: ingredients},
+		Instructions:  &models.Instructions{Values: instructions},
 		Name:          name,
 		PrepTime:      prep,
 	}, nil

@@ -7,17 +7,17 @@ import (
 )
 
 func scrapeProjectgezond(root *goquery.Document) (models.RecipeSchema, error) {
-	name, _ := root.Find("meta[property='og:title']").Attr("content")
+	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
 	before, _, found := strings.Cut(name, " | ")
 	if found {
 		name = strings.TrimSpace(before)
 	}
-	description, _ := root.Find("meta[property='og:description']").Attr("content")
+	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
 	category, _ := root.Find("meta[property='article:section']").Attr("content")
-	image, _ := root.Find(".wp-post-image").First().Attr("src")
+	rs.Image.Value, _ = root.Find(".wp-post-image").First().Attr("src")
 
-	datePublished, _ := root.Find("meta[property='og:published_time']").Attr("content")
-	dateModified, _ := root.Find("meta[property='article:modified_time']").Attr("content")
+	rs.DatePublished, _ = root.Find("meta[property='og:published_time']").Attr("content")
+	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
 
 	nodes := root.Find("h2").First().NextUntil("h2")
 	ingredientNodes := nodes.Find("ul li")
@@ -29,10 +29,9 @@ func scrapeProjectgezond(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes = nodes.Next().NextUntil("h2")
 	instructionNodes := nodes.Find("ul li")
-	instructions := make([]string, 0, instructionNodes.Length())
+	instructions := make([]models.HowToStep, 0, instructionNodes.Length())
 	instructionNodes.Each(func(_ int, sel *goquery.Selection) {
-		s := sel.Text()
-		instructions = append(instructions, s)
+		instructions = append(instructions, models.NewHowToStep(sel.Text()))
 	})
 
 	var cal string
@@ -66,15 +65,15 @@ func scrapeProjectgezond(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	return models.RecipeSchema{
-		Category:      models.Category{Value: category},
+		Category:      &models.Category{Value: category},
 		DateModified:  dateModified,
 		DatePublished: datePublished,
-		Description:   models.Description{Value: description},
-		Image:         models.Image{Value: image},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
+		Description:   &models.Description{Value: description},
+		Image:         &models.Image{Value: image},
+		Ingredients:   &models.Ingredients{Values: ingredients},
+		Instructions:  &models.Instructions{Values: instructions},
 		Name:          name,
-		NutritionSchema: models.NutritionSchema{
+		NutritionSchema: &models.NutritionSchema{
 			Calories:      cal + " kcal",
 			Carbohydrates: carbs,
 			Fat:           fat,

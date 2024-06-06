@@ -9,8 +9,8 @@ import (
 )
 
 func scrapeRecipeCommunity(root *goquery.Document) (models.RecipeSchema, error) {
-	name, _ := root.Find("meta[property='og:title']").Attr("content")
-	description, _ := root.Find("meta[itemprop='description']").Attr("content")
+	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
+	rs.Description.Value, _ = root.Find("meta[itemprop='description']").Attr("content")
 	datePublished := root.Find(".recipe-summary .creation-date").Text()
 	if strings.Contains(datePublished, ":") {
 		datePublished = strings.Trim(strings.Split(datePublished, ":")[1], " ")
@@ -25,7 +25,7 @@ func scrapeRecipeCommunity(root *goquery.Document) (models.RecipeSchema, error) 
 	if strings.Contains(dateModified, "/") {
 		dateModified = strings.ReplaceAll(dateModified, "/", "-")
 	}
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
 
 	yield := findYield(root.Find("span[itemprop='recipeYield']").Parent().Text())
 
@@ -40,28 +40,28 @@ func scrapeRecipeCommunity(root *goquery.Document) (models.RecipeSchema, error) 
 	keywords := strings.Join(allKeywords, ", ")
 
 	nodes = root.Find("li[itemprop='recipeIngredient']")
-	ingredients := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		ingredients[i] = strings.Join(strings.Fields(s.Text()), " ")
+	ingredients := make([]string, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		ingredients = append(ingredients, strings.Join(strings.Fields(s.Text()), " "))
 	})
 
 	nodes = root.Find("ol.steps-list li")
-	instructions := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		instructions[i] = s.Text()
+	instructions := make([]models.HowToStep, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		instructions = append(instructions, models.NewHowToStep(s.Text()))
 	})
 
 	return models.RecipeSchema{
 		Name:          name,
 		DatePublished: datePublished,
 		DateModified:  dateModified,
-		Description:   models.Description{Value: description},
-		Image:         models.Image{Value: image},
-		Yield:         models.Yield{Value: yield},
+		Description:   &models.Description{Value: description},
+		Image:         &models.Image{Value: image},
+		Yield:         &models.Yield{Value: yield},
 		PrepTime:      prepTime,
 		CookTime:      cookTime,
-		Keywords:      models.Keywords{Values: keywords},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
+		Keywords:      &models.Keywords{Values: keywords},
+		Ingredients:   &models.Ingredients{Values: ingredients},
+		Instructions:  &models.Instructions{Values: instructions},
 	}, nil
 }

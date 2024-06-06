@@ -13,21 +13,18 @@ func scrapeBongeats(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	nodes := root.Find(".recipe-ingredients li")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
-		ingredients = append(ingredients, s)
+		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
 	})
 
 	nodes = root.Find(".recipe-process li")
-	instructions := make([]string, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToStep, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
-		instructions = append(instructions, s)
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
 	})
-
-	rs.Ingredients.Values = ingredients
-	rs.Instructions.Values = instructions
 
 	parsed, err := time.Parse("Jan 02, 2006", rs.DatePublished)
 	if err == nil {

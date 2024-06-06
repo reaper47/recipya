@@ -15,7 +15,7 @@ func scrapeGreatBritishChefs(root *goquery.Document) (models.RecipeSchema, error
 
 	yieldStr := root.Find(".gbcicon-serves").Next().Text()
 	yield, _ := strconv.ParseInt(strings.TrimSpace(yieldStr), 10, 16)
-	rs.Yield = models.Yield{Value: int16(yield)}
+	rs.Yield = &models.Yield{Value: int16(yield)}
 
 	node := root.Find(".gbcicon-clock").Next().Text()
 	split := strings.Split(node, " ")

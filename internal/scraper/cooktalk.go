@@ -7,7 +7,9 @@ import (
 )
 
 func scrapeCooktalk(root *goquery.Document) (models.RecipeSchema, error) {
-	datePublished, _ := root.Find("time.entry-date").Attr("datetime")
+	rs := models.NewRecipeSchema()
+
+	rs.DatePublished, _ = root.Find("time.entry-date").Attr("datetime")
 
 	nodes := root.Find("a[rel='category']")
 	xc := make([]string, 0, nodes.Length())
@@ -15,34 +17,29 @@ func scrapeCooktalk(root *goquery.Document) (models.RecipeSchema, error) {
 		xc = append(xc, sel.Text())
 	})
 
-	image, _ := root.Find("img[itemprop='image']").Attr("src")
+	rs.Category.Value = xc[0]
+	rs.Image.Value, _ = root.Find("img[itemprop='image']").Attr("src")
 
 	description := root.Find("div[itemprop='description']").Text()
-	description = strings.TrimSpace(strings.Trim(description, "\n"))
+	rs.Description.Value = strings.TrimSpace(strings.Trim(description, "\n"))
 
 	nodes = root.Find("li[itemprop='ingredients']")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		s = strings.TrimSpace(s)
-		ingredients = append(ingredients, s)
+		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
 	})
 
 	nodes = root.Find("p[itemprop='recipeInstructions']")
-	instructions := make([]string, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToStep, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		s = strings.TrimSpace(s)
-		instructions = append(instructions, s)
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
 	})
 
-	return models.RecipeSchema{
-		Category:      models.Category{Value: xc[0]},
-		DatePublished: datePublished,
-		Description:   models.Description{Value: description},
-		Image:         models.Image{Value: image},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
-		Name:          root.Find(".page-title").Text(),
-	}, nil
+	rs.Name = root.Find(".page-title").Text()
+
+	return rs, nil
 }

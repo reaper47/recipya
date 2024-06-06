@@ -8,7 +8,7 @@ import (
 )
 
 func scrapeSallysblog(root *goquery.Document) (models.RecipeSchema, error) {
-	description, _ := root.Find("meta[name='description']").Attr("content")
+	rs.Description.Value, _ = root.Find("meta[name='description']").Attr("content")
 
 	prep := root.Find("p:contains('Zubereitungszeit')").Next().Text()
 	split := strings.Split(prep, " ")
@@ -31,16 +31,15 @@ func scrapeSallysblog(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	nodes = root.Find(".recipe-description div p")
-	instructions := make([]string, 0, nodes.Length())
+	instructions := make([]models.HowToStep, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := sel.Text()
-		instructions = append(instructions, s)
+		instructions = append(instructions, models.NewHowToStep(sel.Text()))
 	})
 
 	return models.RecipeSchema{
-		Description:  models.Description{Value: description},
-		Ingredients:  models.Ingredients{Values: ingredients},
-		Instructions: models.Instructions{Values: instructions},
+		Description:  &models.Description{Value: description},
+		Ingredients:  &models.Ingredients{Values: ingredients},
+		Instructions: &models.Instructions{Values: instructions},
 		Name:         strings.ToLower(root.Find("h1").First().Text()),
 		PrepTime:     prep,
 	}, nil

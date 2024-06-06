@@ -8,9 +8,9 @@ import (
 )
 
 func scrapeValdemarsro(root *goquery.Document) (models.RecipeSchema, error) {
-	datePublished, _ := root.Find("meta[property='article:published_time']").Attr("content")
-	dateModified, _ := root.Find("meta[property='article:modified_time']").Attr("content")
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
+	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
+	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
 
 	start := root.Find("div[itemprop='description']").Children().First()
 	description := start.NextUntil(".post-recipe").FilterFunction(func(_ int, selection *goquery.Selection) bool {
@@ -42,15 +42,15 @@ func scrapeValdemarsro(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	nodes := root.Find("li[itemprop='recipeIngredient']")
-	ingredients := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		ingredients[i] = s.Text()
+	ingredients := make([]string, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		ingredients = append(ingredients, s.Text())
 	})
 
 	nodes = root.Find("div[itemprop='recipeInstructions'] p")
-	instructions := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		instructions[i] = s.Text()
+	instructions := make([]models.HowToStep, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		instructions = append(instructions, models.NewHowToStep(s.Text()))
 	})
 
 	return models.RecipeSchema{
@@ -58,11 +58,11 @@ func scrapeValdemarsro(root *goquery.Document) (models.RecipeSchema, error) {
 		CookTime:      cookTime,
 		DateModified:  dateModified,
 		DatePublished: datePublished,
-		Description:   models.Description{Value: description},
-		Image:         models.Image{Value: image},
+		Description:   &models.Description{Value: description},
+		Image:         &models.Image{Value: image},
 		PrepTime:      prepTime,
-		Yield:         models.Yield{Value: yield},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
+		Yield:         &models.Yield{Value: yield},
+		Ingredients:   &models.Ingredients{Values: ingredients},
+		Instructions:  &models.Instructions{Values: instructions},
 	}, nil
 }

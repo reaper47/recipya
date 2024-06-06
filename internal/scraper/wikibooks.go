@@ -27,7 +27,7 @@ func scrapeWikiBooks(root *goquery.Document) (models.RecipeSchema, error) {
 
 	category := root.Find("th:contains('Category')").Next().Text()
 
-	image, _ := root.Find(".infobox-image img").First().Attr("src")
+	rs.Image.Value, _ = root.Find(".infobox-image img").First().Attr("src")
 	if image != "" {
 		image = "https:" + image
 	}
@@ -38,23 +38,23 @@ func scrapeWikiBooks(root *goquery.Document) (models.RecipeSchema, error) {
 	end := root.Find("#Procedure").Parent()
 	nodes = start.NextUntilSelection(end).Find("li")
 	ingredients := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		ingredients[i] = s.Text()
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		ingredients = append(ingredients, s.Text())
 	})
 
 	nodes = root.Find("#Procedure").Parent().NextUntil("h2").Find("li")
-	instructions := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		instructions[i] = s.Text()
+	instructions := make([]models.HowToStep, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		instructions = append(instructions, models.NewHowToStep(s.Text()))
 	})
 
 	return models.RecipeSchema{
 		Name:         name,
-		Description:  models.Description{Value: description},
-		Image:        models.Image{Value: image},
-		Category:     models.Category{Value: category},
-		Yield:        models.Yield{Value: yield},
-		Ingredients:  models.Ingredients{Values: ingredients},
-		Instructions: models.Instructions{Values: instructions},
+		Description:  &models.Description{Value: description},
+		Image:        &models.Image{Value: image},
+		Category:     &models.Category{Value: category},
+		Yield:        &models.Yield{Value: yield},
+		Ingredients:  &models.Ingredients{Values: ingredients},
+		Instructions: &models.Instructions{Values: instructions},
 	}, nil
 }

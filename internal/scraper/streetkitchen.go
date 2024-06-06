@@ -11,35 +11,35 @@ func scrapeStreetKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 	article := root.Find("article").First()
 	name := article.Find("h1").First().Text()
 
-	description, _ := root.Find("meta[name='description']").Attr("content")
-	datePublished, _ := root.Find("meta[property='article:published_time").Attr("content")
-	dateModified, _ := root.Find("meta[property='article:modified_time").Attr("content")
+	rs.Description.Value, _ = root.Find("meta[name='description']").Attr("content")
+	rs.DatePublished, _ = root.Find("meta[property='article:published_time").Attr("content")
+	rs.DateModified, _ = root.Find("meta[property='article:modified_time").Attr("content")
 
 	yield := findYield(article.Find(".c-svgicon--servings").Next().Text())
 
 	nodes := article.Find(".ingredients label")
-	ingredients := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		ingredients[i] = strings.TrimSpace(s.Text())
+	ingredients := make([]string, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		ingredients = append(ingredients, strings.TrimSpace(s.Text()))
 	})
 
 	nodes = article.Find(".method-step")
-	instructions := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
+	instructions := make([]models.HowToStep, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
 		v := strings.TrimSuffix(s.Text(), "\n")
-		instructions[i] = v
+		instructions = append(instructions, models.NewHowToStep(v))
 	})
 
-	image, _ := article.Find("img").First().Attr("src")
+	rs.Image.Value, _ = article.Find("img").First().Attr("src")
 
 	return models.RecipeSchema{
 		DateModified:  dateModified,
 		DatePublished: datePublished,
-		Description:   models.Description{Value: description},
+		Description:   &models.Description{Value: description},
 		Name:          name,
-		Yield:         models.Yield{Value: yield},
-		Image:         models.Image{Value: image},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
+		Yield:         &models.Yield{Value: yield},
+		Image:         &models.Image{Value: image},
+		Ingredients:   &models.Ingredients{Values: ingredients},
+		Instructions:  &models.Instructions{Values: instructions},
 	}, nil
 }
