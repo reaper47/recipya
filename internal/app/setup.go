@@ -196,7 +196,7 @@ func downloadFile(path, filename, url string) error {
 func setupConfigFile() {
 	if isRunningInDocker() {
 		isEnvOk := true
-		xenv := []string{"RECIPYA_SERVER_PORT", "RECIPYA_SERVER_URL"}
+		xenv := []string{"RECIPYA_SERVER_PORT"}
 		for _, env := range xenv {
 			if os.Getenv(env) == "" {
 				isEnvOk = false
