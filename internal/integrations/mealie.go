@@ -51,13 +51,13 @@ type mealieRecipeResponse struct {
 		Name string `json:"name"`
 		Slug string `json:"slug"`
 	} `json:"tags"`
-	Tools            []models.Tool `json:"tools"`
-	Rating           int           `json:"rating"`
-	OrgURL           string        `json:"orgURL"`
-	DateAdded        string        `json:"dateAdded"`
-	DateUpdated      string        `json:"dateUpdated"`
-	CreatedAt        string        `json:"createdAt"`
-	UpdateAt         string        `json:"updateAt"`
+	Tools            []models.HowToItem `json:"tools"`
+	Rating           int                `json:"rating"`
+	OrgURL           string             `json:"orgURL"`
+	DateAdded        string             `json:"dateAdded"`
+	DateUpdated      string             `json:"dateUpdated"`
+	CreatedAt        string             `json:"createdAt"`
+	UpdateAt         string             `json:"updateAt"`
 	RecipeIngredient []struct {
 		Quantity float64     `json:"quantity"`
 		Unit     interface{} `json:"unit"`

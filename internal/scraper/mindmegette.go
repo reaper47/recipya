@@ -11,7 +11,6 @@ func scrapeMindMegette(root *goquery.Document) (models.RecipeSchema, error) {
 		return rs, err
 	}
 
-	yield := findYield(root.Find(".spritePortion").Siblings().First().Text())
-	rs.Yield.Value = yield
+	rs.Yield.Value = findYield(root.Find(".spritePortion").Siblings().First().Text())
 	return rs, nil
 }

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/google/go-cmp/cmp"
 	"github.com/reaper47/recipya/internal/models"
+	"strings"
 	"testing"
 	"time"
 
@@ -13,7 +14,7 @@ import (
 
 func TestCategory_UnmarshalJSON(t *testing.T) {
 	want := models.RecipeSchema{
-		Category: models.Category{Value: "dinner"},
+		Category: &models.Category{Value: "dinner"},
 	}
 
 	testcases := []struct {
@@ -42,7 +43,7 @@ func TestCategory_UnmarshalJSON(t *testing.T) {
 
 func TestCookingMethod_UnmarshalJSON(t *testing.T) {
 	want := models.RecipeSchema{
-		CookingMethod: models.CookingMethod{Value: "frying"},
+		CookingMethod: &models.CookingMethod{Value: "frying"},
 	}
 
 	testcases := []struct {
@@ -67,7 +68,7 @@ func TestCookingMethod_UnmarshalJSON(t *testing.T) {
 
 func TestCuisine_UnmarshalJSON(t *testing.T) {
 	want := models.RecipeSchema{
-		Cuisine: models.Cuisine{Value: "French"},
+		Cuisine: &models.Cuisine{Value: "French"},
 	}
 
 	testcases := []struct {
@@ -92,7 +93,7 @@ func TestCuisine_UnmarshalJSON(t *testing.T) {
 
 func TestDescription_UnmarshalJSON(t *testing.T) {
 	want := models.RecipeSchema{
-		Description: models.Description{Value: "ze best chicken"},
+		Description: &models.Description{Value: "ze best chicken"},
 	}
 
 	testcases := []struct {
@@ -117,7 +118,7 @@ func TestDescription_UnmarshalJSON(t *testing.T) {
 
 func TestKeywords_UnmarshalJSON(t *testing.T) {
 	want := models.RecipeSchema{
-		Keywords: models.Keywords{Values: "big,fat,meat"},
+		Keywords: &models.Keywords{Values: "big,fat,meat"},
 	}
 
 	testcases := []struct {
@@ -142,7 +143,7 @@ func TestKeywords_UnmarshalJSON(t *testing.T) {
 
 func TestImage_UnmarshalJSON(t *testing.T) {
 	want := models.RecipeSchema{
-		Image: models.Image{Value: "image1.png"},
+		Image: &models.Image{Value: "image1.png"},
 	}
 
 	testcases := []struct {
@@ -175,7 +176,7 @@ func TestImage_UnmarshalJSON(t *testing.T) {
 
 func TestIngredient_UnmarshalJSON(t *testing.T) {
 	want := models.RecipeSchema{
-		Ingredients: models.Ingredients{Values: []string{"1 chicken", "2 eggs"}},
+		Ingredients: &models.Ingredients{Values: []string{"1 chicken", "2 eggs"}},
 	}
 
 	testcases := []struct {
@@ -200,7 +201,13 @@ func TestIngredient_UnmarshalJSON(t *testing.T) {
 
 func TestInstruction_UnmarshalJSON(t *testing.T) {
 	want := models.RecipeSchema{
-		Instructions: models.Instructions{Values: []string{"preheat", "mix all", "eat everything"}},
+		Instructions: &models.Instructions{
+			Values: []models.HowToItem{
+				{Type: "HowToStep", Text: "preheat"},
+				{Type: "HowToStep", Text: "mix all"},
+				{Type: "HowToStep", Text: "eat everything"},
+			},
+		},
 	}
 
 	testcases := []struct {
@@ -229,7 +236,7 @@ func TestInstruction_UnmarshalJSON(t *testing.T) {
 
 func TestYield_UnmarshalJSON(t *testing.T) {
 	want := models.RecipeSchema{
-		Yield: models.Yield{Value: 4},
+		Yield: &models.Yield{Value: 4},
 	}
 
 	testcases := []struct {
@@ -266,7 +273,7 @@ func TestYield_UnmarshalJSON(t *testing.T) {
 
 func TestSchemaType_UnmarshalJSON(t *testing.T) {
 	want := models.RecipeSchema{
-		AtType: models.SchemaType{Value: "Recipe"},
+		AtType: &models.SchemaType{Value: "Recipe"},
 	}
 
 	testcases := []struct {
@@ -295,7 +302,7 @@ func TestSchemaType_UnmarshalJSON(t *testing.T) {
 
 func TestNutritionSchema_UnmarshalJSON(t *testing.T) {
 	want := models.RecipeSchema{
-		NutritionSchema: models.NutritionSchema{
+		NutritionSchema: &models.NutritionSchema{
 			Calories:       "420 kcal",
 			Carbohydrates:  "4g",
 			Cholesterol:    "3mg",
@@ -356,9 +363,9 @@ func assertRecipeSchema(t testing.TB, data string, want models.RecipeSchema) {
 }
 
 func TestTool_String(t *testing.T) {
-	tool := models.Tool{Quantity: 3, Name: "wok"}
+	tool := models.NewHowToTool("wok", &models.HowToItem{Quantity: 3})
 
-	got := tool.String()
+	got := tool.StringQuantity()
 
 	want := "3 wok"
 	if got != want {
@@ -368,16 +375,16 @@ func TestTool_String(t *testing.T) {
 
 func TestTools_UnmarshalJSON(t *testing.T) {
 	want := models.RecipeSchema{
-		Tools: models.Tools{
-			Values: []models.Tool{
+		Tools: &models.Tools{
+			Values: []models.HowToItem{
 				{
-					AtType:   "HowToTool",
-					Name:     "Saw",
+					Type:     "HowToTool",
+					Text:     "Saw",
 					Quantity: 1,
 				},
 				{
-					AtType:   "HowToTool",
-					Name:     "Blender",
+					Type:     "HowToTool",
+					Text:     "Blender",
 					Quantity: 2,
 				},
 			},
@@ -406,8 +413,8 @@ func TestTools_UnmarshalJSON(t *testing.T) {
 		{
 			name: "schema HowToTool",
 			data: `{"tool": [
-				{"@type":"HowToTool", "name":"Saw","requiredQuantity":1},
-				{"@type":"HowToTool", "name":"Blender", "requiredQuantity":2}
+				{"@type":"HowToTool", "text":"Saw","requiredQuantity":1},
+				{"@type":"HowToTool", "text":"Blender", "requiredQuantity":2}
 			]}`,
 		},
 	}
@@ -420,27 +427,33 @@ func TestTools_UnmarshalJSON(t *testing.T) {
 
 func TestRecipeSchema_Recipe(t *testing.T) {
 	imageID := uuid.New()
-	tools := []models.Tool{
+	tools := []models.HowToItem{
 		{Name: "Saw", Quantity: 1},
 		{Name: "Blender", Quantity: 2},
 	}
 	rs := models.RecipeSchema{
 		AtContext:     "@Schema",
-		AtType:        models.SchemaType{Value: "Recipe"},
-		Category:      models.Category{Value: "lunch"},
+		AtType:        &models.SchemaType{Value: "Recipe"},
+		Category:      &models.Category{Value: "lunch"},
 		CookTime:      "PT3H",
-		CookingMethod: models.CookingMethod{Value: ""},
-		Cuisine:       models.Cuisine{Value: "american"},
+		CookingMethod: nil,
+		Cuisine:       &models.Cuisine{Value: "american"},
 		DateCreated:   "2022-03-16",
 		DateModified:  "2022-03-20",
 		DatePublished: "2022-03-16",
-		Description:   models.Description{Value: "description"},
-		Keywords:      models.Keywords{Values: "kw1,kw2,kw3"},
-		Image:         models.Image{Value: imageID.String()},
-		Ingredients:   models.Ingredients{Values: []string{"ing1", "ing2", "ing3"}},
-		Instructions:  models.Instructions{Values: []string{"ins1", "ins2", "ins3"}},
-		Name:          "name",
-		NutritionSchema: models.NutritionSchema{
+		Description:   &models.Description{Value: "description"},
+		Keywords:      &models.Keywords{Values: "kw1,kw2,kw3"},
+		Image:         &models.Image{Value: imageID.String()},
+		Ingredients:   &models.Ingredients{Values: []string{"ing1", "ing2", "ing3"}},
+		Instructions: &models.Instructions{
+			Values: []models.HowToItem{
+				{Type: "HowToStep", Text: "ins1"},
+				{Type: "HowToStep", Text: "ins2"},
+				{Type: "HowToStep", Text: "ins3"},
+			},
+		},
+		Name: "name",
+		NutritionSchema: &models.NutritionSchema{
 			Calories:       "341kcal",
 			Carbohydrates:  "1g",
 			Cholesterol:    "2g",
@@ -455,8 +468,8 @@ func TestRecipeSchema_Recipe(t *testing.T) {
 			UnsaturatedFat: "11g",
 		},
 		PrepTime: "PT1H",
-		Tools:    models.Tools{Values: tools},
-		Yield:    models.Yield{Value: 4},
+		Tools:    &models.Tools{Values: tools},
+		Yield:    &models.Yield{Value: 4},
 		URL:      "https://recipes.musicavis.ca",
 	}
 
@@ -512,5 +525,183 @@ func TestRecipeSchema_Recipe(t *testing.T) {
 	if !slices.Equal(actualBytes, expectedBytes) {
 		t.Logf(cmp.Diff(*actual, expected))
 		t.Fail()
+	}
+}
+
+func TestRecipeSchema_Marshal(t *testing.T) {
+	imageID := uuid.New()
+	tools := []models.HowToItem{
+		models.NewHowToTool("Saw"),
+		models.NewHowToTool("Blender"),
+	}
+	rs := models.RecipeSchema{
+		AtContext:     "@Schema",
+		AtType:        &models.SchemaType{Value: "Recipe"},
+		Category:      &models.Category{Value: "lunch"},
+		CookTime:      "PT3H",
+		CookingMethod: nil,
+		Cuisine:       &models.Cuisine{Value: "american"},
+		DateCreated:   "2022-03-16",
+		DateModified:  "2022-03-20",
+		DatePublished: "2022-03-16",
+		Description:   &models.Description{Value: "description"},
+		Keywords:      &models.Keywords{Values: "kw1,kw2,kw3"},
+		Image:         &models.Image{Value: imageID.String()},
+		Ingredients:   &models.Ingredients{Values: []string{"ing1", "ing2", "ing3"}},
+		Instructions: &models.Instructions{
+			Values: []models.HowToItem{
+				{Type: "HowToStep", Text: "ins1"},
+				{Type: "HowToStep", Text: "ins2"},
+				{Type: "HowToStep", Text: "ins3"},
+			},
+		},
+		Name: "name",
+		NutritionSchema: &models.NutritionSchema{
+			Calories:       "341kcal",
+			Carbohydrates:  "1g",
+			Cholesterol:    "2g",
+			Fat:            "27g",
+			Fiber:          "4g",
+			Protein:        "5g",
+			SaturatedFat:   "6g",
+			Servings:       "1",
+			Sodium:         "8g",
+			Sugar:          "9g",
+			TransFat:       "10g",
+			UnsaturatedFat: "11g",
+		},
+		PrepTime:  "PT1H",
+		TotalTime: "PT4H",
+		Tools:     &models.Tools{Values: tools},
+		Yield:     &models.Yield{Value: 4},
+		URL:       "https://recipes.musicavis.ca",
+	}
+
+	xb, _ := json.Marshal(rs)
+	var got map[string]any
+	_ = json.Unmarshal(xb, &got)
+
+	for k, v := range got {
+		switch k {
+		case "@context":
+			if v != rs.AtContext {
+				t.Errorf("got @context %q; want %q", v, rs.AtContext)
+			}
+		case "@type":
+			if v.(string) != rs.AtType.Value {
+				t.Errorf("got @type %q; want %q", v, rs.AtType)
+			}
+		case "recipeCategory":
+			if v.(string) != rs.Category.Value {
+				t.Errorf("got recipeCategory %q; want %q", v, rs.Category.Value)
+			}
+		case "cookTime":
+			if v.(string) != rs.CookTime {
+				t.Errorf("got recipeCategory %q; want %q", v, rs.CookTime)
+			}
+		case "cookingMethod":
+			if v.(string) != rs.CookingMethod.Value {
+				t.Errorf("got cookingMethod %q; want %q", v, rs.CookingMethod.Value)
+			}
+		case "recipeCuisine":
+			if v.(string) != rs.Cuisine.Value {
+				t.Errorf("got recipeCuisine %q; want %q", v, rs.Cuisine.Value)
+			}
+		case "dateCreated":
+			if v.(string) != rs.DateCreated {
+				t.Errorf("got dateCreated %q; want %q", v, rs.DateCreated)
+			}
+		case "dateModified":
+			if v.(string) != rs.DateModified {
+				t.Errorf("got dateModified %q; want %q", v, rs.DateModified)
+			}
+		case "datePublished":
+			if v.(string) != rs.DatePublished {
+				t.Errorf("got datePublished %q; want %q", v, rs.DatePublished)
+			}
+		case "description":
+			if v.(string) != rs.Description.Value {
+				t.Errorf("got description %q; want %q", v, rs.Description.Value)
+			}
+		case "keywords":
+			if v.(string) != rs.Keywords.Values {
+				t.Errorf("got keywords %q; want %q", v, rs.Keywords.Values)
+			}
+		case "image":
+			want := "/data/images/" + rs.Image.Value
+			s := v.(string)
+			_, after, ok := strings.Cut(v.(string), "/")
+			if ok {
+				s = "/" + after
+			}
+			if s != want {
+				t.Errorf("got image %q; want %q", v, rs.Image.Value)
+			}
+		case "recipeIngredient":
+			xa := v.([]any)
+			xs := make([]string, 0, len(xa))
+			for _, a := range xa {
+				xs = append(xs, a.(string))
+			}
+			if !slices.Equal(xs, rs.Ingredients.Values) {
+				t.Errorf("got recipeIngredient %q; want %q", v, rs.Ingredients.Values)
+			}
+		case "recipeInstructions":
+			xa := v.([]any)
+			xv := make([]models.HowToItem, 0, len(xa))
+			for _, a := range xa {
+				m := a.(map[string]any)
+				s, ok := m["text"]
+				if ok {
+					xv = append(xv, models.HowToItem{Type: "HowToStep", Text: s.(string)})
+				}
+			}
+
+			if !slices.Equal(xv, rs.Instructions.Values) {
+				t.Errorf("got recipeInstructions %q; want %q", xv, rs.Instructions.Values)
+			}
+		case "name":
+			if v.(string) != rs.Name {
+				t.Errorf("got name %q; want %q", v, rs.Name)
+			}
+		case "nutrition":
+			var want map[string]any
+			b, _ := json.Marshal(&rs.NutritionSchema)
+			_ = json.Unmarshal(b, &want)
+			if !cmp.Equal(v.(map[string]any), want) {
+				t.Errorf("got nutrition %q; want %q", v, want)
+			}
+		case "prepTime":
+			if v.(string) != rs.PrepTime {
+				t.Errorf("got prepTime %q; want %q", v, rs.PrepTime)
+			}
+		case "tool":
+			xa := v.([]any)
+			xv := make([]models.HowToItem, 0, len(xa))
+			for _, a := range xa {
+				m := a.(map[string]any)
+				xv = append(xv, models.NewHowToTool(m["text"].(string), &models.HowToItem{
+					Quantity: int(m["requiredQuantity"].(float64)),
+				}))
+			}
+
+			if !slices.Equal(xv, rs.Tools.Values) {
+				t.Errorf("got tool %+v; want %+v", xv, rs.Tools.Values)
+			}
+		case "totalTime":
+			if v.(string) != rs.TotalTime {
+				t.Errorf("got totalTime %q; want %q", v, rs.TotalTime)
+			}
+		case "recipeYield":
+			if int16(v.(float64)) != rs.Yield.Value {
+				t.Errorf("got recipeYield %q; want %q", v, rs.Yield.Value)
+			}
+		case "url":
+			if v.(string) != rs.URL {
+				t.Errorf("got url %q; want %q", v, rs.URL)
+			}
+		default:
+			t.Errorf("invalid key %q", k)
+		}
 	}
 }

@@ -8,9 +8,12 @@ import (
 )
 
 func scrapeKptncook(root *goquery.Document) (models.RecipeSchema, error) {
-	image, _ := root.Find("image[itemprop='image']").Attr("src")
+	rs := models.NewRecipeSchema()
 
-	var prep string
+	rs.Image.Value, _ = root.Find("image[itemprop='image']").Attr("src")
+	rs.Name = root.Find("title").Text()
+	rs.Yield.Value = findYield(root.Find(".kptn-person-count").Text())
+
 	clock := root.Find("img[alt='clockIcon']")
 	if clock != nil && len(clock.Nodes) > 0 && clock.Nodes[0].NextSibling != nil {
 		data := clock.Nodes[0].NextSibling.Data
@@ -19,15 +22,13 @@ func scrapeKptncook(root *goquery.Document) (models.RecipeSchema, error) {
 		for i, s := range split {
 			_, err := strconv.ParseInt(s, 10, 64)
 			if err == nil && isMin {
-				prep = "PT" + split[i] + "M"
+				rs.PrepTime = "PT" + split[i] + "M"
 				break
 			}
 		}
 	}
 
 	// It is possible to extract the category, but I am not sure how.
-
-	var ingredients []string
 	node := root.Find("img[src='/assets/images/img_wave_grey4.png']").Parent().Parent()
 	for {
 		node = node.Next()
@@ -35,11 +36,11 @@ func scrapeKptncook(root *goquery.Document) (models.RecipeSchema, error) {
 			break
 		}
 		s := strings.Join(strings.Fields(node.Text()), " ")
-		ingredients = append(ingredients, s)
+		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
 	}
 
 	nodes := root.Find(".kptn-step-title")
-	instructions := make([]string, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
 		_, err := strconv.ParseInt(s[:1], 10, 64)
@@ -48,15 +49,8 @@ func scrapeKptncook(root *goquery.Document) (models.RecipeSchema, error) {
 			after = strings.Join(strings.Fields(after), " ")
 			s = strings.TrimSpace(after)
 		}
-		instructions = append(instructions, s)
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
 	})
 
-	return models.RecipeSchema{
-		Image:        models.Image{Value: image},
-		Ingredients:  models.Ingredients{Values: ingredients},
-		Instructions: models.Instructions{Values: instructions},
-		Name:         root.Find("title").Text(),
-		PrepTime:     prep,
-		Yield:        models.Yield{Value: findYield(root.Find(".kptn-person-count").Text())},
-	}, nil
+	return rs, nil
 }

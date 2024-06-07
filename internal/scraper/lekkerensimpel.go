@@ -6,17 +6,13 @@ import (
 )
 
 func scrapeLekkerenSimpel(root *goquery.Document) (models.RecipeSchema, error) {
-	datePublished, _ := root.Find("meta[property='article:published_time']").Attr("content")
-	dateModified, _ := root.Find("meta[property='article:modified_time']").Attr("content")
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
-	keywords, _ := root.Find("meta[name='shareaholic='keywords']").Attr("content")
-	name := root.Find(".hero__title").Text()
+	rs := models.NewRecipeSchema()
 
-	return models.RecipeSchema{
-		DatePublished: datePublished,
-		DateModified:  dateModified,
-		Name:          name,
-		Image:         models.Image{Value: image},
-		Keywords:      models.Keywords{Values: keywords},
-	}, nil
+	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
+	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.Keywords.Values, _ = root.Find("meta[name='shareaholic='keywords']").Attr("content")
+	rs.Name = root.Find(".hero__title").Text()
+
+	return rs, nil
 }

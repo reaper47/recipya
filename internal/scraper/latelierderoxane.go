@@ -8,16 +8,19 @@ import (
 )
 
 func scrapeLatelierderoxane(root *goquery.Document) (models.RecipeSchema, error) {
-	description, _ := root.Find("meta[name='description']").Attr("content")
+	rs := models.NewRecipeSchema()
+
+	rs.Description.Value, _ = root.Find("meta[name='description']").Attr("content")
 
 	name, _ := root.Find("meta[name='og:title']").Attr("content")
 	before, _, found := strings.Cut(name, " - ")
 	if found {
 		name = strings.TrimSpace(before)
 	}
+	rs.Name = name
 
-	image, _ := root.Find("meta[name='image']").Attr("content")
-	datePublished, _ := root.Find("time[itemprop='datePublished']").Attr("datetime")
+	rs.Image.Value, _ = root.Find("meta[name='image']").Attr("content")
+	rs.DatePublished, _ = root.Find("time[itemprop='datePublished']").Attr("datetime")
 
 	prep := root.Find("span:contains('Préparation')").Next().Text()
 	if prep != "" {
@@ -31,6 +34,7 @@ func scrapeLatelierderoxane(root *goquery.Document) (models.RecipeSchema, error)
 			}
 		}
 	}
+	rs.PrepTime = prep
 
 	cook := root.Find("span:contains('Cuisson')").Next().Text()
 	if cook != "" {
@@ -44,36 +48,25 @@ func scrapeLatelierderoxane(root *goquery.Document) (models.RecipeSchema, error)
 			}
 		}
 	}
+	rs.CookTime = cook
 
 	split := strings.Split(root.Find("span.titre:contains('Personnes')").Next().Text(), "/")
-	var yield string
 	if len(split) > 0 {
-		yield = split[0]
+		rs.Yield.Value = findYield(split[0])
 	}
 
 	nodes := root.Find(".ingredient")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
-		ingredients = append(ingredients, s)
+		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
 	})
 
 	nodes = root.Find(".bloc_texte_simple li")
-	instructions := make([]string, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := strings.TrimSpace(sel.Text())
-		instructions = append(instructions, s)
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(sel.Text())))
 	})
 
-	return models.RecipeSchema{
-		CookTime:      cook,
-		DatePublished: datePublished,
-		Description:   models.Description{Value: description},
-		Image:         models.Image{Value: image},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
-		Name:          name,
-		PrepTime:      prep,
-		Yield:         models.Yield{Value: findYield(yield)},
-	}, nil
+	return rs, nil
 }

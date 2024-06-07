@@ -12,32 +12,34 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://www.tasteofhome.com/recipes/cast-iron-skillet-steak/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Dinner"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Dinner"},
 				CookTime:      "PT5M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DateModified:  "2024-03-06",
 				DatePublished: "2019-02-13",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: `If you’ve never cooked steak at home before, it can be a little intimidating. That’s why I came up with this simple steak recipe that’s so easy, you could make it any day of the week. —<a href="https://www.tasteofhome.com/author/jschend/">James Schend</a>, <a href="https://www.dairyfreed.com/" target="_blank">Dairy Freed</a>`,
 				},
-				Keywords: models.Keywords{Values: ""},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: ""},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 beef New York strip or ribeye steak (1 pound), 1 inch thick",
 						"3 teaspoons kosher salt, divided",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Remove the steak from the refrigerator. Sprinkle it with 2 teaspoons salt, and let it stand at room temperature 45 for 60 minutes. Editor's Tip: The resting step here is essential for proper searing later! It also gives the meat time to absorb some of the salt.",
-						"Preheat a cast-iron skillet over high heat until it's extremely hot, four to five minutes. Sprinkle the remaining 1 teaspoon salt in the bottom of the skillet. Editor's Tip: The high heat produces a lot of smoke, so make sure you're cooking in a well-ventilated space. It's also a good idea to turn on your kitchen vent or fan.",
-						"Pat the steak dry with paper towels. Place the steak in the hot skillet. Cook until it can be easily moved, one to two minutes. Flip the steak, placing it in a different section of the skillet. Cook for 30 seconds, then begin moving the steak around the skillet, occasionally pressing on it slightly to ensure even contact with the skillet. Editor's Tip: Moving the steak around the hot skillet helps it get a better sear.",
-						"Continue turning and flipping for one to two minutes, until the steak is cooked to the desired degree of doneness. A thermometer inserted in the thickest part of the meat should read: Medium-rare: 135° Medium: 140° Medium-well: 145° Editor's Tip: Keep in mind that the steak will continue to cook after it's removed from the skillet. It's best to aim for a few degrees shy of your desired temperature. Then let it rest for 10 minutes, and slice the steak against the grain.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Remove the steak from the refrigerator. Sprinkle it with 2 teaspoons salt, and let it stand at room temperature 45 for 60 minutes. Editor's Tip: The resting step here is essential for proper searing later! It also gives the meat time to absorb some of the salt."},
+						{Type: "HowToStep", Text: "Preheat a cast-iron skillet over high heat until it's extremely hot, four to five minutes. Sprinkle the remaining 1 teaspoon salt in the bottom of the skillet. Editor's Tip: The high heat produces a lot of smoke, so make sure you're cooking in a well-ventilated space. It's also a good idea to turn on your kitchen vent or fan."},
+						{Type: "HowToStep", Text: "Pat the steak dry with paper towels. Place the steak in the hot skillet. Cook until it can be easily moved, one to two minutes. Flip the steak, placing it in a different section of the skillet. Cook for 30 seconds, then begin moving the steak around the skillet, occasionally pressing on it slightly to ensure even contact with the skillet. Editor's Tip: Moving the steak around the hot skillet helps it get a better sear."},
+						{Type: "HowToStep", Text: "Continue turning and flipping for one to two minutes, until the steak is cooked to the desired degree of doneness. A thermometer inserted in the thickest part of the meat should read: Medium-rare: 135° Medium: 140° Medium-well: 145° Editor's Tip: Keep in mind that the steak will continue to cook after it's removed from the skillet. It's best to aim for a few degrees shy of your desired temperature. Then let it rest for 10 minutes, and slice the steak against the grain."},
 					},
 				},
 				Name: "Cast-Iron Skillet Steak",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "494 calories",
 					Carbohydrates: "0 carbohydrate (0 sugars",
 					Cholesterol:   "134mg cholesterol",
@@ -47,8 +49,9 @@ func TestScraper_T(t *testing.T) {
 					Sodium:        "2983mg sodium",
 				},
 				PrepTime:  "PT5M",
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT10M",
-				Yield:     models.Yield{Value: 2},
+				Yield:     &models.Yield{Value: 2},
 				URL:       "https://www.tasteofhome.com/recipes/cast-iron-skillet-steak/",
 			},
 		},
@@ -57,19 +60,19 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://tastesbetterfromscratch.com/apple-crisp",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Dessert"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Dessert"},
 				CookTime:      "PT35M",
-				Cuisine:       models.Cuisine{Value: "American"},
+				Cuisine:       &models.Cuisine{Value: "American"},
 				DatePublished: "2023-11-21T06:00:00+00:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Our favorite Apple Crisp recipe is made with Granny Smith apples and a delicious oatmeal crumb topping.It&#39;s irresistible!",
 				},
-				Keywords: models.Keywords{
+				Keywords: &models.Keywords{
 					Values: "apple crisp, Apple crisp ingredients, apple crisp recipe, Apple crisp recipe 9x9 pan, apple crisp recipe with oats, apple crisp topping, apple crisp with oats, Best apple crisp, easy apple crisp, Homemade apple crisp, how to make apple crisp, Old fashioned apple crisp recipe",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"2/3 cup old-fashioned rolled oats", "1/2 cup all-purpose flour",
 						"1/2 cup light brown sugar", "1/2 teaspoon ground cinnamon",
@@ -83,17 +86,17 @@ func TestScraper_T(t *testing.T) {
 						"vanilla Ice Cream", "Homemade Caramel Sauce",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Preheat oven to 375 degrees F.",
-						"Crumble Toppings: In a medium size bowl combine oats, flour, brown sugar, cinnamon, and baking powder. Add butter and cut in with a pastry blender or fork until well combined. Refrigerate while you prepare the apple filling.",
-						"Apple Filling: (I use a Johnny Apple Peeler to peel, core and slice the apples all at once.) In a small bowl stir together melted butter and flour until smooth. Add lemon juice, milk and vanilla and stir. Stir in brown sugar, cinnamon, and nutmeg. Pour butter mixture over apples and toss to coat.",
-						"Bake: Pour apple mixture into an 8x8-inch baking dish and spread into an even layer. Sprinkle crumble topping evenly over the apples. Bake for about 35 minutes or until golden brown and top is set. Remove from oven cool at least 15 minutes before serving.",
-						"Serve with vanilla ice cream and homemade caramel sauce, if desired.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Preheat oven to 375 degrees F."},
+						{Type: "HowToStep", Text: "Crumble Toppings: In a medium size bowl combine oats, flour, brown sugar, cinnamon, and baking powder. Add butter and cut in with a pastry blender or fork until well combined. Refrigerate while you prepare the apple filling."},
+						{Type: "HowToStep", Text: "Apple Filling: (I use a Johnny Apple Peeler to peel, core and slice the apples all at once.) In a small bowl stir together melted butter and flour until smooth. Add lemon juice, milk and vanilla and stir. Stir in brown sugar, cinnamon, and nutmeg. Pour butter mixture over apples and toss to coat."},
+						{Type: "HowToStep", Text: "Bake: Pour apple mixture into an 8x8-inch baking dish and spread into an even layer. Sprinkle crumble topping evenly over the apples. Bake for about 35 minutes or until golden brown and top is set. Remove from oven cool at least 15 minutes before serving."},
+						{Type: "HowToStep", Text: "Serve with vanilla ice cream and homemade caramel sauce, if desired."},
 					},
 				},
 				Name: "The BEST Apple Crisp",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "382 kcal",
 					Carbohydrates: "57 g",
 					Cholesterol:   "42 mg",
@@ -107,7 +110,7 @@ func TestScraper_T(t *testing.T) {
 				},
 				PrepTime:  "PT15M",
 				TotalTime: "PT50M",
-				Yield:     models.Yield{Value: 6},
+				Yield:     &models.Yield{Value: 6},
 				URL:       "https://tastesbetterfromscratch.com/apple-crisp",
 			},
 		},
@@ -116,19 +119,19 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://www.tastesoflizzyt.com/easter-ham-pie/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Brunch"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Brunch"},
 				CookTime:      "PT75M",
-				Cuisine:       models.Cuisine{Value: "Italian"},
+				Cuisine:       &models.Cuisine{Value: "Italian"},
 				DatePublished: "2022-04-04T04:28:00+00:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "A midwestern take on Italian Easter Pie, this Easter Ham Pie is perfect for Sunday brunch. It&#039;s the best way to use up leftover ham and will quickly become a family favorite.",
 				},
-				Keywords: models.Keywords{
+				Keywords: &models.Keywords{
 					Values: "breakfast and brunch, easter breakfast, leftover ham recipe",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"double pie dough for 9-inch pie pan",
 						"6 large eggs (beaten)",
@@ -141,19 +144,19 @@ func TestScraper_T(t *testing.T) {
 						"Salt and pepper (for topping)",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Place one of the pie crusts in the bottom of a greased 9” pie plate. Flute the edges. Chill the pie crust for 30 minutes.",
-						"Preheat the oven to 375°F. Place parchment paper in the bottom of the pie crust, then fill with pie weights or dry beans. Blind bake the pie crust for 15 minutes or until the edges are starting to brown. Remove the crust from the oven and allow it to cool while you prepare the filling.",
-						"In a large bowl, whisk the eggs. Then add the ham, ricotta, mozzarella, parmesan, oregano and garlic powder. Mix well.",
-						"Pour the cheese and ham mixture into the baked bottom crust. Place the second pie crust on top and flute the edges to seal. (Set aside any excess pastry to make a cinnamon thing!)",
-						"Use a sharp knife to make 3 slits across the top of the pie crust. Sprinkle with sea salt and freshly ground pepper.",
-						"Bake at 350°F for one hour.",
-						"Store any leftover ham pie in the refrigerator in an airtight container or covered with plastic wrap.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Place one of the pie crusts in the bottom of a greased 9” pie plate. Flute the edges. Chill the pie crust for 30 minutes."},
+						{Type: "HowToStep", Text: "Preheat the oven to 375°F. Place parchment paper in the bottom of the pie crust, then fill with pie weights or dry beans. Blind bake the pie crust for 15 minutes or until the edges are starting to brown. Remove the crust from the oven and allow it to cool while you prepare the filling."},
+						{Type: "HowToStep", Text: "In a large bowl, whisk the eggs. Then add the ham, ricotta, mozzarella, parmesan, oregano and garlic powder. Mix well."},
+						{Type: "HowToStep", Text: "Pour the cheese and ham mixture into the baked bottom crust. Place the second pie crust on top and flute the edges to seal. (Set aside any excess pastry to make a cinnamon thing!)"},
+						{Type: "HowToStep", Text: "Use a sharp knife to make 3 slits across the top of the pie crust. Sprinkle with sea salt and freshly ground pepper."},
+						{Type: "HowToStep", Text: "Bake at 350°F for one hour."},
+						{Type: "HowToStep", Text: "Store any leftover ham pie in the refrigerator in an airtight container or covered with plastic wrap."},
 					},
 				},
 				Name: "Ham Pie",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:       "474 kcal",
 					Carbohydrates:  "24 g",
 					Cholesterol:    "192 mg",
@@ -169,7 +172,7 @@ func TestScraper_T(t *testing.T) {
 				},
 				PrepTime:  "PT20M",
 				TotalTime: "PT125M",
-				Yield:     models.Yield{Value: 8},
+				Yield:     &models.Yield{Value: 8},
 				URL:       "https://www.tastesoflizzyt.com/easter-ham-pie/",
 			},
 		},
@@ -178,20 +181,18 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://tasty.co/recipe/honey-soy-glazed-salmon",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Lunch"},
-				Cuisine:       models.Cuisine{Value: "North American"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Lunch"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{Value: "North American"},
 				DateModified:  "2022-11-28T23:00:00",
 				DatePublished: "2017-05-11T21:21:36",
-				Description: models.Description{
-					Value: "Two words: honey salmon! Sure, it takes a tiny bit of prep work, but once you marinate your " +
-						"salmon, you won’t be able to go back. A simple mix of honey, soy sauce, garlic, and ginger coats " +
-						"and flavors your fish for 30 minutes before you throw it on the pan until the outside is perfectly " +
-						"crispy. Once that’s done, you heat up and reduce some extra marinade to make a thick, to-die-for " +
-						"glaze to pour over your filet. Serve with your favorite veggies or rice and enjoy!",
+				Description: &models.Description{
+					Value: "Two words: honey salmon! Sure, it takes a tiny bit of prep work, but once you marinate your salmon, you won’t be able to go back. A simple mix of honey, soy sauce, garlic, and ginger coats and flavors your fish for 30 minutes before you throw it on the pan until the outside is perfectly crispy. Once that’s done, you heat up and reduce some extra marinade to make a thick, to-die-for glaze to pour over your filet. Serve with your favorite veggies or rice and enjoy!",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"12 oz skinless salmon",
 						"1 tablespoon olive oil",
@@ -203,21 +204,20 @@ func TestScraper_T(t *testing.T) {
 						"⅓ cup honey",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Place salmon in a sealable bag or medium bowl.",
-						"In a small bowl or measuring cup, mix marinade ingredients.",
-						"Pour half of the marinade on the salmon. Save the other half for later.",
-						"Let the salmon marinate in the refrigerator for at least 30 minutes.",
-						"In a medium pan, heat oil. Add salmon to the pan, but discard the used marinade. Cook salmon on one " +
-							"side for about 2-3 minutes, then flip over and cook for an additional 1-2 minutes.",
-						"Remove salmon from pan. Pour in remaining marinade and reduce.",
-						"Serve the salmon with sauce and a side of veggies. We used broccoli.",
-						"Enjoy!",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Place salmon in a sealable bag or medium bowl."},
+						{Type: "HowToStep", Text: "In a small bowl or measuring cup, mix marinade ingredients."},
+						{Type: "HowToStep", Text: "Pour half of the marinade on the salmon. Save the other half for later."},
+						{Type: "HowToStep", Text: "Let the salmon marinate in the refrigerator for at least 30 minutes."},
+						{Type: "HowToStep", Text: "In a medium pan, heat oil. Add salmon to the pan, but discard the used marinade. Cook salmon on one side for about 2-3 minutes, then flip over and cook for an additional 1-2 minutes."},
+						{Type: "HowToStep", Text: "Remove salmon from pan. Pour in remaining marinade and reduce."},
+						{Type: "HowToStep", Text: "Serve the salmon with sauce and a side of veggies. We used broccoli."},
+						{Type: "HowToStep", Text: "Enjoy!"},
 					},
 				},
 				Name: "Honey Soy-Glazed Salmon Recipe by Tasty",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "705 calories",
 					Carbohydrates: "60 grams",
 					Fat:           "35 grams",
@@ -225,7 +225,8 @@ func TestScraper_T(t *testing.T) {
 					Protein:       "37 grams",
 					Sugar:         "57 grams",
 				},
-				Yield: models.Yield{Value: 2},
+				Tools: &models.Tools{Values: []models.HowToItem{}},
+				Yield: &models.Yield{Value: 2},
 				URL:   "https://tasty.co/recipe/honey-soy-glazed-salmon",
 			},
 		},
@@ -233,18 +234,20 @@ func TestScraper_T(t *testing.T) {
 			name: "tastykitchen.com",
 			in:   "https://tastykitchen.com/recipes/main-courses/garlic-shrimp-scampi-with-angel-hair-pasta/",
 			want: models.RecipeSchema{
-				AtContext: atContext,
-				AtType:    models.SchemaType{Value: "Recipe"},
-				Name:      "Garlic Shrimp Scampi with Angel Hair Pasta",
-				Category:  models.Category{Value: "Main Courses"},
-				Description: models.Description{
-					Value: "This shrimp scampi with angel hair pasta is a delicious dinner with plenty of cheese that you can " +
-						"make in just 15 minutes! ",
+				AtContext:     atContext,
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Name:          "Garlic Shrimp Scampi with Angel Hair Pasta",
+				Category:      &models.Category{Value: "Main Courses"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Description: &models.Description{
+					Value: "This shrimp scampi with angel hair pasta is a delicious dinner with plenty of cheese that you can make in just 15 minutes! ",
 				},
-				Image:    models.Image{Value: anUploadedImage.String()},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Keywords: &models.Keywords{},
 				PrepTime: "PT5M",
 				CookTime: "PT10M",
-				Ingredients: models.Ingredients{
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"3 Tablespoons Butter",
 						"4 cloves Garlic, Minced",
@@ -260,26 +263,20 @@ func TestScraper_T(t *testing.T) {
 						"Salt And Pepper, to taste",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Melt the butter in a large skillet over medium heat. Add the garlic and cook until fragrant, about " +
-							"1 minute, stirring constantly. Add in the shrimp and sprinkle with chili flakes and sea salt.",
-						"Cook the shrimp for about 1 to 2 minutes per side, or until pink and opaque. Set aside on a plate.",
-						"To the same skillet, add the lemon zest and juice. Pour in 5 cups of broth. Keep the remaining 1 cup " +
-							"on hand, in case you need it for later. Stir to combine then bring the liquid to a gentle simmer.",
-						"Add the pasta, and using a pair of tongs, stir occasionally for a few minutes, or until the pasta starts " +
-							"to soften and bend. Fully immerse the pasta into the liquid, and keep stirring frequently to avoid " +
-							"sticking to the bottom of the pan.",
-						"Cook the pasta according to the timing on the package directions. Angel hair pasta needs no more than 3 " +
-							"minutes to cook to al dente.",
-						"Once the pasta is cooked to al dente, return the shrimp to the pan and turn the heat off. Stir in the " +
-							"Parmesan cheese and chopped parsley, and mix until the cheese has melted into the sauce. The " +
-							"pasta will continue to absorb the sauce if not served immediately. So quickly season with salt " +
-							"and pepper to your taste, and dig in!",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Melt the butter in a large skillet over medium heat. Add the garlic and cook until fragrant, about 1 minute, stirring constantly. Add in the shrimp and sprinkle with chili flakes and sea salt."},
+						{Type: "HowToStep", Text: "Cook the shrimp for about 1 to 2 minutes per side, or until pink and opaque. Set aside on a plate."},
+						{Type: "HowToStep", Text: "To the same skillet, add the lemon zest and juice. Pour in 5 cups of broth. Keep the remaining 1 cup on hand, in case you need it for later. Stir to combine then bring the liquid to a gentle simmer."},
+						{Type: "HowToStep", Text: "Add the pasta, and using a pair of tongs, stir occasionally for a few minutes, or until the pasta starts to soften and bend. Fully immerse the pasta into the liquid, and keep stirring frequently to avoid sticking to the bottom of the pan."},
+						{Type: "HowToStep", Text: "Cook the pasta according to the timing on the package directions. Angel hair pasta needs no more than 3 minutes to cook to al dente."},
+						{Type: "HowToStep", Text: "Once the pasta is cooked to al dente, return the shrimp to the pan and turn the heat off. Stir in the Parmesan cheese and chopped parsley, and mix until the cheese has melted into the sauce. The pasta will continue to absorb the sauce if not served immediately. So quickly season with salt and pepper to your taste, and dig in!"},
 					},
 				},
-				Yield: models.Yield{Value: 4},
-				URL:   "https://tastykitchen.com/recipes/main-courses/garlic-shrimp-scampi-with-angel-hair-pasta/",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 4},
+				URL:             "https://tastykitchen.com/recipes/main-courses/garlic-shrimp-scampi-with-angel-hair-pasta/",
 			},
 		},
 		{
@@ -287,22 +284,22 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://realfood.tesco.com/recipes/salted-honey-and-rosemary-lamb-with-roasties-and-rainbow-carrots.html",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
 				Name:          "Salted honey and rosemary lamb with roasties and rainbow carrots",
-				Category:      models.Category{Value: "Dinner"},
+				Category:      &models.Category{Value: "Dinner"},
 				CookTime:      "PT2H0M",
-				Cuisine:       models.Cuisine{Value: "British"},
+				Cuisine:       &models.Cuisine{Value: "British"},
 				DateModified:  "2024-03-08T16:30:55Z",
 				DatePublished: "2022-03-23T14:55:51Z",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "This one-tray wonder is a great option for Sunday roast, Mother's Day or even Easter",
 				},
-				Keywords: models.Keywords{
+				Keywords: &models.Keywords{
 					Values: "honey, lamb, easter, mother's Day, sunday roast, sunday lunch, roast dinner, veg, meat and two veg, potatoes, roast potatoes, roasted potatoes",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Yield: models.Yield{Value: 6},
-				NutritionSchema: models.NutritionSchema{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Yield: &models.Yield{Value: 6},
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "855 calories",
 					Carbohydrates: "64.2 grams carbohydrate",
 					Cholesterol:   "",
@@ -312,7 +309,7 @@ func TestScraper_T(t *testing.T) {
 					SaturatedFat:  "16 grams saturated fat",
 					Sugar:         "21 grams sugar",
 				},
-				Ingredients: models.Ingredients{
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"2kg lamb leg joint", "¼ tsp flaky sea salt, plus extra to season",
 						"20g pack fresh rosemary, most leaves finely chopped, some whole sprigs",
@@ -325,22 +322,12 @@ func TestScraper_T(t *testing.T) {
 						"3 tbsp white wine vinegar",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Preheat the oven to gas 3, 160 ̊C, fan 140 ̊C. Use a small sharp knife to pierce holes about 4cm deep all " +
-							"over the lamb, then season well with sea salt. In a small bowl, combine the chopped rosemary and " +
-							"garlic with 6 tbsp olive oil.",
-						"Rinse the chopped potatoes and tip into one side of a large, rimmed baking tray. Put the carrots in the " +
-							"other half of the tray. Toss the carrots with 1 tbsp oil, then toss the potatoes in half the rosemary- " +
-							"garlic oil and spread out in a single layer over half of the tray; add the whole rosemary sprigs. Put " +
-							"the lamb in the centre of the tray and rub with the remaining rosemary-garlic oil.",
-						"Roast for 1 hr 45 mins. Mix the honey with &frac14; tsp flaky sea salt and dab all over the lamb with a pastry " +
-							"brush. Return to the oven, increase the temperature to gas 7, 220 ̊C, fan 200 ̊C, then roast for a " +
-							"final 15 mins. Transfer the lamb to a warmed plate, then set aside to rest, covered loosely with " +
-							"foil, for at least 20 mins. Keep the veg warm while the lamb rests.",
-						"Meanwhile, make the mint sauce. Finely chop the mint leaves with the sugar (this helps to stop oxidisation), " +
-							"then mix well in a bowl with 3 tbsp boiling water and the vinegar. Serve alongside the roast lamb, " +
-							"potatoes and carrots.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Preheat the oven to gas 3, 160 ̊C, fan 140 ̊C. Use a small sharp knife to pierce holes about 4cm deep all over the lamb, then season well with sea salt. In a small bowl, combine the chopped rosemary and garlic with 6 tbsp olive oil."},
+						{Type: "HowToStep", Text: "Rinse the chopped potatoes and tip into one side of a large, rimmed baking tray. Put the carrots in the other half of the tray. Toss the carrots with 1 tbsp oil, then toss the potatoes in half the rosemary- garlic oil and spread out in a single layer over half of the tray; add the whole rosemary sprigs. Put the lamb in the centre of the tray and rub with the remaining rosemary-garlic oil."},
+						{Type: "HowToStep", Text: "Roast for 1 hr 45 mins. Mix the honey with &frac14; tsp flaky sea salt and dab all over the lamb with a pastry brush. Return to the oven, increase the temperature to gas 7, 220 ̊C, fan 200 ̊C, then roast for a final 15 mins. Transfer the lamb to a warmed plate, then set aside to rest, covered loosely with foil, for at least 20 mins. Keep the veg warm while the lamb rests."},
+						{Type: "HowToStep", Text: "Meanwhile, make the mint sauce. Finely chop the mint leaves with the sugar (this helps to stop oxidisation), then mix well in a bowl with 3 tbsp boiling water and the vinegar. Serve alongside the roast lamb, potatoes and carrots."},
 					},
 				},
 				PrepTime:  "PT1H0M",
@@ -353,22 +340,20 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://www.theclevercarrot.com/2021/10/homemade-sourdough-breadcrumbs/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Sourdough Bread"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Sourdough Bread"},
 				CookTime:      "PT25M",
-				CookingMethod: models.CookingMethod{Value: "Oven-Baked"},
-				Cuisine:       models.Cuisine{Value: "American"},
+				CookingMethod: &models.CookingMethod{Value: "Oven-Baked"},
+				Cuisine:       &models.Cuisine{Value: "American"},
 				DatePublished: "2021-10-03",
-				Description: models.Description{
-					Value: "Transform leftover bread into delicious homemade breadcrumbs, with just 10 minutes hands on time and " +
-						"minimal effort. I like using sourdough bread, but any bread will do. Breadcrumbs can be stored " +
-						"in the freezer for up to 3-6 months.",
+				Description: &models.Description{
+					Value: "Transform leftover bread into delicious homemade breadcrumbs, with just 10 minutes hands on time and minimal effort. I like using sourdough bread, but any bread will do. Breadcrumbs can be stored in the freezer for up to 3-6 months.",
 				},
-				Keywords: models.Keywords{
+				Keywords: &models.Keywords{
 					Values: "homemade, sourdough bread, breadcrumbs, Italian, seasoned bread crumbs",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 tsp dried garlic powder",
 						"1 tsp dried onion powder",
@@ -378,26 +363,22 @@ func TestScraper_T(t *testing.T) {
 						"1/4 cup (30 g) ground Pecorino Romano or Parmesan cheese",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Preheat your oven to 300˚ F (150˚ C). Grab (2x) rimmed baking sheets.",
-						"Cut the bread into small cubes, including the crust, about 1-inch in size.",
-						"Add the cubes to a food processor or high-powdered blender (you will need to work in batches). Process " +
-							"until fine crumbs form. Note: if you cannot get the crumbs small enough at this stage, you " +
-							"can process them again after baking.",
-						"Divide the crumbs over the (2x) sheet pans in one even layer.",
-						"Bake for 15-30 minutes, stirring once, or until the crumbs are crispy. Bake time will vary depending on " +
-							"bread type and freshness.",
-						"Remove the breadcrumbs from the oven. Allow to cool.",
-						"At this point, you can either keep the breadcrumbs plain or season, Italian-style (my preference). Add the " +
-							"dried garlic, onion, salt, oregano, parsley and cheese; mix well.",
-						"Portion the cooled breadcrumbs into containers or a zip-top bag and freeze until ready to use.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Preheat your oven to 300˚ F (150˚ C). Grab (2x) rimmed baking sheets."},
+						{Type: "HowToStep", Text: "Cut the bread into small cubes, including the crust, about 1-inch in size."},
+						{Type: "HowToStep", Text: "Add the cubes to a food processor or high-powdered blender (you will need to work in batches). Process until fine crumbs form. Note: if you cannot get the crumbs small enough at this stage, you can process them again after baking."},
+						{Type: "HowToStep", Text: "Divide the crumbs over the (2x) sheet pans in one even layer."},
+						{Type: "HowToStep", Text: "Bake for 15-30 minutes, stirring once, or until the crumbs are crispy. Bake time will vary depending on bread type and freshness."},
+						{Type: "HowToStep", Text: "Remove the breadcrumbs from the oven. Allow to cool."},
+						{Type: "HowToStep", Text: "At this point, you can either keep the breadcrumbs plain or season, Italian-style (my preference). Add the dried garlic, onion, salt, oregano, parsley and cheese; mix well."},
+						{Type: "HowToStep", Text: "Portion the cooled breadcrumbs into containers or a zip-top bag and freeze until ready to use."},
 					},
 				},
 				Name:      "Homemade Sourdough Breadcrumbs",
 				PrepTime:  "PT10M",
 				TotalTime: "PT35M",
-				Yield:     models.Yield{Value: 4},
+				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.theclevercarrot.com/2021/10/homemade-sourdough-breadcrumbs/",
 			},
 		},
@@ -406,13 +387,15 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://www.thecookingguy.com/recipes/funeral-sandwiches",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "uncategorized"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DatePublished: "2024-01-29",
-				Description:   models.Description{Value: "Super delicious roast, homemade brioche sliders, melty cheese and an amped up garlic butter - what could be better?"},
-				Keywords:      models.Keywords{Values: "Cooking, Guy, Grill, Grilling, Grilled, BBQ, Dinner, Family Meal, Chicken, Beef, Steak, Pork, Seafood, Fish, Lobster, Sauce, Tacos, Sam The Cooking Guy"},
-				Image:         models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Description:   &models.Description{Value: "Super delicious roast, homemade brioche sliders, melty cheese and an amped up garlic butter - what could be better?"},
+				Keywords:      &models.Keywords{Values: "Cooking, Guy, Grill, Grilling, Grilled, BBQ, Dinner, Family Meal, Chicken, Beef, Steak, Pork, Seafood, Fish, Lobster, Sauce, Tacos, Sam The Cooking Guy"},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"One 4-5 pound eye of round",
 						"1/4 cup yellow mustard",
@@ -431,27 +414,28 @@ func TestScraper_T(t *testing.T) {
 						"1 tablespoon olive oil",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Preheat oven to 500",
-						"Remove any fat and silver-skin from the roast, brush with mustard and season well with the rub",
-						"Put on a rack covered baking sheet, and cook 15 minutes, turn down to 325 and continue to cook until 125 internally - remove and let cool",
-						"When it's cool, wrap tightly in saran, and refrigerate overnight",
-						"When ready to build, preheat oven to 350",
-						"Slice buns horizontally, butter a 9x13 baking dish and put bottoms side by side in the pan",
-						"Spread mayo and mustard across all the bottoms, top with half cheese",
-						"Remove refrigerated roast, unwrap, dry off and slice into the thinnest slices possible - you'll need between 1 and 1.25 pounds",
-						"Top cheese with roast, add another layer of cheese, then the top buns",
-						"Combine butter, horseradish, garlic, Cholula, Worcestershire, parsley, soy & olive oil - mix well to combine, then brush about half over the little sandos",
-						"Cover with foil, and bake 20 minutes",
-						"Remove foil, brush again and bake another 7-10 or until the cheese is bubbly",
-						"Remove, let cool slightly and away you go.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Preheat oven to 500"},
+						{Type: "HowToStep", Text: "Remove any fat and silver-skin from the roast, brush with mustard and season well with the rub"},
+						{Type: "HowToStep", Text: "Put on a rack covered baking sheet, and cook 15 minutes, turn down to 325 and continue to cook until 125 internally - remove and let cool"},
+						{Type: "HowToStep", Text: "When it's cool, wrap tightly in saran, and refrigerate overnight"},
+						{Type: "HowToStep", Text: "When ready to build, preheat oven to 350"},
+						{Type: "HowToStep", Text: "Slice buns horizontally, butter a 9x13 baking dish and put bottoms side by side in the pan"},
+						{Type: "HowToStep", Text: "Spread mayo and mustard across all the bottoms, top with half cheese"},
+						{Type: "HowToStep", Text: "Remove refrigerated roast, unwrap, dry off and slice into the thinnest slices possible - you'll need between 1 and 1.25 pounds"},
+						{Type: "HowToStep", Text: "Top cheese with roast, add another layer of cheese, then the top buns"},
+						{Type: "HowToStep", Text: "Combine butter, horseradish, garlic, Cholula, Worcestershire, parsley, soy & olive oil - mix well to combine, then brush about half over the little sandos"},
+						{Type: "HowToStep", Text: "Cover with foil, and bake 20 minutes"},
+						{Type: "HowToStep", Text: "Remove foil, brush again and bake another 7-10 or until the cheese is bubbly"},
+						{Type: "HowToStep", Text: "Remove, let cool slightly and away you go."},
 					},
 				},
-				Name:  "Funeral Sandwiches",
-				Tools: models.Tools{},
-				Yield: models.Yield{Value: 12},
-				URL:   "https://www.thecookingguy.com/recipes/funeral-sandwiches",
+				Name:            "Funeral Sandwiches",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 12},
+				URL:             "https://www.thecookingguy.com/recipes/funeral-sandwiches",
 			},
 		},
 		{
@@ -459,17 +443,17 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://theexpertguides.com/recipes/is-guacamole-vegan/",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Side Dish"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Side Dish"},
 				CookTime:      "PT10M",
-				Cuisine:       models.Cuisine{Value: "Mexican"},
+				Cuisine:       &models.Cuisine{Value: "Mexican"},
 				DatePublished: "2023-09-11T19:31:32+00:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "This vegan guacamole recipe yields a creamy and tangy dip that you can eat with tortilla chips, bread, or veggies. It's quick and requires a few basic ingredients.",
 				},
-				Keywords: models.Keywords{Values: "avocado guacamole recipe, guacamole, vegan guacamole, vegan salsa"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "avocado guacamole recipe, guacamole, vegan guacamole, vegan salsa"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"3 Avocados", "2 tbsp fresh lime juice", "2 garlic cloves (minced)",
 						"10 cherry tomatoes (sliced into small pieces)",
@@ -477,19 +461,19 @@ func TestScraper_T(t *testing.T) {
 						"Salt and black pepper to taste",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Slice the avocados into small cubes in a mixing bowl, and mash them with a fork.",
-						"Add fresh lime juice and mix in the avocados.",
-						"Add sliced tomatoes, garlic, onion, and cilantro. Continue mashing with a fork.",
-						"Add salt and black pepper to taste.",
-						"Serve with sliced veggies, tortilla chips, or fajitas.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Slice the avocados into small cubes in a mixing bowl, and mash them with a fork."},
+						{Type: "HowToStep", Text: "Add fresh lime juice and mix in the avocados."},
+						{Type: "HowToStep", Text: "Add sliced tomatoes, garlic, onion, and cilantro. Continue mashing with a fork."},
+						{Type: "HowToStep", Text: "Add salt and black pepper to taste."},
+						{Type: "HowToStep", Text: "Serve with sliced veggies, tortilla chips, or fajitas."},
 					},
 				},
 				Name:      "Homemade Vegan Guacamole Recipe",
 				PrepTime:  "PT5M",
 				TotalTime: "PT15M",
-				Yield:     models.Yield{Value: 6},
+				Yield:     &models.Yield{Value: 6},
 				URL:       "https://theexpertguides.com/recipes/is-guacamole-vegan/",
 			},
 		},
@@ -497,23 +481,24 @@ func TestScraper_T(t *testing.T) {
 			name: "thehappyfoodie.co.uk",
 			in:   "https://thehappyfoodie.co.uk/recipes/leek-and-lentil-gratin/",
 			want: models.RecipeSchema{
-				AtContext:    atContext,
-				AtType:       models.SchemaType{Value: "Recipe"},
-				Category:     models.Category{Value: "uncategorized"},
-				DateModified: "2024-02-12T16:17:38+00:00",
-				Name:         "Leek and Puy Lentil Gratin with a Crunchy Feta Topping",
-				Yield:        models.Yield{Value: 4},
-				Description: models.Description{
-					Value: "A creamy, cheesy, and deeply comforting dish, Rukmini Iyer's one-tin vegetarian gratin also happens " +
-						"to be packed with nutritious Puy lentils.",
+				AtContext:     atContext,
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DateModified:  "2024-02-12T16:17:38+00:00",
+				Name:          "Leek and Puy Lentil Gratin with a Crunchy Feta Topping",
+				Yield:         &models.Yield{Value: 4},
+				Description: &models.Description{
+					Value: "A creamy, cheesy, and deeply comforting dish, Rukmini Iyer's one-tin vegetarian gratin also happens to be packed with nutritious Puy lentils.",
 				},
-				Image:    models.Image{Value: anUploadedImage.String()},
+				Image:    &models.Image{Value: anUploadedImage.String()},
 				PrepTime: "PT10M",
 				CookTime: "PT40M",
-				Keywords: models.Keywords{
+				Keywords: &models.Keywords{
 					Values: "Vegetarian, Feta, Leek, Lentil, One Pot, One-pot, Valentine's Day, Dinner, Main Course, French, Easy, Quick",
 				},
-				Ingredients: models.Ingredients{
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"30g butter", "3 cloves of garlic, crushed", "500g leeks, thinly sliced",
 						"2 tsp sea salt", "freshly ground black pepper",
@@ -522,19 +507,17 @@ func TestScraper_T(t *testing.T) {
 						"1 tbsp olive oil",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Preheat the oven to 180°C fan/200°C/gas 6. Put the butter and garlic into a roasting tin and pop into " +
-							"the oven to melt while you get on with slicing the leeks.",
-						"Mix the sliced leeks with the melted garlic butter, season well with the sea salt and black pepper, then " +
-							"return to the oven to roast for 20 minutes.",
-						"After 20 minutes, stir through the Puy lentils, crème fraîche and another good scatter of sea salt, then " +
-							"top with the feta cheese and breadcrumbs. Drizzle with the olive oil, then return to the oven " +
-							"for a further 20–25 minutes, until golden brown on top.",
-						"Serve the gratin hot, with a mustard or balsamic dressed green salad alongside.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Preheat the oven to 180°C fan/200°C/gas 6. Put the butter and garlic into a roasting tin and pop into the oven to melt while you get on with slicing the leeks."},
+						{Type: "HowToStep", Text: "Mix the sliced leeks with the melted garlic butter, season well with the sea salt and black pepper, then return to the oven to roast for 20 minutes."},
+						{Type: "HowToStep", Text: "After 20 minutes, stir through the Puy lentils, crème fraîche and another good scatter of sea salt, then top with the feta cheese and breadcrumbs. Drizzle with the olive oil, then return to the oven for a further 20–25 minutes, until golden brown on top."},
+						{Type: "HowToStep", Text: "Serve the gratin hot, with a mustard or balsamic dressed green salad alongside."},
 					},
 				},
-				URL: "https://thehappyfoodie.co.uk/recipes/leek-and-lentil-gratin/",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				URL:             "https://thehappyfoodie.co.uk/recipes/leek-and-lentil-gratin/",
 			},
 		},
 		{
@@ -542,17 +525,18 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://thekitchencommunity.org/turkey-salad-recipe/",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "uncategorized"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
 				DateModified:  "2023-12-08T11:47:42-05:00",
 				DatePublished: "2023-11-23T12:23:49-05:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Are you looking for a great way to use that leftover turkey from your holiday feast? Look no further – we have the perfect turkey salad recipe for you! This easy turkey salad is not only a delicious option, but it's also a fantastic way to ensure that none of your delicious turkey goes to",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Name:  "Turkey Salad Recipe",
-				URL:   "https://thekitchencommunity.org/turkey-salad-recipe/",
-				Yield: models.Yield{Value: 1},
+				Keywords: &models.Keywords{},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Name:     "Turkey Salad Recipe",
+				URL:      "https://thekitchencommunity.org/turkey-salad-recipe/",
+				Yield:    &models.Yield{Value: 1},
 			},
 		},
 		{
@@ -560,17 +544,16 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://www.thekitchenmagpie.com/blt-pasta-salad/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Salad"},
-				Cuisine:       models.Cuisine{Value: "American"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Salad"},
+				Cuisine:       &models.Cuisine{Value: "American"},
 				DatePublished: "2021-06-16T04:00:00+00:00",
-				Description: models.Description{
-					Value: "Fantastic BLT pasta salad with bacon, lettuce, tomatoes, two types of cheese and tangy Ranch " +
-						"dressing! The perfect side dish for BBQ&#039;s, or eat it as a meal!",
+				Description: &models.Description{
+					Value: "Fantastic BLT pasta salad with bacon, lettuce, tomatoes, two types of cheese and tangy Ranch dressing! The perfect side dish for BBQ&#039;s, or eat it as a meal!",
 				},
-				Keywords: models.Keywords{Values: "BLT pasta salad"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "BLT pasta salad"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"one 454 gram box Farfalle pasta (bow-tie pasta cooked until al dente)",
 						"1 pound bacon diced and cooked",
@@ -585,19 +568,16 @@ func TestScraper_T(t *testing.T) {
 						"2 tablespoons fresh parsley chopped",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"In a large serving bowl place the cooked pasta, then pour one cup of the dressing on top. Stir " +
-							"to coat the pasta.",
-						"Add in the cooked bacon, romaine lettuce, two types of tomatoes, the two types of cheese, the red " +
-							"onion, and the avocados.",
-						"Pour the remaining half a cup of dressing over, then gently mix until the other ingredients are " +
-							"slightly coated. Taste test, and add more dressing if desired.",
-						"Garnish with the fresh parsley and serve.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "In a large serving bowl place the cooked pasta, then pour one cup of the dressing on top. Stir to coat the pasta."},
+						{Type: "HowToStep", Text: "Add in the cooked bacon, romaine lettuce, two types of tomatoes, the two types of cheese, the red onion, and the avocados."},
+						{Type: "HowToStep", Text: "Pour the remaining half a cup of dressing over, then gently mix until the other ingredients are slightly coated. Taste test, and add more dressing if desired."},
+						{Type: "HowToStep", Text: "Garnish with the fresh parsley and serve."},
 					},
 				},
 				Name: "BLT Pasta Salad",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "653 kcal",
 					Carbohydrates: "10 g",
 					Cholesterol:   "78 mg",
@@ -611,7 +591,7 @@ func TestScraper_T(t *testing.T) {
 					TransFat:      "1 g",
 				},
 				PrepTime: "PT30M",
-				Yield:    models.Yield{Value: 12},
+				Yield:    &models.Yield{Value: 12},
 				URL:      "https://www.thekitchenmagpie.com/blt-pasta-salad/",
 			},
 		},
@@ -620,36 +600,38 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://www.thekitchn.com/how-to-reheat-turkey-and-keep-it-moist-251033",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Main dish"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Main dish"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DateCreated:   "2017-11-24T12:30:00-05:00",
 				DateModified:  "2023-10-24T19:30:00-04:00",
 				DatePublished: "2017-11-24T12:30:00-05:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Learn the best way to reheat leftover turkey this weekend and a few tips for better microwaved leftovers.",
 				},
-				Keywords: models.Keywords{
+				Keywords: &models.Keywords{
 					Values: "anheuser busch thanksgiving,butter,christmas,Cooking Lessons from The Kitchn,dinner,easy,Gluten-Free,How To,Ingredient,Lunch,Main Dish,Meat Tutorials,poultry,recipe,thanksgiving,Tips & Techniques,Turkey,Wellness,Dish Types,team:food,purpose:search,platform:email,platform:homepage,platform:newsfeeds,platform:search,platform:social,course:main dish,diet:under 500 calories,diet:gluten-free,diet:under 200 calories,diet:low-calorie,diet:under 400 calories,diet:low-fat,diet:under 300 calories,mainingredients:poultry,mainingredients:turkey,dishtype:poultry dish,meal:dinner,meal:lunch,updated:2023-10-24",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 pound cooked turkey (breast meat, thigh meat, or whole drumsticks)",
 						"1 cup low-sodium turkey, vegetable, or chicken broth",
 						"1 tablespoon unsalted butter, cut into 4 pieces",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Heat the oven to 350°F. Arrange a rack in the middle of the oven and heat to 350°F.",
-						"Slice the turkey and spread into a baking dish. Uniform slices or bite-sized pieces reheat quickly and evenly, so slice the turkey as needed. Place the turkey in a a single layer in an 8x8-inch baking dish.",
-						"Cover the turkey with broth and dot with the butter. Add the broth and dot the turkey with the pieces of butter. Cover the baking dish with aluminum foil.",
-						"Reheat in the oven for 30 to 35 minutes. Bake until the turkey is heated through, 30 to 35 minutes. Remember that all leftovers should be reheated to a minimum of 165°F.",
-						"Serving. Uncover and serve the turkey immediately.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Heat the oven to 350°F. Arrange a rack in the middle of the oven and heat to 350°F."},
+						{Type: "HowToStep", Text: "Slice the turkey and spread into a baking dish. Uniform slices or bite-sized pieces reheat quickly and evenly, so slice the turkey as needed. Place the turkey in a a single layer in an 8x8-inch baking dish."},
+						{Type: "HowToStep", Text: "Cover the turkey with broth and dot with the butter. Add the broth and dot the turkey with the pieces of butter. Cover the baking dish with aluminum foil."},
+						{Type: "HowToStep", Text: "Reheat in the oven for 30 to 35 minutes. Bake until the turkey is heated through, 30 to 35 minutes. Remember that all leftovers should be reheated to a minimum of 165°F."},
+						{Type: "HowToStep", Text: "Serving. Uncover and serve the turkey immediately."},
 					},
 				},
 				Name: "The Best Method for Reheating Turkey So It Never Dries Out",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:       "194 cal",
 					Carbohydrates:  "2.3 g",
 					Cholesterol:    "0 mg",
@@ -662,8 +644,9 @@ func TestScraper_T(t *testing.T) {
 					Sugar:          "1.0 g",
 					UnsaturatedFat: "0.0 g",
 				},
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT0S",
-				Yield:     models.Yield{Value: 4},
+				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.thekitchn.com/how-to-reheat-turkey-and-keep-it-moist-251033",
 			},
 		},
@@ -672,16 +655,16 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://www.themagicalslowcooker.com/slow-cooker-apple-cider-pot-roast/",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Main Course"},
-				Cuisine:       models.Cuisine{Value: "American"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Main Course"},
+				Cuisine:       &models.Cuisine{Value: "American"},
 				DatePublished: "2023-11-09T07:25:41+00:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Give your pot roast a tasty upgrade by using apple cider - a taste the whole family is sure to enjoy.",
 				},
-				Keywords: models.Keywords{Values: "apple cider pot roast"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "apple cider pot roast"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"3 lbs. beef chuck roast", "1 tsp. salt", "¼ tsp. pepper",
 						"2 Tbsp. vegetable oil", "1 cup apple cider", "1 cup beef broth",
@@ -693,21 +676,21 @@ func TestScraper_T(t *testing.T) {
 						"1 lbs. baby potatoes (halved or quartered depending on size)",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Season the chuck roast on both sides with salt and pepper. You can use more or less depending on your preferences.",
-						"Heat the vegetable oil in a cast iron skillet or large pan over medium-high heat. Sear the chuck roast until browned on all sides, about 3-4 minutes per side. Remove the roast from the skillet and set aside.",
-						"In a large mixing bowl, whisk together the apple cider, beef broth, Worcestershire sauce, minced garlic, tomato paste, dijon mustard, chopped rosemary, and chopped thyme. Whisk until thoroughly combined and set aside.",
-						"Place the baby carrots and baby potatoes in the bottom of a slow cooker.",
-						"Carefully transfer the seared chuck roast onto the bed of vegetables in the slow cooker.",
-						"Pour the apple cider mixture over the roast and vegetables in the slow cooker.",
-						"Cover the slow cooker and cook on LOW heat for 8-10 hours or on HIGH heat for 5-6 hours, until the meat is tender and easily shreds with a fork.",
-						"Once cooked, remove the chuck roast from the slow cooker and let it rest for a few minutes before slicing or shredding it.",
-						"Serve the pot roast with the cooked baby carrots, potatoes and a ladle of the flavorful cooking liquid, Garnish with fresh thyme, parsley and rosemary sprigs. Enjoy!",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Season the chuck roast on both sides with salt and pepper. You can use more or less depending on your preferences."},
+						{Type: "HowToStep", Text: "Heat the vegetable oil in a cast iron skillet or large pan over medium-high heat. Sear the chuck roast until browned on all sides, about 3-4 minutes per side. Remove the roast from the skillet and set aside."},
+						{Type: "HowToStep", Text: "In a large mixing bowl, whisk together the apple cider, beef broth, Worcestershire sauce, minced garlic, tomato paste, dijon mustard, chopped rosemary, and chopped thyme. Whisk until thoroughly combined and set aside."},
+						{Type: "HowToStep", Text: "Place the baby carrots and baby potatoes in the bottom of a slow cooker."},
+						{Type: "HowToStep", Text: "Carefully transfer the seared chuck roast onto the bed of vegetables in the slow cooker."},
+						{Type: "HowToStep", Text: "Pour the apple cider mixture over the roast and vegetables in the slow cooker."},
+						{Type: "HowToStep", Text: "Cover the slow cooker and cook on LOW heat for 8-10 hours or on HIGH heat for 5-6 hours, until the meat is tender and easily shreds with a fork."},
+						{Type: "HowToStep", Text: "Once cooked, remove the chuck roast from the slow cooker and let it rest for a few minutes before slicing or shredding it."},
+						{Type: "HowToStep", Text: "Serve the pot roast with the cooked baby carrots, potatoes and a ladle of the flavorful cooking liquid, Garnish with fresh thyme, parsley and rosemary sprigs. Enjoy!"},
 					},
 				},
 				Name: "Slow Cooker Apple Cider Pot Roast",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:       "565 kcal",
 					Carbohydrates:  "26 g",
 					Cholesterol:    "156 mg",
@@ -723,7 +706,7 @@ func TestScraper_T(t *testing.T) {
 				},
 				PrepTime:  "PT15M",
 				TotalTime: "PT495M",
-				Yield:     models.Yield{Value: 6},
+				Yield:     &models.Yield{Value: 6},
 				URL:       "https://www.themagicalslowcooker.com/slow-cooker-apple-cider-pot-roast/",
 			},
 		},
@@ -732,22 +715,20 @@ func TestScraper_T(t *testing.T) {
 			in:   "http://thenutritiouskitchen.co/fluffy-paleo-blueberry-pancakes/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "breakfast"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "breakfast"},
 				CookTime:      "PT15M",
-				CookingMethod: models.CookingMethod{Value: "stove top"},
-				Cuisine:       models.Cuisine{Value: "pancakes"},
+				CookingMethod: &models.CookingMethod{Value: "stove top"},
+				Cuisine:       &models.Cuisine{Value: "pancakes"},
 				DatePublished: "2022-04-08",
-				Description: models.Description{
-					Value: "Delicious paleo blueberry pancakes made extra fluffy with simple, healthy ingredients all made in " +
-						"one bowl! The perfect weekend breakfast or brunch recipe packed with refreshing blueberry flavors, " +
-						"no added sugars and 100% dairy-free + gluten-free!",
+				Description: &models.Description{
+					Value: "Delicious paleo blueberry pancakes made extra fluffy with simple, healthy ingredients all made in one bowl! The perfect weekend breakfast or brunch recipe packed with refreshing blueberry flavors, no added sugars and 100% dairy-free + gluten-free!",
 				},
-				Keywords: models.Keywords{
+				Keywords: &models.Keywords{
 					Values: "paleo, pancakes, gluten-free, dairy-free",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"3/4 cup unsweetened apple sauce",
 						"1/4 cup cashew butter",
@@ -762,23 +743,19 @@ func TestScraper_T(t *testing.T) {
 						"Vegan butter or ghee",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"In a large bowl whisk the apple sauce, cashew butter and egg until fully combined.",
-						"Then add in the almond flour, tapioca flour, baking powder, sea salt, and cinnamon. Combine with a mixing " +
-							"spoon until a thick batter forms. It will be thick but still moist!",
-						"Heat ghee or butter in a pan over medium heat. Once the pan is hot, scoop the batter using a cookie scoop " +
-							"or about 1/4 cup full of batter. I like to cook 3 at a time.",
-						"Place some blueberries onto the pancakes while on pan and cook for about 3 minutes. Flip gently, and " +
-							"continue cooking for about 2 minutes over medium-low heat.",
-						"Repeat with remaining batter then serve with maple syrup, extra butter and toppings of choice. I love " +
-							"coconut cream or cashew butter!",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "In a large bowl whisk the apple sauce, cashew butter and egg until fully combined."},
+						{Type: "HowToStep", Text: "Then add in the almond flour, tapioca flour, baking powder, sea salt, and cinnamon. Combine with a mixing spoon until a thick batter forms. It will be thick but still moist!"},
+						{Type: "HowToStep", Text: "Heat ghee or butter in a pan over medium heat. Once the pan is hot, scoop the batter using a cookie scoop or about 1/4 cup full of batter. I like to cook 3 at a time."},
+						{Type: "HowToStep", Text: "Place some blueberries onto the pancakes while on pan and cook for about 3 minutes. Flip gently, and continue cooking for about 2 minutes over medium-low heat."},
+						{Type: "HowToStep", Text: "Repeat with remaining batter then serve with maple syrup, extra butter and toppings of choice. I love coconut cream or cashew butter!"},
 					},
 				},
 				Name:      "Fluffy Paleo Blueberry Pancakes",
 				PrepTime:  "PT5M",
 				TotalTime: "PT20M",
-				Yield:     models.Yield{Value: 6},
+				Yield:     &models.Yield{Value: 6},
 				URL:       "https://thenutritiouskitchen.co/fluffy-paleo-blueberry-pancakes/",
 			},
 		},
@@ -787,21 +764,21 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://themodernproper.com/turkey-pozole-rojo",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "dinner, soup, diary-free, gluten-free, one-pot-meals"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "dinner, soup, diary-free, gluten-free, one-pot-meals"},
 				CookTime:      "PT1H",
-				Cuisine:       models.Cuisine{Value: "Mexican"},
+				Cuisine:       &models.Cuisine{Value: "Mexican"},
 				DateCreated:   "2016-11-25T08:43:41-08:00",
 				DateModified:  "2023-11-23",
 				DatePublished: "2023-11-23",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "This spicy, warming turkey pozole rojo soup is a flavorful way to use all of your turkey leftovers. Easy, and warming, it’s perfect palate-awakener for the day after Thanksgiving.",
 				},
-				Keywords: models.Keywords{
+				Keywords: &models.Keywords{
 					Values: "turkey pozole rojo, fall recipe, thanksgiving recipe, winter recipe, diary-free recipe, gluten-free recipe, one-pot-meals",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 tablespoon extra-virgin olive oil", "1 large yellow onion, diced",
 						"7 garlic cloves, smashed", "4 large dried ancho chiles",
@@ -821,24 +798,25 @@ func TestScraper_T(t *testing.T) {
 						"1 teaspoon kosher salt",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Cut open the dried chiles with kitchen scissors or a knife and discard the seeds",
-						"Heat a large dry skillet over medium-high heat",
-						"Toast the chiles, moving them occasionally, for 4 minutes",
-						"(See Note)Cover the chiles with 2 inches of water",
-						"Bring the water to a boil over high heat, then turn the heat off and let the chilis soak until softened, about 15 minutes.Add chilies and garlic along with 1 ½ cups of the cooking liquid to a high speed blender and blend until smooth",
-						"Make the seasoned cabbage",
-						"In a medium bowl, combine cabbage, olive oil, vinegar, salt, and pepper and toss until combined.Heat the oil in a medium pot over medium heat",
-						"Once the oil is glistening, add the onions and cook until translucent, 4-5 minutes",
-						"To the same pot over medium heat, add the blended chilis, chicken stock, cumin, oregano, bay leaves and salt",
-						"Increase the heat to high and bring to a simmer", "Cook for 30 minutes",
-						"Stir in the hominy and the turkey and continue to cook until the turkey is warmed through and the hominy has absorbed the broth, 20 minutes more",
-						"Taste and adjust season with salt.Serve the pozole in bowls topped with seasoned cabbage, avocado, cilantro, radishes, and lime juice.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Cut open the dried chiles with kitchen scissors or a knife and discard the seeds"},
+						{Type: "HowToStep", Text: "Heat a large dry skillet over medium-high heat"},
+						{Type: "HowToStep", Text: "Toast the chiles, moving them occasionally, for 4 minutes"},
+						{Type: "HowToStep", Text: "(See Note)Cover the chiles with 2 inches of water"},
+						{Type: "HowToStep", Text: "Bring the water to a boil over high heat, then turn the heat off and let the chilis soak until softened, about 15 minutes.Add chilies and garlic along with 1 ½ cups of the cooking liquid to a high speed blender and blend until smooth"},
+						{Type: "HowToStep", Text: "Make the seasoned cabbage"},
+						{Type: "HowToStep", Text: "In a medium bowl, combine cabbage, olive oil, vinegar, salt, and pepper and toss until combined.Heat the oil in a medium pot over medium heat"},
+						{Type: "HowToStep", Text: "Once the oil is glistening, add the onions and cook until translucent, 4-5 minutes"},
+						{Type: "HowToStep", Text: "To the same pot over medium heat, add the blended chilis, chicken stock, cumin, oregano, bay leaves and salt"},
+						{Type: "HowToStep", Text: "Increase the heat to high and bring to a simmer"},
+						{Type: "HowToStep", Text: "Cook for 30 minutes"},
+						{Type: "HowToStep", Text: "Stir in the hominy and the turkey and continue to cook until the turkey is warmed through and the hominy has absorbed the broth, 20 minutes more"},
+						{Type: "HowToStep", Text: "Taste and adjust season with salt.Serve the pozole in bowls topped with seasoned cabbage, avocado, cilantro, radishes, and lime juice."},
 					},
 				},
 				Name: "Turkey Pozole Rojo",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "406 calories",
 					Carbohydrates: "47 grams carbohydrates",
 					Cholesterol:   "0 milligrams cholesterol",
@@ -852,7 +830,7 @@ func TestScraper_T(t *testing.T) {
 				},
 				PrepTime:  "PT20M",
 				TotalTime: "PT1H20M",
-				Yield:     models.Yield{Value: 8},
+				Yield:     &models.Yield{Value: 8},
 				URL:       "https://themodernproper.com/turkey-pozole-rojo",
 			},
 		},
@@ -861,12 +839,13 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://www.thepalatablelife.com/cinnamon-toast-crunch-cookies-2",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Dessert"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Dessert"},
 				CookTime:      "PT15M",
 				DatePublished: "2024-03-02T10:47:43+00:00",
-				Image:         models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Description:   &models.Description{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1/2 cup butter (softened)", "1/2 cup brown sugar", "1/4 cup white sugar",
 						"1 egg + 1 egg yolk", "1 tsp vanilla extract", "1 1/2 cups flour (195 grams)",
@@ -881,24 +860,24 @@ func TestScraper_T(t *testing.T) {
 						"splash of vanilla extract",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Preheat the oven to 350F.",
-						"Begin by making the cinnamon cookies. Add the softened butter, brown sugar, and white sugar to a bowl. Use a stand mixer or hand mixer to mix for 3-4 minutes, until well combined.",
-						"Scrape down the sides and add the egg, egg yolk, and vanilla. Mix until well combined.",
-						"Add the flour, cornstarch, cinnamon, baking soda, and salt. Mix on low until just combined. Add the white chocolate chips and pulse until well distributed.",
-						"Set the dough aside and start on the streusel. For the streusel add the softened butter, brown sugar, cinnamon toast crunch, flour, cinnamon, and salt in a bowl. Use a stand mixer or hand mixer to mix until the streusel is well combined. The streusel should stick together when you squeeze it in your fist, but crumble when you run it through your fingers.",
-						"Add 1/4 cup of cinnamon toast crunch to a blender. Blend until its fine crumbs. Pour the crumbs into a bowl.",
-						"Use a large cookie scoop (about 1/4 cup) to scoop out the cinnamon dough. Roll the dough in your hands into a ball, then drop it into the bowl of cinnamon toast crunch crumbs. Roll the dough ball around in the crumbs until it is coated all over.",
-						"Use a spoon or the back side of the cookie scoop to make an indent in the top of the dough ball. Add about 2 tbsp of streusel on top of the dough ball, in the indent. Repeat this process with the remaining dough.",
-						"Add up to 6 dough balls on a parchment lined baking sheet then transfer to the oven. Bake for 8-9 minutes. Let the cookies cool on the baking sheet for 10 minutes, then transfer to a cooling rack to cool completely.",
-						"While the cookies are cooling, make the icing. Add the powdered sugar, milk, and vanilla extract to a bowl. Whisk until smooth. When the cookies are cool, drizzle icing on top of each one and enjoy!",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Preheat the oven to 350F."},
+						{Type: "HowToStep", Text: "Begin by making the cinnamon cookies. Add the softened butter, brown sugar, and white sugar to a bowl. Use a stand mixer or hand mixer to mix for 3-4 minutes, until well combined."},
+						{Type: "HowToStep", Text: "Scrape down the sides and add the egg, egg yolk, and vanilla. Mix until well combined."},
+						{Type: "HowToStep", Text: "Add the flour, cornstarch, cinnamon, baking soda, and salt. Mix on low until just combined. Add the white chocolate chips and pulse until well distributed."},
+						{Type: "HowToStep", Text: "Set the dough aside and start on the streusel. For the streusel add the softened butter, brown sugar, cinnamon toast crunch, flour, cinnamon, and salt in a bowl. Use a stand mixer or hand mixer to mix until the streusel is well combined. The streusel should stick together when you squeeze it in your fist, but crumble when you run it through your fingers."},
+						{Type: "HowToStep", Text: "Add 1/4 cup of cinnamon toast crunch to a blender. Blend until its fine crumbs. Pour the crumbs into a bowl."},
+						{Type: "HowToStep", Text: "Use a large cookie scoop (about 1/4 cup) to scoop out the cinnamon dough. Roll the dough in your hands into a ball, then drop it into the bowl of cinnamon toast crunch crumbs. Roll the dough ball around in the crumbs until it is coated all over."},
+						{Type: "HowToStep", Text: "Use a spoon or the back side of the cookie scoop to make an indent in the top of the dough ball. Add about 2 tbsp of streusel on top of the dough ball, in the indent. Repeat this process with the remaining dough."},
+						{Type: "HowToStep", Text: "Add up to 6 dough balls on a parchment lined baking sheet then transfer to the oven. Bake for 8-9 minutes. Let the cookies cool on the baking sheet for 10 minutes, then transfer to a cooling rack to cool completely."},
+						{Type: "HowToStep", Text: "While the cookies are cooling, make the icing. Add the powdered sugar, milk, and vanilla extract to a bowl. Whisk until smooth. When the cookies are cool, drizzle icing on top of each one and enjoy!"},
 					},
 				},
 				Name:      "cinnamon toast crunch cookies",
 				PrepTime:  "PT30M",
 				TotalTime: "PT45M",
-				Yield:     models.Yield{Value: 8},
+				Yield:     &models.Yield{Value: 8},
 				URL:       "https://www.thepalatablelife.com/cinnamon-toast-crunch-cookies-2",
 			},
 		},
@@ -907,18 +886,18 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://www.thepioneerwoman.com/food-cooking/recipes/a8865/eggs-benedict/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "brunch"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "brunch"},
 				CookTime:      "PT10M",
-				Cuisine:       models.Cuisine{Value: "American"},
+				Cuisine:       &models.Cuisine{Value: "American"},
 				DateModified:  "2024-03-08T19:38:00Z EST",
 				DatePublished: "2007-10-12T09:33:50Z EST",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Ree Drummond's fool-proof recipe for making eggs Benedict features perfectly poached eggs and a creamy, dreamy homemade Hollandaise sauce.",
 				},
-				Keywords: models.Keywords{Values: "Recipes, Cooking, Food"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "Recipes, Cooking, Food"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"3 whole English muffins",
 						"6 slices Canadian bacon",
@@ -930,18 +909,18 @@ func TestScraper_T(t *testing.T) {
 						"Chopped chives, to garnish",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Bring a pot of water to a boil. While the water's boiling, place the English muffin halves and an equal number of Canadian bacon slices on a cookie sheet. Lightly butter the English muffins and place the sheet under the broiler for just a few minutes, or until the English muffins are very lightly golden. Be careful not to dry out the Canadian bacon.",
-						"Now if you do not have an egg poacher you can poach your eggs by doing the following: With a spoon, begin stirring the boiling water in a large, circular motion. When the tornado's really twisting, crack in an egg. The reason for the swirling is so the egg will wrap around itself as it cooks, keeping it together. Cook for about 2 1/2 to 3 minutes. Repeat with the remaining eggs.",
-						"Melt 2 sticks of butter in a small saucepan until sizzling, but don't let it burn! Separate three eggs and place the yolks into a blender. Turn the blender on low to allow the yolks to combine, then begin pouring the very hot butter in a thin stream into the blender. The blender should remain on the whole time, and you should be careful to pour in the butter very slowly. Keep pouring butter until it’s all gone, then immediately begin squeezing lemon juice into the blender. If you are going to add cayenne pepper, this is the point at which you would do that.",
-						"Place the English muffins on the plate, face up. Next, place a slice of Canadian bacon on each half. Place an egg on top of the bacon and then top with a generous helping of Hollandaise sauce. <em>Vegetarian variation:</em> you can omit the Canadian bacon altogether, or you can wilt fresh spinach and place it on the muffins for Eggs Florentine, which is divine in its own right. Top with more cayenne, or a sprinkle of paprika, and chopped chives if you like.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Bring a pot of water to a boil. While the water's boiling, place the English muffin halves and an equal number of Canadian bacon slices on a cookie sheet. Lightly butter the English muffins and place the sheet under the broiler for just a few minutes, or until the English muffins are very lightly golden. Be careful not to dry out the Canadian bacon."},
+						{Type: "HowToStep", Text: "Now if you do not have an egg poacher you can poach your eggs by doing the following: With a spoon, begin stirring the boiling water in a large, circular motion. When the tornado's really twisting, crack in an egg. The reason for the swirling is so the egg will wrap around itself as it cooks, keeping it together. Cook for about 2 1/2 to 3 minutes. Repeat with the remaining eggs."},
+						{Type: "HowToStep", Text: "Melt 2 sticks of butter in a small saucepan until sizzling, but don't let it burn! Separate three eggs and place the yolks into a blender. Turn the blender on low to allow the yolks to combine, then begin pouring the very hot butter in a thin stream into the blender. The blender should remain on the whole time, and you should be careful to pour in the butter very slowly. Keep pouring butter until it’s all gone, then immediately begin squeezing lemon juice into the blender. If you are going to add cayenne pepper, this is the point at which you would do that."},
+						{Type: "HowToStep", Text: "Place the English muffins on the plate, face up. Next, place a slice of Canadian bacon on each half. Place an egg on top of the bacon and then top with a generous helping of Hollandaise sauce. <em>Vegetarian variation:</em> you can omit the Canadian bacon altogether, or you can wilt fresh spinach and place it on the muffins for Eggs Florentine, which is divine in its own right. Top with more cayenne, or a sprinkle of paprika, and chopped chives if you like."},
 					},
 				},
 				Name:      "Eggs Benedict",
 				PrepTime:  "PT15M",
 				TotalTime: "PT25M",
-				Yield:     models.Yield{Value: 3},
+				Yield:     &models.Yield{Value: 3},
 				URL:       "https://www.thepioneerwoman.com/food-cooking/recipes/a8865/eggs-benedict/",
 			},
 		},
@@ -950,16 +929,16 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://therecipecritic.com/avocado-egg-rolls/",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Appetizer"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Appetizer"},
 				CookTime:      "PT5M",
-				Cuisine:       models.Cuisine{Value: "Asian American"},
+				Cuisine:       &models.Cuisine{Value: "Asian American"},
 				DatePublished: "2019-05-06T06:00:02+00:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Avocado Egg Rolls are crispy on the outside with an avocado mixture&nbsp;inside that is bursting with flavor!",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 cup vegetable oil (for frying)", "3 avocados (diced)",
 						"1/4 cup red onion (diced)", "1 Roma tomato (diced)",
@@ -967,16 +946,16 @@ func TestScraper_T(t *testing.T) {
 						"Juice of 1 lime", "salt and pepper to taste", "8 egg roll wrappers",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"In a large skillet heat the olive oil to medium high heat.",
-						"In a medium bowl, add the avocado and mash to desired consistency. Add the onion, tomato, cilantro, garlic powder, lime juice and salt and pepper to taste.",
-						"To make the egg rolls: Place the avocado mixture in the center of each wrapper. Using your finger, rub the edges with water. Bring the bottom edge of the wrapper and roll it tightly over the filling. Fold in the sides and continue to roll up the wrapper and press to seal. Repeat until you have used all of the wrappers.",
-						"Add the. egg rolls to the hot oil and fry until they are golden brown on all sides for about 2-3 minutes. Remove with a metal tong onto a paper towel lined plate. Serve immediately with favorite dipping sauce.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "In a large skillet heat the olive oil to medium high heat."},
+						{Type: "HowToStep", Text: "In a medium bowl, add the avocado and mash to desired consistency. Add the onion, tomato, cilantro, garlic powder, lime juice and salt and pepper to taste."},
+						{Type: "HowToStep", Text: "To make the egg rolls: Place the avocado mixture in the center of each wrapper. Using your finger, rub the edges with water. Bring the bottom edge of the wrapper and roll it tightly over the filling. Fold in the sides and continue to roll up the wrapper and press to seal. Repeat until you have used all of the wrappers."},
+						{Type: "HowToStep", Text: "Add the. egg rolls to the hot oil and fry until they are golden brown on all sides for about 2-3 minutes. Remove with a metal tong onto a paper towel lined plate. Serve immediately with favorite dipping sauce."},
 					},
 				},
 				Name: "The Best Avocado Egg Rolls",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "187 kcal",
 					Carbohydrates: "15 g",
 					Cholesterol:   "1 mg",
@@ -990,7 +969,7 @@ func TestScraper_T(t *testing.T) {
 				},
 				PrepTime:  "PT15M",
 				TotalTime: "PT20M",
-				Yield:     models.Yield{Value: 8},
+				Yield:     &models.Yield{Value: 8},
 				URL:       "https://therecipecritic.com/avocado-egg-rolls/",
 			},
 		},
@@ -999,19 +978,18 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://www.thespruceeats.com/pasta-with-anchovies-and-breadcrumbs-recipe-5215384",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Dinner"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Dinner"},
 				CookTime:      "PT28M",
-				Cuisine:       models.Cuisine{Value: "Italian"},
+				Cuisine:       &models.Cuisine{Value: "Italian"},
 				DateModified:  "2023-02-20T21:36:14.876-05:00",
 				DatePublished: "2022-01-12T16:19:41.204-05:00",
-				Description: models.Description{
-					Value: "Anchovies and pepper provide complex flavor in this simple Sicilian-style pasta dish. Crisp garlicky " +
-						"breadcrumbs are the perfect finishing touch.",
+				Description: &models.Description{
+					Value: "Anchovies and pepper provide complex flavor in this simple Sicilian-style pasta dish. Crisp garlicky breadcrumbs are the perfect finishing touch.",
 				},
-				Keywords: models.Keywords{Values: "anchovie pasta"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "anchovie pasta"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"For the Breadcrumbs:",
 						"4 slices day-old bread, about 7 ounces",
@@ -1033,31 +1011,22 @@ func TestScraper_T(t *testing.T) {
 						"1/4 cup freshly grated Parmesan cheese, optional",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Gather the ingredients.",
-						"Bring a large pot of well salted water to a boil. While the water is heating, remove the crusts from the " +
-							"bread, if you like, and tear or cut it into cubes.",
-						"Put bread cubes, garlic, and 1/4 teaspoon of kosher salt in a food processor and pulse to make coarse " +
-							"breadcrumbs. You should have about 2 cups of crumbs, a bit more if the crusts are not removed.",
-						"Heat the 3 tablespoons of the oil in a large Dutch oven or other heavy-duty pot over medium heat. When " +
-							"the oil shimmers, add the breadcrumbs. Cook, stirring frequently, until the crumbs are lightly brown " +
-							"and crisp, about 5 to 12 minutes, depending on the moisture in the bread.",
-						"Transfer the breadcrumbs to a bowl, toss with lemon zest, if using, and set aside.",
-						"Meanwhile, cook the pasta according to al dente according to package instructions, reserving 1/2 cup of " +
-							"the pasta water. Drain the pasta and set aside.",
-						"Wipe out the pot used for the breadcrumbs. Add 3 tablespoons of the oil over medium heat until it shimmers. " +
-							"Add the halved garlic cloves and cook until lightly brown, about 2 minutes.",
-						"Remove and discard the garlic pieces. Add the anchovies and crushed red pepper to the garlic-flavored oil " +
-							"and cook for 1 minute longer. Add the lemon juice, if using.",
-						"Add the pasta to the pot and toss, cooking, until warmed through. Add some cooking water to loosen the " +
-							"mixture as needed. Taste and adjust the seasonings with salt and more crushed red pepper flakes, if desired.",
-						"Plate the pasta in wide, shallow pasta bowls and top with a generous amount of garlic breadcrumbs. Garnish " +
-							"with chopped parsley and Parmesan cheese, if using. Serve with lemon wedges, if desired.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Gather the ingredients."},
+						{Type: "HowToStep", Text: "Bring a large pot of well salted water to a boil. While the water is heating, remove the crusts from the bread, if you like, and tear or cut it into cubes."},
+						{Type: "HowToStep", Text: "Put bread cubes, garlic, and 1/4 teaspoon of kosher salt in a food processor and pulse to make coarse breadcrumbs. You should have about 2 cups of crumbs, a bit more if the crusts are not removed."},
+						{Type: "HowToStep", Text: "Heat the 3 tablespoons of the oil in a large Dutch oven or other heavy-duty pot over medium heat. When the oil shimmers, add the breadcrumbs. Cook, stirring frequently, until the crumbs are lightly brown and crisp, about 5 to 12 minutes, depending on the moisture in the bread."},
+						{Type: "HowToStep", Text: "Transfer the breadcrumbs to a bowl, toss with lemon zest, if using, and set aside."},
+						{Type: "HowToStep", Text: "Meanwhile, cook the pasta according to al dente according to package instructions, reserving 1/2 cup of the pasta water. Drain the pasta and set aside."},
+						{Type: "HowToStep", Text: "Wipe out the pot used for the breadcrumbs. Add 3 tablespoons of the oil over medium heat until it shimmers. Add the halved garlic cloves and cook until lightly brown, about 2 minutes."},
+						{Type: "HowToStep", Text: "Remove and discard the garlic pieces. Add the anchovies and crushed red pepper to the garlic-flavored oil and cook for 1 minute longer. Add the lemon juice, if using."},
+						{Type: "HowToStep", Text: "Add the pasta to the pot and toss, cooking, until warmed through. Add some cooking water to loosen the mixture as needed. Taste and adjust the seasonings with salt and more crushed red pepper flakes, if desired."},
+						{Type: "HowToStep", Text: "Plate the pasta in wide, shallow pasta bowls and top with a generous amount of garlic breadcrumbs. Garnish with chopped parsley and Parmesan cheese, if using. Serve with lemon wedges, if desired."},
 					},
 				},
 				Name: "Pasta With Anchovies and Breadcrumbs Recipe",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:       "642 kcal",
 					Carbohydrates:  "90 g",
 					Cholesterol:    "3 mg",
@@ -1071,7 +1040,7 @@ func TestScraper_T(t *testing.T) {
 				},
 				PrepTime:  "PT15M",
 				TotalTime: "PT43M",
-				Yield:     models.Yield{Value: 4},
+				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.thespruceeats.com/pasta-with-anchovies-and-breadcrumbs-recipe-5215384",
 			},
 		},
@@ -1080,16 +1049,17 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://www.thevintagemixer.com/roasted-asparagus-grilled-cheese/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Main Course"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Main Course"},
+				CookingMethod: &models.CookingMethod{},
 				CookTime:      "PT5M",
-				Cuisine:       models.Cuisine{Value: "American"},
+				Cuisine:       &models.Cuisine{Value: "American"},
 				DatePublished: "2017-04-03T04:00:45+00:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "A seasonally fresh take on grilled cheese with asparagus.",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"6 spears of asparagus",
 						"1 teaspoon olive oil",
@@ -1100,23 +1070,23 @@ func TestScraper_T(t *testing.T) {
 						"grass fed butter",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Preheat oven to 400 degrees and line a baking sheet with foil.",
-						"Remove the woody ends of the asparagus and toss the spears with olive oil, then sprinkle with the sea salt " +
-							"and pepper. Spread the asparagus spears out onto the prepared baking sheet and roast for 8-10 " +
-							"minutes or until slightly brown.",
-						"Meanwhile, slice the cheese and butter the bread. Remove asparagus from oven.",
-						"Heat up a large skillet over medium heat. Add two slices of the bread, butter side down, to the pan. " +
-							"Add cheese then add 3 spears of asparagus to each sandwich. Top with the other bread slices, butter side up.",
-						"Toast for 3-4 minutes then flip and toast for 2 minutes. Remove from heat and serve hot with tomato soup!",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Preheat oven to 400 degrees and line a baking sheet with foil."},
+						{Type: "HowToStep", Text: "Remove the woody ends of the asparagus and toss the spears with olive oil, then sprinkle with the sea salt and pepper. Spread the asparagus spears out onto the prepared baking sheet and roast for 8-10 minutes or until slightly brown."},
+						{Type: "HowToStep", Text: "Meanwhile, slice the cheese and butter the bread. Remove asparagus from oven."},
+						{Type: "HowToStep", Text: "Heat up a large skillet over medium heat. Add two slices of the bread, butter side down, to the pan. Add cheese then add 3 spears of asparagus to each sandwich. Top with the other bread slices, butter side up."},
+						{Type: "HowToStep", Text: "Toast for 3-4 minutes then flip and toast for 2 minutes. Remove from heat and serve hot with tomato soup!"},
 					},
 				},
-				Name:      "Asparagus Grilled Cheese",
-				PrepTime:  "PT5M",
-				TotalTime: "PT10M",
-				Yield:     models.Yield{Value: 2},
-				URL:       "https://www.thevintagemixer.com/roasted-asparagus-grilled-cheese/",
+				Keywords:        &models.Keywords{},
+				Name:            "Asparagus Grilled Cheese",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT5M",
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:       "PT10M",
+				Yield:           &models.Yield{Value: 2},
+				URL:             "https://www.thevintagemixer.com/roasted-asparagus-grilled-cheese/",
 			},
 		},
 		{
@@ -1124,18 +1094,17 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://thewoksoflife.com/fried-wontons/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Appetizers and Snacks"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Appetizers and Snacks"},
 				CookTime:      "PT20M",
-				Cuisine:       models.Cuisine{Value: "Chinese"},
+				Cuisine:       &models.Cuisine{Value: "Chinese"},
 				DatePublished: "2015-09-05T13:38:44+00:00",
-				Description: models.Description{
-					Value: "Fried wontons are a easy-to-make crispy, crunchy, delicious appetizer. Your guests will be talking " +
-						"about these fried wontons long after the party's over!",
+				Description: &models.Description{
+					Value: "Fried wontons are a easy-to-make crispy, crunchy, delicious appetizer. Your guests will be talking about these fried wontons long after the party's over!",
 				},
-				Keywords: models.Keywords{Values: "fried wontons"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "fried wontons"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"12 oz. ground pork ((340g))",
 						"2 tablespoons finely chopped scallions",
@@ -1158,38 +1127,23 @@ func TestScraper_T(t *testing.T) {
 						"1/2 teaspoon toasted sesame seeds ((optional))",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Start by making the filling. Simply combine the ground pork, chopped scallions, sesame oil, soy sauce, " +
-							"wine (or sherry), sugar, oil, water, and white pepper in a bowl. Whip everything together by hand " +
-							"for 5 minutes or in a food processor for 1 minute. You want the pork to look a bit like a paste.",
-						"To make the wontons, take a wrapper, and add about a teaspoon of filling. Overstuffed wontons will pop " +
-							"open during the cooking process and make a mess. Use your finger to coat the edges with a little " +
-							"water (this helps the two sides seal together).",
-						"For shape #1:",
-						"Fold the wrapper in half into a rectangle, and press the two sides together so you get a firm seal. Hold " +
-							"the bottom two corners of the little rectangle you just made, and bring the two corners together, " +
-							"pressing firmly to seal. (Use a little water to make sure it sticks.)",
-						"Shape #2:",
-						"Fold the wonton in half so you have a triangle shape. Bring together the two outer corners, and press to " +
-							"seal (you can use a little water to make sure it sticks).",
-						"Keep assembling until all the filling is gone (this recipe should make between 40 and 50 wontons). Place " +
-							"the wontons on a baking sheet or plate lined with parchment paper to prevent sticking.",
-						"At this point, you can cover the wontons with plastic wrap, put the baking sheet/plate into the freezer, " +
-							"and transfer them to Ziploc bags once they’re frozen. They’ll keep for a couple months in the " +
-							"freezer and be ready for the fryer whenever you’re ready.",
-						"To conserve oil, use a small pot to fry the wontons. Fill it with 2 to 3 inches of oil, making sure the " +
-							"pot is deep enough so the oil does not overflow when adding the wontons. Heat the oil to 350 degrees, " +
-							"and fry in small batches, turning the wontons occasionally until they are golden brown.",
-						"If you have a small spider strainer or slotted spoon, you can use it to keep the wontons submerged when " +
-							"frying. This method will give you the most uniform golden brown look without the fuss of turning them. " +
-							"Remove the fried wontons to a sheet pan lined with paper towels or a metal cooling rack to drain.",
-						"To make one or all of the sauces, simply mix the respective ingredients in a small bowl, and you’re ready " +
-							"to eat!",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Start by making the filling. Simply combine the ground pork, chopped scallions, sesame oil, soy sauce, wine (or sherry), sugar, oil, water, and white pepper in a bowl. Whip everything together by hand for 5 minutes or in a food processor for 1 minute. You want the pork to look a bit like a paste."},
+						{Type: "HowToStep", Text: "To make the wontons, take a wrapper, and add about a teaspoon of filling. Overstuffed wontons will pop open during the cooking process and make a mess. Use your finger to coat the edges with a little water (this helps the two sides seal together)."},
+						{Type: "HowToStep", Text: "For shape #1:"},
+						{Type: "HowToStep", Text: "Fold the wrapper in half into a rectangle, and press the two sides together so you get a firm seal. Hold the bottom two corners of the little rectangle you just made, and bring the two corners together, pressing firmly to seal. (Use a little water to make sure it sticks.)"},
+						{Type: "HowToStep", Text: "Shape #2:"},
+						{Type: "HowToStep", Text: "Fold the wonton in half so you have a triangle shape. Bring together the two outer corners, and press to seal (you can use a little water to make sure it sticks)."},
+						{Type: "HowToStep", Text: "Keep assembling until all the filling is gone (this recipe should make between 40 and 50 wontons). Place the wontons on a baking sheet or plate lined with parchment paper to prevent sticking."},
+						{Type: "HowToStep", Text: "At this point, you can cover the wontons with plastic wrap, put the baking sheet/plate into the freezer, and transfer them to Ziploc bags once they’re frozen. They’ll keep for a couple months in the freezer and be ready for the fryer whenever you’re ready."},
+						{Type: "HowToStep", Text: "To conserve oil, use a small pot to fry the wontons. Fill it with 2 to 3 inches of oil, making sure the pot is deep enough so the oil does not overflow when adding the wontons. Heat the oil to 350 degrees, and fry in small batches, turning the wontons occasionally until they are golden brown."},
+						{Type: "HowToStep", Text: "If you have a small spider strainer or slotted spoon, you can use it to keep the wontons submerged when frying. This method will give you the most uniform golden brown look without the fuss of turning them. Remove the fried wontons to a sheet pan lined with paper towels or a metal cooling rack to drain."},
+						{Type: "HowToStep", Text: "To make one or all of the sauces, simply mix the respective ingredients in a small bowl, and you’re ready to eat!"},
 					},
 				},
 				Name: "Fried Wontons",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "164 kcal",
 					Carbohydrates: "15 g",
 					Cholesterol:   "23 mg",
@@ -1203,7 +1157,7 @@ func TestScraper_T(t *testing.T) {
 				},
 				PrepTime:  "PT90M",
 				TotalTime: "PT110M",
-				Yield:     models.Yield{Value: 12},
+				Yield:     &models.Yield{Value: 12},
 				URL:       "https://thewoksoflife.com/fried-wontons/",
 			},
 		},
@@ -1212,33 +1166,33 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://thinlicious.com/low-carb-greek-yogurt/",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Breakfast"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Breakfast"},
 				CookTime:      "PT720M",
-				Cuisine:       models.Cuisine{Value: "Egg free"},
+				Cuisine:       &models.Cuisine{Value: "Egg free"},
 				DatePublished: "2023-07-19T07:00:00+00:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "This low-carb yogurt recipe is deliciously thick and creamy. Perfect for breakfast, snacks, or even cooking and baking.",
 				},
-				Keywords: models.Keywords{Values: "low-carb yogurt"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "low-carb yogurt"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"½ gallon ultra-pasteurized whole milk",
 						"2 tbsp. plain Greek yogurt (with live stains)",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"In the Instant Pot, whisk together a cup of milk and 2 tablespoons of Greek yogurt until well combined. Then whisk in the rest of the milk. This makes it easier to thoroughly combine the yogurt and milk.",
-						"Close the Instant Pot lid and press the \"Yogurt\" button, then press \"+\" to adjust the time. The incubation period for Greek yogurt is between 10-12 hours. Choose 10 hours for a mildly tangy yogurt. Increase the time for a tangier flavored yogurt.The Instant Pot will beep and then the timer will start counting up. Do not remove the lid or stir during the incubation period.",
-						"After incubation, remove the lid check to make sure your yogurt has set, and taste your yogurt. If it is not tangy enough incubate it for another hour. Your yogurt will be thick, but not yet Greek yogurt consistency.",
-						"Now, it is time to cool and strain the yogurt. To strain place a colander into a mixing bowl and line it with a cheesecloth or coffee filters. Pour the yogurt into the colander and place the whole thing into the refrigerator. Let the yogurt cool and strain for 2-4 hours. The longer it strains the thicker the yogurt will be.",
-						"When the yogurt reaches your desired thickness store the yogurt in an airtight container in the refrigerator for up to 2 weeks. Reserve a portion of the yogurt to use as a starter for your next batch of yogurt.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "In the Instant Pot, whisk together a cup of milk and 2 tablespoons of Greek yogurt until well combined. Then whisk in the rest of the milk. This makes it easier to thoroughly combine the yogurt and milk."},
+						{Type: "HowToStep", Text: "Close the Instant Pot lid and press the \"Yogurt\" button, then press \"+\" to adjust the time. The incubation period for Greek yogurt is between 10-12 hours. Choose 10 hours for a mildly tangy yogurt. Increase the time for a tangier flavored yogurt.The Instant Pot will beep and then the timer will start counting up. Do not remove the lid or stir during the incubation period."},
+						{Type: "HowToStep", Text: "After incubation, remove the lid check to make sure your yogurt has set, and taste your yogurt. If it is not tangy enough incubate it for another hour. Your yogurt will be thick, but not yet Greek yogurt consistency."},
+						{Type: "HowToStep", Text: "Now, it is time to cool and strain the yogurt. To strain place a colander into a mixing bowl and line it with a cheesecloth or coffee filters. Pour the yogurt into the colander and place the whole thing into the refrigerator. Let the yogurt cool and strain for 2-4 hours. The longer it strains the thicker the yogurt will be."},
+						{Type: "HowToStep", Text: "When the yogurt reaches your desired thickness store the yogurt in an airtight container in the refrigerator for up to 2 weeks. Reserve a portion of the yogurt to use as a starter for your next batch of yogurt."},
 					},
 				},
 				Name: "Low-Carb Yogurt",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "70 kcal",
 					Carbohydrates: "4 g",
 					Fat:           "4 g",
@@ -1248,7 +1202,7 @@ func TestScraper_T(t *testing.T) {
 					Sugar:         "4 g",
 				},
 				PrepTime: "PT5M",
-				Yield:    models.Yield{Value: 12},
+				Yield:    &models.Yield{Value: 12},
 				URL:      "https://thinlicious.com/low-carb-greek-yogurt/",
 			},
 		},
@@ -1257,17 +1211,18 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://tidymom.net/make-ahead-mashed-potatoes/",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Side Dish Recipes"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Side Dish Recipes"},
+				CookingMethod: &models.CookingMethod{},
 				CookTime:      "PT45M",
-				Cuisine:       models.Cuisine{Value: "American"},
+				Cuisine:       &models.Cuisine{Value: "American"},
 				DatePublished: "2021-09-28",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "MAKE-AHEAD MASHED POTATOES are perfect for busy holidays. They will keep up to two days in the refrigerator and come out creamy and buttery, with a slightly crunchy golden crust on top every time!",
 				},
-				Keywords: models.Keywords{Values: "potatoes, side dish, mashed"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "potatoes, side dish, mashed"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"2½ pounds potatoes, peeled and cubed (Yukon Gold, Russet or combo of the two)",
 						"3 ounces cream cheese, room temperature",
@@ -1276,18 +1231,18 @@ func TestScraper_T(t *testing.T) {
 						"freshly chopped chives or thyme for garnish (optional)",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Spray a large casserole dish with cooking spray (or grease with butter) and set aside.",
-						"Boil potatoes until tender but still firm (about 15 minutes). Drain and drain the potatoes and put them back in the pot without a lid. Set them back on a hot/warm burner for a few minutes, shaking the pot, until all the excess moisture on the potatoes has evaporated.",
-						"In a large mixing bowl, mix potatoes, cream cheese, milk, 1/4 cup (4 tablespoons) softened butter, and salt. Mix until blended.",
-						"Add mashed potatoes to the prepared casserole dish and cover. Store in the refrigerator overnight or for up to two days.",
-						"When ready to bake, let the potatoes sit at room temperature for about 1/2 hour and heat the oven to 350° F. Dot the top of the potatoes with the remaining 1/4 cup (4 tablespoons) of butter. Bake covered in the preheated oven for 30 minutes, uncover and bake until hot about another 15-20 minutes. This will give the mashed potatoes a bit of a crispy top.",
-						"Garnish with freshly chopped chives or thyme, if desired.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Spray a large casserole dish with cooking spray (or grease with butter) and set aside."},
+						{Type: "HowToStep", Text: "Boil potatoes until tender but still firm (about 15 minutes). Drain and drain the potatoes and put them back in the pot without a lid. Set them back on a hot/warm burner for a few minutes, shaking the pot, until all the excess moisture on the potatoes has evaporated."},
+						{Type: "HowToStep", Text: "In a large mixing bowl, mix potatoes, cream cheese, milk, 1/4 cup (4 tablespoons) softened butter, and salt. Mix until blended."},
+						{Type: "HowToStep", Text: "Add mashed potatoes to the prepared casserole dish and cover. Store in the refrigerator overnight or for up to two days."},
+						{Type: "HowToStep", Text: "When ready to bake, let the potatoes sit at room temperature for about 1/2 hour and heat the oven to 350° F. Dot the top of the potatoes with the remaining 1/4 cup (4 tablespoons) of butter. Bake covered in the preheated oven for 30 minutes, uncover and bake until hot about another 15-20 minutes. This will give the mashed potatoes a bit of a crispy top."},
+						{Type: "HowToStep", Text: "Garnish with freshly chopped chives or thyme, if desired."},
 					},
 				},
 				Name: "Make-Ahead Mashed Potatoes",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:       "193 calories",
 					Carbohydrates:  "22 grams carbohydrates",
 					Cholesterol:    "30 milligrams cholesterol",
@@ -1302,8 +1257,9 @@ func TestScraper_T(t *testing.T) {
 					UnsaturatedFat: "3 grams unsaturated fat",
 				},
 				PrepTime:  "PT15M",
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT1H",
-				Yield:     models.Yield{Value: 10},
+				Yield:     &models.Yield{Value: 10},
 				URL:       "https://tidymom.net/make-ahead-mashed-potatoes/",
 			},
 		},
@@ -1312,20 +1268,19 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://recipes.timesofindia.com/recipes/beetroot-cold-soup/rs90713582.cms",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Appetizers"},
-				Cuisine:       models.Cuisine{Value: "Vegetarian"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Appetizers"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{Value: "Vegetarian"},
 				DatePublished: "2022-04-07T22:43:02+05:30",
-				Description: models.Description{
-					Value: "Yearning for a satiating and delicious meal, then try this easy and tasty cold soup made with " +
-						"beetroot, curd, hard boiled eggs, coriander leaves and spices. To make this simple soup, just " +
-						"follow us through some simple steps and make a sumptuous and enjoy it cold.",
+				Description: &models.Description{
+					Value: "Yearning for a satiating and delicious meal, then try this easy and tasty cold soup made with beetroot, curd, hard boiled eggs, coriander leaves and spices. To make this simple soup, just follow us through some simple steps and make a sumptuous and enjoy it cold.",
 				},
-				Keywords: models.Keywords{
+				Keywords: &models.Keywords{
 					Values: "Beetroot Cold Soup recipe, Vegetarian, cook Beetroot Cold Soup",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 Numbers egg",
 						"1 cup yoghurt (curd)",
@@ -1338,22 +1293,21 @@ func TestScraper_T(t *testing.T) {
 						"1 Numbers beetroot",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"To make this easy recipe, take a pan and add water, boil the egg with a dash of salt. Once done, remove " +
-							"the shell and save for garnishing. In the meantime, wash and chop the beetroot and make a smooth blend.",
-						"Next, whisk the curd and add beetroot blend along with spices, chopped coriander leaves and mix it well. " +
-							"Garnish with oregano and egg and enjoy.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "To make this easy recipe, take a pan and add water, boil the egg with a dash of salt. Once done, remove the shell and save for garnishing. In the meantime, wash and chop the beetroot and make a smooth blend."},
+						{Type: "HowToStep", Text: "Next, whisk the curd and add beetroot blend along with spices, chopped coriander leaves and mix it well. Garnish with oregano and egg and enjoy."},
 					},
 				},
 				Name: "Beetroot Cold Soup Recipe",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories: "189 cal",
 					Servings: "1",
 				},
 				PrepTime:  "PT10M",
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT30M",
-				Yield:     models.Yield{Value: 2},
+				Yield:     &models.Yield{Value: 2},
 				URL:       "https://recipes.timesofindia.com/recipes/beetroot-cold-soup/rs90713582.cms",
 			},
 		},
@@ -1362,18 +1316,18 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://www.tine.no/oppskrifter/middag-og-hovedretter/kylling-og-fjarkre/rask-kylling-tikka-masala",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "middag"},
-				Cuisine:       models.Cuisine{Value: "indisk"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "middag"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{Value: "indisk"},
 				DateModified:  "2022-12-19T09:14:12.161Z",
 				DatePublished: "2018-09-05T18:43:37.088Z",
-				Description: models.Description{
-					Value: "En god og rask oppskrift på en kylling tikka masala. Dette er en rett med små smakseksplosjoner som " +
-						"sender tankene til India.",
+				Description: &models.Description{
+					Value: "En god og rask oppskrift på en kylling tikka masala. Dette er en rett med små smakseksplosjoner som sender tankene til India.",
 				},
-				Keywords: models.Keywords{Values: "kylling"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "kylling"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"4 dl basmatiris",
 						"400 g kyllingfileter",
@@ -1397,20 +1351,21 @@ func TestScraper_T(t *testing.T) {
 						"0.25 ts pepper",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Kok ris etter anvisningen på pakken.",
-						"Del kylling i biter. Brun kyllingen i smør i en stekepanne på middels varme.",
-						"Rens og hakk paprika, chili, vårløk og hvitløk og ha det i stekepannen sammen med kyllingen. Rens og " +
-							"finhakk ingefær og frisk koriander. Krydre med garam masala, koriander og ingefær.",
-						"Hell i crème fraîche og tomatpuré, og la småkoke i 5 minutter. Smak til med salt og pepper.",
-						"Riv agurk og bland den med yoghurt. Hakk mynte og hvitløk og bland det i. Smak til med salt og pepper.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Kok ris etter anvisningen på pakken."},
+						{Type: "HowToStep", Text: "Del kylling i biter. Brun kyllingen i smør i en stekepanne på middels varme."},
+						{Type: "HowToStep", Text: "Rens og hakk paprika, chili, vårløk og hvitløk og ha det i stekepannen sammen med kyllingen. Rens og finhakk ingefær og frisk koriander. Krydre med garam masala, koriander og ingefær."},
+						{Type: "HowToStep", Text: "Hell i crème fraîche og tomatpuré, og la småkoke i 5 minutter. Smak til med salt og pepper."},
+						{Type: "HowToStep", Text: "Riv agurk og bland den med yoghurt. Hakk mynte og hvitløk og bland det i. Smak til med salt og pepper."},
 					},
 				},
-				Name:      "Rask kylling tikka masala",
-				TotalTime: "PT30M",
-				Yield:     models.Yield{Value: 4},
-				URL:       "https://www.tine.no/oppskrifter/middag-og-hovedretter/kylling-og-fjarkre/rask-kylling-tikka-masala",
+				Name:            "Rask kylling tikka masala",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:       "PT30M",
+				Yield:           &models.Yield{Value: 4},
+				URL:             "https://www.tine.no/oppskrifter/middag-og-hovedretter/kylling-og-fjarkre/rask-kylling-tikka-masala",
 			},
 		},
 		{
@@ -1418,34 +1373,38 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://www.tudogostoso.com.br/receita/585-rocambole-de-carne-moida.html",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Carnes"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Carnes"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DatePublished: "2005-08-06",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Descubra a receita de Rocambole de carne moída para fazer em 30 minutos. Em uma vasilha junte à carne, o pacote de creme de cebola e amasse bem até ficar homogêneo. Em seguida sobre um plástico abra a massa (carne moida com o creme de cebola) no tamanho do tabuleiro que irá assar. Sobre a massa coloque a cebola e o alho picados bem pequenos, a muss…",
 				},
-				Keywords: models.Keywords{Values: "Receita de Rocambole de carne moída"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "Receita de Rocambole de carne moída"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 kg de carne moída", "1 pacote de creme de cebola", "1 cebola",
 						"150 g de mussarela", "150 g de presunto", "3 fatias de bacon", "Alho a gosto",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Em uma vasilha junte à carne, o pacote de creme de cebola e amasse bem até ficar homogêneo.",
-						"Em seguida sobre um plástico abra a massa (carne moida com o creme de cebola) no tamanho do tabuleiro que irá assar.",
-						"Sobre a massa coloque a cebola e o alho picados bem pequenos, a mussarela em seguida o presunto.",
-						"Para enrolar a massa basta começar a levantar a ponta do plástico.",
-						"Sobre o rocambole já enrolado coloque as fatias de bacon para decorar.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Em uma vasilha junte à carne, o pacote de creme de cebola e amasse bem até ficar homogêneo."},
+						{Type: "HowToStep", Text: "Em seguida sobre um plástico abra a massa (carne moida com o creme de cebola) no tamanho do tabuleiro que irá assar."},
+						{Type: "HowToStep", Text: "Sobre a massa coloque a cebola e o alho picados bem pequenos, a mussarela em seguida o presunto."},
+						{Type: "HowToStep", Text: "Para enrolar a massa basta começar a levantar a ponta do plástico."},
+						{Type: "HowToStep", Text: "Sobre o rocambole já enrolado coloque as fatias de bacon para decorar."},
 					},
 				},
-				Name:      "Rocambole de carne moída",
-				PrepTime:  "PT30M",
-				TotalTime: "PT30M",
-				Yield:     models.Yield{Value: 8},
-				URL:       "https://www.tudogostoso.com.br/receita/585-rocambole-de-carne-moida.html",
+				Name:            "Rocambole de carne moída",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT30M",
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:       "PT30M",
+				Yield:           &models.Yield{Value: 8},
+				URL:             "https://www.tudogostoso.com.br/receita/585-rocambole-de-carne-moida.html",
 			},
 		},
 		{
@@ -1453,17 +1412,15 @@ func TestScraper_T(t *testing.T) {
 			in:   "https://www.twopeasandtheirpod.com/easy-chickpea-salad/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Salad"},
-				Cuisine:       models.Cuisine{Value: "American"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Salad"},
+				Cuisine:       &models.Cuisine{Value: "American"},
 				DatePublished: "2022-03-28T06:03:00+00:00",
-				Description: models.Description{
-					Value: "This chickpea salad is a vegetarian version of a classic chicken salad, some refer to it as chickpea " +
-						"chicken salad. It&#039;s made with basic ingredients, loaded with flavor, and perfect for picnics, " +
-						"work lunches, or a simple, healthy lunch at home.",
+				Description: &models.Description{
+					Value: "This chickpea salad is a vegetarian version of a classic chicken salad, some refer to it as chickpea chicken salad. It&#039;s made with basic ingredients, loaded with flavor, and perfect for picnics, work lunches, or a simple, healthy lunch at home.",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"2 (15 oz) cans chickpeas, (drained and rinsed)",
 						"3/4 cup diced celery",
@@ -1479,27 +1436,18 @@ func TestScraper_T(t *testing.T) {
 						"Kosher salt and black pepper, (to taste)",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Place the chickpeas on a clean dish towel or paper towel. Put another towel on top. Use your hands to " +
-							"roll and rub the chickpeas for about 20-30 seconds. This will help the skins come off easier. " +
-							"Remove the skins and discard. I try to remove most of the skins, but if you don’t get them all, " +
-							"that is ok. And if you don&#39;t have time to remove the skins, just rinse and drain. The salad " +
-							"will still be good. Removing the skins just makes the salad a little creamier and smooth.",
-						"Place the chickpeas in a large bowl and mash with a fork or potato masher until most of the chickpeas " +
-							"are smashed. Stir in the celery, onion, and pickles.",
-						"In a small bowl, whisk together the Greek yogurt, lemon juice, mustard, red wine vinegar, dill, parsley, " +
-							"garlic powder, salt, and pepper.",
-						"Add the sauce to the chickpea mixture and stir until well combined. Taste and adjust ingredients, if " +
-							"necessary.",
-						"Serve in between two slices of bread to make a sandwich, in pita bread, in a lettuce wrap, in a tortilla, " +
-							"with crackers or chips, or on top of a rice cake, or add to a bed of greens to make a salad! The " +
-							"options are endless.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Place the chickpeas on a clean dish towel or paper towel. Put another towel on top. Use your hands to roll and rub the chickpeas for about 20-30 seconds. This will help the skins come off easier. Remove the skins and discard. I try to remove most of the skins, but if you don’t get them all, that is ok. And if you don&#39;t have time to remove the skins, just rinse and drain. The salad will still be good. Removing the skins just makes the salad a little creamier and smooth."},
+						{Type: "HowToStep", Text: "Place the chickpeas in a large bowl and mash with a fork or potato masher until most of the chickpeas are smashed. Stir in the celery, onion, and pickles."},
+						{Type: "HowToStep", Text: "In a small bowl, whisk together the Greek yogurt, lemon juice, mustard, red wine vinegar, dill, parsley, garlic powder, salt, and pepper."},
+						{Type: "HowToStep", Text: "Add the sauce to the chickpea mixture and stir until well combined. Taste and adjust ingredients, if necessary."},
+						{Type: "HowToStep", Text: "Serve in between two slices of bread to make a sandwich, in pita bread, in a lettuce wrap, in a tortilla, with crackers or chips, or on top of a rice cake, or add to a bed of greens to make a salad! The options are endless."},
 					},
 				},
-				Keywords: models.Keywords{Values: "vegetarian"},
+				Keywords: &models.Keywords{Values: "vegetarian"},
 				Name:     "Chickpea Salad",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:       "215 kcal",
 					Carbohydrates:  "32 g",
 					Cholesterol:    "1 mg",
@@ -1515,7 +1463,7 @@ func TestScraper_T(t *testing.T) {
 				},
 				PrepTime:  "PT10M",
 				TotalTime: "PT6M",
-				Yield:     models.Yield{Value: 4},
+				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.twopeasandtheirpod.com/easy-chickpea-salad/",
 			},
 		},

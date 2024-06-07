@@ -106,10 +106,14 @@ func (s *Scraper) scrapeFoodbag(rawURL string) (models.RecipeSchema, error) {
 		return models.RecipeSchema{}, err
 	}
 
+	rs := models.NewRecipeSchema()
+	rs.URL = rawURL
+
 	keywords := make([]string, 0, len(fb.PrimaryTags))
 	for _, tag := range fb.PrimaryTags {
 		keywords = append(keywords, tag.Name)
 	}
+	rs.Keywords.Values = strings.Join(keywords, ",")
 
 	var nutrition models.NutritionSchema
 	if fb.DishRecipe.NutriValue100G != "" {
@@ -134,48 +138,35 @@ func (s *Scraper) scrapeFoodbag(rawURL string) (models.RecipeSchema, error) {
 			}
 		}
 	}
-
-	var (
-		cook         string
-		ingredients  []string
-		instructions []string
-		prep         string
-		yield        int16
-	)
+	rs.NutritionSchema = &nutrition
 
 	if len(fb.DishRecipe.DishVariants) > 0 {
 		variant := fb.DishRecipe.DishVariants[0]
 
-		yield = int16(variant.NumberOfPersons)
-		prep = "PT" + strconv.Itoa(variant.PreparationTime) + "M"
-		cook = "PT" + strconv.Itoa(variant.CookingTime) + "M"
-		instructions = strings.Split(variant.Directions, "|")
+		rs.Yield.Value = int16(variant.NumberOfPersons)
+		rs.PrepTime = "PT" + strconv.Itoa(variant.PreparationTime) + "M"
+		rs.CookTime = "PT" + strconv.Itoa(variant.CookingTime) + "M"
 
-		ingredients = make([]string, 0, len(variant.Ingredients))
+		parts := strings.Split(variant.Directions, "|")
+		rs.Instructions.Values = make([]models.HowToItem, 0, len(parts))
+		for _, v := range parts {
+			rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(v))
+		}
+
+		rs.Ingredients.Values = make([]string, 0, len(variant.Ingredients))
 		for _, ing := range variant.Ingredients {
 			var quantity string
 			switch x := ing.Quantity.(type) {
 			case string:
 				quantity = x + " " + ing.Size + " "
 			}
-			ingredients = append(ingredients, quantity+ing.Name)
+			rs.Ingredients.Values = append(rs.Ingredients.Values, quantity+ing.Name)
 		}
 	}
 
-	return models.RecipeSchema{
-		AtContext:       atContext,
-		AtType:          models.SchemaType{Value: "Recipe"},
-		Category:        models.Category{Value: "uncategorized"},
-		CookTime:        cook,
-		Description:     models.Description{Value: fb.DishRecipe.Description},
-		Keywords:        models.Keywords{Values: strings.Join(keywords, ",")},
-		Image:           models.Image{Value: fb.DishRecipe.ImageURL1},
-		Ingredients:     models.Ingredients{Values: ingredients},
-		Instructions:    models.Instructions{Values: instructions},
-		Name:            fb.DishRecipe.Name + " " + fb.DishRecipe.Subtitle,
-		NutritionSchema: nutrition,
-		PrepTime:        prep,
-		Yield:           models.Yield{Value: yield},
-		URL:             rawURL,
-	}, nil
+	rs.Description.Value = fb.DishRecipe.Description
+	rs.Image.Value = fb.DishRecipe.ImageURL1
+	rs.Name = fb.DishRecipe.Name + " " + fb.DishRecipe.Subtitle
+
+	return rs, nil
 }

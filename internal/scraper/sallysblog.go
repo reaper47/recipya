@@ -8,7 +8,10 @@ import (
 )
 
 func scrapeSallysblog(root *goquery.Document) (models.RecipeSchema, error) {
-	description, _ := root.Find("meta[name='description']").Attr("content")
+	rs := models.NewRecipeSchema()
+
+	rs.Description.Value, _ = root.Find("meta[name='description']").Attr("content")
+	rs.Name = strings.ToLower(root.Find("h1").First().Text())
 
 	prep := root.Find("p:contains('Zubereitungszeit')").Next().Text()
 	split := strings.Split(prep, " ")
@@ -19,29 +22,23 @@ func scrapeSallysblog(root *goquery.Document) (models.RecipeSchema, error) {
 			prep = split[i]
 		}
 	}
+	rs.PrepTime = prep
 
 	nodes := root.Find(".recipe-description").Next().Find(".hidden").First().Prev().Find("div.text-lg")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		s = strings.TrimSpace(s)
 		if s != "" {
-			ingredients = append(ingredients, s)
+			rs.Ingredients.Values = append(rs.Ingredients.Values, s)
 		}
 	})
 
 	nodes = root.Find(".recipe-description div p")
-	instructions := make([]string, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := sel.Text()
-		instructions = append(instructions, s)
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
 	})
 
-	return models.RecipeSchema{
-		Description:  models.Description{Value: description},
-		Ingredients:  models.Ingredients{Values: ingredients},
-		Instructions: models.Instructions{Values: instructions},
-		Name:         strings.ToLower(root.Find("h1").First().Text()),
-		PrepTime:     prep,
-	}, nil
+	return rs, nil
 }

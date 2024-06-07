@@ -22,19 +22,18 @@ func scrapePanelinha(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	nodes := root.Find(".blockIngredientListingsctn ul li")
-	ingredients := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		ingredients[i] = s.Text()
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		rs.Ingredients.Values = append(rs.Ingredients.Values, s.Text())
 	})
-	rs.Ingredients = models.Ingredients{Values: ingredients}
 
 	if nodes.Parent() != nil && nodes.Parent().Parent() != nil {
 		nodes = root.Find("h5:contains('Modo de preparo')").Parent().Parent().Find("li")
-		instructions := make([]string, nodes.Length())
-		nodes.Each(func(i int, s *goquery.Selection) {
-			instructions[i] = strings.TrimSuffix(s.Text(), "\u00a0")
+		instructions := make([]models.HowToItem, 0, nodes.Length())
+		nodes.Each(func(_ int, s *goquery.Selection) {
+			instructions = append(instructions, models.NewHowToStep(strings.TrimSuffix(s.Text(), "\u00a0")))
 		})
-		rs.Instructions = models.Instructions{Values: instructions}
+		rs.Instructions = &models.Instructions{Values: instructions}
 	}
 
 	return rs, nil

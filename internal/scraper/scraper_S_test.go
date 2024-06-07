@@ -12,12 +12,16 @@ func TestScraper_S(t *testing.T) {
 			in:   "https://www.saboresajinomoto.com.br/receita/pizza-de-pao-amanhecido",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "uncategorized"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				CookTime:      "PT15M",
 				DatePublished: "2023/11/17",
-				Image:         models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{Values: []string{
+				Description:   &models.Description{},
+				Keywords:      &models.Keywords{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{Values: []string{
 					"3 pães tipo francês amanhecidos e picados",
 					"meia xícara (chá) de água (100 ml)",
 					"1 sachê de Tempero SAZÓN® Laranja",
@@ -28,16 +32,18 @@ func TestScraper_S(t *testing.T) {
 					"1 tomate pequeno cortado em rodelas finas",
 					"6 azeitonas verdes sem caroço",
 				}},
-				Instructions: models.Instructions{Values: []string{
-					"Em uma tigela grande, coloque o pão, a água e o Tempero SAZÓN®, e, com o auxílio de um garfo, amasse até o pão desmanchar completamente e formar uma massa homogênea. Acrescente o ovo e o queijo ralado, e misture.",
-					"Espalhe a massa em uma assadeira redonda (30 cm de diâmetro), untada e enfarinhada, e leve ao forno médio (180 graus), preaquecido, por 15 minutos, ou até estar assada e desgrudar do fundo da assadeira.",
-					"Retire do forno, espalhe a polpa de tomate pela superfície, por cima a muçarela, as rodelas de tomate e as azeitonas, e volte ao forno médio (180 graus), por mais 10 minutos, ou até o queijo derreter completamente. Retire do forno e sirva em seguida.",
+				Instructions: &models.Instructions{Values: []models.HowToItem{
+					{Type: "HowToStep", Text: "Em uma tigela grande, coloque o pão, a água e o Tempero SAZÓN®, e, com o auxílio de um garfo, amasse até o pão desmanchar completamente e formar uma massa homogênea. Acrescente o ovo e o queijo ralado, e misture."},
+					{Type: "HowToStep", Text: "Espalhe a massa em uma assadeira redonda (30 cm de diâmetro), untada e enfarinhada, e leve ao forno médio (180 graus), preaquecido, por 15 minutos, ou até estar assada e desgrudar do fundo da assadeira."},
+					{Type: "HowToStep", Text: "Retire do forno, espalhe a polpa de tomate pela superfície, por cima a muçarela, as rodelas de tomate e as azeitonas, e volte ao forno médio (180 graus), por mais 10 minutos, ou até o queijo derreter completamente. Retire do forno e sirva em seguida."},
 				}},
-				Name:      "PIZZA DE PÃO AMANHECIDO",
-				PrepTime:  "PT15M",
-				TotalTime: "PT15M",
-				Yield:     models.Yield{Value: 6},
-				URL:       "https://www.saboresajinomoto.com.br/receita/pizza-de-pao-amanhecido",
+				Name:            "PIZZA DE PÃO AMANHECIDO",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT15M",
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:       "PT15M",
+				Yield:           &models.Yield{Value: 6},
+				URL:             "https://www.saboresajinomoto.com.br/receita/pizza-de-pao-amanhecido",
 			},
 		},
 		{
@@ -45,20 +51,18 @@ func TestScraper_S(t *testing.T) {
 			in:   "https://sallysbakingaddiction.com/breakfast-pastries/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Breakfast"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Breakfast"},
 				CookTime:      "PT20M",
-				CookingMethod: models.CookingMethod{Value: "Baking"},
-				Cuisine:       models.Cuisine{Value: "Danish"},
+				CookingMethod: &models.CookingMethod{Value: "Baking"},
+				Cuisine:       &models.Cuisine{Value: "Danish"},
 				DatePublished: "2020-08-01",
-				Description: models.Description{
-					Value: "These homemade breakfast pastries use a variation of classic Danish pastry dough. We're working the " +
-						"butter directly into the dough, which is a different method from laminating it with separate layers " +
-						"of butter. Make sure the butter is very cold before beginning. This recipe yields 2 pounds of dough.",
+				Description: &models.Description{
+					Value: "These homemade breakfast pastries use a variation of classic Danish pastry dough. We're working the butter directly into the dough, which is a different method from laminating it with separate layers of butter. Make sure the butter is very cold before beginning. This recipe yields 2 pounds of dough.",
 				},
-				Keywords: models.Keywords{Values: "breakfast pastries, danishes, pastry"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "breakfast pastries, danishes, pastry"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1/4 cup (60ml) warm water (between 100-110°F, 38-43°C)",
 						"2 and 1/4 teaspoons Platinum Yeast from Red Star (1 standard packet)*",
@@ -67,8 +71,7 @@ func TestScraper_S(t *testing.T) {
 						"1 large egg, at room temperature",
 						"1 teaspoon salt",
 						"14 Tablespoons (196g) unsalted butter, cold",
-						"2 and 1/2 cups (313g) all-purpose flour (spooned &amp; leveled), plus more for generously flouring hands, " +
-							"surface, and dough",
+						"2 and 1/2 cups (313g) all-purpose flour (spooned &amp; leveled), plus more for generously flouring hands, surface, and dough",
 						"2/3 cup filling (see recipe notes for options &amp; cheese filling)",
 						"1 large egg",
 						"2 Tablespoons (30ml) milk",
@@ -77,71 +80,32 @@ func TestScraper_S(t *testing.T) {
 						"1 teaspoon pure vanilla extract",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"To help guarantee success, I recommend reading through the recipe, watching the video tutorial, and " +
-							"reading the explanations below this recipe. (All answer many FAQs.) Do not use an electric mixer " +
-							"for this dough. It's best if the dough is folded together with a wooden spoon or rubber spatula " +
-							"since it is so sticky. There is very minimal mixing required.",
-						"Whisk the warm water, yeast, and 1 Tablespoon (6g) of sugar together in a large bowl. Cover and allow to " +
-							"rest until foamy on top, about 5 minutes. If the surface doesn't have bubbles on top or look " +
-							"foamy after 15 minutes (it should if the yeast isn't expired), start over with a fresh packet of" +
-							" yeast. Whisk in remaining sugar, the milk, egg, and salt. Once these wet ingredients are mixed together, " +
-							"lightly cover and set the bowl aside as you work on the next step.",
-						"Cut the cold butter into 1/4 inch slices and add to a food processor or blender. Top with 2 and 1/2 cups " +
-							"flour. Pulse the mixture 12-15 times, until butter is crumbled into pea-size bits. See photo below " +
-							"for a visual. Using a food processor or blender is best for this dough. Keeping that in mind, if you " +
-							"don't have one, you can use a pastry cutter to work in the butter.",
-						"Pour the flour mixture into the wet yeast mixture. Very gently fold everything together using a rubber " +
-							"spatula or wooden spoon. Fold *just until* the dry ingredients are moistened. The butter must remain " +
-							"in pieces and crumbles, which creates a flaky pastry. Turn the sticky dough out onto a large piece of " +
-							"plastic wrap, parchment paper, aluminum foil, or into any container you can tightly cover.",
-						"Wrap the dough/cover up tightly and refrigerate for at least 4 hours and up to 48 hours.",
-						"Take the dough out of the refrigerator to begin the “rolling and folding” process. If the dough sat for " +
-							"more than 4 hours, it may have slightly puffed up and that's ok. (It will deflate as you shape " +
-							"it, which is also ok.) Very generously flour a work surface. The dough is very sticky, so make sure you " +
-							"have more flour nearby as you roll and fold. Using the palm of your hands, gently flatten the dough into " +
-							"a small square. Using a rolling pin, roll out into a 15&#215;8 inch rectangle. When needed, flour " +
-							"the work surface and dough as you are rolling. Fold the dough into thirds as if it were a business " +
-							"letter. (See photos and video tutorial.) Turn it clockwise and roll it out into a 15 inch long rectangle " +
-							"again. Then, fold into thirds again. Turn it clockwise. You’ll repeat rolling and folding 1 more time for " +
-							"a total of 3 times.",
-						"Wrap up/seal tightly and refrigerate for at least 1 hour and up to 24 hours. You can also freeze the dough " +
-							"at this point. See freezing instructions.",
-						"Line two large baking sheets with parchment paper or silicone baking mats. Rimmed baking sheets are best " +
-							"because butter may leak from the dough as it bakes. If you don't have rimmed baking sheets, when " +
-							"it's time to preheat the oven, place another baking sheet on the oven rack below to catch any butter " +
-							"that may drip.",
-						"Take the dough out of the refrigerator and cut it in half. Wrap 1 half up and keep refrigerated as you " +
-							"work with the first half. (You can freeze half of the dough at this point, use the freezing instructions " +
-							"below.)",
-						"Cut the first half of dough into 8 even pieces. This will be about 1/4 cup of dough per pastry. Roll each " +
-							"into balls. Flatten each into a 2.5 inch circle. Use your fingers to create a lip around the edges. See " +
-							"photos and video tutorial if needed. Press the center down to flatten the center as much as you can so you " +
-							"can fit the filling inside. (Center puffs up as it bakes.) Arrange pastries 3 inches apart on a lined " +
-							"baking sheet. Repeat with second half of dough.",
-						"Spoon 2 teaspoons of fruity filling or 1 Tablespoon of cheese filling inside each.",
-						"Whisk the egg wash ingredients together. Brush on the edges of each shaped pastry.",
-						"This step is optional, but I very strongly recommend it. Chill the shaped pastries in the refrigerator, " +
-							"covered or uncovered, for at least 15 minutes and up to 1 hour. See recipe note. You can preheat the " +
-							"oven as they finish up chilling.",
-						"Preheat oven to 400°F (204°C).",
-						"Bake for 19-22 minutes or until golden brown around the edges. Some butter may leak from the dough, " +
-							"that's completely normal and expected. Feel free to remove the baking sheets from the oven halfway " +
-							"through baking and brush the dough with any of the leaking butter, then place back in the oven to finish " +
-							"baking. (That's what I do!)",
-						"Remove baked pastries from the oven. Cool for at least 5 minutes before icing/serving.",
-						"Whisk the icing ingredients together. If you want a thicker icing, whisk in more confectioners’ sugar. " +
-							"If you want a thinner icing, whisk in more milk or cream. Drizzle over warm pastries and serve.",
-						"Cover leftover iced or un-iced pastries and store at room temperature for 1 day or in the refrigerator " +
-							"for up to 5 days. Or you can freeze them for up to 3 months. Thaw before serving. Before enjoying, feel " +
-							"free to reheat leftover iced or un-iced pastries in the microwave for a few seconds until warmed.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "To help guarantee success, I recommend reading through the recipe, watching the video tutorial, and reading the explanations below this recipe. (All answer many FAQs.) Do not use an electric mixer for this dough. It's best if the dough is folded together with a wooden spoon or rubber spatula since it is so sticky. There is very minimal mixing required."},
+						{Type: "HowToStep", Text: "Whisk the warm water, yeast, and 1 Tablespoon (6g) of sugar together in a large bowl. Cover and allow to rest until foamy on top, about 5 minutes. If the surface doesn't have bubbles on top or look foamy after 15 minutes (it should if the yeast isn't expired), start over with a fresh packet of yeast. Whisk in remaining sugar, the milk, egg, and salt. Once these wet ingredients are mixed together, lightly cover and set the bowl aside as you work on the next step."},
+						{Type: "HowToStep", Text: "Cut the cold butter into 1/4 inch slices and add to a food processor or blender. Top with 2 and 1/2 cups flour. Pulse the mixture 12-15 times, until butter is crumbled into pea-size bits. See photo below for a visual. Using a food processor or blender is best for this dough. Keeping that in mind, if you don't have one, you can use a pastry cutter to work in the butter."},
+						{Type: "HowToStep", Text: "Pour the flour mixture into the wet yeast mixture. Very gently fold everything together using a rubber spatula or wooden spoon. Fold *just until* the dry ingredients are moistened. The butter must remain in pieces and crumbles, which creates a flaky pastry. Turn the sticky dough out onto a large piece of plastic wrap, parchment paper, aluminum foil, or into any container you can tightly cover."},
+						{Type: "HowToStep", Text: "Wrap the dough/cover up tightly and refrigerate for at least 4 hours and up to 48 hours."},
+						{Type: "HowToStep", Text: "Take the dough out of the refrigerator to begin the “rolling and folding” process. If the dough sat for more than 4 hours, it may have slightly puffed up and that's ok. (It will deflate as you shape it, which is also ok.) Very generously flour a work surface. The dough is very sticky, so make sure you have more flour nearby as you roll and fold. Using the palm of your hands, gently flatten the dough into a small square. Using a rolling pin, roll out into a 15&#215;8 inch rectangle. When needed, flour the work surface and dough as you are rolling. Fold the dough into thirds as if it were a business letter. (See photos and video tutorial.) Turn it clockwise and roll it out into a 15 inch long rectangle again. Then, fold into thirds again. Turn it clockwise. You’ll repeat rolling and folding 1 more time for a total of 3 times."},
+						{Type: "HowToStep", Text: "Wrap up/seal tightly and refrigerate for at least 1 hour and up to 24 hours. You can also freeze the dough at this point. See freezing instructions."},
+						{Type: "HowToStep", Text: "Line two large baking sheets with parchment paper or silicone baking mats. Rimmed baking sheets are best because butter may leak from the dough as it bakes. If you don't have rimmed baking sheets, when it's time to preheat the oven, place another baking sheet on the oven rack below to catch any butter that may drip."},
+						{Type: "HowToStep", Text: "Take the dough out of the refrigerator and cut it in half. Wrap 1 half up and keep refrigerated as you work with the first half. (You can freeze half of the dough at this point, use the freezing instructions below.)"},
+						{Type: "HowToStep", Text: "Cut the first half of dough into 8 even pieces. This will be about 1/4 cup of dough per pastry. Roll each into balls. Flatten each into a 2.5 inch circle. Use your fingers to create a lip around the edges. See photos and video tutorial if needed. Press the center down to flatten the center as much as you can so you can fit the filling inside. (Center puffs up as it bakes.) Arrange pastries 3 inches apart on a lined baking sheet. Repeat with second half of dough."},
+						{Type: "HowToStep", Text: "Spoon 2 teaspoons of fruity filling or 1 Tablespoon of cheese filling inside each."},
+						{Type: "HowToStep", Text: "Whisk the egg wash ingredients together. Brush on the edges of each shaped pastry."},
+						{Type: "HowToStep", Text: "This step is optional, but I very strongly recommend it. Chill the shaped pastries in the refrigerator, covered or uncovered, for at least 15 minutes and up to 1 hour. See recipe note. You can preheat the oven as they finish up chilling."},
+						{Type: "HowToStep", Text: "Preheat oven to 400°F (204°C)."},
+						{Type: "HowToStep", Text: "Bake for 19-22 minutes or until golden brown around the edges. Some butter may leak from the dough, that's completely normal and expected. Feel free to remove the baking sheets from the oven halfway through baking and brush the dough with any of the leaking butter, then place back in the oven to finish baking. (That's what I do!)"},
+						{Type: "HowToStep", Text: "Remove baked pastries from the oven. Cool for at least 5 minutes before icing/serving."},
+						{Type: "HowToStep", Text: "Whisk the icing ingredients together. If you want a thicker icing, whisk in more confectioners’ sugar. If you want a thinner icing, whisk in more milk or cream. Drizzle over warm pastries and serve."},
+						{Type: "HowToStep", Text: "Cover leftover iced or un-iced pastries and store at room temperature for 1 day or in the refrigerator for up to 5 days. Or you can freeze them for up to 3 months. Thaw before serving. Before enjoying, feel free to reheat leftover iced or un-iced pastries in the microwave for a few seconds until warmed."},
 					},
 				},
 				Name:      "Breakfast Pastries with Shortcut Homemade Dough",
 				PrepTime:  "PT6H",
 				TotalTime: "PT6H25M",
-				Yield:     models.Yield{Value: 16},
+				Yield:     &models.Yield{Value: 16},
 				URL:       "https://sallysbakingaddiction.com/breakfast-pastries/",
 			},
 		},
@@ -149,14 +113,17 @@ func TestScraper_S(t *testing.T) {
 			name: "sallys-blog.de",
 			in:   "https://sallys-blog.de/rezepte/zwieback-dessert-etimek-tatlisi-no-bake",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
-				AtType:    models.SchemaType{Value: "Recipe"},
-				Category:  models.Category{Value: "uncategorized"},
-				Description: models.Description{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Description: &models.Description{
 					Value: "Dieses hübsche Dessert sieht nicht nur gut aus, sondern ist auch ganz schnell zubereitet, dann muss es nur noch gekühlt werden und ist bereit zum S",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"200 g Zucker",
 						"200 g Wasser",
@@ -175,17 +142,20 @@ func TestScraper_S(t *testing.T) {
 						"100 g Heidelbeeren (frisch oder TK)",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Gib den Zucker in einen Topf, erhitze ihn, bis er leicht karamellisiert und gieße ihn mit dem Wasser auf. Koche den Sirup kurz auf, bis sich das Karamell gelöst hat und er ganz leicht dickflüssig wird und nimm ihn dann vom Herd. Verteile den Zwieback in einer Ofenform oder einem Backrahmen und gieße den warmen Sirup darüber, wende dabei die Zweibackscheiben, so kann der Sirup von allen Seiten einziehen.",
-						"Verrühre die Milch mit dem Zucker, Vanilleextrakt und der Stärke in einem Topf und lasse den Pudding aufkochen. Koche ihn für etwa 2 Minuten und gieße ihn dann ebenfalls über den Zwieback. Lasse die Masse abkühlen.",
-						"Tipp: Streiche den Pudding durch ein Haarsieb, um mögliche Klümpchen zu entfernen.",
-						"Röste die Kokosraspeln in einer Pfanne ohne Fett an, bis sie leicht Farbe annehmen, verrühre sie mit dem Zimt und lasse sie auf einem Teller abkühlen. Schlage die Sahne mit Vanilleextrakt und Sanapart steif und streiche sie auf dem Pudding glatt. Hacke die Pistazien klein und streue sie gemeinsam mit den Kokosraspeln über die Sahne. Stelle das Dessert für mindestens 4 Stunden oder über Nacht in den Kühlschrank. Dekoriere das Dessert zum Servieren mit den frischen Beeren. Viel Spaß beim Nachmachen, eure Sally!",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Gib den Zucker in einen Topf, erhitze ihn, bis er leicht karamellisiert und gieße ihn mit dem Wasser auf. Koche den Sirup kurz auf, bis sich das Karamell gelöst hat und er ganz leicht dickflüssig wird und nimm ihn dann vom Herd. Verteile den Zwieback in einer Ofenform oder einem Backrahmen und gieße den warmen Sirup darüber, wende dabei die Zweibackscheiben, so kann der Sirup von allen Seiten einziehen."},
+						{Type: "HowToStep", Text: "Verrühre die Milch mit dem Zucker, Vanilleextrakt und der Stärke in einem Topf und lasse den Pudding aufkochen. Koche ihn für etwa 2 Minuten und gieße ihn dann ebenfalls über den Zwieback. Lasse die Masse abkühlen."},
+						{Type: "HowToStep", Text: "Tipp: Streiche den Pudding durch ein Haarsieb, um mögliche Klümpchen zu entfernen."},
+						{Type: "HowToStep", Text: "Röste die Kokosraspeln in einer Pfanne ohne Fett an, bis sie leicht Farbe annehmen, verrühre sie mit dem Zimt und lasse sie auf einem Teller abkühlen. Schlage die Sahne mit Vanilleextrakt und Sanapart steif und streiche sie auf dem Pudding glatt. Hacke die Pistazien klein und streue sie gemeinsam mit den Kokosraspeln über die Sahne. Stelle das Dessert für mindestens 4 Stunden oder über Nacht in den Kühlschrank. Dekoriere das Dessert zum Servieren mit den frischen Beeren. Viel Spaß beim Nachmachen, eure Sally!"},
 					},
 				},
-				Name:     "zwieback dessert / etimek tatlisi / no bake ramadan rezept",
-				PrepTime: "30",
-				URL:      "https://sallys-blog.de/rezepte/zwieback-dessert-etimek-tatlisi-no-bake",
+				Name:            "zwieback dessert / etimek tatlisi / no bake ramadan rezept",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "30",
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://sallys-blog.de/rezepte/zwieback-dessert-etimek-tatlisi-no-bake",
 			},
 		},
 		{
@@ -193,37 +163,37 @@ func TestScraper_S(t *testing.T) {
 			in:   "https://saltpepperskillet.com/recipes/creamy-mashed-potatoes/",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Side Dish"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Side Dish"},
 				CookTime:      "PT40M",
-				Cuisine:       models.Cuisine{Value: "American"},
+				Cuisine:       &models.Cuisine{Value: "American"},
 				DatePublished: "2021-11-16T16:12:35+00:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "The creamiest, most luxurious and delicious mashed potatoes. A beloved side dish that can become the star of the meal.",
 				},
-				Keywords: models.Keywords{Values: "mashed potatoes"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "mashed potatoes"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"2 lbs Yukon Gold potatoes", "1/4 lb unsalted butter ((room temperature))",
 						"1 cup heavy cream ((hot))", "Diamond kosher salt", "Freshly ground pepper",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Place the whole unpeeled potatoes in a 4-quart saucepan and cover with a few inches of cold water.",
-						"Bring to a simmer and cook until they are very tender when pierced with a paring knife, about 25 to 35 minutes depending on the size of the potatoes.",
-						"Strain the cooked potatoes in a colander and carefully peel with a clean kitchen towel and a paring knife. Work quickly so the potatoes stay warm.",
-						"Push the potatoes through a potato ricer or food mill back into the warm pot they were cooked in.",
-						"Add the room temperature butter and combine using a stiff spatula. Next start adding 3/4 cup of the hot cream and gently fold in. Add more as needed.",
-						"Season well with kosher salt and freshly ground pepper. Taste and add more butter, cream or seasoning as needed.",
-						"Cover and keep warm until serving with another pat of butter and fresh herbs if desired.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Place the whole unpeeled potatoes in a 4-quart saucepan and cover with a few inches of cold water."},
+						{Type: "HowToStep", Text: "Bring to a simmer and cook until they are very tender when pierced with a paring knife, about 25 to 35 minutes depending on the size of the potatoes."},
+						{Type: "HowToStep", Text: "Strain the cooked potatoes in a colander and carefully peel with a clean kitchen towel and a paring knife. Work quickly so the potatoes stay warm."},
+						{Type: "HowToStep", Text: "Push the potatoes through a potato ricer or food mill back into the warm pot they were cooked in."},
+						{Type: "HowToStep", Text: "Add the room temperature butter and combine using a stiff spatula. Next start adding 3/4 cup of the hot cream and gently fold in. Add more as needed."},
+						{Type: "HowToStep", Text: "Season well with kosher salt and freshly ground pepper. Taste and add more butter, cream or seasoning as needed."},
+						{Type: "HowToStep", Text: "Cover and keep warm until serving with another pat of butter and fresh herbs if desired."},
 					},
 				},
 				Name:      "Mashed Potatoes",
 				PrepTime:  "PT5M",
 				TotalTime: "PT45M",
-				Yield:     models.Yield{Value: 6},
+				Yield:     &models.Yield{Value: 6},
 				URL:       "https://saltpepperskillet.com/recipes/creamy-mashed-potatoes/",
 			},
 		},
@@ -231,19 +201,22 @@ func TestScraper_S(t *testing.T) {
 			name: "saveur.com",
 			in:   "https://www.saveur.com/recipes/varenyky-pierogi-recipe/",
 			want: models.RecipeSchema{
-				AtContext: atContext,
-				AtType:    models.SchemaType{Value: "Recipe"},
-				Category:  models.Category{Value: "uncategorized"},
-				Name:      "Larisa Frumkin’s Varenyky",
-				CookTime:  "PT0D1H30M",
-				Description: models.Description{
+				AtContext:     atContext,
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Name:          "Larisa Frumkin’s Varenyky",
+				CookTime:      "PT0D1H30M",
+				Description: &models.Description{
 					Value: "These sweet dumplings, known as pierogi in Poland and varenyky in Ukraine, are a staple of many Slavic cuisines.",
 				},
 				DatePublished: "2022-04-05 17:23:56",
-				Image:         models.Image{Value: anUploadedImage.String()},
-				Yield:         models.Yield{Value: 4},
+				Keywords:      &models.Keywords{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Yield:         &models.Yield{Value: 4},
 				URL:           "https://www.saveur.com/recipes/varenyky-pierogi-recipe/",
-				Ingredients: models.Ingredients{
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"2 cups all-purpose flour, plus more for dusting",
 						"1 tsp. kosher salt",
@@ -256,17 +229,19 @@ func TestScraper_S(t *testing.T) {
 						"Sour cherry preserves, sour cream, or crème fraîche, to serve",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Make the dough: To a food processor, add the flour and the salt. With the motor running, add the 2 egg yolks, one-by-one, then drizzle in the oil through the feeder tube. With the motor still running, drizzle in 8–10 tablespoons of cool water, just until the dough begins to form a ball around the blade. Lightly flour a clean work surface, then transfer the dough out onto it and knead just until smooth, about 2 minutes. Cover with a clean kitchen towel and set aside to rest for 30 minutes.",
-						"Meanwhile, make the filling: In a medium bowl, mix together the farmer’s cheese, egg yolk, and sugar. Set aside.",
-						"Lightly flour a large rimmed baking sheet and set it by your work surface.",
-						"Begin shaping the varenyky. Dust your work surface lightly with flour; divide the dough in half and shape into 2 balls. Keep one ball covered with the kitchen towel and, using a lightly floured rolling pin or a hand-crank pasta roller, roll the other ball into a thin sheet, about 1⁄16 -inch thick. Using a 3-inch round cookie cutter, punch out circles of the dough. Place a heaping teaspoon of filling in the center of each circle. Brush the edges of the circles lightly with egg white, then fold into a half moons, pressing the edges firmly together with either your fingers or with the tines of a fork to seal. Place the varenyky on the baking sheet about ½-inch apart and cover with a damp cloth. Roll out the second ball of dough, and repeat, then combine all of the leftover dough scraps to make a third batch.",
-						"Fill a large pot two thirds of the way with water and salt generously. Set over medium high heat and bring to a boil. Carefully lower half the varenyky into the pot. Boil, stirring occasionally to prevent sticking, until the dumplings rise to the surface and the dough is cooked through, 6–7 minutes. Using a slotted spoon, transfer the varenyky to a deep bowl and add the butter, tossing gently with the spoon to melt. Keep warm while you cook the remaining dumplings. Divide the varenyky among 4 deep plates, top with sour cherry preserves and sour cream, and serve warm.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Make the dough: To a food processor, add the flour and the salt. With the motor running, add the 2 egg yolks, one-by-one, then drizzle in the oil through the feeder tube. With the motor still running, drizzle in 8–10 tablespoons of cool water, just until the dough begins to form a ball around the blade. Lightly flour a clean work surface, then transfer the dough out onto it and knead just until smooth, about 2 minutes. Cover with a clean kitchen towel and set aside to rest for 30 minutes."},
+						{Type: "HowToStep", Text: "Meanwhile, make the filling: In a medium bowl, mix together the farmer’s cheese, egg yolk, and sugar. Set aside."},
+						{Type: "HowToStep", Text: "Lightly flour a large rimmed baking sheet and set it by your work surface."},
+						{Type: "HowToStep", Text: "Begin shaping the varenyky. Dust your work surface lightly with flour; divide the dough in half and shape into 2 balls. Keep one ball covered with the kitchen towel and, using a lightly floured rolling pin or a hand-crank pasta roller, roll the other ball into a thin sheet, about 1⁄16 -inch thick. Using a 3-inch round cookie cutter, punch out circles of the dough. Place a heaping teaspoon of filling in the center of each circle. Brush the edges of the circles lightly with egg white, then fold into a half moons, pressing the edges firmly together with either your fingers or with the tines of a fork to seal. Place the varenyky on the baking sheet about ½-inch apart and cover with a damp cloth. Roll out the second ball of dough, and repeat, then combine all of the leftover dough scraps to make a third batch."},
+						{Type: "HowToStep", Text: "Fill a large pot two thirds of the way with water and salt generously. Set over medium high heat and bring to a boil. Carefully lower half the varenyky into the pot. Boil, stirring occasionally to prevent sticking, until the dumplings rise to the surface and the dough is cooked through, 6–7 minutes. Using a slotted spoon, transfer the varenyky to a deep bowl and add the butter, tossing gently with the spoon to melt. Keep warm while you cook the remaining dumplings. Divide the varenyky among 4 deep plates, top with sour cherry preserves and sour cream, and serve warm."},
 					},
 				},
-				PrepTime:  "PT0D0H0M",
-				TotalTime: "PT0D1H30M",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT0D0H0M",
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:       "PT0D1H30M",
 			},
 		},
 		{
@@ -274,18 +249,17 @@ func TestScraper_S(t *testing.T) {
 			in:   "https://www.seriouseats.com/miyeok-guk-korean-seaweed-and-brisket-soup",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Soups and Stews"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Soups and Stews"},
 				CookTime:      "PT180M",
-				Cuisine:       models.Cuisine{Value: "Korean"},
+				Cuisine:       &models.Cuisine{Value: "Korean"},
 				DateModified:  "2023-07-12T11:51:57.502-04:00",
 				DatePublished: "2020-03-02T08:00:03.000-05:00",
-				Description: models.Description{
-					Value: "Tender seaweed and pieces of beef brisket come together in this warming, comforting, and nutritious " +
-						"Korean soup.",
+				Description: &models.Description{
+					Value: "Tender seaweed and pieces of beef brisket come together in this warming, comforting, and nutritious Korean soup.",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 ounce (30g) dried miyeok seaweed (also sold under the Japanese name wakame )",
 						"3 whole medium cloves garlic plus 3 finely minced medium cloves garlic, divided",
@@ -296,27 +270,18 @@ func TestScraper_S(t *testing.T) {
 						"Kosher or sea salt",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"In a medium bowl, cover seaweed with at least 3 inches cold water and let stand at room temperature until " +
-							"fully softened and hydrated, about 2 hours.",
-						"Meanwhile, in a Dutch oven or pot, combine whole garlic cloves, ginger, onion, and brisket with 1 1/2 " +
-							"quarts (1 1/2L) cold water and bring to a boil over high heat. Lower heat to maintain a gentle simmer " +
-							"and cook, covered, until brisket is tender and broth is slightly cloudy, about 2 hours. Using a slotted " +
-							"spoon, remove and discard garlic cloves, ginger, and onion from broth.",
-						"Transfer brisket to a work surface and allow to cool slightly, then slice across the grain into bite-size " +
-							"pieces. Transfer brisket to a small bowl and toss well with 1 tablespoon soy sauce and remaining " +
-							"3 cloves minced garlic. Set aside.",
-						"Drain seaweed and squeeze well to remove excess water. Transfer to work surface and roughly chop into " +
-							"bite-size pieces.",
-						"Return broth to a simmer and add seaweed and seasoned brisket. If the proportion of liquid to solids is " +
-							"too low for your taste, you can top up with water and return to a simmer. Add remaining 1 tablespoon " +
-							"soy sauce and simmer until seaweed is tender, about 30 minutes. Season to taste with salt.",
-						"Ladle soup into bowls and serve alongside hot rice and any banchan (side dishes) of your choosing.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "In a medium bowl, cover seaweed with at least 3 inches cold water and let stand at room temperature until fully softened and hydrated, about 2 hours."},
+						{Type: "HowToStep", Text: "Meanwhile, in a Dutch oven or pot, combine whole garlic cloves, ginger, onion, and brisket with 1 1/2 quarts (1 1/2L) cold water and bring to a boil over high heat. Lower heat to maintain a gentle simmer and cook, covered, until brisket is tender and broth is slightly cloudy, about 2 hours. Using a slotted spoon, remove and discard garlic cloves, ginger, and onion from broth."},
+						{Type: "HowToStep", Text: "Transfer brisket to a work surface and allow to cool slightly, then slice across the grain into bite-size pieces. Transfer brisket to a small bowl and toss well with 1 tablespoon soy sauce and remaining 3 cloves minced garlic. Set aside."},
+						{Type: "HowToStep", Text: "Drain seaweed and squeeze well to remove excess water. Transfer to work surface and roughly chop into bite-size pieces."},
+						{Type: "HowToStep", Text: "Return broth to a simmer and add seaweed and seasoned brisket. If the proportion of liquid to solids is too low for your taste, you can top up with water and return to a simmer. Add remaining 1 tablespoon soy sauce and simmer until seaweed is tender, about 30 minutes. Season to taste with salt."},
+						{Type: "HowToStep", Text: "Ladle soup into bowls and serve alongside hot rice and any banchan (side dishes) of your choosing."},
 					},
 				},
 				Name: "Miyeok-Guk (Korean Seaweed and Brisket Soup)",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:       "173 kcal",
 					Carbohydrates:  "2 g",
 					Cholesterol:    "60 mg",
@@ -331,7 +296,7 @@ func TestScraper_S(t *testing.T) {
 				},
 				PrepTime:  "PT5M",
 				TotalTime: "PT185M",
-				Yield:     models.Yield{Value: 6},
+				Yield:     &models.Yield{Value: 6},
 				URL:       "https://www.seriouseats.com/miyeok-guk-korean-seaweed-and-brisket-soup",
 			},
 		},
@@ -340,17 +305,17 @@ func TestScraper_S(t *testing.T) {
 			in:   "https://simple-veganista.com/blackberry-cobbler/",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Dessert"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Dessert"},
 				CookTime:      "PT40M",
-				CookingMethod: models.CookingMethod{Value: "bake"},
-				Cuisine:       models.Cuisine{Value: "Southern"},
+				CookingMethod: &models.CookingMethod{Value: "bake"},
+				Cuisine:       &models.Cuisine{Value: "Southern"},
 				DatePublished: "2021-05-14",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "With only 7 ingredients this flavorful vegan blackberry cobbler is a great way to use up the season's abundance of blackberries.",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 cup flour", "1/2 cup sugar", "1 heaped teaspoon baking powder",
 						"1/4 teaspoon cinnamon",
@@ -359,19 +324,19 @@ func TestScraper_S(t *testing.T) {
 						"2 &#8211; 3 cups (about 12oz.) blackberries, fresh or frozen",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Preheat oven to 350 degrees F.",
-						"Batter: In a medium bowl, whisk together the flour, sugar, baking powder, and cinnamon. Be sure to warm your milk if using coconut oil before using or it will harden the coconut oil when combined. Add milk and mix well. Add oil/butter, mix well again.",
-						"Assemble: Pour batter into an 8-inch baking dish. Drop blackberries into the batter, distributing evenly all over. Push down some of the blackberries into the batter, then add more over top. Sprinkle a little pure cane sugar over top if you like. I would refrain from using coconut sugar as it may burn. If you want to add coconut sugar, sprinkle some at least halfway through baking time.",
-						"Bake: Place in oven on the middle rack and bake for 40 &#8211; 45 minutes. Let cool a few minutes and serve.",
-						"Serve: Pair with a scoop of non-dairy vanilla ice cream for dessert and a scoop of vanilla non-dairy yogurt for breakfast (yes, this would be a fine way to start your day!)",
-						"Serves 6",
-						"Leftovers can be stored in the refrigerator for up to 5 days. Warm serving portions in the microwave or oven set to 350 for 10 &#8211; 15 minutes.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Preheat oven to 350 degrees F."},
+						{Type: "HowToStep", Text: "Batter: In a medium bowl, whisk together the flour, sugar, baking powder, and cinnamon. Be sure to warm your milk if using coconut oil before using or it will harden the coconut oil when combined. Add milk and mix well. Add oil/butter, mix well again."},
+						{Type: "HowToStep", Text: "Assemble: Pour batter into an 8-inch baking dish. Drop blackberries into the batter, distributing evenly all over. Push down some of the blackberries into the batter, then add more over top. Sprinkle a little pure cane sugar over top if you like. I would refrain from using coconut sugar as it may burn. If you want to add coconut sugar, sprinkle some at least halfway through baking time."},
+						{Type: "HowToStep", Text: "Bake: Place in oven on the middle rack and bake for 40 &#8211; 45 minutes. Let cool a few minutes and serve."},
+						{Type: "HowToStep", Text: "Serve: Pair with a scoop of non-dairy vanilla ice cream for dessert and a scoop of vanilla non-dairy yogurt for breakfast (yes, this would be a fine way to start your day!)"},
+						{Type: "HowToStep", Text: "Serves 6"},
+						{Type: "HowToStep", Text: "Leftovers can be stored in the refrigerator for up to 5 days. Warm serving portions in the microwave or oven set to 350 for 10 &#8211; 15 minutes."},
 					},
 				},
 				Name: "Southern Blackberry Cobbler (Vegan + Easy)",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:       "245 calories",
 					Carbohydrates:  "28.3 g",
 					Cholesterol:    "0 mg",
@@ -386,7 +351,7 @@ func TestScraper_S(t *testing.T) {
 				},
 				PrepTime:  "PT5M",
 				TotalTime: "PT45M",
-				Yield:     models.Yield{Value: 6},
+				Yield:     &models.Yield{Value: 6},
 				URL:       "https://simple-veganista.com/blackberry-cobbler/",
 			},
 		},
@@ -394,37 +359,40 @@ func TestScraper_S(t *testing.T) {
 			name: "simply-cookit.com",
 			in:   "https://www.simply-cookit.com/de/rezepte/paprikagulasch",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
-				AtType:    models.SchemaType{Value: "Recipe"},
-				Category:  models.Category{Value: "Fleisch & Geflügel"},
-				CookTime:  "PT1H59M00S",
-				Description: models.Description{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Fleisch & Geflügel"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				CookTime:      "PT1H59M00S",
+				Description: &models.Description{
 					Value: "Deftiges, würziges Gulasch mit bunter Paprika - so wird die Sauce schön fruchtig.",
 				},
-				Keywords: models.Keywords{Values: "Fleisch & Geflügel"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "Fleisch & Geflügel"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"300 g Zwiebeln", "20 ml Rapsöl", "750 g Gulasch, gemischt",
 						"20 g Tomatenmark", "1 EL Paprikapulver, edelsüß",
 						"1 EL Paprikapulver, rosenscharf", "3 Stängel Thymian, frisch",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Das Universalmesser einsetzen. Die Zwiebeln schälen, halbieren und einwiegen. Den Deckel schließen, den Messbecher einsetzen und (Universalmesser | Stufe 14 | 10 Sek.) zerkleinern. Das Universalmesser entnehmen und das Lebensmittel mit dem Spatel abstreifen. Die Zwiebeln umfüllen.",
-						"Den 3D-Rührer einsetzen. Das Rapsöl einwiegen, den Deckel schließen, den Messbecher einsetzen und das Öl (3D-Rührer | 200 \xc2\xb0C | 4 Min.) erhitzen. Das Gulasch einwiegen. Den Deckel schlie\xc3\x9fen, den Messbecher entnehmen und (3D-Rührer | Stufe 2 | 200 °C | 9 Min.) scharf anbraten. Die Zwiebeln zugeben, den Deckel schließen und die Zwiebeln (3D-Rührer | Stufe 2 | 160 °C | 2 Min.) kurz mitbraten.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Das Universalmesser einsetzen. Die Zwiebeln schälen, halbieren und einwiegen. Den Deckel schließen, den Messbecher einsetzen und (Universalmesser | Stufe 14 | 10 Sek.) zerkleinern. Das Universalmesser entnehmen und das Lebensmittel mit dem Spatel abstreifen. Die Zwiebeln umfüllen."},
+						{Type: "HowToStep", Text: "Den 3D-Rührer einsetzen. Das Rapsöl einwiegen, den Deckel schließen, den Messbecher einsetzen und das Öl (3D-Rührer | 200 \xc2\xb0C | 4 Min.) erhitzen. Das Gulasch einwiegen. Den Deckel schlie\xc3\x9fen, den Messbecher entnehmen und (3D-Rührer | Stufe 2 | 200 °C | 9 Min.) scharf anbraten. Die Zwiebeln zugeben, den Deckel schließen und die Zwiebeln (3D-Rührer | Stufe 2 | 160 °C | 2 Min.) kurz mitbraten."},
 					},
 				},
 				Name: "Buntes Paprikagulasch",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "577 kcal",
 					Carbohydrates: "16 g",
 					Fat:           "36 g",
 					Protein:       "38 g",
 				},
 				TotalTime: "PT1H59M00S",
-				Yield:     models.Yield{Value: 4},
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
+				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.simply-cookit.com/de/rezepte/paprikagulasch",
 			},
 		},
@@ -433,18 +401,17 @@ func TestScraper_S(t *testing.T) {
 			in:   "https://www.simplyquinoa.com/spicy-kimchi-quinoa-bowls/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Main Course"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Main Course"},
 				CookTime:      "PT10M",
-				Cuisine:       models.Cuisine{Value: "korean"},
+				Cuisine:       &models.Cuisine{Value: "korean"},
 				DatePublished: "2021-01-15T07:00:21+00:00",
-				Description: models.Description{
-					Value: "These spicy kimchi quinoa bowls are the perfect weeknight dinner. They&#039;re quick, easy, and " +
-						"super healthy, packed with protein, fermented veggies, and greens!",
+				Description: &models.Description{
+					Value: "These spicy kimchi quinoa bowls are the perfect weeknight dinner. They&#039;re quick, easy, and super healthy, packed with protein, fermented veggies, and greens!",
 				},
-				Keywords: models.Keywords{Values: "egg, kimchi, quinoa bowl"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "egg, kimchi, quinoa bowl"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"2 teaspoons toasted sesame oil",
 						"1/2 teaspoon freshly grated ginger",
@@ -460,21 +427,16 @@ func TestScraper_S(t *testing.T) {
 						"Fresh ground pepper for garnish (optional)",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Heat the oil in a large skillet over medium heat. Add ginger and garlic and saute for 30 - 60 seconds " +
-							"until fragrant. Add the quinoa and kimchi and cook until hot, about 2 - 3 minutes. Stir in kimchi " +
-							"juice, tamari and hot sauce if using. Turn to low and stir occasionally while you prepare the other " +
-							"ingredients.",
-						"In a separate skillet, cook the eggs on low until the whites have cooked through but the yolks are " +
-							"still runny, about 3 - 5 minutes.",
-						"Steam the kale in a separate pot for 30 - 60 seconds until soft.",
-						"Assemble the bowls, dividing the kimchi-quinoa mixture and kale evenly between two dishes. Top with green " +
-							"onions and fresh pepper if using.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Heat the oil in a large skillet over medium heat. Add ginger and garlic and saute for 30 - 60 seconds until fragrant. Add the quinoa and kimchi and cook until hot, about 2 - 3 minutes. Stir in kimchi juice, tamari and hot sauce if using. Turn to low and stir occasionally while you prepare the other ingredients."},
+						{Type: "HowToStep", Text: "In a separate skillet, cook the eggs on low until the whites have cooked through but the yolks are still runny, about 3 - 5 minutes."},
+						{Type: "HowToStep", Text: "Steam the kale in a separate pot for 30 - 60 seconds until soft."},
+						{Type: "HowToStep", Text: "Assemble the bowls, dividing the kimchi-quinoa mixture and kale evenly between two dishes. Top with green onions and fresh pepper if using."},
 					},
 				},
 				Name: "Spicy Kimchi Quinoa Bowls",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "359 kcal",
 					Carbohydrates: "46 g",
 					Cholesterol:   "163 mg",
@@ -488,7 +450,7 @@ func TestScraper_S(t *testing.T) {
 				},
 				PrepTime:  "PT3M",
 				TotalTime: "PT13M",
-				Yield:     models.Yield{Value: 2},
+				Yield:     &models.Yield{Value: 2},
 				URL:       "https://www.simplyquinoa.com/spicy-kimchi-quinoa-bowls/",
 			},
 		},
@@ -497,21 +459,20 @@ func TestScraper_S(t *testing.T) {
 			in:   "https://www.simplyrecipes.com/recipes/chicken_tikka_masala/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Dinner"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Dinner"},
 				CookTime:      "PT20M",
-				Cuisine:       models.Cuisine{Value: "British"},
+				Cuisine:       &models.Cuisine{Value: "British"},
 				DateModified:  "2023-09-29T18:15:43.573-04:00",
 				DatePublished: "2017-02-27T04:30:56.000-05:00",
-				Description: models.Description{
-					Value: "This easy stovetop Chicken Tikka Masala tastes just like your favorite Indian take-out and is ready " +
-						"in under an hour. Leftovers are even better the next day!",
+				Description: &models.Description{
+					Value: "This easy stovetop Chicken Tikka Masala tastes just like your favorite Indian take-out and is ready in under an hour. Leftovers are even better the next day!",
 				},
-				Keywords: models.Keywords{
+				Keywords: &models.Keywords{
 					Values: "Comfort Food, Quick and Easy, Restaurant Favorite, British, Indian, Gluten-Free, Dinner",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"For the chicken:",
 						"1 1/4 pounds boneless skinless chicken breasts, thighs, or a mix",
@@ -539,29 +500,19 @@ func TestScraper_S(t *testing.T) {
 						"Cilantro, to garnish",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Prepare the chicken: Trim chicken thighs of any extra fat. Chop into bite-sized pieces about 1/2 to 1-inch " +
-							"wide. Place the chicken thigh pieces to a medium bowl. Add the yogurt, ginger, garlic, cumin, paprika " +
-							"and salt. Using your hands, combine the chicken with the spices until the chicken is evenly coated.",
-						"Marinate the chicken: Cover the bowl with plastic wrap and let the chicken marinate in the fridge for at " +
-							"least 45 minutes or as long as overnight. (Marinating for 4 to 6 hours is perfect.)",
-						"Cook the chicken: In a large skillet, heat 1 tablespoon of canola oil over medium-high heat. Add the chicken" +
-							" thigh pieces and cook for about 6 to 7 minutes, until they’re cooked through. Transfer to a plate " +
-							"and set aside.",
-						"Toast the spices: Wipe down the pan you used to cook the chicken. Heat remaining canola oil over medium " +
-							"heat. Add the onions and cook for 5 minutes, until softened, stirring often. Add the grated ginger," +
-							" minced garlic, coriander, paprika, garam masala, turmeric, black pepper, salt, and cayenne. Let the " +
-							"spices cook until fragrant, about 30 seconds to a minute.",
-						"Make the sauce: Add the crushed tomatoes to the pan with the spices and let everything cook for 4 minutes," +
-							" stirring often. Add the yogurt and stir to combine.",
-						"Simmer the sauce: Reduce the heat to medium-low and let the sauce simmer for another 4 minutes. Add the c" +
-							"hicken pieces to the pan and coat with sauce.",
-						"Serve: Serve over cooked basmati rice and garnish with cilantro.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Prepare the chicken: Trim chicken thighs of any extra fat. Chop into bite-sized pieces about 1/2 to 1-inch wide. Place the chicken thigh pieces to a medium bowl. Add the yogurt, ginger, garlic, cumin, paprika and salt. Using your hands, combine the chicken with the spices until the chicken is evenly coated."},
+						{Type: "HowToStep", Text: "Marinate the chicken: Cover the bowl with plastic wrap and let the chicken marinate in the fridge for at least 45 minutes or as long as overnight. (Marinating for 4 to 6 hours is perfect.)"},
+						{Type: "HowToStep", Text: "Cook the chicken: In a large skillet, heat 1 tablespoon of canola oil over medium-high heat. Add the chicken thigh pieces and cook for about 6 to 7 minutes, until they’re cooked through. Transfer to a plate and set aside."},
+						{Type: "HowToStep", Text: "Toast the spices: Wipe down the pan you used to cook the chicken. Heat remaining canola oil over medium heat. Add the onions and cook for 5 minutes, until softened, stirring often. Add the grated ginger, minced garlic, coriander, paprika, garam masala, turmeric, black pepper, salt, and cayenne. Let the spices cook until fragrant, about 30 seconds to a minute."},
+						{Type: "HowToStep", Text: "Make the sauce: Add the crushed tomatoes to the pan with the spices and let everything cook for 4 minutes, stirring often. Add the yogurt and stir to combine."},
+						{Type: "HowToStep", Text: "Simmer the sauce: Reduce the heat to medium-low and let the sauce simmer for another 4 minutes. Add the chicken pieces to the pan and coat with sauce."},
+						{Type: "HowToStep", Text: "Serve: Serve over cooked basmati rice and garnish with cilantro."},
 					},
 				},
 				Name: "Chicken Tikka Masala",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:       "324 kcal",
 					Carbohydrates:  "25 g",
 					Cholesterol:    "84 mg",
@@ -576,7 +527,7 @@ func TestScraper_S(t *testing.T) {
 				},
 				PrepTime:  "PT15M",
 				TotalTime: "PT35M",
-				Yield:     models.Yield{Value: 6},
+				Yield:     &models.Yield{Value: 6},
 				URL:       "https://www.simplyrecipes.com/recipes/chicken_tikka_masala/",
 			},
 		},
@@ -585,23 +536,20 @@ func TestScraper_S(t *testing.T) {
 			in:   "https://www.simplywhisked.com/dill-pickle-pasta-salad/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Salads"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Salads"},
 				CookTime:      "PT10M",
-				CookingMethod: models.CookingMethod{Value: "Stovetop"},
-				Cuisine:       models.Cuisine{Value: "American"},
+				CookingMethod: &models.CookingMethod{Value: "Stovetop"},
+				Cuisine:       &models.Cuisine{Value: "American"},
 				DatePublished: "2022-03-02",
-				Description: models.Description{
-					Value: "Looking for something new to bring to your next potluck? This super flavorful dill pickle pasta salad " +
-						"is a crowd pleaser, and it's so easy to make. It's loaded with crunchy dill pickles, savory bacon, " +
-						"toasted cashews and topped with a creamy dill dressing.",
+				Description: &models.Description{
+					Value: "Looking for something new to bring to your next potluck? This super flavorful dill pickle pasta salad is a crowd pleaser, and it's so easy to make. It's loaded with crunchy dill pickles, savory bacon, toasted cashews and topped with a creamy dill dressing.",
 				},
-				Keywords: models.Keywords{
-					Values: "dill pickle pasta salad, pasta salad with pickles, dill pasta salad, pasta salad recipe, dairy free " +
-						"dill pickle pasta salad, dairy free pasta salad, dairy free macaroni salad",
+				Keywords: &models.Keywords{
+					Values: "dill pickle pasta salad, pasta salad with pickles, dill pasta salad, pasta salad recipe, dairy free dill pickle pasta salad, dairy free pasta salad, dairy free macaroni salad",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 pound pasta, cooked and cooled",
 						"4 slices bacon, thinly sliced",
@@ -617,19 +565,16 @@ func TestScraper_S(t *testing.T) {
 						"Coarse salt &amp; black pepper, to taste",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"If needed, cook pasta according to package directions for al dente in a large pot of salted, boiling " +
-							"water. Drain pasta and rinse with cold water.",
-						"In a medium mixing bowl, whisk the mayonnaise, Dijon mustard, pickle juice, and water until smooth. " +
-							"Season salt &amp; pepper, to taste.",
-						"Combine salad ingredients in a large mixing bowl, reserving about 1 teaspoon fresh dill. Add dressing " +
-							"and stir until evenly coated.",
-						"Before serving, adjust seasoning with salt &amp; pepper (to taste) and garnish with remaining dill.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "If needed, cook pasta according to package directions for al dente in a large pot of salted, boiling water. Drain pasta and rinse with cold water."},
+						{Type: "HowToStep", Text: "In a medium mixing bowl, whisk the mayonnaise, Dijon mustard, pickle juice, and water until smooth. Season salt &amp; pepper, to taste."},
+						{Type: "HowToStep", Text: "Combine salad ingredients in a large mixing bowl, reserving about 1 teaspoon fresh dill. Add dressing and stir until evenly coated."},
+						{Type: "HowToStep", Text: "Before serving, adjust seasoning with salt &amp; pepper (to taste) and garnish with remaining dill."},
 					},
 				},
 				Name: "Dill Pickle Pasta Salad",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "386 calories",
 					Carbohydrates: "25.7 g",
 					Cholesterol:   "16.2 mg",
@@ -643,7 +588,7 @@ func TestScraper_S(t *testing.T) {
 				},
 				PrepTime:  "PT15M",
 				TotalTime: "PT25M",
-				Yield:     models.Yield{Value: 16},
+				Yield:     &models.Yield{Value: 16},
 				URL:       "https://www.simplywhisked.com/dill-pickle-pasta-salad/",
 			},
 		},
@@ -652,20 +597,19 @@ func TestScraper_S(t *testing.T) {
 			in:   "https://www.skinnytaste.com/air-fryer-steak/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Dinner"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Dinner"},
 				CookTime:      "PT10M",
-				Cuisine:       models.Cuisine{Value: "American"},
+				Cuisine:       &models.Cuisine{Value: "American"},
 				DatePublished: "2022-03-29T09:04:25+00:00",
-				Description: models.Description{
-					Value: "Make perfect Air Fryer Steak that is seared on the outside and juicy on the inside. Air frying " +
-						"steak is quick and easy with no splatter or mess in the kitchen!",
+				Description: &models.Description{
+					Value: "Make perfect Air Fryer Steak that is seared on the outside and juicy on the inside. Air frying steak is quick and easy with no splatter or mess in the kitchen!",
 				},
-				Keywords: models.Keywords{
+				Keywords: &models.Keywords{
 					Values: "Air Fryer Recipes, air fryer steak, sirloin",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 teaspoon garlic powder",
 						"1/2 teaspoon sweet paprika",
@@ -675,20 +619,17 @@ func TestScraper_S(t *testing.T) {
 						"olive oil spray",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Combine the spices in a small bowl.",
-						"Spray the steak with olive oil and coat both sides with the spices.",
-						"Preheat the air fryer so the basket gets hot. For a 1-inch steak, air fry 400F 10 minutes " +
-							"turning halfway, for medium rare, for medium, cook 12 minutes, flipping halfway. " +
-							"See temp chart below, time may vary slightly with different air fryer models, " +
-							"and the thickness of the steaks.",
-						"Finish with a pinch of more salt and black pepper.",
-						"Let it rest, tented with foil 5 minutes before slicing.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Combine the spices in a small bowl."},
+						{Type: "HowToStep", Text: "Spray the steak with olive oil and coat both sides with the spices."},
+						{Type: "HowToStep", Text: "Preheat the air fryer so the basket gets hot. For a 1-inch steak, air fry 400F 10 minutes turning halfway, for medium rare, for medium, cook 12 minutes, flipping halfway. See temp chart below, time may vary slightly with different air fryer models, and the thickness of the steaks."},
+						{Type: "HowToStep", Text: "Finish with a pinch of more salt and black pepper."},
+						{Type: "HowToStep", Text: "Let it rest, tented with foil 5 minutes before slicing."},
 					},
 				},
 				Name: "Air Fryer Steak",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "221 kcal",
 					Carbohydrates: "0.5 g",
 					Cholesterol:   "117.5 mg",
@@ -701,7 +642,7 @@ func TestScraper_S(t *testing.T) {
 				},
 				PrepTime:  "PT5M",
 				TotalTime: "PT15M",
-				Yield:     models.Yield{Value: 4},
+				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.skinnytaste.com/air-fryer-steak/",
 			},
 		},
@@ -710,13 +651,16 @@ func TestScraper_S(t *testing.T) {
 			in:   "https://smittenkitchen.com/2024/04/new-york-crumb-cake/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "uncategorized"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DateModified:  "2024-04-18T20:11:53-05:00",
 				DatePublished: "2024-04-03T09:52:47-05:00",
-				Description:   models.Description{Value: "Hasn’t it always been too long since your last slice of profoundly perfect crumb cake? You know, the kind that’s a hefty square with at least as much height from big brown sugar and cinnamon crumbs as from a golden, buttery, sour cream-enriched and vanilla-scented cake? Yes, me too. I didn’t expect to be back here so soon, though. I truly believed I’d finished my Crumb Cake Degree in 2021 with the still-perfect-in-every-way Big Apple Crumb Cake. But sometimes, perfection is a process."},
-				Image:         models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Description:   &models.Description{Value: "Hasn’t it always been too long since your last slice of profoundly perfect crumb cake? You know, the kind that’s a hefty square with at least as much height from big brown sugar and cinnamon crumbs as from a golden, buttery, sour cream-enriched and vanilla-scented cake? Yes, me too. I didn’t expect to be back here so soon, though. I truly believed I’d finished my Crumb Cake Degree in 2021 with the still-perfect-in-every-way Big Apple Crumb Cake. But sometimes, perfection is a process."},
+				Keywords:      &models.Keywords{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"Crumbs",
 						"10 tablespoons (140 grams) unsalted butter, melted",
@@ -739,21 +683,23 @@ func TestScraper_S(t *testing.T) {
 						"Powdered sugar, for dusting",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Heat oven: To 350°F (175°C). Lightly coat an 8-inch square or 9-inch cake pan with butter or nonstick spray. For extra security, line it with parchment paper.",
-						"Make crumbs: Whisk butter, sugars, cinnamon, and salt together until evenly mixed. Add flour and mix until it disappears. It’s going to be very thick; press it evenly into the bottom of the bowl and set it aside.",
-						"Make cake: Beat butter with sugar until lightened and fluffy. Add egg, water or milk, sour cream, and vanilla and beat until combined. Sprinkle surface of batter with baking powder and salt, and beat well to combine. Add flour and mix only until it disappears.",
-						"Assemble: Scrape batter into prepared cake pan and smooth it flat. Use a spoon to loosen the crumbs from the bottom of the bowl where they’ve rested, breaking them up into big and small rubble. Sprinkle evenly over the batter.",
-						"Bake: Bake for about 30 to 35 minutes, or until a toothpick inserted into the cake just below the crumbs comes out batter-free. Check in a few spots, in case it has baked unevenly.",
-						"Cool to lukewarm, if you can bear it, before dusting it generously with powdered sugar and cutting the cake into squares or wedges.",
-						"Do ahead: This cake keeps in an airtight container at room temperature for 3 to 4 days, but I like it best in the first two.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Heat oven: To 350°F (175°C). Lightly coat an 8-inch square or 9-inch cake pan with butter or nonstick spray. For extra security, line it with parchment paper."},
+						{Type: "HowToStep", Text: "Make crumbs: Whisk butter, sugars, cinnamon, and salt together until evenly mixed. Add flour and mix until it disappears. It’s going to be very thick; press it evenly into the bottom of the bowl and set it aside."},
+						{Type: "HowToStep", Text: "Make cake: Beat butter with sugar until lightened and fluffy. Add egg, water or milk, sour cream, and vanilla and beat until combined. Sprinkle surface of batter with baking powder and salt, and beat well to combine. Add flour and mix only until it disappears."},
+						{Type: "HowToStep", Text: "Assemble: Scrape batter into prepared cake pan and smooth it flat. Use a spoon to loosen the crumbs from the bottom of the bowl where they’ve rested, breaking them up into big and small rubble. Sprinkle evenly over the batter."},
+						{Type: "HowToStep", Text: "Bake: Bake for about 30 to 35 minutes, or until a toothpick inserted into the cake just below the crumbs comes out batter-free. Check in a few spots, in case it has baked unevenly."},
+						{Type: "HowToStep", Text: "Cool to lukewarm, if you can bear it, before dusting it generously with powdered sugar and cutting the cake into squares or wedges."},
+						{Type: "HowToStep", Text: "Do ahead: This cake keeps in an airtight container at room temperature for 3 to 4 days, but I like it best in the first two."},
 					},
 				},
-				Name:     "New York Crumb Cake",
-				PrepTime: "P0DT1H0M0S",
-				Yield:    models.Yield{Value: 12},
-				URL:      "https://smittenkitchen.com/2024/04/new-york-crumb-cake/",
+				Name:            "New York Crumb Cake",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "P0DT1H0M0S",
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 12},
+				URL:             "https://smittenkitchen.com/2024/04/new-york-crumb-cake/",
 			},
 		},
 		{
@@ -761,13 +707,16 @@ func TestScraper_S(t *testing.T) {
 			in:   "https://smittenkitchen.com/2009/05/slaw-tartare/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "uncategorized"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DateModified:  "2020-07-14T16:12:17-05:00",
 				DatePublished: "2009-05-21T12:18:24-05:00",
-				Description:   models.Description{Value: "I had great plans for our holiday weekends, my friends. We were all going to kick it off by making homemade hamburger buns that we could use right away, or stash in the freezer until the weather cooperates. Really, nothing should have been simpler. Most hamburger buns are an enriched white bread, which is ridiculously simple to make, and rolls are so much quicker to bake than large loaves. Because isn’t it funny how in this day and age where so many of us grind our own meats for our signature burger blends that we’re generally still getting those buns from a bag or bakery?"},
-				Image:         models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Description:   &models.Description{Value: "I had great plans for our holiday weekends, my friends. We were all going to kick it off by making homemade hamburger buns that we could use right away, or stash in the freezer until the weather cooperates. Really, nothing should have been simpler. Most hamburger buns are an enriched white bread, which is ridiculously simple to make, and rolls are so much quicker to bake than large loaves. Because isn’t it funny how in this day and age where so many of us grind our own meats for our signature burger blends that we’re generally still getting those buns from a bag or bakery?"},
+				Keywords:      &models.Keywords{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1/4 cup chopped red onion",
 						"1/4 cup roughly chopped capers",
@@ -781,14 +730,16 @@ func TestScraper_S(t *testing.T) {
 						"5 cups julienned Savoy or green cabbage (or 3 cups red cabbage, julienned, and 2 cups green cabbage for a more colorful presentation)",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Mix everything but the cabbage in a small bowl. In a larger one, toss the cabbage with as much dressing as you like. Adjust the salt and pepper to taste. Refrigerating a couple hours before serving allows the flavors to meld well, and the cabbage to soften slightly.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Mix everything but the cabbage in a small bowl. In a larger one, toss the cabbage with as much dressing as you like. Adjust the salt and pepper to taste. Refrigerating a couple hours before serving allows the flavors to meld well, and the cabbage to soften slightly."},
 					},
 				},
-				Name:  "slaw tartare",
-				Yield: models.Yield{Value: 1},
-				URL:   "https://smittenkitchen.com/2009/05/slaw-tartare/",
+				Name:            "slaw tartare",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://smittenkitchen.com/2009/05/slaw-tartare/",
 			},
 		},
 		{
@@ -796,13 +747,16 @@ func TestScraper_S(t *testing.T) {
 			in:   "https://smittenkitchen.com/2008/12/sausage-stuffed-potatoes-a-green-salad/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "uncategorized"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DateModified:  "2016-07-14T03:46:38-05:00",
 				DatePublished: "2008-12-15T16:13:37-05:00",
-				Description:   models.Description{Value: "I don’t think I need to tell you that sometimes the tastiest food is not the prettiest. Take a real close look at meat sauce, or shiny, oily cheese draped over tuna or a ground up olive paste and you’ll know why it may be tasty, but it’s not pretty. Meanwhile, I am wary of too-pretty food; perfectly smoothed fondant lids on cakes, making them look like rubber, overly glazed tartlets that look like they’re cellophaned."},
-				Image:         models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Description:   &models.Description{Value: "I don’t think I need to tell you that sometimes the tastiest food is not the prettiest. Take a real close look at meat sauce, or shiny, oily cheese draped over tuna or a ground up olive paste and you’ll know why it may be tasty, but it’s not pretty. Meanwhile, I am wary of too-pretty food; perfectly smoothed fondant lids on cakes, making them look like rubber, overly glazed tartlets that look like they’re cellophaned."},
+				Keywords:      &models.Keywords{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"2 large russet (baking) potatoes (preferably organic; 3/4 pound each, scrubbed",
 						"3 tablespoons mayonnaise",
@@ -820,23 +774,25 @@ func TestScraper_S(t *testing.T) {
 						"5 cups salad greens (2 ounces)(we used arugula, which paired with the dijon sauce was deliciously kicky)",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Prick potatoes with a fork. Microwave, covered with a paper towel, on high power until tender, 10 to 12 minutes.",
-						"Cutting lengthwise, remove top fourth of each potato and scoop out centers (reserve for another use), leaving 1/2-inch-thick walls.",
-						"Whisk together mayonnaise, 1 tablespoon water, tomato paste, anchovy paste, and 1 1/2 tablespoons mustard.",
-						"Preheat oven to 350°F with rack in middle.",
-						"Cook onion in oil with a pinch of salt in a small heavy skillet over medium heat, stirring occasionally, until golden, about 10 minutes.",
-						"Meanwhile, tear bread into small pieces, then soak in milk in a medium bowl until very soft. Mix in sausage, parsley, onion, and 2 tablespoons mayonnaise sauce with your hands.",
-						"Divide filling between potatoes, then coat skins lightly with oil. Bake in a 4-sided sheet pan until sausage is cooked through, about 30 minutes.",
-						"While potatoes bake, whisk 1 tablespoon mayonnaise sauce with lemon juice, remaining 1 1/2 teaspoon mustard and 1/2 teaspoon water, and salt and pepper to taste.",
-						"Remove potatoes from oven and turn on broiler. Spoon remaining mayonnaise sauce over filling and broil 3 to 4 inches from heat until charred in spots, 3 to 5 minutes. Cool slightly.",
-						"Toss greens with dressing and serve with potatoes.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Prick potatoes with a fork. Microwave, covered with a paper towel, on high power until tender, 10 to 12 minutes."},
+						{Type: "HowToStep", Text: "Cutting lengthwise, remove top fourth of each potato and scoop out centers (reserve for another use), leaving 1/2-inch-thick walls."},
+						{Type: "HowToStep", Text: "Whisk together mayonnaise, 1 tablespoon water, tomato paste, anchovy paste, and 1 1/2 tablespoons mustard."},
+						{Type: "HowToStep", Text: "Preheat oven to 350°F with rack in middle."},
+						{Type: "HowToStep", Text: "Cook onion in oil with a pinch of salt in a small heavy skillet over medium heat, stirring occasionally, until golden, about 10 minutes."},
+						{Type: "HowToStep", Text: "Meanwhile, tear bread into small pieces, then soak in milk in a medium bowl until very soft. Mix in sausage, parsley, onion, and 2 tablespoons mayonnaise sauce with your hands."},
+						{Type: "HowToStep", Text: "Divide filling between potatoes, then coat skins lightly with oil. Bake in a 4-sided sheet pan until sausage is cooked through, about 30 minutes."},
+						{Type: "HowToStep", Text: "While potatoes bake, whisk 1 tablespoon mayonnaise sauce with lemon juice, remaining 1 1/2 teaspoon mustard and 1/2 teaspoon water, and salt and pepper to taste."},
+						{Type: "HowToStep", Text: "Remove potatoes from oven and turn on broiler. Spoon remaining mayonnaise sauce over filling and broil 3 to 4 inches from heat until charred in spots, 3 to 5 minutes. Cool slightly."},
+						{Type: "HowToStep", Text: "Toss greens with dressing and serve with potatoes."},
 					},
 				},
-				Name:  "sausage-stuffed potatoes + a green\u00a0salad",
-				Yield: models.Yield{Value: 2},
-				URL:   "https://smittenkitchen.com/2008/12/sausage-stuffed-potatoes-a-green-salad/",
+				Name:            "sausage-stuffed potatoes + a green\u00a0salad",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 2},
+				URL:             "https://smittenkitchen.com/2008/12/sausage-stuffed-potatoes-a-green-salad/",
 			},
 		},
 		{
@@ -844,38 +800,42 @@ func TestScraper_S(t *testing.T) {
 			in:   "https://sobors.hu/receptek/karamelles-sajttorta-poharkrem-recept/",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "uncategorized"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				CookTime:      "PT40M",
 				DateModified:  "2023-11-24",
 				DatePublished: "2023-11-23",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Készíts végtelenül krémes desszertet, amelyet akár több nappal a vendégvárás előtt is összedobhatsz: hamis sajtkrém és mennyei karamellszósz alkotja!",
 				},
-				Keywords: models.Keywords{
+				Keywords: &models.Keywords{
 					Values: "sós karamell,vegán,pohárkrém,tejmentes,narancsos mézeskalácsos pohárdesszert,karamellszósz,vegán desszert,sajttorta pohárdesszert,hamis karamell,karamelles sajttorta pohárdesszert",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"150 ml vegán karamell a leírás szerint",
 						"250 ml habosítható növényi tejszín", "250 g vegán krémsajt",
 						"1 tk vaníliakivonat",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Elősz&ouml;r k&eacute;sz&iacute;ts&uuml;k el a veg&aacute;n s&oacute;s karamellt az ebben a receptben le&iacute;rtak szerint. Haszn&aacute;ljunk fel belőle 150 ml-t, a marad&eacute;kb&oacute;l pedig k&eacute;sz&iacute;ts&uuml;nk karamelles latt&eacute;t, csurgassuk alm&aacute;s pite tetej&eacute;re, vagy fogyasszuk tetsz&eacute;s szerint. Ha elk&eacute;sz&uuml;lt, hagyjuk szobah\xc5\x91m&eacute;rs&eacute;kletűre hűlni.",
-						"Egy t&aacute;lban habos&iacute;tsuk fel a n&ouml;v&eacute;nyi tejsz&iacute;nt, majd tegy&uuml;k f&eacute;lre. Tegy&uuml;k egy m&aacute;sik t&aacute;lba a veg&aacute;n kr&eacute;msajtot, &eacute;s a k&eacute;zi mixerrel ezt is habos&iacute;tsuk fel, majd adjuk hozz&aacute; a van&iacute;liakivonatot &eacute;s 100 ml-t a karamellből, &eacute;s dolgozzuk &ouml;ssze.",
-						"Egy spatul&aacute;val &oacute;vatosan forgassuk bele a felhabos&iacute;tott tejsz&iacute;nt, majd osszuk a kr&eacute;met 4 egyforma poh&aacute;rba a k&ouml;vetkező m&oacute;don: kanalazzunk a poharak alj&aacute;ra 1-1 kan&aacute;llal a megmaradt karamellből, majd mehet r&aacute; a kr&eacute;m is.",
-						"Fogyaszt&aacute;s előtt legal&aacute;bb 1 &oacute;r&aacute;ra tegy&uuml;k hűtőbe, hogy kiss&eacute; megdermedjen, &eacute;s az &iacute;zek &ouml;ssze&aacute;lljanak.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Elősz&ouml;r k&eacute;sz&iacute;ts&uuml;k el a veg&aacute;n s&oacute;s karamellt az ebben a receptben le&iacute;rtak szerint. Haszn&aacute;ljunk fel belőle 150 ml-t, a marad&eacute;kb&oacute;l pedig k&eacute;sz&iacute;ts&uuml;nk karamelles latt&eacute;t, csurgassuk alm&aacute;s pite tetej&eacute;re, vagy fogyasszuk tetsz&eacute;s szerint. Ha elk&eacute;sz&uuml;lt, hagyjuk szobah\xc5\x91m&eacute;rs&eacute;kletűre hűlni."},
+						{Type: "HowToStep", Text: "Egy t&aacute;lban habos&iacute;tsuk fel a n&ouml;v&eacute;nyi tejsz&iacute;nt, majd tegy&uuml;k f&eacute;lre. Tegy&uuml;k egy m&aacute;sik t&aacute;lba a veg&aacute;n kr&eacute;msajtot, &eacute;s a k&eacute;zi mixerrel ezt is habos&iacute;tsuk fel, majd adjuk hozz&aacute; a van&iacute;liakivonatot &eacute;s 100 ml-t a karamellből, &eacute;s dolgozzuk &ouml;ssze."},
+						{Type: "HowToStep", Text: "Egy spatul&aacute;val &oacute;vatosan forgassuk bele a felhabos&iacute;tott tejsz&iacute;nt, majd osszuk a kr&eacute;met 4 egyforma poh&aacute;rba a k&ouml;vetkező m&oacute;don: kanalazzunk a poharak alj&aacute;ra 1-1 kan&aacute;llal a megmaradt karamellből, majd mehet r&aacute; a kr&eacute;m is."},
+						{Type: "HowToStep", Text: "Fogyaszt&aacute;s előtt legal&aacute;bb 1 &oacute;r&aacute;ra tegy&uuml;k hűtőbe, hogy kiss&eacute; megdermedjen, &eacute;s az &iacute;zek &ouml;ssze&aacute;lljanak."},
 					},
 				},
-				Name:      "Karamelles sajttortapohárkrém",
-				PrepTime:  "PT5M",
-				TotalTime: "PT45M",
-				URL:       "https://sobors.hu/receptek/karamelles-sajttorta-poharkrem-recept/",
-				Yield:     models.Yield{Value: 1},
+				Name:            "Karamelles sajttortapohárkrém",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT5M",
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:       "PT45M",
+				URL:             "https://sobors.hu/receptek/karamelles-sajttorta-poharkrem-recept/",
+				Yield:           &models.Yield{Value: 1},
 			},
 		},
 		{
@@ -883,15 +843,18 @@ func TestScraper_S(t *testing.T) {
 			in:   "https://southerncastiron.com/creamy-turkey-and-wild-rice-soup/",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Main Dishes"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Main Dishes"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DateModified:  "2023-11-22T20:45:27+00:00",
 				DatePublished: "2023-11-22T20:45:27+00:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "The star of the Thanksgiving meal takes on a new life in this cozy and comforting Creamy Turkey and Wild Rice Soup.",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"4 tablespoons unsalted butter", "½ cup sliced celery",
 						"2 large carrots, halved and sliced", "1 medium yellow onion, chopped",
@@ -903,16 +866,18 @@ func TestScraper_S(t *testing.T) {
 						"Garnish: ground black pepper, fresh thyme leaves",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"In a medium cast-iron Dutch oven, melt butter over medium heat. Add celery, carrot, onion, garlic, and thyme; cook over medium heat, stirring occasionally, until vegetables are crisp-tender, about 10 minutes. Sprinkle flour over vegetables and cook, stirring, until evenly coated and lightly browned, about 3 minutes.",
-						"Add rice and gradually stir in broth, salt, pepper, and poultry seasoning. Bring to a boil; reduce heat to low and simmer, stirring occasionally, until vegetables are tender, about 30 minutes.",
-						"Add turkey; cook, stirring occasionally, until rice is tender, 10 to 15 minutes. Serve warm. Garnish with pepper and thyme, if desired.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "In a medium cast-iron Dutch oven, melt butter over medium heat. Add celery, carrot, onion, garlic, and thyme; cook over medium heat, stirring occasionally, until vegetables are crisp-tender, about 10 minutes. Sprinkle flour over vegetables and cook, stirring, until evenly coated and lightly browned, about 3 minutes."},
+						{Type: "HowToStep", Text: "Add rice and gradually stir in broth, salt, pepper, and poultry seasoning. Bring to a boil; reduce heat to low and simmer, stirring occasionally, until vegetables are tender, about 30 minutes."},
+						{Type: "HowToStep", Text: "Add turkey; cook, stirring occasionally, until rice is tender, 10 to 15 minutes. Serve warm. Garnish with pepper and thyme, if desired."},
 					},
 				},
-				Name:  "Creamy Turkey and Wild Rice Soup",
-				Yield: models.Yield{Value: 6},
-				URL:   "https://southerncastiron.com/creamy-turkey-and-wild-rice-soup/",
+				Name:            "Creamy Turkey and Wild Rice Soup",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 6},
+				URL:             "https://southerncastiron.com/creamy-turkey-and-wild-rice-soup/",
 			},
 		},
 		{
@@ -920,18 +885,18 @@ func TestScraper_S(t *testing.T) {
 			in:   "https://www.southernliving.com/recipes/oven-roasted-corn-on-cob",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
 				Name:          "Oven-Roasted Corn On The Cob",
-				Category:      models.Category{Value: "Side Dish"},
-				Cuisine:       models.Cuisine{Value: "American"},
+				Category:      &models.Category{Value: "Side Dish"},
+				Cuisine:       &models.Cuisine{Value: "American"},
 				DateModified:  "2023-11-05T21:00:17.338-05:00",
 				DatePublished: "2019-05-14T09:02:49.000-04:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Great corn doesn&#39;t get much easier than our Oven-Roasted Corn on the Cob recipe. The trick? Flavored butter and foil. See how to bake corn on the cob in the oven.",
 				},
-				Yield: models.Yield{Value: 4},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Yield: &models.Yield{Value: 4},
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1/4 cup unsalted butter, softened",
 						"1 tablespoon chopped fresh flat-leaf parsley",
@@ -943,12 +908,12 @@ func TestScraper_S(t *testing.T) {
 						"4 ears fresh corn, husks removed",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Make butter mixture: Preheat oven to 425°F. Stir together butter, parsley, garlic, rosemary, thyme, salt, and pepper in a bowl until evenly combined.",
-						"Spread butter on corn: Spread 1 tablespoon herb butter on each corn cob.",
-						"Wrap corn in foil: Wrap each corn on the cob individually in aluminum foil.",
-						"Roast corn in oven: Place foil-wrapped corn on a baking sheet. Bake in preheated oven until corn is soft, 20 to 25 minutes, turning once halfway through cook time. Remove corn from foil, and serve",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Make butter mixture: Preheat oven to 425°F. Stir together butter, parsley, garlic, rosemary, thyme, salt, and pepper in a bowl until evenly combined."},
+						{Type: "HowToStep", Text: "Spread butter on corn: Spread 1 tablespoon herb butter on each corn cob."},
+						{Type: "HowToStep", Text: "Wrap corn in foil: Wrap each corn on the cob individually in aluminum foil."},
+						{Type: "HowToStep", Text: "Roast corn in oven: Place foil-wrapped corn on a baking sheet. Bake in preheated oven until corn is soft, 20 to 25 minutes, turning once halfway through cook time. Remove corn from foil, and serve"},
 					},
 				},
 				TotalTime: "PT30M",
@@ -960,19 +925,19 @@ func TestScraper_S(t *testing.T) {
 			in:   "https://www.spendwithpennies.com/split-pea-soup/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Dinner"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Dinner"},
 				CookTime:      "PT130M",
-				Cuisine:       models.Cuisine{Value: "American"},
+				Cuisine:       &models.Cuisine{Value: "American"},
 				DatePublished: "2023-10-15T20:32:25+00:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Split pea soup is the perfect way to use up leftover ham. Split peas and ham are simmered in a delicious broth to create a thick and hearty soup!",
 				},
-				Keywords: models.Keywords{
+				Keywords: &models.Keywords{
 					Values: "best recipe, ham and pea soup, how to make, leftover ham, split pea soup",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"2 cups dried split peas (green or yellow (14 oz))",
 						"1 meaty ham bone (or 2 cups diced leftover ham)",
@@ -988,18 +953,17 @@ func TestScraper_S(t *testing.T) {
 						"salt to taste",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Sort through the peas to ensure there is no debris. Rinse and drain well.",
-						"In a large pot, combine peas, ham, water, broth, parsley, and bay leaf. Bring to a boil, reduce heat " +
-							"to low, and simmer covered for 1 hour.",
-						"Add in celery, carrots, onion, pepper, thyme, and salt. Cover and simmer 45 minutes more.",
-						"Remove ham bone and chop the meat. Return the meat to the soup and cook uncovered until thickened and the peas have broken down and the soup has thickened, about 20 minutes more.",
-						"Discard the bay leaf and season with salt and additional pepper to taste.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Sort through the peas to ensure there is no debris. Rinse and drain well."},
+						{Type: "HowToStep", Text: "In a large pot, combine peas, ham, water, broth, parsley, and bay leaf. Bring to a boil, reduce heat to low, and simmer covered for 1 hour."},
+						{Type: "HowToStep", Text: "Add in celery, carrots, onion, pepper, thyme, and salt. Cover and simmer 45 minutes more."},
+						{Type: "HowToStep", Text: "Remove ham bone and chop the meat. Return the meat to the soup and cook uncovered until thickened and the peas have broken down and the soup has thickened, about 20 minutes more."},
+						{Type: "HowToStep", Text: "Discard the bay leaf and season with salt and additional pepper to taste."},
 					},
 				},
 				Name: "Split Pea Soup",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "365 kcal",
 					Carbohydrates: "45 g",
 					Cholesterol:   "29 mg",
@@ -1012,7 +976,7 @@ func TestScraper_S(t *testing.T) {
 				},
 				PrepTime:  "PT20M",
 				TotalTime: "PT150M",
-				Yield:     models.Yield{Value: 6},
+				Yield:     &models.Yield{Value: 6},
 				URL:       "https://www.spendwithpennies.com/split-pea-soup/",
 			},
 		},
@@ -1021,19 +985,19 @@ func TestScraper_S(t *testing.T) {
 			in:   "https://www.staysnatched.com/seafood-dressing",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "dinner"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "dinner"},
 				CookTime:      "PT55M",
-				Cuisine:       models.Cuisine{Value: "Louisiana"},
+				Cuisine:       &models.Cuisine{Value: "Louisiana"},
 				DatePublished: "2022-11-14T12:29:00+00:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "This Seafood Dressing is a classic Southern side dish recipe made with cornbread and the Louisiana Holy Trinity vegetables including celery, green peppers, and onion. Load this with shrimp, crab, and even lobster! This is perfect for soul food dinners, Thanksgiving, or any gathering.",
 				},
-				Keywords: models.Keywords{
+				Keywords: &models.Keywords{
 					Values: "how to make seafood dressing, Louisiana seafood dressing, seafood cornbread dressing, seafood dressing, shrimp cornbread dressing",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"Cooked/Day Old Cornbread", "1 tablespoon olive oil",
 						"1 cup finely chopped white onion", "1 cup finely chopped celery",
@@ -1046,24 +1010,24 @@ func TestScraper_S(t *testing.T) {
 						"1 pound raw shrimp (Peeled and deveined)",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"You can get the recipe for homemade cornbread here.",
-						"Preheat oven to 350 degrees.",
-						"Heat a skillet on medium-high heat. When hot, add the olive oil, celery, onions, garlic, and green peppers.",
-						"Saute until the onions are translucent, fragrant, and the vegetables are soft. Remove the vegetables from the pan. Set aside to cool while prepping the remaining ingredients.",
-						"Place day old cornbread in a large mixing bowl. Use a large spoon and/or your hands to break down the cornbread. You want to fully crumble it.",
-						"Add in the sauteed veggies, ground sage, Old Bay seasoning, salt, and pepper. Mix well. Stop and taste the mixture here. This is where you want to adjust the seasoning and spice if necessary to suit your taste. Before adding the eggs, taste the dressing.",
-						"Add in the eggs and cream of chicken soup. Stir.",
-						"Slowly pour in the chicken broth. Start with a little chicken broth and then stir until the dressing is thick. Add more when needed. You should get the consistency of thick oatmeal.",
-						"Add in 1/2 of the dressing mixture and spread it throughout the bottom of the pan.",
-						"Add the shrimp and crab on top.",
-						"Top it with a layer of the remaining dressing.",
-						"Bake for 40-45 minutes uncovered on 350 degrees until a toothpick returns clean.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "You can get the recipe for homemade cornbread here."},
+						{Type: "HowToStep", Text: "Preheat oven to 350 degrees."},
+						{Type: "HowToStep", Text: "Heat a skillet on medium-high heat. When hot, add the olive oil, celery, onions, garlic, and green peppers."},
+						{Type: "HowToStep", Text: "Saute until the onions are translucent, fragrant, and the vegetables are soft. Remove the vegetables from the pan. Set aside to cool while prepping the remaining ingredients."},
+						{Type: "HowToStep", Text: "Place day old cornbread in a large mixing bowl. Use a large spoon and/or your hands to break down the cornbread. You want to fully crumble it."},
+						{Type: "HowToStep", Text: "Add in the sauteed veggies, ground sage, Old Bay seasoning, salt, and pepper. Mix well. Stop and taste the mixture here. This is where you want to adjust the seasoning and spice if necessary to suit your taste. Before adding the eggs, taste the dressing."},
+						{Type: "HowToStep", Text: "Add in the eggs and cream of chicken soup. Stir."},
+						{Type: "HowToStep", Text: "Slowly pour in the chicken broth. Start with a little chicken broth and then stir until the dressing is thick. Add more when needed. You should get the consistency of thick oatmeal."},
+						{Type: "HowToStep", Text: "Add in 1/2 of the dressing mixture and spread it throughout the bottom of the pan."},
+						{Type: "HowToStep", Text: "Add the shrimp and crab on top."},
+						{Type: "HowToStep", Text: "Top it with a layer of the remaining dressing."},
+						{Type: "HowToStep", Text: "Bake for 40-45 minutes uncovered on 350 degrees until a toothpick returns clean."},
 					},
 				},
 				Name: "Seafood Dressing Recipe",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "289 kcal",
 					Carbohydrates: "17 g",
 					Fat:           "9 g",
@@ -1072,7 +1036,7 @@ func TestScraper_S(t *testing.T) {
 				},
 				PrepTime:  "PT15M",
 				TotalTime: "PT70M",
-				Yield:     models.Yield{Value: 10},
+				Yield:     &models.Yield{Value: 10},
 				URL:       "https://www.staysnatched.com/seafood-dressing",
 			},
 		},
@@ -1081,19 +1045,17 @@ func TestScraper_S(t *testing.T) {
 			in:   "https://steamykitchen.com/4474-korean-style-tacos-with-kogi-bbq-sauce.html",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Main Course"},
-				Cuisine:       models.Cuisine{Value: "American"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Main Course"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{Value: "American"},
 				DatePublished: "2020-07-25T05:19:27+00:00",
-				Description: models.Description{
-					Value: "This is a great way to use your leftover pulled pork or roasted chicken. The BBQ Sauce from Kogi BBQ " +
-						"was created by Chef Roy to be strong flavored enough to match the smokiness of BBQ’d pork or roasted " +
-						"chicken. You can add use kimchi (spicy pickled Korean cabbage) to top the tacos, or make a quick " +
-						"cucumber pickle like I have. The recipe for the quick cucumber pickle is below.",
+				Description: &models.Description{
+					Value: "This is a great way to use your leftover pulled pork or roasted chicken. The BBQ Sauce from Kogi BBQ was created by Chef Roy to be strong flavored enough to match the smokiness of BBQ’d pork or roasted chicken. You can add use kimchi (spicy pickled Korean cabbage) to top the tacos, or make a quick cucumber pickle like I have. The recipe for the quick cucumber pickle is below.",
 				},
-				Keywords: models.Keywords{Values: "korean bbq, taco"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "korean bbq, taco"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 pound cooked pulled pork or cooked shredded chicken",
 						"12 corn or flour tortillas",
@@ -1110,20 +1072,15 @@ func TestScraper_S(t *testing.T) {
 						"2 teaspoons sesame oil",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Make the Quick Cucumber Pickle: Mix together all the Quick Pickle ingredients. You can make this a " +
-							"few hours in advance and store in refrigerator. The longer it sits, the less “crunch” you’ll " +
-							"have. I like making this cucumber pickle 1 hour prior, storing in refrigerator and serving it " +
-							"cold on the tacos for texture and temperature contrast.",
-						"Make the Koji BBQ Sauce: Whisk all BBQ sauce ingredients together until sugar has dissolved and mixture " +
-							"is smooth. You can make this a few days in advance and store tightly covered in the refrigerator.",
-						"Toss the Koji BBQ Sauce with your cooked pulled pork or shredded chicken. Warm the tortillas and serve" +
-							" tacos with the Quick Cucumber Pickle.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Make the Quick Cucumber Pickle: Mix together all the Quick Pickle ingredients. You can make this a few hours in advance and store in refrigerator. The longer it sits, the less “crunch” you’ll have. I like making this cucumber pickle 1 hour prior, storing in refrigerator and serving it cold on the tacos for texture and temperature contrast."},
+						{Type: "HowToStep", Text: "Make the Koji BBQ Sauce: Whisk all BBQ sauce ingredients together until sugar has dissolved and mixture is smooth. You can make this a few days in advance and store tightly covered in the refrigerator."},
+						{Type: "HowToStep", Text: "Toss the Koji BBQ Sauce with your cooked pulled pork or shredded chicken. Warm the tortillas and serve tacos with the Quick Cucumber Pickle."},
 					},
 				},
 				Name: "Korean Style Tacos with Kogi BBQ Sauce Recipe",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "503 kcal",
 					Carbohydrates: "48 g",
 					Cholesterol:   "102 mg",
@@ -1136,7 +1093,8 @@ func TestScraper_S(t *testing.T) {
 					Sugar:         "11 g",
 				},
 				PrepTime: "PT60M",
-				Yield:    models.Yield{Value: 4},
+				Tools:    &models.Tools{Values: []models.HowToItem{}},
+				Yield:    &models.Yield{Value: 4},
 				URL:      "https://steamykitchen.com/4474-korean-style-tacos-with-kogi-bbq-sauce.html",
 			},
 		},
@@ -1144,16 +1102,19 @@ func TestScraper_S(t *testing.T) {
 			name: "streetkitchen.co",
 			in:   "https://streetkitchen.co/recipe/thai-red-duck-curry/",
 			want: models.RecipeSchema{
-				AtContext: atContext,
-				AtType:    models.SchemaType{Value: "Recipe"},
-				Category:  models.Category{Value: "uncategorized"},
-				Description: models.Description{
+				AtContext:     atContext,
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Description: &models.Description{
 					Value: "This exquisite Thai Red Duck Curry is made with pineapple, cherry tomatoes and authentic red curry spices and coconut.",
 				},
-				Name:  "Thai Red Duck Curry",
-				Yield: models.Yield{Value: 4},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{},
+				Name:     "Thai Red Duck Curry",
+				Yield:    &models.Yield{Value: 4},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"2 tablespoons vegetable oil",
 						"380g (approx. 2) fresh duck breast fillets, pat dry",
@@ -1166,26 +1127,31 @@ func TestScraper_S(t *testing.T) {
 						"Steamed jasmine rice and roti to serve",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Brush the oil over duck breasts and season with salt. Heat a non-stick frying pan over medium heat. When hot, add duck breasts skin-side down. Cook for 4-5 minutes or until the skin is golden and crisp. Turn and cook for 3-4 minutes or until just cooked through. Transfer to a plate. Cut into 1cm slices",
-						"Discard excess oil, retaining 1 tbsp. Return pan to medium heat. Add spice pack and cook for 5 seconds. Add onion and cook for 3 minutes or until softened.\u00a0",
-						"Stir in curry paste, coconut milk sachet, pineapple, tomatoes and 1/2 cup water. Stir until combined. Bring to the boil and simmer for 2 minutes. Nestle duck into sauce and simmer for 5 minutes or until duck is cooked through and sauce thickens. Spoon rice into serving bowls. Top with curry and garnish with basil and mint leaves and sliced red chilli. Serve with extra grilled roti.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Brush the oil over duck breasts and season with salt. Heat a non-stick frying pan over medium heat. When hot, add duck breasts skin-side down. Cook for 4-5 minutes or until the skin is golden and crisp. Turn and cook for 3-4 minutes or until just cooked through. Transfer to a plate. Cut into 1cm slices"},
+						{Type: "HowToStep", Text: "Discard excess oil, retaining 1 tbsp. Return pan to medium heat. Add spice pack and cook for 5 seconds. Add onion and cook for 3 minutes or until softened."},
+						{Type: "HowToStep", Text: "Stir in curry paste, coconut milk sachet, pineapple, tomatoes and 1/2 cup water. Stir until combined. Bring to the boil and simmer for 2 minutes. Nestle duck into sauce and simmer for 5 minutes or until duck is cooked through and sauce thickens. Spoon rice into serving bowls. Top with curry and garnish with basil and mint leaves and sliced red chilli. Serve with extra grilled roti."},
 					},
 				},
-				URL: "https://streetkitchen.co/recipe/thai-red-duck-curry/",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				URL:             "https://streetkitchen.co/recipe/thai-red-duck-curry/",
 			},
 		},
 		{
 			name: "strongrfastr.com",
 			in:   "https://www.strongrfastr.com/recipes/96-latininspired_creamy_chicken_stew",
 			want: models.RecipeSchema{
-				AtContext:   "https://schema.org",
-				AtType:      models.SchemaType{Value: "Recipe"},
-				Category:    models.Category{Value: "dinner"},
-				Description: models.Description{Value: "crock pot, slow cooker"},
-				Image:       models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "dinner"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Description:   &models.Description{Value: "crock pot, slow cooker"},
+				Keywords:      &models.Keywords{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"4 dash ground cumin", "1/3 lbs boneless skinless chicken breast, raw",
 						"1/2 can(s) diced tomatoes", "1/6 can black beans",
@@ -1194,23 +1160,24 @@ func TestScraper_S(t *testing.T) {
 						"1/6 can (~16 oz) pinto beans", "4 tsp cream cheese",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Note: a slow cooker is recommended for extra juicy chicken, but to save time, you can also cook the stew in a large pot on the stove and keep it at a simmer until the chicken breasts are fully cooked, about 10-15 minutes, before taking them out to shred.",
-						"Place the chicken breasts into the bottom of a slow cooker, and pour tomatoes, green salsa, black beans, pinto beans, and corn over the chicken. Sprinkle taco seasoning, cayenne, cumin, and some salt over the mixture, and stir to combine. Cover the cooker, set on Low, and cook until chicken is very tender and the mixture has thickened, 8 to 10 hours.",
-						"After its finished cooking, remove the chicken breasts and shred them with two forks. Return the shredded chicken to the stew and stir.",
-						"Mix a few tablespoons of stew liquid with cream cheese in a bowl, stir until smooth, and mix the cream cheese into the cooker to make a creamy sauce. Continue to cook for 15 minutes, then serve.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Note: a slow cooker is recommended for extra juicy chicken, but to save time, you can also cook the stew in a large pot on the stove and keep it at a simmer until the chicken breasts are fully cooked, about 10-15 minutes, before taking them out to shred."},
+						{Type: "HowToStep", Text: "Place the chicken breasts into the bottom of a slow cooker, and pour tomatoes, green salsa, black beans, pinto beans, and corn over the chicken. Sprinkle taco seasoning, cayenne, cumin, and some salt over the mixture, and stir to combine. Cover the cooker, set on Low, and cook until chicken is very tender and the mixture has thickened, 8 to 10 hours."},
+						{Type: "HowToStep", Text: "After its finished cooking, remove the chicken breasts and shred them with two forks. Return the shredded chicken to the stew and stir."},
+						{Type: "HowToStep", Text: "Mix a few tablespoons of stew liquid with cream cheese in a bowl, stir until smooth, and mix the cream cheese into the cooker to make a creamy sauce. Continue to cook for 15 minutes, then serve."},
 					},
 				},
 				Name: "Latin-inspired creamy chicken stew",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "490 calories",
 					Carbohydrates: "36 g",
 					Fat:           "12 g",
 					Protein:       "47 g",
 				},
 				TotalTime: "PT550M",
-				Yield:     models.Yield{Value: 1},
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
+				Yield:     &models.Yield{Value: 1},
 				URL:       "https://www.strongrfastr.com/recipes/96-latininspired_creamy_chicken_stew",
 			},
 		},
@@ -1218,22 +1185,24 @@ func TestScraper_S(t *testing.T) {
 			name: "sunbasket.com",
 			in:   "https://sunbasket.com/recipe/chicken-and-dumplings",
 			want: models.RecipeSchema{
-				AtContext: atContext,
-				AtType:    models.SchemaType{Value: "Recipe"},
-				Category:  models.Category{Value: "uncategorized"},
-				CookTime:  "PT35M",
-				Description: models.Description{
+				AtContext:     atContext,
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				CookTime:      "PT35M",
+				Description: &models.Description{
 					Value: "This is Sunbasket’s easy (and gluten-free!) spin on an American classic.",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 cup milk",
 						"1 teaspoon apple cider vinegar",
 						"2 ounces organic cremini or other button mushrooms",
 						"1 or 2 cloves organic peeled fresh garlic",
-						"Sunbasket gluten-free dumpling mix (Cup4Cup gluten-free flour - sugar - kosher salt - baking powder - " +
-							"baking soda)",
+						"Sunbasket gluten-free dumpling mix (Cup4Cup gluten-free flour - sugar - kosher salt - baking powder - baking soda)",
 						"Chicken options:",
 						"2 to 4 boneless skinless chicken thighs (about 10 ounces total)",
 						"2 boneless skinless chicken breasts (about 6 ounces each)",
@@ -1244,18 +1213,18 @@ func TestScraper_S(t *testing.T) {
 						"1 cup chicken broth",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Prep the milk-vinegar mixture",
-						"Prep the vegetables; make the dumpling dough",
-						"Prep and brown the chicken",
-						"Cook the vegetables",
-						"Finish the chicken; cook the dumplings",
-						"Serve",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Prep the milk-vinegar mixture"},
+						{Type: "HowToStep", Text: "Prep the vegetables; make the dumpling dough"},
+						{Type: "HowToStep", Text: "Prep and brown the chicken"},
+						{Type: "HowToStep", Text: "Cook the vegetables"},
+						{Type: "HowToStep", Text: "Finish the chicken; cook the dumplings"},
+						{Type: "HowToStep", Text: "Serve"},
 					},
 				},
 				Name: "Chicken and dumplings",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:     "520",
 					Cholesterol:  "135mg",
 					Fat:          "21g",
@@ -1265,7 +1234,8 @@ func TestScraper_S(t *testing.T) {
 					Sodium:       "830mg",
 					Sugar:        "7g",
 				},
-				Yield: models.Yield{Value: 2},
+				Tools: &models.Tools{Values: []models.HowToItem{}},
+				Yield: &models.Yield{Value: 2},
 				URL:   "https://sunbasket.com/recipe/chicken-and-dumplings",
 			},
 		},
@@ -1274,13 +1244,14 @@ func TestScraper_S(t *testing.T) {
 			in:   "https://sundpaabudget.dk/shawarma-bowl",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Kylling"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Kylling"},
 				CookTime:      "PT15M",
-				Cuisine:       models.Cuisine{Value: "Middelhavsmad"},
+				Cuisine:       &models.Cuisine{Value: "Middelhavsmad"},
 				DatePublished: "2023-01-13T17:24:13+00:00",
-				Image:         models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Description:   &models.Description{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"2 dl ris", "300 g kebab", "1 ds kikærter", "2 peberfrugter", "1 rødløg",
 						"1 spsk olie til stegning", "1 tsk spidskommen", "1 tsk paprika",
@@ -1293,24 +1264,24 @@ func TestScraper_S(t *testing.T) {
 						"syltet rødkålssalat ((se opskrift))",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Kog risen som anvist.",
-						"Agurk-tomatsalat: vask og hak agurk og tomat i små fine tern. Vend dem sammen citronsaft og salt og peber.",
-						"Rør ingredienserne sammen til dressingen og smag til.",
-						"Peberfrugt skæres i grove strimler, rødløget skæres i tynde halve skiver, hæld vandet fra kikærterne.",
-						"Opvarm lidt olie på en pande og rist først kikærterne sammen spidskommen og paprika samt salt og peber. Tag dem til side og rist peberfrugterne på begge sider så de tager farve.",
-						"Steg kebaben som anvist på pakken.",
-						"Anret shawarma bowlen med alle ingredienserne. Skal det være ekstra lækkert, kan jeg anbefale at lave syltet rødkålssalat til - det smager skønt.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Kog risen som anvist."},
+						{Type: "HowToStep", Text: "Agurk-tomatsalat: vask og hak agurk og tomat i små fine tern. Vend dem sammen citronsaft og salt og peber."},
+						{Type: "HowToStep", Text: "Rør ingredienserne sammen til dressingen og smag til."},
+						{Type: "HowToStep", Text: "Peberfrugt skæres i grove strimler, rødløget skæres i tynde halve skiver, hæld vandet fra kikærterne."},
+						{Type: "HowToStep", Text: "Opvarm lidt olie på en pande og rist først kikærterne sammen spidskommen og paprika samt salt og peber. Tag dem til side og rist peberfrugterne på begge sider så de tager farve."},
+						{Type: "HowToStep", Text: "Steg kebaben som anvist på pakken."},
+						{Type: "HowToStep", Text: "Anret shawarma bowlen med alle ingredienserne. Skal det være ekstra lækkert, kan jeg anbefale at lave syltet rødkålssalat til - det smager skønt."},
 					},
 				},
 				Name: "Shawarma bowl",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories: "300 kcal",
 					Servings: "1",
 				},
 				PrepTime: "PT30M",
-				Yield:    models.Yield{Value: 4},
+				Yield:    &models.Yield{Value: 4},
 				URL:      "https://sundpaabudget.dk/shawarma-bowl",
 			},
 		},
@@ -1319,13 +1290,16 @@ func TestScraper_S(t *testing.T) {
 			in:   "https://www.sunset.com/recipe/veggie-chili",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "uncategorized"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
 				CookTime:      "PT0H0M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DatePublished: "2019-02-25",
-				Description:   models.Description{Value: "Veggie Chili"},
-				Image:         models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Description:   &models.Description{Value: "Veggie Chili"},
+				Keywords:      &models.Keywords{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 cup each dried pinto beans and dried kidney beans, sorted of debris and rinsed, and soaked separately for two nights in 3 cups water each",
 						"1 oz each dry guajillo chile and dry ancho chile, stemmed and seeded, and soaked separately overnight in 1 1/2 cups hot water each",
@@ -1345,21 +1319,23 @@ func TestScraper_S(t *testing.T) {
 						"Sour cream, sliced green onion, pepitas, parmesan crisps, for garnish (optional)",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Drain and rinse beans; set aside. Drain chiles and reserve 1/2 cup of each soaking liquid; set aside.",
-						"Heat a large pot over medium-low heat. Add oil, then onion, carrot, bell pepper, jalapeño, garlic, and 1/2 tsp. salt. Stir frequently on medium-low heat until liquid is released and vegetables start to stew down.",
-						"Add the paprikas, chili powder, cayenne, cumin, black pepper, onion powder, tomato paste, beans, and tomatoes and stir to incorporate.",
-						"In a medium bowl, use an immersion blender to purée the chiles, the reserved chile soaking liquids, 1 1/2 tbsp. vinegar, the chipotle in adobo, brown sugar, 1 1/2 tsp. salt, and 3 tbsp. water. Add mixture to pot, bring to a simmer, and simmer lightly for 1 1/2 hours.",
-						"Add corn and 1/3 cup water to pot, bring back to a simmer, and let simmer lightly for 1 hour.",
-						"Remove pot from heat. Stir in the chocolate, 1/2 tsp. salt, and the remaining 3 tbsp. vinegar. Serve warm, topped with garnishes, if using.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Drain and rinse beans; set aside. Drain chiles and reserve 1/2 cup of each soaking liquid; set aside."},
+						{Type: "HowToStep", Text: "Heat a large pot over medium-low heat. Add oil, then onion, carrot, bell pepper, jalapeño, garlic, and 1/2 tsp. salt. Stir frequently on medium-low heat until liquid is released and vegetables start to stew down."},
+						{Type: "HowToStep", Text: "Add the paprikas, chili powder, cayenne, cumin, black pepper, onion powder, tomato paste, beans, and tomatoes and stir to incorporate."},
+						{Type: "HowToStep", Text: "In a medium bowl, use an immersion blender to purée the chiles, the reserved chile soaking liquids, 1 1/2 tbsp. vinegar, the chipotle in adobo, brown sugar, 1 1/2 tsp. salt, and 3 tbsp. water. Add mixture to pot, bring to a simmer, and simmer lightly for 1 1/2 hours."},
+						{Type: "HowToStep", Text: "Add corn and 1/3 cup water to pot, bring back to a simmer, and let simmer lightly for 1 hour."},
+						{Type: "HowToStep", Text: "Remove pot from heat. Stir in the chocolate, 1/2 tsp. salt, and the remaining 3 tbsp. vinegar. Serve warm, topped with garnishes, if using."},
 					},
 				},
-				Name:      "Veggie Chili",
-				PrepTime:  "PT0H0M",
-				TotalTime: "PT0H0M",
-				Yield:     models.Yield{Value: 8},
-				URL:       "https://www.sunset.com/recipe/veggie-chili",
+				Name:            "Veggie Chili",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT0H0M",
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:       "PT0H0M",
+				Yield:           &models.Yield{Value: 8},
+				URL:             "https://www.sunset.com/recipe/veggie-chili",
 			},
 		},
 		{
@@ -1367,20 +1343,19 @@ func TestScraper_S(t *testing.T) {
 			in:   "https://sweetcsdesigns.com/roasted-tomato-marinara-sauce/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Pasta"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Pasta"},
 				CookTime:      "PT45M",
-				Cuisine:       models.Cuisine{Value: "Italian"},
+				Cuisine:       &models.Cuisine{Value: "Italian"},
 				DatePublished: "2022-03-18T09:01:00+00:00",
-				Description: models.Description{
-					Value: "Tired of using those bland jars of spaghetti sauce? This homemade roasted tomato marinara " +
-						"sauce is packed with more flavor than those store-bought jars.",
+				Description: &models.Description{
+					Value: "Tired of using those bland jars of spaghetti sauce? This homemade roasted tomato marinara sauce is packed with more flavor than those store-bought jars.",
 				},
-				Keywords: models.Keywords{
+				Keywords: &models.Keywords{
 					Values: "italian, pasta, sauce, tomato, tomato sauce",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"2 pounds roma tomatoes",
 						"1 onion (peeled and quartered)",
@@ -1391,26 +1366,22 @@ func TestScraper_S(t *testing.T) {
 						"Salt and Pepper",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Preheat your oven to 425 and line a large baking sheet with foil (it will help keep the tomatoes from " +
-							"sticking to the pan).",
-						"Add the tomatoes and onion to the pan and drizzle over 1.5 tablespoons olive oil along with the balsamic " +
-							"vinegar. Sprinkle generously with salt and pepper and toss to combine.",
-						"Slice the top off the head of garlic, making sure to leave it intact.",
-						"Drizzle the remaining half tablespoon of olive oil over the garlic and wrap it tightly in foil.",
-						"Place the garlic cut side up on the baking sheet.",
-						"Roast for 35 minutes, or until the tomatoes are caramelized and the onions are golden brown.",
-						"Remove the garlic from the foil and squeeze out the cloves-- be careful, it will be hot!",
-						"Add the garlic cloves to a food processor, along with the roasted tomatoes, roasted onion, remaining two " +
-							"tablespoons balsamic vinegar, and fresh basil.",
-						"Puree to your desired consistency and season with salt and pepper to taste.",
-						"Store the marinara sauce in an airtight container in the fridge for up to five days or in an airtight " +
-							"container in the freezer for up to three months.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Preheat your oven to 425 and line a large baking sheet with foil (it will help keep the tomatoes from sticking to the pan)."},
+						{Type: "HowToStep", Text: "Add the tomatoes and onion to the pan and drizzle over 1.5 tablespoons olive oil along with the balsamic vinegar. Sprinkle generously with salt and pepper and toss to combine."},
+						{Type: "HowToStep", Text: "Slice the top off the head of garlic, making sure to leave it intact."},
+						{Type: "HowToStep", Text: "Drizzle the remaining half tablespoon of olive oil over the garlic and wrap it tightly in foil."},
+						{Type: "HowToStep", Text: "Place the garlic cut side up on the baking sheet."},
+						{Type: "HowToStep", Text: "Roast for 35 minutes, or until the tomatoes are caramelized and the onions are golden brown."},
+						{Type: "HowToStep", Text: "Remove the garlic from the foil and squeeze out the cloves-- be careful, it will be hot!"},
+						{Type: "HowToStep", Text: "Add the garlic cloves to a food processor, along with the roasted tomatoes, roasted onion, remaining two tablespoons balsamic vinegar, and fresh basil."},
+						{Type: "HowToStep", Text: "Puree to your desired consistency and season with salt and pepper to taste."},
+						{Type: "HowToStep", Text: "Store the marinara sauce in an airtight container in the fridge for up to five days or in an airtight container in the freezer for up to three months."},
 					},
 				},
 				Name: "Roasted Tomato Marinara Sauce",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:       "68 kcal",
 					Carbohydrates:  "8 g",
 					Fat:            "4 g",
@@ -1424,7 +1395,7 @@ func TestScraper_S(t *testing.T) {
 				},
 				PrepTime:  "PT5M",
 				TotalTime: "PT50M",
-				Yield:     models.Yield{Value: 2},
+				Yield:     &models.Yield{Value: 2},
 				URL:       "https://sweetcsdesigns.com/roasted-tomato-marinara-sauce/",
 			},
 		},
@@ -1433,20 +1404,19 @@ func TestScraper_S(t *testing.T) {
 			in:   "https://sweetpeasandsaffron.com/slow-cooker-cilantro-lime-chicken-tacos-freezer-slow-cooker/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Main Course"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Main Course"},
 				CookTime:      "PT240M",
-				Cuisine:       models.Cuisine{Value: "Mexican"},
+				Cuisine:       &models.Cuisine{Value: "Mexican"},
 				DatePublished: "2022-03-24T01:10:00+00:00",
-				Description: models.Description{
-					Value: "Cilantro lime chicken tacos are full of simple, bright flavors: cilantro, lime juice, garlic and a " +
-						"touch of honey! No sauteeing required (just 15 min prep!), and easy to meal prep.",
+				Description: &models.Description{
+					Value: "Cilantro lime chicken tacos are full of simple, bright flavors: cilantro, lime juice, garlic and a touch of honey! No sauteeing required (just 15 min prep!), and easy to meal prep.",
 				},
-				Keywords: models.Keywords{
+				Keywords: &models.Keywords{
 					Values: "cilantro lime chicken crockpot tacos, cilantro lime chicken tacos, crockpot tacos, meal prep tacos",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"4 chicken breasts (roughly 2 lbs; boneless skinless chicken thighs may also be used * see note 1)",
 						"11.5 oz can of corn kernels (drained; 341 mL)",
@@ -1466,18 +1436,16 @@ func TestScraper_S(t *testing.T) {
 						"greek yogurt",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Combine - In the base of a 6-quart slow cooker, place the chicken breasts, corn and onion slices.",
-						"Blend sauce - Using a stand or immersion blender, blend the sauce ingredients and pour over slow cooker " +
-							"contents.",
-						"Slow cook - Cover and cook on low for 4-5 hours, until chicken is cooked through.",
-						"Serve - Shred chicken, then serve in tortillas topped with yogurt, shredded cabbage, and radish slices. " +
-							"* see note 3",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Combine - In the base of a 6-quart slow cooker, place the chicken breasts, corn and onion slices."},
+						{Type: "HowToStep", Text: "Blend sauce - Using a stand or immersion blender, blend the sauce ingredients and pour over slow cooker contents."},
+						{Type: "HowToStep", Text: "Slow cook - Cover and cook on low for 4-5 hours, until chicken is cooked through."},
+						{Type: "HowToStep", Text: "Serve - Shred chicken, then serve in tortillas topped with yogurt, shredded cabbage, and radish slices. * see note 3"},
 					},
 				},
 				Name: "Cilantro Lime Chicken Crockpot Tacos",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "267 kcal",
 					Carbohydrates: "28 g",
 					Cholesterol:   "73 mg",
@@ -1491,7 +1459,7 @@ func TestScraper_S(t *testing.T) {
 				},
 				PrepTime:  "PT15M",
 				TotalTime: "PT260M",
-				Yield:     models.Yield{Value: 8},
+				Yield:     &models.Yield{Value: 8},
 				URL:       "https://sweetpeasandsaffron.com/slow-cooker-cilantro-lime-chicken-tacos-freezer-slow-cooker/",
 			},
 		},

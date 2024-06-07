@@ -12,17 +12,15 @@ func TestScraper_R(t *testing.T) {
 			in:   "https://rachlmansfield.com/delicious-crispy-rice-salad-gluten-free/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "uncategorized"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
 				CookTime:      "PT15M",
 				DatePublished: "2022-04-03",
-				Description: models.Description{
-					Value: "This Crispy Rice Salad is such an easy and flavorful recipe to make for lunch or dinner. This salad " +
-						"" +
-						"is vegan, gluten-free and craveable.",
+				Description: &models.Description{
+					Value: "This Crispy Rice Salad is such an easy and flavorful recipe to make for lunch or dinner. This salad is vegan, gluten-free and craveable.",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1/2 cup basmati rice, uncooked",
 						"1/2 cup broth (code RACHL)",
@@ -41,25 +39,23 @@ func TestScraper_R(t *testing.T) {
 						"Salt and pepper to taste",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Prepare the rice per package but do a mix of the broth and water (optimal flavor!)",
-						"While the rice cooks, remove stems from the kale and chop the kale",
-						"Add kale to a large mixing bowl and massage with your hands with olive oil to cut the bitterness",
-						"Warm a large skillet with oil, garlic and onion and cook for 3-5 minutes or until fragrant",
-						"Add in the rice and press down to form a large &#8220;rice pancake&#8221; of sorts",
-						"Cook on medium heat for about 8 minutes then start to stir it to crisp the other side of the rice (do " +
-							"not cover the rice or it won't crisp!)",
-						"Remove rice from pan once crisped and add to mixing bowl with the kale and add in the edamame, scallions, " +
-							"peppers, kimchi, peanuts and mix",
-						"Dress with coconut aminos and sesame oil and salt and pepper and enjoy!",
-						"You can also add some cooked salmon, chicken or any additional protein if you'd like",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Prepare the rice per package but do a mix of the broth and water (optimal flavor!)"},
+						{Type: "HowToStep", Text: "While the rice cooks, remove stems from the kale and chop the kale"},
+						{Type: "HowToStep", Text: "Add kale to a large mixing bowl and massage with your hands with olive oil to cut the bitterness"},
+						{Type: "HowToStep", Text: "Warm a large skillet with oil, garlic and onion and cook for 3-5 minutes or until fragrant"},
+						{Type: "HowToStep", Text: "Add in the rice and press down to form a large &#8220;rice pancake&#8221; of sorts"},
+						{Type: "HowToStep", Text: "Cook on medium heat for about 8 minutes then start to stir it to crisp the other side of the rice (do not cover the rice or it won't crisp!)"},
+						{Type: "HowToStep", Text: "Remove rice from pan once crisped and add to mixing bowl with the kale and add in the edamame, scallions, peppers, kimchi, peanuts and mix"},
+						{Type: "HowToStep", Text: "Dress with coconut aminos and sesame oil and salt and pepper and enjoy!"},
+						{Type: "HowToStep", Text: "You can also add some cooked salmon, chicken or any additional protein if you'd like"},
 					},
 				},
 				Name:      "Delicious Crispy Rice Salad (gluten-free)",
 				PrepTime:  "PT5M",
 				TotalTime: "PT20M",
-				Yield:     models.Yield{Value: 2},
+				Yield:     &models.Yield{Value: 2},
 				URL:       "https://rachlmansfield.com/delicious-crispy-rice-salad-gluten-free/",
 			},
 		},
@@ -68,17 +64,17 @@ func TestScraper_R(t *testing.T) {
 			in:   "https://rainbowplantlife.com/livornese-stewed-beans/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Dinner"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Dinner"},
 				CookTime:      "PT60M",
-				Cuisine:       models.Cuisine{Value: "Italian"},
+				Cuisine:       &models.Cuisine{Value: "Italian"},
 				DatePublished: "2022-01-04T04:56:15+00:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "These Tuscan Stewed Beans are the ultimate rustic Italian comfort food! Made with simple pantry-friendly ingredients like onions, garlic, tomato paste and white beans, but big on gourmet Italian flavor. It&#039;s cozy and indulgent yet wholesome, vegan, and gluten-free.",
 				},
-				Keywords: models.Keywords{Values: "italian beans, italian white bean stew, stewed beans, tuscan beans"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "italian beans, italian white bean stew, stewed beans, tuscan beans"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1/4 cup (56 mL) extra virgin olive oil",
 						"1 medium yellow onion, (chopped)",
@@ -99,29 +95,18 @@ func TestScraper_R(t *testing.T) {
 						"½ cup (8g) fresh basil, (slivered***)",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Heat the olive oil in a Dutch oven over medium heat. Once the oil is hot, add the onion, and season with " +
-							"a pinch or two of salt and pepper. Cook for 7 to 8 minutes, until golden, stirring occasionally. " +
-							"Add in the carrot, celery, and garlic, with another pinch of salt and cook for 3 to 4 minutes. " +
-							"Add the red pepper flakes, parsley, and sage and cook until fragrant, about 1 minute.",
-						"Add the tomato paste and cook, stirring almost continuously, for 1 to 2 minutes, until it&#39;s a bit " +
-							"darker in color.",
-						"Pour the white wine in and deglaze the pan, scraping up any browned bits stuck to the bottom of the pot. " +
-							"Allow wine to simmer rapidly for 3 minutes, or until mostly evaporated and it no longer smells like " +
-							"wine, stirring often.",
-						"Add tomatoes along with their juices, bay leaf, 1 teaspoon kosher salt, and several cracks of black pepper. " +
-							"Cook at a rapid simmer, stirring fairly often, until the tomatoes are fully broken down and most of " +
-							"the liquid has evaporated, 12 to 13 minutes.",
-						"Add the veggie broth and 2 cans of beans. Reduce the heat to low, cover the pan, and maintain a decent " +
-							"simmer for 30 minutes, stirring once in a while. If you want the stew to be thicker, towards the end " +
-							"of cooking, use the back of a wooden spoon or a spatula to gently smash a small portion of the beans.",
-						"Taste, adding a pinch of sugar if needed (if your tomatoes are good-quality, it should not be necessary). " +
-							"Remove the bay leaf. Finish with chopped basil. Season to taste, adding salt and pepper as needed.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Heat the olive oil in a Dutch oven over medium heat. Once the oil is hot, add the onion, and season with a pinch or two of salt and pepper. Cook for 7 to 8 minutes, until golden, stirring occasionally. Add in the carrot, celery, and garlic, with another pinch of salt and cook for 3 to 4 minutes. Add the red pepper flakes, parsley, and sage and cook until fragrant, about 1 minute."},
+						{Type: "HowToStep", Text: "Add the tomato paste and cook, stirring almost continuously, for 1 to 2 minutes, until it&#39;s a bit darker in color."},
+						{Type: "HowToStep", Text: "Pour the white wine in and deglaze the pan, scraping up any browned bits stuck to the bottom of the pot. Allow wine to simmer rapidly for 3 minutes, or until mostly evaporated and it no longer smells like wine, stirring often."},
+						{Type: "HowToStep", Text: "Add tomatoes along with their juices, bay leaf, 1 teaspoon kosher salt, and several cracks of black pepper. Cook at a rapid simmer, stirring fairly often, until the tomatoes are fully broken down and most of the liquid has evaporated, 12 to 13 minutes."},
+						{Type: "HowToStep", Text: "Add the veggie broth and 2 cans of beans. Reduce the heat to low, cover the pan, and maintain a decent simmer for 30 minutes, stirring once in a while. If you want the stew to be thicker, towards the end of cooking, use the back of a wooden spoon or a spatula to gently smash a small portion of the beans."},
+						{Type: "HowToStep", Text: "Taste, adding a pinch of sugar if needed (if your tomatoes are good-quality, it should not be necessary). Remove the bay leaf. Finish with chopped basil. Season to taste, adding salt and pepper as needed."},
 					},
 				},
 				Name: "Tuscan Stewed Beans",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:       "472 kcal",
 					Carbohydrates:  "59 g",
 					Fat:            "16 g",
@@ -135,7 +120,7 @@ func TestScraper_R(t *testing.T) {
 				},
 				PrepTime:  "PT15M",
 				TotalTime: "PT75M",
-				Yield:     models.Yield{Value: 4},
+				Yield:     &models.Yield{Value: 4},
 				URL:       "https://rainbowplantlife.com/livornese-stewed-beans/",
 			},
 		},
@@ -144,15 +129,15 @@ func TestScraper_R(t *testing.T) {
 			in:   "https://www.realsimple.com/food-recipes/browse-all-recipes/sheet-pan-chicken-and-sweet-potatoes",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "uncategorized"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
 				DateModified:  "2018-07-05T14:07:52.000-04:00",
 				DatePublished: "2016-12-07T11:48:40.000-05:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Get the recipe for Sheet Pan Chicken and Sweet Potatoes.",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"4 bone-in, skin-on chicken leg quarters (about 2 lb.)",
 						"2 medium sweet potatoes, peeled and cut into 1-in. wedges",
@@ -165,20 +150,16 @@ func TestScraper_R(t *testing.T) {
 						"1 tablespoon fresh lemon juice",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Preheat oven to 450°F. Arrange the chicken and sweet potatoes side by side in a single layer on a " +
-							"large rimmed baking sheet. Season with the sage, salt, and pepper and drizzle with 2 " +
-							"tablespoons of the oil, tossing to coat. Lay the bacon on top of the sweet potatoes.",
-						"Roast until a meat thermometer inserted into the thickest portion of a thigh registers 165°F, 20 to " +
-							"25 minutes.",
-						"Meanwhile, toss together the watercress, lemon juice, and the remaining 1 tablespoon of olive oil and " +
-							"season to taste with salt and pepper.",
-						"Serve the chicken with the sweet potatoes and salad, with the bacon crumbled over the top.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Preheat oven to 450°F. Arrange the chicken and sweet potatoes side by side in a single layer on a large rimmed baking sheet. Season with the sage, salt, and pepper and drizzle with 2 tablespoons of the oil, tossing to coat. Lay the bacon on top of the sweet potatoes."},
+						{Type: "HowToStep", Text: "Roast until a meat thermometer inserted into the thickest portion of a thigh registers 165°F, 20 to 25 minutes."},
+						{Type: "HowToStep", Text: "Meanwhile, toss together the watercress, lemon juice, and the remaining 1 tablespoon of olive oil and season to taste with salt and pepper."},
+						{Type: "HowToStep", Text: "Serve the chicken with the sweet potatoes and salad, with the bacon crumbled over the top."},
 					},
 				},
 				Name: "Sheet Pan Chicken and Sweet Potatoes",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:       "533 kcal",
 					Carbohydrates:  "22 g",
 					Cholesterol:    "181 mg",
@@ -191,7 +172,7 @@ func TestScraper_R(t *testing.T) {
 				},
 				TotalTime: "PT30M",
 				URL:       "https://www.realsimple.com/food-recipes/browse-all-recipes/sheet-pan-chicken-and-sweet-potatoes",
-				Yield:     models.Yield{Value: 1},
+				Yield:     &models.Yield{Value: 1},
 			},
 		},
 		{
@@ -199,19 +180,19 @@ func TestScraper_R(t *testing.T) {
 			in:   "https://www.receitasnestle.com.br/receitas/pave-de-pessego",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Sobremesa"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Sobremesa"},
 				CookTime:      "PT0M",
-				Cuisine:       models.Cuisine{Value: "Local"},
+				Cuisine:       &models.Cuisine{Value: "Local"},
 				DatePublished: "2022-10-07T02:44:16-0300",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Sobremesa com creme de Leite MOÇA, biscoito champanhe, pêssegos em calda e Chocolate GALAK",
 				},
-				Keywords: models.Keywords{
+				Keywords: &models.Keywords{
 					Values: "Family Meals,Café da Tarde,Sobremesa,Local,New Years,Natal,Sem peixe,Sem crustáceos,Sem carne de porco,Pescador,receita com frutos do mar,receita com peixe,receita sem crustaceos,receita sem carne de porco,receita sem peixe,MyMenuPlan,leite moça,pavê,De outros,Fruta,Frio / montagem",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 Lata Leite MOÇA® (lata ou caixinha) 395g",
 						"2 xícaras (chá) de Leite Líquido NINHO® Forti+ Integral", "2 gemas",
@@ -220,18 +201,18 @@ func TestScraper_R(t *testing.T) {
 						"1 lata de pêssego em calda picado", "100 g de raspas de Chocolate GALAK®",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Em uma panela, misture o Leite MOÇA, o Leite NINHO, as gemas e o amido de milho e leve ao fogo, mexendo sempre até engrossar. Deixe esfriar e reserve.",
-						"Passe rapidamente parte dos biscoitos na calda do pêssego, acomodando-os no fundo de um refratário retangular (20 x 30 cm).",
-						"Distribua metade do Creme e metade dos pêssegos picados.",
-						"Repita a camada de biscoitos e coloque o restante do Creme e dos pêssegos.",
-						"Decore com as raspas de Chocolate GALAK e com fatias de pêssegos.",
-						"Leve à geladeira até o momento de servir.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Em uma panela, misture o Leite MOÇA, o Leite NINHO, as gemas e o amido de milho e leve ao fogo, mexendo sempre até engrossar. Deixe esfriar e reserve."},
+						{Type: "HowToStep", Text: "Passe rapidamente parte dos biscoitos na calda do pêssego, acomodando-os no fundo de um refratário retangular (20 x 30 cm)."},
+						{Type: "HowToStep", Text: "Distribua metade do Creme e metade dos pêssegos picados."},
+						{Type: "HowToStep", Text: "Repita a camada de biscoitos e coloque o restante do Creme e dos pêssegos."},
+						{Type: "HowToStep", Text: "Decore com as raspas de Chocolate GALAK e com fatias de pêssegos."},
+						{Type: "HowToStep", Text: "Leve à geladeira até o momento de servir."},
 					},
 				},
 				Name: "Pavê de Pêssego",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:     "226",
 					Fat:          "10",
 					Protein:      "5",
@@ -241,7 +222,7 @@ func TestScraper_R(t *testing.T) {
 				},
 				PrepTime:  "PT0M",
 				TotalTime: "PT0M",
-				Yield:     models.Yield{Value: 12},
+				Yield:     &models.Yield{Value: 12},
 				URL:       "https://www.receitasnestle.com.br/receitas/pave-de-pessego",
 			},
 		},
@@ -250,16 +231,18 @@ func TestScraper_R(t *testing.T) {
 			in:   "https://www.recettes.qc.ca/recettes/recette/yakisoba-nouille-sautees-a-la-japonaise",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Pâtes alimentaires"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Pâtes alimentaires"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				CookTime:      "PT20M",
 				DatePublished: "2015-07-28T21:44:00-04:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Recette de Yakisoba (nouilles sautées à la japonaise)",
 				},
-				Keywords: models.Keywords{Values: "pates alimentaires"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "pates alimentaires"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"250 g nouilles soba ou à ramen",
 						"300 g porc haché",
@@ -277,18 +260,20 @@ func TestScraper_R(t *testing.T) {
 						"60 mL sauce soja japonaise",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Faites cuire les nouilles dans de l’eau bouillante en les gardant fermes. Égouttez-les.",
-						"Préparez la sauce : mettez les ingrédients de la sauce dans une petite casserole et chauffez jusqu’à ce que le sucre soit dissous.",
-						"Faites chauffer l’huile de sésame et 1 cuillerée d’huile de pépins de raisin dans un wok. Faites-y revenir le porc jusqu’à ce qu’il soit légèrement doré. Réservez.",
-						"Ajoutez le reste de l’huile dans le wok et faites sauter l’oignon et l’ail jusqu’à ce que l’oignon blondisse. Ajoutez le chou et le poivron. Cuisez jusqu’à ce qu’ils soient tendres. Ajoutez les nouilles, le porc, le gingembre mariné et la sauce. Mélangez et réchauffez. Servez et parsemez avec les ao-nori.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Faites cuire les nouilles dans de l’eau bouillante en les gardant fermes. Égouttez-les."},
+						{Type: "HowToStep", Text: "Préparez la sauce : mettez les ingrédients de la sauce dans une petite casserole et chauffez jusqu’à ce que le sucre soit dissous."},
+						{Type: "HowToStep", Text: "Faites chauffer l’huile de sésame et 1 cuillerée d’huile de pépins de raisin dans un wok. Faites-y revenir le porc jusqu’à ce qu’il soit légèrement doré. Réservez."},
+						{Type: "HowToStep", Text: "Ajoutez le reste de l’huile dans le wok et faites sauter l’oignon et l’ail jusqu’à ce que l’oignon blondisse. Ajoutez le chou et le poivron. Cuisez jusqu’à ce qu’ils soient tendres. Ajoutez les nouilles, le porc, le gingembre mariné et la sauce. Mélangez et réchauffez. Servez et parsemez avec les ao-nori."},
 					},
 				},
-				Name:     "Yakisoba (nouilles sautées à la japonaise)",
-				PrepTime: "PT15M",
-				Yield:    models.Yield{Value: 4},
-				URL:      "https://www.recettes.qc.ca/recettes/recette/yakisoba-nouille-sautees-a-la-japonaise",
+				Name:            "Yakisoba (nouilles sautées à la japonaise)",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT15M",
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 4},
+				URL:             "https://www.recettes.qc.ca/recettes/recette/yakisoba-nouille-sautees-a-la-japonaise",
 			},
 		},
 		{
@@ -296,19 +281,20 @@ func TestScraper_R(t *testing.T) {
 			in:   "https://reciperunner.com/cranberry-apple-sauce/",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Side Dishes"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Side Dishes"},
+				CookingMethod: &models.CookingMethod{},
 				CookTime:      "PT10M",
-				Cuisine:       models.Cuisine{Value: "American"},
+				Cuisine:       &models.Cuisine{Value: "American"},
 				DatePublished: "2023-11-13",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Cranberry apple sauce is sweet and tart and a must make side dish for your holiday table!",
 				},
-				Keywords: models.Keywords{
+				Keywords: &models.Keywords{
 					Values: "cranberry apple sauce, cranberry sauce, cranberry applesauce, apple cranberry sauce",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"12 ounces fresh or frozen cranberries",
 						"1 cup peeled and diced Honeycrisp apples", "1/2 cup maple syrup",
@@ -316,15 +302,15 @@ func TestScraper_R(t *testing.T) {
 						"1/4 teaspoon ground allspice", "1/8 teaspoon salt",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Combine all of the ingredients in a saucepan and bring to a boil over medium-high heat. Once boiling, reduce the heat to a simmer.",
-						"Stir occasionally and cook until the cranberries have broken down and the apples have softened, but still have a little bite to them, about 10-15 minutes. The sauce should be compote-like in consistency.",
-						"Remove the cranberry apple sauce from the heat and let it cool completely before transferring it to a bowl to chill in the refrigerator until ready to eat.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Combine all of the ingredients in a saucepan and bring to a boil over medium-high heat. Once boiling, reduce the heat to a simmer."},
+						{Type: "HowToStep", Text: "Stir occasionally and cook until the cranberries have broken down and the apples have softened, but still have a little bite to them, about 10-15 minutes. The sauce should be compote-like in consistency."},
+						{Type: "HowToStep", Text: "Remove the cranberry apple sauce from the heat and let it cool completely before transferring it to a bowl to chill in the refrigerator until ready to eat."},
 					},
 				},
 				Name: "Cranberry Apple Sauce",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:       "117 calories",
 					Carbohydrates:  "30 grams carbohydrates",
 					Cholesterol:    "0 milligrams cholesterol",
@@ -339,8 +325,9 @@ func TestScraper_R(t *testing.T) {
 					UnsaturatedFat: "0 grams unsaturated fat",
 				},
 				PrepTime:  "PT5M",
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT15M",
-				Yield:     models.Yield{Value: 6},
+				Yield:     &models.Yield{Value: 6},
 				URL:       "https://reciperunner.com/cranberry-apple-sauce/",
 			},
 		},
@@ -349,21 +336,17 @@ func TestScraper_R(t *testing.T) {
 			in:   "https://www.recipetineats.com/chicken-sharwama-middle-eastern/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Chicken"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Chicken"},
 				CookTime:      "PT10M",
-				Cuisine:       models.Cuisine{Value: "Arabic"},
+				Cuisine:       &models.Cuisine{Value: "Arabic"},
 				DatePublished: "2022-02-06T06:47:00+00:00",
-				Description: models.Description{
-					Value: "Recipe video above. The smell when this is cooking is outrageous! The marinade is very quick to " +
-						"prepare and the chicken can be frozen in the marinade, then defrosted prior to cooking. " +
-						"Best cooked on the outdoor grill / BBQ, but I usually make it on the stove. Serve with " +
-						"Yogurt Sauce (provided) or the Tahini sauce in this recipe. Add a simple salad and " +
-						"flatbread laid out on a large platter, then let everyone make their own wraps!",
+				Description: &models.Description{
+					Value: "Recipe video above. The smell when this is cooking is outrageous! The marinade is very quick to prepare and the chicken can be frozen in the marinade, then defrosted prior to cooking. Best cooked on the outdoor grill / BBQ, but I usually make it on the stove. Serve with Yogurt Sauce (provided) or the Tahini sauce in this recipe. Add a simple salad and flatbread laid out on a large platter, then let everyone make their own wraps!",
 				},
-				Keywords: models.Keywords{Values: "Chicken Shawarma, shawarma"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "Chicken Shawarma, shawarma"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 kg / 2 lb chicken thigh fillets (, skinless and boneless (Note 3))",
 						"1 large garlic clove (, minced (or 2 small cloves))",
@@ -389,26 +372,19 @@ func TestScraper_R(t *testing.T) {
 						"Hot sauce of choice ((optional))",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Marinade chicken - Combine the marinade ingredients in a large ziplock bag. Add the chicken, seal, the " +
-							"massage from the outside with your hands to make sure each piece is coated. Marinate 24 " +
-							"hours (minimum 3 hours).",
-						"Yogurt Sauce - Combine the Yogurt Sauce ingredients in a bowl and mix. Cover and put in the fridge " +
-							"until required (it will last for 3 days in the fridge).",
-						"Preheat stove or BBQ - Heat a large non-stick skillet with 1 tablespoon over medium high heat, or " +
-							"lightly brush a BBQ hotplate/grills with oil and heat to medium high. (See notes for baking)",
-						"Cook chicken - Place chicken in the skillet or on the grill and cook the first side for 4 to 5 minutes " +
-							"until nicely charred. Turn and cook the other side for 3 to 4 minutes (the 2nd side takes less time).",
-						"Rest - Remove chicken from the grill and cover loosely with foil. Set aside to rest for 5 minutes.",
-						"Slice chicken and pile onto platter alongside flatbreads, Salad and the Yoghurt Sauce (or dairy free " +
-							"Tahini sauce from this recipe).",
-						"To make a wrap, get a piece of flatbread and smear with Yoghurt Sauce. Top with a bit of lettuce and " +
-							"tomato and Chicken Shawarma. Roll up and enjoy!",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Marinade chicken - Combine the marinade ingredients in a large ziplock bag. Add the chicken, seal, the massage from the outside with your hands to make sure each piece is coated. Marinate 24 hours (minimum 3 hours)."},
+						{Type: "HowToStep", Text: "Yogurt Sauce - Combine the Yogurt Sauce ingredients in a bowl and mix. Cover and put in the fridge until required (it will last for 3 days in the fridge)."},
+						{Type: "HowToStep", Text: "Preheat stove or BBQ - Heat a large non-stick skillet with 1 tablespoon over medium high heat, or lightly brush a BBQ hotplate/grills with oil and heat to medium high. (See notes for baking)"},
+						{Type: "HowToStep", Text: "Cook chicken - Place chicken in the skillet or on the grill and cook the first side for 4 to 5 minutes until nicely charred. Turn and cook the other side for 3 to 4 minutes (the 2nd side takes less time)."},
+						{Type: "HowToStep", Text: "Rest - Remove chicken from the grill and cover loosely with foil. Set aside to rest for 5 minutes."},
+						{Type: "HowToStep", Text: "Slice chicken and pile onto platter alongside flatbreads, Salad and the Yoghurt Sauce (or dairy free Tahini sauce from this recipe)."},
+						{Type: "HowToStep", Text: "To make a wrap, get a piece of flatbread and smear with Yoghurt Sauce. Top with a bit of lettuce and tomato and Chicken Shawarma. Roll up and enjoy!"},
 					},
 				},
 				Name: "Chicken Shawarma (Middle Eastern)",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:       "275 kcal",
 					Carbohydrates:  "1.1 g",
 					Cholesterol:    "140 mg",
@@ -421,7 +397,7 @@ func TestScraper_R(t *testing.T) {
 				},
 				PrepTime:  "PT10M",
 				TotalTime: "PT20M",
-				Yield:     models.Yield{Value: 4},
+				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.recipetineats.com/chicken-sharwama-middle-eastern/",
 			},
 		},
@@ -430,11 +406,15 @@ func TestScraper_R(t *testing.T) {
 			in:   "https://old.reddit.com/r/recipes/comments/1bhr8se/spicy_chilli_garlic_prawn_linguine_pasta/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "uncategorized"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DatePublished: "2024-03-18",
-				Image:         models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Description:   &models.Description{},
+				Keywords:      &models.Keywords{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"500 g Linguine",
 						"400 g Raw Prawns shells removed, deveined",
@@ -450,17 +430,20 @@ func TestScraper_R(t *testing.T) {
 						"1/4 cup Parmesan Cheese shredded",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Cook linguine until al dente per package directions (usually around 7-8 minutes).",
-						"In a large skillet pan-fry the garlic, chilli, and parsley in 2 tbsp of oil over high heat for 5 minutes.",
-						"Add the prawns and stir for 2 minutes. Add the butter and let foam for an additional minute.",
-						"Add the strained pasta noodles along with lemon juice, zest, remaining oil and white wine. Season to taste with salt and pepper.",
-						"Stir to combine then serve immediately in bowls topped with parmesan cheese.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Cook linguine until al dente per package directions (usually around 7-8 minutes)."},
+						{Type: "HowToStep", Text: "In a large skillet pan-fry the garlic, chilli, and parsley in 2 tbsp of oil over high heat for 5 minutes."},
+						{Type: "HowToStep", Text: "Add the prawns and stir for 2 minutes. Add the butter and let foam for an additional minute."},
+						{Type: "HowToStep", Text: "Add the strained pasta noodles along with lemon juice, zest, remaining oil and white wine. Season to taste with salt and pepper."},
+						{Type: "HowToStep", Text: "Stir to combine then serve immediately in bowls topped with parmesan cheese."},
 					},
 				},
-				Name: "Spicy Chilli Garlic Prawn Linguine Pasta",
-				URL:  "https://old.reddit.com/r/recipes/comments/1bhr8se/spicy_chilli_garlic_prawn_linguine_pasta/",
+				Name:            "Spicy Chilli Garlic Prawn Linguine Pasta",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://old.reddit.com/r/recipes/comments/1bhr8se/spicy_chilli_garlic_prawn_linguine_pasta/",
 			},
 		},
 		{
@@ -468,18 +451,17 @@ func TestScraper_R(t *testing.T) {
 			in:   "https://redhousespice.com/pork-fried-rice/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Main Course"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Main Course"},
 				CookTime:      "PT8M",
-				Cuisine:       models.Cuisine{Value: "Chinese"},
+				Cuisine:       &models.Cuisine{Value: "Chinese"},
 				DatePublished: "2022-03-26T17:48:51+00:00",
-				Description: models.Description{
-					Value: "Delicious pork fried rice made in less than 20 minutes. Enjoy the mix of fluffy rice, tender pork " +
-						"and crunchy veggies coated with umami-filled seasoning.",
+				Description: &models.Description{
+					Value: "Delicious pork fried rice made in less than 20 minutes. Enjoy the mix of fluffy rice, tender pork and crunchy veggies coated with umami-filled seasoning.",
 				},
-				Keywords: models.Keywords{Values: "Pork, Rice, Stir-fry"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "Pork, Rice, Stir-fry"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"2 tbsp oyster sauce (see note 1 for substitutes)",
 						"1 tbsp light soy sauce",
@@ -497,32 +479,25 @@ func TestScraper_R(t *testing.T) {
 						"Scallions, finely chopped (for garnishing)",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"In a small bowl, mix oyster sauce, light soy sauce, dark soy sauce and white pepper. Set aside.",
-						"Heat an empty, well-seasoned wok over high heat until smoking hot. Add 1 tablespoon of oil (see note 3 " +
-							"if using other cookware). Swirl to coat a bigger perimeter.",
-						"Pour in the beaten egg. Once it begins to set at the bottom, stir to help the running part flow. Use a " +
-							"spatula to scramble so that it turns into small pieces. Transfer out and set aside.",
-						"Pour the remaining 1 tablespoon of oil into the wok. Add minced pork. Spread and flatten it to ensure " +
-							"maximum contact with the wok. Wait for the bottom part to get lightly browned. Then flip and stir " +
-							"to fry it thoroughly.",
-						"Once the pork loses its pink colour, add onion, garlic and ginger. Fry until the onion becomes a little " +
-							"transparent.",
-						"Stir in peas and carrots. Retain the high heat to fry for 30 seconds or so. Add rice and return the egg " +
-							"to the wok. Cook for a further 30-40 seconds.",
-						"Pour the sauce mixture over. Toss and stir constantly to ensure an even coating. Once all the ingredients " +
-							"are piping hot, turn off the heat. Sprinkle scallions over and give everything a final toss.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "In a small bowl, mix oyster sauce, light soy sauce, dark soy sauce and white pepper. Set aside."},
+						{Type: "HowToStep", Text: "Heat an empty, well-seasoned wok over high heat until smoking hot. Add 1 tablespoon of oil (see note 3 if using other cookware). Swirl to coat a bigger perimeter."},
+						{Type: "HowToStep", Text: "Pour in the beaten egg. Once it begins to set at the bottom, stir to help the running part flow. Use a spatula to scramble so that it turns into small pieces. Transfer out and set aside."},
+						{Type: "HowToStep", Text: "Pour the remaining 1 tablespoon of oil into the wok. Add minced pork. Spread and flatten it to ensure maximum contact with the wok. Wait for the bottom part to get lightly browned. Then flip and stir to fry it thoroughly."},
+						{Type: "HowToStep", Text: "Once the pork loses its pink colour, add onion, garlic and ginger. Fry until the onion becomes a little transparent."},
+						{Type: "HowToStep", Text: "Stir in peas and carrots. Retain the high heat to fry for 30 seconds or so. Add rice and return the egg to the wok. Cook for a further 30-40 seconds."},
+						{Type: "HowToStep", Text: "Pour the sauce mixture over. Toss and stir constantly to ensure an even coating. Once all the ingredients are piping hot, turn off the heat. Sprinkle scallions over and give everything a final toss."},
 					},
 				},
 				Name: "Pork Fried Rice (猪肉炒饭)",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories: "455 kcal",
 					Servings: "1",
 				},
 				PrepTime:  "PT10M",
 				TotalTime: "PT18M",
-				Yield:     models.Yield{Value: 3},
+				Yield:     &models.Yield{Value: 3},
 				URL:       "https://redhousespice.com/pork-fried-rice/",
 			},
 		},
@@ -531,17 +506,17 @@ func TestScraper_R(t *testing.T) {
 			in:   "https://www.reishunger.de/rezepte/rezept/440/chicken-tikka-masala",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Grillen"},
-				Cuisine:       models.Cuisine{Value: "Indisch"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Grillen"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{Value: "Indisch"},
 				DatePublished: "2015-07-25T21:55:34+00:00",
-				Description: models.Description{
-					Value: "Hier kommt der Briten liebstes Gericht: Chicken Tikka Masala zusammen mit einem indischen Biryani " +
-						"Reis und Minzjoghurt! Geflügel ist gerade im Sommer eine tolle Sache und dieses Gericht lässt " +
-						"sich problemlos für mehrere Personen kochen!",
+				Description: &models.Description{
+					Value: "Hier kommt der Briten liebstes Gericht: Chicken Tikka Masala zusammen mit einem indischen Biryani Reis und Minzjoghurt! Geflügel ist gerade im Sommer eine tolle Sache und dieses Gericht lässt sich problemlos für mehrere Personen kochen!",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"200g Basmati Reis Pusa",
 						"2 TL Indian Tikka Marinade",
@@ -563,22 +538,24 @@ func TestScraper_R(t *testing.T) {
 						"0.25 Gurke",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Den Knoblauch und den Ingwer mit einer feinen Küchenreibe in eine große Schüssel reiben. \nDie zwei Schalotten in grobe Scheiben schneiden und die Chilischoten in der Mitte teilen, nun kann man die Kerne entfernen.",
-						"Die gehackten Zutaten kommen zu den Übrigen in die Schüssel. Anschließend den Saft einer Limette, 250 Gramm Joghurt, einen guten Schuss Olivenöl sowie die Gewürzmischung samt Salz und Pfeffer dazu. \nAlles zusammen mit dem Hühnchen vermengen und dieses mindestens eine halbe Stunde in den Kühlschrank stellen.",
-						"Als Nächstes die marinierten Stücke der Brust aus der Schüssel nehmen und diese auf Spieße stecken. Den Grill auf direkte, starke Hitze vorheizen und die Spieße direkt über die Glut legen, um Sie von allen Seiten anzugrillen. \nSind die Spieße scharf angegrillt (Ihr könnt die Stücke auch in der Pfanne braten), diese vom Grill nehmen und sie kurz bei Seite legen.",
-						"In der Zwischenzeit kann man eine Pfanne auf den Grill stellen und dort die Butter, eine grob gehackte Schalotte, das Tomatenmark sowie den Rest der Marinade hineingeben. \nAlles zusammen wird unter direkter starker Hitze angebraten und anschließend mit 500 ml Wasser aufgegossen.",
-						"Ist alles etwas eingekocht gebt Ihr die Hähnchenstücke und Euren Becher Creme Fraiche dazu. \nNun wird die Pfanne in den indirekten Bereich gestellt und alles wird etwa 20-25 Minuten bei geschlossenem Deckel geschmort.",
-						"Der Reis wird zusammen mit der Gewürzpaste in einen Topf gegeben, anschließend kommt die 1,5 Fache Menge an Wasser dazu (im Zweifel mit Tassen abmessen). \nNun lasst Ihr den Reis zusammen mit dem Wasser und der Gewürzmischung etwa 10 Minuten quellen ehe Ihr Ihn auf den Herd oder die Seitenkochplatte stellt.",
-						"Den Reis kurz aufkochen, die Flamme zurückstellen und den Reis unter gelegentlichem Rühren garen lassen. Wenn das Wasser verschwunden ist, ist er fertig.\nJetzt kann man die Rosinen und die Cashewkerne dazu geben und den Reis eventuell mit noch etwas Gewürzpaste und Salz abschmecken.",
-						"Für den Minzjoghurt die übrigen 250 Gramm Joghurt nehmen und in eine Schüssel geben. \nDie Gurke in der Mitte durchschneiden und das Kerngehäuse entfernen. Anschließend in feine Würfel schneiden. Die Minze in feine Streifen schneiden und zusammen mit den Gurkenwürfeln zum Joghurt geben. Mit Salz und Pfeffer abschmecken.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Den Knoblauch und den Ingwer mit einer feinen Küchenreibe in eine große Schüssel reiben. \nDie zwei Schalotten in grobe Scheiben schneiden und die Chilischoten in der Mitte teilen, nun kann man die Kerne entfernen."},
+						{Type: "HowToStep", Text: "Die gehackten Zutaten kommen zu den Übrigen in die Schüssel. Anschließend den Saft einer Limette, 250 Gramm Joghurt, einen guten Schuss Olivenöl sowie die Gewürzmischung samt Salz und Pfeffer dazu. \nAlles zusammen mit dem Hühnchen vermengen und dieses mindestens eine halbe Stunde in den Kühlschrank stellen."},
+						{Type: "HowToStep", Text: "Als Nächstes die marinierten Stücke der Brust aus der Schüssel nehmen und diese auf Spieße stecken. Den Grill auf direkte, starke Hitze vorheizen und die Spieße direkt über die Glut legen, um Sie von allen Seiten anzugrillen. \nSind die Spieße scharf angegrillt (Ihr könnt die Stücke auch in der Pfanne braten), diese vom Grill nehmen und sie kurz bei Seite legen."},
+						{Type: "HowToStep", Text: "In der Zwischenzeit kann man eine Pfanne auf den Grill stellen und dort die Butter, eine grob gehackte Schalotte, das Tomatenmark sowie den Rest der Marinade hineingeben. \nAlles zusammen wird unter direkter starker Hitze angebraten und anschließend mit 500 ml Wasser aufgegossen."},
+						{Type: "HowToStep", Text: "Ist alles etwas eingekocht gebt Ihr die Hähnchenstücke und Euren Becher Creme Fraiche dazu. \nNun wird die Pfanne in den indirekten Bereich gestellt und alles wird etwa 20-25 Minuten bei geschlossenem Deckel geschmort."},
+						{Type: "HowToStep", Text: "Der Reis wird zusammen mit der Gewürzpaste in einen Topf gegeben, anschließend kommt die 1,5 Fache Menge an Wasser dazu (im Zweifel mit Tassen abmessen). \nNun lasst Ihr den Reis zusammen mit dem Wasser und der Gewürzmischung etwa 10 Minuten quellen ehe Ihr Ihn auf den Herd oder die Seitenkochplatte stellt."},
+						{Type: "HowToStep", Text: "Den Reis kurz aufkochen, die Flamme zurückstellen und den Reis unter gelegentlichem Rühren garen lassen. Wenn das Wasser verschwunden ist, ist er fertig.\nJetzt kann man die Rosinen und die Cashewkerne dazu geben und den Reis eventuell mit noch etwas Gewürzpaste und Salz abschmecken."},
+						{Type: "HowToStep", Text: "Für den Minzjoghurt die übrigen 250 Gramm Joghurt nehmen und in eine Schüssel geben. \nDie Gurke in der Mitte durchschneiden und das Kerngehäuse entfernen. Anschließend in feine Würfel schneiden. Die Minze in feine Streifen schneiden und zusammen mit den Gurkenwürfeln zum Joghurt geben. Mit Salz und Pfeffer abschmecken."},
 					},
 				},
-				Name:      "Chicken Tikka Masala",
-				TotalTime: "PT60M",
-				Yield:     models.Yield{Value: 3},
-				URL:       "https://www.reishunger.de/rezepte/rezept/440/chicken-tikka-masala",
+				Name:            "Chicken Tikka Masala",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:       "PT60M",
+				Yield:           &models.Yield{Value: 3},
+				URL:             "https://www.reishunger.de/rezepte/rezept/440/chicken-tikka-masala",
 			},
 		},
 		{
@@ -586,17 +563,18 @@ func TestScraper_R(t *testing.T) {
 			in:   "https://www.rezeptwelt.de/vorspeisensalate-rezepte/haehnchen-nuggets/y3duba6e-e2d56-608317-cfcd2-vjez4wd6",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "uncategorized"},
-				Cuisine:       models.Cuisine{Value: "Europäisch, Spanisch"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{Value: "Europäisch, Spanisch"},
 				Name:          "Hähnchen-Nuggets",
 				DateModified:  "2014-05-28",
 				DatePublished: "2014-05-26",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Hähnchen-Nuggets, ein Rezept der Kategorie Vorspeisen/Salate. Mehr Thermomix ® Rezepte auf www.rezeptwelt.de",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"200 g Hähnchenbrust, ohne haut, in Stücken",
 						"1/2 TL Salz",
@@ -609,47 +587,58 @@ func TestScraper_R(t *testing.T) {
 						"Öl zum Frittieren",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Hähnchenfleisch, Salz, Knoblauch in den Mixtopf geben und 5 Sek./Stufe 7 zerkleinern.",
-						"Brot in Stücken mit Frischkäse und Milch zugeben und 10 Sek./Stufe 7 vermischen.",
-						"Fleischmischung aus dem Mixtopf nehmen, walnussgroße Bällchen formen und leicht mit dem Boden des Messbechers flach drücken. Jedes Nugget zuerst in Ei und dann in Paniermehl wenden. Öl in einer tiefen Pfanne erhitzen. Nuggets darin goldbraun frittieren und auf Küchenkrepp abtropfen lassen.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Hähnchenfleisch, Salz, Knoblauch in den Mixtopf geben und 5 Sek./Stufe 7 zerkleinern."},
+						{Type: "HowToStep", Text: "Brot in Stücken mit Frischkäse und Milch zugeben und 10 Sek./Stufe 7 vermischen."},
+						{Type: "HowToStep", Text: "Fleischmischung aus dem Mixtopf nehmen, walnussgroße Bällchen formen und leicht mit dem Boden des Messbechers flach drücken. Jedes Nugget zuerst in Ei und dann in Paniermehl wenden. Öl in einer tiefen Pfanne erhitzen. Nuggets darin goldbraun frittieren und auf Küchenkrepp abtropfen lassen."},
 					},
 				},
-				Keywords: models.Keywords{Values: "einfach,europaisch,spanisch,vorspeise,braten,snack,"},
-				PrepTime: "PT20M",
-				Yield:    models.Yield{Value: 20},
-				URL:      "https://www.rezeptwelt.de/vorspeisensalate-rezepte/haehnchen-nuggets/y3duba6e-e2d56-608317-cfcd2-vjez4wd6",
+				Keywords:        &models.Keywords{Values: "einfach,europaisch,spanisch,vorspeise,braten,snack,"},
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT20M",
+				Tools: &models.Tools{
+					Values: []models.HowToItem{
+						{Type: "HowToTool", Text: "Spatel", Quantity: 1},
+						{Type: "HowToTool", Text: "2. Mixtopf TM6", Quantity: 1},
+					},
+				},
+				Yield: &models.Yield{Value: 20},
+				URL:   "https://www.rezeptwelt.de/vorspeisensalate-rezepte/haehnchen-nuggets/y3duba6e-e2d56-608317-cfcd2-vjez4wd6",
 			},
 		},
 		{
 			name: "ricetta.it",
 			in:   "https://ricetta.it/pan-d-arancio",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
-				AtType:    models.SchemaType{Value: "Recipe"},
-				Category:  models.Category{Value: "Torte"},
-				Cuisine:   models.Cuisine{Value: "Italiana"},
-				Description: models.Description{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Torte"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{Value: "Italiana"},
+				Description: &models.Description{
 					Value: "Il Pan d'arancio è un dolce della tradizione siciliana caratterizzato da un intenso sapore agrumato, dato dall'utilizzo delle arance intere, buccia compresa.",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"3 uova", "100 g di olio", "250 g di zucchero", "300 g di farina 00",
 						"100 ml di latte", "1 bustina di lievito", "1 arancia bio (senza semi)",
 						"1 cucchiaino di essenza di vaniglia",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Per prima cosa laviamo accuratamente l'arancia e tagliamola a pezzetti, mantenendo la buccia (eliminando con cura gli eventuali semi che risulterebbero amari) [1]. Mettiamola in un mixer e aggiungiamo il latte [2] l'olio [3] e frulliamo fino ad ottenere un composto omogeneo e cremoso [4]. In una boule setacciamo la farina e uniamo lo zucchero [5]; aggiungiamo le uova [6] e il cucchiaino di vaniglia [7]. Aiutandoci con le fruste elettriche amalgamiamo gli ingredienti per qualche secondo. A questo punto uniamo il composto di arancia precedentemente frullata e azioniamo di nuovo le fruste [8]. Aggiungiamo il lievito [9] e mescoliamo per bene [10]. Imburriamo e foderiamo una teglia da 24 cm e trasferiamovi il composto [11]. Cuociamo a 180° per 60 minuti con forno statico (160° per 50 minuti se ventilato). A cottura ultimata, sformiamo la torta, lasciamola raffreddare e cospargiamo la superficie con marmellata di arance [12].",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Per prima cosa laviamo accuratamente l'arancia e tagliamola a pezzetti, mantenendo la buccia (eliminando con cura gli eventuali semi che risulterebbero amari) [1]. Mettiamola in un mixer e aggiungiamo il latte [2] l'olio [3] e frulliamo fino ad ottenere un composto omogeneo e cremoso [4]. In una boule setacciamo la farina e uniamo lo zucchero [5]; aggiungiamo le uova [6] e il cucchiaino di vaniglia [7]. Aiutandoci con le fruste elettriche amalgamiamo gli ingredienti per qualche secondo. A questo punto uniamo il composto di arancia precedentemente frullata e azioniamo di nuovo le fruste [8]. Aggiungiamo il lievito [9] e mescoliamo per bene [10]. Imburriamo e foderiamo una teglia da 24 cm e trasferiamovi il composto [11]. Cuociamo a 180° per 60 minuti con forno statico (160° per 50 minuti se ventilato). A cottura ultimata, sformiamo la torta, lasciamola raffreddare e cospargiamo la superficie con marmellata di arance [12]."},
 					},
 				},
-				Name:      "Pan d'arancio",
-				TotalTime: "PT60M",
-				Yield:     models.Yield{Value: 6},
-				URL:       "https://ricetta.it/pan-d-arancio",
+				Name:            "Pan d'arancio",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:       "PT60M",
+				Yield:           &models.Yield{Value: 6},
+				URL:             "https://ricetta.it/pan-d-arancio",
 			},
 		},
 		{
@@ -657,41 +646,44 @@ func TestScraper_R(t *testing.T) {
 			in:   "https://www.ricetteperbimby.it/ricette/dolcetti-mandorle-e-limone-bimby",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Dolci e Dessert"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Dolci e Dessert"},
 				CookTime:      "PT10M",
-				Cuisine:       models.Cuisine{Value: "Italiana"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{Value: "Italiana"},
 				DateModified:  "2024-02-14",
 				DatePublished: "2024-03-03",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Prepara dei golosi dolcetti mandorle e limone con il Bimby, dei deliziosi e profumati biscotti ottimi a colazione e a merenda. Ecco la ricetta veloce!",
 				},
-				Keywords: models.Keywords{Values: "Bambini,Forno,Vegetariana"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "Bambini,Forno,Vegetariana"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 (scorza e succo) limone", "100 g (pelate) mandorle", "200 g farina 00",
 						"mezza bustina lievito per dolci", "90 g zucchero semolato",
 						"100 g (freddo) burro", "1 uova", "q.b. zucchero a velo",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Mettere nel boccale la scorza di limone e le mandorle: 10 sec. vel. 10.",
-						"Raccogliere sul fondo e aggiungere la farina, il lievito, lo zucchero e il burro a tocchetti: 40 sec. vel. 5.",
-						"Aggiungere l'uovo e 40 g di succo di limone: 30 sec. vel. 5.",
-						"Versare la frolla in una ciotola, coprire con pellicola e trasferire in frigorifero per 25 minuti.",
-						"Con l'aiuto di 2 cucchiaini prelevare piccole quantità di frolla (morbida), farle cadere in un piatto con dello zucchero a velo e rotolarle fino a ricoprirle completamente.",
-						"Disporre le palline su una teglia rivestita di carta forno.",
-						"Infornare in forno preriscaldato statico a 180° per 10 minuti.",
-						"Sfornare, lasciare raffreddare e servire.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Mettere nel boccale la scorza di limone e le mandorle: 10 sec. vel. 10."},
+						{Type: "HowToStep", Text: "Raccogliere sul fondo e aggiungere la farina, il lievito, lo zucchero e il burro a tocchetti: 40 sec. vel. 5."},
+						{Type: "HowToStep", Text: "Aggiungere l'uovo e 40 g di succo di limone: 30 sec. vel. 5."},
+						{Type: "HowToStep", Text: "Versare la frolla in una ciotola, coprire con pellicola e trasferire in frigorifero per 25 minuti."},
+						{Type: "HowToStep", Text: "Con l'aiuto di 2 cucchiaini prelevare piccole quantità di frolla (morbida), farle cadere in un piatto con dello zucchero a velo e rotolarle fino a ricoprirle completamente."},
+						{Type: "HowToStep", Text: "Disporre le palline su una teglia rivestita di carta forno."},
+						{Type: "HowToStep", Text: "Infornare in forno preriscaldato statico a 180° per 10 minuti."},
+						{Type: "HowToStep", Text: "Sfornare, lasciare raffreddare e servire."},
 					},
 				},
-				Name:      "Dolcetti mandorle e limone",
-				PrepTime:  "PT20M",
-				TotalTime: "PT30M",
-				Yield:     models.Yield{Value: 1},
-				URL:       "https://www.ricetteperbimby.it/ricette/dolcetti-mandorle-e-limone-bimby",
+				Name:            "Dolcetti mandorle e limone",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT20M",
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:       "PT30M",
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://www.ricetteperbimby.it/ricette/dolcetti-mandorle-e-limone-bimby",
 			},
 		},
 		{
@@ -699,12 +691,15 @@ func TestScraper_R(t *testing.T) {
 			in:   "https://rosannapansino.com/blogs/recipes/rainbow-treats",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "uncategorized"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DatePublished: "2023-06-14T19:08:32Z",
-				Description:   models.Description{Value: "Check out these colorful and flavorful rainbow treats!"},
-				Image:         models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Description:   &models.Description{Value: "Check out these colorful and flavorful rainbow treats!"},
+				Keywords:      &models.Keywords{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 stick (4 ounces) unsalted butter, room temperature", "1 cup sugar",
 						"3 egg whites", "2 teaspoons vanilla extract", "1/4 teaspoons almond extract",
@@ -720,23 +715,25 @@ func TestScraper_R(t *testing.T) {
 						"Melting Pot (Nerdy Nummies)",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Preheat the oven to 325F°. Grease and line the cake pans.",
-						"In a small bowl, whisk together the flour, baking powder and salt.",
-						"In a medium bowl using hand mixer, cream together the butter, sugar and extracts until light and fluffy, 6 to 8 minutes.",
-						"Add the egg whites to the butter mixture, mix until combined (do not over mix).",
-						"Alternate adding the flour mixture and milk in three addition, starting and ending with the flour. Do not over mix.",
-						"Pour batter evenly into prepared pans. Bake for 30 minutes or until toothpick comes out clean.",
-						"In a large bowl, crumble the cakes and add the buttercream.Mix with the hand mixer until a smooth dough forms. It should feel like cookie dough.",
-						"Separate the cake dough evenly between 6 bowls. Add and mix the colors red, orange, yellow, green, blue and purple into each bowl until desired colors - about 1/2 teaspoons to 1 teaspoon per bowl.",
-						"Split all the colored dough into 1/2 teaspoon pieces. Stack 6 pieces of each color starting with the red and ending with the purple and roll into a smooth ball. Repeat with the rest of the dough (about 40 balls). Chill in refrigerator for 1 hour.",
-						"Melt the white Candy Melts in the melting pot. Dip each cake ball in the candy and sprinkle the rainbow sprinkles on top.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Preheat the oven to 325F°. Grease and line the cake pans."},
+						{Type: "HowToStep", Text: "In a small bowl, whisk together the flour, baking powder and salt."},
+						{Type: "HowToStep", Text: "In a medium bowl using hand mixer, cream together the butter, sugar and extracts until light and fluffy, 6 to 8 minutes."},
+						{Type: "HowToStep", Text: "Add the egg whites to the butter mixture, mix until combined (do not over mix)."},
+						{Type: "HowToStep", Text: "Alternate adding the flour mixture and milk in three addition, starting and ending with the flour. Do not over mix."},
+						{Type: "HowToStep", Text: "Pour batter evenly into prepared pans. Bake for 30 minutes or until toothpick comes out clean."},
+						{Type: "HowToStep", Text: "In a large bowl, crumble the cakes and add the buttercream.Mix with the hand mixer until a smooth dough forms. It should feel like cookie dough."},
+						{Type: "HowToStep", Text: "Separate the cake dough evenly between 6 bowls. Add and mix the colors red, orange, yellow, green, blue and purple into each bowl until desired colors - about 1/2 teaspoons to 1 teaspoon per bowl."},
+						{Type: "HowToStep", Text: "Split all the colored dough into 1/2 teaspoon pieces. Stack 6 pieces of each color starting with the red and ending with the purple and roll into a smooth ball. Repeat with the rest of the dough (about 40 balls). Chill in refrigerator for 1 hour."},
+						{Type: "HowToStep", Text: "Melt the white Candy Melts in the melting pot. Dip each cake ball in the candy and sprinkle the rainbow sprinkles on top."},
 					},
 				},
-				Name:  "Rainbow Treats",
-				Yield: models.Yield{Value: 40},
-				URL:   "https://rosannapansino.com/blogs/recipes/rainbow-treats",
+				Name:            "Rainbow Treats",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 40},
+				URL:             "https://rosannapansino.com/blogs/recipes/rainbow-treats",
 			},
 		},
 		{
@@ -744,29 +741,34 @@ func TestScraper_R(t *testing.T) {
 			in:   "https://rutgerbakt.nl/basisrecepten/oreo-topping-van-roomkaas/",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "uncategorized"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DateModified:  "2023/09/19",
 				DatePublished: "2022/01/28",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Ben je aan het bakken geslagen met Oreo’s en zoek je een bijpassende vulling of topping? Deze crème is perfect als Oreo cupcake topping of als toppin",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"10 oreo koekjes", "150 gr boter, op kamertemperatuur", "150 gr poedersuiker",
 						"1 tl vanille-extract", "200 gr roomkaas, op kamertemperatuur",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Ben je aan het bakken geslagen met Oreo’s en zoek je een bijpassende vulling of topping? Deze crème is perfect als Oreo cupcake topping of als toppin",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Ben je aan het bakken geslagen met Oreo’s en zoek je een bijpassende vulling of topping? Deze crème is perfect als Oreo cupcake topping of als toppin"},
 					},
 				},
-				Name:     "Oreo topping van roomkaas",
-				PrepTime: "PT12M",
-				URL:      "https://rutgerbakt.nl/basisrecepten/oreo-topping-van-roomkaas/",
-				Yield:    models.Yield{Value: 1},
+				Name:            "Oreo topping van roomkaas",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT12M",
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				URL:             "https://rutgerbakt.nl/basisrecepten/oreo-topping-van-roomkaas/",
+				Yield:           &models.Yield{Value: 1},
 			},
 		},
 		{
@@ -774,17 +776,19 @@ func TestScraper_R(t *testing.T) {
 			in:   "https://www.recipecommunity.com.au/baking-sweet-recipes/flourless-refined-sugar-free-chocolate-cake/1te0mta9-5d0d3-705689-cfcd2-7zd1b4nd",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "uncategorized"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				Name:          "Flourless refined sugar free chocolate cake",
 				DatePublished: "2016-06-08",
 				DateModified:  "2016-06-11",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Recipe Flourless refined sugar free chocolate cake by Mixing Adventures, learn to make this recipe easily in your kitchen machine and discover other Thermomix recipes in Baking - sweet.",
 				},
-				Keywords: models.Keywords{Values: "Baking - sweet, recipes, Dessert, Gluten free, Lactose free, Non-dairy"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "Baking - sweet, recipes, Dessert, Gluten free, Lactose free, Non-dairy"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"270 g Dates (pitted)",
 						"125 g Boiling water",
@@ -798,20 +802,22 @@ func TestScraper_R(t *testing.T) {
 						"pinch salt",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Pre-heat oven to 180 degrees C.  Grease and line a 20 cm round cake pan (I used a silicone ring tin)Mix dates and bi-carb soda in boiling water and leave to soak for a few minutes while you do the next step.",
-						"Grind almonds for 10 seconds, speed 9.Set aside.",
-						"Put dates, water and bi-carb into mixing bowl, and blend for 30 seconds, speed 6.  You may need to stop and scrape the sides a couple of times, and maybe reduce the speed a little after the first few seconds if necessary.   ",
-						"Add eggs, oil, vanilla essence and blend for 20 seconds, speed 6.  Scrape down bowl.",
-						"Add almonds, baking powder, cocoa and salt and mix for 20 seconds, speed 6.  Scrape down bowl and repeat. ",
-						"Pour into prepared cake tin and bake at 180 degrees for 30 minutes, or until a skewer comes out clean.  Leave until cool before turning onto a serving plate. I covered mine with chocolate ganache and served with whipped cream and raspberry coulis.  ",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Pre-heat oven to 180 degrees C.  Grease and line a 20 cm round cake pan (I used a silicone ring tin)Mix dates and bi-carb soda in boiling water and leave to soak for a few minutes while you do the next step."},
+						{Type: "HowToStep", Text: "Grind almonds for 10 seconds, speed 9.Set aside."},
+						{Type: "HowToStep", Text: "Put dates, water and bi-carb into mixing bowl, and blend for 30 seconds, speed 6.  You may need to stop and scrape the sides a couple of times, and maybe reduce the speed a little after the first few seconds if necessary.   "},
+						{Type: "HowToStep", Text: "Add eggs, oil, vanilla essence and blend for 20 seconds, speed 6.  Scrape down bowl."},
+						{Type: "HowToStep", Text: "Add almonds, baking powder, cocoa and salt and mix for 20 seconds, speed 6.  Scrape down bowl and repeat. "},
+						{Type: "HowToStep", Text: "Pour into prepared cake tin and bake at 180 degrees for 30 minutes, or until a skewer comes out clean.  Leave until cool before turning onto a serving plate. I covered mine with chocolate ganache and served with whipped cream and raspberry coulis.  "},
 					},
 				},
-				PrepTime: "PT10M",
-				CookTime: "PT40M",
-				URL:      "https://www.recipecommunity.com.au/baking-sweet-recipes/flourless-refined-sugar-free-chocolate-cake/1te0mta9-5d0d3-705689-cfcd2-7zd1b4nd",
-				Yield:    models.Yield{Value: 8},
+				PrepTime:        "PT10M",
+				CookTime:        "PT40M",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				URL:             "https://www.recipecommunity.com.au/baking-sweet-recipes/flourless-refined-sugar-free-chocolate-cake/1te0mta9-5d0d3-705689-cfcd2-7zd1b4nd",
+				Yield:           &models.Yield{Value: 8},
 			},
 		},
 	}

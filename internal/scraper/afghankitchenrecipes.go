@@ -7,68 +7,58 @@ import (
 )
 
 func scrapeAfghanKitchen(root *goquery.Document) (models.RecipeSchema, error) {
+	rs := models.NewRecipeSchema()
+
 	content := root.Find("#content")
 	info := content.Find(".recipe-info")
 	about := content.Find("div[itemprop='about']")
-	yield := findYield(info.Find(".servings .value").Text())
+	rs.Yield.Value = findYield(info.Find(".servings .value").Text())
 
-	var prep string
 	time := info.Find(".prep-time .value").Text()
 	if strings.Contains(time, "m") {
-		prep = "PT" + strings.TrimSuffix(time, "m") + "M"
+		rs.PrepTime = "PT" + strings.TrimSuffix(time, "m") + "M"
 	} else if strings.Contains(time, "h") {
 		time = strings.TrimSuffix(time, " h")
 		parts := strings.Split(time, ":")
 		if len(parts) > 1 {
-			prep = "PT" + parts[0] + "H" + parts[1] + "M"
+			rs.PrepTime = "PT" + parts[0] + "H" + parts[1] + "M"
 		}
 	}
 
-	var cook string
 	time = info.Find(".cook-time .value").Text()
 	if strings.Contains(time, "m") {
-		cook = "PT" + strings.TrimSuffix(time, "m") + "M"
+		rs.CookTime = "PT" + strings.TrimSuffix(time, "m") + "M"
 	} else if strings.Contains(time, "h") {
 		time = strings.TrimSuffix(time, " h")
 		parts := strings.Split(time, ":")
 		if len(parts) > 1 {
-			cook = "PT" + parts[0] + "H" + parts[1] + "M"
+			rs.CookTime = "PT" + parts[0] + "H" + parts[1] + "M"
 		}
 	}
 
-	var description string
 	if len(about.Nodes) > 0 && about.Nodes[0].FirstChild != nil && about.Nodes[0].FirstChild.NextSibling != nil && about.Nodes[0].FirstChild.NextSibling.FirstChild != nil {
-		description = about.Nodes[0].FirstChild.NextSibling.FirstChild.Data
-		description = strings.ReplaceAll(description, "\n", "")
-		description = strings.ReplaceAll(description, "\u00a0", " ")
+		s := about.Nodes[0].FirstChild.NextSibling.FirstChild.Data
+		s = strings.ReplaceAll(s, "\n", "")
+		s = strings.ReplaceAll(s, "\u00a0", " ")
+		rs.Description.Value = strings.TrimSpace(s)
 	}
 
 	nodes := about.Find("li.ingredient")
-	ingredients := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		ingredients[i] = strings.ReplaceAll(s.Text(), "  ", " ")
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.ReplaceAll(s.Text(), "  ", " "))
 	})
 
 	nodes = about.Find("p.instructions")
-	instructions := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		instructions[i] = strings.ReplaceAll(strings.TrimSpace(s.Text()), "  ", " ")
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		st := strings.ReplaceAll(strings.TrimSpace(s.Text()), "  ", " ")
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(st))
 	})
 
-	datePub, _ := content.Find("meta[itemprop='datePublished']").Attr("content")
-	image, _ := content.Find("meta[itemprop='image']").Attr("content")
-
-	return models.RecipeSchema{
-		AtType:        models.SchemaType{Value: "Recipe"},
-		Name:          content.Find("h2[itemprop='name']").Text(),
-		DatePublished: datePub,
-		Image:         models.Image{Value: image},
-		Yield:         models.Yield{Value: yield},
-		PrepTime:      prep,
-		CookTime:      cook,
-		Description:   models.Description{Value: strings.TrimSpace(description)},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
-		Category:      models.Category{Value: about.Find(".type a").Text()},
-	}, nil
+	rs.DatePublished, _ = content.Find("meta[itemprop='datePublished']").Attr("content")
+	rs.Image.Value, _ = content.Find("meta[itemprop='image']").Attr("content")
+	rs.Name = content.Find("h2[itemprop='name']").Text()
+	rs.Category = &models.Category{Value: about.Find(".type a").Text()}
+	return rs, nil
 }

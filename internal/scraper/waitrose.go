@@ -13,7 +13,7 @@ func scrapeWaitrose(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	for i, value := range rs.Instructions.Values {
-		rs.Instructions.Values[i] = strings.ReplaceAll(value, "\r", "")
+		rs.Instructions.Values[i].Text = strings.ReplaceAll(value.Text, "\r", "")
 	}
 
 	return rs, nil

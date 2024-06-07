@@ -8,43 +8,38 @@ import (
 )
 
 func scrapeKuchniadomova(root *goquery.Document) (models.RecipeSchema, error) {
+	rs := models.NewRecipeSchema()
+
 	name := root.Find("h2[itemprop='name']").Text()
 	name = strings.ReplaceAll(name, "\n", "")
-	name = strings.ReplaceAll(name, "\t", "")
+	rs.Name = strings.ReplaceAll(name, "\t", "")
 
 	yieldStr := root.Find("p[itemprop='recipeYield']").Text()
 	yieldStr = strings.ReplaceAll(yieldStr, "-", " ")
-	yield := findYield(yieldStr)
+	rs.Yield.Value = findYield(yieldStr)
 
-	category, _ := root.Find("meta[itemprop='recipeCategory']").Attr("content")
-	keywords, _ := root.Find("meta[name='keywords']").Attr("content")
+	rs.Category.Value, _ = root.Find("meta[itemprop='recipeCategory']").Attr("content")
+	rs.Keywords.Values, _ = root.Find("meta[name='keywords']").Attr("content")
+	rs.Cuisine.Value = root.Find("p[itemprop='recipeCuisine']").Text()
+
 	image, _ := root.Find("#article-img-1").Attr("data-src")
+	rs.Image.Value = "https://kuchnia-domowa.pl" + image
 
 	description := root.Find("#recipe-description").Text()
 	description = strings.TrimPrefix(description, "\n")
-	description = strings.TrimSuffix(description, "\n")
+	rs.Description.Value = strings.TrimSuffix(description, "\n")
 
 	nodes := root.Find("li[itemprop='recipeIngredient']")
-	ingredients := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		ingredients[i] = s.Text()
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		rs.Ingredients.Values = append(rs.Ingredients.Values, s.Text())
 	})
 
 	nodes = root.Find("#recipe-instructions li")
-	instructions := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		instructions[i] = s.Text()
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s.Text()))
 	})
 
-	return models.RecipeSchema{
-		Name:         name,
-		Category:     models.Category{Value: category},
-		Cuisine:      models.Cuisine{Value: root.Find("p[itemprop='recipeCuisine']").Text()},
-		Keywords:     models.Keywords{Values: keywords},
-		Image:        models.Image{Value: "https://kuchnia-domowa.pl" + image},
-		Description:  models.Description{Value: description},
-		Yield:        models.Yield{Value: yield},
-		Ingredients:  models.Ingredients{Values: ingredients},
-		Instructions: models.Instructions{Values: instructions},
-	}, nil
+	return rs, nil
 }

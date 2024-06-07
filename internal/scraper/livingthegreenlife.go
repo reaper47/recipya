@@ -11,18 +11,22 @@ func scrapeLivingTheGreenLife(root *goquery.Document) (models.RecipeSchema, erro
 		return rs, err
 	}
 
-	if len(rs.Ingredients.Values) == 0 {
+	var ingredients []string
+	if len(ingredients) == 0 {
 		nodes := root.Find("ul.wprm-recipe-ingredients").First().Find("li")
-		rs.Ingredients.Values = make([]string, 0, nodes.Length())
+		ingredients = make([]string, 0, nodes.Length())
 		nodes.Each(func(_ int, sel *goquery.Selection) {
-			rs.Ingredients.Values = append(rs.Ingredients.Values, sel.Text())
+			ingredients = append(ingredients, sel.Text())
 		})
 	}
+	rs.Ingredients = &models.Ingredients{Values: ingredients}
 
 	nodes := root.Find(".wprm-recipe-instructions-container").First().Find("ul.wprm-recipe-instructions li")
-	rs.Instructions.Values = make([]string, 0, nodes.Length())
+	instructions := make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Instructions.Values = append(rs.Instructions.Values, sel.Text())
+		instructions = append(instructions, models.NewHowToStep(sel.Text()))
 	})
+	rs.Instructions = &models.Instructions{Values: instructions}
+
 	return rs, nil
 }

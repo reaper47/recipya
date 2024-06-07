@@ -7,26 +7,24 @@ import (
 )
 
 func scrapeGesundAktiv(root *goquery.Document) (models.RecipeSchema, error) {
-	description, _ := root.Find("meta[name='description']").Attr("content")
+	rs := models.NewRecipeSchema()
+
+	rs.Description.Value, _ = root.Find("meta[name='description']").Attr("content")
+	rs.Name = strings.TrimSpace(root.Find("h1[itemprop='headline']").Text())
 
 	nodes := root.Find(".news-recipes-indgredients").Last().Find("ul li")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
-		ingredients = append(ingredients, s)
+		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
 	})
 
 	nodes = root.Find(".news-recipes-cookingsteps").Last().Find("ol li")
-	instructions := make([]string, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
-		instructions = append(instructions, s)
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
 	})
 
-	return models.RecipeSchema{
-		Description:  models.Description{Value: description},
-		Ingredients:  models.Ingredients{Values: ingredients},
-		Instructions: models.Instructions{Values: instructions},
-		Name:         strings.TrimSpace(root.Find("h1[itemprop='headline']").Text()),
-	}, nil
+	return rs, nil
 }

@@ -7,17 +7,19 @@ import (
 	"strings"
 )
 
-func scrapeCdKitchen(root *goquery.Document) (rs models.RecipeSchema, err error) {
+func scrapeCdKitchen(root *goquery.Document) (models.RecipeSchema, error) {
+	rs := models.NewRecipeSchema()
+
 	category := root.Find(".prev-page").Last().Text()
-	category = strings.Join(strings.Fields(category), " ")
+	rs.Category.Value = strings.Join(strings.Fields(category), " ")
 
 	content := root.Find("#recipepage")
 
 	nodes := content.Find("span[itemprop='recipeIngredient']")
-	ingredients := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
 		v := strings.ReplaceAll(s.Text(), "  ", " ")
-		ingredients[i] = strings.TrimSpace(v)
+		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(v))
 	})
 
 	node := content.Find("div[itemprop='recipeInstructions'] p")
@@ -25,16 +27,17 @@ func scrapeCdKitchen(root *goquery.Document) (rs models.RecipeSchema, err error)
 		s.ReplaceWithHtml("$$$")
 	})
 	lines := strings.Split(node.Text(), "$$$$$$")
-	instructions := make([]string, len(lines))
-	for i, line := range lines {
-		instructions[i] = strings.TrimSpace(line)
+	rs.Instructions.Values = make([]models.HowToItem, 0, len(lines))
+	for _, line := range lines {
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(line)))
 	}
 
 	yieldStr, _ := content.Find(".change-servs-input").Attr("value")
 	yield, _ := strconv.ParseInt(yieldStr, 10, 16)
+	rs.Yield.Value = int16(yield)
 
 	node = content.Find("span[itemprop='nutrition']")
-	nutrition := models.NutritionSchema{
+	rs.NutritionSchema = &models.NutritionSchema{
 		Calories:       node.Find("span[itemprop='calories']").Text(),
 		Carbohydrates:  node.Find(".carbohydrateContent").Text(),
 		Sugar:          node.Find(".sugarContent").Text(),
@@ -48,16 +51,9 @@ func scrapeCdKitchen(root *goquery.Document) (rs models.RecipeSchema, err error)
 		UnsaturatedFat: node.Find(".unsaturatedFatContent").Text(),
 	}
 
-	cookTime, _ := content.Find("meta[itemprop='cookTime']").Attr("content")
+	rs.CookTime, _ = content.Find("meta[itemprop='cookTime']").Attr("content")
+	rs.Description = &models.Description{Value: content.Find("p[itemprop='description']").Text()}
+	rs.Name = content.Find("h1[itemprop='name']").Text()
 
-	return models.RecipeSchema{
-		Category:        models.Category{Value: category},
-		Name:            content.Find("h1[itemprop='name']").Text(),
-		Description:     models.Description{Value: content.Find("p[itemprop='description']").Text()},
-		Yield:           models.Yield{Value: int16(yield)},
-		CookTime:        cookTime,
-		Ingredients:     models.Ingredients{Values: ingredients},
-		Instructions:    models.Instructions{Values: instructions},
-		NutritionSchema: nutrition,
-	}, err
+	return rs, nil
 }

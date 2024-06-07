@@ -10,7 +10,6 @@ func scrapeKennyMcGovern(root *goquery.Document) (models.RecipeSchema, error) {
 	if err != nil {
 		return rs, err
 	}
-	image, _ := root.Find(".gridfeel-post-thumbnail-single-img").Attr("src")
-	rs.Image.Value = image
+	rs.Image.Value, _ = root.Find(".gridfeel-post-thumbnail-single-img").Attr("src")
 	return rs, nil
 }

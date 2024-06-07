@@ -346,7 +346,9 @@ func parseWebsite(doc *goquery.Document) (models.RecipeSchema, error) {
 		}
 	}
 
-	if rs.Yield.Value == 0 {
+	if rs.Yield == nil {
+		rs.Yield = &models.Yield{Value: 1}
+	} else if rs.Yield.Value == 0 {
 		rs.Yield.Value = 1
 	}
 

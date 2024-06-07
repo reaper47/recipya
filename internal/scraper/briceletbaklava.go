@@ -7,17 +7,20 @@ import (
 )
 
 func scrapeBriceletbaklava(root *goquery.Document) (models.RecipeSchema, error) {
+	rs := models.NewRecipeSchema()
+
 	name, _ := root.Find("meta[property='og:title']").Attr("content")
 	before, _, ok := strings.Cut(name, " - ")
 	if ok {
 		name = strings.TrimSpace(before)
 	}
+	rs.Name = name
 
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
 
 	content := root.Find(".ob-section-html")
 	description := strings.Trim(content.First().Text(), "\n")
-	description = strings.TrimSpace(description)
+	rs.Description.Value = strings.TrimSpace(description)
 
 	nodes := root.Find(".Post-tags a")
 	var xk []string
@@ -28,32 +31,24 @@ func scrapeBriceletbaklava(root *goquery.Document) (models.RecipeSchema, error) 
 		}
 		xk = append(xk, s)
 	})
-	keywords := strings.Join(xk, ",")
+	rs.Keywords.Values = strings.Join(xk, ",")
 
 	nodes = content.Last().Find("p")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		if s == " " {
 			return
 		}
-		ingredients = append(ingredients, strings.TrimSpace(s))
+		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(s))
 	})
 
 	nodes = content.Last().Find("ul li")
-	instructions := make([]string, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
-		instructions = append(instructions, strings.TrimSpace(s))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(s)))
 	})
 
-	return models.RecipeSchema{
-		AtType:       models.SchemaType{Value: "Recipe"},
-		Description:  models.Description{Value: description},
-		Image:        models.Image{Value: image},
-		Ingredients:  models.Ingredients{Values: ingredients},
-		Instructions: models.Instructions{Values: instructions},
-		Keywords:     models.Keywords{Values: keywords},
-		Name:         name,
-	}, nil
+	return rs, nil
 }

@@ -7,41 +7,36 @@ import (
 )
 
 func scrapeCoop(root *goquery.Document) (models.RecipeSchema, error) {
-	dateCreated, _ := root.Find("meta[name='creation_date']").Attr("content")
+	rs := models.NewRecipeSchema()
+
+	rs.DateCreated, _ = root.Find("meta[name='creation_date']").Attr("content")
+	rs.DatePublished = rs.DateCreated
 
 	name, _ := root.Find("meta[name='og:title']").Attr("content")
 	before, _, ok := strings.Cut(name, "|")
 	if ok {
 		name = strings.TrimSpace(before)
 	}
+	rs.Name = name
 
 	description, _ := root.Find("meta[name='og:description']").Attr("content")
+	rs.Description.Value = strings.TrimSpace(description)
 
 	nodes := root.Find(".IngredientList-content")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
-		ingredients = append(ingredients, s)
+		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
 	})
 
 	nodes = root.Find("ol.List--orderedRecipe")
-	var instructions []string
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := sel.Text()
-		instructions = append(instructions, s)
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
 	})
 
 	image, _ := root.Find("picture img").First().Attr("src")
-	image = strings.TrimPrefix(image, "//")
+	rs.Image.Value = strings.TrimPrefix(image, "//")
+	rs.Yield.Value = findYield(root.Find("span:contains('portioner')").Text())
 
-	return models.RecipeSchema{
-		DateCreated:   dateCreated,
-		DatePublished: dateCreated,
-		Description:   models.Description{Value: strings.TrimSpace(description)},
-		Image:         models.Image{Value: image},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
-		Name:          name,
-		Yield:         models.Yield{Value: findYield(root.Find("span:contains('portioner')").Text())},
-	}, nil
+	return rs, nil
 }

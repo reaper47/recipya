@@ -12,17 +12,17 @@ func TestScraper_C(t *testing.T) {
 			in:   "https://cafedelites.com/butter-chicken",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Dinner"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Dinner"},
 				CookTime:      "PT30M",
-				Cuisine:       models.Cuisine{Value: "Indian"},
+				Cuisine:       &models.Cuisine{Value: "Indian"},
 				DatePublished: "2019-01-21T19:09:20+00:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Butter Chicken is creamy and easy to make right at home in one pan with simple ingredients! Full of incredible flavours, it rivals any Indian restaurant! Aromatic golden chicken pieces in an incredible creamy curry sauce, this Butter Chicken recipe is one of the best you will try!",
 				},
-				Keywords: models.Keywords{Values: "butter chicken"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "butter chicken"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"28 oz (800g) boneless and skinless chicken thighs or breasts (cut into bite-sized pieces)",
 						"1/2 cup plain yogurt",
@@ -49,20 +49,20 @@ func TestScraper_C(t *testing.T) {
 						"1/2 teaspoon kasoori methi ((or dried fenugreek leaves))",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"In a bowl, combine chicken with all of the ingredients for the chicken marinade; let marinate for 30 minutes to an hour (or overnight if time allows).",
-						"Heat oil in a large skillet or pot over medium-high heat. When sizzling, add chicken pieces in batches of two or three, making sure not to crowd the pan. Fry until browned for only 3 minutes on each side. Set aside and keep warm. (You will finish cooking the chicken in the sauce.)",
-						"Heat butter or ghee in the same pan. Fry the onions until they start to sweat (about 6 minutes) while scraping up any browned bits stuck on the bottom of the pan.",
-						"Add garlic and ginger and sauté for 1 minute until fragrant, then add ground coriander, cumin and garam masala. Let cook for about 20 seconds until fragrant, while stirring occasionally.",
-						"Add crushed tomatoes, chili powder and salt. Let simmer for about 10-15 minutes, stirring occasionally until sauce thickens and becomes a deep brown red colour.",
-						"Remove from heat, scoop mixture into a blender and blend until smooth. You may need to add a couple tablespoons of water to help it blend (up to 1/4 cup). Work in batches depending on the size of your blender.",
-						"Pour the puréed sauce back into the pan. Stir the cream, sugar and crushed kasoori methi (or fenugreek leaves) through the sauce. Add the chicken with juices back into the pan and cook for an additional 8-10 minutes until chicken is cooked through and the sauce is thick and bubbling.",
-						"Garnish with chopped cilantro and serve with fresh, hot garlic butter rice and fresh homemade Naan bread!",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "In a bowl, combine chicken with all of the ingredients for the chicken marinade; let marinate for 30 minutes to an hour (or overnight if time allows)."},
+						{Type: "HowToStep", Text: "Heat oil in a large skillet or pot over medium-high heat. When sizzling, add chicken pieces in batches of two or three, making sure not to crowd the pan. Fry until browned for only 3 minutes on each side. Set aside and keep warm. (You will finish cooking the chicken in the sauce.)"},
+						{Type: "HowToStep", Text: "Heat butter or ghee in the same pan. Fry the onions until they start to sweat (about 6 minutes) while scraping up any browned bits stuck on the bottom of the pan."},
+						{Type: "HowToStep", Text: "Add garlic and ginger and sauté for 1 minute until fragrant, then add ground coriander, cumin and garam masala. Let cook for about 20 seconds until fragrant, while stirring occasionally."},
+						{Type: "HowToStep", Text: "Add crushed tomatoes, chili powder and salt. Let simmer for about 10-15 minutes, stirring occasionally until sauce thickens and becomes a deep brown red colour."},
+						{Type: "HowToStep", Text: "Remove from heat, scoop mixture into a blender and blend until smooth. You may need to add a couple tablespoons of water to help it blend (up to 1/4 cup). Work in batches depending on the size of your blender."},
+						{Type: "HowToStep", Text: "Pour the puréed sauce back into the pan. Stir the cream, sugar and crushed kasoori methi (or fenugreek leaves) through the sauce. Add the chicken with juices back into the pan and cook for an additional 8-10 minutes until chicken is cooked through and the sauce is thick and bubbling."},
+						{Type: "HowToStep", Text: "Garnish with chopped cilantro and serve with fresh, hot garlic butter rice and fresh homemade Naan bread!"},
 					},
 				},
 				Name: "Butter Chicken",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "580 kcal",
 					Carbohydrates: "17 g",
 					Cholesterol:   "250 mg",
@@ -76,7 +76,7 @@ func TestScraper_C(t *testing.T) {
 				},
 				PrepTime:  "PT15M",
 				TotalTime: "PT45M",
-				Yield:     models.Yield{Value: 5},
+				Yield:     &models.Yield{Value: 5},
 				URL:       "https://cafedelites.com/butter-chicken"},
 		},
 		{
@@ -84,17 +84,16 @@ func TestScraper_C(t *testing.T) {
 			in:   "https://www.castironketo.net/blog/balsamic-mushrooms-with-herbed-veggie-mash/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Main Course"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Main Course"},
 				CookTime:      "PT30M",
-				Cuisine:       models.Cuisine{Value: "Italian"},
+				Cuisine:       &models.Cuisine{Value: "Italian"},
 				DatePublished: "2022-03-06T03:40:00+00:00",
-				Description: models.Description{
-					Value: "This easy low-carb dinner is perfect for plant-based eaters or anyone looking to add more veggies " +
-						"to their diet!",
+				Description: &models.Description{
+					Value: "This easy low-carb dinner is perfect for plant-based eaters or anyone looking to add more veggies to their diet!",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"10 ounces cremini mushrooms",
 						"2 tablespoons olive oil",
@@ -111,23 +110,15 @@ func TestScraper_C(t *testing.T) {
 						"Sea salt and freshly cracked pepper (to taste)",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"First, make the veggie mash by heating the butter in a large 10.5” skillet over medium-high heat. " +
-							"Once hot add in the garlic and fresh herbs cook for 30 seconds until fragrant. Add in the " +
-							"cauliflower and heavy cream. Cover and simmer for 15 minutes until the florets are soft. Transfer " +
-							"the mixture to a food processor and blend until smooth. If needed, add an additional tablespoon or " +
-							"two of heavy cream to reach your desired consistency. Season with salt and pepper to taste.",
-						"To the same skillet over medium heat add the kale with 2 tablespoons of water. Cover and cook 3-4 minutes " +
-							"until wilted. Stir the kale into the mashed cauliflower and divide between two bowls.",
-						"In the same skillet over medium-high heat, heat the olive oil. Once hot add in the garlic and mushrooms. " +
-							"Add 1 tablespoon water to the skillet, cook for 5-7 minutes until the mushrooms are soft. Add " +
-							"in the balsamic vinegar, salt, and black pepper. Cook another 1-2 minutes until the vinegar has " +
-							"reduced and is thick. Top the bowls with the mushrooms and serve.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "First, make the veggie mash by heating the butter in a large 10.5” skillet over medium-high heat. Once hot add in the garlic and fresh herbs cook for 30 seconds until fragrant. Add in the cauliflower and heavy cream. Cover and simmer for 15 minutes until the florets are soft. Transfer the mixture to a food processor and blend until smooth. If needed, add an additional tablespoon or two of heavy cream to reach your desired consistency. Season with salt and pepper to taste."},
+						{Type: "HowToStep", Text: "To the same skillet over medium heat add the kale with 2 tablespoons of water. Cover and cook 3-4 minutes until wilted. Stir the kale into the mashed cauliflower and divide between two bowls."},
+						{Type: "HowToStep", Text: "In the same skillet over medium-high heat, heat the olive oil. Once hot add in the garlic and mushrooms. Add 1 tablespoon water to the skillet, cook for 5-7 minutes until the mushrooms are soft. Add in the balsamic vinegar, salt, and black pepper. Cook another 1-2 minutes until the vinegar has reduced and is thick. Top the bowls with the mushrooms and serve."},
 					},
 				},
 				Name: "Balsamic Mushrooms with Herbed Veggie Mash",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:       "201 kcal",
 					Carbohydrates:  "12 g",
 					Cholesterol:    "",
@@ -143,25 +134,27 @@ func TestScraper_C(t *testing.T) {
 				},
 				PrepTime:  "PT10M",
 				TotalTime: "PT40M",
-				Yield:     models.Yield{Value: 4},
+				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.castironketo.net/blog/balsamic-mushrooms-with-herbed-veggie-mash/"},
 		},
 		{
 			name: "cdkitchen.com",
 			in:   "https://www.cdkitchen.com/recipes/recs/285/MerleHaggardsRainbowStew65112.shtml",
 			want: models.RecipeSchema{
-				AtContext: atContext,
-				AtType:    models.SchemaType{Value: "Recipe"},
-				Name:      "Merle Haggard's Rainbow Stew",
-				Description: models.Description{
+				AtContext:     atContext,
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Name:          "Merle Haggard's Rainbow Stew",
+				Description: &models.Description{
 					Value: `This colorful stew named for American country singer, Merle Haggard's song "Rainbow Stew", is ` +
 						"loaded with sausage, chicken, beans, and fresh vegetables.",
 				},
-				Yield:    models.Yield{Value: 6},
+				Yield:    &models.Yield{Value: 6},
 				CookTime: "PT1H20M",
-				Category: models.Category{Value: "stews"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Category: &models.Category{Value: "stews"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"5 tablespoons canola oil, divided",
 						"1 pound kielbasa, chorizo or andouille sausage, cut into 1/2-inch cubes",
@@ -185,29 +178,25 @@ func TestScraper_C(t *testing.T) {
 						"1/2 cup chopped green onions",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Heat 2 tablespoons of the oil in a Dutch oven over medium heat. Add the sausage and cook, stirring " +
-							"frequently, until browned. Remove with a slotted spoon and set aside.",
-						"Add the chicken to the pan and cook, stirring frequently, until browned. Remove the chicken with a " +
-							"slotted spoon and add to the sausage. Drain the oil from the pan and return the chicken and " +
-							"sausage to the pan.",
-						"Add the broth and bring it to a simmer. Let cook until the chicken is cooked through.",
-						"In a large skillet over medium heat, combine the flour and remaining oil and cook, stirring constantly, " +
-							"until smooth. Stir in the bell peppers, onion, carrots, celery, garlic, jicama, and parsley. " +
-							"Cook, stirring frequently, for 10 minutes.",
-						"Transfer the vegetable mixture to the Dutch oven. Add the kidney beans, bay leaf, savory, and cayenne. " +
-							"Bring to a boil then reduce the heat to a simmer. Let cook, uncovered, for 45 minutes, stirring frequently.",
-						"Season to taste with salt and pepper. Add the green onions and mix well. Serve over rice.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Heat 2 tablespoons of the oil in a Dutch oven over medium heat. Add the sausage and cook, stirring frequently, until browned. Remove with a slotted spoon and set aside."},
+						{Type: "HowToStep", Text: "Add the chicken to the pan and cook, stirring frequently, until browned. Remove the chicken with a slotted spoon and add to the sausage. Drain the oil from the pan and return the chicken and sausage to the pan."},
+						{Type: "HowToStep", Text: "Add the broth and bring it to a simmer. Let cook until the chicken is cooked through."},
+						{Type: "HowToStep", Text: "In a large skillet over medium heat, combine the flour and remaining oil and cook, stirring constantly, until smooth. Stir in the bell peppers, onion, carrots, celery, garlic, jicama, and parsley. Cook, stirring frequently, for 10 minutes."},
+						{Type: "HowToStep", Text: "Transfer the vegetable mixture to the Dutch oven. Add the kidney beans, bay leaf, savory, and cayenne. Bring to a boil then reduce the heat to a simmer. Let cook, uncovered, for 45 minutes, stirring frequently."},
+						{Type: "HowToStep", Text: "Season to taste with salt and pepper. Add the green onions and mix well. Serve over rice."},
 					},
 				},
-				NutritionSchema: models.NutritionSchema{
+				Keywords: &models.Keywords{},
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "565 calories",
 					Carbohydrates: "28 grams carbohydrates",
 					Fat:           "34 grams fat",
 					Protein:       "36 grams protein",
 				},
-				URL: "https://www.cdkitchen.com/recipes/recs/285/MerleHaggardsRainbowStew65112.shtml",
+				Tools: &models.Tools{Values: []models.HowToItem{}},
+				URL:   "https://www.cdkitchen.com/recipes/recs/285/MerleHaggardsRainbowStew65112.shtml",
 			},
 		},
 		{
@@ -215,18 +204,20 @@ func TestScraper_C(t *testing.T) {
 			in:   "https://www.chefkoch.de/rezepte/1064631211795001/Knusprige-Ofenkartoffeln.html",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Raffiniert & preiswert"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Raffiniert & preiswert"},
 				CookTime:      "P0DT0H40M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DatePublished: "2008-05-26",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Knusprige Ofenkartoffeln. Über 238 Bewertungen und für raffiniert befunden. Mit ► Portionsrechner ► Kochbuch ► Video-Tipps! Jetzt entdecken und ausprobieren!",
 				},
-				Keywords: models.Keywords{
+				Keywords: &models.Keywords{
 					Values: "Backen,Vegetarisch,Saucen,Dips,Beilage,raffiniert oder preiswert,einfach,Kartoffel,Snack",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"10 m.-große Kartoffeln, festkochende",
 						"3 EL Olivenöl",
@@ -242,23 +233,17 @@ func TestScraper_C(t *testing.T) {
 						"1 EL Kräuter nach Wahl, italienische",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Die geschälten, geviertelten Kartoffeln gut mit Küchenkrepp abtrocknen. Die Kartoffeln in eine " +
-							"große Schale geben, die Gewürze dazugeben und alles gut mit den Händen durchmengen. Nun das Öl " +
-							"dazugeben und nochmals durchmengen. Die Kartoffeln auf ein Blech geben. Ich fette das Blech nicht " +
-							"noch zusätzlich ein, da das Öl an den Kartoffeln bereits genügt.",
-						"Im vorgeheizten Backofen bei 200 °C Ober-/Unterhitze auf mittlerer Schiene ca. 30 - 40 Min. (je " +
-							"nach Größe der Kartoffelspalten) backen.",
-						"Alle 10 Min. müssen die Spalten gewendet werden, damit sie von allen Seiten schön kross werden. " +
-							"Wenn die Spalten anfangs etwas am Blech festbacken - nicht schlimm, einfach mit einem Pfannenwender lösen.",
-						"Nun aus der sauren Sahne, dem Zitronensaft, den Gewürzen und den Kräutern einen Dip anrühren. Der " +
-							"kann bei Bedarf natürlich auch mit etwas Knoblauch verfeinert werden.",
-						"Dazu gibt es bei uns Fisch oder Hähnchenschenkel.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Die geschälten, geviertelten Kartoffeln gut mit Küchenkrepp abtrocknen. Die Kartoffeln in eine große Schale geben, die Gewürze dazugeben und alles gut mit den Händen durchmengen. Nun das Öl dazugeben und nochmals durchmengen. Die Kartoffeln auf ein Blech geben. Ich fette das Blech nicht noch zusätzlich ein, da das Öl an den Kartoffeln bereits genügt."},
+						{Type: "HowToStep", Text: "Im vorgeheizten Backofen bei 200 °C Ober-/Unterhitze auf mittlerer Schiene ca. 30 - 40 Min. (je nach Größe der Kartoffelspalten) backen."},
+						{Type: "HowToStep", Text: "Alle 10 Min. müssen die Spalten gewendet werden, damit sie von allen Seiten schön kross werden. Wenn die Spalten anfangs etwas am Blech festbacken - nicht schlimm, einfach mit einem Pfannenwender lösen."},
+						{Type: "HowToStep", Text: "Nun aus der sauren Sahne, dem Zitronensaft, den Gewürzen und den Kräutern einen Dip anrühren. Der kann bei Bedarf natürlich auch mit etwas Knoblauch verfeinert werden."},
+						{Type: "HowToStep", Text: "Dazu gibt es bei uns Fisch oder Hähnchenschenkel."},
 					},
 				},
 				Name: "Knusprige Ofenkartoffeln",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "389 kcal",
 					Carbohydrates: "53,93g",
 					Fat:           "14,10g",
@@ -266,8 +251,9 @@ func TestScraper_C(t *testing.T) {
 					Servings:      "1",
 				},
 				PrepTime:  "P0DT0H20M",
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "P0DT1H0M",
-				Yield:     models.Yield{Value: 3},
+				Yield:     &models.Yield{Value: 3},
 				URL:       "https://www.chefkoch.de/rezepte/1064631211795001/Knusprige-Ofenkartoffeln.html",
 			},
 		},
@@ -276,16 +262,18 @@ func TestScraper_C(t *testing.T) {
 			in:   "https://www.chefnini.com/ramen-vegetarien/",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Pâtes"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Pâtes"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DateModified:  "2023-09-14T10:18:40+02:00",
 				DatePublished: "2023-09-14T10:18:35+02:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Depuis le temps que je voulais vous partager ma recette de ramen que je fais depuis 1 an maintenant. Au fur et à mesure, j’ai amélioré la recette pour la faire à notre goût. Ce qu’on aime le plus dans cette recette, ce sont les œufs mollets marinés. 🤤",
 				},
-				Keywords: models.Keywords{Values: "carotte,champignon,courgette,oeuf"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "carotte,champignon,courgette,oeuf"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"2 oeufs", "3 cuillères à soupe de sauce soja (salée ou shoyu)",
 						"1/2 cuillère à soupe de vinaigre de riz", "2 cuillères à café de sucre",
@@ -296,30 +284,32 @@ func TestScraper_C(t *testing.T) {
 						"huile de sésame (facultatif)", "Ciboule ou ciboulette",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"1- 6h à l’avance (+ c’est mariné, meilleur c’est !) : faites cuire les œufs 6 minutes à l’eau bouillante pour les avoir mollet.",
-						"2- Ecalez-les.",
-						"3- Faites chauffer dans une petite casserole la sauce soja, le vinaigre de riz et le sucre.",
-						"4- Versez dans un sachet congélation et ajoutez les œufs.",
-						"5- Placez au frais pour 6 h en les retournant de temps en temps.",
-						"1- Portez à ébullition l’eau avec la sauce soja et le cube de bouillon de légumes.",
-						"2- Pendant ce temps, épluchez et émincez l’oignon.",
-						"3- Faites-le cuire 10 minutes dans un peu de matière grasse (idéalement de l’huile de sésame).",
-						"4- Lorsqu’il est cuit et un peu doré, ajoutez-le au bouillon. Poursuivez la cuisson à frémissement.",
-						"5- Pendant ce temps, épluchez et émincez les champignons. Faites-les cuire dans la même poêle où ont cuits les oignons.",
-						"6- Epluchez et coupez en julienne la courgette et les carottes.",
-						"7- Faites cuire les ramens dans le bouillon selon le temps indiqué sur le paquet.",
-						"8- Retirez les ramens et répartissez-les dans des assiettes creuses.",
-						"9- A la place des ramens, faites cuire les légumes dans le bouillon. Laissez cuire 5 minutes. Les légumes doivent restés un peu croquants.",
-						"10- Répartissez dans les ramens les légumes, les champignons, arrosez de bouillon.",
-						"11- Ajoutez les œufs mollets coupés en deux.",
-						"12- Si vous en avez, ajoutez de la ciboule ciselée ou de la ciboulette.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "1- 6h à l’avance (+ c’est mariné, meilleur c’est !) : faites cuire les œufs 6 minutes à l’eau bouillante pour les avoir mollet."},
+						{Type: "HowToStep", Text: "2- Ecalez-les."},
+						{Type: "HowToStep", Text: "3- Faites chauffer dans une petite casserole la sauce soja, le vinaigre de riz et le sucre."},
+						{Type: "HowToStep", Text: "4- Versez dans un sachet congélation et ajoutez les œufs."},
+						{Type: "HowToStep", Text: "5- Placez au frais pour 6 h en les retournant de temps en temps."},
+						{Type: "HowToStep", Text: "1- Portez à ébullition l’eau avec la sauce soja et le cube de bouillon de légumes."},
+						{Type: "HowToStep", Text: "2- Pendant ce temps, épluchez et émincez l’oignon."},
+						{Type: "HowToStep", Text: "3- Faites-le cuire 10 minutes dans un peu de matière grasse (idéalement de l’huile de sésame)."},
+						{Type: "HowToStep", Text: "4- Lorsqu’il est cuit et un peu doré, ajoutez-le au bouillon. Poursuivez la cuisson à frémissement."},
+						{Type: "HowToStep", Text: "5- Pendant ce temps, épluchez et émincez les champignons. Faites-les cuire dans la même poêle où ont cuits les oignons."},
+						{Type: "HowToStep", Text: "6- Epluchez et coupez en julienne la courgette et les carottes."},
+						{Type: "HowToStep", Text: "7- Faites cuire les ramens dans le bouillon selon le temps indiqué sur le paquet."},
+						{Type: "HowToStep", Text: "8- Retirez les ramens et répartissez-les dans des assiettes creuses."},
+						{Type: "HowToStep", Text: "9- A la place des ramens, faites cuire les légumes dans le bouillon. Laissez cuire 5 minutes. Les légumes doivent restés un peu croquants."},
+						{Type: "HowToStep", Text: "10- Répartissez dans les ramens les légumes, les champignons, arrosez de bouillon."},
+						{Type: "HowToStep", Text: "11- Ajoutez les œufs mollets coupés en deux."},
+						{Type: "HowToStep", Text: "12- Si vous en avez, ajoutez de la ciboule ciselée ou de la ciboulette."},
 					},
 				},
-				Name:  "Ramen végétarien",
-				Yield: models.Yield{Value: 2},
-				URL:   "https://www.chefnini.com/ramen-vegetarien/",
+				Name:            "Ramen végétarien",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 2},
+				URL:             "https://www.chefnini.com/ramen-vegetarien/",
 			},
 		},
 		{
@@ -327,33 +317,33 @@ func TestScraper_C(t *testing.T) {
 			in:   "https://chefsavvy.com/crispy-baked-chicken-wings/",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Appetizer"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Appetizer"},
 				CookTime:      "PT45M",
-				Cuisine:       models.Cuisine{Value: "American"},
+				Cuisine:       &models.Cuisine{Value: "American"},
 				DatePublished: "2023-10-27T22:16:53+00:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Whether drenched in smoky barbecue, zesty buffalo, or a sweet and sour glaze, these Crispy Baked Chicken Wings are succulent on the inside and crispy on the outside for the perfect wing experience! Don&#39;t be fooled, the oven can make these wings just as tasty as deep frying!",
 				},
-				Keywords: models.Keywords{Values: "Baked Chicken Wings"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "Baked Chicken Wings"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 1/2 lbs chicken wings", "1/2 tbsp baking powder", "1/2 tsp salt",
 						"1/4 tsp pepper", "1/2 tsp garlic powder", "1/2 tsp onion powder",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Preheat oven to 425 degrees. Line a baking sheet with a slipmat or aluminum foil. Top with a wire rack, set aside.",
-						"Dab the chicken wings off with a paper towel to ensure they are completely dry.",
-						"Add the chicken wings to a medium bowl. Sprinkle with baking powder, salt, pepper, garlic powder and onion powder. Toss to coat the chicken wings in the seasonings.Place the chicken wings onto the prepared baking sheet and bake for 45 minutes (depending on the size of the chicken wings)",
-						"Turn the chicken wings every 20 minutes to ensure they get crispy on both sides.",
-						"Serve the chicken wings as is with ranch dressing or blue cheese for dipping. You could also toss these with your favorite wings sauce or my Honey Chipotle Sauce!",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Preheat oven to 425 degrees. Line a baking sheet with a slipmat or aluminum foil. Top with a wire rack, set aside."},
+						{Type: "HowToStep", Text: "Dab the chicken wings off with a paper towel to ensure they are completely dry."},
+						{Type: "HowToStep", Text: "Add the chicken wings to a medium bowl. Sprinkle with baking powder, salt, pepper, garlic powder and onion powder. Toss to coat the chicken wings in the seasonings.Place the chicken wings onto the prepared baking sheet and bake for 45 minutes (depending on the size of the chicken wings)"},
+						{Type: "HowToStep", Text: "Turn the chicken wings every 20 minutes to ensure they get crispy on both sides."},
+						{Type: "HowToStep", Text: "Serve the chicken wings as is with ranch dressing or blue cheese for dipping. You could also toss these with your favorite wings sauce or my Honey Chipotle Sauce!"},
 					},
 				},
 				Name: "Crispy Baked Chicken Wings",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:       "204 kcal",
 					Cholesterol:    "71 mg",
 					Fat:            "15 g",
@@ -366,7 +356,7 @@ func TestScraper_C(t *testing.T) {
 				},
 				PrepTime:  "PT15M",
 				TotalTime: "PT60M",
-				Yield:     models.Yield{Value: 4},
+				Yield:     &models.Yield{Value: 4},
 				URL:       "https://chefsavvy.com/crispy-baked-chicken-wings/",
 			},
 		},
@@ -374,12 +364,14 @@ func TestScraper_C(t *testing.T) {
 			name: "chuckycruz.substack.com",
 			in:   "https://chuckycruz.substack.com/p/yuzu-fried-chicken-sandwich",
 			want: models.RecipeSchema{
-				AtContext:   "https://schema.org",
-				AtType:      models.SchemaType{Value: "Recipe"},
-				Category:    models.Category{Value: "uncategorized"},
-				Description: models.Description{Value: "with yuzu ranch"},
-				Image:       models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Description:   &models.Description{Value: "with yuzu ranch"},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 cup full fat yogurt", "2 Tbsp yuzu juice, or lemon juice",
 						"1 Tbsp hot sauce, such as Frank’s or Crystal", "2 garlic cloves, grated",
@@ -404,24 +396,27 @@ func TestScraper_C(t *testing.T) {
 						"Dill pickles, sliced",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"In a bowl, combine yogurt, yuzu juice, hot sauce, garlic, ginger and black pepper. Whisk together.",
-						"Place chicken cutlets into yogurt marinade. Marinate for at least 1 hour or overnight.",
-						"In a bowl, whisk together flour, cornstarch, smoked paprika, ground mustard, garlic powder and onion powder.",
-						"In a bowl, combine kewpie mayo, yogurt, yuzu juice, chives, parsley, dill, garlic and powder onions.",
-						"Mix until combined.",
-						"Heat frying oil in a large skillet over medium heat to around 330-350F.",
-						"Remove chicken from marinade and shake off extra marinade. Coat chicken in breading mixture completely. Pat the breading mixture into the cutlet. Shake off extra breading mixture.",
-						"Carefully add in breaded chicken cutlet to oil, and fry in batches until golden and crispy, about 3-5 minutes. Repeat with with remainder of chicken cutlets.",
-						"Toast buns in butter until golden brown.",
-						"To serve, place a spoonful of yuzu ranch on bottom and top of bread. Place fried chicken cutlet and top with pickles and onions. Enjoy",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "In a bowl, combine yogurt, yuzu juice, hot sauce, garlic, ginger and black pepper. Whisk together."},
+						{Type: "HowToStep", Text: "Place chicken cutlets into yogurt marinade. Marinate for at least 1 hour or overnight."},
+						{Type: "HowToStep", Text: "In a bowl, whisk together flour, cornstarch, smoked paprika, ground mustard, garlic powder and onion powder."},
+						{Type: "HowToStep", Text: "In a bowl, combine kewpie mayo, yogurt, yuzu juice, chives, parsley, dill, garlic and powder onions."},
+						{Type: "HowToStep", Text: "Mix until combined."},
+						{Type: "HowToStep", Text: "Heat frying oil in a large skillet over medium heat to around 330-350F."},
+						{Type: "HowToStep", Text: "Remove chicken from marinade and shake off extra marinade. Coat chicken in breading mixture completely. Pat the breading mixture into the cutlet. Shake off extra breading mixture."},
+						{Type: "HowToStep", Text: "Carefully add in breaded chicken cutlet to oil, and fry in batches until golden and crispy, about 3-5 minutes. Repeat with with remainder of chicken cutlets."},
+						{Type: "HowToStep", Text: "Toast buns in butter until golden brown."},
+						{Type: "HowToStep", Text: "To serve, place a spoonful of yuzu ranch on bottom and top of bread. Place fried chicken cutlet and top with pickles and onions. Enjoy"},
 					},
 				},
-				Name:     "yuzu fried chicken sandwich",
-				PrepTime: "PT45M",
-				Yield:    models.Yield{Value: 6},
-				URL:      "https://chuckycruz.substack.com/p/yuzu-fried-chicken-sandwich",
+				Keywords:        &models.Keywords{},
+				Name:            "yuzu fried chicken sandwich",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT45M",
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 6},
+				URL:             "https://chuckycruz.substack.com/p/yuzu-fried-chicken-sandwich",
 			},
 		},
 		{
@@ -429,15 +424,17 @@ func TestScraper_C(t *testing.T) {
 			in:   "https://www.closetcooking.com/chipotle-roast-sweet-potatoes/",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "uncategorized"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				CookTime:      "PT20M",
 				DateModified:  "2023-11-12T11:20:22+00:00",
 				DatePublished: "2023-11-16T06:00:54+00:00",
-				Description:   models.Description{Value: "Tender roast sweet potatoes with smoky chipotle chili warmth!"},
-				Keywords:      models.Keywords{Values: "Food,Gluten-free,Recipe,Side Dish,Vegetable,Vegetarian"},
-				Image:         models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Description:   &models.Description{Value: "Tender roast sweet potatoes with smoky chipotle chili warmth!"},
+				Keywords:      &models.Keywords{Values: "Food,Gluten-free,Recipe,Side Dish,Vegetable,Vegetarian"},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"2 pounds sweet potatoes, washed, optionally peeled, and cut into 1 inch cubes",
 						"2 tablespoons oil", "1 teaspoon chipotle chili powder",
@@ -445,13 +442,13 @@ func TestScraper_C(t *testing.T) {
 						"1/2 teaspoon garlic powder", "1/2 teaspoon salt", "1/2 teaspoon pepper",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Toss the sweet potato in the oil, chili powder, paprika, cumin, garlic, salt and pepper, place on a baking sheet in a single layer and roast in a preheated 425F/220C oven until tender, about 20 minutes, flipping halfway through.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Toss the sweet potato in the oil, chili powder, paprika, cumin, garlic, salt and pepper, place on a baking sheet in a single layer and roast in a preheated 425F/220C oven until tender, about 20 minutes, flipping halfway through."},
 					},
 				},
 				Name: "Chipotle Roast Sweet Potatoes",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "Calories 214",
 					Carbohydrates: "Carbs 46g",
 					Cholesterol:   "Cholesterol 0",
@@ -464,7 +461,8 @@ func TestScraper_C(t *testing.T) {
 					TransFat:      "Trans 0",
 				},
 				PrepTime: "PT10M",
-				Yield:    models.Yield{Value: 4},
+				Tools:    &models.Tools{Values: []models.HowToItem{}},
+				Yield:    &models.Yield{Value: 4},
 				URL:      "https://www.closetcooking.com/chipotle-roast-sweet-potatoes/",
 			},
 		},
@@ -473,25 +471,18 @@ func TestScraper_C(t *testing.T) {
 			in:   "https://comidinhasdochef.com/pudim-no-copinho-para-festa/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Sobremesa"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Sobremesa"},
 				CookTime:      "PT5M",
-				Cuisine:       models.Cuisine{Value: "Brasileira"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{Value: "Brasileira"},
 				DatePublished: "2022-03-06T20:46:27-03:00",
-				Description: models.Description{
-					Value: "Você sabia que pudim pode ser um excelente doce para servir em festas? Pois, é! Praticamente todo mundo " +
-						"ama um pudim, né? E,  por isso, muitas pessoas têm aprendido como fazer pudim no copinho para festa " +
-						"que é um sucesso! E, se você trabalha nesta área ou adora preparar as festas da sua família, com " +
-						"certeza você vai amar esta receita. O pudim fica delicioso, bem levinho, daquele jeito que todo mundo " +
-						"ama e no ponto certo com esta receita, além disso, com o passo a passo que preparamos, você vai " +
-						"conseguir montar todos os copinhos para servir nas festas e comemorações. Com certeza, todo mundo " +
-						"vai amar e ainda querer repetir várias e várias vezes! Portanto, fique atento nesta receita de pudim " +
-						"no copinho para festa, que pode ser uma solução para as comemorações e festas infantis, assim como " +
-						"uma fonte de renda extra para você oferecer em seus serviços!",
+				Description: &models.Description{
+					Value: "Você sabia que pudim pode ser um excelente doce para servir em festas? Pois, é! Praticamente todo mundo ama um pudim, né? E,  por isso, muitas pessoas têm aprendido como fazer pudim no copinho para festa que é um sucesso! E, se você trabalha nesta área ou adora preparar as festas da sua família, com certeza você vai amar esta receita. O pudim fica delicioso, bem levinho, daquele jeito que todo mundo ama e no ponto certo com esta receita, além disso, com o passo a passo que preparamos, você vai conseguir montar todos os copinhos para servir nas festas e comemorações. Com certeza, todo mundo vai amar e ainda querer repetir várias e várias vezes! Portanto, fique atento nesta receita de pudim no copinho para festa, que pode ser uma solução para as comemorações e festas infantis, assim como uma fonte de renda extra para você oferecer em seus serviços!",
 				},
-				Keywords: models.Keywords{Values: "Pudim no Copinho para Festa"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{Values: []string{
+				Keywords: &models.Keywords{Values: "Pudim no Copinho para Festa"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{Values: []string{
 					"1 xícara (chá) de Água",
 					"2 xícaras (chá) de açúcar",
 					"500 ml de leite",
@@ -502,23 +493,22 @@ func TestScraper_C(t *testing.T) {
 					"2 pacotinhos de gelatina incolor sem sabor",
 				},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Em uma panela e no fogo médio vá adicionando o açúcar aos poucos, mexendo sem parar até derreter completamente;",
-						"Adicione a água e continue mexendo até dissolver todas as pelotas formadas pelo açúcar;",
-						"Quando estiver em consistência de calda bem liquida desligue o fogo e aguarde esfriar;",
-						"Unte os copinhos (50 ml) com um fio de óleo e distribua toda a calda entre eles (cerca de 1 colher de sopa " +
-							"em cada) e reserve.",
-						"Em uma tigela dissolva toda a gelatina incolor na água quente e em seguida reserve;",
-						"No liquidificador coloque o leite, a essência de baunilha, o creme de leite e o leite condensado;",
-						"Bata por 2-3 minutos e acrescente a gelatina dissolvida;",
-						"Bata novamente por mais 1 minuto ou até ficar bem homogêneo;",
-						"Distribua a mistura entre os copinhos com a calda e para finalizar leve a geladeira por pelo menos 2 horas;",
-						"Retire da geladeira e pronto, já pode servir.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Em uma panela e no fogo médio vá adicionando o açúcar aos poucos, mexendo sem parar até derreter completamente;"},
+						{Type: "HowToStep", Text: "Adicione a água e continue mexendo até dissolver todas as pelotas formadas pelo açúcar;"},
+						{Type: "HowToStep", Text: "Quando estiver em consistência de calda bem liquida desligue o fogo e aguarde esfriar;"},
+						{Type: "HowToStep", Text: "Unte os copinhos (50 ml) com um fio de óleo e distribua toda a calda entre eles (cerca de 1 colher de sopa em cada) e reserve."},
+						{Type: "HowToStep", Text: "Em uma tigela dissolva toda a gelatina incolor na água quente e em seguida reserve;"},
+						{Type: "HowToStep", Text: "No liquidificador coloque o leite, a essência de baunilha, o creme de leite e o leite condensado;"},
+						{Type: "HowToStep", Text: "Bata por 2-3 minutos e acrescente a gelatina dissolvida;"},
+						{Type: "HowToStep", Text: "Bata novamente por mais 1 minuto ou até ficar bem homogêneo;"},
+						{Type: "HowToStep", Text: "Distribua a mistura entre os copinhos com a calda e para finalizar leve a geladeira por pelo menos 2 horas;"},
+						{Type: "HowToStep", Text: "Retire da geladeira e pronto, já pode servir."},
 					},
 				},
 				Name: "Pudim no Copinho para Festa",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:       "215 kcal",
 					Carbohydrates:  "36 g",
 					Fat:            "6.5 g",
@@ -531,8 +521,9 @@ func TestScraper_C(t *testing.T) {
 					UnsaturatedFat: "1.6 g",
 				},
 				PrepTime:  "PT20M",
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT25M",
-				Yield:     models.Yield{Value: 50},
+				Yield:     &models.Yield{Value: 50},
 				URL:       "https://comidinhasdochef.com/pudim-no-copinho-para-festa/"},
 		},
 		{
@@ -540,21 +531,17 @@ func TestScraper_C(t *testing.T) {
 			in:   "https://cookeatshare.com/recipes/balinese-bbq-pork-roast-babi-guling-81003",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Kid Friendly"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Kid Friendly"},
 				CookTime:      "PT120M",
-				Cuisine:       models.Cuisine{Value: "Indonesian"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{Value: "Indonesian"},
 				DatePublished: "2009-07-05",
-				Description: models.Description{
-					Value: "My cousin Brett recently went to Bali for his honeymoon, so I decided to try the most famous Balinese " +
-						"dish for July 4th this summer.  This pork came out soft and tasty like the meat you eat at a Luau, but " +
-						"with a delicious complexity of flavors from the chiles, garlic, ginger, lemongrass and turmeric.  " +
-						"The process of slicing the roast in the middle and stuffing it with the marinade infused the entire " +
-						"roast with flavor.  Our guests raved...and were still going back for more even after dessert!  " +
-						"Make sure to serve the Balinese yellow rice.  A wonderful combination!",
+				Description: &models.Description{
+					Value: "My cousin Brett recently went to Bali for his honeymoon, so I decided to try the most famous Balinese dish for July 4th this summer.  This pork came out soft and tasty like the meat you eat at a Luau, but with a delicious complexity of flavors from the chiles, garlic, ginger, lemongrass and turmeric.  The process of slicing the roast in the middle and stuffing it with the marinade infused the entire roast with flavor.  Our guests raved...and were still going back for more even after dessert!  Make sure to serve the Balinese yellow rice.  A wonderful combination!",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 boneless pork shoulder roast, about 3 pounds (or bone in roast, about 3.5 pounds)",
 						"4 large shallots or 2 small onions",
@@ -571,37 +558,21 @@ func TestScraper_C(t *testing.T) {
 						"3 Tbsp vegetable oil",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Combine the shallots, chiles, garlic, ginger, turmeric, galangal, lemongrass, coriander, pepper, lime " +
-							"juice, sugar, salt, and 1 Tbsp vegetable oil in a mortar and pound to a smooth paste with the " +
-							"pestle, or puree in a blender or food processor to a smooth paste.",
-						"Heat 2 Tbsp of oil in a wok or skillet over medium heat. Add the spice paste and saute until fragrant, " +
-							"about 5 minutes. Stir frequently to avoid splattering, and run your fan on high. Remove from " +
-							"pan and let cool. The paste can be made up to a day in advance and refrigerated in an airtight container.",
-						"Trim the roast of excess fat, if any. Using a sharp knife, make a deep slice in the center of roast, " +
-							"starting and ending 3/4 inch from the ends, and cutting almost though to the other side of the " +
-							"roast. You should have a nice pocket about 6 inches long.",
-						"Fill the pocket with spice paste and tie the roast back together with kitchen twine or pin it with " +
-							"metal skewers.  Spread the remaining paste all over the outside of the roast. If any spice mixture " +
-							"remains, set it aside to add during the grilling process.",
-						"If you have a rotisserie, this is probably the best way to cook the roast. Preheat your grill to high " +
-							"and cook for about 1.5 hours.",
-						"I used the indirect cooking method. Move the charcoals to either side of the place where you plan to " +
-							"cook the roast, and place a drip pan in the middle. If you have a gas grill where the coals are not " +
-							"movable, either turn off the middle burner or just put a drip pan made of aluminum foil directly over " +
-							"the center burner. To make a foil drip pan, just tear 3 pieces of foil about 16 inches long, overlap them " +
-							"so they are the width you want, then fold the edges up about 2 inches to form a make-shift drip pan.",
-						"After setting up the grill, preheat it on high. Turn the grill down and place the roast over the drip " +
-							"pan. Adjust heat or coals so the internal temperature rests at about 350 F. This will ensure nice " +
-							"browning without burning, and should result in a cook time of about 2 hours. Turn the meat occasionally " +
-							"during cooking so all sides get equally browned, and rub on additional spice mixture if any.",
-						"Transfer roast to cutting board or platter and let stand for 10 minutes before removing strings and " +
-							"cutting into thin slices to serve.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Combine the shallots, chiles, garlic, ginger, turmeric, galangal, lemongrass, coriander, pepper, lime juice, sugar, salt, and 1 Tbsp vegetable oil in a mortar and pound to a smooth paste with the pestle, or puree in a blender or food processor to a smooth paste."},
+						{Type: "HowToStep", Text: "Heat 2 Tbsp of oil in a wok or skillet over medium heat. Add the spice paste and saute until fragrant, about 5 minutes. Stir frequently to avoid splattering, and run your fan on high. Remove from pan and let cool. The paste can be made up to a day in advance and refrigerated in an airtight container."},
+						{Type: "HowToStep", Text: "Trim the roast of excess fat, if any. Using a sharp knife, make a deep slice in the center of roast, starting and ending 3/4 inch from the ends, and cutting almost though to the other side of the roast. You should have a nice pocket about 6 inches long."},
+						{Type: "HowToStep", Text: "Fill the pocket with spice paste and tie the roast back together with kitchen twine or pin it with metal skewers.  Spread the remaining paste all over the outside of the roast. If any spice mixture remains, set it aside to add during the grilling process."},
+						{Type: "HowToStep", Text: "If you have a rotisserie, this is probably the best way to cook the roast. Preheat your grill to high and cook for about 1.5 hours."},
+						{Type: "HowToStep", Text: "I used the indirect cooking method. Move the charcoals to either side of the place where you plan to cook the roast, and place a drip pan in the middle. If you have a gas grill where the coals are not movable, either turn off the middle burner or just put a drip pan made of aluminum foil directly over the center burner. To make a foil drip pan, just tear 3 pieces of foil about 16 inches long, overlap them so they are the width you want, then fold the edges up about 2 inches to form a make-shift drip pan."},
+						{Type: "HowToStep", Text: "After setting up the grill, preheat it on high. Turn the grill down and place the roast over the drip pan. Adjust heat or coals so the internal temperature rests at about 350 F. This will ensure nice browning without burning, and should result in a cook time of about 2 hours. Turn the meat occasionally during cooking so all sides get equally browned, and rub on additional spice mixture if any."},
+						{Type: "HowToStep", Text: "Transfer roast to cutting board or platter and let stand for 10 minutes before removing strings and cutting into thin slices to serve."},
 					},
 				},
-				Name: "Balinese BBQ Pork Roast - Babi Guling",
-				NutritionSchema: models.NutritionSchema{
+				Keywords: &models.Keywords{},
+				Name:     "Balinese BBQ Pork Roast - Babi Guling",
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "",
 					Carbohydrates: "4.05 g",
 					Cholesterol:   "0 g",
@@ -615,8 +586,9 @@ func TestScraper_C(t *testing.T) {
 					TransFat:      "0.18 g",
 				},
 				PrepTime:  "PT30M",
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT150M",
-				Yield:     models.Yield{Value: 1},
+				Yield:     &models.Yield{Value: 1},
 				URL:       "https://cookeatshare.com/recipes/balinese-bbq-pork-roast-babi-guling-81003"},
 		},
 		{
@@ -624,20 +596,18 @@ func TestScraper_C(t *testing.T) {
 			in:   "https://cookieandkate.com/honey-butter-cornbread-recipe/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Baked goods"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Baked goods"},
 				CookTime:      "PT35M",
-				CookingMethod: models.CookingMethod{Value: "Baked"},
-				Cuisine:       models.Cuisine{Value: "American"},
+				CookingMethod: &models.CookingMethod{Value: "Baked"},
+				Cuisine:       &models.Cuisine{Value: "American"},
 				DatePublished: "2020-03-24",
-				Description: models.Description{
-					Value: "Make the best homemade cornbread with this easy recipe! It's fluffy on the inside, crisp around the " +
-						"edges, and full of delicious honey-butter flavor. Recipe yields one large skillet of cornbread " +
-						"(see recipe notes for alternate baking vessel options).",
+				Description: &models.Description{
+					Value: "Make the best homemade cornbread with this easy recipe! It's fluffy on the inside, crisp around the edges, and full of delicious honey-butter flavor. Recipe yields one large skillet of cornbread (see recipe notes for alternate baking vessel options).",
 				},
-				Keywords: models.Keywords{Values: "skillet cornbread"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "skillet cornbread"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1/2 cup (1 stick) unsalted butter",
 						"1 1/2 cups cornmeal, medium-grind or finer*",
@@ -651,29 +621,18 @@ func TestScraper_C(t *testing.T) {
 						"Optional serving suggestions: additional butter, honey or jam",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Preheat the oven to 375 degrees Fahrenheit. Place the butter in a large (12-inch) cast iron skillet and " +
-							"place the skillet in the oven to melt the butter, about 5 to 13 minutes (keep an extra eye on " +
-							"it as time goes on—we want it to get bubbly and lightly browned, but not burnt).",
-						"Meanwhile, in a large bowl, combine the cornmeal, flour, salt, baking powder and baking soda. Stir to " +
-							"combine, and set aside. In a medium bowl, whisk together the eggs and honey until fully blended. " +
-							"Add the milk and whisk until evenly combined.",
-						"Pour the liquid into the dry mixture, and stir just until moistened through (we'll stir it more " +
-							"soon). When the butter is melted and golden, use oven mitts (the skillet is crazy hot!) to remove " +
-							"the skillet from the oven, and give it a gentle swirl to lightly coat about an inch up the sides.",
-						"Pour the melted butter into the batter and stir just until incorporated. Pour the batter back into the " +
-							"hot skillet, using a spatula to scrape all of the batter from the bowl into the skillet.",
-						"Carefully return the skillet to the oven and bake until the bread is brown around the edge, springy to " +
-							"the touch, and a toothpick inserted in the center comes out clean with just a few crumbs, 25 to 30 " +
-							"minutes. Carefully (with oven mitts), place the skillet on a cooling rack. Let it cool for at " +
-							"least 5 minutes before slicing and serving—perhaps with extra butter, honey or jam on the side.",
-						"This cornbread will keep at room temperature in a sealed container for up to 3 days, or up to a week in " +
-							"the refrigerator. You can also freeze it for up to 3 months. Gently reheat before serving.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Preheat the oven to 375 degrees Fahrenheit. Place the butter in a large (12-inch) cast iron skillet and place the skillet in the oven to melt the butter, about 5 to 13 minutes (keep an extra eye on it as time goes on—we want it to get bubbly and lightly browned, but not burnt)."},
+						{Type: "HowToStep", Text: "Meanwhile, in a large bowl, combine the cornmeal, flour, salt, baking powder and baking soda. Stir to combine, and set aside. In a medium bowl, whisk together the eggs and honey until fully blended. Add the milk and whisk until evenly combined."},
+						{Type: "HowToStep", Text: "Pour the liquid into the dry mixture, and stir just until moistened through (we'll stir it more soon). When the butter is melted and golden, use oven mitts (the skillet is crazy hot!) to remove the skillet from the oven, and give it a gentle swirl to lightly coat about an inch up the sides."},
+						{Type: "HowToStep", Text: "Pour the melted butter into the batter and stir just until incorporated. Pour the batter back into the hot skillet, using a spatula to scrape all of the batter from the bowl into the skillet."},
+						{Type: "HowToStep", Text: "Carefully return the skillet to the oven and bake until the bread is brown around the edge, springy to the touch, and a toothpick inserted in the center comes out clean with just a few crumbs, 25 to 30 minutes. Carefully (with oven mitts), place the skillet on a cooling rack. Let it cool for at least 5 minutes before slicing and serving—perhaps with extra butter, honey or jam on the side."},
+						{Type: "HowToStep", Text: "This cornbread will keep at room temperature in a sealed container for up to 3 days, or up to a week in the refrigerator. You can also freeze it for up to 3 months. Gently reheat before serving."},
 					},
 				},
 				Name: "Honey Butter Cornbread",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "200 calories",
 					Carbohydrates: "30.3 g",
 					Cholesterol:   "52 mg",
@@ -688,7 +647,7 @@ func TestScraper_C(t *testing.T) {
 				},
 				PrepTime:  "PT10M",
 				TotalTime: "PT45M",
-				Yield:     models.Yield{Value: 16},
+				Yield:     &models.Yield{Value: 16},
 				URL:       "https://cookieandkate.com/honey-butter-cornbread-recipe/"},
 		},
 		{
@@ -696,16 +655,18 @@ func TestScraper_C(t *testing.T) {
 			in:   "https://cookpad.com/recipe/4610651",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "本格バターチキンカレー"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "本格バターチキンカレー"},
 				CookTime:      "PT40M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DateModified:  "2018-02-19",
 				DatePublished: "2018-02-19",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "本格バターチキンカレーのレシピです。 おうちにある材料で作れるバターチキンカレーです(*´`*)♡とっても簡単♬すぐ出来るのでぜひお試しください♡ʾʾ",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"♥鶏モモ肉 500g前後", "♥玉ねぎ 2個",
 						"♥にんにくチューブ 5cm",
@@ -716,20 +677,23 @@ func TestScraper_C(t *testing.T) {
 						"＊ケチャップ 大さじ1", "♥生クリーム 100ml",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"鶏モモ肉 は一口大に、 玉ねぎ は薄切り(orみじん切り)にします♪",
-						"フライパンに バター(大さじ2) を熱し、鶏肉 に 塩胡椒 をふり表面をこんがり焼きます♪",
-						"お鍋に バター(大さじ3) にんにくチューブ 生姜チューブ 玉ねぎ を入れてあめ色になるまでじっくり炒めます♪",
-						"カレー粉 を加えて弱火で3分くらい炒めます♪",
-						"＊ と 鶏肉(油分も) を加えて沸騰したら火が通るまで(10分程)煮ます♪",
-						"仕上げに 生クリーム を加えて混ぜ、温まったらすぐ火を止めます♪\n完成♡♡\n更に仕上げに生\xe3\x82\xafリームをトッピングしました♡",
-						"子供ごはんはこんな感じの盛り付けに♡♥",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "鶏モモ肉 は一口大に、 玉ねぎ は薄切り(orみじん切り)にします♪"},
+						{Type: "HowToStep", Text: "フライパンに バター(大さじ2) を熱し、鶏肉 に 塩胡椒 をふり表面をこんがり焼きます♪"},
+						{Type: "HowToStep", Text: "お鍋に バター(大さじ3) にんにくチューブ 生姜チューブ 玉ねぎ を入れてあめ色になるまでじっくり炒めます♪"},
+						{Type: "HowToStep", Text: "カレー粉 を加えて弱火で3分くらい炒めます♪"},
+						{Type: "HowToStep", Text: "＊ と 鶏肉(油分も) を加えて沸騰したら火が通るまで(10分程)煮ます♪"},
+						{Type: "HowToStep", Text: "仕上げに 生クリーム を加えて混ぜ、温まったらすぐ火を止めます♪\n完成♡♡\n更に仕上げに生\xe3\x82\xafリームをトッピングしました♡"},
+						{Type: "HowToStep", Text: "子供ごはんはこんな感じの盛り付けに♡♥"},
 					},
 				},
-				Name:  "30分で簡単♡本格バターチキンカレー♡",
-				URL:   "https://cookpad.com/recipe/4610651",
-				Yield: models.Yield{Value: 1},
+				Keywords:        &models.Keywords{},
+				Name:            "30分で簡単♡本格バターチキンカレー♡",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				URL:             "https://cookpad.com/recipe/4610651",
+				Yield:           &models.Yield{Value: 1},
 			},
 		},
 		{
@@ -737,16 +701,18 @@ func TestScraper_C(t *testing.T) {
 			in:   "https://cook-talk.com/?p=5476",
 			want: models.RecipeSchema{
 				AtContext: "https://schema.org",
-				AtType:    models.SchemaType{Value: "Recipe"},
-				Category: models.Category{
+				AtType:    &models.SchemaType{Value: "Recipe"},
+				Category: &models.Category{
 					Value: "Птица",
 				},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DatePublished: "2014-03-20T15:23:00+00:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Очень, очень вкусный салат. Там не только индейка, там еще сливочный сыр и орехи, полноценный ужин практически.",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"400 г фельд-салата (он же маш, он же рапунцель, он же полевой салат)",
 						"300 г запеченного мяса индейки",
@@ -759,17 +725,21 @@ func TestScraper_C(t *testing.T) {
 						"пара долек грейпфрута для сервировки",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Орехи поставить в духовку на 220 градусов на 8 минут, готовые орехи остудить.",
-						"Листочки фельд-салата разложить на тарелке. Выложить сверху мясо индейки, нарезанное на кубики. Сливочный сыр нарезать на такого же размера кубики и обвалять в мелко нарезанном шнитт-луке или черемше, тоже выложить на салат. (У меня не было ни того, ни другого, поэтому я обваливала в зеленом луке).",
-						"Выложить на салат половинки помидоров. Сбрызнуть салат грейпфрутовым соком, а потом оливковым маслом. Солить не нужно.",
-						"Сверху посыпать поджаренными и крупно порезанными орехами и положить дольки грейпфрута. Подавать со свежим хлебом.",
-						"Приятного аппетита.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Орехи поставить в духовку на 220 градусов на 8 минут, готовые орехи остудить."},
+						{Type: "HowToStep", Text: "Листочки фельд-салата разложить на тарелке. Выложить сверху мясо индейки, нарезанное на кубики. Сливочный сыр нарезать на такого же размера кубики и обвалять в мелко нарезанном шнитт-луке или черемше, тоже выложить на салат. (У меня не было ни того, ни другого, поэтому я обваливала в зеленом луке)."},
+						{Type: "HowToStep", Text: "Выложить на салат половинки помидоров. Сбрызнуть салат грейпфрутовым соком, а потом оливковым маслом. Солить не нужно."},
+						{Type: "HowToStep", Text: "Сверху посыпать поджаренными и крупно порезанными орехами и положить дольки грейпфрута. Подавать со свежим хлебом."},
+						{Type: "HowToStep", Text: "Приятного аппетита."},
 					},
 				},
-				Name: "Салат из индейки",
-				URL:  "https://cook-talk.com/?p=5476",
+				Keywords:        &models.Keywords{},
+				Name:            "Салат из индейки",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://cook-talk.com/?p=5476",
 			},
 		},
 		{
@@ -777,17 +747,24 @@ func TestScraper_C(t *testing.T) {
 			in:   "https://www.coop.se/recept/appelkaka-med-havregryn/",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "uncategorized"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DateCreated:   "2019-03-21 10:14:50",
 				DatePublished: "2019-03-21 10:14:50",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Här hittar du ett recept på äppelkaka med havrygryn som är enkel att göra och så god. Mycket crunch och saftig!",
 				},
-				Image:       models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{Values: []string{}},
-				Name:        "Äppelkaka med havregryn",
-				URL:         "https://www.coop.se/recept/appelkaka-med-havregryn/",
+				Image:           &models.Image{Value: anUploadedImage.String()},
+				Ingredients:     &models.Ingredients{Values: []string{}},
+				Instructions:    &models.Instructions{Values: []models.HowToItem{}},
+				Keywords:        &models.Keywords{},
+				Name:            "Äppelkaka med havregryn",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{},
+				URL:             "https://www.coop.se/recept/appelkaka-med-havregryn/",
 			},
 		},
 		{
@@ -795,18 +772,17 @@ func TestScraper_C(t *testing.T) {
 			in:   "https://copykat.com/mcdonalds-egg-mcmuffin",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Breakfast"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Breakfast"},
 				CookTime:      "PT5M",
-				Cuisine:       models.Cuisine{Value: "American"},
+				Cuisine:       &models.Cuisine{Value: "American"},
 				DatePublished: "2023-02-16T05:11:12+00:00",
-				Description: models.Description{
-					Value: "Learn how to make a McDonalds Egg McMuffin at home with this easy copycat recipe. Find out the secret " +
-						"to making perfect egg rings for a breakfast sandwich.",
+				Description: &models.Description{
+					Value: "Learn how to make a McDonalds Egg McMuffin at home with this easy copycat recipe. Find out the secret to making perfect egg rings for a breakfast sandwich.",
 				},
-				Keywords: models.Keywords{Values: "McDonald's Egg McMuffin"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "McDonald's Egg McMuffin"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"4 tablespoons softened butter (butter has divided uses)",
 						"4 English Muffins",
@@ -816,26 +792,23 @@ func TestScraper_C(t *testing.T) {
 						"4 slices American cheese",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Split open English Muffins and place them into a toaster, toast the English Muffins.",
-						"In a non-stick skillet over medium heat, cook Candian bacon on both sides for about 1 to 2 minutes in " +
-							"two teaspoons of butter. The bacon should begin to just brown.",
-						"While the Canadian bacon is cooking, remove the English muffins from the toaster and spread softened " +
-							"butter on both halves.",
-						"Place the 1 slice of Canadian bacon on each English Muffin bottom.",
-						"Add about 1 tablespoon of butter to the same skillet where you cooked the bacon.",
-						"Place the quart-sized canning lids screw size up (or you can use an egg ring) into the skillet.",
-						"Spray the canning lid with non-stick spray. Crack an egg into each of the rings.",
-						"Break the yolk with a fork. Pour about 1/2 cup of water into the skillet, and place a lid on top. Cook " +
-							"until the eggs are set, it should take about two minutes.",
-						"Gently remove the eggs from the rings, and place one egg on each piece of Canadian bacon.",
-						"Top each egg with one slice of American cheese, top cheese with the top of the English muffin.",
-						"Wrap each egg McMuffin with foil or parchment paper. Wait about 30 seconds before serving.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Split open English Muffins and place them into a toaster, toast the English Muffins."},
+						{Type: "HowToStep", Text: "In a non-stick skillet over medium heat, cook Candian bacon on both sides for about 1 to 2 minutes in two teaspoons of butter. The bacon should begin to just brown."},
+						{Type: "HowToStep", Text: "While the Canadian bacon is cooking, remove the English muffins from the toaster and spread softened butter on both halves."},
+						{Type: "HowToStep", Text: "Place the 1 slice of Canadian bacon on each English Muffin bottom."},
+						{Type: "HowToStep", Text: "Add about 1 tablespoon of butter to the same skillet where you cooked the bacon."},
+						{Type: "HowToStep", Text: "Place the quart-sized canning lids screw size up (or you can use an egg ring) into the skillet."},
+						{Type: "HowToStep", Text: "Spray the canning lid with non-stick spray. Crack an egg into each of the rings."},
+						{Type: "HowToStep", Text: "Break the yolk with a fork. Pour about 1/2 cup of water into the skillet, and place a lid on top. Cook until the eggs are set, it should take about two minutes."},
+						{Type: "HowToStep", Text: "Gently remove the eggs from the rings, and place one egg on each piece of Canadian bacon."},
+						{Type: "HowToStep", Text: "Top each egg with one slice of American cheese, top cheese with the top of the English muffin."},
+						{Type: "HowToStep", Text: "Wrap each egg McMuffin with foil or parchment paper. Wait about 30 seconds before serving."},
 					},
 				},
 				Name: "McDonald's Egg McMuffin",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "420 kcal",
 					Carbohydrates: "28 g",
 					Cholesterol:   "229 mg",
@@ -848,7 +821,7 @@ func TestScraper_C(t *testing.T) {
 					Sugar:         "1 g",
 				},
 				PrepTime: "PT5M",
-				Yield:    models.Yield{Value: 4},
+				Yield:    &models.Yield{Value: 4},
 				URL:      "https://copykat.com/mcdonalds-egg-mcmuffin",
 			},
 		},
@@ -857,18 +830,14 @@ func TestScraper_C(t *testing.T) {
 			in:   "https://www.costco.com/connection-recipe-chicken-salad-grapes-walnuts-blue-cheese-march-2023.html",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "uncategorized"},
-				CookTime:      "",
-				CookingMethod: models.CookingMethod{},
-				Cuisine:       models.Cuisine{},
-				DateCreated:   "",
-				DateModified:  "",
-				DatePublished: "",
-				Description:   models.Description{},
-				Keywords:      models.Keywords{},
-				Image:         models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Description:   &models.Description{},
+				Keywords:      &models.Keywords{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"6 cups rotisserie chicken, shredded",
 						"3 cups red seedless grapes, halved lengthwise",
@@ -883,17 +852,18 @@ func TestScraper_C(t *testing.T) {
 						"½ tsp kosher salt, or to taste",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Combine chicken, grapes, celery, walnuts and blue cheese in a large mixing bowl.",
-						"In a medium-size mixing bowl, blend mayonnaise, sherry vinegar, thyme, lemon zest, garlic powder and salt.",
-						"Fold the dressing into the chicken-grape mixture and combine well. Adjust seasonings as desired. Serve in Bibb lettuce cups or as a sandwich filling. Makes 6 servings.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Combine chicken, grapes, celery, walnuts and blue cheese in a large mixing bowl."},
+						{Type: "HowToStep", Text: "In a medium-size mixing bowl, blend mayonnaise, sherry vinegar, thyme, lemon zest, garlic powder and salt."},
+						{Type: "HowToStep", Text: "Fold the dressing into the chicken-grape mixture and combine well. Adjust seasonings as desired. Serve in Bibb lettuce cups or as a sandwich filling. Makes 6 servings."},
 					},
 				},
-				Name:     "Chicken Salad with Red Grapes, Walnuts and Blue Cheese",
-				PrepTime: "",
-				Yield:    models.Yield{},
-				URL:      "https://www.costco.com/connection-recipe-chicken-salad-grapes-walnuts-blue-cheese-march-2023.html",
+				Name:            "Chicken Salad with Red Grapes, Walnuts and Blue Cheese",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://www.costco.com/connection-recipe-chicken-salad-grapes-walnuts-blue-cheese-march-2023.html",
 			},
 		},
 		{
@@ -901,19 +871,19 @@ func TestScraper_C(t *testing.T) {
 			in:   "https://www.countryliving.com/food-drinks/a39298988/braised-turkey-wings-recipe/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Sunday lunch"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Sunday lunch"},
 				CookTime:      "PT0S",
-				Cuisine:       models.Cuisine{Value: "American"},
+				Cuisine:       &models.Cuisine{Value: "American"},
 				DatePublished: "2022-03-04T00:01:33.158861Z EST",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "This Southern dish is just bursting with flavor.",
 				},
-				Keywords: models.Keywords{
+				Keywords: &models.Keywords{
 					Values: "American, Southern, Sunday lunch, comfort food, dinner",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"3 whole turkey wings (about 3 pounds total)",
 						"Kosher salt and freshly ground black pepper",
@@ -931,23 +901,16 @@ func TestScraper_C(t *testing.T) {
 						"Cooked white rice, for serving",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Preheat oven to 350°F. Season wings with salt and pepper. Heat oil in a large Dutch oven over " +
-							"medium-high heat. Add wings and cook, turning once, until golden brown, 4 to 5 minutes. " +
-							"Transfer to a plate; reserve pot.",
-						"Reduce heat to medium. Add onion, carrots, and celery to reserved pot. Cook, stirring occasionally, " +
-							"until onion is translucent, 6 to 8 minutes. Add garlic, rosemary, sage, thyme, and bay leaves. " +
-							"Cook, stirring, until garlic is fragrant, about 1 minute. Sprinkle in flour and cook, stirring, " +
-							"until flour becomes a medium brown shade (like the color of caramel), 4 to 5 minutes. While " +
-							"stirring, slowly pour in half of stock. Return wings to pot and pour in remaining stock until " +
-							"wings are 2/3 covered by liquid. Cover and bake until wings are tender, 2 to 2 1/2 hours. Serve over rice.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Preheat oven to 350°F. Season wings with salt and pepper. Heat oil in a large Dutch oven over medium-high heat. Add wings and cook, turning once, until golden brown, 4 to 5 minutes. Transfer to a plate; reserve pot."},
+						{Type: "HowToStep", Text: "Reduce heat to medium. Add onion, carrots, and celery to reserved pot. Cook, stirring occasionally, until onion is translucent, 6 to 8 minutes. Add garlic, rosemary, sage, thyme, and bay leaves. Cook, stirring, until garlic is fragrant, about 1 minute. Sprinkle in flour and cook, stirring, until flour becomes a medium brown shade (like the color of caramel), 4 to 5 minutes. While stirring, slowly pour in half of stock. Return wings to pot and pour in remaining stock until wings are 2/3 covered by liquid. Cover and bake until wings are tender, 2 to 2 1/2 hours. Serve over rice."},
 					},
 				},
 				Name:      "Braised Turkey Wings",
 				PrepTime:  "PT40M",
 				TotalTime: "PT3H10M",
-				Yield:     models.Yield{Value: 4},
+				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.countryliving.com/food-drinks/a39298988/braised-turkey-wings-recipe/",
 			},
 		},
@@ -956,15 +919,17 @@ func TestScraper_C(t *testing.T) {
 			in:   "https://creativecanning.com/caramelized-onion-jam/",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "uncategorized"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
 				CookTime:      "PT1H15M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DatePublished: "2022-09-05",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Caramelized onion jam is a unique savory jam that&#x27;s delicious no matter where you use it.",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 Tablespoon cooking oil, neutral, such as sunflower or grape seed",
 						"3 pounds red onions, sliced",
@@ -973,29 +938,32 @@ func TestScraper_C(t *testing.T) {
 						"2 teaspoons kosher salt",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"If canning, prepare a water bath canner, jars and lids before beginning. If not canning, no worries, just let it cool on the counter in jars before storing in the refrigerator.",
-						"Heat oil in a heavy-bottomed pan or Dutch oven over medium-high heat, then add the sliced onions and stir to coat.",
-						"Reduce the heat to medium and cook the onions for 45-50 minutes, stirring often.",
-						"Prepare jars and a hot water bath.",
-						"Add maple sugar to the cooked onions and stir to dissolve the sugar.",
-						"Increase the heat to medium-high and cook the onions and sugar for 3-4 minutes, stirring constantly.",
-						"Carefully stir in the vinegar and lemon juice, being cautious of splattering and vinegar vapor.",
-						"Reduce the heat to medium and add salt to the mixture.",
-						"Cook the onion mixture until the vinegar has reduced to a sticky syrup, about 10-12 minutes.",
-						`Pour or ladle the hot jam into prepared hot jars, leaving ½ " headspace at the top of the jars.`,
-						"Wipe the rims of the jars with a clean cloth, and apply the 2-part canning lids.",
-						"Preserve the homemade onion jam using a hot water bath canning method for 10 minutes, adjusting time if necessary for altitude.",
-						"After processing, turn off the heat and leave jars in the canner, uncovered, for 5 minutes. Remove the jars from the canner and let them cool for 12-24 hours, then check that the jars have sealed. Refrigerate any unsealed jars.",
-						"Sealed red onion jam will retain peak quality for up to 18 months stored in a cool, dry place or pantry. Refrigerate the jam once opened.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "If canning, prepare a water bath canner, jars and lids before beginning. If not canning, no worries, just let it cool on the counter in jars before storing in the refrigerator."},
+						{Type: "HowToStep", Text: "Heat oil in a heavy-bottomed pan or Dutch oven over medium-high heat, then add the sliced onions and stir to coat."},
+						{Type: "HowToStep", Text: "Reduce the heat to medium and cook the onions for 45-50 minutes, stirring often."},
+						{Type: "HowToStep", Text: "Prepare jars and a hot water bath."},
+						{Type: "HowToStep", Text: "Add maple sugar to the cooked onions and stir to dissolve the sugar."},
+						{Type: "HowToStep", Text: "Increase the heat to medium-high and cook the onions and sugar for 3-4 minutes, stirring constantly."},
+						{Type: "HowToStep", Text: "Carefully stir in the vinegar and lemon juice, being cautious of splattering and vinegar vapor."},
+						{Type: "HowToStep", Text: "Reduce the heat to medium and add salt to the mixture."},
+						{Type: "HowToStep", Text: "Cook the onion mixture until the vinegar has reduced to a sticky syrup, about 10-12 minutes."},
+						{Type: "HowToStep", Text: `Pour or ladle the hot jam into prepared hot jars, leaving ½ " headspace at the top of the jars.`},
+						{Type: "HowToStep", Text: "Wipe the rims of the jars with a clean cloth, and apply the 2-part canning lids."},
+						{Type: "HowToStep", Text: "Preserve the homemade onion jam using a hot water bath canning method for 10 minutes, adjusting time if necessary for altitude."},
+						{Type: "HowToStep", Text: "After processing, turn off the heat and leave jars in the canner, uncovered, for 5 minutes. Remove the jars from the canner and let them cool for 12-24 hours, then check that the jars have sealed. Refrigerate any unsealed jars."},
+						{Type: "HowToStep", Text: "Sealed red onion jam will retain peak quality for up to 18 months stored in a cool, dry place or pantry. Refrigerate the jam once opened."},
 					},
 				},
-				Name:      "Caramelized Onion Jam",
-				PrepTime:  "PT20M",
-				TotalTime: "PT1H45M",
-				Yield:     models.Yield{Value: 4},
-				URL:       "https://creativecanning.com/caramelized-onion-jam/",
+				Keywords:        &models.Keywords{},
+				Name:            "Caramelized Onion Jam",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT20M",
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:       "PT1H45M",
+				Yield:           &models.Yield{Value: 4},
+				URL:             "https://creativecanning.com/caramelized-onion-jam/",
 			},
 		},
 		{
@@ -1003,16 +971,18 @@ func TestScraper_C(t *testing.T) {
 			in:   "https://www.cucchiaio.it/ricetta/baccala-in-crosta-senza-glutine/",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Secondi"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Secondi"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DateModified:  "2023-11-17",
 				DatePublished: "2023-11-17",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Il baccalà in crosta&nbsp;senza glutine è un raffinato secondo di pesce ideale per le cene dei giorni di festa. Sotto uno strato di fragrante pasta sfoglia si nasconde un tenero filetto di baccalà, avvolto in un battuto a base di pomodori, olive e capperi che rende il risultato finale saporito e goloso.",
 				},
-				Keywords: models.Keywords{Values: "Baccalà in crosta senza glutine,al forno"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "Baccalà in crosta senza glutine,al forno"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 filetto intero di baccalà già ammollato (di 600-700 g circa)",
 						"150 g di pomodori secchi sott’olio", "2 cucchiai di capperi sott’aceto",
@@ -1021,17 +991,19 @@ func TestScraper_C(t *testing.T) {
 						"1 cucchiaino di semi di papavero", "1 ciuffo di prezzemolo", "sale", "pepe",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Per preparare il baccalà in crosta senza glutine iniziate a deliscare il filetto di baccalà con una pinzetta, poi con un coltello ben affilato rimuovete la pelle del pesce (potete anche lasciarla, se preferite). Scolate i pomodori, le olive e i capperi e tritateli al coltello cercando di ottenere un battuto non troppo fine. Riunite il battuto in una ciotola, aggiungete il prezzemolo tritato e mescolate.",
-						"Sistemate la pasta sfoglia rettangolare in maniera orizzontale di fronte a voi su un foglio di carta forno. Spalmate soltanto la parte centrale con un po’ di battuto mediterraneo. Tamponate il baccalà con carta assorbente e sistematelo al centro della pasta sfoglia, esattamente sulla parte cosparsa di battuto. Pepate poi distribuite il resto del battuto sul baccalà.",
-						"Coprite il baccalà con un secondo foglio di pasta sfoglia, poi con un coltello affilato ritagliate le abbondanze laterali. Usate i ritagli di pasta per decorare il guscio di sfoglia. Spennellate tutto con il tuorlo sbattuto con il latte, cospargete con i semi di papavero e cuocete in forno statico preriscaldato a 190° per circa 25 minuti, fino a doratura.",
-						"Sfornate il baccalà in crosta senza glutine, lasciate intiepidire per almeno 15 minuti prima di servirlo tagliato a tranci.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Per preparare il baccalà in crosta senza glutine iniziate a deliscare il filetto di baccalà con una pinzetta, poi con un coltello ben affilato rimuovete la pelle del pesce (potete anche lasciarla, se preferite). Scolate i pomodori, le olive e i capperi e tritateli al coltello cercando di ottenere un battuto non troppo fine. Riunite il battuto in una ciotola, aggiungete il prezzemolo tritato e mescolate."},
+						{Type: "HowToStep", Text: "Sistemate la pasta sfoglia rettangolare in maniera orizzontale di fronte a voi su un foglio di carta forno. Spalmate soltanto la parte centrale con un po’ di battuto mediterraneo. Tamponate il baccalà con carta assorbente e sistematelo al centro della pasta sfoglia, esattamente sulla parte cosparsa di battuto. Pepate poi distribuite il resto del battuto sul baccalà."},
+						{Type: "HowToStep", Text: "Coprite il baccalà con un secondo foglio di pasta sfoglia, poi con un coltello affilato ritagliate le abbondanze laterali. Usate i ritagli di pasta per decorare il guscio di sfoglia. Spennellate tutto con il tuorlo sbattuto con il latte, cospargete con i semi di papavero e cuocete in forno statico preriscaldato a 190° per circa 25 minuti, fino a doratura."},
+						{Type: "HowToStep", Text: "Sfornate il baccalà in crosta senza glutine, lasciate intiepidire per almeno 15 minuti prima di servirlo tagliato a tranci."},
 					},
 				},
-				Name:  "Baccalà in crosta senza glutine",
-				URL:   "https://www.cucchiaio.it/ricetta/baccala-in-crosta-senza-glutine/",
-				Yield: models.Yield{Value: 1},
+				Name:            "Baccalà in crosta senza glutine",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				URL:             "https://www.cucchiaio.it/ricetta/baccala-in-crosta-senza-glutine/",
+				Yield:           &models.Yield{Value: 1},
 			},
 		},
 		{
@@ -1039,13 +1011,14 @@ func TestScraper_C(t *testing.T) {
 			in:   "https://www.cuisineaz.com/recettes/champignons-farcis-au-fromage-brie-87449.aspx",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Legumes Farcis"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Legumes Farcis"},
 				CookTime:      "PT15M",
-				Cuisine:       models.Cuisine{Value: "French"},
+				Cuisine:       &models.Cuisine{Value: "French"},
 				DatePublished: "2016-06-06T14:39:27+02:00",
-				Image:         models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Description:   &models.Description{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"16 Champignon(s) de paris",
 						"0.5 Brie",
@@ -1056,47 +1029,46 @@ func TestScraper_C(t *testing.T) {
 						"Sel poivre",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Etape 1",
-						"Préchauffez le four à 180°C.",
-						"Etape 2",
-						"Enlevez le pied des champignons de Paris et nettoyez les chapeaux.",
-						"Etape 3",
-						"Epluchez l'échalote et coupez-la en quatre.",
-						"Etape 4", "Coupez le fromage Brie en gros morceaux.",
-						"Etape 5",
-						"Dans le bol d'un robot mixeur, placez les morceaux d'échalote et de fromage Brie, la crème fraîche, la tranche de jambon blanc, la chapelure, du sel et du poivre. Mixez jusqu’à obtenir une crème bien lisse et homogène.",
-						"Etape 6",
-						"Répartissez la crème dans les champignons et disposez-les sur une plaque du four recouverte de papier sulfurisé.",
-						"Etape 7",
-						"Enfournez pendant 10 à 15 minutes.",
-						"Etape 8",
-						"Servez immédiatement accompagné de volaille.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Etape 1"},
+						{Type: "HowToStep", Text: "Préchauffez le four à 180°C."},
+						{Type: "HowToStep", Text: "Etape 2"},
+						{Type: "HowToStep", Text: "Enlevez le pied des champignons de Paris et nettoyez les chapeaux."},
+						{Type: "HowToStep", Text: "Etape 3"},
+						{Type: "HowToStep", Text: "Epluchez l'échalote et coupez-la en quatre."},
+						{Type: "HowToStep", Text: "Etape 4"},
+						{Type: "HowToStep", Text: "Coupez le fromage Brie en gros morceaux."},
+						{Type: "HowToStep", Text: "Etape 5"},
+						{Type: "HowToStep", Text: "Dans le bol d'un robot mixeur, placez les morceaux d'échalote et de fromage Brie, la crème fraîche, la tranche de jambon blanc, la chapelure, du sel et du poivre. Mixez jusqu’à obtenir une crème bien lisse et homogène."},
+						{Type: "HowToStep", Text: "Etape 6"},
+						{Type: "HowToStep", Text: "Répartissez la crème dans les champignons et disposez-les sur une plaque du four recouverte de papier sulfurisé."},
+						{Type: "HowToStep", Text: "Etape 7"},
+						{Type: "HowToStep", Text: "Enfournez pendant 10 à 15 minutes."},
+						{Type: "HowToStep", Text: "Etape 8"},
+						{Type: "HowToStep", Text: "Servez immédiatement accompagné de volaille."},
 					},
 				},
 				Name:      "Champignons farcis au fromage Brie",
 				PrepTime:  "PT15M",
 				TotalTime: "PT30M",
-				Yield:     models.Yield{Value: 4},
+				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.cuisineaz.com/recettes/champignons-farcis-au-fromage-brie-87449.aspx",
 			},
 		},
 		{
 			name: "cybercook.com.br",
-			in: "https://cybercook.com.br/receitas/peixes-e-frutos-do-mar/receita-de-file-de-tilapia-com-batatas-82273?" +
-				"receita-do-dia",
+			in:   "https://cybercook.com.br/receitas/peixes-e-frutos-do-mar/receita-de-file-de-tilapia-com-batatas-82273?receita-do-dia",
 			want: models.RecipeSchema{
 				AtContext: atContext,
-				AtType:    models.SchemaType{Value: "Recipe"},
-				Category:  models.Category{Value: "Peixes e Frutos do Mar"},
+				AtType:    &models.SchemaType{Value: "Recipe"},
+				Category:  &models.Category{Value: "Peixes e Frutos do Mar"},
 				CookTime:  "PT1H",
-				Description: models.Description{
-					Value: "Já experimentou essa deliciosa receita de Filé de Tilápia com Batatas? No CyberCook você encontra " +
-						"essa e outras receitas. Saiba mais!",
+				Description: &models.Description{
+					Value: "Já experimentou essa deliciosa receita de Filé de Tilápia com Batatas? No CyberCook você encontra essa e outras receitas. Saiba mais!",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"Tilápia 500 gramas",
 						"Batata 3 unidades",
@@ -1107,24 +1079,21 @@ func TestScraper_C(t *testing.T) {
 						"Salsinha 1 colher (sopa)",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Cozinhe as batatas al dente.",
-						"Unte um refratário com azeite e requeijão, coloque as batatas e as cebolas, em cima coloque o peixe " +
-							"temperado com sal e pimenta a gosto, e para finalizar acrescente o requeijão, leve ao " +
-							"forno por Aproximadamente 40 minutos ou até dourar.",
-						"Decore com salsinhas picadinhas",
-						"Sirva a seguir.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Cozinhe as batatas al dente."},
+						{Type: "HowToStep", Text: "Unte um refratário com azeite e requeijão, coloque as batatas e as cebolas, em cima coloque o peixe temperado com sal e pimenta a gosto, e para finalizar acrescente o requeijão, leve ao forno por Aproximadamente 40 minutos ou até dourar."},
+						{Type: "HowToStep", Text: "Decore com salsinhas picadinhas"},
+						{Type: "HowToStep", Text: "Sirva a seguir."},
 					},
 				},
 				Name: "Filé de Tilápia com Batatas",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories: "274.20",
 				},
-				PrepTime: "PT1H",
-				//Tools:     models.Tools{Values: []string(nil)},
+				PrepTime:  "PT1H",
 				TotalTime: "PT1H",
-				Yield:     models.Yield{Value: 5},
+				Yield:     &models.Yield{Value: 5},
 				URL:       "https://cybercook.com.br/receitas/peixes-e-frutos-do-mar/receita-de-file-de-tilapia-com-batatas-82273",
 			},
 		},

@@ -10,17 +10,14 @@ import (
 )
 
 func scrapePuurgezond(root *goquery.Document) (models.RecipeSchema, error) {
-	description, _ := root.Find("meta[name='description']").Attr("content")
-	keywords, _ := root.Find("meta[name='keywords']").Attr("content")
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
+	rs := models.NewRecipeSchema()
+
+	rs.Description.Value, _ = root.Find("meta[name='description']").Attr("content")
+	rs.Keywords.Values, _ = root.Find("meta[name='keywords']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.Name = root.Find("title").Text()
 
 	var (
-		cookTime     string
-		prepTime     string
-		ingredients  []string
-		instructions []string
-		yield        int16
-
 		isIngredients  bool
 		isInstructions bool
 	)
@@ -34,30 +31,30 @@ func scrapePuurgezond(root *goquery.Document) (models.RecipeSchema, error) {
 				}
 
 				if strings.Contains(c.Data, "person") {
-					yield = findYield(c.Data)
+					rs.Yield.Value = findYield(c.Data)
 				} else if strings.Contains(c.Data, "bereidingstijd") {
 					match := slices.DeleteFunc(regex.Time.FindStringSubmatch(c.Data), func(s string) bool { return s == "" })
 					switch len(match) {
 					case 2:
 						if strings.Contains(match[1], "h") || strings.Contains(match[1], "time") {
-							prepTime = "PT" + regex.Digit.FindString(match[1]) + "H"
+							rs.PrepTime = "PT" + regex.Digit.FindString(match[1]) + "H"
 						} else if strings.Contains(match[1], "min") {
-							prepTime = "PT" + regex.Digit.FindString(match[1]) + "M"
+							rs.PrepTime = "PT" + regex.Digit.FindString(match[1]) + "M"
 						}
 					case 3:
-						prepTime = "PT" + regex.Digit.FindString(match[1]) + "H" + regex.Digit.FindString(match[2]) + "M"
+						rs.PrepTime = "PT" + regex.Digit.FindString(match[1]) + "H" + regex.Digit.FindString(match[2]) + "M"
 					}
 				} else if strings.Contains(c.Data, "oventijd") {
 					match := slices.DeleteFunc(regex.Time.FindStringSubmatch(c.Data), func(s string) bool { return s == "" })
 					switch len(match) {
 					case 2:
 						if strings.Contains(match[1], "h") || strings.Contains(match[1], "time") {
-							cookTime = "PT" + regex.Digit.FindString(match[1]) + "H"
+							rs.CookTime = "PT" + regex.Digit.FindString(match[1]) + "H"
 						} else if strings.Contains(match[1], "min") {
-							cookTime = "PT" + regex.Digit.FindString(match[1]) + "M"
+							rs.CookTime = "PT" + regex.Digit.FindString(match[1]) + "M"
 						}
 					case 3:
-						cookTime = "PT" + regex.Digit.FindString(match[1]) + "H" + regex.Digit.FindString(match[2]) + "M"
+						rs.CookTime = "PT" + regex.Digit.FindString(match[1]) + "H" + regex.Digit.FindString(match[2]) + "M"
 					}
 				}
 			}
@@ -70,27 +67,17 @@ func scrapePuurgezond(root *goquery.Document) (models.RecipeSchema, error) {
 				if regex.Digit.FindStringIndex(c.Data) == nil && len(c.Data) > 50 {
 					break
 				} else if c.Type == html.TextNode {
-					ingredients = append(ingredients, strings.TrimSpace(c.Data))
+					rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(c.Data))
 				}
 			}
 			isIngredients = false
 		} else if isInstructions {
 			sel.Find("li").Each(func(_ int, li *goquery.Selection) {
-				instructions = append(instructions, strings.TrimSpace(li.Text()))
+				rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(li.Text())))
 			})
 			isInstructions = false
 		}
 	})
 
-	return models.RecipeSchema{
-		CookTime:     cookTime,
-		Description:  models.Description{Value: description},
-		Keywords:     models.Keywords{Values: keywords},
-		Image:        models.Image{Value: image},
-		Ingredients:  models.Ingredients{Values: ingredients},
-		Instructions: models.Instructions{Values: instructions},
-		Name:         root.Find("title").Text(),
-		PrepTime:     prepTime,
-		Yield:        models.Yield{Value: yield},
-	}, nil
+	return rs, nil
 }

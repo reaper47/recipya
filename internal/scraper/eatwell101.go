@@ -8,26 +8,27 @@ import (
 )
 
 func scrapeEatwell101(root *goquery.Document) (models.RecipeSchema, error) {
-	description, _ := root.Find("meta[name='description']").Attr("content")
-	keywords, _ := root.Find("meta[name='keywords']").Attr("content")
-	name, _ := root.Find("meta[property='og:title']").Attr("content")
-	datePublished, _ := root.Find("meta[property='article:published_time']").Attr("content")
-	dateModified, _ := root.Find("meta[property='article:modified_time']").Attr("content")
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
+	rs := models.NewRecipeSchema()
+
+	rs.Description.Value, _ = root.Find("meta[name='description']").Attr("content")
+	rs.Keywords.Values, _ = root.Find("meta[name='keywords']").Attr("content")
+	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
+	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
+	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
 
 	nodes := root.Find("h2:contains('Ingredients')").Next().Find("li")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
-		ingredients = append(ingredients, s)
+		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
 	})
 
 	nodes = root.Find("h2:contains('Directions')")
-	var instructions []string
 	for {
 		nodes = nodes.Next()
 		s := nodes.Text()
-		instructions = append(instructions, s)
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
 		if goquery.NodeName(nodes) != "p" {
 			break
 		}
@@ -58,17 +59,9 @@ func scrapeEatwell101(root *goquery.Document) (models.RecipeSchema, error) {
 		}
 	}
 
-	return models.RecipeSchema{
-		CookTime:      cook,
-		DateModified:  dateModified,
-		DatePublished: datePublished,
-		Description:   models.Description{Value: description},
-		Keywords:      models.Keywords{Values: keywords},
-		Image:         models.Image{Value: image},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
-		Name:          name,
-		PrepTime:      prep,
-		Yield:         models.Yield{Value: findYield(div.Find("span:contains('servings')").Text())},
-	}, nil
+	rs.CookTime = cook
+	rs.PrepTime = prep
+	rs.Yield.Value = findYield(div.Find("span:contains('servings')").Text())
+
+	return rs, nil
 }

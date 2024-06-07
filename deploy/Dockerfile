@@ -18,7 +18,7 @@ COPY ./main.go ./
 COPY ./docs ./docs
 COPY ./web ./web
 
-RUN go test ./...
+RUN go test ./... -v
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /app/recipya main.go
 
 # Deploy the application binary into a lean image

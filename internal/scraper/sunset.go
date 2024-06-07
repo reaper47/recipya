@@ -14,10 +14,10 @@ func scrapeSunset(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	for i, s := range rs.Instructions.Values {
-		doc, err := html.Parse(strings.NewReader(s))
+		doc, err := html.Parse(strings.NewReader(s.Text))
 		if err == nil {
 			node := goquery.NewDocumentFromNode(doc)
-			rs.Instructions.Values[i] = node.Find("p").First().Text()
+			rs.Instructions.Values[i] = models.NewHowToStep(node.Find("p").First().Text())
 		}
 	}
 

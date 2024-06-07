@@ -7,20 +7,22 @@ import (
 )
 
 func scrape15gram(root *goquery.Document) (models.RecipeSchema, error) {
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
-	cook, _ := root.Find("meta[itemprop='cookTime']").Attr("content")
-	prep, _ := root.Find("meta[itemprop='prepTime']").Attr("content")
+	rs := models.NewRecipeSchema()
+
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.CookTime, _ = root.Find("meta[itemprop='cookTime']").Attr("content")
+	rs.PrepTime, _ = root.Find("meta[itemprop='prepTime']").Attr("content")
 
 	nodes := root.Find("li[itemprop='recipeIngredient']")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		ingredients = append(ingredients, sel.Text())
+		rs.Ingredients.Values = append(rs.Ingredients.Values, sel.Text())
 	})
 
 	nodes = root.Find("li[itemprop='recipeInstructions']")
-	instructions := make([]string, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		instructions = append(instructions, sel.Text())
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
 	})
 
 	nodes = root.Find("span[itemprop='keywords']")
@@ -29,15 +31,9 @@ func scrape15gram(root *goquery.Document) (models.RecipeSchema, error) {
 		keywords = append(keywords, strings.TrimSpace(sel.Text()))
 	})
 
-	return models.RecipeSchema{
-		CookTime:     cook,
-		Description:  models.Description{Value: strings.TrimSpace(root.Find("p[itemprop='description']").Text())},
-		Keywords:     models.Keywords{Values: strings.Join(keywords, ",")},
-		Image:        models.Image{Value: image},
-		Ingredients:  models.Ingredients{Values: ingredients},
-		Instructions: models.Instructions{Values: instructions},
-		Name:         root.Find("h1[itemprop='name']").Text(),
-		PrepTime:     prep,
-		Yield:        models.Yield{Value: findYield(root.Find("span[itemprop='recipeYield']").Text())},
-	}, nil
+	rs.Description = &models.Description{Value: strings.TrimSpace(root.Find("p[itemprop='description']").Text())}
+	rs.Keywords = &models.Keywords{Values: strings.Join(keywords, ",")}
+	rs.Name = root.Find("h1[itemprop='name']").Text()
+	rs.Yield = &models.Yield{Value: findYield(root.Find("span[itemprop='recipeYield']").Text())}
+	return rs, nil
 }

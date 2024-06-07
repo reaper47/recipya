@@ -8,23 +8,18 @@ import (
 )
 
 func scrapeAllClad(root *goquery.Document) (models.RecipeSchema, error) {
-	name, _ := root.Find("meta[name='title']").Attr("content")
-	description, _ := root.Find("meta[name='description']").Attr("content")
-	keywords, _ := root.Find("meta[name='description']").Attr("content")
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
-	category, _ := root.Find(".post-categories a").First().Attr("title")
+	rs := models.NewRecipeSchema()
 
-	var datePub string
+	rs.Name, _ = root.Find("meta[name='title']").Attr("content")
+	rs.Description.Value, _ = root.Find("meta[name='description']").Attr("content")
+	rs.Keywords.Values, _ = root.Find("meta[name='description']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.Category.Value, _ = root.Find(".post-categories a").First().Attr("title")
+
 	parse, err := time.Parse("January 02, 2006", root.Find(".post-date span").Last().Text())
 	if err == nil {
-		datePub = parse.Format(time.DateOnly)
+		rs.DatePublished = parse.Format(time.DateOnly)
 	}
-
-	var (
-		cook  string
-		prep  string
-		yield int16
-	)
 
 	meta := strings.Split(root.Find("div:contains('SERVES')").Last().Text(), "\n")
 	if len(meta) > 1 {
@@ -32,46 +27,34 @@ func scrapeAllClad(root *goquery.Document) (models.RecipeSchema, error) {
 			v := strings.TrimSpace(meta[i+1])
 			switch strings.TrimSpace(meta[i]) {
 			case "SERVES":
-				yield = findYield(v)
+				rs.Yield.Value = findYield(v)
 			case "PREP TIME":
 				before, _, ok := strings.Cut(v, "MIN")
 				if ok {
 					v = strings.TrimSpace(before)
 				}
-				prep = "PT" + v + "M"
+				rs.PrepTime = "PT" + v + "M"
 			case "COOK TIME":
 				before, _, ok := strings.Cut(v, "MIN")
 				if ok {
 					v = strings.TrimSpace(before)
 				}
-				cook = "PT" + v + "M"
+				rs.CookTime = "PT" + v + "M"
 			}
 		}
 	}
 
 	nodes := root.Find("h2:contains('Ingredients')").Next().Find("ul li")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		ingredients = append(ingredients, sel.Text())
+		rs.Ingredients.Values = append(rs.Ingredients.Values, sel.Text())
 	})
 
 	nodes = root.Find("h2:contains('Directions')").Next().Find("ol li")
-	instructions := make([]string, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		instructions = append(instructions, sel.Text())
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
 	})
 
-	return models.RecipeSchema{
-		Category:      models.Category{Value: category},
-		CookTime:      cook,
-		DatePublished: datePub,
-		Description:   models.Description{Value: description},
-		Keywords:      models.Keywords{Values: keywords},
-		Image:         models.Image{Value: image},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
-		Name:          name,
-		PrepTime:      prep,
-		Yield:         models.Yield{Value: yield},
-	}, nil
+	return rs, nil
 }

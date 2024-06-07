@@ -111,27 +111,31 @@ func (s *Scraper) scrapeMonsieurCuisine(root *goquery.Document, rawURL string, f
 		return models.RecipeSchema{}, err
 	}
 
-	var prep string
+	rs := models.NewRecipeSchema()
+
+	rs.DateCreated = m.Data.Recipe.CreatedDate
+	rs.DateModified = m.Data.Recipe.LastUpdated
+	rs.DatePublished = m.Data.Recipe.PublishedDate
+	rs.Name = m.Data.Recipe.Name
+	rs.URL = rawURL
+
 	if m.Data.Recipe.PreparationDuration > 0 {
-		prep = "PT" + strconv.Itoa(m.Data.Recipe.PreparationDuration) + "M"
+		rs.PrepTime = "PT" + strconv.Itoa(m.Data.Recipe.PreparationDuration) + "M"
 	}
 
-	var cook string
-	if prep != "" && m.Data.Recipe.Duration > m.Data.Recipe.PreparationDuration {
+	if rs.PrepTime != "" && m.Data.Recipe.Duration > m.Data.Recipe.PreparationDuration {
 		rem := m.Data.Recipe.Duration - m.Data.Recipe.PreparationDuration
-		cook = "PT" + strconv.Itoa(rem) + "M"
+		rs.CookTime = "PT" + strconv.Itoa(rem) + "M"
 	}
 
-	var category string
 	if len(m.Data.Recipe.Categories) > 0 {
-		category = m.Data.Recipe.Categories[0].Name
+		rs.Category.Value = m.Data.Recipe.Categories[0].Name
 	}
 
-	var description string
 	if m.Data.Recipe.Description != nil {
 		switch x := m.Data.Recipe.Description.(type) {
 		case string:
-			description = x
+			rs.Description.Value = x
 		}
 	}
 
@@ -142,9 +146,10 @@ func (s *Scraper) scrapeMonsieurCuisine(root *goquery.Document, rawURL string, f
 			keywords = append(keywords, x)
 		}
 	}
+	rs.Keywords.Values = strings.Join(keywords, ",")
 
 	block := m.Data.Recipe.ServingSizes[0]
-	ingredients := make([]string, 0, len(block.Ingredients))
+	rs.Ingredients.Values = make([]string, 0, len(block.Ingredients))
 	for _, ing := range block.Ingredients {
 		var sb strings.Builder
 		if ing.Amount != "" {
@@ -155,8 +160,10 @@ func (s *Scraper) scrapeMonsieurCuisine(root *goquery.Document, rawURL string, f
 		}
 
 		sb.WriteString(ing.Name)
-		ingredients = append(ingredients, sb.String())
+		rs.Ingredients.Values = append(rs.Ingredients.Values, sb.String())
 	}
+
+	rs.Yield.Value = int16(block.Amount)
 
 	var ns models.NutritionSchema
 	for _, n := range m.Data.Recipe.Nutrients {
@@ -174,21 +181,10 @@ func (s *Scraper) scrapeMonsieurCuisine(root *goquery.Document, rawURL string, f
 		}
 	}
 
-	rs := models.RecipeSchema{
-		Category:        models.Category{Value: category},
-		CookTime:        cook,
-		DateCreated:     m.Data.Recipe.CreatedDate,
-		DateModified:    m.Data.Recipe.LastUpdated,
-		DatePublished:   m.Data.Recipe.PublishedDate,
-		Description:     models.Description{Value: description},
-		Keywords:        models.Keywords{Values: strings.Join(keywords, ",")},
-		Ingredients:     models.Ingredients{Values: ingredients},
-		Instructions:    models.Instructions{Values: strings.Split(block.Instruction, "\r\n\r\n")},
-		Name:            m.Data.Recipe.Name,
-		NutritionSchema: ns,
-		PrepTime:        prep,
-		Yield:           models.Yield{Value: int16(block.Amount)},
-		URL:             rawURL,
+	parts := strings.Split(block.Instruction, "\r\n\r\n")
+	rs.Instructions.Values = make([]models.HowToItem, 0, len(parts))
+	for _, part := range parts {
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(part))
 	}
 
 	imageUUID, err := files.ScrapeAndStoreImage(m.Data.Recipe.Thumbnail.Landscape)

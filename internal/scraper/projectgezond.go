@@ -7,32 +7,35 @@ import (
 )
 
 func scrapeProjectgezond(root *goquery.Document) (models.RecipeSchema, error) {
+	rs := models.NewRecipeSchema()
+
 	name, _ := root.Find("meta[property='og:title']").Attr("content")
 	before, _, found := strings.Cut(name, " | ")
 	if found {
 		name = strings.TrimSpace(before)
 	}
-	description, _ := root.Find("meta[property='og:description']").Attr("content")
-	category, _ := root.Find("meta[property='article:section']").Attr("content")
-	image, _ := root.Find(".wp-post-image").First().Attr("src")
+	rs.Name = name
 
-	datePublished, _ := root.Find("meta[property='og:published_time']").Attr("content")
-	dateModified, _ := root.Find("meta[property='article:modified_time']").Attr("content")
+	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
+	rs.Category.Value, _ = root.Find("meta[property='article:section']").Attr("content")
+	rs.Image.Value, _ = root.Find(".wp-post-image").First().Attr("src")
+
+	rs.DatePublished, _ = root.Find("meta[property='og:published_time']").Attr("content")
+	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
 
 	nodes := root.Find("h2").First().NextUntil("h2")
 	ingredientNodes := nodes.Find("ul li")
-	ingredients := make([]string, 0, ingredientNodes.Length())
+	rs.Ingredients.Values = make([]string, 0, ingredientNodes.Length())
 	ingredientNodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
-		ingredients = append(ingredients, s)
+		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
 	})
 
 	nodes = nodes.Next().NextUntil("h2")
 	instructionNodes := nodes.Find("ul li")
-	instructions := make([]string, 0, instructionNodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, instructionNodes.Length())
 	instructionNodes.Each(func(_ int, sel *goquery.Selection) {
-		s := sel.Text()
-		instructions = append(instructions, s)
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
 	})
 
 	var cal string
@@ -65,21 +68,13 @@ func scrapeProjectgezond(root *goquery.Document) (models.RecipeSchema, error) {
 		fiber = strings.TrimSpace(node.Nodes[0].NextSibling.Data)
 	}
 
-	return models.RecipeSchema{
-		Category:      models.Category{Value: category},
-		DateModified:  dateModified,
-		DatePublished: datePublished,
-		Description:   models.Description{Value: description},
-		Image:         models.Image{Value: image},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
-		Name:          name,
-		NutritionSchema: models.NutritionSchema{
-			Calories:      cal + " kcal",
-			Carbohydrates: carbs,
-			Fat:           fat,
-			Fiber:         fiber,
-			Protein:       protein,
-		},
-	}, nil
+	rs.NutritionSchema = &models.NutritionSchema{
+		Calories:      cal + " kcal",
+		Carbohydrates: carbs,
+		Fat:           fat,
+		Fiber:         fiber,
+		Protein:       protein,
+	}
+
+	return rs, nil
 }

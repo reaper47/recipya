@@ -8,31 +8,31 @@ import (
 )
 
 func scrapeBrianLagerstrom(root *goquery.Document) (models.RecipeSchema, error) {
-	description, _ := root.Find("meta[itemprop='description']").Attr("content")
-	image, _ := root.Find("meta[itemprop='thumbnailUrl']").Attr("content")
+	rs := models.NewRecipeSchema()
+
+	rs.Description.Value, _ = root.Find("meta[itemprop='description']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[itemprop='thumbnailUrl']").Attr("content")
 
 	name, _ := root.Find("meta[itemprop='name']").Attr("content")
 	before, _, ok := strings.Cut(name, "—")
 	if ok {
 		name = before
 	}
+	rs.Name = strings.TrimSpace(name)
 
-	datePublished, _ := root.Find("meta[itemprop='datePublished']").Attr("content")
-	before, _, ok = strings.Cut(datePublished, "T")
+	datePub, _ := root.Find("meta[itemprop='datePublished']").Attr("content")
+	before, _, ok = strings.Cut(datePub, "T")
 	if ok {
-		datePublished = before
+		datePub = before
 	}
+	rs.DatePublished = datePub
 
-	dateModified, _ := root.Find("meta[itemprop='dateModified']").Attr("content")
-	before, _, ok = strings.Cut(dateModified, "T")
+	dateMod, _ := root.Find("meta[itemprop='dateModified']").Attr("content")
+	before, _, ok = strings.Cut(dateMod, "T")
 	if ok {
-		dateModified = before
+		dateMod = before
 	}
-
-	var (
-		ingredients  []string
-		instructions []string
-	)
+	rs.DateModified = dateMod
 
 	nodes := root.Find("p:contains('▪')")
 	if nodes.Length() == 1 {
@@ -41,9 +41,9 @@ func scrapeBrianLagerstrom(root *goquery.Document) (models.RecipeSchema, error) 
 		parts = slices.DeleteFunc(parts, func(s string) bool {
 			return s == ""
 		})
-		ingredients = make([]string, 0, len(parts))
+		rs.Ingredients.Values = make([]string, 0, len(parts))
 		for _, s := range parts {
-			ingredients = append(ingredients, strings.TrimSpace(s))
+			rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(s))
 		}
 
 		// Instructions
@@ -55,7 +55,7 @@ func scrapeBrianLagerstrom(root *goquery.Document) (models.RecipeSchema, error) 
 				return
 			}
 
-			instructions = append(instructions, s)
+			rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
 		})
 	} else {
 		// Ingredients
@@ -63,12 +63,12 @@ func scrapeBrianLagerstrom(root *goquery.Document) (models.RecipeSchema, error) 
 		for node.Nodes != nil {
 			prev := node.Prev()
 			if prev.Nodes[0].Data == "p" {
-				ingredients = append(ingredients, strings.TrimSpace(prev.Text()))
+				rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(prev.Text()))
 			}
 
 			node.Children().Each(func(_ int, sel *goquery.Selection) {
 				if sel.Nodes[0].Data == "li" {
-					ingredients = append(ingredients, sel.Text())
+					rs.Ingredients.Values = append(rs.Ingredients.Values, sel.Text())
 				}
 			})
 			node = node.Next()
@@ -76,29 +76,18 @@ func scrapeBrianLagerstrom(root *goquery.Document) (models.RecipeSchema, error) 
 
 		// Instructions
 		nodes = root.Find("ol li")
-		instructions = make([]string, 0, nodes.Length())
+		rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 		nodes.Each(func(_ int, sel *goquery.Selection) {
 			s := strings.TrimSpace(sel.Text())
 			s = strings.ReplaceAll(s, "\u00a0", " ")
-			instructions = append(instructions, s)
+			rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
 		})
 	}
 
-	var yield int16
 	node := root.Find("p:contains('portion')").First()
 	if node != nil {
-		yield = findYield(node.Text())
+		rs.Yield.Value = findYield(node.Text())
 	}
 
-	return models.RecipeSchema{
-		DateModified:  dateModified,
-		DatePublished: datePublished,
-		Description:   models.Description{Value: description},
-		Keywords:      models.Keywords{},
-		Image:         models.Image{Value: image},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
-		Name:          strings.TrimSpace(name),
-		Yield:         models.Yield{Value: yield},
-	}, nil
+	return rs, nil
 }

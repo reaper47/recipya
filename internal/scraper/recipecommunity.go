@@ -9,59 +9,49 @@ import (
 )
 
 func scrapeRecipeCommunity(root *goquery.Document) (models.RecipeSchema, error) {
-	name, _ := root.Find("meta[property='og:title']").Attr("content")
-	description, _ := root.Find("meta[itemprop='description']").Attr("content")
-	datePublished := root.Find(".recipe-summary .creation-date").Text()
-	if strings.Contains(datePublished, ":") {
-		datePublished = strings.Trim(strings.Split(datePublished, ":")[1], " ")
-	}
-	if strings.Contains(datePublished, "/") {
-		datePublished = strings.ReplaceAll(datePublished, "/", "-")
-	}
-	dateModified := root.Find(".recipe-summary .changed-date").Text()
-	if strings.Contains(dateModified, ":") {
-		dateModified = strings.Trim(strings.Split(dateModified, ":")[1], " ")
-	}
-	if strings.Contains(dateModified, "/") {
-		dateModified = strings.ReplaceAll(dateModified, "/", "-")
-	}
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
+	rs := models.NewRecipeSchema()
 
-	yield := findYield(root.Find("span[itemprop='recipeYield']").Parent().Text())
+	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
+	rs.Description.Value, _ = root.Find("meta[itemprop='description']").Attr("content")
+	rs.DatePublished = root.Find(".recipe-summary .creation-date").Text()
+	if strings.Contains(rs.DatePublished, ":") {
+		rs.DatePublished = strings.Trim(strings.Split(rs.DatePublished, ":")[1], " ")
+	}
+	if strings.Contains(rs.DatePublished, "/") {
+		rs.DatePublished = strings.ReplaceAll(rs.DatePublished, "/", "-")
+	}
+	rs.DateModified = root.Find(".recipe-summary .changed-date").Text()
+	if strings.Contains(rs.DateModified, ":") {
+		rs.DateModified = strings.Trim(strings.Split(rs.DateModified, ":")[1], " ")
+	}
+	if strings.Contains(rs.DateModified, "/") {
+		rs.DateModified = strings.ReplaceAll(rs.DateModified, "/", "-")
+	}
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
 
-	prepTime, _ := root.Find("#preparation-time-final meta[itemprop='performTime']").Attr("content")
-	cookTime, _ := root.Find("#preparation-time-final meta[itemprop='totalTime']").Attr("content")
+	rs.Yield.Value = findYield(root.Find("span[itemprop='recipeYield']").Parent().Text())
+
+	rs.PrepTime, _ = root.Find("#preparation-time-final meta[itemprop='performTime']").Attr("content")
+	rs.CookTime, _ = root.Find("#preparation-time-final meta[itemprop='totalTime']").Attr("content")
 
 	nodes := root.Find(".catText")
 	allKeywords := make([]string, nodes.Length())
 	nodes.Each(func(i int, s *goquery.Selection) {
 		allKeywords[i] = s.Text()
 	})
-	keywords := strings.Join(allKeywords, ", ")
+	rs.Keywords.Values = strings.Join(allKeywords, ", ")
 
 	nodes = root.Find("li[itemprop='recipeIngredient']")
-	ingredients := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		ingredients[i] = strings.Join(strings.Fields(s.Text()), " ")
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.Join(strings.Fields(s.Text()), " "))
 	})
 
 	nodes = root.Find("ol.steps-list li")
-	instructions := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		instructions[i] = s.Text()
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s.Text()))
 	})
 
-	return models.RecipeSchema{
-		Name:          name,
-		DatePublished: datePublished,
-		DateModified:  dateModified,
-		Description:   models.Description{Value: description},
-		Image:         models.Image{Value: image},
-		Yield:         models.Yield{Value: yield},
-		PrepTime:      prepTime,
-		CookTime:      cookTime,
-		Keywords:      models.Keywords{Values: keywords},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
-	}, nil
+	return rs, nil
 }

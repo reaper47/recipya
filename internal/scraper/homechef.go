@@ -7,38 +7,34 @@ import (
 )
 
 func scrapeHomechef(root *goquery.Document) (models.RecipeSchema, error) {
-	description, _ := root.Find("meta[name='description']").Attr("content")
-	yield, _ := root.Find("meta[itemprop='recipeYield']").Attr("content")
+	rs := models.NewRecipeSchema()
 
-	image, _ := root.Find("div img").First().Attr("data-srcset")
+	rs.Description.Value, _ = root.Find("meta[name='description']").Attr("content")
+	yield, _ := root.Find("meta[itemprop='recipeYield']").Attr("content")
+	rs.Yield.Value = findYield(yield)
+	rs.Image.Value, _ = root.Find("div img").First().Attr("data-srcset")
+	rs.Name = root.Find("h1").First().Text()
 
 	nodes := root.Find("li[itemprop='recipeIngredient']")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.ReplaceAll(sel.Text(), "\n", " ")
 		s = strings.Join(strings.Fields(s), " ")
 		s = strings.TrimSpace(strings.TrimPrefix(s, "Info"))
 		if s != "" {
-			ingredients = append(ingredients, s)
+			rs.Ingredients.Values = append(rs.Ingredients.Values, s)
 		}
 	})
 
 	nodes = root.Find("li[itemprop='itemListElement']")
-	instructions := make([]string, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.ReplaceAll(sel.Text(), "\n", " ")
 		s = strings.Join(strings.Fields(s), " ")
 		if s != "" {
-			instructions = append(instructions, s)
+			rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
 		}
 	})
 
-	return models.RecipeSchema{
-		Description:  models.Description{Value: description},
-		Image:        models.Image{Value: image},
-		Ingredients:  models.Ingredients{Values: ingredients},
-		Instructions: models.Instructions{Values: instructions},
-		Name:         root.Find("h1").First().Text(),
-		Yield:        models.Yield{Value: findYield(yield)},
-	}, nil
+	return rs, nil
 }

@@ -7,33 +7,26 @@ import (
 )
 
 func scrapeHeatherChristo(root *goquery.Document) (models.RecipeSchema, error) {
-	description, _ := root.Find("meta[property='og:description']").Attr("content")
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
-	prep, _ := root.Find("time[itemprop='prepTime']").Attr("datetime")
-	cook, _ := root.Find("time[itemprop='cookTime']").Attr("datetime")
+	rs := models.NewRecipeSchema()
+
+	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.PrepTime, _ = root.Find("time[itemprop='prepTime']").Attr("datetime")
+	rs.CookTime, _ = root.Find("time[itemprop='cookTime']").Attr("datetime")
+	rs.Name = strings.TrimSpace(root.Find("div[itemprop='name']").First().Text())
+	rs.Yield.Value = findYield(root.Find("span[itemprop='recipeYield']").First().Text())
 
 	nodes := root.Find(".ERSIngredients ul").First().Find("li")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		ingredients = append(ingredients, strings.TrimSpace(sel.Text()))
+		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(sel.Text()))
 	})
 
 	nodes = root.Find(".ERSInstructions ol").First().Find("li")
-	instructions := make([]string, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		instructions = append(instructions, strings.TrimSpace(sel.Text()))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(sel.Text())))
 	})
 
-	return models.RecipeSchema{
-		CookTime:        cook,
-		Description:     models.Description{Value: description},
-		Image:           models.Image{Value: image},
-		Ingredients:     models.Ingredients{Values: ingredients},
-		Instructions:    models.Instructions{Values: instructions},
-		Name:            strings.TrimSpace(root.Find("div[itemprop='name']").First().Text()),
-		NutritionSchema: models.NutritionSchema{},
-		PrepTime:        prep,
-		Tools:           models.Tools{},
-		Yield:           models.Yield{Value: findYield(root.Find("span[itemprop='recipeYield']").First().Text())},
-	}, nil
+	return rs, nil
 }

@@ -9,16 +9,20 @@ import (
 )
 
 func scrapeKuchynalidla(root *goquery.Document) (models.RecipeSchema, error) {
-	description, _ := root.Find("meta[name='description']").Attr("content")
+	rs := models.NewRecipeSchema()
+
+	rs.Description.Value, _ = root.Find("meta[name='description']").Attr("content")
+	rs.Yield.Value = findYield(root.Find(".recipe-detail._servings").Text())
 
 	name, _ := root.Find("meta[property='og:title']").Attr("content")
 	before, _, ok := strings.Cut(name, "|")
 	if ok {
 		name = strings.TrimSpace(before)
 	}
+	rs.Name = name
 
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
-	datePub, _ := root.Find("meta[property='article:published_time']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
 
 	var prep string
 	matches := slices.DeleteFunc(regex.Time.FindStringSubmatch(root.Find(".recipe-detail._time").First().Text()), func(s string) bool {
@@ -35,17 +39,13 @@ func scrapeKuchynalidla(root *goquery.Document) (models.RecipeSchema, error) {
 			prep = "PT" + v + "M"
 		}
 	}
+	rs.PrepTime = prep
 
 	nodes := root.Find("div.ing ul li")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		ingredients = append(ingredients, strings.TrimSpace(sel.Text()))
+		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(sel.Text()))
 	})
-
-	var (
-		instructions []string
-		tools        []string
-	)
 
 	node := root.Find("h2:contains('Postup')")
 	if len(node.Nodes) > 0 {
@@ -55,7 +55,7 @@ func scrapeKuchynalidla(root *goquery.Document) (models.RecipeSchema, error) {
 				if s == "" {
 					continue
 				}
-				instructions = append(instructions, s)
+				rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
 			} else if c.Data == "ul" {
 				if c.PrevSibling == nil && c.PrevSibling.PrevSibling.FirstChild == nil {
 					continue
@@ -63,22 +63,12 @@ func scrapeKuchynalidla(root *goquery.Document) (models.RecipeSchema, error) {
 
 				if strings.Contains(strings.ToUpper(c.PrevSibling.PrevSibling.FirstChild.Data), "POTREBUJEME") {
 					goquery.NewDocumentFromNode(c).Children().Each(func(_ int, sel *goquery.Selection) {
-						tools = append(tools, strings.TrimSpace(sel.Text()))
+						rs.Tools.Values = append(rs.Tools.Values, models.NewHowToTool(strings.TrimSpace(sel.Text())))
 					})
 				}
 			}
 		}
 	}
 
-	return models.RecipeSchema{
-		DatePublished: datePub,
-		Description:   models.Description{Value: description},
-		Image:         models.Image{Value: image},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: instructions},
-		Name:          name,
-		PrepTime:      prep,
-		//Tools:         models.Tools{Values: tools},
-		Yield: models.Yield{Value: findYield(root.Find(".recipe-detail._servings").Text())},
-	}, nil
+	return rs, nil
 }

@@ -7,28 +7,30 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 )
 
-func scrapeWoop(root *goquery.Document) (rs models.RecipeSchema, err error) {
-	name, _ := root.Find("meta[name='title']").Attr("content")
-	keywords, _ := root.Find("meta[name='keywords']").Attr("content")
-	description, _ := root.Find("meta[property='og:description']").Attr("content")
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
+func scrapeWoop(root *goquery.Document) (models.RecipeSchema, error) {
+	rs := models.NewRecipeSchema()
 
-	yield := findYield(root.Find(".serving-amount").Children().Last().Text())
+	rs.Name, _ = root.Find("meta[name='title']").Attr("content")
+	rs.Keywords.Values, _ = root.Find("meta[name='keywords']").Attr("content")
+	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.Yield.Value = findYield(root.Find(".serving-amount").Children().Last().Text())
 
 	nodes := root.Find(".ingredients li")
-	var ingredients []string
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, s *goquery.Selection) {
 		v := strings.TrimSpace(s.Text())
 		if v != "" {
-			ingredients = append(ingredients, v)
+			rs.Ingredients.Values = append(rs.Ingredients.Values, v)
 		}
 	})
 
-	instructions := make([]string, 0)
-	root.Find(".cooking-instructions li").Each(func(_ int, s *goquery.Selection) {
+	nodes = root.Find(".cooking-instructions li")
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
 		v := strings.TrimSpace(s.Text())
 		if v != "" {
-			instructions = append(instructions, v)
+			rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(v))
 		}
 	})
 
@@ -47,15 +49,7 @@ func scrapeWoop(root *goquery.Document) (rs models.RecipeSchema, err error) {
 			nutrition.Fat = val
 		}
 	})
+	rs.NutritionSchema = &nutrition
 
-	return models.RecipeSchema{
-		Name:            name,
-		Description:     models.Description{Value: description},
-		Image:           models.Image{Value: image},
-		Ingredients:     models.Ingredients{Values: ingredients},
-		Instructions:    models.Instructions{Values: instructions},
-		Keywords:        models.Keywords{Values: keywords},
-		NutritionSchema: nutrition,
-		Yield:           models.Yield{Value: yield},
-	}, nil
+	return rs, nil
 }

@@ -2,73 +2,22 @@
   <profile version="1.0">
     <option name="myName" value="Project Default" />
     <inspection_tool class="GoUnhandledErrorResult" enabled="true" level="WARNING" enabled_by_default="true">
-      <functions>
-        <function importPath="fmt" name="Printf" />
-        <function importPath="fmt" name="Errorf" />
-        <function importPath="math/rand" name="Read" />
-        <function importPath="fmt" name="Println" />
-        <function importPath="fmt" name="Print" />
-        <function importPath="fmt" name="Fprint" />
-        <function importPath="crypto/rand" name="Read" />
-        <function importPath="os" name="Remove" />
-        <function importPath="io" name="Copy" />
-        <function importPath="fmt" name="Fprintf" />
-        <function importPath="os" name="RemoveAll" />
-      </functions>
       <methods>
-        <method importPath="hash" receiver="Hash" name="Write" />
-        <method importPath="strings" receiver="*Builder" name="Write" />
-        <method importPath="strings" receiver="*Builder" name="WriteByte" />
-        <method importPath="bytes" receiver="*Buffer" name="WriteRune" />
-        <method importPath="bytes" receiver="*Buffer" name="Write" />
-        <method importPath="bytes" receiver="*Buffer" name="WriteString" />
-        <method importPath="strings" receiver="*Builder" name="WriteString" />
-        <method importPath="bytes" receiver="*Buffer" name="WriteByte" />
-        <method importPath="strings" receiver="*Builder" name="WriteRune" />
         <method importPath="math/rand" receiver="*Rand" name="Read" />
-        <method importPath="net/http" receiver="ResponseWriter" name="Write" />
-        <method importPath="database/sql" receiver="*Rows" name="Close" />
+        <method importPath="strings" receiver="*Builder" name="WriteString" />
+        <method importPath="bytes" receiver="*Buffer" name="WriteRune" />
+        <method importPath="strings" receiver="*Builder" name="WriteByte" />
+        <method importPath="hash" receiver="Hash" name="Write" />
+        <method importPath="bytes" receiver="*Buffer" name="WriteString" />
+        <method importPath="strings" receiver="*Builder" name="WriteRune" />
+        <method importPath="bytes" receiver="*Buffer" name="Write" />
+        <method importPath="bytes" receiver="*Buffer" name="WriteByte" />
+        <method importPath="strings" receiver="*Builder" name="Write" />
         <method importPath="io" receiver="ReadCloser" name="Close" />
-        <method importPath="os" receiver="*File" name="Close" />
-        <method importPath="database/sql" receiver="*Tx" name="Rollback" />
-        <method importPath="mime/multipart" receiver="File" name="Close" />
-        <method importPath="mime/multipart" receiver="*Writer" name="Close" />
-        <method importPath="io" receiver="Writer" name="Write" />
-        <method importPath="archive/zip" receiver="*Writer" name="Close" />
-        <method importPath="database/sql" receiver="*DB" name="Close" />
-        <method importPath="archive/zip" receiver="*ReadCloser" name="Close" />
-        <method importPath="net" receiver="Conn" name="Close" />
-        <method importPath="github.com/gorilla/websocket" receiver="*Conn" name="Close" />
-        <method importPath="net" receiver="Listener" name="Close" />
-        <method importPath="compress/gzip" receiver="*Reader" name="Close" />
-        <method importPath="io" receiver="*PipeWriter" name="Close" />
-        <method importPath="io" receiver="*PipeWriter" name="CloseWithError" />
-        <method importPath="io" receiver="*PipeReader" name="Close" />
+        <method importPath="database/sql" receiver="*Rows" name="Close" />
+        <method importPath="nhooyr.io/websocket" receiver="*Conn" name="Close" />
         <method importPath="nhooyr.io/websocket" receiver="*Conn" name="CloseNow" />
       </methods>
-    </inspection_tool>
-    <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="myValues">
-        <value>
-          <list size="14">
-            <item index="0" class="java.lang.String" itemvalue="_" />
-            <item index="1" class="java.lang.String" itemvalue="hx-post" />
-            <item index="2" class="java.lang.String" itemvalue="hx-put" />
-            <item index="3" class="java.lang.String" itemvalue="hx-confirm" />
-            <item index="4" class="java.lang.String" itemvalue="hx-swap" />
-            <item index="5" class="java.lang.String" itemvalue="hx-get" />
-            <item index="6" class="java.lang.String" itemvalue="hx-include" />
-            <item index="7" class="java.lang.String" itemvalue="hx-indicator" />
-            <item index="8" class="java.lang.String" itemvalue="hx-delete" />
-            <item index="9" class="java.lang.String" itemvalue="hx-target" />
-            <item index="10" class="java.lang.String" itemvalue="hx-trigger" />
-            <item index="11" class="java.lang.String" itemvalue="hx-push-url" />
-            <item index="12" class="java.lang.String" itemvalue="hx-swap-oob" />
-            <item index="13" class="java.lang.String" itemvalue="hx-vals" />
-          </list>
-        </value>
-      </option>
-      <option name="myCustomValuesEnabled" value="true" />
     </inspection_tool>
   </profile>
 </component>

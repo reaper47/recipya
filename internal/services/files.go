@@ -523,7 +523,7 @@ func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType, 
 func exportRecipesJSON(recipes models.Recipes) []exportData {
 	data := make([]exportData, len(recipes))
 	for i, r := range recipes {
-		xb, err := json.Marshal(r.Schema())
+		xb, err := json.MarshalIndent(r.Schema(), "", "\t")
 		if err != nil {
 			continue
 		}
@@ -796,7 +796,7 @@ func addRecipeToPDF(pdf *gofpdf.Fpdf, r *models.Recipe) *gofpdf.Fpdf {
 		pdf.SetFont(fontFamily, "", fontSizeSmall)
 
 		for _, t := range r.Tools {
-			pdf.MultiCell(maxWidthColumn, 5, tr("-> "+t.String()), "", "L", false)
+			pdf.MultiCell(maxWidthColumn, 5, tr("-> "+t.StringQuantity()), "", "L", false)
 		}
 
 		ingredientsX = pageWidth/3 - marginLeft/2
@@ -911,7 +911,7 @@ func (f *Files) ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recip
 
 // IsAppLatest checks whether there is a software update.
 func (f *Files) IsAppLatest(current semver.Version) (bool, *github.RepositoryRelease, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 
 	gh := github.NewClient(http.DefaultClient)
@@ -1267,7 +1267,7 @@ func (f *Files) UpdateApp(current semver.Version) error {
 	}
 
 	// Download asset
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 
 	gh := github.NewClient(http.DefaultClient)

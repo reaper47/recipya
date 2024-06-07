@@ -12,15 +12,15 @@ func TestScraper_D(t *testing.T) {
 			in:   "https://www.davidlebovitz.com/marcella-hazans-bolognese-sauce-recipe-italian-beef-tomato/",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Main Course"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Main Course"},
 				DatePublished: "2023-09-27T10:25:00+00:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "There are a few Marcella Hazan Pasta Bolognese recipes out there. I tweaked a few of them to come up with this recipe, which is inspired and adapted by her. Note that this sauce will take a while to prepare. It&#39;s mostly downtime. At first, you&#39;re just sauteeing ingredients, stirring until they&#39;re combined, then adding wine and milk, simmering and stirring until those have been absorbed. Once the tomatoes have been added, that&#39;s when you let the sauce cook at the lowest heat possible, stirring every once in a while, until it&#39;s ready. Within an hour, it comes together into a nice paste, but if you cook it another hour, nursing it with water as you go, you&#39;ll get a sauce with a richer flavor. One of Hazan&#39;s recipes says to cook sauce Bolognese for up to 4 hours! In the untraditional category, some people like to grate from Parmesan cheese over finished bowls of pasta.",
 				},
-				Keywords: models.Keywords{Values: "mushrooms"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "mushrooms"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"3 tablespoons butter (salted or unsalted, plus 1 tablespoon for finishing the pasta)",
 						"3 tablespoons olive oil", "1/2 cup (60g) diced onions",
@@ -33,17 +33,17 @@ func TestScraper_D(t *testing.T) {
 						"1 1/2 tablespoons tomato paste", "1 pound (450g) pasta",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Melt the butter with the olive oil in a soup pot over medium-high heat. Add the onions and cook, stirring frequently, until the onions are soft and translucent, about 3 minutes. Add the celery and carrots and cook, stirring a few times, until they start to wilt, 3 to 4 minutes.",
-						"Add the ground beef, salt, and some freshly ground pepper. Lower the heat to medium and cook, stirring, until the beef is no longer raw on the outside. Pour in the milk, and cook at a steady simmer, stirring occasionally, until the milk is absorbed. Add a dusting of nutmeg and the wine, and continue to cook until the wine is mostly absorbed. (These steps can take a bit longer than you think, maybe 10 to 15 minutes of so, but this isn&#39;t a sauce to be rushed.)",
-						"Add the tomatoes in their juice and the tomato paste. Let come close to a boil then lower the heat to as low as possible until the sauce is just barely bubbling. Cook the sauce uncovered for 1 hour, stirring every once in a while, until most of the liquid is absorbed but the mixture is still wet, rich and thick. (There&#39;s a picture of it in the spoon, in the post.) You can use the sauce now, or if you want to give it some extra attention, you can cook it for another hour, adding up to 1/2 cup (125ml) of water, little by little as it continues to cook, and stirring occasionally, to make the sauce even more unctuous.",
-						"Taste and add salt, if desired.",
-						"To serve, cook the pasta in lightly salted water as directed on the package. (Before draining, reserve a little of the pasta cooking water.) Drain the pasta and toss the hot pasta in the Bolognese sauce with 1 tablespoon of butter. If the sauce needs a bit of thinning out, add a parsimonious splash of the reserved pasta water.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Melt the butter with the olive oil in a soup pot over medium-high heat. Add the onions and cook, stirring frequently, until the onions are soft and translucent, about 3 minutes. Add the celery and carrots and cook, stirring a few times, until they start to wilt, 3 to 4 minutes."},
+						{Type: "HowToStep", Text: "Add the ground beef, salt, and some freshly ground pepper. Lower the heat to medium and cook, stirring, until the beef is no longer raw on the outside. Pour in the milk, and cook at a steady simmer, stirring occasionally, until the milk is absorbed. Add a dusting of nutmeg and the wine, and continue to cook until the wine is mostly absorbed. (These steps can take a bit longer than you think, maybe 10 to 15 minutes of so, but this isn&#39;t a sauce to be rushed.)"},
+						{Type: "HowToStep", Text: "Add the tomatoes in their juice and the tomato paste. Let come close to a boil then lower the heat to as low as possible until the sauce is just barely bubbling. Cook the sauce uncovered for 1 hour, stirring every once in a while, until most of the liquid is absorbed but the mixture is still wet, rich and thick. (There&#39;s a picture of it in the spoon, in the post.) You can use the sauce now, or if you want to give it some extra attention, you can cook it for another hour, adding up to 1/2 cup (125ml) of water, little by little as it continues to cook, and stirring occasionally, to make the sauce even more unctuous."},
+						{Type: "HowToStep", Text: "Taste and add salt, if desired."},
+						{Type: "HowToStep", Text: "To serve, cook the pasta in lightly salted water as directed on the package. (Before draining, reserve a little of the pasta cooking water.) Drain the pasta and toss the hot pasta in the Bolognese sauce with 1 tablespoon of butter. If the sauce needs a bit of thinning out, add a parsimonious splash of the reserved pasta water."},
 					},
 				},
 				Name:  "Pasta Bolognese",
-				Yield: models.Yield{Value: 4},
+				Yield: &models.Yield{Value: 4},
 				URL:   "https://www.davidlebovitz.com/marcella-hazans-bolognese-sauce-recipe-italian-beef-tomato/",
 			},
 		},
@@ -52,21 +52,20 @@ func TestScraper_D(t *testing.T) {
 			in:   "https://www.delish.com/cooking/recipe-ideas/a24489879/beef-and-broccoli-recipe/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "weeknight meals"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "weeknight meals"},
 				CookTime:      "PT0S",
-				Cuisine:       models.Cuisine{Value: "American"},
+				Cuisine:       &models.Cuisine{Value: "American"},
 				DateModified:  "2023-06-26T17:34:00Z EST",
 				DatePublished: "2018-11-06T17:45:06.218596Z EST",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "A classic Chinese-American dish with thinly sliced, velveted flank steak in a rich brown sauce with tender-crisp broccoli.",
 				},
-				Keywords: models.Keywords{
-					Values: "American, Asian, dinner, weeknight meals, beef and broccoli recipe, sirloin recipes, Chinese take " +
-						"out recipes, easy weeknight dinner recipes, stir-fry recipe, beef stir-fry",
+				Keywords: &models.Keywords{
+					Values: "American, Asian, dinner, weeknight meals, beef and broccoli recipe, sirloin recipes, Chinese take out recipes, easy weeknight dinner recipes, stir-fry recipe, beef stir-fry",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"2 tbsp. dry sherry or shaoxing wine",
 						"2 tbsp. unseasoned rice vinegar",
@@ -87,18 +86,18 @@ func TestScraper_D(t *testing.T) {
 						"Toasted sesame seeds andwhite rice, for serving",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"In a medium bowl, combine sherry, vinegar, salt, pepper, 1/3 cup soy sauce, 1 tablespoon plus 1 1/2 teaspoons cornstarch, and 1 tablespoon brown sugar. Add steak and toss to coat. Let sit 20 minutes.",
-						"Meanwhile, finely chop garlic and ginger. Slice scallions and separate green and white parts. In a small bowl, combine garlic, ginger, and white scallion parts; reserve green parts for serving. Chop broccoli into florets and transfer to another small bowl.",
-						"In a large measuring cup, whisk broth, oyster sauce, sriracha (if using), and remaining 1/4 cup soy sauce, 1 tablespoon cornstarch, and 1 tablespoon brown sugar. When ready to cook, arrange bowls of beef, garlic mixture, broccoli, and stir-fry sauce next to stove.",
-						"In a large skillet over medium-high heat, heat 1 tablespoon oil. Add half of beef and cook, undisturbed, 1 minute, then stir and cook until cooked through and starting to char in some spots, about 1 minute more. Transfer to a plate. Repeat with 1 tablespoon oil and remaining beef. Discard excess marinade.",
-						"Return skillet to medium heat and heat remaining 1 tablespoon oil. Add garlic mixture and cook, stirring occasionally, until fragrant, about 2 minutes. Add broccoli and cook, stirring frequently, until slightly softened, about 1 minute, then add stir-fry sauce. Cover and cook 3 minutes. Uncover, return beef to skillet, and toss to coat. Cook, tossing frequently, until warmed through and broccoli is crisp-tender, 2 to 3 minutes more.",
-						"Divide rice among plates. Top with stir-fry, sesame seeds, and reserved green scallion parts.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "In a medium bowl, combine sherry, vinegar, salt, pepper, 1/3 cup soy sauce, 1 tablespoon plus 1 1/2 teaspoons cornstarch, and 1 tablespoon brown sugar. Add steak and toss to coat. Let sit 20 minutes."},
+						{Type: "HowToStep", Text: "Meanwhile, finely chop garlic and ginger. Slice scallions and separate green and white parts. In a small bowl, combine garlic, ginger, and white scallion parts; reserve green parts for serving. Chop broccoli into florets and transfer to another small bowl."},
+						{Type: "HowToStep", Text: "In a large measuring cup, whisk broth, oyster sauce, sriracha (if using), and remaining 1/4 cup soy sauce, 1 tablespoon cornstarch, and 1 tablespoon brown sugar. When ready to cook, arrange bowls of beef, garlic mixture, broccoli, and stir-fry sauce next to stove."},
+						{Type: "HowToStep", Text: "In a large skillet over medium-high heat, heat 1 tablespoon oil. Add half of beef and cook, undisturbed, 1 minute, then stir and cook until cooked through and starting to char in some spots, about 1 minute more. Transfer to a plate. Repeat with 1 tablespoon oil and remaining beef. Discard excess marinade."},
+						{Type: "HowToStep", Text: "Return skillet to medium heat and heat remaining 1 tablespoon oil. Add garlic mixture and cook, stirring occasionally, until fragrant, about 2 minutes. Add broccoli and cook, stirring frequently, until slightly softened, about 1 minute, then add stir-fry sauce. Cover and cook 3 minutes. Uncover, return beef to skillet, and toss to coat. Cook, tossing frequently, until warmed through and broccoli is crisp-tender, 2 to 3 minutes more."},
+						{Type: "HowToStep", Text: "Divide rice among plates. Top with stir-fry, sesame seeds, and reserved green scallion parts."},
 					},
 				},
 				Name: "Beef & Broccoli",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "609 Calories",
 					Carbohydrates: "26 g",
 					Cholesterol:   "111 mg",
@@ -112,7 +111,7 @@ func TestScraper_D(t *testing.T) {
 				},
 				PrepTime:  "PT10M",
 				TotalTime: "PT40M",
-				Yield:     models.Yield{Value: 4},
+				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.delish.com/cooking/recipe-ideas/a24489879/beef-and-broccoli-recipe/",
 			},
 		},
@@ -121,17 +120,17 @@ func TestScraper_D(t *testing.T) {
 			in:   "https://www.ditchthecarbs.com/how-to-make-keto-samosa-air-fryer-oven/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Appetiser"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Appetiser"},
 				CookTime:      "PT10M",
-				Cuisine:       models.Cuisine{Value: "Egg free"},
+				Cuisine:       &models.Cuisine{Value: "Egg free"},
 				DatePublished: "2022-03-17T09:35:35+00:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Keto samosas is an Indian vegetarian dish perfect for appitizers, snacks, or even a meal.",
 				},
-				Keywords: models.Keywords{Values: "Keto Samosas"},
-				Image:    models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{Values: "Keto Samosas"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1 batch keto roti dough",
 						"2 cups cauliflower (steamed and chopped)",
@@ -147,38 +146,20 @@ func TestScraper_D(t *testing.T) {
 						"+/- salt and pepper",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Start by maxing up a batch of keto roti dough. While the dough is resting you will want to make the filling.",
-						"To make the filling heat the oil in a skillet. When the oil is hot add the seasoning(cumin, ginger, " +
-							"Garam masala), garlic, and jalapeno to the skillet. Saute in the skillet for about 1 minute then " +
-							"add the rest of the filling ingredients to the skillet. Let the filling cook for 3-4 minutes, stirring " +
-							"occassionally. Once the filling is done remove it from the heat and let it cool completely.",
-						"While the filling is cooling prepare and shape the samosas wrappers. To do this cut your roti dough " +
-							"into 6 equal sections. Form each section into a ball. Roll each ball into a thin circle about the " +
-							"size of a side plate between two sheets of parchment paper using a rolling pin.Then using a knife cut " +
-							"each circle in half. This will give you 12 samosa wrappers. Cover and set aside until filling is " +
-							"completely cool.",
-						"Start by laying out one samosa wrapper with the flat cut side toward the bottom. Use your finger to " +
-							"brush water in a line along half of the flat cut side. This will help the wrapper stick together " +
-							"as you fold it.",
-						"Next, fold the two corner edges up to make a cone. Overlap the corners with the wet edge on top of " +
-							"the other. Firmly press the seam down to ensure it sticks and pinch the bottom of the cone closed.",
-						"Hold the cone upright and open in your hand with the seam facing your palm. Your palm will help support " +
-							"the seam while you add the filling. Spoon the filling into the cone until it is 2/3 of the way full.",
-						"Using your finger brush water around the inside edge of the cone. Then press the edges of the cone " +
-							"together and fold the bottom under to seal the cone and form a triangular samosa. Place the samosa " +
-							"down so that it is standing up with the sealed bottom facing down. Repeast until all 12 samosas are filled.",
-						"Finally, brush the samosas with olive oil and cook one of 3 ways.1) Bake in the oven on a baking tray " +
-							"at 190°C/375°F for 15-18 minutes or until the samosas are golden brown.2) Arrange the samosas " +
-							"in your air fryer basket and air at 190°C/375°F for 7-8 minutes. Depending on the size of your air fryer " +
-							"you may need to cook the samosas in batches.3) Add an inch of olive oil to a skillet and fry the " +
-							"samosas over medium-high heat for 3-4 minutes on each side. Only cook 3-4 samosas at a time. Let " +
-							"the samosas cool for a few minutes after cooking and enjoy.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Start by maxing up a batch of keto roti dough. While the dough is resting you will want to make the filling."},
+						{Type: "HowToStep", Text: "To make the filling heat the oil in a skillet. When the oil is hot add the seasoning(cumin, ginger, Garam masala), garlic, and jalapeno to the skillet. Saute in the skillet for about 1 minute then add the rest of the filling ingredients to the skillet. Let the filling cook for 3-4 minutes, stirring occassionally. Once the filling is done remove it from the heat and let it cool completely."},
+						{Type: "HowToStep", Text: "While the filling is cooling prepare and shape the samosas wrappers. To do this cut your roti dough into 6 equal sections. Form each section into a ball. Roll each ball into a thin circle about the size of a side plate between two sheets of parchment paper using a rolling pin.Then using a knife cut each circle in half. This will give you 12 samosa wrappers. Cover and set aside until filling is completely cool."},
+						{Type: "HowToStep", Text: "Start by laying out one samosa wrapper with the flat cut side toward the bottom. Use your finger to brush water in a line along half of the flat cut side. This will help the wrapper stick together as you fold it."},
+						{Type: "HowToStep", Text: "Next, fold the two corner edges up to make a cone. Overlap the corners with the wet edge on top of the other. Firmly press the seam down to ensure it sticks and pinch the bottom of the cone closed."},
+						{Type: "HowToStep", Text: "Hold the cone upright and open in your hand with the seam facing your palm. Your palm will help support the seam while you add the filling. Spoon the filling into the cone until it is 2/3 of the way full."},
+						{Type: "HowToStep", Text: "Using your finger brush water around the inside edge of the cone. Then press the edges of the cone together and fold the bottom under to seal the cone and form a triangular samosa. Place the samosa down so that it is standing up with the sealed bottom facing down. Repeast until all 12 samosas are filled."},
+						{Type: "HowToStep", Text: "Finally, brush the samosas with olive oil and cook one of 3 ways.1) Bake in the oven on a baking tray at 190°C/375°F for 15-18 minutes or until the samosas are golden brown.2) Arrange the samosas in your air fryer basket and air at 190°C/375°F for 7-8 minutes. Depending on the size of your air fryer you may need to cook the samosas in batches.3) Add an inch of olive oil to a skillet and fry the samosas over medium-high heat for 3-4 minutes on each side. Only cook 3-4 samosas at a time. Let the samosas cool for a few minutes after cooking and enjoy."},
 					},
 				},
 				Name: "Easy Keto Samosas Recipe (Air Fryer Recipe)",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "69.6 kcal",
 					Carbohydrates: "7.5 g",
 					Fat:           "4.5 g",
@@ -190,7 +171,7 @@ func TestScraper_D(t *testing.T) {
 					Sugar:         "0.9 g",
 				},
 				PrepTime: "PT30M",
-				Yield:    models.Yield{Value: 12},
+				Yield:    &models.Yield{Value: 12},
 				URL:      "https://www.ditchthecarbs.com/how-to-make-keto-samosa-air-fryer-oven/",
 			},
 		},
@@ -199,15 +180,14 @@ func TestScraper_D(t *testing.T) {
 			in:   "https://domesticate-me.com/10-summer-cocktail-recipes/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Drinks"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Drinks"},
 				DatePublished: "2021-05-28T16:11:33+00:00",
-				Description: models.Description{
-					Value: "Made with muddled strawberries, thyme, lemon, vodka, and St. Germain, this refreshing Strawberry " +
-						"Thyme Cooler is perfect for all your summer celebrations!",
+				Description: &models.Description{
+					Value: "Made with muddled strawberries, thyme, lemon, vodka, and St. Germain, this refreshing Strawberry Thyme Cooler is perfect for all your summer celebrations!",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"1/3 cup hulled and diced strawberries",
 						"1 sprig of fresh thyme",
@@ -219,17 +199,16 @@ func TestScraper_D(t *testing.T) {
 						"Thyme sprig",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Muddle the strawberries, thyme sprig, and lemon juice in a cocktail shaker. Add the St. Germain, " +
-							"vodka, and some ice, and shake vigorously to combine.",
-						"Strain the cocktail into a glass with ice and top with club soda.",
-						"Garnish with sliced strawberries and a sprig of thyme. Bottoms up!",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Muddle the strawberries, thyme sprig, and lemon juice in a cocktail shaker. Add the St. Germain, vodka, and some ice, and shake vigorously to combine."},
+						{Type: "HowToStep", Text: "Strain the cocktail into a glass with ice and top with club soda."},
+						{Type: "HowToStep", Text: "Garnish with sliced strawberries and a sprig of thyme. Bottoms up!"},
 					},
 				},
 				Name:     "Strawberry Thyme Cooler and 9 Other Summer Cocktail Recipes",
 				PrepTime: "PT5M",
-				Yield:    models.Yield{Value: 1},
+				Yield:    &models.Yield{Value: 1},
 				URL:      "https://domesticate-me.com/10-summer-cocktail-recipes/",
 			},
 		},
@@ -238,19 +217,19 @@ func TestScraper_D(t *testing.T) {
 			in:   "https://downshiftology.com/recipes/baked-chicken-breasts/",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Main Course"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Main Course"},
 				CookTime:      "PT20M",
-				Cuisine:       models.Cuisine{Value: "American"},
+				Cuisine:       &models.Cuisine{Value: "American"},
 				DatePublished: "2023-10-31T08:00:00+00:00",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "You&#039;ll love these perfectly baked chicken breasts that are juicy, tender, easy, and flavorful! All you need is a drizzle of olive oil, a special seasoning mix, and a few insider tips for these super tasty, no-fail chicken breasts. Watch the video below to see how I make them in my kitchen!",
 				},
-				Keywords: models.Keywords{
+				Keywords: &models.Keywords{
 					Values: "baked chicken, baked chicken breasts, baked chicken recipe",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"4 boneless skinless chicken breasts",
 						"1 tablespoon olive oil (or avocado oil)",
@@ -261,17 +240,15 @@ func TestScraper_D(t *testing.T) {
 						"¼ teaspoon freshly ground black pepper",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Preheat your oven to 425°F (220°C). In a small bowl, mix together the paprika, garlic powder, thyme, salt and pepper.",
-						"Lightly coat the chicken breasts in olive oil, and then generously rub the spice mix on both sides of the chicken.",
-						"Place the chicken breasts in a baking dish and cook for 20 to 25 minutes, depending on size (see chart " +
-							"above). Let the chicken rest for a few minutes to allow the juices to redistribute within " +
-							"the meat, then serve.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Preheat your oven to 425°F (220°C). In a small bowl, mix together the paprika, garlic powder, thyme, salt and pepper."},
+						{Type: "HowToStep", Text: "Lightly coat the chicken breasts in olive oil, and then generously rub the spice mix on both sides of the chicken."},
+						{Type: "HowToStep", Text: "Place the chicken breasts in a baking dish and cook for 20 to 25 minutes, depending on size (see chart above). Let the chicken rest for a few minutes to allow the juices to redistribute within the meat, then serve."},
 					},
 				},
 				Name: "Best Baked Chicken Breast",
-				NutritionSchema: models.NutritionSchema{
+				NutritionSchema: &models.NutritionSchema{
 					Calories:      "163 kcal",
 					Carbohydrates: "1 g",
 					Cholesterol:   "72 mg",
@@ -285,7 +262,7 @@ func TestScraper_D(t *testing.T) {
 				},
 				PrepTime:  "PT5M",
 				TotalTime: "PT25M",
-				Yield:     models.Yield{Value: 4},
+				Yield:     &models.Yield{Value: 4},
 				URL:       "https://downshiftology.com/recipes/baked-chicken-breasts/",
 			},
 		},
@@ -294,16 +271,18 @@ func TestScraper_D(t *testing.T) {
 			in:   "https://www.dr.dk/mad/opskrift/nytarskage-med-champagne-kransekagebund-solbaer-og-chokoladepynt",
 			want: models.RecipeSchema{
 				AtContext:     atContext,
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "uncategorized"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				Name:          "Nytårskage med champagne, kransekagebund, solbær og chokoladepynt",
 				DatePublished: "2022-01-01T21:00:00+00:00",
-				Image:         models.Image{Value: anUploadedImage.String()},
-				Description: models.Description{
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Description: &models.Description{
 					Value: "Smuk nytårskage med urvisere og masser af smag, der passer perfekt til nytårsaften.",
 				},
 				URL: "https://www.dr.dk/mad/opskrift/nytarskage-med-champagne-kransekagebund-solbaer-og-chokoladepynt",
-				Ingredients: models.Ingredients{
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"30 g æggehvider",
 						"50 g sukker",
@@ -346,77 +325,75 @@ func TestScraper_D(t *testing.T) {
 						"Minimum 800 g mørk chokolade",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Kransekagebund",
-						"Varm marcipan kort i mikroovn, rør alle ingredienser sammen i røremaskinen indtil den samler sig.",
-						"Fordel dejen i en kagering på ca. 16ø og bag den I ca. 15 minutter ved 200C, til den er let gylden. Lad den køle ned.",
-						"\n",
-						"Mandel-solbær-knas",
-						"Smelt sukkeret ved lav blus i en gryde, indtil den er let gylden. Tag gryden af varme og rør mandler og salt i.",
-						"Hæld karamelliseret mandler i et stk bagepapir og lad den køle helt ned. Hak mandlerne fint. Smelt chokoladen op til 45C, tilsæt solbærpulver, pufsukker og de hakket mandler i.",
-						"Fordel knaset oven på kransekagebunden til et jævnt fint lag. Stil kagen i fryseren mens du arbejder videre.",
-						"\n",
-						"Solbærcremeux",
-						"Kom chokoladen i en skål og sæt den til side. Sæt husblas i koldt vand i ca. 5 minutter.",
-						"Pisk æggeblommer og sukker let sammen i en anden skål.",
-						"Varm fløde, citronsyre og solbærpuré op til kogepunktet og hæld den i æggeblandingen under piskning. Hæld blandingen tilbage i gryden og kog cremen op til 85C under konstant omrøring med en silikoneske.",
-						"Tag gryden af varmen og sigt cremen.",
-						"Vrid husblas fri fra vand og smelt den i cremen. Hæld cremen over chokoladen og rør midt i skålen indtil chokoladen og cremen er blevet homogen.",
-						"Smag til med citronsaft og stablen cremeuxen. Fordel den ovenpå kransekagebund (chokolade knas skal være ned i bunden) i bageringen og sæt den i fryseren.",
-						"\n",
-						"Champagne-flødebolleskum",
-						"Bring 75g sukker, glukosesirup, champagne og citronsyre i kog op til 118C.",
-						"Pisk æggehvider og 1 spsk sukker næsten stive i en skål og hæld den varme sukkerlage ned i æggehviderne i en tynd stråle under piskning. Pisk videre, til skummet er sejt og fast. Ved slutning tilsæt solbærpulver og pisk færdig.",
-						"Fordel skummet over solbærcremeux, gør overfladen glat med en paletkniv og stil kagen i fryseren igen.",
-						"\n",
-						"Champagnemousse",
-						"1/2 tsk citronsyre Udblød husblassen i koldt vand. Smelt chokoladen op til 45C.",
-						"Bring champagne, citronsyre og citronsaft til kogepunktet og tag gryden straks af varmen.",
-						"Vrid husblas fri for vand og rør den i den varme champagne. Hæld champagnen over chokoladen, mens du rør " +
-							"i midten af skålen. Fortsæt indtil massen samler sig.",
-						"Pisk fløde til let skum, ved skummet over chokoladen ad 3 omgange.",
-						"Fordel champagnemousse i en silikoneforme og tryk solbærindlæg ned i moussen - bunden skal være oppe. Lad " +
-							"kagen fryse indtil den skal glazes.",
-						"\n",
-						"Solbærglaze",
-						"Læg husblad i koldt vandbad i ca. 5 minutter. Kom chokolade i en høj kande.",
-						"Bring solbærpuré, vand, sukker og glukosesirup i en gryde og koge den op til kogepunktet. Tag gryden af " +
-							"varmen og rør kondenseret mælk i.",
-						"Vrid husblassen fri for vand og rør den ud i den varme væske. Hæld væsken over chokoladen og lad den " +
-							"træk i et par minutter.",
-						"Stavblend glaze indtil det er samlet og ensartet. Tilsæt guldstøv og stavblend igen.",
-						"Dæk overflade med film og lad gazen køle ned til 32 grader.",
-						"Placér den frosne kage på en rist og glaze kagen.",
-						"\n",
-						"Forberedelse af chokoladepynt",
-						"Klip et langt stykke plast på 63 cm til som et bylandskab og et andet stykke plast på 30 cm",
-						"Klip to viser af stift kageplast",
-						"Forberedelse af en halvkugle Ø10 cm pudses med vat",
-						"Temperere guld kakaofarve sammen med guldstøv og dup med en svamp et fyrværkeri mønster i halvkuglen, så " +
-							"det ligner en guldregn",
-						"Temperere 800 g mørk chokolade",
-						"Fyld hele halvkuglen op med chokolade og lade det sidde i 1-2 min for at sørge for, at skallen bliver tyk",
-						"Bank alt det overskydende chokolade ud på et stykke bagepapir og sæt den til at størkne",
-						"Fordel et jævnt lag chokolade ud på plasten der forestiller et bylandskab og på 30 cm plast",
-						"Beklæd en 20 cm kagering med plast og sæt bylandskabet rundt herom, som et stort bånd",
-						"Udstik med en Ø3 cm ring små knapper af den næsten størknet chokolade på 30 cm plast og befri dem, når " +
-							"chokoladen er kølet helt af",
-						"De runde cirkler pensles med guldstøv og efterfølgende skrives der med romertal fra 1-12",
-						"Befri halvkuglen fra formen og sæt til side",
-						"Lav visere af chokolade",
-						"\n",
-						"Samling",
-						"Den frosne kage befries fra formen og sættes på en drejeskive",
-						"Kagen betrækkes med et lag smørcreme, som glattes tyndt ud",
-						"Kagen sættes tilbage på frost i 10 min",
-						"Betræk med et nyt lag, som glattes helt jævnt ud",
-						"Sæt kagen tilbage på frost 10-15 min",
-						"Spray kagen med cremet velvet spray farve",
-						"Betræk kagen med chokoladebånd",
-						"Pynt toppen med guldtal oven på små chokoladekugler og placere halvkuglen i midten af kagen",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Kransekagebund"},
+						{Type: "HowToStep", Text: "Varm marcipan kort i mikroovn, rør alle ingredienser sammen i røremaskinen indtil den samler sig."},
+						{Type: "HowToStep", Text: "Fordel dejen i en kagering på ca. 16ø og bag den I ca. 15 minutter ved 200C, til den er let gylden. Lad den køle ned."},
+						{Type: "HowToStep", Text: "\n"},
+						{Type: "HowToStep", Text: "Mandel-solbær-knas"},
+						{Type: "HowToStep", Text: "Smelt sukkeret ved lav blus i en gryde, indtil den er let gylden. Tag gryden af varme og rør mandler og salt i."},
+						{Type: "HowToStep", Text: "Hæld karamelliseret mandler i et stk bagepapir og lad den køle helt ned. Hak mandlerne fint. Smelt chokoladen op til 45C, tilsæt solbærpulver, pufsukker og de hakket mandler i."},
+						{Type: "HowToStep", Text: "Fordel knaset oven på kransekagebunden til et jævnt fint lag. Stil kagen i fryseren mens du arbejder videre."},
+						{Type: "HowToStep", Text: "\n"},
+						{Type: "HowToStep", Text: "Solbærcremeux"},
+						{Type: "HowToStep", Text: "Kom chokoladen i en skål og sæt den til side. Sæt husblas i koldt vand i ca. 5 minutter."},
+						{Type: "HowToStep", Text: "Pisk æggeblommer og sukker let sammen i en anden skål."},
+						{Type: "HowToStep", Text: "Varm fløde, citronsyre og solbærpuré op til kogepunktet og hæld den i æggeblandingen under piskning. Hæld blandingen tilbage i gryden og kog cremen op til 85C under konstant omrøring med en silikoneske."},
+						{Type: "HowToStep", Text: "Tag gryden af varmen og sigt cremen."},
+						{Type: "HowToStep", Text: "Vrid husblas fri fra vand og smelt den i cremen. Hæld cremen over chokoladen og rør midt i skålen indtil chokoladen og cremen er blevet homogen."},
+						{Type: "HowToStep", Text: "Smag til med citronsaft og stablen cremeuxen. Fordel den ovenpå kransekagebund (chokolade knas skal være ned i bunden) i bageringen og sæt den i fryseren."},
+						{Type: "HowToStep", Text: "\n"},
+						{Type: "HowToStep", Text: "Champagne-flødebolleskum"},
+						{Type: "HowToStep", Text: "Bring 75g sukker, glukosesirup, champagne og citronsyre i kog op til 118C."},
+						{Type: "HowToStep", Text: "Pisk æggehvider og 1 spsk sukker næsten stive i en skål og hæld den varme sukkerlage ned i æggehviderne i en tynd stråle under piskning. Pisk videre, til skummet er sejt og fast. Ved slutning tilsæt solbærpulver og pisk færdig."},
+						{Type: "HowToStep", Text: "Fordel skummet over solbærcremeux, gør overfladen glat med en paletkniv og stil kagen i fryseren igen."},
+						{Type: "HowToStep", Text: "\n"},
+						{Type: "HowToStep", Text: "Champagnemousse"},
+						{Type: "HowToStep", Text: "1/2 tsk citronsyre Udblød husblassen i koldt vand. Smelt chokoladen op til 45C."},
+						{Type: "HowToStep", Text: "Bring champagne, citronsyre og citronsaft til kogepunktet og tag gryden straks af varmen."},
+						{Type: "HowToStep", Text: "Vrid husblas fri for vand og rør den i den varme champagne. Hæld champagnen over chokoladen, mens du rør i midten af skålen. Fortsæt indtil massen samler sig."},
+						{Type: "HowToStep", Text: "Pisk fløde til let skum, ved skummet over chokoladen ad 3 omgange."},
+						{Type: "HowToStep", Text: "Fordel champagnemousse i en silikoneforme og tryk solbærindlæg ned i moussen - bunden skal være oppe. Lad kagen fryse indtil den skal glazes."},
+						{Type: "HowToStep", Text: "\n"},
+						{Type: "HowToStep", Text: "Solbærglaze"},
+						{Type: "HowToStep", Text: "Læg husblad i koldt vandbad i ca. 5 minutter. Kom chokolade i en høj kande."},
+						{Type: "HowToStep", Text: "Bring solbærpuré, vand, sukker og glukosesirup i en gryde og koge den op til kogepunktet. Tag gryden af varmen og rør kondenseret mælk i."},
+						{Type: "HowToStep", Text: "Vrid husblassen fri for vand og rør den ud i den varme væske. Hæld væsken over chokoladen og lad den træk i et par minutter."},
+						{Type: "HowToStep", Text: "Stavblend glaze indtil det er samlet og ensartet. Tilsæt guldstøv og stavblend igen."},
+						{Type: "HowToStep", Text: "Dæk overflade med film og lad gazen køle ned til 32 grader."},
+						{Type: "HowToStep", Text: "Placér den frosne kage på en rist og glaze kagen."},
+						{Type: "HowToStep", Text: "\n"},
+						{Type: "HowToStep", Text: "Forberedelse af chokoladepynt"},
+						{Type: "HowToStep", Text: "Klip et langt stykke plast på 63 cm til som et bylandskab og et andet stykke plast på 30 cm"},
+						{Type: "HowToStep", Text: "Klip to viser af stift kageplast"},
+						{Type: "HowToStep", Text: "Forberedelse af en halvkugle Ø10 cm pudses med vat"},
+						{Type: "HowToStep", Text: "Temperere guld kakaofarve sammen med guldstøv og dup med en svamp et fyrværkeri mønster i halvkuglen, så det ligner en guldregn"},
+						{Type: "HowToStep", Text: "Temperere 800 g mørk chokolade"},
+						{Type: "HowToStep", Text: "Fyld hele halvkuglen op med chokolade og lade det sidde i 1-2 min for at sørge for, at skallen bliver tyk"},
+						{Type: "HowToStep", Text: "Bank alt det overskydende chokolade ud på et stykke bagepapir og sæt den til at størkne"},
+						{Type: "HowToStep", Text: "Fordel et jævnt lag chokolade ud på plasten der forestiller et bylandskab og på 30 cm plast"},
+						{Type: "HowToStep", Text: "Beklæd en 20 cm kagering med plast og sæt bylandskabet rundt herom, som et stort bånd"},
+						{Type: "HowToStep", Text: "Udstik med en Ø3 cm ring små knapper af den næsten størknet chokolade på 30 cm plast og befri dem, når chokoladen er kølet helt af"},
+						{Type: "HowToStep", Text: "De runde cirkler pensles med guldstøv og efterfølgende skrives der med romertal fra 1-12"},
+						{Type: "HowToStep", Text: "Befri halvkuglen fra formen og sæt til side"},
+						{Type: "HowToStep", Text: "Lav visere af chokolade"},
+						{Type: "HowToStep", Text: "\n"},
+						{Type: "HowToStep", Text: "Samling"},
+						{Type: "HowToStep", Text: "Den frosne kage befries fra formen og sættes på en drejeskive"},
+						{Type: "HowToStep", Text: "Kagen betrækkes med et lag smørcreme, som glattes tyndt ud"},
+						{Type: "HowToStep", Text: "Kagen sættes tilbage på frost i 10 min"},
+						{Type: "HowToStep", Text: "Betræk med et nyt lag, som glattes helt jævnt ud"},
+						{Type: "HowToStep", Text: "Sæt kagen tilbage på frost 10-15 min"},
+						{Type: "HowToStep", Text: "Spray kagen med cremet velvet spray farve"},
+						{Type: "HowToStep", Text: "Betræk kagen med chokoladebånd"},
+						{Type: "HowToStep", Text: "Pynt toppen med guldtal oven på små chokoladekugler og placere halvkuglen i midten af kagen"},
 					},
 				},
+				Keywords:        &models.Keywords{},
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{},
 			},
 		},
 		{
@@ -424,41 +401,46 @@ func TestScraper_D(t *testing.T) {
 			in:   "https://drinkoteket.se/recept/limoncello-spritz/",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtType:        models.SchemaType{Value: "Recipe"},
-				Category:      models.Category{Value: "Champagnedrinkar"},
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Champagnedrinkar"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				CookTime:      "PT2M",
 				DatePublished: "2023-12-30",
-				Description: models.Description{
+				Description: &models.Description{
 					Value: "Limoncello Spritz Drinkrecept på Drinkoteket.se. Här hittar du en mängd recept på enkla och goda drinkar och cocktails online. Välkommen in!",
 				},
-				Image: models.Image{Value: anUploadedImage.String()},
-				Ingredients: models.Ingredients{
+				Keywords: &models.Keywords{},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
 					Values: []string{
 						"5 cl Limoncello", "10 cl Bubbel", "4 cl Sodavatten", "1 cl Citronjuice",
 						"Rekommenderat bubbel", "Prosecco",
 					},
 				},
-				Instructions: models.Instructions{
-					Values: []string{
-						"Fyll ett glas med is.",
-						"Tillsätt ett torrt mousserande vin, förslagsvis prosecco.",
-						"Tillsätt limoncello och en skvätt citronjuice.", "Rör om lite lätt.",
-						"Garnera med en citronskiva.",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Fyll ett glas med is."},
+						{Type: "HowToStep", Text: "Tillsätt ett torrt mousserande vin, förslagsvis prosecco."},
+						{Type: "HowToStep", Text: "Tillsätt limoncello och en skvätt citronjuice."},
+						{Type: "HowToStep", Text: "Rör om lite lätt."},
+						{Type: "HowToStep", Text: "Garnera med en citronskiva."},
 					},
 				},
-				Name:     "Limoncello Spritz",
-				PrepTime: "PT1M",
-				Tools: models.Tools{
-					Values: []models.Tool{
-						{Name: "Barset med shaker"},
-						{Name: "Shaker"},
-						{Name: "Jigger"},
-						{Name: "Citruspress"},
-						{Name: "Cocktailsil"},
-						{Name: "Barsked"},
+				Name:            "Limoncello Spritz",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT1M",
+				Tools: &models.Tools{
+					Values: []models.HowToItem{
+						{Quantity: 1, Text: "Barset med shaker", Type: "HowToTool"},
+						{Quantity: 1, Text: "Shaker", Type: "HowToTool"},
+						{Quantity: 1, Text: "Jigger", Type: "HowToTool"},
+						{Quantity: 1, Text: "Citruspress", Type: "HowToTool"},
+						{Quantity: 1, Text: "Cocktailsil", Type: "HowToTool"},
+						{Quantity: 1, Text: "Barsked", Type: "HowToTool"},
 					},
 				},
-				Yield: models.Yield{Value: 1},
+				Yield: &models.Yield{Value: 1},
 				URL:   "https://drinkoteket.se/recept/limoncello-spritz/",
 			},
 		},

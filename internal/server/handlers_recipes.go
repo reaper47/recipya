@@ -258,10 +258,10 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 			keywords = append(keywords, xs...)
 		}
 
-		var tools []models.Tool
+		var tools []models.HowToItem
 		xs, ok = r.Form["tools"]
 		if ok {
-			tools = make([]models.Tool, 0, len(xs))
+			tools = make([]models.HowToItem, 0, len(xs))
 
 			for _, tool := range xs {
 				quantity := 1
@@ -276,7 +276,7 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 					}
 				}
 
-				tools = append(tools, models.Tool{Name: name, Quantity: quantity})
+				tools = append(tools, models.NewHowToTool(name, &models.HowToItem{Quantity: quantity}))
 			}
 		}
 
@@ -789,10 +789,9 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 
 				name = strings.TrimSpace(name)
 				if name != "" {
-					updatedRecipe.Tools = append(updatedRecipe.Tools, models.Tool{
-						Name:     name,
+					updatedRecipe.Tools = append(updatedRecipe.Tools, models.NewHowToTool(name, &models.HowToItem{
 						Quantity: quantity,
-					})
+					}))
 				}
 			}
 		}

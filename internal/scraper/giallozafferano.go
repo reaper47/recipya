@@ -14,20 +14,24 @@ func scrapeGiallozafferano(root *goquery.Document) (models.RecipeSchema, error) 
 		return rs, nil
 	}
 
-	name, _ := root.Find("meta[property='og:title']").Attr("content")
+	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
 	description, _ := root.Find("meta[name='description']").Attr("content")
-	datePub, _ := root.Find("meta[property='article:published_time']").Attr("content")
+	rs.Description = &models.Description{Value: description}
+	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
 	image, _ := root.Find("meta[property='og:image']").Attr("content")
+	rs.Image = &models.Image{Value: image}
+	rs.Category = &models.Category{Value: root.Find("a[rel='category tag']").First().Text()}
 
 	nodes := root.Find(".post-tags a")
 	keywords := make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		keywords = append(keywords, strings.TrimSpace(strings.ToLower(sel.Text())))
 	})
+	rs.Keywords = &models.Keywords{Values: strings.Join(extensions.Unique(keywords), ",")}
 
 	var (
 		ingredients  []string
-		instructions []string
+		instructions []models.HowToItem
 	)
 
 	node := root.Find(".entry-content").First()
@@ -43,20 +47,15 @@ func scrapeGiallozafferano(root *goquery.Document) (models.RecipeSchema, error) 
 			}
 
 			if c.Data == "p" {
-				instructions = append(instructions, strings.TrimSpace(c.FirstChild.Data))
+				instructions = append(instructions, models.NewHowToStep(strings.TrimSpace(c.FirstChild.Data)))
 			}
 		}
 	}
 
-	return models.RecipeSchema{
-		Category:      models.Category{Value: root.Find("a[rel='category tag']").First().Text()},
-		DatePublished: datePub,
-		Description:   models.Description{Value: description},
-		Keywords:      models.Keywords{Values: strings.Join(extensions.Unique(keywords), ",")},
-		Image:         models.Image{Value: image},
-		Ingredients:   models.Ingredients{Values: ingredients},
-		Instructions:  models.Instructions{Values: slices.DeleteFunc(instructions, func(s string) bool { return s == "" })},
-		Name:          name,
-		Yield:         models.Yield{Value: 1},
-	}, nil
+	instructions = slices.DeleteFunc(instructions, func(s models.HowToItem) bool { return s.Text == "" })
+
+	rs.Ingredients = &models.Ingredients{Values: ingredients}
+	rs.Instructions = &models.Instructions{Values: instructions}
+	rs.Yield = &models.Yield{Value: 1}
+	return rs, nil
 }

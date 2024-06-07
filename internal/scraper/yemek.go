@@ -7,25 +7,22 @@ import (
 )
 
 func scrapeYemek(root *goquery.Document) (models.RecipeSchema, error) {
-	name, _ := root.Find("meta[property='og:title']").Attr("content")
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
+	rs := models.NewRecipeSchema()
+
+	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
+	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
 
 	nodes := root.Find("li[itemprop='recipeIngredient']")
-	ingredients := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		ingredients[i] = strings.TrimSpace(s.Text())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(s.Text()))
 	})
 
 	nodes = root.Find("p[itemprop='recipeInstructions']")
-	instructions := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		instructions[i] = strings.TrimSpace(s.Text())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(s.Text())))
 	})
 
-	return models.RecipeSchema{
-		Image:        models.Image{Value: image},
-		Ingredients:  models.Ingredients{Values: ingredients},
-		Instructions: models.Instructions{Values: instructions},
-		Name:         name,
-	}, nil
+	return rs, nil
 }

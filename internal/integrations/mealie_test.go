@@ -90,7 +90,7 @@ func TestMealieImport(t *testing.T) {
 			TotalFat:           "24.6g",
 		},
 		Times:     models.Times{Prep: 15 * time.Minute, Cook: 30 * time.Minute},
-		Tools:     []models.Tool{},
+		Tools:     []models.HowToItem{},
 		UpdatedAt: time.Date(2024, 04, 12, 0, 0, 0, 0, time.UTC),
 		URL:       "https://pinchofyum.com/30-minute-meal-prep-roasted-vegetable-bowls-with-green-tahini",
 		Yield:     6,

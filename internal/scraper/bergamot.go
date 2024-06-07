@@ -70,47 +70,37 @@ func (s *Scraper) scrapeBergamot(rawURL string) (models.RecipeSchema, error) {
 		return models.RecipeSchema{}, err
 	}
 
-	var ingredients []string
+	rs := models.NewRecipeSchema()
+
 	for _, d := range b.Ingredients {
-		ingredients = append(ingredients, d.Data...)
+		rs.Ingredients.Values = append(rs.Ingredients.Values, d.Data...)
 	}
 
-	var instructions []string
 	for _, d := range b.Instructions {
-		instructions = append(instructions, d.Data...)
+		for _, v := range d.Data {
+			rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(v))
+		}
 	}
 
-	var prep string
 	if b.Time.PrepTime > 0 {
-		prep = "PT" + strconv.Itoa(b.Time.PrepTime) + "M"
+		rs.PrepTime = "PT" + strconv.Itoa(b.Time.PrepTime) + "M"
 	}
 
-	var cook string
-	if prep != "" {
-		cook = "PT" + strconv.Itoa(b.Time.TotalTime-b.Time.PrepTime) + "M"
+	if rs.PrepTime != "" {
+		rs.CookTime = "PT" + strconv.Itoa(b.Time.TotalTime-b.Time.PrepTime) + "M"
 	}
 
-	var image string
 	if len(b.Photos) > 0 {
-		image = b.Photos[0].PhotoThumbURL
+		rs.Image.Value = b.Photos[0].PhotoThumbURL
 	}
 
-	return models.RecipeSchema{
-		AtContext:       atContext,
-		AtType:          models.SchemaType{Value: "Recipe"},
-		Category:        models.Category{Value: "uncategorized"},
-		CookTime:        cook,
-		DateCreated:     b.CreatedAt.Format(time.DateOnly),
-		DateModified:    b.UpdatedAt.Format(time.DateOnly),
-		DatePublished:   b.CreatedAt.Format(time.DateOnly),
-		Description:     models.Description{Value: b.Description},
-		Image:           models.Image{Value: image},
-		Ingredients:     models.Ingredients{Values: ingredients},
-		Instructions:    models.Instructions{Values: instructions},
-		Name:            b.Title,
-		NutritionSchema: models.NutritionSchema{},
-		PrepTime:        prep,
-		Yield:           models.Yield{Value: int16(b.Servings)},
-		URL:             rawURL,
-	}, nil
+	rs.DateCreated = b.CreatedAt.Format(time.DateOnly)
+	rs.DateModified = b.UpdatedAt.Format(time.DateOnly)
+	rs.DatePublished = b.CreatedAt.Format(time.DateOnly)
+	rs.Description = &models.Description{Value: b.Description}
+	rs.Name = b.Title
+	rs.Yield = &models.Yield{Value: int16(b.Servings)}
+	rs.URL = rawURL
+
+	return rs, nil
 }

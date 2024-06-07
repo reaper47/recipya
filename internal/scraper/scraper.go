@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services"
 	"net/http"
@@ -69,11 +70,13 @@ func (s *Scraper) Scrape(url string, files services.FilesService) (models.Recipe
 		rs.AtContext = atContext
 	}
 
-	if rs.Category.Value == "" {
-		rs.Category.Value = "uncategorized"
+	if rs.Category == nil || rs.Category.Value == "" {
+		rs.Category = models.NewCategory("")
 	}
 
-	if rs.AtType.Value == "" {
+	if rs.AtType == nil {
+		rs.AtType = &models.SchemaType{Value: "Recipe"}
+	} else if rs.AtType.Value == "" {
 		rs.AtType.Value = "Recipe"
 	}
 
@@ -81,12 +84,15 @@ func (s *Scraper) Scrape(url string, files services.FilesService) (models.Recipe
 		rs.URL = url
 	}
 
-	imageUUID, err := files.ScrapeAndStoreImage(rs.Image.Value)
-	if err != nil {
-		return rs, err
+	var imageUUID uuid.UUID
+	if rs.Image != nil {
+		imageUUID, err = files.ScrapeAndStoreImage(rs.Image.Value)
+		if err != nil {
+			return rs, err
+		}
+		rs.Image.Value = imageUUID.String()
 	}
 
-	rs.Image.Value = imageUUID.String()
 	return rs, nil
 }
 
@@ -171,18 +177,17 @@ func parseLdJSON(root *goquery.Document) (models.RecipeSchema, error) {
 			continue
 		}
 
-		var rs models.RecipeSchema
+		var rs = models.NewRecipeSchema()
 		err := json.Unmarshal([]byte(strings.ReplaceAll(node.FirstChild.Data, "\n", "")), &rs)
-		if err != nil {
+		if err != nil || rs.Equal(models.NewRecipeSchema()) {
 			var xrs []models.RecipeSchema
 			err = json.Unmarshal([]byte(node.FirstChild.Data), &xrs)
 			if err != nil {
 				continue
 			}
 
-			for _, rs := range xrs {
-				if rs.AtType.Value == "Recipe" {
-					rs.AtContext = atContext
+			for _, rs = range xrs {
+				if rs.AtType != nil && rs.AtType.Value == "Recipe" {
 					return rs, nil
 				}
 			}
@@ -192,8 +197,6 @@ func parseLdJSON(root *goquery.Document) (models.RecipeSchema, error) {
 		if rs.AtType.Value != "Recipe" {
 			continue
 		}
-
-		rs.AtContext = atContext
 		return rs, nil
 	}
 	return models.RecipeSchema{}, ErrNotImplemented
@@ -223,5 +226,5 @@ func parseGraph(root *goquery.Document) (models.RecipeSchema, error) {
 			}
 		}
 	}
-	return models.RecipeSchema{}, ErrNotImplemented
+	return models.NewRecipeSchema(), ErrNotImplemented
 }

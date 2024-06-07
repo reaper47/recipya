@@ -87,7 +87,7 @@ func (b *Broker) HideNotification(userID int64) {
 // Monitor monitors the websocket connections to clean those closed.
 func (b *Broker) Monitor() {
 	go func() {
-		ticker := time.NewTicker(1 * time.Minute)
+		ticker := time.NewTicker(time.Minute)
 
 		defer func() {
 			ticker.Stop()

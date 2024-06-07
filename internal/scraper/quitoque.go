@@ -253,29 +253,29 @@ func (s *Scraper) scrapeQuitoque(rawURL string) (models.RecipeSchema, error) {
 		}
 	}
 
-	var (
-		cook         string
-		prep         string
-		ingredients  []string
-		instructions []string
-		yield        int16
-	)
+	rs := models.NewRecipeSchema()
+
+	rs.Description.Value = q.Data.Recipe.ShortDescription
+	rs.Image.Value = q.Data.Recipe.Image
+	rs.Name = q.Data.Recipe.Name
+	rs.NutritionSchema = &ns
+
 	if len(q.Data.Recipe.Pools) > 0 && len(q.Data.Recipe.Pools[0].CookingModes) > 0 {
 		m := q.Data.Recipe.Pools[0].CookingModes[0]
 
-		yield = int16(q.Data.Recipe.Pools[0].NbPerson)
+		rs.Yield.Value = int16(q.Data.Recipe.Pools[0].NbPerson)
 
-		prep = "PT" + strconv.Itoa(m.WaitingTime) + "M"
-		cook = "PT" + strconv.Itoa(m.CookingTime) + "M"
+		rs.PrepTime = "PT" + strconv.Itoa(m.WaitingTime) + "M"
+		rs.CookTime = "PT" + strconv.Itoa(m.CookingTime) + "M"
 
-		instructions = make([]string, 0, len(m.Steps))
+		rs.Instructions.Values = make([]models.HowToItem, 0, len(m.Steps))
 		for _, step := range m.Steps {
 			ins := step.Title + "\n" + step.Description
 			ins = strings.ReplaceAll(ins, "\u00a0", " ")
-			instructions = append(instructions, ins)
+			rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(ins))
 		}
 
-		ingredients = make([]string, 0, len(m.Stacks.Ingredients)+len(m.Stacks.Ingredients))
+		rs.Ingredients.Values = make([]string, 0, len(m.Stacks.Ingredients)+len(m.Stacks.Ingredients))
 		for _, ing := range m.Stacks.Ingredients {
 			var sb strings.Builder
 			if ing.LiteralQuantity != "" {
@@ -284,7 +284,7 @@ func (s *Scraper) scrapeQuitoque(rawURL string) (models.RecipeSchema, error) {
 			}
 
 			sb.WriteString(ing.Name)
-			ingredients = append(ingredients, sb.String())
+			rs.Ingredients.Values = append(rs.Ingredients.Values, sb.String())
 		}
 
 		for _, ing := range m.Stacks.CupboardIngredients {
@@ -295,22 +295,9 @@ func (s *Scraper) scrapeQuitoque(rawURL string) (models.RecipeSchema, error) {
 			}
 
 			sb.WriteString(ing.Name)
-			ingredients = append(ingredients, sb.String())
+			rs.Ingredients.Values = append(rs.Ingredients.Values, sb.String())
 		}
 	}
 
-	return models.RecipeSchema{
-		AtContext:       atContext,
-		AtType:          models.SchemaType{Value: "Recipe"},
-		Category:        models.Category{Value: "uncategorized"},
-		CookTime:        cook,
-		Description:     models.Description{Value: q.Data.Recipe.ShortDescription},
-		Image:           models.Image{Value: q.Data.Recipe.Image},
-		Ingredients:     models.Ingredients{Values: ingredients},
-		Instructions:    models.Instructions{Values: instructions},
-		Name:            q.Data.Recipe.Name,
-		NutritionSchema: ns,
-		PrepTime:        prep,
-		Yield:           models.Yield{Value: yield},
-	}, nil
+	return rs, nil
 }
