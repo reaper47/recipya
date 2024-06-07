@@ -388,14 +388,14 @@ func formatDuration(d time.Duration) string {
 
 	s := strings.ToUpper(d.Truncate(time.Millisecond).String())
 
-	before, _, ok := strings.Cut(s, "0S")
+	before, _, ok := strings.Cut(s, "M0S")
 	if ok {
-		s = before
+		s = before + "M"
 	}
 
-	before, _, ok = strings.Cut(s, "0M")
+	before, _, ok = strings.Cut(s, "H0M")
 	if ok {
-		s = before
+		s = before + "H"
 	}
 
 	return "PT" + s
