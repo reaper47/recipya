@@ -13,26 +13,26 @@ func scrapeBrianLagerstrom(root *goquery.Document) (models.RecipeSchema, error) 
 	rs.Description.Value, _ = root.Find("meta[itemprop='description']").Attr("content")
 	rs.Image.Value, _ = root.Find("meta[itemprop='thumbnailUrl']").Attr("content")
 
-	rs.Name, _ = root.Find("meta[itemprop='name']").Attr("content")
+	name, _ := root.Find("meta[itemprop='name']").Attr("content")
 	before, _, ok := strings.Cut(name, "—")
 	if ok {
 		name = before
 	}
 	rs.Name = strings.TrimSpace(name)
 
-	rs.DatePublished, _ = root.Find("meta[itemprop='datePublished']").Attr("content")
-	before, _, ok = strings.Cut(datePublished, "T")
+	datePub, _ := root.Find("meta[itemprop='datePublished']").Attr("content")
+	before, _, ok = strings.Cut(datePub, "T")
 	if ok {
-		datePublished = before
+		datePub = before
 	}
-	rs.DatePublished = datePublished
+	rs.DatePublished = datePub
 
-	rs.DateModified, _ = root.Find("meta[itemprop='dateModified']").Attr("content")
-	before, _, ok = strings.Cut(dateModified, "T")
+	dateMod, _ := root.Find("meta[itemprop='dateModified']").Attr("content")
+	before, _, ok = strings.Cut(dateMod, "T")
 	if ok {
-		dateModified = before
+		dateMod = before
 	}
-	rs.DateModified = dateModified
+	rs.DateModified = dateMod
 
 	nodes := root.Find("p:contains('▪')")
 	if nodes.Length() == 1 {
@@ -76,7 +76,7 @@ func scrapeBrianLagerstrom(root *goquery.Document) (models.RecipeSchema, error) 
 
 		// Instructions
 		nodes = root.Find("ol li")
-		rs.Instructions.Values = make([]models.HowToStep, 0, nodes.Length())
+		rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 		nodes.Each(func(_ int, sel *goquery.Selection) {
 			s := strings.TrimSpace(sel.Text())
 			s = strings.ReplaceAll(s, "\u00a0", " ")

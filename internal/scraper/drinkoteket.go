@@ -21,15 +21,15 @@ func scrapeDrinkoteket(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	nodes = root.Find("div[itemprop='recipeInstructions'] li")
-	rs.Instructions.Values = make([]models.HowToStep, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(sel.Text())))
 	})
 
 	nodes = root.Find("#recipe-utrustning .rbs-img-content")
-	rs.Tools.Values = make([]models.Tool, 0, nodes.Length())
+	rs.Tools.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Tools.Values = append(rs.Tools.Values, models.Tool{Name: strings.TrimSpace(sel.Text())})
+		rs.Tools.Values = append(rs.Tools.Values, models.NewHowToTool(strings.TrimSpace(sel.Text())))
 	})
 
 	rs.DatePublished, _ = root.Find("meta[itemprop='datePublished']").Attr("content")

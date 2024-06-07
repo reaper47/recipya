@@ -9,7 +9,7 @@ import (
 func scrapeBingingWithBabish(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
+	name, _ := root.Find("meta[property='og:title']").Attr("content")
 	before, _, ok := strings.Cut(name, " — ")
 	if ok {
 		name = strings.TrimSpace(before)
@@ -28,13 +28,10 @@ func scrapeBingingWithBabish(root *goquery.Document) (models.RecipeSchema, error
 	})
 
 	nodes = root.Find("h1:contains('Method')").First().Parent().Find("ol li")
-	rs.Instructions.Values = make([]models.HowToStep, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(sel.Text())))
 	})
-
-	rs.Name = name
-	rs.Yield = &models.Yield{Value: 1}
 
 	return rs, nil
 }

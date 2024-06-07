@@ -13,7 +13,7 @@ func scrapeFitMenCook(root *goquery.Document) (models.RecipeSchema, error) {
 		return rs, err
 	}
 
-	rs.Image.Value, _ = root.Find("picture > img").Attr("data-lazy-src")
+	image, _ := root.Find("picture > img").Attr("data-lazy-src")
 	rs.Image = &models.Image{Value: image}
 
 	nodes := root.Find("a[rel='tag']")
@@ -40,21 +40,22 @@ func scrapeFitMenCook(root *goquery.Document) (models.RecipeSchema, error) {
 		}
 	}
 
-	rs.Ingredients.Values = make([]string, 0)
-	root.Find(".fmc_rs.Ingredients.Values").Last().Find("ul li").Each(func(_ int, s *goquery.Selection) {
+	ingredients := make([]string, 0)
+	root.Find(".fmc_ingredients").Last().Find("ul li").Each(func(_ int, s *goquery.Selection) {
 		ing := strings.ReplaceAll(s.Text(), "\t", "")
 		if !strings.Contains(ing, "\n\n") {
 			return
 		}
 
 		split := strings.Split(ing, "\n\n")
-		rs.Ingredients.Values = append(rs.Ingredients.Values, split[0])
+		ingredients = append(ingredients, split[0])
 		for _, s2 := range strings.Split(split[1], "\n") {
 			s2 = strings.ReplaceAll(s2, "\u00a0", " ")
-			rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(s2))
+			ingredients = append(ingredients, strings.TrimSpace(s2))
 		}
-		rs.Ingredients.Values = append(rs.Ingredients.Values, "\n")
+		ingredients = append(ingredients, "\n")
 	})
+	rs.Ingredients = &models.Ingredients{Values: ingredients}
 
 	var n models.NutritionSchema
 	nNodes := root.Find(".fmc_macro_cals")

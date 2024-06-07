@@ -8,18 +8,22 @@ import (
 )
 
 func scrapeSoutherncastiron(root *goquery.Document) (models.RecipeSchema, error) {
+	rs := models.NewRecipeSchema()
+
 	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
 	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
 	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
 	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.Yield.Value = findYield(root.Find("div[itemprop='description']").Text())
 
-	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
+	name, _ := root.Find("meta[property='og:title']").Attr("content")
 	before, _, found := strings.Cut(name, " - ")
 	if found {
 		name = strings.TrimSpace(before)
 	}
+	rs.Name = name
 
-	category := strings.TrimSpace(root.Find(".td-crumb-container a").Last().Text())
+	rs.Category.Value = strings.TrimSpace(root.Find(".td-crumb-container a").Last().Text())
 
 	prep := root.Find(".recipe-legend").First().Prev().Text()
 	split := strings.Split(prep, " ")
@@ -30,32 +34,22 @@ func scrapeSoutherncastiron(root *goquery.Document) (models.RecipeSchema, error)
 			prep = "PT" + split[i] + "M"
 		}
 	}
+	rs.PrepTime = prep
 
 	nodes := root.Find("li[itemprop='ingredients']")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.Join(strings.Fields(sel.Text()), " ")
-		ingredients = append(ingredients, s)
+		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
 	})
 
 	nodes = root.Find("li[itemprop='recipeInstructions']")
-	instructions := make([]models.HowToStep, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
 		s = strings.Join(strings.Fields(s), " ")
-		instructions = append(instructions, models.NewHowToStep(s))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
 	})
 
-	return models.RecipeSchema{
-		Category:      &models.Category{Value: category},
-		DateModified:  dateModified,
-		DatePublished: datePublished,
-		Description:   &models.Description{Value: description},
-		Image:         &models.Image{Value: image},
-		Ingredients:   &models.Ingredients{Values: ingredients},
-		Instructions:  &models.Instructions{Values: instructions},
-		Name:          name,
-		PrepTime:      prep,
-		Yield:         &models.Yield{Value: findYield(root.Find("div[itemprop='description']").Text())},
-	}, nil
+	return rs, nil
 }

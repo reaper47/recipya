@@ -36,7 +36,7 @@ func scrapeKuchniadomova(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	nodes = root.Find("#recipe-instructions li")
-	rs.Instructions.Values = make([]models.HowToStep, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, s *goquery.Selection) {
 		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s.Text()))
 	})

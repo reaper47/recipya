@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/google/go-cmp/cmp"
 	"github.com/reaper47/recipya/internal/models"
+	"strings"
 	"testing"
 	"time"
 
@@ -201,10 +202,10 @@ func TestIngredient_UnmarshalJSON(t *testing.T) {
 func TestInstruction_UnmarshalJSON(t *testing.T) {
 	want := models.RecipeSchema{
 		Instructions: &models.Instructions{
-			Values: []models.HowToStep{
-				{Text: "preheat"},
-				{Text: "mix all"},
-				{Text: "eat everything"},
+			Values: []models.HowToItem{
+				{Type: "HowToStep", Text: "preheat"},
+				{Type: "HowToStep", Text: "mix all"},
+				{Type: "HowToStep", Text: "eat everything"},
 			},
 		},
 	}
@@ -362,9 +363,9 @@ func assertRecipeSchema(t testing.TB, data string, want models.RecipeSchema) {
 }
 
 func TestTool_String(t *testing.T) {
-	tool := models.Tool{Quantity: 3, Name: "wok"}
+	tool := models.NewHowToTool("wok", &models.HowToItem{Quantity: 3})
 
-	got := tool.String()
+	got := tool.StringQuantity()
 
 	want := "3 wok"
 	if got != want {
@@ -375,15 +376,15 @@ func TestTool_String(t *testing.T) {
 func TestTools_UnmarshalJSON(t *testing.T) {
 	want := models.RecipeSchema{
 		Tools: &models.Tools{
-			Values: []models.Tool{
+			Values: []models.HowToItem{
 				{
-					AtType:   "HowToTool",
-					Name:     "Saw",
+					Type:     "HowToTool",
+					Text:     "Saw",
 					Quantity: 1,
 				},
 				{
-					AtType:   "HowToTool",
-					Name:     "Blender",
+					Type:     "HowToTool",
+					Text:     "Blender",
 					Quantity: 2,
 				},
 			},
@@ -412,8 +413,8 @@ func TestTools_UnmarshalJSON(t *testing.T) {
 		{
 			name: "schema HowToTool",
 			data: `{"tool": [
-				{"@type":"HowToTool", "name":"Saw","requiredQuantity":1},
-				{"@type":"HowToTool", "name":"Blender", "requiredQuantity":2}
+				{"@type":"HowToTool", "text":"Saw","requiredQuantity":1},
+				{"@type":"HowToTool", "text":"Blender", "requiredQuantity":2}
 			]}`,
 		},
 	}
@@ -426,7 +427,7 @@ func TestTools_UnmarshalJSON(t *testing.T) {
 
 func TestRecipeSchema_Recipe(t *testing.T) {
 	imageID := uuid.New()
-	tools := []models.Tool{
+	tools := []models.HowToItem{
 		{Name: "Saw", Quantity: 1},
 		{Name: "Blender", Quantity: 2},
 	}
@@ -445,10 +446,10 @@ func TestRecipeSchema_Recipe(t *testing.T) {
 		Image:         &models.Image{Value: imageID.String()},
 		Ingredients:   &models.Ingredients{Values: []string{"ing1", "ing2", "ing3"}},
 		Instructions: &models.Instructions{
-			Values: []models.HowToStep{
-				{Text: "ins1"},
-				{Text: "ins2"},
-				{Text: "ins3"},
+			Values: []models.HowToItem{
+				{Type: "HowToStep", Text: "ins1"},
+				{Type: "HowToStep", Text: "ins2"},
+				{Type: "HowToStep", Text: "ins3"},
 			},
 		},
 		Name: "name",
@@ -529,9 +530,9 @@ func TestRecipeSchema_Recipe(t *testing.T) {
 
 func TestRecipeSchema_Marshal(t *testing.T) {
 	imageID := uuid.New()
-	tools := []models.Tool{
-		{Name: "Saw", Quantity: 1},
-		{Name: "Blender", Quantity: 2},
+	tools := []models.HowToItem{
+		models.NewHowToTool("Saw"),
+		models.NewHowToTool("Blender"),
 	}
 	rs := models.RecipeSchema{
 		AtContext:     "@Schema",
@@ -548,10 +549,10 @@ func TestRecipeSchema_Marshal(t *testing.T) {
 		Image:         &models.Image{Value: imageID.String()},
 		Ingredients:   &models.Ingredients{Values: []string{"ing1", "ing2", "ing3"}},
 		Instructions: &models.Instructions{
-			Values: []models.HowToStep{
-				{Text: "ins1"},
-				{Text: "ins2"},
-				{Text: "ins3"},
+			Values: []models.HowToItem{
+				{Type: "HowToStep", Text: "ins1"},
+				{Type: "HowToStep", Text: "ins2"},
+				{Type: "HowToStep", Text: "ins3"},
 			},
 		},
 		Name: "name",
@@ -627,7 +628,13 @@ func TestRecipeSchema_Marshal(t *testing.T) {
 				t.Errorf("got keywords %q; want %q", v, rs.Keywords.Values)
 			}
 		case "image":
-			if v.(string) != rs.Image.Value {
+			want := "/data/images/" + rs.Image.Value
+			s := v.(string)
+			_, after, ok := strings.Cut(v.(string), "/")
+			if ok {
+				s = "/" + after
+			}
+			if s != want {
 				t.Errorf("got image %q; want %q", v, rs.Image.Value)
 			}
 		case "recipeIngredient":
@@ -641,12 +648,12 @@ func TestRecipeSchema_Marshal(t *testing.T) {
 			}
 		case "recipeInstructions":
 			xa := v.([]any)
-			xv := make([]models.HowToStep, 0, len(xa))
+			xv := make([]models.HowToItem, 0, len(xa))
 			for _, a := range xa {
 				m := a.(map[string]any)
 				s, ok := m["text"]
 				if ok {
-					xv = append(xv, models.HowToStep{Text: s.(string)})
+					xv = append(xv, models.HowToItem{Type: "HowToStep", Text: s.(string)})
 				}
 			}
 
@@ -670,17 +677,16 @@ func TestRecipeSchema_Marshal(t *testing.T) {
 			}
 		case "tool":
 			xa := v.([]any)
-			xv := make([]models.Tool, 0, len(xa))
+			xv := make([]models.HowToItem, 0, len(xa))
 			for _, a := range xa {
 				m := a.(map[string]any)
-				xv = append(xv, models.Tool{
-					Name:     m["name"].(string),
+				xv = append(xv, models.NewHowToTool(m["text"].(string), &models.HowToItem{
 					Quantity: int(m["requiredQuantity"].(float64)),
-				})
+				}))
 			}
 
 			if !slices.Equal(xv, rs.Tools.Values) {
-				t.Errorf("got tool %q; want %q", xv, rs.Tools.Values)
+				t.Errorf("got tool %+v; want %+v", xv, rs.Tools.Values)
 			}
 		case "totalTime":
 			if v.(string) != rs.TotalTime {

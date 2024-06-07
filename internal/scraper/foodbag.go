@@ -148,7 +148,7 @@ func (s *Scraper) scrapeFoodbag(rawURL string) (models.RecipeSchema, error) {
 		rs.CookTime = "PT" + strconv.Itoa(variant.CookingTime) + "M"
 
 		parts := strings.Split(variant.Directions, "|")
-		rs.Instructions.Values = make([]models.HowToStep, 0, len(parts))
+		rs.Instructions.Values = make([]models.HowToItem, 0, len(parts))
 		for _, v := range parts {
 			rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(v))
 		}

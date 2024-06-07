@@ -29,13 +29,13 @@ func TestScraper_B(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Preheat oven to 425°F. Scrub potatoes, remove any blemishes, and cut them into 2-inch pieces."},
-						{Text: "Pile potatoes on a baking sheet and drizzle with olive oil and sprinkle Italian seasoning and salt over the top. Toss until well-coated. Arrange potatoes so they are evenly spaced over the baking sheet with a cut side down."},
-						{Text: "Cover the tray tightly with foil and bake on the center rack of your oven for 15 minutes."},
-						{Text: "Remove and discard the foil. Raise the oven temperature to 475°F."},
-						{Text: "Continue to bake the potatoes uncovered for 25 to 30 minutes, rotating the pan once halfway through, until the potatoes are fork-tender."},
-						{Text: "Remove from the oven, add additional salt if needed, and enjoy!"},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Preheat oven to 425°F. Scrub potatoes, remove any blemishes, and cut them into 2-inch pieces."},
+						{Type: "HowToStep", Text: "Pile potatoes on a baking sheet and drizzle with olive oil and sprinkle Italian seasoning and salt over the top. Toss until well-coated. Arrange potatoes so they are evenly spaced over the baking sheet with a cut side down."},
+						{Type: "HowToStep", Text: "Cover the tray tightly with foil and bake on the center rack of your oven for 15 minutes."},
+						{Type: "HowToStep", Text: "Remove and discard the foil. Raise the oven temperature to 475°F."},
+						{Type: "HowToStep", Text: "Continue to bake the potatoes uncovered for 25 to 30 minutes, rotating the pan once halfway through, until the potatoes are fork-tender."},
+						{Type: "HowToStep", Text: "Remove from the oven, add additional salt if needed, and enjoy!"},
 					},
 				},
 				Name: "Italian Roasted Potatoes",
@@ -73,13 +73,13 @@ func TestScraper_B(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Place the potatoes in a pot of water with 1/2 teaspoon of the salt. Boil until the potatoes are tender. Drain."},
-						{Text: "Pass the potatoes through a ricer back into the pot, or use a potato masher. Add 1 oz (2 tablespoons) of the butter and the remaining salt mix until the butter is melted. Add the flour, baking powder and pepper and stir until most of the flour is mixed in."},
-						{Text: "Turn the dough out onto a lightly floured surface and knead in the chopped scallions then form the dough into a ball. Divide the dough in half."},
-						{Text: "Preheat a large skillet over medium heat. While the pan is heating, pat each half of the dough to an 8\" round, 1/4”thick. Use flour as needed to prevent sticking. Cut the rounds into quarters. You&#39;ll have a total of 8 farls. (See Note)"},
-						{Text: "Melt 1 tablespoon of the remaining butter in the pan. Fry half the farls in the butter until golden brown, then flip and fry the other side. Cook until both sides are golden brown and the farl springs back when pressed in the center. About 4 minutes per side."},
-						{Text: "Repeat with the remaining butter and farls. Serve immediately."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Place the potatoes in a pot of water with 1/2 teaspoon of the salt. Boil until the potatoes are tender. Drain."},
+						{Type: "HowToStep", Text: "Pass the potatoes through a ricer back into the pot, or use a potato masher. Add 1 oz (2 tablespoons) of the butter and the remaining salt mix until the butter is melted. Add the flour, baking powder and pepper and stir until most of the flour is mixed in."},
+						{Type: "HowToStep", Text: "Turn the dough out onto a lightly floured surface and knead in the chopped scallions then form the dough into a ball. Divide the dough in half."},
+						{Type: "HowToStep", Text: "Preheat a large skillet over medium heat. While the pan is heating, pat each half of the dough to an 8\" round, 1/4”thick. Use flour as needed to prevent sticking. Cut the rounds into quarters. You&#39;ll have a total of 8 farls. (See Note)"},
+						{Type: "HowToStep", Text: "Melt 1 tablespoon of the remaining butter in the pan. Fry half the farls in the butter until golden brown, then flip and fry the other side. Cook until both sides are golden brown and the farl springs back when pressed in the center. About 4 minutes per side."},
+						{Type: "HowToStep", Text: "Repeat with the remaining butter and farls. Serve immediately."},
 					},
 				},
 				Keywords: &models.Keywords{Values: "pancake, potato"},
@@ -129,9 +129,9 @@ func TestScraper_B(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Heat the olive oil in a large (12-inch) sauté pan and add the pancetta. Cook over medium heat, stirring often, until the fat is rendered and the pancetta is golden brown and crisp, 5 to 10 minutes. Remove the pancetta to a plate lined with a paper towel."},
-						{Text: "Add the Brussels sprouts, salt, and pepper to the fat in the pan and sauté over medium heat for about 5 minutes, until lightly browned. Add the raisins and chicken stock. Lower the heat and cook uncovered, stirring occasionally, until the sprouts are tender when pierced with a knife, about 15 minutes. If the skillet becomes too dry, add a little chicken stock or water. Return the pancetta to the pan, heat through, season to taste, and serve."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Heat the olive oil in a large (12-inch) sauté pan and add the pancetta. Cook over medium heat, stirring often, until the fat is rendered and the pancetta is golden brown and crisp, 5 to 10 minutes. Remove the pancetta to a plate lined with a paper towel."},
+						{Type: "HowToStep", Text: "Add the Brussels sprouts, salt, and pepper to the fat in the pan and sauté over medium heat for about 5 minutes, until lightly browned. Add the raisins and chicken stock. Lower the heat and cook uncovered, stirring occasionally, until the sprouts are tender when pierced with a knife, about 15 minutes. If the skillet becomes too dry, add a little chicken stock or water. Return the pancetta to the pan, heat through, season to taste, and serve."},
 					},
 				},
 				Name:  "Brussels Sprouts Lardons",
@@ -176,11 +176,11 @@ func TestScraper_B(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Preheat the oven to 220C/200C Fan/Gas 7."},
-						{Text: "Put the peppers, carrots, onions and garlic into a deep baking dish and roast for 20 minutes. Add the sausages and roast for a further 10 minutes."},
-						{Text: "Turn the oven down to 200C/180C Fan/Gas 6. Pour the tomatoes and chickpeas into the baking dish, then stir in the stock, chilli and paprika. Bake for another 35 minutes."},
-						{Text: "Stir in the mustard and the frozen mixed veg and return to the oven for 5 minutes. Leave to rest for 10 minutes before serving."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Preheat the oven to 220C/200C Fan/Gas 7."},
+						{Type: "HowToStep", Text: "Put the peppers, carrots, onions and garlic into a deep baking dish and roast for 20 minutes. Add the sausages and roast for a further 10 minutes."},
+						{Type: "HowToStep", Text: "Turn the oven down to 200C/180C Fan/Gas 6. Pour the tomatoes and chickpeas into the baking dish, then stir in the stock, chilli and paprika. Bake for another 35 minutes."},
+						{Type: "HowToStep", Text: "Stir in the mustard and the frozen mixed veg and return to the oven for 5 minutes. Leave to rest for 10 minutes before serving."},
 					},
 				},
 				Name: "Healthy sausage casserole",
@@ -194,7 +194,7 @@ func TestScraper_B(t *testing.T) {
 					Sugar:         "18g",
 				},
 				PrepTime:  "PT30M",
-				Tools:     &models.Tools{Values: []models.Tool{}},
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "",
 				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.bbc.co.uk/food/recipes/healthy_sausage_16132",
@@ -235,10 +235,10 @@ func TestScraper_B(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Melt the butter and olive oil together in a large, shallow saucepan, add the onion and garlic, and cook for 5-10 mins until soft. Add the risotto rice and cook for 2-3 mins, getting a good covering in the fats and giving the rice a slightly toasted flavour."},
-						{Text: "Add the white wine and cook until it has reduced away. Add the warm chicken stock, a ladleful at a time, and stir into the rice – when it has been absorbed, add more. You may not need to add all the stock, but keep adding until the rice is cooked al dente. It will take around 15 mins to get the risotto to the right consistency."},
-						{Text: "Take the rice pan off the heat and stir in the cheeses, season and leave to rest for 3-4 mins. Serve with the roasted poussins, morel sauce and some wilted Baby Gem lettuce leaves."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Melt the butter and olive oil together in a large, shallow saucepan, add the onion and garlic, and cook for 5-10 mins until soft. Add the risotto rice and cook for 2-3 mins, getting a good covering in the fats and giving the rice a slightly toasted flavour."},
+						{Type: "HowToStep", Text: "Add the white wine and cook until it has reduced away. Add the warm chicken stock, a ladleful at a time, and stir into the rice – when it has been absorbed, add more. You may not need to add all the stock, but keep adding until the rice is cooked al dente. It will take around 15 mins to get the risotto to the right consistency."},
+						{Type: "HowToStep", Text: "Take the rice pan off the heat and stir in the cheeses, season and leave to rest for 3-4 mins. Serve with the roasted poussins, morel sauce and some wilted Baby Gem lettuce leaves."},
 					},
 				},
 				Name: "Three-cheese risotto",
@@ -254,7 +254,7 @@ func TestScraper_B(t *testing.T) {
 					Sugar:         "4 grams",
 				},
 				PrepTime:  "PT20M",
-				Tools:     &models.Tools{Values: []models.Tool{}},
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT55M",
 				Yield:     &models.Yield{Value: 1},
 				URL:       "https://www.bbcgoodfood.com/recipes/three-cheese-risotto",
@@ -295,10 +295,10 @@ func TestScraper_B(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Melt the butter and olive oil together in a large, shallow saucepan, add the onion and garlic, and cook for 5-10 mins until soft. Add the risotto rice and cook for 2-3 mins, getting a good covering in the fats and giving the rice a slightly toasted flavour."},
-						{Text: "Add the white wine and cook until it has reduced away. Add the warm chicken stock, a ladleful at a time, and stir into the rice – when it has been absorbed, add more. You may not need to add all the stock, but keep adding until the rice is cooked al dente. It will take around 15 mins to get the risotto to the right consistency."},
-						{Text: "Take the rice pan off the heat and stir in the cheeses, season and leave to rest for 3-4 mins. Serve with the roasted poussins, morel sauce and some wilted Baby Gem lettuce leaves."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Melt the butter and olive oil together in a large, shallow saucepan, add the onion and garlic, and cook for 5-10 mins until soft. Add the risotto rice and cook for 2-3 mins, getting a good covering in the fats and giving the rice a slightly toasted flavour."},
+						{Type: "HowToStep", Text: "Add the white wine and cook until it has reduced away. Add the warm chicken stock, a ladleful at a time, and stir into the rice – when it has been absorbed, add more. You may not need to add all the stock, but keep adding until the rice is cooked al dente. It will take around 15 mins to get the risotto to the right consistency."},
+						{Type: "HowToStep", Text: "Take the rice pan off the heat and stir in the cheeses, season and leave to rest for 3-4 mins. Serve with the roasted poussins, morel sauce and some wilted Baby Gem lettuce leaves."},
 					},
 				},
 				Name: "Three-cheese risotto",
@@ -314,7 +314,7 @@ func TestScraper_B(t *testing.T) {
 					Sugar:         "4 grams",
 				},
 				PrepTime:  "PT20M",
-				Tools:     &models.Tools{Values: []models.Tool{}},
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT55M",
 				Yield:     &models.Yield{Value: 1},
 				URL:       "https://www.bbcgoodfood.com/recipes/three-cheese-risotto",
@@ -348,8 +348,8 @@ func TestScraper_B(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Generously season the salmon fillets with salt and pepper. Put the oil and butter in a non-stick frying pan over a medium heat, swirling around the pan until melted and foaming, then turn up the heat. Once the butter starts bubbling, add the salmon fillets to the pan, skin-side-down, and fry for 3 mins until crisp. Flip the fillets over, lower the heat and cook for 2 mins more, then drizzle with the lemon juice. Transfer the salmon to a plate and baste with any of the buttery juices left in the pan."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Generously season the salmon fillets with salt and pepper. Put the oil and butter in a non-stick frying pan over a medium heat, swirling around the pan until melted and foaming, then turn up the heat. Once the butter starts bubbling, add the salmon fillets to the pan, skin-side-down, and fry for 3 mins until crisp. Flip the fillets over, lower the heat and cook for 2 mins more, then drizzle with the lemon juice. Transfer the salmon to a plate and baste with any of the buttery juices left in the pan."},
 					},
 				},
 				Name: "Pan-fried salmon",
@@ -365,7 +365,7 @@ func TestScraper_B(t *testing.T) {
 					Sugar:         "0.3 grams",
 				},
 				PrepTime:  "PT1M",
-				Tools:     &models.Tools{Values: []models.Tool{}},
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT6M",
 				Yield:     &models.Yield{Value: 2},
 				URL:       "https://www.bbcgoodfood.com/recipes/pan-fried-salmon",
@@ -379,6 +379,8 @@ func TestScraper_B(t *testing.T) {
 				AtType:        &models.SchemaType{Value: "Recipe"},
 				Category:      &models.Category{Value: "uncategorized"},
 				CookTime:      "PT30M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DateCreated:   "2013-08-02T00:00:00",
 				DateModified:  "2013-08-02T00:00:00",
 				DatePublished: "2013-08-02T00:00:00",
@@ -402,7 +404,7 @@ func TestScraper_B(t *testing.T) {
 					"4 EL Espresso",
 					"60 g Kokosraspel",
 				}},
-				Instructions: &models.Instructions{Values: []models.HowToStep{
+				Instructions: &models.Instructions{Values: []models.HowToItem{
 					{Type: "HowToStep", Text: "Ofen auf 180 Grad vorheizen.\nMehl, Zucker, Vanillezucker, Kakaopulver, Backpulver und Salz in einer Schüssel mischen."},
 					{Type: "HowToStep", Text: "Butter in einer kleinen Pfanne schmelzen, etwas abkühlen. Butter, Eier und Milch unter die Mehlmischung rühren. Teig in die vorbereitete Form füllen."},
 					{Type: "HowToStep", Text: "Backen: ca. 30 Min. in der Mitte des Ofens. Herausnehmen, etwas abkühlen, mit einem Holzspiesschen mehrmals einstechen."},
@@ -420,6 +422,7 @@ func TestScraper_B(t *testing.T) {
 					Sugar:         "30 g",
 				},
 				PrepTime: "PT20M",
+				Tools:    &models.Tools{Values: []models.HowToItem{}},
 				Yield:    &models.Yield{Value: 16},
 				URL:      "https://www.bettybossi.ch/de/Rezept/ShowRezept/BB_KUCA130802_0054A-160-de",
 			},
@@ -457,11 +460,11 @@ func TestScraper_B(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Heat oven to 425°F. In medium bowl, place Bisquick mix. Cut in shortening, using pastry blender (or pulling 2 table knives through ingredients in opposite directions), until particles are size of small peas. Sprinkle with cold water, 1 tablespoon at a time, tossing with fork until all flour is moistened and pastry almost leaves side of bowl (1 to 2 teaspoons more water can be added if necessary)."},
-						{Text: "Press pastry in bottom and up side of ungreased 9-inch quiche dish or glass pie plate. Bake 12 to 14 minutes or until crust just begins to brown and is set. Reduce oven temperature to 325°F."},
-						{Text: "Meanwhile, in 10-inch skillet, melt butter over medium heat. Cook onion and mushrooms in butter about 5 minutes, stirring occasionally, until tender. In medium bowl, beat eggs, milk and red pepper until well blended. Stir in spinach, bell pepper, mushroom mixture and cheese. Pour into partially baked crust."},
-						{Text: "Bake 40 to 45 minutes or until knife inserted in center comes out clean. Let stand 10 minutes before cutting."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Heat oven to 425°F. In medium bowl, place Bisquick mix. Cut in shortening, using pastry blender (or pulling 2 table knives through ingredients in opposite directions), until particles are size of small peas. Sprinkle with cold water, 1 tablespoon at a time, tossing with fork until all flour is moistened and pastry almost leaves side of bowl (1 to 2 teaspoons more water can be added if necessary)."},
+						{Type: "HowToStep", Text: "Press pastry in bottom and up side of ungreased 9-inch quiche dish or glass pie plate. Bake 12 to 14 minutes or until crust just begins to brown and is set. Reduce oven temperature to 325°F."},
+						{Type: "HowToStep", Text: "Meanwhile, in 10-inch skillet, melt butter over medium heat. Cook onion and mushrooms in butter about 5 minutes, stirring occasionally, until tender. In medium bowl, beat eggs, milk and red pepper until well blended. Stir in spinach, bell pepper, mushroom mixture and cheese. Pour into partially baked crust."},
+						{Type: "HowToStep", Text: "Bake 40 to 45 minutes or until knife inserted in center comes out clean. Let stand 10 minutes before cutting."},
 					},
 				},
 				Name: "Spinach Mushroom Quiche",
@@ -480,7 +483,7 @@ func TestScraper_B(t *testing.T) {
 					UnsaturatedFat: "",
 				},
 				PrepTime:  "PT0H30M",
-				Tools:     &models.Tools{Values: []models.Tool{}},
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT1H40M",
 				Yield:     &models.Yield{Value: 8},
 				URL:       "https://www.bettycrocker.com/recipes/spinach-mushroom-quiche/ed3014db-7810-41d6-8e1c-cd4eed7b1db3",
@@ -522,16 +525,16 @@ func TestScraper_B(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Cook the rice in vegetable broth (or salted water) according to package directions. Then allow to cool, gently fluffing occasionally (can be cooked ahead)."},
-						{Text: "Heat the oil in a large skillet and and sauté the onion for 1-2 minutes until translucent. Then add the garlic and sauté for 30 seconds. Then add the paprika, chili and cumin and sauté briefly."},
-						{Text: "Turn off the heat and stir in the rice, beans, corn and tomatoes. Season with salt and pepper to taste and fold in half of the vegan grated cheese."},
-						{Text: "Preheat the oven to 428 °F (220 °C) and cover the bottom of an ovenproof pan or casserole dish with a little water (about ¼ cup)."},
-						{Text: "Place the halved peppers in the baking dish and fill with the Mexican rice. Top with the remaining cheese and cover the pan or dish with a lid (or aluminum foil)."},
-						{Text: "Bake the stuffed peppers for 30 minutes. Then remove the lid, reduce the heat to 392 °F (200 °C) and bake for another 10-15 minutes or until the peppers are tender and lightly golden brown."},
-						{Text: "Meanwhile, prepare the aioli according to this recipe."},
-						{Text: "Garnish the stuffed peppers with hot peppers or jalapeños, spring onions and parsley or cilantro as desired and serve with vegan aioli."},
-						{Text: "Enjoy!"},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Cook the rice in vegetable broth (or salted water) according to package directions. Then allow to cool, gently fluffing occasionally (can be cooked ahead)."},
+						{Type: "HowToStep", Text: "Heat the oil in a large skillet and and sauté the onion for 1-2 minutes until translucent. Then add the garlic and sauté for 30 seconds. Then add the paprika, chili and cumin and sauté briefly."},
+						{Type: "HowToStep", Text: "Turn off the heat and stir in the rice, beans, corn and tomatoes. Season with salt and pepper to taste and fold in half of the vegan grated cheese."},
+						{Type: "HowToStep", Text: "Preheat the oven to 428 °F (220 °C) and cover the bottom of an ovenproof pan or casserole dish with a little water (about ¼ cup)."},
+						{Type: "HowToStep", Text: "Place the halved peppers in the baking dish and fill with the Mexican rice. Top with the remaining cheese and cover the pan or dish with a lid (or aluminum foil)."},
+						{Type: "HowToStep", Text: "Bake the stuffed peppers for 30 minutes. Then remove the lid, reduce the heat to 392 °F (200 °C) and bake for another 10-15 minutes or until the peppers are tender and lightly golden brown."},
+						{Type: "HowToStep", Text: "Meanwhile, prepare the aioli according to this recipe."},
+						{Type: "HowToStep", Text: "Garnish the stuffed peppers with hot peppers or jalapeños, spring onions and parsley or cilantro as desired and serve with vegan aioli."},
+						{Type: "HowToStep", Text: "Enjoy!"},
 					},
 				},
 				Name: "Vegan Mexican Stuffed Peppers",
@@ -583,8 +586,8 @@ func TestScraper_B(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Separate the onion into rings. Steam the broccoli 5 minutes (or microwave a few minutes).  In an electric blender combine the flour, salt, baking soda, egg yolk, and water. Blend to mix. Let stand 15 minutes.  Heat 3 - 4 inches of oil in a deep heavy kettle, deep-fat fryer, or electric wok until it registers 375F / 190C on a deep-fat thermometer. Test batter consistency by dipping one piece of vegetable and letting excess drip off. There should be a light coating left on.  Dip and fry, a few at a time, in the hot oil until golden. Drain on paper towels and keep warm in the oven heated to 250F / 130C / Gas Mark  until all are cooked."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Separate the onion into rings. Steam the broccoli 5 minutes (or microwave a few minutes).  In an electric blender combine the flour, salt, baking soda, egg yolk, and water. Blend to mix. Let stand 15 minutes.  Heat 3 - 4 inches of oil in a deep heavy kettle, deep-fat fryer, or electric wok until it registers 375F / 190C on a deep-fat thermometer. Test batter consistency by dipping one piece of vegetable and letting excess drip off. There should be a light coating left on.  Dip and fry, a few at a time, in the hot oil until golden. Drain on paper towels and keep warm in the oven heated to 250F / 130C / Gas Mark  until all are cooked."},
 					},
 				},
 				Name: "Vegetable Tempura - Japanese",
@@ -602,7 +605,7 @@ func TestScraper_B(t *testing.T) {
 					TransFat:      "0.476087607733719 g",
 				},
 				PrepTime:  "PT30M",
-				Tools:     &models.Tools{Values: []models.Tool{}},
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT30M",
 				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.bigoven.com/recipe/vegetable-tempura-japanese/19344",
@@ -615,6 +618,8 @@ func TestScraper_B(t *testing.T) {
 				AtContext:     "https://schema.org",
 				AtType:        &models.SchemaType{Value: "Recipe"},
 				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DateModified:  "2023-05-12T11:28:56-0500",
 				DatePublished: "2023-04-17T14:51:26-0500",
 				Description: &models.Description{
@@ -653,7 +658,7 @@ func TestScraper_B(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
+					Values: []models.HowToItem{
 						{Type: "HowToStep", Text: "Preheat the oven to 350 °F. Spray two cake pans (of desired size) with nonstick spray, then line the bottoms with a parchment circle. Optionally, place two fabric baking strips in a bowl of water to soak."},
 						{Type: "HowToStep", Text: "Combine the flour and salt in a medium bowl and whisk to combine. Set aside until ready to use."},
 						{Type: "HowToStep", Text: "Combine the milk and vanilla in a pourable vessel, whisk to combine and set aside until ready to use."},
@@ -696,9 +701,12 @@ func TestScraper_B(t *testing.T) {
 						{Type: "HowToStep", Text: "Serve at room temperature."},
 					},
 				},
-				Name:  "Peach's Cake inspired by Mario 64",
-				Yield: &models.Yield{Value: 1},
-				URL:   "https://www.bingingwithbabish.com/recipes/peachs-cake-mario-64",
+				Keywords:        &models.Keywords{},
+				Name:            "Peach's Cake inspired by Mario 64",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://www.bingingwithbabish.com/recipes/peachs-cake-mario-64",
 			},
 		},
 		{
@@ -708,6 +716,7 @@ func TestScraper_B(t *testing.T) {
 				AtContext:     atContext,
 				AtType:        &models.SchemaType{Value: "Recipe"},
 				Category:      &models.Category{Value: "Dinner"},
+				CookingMethod: &models.CookingMethod{},
 				Cuisine:       &models.Cuisine{Value: "Asian"},
 				DatePublished: "2023-07-26",
 				Description:   &models.Description{Value: "Pork belly is an incredibly rich, delicious cut of meat (used to make bacon), whose high fat content allows the meat to turn perfectly tender and flavorful as it cooks and the fat renders. Here, we're coating it with a soy and gochujang glaze, then serving it over fried rice laden with bites of vibrant kimchi and tender bok choy."},
@@ -728,7 +737,7 @@ func TestScraper_B(t *testing.T) {
 					"2 Tbsps Soy Glaze",
 					"1 Tbsp Rice Vinegar",
 				}},
-				Instructions: &models.Instructions{Values: []models.HowToStep{
+				Instructions: &models.Instructions{Values: []models.HowToItem{
 					{Type: "HowToStep", Text: "In a small pot, combine the rice, a big pinch of salt, and 3/4 cup of water. Heat to boiling on high. Once boiling, reduce the heat to low. Cover and cook, without stirring, 15 to 17 minutes, or until the water has been absorbed and the rice is tender. Turn off the heat and fluff with a fork."},
 					{Type: "HowToStep", Text: "Meanwhile, wash and dry the fresh produce. Cut off and discard the root ends of the bok choy; thinly slice crosswise. Thinly slice the scallions, separating the white bottoms and hollow green tops. Roughly chop the kimchi. Pat the pork belly dry with paper towels. Place on a cutting board with the fat cap facing up; cut crosswise into 1/2-inch-thick pieces. Place in a bowl. Add the soy sauce; stir to coat. Set aside to marinate, stirring occasionally, at least 10 minutes. To make the glaze, in a separate bowl, combine the vinegar, soy glaze, 1 tablespoon of water, and as much of the gochujang as you'd like, depending on how spicy you'd like the dish to be."},
 					{Type: "HowToStep", Text: "In a medium pan (nonstick, if you have one), heat the sautéed aromatics on medium-high until hot. Add the sliced bok choy, sliced white bottoms of the scallions, and chopped kimchi; season with salt and pepper. Cook, stirring occasionally, 3 to 4 minutes, or until softened and combined. Transfer to a large bowl. Taste, then season with salt and pepper if desired. Wipe out the pan."},
@@ -739,6 +748,7 @@ func TestScraper_B(t *testing.T) {
 				Keywords:        &models.Keywords{Values: "Asian"},
 				Name:            "Sweet & Spicy Pork Belly Fried Rice",
 				NutritionSchema: &models.NutritionSchema{Calories: "1140 Cals"},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				URL:             "https://www.blueapron.com/recipes/sweet-spicy-pork-belly-fried-rice-with-kimchi-fried-eggs-71501763-72c6-4cc2-86d5-de2bc14d6b7b",
 				Yield:           &models.Yield{Value: 2},
 			},
@@ -771,13 +781,13 @@ func TestScraper_B(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Place a 10-inch cast iron skillet in the oven and pre-heat the oven to 425°F."},
-						{Text: "Whisk the eggs, half-and-half, vanilla extract, and 2 tablespoons of the butter together until combined. Add the flour and salt and whisk thoroughly until the mixture is smooth with no lumps. Let the batter rest for at least 10 minutes."},
-						{Text: "Combine the sliced apples, brown sugar, cinnamon, and a pinch of nutmeg in a bowl and toss to coat the apples. Set the apples aside."},
-						{Text: "Carefully remove the hot cast iron skillet from the oven and place on the stovetop. (Remember this skillet is hot and you will need to use oven mitts.) Pour the remaining 2 tablespoons of butter into the pre-heated cast iron skillet and carefully scatter the apples over the butter. Pour the batter into the pan evenly over the apples. Use oven mitts to return the pan to the oven."},
-						{Text: "Bake for 20 to 25 minutes until the pancake is brown and has puffed up. Make sure you don’t open the oven for the first 15 minutes of the cooking process."},
-						{Text: "Remove the pan from the oven and dust a little powdered sugar on top. The Dutch baby will deflate quickly so have your phone ready so you can catch your Instagram-worthy picture right away! Cut the Dutch baby into wedges and serve immediately with maple syrup."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Place a 10-inch cast iron skillet in the oven and pre-heat the oven to 425°F."},
+						{Type: "HowToStep", Text: "Whisk the eggs, half-and-half, vanilla extract, and 2 tablespoons of the butter together until combined. Add the flour and salt and whisk thoroughly until the mixture is smooth with no lumps. Let the batter rest for at least 10 minutes."},
+						{Type: "HowToStep", Text: "Combine the sliced apples, brown sugar, cinnamon, and a pinch of nutmeg in a bowl and toss to coat the apples. Set the apples aside."},
+						{Type: "HowToStep", Text: "Carefully remove the hot cast iron skillet from the oven and place on the stovetop. (Remember this skillet is hot and you will need to use oven mitts.) Pour the remaining 2 tablespoons of butter into the pre-heated cast iron skillet and carefully scatter the apples over the butter. Pour the batter into the pan evenly over the apples. Use oven mitts to return the pan to the oven."},
+						{Type: "HowToStep", Text: "Bake for 20 to 25 minutes until the pancake is brown and has puffed up. Make sure you don’t open the oven for the first 15 minutes of the cooking process."},
+						{Type: "HowToStep", Text: "Remove the pan from the oven and dust a little powdered sugar on top. The Dutch baby will deflate quickly so have your phone ready so you can catch your Instagram-worthy picture right away! Cut the Dutch baby into wedges and serve immediately with maple syrup."},
 					},
 				},
 				Name: "Apple Dutch Baby Pancake",
@@ -796,7 +806,7 @@ func TestScraper_B(t *testing.T) {
 					UnsaturatedFat: "5 g",
 				},
 				PrepTime:  "PT10M",
-				Tools:     &models.Tools{Values: []models.Tool{}},
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT30M",
 				Yield:     &models.Yield{Value: 6},
 				URL:       "https://bluejeanchef.com/recipes/apple-dutch-baby-pancake/",
@@ -809,6 +819,8 @@ func TestScraper_B(t *testing.T) {
 				AtContext:     "https://schema.org",
 				AtType:        &models.SchemaType{Value: "Recipe"},
 				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DateModified:  "2023-05-12",
 				DatePublished: "2023-04-21",
 				Description: &models.Description{
@@ -832,7 +844,7 @@ func TestScraper_B(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
+					Values: []models.HowToItem{
 						{Type: "HowToStep", Text: "Heat a dutch oven or large heavy bottomed pot over medium high. Add a bit of oil, the ground beef, and sausage, breaking the meat apart into small pieces as it cooks - i use a meat smasher for this."},
 						{Type: "HowToStep", Text: "When the meat begins to brown and is well broken down, stir in the onion, garlic, and a pinch of salt, making sure to scrape up any meat fond stuck to the bottom of the pot. Cover and cook for 5 minutes."},
 						{Type: "HowToStep", Text: "Now is a good time to preheat your oven to 425F/220C."},
@@ -843,9 +855,11 @@ func TestScraper_B(t *testing.T) {
 						{Type: "HowToStep", Text: "Garnish with additional parm."},
 					},
 				},
-				Name:  "Faster, Better, Spaghetti &amp; Meat Sauce",
-				Yield: &models.Yield{Value: 4},
-				URL:   "https://www.brianlagerstrom.com/recipes/faster-better-spaghetti-amp-meat-sauce",
+				Name:            "Faster, Better, Spaghetti &amp; Meat Sauce",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 4},
+				URL:             "https://www.brianlagerstrom.com/recipes/faster-better-spaghetti-amp-meat-sauce",
 			},
 		},
 		{
@@ -855,6 +869,8 @@ func TestScraper_B(t *testing.T) {
 				AtContext:     "https://schema.org",
 				AtType:        &models.SchemaType{Value: "Recipe"},
 				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DateModified:  "2023-07-20",
 				DatePublished: "2023-07-20",
 				Description: &models.Description{
@@ -903,7 +919,7 @@ func TestScraper_B(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
+					Values: []models.HowToItem{
 						{Type: "HowToStep", Text: "In a stand mixer, combine warm water, instant yeast, salt, sugar, olive oil, and bread flour. Mix on medium speed with the dough hook attachment for 8 minutes until well combined and the dough clears the bowl. That’s about a 2 on my kitchen aid."},
 						{Type: "HowToStep", Text: "Transfer the dough onto a lightly floured surface and divide it into 4 equal-sized pieces, each weighing approximately 275g."},
 						{Type: "HowToStep", Text: "Shape each piece of dough into a pizza ball by flattening it, folding the sides over, rolling it, and tucking the edges to create tension and strength. See video @1:25."},
@@ -925,18 +941,22 @@ func TestScraper_B(t *testing.T) {
 						{Type: "HowToStep", Text: "After 6-7 minutes of grilling, remove the pizza from the grill and let it rest for a moment."},
 					},
 				},
-				Name:  "Grilled Pizza",
-				URL:   "https://www.brianlagerstrom.com/recipes/grilled-pizza",
-				Yield: &models.Yield{},
+				Name:            "Grilled Pizza",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				URL:             "https://www.brianlagerstrom.com/recipes/grilled-pizza",
+				Yield:           &models.Yield{},
 			},
 		},
 		{
 			name: "briceletbaklava.ch",
 			in:   "https://briceletbaklava.ch/2023/10/taille-au-sel-de-granges-marnand.html",
 			want: models.RecipeSchema{
-				AtContext: "https://schema.org",
-				AtType:    &models.SchemaType{Value: "Recipe"},
-				Category:  &models.Category{Value: "uncategorized"},
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				Description: &models.Description{
 					Value: "Il y a quelques temps je vous avais donné la recette du taillé au sel, celle de ma voisine Claudine, une spécialité vaudoise. Cette recette, je l’avais obtenue, un soir après un bon repas entre amis, chez Claudine. Elle m’avait gribouillé la liste des ingrédients sur un morceau de papier avec quelques explications orales. Quelques semaines plus tard je m’étais lancé et avais alors refait cette recette chez moi mais quelque peu adaptée à ma façon de faire. Après plusieurs essais et content du résultat, je l’avais alors publiée (recette ICI) et il a fait des émules ce taillé, presque le tour du monde, même jusqu’aux oreilles des producteurs de la TV suisse (Couleurs Locales). Ils m’ont contacté car ils désiraient en faire un petit reportage que voici: \n\ninfo : pour visualiser uniquement la petite séquence, allez à la minute 5:15\n\n\n\nAlors, j’ai aussitôt convoqué Claudine et devant les caméras, elle nous a réalisé son taillé, SA recette avec tous les détails qui me manquaient. Mais claudine a bien précisé que ce taillé est une spécialité du village où nous habitons, cette recette qui nous a été transmise de familles en familles et que nous avons envie de faire perdurer. \n\nSa confection est des plus simple et rapide à réaliser. Ici pas de robot, pas de levain et le pétrissage se fait à l’ancienne, c’est-à-dire à la main. Voilà ce que ça donne :",
 				},
@@ -957,7 +977,7 @@ func TestScraper_B(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
+					Values: []models.HowToItem{
 						{Type: "HowToStep", Text: "Dans un grand bol, déposer la farine préalablement tamisée."},
 						{Type: "HowToStep", Text: "Ajouter les 16 grammes de sel. Oui je sais, c’est beaucoup, presque trop, mais c’est la recette,"},
 						{Type: "HowToStep", Text: "et bien l’incorporer à la farine."},
@@ -981,8 +1001,11 @@ func TestScraper_B(t *testing.T) {
 						{Type: "HowToStep", Text: "J’ai aussi entendu que certains le dégustaient au petit déjeuner accompagné d’une tasse de cacao mais ici, je n’ai pas eu le courage d'essayer."},
 					},
 				},
-				Name: "Taillé au sel de Granges-Marnand",
-				URL:  "https://briceletbaklava.ch/2023/10/taille-au-sel-de-granges-marnand.html",
+				Name:            "Taillé au sel de Granges-Marnand",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://briceletbaklava.ch/2023/10/taille-au-sel-de-granges-marnand.html",
 			},
 		},
 		{
@@ -1010,7 +1033,7 @@ func TestScraper_B(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
+					Values: []models.HowToItem{
 						{Type: "HowToStep", Text: "Prepare rice to your specifications."},
 						{Type: "HowToStep", Text: "Chop broccoli, red pepper, and green onions."},
 						{Type: "HowToStep", Text: "Add soy sauce and green onions to rice."},
@@ -1029,7 +1052,7 @@ func TestScraper_B(t *testing.T) {
 					Protein:       "40 g",
 				},
 				PrepTime: "PT5M",
-				Tools:    &models.Tools{},
+				Tools:    &models.Tools{Values: []models.HowToItem{}},
 				Yield:    &models.Yield{Value: 1},
 				URL:      "https://www.bodybuilding.com/recipes/beef-teriyaki-rice-and-stir-fry",
 			},
@@ -1069,16 +1092,16 @@ func TestScraper_B(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Place chicken in a medium bowl. Sprinkle paprika and 1 tsp. Diamond Crystal or ½ tsp. Morton kosher salt over chicken; season with pepper. Gently mix with your hands to combine."},
-						{Text: "Heat oil in a large nonstick skillet over medium-high. Arrange chicken in pan in a thin, even layer and cook, undisturbed, until golden brown and crisp underneath, about 5 minutes. Continue to cook, stirring and breaking up into bite-size pieces with a wooden spoon, until cooked through, about 1 minute. Using a slotted spoon, transfer chicken to a plate, leaving oil and fat behind."},
-						{Text: "Add olives to same pan and cook, undisturbed, until heated through and blistered, 1–2 minutes. Add rice and 1 Tbsp. za’atar and cook, stirring often, until slightly crisp, about 3 minutes. Add greens and lemon juice and cook, stirring occasionally, until greens are wilted, about 2 minutes. Remove pan from heat; stir in lemon zest, feta, and chicken. Taste and season with more salt and pepper if needed."},
-						{Text: "Transfer chicken and rice to a large shallow bowl; sprinkle with more za’atar and top with dill."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Place chicken in a medium bowl. Sprinkle paprika and 1 tsp. Diamond Crystal or ½ tsp. Morton kosher salt over chicken; season with pepper. Gently mix with your hands to combine."},
+						{Type: "HowToStep", Text: "Heat oil in a large nonstick skillet over medium-high. Arrange chicken in pan in a thin, even layer and cook, undisturbed, until golden brown and crisp underneath, about 5 minutes. Continue to cook, stirring and breaking up into bite-size pieces with a wooden spoon, until cooked through, about 1 minute. Using a slotted spoon, transfer chicken to a plate, leaving oil and fat behind."},
+						{Type: "HowToStep", Text: "Add olives to same pan and cook, undisturbed, until heated through and blistered, 1–2 minutes. Add rice and 1 Tbsp. za’atar and cook, stirring often, until slightly crisp, about 3 minutes. Add greens and lemon juice and cook, stirring occasionally, until greens are wilted, about 2 minutes. Remove pan from heat; stir in lemon zest, feta, and chicken. Taste and season with more salt and pepper if needed."},
+						{Type: "HowToStep", Text: "Transfer chicken and rice to a large shallow bowl; sprinkle with more za’atar and top with dill."},
 					},
 				},
 				Name:            "Crispy Chicken With Za’atar-Olive Rice",
 				NutritionSchema: &models.NutritionSchema{},
-				Tools:           &models.Tools{Values: []models.Tool{}},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 4},
 				URL:             "https://www.bonappetit.com/recipe/crispy-chicken-with-zaatar-olive-rice"},
 		},
@@ -1117,7 +1140,7 @@ func TestScraper_B(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
+					Values: []models.HowToItem{
 						{Type: "HowToStep", Text: "Separate the drumette and the flat. Pop the joint between drumette and the flat. Then cut between the joint to separate."},
 						{Type: "HowToStep", Text: "With the flat, hold the tip in your right hand, and flat in the left hand (reverse if you're left-handed). Use force to push out the two small bones. Discard the smaller bone."},
 						{Type: "HowToStep", Text: "You can now discard the wing tip. We needed it for gripping earlier. "},
@@ -1149,7 +1172,7 @@ func TestScraper_B(t *testing.T) {
 				Name:            "Chicken Lollipop / Drums of Heaven",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT1H30M",
-				Tools:           &models.Tools{Values: []models.Tool{}},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				TotalTime:       "PT2H",
 				Yield:           &models.Yield{Value: 12},
 				URL:             "https://www.bongeats.com/recipe/chicken-lollipop",
@@ -1184,13 +1207,13 @@ func TestScraper_B(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Preheat oven to 400 degrees F. Butter or grease a rimmed baking sheet or casserole dish."},
-						{Text: "In a large bowl, add the grated onion, quick oats (1 cup), milk (1/2 cup), 2 eggs, kosher salt (1 teaspoon), black pepper (1/2 teaspoon), and soy sauce (2 teaspoons) and mix until well combined. Allow to sit for 3-5 minutes while the oats absorb some of the moisture."},
-						{Text: "Add the ground beef (2 lbs.) to the bowl. Mix well- for best results, use hands."},
-						{Text: "Divide the mixture into eight parts and form them into loaf shapes. (I like to flatten the mixture in the bowl and use a knife to portion it out into 8 \"wedges,\" kind of like slicing a cake, to get even amounts)."},
-						{Text: "At this point, you can wrap the mini meatloaves in plastic wrap or flash freeze to store in the freezer, or refrigerate until you&#039;re ready to bake (see notes for more info on this). Otherwise, proceed to cooking."},
-						{Text: "Place the mini meatloaves on the prepared baking sheet or casserole dish (as many as you want to cook - if frozen, defrost completely before cooking). Bake at 400 degrees F for 25 minutes (or until the internal temperature is 160 degrees)."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Preheat oven to 400 degrees F. Butter or grease a rimmed baking sheet or casserole dish."},
+						{Type: "HowToStep", Text: "In a large bowl, add the grated onion, quick oats (1 cup), milk (1/2 cup), 2 eggs, kosher salt (1 teaspoon), black pepper (1/2 teaspoon), and soy sauce (2 teaspoons) and mix until well combined. Allow to sit for 3-5 minutes while the oats absorb some of the moisture."},
+						{Type: "HowToStep", Text: "Add the ground beef (2 lbs.) to the bowl. Mix well- for best results, use hands."},
+						{Type: "HowToStep", Text: "Divide the mixture into eight parts and form them into loaf shapes. (I like to flatten the mixture in the bowl and use a knife to portion it out into 8 \"wedges,\" kind of like slicing a cake, to get even amounts)."},
+						{Type: "HowToStep", Text: "At this point, you can wrap the mini meatloaves in plastic wrap or flash freeze to store in the freezer, or refrigerate until you&#039;re ready to bake (see notes for more info on this). Otherwise, proceed to cooking."},
+						{Type: "HowToStep", Text: "Place the mini meatloaves on the prepared baking sheet or casserole dish (as many as you want to cook - if frozen, defrost completely before cooking). Bake at 400 degrees F for 25 minutes (or until the internal temperature is 160 degrees)."},
 					},
 				},
 				Name: "Mini Meatloaves",
@@ -1247,14 +1270,14 @@ func TestScraper_B(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Make the stir fry sauce first. Combine the soy sauce, water, brown sugar, sesame oil, garlic, ginger, and cornstarch in a small bowl. Set the sauce aside."},
-						{Text: "Chop the vegetables into similar-sized pieces. It&#39;s up to you whether you slice, dice, or cut into any other shape you prefer."},
-						{Text: "Add the cooking oil to a very large skillet or wok. Heat over medium-high. When the pan and oil are very hot (but not smoking), add the hardest vegetables first: carrots and broccoli. Cook and stir for about a minute, or just until the broccoli begins to turn bright green."},
-						{Text: "Next, add the mushrooms and sugar snap peas. Continue to cook and stir for a minute or two more, or just until the mushrooms begin to soften."},
-						{Text: "Finally, add the softest vegetables, bell pepper and onion. Continue to cook and stir just until the onion begins to soften."},
-						{Text: "Give the stir fry sauce another brief stir, then pour it over the vegetables. Continue to cook and stir until the sauce begins to simmer, at which point it will thicken and turn glossy. Remove the vegetables from the heat, or continue to cook until they are to your desired doneness."},
-						{Text: "Top the stir fry with sesame seeds and serve!"},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Make the stir fry sauce first. Combine the soy sauce, water, brown sugar, sesame oil, garlic, ginger, and cornstarch in a small bowl. Set the sauce aside."},
+						{Type: "HowToStep", Text: "Chop the vegetables into similar-sized pieces. It&#39;s up to you whether you slice, dice, or cut into any other shape you prefer."},
+						{Type: "HowToStep", Text: "Add the cooking oil to a very large skillet or wok. Heat over medium-high. When the pan and oil are very hot (but not smoking), add the hardest vegetables first: carrots and broccoli. Cook and stir for about a minute, or just until the broccoli begins to turn bright green."},
+						{Type: "HowToStep", Text: "Next, add the mushrooms and sugar snap peas. Continue to cook and stir for a minute or two more, or just until the mushrooms begin to soften."},
+						{Type: "HowToStep", Text: "Finally, add the softest vegetables, bell pepper and onion. Continue to cook and stir just until the onion begins to soften."},
+						{Type: "HowToStep", Text: "Give the stir fry sauce another brief stir, then pour it over the vegetables. Continue to cook and stir until the sauce begins to simmer, at which point it will thicken and turn glossy. Remove the vegetables from the heat, or continue to cook until they are to your desired doneness."},
+						{Type: "HowToStep", Text: "Top the stir fry with sesame seeds and serve!"},
 					},
 				},
 				Name: "Easy Vegetable Stir Fry",

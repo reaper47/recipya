@@ -12,10 +12,9 @@ func scrapeBodybuilding(root *goquery.Document) (models.RecipeSchema, error) {
 
 	rs.DateModified, _ = root.Find("meta[property='og:updated_time']").Attr("content")
 	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
+	rs.Description.Value = strings.TrimSpace(root.Find(".BBCMS__content--article-description").Text())
 
-	rs.Description.Value = root.Find(".BBCMS__content--article-description").Text()
-
-	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
+	name, _ := root.Find("meta[property='og:title']").Attr("content")
 	before, _, found := strings.Cut(name, "|")
 	if found {
 		name = strings.TrimSpace(before)
@@ -47,7 +46,7 @@ func scrapeBodybuilding(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	nodes = root.Find(".bb-recipe__directions-list-item")
-	rs.Instructions.Values = make([]models.HowToStep, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.ReplaceAll(sel.Text(), "\n", "")
 		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(s)))

@@ -9,7 +9,7 @@ import (
 func scrapeFarmhousedelivery(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
+	name, _ := root.Find("meta[property='og:title']").Attr("content")
 	before, _, ok := strings.Cut(name, " - ")
 	if ok {
 		name = strings.TrimSpace(before)

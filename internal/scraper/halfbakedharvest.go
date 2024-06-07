@@ -13,7 +13,7 @@ func scrapeHalfBakedHarvest(root *goquery.Document) (models.RecipeSchema, error)
 		return models.RecipeSchema{}, err
 	}
 
-	var instructions []models.HowToStep
+	var instructions []models.HowToItem
 	allInstructions := rs.Instructions.Values[0]
 	i := 1
 	for {

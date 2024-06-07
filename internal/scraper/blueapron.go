@@ -16,7 +16,7 @@ func scrapeBlueapron(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.Image.Value, _ = root.Find("meta[itemprop='image thumbnailUrl']").Attr("content")
 
 	description := root.Find("p[itemprop='description']").Text()
-	rs.Description.Value = strings.TrimPrefix(description, "INGREDIENT IN FOCUS")
+	rs.Description.Value = strings.TrimSpace(strings.TrimPrefix(description, "INGREDIENT IN FOCUS"))
 
 	nodes := root.Find("li[itemprop='recipeIngredient']")
 	rs.Ingredients.Values = make([]string, 0, nodes.Length())
@@ -28,12 +28,11 @@ func scrapeBlueapron(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	nodes = root.Find("div[itemprop='recipeInstructions'] .step-txt")
-	rs.Instructions.Values = make([]models.HowToStep, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(strings.Trim(sel.Text(), "\n"))))
 	})
 
-	rs.Description = &models.Description{Value: description}
 	rs.Name = strings.Trim(root.Find(".ba-recipe-title__main").Text(), "\n")
 	rs.NutritionSchema = &models.NutritionSchema{
 		Calories: root.Find("span[itemprop='calories']").Text() + " Cals",

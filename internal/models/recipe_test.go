@@ -628,7 +628,7 @@ func TestRecipe_IsEmpty(t *testing.T) {
 		{name: "has Name only", recipe: models.Recipe{Name: "one"}},
 		{name: "has Nutrition only", recipe: models.Recipe{Nutrition: models.Nutrition{Calories: "666 kcal"}}},
 		{name: "has times only", recipe: models.Recipe{Times: models.Times{Prep: 5 * time.Hour}}},
-		{name: "has Tools only", recipe: models.Recipe{Tools: []models.Tool{{Name: "hose"}}}},
+		{name: "has Tools only", recipe: models.Recipe{Tools: []models.HowToItem{{Name: "hose"}}}},
 		{name: "has UpdatedAt only", recipe: models.Recipe{UpdatedAt: time.Now()}},
 		{name: "has URL only", recipe: models.Recipe{URL: "mama"}},
 		{name: "has Yield only", recipe: models.Recipe{Yield: 5}},
@@ -812,7 +812,7 @@ func TestRecipe_Copy(t *testing.T) {
 			UnsaturatedFat:     "10g",
 		},
 		Times: times,
-		Tools: []models.Tool{
+		Tools: []models.HowToItem{
 			{Name: "small pan"},
 			{Name: "large pan"},
 			{Name: "spatula"},
@@ -840,7 +840,7 @@ func TestRecipe_Copy(t *testing.T) {
 	if slices.Equal(original.Keywords, copied.Keywords) {
 		t.Fatal("keywords slices the same when they should not")
 	}
-	copied.Tools[0] = models.Tool{Name: "saw"}
+	copied.Tools[0] = models.HowToItem{Name: "saw"}
 	if slices.Equal(original.Tools, copied.Tools) {
 		t.Fatal("tools slices the same when they should not")
 	}
@@ -995,7 +995,11 @@ func TestRecipe_Schema(t *testing.T) {
 			Cook:  2 * time.Hour,
 			Total: 3 * time.Hour,
 		},
-		Tools:     []models.Tool{{Name: "t1"}, {Name: "t2"}, {Name: "t3"}},
+		Tools: []models.HowToItem{
+			{Text: "t1", Quantity: 1, Type: "HowToTool"},
+			{Text: "t2", Quantity: 1, Type: "HowToTool"},
+			{Text: "t3", Quantity: 1, Type: "HowToTool"},
+		},
 		UpdatedAt: time.Now().Add(2 * time.Hour),
 		URL:       "https://www.google.com",
 		Yield:     4,
@@ -1009,16 +1013,16 @@ func TestRecipe_Schema(t *testing.T) {
 	if schema.AtType.Value != "Recipe" {
 		t.Errorf("type must be Recipe")
 	}
-	if schema.Category.Value != "lunch" {
+	if schema.Category != nil && schema.Category.Value != "lunch" {
 		t.Errorf("wanted category 'lunch' but got '%q'", schema.Category)
 	}
-	if schema.CookTime != "PT2H0M0S" {
+	if schema.CookTime != "PT2H" {
 		t.Errorf("wanted cook time PT1H but got %q", schema.CookTime)
 	}
-	if schema.CookingMethod.Value != "" {
+	if schema.CookingMethod != nil && schema.CookingMethod.Value != "" {
 		t.Errorf("wanted an empty cooking method but got %q", schema.CookingMethod)
 	}
-	if schema.Cuisine.Value != "american" {
+	if schema.Cuisine != nil && schema.Cuisine.Value != "american" {
 		t.Errorf("wanted an empty cusine but got %q", schema.Cuisine)
 	}
 	v := r.CreatedAt.Format(time.DateOnly)
@@ -1033,24 +1037,24 @@ func TestRecipe_Schema(t *testing.T) {
 	if schema.DatePublished != v {
 		t.Errorf("wanted date published %q but got %q", v, schema.DatePublished)
 	}
-	if schema.Description.Value != "description" {
+	if schema.Description != nil && schema.Description.Value != "description" {
 		t.Errorf("wanted description 'description' but got %q", schema.Description)
 	}
-	if schema.Keywords.Values != "kw1,kw2,kw3" {
+	if schema.Keywords != nil && schema.Keywords.Values != "kw1,kw2,kw3" {
 		t.Errorf("wanted keywords 'kw1,kw2,kw3' but got %q", schema.Keywords)
 	}
 	v = imageUUID.String()
-	if schema.Image.Value != v+app.ImageExt {
+	if schema.Image != nil && schema.Image.Value != v+app.ImageExt {
 		t.Errorf("wanted uuid %q but got %q", v, schema.Image.Value)
 	}
 
-	if !slices.Equal(schema.Ingredients.Values, []string{"ing1", "ing2", "ing3"}) {
+	if schema.Ingredients != nil && !slices.Equal(schema.Ingredients.Values, []string{"ing1", "ing2", "ing3"}) {
 		t.Errorf("wanted ingredients []string{ing1, ing2, ing3} but got %v", schema.Ingredients)
 	}
-	if !slices.Equal(schema.Instructions.Values, []models.HowToStep{
-		{Text: "ins1"},
-		{Text: "ins2"},
-		{Text: "ins3"},
+	if schema.Instructions != nil && !slices.Equal(schema.Instructions.Values, []models.HowToItem{
+		{Type: "HowToStep", Text: "ins1"},
+		{Type: "HowToStep", Text: "ins2"},
+		{Type: "HowToStep", Text: "ins3"},
 	}) {
 		t.Errorf(
 			"wanted instructions []string{ins1, ins2, ins3} but got %v",
@@ -1060,16 +1064,22 @@ func TestRecipe_Schema(t *testing.T) {
 	if schema.Name != "name" {
 		t.Errorf("wanted name 'name' but got %q", schema.Name)
 	}
-	if schema.NutritionSchema != r.Nutrition.Schema("4") {
+	if schema.NutritionSchema != nil && !schema.NutritionSchema.Equal(*r.Nutrition.Schema("4")) {
 		t.Errorf("wanted nutrition but got %v", schema.NutritionSchema)
 	}
-	if schema.PrepTime != "PT1H0M0S" {
+	if schema.PrepTime != "PT1H" {
 		t.Errorf("wanted prepTime PT1H0M0S but got %q", schema.PrepTime)
 	}
-	/*if !slices.Equal(schema.Tools.Values, []string{"t1", "t2", "t3"}) {
-		t.Errorf("wanted tools []string{t1, t2, t3} but got %v", schema.Tools.Values)
-	}*/
-	if schema.Yield.Value != 4 {
+
+	wantTools := []models.HowToItem{
+		{Text: "t1", Quantity: 1, Type: "HowToTool"},
+		{Text: "t2", Quantity: 1, Type: "HowToTool"},
+		{Text: "t3", Quantity: 1, Type: "HowToTool"},
+	}
+	if schema.Tools != nil && !slices.Equal(schema.Tools.Values, wantTools) {
+		t.Errorf("wanted tools\n%+v\nbut got\n%+v", wantTools, schema.Tools.Values)
+	}
+	if schema.Yield != nil && schema.Yield.Value != 4 {
 		t.Errorf("wanted yield 4 but got %d", schema.Yield.Value)
 	}
 	if schema.URL != "https://www.google.com" {
@@ -1340,7 +1350,7 @@ func TestNewRecipesFromRecipeKeeper(t *testing.T) {
 				TotalFat:           "41.5g",
 			},
 			Times: models.Times{Prep: 10 * time.Minute, Cook: 1 * time.Hour},
-			Tools: make([]models.Tool, 0),
+			Tools: make([]models.HowToItem, 0),
 			URL:   "Recipe Keeper",
 			Yield: 6,
 		},
@@ -1366,7 +1376,7 @@ func TestNewRecipesFromRecipeKeeper(t *testing.T) {
 				IsPerServing: true,
 			},
 			Times: models.Times{Prep: 10 * time.Minute, Cook: 15 * time.Minute},
-			Tools: make([]models.Tool, 0),
+			Tools: make([]models.HowToItem, 0),
 			URL:   "Recipe Keeper",
 			Yield: 4,
 		},
@@ -1403,7 +1413,7 @@ func TestNewRecipesFromRecipeKeeper(t *testing.T) {
 				TotalFat:           "24.6g",
 			},
 			Times: models.Times{Prep: 5 * time.Minute, Cook: 12 * time.Minute},
-			Tools: make([]models.Tool, 0),
+			Tools: make([]models.HowToItem, 0),
 			URL:   "Recipe Keeper",
 			Yield: 12,
 		},

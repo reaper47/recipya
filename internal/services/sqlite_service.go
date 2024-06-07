@@ -390,7 +390,7 @@ func (s *SQLiteService) addRecipeTx(ctx context.Context, tx *sql.Tx, r models.Re
 	}
 
 	// Insert tools
-	r.Tools = slices.DeleteFunc(extensions.Unique(r.Tools), func(t models.Tool) bool { return t.Name == "" })
+	r.Tools = slices.DeleteFunc(extensions.Unique(r.Tools), func(t models.HowToItem) bool { return t.Name == "" })
 	for i, tool := range r.Tools {
 		var toolID int64
 		err = tx.QueryRowContext(ctx, statements.InsertTool, tool.Name).Scan(&toolID)
@@ -1606,7 +1606,7 @@ func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 
 		if tools.Valid {
 			parts := strings.Split(tools.String, ",")
-			r.Tools = make([]models.Tool, 0, len(parts))
+			r.Tools = make([]models.HowToItem, 0, len(parts))
 			for _, part := range parts {
 				var (
 					q    int
@@ -1623,7 +1623,7 @@ func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 					name = strings.TrimSpace(after)
 				}
 
-				r.Tools = append(r.Tools, models.Tool{
+				r.Tools = append(r.Tools, models.HowToItem{
 					Name:     name,
 					Quantity: q,
 				})
@@ -1913,7 +1913,7 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 	}
 
 	if !slices.Equal(updatedRecipe.Tools, oldRecipe.Tools) {
-		updatedRecipe.Tools = slices.DeleteFunc(updatedRecipe.Tools, func(t models.Tool) bool { return t.Name == "" })
+		updatedRecipe.Tools = slices.DeleteFunc(updatedRecipe.Tools, func(t models.HowToItem) bool { return t.Name == "" })
 
 		ids := make([]int64, 0, len(updatedRecipe.Tools))
 		updatedRecipe.Tools = extensions.Unique(updatedRecipe.Tools)

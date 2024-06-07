@@ -689,7 +689,7 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 								<span class="underline">Tools</span>
 							</h2>
 							<ol id="tools-list" class="pl-4 list-decimal">
-								@AddTool(models.Tool{})
+								@AddTool(models.HowToItem{})
 							</ol>
 							<div class="divider"></div>
 							<h2 class="font-semibold text-center pb-2">
@@ -720,7 +720,7 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 	@loadRecipesManualScripts()
 }
 
-templ AddTool(tool models.Tool) {
+templ AddTool(tool models.HowToItem) {
 	<li class="pb-2">
 		<div class="grid grid-flow-col items-center">
 			<label>
@@ -730,7 +730,7 @@ templ AddTool(tool models.Tool) {
 					placeholder="1 frying pan"
 					class="input input-bordered input-sm w-full"
 					if tool.Name != "" {
-						value={ tool.String() }
+						value={ tool.StringQuantity() }
 					}
 					_="on keydown if event.key is 'Enter' halt the event then call addItem(event)"
 				/>
@@ -1511,7 +1511,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 							<h2 class="font-semibold text-center pb-2 underline">Tools</h2>
 							<ol id="tools-list" class="pl-4 list-decimal">
 								if len(data.Recipe.Tools) == 0 {
-									@AddTool(models.Tool{})
+									@AddTool(models.HowToItem{})
 								} else {
 									for _, t := range data.Recipe.Tools {
 										@AddTool(t)
@@ -2127,7 +2127,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 									for _, t := range data.Recipe.Tools {
 										<li class="text-sm">
 											<label><input type="checkbox"/></label>
-											<span class="pl-2">{ t.String() }</span>
+											<span class="pl-2">{ t.StringQuantity() }</span>
 										</li>
 									}
 								</ol>
@@ -2232,7 +2232,7 @@ templ IngredientsInstructions(data *templates.ViewRecipeData) {
 						<li class="form-control hover:bg-gray-100 dark:hover:bg-gray-700">
 							<label class="label justify-start">
 								<input type="checkbox" class="checkbox"/>
-								<span class="label-text pl-2">{ t.String() }</span>
+								<span class="label-text pl-2">{ t.StringQuantity() }</span>
 							</label>
 						</li>
 					}

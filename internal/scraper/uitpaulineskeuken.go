@@ -9,21 +9,19 @@ import (
 )
 
 func scrapeUitpaulineskeuken(root *goquery.Document) (models.RecipeSchema, error) {
+	rs := models.NewRecipeSchema()
+
 	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
 	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
-	dateMod, _ := root.Find("meta[property='article:modified_time']").Attr("content")
+	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
 	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
 
-	var (
-		prep string
-		cook string
-	)
 	s := strings.TrimSpace(root.Find(".fa-stopwatch").First().Parent().Text())
 	if s != "" {
 		parts := strings.Split(s, "+")
 		if len(parts) == 2 {
 			v := regex.Digit.FindString(parts[0])
-			prep = "PT" + v + "M"
+			rs.PrepTime = "PT" + v + "M"
 
 			left, err := strconv.Atoi(v)
 			if err == nil {
@@ -31,7 +29,7 @@ func scrapeUitpaulineskeuken(root *goquery.Document) (models.RecipeSchema, error
 				if err == nil {
 					rem := right - left
 					if rem > 0 {
-						cook = "PT" + strconv.Itoa(rem) + "M"
+						rs.CookTime = "PT" + strconv.Itoa(rem) + "M"
 					}
 				}
 			}
@@ -39,15 +37,15 @@ func scrapeUitpaulineskeuken(root *goquery.Document) (models.RecipeSchema, error
 	}
 
 	nodes := root.Find("#ingredienten ul li")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		ingredients = append(ingredients, strings.TrimSpace(sel.Text()))
+		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(sel.Text()))
 	})
 
 	nodes = root.Find("#recept ol li")
-	instructions := make([]models.HowToStep, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		instructions = append(instructions, models.NewHowToStep(strings.TrimSpace(sel.Text())))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(sel.Text())))
 	})
 
 	nodes = root.Find("#gerelateerd a")
@@ -55,18 +53,7 @@ func scrapeUitpaulineskeuken(root *goquery.Document) (models.RecipeSchema, error
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		keywords = append(keywords, strings.TrimSpace(strings.ToLower(sel.Text())))
 	})
+	rs.Keywords.Values = strings.Join(keywords, ",")
 
-	return models.RecipeSchema{
-		Category:     &models.Category{Value: "uncategorized"},
-		CookTime:     cook,
-		DateModified: dateMod,
-		Description:  &models.Description{Value: description},
-		Keywords:     &models.Keywords{Values: strings.Join(keywords, ",")},
-		Image:        &models.Image{Value: image},
-		Ingredients:  &models.Ingredients{Values: ingredients},
-		Instructions: &models.Instructions{Values: instructions},
-		Name:         name,
-		PrepTime:     prep,
-		Yield:        &models.Yield{Value: 1},
-	}, nil
+	return rs, nil
 }

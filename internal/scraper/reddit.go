@@ -8,19 +8,21 @@ import (
 )
 
 func scrapeReddit(root *goquery.Document) (models.RecipeSchema, error) {
+	rs := models.NewRecipeSchema()
+
 	node := root.Find(".commentarea").First()
 
-	rs.DatePublished, _ = node.Find("time").First().Attr("datetime")
-	datePub, _, _ = strings.Cut(datePub, "T")
+	datePub, _ := node.Find("time").First().Attr("datetime")
+	rs.DatePublished, _, _ = strings.Cut(datePub, "T")
+	rs.Name = root.Find("a[data-event-action='title']").Text()
 
 	form := node.Find(".sitetable.nestedlisting form").First()
 	nodes := form.Find("ul").First().Find("li")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		ingredients = append(ingredients, sel.Text())
+		rs.Ingredients.Values = append(rs.Ingredients.Values, sel.Text())
 	})
 
-	var instructions []models.HowToStep
 	node = form.Find("p:contains('Instructions')")
 	if node.Nodes != nil {
 		for c := node.Nodes[0].FirstChild; c != nil; c = c.NextSibling {
@@ -30,16 +32,10 @@ func scrapeReddit(root *goquery.Document) (models.RecipeSchema, error) {
 				if dotIndex < 4 {
 					_, s, _ = strings.Cut(s, ".")
 				}
-				instructions = append(instructions, models.NewHowToStep(strings.TrimSpace(s)))
+				rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(s)))
 			}
 		}
 	}
 
-	return models.RecipeSchema{
-		DatePublished: datePub,
-		Ingredients:   &models.Ingredients{Values: ingredients},
-		Instructions:  &models.Instructions{Values: instructions},
-		Name:          root.Find("a[data-event-action='title']").Text(),
-		Yield:         &models.Yield{},
-	}, nil
+	return rs, nil
 }

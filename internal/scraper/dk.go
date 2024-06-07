@@ -24,7 +24,7 @@ func scrapeDk(root *goquery.Document) (models.RecipeSchema, error) {
 		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.Join(strings.Fields(v), " "))
 	})
 
-	rs.Instructions.Values = make([]models.HowToStep, 0)
+	rs.Instructions.Values = make([]models.HowToItem, 0)
 	content.Find("div[itemprop='recipeInstructions'] h3,div[itemprop='recipeInstructions'] li").Each(func(i int, s *goquery.Selection) {
 		if i > 0 && s.Nodes[0].Data == "h3" {
 			rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep("\n"))

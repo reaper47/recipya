@@ -30,7 +30,7 @@ func scrapeChefnini(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
 	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
 
-	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
+	name, _ := root.Find("meta[property='og:title']").Attr("content")
 	before, _, ok := strings.Cut(name, " - ")
 	if ok {
 		name = strings.TrimSpace(before)
@@ -48,7 +48,7 @@ func scrapeChefnini(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	nodes = root.Find("div[itemprop='recipeInstructions'] p")
-	rs.Instructions.Values = make([]models.HowToStep, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
 		if s == "" {
