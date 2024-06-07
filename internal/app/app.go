@@ -26,7 +26,7 @@ var (
 	LogsDir       string // LogsDir is the directory where the logs are stored.
 	ThumbnailsDir string // ThumbnailsDir is the directory where the thumbnails of user images are stored.
 
-	ImageExt = ".webp"
+	ImageExt = ".webp" // ImageExt is the file extension for images.
 
 	Info = GeneralInfo{
 		Version: semver.Version{

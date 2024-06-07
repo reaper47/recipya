@@ -40,6 +40,7 @@ type RecipeSchema struct {
 	URL             string           `json:"url,omitempty"`
 }
 
+// Equal verifies whether a RecipeSchema is equal to the other.
 func (r *RecipeSchema) Equal(other RecipeSchema) bool {
 	return r.AtType != nil && r.AtType.Value == other.AtType.Value &&
 		r.Category != nil && r.Category.Value == other.Category.Value &&
@@ -63,6 +64,7 @@ func (r *RecipeSchema) Equal(other RecipeSchema) bool {
 		r.URL == other.URL
 }
 
+// NewRecipeSchema creates an initialized RecipeSchema.
 func NewRecipeSchema() RecipeSchema {
 	return RecipeSchema{
 		AtContext:       "https://schema.org",
@@ -81,13 +83,14 @@ func NewRecipeSchema() RecipeSchema {
 	}
 }
 
+// HowToItem is a representation of the HowToItem schema (https://schema.org/HowToItem).
 type HowToItem struct {
 	Image    string `json:"image,omitempty"`
 	Quantity int    `json:"requiredQuantity,omitempty"`
 	Name     string `json:"name,omitempty"`
 	Text     string `json:"text,omitempty"`
 	Type     string `json:"@type,omitempty"`
-	Url      string `json:"url,omitempty"`
+	URL      string `json:"url,omitempty"`
 }
 
 // StringQuantity stringifies the HowToItem as `{Quantity} {Name}`.
@@ -95,6 +98,7 @@ func (h *HowToItem) StringQuantity() string {
 	return strconv.Itoa(h.Quantity) + " " + h.Text
 }
 
+// NewHowToStep creates an initialized HowToStep struct.
 func NewHowToStep(text string, opts ...*HowToItem) HowToItem {
 	v := HowToItem{
 		Type: "HowToStep",
@@ -102,12 +106,13 @@ func NewHowToStep(text string, opts ...*HowToItem) HowToItem {
 	}
 	for _, opt := range opts {
 		v.Name = opt.Name
-		v.Url = opt.Url
+		v.URL = opt.URL
 		v.Image = opt.Image
 	}
 	return v
 }
 
+// NewHowToTool creates an initialized HowToTool struct.
 func NewHowToTool(text string, opts ...*HowToItem) HowToItem {
 	v := HowToItem{
 		Type: "HowToTool",
@@ -116,7 +121,7 @@ func NewHowToTool(text string, opts ...*HowToItem) HowToItem {
 
 	for _, opt := range opts {
 		v.Name = opt.Name
-		v.Url = opt.Url
+		v.URL = opt.URL
 		v.Image = opt.Image
 		v.Quantity = opt.Quantity
 	}
@@ -334,6 +339,7 @@ func (c *Category) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// NewCategory creates an initialized Category. The default value of a Category is 'uncategorized'.
 func NewCategory(name string) *Category {
 	if name == "" {
 		name = "uncategorized"
@@ -809,6 +815,7 @@ type NutritionSchema struct {
 	UnsaturatedFat string `json:"unsaturatedFatContent,omitempty"`
 }
 
+// Equal verifies whether the NutritionSchema equals the other.
 func (n *NutritionSchema) Equal(other NutritionSchema) bool {
 	return n.Calories == other.Calories &&
 		n.Carbohydrates == other.Carbohydrates &&

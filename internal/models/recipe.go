@@ -474,7 +474,7 @@ func (n *Nutrition) Equal(other Nutrition) bool {
 }
 
 // Format formats the nutrition.
-func (n *Nutrition) Format(isOneLine bool) string {
+func (n *Nutrition) Format() string {
 	if n.Equal(Nutrition{}) {
 		return ""
 	}

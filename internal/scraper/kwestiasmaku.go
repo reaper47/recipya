@@ -19,7 +19,7 @@ func scrapeKwestiasmaku(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes := root.Find(".field-name-field-skladniki li")
 	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
+	nodes.Each(func(_ int, s *goquery.Selection) {
 		v := strings.ReplaceAll(s.Text(), "\n", "")
 		v = strings.ReplaceAll(v, "\t", "")
 		rs.Ingredients.Values = append(rs.Ingredients.Values, v)

@@ -32,7 +32,7 @@ func scrapeArchanasKitchen(root *goquery.Document) (models.RecipeSchema, error) 
 
 	nodes = root.Find("li[itemprop='recipeInstructions'] p")
 	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
+	nodes.Each(func(_ int, s *goquery.Selection) {
 		v := strings.ReplaceAll(s.Text(), "\u00a0", " ")
 		v = strings.TrimSpace(strings.ReplaceAll(v, " .", "."))
 		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(v))

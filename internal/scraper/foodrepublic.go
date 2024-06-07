@@ -31,13 +31,13 @@ func scrapeFoodRepublic(root *goquery.Document) (models.RecipeSchema, error) {
 
 	nodes := content.Find(".recipe-ingredients li")
 	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
+	nodes.Each(func(_ int, s *goquery.Selection) {
 		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.ReplaceAll(s.Text(), "  ", " "))
 	})
 
 	nodes = content.Find(".recipe-directions li")
 	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
+	nodes.Each(func(_ int, s *goquery.Selection) {
 		v := strings.ReplaceAll(s.Text(), "\u00a0", " ")
 		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(v))
 	})

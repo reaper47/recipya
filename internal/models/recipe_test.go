@@ -767,7 +767,7 @@ func TestNutrition_Format(t *testing.T) {
 	}
 	for _, tc := range testcases {
 		t.Run("one line"+tc.name, func(t *testing.T) {
-			got := tc.in.Format(true)
+			got := tc.in.Format()
 
 			if got != tc.want {
 				t.Fatalf("got %s; want %s", got, tc.want)

@@ -2089,7 +2089,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 								if !data.Recipe.Nutrition.Equal(models.Nutrition{}) {
 									<div class="hidden pt-2 print:block print:mx-2 print:my-1">
 										<h1 class="text-sm print:mb-1"><b>Nutrition Facts</b></h1>
-										<p class="text-xs">{ data.Recipe.Nutrition.Format(true) }</p>
+										<p class="text-xs">{ data.Recipe.Nutrition.Format() }</p>
 									</div>
 								}
 							</div>
