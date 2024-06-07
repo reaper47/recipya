@@ -10,15 +10,17 @@ func scrapeCoop(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
 	rs.DateCreated, _ = root.Find("meta[name='creation_date']").Attr("content")
+	rs.DatePublished = rs.DateCreated
 
-	rs.Name, _ = root.Find("meta[name='og:title']").Attr("content")
+	name, _ := root.Find("meta[name='og:title']").Attr("content")
 	before, _, ok := strings.Cut(name, "|")
 	if ok {
 		name = strings.TrimSpace(before)
 	}
 	rs.Name = name
 
-	rs.Description.Value, _ = root.Find("meta[name='og:description']").Attr("content")
+	description, _ := root.Find("meta[name='og:description']").Attr("content")
+	rs.Description.Value = strings.TrimSpace(description)
 
 	nodes := root.Find(".IngredientList-content")
 	rs.Ingredients.Values = make([]string, 0, nodes.Length())
@@ -32,7 +34,7 @@ func scrapeCoop(root *goquery.Document) (models.RecipeSchema, error) {
 		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
 	})
 
-	rs.Image.Value, _ = root.Find("picture img").First().Attr("src")
+	image, _ := root.Find("picture img").First().Attr("src")
 	rs.Image.Value = strings.TrimPrefix(image, "//")
 	rs.Yield.Value = findYield(root.Find("span:contains('portioner')").Text())
 

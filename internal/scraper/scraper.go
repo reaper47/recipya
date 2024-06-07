@@ -187,7 +187,7 @@ func parseLdJSON(root *goquery.Document) (models.RecipeSchema, error) {
 			}
 
 			for _, rs = range xrs {
-				if rs.AtType.Value == "Recipe" {
+				if rs.AtType != nil && rs.AtType.Value == "Recipe" {
 					return rs, nil
 				}
 			}
@@ -226,5 +226,5 @@ func parseGraph(root *goquery.Document) (models.RecipeSchema, error) {
 			}
 		}
 	}
-	return models.RecipeSchema{}, ErrNotImplemented
+	return models.NewRecipeSchema(), ErrNotImplemented
 }

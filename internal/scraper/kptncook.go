@@ -40,7 +40,7 @@ func scrapeKptncook(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	nodes := root.Find(".kptn-step-title")
-	rs.Instructions.Values = make([]models.HowToStep, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
 		_, err := strconv.ParseInt(s[:1], 10, 64)

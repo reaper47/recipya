@@ -26,7 +26,6 @@ func scrapePrzepisy(root *goquery.Document) (models.RecipeSchema, error) {
 		ingredients[i] = strings.Join(strings.Fields(ing), " ")
 	})
 
-	rs.Image.Value = image
 	rs.Yield = &models.Yield{Value: yield}
 	rs.Ingredients = &models.Ingredients{Values: ingredients}
 	return rs, nil

@@ -8,7 +8,11 @@ import (
 )
 
 func scrapeGrandfrais(root *goquery.Document) (models.RecipeSchema, error) {
+	rs := models.NewRecipeSchema()
+
 	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
+	rs.Name = root.Find("h1[itemprop='name']").Text()
+	rs.Yield.Value = findYield(root.Find("p[itemprop='recipeYield']").Text())
 
 	prep := root.Find(".pre-requie-item p").First().Text()
 	split := strings.Split(prep, " ")
@@ -19,6 +23,7 @@ func scrapeGrandfrais(root *goquery.Document) (models.RecipeSchema, error) {
 			prep = "PT" + split[i] + "M"
 		}
 	}
+	rs.PrepTime = prep
 
 	cook := root.Find(".pre-requie-item p").Last().Text()
 	split = strings.Split(cook, " ")
@@ -29,35 +34,28 @@ func scrapeGrandfrais(root *goquery.Document) (models.RecipeSchema, error) {
 			cook = "PT" + split[i] + "M"
 		}
 	}
+	rs.CookTime = cook
 
 	nodes := root.Find("div[itemprop='ingredients']")
-	ingredients := strings.Split(nodes.Text(), "\n")
-	for i, ingredient := range ingredients {
+	rs.Ingredients.Values = strings.Split(nodes.Text(), "\n")
+	for i, ingredient := range rs.Ingredients.Values {
 		_, after, ok := strings.Cut(ingredient, "- ")
 		if ok {
-			ingredients[i] = after
+			rs.Ingredients.Values[i] = after
 		}
 	}
 
 	nodes = root.Find("div[itemprop='recipeInstructions'] li")
-	instructions := make([]models.HowToStep, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		instructions = append(instructions, models.NewHowToStep(sel.Text()))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
 	})
 
-	rs.Image.Value, _ = root.Find("img[itemprop='image']").Attr("src")
+	image, _ := root.Find("img[itemprop='image']").Attr("src")
 	if !strings.HasPrefix(image, "https://") {
 		image = "https://www.grandfrais.com" + image
 	}
+	rs.Image.Value = image
 
-	return models.RecipeSchema{
-		CookTime:     cook,
-		Description:  &models.Description{Value: description},
-		Image:        &models.Image{Value: image},
-		Ingredients:  &models.Ingredients{Values: ingredients},
-		Instructions: &models.Instructions{Values: instructions},
-		Name:         root.Find("h1[itemprop='name']").Text(),
-		PrepTime:     prep,
-		Yield:        &models.Yield{Value: findYield(root.Find("p[itemprop='recipeYield']").Text())},
-	}, nil
+	return rs, nil
 }

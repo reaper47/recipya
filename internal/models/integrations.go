@@ -101,7 +101,7 @@ func (p PaprikaRecipe) Recipe(image uuid.UUID) Recipe {
 			Prep: duration.From(p.PrepTime),
 			Cook: duration.From(p.CookTime),
 		},
-		Tools:     make([]Tool, 0),
+		Tools:     make([]HowToItem, 0),
 		UpdatedAt: dateCreated,
 		URL:       source,
 		Yield:     yield,

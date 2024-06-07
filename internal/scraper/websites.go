@@ -147,8 +147,7 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		case "jaimyskitchen":
 			return scrapeJaimysKitchen(doc)
 		case "juliegoodwin":
-			return
-			scrapeJuliegoodwin(doc)
+			return scrapeJuliegoodwin(doc)
 		case "justbento":
 			return scrapeJustbento(doc)
 		default:

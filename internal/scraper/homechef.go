@@ -27,7 +27,7 @@ func scrapeHomechef(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	nodes = root.Find("li[itemprop='itemListElement']")
-	rs.Instructions.Values = make([]models.HowToStep, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.ReplaceAll(sel.Text(), "\n", " ")
 		s = strings.Join(strings.Fields(s), " ")

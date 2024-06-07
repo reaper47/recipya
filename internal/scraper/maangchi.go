@@ -64,6 +64,6 @@ func scrapeMaangchi(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	rs.Ingredients.Values = slices.DeleteFunc(rs.Ingredients.Values, func(s string) bool { return s == "" })
-	rs.Instructions.Values = slices.DeleteFunc(rs.Instructions.Values, func(s models.HowToStep) bool { return s.Text == "" })
+	rs.Instructions.Values = slices.DeleteFunc(rs.Instructions.Values, func(s models.HowToItem) bool { return s.Text == "" })
 	return rs, nil
 }

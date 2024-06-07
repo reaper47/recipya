@@ -27,7 +27,7 @@ func scrapeCdKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 		s.ReplaceWithHtml("$$$")
 	})
 	lines := strings.Split(node.Text(), "$$$$$$")
-	rs.Instructions.Values = make([]models.HowToStep, 0, len(lines))
+	rs.Instructions.Values = make([]models.HowToItem, 0, len(lines))
 	for _, line := range lines {
 		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(line)))
 	}

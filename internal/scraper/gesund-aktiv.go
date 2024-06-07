@@ -20,7 +20,7 @@ func scrapeGesundAktiv(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	nodes = root.Find(".news-recipes-cookingsteps").Last().Find("ol li")
-	rs.Instructions.Values = make([]models.HowToStep, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
 		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))

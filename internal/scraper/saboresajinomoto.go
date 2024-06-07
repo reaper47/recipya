@@ -12,19 +12,17 @@ func scrapeSaboresajinomoto(root *goquery.Document) (models.RecipeSchema, error)
 	}
 
 	nodes := root.Find("div[itemprop='recipeIngredient'] ul li")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
-		ingredients = append(ingredients, s)
+		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
 	})
-	rs.Ingredients.Values = ingredients
 
 	nodes = root.Find("div[itemprop='recipeInstructions'] ol li")
-	instructions := make([]models.HowToStep, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		instructions = append(instructions, models.NewHowToStep(sel.Text()))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
 	})
-	rs.Instructions.Values = instructions
 
 	return rs, nil
 }

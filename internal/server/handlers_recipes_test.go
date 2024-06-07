@@ -344,7 +344,10 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 				Cook:  30*time.Minute + 15*time.Second,
 				Total: 45*time.Minute + 45*time.Second,
 			},
-			Tools: []models.Tool{{Name: "wok", Quantity: 1}, {Name: "pan", Quantity: 3}},
+			Tools: []models.HowToItem{
+				{Type: "HowToTool", Text: "wok", Quantity: 1},
+				{Type: "HowToTool", Text: "pan", Quantity: 3},
+			},
 			URL:   "Mommy",
 			Yield: 4,
 		}
@@ -644,7 +647,10 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 			Cook:  1 * time.Hour,
 			Total: 1*time.Hour + 30*time.Minute,
 		},
-		Tools:     []models.Tool{{Name: "spoons"}, {Name: "drill"}},
+		Tools: []models.HowToItem{
+			models.NewHowToTool("spoons"),
+			models.NewHowToTool("drill"),
+		},
 		UpdatedAt: time.Now(),
 		URL:       "https://example.com/recipes/yummy",
 		Yield:     12,
@@ -705,7 +711,7 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 			`<textarea name="description" placeholder="This Thai curry chicken will make you drool." class="textarea w-full h-full resize-none">A delicious recipe!</textarea>`,
 			`<tbody><tr><td>Prep</td><td><label><input type="text" name="time-preparation" class="input input-bordered input-xs max-w-24 html-duration-picker" value="00:30:00"></label></td></tr><tr><td>Cooking</td><td><label><input type="text" name="time-cooking" class="input input-bordered input-xs max-w-24 html-duration-picker" value="01:00:00"></label></td></tr></tbody>`,
 			`<tbody><tr><td>Calories</td><td><label><input type="text" name="calories" autocomplete="off" placeholder="368kcal" class="input input-bordered input-xs max-w-24" value="354"></label></td></tr><tr><td>Total carbs</td><td><label><input type="text" name="total-carbohydrates" autocomplete="off" placeholder="35g" class="input input-bordered input-xs max-w-24" value="7g"></label></td></tr><tr><td>Sugars</td><td><label><input type="text" name="sugars" autocomplete="off" placeholder="3g" class="input input-bordered input-xs max-w-24" value="6g"></label></td></tr><tr><td>Protein</td><td><label><input type="text" name="protein" autocomplete="off" placeholder="21g" class="input input-bordered input-xs max-w-24" value="3g"></label></td></tr><tr><td>Total fat</td><td><label><input type="text" name="total-fat" autocomplete="off" placeholder="15g" class="input input-bordered input-xs max-w-24" value="8g"></label></td></tr><tr><td>Saturated fat</td><td><label><input type="text" name="saturated-fat" autocomplete="off" placeholder="1.8g" class="input input-bordered input-xs max-w-24" value="4g"></label></td></tr><tr><td>Cholesterol</td><td><label><input type="text" name="cholesterol" autocomplete="off" placeholder="1.1mg" class="input input-bordered input-xs max-w-24" value="1g"></label></td></tr><tr><td>Sodium</td><td><label><input type="text" name="sodium" autocomplete="off" placeholder="100mg" class="input input-bordered input-xs max-w-24" value="5g"></label></td></tr><tr><td>Fiber</td><td><label><input type="text" name="fiber" autocomplete="off" placeholder="8g" class="input input-bordered input-xs max-w-24" value="2g"></label></td></tr></tbody>`,
-			`<input type="text" name="tools" placeholder="1 frying pan" class="input input-bordered input-sm w-full" value="0 spoons" _="on keydown if event.key is 'Enter' halt the event then call addItem(event)">`,
+			`<input type="text" name="tools" placeholder="1 frying pan" class="input input-bordered input-sm w-full" _="on keydown if event.key is 'Enter' halt the event then call addItem(event)">`,
 			`<input type="text" name="time-preparation" class="input input-bordered input-xs max-w-24 html-duration-picker" value="00:30:00">`,
 			`<input required type="text" name="ingredients" value="ing1" placeholder="1 cup of chopped onions" class="input input-bordered input-sm w-full" _="on keydown if event.key is 'Enter' halt the event then call addItem(event)">`,
 			`<textarea required name="instructions" rows="3" class="textarea textarea-bordered w-full" placeholder="Mix all ingredients together" _="on keydown if event.key is 'Enter' halt the event then call addItem(event)">ins1</textarea>`,

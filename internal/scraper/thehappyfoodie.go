@@ -8,41 +8,40 @@ import (
 )
 
 func scrapeTheHappyFoodie(root *goquery.Document) (models.RecipeSchema, error) {
+	rs := models.NewRecipeSchema()
+
 	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
 	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
 	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
 	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
 	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.Yield.Value = findYield(root.Find(".hf-metadata__portions p").Text())
 
-	yield := findYield(root.Find(".hf-metadata__portions p").Text())
-
-	prepTimeStr := root.Find(".hf-metadata__time-prep span").Text()
-	var prepTime string
-	if prepTimeStr != "" {
-		parts := strings.Split(prepTimeStr, " ")
+	rs.PrepTime = root.Find(".hf-metadata__time-prep span").Text()
+	if rs.PrepTime != "" {
+		parts := strings.Split(rs.PrepTime, " ")
 		switch len(parts) {
 		case 1:
 			minutes := strings.TrimSuffix(parts[0], "min")
-			prepTime = "PT" + minutes + "M"
+			rs.PrepTime = "PT" + minutes + "M"
 		case 2:
 			hour := strings.TrimSuffix(parts[0], "hr")
 			minutes := strings.TrimSuffix(parts[1], "min")
-			prepTime = "PT" + hour + "H" + minutes + "M"
+			rs.PrepTime = "PT" + hour + "H" + minutes + "M"
 		}
 	}
 
-	cookTimeStr := root.Find(".hf-metadata__time-cook span").Text()
-	var cookTime string
-	if prepTimeStr != "" {
-		parts := strings.Split(cookTimeStr, " ")
+	rs.CookTime = root.Find(".hf-metadata__time-cook span").Text()
+	if rs.PrepTime != "" {
+		parts := strings.Split(rs.CookTime, " ")
 		switch len(parts) {
 		case 1:
 			minutes := strings.TrimSuffix(parts[0], "min")
-			cookTime = "PT" + minutes + "M"
+			rs.CookTime = "PT" + minutes + "M"
 		case 2:
 			hour := strings.TrimSuffix(parts[0], "hr")
 			minutes := strings.TrimSuffix(parts[1], "min")
-			cookTime = "PT" + hour + "H" + minutes + "M"
+			rs.CookTime = "PT" + hour + "H" + minutes + "M"
 		}
 	}
 
@@ -51,31 +50,19 @@ func scrapeTheHappyFoodie(root *goquery.Document) (models.RecipeSchema, error) {
 	nodes.Each(func(i int, s *goquery.Selection) {
 		allKeywords[i] = s.Text()
 	})
-	keywords := strings.Join(allKeywords, ", ")
+	rs.Keywords.Values = strings.Join(allKeywords, ", ")
 
 	nodes = root.Find(".hf-ingredients__single-group tr")
-	ingredients := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		ingredients[i] = strings.Join(strings.Fields(s.Text()), " ")
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.Join(strings.Fields(s.Text()), " "))
 	})
 
 	nodes = root.Find(".hf-method__text p")
-	instructions := make([]models.HowToStep, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, s *goquery.Selection) {
-		instructions = append(instructions, models.NewHowToStep(s.Text()))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s.Text()))
 	})
 
-	return models.RecipeSchema{
-		Name:          name,
-		DatePublished: datePublished,
-		DateModified:  dateModified,
-		Description:   &models.Description{Value: description},
-		Image:         &models.Image{Value: image},
-		Yield:         &models.Yield{Value: yield},
-		PrepTime:      prepTime,
-		CookTime:      cookTime,
-		Keywords:      &models.Keywords{Values: keywords},
-		Ingredients:   &models.Ingredients{Values: ingredients},
-		Instructions:  &models.Instructions{Values: instructions},
-	}, nil
+	return rs, nil
 }

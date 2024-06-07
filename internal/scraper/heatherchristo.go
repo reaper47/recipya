@@ -23,7 +23,7 @@ func scrapeHeatherChristo(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	nodes = root.Find(".ERSInstructions ol").First().Find("li")
-	rs.Instructions.Values = make([]models.HowToStep, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(sel.Text())))
 	})

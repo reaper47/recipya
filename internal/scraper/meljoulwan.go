@@ -7,23 +7,26 @@ import (
 )
 
 func scrapeMeljoulwan(root *goquery.Document) (models.RecipeSchema, error) {
+	rs := models.NewRecipeSchema()
+
 	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
 	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
 	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
 	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
 	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
+	rs.Yield.Value = findYield(root.Find("p:contains('Serves')").Text())
 
 	nodes := root.Find("h5:contains('Ingredients')").Parent().Find("li")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
-		ingredients = append(ingredients, strings.TrimSpace(s))
+		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(s))
 	})
 
 	nodes = root.Find("h5:contains('Directions')").Parent().Find("p")
-	instructions := make([]models.HowToStep, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		instructions = append(instructions, models.NewHowToStep(sel.Text()))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
 	})
 
 	var category string
@@ -33,24 +36,14 @@ func scrapeMeljoulwan(root *goquery.Document) (models.RecipeSchema, error) {
 			category = s
 		}
 	})
+	rs.Category.Value = category
 
 	var sb strings.Builder
 	root.Find("div.post-tage a").Each(func(_ int, sel *goquery.Selection) {
 		sb.WriteString(sel.Text())
 		sb.WriteString(",")
 	})
-	keywords := strings.TrimSuffix(sb.String(), ",")
+	rs.Keywords.Values = strings.TrimSuffix(sb.String(), ",")
 
-	return models.RecipeSchema{
-		Category:      &models.Category{Value: category},
-		DateModified:  dateModified,
-		DatePublished: datePublished,
-		Description:   &models.Description{Value: description},
-		Keywords:      &models.Keywords{Values: keywords},
-		Image:         &models.Image{Value: image},
-		Ingredients:   &models.Ingredients{Values: ingredients},
-		Instructions:  &models.Instructions{Values: instructions},
-		Name:          name,
-		Yield:         &models.Yield{Value: findYield(root.Find("p:contains('Serves')").Text())},
-	}, nil
+	return rs, nil
 }

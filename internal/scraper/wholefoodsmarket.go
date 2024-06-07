@@ -7,6 +7,8 @@ import (
 )
 
 func scrapeWholefoodsmarket(root *goquery.Document) (models.RecipeSchema, error) {
+	rs := models.NewRecipeSchema()
+
 	rs.Name, _ = root.Find("meta[itemprop='headline']").Attr("content")
 	rs.DateModified, _ = root.Find("meta[itemprop='dateModified']").Attr("content")
 	rs.DatePublished, _ = root.Find("meta[itemprop='datePublished']").Attr("content")
@@ -14,38 +16,28 @@ func scrapeWholefoodsmarket(root *goquery.Document) (models.RecipeSchema, error)
 	rs.Description.Value, _ = root.Find("meta[itemprop='description']").Attr("content")
 
 	p := root.Find(".image-subtitle p").Last().Text()
-	var yield string
 	for _, s := range strings.Split(p, "|") {
 		if strings.Contains(strings.ToLower(s), "serves") {
-			yield = s
+			rs.Yield.Value = findYield(s)
 		}
 	}
 
 	nodes := root.Find("h4:contains('Ingredients')").Parent().Find("p")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.Join(strings.Fields(sel.Text()), " ")
-		ingredients = append(ingredients, s)
+		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
 	})
 
 	nodes = root.Find("h4:contains('Method')").ParentsUntil(".sqs-col-6").Last().Parent().Find("p")
-	instructions := make([]models.HowToStep, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.Join(strings.Fields(sel.Text()), " ")
 		if s != "" {
-			instructions = append(instructions, models.NewHowToStep(s))
+			rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
 		}
 
 	})
 
-	return models.RecipeSchema{
-		DateModified:  dateModified,
-		DatePublished: datePublished,
-		Description:   &models.Description{Value: description},
-		Image:         &models.Image{Value: image},
-		Ingredients:   &models.Ingredients{Values: ingredients},
-		Instructions:  &models.Instructions{Values: instructions},
-		Name:          name,
-		Yield:         &models.Yield{Value: findYield(yield)},
-	}, nil
+	return rs, nil
 }

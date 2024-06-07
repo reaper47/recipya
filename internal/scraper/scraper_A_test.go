@@ -44,14 +44,14 @@ func TestScraper_A(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Derreta a manteiga e refogue a cebola até ficar transparente.Junte a carne e tempere com o sal.Mexa até a carne dourar de todos os lados.Acrescente a mostarda, o catchup, a pimenta-do-reino e o tomate picado.Cozinhe até formar um molho espesso.Se necessário, adicione água quente aos poucos.Quando o molho estiver encorpado e a carne macia, adicione os cogumelos e o creme de leite.Mexa por 1 minuto e retire do fogo.Sirva imediatamente, acompanhado de arroz e batata palha.Dica: Se juntar água ao refogar a carne, frite-a até todo o líquido evaporar."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Derreta a manteiga e refogue a cebola até ficar transparente.Junte a carne e tempere com o sal.Mexa até a carne dourar de todos os lados.Acrescente a mostarda, o catchup, a pimenta-do-reino e o tomate picado.Cozinhe até formar um molho espesso.Se necessário, adicione água quente aos poucos.Quando o molho estiver encorpado e a carne macia, adicione os cogumelos e o creme de leite.Mexa por 1 minuto e retire do fogo.Sirva imediatamente, acompanhado de arroz e batata palha.Dica: Se juntar água ao refogar a carne, frite-a até todo o líquido evaporar."},
 					},
 				},
 				Name:            "Estrogonofe de carne",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT30M",
-				Tools:           &models.Tools{Values: []models.Tool{}},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				TotalTime:       "PT30M",
 				Yield:           &models.Yield{Value: 4},
 				URL:             "https://claudia.abril.com.br/receitas/estrogonofe-de-carne/",
@@ -86,20 +86,20 @@ func TestScraper_A(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Preheat oven to 425 degrees."},
-						{Text: "Line a sheet pan with parchment paper or a silpat cover. Add all the vegetables, along with the apple, thyme and shallot. Toss in oil and sprinkle with 1 teaspoon of salt and freshly cracked pepper."},
-						{Text: "Roast everything for 15 minutes. Then add 2 cups of stock. Roast for another 15 minutes or until all the vegetables have completely cooked through and are tender."},
-						{Text: "Add everything to the blender (including the liquid) but make sure you leave out the thyme. Before adding the thyme to the blender, strip the thyme sprigs of their leaves. Discard the stems and only add the leaves to the blender."},
-						{Text: "Add another 2 cups of stock. Add a small pinch of freshly grated nutmeg."},
-						{Text: "Blend until completely smooth. Use a rubber spatula to move any chunks or pieces from the sides of the blender. If you want it to be a little thinner add another ½-1 cup of liquid or as much as you need to get it to your preferred consistency."},
-						{Text: "Add to a pot keep warm on low heat. Serve and garnish."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Preheat oven to 425 degrees."},
+						{Type: "HowToStep", Text: "Line a sheet pan with parchment paper or a silpat cover. Add all the vegetables, along with the apple, thyme and shallot. Toss in oil and sprinkle with 1 teaspoon of salt and freshly cracked pepper."},
+						{Type: "HowToStep", Text: "Roast everything for 15 minutes. Then add 2 cups of stock. Roast for another 15 minutes or until all the vegetables have completely cooked through and are tender."},
+						{Type: "HowToStep", Text: "Add everything to the blender (including the liquid) but make sure you leave out the thyme. Before adding the thyme to the blender, strip the thyme sprigs of their leaves. Discard the stems and only add the leaves to the blender."},
+						{Type: "HowToStep", Text: "Add another 2 cups of stock. Add a small pinch of freshly grated nutmeg."},
+						{Type: "HowToStep", Text: "Blend until completely smooth. Use a rubber spatula to move any chunks or pieces from the sides of the blender. If you want it to be a little thinner add another ½-1 cup of liquid or as much as you need to get it to your preferred consistency."},
+						{Type: "HowToStep", Text: "Add to a pot keep warm on low heat. Serve and garnish."},
 					},
 				},
 				Name:            "Roasted Carrot Soup",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT10M",
-				Tools:           &models.Tools{Values: []models.Tool{}},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				TotalTime:       "PT45M",
 				Yield:           &models.Yield{Value: 6},
 				URL:             "https://abuelascounter.com/roasted-carrot-soup/",
@@ -138,12 +138,12 @@ func TestScraper_A(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Shave the Brussels sprouts:\n\nWith a knife: Remove any tough outer layers with your fingers. With a large Chef’s knife, cut the Brussels sprout in half lengthwise. Place the cut side down and thinly slice cross-wise to create shreds. Separate the shreds with your fingers. Discard the root end."},
-						{Text: "With a food processor (fastest!): Use a food processor with the shredding disc attachment blade. (Here's a video.)"},
-						{Text: "With a mandolin: Slice the whole Brussels sprouts with a mandolin, taking proper safety precautions to keep your fingers away from the blade. (Here's a video.)"},
-						{Text: "In a medium bowl, stir together the minced garlic, shallot, Parmesan cheese, and kosher salt."},
-						{Text: "In a large skillet, heat the olive oil over medium high heat. Add the Brussels sprouts and cook for 4 minutes, stirring only occasionally, until tender and browned. Stir in the Parmesan mixture and cook additional 3 to 4 minutes until lightly browned and fragrant. Remove the heat and if desired, stir in the panko. Taste and add additional salt as necessary."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Shave the Brussels sprouts:\n\nWith a knife: Remove any tough outer layers with your fingers. With a large Chef’s knife, cut the Brussels sprout in half lengthwise. Place the cut side down and thinly slice cross-wise to create shreds. Separate the shreds with your fingers. Discard the root end."},
+						{Type: "HowToStep", Text: "With a food processor (fastest!): Use a food processor with the shredding disc attachment blade. (Here's a video.)"},
+						{Type: "HowToStep", Text: "With a mandolin: Slice the whole Brussels sprouts with a mandolin, taking proper safety precautions to keep your fingers away from the blade. (Here's a video.)"},
+						{Type: "HowToStep", Text: "In a medium bowl, stir together the minced garlic, shallot, Parmesan cheese, and kosher salt."},
+						{Type: "HowToStep", Text: "In a large skillet, heat the olive oil over medium high heat. Add the Brussels sprouts and cook for 4 minutes, stirring only occasionally, until tender and browned. Stir in the Parmesan mixture and cook additional 3 to 4 minutes until lightly browned and fragrant. Remove the heat and if desired, stir in the panko. Taste and add additional salt as necessary."},
 					},
 				},
 				NutritionSchema: &models.NutritionSchema{
@@ -187,9 +187,9 @@ func TestScraper_A(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Add the meatballs, grape jelly, and BBQ sauce to the slow cooker. Stir to combine. Cover with the lid. Set the timer for 4 hours on the low setting, stirring after 2 hours. Leave on the warm setting until ready to serve."},
-						{Text: "Optional topping to serve: Top with green onions or chives for serving."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Add the meatballs, grape jelly, and BBQ sauce to the slow cooker. Stir to combine. Cover with the lid. Set the timer for 4 hours on the low setting, stirring after 2 hours. Leave on the warm setting until ready to serve."},
+						{Type: "HowToStep", Text: "Optional topping to serve: Top with green onions or chives for serving."},
 					},
 				},
 				Name: "Easy Grape Jelly Meatballs Recipe",
@@ -217,6 +217,8 @@ func TestScraper_A(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        &models.SchemaType{Value: "Recipe"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				Name:          "Norinj Palau (Rice with orange)",
 				DatePublished: "2015-01-01",
 				Image:         &models.Image{Value: anUploadedImage.String()},
@@ -224,8 +226,7 @@ func TestScraper_A(t *testing.T) {
 				PrepTime:      "PT10M",
 				CookTime:      "PT2H0M",
 				Description: &models.Description{
-					Value: "Norinj Palau is one of traditional Afghan dishes and it has a lovely delicate flavour. " +
-						"This pilau is prepared with the peel of the bitter (or Seville) oranges. It is quite a sweet dish.",
+					Value: "Norinj Palau is one of traditional Afghan dishes and it has a lovely delicate flavour. This pilau is prepared with the peel of the bitter (or Seville) oranges. It is quite a sweet dish.",
 				},
 				Ingredients: &models.Ingredients{
 					Values: []string{
@@ -245,7 +246,7 @@ func TestScraper_A(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
+					Values: []models.HowToItem{
 						{Type: "HowToStep", Text: "Measure out the rice and rinse several times until the water remains clear."},
 						{Type: "HowToStep", Text: "Add fresh water and leave the rice to soak for at least half an hour."},
 						{Type: "HowToStep", Text: "Heat the oil and add the chopped onions."},
@@ -268,8 +269,11 @@ func TestScraper_A(t *testing.T) {
 						{Type: "HowToStep", Text: "When serving, place the meat in the centre of a large dish, mound the rice over the top and then garnish with the reserved orange peel and nuts."},
 					},
 				},
-				Category: &models.Category{Value: "Rice Dishes"},
-				URL:      "http://www.afghankitchenrecipes.com/recipe/norinj-palau-rice-with-orange/",
+				Category:        &models.Category{Value: "Rice Dishes"},
+				NutritionSchema: &models.NutritionSchema{},
+				Keywords:        &models.Keywords{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				URL:             "http://www.afghankitchenrecipes.com/recipe/norinj-palau-rice-with-orange/",
 			},
 		},
 		{
@@ -298,23 +302,23 @@ func TestScraper_A(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Verwarm de oven voor op 175 °C."},
-						{Text: "Snijd de knoflook fijn. Snijd de sjalotten in halve ringen. Schil de winterpeen en snijd in blokjes van ca. een ½ cm."},
-						{Text: "Dep de sukadelappen droog met keukenpapier, snijd in stukken van ca. 2 cm."},
-						{Text: "Bestrooi het vlees rondom met peper en meng de bloem erdoor, zodat het vlees rondom met een laagje bedekt is."},
-						{Text: "Verhit de braadpan met de boter en olie en braad het vlees 4 min. op hoog vuur tot het meeste vocht verdampt is en het vlees rondom bruin en krokant is."},
-						{Text: "Voeg de baconreepjes en tomatenpuree toe en bak 4 min. op hoog vuur mee."},
-						{Text: "Ris ondertussen de blaadjes van de tijm."},
-						{Text: "Voeg de helft van de tijm, de wijn, het water, de knoflook, sjalot, peen, laurier en mosterd toe aan het vlees."},
-						{Text: "Zet de braadpan met de deksel erop onder in de oven en stoof het vlees ca. 2½ uur tot het vlees mals is. Haal na 1½ uur de deksel van de pan."},
-						{Text: "Snijd de champignons in kwarten en voeg de laatste 45 min. van de stooftijd toe aan het vlees."},
-						{Text: "Test na 2½ uur of het vlees mals is, laat het zo nodig nog 30 min. langer stoven."},
-						{Text: "Halveer ondertussen de spruiten en verdeel ze over de met bakpapier beklede traybake."},
-						{Text: "Besprenkel met de rest van de olie en bestrooi met de rest van de tijm."},
-						{Text: "Breng op smaak met peper en rooster de laatste 20 min. van de stooftijd boven in de oven met de boeuf bourguignon mee."},
-						{Text: "Breng de stoof op smaak met peper en eventueel zout. Verwijder de laurierblaadjes."},
-						{Text: "Snijd de peterselie fijn. Bestrooi de boeuf bourguignon met de peterselie en serveer met de geroosterde spruiten."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Verwarm de oven voor op 175 °C."},
+						{Type: "HowToStep", Text: "Snijd de knoflook fijn. Snijd de sjalotten in halve ringen. Schil de winterpeen en snijd in blokjes van ca. een ½ cm."},
+						{Type: "HowToStep", Text: "Dep de sukadelappen droog met keukenpapier, snijd in stukken van ca. 2 cm."},
+						{Type: "HowToStep", Text: "Bestrooi het vlees rondom met peper en meng de bloem erdoor, zodat het vlees rondom met een laagje bedekt is."},
+						{Type: "HowToStep", Text: "Verhit de braadpan met de boter en olie en braad het vlees 4 min. op hoog vuur tot het meeste vocht verdampt is en het vlees rondom bruin en krokant is."},
+						{Type: "HowToStep", Text: "Voeg de baconreepjes en tomatenpuree toe en bak 4 min. op hoog vuur mee."},
+						{Type: "HowToStep", Text: "Ris ondertussen de blaadjes van de tijm."},
+						{Type: "HowToStep", Text: "Voeg de helft van de tijm, de wijn, het water, de knoflook, sjalot, peen, laurier en mosterd toe aan het vlees."},
+						{Type: "HowToStep", Text: "Zet de braadpan met de deksel erop onder in de oven en stoof het vlees ca. 2½ uur tot het vlees mals is. Haal na 1½ uur de deksel van de pan."},
+						{Type: "HowToStep", Text: "Snijd de champignons in kwarten en voeg de laatste 45 min. van de stooftijd toe aan het vlees."},
+						{Type: "HowToStep", Text: "Test na 2½ uur of het vlees mals is, laat het zo nodig nog 30 min. langer stoven."},
+						{Type: "HowToStep", Text: "Halveer ondertussen de spruiten en verdeel ze over de met bakpapier beklede traybake."},
+						{Type: "HowToStep", Text: "Besprenkel met de rest van de olie en bestrooi met de rest van de tijm."},
+						{Type: "HowToStep", Text: "Breng op smaak met peper en rooster de laatste 20 min. van de stooftijd boven in de oven met de boeuf bourguignon mee."},
+						{Type: "HowToStep", Text: "Breng de stoof op smaak met peper en eventueel zout. Verwijder de laurierblaadjes."},
+						{Type: "HowToStep", Text: "Snijd de peterselie fijn. Bestrooi de boeuf bourguignon met de peterselie en serveer met de geroosterde spruiten."},
 					},
 				},
 				Name: "Boeuf bourguignon uit de oven met geroosterde spruiten",
@@ -326,7 +330,7 @@ func TestScraper_A(t *testing.T) {
 					SaturatedFat:  "12 g",
 				},
 				PrepTime:  "PT30M",
-				Tools:     &models.Tools{Values: []models.Tool{}},
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT3H30M",
 				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.ah.nl/allerhande/recept/R-R1197438/boeuf-bourguignon-uit-de-oven-met-geroosterde-spruiten",
@@ -359,22 +363,22 @@ func TestScraper_A(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Βάζουμε στον πολυκόφτη τα καρύδια, τη φρυγανιά, την κανέλα, το γαρίφαλο, και χτυπάμε μέχρι να διαλυθούν όλα τα υλικά."},
-						{Text: "Προθερμαίνουμε τον φούρνο στους 150&deg;C στον αέρα."},
-						{Text: "Βουτυρώνουμε ένα ορθογώνιο ταψί 25x32 εκ."},
-						{Text: "Απλώνουμε τα φύλλα κρούστας στον πάγκο εργασίας και τα κόβουμε στο μέγεθος του ταψιού. Το φύλλο που περισσεύει το κρατάμε στην άκρη."},
-						{Text: "Βάζουμε τα μισά φύλλα στο ταψί, ρίχνουμε όλη τη γέμιση και καλύπτουμε με τα φύλλα που είχαμε αφήσει στην άκρη."},
-						{Text: "Χαράσσουμε τον μπακλαβά σε διαγώνια κομμάτια."},
-						{Text: "Ρίχνουμε το λιωμένο βούτυρο με μια κουτάλα σταδιακά και το απλώνουμε ως τις άκρες με ένα πινέλο."},
-						{Text: "Μεταφέρουμε το ταψί στον φούρνο, ψηλά στη σχάρα και ψήνουμε για 2 ώρες μέχρι να γίνει τραγανός."},
-						{Text: "Λίγα λεπτά πριν βγάλουμε τον μπακλαβά από τον φούρνο ετοιμάζουμε το σιρόπι."},
-						{Text: "Τοποθετούμε μια κατσαρόλα σε δυνατή φωτιά να κάψει."},
-						{Text: "Ρίχνουμε τη ζάχαρη, το νερό, το λεμόνι, την κανέλα, το μέλι, και αφήνουμε να πάρει μια βράση μέχρι να διαλυθεί η ζάχαρη."},
-						{Text: "Μόλις πάρει μια βράση και έχουμε βγάλει από τον φούρνο τον μπακλαβά, σιροπιάζουμε με το καυτό σιρόπι τον καυτό μπακλαβά."},
-						{Text: "Προσέχουμε και σιροπιάζουμε σταδιακά με την κουτάλα για να μην διαλυθεί ο μπακλαβάς."},
-						{Text: "Αφήνουμε τον μπακλαβά στην άκρη μέχρι να &lsquo;&rsquo;πιει&rsquo;&rsquo; όλο το σιρόπι."},
-						{Text: "Κόβουμε σε κομμάτια και σερβίρουμε."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Βάζουμε στον πολυκόφτη τα καρύδια, τη φρυγανιά, την κανέλα, το γαρίφαλο, και χτυπάμε μέχρι να διαλυθούν όλα τα υλικά."},
+						{Type: "HowToStep", Text: "Προθερμαίνουμε τον φούρνο στους 150&deg;C στον αέρα."},
+						{Type: "HowToStep", Text: "Βουτυρώνουμε ένα ορθογώνιο ταψί 25x32 εκ."},
+						{Type: "HowToStep", Text: "Απλώνουμε τα φύλλα κρούστας στον πάγκο εργασίας και τα κόβουμε στο μέγεθος του ταψιού. Το φύλλο που περισσεύει το κρατάμε στην άκρη."},
+						{Type: "HowToStep", Text: "Βάζουμε τα μισά φύλλα στο ταψί, ρίχνουμε όλη τη γέμιση και καλύπτουμε με τα φύλλα που είχαμε αφήσει στην άκρη."},
+						{Type: "HowToStep", Text: "Χαράσσουμε τον μπακλαβά σε διαγώνια κομμάτια."},
+						{Type: "HowToStep", Text: "Ρίχνουμε το λιωμένο βούτυρο με μια κουτάλα σταδιακά και το απλώνουμε ως τις άκρες με ένα πινέλο."},
+						{Type: "HowToStep", Text: "Μεταφέρουμε το ταψί στον φούρνο, ψηλά στη σχάρα και ψήνουμε για 2 ώρες μέχρι να γίνει τραγανός."},
+						{Type: "HowToStep", Text: "Λίγα λεπτά πριν βγάλουμε τον μπακλαβά από τον φούρνο ετοιμάζουμε το σιρόπι."},
+						{Type: "HowToStep", Text: "Τοποθετούμε μια κατσαρόλα σε δυνατή φωτιά να κάψει."},
+						{Type: "HowToStep", Text: "Ρίχνουμε τη ζάχαρη, το νερό, το λεμόνι, την κανέλα, το μέλι, και αφήνουμε να πάρει μια βράση μέχρι να διαλυθεί η ζάχαρη."},
+						{Type: "HowToStep", Text: "Μόλις πάρει μια βράση και έχουμε βγάλει από τον φούρνο τον μπακλαβά, σιροπιάζουμε με το καυτό σιρόπι τον καυτό μπακλαβά."},
+						{Type: "HowToStep", Text: "Προσέχουμε και σιροπιάζουμε σταδιακά με την κουτάλα για να μην διαλυθεί ο μπακλαβάς."},
+						{Type: "HowToStep", Text: "Αφήνουμε τον μπακλαβά στην άκρη μέχρι να &lsquo;&rsquo;πιει&rsquo;&rsquo; όλο το σιρόπι."},
+						{Type: "HowToStep", Text: "Κόβουμε σε κομμάτια και σερβίρουμε."},
 					},
 				},
 				Name: "Εύκολος μπακλαβάς",
@@ -382,7 +386,7 @@ func TestScraper_A(t *testing.T) {
 					Calories: "508 calories",
 				},
 				PrepTime: "PT35M",
-				Tools:    &models.Tools{Values: []models.Tool{}},
+				Tools:    &models.Tools{Values: []models.HowToItem{}},
 				URL:      "https://akispetretzikis.com/recipe/6867/eukolos-mpaklavas",
 				Yield:    &models.Yield{Value: 1},
 			},
@@ -395,6 +399,8 @@ func TestScraper_A(t *testing.T) {
 				AtType:        &models.SchemaType{Value: "Recipe"},
 				Category:      &models.Category{Value: "Main Course"},
 				CookTime:      "PT60M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
 				DatePublished: "2021-04-19",
 				Description:   &models.Description{Value: "dfinocchiaro"},
 				Keywords:      &models.Keywords{Values: "dfinocchiaro"},
@@ -413,7 +419,7 @@ func TestScraper_A(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
+					Values: []models.HowToItem{
 						{Type: "HowToStep", Text: "Preheat oven to 400°F"},
 						{Type: "HowToStep", Text: "In a small bowl, whisk together the olive oil, garlic, sugar, lemon juice, orange juice, oregano, paprika, onion powder, pepper flakes, salt and pepper."},
 						{Type: "HowToStep", Text: "Place chicken pieces in the pan, skin side up. Pour the mixture all over the chicken, turning to coat."},
@@ -422,10 +428,12 @@ func TestScraper_A(t *testing.T) {
 						{Type: "HowToStep", Text: "Bake for 1 hour, uncovered, or until the skin turns brown and juices run clear."},
 					},
 				},
-				Name:     "Citrus Chicken by All-Clad",
-				PrepTime: "PT5M",
-				Yield:    &models.Yield{Value: 8},
-				URL:      "https://www.all-clad.com/blog/post/kellyann-citrus-chicken",
+				NutritionSchema: &models.NutritionSchema{},
+				Name:            "Citrus Chicken by All-Clad",
+				PrepTime:        "PT5M",
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 8},
+				URL:             "https://www.all-clad.com/blog/post/kellyann-citrus-chicken",
 			},
 		},
 		{
@@ -459,17 +467,17 @@ func TestScraper_A(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Gather your ingredients, making sure your butter is softened, and your eggs are room temperature."},
-						{Text: "Preheat the oven to 350 degrees F (175 degrees C)."},
-						{Text: "Beat butter, white sugar, and brown sugar with an electric mixer in a large bowl until smooth."},
-						{Text: "Beat in eggs, one at a time, then stir in vanilla."},
-						{Text: "Dissolve baking soda in hot water. Add to batter along with salt."},
-						{Text: "Stir in flour, chocolate chips, and walnuts."},
-						{Text: "Drop spoonfuls of dough 2 inches apart onto ungreased baking sheets."},
-						{Text: "Bake in the preheated oven until edges are nicely browned, about 10 minutes."},
-						{Text: "Cool on the baking sheets briefly before removing to a wire rack to cool completely."},
-						{Text: "Store in an airtight container or serve immediately and enjoy!"},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Gather your ingredients, making sure your butter is softened, and your eggs are room temperature."},
+						{Type: "HowToStep", Text: "Preheat the oven to 350 degrees F (175 degrees C)."},
+						{Type: "HowToStep", Text: "Beat butter, white sugar, and brown sugar with an electric mixer in a large bowl until smooth."},
+						{Type: "HowToStep", Text: "Beat in eggs, one at a time, then stir in vanilla."},
+						{Type: "HowToStep", Text: "Dissolve baking soda in hot water. Add to batter along with salt."},
+						{Type: "HowToStep", Text: "Stir in flour, chocolate chips, and walnuts."},
+						{Type: "HowToStep", Text: "Drop spoonfuls of dough 2 inches apart onto ungreased baking sheets."},
+						{Type: "HowToStep", Text: "Bake in the preheated oven until edges are nicely browned, about 10 minutes."},
+						{Type: "HowToStep", Text: "Cool on the baking sheets briefly before removing to a wire rack to cool completely."},
+						{Type: "HowToStep", Text: "Store in an airtight container or serve immediately and enjoy!"},
 					},
 				},
 				Name: "Best Chocolate Chip Cookies",
@@ -519,17 +527,17 @@ func TestScraper_A(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Combine the flour, salt, and sugar in the bowl of your food processor and pulse 3-4 times. Add the butter and pulse until texture looks mealy, 5-6 pulses. Then, add the shortening and pulse until incorporated, another 3-4 pulses. Remove the lid and drizzle in 5 tablespoons of the Applejack. Replace the lid and pulse 5 times. Add the remaining Applejack and pulse until the mixture begins to hold together and pull away from the sides of the bowl."},
-						{Text: "Dump the mixture onto a clean surface and squeeze together with your hands to form a smooth ball. Divide the ball in half and press each into a disk about 1-inch thick. Wrap each dough in plastic wrap and refrigerate for at least 1 hour. (You can refrigerate longer, even overnight, but the dough will have to sit at room temperature for 15 minutes to be malleable enough to roll."},
-						{Text: "Peel, core, and slice the apples into 1/4-inch slices and move to a large mixing bowl. Add 1/4 cup of the sugar and toss with your hands to thoroughly coat. Set aside for 45 minutes, tossing halfway through, then transfer to a colander set over a large bowl and set aside to drain for 45 minutes."},
-						{Text: "Transfer the accumulated juices (you should have about 1/4 cup) to a small saucepan and reduce over medium heat to 2 tablespoons, about 3 minutes. Set aside to cool."},
-						{Text: "Stir the remaining sugar into the apple slices along with the tapioca flour, liquid pectin, apple cider vinegar, salt, and grains of paradise. Set aside."},
-						{Text: "Crank your oven to 400℉ and move a rack to the lowest position."},
-						{Text: `Place a 12" x 24" piece of wax paper on a clean work surface and lightly dust with flour. Remove the dough disks from the refrigerator and allow them to come to room temperature, 15 minutes. Discard the plastic wrap from one and place the dough on the wax paper. Dust with a bit more flour and roll into a 12" x 12" circle. Carefully peel the wax paper off and place the dough into the tart pan, gently pressing it into the edges. (See the note on dough movement below).`},
-						{Text: "Arrange the apples in the bottom of the pan in concentric circles starting around the edges, working toward the center, which will result in a slight mound shape. Pour any remaining liquid evenly over the apples."},
-						{Text: "Roll out the second dough disk in the same manner as the first. Place this dough over the apples and seal the edges of the pie, trimming any excess dough. Make a few slits in the top of the crust with a paring knife to give steam a way out. Park the pie on a foil-lined sheet pan and brush the top of the crust with the reduced juice. Bake for 1 hour, 10 minutes."},
-						{Text: "Transfer the pie to a cooling rack and rest for at least 4 hours before removing from the tart pan and slicing."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Combine the flour, salt, and sugar in the bowl of your food processor and pulse 3-4 times. Add the butter and pulse until texture looks mealy, 5-6 pulses. Then, add the shortening and pulse until incorporated, another 3-4 pulses. Remove the lid and drizzle in 5 tablespoons of the Applejack. Replace the lid and pulse 5 times. Add the remaining Applejack and pulse until the mixture begins to hold together and pull away from the sides of the bowl."},
+						{Type: "HowToStep", Text: "Dump the mixture onto a clean surface and squeeze together with your hands to form a smooth ball. Divide the ball in half and press each into a disk about 1-inch thick. Wrap each dough in plastic wrap and refrigerate for at least 1 hour. (You can refrigerate longer, even overnight, but the dough will have to sit at room temperature for 15 minutes to be malleable enough to roll."},
+						{Type: "HowToStep", Text: "Peel, core, and slice the apples into 1/4-inch slices and move to a large mixing bowl. Add 1/4 cup of the sugar and toss with your hands to thoroughly coat. Set aside for 45 minutes, tossing halfway through, then transfer to a colander set over a large bowl and set aside to drain for 45 minutes."},
+						{Type: "HowToStep", Text: "Transfer the accumulated juices (you should have about 1/4 cup) to a small saucepan and reduce over medium heat to 2 tablespoons, about 3 minutes. Set aside to cool."},
+						{Type: "HowToStep", Text: "Stir the remaining sugar into the apple slices along with the tapioca flour, liquid pectin, apple cider vinegar, salt, and grains of paradise. Set aside."},
+						{Type: "HowToStep", Text: "Crank your oven to 400℉ and move a rack to the lowest position."},
+						{Type: "HowToStep", Text: `Place a 12" x 24" piece of wax paper on a clean work surface and lightly dust with flour. Remove the dough disks from the refrigerator and allow them to come to room temperature, 15 minutes. Discard the plastic wrap from one and place the dough on the wax paper. Dust with a bit more flour and roll into a 12" x 12" circle. Carefully peel the wax paper off and place the dough into the tart pan, gently pressing it into the edges. (See the note on dough movement below).`},
+						{Type: "HowToStep", Text: "Arrange the apples in the bottom of the pan in concentric circles starting around the edges, working toward the center, which will result in a slight mound shape. Pour any remaining liquid evenly over the apples."},
+						{Type: "HowToStep", Text: "Roll out the second dough disk in the same manner as the first. Place this dough over the apples and seal the edges of the pie, trimming any excess dough. Make a few slits in the top of the crust with a paring knife to give steam a way out. Park the pie on a foil-lined sheet pan and brush the top of the crust with the reduced juice. Bake for 1 hour, 10 minutes."},
+						{Type: "HowToStep", Text: "Transfer the pie to a cooling rack and rest for at least 4 hours before removing from the tart pan and slicing."},
 					},
 				},
 				Name:      "The Apple Pie",
@@ -570,38 +578,38 @@ func TestScraper_A(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Prep. To create the blue cheese dip, take the cream cheese and the blue cheese out of the fridge and " +
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Prep. To create the blue cheese dip, take the cream cheese and the blue cheese out of the fridge and " +
 							"let them come to room temp. Then smush them together with the spices. Mix in the sour cream and " +
 							"half and half. Put them in a serving bowl and refrigerate. You can do this a day ahead. Cut up the " +
 							"celery into 4-inch (10 cm) sections and put it back in the chiller."},
-						{Text: "For the Buffalo hot sauce, melt the butter over a low heat and then adding the garlic. Let it simmer " +
+						{Type: "HowToStep", Text: "For the Buffalo hot sauce, melt the butter over a low heat and then adding the garlic. Let it simmer " +
 							"for about a minute but don't let the garlic brown. Then add the Frank's RedHot sauce. Let them get " +
 							"to know each other for at least 3 to 4 minutes. But remember, if you don't want to use the original " +
 							"and you want to get creative, try one or more of the other sauces listed above. I'm partial to DC Mumbo " +
 							"Sauce. Like the dip, the sauce can be made a day in advance."},
-						{Text: "When it comes time to prep the wings, note that there are three distinct pieces of different thickness " +
+						{Type: "HowToStep", Text: "When it comes time to prep the wings, note that there are three distinct pieces of different thickness " +
 							"and skin to meat ratio: (1) The tips (2) the flats or wingettes in the center, and (3) the drumettes " +
 							"on the end that attaches to the shoulders. The thickness differences means they cook at different speeds " +
 							"and finish at different times. The best thing to do is separate them into three parts with kitchen shears, " +
 							"a sturdy knife, or a Chinese cleaver (my weapon of choice because the ka-chunk noise of chopping them off " +
 							"is so very satisfying)."},
-						{Text: "The tips are almost all skin, really thin, and small enough that they often fall through the grates or " +
+						{Type: "HowToStep", Text: "The tips are almost all skin, really thin, and small enough that they often fall through the grates or " +
 							"burn to a crisp. You can cook them if you wish, but I freeze them for use in making soup. Separate the " +
 							"V shaped piece remaining at the joint between the flat and drumette. You will cook both these parts."},
-						{Text: "Some folks like to season them with a spice rub. That works most of the time. I find that most commerci" +
+						{Type: "HowToStep", Text: "Some folks like to season them with a spice rub. That works most of the time. I find that most commerci" +
 							"al rubs are too salty for such thin cuts, and most have too much sugar that tends to burn during the " +
 							"crisping phase. Besides, they just get lost under the sauces and dips. So I just season them with salt and " +
 							"pepper. As Rachael Ray says: \"Easy peasy.\""},
-						{Text: "Fire up. You can start them on a smoker if you wish, but I usually grill them. Set up the grill for 2-zone " +
+						{Type: "HowToStep", Text: "Fire up. You can start them on a smoker if you wish, but I usually grill them. Set up the grill for 2-zone " +
 							"cooking with the indirect side at about 325°F (162.8°C) to help crisp the skin and melt the fat. If you " +
 							"wish, add wood to the direct side to create smoke. Use a lot of smoke."},
-						{Text: "Cook. Add the wings to the indirect heat side of the grill and cook with the lid closed until the skins are " +
+						{Type: "HowToStep", Text: "Cook. Add the wings to the indirect heat side of the grill and cook with the lid closed until the skins are " +
 							"golden. That will probably take about 7 to 10 minutes per side. By then they are pretty close to done."},
-						{Text: "To crisp the skin, move the wings to the direct heat side of your grill, high heat, lid open, and stand there, " +
+						{Type: "HowToStep", Text: "To crisp the skin, move the wings to the direct heat side of your grill, high heat, lid open, and stand there, " +
 							"turning frequently until the skin is dark golden to brown but not burnt, keeping a close eye on the " +
 							"skinnier pieces, moving them to the indirect zone when they are done."},
-						{Text: "Serve. Put the sauce in a big mixing bowl or pot and put it on the grill and get it warm. Stir or whisk well. " +
+						{Type: "HowToStep", Text: "Serve. Put the sauce in a big mixing bowl or pot and put it on the grill and get it warm. Stir or whisk well. " +
 							"Keep warm. When the wings are done you can serve them with the sauce on the side for dipping, or just dump " +
 							"them in with the sauce and toss or stir until they are coated. Then slide them onto a serving platter. Put " +
 							"the celery sticks next to them, and serve with a bowl of Blue Cheese Dip. People can scoop some Blue " +
@@ -640,10 +648,10 @@ func TestScraper_A(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Preheat the oven to 400 degrees F. Line a large baking sheet with parchment paper or foil and grease lightly with olive oil or nonstick cooking spray. Place salmon skin side down."},
-						{Text: "In a medium bowl, whisk together the melted butter, honey, dijon, lemon juice, lemon zest, garlic powder and salt and pepper. Generously brush the salmon with the marinade."},
-						{Text: "Place salmon in the oven and bake for 15-20 minutes or until salmon easily flakes with a fork. Mine is always perfect at 16-18 minutes. Enjoy immediately."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Preheat the oven to 400 degrees F. Line a large baking sheet with parchment paper or foil and grease lightly with olive oil or nonstick cooking spray. Place salmon skin side down."},
+						{Type: "HowToStep", Text: "In a medium bowl, whisk together the melted butter, honey, dijon, lemon juice, lemon zest, garlic powder and salt and pepper. Generously brush the salmon with the marinade."},
+						{Type: "HowToStep", Text: "Place salmon in the oven and bake for 15-20 minutes or until salmon easily flakes with a fork. Mine is always perfect at 16-18 minutes. Enjoy immediately."},
 					},
 				},
 				Keywords: &models.Keywords{
@@ -697,13 +705,13 @@ func TestScraper_A(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Spray the pan well in step 1 to prevent sticking. If you don’t have nonstick baking spray with flour, mix 1 tablespoon melted butter and 1 tablespoon flour into a paste and brush inside the pan. For fruit pectin we recommend Sure-Jell for Less or No Sugar Needed Recipes. Ball Fruit Pectin will not work. If using frozen berries, thaw them before blending in step 3. This cake can be served plain or with Lemon Glaze or Cinnamon Whipped Cream ."},
-						{Text: "FOR THE CAKE: Adjust oven rack to lower-middle position and heat oven to 325 degrees. Heavily spray 12-cup nonstick Bundt pan with baking spray with flour. Whisk flour, baking powder, baking soda, salt, and cinnamon together in large bowl. Whisk buttermilk, lemon zest and juice, and vanilla together in medium bowl. Gently whisk eggs and yolk to combine in third bowl."},
-						{Text: "Using stand mixer fitted with paddle, beat butter and sugar on medium-high speed until pale and fluffy, about 3 minutes, scraping down bowl as needed. Reduce speed to medium and beat in half of eggs until incorporated, about 15 seconds. Repeat with remaining eggs, scraping down bowl after incorporating. Reduce speed to low and add one-third of flour mixture, followed by half of buttermilk mixture, mixing until just incorporated after each addition, about 5 seconds. Repeat using half of remaining flour mixture and all of remaining buttermilk mixture. Scrape down bowl, add remaining flour mixture, and mix at medium-low speed until batter is thoroughly combined, about 15 seconds. Remove bowl from mixer and fold batter once or twice with rubber spatula to incorporate any remaining flour. Cover bowl with plastic wrap and set aside while preparing filling (batter will inflate a bit)."},
-						{Text: "FOR THE FILLING: Whisk sugar, pectin, and salt together in small saucepan. Process blueberries in blender until mostly smooth, about 1 minute. Transfer 1/4 cup puree and lemon zest to saucepan with sugar mixture and stir to thoroughly combine. Heat sugar-blueberry mixture over medium heat until just simmering, about 3 minutes, stirring frequently to dissolve sugar and pectin. Transfer mixture to medium bowl and let cool for 5 minutes. Add remaining puree and lemon juice to cooled mixture and whisk to combine. Let sit until slightly set, about 8 minutes."},
-						{Text: "Spoon half of batter into prepared pan and smooth top. Using back of spoon, create 1/2-inch-deep channel in center of batter. Spoon half of filling into channel. Using butter knife or small offset spatula, thoroughly swirl filling into batter (there should be no large pockets of filling remaining). Repeat swirling step with remaining batter and filling."},
-						{Text: "Bake until top is golden brown and skewer inserted in center comes out with no crumbs attached, 60 to 70 minutes. Let cake cool in pan on wire rack for 10 minutes, then invert cake directly onto wire rack. Let cake cool for at least 3 hours before serving."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Spray the pan well in step 1 to prevent sticking. If you don’t have nonstick baking spray with flour, mix 1 tablespoon melted butter and 1 tablespoon flour into a paste and brush inside the pan. For fruit pectin we recommend Sure-Jell for Less or No Sugar Needed Recipes. Ball Fruit Pectin will not work. If using frozen berries, thaw them before blending in step 3. This cake can be served plain or with Lemon Glaze or Cinnamon Whipped Cream ."},
+						{Type: "HowToStep", Text: "FOR THE CAKE: Adjust oven rack to lower-middle position and heat oven to 325 degrees. Heavily spray 12-cup nonstick Bundt pan with baking spray with flour. Whisk flour, baking powder, baking soda, salt, and cinnamon together in large bowl. Whisk buttermilk, lemon zest and juice, and vanilla together in medium bowl. Gently whisk eggs and yolk to combine in third bowl."},
+						{Type: "HowToStep", Text: "Using stand mixer fitted with paddle, beat butter and sugar on medium-high speed until pale and fluffy, about 3 minutes, scraping down bowl as needed. Reduce speed to medium and beat in half of eggs until incorporated, about 15 seconds. Repeat with remaining eggs, scraping down bowl after incorporating. Reduce speed to low and add one-third of flour mixture, followed by half of buttermilk mixture, mixing until just incorporated after each addition, about 5 seconds. Repeat using half of remaining flour mixture and all of remaining buttermilk mixture. Scrape down bowl, add remaining flour mixture, and mix at medium-low speed until batter is thoroughly combined, about 15 seconds. Remove bowl from mixer and fold batter once or twice with rubber spatula to incorporate any remaining flour. Cover bowl with plastic wrap and set aside while preparing filling (batter will inflate a bit)."},
+						{Type: "HowToStep", Text: "FOR THE FILLING: Whisk sugar, pectin, and salt together in small saucepan. Process blueberries in blender until mostly smooth, about 1 minute. Transfer 1/4 cup puree and lemon zest to saucepan with sugar mixture and stir to thoroughly combine. Heat sugar-blueberry mixture over medium heat until just simmering, about 3 minutes, stirring frequently to dissolve sugar and pectin. Transfer mixture to medium bowl and let cool for 5 minutes. Add remaining puree and lemon juice to cooled mixture and whisk to combine. Let sit until slightly set, about 8 minutes."},
+						{Type: "HowToStep", Text: "Spoon half of batter into prepared pan and smooth top. Using back of spoon, create 1/2-inch-deep channel in center of batter. Spoon half of filling into channel. Using butter knife or small offset spatula, thoroughly swirl filling into batter (there should be no large pockets of filling remaining). Repeat swirling step with remaining batter and filling."},
+						{Type: "HowToStep", Text: "Bake until top is golden brown and skewer inserted in center comes out with no crumbs attached, 60 to 70 minutes. Let cake cool in pan on wire rack for 10 minutes, then invert cake directly onto wire rack. Let cake cool for at least 3 hours before serving."},
 					},
 				},
 				Name: "Marbled Blueberry Bundt Cake",
@@ -719,10 +727,22 @@ func TestScraper_A(t *testing.T) {
 					UnsaturatedFat: "6 grams",
 				},
 				Tools: &models.Tools{
-					Values: []models.Tool{
-						{AtType: "HowToTool", Name: "Stand Mixers (Inexpensive)"},
-						{AtType: "HowToTool", Name: "The Best Rasp-Style Graters"},
-						{AtType: "HowToTool", Name: "All-Purpose Whisks"},
+					Values: []models.HowToItem{
+						{
+							Type:  "HowToTool",
+							Name:  "Stand Mixers (Inexpensive)",
+							Image: "https://res.cloudinary.com/hksqkdlah/image/upload/ar_1:1,c_fill,dpr_2.0,f_auto,fl_lossy.progressive.strip_profile,g_faces:auto,q_auto:low,w_150/v1/Digital%20Partnerships/Washington%20Post%20Guides/Stand-Mixers_Inexpensive",
+						},
+						{
+							Type:  "HowToTool",
+							Name:  "The Best Rasp-Style Graters",
+							Image: "https://res.cloudinary.com/hksqkdlah/image/upload/ar_1:1,c_fill,dpr_2.0,f_auto,fl_lossy.progressive.strip_profile,g_faces:auto,q_auto:low,w_150/35193_can-rasp-style-graters-8639-square",
+						},
+						{
+							Type:  "HowToTool",
+							Name:  "All-Purpose Whisks",
+							Image: "https://res.cloudinary.com/hksqkdlah/image/upload/ar_1:1,c_fill,dpr_2.0,f_auto,fl_lossy.progressive.strip_profile,g_faces:auto,q_auto:low,w_150/22997_sil-whisk-oxogoodgrips-74191-1",
+						},
 					},
 				},
 				Yield: &models.Yield{Value: 12},
@@ -736,6 +756,7 @@ func TestScraper_A(t *testing.T) {
 				AtContext:     atContext,
 				AtType:        &models.SchemaType{Value: "Recipe"},
 				Name:          "Karnataka Style Orange Peels Curry Recipe",
+				CookingMethod: &models.CookingMethod{},
 				Cuisine:       &models.Cuisine{Value: "Karnataka"},
 				DateModified:  "2023-11-13T05:30:02+0000",
 				DatePublished: "2017-10-05T00:23:00+0000",
@@ -767,7 +788,7 @@ func TestScraper_A(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
+					Values: []models.HowToItem{
 						{Type: "HowToStep", Text: "To begin making the Karnataka Style Orange Peels Curry recipe, Peel out 2 oranges. Gently scrape the white region from the orange peel using a spoon. Remove as much as possible as this will reduce the bitterness."},
 						{Type: "HowToStep", Text: "Chop the orange peels finely."},
 						{Type: "HowToStep", Text: "Soak tamarind in water. After it's soaked well, squeeze out tamarind water and keep aside."},
@@ -778,7 +799,9 @@ func TestScraper_A(t *testing.T) {
 						{Type: "HowToStep", Text: "Serve Karnataka Style Orange Peels Curry along with Cabbage Thoran and Whole Wheat Lachha Paratha for your weekday meal. It even tastes great with Steamed Rice."},
 					},
 				},
-				Category: &models.Category{Value: "Indian Curry Recipes"},
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Category:        &models.Category{Value: "Indian Curry Recipes"},
 				Keywords: &models.Keywords{
 					Values: "South Indian Recipes,Indian Lunch Recipes,Orange Recipes,Karnataka Recipes",
 				},
@@ -823,17 +846,17 @@ func TestScraper_A(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Κόβουμε πρώτα το στήθος κοτόπουλο σε μεγάλα κομμάτια.Ζεσταίνουμε το ελαιόλαδο και το ροδίζουμε για 5 με 6 λεπτά.Προσθέτουμε το κρεμμύδι και το σκόρδο και αφήνουμε για 2 με 3 λεπτά να γίνει διάφανο.Προσθέτουμε τα μανιτάρια και τις πιπεριές και αφήνουμε να πιούν τα υγρά τους.Πασπαλίζουμε με το αλεύρι κι ανακατεύουμε να ψηθεί για 2 λεπτά.Τότε προσθέτουμε το ζωμό κι αφήνουμε σκεπασμένο να σιγοβράσει μέχρι να πιει τα υγρά του.Στο τέλος προσθέτουμε αλάτι και πιπέρι.Προσθέτουμε την κρέμα γάλακτος και σιγοβράζουμε να δέσει.Πασπαλίζουμε φρεσκοκομμένο μαϊντανό."},
-						{Text: "Ζεσταίνουμε το λάδι και σοτάρουμε το κρεμμύδι για 3 με 4 λεπτά.Προσθέτουμε το ρύζι και ανακατεύουμε να λαδωθεί και να γυαλίσει.Ρίχνουμε το ζωμό ζεστό και χαμηλώνουμε τη φωτιά.Προσθέτουμε αλάτι και πιπέρι και σκεπάζουμε την κατσαρόλα.Αφήνουμε να σιγοβράσει μέχρι να εμφανιστούν τρυπούλες στην επιφάνεια του ρυζιού.Τέλος προσθέτουμε τα ψιλοκομμένα μυρωδικά.Σερβίρουμε με ρύζι."},
-						{Text: "Αν θέλετε να αντικαταστήσετε την κρέμα γάλακτος, μπορείτε να βάλετε γιαούρτι, αριάνι ή κεφίρ.Θα πρέπει να έχετε όποιο από τα 3 υλικά θα χρησιμοποιήσετε, σε θερμοκρασία δωματίου.Αφού ολοκληρώσετε το μαγείρεμα και το φαγητό έχει μείνει με λίγη σάλτσα, τραβήξτε το σκεύος εκτός φωτιάς και προσθέστε ένα από τα παραπάνω υλικά.Ανακατέψτε ελαφρά.Με το γιαούρτι δένει πιο σωστά και βγαίνει πιο πυκνή σάλτσα όπως γίνεται με την κρέμα γάλακτος.Εάν χρησιμοποιήσετε το γιαούρτι, αφήστε τη σάλτσα να βράσει και να πυκνώσει, αποσύρετε από τη φωτιά και ανακατέψτε το στη σάλτσα.Στην γεύση είναι τέλεια και τα τρία υλικά."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Κόβουμε πρώτα το στήθος κοτόπουλο σε μεγάλα κομμάτια.Ζεσταίνουμε το ελαιόλαδο και το ροδίζουμε για 5 με 6 λεπτά.Προσθέτουμε το κρεμμύδι και το σκόρδο και αφήνουμε για 2 με 3 λεπτά να γίνει διάφανο.Προσθέτουμε τα μανιτάρια και τις πιπεριές και αφήνουμε να πιούν τα υγρά τους.Πασπαλίζουμε με το αλεύρι κι ανακατεύουμε να ψηθεί για 2 λεπτά.Τότε προσθέτουμε το ζωμό κι αφήνουμε σκεπασμένο να σιγοβράσει μέχρι να πιει τα υγρά του.Στο τέλος προσθέτουμε αλάτι και πιπέρι.Προσθέτουμε την κρέμα γάλακτος και σιγοβράζουμε να δέσει.Πασπαλίζουμε φρεσκοκομμένο μαϊντανό."},
+						{Type: "HowToStep", Text: "Ζεσταίνουμε το λάδι και σοτάρουμε το κρεμμύδι για 3 με 4 λεπτά.Προσθέτουμε το ρύζι και ανακατεύουμε να λαδωθεί και να γυαλίσει.Ρίχνουμε το ζωμό ζεστό και χαμηλώνουμε τη φωτιά.Προσθέτουμε αλάτι και πιπέρι και σκεπάζουμε την κατσαρόλα.Αφήνουμε να σιγοβράσει μέχρι να εμφανιστούν τρυπούλες στην επιφάνεια του ρυζιού.Τέλος προσθέτουμε τα ψιλοκομμένα μυρωδικά.Σερβίρουμε με ρύζι."},
+						{Type: "HowToStep", Text: "Αν θέλετε να αντικαταστήσετε την κρέμα γάλακτος, μπορείτε να βάλετε γιαούρτι, αριάνι ή κεφίρ.Θα πρέπει να έχετε όποιο από τα 3 υλικά θα χρησιμοποιήσετε, σε θερμοκρασία δωματίου.Αφού ολοκληρώσετε το μαγείρεμα και το φαγητό έχει μείνει με λίγη σάλτσα, τραβήξτε το σκεύος εκτός φωτιάς και προσθέστε ένα από τα παραπάνω υλικά.Ανακατέψτε ελαφρά.Με το γιαούρτι δένει πιο σωστά και βγαίνει πιο πυκνή σάλτσα όπως γίνεται με την κρέμα γάλακτος.Εάν χρησιμοποιήσετε το γιαούρτι, αφήστε τη σάλτσα να βράσει και να πυκνώσει, αποσύρετε από τη φωτιά και ανακατέψτε το στη σάλτσα.Στην γεύση είναι τέλεια και τα τρία υλικά."},
 					},
 				},
 				Keywords:        &models.Keywords{},
 				Name:            "Κοτόπουλο αλά κρεμ",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT10M",
-				Tools:           &models.Tools{Values: []models.Tool{}},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				TotalTime:       "PT40M",
 				Yield:           &models.Yield{Value: 4},
 				URL:             "https://www.argiro.gr/recipe/kotopoulo-ala-krem-me-ruzi/",
@@ -860,10 +883,10 @@ func TestScraper_A(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "Koka pastan enligt anvisning på förpackningen."},
-						{Text: "Strimla kycklingköttet. Fräs det i smör-&rapsolja i en stekpanna, salta och peppra."},
-						{Text: "Rör ner crème fraiche och låt koka ihop ca 5 min. Vänd ner spenaten och blanda med pastan. Servera direkt."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Koka pastan enligt anvisning på förpackningen."},
+						{Type: "HowToStep", Text: "Strimla kycklingköttet. Fräs det i smör-&rapsolja i en stekpanna, salta och peppra."},
+						{Type: "HowToStep", Text: "Rör ner crème fraiche och låt koka ihop ca 5 min. Vänd ner spenaten och blanda med pastan. Servera direkt."},
 					},
 				},
 				Name: "Kycklingpasta med spenat och parmesan",
@@ -912,16 +935,16 @@ func TestScraper_A(t *testing.T) {
 						"0.25 botte(s) Persil plat",
 					},
 				},
-				Instructions: &models.Instructions{Values: []models.HowToStep{
-					{Text: "Couper et dégraisser légèrement la viande. Éplucher et tailler en gros morceaux les carottes et l'oignon. Éplucher et dégermer les gousses d'ail.\nMettre la viande et la garniture dans le vin rouge, et faire mariner toute une nuit au réfrigérateur."},
-					{Text: "Égoutter la viande et la garniture en conservant le vin. Séparer la garniture et la viande. Effeuiller le persil, conserver les tiges pour la cuisson et les feuilles pour le dressage.\n\nDans une cocotte chaude, mettre l'huile de tournesol et colorer les morceaux de viande environ 1 minute de chaque côté. Ajouter la garniture aromatique, assaisonner de sel fin, puis cuire doucement pendant 3 minutes. Singer (c'est-à-dire ajouter la farine) et cuire à nouveau 1 minute tout en mélangeant pour bien incorporer la farine. Mouiller avec le vin rouge puis avec le fond de veau. Ajouter les tiges de persil et compléter avec de l'eau si nécessaire. Faire bouillir puis baisser le feu et laisser mijoter pendant 2h30.\n\nLorsque la viande est cuite, la retirer de la cocotte. Passer la sauce au chinois pour la filtrer et vérifier sa texture. Si elle est encore trop liquide, la réduire pendant quelques minutes. La goûter et l'assaisonner de sel et de poivre."},
-					{Text: "Éplucher les champignons au couteau. \n\nDisposer les oignons grelots dans une poêle. Ajouter de l'eau à mi-hauteur, 20 g de beurre et 1 cuillère à soupe de sucre. Couvrir au contact avec un papier sulfurisé et cuire jusqu'à évaporation complète de l'eau. Lorsque le sucre commence à caraméliser, ajouter 1 cuillère à soupe d'eau et bien enrober les oignons de caramel.\n\nDans une casserole d'eau froide, mettre les lardons et faire bouillir pour les blanchir. Bien les égoutter, puis les colorer dans une poêle antiadhésive bien chaude. Réserver ensuite sur du papier absorbant. Dans la même poêle, mettre un filet d'huile d'olive et faire sauter les champignons pour les colorer. Réserver."},
-					{Text: "Ciseler les feuilles de persil.\nDans un plat, déposer la viande, verser la sauce dessus et disposer les garnitures."},
+				Instructions: &models.Instructions{Values: []models.HowToItem{
+					{Type: "HowToStep", Text: "Couper et dégraisser légèrement la viande. Éplucher et tailler en gros morceaux les carottes et l'oignon. Éplucher et dégermer les gousses d'ail.\nMettre la viande et la garniture dans le vin rouge, et faire mariner toute une nuit au réfrigérateur."},
+					{Type: "HowToStep", Text: "Égoutter la viande et la garniture en conservant le vin. Séparer la garniture et la viande. Effeuiller le persil, conserver les tiges pour la cuisson et les feuilles pour le dressage.\n\nDans une cocotte chaude, mettre l'huile de tournesol et colorer les morceaux de viande environ 1 minute de chaque côté. Ajouter la garniture aromatique, assaisonner de sel fin, puis cuire doucement pendant 3 minutes. Singer (c'est-à-dire ajouter la farine) et cuire à nouveau 1 minute tout en mélangeant pour bien incorporer la farine. Mouiller avec le vin rouge puis avec le fond de veau. Ajouter les tiges de persil et compléter avec de l'eau si nécessaire. Faire bouillir puis baisser le feu et laisser mijoter pendant 2h30.\n\nLorsque la viande est cuite, la retirer de la cocotte. Passer la sauce au chinois pour la filtrer et vérifier sa texture. Si elle est encore trop liquide, la réduire pendant quelques minutes. La goûter et l'assaisonner de sel et de poivre."},
+					{Type: "HowToStep", Text: "Éplucher les champignons au couteau. \n\nDisposer les oignons grelots dans une poêle. Ajouter de l'eau à mi-hauteur, 20 g de beurre et 1 cuillère à soupe de sucre. Couvrir au contact avec un papier sulfurisé et cuire jusqu'à évaporation complète de l'eau. Lorsque le sucre commence à caraméliser, ajouter 1 cuillère à soupe d'eau et bien enrober les oignons de caramel.\n\nDans une casserole d'eau froide, mettre les lardons et faire bouillir pour les blanchir. Bien les égoutter, puis les colorer dans une poêle antiadhésive bien chaude. Réserver ensuite sur du papier absorbant. Dans la même poêle, mettre un filet d'huile d'olive et faire sauter les champignons pour les colorer. Réserver."},
+					{Type: "HowToStep", Text: "Ciseler les feuilles de persil.\nDans un plat, déposer la viande, verser la sauce dessus et disposer les garnitures."},
 				}},
 				Keywords:        &models.Keywords{},
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "P0Y0M0DT0H0M1200S",
-				Tools:           &models.Tools{Values: []models.Tool{}},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				TotalTime:       "P0Y0M0DT0H0M55200S",
 				URL:             "https://www.atelierdeschefs.fr/fr/recette/17741-boeuf-bourguignon-traditionnel.php",
 				Yield:           &models.Yield{Value: 6},
@@ -957,13 +980,13 @@ func TestScraper_A(t *testing.T) {
 					},
 				},
 				Instructions: &models.Instructions{
-					Values: []models.HowToStep{
-						{Text: "To a large 7 to 8-quart slow cooker, add the beef, onion, garlic, salt, pepper, beef bouillon, thyme, and stir to combine; set aside."},
-						{Text: "To a medium bowl, add the mushroom soup, beef broth, optional Dijon, Worcestershire sauce, and whisk to combine."},
-						{Text: "Pour the liquid over the contents in the slow cooker, stir to combine, cover the the lid, and cook on high for 4 to 5 hours OR on low for 7 to 8 hours, or until done. Tip - At any time the beef is slow cooking and you feel like it needs a bit more beef broth, it's fine to add a bit more, to taste."},
-						{Text: "In the last 15 minutes of slow cooking, cook the egg noodles in a pot of boiling water according to package directions; drain and set aside.* (See Notes about why I don't cook the noodles in the slow cooker and cook them separately.)"},
-						{Text: "Optionally, if you want a creamier sauce, after the beef stroganoff has cooked and has cooled a bit meaning it's not boiling nor bubbling, slowly you can add 1/2-cup heavy cream at room temperature while whisking vigorously as you add it. Tip - Do NOT add cold cream to hot beef liquid because the dairy proteins can separate, or break, and you will end up with a horribly ugly looking sauce after hours and hours slow cooking. So make sure the cream is at room temp and the beef stroganoff has cooled a bit if you are adding cream."},
-						{Text: "Plate a bed of noodles, top with the beef and gravy mixture, and serve immediately. Extra beef stroganoff will keep airtight in the fridge for up to 5 days and in the freezer for up to 4 months. Tip - Because the noodles will continue to absorb moisture, including any of the beef gravy or sauce, it's very important to store the beef mixture and the noodles separately in the fridge or freezer."},
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "To a large 7 to 8-quart slow cooker, add the beef, onion, garlic, salt, pepper, beef bouillon, thyme, and stir to combine; set aside."},
+						{Type: "HowToStep", Text: "To a medium bowl, add the mushroom soup, beef broth, optional Dijon, Worcestershire sauce, and whisk to combine."},
+						{Type: "HowToStep", Text: "Pour the liquid over the contents in the slow cooker, stir to combine, cover the the lid, and cook on high for 4 to 5 hours OR on low for 7 to 8 hours, or until done. Tip - At any time the beef is slow cooking and you feel like it needs a bit more beef broth, it's fine to add a bit more, to taste."},
+						{Type: "HowToStep", Text: "In the last 15 minutes of slow cooking, cook the egg noodles in a pot of boiling water according to package directions; drain and set aside.* (See Notes about why I don't cook the noodles in the slow cooker and cook them separately.)"},
+						{Type: "HowToStep", Text: "Optionally, if you want a creamier sauce, after the beef stroganoff has cooked and has cooled a bit meaning it's not boiling nor bubbling, slowly you can add 1/2-cup heavy cream at room temperature while whisking vigorously as you add it. Tip - Do NOT add cold cream to hot beef liquid because the dairy proteins can separate, or break, and you will end up with a horribly ugly looking sauce after hours and hours slow cooking. So make sure the cream is at room temp and the beef stroganoff has cooled a bit if you are adding cream."},
+						{Type: "HowToStep", Text: "Plate a bed of noodles, top with the beef and gravy mixture, and serve immediately. Extra beef stroganoff will keep airtight in the fridge for up to 5 days and in the freezer for up to 4 months. Tip - Because the noodles will continue to absorb moisture, including any of the beef gravy or sauce, it's very important to store the beef mixture and the noodles separately in the fridge or freezer."},
 					},
 				},
 				Keywords: &models.Keywords{

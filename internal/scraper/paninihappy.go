@@ -9,10 +9,13 @@ import (
 )
 
 func scrapePaniniHappy(root *goquery.Document) (models.RecipeSchema, error) {
+	rs := models.NewRecipeSchema()
+
 	content := root.Find(".entry-content")
 	rs.Image.Value, _ = content.Find("img").First().Attr("src")
 
 	recipe := content.Find(".hrecipe")
+	rs.Name = recipe.Find("h2").Last().Text()
 
 	var description string
 	content.Children().NextUntil(".hrecipe").Each(func(i int, s *goquery.Selection) {
@@ -21,9 +24,8 @@ func scrapePaniniHappy(root *goquery.Document) (models.RecipeSchema, error) {
 		}
 		description += s.Text()
 	})
-	description = strings.TrimSuffix(description, "\n\n\n")
+	rs.Description.Value = strings.TrimSuffix(description, "\n\n\n")
 
-	var prepTime string
 	prepTimeStr := recipe.Find(".preptime").Text()
 	parts := strings.Split(prepTimeStr, " ")
 	if len(parts) > 1 {
@@ -31,10 +33,9 @@ func scrapePaniniHappy(root *goquery.Document) (models.RecipeSchema, error) {
 		if strings.HasPrefix(parts[1], "hour") {
 			letter = "H"
 		}
-		prepTime = fmt.Sprintf("PT%s%s", parts[0], letter)
+		rs.PrepTime = fmt.Sprintf("PT%s%s", parts[0], letter)
 	}
 
-	var cookTime string
 	cookeTimeStr := recipe.Find(".cooktime").Text()
 	parts = strings.Split(cookeTimeStr, " ")
 	if len(parts) > 1 {
@@ -42,31 +43,22 @@ func scrapePaniniHappy(root *goquery.Document) (models.RecipeSchema, error) {
 		if strings.HasPrefix(parts[1], "hour") {
 			letter = "H"
 		}
-		cookTime = fmt.Sprintf("PT%s%s", parts[0], letter)
+		rs.CookTime = fmt.Sprintf("PT%s%s", parts[0], letter)
 	}
 
-	yield := findYield(recipe.Find(".yield").Text())
+	rs.Yield.Value = findYield(recipe.Find(".yield").Text())
 
 	nodes := recipe.Find(".ingredient")
-	ingredients := make([]string, nodes.Length())
-	nodes.Each(func(i int, s *goquery.Selection) {
-		ingredients[i] = s.Text()
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
+	nodes.Each(func(_ int, s *goquery.Selection) {
+		rs.Ingredients.Values = append(rs.Ingredients.Values, s.Text())
 	})
 
 	nodes = recipe.Find(".instruction")
-	instructions := make([]models.HowToStep, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, s *goquery.Selection) {
-		instructions = append(instructions, models.NewHowToStep(s.Text()))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s.Text()))
 	})
 
-	return models.RecipeSchema{
-		Name:         recipe.Find("h2").Last().Text(),
-		Description:  &models.Description{Value: description},
-		Image:        &models.Image{Value: image},
-		PrepTime:     prepTime,
-		CookTime:     cookTime,
-		Yield:        &models.Yield{Value: yield},
-		Ingredients:  &models.Ingredients{Values: ingredients},
-		Instructions: &models.Instructions{Values: instructions},
-	}, nil
+	return rs, nil
 }

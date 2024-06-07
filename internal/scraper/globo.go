@@ -48,11 +48,11 @@ func scrapeGlobo(root *goquery.Document) (rs models.RecipeSchema, err error) {
 		yield = int16(i)
 	}()
 
-	chInstructions := make(chan []models.HowToStep)
+	chInstructions := make(chan []models.HowToItem)
 	go func() {
 		nodes := root.Find("li[itemprop='recipeInstructions']")
 
-		values := make([]models.HowToStep, nodes.Length())
+		values := make([]models.HowToItem, nodes.Length())
 		defer func() {
 			_ = recover()
 			chInstructions <- values
@@ -64,17 +64,22 @@ func scrapeGlobo(root *goquery.Document) (rs models.RecipeSchema, err error) {
 	}()
 
 	rs.Name, _ = root.Find("meta[itemprop='name']").Attr("content")
-	rs.Image.Value, _ = root.Find("meta[itemprop='image']").Attr("content")
+	image, _ := root.Find("meta[itemprop='image']").Attr("content")
+	rs.Image = &models.Image{Value: image}
 	rs.DateModified, _ = root.Find("meta[itemprop='dateModified']").Attr("content")
 	rs.DatePublished, _ = root.Find("meta[itemprop='datePublished']").Attr("content")
-	rs.Keywords.Values, _ = root.Find("meta[itemprop='keywords']").Attr("content")
-	rs.Category.Value, _ = root.Find("meta[itemprop='recipeCategory']").Attr("content")
-	rs.CookingMethod.Value, _ = root.Find("meta[itemprop='recipeCuisine']").Attr("content")
-	rs.Cuisine.Value, _ = root.Find("meta[itemprop='recipeCuisine']").Attr("content")
-	rs.Yield.Value = <-chYield
-	rs.Ingredients.Values = <-chIngredients
-	rs.Instructions.Values = <-chInstructions
-	rs.Description.Value = <-chDescription
+	keywords, _ := root.Find("meta[itemprop='keywords']").Attr("content")
+	rs.Keywords = &models.Keywords{Values: keywords}
+	cat, _ := root.Find("meta[itemprop='recipeCategory']").Attr("content")
+	rs.Category = &models.Category{Value: cat}
+	method, _ := root.Find("meta[itemprop='recipeCuisine']").Attr("content")
+	rs.CookingMethod = &models.CookingMethod{Value: method}
+	cuisine, _ := root.Find("meta[itemprop='recipeCuisine']").Attr("content")
+	rs.Cuisine = &models.Cuisine{Value: cuisine}
+	rs.Yield = &models.Yield{Value: <-chYield}
+	rs.Ingredients = &models.Ingredients{Values: <-chIngredients}
+	rs.Instructions = &models.Instructions{Values: <-chInstructions}
+	rs.Description = &models.Description{Value: <-chDescription}
 
 	return rs, err
 }

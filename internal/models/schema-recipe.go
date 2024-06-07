@@ -3,6 +3,7 @@ package models
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/utils/extensions"
 	"log/slog"
 	"math"
@@ -21,15 +22,15 @@ type RecipeSchema struct {
 	Category        *Category        `json:"recipeCategory,omitempty"`
 	CookTime        string           `json:"cookTime,omitempty"`
 	CookingMethod   *CookingMethod   `json:"cookingMethod,omitempty"`
-	Cuisine         *Cuisine         `json:"recipeCuisine"`
+	Cuisine         *Cuisine         `json:"recipeCuisine,omitempty"`
 	DateCreated     string           `json:"dateCreated,omitempty"`
 	DateModified    string           `json:"dateModified,omitempty"`
 	DatePublished   string           `json:"datePublished,omitempty"`
 	Description     *Description     `json:"description"`
-	Keywords        *Keywords        `json:"keywords"`
-	Image           *Image           `json:"image"`
-	Ingredients     *Ingredients     `json:"recipeIngredient"`
-	Instructions    *Instructions    `json:"recipeInstructions"`
+	Keywords        *Keywords        `json:"keywords,omitempty"`
+	Image           *Image           `json:"image,omitempty"`
+	Ingredients     *Ingredients     `json:"recipeIngredient,omitempty"`
+	Instructions    *Instructions    `json:"recipeInstructions,omitempty"`
 	Name            string           `json:"name,omitempty"`
 	NutritionSchema *NutritionSchema `json:"nutrition,omitempty"`
 	PrepTime        string           `json:"prepTime,omitempty"`
@@ -40,25 +41,25 @@ type RecipeSchema struct {
 }
 
 func (r *RecipeSchema) Equal(other RecipeSchema) bool {
-	return r.AtType.Value == other.AtType.Value &&
-		r.Category.Value == other.Category.Value &&
+	return r.AtType != nil && r.AtType.Value == other.AtType.Value &&
+		r.Category != nil && r.Category.Value == other.Category.Value &&
 		r.CookTime == other.CookTime &&
-		r.CookingMethod.Value == other.CookingMethod.Value &&
-		r.Cuisine.Value == other.Cuisine.Value &&
+		r.CookingMethod != nil && r.CookingMethod.Value == other.CookingMethod.Value &&
+		r.Cuisine != nil && r.Cuisine.Value == other.Cuisine.Value &&
 		r.DateCreated == other.DateCreated &&
 		r.DateModified == other.DateModified &&
 		r.DatePublished == other.DatePublished &&
-		r.Description.Value == other.Description.Value &&
-		r.Keywords.Values == other.Keywords.Values &&
-		r.Image.Value == other.Image.Value &&
-		slices.Equal(r.Ingredients.Values, other.Ingredients.Values) &&
-		slices.Equal(r.Instructions.Values, other.Instructions.Values) &&
+		r.Description != nil && r.Description.Value == other.Description.Value &&
+		r.Keywords != nil && r.Keywords.Values == other.Keywords.Values &&
+		r.Image != nil && r.Image.Value == other.Image.Value &&
+		r.Ingredients != nil && slices.Equal(r.Ingredients.Values, other.Ingredients.Values) &&
+		r.Instructions != nil && slices.Equal(r.Instructions.Values, other.Instructions.Values) &&
 		r.Name == other.Name &&
-		r.NutritionSchema.Equal(*other.NutritionSchema) &&
+		r.NutritionSchema != nil && r.NutritionSchema.Equal(*other.NutritionSchema) &&
 		r.PrepTime == other.PrepTime &&
-		slices.Equal(r.Tools.Values, other.Tools.Values) &&
+		r.Tools != nil && slices.Equal(r.Tools.Values, other.Tools.Values) &&
 		r.TotalTime == other.TotalTime &&
-		r.Yield.Value == other.Yield.Value &&
+		r.Yield != nil && r.Yield.Value == other.Yield.Value &&
 		r.URL == other.URL
 }
 
@@ -73,28 +74,57 @@ func NewRecipeSchema() RecipeSchema {
 		Keywords:        &Keywords{},
 		Image:           &Image{},
 		Ingredients:     &Ingredients{Values: make([]string, 0)},
-		Instructions:    &Instructions{Values: make([]HowToStep, 0)},
+		Instructions:    &Instructions{Values: make([]HowToItem, 0)},
 		NutritionSchema: &NutritionSchema{},
-		Tools:           &Tools{Values: make([]Tool, 0)},
+		Tools:           &Tools{Values: make([]HowToItem, 0)},
 		Yield:           &Yield{Value: 1},
 	}
 }
 
-type HowToStep struct {
-	Type  string `json:"@type,omitempty"`
-	Name  string `json:"name,omitempty"`
-	Text  string `json:"text,omitempty"`
-	Url   string `json:"url,omitempty"`
-	Image string `json:"image,omitempty"`
+type HowToItem struct {
+	Image    string `json:"image,omitempty"`
+	Quantity int    `json:"requiredQuantity,omitempty"`
+	Name     string `json:"name,omitempty"`
+	Text     string `json:"text,omitempty"`
+	Type     string `json:"@type,omitempty"`
+	Url      string `json:"url,omitempty"`
 }
 
-func NewHowToStep(text string, opts ...*HowToStep) HowToStep {
-	v := HowToStep{Type: "HowToStep", Text: text}
+// StringQuantity stringifies the HowToItem as `{Quantity} {Name}`.
+func (h *HowToItem) StringQuantity() string {
+	return strconv.Itoa(h.Quantity) + " " + h.Text
+}
+
+func NewHowToStep(text string, opts ...*HowToItem) HowToItem {
+	v := HowToItem{
+		Type: "HowToStep",
+		Text: text,
+	}
 	for _, opt := range opts {
 		v.Name = opt.Name
 		v.Url = opt.Url
 		v.Image = opt.Image
 	}
+	return v
+}
+
+func NewHowToTool(text string, opts ...*HowToItem) HowToItem {
+	v := HowToItem{
+		Type: "HowToTool",
+		Text: text,
+	}
+
+	for _, opt := range opts {
+		v.Name = opt.Name
+		v.Url = opt.Url
+		v.Image = opt.Image
+		v.Quantity = opt.Quantity
+	}
+
+	if v.Quantity == 0 {
+		v.Quantity = 1
+	}
+
 	return v
 }
 
@@ -193,7 +223,7 @@ func (r *RecipeSchema) Recipe() (*Recipe, error) {
 		ingredients = r.Ingredients.Values
 	}
 
-	var tools []Tool
+	var tools []HowToItem
 	if r.Tools != nil {
 		tools = r.Tools.Values
 	}
@@ -462,7 +492,11 @@ type Image struct {
 
 // MarshalJSON encodes the image.
 func (i *Image) MarshalJSON() ([]byte, error) {
-	return json.Marshal(i.Value)
+	s := i.Value
+	if s != "" {
+		s = app.Config.Address() + "/data/images/" + s
+	}
+	return json.Marshal(s)
 }
 
 // UnmarshalJSON decodes the image according to the schema (https://schema.org/image).
@@ -565,7 +599,7 @@ func (i *Ingredients) UnmarshalJSON(data []byte) error {
 
 // Instructions holds a recipe's list of instructions.
 type Instructions struct {
-	Values []HowToStep
+	Values []HowToItem
 }
 
 // MarshalJSON encodes the list of instructions.
@@ -586,19 +620,19 @@ func (i *Instructions) UnmarshalJSON(data []byte) error {
 		parts := strings.Split(strings.TrimSpace(x), "\n")
 		for _, s := range parts {
 			if s != "" {
-				i.Values = append(i.Values, HowToStep{Text: strings.TrimSpace(s)})
+				i.Values = append(i.Values, NewHowToStep(strings.TrimSpace(s)))
 			}
 		}
 	case []any:
 		for _, part := range x {
 			switch y := part.(type) {
 			case string:
-				i.Values = append(i.Values, HowToStep{Text: strings.TrimSpace(y)})
+				i.Values = append(i.Values, NewHowToStep(strings.TrimSpace(y)))
 			case map[string]any:
 				text, ok := y["text"]
 				if ok {
 					str := strings.TrimSuffix(text.(string), "\n")
-					i.Values = append(i.Values, HowToStep{Text: strings.TrimSpace(str)})
+					i.Values = append(i.Values, NewHowToStep(strings.TrimSpace(str)))
 					continue
 				}
 
@@ -615,7 +649,7 @@ func (i *Instructions) UnmarshalJSON(data []byte) error {
 		xv, ok := x["Values"]
 		if ok {
 			for _, s := range xv.([]any) {
-				i.Values = append(i.Values, HowToStep{Text: s.(string)})
+				i.Values = append(i.Values, NewHowToStep(s.(string)))
 			}
 		}
 	}
@@ -670,7 +704,7 @@ func parseSections(part any, instructions *Instructions) {
 	}
 
 	if sect.Text != "" {
-		instructions.Values = append(instructions.Values, HowToStep{Text: sect.Text})
+		instructions.Values = append(instructions.Values, NewHowToStep(sect.Text))
 	}
 
 	for _, item := range sect.Items {
@@ -693,7 +727,7 @@ func parseSections(part any, instructions *Instructions) {
 			str = strings.TrimSuffix(str, "\n")
 			str = strings.ReplaceAll(str, "\u00a0", "")
 			str = strings.ReplaceAll(str, "\u2009", "")
-			instructions.Values = append(instructions.Values, HowToStep{Text: strings.TrimSpace(str)})
+			instructions.Values = append(instructions.Values, NewHowToStep(strings.TrimSpace(str)))
 		}
 	}
 }
@@ -893,19 +927,7 @@ func (n *NutritionSchema) UnmarshalJSON(data []byte) error {
 
 // Tools holds the list of tools used for a recipe.
 type Tools struct {
-	Values []Tool
-}
-
-// Tool is a representation of the tool schema (https://schema.org/tool).
-type Tool struct {
-	AtType   string `json:"@type"`
-	Name     string `json:"name"`
-	Quantity int    `json:"requiredQuantity"`
-}
-
-// String stringifies the Tool as `{Quantity} {Name}`.
-func (t *Tool) String() string {
-	return strconv.Itoa(t.Quantity) + " " + t.Name
+	Values []HowToItem
 }
 
 // MarshalJSON encodes the list of tools.
@@ -945,11 +967,7 @@ func (t *Tools) UnmarshalJSON(data []byte) error {
 				}
 			}
 
-			t.Values = append(t.Values, Tool{
-				AtType:   "HowToTool",
-				Name:     s,
-				Quantity: q,
-			})
+			t.Values = append(t.Values, NewHowToTool(s, &HowToItem{Quantity: q}))
 		}
 	case []any:
 		for _, a := range x {
@@ -960,16 +978,16 @@ func (t *Tools) UnmarshalJSON(data []byte) error {
 					return err
 				}
 
-				var tool Tool
+				var tool HowToItem
 				err = json.Unmarshal(xb, &tool)
 				if err != nil {
 					return err
 				}
 
-				if tool.Name == "" {
+				if tool.Text == "" {
 					item, ok := x2["item"]
 					if ok {
-						tool.Name = item.(string)
+						tool.Text = item.(string)
 					}
 				}
 
@@ -977,7 +995,7 @@ func (t *Tools) UnmarshalJSON(data []byte) error {
 			}
 		}
 	case map[string]any:
-		var tool Tool
+		var tool HowToItem
 		err = json.Unmarshal(data, &tool)
 		if err != nil {
 			return err

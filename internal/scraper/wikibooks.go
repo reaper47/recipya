@@ -8,11 +8,14 @@ import (
 )
 
 func scrapeWikiBooks(root *goquery.Document) (models.RecipeSchema, error) {
+	rs := models.NewRecipeSchema()
+
 	var name string
 	split := strings.Split(root.Find("#firstHeading").Text(), ":")
 	if len(split) > 1 {
 		name = split[1]
 	}
+	rs.Name = name
 
 	start := root.Find(".mw-parser-output").Children().First()
 	if start.Nodes[0].Data == "section" {
@@ -23,38 +26,31 @@ func scrapeWikiBooks(root *goquery.Document) (models.RecipeSchema, error) {
 		return s.Nodes[0].Data == "p"
 	})
 	description := nodes.Slice(1, nodes.Length()).Text()
-	description = strings.TrimSuffix(description, "\n")
+	rs.Description.Value = strings.TrimSuffix(description, "\n")
 
-	category := root.Find("th:contains('Category')").Next().Text()
+	rs.Category.Value = root.Find("th:contains('Category')").Next().Text()
 
-	rs.Image.Value, _ = root.Find(".infobox-image img").First().Attr("src")
+	image, _ := root.Find(".infobox-image img").First().Attr("src")
 	if image != "" {
 		image = "https:" + image
 	}
+	rs.Image.Value = image
 
-	yield := findYield(root.Find("th:contains('Servings')").Next().Text())
+	rs.Yield.Value = findYield(root.Find("th:contains('Servings')").Next().Text())
 
 	start = root.Find("#Ingredients").Parent()
 	end := root.Find("#Procedure").Parent()
 	nodes = start.NextUntilSelection(end).Find("li")
-	ingredients := make([]string, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, s *goquery.Selection) {
-		ingredients = append(ingredients, s.Text())
+		rs.Ingredients.Values = append(rs.Ingredients.Values, s.Text())
 	})
 
 	nodes = root.Find("#Procedure").Parent().NextUntil("h2").Find("li")
-	instructions := make([]models.HowToStep, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, s *goquery.Selection) {
-		instructions = append(instructions, models.NewHowToStep(s.Text()))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s.Text()))
 	})
 
-	return models.RecipeSchema{
-		Name:         name,
-		Description:  &models.Description{Value: description},
-		Image:        &models.Image{Value: image},
-		Category:     &models.Category{Value: category},
-		Yield:        &models.Yield{Value: yield},
-		Ingredients:  &models.Ingredients{Values: ingredients},
-		Instructions: &models.Instructions{Values: instructions},
-	}, nil
+	return rs, nil
 }

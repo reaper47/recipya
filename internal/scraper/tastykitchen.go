@@ -7,39 +7,31 @@ import (
 )
 
 func scrapeTastyKitchen(root *goquery.Document) (models.RecipeSchema, error) {
-	category := root.Find("a[rel='category tag']").First().Text()
+	rs := models.NewRecipeSchema()
+
+	rs.Category.Value = root.Find("a[rel='category tag']").First().Text()
 	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
 	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
 
-	name := root.Find("h1[itemprop='name']").Text()
-	prepTime, _ := root.Find("time[itemprop='prepTime']").Attr("datetime")
-	cookTime, _ := root.Find("time[itemprop='cookTime']").Attr("datetime")
+	rs.Name = root.Find("h1[itemprop='name']").Text()
+	rs.PrepTime, _ = root.Find("time[itemprop='prepTime']").Attr("datetime")
+	rs.CookTime, _ = root.Find("time[itemprop='cookTime']").Attr("datetime")
 
 	yieldStr, _ := root.Find("input[name='servings']").Attr("value")
-	yield := findYield(yieldStr)
+	rs.Yield.Value = findYield(yieldStr)
 
 	nodes := root.Find("span[itemprop='ingredient']")
-	ingredients := make([]string, 0, nodes.Length())
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, s *goquery.Selection) {
 		v := strings.ReplaceAll(s.Text(), "\u00a0", " ")
-		ingredients = append(ingredients, v)
+		rs.Ingredients.Values = append(rs.Ingredients.Values, v)
 	})
 
 	nodes = root.Find("span[itemprop='instructions'] p")
-	instructions := make([]models.HowToStep, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, s *goquery.Selection) {
-		instructions = append(instructions, models.NewHowToStep(s.Text()))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s.Text()))
 	})
 
-	return models.RecipeSchema{
-		Name:         name,
-		Category:     &models.Category{Value: category},
-		Description:  &models.Description{Value: description},
-		Image:        &models.Image{Value: image},
-		PrepTime:     prepTime,
-		CookTime:     cookTime,
-		Ingredients:  &models.Ingredients{Values: ingredients},
-		Instructions: &models.Instructions{Values: instructions},
-		Yield:        &models.Yield{Value: yield},
-	}, nil
+	return rs, nil
 }

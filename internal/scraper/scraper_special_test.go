@@ -70,16 +70,16 @@ func TestScraper_Bergamot(t *testing.T) {
 			},
 		},
 		Instructions: &models.Instructions{
-			Values: []models.HowToStep{
-				{Text: "Dans une poêle bien chaude, faites cuire le saumon côté peau pendant 5 mn, puis laissez-le refroidir avant de l’émietter."},
-				{Text: "Dans une casserole, versez 1,5l d’eau, la moitié des oignons lavés et coupés en deux dans la hauteur, et les algues, puis portez à ébullition, réduisez ensuite le feu et laissez mijoter pendant 20 mn. Filtrez et ajoutez le miso, mélangez soigneusement."},
-				{Text: "Ajoutez le reste des oignons coupés en quatre, les cives lavées et émincées, le tofu coupé en dés et les miettes de saumon. Arrosez d’huile de sésame et parsemez de graines de sésame. Dégustez bien chaud."},
+			Values: []models.HowToItem{
+				{Type: "HowToStep", Text: "Dans une poêle bien chaude, faites cuire le saumon côté peau pendant 5 mn, puis laissez-le refroidir avant de l’émietter."},
+				{Type: "HowToStep", Text: "Dans une casserole, versez 1,5l d’eau, la moitié des oignons lavés et coupés en deux dans la hauteur, et les algues, puis portez à ébullition, réduisez ensuite le feu et laissez mijoter pendant 20 mn. Filtrez et ajoutez le miso, mélangez soigneusement."},
+				{Type: "HowToStep", Text: "Ajoutez le reste des oignons coupés en quatre, les cives lavées et émincées, le tofu coupé en dés et les miettes de saumon. Arrosez d’huile de sésame et parsemez de graines de sésame. Dégustez bien chaud."},
 			},
 		},
 		Name:            "Soupe miso aux oignons nouveaux, tofu et saumon émietté",
 		NutritionSchema: &models.NutritionSchema{},
 		PrepTime:        "PT20M",
-		Tools:           &models.Tools{},
+		Tools:           &models.Tools{Values: []models.HowToItem{}},
 		Yield:           &models.Yield{Value: 4},
 		URL:             "https://dashboard.bergamot.app/shared/mIB4jYQtZU1A97",
 	}
@@ -99,11 +99,13 @@ func TestScraper_Foodbag(t *testing.T) {
 	}
 
 	want := models.RecipeSchema{
-		AtContext:   "https://schema.org",
-		AtType:      &models.SchemaType{Value: "Recipe"},
-		Category:    &models.Category{Value: "uncategorized"},
-		CookTime:    "PT30M",
-		Description: &models.Description{Value: "Deze week neem ik je nog een keertje mee op skivakantie! Of toch naar de après-ski maaltijd. De pompoenblokjes zijn al voorgesneden en mixen we door de saus. Daardoor kleurt die ook mooi oranje!"},
+		AtContext:     "https://schema.org",
+		AtType:        &models.SchemaType{Value: "Recipe"},
+		Category:      &models.Category{Value: "uncategorized"},
+		CookingMethod: &models.CookingMethod{},
+		Cuisine:       &models.Cuisine{},
+		CookTime:      "PT30M",
+		Description:   &models.Description{Value: "Deze week neem ik je nog een keertje mee op skivakantie! Of toch naar de après-ski maaltijd. De pompoenblokjes zijn al voorgesneden en mixen we door de saus. Daardoor kleurt die ook mooi oranje!"},
 		Image: &models.Image{
 			Value: "https://s3.eu-west-2.amazonaws.com/smartmat-production/a1MJv000000YqYrMAK_920x920.jpg",
 		},
@@ -120,14 +122,14 @@ func TestScraper_Foodbag(t *testing.T) {
 				"bakpapier"},
 		},
 		Instructions: &models.Instructions{
-			Values: []models.HowToStep{
-				{Text: "Breng een ruime pot gezouten water aan de kook voor de pasta."},
-				{Text: "Verwarm de oven voor op 220°C en bedek een bakplaat met bakpapier."},
-				{Text: "Schik de pompoenblokjes op de bakplaat en pers de knoflook erbij. Hussel door elkaar met olijfolie, zout en zwarte peper. Rooster in 20 min. gaar in de oven."},
-				{Text: `Verhit een scheutje olijfolie in een pan op hoog vuur. Bak het gehakt in 6-8 min. Prak met een spatel in "chunks", het hoeft niet helemaal fijn te zijn.`},
-				{Text: "Kook de pasta volgens de instructies op de verpakking."},
-				{Text: "Schik de geroosterde pompoen in een blender of maatbeker en mix, samen met de zure room en de helft van de geraspte cheddar, tot een gladde saus. Proef en breng op smaak met extra zout of zwarte peper (zie tip)."},
-				{Text: "Giet de pasta af en schik opnieuw in de pot. Meng met de roomsaus en het gehakt. Stort in een ovenschaal en strooi de rest van de kaas erover. Gratineer nog 5-10 min. in de oven voor een mooi kaaskorstje."},
+			Values: []models.HowToItem{
+				{Type: "HowToStep", Text: "Breng een ruime pot gezouten water aan de kook voor de pasta."},
+				{Type: "HowToStep", Text: "Verwarm de oven voor op 220°C en bedek een bakplaat met bakpapier."},
+				{Type: "HowToStep", Text: "Schik de pompoenblokjes op de bakplaat en pers de knoflook erbij. Hussel door elkaar met olijfolie, zout en zwarte peper. Rooster in 20 min. gaar in de oven."},
+				{Type: "HowToStep", Text: `Verhit een scheutje olijfolie in een pan op hoog vuur. Bak het gehakt in 6-8 min. Prak met een spatel in "chunks", het hoeft niet helemaal fijn te zijn.`},
+				{Type: "HowToStep", Text: "Kook de pasta volgens de instructies op de verpakking."},
+				{Type: "HowToStep", Text: "Schik de geroosterde pompoen in een blender of maatbeker en mix, samen met de zure room en de helft van de geraspte cheddar, tot een gladde saus. Proef en breng op smaak met extra zout of zwarte peper (zie tip)."},
+				{Type: "HowToStep", Text: "Giet de pasta af en schik opnieuw in de pot. Meng met de roomsaus en het gehakt. Stort in een ovenschaal en strooi de rest van de kaas erover. Gratineer nog 5-10 min. in de oven voor een mooi kaaskorstje."},
 			},
 		},
 		Keywords: &models.Keywords{Values: "Quick&Easy"},
@@ -140,6 +142,7 @@ func TestScraper_Foodbag(t *testing.T) {
 			Protein:       "7.28 g",
 		},
 		PrepTime: "PT10M",
+		Tools:    &models.Tools{Values: []models.HowToItem{}},
 		Yield:    &models.Yield{Value: 4},
 		URL:      "https://www.foodbag.be/nl/recept/?dishId=a0MJv000002YcOHMA0&portion=2",
 	}

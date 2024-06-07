@@ -52,7 +52,7 @@ func NewBaseRecipe() Recipe {
 		Ingredients:  make([]string, 0),
 		Instructions: make([]string, 0),
 		Keywords:     make([]string, 0),
-		Tools:        make([]Tool, 0),
+		Tools:        make([]HowToItem, 0),
 		Yield:        1,
 	}
 }
@@ -71,7 +71,7 @@ type Recipe struct {
 	Name         string
 	Nutrition    Nutrition
 	Times        Times
-	Tools        []Tool
+	Tools        []HowToItem
 	UpdatedAt    time.Time
 	URL          string
 	Yield        int16
@@ -127,7 +127,7 @@ func (r *Recipe) Copy() Recipe {
 	keywords := make([]string, len(r.Keywords))
 	copy(keywords, r.Keywords)
 
-	tools := make([]Tool, len(r.Tools))
+	tools := make([]HowToItem, len(r.Tools))
 	copy(tools, r.Tools)
 
 	return Recipe{
@@ -267,15 +267,16 @@ func (r *Recipe) Schema() RecipeSchema {
 		img = r.Images[0].String() + app.ImageExt
 	}
 
-	instructions := make([]HowToStep, 0, len(r.Instructions))
+	instructions := make([]HowToItem, 0, len(r.Instructions))
 	for _, ins := range r.Instructions {
-		instructions = append(instructions, HowToStep{Text: ins})
+		instructions = append(instructions, NewHowToStep(ins))
 	}
 
-	return RecipeSchema{
+	schema := RecipeSchema{
 		AtContext:       "https://schema.org",
 		AtType:          &SchemaType{Value: "Recipe"},
 		Category:        &Category{Value: r.Category},
+		CookingMethod:   &CookingMethod{},
 		CookTime:        formatDuration(r.Times.Cook),
 		Cuisine:         &Cuisine{Value: r.Cuisine},
 		DateCreated:     r.CreatedAt.Format(time.DateOnly),
@@ -290,9 +291,52 @@ func (r *Recipe) Schema() RecipeSchema {
 		NutritionSchema: r.Nutrition.Schema(strconv.Itoa(int(r.Yield))),
 		PrepTime:        formatDuration(r.Times.Prep),
 		Tools:           &Tools{Values: r.Tools},
+		TotalTime:       formatDuration(r.Times.Total),
 		Yield:           &Yield{Value: r.Yield},
 		URL:             r.URL,
 	}
+
+	if schema.CookingMethod.Value == "" {
+		schema.CookingMethod = nil
+	}
+
+	if schema.Cuisine.Value == "" {
+		schema.Cuisine = nil
+	}
+
+	if schema.Description.Value == "" {
+		schema.Description = nil
+	}
+
+	if len(schema.Keywords.Values) == 0 {
+		schema.Keywords = nil
+	}
+
+	if schema.Image.Value == "" {
+		schema.Image = nil
+	}
+
+	if len(schema.Tools.Values) == 0 {
+		schema.Tools = nil
+	}
+
+	if len(schema.Ingredients.Values) == 0 {
+		schema.Ingredients = nil
+	}
+
+	if len(schema.Instructions.Values) == 0 {
+		schema.Instructions = nil
+	}
+
+	if schema.NutritionSchema.Equal(NutritionSchema{}) {
+		schema.NutritionSchema = nil
+	}
+
+	if schema.Yield.Value == 0 {
+		schema.Yield = nil
+	}
+
+	return schema
 }
 
 // Times holds a variety of intervals.
@@ -338,7 +382,23 @@ func parseDuration(d string) (time.Duration, error) {
 }
 
 func formatDuration(d time.Duration) string {
-	return "PT" + strings.ToUpper(d.Truncate(time.Millisecond).String())
+	if d == 0 {
+		return ""
+	}
+
+	s := strings.ToUpper(d.Truncate(time.Millisecond).String())
+
+	before, _, ok := strings.Cut(s, "0S")
+	if ok {
+		s = before
+	}
+
+	before, _, ok = strings.Cut(s, "0M")
+	if ok {
+		s = before
+	}
+
+	return "PT" + s
 }
 
 // Nutrition holds nutrition facts.
@@ -1325,7 +1385,7 @@ func processMetaData(line []byte, recipe *Recipe) {
 		_, after, found := strings.Cut(string(line), ":")
 		if found {
 			for _, s := range strings.Split(after, ",") {
-				recipe.Tools = append(recipe.Tools, Tool{Name: strings.TrimSpace(s)})
+				recipe.Tools = append(recipe.Tools, NewHowToTool(strings.TrimSpace(s)))
 			}
 		}
 	}
@@ -1460,6 +1520,8 @@ func NewRecipesFromMasterCook(r io.Reader) Recipes {
 
 // NewRecipesFromRecipeKeeper extracts the recipes from a Recipe Keeper export.
 func NewRecipesFromRecipeKeeper(root *goquery.Document) Recipes {
+	rs := NewRecipeSchema()
+
 	nodes := root.Find(".recipe-details")
 	recipes := make(Recipes, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
@@ -1482,8 +1544,8 @@ func NewRecipesFromRecipeKeeper(root *goquery.Document) Recipes {
 		}
 
 		var prep time.Duration
-		prepTime, _ := sel.Find("meta[itemprop='prepTime']").Attr("content")
-		_, after, ok := strings.Cut(prepTime, "PT")
+		rs.PrepTime, _ = sel.Find("meta[itemprop='prepTime']").Attr("content")
+		_, after, ok := strings.Cut(rs.PrepTime, "PT")
 		if ok {
 			prep, _ = time.ParseDuration(strings.ToLower(after))
 		}
@@ -1554,7 +1616,7 @@ func NewRecipesFromRecipeKeeper(root *goquery.Document) Recipes {
 				TotalFat:           extractNut("recipeNutTotalFat", "g"),
 			},
 			Times:     Times{Prep: prep, Cook: cook},
-			Tools:     make([]Tool, 0),
+			Tools:     make([]HowToItem, 0),
 			UpdatedAt: time.Time{},
 			URL:       "Recipe Keeper",
 			Yield:     yield,

@@ -14,7 +14,7 @@ func scrapeArchanasKitchen(root *goquery.Document) (models.RecipeSchema, error) 
 	description = strings.ReplaceAll(description, "\u00a0", " ")
 	rs.Description.Value = strings.TrimSpace(description)
 
-	rs.Image.Value, _ = root.Find("img[itemprop='image']").Attr("src")
+	image, _ := root.Find("img[itemprop='image']").Attr("src")
 	rs.Image.Value = "https://www.archanaskitchen.com" + image
 
 	root.Find("li[itemprop='keywords'] a").Each(func(_ int, s *goquery.Selection) {
@@ -31,7 +31,7 @@ func scrapeArchanasKitchen(root *goquery.Document) (models.RecipeSchema, error) 
 	})
 
 	nodes = root.Find("li[itemprop='recipeInstructions'] p")
-	rs.Instructions.Values = make([]models.HowToStep, 0, nodes.Length())
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(i int, s *goquery.Selection) {
 		v := strings.ReplaceAll(s.Text(), "\u00a0", " ")
 		v = strings.TrimSpace(strings.ReplaceAll(v, " .", "."))
