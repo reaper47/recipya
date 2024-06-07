@@ -16,7 +16,7 @@ func scrapeGrimGrains(root *goquery.Document) (models.RecipeSchema, error) {
 	if ok {
 		split := strings.Split(before, " ")
 		for _, s := range split {
-			parseInt, err := strconv.ParseInt(s, 10, 64)
+			parseInt, err := strconv.ParseInt(s, 10, 16)
 			if err == nil {
 				rs.Yield.Value = int16(parseInt)
 			}
