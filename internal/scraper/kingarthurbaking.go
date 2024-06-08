@@ -22,5 +22,38 @@ func scrapeKingArthurBaking(root *goquery.Document) (models.RecipeSchema, error)
 		}
 	}
 
+	var cat string
+	root.Find("nav.breadcrumb").First().Find("a").Each(func(_ int, sel *goquery.Selection) {
+		href, _ := sel.Attr("href")
+		if href == "/recipes" {
+			return
+		}
+
+		s := sel.Text()
+		before, _, ok := strings.Cut(s, "&")
+		if ok {
+			s = before
+		}
+		cat += strings.TrimSpace(s) + ":"
+	})
+
+	rs.Category = &models.Category{
+		Value: strings.TrimSpace(strings.ToLower(strings.TrimSuffix(cat, ":"))),
+	}
+
+	nodes := root.Find("article.recipe__instructions ol li p")
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
+	nodes.Each(func(_ int, sel *goquery.Selection) {
+		s := strings.TrimSpace(sel.Text())
+		if strings.HasPrefix(s, "By\n        ") {
+			return
+		}
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
+	})
+
+	rs.CookingMethod = &models.CookingMethod{}
+	rs.Cuisine = &models.Cuisine{}
+	rs.Tools = &models.Tools{}
+
 	return rs, nil
 }
