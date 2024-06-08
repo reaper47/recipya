@@ -2,6 +2,18 @@
   <profile version="1.0">
     <option name="myName" value="Project Default" />
     <inspection_tool class="GoUnhandledErrorResult" enabled="true" level="WARNING" enabled_by_default="true">
+      <functions>
+        <function importPath="fmt" name="Print" />
+        <function importPath="fmt" name="Printf" />
+        <function importPath="math/rand" name="Read" />
+        <function importPath="errors" name="Unwrap" />
+        <function importPath="errors" name="Join" />
+        <function importPath="fmt" name="Errorf" />
+        <function importPath="fmt" name="Println" />
+        <function importPath="errors" name="New" />
+        <function importPath="os" name="Remove" />
+        <function importPath="os" name="RemoveAll" />
+      </functions>
       <methods>
         <method importPath="math/rand" receiver="*Rand" name="Read" />
         <method importPath="strings" receiver="*Builder" name="WriteString" />
@@ -17,6 +29,10 @@
         <method importPath="database/sql" receiver="*Rows" name="Close" />
         <method importPath="nhooyr.io/websocket" receiver="*Conn" name="Close" />
         <method importPath="nhooyr.io/websocket" receiver="*Conn" name="CloseNow" />
+        <method importPath="os" receiver="*File" name="Close" />
+        <method importPath="archive/zip" receiver="*Writer" name="Close" />
+        <method importPath="compress/gzip" receiver="*Reader" name="Close" />
+        <method importPath="archive/zip" receiver="*ReadCloser" name="Close" />
       </methods>
     </inspection_tool>
   </profile>

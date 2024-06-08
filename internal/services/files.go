@@ -46,11 +46,15 @@ const (
 
 // NewFilesService creates a new Files that satisfies the FilesService interface.
 func NewFilesService() *Files {
-	return &Files{}
+	return &Files{
+		mu: sync.Mutex{},
+	}
 }
 
 // Files is the entity that manages the email client.
-type Files struct{}
+type Files struct {
+	mu sync.Mutex
+}
 
 type exportData struct {
 	recipeName  string
@@ -1201,6 +1205,9 @@ func (f *Files) ReadTempFile(name string) ([]byte, error) {
 
 // UploadImage uploads an image to the server.
 func (f *Files) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+
 	origImg, _, err := image.Decode(rc)
 	if err != nil {
 		return uuid.Nil, err

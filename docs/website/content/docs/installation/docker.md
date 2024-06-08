@@ -42,6 +42,20 @@ Remember to replace `recipya` with your actual container name if it differs and 
 docker run --rm --volume /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower --run-once recipya
 ```
 
+### Synology NAS
+
+The following Docker command should be used if you use Synology.
+
+```bash
+docker run -d \
+  --name recipya
+  --restart unless-stopped
+  -p 8085:8078 \
+  -v /shared/path/here:/root/.config/Recipya/:rw \
+  -e RECIPYA_SERVER_PORT=8078 \
+  reaper99/recipya:nightly
+```
+
 ## Using Docker Compose
 
 You can use Docker Compose to run the container. First, download the [compose.yaml](https://github.com/reaper47/recipya/blob/main/deploy/compose.yaml) file. 
