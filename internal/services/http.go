@@ -6,8 +6,9 @@ import (
 	"strings"
 )
 
-func GetGetRequestForUrl(url string) (*http.Request, error) {
-
+// PrepareRequestForURL Prepares an HTTP GET request for a given URL.
+// It will apply additional HTTP headers if the host requires it.
+func PrepareRequestForURL(url string) (*http.Request, error) {
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
@@ -27,6 +28,7 @@ func GetGetRequestForUrl(url string) (*http.Request, error) {
 	return req, err
 }
 
+// GetHost gets the host from the raw URL.
 func GetHost(rawURL string) string {
 	u, err := url.Parse(rawURL)
 	if err != nil {

@@ -952,9 +952,9 @@ func (f *Files) ScrapeAndStoreImage(rawURL string) (uuid.UUID, error) {
 		return uuid.Nil, nil
 	}
 
-	req, err := GetGetRequestForUrl(rawURL)
+	req, err := PrepareRequestForURL(rawURL)
 	if err != nil {
-		return uuid.Nil, nil
+		return uuid.Nil, err
 	}
 
 	client := &http.Client{}

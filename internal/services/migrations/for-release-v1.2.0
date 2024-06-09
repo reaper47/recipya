@@ -1,0 +1,10 @@
+-- +goose Up
+INSERT INTO websites (host, url)
+VALUES
+    ('chatelaine.com', 'https://chatelaine.com/'),
+    ('natashaskitchen.com', 'https://natashaskitchen.com/')
+;
+
+-- +goose Down
+DELETE FROM websites
+WHERE host IN ('chatelaine.com/', 'natashaskitchen.com/');

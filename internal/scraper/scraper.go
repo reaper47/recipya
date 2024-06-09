@@ -96,7 +96,10 @@ func (s *Scraper) Scrape(url string, files services.FilesService) (models.Recipe
 }
 
 func (s *Scraper) fetchDocument(url string) (*goquery.Document, error) {
-	req, err := services.GetGetRequestForUrl(url)
+	req, err := services.PrepareRequestForURL(url)
+	if err != nil {
+		return nil, err
+	}
 
 	res, err := s.Client.Do(req)
 	if err != nil {

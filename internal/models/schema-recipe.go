@@ -18,7 +18,7 @@ import (
 // RecipeSchema is a representation of the Recipe schema (https://schema.org/Recipe).
 type RecipeSchema struct {
 	AtContext       string           `json:"@context"`
-	AtGraph         []interface{}    `json:"@graph,omitempty"`
+	AtGraph         []any            `json:"@graph,omitempty"`
 	AtType          *SchemaType      `json:"@type"`
 	Category        *Category        `json:"recipeCategory,omitempty"`
 	CookTime        string           `json:"cookTime,omitempty"`
