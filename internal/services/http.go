@@ -17,7 +17,7 @@ func GetGetRequestForUrl(url string) (*http.Request, error) {
 
 	host := GetHost(url)
 	switch host {
-	case "aberlehome", "bettybossi", "marmiton", "natashaskitchen", "puurgezond", "reddit", "thepalatablelife":
+	case "aberlehome", "bettybossi", "chatelaine.com", "downshiftology.com", "marmiton", "natashaskitchen", "puurgezond", "reddit", "thekitchn", "thepalatablelife", "wellplated":
 		req.Header.Set("User-Agent", mozilla)
 	case "ah":
 		req.Header.Set("Accept-Language", "nl")
