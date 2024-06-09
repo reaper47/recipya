@@ -8,6 +8,61 @@ import (
 func TestScraper_N(t *testing.T) {
 	testcases := []testcase{
 		{
+			name: "natashaskitchen.com",
+			in:   "https://natashaskitchen.com/taco-seasoning-recipe",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Condiments"},
+				CookingMethod: nil,
+				Cuisine:       &models.Cuisine{Value: "Mexican"},
+				DatePublished: "2022-07-05T11:14:41+00:00",
+				Description: &models.Description{
+					Value: "Once you try this homemade taco seasoning blend, you&#039;ll never want to use store-bought again. This DIY Taco seasoning is so versatile for tacos, taco soup, and taco salad, as a seasoning for veggies, you name it! This recipe makes 3 Tbsp of seasoning.",
+				},
+				Keywords: &models.Keywords{Values: "homemade taco seasoning, taco seasoning, taco seasoning recipe"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"1 Tbsp chili powder",
+						"2 tsp ground cumin",
+						"1 tsp paprika (preferably smoked paprika)",
+						"1 tsp fine sea salt",
+						"1 tsp ground black pepper",
+						"1/2 tsp garlic powder",
+						"1/2 tsp onion powder",
+						"1/2 tsp dried oregano",
+						"Pinch red pepper flakes (optional)",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "In a small bowl, add all of the taco seasoning ingredients. Stir to combine and store homemade taco seasoning in an airtight container for up to 6 months."},
+					},
+				},
+				Name: "Homemade Taco Seasoning Recipe",
+				NutritionSchema: &models.NutritionSchema{
+					Calories:       "7 kcal",
+					Carbohydrates:  "1 g",
+					Cholesterol:    "",
+					Fat:            "0.3 g",
+					Fiber:          "1 g",
+					Protein:        "0.3 g",
+					SaturatedFat:   "0.04 g",
+					Servings:       "1",
+					Sodium:         "274 mg",
+					Sugar:          "0.1 g",
+					TransFat:       "",
+					UnsaturatedFat: "0.2 g",
+				},
+				PrepTime:  "PT5M",
+				TotalTime: "PT5M",
+				Tools:     nil,
+				Yield:     &models.Yield{Value: 9},
+				URL:       "https://natashaskitchen.com/taco-seasoning-recipe",
+			},
+		},
+		{
 			name: "ninjatestkitchen.eu",
 			in:   "https://ninjatestkitchen.eu/recipe/dirt-worm-brownies",
 			want: models.RecipeSchema{

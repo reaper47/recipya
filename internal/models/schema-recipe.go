@@ -18,6 +18,7 @@ import (
 // RecipeSchema is a representation of the Recipe schema (https://schema.org/Recipe).
 type RecipeSchema struct {
 	AtContext       string           `json:"@context"`
+	AtGraph         []interface{}    `json:"@graph,omitempty"`
 	AtType          *SchemaType      `json:"@type"`
 	Category        *Category        `json:"recipeCategory,omitempty"`
 	CookTime        string           `json:"cookTime,omitempty"`
@@ -347,7 +348,7 @@ func NewCategory(name string) *Category {
 	return &Category{Value: name}
 }
 
-// CookingMethod holds a recipe's category.
+// CookingMethod holds a recipe's cooking method.
 type CookingMethod struct {
 	Value string
 }
@@ -378,7 +379,7 @@ func (c *CookingMethod) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// Cuisine holds a recipe's category.
+// Cuisine holds a recipe's cuisine type.
 type Cuisine struct {
 	Value string
 }
