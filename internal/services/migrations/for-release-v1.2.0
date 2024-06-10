@@ -6,8 +6,11 @@ VALUES
     ('chejorge.com', 'https://chejorge.com/'),
     ('cuisineandtravel.com', 'https://cuisineandtravel.com/'),
     ('daringgourmet.com', 'https://daringgourmet.com/'),
-    ('dreenaburton.com', 'https://dreenaburton.com'),
-    ('elephantasticvegan.com', 'https://elephantasticvegan.com'),
+    ('dreenaburton.com', 'https://dreenaburton.com/'),
+    ('elephantasticvegan.com', 'https://elephantasticvegan.com/'),
+    ('entertainingwithbeth.com', 'https://entertainingwithbeth.com/'),
+    ('feastingathome.com', 'https://feastingathome.com/'),
+    ('foodal.com', 'https://foodal.com/'),
     ('natashaskitchen.com', 'https://natashaskitchen.com/'),
 ;
 
@@ -15,5 +18,6 @@ VALUES
 DELETE FROM websites
 WHERE host IN (
     'avocadoskillet.com', 'chatelaine.com', 'chejorge.com', 'cuisineandtravel.com', 'daringgourmet.com',
-    'dreenaburton.com', 'elephantasticvegan.com', 'natashaskitchen.com'
+    'dreenaburton.com', 'elephantasticvegan.com', 'entertainingwithbeth.com', 'feastingathome.com', 'foodal.com',
+    'natashaskitchen.com'
 );
