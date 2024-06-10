@@ -11,6 +11,9 @@ VALUES
     ('entertainingwithbeth.com', 'https://entertainingwithbeth.com/'),
     ('feastingathome.com', 'https://feastingathome.com/'),
     ('foodal.com', 'https://foodal.com/'),
+    ('foodbymaria.com', 'https://foodbymaria.com/'),
+    ('foodiecrush.com', 'https://foodiecrush.com/'),
+    ('foolproofliving.com', 'https://foolproofliving.com/'),
     ('natashaskitchen.com', 'https://natashaskitchen.com/'),
 ;
 
@@ -19,5 +22,5 @@ DELETE FROM websites
 WHERE host IN (
     'avocadoskillet.com', 'chatelaine.com', 'chejorge.com', 'cuisineandtravel.com', 'daringgourmet.com',
     'dreenaburton.com', 'elephantasticvegan.com', 'entertainingwithbeth.com', 'feastingathome.com', 'foodal.com',
-    'natashaskitchen.com'
+    'foodbymaria.com', 'foodiecrush.com', 'foolproofliving.com', 'natashaskitchen.com'
 );
