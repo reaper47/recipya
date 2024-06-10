@@ -463,6 +463,38 @@ func TestScraper_D(t *testing.T) {
 			},
 		},
 		{
+			name: "dreenaburton.com",
+			in:   "https://dreenaburton.com/2-ingredient-watermelon-gelato/",
+			want: models.RecipeSchema{
+				AtContext:     atContext,
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Dessert"},
+				DatePublished: "2022-07-08T19:35:00+00:00",
+				Description: &models.Description{
+					Value: "Watermelon gets even better when frozen and churned into this refreshing, sugar-free, dairy-free gelato. It's magical!&nbsp;",
+				},
+				Keywords: &models.Keywords{Values: "banana, gelato, ice cream, watermelon"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"5 cups frozen cubed watermelon (see note)",
+						"1 cup sliced overripe banana (frozen or room temp) (see note)",
+						"1/2 - 1 tbsp coconut nectar or cassava syrup OPTIONAL (see note)",
+						"1-2 tbsp raw cashew butter, OPTIONAL (see note)",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Add watermelon and banana to a food processor (if you prefer to use a blender, it must be high-speed for this recipe). Pulse to first mince the frozen fruit, and then once in slivers or small pieces, switch to puree."},
+						{Type: "HowToStep", Text: "Puree until smooth, stopping to scrape down food processor once or twice. Taste, and if you’d like it a little sweeter, add the sweetener to taste. Serve, or transfer to the freezer for an hour or more for a firmer set gelato."},
+					},
+				},
+				Name:  "Vegan Watermelon Gelato (Only 2 Ingredients!)",
+				Yield: &models.Yield{Value: 1},
+				URL:   "https://dreenaburton.com/2-ingredient-watermelon-gelato/",
+			},
+		},
+		{
 			name: "drinkoteket.se",
 			in:   "https://drinkoteket.se/recept/limoncello-spritz/",
 			want: models.RecipeSchema{

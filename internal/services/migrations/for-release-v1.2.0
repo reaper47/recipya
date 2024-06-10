@@ -6,9 +6,13 @@ VALUES
     ('chejorge.com', 'https://chejorge.com/'),
     ('cuisineandtravel.com', 'https://cuisineandtravel.com/'),
     ('daringgourmet.com', 'https://daringgourmet.com/'),
+    ('dreenaburton.com', 'https://dreenaburton.com'),
     ('natashaskitchen.com', 'https://natashaskitchen.com/'),
 ;
 
 -- +goose Down
 DELETE FROM websites
-WHERE host IN ('avocadoskillet.com', 'chatelaine.com', 'chejorge.com', 'cuisineandtravel.com', 'daringgourmet.com', 'natashaskitchen.com');
+WHERE host IN (
+    'avocadoskillet.com', 'chatelaine.com', 'chejorge.com', 'cuisineandtravel.com', 'daringgourmet.com',
+    'dreenaburton.com', natashaskitchen.com'
+);
