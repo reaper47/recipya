@@ -4,9 +4,10 @@ VALUES
     ('avocadoskillet.com', 'https://avocadoskillet.com/'),
     ('chatelaine.com', 'https://chatelaine.com/'),
     ('chejorge.com', 'https://chejorge.com/'),
+    ('cuisineandtravel.com', 'https://cuisineandtravel.com/'),
     ('natashaskitchen.com', 'https://natashaskitchen.com/'),
 ;
 
 -- +goose Down
 DELETE FROM websites
-WHERE host IN ('avocadoskillet.com', 'chatelaine.com', 'chejorge.com', 'natashaskitchen.com');
+WHERE host IN ('avocadoskillet.com', 'chatelaine.com', 'chejorge.com', 'cuisineandtravel.com', 'natashaskitchen.com');
