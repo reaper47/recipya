@@ -1,0 +1,31 @@
+-- +goose Up
+INSERT INTO websites (host, url)
+VALUES
+    ('avocadoskillet.com', 'https://avocadoskillet.com/'),
+    ('beyondkimchee.com', 'https://beyondkimchee.com/'),
+    ('chatelaine.com', 'https://chatelaine.com/'),
+    ('chejorge.com', 'https://chejorge.com/'),
+    ('cuisineandtravel.com', 'https://cuisineandtravel.com/'),
+    ('daringgourmet.com', 'https://daringgourmet.com/'),
+    ('dreenaburton.com', 'https://dreenaburton.com/'),
+    ('elephantasticvegan.com', 'https://elephantasticvegan.com/'),
+    ('entertainingwithbeth.com', 'https://entertainingwithbeth.com/'),
+    ('feastingathome.com', 'https://feastingathome.com/'),
+    ('foodal.com', 'https://foodal.com/'),
+    ('foodbymaria.com', 'https://foodbymaria.com/'),
+    ('foodiecrush.com', 'https://foodiecrush.com/'),
+    ('foolproofliving.com', 'https://foolproofliving.com/'),
+    ('gastroplant.com', 'https://gastroplant.com/'),
+    ('goodto.com', 'https://goodto.com/'),
+    ('jaroflemons.com', 'https://jaroflemons.com/'),
+    ('natashaskitchen.com', 'https://natashaskitchen.com/'),
+;
+
+-- +goose Down
+DELETE FROM websites
+WHERE host IN (
+    'avocadoskillet.com', 'beyondkimchee.com', 'chatelaine.com', 'chejorge.com', 'cuisineandtravel.com',
+    'daringgourmet.com', 'dreenaburton.com', 'elephantasticvegan.com', 'entertainingwithbeth.com', 'feastingathome.com',
+    'foodal.com', 'foodbymaria.com', 'foodiecrush.com', 'foolproofliving.com', 'gastroplant.com', 'goodto.com',
+    'jaroflemons.com', 'natashaskitchen.com'
+);

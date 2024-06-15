@@ -1825,7 +1825,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 						</span>
 					</h2>
 					<div class="grid md:grid-flow-col md:grid-cols-6">
-						<div class="w-[95vw] md:w-full text-center border-b border-gray-700 md:col-span-3 md:border-r md:border-b-0 print:hidden">
+						<div class="w-[95vw] md:w-full text-center border-b border-gray-700 md:col-span-3 md:border-r md:border-b-0 flex items-center justify-center print:hidden">
 							switch len(data.Recipe.Images) {
 								case 0:
 									<img

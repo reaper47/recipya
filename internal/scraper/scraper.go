@@ -8,7 +8,6 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services"
 	"net/http"
-	"net/url"
 	"strings"
 )
 
@@ -39,7 +38,7 @@ func NewScraper(client HTTPClient) *Scraper {
 // Scrape extracts the recipe from the given URL. An error will be
 // returned when the URL cannot be parsed.
 func (s *Scraper) Scrape(url string, files services.FilesService) (models.RecipeSchema, error) {
-	host := getHost(url)
+	host := services.GetHost(url)
 	if host == "bergamot" {
 		return s.scrapeBergamot(url)
 	} else if host == "foodbag" {
@@ -97,20 +96,9 @@ func (s *Scraper) Scrape(url string, files services.FilesService) (models.Recipe
 }
 
 func (s *Scraper) fetchDocument(url string) (*goquery.Document, error) {
-	req, err := http.NewRequest(http.MethodGet, url, nil)
+	req, err := services.PrepareRequestForURL(url)
 	if err != nil {
 		return nil, err
-	}
-
-	const mozilla = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0"
-
-	host := getHost(url)
-	switch host {
-	case "aberlehome", "bettybossi", "marmiton", "puurgezond", "reddit", "thepalatablelife":
-		req.Header.Set("User-Agent", mozilla)
-	case "ah":
-		req.Header.Set("Accept-Language", "nl")
-		req.Header.Set("User-Agent", mozilla)
 	}
 
 	res, err := s.Client.Do(req)
@@ -120,6 +108,7 @@ func (s *Scraper) fetchDocument(url string) (*goquery.Document, error) {
 	defer res.Body.Close()
 
 	// Some websites require page reloads
+	host := services.GetHost(url)
 	if host == "bettybossi" {
 		res, err = s.Client.Do(req)
 		if err != nil {
@@ -133,42 +122,6 @@ func (s *Scraper) fetchDocument(url string) (*goquery.Document, error) {
 	}
 
 	return goquery.NewDocumentFromReader(res.Body)
-}
-
-func getHost(rawURL string) string {
-	u, err := url.Parse(rawURL)
-	if err != nil {
-		return ""
-	}
-
-	parts := strings.Split(u.Hostname(), ".")
-	switch len(parts) {
-	case 4:
-		if parts[1] == "m" {
-			return parts[2]
-		}
-		return parts[1]
-	case 3:
-		s := parts[0]
-		if s == "recipes" || s == "receitas" || s == "cooking" || s == "news" || s == "mobile" ||
-			s == "dashboard" || s == "fr" || s == "blog" || s == "old" {
-			return parts[1]
-		}
-
-		if parts[1] == "wikibooks" || parts[1] == "tesco" || parts[1] == "expressen" {
-			return parts[1]
-		}
-
-		if s != "www" {
-			return s
-		}
-		return parts[1]
-	default:
-		if len(parts) > 1 {
-			return parts[len(parts)-2]
-		}
-		return ""
-	}
 }
 
 func parseLdJSON(root *goquery.Document) (models.RecipeSchema, error) {
