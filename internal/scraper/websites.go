@@ -204,6 +204,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		}
 	case 'n':
 		switch host {
+		case "nigella":
+			return scrapeNigella(doc)
 		case "ninjatestkitchen":
 			return scrapeNinjatestkitchen(doc)
 		default:

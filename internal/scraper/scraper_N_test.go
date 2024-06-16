@@ -8,6 +8,43 @@ import (
 func TestScraper_N(t *testing.T) {
 	testcases := []testcase{
 		{
+			name: "nigella.com",
+			in:   "https://www.nigella.com/recipes/moonblush-tomatoes",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Description: &models.Description{
+					Value: "You may have come across Sunblush Tomatoes in delis; these are my homespun version. I halve cherry tomatoes, sprinkle them with herbs, a little salt and a pinch of sugar and drizzle over oil, put in a hot oven which I turn off immediately, leaving the tomatoes to cook in the residual heat overnight, hence “moonblush”. The taste of even disappointing tomatoes becomes, transformed this way, bright and intense. Think very essence of tomato. Eat in salads, alongside cheese, in pasta or however you wish.",
+				},
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"500 grams cherry tomatoes (on the vine or other baby tomatoes)",
+						"2 teaspoons Maldon salt (or 1 teaspoon table salt)",
+						"¼ teaspoon white sugar",
+						"1 teaspoon dried thyme",
+						"2 tablespoons olive oil",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Preheat the oven to 220°C/200°C Fan/gas mark 7/450ºF."},
+						{Type: "HowToStep", Text: "Cut the tomatoes in half and sit them cut side up in an ovenproof dish. Sprinkle with the salt, sugar, thyme and olive oil."},
+						{Type: "HowToStep", Text: "Put them in the oven, and immediately turn it off. Leave the tomatoes in the oven overnight or for a day without opening the door."},
+					},
+				},
+				Keywords:        &models.Keywords{},
+				Name:            "Moonblush Tomatoes",
+				NutritionSchema: &models.NutritionSchema{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 80},
+				URL:             "https://www.nigella.com/recipes/moonblush-tomatoes",
+			},
+		},
+		{
 			name: "ninjatestkitchen.eu",
 			in:   "https://ninjatestkitchen.eu/recipe/dirt-worm-brownies",
 			want: models.RecipeSchema{
