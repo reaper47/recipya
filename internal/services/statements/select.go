@@ -255,9 +255,9 @@ func BuildBaseSelectRecipe(sorts models.Sort) string {
 	} else if sorts.IsZToA {
 		s = "recipes.name DESC"
 	} else if sorts.IsNewestToOldest {
-		s = "recipes.created_at ASC"
-	} else if sorts.IsOldestToNewest {
 		s = "recipes.created_at DESC"
+	} else if sorts.IsOldestToNewest {
+		s = "recipes.created_at ASC"
 	} else if sorts.IsRandom {
 		s = "RANDOM()"
 	} else {
