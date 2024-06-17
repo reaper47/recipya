@@ -3,8 +3,6 @@ package scraper
 import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
-	"regexp"
-	"strconv"
 	"strings"
 )
 
@@ -18,20 +16,15 @@ func scrapeNigella(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 	rs.Name = name
 
-	yieldNode := root.Find("p[class='serves']")
-	yieldText := strings.Split(yieldNode.Nodes[0].FirstChild.Data, ":")[1]
-	numberPattern, _ := regexp.Compile("[0-9]+")
-	yieldNumMatch := numberPattern.FindString(yieldText)
-	yield, err := strconv.Atoi(yieldNumMatch)
-	if err != nil {
-		return rs, err
-	}
-	rs.Yield.Value = int16(yield)
+	rs.Yield.Value = findYield(root.Find("p[class='serves']").Text())
 
 	untrimmedDescription, _ := root.Find("meta[property='og:description']").Attr("content")
 	description, _ := strings.CutSuffix(untrimmedDescription, "\n\nFor US cup measures, use the toggle at the top of the ingredients list.")
 	rs.Description.Value = description
 	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+
+	keywords, _ := root.Find("meta[itemprop='keywords]").Attr("content")
+	rs.Keywords.Values = keywords
 
 	nodes := root.Find("li[itemprop=recipeIngredient]")
 	rs.Ingredients.Values = make([]string, 0, nodes.Length())

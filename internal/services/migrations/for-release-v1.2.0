@@ -1,0 +1,9 @@
+-- +goose Up
+INSERT INTO websites (host, url)
+VALUES
+    ('nigella.com', 'https://nigella.com/')
+;
+
+-- +goose Down
+DELETE FROM websites
+WHERE host = 'nigella.com';
