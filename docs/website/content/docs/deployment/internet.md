@@ -58,3 +58,40 @@ domain.com {
 	}
 }
 ```
+
+## Nginx
+
+[Nginx](https://en.wikipedia.org/wiki/Nginx) is a powerful web server that can also be used as a reverse proxy, load balancer, mail proxy and HTTP cache.
+It is widely used for its high performance, efficiency in handling concurrent connections, and low resource consumption.
+
+The following segment in the Nginx configuration file is the minimum required for hosting Recipya over the network.
+
+```text
+server {   
+    listen 80;
+    server_name domain.com;
+
+    gzip on;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml text/javascript;
+     
+    location / {
+        proxy_pass http://127.0.0.1:<port>/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    
+    location ~* /static/ {
+        add_header Cache-Control "public, max-age=2678400, must-revalidate";
+    }
+    
+    location /ws {
+        proxy_pass http://127.0.0.1:8125;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_set_header Host $host;
+    }
+}
+```
