@@ -885,7 +885,7 @@ templ loadRecipesManualScripts() {
             _hyperscript.processNode(cloneImage);
 
             let target = event.target;
-            if (target.tagName === "svg") {
+            if (["svg", "circle"].includes(target.tagName)) {
                 target = event.target.parentElement;
             }
 

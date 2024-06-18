@@ -96,6 +96,7 @@ This project was mainly coded to blasting the following albums:
 - [Lofi Girl - lofi hip hop radio](https://www.youtube.com/watch?v=jfKfPfyJRdk)
 - [Lofi Girl - synthwave radio](https://www.youtube.com/watch?v=4xDzrJKXOOY)
 - [Mozart - Requiem Dm](https://www.youtube.com/watch?v=pBGVfwOLU1w0)
+- [Necrophobic - In the Twilight Grey](https://www.youtube.com/watch?v=eDFD6YnMid8)
 - [Pain - You Only Live Twice](https://www.youtube.com/watch?v=obgCEoLzLs4)
 - [Sonata Arctica - Talviyö](https://www.youtube.com/watch?v=x6rEDMqM36I)
 - [Wintersun - Wintersun](https://www.youtube.com/watch?v=W0M3HAMus7g&pp=ygUPd2ludGVyc3VuIGFsYnVt)
