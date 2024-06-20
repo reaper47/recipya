@@ -1665,21 +1665,14 @@ func (s *SQLiteService) SwitchMeasurementSystem(system units.System, userID int6
 	s.Mutex.Lock()
 	defer s.Mutex.Unlock()
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Hour)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{})
-	if err != nil {
-		return err
-	}
-	defer tx.Rollback()
+	_, err := s.DB.ExecContext(ctx, statements.UpdateMeasurementSystem, system.String(), userID)
+	return err
 
-	_, err = tx.ExecContext(ctx, statements.UpdateMeasurementSystem, system.String(), userID)
-	if err != nil {
-		return err
-	}
-
-	numConverted := 0
+	// TODO: Figure out what to do with converting all recipes at once.
+	/*numConverted := 0
 	for _, r := range s.RecipesAll(userID) {
 		converted, err := r.ConvertMeasurementSystem(system)
 		if err != nil || converted == nil {
@@ -1718,8 +1711,7 @@ func (s *SQLiteService) SwitchMeasurementSystem(system units.System, userID int6
 		}
 
 		numConverted++
-	}
-	return tx.Commit()
+	}*/
 }
 
 // UpdateCalculateNutrition updates the user's calculate nutrition facts automatically setting.

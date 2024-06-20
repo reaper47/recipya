@@ -734,12 +734,23 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 
 		imageFiles, ok := r.MultipartForm.File["images"]
 		if ok {
-			imageFiles = slices.DeleteFunc(imageFiles, func(fh *multipart.FileHeader) bool {
-				_, err = os.Stat(filepath.Join(app.ImagesDir, fh.Filename+app.ImageExt))
-				return err == nil
-			})
+			var newImages []*multipart.FileHeader
 
-			for _, imageFile := range imageFiles {
+			for _, fh := range imageFiles {
+				_, err = os.Stat(filepath.Join(app.ImagesDir, fh.Filename+app.ImageExt))
+				if err == nil {
+					parsed, err := uuid.Parse(fh.Filename)
+					if err != nil {
+						slog.Error("Could not parse image file name as UUID", "name", fh.Filename, "error", err)
+						continue
+					}
+					updatedRecipe.Images = append(updatedRecipe.Images, parsed)
+				} else {
+					newImages = append(newImages, fh)
+				}
+			}
+
+			for _, imageFile := range newImages {
 				file, err := imageFile.Open()
 				if err != nil {
 					msg := "Could not open the image from the form."
