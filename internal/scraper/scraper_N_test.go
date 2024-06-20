@@ -36,7 +36,7 @@ func TestScraper_N(t *testing.T) {
 						{Type: "HowToStep", Text: "Put them in the oven, and immediately turn it off. Leave the tomatoes in the oven overnight or for a day without opening the door."},
 					},
 				},
-				Keywords:        &models.Keywords{},
+				Keywords:        &models.Keywords{Values: "Vegetarian, Gluten Free, Nibbly, Impatient, Express, Summer, Dairy Free, Egg Free, Nut Free, Vegan,"},
 				Name:            "Moonblush Tomatoes",
 				NutritionSchema: &models.NutritionSchema{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
