@@ -60,6 +60,7 @@ func TestScraper_N(t *testing.T) {
 				Tools:     nil,
 				Yield:     &models.Yield{Value: 9},
 				URL:       "https://natashaskitchen.com/taco-seasoning-recipe",
+			},
 		},
 		{
 			name: "nigella.com",
