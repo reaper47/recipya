@@ -85,7 +85,7 @@ func (s *Scraper) scrapeFoodbag(rawURL string) (models.RecipeSchema, error) {
 		return models.RecipeSchema{}, err
 	}
 
-	res, err := s.Client.Do(req)
+	res, err := s.HTTP.Client.Do(req)
 	if err != nil {
 		return models.RecipeSchema{}, err
 	}

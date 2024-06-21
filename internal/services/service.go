@@ -11,6 +11,7 @@ import (
 	"github.com/reaper47/recipya/internal/units"
 	"io"
 	"mime/multipart"
+	"net/http"
 	"time"
 )
 
@@ -250,6 +251,16 @@ type FilesService interface {
 
 	// UploadImage uploads an image to the server.
 	UploadImage(rc io.ReadCloser) (uuid.UUID, error)
+}
+
+// HTTPService is the interface that describes the methods required for preparing and utilizing https requests and responses.
+type HTTPService interface {
+	// PrepareRequestForURL Prepares an HTTP GET request for a given URL.
+	// It will apply additional HTTP headers if the host requires it.
+	PrepareRequestForURL(url string) (*http.Request, error)
+
+	// GetHost gets the host from the raw URL.
+	GetHost(rawURL string) string
 }
 
 // IntegrationsService is the interface that describes the methods required for various software integrations.

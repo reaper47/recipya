@@ -60,6 +60,48 @@ func TestScraper_I(t *testing.T) {
 			},
 		},
 		{
+			name: "im-worthy.com",
+			in:   "https://im-worthy.com/cranberry-walnut-oatmeal-energy-balls/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Appetizer"},
+				Cuisine:       &models.Cuisine{Value: "American"},
+				DatePublished: "2023-10-25T10:23:17+00:00",
+				Description: &models.Description{
+					Value: "Indulge in these scrumptious no-bake Cranberry-Walnut Energy Balls, a delightful blend of sweet cranberries and brain-boosting walnuts. Crafted with love, these energy-packed wonders offer a quick and easy way to nourish your body, whether you&#39;re starting your day or need an on-the-go breakfast or snack. Satisfy your cravings with wholesome, bite-sized goodness – no baking required!",
+				},
+				Keywords: &models.Keywords{
+					Values: "energy balls, energy bites, mediterranean diet desserts, oatmeal energy balls",
+				},
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"3/4 cup raw walnuts", "1/2 cup sweetened dried cranberries",
+						"1/4 cup pitted dates", "3/4 cup old-fashioned rolled oats", "2 tbsp tahini",
+						"2 tbsp fresh lemon juice", "1 tbsp pure maple syrup",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Begin by placing your raw walnuts, dried cranberries, and pitted dates in a food processor. Give them a whirl until they become finely chopped but still maintain some texture. It&#39;s like creating the canvas for your masterpiece."},
+						{Type: "HowToStep", Text: "Add the old-fashioned rolled oats, tahini, fresh lemon juice, and pure maple syrup to the food processor. These ingredients join the party, creating a vibrant dance of flavors. Pulse everything until the mixture becomes sticky and easily forms into balls."},
+						{Type: "HowToStep", Text: "With clean hands, shape the mixture into bite-sized balls, like crafting your edible work of art. Place them on a baking sheet lined with parchment paper."},
+						{Type: "HowToStep", Text: "Let the oatmeal balls chill in the refrigerator for about 30 minutes. This step is your chance to practice a bit of mindfulness. While they&#39;re cooling, take a moment to savor the delightful anticipation of your delicious creation."},
+					},
+				},
+				Name: "Cranberry-Walnut Oatmeal Energy Balls (No-Bake)",
+				NutritionSchema: &models.NutritionSchema{
+					Calories: "170 kcal",
+					Servings: "1",
+				},
+				PrepTime:  "PT10M",
+				TotalTime: "PT10M",
+				Yield:     &models.Yield{Value: 8},
+				URL:       "https://im-worthy.com/cranberry-walnut-oatmeal-energy-balls/",
+			},
+		},
+		{
 			name: "indianhealthyrecipes.com",
 			in:   "https://www.indianhealthyrecipes.com/mango-rice-mamidikaya-pulihora/",
 			want: models.RecipeSchema{
@@ -121,48 +163,6 @@ func TestScraper_I(t *testing.T) {
 				TotalTime: "PT35M",
 				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.indianhealthyrecipes.com/mango-rice-mamidikaya-pulihora/",
-			},
-		},
-		{
-			name: "im-worthy.com",
-			in:   "https://im-worthy.com/cranberry-walnut-oatmeal-energy-balls/",
-			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
-				AtType:        &models.SchemaType{Value: "Recipe"},
-				Category:      &models.Category{Value: "Appetizer"},
-				Cuisine:       &models.Cuisine{Value: "American"},
-				DatePublished: "2023-10-25T10:23:17+00:00",
-				Description: &models.Description{
-					Value: "Indulge in these scrumptious no-bake Cranberry-Walnut Energy Balls, a delightful blend of sweet cranberries and brain-boosting walnuts. Crafted with love, these energy-packed wonders offer a quick and easy way to nourish your body, whether you&#39;re starting your day or need an on-the-go breakfast or snack. Satisfy your cravings with wholesome, bite-sized goodness – no baking required!",
-				},
-				Keywords: &models.Keywords{
-					Values: "energy balls, energy bites, mediterranean diet desserts, oatmeal energy balls",
-				},
-				Image: &models.Image{Value: anUploadedImage.String()},
-				Ingredients: &models.Ingredients{
-					Values: []string{
-						"3/4 cup raw walnuts", "1/2 cup sweetened dried cranberries",
-						"1/4 cup pitted dates", "3/4 cup old-fashioned rolled oats", "2 tbsp tahini",
-						"2 tbsp fresh lemon juice", "1 tbsp pure maple syrup",
-					},
-				},
-				Instructions: &models.Instructions{
-					Values: []models.HowToItem{
-						{Type: "HowToStep", Text: "Begin by placing your raw walnuts, dried cranberries, and pitted dates in a food processor. Give them a whirl until they become finely chopped but still maintain some texture. It&#39;s like creating the canvas for your masterpiece."},
-						{Type: "HowToStep", Text: "Add the old-fashioned rolled oats, tahini, fresh lemon juice, and pure maple syrup to the food processor. These ingredients join the party, creating a vibrant dance of flavors. Pulse everything until the mixture becomes sticky and easily forms into balls."},
-						{Type: "HowToStep", Text: "With clean hands, shape the mixture into bite-sized balls, like crafting your edible work of art. Place them on a baking sheet lined with parchment paper."},
-						{Type: "HowToStep", Text: "Let the oatmeal balls chill in the refrigerator for about 30 minutes. This step is your chance to practice a bit of mindfulness. While they&#39;re cooling, take a moment to savor the delightful anticipation of your delicious creation."},
-					},
-				},
-				Name: "Cranberry-Walnut Oatmeal Energy Balls (No-Bake)",
-				NutritionSchema: &models.NutritionSchema{
-					Calories: "170 kcal",
-					Servings: "1",
-				},
-				PrepTime:  "PT10M",
-				TotalTime: "PT10M",
-				Yield:     &models.Yield{Value: 8},
-				URL:       "https://im-worthy.com/cranberry-walnut-oatmeal-energy-balls/",
 			},
 		},
 		{

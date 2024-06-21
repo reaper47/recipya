@@ -1013,6 +1013,55 @@ func TestScraper_A(t *testing.T) {
 				URL:       "https://www.averiecooks.com/slow-cooker-beef-stroganoff/",
 			},
 		},
+		{
+			name: "avocadoskillet.com",
+			in:   "https://avocadoskillet.com/soba-noodles-with-crispy-tofu-and-cilantro-avocado-sauce",
+			want: models.RecipeSchema{
+				AtContext:     atContext,
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookTime:      "PT30M",
+				Cuisine:       nil,
+				DatePublished: "2022-08-05",
+				Description: &models.Description{
+					Value: "Noodles and tofu is an amazing combination. Especially when it is prepared with a tasty sauce. These Soba Noodles with Crispy Tofu and Cilantro Avocado Sauce will be your new favorite noodle recipe.\r\n\r\nThese noodles are simple to make but full of flavor. The cilantro avocado sauce offers a unique flavor profile.\r\n\r\nLet's get into the recipe.\r\nThese soba noodles with crispy tofu are\r\n\r\n \teasy to make\r\n \thealthy for you\r\n \tfull of protein, fiber and healthy fats\r\n \tcovered with a delicious sauce\r\n \tperfect for a healthy dinner recipe\r\n \tvegan, gluten free and dairy free\r\n\r\n\r\nWhat do I need to make soba noodles with crispy tofu?\r\n\r\n \ttofu\r\n \toil\r\n \tstarch\r\n \tsoy sauce\r\n \tsalt/pepper\r\n \tgarlic powder\r\n \tcilantro\r\n \tsesame oil\r\n \twater\r\n \tlime\r\n \tginger\r\n \tgarlic\r\n \tmiso\r\n \tmaple syrup\r\n\r\nOther plant based recipes to try\r\n\r\n \tvegan zucchini pizza\r\n \tasian chickpea salad\r\n \troasted red pepper and carrot pasta\r\n\r\nIf you make these Soba Noodles with Crispy Tofu and Cilantro Avocado Sauce, please leave me a rating and review. This is the best way to support me!\r\nTag me on Instagram so I can repost you!",
+				},
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"1 block tofu - cubed",
+						"1 tbsp oil",
+						"2 tbsp arrowroot starch",
+						"1/2 tbsp soy sauce",
+						"pinch salt/pepper",
+						"pinch garlic powder",
+						"1 bunch cilantro",
+						"2 tbsp sesame oil",
+						"1/4 cup water",
+						"juice from 1/2 lime",
+						"1/4 inch piece of ginger",
+						"1 garlic clove",
+						"1 tbsp miso (can sub soy sauce or 1 tsp salt)",
+						"1 tsp maple syrup",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Preheat oven to 425 degrees."},
+						{Type: "HowToStep", Text: "Toss tofu in starch, oil, and spices. Bake for 30 minutes."},
+						{Type: "HowToStep", Text: "Blend together sauce ingredients."},
+						{Type: "HowToStep", Text: "Toss cooked noodles with sauce and tofu. Dig in."},
+					},
+				},
+				Keywords:        nil,
+				Name:            "Soba Noodles with Crispy Tofu and Cilantro Avocado Sauce",
+				NutritionSchema: nil,
+				PrepTime:        "PT10M",
+				TotalTime:       "PT40M",
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://avocadoskillet.com/soba-noodles-with-crispy-tofu-and-cilantro-avocado-sauce/",
+			},
+		},
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
