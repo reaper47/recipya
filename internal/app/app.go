@@ -25,8 +25,10 @@ var (
 	ImagesDir     string // ImagesDir is the directory where user images are stored.
 	LogsDir       string // LogsDir is the directory where the logs are stored.
 	ThumbnailsDir string // ThumbnailsDir is the directory where the thumbnails of user images are stored.
+	VideosDir     string // VideosDir is the directory where user videos are stored.
 
 	ImageExt = ".webp" // ImageExt is the file extension for images.
+	VideoExt = ".webm" // VideoExt is the file extension for videos.
 
 	Info = GeneralInfo{
 		Version: semver.Version{
@@ -44,6 +46,7 @@ var (
 
 // GeneralInfo holds information on the application.
 type GeneralInfo struct {
+	IsFFmpegInstalled   bool
 	IsUpdateAvailable   bool
 	LastCheckedUpdateAt time.Time
 	LastUpdatedAt       time.Time
@@ -261,8 +264,9 @@ func Init() {
 	ImagesDir = filepath.Join(baseDir, "Images")
 	LogsDir = filepath.Join(baseDir, "Logs")
 	ThumbnailsDir = filepath.Join(ImagesDir, "Thumbnails")
+	VideosDir = filepath.Join(ImagesDir, "Videos")
 
-	xs := []string{BackupPath, DBBasePath, ImagesDir, ThumbnailsDir, LogsDir}
+	xs := []string{BackupPath, DBBasePath, ImagesDir, ThumbnailsDir, LogsDir, VideosDir}
 	for _, s := range xs {
 		err = os.MkdirAll(s, os.ModePerm)
 		if err != nil {
@@ -280,7 +284,13 @@ func Init() {
 	}
 	defer f.Close()
 
-	fmt.Printf("File locations:\n\t- Backups: %s\n\t- Database: %s\n\t- Images: %s\n\t- Logs: %s\n", BackupPath, DBBasePath, ImagesDir, LogsDir)
+	places := []string{
+		"\t- Backups: %s",
+		"\t- Database: %s",
+		"\t- Images: %s",
+		"\t- Logs: %s\n",
+	}
+	fmt.Printf("File locations:\n"+strings.Join(places, "\n"), BackupPath, DBBasePath, ImagesDir, LogsDir)
 }
 
 // NewConfig initializes the global Config. It can either be populated from environment variables or the configuration file.

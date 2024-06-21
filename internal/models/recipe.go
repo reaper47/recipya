@@ -53,6 +53,7 @@ func NewBaseRecipe() Recipe {
 		Instructions: make([]string, 0),
 		Keywords:     make([]string, 0),
 		Tools:        make([]HowToItem, 0),
+		Videos:       make([]uuid.UUID, 0),
 		Yield:        1,
 	}
 }
@@ -74,6 +75,7 @@ type Recipe struct {
 	Tools        []HowToItem
 	UpdatedAt    time.Time
 	URL          string
+	Videos       []uuid.UUID
 	Yield        int16
 }
 

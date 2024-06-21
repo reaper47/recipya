@@ -187,12 +187,20 @@ func (s *Server) recipeAddManualHandler() http.HandlerFunc {
 			return
 		}
 
+		keywords, err := s.Repository.Keywords()
+		if err != nil {
+			slog.Error("Failed to fetch keywords", "error", err)
+		}
+
 		_ = components.AddRecipeManual(templates.Data{
 			About:           templates.NewAboutData(),
 			IsAdmin:         userID == 1,
 			IsAuthenticated: true,
 			IsHxRequest:     r.Header.Get("Hx-Request") == "true",
-			View:            &templates.ViewRecipeData{Categories: categories},
+			View: &templates.ViewRecipeData{
+				Categories: categories,
+				Keywords:   keywords,
+			},
 		}).Render(r.Context(), w)
 	}
 }
@@ -213,7 +221,11 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 			return
 		}
 
-		var imageUUIDs []uuid.UUID
+		var (
+			imageUUIDs []uuid.UUID
+			videoUUIDs []uuid.UUID
+		)
+
 		imageFiles, ok := r.MultipartForm.File["images"]
 		if ok {
 			for _, file := range imageFiles {
@@ -225,13 +237,32 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 					continue
 				}
 
-				imageUUID, err := s.Files.UploadImage(f)
+				buf := make([]byte, 512)
+				_, err = f.Read(buf)
 				if err != nil {
-					_ = f.Close()
-					slog.Error("Error uploading image.", userIDAttr, fileAttr, "error", err)
+					slog.Error("Could not read the image from the form.", userIDAttr, fileAttr, "error", err)
 					continue
 				}
-				imageUUIDs = append(imageUUIDs, imageUUID)
+				_, _ = f.Seek(0, io.SeekStart)
+
+				mimeType := http.DetectContentType(buf)
+				if strings.HasPrefix(mimeType, "video") {
+					u, err := s.Files.UploadVideo(f)
+					if err != nil {
+						_ = f.Close()
+						slog.Error("Failed to upload video", userIDAttr, fileAttr, "error", err)
+						continue
+					}
+					videoUUIDs = append(videoUUIDs, u)
+				} else {
+					u, err := s.Files.UploadImage(f)
+					if err != nil {
+						_ = f.Close()
+						slog.Error("Failed to upload image", userIDAttr, fileAttr, "error", err)
+						continue
+					}
+					imageUUIDs = append(imageUUIDs, u)
+				}
 
 				_ = f.Close()
 			}
@@ -315,10 +346,11 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 				TotalCarbohydrates: r.FormValue("total-carbohydrates"),
 				TotalFat:           r.FormValue("total-fat"),
 			},
-			Times: times,
-			Tools: tools,
-			URL:   r.FormValue("source"),
-			Yield: int16(yield),
+			Times:  times,
+			Tools:  tools,
+			URL:    r.FormValue("source"),
+			Videos: videoUUIDs,
+			Yield:  int16(yield),
 		}
 
 		recipeIDs, _, err := s.Repository.AddRecipes(models.Recipes{recipe}, userID, nil)
@@ -677,12 +709,17 @@ func (s *Server) recipesEditHandler() http.HandlerFunc {
 			return
 		}
 
+		keywords, err := s.Repository.Keywords()
+		if err != nil {
+			slog.Error("Failed to fetch keywords", "error", err)
+		}
+
 		_ = components.EditRecipe(templates.Data{
 			About:           templates.NewAboutData(),
 			IsAdmin:         userID == 1,
 			IsAuthenticated: true,
 			IsHxRequest:     r.Header.Get("HX-Request") == "true",
-			View:            templates.NewViewRecipeData(id, recipe, categories, true, false),
+			View:            templates.NewViewRecipeData(id, recipe, categories, keywords, true, false),
 		}).Render(r.Context(), w)
 	}
 }
@@ -868,7 +905,7 @@ func (s *Server) recipeShareHandler(w http.ResponseWriter, r *http.Request) {
 		IsAdmin:         userID == 1,
 		IsAuthenticated: isLoggedIn,
 		IsHxRequest:     r.Header.Get("Hx-Request") == "true",
-		View:            templates.NewViewRecipeData(share.RecipeID, recipe, nil, userID == share.UserID, true),
+		View:            templates.NewViewRecipeData(share.RecipeID, recipe, nil, nil, userID == share.UserID, true),
 	}).Render(r.Context(), w)
 }
 
@@ -1139,7 +1176,7 @@ func (s *Server) recipesViewHandler() http.HandlerFunc {
 			IsAdmin:         userID == 1,
 			IsAuthenticated: true,
 			IsHxRequest:     r.Header.Get("Hx-Request") == "true",
-			View:            templates.NewViewRecipeData(id, recipe, nil, true, false),
+			View:            templates.NewViewRecipeData(id, recipe, nil, nil, true, false),
 		}).Render(r.Context(), w)
 	}
 }
@@ -1173,7 +1210,7 @@ func (s *Server) recipesViewShareHandler() http.HandlerFunc {
 			IsAdmin:         userID == 1,
 			IsAuthenticated: isLoggedIn,
 			IsHxRequest:     r.Header.Get("Hx-Request") == "true",
-			View:            templates.NewViewRecipeData(id, recipe, nil, cookbookUserID == userID, true),
+			View:            templates.NewViewRecipeData(id, recipe, nil, nil, cookbookUserID == userID, true),
 		}).Render(r.Context(), w)
 	}
 }

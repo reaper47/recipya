@@ -507,6 +507,10 @@ func (m *mockRepository) IsUserPassword(id int64, password string) bool {
 	return slices.IndexFunc(m.UsersRegistered, func(user models.User) bool { return user.ID == id }) != -1
 }
 
+func (m *mockRepository) Keywords() ([]string, error) {
+	return []string{"big"}, nil
+}
+
 func (m *mockRepository) MeasurementSystems(userID int64) ([]units.System, models.UserSettings, error) {
 	if m.MeasurementSystemsFunc != nil {
 		return m.MeasurementSystemsFunc(userID)
@@ -1031,6 +1035,10 @@ func (m *mockFiles) MergeImagesToPDF(images []io.Reader) io.ReadWriter {
 	return nil
 }
 
+func (m *mockFiles) ScrapeAndStoreImage(_ string) (uuid.UUID, error) {
+	return uuid.New(), nil
+}
+
 func (m *mockFiles) UpdateApp(current semver.Version) error {
 	if m.updateAppFunc != nil {
 		return m.updateAppFunc(current)
@@ -1046,7 +1054,7 @@ func (m *mockFiles) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
 	return uuid.New(), nil
 }
 
-func (m *mockFiles) ScrapeAndStoreImage(_ string) (uuid.UUID, error) {
+func (m *mockFiles) UploadVideo(_ io.ReadCloser) (uuid.UUID, error) {
 	return uuid.New(), nil
 }
 
