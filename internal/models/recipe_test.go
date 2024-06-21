@@ -142,7 +142,7 @@ func TestRecipe_ConvertMeasurementSystem(t *testing.T) {
 		{
 			name: "imperial to metric",
 			in: models.Recipe{
-				Description: "Preheat the oven to 351 °F (351 °F). " +
+				Description: "Preheat the oven to 351 °F (177 °C). " +
 					"Stir in flour, chocolate chips, and walnuts. " +
 					"Drop spoonfuls of dough 1.18 inches apart onto ungreased baking sheets. " +
 					"Bake in the preheated oven until edges are nicely browned, about 10 minutes.",
@@ -154,6 +154,7 @@ func TestRecipe_ConvertMeasurementSystem(t *testing.T) {
 					"3 cups all-purpose flour",
 					"2 cups semisweet chocolate chips",
 					"Salt and pepper",
+					"1 tablespoon plus 1 teaspoon adobo sauce (or to taste (from canned chipotle peppers))",
 				},
 				Instructions: []string{
 					"Preheat the oven to 350 degrees F (175 degrees C).",
@@ -176,9 +177,10 @@ func TestRecipe_ConvertMeasurementSystem(t *testing.T) {
 					"7.1 dl all-purpose flour",
 					"4.73 dl semisweet chocolate chips",
 					"Salt and pepper",
+					"14.79 ml plus 5 ml adobo sauce (or to taste (from canned chipotle peppers))",
 				},
 				Instructions: []string{
-					"Preheat the oven to 177 °C (177 °C).",
+					"Preheat the oven to 177 °C (175 °C).",
 					"Stir in flour, chocolate chips, and walnuts.",
 					"Drop spoonfuls of dough 5.08 cm apart onto ungreased baking sheets.",
 					"Bake in the preheated oven until edges are nicely browned, about 10 minutes.",
@@ -209,7 +211,7 @@ func TestRecipe_ConvertMeasurementSystem(t *testing.T) {
 			},
 			to: units.ImperialSystem,
 			want: models.Recipe{
-				Description: "Preheat the oven to 351 °F (351 °F). " +
+				Description: "Preheat the oven to 351 °F (347 °F). " +
 					"Stir in flour, chocolate chips, and walnuts. " +
 					"Drop spoonfuls of dough 1.18 inches apart onto ungreased baking sheets. " +
 					"Bake in the preheated oven until edges are nicely browned, about 10 minutes.",
@@ -222,7 +224,7 @@ func TestRecipe_ConvertMeasurementSystem(t *testing.T) {
 					"2 cups semisweet chocolate chips",
 				},
 				Instructions: []string{
-					"Preheat the oven to 351 °F (351 °F).",
+					"Preheat the oven to 351 °F (347 °F).",
 					"Stir in flour, chocolate chips, and walnuts.",
 					"Drop spoonfuls of dough 1.18 inches apart onto ungreased baking sheets.",
 					"Bake in the preheated oven until edges are nicely browned, about 10 minutes.",

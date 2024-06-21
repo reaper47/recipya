@@ -261,17 +261,20 @@ func TandoorImport(baseURL, username, password string, client *http.Client, uplo
 			}
 
 			for _, ing := range step.Ingredients {
-				s := ing.Food.Name
+				var parts []string
+
 				if ing.Amount > 0 {
 					formatted := strconv.FormatFloat(ing.Amount, 'g', -1, 64)
-					s = formatted + " " + s
+					parts = append(parts, formatted)
 				}
 
 				if ing.Unit != nil && ing.Unit.Name != "" {
-					s = s + " " + ing.Unit.Name
+					parts = append(parts, ing.Unit.Name)
 				}
 
-				ingredients = append(ingredients, s)
+				parts = append(parts, ing.Food.Name)
+
+				ingredients = append(ingredients, strings.Join(parts, " "))
 			}
 		}
 
