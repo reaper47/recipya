@@ -47,13 +47,15 @@ const (
 // NewFilesService creates a new Files that satisfies the FilesService interface.
 func NewFilesService() *Files {
 	return &Files{
-		mu: sync.Mutex{},
+		HTTP: NewHTTP(nil),
+		mu:   sync.Mutex{},
 	}
 }
 
 // Files is the entity that manages the email client.
 type Files struct {
-	mu sync.Mutex
+	HTTP HTTPService
+	mu   sync.Mutex
 }
 
 type exportData struct {
@@ -952,7 +954,7 @@ func (f *Files) ScrapeAndStoreImage(rawURL string) (uuid.UUID, error) {
 		return uuid.Nil, nil
 	}
 
-	req, err := PrepareRequestForURL(rawURL)
+	req, err := f.HTTP.PrepareRequestForURL(rawURL)
 	if err != nil {
 		return uuid.Nil, err
 	}

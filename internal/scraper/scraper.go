@@ -13,11 +13,6 @@ import (
 
 const atContext = "https://schema.org"
 
-// HTTPClient is an interface for making HTTP requests.
-type HTTPClient interface {
-	Do(req *http.Request) (*http.Response, error)
-}
-
 // IScraper is the scraper's interface.
 type IScraper interface {
 	Scrape(url string, files services.FilesService) (models.RecipeSchema, error)
@@ -25,20 +20,20 @@ type IScraper interface {
 
 // Scraper represents the IScraper's implementation.
 type Scraper struct {
-	Client HTTPClient
+	HTTP services.HTTP
 }
 
 // NewScraper creates a new Scraper.
-func NewScraper(client HTTPClient) *Scraper {
+func NewScraper(client services.HTTPClient) *Scraper {
 	return &Scraper{
-		Client: client,
+		HTTP: *services.NewHTTP(client),
 	}
 }
 
 // Scrape extracts the recipe from the given URL. An error will be
 // returned when the URL cannot be parsed.
 func (s *Scraper) Scrape(url string, files services.FilesService) (models.RecipeSchema, error) {
-	host := services.GetHost(url)
+	host := s.HTTP.GetHost(url)
 	if host == "bergamot" {
 		return s.scrapeBergamot(url)
 	} else if host == "foodbag" {
@@ -96,21 +91,21 @@ func (s *Scraper) Scrape(url string, files services.FilesService) (models.Recipe
 }
 
 func (s *Scraper) fetchDocument(url string) (*goquery.Document, error) {
-	req, err := services.PrepareRequestForURL(url)
+	req, err := s.HTTP.PrepareRequestForURL(url)
 	if err != nil {
 		return nil, err
 	}
 
-	res, err := s.Client.Do(req)
+	res, err := s.HTTP.Client.Do(req)
 	if err != nil {
 		return nil, err
 	}
 	defer res.Body.Close()
 
 	// Some websites require page reloads
-	host := services.GetHost(url)
+	host := s.HTTP.GetHost(url)
 	if host == "bettybossi" {
-		res, err = s.Client.Do(req)
+		res, err = s.HTTP.Client.Do(req)
 		if err != nil {
 			return nil, err
 		}
