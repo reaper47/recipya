@@ -236,6 +236,12 @@ const SelectDistinctImages = `
 	SELECT DISTINCT image
 	FROM cookbooks`
 
+// SelectKeywords fetches all keywords.
+const SelectKeywords = `
+	SELECT name 
+	FROM keywords
+	ORDER BY name`
+
 // SelectMeasurementSystems fetches the units systems along with the user's selected system and settings.
 const SelectMeasurementSystems = `
 	SELECT ms.name,

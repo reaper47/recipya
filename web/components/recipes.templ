@@ -363,7 +363,7 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 										id="add-image-button"
 										type="button"
 										class="btn btn-sm btn-ghost"
-										onclick="addImage(event)"
+										onclick="addMedia(event)"
 									>
 										@iconPlusCircle()
 										Add
@@ -376,15 +376,24 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 											<div class="mr-1">
 												<input
 													type="file"
-													accept="image/*"
+													accept="image/*,video/*"
 													name="images"
 													class="file-input file-input-sm file-input-bordered w-full max-w-sm"
 													_="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
                                                           on dragleave or drop set the target's style.background to ''
                                                           on drop or change
                                                             make an FileReader called reader then
-                                                            if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then
-                                                            set {src: window.URL.createObjectURL(it)} on previous <img/> then
+                                                            if event.dataTransfer
+                                                                get event.dataTransfer.files[0]
+                                                            else
+                                                                get event.target.files[0]
+                                                            end then
+                                                            if it.type.startsWith('video')
+                                                                put `<video controls class='object-cover mb-2 w-full max-h-[39rem]'><source src='${window.URL.createObjectURL(it)}'></source></video>` after previous <img/> then
+                                                                add .hidden to previous <img/>
+                                                            else
+                                                                set {src: window.URL.createObjectURL(it)} on previous <img/>
+                                                            end then
                                                             remove .hidden from me.parentElement.parentElement.querySelectorAll('button') then
                                                             add .hidden to the parentElement of me"
 												/>
@@ -408,16 +417,7 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 													</button>
 												</div>
 											</div>
-											<button
-												type="button"
-												class="hidden btn btn-sm btn-error btn-outline"
-												_="on click
-                                                    set {value: ''} on me.parentElement.children[0].children[0] then
-                                                    set {src: ''} on previous <img/> then
-                                                    set {value: ''} on the first in (last in me.parentElement.children[0].children) then
-                                                    remove .hidden from the first in me.parentElement.children then
-                                                    add .hidden"
-											>
+											<button type="button" class="hidden btn btn-sm btn-error btn-outline" onclick="deleteMedia(event)">
 												Delete
 											</button>
 										</span>
@@ -489,7 +489,7 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 								</div>
 								<div class="border-gray-700 border-y col-span-6 md:border-t md:border-b-0 md:grid-cols-3 print:border-none">
 									<div class="p-4 flex gap-2 flex-wrap">
-										@recipeKeywordEmpty()
+										@recipeKeywordEmpty(data.Keywords)
 									</div>
 								</div>
 								<div class="grid grid-flow-col col-span-6 border-gray-700 border-y md:grid-cols-2 md:row-span-2">
@@ -860,7 +860,7 @@ templ loadRecipesManualScripts() {
                 });
             });
 
-        function addImage(event) {
+        function addMedia(event) {
             const images = document.querySelectorAll("#images label");
             for (let i = 0; i < images.length; i++) {
                 if (images[i].querySelector('input[type="file"]').files.length === 0) {
@@ -882,6 +882,11 @@ templ loadRecipesManualScripts() {
             const subButtons = cloneImage.querySelectorAll("button");
             subButtons[subButtons.length-1].classList.add("hidden");
             document.querySelector("#images").appendChild(cloneImage);
+            const video = cloneImage.querySelector('video');
+            if (video) {
+              cloneImage.querySelector("img").classList.remove("hidden");
+              video.parentNode.removeChild(video);
+            }
             _hyperscript.processNode(cloneImage);
 
             let target = event.target;
@@ -897,6 +902,21 @@ templ loadRecipesManualScripts() {
             target.previousElementSibling.parentNode.insertBefore(cloneButton, target);
             _hyperscript.processNode(cloneButton);
             htmx.process(cloneImage);
+        }
+
+        function deleteMedia(event) {
+            const parent = event.target.parentElement;
+            parent.children[0].children[0].src = "";
+            parent.children[0].children[0].value = "";
+
+            if (parent.previousElementSibling.tagName === "VIDEO") {
+                parent.previousElementSibling.parentElement.removeChild(parent.previousElementSibling);
+                parent.previousElementSibling.classList.remove("hidden");
+            }
+
+            parent.previousElementSibling.src = "";
+            parent.children[0].classList.remove("hidden");
+            event.target.classList.add("hidden");
         }
 
         function addKeyword(event) {
@@ -1084,7 +1104,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 										id="add-image-button"
 										type="button"
 										class="btn btn-sm btn-ghost"
-										onclick="addImage(event)"
+										onclick="addMedia(event)"
 									>
 										@iconPlusCircle()
 										Add
@@ -1130,16 +1150,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 														</button>
 													</div>
 												</div>
-												<button
-													type="button"
-													class="hidden btn btn-sm btn-error btn-outline"
-													_="on click
-                                                        set {value: ''} on me.parentElement.children[0].children[0] then
-                                                        set {src: ''} on previous <img/> then
-                                                        set {value: ''} on the first in (last in me.parentElement.children[0].children) then
-                                                        remove .hidden from the first in me.parentElement.children then
-                                                        add .hidden"
-												>
+												<button type="button" class="hidden btn btn-sm btn-error btn-outline" onclick="deleteMedia(event)">
 													Delete
 												</button>
 											</span>
@@ -1196,12 +1207,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 													<button
 														type="button"
 														class={ "btn btn-sm btn-error btn-outline", templ.KV("hidden", !data.IsImagesExist[i]) }
-														_="on click
-                                                            set {value: ''} on me.parentElement.children[0].children[0] then
-                                                            set {src: ''} on previous <img/> then
-                                                            set {value: ''} on the first in (last in me.parentElement.children[0].children) then
-                                                            remove .hidden from the first in me.parentElement.children then
-                                                            add .hidden"
+														onclick="deleteMedia(event)"
 													>
 														Delete
 													</button>
@@ -1295,7 +1301,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 												<button type="button" class="btn btn-xs btn-ghost" _="on click remove closest <div/>">X</button>
 											</div>
 										}
-										@recipeKeywordEmpty()
+										@recipeKeywordEmpty(data.Keywords)
 									</div>
 								</div>
 								<div class="grid grid-flow-col col-span-6 border-gray-700 border-y md:grid-cols-2 md:row-span-2">
@@ -1880,6 +1886,17 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 												</div>
 											</div>
 										}
+										<div id="image-2" class="carousel-item relative w-full">
+											<video controls preload="metadata">
+												<source src="/static/videos/output.webm" type="video/webm"/>
+												Download the <a href="/static/videos/output.webm">webm</a> video.
+												<!-- ffmpeg -i sample.mp4 -c:v libvpx -b:v 1M -c:a libvorbis output.webm -->
+											</video>
+											<div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
+												<a class="btn btn-circle" href="#image-1">❮</a>
+												<a class="btn btn-circle" href="#image-0">❯</a>
+											</div>
+										</div>
 									</div>
 							}
 						</div>
@@ -2200,7 +2217,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
     </script>
 }
 
-templ recipeKeywordEmpty() {
+templ recipeKeywordEmpty(keywords []string) {
 	<div id="hidden_keyword" class="hidden badge badge-sm badge-neutral p-3 pr-0">
 		<input type="hidden" name="keywords" value=""/>
 		<span class="select-none"></span>
@@ -2212,7 +2229,12 @@ templ recipeKeywordEmpty() {
 		_="on keydown if event.key is 'Enter' halt the event then addKeyword(event)"
 	>
 		<label>
-			<input id="new_keyword" type="text" placeholder="New keyword" class="input input-ghost input-xs w-[16ch] focus:outline-none" autocomplete="off"/>
+			<input id="new_keyword" type="text" placeholder="New keyword" class="input input-ghost input-xs w-[16ch] focus:outline-none" autocomplete="off" list="keywords"/>
+			<datalist id="keywords">
+				for _, k := range keywords {
+					<option>{ k }</option>
+				}
+			</datalist>
 		</label>
 		<button
 			type="button"

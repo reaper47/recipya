@@ -28,6 +28,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"runtime"
 	"slices"
@@ -578,7 +579,7 @@ func recipeToPDF(r *models.Recipe) []byte {
 }
 
 func addRecipeToPDF(pdf *gofpdf.Fpdf, r *models.Recipe) *gofpdf.Fpdf {
-	viewData := templates.NewViewRecipeData(1, r, nil, true, false)
+	viewData := templates.NewViewRecipeData(1, r, nil, nil, true, false)
 
 	tr := pdf.UnicodeTranslatorFromDescriptor("")
 	marginLeft, marginTop, marginRight, _ := pdf.GetMargins()
@@ -1264,6 +1265,39 @@ func (f *Files) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
 	}
 
 	return imageUUID, nil
+}
+
+// UploadVideo uploads a video to the server. The video is converted to WebM in the background.
+func (f *Files) UploadVideo(rc io.ReadCloser) (uuid.UUID, error) {
+	if !app.Info.IsFFmpegInstalled {
+		return uuid.Nil, errors.New("ffmpeg is not installed")
+	}
+
+	mediaUUID := uuid.New()
+
+	temp, err := os.CreateTemp("", "*")
+	if err != nil {
+		return uuid.Nil, err
+	}
+	defer temp.Close()
+
+	n, err := io.Copy(temp, rc)
+	if err != nil {
+		return uuid.Nil, err
+	}
+
+	go func(u uuid.UUID, file string) {
+		f.mu.Lock()
+		defer f.mu.Unlock()
+		defer os.Remove(file)
+
+		out := filepath.Join(app.VideosDir, u.String()+app.VideoExt)
+		start := time.Now()
+		err = exec.Command("ffmpeg", "-i", file, "-c:v", "libvpx", "-b:v", "1M", "-c:a", "libvorbis", out).Run()
+		slog.Info("Converted video to WebM", "file", file, "out", out, "bytes", n, "exec", time.Since(start), "error", err)
+	}(mediaUUID, temp.Name())
+
+	return mediaUUID, nil
 }
 
 // UpdateApp updates the application to the latest version.

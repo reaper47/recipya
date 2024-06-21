@@ -25,6 +25,9 @@ FROM alpine AS build-release-stage
 
 WORKDIR /
 
+RUN apk add --no-cache ffmpeg
+RUN ffmpeg -version
+
 COPY --from=build-stage /app/recipya /app/recipya
 
 EXPOSE 8080

@@ -347,7 +347,7 @@ func (s *SQLiteService) addRecipeTx(ctx context.Context, tx *sql.Tx, r models.Re
 	r.Keywords = slices.DeleteFunc(extensions.Unique(r.Keywords), func(s string) bool { return s == "" })
 	for _, keyword := range r.Keywords {
 		var keywordID int64
-		err = tx.QueryRowContext(ctx, statements.InsertKeyword, keyword).Scan(&keywordID)
+		err = tx.QueryRowContext(ctx, statements.InsertKeyword, strings.ToLower(keyword)).Scan(&keywordID)
 		if err != nil {
 			return 0, err
 		}
@@ -403,6 +403,14 @@ func (s *SQLiteService) addRecipeTx(ctx context.Context, tx *sql.Tx, r models.Re
 		}
 
 		_, err = tx.ExecContext(ctx, statements.InsertRecipeTool, toolID, recipeID, tool.Quantity, i)
+		if err != nil {
+			return 0, err
+		}
+	}
+
+	// Insert videos
+	for _, u := range r.Videos {
+		_, err = tx.ExecContext(ctx, statements.InsertVideoRecipe, u, recipeID)
 		if err != nil {
 			return 0, err
 		}
@@ -648,7 +656,7 @@ func (s *SQLiteService) calculateNutrition(userID int64, recipes []int64, settin
 	}()
 }
 
-// Categories gets all categories in the database.
+// Categories gets all user categories from the database.
 func (s *SQLiteService) Categories(userID int64) ([]string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
@@ -1095,6 +1103,35 @@ func (s *SQLiteService) IsUserPassword(id int64, password string) bool {
 	}
 
 	return auth.VerifyPassword(password, auth.HashedPassword(hash))
+}
+
+// Keywords gets all keywords in the database.
+func (s *SQLiteService) Keywords() ([]string, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	var xk []string
+	rows, err := s.DB.QueryContext(ctx, statements.SelectKeywords)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var k string
+		err = rows.Scan(&k)
+		if err != nil {
+			return nil, err
+		}
+		xk = append(xk, k)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+
+	return xk, nil
 }
 
 // MeasurementSystems gets the units systems, along with the one the user selected, in the database.
@@ -1884,7 +1921,7 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 		ids := make([]int64, len(updatedRecipe.Keywords))
 		for i, v := range updatedRecipe.Keywords {
 			var id int64
-			err = tx.QueryRowContext(ctx, statements.InsertKeyword, v).Scan(&id)
+			err = tx.QueryRowContext(ctx, statements.InsertKeyword, strings.ToLower(v)).Scan(&id)
 			if err != nil {
 				return err
 			}

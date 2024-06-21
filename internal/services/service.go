@@ -41,7 +41,7 @@ type RepositoryService interface {
 	// AddShareRecipe adds a shared recipe to the user's collection.
 	AddShareRecipe(recipeID, userID int64) (int64, error)
 
-	// Categories gets all categories in the database.
+	// Categories gets all user categories from the database.
 	Categories(userID int64) ([]string, error)
 
 	// CheckUpdate checks whether there is a new release for Recipya.
@@ -106,6 +106,9 @@ type RepositoryService interface {
 
 	// IsUserPassword checks whether the password is the user's password.
 	IsUserPassword(id int64, password string) bool
+
+	// Keywords gets all keywords in the database.
+	Keywords() ([]string, error)
 
 	// MeasurementSystems gets the units systems, along with the one the user selected, in the database.
 	MeasurementSystems(userID int64) ([]units.System, models.UserSettings, error)
@@ -249,8 +252,11 @@ type FilesService interface {
 	// UpdateApp updates the application to the latest version.
 	UpdateApp(current semver.Version) error
 
-	// UploadImage uploads an image to the server.
+	// UploadImage uploads an image to the server. The image is converted to WebP.
 	UploadImage(rc io.ReadCloser) (uuid.UUID, error)
+
+	// UploadVideo uploads a video to the server. The video is converted to WebM in the background.
+	UploadVideo(rc io.ReadCloser) (uuid.UUID, error)
 }
 
 // HTTPService is the interface that describes the methods required for preparing and utilizing https requests and responses.

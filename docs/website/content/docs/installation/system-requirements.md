@@ -20,7 +20,7 @@ The following table lists the supported platforms and devices.
 
 In addition, you must have at least 300 MB of free space.
 
-## Browsers
+## Browser Compatibility
 
 | Browser  | Version |     Compatibility      |
 |----------|:-------:|:----------------------:|
@@ -32,3 +32,17 @@ In addition, you must have at least 300 MB of free space.
 | Opera    |  100+   |  {{< icon "check" >}}  |
 | Safari   |   17+   |  {{< icon "check" >}}  |
 | Vanadium |  114+   |  {{< icon "check" >}}  |
+
+## Dependencies
+
+| Software | Version |       Optional       |
+|----------|:-------:|:--------------------:|
+| FFmpeg   |   7+    | {{< icon "check" >}} |
+
+### FFmpeg
+
+[FFmpeg](https://en.wikipedia.org/wiki/FFmpeg) is used to convert video files to the [WebM](https://en.wikipedia.org/wiki/WebM) 
+audiovisual media file format. It is included in the Docker image. Otherwise, it will be automatically installed if you use Windows.
+If you use macOS or Linux, then you should install it manually.
+
+The video feature will be disabled if FFmpeg is not installed.
