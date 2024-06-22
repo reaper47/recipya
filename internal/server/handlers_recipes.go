@@ -207,12 +207,13 @@ func (s *Server) recipeAddManualHandler() http.HandlerFunc {
 
 func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		r.Body = http.MaxBytesReader(w, r.Body, 128<<20)
+		const maxSize = 512 << 20
+		r.Body = http.MaxBytesReader(w, r.Body, maxSize)
 
 		userID := getUserID(r)
 		userIDAttr := slog.Int64("userID", userID)
 
-		err := r.ParseMultipartForm(128 << 20)
+		err := r.ParseMultipartForm(maxSize)
 		if err != nil {
 			msg := "Could not parse the form."
 			slog.Error(msg, userIDAttr, "error", err)

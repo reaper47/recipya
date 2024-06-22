@@ -397,6 +397,7 @@ func TestScraper_F(t *testing.T) {
 				},
 				PrepTime: "PT5M",
 				URL:      "https://fitmencook.com/rosemary-blue-cheese-turkey-sliders/",
+				Yield:    &models.Yield{Value: 1},
 			},
 		},
 		{

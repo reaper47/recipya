@@ -960,8 +960,7 @@ func (f *Files) ScrapeAndStoreImage(rawURL string) (uuid.UUID, error) {
 		return uuid.Nil, err
 	}
 
-	client := &http.Client{}
-	resImage, err := client.Do(req)
+	resImage, err := f.HTTP.Do(req)
 	if err != nil {
 		_, err = os.Stat(filepath.Join(app.ImagesDir, rawURL+app.ImageExt))
 		if errors.Is(err, os.ErrExist) {

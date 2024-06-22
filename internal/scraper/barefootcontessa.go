@@ -7,7 +7,7 @@ import (
 )
 
 func scrapeBarefootcontessa(root *goquery.Document) (models.RecipeSchema, error) {
-	rs, err := parseGraph(root)
+	rs, err := parseWebsite(root)
 	if err != nil {
 		return models.RecipeSchema{}, err
 	}

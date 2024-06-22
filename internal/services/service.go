@@ -261,6 +261,9 @@ type FilesService interface {
 
 // HTTPService is the interface that describes the methods required for preparing and utilizing https requests and responses.
 type HTTPService interface {
+	// Do sends an HTTP request and returns an HTTP response, following policy (such as redirects, cookies, auth) as configured on the client.
+	Do(req *http.Request) (*http.Response, error)
+
 	// PrepareRequestForURL Prepares an HTTP GET request for a given URL.
 	// It will apply additional HTTP headers if the host requires it.
 	PrepareRequestForURL(url string) (*http.Request, error)
