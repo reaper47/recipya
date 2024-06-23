@@ -644,6 +644,9 @@ func TestScraper_T(t *testing.T) {
 					Sugar:          "1.0 g",
 					UnsaturatedFat: "0.0 g",
 				},
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://cdn.apartmenttherapy.info/image/upload/f_auto,q_auto:eco,c_fill,g_auto,w_1500,ar_3:2/k%2Farchive%2F6cc517c3ad0e6cce62ca2954c6f6b400fca13bc1",
+				},
 				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT0S",
 				Yield:     &models.Yield{Value: 4},
@@ -917,8 +920,11 @@ func TestScraper_T(t *testing.T) {
 						{Type: "HowToStep", Text: "Place the English muffins on the plate, face up. Next, place a slice of Canadian bacon on each half. Place an egg on top of the bacon and then top with a generous helping of Hollandaise sauce. <em>Vegetarian variation:</em> you can omit the Canadian bacon altogether, or you can wilt fresh spinach and place it on the muffins for Eggs Florentine, which is divine in its own right. Top with more cayenne, or a sprinkle of paprika, and chopped chives if you like."},
 					},
 				},
-				Name:      "Eggs Benedict",
-				PrepTime:  "PT15M",
+				Name:     "Eggs Benedict",
+				PrepTime: "PT15M",
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://hips.hearstapps.com/thepioneerwoman/wp-content/uploads/2007/10/1546875357_506daa8f1c.jpg?crop=0.664xw:1xh;center,top&resize=100:*",
+				},
 				TotalTime: "PT25M",
 				Yield:     &models.Yield{Value: 3},
 				URL:       "https://www.thepioneerwoman.com/food-cooking/recipes/a8865/eggs-benedict/",

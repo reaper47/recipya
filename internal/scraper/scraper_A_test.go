@@ -944,10 +944,13 @@ func TestScraper_A(t *testing.T) {
 				Keywords:        &models.Keywords{},
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "P0Y0M0DT0H0M1200S",
-				Tools:           &models.Tools{Values: []models.HowToItem{}},
-				TotalTime:       "P0Y0M0DT0H0M55200S",
-				URL:             "https://www.atelierdeschefs.fr/fr/recette/17741-boeuf-bourguignon-traditionnel.php",
-				Yield:           &models.Yield{Value: 6},
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://adc-dev-images-recipes.s3.eu-west-1.amazonaws.com/bourguignon_3bd.jpg",
+				},
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
+				TotalTime: "P0Y0M0DT0H0M55200S",
+				URL:       "https://www.atelierdeschefs.fr/fr/recette/17741-boeuf-bourguignon-traditionnel.php",
+				Yield:     &models.Yield{Value: 6},
 			},
 		},
 		{

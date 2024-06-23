@@ -475,7 +475,10 @@ func TestScraper_G(t *testing.T) {
 				NutritionSchema: &models.NutritionSchema{
 					Calories: "376 calories",
 				},
-				PrepTime:  "PT0S",
+				PrepTime: "PT0S",
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://hips.hearstapps.com/hmg-prod/images/balsamic-chicken-caprese-64c91c95d79f4.jpg?crop=1.00xw:0.668xh;0,0.192xh&resize=100:*",
+				},
 				TotalTime: "PT30M",
 				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.goodhousekeeping.com/food-recipes/a44652479/balsamic-chicken-caprese-recipe/",
@@ -526,6 +529,7 @@ func TestScraper_G(t *testing.T) {
 				Name:            "Gousto chicken grain bowl with zingy cashew sauce recipe",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT15M",
+				ThumbnailURL:    &models.ThumbnailURL{Value: "https://cdn.mos.cms.futurecdn.net/DktD3Cp7PGCvFn7PVVgKKT-320-80.jpeg"},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				TotalTime:       "PT45M",
 				Yield:           &models.Yield{Value: 2},

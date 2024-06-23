@@ -234,6 +234,27 @@ func TestInstruction_UnmarshalJSON(t *testing.T) {
 	}
 }
 
+func TestThumnailURL_UnmarshalJSON(t *testing.T) {
+	want := models.RecipeSchema{
+		ThumbnailURL: &models.ThumbnailURL{Value: "thumbnail.png"},
+	}
+
+	testcases := []struct {
+		name string
+		data string
+	}{
+		{
+			name: "text",
+			data: `{"thumbnailUrl": "thumbnail.png"}`,
+		},
+	}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			assertRecipeSchema(t, tc.data, want)
+		})
+	}
+}
+
 func TestYield_UnmarshalJSON(t *testing.T) {
 	want := models.RecipeSchema{
 		Yield: &models.Yield{Value: 4},
@@ -530,6 +551,7 @@ func TestRecipeSchema_Recipe(t *testing.T) {
 
 func TestRecipeSchema_Marshal(t *testing.T) {
 	imageID := uuid.New()
+	thumbnailID := uuid.New()
 	tools := []models.HowToItem{
 		models.NewHowToTool("Saw"),
 		models.NewHowToTool("Blender"),
@@ -570,11 +592,12 @@ func TestRecipeSchema_Marshal(t *testing.T) {
 			TransFat:       "10g",
 			UnsaturatedFat: "11g",
 		},
-		PrepTime:  "PT1H",
-		TotalTime: "PT4H",
-		Tools:     &models.Tools{Values: tools},
-		Yield:     &models.Yield{Value: 4},
-		URL:       "https://recipes.musicavis.ca",
+		PrepTime:     "PT1H",
+		ThumbnailURL: &models.ThumbnailURL{Value: thumbnailID.String()},
+		TotalTime:    "PT4H",
+		Tools:        &models.Tools{Values: tools},
+		Yield:        &models.Yield{Value: 4},
+		URL:          "https://recipes.musicavis.ca",
 	}
 
 	xb, _ := json.Marshal(rs)
@@ -674,6 +697,16 @@ func TestRecipeSchema_Marshal(t *testing.T) {
 		case "prepTime":
 			if v.(string) != rs.PrepTime {
 				t.Errorf("got prepTime %q; want %q", v, rs.PrepTime)
+			}
+		case "thumbnailUrl":
+			want := "/data/images/thumbnails/" + rs.ThumbnailURL.Value
+			s := v.(string)
+			_, after, ok := strings.Cut(v.(string), "/")
+			if ok {
+				s = "/" + after
+			}
+			if s != want {
+				t.Errorf("got thumbnailURL %q; want %q", v, rs.ThumbnailURL.Value)
 			}
 		case "tool":
 			xa := v.([]any)

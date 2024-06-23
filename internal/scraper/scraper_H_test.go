@@ -384,6 +384,9 @@ func TestScraper_H(t *testing.T) {
 					Sodium:        "880 mg",
 					Sugar:         "9 g",
 				},
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://img.hellofresh.com/f_auto,fl_lossy,h_300,q_auto,w_450/hellofresh_s3/image/5a8f0fcbae08b52f161b5832-033c9a4a.jpg",
+				},
 				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT20M",
 				Yield:     &models.Yield{Value: 2},

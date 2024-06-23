@@ -175,7 +175,10 @@ func TestScraper_D(t *testing.T) {
 					Sugar:         "9 g",
 					TransFat:      "1 g",
 				},
-				PrepTime:  "PT10M",
+				PrepTime: "PT10M",
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://hips.hearstapps.com/hmg-prod/images/delish-230510-beef-broccoli-613-rv-index-646bca228a2b3.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=100:*",
+				},
 				TotalTime: "PT40M",
 				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.delish.com/cooking/recipe-ideas/a24489879/beef-and-broccoli-recipe/",

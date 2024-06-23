@@ -1166,9 +1166,12 @@ func TestScraper_B(t *testing.T) {
 				},
 				Name:            "Crispy Chicken With Za’atar-Olive Rice",
 				NutritionSchema: &models.NutritionSchema{},
-				Tools:           &models.Tools{Values: []models.HowToItem{}},
-				Yield:           &models.Yield{Value: 4},
-				URL:             "https://www.bonappetit.com/recipe/crispy-chicken-with-zaatar-olive-rice"},
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://assets.bonappetit.com/photos/6228bc8071b26c82f857f620/3:2/w_5238,h_3492,c_limit/Crispy-Chicken-With-Za%E2%80%99atar-Olive-Rice.jpg",
+				},
+				Tools: &models.Tools{Values: []models.HowToItem{}},
+				Yield: &models.Yield{Value: 4},
+				URL:   "https://www.bonappetit.com/recipe/crispy-chicken-with-zaatar-olive-rice"},
 		},
 		{
 			name: "bongeats.com",

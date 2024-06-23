@@ -292,6 +292,7 @@ func (r *Recipe) Schema() RecipeSchema {
 		Name:            r.Name,
 		NutritionSchema: r.Nutrition.Schema(strconv.Itoa(int(r.Yield))),
 		PrepTime:        formatDuration(r.Times.Prep),
+		ThumbnailURL:    &ThumbnailURL{Value: img},
 		Tools:           &Tools{Values: r.Tools},
 		TotalTime:       formatDuration(r.Times.Total),
 		Yield:           &Yield{Value: r.Yield},
@@ -332,6 +333,10 @@ func (r *Recipe) Schema() RecipeSchema {
 
 	if schema.NutritionSchema.Equal(NutritionSchema{}) {
 		schema.NutritionSchema = nil
+	}
+
+	if schema.ThumbnailURL.Value == "" {
+		schema.ThumbnailURL = nil
 	}
 
 	if schema.Yield.Value == 0 {

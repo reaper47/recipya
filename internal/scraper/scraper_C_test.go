@@ -1016,8 +1016,11 @@ func TestScraper_C(t *testing.T) {
 						{Type: "HowToStep", Text: "Reduce heat to medium. Add onion, carrots, and celery to reserved pot. Cook, stirring occasionally, until onion is translucent, 6 to 8 minutes. Add garlic, rosemary, sage, thyme, and bay leaves. Cook, stirring, until garlic is fragrant, about 1 minute. Sprinkle in flour and cook, stirring, until flour becomes a medium brown shade (like the color of caramel), 4 to 5 minutes. While stirring, slowly pour in half of stock. Return wings to pot and pour in remaining stock until wings are 2/3 covered by liquid. Cover and bake until wings are tender, 2 to 2 1/2 hours. Serve over rice."},
 					},
 				},
-				Name:      "Braised Turkey Wings",
-				PrepTime:  "PT40M",
+				Name:     "Braised Turkey Wings",
+				PrepTime: "PT40M",
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://hips.hearstapps.com/hmg-prod/images/braised-turkey-wings-clx040122-1646247632.jpg?crop=0.878xw:0.585xh;0,0.223xh&resize=100:*",
+				},
 				TotalTime: "PT3H10M",
 				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.countryliving.com/food-drinks/a39298988/braised-turkey-wings-recipe/",

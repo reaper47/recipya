@@ -599,9 +599,12 @@ func TestScraper_E(t *testing.T) {
 				},
 				Name:            "Olive Oil Cake",
 				NutritionSchema: &models.NutritionSchema{},
-				Tools:           &models.Tools{Values: []models.HowToItem{}},
-				Yield:           &models.Yield{Value: 8},
-				URL:             "https://www.bonappetit.com/recipe/olive-oil-cake",
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://assets.epicurious.com/photos/5a05db121a9e232c87581a7f/1:1/w_1225,h_1225,c_limit/olive-oil-cake-recipe-BA-111017.jpg",
+				},
+				Tools: &models.Tools{Values: []models.HowToItem{}},
+				Yield: &models.Yield{Value: 8},
+				URL:   "https://www.bonappetit.com/recipe/olive-oil-cake",
 			},
 		},
 		{
@@ -716,8 +719,11 @@ func TestScraper_E(t *testing.T) {
 					},
 				},
 				Keywords: &models.Keywords{Values: "sections/recept"},
-				Yield:    &models.Yield{Value: 22},
-				URL:      "https://alltommat.expressen.se/recept/saftiga-choklad--och-apelsinbullar/",
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://static.cdn-expressen.se/images/45/cd/45cd6c5649004e1fa957e891d581fa49/16x9/original.jpg",
+				},
+				Yield: &models.Yield{Value: 22},
+				URL:   "https://alltommat.expressen.se/recept/saftiga-choklad--och-apelsinbullar/",
 			},
 		},
 	}

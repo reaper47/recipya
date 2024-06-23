@@ -226,7 +226,10 @@ func TestScraper_K(t *testing.T) {
 					Protein:       "15 g",
 					Servings:      "1",
 				},
-				PrepTime:  "PT45M",
+				PrepTime: "PT45M",
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://images.kitchenstories.io/recipeImages/RP02_18_06_valencianPaella_titlePicture.jpg",
+				},
 				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT45M",
 				URL:       "https://www.kitchenstories.com/de/rezepte/valencianische-paella",

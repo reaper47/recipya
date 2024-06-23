@@ -1164,6 +1164,7 @@ func TestScraper_F(t *testing.T) {
 				},
 				Name:            "Fyllning",
 				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{Value: "uploads/sites/87/2020/08/knackig-appelpaj-rakram-4.jpg"},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				TotalTime:       "PT60M",
 				Yield:           &models.Yield{Value: 6},

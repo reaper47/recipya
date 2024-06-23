@@ -35,6 +35,7 @@ type RecipeSchema struct {
 	Name            string           `json:"name,omitempty"`
 	NutritionSchema *NutritionSchema `json:"nutrition,omitempty"`
 	PrepTime        string           `json:"prepTime,omitempty"`
+	ThumbnailURL    *ThumbnailURL    `json:"thumbnailUrl,omitempty"`
 	Tools           *Tools           `json:"tool,omitempty"`
 	TotalTime       string           `json:"totalTime,omitempty"`
 	Yield           *Yield           `json:"recipeYield,omitempty"`
@@ -492,7 +493,7 @@ func (k *Keywords) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// Image holds a recipe's image. The JSON fields correspond.
+// Image holds a recipe's image.
 type Image struct {
 	Value string
 }
@@ -929,6 +930,35 @@ func (n *NutritionSchema) UnmarshalJSON(data []byte) error {
 		}
 	default:
 		slog.Warn("Could not parse nutrition schema", "schema", v, "type", x)
+	}
+	return nil
+}
+
+// ThumbnailURL holds a recipe's thumbnail.
+type ThumbnailURL struct {
+	Value string
+}
+
+// MarshalJSON encodes the thumbnail URL.
+func (t *ThumbnailURL) MarshalJSON() ([]byte, error) {
+	s := t.Value
+	if s != "" {
+		s = app.Config.Address() + "/data/images/thumbnails/" + s
+	}
+	return json.Marshal(s)
+}
+
+// UnmarshalJSON decodes the thumbnail URL according to the schema (https://schema.org/URL).
+func (t *ThumbnailURL) UnmarshalJSON(data []byte) error {
+	var v any
+	err := json.Unmarshal(data, &v)
+	if err != nil {
+		return err
+	}
+
+	switch x := v.(type) {
+	case string:
+		t.Value = x
 	}
 	return nil
 }
