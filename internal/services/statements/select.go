@@ -236,6 +236,11 @@ const SelectDistinctImages = `
 	SELECT DISTINCT image
 	FROM cookbooks`
 
+// SelectDistinctVideos gets all distinct video UUIDs from the recipes table.
+const SelectDistinctVideos = `
+	SELECT DISTINCT video
+	FROM video_recipe`
+
 // SelectKeywords fetches all keywords.
 const SelectKeywords = `
 	SELECT name 
@@ -326,6 +331,7 @@ const baseSelectRecipe = `
 		   times.prep_seconds,
 		   times.cook_seconds,
 		   times.total_seconds,
+		   GROUP_CONCAT(DISTINCT video_recipe.video),
 		   ROW_NUMBER() OVER (ORDER BY recipes.id)                                      AS row_num
 	FROM recipes
 			 LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id
@@ -342,7 +348,8 @@ const baseSelectRecipe = `
 			 LEFT JOIN tools ON tool_recipe.tool_id = tools.id
 			 LEFT JOIN nutrition ON recipes.id = nutrition.recipe_id
 			 LEFT JOIN time_recipe ON recipes.id = time_recipe.recipe_id
-			 LEFT JOIN times ON time_recipe.time_id = times.id`
+			 LEFT JOIN times ON time_recipe.time_id = times.id
+			 LEFT JOIN video_recipe ON video_recipe.recipe_id = recipes.id`
 
 const baseSelectSearchRecipe = `
 	SELECT recipes.id                                                                      AS recipe_id,

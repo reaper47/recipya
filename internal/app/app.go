@@ -264,7 +264,7 @@ func Init() {
 	ImagesDir = filepath.Join(baseDir, "Images")
 	LogsDir = filepath.Join(baseDir, "Logs")
 	ThumbnailsDir = filepath.Join(ImagesDir, "Thumbnails")
-	VideosDir = filepath.Join(ImagesDir, "Videos")
+	VideosDir = filepath.Join(baseDir, "Videos")
 
 	xs := []string{BackupPath, DBBasePath, ImagesDir, ThumbnailsDir, LogsDir, VideosDir}
 	for _, s := range xs {
@@ -288,9 +288,10 @@ func Init() {
 		"\t- Backups: %s",
 		"\t- Database: %s",
 		"\t- Images: %s",
-		"\t- Logs: %s\n",
+		"\t- Logs: %s",
+		"\t- Videos: %s\n",
 	}
-	fmt.Printf("File locations:\n"+strings.Join(places, "\n"), BackupPath, DBBasePath, ImagesDir, LogsDir)
+	fmt.Printf("File locations:\n"+strings.Join(places, "\n"), BackupPath, DBBasePath, ImagesDir, LogsDir, VideosDir)
 }
 
 // NewConfig initializes the global Config. It can either be populated from environment variables or the configuration file.

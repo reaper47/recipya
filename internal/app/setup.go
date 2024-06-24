@@ -125,6 +125,7 @@ func moveFiles(srcDir, destDir string) error {
 		}
 	}
 
+	// TODO: v1.3.0 - Move Images and Videos to Media folder. Media folder will have two subfolders: Images and Videos.
 	return nil
 }
 

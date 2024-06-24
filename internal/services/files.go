@@ -48,15 +48,17 @@ const (
 // NewFilesService creates a new Files that satisfies the FilesService interface.
 func NewFilesService() *Files {
 	return &Files{
-		HTTP: NewHTTP(nil),
-		mu:   sync.Mutex{},
+		HTTP:    NewHTTP(nil),
+		mu:      sync.Mutex{},
+		videoMu: sync.Mutex{},
 	}
 }
 
 // Files is the entity that manages the email client.
 type Files struct {
-	HTTP HTTPService
-	mu   sync.Mutex
+	HTTP    HTTPService
+	mu      sync.Mutex
+	videoMu sync.Mutex
 }
 
 type exportData struct {
@@ -466,28 +468,6 @@ func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType, 
 			_, err = out.Write(e.data)
 			if err != nil {
 				return nil, err
-			}
-
-			if e.recipeImage != uuid.Nil {
-				filePath := filepath.Join(app.ImagesDir, e.recipeImage.String()+app.ImageExt)
-
-				_, err = os.Stat(filePath)
-				if err == nil {
-					out, err = writer.Create(e.recipeName + "/image.webp")
-					if err != nil {
-						return nil, err
-					}
-
-					data, err := os.ReadFile(filePath)
-					if err != nil {
-						return nil, err
-					}
-
-					_, err = out.Write(data)
-					if err != nil {
-						return nil, err
-					}
-				}
 			}
 		}
 	case models.PDF:
@@ -946,13 +926,14 @@ func (f *Files) ScrapeAndStoreImage(rawURL string) (uuid.UUID, error) {
 		return uuid.Nil, nil
 	}
 
-	parsed, err := uuid.Parse(rawURL)
+	localImage := strings.TrimSuffix(filepath.Base(rawURL), app.ImageExt)
+	parsed, err := uuid.Parse(localImage)
 	if err == nil {
-		_, err = os.Stat(filepath.Join(app.ImagesDir, rawURL+app.ImageExt))
-		if errors.Is(err, os.ErrExist) {
-			return parsed, err
+		_, err = os.Stat(filepath.Join(app.ImagesDir, localImage+app.ImageExt))
+		if err != nil {
+			return uuid.Nil, err
 		}
-		return uuid.Nil, nil
+		return parsed, nil
 	}
 
 	req, err := f.HTTP.PrepareRequestForURL(rawURL)
@@ -1286,8 +1267,8 @@ func (f *Files) UploadVideo(rc io.ReadCloser) (uuid.UUID, error) {
 	}
 
 	go func(u uuid.UUID, file string) {
-		f.mu.Lock()
-		defer f.mu.Unlock()
+		f.videoMu.Lock()
+		defer f.videoMu.Unlock()
 		defer os.Remove(file)
 
 		out := filepath.Join(app.VideosDir, u.String()+app.VideoExt)

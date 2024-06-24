@@ -486,8 +486,8 @@ func (m *mockRepository) GetAuthToken(_, _ string) (models.AuthToken, error) {
 	return models.AuthToken{UserID: 1, Expires: time.Now().Add(1 * time.Hour)}, nil
 }
 
-func (m *mockRepository) Images() []string {
-	return make([]string, 0)
+func (m *mockRepository) Media() (images, videos []string) {
+	return make([]string, 0), make([]string, 0)
 }
 
 func (m *mockRepository) InitAutologin() error {

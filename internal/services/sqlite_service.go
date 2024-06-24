@@ -196,8 +196,13 @@ func (s *SQLiteService) addRecipe(r models.Recipe, userID int64, settings models
 	s.Mutex.Lock()
 	defer s.Mutex.Unlock()
 
+	u := r.URL
+	if u == "" {
+		u = "Unknown"
+	}
+
 	var isRecipeExists bool
-	err := s.DB.QueryRowContext(ctx, statements.IsRecipeForUserExist, userID, r.Name, r.Description, r.Yield, r.URL).Scan(&isRecipeExists)
+	err := s.DB.QueryRowContext(ctx, statements.IsRecipeForUserExist, userID, r.Name, r.Description, r.Yield, u).Scan(&isRecipeExists)
 	if err != nil {
 		return 0, err
 	}
@@ -1030,28 +1035,37 @@ func (s *SQLiteService) GetAuthToken(selector, validator string) (models.AuthTok
 	return token, nil
 }
 
-// Images fetches all distinct image UUIDs for recipes.
+// Media fetches all distinct image and video UUIDs for recipes.
 // An empty slice is returned when an error occurred.
-func (s *SQLiteService) Images() []string {
+func (s *SQLiteService) Media() (images, videos []string) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
-	xs := make([]string, 0)
-
 	rows, err := s.DB.QueryContext(ctx, statements.SelectDistinctImages)
-	if err != nil {
-		return xs
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var file string
-		err = rows.Scan(&file)
-		if err == nil {
-			xs = append(xs, file+app.ImageExt)
+	if err == nil {
+		for rows.Next() {
+			var file string
+			err = rows.Scan(&file)
+			if err == nil {
+				images = append(images, file+app.ImageExt)
+			}
 		}
+		rows.Close()
 	}
-	return xs
+
+	rows, err = s.DB.QueryContext(ctx, statements.SelectDistinctVideos)
+	if err == nil {
+		for rows.Next() {
+			var file string
+			err = rows.Scan(&file)
+			if err == nil {
+				videos = append(videos, file+app.VideoExt)
+			}
+		}
+		rows.Close()
+	}
+
+	return images, videos
 }
 
 // InitAutologin creates a default user for the autologin feature if no users are present.
@@ -1616,6 +1630,7 @@ func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 		isPerServing   int64
 		keywords       sql.NullString
 		tools          sql.NullString
+		videos         sql.NullString
 		count          int64
 		err            error
 	)
@@ -1631,7 +1646,7 @@ func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 			&ingredients, &instructions, &keywords, &tools, &r.Nutrition.Calories, &r.Nutrition.TotalCarbohydrates,
 			&r.Nutrition.Sugars, &r.Nutrition.Protein, &r.Nutrition.TotalFat, &r.Nutrition.SaturatedFat, &r.Nutrition.UnsaturatedFat,
 			&r.Nutrition.Cholesterol, &r.Nutrition.Sodium, &r.Nutrition.Fiber, &isPerServing, &r.Times.Prep, &r.Times.Cook, &r.Times.Total,
-			&count,
+			&videos, &count,
 		)
 		if err != nil {
 			return nil, err
@@ -1692,6 +1707,19 @@ func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 			other = append(other, parsed)
 		}
 		r.Images = slices.Concat([]uuid.UUID{mainImage}, other)
+	}
+
+	if videos.Valid {
+		uuids := strings.Split(videos.String, ",")
+		for _, u := range uuids {
+			parsed, err := uuid.Parse(u)
+			if err != nil {
+				continue
+			}
+			r.Videos = append(r.Videos, parsed)
+		}
+	} else {
+		r.Videos = make([]uuid.UUID, 0, 0)
 	}
 
 	return &r, err

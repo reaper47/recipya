@@ -164,15 +164,23 @@ func NewViewRecipeData(id int64, recipe *models.Recipe, categories, keywords []s
 		Inc: func(n int) int {
 			return n + 1
 		},
-		IsImagesExist: func(xu []uuid.UUID) []bool {
-			xb := make([]bool, 0, len(xu))
-			for _, u := range xu {
+		IsImagesExist: func(images []uuid.UUID) []bool {
+			xb := make([]bool, 0, len(images))
+			for _, u := range images {
 				_, err := os.Stat(filepath.Join(app.ImagesDir, u.String()+app.ImageExt))
 				xb = append(xb, err == nil)
 			}
 			return xb
 		}(recipe.Images),
-		IsURL:    isURL(recipe.URL),
+		IsURL: isURL(recipe.URL),
+		IsVideoExist: func(videos []uuid.UUID) []bool {
+			xb := make([]bool, 0, len(videos))
+			for _, u := range videos {
+				fi, err := os.Stat(filepath.Join(app.VideosDir, u.String()+app.VideoExt))
+				xb = append(xb, err == nil && fi.Size() > 0)
+			}
+			return xb
+		}(recipe.Videos),
 		Keywords: keywords,
 		Recipe:   recipe,
 		Share: ShareData{
@@ -190,6 +198,7 @@ type ViewRecipeData struct {
 	Inc            func(n int) int
 	IsImagesExist  []bool
 	IsURL          bool
+	IsVideoExist   []bool
 	Keywords       []string
 	Recipe         *models.Recipe
 	Share          ShareData

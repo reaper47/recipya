@@ -1832,7 +1832,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 					</h2>
 					<div class="grid md:grid-flow-col md:grid-cols-6">
 						<div class="w-[95vw] md:w-full text-center border-b border-gray-700 md:col-span-3 md:border-r md:border-b-0 flex items-center justify-center print:hidden">
-							switch len(data.Recipe.Images) {
+							switch len(data.Recipe.Images) + len(data.Recipe.Videos) {
 								case 0:
 									<img
 										style="object-fit: cover"
@@ -1841,27 +1841,38 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 										src="/static/img/recipes/placeholder.webp"
 									/>
 								case 1:
-									<img
-										id="output"
-										style="object-fit: cover"
-										alt="Image of the recipe"
-										class="w-full max-h-80  md:max-h-[34rem]"
-										if data.IsImagesExist[0] {
-											src={ fmt.Sprintf("/data/images/%s.webp", data.Recipe.Images[0]) }
+									if len(data.Recipe.Images) == 1 {
+										<img
+											id="output"
+											style="object-fit: cover"
+											alt="Image of the recipe"
+											class="w-full max-h-80  md:max-h-[34rem]"
+											if data.IsImagesExist[0] {
+												src={ fmt.Sprintf("/data/images/%s.webp", data.Recipe.Images[0]) }
+											} else {
+												src="/static/img/recipes/placeholder.webp"
+											}
+										/>
+									} else {
+										if data.IsVideoExist[0] {
+											<video controls preload="metadata">
+												<source src={ "/data/videos/" + data.Recipe.Videos[0].String() + ".webm" } type="video/webm"/>
+												Download the <a href={ templ.SafeURL("/data/videos/" + data.Recipe.Videos[0].String() + ".webm") }>video</a>.
+											</video>
 										} else {
-											src="/static/img/recipes/placeholder.webp"
+											<p>Video is currently being processed.<br/>Please refresh the page later.</p>
 										}
-									/>
+									}
 								default:
 									<div class="carousel w-full">
-										for i := 0; i < len(data.Recipe.Images); i++ {
+										for i, img := range data.Recipe.Images {
 											<div id={ "image-" + strconv.Itoa(i) } class="carousel-item relative w-full">
 												<img
 													style="object-fit: cover"
 													alt="Image of the recipe"
 													class="w-full max-h-80  md:max-h-[34rem]"
 													if data.IsImagesExist[i] {
-														src={ fmt.Sprintf("/data/images/%s.webp", data.Recipe.Images[i]) }
+														src={ "/data/images/" + img.String() + ".webp" }
 													} else {
 														src="/static/img/recipes/placeholder.webp"
 													}
@@ -1870,14 +1881,14 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 													<a
 														class="btn btn-circle"
 														if i == 0 {
-															href={ templ.URL("#image-" + strconv.Itoa(len(data.Recipe.Images)-1)) }
+															href={ templ.URL("#image-" + strconv.Itoa(len(data.Recipe.Images)+len(data.Recipe.Videos)-1)) }
 														} else {
 															href={ templ.URL("#image-" + strconv.Itoa(i-1)) }
 														}
 													>❮</a>
 													<a
 														class="btn btn-circle"
-														if i == len(data.Recipe.Images) - 1 {
+														if i == len(data.Recipe.Images) + len(data.Recipe.Videos) - 1 {
 															href="#image-0"
 														} else {
 															href={ templ.URL("#image-" + strconv.Itoa(i+1)) }
@@ -1886,17 +1897,32 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 												</div>
 											</div>
 										}
-										<div id="image-2" class="carousel-item relative w-full">
-											<video controls preload="metadata">
-												<source src="/static/videos/output.webm" type="video/webm"/>
-												Download the <a href="/static/videos/output.webm">webm</a> video.
-												<!-- ffmpeg -i sample.mp4 -c:v libvpx -b:v 1M -c:a libvorbis output.webm -->
-											</video>
-											<div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-												<a class="btn btn-circle" href="#image-1">❮</a>
-												<a class="btn btn-circle" href="#image-0">❯</a>
+										for i, v := range data.Recipe.Videos {
+											<div id={ "image-" + strconv.Itoa(i+len(data.Recipe.Images)) } class="carousel-item relative w-full">
+												if data.IsVideoExist[i] {
+													<video controls preload="metadata">
+														<source src={ "/data/videos/" + v.String() + ".webm" } type="video/webm"/>
+														Download the <a href={ templ.SafeURL("/data/videos/" + v.String() + ".webm") }>video</a>.
+													</video>
+												} else {
+													<p class="grid place-self-center">
+													    Video #{ strconv.Itoa(i+1) } is currently being processed.<br/>
+													    Please refresh the page later.
+                                                    </p>
+												}
+												<div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
+													<a class="btn btn-circle" href={ templ.URL("#image-" + strconv.Itoa(i+len(data.Recipe.Images)-1)) }>❮</a>
+													<a
+														class="btn btn-circle"
+														if i == len(data.Recipe.Images) + len(data.Recipe.Videos) - 2 {
+															href="#image-0"
+														} else {
+															href={ templ.URL("#image-" + strconv.Itoa(i+len(data.Recipe.Images)+1)) }
+														}
+													>❯</a>
+												</div>
 											</div>
-										</div>
+										}
 									</div>
 							}
 						</div>

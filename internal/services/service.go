@@ -94,10 +94,6 @@ type RepositoryService interface {
 	// GetAuthToken gets a non-expired auth token by the selector.
 	GetAuthToken(selector, validator string) (models.AuthToken, error)
 
-	// Images fetches all distinct image UUIDs for recipes.
-	// An empty slice is returned when an error occurred.
-	Images() []string
-
 	// InitAutologin creates a default user for the autologin feature if no users are present.
 	InitAutologin() error
 
@@ -112,6 +108,10 @@ type RepositoryService interface {
 
 	// MeasurementSystems gets the units systems, along with the one the user selected, in the database.
 	MeasurementSystems(userID int64) ([]units.System, models.UserSettings, error)
+
+	// Media fetches all distinct image and video UUIDs for recipes.
+	// An empty slice is returned when an error occurred.
+	Media() (images, videos []string)
 
 	// Nutrients gets the nutrients for the ingredients from the FDC database, along with the total weight.
 	Nutrients(ingredients []string) (models.NutrientsFDC, float64, error)
