@@ -224,7 +224,7 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 
 		var (
 			imageUUIDs []uuid.UUID
-			videoUUIDs []uuid.UUID
+			videos     []models.VideoObject
 		)
 
 		imageFiles, ok := r.MultipartForm.File["images"]
@@ -248,13 +248,13 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 
 				mimeType := http.DetectContentType(buf)
 				if strings.HasPrefix(mimeType, "video") {
-					u, err := s.Files.UploadVideo(f)
+					u, err := s.Files.UploadVideo(f, s.Repository)
 					if err != nil {
 						_ = f.Close()
 						slog.Error("Failed to upload video", userIDAttr, fileAttr, "error", err)
 						continue
 					}
-					videoUUIDs = append(videoUUIDs, u)
+					videos = append(videos, models.VideoObject{ID: u})
 				} else {
 					u, err := s.Files.UploadImage(f)
 					if err != nil {
@@ -350,7 +350,7 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 			Times:  times,
 			Tools:  tools,
 			URL:    r.FormValue("source"),
-			Videos: videoUUIDs,
+			Videos: videos,
 			Yield:  int16(yield),
 		}
 

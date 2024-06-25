@@ -3,6 +3,7 @@ package scraper_test
 import (
 	"github.com/reaper47/recipya/internal/models"
 	"testing"
+	"time"
 )
 
 func TestScraper_F(t *testing.T) {
@@ -217,6 +218,18 @@ func TestScraper_F(t *testing.T) {
 				TotalTime: "PT30M",
 				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.feastingathome.com/orecchiette-pasta-with-broccoli-sauce/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentUrl:   "https://content.jwplatform.com/videos/&rdquo;mXhs2DnA&rdquo;.mp4",
+							Description:  "”A",
+							Name:         "”Orecchiette",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/&rdquo;mXhs2DnA&rdquo;-720.jpg"},
+							UploadDate:   time.Date(1970, 1, 1, 0, 0, 0, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -442,6 +455,18 @@ func TestScraper_F(t *testing.T) {
 				TotalTime: "PT15M",
 				Yield:     &models.Yield{Value: 8},
 				URL:       "https://fitslowcookerqueen.com/easy-homemade-breakfast-sausage/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentUrl:   "https://content.jwplatform.com/videos/&rdquo;HzwLU00f&rdquo;.mp4",
+							Description:  "”Air",
+							Name:         "”Air",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/&rdquo;HzwLU00f&rdquo;-720.jpg"},
+							UploadDate:   time.Date(1970, 1, 1, 0, 0, 0, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -945,6 +970,18 @@ func TestScraper_F(t *testing.T) {
 				TotalTime: "PT40M",
 				Yield:     &models.Yield{Value: 6},
 				URL:       "https://foolproofliving.com/chocolate-chili/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentUrl:   "https://content.jwplatform.com/videos/vOrUM6ik.mp4",
+							Description:  "My Chocolate Chili Recipe is full-bodied, rich, and utterly scrumptious chili recipe that will transform your everyday dinner into a five-star meal. This one-pot recipe builds layers of complex flavors, like warm cumin, deep cocoa powder, and spicy jalapenos into a surprisingly rich one pot meal.",
+							Name:         "Chocolate Chili Recipe Video",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/vOrUM6ik-720.jpg"},
+							UploadDate:   time.Date(2022, 11, 9, 20, 5, 28, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{

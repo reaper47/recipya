@@ -40,6 +40,7 @@ type RecipeSchema struct {
 	TotalTime       string           `json:"totalTime,omitempty"`
 	Yield           *Yield           `json:"recipeYield,omitempty"`
 	URL             string           `json:"url,omitempty"`
+	Video           *Videos          `json:"video,omitempty"`
 }
 
 // Equal verifies whether a RecipeSchema is equal to the other.
@@ -801,6 +802,92 @@ func (y *Yield) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// Videos holds a list of VideoObject.
+type Videos struct {
+	Values []VideoObject
+}
+
+// MarshalJSON encodes the value of the yield.
+func (v *Videos) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.Values)
+}
+
+// UnmarshalJSON decodes the Videos according to the schema (https://schema.org/VideoObject).
+func (v *Videos) UnmarshalJSON(data []byte) error {
+	var t any
+	err := json.Unmarshal(data, &t)
+	if err != nil {
+		return err
+	}
+
+	switch x := t.(type) {
+	case map[string]any:
+		tm, ok := x["uploadDate"]
+		if ok {
+			parsed, _ := parseTime(tm.(string))
+			x["uploadDate"] = parsed.Format(time.RFC3339)
+			data, _ = json.Marshal(x)
+		}
+
+		var vid VideoObject
+		err = json.Unmarshal(data, &vid)
+		if err != nil {
+			return err
+		}
+		v.Values = append(v.Values, vid)
+	case []any:
+		for _, a := range x {
+			tm, ok := a.(map[string]any)["uploadDate"]
+			if ok {
+				parsed, _ := parseTime(tm.(string))
+				a.(map[string]any)["uploadDate"] = parsed.Format(time.RFC3339)
+				data, _ = json.Marshal(x)
+			}
+
+			xb, _ := json.Marshal(a)
+			var vid VideoObject
+			err = json.Unmarshal(xb, &vid)
+			if err != nil {
+				return err
+			}
+			v.Values = append(v.Values, vid)
+		}
+	}
+	return nil
+}
+
+func parseTime(tm string) (time.Time, error) {
+	var (
+		parsed time.Time
+		err    error
+	)
+
+	layouts := []string{"01-02-2006", time.RFC3339, "2006-01-02T15:04:05.999", "2006/01/02"}
+	for _, layout := range layouts {
+		parsed, err = time.Parse(layout, tm)
+		if err == nil {
+			break
+		}
+	}
+
+	return parsed, err
+}
+
+// VideoObject is a representation of the VideoObject schema (https://schema.org/VideoObject).
+type VideoObject struct {
+	Values       []*VideoObject `json:"-"`
+	AtType       string         `json:"@type"`
+	ContentUrl   string         `json:"contentUrl,omitempty"`
+	Description  string         `json:"description,omitempty"`
+	Duration     string         `json:"duration,omitempty"`
+	EmbedUrl     string         `json:"embedUrl,omitempty"`
+	Expires      time.Time      `json:"expires,omitempty"`
+	ID           uuid.UUID      `json:"-"`
+	Name         string         `json:"name,omitempty"`
+	ThumbnailURL *ThumbnailURL  `json:"thumbnailUrl,omitempty"`
+	UploadDate   time.Time      `json:"uploadDate,omitempty"`
+}
+
 // NutritionSchema is a representation of the nutrition schema (https://schema.org/NutritionInformation).
 type NutritionSchema struct {
 	Calories       string `json:"calories,omitempty"`
@@ -959,6 +1046,10 @@ func (t *ThumbnailURL) UnmarshalJSON(data []byte) error {
 	switch x := v.(type) {
 	case string:
 		t.Value = x
+	case []any:
+		if len(x) > 0 {
+			t.Value = x[0].(string)
+		}
 	}
 	return nil
 }

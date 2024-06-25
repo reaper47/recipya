@@ -3,6 +3,7 @@ package scraper_test
 import (
 	"github.com/reaper47/recipya/internal/models"
 	"testing"
+	"time"
 )
 
 func TestScraper_T(t *testing.T) {
@@ -53,6 +54,20 @@ func TestScraper_T(t *testing.T) {
 				TotalTime: "PT10M",
 				Yield:     &models.Yield{Value: 2},
 				URL:       "https://www.tasteofhome.com/recipes/cast-iron-skillet-steak/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentUrl:  "https://videodam.tmbi.com/wp-content/uploads/2019/02/BEST_CastIronSteak_020119.mp4",
+							Description: "Check out this video for how to make the best cast iron steak",
+							Duration:    "P0DT0H2M46S",
+							Name:        "The Best Cast Iron Steak",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://tmbidigitalassetsazure.blob.core.windows.net/wpconnatixthumbnailsprod/BESTCastIronSteak020119_thumbnail.jpeg",
+							},
+						},
+					},
+				},
 			},
 		},
 		{
@@ -112,6 +127,18 @@ func TestScraper_T(t *testing.T) {
 				TotalTime: "PT50M",
 				Yield:     &models.Yield{Value: 6},
 				URL:       "https://tastesbetterfromscratch.com/apple-crisp",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentUrl:   "https://content.jwplatform.com/videos/lNQxm2OX.mp4",
+							Description:  "The BEST Apple Crisp recipe is made with thinly sliced Granny Smith apples and baked with a cinnamon glaze and oatmeal crumb topping. This irresistible dessert is always a crowd favorite!",
+							Name:         "Apple Crisp",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/lNQxm2OX-720.jpg"},
+							UploadDate:   time.Date(2022, 10, 3, 19, 56, 18, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -228,6 +255,21 @@ func TestScraper_T(t *testing.T) {
 				Tools: &models.Tools{Values: []models.HowToItem{}},
 				Yield: &models.Yield{Value: 2},
 				URL:   "https://tasty.co/recipe/honey-soy-glazed-salmon",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentUrl:  "https://vid.tasty.co/output/20368/mp4_640x640/1484095035",
+							Description: "Two words: honey salmon! Sure, it takes a tiny bit of prep work, but once you marinate your salmon, you won’t be able to go back. A simple mix of honey, soy sauce, garlic, and ginger coats and flavors your fish for 30 minutes before you throw it on the pan until the outside is perfectly crispy. Once that’s done, you heat up and reduce some extra marinade to make a thick, to-die-for glaze to pour over your filet. Serve with your favorite veggies or rice and enjoy!",
+							Duration:    "PT0S",
+							Name:        "Honey Soy-Glazed Salmon Recipe by Tasty",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://img.buzzfeed.com/video-api-prod/assets/04ff8cfcc4b5428a8bcc6b03099d4492/Thumb_A_FB.jpg?resize=1200:*",
+							},
+							UploadDate: time.Date(2017, 5, 11, 21, 21, 36, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -436,6 +478,20 @@ func TestScraper_T(t *testing.T) {
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 12},
 				URL:             "https://www.thecookingguy.com/recipes/funeral-sandwiches",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentUrl:  "https://www.youtube.com/watch?v=",
+							Description: "Super delicious roast, homemade brioche sliders, melty cheese and an amped up garlic butter - what could be better?",
+							EmbedUrl:    "https://www.youtube.com/embed/",
+							Name:        "Funeral Sandwiches",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://assets-global.website-files.com/657a7aac36df076237527e36/65b7bf33ae368a434c7e4132_funeralsandwiches_youtube_2.jpeg",
+							},
+						},
+					},
+				},
 			},
 		},
 		{
@@ -928,6 +984,22 @@ func TestScraper_T(t *testing.T) {
 				TotalTime: "PT25M",
 				Yield:     &models.Yield{Value: 3},
 				URL:       "https://www.thepioneerwoman.com/food-cooking/recipes/a8865/eggs-benedict/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentUrl:  "https://streaming.hearstdigitalstudios.com/d3bc40e9-c97a-4a9e-b10a-97b8850853f0/video_rover_16x9_1080p_hd_1657205235_9764.mp4",
+							Description: "How to poach eggs, make hollandaise, and eggs benedict.",
+							Duration:    "PT1M13S",
+							EmbedUrl:    "https://glimmer.hearstapps.com/amp.html?embedId=6f8ba648-41a4-4e33-bcc2-29d1db3abe89",
+							Name:        "Eggs Benedict",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://hips.hearstapps.com/thepioneerwoman/wp-content/uploads/2007/10/1546875357_506daa8f1c.jpg?crop=1xw:0.8471385542168675xh;center,top",
+							},
+							UploadDate: time.Date(2022, 7, 7, 15, 3, 32, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -977,6 +1049,18 @@ func TestScraper_T(t *testing.T) {
 				TotalTime: "PT20M",
 				Yield:     &models.Yield{Value: 8},
 				URL:       "https://therecipecritic.com/avocado-egg-rolls/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentUrl:   "https://content.jwplatform.com/videos/oe3FAQKI.mp4",
+							Description:  "Avocado Egg Rolls are crispy on the outside with an avocado mixture inside that is bursting with flavor! Once these hit the table they don’t last long!",
+							Name:         "Avocado Egg Rolls",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/oe3FAQKI-720.jpg"},
+							UploadDate:   time.Date(2019, 6, 2, 17, 46, 19, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -1372,6 +1456,17 @@ func TestScraper_T(t *testing.T) {
 				TotalTime:       "PT30M",
 				Yield:           &models.Yield{Value: 4},
 				URL:             "https://www.tine.no/oppskrifter/middag-og-hovedretter/kylling-og-fjarkre/rask-kylling-tikka-masala",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							Description: "Hvordan lage den indiske gryten tikka masala? I denne filmen har vi gjort det enkelt for deg.",
+							Name:        "Rask kylling tikka masala",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://www.tine.no/_/recipeimage/w_1200,h_675,c_fill,x_2880,y_1920,g_xy_center/recipeimage/w1r3ydbmyeqcngqpxatv.jpg",
+							},
+						},
+					},
+				},
 			},
 		},
 		{

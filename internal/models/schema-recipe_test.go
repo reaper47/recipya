@@ -247,6 +247,10 @@ func TestThumnailURL_UnmarshalJSON(t *testing.T) {
 			name: "text",
 			data: `{"thumbnailUrl": "thumbnail.png"}`,
 		},
+		{
+			name: "list of strings",
+			data: `{"thumbnailUrl": ["thumbnail.png","preview.png"]}`,
+		},
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
@@ -442,6 +446,61 @@ func TestTools_UnmarshalJSON(t *testing.T) {
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
 			assertRecipeSchema(t, tc.data, want)
+		})
+	}
+}
+
+func TestVideoObject_UnmarshalJSON(t *testing.T) {
+	testcases := []struct {
+		name string
+		data string
+		want models.RecipeSchema
+	}{
+		{
+			name: "json",
+			data: `{"video": {"@type":"VideoObject","name":"one"}}`,
+			want: models.RecipeSchema{
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{AtType: "VideoObject", Name: "one"},
+					},
+				},
+			},
+		},
+		{
+			name: "json",
+			data: `{"video": {"@type": "VideoObject","name": "Boeuf bourguignon met geroosterde spruiten","thumbnailUrl": ["https://allerhande.bbvms.com/mediaclip/4943112/pthumbnail/120/67.jpg","https://allerhande.bbvms.com/mediaclip/4943112/pthumbnail/900/500.jpg"],"contentUrl": "https://d1p9dpblu12ati.cloudfront.net/allerhande/media/2022/09/29/asset-4943112-1664455067445069.mp4","duration": "PT3M49S","uploadDate": "2022-10-06T22:00:00.000","interactionStatistic": {"@type": "InteractionCounter","interactionType": {"@type": "http://schema.org/WatchAction","userInteractionCount": 0}}}}`,
+			want: models.RecipeSchema{
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentUrl:   "https://d1p9dpblu12ati.cloudfront.net/allerhande/media/2022/09/29/asset-4943112-1664455067445069.mp4",
+							Duration:     "PT3M49S",
+							Name:         "Boeuf bourguignon met geroosterde spruiten",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://allerhande.bbvms.com/mediaclip/4943112/pthumbnail/120/67.jpg"},
+							UploadDate:   time.Date(2022, 10, 6, 22, 0, 0, 0, time.UTC),
+						},
+					},
+				},
+			},
+		},
+		{
+			name: "list of json",
+			data: `{"video": [{"@type":"VideoObject","name":"one"},{"@type":"VideoObject","name":"two"}]}`,
+			want: models.RecipeSchema{
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{AtType: "VideoObject", Name: "one"},
+						{AtType: "VideoObject", Name: "two"},
+					},
+				},
+			},
+		},
+	}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			assertRecipeSchema(t, tc.data, tc.want)
 		})
 	}
 }

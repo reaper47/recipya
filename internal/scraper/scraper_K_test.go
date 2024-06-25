@@ -3,6 +3,7 @@ package scraper_test
 import (
 	"github.com/reaper47/recipya/internal/models"
 	"testing"
+	"time"
 )
 
 func TestScraper_K(t *testing.T) {
@@ -361,8 +362,21 @@ func TestScraper_K(t *testing.T) {
 				},
 				Name:      "Myllymäkis toast skagen",
 				TotalTime: "PT25M",
-				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.koket.se/mitt-kok/tommy-myllymaki/myllymakis-toast-skagen",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentUrl:   "https://www.tv4play.se/iframe/video/20277435?autoload=true",
+							Description:  "Myllymäkis toast skagen",
+							EmbedUrl:     "https://www.tv4play.se/iframe/video/20277435?autoload=true",
+							Name:         "Myllymäkis toast skagen",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://img.koket.se/standard-mega/myllymakis-toast-skagen-2.jpg"},
+							UploadDate:   time.Date(2014, 12, 29, 5, 0, 0, 0, time.UTC),
+						},
+					},
+				},
+				Yield: &models.Yield{Value: 4},
 			},
 		},
 		{

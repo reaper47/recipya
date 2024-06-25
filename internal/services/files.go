@@ -24,6 +24,7 @@ import (
 	"io"
 	"io/fs"
 	"log/slog"
+	"math"
 	"mime/multipart"
 	"net/http"
 	"net/url"
@@ -1248,7 +1249,7 @@ func (f *Files) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
 }
 
 // UploadVideo uploads a video to the server. The video is converted to WebM in the background.
-func (f *Files) UploadVideo(rc io.ReadCloser) (uuid.UUID, error) {
+func (f *Files) UploadVideo(rc io.ReadCloser, repo RepositoryService) (uuid.UUID, error) {
 	if !app.Info.IsFFmpegInstalled {
 		return uuid.Nil, errors.New("ffmpeg is not installed")
 	}
@@ -1273,8 +1274,33 @@ func (f *Files) UploadVideo(rc io.ReadCloser) (uuid.UUID, error) {
 
 		out := filepath.Join(app.VideosDir, u.String()+app.VideoExt)
 		start := time.Now()
+
 		err = exec.Command("ffmpeg", "-i", file, "-c:v", "libvpx", "-b:v", "1M", "-c:a", "libvorbis", out).Run()
 		slog.Info("Converted video to WebM", "file", file, "out", out, "bytes", n, "exec", time.Since(start), "error", err)
+		if err == nil {
+			output, err := exec.Command("ffprobe", "-v", "error", "-show_format", "-of", "json", out).Output()
+			if err != nil {
+				slog.Info("Could not parse FFprobe file", "file", out, "error", err)
+				return
+			}
+
+			var probe models.FFProbe
+			if err := json.Unmarshal(output, &probe); err != nil {
+				slog.Info("Could not unmarshal FFprobe output", "file", out, "error", err)
+				return
+			}
+
+			float, err := strconv.ParseFloat(probe.Format.Duration, 64)
+			if err != nil {
+				slog.Info("Could not parse FFprobe duration", "file", out, "error", err)
+				return
+			}
+
+			err = repo.UpdateVideo(u, int(math.Round(float)))
+			if err != nil {
+				slog.Info("Could not update video", "file", out, "error", err)
+			}
+		}
 	}(mediaUUID, temp.Name())
 
 	return mediaUUID, nil

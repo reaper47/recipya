@@ -3,6 +3,7 @@ package scraper_test
 import (
 	"github.com/reaper47/recipya/internal/models"
 	"testing"
+	"time"
 )
 
 func TestScraper_N(t *testing.T) {
@@ -267,12 +268,27 @@ func TestScraper_N(t *testing.T) {
 					TransFat:       "",
 					UnsaturatedFat: "",
 				},
-				PrepTime:     "PT20M",
-				ThumbnailURL: &models.ThumbnailURL{},
-				Tools:        &models.Tools{Values: []models.HowToItem{}},
-				TotalTime:    "PT32M",
-				Yield:        &models.Yield{Value: 6},
-				URL:          "https://www.nosalty.hu/recept/kelt-pizzateszta",
+				PrepTime: "PT20M",
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://image-api.nosalty.hu/nosalty/images/recipes/Fu/LX/kelt-pizzateszta.jpeg?w=64&h=64&fit=crop&s=0fff8f5722bcf7e92685e39cf4898aef",
+				},
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
+				TotalTime: "PT32M",
+				Yield:     &models.Yield{Value: 6},
+				URL:       "https://www.nosalty.hu/recept/kelt-pizzateszta",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentUrl:  "https://cdn.jwplayer.com/manifests/fM0VLO5e.m3u8",
+							Description: "Az igazi pizzatészta friss élesztőből, BL '00'-ás finomlisztből és extra szűz olívaolajból az igazi. FELIRATKOZÁS: http://bit.ly/NoSalty-feliratkozas Recept: https://www.nosalty.hu/recept/kelt-pizzateszta Nosalty Magazin - http://nosalty.hu Facebook - https://www.facebook.com/NoSalty Instagram - https://www.instagram.com/nosalty Twitter - https://twitter.com/NoSalty Pinterest - https://hu.pinterest.com/nosalty",
+							Duration:    "PT1M13S",
+							EmbedUrl:    "https://cdn.jwplayer.com/manifests/fM0VLO5e.m3u8",
+							Name:        "Kelt pizzatészta",
+							UploadDate:  time.Date(2018, 8, 17, 0, 0, 0, 0, time.FixedZone("CEST", 2*60*60)),
+						},
+					},
+				},
 			},
 		},
 		{

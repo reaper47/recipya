@@ -53,7 +53,7 @@ func NewBaseRecipe() Recipe {
 		Instructions: make([]string, 0),
 		Keywords:     make([]string, 0),
 		Tools:        make([]HowToItem, 0),
-		Videos:       make([]uuid.UUID, 0),
+		Videos:       make([]VideoObject, 0),
 		Yield:        1,
 	}
 }
@@ -75,7 +75,7 @@ type Recipe struct {
 	Tools        []HowToItem
 	UpdatedAt    time.Time
 	URL          string
-	Videos       []uuid.UUID
+	Videos       []VideoObject
 	Yield        int16
 }
 
@@ -274,6 +274,23 @@ func (r *Recipe) Schema() RecipeSchema {
 		instructions = append(instructions, NewHowToStep(ins))
 	}
 
+	video := &Videos{Values: make([]VideoObject, 0, len(r.Videos))}
+	for i, v := range r.Videos {
+		u := app.Config.Address() + "/data/videos/" + v.ID.String() + app.VideoExt
+
+		video.Values = append(video.Values, VideoObject{
+			AtType:       "VideoObject",
+			Name:         "Video #" + strconv.Itoa(i+1),
+			Description:  "A video showing how to cook " + r.Name,
+			ThumbnailURL: nil,
+			ContentUrl:   u,
+			EmbedUrl:     u,
+			UploadDate:   v.UploadDate,
+			Duration:     v.Duration,
+			Expires:      time.Now().AddDate(1000, 0, 0),
+		})
+	}
+
 	schema := RecipeSchema{
 		AtContext:       "https://schema.org",
 		AtType:          &SchemaType{Value: "Recipe"},
@@ -297,6 +314,7 @@ func (r *Recipe) Schema() RecipeSchema {
 		TotalTime:       formatDuration(r.Times.Total),
 		Yield:           &Yield{Value: r.Yield},
 		URL:             r.URL,
+		Video:           video,
 	}
 
 	if schema.CookingMethod.Value == "" {

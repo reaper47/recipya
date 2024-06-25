@@ -175,6 +175,9 @@ type RepositoryService interface {
 	// UpdateUserSettingsCookbooksViewMode updates the user's preferred cookbooks viewing mode.
 	UpdateUserSettingsCookbooksViewMode(userID int64, mode models.ViewMode) error
 
+	// UpdateVideo updates a video.
+	UpdateVideo(video uuid.UUID, duration int) error
+
 	// UserID gets the user's id from the email. It returns -1 if user not found.
 	UserID(email string) int64
 
@@ -256,7 +259,7 @@ type FilesService interface {
 	UploadImage(rc io.ReadCloser) (uuid.UUID, error)
 
 	// UploadVideo uploads a video to the server. The video is converted to WebM in the background.
-	UploadVideo(rc io.ReadCloser) (uuid.UUID, error)
+	UploadVideo(rc io.ReadCloser, repo RepositoryService) (uuid.UUID, error)
 }
 
 // HTTPService is the interface that describes the methods required for preparing and utilizing https requests and responses.

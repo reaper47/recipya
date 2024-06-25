@@ -1856,8 +1856,8 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 									} else {
 										if data.IsVideoExist[0] {
 											<video controls preload="metadata">
-												<source src={ "/data/videos/" + data.Recipe.Videos[0].String() + ".webm" } type="video/webm"/>
-												Download the <a href={ templ.SafeURL("/data/videos/" + data.Recipe.Videos[0].String() + ".webm") }>video</a>.
+												<source src={ "/data/videos/" + data.Recipe.Videos[0].ID.String() + ".webm" } type="video/webm"/>
+												Download the <a href={ templ.SafeURL("/data/videos/" + data.Recipe.Videos[0].ID.String() + ".webm") }>video</a>.
 											</video>
 										} else {
 											<p>Video is currently being processed.<br/>Please refresh the page later.</p>
@@ -1901,20 +1901,21 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 											<div id={ "image-" + strconv.Itoa(i+len(data.Recipe.Images)) } class="carousel-item relative w-full">
 												if data.IsVideoExist[i] {
 													<video controls preload="metadata">
-														<source src={ "/data/videos/" + v.String() + ".webm" } type="video/webm"/>
-														Download the <a href={ templ.SafeURL("/data/videos/" + v.String() + ".webm") }>video</a>.
+														<source src={ "/data/videos/" + v.ID.String() + ".webm" } type="video/webm"/>
+														Download the <a href={ templ.SafeURL("/data/videos/" + v.ID.String() + ".webm") }>video</a>.
 													</video>
 												} else {
 													<p class="grid place-self-center">
-													    Video #{ strconv.Itoa(i+1) } is currently being processed.<br/>
-													    Please refresh the page later.
-                                                    </p>
+														Video #{ strconv.Itoa(i+1) } is currently being processed.
+														<br/>
+														Please refresh the page later.
+													</p>
 												}
 												<div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
 													<a class="btn btn-circle" href={ templ.URL("#image-" + strconv.Itoa(i+len(data.Recipe.Images)-1)) }>❮</a>
 													<a
 														class="btn btn-circle"
-														if i == len(data.Recipe.Images) + len(data.Recipe.Videos) - 2 {
+														if i == len(data.Recipe.Videos) - 1 {
 															href="#image-0"
 														} else {
 															href={ templ.URL("#image-" + strconv.Itoa(i+len(data.Recipe.Images)+1)) }

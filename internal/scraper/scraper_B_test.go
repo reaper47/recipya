@@ -3,6 +3,7 @@ package scraper_test
 import (
 	"github.com/reaper47/recipya/internal/models"
 	"testing"
+	"time"
 )
 
 func TestScraper_B(t *testing.T) {
@@ -674,6 +675,18 @@ func TestScraper_B(t *testing.T) {
 				TotalTime: "PT30M",
 				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.bigoven.com/recipe/vegetable-tempura-japanese/19344",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentUrl:   "/",
+							Description:  "not set",
+							Name:         "not set",
+							ThumbnailURL: &models.ThumbnailURL{Value: "/"},
+							UploadDate:   time.Date(2000, 01, 01, 0, 0, 0, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -1244,6 +1257,20 @@ func TestScraper_B(t *testing.T) {
 				TotalTime:       "PT2H",
 				Yield:           &models.Yield{Value: 12},
 				URL:             "https://www.bongeats.com/recipe/chicken-lollipop",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentUrl:  "https://youtu.be/HHdDtftfA-U",
+							Description: "Learn how to easily make lollipops from chicken wings, then turn them into the hot-sour-crunchy appetiser, drums of heaven",
+							EmbedUrl:    "https://youtu.be/HHdDtftfA-U",
+							Name:        "Chicken Lollipop / Drums of Heaven",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://assets-global.website-files.com/60d34b8627f6e735cf28df18/62a95eaacb8d206406f1d296_Chicken%20Lollipop%20Hero%204.3.jpg",
+							},
+						},
+					},
+				},
 			},
 		},
 		{

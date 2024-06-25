@@ -173,10 +173,10 @@ func NewViewRecipeData(id int64, recipe *models.Recipe, categories, keywords []s
 			return xb
 		}(recipe.Images),
 		IsURL: isURL(recipe.URL),
-		IsVideoExist: func(videos []uuid.UUID) []bool {
+		IsVideoExist: func(videos []models.VideoObject) []bool {
 			xb := make([]bool, 0, len(videos))
-			for _, u := range videos {
-				fi, err := os.Stat(filepath.Join(app.VideosDir, u.String()+app.VideoExt))
+			for _, v := range videos {
+				fi, err := os.Stat(filepath.Join(app.VideosDir, v.ID.String()+app.VideoExt))
 				xb = append(xb, err == nil && fi.Size() > 0)
 			}
 			return xb

@@ -13,6 +13,7 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services/statements"
 	"github.com/reaper47/recipya/internal/units"
+	"github.com/reaper47/recipya/internal/utils/duration"
 	"github.com/reaper47/recipya/internal/utils/extensions"
 	"github.com/reaper47/recipya/internal/utils/regex"
 	"io"
@@ -414,8 +415,8 @@ func (s *SQLiteService) addRecipeTx(ctx context.Context, tx *sql.Tx, r models.Re
 	}
 
 	// Insert videos
-	for _, u := range r.Videos {
-		_, err = tx.ExecContext(ctx, statements.InsertVideoRecipe, u, recipeID)
+	for _, v := range r.Videos {
+		_, err = tx.ExecContext(ctx, statements.InsertVideoRecipe, v.ID, recipeID)
 		if err != nil {
 			return 0, err
 		}
@@ -1710,16 +1711,29 @@ func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 	}
 
 	if videos.Valid {
-		uuids := strings.Split(videos.String, ",")
-		for _, u := range uuids {
-			parsed, err := uuid.Parse(u)
+		xv := strings.Split(videos.String, ",")
+		for _, v := range xv {
+			parts := strings.Split(v, ";")
+			if len(parts) != 3 {
+				continue
+			}
+
+			parsed, err := uuid.Parse(parts[0])
 			if err != nil {
 				continue
 			}
-			r.Videos = append(r.Videos, parsed)
+
+			var dt time.Time
+			dt, _ = time.Parse(time.DateTime, parts[2])
+
+			r.Videos = append(r.Videos, models.VideoObject{
+				Duration:   parts[1],
+				ID:         parsed,
+				UploadDate: dt,
+			})
 		}
 	} else {
-		r.Videos = make([]uuid.UUID, 0, 0)
+		r.Videos = make([]models.VideoObject, 0, 0)
 	}
 
 	return &r, err
@@ -2173,6 +2187,18 @@ func (s *SQLiteService) UpdateUserSettingsCookbooksViewMode(userID int64, mode m
 	defer s.Mutex.Unlock()
 
 	_, err := s.DB.ExecContext(ctx, statements.UpdateUserSettingsCookbooksViewMode, mode, userID)
+	return err
+}
+
+// UpdateVideo updates a video.
+func (s *SQLiteService) UpdateVideo(video uuid.UUID, durationSecs int) error {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	_, err := s.DB.ExecContext(ctx, statements.UpdateVideo, duration.ISO8601(durationSecs), video)
 	return err
 }
 
