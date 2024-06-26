@@ -763,23 +763,40 @@ func ConvertSentence(input string, from, to System) (string, error) {
 
 	input = ReplaceVulgarFractions(input)
 
-	matches := regex.Unit.FindStringSubmatch(input)
-	if matches == nil {
-		return "", errors.New("sentence has no measurement")
-	}
+	var (
+		irregular string
+		returnErr error
+	)
 
-	q, err := strconv.ParseFloat(matches[1], 64)
-	if err != nil {
-		return parseIrregularQuantity(input, matches, regex.Unit, to)
-	}
+	converted := regex.Unit.ReplaceAllStringFunc(input, func(s string) string {
+		if irregular != "" || returnErr != nil {
+			return s
+		}
 
-	m, err := NewMeasurement(q, matches[len(matches)-1])
-	if err != nil {
-		return "", err
-	}
+		matches := regex.Unit.FindStringSubmatch(s)
+		if matches == nil {
+			return s
+		}
 
-	converted := convertMeasurement(m, to)
-	return regex.Unit.ReplaceAllString(input, converted.String()), nil
+		q, err := strconv.ParseFloat(matches[1], 64)
+		if err != nil {
+			irregular, returnErr = parseIrregularQuantity(input, matches, regex.Unit, to)
+			return s
+		}
+
+		m, err := NewMeasurement(q, matches[len(matches)-1])
+		if err != nil {
+			returnErr = err
+			return s
+		}
+
+		return convertMeasurement(m, to).String()
+	})
+
+	if irregular != "" || returnErr != nil {
+		return irregular, returnErr
+	}
+	return converted, nil
 }
 
 func parseIrregularQuantity(input string, matches []string, re *regexp.Regexp, to System) (string, error) {

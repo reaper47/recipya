@@ -20,6 +20,7 @@ VALUES
     ('goodto.com', 'https://goodto.com/'),
     ('jaroflemons.com', 'https://jaroflemons.com/'),
     ('natashaskitchen.com', 'https://natashaskitchen.com/'),
+    ('nigella.com', 'https://nigella.com/')
 ;
 
 -- +goose Down
@@ -28,5 +29,6 @@ WHERE host IN (
     'avocadoskillet.com', 'beyondkimchee.com', 'chatelaine.com', 'chejorge.com',
     'chinesecookingdemystified.substack.com', 'cuisineandtravel.com', 'daringgourmet.com', 'dreenaburton.com',
     'elephantasticvegan.com', 'entertainingwithbeth.com', 'feastingathome.com', 'foodal.com', 'foodbymaria.com',
-    'foodiecrush.com', 'foolproofliving.com', 'gastroplant.com', 'goodto.com', 'jaroflemons.com', 'natashaskitchen.com'
+    'foodiecrush.com', 'foolproofliving.com', 'gastroplant.com', 'goodto.com', 'jaroflemons.com', 'natashaskitchen.com',
+    'nigella.com'
 );

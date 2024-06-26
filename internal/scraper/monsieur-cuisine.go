@@ -94,7 +94,7 @@ func (s *Scraper) scrapeMonsieurCuisine(root *goquery.Document, rawURL string, f
 	req.Header.Set("Accept-Language", "nl-NL")
 	req.Header.Set("device-type", "web")
 
-	res, err := s.Client.Do(req)
+	res, err := s.HTTP.Client.Do(req)
 	if err != nil {
 		return models.RecipeSchema{}, err
 	}

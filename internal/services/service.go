@@ -253,8 +253,8 @@ type FilesService interface {
 	UploadImage(rc io.ReadCloser) (uuid.UUID, error)
 }
 
-// HttpService is the interface that describes the methods required for preparing and utilizing https requests and responses.
-type HttpService interface {
+// HTTPService is the interface that describes the methods required for preparing and utilizing https requests and responses.
+type HTTPService interface {
 	// PrepareRequestForURL Prepares an HTTP GET request for a given URL.
 	// It will apply additional HTTP headers if the host requires it.
 	PrepareRequestForURL(url string) (*http.Request, error)

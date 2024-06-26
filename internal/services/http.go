@@ -6,9 +6,30 @@ import (
 	"strings"
 )
 
+// HTTPClient is an interface for making HTTP requests.
+type HTTPClient interface {
+	Do(req *http.Request) (*http.Response, error)
+}
+
+// NewHTTP creates a new HTTP service.
+func NewHTTP(client HTTPClient) *HTTP {
+	if client == nil {
+		client = http.DefaultClient
+	}
+
+	return &HTTP{
+		Client: client,
+	}
+}
+
+// HTTP is the entity that manages the HTTP client.
+type HTTP struct {
+	Client HTTPClient
+}
+
 // PrepareRequestForURL Prepares an HTTP GET request for a given URL.
 // It will apply additional HTTP headers if the host requires it.
-func PrepareRequestForURL(url string) (*http.Request, error) {
+func (h *HTTP) PrepareRequestForURL(url string) (*http.Request, error) {
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
@@ -16,7 +37,7 @@ func PrepareRequestForURL(url string) (*http.Request, error) {
 
 	const mozilla = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0"
 
-	host := GetHost(url)
+	host := h.GetHost(url)
 	switch host {
 	case "aberlehome", "bettybossi", "chatelaine.com", "downshiftology.com", "marmiton", "natashaskitchen", "puurgezond", "reddit", "thekitchn", "thepalatablelife", "wellplated":
 		req.Header.Set("User-Agent", mozilla)
@@ -29,7 +50,7 @@ func PrepareRequestForURL(url string) (*http.Request, error) {
 }
 
 // GetHost gets the host from the raw URL.
-func GetHost(rawURL string) string {
+func (h *HTTP) GetHost(rawURL string) string {
 	u, err := url.Parse(rawURL)
 	if err != nil {
 		return ""

@@ -1,9 +1,10 @@
 package statements
 
 import (
-	"github.com/reaper47/recipya/internal/models"
 	"strings"
 	"testing"
+
+	"github.com/reaper47/recipya/internal/models"
 )
 
 func BenchmarkBuildPaginatedResultsQuery(b *testing.B) {
@@ -39,12 +40,12 @@ func TestBuildBaseSelectRecipe(t *testing.T) {
 		{
 			name: "new to old",
 			in:   models.Sort{IsNewestToOldest: true},
-			want: "ROW_NUMBER() OVER (ORDER BY recipes.created_at ASC) AS row_num",
+			want: "ROW_NUMBER() OVER (ORDER BY recipes.created_at DESC) AS row_num",
 		},
 		{
 			name: "old to new",
 			in:   models.Sort{IsOldestToNewest: true},
-			want: "ROW_NUMBER() OVER (ORDER BY recipes.created_at DESC) AS row_num",
+			want: "ROW_NUMBER() OVER (ORDER BY recipes.created_at ASC) AS row_num",
 		},
 		{
 			name: "default",
