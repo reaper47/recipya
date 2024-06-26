@@ -236,6 +236,17 @@ const SelectDistinctImages = `
 	SELECT DISTINCT image
 	FROM cookbooks`
 
+// SelectDistinctVideos gets all distinct video UUIDs from the recipes table.
+const SelectDistinctVideos = `
+	SELECT DISTINCT video
+	FROM video_recipe`
+
+// SelectKeywords fetches all keywords.
+const SelectKeywords = `
+	SELECT name 
+	FROM keywords
+	ORDER BY name`
+
 // SelectMeasurementSystems fetches the units systems along with the user's selected system and settings.
 const SelectMeasurementSystems = `
 	SELECT ms.name,
@@ -273,39 +284,42 @@ func BuildBaseSelectRecipe(sorts models.Sort) string {
 }
 
 const baseSelectRecipe = `
-	SELECT recipes.id                                                                   AS recipe_id,
-		   recipes.name                                                                 AS name,
-		   recipes.description                                                          AS description,
-		   recipes.image                                                                AS image,
+	SELECT recipes.id                               AS recipe_id,
+		   recipes.name                             AS name,
+		   recipes.description                      AS description,
+		   recipes.image                            AS image,
 		   COALESCE((SELECT GROUP_CONCAT(other_image, ';')
 					 FROM (SELECT image AS other_image
 						   FROM additional_images_recipe
-						   WHERE additional_images_recipe.recipe_id = recipes.id)), '') AS other_images,
-		   recipes.url                                                                  AS url,
-		   recipes.yield                                                                AS yield,
-		   recipes.created_at                                                           AS created_at,
-		   recipes.updated_at                                                           AS updated_at,
-		   categories.name                                                              AS category,
-		   cuisines.name                                                                AS cuisine,
+						   WHERE additional_images_recipe.recipe_id = recipes.id)),
+					'')                             AS other_images,
+		   recipes.url                              AS url,
+		   recipes.yield                            AS yield,
+		   recipes.created_at                       AS created_at,
+		   recipes.updated_at                       AS updated_at,
+		   categories.name                          AS category,
+		   cuisines.name                            AS cuisine,
 		   COALESCE((SELECT GROUP_CONCAT(ingredient_name, '<!---->')
 					 FROM (SELECT DISTINCT ingredients.name AS ingredient_name
 						   FROM ingredient_recipe
 									JOIN ingredients ON ingredients.id = ingredient_recipe.ingredient_id
 						   WHERE ingredient_recipe.recipe_id = recipes.id
-						   ORDER BY ingredient_order)), '')                             AS ingredients,
+						   ORDER BY ingredient_order)),
+					'')                             AS ingredients,
 		   COALESCE((SELECT GROUP_CONCAT(instruction_name, '<!---->')
 					 FROM (SELECT DISTINCT instructions.name AS instruction_name
 						   FROM instruction_recipe
 									JOIN instructions ON instructions.id = instruction_recipe.instruction_id
 						   WHERE instruction_recipe.recipe_id = recipes.id
-						   ORDER BY instruction_order)), '')                            AS instructions,
-		   GROUP_CONCAT(DISTINCT keywords.name)                                         AS keywords,
+						   ORDER BY instruction_order)),
+					'')                             AS instructions,
+		   GROUP_CONCAT(DISTINCT keywords.name)     AS keywords,
 		   (SELECT GROUP_CONCAT(name)
 			FROM (SELECT tool_recipe.quantity || ' ' || tools.name AS name
 				  FROM tool_recipe
 						   JOIN tools ON tool_recipe.tool_id = tools.id
 				  WHERE tool_recipe.recipe_id = recipes.id
-				  ORDER BY tool_recipe.tool_order))                                     AS tools,
+				  ORDER BY tool_recipe.tool_order)) AS tools,
 		   nutrition.calories,
 		   nutrition.total_carbohydrates,
 		   nutrition.sugars,
@@ -320,7 +334,13 @@ const baseSelectRecipe = `
 		   times.prep_seconds,
 		   times.cook_seconds,
 		   times.total_seconds,
-		   ROW_NUMBER() OVER (ORDER BY recipes.id)                                      AS row_num
+		   GROUP_CONCAT(DISTINCT
+						vr.video || ';' ||
+						vr.duration || ';' ||
+						vr.content_url || ';' ||
+						vr.embed_url || ';' ||
+						vr.created_at)              AS video,
+		   ROW_NUMBER() OVER (ORDER BY recipes.id)  AS row_num
 	FROM recipes
 			 LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id
 			 LEFT JOIN categories ON category_recipe.category_id = categories.id
@@ -336,7 +356,8 @@ const baseSelectRecipe = `
 			 LEFT JOIN tools ON tool_recipe.tool_id = tools.id
 			 LEFT JOIN nutrition ON recipes.id = nutrition.recipe_id
 			 LEFT JOIN time_recipe ON recipes.id = time_recipe.recipe_id
-			 LEFT JOIN times ON time_recipe.time_id = times.id`
+			 LEFT JOIN times ON time_recipe.time_id = times.id
+			 LEFT JOIN video_recipe AS vr ON vr.recipe_id = recipes.id`
 
 const baseSelectSearchRecipe = `
 	SELECT recipes.id                                                                      AS recipe_id,

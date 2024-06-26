@@ -16,7 +16,7 @@ import (
 
 // ScheduleCronJobs schedules cron jobs for the web app. It starts the following jobs:
 //
-// - Clean Images: Removes unreferenced images from the data/images folder to save space.
+// - Clean Media: Removes unreferenced images and videos from the data folder to save space.
 //
 // - Send queued emails
 //
@@ -28,19 +28,23 @@ func ScheduleCronJobs(repo services.RepositoryService, files services.FilesServi
 
 	// Clean Images
 	_, _ = scheduler.Every(1).MonthLastDay().Do(func() {
-		rmFunc := func(file string) error {
+		images, videos := repo.Media()
+
+		numImages, numBytesImages := cleanMedia(os.DirFS(app.ImagesDir), images, func(file string) error {
 			_ = os.Remove(filepath.Join(app.ThumbnailsDir, file))
 			return os.Remove(filepath.Join(app.ImagesDir, file))
-		}
+		})
 
-		numFiles, numBytes := cleanImages(os.DirFS(app.ImagesDir), repo.Images(), rmFunc)
+		numVideos, numBytesVideos := cleanMedia(os.DirFS(app.VideosDir), videos, func(file string) error {
+			return os.Remove(filepath.Join(app.VideosDir, file))
+		})
 
 		var s string
-		if numBytes > 0 {
-			s = "(" + strconv.FormatFloat(float64(numBytes)/(1<<20), 'f', 2, 64) + " MB)"
+		if numBytesImages > 0 || numBytesVideos > 0 {
+			s = "(" + strconv.FormatFloat(float64(numBytesImages+numBytesVideos)/(1<<20), 'f', 2, 64) + " MB)"
 		}
 
-		slog.Info("Ran CleanImages job", "numImagesRemoved", numFiles, "spaceReclaimed", s)
+		slog.Info("Ran CleanMedia job", "numImagesRemoved", numImages, "numVideosRemoved", numVideos, "spaceReclaimed", s)
 	})
 
 	// Send queued emails
@@ -84,25 +88,25 @@ func ScheduleCronJobs(repo services.RepositoryService, files services.FilesServi
 	scheduler.StartAsync()
 }
 
-func cleanImages(dir fs.FS, usedImages []string, rmFileFunc func(path string) error) (numFilesDeleted, numBytesDeleted int64) {
-	sort.Strings(usedImages)
+func cleanMedia(dir fs.FS, used []string, rmFileFunc func(path string) error) (numFilesDeleted, numBytesDeleted int64) {
+	sort.Strings(used)
 
 	_ = fs.WalkDir(dir, ".", func(path string, d fs.DirEntry, _ error) error {
 		if path == "." || d.IsDir() {
 			return nil
 		}
 
-		_, found := slices.BinarySearch(usedImages, d.Name())
+		_, found := slices.BinarySearch(used, d.Name())
 		if !found {
 			info, err := d.Info()
 			if err != nil {
-				slog.Error("Clean images dir walk", "error", err)
+				slog.Error("Clean media dir walk", "error", err)
 				return err
 			}
 
 			err = rmFileFunc(path)
 			if err != nil {
-				slog.Error("Clean images walk", "error", err, "path", path)
+				slog.Error("Clean media walk", "error", err, "path", path)
 				return err
 			}
 

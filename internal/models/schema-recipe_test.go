@@ -234,6 +234,31 @@ func TestInstruction_UnmarshalJSON(t *testing.T) {
 	}
 }
 
+func TestThumnailURL_UnmarshalJSON(t *testing.T) {
+	want := models.RecipeSchema{
+		ThumbnailURL: &models.ThumbnailURL{Value: "thumbnail.png"},
+	}
+
+	testcases := []struct {
+		name string
+		data string
+	}{
+		{
+			name: "text",
+			data: `{"thumbnailUrl": "thumbnail.png"}`,
+		},
+		{
+			name: "list of strings",
+			data: `{"thumbnailUrl": ["thumbnail.png","preview.png"]}`,
+		},
+	}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			assertRecipeSchema(t, tc.data, want)
+		})
+	}
+}
+
 func TestYield_UnmarshalJSON(t *testing.T) {
 	want := models.RecipeSchema{
 		Yield: &models.Yield{Value: 4},
@@ -425,6 +450,61 @@ func TestTools_UnmarshalJSON(t *testing.T) {
 	}
 }
 
+func TestVideoObject_UnmarshalJSON(t *testing.T) {
+	testcases := []struct {
+		name string
+		data string
+		want models.RecipeSchema
+	}{
+		{
+			name: "json",
+			data: `{"video": {"@type":"VideoObject","name":"one"}}`,
+			want: models.RecipeSchema{
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{AtType: "VideoObject", Name: "one"},
+					},
+				},
+			},
+		},
+		{
+			name: "json",
+			data: `{"video": {"@type": "VideoObject","name": "Boeuf bourguignon met geroosterde spruiten","thumbnailUrl": ["https://allerhande.bbvms.com/mediaclip/4943112/pthumbnail/120/67.jpg","https://allerhande.bbvms.com/mediaclip/4943112/pthumbnail/900/500.jpg"],"contentUrl": "https://d1p9dpblu12ati.cloudfront.net/allerhande/media/2022/09/29/asset-4943112-1664455067445069.mp4","duration": "PT3M49S","uploadDate": "2022-10-06T22:00:00.000","interactionStatistic": {"@type": "InteractionCounter","interactionType": {"@type": "http://schema.org/WatchAction","userInteractionCount": 0}}}}`,
+			want: models.RecipeSchema{
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://d1p9dpblu12ati.cloudfront.net/allerhande/media/2022/09/29/asset-4943112-1664455067445069.mp4",
+							Duration:     "PT3M49S",
+							Name:         "Boeuf bourguignon met geroosterde spruiten",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://allerhande.bbvms.com/mediaclip/4943112/pthumbnail/120/67.jpg"},
+							UploadDate:   time.Date(2022, 10, 6, 22, 0, 0, 0, time.UTC),
+						},
+					},
+				},
+			},
+		},
+		{
+			name: "list of json",
+			data: `{"video": [{"@type":"VideoObject","name":"one"},{"@type":"VideoObject","name":"two"}]}`,
+			want: models.RecipeSchema{
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{AtType: "VideoObject", Name: "one"},
+						{AtType: "VideoObject", Name: "two"},
+					},
+				},
+			},
+		},
+	}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			assertRecipeSchema(t, tc.data, tc.want)
+		})
+	}
+}
+
 func TestRecipeSchema_Recipe(t *testing.T) {
 	imageID := uuid.New()
 	tools := []models.HowToItem{
@@ -530,6 +610,7 @@ func TestRecipeSchema_Recipe(t *testing.T) {
 
 func TestRecipeSchema_Marshal(t *testing.T) {
 	imageID := uuid.New()
+	thumbnailID := uuid.New()
 	tools := []models.HowToItem{
 		models.NewHowToTool("Saw"),
 		models.NewHowToTool("Blender"),
@@ -570,11 +651,12 @@ func TestRecipeSchema_Marshal(t *testing.T) {
 			TransFat:       "10g",
 			UnsaturatedFat: "11g",
 		},
-		PrepTime:  "PT1H",
-		TotalTime: "PT4H",
-		Tools:     &models.Tools{Values: tools},
-		Yield:     &models.Yield{Value: 4},
-		URL:       "https://recipes.musicavis.ca",
+		PrepTime:     "PT1H",
+		ThumbnailURL: &models.ThumbnailURL{Value: thumbnailID.String()},
+		TotalTime:    "PT4H",
+		Tools:        &models.Tools{Values: tools},
+		Yield:        &models.Yield{Value: 4},
+		URL:          "https://recipes.musicavis.ca",
 	}
 
 	xb, _ := json.Marshal(rs)
@@ -674,6 +756,16 @@ func TestRecipeSchema_Marshal(t *testing.T) {
 		case "prepTime":
 			if v.(string) != rs.PrepTime {
 				t.Errorf("got prepTime %q; want %q", v, rs.PrepTime)
+			}
+		case "thumbnailUrl":
+			want := "/data/images/thumbnails/" + rs.ThumbnailURL.Value
+			s := v.(string)
+			_, after, ok := strings.Cut(v.(string), "/")
+			if ok {
+				s = "/" + after
+			}
+			if s != want {
+				t.Errorf("got thumbnailURL %q; want %q", v, rs.ThumbnailURL.Value)
 			}
 		case "tool":
 			xa := v.([]any)

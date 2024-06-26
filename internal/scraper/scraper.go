@@ -1,7 +1,6 @@
 package scraper
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/google/uuid"
@@ -26,7 +25,7 @@ type Scraper struct {
 // NewScraper creates a new Scraper.
 func NewScraper(client services.HTTPClient) *Scraper {
 	return &Scraper{
-		HTTP: *services.NewHTTP(client),
+		HTTP: services.NewHTTP(client),
 	}
 }
 
@@ -117,62 +116,4 @@ func (s *Scraper) fetchDocument(url string) (*goquery.Document, error) {
 	}
 
 	return goquery.NewDocumentFromReader(res.Body)
-}
-
-func parseLdJSON(root *goquery.Document) (models.RecipeSchema, error) {
-	for _, node := range root.Find("script[type='application/ld+json']").Nodes {
-		if node.FirstChild == nil {
-			continue
-		}
-
-		var rs = models.NewRecipeSchema()
-		err := json.Unmarshal([]byte(strings.ReplaceAll(node.FirstChild.Data, "\n", "")), &rs)
-		if err != nil || rs.Equal(models.NewRecipeSchema()) {
-			var xrs []models.RecipeSchema
-			err = json.Unmarshal([]byte(node.FirstChild.Data), &xrs)
-			if err != nil {
-				continue
-			}
-
-			for _, rs = range xrs {
-				if rs.AtType != nil && rs.AtType.Value == "Recipe" {
-					return rs, nil
-				}
-			}
-			continue
-		}
-
-		if rs.AtType.Value != "Recipe" {
-			continue
-		}
-		return rs, nil
-	}
-	return models.RecipeSchema{}, ErrNotImplemented
-}
-
-type graph struct {
-	AtContext string                `json:"@context"`
-	AtGraph   []models.RecipeSchema `json:"@graph"`
-}
-
-func parseGraph(root *goquery.Document) (models.RecipeSchema, error) {
-	for _, node := range root.Find("script[type='application/ld+json']").Nodes {
-		if node.FirstChild == nil {
-			continue
-		}
-
-		var g graph
-		err := json.Unmarshal([]byte(node.FirstChild.Data), &g)
-		if err != nil {
-			continue
-		}
-
-		for _, r := range g.AtGraph {
-			if r.AtType.Value == "Recipe" {
-				r.AtContext = atContext
-				return r, nil
-			}
-		}
-	}
-	return models.NewRecipeSchema(), ErrNotImplemented
 }

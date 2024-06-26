@@ -14,6 +14,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"os"
+	"path/filepath"
 	"slices"
 	"strconv"
 	"strings"
@@ -185,7 +187,7 @@ func TestHandlers_Recipes_AddManual(t *testing.T) {
 				`<title hx-swap-oob="true">Add Manual | Recipya</title>`,
 				`<form class="card-body" style="padding: 0" enctype="multipart/form-data" hx-post="/recipes/add/manual" hx-indicator="#fullscreen-loader">`,
 				`<input required type="text" name="title" placeholder="Title of the recipe*" autocomplete="off" class="input w-full btn-ghost text-center">`,
-				`<img src="" alt="Image preview of the recipe." class="object-cover mb-2 w-full max-h-[39rem]"> <span class="grid gap-1 max-w-sm" style="margin: auto auto 0.25rem;"><div class="mr-1"><input type="file" accept="image/*" name="images" class="file-input file-input-sm file-input-bordered w-full max-w-sm" _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray' on dragleave or drop set the target's style.background to '' on drop or change make an FileReader called reader then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then set {src: window.URL.createObjectURL(it)} on previous <img/> then remove .hidden from me.parentElement.parentElement.querySelectorAll('button') then add .hidden to the parentElement of me">`,
+				`<img src="" alt="" class="object-cover mb-2 w-full max-h-[39rem]"> <span class="grid gap-1 max-w-sm" style="margin: auto auto 0.25rem;"><div class="mr-1"><input type="file" accept="image/*,video/*" name="images" class="file-input file-input-sm file-input-bordered w-full max-w-sm" _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray' on dragleave or drop set the target's style.background to '' on drop or change make an FileReader called reader then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then if it.type.startsWith('video') put`,
 				`<input type="number" min="1" name="yield" value="1" class="input input-bordered input-sm w-24 md:w-20 lg:w-24">`,
 				`<input type="text" list="categories" name="category" class="input input-bordered input-sm w-48 md:w-36 lg:w-48" placeholder="Breakfast" autocomplete="off"> <datalist id="categories"><option>breakfast</option><option>lunch</option><option>dinner</option></datalist>`,
 				`<textarea name="description" placeholder="This Thai curry chicken will make you drool." class="textarea w-full h-full resize-none"></textarea>`,
@@ -704,7 +706,8 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 		want := []string{
 			`<title hx-swap-oob="true">Edit Chicken Jersey | Recipya</title>`,
 			`<input required type="text" name="title" placeholder="Title of the recipe*" autocomplete="off" class="input w-full btn-ghost text-center" value="Chicken Jersey">`,
-			`<div id="images-container" class="grid grid-flow-col grid-cols-7 w-full text-center border-gray-700 md:grid-cols-6 md:col-span-3 md:border-r"><div class="buttons-container flex flex-col gap-1 col-span-2 md:col-span-1 p-1"><button id="image-button-1" type="button" class="btn btn-sm btn-ghost btn-active" onclick="switchImage(event)">Image 1</button> <button id="add-image-button" type="button" class="btn btn-sm btn-ghost" onclick="addImage(event)"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24" width="24px" height="24px" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle> <line x1="12" y1="8" x2="12" y2="16"></line> <line x1="8" y1="12" x2="16" y2="12"></line></svg>Add</button></div><div id="images" class="col-span-5"><label id="image-1" class=""><img alt="Image preview of the recipe." class="object-cover mb-2 w-full max-h-[39rem]" src=""> <span class="grid gap-1 max-w-sm" style="margin: auto auto 0.25rem;"><div class="mr-1"><input type="file" accept="image/*" name="images" class="file-input file-input-sm file-input-bordered w-full max-w-sm" value="/data/images/` + baseRecipe.Images[0].String() + `.webp" _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray' on dragleave or drop set the target's style.background to '' on drop or change make an FileReader called reader then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then set {src: window.URL.createObjectURL(it)} on previous <img/> then remove .hidden from me.parentElement.parentElement.querySelectorAll('button') then add .hidden to the parentElement of me"><div class="divider">OR</div><span class="hidden input-error"></span><div class="flex"><input type="url" placeholder="Enter the URL of an image" class="input input-bordered input-sm w-full max-w-sm mr-1"> <button type="button" class="btn btn-sm" hx-get="/fetch" hx-vals="js:{url: event.target.previousElementSibling.value}" hx-swap="none" _="on htmx:afterRequest if event.detail.successful then set a to first in event.target.parentElement.parentElement.children then call updateImageFromFetch(a, event.detail.xhr.responseURL) end">Fetch</button></div></div><button type="button" class="btn btn-sm btn-error btn-outline hidden" _="on click set {value: ''} on me.parentElement.children[0].children[0] then set {src: ''} on previous <img/> then set {value: ''} on the first in (last in me.parentElement.children[0].children) then remove .hidden from the first in me.parentElement.children then add .hidden">Delete</button></span></label></div></div>`,
+			`<div id="media-container" class="grid grid-flow-col grid-cols-7 w-full text-center border-gray-700 md:grid-cols-6 md:col-span-3 md:border-r"><div class="buttons-container flex flex-col gap-1 col-span-2 md:col-span-1 p-1"><button id="media-button-1" type="button" class="btn btn-sm btn-ghost btn-active" onclick="switchMedia(event)">Media 1</button> <button id="add-media-button" type="button" class="btn btn-sm btn-ghost" onclick="addMedia(event)"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24" width="24px" height="24px" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle> <line x1="12" y1="8" x2="12" y2="16"></line> <line x1="8" y1="12" x2="16" y2="12"></line></svg>Add</button></div><div id="media" class="col-span-5"><label id="media-1" class=""><img alt="" class="object-cover mb-2 w-full max-h-[39rem]" src=""> <span class="grid gap-1 max-w-sm" style="margin: auto auto 0.25rem;"><div class="mr-1"><input type="file" accept="image/*,video/*" name="images" class="file-input file-input-sm file-input-bordered w-full max-w-sm" value="/data/images/` + baseRecipe.Images[0].String() + `.webp" _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray' on dragleave or drop set the target's style.background to '' on drop or change make an FileReader called reader then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then if it.type.startsWith('video')`,
+			`after previous <img/> then add .hidden to previous <img/> else set {src: window.URL.createObjectURL(it)} on previous <img/> end then remove .hidden from me.parentElement.parentElement.querySelectorAll('button') then add .hidden to the parentElement of me"><div class="divider">OR</div><span class="hidden input-error"></span><div class="flex"><input type="url" placeholder="Enter the URL of an image" class="input input-bordered input-sm w-full max-w-sm mr-1"> <button type="button" class="btn btn-sm" hx-get="/fetch" hx-vals="js:{url: event.target.previousElementSibling.value}" hx-swap="none" _="on htmx:afterRequest if event.detail.successful then set a to first in event.target.parentElement.parentElement.children then call updateMediaFromFetch(a, event.detail.xhr.responseURL) end">Fetch</button></div></div><button type="button" class="btn btn-sm btn-error btn-outline hidden" onclick="deleteMedia(event)">Delete</button></span></label> </div>`,
 			`<input type="text" list="categories" name="category" class="input input-bordered input-sm w-48 md:w-36 lg:w-48" placeholder="Breakfast" autocomplete="off" value="american"> <datalist id="categories"><option>breakfast</option><option>lunch</option><option>dinner</option></datalist>`,
 			`<input type="number" min="1" name="yield" class="input input-bordered input-sm w-24 md:w-20 lg:w-24" value="12">`,
 			`<input type="text" placeholder="Source" name="source" class="input input-bordered input-sm md:w-28 lg:w-40 xl:w-44" value="https://example.com/recipes/yummy"`,
@@ -747,7 +750,9 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 
 		assertStatus(t, rr.Code, http.StatusNoContent)
 		got, _ := srv.Repository.Recipe(baseRecipe.ID, 1)
-		if slices.Equal(got.Images, baseRecipe.Images) {
+		isImagesEqual := slices.Equal(got.Images, baseRecipe.Images)
+		isVideosEqual := slices.Equal(got.Videos, baseRecipe.Videos)
+		if (isImagesEqual && !isVideosEqual) || (!isImagesEqual && isVideosEqual) {
 			t.Fatal("image should have been updated")
 		}
 		if files.uploadImageHitCount == 0 {
@@ -1627,7 +1632,7 @@ func TestHandlers_Recipes_View(t *testing.T) {
 			rr := tc.sendFunc(srv, http.MethodGet, uri+"/1")
 
 			assertStatus(t, rr.Code, http.StatusOK)
-			want := []string{
+			assertStringsInHTML(t, getBodyHTML(rr), []string{
 				`<title hx-swap-oob="true">` + r.Name + " | Recipya</title>",
 				`<button title="Toggle screen lock" _="on load if not navigator.wakeLock hide me end on click if wakeLock wakeLock.release() then add @d='M 12.276 18.55 v -0.748 a 4.79 4.79 0 0 1 1.463 -3.458 a 5.763 5.763 0 0 0 1.804 -4.21 a 5.821 5.821 0 0 0 -6.475 -5.778 c -2.779 0.307 -4.99 2.65 -5.146 5.448 a 5.82 5.82 0 0 0 1.757 4.503 a 4.906 4.906 0 0 1 1.5 3.495 v 0.747 a 1.44 1.44 0 0 0 1.44 1.439 h 2.218 a 1.44 1.44 0 0 0 1.44 -1.439 z m -1.058 0 c 0 0.209 -0.17 0.38 -0.38 0.38 h -2.22 c -0.21 0 -0.38 -0.171 -0.38 -0.38 v -0.748 c 0 -1.58 -0.664 -3.13 -1.822 -4.254 A 4.762 4.762 0 0 1 4.98 9.863 c 0.127 -2.289 1.935 -4.204 4.205 -4.455 a 4.762 4.762 0 0 1 5.3 4.727 a 4.714 4.714 0 0 1 -1.474 3.443 a 5.853 5.853 0 0 0 -1.791 4.225 v 0.746 z M 11.45 20.51 H 8.006 a 0.397 0.397 0 1 0 0 0.795 h 3.444 a 0.397 0.397 0 1 0 0 -0.794 z M 11.847 22.162 a 0.397 0.397 0 0 0 -0.397 -0.397 H 8.006 a 0.397 0.397 0 1 0 0 0.794 h 3.444 c 0.22 0 0.397 -0.178 0.397 -0.397 z z z z z z z z M 10.986 23.416 H 8.867 a 0.397 0.397 0 1 0 0 0.794 h 1.722 c 0.22 0 0.397 -0.178 0.397 -0.397 z' to #icon-bulb else call initWakeLock() then add @d='M12.276 18.55v-.748a4.79 4.79 0 0 1 1.463-3.458 5.763 5.763 0 0 0 1.804-4.21 5.821 5.821 0 0 0-6.475-5.778c-2.779.307-4.99 2.65-5.146 5.448a5.82 5.82 0 0 0 1.757 4.503 4.906 4.906 0 0 1 1.5 3.495v.747a1.44 1.44 0 0 0 1.44 1.439h2.218a1.44 1.44 0 0 0 1.44-1.439zm-1.058 0c0 .209-.17.38-.38.38h-2.22c-.21 0-.38-.171-.38-.38v-.748c0-1.58-.664-3.13-1.822-4.254A4.762 4.762 0 0 1 4.98 9.863c.127-2.289 1.935-4.204 4.205-4.455a4.762 4.762 0 0 1 5.3 4.727 4.714 4.714 0 0 1-1.474 3.443 5.853 5.853 0 0 0-1.791 4.225v.746zM11.45 20.51H8.006a.397.397 0 1 0 0 .795h3.444a.397.397 0 1 0 0-.794zM11.847 22.162a.397.397 0 0 0-.397-.397H8.006a.397.397 0 1 0 0 .794h3.444c.22 0 .397-.178.397-.397zM.397 10.125h2.287a.397.397 0 1 0 0-.794H.397a.397.397 0 1 0 0 .794zM19.456 9.728a.397.397 0 0 0-.397-.397h-2.287a.397.397 0 1 0 0 .794h2.287c.22 0 .397-.178.397-.397zM9.331.397v2.287a.397.397 0 1 0 .794 0V.397a.397.397 0 1 0-.794 0zM16.045 2.85 14.43 4.465a.397.397 0 1 0 .561.561l1.617-1.617a.397.397 0 1 0-.562-.56zM5.027 14.429a.397.397 0 0 0-.56 0l-1.618 1.616a.397.397 0 1 0 .562.562l1.617-1.617a.397.397 0 0 0 0-.561zM4.466 5.027a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.56L3.41 2.848a.397.397 0 1 0-.561.561zM16.045 16.607a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.562L14.99 14.43a.397.397 0 1 0-.561.56zM10.986 23.416a.397.397 0 0 0-.397-.397H8.867a.397.397 0 1 0 0 .794h1.722c.22 0 .397-.178.397-.397z' to #icon-bulb end"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24" width="24px" height="24px" stroke="currentColor"><path id="icon-bulb" d="M12.276 18.55v-.748a4.79 4.79 0 0 1 1.463-3.458 5.763 5.763 0 0 0 1.804-4.21 5.821 5.821 0 0 0-6.475-5.778c-2.779.307-4.99 2.65-5.146 5.448a5.82 5.82 0 0 0 1.757 4.503 4.906 4.906 0 0 1 1.5 3.495v.747a1.44 1.44 0 0 0 1.44 1.439h2.218a1.44 1.44 0 0 0 1.44-1.439zm-1.058 0c0 .209-.17.38-.38.38h-2.22c-.21 0-.38-.171-.38-.38v-.748c0-1.58-.664-3.13-1.822-4.254A4.762 4.762 0 0 1 4.98 9.863c.127-2.289 1.935-4.204 4.205-4.455a4.762 4.762 0 0 1 5.3 4.727 4.714 4.714 0 0 1-1.474 3.443 5.853 5.853 0 0 0-1.791 4.225v.746zM11.45 20.51H8.006a.397.397 0 1 0 0 .795h3.444a.397.397 0 1 0 0-.794zM11.847 22.162a.397.397 0 0 0-.397-.397H8.006a.397.397 0 1 0 0 .794h3.444c.22 0 .397-.178.397-.397zM.397 10.125h2.287a.397.397 0 1 0 0-.794H.397a.397.397 0 1 0 0 .794zM19.456 9.728a.397.397 0 0 0-.397-.397h-2.287a.397.397 0 1 0 0 .794h2.287c.22 0 .397-.178.397-.397zM9.331.397v2.287a.397.397 0 1 0 .794 0V.397a.397.397 0 1 0-.794 0zM16.045 2.85 14.43 4.465a.397.397 0 1 0 .561.561l1.617-1.617a.397.397 0 1 0-.562-.56zM5.027 14.429a.397.397 0 0 0-.56 0l-1.618 1.616a.397.397 0 1 0 .562.562l1.617-1.617a.397.397 0 0 0 0-.561zM4.466 5.027a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.56L3.41 2.848a.397.397 0 1 0-.561.561zM16.045 16.607a.396.396 0 0 0 .562 0 .397.397 0 0 0 0-.562L14.99 14.43a.397.397 0 1 0-.561.56zM10.986 23.416a.397.397 0 0 0-.397-.397H8.867a.397.397 0 1 0 0 .794h1.722c.22 0 .397-.178.397-.397z"></path></svg></button>`,
 				`<button class="ml-2" title="Edit recipe" hx-get="/recipes/1/edit" hx-push-url="true" hx-target="#content" hx-swap="innerHTML transition:true"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button>`,
@@ -1644,8 +1649,124 @@ func TestHandlers_Recipes_View(t *testing.T) {
 				`<p class="text-xs">Per 100g: calories 500; total carbohydrates 7g; sugar 6g; protein 3g; total fat 8g; saturated fat 4g; cholesterol 1g; fiber 2g</p>`,
 				`<table class="table table-zebra table-xs md:h-fit"><thead><tr><th>Time</th><th>h:m:s</th></tr></thead> <tbody><tr><td>Prep:</td><td><time datetime="PT05M">5m</time></td></tr><tr><td>Cooking:</td><td><time datetime="PT1H05M">1h05m</time></td></tr><tr><td>Total:</td><td><time datetime="PT1H10M">1h10m</time></td></tr></tbody></table>`,
 				`<table class="table table-zebra table-xs print:hidden"><thead><tr><th>Nutrition (per 100g)</th><th>Amount</th></tr></thead> <tbody><tr><td>Calories:</td><td>500</td></tr><tr><td>Total carbs:</td><td>7g</td></tr><tr><td>Sugars:</td><td>6g</td></tr><tr><td>Protein:</td><td>3g</td></tr><tr><td>Total fat:</td><td>8g</td></tr><tr><td>Saturated fat:</td><td>4g</td></tr><tr><td>Cholesterol:</td><td>1g</td></tr><tr><td>Sodium:</td><td>5g</td></tr><tr><td>Fiber:</td><td>2g</td></tr></tbody></table>`,
-			}
-			assertStringsInHTML(t, getBodyHTML(rr), want)
+			})
 		})
+	}
+
+	anImage1 := uuid.New()
+	anImage2 := uuid.New()
+	aVideo1 := uuid.New()
+	aVideo2 := uuid.New()
+
+	f1, _ := os.Create(filepath.Join(app.ImagesDir, anImage1.String()+app.ImageExt))
+	f2, _ := os.Create(filepath.Join(app.ImagesDir, anImage2.String()+app.ImageExt))
+	f3, _ := os.Create(filepath.Join(app.VideosDir, aVideo1.String()+app.VideoExt))
+	f4, _ := os.Create(filepath.Join(app.VideosDir, aVideo2.String()+app.VideoExt))
+	_, _ = f3.Write([]byte("video 1"))
+	_, _ = f4.Write([]byte("video 2"))
+	f1.Close()
+	f2.Close()
+	f3.Close()
+	f4.Close()
+
+	testcases2 := []struct {
+		name   string
+		images []uuid.UUID
+		videos []uuid.UUID
+		want   []string
+	}{
+		{
+			name:   "0 image + 0 video",
+			images: nil,
+			videos: nil,
+			want: []string{
+				`<img style="object-fit: cover" alt="Image of the recipe" class="w-full max-h-80 md:max-h-[34rem]" src="/static/img/recipes/placeholder.webp">`,
+			},
+		},
+		{
+			name:   "1 image + 0 video",
+			images: []uuid.UUID{anImage1},
+			videos: nil,
+			want: []string{
+				`<img id="output" style="object-fit: cover" alt="Image of the recipe" class="w-full max-h-80 md:max-h-[34rem]" src="/data/images/` + anImage1.String() + `.webp">`,
+			},
+		},
+		{
+			name:   "2 images + 0 video",
+			images: []uuid.UUID{anImage1, anImage2},
+			videos: nil,
+			want: []string{
+				`<img style="object-fit: cover" alt="Image of the recipe" class="w-full max-h-80 md:max-h-[34rem]" src="/data/images/` + anImage1.String() + `.webp"><div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2"><a class="btn btn-circle" href="#media-1">❮</a> <a class="btn btn-circle" href="#media-1">❯</a></div></div><div id="media-1" class="carousel-item relative w-full">`,
+				`<img style="object-fit: cover" alt="Image of the recipe" class="w-full max-h-80 md:max-h-[34rem]" src="/data/images/` + anImage2.String() + `.webp"><div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2"><a class="btn btn-circle" href="#media-0">❮</a> <a class="btn btn-circle" href="#media-0">❯</a></div></div></div></div>`,
+			},
+		},
+		{
+			name:   "0 image + 1 video",
+			images: nil,
+			videos: []uuid.UUID{aVideo1},
+			want: []string{
+				`<video controls preload="metadata" src="/data/videos/` + aVideo1.String() + `.webm" type="video/webm"></video>`,
+			},
+		},
+		{
+			name:   "0 image + 2 video",
+			images: nil,
+			videos: []uuid.UUID{aVideo1, aVideo2},
+			want: []string{
+				`<video controls preload="metadata" src="/data/videos/` + aVideo1.String() + `.webm" type="video/webm"></video><div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2"><a class="btn btn-circle" href="#media--1">❮</a> <a class="btn btn-circle" href="#media-1">❯</a></div></div><div id="media-1" class="carousel-item relative w-full">`,
+				`<div id="media-1" class="carousel-item relative w-full"><video controls preload="metadata" src="/data/videos/` + aVideo2.String() + `.webm" type="video/webm"></video>`,
+			},
+		},
+		{
+			name:   "2 images + 2 videos",
+			images: []uuid.UUID{anImage1, anImage2},
+			videos: []uuid.UUID{aVideo1, aVideo2},
+			want: []string{
+				`<img style="object-fit: cover" alt="Image of the recipe" class="w-full max-h-80 md:max-h-[34rem]" src="/data/images/` + anImage1.String() + `.webp"><div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2"><a class="btn btn-circle" href="#media-3">❮</a> <a class="btn btn-circle" href="#media-1">❯</a></div></div><div id="media-1" class="carousel-item relative w-full">`,
+				`<img style="object-fit: cover" alt="Image of the recipe" class="w-full max-h-80 md:max-h-[34rem]" src="/data/images/` + anImage2.String() + `.webp"><div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2"><a class="btn btn-circle" href="#media-0">❮</a> <a class="btn btn-circle" href="#media-2">❯</a></div></div><div id="media-2" class="carousel-item relative w-full">`,
+				`<video controls preload="metadata" src="/data/videos/` + aVideo1.String() + `.webm" type="video/webm"></video><div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2"><a class="btn btn-circle" href="#media-1">❮</a> <a class="btn btn-circle" href="#media-3">❯</a></div></div><div id="media-3" class="carousel-item relative w-full">`,
+				`<video controls preload="metadata" src="/data/videos/` + aVideo2.String() + `.webm" type="video/webm"></video>`,
+			},
+		},
+	}
+	for _, tc := range testcases2 {
+		t.Run("media "+tc.name, func(t *testing.T) {
+			videos := make([]models.VideoObject, 0, len(tc.videos))
+			for _, v := range tc.videos {
+				videos = append(videos, models.VideoObject{ID: v})
+			}
+
+			srv.Repository = &mockRepository{
+				RecipesRegistered: map[int64]models.Recipes{
+					1: {
+						models.Recipe{
+							Category:     "American",
+							ID:           1,
+							Images:       tc.images,
+							Ingredients:  []string{"Ing1", "Ing2", "Ing3"},
+							Instructions: []string{"Ins1", "Ins2", "Ins3"},
+							Name:         "Chicken Jersey",
+							Times: models.Times{
+								Prep:  5 * time.Minute,
+								Cook:  1*time.Hour + 5*time.Minute,
+								Total: 1*time.Hour + 10*time.Minute,
+							},
+							URL:    "https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/",
+							Videos: videos,
+							Yield:  2,
+						},
+					},
+				},
+			}
+
+			rr := sendRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"/1")
+
+			assertStatus(t, rr.Code, http.StatusOK)
+			assertStringsInHTML(t, getBodyHTML(rr), tc.want)
+		})
+	}
+
+	for _, file := range []*os.File{f1, f2, f3, f4} {
+		os.Remove(file.Name())
 	}
 }

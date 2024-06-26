@@ -1,9 +1,11 @@
 package scraper
 
 import (
+	"encoding/json"
 	"errors"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
+	"strings"
 )
 
 // ErrNotImplemented is the error used when the website is not supported.
@@ -344,10 +346,7 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 func parseWebsite(doc *goquery.Document) (models.RecipeSchema, error) {
 	rs, err := parseLdJSON(doc)
 	if err != nil {
-		rs, err = parseGraph(doc)
-		if err != nil {
-			return models.RecipeSchema{}, ErrNotImplemented
-		}
+		return models.RecipeSchema{}, ErrNotImplemented
 	}
 
 	if rs.Yield == nil {
@@ -357,4 +356,47 @@ func parseWebsite(doc *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	return rs, nil
+}
+
+func parseLdJSON(root *goquery.Document) (models.RecipeSchema, error) {
+	for _, node := range root.Find("script[type='application/ld+json']").Nodes {
+		if node.FirstChild == nil {
+			continue
+		}
+
+		var rs = models.NewRecipeSchema()
+		err := json.Unmarshal([]byte(strings.ReplaceAll(node.FirstChild.Data, "\n", "")), &rs)
+
+		var found bool
+		if len(rs.AtGraph) > 0 {
+			for _, schema := range rs.AtGraph {
+				if schema.AtType.Value == "Recipe" {
+					rs = *schema
+					found = true
+					break
+				}
+			}
+		}
+
+		if !found && err != nil || rs.Equal(models.NewRecipeSchema()) {
+			var xrs []models.RecipeSchema
+			err = json.Unmarshal([]byte(node.FirstChild.Data), &xrs)
+			if err != nil {
+				continue
+			}
+
+			for _, rs = range xrs {
+				if rs.AtType != nil && rs.AtType.Value == "Recipe" {
+					return rs, nil
+				}
+			}
+			continue
+		}
+
+		if rs.AtType.Value != "Recipe" {
+			continue
+		}
+		return rs, nil
+	}
+	return models.RecipeSchema{}, ErrNotImplemented
 }

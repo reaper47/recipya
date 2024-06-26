@@ -6,7 +6,7 @@ import (
 )
 
 func scrapeKennyMcGovern(root *goquery.Document) (models.RecipeSchema, error) {
-	rs, err := parseGraph(root)
+	rs, err := parseWebsite(root)
 	if err != nil {
 		return rs, err
 	}

@@ -187,24 +187,33 @@ func (s *Server) recipeAddManualHandler() http.HandlerFunc {
 			return
 		}
 
+		keywords, err := s.Repository.Keywords()
+		if err != nil {
+			slog.Error("Failed to fetch keywords", "error", err)
+		}
+
 		_ = components.AddRecipeManual(templates.Data{
 			About:           templates.NewAboutData(),
 			IsAdmin:         userID == 1,
 			IsAuthenticated: true,
 			IsHxRequest:     r.Header.Get("Hx-Request") == "true",
-			View:            &templates.ViewRecipeData{Categories: categories},
+			View: &templates.ViewRecipeData{
+				Categories: categories,
+				Keywords:   keywords,
+			},
 		}).Render(r.Context(), w)
 	}
 }
 
 func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		r.Body = http.MaxBytesReader(w, r.Body, 128<<20)
+		const maxSize = 512 << 20
+		r.Body = http.MaxBytesReader(w, r.Body, maxSize)
 
 		userID := getUserID(r)
 		userIDAttr := slog.Int64("userID", userID)
 
-		err := r.ParseMultipartForm(128 << 20)
+		err := r.ParseMultipartForm(maxSize)
 		if err != nil {
 			msg := "Could not parse the form."
 			slog.Error(msg, userIDAttr, "error", err)
@@ -213,7 +222,11 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 			return
 		}
 
-		var imageUUIDs []uuid.UUID
+		var (
+			imageUUIDs []uuid.UUID
+			videos     []models.VideoObject
+		)
+
 		imageFiles, ok := r.MultipartForm.File["images"]
 		if ok {
 			for _, file := range imageFiles {
@@ -225,13 +238,32 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 					continue
 				}
 
-				imageUUID, err := s.Files.UploadImage(f)
+				buf := make([]byte, 512)
+				_, err = f.Read(buf)
 				if err != nil {
-					_ = f.Close()
-					slog.Error("Error uploading image.", userIDAttr, fileAttr, "error", err)
+					slog.Error("Could not read the image from the form.", userIDAttr, fileAttr, "error", err)
 					continue
 				}
-				imageUUIDs = append(imageUUIDs, imageUUID)
+				_, _ = f.Seek(0, io.SeekStart)
+
+				mimeType := http.DetectContentType(buf)
+				if strings.HasPrefix(mimeType, "video") {
+					u, err := s.Files.UploadVideo(f, s.Repository)
+					if err != nil {
+						_ = f.Close()
+						slog.Error("Failed to upload video", userIDAttr, fileAttr, "error", err)
+						continue
+					}
+					videos = append(videos, models.VideoObject{ID: u})
+				} else {
+					u, err := s.Files.UploadImage(f)
+					if err != nil {
+						_ = f.Close()
+						slog.Error("Failed to upload image", userIDAttr, fileAttr, "error", err)
+						continue
+					}
+					imageUUIDs = append(imageUUIDs, u)
+				}
 
 				_ = f.Close()
 			}
@@ -315,10 +347,11 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 				TotalCarbohydrates: r.FormValue("total-carbohydrates"),
 				TotalFat:           r.FormValue("total-fat"),
 			},
-			Times: times,
-			Tools: tools,
-			URL:   r.FormValue("source"),
-			Yield: int16(yield),
+			Times:  times,
+			Tools:  tools,
+			URL:    r.FormValue("source"),
+			Videos: videos,
+			Yield:  int16(yield),
 		}
 
 		recipeIDs, _, err := s.Repository.AddRecipes(models.Recipes{recipe}, userID, nil)
@@ -677,12 +710,19 @@ func (s *Server) recipesEditHandler() http.HandlerFunc {
 			return
 		}
 
+		keywords, err := s.Repository.Keywords()
+		if err != nil {
+			slog.Error("Failed to fetch keywords", "error", err)
+		}
+
+		recipe.Videos = slices.DeleteFunc(recipe.Videos, func(v models.VideoObject) bool { return v.ID == uuid.Nil })
+
 		_ = components.EditRecipe(templates.Data{
 			About:           templates.NewAboutData(),
 			IsAdmin:         userID == 1,
 			IsAuthenticated: true,
 			IsHxRequest:     r.Header.Get("HX-Request") == "true",
-			View:            templates.NewViewRecipeData(id, recipe, categories, true, false),
+			View:            templates.NewViewRecipeData(id, recipe, categories, keywords, true, false),
 		}).Render(r.Context(), w)
 	}
 }
@@ -732,21 +772,39 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 			return
 		}
 
-		imageFiles, ok := r.MultipartForm.File["images"]
+		mediaFiles, ok := r.MultipartForm.File["images"]
 		if ok {
-			var newImages []*multipart.FileHeader
+			var (
+				newImages []*multipart.FileHeader
+				newVideos []*multipart.FileHeader
+			)
 
-			for _, fh := range imageFiles {
-				_, err = os.Stat(filepath.Join(app.ImagesDir, fh.Filename+app.ImageExt))
-				if err == nil {
-					parsed, err := uuid.Parse(fh.Filename)
-					if err != nil {
-						slog.Error("Could not parse image file name as UUID", "name", fh.Filename, "error", err)
-						continue
+			for _, fh := range mediaFiles {
+				mimeType := fh.Header.Get("Content-Type")
+				if strings.HasPrefix(mimeType, "image") {
+					_, err = os.Stat(filepath.Join(app.ImagesDir, fh.Filename+app.ImageExt))
+					if err == nil {
+						parsed, err := uuid.Parse(fh.Filename)
+						if err != nil {
+							slog.Error("Could not parse image file name as UUID", "name", fh.Filename, "error", err)
+							continue
+						}
+						updatedRecipe.Images = append(updatedRecipe.Images, parsed)
+					} else {
+						newImages = append(newImages, fh)
 					}
-					updatedRecipe.Images = append(updatedRecipe.Images, parsed)
 				} else {
-					newImages = append(newImages, fh)
+					_, err = os.Stat(filepath.Join(app.VideosDir, fh.Filename+app.VideoExt))
+					if err == nil {
+						parsed, err := uuid.Parse(fh.Filename)
+						if err != nil {
+							slog.Error("Could not parse video file name as UUID", "name", fh.Filename, "error", err)
+							continue
+						}
+						updatedRecipe.Videos = append(updatedRecipe.Videos, models.VideoObject{ID: parsed})
+					} else {
+						newVideos = append(newVideos, fh)
+					}
 				}
 			}
 
@@ -760,7 +818,7 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 					return
 				}
 
-				imageUUID, err := s.Files.UploadImage(file)
+				u, err := s.Files.UploadImage(file)
 				if err != nil {
 					_ = file.Close()
 					msg := "Error uploading image."
@@ -772,8 +830,35 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 
 				_ = file.Close()
 
-				if imageUUID != uuid.Nil {
-					updatedRecipe.Images = append(updatedRecipe.Images, imageUUID)
+				if u != uuid.Nil {
+					updatedRecipe.Images = append(updatedRecipe.Images, u)
+				}
+			}
+
+			for _, videoFile := range newVideos {
+				file, err := videoFile.Open()
+				if err != nil {
+					msg := "Could not open the image from the form."
+					slog.Error(msg, userIDAttr, recipeNumAttr, "error", err)
+					s.Brokers.SendToast(models.NewErrorGeneralToast(msg), userID)
+					w.WriteHeader(http.StatusBadRequest)
+					return
+				}
+
+				u, err := s.Files.UploadVideo(file, s.Repository)
+				if err != nil {
+					_ = file.Close()
+					msg := "Error uploading video."
+					slog.Error(msg, userIDAttr, "error", err)
+					s.Brokers.SendToast(models.NewErrorGeneralToast(msg), userID)
+					w.WriteHeader(http.StatusBadRequest)
+					return
+				}
+
+				_ = file.Close()
+
+				if u != uuid.Nil {
+					updatedRecipe.Videos = append(updatedRecipe.Videos, models.VideoObject{ID: u})
 				}
 			}
 		}
@@ -868,7 +953,7 @@ func (s *Server) recipeShareHandler(w http.ResponseWriter, r *http.Request) {
 		IsAdmin:         userID == 1,
 		IsAuthenticated: isLoggedIn,
 		IsHxRequest:     r.Header.Get("Hx-Request") == "true",
-		View:            templates.NewViewRecipeData(share.RecipeID, recipe, nil, userID == share.UserID, true),
+		View:            templates.NewViewRecipeData(share.RecipeID, recipe, nil, nil, userID == share.UserID, true),
 	}).Render(r.Context(), w)
 }
 
@@ -1139,7 +1224,7 @@ func (s *Server) recipesViewHandler() http.HandlerFunc {
 			IsAdmin:         userID == 1,
 			IsAuthenticated: true,
 			IsHxRequest:     r.Header.Get("Hx-Request") == "true",
-			View:            templates.NewViewRecipeData(id, recipe, nil, true, false),
+			View:            templates.NewViewRecipeData(id, recipe, nil, nil, true, false),
 		}).Render(r.Context(), w)
 	}
 }
@@ -1173,7 +1258,7 @@ func (s *Server) recipesViewShareHandler() http.HandlerFunc {
 			IsAdmin:         userID == 1,
 			IsAuthenticated: isLoggedIn,
 			IsHxRequest:     r.Header.Get("Hx-Request") == "true",
-			View:            templates.NewViewRecipeData(id, recipe, nil, cookbookUserID == userID, true),
+			View:            templates.NewViewRecipeData(id, recipe, nil, nil, cookbookUserID == userID, true),
 		}).Render(r.Context(), w)
 	}
 }

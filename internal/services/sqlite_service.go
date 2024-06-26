@@ -13,6 +13,7 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services/statements"
 	"github.com/reaper47/recipya/internal/units"
+	"github.com/reaper47/recipya/internal/utils/duration"
 	"github.com/reaper47/recipya/internal/utils/extensions"
 	"github.com/reaper47/recipya/internal/utils/regex"
 	"io"
@@ -196,8 +197,13 @@ func (s *SQLiteService) addRecipe(r models.Recipe, userID int64, settings models
 	s.Mutex.Lock()
 	defer s.Mutex.Unlock()
 
+	u := r.URL
+	if u == "" {
+		u = "Unknown"
+	}
+
 	var isRecipeExists bool
-	err := s.DB.QueryRowContext(ctx, statements.IsRecipeForUserExist, userID, r.Name, r.Description, r.Yield, r.URL).Scan(&isRecipeExists)
+	err := s.DB.QueryRowContext(ctx, statements.IsRecipeForUserExist, userID, r.Name, r.Description, r.Yield, u).Scan(&isRecipeExists)
 	if err != nil {
 		return 0, err
 	}
@@ -347,7 +353,7 @@ func (s *SQLiteService) addRecipeTx(ctx context.Context, tx *sql.Tx, r models.Re
 	r.Keywords = slices.DeleteFunc(extensions.Unique(r.Keywords), func(s string) bool { return s == "" })
 	for _, keyword := range r.Keywords {
 		var keywordID int64
-		err = tx.QueryRowContext(ctx, statements.InsertKeyword, keyword).Scan(&keywordID)
+		err = tx.QueryRowContext(ctx, statements.InsertKeyword, strings.ToLower(keyword)).Scan(&keywordID)
 		if err != nil {
 			return 0, err
 		}
@@ -403,6 +409,14 @@ func (s *SQLiteService) addRecipeTx(ctx context.Context, tx *sql.Tx, r models.Re
 		}
 
 		_, err = tx.ExecContext(ctx, statements.InsertRecipeTool, toolID, recipeID, tool.Quantity, i)
+		if err != nil {
+			return 0, err
+		}
+	}
+
+	// Insert videos
+	for _, v := range r.Videos {
+		_, err = tx.ExecContext(ctx, statements.InsertVideoRecipe, v.ID, recipeID, v.ContentURL, v.EmbedURL)
 		if err != nil {
 			return 0, err
 		}
@@ -648,7 +662,7 @@ func (s *SQLiteService) calculateNutrition(userID int64, recipes []int64, settin
 	}()
 }
 
-// Categories gets all categories in the database.
+// Categories gets all user categories from the database.
 func (s *SQLiteService) Categories(userID int64) ([]string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
@@ -1022,28 +1036,37 @@ func (s *SQLiteService) GetAuthToken(selector, validator string) (models.AuthTok
 	return token, nil
 }
 
-// Images fetches all distinct image UUIDs for recipes.
+// Media fetches all distinct image and video UUIDs for recipes.
 // An empty slice is returned when an error occurred.
-func (s *SQLiteService) Images() []string {
+func (s *SQLiteService) Media() (images, videos []string) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
-	xs := make([]string, 0)
-
 	rows, err := s.DB.QueryContext(ctx, statements.SelectDistinctImages)
-	if err != nil {
-		return xs
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var file string
-		err = rows.Scan(&file)
-		if err == nil {
-			xs = append(xs, file+app.ImageExt)
+	if err == nil {
+		for rows.Next() {
+			var file string
+			err = rows.Scan(&file)
+			if err == nil {
+				images = append(images, file+app.ImageExt)
+			}
 		}
+		rows.Close()
 	}
-	return xs
+
+	rows, err = s.DB.QueryContext(ctx, statements.SelectDistinctVideos)
+	if err == nil {
+		for rows.Next() {
+			var file string
+			err = rows.Scan(&file)
+			if err == nil {
+				videos = append(videos, file+app.VideoExt)
+			}
+		}
+		rows.Close()
+	}
+
+	return images, videos
 }
 
 // InitAutologin creates a default user for the autologin feature if no users are present.
@@ -1095,6 +1118,35 @@ func (s *SQLiteService) IsUserPassword(id int64, password string) bool {
 	}
 
 	return auth.VerifyPassword(password, auth.HashedPassword(hash))
+}
+
+// Keywords gets all keywords in the database.
+func (s *SQLiteService) Keywords() ([]string, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	var xk []string
+	rows, err := s.DB.QueryContext(ctx, statements.SelectKeywords)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var k string
+		err = rows.Scan(&k)
+		if err != nil {
+			return nil, err
+		}
+		xk = append(xk, k)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+
+	return xk, nil
 }
 
 // MeasurementSystems gets the units systems, along with the one the user selected, in the database.
@@ -1579,6 +1631,7 @@ func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 		isPerServing   int64
 		keywords       sql.NullString
 		tools          sql.NullString
+		videos         sql.NullString
 		count          int64
 		err            error
 	)
@@ -1594,7 +1647,7 @@ func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 			&ingredients, &instructions, &keywords, &tools, &r.Nutrition.Calories, &r.Nutrition.TotalCarbohydrates,
 			&r.Nutrition.Sugars, &r.Nutrition.Protein, &r.Nutrition.TotalFat, &r.Nutrition.SaturatedFat, &r.Nutrition.UnsaturatedFat,
 			&r.Nutrition.Cholesterol, &r.Nutrition.Sodium, &r.Nutrition.Fiber, &isPerServing, &r.Times.Prep, &r.Times.Cook, &r.Times.Total,
-			&count,
+			&videos, &count,
 		)
 		if err != nil {
 			return nil, err
@@ -1655,6 +1708,34 @@ func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 			other = append(other, parsed)
 		}
 		r.Images = slices.Concat([]uuid.UUID{mainImage}, other)
+	}
+
+	if videos.Valid {
+		xv := strings.Split(videos.String, ",")
+		for _, v := range xv {
+			parts := strings.Split(v, ";")
+			if len(parts) != 5 {
+				continue
+			}
+
+			parsed, err := uuid.Parse(parts[0])
+			if err != nil {
+				continue
+			}
+
+			var dt time.Time
+			dt, _ = time.Parse(time.DateTime, parts[4])
+
+			r.Videos = append(r.Videos, models.VideoObject{
+				ContentURL: parts[2],
+				Duration:   parts[1],
+				EmbedURL:   parts[3],
+				ID:         parsed,
+				UploadDate: dt,
+			})
+		}
+	} else {
+		r.Videos = make([]models.VideoObject, 0, 0)
 	}
 
 	return &r, err
@@ -1884,7 +1965,7 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 		ids := make([]int64, len(updatedRecipe.Keywords))
 		for i, v := range updatedRecipe.Keywords {
 			var id int64
-			err = tx.QueryRowContext(ctx, statements.InsertKeyword, v).Scan(&id)
+			err = tx.QueryRowContext(ctx, statements.InsertKeyword, strings.ToLower(v)).Scan(&id)
 			if err != nil {
 				return err
 			}
@@ -1956,6 +2037,20 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 					continue
 				}
 			}
+		}
+	}
+
+	_, err = tx.ExecContext(ctx, statements.DeleteRecipeVideos, recipeID, userID)
+	if err != nil {
+		slog.Error("Failed to delete user-uploaded videos.", userIDAttr, recipeIDAttr, "error", err)
+		return err
+	}
+
+	for _, v := range updatedRecipe.Videos {
+		_, err = tx.ExecContext(ctx, statements.InsertVideoRecipe, v.ID, recipeID, "", "")
+		if err != nil {
+			slog.Warn("Error inserting recipe image", userIDAttr, recipeIDAttr, "video", v, "err", err)
+			continue
 		}
 	}
 
@@ -2108,6 +2203,18 @@ func (s *SQLiteService) UpdateUserSettingsCookbooksViewMode(userID int64, mode m
 	defer s.Mutex.Unlock()
 
 	_, err := s.DB.ExecContext(ctx, statements.UpdateUserSettingsCookbooksViewMode, mode, userID)
+	return err
+}
+
+// UpdateVideo updates a video.
+func (s *SQLiteService) UpdateVideo(video uuid.UUID, durationSecs int) error {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+
+	_, err := s.DB.ExecContext(ctx, statements.UpdateVideo, duration.ISO8601(durationSecs), video)
 	return err
 }
 

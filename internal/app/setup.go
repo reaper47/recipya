@@ -14,6 +14,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
@@ -25,6 +26,7 @@ func setup() {
 	setupFDC()
 	setupConfigFile()
 	verifyMedia()
+	verifyExtraSoftware()
 
 	fmt.Println("Recipya is properly set up")
 }
@@ -123,6 +125,7 @@ func moveFiles(srcDir, destDir string) error {
 		}
 	}
 
+	// TODO: v1.3.0 - Move Images and Videos to Media folder. Media folder will have two subfolders: Images and Videos.
 	return nil
 }
 
@@ -380,4 +383,36 @@ func verifyMedia() {
 		os.Remove(path)
 	}
 	s.Stop()
+}
+
+func verifyExtraSoftware() {
+	err := exec.Command("ffmpeg", "-version").Run()
+	Info.IsFFmpegInstalled = err == nil
+	if !Info.IsFFmpegInstalled {
+		msg := redText("X") + " Could not find ffmpeg"
+		fmt.Printf(msg)
+		switch runtime.GOOS {
+		case "darwin":
+			fmt.Println("\tPlease execute: brew install ffmpeg")
+		case "linux":
+			fmt.Println("\tPlease consult your package manager to install it.")
+		case "windows":
+			s := spinner.New(spinner.CharSets[9], 100*time.Millisecond)
+			s.Prefix = msg + ". Attempting to install using winget..."
+			s.FinalMSG = greenText("OK") + " FFmpeg installed\n"
+			s.Start()
+
+			err = exec.Command("winget", "install", "FFmpeg (Essentials Build)").Run()
+			s.Stop()
+
+			if err != nil {
+				fmt.Printf(redText("X") + " Failed to install using winget. Please install manually: https://www.gyan.dev/ffmpeg/builds\n")
+			} else {
+				fmt.Println("Please reload your command prompt to refresh the environment variables.")
+				os.Exit(0)
+			}
+		}
+	} else {
+		fmt.Println(greenText("OK") + " FFmpeg is installed")
+	}
 }

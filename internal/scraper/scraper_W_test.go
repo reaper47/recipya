@@ -3,6 +3,7 @@ package scraper_test
 import (
 	"github.com/reaper47/recipya/internal/models"
 	"testing"
+	"time"
 )
 
 func TestScraper_W(t *testing.T) {
@@ -238,6 +239,22 @@ func TestScraper_W(t *testing.T) {
 				TotalTime: "PT40M",
 				Yield:     &models.Yield{Value: 18},
 				URL:       "https://www.wellplated.com/energy-balls/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1693582586/ibhhAf8wH.mp4",
+							Description: "The only Energy Ball recipe you\xe2\x80\x99ll ever need, plus six no-bake energy ball flavors! Start with this easy base recipe, then add any of your favorite mix-ins.",
+							Duration:    "PT97S",
+							EmbedURL:    "https://video.mediavine.com/videos/ibhhAf8wH.js",
+							Name:        "Energy Balls | The Ultimate Recipe Guide!",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://mediavine-res.cloudinary.com/image/upload/s--kyaSKQN5--/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1693582589/iq4fxelh1m6et0pelbhu.jpg",
+							},
+							UploadDate: time.Date(2018, 5, 16, 16, 39, 18, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{

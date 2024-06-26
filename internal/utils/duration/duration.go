@@ -185,3 +185,29 @@ func (duration *Duration) ToTimeDuration() (d time.Duration) {
 	d += time.Duration(math.Round(duration.Seconds * 1e+9))
 	return d
 }
+
+// ISO8601 formats the number of seconds according to the ISO8601 standard.
+func ISO8601(seconds int) string {
+	duration := time.Duration(seconds) * time.Second
+	s := "PT"
+
+	hours := int(duration.Hours())
+	if hours > 0 {
+		s += strconv.Itoa(hours) + "H"
+	}
+
+	minutes := int(duration.Minutes()) % 60
+	if minutes > 0 {
+		s += strconv.Itoa(minutes) + "M"
+	}
+
+	secs := duration.Seconds() - float64(hours*3600+minutes*60)
+	if secs > 0 {
+		s += strconv.Itoa(int(secs)) + "S"
+	}
+
+	if s == "PT" {
+		return "PT0S"
+	}
+	return s
+}

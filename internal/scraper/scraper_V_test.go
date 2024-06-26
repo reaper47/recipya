@@ -3,6 +3,7 @@ package scraper_test
 import (
 	"github.com/reaper47/recipya/internal/models"
 	"testing"
+	"time"
 )
 
 func TestScraper_V(t *testing.T) {
@@ -319,6 +320,18 @@ func TestScraper_V(t *testing.T) {
 				TotalTime: "PT40M",
 				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.vegrecipesofindia.com/paneer-butter-masala/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/of0NUOor.mp4",
+							Description:  "This Paneer Butter Masala is an easy recipe and yields a mildly spiced, creamy, tangy and lightly sweet delicious restaurant-style Cottage Cheese Curry.",
+							Name:         "Paneer Butter Masala",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/of0NUOor-720.jpg"},
+							UploadDate:   time.Date(2019, 11, 11, 0, 0, 0, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 	}

@@ -3,6 +3,7 @@ package scraper_test
 import (
 	"github.com/reaper47/recipya/internal/models"
 	"testing"
+	"time"
 )
 
 func TestScraper_D(t *testing.T) {
@@ -175,10 +176,29 @@ func TestScraper_D(t *testing.T) {
 					Sugar:         "9 g",
 					TransFat:      "1 g",
 				},
-				PrepTime:  "PT10M",
+				PrepTime: "PT10M",
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://hips.hearstapps.com/hmg-prod/images/delish-230510-beef-broccoli-613-rv-index-646bca228a2b3.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=100:*",
+				},
 				TotalTime: "PT40M",
 				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.delish.com/cooking/recipe-ideas/a24489879/beef-and-broccoli-recipe/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://streaming.hearstdigitalstudios.com/46aa890d-5fca-4635-8f72-7c65a59ef391/video_rover_16x9_1080p_hd_1687798821_89157.mp4",
+							Description: "A classic Chinese-American dish with thinly sliced, velveted flank steak in a rich brown sauce with tender-crisp broccoli.",
+							Duration:    "PT1M28S",
+							EmbedURL:    "https://glimmer.hearstapps.com/amp.html?embedId=99d4ade0-430a-4b67-a3ac-6f3e1796edc1",
+							Name:        "Our Best-Ever Beef & Broccoli Recipe Will Help You Perfect The Stir-Fry Classic",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://hips.hearstapps.com/hmg-prod/images/delish-230510-beef-broccoli-613-rv-index-646bca228a2b3.jpg?crop=0.8890731909599834xw:1xh;center,top",
+							},
+							UploadDate: time.Date(2023, 6, 26, 17, 20, 7, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -330,6 +350,20 @@ func TestScraper_D(t *testing.T) {
 				TotalTime: "PT25M",
 				Yield:     &models.Yield{Value: 4},
 				URL:       "https://downshiftology.com/recipes/baked-chicken-breasts/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://www.youtube.com/watch?v=1TlVgW-pM5g",
+							Description:  "Perfectly baked chicken breasts that are juicy, tender, and loaded with flavor! If you’ve ever struggled with dry, rubbery, and just flat-out boring chicken breasts, you're in luck, because today’s recipe is about as easy as they come. Just whip up my special seasoning mix, give the chicken breasts a generous coating of it, and bake until juicy perfection.\n\nThis healthy, baked chicken recipe is perfect to serve for a weeknight dinner with a few side dishes, or slice it up and meal prep it for the week. It's naturally gluten-free, low-carb, and keto friendly, and one of the best dinner recipes! Make sure to check out the blog post below for extra tips and storage suggestions. \n\n🖨  Printable Baked Chicken Breast Recipe: https://downshiftology.com/recipes/baked-chicken-breast/\n\nSign up for weekly emails (never miss a recipe!): https://mailchi.mp/downshiftology/youtube/\n\nJoin the private Facebook group of fellow Downshifters around the world: https://www.facebook.com/groups/downshiftologycommunity/\n\n► PRODUCTS MENTIONED:\nBaking Pan: https://bit.ly/3hHxmAn\nInstant Read Thermometer: https://amzn.to/3owIuDw\nMeat Tenderizer: https://amzn.to/2MOMOAd\n\n► ALWAYS IN MY KITCHEN:\nCounter Stools: http://bit.ly/2tUNvZG\nVitamix Blender: https://amzn.to/2NjFp75\nSpiralizer: https://amzn.to/2N37WRy \nTea Kettle: http://amzn.to/2uuNSMp\nUtensil Holder: http://bit.ly/2tVfGaH\nFlour Jars: https://amzn.to/30UZESn\nSalt Cellar: https://amzn.to/2UUyK9r\nKnife Set: http://bit.ly/2tUGzMa\nCutting Board: https://amzn.to/2Vskgv9\nGlass Mixing Bowls: https://amzn.to/2L2hx6O\nMagnetic Measuring Spoons: https://amzn.to/2YIeKYT\nMagnetic Measuring Cups: https://amzn.to/3hAJu6A\n\nFor everything else I use in my videos, check out the SHOP page on my website: https://downshiftology.com/shop/\n\n► TIMESTAMPS:\n00:00 Intro\n00:31 Tips for juicy and tender baked chicken\n01:33 Make the seasoning mix\n02:00 Coat the chicken in oil and seasoning\n03:10 Bake the chicken breasts\n04:46 Serve the chicken breasts with side dishes\n05:09 Meal prep and save the chicken breasts for future meals\n05:23 Taste test\n\n► WHAT I'M WEARING\nTshirt: https://bit.ly/3h4Wm58\nJeans: http://bit.ly/32Fq7l5\nLinen Apron: http://bit.ly/2twA32E\n\nThe music I use: https://bit.ly/2Ms5nF2 - Great music for YouTubers!\n\nDisclaimer: product links may include affiliate links.\n#chicken #chickenrecipe #bakedchickenbreast",
+							Duration:     "PT5M39S",
+							EmbedURL:     "https://www.youtube.com/embed/1TlVgW-pM5g?feature=oembed",
+							Name:         "BAKED CHICKEN BREAST | juicy, tender, easy, and oh, so flavorful!",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://i.ytimg.com/vi/1TlVgW-pM5g/hqdefault.jpg"},
+							UploadDate:   time.Date(2021, 1, 10, 16, 1, 13, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{

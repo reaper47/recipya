@@ -210,3 +210,7 @@ func (m *mockFiles) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
 	m.uploadImageHitCount++
 	return uuid.New(), nil
 }
+
+func (m *mockFiles) UploadVideo(_ io.ReadCloser, _ services.RepositoryService) (uuid.UUID, error) {
+	return uuid.New(), nil
+}

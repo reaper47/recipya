@@ -155,3 +155,71 @@ func TestDuration_ToTimeDuration(t *testing.T) {
 		})
 	}
 }
+
+func TestISO8601(t *testing.T) {
+	testCases := []struct {
+		name     string
+		input    int
+		expected string
+	}{
+		{
+			name:     "nothing",
+			input:    0,
+			expected: "PT0S",
+		},
+		{
+			name:     "only second",
+			input:    1,
+			expected: "PT1S",
+		},
+		{
+			name:     "almost one minute",
+			input:    59,
+			expected: "PT59S",
+		},
+		{
+			name:     "one minute",
+			input:    60,
+			expected: "PT1M",
+		},
+		{
+			name:     "a bit more than a minute",
+			input:    61,
+			expected: "PT1M1S",
+		},
+		{
+			name:     "almost an hour",
+			input:    3599,
+			expected: "PT59M59S",
+		},
+		{
+			name:     "an hour",
+			input:    3600,
+			expected: "PT1H",
+		},
+		{
+			name:     "a bit more than an hour",
+			input:    3661,
+			expected: "PT1H1M1S",
+		},
+		{
+			name:     "many hours",
+			input:    7322,
+			expected: "PT2H2M2S",
+		},
+		{
+			name:     "almost a day",
+			input:    86399,
+			expected: "PT23H59M59S",
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			actual := duration.ISO8601(tc.input)
+			if actual != tc.expected {
+				t.Errorf("Expected %s, but got %s", tc.expected, actual)
+			}
+		})
+	}
+}

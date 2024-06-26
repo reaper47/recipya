@@ -37,17 +37,6 @@ const InsertCuisine = `
 	INSERT OR IGNORE INTO cuisines (name)
 	VALUES (trim(?))`
 
-// InsertReport is the query to add a report without logs into the database
-const InsertReport = `
-	INSERT INTO reports (report_type, created_at, exec_time_ns, user_id) 
-	VALUES (?, ?, ?, ?)
-	RETURNING id`
-
-// InsertReportLog is the query to add a log to a report.
-const InsertReportLog = `
-	INSERT INTO report_logs (report_id, title, success, error_reason) 
-	VALUES (?, ?, ?, ?)`
-
 // InsertIngredient is the query to add an ingredient.
 const InsertIngredient = `
 	INSERT INTO ingredients (name)
@@ -110,7 +99,8 @@ const InsertRecipeInstruction = `
 // InsertRecipeKeyword is the query to associate a recipe with a keyword.
 const InsertRecipeKeyword = `
 	INSERT INTO keyword_recipe (keyword_id, recipe_id)
-	VALUES (?, ?)`
+	VALUES (?, ?)
+	ON CONFLICT (keyword_id, recipe_id) DO NOTHING`
 
 // InsertRecipeShadow is the query to insert a recipe into the shadow table.
 const InsertRecipeShadow = `
@@ -125,6 +115,17 @@ const InsertRecipeTime = `
 // InsertRecipeTool is the query to associate a recipe with a tool.
 const InsertRecipeTool = `
 	INSERT INTO tool_recipe (tool_id, recipe_id, quantity, tool_order)
+	VALUES (?, ?, ?, ?)`
+
+// InsertReport is the query to add a report without logs into the database
+const InsertReport = `
+	INSERT INTO reports (report_type, created_at, exec_time_ns, user_id) 
+	VALUES (?, ?, ?, ?)
+	RETURNING id`
+
+// InsertReportLog is the query to add a log to a report.
+const InsertReportLog = `
+	INSERT INTO report_logs (report_id, title, success, error_reason) 
 	VALUES (?, ?, ?, ?)`
 
 // InsertShareLink is the query to add a recipe share link to the database.
@@ -172,3 +173,8 @@ const InsertUserCategory = `
 const InsertUserRecipe = `
 	INSERT INTO user_recipe (user_id, recipe_id)
 	VALUES (?, ?)`
+
+// InsertVideoRecipe is the query to add a video to a recipe.
+const InsertVideoRecipe = `
+	INSERT INTO video_recipe (video, recipe_id, content_url, embed_url)
+	VALUES (?, ?, trim(?), trim(?))`
