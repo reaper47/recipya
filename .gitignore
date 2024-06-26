@@ -6,10 +6,9 @@ docs/website/public
 docs/website/themes/hextra
 releases/v*
 releases/nightly
-scripts/sponsors/.env
-scripts/sponsors/node_modules/
+**/.env
+**/node_modules/
 static/css/tailwind.css
-web/app/node_modules/
 web/components/*_templ.go
 web/components/*_templ.txt
 web/emails/transpiled/*.gohtml
