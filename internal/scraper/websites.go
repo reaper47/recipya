@@ -57,6 +57,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeCdKitchen(doc)
 		case "chefnini":
 			return scrapeChefnini(doc)
+		case "chinesecookingdemystified":
+			return scrapeChinesecookingdemystified(doc)
 		case "chuckycruz":
 			return scrapeChuckycruz(doc)
 		case "closetcooking":

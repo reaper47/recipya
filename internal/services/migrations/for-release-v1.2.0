@@ -5,6 +5,7 @@ VALUES
     ('beyondkimchee.com', 'https://beyondkimchee.com/'),
     ('chatelaine.com', 'https://chatelaine.com/'),
     ('chejorge.com', 'https://chejorge.com/'),
+    ('chinesecookingdemystified.substack.com', 'https://chinesecookingdemystified.substack.com/'),
     ('cuisineandtravel.com', 'https://cuisineandtravel.com/'),
     ('daringgourmet.com', 'https://daringgourmet.com/'),
     ('dreenaburton.com', 'https://dreenaburton.com/'),
@@ -24,8 +25,8 @@ VALUES
 -- +goose Down
 DELETE FROM websites
 WHERE host IN (
-    'avocadoskillet.com', 'beyondkimchee.com', 'chatelaine.com', 'chejorge.com', 'cuisineandtravel.com',
-    'daringgourmet.com', 'dreenaburton.com', 'elephantasticvegan.com', 'entertainingwithbeth.com', 'feastingathome.com',
-    'foodal.com', 'foodbymaria.com', 'foodiecrush.com', 'foolproofliving.com', 'gastroplant.com', 'goodto.com',
-    'jaroflemons.com', 'natashaskitchen.com'
+    'avocadoskillet.com', 'beyondkimchee.com', 'chatelaine.com', 'chejorge.com',
+    'chinesecookingdemystified.substack.com', 'cuisineandtravel.com', 'daringgourmet.com', 'dreenaburton.com',
+    'elephantasticvegan.com', 'entertainingwithbeth.com', 'feastingathome.com', 'foodal.com', 'foodbymaria.com',
+    'foodiecrush.com', 'foolproofliving.com', 'gastroplant.com', 'goodto.com', 'jaroflemons.com', 'natashaskitchen.com'
 );
