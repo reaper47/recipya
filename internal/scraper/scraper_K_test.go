@@ -367,9 +367,9 @@ func TestScraper_K(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://www.tv4play.se/iframe/video/20277435?autoload=true",
+							ContentURL:   "https://www.tv4play.se/iframe/video/20277435?autoload=true",
 							Description:  "Myllymäkis toast skagen",
-							EmbedUrl:     "https://www.tv4play.se/iframe/video/20277435?autoload=true",
+							EmbedURL:     "https://www.tv4play.se/iframe/video/20277435?autoload=true",
 							Name:         "Myllymäkis toast skagen",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://img.koket.se/standard-mega/myllymakis-toast-skagen-2.jpg"},
 							UploadDate:   time.Date(2014, 12, 29, 5, 0, 0, 0, time.UTC),

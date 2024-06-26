@@ -475,7 +475,7 @@ func TestVideoObject_UnmarshalJSON(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://d1p9dpblu12ati.cloudfront.net/allerhande/media/2022/09/29/asset-4943112-1664455067445069.mp4",
+							ContentURL:   "https://d1p9dpblu12ati.cloudfront.net/allerhande/media/2022/09/29/asset-4943112-1664455067445069.mp4",
 							Duration:     "PT3M49S",
 							Name:         "Boeuf bourguignon met geroosterde spruiten",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://allerhande.bbvms.com/mediaclip/4943112/pthumbnail/120/67.jpg"},

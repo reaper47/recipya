@@ -127,7 +127,7 @@ func TestScraper_R(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://content.jwplatform.com/videos/B8sNtLv6.mp4",
+							ContentURL:   "https://content.jwplatform.com/videos/B8sNtLv6.mp4",
 							Description:  "These Livornese Stewed Beans are the ultimate rustic Italian comfort food! Made with simple pantry-friendly ingredients like onions, garlic, tomato paste and white beans, but it's big on gourmet Italian flavor. It's cozy and indulgent but wholesome, vegan, and gluten-free.",
 							Name:         "Livornese Stewed Beans",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/B8sNtLv6-720.jpg"},
@@ -190,7 +190,7 @@ func TestScraper_R(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://content.jwplatform.com/videos/xRqzJv32-aODiX4Tu.mp4",
+							ContentURL:   "https://content.jwplatform.com/videos/xRqzJv32-aODiX4Tu.mp4",
 							Description:  "This easy meal uses just one baking sheet. The chicken comes out with delicious crispy skin, which pairs well with crunchy, peppery watercress and crisp, salty bacon. The roasted sweet potatoes add a bit of sweetness to round out the plate.",
 							Duration:     "PT9M6S",
 							Name:         "Real Simple Cooking School: Sheet Pan Chicken and Sweet Potatoes",
@@ -529,10 +529,10 @@ func TestScraper_R(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://www.youtube.com/watch?v=NnenY4eN3VA",
+							ContentURL:   "https://www.youtube.com/watch?v=NnenY4eN3VA",
 							Description:  "Skip the take-out and cook this delicious pork fried rice in less than 20 minutes. Enjoy the mix of fluffy rice, tender pork and crunchy veggies coated with umami-filled seasoning.\n🔎 Full written recipe: https://redhousespice.com/pork-fried-rice/\n🎵 Music: Dear Autumn by Ikson: https://youtu.be/k_IbJrIl1go",
 							Duration:     "PT1M26S",
-							EmbedUrl:     "https://www.youtube.com/embed/NnenY4eN3VA?feature=oembed",
+							EmbedURL:     "https://www.youtube.com/embed/NnenY4eN3VA?feature=oembed",
 							Name:         "Pork Fried Rice | 猪肉炒饭",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://i.ytimg.com/vi/NnenY4eN3VA/hqdefault.jpg"},
 							UploadDate:   time.Date(2022, 3, 26, 17, 48, 44, 0, time.UTC),
@@ -683,7 +683,7 @@ func TestScraper_R(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://cdn.video.ricetta.it/tutorial/320/pan-d-arancio.mp4",
+							ContentURL:   "https://cdn.video.ricetta.it/tutorial/320/pan-d-arancio.mp4",
 							Description:  "Il Pan d'arancio è un dolce della tradizione siciliana caratterizzato da un intenso sapore agrumato, dato dall'utilizzo delle arance intere, buccia compresa.",
 							Name:         "Pan d'arancio",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://ricetta.it/Uploads/Imgs/pan-d-arancio_medium.jpg.webp"},

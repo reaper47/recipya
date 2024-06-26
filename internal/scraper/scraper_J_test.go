@@ -69,9 +69,9 @@ func TestScraper_J(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:      "VideoObject",
-							ContentUrl:  "https://www.youtube.com/watch?v=wno_qUB02lM",
+							ContentURL:  "https://www.youtube.com/watch?v=wno_qUB02lM",
 							Description: "This deliciously fragrant Thai green curry really packs a flavour punch.",
-							EmbedUrl:    "https://www.youtube.com/embded/wno_qUB02lM",
+							EmbedURL:    "https://www.youtube.com/embded/wno_qUB02lM",
 							Name:        "Thai green chicken curry",
 							ThumbnailURL: &models.ThumbnailURL{
 								Value: "https://cdn.jamieoliver.com/recipe-database/oldImages/xtra_med/1575_2_1437576282.jpg",
@@ -305,10 +305,10 @@ func TestScraper_J(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:      "VideoObject",
-							ContentUrl:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1642947749/tzdoglhnbiiiup85wmps.mp4",
+							ContentURL:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1642947749/tzdoglhnbiiiup85wmps.mp4",
 							Description: "This peanut butter frosting recipe (peanut butter buttercream) is easy to make in 5 minutes. It's silky smooth, made with more peanut butter than butter and is flavored with vanilla & sea salt. It pipes well and tastes delicious on top of chocolate cupcakes and brownies and chocolate cake.",
 							Duration:    "PT53S",
-							EmbedUrl:    "https://video.mediavine.com/videos/tzdoglhnbiiiup85wmps.js",
+							EmbedURL:    "https://video.mediavine.com/videos/tzdoglhnbiiiup85wmps.js",
 							Name:        "Peanut Butter Frosting Recipe",
 							ThumbnailURL: &models.ThumbnailURL{
 								Value: "https://mediavine-res.cloudinary.com/image/upload/s--CxD4o5LH--/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1642947695/haqpzgp58bql3ypnhnrv.jpg",

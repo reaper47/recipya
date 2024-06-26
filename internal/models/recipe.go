@@ -132,6 +132,9 @@ func (r *Recipe) Copy() Recipe {
 	tools := make([]HowToItem, len(r.Tools))
 	copy(tools, r.Tools)
 
+	videos := make([]VideoObject, len(r.Videos))
+	copy(videos, r.Videos)
+
 	return Recipe{
 		Category:     r.Category,
 		CreatedAt:    r.CreatedAt,
@@ -163,6 +166,7 @@ func (r *Recipe) Copy() Recipe {
 		Tools:     tools,
 		UpdatedAt: r.UpdatedAt,
 		URL:       r.URL,
+		Videos:    videos,
 		Yield:     r.Yield,
 	}
 }
@@ -283,8 +287,8 @@ func (r *Recipe) Schema() RecipeSchema {
 			Name:         "Video #" + strconv.Itoa(i+1),
 			Description:  "A video showing how to cook " + r.Name,
 			ThumbnailURL: nil,
-			ContentUrl:   u,
-			EmbedUrl:     u,
+			ContentURL:   u,
+			EmbedURL:     u,
 			UploadDate:   v.UploadDate,
 			Duration:     v.Duration,
 			Expires:      time.Now().AddDate(1000, 0, 0),

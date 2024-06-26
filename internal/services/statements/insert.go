@@ -176,5 +176,5 @@ const InsertUserRecipe = `
 
 // InsertVideoRecipe is the query to add a video to a recipe.
 const InsertVideoRecipe = `
-	INSERT INTO video_recipe (video, recipe_id)
-	VALUES (?, ?)`
+	INSERT INTO video_recipe (video, recipe_id, content_url, embed_url)
+	VALUES (?, ?, trim(?), trim(?))`

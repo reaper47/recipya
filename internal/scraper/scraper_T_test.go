@@ -58,7 +58,7 @@ func TestScraper_T(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:      "VideoObject",
-							ContentUrl:  "https://videodam.tmbi.com/wp-content/uploads/2019/02/BEST_CastIronSteak_020119.mp4",
+							ContentURL:  "https://videodam.tmbi.com/wp-content/uploads/2019/02/BEST_CastIronSteak_020119.mp4",
 							Description: "Check out this video for how to make the best cast iron steak",
 							Duration:    "P0DT0H2M46S",
 							Name:        "The Best Cast Iron Steak",
@@ -131,7 +131,7 @@ func TestScraper_T(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://content.jwplatform.com/videos/lNQxm2OX.mp4",
+							ContentURL:   "https://content.jwplatform.com/videos/lNQxm2OX.mp4",
 							Description:  "The BEST Apple Crisp recipe is made with thinly sliced Granny Smith apples and baked with a cinnamon glaze and oatmeal crumb topping. This irresistible dessert is always a crowd favorite!",
 							Name:         "Apple Crisp",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/lNQxm2OX-720.jpg"},
@@ -259,7 +259,7 @@ func TestScraper_T(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:      "VideoObject",
-							ContentUrl:  "https://vid.tasty.co/output/20368/mp4_640x640/1484095035",
+							ContentURL:  "https://vid.tasty.co/output/20368/mp4_640x640/1484095035",
 							Description: "Two words: honey salmon! Sure, it takes a tiny bit of prep work, but once you marinate your salmon, you won’t be able to go back. A simple mix of honey, soy sauce, garlic, and ginger coats and flavors your fish for 30 minutes before you throw it on the pan until the outside is perfectly crispy. Once that’s done, you heat up and reduce some extra marinade to make a thick, to-die-for glaze to pour over your filet. Serve with your favorite veggies or rice and enjoy!",
 							Duration:    "PT0S",
 							Name:        "Honey Soy-Glazed Salmon Recipe by Tasty",
@@ -482,9 +482,9 @@ func TestScraper_T(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:      "VideoObject",
-							ContentUrl:  "https://www.youtube.com/watch?v=",
+							ContentURL:  "https://www.youtube.com/watch?v=",
 							Description: "Super delicious roast, homemade brioche sliders, melty cheese and an amped up garlic butter - what could be better?",
-							EmbedUrl:    "https://www.youtube.com/embed/",
+							EmbedURL:    "https://www.youtube.com/embed/",
 							Name:        "Funeral Sandwiches",
 							ThumbnailURL: &models.ThumbnailURL{
 								Value: "https://assets-global.website-files.com/657a7aac36df076237527e36/65b7bf33ae368a434c7e4132_funeralsandwiches_youtube_2.jpeg",
@@ -988,10 +988,10 @@ func TestScraper_T(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:      "VideoObject",
-							ContentUrl:  "https://streaming.hearstdigitalstudios.com/d3bc40e9-c97a-4a9e-b10a-97b8850853f0/video_rover_16x9_1080p_hd_1657205235_9764.mp4",
+							ContentURL:  "https://streaming.hearstdigitalstudios.com/d3bc40e9-c97a-4a9e-b10a-97b8850853f0/video_rover_16x9_1080p_hd_1657205235_9764.mp4",
 							Description: "How to poach eggs, make hollandaise, and eggs benedict.",
 							Duration:    "PT1M13S",
-							EmbedUrl:    "https://glimmer.hearstapps.com/amp.html?embedId=6f8ba648-41a4-4e33-bcc2-29d1db3abe89",
+							EmbedURL:    "https://glimmer.hearstapps.com/amp.html?embedId=6f8ba648-41a4-4e33-bcc2-29d1db3abe89",
 							Name:        "Eggs Benedict",
 							ThumbnailURL: &models.ThumbnailURL{
 								Value: "https://hips.hearstapps.com/thepioneerwoman/wp-content/uploads/2007/10/1546875357_506daa8f1c.jpg?crop=1xw:0.8471385542168675xh;center,top",
@@ -1053,7 +1053,7 @@ func TestScraper_T(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://content.jwplatform.com/videos/oe3FAQKI.mp4",
+							ContentURL:   "https://content.jwplatform.com/videos/oe3FAQKI.mp4",
 							Description:  "Avocado Egg Rolls are crispy on the outside with an avocado mixture inside that is bursting with flavor! Once these hit the table they don’t last long!",
 							Name:         "Avocado Egg Rolls",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/oe3FAQKI-720.jpg"},

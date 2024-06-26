@@ -416,7 +416,7 @@ func (s *SQLiteService) addRecipeTx(ctx context.Context, tx *sql.Tx, r models.Re
 
 	// Insert videos
 	for _, v := range r.Videos {
-		_, err = tx.ExecContext(ctx, statements.InsertVideoRecipe, v.ID, recipeID)
+		_, err = tx.ExecContext(ctx, statements.InsertVideoRecipe, v.ID, recipeID, v.ContentURL, v.EmbedURL)
 		if err != nil {
 			return 0, err
 		}
@@ -1714,7 +1714,7 @@ func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 		xv := strings.Split(videos.String, ",")
 		for _, v := range xv {
 			parts := strings.Split(v, ";")
-			if len(parts) != 3 {
+			if len(parts) != 5 {
 				continue
 			}
 
@@ -1724,10 +1724,12 @@ func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 			}
 
 			var dt time.Time
-			dt, _ = time.Parse(time.DateTime, parts[2])
+			dt, _ = time.Parse(time.DateTime, parts[4])
 
 			r.Videos = append(r.Videos, models.VideoObject{
+				ContentURL: parts[2],
 				Duration:   parts[1],
+				EmbedURL:   parts[3],
 				ID:         parsed,
 				UploadDate: dt,
 			})
@@ -2035,6 +2037,20 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 					continue
 				}
 			}
+		}
+	}
+
+	_, err = tx.ExecContext(ctx, statements.DeleteRecipeVideos, recipeID, userID)
+	if err != nil {
+		slog.Error("Failed to delete user-uploaded videos.", userIDAttr, recipeIDAttr, "error", err)
+		return err
+	}
+
+	for _, v := range updatedRecipe.Videos {
+		_, err = tx.ExecContext(ctx, statements.InsertVideoRecipe, v.ID, recipeID, "", "")
+		if err != nil {
+			slog.Warn("Error inserting recipe image", userIDAttr, recipeIDAttr, "video", v, "err", err)
+			continue
 		}
 	}
 

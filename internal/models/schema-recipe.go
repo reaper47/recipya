@@ -241,6 +241,11 @@ func (r *RecipeSchema) Recipe() (*Recipe, error) {
 		yield = r.Yield.Value
 	}
 
+	var videos []VideoObject
+	if r.Video != nil {
+		videos = r.Video.Values
+	}
+
 	recipe := Recipe{
 		Category:     category,
 		CreatedAt:    createdAt,
@@ -257,6 +262,7 @@ func (r *RecipeSchema) Recipe() (*Recipe, error) {
 		Tools:        tools,
 		UpdatedAt:    updatedAt,
 		URL:          r.URL,
+		Videos:       videos,
 		Yield:        yield,
 	}
 
@@ -875,17 +881,17 @@ func parseTime(tm string) (time.Time, error) {
 
 // VideoObject is a representation of the VideoObject schema (https://schema.org/VideoObject).
 type VideoObject struct {
-	Values       []*VideoObject `json:"-"`
-	AtType       string         `json:"@type"`
-	ContentUrl   string         `json:"contentUrl,omitempty"`
-	Description  string         `json:"description,omitempty"`
-	Duration     string         `json:"duration,omitempty"`
-	EmbedUrl     string         `json:"embedUrl,omitempty"`
-	Expires      time.Time      `json:"expires,omitempty"`
-	ID           uuid.UUID      `json:"-"`
-	Name         string         `json:"name,omitempty"`
-	ThumbnailURL *ThumbnailURL  `json:"thumbnailUrl,omitempty"`
-	UploadDate   time.Time      `json:"uploadDate,omitempty"`
+	AtType       string        `json:"@type"`
+	ContentURL   string        `json:"contentUrl,omitempty"`
+	Description  string        `json:"description,omitempty"`
+	Duration     string        `json:"duration,omitempty"`
+	EmbedURL     string        `json:"embedUrl,omitempty"`
+	Expires      time.Time     `json:"expires,omitempty"`
+	ID           uuid.UUID     `json:"-"`
+	IsIFrame     bool          `json:"_"`
+	Name         string        `json:"name,omitempty"`
+	ThumbnailURL *ThumbnailURL `json:"thumbnailUrl,omitempty"`
+	UploadDate   time.Time     `json:"uploadDate,omitempty"`
 }
 
 // NutritionSchema is a representation of the nutrition schema (https://schema.org/NutritionInformation).

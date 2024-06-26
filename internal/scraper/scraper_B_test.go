@@ -679,7 +679,7 @@ func TestScraper_B(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "/",
+							ContentURL:   "/",
 							Description:  "not set",
 							Name:         "not set",
 							ThumbnailURL: &models.ThumbnailURL{Value: "/"},
@@ -1261,9 +1261,9 @@ func TestScraper_B(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:      "VideoObject",
-							ContentUrl:  "https://youtu.be/HHdDtftfA-U",
+							ContentURL:  "https://youtu.be/HHdDtftfA-U",
 							Description: "Learn how to easily make lollipops from chicken wings, then turn them into the hot-sour-crunchy appetiser, drums of heaven",
-							EmbedUrl:    "https://youtu.be/HHdDtftfA-U",
+							EmbedURL:    "https://youtu.be/HHdDtftfA-U",
 							Name:        "Chicken Lollipop / Drums of Heaven",
 							ThumbnailURL: &models.ThumbnailURL{
 								Value: "https://assets-global.website-files.com/60d34b8627f6e735cf28df18/62a95eaacb8d206406f1d296_Chicken%20Lollipop%20Hero%204.3.jpg",

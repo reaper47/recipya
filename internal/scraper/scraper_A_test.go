@@ -108,9 +108,9 @@ func TestScraper_A(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:      "VideoObject",
-							ContentUrl:  "https://youtu.be/g63Nto5ld-k",
+							ContentURL:  "https://youtu.be/g63Nto5ld-k",
 							Description: "Roasted Carrot Soup",
-							EmbedUrl:    "https://youtu.be/g63Nto5ld-k",
+							EmbedURL:    "https://youtu.be/g63Nto5ld-k",
 							Name:        "Roasted Carrot Soup",
 							ThumbnailURL: &models.ThumbnailURL{
 								Value: "https://abuelascounter.com/wp-content/uploads/2023/10/Roasted-Carrot-Soup-Recipe.jpeg",
@@ -354,7 +354,7 @@ func TestScraper_A(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://d1p9dpblu12ati.cloudfront.net/allerhande/media/2022/09/29/asset-4943112-1664455067445069.mp4",
+							ContentURL:   "https://d1p9dpblu12ati.cloudfront.net/allerhande/media/2022/09/29/asset-4943112-1664455067445069.mp4",
 							Description:  "Boeuf bourguignon, oftewel: 'Rund op z'n Bourgondisch'. Zo proef je de authentieke Franse keuken. Rode wijn, laurierblad en mosterd zorgen voor diepe winterse smaken. Lekker met geroosterde spruiten.INGREDIËNTEN3 tenen knoflook (netje 250 g)2 sjalotten (net 1 kilo)300 g winterpeen (zak 1 kilo)700 g sukadelappen (schaal, AH Greenfields)1 el tarwebloem (pak 1 kilo)&nbsp;30 g roomboter (pakje 250 g, De Zaanse Hoeve)&nbsp;3 el olijfolie mild (fles 1 liter)150 g gerookte baconreepjes (schaal)70 g tomatenpuree (blikje)10 g tijm (bakje 15 g)300 ml pinot noir2 laurierblaadjes1 tl fijne Dijonmosterd&nbsp;400 g witte champignons (bak)700 g geschoonde spruiten (zak 350 g)10 g platte peterselie (bakje 15 g)Keukenspullenhoge braadpan (Ø 22 cm)tray (38,4 x 24,4 cm)bakpapierSukadelappen bakkenVerwarm de oven voor op 175 °C. Snijd de tenen knoflook fijn. Snijd de sjalotten in halve ringen. Schil de winterpeen en snijd in blokjes van ca. een ½ cm. Dep de sukadelappen droog met keukenpapier, snijd in stukken van ca. 2 cm. Bestrooi het vlees met peper en meng de bloem erdoor, zodat het vlees rondom met een laagje bedekt is. Verhit de braadpan met de boter en 1 el olie en braad het vlees in ca. 4 min. op hoog vuur tot het meeste vocht verdampt is en het vlees rondom bruin en krokant is. Voeg de baconreepjes en tomatenpuree toe en bak 4 min. op hoog vuur mee.&nbsp;Stoofvlees uit de ovenRis ondertussen de blaadjes van de tijm. Voeg de helft van de tijm, de wijn, 750 ml water, de knoflook, sjalot, wortel, laurier en mosterd toe aan het vlees. Zet de braadpan met de deksel erop onder in de oven en stoof het vlees ca. 2½ uur tot het vlees mals is. Haal na 1½ uur de deksel van de pan. Snijd de champignons in kwarten en voeg de laatste 45 min. van de stooftijd toe aan het vlees. Test na 2½ uur of het vlees mals is, laat het zo nodig nog 30 min. langer stoven.Spruitjes roosterenHalveer ondertussen de spruiten en verdeel ze over de met bakpapier beklede tray. Besprenkel met de rest van de olie en bestrooi met de rest van de tijm. Breng op smaak met peper en rooster de laatste 20 min. van de stooftijd boven in de oven met de&nbsp;boeuf bourguignon mee.Boeuf bourguignon serverenBreng de stoof op smaak met peper en eventueel zout. Verwijder de laurierblaadjes. Snijd de peterselie fijn. Bestrooi de boeuf bourguignon met de peterselie en serveer met de geroosterde spruiten.",
 							Duration:     "PT3M49S",
 							Name:         "Boeuf bourguignon met geroosterde spruiten",
@@ -529,7 +529,7 @@ func TestScraper_A(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://content.jwplatform.com/videos/qHQSNVCK-K3AjnAEN.mp4",
+							ContentURL:   "https://content.jwplatform.com/videos/qHQSNVCK-K3AjnAEN.mp4",
 							Description:  "When it comes to fresh and delicious cookies, nothing beats homemade. In this video, Nicole shows you how to make Allrecipes’s top rated recipe for chocolate chip cookies. Using a deliciously sweet cookie dough that’s beaten with brown sugar and vanilla, fold in mini chocolate chips. Once the dough has been chilled in the fridge, distribute it onto a baking sheet and bake for ten minutes in the oven. With a tender texture and a rich, buttery taste, they're the ultimate comfort snack!",
 							Duration:     "PT3M33S",
 							Name:         "How to Make the Best Chocolate Chip Cookies",
@@ -920,7 +920,7 @@ func TestScraper_A(t *testing.T) {
 						{
 							AtType:      "VideoObject",
 							Description: "Κοτόπουλο αλά κρεμ από την Αργυρώ Μπαρμπαρίγου. Λαχταριστό και ζουμερό φαγητό με νόστι\xce\xbcη κρεμώδη σάλτσα αλά κρεμ.",
-							EmbedUrl:    "https://www.youtube.com/embed/r1XY_Tyb6N0",
+							EmbedURL:    "https://www.youtube.com/embed/r1XY_Tyb6N0",
 							Name:        "Κοτόπουλο αλά κρεμ",
 							ThumbnailURL: &models.ThumbnailURL{
 								Value: "https://www.argiro.gr/wp-content/uploads/2021/12/kotopoulo-ala-krem-ryzi-400x400.jpg",

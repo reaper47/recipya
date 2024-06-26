@@ -167,10 +167,10 @@ func TestScraper_I(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://www.youtube.com/watch?v=E4wtxm42u9Y",
+							ContentURL:   "https://www.youtube.com/watch?v=E4wtxm42u9Y",
 							Description:  "For complete recipe of mango rice, you can check this link https://www.indianhealthyrecipes.com/mango-rice-mamidikaya-pulihora/",
 							Duration:     "PT1M38S",
-							EmbedUrl:     "https://www.youtube.com/embed/E4wtxm42u9Y?feature=oembed",
+							EmbedURL:     "https://www.youtube.com/embed/E4wtxm42u9Y?feature=oembed",
 							Name:         "Mango rice recipe | Mamidikaya pulihora | South Indian mango rice",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://i.ytimg.com/vi/E4wtxm42u9Y/hqdefault.jpg"},
 							UploadDate:   time.Date(2017, 4, 29, 9, 25, 16, 0, time.UTC),
@@ -237,7 +237,7 @@ func TestScraper_I(t *testing.T) {
 				Video: &models.Videos{
 					Values: []models.VideoObject{
 						{
-							ContentUrl: "https://www.innit.com/meal-service/en-US/videos/MealTask-Salad%3A%20Coconut_Pineapple_Salad_1529612492439_1920x1080.mp4",
+							ContentURL: "https://www.innit.com/meal-service/en-US/videos/MealTask-Salad%3A%20Coconut_Pineapple_Salad_1529612492439_1920x1080.mp4",
 							Name:       "Coconut Pineapple Rice ",
 							ThumbnailURL: &models.ThumbnailURL{
 								Value: "https://www.innit.com/meal-service/en-US/images/MealTask-Salad%3A%20Coconut_Pineapple_Salad_1529612492439_EXTRACTED_MIDDLE_480x480.png",

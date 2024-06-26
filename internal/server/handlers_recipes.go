@@ -715,6 +715,8 @@ func (s *Server) recipesEditHandler() http.HandlerFunc {
 			slog.Error("Failed to fetch keywords", "error", err)
 		}
 
+		recipe.Videos = slices.DeleteFunc(recipe.Videos, func(v models.VideoObject) bool { return v.ID == uuid.Nil })
+
 		_ = components.EditRecipe(templates.Data{
 			About:           templates.NewAboutData(),
 			IsAdmin:         userID == 1,
@@ -770,21 +772,39 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 			return
 		}
 
-		imageFiles, ok := r.MultipartForm.File["images"]
+		mediaFiles, ok := r.MultipartForm.File["images"]
 		if ok {
-			var newImages []*multipart.FileHeader
+			var (
+				newImages []*multipart.FileHeader
+				newVideos []*multipart.FileHeader
+			)
 
-			for _, fh := range imageFiles {
-				_, err = os.Stat(filepath.Join(app.ImagesDir, fh.Filename+app.ImageExt))
-				if err == nil {
-					parsed, err := uuid.Parse(fh.Filename)
-					if err != nil {
-						slog.Error("Could not parse image file name as UUID", "name", fh.Filename, "error", err)
-						continue
+			for _, fh := range mediaFiles {
+				mimeType := fh.Header.Get("Content-Type")
+				if strings.HasPrefix(mimeType, "image") {
+					_, err = os.Stat(filepath.Join(app.ImagesDir, fh.Filename+app.ImageExt))
+					if err == nil {
+						parsed, err := uuid.Parse(fh.Filename)
+						if err != nil {
+							slog.Error("Could not parse image file name as UUID", "name", fh.Filename, "error", err)
+							continue
+						}
+						updatedRecipe.Images = append(updatedRecipe.Images, parsed)
+					} else {
+						newImages = append(newImages, fh)
 					}
-					updatedRecipe.Images = append(updatedRecipe.Images, parsed)
 				} else {
-					newImages = append(newImages, fh)
+					_, err = os.Stat(filepath.Join(app.VideosDir, fh.Filename+app.VideoExt))
+					if err == nil {
+						parsed, err := uuid.Parse(fh.Filename)
+						if err != nil {
+							slog.Error("Could not parse video file name as UUID", "name", fh.Filename, "error", err)
+							continue
+						}
+						updatedRecipe.Videos = append(updatedRecipe.Videos, models.VideoObject{ID: parsed})
+					} else {
+						newVideos = append(newVideos, fh)
+					}
 				}
 			}
 
@@ -798,7 +818,7 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 					return
 				}
 
-				imageUUID, err := s.Files.UploadImage(file)
+				u, err := s.Files.UploadImage(file)
 				if err != nil {
 					_ = file.Close()
 					msg := "Error uploading image."
@@ -810,8 +830,35 @@ func (s *Server) recipesEditPostHandler() http.HandlerFunc {
 
 				_ = file.Close()
 
-				if imageUUID != uuid.Nil {
-					updatedRecipe.Images = append(updatedRecipe.Images, imageUUID)
+				if u != uuid.Nil {
+					updatedRecipe.Images = append(updatedRecipe.Images, u)
+				}
+			}
+
+			for _, videoFile := range newVideos {
+				file, err := videoFile.Open()
+				if err != nil {
+					msg := "Could not open the image from the form."
+					slog.Error(msg, userIDAttr, recipeNumAttr, "error", err)
+					s.Brokers.SendToast(models.NewErrorGeneralToast(msg), userID)
+					w.WriteHeader(http.StatusBadRequest)
+					return
+				}
+
+				u, err := s.Files.UploadVideo(file, s.Repository)
+				if err != nil {
+					_ = file.Close()
+					msg := "Error uploading video."
+					slog.Error(msg, userIDAttr, "error", err)
+					s.Brokers.SendToast(models.NewErrorGeneralToast(msg), userID)
+					w.WriteHeader(http.StatusBadRequest)
+					return
+				}
+
+				_ = file.Close()
+
+				if u != uuid.Nil {
+					updatedRecipe.Videos = append(updatedRecipe.Videos, models.VideoObject{ID: u})
 				}
 			}
 		}

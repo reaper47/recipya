@@ -86,3 +86,10 @@ const DeleteUserCategory = `
 	WHERE user_id = ?
 	  AND category_id = (SELECT id FROM categories WHERE name = ?)
 	RETURNING category_id`
+
+// DeleteRecipeVideos deletes a recipe's user-uploaded videos.
+const DeleteRecipeVideos = `
+	DELETE
+	FROM video_recipe
+	WHERE recipe_id = (SELECT recipe_id FROM user_recipe AS ur WHERE ur.recipe_id = ? AND user_id = ?)
+		AND video != '00000000-0000-0000-0000-000000000000'`

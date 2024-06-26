@@ -222,7 +222,7 @@ func TestScraper_F(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://content.jwplatform.com/videos/&rdquo;mXhs2DnA&rdquo;.mp4",
+							ContentURL:   "https://content.jwplatform.com/videos/&rdquo;mXhs2DnA&rdquo;.mp4",
 							Description:  "”A",
 							Name:         "”Orecchiette",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/&rdquo;mXhs2DnA&rdquo;-720.jpg"},
@@ -459,7 +459,7 @@ func TestScraper_F(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://content.jwplatform.com/videos/&rdquo;HzwLU00f&rdquo;.mp4",
+							ContentURL:   "https://content.jwplatform.com/videos/&rdquo;HzwLU00f&rdquo;.mp4",
 							Description:  "”Air",
 							Name:         "”Air",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/&rdquo;HzwLU00f&rdquo;-720.jpg"},
@@ -974,7 +974,7 @@ func TestScraper_F(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://content.jwplatform.com/videos/vOrUM6ik.mp4",
+							ContentURL:   "https://content.jwplatform.com/videos/vOrUM6ik.mp4",
 							Description:  "My Chocolate Chili Recipe is full-bodied, rich, and utterly scrumptious chili recipe that will transform your everyday dinner into a five-star meal. This one-pot recipe builds layers of complex flavors, like warm cumin, deep cocoa powder, and spicy jalapenos into a surprisingly rich one pot meal.",
 							Name:         "Chocolate Chili Recipe Video",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/vOrUM6ik-720.jpg"},

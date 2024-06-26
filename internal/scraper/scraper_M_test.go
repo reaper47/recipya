@@ -365,7 +365,7 @@ func TestScraper_M(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://content.jwplatform.com/videos/lHp7fzKF-DuXeUCvc.mp4",
+							ContentURL:   "https://content.jwplatform.com/videos/lHp7fzKF-DuXeUCvc.mp4",
 							Description:  "A delicate cake that has a double dose of tangy brightness, thanks to a zest-filled batter and a silky citrus glaze. The optional candied lemon-rind topping adds a design element that will have the crowd swirling with delight.",
 							Duration:     "PT7M33S",
 							Name:         "Lemon-Glazed Sheet Cake",
@@ -419,7 +419,7 @@ func TestScraper_M(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://youtu.be/oD_1HcQZ0-A",
+							ContentURL:   "https://youtu.be/oD_1HcQZ0-A",
 							Description:  "Nystekte vafler slår aldri feil! Ingenting er som nystekte vafler med rømme og syltetøy på. Og det er mange forskjellige preferanser og tradisjoner til tilbehør, så sett fram all slags syltetøy, smør, sukker, brunost eller kanskje til og med pølser, så er garantert både store og små fornøyde. Her har du vår oppskrift på vafler som er både enkel og kjempegod, her er en porsjon rundt 10 vafler.\n\n\n➡️ Her finner du oppskriften:\nhttps://www.matprat.no/oppskrifter/tradisjon/vafler/\n\n\n\n\n➡️ Vi har flere vaffeloppskrifter, ta en titt her:\nhttps://www.matprat.no/vafler/\n\n\n\n\nAbonner på kanalen vår for nydelige oppskrifter og nyttige tips:\nhttps://goo.gl/beBt6i \n\n\n\n\nFølg oss gjerne i sosiale medier: \nFacebook | https://www.facebook.com/MatPrat \nInstagram | https://www.instagram.com/matprat.no \nFlere oppskrifter | https://www.matprat.no",
 							Name:         "Vafler - kjapt og greit! | MatPrat",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://i.ytimg.com/vi/oD_1HcQZ0-A/sddefault.jpg"},
@@ -632,10 +632,10 @@ func TestScraper_M(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://www.youtube.com/watch?v=uV9gYUMEMTU",
+							ContentURL:   "https://www.youtube.com/watch?v=uV9gYUMEMTU",
 							Description:  "Low-sugar hot chocolate mix with raw cacao powder and adaptogens like reishi mushroom, maca, ashwagandha, and he shou wu. The perfect low-caffeine cozy beverage to replace coffee or matcha.\n\nFull Recipe: https://minimalistbaker.com/adaptogenic-hot-chocolate-mix/\n \nFOLLOW US!\nBlog: http://minimalistbaker.com/\nInstagram: https://instagram.com/minimalistbaker/\nTwitter: https://twitter.com/minimalistbaker\nFacebook: https://www.facebook.com/MinimalistBaker",
 							Duration:     "PT45S",
-							EmbedUrl:     "https://www.youtube.com/embed/uV9gYUMEMTU?feature=oembed",
+							EmbedURL:     "https://www.youtube.com/embed/uV9gYUMEMTU?feature=oembed",
 							Name:         "Adaptogenic Hot Chocolate Mix | Minimalist Baker Recipes",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://i.ytimg.com/vi/uV9gYUMEMTU/hqdefault.jpg"},
 							UploadDate:   time.Date(2020, 3, 1, 9, 0, 9, 0, time.UTC),
@@ -695,7 +695,7 @@ func TestScraper_M(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://content.jwplatform.com/videos/SKpwqP3W.mp4",
+							ContentURL:   "https://content.jwplatform.com/videos/SKpwqP3W.mp4",
 							Description:  "Cranberry sauce with its sweet and tangy flavors is my favorite Thanksgiving side dish that brightens up the holiday table. This EASY gluten free, vegan recipe uses only 4 ingredients and is ready in 15 minutes using the Instant Pot!",
 							Name:         "Instant Pot Cranberry Sauce",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/SKpwqP3W-720.jpg"},
@@ -866,7 +866,7 @@ func TestScraper_M(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://content.jwplatform.com/videos/m7qk6W6r.mp4",
+							ContentURL:   "https://content.jwplatform.com/videos/m7qk6W6r.mp4",
 							Description:  "Save your oven space and make this delicious Crockpot Cornbread Recipe right in your slow cooker. Comes out perfect every time!",
 							Name:         "Crockpot Cornbread Recipe",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/m7qk6W6r-720.jpg"},
@@ -1086,10 +1086,10 @@ func TestScraper_M(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:      "VideoObject",
-							ContentUrl:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1646933624/a7syuib4chpdofspjb98.mp4",
+							ContentURL:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1646933624/a7syuib4chpdofspjb98.mp4",
 							Description: "Pistachio Pudding Cake is a simple bundt cake to make any time of year. Made with a cake mix and pistachio pudding mix, this cake can be topped with a simple glaze or any number of frostings for a delicious crowd-pleasing dessert.",
 							Duration:    "PT64S",
-							EmbedUrl:    "https://video.mediavine.com/videos/a7syuib4chpdofspjb98.js",
+							EmbedURL:    "https://video.mediavine.com/videos/a7syuib4chpdofspjb98.js",
 							Name:        "Pistachio Pudding Cake",
 							ThumbnailURL: &models.ThumbnailURL{
 								Value: "https://mediavine-res.cloudinary.com/video/upload/s--20mrVB9o--/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1646933624/a7syuib4chpdofspjb98.jpg",
@@ -1141,7 +1141,7 @@ func TestScraper_M(t *testing.T) {
 						{
 							AtType:       "VideoObject",
 							Description:  "Challah Recipe. Make your own challah, round or braided. Ashkenazic Jewish Recipes. Ashkenazic Jewish Food",
-							EmbedUrl:     "https://www.youtube.com/watch?v=SYH4zNgp3DY",
+							EmbedURL:     "https://www.youtube.com/watch?v=SYH4zNgp3DY",
 							Name:         "Classic Challah Recipe",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://img.youtube.com/vi/SYH4zNgp3DY/maxresdefault.jpg"},
 							UploadDate:   time.Date(2002, 8, 1, 0, 0, 0, 0, time.FixedZone("-4", -4*60*60)),
@@ -1416,7 +1416,7 @@ func TestScraper_M(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://content.jwplatform.com/videos/sXNlu4MM-px9BSfP1.mp4",
+							ContentURL:   "https://content.jwplatform.com/videos/sXNlu4MM-px9BSfP1.mp4",
 							Description:  "These classic Tex-Mex nachos are loaded to the MAX! Avoid soggy nachos by briefly baking them before topping with cheese, seasoned beef, refried beans, guacamole, and salsa. They're a great snack, party appetizer, or even casual weeknight dinner.",
 							Duration:     "PT1M29S",
 							Name:         "The Best Nachos",

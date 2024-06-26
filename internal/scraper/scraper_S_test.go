@@ -112,10 +112,10 @@ func TestScraper_S(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://www.youtube.com/watch?v=xD7aze6f2_8",
+							ContentURL:   "https://www.youtube.com/watch?v=xD7aze6f2_8",
 							Description:  "Let’s make homemade breakfast pastries using a variation of classic Danish pastry dough. These breakfast pastries are buttery and flaky with sweet fillings and a drizzle of vanilla icing!\n\nGet the full recipe: https://sallysbakingaddiction.com/breakfast-pastries/\n\n• Ask your recipe question or leave a review over on the recipe page.\n\n#baking #recipes #pastries\n\n• More of our favorite recipes: https://sallysbakingaddiction.com/",
 							Duration:     "PT5M",
-							EmbedUrl:     "https://www.youtube.com/embed/xD7aze6f2_8?feature=oembed",
+							EmbedURL:     "https://www.youtube.com/embed/xD7aze6f2_8?feature=oembed",
 							Name:         "Breakfast Pastries with Homemade Dough  | Sally's Baking Addiction",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://i.ytimg.com/vi/xD7aze6f2_8/hqdefault.jpg"},
 							UploadDate:   time.Date(2020, 8, 5, 16, 6, 29, 0, time.UTC),
@@ -214,10 +214,10 @@ func TestScraper_S(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:      "VideoObject",
-							ContentUrl:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1637107542/q9nvvob8pqjpndpeksj9.mp4",
+							ContentURL:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1637107542/q9nvvob8pqjpndpeksj9.mp4",
 							Description: "The creamiest, most luxurious and delicious mashed potatoes. A beloved side dish that can become the star of the meal.",
 							Duration:    "PT27S",
-							EmbedUrl:    "https://video.mediavine.com/videos/q9nvvob8pqjpndpeksj9.js",
+							EmbedURL:    "https://video.mediavine.com/videos/q9nvvob8pqjpndpeksj9.js",
 							Name:        "Creamy Mashed Potatoes",
 							ThumbnailURL: &models.ThumbnailURL{
 								Value: "https://mediavine-res.cloudinary.com/image/upload/s--wDLwAqt_--/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1637108080/yuw9ajqwg0mw6jy7jque.jpg",
@@ -487,7 +487,7 @@ func TestScraper_S(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://content.jwplatform.com/videos/i3jj0ZQN.mp4",
+							ContentURL:   "https://content.jwplatform.com/videos/i3jj0ZQN.mp4",
 							Description:  "Spicy kimchi quinoa bowls. Best. Meal. EVER.",
 							Name:         "Spicy Kimchi Quinoa Bowls",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/i3jj0ZQN-720.jpg"},
@@ -576,7 +576,7 @@ func TestScraper_S(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://content.jwplatform.com/videos/UybYQ736-px9BSfP1.mp4",
+							ContentURL:   "https://content.jwplatform.com/videos/UybYQ736-px9BSfP1.mp4",
 							Description:  "This easy stovetop Chicken Tikka Masala tastes just like your favorite Indian take-out and is ready in under an hour. Leftovers are even better the next day!",
 							Duration:     "PT1M15S",
 							Name:         "Chicken Tikka Masala",
@@ -978,7 +978,7 @@ func TestScraper_S(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://content.jwplatform.com/videos/NtHwFOlR-KtCa7qb3.mp4",
+							ContentURL:   "https://content.jwplatform.com/videos/NtHwFOlR-KtCa7qb3.mp4",
 							Description:  "Sweet, fresh corn is a popular addition to summer salads, soups, and pastas. ",
 							Duration:     "PT46S",
 							Name:         "How to Make Oven-Roasted Corn on the Cob",
@@ -1051,7 +1051,7 @@ func TestScraper_S(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://content.jwplatform.com/videos/mvK34vLq.mp4",
+							ContentURL:   "https://content.jwplatform.com/videos/mvK34vLq.mp4",
 							Description:  "Split pea soup is the perfect way to use up leftover ham. Split peas and ham are simmered in a delicious chicken broth to create a thick and hearty soup!",
 							Name:         "Split Pea Soup",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/mvK34vLq-720.jpg"},
@@ -1546,7 +1546,7 @@ func TestScraper_S(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://content.jwplatform.com/videos/JfZMnwX3.mp4",
+							ContentURL:   "https://content.jwplatform.com/videos/JfZMnwX3.mp4",
 							Description:  "These slow cooker cilantro lime chicken tacos can be assembled ahead and stored in the freezer until you are ready to cook them up. The cilantro lime chicken is versatile and is also great on salad, in wraps, pizza, you name it!",
 							Name:         "Slow Cooker Cilantro Lime Chicken",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/JfZMnwX3-720.jpg"},

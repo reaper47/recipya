@@ -45,4 +45,5 @@ In addition, you must have at least 300 MB of free space.
 audiovisual media file format. It is included in the Docker image. Otherwise, it will be automatically installed if you use Windows.
 If you use macOS or Linux, then you should install it manually.
 
-The video feature will be disabled if FFmpeg is not installed.
+The video feature will be disabled if FFmpeg is not installed. You do not need this software if you do not intend to attach
+videos to recipes. 

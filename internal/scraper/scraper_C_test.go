@@ -310,9 +310,9 @@ func TestScraper_C(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:      "VideoObject",
-							ContentUrl:  "https://www.chefkoch.de/rezepte/1064631211795001/Knusprige-Ofenkartoffeln.html",
+							ContentURL:  "https://www.chefkoch.de/rezepte/1064631211795001/Knusprige-Ofenkartoffeln.html",
 							Description: "Video zu Knusprige Ofenkartoffeln",
-							EmbedUrl:    "https://video.chefkoch-cdn.de/ck.de/videos/4244-video.mp4",
+							EmbedURL:    "https://video.chefkoch-cdn.de/ck.de/videos/4244-video.mp4",
 							Name:        "Video zu Knusprige Ofenkartoffeln",
 							ThumbnailURL: &models.ThumbnailURL{
 								Value: "https://static.chefkoch-cdn.de/images/crop-960x540/ck.de/videos/thumbs/4244-org.jpg",
@@ -427,7 +427,7 @@ func TestScraper_C(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://content.jwplatform.com/videos/2lO7mp0i.mp4",
+							ContentURL:   "https://content.jwplatform.com/videos/2lO7mp0i.mp4",
 							Description:  "If you thought you couldn't get CRISPY chicken wings in the oven think again! It's so easy to bake these chicken wings and you would never know that these aren't fried!",
 							Name:         "Crispy Baked Chicken Wings",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/2lO7mp0i-720.jpg"},
@@ -665,10 +665,10 @@ func TestScraper_C(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://www.youtube.com/watch?v=dtupU7SRGPs",
+							ContentURL:   "https://www.youtube.com/watch?v=dtupU7SRGPs",
 							Description:  "Vem comigo aprender como fazer uma receita de pudim no copinho para festa de aniversário ou para vender. Essa receita é perfeita para você que vai fazer uma festa ou uma confraternização e quer servir uma sobremesa gostosa que renda bastante.",
 							Duration:     "PT4M22S",
-							EmbedUrl:     "https://www.youtube.com/embed/dtupU7SRGPs",
+							EmbedURL:     "https://www.youtube.com/embed/dtupU7SRGPs",
 							Name:         "Pudim no Copinho Para Festa | Receita",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://img.youtube.com/vi/dtupU7SRGPs/hqdefault.jpg"},
 							UploadDate:   time.Date(2021, 10, 1, 0, 0, 0, 0, time.UTC),
@@ -804,7 +804,7 @@ func TestScraper_C(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://content.jwplatform.com/videos/HyLC1Ad5.mp4",
+							ContentURL:   "https://content.jwplatform.com/videos/HyLC1Ad5.mp4",
 							Description:  "Watch how to make cornbread in this short video. It’s fluffy on the inside, crisp around the edges, and full of delicious honey-butter flavor. ",
 							Name:         "Honey Butter Cornbread",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/HyLC1Ad5-720.jpg"},
@@ -991,7 +991,7 @@ func TestScraper_C(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://content.jwplatform.com/videos/3Q0cyCTI.mp4",
+							ContentURL:   "https://content.jwplatform.com/videos/3Q0cyCTI.mp4",
 							Description:  "Do you love Mcdonald’s Egg McMuffin? A perfectly toasted English muffin, a slice of Candian bacon, and a perfectly cooked egg, and a slice of American cheese is the most-loved breakfast sandwich. You can make these at home.",
 							Name:         "How to make an Egg McMuffin",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/3Q0cyCTI-720.jpg"},

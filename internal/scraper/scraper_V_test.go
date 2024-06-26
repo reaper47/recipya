@@ -324,7 +324,7 @@ func TestScraper_V(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:       "VideoObject",
-							ContentUrl:   "https://content.jwplatform.com/videos/of0NUOor.mp4",
+							ContentURL:   "https://content.jwplatform.com/videos/of0NUOor.mp4",
 							Description:  "This Paneer Butter Masala is an easy recipe and yields a mildly spiced, creamy, tangy and lightly sweet delicious restaurant-style Cottage Cheese Curry.",
 							Name:         "Paneer Butter Masala",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/of0NUOor-720.jpg"},
