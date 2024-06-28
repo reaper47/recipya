@@ -29,7 +29,7 @@ func scrapeCdKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 	lines := strings.Split(node.Text(), "$$$$$$")
 	rs.Instructions.Values = make([]models.HowToItem, 0, len(lines))
 	for _, line := range lines {
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(line)))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(line))
 	}
 
 	yieldStr, _ := content.Find(".change-servs-input").Attr("value")

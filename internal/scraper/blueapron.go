@@ -30,7 +30,7 @@ func scrapeBlueapron(root *goquery.Document) (models.RecipeSchema, error) {
 	nodes = root.Find("div[itemprop='recipeInstructions'] .step-txt")
 	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(strings.Trim(sel.Text(), "\n"))))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.Trim(sel.Text(), "\n")))
 	})
 
 	rs.Name = strings.Trim(root.Find(".ba-recipe-title__main").Text(), "\n")

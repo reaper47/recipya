@@ -47,7 +47,7 @@ func scrapeBriceletbaklava(root *goquery.Document) (models.RecipeSchema, error) 
 	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := sel.Text()
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(s)))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
 	})
 
 	return rs, nil

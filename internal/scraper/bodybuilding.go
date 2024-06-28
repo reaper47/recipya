@@ -49,7 +49,7 @@ func scrapeBodybuilding(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.ReplaceAll(sel.Text(), "\n", "")
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(s)))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
 	})
 
 	node := root.Find(".bb-recipe__directions-timing--prep").Find("time")

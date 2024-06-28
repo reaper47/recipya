@@ -17,6 +17,7 @@ import (
 	"io"
 	"io/fs"
 	"log/slog"
+	"net"
 	"net/http"
 	"net/http/cookiejar"
 	"os"
@@ -47,6 +48,13 @@ func NewServer(repo services.RepositoryService) *Server {
 		Repository:   repo,
 		Scraper: scraper.NewScraper(&http.Client{
 			Jar: jar,
+			Transport: &http.Transport{
+				DialContext: (&net.Dialer{
+					Timeout:   30 * time.Second,
+					KeepAlive: 30 * time.Second,
+				}).DialContext,
+				TLSHandshakeTimeout: 10 * time.Second,
+			},
 		}),
 	}
 	srv.mountHandlers()

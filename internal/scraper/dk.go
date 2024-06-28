@@ -32,7 +32,7 @@ func scrapeDk(root *goquery.Document) (models.RecipeSchema, error) {
 
 		v := strings.ReplaceAll(s.Text(), "\n", "")
 		v = strings.ReplaceAll(v, "\u00a0", "")
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(v)))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(v))
 	})
 
 	description := content.Find("p[itemprop='description']").Text()

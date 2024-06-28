@@ -183,10 +183,11 @@ func TestScraper_H(t *testing.T) {
 					Fat:      "34 g",
 					Servings: "1",
 				},
-				PrepTime:  "PT20M",
-				Tools:     &models.Tools{Values: []models.HowToItem{}},
-				TotalTime: "PT30M",
-				URL:       "https://www.hassanchef.com/2022/10/dragon-chicken.html",
+				PrepTime:     "PT20M",
+				ThumbnailURL: &models.ThumbnailURL{},
+				Tools:        &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:    "PT30M",
+				URL:          "https://www.hassanchef.com/2022/10/dragon-chicken.html",
 				Video: &models.Videos{
 					Values: []models.VideoObject{
 						{
@@ -372,9 +373,11 @@ func TestScraper_H(t *testing.T) {
 				Name:            "Lemon Blueberry Scones with Lemon Sugar (Vegan and Gluten-free)",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT15M",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 6},
 				URL:             "https://heatherchristo.com/2020/05/03/13229/",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -437,6 +440,7 @@ func TestScraper_H(t *testing.T) {
 				TotalTime: "PT20M",
 				Yield:     &models.Yield{Value: 2},
 				URL:       "https://www.hellofresh.com/recipes/creamy-shrimp-tagliatelle-5a8f0fcbae08b52f161b5832",
+				Video:     &models.Videos{},
 			},
 		},
 		{
@@ -479,7 +483,9 @@ func TestScraper_H(t *testing.T) {
 					},
 				},
 				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Video:           &models.Videos{},
 			},
 		},
 		{

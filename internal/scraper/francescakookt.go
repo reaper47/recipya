@@ -58,7 +58,7 @@ func scrapeFrancescakookt(root *goquery.Document) (models.RecipeSchema, error) {
 	nodes = root.Find("div.dynamic-entry-content ol").Last().Find("li")
 	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(sel.Text())))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
 	})
 
 	return rs, nil

@@ -21,7 +21,7 @@ func scrapeYemek(root *goquery.Document) (models.RecipeSchema, error) {
 	nodes = root.Find("p[itemprop='recipeInstructions']")
 	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, s *goquery.Selection) {
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(s.Text())))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s.Text()))
 	})
 
 	return rs, nil

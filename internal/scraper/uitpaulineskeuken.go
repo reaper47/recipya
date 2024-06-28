@@ -45,7 +45,7 @@ func scrapeUitpaulineskeuken(root *goquery.Document) (models.RecipeSchema, error
 	nodes = root.Find("#recept ol li")
 	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(sel.Text())))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
 	})
 
 	nodes = root.Find("#gerelateerd a")

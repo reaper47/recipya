@@ -1,17 +1,22 @@
 -- +goose Up
 INSERT INTO websites (host, url)
 VALUES
+    ('angielaeats.com', 'https://www.angielaeats.com'),
     ('avocadoskillet.com', 'https://avocadoskillet.com/'),
     ('beyondkimchee.com', 'https://beyondkimchee.com/'),
+    ('bottomlessgreens.com', 'https://bottomlessgreens.com'),
     ('chatelaine.com', 'https://chatelaine.com/'),
     ('chejorge.com', 'https://chejorge.com/'),
     ('chinesecookingdemystified.substack.com', 'https://chinesecookingdemystified.substack.com/'),
     ('cuisineandtravel.com', 'https://cuisineandtravel.com/'),
     ('daringgourmet.com', 'https://daringgourmet.com/'),
+    ('dherbs.com', 'https://www.dherbs.com'),
+    ('dish.co.nz', 'https://dish.co.nz'),
     ('dreenaburton.com', 'https://dreenaburton.com/'),
     ('elephantasticvegan.com', 'https://elephantasticvegan.com/'),
     ('entertainingwithbeth.com', 'https://entertainingwithbeth.com/'),
     ('feastingathome.com', 'https://feastingathome.com/'),
+    ('findingtimeforcooking.com', 'https://findingtimeforcooking.com'),
     ('foodal.com', 'https://foodal.com/'),
     ('foodbymaria.com', 'https://foodbymaria.com/'),
     ('foodiecrush.com', 'https://foodiecrush.com/'),
@@ -26,9 +31,9 @@ VALUES
 -- +goose Down
 DELETE FROM websites
 WHERE host IN (
-    'avocadoskillet.com', 'beyondkimchee.com', 'chatelaine.com', 'chejorge.com',
-    'chinesecookingdemystified.substack.com', 'cuisineandtravel.com', 'daringgourmet.com', 'dreenaburton.com',
-    'elephantasticvegan.com', 'entertainingwithbeth.com', 'feastingathome.com', 'foodal.com', 'foodbymaria.com',
+    'angielaeats.com', 'avocadoskillet.com', 'beyondkimchee.com', 'bottomlessgreens.com', 'chatelaine.com', 'chejorge.com',
+    'chinesecookingdemystified.substack.com', 'cuisineandtravel.com', 'daringgourmet.com', 'dherbs.com', 'dish.co.nz', 'dreenaburton.com',
+    'elephantasticvegan.com', 'entertainingwithbeth.com', 'feastingathome.com', 'findingtimeforcooking.com', ''foodal.com', 'foodbymaria.com',
     'foodiecrush.com', 'foolproofliving.com', 'gastroplant.com', 'goodto.com', 'jaroflemons.com', 'natashaskitchen.com',
     'nigella.com'
 );

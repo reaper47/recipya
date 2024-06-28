@@ -79,9 +79,11 @@ func TestScraper_Bergamot(t *testing.T) {
 		Name:            "Soupe miso aux oignons nouveaux, tofu et saumon émietté",
 		NutritionSchema: &models.NutritionSchema{},
 		PrepTime:        "PT20M",
+		ThumbnailURL:    &models.ThumbnailURL{},
 		Tools:           &models.Tools{Values: []models.HowToItem{}},
 		Yield:           &models.Yield{Value: 4},
 		URL:             "https://dashboard.bergamot.app/shared/mIB4jYQtZU1A97",
+		Video:           &models.Videos{},
 	}
 	if !cmp.Equal(got, want) {
 		t.Logf(cmp.Diff(got, want))
@@ -141,10 +143,12 @@ func TestScraper_Foodbag(t *testing.T) {
 			Fiber:         "0.93 g",
 			Protein:       "7.28 g",
 		},
-		PrepTime: "PT10M",
-		Tools:    &models.Tools{Values: []models.HowToItem{}},
-		Yield:    &models.Yield{Value: 4},
-		URL:      "https://www.foodbag.be/nl/recept/?dishId=a0MJv000002YcOHMA0&portion=2",
+		PrepTime:     "PT10M",
+		ThumbnailURL: &models.ThumbnailURL{},
+		Tools:        &models.Tools{Values: []models.HowToItem{}},
+		Yield:        &models.Yield{Value: 4},
+		URL:          "https://www.foodbag.be/nl/recept/?dishId=a0MJv000002YcOHMA0&portion=2",
+		Video:        &models.Videos{},
 	}
 	if !cmp.Equal(got, want) {
 		t.Logf(cmp.Diff(got, want))
