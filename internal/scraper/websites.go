@@ -129,6 +129,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeGiallozafferano(doc)
 		case "globo":
 			return scrapeGlobo(doc)
+		case "goodeatings":
+			return scrapeGoodEatings(doc)
 		case "grandfrais":
 			return scrapeGrandfrais(doc)
 		case "greatbritishchefs":
@@ -146,6 +148,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeHalfBakedHarvest(doc)
 		case "heatherchristo":
 			return scrapeHeatherChristo(doc)
+		case "homebrewanswers":
+			return scrapeHomebrewAnswers(doc)
 		case "homechef":
 			return scrapeHomechef(doc)
 		default:

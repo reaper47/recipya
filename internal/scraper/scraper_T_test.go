@@ -1585,6 +1585,61 @@ func TestScraper_T(t *testing.T) {
 				URL:       "https://www.twopeasandtheirpod.com/easy-chickpea-salad/",
 			},
 		},
+		{
+			name: "twosleevers.com",
+			in:   "https://twosleevers.com/pressure-cooker-aloo-gobi/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Side Dishes"},
+				CookTime:      "PT10M",
+				Cuisine:       &models.Cuisine{Value: "Indian"},
+				DatePublished: "2021-02-10T09:20:04+00:00",
+				Description: &models.Description{
+					Value: "Perfect Punjabi-style&nbsp;Aloo Gobi from your pressure cooker or Instant Pot. Make this classic Indian vegan restaurant dish at home in minutes, without a lot of fuss.&nbsp;",
+				},
+				Keywords: &models.Keywords{Values: "Aloo Gobi, Indian Aloo Gobi, Instant Pot Aloo Gobi"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"1 tablespoon Oil", "1 teaspoon cumin seeds",
+						"4 cups cauliflower florets ((about one medium cauliflower))",
+						"2 cups Potatoes (sliced (about 1 large potato))", "1/2 cup Tomatoes (diced)",
+						"1 teaspoon Kosher Salt", "1 teaspoon Garam Masala", "1/2 teaspoon Turmeric",
+						"1/4 teaspoon Ground Cumin",
+						"1/2 teaspoon Ground Coriander",
+						"1/4 teaspoon Cayenne Pepper",
+						"1/4 cup Water",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Heat the Instant Pot and when it's hot, add the oil, and when the oil shimmers, add the cumin seeds. They'll splutter like popcorn.", Type: "HowToStep"},
+						{Text: "Once this happens, add in the potatoes and sauté. You want the potatoes to brown and crisp a little, and you want good, brown fond at the bottom to flavor the final dish.", Type: "HowToStep"},
+						{Text: "At this point, add the spices and sauté briefly.", Type: "HowToStep"},
+						{Text: "Then add in the tomatoes and the water and scrape up all the lovely fond at the bottom. Make sure you get all the brown bits scraped off since if you don't, you will see the BURN message. If all the water evaporates as you do this, add in another 1/4 cup of water.", Type: "HowToStep"},
+						{Text: "Add in the cauliflower and set your Instant Pot to Low Pressure for 2 minutes.", Type: "HowToStep"},
+						{Text: "Quick release the pressure and garnish with chopped cilantro, if needed.", Type: "HowToStep"},
+						{Text: "If you have an 8 quart, you may need to double the recipe so as to not ge the BURN message.", Type: "HowToStep"},
+					},
+				},
+				Name: "Aloo Gobi Potatoes and Cauliflower",
+				NutritionSchema: &models.NutritionSchema{
+					Calories:      "84 kcal",
+					Carbohydrates: "12 g",
+					Fat:           "2 g",
+					Fiber:         "3 g",
+					Protein:       "3 g",
+					Servings:      "1",
+					Sodium:        "416 mg",
+					Sugar:         "1 g",
+				},
+				PrepTime:  "PT10M",
+				TotalTime: "PT20M",
+				Yield:     &models.Yield{Value: 6},
+				URL:       "https://twosleevers.com/pressure-cooker-aloo-gobi/",
+			},
+		},
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
