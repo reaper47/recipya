@@ -24,7 +24,7 @@ func scrapeKochbucher(root *goquery.Document) (models.RecipeSchema, error) {
 		if goquery.NodeName(node) != "p" {
 			break
 		}
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(node.Text())))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(node.Text()))
 	}
 
 	return rs, nil

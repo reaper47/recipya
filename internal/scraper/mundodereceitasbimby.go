@@ -45,7 +45,7 @@ func scrapeMundodereceitasbimby(root *goquery.Document) (models.RecipeSchema, er
 	nodes = root.Find("ol[itemprop='recipeInstructions'] div[itemprop='itemListElement']")
 	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(sel.Text())))
+		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
 	})
 
 	parts := strings.Split(root.Find(".media h5.media-heading").Text(), " ")

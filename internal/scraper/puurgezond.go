@@ -73,7 +73,7 @@ func scrapePuurgezond(root *goquery.Document) (models.RecipeSchema, error) {
 			isIngredients = false
 		} else if isInstructions {
 			sel.Find("li").Each(func(_ int, li *goquery.Selection) {
-				rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(li.Text())))
+				rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(li.Text()))
 			})
 			isInstructions = false
 		}

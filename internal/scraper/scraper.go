@@ -1,11 +1,14 @@
 package scraper
 
 import (
+	"bytes"
+	"compress/gzip"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services"
+	"io"
 	"net/http"
 	"strings"
 )
@@ -101,9 +104,10 @@ func (s *Scraper) fetchDocument(url string) (*goquery.Document, error) {
 	}
 	defer res.Body.Close()
 
-	// Some websites require page reloads
+	// Some websites require cookies
 	host := s.HTTP.GetHost(url)
-	if host == "bettybossi" {
+	switch host {
+	case "bettybossi", "chatelaine":
 		res, err = s.HTTP.Client.Do(req)
 		if err != nil {
 			return nil, err
@@ -115,5 +119,22 @@ func (s *Scraper) fetchDocument(url string) (*goquery.Document, error) {
 		return nil, fmt.Errorf("could not fetch (%d), try the bookmarklet", res.StatusCode)
 	}
 
-	return goquery.NewDocumentFromReader(res.Body)
+	var r io.Reader = res.Body
+	if res.Header.Get("Content-Encoding") == "gzip" {
+		zr, err := gzip.NewReader(r)
+		if err != nil {
+			return nil, err
+		}
+		defer zr.Close()
+
+		buf := bytes.NewBuffer(nil)
+		_, err = io.Copy(buf, zr)
+		if err != nil {
+			return nil, err
+		}
+
+		r = buf
+	}
+
+	return goquery.NewDocumentFromReader(r)
 }

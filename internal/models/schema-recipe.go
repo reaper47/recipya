@@ -74,7 +74,7 @@ func NewRecipeSchema() RecipeSchema {
 	return RecipeSchema{
 		AtContext:       "https://schema.org",
 		AtType:          &SchemaType{Value: "Recipe"},
-		Category:        NewCategory(""),
+		Category:        NewCategory("uncategorized"),
 		CookingMethod:   &CookingMethod{},
 		Cuisine:         &Cuisine{},
 		Description:     &Description{},
@@ -83,8 +83,10 @@ func NewRecipeSchema() RecipeSchema {
 		Ingredients:     &Ingredients{Values: make([]string, 0)},
 		Instructions:    &Instructions{Values: make([]HowToItem, 0)},
 		NutritionSchema: &NutritionSchema{},
+		ThumbnailURL:    &ThumbnailURL{},
 		Tools:           &Tools{Values: make([]HowToItem, 0)},
 		Yield:           &Yield{Value: 1},
+		Video:           &Videos{},
 	}
 }
 
@@ -107,7 +109,7 @@ func (h *HowToItem) StringQuantity() string {
 func NewHowToStep(text string, opts ...*HowToItem) HowToItem {
 	v := HowToItem{
 		Type: "HowToStep",
-		Text: text,
+		Text: strings.TrimSpace(text),
 	}
 	for _, opt := range opts {
 		v.Name = opt.Name
@@ -537,6 +539,11 @@ func (i *Image) UnmarshalJSON(data []byte) error {
 				if ok {
 					i.Value = u.(string)
 				}
+
+				img, ok := y["@id"]
+				if ok {
+					i.Value = img.(string)
+				}
 			}
 		}
 	case map[string]any:
@@ -842,6 +849,12 @@ func (v *Videos) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
+
+		if vid.AtID != "" {
+			vid.EmbedURL = vid.AtID
+			vid.IsIFrame = true
+		}
+
 		v.Values = append(v.Values, vid)
 	case []any:
 		for _, a := range x {
@@ -858,6 +871,12 @@ func (v *Videos) UnmarshalJSON(data []byte) error {
 			if err != nil {
 				return err
 			}
+
+			if vid.AtID != "" {
+				vid.EmbedURL = vid.AtID
+				vid.IsIFrame = true
+			}
+
 			v.Values = append(v.Values, vid)
 		}
 	}
@@ -883,6 +902,7 @@ func parseTime(tm string) (time.Time, error) {
 
 // VideoObject is a representation of the VideoObject schema (https://schema.org/VideoObject).
 type VideoObject struct {
+	AtID         string        `json:"@id"`
 	AtType       string        `json:"@type"`
 	ContentURL   string        `json:"contentUrl,omitempty"`
 	Description  string        `json:"description,omitempty"`

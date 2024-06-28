@@ -32,7 +32,7 @@ func scrapeReddit(root *goquery.Document) (models.RecipeSchema, error) {
 				if dotIndex < 4 {
 					_, s, _ = strings.Cut(s, ".")
 				}
-				rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(s)))
+				rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
 			}
 		}
 	}

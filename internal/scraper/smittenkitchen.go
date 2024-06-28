@@ -71,7 +71,7 @@ func scrapeSmittenKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 						rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(x))
 					}
 				} else if len(rs.Ingredients.Values) > 0 {
-					rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(sel.Text())))
+					rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
 				}
 			}
 		})

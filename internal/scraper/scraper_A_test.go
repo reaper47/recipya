@@ -53,10 +53,12 @@ func TestScraper_A(t *testing.T) {
 				Name:            "Estrogonofe de carne",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT30M",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				TotalTime:       "PT30M",
 				Yield:           &models.Yield{Value: 4},
 				URL:             "https://claudia.abril.com.br/receitas/estrogonofe-de-carne/",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -101,6 +103,7 @@ func TestScraper_A(t *testing.T) {
 				Name:            "Roasted Carrot Soup",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT10M",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				TotalTime:       "PT45M",
 				Yield:           &models.Yield{Value: 6},
@@ -241,6 +244,7 @@ func TestScraper_A(t *testing.T) {
 				Image:         &models.Image{Value: anUploadedImage.String()},
 				Yield:         &models.Yield{Value: 4},
 				PrepTime:      "PT10M",
+				ThumbnailURL:  &models.ThumbnailURL{},
 				CookTime:      "PT2H0M",
 				Description: &models.Description{
 					Value: "Norinj Palau is one of traditional Afghan dishes and it has a lovely delicate flavour. This pilau is prepared with the peel of the bitter (or Seville) oranges. It is quite a sweet dish.",
@@ -291,6 +295,7 @@ func TestScraper_A(t *testing.T) {
 				Keywords:        &models.Keywords{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				URL:             "http://www.afghankitchenrecipes.com/recipe/norinj-palau-rice-with-orange/",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -346,11 +351,12 @@ func TestScraper_A(t *testing.T) {
 					Protein:       "52",
 					SaturatedFat:  "12",
 				},
-				PrepTime:  "PT30M",
-				Tools:     &models.Tools{Values: []models.HowToItem{}},
-				TotalTime: "PT3H30M",
-				Yield:     &models.Yield{Value: 4},
-				URL:       "https://www.ah.nl/allerhande/recept/R-R1197438/boeuf-bourguignon-uit-de-oven-met-geroosterde-spruiten",
+				PrepTime:     "PT30M",
+				ThumbnailURL: &models.ThumbnailURL{},
+				Tools:        &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:    "PT3H30M",
+				Yield:        &models.Yield{Value: 4},
+				URL:          "https://www.ah.nl/allerhande/recept/R-R1197438/boeuf-bourguignon-uit-de-oven-met-geroosterde-spruiten",
 				Video: &models.Videos{
 					Values: []models.VideoObject{
 						{
@@ -415,10 +421,12 @@ func TestScraper_A(t *testing.T) {
 				NutritionSchema: &models.NutritionSchema{
 					Calories: "508",
 				},
-				PrepTime: "PT35M",
-				Tools:    &models.Tools{Values: []models.HowToItem{}},
-				URL:      "https://akispetretzikis.com/recipe/6867/eukolos-mpaklavas",
-				Yield:    &models.Yield{Value: 1},
+				PrepTime:     "PT35M",
+				ThumbnailURL: &models.ThumbnailURL{},
+				Tools:        &models.Tools{Values: []models.HowToItem{}},
+				URL:          "https://akispetretzikis.com/recipe/6867/eukolos-mpaklavas",
+				Video:        &models.Videos{},
+				Yield:        &models.Yield{Value: 1},
 			},
 		},
 		{
@@ -461,9 +469,11 @@ func TestScraper_A(t *testing.T) {
 				NutritionSchema: &models.NutritionSchema{},
 				Name:            "Citrus Chicken by All-Clad",
 				PrepTime:        "PT5M",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 8},
 				URL:             "https://www.all-clad.com/blog/post/kellyann-citrus-chicken",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -770,6 +780,7 @@ func TestScraper_A(t *testing.T) {
 					TransFat:       "0",
 					UnsaturatedFat: "6",
 				},
+				ThumbnailURL: &models.ThumbnailURL{},
 				Tools: &models.Tools{
 					Values: []models.HowToItem{
 						{
@@ -807,6 +818,48 @@ func TestScraper_A(t *testing.T) {
 			},
 		},
 		{
+			name: "angielaeats.com",
+			in:   "https://www.angielaeats.com/recipes/maple-soy-brussels-sprouts",
+			want: models.RecipeSchema{
+				AtContext:     atContext,
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DateModified:  "2022-09-28T17:57:59-0700",
+				DatePublished: "2022-09-20T09:43:57-0700",
+				Description:   &models.Description{Value: "Maple Soy Brussels Sprouts- Asian style seasoned airfryer Brussels sprouts | AngielaEats"},
+				Keywords:      &models.Keywords{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"1 lb brussels sprouts",
+						"2 tsp soy sauce",
+						"2 tsp maple syrup",
+						"1 tsp garlic powder",
+						"1/2 tsp white pepper",
+						"flakey salt",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Prep brussels sprouts\n\n-Rinse, pay dry\n\n-Trim off ends and cut in half longways"},
+						{Type: "HowToStep", Text: "Transfer Brussels sprouts to a mixing bowl and season with soy sauce, maple syrup, garlic powder, and white pepper. Mix well."},
+						{Type: "HowToStep", Text: "Airfry brussels sprouts at 400F for about 10 minutes, toss halfway though.\n\n*If your aifryer is heats up really hot, or your using less Brussels sprouts, airfry at 375F for about 12 minutes and toss halfway through. ."},
+						{Type: "HowToStep", Text: "Transfer brussels sprouts to a serving dish and sprinkle flakey salt on top while they’re hot."},
+						{Type: "HowToStep", Text: "Enjoy right away!"},
+					},
+				},
+				Name:            "Maple Soy Brussels Sprouts",
+				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{Value: "http://static1.squarespace.com/static/61c0cdf35ec33d23e1257608/61c0ce688fe92c2a6a7e2d9b/6329eac8429cae3ed530e8ab/1664413079951/IMG_9881.jpg?format=1500w"},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://www.angielaeats.com/recipes/maple-soy-brussels-sprouts",
+				Video:           &models.Videos{},
+			},
+		},
+		{
 			name: "archanaskitchen.com",
 			in:   "https://www.archanaskitchen.com/karnataka-style-orange-peels-curry-recipe",
 			want: models.RecipeSchema{
@@ -820,10 +873,11 @@ func TestScraper_A(t *testing.T) {
 				Description: &models.Description{
 					Value: "Did you know that we can make a yummy curry out of Orange Peels? It is tangy, sweetish, spicy, slightly bitter and bursting with flavors. It is an unique recipe. So next time you have some guests at home, make this recipe and impress your friends and family. It is filled with flavours and tastes delicious with almost everything. Next time you eat an orange, don't throw the peels, make a curry out of it.\nServe Karnataka Style Orange Peels Curry along with Cabbage Thoran and Whole Wheat Lachha Paratha for your weekday meal. It even tastes great with Steamed Rice.\nIf you like this recipe, you can also try other Karnataka recipes such as\n\nMavina Hannina Gojju Recipe\nMavina Hannina Gojju Recipe\nKarnataka Style Bassaru Palya Recipe",
 				},
-				Image:    &models.Image{Value: anUploadedImage.String()},
-				PrepTime: "PT15M",
-				CookTime: "PT15M",
-				Yield:    &models.Yield{Value: 4},
+				Image:        &models.Image{Value: anUploadedImage.String()},
+				PrepTime:     "PT15M",
+				ThumbnailURL: &models.ThumbnailURL{},
+				CookTime:     "PT15M",
+				Yield:        &models.Yield{Value: 4},
 				Ingredients: &models.Ingredients{
 					Values: []string{
 						"2 Orange",
@@ -862,7 +916,8 @@ func TestScraper_A(t *testing.T) {
 				Keywords: &models.Keywords{
 					Values: "South Indian Recipes,Indian Lunch Recipes,Orange Recipes,Karnataka Recipes",
 				},
-				URL: "https://www.archanaskitchen.com/karnataka-style-orange-peels-curry-recipe",
+				URL:   "https://www.archanaskitchen.com/karnataka-style-orange-peels-curry-recipe",
+				Video: &models.Videos{},
 			},
 		},
 		{
@@ -913,6 +968,7 @@ func TestScraper_A(t *testing.T) {
 				Name:            "Κοτόπουλο αλά κρεμ",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT10M",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				TotalTime:       "PT40M",
 				Yield:           &models.Yield{Value: 4},
@@ -1021,6 +1077,7 @@ func TestScraper_A(t *testing.T) {
 				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "P0Y0M0DT0H0M55200S",
 				URL:       "https://www.atelierdeschefs.fr/fr/recette/17741-boeuf-bourguignon-traditionnel.php",
+				Video:     &models.Videos{},
 				Yield:     &models.Yield{Value: 6},
 			},
 		},

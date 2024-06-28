@@ -44,11 +44,20 @@ func (h HTTP) PrepareRequestForURL(url string) (*http.Request, error) {
 
 	host := h.GetHost(url)
 	switch host {
-	case "aberlehome", "bettybossi", "chatelaine.com", "downshiftology.com", "marmiton", "natashaskitchen", "puurgezond", "reddit", "thekitchn", "thepalatablelife", "wellplated":
+	case "aberlehome", "bettybossi", "downshiftology", "findingtimeforcooking", "marmiton", "natashaskitchen",
+		"puurgezond", "reddit", "thekitchn", "thepalatablelife", "wellplated":
 		req.Header.Set("User-Agent", mozilla)
 	case "ah":
 		req.Header.Set("Accept-Language", "nl")
 		req.Header.Set("User-Agent", mozilla)
+	case "chatelaine":
+		req.Header.Set("User-Agent", mozilla)
+		req.Header.Set("Pragma", "no-cache")
+		req.Header.Set("DNT", "1")
+		req.Header.Set("Accept-Encoding", "gzip, deflate, br")
+		req.Header.Set("Accept", "*/*")
+		req.Header.Add("Accept-Charset", "utf-8")
+		req.Header.Set("Connection", "keep-alive")
 	}
 
 	return req, err
