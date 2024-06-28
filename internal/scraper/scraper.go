@@ -34,30 +34,29 @@ func NewScraper(client services.HTTPClient) *Scraper {
 
 // Scrape extracts the recipe from the given URL. An error will be
 // returned when the URL cannot be parsed.
-func (s *Scraper) Scrape(url string, files services.FilesService) (models.RecipeSchema, error) {
-	host := s.HTTP.GetHost(url)
-	if host == "bergamot" {
-		return s.scrapeBergamot(url)
-	} else if host == "foodbag" {
-		return s.scrapeFoodbag(url)
-	} else if host == "monsieur-cuisine" {
-		doc, err := s.fetchDocument(url)
-		if err != nil {
-			return models.RecipeSchema{}, err
-		}
-		return s.scrapeMonsieurCuisine(doc, url, files)
-	} else if host == "quitoque" {
-		return s.scrapeQuitoque(url)
-	} else if host == "reddit" {
-		url = strings.Replace(url, "www", "old", 1)
-	}
-
-	doc, err := s.fetchDocument(url)
+func (s *Scraper) Scrape(rawURL string, files services.FilesService) (models.RecipeSchema, error) {
+	var host = s.HTTP.GetHost(rawURL)
+	rs, err, isSpecial := s.scrapeSpecial(host, rawURL, files)
 	if err != nil {
 		return models.RecipeSchema{}, err
 	}
 
-	rs, err := scrapeWebsite(doc, host)
+	if isSpecial {
+		img, _ := files.ScrapeAndStoreImage(rs.Image.Value)
+		rs.Image.Value = img.String()
+		return rs, nil
+	}
+
+	if host == "reddit" {
+		rawURL = strings.Replace(rawURL, "www", "old", 1)
+	}
+
+	doc, err := s.fetchDocument(rawURL)
+	if err != nil {
+		return models.RecipeSchema{}, err
+	}
+
+	rs, err = scrapeWebsite(doc, host)
 	if err != nil {
 		return rs, ErrNotImplemented
 	}
@@ -77,7 +76,7 @@ func (s *Scraper) Scrape(url string, files services.FilesService) (models.Recipe
 	}
 
 	if rs.URL == "" {
-		rs.URL = url
+		rs.URL = rawURL
 	}
 
 	var imageUUID uuid.UUID
@@ -90,6 +89,38 @@ func (s *Scraper) Scrape(url string, files services.FilesService) (models.Recipe
 	}
 
 	return rs, nil
+}
+
+func (s *Scraper) scrapeSpecial(host, rawURL string, files services.FilesService) (models.RecipeSchema, error, bool) {
+	var (
+		rs        models.RecipeSchema
+		err       error
+		isSpecial bool
+	)
+
+	switch host {
+	case "bergamot":
+		rs, err = s.scrapeBergamot(rawURL)
+		isSpecial = true
+	case "foodbag":
+		rs, err = s.scrapeFoodbag(rawURL)
+		isSpecial = true
+	case "gousto":
+		rs, err = s.scrapeGousto(rawURL)
+		isSpecial = true
+	case "monsieur-cuisine":
+		doc, err := s.fetchDocument(rawURL)
+		if err != nil {
+			return models.RecipeSchema{}, err, true
+		}
+		rs, err = s.scrapeMonsieurCuisine(doc, rawURL, files)
+		isSpecial = true
+	case "quitoque":
+		rs, err = s.scrapeQuitoque(rawURL)
+		isSpecial = true
+	}
+
+	return rs, err, isSpecial
 }
 
 func (s *Scraper) fetchDocument(url string) (*goquery.Document, error) {

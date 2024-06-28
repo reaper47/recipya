@@ -22,7 +22,7 @@ func TestScraper_Q(t *testing.T) {
 					Value: "Le teriyaki, au Japon, désigne un plat poêlé ou grillé et caramélisé dans son assaisonnement. Ici, on l'utilise en sauce douce et enveloppante !",
 				},
 				Keywords: &models.Keywords{},
-				Image:    &models.Image{Value: "https://s3.eu-central-1.amazonaws.com/media.quitoque.fr/recipe_w1536_h1024/recipes/images/saumon-teriyaki-et-riz-rouge/saumon-teriyaki-et-riz-rouge-4.jpg"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
 					Values: []string{
 						"240 g pavé de saumon 2x120g sous vide", "1 poireau pce rdc",
