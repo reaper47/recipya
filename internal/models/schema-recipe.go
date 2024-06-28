@@ -882,7 +882,7 @@ func (n *NutritionSchema) UnmarshalJSON(data []byte) error {
 		n.TransFat = EnsureNutritionUnitForString(extensions.ConvertToString(x["transFatContent"]), "transFatContent")
 		n.UnsaturatedFat = EnsureNutritionUnitForString(extensions.ConvertToString(x["unsaturatedFatContent"]), "unsaturatedFatContent")
 
-		if val, ok := x["servingSize"].(string); ok {
+		if val := extensions.ConvertToString(x["servingSize"]); val != "" {
 			xs := strings.Split(val, " ")
 			if len(xs) == 2 && len(xs[1]) < 4 {
 				n.Servings = val
