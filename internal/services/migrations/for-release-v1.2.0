@@ -22,6 +22,7 @@ VALUES
     ('foodiecrush.com', 'https://foodiecrush.com/'),
     ('foolproofliving.com', 'https://foolproofliving.com/'),
     ('gastroplant.com', 'https://gastroplant.com/'),
+    ('gazoakleychef.com', 'https://www.gazoakleychef.com'),
     ('goodto.com', 'https://goodto.com/'),
     ('jaroflemons.com', 'https://jaroflemons.com/'),
     ('natashaskitchen.com', 'https://natashaskitchen.com/'),
@@ -34,6 +35,6 @@ WHERE host IN (
     'angielaeats.com', 'avocadoskillet.com', 'beyondkimchee.com', 'bottomlessgreens.com', 'chatelaine.com', 'chejorge.com',
     'chinesecookingdemystified.substack.com', 'cuisineandtravel.com', 'daringgourmet.com', 'dherbs.com', 'dish.co.nz', 'dreenaburton.com',
     'elephantasticvegan.com', 'entertainingwithbeth.com', 'feastingathome.com', 'findingtimeforcooking.com', ''foodal.com', 'foodbymaria.com',
-    'foodiecrush.com', 'foolproofliving.com', 'gastroplant.com', 'goodto.com', 'jaroflemons.com', 'natashaskitchen.com',
+    'foodiecrush.com', 'foolproofliving.com', 'gastroplant.com', 'gazoakleychef.com', 'goodto.com', 'jaroflemons.com', 'natashaskitchen.com',
     'nigella.com'
 );
