@@ -2,9 +2,10 @@ package extensions
 
 import (
 	"fmt"
-	"github.com/reaper47/recipya/internal/utils/regex"
 	"strconv"
 	"strings"
+
+	"github.com/reaper47/recipya/internal/utils/regex"
 )
 
 // FloatToString converts a float to a string. Trailing zeroes will be trimmed.
@@ -14,6 +15,21 @@ func FloatToString(number float64, format string) string {
 	formatted = strings.TrimRight(formatted, "0")
 	formatted = strings.TrimRight(formatted, ".")
 	return formatted
+}
+
+// ConvertToString converts the input value to a string.
+// If a conversion cannot be made, an empty string is returned.
+func ConvertToString(v interface{}) string {
+	switch val := v.(type) {
+	case string:
+		return val
+	case int:
+		return strconv.Itoa(val)
+	case float64:
+		return strconv.FormatFloat(val, 'f', -1, 64)
+	default:
+		return ""
+	}
 }
 
 // ScaleString scales the numbers in the string in-place. The string may contain fractions.

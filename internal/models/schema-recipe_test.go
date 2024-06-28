@@ -2,14 +2,16 @@ package models_test
 
 import (
 	"encoding/json"
-	"github.com/google/go-cmp/cmp"
-	"github.com/reaper47/recipya/internal/models"
 	"strings"
 	"testing"
 	"time"
 
-	"github.com/google/uuid"
+	"github.com/google/go-cmp/cmp"
+	"github.com/reaper47/recipya/internal/models"
+
 	"slices"
+
+	"github.com/google/uuid"
 )
 
 func TestCategory_UnmarshalJSON(t *testing.T) {
@@ -304,17 +306,17 @@ func TestNutritionSchema_UnmarshalJSON(t *testing.T) {
 	want := models.RecipeSchema{
 		NutritionSchema: &models.NutritionSchema{
 			Calories:       "420 kcal",
-			Carbohydrates:  "4g",
-			Cholesterol:    "3mg",
-			Fat:            "5g",
-			Fiber:          "7g",
-			Protein:        "9g",
-			SaturatedFat:   "10g",
+			Carbohydrates:  "4 g",
+			Cholesterol:    "3 mg",
+			Fat:            "5 g",
+			Fiber:          "7 g",
+			Protein:        "9 g",
+			SaturatedFat:   "10 g",
 			Servings:       "4",
-			Sodium:         "350mg",
-			Sugar:          "13g",
-			TransFat:       "2g",
-			UnsaturatedFat: "54g",
+			Sodium:         "350 mg",
+			Sugar:          "13 g",
+			TransFat:       "2 g",
+			UnsaturatedFat: "54 g",
 		},
 	}
 
@@ -323,20 +325,105 @@ func TestNutritionSchema_UnmarshalJSON(t *testing.T) {
 		data string
 	}{
 		{
-			name: "simple string",
+			name: "nutrional info without space characters",
 			data: `{"nutrition":{
 			  "calories": "420 kcal",
 			  "carbohydrateContent": "4g",
 			  "cholesterolContent": "3mg",
-			  "fatContent": "5g",
-			  "fiberContent": "7g",
+			  "fatContent": "5gram",
+			  "fiberContent": "7grams",
 			  "proteinContent": "9g",
 			  "saturatedFatContent": "10g",
 			  "servingSize": "makes 4 loaves",
-			  "sodiumContent": "350mg",
+			  "sodiumContent": "350milligram",
 			  "sugarContent": "13g",
 			  "transFatContent": "2g",
 			  "unsaturatedFatContent": "54g"
+			}}`,
+		},
+		{
+			name: "nutrional info with abbreviated suffixes",
+			data: `{"nutrition":{
+			  "calories": "420 kcal",
+			  "carbohydrateContent": "4 g",
+			  "cholesterolContent": "3 mg",
+			  "fatContent": "5 g",
+			  "fiberContent": "7 g",
+			  "proteinContent": "9 g",
+			  "saturatedFatContent": "10 g",
+			  "servingSize": "makes 4 loaves",
+			  "sodiumContent": "350 mg",
+			  "sugarContent": "13 g",
+			  "transFatContent": "2 g",
+			  "unsaturatedFatContent": "54 g"
+			}}`,
+		},
+		{
+			name: "nutrional info with non-abbreviated singular suffixes",
+			data: `{"nutrition":{
+			  "calories": "420 calories",
+			  "carbohydrateContent": "4 gram",
+			  "cholesterolContent": "3 milligram",
+			  "fatContent": "5 gram",
+			  "fiberContent": "7 gram",
+			  "proteinContent": "9 gram",
+			  "saturatedFatContent": "10 gram",
+			  "servingSize": "makes 4 loave",
+			  "sodiumContent": "350 milligram",
+			  "sugarContent": "13 gram",
+			  "transFatContent": "2 gram",
+			  "unsaturatedFatContent": " 54 gram"
+			}}`,
+		},
+		{
+			name: "nutrional info with non-abbreviated plural suffixes",
+			data: `{"nutrition":{
+			  "calories": "420 calories",
+			  "carbohydrateContent": "4 grams",
+			  "cholesterolContent": "3 milligrams",
+			  "fatContent": "5 grams",
+			  "fiberContent": "7 grams",
+			  "proteinContent": "9 grams",
+			  "saturatedFatContent": "10 grams",
+			  "servingSize": "makes 4 loaves",
+			  "sodiumContent": "350 milligrams",
+			  "sugarContent": "13 grams",
+			  "transFatContent": "2 grams",
+			  "unsaturatedFatContent": " 54 grams"
+			}}`,
+		},
+		{
+			name: "nutrional info without suffixes as strings",
+			data: `{"nutrition":{
+			  "calories": "420",
+			  "carbohydrateContent": "4",
+			  "cholesterolContent": "3",
+			  "fatContent": "5",
+			  "fiberContent": "7",
+			  "proteinContent": "9",
+			  "saturatedFatContent": "10",
+			  "servingSize": "4",
+			  "sodiumContent": "350",
+			  "sugarContent": "13",
+			  "transFatContent": "2",
+			  "unsaturatedFatContent": "54"
+			}}`,
+		},
+		{
+			name: "nutrional info without suffixes as integers",
+			data: `{"nutrition":{
+			  "calories": 420,
+			  "carbohydrateContent": 4,
+			  "cholesterolContent": 3,
+			  "fatContent": 5,
+			  "fiberContent": 7,
+			  "proteinContent": 9,
+			  "saturatedFatContent": 10,
+			  "servingSize": "4 servings",
+			  "sodiumContent": 350,
+			  "sugarContent": 13,
+			  "transFatContent": 2,
+			  "unsaturatedFatContent": 54
 			}}`,
 		},
 	}

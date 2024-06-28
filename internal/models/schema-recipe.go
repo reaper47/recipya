@@ -3,14 +3,15 @@ package models
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/reaper47/recipya/internal/app"
-	"github.com/reaper47/recipya/internal/utils/extensions"
 	"log/slog"
 	"math"
 	"slices"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/reaper47/recipya/internal/app"
+	"github.com/reaper47/recipya/internal/utils/extensions"
 
 	"github.com/google/uuid"
 )
@@ -869,33 +870,17 @@ func (n *NutritionSchema) UnmarshalJSON(data []byte) error {
 
 	switch x := v.(type) {
 	case map[string]any:
-		if val, ok := x["calories"].(string); ok {
-			n.Calories = strings.TrimSpace(val)
-		}
-
-		if val, ok := x["carbohydrateContent"].(string); ok {
-			n.Carbohydrates = val
-		}
-
-		if val, ok := x["cholesterolContent"].(string); ok {
-			n.Cholesterol = val
-		}
-
-		if val, ok := x["fatContent"].(string); ok {
-			n.Fat = val
-		}
-
-		if val, ok := x["fiberContent"].(string); ok {
-			n.Fiber = val
-		}
-
-		if val, ok := x["proteinContent"].(string); ok {
-			n.Protein = val
-		}
-
-		if val, ok := x["saturatedFatContent"].(string); ok {
-			n.SaturatedFat = val
-		}
+		n.Calories = EnsureNutritionUnitForString(extensions.ConvertToString(x["calories"]), "calories")
+		n.Carbohydrates = EnsureNutritionUnitForString(extensions.ConvertToString(x["carbohydrateContent"]), "carbohydrateContent")
+		n.Cholesterol = EnsureNutritionUnitForString(extensions.ConvertToString(x["cholesterolContent"]), "cholesterolContent")
+		n.Fat = EnsureNutritionUnitForString(extensions.ConvertToString(x["fatContent"]), "fatContent")
+		n.Fiber = EnsureNutritionUnitForString(extensions.ConvertToString(x["fiberContent"]), "fiberContent")
+		n.Protein = EnsureNutritionUnitForString(extensions.ConvertToString(x["proteinContent"]), "proteinContent")
+		n.SaturatedFat = EnsureNutritionUnitForString(extensions.ConvertToString(x["saturatedFatContent"]), "saturatedFatContent")
+		n.Sodium = EnsureNutritionUnitForString(extensions.ConvertToString(x["sodiumContent"]), "sodiumContent")
+		n.Sugar = EnsureNutritionUnitForString(extensions.ConvertToString(x["sugarContent"]), "sugarContent")
+		n.TransFat = EnsureNutritionUnitForString(extensions.ConvertToString(x["transFatContent"]), "transFatContent")
+		n.UnsaturatedFat = EnsureNutritionUnitForString(extensions.ConvertToString(x["unsaturatedFatContent"]), "unsaturatedFatContent")
 
 		if val, ok := x["servingSize"].(string); ok {
 			xs := strings.Split(val, " ")
@@ -911,26 +896,45 @@ func (n *NutritionSchema) UnmarshalJSON(data []byte) error {
 				}
 			}
 		}
-
-		if val, ok := x["sodiumContent"].(string); ok {
-			n.Sodium = val
-		}
-
-		if val, ok := x["sugarContent"].(string); ok {
-			n.Sugar = val
-		}
-
-		if val, ok := x["transFatContent"].(string); ok {
-			n.TransFat = val
-		}
-
-		if val, ok := x["unsaturatedFatContent"].(string); ok {
-			n.UnsaturatedFat = val
-		}
 	default:
 		slog.Warn("Could not parse nutrition schema", "schema", v, "type", x)
 	}
 	return nil
+}
+
+// EnsureNutritionUnitForString checks for existing unit suffix for nutritional property.
+// If not already present, add unit to the input string.
+func EnsureNutritionUnitForString(nutritionString string, nutritionProperty string) string {
+	switch nutritionProperty {
+	case "calories":
+		if nutritionString == "" {
+			return strings.TrimSpace(nutritionString)
+		} else {
+			nutritionString = strings.TrimSuffix(nutritionString, "calories")
+			nutritionString = strings.TrimSuffix(nutritionString, "kcal")
+			return strings.TrimSpace(nutritionString) + " kcal"
+		}
+	case "carbohydrateContent", "fatContent", "fiberContent", "proteinContent", "saturatedFatContent", "sugarContent", "transFatContent", "unsaturatedFatContent":
+		if nutritionString == "" {
+			return strings.TrimSpace(nutritionString)
+		} else {
+			nutritionString = strings.TrimSuffix(nutritionString, "gram")
+			nutritionString = strings.TrimSuffix(nutritionString, "grams")
+			nutritionString = strings.TrimSuffix(nutritionString, "g")
+			return strings.TrimSpace(nutritionString) + " g"
+		}
+	case "cholesterolContent", "sodiumContent":
+		if nutritionString == "" {
+			return strings.TrimSpace(nutritionString)
+		} else {
+			nutritionString = strings.TrimSuffix(nutritionString, "milligram")
+			nutritionString = strings.TrimSuffix(nutritionString, "milligrams")
+			nutritionString = strings.TrimSuffix(nutritionString, "mg")
+			return strings.TrimSpace(nutritionString) + " mg"
+		}
+	default:
+		return nutritionString
+	}
 }
 
 // Tools holds the list of tools used for a recipe.
