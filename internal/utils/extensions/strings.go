@@ -19,7 +19,7 @@ func FloatToString(number float64, format string) string {
 
 // ConvertToString converts the input value to a string.
 // If a conversion cannot be made, an empty string is returned.
-func ConvertToString(v interface{}) string {
+func ConvertToString(v any) string {
 	switch val := v.(type) {
 	case string:
 		return val

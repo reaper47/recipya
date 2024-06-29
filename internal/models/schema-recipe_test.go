@@ -385,7 +385,7 @@ func TestNutritionSchema_UnmarshalJSON(t *testing.T) {
 			  "fiberContent": "7 grams",
 			  "proteinContent": "9 grams",
 			  "saturatedFatContent": "10 grams",
-			  "servingSize": "makes 4 servings",
+			  "servingSize": "makes 4 loaves",
 			  "sodiumContent": "350 milligrams",
 			  "sugarContent": "13 grams",
 			  "transFatContent": "2 grams",
