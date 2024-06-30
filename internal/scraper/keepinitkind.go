@@ -15,5 +15,6 @@ func scrapeKeepinItKind(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.Image.Value = getPropertyContent(root, "og:image")
 	rs.Yield.Value = findYield(root.Find("*[itemprop='recipeYield']").Text())
 	getIngredients(&rs, root.Find("li[itemprop='ingredients']"))
+	getInstructions(&rs, root.Find("li[itemprop='recipeInstructions']"))
 	return rs, nil
 }
