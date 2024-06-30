@@ -297,7 +297,7 @@ func TestScraper_O(t *testing.T) {
 						"1 small avocado, sliced", "1 ripe vine or Roma tomato, sliced into rounds",
 						"½ medium red onion, sliced into rings", "4 pieces of cooked bacon",
 						"2 soft, oblong hoagie rolls, split", "4 tablespoons crumbled blue cheese",
-						"2 tablespoons mayonnaise\u00a0",
+						"2 tablespoons mayonnaise",
 						"1 tbsp mustard",
 						"1 clove garlic minced",
 						"1 tbsp chives",

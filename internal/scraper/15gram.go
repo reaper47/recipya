@@ -9,23 +9,14 @@ import (
 func scrape15gram(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
-	rs.CookTime, _ = root.Find("meta[itemprop='cookTime']").Attr("content")
-	rs.PrepTime, _ = root.Find("meta[itemprop='prepTime']").Attr("content")
+	rs.Image.Value = getPropertyContent(root, "og:image")
+	rs.CookTime = getItempropContent(root, "cookTime")
+	rs.PrepTime = getItempropContent(root, "prepTime")
 
-	nodes := root.Find("li[itemprop='recipeIngredient']")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Ingredients.Values = append(rs.Ingredients.Values, sel.Text())
-	})
+	getIngredients(&rs, root.Find("li[itemprop='recipeIngredient']"))
+	getInstructions(&rs, root.Find("li[itemprop='recipeInstructions']"))
 
-	nodes = root.Find("li[itemprop='recipeInstructions']")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
-	})
-
-	nodes = root.Find("span[itemprop='keywords']")
+	nodes := root.Find("span[itemprop='keywords']")
 	keywords := make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		keywords = append(keywords, strings.TrimSpace(sel.Text()))

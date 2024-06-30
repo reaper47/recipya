@@ -20,7 +20,7 @@ func TestScraper_L(t *testing.T) {
 				CookTime:      "PT45M",
 				DatePublished: "2023-11-12T07:54:40+01:00",
 				Description: &models.Description{
-					Value: "Une recette facile, rapide et adorée des enfants : le cake marbré moelleux au chocolat façon Savane. Un cake parfumé à la vanille et au chocolat. ",
+					Value: "Une recette facile, rapide et adorée des enfants : le cake marbré moelleux au chocolat façon Savane. Un cake parfumé à la vanille et au chocolat.",
 				},
 				Keywords: &models.Keywords{},
 				Image:    &models.Image{Value: anUploadedImage.String()},

@@ -31,11 +31,7 @@ func scrapeBottomLessGreens(root *goquery.Document) (models.RecipeSchema, error)
 		rs.Category.Value = strings.ReplaceAll(before, "-", " ")
 	}
 
-	nodes = root.Find("ul").First().Find("li")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(sel.Text()))
-	})
+	getIngredients(&rs, root.Find("ul").First().Find("li"))
 
 	root.Find("h3").Each(func(_ int, sel *goquery.Selection) {
 		name := strings.TrimSpace(sel.Text())

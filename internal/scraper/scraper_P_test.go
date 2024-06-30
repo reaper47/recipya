@@ -247,7 +247,36 @@ func TestScraper_P(t *testing.T) {
 						"2 carrot", "1 head of bok choy",
 					},
 				},
-				Instructions:    &models.Instructions{Values: []models.HowToItem{}},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Combine sauce ingredients in a jar or small bowl.", Type: "HowToStep"},
+						{
+							Text: "Add the oil to sauté pan on high heat. Cook the mock chicken pieces until golden. Transfer to a plate and set aside.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Add the some more oil to the now-empty pan. Cook the onion and garlic in the pan until the garlic becomes golden.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Then add the cabbage, carrots, and white stems of the bok choy. Cook for 3 - 4 minutes.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Meanwhile, cook the noodles according to the package directions. Then drain and rinse with cold water to stop the cooking process.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Add the mock chicken back to the pan along with the bok choy leaves. Cook until warmed through.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Stir through the cooked noodles, then pour over the sauce and toss to combine. Cook for 3 minutes to allow the cornstarch to thicken.",
+							Type: "HowToStep",
+						},
+						{Text: "Serve with green onions and sesame seeds. Enjoy!", Type: "HowToStep"},
+					},
+				},
 				NutritionSchema: &models.NutritionSchema{},
 				Name:            "The Best Vegan Chow Mein",
 				PrepTime:        "PT20M",

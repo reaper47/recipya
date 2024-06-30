@@ -10,21 +10,15 @@ import (
 func scrapeEatwell101(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Description.Value, _ = root.Find("meta[name='description']").Attr("content")
-	rs.Keywords.Values, _ = root.Find("meta[name='keywords']").Attr("content")
-	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
-	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
-	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
-	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.Description.Value = getNameContent(root, "description")
+	rs.Keywords.Values = getNameContent(root, "keywords")
+	rs.Name = getPropertyContent(root, "og:title")
+	rs.DatePublished = getPropertyContent(root, "article:published_time")
+	rs.DateModified = getPropertyContent(root, "article:modified_time")
+	rs.Image.Value = getPropertyContent(root, "og:image")
+	getIngredients(&rs, root.Find("h2:contains('Ingredients')").Next().Find("li"))
 
-	nodes := root.Find("h2:contains('Ingredients')").Next().Find("li")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := sel.Text()
-		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
-	})
-
-	nodes = root.Find("h2:contains('Directions')")
+	nodes := root.Find("h2:contains('Directions')")
 	for {
 		nodes = nodes.Next()
 		s := nodes.Text()

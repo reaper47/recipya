@@ -17,12 +17,9 @@ func scrapeCdKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 
 	content := root.Find("#recipepage")
 
-	nodes := content.Find("span[itemprop='recipeIngredient']")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, s *goquery.Selection) {
-		v := strings.ReplaceAll(s.Text(), "  ", " ")
-		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(v))
-	})
+	getIngredients(&rs, content.Find("span[itemprop='recipeIngredient']"), []models.Replace{
+		{"  ", " "},
+	}...)
 
 	node := content.Find("div[itemprop='recipeInstructions'] p")
 	node.Find("br").Each(func(_ int, s *goquery.Selection) {

@@ -10,6 +10,11 @@ import (
 func TestScraper_K(t *testing.T) {
 	testcases := []testcase{
 		{
+			name: "keepinitkind.com",
+			in:   "https://keepinitkind.com/jackfruit-vietnamese-summer-rolls-with-hoisin-peanut-sauce/",
+			want: models.RecipeSchema{},
+		},
+		{
 			name: "kennymcgovern.com",
 			in:   "https://kennymcgovern.com/chicken-noodle-soup",
 			want: models.RecipeSchema{

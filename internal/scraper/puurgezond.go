@@ -12,9 +12,9 @@ import (
 func scrapePuurgezond(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Description.Value, _ = root.Find("meta[name='description']").Attr("content")
-	rs.Keywords.Values, _ = root.Find("meta[name='keywords']").Attr("content")
-	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.Description.Value = getNameContent(root, "description")
+	rs.Keywords.Values = getNameContent(root, "keywords")
+	rs.Image.Value = getPropertyContent(root, "og:image")
 	rs.Name = root.Find("title").Text()
 
 	var (

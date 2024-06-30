@@ -451,18 +451,15 @@ func (d *Description) UnmarshalJSON(data []byte) error {
 	}
 
 	s = strings.TrimSpace(s)
-	replace := []struct {
-		old string
-		new string
-	}{
-		{old: "\u202f", new: ""},
-		{old: "\u00a0", new: ""},
-		{old: "&quot;", new: ""},
-		{old: "”", new: `"`},
-		{old: "\u00ad", new: ""},
+	replace := []Replace{
+		{"\u202f", ""},
+		{"\u00a0", ""},
+		{"&quot;", ""},
+		{"”", `"`},
+		{"\u00ad", ""},
 	}
 	for _, r := range replace {
-		s = strings.ReplaceAll(s, r.old, r.new)
+		s = strings.ReplaceAll(s, r.Old, r.New)
 	}
 
 	d.Value = s
@@ -589,21 +586,18 @@ func (i *Ingredients) UnmarshalJSON(data []byte) error {
 		xv = v
 	}
 
-	cases := []struct {
-		old string
-		new string
-	}{
-		{old: "  ", new: " "},
-		{old: "\u00a0", new: " "},
-		{old: "&frac12;", new: "½"},
-		{old: "&frac34;", new: "¾"},
-		{old: "&apos;", new: "'"},
-		{old: "&nbsp;", new: ""},
-		{old: "&#224;", new: "à"},
-		{old: "&#8217;", new: "'"},
-		{old: "&#339;", new: "œ"},
-		{old: "&#233;", new: "é"},
-		{old: "&#239;", new: "ï"},
+	cases := []Replace{
+		{"  ", " "},
+		{"\u00a0", " "},
+		{"&frac12;", "½"},
+		{"&frac34;", "¾"},
+		{"&apos;", "'"},
+		{"&nbsp;", ""},
+		{"&#224;", "à"},
+		{"&#8217;", "'"},
+		{"&#339;", "œ"},
+		{"&#233;", "é"},
+		{"&#239;", "ï"},
 	}
 
 	for _, v := range xv {
@@ -614,7 +608,7 @@ func (i *Ingredients) UnmarshalJSON(data []byte) error {
 
 		str = strings.TrimSpace(v.(string))
 		for _, c := range cases {
-			str = strings.ReplaceAll(str, c.old, c.new)
+			str = strings.ReplaceAll(str, c.Old, c.New)
 		}
 		i.Values = append(i.Values, str)
 	}

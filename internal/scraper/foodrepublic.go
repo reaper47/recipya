@@ -29,21 +29,16 @@ func scrapeFoodRepublic(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.Image.Value, _ = content.Find(".recipe-card-image img").Attr("data-lazy-src")
 	rs.Description.Value = content.Find(".recipe-card-description").Text()
 
-	nodes := content.Find(".recipe-ingredients li")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, s *goquery.Selection) {
-		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.ReplaceAll(s.Text(), "  ", " "))
-	})
+	getIngredients(&rs, content.Find(".recipe-ingredients li"), []models.Replace{
+		{"  ", " "},
+	}...)
 
-	nodes = content.Find(".recipe-directions li")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, s *goquery.Selection) {
-		v := strings.ReplaceAll(s.Text(), "\u00a0", " ")
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(v))
-	})
+	getInstructions(&rs, content.Find(".recipe-directions li"), []models.Replace{
+		{"\u00a0", " "},
+	}...)
 
-	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
-	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
+	rs.DateModified = getPropertyContent(root, "article:modified_time")
+	rs.DatePublished = getPropertyContent(root, "article:published_time")
 
 	yieldStr := content.Find(".recipe-card-servings .recipe-card-amount").Text()
 	yield, _ := strconv.ParseInt(yieldStr, 10, 16)

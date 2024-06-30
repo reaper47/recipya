@@ -58,23 +58,10 @@ func scrapeGazoakleychef(root *goquery.Document) (models.RecipeSchema, error) {
 
 	rs.Description.Value = strings.TrimSpace(root.Find(".recipe-introduction").Text())
 	rs.Category.Value = root.Find(".entry-recipe-categories a").First().Text()
+	getIngredients(&rs, root.Find(".recipe-ingredients p"))
+	getInstructions(&rs, root.Find(".recipe-method p"))
 
-	nodes := root.Find(".recipe-ingredients p")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(sel.Text()))
-	})
-
-	nodes = root.Find(".recipe-method p")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := strings.TrimSpace(sel.Text())
-		if s != "" {
-			rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
-		}
-	})
-
-	nodes = root.Find(".entry-share-ingredients a")
+	nodes := root.Find(".entry-share-ingredients a")
 	keywords := make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())

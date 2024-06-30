@@ -9,8 +9,8 @@ import (
 func scrapeKochbucher(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
-	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.Description.Value = getPropertyContent(root, "og:description")
+	rs.Image.Value = getPropertyContent(root, "og:image")
 	rs.Name = root.Find("h1[itemprop='headline']").Text()
 
 	rs.Ingredients.Values = strings.Split(root.Find("p:contains('Zutaten')").First().Next().Text(), "\n")

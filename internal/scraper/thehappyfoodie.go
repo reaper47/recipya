@@ -10,11 +10,11 @@ import (
 func scrapeTheHappyFoodie(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
-	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
-	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
-	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
-	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.Name = getPropertyContent(root, "og:title")
+	rs.Description.Value = getPropertyContent(root, "og:description")
+	rs.DatePublished = getPropertyContent(root, "article:published_time")
+	rs.DateModified = getPropertyContent(root, "article:modified_time")
+	rs.Image.Value = getPropertyContent(root, "og:image")
 	rs.Yield.Value = findYield(root.Find(".hf-metadata__portions p").Text())
 
 	rs.PrepTime = root.Find(".hf-metadata__time-prep span").Text()
@@ -52,17 +52,8 @@ func scrapeTheHappyFoodie(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 	rs.Keywords.Values = strings.Join(allKeywords, ", ")
 
-	nodes = root.Find(".hf-ingredients__single-group tr")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, s *goquery.Selection) {
-		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.Join(strings.Fields(s.Text()), " "))
-	})
-
-	nodes = root.Find(".hf-method__text p")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, s *goquery.Selection) {
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s.Text()))
-	})
+	getIngredients(&rs, root.Find(".hf-ingredients__single-group tr"), []models.Replace{{"useFields", ""}}...)
+	getInstructions(&rs, root.Find(".hf-method__text p"))
 
 	return rs, nil
 }

@@ -1241,7 +1241,7 @@ func TestScraper_B(t *testing.T) {
 				Image: &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
 					Values: []string{
-						"500 g chicken wings (6 whole wings) ", "\u200d6 g (1 tsp) soy sauce",
+						"500 g chicken wings (6 whole wings)", "\u200d6 g (1 tsp) soy sauce",
 						"6 g (1 tsp) green chilli sauce", "15 g (1½ \u00a0tbsp) red chilli sauce",
 						"4 g salt", "¼ tsp MSG", "½ tsp ground black pepper", "2 g ginger",
 						"2 g garlic", "1 tbsp egg whites", "4 tbsp plain flour (maida)",

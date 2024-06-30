@@ -63,11 +63,11 @@ func scrapeGlobo(root *goquery.Document) (rs models.RecipeSchema, err error) {
 		})
 	}()
 
-	rs.Name, _ = root.Find("meta[itemprop='name']").Attr("content")
+	rs.Name = getItempropContent(root, "name")
 	image, _ := root.Find("meta[itemprop='image']").Attr("content")
 	rs.Image = &models.Image{Value: image}
-	rs.DateModified, _ = root.Find("meta[itemprop='dateModified']").Attr("content")
-	rs.DatePublished, _ = root.Find("meta[itemprop='datePublished']").Attr("content")
+	rs.DateModified = getItempropContent(root, "dateModified")
+	rs.DatePublished = getItempropContent(root, "datePublished")
 	keywords, _ := root.Find("meta[itemprop='keywords']").Attr("content")
 	rs.Keywords = &models.Keywords{Values: keywords}
 	cat, _ := root.Find("meta[itemprop='recipeCategory']").Attr("content")

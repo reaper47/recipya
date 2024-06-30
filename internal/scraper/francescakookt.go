@@ -10,9 +10,9 @@ import (
 func scrapeFrancescakookt(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Description.Value, _ = root.Find("meta[name='description']").Attr("content")
-	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
-	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.Description.Value = getNameContent(root, "description")
+	rs.Name = getPropertyContent(root, "og:title")
+	rs.Image.Value = getPropertyContent(root, "og:image")
 
 	nodes := root.Find("meta[property='article:tag']")
 	keywords := make([]string, 0, nodes.Length())
@@ -22,8 +22,8 @@ func scrapeFrancescakookt(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 	rs.Keywords.Values = strings.ToLower(strings.Join(keywords, ","))
 
-	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
-	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
+	rs.DateModified = getPropertyContent(root, "article:modified_time")
+	rs.DatePublished = getPropertyContent(root, "article:published_time")
 
 	category := root.Find("h2:contains('Categorieën')").Next().Find("a").First().Text()
 	before, _, ok := strings.Cut(category, "recepten")
@@ -41,11 +41,8 @@ func scrapeFrancescakookt(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 	rs.Yield.Value = yield
 
-	nodes = root.Find("div.dynamic-entry-content ul").Last().Find("li")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(sel.Text()))
-	})
+	getIngredients(&rs, root.Find("div.dynamic-entry-content ul").Last().Find("li"))
+	getInstructions(&rs, root.Find("div.dynamic-entry-content ol").Last().Find("li"))
 
 	s := root.Find("p:contains('Bereidingstijd')").Text()
 	if s != "" {
@@ -54,12 +51,6 @@ func scrapeFrancescakookt(root *goquery.Document) (models.RecipeSchema, error) {
 			rs.PrepTime = "PT" + regex.Digit.FindString(s) + "M"
 		}
 	}
-
-	nodes = root.Find("div.dynamic-entry-content ol").Last().Find("li")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
-	})
 
 	return rs, nil
 }

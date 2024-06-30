@@ -10,7 +10,7 @@ import (
 func scrapeGrandfrais(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
+	rs.Description.Value = getPropertyContent(root, "og:description")
 	rs.Name = root.Find("h1[itemprop='name']").Text()
 	rs.Yield.Value = findYield(root.Find("p[itemprop='recipeYield']").Text())
 
@@ -45,11 +45,7 @@ func scrapeGrandfrais(root *goquery.Document) (models.RecipeSchema, error) {
 		}
 	}
 
-	nodes = root.Find("div[itemprop='recipeInstructions'] li")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
-	})
+	getInstructions(&rs, root.Find("div[itemprop='recipeInstructions'] li"))
 
 	image, _ := root.Find("img[itemprop='image']").Attr("src")
 	if !strings.HasPrefix(image, "https://") {

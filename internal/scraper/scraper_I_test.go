@@ -351,6 +351,41 @@ func TestScraper_I(t *testing.T) {
 				URL:       "https://inspiralized.com/vegetarian-zucchini-noodle-pad-thai/",
 			},
 		},
+		{
+			name: "instantpot.com",
+			in:   "https://instantpot.com/blogs/recipes/cilantro-lime-rice",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "side dish"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Description: &models.Description{
+					Value: "Instant® is a well-known brand of kitchen and home appliances. Find pressure cookers, air purifiers, air fryers & cookware. Ships to USA and Canada.",
+				},
+				Keywords: &models.Keywords{
+					Values: "15-30min,cilantro,easy,limes,pressurecook,rice,sidedish,vegetarian,water",
+				},
+				Image:       &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{Values: []string{"3 cups rice", "3 cups Water", "3  limes", "1/4 cup cilantro"}},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Pour rice and water into your Instant Pot.", Type: "HowToStep"},
+						{Text: "Use the Rice Function and Pressure Cook.", Type: "HowToStep"},
+						{Text: "Do a Quick Release. Juice the limes into the rice, use as much or as little to your taste. Sprinkle cilantro and stir the rice until thoroughly mixed.", Type: "HowToStep"},
+						{Text: "Enjoy!", Type: "HowToStep"},
+					},
+				},
+				Name:            "Cilantro Lime Rice",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT15M",
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://instantpot.com/blogs/recipes/cilantro-lime-rice",
+				Video:           &models.Videos{},
+			},
+		},
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {

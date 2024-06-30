@@ -29,11 +29,7 @@ func scrapeChinesecookingdemystified(root *goquery.Document) (models.RecipeSchem
 		})
 	})
 
-	nodes := root.Find("h3:contains('Process')").NextUntil(":not(p)")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
-	})
+	getInstructions(&rs, root.Find("h3:contains('Process')").NextUntil(":not(p)"))
 
 	return rs, nil
 }

@@ -27,7 +27,9 @@ VALUES
     ('goodto.com', 'https://goodto.com'),
     ('gousto.co.uk', 'https://www.gousto.co.uk'),
     ('homebrewanswers.com', 'https://homebrewanswers.com'),
+    ('instantpot.com', 'https://instantpot.com'),
     ('jaroflemons.com', 'https://jaroflemons.com'),
+    ('keepinitkind.com', 'https://keepinitkind.com'),
     ('mygingergarlickitchen.com', 'https://www.mygingergarlickitchen.com'),
     ('natashaskitchen.com', 'https://natashaskitchen.com'),
     ('nigella.com', 'https://nigella.com'),
@@ -42,6 +44,6 @@ WHERE host IN (
     'chinesecookingdemystified.substack.com', 'cuisineandtravel.com', 'daringgourmet.com', 'dherbs.com', 'dish.co.nz', 'dreenaburton.com',
     'elephantasticvegan.com', 'entertainingwithbeth.com', 'feastingathome.com', 'findingtimeforcooking.com', 'foodal.com', 'foodbymaria.com',
     'foodiecrush.com', 'foolproofliving.com', 'gastroplant.com', 'gazoakleychef.com', 'goodeatings.com', 'goodto.com',
-    'gousto.co.uk', 'homebrewanswers.com', 'jaroflemons.com', 'mygingergarlickitchen.com', 'natashaskitchen.com',
+    'gousto.co.uk', 'homebrewanswers.com', 'instantpot.com', 'jaroflemons.com', 'keepinitkind.com', 'mygingergarlickitchen.com', 'natashaskitchen.com',
     'nigella.com', 'ohmyveggies.com', 'sarahsveganguide.com', 'twosleevers.com'
 );
