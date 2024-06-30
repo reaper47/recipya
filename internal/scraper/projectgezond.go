@@ -9,19 +9,19 @@ import (
 func scrapeProjectgezond(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	name, _ := root.Find("meta[property='og:title']").Attr("content")
+	name := getPropertyContent(root, "og:title")
 	before, _, found := strings.Cut(name, " | ")
 	if found {
 		name = strings.TrimSpace(before)
 	}
 	rs.Name = name
 
-	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
-	rs.Category.Value, _ = root.Find("meta[property='article:section']").Attr("content")
+	rs.Description.Value = getPropertyContent(root, "og:description")
+	rs.Category.Value = getPropertyContent(root, "article:section")
 	rs.Image.Value, _ = root.Find(".wp-post-image").First().Attr("src")
 
 	rs.DatePublished, _ = root.Find("meta[property='og:published_time']").Attr("content")
-	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
+	rs.DateModified = getPropertyContent(root, "article:modified_time")
 
 	nodes := root.Find("h2").First().NextUntil("h2")
 	ingredientNodes := nodes.Find("ul li")

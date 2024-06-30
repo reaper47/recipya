@@ -15,15 +15,9 @@ func scrapeAngielaEats(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.DatePublished = getItempropContent(root, "datePublished")
 	rs.DateModified = getItempropContent(root, "dateModified")
 	rs.Name = getItempropContent(root, "headline")
+	getIngredients(&rs, root.Find("ul").Last().Find("li"))
 
-	nodes := root.Find("ul").Last().Find("li")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := strings.TrimSpace(sel.Text())
-		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
-	})
-
-	nodes = root.Find("ol").Last().Find("li")
+	nodes := root.Find("ol").Last().Find("li")
 	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		var s []string

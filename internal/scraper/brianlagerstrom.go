@@ -10,7 +10,7 @@ import (
 func scrapeBrianLagerstrom(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Description.Value, _ = root.Find("meta[itemprop='description']").Attr("content")
+	rs.Description.Value = getItempropContent(root, "description")
 	rs.Image.Value, _ = root.Find("meta[itemprop='thumbnailUrl']").Attr("content")
 
 	name, _ := root.Find("meta[itemprop='name']").Attr("content")
@@ -74,14 +74,9 @@ func scrapeBrianLagerstrom(root *goquery.Document) (models.RecipeSchema, error) 
 			node = node.Next()
 		}
 
-		// Instructions
-		nodes = root.Find("ol li")
-		rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-		nodes.Each(func(_ int, sel *goquery.Selection) {
-			s := strings.TrimSpace(sel.Text())
-			s = strings.ReplaceAll(s, "\u00a0", " ")
-			rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
-		})
+		getInstructions(&rs, root.Find("ol li"), []models.Replace{
+			{"\u00a0", " "},
+		}...)
 	}
 
 	node := root.Find("p:contains('portion')").First()

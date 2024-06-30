@@ -9,29 +9,18 @@ import (
 func scrapeClosetcooking(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
-	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
-	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
-	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
-	rs.PrepTime, _ = root.Find("meta[itemprop='prepTime']").Attr("content")
-	rs.CookTime, _ = root.Find("meta[itemprop='cookTime']").Attr("content")
-	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.DatePublished = getPropertyContent(root, "article:published_time")
+	rs.DateModified = getPropertyContent(root, "article:modified_time")
+	rs.Description.Value = getPropertyContent(root, "og:description")
+	rs.Name = getPropertyContent(root, "og:title")
+	rs.PrepTime = getItempropContent(root, "prepTime")
+	rs.CookTime = getItempropContent(root, "cookTime")
+	rs.Image.Value = getPropertyContent(root, "og:image")
 
-	nodes := root.Find("li[itemprop='recipeIngredient']")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := sel.Text()
-		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
-	})
+	getIngredients(&rs, root.Find("li[itemprop='recipeIngredient']"))
+	getInstructions(&rs, root.Find("li[itemprop='recipeInstructions']"))
 
-	nodes = root.Find("li[itemprop='recipeInstructions']")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := sel.Text()
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
-	})
-
-	nodes = root.Find(".entry-categories a")
+	nodes := root.Find(".entry-categories a")
 	xk := make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		xk = append(xk, sel.Text())

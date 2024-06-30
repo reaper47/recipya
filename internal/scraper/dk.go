@@ -16,13 +16,10 @@ func scrapeDk(root *goquery.Document) (models.RecipeSchema, error) {
 	yield, _ := strconv.ParseInt(yieldStr, 10, 16)
 	rs.Yield.Value = int16(yield)
 
-	nodes := content.Find("li[itemprop='recipeIngredient']")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, s *goquery.Selection) {
-		v := strings.TrimSpace(s.Text())
-		v = strings.ReplaceAll(v, "\n", "")
-		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.Join(strings.Fields(v), " "))
-	})
+	getIngredients(&rs, content.Find("li[itemprop='recipeIngredient']"), []models.Replace{
+		{"\n", ""},
+		{"useFields", ""},
+	}...)
 
 	rs.Instructions.Values = make([]models.HowToItem, 0)
 	content.Find("div[itemprop='recipeInstructions'] h3,div[itemprop='recipeInstructions'] li").Each(func(i int, s *goquery.Selection) {

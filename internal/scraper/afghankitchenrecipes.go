@@ -43,18 +43,8 @@ func scrapeAfghanKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 		rs.Description.Value = strings.TrimSpace(s)
 	}
 
-	nodes := about.Find("li.ingredient")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, s *goquery.Selection) {
-		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.ReplaceAll(s.Text(), "  ", " "))
-	})
-
-	nodes = about.Find("p.instructions")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, s *goquery.Selection) {
-		st := strings.ReplaceAll(strings.TrimSpace(s.Text()), "  ", " ")
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(st))
-	})
+	getIngredients(&rs, about.Find("li.ingredient"), []models.Replace{{"  ", " "}}...)
+	getInstructions(&rs, about.Find("p.instructions"), []models.Replace{{"  ", " "}}...)
 
 	rs.DatePublished, _ = content.Find("meta[itemprop='datePublished']").Attr("content")
 	rs.Image.Value, _ = content.Find("meta[itemprop='image']").Attr("content")

@@ -29,20 +29,10 @@ func scrapeGoodEatings(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.Name = root.Find("h2").First().Text()
 	rs.DateModified = getPropertyContent(root, "article:modified_time")
 	rs.DatePublished = getPropertyContent(root, "article:published_time")
+	getIngredients(&rs, root.Find("p:contains('INGREDIENTS:')").NextAll())
+	getInstructions(&rs, root.Find("p:contains('METHOD:')").NextAll())
 
-	nodes := root.Find("p:contains('INGREDIENTS:')").NextAll()
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(sel.Text()))
-	})
-
-	nodes = root.Find("p:contains('METHOD:')").NextAll()
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
-	})
-
-	nodes = root.Find(".tag-cloud-link")
+	nodes := root.Find(".tag-cloud-link")
 	keywords := make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		keywords = append(keywords, strings.TrimSpace(sel.Text()))
@@ -82,19 +72,11 @@ func scrapeGoodEatings(root *goquery.Document) (models.RecipeSchema, error) {
 		rs.Yield.Value = int16(parsed)
 
 		if len(rs.Ingredients.Values) == 0 {
-			nodes = node.NextAll()
-			rs.Ingredients.Values = make([]string, 0, nodes.Length())
-			nodes.Each(func(_ int, sel *goquery.Selection) {
-				rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(sel.Text()))
-			})
+			getIngredients(&rs, node.NextAll())
 		}
 
 		if len(rs.Instructions.Values) == 0 {
-			nodes = node.ParentsUntil(".wpb_row.row-inner").Parent().Find("div").Last().Find("p")
-			rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-			nodes.Each(func(_ int, sel *goquery.Selection) {
-				rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
-			})
+			getInstructions(&rs, node.ParentsUntil(".wpb_row.row-inner").Parent().Find("div").Last().Find("p"))
 		}
 	}
 

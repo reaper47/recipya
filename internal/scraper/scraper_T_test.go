@@ -285,7 +285,7 @@ func TestScraper_T(t *testing.T) {
 				CookingMethod: &models.CookingMethod{},
 				Cuisine:       &models.Cuisine{},
 				Description: &models.Description{
-					Value: "This shrimp scampi with angel hair pasta is a delicious dinner with plenty of cheese that you can make in just 15 minutes! ",
+					Value: "This shrimp scampi with angel hair pasta is a delicious dinner with plenty of cheese that you can make in just 15 minutes!",
 				},
 				Image:    &models.Image{Value: anUploadedImage.String()},
 				Keywords: &models.Keywords{},

@@ -157,6 +157,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		}
 	case 'i':
 		switch host {
+		case "instantpot":
+			return scrapeInstantPot(doc)
 		default:
 			return parseWebsite(doc)
 		}
@@ -173,6 +175,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		}
 	case 'k':
 		switch host {
+		case "keepinitkind":
+			return scrapeKeepinItKind(doc)
 		case "kennymcgovern":
 			return scrapeKennyMcGovern(doc)
 		case "kingarthurbaking":

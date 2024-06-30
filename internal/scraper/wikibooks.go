@@ -40,17 +40,8 @@ func scrapeWikiBooks(root *goquery.Document) (models.RecipeSchema, error) {
 
 	start = root.Find("#Ingredients").Parent()
 	end := root.Find("#Procedure").Parent()
-	nodes = start.NextUntilSelection(end).Find("li")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, s *goquery.Selection) {
-		rs.Ingredients.Values = append(rs.Ingredients.Values, s.Text())
-	})
-
-	nodes = root.Find("#Procedure").Parent().NextUntil("h2").Find("li")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, s *goquery.Selection) {
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s.Text()))
-	})
+	getIngredients(&rs, start.NextUntilSelection(end).Find("li"))
+	getInstructions(&rs, root.Find("#Procedure").Parent().NextUntil("h2").Find("li"))
 
 	return rs, nil
 }

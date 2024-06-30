@@ -22,21 +22,16 @@ func scrapeArchanasKitchen(root *goquery.Document) (models.RecipeSchema, error) 
 	})
 	rs.Keywords.Values = strings.TrimSuffix(rs.Keywords.Values, ",")
 
-	nodes := root.Find("li[itemprop='ingredients']")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, s *goquery.Selection) {
-		v := strings.ReplaceAll(s.Text(), "\n", "")
-		v = strings.ReplaceAll(v, "\t", "")
-		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(strings.ReplaceAll(v, " , ", ", ")))
-	})
-
-	nodes = root.Find("li[itemprop='recipeInstructions'] p")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, s *goquery.Selection) {
-		v := strings.ReplaceAll(s.Text(), "\u00a0", " ")
-		v = strings.TrimSpace(strings.ReplaceAll(v, " .", "."))
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(v))
-	})
+	getIngredients(&rs, root.Find("li[itemprop='ingredients']"), []models.Replace{
+		{"\n", ""},
+		{"\t", ""},
+		{" , ", ", "},
+	}...)
+	
+	getInstructions(&rs, root.Find("li[itemprop='recipeInstructions'] p"), []models.Replace{
+		{"\u00a0", " "},
+		{" .", "."},
+	}...)
 
 	rs.PrepTime, _ = root.Find("span[itemprop='prepTime']").Attr("content")
 	rs.CookTime, _ = root.Find("span[itemprop='cookTime']").Attr("content")

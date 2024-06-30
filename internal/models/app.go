@@ -10,3 +10,9 @@ type AppInfo struct {
 	LastUpdatedAt       time.Time
 	LastCheckedUpdateAt time.Time
 }
+
+// Replace holds the old and new values for a strings.ReplaceAll operation.
+type Replace struct {
+	Old string
+	New string
+}

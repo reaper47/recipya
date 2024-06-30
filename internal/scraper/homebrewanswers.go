@@ -40,14 +40,9 @@ func scrapeHomebrewAnswers(root *goquery.Document) (models.RecipeSchema, error) 
 	rs.Description.Value = getPropertyContent(root, "og:description")
 
 	if len(rs.Ingredients.Values) == 0 {
-		nodes := root.Find("h2:contains('Ingredients')").Next().Find("li")
-		rs.Ingredients.Values = make([]string, 0, nodes.Length())
-		nodes.Each(func(_ int, sel *goquery.Selection) {
-			rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(sel.Text()))
-		})
+		getIngredients(&rs, root.Find("h2:contains('Ingredients')").Next().Find("li"))
 	} else {
 		rs.Ingredients.Values = slices.DeleteFunc(rs.Ingredients.Values, func(s string) bool { return s == "" })
-
 	}
 
 	if rs.CookingMethod == nil {

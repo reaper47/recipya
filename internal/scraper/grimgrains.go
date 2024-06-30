@@ -39,19 +39,8 @@ func scrapeGrimGrains(root *goquery.Document) (models.RecipeSchema, error) {
 
 	rs.Description.Value = root.Find(".col2").Text()
 	rs.Name = root.Find("h1").Text()
-
-	nodes := root.Find(".ingredients dt")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := sel.Text()
-		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
-	})
-
-	nodes = root.Find(".instructions li")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
-	})
+	getIngredients(&rs, root.Find(".ingredients dt"))
+	getInstructions(&rs, root.Find(".instructions li"))
 
 	return rs, nil
 }

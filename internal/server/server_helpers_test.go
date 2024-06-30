@@ -216,7 +216,7 @@ func prepareRequestOther(method, target string, contentType header, body *string
 func getBodyHTML(rr *httptest.ResponseRecorder) string {
 	body, _ := io.ReadAll(rr.Body)
 
-	cases := []struct{ old, new string }{
+	cases := []models.Replace{
 		{"\r\n", ""},
 		{"\n", ""},
 		{"\r", ""},
@@ -226,7 +226,7 @@ func getBodyHTML(rr *httptest.ResponseRecorder) string {
 		{"&gt;", ">"},
 	}
 	for _, c := range cases {
-		body = bytes.ReplaceAll(body, []byte(c.old), []byte(c.new))
+		body = bytes.ReplaceAll(body, []byte(c.Old), []byte(c.New))
 	}
 
 	body = bytes.Join(bytes.Fields(body), []byte(" "))

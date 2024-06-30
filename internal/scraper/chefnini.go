@@ -26,11 +26,11 @@ func scrapeChefnini(root *goquery.Document) (models.RecipeSchema, error) {
 		}
 	}
 
-	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
-	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
-	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
+	rs.Image.Value = getPropertyContent(root, "og:image")
+	rs.DateModified = getPropertyContent(root, "article:modified_time")
+	rs.DatePublished = getPropertyContent(root, "article:published_time")
 
-	name, _ := root.Find("meta[property='og:title']").Attr("content")
+	name := getPropertyContent(root, "og:title")
 	before, _, ok := strings.Cut(name, " - ")
 	if ok {
 		name = strings.TrimSpace(before)
@@ -39,24 +39,8 @@ func scrapeChefnini(root *goquery.Document) (models.RecipeSchema, error) {
 
 	description := root.Find("p[itemprop='description']").Text()
 	rs.Description.Value = strings.TrimSpace(description)
-
-	nodes = root.Find("li[itemprop='ingredients']")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := sel.Text()
-		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
-	})
-
-	nodes = root.Find("div[itemprop='recipeInstructions'] p")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := sel.Text()
-		if s == "" {
-			return
-		}
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
-	})
-
+	getIngredients(&rs, root.Find("li[itemprop='ingredients']"))
+	getInstructions(&rs, root.Find("div[itemprop='recipeInstructions'] p"))
 	rs.Yield.Value = findYield(root.Find("h3[itemprop='recipeYield']").Text())
 
 	return rs, nil

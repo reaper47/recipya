@@ -10,9 +10,9 @@ import (
 func scrapeValdemarsro(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
-	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
-	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.DatePublished = getPropertyContent(root, "article:published_time")
+	rs.DateModified = getPropertyContent(root, "article:modified_time")
+	rs.Image.Value = getPropertyContent(root, "og:image")
 	rs.Name = root.Find("h1[itemprop='headline']").Text()
 	rs.Yield.Value = findYield(root.Find(".fa-sort").Parent().Text())
 
@@ -39,17 +39,8 @@ func scrapeValdemarsro(root *goquery.Document) (models.RecipeSchema, error) {
 		rs.CookTime = "PT" + parts[0] + "H" + parts[2] + "M"
 	}
 
-	nodes := root.Find("li[itemprop='recipeIngredient']")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, s *goquery.Selection) {
-		rs.Ingredients.Values = append(rs.Ingredients.Values, s.Text())
-	})
-
-	nodes = root.Find("div[itemprop='recipeInstructions'] p")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, s *goquery.Selection) {
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s.Text()))
-	})
+	getIngredients(&rs, root.Find("li[itemprop='recipeIngredient']"))
+	getInstructions(&rs, root.Find("div[itemprop='recipeInstructions'] p"))
 
 	return rs, nil
 }

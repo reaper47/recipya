@@ -64,11 +64,7 @@ func scrapeDish(root *goquery.Document) (models.RecipeSchema, error) {
 		}
 	})
 
-	nodes := root.Find("div[itemprop='recipeInstructions']").First().Find("p")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
-	})
+	getInstructions(&rs, root.Find("div[itemprop='recipeInstructions']").First().Find("p"))
 
 	return rs, nil
 }

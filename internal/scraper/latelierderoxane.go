@@ -10,9 +10,9 @@ import (
 func scrapeLatelierderoxane(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Description.Value, _ = root.Find("meta[name='description']").Attr("content")
+	rs.Description.Value = getNameContent(root, "description")
 
-	name, _ := root.Find("meta[name='og:title']").Attr("content")
+	name := getNameContent(root, "og:title")
 	before, _, found := strings.Cut(name, " - ")
 	if found {
 		name = strings.TrimSpace(before)
@@ -55,18 +55,8 @@ func scrapeLatelierderoxane(root *goquery.Document) (models.RecipeSchema, error)
 		rs.Yield.Value = findYield(split[0])
 	}
 
-	nodes := root.Find(".ingredient")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := strings.TrimSpace(sel.Text())
-		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
-	})
-
-	nodes = root.Find(".bloc_texte_simple li")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
-	})
+	getIngredients(&rs, root.Find(".ingredient"))
+	getInstructions(&rs, root.Find(".bloc_texte_simple li"))
 
 	return rs, nil
 }
