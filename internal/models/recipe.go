@@ -516,6 +516,12 @@ func (n *Nutrition) Format() string {
 		sb.WriteString("; ")
 	}
 
+	if n.UnsaturatedFat != "" {
+		sb.WriteString("unsaturated fat ")
+		sb.WriteString(EnsureNutritionUnitForString(n.UnsaturatedFat, "UnsaturatedFat"))
+		sb.WriteString("; ")
+	}
+
 	if n.Cholesterol != "" {
 		sb.WriteString("cholesterol ")
 		sb.WriteString(EnsureNutritionUnitForString(n.Cholesterol, "Cholesterol"))

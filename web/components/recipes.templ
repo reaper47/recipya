@@ -1444,6 +1444,21 @@ templ editRecipe(data *templates.ViewRecipeData) {
 												</td>
 											</tr>
 											<tr>
+												<td>Unsaturated fat</td>
+												<td>
+													<label>
+														<input
+															type="text"
+															name="unsaturated-fat"
+															autocomplete="off"
+															placeholder="g"
+															class="input input-bordered input-xs max-w-24"
+															value={ data.Recipe.Nutrition.UnsaturatedFat }
+														/>
+													</label>
+												</td>
+											</tr>
+											<tr>
 												<td>Cholesterol</td>
 												<td>
 													<label>
@@ -2051,6 +2066,16 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 													-
 												} else {
 													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.SaturatedFat,"SaturatedFat") }
+												}
+											</td>
+										</tr>
+										<tr>
+											<td>Unsaturated fat:</td>
+											<td>
+												if data.Recipe.Nutrition.UnsaturatedFat == "" {
+													-
+												} else {
+													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.UnsaturatedFat,"UnsaturatedFat") }
 												}
 											</td>
 										</tr>
