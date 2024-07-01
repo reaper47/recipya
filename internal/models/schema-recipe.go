@@ -871,17 +871,17 @@ func (n *NutritionSchema) UnmarshalJSON(data []byte) error {
 
 	switch x := v.(type) {
 	case map[string]any:
-		n.Calories = regex.Digit.FindString(extensions.ConvertToString(x["calories"]))
-		n.Carbohydrates = regex.Digit.FindString(extensions.ConvertToString(x["carbohydrateContent"]))
-		n.Cholesterol = regex.Digit.FindString(extensions.ConvertToString(x["cholesterolContent"]))
-		n.Fat = regex.Digit.FindString(extensions.ConvertToString(x["fatContent"]))
-		n.Fiber = regex.Digit.FindString(extensions.ConvertToString(x["fiberContent"]))
-		n.Protein = regex.Digit.FindString(extensions.ConvertToString(x["proteinContent"]))
-		n.SaturatedFat = regex.Digit.FindString(extensions.ConvertToString(x["saturatedFatContent"]))
-		n.Sodium = regex.Digit.FindString(extensions.ConvertToString(x["sodiumContent"]))
-		n.Sugar = regex.Digit.FindString(extensions.ConvertToString(x["sugarContent"]))
-		n.TransFat = regex.Digit.FindString(extensions.ConvertToString(x["transFatContent"]))
-		n.UnsaturatedFat = regex.Digit.FindString(extensions.ConvertToString(x["unsaturatedFatContent"]))
+		n.Calories = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["calories"]), ",", ".", -1))
+		n.Carbohydrates = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["carbohydrateContent"]), ",", ".", -1))
+		n.Cholesterol = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["cholesterolContent"]), ",", ".", -1))
+		n.Fat = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["fatContent"]), ",", ".", -1))
+		n.SaturatedFat = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["saturatedFatContent"]), ",", ".", -1))
+		n.UnsaturatedFat = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["unsaturatedFatContent"]), ",", ".", -1))
+		n.TransFat = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["transFatContent"]), ",", ".", -1))
+		n.Protein = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["proteinContent"]), ",", ".", -1))
+		n.Sugar = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["sugarContent"]), ",", ".", -1))
+		n.Sodium = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["sodiumContent"]), ",", ".", -1))
+		n.Fiber = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["fiberContent"]), ",", ".", -1))
 
 		if val := extensions.ConvertToString(x["servingSize"]); val != "" {
 			xs := strings.Split(val, " ")
