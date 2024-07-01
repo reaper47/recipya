@@ -919,7 +919,7 @@ func EnsureNutritionUnitForString(nutritionValue any, nutritionProperty string) 
 	switch nutritionPropertyLowerCase {
 	case "calories":
 		return nutritionStringDigits + " kcal"
-	case "carbohydrates", "fat", "fiber", "protein", "saturatedfat", "sugar", "transfat", "unsaturatedfat":
+	case "carbohydrates", "protein", "fat", "saturatedfat", "sugar", "transfat", "unsaturatedfat", "fiber":
 		return nutritionStringDigits + " g"
 	case "cholesterol", "sodium":
 		return nutritionStringDigits + " mg"
