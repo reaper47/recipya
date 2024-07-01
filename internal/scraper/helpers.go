@@ -44,8 +44,9 @@ func getIngredients(rs *models.RecipeSchema, nodes *goquery.Selection, replaceOp
 			}
 		}
 
+		s = strings.TrimSpace(s)
 		if s != "" {
-			rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(s))
+			rs.Ingredients.Values = append(rs.Ingredients.Values, s)
 		}
 	})
 }
