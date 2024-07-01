@@ -3,11 +3,12 @@ package scraper
 import (
 	"encoding/json"
 	"errors"
-	"github.com/reaper47/recipya/internal/models"
 	"io"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/reaper47/recipya/internal/models"
 )
 
 type quitoque struct {
@@ -241,15 +242,15 @@ func (s *Scraper) scrapeQuitoque(rawURL string) (models.RecipeSchema, error) {
 	if len(q.Data.Recipe.NutritionalInformations) > 0 {
 		n := q.Data.Recipe.NutritionalInformations[0]
 		ns = models.NutritionSchema{
-			Calories:      strconv.FormatFloat(n.KiloCalorie, 'g', 10, 64) + " kcal",
-			Carbohydrates: strconv.FormatFloat(n.Carbohydrate, 'g', 10, 64) + " g",
-			Fat:           strconv.FormatFloat(n.Fat, 'g', 10, 64) + " g",
-			Fiber:         strconv.FormatFloat(n.Fiber, 'g', 10, 64) + " g",
-			Protein:       strconv.FormatFloat(n.Protein, 'g', 10, 64) + " g",
-			SaturatedFat:  strconv.FormatFloat(n.SaturatedFat, 'g', 10, 64) + " g",
+			Calories:      strconv.FormatFloat(n.KiloCalorie, 'g', 10, 64),
+			Carbohydrates: strconv.FormatFloat(n.Carbohydrate, 'g', 10, 64),
+			Fat:           strconv.FormatFloat(n.Fat, 'g', 10, 64),
+			Fiber:         strconv.FormatFloat(n.Fiber, 'g', 10, 64),
+			Protein:       strconv.FormatFloat(n.Protein, 'g', 10, 64),
+			SaturatedFat:  strconv.FormatFloat(n.SaturatedFat, 'g', 10, 64),
 			Servings:      strconv.Itoa(n.NbPerson),
-			Sodium:        strconv.FormatFloat(n.Salt, 'g', 10, 64) + " g",
-			Sugar:         strconv.FormatFloat(n.SugarCarbohydrate, 'g', 10, 64) + " g",
+			Sodium:        strconv.FormatFloat(n.Salt, 'g', 10, 64),
+			Sugar:         strconv.FormatFloat(n.SugarCarbohydrate, 'g', 10, 64),
 		}
 	}
 

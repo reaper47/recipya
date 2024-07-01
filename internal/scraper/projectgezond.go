@@ -1,9 +1,11 @@
 package scraper
 
 import (
+	"strings"
+
 	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
-	"strings"
+	"github.com/reaper47/recipya/internal/utils/regex"
 )
 
 func scrapeProjectgezond(root *goquery.Document) (models.RecipeSchema, error) {
@@ -69,11 +71,11 @@ func scrapeProjectgezond(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	rs.NutritionSchema = &models.NutritionSchema{
-		Calories:      cal + " kcal",
-		Carbohydrates: carbs,
-		Fat:           fat,
-		Fiber:         fiber,
-		Protein:       protein,
+		Calories:      regex.Digit.FindString(cal),
+		Carbohydrates: regex.Digit.FindString(carbs),
+		Fat:           regex.Digit.FindString(fat),
+		Fiber:         regex.Digit.FindString(fiber),
+		Protein:       regex.Digit.FindString(protein),
 	}
 
 	return rs, nil

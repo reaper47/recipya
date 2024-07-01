@@ -4,12 +4,6 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/google/go-cmp/cmp"
-	"github.com/google/uuid"
-	"github.com/reaper47/recipya/internal/app"
-	"github.com/reaper47/recipya/internal/models"
-	"github.com/reaper47/recipya/internal/server"
-	"github.com/reaper47/recipya/internal/services"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -19,6 +13,13 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/app"
+	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/server"
+	"github.com/reaper47/recipya/internal/services"
 )
 
 func TestHandlers_Recipes(t *testing.T) {
@@ -632,15 +633,15 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 		Name:         "Chicken Jersey",
 		Nutrition: models.Nutrition{
 			Calories:           "354",
-			Cholesterol:        "1g",
-			Fiber:              "2g",
-			Protein:            "3g",
-			SaturatedFat:       "4g",
-			Sodium:             "5g",
-			Sugars:             "6g",
-			TotalCarbohydrates: "7g",
-			TotalFat:           "8g",
-			UnsaturatedFat:     "9g",
+			Cholesterol:        "1",
+			Fiber:              "2",
+			Protein:            "3",
+			SaturatedFat:       "4",
+			Sodium:             "5",
+			Sugars:             "6",
+			TotalCarbohydrates: "7",
+			TotalFat:           "8",
+			UnsaturatedFat:     "9",
 		},
 		Times: models.Times{
 			Prep:  30 * time.Minute,
@@ -710,7 +711,7 @@ func TestHandlers_Recipes_Edit(t *testing.T) {
 			`<input type="text" placeholder="Source" name="source" class="input input-bordered input-sm md:w-28 lg:w-40 xl:w-44" value="https://example.com/recipes/yummy"`,
 			`<textarea name="description" placeholder="This Thai curry chicken will make you drool." class="textarea w-full h-full resize-none">A delicious recipe!</textarea>`,
 			`<tbody><tr><td>Prep</td><td><label><input type="text" name="time-preparation" class="input input-bordered input-xs max-w-24 html-duration-picker" value="00:30:00"></label></td></tr><tr><td>Cooking</td><td><label><input type="text" name="time-cooking" class="input input-bordered input-xs max-w-24 html-duration-picker" value="01:00:00"></label></td></tr></tbody>`,
-			`<tbody><tr><td>Calories</td><td><label><input type="text" name="calories" autocomplete="off" placeholder="368kcal" class="input input-bordered input-xs max-w-24" value="354"></label></td></tr><tr><td>Total carbs</td><td><label><input type="text" name="total-carbohydrates" autocomplete="off" placeholder="35g" class="input input-bordered input-xs max-w-24" value="7g"></label></td></tr><tr><td>Sugars</td><td><label><input type="text" name="sugars" autocomplete="off" placeholder="3g" class="input input-bordered input-xs max-w-24" value="6g"></label></td></tr><tr><td>Protein</td><td><label><input type="text" name="protein" autocomplete="off" placeholder="21g" class="input input-bordered input-xs max-w-24" value="3g"></label></td></tr><tr><td>Total fat</td><td><label><input type="text" name="total-fat" autocomplete="off" placeholder="15g" class="input input-bordered input-xs max-w-24" value="8g"></label></td></tr><tr><td>Saturated fat</td><td><label><input type="text" name="saturated-fat" autocomplete="off" placeholder="1.8g" class="input input-bordered input-xs max-w-24" value="4g"></label></td></tr><tr><td>Cholesterol</td><td><label><input type="text" name="cholesterol" autocomplete="off" placeholder="1.1mg" class="input input-bordered input-xs max-w-24" value="1g"></label></td></tr><tr><td>Sodium</td><td><label><input type="text" name="sodium" autocomplete="off" placeholder="100mg" class="input input-bordered input-xs max-w-24" value="5g"></label></td></tr><tr><td>Fiber</td><td><label><input type="text" name="fiber" autocomplete="off" placeholder="8g" class="input input-bordered input-xs max-w-24" value="2g"></label></td></tr></tbody>`,
+			`<tbody><tr><td>Calories</td><td><label><input type="text" name="calories" autocomplete="off" placeholder="kcal" class="input input-bordered input-xs max-w-24" value="354"></label></td></tr><tr><td>Total carbs</td><td><label><input type="text" name="total-carbohydrates" autocomplete="off" placeholder="g" class="input input-bordered input-xs max-w-24" value="7"></label></td></tr><tr><td>Sugars</td><td><label><input type="text" name="sugars" autocomplete="off" placeholder="g" class="input input-bordered input-xs max-w-24" value="6"></label></td></tr><tr><td>Protein</td><td><label><input type="text" name="protein" autocomplete="off" placeholder="g" class="input input-bordered input-xs max-w-24" value="3"></label></td></tr><tr><td>Total fat</td><td><label><input type="text" name="total-fat" autocomplete="off" placeholder="g" class="input input-bordered input-xs max-w-24" value="8"></label></td></tr><tr><td>Saturated fat</td><td><label><input type="text" name="saturated-fat" autocomplete="off" placeholder="g" class="input input-bordered input-xs max-w-24" value="4"></label></td></tr><tr><td>Unsaturated fat</td><td><label><input type="text" name="unsaturated-fat" autocomplete="off" placeholder="g" class="input input-bordered input-xs max-w-24" value="9"></label></td></tr><tr><td>Cholesterol</td><td><label><input type="text" name="cholesterol" autocomplete="off" placeholder="mg" class="input input-bordered input-xs max-w-24" value="1"></label></td></tr><tr><td>Sodium</td><td><label><input type="text" name="sodium" autocomplete="off" placeholder="mg" class="input input-bordered input-xs max-w-24" value="5"></label></td></tr><tr><td>Fiber</td><td><label><input type="text" name="fiber" autocomplete="off" placeholder="g" class="input input-bordered input-xs max-w-24" value="2"></label></td></tr></tbody>`,
 			`<input type="text" name="tools" placeholder="1 frying pan" class="input input-bordered input-sm w-full" _="on keydown if event.key is 'Enter' halt the event then call addItem(event)">`,
 			`<input type="text" name="time-preparation" class="input input-bordered input-xs max-w-24 html-duration-picker" value="00:30:00">`,
 			`<input required type="text" name="ingredients" value="ing1" placeholder="1 cup of chopped onions" class="input input-bordered input-sm w-full" _="on keydown if event.key is 'Enter' halt the event then call addItem(event)">`,
@@ -1260,11 +1261,11 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 		Name:         "Chicken Jersey",
 		Nutrition: models.Nutrition{
 			Calories:           "500",
-			Cholesterol:        "1g",
+			Cholesterol:        "1mg",
 			Fiber:              "2g",
 			Protein:            "3g",
 			SaturatedFat:       "4g",
-			Sodium:             "5g",
+			Sodium:             "5mg",
 			Sugars:             "6g",
 			TotalCarbohydrates: "7g",
 			TotalFat:           "8g",
@@ -1314,9 +1315,9 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 			`<p class="text-sm text-center">2 servings</p>`,
 			`<a class="btn btn-sm btn-outline no-underline print:hidden" href="https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/" target="_blank">Source</a><p class="hidden print:block print:whitespace-nowrap print:overflow-hidden print:text-ellipsis print:max-w-xs">https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/</p>`,
 			`<textarea class="textarea w-full h-full resize-none" readonly>This is the most delicious recipe!</textarea>`,
-			`<p class="text-xs">Per 100g: calories 500; total carbohydrates 7g; sugar 6g; protein 3g; total fat 8g; saturated fat 4g; cholesterol 1g; fiber 2g</p>`,
+			`<p class="text-xs">Per 100g: calories 500 kcal; total carbohydrates 7 g; sugar 6 g; protein 3 g; total fat 8 g; saturated fat 4 g; unsaturated fat 9 g; cholesterol 1 mg; sodium 5 mg; fiber 2 g</p>`,
 			`<table class="table table-zebra table-xs md:h-fit"><thead><tr><th>Time</th><th>h:m:s</th></tr></thead> <tbody><tr><td>Prep:</td><td><time datetime="PT05M">5m</time></td></tr><tr><td>Cooking:</td><td><time datetime="PT1H05M">1h05m</time></td></tr><tr><td>Total:</td><td><time datetime="PT1H10M">1h10m</time></td></tr></tbody></table>`,
-			`<table class="table table-zebra table-xs print:hidden"><thead><tr><th>Nutrition (per 100g)</th><th>Amount</th></tr></thead> <tbody><tr><td>Calories:</td><td>500</td></tr><tr><td>Total carbs:</td><td>7g</td></tr><tr><td>Sugars:</td><td>6g</td></tr><tr><td>Protein:</td><td>3g</td></tr><tr><td>Total fat:</td><td>8g</td></tr><tr><td>Saturated fat:</td><td>4g</td></tr><tr><td>Cholesterol:</td><td>1g</td></tr><tr><td>Sodium:</td><td>5g</td></tr><tr><td>Fiber:</td><td>2g</td></tr></tbody></table>`,
+			`<table class="table table-zebra table-xs print:hidden"><thead><tr><th>Nutrition (per 100g)</th><th>Amount</th></tr></thead> <tbody><tr><td>Calories:</td><td>500 kcal</td></tr><tr><td>Total carbs:</td><td>7 g</td></tr><tr><td>Sugars:</td><td>6 g</td></tr><tr><td>Protein:</td><td>3 g</td></tr><tr><td>Total fat:</td><td>8 g</td></tr><tr><td>Saturated fat:</td><td>4 g</td></tr><tr><td>Unsaturated fat:</td><td>9 g</td></tr><tr><td>Cholesterol:</td><td>1 mg</td></tr><tr><td>Sodium:</td><td>5 mg</td></tr><tr><td>Fiber:</td><td>2 g</td></tr></tbody></table>`,
 			`<div id="ingredients-instructions-container" class="grid text-sm md:grid-flow-col md:col-span-6"><div class="col-span-6 border-gray-700 px-4 py-2 border-y md:col-span-2 md:border-r md:border-y-0 print:hidden"><h2 class="font-semibold text-center underline pb-1">Ingredients</h2><ul><li class="form-control hover:bg-gray-100 dark:hover:bg-gray-700"><label class="label justify-start"><input type="checkbox" class="checkbox"> <span class="label-text pl-2">Ing1</span></label></li><li class="form-control hover:bg-gray-100 dark:hover:bg-gray-700"><label class="label justify-start"><input type="checkbox" class="checkbox"> <span class="label-text pl-2">Ing2</span></label></li><li class="form-control hover:bg-gray-100 dark:hover:bg-gray-700"><label class="label justify-start"><input type="checkbox" class="checkbox"> <span class="label-text pl-2">Ing3</span></label></li></ul></div><div class="col-span-6 px-8 py-2 border-gray-700 md:rounded-bl-none md:col-span-4 print:hidden"><h2 class="font-semibold text-center underline pb-1">Instructions</h2><ol class="grid list-decimal"><li class="min-w-full py-2 select-none hover:bg-gray-100 dark:hover:bg-gray-700" _="on mousedown toggle .line-through"><span class="whitespace-pre-line">Ins1</span></li><li class="min-w-full py-2 select-none hover:bg-gray-100 dark:hover:bg-gray-700" _="on mousedown toggle .line-through"><span class="whitespace-pre-line">Ins2</span></li><li class="min-w-full py-2 select-none hover:bg-gray-100 dark:hover:bg-gray-700" _="on mousedown toggle .line-through"><span class="whitespace-pre-line">Ins3</span></li></ol></div></div><div class="hidden print:grid col-span-6 ml-2 my-1"><h1 class="text-sm print:mb-1"><b>Ingredients</b></h1><ol class="col-span-6 w-full print:mb-2" style="column-count: 1"><li class="text-sm"><label><input type="checkbox"></label> <span class="pl-2">Ing1</span></li><li class="text-sm"><label><input type="checkbox"></label> <span class="pl-2">Ing2</span></li><li class="text-sm"><label><input type="checkbox"></label> <span class="pl-2">Ing3</span></li></ol></div><div class="hidden col-span-5 overflow-visible print:inline"><h1 class="text-sm print:ml-2 print:mb-1"><b>Instructions</b></h1><ol class="col-span-6 list-decimal w-full ml-6"><li class="print:mr-4"><span class="text-sm whitespace-pre-line">Ins1</span></li><li class="print:mr-4"><span class="text-sm whitespace-pre-line">Ins2</span></li><li class="print:mr-4"><span class="text-sm whitespace-pre-line">Ins3</span></li></ol></div>`,
 			`<h2 class="font-semibold text-center underline pb-1">Instructions</h2><ol class="grid list-decimal"><li class="min-w-full py-2 select-none hover:bg-gray-100 dark:hover:bg-gray-700" _="on mousedown toggle .line-through"><span class="whitespace-pre-line">Ins1</span></li><li class="min-w-full py-2 select-none hover:bg-gray-100 dark:hover:bg-gray-700" _="on mousedown toggle .line-through"><span class="whitespace-pre-line">Ins2</span></li><li class="min-w-full py-2 select-none hover:bg-gray-100 dark:hover:bg-gray-700" _="on mousedown toggle .line-through"><span class="whitespace-pre-line">Ins3</span></li></ol>`,
 		}
@@ -1604,11 +1605,11 @@ func TestHandlers_Recipes_View(t *testing.T) {
 				Name:         "Chicken Jersey",
 				Nutrition: models.Nutrition{
 					Calories:           "500",
-					Cholesterol:        "1g",
+					Cholesterol:        "1mg",
 					Fiber:              "2g",
 					Protein:            "3g",
 					SaturatedFat:       "4g",
-					Sodium:             "5g",
+					Sodium:             "5mg",
 					Sugars:             "6g",
 					TotalCarbohydrates: "7g",
 					TotalFat:           "8g",
@@ -1641,9 +1642,9 @@ func TestHandlers_Recipes_View(t *testing.T) {
 				`<form autocomplete="off" _="on submit halt the event" class="print:hidden"><label class="form-control w-full"><div class="label p-0"><span class="label-text">Servings</span></div><input id="yield" type="number" min="1" name="yield" value="2" class="input input-bordered input-sm w-24" hx-get="/recipes/1/scale" hx-trigger="input" hx-target="#ingredients-instructions-container"></label></form>`,
 				`<a class="btn btn-sm btn-outline no-underline print:hidden" href="https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/" target="_blank">Source</a>`,
 				`<textarea class="textarea w-full h-full resize-none" readonly>This is the most delicious recipe!</textarea>`,
-				`<p class="text-xs">Per 100g: calories 500; total carbohydrates 7g; sugar 6g; protein 3g; total fat 8g; saturated fat 4g; cholesterol 1g; fiber 2g</p>`,
+				`<p class="text-xs">Per 100g: calories 500 kcal; total carbohydrates 7 g; sugar 6 g; protein 3 g; total fat 8 g; saturated fat 4 g; unsaturated fat 9 g; cholesterol 1 mg; sodium 5 mg; fiber 2 g</p>`,
 				`<table class="table table-zebra table-xs md:h-fit"><thead><tr><th>Time</th><th>h:m:s</th></tr></thead> <tbody><tr><td>Prep:</td><td><time datetime="PT05M">5m</time></td></tr><tr><td>Cooking:</td><td><time datetime="PT1H05M">1h05m</time></td></tr><tr><td>Total:</td><td><time datetime="PT1H10M">1h10m</time></td></tr></tbody></table>`,
-				`<table class="table table-zebra table-xs print:hidden"><thead><tr><th>Nutrition (per 100g)</th><th>Amount</th></tr></thead> <tbody><tr><td>Calories:</td><td>500</td></tr><tr><td>Total carbs:</td><td>7g</td></tr><tr><td>Sugars:</td><td>6g</td></tr><tr><td>Protein:</td><td>3g</td></tr><tr><td>Total fat:</td><td>8g</td></tr><tr><td>Saturated fat:</td><td>4g</td></tr><tr><td>Cholesterol:</td><td>1g</td></tr><tr><td>Sodium:</td><td>5g</td></tr><tr><td>Fiber:</td><td>2g</td></tr></tbody></table>`,
+				`<table class="table table-zebra table-xs print:hidden"><thead><tr><th>Nutrition (per 100g)</th><th>Amount</th></tr></thead> <tbody><tr><td>Calories:</td><td>500 kcal</td></tr><tr><td>Total carbs:</td><td>7 g</td></tr><tr><td>Sugars:</td><td>6 g</td></tr><tr><td>Protein:</td><td>3 g</td></tr><tr><td>Total fat:</td><td>8 g</td></tr><tr><td>Saturated fat:</td><td>4 g</td></tr><tr><td>Unsaturated fat:</td><td>9 g</td></tr><tr><td>Cholesterol:</td><td>1 mg</td></tr><tr><td>Sodium:</td><td>5 mg</td></tr><tr><td>Fiber:</td><td>2 g</td></tr></tbody></table>`,
 			}
 			assertStringsInHTML(t, getBodyHTML(rr), want)
 		})

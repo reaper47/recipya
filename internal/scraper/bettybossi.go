@@ -2,11 +2,12 @@ package scraper
 
 import (
 	"encoding/json"
-	"github.com/PuerkitoBio/goquery"
-	"github.com/reaper47/recipya/internal/models"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/PuerkitoBio/goquery"
+	"github.com/reaper47/recipya/internal/models"
 )
 
 type bettibossi struct {
@@ -130,7 +131,7 @@ func scrapeBettybossi(root *goquery.Document) (models.RecipeSchema, error) {
 
 	var ns models.NutritionSchema
 	for _, n := range b.Naehrwerte {
-		v := strconv.Itoa(n.Wert1) + " " + n.Wert1Einheit
+		v := strconv.Itoa(n.Wert1) // + " " + n.Wert1Einheit 	2024-07-01: Commented out this section (left the original code as it was in German in case we need to revert) as we only scrape the digits, as part of https://github.com/reaper47/recipya/pull/382
 		switch n.Kurzbezeichnung {
 		case "E":
 			if n.Bezeichnung == "Eiweiss" {

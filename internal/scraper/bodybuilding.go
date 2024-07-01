@@ -1,10 +1,12 @@
 package scraper
 
 import (
+	"strings"
+
 	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/utils/extensions"
-	"strings"
+	"github.com/reaper47/recipya/internal/utils/regex"
 )
 
 func scrapeBodybuilding(root *goquery.Document) (models.RecipeSchema, error) {
@@ -26,13 +28,13 @@ func scrapeBodybuilding(root *goquery.Document) (models.RecipeSchema, error) {
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		switch sel.Text() {
 		case "Calories":
-			n.Calories = sel.Prev().Text() + " kcal"
+			n.Calories = regex.Digit.FindString(sel.Prev().Text())
 		case "Carbs":
-			n.Carbohydrates = sel.Prev().Text()
+			n.Carbohydrates = regex.Digit.FindString(sel.Prev().Text())
 		case "Protein":
-			n.Protein = sel.Prev().Text()
+			n.Protein = regex.Digit.FindString(sel.Prev().Text())
 		case "Fat":
-			n.Fat = sel.Prev().Text()
+			n.Fat = regex.Digit.FindString(sel.Prev().Text())
 		}
 	})
 	rs.NutritionSchema = &n

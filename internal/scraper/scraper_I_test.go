@@ -1,8 +1,9 @@
 package scraper_test
 
 import (
-	"github.com/reaper47/recipya/internal/models"
 	"testing"
+
+	"github.com/reaper47/recipya/internal/models"
 )
 
 func TestScraper_I(t *testing.T) {
@@ -47,10 +48,10 @@ func TestScraper_I(t *testing.T) {
 				},
 				Name: "Chicken à la king",
 				NutritionSchema: &models.NutritionSchema{
-					Calories:      "775 calories",
-					Carbohydrates: "58 g",
-					Fat:           "45 g",
-					Protein:       "34 g",
+					Calories:      "775",
+					Carbohydrates: "58",
+					Fat:           "45",
+					Protein:       "34",
 					Servings:      "4",
 				},
 				Tools:     &models.Tools{Values: []models.HowToItem{}},
@@ -92,7 +93,7 @@ func TestScraper_I(t *testing.T) {
 				},
 				Name: "Cranberry-Walnut Oatmeal Energy Balls (No-Bake)",
 				NutritionSchema: &models.NutritionSchema{
-					Calories: "170 kcal",
+					Calories: "170",
 					Servings: "1",
 				},
 				PrepTime:  "PT10M",
@@ -149,15 +150,15 @@ func TestScraper_I(t *testing.T) {
 				},
 				Name: "Mango Rice Recipe",
 				NutritionSchema: &models.NutritionSchema{
-					Calories:      "636 kcal",
-					Carbohydrates: "83 g",
-					Fat:           "28 g",
-					Fiber:         "7 g",
-					Protein:       "11 g",
-					SaturatedFat:  "13 g",
+					Calories:      "636",
+					Carbohydrates: "83",
+					Fat:           "28",
+					Fiber:         "7",
+					Protein:       "11",
+					SaturatedFat:  "13",
 					Servings:      "1",
-					Sodium:        "28 mg",
-					Sugar:         "1 g",
+					Sodium:        "28",
+					Sugar:         "1",
 				},
 				PrepTime:  "PT10M",
 				TotalTime: "PT35M",
@@ -204,16 +205,16 @@ func TestScraper_I(t *testing.T) {
 				},
 				Name: "Coconut Pineapple Rice",
 				NutritionSchema: &models.NutritionSchema{
-					Calories:       "880 kcal",
-					Carbohydrates:  "88 g",
-					Cholesterol:    "0 mg",
-					Fat:            "56 g",
-					Fiber:          "7 g",
-					Protein:        "12 g",
-					SaturatedFat:   "28 g",
-					Sodium:         "1190 mg",
-					Sugar:          "10 g",
-					UnsaturatedFat: "28 g",
+					Calories:       "880",
+					Carbohydrates:  "88",
+					Cholesterol:    "0",
+					Fat:            "56",
+					Fiber:          "7",
+					Protein:        "12",
+					SaturatedFat:   "28",
+					Sodium:         "1190",
+					Sugar:          "10",
+					UnsaturatedFat: "28",
 				},
 				PrepTime:  "PT28M",
 				Tools:     &models.Tools{Values: []models.HowToItem{}},
@@ -261,7 +262,7 @@ func TestScraper_I(t *testing.T) {
 				},
 				Name: "Easy Chicken Cordon Bleu Casserole Recipe",
 				NutritionSchema: &models.NutritionSchema{
-					Calories: "455 cal",
+					Calories: "455",
 				},
 				PrepTime:  "PT10M",
 				Tools:     &models.Tools{Values: []models.HowToItem{}},

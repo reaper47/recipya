@@ -3,18 +3,19 @@ package models_test
 import (
 	"bytes"
 	"errors"
-	"github.com/PuerkitoBio/goquery"
-	"github.com/google/go-cmp/cmp"
-	"github.com/google/uuid"
-	"github.com/reaper47/recipya/internal/app"
-	"github.com/reaper47/recipya/internal/models"
-	"github.com/reaper47/recipya/internal/units"
 	"io"
 	"math"
 	"net/url"
 	"slices"
 	"testing"
 	"time"
+
+	"github.com/PuerkitoBio/goquery"
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/app"
+	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/units"
 )
 
 func BenchmarkRecipe_ConvertMeasurementSystem(b *testing.B) {
@@ -747,8 +748,8 @@ func TestNutrition_Format(t *testing.T) {
 		},
 		{
 			name: "selected fields",
-			in:   models.Nutrition{Calories: "354 kcal", Cholesterol: "207.44 ug", Fiber: "7.10 g"},
-			want: "Per 100g: calories 354 kcal; cholesterol 207.44 ug; fiber 7.10 g",
+			in:   models.Nutrition{Calories: "354 kcal", Cholesterol: "207.44 mg", Fiber: "7.10 g"},
+			want: "Per 100g: calories 354 kcal; cholesterol 207.44 mg; fiber 7.10 g",
 		},
 		{
 			name: "all fields",
@@ -764,7 +765,7 @@ func TestNutrition_Format(t *testing.T) {
 				TotalFat:           "20g",
 				UnsaturatedFat:     "15g",
 			},
-			want: "Per 100g: calories 150 kcal; total carbohydrates 89g; sugar 66g; protein 8g; total fat 20g; saturated fat 1g; cholesterol 34mg; fiber 6g",
+			want: "Per 100g: calories 150 kcal; total carbohydrates 89 g; sugar 66 g; protein 8 g; total fat 20 g; saturated fat 1 g; unsaturated fat 15 g; cholesterol 34 mg; sodium 567 mg; fiber 6 g",
 		},
 	}
 	for _, tc := range testcases {

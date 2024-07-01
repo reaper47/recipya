@@ -1,8 +1,9 @@
 package scraper_test
 
 import (
-	"github.com/reaper47/recipya/internal/models"
 	"testing"
+
+	"github.com/reaper47/recipya/internal/models"
 )
 
 func TestScraper_H(t *testing.T) {
@@ -52,7 +53,7 @@ func TestScraper_H(t *testing.T) {
 				},
 				Name: "Skillet Louisiana Style Chicken and Rice",
 				NutritionSchema: &models.NutritionSchema{
-					Calories: "547 kcal",
+					Calories: "547",
 					Servings: "1",
 				},
 				PrepTime:  "PT20M",
@@ -162,8 +163,8 @@ func TestScraper_H(t *testing.T) {
 				},
 				Name: "Dragon Chicken",
 				NutritionSchema: &models.NutritionSchema{
-					Calories: "640 cal",
-					Fat:      "34 g",
+					Calories: "640",
+					Fat:      "34",
 					Servings: "1",
 				},
 				PrepTime:  "PT20M",
@@ -260,18 +261,18 @@ func TestScraper_H(t *testing.T) {
 				Keywords: &models.Keywords{Values: "Broccoli Tots"},
 				Name:     "Broccoli Tots",
 				NutritionSchema: &models.NutritionSchema{
-					Calories:       "39 kcal",
-					Carbohydrates:  "2 g",
-					Cholesterol:    "16 mg",
-					Fat:            "3 g",
-					Fiber:          "1 g",
-					Protein:        "2 g",
-					SaturatedFat:   "1 g",
+					Calories:       "39",
+					Carbohydrates:  "2",
+					Cholesterol:    "16",
+					Fat:            "3",
+					Fiber:          "1",
+					Protein:        "2",
+					SaturatedFat:   "1",
 					Servings:       "1",
-					Sodium:         "31 mg",
-					Sugar:          "1 g",
-					TransFat:       "1 g",
-					UnsaturatedFat: "2 g",
+					Sodium:         "31",
+					Sugar:          "1",
+					TransFat:       "1",
+					UnsaturatedFat: "2",
 				},
 				PrepTime:  "PT20M",
 				TotalTime: "PT40M",
@@ -374,15 +375,15 @@ func TestScraper_H(t *testing.T) {
 				},
 				Name: "Creamy Shrimp Tagliatelle with Heirloom Tomatoes, Garlic, and Chili",
 				NutritionSchema: &models.NutritionSchema{
-					Calories:      "750 kcal",
-					Carbohydrates: "86 g",
-					Cholesterol:   "350 mg",
-					Fat:           "27 g",
-					Fiber:         "5 g",
-					Protein:       "50 g",
-					SaturatedFat:  "12 g",
-					Sodium:        "880 mg",
-					Sugar:         "9 g",
+					Calories:      "750",
+					Carbohydrates: "86",
+					Cholesterol:   "350",
+					Fat:           "27",
+					Fiber:         "5",
+					Protein:       "50",
+					SaturatedFat:  "12",
+					Sodium:        "880",
+					Sugar:         "9",
 				},
 				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT20M",

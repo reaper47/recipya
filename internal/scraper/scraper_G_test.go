@@ -1,8 +1,9 @@
 package scraper_test
 
 import (
-	"github.com/reaper47/recipya/internal/models"
 	"testing"
+
+	"github.com/reaper47/recipya/internal/models"
 )
 
 func TestScraper_G(t *testing.T) {
@@ -371,17 +372,17 @@ func TestScraper_G(t *testing.T) {
 				},
 				Name: "Beef and Tomato Macaroni\u00a0Soup",
 				NutritionSchema: &models.NutritionSchema{
-					Calories:       "829 kcal",
-					Carbohydrates:  "79 g",
-					Cholesterol:    "80.5 mg",
-					Fat:            "40 g",
-					Fiber:          "8.5 g",
-					Protein:        "36 g",
-					SaturatedFat:   "16 g",
+					Calories:       "829",
+					Carbohydrates:  "79",
+					Cholesterol:    "80.5",
+					Fat:            "40",
+					Fiber:          "8.5",
+					Protein:        "36",
+					SaturatedFat:   "16",
 					Servings:       "1",
-					Sodium:         "2643 mg",
-					Sugar:          "9.5 g",
-					UnsaturatedFat: "7 g",
+					Sodium:         "2643",
+					Sugar:          "9.5",
+					UnsaturatedFat: "7",
 				},
 				PrepTime:  "PT10M",
 				TotalTime: "PT40M",
@@ -430,7 +431,7 @@ func TestScraper_G(t *testing.T) {
 				},
 				Name: "Hunter's Chicken (with Bacon, BBQ Sauce and Cheese)",
 				NutritionSchema: &models.NutritionSchema{
-					Calories: "440 cal",
+					Calories: "440",
 				},
 				PrepTime:  "PT5M",
 				Tools:     &models.Tools{Values: []models.HowToItem{}},
@@ -473,7 +474,7 @@ func TestScraper_G(t *testing.T) {
 				},
 				Name: "Balsamic Chicken Caprese",
 				NutritionSchema: &models.NutritionSchema{
-					Calories: "376 calories",
+					Calories: "376",
 				},
 				PrepTime:  "PT0S",
 				TotalTime: "PT30M",

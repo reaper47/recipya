@@ -1,8 +1,9 @@
 package scraper_test
 
 import (
-	"github.com/reaper47/recipya/internal/models"
 	"testing"
+
+	"github.com/reaper47/recipya/internal/models"
 )
 
 func TestScraper_K(t *testing.T) {
@@ -100,17 +101,17 @@ func TestScraper_K(t *testing.T) {
 				},
 				Name: "Sourdough Zucchini Bread",
 				NutritionSchema: &models.NutritionSchema{
-					Calories:       "279 calories",
-					Carbohydrates:  "33g",
-					Cholesterol:    "23g",
-					Fat:            "13g",
-					Fiber:          "2g",
-					Protein:        "5g",
-					SaturatedFat:   "2g",
+					Calories:       "279",
+					Carbohydrates:  "33",
+					Cholesterol:    "23",
+					Fat:            "13",
+					Fiber:          "2",
+					Protein:        "5",
+					SaturatedFat:   "2",
 					Servings:       "",
-					Sodium:         "202mg",
-					Sugar:          "21g",
-					TransFat:       "0g",
+					Sodium:         "202",
+					Sugar:          "21",
+					TransFat:       "0",
 					UnsaturatedFat: "",
 				},
 				PrepTime:  "PT30M",
@@ -163,17 +164,17 @@ func TestScraper_K(t *testing.T) {
 				},
 				Name: "Fudge Brownies",
 				NutritionSchema: &models.NutritionSchema{
-					Calories:      "260 calories",
-					Carbohydrates: "36g",
-					Cholesterol:   "55mg",
-					Fat:           "17g",
-					Fiber:         "2g",
-					Protein:       "3g",
-					SaturatedFat:  "8g",
+					Calories:      "260",
+					Carbohydrates: "36",
+					Cholesterol:   "55",
+					Fat:           "17",
+					Fiber:         "2",
+					Protein:       "3",
+					SaturatedFat:  "8",
 					Servings:      "1",
-					Sodium:        "130mg",
-					Sugar:         "27g",
-					TransFat:      "0g",
+					Sodium:        "130",
+					Sugar:         "27",
+					TransFat:      "0",
 				},
 				PrepTime:  "PT12M",
 				Tools:     &models.Tools{},
@@ -220,10 +221,10 @@ func TestScraper_K(t *testing.T) {
 				},
 				Name: "Vegetarische Paella mit Zucchini und Aubergine",
 				NutritionSchema: &models.NutritionSchema{
-					Calories:      "448 cal",
-					Carbohydrates: "69 g",
-					Fat:           "7 g",
-					Protein:       "15 g",
+					Calories:      "448",
+					Carbohydrates: "69",
+					Fat:           "7",
+					Protein:       "15",
 					Servings:      "1",
 				},
 				PrepTime:  "PT45M",
@@ -274,10 +275,10 @@ func TestScraper_K(t *testing.T) {
 				},
 				Name: "Spargelsalat Fruchtig",
 				NutritionSchema: &models.NutritionSchema{
-					Calories:      "97 kcal",
-					Carbohydrates: "1,87273 g",
-					Fat:           "9,23273 g",
-					Protein:       "1,78182 g",
+					Calories:      "97",
+					Carbohydrates: "1.87273",
+					Fat:           "9.23273",
+					Protein:       "1.78182",
 					Servings:      "100 g",
 				},
 				Tools: &models.Tools{Values: []models.HowToItem{}},

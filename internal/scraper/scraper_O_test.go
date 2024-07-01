@@ -1,8 +1,9 @@
 package scraper_test
 
 import (
-	"github.com/reaper47/recipya/internal/models"
 	"testing"
+
+	"github.com/reaper47/recipya/internal/models"
 )
 
 func TestScraper_O(t *testing.T) {
@@ -67,15 +68,15 @@ func TestScraper_O(t *testing.T) {
 				},
 				Name: "Bread-Free Stuffing Balls",
 				NutritionSchema: &models.NutritionSchema{
-					Calories:      "140 calorie",
-					Carbohydrates: "18 grams",
-					Fat:           "6 grams",
-					Fiber:         "2 grams",
-					Protein:       "4 grams",
-					SaturatedFat:  "0.5 grams",
+					Calories:      "140",
+					Carbohydrates: "18",
+					Fat:           "6",
+					Fiber:         "2",
+					Protein:       "4",
+					SaturatedFat:  "0.5",
 					Servings:      "1",
-					Sodium:        "160 milligrams",
-					Sugar:         "9 grams",
+					Sodium:        "160",
+					Sugar:         "9",
 				},
 				PrepTime:  "PT30M",
 				Tools:     &models.Tools{Values: []models.HowToItem{}},
@@ -131,15 +132,15 @@ func TestScraper_O(t *testing.T) {
 				},
 				Name: "Chinese Scallion Pancakes (葱油饼)",
 				NutritionSchema: &models.NutritionSchema{
-					Calories:      "202 kcal",
-					Carbohydrates: "25.7 g",
-					Fat:           "9.3 g",
-					Fiber:         "1.1 g",
-					Protein:       "3.6 g",
-					SaturatedFat:  "1.6 g",
+					Calories:      "202",
+					Carbohydrates: "25.7",
+					Fat:           "9.3",
+					Fiber:         "1.1",
+					Protein:       "3.6",
+					SaturatedFat:  "1.6",
 					Servings:      "1",
-					Sodium:        "246 mg",
-					Sugar:         "0.3 g",
+					Sodium:        "246",
+					Sugar:         "0.3",
 				},
 				PrepTime:  "PT10M",
 				TotalTime: "PT60M",
@@ -181,14 +182,14 @@ func TestScraper_O(t *testing.T) {
 				Name: "Perfect Basmati Rice",
 				NutritionSchema: &models.NutritionSchema{
 					Calories:      "207",
-					Carbohydrates: "37 g",
-					Cholesterol:   "11 mg",
-					Fat:           "5 g",
-					Fiber:         "1 g",
-					Protein:       "3 g",
-					SaturatedFat:  "3 g",
-					Sodium:        "120 mg",
-					Sugar:         "0 g",
+					Carbohydrates: "37",
+					Cholesterol:   "11",
+					Fat:           "5",
+					Fiber:         "1",
+					Protein:       "3",
+					SaturatedFat:  "3",
+					Sodium:        "120",
+					Sugar:         "0",
 				},
 				PrepTime:  "PT0M",
 				Tools:     &models.Tools{Values: []models.HowToItem{}},

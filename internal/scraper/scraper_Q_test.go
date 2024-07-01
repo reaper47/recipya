@@ -1,8 +1,9 @@
 package scraper_test
 
 import (
-	"github.com/reaper47/recipya/internal/models"
 	"testing"
+
+	"github.com/reaper47/recipya/internal/models"
 )
 
 func TestScraper_Q(t *testing.T) {
@@ -41,15 +42,15 @@ func TestScraper_Q(t *testing.T) {
 				},
 				Name: "Saumon teriyaki et riz au poireau",
 				NutritionSchema: &models.NutritionSchema{
-					Calories:      "617.85 kcal",
-					Carbohydrates: "70.12 g",
-					Fat:           "20.49 g",
-					Fiber:         "4.76 g",
-					Protein:       "34.94 g",
-					SaturatedFat:  "2.81 g",
+					Calories:      "617.85",
+					Carbohydrates: "70.12",
+					Fat:           "20.49",
+					Fiber:         "4.76",
+					Protein:       "34.94",
+					SaturatedFat:  "2.81",
 					Servings:      "2",
-					Sodium:        "0.56 g",
-					Sugar:         "10.45 g",
+					Sodium:        "0.56",
+					Sugar:         "10.45",
 				},
 				PrepTime: "PT20M",
 				Tools:    &models.Tools{Values: []models.HowToItem{}},

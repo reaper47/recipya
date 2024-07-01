@@ -1,8 +1,9 @@
 package scraper_test
 
 import (
-	"github.com/reaper47/recipya/internal/models"
 	"testing"
+
+	"github.com/reaper47/recipya/internal/models"
 )
 
 func TestScraper_W(t *testing.T) {
@@ -36,14 +37,14 @@ func TestScraper_W(t *testing.T) {
 				},
 				Name: "The best macaroni cheese",
 				NutritionSchema: &models.NutritionSchema{
-					Calories:      "724 calories",
-					Carbohydrates: "60 g",
-					Fat:           "39 g",
-					Fiber:         "2.6 g",
-					Protein:       "32 g",
-					SaturatedFat:  "24 g",
-					Sodium:        "1.6 g",
-					Sugar:         "8.7 g",
+					Calories:      "724",
+					Carbohydrates: "60",
+					Fat:           "39",
+					Fiber:         "2.6",
+					Protein:       "32",
+					SaturatedFat:  "24",
+					Sodium:        "1.6",
+					Sugar:         "8.7",
 				},
 				PrepTime:  "PT15M",
 				Tools:     &models.Tools{Values: []models.HowToItem{}},
@@ -96,7 +97,7 @@ func TestScraper_W(t *testing.T) {
 				},
 				Name: "Healthy Fried Brown Rice With Vegetables",
 				NutritionSchema: &models.NutritionSchema{
-					Calories: "336 kcal",
+					Calories: "336",
 					Servings: "1",
 				},
 				PrepTime: "PT15M",
@@ -178,7 +179,7 @@ func TestScraper_W(t *testing.T) {
 				},
 				Name: "Pepperoni flatbread pizza",
 				NutritionSchema: &models.NutritionSchema{
-					Calories: "484 kcal",
+					Calories: "484",
 				},
 				PrepTime:  "PT5M",
 				Tools:     &models.Tools{Values: []models.HowToItem{}},
@@ -225,14 +226,14 @@ func TestScraper_W(t *testing.T) {
 				},
 				Name: "Energy Balls",
 				NutritionSchema: &models.NutritionSchema{
-					Calories:      "131 kcal",
-					Carbohydrates: "18 g",
-					Fat:           "5 g",
-					Fiber:         "3 g",
-					Protein:       "4 g",
-					SaturatedFat:  "1 g",
+					Calories:      "131",
+					Carbohydrates: "18",
+					Fat:           "5",
+					Fiber:         "3",
+					Protein:       "4",
+					SaturatedFat:  "1",
 					Servings:      "1",
-					Sugar:         "6 g",
+					Sugar:         "6",
 				},
 				PrepTime:  "PT10M",
 				TotalTime: "PT40M",
@@ -279,18 +280,18 @@ func TestScraper_W(t *testing.T) {
 				Keywords: &models.Keywords{Values: "homemade pizza, spring pizza"},
 				Name:     "Pea Prosciutto Spring Pizza",
 				NutritionSchema: &models.NutritionSchema{
-					Calories:       "610 kcal",
-					Carbohydrates:  "56 g",
-					Cholesterol:    "123 mg",
-					Fat:            "33 g",
-					Fiber:          "5 g",
-					Protein:        "24 g",
-					SaturatedFat:   "11 g",
+					Calories:       "610",
+					Carbohydrates:  "56",
+					Cholesterol:    "123",
+					Fat:            "33",
+					Fiber:          "5",
+					Protein:        "24",
+					SaturatedFat:   "11",
 					Servings:       "1",
-					Sodium:         "1124 mg",
-					Sugar:          "11 g",
-					TransFat:       "0.04 g",
-					UnsaturatedFat: "19 g",
+					Sodium:         "1124",
+					Sugar:          "11",
+					TransFat:       "0.04",
+					UnsaturatedFat: "19",
 				},
 				PrepTime:  "PT10M",
 				TotalTime: "PT20M",
@@ -474,10 +475,10 @@ func TestScraper_W(t *testing.T) {
 				},
 				Keywords: &models.Keywords{Values: "Magento, Varien, E-commerce"},
 				NutritionSchema: &models.NutritionSchema{
-					Calories:      "2536kj (606Kcal)",
-					Carbohydrates: "43g",
-					Protein:       "44g",
-					Fat:           "28g",
+					Calories:      "606",
+					Carbohydrates: "43",
+					Protein:       "44",
+					Fat:           "28",
 				},
 				Tools: &models.Tools{Values: []models.HowToItem{}},
 				URL:   "https://woop.co.nz/thai-marinated-beef-sirlion-344-2-f.html",

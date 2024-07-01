@@ -1,10 +1,12 @@
 package scraper
 
 import (
-	"github.com/PuerkitoBio/goquery"
-	"github.com/reaper47/recipya/internal/models"
 	"strconv"
 	"strings"
+
+	"github.com/PuerkitoBio/goquery"
+	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/utils/regex"
 )
 
 func scrapeCdKitchen(root *goquery.Document) (models.RecipeSchema, error) {
@@ -38,17 +40,17 @@ func scrapeCdKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 
 	node = content.Find("span[itemprop='nutrition']")
 	rs.NutritionSchema = &models.NutritionSchema{
-		Calories:       node.Find("span[itemprop='calories']").Text(),
-		Carbohydrates:  node.Find(".carbohydrateContent").Text(),
-		Sugar:          node.Find(".sugarContent").Text(),
-		Protein:        node.Find(".proteinContent").Text(),
-		Fat:            node.Find(".fatContent").Text(),
-		SaturatedFat:   node.Find(".saturatedFatContent").Text(),
-		Cholesterol:    node.Find(".cholesterolContent").Text(),
-		Sodium:         node.Find(".sodiumContent").Text(),
-		Fiber:          node.Find(".fiberContent").Text(),
-		TransFat:       node.Find(".transFatContent").Text(),
-		UnsaturatedFat: node.Find(".unsaturatedFatContent").Text(),
+		Calories:       regex.Digit.FindString(node.Find("span[itemprop='calories']").Text()),
+		Carbohydrates:  regex.Digit.FindString(node.Find(".carbohydrateContent").Text()),
+		Sugar:          regex.Digit.FindString(node.Find(".sugarContent").Text()),
+		Protein:        regex.Digit.FindString(node.Find(".proteinContent").Text()),
+		Fat:            regex.Digit.FindString(node.Find(".fatContent").Text()),
+		SaturatedFat:   regex.Digit.FindString(node.Find(".saturatedFatContent").Text()),
+		Cholesterol:    regex.Digit.FindString(node.Find(".cholesterolContent").Text()),
+		Sodium:         regex.Digit.FindString(node.Find(".sodiumContent").Text()),
+		Fiber:          regex.Digit.FindString(node.Find(".fiberContent").Text()),
+		TransFat:       regex.Digit.FindString(node.Find(".transFatContent").Text()),
+		UnsaturatedFat: regex.Digit.FindString(node.Find(".unsaturatedFatContent").Text()),
 	}
 
 	rs.CookTime, _ = content.Find("meta[itemprop='cookTime']").Attr("content")

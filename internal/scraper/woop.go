@@ -1,10 +1,13 @@
 package scraper
 
 import (
-	"github.com/PuerkitoBio/goquery"
+	"regexp"
 	"strings"
 
+	"github.com/PuerkitoBio/goquery"
+
 	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/utils/regex"
 )
 
 func scrapeWoop(root *goquery.Document) (models.RecipeSchema, error) {
@@ -40,13 +43,17 @@ func scrapeWoop(root *goquery.Document) (models.RecipeSchema, error) {
 		val := strings.TrimSpace(strings.Join(parts[1:], " "))
 		switch parts[0] {
 		case "Energy":
-			nutrition.Calories = val
+			if match := regexp.MustCompile(`(\d+)Kcal`).FindStringSubmatch(val); len(match) > 1 {
+				nutrition.Calories = match[1]
+			} else {
+				nutrition.Calories = ""
+			}
 		case "Protein":
-			nutrition.Protein = val
+			nutrition.Protein = regex.Digit.FindString(val)
 		case "Carbohydrate":
-			nutrition.Carbohydrates = val
+			nutrition.Carbohydrates = regex.Digit.FindString(val)
 		case "Fat":
-			nutrition.Fat = val
+			nutrition.Fat = regex.Digit.FindString(val)
 		}
 	})
 	rs.NutritionSchema = &nutrition
