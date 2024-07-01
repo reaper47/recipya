@@ -871,17 +871,17 @@ func (n *NutritionSchema) UnmarshalJSON(data []byte) error {
 
 	switch x := v.(type) {
 	case map[string]any:
-		n.Calories = ensureNutritionUnitForString(extensions.ConvertToString(x["calories"]), "calories")
-		n.Carbohydrates = ensureNutritionUnitForString(extensions.ConvertToString(x["carbohydrateContent"]), "carbohydrateContent")
-		n.Cholesterol = ensureNutritionUnitForString(extensions.ConvertToString(x["cholesterolContent"]), "cholesterolContent")
-		n.Fat = ensureNutritionUnitForString(extensions.ConvertToString(x["fatContent"]), "fatContent")
-		n.Fiber = ensureNutritionUnitForString(extensions.ConvertToString(x["fiberContent"]), "fiberContent")
-		n.Protein = ensureNutritionUnitForString(extensions.ConvertToString(x["proteinContent"]), "proteinContent")
-		n.SaturatedFat = ensureNutritionUnitForString(extensions.ConvertToString(x["saturatedFatContent"]), "saturatedFatContent")
-		n.Sodium = ensureNutritionUnitForString(extensions.ConvertToString(x["sodiumContent"]), "sodiumContent")
-		n.Sugar = ensureNutritionUnitForString(extensions.ConvertToString(x["sugarContent"]), "sugarContent")
-		n.TransFat = ensureNutritionUnitForString(extensions.ConvertToString(x["transFatContent"]), "transFatContent")
-		n.UnsaturatedFat = ensureNutritionUnitForString(extensions.ConvertToString(x["unsaturatedFatContent"]), "unsaturatedFatContent")
+		n.Calories = regex.Digit.FindString(extensions.ConvertToString(x["calories"]))
+		n.Carbohydrates = regex.Digit.FindString(extensions.ConvertToString(x["carbohydrateContent"]))
+		n.Cholesterol = regex.Digit.FindString(extensions.ConvertToString(x["cholesterolContent"]))
+		n.Fat = regex.Digit.FindString(extensions.ConvertToString(x["fatContent"]))
+		n.Fiber = regex.Digit.FindString(extensions.ConvertToString(x["fiberContent"]))
+		n.Protein = regex.Digit.FindString(extensions.ConvertToString(x["proteinContent"]))
+		n.SaturatedFat = regex.Digit.FindString(extensions.ConvertToString(x["saturatedFatContent"]))
+		n.Sodium = regex.Digit.FindString(extensions.ConvertToString(x["sodiumContent"]))
+		n.Sugar = regex.Digit.FindString(extensions.ConvertToString(x["sugarContent"]))
+		n.TransFat = regex.Digit.FindString(extensions.ConvertToString(x["transFatContent"]))
+		n.UnsaturatedFat = regex.Digit.FindString(extensions.ConvertToString(x["unsaturatedFatContent"]))
 
 		if val := extensions.ConvertToString(x["servingSize"]); val != "" {
 			xs := strings.Split(val, " ")
@@ -903,9 +903,11 @@ func (n *NutritionSchema) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ensureNutritionUnitForString checks for existing unit suffix for nutritional property.
-// If not already present, add unit to the input string.
-func ensureNutritionUnitForString(nutritionString string, nutritionProperty string) string {
+// EnsureNutritionUnitForString extracts digits from nutritional property and appends metric unit.
+// Returns a string value.
+func EnsureNutritionUnitForString(nutritionValue any, nutritionProperty string) string {
+	var nutritionPropertyLowerCase = strings.ToLower(nutritionProperty)
+	var nutritionString string = extensions.ConvertToString(nutritionValue)
 	var nutritionStringDigits string = regex.Digit.FindString(nutritionString)
 
 	// Early return if no digits could be found
@@ -913,15 +915,15 @@ func ensureNutritionUnitForString(nutritionString string, nutritionProperty stri
 		return nutritionStringDigits
 	}
 
-	// Concatenate unit to found digits
-	switch nutritionProperty {
+	// Concatenate metric unit to extracted digits
+	switch nutritionPropertyLowerCase {
 	case "calories":
 		return nutritionStringDigits + " kcal"
-	case "carbohydrateContent", "fatContent", "fiberContent", "proteinContent", "saturatedFatContent", "sugarContent", "transFatContent", "unsaturatedFatContent":
+	case "carbohydrates", "fat", "fiber", "protein", "saturatedfat", "sugar", "transfat", "unsaturatedfat":
 		return nutritionStringDigits + " g"
-	case "cholesterolContent", "sodiumContent":
+	case "cholesterol", "sodium":
 		return nutritionStringDigits + " mg"
-	// Return original string if the property is unhandled, e.g. if the schema has received new or updated property names which are not included in the other cases
+	// If the property is unhandled, e.g. if the schema has received new or updated property names which are not included in the other cases.
 	default:
 		return nutritionString
 	}

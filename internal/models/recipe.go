@@ -4,14 +4,6 @@ import (
 	"bufio"
 	"bytes"
 	"errors"
-	"github.com/PuerkitoBio/goquery"
-	"github.com/donna-legal/word2number"
-	"github.com/google/uuid"
-	"github.com/reaper47/recipya/internal/app"
-	"github.com/reaper47/recipya/internal/units"
-	"github.com/reaper47/recipya/internal/utils/duration"
-	"github.com/reaper47/recipya/internal/utils/extensions"
-	"github.com/reaper47/recipya/internal/utils/regex"
 	"io"
 	"log/slog"
 	"net/url"
@@ -20,6 +12,15 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/PuerkitoBio/goquery"
+	"github.com/donna-legal/word2number"
+	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/app"
+	"github.com/reaper47/recipya/internal/units"
+	"github.com/reaper47/recipya/internal/utils/duration"
+	"github.com/reaper47/recipya/internal/utils/extensions"
+	"github.com/reaper47/recipya/internal/utils/regex"
 )
 
 var (
@@ -482,48 +483,54 @@ func (n *Nutrition) Format() string {
 	var sb strings.Builder
 	if n.Calories != "" {
 		sb.WriteString("calories ")
-		sb.WriteString(n.Calories)
+		sb.WriteString(EnsureNutritionUnitForString(n.Calories, "Calories"))
 		sb.WriteString("; ")
 	}
 
 	if n.TotalCarbohydrates != "" {
 		sb.WriteString("total carbohydrates ")
-		sb.WriteString(n.TotalCarbohydrates)
+		sb.WriteString(EnsureNutritionUnitForString(n.TotalCarbohydrates, "Carbohydrates"))
 		sb.WriteString("; ")
 	}
 
 	if n.Sugars != "" {
 		sb.WriteString("sugar ")
-		sb.WriteString(n.Sugars)
+		sb.WriteString(EnsureNutritionUnitForString(n.Sugars, "Sugar"))
 		sb.WriteString("; ")
 	}
 	if n.Protein != "" {
 		sb.WriteString("protein ")
-		sb.WriteString(n.Protein)
+		sb.WriteString(EnsureNutritionUnitForString(n.Protein, "Protein"))
 		sb.WriteString("; ")
 	}
 
 	if n.TotalFat != "" {
 		sb.WriteString("total fat ")
-		sb.WriteString(n.TotalFat)
+		sb.WriteString(EnsureNutritionUnitForString(n.TotalFat, "Fat"))
 		sb.WriteString("; ")
 	}
 
 	if n.SaturatedFat != "" {
 		sb.WriteString("saturated fat ")
-		sb.WriteString(n.SaturatedFat)
+		sb.WriteString(EnsureNutritionUnitForString(n.SaturatedFat, "SaturatedFat"))
 		sb.WriteString("; ")
 	}
 
 	if n.Cholesterol != "" {
 		sb.WriteString("cholesterol ")
-		sb.WriteString(n.Cholesterol)
+		sb.WriteString(EnsureNutritionUnitForString(n.Cholesterol, "Cholesterol"))
+		sb.WriteString("; ")
+	}
+
+	if n.Sodium != "" {
+		sb.WriteString("sodium ")
+		sb.WriteString(EnsureNutritionUnitForString(n.Sodium, "Sodium"))
 		sb.WriteString("; ")
 	}
 
 	if n.Fiber != "" {
 		sb.WriteString("fiber ")
-		sb.WriteString(n.Fiber)
+		sb.WriteString(EnsureNutritionUnitForString(n.Fiber, "Fiber"))
 	}
 
 	return "Per 100g: " + sb.String()

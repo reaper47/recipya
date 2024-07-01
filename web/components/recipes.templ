@@ -2000,7 +2000,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 												if data.Recipe.Nutrition.Calories == "" {
 													-
 												} else {
-													{ data.Recipe.Nutrition.Calories }
+													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Calories,"Calories") }
 												}
 											</td>
 										</tr>
@@ -2010,7 +2010,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 												if data.Recipe.Nutrition.TotalCarbohydrates == "" {
 													-
 												} else {
-													{ data.Recipe.Nutrition.TotalCarbohydrates }
+													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.TotalCarbohydrates,"Carbohydrates") }
 												}
 											</td>
 										</tr>
@@ -2020,7 +2020,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 												if data.Recipe.Nutrition.Sugars == "" {
 													-
 												} else {
-													{ data.Recipe.Nutrition.Sugars }
+													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Sugars,"Sugar") }
 												}
 											</td>
 										</tr>
@@ -2030,7 +2030,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 												if data.Recipe.Nutrition.Protein == "" {
 													-
 												} else {
-													{ data.Recipe.Nutrition.Protein }
+													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Protein,"Protein") }
 												}
 											</td>
 										</tr>
@@ -2040,7 +2040,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 												if data.Recipe.Nutrition.TotalFat == "" {
 													-
 												} else {
-													{ data.Recipe.Nutrition.TotalFat }
+													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.TotalFat,"Fat") }
 												}
 											</td>
 										</tr>
@@ -2050,7 +2050,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 												if data.Recipe.Nutrition.SaturatedFat == "" {
 													-
 												} else {
-													{ data.Recipe.Nutrition.SaturatedFat }
+													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.SaturatedFat,"SaturatedFat") }
 												}
 											</td>
 										</tr>
@@ -2060,7 +2060,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 												if data.Recipe.Nutrition.Cholesterol == "" {
 													-
 												} else {
-													{ data.Recipe.Nutrition.Cholesterol }
+													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Cholesterol,"Cholesterol") }
 												}
 											</td>
 										</tr>
@@ -2070,7 +2070,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 												if data.Recipe.Nutrition.Sodium == "" {
 													-
 												} else {
-													{ data.Recipe.Nutrition.Sodium }
+													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Sodium,"Sodium") }
 												}
 											</td>
 										</tr>
@@ -2080,7 +2080,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 												if data.Recipe.Nutrition.Fiber == "" {
 													-
 												} else {
-													{ data.Recipe.Nutrition.Fiber }
+													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Fiber,"Fiber") }
 												}
 											</td>
 										</tr>
