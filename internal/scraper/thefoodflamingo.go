@@ -49,7 +49,7 @@ func scrapeTheFoodFlamingo(root *goquery.Document) (models.RecipeSchema, error) 
 	root.Find("ul").FilterFunction(func(_ int, sel *goquery.Selection) bool {
 		_, exists := sel.Attr("class")
 		return !exists && goquery.NodeName(sel.Prev()) != "h2"
-	}).Each(func(i int, ul *goquery.Selection) {
+	}).Each(func(_ int, ul *goquery.Selection) {
 		isEquipment := strings.Contains(ul.Prev().Text(), "Equipment")
 		ul.Children().Each(func(_ int, li *goquery.Selection) {
 			s := strings.TrimSpace(li.Text())
