@@ -34,6 +34,10 @@ func getPropertyContent(doc *goquery.Document, name string) string {
 }
 
 func getIngredients(rs *models.RecipeSchema, nodes *goquery.Selection, replaceOpts ...models.Replace) {
+	if rs.Ingredients == nil {
+		rs.Ingredients = &models.Ingredients{}
+	}
+
 	rs.Ingredients.Values = make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())
@@ -52,6 +56,10 @@ func getIngredients(rs *models.RecipeSchema, nodes *goquery.Selection, replaceOp
 }
 
 func getInstructions(rs *models.RecipeSchema, nodes *goquery.Selection, replaceOpts ...models.Replace) {
+	if rs.Instructions == nil {
+		rs.Instructions = &models.Instructions{}
+	}
+
 	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		s := strings.TrimSpace(sel.Text())

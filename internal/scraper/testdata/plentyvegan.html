@@ -1,0 +1,1956 @@
+<!DOCTYPE html><html lang="en-US"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Almond Chickpea Chocolate Chip Cookies</title><style>.single .content h2,
+.page .content h2{
+    font-size: 24px;
+}</style><meta name="robots" content="max-image-preview:large" /><link rel="dns-prefetch" href="//cdnjs.cloudflare.com" /><link rel="dns-prefetch" href="//ajax.googleapis.com" /><link rel="dns-prefetch" href="//fonts.googleapis.com" /><link rel="dns-prefetch" href="//pagead2.googlesyndication.com" /><link rel="alternate" type="application/rss+xml" title="Plenty Vegan &raquo; Feed" href="https://plentyvegan.com/feed/" /><link rel="alternate" type="application/rss+xml" title="Plenty Vegan &raquo; Comments Feed" href="https://plentyvegan.com/comments/feed/" /><link rel="alternate" type="application/rss+xml" title="Plenty Vegan &raquo; Almond Chickpea Chocolate Chip Cookies Comments Feed" href="https://plentyvegan.com/almond-chickpea-chocolate-chip-cookies/feed/" /><link rel="canonical" href="https://plentyvegan.com/almond-chickpea-chocolate-chip-cookies/" /> <script type="text/javascript">window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"wpemoji":"https:\/\/plentyvegan.com\/wp-includes\/js\/wp-emoji.js?ver=6.5.3","twemoji":"https:\/\/plentyvegan.com\/wp-includes\/js\/twemoji.js?ver=6.5.3"}};
+/**
+ * @output wp-includes/js/wp-emoji-loader.js
+ */
+
+/**
+ * Emoji Settings as exported in PHP via _print_emoji_detection_script().
+ * @typedef WPEmojiSettings
+ * @type {object}
+ * @property {?object} source
+ * @property {?string} source.concatemoji
+ * @property {?string} source.twemoji
+ * @property {?string} source.wpemoji
+ * @property {?boolean} DOMReady
+ * @property {?Function} readyCallback
+ */
+
+/**
+ * Support tests.
+ * @typedef SupportTests
+ * @type {object}
+ * @property {?boolean} flag
+ * @property {?boolean} emoji
+ */
+
+/**
+ * IIFE to detect emoji support and load Twemoji if needed.
+ *
+ * @param {Window} window
+ * @param {Document} document
+ * @param {WPEmojiSettings} settings
+ */
+( function wpEmojiLoader( window, document, settings ) {
+    if ( typeof Promise === 'undefined' ) {
+        return;
+    }
+
+    var sessionStorageKey = 'wpEmojiSettingsSupports';
+    var tests = [ 'flag', 'emoji' ];
+
+    /**
+     * Checks whether the browser supports offloading to a Worker.
+     *
+     * @since 6.3.0
+     *
+     * @private
+     *
+     * @returns {boolean}
+     */
+    function supportsWorkerOffloading() {
+        return (
+            typeof Worker !== 'undefined' &&
+            typeof OffscreenCanvas !== 'undefined' &&
+            typeof URL !== 'undefined' &&
+            URL.createObjectURL &&
+            typeof Blob !== 'undefined'
+        );
+    }
+
+    /**
+     * @typedef SessionSupportTests
+     * @type {object}
+     * @property {number} timestamp
+     * @property {SupportTests} supportTests
+     */
+
+    /**
+     * Get support tests from session.
+     *
+     * @since 6.3.0
+     *
+     * @private
+     *
+     * @returns {?SupportTests} Support tests, or null if not set or older than 1 week.
+     */
+    function getSessionSupportTests() {
+        try {
+            /** @type {SessionSupportTests} */
+            var item = JSON.parse(
+                sessionStorage.getItem( sessionStorageKey )
+            );
+            if (
+                typeof item === 'object' &&
+                typeof item.timestamp === 'number' &&
+                new Date().valueOf() < item.timestamp + 604800 && // Note: Number is a week in seconds.
+                typeof item.supportTests === 'object'
+            ) {
+                return item.supportTests;
+            }
+        } catch ( e ) {}
+        return null;
+    }
+
+    /**
+     * Persist the supports in session storage.
+     *
+     * @since 6.3.0
+     *
+     * @private
+     *
+     * @param {SupportTests} supportTests Support tests.
+     */
+    function setSessionSupportTests( supportTests ) {
+        try {
+            /** @type {SessionSupportTests} */
+            var item = {
+                supportTests: supportTests,
+                timestamp: new Date().valueOf()
+            };
+
+            sessionStorage.setItem(
+                sessionStorageKey,
+                JSON.stringify( item )
+            );
+        } catch ( e ) {}
+    }
+
+    /**
+     * Checks if two sets of Emoji characters render the same visually.
+     *
+     * This function may be serialized to run in a Worker. Therefore, it cannot refer to variables from the containing
+     * scope. Everything must be passed by parameters.
+     *
+     * @since 4.9.0
+     *
+     * @private
+     *
+     * @param {CanvasRenderingContext2D} context 2D Context.
+     * @param {string} set1 Set of Emoji to test.
+     * @param {string} set2 Set of Emoji to test.
+     *
+     * @return {boolean} True if the two sets render the same.
+     */
+    function emojiSetsRenderIdentically( context, set1, set2 ) {
+        // Cleanup from previous test.
+        context.clearRect( 0, 0, context.canvas.width, context.canvas.height );
+        context.fillText( set1, 0, 0 );
+        var rendered1 = new Uint32Array(
+            context.getImageData(
+                0,
+                0,
+                context.canvas.width,
+                context.canvas.height
+            ).data
+        );
+
+        // Cleanup from previous test.
+        context.clearRect( 0, 0, context.canvas.width, context.canvas.height );
+        context.fillText( set2, 0, 0 );
+        var rendered2 = new Uint32Array(
+            context.getImageData(
+                0,
+                0,
+                context.canvas.width,
+                context.canvas.height
+            ).data
+        );
+
+        return rendered1.every( function ( rendered2Data, index ) {
+            return rendered2Data === rendered2[ index ];
+        } );
+    }
+
+    /**
+     * Determines if the browser properly renders Emoji that Twemoji can supplement.
+     *
+     * This function may be serialized to run in a Worker. Therefore, it cannot refer to variables from the containing
+     * scope. Everything must be passed by parameters.
+     *
+     * @since 4.2.0
+     *
+     * @private
+     *
+     * @param {CanvasRenderingContext2D} context 2D Context.
+     * @param {string} type Whether to test for support of "flag" or "emoji".
+     * @param {Function} emojiSetsRenderIdentically Reference to emojiSetsRenderIdentically function, needed due to minification.
+     *
+     * @return {boolean} True if the browser can render emoji, false if it cannot.
+     */
+    function browserSupportsEmoji( context, type, emojiSetsRenderIdentically ) {
+        var isIdentical;
+
+        switch ( type ) {
+            case 'flag':
+                /*
+                 * Test for Transgender flag compatibility. Added in Unicode 13.
+                 *
+                 * To test for support, we try to render it, and compare the rendering to how it would look if
+                 * the browser doesn't render it correctly (white flag emoji + transgender symbol).
+                 */
+                isIdentical = emojiSetsRenderIdentically(
+                    context,
+                    '\uD83C\uDFF3\uFE0F\u200D\u26A7\uFE0F', // as a zero-width joiner sequence
+                    '\uD83C\uDFF3\uFE0F\u200B\u26A7\uFE0F' // separated by a zero-width space
+                );
+
+                if ( isIdentical ) {
+                    return false;
+                }
+
+                /*
+                 * Test for UN flag compatibility. This is the least supported of the letter locale flags,
+                 * so gives us an easy test for full support.
+                 *
+                 * To test for support, we try to render it, and compare the rendering to how it would look if
+                 * the browser doesn't render it correctly ([U] + [N]).
+                 */
+                isIdentical = emojiSetsRenderIdentically(
+                    context,
+                    '\uD83C\uDDFA\uD83C\uDDF3', // as the sequence of two code points
+                    '\uD83C\uDDFA\u200B\uD83C\uDDF3' // as the two code points separated by a zero-width space
+                );
+
+                if ( isIdentical ) {
+                    return false;
+                }
+
+                /*
+                 * Test for English flag compatibility. England is a country in the United Kingdom, it
+                 * does not have a two letter locale code but rather a five letter sub-division code.
+                 *
+                 * To test for support, we try to render it, and compare the rendering to how it would look if
+                 * the browser doesn't render it correctly (black flag emoji + [G] + [B] + [E] + [N] + [G]).
+                 */
+                isIdentical = emojiSetsRenderIdentically(
+                    context,
+                    // as the flag sequence
+                    '\uD83C\uDFF4\uDB40\uDC67\uDB40\uDC62\uDB40\uDC65\uDB40\uDC6E\uDB40\uDC67\uDB40\uDC7F',
+                    // with each code point separated by a zero-width space
+                    '\uD83C\uDFF4\u200B\uDB40\uDC67\u200B\uDB40\uDC62\u200B\uDB40\uDC65\u200B\uDB40\uDC6E\u200B\uDB40\uDC67\u200B\uDB40\uDC7F'
+                );
+
+                return ! isIdentical;
+            case 'emoji':
+                /*
+                 * Four and twenty blackbirds baked in a pie.
+                 *
+                 * To test for Emoji 15.0 support, try to render a new emoji: Blackbird.
+                 *
+                 * The Blackbird is a ZWJ sequence combining 🐦 Bird and ⬛ large black square.,
+                 *
+                 * 0x1F426 (\uD83D\uDC26) == Bird
+                 * 0x200D == Zero-Width Joiner (ZWJ) that links the code points for the new emoji or
+                 * 0x200B == Zero-Width Space (ZWS) that is rendered for clients not supporting the new emoji.
+                 * 0x2B1B == Large Black Square
+                 *
+                 * When updating this test for future Emoji releases, ensure that individual emoji that make up the
+                 * sequence come from older emoji standards.
+                 */
+                isIdentical = emojiSetsRenderIdentically(
+                    context,
+                    '\uD83D\uDC26\u200D\u2B1B', // as the zero-width joiner sequence
+                    '\uD83D\uDC26\u200B\u2B1B' // separated by a zero-width space
+                );
+
+                return ! isIdentical;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks emoji support tests.
+     *
+     * This function may be serialized to run in a Worker. Therefore, it cannot refer to variables from the containing
+     * scope. Everything must be passed by parameters.
+     *
+     * @since 6.3.0
+     *
+     * @private
+     *
+     * @param {string[]} tests Tests.
+     * @param {Function} browserSupportsEmoji Reference to browserSupportsEmoji function, needed due to minification.
+     * @param {Function} emojiSetsRenderIdentically Reference to emojiSetsRenderIdentically function, needed due to minification.
+     *
+     * @return {SupportTests} Support tests.
+     */
+    function testEmojiSupports( tests, browserSupportsEmoji, emojiSetsRenderIdentically ) {
+        var canvas;
+        if (
+            typeof WorkerGlobalScope !== 'undefined' &&
+            self instanceof WorkerGlobalScope
+        ) {
+            canvas = new OffscreenCanvas( 300, 150 ); // Dimensions are default for HTMLCanvasElement.
+        } else {
+            canvas = document.createElement( 'canvas' );
+        }
+
+        var context = canvas.getContext( '2d', { willReadFrequently: true } );
+
+        /*
+         * Chrome on OS X added native emoji rendering in M41. Unfortunately,
+         * it doesn't work when the font is bolder than 500 weight. So, we
+         * check for bold rendering support to avoid invisible emoji in Chrome.
+         */
+        context.textBaseline = 'top';
+        context.font = '600 32px Arial';
+
+        var supports = {};
+        tests.forEach( function ( test ) {
+            supports[ test ] = browserSupportsEmoji( context, test, emojiSetsRenderIdentically );
+        } );
+        return supports;
+    }
+
+    /**
+     * Adds a script to the head of the document.
+     *
+     * @ignore
+     *
+     * @since 4.2.0
+     *
+     * @param {string} src The url where the script is located.
+     *
+     * @return {void}
+     */
+    function addScript( src ) {
+        var script = document.createElement( 'script' );
+        script.src = src;
+        script.defer = true;
+        document.head.appendChild( script );
+    }
+
+    settings.supports = {
+        everything: true,
+        everythingExceptFlag: true
+    };
+
+    // Create a promise for DOMContentLoaded since the worker logic may finish after the event has fired.
+    var domReadyPromise = new Promise( function ( resolve ) {
+        document.addEventListener( 'DOMContentLoaded', resolve, {
+            once: true
+        } );
+    } );
+
+    // Obtain the emoji support from the browser, asynchronously when possible.
+    new Promise( function ( resolve ) {
+        var supportTests = getSessionSupportTests();
+        if ( supportTests ) {
+            resolve( supportTests );
+            return;
+        }
+
+        if ( supportsWorkerOffloading() ) {
+            try {
+                // Note that the functions are being passed as arguments due to minification.
+                var workerScript =
+                    'postMessage(' +
+                    testEmojiSupports.toString() +
+                    '(' +
+                    [
+                        JSON.stringify( tests ),
+                        browserSupportsEmoji.toString(),
+                        emojiSetsRenderIdentically.toString()
+                    ].join( ',' ) +
+                    '));';
+                var blob = new Blob( [ workerScript ], {
+                    type: 'text/javascript'
+                } );
+                var worker = new Worker( URL.createObjectURL( blob ), { name: 'wpTestEmojiSupports' } );
+                worker.onmessage = function ( event ) {
+                    supportTests = event.data;
+                    setSessionSupportTests( supportTests );
+                    worker.terminate();
+                    resolve( supportTests );
+                };
+                return;
+            } catch ( e ) {}
+        }
+
+        supportTests = testEmojiSupports( tests, browserSupportsEmoji, emojiSetsRenderIdentically );
+        setSessionSupportTests( supportTests );
+        resolve( supportTests );
+    } )
+        // Once the browser emoji support has been obtained from the session, finalize the settings.
+        .then( function ( supportTests ) {
+            /*
+             * Tests the browser support for flag emojis and other emojis, and adjusts the
+             * support settings accordingly.
+             */
+            for ( var test in supportTests ) {
+                settings.supports[ test ] = supportTests[ test ];
+
+                settings.supports.everything =
+                    settings.supports.everything && settings.supports[ test ];
+
+                if ( 'flag' !== test ) {
+                    settings.supports.everythingExceptFlag =
+                        settings.supports.everythingExceptFlag &&
+                        settings.supports[ test ];
+                }
+            }
+
+            settings.supports.everythingExceptFlag =
+                settings.supports.everythingExceptFlag &&
+                ! settings.supports.flag;
+
+            // Sets DOMReady to false and assigns a ready function to settings.
+            settings.DOMReady = false;
+            settings.readyCallback = function () {
+                settings.DOMReady = true;
+            };
+        } )
+        .then( function () {
+            return domReadyPromise;
+        } )
+        .then( function () {
+            // When the browser can not render everything we need to load a polyfill.
+            if ( ! settings.supports.everything ) {
+                settings.readyCallback();
+
+                var src = settings.source || {};
+
+                if ( src.concatemoji ) {
+                    addScript( src.concatemoji );
+                } else if ( src.wpemoji && src.twemoji ) {
+                    addScript( src.twemoji );
+                    addScript( src.wpemoji );
+                }
+            }
+        } );
+} )( window, document, window._wpemojiSettings );</script> <link rel="stylesheet" id="mp-theme-css" href="https://plentyvegan.com/wp-content/plugins/memberpress/css/ui/theme.css?ver=1.11.33" type="text/css" media="all" /><link rel="stylesheet" id="mp-account-css-css" href="https://plentyvegan.com/wp-content/plugins/memberpress/css/ui/account.css?ver=1.11.33" type="text/css" media="all" /><link rel="stylesheet" id="dashicons-css" href="https://plentyvegan.com/wp-includes/css/dashicons.css?ver=6.5.3" type="text/css" media="all" /><link rel="stylesheet" id="mp-login-css-css" href="https://plentyvegan.com/wp-content/plugins/memberpress/css/ui/login.css?ver=1.11.33" type="text/css" media="all" /><link rel="stylesheet" id="mepr-jquery-ui-smoothness-css" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.css?ver=6.5.3" type="text/css" media="all" /><link rel="stylesheet" id="jquery-ui-timepicker-addon-css" href="https://plentyvegan.com/wp-content/plugins/memberpress/css/jquery-ui-timepicker-addon.css?ver=6.5.3" type="text/css" media="all" /><link rel="stylesheet" id="jquery-magnific-popup-css" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css?ver=6.5.3" type="text/css" media="all" /><link rel="stylesheet" id="mp-signup-css" href="https://plentyvegan.com/wp-content/plugins/memberpress/css/signup.css?ver=1.11.33" type="text/css" media="all" /><link rel="stylesheet" id="mp-plans-css-css" href="https://plentyvegan.com/wp-content/plugins/memberpress/css/plans.min.css?ver=1.11.33" type="text/css" media="all" /><link rel="stylesheet" id="divine-theme-current-css" href="https://plentyvegan.com/wp-content/themes/restored316-divine/style.css?ver=1719886314" type="text/css" media="all" /><style id="wp-emoji-styles-inline-css" type="text/css">img.wp-smiley, img.emoji {
+    display: inline !important;
+    border: none !important;
+    box-shadow: none !important;
+    height: 1em !important;
+    width: 1em !important;
+    margin: 0 0.07em !important;
+    vertical-align: -0.1em !important;
+    background: none !important;
+    padding: 0 !important;
+}</style><link rel="stylesheet" id="wp-block-library-css" href="https://plentyvegan.com/wp-includes/css/dist/block-library/style.css?ver=6.5.3" type="text/css" media="all" /><link rel="stylesheet" id="wc-blocks-vendors-style-css" href="https://plentyvegan.com/wp-content/plugins/woo-gutenberg-products-block/build/wc-blocks-vendors-style.css?ver=1641141225" type="text/css" media="all" /><link rel="stylesheet" id="wc-blocks-style-css" href="https://plentyvegan.com/wp-content/plugins/woo-gutenberg-products-block/build/wc-blocks-style.css?ver=1641141225" type="text/css" media="all" /><style id="classic-theme-styles-inline-css" type="text/css">/**
+ * These rules are needed for backwards compatibility.
+ * They should match the button element rules in the base theme.json file.
+ */
+.wp-block-button__link {
+    color: #ffffff;
+    background-color: #32373c;
+    border-radius: 9999px; /* 100% causes an oval, but any explicit but really high value retains the pill shape. */
+
+    /* This needs a low specificity so it won't override the rules from the button element if defined in theme.json. */
+    box-shadow: none;
+    text-decoration: none;
+
+    /* The extra 2px are added to size solids the same as the outline versions.*/
+    padding: calc(0.667em + 2px) calc(1.333em + 2px);
+
+    font-size: 1.125em;
+}
+
+.wp-block-file__button {
+    background: #32373c;
+    color: #ffffff;
+    text-decoration: none;
+}</style><style id="global-styles-inline-css" type="text/css">body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}body .is-layout-flex{flex-wrap: wrap;align-items: center;}body .is-layout-flex > *{margin: 0;}body .is-layout-grid{display: grid;}body .is-layout-grid > *{margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+.wp-block-navigation a:where(:not(.wp-element-button)){color: inherit;}
+:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
+.wp-block-pullquote{font-size: 1.5em;line-height: 1.6;}</style><link rel="stylesheet" id="dwqa-style-css" href="https://plentyvegan.com/wp-content/plugins/dw-question-answer-pro/templates/assets/css/style.css?ver=250420160307" type="text/css" media="all" /><link rel="stylesheet" id="dwqa-style-rtl-css" href="https://plentyvegan.com/wp-content/plugins/dw-question-answer-pro/templates/assets/css/rtl.css?ver=250420160307" type="text/css" media="all" /><link rel="stylesheet" id="woocommerce-layout-css" href="https://plentyvegan.com/wp-content/plugins/woocommerce/assets/css/woocommerce-layout.css?ver=6.0.0" type="text/css" media="all" /><link rel="stylesheet" id="woocommerce-smallscreen-css" href="https://plentyvegan.com/wp-content/plugins/woocommerce/assets/css/woocommerce-smallscreen.css?ver=6.0.0" type="text/css" media="only screen and (max-width: 768px)" /><link rel="stylesheet" id="woocommerce-general-css" href="https://plentyvegan.com/wp-content/plugins/woocommerce/assets/css/woocommerce.css?ver=6.0.0" type="text/css" media="all" /><style id="woocommerce-inline-inline-css" type="text/css">.woocommerce form .form-row .required { visibility: visible; }</style><link rel="stylesheet" id="wpt-twitter-feed-css" href="https://plentyvegan.com/wp-content/plugins/wp-to-twitter/css/twitter-feed.css?ver=6.5.3" type="text/css" media="all" /><link rel="stylesheet" id="google-font-css" href="//fonts.googleapis.com/css?family=EB+Garamond%7COpen+Sans%3A400%2C300italic%2C300%2C400italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%7CSource+Serif+Pro&#038;ver=6.5.3" type="text/css" media="all" /><link rel="stylesheet" id="dwqa_leaderboard-css" href="https://plentyvegan.com/wp-content/plugins/dw-question-answer-pro/templates/assets/css/leaderboard.css?ver=6.5.3" type="text/css" media="all" /><link rel="stylesheet" id="easyrecipestyle-reset-css" href="https://plentyvegan.com/wp-content/plugins/easyrecipeplus/css/easyrecipe-style-reset-min.css?ver=3.5.3251" type="text/css" media="all" /><link rel="stylesheet" id="easyrecipebuttonUI-css" href="https://plentyvegan.com/wp-content/plugins/easyrecipeplus/ui/easyrecipe-buttonUI.css?ver=3.5.3251" type="text/css" media="all" /><link rel="stylesheet" id="easyrecipestyle-css" href="https://plentyvegan.com/wp-content/plugins/easyrecipeplus/styles/style002a/style.css?ver=3.5.3251.1.1" type="text/css" media="all" /><link rel="stylesheet" id="wpb_wmca_accordion_style-css" href="https://plentyvegan.com/wp-content/plugins/wpb-accordion-menu-or-category-pro/assets/css/wpb_wmca_style.css?ver=1.0" type="text/css" media /><link rel="stylesheet" id="wpb_wmca_font_awesome_style_frontend-css" href="https://plentyvegan.com/wp-content/plugins/wpb-accordion-menu-or-category-pro/admin/assets/css/font-awesome.min.css?ver=1.0" type="text/css" media /><link rel="stylesheet" id="rtbs-css" href="https://plentyvegan.com/wp-content/plugins/responsive-tabs-pro/css/rtbs_style.min.css?ver=6.5.3" type="text/css" media="all" /> <script type="text/javascript" src="https://plentyvegan.com/wp-includes/js/jquery/jquery.js?ver=3.7.1" id="jquery-core-js"></script> <script type="text/javascript" id="wp-i18n-js-after">wp.i18n.setLocaleData( { 'text direction\u0004ltr': [ 'ltr' ] } );</script> <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js?ver=6.5.3" id="jquery-magnific-popup-js"></script> <script type="text/javascript" id="mp-i18n-js-extra">var MeprI18n = {"states":{"HU":{"BK":"B\u00e1cs-Kiskun","BE":"B\u00e9k\u00e9s","BA":"Baranya","BZ":"Borsod-Aba\u00faj-Zempl\u00e9n","BU":"Budapest","CS":"Csongr\u00e1d","FE":"Fej\u00e9r","GS":"Gy\u0151r-Moson-Sopron","HB":"Hajd\u00fa-Bihar","HE":"Heves","JN":"J\u00e1sz-Nagykun-Szolnok","KE":"Kom\u00e1rom-Esztergom","NO":"N\u00f3gr\u00e1d","PE":"Pest","SO":"Somogy","SZ":"Szabolcs-Szatm\u00e1r-Bereg","TO":"Tolna","VA":"Vas","VE":"Veszpr\u00e9m","ZA":"Zala"},"ZA":{"EC":"Eastern Cape","FS":"Free State","GP":"Gauteng","KZN":"KwaZulu-Natal","LP":"Limpopo","MP":"Mpumalanga","NC":"Northern Cape","NW":"North West","WC":"Western Cape"},"TR":{"TR01":"Adana","TR02":"Ad&#305;yaman","TR03":"Afyon","TR04":"A&#287;r&#305;","TR05":"Amasya","TR06":"Ankara","TR07":"Antalya","TR08":"Artvin","TR09":"Ayd&#305;n","TR10":"Bal&#305;kesir","TR11":"Bilecik","TR12":"Bing&#246;l","TR13":"Bitlis","TR14":"Bolu","TR15":"Burdur","TR16":"Bursa","TR17":"&#199;anakkale","TR18":"&#199;ank&#305;r&#305;","TR19":"&#199;orum","TR20":"Denizli","TR21":"Diyarbak&#305;r","TR22":"Edirne","TR23":"Elaz&#305;&#287;","TR24":"Erzincan","TR25":"Erzurum","TR26":"Eski&#351;ehir","TR27":"Gaziantep","TR28":"Giresun","TR29":"G&#252;m&#252;&#351;hane","TR30":"Hakkari","TR31":"Hatay","TR32":"Isparta","TR33":"&#304;&#231;el","TR34":"&#304;stanbul","TR35":"&#304;zmir","TR36":"Kars","TR37":"Kastamonu","TR38":"Kayseri","TR39":"K&#305;rklareli","TR40":"K&#305;r&#351;ehir","TR41":"Kocaeli","TR42":"Konya","TR43":"K&#252;tahya","TR44":"Malatya","TR45":"Manisa","TR46":"Kahramanmara&#351;","TR47":"Mardin","TR48":"Mu&#287;la","TR49":"Mu&#351;","TR50":"Nev&#351;ehir","TR51":"Ni&#287;de","TR52":"Ordu","TR53":"Rize","TR54":"Sakarya","TR55":"Samsun","TR56":"Siirt","TR57":"Sinop","TR58":"Sivas","TR59":"Tekirda&#287;","TR60":"Tokat","TR61":"Trabzon","TR62":"Tunceli","TR63":"&#350;anl&#305;urfa","TR64":"U&#351;ak","TR65":"Van","TR66":"Yozgat","TR67":"Zonguldak","TR68":"Aksaray","TR69":"Bayburt","TR70":"Karaman","TR71":"K&#305;r&#305;kkale","TR72":"Batman","TR73":"&#350;&#305;rnak","TR74":"Bart&#305;n","TR75":"Ardahan","TR76":"I&#287;d&#305;r","TR77":"Yalova","TR78":"Karab&#252;k","TR79":"Kilis","TR80":"Osmaniye","TR81":"D&#252;zce"},"AU":{"ACT":"Australian Capital Territory","NSW":"New South Wales","NT":"Northern Territory","QLD":"Queensland","SA":"South Australia","TAS":"Tasmania","VIC":"Victoria","WA":"Western Australia"},"NZ":{"NL":"Northland","AK":"Auckland","WA":"Waikato","BP":"Bay of Plenty","TK":"Taranaki","HB":"Hawke&rsquo;s Bay","MW":"Manawatu-Wanganui","WE":"Wellington","NS":"Nelson","MB":"Marlborough","TM":"Tasman","WC":"West Coast","CT":"Canterbury","OT":"Otago","SL":"Southland"},"MY":{"JHR":"Johor","KDH":"Kedah","KTN":"Kelantan","MLK":"Melaka","NSN":"Negeri Sembilan","PHG":"Pahang","PRK":"Perak","PLS":"Perlis","PNG":"Pulau Pinang","SBH":"Sabah","SWK":"Sarawak","SGR":"Selangor","TRG":"Terengganu","KUL":"W.P. Kuala Lumpur","LBN":"W.P. Labuan","PJY":"W.P. Putrajaya"},"PE":{"CAL":"El Callao","LMA":"Municipalidad Metropolitana de Lima","AMA":"Amazonas","ANC":"Ancash","APU":"Apur&iacute;mac","ARE":"Arequipa","AYA":"Ayacucho","CAJ":"Cajamarca","CUS":"Cusco","HUV":"Huancavelica","HUC":"Hu&aacute;nuco","ICA":"Ica","JUN":"Jun&iacute;n","LAL":"La Libertad","LAM":"Lambayeque","LIM":"Lima","LOR":"Loreto","MDD":"Madre de Dios","MOQ":"Moquegua","PAS":"Pasco","PIU":"Piura","PUN":"Puno","SAM":"San Mart&iacute;n","TAC":"Tacna","TUM":"Tumbes","UCA":"Ucayali"},"MX":{"Distrito Federal":"Distrito Federal","Jalisco":"Jalisco","Nuevo Leon":"Nuevo Le\u00f3n","Aguascalientes":"Aguascalientes","Baja California":"Baja California","Baja California Sur":"Baja California Sur","Campeche":"Campeche","Chiapas":"Chiapas","Chihuahua":"Chihuahua","Coahuila":"Coahuila","Colima":"Colima","Durango":"Durango","Guanajuato":"Guanajuato","Guerrero":"Guerrero","Hidalgo":"Hidalgo","Estado de Mexico":"Edo. de M\u00e9xico","Michoacan":"Michoac\u00e1n","Morelos":"Morelos","Nayarit":"Nayarit","Oaxaca":"Oaxaca","Puebla":"Puebla","Queretaro":"Quer\u00e9taro","Quintana Roo":"Quintana Roo","San Luis Potosi":"San Luis Potos\u00ed","Sinaloa":"Sinaloa","Sonora":"Sonora","Tabasco":"Tabasco","Tamaulipas":"Tamaulipas","Tlaxcala":"Tlaxcala","Veracruz":"Veracruz","Yucatan":"Yucat\u00e1n","Zacatecas":"Zacatecas"},"US":{"AL":"Alabama","AK":"Alaska","AZ":"Arizona","AR":"Arkansas","CA":"California","CO":"Colorado","CT":"Connecticut","DE":"Delaware","DC":"District Of Columbia","FL":"Florida","GA":"Georgia","HI":"Hawaii","ID":"Idaho","IL":"Illinois","IN":"Indiana","IA":"Iowa","KS":"Kansas","KY":"Kentucky","LA":"Louisiana","ME":"Maine","MD":"Maryland","MA":"Massachusetts","MI":"Michigan","MN":"Minnesota","MS":"Mississippi","MO":"Missouri","MT":"Montana","NE":"Nebraska","NV":"Nevada","NH":"New Hampshire","NJ":"New Jersey","NM":"New Mexico","NY":"New York","NC":"North Carolina","ND":"North Dakota","OH":"Ohio","OK":"Oklahoma","OR":"Oregon","PA":"Pennsylvania","RI":"Rhode Island","SC":"South Carolina","SD":"South Dakota","TN":"Tennessee","TX":"Texas","UT":"Utah","VT":"Vermont","VA":"Virginia","WA":"Washington","WV":"West Virginia","WI":"Wisconsin","WY":"Wyoming","AA":"Armed Forces (AA)","AE":"Armed Forces (AE)","AP":"Armed Forces (AP)","AS":"American Samoa","GU":"Guam","MP":"Northern Mariana Islands","PR":"Puerto Rico","UM":"US Minor Outlying Islands","VI":"US Virgin Islands"},"IN":{"AP":"Andra Pradesh","AR":"Arunachal Pradesh","AS":"Assam","BR":"Bihar","CT":"Chhattisgarh","GA":"Goa","GJ":"Gujarat","HR":"Haryana","HP":"Himachal Pradesh","JK":"Jammu and Kashmir","JH":"Jharkhand","KA":"Karnataka","KL":"Kerala","MP":"Madhya Pradesh","MH":"Maharashtra","MN":"Manipur","ML":"Meghalaya","MZ":"Mizoram","NL":"Nagaland","OR":"Orissa","PB":"Punjab","RJ":"Rajasthan","SK":"Sikkim","TN":"Tamil Nadu","TS":"Telangana","TR":"Tripura","UK":"Uttarakhand","UP":"Uttar Pradesh","WB":"West Bengal","AN":"Andaman and Nicobar Islands","CH":"Chandigarh","DN":"Dadar and Nagar Haveli","DD":"Daman and Diu","DL":"Delhi","LD":"Lakshadeep","PY":"Pondicherry (Puducherry)"},"ES":{"C":"A Coru&ntilde;a","VI":"Araba\/&Aacute;lava","AB":"Albacete","A":"Alicante","AL":"Almer&iacute;a","O":"Asturias","AV":"&Aacute;vila","BA":"Badajoz","PM":"Baleares","B":"Barcelona","BU":"Burgos","CC":"C&aacute;ceres","CA":"C&aacute;diz","S":"Cantabria","CS":"Castell&oacute;n","CE":"Ceuta","CR":"Ciudad Real","CO":"C&oacute;rdoba","CU":"Cuenca","GI":"Girona","GR":"Granada","GU":"Guadalajara","SS":"Gipuzkoa","H":"Huelva","HU":"Huesca","J":"Ja&eacute;n","LO":"La Rioja","GC":"Las Palmas","LE":"Le&oacute;n","L":"Lleida","LU":"Lugo","M":"Madrid","MA":"M&aacute;laga","ML":"Melilla","MU":"Murcia","NA":"Navarra","OR":"Ourense","P":"Palencia","PO":"Pontevedra","SA":"Salamanca","TF":"Santa Cruz de Tenerife","SG":"Segovia","SE":"Sevilla","SO":"Soria","T":"Tarragona","TE":"Teruel","TO":"Toledo","V":"Valencia","VA":"Valladolid","BI":"Bizkaia","ZA":"Zamora","Z":"Zaragoza"},"JP":{"JP01":"Hokkaido","JP02":"Aomori","JP03":"Iwate","JP04":"Miyagi","JP05":"Akita","JP06":"Yamagata","JP07":"Fukushima","JP08":"Ibaraki","JP09":"Tochigi","JP10":"Gunma","JP11":"Saitama","JP12":"Chiba","JP13":"Tokyo","JP14":"Kanagawa","JP15":"Niigata","JP16":"Toyama","JP17":"Ishikawa","JP18":"Fukui","JP19":"Yamanashi","JP20":"Nagano","JP21":"Gifu","JP22":"Shizuoka","JP23":"Aichi","JP24":"Mie","JP25":"Shiga","JP26":"Kyouto","JP27":"Osaka","JP28":"Hyougo","JP29":"Nara","JP30":"Wakayama","JP31":"Tottori","JP32":"Shimane","JP33":"Okayama","JP34":"Hiroshima","JP35":"Yamaguchi","JP36":"Tokushima","JP37":"Kagawa","JP38":"Ehime","JP39":"Kochi","JP40":"Fukuoka","JP41":"Saga","JP42":"Nagasaki","JP43":"Kumamoto","JP44":"Oita","JP45":"Miyazaki","JP46":"Kagoshima","JP47":"Okinawa"},"CN":{"CN1":"Yunnan \/ &#20113;&#21335;","CN2":"Beijing \/ &#21271;&#20140;","CN3":"Tianjin \/ &#22825;&#27941;","CN4":"Hebei \/ &#27827;&#21271;","CN5":"Shanxi \/ &#23665;&#35199;","CN6":"Inner Mongolia \/ &#20839;&#33945;&#21476;","CN7":"Liaoning \/ &#36797;&#23425;","CN8":"Jilin \/ &#21513;&#26519;","CN9":"Heilongjiang \/ &#40657;&#40857;&#27743;","CN10":"Shanghai \/ &#19978;&#28023;","CN11":"Jiangsu \/ &#27743;&#33487;","CN12":"Zhejiang \/ &#27993;&#27743;","CN13":"Anhui \/ &#23433;&#24509;","CN14":"Fujian \/ &#31119;&#24314;","CN15":"Jiangxi \/ &#27743;&#35199;","CN16":"Shandong \/ &#23665;&#19996;","CN17":"Henan \/ &#27827;&#21335;","CN18":"Hubei \/ &#28246;&#21271;","CN19":"Hunan \/ &#28246;&#21335;","CN20":"Guangdong \/ &#24191;&#19996;","CN21":"Guangxi Zhuang \/ &#24191;&#35199;&#22766;&#26063;","CN22":"Hainan \/ &#28023;&#21335;","CN23":"Chongqing \/ &#37325;&#24198;","CN24":"Sichuan \/ &#22235;&#24029;","CN25":"Guizhou \/ &#36149;&#24030;","CN26":"Shaanxi \/ &#38485;&#35199;","CN27":"Gansu \/ &#29976;&#32899;","CN28":"Qinghai \/ &#38738;&#28023;","CN29":"Ningxia Hui \/ &#23425;&#22799;","CN30":"Macau \/ &#28595;&#38376;","CN31":"Tibet \/ &#35199;&#34255;","CN32":"Xinjiang \/ &#26032;&#30086;"},"ID":{"AC":"Daerah Istimewa Aceh","SU":"Sumatera Utara","SB":"Sumatera Barat","RI":"Riau","KR":"Kepulauan Riau","JA":"Jambi","SS":"Sumatera Selatan","BB":"Bangka Belitung","BE":"Bengkulu","LA":"Lampung","JK":"DKI Jakarta","JB":"Jawa Barat","BT":"Banten","JT":"Jawa Tengah","JI":"Jawa Timur","YO":"Daerah Istimewa Yogyakarta","BA":"Bali","NB":"Nusa Tenggara Barat","NT":"Nusa Tenggara Timur","KB":"Kalimantan Barat","KT":"Kalimantan Tengah","KI":"Kalimantan Timur","KS":"Kalimantan Selatan","KU":"Kalimantan Utara","SA":"Sulawesi Utara","ST":"Sulawesi Tengah","SG":"Sulawesi Tenggara","SR":"Sulawesi Barat","SN":"Sulawesi Selatan","GO":"Gorontalo","MA":"Maluku","MU":"Maluku Utara","PA":"Papua","PB":"Papua Barat"},"CA":{"AB":"Alberta","BC":"British Columbia","MB":"Manitoba","NB":"New Brunswick","NL":"Newfoundland","NT":"Northwest Territories","NS":"Nova Scotia","NU":"Nunavut","ON":"Ontario","PE":"Prince Edward Island","QC":"Quebec","SK":"Saskatchewan","YT":"Yukon Territory"},"NP":{"ILL":"Illam","JHA":"Jhapa","PAN":"Panchthar","TAP":"Taplejung","BHO":"Bhojpur","DKA":"Dhankuta","MOR":"Morang","SUN":"Sunsari","SAN":"Sankhuwa","TER":"Terhathum","KHO":"Khotang","OKH":"Okhaldhunga","SAP":"Saptari","SIR":"Siraha","SOL":"Solukhumbu","UDA":"Udayapur","DHA":"Dhanusa","DLK":"Dolakha","MOH":"Mohottari","RAM":"Ramechha","SAR":"Sarlahi","SIN":"Sindhuli","BHA":"Bhaktapur","DHD":"Dhading","KTM":"Kathmandu","KAV":"Kavrepalanchowk","LAL":"Lalitpur","NUW":"Nuwakot","RAS":"Rasuwa","SPC":"Sindhupalchowk","BAR":"Bara","CHI":"Chitwan","MAK":"Makwanpur","PAR":"Parsa","RAU":"Rautahat","GOR":"Gorkha","KAS":"Kaski","LAM":"Lamjung","MAN":"Manang","SYN":"Syangja","TAN":"Tanahun","BAG":"Baglung","PBT":"Parbat","MUS":"Mustang","MYG":"Myagdi","AGR":"Agrghakanchi","GUL":"Gulmi","KAP":"Kapilbastu","NAW":"Nawalparasi","PAL":"Palpa","RUP":"Rupandehi","DAN":"Dang","PYU":"Pyuthan","ROL":"Rolpa","RUK":"Rukum","SAL":"Salyan","BAN":"Banke","BDA":"Bardiya","DAI":"Dailekh","JAJ":"Jajarkot","SUR":"Surkhet","DOL":"Dolpa","HUM":"Humla","JUM":"Jumla","KAL":"Kalikot","MUG":"Mugu","ACH":"Achham","BJH":"Bajhang","BJU":"Bajura","DOT":"Doti","KAI":"Kailali","BAI":"Baitadi","DAD":"Dadeldhura","DAR":"Darchula","KAN":"Kanchanpur"},"HK":{"HONG KONG":"Hong Kong Island","KOWLOON":"Kowloon","NEW TERRITORIES":"New Territories"},"DE":{"BW":"Baden-W\u00fcrttemberg","BY":"Bavaria","BE":"Berlin","BB":"Brandenburg","HB":"Bremen","HH":"Hamburg","HE":"Hesse","NI":"Lower Saxony","MV":"Mecklenburg-Vorpommern","NW":"North Rhine-Westphalia","RP":"Rhineland-Palatinate","SL":"Saarland","SN":"Saxony","ST":"Saxony-Anhalt","SH":"Schleswig-Holstein","TH":"Thuringia"},"IR":{"KHZ":"Khuzestan  (\u062e\u0648\u0632\u0633\u062a\u0627\u0646)","THR":"Tehran  (\u062a\u0647\u0631\u0627\u0646)","ILM":"Ilaam (\u0627\u06cc\u0644\u0627\u0645)","BHR":"Bushehr (\u0628\u0648\u0634\u0647\u0631)","ADL":"Ardabil (\u0627\u0631\u062f\u0628\u06cc\u0644)","ESF":"Isfahan (\u0627\u0635\u0641\u0647\u0627\u0646)","YZD":"Yazd (\u06cc\u0632\u062f)","KRH":"Kermanshah (\u06a9\u0631\u0645\u0627\u0646\u0634\u0627\u0647)","KRN":"Kerman (\u06a9\u0631\u0645\u0627\u0646)","HDN":"Hamadan (\u0647\u0645\u062f\u0627\u0646)","GZN":"Ghazvin (\u0642\u0632\u0648\u06cc\u0646)","ZJN":"Zanjan (\u0632\u0646\u062c\u0627\u0646)","LRS":"Luristan (\u0644\u0631\u0633\u062a\u0627\u0646)","ABZ":"Alborz (\u0627\u0644\u0628\u0631\u0632)","EAZ":"East Azarbaijan (\u0622\u0630\u0631\u0628\u0627\u06cc\u062c\u0627\u0646 \u0634\u0631\u0642\u06cc)","WAZ":"West Azarbaijan (\u0622\u0630\u0631\u0628\u0627\u06cc\u062c\u0627\u0646 \u063a\u0631\u0628\u06cc)","CHB":"Chaharmahal and Bakhtiari (\u0686\u0647\u0627\u0631\u0645\u062d\u0627\u0644 \u0648 \u0628\u062e\u062a\u06cc\u0627\u0631\u06cc)","SKH":"South Khorasan (\u062e\u0631\u0627\u0633\u0627\u0646 \u062c\u0646\u0648\u0628\u06cc)","RKH":"Razavi Khorasan (\u062e\u0631\u0627\u0633\u0627\u0646 \u0631\u0636\u0648\u06cc)","NKH":"North Khorasan (\u062e\u0631\u0627\u0633\u0627\u0646 \u062c\u0646\u0648\u0628\u06cc)","SMN":"Semnan (\u0633\u0645\u0646\u0627\u0646)","FRS":"Fars (\u0641\u0627\u0631\u0633)","QHM":"Qom (\u0642\u0645)","KRD":"Kurdistan \/ \u06a9\u0631\u062f\u0633\u062a\u0627\u0646)","KBD":"Kohgiluyeh and BoyerAhmad (\u06a9\u0647\u06af\u06cc\u0644\u0648\u06cc\u06cc\u0647 \u0648 \u0628\u0648\u06cc\u0631\u0627\u062d\u0645\u062f)","GLS":"Golestan (\u06af\u0644\u0633\u062a\u0627\u0646)","GIL":"Gilan (\u06af\u06cc\u0644\u0627\u0646)","MZN":"Mazandaran (\u0645\u0627\u0632\u0646\u062f\u0631\u0627\u0646)","MKZ":"Markazi (\u0645\u0631\u06a9\u0632\u06cc)","HRZ":"Hormozgan (\u0647\u0631\u0645\u0632\u06af\u0627\u0646)","SBN":"Sistan and Baluchestan (\u0633\u06cc\u0633\u062a\u0627\u0646 \u0648 \u0628\u0644\u0648\u0686\u0633\u062a\u0627\u0646)"},"TH":{"TH-37":"Amnat Charoen (&#3629;&#3635;&#3609;&#3634;&#3592;&#3648;&#3592;&#3619;&#3636;&#3597;)","TH-15":"Ang Thong (&#3629;&#3656;&#3634;&#3591;&#3607;&#3629;&#3591;)","TH-14":"Ayutthaya (&#3614;&#3619;&#3632;&#3609;&#3588;&#3619;&#3624;&#3619;&#3637;&#3629;&#3618;&#3640;&#3608;&#3618;&#3634;)","TH-10":"Bangkok (&#3585;&#3619;&#3640;&#3591;&#3648;&#3607;&#3614;&#3617;&#3627;&#3634;&#3609;&#3588;&#3619;)","TH-38":"Bueng Kan (&#3610;&#3638;&#3591;&#3585;&#3634;&#3628;)","TH-31":"Buri Ram (&#3610;&#3640;&#3619;&#3637;&#3619;&#3633;&#3617;&#3618;&#3660;)","TH-24":"Chachoengsao (&#3593;&#3632;&#3648;&#3594;&#3636;&#3591;&#3648;&#3607;&#3619;&#3634;)","TH-18":"Chai Nat (&#3594;&#3633;&#3618;&#3609;&#3634;&#3607;)","TH-36":"Chaiyaphum (&#3594;&#3633;&#3618;&#3616;&#3641;&#3617;&#3636;)","TH-22":"Chanthaburi (&#3592;&#3633;&#3609;&#3607;&#3610;&#3640;&#3619;&#3637;)","TH-50":"Chiang Mai (&#3648;&#3594;&#3637;&#3618;&#3591;&#3651;&#3627;&#3617;&#3656;)","TH-57":"Chiang Rai (&#3648;&#3594;&#3637;&#3618;&#3591;&#3619;&#3634;&#3618;)","TH-20":"Chonburi (&#3594;&#3621;&#3610;&#3640;&#3619;&#3637;)","TH-86":"Chumphon (&#3594;&#3640;&#3617;&#3614;&#3619;)","TH-46":"Kalasin (&#3585;&#3634;&#3628;&#3626;&#3636;&#3609;&#3608;&#3640;&#3660;)","TH-62":"Kamphaeng Phet (&#3585;&#3635;&#3649;&#3614;&#3591;&#3648;&#3614;&#3594;&#3619;)","TH-71":"Kanchanaburi (&#3585;&#3634;&#3597;&#3592;&#3609;&#3610;&#3640;&#3619;&#3637;)","TH-40":"Khon Kaen (&#3586;&#3629;&#3609;&#3649;&#3585;&#3656;&#3609;)","TH-81":"Krabi (&#3585;&#3619;&#3632;&#3610;&#3637;&#3656;)","TH-52":"Lampang (&#3621;&#3635;&#3611;&#3634;&#3591;)","TH-51":"Lamphun (&#3621;&#3635;&#3614;&#3641;&#3609;)","TH-42":"Loei (&#3648;&#3621;&#3618;)","TH-16":"Lopburi (&#3621;&#3614;&#3610;&#3640;&#3619;&#3637;)","TH-58":"Mae Hong Son (&#3649;&#3617;&#3656;&#3630;&#3656;&#3629;&#3591;&#3626;&#3629;&#3609;)","TH-44":"Maha Sarakham (&#3617;&#3627;&#3634;&#3626;&#3634;&#3619;&#3588;&#3634;&#3617;)","TH-49":"Mukdahan (&#3617;&#3640;&#3585;&#3604;&#3634;&#3627;&#3634;&#3619;)","TH-26":"Nakhon Nayok (&#3609;&#3588;&#3619;&#3609;&#3634;&#3618;&#3585;)","TH-73":"Nakhon Pathom (&#3609;&#3588;&#3619;&#3611;&#3600;&#3617;)","TH-48":"Nakhon Phanom (&#3609;&#3588;&#3619;&#3614;&#3609;&#3617;)","TH-30":"Nakhon Ratchasima (&#3609;&#3588;&#3619;&#3619;&#3634;&#3594;&#3626;&#3637;&#3617;&#3634;)","TH-60":"Nakhon Sawan (&#3609;&#3588;&#3619;&#3626;&#3623;&#3619;&#3619;&#3588;&#3660;)","TH-80":"Nakhon Si Thammarat (&#3609;&#3588;&#3619;&#3624;&#3619;&#3637;&#3608;&#3619;&#3619;&#3617;&#3619;&#3634;&#3594;)","TH-55":"Nan (&#3609;&#3656;&#3634;&#3609;)","TH-96":"Narathiwat (&#3609;&#3619;&#3634;&#3608;&#3636;&#3623;&#3634;&#3626;)","TH-39":"Nong Bua Lam Phu (&#3627;&#3609;&#3629;&#3591;&#3610;&#3633;&#3623;&#3621;&#3635;&#3616;&#3641;)","TH-43":"Nong Khai (&#3627;&#3609;&#3629;&#3591;&#3588;&#3634;&#3618;)","TH-12":"Nonthaburi (&#3609;&#3609;&#3607;&#3610;&#3640;&#3619;&#3637;)","TH-13":"Pathum Thani (&#3611;&#3607;&#3640;&#3617;&#3608;&#3634;&#3609;&#3637;)","TH-94":"Pattani (&#3611;&#3633;&#3605;&#3605;&#3634;&#3609;&#3637;)","TH-82":"Phang Nga (&#3614;&#3633;&#3591;&#3591;&#3634;)","TH-93":"Phatthalung (&#3614;&#3633;&#3607;&#3621;&#3640;&#3591;)","TH-56":"Phayao (&#3614;&#3632;&#3648;&#3618;&#3634;)","TH-67":"Phetchabun (&#3648;&#3614;&#3594;&#3619;&#3610;&#3641;&#3619;&#3603;&#3660;)","TH-76":"Phetchaburi (&#3648;&#3614;&#3594;&#3619;&#3610;&#3640;&#3619;&#3637;)","TH-66":"Phichit (&#3614;&#3636;&#3592;&#3636;&#3605;&#3619;)","TH-65":"Phitsanulok (&#3614;&#3636;&#3625;&#3603;&#3640;&#3650;&#3621;&#3585;)","TH-54":"Phrae (&#3649;&#3614;&#3619;&#3656;)","TH-83":"Phuket (&#3616;&#3641;&#3648;&#3585;&#3655;&#3605;)","TH-25":"Prachin Buri (&#3611;&#3619;&#3634;&#3592;&#3637;&#3609;&#3610;&#3640;&#3619;&#3637;)","TH-77":"Prachuap Khiri Khan (&#3611;&#3619;&#3632;&#3592;&#3623;&#3610;&#3588;&#3637;&#3619;&#3637;&#3586;&#3633;&#3609;&#3608;&#3660;)","TH-85":"Ranong (&#3619;&#3632;&#3609;&#3629;&#3591;)","TH-70":"Ratchaburi (&#3619;&#3634;&#3594;&#3610;&#3640;&#3619;&#3637;)","TH-21":"Rayong (&#3619;&#3632;&#3618;&#3629;&#3591;)","TH-45":"Roi Et (&#3619;&#3657;&#3629;&#3618;&#3648;&#3629;&#3655;&#3604;)","TH-27":"Sa Kaeo (&#3626;&#3619;&#3632;&#3649;&#3585;&#3657;&#3623;)","TH-47":"Sakon Nakhon (&#3626;&#3585;&#3621;&#3609;&#3588;&#3619;)","TH-11":"Samut Prakan (&#3626;&#3617;&#3640;&#3607;&#3619;&#3611;&#3619;&#3634;&#3585;&#3634;&#3619;)","TH-74":"Samut Sakhon (&#3626;&#3617;&#3640;&#3607;&#3619;&#3626;&#3634;&#3588;&#3619;)","TH-75":"Samut Songkhram (&#3626;&#3617;&#3640;&#3607;&#3619;&#3626;&#3591;&#3588;&#3619;&#3634;&#3617;)","TH-19":"Saraburi (&#3626;&#3619;&#3632;&#3610;&#3640;&#3619;&#3637;)","TH-91":"Satun (&#3626;&#3605;&#3641;&#3621;)","TH-17":"Sing Buri (&#3626;&#3636;&#3591;&#3627;&#3660;&#3610;&#3640;&#3619;&#3637;)","TH-33":"Sisaket (&#3624;&#3619;&#3637;&#3626;&#3632;&#3648;&#3585;&#3625;)","TH-90":"Songkhla (&#3626;&#3591;&#3586;&#3621;&#3634;)","TH-64":"Sukhothai (&#3626;&#3640;&#3650;&#3586;&#3607;&#3633;&#3618;)","TH-72":"Suphan Buri (&#3626;&#3640;&#3614;&#3619;&#3619;&#3603;&#3610;&#3640;&#3619;&#3637;)","TH-84":"Surat Thani (&#3626;&#3640;&#3619;&#3634;&#3625;&#3598;&#3619;&#3660;&#3608;&#3634;&#3609;&#3637;)","TH-32":"Surin (&#3626;&#3640;&#3619;&#3636;&#3609;&#3607;&#3619;&#3660;)","TH-63":"Tak (&#3605;&#3634;&#3585;)","TH-92":"Trang (&#3605;&#3619;&#3633;&#3591;)","TH-23":"Trat (&#3605;&#3619;&#3634;&#3604;)","TH-34":"Ubon Ratchathani (&#3629;&#3640;&#3610;&#3621;&#3619;&#3634;&#3594;&#3608;&#3634;&#3609;&#3637;)","TH-41":"Udon Thani (&#3629;&#3640;&#3604;&#3619;&#3608;&#3634;&#3609;&#3637;)","TH-61":"Uthai Thani (&#3629;&#3640;&#3607;&#3633;&#3618;&#3608;&#3634;&#3609;&#3637;)","TH-53":"Uttaradit (&#3629;&#3640;&#3605;&#3619;&#3604;&#3636;&#3605;&#3606;&#3660;)","TH-95":"Yala (&#3618;&#3632;&#3621;&#3634;)","TH-35":"Yasothon (&#3618;&#3650;&#3626;&#3608;&#3619;)"},"BR":{"AC":"Acre","AL":"Alagoas","AP":"Amap&aacute;","AM":"Amazonas","BA":"Bahia","CE":"Cear&aacute;","DF":"Distrito Federal","ES":"Esp&iacute;rito Santo","GO":"Goi&aacute;s","MA":"Maranh&atilde;o","MT":"Mato Grosso","MS":"Mato Grosso do Sul","MG":"Minas Gerais","PA":"Par&aacute;","PB":"Para&iacute;ba","PR":"Paran&aacute;","PE":"Pernambuco","PI":"Piau&iacute;","RJ":"Rio de Janeiro","RN":"Rio Grande do Norte","RS":"Rio Grande do Sul","RO":"Rond&ocirc;nia","RR":"Roraima","SC":"Santa Catarina","SP":"S&atilde;o Paulo","SE":"Sergipe","TO":"Tocantins"},"IT":{"AG":"Agrigento","AL":"Alessandria","AN":"Ancona","AO":"Aosta","AR":"Arezzo","AP":"Ascoli Piceno","AT":"Asti","AV":"Avellino","BA":"Bari","BT":"Barletta-Andria-Trani","BL":"Belluno","BN":"Benevento","BG":"Bergamo","BI":"Biella","BO":"Bologna","BZ":"Bolzano","BS":"Brescia","BR":"Brindisi","CA":"Cagliari","CL":"Caltanissetta","CB":"Campobasso","CI":"Carbonia-Iglesias","CE":"Caserta","CT":"Catania","CZ":"Catanzaro","CH":"Chieti","CO":"Como","CS":"Cosenza","CR":"Cremona","KR":"Crotone","CN":"Cuneo","EN":"Enna","FM":"Fermo","FE":"Ferrara","FI":"Firenze","FG":"Foggia","FC":"Forl\u00ec-Cesena","FR":"Frosinone","GE":"Genova","GO":"Gorizia","GR":"Grosseto","IM":"Imperia","IS":"Isernia","SP":"La Spezia","AQ":"L&apos;Aquila","LT":"Latina","LE":"Lecce","LC":"Lecco","LI":"Livorno","LO":"Lodi","LU":"Lucca","MC":"Macerata","MN":"Mantova","MS":"Massa-Carrara","MT":"Matera","ME":"Messina","MI":"Milano","MO":"Modena","MB":"Monza e della Brianza","NA":"Napoli","NO":"Novara","NU":"Nuoro","OT":"Olbia-Tempio","OR":"Oristano","PD":"Padova","PA":"Palermo","PR":"Parma","PV":"Pavia","PG":"Perugia","PU":"Pesaro e Urbino","PE":"Pescara","PC":"Piacenza","PI":"Pisa","PT":"Pistoia","PN":"Pordenone","PZ":"Potenza","PO":"Prato","RG":"Ragusa","RA":"Ravenna","RC":"Reggio Calabria","RE":"Reggio Emilia","RI":"Rieti","RN":"Rimini","RM":"Roma","RO":"Rovigo","SA":"Salerno","VS":"Medio Campidano","SS":"Sassari","SV":"Savona","SI":"Siena","SR":"Siracusa","SO":"Sondrio","TA":"Taranto","TE":"Teramo","TR":"Terni","TO":"Torino","OG":"Ogliastra","TP":"Trapani","TN":"Trento","TV":"Treviso","TS":"Trieste","UD":"Udine","VA":"Varese","VE":"Venezia","VB":"Verbano-Cusio-Ossola","VC":"Vercelli","VR":"Verona","VV":"Vibo Valentia","VI":"Vicenza","VT":"Viterbo"},"BG":{"BG-01":"Blagoevgrad","BG-02":"Burgas","BG-08":"Dobrich","BG-07":"Gabrovo","BG-26":"Haskovo","BG-09":"Kardzhali","BG-10":"Kyustendil","BG-11":"Lovech","BG-12":"Montana","BG-13":"Pazardzhik","BG-14":"Pernik","BG-15":"Pleven","BG-16":"Plovdiv","BG-17":"Razgrad","BG-18":"Ruse","BG-27":"Shumen","BG-19":"Silistra","BG-20":"Sliven","BG-21":"Smolyan","BG-23":"Sofia","BG-22":"Sofia-Grad","BG-24":"Stara Zagora","BG-25":"Targovishte","BG-03":"Varna","BG-04":"Veliko Tarnovo","BG-05":"Vidin","BG-06":"Vratsa","BG-28":"Yambol"},"PT":{"NO":"Norte","CE":"Centro","LT":"Lisboa e Vale do Tejo","AG":"Algarve","AT":"Alentejo","MD":"Madeira","AC":"A\u00e7ores"},"BD":{"BAG":"Bagerhat","BAN":"Bandarban","BAR":"Barguna","BARI":"Barisal","BHO":"Bhola","BOG":"Bogra","BRA":"Brahmanbaria","CHA":"Chandpur","CHI":"Chittagong","CHU":"Chuadanga","COM":"Comilla","COX":"Cox's Bazar","DHA":"Dhaka","DIN":"Dinajpur","FAR":"Faridpur ","FEN":"Feni","GAI":"Gaibandha","GAZI":"Gazipur","GOP":"Gopalganj","HAB":"Habiganj","JAM":"Jamalpur","JES":"Jessore","JHA":"Jhalokati","JHE":"Jhenaidah","JOY":"Joypurhat","KHA":"Khagrachhari","KHU":"Khulna","KIS":"Kishoreganj","KUR":"Kurigram","KUS":"Kushtia","LAK":"Lakshmipur","LAL":"Lalmonirhat","MAD":"Madaripur","MAG":"Magura","MAN":"Manikganj ","MEH":"Meherpur","MOU":"Moulvibazar","MUN":"Munshiganj","MYM":"Mymensingh","NAO":"Naogaon","NAR":"Narail","NARG":"Narayanganj","NARD":"Narsingdi","NAT":"Natore","NAW":"Nawabganj","NET":"Netrakona","NIL":"Nilphamari","NOA":"Noakhali","PAB":"Pabna","PAN":"Panchagarh","PAT":"Patuakhali","PIR":"Pirojpur","RAJB":"Rajbari","RAJ":"Rajshahi","RAN":"Rangamati","RANP":"Rangpur","SAT":"Satkhira","SHA":"Shariatpur","SHE":"Sherpur","SIR":"Sirajganj","SUN":"Sunamganj","SYL":"Sylhet","TAN":"Tangail","THA":"Thakurgaon"}},"ajaxurl":"https:\/\/plentyvegan.com\/wp-admin\/admin-ajax.php","please_select_state":"-- Select State --"};</script> <script type="text/javascript" id="jquery-ui-datepicker-js-after">jQuery(function(jQuery){jQuery.datepicker.setDefaults({"closeText":"Close","currentText":"Today","monthNames":["January","February","March","April","May","June","July","August","September","October","November","December"],"monthNamesShort":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"nextText":"Next","prevText":"Previous","dayNames":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"dayNamesShort":["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],"dayNamesMin":["S","M","T","W","T","F","S"],"dateFormat":"MM d, yy","firstDay":1,"isRTL":false});});</script> <script type="text/javascript" id="mp-datepicker-js-extra">var MeprDatePicker = {"translations":{"closeText":"Done","currentText":"Today","monthNamesShort":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"dayNamesMin":["Su","Mo","Tu","We","Th","Fr","Sa"]},"timeFormat":"","dateFormat":"MM d, yy","showTime":""};</script> <script type="text/javascript" id="mp-signup-js-extra">var MeprSignup = {"coupon_nonce":"1d1ec7c4a8","spc_enabled":"","spc_invoice":"","no_compatible_pms":"There are no payment methods available that can purchase this product, please contact the site administrator or purchase it separately.","switch_pm_prompt":"It looks like your purchase requires %s. No problem! Just click below to switch.","switch_pm":"Switch to %s","cancel":"Cancel","warning_icon_url":"https:\/\/plentyvegan.com\/wp-content\/plugins\/memberpress\/images\/mepr-notice-icon-error.png"};</script> <link rel="https://api.w.org/" href="https://plentyvegan.com/wp-json/" /><link rel="alternate" type="application/json" href="https://plentyvegan.com/wp-json/wp/v2/posts/1830" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://plentyvegan.com/xmlrpc.php?rsd" /><link rel="alternate" type="application/json+oembed" href="https://plentyvegan.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fplentyvegan.com%2Falmond-chickpea-chocolate-chip-cookies%2F" /><link rel="alternate" type="text/xml+oembed" href="https://plentyvegan.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fplentyvegan.com%2Falmond-chickpea-chocolate-chip-cookies%2F&#038;format=xml" /><meta name="generator" content="Site Kit by Google 1.48.1" /><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> <script type="text/javascript">var jQueryMigrateHelperHasSentDowngrade = false;
+
+window.onerror = function( msg, url, line, col, error ) {
+    // Break out early, do not processing if a downgrade reqeust was already sent.
+    if ( jQueryMigrateHelperHasSentDowngrade ) {
+        return true;
+    }
+
+    var xhr = new XMLHttpRequest();
+    var nonce = 'df32da0c75';
+    var jQueryFunctions = [
+        'andSelf',
+        'browser',
+        'live',
+        'boxModel',
+        'support.boxModel',
+        'size',
+        'swap',
+        'clean',
+        'sub',
+    ];
+    var match_pattern = /\)\.(.+?) is not a function/;
+    var erroredFunction = msg.match( match_pattern );
+
+    // If there was no matching functions, do not try to downgrade.
+    if ( typeof erroredFunction !== 'object' || typeof erroredFunction[1] === "undefined" || -1 === jQueryFunctions.indexOf( erroredFunction[1] ) ) {
+        return true;
+    }
+
+    // Set that we've now attempted a downgrade request.
+    jQueryMigrateHelperHasSentDowngrade = true;
+
+    xhr.open( 'POST', 'https://plentyvegan.com/wp-admin/admin-ajax.php' );
+    xhr.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+    xhr.onload = function () {
+        var response,
+            reload = false;
+
+        if ( 200 === xhr.status ) {
+            try {
+                response = JSON.parse( xhr.response );
+
+                reload = response.data.reload;
+            } catch ( e ) {
+                reload = false;
+            }
+        }
+
+        // Automatically reload the page if a deprecation caused an automatic downgrade, ensure visitors get the best possible experience.
+        if ( reload ) {
+            location.reload();
+        }
+    };
+
+    xhr.send( encodeURI( 'action=jquery-migrate-downgrade-version&_wpnonce=' + nonce ) );
+
+    // Suppress error alerts in older browsers
+    return true;
+}</script> <script async id="_ck_000" src="https://forms.convertkit.com/000"></script> <script type="text/javascript">setTimeout(function(){var a=document.createElement("script");
+    var b=document.getElementsByTagName("script")[0];
+    a.src=document.location.protocol+"//script.crazyegg.com/pages/scripts/0049/7481.js?"+Math.floor(new Date().getTime()/3600000);
+    a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);</script> <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet"> <script async id="_ck_227325" src="https://forms.convertkit.com/227325?v=6"></script> <script src="//static.leadpages.net/leadboxes/current/embed.js" async defer></script> <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> <script>(adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-8528488560697115",
+    enable_page_level_ads: true
+});</script> <style type="text/css">.site-title a { background: url(https://plentyvegan.com/wp-content/uploads/2016/12/cropped-header-1-12-spaces.jpg) no-repeat !important; }</style><noscript><style>.woocommerce-product-gallery{ opacity: 1 !important; }</style></noscript><meta name="google-adsense-platform-account" content="ca-host-pub-2644536267352236"><meta name="google-adsense-platform-domain" content="sitekit.withgoogle.com"> <script type="text/javascript" async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8528488560697115" crossorigin="anonymous"></script> <link rel="icon" href="https://plentyvegan.com/wp-content/uploads/2016/08/green-favicon-bold-100x100.png" sizes="32x32" /><link rel="icon" href="https://plentyvegan.com/wp-content/uploads/2016/08/green-favicon-bold.png" sizes="192x192" /><link rel="apple-touch-icon" href="https://plentyvegan.com/wp-content/uploads/2016/08/green-favicon-bold.png" /><meta name="msapplication-TileImage" content="https://plentyvegan.com/wp-content/uploads/2016/08/green-favicon-bold.png" /><style type="text/css"></style><style type="text/css" id="wp-custom-css">/*
+You can add your own CSS here.
+
+Click the help icon above to learn more.
+*/
+/* WPPS - ticket #CM15024161 - MB Start */
+@media screen and (max-width: 768px) {
+    .home .before-content .entry-header {
+        background: rgba(255, 255, 255, 0.8) none repeat scroll 0 0;
+        margin: 0 auto !important;
+        position: absolute;
+        width: 90%;
+        padding: 10px !important;
+        left: 5%;
+    }
+    .home .featuredpost .entry-title > a {
+        font-size: 13px !important;
+        letter-spacing: 0;
+        line-height: 15px !important;
+    }
+    .home .before-content .entry-header .entry-title {
+        line-height: 18px !important;
+    }
+    .home .featuredpost .widget-wrap a img.entry-image {
+        width: 100%;
+    }
+}
+@media screen and (min-width: 1024px) and (max-width: 1200px) {
+    .home .featuredpost .post .entry-header {
+        left: 5%;
+        position: absolute;
+        top: 30%;
+    }
+    .home .featuredpost .entry-title > a {
+        font-size: 16px !important;
+        letter-spacing: 0;
+        line-height: 18px !important;
+    }
+    .home .before-content .entry-header .entry-title {
+        line-height: 20px !important;
+    }
+}
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    .home .before-content .entry-header {
+        padding: 10px;
+    }
+    .home .featuredpost .post .entry-header {
+        left: 0;
+        position: absolute;
+        top: 30%;
+    }
+    .home .featuredpost .entry-title > a {
+        font-size: 14px !important;
+        letter-spacing: 0;
+        line-height: 16px !important;
+    }
+    .home .before-content .entry-header .entry-title {
+        line-height: 20px !important;
+    }
+}
+/* WPPS - ticket #CM15024161 - MB End */
+
+/* WPPS SG CM17298117 start */
+.content ol {margin-left:20px;}
+.content ol li {list-style-position: outside; padding-left: 16px;}
+/* WPPS SG CM17298117 end */</style><style id="sccss">/* Enter Your Custom CSS Here */
+
+
+/*WPcurve # JWN start*/
+li#wpmenucartli {
+    list-style-type: none;
+}
+.search-form input[type="search"] {
+    padding: 13px 50px 13px 13px;
+}
+/*WPcurve # JWN end*/
+
+
+
+/* WP Curve #146259  - AA - Start*/
+.post-type-archive-product .page-title {
+    display: none;
+}
+/* WP Curve - AA - End*/
+/* WP Curve #146259  - AA - Start*/
+h2.trail-browse {
+    display: none !important;
+}
+ul.trail-items:before {
+    content: 'You are here: ';
+}
+.post-type-archive-product .trail-items li:last-child {
+    display: none;
+}
+/* WP Curve - AA - End*/
+/* WP Curve #146259  - NM - Start */
+.content .breadcrumbs:before {
+    content: 'You are here: ';
+}
+/* WP Curve #146259  - NM - end */
+
+/* WP Curve #146259 - RS - Start */
+.home .breadcrumbs{
+    display: none;
+}
+/* WP Curve #146259 - RS - End */
+
+/* WP Curve #147113  - AA - Start*/
+.site-header .title-area {
+    background: none;
+    outline: none;
+    border: none !important;
+    padding 0px 0px;
+}
+.site-title a {
+    background: url(https://plentyvegan.com/wp-content/uploads/2016/11/logo.svg) no-repeat !important;
+    background-position: center center !important;
+    background-size: auto;
+    display: block;
+    height: 80%;
+    color: rgba(255, 255, 255, 0) !important;
+}
+.site-header .title-area {
+    min-height: 100px !important;
+}
+.header-full-width .site-title{
+    height: 140px !important;
+}
+
+@media only screen and (max-width: 760px){
+    .site-header .title-area {
+        height: 70px;
+        min-height: 70px !important;
+    }
+    .header-full-width .site-title {
+        height: 70px !important;
+    }
+}
+/* WP Curve - AA - End*/
+/* WP Curve - NM - #147543 start */
+.dwqa-breadcrumbs {
+    display: none;
+}
+/* WP Curve - NM - #147543 end */
+/* WP Curve #149782 - RS - Start */
+.single div.pp_woocommerce div.ppt{
+    visibility: hidden;
+}
+/* WP Curve #149782 - RS - End */
+/* WP Curve #151107 - JHA */
+.rtbs .rtbs_menu li a{
+    padding: 11px 30px 11px 60px!important;
+    box-shadow: 0 0;
+    text-align: center;
+    display: block;
+}
+/* WP Curve #151107 - JHA - End */
+/** WP Curve AB #155161 Start **/
+.menu-item-1070 a {z-index: 9999;}
+@media only screen and (max-width: 560px) {
+    .ck_form_content h3 {font-size: 22px !important;}
+    .ck_modal.ck_form_v6 .ck_close_link{font-size: 40px !important;}
+}
+/** WP Curve AB #155161 End **/
+
+/* WP Curve #159463  - AA - Start*/
+.sidebar li {
+    float: left;
+    clear: both;
+    list-style: none;
+    text-align: left;
+}
+/* WP Curve - AA - End*/
+
+/* Plenty Vegan - Easy Recipe Start*/
+.easyrecipe .ERSName {
+    font-weight: 400 !important;
+}
+
+.easyrecipe .ERSIngredients .ERSIngredientsHeader {
+    font-weight: 400 !important;
+}
+
+.easyrecipe .ERSInstructions .ERSInstructionsHeader {
+    font-weight: 400 !important;
+}
+
+.easyrecipe .ERSIngredients li.ingredient {
+    margin-left: 30px;
+}
+
+div.easyrecipe {
+    color: #222;
+    padding: 0px !important;
+    margin: 0px 0px !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+}
+
+/* Plenty Vegan - Easy Recipe End*/
+
+/* Plenty Vegan - Remove Page Titles*/
+
+.page-id-3015 .entry-title {
+    display:none;
+}
+
+.page-id-3015 .entry-content {
+    padding-top: 20px;
+}
+
+.page-id-3009 .entry-title {
+    display:none;
+}
+
+.page-id-3009 .entry-content {
+    padding-top: 20px;
+}
+
+.page-id-3020 .entry-title {
+    display:none;
+}
+
+.page-id-3020 .entry-content {
+    padding-top: 20px;
+}
+
+.page-id-3023 .entry-title {
+    display:none;
+}
+
+.page-id-3023 .entry-content {
+    padding-top: 20px;
+}
+
+/* Plenty Vegan - Remove Page Titles End*/
+
+/* Plenty Vegan - Remove Breadcrumbs Entry Title MemberPress Start*/
+
+.page-id-3623 .breadcrumbs {
+    display: none !important;
+}
+
+.page-id-3623 .entry-title {
+    display: none !important;
+}
+
+.page-id-3631 .breadcrumbs {
+    display: none !important;
+}
+
+.page-id-3631 .entry-title {
+    display: none !important;
+}
+
+.page-id-3645 .breadcrumbs {
+    display: none !important;
+}
+
+.page-id-3645 .entry-title {
+    display: none !important;
+}
+
+.page-id-3648 .breadcrumbs {
+    display: none !important;
+}
+
+.page-id-3648 .entry-title {
+    display: none !important;
+}
+
+.page-id-3651 .breadcrumbs {
+    display: none !important;
+}
+
+.page-id-3651 .entry-title {
+    display: none !important;
+}
+
+.page-id-3654 .breadcrumbs {
+    display: none !important;
+}
+
+.page-id-3654 .entry-title {
+    display: none !important;
+}
+
+.page-id-3657 .breadcrumbs {
+    display: none !important;
+}
+
+.page-id-3657 .entry-title {
+    display: none !important;
+}
+
+/* Plenty Vegan - Remove Breadcrumbs Entry Title MemberPress End*/
+
+
+/* WP Curve #165590 TA */
+.wpb_category_n_menu_accordion ul li > a > span.wpb-submenu-indicator {
+    margin-top: -2px;
+    padding-left: 5px;
+}
+/* WP Curve #165590 TA */
+/* WP Curve #165590 - RS - Start */
+.wpb_category_n_menu_accordion.wpb_wmca_theme_transparent > ul > li a{
+    margin-bottom: 6px;
+}
+/* WP Curve #165590 - RS - End */
+/* WPCurve CDJ 173240 start */
+.footer-widgets-2 #text-13 .textwidget { padding-left:16px !important; }
+/* WPCurve CDJ 173240 end */
+
+.woocommerce-product-gallery{
+    opacity:1 !important;
+}
+
+
+/* WPPS CM11572687 MC */
+@media(min-width: 600px){
+    .page-template-page_blog img.entry-image{width:100%;}
+    .page-template-page_blog a.entry-image-link{height:400px; overflow:hidden; display:block;}
+
+    .archive .content .entry-header h2.entry-title a {font-size:24px;}
+    .archive .content img.entry-image{width:100%;}
+    .archive .content a.entry-image-link{height:400px; overflow:hidden; display:block;}
+    .archive .content article.entry{border-bottom: medium double #ddd; padding-bottom:20px;}
+    .archive .content .archive-description{margin-bottom:0;}
+}
+/* WPPS CM11572687 MC */
+
+/* PV Widget About Custom Start */
+
+.sidebar .widget {
+    line-height: 1;
+    padding: 0px 0px;
+}
+
+.sidebar {
+    padding-top: 30px;
+}
+
+.entry-title {
+    font-size: 30px !important;
+    font-weight: 500  !important;
+}
+
+.content .entry-header .entry-meta {
+    display: none;
+}
+
+.nav-primary {
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.entry-title a {
+    color: #222;
+}
+
+.content {
+    padding-top: 30px;
+}
+
+.post-grid .grid-items {
+    text-transform: uppercase;
+    line-height: 1.2;
+    color: #333333;
+}
+
+a {
+    font-style: italic;
+}
+
+.genesis-nav-menu a {
+    font-style: normal;
+}
+
+.woocommerce ul.products li.product .woocommerce-loop-category__title  {
+    font-style: normal;
+}
+
+.woocommerce ul.products li.product .woocommerce-loop-product__title {
+    font-style: normal;
+}
+
+.wpb_category_n_menu_accordion.wpb_wmca_theme_transparent>ul>li a, .wpb_category_n_menu_accordion.wpb_wmca_theme_transparent>ul>li a:visited {
+    font-style: normal;
+}
+
+.woocommerce ul.cart_list li a, .woocommerce ul.product_list_widget li a {
+    font-style: normal;
+}
+
+.footer-widgets a {
+    font-style: normal;
+}
+
+.sidebar a {
+    font-style: normal;
+}
+
+.entry-title a {
+    font-style: normal;
+}
+
+/*PV Widget About Custom End */
+
+/* WPPS CM12766749 (MJ) - Start */
+.wpps-fullwidth {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    overflow: hidden;
+    padding: 40px;
+}
+
+.wpps-fullwidth div {
+    /*margin: 0 auto 15px;*/
+    max-width: 100%;
+    padding: 40px 47px 40px 47px;
+}
+
+
+/* WPPS CM12766749 (MJ) - END */
+
+/* PV Full width img */
+.wpps-fullwidth-img {
+    background: #f2f3f8 none repeat scroll 0 0;
+    left: 50%;
+    margin: 0px -50vw;
+    padding-bottom: 25px;
+    padding-top: 0px;
+    position: relative;
+    right: 50%;
+    width: 100vw;
+}
+.wpps-fullwidth-img div {
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* PV Full width img */
+
+.page-id-373 h1.entry-title {
+    display:none;
+}
+
+/* PV Custom Landing Page styling */
+
+
+.custom-landing .site-container {
+    max-width: 100%;
+    margin: 0px auto 15px;
+    padding: 0px 40px 40px 40px;
+}
+
+.custom-landing .entry-header {
+    display: none;
+}
+.custom-landing .entry-content h2 {
+    margin-top: 0;
+}
+
+.custom-landing .content {
+    padding-top: 0;
+}
+
+.custom-landing .site-inner {
+    margin: 0px auto;
+    padding: 0px 0;
+}
+
+/* End PV Custom Landing page styling */
+
+/* WPPS - ticket #CM13206248 - JA start */
+@media (min-width: 768px){
+    .wpps-full-text p{
+        padding-left: 47px;
+        padding-right: 47px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .wpps-fullwidth .wpps-space-left,
+    .wpps-fullwidth .wpps-space-right{
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .wpps-fullwidth .wpps-space-left > p,
+    .wpps-fullwidth .wpps-space-right > p{
+        text-align : justify !important;
+    }
+}
+/* WPPS - ticket #CM13206248 - JA end */
+
+/* start Edit Column class so there's a break on mobile */
+
+@media only screen and (max-width: 767px) {
+
+    .site-container {
+        max-width: 600px;
+    }
+
+    .one-half {
+        margin: 0;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+/* end Edit Column class so there's a break on mobile */</style> <script src="//geniuslinkcdn.com/snippet.min.js" defer></script> <script type="text/javascript">jQuery(document).ready(function( $ ) {
+    var ale_on_click_checkbox_is_checked="1";
+    if(typeof Georiot !== "undefined")
+    {
+        if(ale_on_click_checkbox_is_checked) {
+            Georiot.amazon.addOnClickRedirect(4632, true);
+        }
+        else {
+            Georiot.amazon.convertToGeoRiotLinks(4632, true);
+        };
+    };
+});</script> </head><body class="post-template-default single single-post postid-1830 single-format-standard theme-genesis woocommerce-no-js custom-header header-image header-full-width content-sidebar genesis-breadcrumbs-hidden genesis-footer-widgets-hidden er-recipe" itemscope itemtype="https://schema.org/WebPage"><div class="site-container"><header class="site-header" itemscope itemtype="https://schema.org/WPHeader"><div class="wrap"><div class="title-area"><p class="site-title" itemprop="headline"><a href="https://plentyvegan.com/">Plenty Vegan</a></p></div></div></header><nav class="nav-primary" aria-label="Main" itemscope itemtype="https://schema.org/SiteNavigationElement"><div class="wrap"><ul id="menu-menu-2022" class="menu genesis-nav-menu menu-primary"><li id="menu-item-1640" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1640"><a href="https://plentyvegan.com/register/plenty-vegan-plan/" itemprop="url"><span itemprop="name">Resources</span></a><ul class="sub-menu"><li id="menu-item-4312" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4312"><a href="https://plentyvegan.com/pvp-trial" itemprop="url"><span itemprop="name">Free Email Course</span></a></li><li id="menu-item-4558" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4558"><a href="https://plentyvegan.com/topics/" itemprop="url"><span itemprop="name">Posts</span></a></li><li id="menu-item-1529" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1529"><a href="https://plentyvegan.com/glossary/" itemprop="url"><span itemprop="name">Glossary</span></a></li></ul></li><li id="menu-item-2364" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2364"><a href="https://plentyvegan.com/shop/" itemprop="url"><span itemprop="name">Shop</span></a></li><li id="menu-item-2614" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2614"><a itemprop="url"><span itemprop="name">Members</span></a><ul class="sub-menu"><li id="menu-item-4328" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4328"><a href="https://plentyvegan.com/register/plenty-vegan-plan-trial/" itemprop="url"><span itemprop="name">Free Access</span></a></li><li id="menu-item-2616" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2616"><a href="https://plentyvegan.com/plenty-vegan-plan-resources/plenty-vegan-plan-videos/" itemprop="url"><span itemprop="name">Plenty Vegan Plan Course Videos</span></a></li><li id="menu-item-2615" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-2615"><a href="https://plentyvegan.com/plenty-vegan-plan-resources/" itemprop="url"><span itemprop="name">Plenty Vegan Plan Resources</span></a><ul class="sub-menu"><li id="menu-item-4268" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4268"><a href="https://plentyvegan.com/plenty-vegan-plan-resources/plenty-vegan-plan-videos/" itemprop="url"><span itemprop="name">Plenty Vegan Plan Videos</span></a></li><li id="menu-item-3028" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3028"><a href="https://plentyvegan.com/plenty-vegan-plan-resources/cooking/" itemprop="url"><span itemprop="name">Cooking</span></a></li><li id="menu-item-3029" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3029"><a href="https://plentyvegan.com/plenty-vegan-plan-resources/guides/" itemprop="url"><span itemprop="name">Guides</span></a></li><li id="menu-item-3027" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3027"><a href="https://plentyvegan.com/plenty-vegan-plan-resources/recommendations/" itemprop="url"><span itemprop="name">Recommendations</span></a></li><li id="menu-item-3026" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3026"><a href="https://plentyvegan.com/plenty-vegan-plan-resources/support/" itemprop="url"><span itemprop="name">Support</span></a></li></ul></li><li id="menu-item-2613" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2613"><a href="https://plentyvegan.com/account-2/" itemprop="url"><span itemprop="name">Log In</span></a></li></ul></li><li id="menu-item-1069" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1069"><a href="https://plentyvegan.com/about/" itemprop="url"><span itemprop="name">About</span></a><ul class="sub-menu"><li id="menu-item-986" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-986"><a href="https://plentyvegan.com/about/" itemprop="url"><span itemprop="name">About Plenty Vegan</span></a></li><li id="menu-item-992" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-992"><a href="https://plentyvegan.com/contact/" itemprop="url"><span itemprop="name">Contact</span></a></li></ul></li><li class="right search"><form class="search-form" method="get" action="https://plentyvegan.com/" role="search" itemprop="potentialAction" itemscope itemtype="https://schema.org/SearchAction"><input class="search-form-input" type="search" name="s" id="searchform-1" placeholder="Search Plenty Vegan" itemprop="query-input"><input class="search-form-submit" type="submit" value="Search"><meta content="https://plentyvegan.com/?s={s}" itemprop="target"></form></li></ul></div></nav><div class="site-inner"><div class="content-sidebar-wrap"><main class="content"><article class="post-1830 post type-post status-publish format-standard has-post-thumbnail category-food category-recipes course-adapted-from-hungry-roots-almond-chickpea-cookie-dough cuisine-dessert entry" aria-label="Almond Chickpea Chocolate Chip Cookies" itemscope itemtype="https://schema.org/CreativeWork"><header class="entry-header"><p class="entry-meta"><span class="entry-categories"><a href="https://plentyvegan.com/topics/food/" rel="category tag">Food</a> <a href="https://plentyvegan.com/topics/food/recipes/" rel="category tag">Recipes</a></span></p><h1 class="entry-title" itemprop="headline">Almond Chickpea Chocolate Chip Cookies</h1></header><div class="entry-content" itemprop="text"><p><img decoding="async" class="aligncenter size-full wp-image-2192" src="https://plentyvegan.com/wp-content/uploads/2016/11/ingredients-sm-no-black.jpg" alt="ingredients-sm-no-black" width="1388" height="2468" srcset="https://plentyvegan.com/wp-content/uploads/2016/11/ingredients-sm-no-black.jpg 1388w, https://plentyvegan.com/wp-content/uploads/2016/11/ingredients-sm-no-black-600x1067.jpg 600w, https://plentyvegan.com/wp-content/uploads/2016/11/ingredients-sm-no-black-169x300.jpg 169w, https://plentyvegan.com/wp-content/uploads/2016/11/ingredients-sm-no-black-768x1366.jpg 768w, https://plentyvegan.com/wp-content/uploads/2016/11/ingredients-sm-no-black-576x1024.jpg 576w" sizes="(max-width: 1388px) 100vw, 1388px" />Cookies that contain no flour are fascinating. Gluten-free, paleo, or just the adventurous bakers out there have given us an exciting new trend. It makes you feel like you just ate a salad rather than a chocolate chip cookie. Right?</p><h2><span style="color: #009999;"><strong>The Ingredient Label</strong></span></h2><p>When I came across the Almond Chickpea Cookie Dough from&nbsp;<a href="https://www.hungryroot.com/products/almond-chickpea-cookie-dough" target="_blank" rel="noopener noreferrer">Hungry Root</a>, I was inspired. Look at these ingredients &ndash; not hard at all to recreate at home!</p><p><em><b>Chickpeas, Almond Butter, Vegan Chocolate Chips [Evaporated Cane Juice, Natural Chocolate Liquor (Non-Alcoholic), Non-Dairy Cocoa Butter], Sesame Tahini, Sweet Potato, Coconut Sugar, Maple Syrup, Vanilla Extract, Coconut Oil, Sea Salt, Baking Powder, Baking Soda.</b></em></p><p>And so recreate it I did.</p><h2><span style="color: #009999;"><strong>Make Substitutions</strong></span></h2><p>Since I had <a href="https://plentyvegan.com/bobs-red-mill-ga%E2%80%A6bean-flour-16-oz" target="_blank" rel="noopener noreferrer">garbanzo bean flour</a>, I decided to use it instead of smashing up <a href="https://plentyvegan.com/westbrae-garbanzo-beans" target="_blank" rel="noopener noreferrer">chickpeas</a>. So, not flour-free but gluten-free!</p><p>I had all of the other ingredients because I&rsquo;m a Level 10 Vegan&reg; (?) but if you don&rsquo;t have, say, coconut sugar, you could use regular sugar. Same goes for coconut oil &ndash; you could stick with canola. As for tahini&hellip; peanut butter?! Tahini is just peanut butter from sesame seeds instead of peanuts so that could work. Or you could up the almond butter amount.</p><p>If you don&rsquo;t have chickpeas or garbanzo bean/chickpea flour, almond butter and sweet potato then you better just make a different cookie or hit the grocery store because this cookie is all about these weird ingredients!<br></p><script src="https://cdn.convertkit.com/assets/CKJS4.js?v=21"></script> <div class="ck_form_container ck_inline" data-ck-version="6"><div class="ck_form ck_vertical_subscription_form"><div class="ck_form_content"><h3 class="ck_form_title"></h3><div class="ck_description"> <span class="ck_image"> </span><div style="color:#222;"><p style="text-align: center; font-size: 18px;">Subscribe for access to the<br><strong><em>free</em> Becoming Vegan email course!</strong></p><p style="text-align: center; font-size: 18px;"><strong></strong></p><p><img decoding="async" src="https://convertkit.s3.amazonaws.com/assets/pictures/19738/620457/content_plenty-vegan-plan-sections-form-horizontal-course.jpg" data-pin-nopin="true" alt style="display: block; margin: auto;" /></p><p style="text-align: center; font-size: 18px;" rel="text-align: center; font-size: 18px;"><strong></strong></p></div></div></div><div class="ck_form_fields"><div id="ck_success_msg" style="display:none;"><p>Success! Now check your email to confirm your subscription.</p></div><form id="ck_subscribe_form" class="ck_subscribe_form" action="https://forms.convertkit.com/landing_pages/227325/subscribe" data-remote="true"> <input type="hidden" value="{&quot;form_style&quot;:&quot;full&quot;,&quot;embed_style&quot;:&quot;inline&quot;,&quot;embed_trigger&quot;:&quot;scroll_percentage&quot;,&quot;scroll_percentage&quot;:&quot;70&quot;,&quot;delay_seconds&quot;:&quot;10&quot;,&quot;display_position&quot;:&quot;br&quot;,&quot;display_devices&quot;:&quot;all&quot;,&quot;days_no_show&quot;:&quot;0&quot;,&quot;converted_behavior&quot;:&quot;show&quot;}" id="ck_form_options"> <input type="hidden" name="id" value="227325" id="landing_page_id"> <input type="hidden" name="ck_form_recaptcha" value="true" id="ck_form_recaptcha"><div class="ck_errorArea"><div id="ck_error_msg" style="display:none"><p>There was an error submitting your subscription. Please try again.</p></div></div><div class="ck_control_group ck_first_name_field_group"> <label class="ck_label" for="ck_firstNameField">First Name</label> <input type="text" name="first_name" class="ck_first_name" id="ck_firstNameField"></div><div class="ck_control_group ck_email_field_group"> <label class="ck_label" for="ck_emailField">Email Address</label> <input type="email" name="email" class="ck_email_address" id="ck_emailField" required></div><div class="ck_control_group ck_captcha2_h_field_group ck-captcha2-h" style="position: absolute !important;left: -999em !important;"> <label class="ck_label" for="ck_captcha2_h">We use this field to detect spam bots. If you fill this in, you will be marked as a spammer.</label> <input type="text" name="captcha2_h" class="ck-captcha2-h" id="ck_captcha2_h"></div> <label class="ck_checkbox" style="display:none;"> <input class="optIn ck_course_opted" name="course_opted" type="checkbox" id="optIn" checked> <span class="ck_opt_in_prompt">I'd like to receive the free email course.</span> </label> <button class="subscribe_button ck_subscribe_button btn fields" id="ck_subscribe_button"> Get FREE access </button> <span class="ck_guarantee"> <a class="ck_powered_by" href="https://convertkit.com/features/forms?utm_campaign=poweredby&amp;utm_content=form&amp;utm_medium=referral&amp;utm_source=dynamic">Powered by ConvertKit</a> </span></form></div></div></div><style type="text/css">/* Layout */
+.ck_form {
+    /* divider image */
+    background: #fff url(data:image/gif;base64,R0lGODlhAQADAIABAMzMzP///yH/C1hNUCBEYXRhWE1QPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS41LWMwMTQgNzkuMTUxNDgxLCAyMDEzLzAzLzEzLTEyOjA5OjE1ICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MUQ5NjM5RjgxQUVEMTFFNEJBQTdGNTQwMjc5MTZDOTciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MUQ5NjM5RjkxQUVEMTFFNEJBQTdGNTQwMjc5MTZDOTciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxRDk2MzlGNjFBRUQxMUU0QkFBN0Y1NDAyNzkxNkM5NyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxRDk2MzlGNzFBRUQxMUU0QkFBN0Y1NDAyNzkxNkM5NyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgH//v38+/r5+Pf29fTz8vHw7+7t7Ovq6ejn5uXk4+Lh4N/e3dzb2tnY19bV1NPS0dDPzs3My8rJyMfGxcTDwsHAv769vLu6ubi3trW0s7KxsK+urayrqqmop6alpKOioaCfnp2cm5qZmJeWlZSTkpGQj46NjIuKiYiHhoWEg4KBgH9+fXx7enl4d3Z1dHNycXBvbm1sa2ppaGdmZWRjYmFgX15dXFtaWVhXVlVUU1JRUE9OTUxLSklIR0ZFRENCQUA/Pj08Ozo5ODc2NTQzMjEwLy4tLCsqKSgnJiUkIyIhIB8eHRwbGhkYFxYVFBMSERAPDg0MCwoJCAcGBQQDAgEAACH5BAEAAAEALAAAAAABAAMAAAICRFIAOw==) repeat-y center top;
+    font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+    line-height: 1.5em;
+    overflow: hidden;
+    color: #666;
+    font-size: 16px;
+    border-top: solid 20px #3071b0;
+    border-top-color: #ffffff;
+    border-bottom: solid 10px #3d3d3d;
+    border-bottom-color: #999999;
+    -webkit-box-shadow: 0px 0px 5px rgba(0,0,0,.3);
+    -moz-box-shadow: 0px 0px 5px rgba(0,0,0,.3);
+    box-shadow: 0px 0px 5px rgba(0,0,0,.3);
+    clear: both;
+    margin: 20px 0px;
+}
+
+.ck_form, .ck_form * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#ck_subscribe_form {
+    clear: both;
+}
+
+/* Element Queries &mdash;&nbsp;uses JS */
+
+.ck_form_content, .ck_form_fields {
+    width: 50%;
+    float: left;
+    padding: 5%;
+}
+
+.ck_form.ck_horizontal {
+}
+
+.ck_form_content {
+    border-bottom: none;
+}
+
+.ck_form.ck_vertical {
+    background: #fff;
+}
+
+.ck_vertical .ck_form_content, .ck_vertical .ck_form_fields {
+    padding: 10%;
+    width: 100%;
+    float: none;
+}
+
+.ck_vertical .ck_form_content {
+    border-bottom: 1px dotted #aaa;
+    overflow: hidden;
+}
+
+/* Trigger the vertical layout with media queries as well */
+
+@media all and (max-width: 499px) {
+
+    .ck_form {
+        background: #fff;
+    }
+
+    .ck_form_content, .ck_form_fields {
+        padding: 10%;
+        width: 100%;
+        float: none;
+    }
+
+    .ck_form_content {
+        border-bottom: 1px dotted #aaa;
+    }
+
+}
+
+/* Content */
+
+.ck_form_content h3 {
+    margin: 0px 0px 15px;
+    font-size: 24px;
+    padding: 0px;
+}
+
+
+.ck_form_content p {
+    font-size: 14px;
+}
+
+.ck_image {
+    float: left;
+    margin-right: 5px;
+}
+
+/* Form fields */
+
+.ck_errorArea {
+    display: none;
+}
+
+#ck_success_msg {
+    padding: 10px 10px 0px;
+    border: solid 1px #ddd;
+    background: #eee;
+}
+
+.ck_label {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.ck_form input[type="text"], .ck_form input[type="email"] {
+    font-size: 14px;
+    padding: 10px 8px;
+    width: 100%;
+    border: 1px solid #d6d6d6; /* stroke */
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px; /* border radius */
+    background-color: #f8f7f7; /* layer fill content */
+    margin-bottom: 5px;
+    height: auto;
+}
+
+.ck_form input[type="text"]:focus, .ck_form input[type="email"]:focus {
+    outline: none;
+    border-color: #aaa;
+}
+
+.ck_checkbox {
+    padding: 10px 0px 10px 20px;
+    display: block;
+    clear: both;
+}
+
+.ck_checkbox input.optIn {
+    margin-left: -20px;
+    margin-top: 0;
+}
+.ck_form .ck_opt_in_prompt {
+    margin-left: 4px;
+}
+.ck_form .ck_opt_in_prompt p {
+    display: inline;
+}
+
+.ck_form .ck_subscribe_button {
+    width: 100%;
+    color: #fff;
+    margin: 10px 0px 0px;
+    padding:  10px 0px;
+    font-size: 18px;
+    background: #99cc33;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px; /* border radius */
+    cursor: pointer;
+    border: none;
+    text-shadow: none;
+}
+
+
+.ck_form .ck_guarantee {
+    color: #626262;
+    font-size: 12px;
+    text-align: center;
+    padding: 5px 0px;
+    display: block;
+}
+
+.ck_form .ck_powered_by {
+    display: block;
+    color: #aaa;
+}
+
+.ck_form .ck_powered_by:hover {
+    display: block;
+    color: #444;
+}
+
+.ck_converted_content {
+    display: none;
+    padding: 5%;
+    background: #fff;
+}
+
+
+/* v6 */
+
+.ck_form_v6 #ck_success_msg {
+    padding: 0px 10px;
+}
+
+@media all and (max-width: 403px) {
+    .ck_form_v6.ck_modal .ck_close_link {
+        top: 30px;
+    }
+}
+
+@media all and (min-width: 404px) and (max-width: 499px) {
+    .ck_form_v6.ck_modal .ck_close_link {
+        top: 57px;
+    }
+}
+
+
+
+.ck_form_title {
+    color: #009999;
+}
+
+.ck_form_content p {
+    font-size: 20px;
+}
+.ck_form .ck_powered_by {
+    display: none;
+}
+
+::-webkit-input-placeholder {
+    font-family: 'Lato',sans-serif;
+}
+::-moz-placeholder {
+    font-family: 'Lato',sans-serif;
+}
+:-ms-input-placeholder {
+    font-family: 'Lato',sans-serif;
+}
+:-moz-placeholder {
+    font-family: 'Lato',sans-serif;
+}
+input, .ck_form, .ck_label, .ck_subscribe_button {
+    font-family: 'Lato',sans-serif;
+}
+
+.ck_form {
+    margin: 0px 0px;
+}
+
+.ck_form.ck_vertical_subscription_form .ck_form_content {
+    border-bottom: none;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.ck_form.ck_vertical_subscription_form {
+    box-shadow: none;
+    border-bottom: none;
+}</style><h2><strong><span style="color: #009999;">Draw Up The Recipe</span></strong></h2><p>Chocolate chip cookies usually just have the wet and dry ingredients that you mix together and then combine. Or you mix up the wet and add in the dry. This is what I prefer because it means one less bowl to wash.</p><p>I just scoured some cookie recipes to adapt the quantities of each ingredient and gave it a whirl. And, guess what? It worked!</p><p>They say baking is a science but I&rsquo;ve found it to be surprisingly forgiving. And, if you have to throw out a batch of botched cookies &ndash; so be it!</p><p>You have to break a few <del>eggs</del>&nbsp;flaxseeds and all that&hellip;</p><p><img decoding="async" class="aligncenter size-full wp-image-2178" src="https://plentyvegan.com/wp-content/uploads/2016/11/sm.jpg" alt="_sm" width="2500" height="1406" srcset="https://plentyvegan.com/wp-content/uploads/2016/11/sm.jpg 2500w, https://plentyvegan.com/wp-content/uploads/2016/11/sm-600x337.jpg 600w, https://plentyvegan.com/wp-content/uploads/2016/11/sm-300x169.jpg 300w, https://plentyvegan.com/wp-content/uploads/2016/11/sm-768x432.jpg 768w, https://plentyvegan.com/wp-content/uploads/2016/11/sm-1024x576.jpg 1024w" sizes="(max-width: 2500px) 100vw, 2500px" /></p><h2><span style="color: #009999;"><strong>The Recipe</strong></span></h2><div id="easyrecipe-1830-0" class="easyrecipe" itemscope itemtype="http://schema.org/Recipe"><link itemprop="image" href="https://plentyvegan.com/wp-content/uploads/2016/11/sm-300x300.jpg"><div itemprop="name" class="ERSName">Almond Chickpea Chocolate Chip Cookies</div><div class="ERSClear">&nbsp;</div><div class="ERSTopRight"><div class="ERSSavePrint"> <span class="ERSPrintBtnSpan"><a class="ERSPrintBtn" href="https://plentyvegan.com/easyrecipe-print/1830-0/" rel="nofollow" target="_blank">Print</a></span></div></div><div class="ERSTimes"><div class="ERSTime"><div class="ERSTimeHeading">Prep time</div><div class="ERSTimeItem"> <time itemprop="prepTime" datetime="PT10M">10 mins</time></div></div><div class="ERSTime ERSTimeRight"><div class="ERSTimeHeading">Cook time</div><div class="ERSTimeItem"> <time itemprop="cookTime" datetime="PT8M">8 mins</time></div></div><div class="ERSTime ERSTimeRight"><div class="ERSTimeHeading">Total time</div><div class="ERSTimeItem"> <time itemprop="totalTime" datetime="PT18M">18 mins</time></div></div><div class="ERSClearLeft">&nbsp;</div></div><div class="divERSHeadItems"><div class="ERSAuthor">Author: <span itemprop="author">Plenty Vegan</span></div><div class="ERSCategory">Recipe type: <span itemprop="recipeCategory">Adapted from Hungry Root's Almond Chickpea Cookie Dough</span></div><div class="ERSCuisine">Cuisine: <span itemprop="recipeCuisine">Dessert</span></div><div class="ERSServes">Serves: <span itemprop="recipeYield">16 cookies</span></div></div><div class="ERSIngredients"><div class="ERSIngredientsHeader ERSHeading">Ingredients</div><ul><li class="ingredient" itemprop="ingredients">&frac14; coconut sugar</li><li class="ingredient" itemprop="ingredients">&frac14; cup maple syrup</li><li class="ingredient" itemprop="ingredients">&frac14; cup <a aria-describedby="tt" href="https://plentyvegan.com/glossary/almond-milk/" class="glossaryLink" data-cmtooltip="<div class=glossaryItemTitle>Almond Milk</div><div class=glossaryItemBody>Almond milk is a non-dairy alternative to cow&#039;s milk. It can be substituted in baking, cereals, and coffee, among other things. Almonds are soaked in water, pureed and then strained, resulting in the milk.Almond milk is available in a variety of flavors including: unsweetened, sweetened, vanilla, chocolate and creamer.</div>" target="_blank">almond milk</a></li><li class="ingredient" itemprop="ingredients">&frac14; cup coconut oil</li><li class="ingredient" itemprop="ingredients">&frac14; cup almond butter</li><li class="ingredient" itemprop="ingredients">&frac14; cup tahini</li><li class="ingredient" itemprop="ingredients">&frac14; cup cooked sweet potato</li><li class="ingredient" itemprop="ingredients">1 teaspoon vanilla extract</li><li class="ingredient" itemprop="ingredients"><a href="https://plentyvegan.com/bobs-red-mill-ga&#x2026;bean-flour-16-oz" target="_blank">1 cup garbanzo bean flour</a></li><li class="ingredient" itemprop="ingredients">1 teaspoon baking powder</li><li class="ingredient" itemprop="ingredients">&frac12; teaspoon baking soda</li><li class="ingredient" itemprop="ingredients">&frac12; teaspoon salt</li><li class="ingredient" itemprop="ingredients">&frac12; cup chocolate chips</li></ul><div class="ERSClear"></div></div><div class="ERSInstructions"><div class="ERSInstructionsHeader ERSHeading">Instructions</div><ol><li class="instruction" itemprop="recipeInstructions"><em>If you haven't already prepared your baked sweet potato, be sure to bake it! You can roast it whole in the oven for ~45 minutes at 425&deg;F. Poke the potato with a fork before putting it on a baking sheet to bake.</em></li><li class="instruction" itemprop="recipeInstructions">Preheat oven to 350&deg;F.</li><li class="instruction" itemprop="recipeInstructions">Grease 1 baking sheets with spray canola oil or a vegan butter. (You can always grease up another sheet if all the cookies don't all fit on one sheet.)</li><li class="instruction" itemprop="recipeInstructions">Combine the coconut sugar, maple syrup, almond milk and coconut oil and mix vigorously with a fork. If your coconut oil is solid, heat it in the microwave or on the stove until it is just melted (but not hot) before mixing it with the other ingredients.</li><li class="instruction" itemprop="recipeInstructions">Mix in the remaining wet ingredients: almond butter, tahini, sweet potato and vanilla extract.</li><li class="instruction" itemprop="recipeInstructions">Add in the flour, baking powder, baking soda and salt and mix until just combined.</li><li class="instruction" itemprop="recipeInstructions">Fold in the chocolate chips.</li><li class="instruction" itemprop="recipeInstructions">Roll golfball-size amounts of dough. Use your hands to flatten them before placing them on the greased cookie sheet. Leave about 1-2 inches between cookies in case they spread.</li><li class="instruction" itemprop="recipeInstructions">Bake for 8-10 minutes or until browned.</li><li class="instruction" itemprop="recipeInstructions">Let cool for 5 minutes on the baking sheet and then transfer to a cooking rack to cool completely.</li></ol><div class="ERSClear"></div></div><div class="endeasyrecipe" title="style002a" style="display: none">3.5.3226</div></div> <script src="https://cdn.convertkit.com/assets/CKJS4.js?v=21"></script> <div class="ck_form_container ck_inline" data-ck-version="6"><div class="ck_form ck_vertical_subscription_form"><div class="ck_form_content"><h3 class="ck_form_title"></h3><div class="ck_description"> <span class="ck_image"> </span><div style="color:#222;"><p style="text-align: center; font-size: 18px;">Subscribe for access to the<br><strong><em>free</em> Becoming Vegan email course!</strong></p><p style="text-align: center; font-size: 18px;"><strong></strong></p><p><img decoding="async" src="https://convertkit.s3.amazonaws.com/assets/pictures/19738/620457/content_plenty-vegan-plan-sections-form-horizontal-course.jpg" data-pin-nopin="true" alt style="display: block; margin: auto;" /></p><p style="text-align: center; font-size: 18px;" rel="text-align: center; font-size: 18px;"><strong></strong></p></div></div></div><div class="ck_form_fields"><div id="ck_success_msg" style="display:none;"><p>Success! Now check your email to confirm your subscription.</p></div><form id="ck_subscribe_form" class="ck_subscribe_form" action="https://forms.convertkit.com/landing_pages/227325/subscribe" data-remote="true"> <input type="hidden" value="{&quot;form_style&quot;:&quot;full&quot;,&quot;embed_style&quot;:&quot;inline&quot;,&quot;embed_trigger&quot;:&quot;scroll_percentage&quot;,&quot;scroll_percentage&quot;:&quot;70&quot;,&quot;delay_seconds&quot;:&quot;10&quot;,&quot;display_position&quot;:&quot;br&quot;,&quot;display_devices&quot;:&quot;all&quot;,&quot;days_no_show&quot;:&quot;0&quot;,&quot;converted_behavior&quot;:&quot;show&quot;}" id="ck_form_options"> <input type="hidden" name="id" value="227325" id="landing_page_id"> <input type="hidden" name="ck_form_recaptcha" value="true" id="ck_form_recaptcha"><div class="ck_errorArea"><div id="ck_error_msg" style="display:none"><p>There was an error submitting your subscription. Please try again.</p></div></div><div class="ck_control_group ck_first_name_field_group"> <label class="ck_label" for="ck_firstNameField">First Name</label> <input type="text" name="first_name" class="ck_first_name" id="ck_firstNameField"></div><div class="ck_control_group ck_email_field_group"> <label class="ck_label" for="ck_emailField">Email Address</label> <input type="email" name="email" class="ck_email_address" id="ck_emailField" required></div><div class="ck_control_group ck_captcha2_h_field_group ck-captcha2-h" style="position: absolute !important;left: -999em !important;"> <label class="ck_label" for="ck_captcha2_h">We use this field to detect spam bots. If you fill this in, you will be marked as a spammer.</label> <input type="text" name="captcha2_h" class="ck-captcha2-h" id="ck_captcha2_h"></div> <label class="ck_checkbox" style="display:none;"> <input class="optIn ck_course_opted" name="course_opted" type="checkbox" id="optIn" checked> <span class="ck_opt_in_prompt">I'd like to receive the free email course.</span> </label> <button class="subscribe_button ck_subscribe_button btn fields" id="ck_subscribe_button"> Get FREE access </button> <span class="ck_guarantee"> <a class="ck_powered_by" href="https://convertkit.com/features/forms?utm_campaign=poweredby&amp;utm_content=form&amp;utm_medium=referral&amp;utm_source=dynamic">Powered by ConvertKit</a> </span></form></div></div></div><style type="text/css">/* Layout */
+.ck_form {
+    /* divider image */
+    background: #fff url(data:image/gif;base64,R0lGODlhAQADAIABAMzMzP///yH/C1hNUCBEYXRhWE1QPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS41LWMwMTQgNzkuMTUxNDgxLCAyMDEzLzAzLzEzLTEyOjA5OjE1ICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MUQ5NjM5RjgxQUVEMTFFNEJBQTdGNTQwMjc5MTZDOTciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MUQ5NjM5RjkxQUVEMTFFNEJBQTdGNTQwMjc5MTZDOTciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxRDk2MzlGNjFBRUQxMUU0QkFBN0Y1NDAyNzkxNkM5NyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxRDk2MzlGNzFBRUQxMUU0QkFBN0Y1NDAyNzkxNkM5NyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgH//v38+/r5+Pf29fTz8vHw7+7t7Ovq6ejn5uXk4+Lh4N/e3dzb2tnY19bV1NPS0dDPzs3My8rJyMfGxcTDwsHAv769vLu6ubi3trW0s7KxsK+urayrqqmop6alpKOioaCfnp2cm5qZmJeWlZSTkpGQj46NjIuKiYiHhoWEg4KBgH9+fXx7enl4d3Z1dHNycXBvbm1sa2ppaGdmZWRjYmFgX15dXFtaWVhXVlVUU1JRUE9OTUxLSklIR0ZFRENCQUA/Pj08Ozo5ODc2NTQzMjEwLy4tLCsqKSgnJiUkIyIhIB8eHRwbGhkYFxYVFBMSERAPDg0MCwoJCAcGBQQDAgEAACH5BAEAAAEALAAAAAABAAMAAAICRFIAOw==) repeat-y center top;
+    font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+    line-height: 1.5em;
+    overflow: hidden;
+    color: #666;
+    font-size: 16px;
+    border-top: solid 20px #3071b0;
+    border-top-color: #ffffff;
+    border-bottom: solid 10px #3d3d3d;
+    border-bottom-color: #999999;
+    -webkit-box-shadow: 0px 0px 5px rgba(0,0,0,.3);
+    -moz-box-shadow: 0px 0px 5px rgba(0,0,0,.3);
+    box-shadow: 0px 0px 5px rgba(0,0,0,.3);
+    clear: both;
+    margin: 20px 0px;
+}
+
+.ck_form, .ck_form * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#ck_subscribe_form {
+    clear: both;
+}
+
+/* Element Queries &mdash;&nbsp;uses JS */
+
+.ck_form_content, .ck_form_fields {
+    width: 50%;
+    float: left;
+    padding: 5%;
+}
+
+.ck_form.ck_horizontal {
+}
+
+.ck_form_content {
+    border-bottom: none;
+}
+
+.ck_form.ck_vertical {
+    background: #fff;
+}
+
+.ck_vertical .ck_form_content, .ck_vertical .ck_form_fields {
+    padding: 10%;
+    width: 100%;
+    float: none;
+}
+
+.ck_vertical .ck_form_content {
+    border-bottom: 1px dotted #aaa;
+    overflow: hidden;
+}
+
+/* Trigger the vertical layout with media queries as well */
+
+@media all and (max-width: 499px) {
+
+    .ck_form {
+        background: #fff;
+    }
+
+    .ck_form_content, .ck_form_fields {
+        padding: 10%;
+        width: 100%;
+        float: none;
+    }
+
+    .ck_form_content {
+        border-bottom: 1px dotted #aaa;
+    }
+
+}
+
+/* Content */
+
+.ck_form_content h3 {
+    margin: 0px 0px 15px;
+    font-size: 24px;
+    padding: 0px;
+}
+
+
+.ck_form_content p {
+    font-size: 14px;
+}
+
+.ck_image {
+    float: left;
+    margin-right: 5px;
+}
+
+/* Form fields */
+
+.ck_errorArea {
+    display: none;
+}
+
+#ck_success_msg {
+    padding: 10px 10px 0px;
+    border: solid 1px #ddd;
+    background: #eee;
+}
+
+.ck_label {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.ck_form input[type="text"], .ck_form input[type="email"] {
+    font-size: 14px;
+    padding: 10px 8px;
+    width: 100%;
+    border: 1px solid #d6d6d6; /* stroke */
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px; /* border radius */
+    background-color: #f8f7f7; /* layer fill content */
+    margin-bottom: 5px;
+    height: auto;
+}
+
+.ck_form input[type="text"]:focus, .ck_form input[type="email"]:focus {
+    outline: none;
+    border-color: #aaa;
+}
+
+.ck_checkbox {
+    padding: 10px 0px 10px 20px;
+    display: block;
+    clear: both;
+}
+
+.ck_checkbox input.optIn {
+    margin-left: -20px;
+    margin-top: 0;
+}
+.ck_form .ck_opt_in_prompt {
+    margin-left: 4px;
+}
+.ck_form .ck_opt_in_prompt p {
+    display: inline;
+}
+
+.ck_form .ck_subscribe_button {
+    width: 100%;
+    color: #fff;
+    margin: 10px 0px 0px;
+    padding:  10px 0px;
+    font-size: 18px;
+    background: #99cc33;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px; /* border radius */
+    cursor: pointer;
+    border: none;
+    text-shadow: none;
+}
+
+
+.ck_form .ck_guarantee {
+    color: #626262;
+    font-size: 12px;
+    text-align: center;
+    padding: 5px 0px;
+    display: block;
+}
+
+.ck_form .ck_powered_by {
+    display: block;
+    color: #aaa;
+}
+
+.ck_form .ck_powered_by:hover {
+    display: block;
+    color: #444;
+}
+
+.ck_converted_content {
+    display: none;
+    padding: 5%;
+    background: #fff;
+}
+
+
+/* v6 */
+
+.ck_form_v6 #ck_success_msg {
+    padding: 0px 10px;
+}
+
+@media all and (max-width: 403px) {
+    .ck_form_v6.ck_modal .ck_close_link {
+        top: 30px;
+    }
+}
+
+@media all and (min-width: 404px) and (max-width: 499px) {
+    .ck_form_v6.ck_modal .ck_close_link {
+        top: 57px;
+    }
+}
+
+
+
+.ck_form_title {
+    color: #009999;
+}
+
+.ck_form_content p {
+    font-size: 20px;
+}
+.ck_form .ck_powered_by {
+    display: none;
+}
+
+::-webkit-input-placeholder {
+    font-family: 'Lato',sans-serif;
+}
+::-moz-placeholder {
+    font-family: 'Lato',sans-serif;
+}
+:-ms-input-placeholder {
+    font-family: 'Lato',sans-serif;
+}
+:-moz-placeholder {
+    font-family: 'Lato',sans-serif;
+}
+input, .ck_form, .ck_label, .ck_subscribe_button {
+    font-family: 'Lato',sans-serif;
+}
+
+.ck_form {
+    margin: 0px 0px;
+}
+
+.ck_form.ck_vertical_subscription_form .ck_form_content {
+    border-bottom: none;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.ck_form.ck_vertical_subscription_form {
+    box-shadow: none;
+    border-bottom: none;
+}</style></div><footer class="entry-footer"><p class="entry-meta"><span class="dashicons dashicons-format-chat"></span><br><span class="entry-comments-link"><a href="https://plentyvegan.com/almond-chickpea-chocolate-chip-cookies/#comments">7 Comments</a></span></p></footer></article><div class="adjacent-entry-pagination pagination"><div class="pagination-previous alignleft"><a href="https://plentyvegan.com/giveaway-chia-company-chia-shots/" rel="prev"><span class="adjacent-post-link">&#xAB; Giveaway: The Chia Company Chia Shots!</span></a></div><div class="pagination-next alignright"><a href="https://plentyvegan.com/vegan-substitutions-for-that-omnivore-food/" rel="next"><span class="adjacent-post-link">Vegan Substitutions for That Omnivore Food (Infographic) &#xBB;</span></a></div></div><div class="entry-comments" id="comments"><h3>Comments</h3><ol class="comment-list"><li class="comment even thread-even depth-1" id="comment-89"><article id="article-comment-89" itemprop="comment" itemscope itemtype="https://schema.org/Comment"><header class="comment-header"><p class="comment-author" itemprop="author" itemscope itemtype="https://schema.org/Person"> <img alt src="https://secure.gravatar.com/avatar/5fefcf8b80c8bf8cc1e9416f74e2063b?s=96&#038;d=mm&#038;r=g" srcset="https://secure.gravatar.com/avatar/5fefcf8b80c8bf8cc1e9416f74e2063b?s=192&#038;d=mm&#038;r=g 2x" class="avatar avatar-96 photo" height="96" width="96" loading="lazy" decoding="async" /><span class="comment-author-name" itemprop="name">Ellen</span> <span class="says">says</span></p><p class="comment-meta"><time class="comment-time" datetime="2016-11-10T16:55:00+00:00" itemprop="datePublished"><a class="comment-time-link" href="https://plentyvegan.com/almond-chickpea-chocolate-chip-cookies/#comment-89" itemprop="url">November 10, 2016 at 4:55 pm</a></time></p></header><div class="comment-content" itemprop="text"><p>Now that temps are cooler, the coconut oil in my pantry is solid. Did you melt yours so it was liquid or should it just be soft for this recipe? These cookies look delish!</p></div><div class="comment-reply"><a rel="nofollow" class="comment-reply-link" href="https://plentyvegan.com/almond-chickpea-chocolate-chip-cookies/?replytocom=89#respond" data-commentid="89" data-postid="1830" data-belowelement="article-comment-89" data-respondelement="respond" data-replyto="Reply to Ellen" aria-label="Reply to Ellen">Reply</a></div></article><ul class="children"><li class="comment byuser comment-author-plentyvegan bypostauthor odd alt depth-2" id="comment-90"><article id="article-comment-90" itemprop="comment" itemscope itemtype="https://schema.org/Comment"><header class="comment-header"><p class="comment-author" itemprop="author" itemscope itemtype="https://schema.org/Person"> <img alt src="https://secure.gravatar.com/avatar/956901cc4650e5f36f60b308e9f77015?s=96&#038;d=mm&#038;r=g" srcset="https://secure.gravatar.com/avatar/956901cc4650e5f36f60b308e9f77015?s=192&#038;d=mm&#038;r=g 2x" class="avatar avatar-96 photo" height="96" width="96" loading="lazy" decoding="async" /><span class="comment-author-name" itemprop="name"><a href="https://plentyvegan.com" class="comment-author-link" rel="external nofollow" itemprop="url">plentyvegan</a></span> <span class="says">says</span></p><p class="comment-meta"><time class="comment-time" datetime="2016-11-10T17:17:14+00:00" itemprop="datePublished"><a class="comment-time-link" href="https://plentyvegan.com/almond-chickpea-chocolate-chip-cookies/#comment-90" itemprop="url">November 10, 2016 at 5:17 pm</a></time></p></header><div class="comment-content" itemprop="text"><p>Ah &#8211; I put the coconut oil in the microwave for just a bit so it doesn&#8217;t get hot and part of it is still solid. Then I swirl around the melted coconut oil to melt the rest of it that is still solid. This way I can make sure it&#8217;s not actually hot &#8211; I don&#8217;t want that to affect the other ingredients.</p><p>Good question &#8211; I&#8217;ll update the instructions! (and, yes, they WERE delicious!)</p></div><div class="comment-reply"><a rel="nofollow" class="comment-reply-link" href="https://plentyvegan.com/almond-chickpea-chocolate-chip-cookies/?replytocom=90#respond" data-commentid="90" data-postid="1830" data-belowelement="article-comment-90" data-respondelement="respond" data-replyto="Reply to plentyvegan" aria-label="Reply to plentyvegan">Reply</a></div></article></li></ul></li><li class="comment even thread-odd thread-alt depth-1" id="comment-219"><article id="article-comment-219" itemprop="comment" itemscope itemtype="https://schema.org/Comment"><header class="comment-header"><p class="comment-author" itemprop="author" itemscope itemtype="https://schema.org/Person"> <img alt src="https://secure.gravatar.com/avatar/b2f5d0c2c4842e040597aa803077e811?s=96&#038;d=mm&#038;r=g" srcset="https://secure.gravatar.com/avatar/b2f5d0c2c4842e040597aa803077e811?s=192&#038;d=mm&#038;r=g 2x" class="avatar avatar-96 photo" height="96" width="96" loading="lazy" decoding="async" /><span class="comment-author-name" itemprop="name"><a href="http://pinterest" class="comment-author-link" rel="external nofollow" itemprop="url">Olivia</a></span> <span class="says">says</span></p><p class="comment-meta"><time class="comment-time" datetime="2017-04-20T17:12:53+00:00" itemprop="datePublished"><a class="comment-time-link" href="https://plentyvegan.com/almond-chickpea-chocolate-chip-cookies/#comment-219" itemprop="url">April 20, 2017 at 5:12 pm</a></time></p></header><div class="comment-content" itemprop="text"><p>If you have chickpeas and want to make a flour with them, what do you do? If they are canned do they have to dry out before blending them?</p></div><div class="comment-reply"><a rel="nofollow" class="comment-reply-link" href="https://plentyvegan.com/almond-chickpea-chocolate-chip-cookies/?replytocom=219#respond" data-commentid="219" data-postid="1830" data-belowelement="article-comment-219" data-respondelement="respond" data-replyto="Reply to Olivia" aria-label="Reply to Olivia">Reply</a></div></article><ul class="children"><li class="comment byuser comment-author-plentyvegan bypostauthor odd alt depth-2" id="comment-220"><article id="article-comment-220" itemprop="comment" itemscope itemtype="https://schema.org/Comment"><header class="comment-header"><p class="comment-author" itemprop="author" itemscope itemtype="https://schema.org/Person"> <img alt src="https://secure.gravatar.com/avatar/956901cc4650e5f36f60b308e9f77015?s=96&#038;d=mm&#038;r=g" srcset="https://secure.gravatar.com/avatar/956901cc4650e5f36f60b308e9f77015?s=192&#038;d=mm&#038;r=g 2x" class="avatar avatar-96 photo" height="96" width="96" loading="lazy" decoding="async" /><span class="comment-author-name" itemprop="name"><a href="https://plentyvegan.com" class="comment-author-link" rel="external nofollow" itemprop="url">plentyvegan</a></span> <span class="says">says</span></p><p class="comment-meta"><time class="comment-time" datetime="2017-04-20T20:06:02+00:00" itemprop="datePublished"><a class="comment-time-link" href="https://plentyvegan.com/almond-chickpea-chocolate-chip-cookies/#comment-220" itemprop="url">April 20, 2017 at 8:06 pm</a></time></p></header><div class="comment-content" itemprop="text"><p>I am not sure how to make flour from the beans themselves, though I&#8217;m sure it&#8217;s possible. I mentioned opting for the flour over the beans only because the recipe I adapted it from seemed to be from the beans, not flour.</p><p>In general, I always have bought garbanzo bean (same as chickpeas) flour and started there. You can check it out <a href="https://plentyvegan.com/shop/products/bobs-red-mill-garbanzo-bean-flour-16-oz/">here</a> (sorry if the images don&#8217;t load &#8211; click &#8220;buy product&#8221; to learn more on Amazon).</p><p>Hope that clarifies things!</p></div><div class="comment-reply"><a rel="nofollow" class="comment-reply-link" href="https://plentyvegan.com/almond-chickpea-chocolate-chip-cookies/?replytocom=220#respond" data-commentid="220" data-postid="1830" data-belowelement="article-comment-220" data-respondelement="respond" data-replyto="Reply to plentyvegan" aria-label="Reply to plentyvegan">Reply</a></div></article></li></ul></li><li class="comment even thread-even depth-1" id="comment-396"><article id="article-comment-396" itemprop="comment" itemscope itemtype="https://schema.org/Comment"><header class="comment-header"><p class="comment-author" itemprop="author" itemscope itemtype="https://schema.org/Person"> <img alt src="https://secure.gravatar.com/avatar/a1f8dff75775c486feca975d17f5ed29?s=96&#038;d=mm&#038;r=g" srcset="https://secure.gravatar.com/avatar/a1f8dff75775c486feca975d17f5ed29?s=192&#038;d=mm&#038;r=g 2x" class="avatar avatar-96 photo" height="96" width="96" loading="lazy" decoding="async" /><span class="comment-author-name" itemprop="name">theveganredprincess</span> <span class="says">says</span></p><p class="comment-meta"><time class="comment-time" datetime="2018-02-16T04:20:36+00:00" itemprop="datePublished"><a class="comment-time-link" href="https://plentyvegan.com/almond-chickpea-chocolate-chip-cookies/#comment-396" itemprop="url">February 16, 2018 at 4:20 am</a></time></p></header><div class="comment-content" itemprop="text"><p>Omg I ordered from hungryroot today and ate half the container of chickpea cookie dough. It’s so good and I wanted to try and make it myself. Thanks so much for putting this recipe up!</p></div><div class="comment-reply"><a rel="nofollow" class="comment-reply-link" href="https://plentyvegan.com/almond-chickpea-chocolate-chip-cookies/?replytocom=396#respond" data-commentid="396" data-postid="1830" data-belowelement="article-comment-396" data-respondelement="respond" data-replyto="Reply to theveganredprincess" aria-label="Reply to theveganredprincess">Reply</a></div></article></li><li class="comment odd alt thread-odd thread-alt depth-1" id="comment-7981"><article id="article-comment-7981" itemprop="comment" itemscope itemtype="https://schema.org/Comment"><header class="comment-header"><p class="comment-author" itemprop="author" itemscope itemtype="https://schema.org/Person"> <img alt src="https://secure.gravatar.com/avatar/d8b27498807644af40e00cedeab263b1?s=96&#038;d=mm&#038;r=g" srcset="https://secure.gravatar.com/avatar/d8b27498807644af40e00cedeab263b1?s=192&#038;d=mm&#038;r=g 2x" class="avatar avatar-96 photo" height="96" width="96" loading="lazy" decoding="async" /><span class="comment-author-name" itemprop="name">Maggie Southern</span> <span class="says">says</span></p><p class="comment-meta"><time class="comment-time" datetime="2020-01-21T01:22:35+00:00" itemprop="datePublished"><a class="comment-time-link" href="https://plentyvegan.com/almond-chickpea-chocolate-chip-cookies/#comment-7981" itemprop="url">January 21, 2020 at 1:22 am</a></time></p></header><div class="comment-content" itemprop="text"><p>Oh wow these are so good!! My first time trying a vegan cookie or using garbanzo bean flour. They were first a little gooey and I was worried they’d mess up. I had to cook them for abt 15min but they came<br/> Out great so far and taste good!! Definitely making again.</p></div><div class="comment-reply"><a rel="nofollow" class="comment-reply-link" href="https://plentyvegan.com/almond-chickpea-chocolate-chip-cookies/?replytocom=7981#respond" data-commentid="7981" data-postid="1830" data-belowelement="article-comment-7981" data-respondelement="respond" data-replyto="Reply to Maggie Southern" aria-label="Reply to Maggie Southern">Reply</a></div></article></li><li class="comment even thread-even depth-1" id="comment-37202"><article id="article-comment-37202" itemprop="comment" itemscope itemtype="https://schema.org/Comment"><header class="comment-header"><p class="comment-author" itemprop="author" itemscope itemtype="https://schema.org/Person"> <img alt src="https://secure.gravatar.com/avatar/7717067ceb803ef93c3e2c67bb96f215?s=96&#038;d=mm&#038;r=g" srcset="https://secure.gravatar.com/avatar/7717067ceb803ef93c3e2c67bb96f215?s=192&#038;d=mm&#038;r=g 2x" class="avatar avatar-96 photo" height="96" width="96" loading="lazy" decoding="async" /><span class="comment-author-name" itemprop="name">Nicole</span> <span class="says">says</span></p><p class="comment-meta"><time class="comment-time" datetime="2021-03-21T01:42:01+00:00" itemprop="datePublished"><a class="comment-time-link" href="https://plentyvegan.com/almond-chickpea-chocolate-chip-cookies/#comment-37202" itemprop="url">March 21, 2021 at 1:42 am</a></time></p></header><div class="comment-content" itemprop="text"><p>I made these and they’re delicious! However I used almond flour instead of garbanzo bean flour (couldn’t find it nearby). My dough was very soupy, so I just kept adding almond flour until it became thicker. It was still more batter-like instead of a dough. They are still rather mushy after cooking but I’ll still eat them because they taste SO GOOD!</p></div><div class="comment-reply"><a rel="nofollow" class="comment-reply-link" href="https://plentyvegan.com/almond-chickpea-chocolate-chip-cookies/?replytocom=37202#respond" data-commentid="37202" data-postid="1830" data-belowelement="article-comment-37202" data-respondelement="respond" data-replyto="Reply to Nicole" aria-label="Reply to Nicole">Reply</a></div></article></li></ol></div><div id="respond" class="comment-respond"><h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/almond-chickpea-chocolate-chip-cookies/#respond" style="display:none;">Cancel reply</a></small></h3><form action="https://plentyvegan.com/wp-comments-post.php?wpe-comment-post=plentyvegan" method="post" id="commentform" class="comment-form" novalidate><p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> <span class="required-field-message">Required fields are marked <span class="required">*</span></span></p><p class="comment-form-comment"><label for="comment">Comment <span class="required">*</span></label><textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required></textarea></p><p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value size="30" maxlength="245" autocomplete="name" required /></p><p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="email" value size="30" maxlength="100" aria-describedby="email-notes" autocomplete="email" required /></p><p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment" /> <input type="hidden" name="comment_post_ID" value="1830" id="comment_post_ID" /> <input type="hidden" name="comment_parent" id="comment_parent" value="0" /></p></form></div></main><aside class="sidebar sidebar-primary widget-area" role="complementary" aria-label="Primary Sidebar" itemscope itemtype="https://schema.org/WPSideBar"><section id="convertkit_form-7" class="widget convertkit widget_convertkit_form"><div class="widget-wrap"><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><html><head><script src="https://cdn.convertkit.com/assets/CKJS4.js?v=21"></script> </head><body><div class="ck_form_container ck_inline" data-ck-version="6"><div class="ck_form ck_vertical_subscription_form"><div class="ck_form_content"><h3 class="ck_form_title"></h3><div class="ck_description"> <span class="ck_image"> </span><div style="color:#222;"><p style="text-align: center; font-size: 18px;">Subscribe for access to the<br><strong><em>free</em> Becoming Vegan email course!</strong></p><p style="text-align: center; font-size: 18px;"><strong></strong></p><p><img src="https://convertkit.s3.amazonaws.com/assets/pictures/19738/620457/content_plenty-vegan-plan-sections-form-horizontal-course.jpg" data-pin-nopin="true" alt style="display: block; margin: auto;"></p><p style="text-align: center; font-size: 18px;" rel="text-align: center; font-size: 18px;"><strong></strong></p></div></div></div><div class="ck_form_fields"><div id="ck_success_msg" style="display:none;"><p>Success! Now check your email to confirm your subscription.</p></div><form id="ck_subscribe_form" class="ck_subscribe_form" action="https://forms.convertkit.com/landing_pages/227325/subscribe" data-remote="true"> <input type="hidden" value="{&quot;form_style&quot;:&quot;full&quot;,&quot;embed_style&quot;:&quot;inline&quot;,&quot;embed_trigger&quot;:&quot;scroll_percentage&quot;,&quot;scroll_percentage&quot;:&quot;70&quot;,&quot;delay_seconds&quot;:&quot;10&quot;,&quot;display_position&quot;:&quot;br&quot;,&quot;display_devices&quot;:&quot;all&quot;,&quot;days_no_show&quot;:&quot;0&quot;,&quot;converted_behavior&quot;:&quot;show&quot;}" id="ck_form_options"> <input type="hidden" name="id" value="227325" id="landing_page_id"> <input type="hidden" name="ck_form_recaptcha" value="true" id="ck_form_recaptcha"><div class="ck_errorArea"><div id="ck_error_msg" style="display:none"><p>There was an error submitting your subscription. Please try again.</p></div></div><div class="ck_control_group ck_first_name_field_group"> <label class="ck_label" for="ck_firstNameField">First Name</label> <input type="text" name="first_name" class="ck_first_name" id="ck_firstNameField"></div><div class="ck_control_group ck_email_field_group"> <label class="ck_label" for="ck_emailField">Email Address</label> <input type="email" name="email" class="ck_email_address" id="ck_emailField" required></div><div class="ck_control_group ck_captcha2_h_field_group ck-captcha2-h" style="position: absolute !important;left: -999em !important;"> <label class="ck_label" for="ck_captcha2_h">We use this field to detect spam bots. If you fill this in, you will be marked as a spammer.</label> <input type="text" name="captcha2_h" class="ck-captcha2-h" id="ck_captcha2_h"></div> <label class="ck_checkbox" style="display:none;"> <input class="optIn ck_course_opted" name="course_opted" type="checkbox" id="optIn" checked> <span class="ck_opt_in_prompt">I'd like to receive the free email course.</span> </label> <button class="subscribe_button ck_subscribe_button btn fields" id="ck_subscribe_button"> Get FREE access </button> <span class="ck_guarantee"> <a class="ck_powered_by" href="https://convertkit.com/features/forms?utm_campaign=poweredby&amp;utm_content=form&amp;utm_medium=referral&amp;utm_source=dynamic">Powered by ConvertKit</a> </span></form></div></div></div><style type="text/css">/* Layout */
+.ck_form {
+    /* divider image */
+    background: #fff url(data:image/gif;base64,R0lGODlhAQADAIABAMzMzP///yH/C1hNUCBEYXRhWE1QPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS41LWMwMTQgNzkuMTUxNDgxLCAyMDEzLzAzLzEzLTEyOjA5OjE1ICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MUQ5NjM5RjgxQUVEMTFFNEJBQTdGNTQwMjc5MTZDOTciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MUQ5NjM5RjkxQUVEMTFFNEJBQTdGNTQwMjc5MTZDOTciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxRDk2MzlGNjFBRUQxMUU0QkFBN0Y1NDAyNzkxNkM5NyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxRDk2MzlGNzFBRUQxMUU0QkFBN0Y1NDAyNzkxNkM5NyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgH//v38+/r5+Pf29fTz8vHw7+7t7Ovq6ejn5uXk4+Lh4N/e3dzb2tnY19bV1NPS0dDPzs3My8rJyMfGxcTDwsHAv769vLu6ubi3trW0s7KxsK+urayrqqmop6alpKOioaCfnp2cm5qZmJeWlZSTkpGQj46NjIuKiYiHhoWEg4KBgH9+fXx7enl4d3Z1dHNycXBvbm1sa2ppaGdmZWRjYmFgX15dXFtaWVhXVlVUU1JRUE9OTUxLSklIR0ZFRENCQUA/Pj08Ozo5ODc2NTQzMjEwLy4tLCsqKSgnJiUkIyIhIB8eHRwbGhkYFxYVFBMSERAPDg0MCwoJCAcGBQQDAgEAACH5BAEAAAEALAAAAAABAAMAAAICRFIAOw==) repeat-y center top;
+    font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+    line-height: 1.5em;
+    overflow: hidden;
+    color: #666;
+    font-size: 16px;
+    border-top: solid 20px #3071b0;
+    border-top-color: #ffffff;
+    border-bottom: solid 10px #3d3d3d;
+    border-bottom-color: #999999;
+    -webkit-box-shadow: 0px 0px 5px rgba(0,0,0,.3);
+    -moz-box-shadow: 0px 0px 5px rgba(0,0,0,.3);
+    box-shadow: 0px 0px 5px rgba(0,0,0,.3);
+    clear: both;
+    margin: 20px 0px;
+}
+
+.ck_form, .ck_form * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#ck_subscribe_form {
+    clear: both;
+}
+
+/* Element Queries &mdash;&nbsp;uses JS */
+
+.ck_form_content, .ck_form_fields {
+    width: 50%;
+    float: left;
+    padding: 5%;
+}
+
+.ck_form.ck_horizontal {
+}
+
+.ck_form_content {
+    border-bottom: none;
+}
+
+.ck_form.ck_vertical {
+    background: #fff;
+}
+
+.ck_vertical .ck_form_content, .ck_vertical .ck_form_fields {
+    padding: 10%;
+    width: 100%;
+    float: none;
+}
+
+.ck_vertical .ck_form_content {
+    border-bottom: 1px dotted #aaa;
+    overflow: hidden;
+}
+
+/* Trigger the vertical layout with media queries as well */
+
+@media all and (max-width: 499px) {
+
+    .ck_form {
+        background: #fff;
+    }
+
+    .ck_form_content, .ck_form_fields {
+        padding: 10%;
+        width: 100%;
+        float: none;
+    }
+
+    .ck_form_content {
+        border-bottom: 1px dotted #aaa;
+    }
+
+}
+
+/* Content */
+
+.ck_form_content h3 {
+    margin: 0px 0px 15px;
+    font-size: 24px;
+    padding: 0px;
+}
+
+
+.ck_form_content p {
+    font-size: 14px;
+}
+
+.ck_image {
+    float: left;
+    margin-right: 5px;
+}
+
+/* Form fields */
+
+.ck_errorArea {
+    display: none;
+}
+
+#ck_success_msg {
+    padding: 10px 10px 0px;
+    border: solid 1px #ddd;
+    background: #eee;
+}
+
+.ck_label {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.ck_form input[type="text"], .ck_form input[type="email"] {
+    font-size: 14px;
+    padding: 10px 8px;
+    width: 100%;
+    border: 1px solid #d6d6d6; /* stroke */
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px; /* border radius */
+    background-color: #f8f7f7; /* layer fill content */
+    margin-bottom: 5px;
+    height: auto;
+}
+
+.ck_form input[type="text"]:focus, .ck_form input[type="email"]:focus {
+    outline: none;
+    border-color: #aaa;
+}
+
+.ck_checkbox {
+    padding: 10px 0px 10px 20px;
+    display: block;
+    clear: both;
+}
+
+.ck_checkbox input.optIn {
+    margin-left: -20px;
+    margin-top: 0;
+}
+.ck_form .ck_opt_in_prompt {
+    margin-left: 4px;
+}
+.ck_form .ck_opt_in_prompt p {
+    display: inline;
+}
+
+.ck_form .ck_subscribe_button {
+    width: 100%;
+    color: #fff;
+    margin: 10px 0px 0px;
+    padding:  10px 0px;
+    font-size: 18px;
+    background: #99cc33;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px; /* border radius */
+    cursor: pointer;
+    border: none;
+    text-shadow: none;
+}
+
+
+.ck_form .ck_guarantee {
+    color: #626262;
+    font-size: 12px;
+    text-align: center;
+    padding: 5px 0px;
+    display: block;
+}
+
+.ck_form .ck_powered_by {
+    display: block;
+    color: #aaa;
+}
+
+.ck_form .ck_powered_by:hover {
+    display: block;
+    color: #444;
+}
+
+.ck_converted_content {
+    display: none;
+    padding: 5%;
+    background: #fff;
+}
+
+
+/* v6 */
+
+.ck_form_v6 #ck_success_msg {
+    padding: 0px 10px;
+}
+
+@media all and (max-width: 403px) {
+    .ck_form_v6.ck_modal .ck_close_link {
+        top: 30px;
+    }
+}
+
+@media all and (min-width: 404px) and (max-width: 499px) {
+    .ck_form_v6.ck_modal .ck_close_link {
+        top: 57px;
+    }
+}
+
+
+
+.ck_form_title {
+    color: #009999;
+}
+
+.ck_form_content p {
+    font-size: 20px;
+}
+.ck_form .ck_powered_by {
+    display: none;
+}
+
+::-webkit-input-placeholder {
+    font-family: 'Lato',sans-serif;
+}
+::-moz-placeholder {
+    font-family: 'Lato',sans-serif;
+}
+:-ms-input-placeholder {
+    font-family: 'Lato',sans-serif;
+}
+:-moz-placeholder {
+    font-family: 'Lato',sans-serif;
+}
+input, .ck_form, .ck_label, .ck_subscribe_button {
+    font-family: 'Lato',sans-serif;
+}
+
+.ck_form {
+    margin: 0px 0px;
+}
+
+.ck_form.ck_vertical_subscription_form .ck_form_content {
+    border-bottom: none;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.ck_form.ck_vertical_subscription_form {
+    box-shadow: none;
+    border-bottom: none;
+}</style> <script defer src="https://plentyvegan.com/wp-content/cache/autoptimize/js/autoptimize_374431b984ad613c326a683b5452c5b7.js"></script></body></html></div></section><div class="sidebar-split-left"></div><div class="sidebar-split-right"></div><div class="sidebar-split-bottom"></div></aside></div></div></div><footer class="site-footer" itemscope itemtype="https://schema.org/WPFooter"><div class="wrap"><div class="creds"><p>Copyright &copy; 2024 &middot; <a>Plenty Vegan</a></p></div><p></p></div></footer><style type="text/css">@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css');
+
+.dwqa-questions-list .dwqa-question-item {
+    padding-left: 70px;
+}
+
+.dwqa-questions-list .dwqa-question-item .avatar {
+    position: static;
+    width: 12px;
+    height: 12px;
+    margin-right: 5px;
+    margin-top: 0;
+    display: inline-block;
+}
+
+.dwqa-question-item .dwqa-status {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    width: 36px;
+    height: 36px;
+    margin-top: -18px;
+    border-radius: 36px;
+    text-indent: -9999px;
+    padding: 0;
+    background: none;
+    box-shadow: 0 0 0 1px #e67e22 inset;
+}
+
+.dwqa-question-item .dwqa-status:after {
+    content: "\f128";
+    display: block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    color: #e67e22;
+    text-indent: 0;
+    font-size: 18px;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    top: 0;
+    position: absolute;
+}
+
+.dwqa-question-item .dwqa-status-closed {
+    box-shadow: 0 0 0 1px #666 inset;
+}
+
+.dwqa-question-item .dwqa-status-closed:after {
+    color: #666;
+    content: "\f023";
+}
+
+.dwqa-question-item .dwqa-status-resolved {
+    box-shadow: 0 0 0 1px #578824 inset;
+}
+
+.dwqa-question-item .dwqa-status-resolved:after {
+    color: #578824;
+    content: "\f00c";
+}
+
+.dwqa-question-item .dwqa-status-answered {
+    box-shadow: 0 0 0 1px #1ba1e2 inset;
+}
+
+.dwqa-question-item .dwqa-status-answered:after {
+    color: #1ba1e2;
+    content: "\f112";
+    font-size: 14px;
+}</style> <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-76222282-1', 'auto');
+ga('send', 'pageview');</script> <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-76222282-1', 'auto');
+ga('send', 'pageview');</script> <script>/* WPCurve - LG - #155161 */
+jQuery(function($) {
+    $( "#menu-item-1069" ).after( '<li id="menu-item-1070" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1070"><a href="#" data-leadbox-popup="145551e73f72a2:14d195cda946dc"><span itemprop="name">FREEBIES</span></a></li>' );
+});
+/* END WPCurve - LG - #155161 */</script> <div id="amzn-assoc-ad-3b39afe2-2625-4769-a201-a36c4cc28b6f"></div><script async src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&adInstanceId=3b39afe2-2625-4769-a201-a36c4cc28b6f"></script> <script type="text/javascript">(function () {
+    var c = document.body.className;
+    c = c.replace(/woocommerce-no-js/, 'woocommerce-js');
+    document.body.className = c;
+})();</script> <style id="core-block-supports-inline-css" type="text/css">/**
+ * Core styles: block-supports
+ */</style><link rel="stylesheet" id="cmtooltip-css" href="https://plentyvegan.com/wp-content/plugins/enhanced-tooltipglossary/assets/css/tooltip.min.css?ver=6.5.3" type="text/css" media="all" /><style id="cmtooltip-inline-css" type="text/css">#tt {
+    z-index: 1500;
+}
+
+
+
+#tt #ttcont div.glossaryItemTitle {
+    font-size: 13px !important;
+}
+
+#tt #ttcont div.glossaryItemBody {
+    padding: 0 !important;
+    font-size: 13px !important;
+}
+
+.mobile-link a.glossaryLink {
+    color: #fff !important;
+}
+.mobile-link:before{content: "Term link:  "}
+
+
+
+.tiles ul.glossaryList li {
+    min-width: 85px !important;
+    width:85px !important;
+}
+.tiles ul.glossaryList span { min-width:85px; width:85px;  }
+.cm-glossary.tiles.big ul.glossaryList a { min-width:179px; width:179px }
+.cm-glossary.tiles.big ul.glossaryList span { min-width:179px; width:179px; }
+
+span.glossaryLink, a.glossaryLink {
+    border-bottom: dotted 1px #000000 !important;
+    color: #000000 !important;
+}
+span.glossaryLink:hover, a.glossaryLink:hover {
+    border-bottom: solid 1px #333333 !important;
+    color:#333333 !important;
+}
+
+#tt #tt-btn-close{ color: #222 !important}
+
+.cm-glossary.grid ul.glossaryList li[class^='ln']  { width: 200px !important}
+
+#tt #tt-btn-close{
+    direction: rtl;
+    font-size: 20px !important
+}
+
+
+
+#tt #ttcont a{color: #2EA3F2 !important}
+
+
+
+#ttcont {
+    box-shadow: #666666 0px 0px 20px;
+}</style> <script type="text/javascript" id="convertkit-js-js-extra">var convertkit = {"ajaxurl":"https:\/\/plentyvegan.com\/wp-admin\/admin-ajax.php","debug":"1","nonce":"96619d8ee9","subscriber_id":"0","tag":"","post_id":"1830"};</script> <script type="text/javascript" id="woocommerce-js-extra">var woocommerce_params = {"ajax_url":"\/wp-admin\/admin-ajax.php","wc_ajax_url":"\/?wc-ajax=%%endpoint%%"};</script> <script type="text/javascript" id="wc-cart-fragments-js-extra">var wc_cart_fragments_params = {"ajax_url":"\/wp-admin\/admin-ajax.php","wc_ajax_url":"\/?wc-ajax=%%endpoint%%","cart_hash_key":"wc_cart_hash_7a84da05fe0f916d483a1dafb05266e7","fragment_name":"wc_fragments_7a84da05fe0f916d483a1dafb05266e7","request_timeout":"5000"};</script> <script type="text/javascript" id="mediaelement-core-js-before">var mejsL10n = {"language":"en","strings":{"mejs.download-file":"Download File","mejs.install-flash":"You are using a browser that does not have Flash player enabled or installed. Please turn on your Flash player plugin or download the latest version from https:\/\/get.adobe.com\/flashplayer\/","mejs.fullscreen":"Fullscreen","mejs.play":"Play","mejs.pause":"Pause","mejs.time-slider":"Time Slider","mejs.time-help-text":"Use Left\/Right Arrow keys to advance one second, Up\/Down arrows to advance ten seconds.","mejs.live-broadcast":"Live Broadcast","mejs.volume-help-text":"Use Up\/Down Arrow keys to increase or decrease volume.","mejs.unmute":"Unmute","mejs.mute":"Mute","mejs.volume-slider":"Volume Slider","mejs.video-player":"Video Player","mejs.audio-player":"Audio Player","mejs.captions-subtitles":"Captions\/Subtitles","mejs.captions-chapters":"Chapters","mejs.none":"None","mejs.afrikaans":"Afrikaans","mejs.albanian":"Albanian","mejs.arabic":"Arabic","mejs.belarusian":"Belarusian","mejs.bulgarian":"Bulgarian","mejs.catalan":"Catalan","mejs.chinese":"Chinese","mejs.chinese-simplified":"Chinese (Simplified)","mejs.chinese-traditional":"Chinese (Traditional)","mejs.croatian":"Croatian","mejs.czech":"Czech","mejs.danish":"Danish","mejs.dutch":"Dutch","mejs.english":"English","mejs.estonian":"Estonian","mejs.filipino":"Filipino","mejs.finnish":"Finnish","mejs.french":"French","mejs.galician":"Galician","mejs.german":"German","mejs.greek":"Greek","mejs.haitian-creole":"Haitian Creole","mejs.hebrew":"Hebrew","mejs.hindi":"Hindi","mejs.hungarian":"Hungarian","mejs.icelandic":"Icelandic","mejs.indonesian":"Indonesian","mejs.irish":"Irish","mejs.italian":"Italian","mejs.japanese":"Japanese","mejs.korean":"Korean","mejs.latvian":"Latvian","mejs.lithuanian":"Lithuanian","mejs.macedonian":"Macedonian","mejs.malay":"Malay","mejs.maltese":"Maltese","mejs.norwegian":"Norwegian","mejs.persian":"Persian","mejs.polish":"Polish","mejs.portuguese":"Portuguese","mejs.romanian":"Romanian","mejs.russian":"Russian","mejs.serbian":"Serbian","mejs.slovak":"Slovak","mejs.slovenian":"Slovenian","mejs.spanish":"Spanish","mejs.swahili":"Swahili","mejs.swedish":"Swedish","mejs.tagalog":"Tagalog","mejs.thai":"Thai","mejs.turkish":"Turkish","mejs.ukrainian":"Ukrainian","mejs.vietnamese":"Vietnamese","mejs.welsh":"Welsh","mejs.yiddish":"Yiddish"}};</script> <script type="text/javascript" id="mediaelement-js-extra">var _wpmejsSettings = {"pluginPath":"\/wp-includes\/js\/mediaelement\/","classPrefix":"mejs-","stretching":"responsive","audioShortcodeLibrary":"mediaelement","videoShortcodeLibrary":"mediaelement"};</script> <script type="text/javascript" id="tooltip-frontend-js-js-extra">var cmtt_data = {"cmtooltip":{"placement":"horizontal","clickable":false,"close_on_moveout":true,"only_on_button":false,"touch_anywhere":false,"delay":0,"timer":0,"minw":200,"maxw":400,"top":5,"left":25,"endalpha":95,"borderStyle":"none","borderWidth":"0px","borderColor":"#000000","background":"#666666","foreground":"#ffffff","fontSize":"13px","padding":"2px 12px 3px 7px","borderRadius":"6px","close_button":true,"close_button_mobile":true,"close_symbol":"dashicons-no"},"ajaxurl":"https:\/\/plentyvegan.com\/wp-admin\/admin-ajax.php","post_id":"1830","mobile_disable_tooltips":"0","desktop_disable_tooltips":"0","tooltip_on_click":"0","cmtooltip_definitions":[]};</script> <div id="tt" role="tooltip" aria-label="Tooltip content" class="cmtt"></div></body></html>

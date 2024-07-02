@@ -16,18 +16,15 @@ func scrapeNinjatestkitchen(root *goquery.Document) (models.RecipeSchema, error)
 	rs.Keywords.Values = getItempropContent(root, "keywords")
 	rs.PrepTime = getItempropContent(root, "prepTime")
 	rs.Category.Value = getItempropContent(root, "recipeCategory")
+	rs.Yield.Value = findYield(getItempropContent(root, "recipeYield"))
+	getInstructions(&rs, root.Find(".single-method__method li p"))
 
-	recipeIngredient, _ := root.Find("meta[itemprop='recipeIngredient']").Attr("content")
+	recipeIngredient, _ := root.Find("meta[itemprop=recipeIngredient]").Attr("content")
 	ingredients := strings.Split(recipeIngredient, ",")
 	rs.Ingredients.Values = make([]string, 0, len(ingredients))
 	for _, s := range ingredients {
 		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(s))
 	}
-
-	getInstructions(&rs, root.Find(".single-method__method li p"))
-
-	yieldStr, _ := root.Find("meta[itemprop='recipeYield']").Attr("content")
-	rs.Yield.Value = findYield(yieldStr)
 
 	return rs, nil
 }

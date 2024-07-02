@@ -16,13 +16,13 @@ func scrapeGlobo(root *goquery.Document) (rs models.RecipeSchema, err error) {
 			chDescription <- s
 		}()
 
-		p := root.Find("div[itemprop='description'] .content-text__container")
+		p := root.Find("div[itemprop=description] .content-text__container")
 		s = strings.TrimSpace(p.Text())
 	}()
 
 	chIngredients := make(chan []string)
 	go func() {
-		nodes := root.Find("li[itemprop='recipeIngredient']")
+		nodes := root.Find("li[itemprop=recipeIngredient]")
 
 		values := make([]string, nodes.Length())
 		defer func() {
@@ -43,14 +43,14 @@ func scrapeGlobo(root *goquery.Document) (rs models.RecipeSchema, err error) {
 			chYield <- yield
 		}()
 
-		yieldStr, _ := root.Find("span[itemprop='recipeYield']").Attr("content")
+		yieldStr, _ := root.Find("span[itemprop=recipeYield]").Attr("content")
 		i, _ := strconv.ParseInt(yieldStr, 10, 16)
 		yield = int16(i)
 	}()
 
 	chInstructions := make(chan []models.HowToItem)
 	go func() {
-		nodes := root.Find("li[itemprop='recipeInstructions']")
+		nodes := root.Find("li[itemprop=recipeInstructions]")
 
 		values := make([]models.HowToItem, nodes.Length())
 		defer func() {
@@ -64,18 +64,13 @@ func scrapeGlobo(root *goquery.Document) (rs models.RecipeSchema, err error) {
 	}()
 
 	rs.Name = getItempropContent(root, "name")
-	image, _ := root.Find("meta[itemprop='image']").Attr("content")
-	rs.Image = &models.Image{Value: image}
+	rs.Image = &models.Image{Value: getItempropContent(root, "image")}
 	rs.DateModified = getItempropContent(root, "dateModified")
 	rs.DatePublished = getItempropContent(root, "datePublished")
-	keywords, _ := root.Find("meta[itemprop='keywords']").Attr("content")
-	rs.Keywords = &models.Keywords{Values: keywords}
-	cat, _ := root.Find("meta[itemprop='recipeCategory']").Attr("content")
-	rs.Category = &models.Category{Value: cat}
-	method, _ := root.Find("meta[itemprop='recipeCuisine']").Attr("content")
-	rs.CookingMethod = &models.CookingMethod{Value: method}
-	cuisine, _ := root.Find("meta[itemprop='recipeCuisine']").Attr("content")
-	rs.Cuisine = &models.Cuisine{Value: cuisine}
+	rs.Keywords = &models.Keywords{Values: getItempropContent(root, "keywords")}
+	rs.Category = &models.Category{Value: getItempropContent(root, "recipeCategory")}
+	rs.CookingMethod = &models.CookingMethod{Value: getItempropContent(root, "recipeCuisine")}
+	rs.Cuisine = &models.Cuisine{Value: getItempropContent(root, "recipeCuisine")}
 	rs.Yield = &models.Yield{Value: <-chYield}
 	rs.Ingredients = &models.Ingredients{Values: <-chIngredients}
 	rs.Instructions = &models.Instructions{Values: <-chInstructions}

@@ -29,10 +29,10 @@ func scrapeRecipeCommunity(root *goquery.Document) (models.RecipeSchema, error) 
 	}
 	rs.Image.Value = getPropertyContent(root, "og:image")
 
-	rs.Yield.Value = findYield(root.Find("span[itemprop='recipeYield']").Parent().Text())
+	rs.Yield.Value = findYield(root.Find("span[itemprop=recipeYield]").Parent().Text())
 
-	rs.PrepTime, _ = root.Find("#preparation-time-final meta[itemprop='performTime']").Attr("content")
-	rs.CookTime, _ = root.Find("#preparation-time-final meta[itemprop='totalTime']").Attr("content")
+	rs.PrepTime, _ = root.Find("#preparation-time-final meta[itemprop=performTime]").Attr("content")
+	rs.CookTime, _ = root.Find("#preparation-time-final meta[itemprop=totalTime]").Attr("content")
 
 	nodes := root.Find(".catText")
 	allKeywords := make([]string, nodes.Length())
@@ -41,7 +41,7 @@ func scrapeRecipeCommunity(root *goquery.Document) (models.RecipeSchema, error) 
 	})
 	rs.Keywords.Values = strings.Join(allKeywords, ", ")
 
-	getIngredients(&rs, root.Find("li[itemprop='recipeIngredient']"), []models.Replace{{"useFields", ""}}...)
+	getIngredients(&rs, root.Find("li[itemprop=recipeIngredient]"), []models.Replace{{"useFields", ""}}...)
 	getInstructions(&rs, root.Find("ol.steps-list li"))
 
 	return rs, nil

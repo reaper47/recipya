@@ -22,7 +22,7 @@ func scrapePuurgezond(root *goquery.Document) (models.RecipeSchema, error) {
 		isInstructions bool
 	)
 
-	root.Find("div[itemprop='articleBody']").Children().Each(func(_ int, sel *goquery.Selection) {
+	root.Find("div[itemprop=articleBody]").Children().Each(func(_ int, sel *goquery.Selection) {
 		s := strings.ToLower(sel.Text())
 		if strings.Contains(s, "person") {
 			for c := sel.Nodes[0].FirstChild; c != nil; c = c.NextSibling {

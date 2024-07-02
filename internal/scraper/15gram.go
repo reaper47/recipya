@@ -13,18 +13,18 @@ func scrape15gram(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.CookTime = getItempropContent(root, "cookTime")
 	rs.PrepTime = getItempropContent(root, "prepTime")
 
-	getIngredients(&rs, root.Find("li[itemprop='recipeIngredient']"))
-	getInstructions(&rs, root.Find("li[itemprop='recipeInstructions']"))
+	getIngredients(&rs, root.Find("li[itemprop=recipeIngredient]"))
+	getInstructions(&rs, root.Find("li[itemprop=recipeInstructions]"))
 
-	nodes := root.Find("span[itemprop='keywords']")
+	nodes := root.Find("span[itemprop=keywords]")
 	keywords := make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		keywords = append(keywords, strings.TrimSpace(sel.Text()))
 	})
 
-	rs.Description = &models.Description{Value: strings.TrimSpace(root.Find("p[itemprop='description']").Text())}
+	rs.Description = &models.Description{Value: strings.TrimSpace(root.Find("p[itemprop=description]").Text())}
 	rs.Keywords = &models.Keywords{Values: strings.Join(keywords, ",")}
-	rs.Name = root.Find("h1[itemprop='name']").Text()
-	rs.Yield = &models.Yield{Value: findYield(root.Find("span[itemprop='recipeYield']").Text())}
+	rs.Name = root.Find("h1[itemprop=name]").Text()
+	rs.Yield = &models.Yield{Value: findYield(root.Find("span[itemprop=recipeYield]").Text())}
 	return rs, nil
 }

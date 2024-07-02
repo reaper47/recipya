@@ -19,8 +19,8 @@ func scrapeLatelierderoxane(root *goquery.Document) (models.RecipeSchema, error)
 	}
 	rs.Name = name
 
-	rs.Image.Value, _ = root.Find("meta[name='image']").Attr("content")
-	rs.DatePublished, _ = root.Find("time[itemprop='datePublished']").Attr("datetime")
+	rs.Image.Value = getNameContent(root, "image")
+	rs.DatePublished, _ = root.Find("time[itemprop=datePublished]").Attr("datetime")
 
 	prep := root.Find("span:contains('Préparation')").Next().Text()
 	if prep != "" {

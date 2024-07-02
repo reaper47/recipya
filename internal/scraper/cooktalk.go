@@ -19,13 +19,13 @@ func scrapeCooktalk(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	rs.Category.Value = xc[0]
-	rs.Image.Value, _ = root.Find("img[itemprop='image']").Attr("src")
+	rs.Image.Value, _ = root.Find("img[itemprop=image]").Attr("src")
 
-	description := root.Find("div[itemprop='description']").Text()
+	description := root.Find("div[itemprop=description]").Text()
 	rs.Description.Value = strings.TrimSpace(strings.Trim(description, "\n"))
 
-	getIngredients(&rs, root.Find("li[itemprop='ingredients']"))
-	getInstructions(&rs, root.Find("p[itemprop='recipeInstructions']"))
+	getIngredients(&rs, root.Find("li[itemprop=ingredients]"))
+	getInstructions(&rs, root.Find("p[itemprop=recipeInstructions]"))
 
 	return rs, nil
 }

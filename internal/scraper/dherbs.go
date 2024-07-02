@@ -17,9 +17,9 @@ func scrapeDherbs(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.PrepTime = getItempropContent(root, "prepTime")
 	rs.CookTime = getItempropContent(root, "cookTime")
 	rs.Yield.Value = findYield(getItempropContent(root, "recipeYield"))
-	rs.Category.Value = strings.ToLower(strings.TrimSpace(root.Find("span[itemprop='recipeCategory'] a").First().Text()))
-	getIngredients(&rs, root.Find("li[itemprop='recipeIngredient']"))
-	getInstructions(&rs, root.Find("li[itemprop='recipeInstructions']"))
+	rs.Category.Value = strings.ToLower(strings.TrimSpace(root.Find("span[itemprop=recipeCategory] a").First().Text()))
+	getIngredients(&rs, root.Find("li[itemprop=recipeIngredient]"))
+	getInstructions(&rs, root.Find("li[itemprop=recipeInstructions]"))
 
 	thumbs, _ := root.Find("img.attachment-post-thumbnail").Attr("srcset")
 	before, _, ok := strings.Cut(thumbs, ",")

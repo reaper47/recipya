@@ -10,7 +10,7 @@ import (
 func scrapeKuchniadomova(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	name := root.Find("h2[itemprop='name']").Text()
+	name := root.Find("h2[itemprop=name]").Text()
 	name = strings.ReplaceAll(name, "\n", "")
 	rs.Name = strings.ReplaceAll(name, "\t", "")
 
@@ -20,7 +20,7 @@ func scrapeKuchniadomova(root *goquery.Document) (models.RecipeSchema, error) {
 
 	rs.Category.Value = getItempropContent(root, "recipeCategory")
 	rs.Keywords.Values = getNameContent(root, "keywords")
-	rs.Cuisine.Value = root.Find("p[itemprop='recipeCuisine']").Text()
+	rs.Cuisine.Value = root.Find("p[itemprop=recipeCuisine]").Text()
 
 	image, _ := root.Find("#article-img-1").Attr("data-src")
 	rs.Image.Value = "https://kuchnia-domowa.pl" + image
@@ -29,7 +29,7 @@ func scrapeKuchniadomova(root *goquery.Document) (models.RecipeSchema, error) {
 	description = strings.TrimPrefix(description, "\n")
 	rs.Description.Value = strings.TrimSuffix(description, "\n")
 
-	getIngredients(&rs, root.Find("li[itemprop='recipeIngredient']"))
+	getIngredients(&rs, root.Find("li[itemprop=recipeIngredient]"))
 	getInstructions(&rs, root.Find("#recipe-instructions li"))
 
 	return rs, nil

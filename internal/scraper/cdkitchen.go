@@ -15,11 +15,11 @@ func scrapeCdKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 
 	content := root.Find("#recipepage")
 
-	getIngredients(&rs, content.Find("span[itemprop='recipeIngredient']"), []models.Replace{
+	getIngredients(&rs, content.Find("span[itemprop=recipeIngredient]"), []models.Replace{
 		{"  ", " "},
 	}...)
 
-	node := content.Find("div[itemprop='recipeInstructions'] p")
+	node := content.Find("div[itemprop=recipeInstructions] p")
 	node.Find("br").Each(func(_ int, s *goquery.Selection) {
 		s.ReplaceWithHtml("$$$")
 	})
@@ -33,9 +33,9 @@ func scrapeCdKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 	yield, _ := strconv.ParseInt(yieldStr, 10, 16)
 	rs.Yield.Value = int16(yield)
 
-	node = content.Find("span[itemprop='nutrition']")
+	node = content.Find("span[itemprop=nutrition]")
 	rs.NutritionSchema = &models.NutritionSchema{
-		Calories:       node.Find("span[itemprop='calories']").Text(),
+		Calories:       node.Find("span[itemprop=calories]").Text(),
 		Carbohydrates:  node.Find(".carbohydrateContent").Text(),
 		Sugar:          node.Find(".sugarContent").Text(),
 		Protein:        node.Find(".proteinContent").Text(),
@@ -48,9 +48,9 @@ func scrapeCdKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 		UnsaturatedFat: node.Find(".unsaturatedFatContent").Text(),
 	}
 
-	rs.CookTime, _ = content.Find("meta[itemprop='cookTime']").Attr("content")
-	rs.Description = &models.Description{Value: content.Find("p[itemprop='description']").Text()}
-	rs.Name = content.Find("h1[itemprop='name']").Text()
+	rs.CookTime = getItempropContent(root, "cookTime")
+	rs.Description = &models.Description{Value: content.Find("p[itemprop=description]").Text()}
+	rs.Name = content.Find("h1[itemprop=name]").Text()
 
 	return rs, nil
 }

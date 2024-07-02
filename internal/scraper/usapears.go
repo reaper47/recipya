@@ -26,8 +26,8 @@ func scrapeUsapears(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 	rs.PrepTime = prep
 
-	getIngredients(&rs, root.Find("li[itemprop='ingredients']"), []models.Replace{{"useFields", ""}}...)
-	getInstructions(&rs, root.Find("div[itemprop='recipeInstructions'] ol li"), []models.Replace{{"useFields", ""}}...)
+	getIngredients(&rs, root.Find("li[itemprop=ingredients]"), []models.Replace{{"useFields", ""}}...)
+	getInstructions(&rs, root.Find("div[itemprop=recipeInstructions] ol li"), []models.Replace{{"useFields", ""}}...)
 
 	return rs, nil
 }
