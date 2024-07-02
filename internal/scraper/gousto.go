@@ -15,16 +15,14 @@ type gousto struct {
 	Status string `json:"status"`
 	Data   struct {
 		Entry struct {
-			Url        string `json:"url"`
+			URL        string `json:"url"`
 			Title      string `json:"title"`
 			Categories []struct {
 				Title string `json:"title"`
-				Url   string `json:"url"`
-				Uid   string `json:"uid"`
+				URL   string `json:"url"`
+				UID   string `json:"uid"`
 			} `json:"categories"`
-			GoustoId  string `json:"gousto_id"`
-			GoustoUid string `json:"gousto_uid"`
-			Media     struct {
+			Media struct {
 				Images []struct {
 					Image string `json:"image"`
 					Width int    `json:"width"`
@@ -44,12 +42,11 @@ type gousto struct {
 				Title string `json:"title"`
 			} `json:"cuisine"`
 			Ingredients []struct {
-				Label      string `json:"label"`
-				Title      string `json:"title"`
-				Uid        string `json:"uid"`
-				GoustoUuid string `json:"gousto_uuid"`
-				Name       string `json:"name"`
-				Media      struct {
+				Label string `json:"label"`
+				Title string `json:"title"`
+				UID   string `json:"uid"`
+				Name  string `json:"name"`
+				Media struct {
 					Images []struct {
 						Image string `json:"image"`
 						Width int    `json:"width"`
@@ -87,7 +84,7 @@ type gousto struct {
 				OpenGraphImage string        `json:"open_graph_image"`
 			} `json:"seo"`
 			Tags                   []interface{} `json:"tags"`
-			Uid                    string        `json:"uid"`
+			UID                    string        `json:"uid"`
 			Version                int           `json:"_version"`
 			NutritionalInformation struct {
 				PerHundredGrams struct {
@@ -119,7 +116,7 @@ type gousto struct {
 				Portions        int  `json:"portions"`
 				IsOffered       bool `json:"is_offered"`
 				IngredientsSkus []struct {
-					Id         string `json:"id"`
+					ID         string `json:"id"`
 					Code       string `json:"code"`
 					Quantities struct {
 						InBox int `json:"in_box"`

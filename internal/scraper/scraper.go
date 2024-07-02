@@ -36,7 +36,7 @@ func NewScraper(client services.HTTPClient) *Scraper {
 // returned when the URL cannot be parsed.
 func (s *Scraper) Scrape(rawURL string, files services.FilesService) (models.RecipeSchema, error) {
 	var host = s.HTTP.GetHost(rawURL)
-	rs, err, isSpecial := s.scrapeSpecial(host, rawURL, files)
+	rs, isSpecial, err := s.scrapeSpecial(host, rawURL, files)
 	if err != nil {
 		return models.RecipeSchema{}, err
 	}
@@ -91,7 +91,7 @@ func (s *Scraper) Scrape(rawURL string, files services.FilesService) (models.Rec
 	return rs, nil
 }
 
-func (s *Scraper) scrapeSpecial(host, rawURL string, files services.FilesService) (models.RecipeSchema, error, bool) {
+func (s *Scraper) scrapeSpecial(host, rawURL string, files services.FilesService) (models.RecipeSchema, bool, error) {
 	var (
 		rs        models.RecipeSchema
 		err       error
@@ -110,7 +110,7 @@ func (s *Scraper) scrapeSpecial(host, rawURL string, files services.FilesService
 	case "monsieur-cuisine":
 		doc, err := s.fetchDocument(rawURL)
 		if err != nil {
-			return models.RecipeSchema{}, err, true
+			return models.RecipeSchema{}, true, err
 		}
 		rs, err = s.scrapeMonsieurCuisine(doc, rawURL, files)
 	case "quitoque":
@@ -119,7 +119,7 @@ func (s *Scraper) scrapeSpecial(host, rawURL string, files services.FilesService
 		isSpecial = false
 	}
 
-	return rs, err, isSpecial
+	return rs, isSpecial, err
 }
 
 func (s *Scraper) fetchDocument(url string) (*goquery.Document, error) {

@@ -19,8 +19,6 @@ func scrapeInstantPot(root *goquery.Document) (models.RecipeSchema, error) {
 		s := strings.TrimSpace(sel.Text())
 		if strings.HasPrefix(s, "Course") {
 			rs.Category.Value = strings.TrimSpace(strings.ToLower(strings.TrimPrefix(s, "Course")))
-		} else if strings.HasPrefix(s, "Diet") {
-			// TODO: When diet is implemented
 		} else if strings.HasPrefix(s, "Keywords") {
 			rs.Keywords.Values = strings.Join(strings.Fields(strings.TrimPrefix(s, "Keywords")), "")
 		} else if strings.HasPrefix(s, "Prep Time") {
