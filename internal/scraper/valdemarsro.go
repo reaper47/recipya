@@ -13,7 +13,7 @@ func scrapeValdemarsro(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.DatePublished = getPropertyContent(root, "article:published_time")
 	rs.DateModified = getPropertyContent(root, "article:modified_time")
 	rs.Image.Value = getPropertyContent(root, "og:image")
-	rs.Name = root.Find("h1[itemprop='headline']").Text()
+	rs.Name = root.Find("h1[itemprop=headline]").Text()
 	rs.Yield.Value = findYield(root.Find(".fa-sort").Parent().Text())
 
 	start := root.Find("div[itemprop='description']").Children().First()
@@ -39,8 +39,8 @@ func scrapeValdemarsro(root *goquery.Document) (models.RecipeSchema, error) {
 		rs.CookTime = "PT" + parts[0] + "H" + parts[2] + "M"
 	}
 
-	getIngredients(&rs, root.Find("li[itemprop='recipeIngredient']"))
-	getInstructions(&rs, root.Find("div[itemprop='recipeInstructions'] p"))
+	getIngredients(&rs, root.Find("li[itemprop=recipeIngredient]"))
+	getInstructions(&rs, root.Find("div[itemprop=recipeInstructions] p"))
 
 	return rs, nil
 }

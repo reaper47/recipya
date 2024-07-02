@@ -9,8 +9,10 @@ import (
 func scrapeCoop(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.DateCreated, _ = root.Find("meta[name='creation_date']").Attr("content")
+	rs.DateCreated = getNameContent(root, "creation_date")
 	rs.DatePublished = rs.DateCreated
+	rs.Description.Value = getNameContent(root, "og:description")
+	getIngredients(&rs, root.Find(".IngredientList-content"))
 
 	name := getNameContent(root, "og:title")
 	before, _, ok := strings.Cut(name, "|")
@@ -18,11 +20,6 @@ func scrapeCoop(root *goquery.Document) (models.RecipeSchema, error) {
 		name = strings.TrimSpace(before)
 	}
 	rs.Name = name
-
-	description, _ := root.Find("meta[name='og:description']").Attr("content")
-	rs.Description.Value = strings.TrimSpace(description)
-
-	getIngredients(&rs, root.Find(".IngredientList-content"))
 
 	nodes := root.Find("ol.List--orderedRecipe")
 	nodes.Each(func(_ int, sel *goquery.Selection) {

@@ -10,7 +10,7 @@ import (
 func scrapeAllClad(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Name, _ = root.Find("meta[name='title']").Attr("content")
+	rs.Name = getNameContent(root, "title")
 	rs.Description.Value = getNameContent(root, "description")
 	rs.Keywords.Values = getNameContent(root, "description")
 	rs.Image.Value = getPropertyContent(root, "og:image")

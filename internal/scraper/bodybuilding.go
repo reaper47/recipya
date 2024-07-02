@@ -12,7 +12,7 @@ import (
 func scrapeBodybuilding(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.DateModified, _ = root.Find("meta[property='og:updated_time']").Attr("content")
+	rs.DateModified = getPropertyContent(root, "og:updated_time")
 	rs.DatePublished = getPropertyContent(root, "article:published_time")
 	rs.Description.Value = strings.TrimSpace(root.Find(".BBCMS__content--article-description").Text())
 

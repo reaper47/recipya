@@ -30,6 +30,7 @@ func scrapeClosetcooking(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.Keywords.Values = strings.Join(xk, ",")
 
 	rs.NutritionSchema = &models.NutritionSchema{
+<<<<<<< HEAD
 		Calories:       regex.Digit.FindString(root.Find("span[itemprop='calories']").Text()),
 		Carbohydrates:  regex.Digit.FindString(root.Find("span[itemprop='carbohydrateContent']").Text()),
 		Sugar:          regex.Digit.FindString(root.Find("span[itemprop='sugarContent']").Text()),
@@ -41,9 +42,22 @@ func scrapeClosetcooking(root *goquery.Document) (models.RecipeSchema, error) {
 		Fiber:          regex.Digit.FindString(root.Find("span[itemprop='fiberContent']").Text()),
 		TransFat:       regex.Digit.FindString(root.Find("span[itemprop='transFatContent']").Text()),
 		UnsaturatedFat: regex.Digit.FindString(root.Find("span[itemprop='unsaturatedFatContent']").Text()),
+=======
+		Calories:       root.Find("span[itemprop=calories]").Text(),
+		Carbohydrates:  root.Find("span[itemprop=carbohydrateContent]").Text(),
+		Sugar:          root.Find("span[itemprop=sugarContent]").Text(),
+		Protein:        root.Find("span[itemprop=proteinContent]").Text(),
+		Fat:            root.Find("span[itemprop=fatContent]").Text(),
+		SaturatedFat:   root.Find("span[itemprop=saturatedFatContent]").Text(),
+		Cholesterol:    root.Find("span[itemprop=cholesterolContent]").Text(),
+		Sodium:         root.Find("span[itemprop=sodiumContent]").Text(),
+		Fiber:          root.Find("span[itemprop=fiberContent]").Text(),
+		TransFat:       root.Find("span[itemprop=transFatContent]").Text(),
+		UnsaturatedFat: root.Find("span[itemprop=unsaturatedFatContent]").Text(),
+>>>>>>> 4404f718 (Finish supporting 34 websites)
 	}
 
-	rs.Yield.Value = findYield(root.Find("span[itemprop='recipeYield']").Text())
+	rs.Yield.Value = findYield(root.Find("span[itemprop=recipeYield]").Text())
 
 	return rs, nil
 }

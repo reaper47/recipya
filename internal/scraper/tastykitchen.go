@@ -12,15 +12,15 @@ func scrapeTastyKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.Description.Value = getPropertyContent(root, "og:description")
 	rs.Image.Value = getPropertyContent(root, "og:image")
 
-	rs.Name = root.Find("h1[itemprop='name']").Text()
-	rs.PrepTime, _ = root.Find("time[itemprop='prepTime']").Attr("datetime")
-	rs.CookTime, _ = root.Find("time[itemprop='cookTime']").Attr("datetime")
+	rs.Name = root.Find("h1[itemprop=name]").Text()
+	rs.PrepTime, _ = root.Find("time[itemprop=prepTime]").Attr("datetime")
+	rs.CookTime, _ = root.Find("time[itemprop=cookTime]").Attr("datetime")
 
-	yieldStr, _ := root.Find("input[name='servings']").Attr("value")
+	yieldStr, _ := root.Find("input[name=servings]").Attr("value")
 	rs.Yield.Value = findYield(yieldStr)
 
-	getIngredients(&rs, root.Find("span[itemprop='ingredient']"), []models.Replace{{"\u00a0", " "}}...)
-	getInstructions(&rs, root.Find("span[itemprop='instructions'] p"))
+	getIngredients(&rs, root.Find("span[itemprop=ingredient]"), []models.Replace{{"\u00a0", " "}}...)
+	getInstructions(&rs, root.Find("span[itemprop=instructions] p"))
 
 	return rs, nil
 }

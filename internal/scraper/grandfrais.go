@@ -11,8 +11,8 @@ func scrapeGrandfrais(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
 	rs.Description.Value = getPropertyContent(root, "og:description")
-	rs.Name = root.Find("h1[itemprop='name']").Text()
-	rs.Yield.Value = findYield(root.Find("p[itemprop='recipeYield']").Text())
+	rs.Name = root.Find("h1[itemprop=name]").Text()
+	rs.Yield.Value = findYield(root.Find("p[itemprop=recipeYield]").Text())
 
 	prep := root.Find(".pre-requie-item p").First().Text()
 	split := strings.Split(prep, " ")
@@ -36,7 +36,7 @@ func scrapeGrandfrais(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 	rs.CookTime = cook
 
-	nodes := root.Find("div[itemprop='ingredients']")
+	nodes := root.Find("div[itemprop=ingredients]")
 	rs.Ingredients.Values = strings.Split(nodes.Text(), "\n")
 	for i, ingredient := range rs.Ingredients.Values {
 		_, after, ok := strings.Cut(ingredient, "- ")
@@ -45,9 +45,9 @@ func scrapeGrandfrais(root *goquery.Document) (models.RecipeSchema, error) {
 		}
 	}
 
-	getInstructions(&rs, root.Find("div[itemprop='recipeInstructions'] li"))
+	getInstructions(&rs, root.Find("div[itemprop=recipeInstructions] li"))
 
-	image, _ := root.Find("img[itemprop='image']").Attr("src")
+	image, _ := root.Find("img[itemprop=image]").Attr("src")
 	if !strings.HasPrefix(image, "https://") {
 		image = "https://www.grandfrais.com" + image
 	}

@@ -316,21 +316,24 @@ func TestScraper_L(t *testing.T) {
 				URL:       "https://www.lecremedelacrumb.com/instant-pot-pot-roast-potatoes/",
 			},
 		},
-		/*{
+		{
 			name: "lekkerensimpel.com",
 			in:   "https://www.lekkerensimpel.com/gougeres/",
 			want: models.RecipeSchema{
-				AtContext: atContext,
-				Type:    &models.SchemaType{Value: "Recipe"},
-				Name:      "Gougères",
-				Category:  &models.Category{Value: "Snacks"},
-				Yield:     &models.Yield{Value: 4},
-				URL:       "https://www.lekkerensimpel.com/gougeres/",
-				PrepTime:  "PT20M",
-				CookTime:  "PT25M",
+				AtContext:     atContext,
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "snacks"},
+				CookTime:      "PT25M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DatePublished: "2021-09-28T04:00:00+00:00",
+				DateModified:  "2021-09-21T08:22:19+00:00",
 				Description: &models.Description{
-					Value: "Vandaag een receptje uit de Franse keuken, namelijk deze gougères. Gougères zijn een soort hartige kaassoesjes, erg lekker! We hadden een tijdje geleden een stuk gruyère kaas gekocht bij de kaasboer, meer uit nood want parmezaanse had hij op dat moment even niet. Inmiddels lag de kaas al een tijdje in de koelkast en moesten we er toch echt wat mee gaan doen. Iemand tipte ons dat we echt eens gougères moesten maken en eerlijk gezegd hadden we er nooit eerder van gehoord. Een kleine speurtocht bracht ons uiteindelijk bij een recept van ‘The Guardian – How to make the perfect gougères‘. We zijn ermee aan de slag gegaan en zie hier het resultaat! \n\nNog meer van dit soort lekkere snacks en borrelhapjes vind je in onze categorie tapas recepten en tussen de high-tea recepten.",
+					Value: "Gek op soesjes en gek op kaas? Dan wil je deze Gougères, een hartige kaassoesjes uit de Franse keuken, vast een keer proberen.",
 				},
+				Name:     "Gougères",
+				PrepTime: "PT20M",
+				Image:    &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
 					Values: []string{
 						"90 gr gruyere kaas",
@@ -344,14 +347,30 @@ func TestScraper_L(t *testing.T) {
 				},
 				Instructions: &models.Instructions{
 					Values: []models.HowToItem{
-						"Verwarm de oven voor op 200 graden. Klop vervolgens 2 eieren los in een beker. Doe het water, de boter en een snuf zout in een pan en laat de boter al roerend smelten. Zet het ‘vuur’ laag en doe de bloem erbij. Zelf doen we de bloem eerst door een zeef zodat er geen kleine klontjes meer inzitten. Roer de bloem door het botermengsel totdat er een soort deeg ontstaat. Haal de pan van het vuur en mix het deeg, bij voorkeur met een mixer, een minuut of 3-4. Voeg dan de helft van het losgeklopte ei toe, even goed mengen en dan kan de andere helft erbij. Mix daarna nog de nootmuskaat en geraspte gruyère door het deeg. Bekleed een bakplaat met bakpapier. Schep met twee lepels kleine bolletjes deeg op de bakplaat of gebruik hiervoor een spuitzak. Smeer de bovenkant in met een beetje losgeklopt ei, bestrooi met nog geraspte gruyère kaas en dan kan de bakplaat de oven in voor 20-25 minuten. Eet smakelijk!",
-						"Bewaar dit recept op Pinterest !",
+						{
+							Text: "Vandaag een receptje uit de Franse keuken, namelijk deze gougères. Gougères zijn een soort hartige kaassoesjes, erg lekker! We hadden een tijdje geleden een stuk gruyère kaas gekocht bij de kaasboer, meer uit nood want parmezaanse had hij op dat moment even niet. Inmiddels lag de kaas al een tijdje in de koelkast en moesten we er toch echt wat mee gaan doen. Iemand tipte ons dat we echt eens gougères moesten maken en eerlijk gezegd hadden we er nooit eerder van gehoord. Een kleine speurtocht bracht ons uiteindelijk bij een recept van ‘The Guardian – How to make the perfect gougères‘. We zijn ermee aan de slag gegaan en zie hier het resultaat!",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Nog meer van dit soort lekkere snacks en borrelhapjes vind je in onze categorie tapas recepten en tussen de high-tea recepten.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Verwarm de oven voor op 200 graden. Klop vervolgens 2 eieren los in een beker. Doe het water, de boter en een snuf zout in een pan en laat de boter al roerend smelten. Zet het ‘vuur’ laag en doe de bloem erbij. Zelf doen we de bloem eerst door een zeef zodat er geen kleine klontjes meer inzitten. Roer de bloem door het botermengsel totdat er een soort deeg ontstaat. Haal de pan van het vuur en mix het deeg, bij voorkeur met een mixer, een minuut of 3-4. Voeg dan de helft van het losgeklopte ei toe, even goed mengen en dan kan de andere helft erbij. Mix daarna nog de nootmuskaat en geraspte gruyère door het deeg. Bekleed een bakplaat met bakpapier. Schep met twee lepels kleine bolletjes deeg op de bakplaat of gebruik hiervoor een spuitzak. Smeer de bovenkant in met een beetje losgeklopt ei, bestrooi met nog geraspte gruyère kaas en dan kan de bakplaat de oven in voor 20-25 minuten. Eet smakelijk!",
+							Type: "HowToStep",
+						},
+						{Text: "Bewaar dit recept op Pinterest!", Type: "HowToStep"},
 					},
 				},
-				DatePublished: "2021-09-28T04:00:00+00:00",
-				DateModified:  "2021-09-21T08:22:19+00:00",
+				Keywords:        &models.Keywords{},
+				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 4},
+				URL:             "https://www.lekkerensimpel.com/gougeres/",
+				Video:           &models.Videos{},
 			},
-		},*/
+		},
 		{
 			name: "leukerecepten.nl",
 			in:   "https://www.leukerecepten.nl/recepten/pita-tandoori",

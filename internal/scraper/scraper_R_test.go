@@ -62,6 +62,59 @@ func TestScraper_R(t *testing.T) {
 			},
 		},
 		{
+			name: "radiofrance.fr",
+			in:   "https://www.radiofrance.fr/franceinter/recette-sauce-cacahuete-tomates-et-piments-3598484",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtGraph:       nil,
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookTime:      "PT5M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DateModified:  "2023-12-01T12:05:14.000Z",
+				DatePublished: "2023-12-01T12:05:14.000Z",
+				Description:   &models.Description{Value: `Aji de mani en version originale, une recette de Juan Arbelaez extraite du livre "Recuerdame, carnet de cuisine de Colombie"`},
+				Keywords:      &models.Keywords{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"2 tomates",
+						"250 g de cacahuètes",
+						"1 cébette",
+						"1 bouquet de coriandre",
+						"1 citron vert (jus)",
+						"½ piment rouge",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "Monder les tomates : former une petite croix sur le dessous des tomates et les plonger dans une grande quantité d’eau bouillante pendant 15 secondes. Les refroidir ensuite dans de l’eau glacée pendant 30 secondes. La peau va ensuite s’enlever facilement.Les hacher grossièrement.Torréfier les cacahuètes quelques minutes dans une poêle jusqu’à obtenir une belle coloration. Mélanger ensuite au blender les cacahuètes, les tomates, la cébette, la coriandre, le jus de citron vert et le piment rouge jusqu’à l’obtention d’une sauce.",
+							Type: "HowToStep",
+						},
+						{Text: "Publicité", Type: "HowToStep"},
+						{
+							Text: "S’il reste quelques morceaux de cacahuètes, ne vous inquiétez pas, ils apportent de la consistance à votre aji !",
+							Type: "HowToStep",
+						},
+						{
+							Text: "►   Recuerdame, carnet de cuisine de Colombie - First Editions",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Sauce cacahuète, tomates et piments",
+				NutritionSchema: &models.NutritionSchema{Servings: "400g"},
+				PrepTime:        "PT30M",
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://www.radiofrance.fr/franceinter/recette-sauce-cacahuete-tomates-et-piments-3598484",
+				Video:           &models.Videos{},
+			},
+		},
+		{
 			name: "rainbowplantlife.com",
 			in:   "https://rainbowplantlife.com/livornese-stewed-beans/",
 			want: models.RecipeSchema{
@@ -749,6 +802,48 @@ func TestScraper_R(t *testing.T) {
 				Yield:           &models.Yield{Value: 1},
 				URL:             "https://www.ricetteperbimby.it/ricette/dolcetti-mandorle-e-limone-bimby",
 				Video:           &models.Videos{},
+			},
+		},
+		{
+			name: "robinasbell.com",
+			in:   "https://robinasbell.com/2019/08/make-a-pizza-with-edible-flowers-its-like-eating-summer/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Main Course"},
+				DatePublished: "2019-08-03T16:56:02+00:00",
+				Description: &models.Description{
+					Value: "When it&#x27;s too hot to bake, make this pizza on the grill. My garden provides the tomatoes, basil, and of course, fresh flowers that make this as charming as it is easy to make.",
+				},
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"1/2 cup roasted cherry tomatoes ((see link))", "1 1/2 cup warm water",
+						"2 teaspoons instant yeast", "1 teaspoon sugar", "1 cup bread flour",
+						"2 cups whole wheat flour", "1 teaspoon salt", "4 cups fresh basil leaves",
+						"2 cloves garlic (peeled)",
+						"1/2 cup pine nuts",
+						"1 teaspoon salt",
+						"1/2 cup extra virgin olive oil",
+						"6 nasturtium flowers",
+						"2 squash blossoms",
+						"2 tablespoons broccoli raab flowers",
+						"oil for the grill",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "The day before, place the warm water, yeast and sugar in alarge storage tub and stir to mix. Let stand at room temperature until bubbly,about 10 minutes. Using a wooden spoon, stir in the flours and salt, and mixjust until combined. Use your hands to knead just enough to make it smooth,adding a little flour if it is sticking to your hands. Let the dough stand atroom temperature for about an hour to double in size. Cover the tub andrefrigerate overnight.", Type: "HowToStep"},
+						{Text: "Two hours before dinner, take the dough out of therefrigerator. Divide the dough into two pieces, shape each into an oval, placeon a floured counter and let it come to room temperature.", Type: "HowToStep"},
+						{Text: "Make the pesto: In a food processor, place the basil, garlic, pine nuts and salt. Process, scraping down as needed, until a smooth paste is formed. Drizzle in the olive oil and puree to make a smooth pesto. Transfer to a cup.", Type: "HowToStep"},
+						{Text: "Preheat the grill to high, and pour a little oil in a cup,and crumple a paper towel to use to oil the grate. Get tongs and a large metalspatula, and a large cutting board.", Type: "HowToStep"},
+						{Text: "Flatten and stretch each out to the width of your cutting board, making an oval about 12 x 7 inches. You can fit both on the board. Sprinkle the board with flour and place the shaped dough on it. Using the tongs to hold the paper towel, oil thegrill grate, and carefully place each portion of dough on the grill. Close thegrill and reduce the heat to medium. Cook for three minutes, then uncover and use tongs to peek under the crust, looking for grill marks. When it feels firmaround the edges and is marked, flip the dough. Quickly spread half of the pesto and sprinkle tomatoes on each crust, then cover the grill and let cook for three minutes.", Type: "HowToStep"},
+						{Text: "Arrange the flowers on the pizzas, cut, and serve.", Type: "HowToStep"},
+					},
+				},
+				Name:  "Pesto Pizza with Edible Flowers",
+				Yield: &models.Yield{Value: 4},
+				URL:   "https://robinasbell.com/2019/08/make-a-pizza-with-edible-flowers-its-like-eating-summer/",
 			},
 		},
 		{

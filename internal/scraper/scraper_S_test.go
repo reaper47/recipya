@@ -1228,6 +1228,78 @@ func TestScraper_S(t *testing.T) {
 			},
 		},
 		{
+			name: "spiceboxtravels.com",
+			in:   "https://spiceboxtravels.com/2013/12/13/ottolenghi-style-eggplant-with-pomegranate/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "appetizer"},
+				CookTime:      "",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DateCreated:   "",
+				DateModified:  "2013-12-14T04:04:56+00:00",
+				DatePublished: "2013-12-13T14:00:55+00:00",
+				Description:   &models.Description{Value: "This is my contribution for this month’s #LetsLunch, a virtual monthly potluck on Twitter.  The theme this month is “edible decorations for the festive season.”   I love the idea …"},
+				Keywords:      &models.Keywords{Values: "eggplant,middle eastern,Ottolenghi,Plenty,pomegranate,recipe,roasted,tahini,vegan,vegetarian"},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"Roasted Eggplant with Tahini and Pomegranate",
+						"Serves: 12 as an appetizer",
+						"Ingredients",
+						"Two large, long eggplants",
+						"1/2 cup olive oil",
+						"salt",
+						"freshly ground black pepper",
+						"1 cup tahini",
+						"2 large cloves of garlic, minced",
+						"juice of half a lemon",
+						"2-3 tablespoons of Italian parsley, in fine ribbons",
+						"ground sumac or za’atar (a few pinches for garnish)",
+						"arils/seeds of one pomegranate",
+						"Technique",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Preheat oven to 300 F.", Type: "HowToStep"},
+						{
+							Text: "Wash and dry eggplants.  Cut in half lengthwise and place, cut side up, onto a parchment paper-lined baking sheet.  Use a paring knife to cut deep diagonal slices into the flesh, but not through the skin, of the eggplant halves.  Repeat at a 45 degree angle in the other direction until you have diamonds.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Brush each eggplant half with a few tablespoons of olive oil.  Sprinkle on a bit of salt and freshly ground black pepper.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Roast in oven for 45 minutes to an hour, until the flesh is soft when pierced with a fork, but the eggplant halves still maintain their shape.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Meanwhile, make the sauce by combining the tahini, garlic and lemon juice.  Add salt to taste.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Arrange eggplants on a platter, spoon sauce onto each half, then top with pomegrante arils, parsley and ground sumac or za’atar.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Serve with triangles of pita, pita chips,  or toasts.",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Ottolenghi Style Eggplant with Tahini and Pomegranate",
+				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 12},
+				URL:             "https://spiceboxtravels.com/2013/12/13/ottolenghi-style-eggplant-with-pomegranate/",
+				Video:           &models.Videos{},
+			},
+		},
+		{
 			name: "staysnatched.com",
 			in:   "https://www.staysnatched.com/seafood-dressing",
 			want: models.RecipeSchema{

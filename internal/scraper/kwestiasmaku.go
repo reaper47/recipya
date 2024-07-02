@@ -12,7 +12,7 @@ func scrapeKwestiasmaku(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.Name = getPropertyContent(root, "og:title")
 	rs.DatePublished = getPropertyContent(root, "article:published_time")
 	rs.DateModified = getPropertyContent(root, "article:modified_time")
-	rs.Description.Value = root.Find("span[itemprop='description']").Text()
+	rs.Description.Value = root.Find("span[itemprop=description]").Text()
 	rs.Yield.Value = findYield(root.Find(".field-name-field-ilosc-porcji").Text())
 
 	getIngredients(&rs, root.Find(".field-name-field-skladniki li"), []models.Replace{

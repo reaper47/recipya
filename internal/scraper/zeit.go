@@ -9,8 +9,8 @@ func scrapeZeit(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
 	rs.Description.Value = getNameContent(root, "description")
-	rs.DateModified, _ = root.Find("meta[name='last-modified']").Attr("content")
-	rs.DatePublished, _ = root.Find("meta[name='date']").Attr("content")
+	rs.DateModified = getNameContent(root, "last-modified")
+	rs.DatePublished = getNameContent(root, "date")
 	rs.Keywords.Values = getNameContent(root, "keywords")
 	rs.Image.Value = getPropertyContent(root, "og:image")
 	rs.Name = getPropertyContent(root, "og:title")

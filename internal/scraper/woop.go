@@ -13,7 +13,7 @@ import (
 func scrapeWoop(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Name, _ = root.Find("meta[name='title']").Attr("content")
+	rs.Name = getNameContent(root, "title")
 	rs.Keywords.Values = getNameContent(root, "keywords")
 	rs.Description.Value = getPropertyContent(root, "og:description")
 	rs.Image.Value = getPropertyContent(root, "og:image")

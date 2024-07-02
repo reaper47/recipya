@@ -11,9 +11,9 @@ func scrapeBrianLagerstrom(root *goquery.Document) (models.RecipeSchema, error) 
 	rs := models.NewRecipeSchema()
 
 	rs.Description.Value = getItempropContent(root, "description")
-	rs.Image.Value, _ = root.Find("meta[itemprop='thumbnailUrl']").Attr("content")
+	rs.Image.Value = getItempropContent(root, "thumbnailUrl")
 
-	name, _ := root.Find("meta[itemprop='name']").Attr("content")
+	name := getItempropContent(root, "name")
 	before, _, ok := strings.Cut(name, "—")
 	if ok {
 		name = before

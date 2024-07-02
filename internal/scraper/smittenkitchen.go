@@ -11,12 +11,12 @@ import (
 func scrapeSmittenKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	parsed, err := strconv.ParseInt(regex.Digit.FindString(root.Find("*[itemprop='recipeYield']").Text()), 10, 16)
+	parsed, err := strconv.ParseInt(regex.Digit.FindString(root.Find("[itemprop=recipeYield]").Text()), 10, 16)
 	if err == nil {
 		rs.Yield.Value = int16(parsed)
 	}
 
-	rs.PrepTime, _ = root.Find("time[itemprop='totalTime']").Attr("datetime")
+	rs.PrepTime, _ = root.Find("time[itemprop=totalTime]").Attr("datetime")
 	rs.Description.Value = root.Find(".smittenkitchen-print-hide p").First().Text()
 
 	nodes := root.Find(".jetpack-recipe-ingredients").Last().Find("ul")

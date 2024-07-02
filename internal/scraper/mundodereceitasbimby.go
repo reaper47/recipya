@@ -13,9 +13,9 @@ func scrapeMundodereceitasbimby(root *goquery.Document) (models.RecipeSchema, er
 
 	rs.Description.Value = getNameContent(root, "og:description")
 	rs.Image.Value = getPropertyContent(root, "og:image")
-	rs.Category.Value = root.Find("span[itemprop='recipeCategory']").First().Text()
-	rs.Name = root.Find("a[itemprop='item'] span[itemprop='name']").Last().Text()
-	rs.Yield.Value = findYield(root.Find("span[itemprop='recipeYield']").Text())
+	rs.Category.Value = root.Find("span[itemprop=recipeCategory]").First().Text()
+	rs.Name = root.Find("a[itemprop=item] span[itemprop=name]").Last().Text()
+	rs.Yield.Value = findYield(root.Find("span[itemprop=recipeYield]").Text())
 
 	_, after, ok := strings.Cut(root.Find("span.creation-date").First().Text(), ":")
 	if ok {
@@ -36,8 +36,8 @@ func scrapeMundodereceitasbimby(root *goquery.Document) (models.RecipeSchema, er
 		}
 	}
 
-	getIngredients(&rs, root.Find("li[itemprop='recipeIngredient']"))
-	getInstructions(&rs, root.Find("ol[itemprop='recipeInstructions'] div[itemprop='itemListElement']"))
+	getIngredients(&rs, root.Find("li[itemprop=recipeIngredient]"))
+	getInstructions(&rs, root.Find("ol[itemprop=recipeInstructions] div[itemprop=itemListElement]"))
 
 	parts := strings.Split(root.Find(".media h5.media-heading").Text(), " ")
 	switch len(parts) {

@@ -45,7 +45,8 @@ func (h HTTP) PrepareRequestForURL(url string) (*http.Request, error) {
 	host := h.GetHost(url)
 	switch host {
 	case "aberlehome", "bettybossi", "downshiftology", "findingtimeforcooking", "marmiton", "natashaskitchen",
-		"puurgezond", "reddit", "sarahsveganguide", "thekitchn", "thepalatablelife", "wellplated":
+		"parsleyandparm", "puurgezond", "reddit", "robinasbell", "sarahsveganguide", "thekitchn", "thepalatablelife",
+		"wellplated":
 		req.Header.Set("User-Agent", mozilla)
 	case "ah":
 		req.Header.Set("Accept-Language", "nl")

@@ -14,7 +14,7 @@ func scrapeSoutherncastiron(root *goquery.Document) (models.RecipeSchema, error)
 	rs.DateModified = getPropertyContent(root, "article:modified_time")
 	rs.DatePublished = getPropertyContent(root, "article:published_time")
 	rs.Image.Value = getPropertyContent(root, "og:image")
-	rs.Yield.Value = findYield(root.Find("div[itemprop='description']").Text())
+	rs.Yield.Value = findYield(root.Find("div[itemprop=description]").Text())
 
 	name := getPropertyContent(root, "og:title")
 	before, _, found := strings.Cut(name, " - ")
@@ -36,8 +36,8 @@ func scrapeSoutherncastiron(root *goquery.Document) (models.RecipeSchema, error)
 	}
 	rs.PrepTime = prep
 
-	getIngredients(&rs, root.Find("li[itemprop='ingredients']"), []models.Replace{{"useFields", ""}}...)
-	getInstructions(&rs, root.Find("li[itemprop='recipeInstructions']"), []models.Replace{{"useFields", ""}}...)
+	getIngredients(&rs, root.Find("li[itemprop=ingredients]"), []models.Replace{{"useFields", ""}}...)
+	getInstructions(&rs, root.Find("li[itemprop=recipeInstructions]"), []models.Replace{{"useFields", ""}}...)
 
 	return rs, nil
 }

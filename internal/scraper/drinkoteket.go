@@ -14,7 +14,7 @@ func scrapeDrinkoteket(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.Category.Value = getPropertyContent(root, "article:section")
 	rs.Image.Value = getPropertyContent(root, "og:image")
 	getIngredients(&rs, root.Find("ul.ingredients li"))
-	getInstructions(&rs, root.Find("div[itemprop='recipeInstructions'] li"))
+	getInstructions(&rs, root.Find("div[itemprop=recipeInstructions] li"))
 
 	nodes := root.Find("#recipe-utrustning .rbs-img-content")
 	rs.Tools.Values = make([]models.HowToItem, 0, nodes.Length())

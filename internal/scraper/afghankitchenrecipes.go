@@ -11,7 +11,7 @@ func scrapeAfghanKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 
 	content := root.Find("#content")
 	info := content.Find(".recipe-info")
-	about := content.Find("div[itemprop='about']")
+	about := content.Find("div[itemprop=about]")
 	rs.Yield.Value = findYield(info.Find(".servings .value").Text())
 
 	time := info.Find(".prep-time .value").Text()
@@ -46,9 +46,9 @@ func scrapeAfghanKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 	getIngredients(&rs, about.Find("li.ingredient"), []models.Replace{{"  ", " "}}...)
 	getInstructions(&rs, about.Find("p.instructions"), []models.Replace{{"  ", " "}}...)
 
-	rs.DatePublished, _ = content.Find("meta[itemprop='datePublished']").Attr("content")
-	rs.Image.Value, _ = content.Find("meta[itemprop='image']").Attr("content")
-	rs.Name = content.Find("h2[itemprop='name']").Text()
+	rs.DatePublished, _ = content.Find("meta[itemprop=datePublished]").Attr("content")
+	rs.Image.Value, _ = content.Find("meta[itemprop=image]").Attr("content")
+	rs.Name = content.Find("h2[itemprop=name]").Text()
 	rs.Category = &models.Category{Value: about.Find(".type a").Text()}
 	return rs, nil
 }

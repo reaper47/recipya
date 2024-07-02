@@ -37,11 +37,11 @@ func scrapeChefnini(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 	rs.Name = name
 
-	description := root.Find("p[itemprop='description']").Text()
+	description := root.Find("p[itemprop=description]").Text()
 	rs.Description.Value = strings.TrimSpace(description)
-	getIngredients(&rs, root.Find("li[itemprop='ingredients']"))
-	getInstructions(&rs, root.Find("div[itemprop='recipeInstructions'] p"))
-	rs.Yield.Value = findYield(root.Find("h3[itemprop='recipeYield']").Text())
+	getIngredients(&rs, root.Find("li[itemprop=ingredients]"))
+	getInstructions(&rs, root.Find("div[itemprop=recipeInstructions] p"))
+	rs.Yield.Value = findYield(root.Find("h3[itemprop=recipeYield]").Text())
 
 	return rs, nil
 }

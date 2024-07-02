@@ -9,7 +9,7 @@ import (
 
 func scrapeLithuanianInTheUSA(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
-	rs.Category.Value = root.Find("a[rel='category']").Last().Text()
+	rs.Category.Value = root.Find("a[rel=category]").Last().Text()
 	rs.Name = getPropertyContent(root, "og:title")
 	rs.DatePublished = getPropertyContent(root, "article:published_time")
 	rs.DateModified = getPropertyContent(root, "article:modified_time")
