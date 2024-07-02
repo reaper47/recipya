@@ -9,8 +9,8 @@ import (
 func scrapeJustbento(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
-	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
+	rs.Name = getPropertyContent(root, "og:title")
+	rs.Description.Value = getPropertyContent(root, "og:description")
 	rs.DateModified, _ = root.Find("meta[property='og:updated_time']").Attr("content")
 	rs.DatePublished, _ = root.Find("meta[property='og:published_time']").Attr("content")
 
@@ -22,14 +22,9 @@ func scrapeJustbento(root *goquery.Document) (models.RecipeSchema, error) {
 		category = ""
 	}
 
-	nodes := root.Find(".field-name-body li")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := sel.Text()
-		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
-	})
+	getIngredients(&rs, root.Find(".field-name-body li"))
 
-	nodes = root.Find(".field-name-body ul").Last()
+	nodes := root.Find(".field-name-body ul").Last()
 	for {
 		nodes = nodes.Next()
 		if nodes.Nodes == nil {

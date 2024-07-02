@@ -11,7 +11,7 @@ import (
 func scrapePloetzblog(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
+	rs.Name = getPropertyContent(root, "og:title")
 	rs.Image.Value, _ = root.Find("img.we2p-pb-recipe__thumbnail-image").Attr("src")
 
 	var description strings.Builder

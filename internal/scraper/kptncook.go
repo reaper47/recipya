@@ -10,7 +10,7 @@ import (
 func scrapeKptncook(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Image.Value, _ = root.Find("image[itemprop='image']").Attr("src")
+	rs.Image.Value, _ = root.Find("image[itemprop=image]").Attr("src")
 	rs.Name = root.Find("title").Text()
 	rs.Yield.Value = findYield(root.Find(".kptn-person-count").Text())
 

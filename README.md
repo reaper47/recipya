@@ -90,6 +90,7 @@ This project was mainly coded to blasting the following albums:
 - [4am](https://www.youtube.com/watch?v=tBcPji_jRDc)
 - [Abysmal Dawn - Phylogenesis](https://www.youtube.com/watch?v=xJMybqRMedk&pp=ygUMYWJ5c21hbCBkYXdu)
 - [Archspire - Bleed the Future](https://www.youtube.com/watch?v=o8H9ahswldM)
+- [Atavistia - Cosmic Warfare](https://www.youtube.com/watch?v=VjJ_zb4RF2E)
 - [Beast In Black - Dark Connection](https://www.youtube.com/watch?v=7NyON-NzBr4)
 - [Cattle Decapitation - Terrasite](https://www.youtube.com/watch?v=x6rEDMqM36I)
 - [Ensiferum - From Afar](https://www.youtube.com/watch?v=6r8OPu3SRSM)

@@ -14,12 +14,10 @@ func scrapeGiallozafferano(root *goquery.Document) (models.RecipeSchema, error) 
 		return rs, nil
 	}
 
-	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
-	description, _ := root.Find("meta[name='description']").Attr("content")
-	rs.Description = &models.Description{Value: description}
-	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
-	image, _ := root.Find("meta[property='og:image']").Attr("content")
-	rs.Image = &models.Image{Value: image}
+	rs.Name = getPropertyContent(root, "og:title")
+	rs.Description = &models.Description{Value: getNameContent(root, "description")}
+	rs.DatePublished = getPropertyContent(root, "article:published_time")
+	rs.Image = &models.Image{Value: getPropertyContent(root, "og:image")}
 	rs.Category = &models.Category{Value: root.Find("a[rel='category tag']").First().Text()}
 
 	nodes := root.Find(".post-tags a")

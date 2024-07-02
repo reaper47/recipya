@@ -9,11 +9,11 @@ import (
 func scrapeWholefoodsmarket(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Name, _ = root.Find("meta[itemprop='headline']").Attr("content")
-	rs.DateModified, _ = root.Find("meta[itemprop='dateModified']").Attr("content")
-	rs.DatePublished, _ = root.Find("meta[itemprop='datePublished']").Attr("content")
-	rs.Image.Value, _ = root.Find("meta[itemprop='image']").Attr("content")
-	rs.Description.Value, _ = root.Find("meta[itemprop='description']").Attr("content")
+	rs.Name = getItempropContent(root, "headline")
+	rs.DateModified = getItempropContent(root, "dateModified")
+	rs.DatePublished = getItempropContent(root, "datePublished")
+	rs.Image.Value = getItempropContent(root, "image")
+	rs.Description.Value = getItempropContent(root, "description")
 
 	p := root.Find(".image-subtitle p").Last().Text()
 	for _, s := range strings.Split(p, "|") {
@@ -22,22 +22,8 @@ func scrapeWholefoodsmarket(root *goquery.Document) (models.RecipeSchema, error)
 		}
 	}
 
-	nodes := root.Find("h4:contains('Ingredients')").Parent().Find("p")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := strings.Join(strings.Fields(sel.Text()), " ")
-		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
-	})
-
-	nodes = root.Find("h4:contains('Method')").ParentsUntil(".sqs-col-6").Last().Parent().Find("p")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := strings.Join(strings.Fields(sel.Text()), " ")
-		if s != "" {
-			rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
-		}
-
-	})
+	getIngredients(&rs, root.Find("h4:contains('Ingredients')").Parent().Find("p"), []models.Replace{{"useFields", ""}}...)
+	getInstructions(&rs, root.Find("h4:contains('Method')").ParentsUntil(".sqs-col-6").Last().Parent().Find("p"))
 
 	return rs, nil
 }

@@ -3,7 +3,6 @@ package scraper
 import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
-	"strings"
 	"time"
 )
 
@@ -18,19 +17,8 @@ func scrapeTheCookingGuy(root *goquery.Document) (models.RecipeSchema, error) {
 		rs.DatePublished = date.Format(time.DateOnly)
 	}
 
-	nodes := root.Find("div.ingredients li")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := strings.TrimSpace(sel.Text())
-		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
-	})
-
-	nodes = root.Find("div.directions li")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := strings.TrimSpace(sel.Text())
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
-	})
+	getIngredients(&rs, root.Find("div.ingredients li"))
+	getInstructions(&rs, root.Find("div.directions li"))
 
 	node := root.Find("div.content_indent").Children().Last()
 	if node != nil {

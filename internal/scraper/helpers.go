@@ -1,6 +1,8 @@
 package scraper
 
 import (
+	"github.com/PuerkitoBio/goquery"
+	"github.com/reaper47/recipya/internal/models"
 	"strconv"
 	"strings"
 )
@@ -14,4 +16,62 @@ func findYield(s string) int16 {
 		}
 	}
 	return 0
+}
+
+func getItempropContent(doc *goquery.Document, name string) string {
+	s, _ := doc.Find("meta[itemprop='" + name + "']").Attr("content")
+	return strings.TrimSpace(s)
+}
+
+func getNameContent(doc *goquery.Document, name string) string {
+	s, _ := doc.Find("meta[name='" + name + "']").Attr("content")
+	return strings.TrimSpace(s)
+}
+
+func getPropertyContent(doc *goquery.Document, name string) string {
+	s, _ := doc.Find("meta[property='" + name + "']").Attr("content")
+	return strings.TrimSpace(s)
+}
+
+func getIngredients(rs *models.RecipeSchema, nodes *goquery.Selection, replaceOpts ...models.Replace) {
+	if rs.Ingredients == nil {
+		rs.Ingredients = &models.Ingredients{}
+	}
+
+	rs.Ingredients.Values = make([]string, 0, nodes.Length())
+	nodes.Each(func(_ int, sel *goquery.Selection) {
+		s := strings.TrimSpace(sel.Text())
+		for _, opt := range replaceOpts {
+			s = strings.ReplaceAll(s, opt.Old, opt.New)
+			if opt.Old == "useFields" {
+				s = strings.Join(strings.Fields(s), " ")
+			}
+		}
+
+		s = strings.TrimSpace(s)
+		if s != "" {
+			rs.Ingredients.Values = append(rs.Ingredients.Values, s)
+		}
+	})
+}
+
+func getInstructions(rs *models.RecipeSchema, nodes *goquery.Selection, replaceOpts ...models.Replace) {
+	if rs.Instructions == nil {
+		rs.Instructions = &models.Instructions{}
+	}
+
+	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
+	nodes.Each(func(_ int, sel *goquery.Selection) {
+		s := strings.TrimSpace(sel.Text())
+		for _, opt := range replaceOpts {
+			s = strings.ReplaceAll(s, opt.Old, opt.New)
+			if opt.Old == "useFields" {
+				s = strings.Join(strings.Fields(s), " ")
+			}
+		}
+
+		if s != "" {
+			rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
+		}
+	})
 }

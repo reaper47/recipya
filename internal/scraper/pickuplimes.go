@@ -15,5 +15,7 @@ func scrapePickupLimes(root *goquery.Document) (models.RecipeSchema, error) {
 		rs.DatePublished = ""
 	}
 
+	getInstructions(&rs, root.Find("ol").First().Find("li"))
+
 	return rs, nil
 }

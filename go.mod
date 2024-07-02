@@ -4,12 +4,12 @@ go 1.22.0
 
 require (
 	github.com/PuerkitoBio/goquery v1.9.2
-	github.com/a-h/templ v0.2.707
+	github.com/a-h/templ v0.2.731
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/briandowns/spinner v1.23.1
 	github.com/disintegration/imaging v1.6.2
 	github.com/donna-legal/word2number v0.0.0-20180823152447-90bc2b233105
-	github.com/gen2brain/webp v0.4.4
+	github.com/gen2brain/webp v0.4.5
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/go-chi/jwtauth/v5 v5.3.1
 	github.com/go-co-op/gocron v1.37.0
@@ -83,7 +83,7 @@ require (
 	gopkg.in/neurosnap/sentences.v1 v1.0.7 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	modernc.org/gc/v3 v3.0.0-20240304020402-f0dba7c97c2b // indirect
-	modernc.org/libc v1.53.3 // indirect
+	modernc.org/libc v1.53.4 // indirect
 	modernc.org/mathutil v1.6.0 // indirect
 	modernc.org/memory v1.8.0 // indirect
 	modernc.org/strutil v1.2.0 // indirect

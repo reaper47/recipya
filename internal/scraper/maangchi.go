@@ -34,17 +34,19 @@ func scrapeMaangchi(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	node = root.Find("h2:contains('Directions')")
-	if node != nil {
+	if node != nil && node.Nodes != nil {
 		clear(rs.Instructions.Values)
 
 		for c := node.Nodes[0].NextSibling; c != nil; c = c.NextSibling {
 			if c.Data == "h2" && strings.ToLower(c.FirstChild.Data) == "directions" {
 				break
+			} else if c.FirstChild == nil {
+				continue
 			}
 
 			switch c.Data {
 			case "h3":
-				rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(c.FirstChild.Data)))
+				rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(c.FirstChild.Data))
 			case "p":
 				s := strings.TrimSpace(c.FirstChild.Data)
 				if s != "a" {
@@ -57,7 +59,7 @@ func scrapeMaangchi(root *goquery.Document) (models.RecipeSchema, error) {
 					if ok {
 						s = before
 					}
-					rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(s)))
+					rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
 				})
 			}
 		}

@@ -9,17 +9,17 @@ import (
 func scrapeFarmhousedelivery(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	name, _ := root.Find("meta[property='og:title']").Attr("content")
+	name := getPropertyContent(root, "og:title")
 	before, _, ok := strings.Cut(name, " - ")
 	if ok {
 		name = strings.TrimSpace(before)
 	}
 	rs.Name = name
 
-	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
-	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
-	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
-	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.Description.Value = getPropertyContent(root, "og:description")
+	rs.DatePublished = getPropertyContent(root, "article:published_time")
+	rs.DateModified = getPropertyContent(root, "article:modified_time")
+	rs.Image.Value = getPropertyContent(root, "og:image")
 
 	rs.Category.Value = root.Find("a[rel='category tag']").First().Text()
 

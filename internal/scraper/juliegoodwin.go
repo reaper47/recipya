@@ -10,15 +10,15 @@ import (
 func scrapeJuliegoodwin(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Name, _ = root.Find("meta[property='og:title']").Attr("content")
+	rs.Name = getPropertyContent(root, "og:title")
 	before, _, ok := strings.Cut(rs.Name, " - ")
 	if ok {
 		rs.Name = strings.TrimSpace(before)
 	}
 
-	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
-	rs.DateModified, _ = root.Find("meta[property='article:modified_time']").Attr("content")
-	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.DatePublished = getPropertyContent(root, "article:published_time")
+	rs.DateModified = getPropertyContent(root, "article:modified_time")
+	rs.Image.Value = getPropertyContent(root, "og:image")
 	rs.Description.Value = root.Find(".divider-wrap").First().Next().Text()
 	rs.Yield.Value = findYield(root.Find("i.fa-cutlery").Parent().Text())
 	rs.Category.Value = root.Find(".meta-category a").First().Text()

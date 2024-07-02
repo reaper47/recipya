@@ -10,9 +10,9 @@ import (
 func scrapeRecettesDuQuebec(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.DatePublished, _ = root.Find("meta[name='cXenseParse:recs:publishtime']").Attr("content")
-	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
-	rs.Name, _ = root.Find("meta[name='cXenseParse:title']").Attr("content")
+	rs.DatePublished = getNameContent(root, "cXenseParse:recs:publishtime")
+	rs.Description.Value = getPropertyContent(root, "og:description")
+	rs.Name = getNameContent(root, "cXenseParse:title")
 
 	category := root.Find(".categories h6").Siblings().First().Text()
 	rs.Category.Value = strings.TrimSpace(category)
@@ -64,20 +64,12 @@ func scrapeRecettesDuQuebec(root *goquery.Document) (models.RecipeSchema, error)
 		}
 	})
 
-	nodes := root.Find(".ingredients ul label")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := strings.TrimSpace(sel.Text())
-		s = strings.ReplaceAll(s, "\n", "")
-		s = strings.Join(strings.Fields(s), " ")
-		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
-	})
+	getIngredients(&rs, root.Find(".ingredients ul label"), []models.Replace{
+		{"\n", ""},
+		{"useFields", ""},
+	}...)
 
-	nodes = root.Find(".method p")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
-	})
+	getInstructions(&rs, root.Find(".method p"))
 
 	image, _ := root.Find("picture img").Attr("srcset")
 	split := strings.Split(image, "?")

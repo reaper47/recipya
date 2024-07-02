@@ -10,31 +10,21 @@ func scrapeDrinkoteket(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
 	rs.Name, _ = root.Find("meta[property='og:title']").Last().Attr("content")
-	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
-	rs.Category.Value, _ = root.Find("meta[property='article:section']").Attr("content")
-	rs.Image.Value, _ = root.Find("meta[property='og:image']").Last().Attr("content")
+	rs.Description.Value = getPropertyContent(root, "og:description")
+	rs.Category.Value = getPropertyContent(root, "article:section")
+	rs.Image.Value = getPropertyContent(root, "og:image")
+	getIngredients(&rs, root.Find("ul.ingredients li"))
+	getInstructions(&rs, root.Find("div[itemprop=recipeInstructions] li"))
 
-	nodes := root.Find("ul.ingredients li")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(sel.Text()))
-	})
-
-	nodes = root.Find("div[itemprop='recipeInstructions'] li")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(sel.Text())))
-	})
-
-	nodes = root.Find("#recipe-utrustning .rbs-img-content")
+	nodes := root.Find("#recipe-utrustning .rbs-img-content")
 	rs.Tools.Values = make([]models.HowToItem, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
 		rs.Tools.Values = append(rs.Tools.Values, models.NewHowToTool(strings.TrimSpace(sel.Text())))
 	})
 
-	rs.DatePublished, _ = root.Find("meta[itemprop='datePublished']").Attr("content")
-	rs.PrepTime, _ = root.Find("meta[itemprop='prepTime']").Attr("content")
-	rs.CookTime, _ = root.Find("meta[itemprop='cookTime']").Attr("content")
+	rs.DatePublished = getItempropContent(root, "datePublished")
+	rs.PrepTime = getItempropContent(root, "prepTime")
+	rs.CookTime = getItempropContent(root, "cookTime")
 
 	return rs, nil
 }
