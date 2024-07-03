@@ -687,7 +687,7 @@ func (s *Server) recipesEditHandler() http.HandlerFunc {
 	}
 }
 
-func (s *Server) recipesEditPostHandler() http.HandlerFunc {
+func (s *Server) recipesEditPutHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		userID := getUserID(r)
 		userIDAttr := slog.Int64("userID", userID)

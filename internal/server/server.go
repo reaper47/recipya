@@ -4,16 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/google/uuid"
-	"github.com/reaper47/recipya/docs"
-	"github.com/reaper47/recipya/internal/app"
-	"github.com/reaper47/recipya/internal/jobs"
-	"github.com/reaper47/recipya/internal/models"
-	"github.com/reaper47/recipya/internal/scraper"
-	"github.com/reaper47/recipya/internal/services"
-	_ "github.com/reaper47/recipya/internal/templates" // Need to initialize the templates package.
-	"github.com/reaper47/recipya/web/static"
-	"gopkg.in/natefinch/lumberjack.v2"
 	"io"
 	"io/fs"
 	"log/slog"
@@ -25,6 +15,17 @@ import (
 	"strconv"
 	"syscall"
 	"time"
+
+	"github.com/google/uuid"
+	"github.com/reaper47/recipya/docs"
+	"github.com/reaper47/recipya/internal/app"
+	"github.com/reaper47/recipya/internal/jobs"
+	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/scraper"
+	"github.com/reaper47/recipya/internal/services"
+	_ "github.com/reaper47/recipya/internal/templates" // Need to initialize the templates package.
+	"github.com/reaper47/recipya/web/static"
+	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 func init() {
@@ -147,7 +148,7 @@ func (s *Server) mountHandlers() {
 	mux.Handle("POST /recipes/{id}/share", withLog(s.recipeSharePostHandler()))
 	mux.Handle("GET /recipes/{id}/share/add", withLog(s.recipeShareAddHandler()))
 	mux.Handle("GET /recipes/{id}/edit", s.mustBeLoggedInMiddleware(s.recipesEditHandler()))
-	mux.Handle("PUT /recipes/{id}/edit", withLog(s.recipesEditPostHandler()))
+	mux.Handle("PUT /recipes/{id}/edit", withLog(s.recipesEditPutHandler()))
 	mux.Handle("GET /recipes/add", s.mustBeLoggedInMiddleware(recipesAddHandler()))
 	mux.Handle("POST /recipes/add/import", withLog(s.recipesAddImportHandler()))
 	mux.Handle("GET /recipes/add/manual", s.mustBeLoggedInMiddleware(s.recipeAddManualHandler()))
