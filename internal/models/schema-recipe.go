@@ -3,14 +3,16 @@ package models
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/reaper47/recipya/internal/app"
-	"github.com/reaper47/recipya/internal/utils/extensions"
 	"log/slog"
 	"math"
 	"slices"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/reaper47/recipya/internal/app"
+	"github.com/reaper47/recipya/internal/utils/extensions"
+	"github.com/reaper47/recipya/internal/utils/regex"
 
 	"github.com/google/uuid"
 )
@@ -963,35 +965,19 @@ func (n *NutritionSchema) UnmarshalJSON(data []byte) error {
 
 	switch x := v.(type) {
 	case map[string]any:
-		if val, ok := x["calories"].(string); ok {
-			n.Calories = strings.TrimSpace(val)
-		}
+		n.Calories = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["calories"]), ",", "."))
+		n.Carbohydrates = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["carbohydrateContent"]), ",", "."))
+		n.Cholesterol = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["cholesterolContent"]), ",", "."))
+		n.Fat = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["fatContent"]), ",", "."))
+		n.SaturatedFat = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["saturatedFatContent"]), ",", "."))
+		n.UnsaturatedFat = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["unsaturatedFatContent"]), ",", "."))
+		n.TransFat = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["transFatContent"]), ",", "."))
+		n.Protein = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["proteinContent"]), ",", "."))
+		n.Sugar = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["sugarContent"]), ",", "."))
+		n.Sodium = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["sodiumContent"]), ",", "."))
+		n.Fiber = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["fiberContent"]), ",", "."))
 
-		if val, ok := x["carbohydrateContent"].(string); ok {
-			n.Carbohydrates = val
-		}
-
-		if val, ok := x["cholesterolContent"].(string); ok {
-			n.Cholesterol = val
-		}
-
-		if val, ok := x["fatContent"].(string); ok {
-			n.Fat = val
-		}
-
-		if val, ok := x["fiberContent"].(string); ok {
-			n.Fiber = val
-		}
-
-		if val, ok := x["proteinContent"].(string); ok {
-			n.Protein = val
-		}
-
-		if val, ok := x["saturatedFatContent"].(string); ok {
-			n.SaturatedFat = val
-		}
-
-		if val, ok := x["servingSize"].(string); ok {
+		if val := extensions.ConvertToString(x["servingSize"]); val != "" {
 			xs := strings.Split(val, " ")
 			if len(xs) == 2 && len(xs[1]) < 4 {
 				n.Servings = val
@@ -1005,26 +991,36 @@ func (n *NutritionSchema) UnmarshalJSON(data []byte) error {
 				}
 			}
 		}
-
-		if val, ok := x["sodiumContent"].(string); ok {
-			n.Sodium = val
-		}
-
-		if val, ok := x["sugarContent"].(string); ok {
-			n.Sugar = val
-		}
-
-		if val, ok := x["transFatContent"].(string); ok {
-			n.TransFat = val
-		}
-
-		if val, ok := x["unsaturatedFatContent"].(string); ok {
-			n.UnsaturatedFat = val
-		}
 	default:
 		slog.Warn("Could not parse nutrition schema", "schema", v, "type", x)
 	}
 	return nil
+}
+
+// EnsureNutritionUnitForString extracts digits from nutritional property and appends metric unit.
+// Returns a string value.
+func EnsureNutritionUnitForString(nutritionValue any, nutritionProperty string) string {
+	nutritionPropertyLowerCase := strings.ToLower(nutritionProperty)
+	nutritionString := extensions.ConvertToString(nutritionValue)
+	nutritionStringDigits := regex.Digit.FindString(nutritionString)
+
+	// Early return if no digits could be found
+	if nutritionStringDigits == "" {
+		return nutritionStringDigits
+	}
+
+	// Concatenate metric unit to extracted digits
+	switch nutritionPropertyLowerCase {
+	case "calories":
+		return nutritionStringDigits + " kcal"
+	case "carbohydrates", "protein", "fat", "saturatedfat", "sugar", "transfat", "unsaturatedfat", "fiber":
+		return nutritionStringDigits + " g"
+	case "cholesterol", "sodium":
+		return nutritionStringDigits + " mg"
+	// If the property is unhandled, e.g. if the schema has received new or updated property names which are not included in the other cases.
+	default:
+		return nutritionString
+	}
 }
 
 // ThumbnailURL holds a recipe's thumbnail.

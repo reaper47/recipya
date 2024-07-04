@@ -2,10 +2,12 @@ package scraper
 
 import (
 	"fmt"
-	"github.com/PuerkitoBio/goquery"
 	"strings"
 
+	"github.com/PuerkitoBio/goquery"
+
 	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/utils/regex"
 )
 
 func scrapeMyPlate(root *goquery.Document) (models.RecipeSchema, error) {
@@ -43,15 +45,15 @@ func scrapeMyPlate(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	rs.NutritionSchema = &models.NutritionSchema{
-		Calories:      root.Find(".total_calories td").Last().Text(),
-		Carbohydrates: root.Find(".carbohydrates td").Last().Text(),
-		Cholesterol:   root.Find(".cholesterol td").Last().Text(),
-		Fat:           root.Find(".total_fat td").Last().Text(),
-		Fiber:         root.Find(".dietary_fiber td").Last().Text(),
-		Protein:       root.Find(".protein td").Last().Text(),
-		SaturatedFat:  root.Find(".saturated_fat td").Last().Text(),
-		Sodium:        root.Find(".sodium td").Last().Text(),
-		Sugar:         root.Find(".total_sugars td").Last().Text(),
+		Calories:      regex.Digit.FindString(root.Find(".total_calories td").Last().Text()),
+		Carbohydrates: regex.Digit.FindString(root.Find(".carbohydrates td").Last().Text()),
+		Cholesterol:   regex.Digit.FindString(root.Find(".cholesterol td").Last().Text()),
+		Fat:           regex.Digit.FindString(root.Find(".total_fat td").Last().Text()),
+		Fiber:         regex.Digit.FindString(root.Find(".dietary_fiber td").Last().Text()),
+		Protein:       regex.Digit.FindString(root.Find(".protein td").Last().Text()),
+		SaturatedFat:  regex.Digit.FindString(root.Find(".saturated_fat td").Last().Text()),
+		Sodium:        regex.Digit.FindString(root.Find(".sodium td").Last().Text()),
+		Sugar:         regex.Digit.FindString(root.Find(".total_sugars td").Last().Text()),
 	}
 
 	return rs, nil

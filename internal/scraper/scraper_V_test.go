@@ -1,9 +1,10 @@
 package scraper_test
 
 import (
-	"github.com/reaper47/recipya/internal/models"
 	"testing"
-	"time"
+  "time"
+
+	"github.com/reaper47/recipya/internal/models"
 )
 
 func TestScraper_V(t *testing.T) {
@@ -127,18 +128,18 @@ func TestScraper_V(t *testing.T) {
 				},
 				Name: "Carrot Cake Bread Recipe",
 				NutritionSchema: &models.NutritionSchema{
-					Calories:       "476 kcal",
-					Carbohydrates:  "38 g",
-					Cholesterol:    "68 mg",
-					Fat:            "35 g",
-					Fiber:          "2 g",
-					Protein:        "6 g",
-					SaturatedFat:   "22 g",
+					Calories:       "476",
+					Carbohydrates:  "38",
+					Cholesterol:    "68",
+					Fat:            "35",
+					Fiber:          "2",
+					Protein:        "6",
+					SaturatedFat:   "22",
 					Servings:       "1",
-					Sodium:         "263 mg",
-					Sugar:          "22 g",
-					TransFat:       "1 g",
-					UnsaturatedFat: "11 g",
+					Sodium:         "263",
+					Sugar:          "22",
+					TransFat:       "1",
+					UnsaturatedFat: "11",
 				},
 				PrepTime:  "PT30M",
 				TotalTime: "PT90M",
@@ -305,16 +306,16 @@ func TestScraper_V(t *testing.T) {
 				},
 				Name: "Paneer Butter Masala Recipe (Restaurant Style)",
 				NutritionSchema: &models.NutritionSchema{
-					Calories:      "307 kcal",
-					Carbohydrates: "9 g",
-					Cholesterol:   "66 mg",
-					Fat:           "27 g",
-					Fiber:         "2 g",
-					Protein:       "9 g",
-					SaturatedFat:  "15 g",
+					Calories:      "307",
+					Carbohydrates: "9",
+					Cholesterol:   "66",
+					Fat:           "27",
+					Fiber:         "2",
+					Protein:       "9",
+					SaturatedFat:  "15",
 					Servings:      "1",
-					Sodium:        "493 mg",
-					Sugar:         "4 g",
+					Sodium:        "493",
+					Sugar:         "4",
 				},
 				PrepTime:  "PT10M",
 				TotalTime: "PT40M",

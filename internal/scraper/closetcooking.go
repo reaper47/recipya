@@ -1,9 +1,11 @@
 package scraper
 
 import (
+	"strings"
+
 	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
-	"strings"
+	"github.com/reaper47/recipya/internal/utils/regex"
 )
 
 func scrapeClosetcooking(root *goquery.Document) (models.RecipeSchema, error) {
@@ -39,17 +41,17 @@ func scrapeClosetcooking(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.Keywords.Values = strings.Join(xk, ",")
 
 	rs.NutritionSchema = &models.NutritionSchema{
-		Calories:       root.Find("span[itemprop='calories']").Text(),
-		Carbohydrates:  root.Find("span[itemprop='carbohydrateContent']").Text(),
-		Sugar:          root.Find("span[itemprop='sugarContent']").Text(),
-		Protein:        root.Find("span[itemprop='proteinContent']").Text(),
-		Fat:            root.Find("span[itemprop='fatContent']").Text(),
-		SaturatedFat:   root.Find("span[itemprop='saturatedFatContent']").Text(),
-		Cholesterol:    root.Find("span[itemprop='cholesterolContent']").Text(),
-		Sodium:         root.Find("span[itemprop='sodiumContent']").Text(),
-		Fiber:          root.Find("span[itemprop='fiberContent']").Text(),
-		TransFat:       root.Find("span[itemprop='transFatContent']").Text(),
-		UnsaturatedFat: root.Find("span[itemprop='unsaturatedFatContent']").Text(),
+		Calories:       regex.Digit.FindString(root.Find("span[itemprop='calories']").Text()),
+		Carbohydrates:  regex.Digit.FindString(root.Find("span[itemprop='carbohydrateContent']").Text()),
+		Sugar:          regex.Digit.FindString(root.Find("span[itemprop='sugarContent']").Text()),
+		Protein:        regex.Digit.FindString(root.Find("span[itemprop='proteinContent']").Text()),
+		Fat:            regex.Digit.FindString(root.Find("span[itemprop='fatContent']").Text()),
+		SaturatedFat:   regex.Digit.FindString(root.Find("span[itemprop='saturatedFatContent']").Text()),
+		Cholesterol:    regex.Digit.FindString(root.Find("span[itemprop='cholesterolContent']").Text()),
+		Sodium:         regex.Digit.FindString(root.Find("span[itemprop='sodiumContent']").Text()),
+		Fiber:          regex.Digit.FindString(root.Find("span[itemprop='fiberContent']").Text()),
+		TransFat:       regex.Digit.FindString(root.Find("span[itemprop='transFatContent']").Text()),
+		UnsaturatedFat: regex.Digit.FindString(root.Find("span[itemprop='unsaturatedFatContent']").Text()),
 	}
 
 	rs.Yield.Value = findYield(root.Find("span[itemprop='recipeYield']").Text())

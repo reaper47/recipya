@@ -1,10 +1,11 @@
 package scraper
 
 import (
+	"strings"
+
 	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/utils/regex"
-	"strings"
 )
 
 func scrapeFitMenCook(root *goquery.Document) (models.RecipeSchema, error) {
@@ -59,22 +60,22 @@ func scrapeFitMenCook(root *goquery.Document) (models.RecipeSchema, error) {
 
 	var n models.NutritionSchema
 	nNodes := root.Find(".fmc_macro_cals")
-	n.Calories = nNodes.First().Find("span").Text()
+	n.Calories = regex.Digit.FindString(nNodes.First().Find("span").Text())
 
 	nNodes.NextAll().Each(func(_ int, s *goquery.Selection) {
 		switch strings.ToLower(s.Nodes[0].FirstChild.Data) {
 		case "protein":
-			n.Protein = s.Find("span").Text()
+			n.Protein = regex.Digit.FindString(s.Find("span").Text())
 		case "fats":
-			n.Fat = s.Find("span").Text()
+			n.Fat = regex.Digit.FindString(s.Find("span").Text())
 		case "carbs":
-			n.Carbohydrates = s.Find("span").Text()
+			n.Carbohydrates = regex.Digit.FindString(s.Find("span").Text())
 		case "sodium":
-			n.Sodium = s.Find("span").Text()
+			n.Sodium = regex.Digit.FindString(s.Find("span").Text())
 		case "fiber":
-			n.Fiber = s.Find("span").Text()
+			n.Fiber = regex.Digit.FindString(s.Find("span").Text())
 		case "sugar":
-			n.Sugar = s.Find("span").Text()
+			n.Sugar = regex.Digit.FindString(s.Find("span").Text())
 		}
 	})
 	rs.NutritionSchema = &n

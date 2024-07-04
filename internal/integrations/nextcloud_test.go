@@ -2,10 +2,6 @@ package integrations_test
 
 import (
 	"fmt"
-	"github.com/google/go-cmp/cmp"
-	"github.com/google/uuid"
-	"github.com/reaper47/recipya/internal/integrations"
-	"github.com/reaper47/recipya/internal/models"
 	"io"
 	"mime/multipart"
 	"net/http"
@@ -13,6 +9,11 @@ import (
 	"regexp"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/integrations"
+	"github.com/reaper47/recipya/internal/models"
 )
 
 func TestNextcloudImport(t *testing.T) {
@@ -121,15 +122,15 @@ func TestNextcloudImport(t *testing.T) {
 			Keywords: []string{""},
 			Name:     "Best Chocolate Chip Cookies",
 			Nutrition: models.Nutrition{
-				Calories:           "146 kcal",
-				Cholesterol:        "10 mg",
-				Fiber:              "1 g",
-				Protein:            "2 g",
-				SaturatedFat:       "4 g",
-				Sodium:             "76 mg",
-				TotalCarbohydrates: "19 g",
-				TotalFat:           "8 g",
-				UnsaturatedFat:     "0 g",
+				Calories:           "146",
+				Cholesterol:        "10",
+				Fiber:              "1",
+				Protein:            "2",
+				SaturatedFat:       "4",
+				Sodium:             "76",
+				TotalCarbohydrates: "19",
+				TotalFat:           "8",
+				UnsaturatedFat:     "0",
 			},
 			UpdatedAt: t1,
 			URL:       "https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/",
@@ -160,10 +161,10 @@ func TestNextcloudImport(t *testing.T) {
 			Keywords: []string{"chips", "jesus"},
 			Name:     "Jesus Buds",
 			Nutrition: models.Nutrition{
-				Calories:     "450kcal",
+				Calories:     "450",
 				IsPerServing: true,
-				Protein:      "2 g",
-				Sugars:       "50g",
+				Protein:      "2",
+				Sugars:       "50",
 			},
 			Times:     times,
 			UpdatedAt: t2,

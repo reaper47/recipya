@@ -1,8 +1,9 @@
 package scraper_test
 
 import (
-	"github.com/reaper47/recipya/internal/models"
 	"testing"
+
+	"github.com/reaper47/recipya/internal/models"
 )
 
 func TestScraper_0to9(t *testing.T) {
@@ -40,12 +41,12 @@ func TestScraper_0to9(t *testing.T) {
 					},
 				},
 				NutritionSchema: &models.NutritionSchema{
-					Calories:      "233 kcal",
-					Carbohydrates: "19 g",
+					Calories:      "233",
+					Carbohydrates: "19",
 					Cholesterol:   "",
-					Fat:           "15 g",
-					Protein:       "6 g",
-					Sodium:        "287 mg",
+					Fat:           "15",
+					Protein:       "6",
+					Sodium:        "287",
 					Servings:      "1",
 				},
 				Keywords:      &models.Keywords{Values: "simple"},
