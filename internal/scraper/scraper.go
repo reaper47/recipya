@@ -1,13 +1,18 @@
 package scraper
 
 import (
+	"bytes"
+	"compress/gzip"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services"
+	"io"
+	"net"
 	"net/http"
 	"strings"
+	"time"
 )
 
 const atContext = "https://schema.org"
@@ -31,30 +36,29 @@ func NewScraper(client services.HTTPClient) *Scraper {
 
 // Scrape extracts the recipe from the given URL. An error will be
 // returned when the URL cannot be parsed.
-func (s *Scraper) Scrape(url string, files services.FilesService) (models.RecipeSchema, error) {
-	host := s.HTTP.GetHost(url)
-	if host == "bergamot" {
-		return s.scrapeBergamot(url)
-	} else if host == "foodbag" {
-		return s.scrapeFoodbag(url)
-	} else if host == "monsieur-cuisine" {
-		doc, err := s.fetchDocument(url)
-		if err != nil {
-			return models.RecipeSchema{}, err
-		}
-		return s.scrapeMonsieurCuisine(doc, url, files)
-	} else if host == "quitoque" {
-		return s.scrapeQuitoque(url)
-	} else if host == "reddit" {
-		url = strings.Replace(url, "www", "old", 1)
-	}
-
-	doc, err := s.fetchDocument(url)
+func (s *Scraper) Scrape(rawURL string, files services.FilesService) (models.RecipeSchema, error) {
+	var host = s.HTTP.GetHost(rawURL)
+	rs, isSpecial, err := s.scrapeSpecial(host, rawURL, files)
 	if err != nil {
 		return models.RecipeSchema{}, err
 	}
 
-	rs, err := scrapeWebsite(doc, host)
+	if isSpecial {
+		img, _ := files.ScrapeAndStoreImage(rs.Image.Value)
+		rs.Image.Value = img.String()
+		return rs, nil
+	}
+
+	if host == "reddit" {
+		rawURL = strings.Replace(rawURL, "www", "old", 1)
+	}
+
+	doc, err := s.fetchDocument(rawURL)
+	if err != nil {
+		return models.RecipeSchema{}, err
+	}
+
+	rs, err = scrapeWebsite(doc, host)
 	if err != nil {
 		return rs, ErrNotImplemented
 	}
@@ -74,7 +78,7 @@ func (s *Scraper) Scrape(url string, files services.FilesService) (models.Recipe
 	}
 
 	if rs.URL == "" {
-		rs.URL = url
+		rs.URL = rawURL
 	}
 
 	var imageUUID uuid.UUID
@@ -89,6 +93,37 @@ func (s *Scraper) Scrape(url string, files services.FilesService) (models.Recipe
 	return rs, nil
 }
 
+func (s *Scraper) scrapeSpecial(host, rawURL string, files services.FilesService) (models.RecipeSchema, bool, error) {
+	var (
+		rs        models.RecipeSchema
+		err       error
+		isSpecial = true
+	)
+
+	switch host {
+	case "bergamot":
+		rs, err = s.scrapeBergamot(rawURL)
+	case "foodbag":
+		rs, err = s.scrapeFoodbag(rawURL)
+	case "gousto":
+		rs, err = s.scrapeGousto(rawURL)
+	case "madewithlau":
+		rs, err = s.scrapeMadeWithLau(rawURL)
+	case "monsieur-cuisine":
+		doc, err := s.fetchDocument(rawURL)
+		if err != nil {
+			return models.RecipeSchema{}, true, err
+		}
+		rs, err = s.scrapeMonsieurCuisine(doc, rawURL, files)
+	case "quitoque":
+		rs, err = s.scrapeQuitoque(rawURL)
+	default:
+		isSpecial = false
+	}
+
+	return rs, isSpecial, err
+}
+
 func (s *Scraper) fetchDocument(url string) (*goquery.Document, error) {
 	req, err := s.HTTP.PrepareRequestForURL(url)
 	if err != nil {
@@ -99,21 +134,59 @@ func (s *Scraper) fetchDocument(url string) (*goquery.Document, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer res.Body.Close()
 
-	// Some websites require page reloads
+	// Some websites require cookies
 	host := s.HTTP.GetHost(url)
-	if host == "bettybossi" {
+	switch host {
+	case "bettybossi":
+		_ = res.Body.Close()
 		res, err = s.HTTP.Client.Do(req)
 		if err != nil {
 			return nil, err
 		}
-		defer res.Body.Close()
+	case "chatelaine":
+		original := s.HTTP.Client
+		c, ok := s.HTTP.Client.(*http.Client)
+		if ok {
+			c.Transport = &http.Transport{
+				DialContext: (&net.Dialer{
+					Timeout:   30 * time.Second,
+					KeepAlive: 30 * time.Second,
+				}).DialContext,
+				TLSHandshakeTimeout: 10 * time.Second,
+			}
+
+			res, err = s.HTTP.Client.Do(req)
+			if err != nil {
+				return nil, err
+			}
+
+			s.HTTP.Client = original
+		}
 	}
+
+	defer res.Body.Close()
 
 	if res.StatusCode >= http.StatusBadRequest {
 		return nil, fmt.Errorf("could not fetch (%d), try the bookmarklet", res.StatusCode)
 	}
 
-	return goquery.NewDocumentFromReader(res.Body)
+	var r io.Reader = res.Body
+	if res.Header.Get("Content-Encoding") == "gzip" {
+		zr, err := gzip.NewReader(r)
+		if err != nil {
+			return nil, err
+		}
+		defer zr.Close()
+
+		buf := bytes.NewBuffer(nil)
+		_, err = io.Copy(buf, zr)
+		if err != nil {
+			return nil, err
+		}
+
+		r = buf
+	}
+
+	return goquery.NewDocumentFromReader(r)
 }

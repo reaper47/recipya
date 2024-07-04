@@ -11,18 +11,18 @@ import (
 func scrapeKuchynalidla(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Description.Value, _ = root.Find("meta[name='description']").Attr("content")
+	rs.Description.Value = getNameContent(root, "description")
 	rs.Yield.Value = findYield(root.Find(".recipe-detail._servings").Text())
 
-	name, _ := root.Find("meta[property='og:title']").Attr("content")
+	name := getPropertyContent(root, "og:title")
 	before, _, ok := strings.Cut(name, "|")
 	if ok {
 		name = strings.TrimSpace(before)
 	}
 	rs.Name = name
 
-	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
-	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
+	rs.Image.Value = getPropertyContent(root, "og:image")
+	rs.DatePublished = getPropertyContent(root, "article:published_time")
 
 	var prep string
 	matches := slices.DeleteFunc(regex.Time.FindStringSubmatch(root.Find(".recipe-detail._time").First().Text()), func(s string) bool {
@@ -41,11 +41,7 @@ func scrapeKuchynalidla(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 	rs.PrepTime = prep
 
-	nodes := root.Find("div.ing ul li")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(sel.Text()))
-	})
+	getIngredients(&rs, root.Find("div.ing ul li"))
 
 	node := root.Find("h2:contains('Postup')")
 	if len(node.Nodes) > 0 {

@@ -31,18 +31,8 @@ func scrapeMyPlate(root *goquery.Document) (models.RecipeSchema, error) {
 		rs.CookTime = fmt.Sprintf("PT%s%s", parts[0], letter)
 	}
 
-	nodes := root.Find(".ingredients li")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, s *goquery.Selection) {
-		v := strings.Join(strings.Fields(s.Text()), " ")
-		rs.Ingredients.Values = append(rs.Ingredients.Values, v)
-	})
-
-	nodes = root.Find(".field--name-field-instructions li")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, s *goquery.Selection) {
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s.Text()))
-	})
+	getIngredients(&rs, root.Find(".ingredients li"), []models.Replace{{"useFields", ""}}...)
+	getInstructions(&rs, root.Find(".field--name-field-instructions li"))
 
 	rs.NutritionSchema = &models.NutritionSchema{
 		Calories:      regex.Digit.FindString(root.Find(".total_calories td").Last().Text()),

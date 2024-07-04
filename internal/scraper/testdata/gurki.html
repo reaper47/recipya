@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="En fyldig og god tomatsuppe lager du enkelt selv. Det trenger ikke å ta så mye lengre tid å lage enn en posesuppe, og så smaker det så uendelig mye bedre. Det er viktig at du benytter gode hermetiske tomater, for suppen blir jo ikke bedre enn kvaliteten på råvarene dine.">
+    <meta property="og:title" content="Tomatsuppe | Gurki">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://gurki.no/tomatsuppe">
+    <meta property="og:image" content="/images/cover_img/tomatsuppe1.jpg">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="icon" sizes="any" type="image/svg+xml" href="/images/icons/gurki-logo.svg">
+    <script type="application/ld+json">
+        [{"name":"Tomatsuppe","datePublished":"2023-12-07","description":"En fyldig og god tomatsuppe lager du enkelt selv. Det trenger ikke å ta så mye lengre tid å lage enn en posesuppe, og så smaker det så uendelig mye bedre. Det er viktig at du benytter gode hermetiske tomater, for suppen blir jo ikke bedre enn kvaliteten på råvarene dine.","cookTime":null,"prepTime":null,"totalTime":null,"keywords":"Tomatsuppe","recipeYield":null,"recipeCategory":null,"recipeCuisine":null,"video":null,"image":["https://gurki.no/images/cover_img/tomatsuppe1.jpg"],"author":{"name":"Gurki","@type":"Person"},"recipeIngredient":["2 stk sjalottløk (finhakket)","2 fedd hvitløk (finhakket)","0.5 stk chili (finhakket)","2 ss tomatpure","2 boks hermetiske tomater","8 dl kyllingkraft","2 ts sukker (smak til)","0.6 ts salt (smak til)","0.5 ts pepper (smak til)","2 stk egg"],"@context":"http://schema.org/","@type":"Recipe","recipeInstructions":[{"@type":"HowToStep","text":"<ul>"},{"@type":"HowToStep","text":"Ha olivenolje eller en annen nøytral matolje i en gryte og fres løken på middels varme, til den er blank og myk, men uten at den tar farge."},{"@type":"HowToStep","text":"Mot slutten tilsetter du hvitløk og chili, og lar det surre med. Mengden chili og hvitløk regulerer du etter smak og behag."},{"@type":"HowToStep","text":"Tilsett tomatpureèn og la det surre med et par minutter."},{"@type":"HowToStep","text":"Tilsett de hermetiske tomatene, knus dem lett med en stekespade eller lignende, og gi suppen et oppkok."},{"@type":"HowToStep","text":"Tilsett deretter kraften og kok opp igjen. Har du ikke kraft tilgjengelig kan du fint benytte buljongterninger eller fond utblandet i vann. Det er her viktig å smake seg frem til du får ønsket smak på suppen din. "},{"@type":"HowToStep","text":"Tomatsmaken skal være dominerende, og kraften skal gi ytterligere smak. Tilsett eventuelt litt sukker dersom du ønsker litt mer sødme på suppen din."},{"@type":"HowToStep","text":"La suppen småkoke til tomatene er møre og fine. Det tar ca 15-20 minutter dersom du benytter hele tomater. Benytter du hakkede tomater kan koketiden gjerne reduseres til ca 10. minutter hvis du har det travelt eller er veldig sulten. "},{"@type":"HowToStep","text":"Kjør suppen med en stavmikser eller lignende, til du får en jevn suppe. Tilsett eventuelt mer vann eller kraft hvis du synes suppen blir for tykk. Smak til med nykvernet sort pepper og salt.</ul>"}],"aggregateRating":{"@type":"AggregateRating","ratingValue":null,"ratingCount":null}}]
+    </script>
+    <script src="/src/jquery/jquery-3.7.1.min.js"></script>
+    <title>Tomatsuppe | Gurki</title>
+    <link rel="stylesheet" href="/css/Recipe/style.css">
+</head>
+<body>
+<div id="main">
+    <div id="menu">
+        <div id="menu-center">
+            <div id="menu-header">
+                <button onclick="closeNav()" id="hidebtn">Skjul</button>
+                <h1>HANDLELISTE</h1>
+                <button id="clearbtn"><img src="/images/icons/trash-icon.svg" height="25" alt="trash icon"></button>
+            </div>
+
+            <div id="menu-recipes">
+                <h2>Oppskrifter</h2>
+                <div id="menu-recipe-list">
+                </div>
+            </div>
+
+            <div id="menu-shoppingcart">
+                <h2>Ingredienser</h2>
+                <div id="menu-ingredient-list">
+                </div>
+                <hr>
+                <button id="copy-clipboard" onclick="copyToClipboard()"><img src="/images/icons/copy-clipboard-white2.svg" height="30" alt="copy clipboard icon"></button>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="center">
+        <div id="heading">
+            <div id="left">
+                <a href="/">
+                    <div id="logo">
+                        <img src="/images/icons/gurki-logo.svg" alt="logo">
+                        <h1>gurki.no</h1>
+                    </div>
+                </a>
+            </div>
+
+            <div id="right">
+                <div id="shoppingcart">
+                    <button onclick="openNav()"><img src="/images/icons/handleliste.svg" height="30" alt="shopping list icon"></button>
+                </div>
+
+                <!--<div id="menubtn">-->
+                <!--	<button><img src="/images/icons/hamburger-icon-5.svg" height="26"></button>-->
+                <!--</div>-->
+            </div>
+        </div>
+
+
+        <div id="cover-image">
+            <img src="/images/cover_img/tomatsuppe1.jpg" alt="cover image" >
+        </div>
+
+        <div id="content">
+            <div id="intro">
+                <div id="recipe_title">Tomatsuppe</div>
+
+                <hr>
+
+                <p>En fyldig og god tomatsuppe lager du enkelt selv. Det trenger ikke å ta så mye lengre tid å lage enn en posesuppe, og så smaker det så uendelig mye bedre. Det er viktig at du benytter gode hermetiske tomater, for suppen blir jo ikke bedre enn kvaliteten på råvarene dine.</p>
+
+                <hr>
+
+                <!--<form method="POST" action="/shoppingcarts/add"> -->
+                <form id="myForm">
+                    <input type="hidden" name="id" id="id" value="41" >
+                    <input type="hidden" name="title" id="title" value="Tomatsuppe" >
+
+                </form>
+
+                <div id="controls">
+                    <div id="CartBox">
+                        <button id="addToCart" type="submit" form="myForm"><img src="/images/icons/add-square-trolley.svg" alt="add to shoppingcart icon"></button>
+                        <span class="tooltiptext"></span>
+                    </div>
+                    <button id="credits"><img src="/images/icons/hyperlink-icon-white.svg" alt="hyperlink icon"></button>
+                </div>
+
+                <div id="result"></div>
+            </div>
+
+            <div id="ingredients">
+                <h1>Ingredienser</h1>
+                <hr>
+
+
+
+
+                <table>
+
+
+                    <tr>
+                        <td style="white-space:nowrap;">2 stk</td>
+                        <td style="width:15px"></td>
+                        <td> sjalottløk (finhakket)</td>
+                    </tr>
+
+
+                    <tr>
+                        <td style="white-space:nowrap;">2 fedd</td>
+                        <td style="width:15px"></td>
+                        <td> hvitløk (finhakket)</td>
+                    </tr>
+
+
+                    <tr>
+                        <td style="white-space:nowrap;">0.5 stk</td>
+                        <td style="width:15px"></td>
+                        <td> chili (finhakket)</td>
+                    </tr>
+
+
+                    <tr>
+                        <td style="white-space:nowrap;">2 ss</td>
+                        <td style="width:15px"></td>
+                        <td> tomatpure</td>
+                    </tr>
+
+
+                    <tr>
+                        <td style="white-space:nowrap;">2 boks</td>
+                        <td style="width:15px"></td>
+                        <td> hermetiske tomater</td>
+                    </tr>
+
+
+                    <tr>
+                        <td style="white-space:nowrap;">8 dl</td>
+                        <td style="width:15px"></td>
+                        <td> kyllingkraft</td>
+                    </tr>
+
+
+                    <tr>
+                        <td style="white-space:nowrap;">2 ts</td>
+                        <td style="width:15px"></td>
+                        <td> sukker (smak til)</td>
+                    </tr>
+
+
+                    <tr>
+                        <td style="white-space:nowrap;">0.6 ts</td>
+                        <td style="width:15px"></td>
+                        <td> salt (smak til)</td>
+                    </tr>
+
+
+                    <tr>
+                        <td style="white-space:nowrap;">0.5 ts</td>
+                        <td style="width:15px"></td>
+                        <td> pepper (smak til)</td>
+                    </tr>
+
+
+                    <tr>
+                        <td style="white-space:nowrap;">2 stk</td>
+                        <td style="width:15px"></td>
+                        <td> egg</td>
+                    </tr>
+                </table>
+                <br>
+            </div>
+
+            <div id="instructions">
+                <h1>Slik gjør du</h1>
+
+                <div><ul>
+                    <li>Ha olivenolje eller en annen nøytral matolje i en gryte og fres løken på middels varme, til den er blank og myk, men uten at den tar farge.</li>
+                    <li>Mot slutten tilsetter du hvitløk og chili, og lar det surre med. Mengden chili og hvitløk regulerer du etter smak og behag.</li>
+                    <li>Tilsett tomatpureèn og la det surre med et par minutter.</li>
+                    <li>Tilsett de hermetiske tomatene, knus dem lett med en stekespade eller lignende, og gi suppen et oppkok.</li>
+                    <li>Tilsett deretter kraften og kok opp igjen. Har du ikke kraft tilgjengelig kan du fint benytte buljongterninger eller fond utblandet i vann. Det er her viktig å smake seg frem til du får ønsket smak på suppen din. </li>
+                    <li>Tomatsmaken skal være dominerende, og kraften skal gi ytterligere smak. Tilsett eventuelt litt sukker dersom du ønsker litt mer sødme på suppen din.</li>
+                    <li>La suppen småkoke til tomatene er møre og fine. Det tar ca 15-20 minutter dersom du benytter hele tomater. Benytter du hakkede tomater kan koketiden gjerne reduseres til ca 10. minutter hvis du har det travelt eller er veldig sulten. </li>
+                    <li>Kjør suppen med en stavmikser eller lignende, til du får en jevn suppe. Tilsett eventuelt mer vann eller kraft hvis du synes suppen blir for tykk. Smak til med nykvernet sort pepper og salt.</li>
+                </ul> </div>
+
+                <img src="/images/end_img/tomatsuppe3.jpg" alt="end image" >
+                <p id="date">7. December 2023</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JS for Copy Clipboard js function -->
+<script src="/js/copyclipboard.js"></script>
+
+<!-- JS for bringing up the mobile nav menu -->
+<script src="/js/navmenu.js"></script>
+
+<!-- JS for refreshing shoppingcart div and ingredient div, without page refresh -->
+<script src="/js/shoppingcart.js"></script>
+
+</body>
+</html>

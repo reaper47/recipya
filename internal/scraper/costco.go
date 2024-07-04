@@ -9,9 +9,9 @@ import (
 func scrapeCostco(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Description.Value, _ = root.Find("meta[name='description']").Attr("content")
+	rs.Description.Value = getNameContent(root, "description")
 
-	keywordsRaw, _ := root.Find("meta[name='description']").Attr("content")
+	keywordsRaw := getNameContent(root, "description")
 	var keywords strings.Builder
 	for _, s := range strings.Split(keywordsRaw, ",") {
 		if s != "" {
@@ -26,22 +26,8 @@ func scrapeCostco(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.Name = name
 
 	rs.Image.Value, _ = div.Prev().Find("img").Attr("src")
-
-	nodes := div.Find("ul li")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := strings.TrimSpace(sel.Text())
-		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
-	})
-
-	nodes = div.Find("p")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := strings.TrimSpace(sel.Text())
-		if s != "" {
-			rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
-		}
-	})
+	getIngredients(&rs, div.Find("ul li"))
+	getInstructions(&rs, div.Find("p"))
 
 	return rs, nil
 }

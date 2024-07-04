@@ -46,7 +46,8 @@ func NewServer(repo services.RepositoryService) *Server {
 		Logger:       slog.New(slog.NewTextHandler(io.Discard, nil)),
 		Repository:   repo,
 		Scraper: scraper.NewScraper(&http.Client{
-			Jar: jar,
+			Jar:     jar,
+			Timeout: 30 * time.Second,
 		}),
 	}
 	srv.mountHandlers()

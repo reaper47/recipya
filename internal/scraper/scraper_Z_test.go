@@ -37,9 +37,11 @@ func TestScraper_Z(t *testing.T) {
 				}},
 				Name:            "Kohlrabi-Fenchel-Carpaccio: Kohlrabi hat Besseres verdient als Mehlschwitze",
 				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 2},
 				URL:             "https://www.zeit.de/zeit-magazin/wochenmarkt/2021-08/kohlrabi-fenchel-carpaccio-fior-di-latte-rezept",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -91,9 +93,11 @@ func TestScraper_Z(t *testing.T) {
 				PrepTime:        "PT20M",
 				CookTime:        "PT1H10M",
 				DatePublished:   "2020-09-01",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				TotalTime:       "PT-475409H3M24S",
 				URL:             "https://www.zenbelly.com/short-ribs/",
+				Video:           &models.Videos{},
 			},
 		},
 	}

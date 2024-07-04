@@ -74,7 +74,7 @@ func NewRecipeSchema() RecipeSchema {
 	return RecipeSchema{
 		AtContext:       "https://schema.org",
 		AtType:          &SchemaType{Value: "Recipe"},
-		Category:        NewCategory(""),
+		Category:        NewCategory("uncategorized"),
 		CookingMethod:   &CookingMethod{},
 		Cuisine:         &Cuisine{},
 		Description:     &Description{},
@@ -83,8 +83,10 @@ func NewRecipeSchema() RecipeSchema {
 		Ingredients:     &Ingredients{Values: make([]string, 0)},
 		Instructions:    &Instructions{Values: make([]HowToItem, 0)},
 		NutritionSchema: &NutritionSchema{},
+		ThumbnailURL:    &ThumbnailURL{},
 		Tools:           &Tools{Values: make([]HowToItem, 0)},
 		Yield:           &Yield{Value: 1},
+		Video:           &Videos{},
 	}
 }
 
@@ -107,7 +109,7 @@ func (h *HowToItem) StringQuantity() string {
 func NewHowToStep(text string, opts ...*HowToItem) HowToItem {
 	v := HowToItem{
 		Type: "HowToStep",
-		Text: text,
+		Text: strings.TrimSpace(text),
 	}
 	for _, opt := range opts {
 		v.Name = opt.Name
@@ -449,18 +451,15 @@ func (d *Description) UnmarshalJSON(data []byte) error {
 	}
 
 	s = strings.TrimSpace(s)
-	replace := []struct {
-		old string
-		new string
-	}{
-		{old: "\u202f", new: ""},
-		{old: "\u00a0", new: ""},
-		{old: "&quot;", new: ""},
-		{old: "”", new: `"`},
-		{old: "\u00ad", new: ""},
+	replace := []Replace{
+		{"\u202f", ""},
+		{"\u00a0", ""},
+		{"&quot;", ""},
+		{"”", `"`},
+		{"\u00ad", ""},
 	}
 	for _, r := range replace {
-		s = strings.ReplaceAll(s, r.old, r.new)
+		s = strings.ReplaceAll(s, r.Old, r.New)
 	}
 
 	d.Value = s
@@ -537,6 +536,11 @@ func (i *Image) UnmarshalJSON(data []byte) error {
 				if ok {
 					i.Value = u.(string)
 				}
+
+				img, ok := y["@id"]
+				if ok {
+					i.Value = img.(string)
+				}
 			}
 		}
 	case map[string]any:
@@ -582,21 +586,18 @@ func (i *Ingredients) UnmarshalJSON(data []byte) error {
 		xv = v
 	}
 
-	cases := []struct {
-		old string
-		new string
-	}{
-		{old: "  ", new: " "},
-		{old: "\u00a0", new: " "},
-		{old: "&frac12;", new: "½"},
-		{old: "&frac34;", new: "¾"},
-		{old: "&apos;", new: "'"},
-		{old: "&nbsp;", new: ""},
-		{old: "&#224;", new: "à"},
-		{old: "&#8217;", new: "'"},
-		{old: "&#339;", new: "œ"},
-		{old: "&#233;", new: "é"},
-		{old: "&#239;", new: "ï"},
+	cases := []Replace{
+		{"  ", " "},
+		{"\u00a0", " "},
+		{"&frac12;", "½"},
+		{"&frac34;", "¾"},
+		{"&apos;", "'"},
+		{"&nbsp;", ""},
+		{"&#224;", "à"},
+		{"&#8217;", "'"},
+		{"&#339;", "œ"},
+		{"&#233;", "é"},
+		{"&#239;", "ï"},
 	}
 
 	for _, v := range xv {
@@ -607,7 +608,7 @@ func (i *Ingredients) UnmarshalJSON(data []byte) error {
 
 		str = strings.TrimSpace(v.(string))
 		for _, c := range cases {
-			str = strings.ReplaceAll(str, c.old, c.new)
+			str = strings.ReplaceAll(str, c.Old, c.New)
 		}
 		i.Values = append(i.Values, str)
 	}
@@ -842,6 +843,12 @@ func (v *Videos) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
+
+		if vid.AtID != "" {
+			vid.EmbedURL = vid.AtID
+			vid.IsIFrame = true
+		}
+
 		v.Values = append(v.Values, vid)
 	case []any:
 		for _, a := range x {
@@ -858,6 +865,12 @@ func (v *Videos) UnmarshalJSON(data []byte) error {
 			if err != nil {
 				return err
 			}
+
+			if vid.AtID != "" {
+				vid.EmbedURL = vid.AtID
+				vid.IsIFrame = true
+			}
+
 			v.Values = append(v.Values, vid)
 		}
 	}
@@ -883,6 +896,7 @@ func parseTime(tm string) (time.Time, error) {
 
 // VideoObject is a representation of the VideoObject schema (https://schema.org/VideoObject).
 type VideoObject struct {
+	AtID         string        `json:"@id"`
 	AtType       string        `json:"@type"`
 	ContentURL   string        `json:"contentUrl,omitempty"`
 	Description  string        `json:"description,omitempty"`
