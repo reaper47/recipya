@@ -852,7 +852,7 @@ func TestScraper_C(t *testing.T) {
 				Keywords: &models.Keywords{
 					Values: "Vis|Voorgerecht|Aperitiefhapje|Glutenvrij|Barbecuegids 2024|BBQ|Lactosevrij",
 				},
-				Image: &models.Image{Value: "fb63de70-68e9-4cfc-9edc-927981db1c34"},
+				Image: &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
 					Values: []string{
 						"100 g torpedoscampi’s met look (versmarkt)", "1 rode chilipeper",
