@@ -82,6 +82,48 @@ func TestScraper_C(t *testing.T) {
 			},
 		},
 		{
+			name: "canada.ca",
+			in:   "https://food-guide.canada.ca/en/recipes/muhammara-dip-red-bell-pepper-walnut/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookTime:      "PT30M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Description: &models.Description{
+					Value: "This dip is versatile and commonly eaten in the Middle East. It is just as delicious served warm or cold.",
+				},
+				Keywords: &models.Keywords{},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"2 red bell peppers", "125 mL (½ cup) unsalted walnuts, divided",
+						"15 mL (1 tbsp) olive oil", "1 clove garlic", "2 mL (½ tsp) salt",
+						"1 mL (¼ tsp) paprika", "2 mL (½ tsp) honey", "30 mL (2 tbsp) breadcrumbs",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Preheat the oven to 230 °C (450 °F) and line 2 baking sheets with aluminum foil.", Type: "HowToStep"},
+						{Text: "Place red bell peppers on a baking sheet. Roast for 30 to 40 minutes or until peppers are soft and skins begin to blacken, checking from time to time. Let cool and remove stems and seeds.", Type: "HowToStep"},
+						{Text: "Roast walnuts on a separate tray for 2 to 3 minutes.", Type: "HowToStep"},
+						{Text: "Place half of walnuts in a zip top bag and let kids crush with a mallet. Reserve.", Type: "HowToStep"},
+						{Text: "In a blender, place bell peppers, oil, uncrushed walnut, garlic, salt, paprika, and honey. Blend until smooth.", Type: "HowToStep"},
+						{Text: "Empty into a bowl and stir in crushed walnuts and breadcrumbs.", Type: "HowToStep"},
+					},
+				},
+				Name:            "Muhammara dip (red bell pepper and walnut)",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT10M",
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 6},
+				URL:             "https://food-guide.canada.ca/en/recipes/muhammara-dip-red-bell-pepper-walnut/",
+				Video:           &models.Videos{},
+			},
+		},
+		{
 			name: "castironketo.com",
 			in:   "https://www.castironketo.net/blog/balsamic-mushrooms-with-herbed-veggie-mash/",
 			want: models.RecipeSchema{
@@ -202,6 +244,118 @@ func TestScraper_C(t *testing.T) {
 				Tools:        &models.Tools{Values: []models.HowToItem{}},
 				URL:          "https://www.cdkitchen.com/recipes/recs/285/MerleHaggardsRainbowStew65112.shtml",
 				Video:        &models.Videos{},
+			},
+		},
+		{
+			name: "cestmafournee.com",
+			in:   "https://www.cestmafournee.com/2024/02/crumble-banane-citron-vert-sauce.html",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtGraph:       nil,
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookTime:      "",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DatePublished: "2024-02-07T15:03:00+01:00",
+				Description:   &models.Description{Value: "Recettes de cuisine et de pâtisserie."},
+				Keywords:      &models.Keywords{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"4 bananes + 1\u00a0pour la déco",
+						"Le jus et les zestes d'un citron vert (20g de jus)",
+						"50g de beurre salé (ou beurre doux avec une pincée de fleur de sel)",
+						"50g de farine",
+						"50g de poudre d'amande",
+						"25g de sucre en poudre",
+						"25g de cassonnade",
+						"150g de chocolat noir à 65%",
+						"150g de crème liquide entière",
+						"75g d'eau",
+						"1g de piment d'Espelette",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "Si vous avez cliqué sur le lien vers la recette originale, vous allez voir que ce n'est pas du tout le même crumble. En effet, au départ j'ai testé la version du Chef, sans farine, et j'ai détesté. C'est très très gras, c'est affreux. Je me demande même si ce n'est pas un oubli ce manque de farine, car vraiment ce n'est pas mangeable. On dirait que l'on ne mange que du gras. Alors j'ai refait la recette avec mon crumble habituel, que je trouve impeccable, et c'est ce que je vous ai indiqué dans cette recette.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "On commence par la sauce au chocolat, qui est super facile à faire.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Dans une petite casserole de 12cm, versez 150g de crème liquide entière, 75g d'eau, et ajoutez 1g de piment d'Espelette, pesé avec une balance de précision si vous en avez une.",
+							Type: "HowToStep",
+						},
+						{Text: "Portez à ébullition :", Type: "HowToStep"},
+						{
+							Text: "Puis, hors du feu, ajoutez 150g de chocolat (coupé en carrés pour que ça fonde plus vite si vous n'utilisez pas de pistoles).",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Mélangez avec une cuillère magique ou un fouet, mais pas avec une maryse :",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Et c'est tout ! Quand elle est chaude, cette sauce est très liquide, mais une fois refroidie, elle aura une texture plus onctueuse, tout en restant assez liquide pour être versée facilement.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Si vous préférez verser une sauce chocolat bien chaude sur le dessert, alors mettez un peu moins d'eau, pour qu'elle soit un peu plus nappante.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Versez-la dans une saucière ou un récipient, filmez bien, et laissez-la au frais le temps de faire la recette (on peut faire la sauce la veille).",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Pour le crumble, versez tous les ingrédients dans un récipient, à savoir 50g de farine, 50g de beurre salé mou, 50g de poudre d'amande, 25g de sucre en poudre et 25g de cassonade. Si vous n'avez pas de cassonade mettez 50g de sucre en poudre (ou l'inverse) :",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Sablez le mélange avec les mains pour obtenir un crumble. Cette pâte à crumble peut aussi être préparée la veille, il suffira de filmer le récipient et de le garder au frais :",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Coupez 4 bananes en rondelles (environ 400g sans la peau), versez 20g de jus de citron vert, ajoutez les zestes du citron, obtenus avec une microplane. Si vous n'avez qu'un citron vert, ne zestez pas tout, gardez un peu pour la déco à la fin !",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Hé hé je vous vois venir : vous allez me demander si on peut mettre du citron jaune ! Alors bien sûr que l'on peut, MAIS UNIQUEMENT SI ON N'A PAS LE CHOIX ! Parce que l'on ne va pas se mentir : la magie du citron vert est irremplaçable. Inégalable et inégalée. Et aucun citron jaune ne pourra jamais rivaliser.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Alors si vous ne vivez pas dans un pays dans lequel le citron vert est introuvable, ne le remplacez pas.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "J'ai voulu faire comme dans la recette originale, en disposant une banane dessus, je trouvais ça sympatoche quand j'ai vu ça sur la photo de la recette de Jérome Banctel, mais au final je crois que c'est une mauvaise idée, pour la simple raison que le crumble qui sera en-dessous ne cuira pas. Et puis, comme on se dit tout ici, je crois que bien c'est moche haha ! En tout cas ce n'est pas aussi joli que dans la recette originale, mais trop la flemme de tout recommencer encore une fois. Je vous indique quand même comment faire si ce look de bananes amoureuses endormies côte à côte vous tente.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Coupez la banane en deux dans la longueur, et arrosez-la bien de jus de citron vert partout. Puis disposez les deux moitiés de banane comme ceci. Ensuite, recouvrez-les de sucre en poudre (j'ai oublié de faire la photo avec le sucre) :",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Enfournez pour environ 30mn à 170° chaleur tournante, puis zestez du citron vert sur le crumble, et régalez-vous !",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Servez la sauce à part, pour que chacun puisse en ajouter dans son assiette.",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Crumble banane citron vert, sauce chocolat piment d'Espelette",
+				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://www.cestmafournee.com/2024/02/crumble-banane-citron-vert-sauce.html",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -678,6 +832,56 @@ func TestScraper_C(t *testing.T) {
 				Tools:        &models.Tools{Values: []models.HowToItem{}},
 				Yield:        &models.Yield{Value: 4},
 				URL:          "https://www.closetcooking.com/chipotle-roast-sweet-potatoes/",
+				Video:        &models.Videos{},
+			},
+		},
+		{
+			name: "colruyt.be",
+			in:   "https://www.colruyt.be/nl/lekker-koken/recept/scampi-torpedo-met-chimichurri",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Voorgerecht"},
+				CookTime:      "PT10M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DatePublished: "2024-03-15",
+				Description: &models.Description{
+					Value: "Deze Zuid-Amerikaanse saus maakt de scampi's heerlijk pittig. ideaal als aperitiefhapje voor BBQ. Bekijk het recept.",
+				},
+				Keywords: &models.Keywords{
+					Values: "Vis|Voorgerecht|Aperitiefhapje|Glutenvrij|Barbecuegids 2024|BBQ|Lactosevrij",
+				},
+				Image: &models.Image{Value: "fb63de70-68e9-4cfc-9edc-927981db1c34"},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"100 g torpedoscampi’s met look (versmarkt)", "1 rode chilipeper",
+						"1 plantje platte peterselie", "1 teentje knoflook", "4 el olijfolie",
+						"2 el rodewijnazijn", "zwarte peper", "zout",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Snipper het knoflook en de peterselie fijn. Verwijder de pitjes uit het pepertje en snipper heel fijn.", Type: "HowToStep"},
+						{Text: "Meng het knoflook, het pepertje en de peterselie met de olijfolie en de rodewijnazijn. Kruid met peper en zout.", Type: "HowToStep"},
+						{Text: "Bak de torpedoscampi’s 3 à 4 min. op een hete barbecue. Werk af met de chimichurri.", Type: "HowToStep"},
+					},
+				},
+				Name: "Scampi torpedo met chimichurri",
+				NutritionSchema: &models.NutritionSchema{
+					Calories:     "506.00 kCal",
+					Fat:          "11.20 g",
+					Fiber:        "0.20 g",
+					Protein:      "4.20 g",
+					SaturatedFat: "1.60 g",
+					Sodium:       "0.20 g",
+					Sugar:        "0.30 g",
+				},
+				ThumbnailURL: &models.ThumbnailURL{},
+				Tools:        &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:    "PT10M",
+				Yield:        &models.Yield{Value: 4},
+				URL:          "https://www.colruyt.be/nl/lekker-koken/recept/scampi-torpedo-met-chimichurri",
 				Video:        &models.Videos{},
 			},
 		},

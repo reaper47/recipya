@@ -9,8 +9,10 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/services"
 	"io"
+	"net"
 	"net/http"
 	"strings"
+	"time"
 )
 
 const atContext = "https://schema.org"
@@ -132,18 +134,38 @@ func (s *Scraper) fetchDocument(url string) (*goquery.Document, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer res.Body.Close()
 
 	// Some websites require cookies
 	host := s.HTTP.GetHost(url)
 	switch host {
-	case "bettybossi", "chatelaine":
+	case "bettybossi":
+		_ = res.Body.Close()
 		res, err = s.HTTP.Client.Do(req)
 		if err != nil {
 			return nil, err
 		}
-		defer res.Body.Close()
+	case "chatelaine":
+		original := s.HTTP.Client
+		c, ok := s.HTTP.Client.(*http.Client)
+		if ok {
+			c.Transport = &http.Transport{
+				DialContext: (&net.Dialer{
+					Timeout:   30 * time.Second,
+					KeepAlive: 30 * time.Second,
+				}).DialContext,
+				TLSHandshakeTimeout: 10 * time.Second,
+			}
+
+			res, err = s.HTTP.Client.Do(req)
+			if err != nil {
+				return nil, err
+			}
+
+			s.HTTP.Client = original
+		}
 	}
+
+	defer res.Body.Close()
 
 	if res.StatusCode >= http.StatusBadRequest {
 		return nil, fmt.Errorf("could not fetch (%d), try the bookmarklet", res.StatusCode)

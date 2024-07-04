@@ -149,6 +149,79 @@ func TestScraper_V(t *testing.T) {
 			},
 		},
 		{
+			name: "vegan-pratique.fr",
+			in:   "https://vegan-pratique.fr/recettes/banana-bread/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Desserts"},
+				Cuisine:       &models.Cuisine{Value: "Vegan"},
+				DateModified:  "2020-11-11T21:57:08+00:00",
+				DatePublished: "2020-03-19T21:10:45+02:00",
+				Description: &models.Description{
+					Value: "Un cake super facile et parfait pour débuter avec la cuisine végétale ! Les bananes apportent beaucoup de moelleux et de saveurs. #vegan #dessertvegan",
+				},
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"3 bananes très ou trop mûres",
+						"200 g de farine",
+						"1 càc de bicarbonate de soude (ou de levure)",
+						"85 g de sucre blond ou complet",
+						"50 g de poudre d’amandes",
+						"½ cuillère à café de vanille en poudre",
+						"85 g d’huile neutre (tournesol par exemple)",
+						"100 ml d’eau",
+						"40 g de pépites de chocolat",
+						"1 càs de vinaigre de cidre",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Préchauffer le four à 180 degrés.", Type: "HowToStep"},
+						{
+							Text: "Pelez puis écraser les bananes dans un saladier avec une fourchette ou un presse purée.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Ajouter la farine et le bicarbonate (ou la levure). Mélanger un peu en surface pour incorporer le bicarbonate à la farine.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Ajouter le sucre, les amandes en poudre et la vanille. Mélanger.",
+							Type: "HowToStep",
+						},
+						{Text: "Ajouter l’huile et l’eau, puis mélanger.", Type: "HowToStep"},
+						{Text: "Ajouter les pépites de chocolat, mélanger.", Type: "HowToStep"},
+						{
+							Text: "Enfin, ajouter le vinaigre de cidre puis mélanger. Cette dernière étape assure un cake aéré.",
+							Type: "HowToStep",
+						},
+						{Text: "Verser dans un moule huilé.", Type: "HowToStep"},
+						{Text: "Enfourner pour une heure.", Type: "HowToStep"},
+						{
+							Text: "Attendre que le cake soit refroidi pour le découper, puis régalez-vous.",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:      "Banana bread vegan",
+				PrepTime:  "PT1H",
+				TotalTime: "PT1H",
+				Yield:     &models.Yield{Value: 8},
+				URL:       "https://vegan-pratique.fr/recettes/banana-bread/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:   "VideoObject",
+							EmbedURL: "https://www.youtube.com/embed/tcei_3khiiw",
+							IsIFrame: true,
+						},
+					},
+				},
+			},
+		},
+		{
 			name: "vegetarbloggen.no",
 			in:   "https://www.vegetarbloggen.no/2023/07/15/peanottkake/",
 			want: models.RecipeSchema{

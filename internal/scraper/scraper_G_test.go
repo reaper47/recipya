@@ -777,6 +777,49 @@ func TestScraper_G(t *testing.T) {
 			},
 		},
 		{
+			name: "gurki.no",
+			in:   "https://gurki.no/tomatsuppe",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				DatePublished: "2023-12-07",
+				Description: &models.Description{
+					Value: "En fyldig og god tomatsuppe lager du enkelt selv. Det trenger ikke å ta så mye lengre tid å lage enn en posesuppe, og så smaker det så uendelig mye bedre. Det er viktig at du benytter gode hermetiske tomater, for suppen blir jo ikke bedre enn kvaliteten på råvarene dine.",
+				},
+				Keywords: &models.Keywords{Values: "Tomatsuppe"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"2 stk sjalottløk (finhakket)", "2 fedd hvitløk (finhakket)",
+						"0.5 stk chili (finhakket)", "2 ss tomatpure", "2 boks hermetiske tomater",
+						"8 dl kyllingkraft", "2 ts sukker (smak til)", "0.6 ts salt (smak til)",
+						"0.5 ts pepper (smak til)",
+						"2 stk egg",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "<ul>", Type: "HowToStep"},
+						{Text: "Ha olivenolje eller en annen nøytral matolje i en gryte og fres løken på middels varme, til den er blank og myk, men uten at den tar farge.", Type: "HowToStep"},
+						{Text: "Mot slutten tilsetter du hvitløk og chili, og lar det surre med. Mengden chili og hvitløk regulerer du etter smak og behag.", Type: "HowToStep"},
+						{Text: "Tilsett tomatpureèn og la det surre med et par minutter.", Type: "HowToStep"},
+						{Text: "Tilsett de hermetiske tomatene, knus dem lett med en stekespade eller lignende, og gi suppen et oppkok.", Type: "HowToStep"},
+						{Text: "Tilsett deretter kraften og kok opp igjen. Har du ikke kraft tilgjengelig kan du fint benytte buljongterninger eller fond utblandet i vann. Det er her viktig å smake seg frem til du får ønsket smak på suppen din.", Type: "HowToStep"},
+						{Text: "Tomatsmaken skal være dominerende, og kraften skal gi ytterligere smak. Tilsett eventuelt litt sukker dersom du ønsker litt mer sødme på suppen din.", Type: "HowToStep"},
+						{Text: "La suppen småkoke til tomatene er møre og fine. Det tar ca 15-20 minutter dersom du benytter hele tomater. Benytter du hakkede tomater kan koketiden gjerne reduseres til ca 10. minutter hvis du har det travelt eller er veldig sulten.", Type: "HowToStep"},
+						{
+							Text: "Kjør suppen med en stavmikser eller lignende, til du får en jevn suppe. Tilsett eventuelt mer vann eller kraft hvis du synes suppen blir for tykk. Smak til med nykvernet sort pepper og salt.</ul>",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:  "Tomatsuppe",
+				Yield: &models.Yield{Value: 1},
+				URL:   "https://gurki.no/tomatsuppe",
+			},
+		},
+		{
 			name: "grandfrais.com",
 			in:   "https://www.grandfrais.com/recettes/saute-de-lapin-sauce-chasseur",
 			want: models.RecipeSchema{
