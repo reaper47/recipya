@@ -14,7 +14,8 @@ func scrapeTheHeartySoul(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.DateModified = getPropertyContent(root, "article:modified_time")
 	rs.Image.Value = getPropertyContent(root, "og:image")
 
-	root.Find("h2:contains('Ingredients:')").NextUntil("h3:contains('Directions:')").Each(func(_ int, sel *goquery.Selection) {
+	node := root.Find("h2:contains('Ingredients:')")
+	node.NextUntil("h3:contains('Directions:')").Each(func(_ int, sel *goquery.Selection) {
 		switch goquery.NodeName(sel) {
 		case "p":
 			rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(sel.Text()))
@@ -25,7 +26,8 @@ func scrapeTheHeartySoul(root *goquery.Document) (models.RecipeSchema, error) {
 		}
 	})
 
-	root.Find("h3:contains('Directions:')").NextAll().Each(func(_ int, sel *goquery.Selection) {
+	node = root.Find("h3:contains('Directions:')")
+	node.NextAll().Each(func(_ int, sel *goquery.Selection) {
 		if goquery.NodeName(sel) == "ul" {
 			sel.Children().Each(func(_ int, li *goquery.Selection) {
 				rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(li.Text()))

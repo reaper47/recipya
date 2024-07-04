@@ -735,6 +735,52 @@ func TestScraper_E(t *testing.T) {
 			},
 		},
 		{
+			name: "etenvaneefke.nl",
+			in:   "http://www.etenvaneefke.nl/pastasalade/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DateModified:  "2014-06-21T18:29:35+00:00",
+				DatePublished: "2014-04-07T07:00:27+00:00",
+				Description:   &models.Description{Value: "Bij de zomer hoort pastasalade. En hoewel het pas april is, kreeg ik door de zomerse temperaturen vorige week spontaan zin in pastasalade. Ik maakte een salade van fusilli, gevuld met gerookte kip, pesto, rucola, zongedroogde tomaatjes, pijnboompitten en een uitje. Ingrediënten (voor 2 à 3 personen) 250 gram pasta 1 zakje rucola 1 gerookte…"},
+				Keywords:      &models.Keywords{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"250 gram pasta",
+						"1 zakje rucola",
+						"1 gerookte kipfilet",
+						"1 ui",
+						"50 gram pijnboompitten",
+						"3 eetlepels pesto",
+						"half potje zongedroogde tomaten",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "Kook de pasta gaar volgens de gebruiksaanwijzing en laat het daarna afkoelen (of spoel af onder de kraan met koud water). Rooster de pijnboompitten bruin in een koekenpan zonder olie of boter. Snijd de kip, ui en zongedroogde tomaten in kleine stukjes. Meng de pasta met de pesto en voeg vervolgens alle andere ingrediënten toe. Breng op smaak met zout en peper.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Een goede maaltijdsalade, maar ook lekker als lunch of bijgerecht bij de BBQ!",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "PASTASALADE KIP-RUCOLA-PESTO-TOMAAT",
+				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "http://www.etenvaneefke.nl/pastasalade/",
+				Video:           &models.Videos{},
+			},
+		},
+		{
 			name: "expressen.se",
 			in:   "https://alltommat.expressen.se/recept/saftiga-choklad--och-apelsinbullar/",
 			want: models.RecipeSchema{
