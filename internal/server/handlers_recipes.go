@@ -4,12 +4,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/google/uuid"
-	"github.com/reaper47/recipya/internal/app"
-	"github.com/reaper47/recipya/internal/models"
-	"github.com/reaper47/recipya/internal/templates"
-	"github.com/reaper47/recipya/internal/utils/extensions"
-	"github.com/reaper47/recipya/web/components"
 	"io"
 	"log/slog"
 	"mime/multipart"
@@ -22,6 +16,13 @@ import (
 	"strings"
 	"sync/atomic"
 	"time"
+
+	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/app"
+	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/templates"
+	"github.com/reaper47/recipya/internal/utils/extensions"
+	"github.com/reaper47/recipya/web/components"
 )
 
 func (s *Server) recipesHandler() http.HandlerFunc {
@@ -711,13 +712,15 @@ func (s *Server) recipesEditPutHandler() http.HandlerFunc {
 			Nutrition: models.Nutrition{
 				Calories:           r.FormValue("calories"),
 				Cholesterol:        r.FormValue("cholesterol"),
-				Fiber:              r.FormValue("fiber"),
 				Protein:            r.FormValue("protein"),
-				SaturatedFat:       r.FormValue("saturated-fat"),
-				Sodium:             r.FormValue("sodium"),
-				Sugars:             r.FormValue("sugars"),
-				TotalCarbohydrates: r.FormValue("total-carbohydrates"),
 				TotalFat:           r.FormValue("total-fat"),
+				SaturatedFat:       r.FormValue("saturated-fat"),
+				UnsaturatedFat:     r.FormValue("unsaturated-fat"),
+				TransFat:           r.FormValue("trans-fat"),
+				Sodium:             r.FormValue("sodium"),
+				TotalCarbohydrates: r.FormValue("total-carbohydrates"),
+				Sugars:             r.FormValue("sugars"),
+				Fiber:              r.FormValue("fiber"),
 			},
 			URL: r.FormValue("source"),
 		}

@@ -624,6 +624,34 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 												</td>
 											</tr>
 											<tr>
+												<td>Unsaturated fat</td>
+												<td>
+													<label>
+														<input
+															type="text"
+															name="unsaturated-fat"
+															autocomplete="off"
+															placeholder="1.8g"
+															class="input input-bordered input-xs max-w-24"
+														/>
+													</label>
+												</td>
+											</tr>
+											<tr>
+												<td>Trans fat</td>
+												<td>
+													<label>
+														<input
+															type="text"
+															name="trans-fat"
+															autocomplete="off"
+															placeholder="1.8g"
+															class="input input-bordered input-xs max-w-24"
+														/>
+													</label>
+												</td>
+											</tr>
+											<tr>
 												<td>Cholesterol</td>
 												<td>
 													<label>
@@ -1459,6 +1487,21 @@ templ editRecipe(data *templates.ViewRecipeData) {
 												</td>
 											</tr>
 											<tr>
+												<td>Trans fat</td>
+												<td>
+													<label>
+														<input
+															type="text"
+															name="trans-fat"
+															autocomplete="off"
+															placeholder="g"
+															class="input input-bordered input-xs max-w-24"
+															value={ data.Recipe.Nutrition.TransFat }
+														/>
+													</label>
+												</td>
+											</tr>
+											<tr>
 												<td>Cholesterol</td>
 												<td>
 													<label>
@@ -2076,6 +2119,16 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 													-
 												} else {
 													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.UnsaturatedFat,"UnsaturatedFat") }
+												}
+											</td>
+										</tr>
+										<tr>
+											<td>Trans fat:</td>
+											<td>
+												if data.Recipe.Nutrition.TransFat == "" {
+													-
+												} else {
+													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.TransFat,"TransFat") }
 												}
 											</td>
 										</tr>

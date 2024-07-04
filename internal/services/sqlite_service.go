@@ -6,6 +6,17 @@ import (
 	"embed"
 	"errors"
 	"fmt"
+	"io"
+	"log/slog"
+	"net/url"
+	"os"
+	"path/filepath"
+	"slices"
+	"strconv"
+	"strings"
+	"sync"
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/pressly/goose/v3"
 	"github.com/reaper47/recipya/internal/app"
@@ -15,17 +26,7 @@ import (
 	"github.com/reaper47/recipya/internal/units"
 	"github.com/reaper47/recipya/internal/utils/extensions"
 	"github.com/reaper47/recipya/internal/utils/regex"
-	"io"
-	"log/slog"
 	_ "modernc.org/sqlite" // Blank import to initialize the SQL driver.
-	"net/url"
-	"os"
-	"path/filepath"
-	"slices"
-	"strconv"
-	"strings"
-	"sync"
-	"time"
 )
 
 //go:embed migrations/*.sql
@@ -326,7 +327,7 @@ func (s *SQLiteService) addRecipeTx(ctx context.Context, tx *sql.Tx, r models.Re
 	// Insert nutrition
 	n := r.Nutrition
 	n.Clean()
-	_, err = tx.ExecContext(ctx, statements.InsertNutrition, recipeID, n.Calories, n.TotalCarbohydrates, n.Sugars, n.Protein, n.TotalFat, n.SaturatedFat, n.UnsaturatedFat, n.Cholesterol, n.Sodium, n.Fiber, n.IsPerServing)
+	_, err = tx.ExecContext(ctx, statements.InsertNutrition, recipeID, n.Calories, n.TotalCarbohydrates, n.Sugars, n.Protein, n.TotalFat, n.SaturatedFat, n.UnsaturatedFat, n.TransFat, n.Cholesterol, n.Sodium, n.Fiber, n.IsPerServing)
 	if err != nil {
 		return 0, err
 	}
@@ -2040,9 +2041,21 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 			xs = append(xs, "protein = ?")
 			args = append(args, updatedRecipe.Nutrition.Protein)
 		}
+		if updatedRecipe.Nutrition.TotalFat != oldRecipe.Nutrition.TotalFat {
+			xs = append(xs, "total_fat = ?")
+			args = append(args, updatedRecipe.Nutrition.TotalFat)
+		}
 		if updatedRecipe.Nutrition.SaturatedFat != oldRecipe.Nutrition.SaturatedFat {
 			xs = append(xs, "saturated_fat = ?")
 			args = append(args, updatedRecipe.Nutrition.SaturatedFat)
+		}
+		if updatedRecipe.Nutrition.UnsaturatedFat != oldRecipe.Nutrition.UnsaturatedFat {
+			xs = append(xs, "unsaturated_fat = ?")
+			args = append(args, updatedRecipe.Nutrition.UnsaturatedFat)
+		}
+		if updatedRecipe.Nutrition.TransFat != oldRecipe.Nutrition.TransFat {
+			xs = append(xs, "trans_fat = ?")
+			args = append(args, updatedRecipe.Nutrition.TransFat)
 		}
 		if updatedRecipe.Nutrition.Sodium != oldRecipe.Nutrition.Sodium {
 			xs = append(xs, "sodium = ?")
@@ -2055,14 +2068,6 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 		if updatedRecipe.Nutrition.TotalCarbohydrates != oldRecipe.Nutrition.TotalCarbohydrates {
 			xs = append(xs, "total_carbohydrates = ?")
 			args = append(args, updatedRecipe.Nutrition.TotalCarbohydrates)
-		}
-		if updatedRecipe.Nutrition.TotalFat != oldRecipe.Nutrition.TotalFat {
-			xs = append(xs, "total_fat = ?")
-			args = append(args, updatedRecipe.Nutrition.TotalFat)
-		}
-		if updatedRecipe.Nutrition.UnsaturatedFat != oldRecipe.Nutrition.UnsaturatedFat {
-			xs = append(xs, "unsaturated_fat = ?")
-			args = append(args, updatedRecipe.Nutrition.UnsaturatedFat)
 		}
 
 		if len(xs) > 0 {

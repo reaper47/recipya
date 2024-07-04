@@ -48,6 +48,7 @@ const UpdateNutrition = `
 	    total_fat = trim(?), 
 	    saturated_fat = trim(?), 
 	    unsaturated_fat = trim(?), 
+	    trans_fat = trim(?), 
 	    cholesterol = trim(?), 
 	    sodium = trim(?), 
 	    fiber = trim(?),
