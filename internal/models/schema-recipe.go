@@ -871,17 +871,17 @@ func (n *NutritionSchema) UnmarshalJSON(data []byte) error {
 
 	switch x := v.(type) {
 	case map[string]any:
-		n.Calories = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["calories"]), ",", ".", -1))
-		n.Carbohydrates = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["carbohydrateContent"]), ",", ".", -1))
-		n.Cholesterol = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["cholesterolContent"]), ",", ".", -1))
-		n.Fat = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["fatContent"]), ",", ".", -1))
-		n.SaturatedFat = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["saturatedFatContent"]), ",", ".", -1))
-		n.UnsaturatedFat = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["unsaturatedFatContent"]), ",", ".", -1))
-		n.TransFat = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["transFatContent"]), ",", ".", -1))
-		n.Protein = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["proteinContent"]), ",", ".", -1))
-		n.Sugar = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["sugarContent"]), ",", ".", -1))
-		n.Sodium = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["sodiumContent"]), ",", ".", -1))
-		n.Fiber = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["fiberContent"]), ",", ".", -1))
+		n.Calories = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["calories"]), ",", "."))
+		n.Carbohydrates = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["carbohydrateContent"]), ",", "."))
+		n.Cholesterol = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["cholesterolContent"]), ",", "."))
+		n.Fat = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["fatContent"]), ",", "."))
+		n.SaturatedFat = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["saturatedFatContent"]), ",", "."))
+		n.UnsaturatedFat = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["unsaturatedFatContent"]), ",", "."))
+		n.TransFat = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["transFatContent"]), ",", "."))
+		n.Protein = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["proteinContent"]), ",", "."))
+		n.Sugar = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["sugarContent"]), ",", "."))
+		n.Sodium = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["sodiumContent"]), ",", "."))
+		n.Fiber = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["fiberContent"]), ",", "."))
 
 		if val := extensions.ConvertToString(x["servingSize"]); val != "" {
 			xs := strings.Split(val, " ")
@@ -906,9 +906,9 @@ func (n *NutritionSchema) UnmarshalJSON(data []byte) error {
 // EnsureNutritionUnitForString extracts digits from nutritional property and appends metric unit.
 // Returns a string value.
 func EnsureNutritionUnitForString(nutritionValue any, nutritionProperty string) string {
-	var nutritionPropertyLowerCase = strings.ToLower(nutritionProperty)
-	var nutritionString string = extensions.ConvertToString(nutritionValue)
-	var nutritionStringDigits string = regex.Digit.FindString(nutritionString)
+	nutritionPropertyLowerCase := strings.ToLower(nutritionProperty)
+	nutritionString := extensions.ConvertToString(nutritionValue)
+	nutritionStringDigits := regex.Digit.FindString(nutritionString)
 
 	// Early return if no digits could be found
 	if nutritionStringDigits == "" {
