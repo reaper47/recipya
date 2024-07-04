@@ -2,8 +2,8 @@ package scraper_test
 
 import (
 	"testing"
-  "time"
-  
+	"time"
+
 	"github.com/reaper47/recipya/internal/models"
 )
 
@@ -1416,8 +1416,6 @@ func TestScraper_M(t *testing.T) {
 				CookTime:      "PT35M",
 				CookingMethod: &models.CookingMethod{},
 				Cuisine:       &models.Cuisine{Value: "Indian"},
-				DateCreated:   "",
-				DateModified:  "",
 				DatePublished: "2023-10-09",
 				Description: &models.Description{
 					Value: "Discover the delectable world of Tawa Paneer, a rich and flavorful Indian dish featuring paneer (cottage cheese) infused with aromatic spices.",
@@ -1496,7 +1494,7 @@ func TestScraper_M(t *testing.T) {
 					},
 				},
 				Name:            "Tawa Paneer",
-				NutritionSchema: &models.NutritionSchema{Calories: "480 calories", Servings: "1"},
+				NutritionSchema: &models.NutritionSchema{Calories: "480", Servings: "1"},
 				PrepTime:        "PT10M",
 				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},

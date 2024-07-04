@@ -2,7 +2,7 @@ package scraper_test
 
 import (
 	"testing"
-    "time"
+	"time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -1660,11 +1660,13 @@ func TestScraper_S(t *testing.T) {
 				NutritionSchema: &models.NutritionSchema{
 					Calories: "0",
 				},
-				PrepTime:  "PT0H0M",
-				Tools:     &models.Tools{Values: []models.HowToItem{}},
-				TotalTime: "PT0H0M",
-				Yield:     &models.Yield{Value: 8},
-				URL:       "https://www.sunset.com/recipe/veggie-chili",
+				PrepTime:     "PT0H0M",
+				ThumbnailURL: &models.ThumbnailURL{},
+				Tools:        &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:    "PT0H0M",
+				Yield:        &models.Yield{Value: 8},
+				URL:          "https://www.sunset.com/recipe/veggie-chili",
+				Video:        &models.Videos{},
 			},
 		},
 		{

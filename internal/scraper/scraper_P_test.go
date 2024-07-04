@@ -2,7 +2,7 @@ package scraper_test
 
 import (
 	"testing"
-  "time"
+	"time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -215,18 +215,18 @@ func TestScraper_P(t *testing.T) {
 				},
 				Name: "Za'atar Sheet Pan Vegetables and Eggs",
 				NutritionSchema: &models.NutritionSchema{
-					Calories:       "417 kcal",
-					Carbohydrates:  "44 g",
-					Cholesterol:    "169 mg",
-					Fat:            "22 g",
-					Fiber:          "10 g",
-					Protein:        "15 g",
-					SaturatedFat:   "5 g",
+					Calories:       "417",
+					Carbohydrates:  "44",
+					Cholesterol:    "169",
+					Fat:            "22",
+					Fiber:          "10",
+					Protein:        "15",
+					SaturatedFat:   "5",
 					Servings:       "1",
-					Sodium:         "633 mg",
-					Sugar:          "5 g",
-					TransFat:       "1 g",
-					UnsaturatedFat: "16 g",
+					Sodium:         "633",
+					Sugar:          "5",
+					TransFat:       "1",
+					UnsaturatedFat: "16",
 				},
 				PrepTime:     "PT10M",
 				ThumbnailURL: nil,

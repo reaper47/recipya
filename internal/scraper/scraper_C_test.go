@@ -2,7 +2,7 @@ package scraper_test
 
 import (
 	"testing"
-  "time"
+	"time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -870,13 +870,13 @@ func TestScraper_C(t *testing.T) {
 				},
 				Name: "Scampi torpedo met chimichurri",
 				NutritionSchema: &models.NutritionSchema{
-					Calories:     "506.00 kCal",
-					Fat:          "11.20 g",
-					Fiber:        "0.20 g",
-					Protein:      "4.20 g",
-					SaturatedFat: "1.60 g",
-					Sodium:       "0.20 g",
-					Sugar:        "0.30 g",
+					Calories:     "506.00",
+					Fat:          "11.20",
+					Fiber:        "0.20",
+					Protein:      "4.20",
+					SaturatedFat: "1.60",
+					Sodium:       "0.20",
+					Sugar:        "0.30",
 				},
 				ThumbnailURL: &models.ThumbnailURL{},
 				Tools:        &models.Tools{Values: []models.HowToItem{}},

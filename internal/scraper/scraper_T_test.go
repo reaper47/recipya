@@ -2,7 +2,7 @@ package scraper_test
 
 import (
 	"testing"
-  "time"
+	"time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -2041,14 +2041,14 @@ func TestScraper_T(t *testing.T) {
 				},
 				Name: "Aloo Gobi Potatoes and Cauliflower",
 				NutritionSchema: &models.NutritionSchema{
-					Calories:      "84 kcal",
-					Carbohydrates: "12 g",
-					Fat:           "2 g",
-					Fiber:         "3 g",
-					Protein:       "3 g",
+					Calories:      "84",
+					Carbohydrates: "12",
+					Fat:           "2",
+					Fiber:         "3",
+					Protein:       "3",
 					Servings:      "1",
-					Sodium:        "416 mg",
-					Sugar:         "1 g",
+					Sodium:        "416",
+					Sugar:         "1",
 				},
 				PrepTime:  "PT10M",
 				TotalTime: "PT20M",

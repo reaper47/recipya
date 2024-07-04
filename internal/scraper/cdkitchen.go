@@ -37,7 +37,6 @@ func scrapeCdKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 
 	node = content.Find("span[itemprop=nutrition]")
 	rs.NutritionSchema = &models.NutritionSchema{
-<<<<<<< HEAD
 		Calories:       regex.Digit.FindString(node.Find("span[itemprop='calories']").Text()),
 		Carbohydrates:  regex.Digit.FindString(node.Find(".carbohydrateContent").Text()),
 		Sugar:          regex.Digit.FindString(node.Find(".sugarContent").Text()),
@@ -49,19 +48,6 @@ func scrapeCdKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 		Fiber:          regex.Digit.FindString(node.Find(".fiberContent").Text()),
 		TransFat:       regex.Digit.FindString(node.Find(".transFatContent").Text()),
 		UnsaturatedFat: regex.Digit.FindString(node.Find(".unsaturatedFatContent").Text()),
-=======
-		Calories:       node.Find("span[itemprop=calories]").Text(),
-		Carbohydrates:  node.Find(".carbohydrateContent").Text(),
-		Sugar:          node.Find(".sugarContent").Text(),
-		Protein:        node.Find(".proteinContent").Text(),
-		Fat:            node.Find(".fatContent").Text(),
-		SaturatedFat:   node.Find(".saturatedFatContent").Text(),
-		Cholesterol:    node.Find(".cholesterolContent").Text(),
-		Sodium:         node.Find(".sodiumContent").Text(),
-		Fiber:          node.Find(".fiberContent").Text(),
-		TransFat:       node.Find(".transFatContent").Text(),
-		UnsaturatedFat: node.Find(".unsaturatedFatContent").Text(),
->>>>>>> 4404f718 (Finish supporting 34 websites)
 	}
 
 	rs.CookTime = getItempropContent(root, "cookTime")
