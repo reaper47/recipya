@@ -2,6 +2,7 @@ package scraper_test
 
 import (
 	"testing"
+  "time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -162,8 +163,22 @@ func TestScraper_I(t *testing.T) {
 				},
 				PrepTime:  "PT10M",
 				TotalTime: "PT35M",
-				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.indianhealthyrecipes.com/mango-rice-mamidikaya-pulihora/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://www.youtube.com/watch?v=E4wtxm42u9Y",
+							Description:  "For complete recipe of mango rice, you can check this link https://www.indianhealthyrecipes.com/mango-rice-mamidikaya-pulihora/",
+							Duration:     "PT1M38S",
+							EmbedURL:     "https://www.youtube.com/embed/E4wtxm42u9Y?feature=oembed",
+							Name:         "Mango rice recipe | Mamidikaya pulihora | South Indian mango rice",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://i.ytimg.com/vi/E4wtxm42u9Y/hqdefault.jpg"},
+							UploadDate:   time.Date(2017, 4, 29, 9, 25, 16, 0, time.UTC),
+						},
+					},
+				},
+				Yield: &models.Yield{Value: 4},
 			},
 		},
 		{
@@ -219,8 +234,19 @@ func TestScraper_I(t *testing.T) {
 				PrepTime:  "PT28M",
 				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT35M",
-				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.innit.com/meal/504/8008/Salad%3A%20Coconut-Pineapple-Salad",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							ContentURL: "https://www.innit.com/meal-service/en-US/videos/MealTask-Salad%3A%20Coconut_Pineapple_Salad_1529612492439_1920x1080.mp4",
+							Name:       "Coconut Pineapple Rice ",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://www.innit.com/meal-service/en-US/images/MealTask-Salad%3A%20Coconut_Pineapple_Salad_1529612492439_EXTRACTED_MIDDLE_480x480.png",
+							},
+						},
+					},
+				},
+				Yield: &models.Yield{Value: 4},
 			},
 		},
 		{

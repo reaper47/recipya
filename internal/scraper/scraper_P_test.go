@@ -2,6 +2,7 @@ package scraper_test
 
 import (
 	"testing"
+  "time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -250,6 +251,19 @@ func TestScraper_P(t *testing.T) {
 				TotalTime:       "PT35M",
 				Yield:           &models.Yield{Value: 3},
 				URL:             "https://www.pickuplimes.com/recipe/the-best-vegan-chow-mein-800",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							Description: "If you&#39;ve ever been on a quest for the ultimate noodle dish, your journey ends here. We&#39;re diving into a chow mein recipe that&#39;s become an obsession for our entire team—and even for our friends and family who aren&#39;t vegan. Packed with flavor and loaded with veggies, this dish rivals any takeout option and is perfect for impressing anyone, vegan or not. Master the golden formula for the perfect sauce and up your knife skills with our brief knife skills tutorial. Whether you&#39;re craving comfort food or looking to impress, this chow mein recipe is your one-stop solution. And trust us, once you try it, you&#39;ll be hooked just like we are. Let&#39;s get cooking!",
+							EmbedURL:    "https://www.youtube.com/embed/vvm9na0x2_Q",
+							Name:        "If I Could Make Only 1 Noodle Dish for the Rest of My Life… 🥢",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://cdn.pickuplimes.com/cache/16/43/1643904be6b964bc60e62047ebb2a955.jpg",
+							},
+						},
+					},
+				},
 			},
 		},
 		{
@@ -306,6 +320,18 @@ func TestScraper_P(t *testing.T) {
 				TotalTime: "PT20M",
 				Yield:     &models.Yield{Value: 12},
 				URL:       "https://pinchofyum.com/the-best-soft-chocolate-chip-cookies",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/wk3TBZA0.mp4",
+							Description:  "These are THE BEST soft chocolate chip cookies! No chilling required. Just ultra thick, soft, classic chocolate chip cookies!",
+							Name:         "The Best Soft Chocolate Chip Cookies",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/wk3TBZA0-720.jpg"},
+							UploadDate:   time.Date(2021, 5, 18, 19, 38, 51, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -559,6 +585,22 @@ func TestScraper_P(t *testing.T) {
 				TotalTime: "PT45M",
 				Yield:     &models.Yield{Value: 15},
 				URL:       "https://plowingthroughlife.com/the-best-rich-and-moist-chocolate-cake/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1665608961/imXifum7P.mp4",
+							Description: "Are you craving a delicious chocolate cake?  This is the BEST rich and moist chocolate cake from a box mix that is unbelievably EASY to make!  This is a bakery quality cake that anyone can make at home with common ingredients!",
+							Duration:    "PT82S",
+							EmbedURL:    "https://video.mediavine.com/videos/imXifum7P.js",
+							Name:        "Rich & Moist Chocolate Cake",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://mediavine-res.cloudinary.com/image/upload/s--H2ahcV3O--/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1665608963/o3wucpclxhb4sit7fvr6.jpg",
+							},
+							UploadDate: time.Date(2020, 4, 23, 17, 11, 18, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -705,6 +747,19 @@ func TestScraper_P(t *testing.T) {
 				TotalTime:       "PT30M",
 				Yield:           &models.Yield{Value: 4},
 				URL:             "https://pressureluckcooking.com/spanish-omelette-scramble/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://www.youtube.com/watch?v=BFls1-xB190",
+							Description:  "NEW Recipe!: https://pressureluckcooking.com/spanish-omelette-scramble/\n\nWhen I was in Valencia, Spain, I was taught how to make a Spanish omelette. It's essentially pan-fried onions and potatoes coated with eggs, seasoned with the basics that are salt and pepper and then cooked in a skillet on both sides for a few minutes where it looks like a super thick, egg pancake. Truth be told, it is one of the most delicious egg dishes you'll ever have. \n\nHOWEVER, as basic as it sounds, it can be a messy and somewhat cumbersome thing to make with the flipping, removing a half-cooked, runny egg mound to a plate and then returning it to the pan to cook on the other side. At the class I took, three people who volunteered with flipping the half-cooked omelette had it spill onto the counter. So I decided to take the basics of a Spanish omelette, add some optional Spanish-favored cheese and meat and scramble it up to give you that flavor experience, but with a much simpler and fool-proof approach to making it. I give you, the Spanish Omelette Scramble!\n\n#spanishomelette #spanishomelettescramble #pressureluck \n\nGet My #1 Bestselling SUPER SHORTCUT (green) Cookbook Here!: https://amzn.to/3QFiMdO\n\nGet My #1 Bestselling Original (orange) Cookbook Here!: https://amzn.to/3eqjEkQ\n\nGet My #1 Bestselling Lighter (blue) Cookbook Here!: https://amzn.to/2RWzrjS\n\nGet my #1 Bestselling Simple Comforts (yellow) Cookbook Here!: https://amzn.to/3kbH14A\n\nVISIT https://pressureluckcooking.com for MORE written recipes and easy-to-follow videos - with more always being added!\n\nWant the products I recommend and use? Check out my Amazon store here (#amazoninfluencer): https://www.amazon.com/shop/pressureluck\n\nWant even more content? Please visit and “like” Pressure Luck on Facebook at https://facebook.com/pressureluckcooking\n\nAdvertising Disclosure: Jeffrey Eisner/Pressure Luck is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to amazon.com",
+							Duration:     "PT14M34S",
+							Name:         "Spanish Omelette Scramble",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://i.ytimg.com/vi/BFls1-xB190/hqdefault.jpg"},
+							UploadDate:   time.Date(2023, 10, 29, 14, 0, 12, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{

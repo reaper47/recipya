@@ -822,6 +822,7 @@ func TestRecipe_Copy(t *testing.T) {
 		},
 		UpdatedAt: time.Date(2012, 12, 25, 0, 0, 0, 0, time.UTC),
 		URL:       "https://www.example.com",
+		Videos:    []models.VideoObject{},
 		Yield:     4,
 	}
 

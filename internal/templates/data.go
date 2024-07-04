@@ -156,7 +156,7 @@ type Backup struct {
 }
 
 // NewViewRecipeData creates and populates a new ViewRecipeData.
-func NewViewRecipeData(id int64, recipe *models.Recipe, categories []string, isFromHost, isShared bool) *ViewRecipeData {
+func NewViewRecipeData(id int64, recipe *models.Recipe, categories, keywords []string, isFromHost, isShared bool) *ViewRecipeData {
 	return &ViewRecipeData{
 		Categories:     categories,
 		FormattedTimes: newFormattedTimes(recipe.Times),
@@ -164,16 +164,25 @@ func NewViewRecipeData(id int64, recipe *models.Recipe, categories []string, isF
 		Inc: func(n int) int {
 			return n + 1
 		},
-		IsImagesExist: func(xu []uuid.UUID) []bool {
-			xb := make([]bool, 0, len(xu))
-			for _, u := range xu {
+		IsImagesExist: func(images []uuid.UUID) []bool {
+			xb := make([]bool, 0, len(images))
+			for _, u := range images {
 				_, err := os.Stat(filepath.Join(app.ImagesDir, u.String()+app.ImageExt))
 				xb = append(xb, err == nil)
 			}
 			return xb
 		}(recipe.Images),
-		IsURL:  isURL(recipe.URL),
-		Recipe: recipe,
+		IsURL: isURL(recipe.URL),
+		IsVideoExist: func(videos []models.VideoObject) []bool {
+			xb := make([]bool, 0, len(videos))
+			for _, v := range videos {
+				fi, err := os.Stat(filepath.Join(app.VideosDir, v.ID.String()+app.VideoExt))
+				xb = append(xb, err == nil && fi.Size() > 0)
+			}
+			return xb
+		}(recipe.Videos),
+		Keywords: keywords,
+		Recipe:   recipe,
 		Share: ShareData{
 			IsFromHost: isFromHost,
 			IsShared:   isShared,
@@ -189,6 +198,8 @@ type ViewRecipeData struct {
 	Inc            func(n int) int
 	IsImagesExist  []bool
 	IsURL          bool
+	IsVideoExist   []bool
+	Keywords       []string
 	Recipe         *models.Recipe
 	Share          ShareData
 }

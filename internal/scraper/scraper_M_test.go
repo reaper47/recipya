@@ -2,7 +2,8 @@ package scraper_test
 
 import (
 	"testing"
-
+  "time"
+  
 	"github.com/reaper47/recipya/internal/models"
 )
 
@@ -48,10 +49,12 @@ func TestScraper_M(t *testing.T) {
 						{Type: "HowToStep", Text: "Remove from the heat and serve hot. If you have any leftovers, just keep them in the fridge and reheat them when you want to eat. You should finished it in a few days."},
 					},
 				},
-				Name:      "Hot and spicy rice cake (Tteokbokki)",
-				TotalTime: "P0DT0H30M0S",
-				Yield:     &models.Yield{Value: 4},
-				URL:       "https://www.maangchi.com/recipe/tteokbokki",
+				Name:         "Hot and spicy rice cake (Tteokbokki)",
+				ThumbnailURL: &models.ThumbnailURL{Value: "https://i.ytimg.com/vi/TA3Uo3a9674/maxresdefault.jpg?meta=og:image"},
+				TotalTime:    "P0DT0H30M0S",
+				Yield:        &models.Yield{Value: 4},
+				URL:          "https://www.maangchi.com/recipe/tteokbokki",
+				Video:        &models.Videos{Values: []models.VideoObject{{}}},
 			},
 		},
 		{
@@ -97,9 +100,11 @@ func TestScraper_M(t *testing.T) {
 						{Type: "HowToStep", Text: "Transfer to a serving plate and serve with rice, kimchi, lettuce, ssamjang, and more side dishes."},
 					},
 				},
-				Name:  "Spicy stir-fried pork (Dwaejigogi-bokkeum)",
-				Yield: &models.Yield{Value: 1},
-				URL:   "https://www.maangchi.com/recipe/dwaejigogi-bokkeum",
+				Name:         "Spicy stir-fried pork (Dwaejigogi-bokkeum)",
+				ThumbnailURL: &models.ThumbnailURL{Value: "https://i.ytimg.com/vi/3oFCGKmzQX8/maxresdefault.jpg?meta=og:image"},
+				Yield:        &models.Yield{Value: 1},
+				URL:          "https://www.maangchi.com/recipe/dwaejigogi-bokkeum",
+				Video:        &models.Videos{Values: []models.VideoObject{{}}},
 			},
 		},
 		{
@@ -167,11 +172,13 @@ func TestScraper_M(t *testing.T) {
 						{Type: "HowToStep", Text: "Once it starts to fermented, store in the refrigerator to use as needed. This slows down the fermentation process, which will make the kimchi more and more sour as time goes on."},
 					},
 				},
-				Name:      "Traditional napa cabbage kimchi (Tongbaechu-kimchi: 통배추김치)",
-				PrepTime:  "P0DT2H20M0S",
-				TotalTime: "P0DT2H50M0S",
-				Yield:     &models.Yield{Value: 8},
-				URL:       "https://www.maangchi.com/recipe/tongbaechu-kimchi",
+				Name:         "Traditional napa cabbage kimchi (Tongbaechu-kimchi: 통배추김치)",
+				PrepTime:     "P0DT2H20M0S",
+				ThumbnailURL: &models.ThumbnailURL{Value: "https://i.ytimg.com/vi/eTucCw1w6Ak/maxresdefault.jpg?meta=og:image"},
+				TotalTime:    "P0DT2H50M0S",
+				Yield:        &models.Yield{Value: 8},
+				URL:          "https://www.maangchi.com/recipe/tongbaechu-kimchi",
+				Video:        &models.Videos{Values: []models.VideoObject{{}}},
 			},
 		},
 		{
@@ -355,7 +362,20 @@ func TestScraper_M(t *testing.T) {
 				PrepTime:  "PT35M",
 				TotalTime: "PT70M",
 				URL:       "https://www.marthastewart.com/1539828/lemon-glazed-sheet-cake",
-				Yield:     &models.Yield{Value: 1},
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/lHp7fzKF-DuXeUCvc.mp4",
+							Description:  "A delicate cake that has a double dose of tangy brightness, thanks to a zest-filled batter and a silky citrus glaze. The optional candied lemon-rind topping adds a design element that will have the crowd swirling with delight.",
+							Duration:     "PT7M33S",
+							Name:         "Lemon-Glazed Sheet Cake",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://cdn.jwplayer.com/v2/media/lHp7fzKF/poster.jpg?width=720"},
+							UploadDate:   time.Date(2020, 11, 24, 11, 48, 52, 0, time.FixedZone("-5", -5*60*60)),
+						},
+					},
+				},
+				Yield: &models.Yield{Value: 1},
 			},
 		},
 		{
@@ -396,6 +416,18 @@ func TestScraper_M(t *testing.T) {
 				TotalTime: "PT40M",
 				Yield:     &models.Yield{Value: 1},
 				URL:       "https://www.matprat.no/oppskrifter/tradisjon/vafler/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://youtu.be/oD_1HcQZ0-A",
+							Description:  "Nystekte vafler slår aldri feil! Ingenting er som nystekte vafler med rømme og syltetøy på. Og det er mange forskjellige preferanser og tradisjoner til tilbehør, så sett fram all slags syltetøy, smør, sukker, brunost eller kanskje til og med pølser, så er garantert både store og små fornøyde. Her har du vår oppskrift på vafler som er både enkel og kjempegod, her er en porsjon rundt 10 vafler.\n\n\n➡️ Her finner du oppskriften:\nhttps://www.matprat.no/oppskrifter/tradisjon/vafler/\n\n\n\n\n➡️ Vi har flere vaffeloppskrifter, ta en titt her:\nhttps://www.matprat.no/vafler/\n\n\n\n\nAbonner på kanalen vår for nydelige oppskrifter og nyttige tips:\nhttps://goo.gl/beBt6i \n\n\n\n\nFølg oss gjerne i sosiale medier: \nFacebook | https://www.facebook.com/MatPrat \nInstagram | https://www.instagram.com/matprat.no \nFlere oppskrifter | https://www.matprat.no",
+							Name:         "Vafler - kjapt og greit! | MatPrat",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://i.ytimg.com/vi/oD_1HcQZ0-A/sddefault.jpg"},
+							UploadDate:   time.Date(2021, 10, 26, 9, 0, 30, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -596,8 +628,22 @@ func TestScraper_M(t *testing.T) {
 				},
 				PrepTime:  "PT5M",
 				TotalTime: "PT5M",
-				Yield:     &models.Yield{Value: 10},
 				URL:       "https://minimalistbaker.com/adaptogenic-hot-chocolate-mix/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://www.youtube.com/watch?v=uV9gYUMEMTU",
+							Description:  "Low-sugar hot chocolate mix with raw cacao powder and adaptogens like reishi mushroom, maca, ashwagandha, and he shou wu. The perfect low-caffeine cozy beverage to replace coffee or matcha.\n\nFull Recipe: https://minimalistbaker.com/adaptogenic-hot-chocolate-mix/\n \nFOLLOW US!\nBlog: http://minimalistbaker.com/\nInstagram: https://instagram.com/minimalistbaker/\nTwitter: https://twitter.com/minimalistbaker\nFacebook: https://www.facebook.com/MinimalistBaker",
+							Duration:     "PT45S",
+							EmbedURL:     "https://www.youtube.com/embed/uV9gYUMEMTU?feature=oembed",
+							Name:         "Adaptogenic Hot Chocolate Mix | Minimalist Baker Recipes",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://i.ytimg.com/vi/uV9gYUMEMTU/hqdefault.jpg"},
+							UploadDate:   time.Date(2020, 3, 1, 9, 0, 9, 0, time.UTC),
+						},
+					},
+				},
+				Yield: &models.Yield{Value: 10},
 			},
 		},
 		{
@@ -645,8 +691,20 @@ func TestScraper_M(t *testing.T) {
 					Sugar:         "30",
 				},
 				TotalTime: "PT15M",
-				Yield:     &models.Yield{Value: 6},
 				URL:       "https://ministryofcurry.com/cranberry-sauce-recipe",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/SKpwqP3W.mp4",
+							Description:  "Cranberry sauce with its sweet and tangy flavors is my favorite Thanksgiving side dish that brightens up the holiday table. This EASY gluten free, vegan recipe uses only 4 ingredients and is ready in 15 minutes using the Instant Pot!",
+							Name:         "Instant Pot Cranberry Sauce",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/SKpwqP3W-720.jpg"},
+							UploadDate:   time.Date(2019, 11, 25, 0, 0, 0, 0, time.UTC),
+						},
+					},
+				},
+				Yield: &models.Yield{Value: 6},
 			},
 		},
 		{
@@ -805,8 +863,20 @@ func TestScraper_M(t *testing.T) {
 				Name:      "Crockpot Cornbread",
 				PrepTime:  "PT5M",
 				TotalTime: "PT125M",
-				Yield:     &models.Yield{Value: 6},
-				URL:       "https://momswithcrockpots.com/crockpot-cornbread/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/m7qk6W6r.mp4",
+							Description:  "Save your oven space and make this delicious Crockpot Cornbread Recipe right in your slow cooker. Comes out perfect every time!",
+							Name:         "Crockpot Cornbread Recipe",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/m7qk6W6r-720.jpg"},
+							UploadDate:   time.Date(2020, 10, 29, 12, 7, 10, 0, time.UTC),
+						},
+					},
+				},
+				Yield: &models.Yield{Value: 6},
+				URL:   "https://momswithcrockpots.com/crockpot-cornbread/",
 			},
 		},
 		{
@@ -1013,8 +1083,24 @@ func TestScraper_M(t *testing.T) {
 				},
 				PrepTime:  "PT5M",
 				TotalTime: "PT50M",
-				Yield:     &models.Yield{Value: 12},
-				URL:       "https://www.mybakingaddiction.com/pistachio-pudding-cake/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1646933624/a7syuib4chpdofspjb98.mp4",
+							Description: "Pistachio Pudding Cake is a simple bundt cake to make any time of year. Made with a cake mix and pistachio pudding mix, this cake can be topped with a simple glaze or any number of frostings for a delicious crowd-pleasing dessert.",
+							Duration:    "PT64S",
+							EmbedURL:    "https://video.mediavine.com/videos/a7syuib4chpdofspjb98.js",
+							Name:        "Pistachio Pudding Cake",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://mediavine-res.cloudinary.com/video/upload/s--20mrVB9o--/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1646933624/a7syuib4chpdofspjb98.jpg",
+							},
+							UploadDate: time.Date(2022, 3, 10, 17, 34, 8, 0, time.UTC),
+						},
+					},
+				},
+				Yield: &models.Yield{Value: 12},
+				URL:   "https://www.mybakingaddiction.com/pistachio-pudding-cake/",
 			},
 		},
 		{
@@ -1047,7 +1133,22 @@ func TestScraper_M(t *testing.T) {
 						{Type: "HowToStep", Text: "Place the 4 loaves on well‑oiled baking sheets, leaving plenty of room for them to expand, then leave to rise for 1 hour, or until doubled in bulk. Now brush gently with the beaten egg yolks or if you want to sprinkle with poppy or sesame seeds, brush first with the whole beaten egg (the seeds stick better if the white is there too). Bake in a preheated 350F (180C) oven for 30‑40 minutes or until the loaves are beautifully golden-brown. They are done if they sound hollow when you tap the bottoms."},
 					},
 				},
-				Name:  "Classic Challah Recipe | My Jewish Learning",
+				Name: "Classic Challah Recipe | My Jewish Learning",
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://www.myjewishlearning.com/wp-content/uploads/2004/08/round-challah.jpg",
+				},
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							Description:  "Challah Recipe. Make your own challah, round or braided. Ashkenazic Jewish Recipes. Ashkenazic Jewish Food",
+							EmbedURL:     "https://www.youtube.com/watch?v=SYH4zNgp3DY",
+							Name:         "Classic Challah Recipe",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://img.youtube.com/vi/SYH4zNgp3DY/maxresdefault.jpg"},
+							UploadDate:   time.Date(2002, 8, 1, 0, 0, 0, 0, time.FixedZone("-4", -4*60*60)),
+						},
+					},
+				},
 				Yield: &models.Yield{Value: 1},
 				URL:   "https://www.myjewishlearning.com/recipe/challah-recipe/",
 			},
@@ -1312,8 +1413,21 @@ func TestScraper_M(t *testing.T) {
 				},
 				PrepTime:  "PT15M",
 				TotalTime: "PT30M",
-				Yield:     &models.Yield{Value: 6},
-				URL:       "https://www.myrecipes.com/recipe/quick-easy-nachos",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/sXNlu4MM-px9BSfP1.mp4",
+							Description:  "These classic Tex-Mex nachos are loaded to the MAX! Avoid soggy nachos by briefly baking them before topping with cheese, seasoned beef, refried beans, guacamole, and salsa. They're a great snack, party appetizer, or even casual weeknight dinner.",
+							Duration:     "PT1M29S",
+							Name:         "The Best Nachos",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://cdn.jwplayer.com/v2/media/sXNlu4MM/poster.jpg?width=720"},
+							UploadDate:   time.Date(2021, 1, 20, 21, 39, 28, 0, time.FixedZone("-5", -5*60*60)),
+						},
+					},
+				},
+				Yield: &models.Yield{Value: 6},
+				URL:   "https://www.myrecipes.com/recipe/quick-easy-nachos",
 			},
 		},
 	}

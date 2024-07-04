@@ -8,7 +8,7 @@ import (
 )
 
 func scrapePanelinha(root *goquery.Document) (models.RecipeSchema, error) {
-	rs, err := parseLdJSON(root)
+	rs, err := parseWebsite(root)
 	if err != nil {
 		return rs, err
 	}

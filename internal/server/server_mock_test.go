@@ -486,8 +486,8 @@ func (m *mockRepository) GetAuthToken(_, _ string) (models.AuthToken, error) {
 	return models.AuthToken{UserID: 1, Expires: time.Now().Add(1 * time.Hour)}, nil
 }
 
-func (m *mockRepository) Images() []string {
-	return make([]string, 0)
+func (m *mockRepository) Media() (images, videos []string) {
+	return make([]string, 0), make([]string, 0)
 }
 
 func (m *mockRepository) InitAutologin() error {
@@ -505,6 +505,10 @@ func (m *mockRepository) IsUserPassword(id int64, password string) bool {
 		return m.IsUserPasswordFunc(id, password)
 	}
 	return slices.IndexFunc(m.UsersRegistered, func(user models.User) bool { return user.ID == id }) != -1
+}
+
+func (m *mockRepository) Keywords() ([]string, error) {
+	return []string{"big"}, nil
 }
 
 func (m *mockRepository) MeasurementSystems(userID int64) ([]units.System, models.UserSettings, error) {
@@ -878,6 +882,10 @@ func (m *mockRepository) UpdateUserSettingsCookbooksViewMode(userID int64, mode 
 	return nil
 }
 
+func (m *mockRepository) UpdateVideo(_ uuid.UUID, _ int) error {
+	return nil
+}
+
 func (m *mockRepository) UserInitials(userID int64) string {
 	index := slices.IndexFunc(m.UsersRegistered, func(user models.User) bool {
 		return user.ID == userID
@@ -1031,6 +1039,10 @@ func (m *mockFiles) MergeImagesToPDF(images []io.Reader) io.ReadWriter {
 	return nil
 }
 
+func (m *mockFiles) ScrapeAndStoreImage(_ string) (uuid.UUID, error) {
+	return uuid.New(), nil
+}
+
 func (m *mockFiles) UpdateApp(current semver.Version) error {
 	if m.updateAppFunc != nil {
 		return m.updateAppFunc(current)
@@ -1046,7 +1058,8 @@ func (m *mockFiles) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
 	return uuid.New(), nil
 }
 
-func (m *mockFiles) ScrapeAndStoreImage(_ string) (uuid.UUID, error) {
+func (m *mockFiles) UploadVideo(_ io.ReadCloser, _ services.RepositoryService) (uuid.UUID, error) {
+	m.uploadImageHitCount++
 	return uuid.New(), nil
 }
 

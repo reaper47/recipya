@@ -12,12 +12,12 @@ type HTTPClient interface {
 }
 
 // NewHTTP creates a new HTTP service.
-func NewHTTP(client HTTPClient) *HTTP {
+func NewHTTP(client HTTPClient) HTTP {
 	if client == nil {
 		client = http.DefaultClient
 	}
 
-	return &HTTP{
+	return HTTP{
 		Client: client,
 	}
 }
@@ -27,9 +27,14 @@ type HTTP struct {
 	Client HTTPClient
 }
 
+// Do sends an HTTP request and returns an HTTP response, following policy (such as redirects, cookies, auth) as configured on the client.
+func (h HTTP) Do(req *http.Request) (*http.Response, error) {
+	return h.Client.Do(req)
+}
+
 // PrepareRequestForURL Prepares an HTTP GET request for a given URL.
 // It will apply additional HTTP headers if the host requires it.
-func (h *HTTP) PrepareRequestForURL(url string) (*http.Request, error) {
+func (h HTTP) PrepareRequestForURL(url string) (*http.Request, error) {
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
@@ -50,7 +55,7 @@ func (h *HTTP) PrepareRequestForURL(url string) (*http.Request, error) {
 }
 
 // GetHost gets the host from the raw URL.
-func (h *HTTP) GetHost(rawURL string) string {
+func (h HTTP) GetHost(rawURL string) string {
 	u, err := url.Parse(rawURL)
 	if err != nil {
 		return ""

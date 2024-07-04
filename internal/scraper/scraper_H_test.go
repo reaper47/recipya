@@ -2,6 +2,7 @@ package scraper_test
 
 import (
 	"testing"
+  "time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -104,8 +105,24 @@ func TestScraper_H(t *testing.T) {
 				Name:      "Peanut Butter Pie",
 				PrepTime:  "PT20M",
 				TotalTime: "PT272M",
-				Yield:     &models.Yield{Value: 8},
 				URL:       "https://handletheheat.com/peanut-butter-pie/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1686750184/iQqyOm2s6.mp4",
+							Description: "This homemade Peanut Butter Pie is made from scratch with just a few easy ingredients and will have everyone coming back for seconds! Tons of amazing chocolate and peanut butter flavor and topped with reese's. The best easy dessert idea to serve for a crowd!",
+							Duration:    "PT59S",
+							EmbedURL:    "https://video.mediavine.com/videos/iQqyOm2s6.js",
+							Name:        "Easy Peanut Butter Pie Recipe",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://mediavine-res.cloudinary.com/image/upload/s--MPjo6Nh3--/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1686750187/lzydttnsifro1sltfxvd.jpg",
+							},
+							UploadDate: time.Date(2022, 3, 31, 22, 59, 19, 0, time.UTC),
+						},
+					},
+				},
+				Yield: &models.Yield{Value: 8},
 			},
 		},
 		{
@@ -170,8 +187,21 @@ func TestScraper_H(t *testing.T) {
 				PrepTime:  "PT20M",
 				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT30M",
-				Yield:     &models.Yield{Value: 1},
 				URL:       "https://www.hassanchef.com/2022/10/dragon-chicken.html",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://youtu.be/9yCRMQ7uX24",
+							Description: "Dragon Chicken an appetizer or snacks of Indian Chinese cuisines where deep fried chicken strips are stir fried with a spicy combination of sauces and herbs",
+							Name:        "Dragon Chicken",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjVPyaqbaCDbK5VdlCoe93-7wQjDmM4jVCrnuGlne0QDqUKlwfzat-Z2RS7GSFujClIpZUZIn7Q0-J75jr4LFCkJu_OwOc-YTIw30WnvpC0lH9vhMGjSDE-FmIvvg0m6dv2KlFRo1YcfA804XBHPp1AeOpf0tA0qoMFzWKHo4tSjUtrL_TJ5a7HP24w/s4623/IMG_20220906_222143.webp",
+							},
+						},
+					},
+				},
+				Yield: &models.Yield{Value: 1},
 			},
 		},
 		{
@@ -276,8 +306,24 @@ func TestScraper_H(t *testing.T) {
 				},
 				PrepTime:  "PT20M",
 				TotalTime: "PT40M",
-				Yield:     &models.Yield{Value: 25},
 				URL:       "https://www.healthylittlefoodies.com/broccoli-tots/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1630820374/ltvoszmwvluaw6vyhycl.mp4",
+							Description: "Video showing how to make broccoli tots. Cooked broccoli, egg, almond meal, garlic and cheese are mixed together to form tablespoon-sized tots. They are then baked for 20 mins until golden and crispy.",
+							Duration:    "PT53S",
+							EmbedURL:    "https://video.mediavine.com/videos/ltvoszmwvluaw6vyhycl.js",
+							Name:        "Broccoli Tots",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://mediavine-res.cloudinary.com/image/upload/s--LyyrRVz---/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1630820338/lpr9iq9ohbmxudkjmgua.jpg",
+							},
+							UploadDate: time.Date(2021, 9, 5, 5, 40, 38, 0, time.UTC),
+						},
+					},
+				},
+				Yield: &models.Yield{Value: 25},
 			},
 		},
 		{
@@ -385,6 +431,9 @@ func TestScraper_H(t *testing.T) {
 					Sodium:        "880",
 					Sugar:         "9",
 				},
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://img.hellofresh.com/f_auto,fl_lossy,h_300,q_auto,w_450/hellofresh_s3/image/5a8f0fcbae08b52f161b5832-033c9a4a.jpg",
+				},
 				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT20M",
 				Yield:     &models.Yield{Value: 2},
@@ -491,8 +540,20 @@ func TestScraper_H(t *testing.T) {
 				Name:      "Guinness Beef Stew with Cheddar Herb Dumplings",
 				PrepTime:  "PT30M",
 				TotalTime: "PT3H30M",
-				Yield:     &models.Yield{Value: 6},
 				URL:       "https://hostthetoast.com/guinness-beef-stew-with-cheddar-herb-dumplings/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/VctDiVIG.mp4",
+							Description:  "Rich and hearty Guinness Beef Stew is a classic that you'll find at pubs and family dinner tables all across Ireland. This version features ultra-tender meat, deep flavors, and Cheddar Herb Dumplings that will make you swoon. It's the ultimate comfort food.",
+							Name:         "Guinness Beef Stew with Cheddar Herb Dumplings",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/VctDiVIG-720.jpg"},
+							UploadDate:   time.Date(2019, 2, 28, 21, 23, 13, 0, time.UTC),
+						},
+					},
+				},
+				Yield: &models.Yield{Value: 6},
 			},
 		},
 	}

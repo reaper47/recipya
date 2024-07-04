@@ -2,6 +2,7 @@ package scraper_test
 
 import (
 	"testing"
+  "time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -227,7 +228,10 @@ func TestScraper_K(t *testing.T) {
 					Protein:       "15",
 					Servings:      "1",
 				},
-				PrepTime:  "PT45M",
+				PrepTime: "PT45M",
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://images.kitchenstories.io/recipeImages/RP02_18_06_valencianPaella_titlePicture.jpg",
+				},
 				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT45M",
 				URL:       "https://www.kitchenstories.com/de/rezepte/valencianische-paella",
@@ -359,8 +363,21 @@ func TestScraper_K(t *testing.T) {
 				},
 				Name:      "Myllymäkis toast skagen",
 				TotalTime: "PT25M",
-				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.koket.se/mitt-kok/tommy-myllymaki/myllymakis-toast-skagen",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://www.tv4play.se/iframe/video/20277435?autoload=true",
+							Description:  "Myllymäkis toast skagen",
+							EmbedURL:     "https://www.tv4play.se/iframe/video/20277435?autoload=true",
+							Name:         "Myllymäkis toast skagen",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://img.koket.se/standard-mega/myllymakis-toast-skagen-2.jpg"},
+							UploadDate:   time.Date(2014, 12, 29, 5, 0, 0, 0, time.UTC),
+						},
+					},
+				},
+				Yield: &models.Yield{Value: 4},
 			},
 		},
 		{

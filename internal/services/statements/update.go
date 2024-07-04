@@ -121,3 +121,9 @@ const UpdateIsUpdateAvailable = `
 	SET is_update_available = ?
 	WHERE id = 1
 	RETURNING updated_at, update_last_checked_at`
+
+// UpdateVideo is the query to update a video.
+const UpdateVideo = `
+	UPDATE video_recipe
+	SET duration = ?
+	WHERE video = ?`

@@ -134,7 +134,18 @@ func TestNextcloudImport(t *testing.T) {
 			},
 			UpdatedAt: t1,
 			URL:       "https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/",
-			Yield:     48,
+			Videos: []models.VideoObject{
+				{
+					AtType:       "VideoObject",
+					ContentURL:   "https://content.jwplatform.com/videos/qHQSNVCK-K3AjnAEN.mp4",
+					Description:  "When it comes to fresh and delicious cookies, nothing beats homemade. In this video, Nicole shows you how to make Allrecipes’s top rated recipe for chocolate chip cookies. Using a deliciously sweet cookie dough that’s beaten with brown sugar and vanilla, fold in mini chocolate chips. Once the dough has been chilled in the fridge, distribute it onto a baking sheet and bake for ten minutes in the oven. With a tender texture and a rich, buttery taste, they're the ultimate comfort snack!",
+					Duration:     "PT3M33S",
+					Name:         "How to Make the Best Chocolate Chip Cookies",
+					ThumbnailURL: &models.ThumbnailURL{Value: "https://cdn.jwplayer.com/v2/media/qHQSNVCK/poster.jpg?width=720"},
+					UploadDate:   time.Date(2023, 8, 24, 22, 27, 49, 0, time.FixedZone("-4", -4*60*60)),
+				},
+			},
+			Yield: 48,
 		},
 		models.Recipe{
 			Category:    "breakfast",

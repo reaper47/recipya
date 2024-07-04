@@ -2,6 +2,7 @@ package scraper_test
 
 import (
 	"testing"
+  "time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -306,6 +307,20 @@ func TestScraper_C(t *testing.T) {
 				TotalTime: "P0DT1H0M",
 				Yield:     &models.Yield{Value: 3},
 				URL:       "https://www.chefkoch.de/rezepte/1064631211795001/Knusprige-Ofenkartoffeln.html",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://www.chefkoch.de/rezepte/1064631211795001/Knusprige-Ofenkartoffeln.html",
+							Description: "Video zu Knusprige Ofenkartoffeln",
+							EmbedURL:    "https://video.chefkoch-cdn.de/ck.de/videos/4244-video.mp4",
+							Name:        "Video zu Knusprige Ofenkartoffeln",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://static.chefkoch-cdn.de/images/crop-960x540/ck.de/videos/thumbs/4244-org.jpg",
+							},
+						},
+					},
+				},
 			},
 		},
 		{
@@ -409,6 +424,18 @@ func TestScraper_C(t *testing.T) {
 				TotalTime: "PT60M",
 				Yield:     &models.Yield{Value: 4},
 				URL:       "https://chefsavvy.com/crispy-baked-chicken-wings/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/2lO7mp0i.mp4",
+							Description:  "If you thought you couldn't get CRISPY chicken wings in the oven think again! It's so easy to bake these chicken wings and you would never know that these aren't fried!",
+							Name:         "Crispy Baked Chicken Wings",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/2lO7mp0i-720.jpg"},
+							UploadDate:   time.Date(2023, 10, 2, 17, 42, 55, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -468,6 +495,70 @@ func TestScraper_C(t *testing.T) {
 				TotalTime:       "PT55M",
 				Yield:           &models.Yield{Value: 3},
 				URL:             "https://chejorge.com/2020/08/15/vegan-nasi-lemak/",
+			},
+		},
+		{
+			name: "chinesecookingdemystified.substack.com",
+			in:   "https://chinesecookingdemystified.substack.com/p/lao-gan-ma-fried-rice",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DatePublished: "2024-01-31",
+				Description: &models.Description{
+					Value: "A specific Guizhou variant of an idea that you can find throughout China",
+				},
+				Keywords: &models.Keywords{},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"Jasmine rice (泰国香米/粘米), 225g",
+						"Napa Cabbage (白菜/娃娃菜), 40g",
+						"Liaojiu a.k.a. Shaoxing wine (料酒/绍酒), ~1/2 tbsp. To be swirled in when frying the cabbage.",
+						"Bacon, 3 strips",
+						"Optional, to fry the bacon:",
+						"Water, ~3 tbsp",
+						"Oil, ~1/2 tbsp",
+						"Aromatics:",
+						"Garlic, 1 large clove, minced.",
+						"Ginger, ~1/2 cm, minced.",
+						"Scallion, ~1. White and green part separated. White minced, greens sliced.",
+						"Liaojiu a.k.a. Shaoxing wine (料酒/绍酒), ~1/2 tbsp. To be swirled in after frying the aromatics.",
+						"Red, fragrant chili powder, 2 tsp. See note above.",
+						"Lao Gan Ma Chili Oil with Black Bean (老干妈风味豆豉油辣椒), 2 tbsp",
+						"Soy sauce (生抽), 1 tbsp",
+						"Canned beans, 100g. Dealer’s choice. Kidney beans would be nice.",
+						"Seasoning:",
+						"Salt, ¼ tsp",
+						"Sugar, ½ tsp",
+						"MSG (味精), ¼ tsp",
+						"White pepper powder (白胡椒粉), ¼ tsp",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Note: we’ll be using the steaming method to prepare our rice for stir-frying. Whenever we call for this method it tends to be a little controversial, as it contradicts some of the prevailing internet wisdom on prepping rice for fried rice. From /r/cooking to Uncle Roger, everyone tends to insist that you should use day-old-rice for fried rice."},
+						{Type: "HowToStep", Text: "Of course, if you happen to have some day-old-rice laying around, definitely feel free to use that method. Use the technique that you’re comfortable with! But the below method is a legit restaurant technique to prepare rice for fried rice in southwest China (albeit slightly adapted to a home kitchen), and is definitely the best way to get a great fried rice texture same-day."},
+						{Type: "HowToStep", Text: "To steam the rice:"},
+						{Type: "HowToStep", Text: "Rinse the rice 2-3 times. Add to a pot of boiling water, cooking it like it’s pasta. Boil for 3.5 minutes, then pour into a strainer. Make a little hole in the center with a chopstick for the rice to steam evenly."},
+						{Type: "HowToStep", Text: "Place the strainer over a pot of bubbling water. Cover, roughly ‘sealing’ the lid with a couple damp rags (alternatively, you could wrap the top of the strainer with aluminum foil). Steam for 15 minutes."},
+						{Type: "HowToStep", Text: "Remove and toss on a plate."},
+						{Type: "HowToStep", Text: "(you can do a lot of the prep work below while the rice is steaming)"},
+						{Type: "HowToStep", Text: "To make the fried rice:"},
+						{Type: "HowToStep", Text: "Mince the garlic, ginger, and scallion whites. Slice the scallion green. Cut the bacon into ~1 cm strips. Cut the napa into similar ~1 cm strips."},
+						{Type: "HowToStep", Text: "To a wok, first longyau: get your wok piping hot, shut off the heat, and swirl in ~1 tbsp oil. Swap the flame back to high, and fry the napa cabbage for ~30 seconds, or until it’s just beginning to char. Swirl in the 1/2 tbsp Shaoxing wine, give a quick mix, then remove."},
+						{Type: "HowToStep", Text: "Next, fry the bacon. The way I like to do this is first add the bacon with that 3 tbsp water over a high flame. Boil rapidly until the water reduces away, then swap the flame to medium and add in that drizzle (~1/2 tbsp) of oil. Fry for ~5 minutes, or until the bacon is crisp and much of its lard has rendered oil. Remove the bacon."},
+						{Type: "HowToStep", Text: "You should be looking at around ~3 tbsp of oil."},
+						{Type: "HowToStep", Text: "Over a medium-low flame toss in the minced aromatics. Fry those until they’re fragrant, about thirty seconds or so, then drizzle in the other half tablespoon of Shaoxing wine. Good mix, and once you’re sure that Shaoxing’s reduced away, also go in with two teaspoons of your red, fragrant chili powder. Give that a quick fry until it’s fragrant, about thirty seconds more, then go in with two tablespoons of your Lao Gan Ma. Quick mix, then up your flame to high and add in the steamed rice. Stir fry for about one minute, then swirl in a tablespoon of soy sauce. Mix, then add in your drained and rinsed beans. Mix, seasoning in. Add back in the cabbage and the bacon. Heat off, another good mix, then mix the scallion greens."},
+					},
+				},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Name:            "Lao Gan Ma Fried Rice (老干妈炒饭)",
+				NutritionSchema: &models.NutritionSchema{},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://chinesecookingdemystified.substack.com/p/lao-gan-ma-fried-rice",
 			},
 		},
 		{
@@ -634,7 +725,22 @@ func TestScraper_C(t *testing.T) {
 				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT25M",
 				Yield:     &models.Yield{Value: 50},
-				URL:       "https://comidinhasdochef.com/pudim-no-copinho-para-festa/"},
+				URL:       "https://comidinhasdochef.com/pudim-no-copinho-para-festa/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://www.youtube.com/watch?v=dtupU7SRGPs",
+							Description:  "Vem comigo aprender como fazer uma receita de pudim no copinho para festa de aniversário ou para vender. Essa receita é perfeita para você que vai fazer uma festa ou uma confraternização e quer servir uma sobremesa gostosa que renda bastante.",
+							Duration:     "PT4M22S",
+							EmbedURL:     "https://www.youtube.com/embed/dtupU7SRGPs",
+							Name:         "Pudim no Copinho Para Festa | Receita",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://img.youtube.com/vi/dtupU7SRGPs/hqdefault.jpg"},
+							UploadDate:   time.Date(2021, 10, 1, 0, 0, 0, 0, time.UTC),
+						},
+					},
+				},
+			},
 		},
 		{
 			name: "cookeatshare.com",
@@ -758,7 +864,20 @@ func TestScraper_C(t *testing.T) {
 				PrepTime:  "PT10M",
 				TotalTime: "PT45M",
 				Yield:     &models.Yield{Value: 16},
-				URL:       "https://cookieandkate.com/honey-butter-cornbread-recipe/"},
+				URL:       "https://cookieandkate.com/honey-butter-cornbread-recipe/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/HyLC1Ad5.mp4",
+							Description:  "Watch how to make cornbread in this short video. It’s fluffy on the inside, crisp around the edges, and full of delicious honey-butter flavor. ",
+							Name:         "Honey Butter Cornbread",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/HyLC1Ad5-720.jpg"},
+							UploadDate:   time.Date(2022, 10, 14, 10, 55, 19, 0, time.UTC),
+						},
+					},
+				},
+			},
 		},
 		{
 			name: "cookpad.com",
@@ -933,6 +1052,18 @@ func TestScraper_C(t *testing.T) {
 				PrepTime: "PT5M",
 				Yield:    &models.Yield{Value: 4},
 				URL:      "https://copykat.com/mcdonalds-egg-mcmuffin",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/3Q0cyCTI.mp4",
+							Description:  "Do you love Mcdonald’s Egg McMuffin? A perfectly toasted English muffin, a slice of Candian bacon, and a perfectly cooked egg, and a slice of American cheese is the most-loved breakfast sandwich. You can make these at home.",
+							Name:         "How to make an Egg McMuffin",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/3Q0cyCTI-720.jpg"},
+							UploadDate:   time.Date(2021, 6, 23, 20, 19, 33, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -1017,8 +1148,11 @@ func TestScraper_C(t *testing.T) {
 						{Type: "HowToStep", Text: "Reduce heat to medium. Add onion, carrots, and celery to reserved pot. Cook, stirring occasionally, until onion is translucent, 6 to 8 minutes. Add garlic, rosemary, sage, thyme, and bay leaves. Cook, stirring, until garlic is fragrant, about 1 minute. Sprinkle in flour and cook, stirring, until flour becomes a medium brown shade (like the color of caramel), 4 to 5 minutes. While stirring, slowly pour in half of stock. Return wings to pot and pour in remaining stock until wings are 2/3 covered by liquid. Cover and bake until wings are tender, 2 to 2 1/2 hours. Serve over rice."},
 					},
 				},
-				Name:      "Braised Turkey Wings",
-				PrepTime:  "PT40M",
+				Name:     "Braised Turkey Wings",
+				PrepTime: "PT40M",
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://hips.hearstapps.com/hmg-prod/images/braised-turkey-wings-clx040122-1646247632.jpg?crop=0.878xw:0.585xh;0,0.223xh&resize=100:*",
+				},
 				TotalTime: "PT3H10M",
 				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.countryliving.com/food-drinks/a39298988/braised-turkey-wings-recipe/",
