@@ -1067,6 +1067,7 @@ func (t *ThumbnailURL) UnmarshalJSON(data []byte) error {
 			t.Value = x[0].(string)
 		}
 	}
+	return nil
 }
 
 // Tools holds the list of tools used for a recipe.

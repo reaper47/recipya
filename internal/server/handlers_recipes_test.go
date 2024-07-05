@@ -1773,9 +1773,6 @@ func TestHandlers_Recipes_View(t *testing.T) {
 
 			assertStatus(t, rr.Code, http.StatusOK)
 			assertStringsInHTML(t, getBodyHTML(rr), tc.want)
-				`<table class="table table-zebra table-xs print:hidden"><thead><tr><th>Nutrition (per 100g)</th><th>Amount</th></tr></thead> <tbody><tr><td>Calories:</td><td>500 kcal</td></tr><tr><td>Total carbs:</td><td>7 g</td></tr><tr><td>Sugars:</td><td>6 g</td></tr><tr><td>Protein:</td><td>3 g</td></tr><tr><td>Total fat:</td><td>8 g</td></tr><tr><td>Saturated fat:</td><td>4 g</td></tr><tr><td>Unsaturated fat:</td><td>9 g</td></tr><tr><td>Trans fat:</td><td>10 g</td></tr><tr><td>Cholesterol:</td><td>1 mg</td></tr><tr><td>Sodium:</td><td>5 mg</td></tr><tr><td>Fiber:</td><td>2 g</td></tr></tbody></table>`,
-			}
-			assertStringsInHTML(t, getBodyHTML(rr), want)
 		})
 	}
 
