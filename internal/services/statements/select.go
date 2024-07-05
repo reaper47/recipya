@@ -1,10 +1,11 @@
 package statements
 
 import (
-	"github.com/reaper47/recipya/internal/models"
-	"github.com/reaper47/recipya/internal/templates"
 	"strconv"
 	"strings"
+
+	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/templates"
 )
 
 // BuildSelectPaginatedResults builds a SQL query for paginated search results.
@@ -327,6 +328,7 @@ const baseSelectRecipe = `
 		   nutrition.total_fat,
 		   nutrition.saturated_fat,
 		   nutrition.unsaturated_fat,
+		   nutrition.trans_fat,
 		   nutrition.cholesterol,
 		   nutrition.sodium,
 		   nutrition.fiber,

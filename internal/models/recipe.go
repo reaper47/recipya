@@ -152,12 +152,13 @@ func (r *Recipe) Copy() Recipe {
 			Cholesterol:        r.Nutrition.Cholesterol,
 			Fiber:              r.Nutrition.Fiber,
 			Protein:            r.Nutrition.Protein,
+			TotalFat:           r.Nutrition.TotalFat,
 			SaturatedFat:       r.Nutrition.SaturatedFat,
+			UnsaturatedFat:     r.Nutrition.UnsaturatedFat,
+			TransFat:           r.Nutrition.TransFat,
 			Sodium:             r.Nutrition.Sodium,
 			Sugars:             r.Nutrition.Sugars,
 			TotalCarbohydrates: r.Nutrition.TotalCarbohydrates,
-			TotalFat:           r.Nutrition.TotalFat,
-			UnsaturatedFat:     r.Nutrition.UnsaturatedFat,
 		},
 		Times: Times{
 			Prep:  r.Times.Prep,
@@ -438,12 +439,13 @@ type Nutrition struct {
 	Fiber              string
 	IsPerServing       bool
 	Protein            string
+	TotalFat           string
 	SaturatedFat       string
+	UnsaturatedFat     string
+	TransFat           string
 	Sodium             string
 	Sugars             string
 	TotalCarbohydrates string
-	TotalFat           string
-	UnsaturatedFat     string
 }
 
 // Clean empties any negligent field of the Nutrition.
@@ -464,8 +466,20 @@ func (n *Nutrition) Clean() {
 		n.Protein = ""
 	}
 
+	if strings.HasPrefix(n.TotalFat, "0") {
+		n.TotalFat = ""
+	}
+
 	if strings.HasPrefix(n.SaturatedFat, "0") {
 		n.SaturatedFat = ""
+	}
+
+	if strings.HasPrefix(n.UnsaturatedFat, "0") {
+		n.UnsaturatedFat = ""
+	}
+
+	if strings.HasPrefix(n.TransFat, "0") {
+		n.TransFat = ""
 	}
 
 	if strings.HasPrefix(n.Sodium, "0") {
@@ -479,14 +493,6 @@ func (n *Nutrition) Clean() {
 	if strings.HasPrefix(n.TotalCarbohydrates, "0") {
 		n.TotalCarbohydrates = ""
 	}
-
-	if strings.HasPrefix(n.TotalFat, "0") {
-		n.TotalFat = ""
-	}
-
-	if strings.HasPrefix(n.UnsaturatedFat, "0") {
-		n.UnsaturatedFat = ""
-	}
 }
 
 // Equal verifies whether the Nutrition struct is equal to the other.
@@ -495,12 +501,13 @@ func (n *Nutrition) Equal(other Nutrition) bool {
 		n.Cholesterol == other.Cholesterol &&
 		n.Fiber == other.Fiber &&
 		n.Protein == other.Protein &&
+		n.TotalFat == other.TotalFat &&
 		n.SaturatedFat == other.SaturatedFat &&
+		n.UnsaturatedFat == other.UnsaturatedFat &&
+		n.TransFat == other.TransFat &&
 		n.Sodium == other.Sodium &&
 		n.Sugars == other.Sugars &&
-		n.TotalCarbohydrates == other.TotalCarbohydrates &&
-		n.TotalFat == other.TotalFat &&
-		n.UnsaturatedFat == other.UnsaturatedFat
+		n.TotalCarbohydrates == other.TotalCarbohydrates
 }
 
 // Format formats the nutrition.
@@ -551,6 +558,12 @@ func (n *Nutrition) Format() string {
 		sb.WriteString("; ")
 	}
 
+	if n.TransFat != "" {
+		sb.WriteString("trans fat ")
+		sb.WriteString(EnsureNutritionUnitForString(n.TransFat, "TransFat"))
+		sb.WriteString("; ")
+	}
+
 	if n.Cholesterol != "" {
 		sb.WriteString("cholesterol ")
 		sb.WriteString(EnsureNutritionUnitForString(n.Cholesterol, "Cholesterol"))
@@ -585,12 +598,13 @@ func (n *Nutrition) Scale(multiplier float64) {
 	n.Cholesterol = regex.Digit.ReplaceAllStringFunc(n.Cholesterol, scale)
 	n.Fiber = regex.Digit.ReplaceAllStringFunc(n.Fiber, scale)
 	n.Protein = regex.Digit.ReplaceAllStringFunc(n.Protein, scale)
+	n.TotalFat = regex.Digit.ReplaceAllStringFunc(n.TotalFat, scale)
 	n.SaturatedFat = regex.Digit.ReplaceAllStringFunc(n.SaturatedFat, scale)
+	n.UnsaturatedFat = regex.Digit.ReplaceAllStringFunc(n.UnsaturatedFat, scale)
+	n.TransFat = regex.Digit.ReplaceAllStringFunc(n.TransFat, scale)
 	n.Sodium = regex.Digit.ReplaceAllStringFunc(n.Sodium, scale)
 	n.Sugars = regex.Digit.ReplaceAllStringFunc(n.Sugars, scale)
 	n.TotalCarbohydrates = regex.Digit.ReplaceAllStringFunc(n.TotalCarbohydrates, scale)
-	n.TotalFat = regex.Digit.ReplaceAllStringFunc(n.TotalFat, scale)
-	n.UnsaturatedFat = regex.Digit.ReplaceAllStringFunc(n.UnsaturatedFat, scale)
 }
 
 // Schema creates the schema representation of the Nutrition.
@@ -601,12 +615,13 @@ func (n *Nutrition) Schema(servings string) *NutritionSchema {
 		Cholesterol:    n.Cholesterol,
 		Fat:            n.TotalFat,
 		Fiber:          n.Fiber,
-		Protein:        n.Protein,
 		SaturatedFat:   n.SaturatedFat,
+		UnsaturatedFat: n.UnsaturatedFat,
+		TransFat:       n.TransFat,
+		Protein:        n.Protein,
 		Servings:       servings,
 		Sodium:         n.Sodium,
 		Sugar:          n.Sugars,
-		UnsaturatedFat: n.UnsaturatedFat,
 	}
 }
 
@@ -623,11 +638,12 @@ func (n NutrientsFDC) NutritionFact(weight float64) Nutrition {
 		cholesterol    float64
 		fiber          float64
 		protein        float64
+		totalFat       float64
 		saturatedFat   float64
+		unsaturatedFat float64
+		transFat       float64
 		sodium         float64
 		sugars         float64
-		totalFat       float64
-		unsaturatedFat float64
 	)
 
 	for _, nutrient := range n {
@@ -646,6 +662,7 @@ func (n NutrientsFDC) NutritionFact(weight float64) Nutrition {
 			unsaturatedFat += v
 			totalFat += v
 		case "Fatty acids, total trans":
+			transFat += v
 			totalFat += v
 		case "Fatty acids, total saturated":
 			saturatedFat += v
@@ -667,12 +684,13 @@ func (n NutrientsFDC) NutritionFact(weight float64) Nutrition {
 		Cholesterol:        formatNutrient(cholesterol / weight),
 		Fiber:              formatNutrient(fiber / weight),
 		Protein:            formatNutrient(protein / weight),
+		TotalFat:           formatNutrient(totalFat / weight),
 		SaturatedFat:       formatNutrient(saturatedFat / weight),
+		UnsaturatedFat:     formatNutrient(unsaturatedFat / weight),
+		TransFat:           formatNutrient(transFat / weight),
 		Sodium:             formatNutrient(sodium / weight),
 		Sugars:             formatNutrient(sugars / weight),
 		TotalCarbohydrates: formatNutrient(carbs / weight),
-		TotalFat:           formatNutrient(totalFat / weight),
-		UnsaturatedFat:     formatNutrient(unsaturatedFat / weight),
 	}
 }
 
