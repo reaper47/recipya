@@ -1486,7 +1486,6 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															name="calories"
 															autocomplete="off"
 															placeholder="kcal"
-															placeholder="kcal"
 															class="input input-bordered input-xs max-w-24"
 															value={ data.Recipe.Nutrition.Calories }
 														/>
@@ -1501,7 +1500,6 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															type="text"
 															name="total-carbohydrates"
 															autocomplete="off"
-															placeholder="g"
 															placeholder="g"
 															class="input input-bordered input-xs max-w-24"
 															value={ data.Recipe.Nutrition.TotalCarbohydrates }
@@ -1518,7 +1516,6 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															name="sugars"
 															autocomplete="off"
 															placeholder="g"
-															placeholder="g"
 															class="input input-bordered input-xs max-w-24"
 															value={ data.Recipe.Nutrition.Sugars }
 														/>
@@ -1533,7 +1530,6 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															type="text"
 															name="protein"
 															autocomplete="off"
-															placeholder="g"
 															placeholder="g"
 															class="input input-bordered input-xs max-w-24"
 															value={ data.Recipe.Nutrition.Protein }
@@ -1550,7 +1546,6 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															name="total-fat"
 															autocomplete="off"
 															placeholder="g"
-															placeholder="g"
 															class="input input-bordered input-xs max-w-24"
 															value={ data.Recipe.Nutrition.TotalFat }
 														/>
@@ -1565,7 +1560,6 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															type="text"
 															name="saturated-fat"
 															autocomplete="off"
-															placeholder="g"
 															placeholder="g"
 															class="input input-bordered input-xs max-w-24"
 															value={ data.Recipe.Nutrition.SaturatedFat }
@@ -1612,7 +1606,6 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															name="cholesterol"
 															autocomplete="off"
 															placeholder="mg"
-															placeholder="mg"
 															class="input input-bordered input-xs max-w-24"
 															value={ data.Recipe.Nutrition.Cholesterol }
 														/>
@@ -1628,7 +1621,6 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															name="sodium"
 															autocomplete="off"
 															placeholder="mg"
-															placeholder="mg"
 															class="input input-bordered input-xs max-w-24"
 															value={ data.Recipe.Nutrition.Sodium }
 														/>
@@ -1643,7 +1635,6 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															type="text"
 															name="fiber"
 															autocomplete="off"
-															placeholder="g"
 															placeholder="g"
 															class="input input-bordered input-xs max-w-24"
 															value={ data.Recipe.Nutrition.Fiber }
@@ -2212,7 +2203,6 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 													-
 												} else {
 													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Calories,"Calories") }
-													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Calories,"Calories") }
 												}
 											</td>
 										</tr>
@@ -2222,7 +2212,6 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 												if data.Recipe.Nutrition.TotalCarbohydrates == "" {
 													-
 												} else {
-													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.TotalCarbohydrates,"Carbohydrates") }
 													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.TotalCarbohydrates,"Carbohydrates") }
 												}
 											</td>
@@ -2234,7 +2223,6 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 													-
 												} else {
 													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Sugars,"Sugar") }
-													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Sugars,"Sugar") }
 												}
 											</td>
 										</tr>
@@ -2245,7 +2233,6 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 													-
 												} else {
 													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Protein,"Protein") }
-													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Protein,"Protein") }
 												}
 											</td>
 										</tr>
@@ -2255,7 +2242,6 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 												if data.Recipe.Nutrition.TotalFat == "" {
 													-
 												} else {
-													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.TotalFat,"Fat") }
 													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.TotalFat,"Fat") }
 												}
 											</td>
@@ -2297,7 +2283,6 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 													-
 												} else {
 													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Cholesterol,"Cholesterol") }
-													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Cholesterol,"Cholesterol") }
 												}
 											</td>
 										</tr>
@@ -2308,7 +2293,6 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 													-
 												} else {
 													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Sodium,"Sodium") }
-													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Sodium,"Sodium") }
 												}
 											</td>
 										</tr>
@@ -2318,7 +2302,6 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 												if data.Recipe.Nutrition.Fiber == "" {
 													-
 												} else {
-													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Fiber,"Fiber") }
 													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Fiber,"Fiber") }
 												}
 											</td>
