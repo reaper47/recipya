@@ -727,6 +727,7 @@ func TestNutrientsFDC_CalculateNutrition(t *testing.T) {
 		TotalCarbohydrates: "276.70 g",
 		TotalFat:           "32.93 mg",
 		UnsaturatedFat:     "32.66 mg",
+		TransFat:           "41.40 ug",
 	}
 
 	if !got.Equal(want) {
