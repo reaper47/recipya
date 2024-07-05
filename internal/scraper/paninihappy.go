@@ -48,17 +48,8 @@ func scrapePaniniHappy(root *goquery.Document) (models.RecipeSchema, error) {
 
 	rs.Yield.Value = findYield(recipe.Find(".yield").Text())
 
-	nodes := recipe.Find(".ingredient")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, s *goquery.Selection) {
-		rs.Ingredients.Values = append(rs.Ingredients.Values, s.Text())
-	})
-
-	nodes = recipe.Find(".instruction")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, s *goquery.Selection) {
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s.Text()))
-	})
+	getIngredients(&rs, recipe.Find(".ingredient"))
+	getInstructions(&rs, recipe.Find(".instruction"))
 
 	return rs, nil
 }

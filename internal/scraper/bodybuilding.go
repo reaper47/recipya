@@ -12,11 +12,11 @@ import (
 func scrapeBodybuilding(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.DateModified, _ = root.Find("meta[property='og:updated_time']").Attr("content")
-	rs.DatePublished, _ = root.Find("meta[property='article:published_time']").Attr("content")
+	rs.DateModified = getPropertyContent(root, "og:updated_time")
+	rs.DatePublished = getPropertyContent(root, "article:published_time")
 	rs.Description.Value = strings.TrimSpace(root.Find(".BBCMS__content--article-description").Text())
 
-	name, _ := root.Find("meta[property='og:title']").Attr("content")
+	name := getPropertyContent(root, "og:title")
 	before, _, found := strings.Cut(name, "|")
 	if found {
 		name = strings.TrimSpace(before)
@@ -39,20 +39,14 @@ func scrapeBodybuilding(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 	rs.NutritionSchema = &n
 
-	nodes = root.Find(".bb-recipe__ingredient-list-item")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := strings.ReplaceAll(sel.Text(), "\n", "")
-		s = strings.Join(strings.Fields(s), " ")
-		rs.Ingredients.Values = append(rs.Ingredients.Values, s)
-	})
+	getIngredients(&rs, root.Find(".bb-recipe__ingredient-list-item"), []models.Replace{
+		{"\n", ""},
+		{"useFields", ""},
+	}...)
 
-	nodes = root.Find(".bb-recipe__directions-list-item")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s := strings.ReplaceAll(sel.Text(), "\n", "")
-		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(s)))
-	})
+	getInstructions(&rs, root.Find(".bb-recipe__directions-list-item"), []models.Replace{
+		{"\n", ""},
+	}...)
 
 	node := root.Find(".bb-recipe__directions-timing--prep").Find("time")
 	rs.PrepTime, _ = node.Attr("datetime")

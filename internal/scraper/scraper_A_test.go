@@ -2,7 +2,8 @@ package scraper_test
 
 import (
 	"testing"
-
+  "time"
+  
 	"github.com/reaper47/recipya/internal/models"
 )
 
@@ -52,10 +53,12 @@ func TestScraper_A(t *testing.T) {
 				Name:            "Estrogonofe de carne",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT30M",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				TotalTime:       "PT30M",
 				Yield:           &models.Yield{Value: 4},
 				URL:             "https://claudia.abril.com.br/receitas/estrogonofe-de-carne/",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -100,10 +103,26 @@ func TestScraper_A(t *testing.T) {
 				Name:            "Roasted Carrot Soup",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT10M",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				TotalTime:       "PT45M",
 				Yield:           &models.Yield{Value: 6},
 				URL:             "https://abuelascounter.com/roasted-carrot-soup/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://youtu.be/g63Nto5ld-k",
+							Description: "Roasted Carrot Soup",
+							EmbedURL:    "https://youtu.be/g63Nto5ld-k",
+							Name:        "Roasted Carrot Soup",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://abuelascounter.com/wp-content/uploads/2023/10/Roasted-Carrot-Soup-Recipe.jpeg",
+							},
+							UploadDate: time.Date(2023, 10, 24, 19, 45, 56, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -225,6 +244,7 @@ func TestScraper_A(t *testing.T) {
 				Image:         &models.Image{Value: anUploadedImage.String()},
 				Yield:         &models.Yield{Value: 4},
 				PrepTime:      "PT10M",
+				ThumbnailURL:  &models.ThumbnailURL{},
 				CookTime:      "PT2H0M",
 				Description: &models.Description{
 					Value: "Norinj Palau is one of traditional Afghan dishes and it has a lovely delicate flavour. This pilau is prepared with the peel of the bitter (or Seville) oranges. It is quite a sweet dish.",
@@ -275,6 +295,7 @@ func TestScraper_A(t *testing.T) {
 				Keywords:        &models.Keywords{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				URL:             "http://www.afghankitchenrecipes.com/recipe/norinj-palau-rice-with-orange/",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -330,11 +351,25 @@ func TestScraper_A(t *testing.T) {
 					Protein:       "52",
 					SaturatedFat:  "12",
 				},
-				PrepTime:  "PT30M",
-				Tools:     &models.Tools{Values: []models.HowToItem{}},
-				TotalTime: "PT3H30M",
-				Yield:     &models.Yield{Value: 4},
-				URL:       "https://www.ah.nl/allerhande/recept/R-R1197438/boeuf-bourguignon-uit-de-oven-met-geroosterde-spruiten",
+				PrepTime:     "PT30M",
+				ThumbnailURL: &models.ThumbnailURL{},
+				Tools:        &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:    "PT3H30M",
+				Yield:        &models.Yield{Value: 4},
+				URL:          "https://www.ah.nl/allerhande/recept/R-R1197438/boeuf-bourguignon-uit-de-oven-met-geroosterde-spruiten",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://d1p9dpblu12ati.cloudfront.net/allerhande/media/2022/09/29/asset-4943112-1664455067445069.mp4",
+							Description:  "Boeuf bourguignon, oftewel: 'Rund op z'n Bourgondisch'. Zo proef je de authentieke Franse keuken. Rode wijn, laurierblad en mosterd zorgen voor diepe winterse smaken. Lekker met geroosterde spruiten.INGREDIËNTEN3 tenen knoflook (netje 250 g)2 sjalotten (net 1 kilo)300 g winterpeen (zak 1 kilo)700 g sukadelappen (schaal, AH Greenfields)1 el tarwebloem (pak 1 kilo)&nbsp;30 g roomboter (pakje 250 g, De Zaanse Hoeve)&nbsp;3 el olijfolie mild (fles 1 liter)150 g gerookte baconreepjes (schaal)70 g tomatenpuree (blikje)10 g tijm (bakje 15 g)300 ml pinot noir2 laurierblaadjes1 tl fijne Dijonmosterd&nbsp;400 g witte champignons (bak)700 g geschoonde spruiten (zak 350 g)10 g platte peterselie (bakje 15 g)Keukenspullenhoge braadpan (Ø 22 cm)tray (38,4 x 24,4 cm)bakpapierSukadelappen bakkenVerwarm de oven voor op 175 °C. Snijd de tenen knoflook fijn. Snijd de sjalotten in halve ringen. Schil de winterpeen en snijd in blokjes van ca. een ½ cm. Dep de sukadelappen droog met keukenpapier, snijd in stukken van ca. 2 cm. Bestrooi het vlees met peper en meng de bloem erdoor, zodat het vlees rondom met een laagje bedekt is. Verhit de braadpan met de boter en 1 el olie en braad het vlees in ca. 4 min. op hoog vuur tot het meeste vocht verdampt is en het vlees rondom bruin en krokant is. Voeg de baconreepjes en tomatenpuree toe en bak 4 min. op hoog vuur mee.&nbsp;Stoofvlees uit de ovenRis ondertussen de blaadjes van de tijm. Voeg de helft van de tijm, de wijn, 750 ml water, de knoflook, sjalot, wortel, laurier en mosterd toe aan het vlees. Zet de braadpan met de deksel erop onder in de oven en stoof het vlees ca. 2½ uur tot het vlees mals is. Haal na 1½ uur de deksel van de pan. Snijd de champignons in kwarten en voeg de laatste 45 min. van de stooftijd toe aan het vlees. Test na 2½ uur of het vlees mals is, laat het zo nodig nog 30 min. langer stoven.Spruitjes roosterenHalveer ondertussen de spruiten en verdeel ze over de met bakpapier beklede tray. Besprenkel met de rest van de olie en bestrooi met de rest van de tijm. Breng op smaak met peper en rooster de laatste 20 min. van de stooftijd boven in de oven met de&nbsp;boeuf bourguignon mee.Boeuf bourguignon serverenBreng de stoof op smaak met peper en eventueel zout. Verwijder de laurierblaadjes. Snijd de peterselie fijn. Bestrooi de boeuf bourguignon met de peterselie en serveer met de geroosterde spruiten.",
+							Duration:     "PT3M49S",
+							Name:         "Boeuf bourguignon met geroosterde spruiten",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://allerhande.bbvms.com/mediaclip/4943112/pthumbnail/120/67.jpg"},
+							UploadDate:   time.Date(2022, 10, 6, 22, 0, 0, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -386,10 +421,12 @@ func TestScraper_A(t *testing.T) {
 				NutritionSchema: &models.NutritionSchema{
 					Calories: "508",
 				},
-				PrepTime: "PT35M",
-				Tools:    &models.Tools{Values: []models.HowToItem{}},
-				URL:      "https://akispetretzikis.com/recipe/6867/eukolos-mpaklavas",
-				Yield:    &models.Yield{Value: 1},
+				PrepTime:     "PT35M",
+				ThumbnailURL: &models.ThumbnailURL{},
+				Tools:        &models.Tools{Values: []models.HowToItem{}},
+				URL:          "https://akispetretzikis.com/recipe/6867/eukolos-mpaklavas",
+				Video:        &models.Videos{},
+				Yield:        &models.Yield{Value: 1},
 			},
 		},
 		{
@@ -432,9 +469,11 @@ func TestScraper_A(t *testing.T) {
 				NutritionSchema: &models.NutritionSchema{},
 				Name:            "Citrus Chicken by All-Clad",
 				PrepTime:        "PT5M",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 8},
 				URL:             "https://www.all-clad.com/blog/post/kellyann-citrus-chicken",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -497,6 +536,19 @@ func TestScraper_A(t *testing.T) {
 				TotalTime: "PT30M",
 				Yield:     &models.Yield{Value: 48},
 				URL:       "https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/qHQSNVCK-K3AjnAEN.mp4",
+							Description:  "When it comes to fresh and delicious cookies, nothing beats homemade. In this video, Nicole shows you how to make Allrecipes’s top rated recipe for chocolate chip cookies. Using a deliciously sweet cookie dough that’s beaten with brown sugar and vanilla, fold in mini chocolate chips. Once the dough has been chilled in the fridge, distribute it onto a baking sheet and bake for ten minutes in the oven. With a tender texture and a rich, buttery taste, they're the ultimate comfort snack!",
+							Duration:     "PT3M33S",
+							Name:         "How to Make the Best Chocolate Chip Cookies",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://cdn.jwplayer.com/v2/media/qHQSNVCK/poster.jpg?width=720"},
+							UploadDate:   time.Date(2023, 8, 24, 22, 27, 49, 0, time.FixedZone("UTC-4", -4*60*60)),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -728,6 +780,7 @@ func TestScraper_A(t *testing.T) {
 					TransFat:       "0",
 					UnsaturatedFat: "6",
 				},
+				ThumbnailURL: &models.ThumbnailURL{},
 				Tools: &models.Tools{
 					Values: []models.HowToItem{
 						{
@@ -749,6 +802,61 @@ func TestScraper_A(t *testing.T) {
 				},
 				Yield: &models.Yield{Value: 12},
 				URL:   "https://www.americastestkitchen.com/recipes/7390-marbled-blueberry-bundt-cake",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							Description: "Tossing large, cultivated blueberries into a Bundt cake gave us big blue blowouts and little fresh flavor. We looked for a way to make the star of the show less of a problem.",
+							Name:        "Marbled Blueberry Bundt Cake",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://res.cloudinary.com/hksqkdlah/image/upload/ar_16:9,c_fill,dpr_2.0,f_auto,fl_lossy.progressive.strip_profile,g_faces:auto,q_auto:low,w_150/2362_sfs-summer-blueberry-bundt-cake-bw-36-vid-thumb",
+							},
+							UploadDate: time.Date(2013, 3, 26, 13, 11, 0, 0, time.UTC),
+						},
+					},
+				},
+			},
+		},
+		{
+			name: "angielaeats.com",
+			in:   "https://www.angielaeats.com/recipes/maple-soy-brussels-sprouts",
+			want: models.RecipeSchema{
+				AtContext:     atContext,
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DateModified:  "2022-09-28T17:57:59-0700",
+				DatePublished: "2022-09-20T09:43:57-0700",
+				Description:   &models.Description{Value: "Maple Soy Brussels Sprouts- Asian style seasoned airfryer Brussels sprouts | AngielaEats"},
+				Keywords:      &models.Keywords{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"1 lb brussels sprouts",
+						"2 tsp soy sauce",
+						"2 tsp maple syrup",
+						"1 tsp garlic powder",
+						"1/2 tsp white pepper",
+						"flakey salt",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Prep brussels sprouts\n\n-Rinse, pay dry\n\n-Trim off ends and cut in half longways"},
+						{Type: "HowToStep", Text: "Transfer Brussels sprouts to a mixing bowl and season with soy sauce, maple syrup, garlic powder, and white pepper. Mix well."},
+						{Type: "HowToStep", Text: "Airfry brussels sprouts at 400F for about 10 minutes, toss halfway though.\n\n*If your aifryer is heats up really hot, or your using less Brussels sprouts, airfry at 375F for about 12 minutes and toss halfway through. ."},
+						{Type: "HowToStep", Text: "Transfer brussels sprouts to a serving dish and sprinkle flakey salt on top while they’re hot."},
+						{Type: "HowToStep", Text: "Enjoy right away!"},
+					},
+				},
+				Name:            "Maple Soy Brussels Sprouts",
+				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{Value: "http://static1.squarespace.com/static/61c0cdf35ec33d23e1257608/61c0ce688fe92c2a6a7e2d9b/6329eac8429cae3ed530e8ab/1664413079951/IMG_9881.jpg?format=1500w"},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://www.angielaeats.com/recipes/maple-soy-brussels-sprouts",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -765,10 +873,11 @@ func TestScraper_A(t *testing.T) {
 				Description: &models.Description{
 					Value: "Did you know that we can make a yummy curry out of Orange Peels? It is tangy, sweetish, spicy, slightly bitter and bursting with flavors. It is an unique recipe. So next time you have some guests at home, make this recipe and impress your friends and family. It is filled with flavours and tastes delicious with almost everything. Next time you eat an orange, don't throw the peels, make a curry out of it.\nServe Karnataka Style Orange Peels Curry along with Cabbage Thoran and Whole Wheat Lachha Paratha for your weekday meal. It even tastes great with Steamed Rice.\nIf you like this recipe, you can also try other Karnataka recipes such as\n\nMavina Hannina Gojju Recipe\nMavina Hannina Gojju Recipe\nKarnataka Style Bassaru Palya Recipe",
 				},
-				Image:    &models.Image{Value: anUploadedImage.String()},
-				PrepTime: "PT15M",
-				CookTime: "PT15M",
-				Yield:    &models.Yield{Value: 4},
+				Image:        &models.Image{Value: anUploadedImage.String()},
+				PrepTime:     "PT15M",
+				ThumbnailURL: &models.ThumbnailURL{},
+				CookTime:     "PT15M",
+				Yield:        &models.Yield{Value: 4},
 				Ingredients: &models.Ingredients{
 					Values: []string{
 						"2 Orange",
@@ -807,7 +916,8 @@ func TestScraper_A(t *testing.T) {
 				Keywords: &models.Keywords{
 					Values: "South Indian Recipes,Indian Lunch Recipes,Orange Recipes,Karnataka Recipes",
 				},
-				URL: "https://www.archanaskitchen.com/karnataka-style-orange-peels-curry-recipe",
+				URL:   "https://www.archanaskitchen.com/karnataka-style-orange-peels-curry-recipe",
+				Video: &models.Videos{},
 			},
 		},
 		{
@@ -858,10 +968,25 @@ func TestScraper_A(t *testing.T) {
 				Name:            "Κοτόπουλο αλά κρεμ",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT10M",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				TotalTime:       "PT40M",
 				Yield:           &models.Yield{Value: 4},
 				URL:             "https://www.argiro.gr/recipe/kotopoulo-ala-krem-me-ruzi/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							Description: "Κοτόπουλο αλά κρεμ από την Αργυρώ Μπαρμπαρίγου. Λαχταριστό και ζουμερό φαγητό με νόστι\xce\xbcη κρεμώδη σάλτσα αλά κρεμ.",
+							EmbedURL:    "https://www.youtube.com/embed/r1XY_Tyb6N0",
+							Name:        "Κοτόπουλο αλά κρεμ",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://www.argiro.gr/wp-content/uploads/2021/12/kotopoulo-ala-krem-ryzi-400x400.jpg",
+							},
+							UploadDate: time.Date(2021, 10, 12, 0, 0, 0, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -946,10 +1071,14 @@ func TestScraper_A(t *testing.T) {
 				Keywords:        &models.Keywords{},
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "P0Y0M0DT0H0M1200S",
-				Tools:           &models.Tools{Values: []models.HowToItem{}},
-				TotalTime:       "P0Y0M0DT0H0M55200S",
-				URL:             "https://www.atelierdeschefs.fr/fr/recette/17741-boeuf-bourguignon-traditionnel.php",
-				Yield:           &models.Yield{Value: 6},
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://adc-dev-images-recipes.s3.eu-west-1.amazonaws.com/bourguignon_3bd.jpg",
+				},
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
+				TotalTime: "P0Y0M0DT0H0M55200S",
+				URL:       "https://www.atelierdeschefs.fr/fr/recette/17741-boeuf-bourguignon-traditionnel.php",
+				Video:     &models.Videos{},
+				Yield:     &models.Yield{Value: 6},
 			},
 		},
 		{

@@ -349,42 +349,51 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 					</h2>
 					<div>
 						<div class="grid md:grid-flow-col md:grid-cols-6">
-							<div id="images-container" class="grid grid-flow-col grid-cols-7 w-full text-center border-gray-700 md:grid-cols-6 md:col-span-3 md:border-r">
+							<div id="media-container" class="grid grid-flow-col grid-cols-7 w-full text-center border-gray-700 md:grid-cols-6 md:col-span-3 md:border-r">
 								<div class="buttons-container flex flex-col gap-1 col-span-2 md:col-span-1 p-1">
 									<button
-										id="image-button-1"
+										id="media-button-1"
 										type="button"
 										class="btn btn-sm btn-ghost btn-active"
-										onclick="switchImage(event)"
+										onclick="switchMedia(event)"
 									>
-										Image 1
+										Media 1
 									</button>
 									<button
-										id="add-image-button"
+										id="add-media-button"
 										type="button"
 										class="btn btn-sm btn-ghost"
-										onclick="addImage(event)"
+										onclick="addMedia(event)"
 									>
 										@iconPlusCircle()
 										Add
 									</button>
 								</div>
-								<div id="images" class="col-span-5">
-									<label id="image-1">
-										<img src="" alt="Image preview of the recipe." class="object-cover mb-2 w-full max-h-[39rem]"/>
+								<div id="media" class="col-span-5">
+									<label id="media-1">
+										<img src="" alt="" class="object-cover mb-2 w-full max-h-[39rem]"/>
 										<span class="grid gap-1 max-w-sm" style="margin: auto auto 0.25rem;">
 											<div class="mr-1">
 												<input
 													type="file"
-													accept="image/*"
+													accept="image/*,video/*"
 													name="images"
 													class="file-input file-input-sm file-input-bordered w-full max-w-sm"
 													_="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
                                                           on dragleave or drop set the target's style.background to ''
                                                           on drop or change
                                                             make an FileReader called reader then
-                                                            if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then
-                                                            set {src: window.URL.createObjectURL(it)} on previous <img/> then
+                                                            if event.dataTransfer
+                                                                get event.dataTransfer.files[0]
+                                                            else
+                                                                get event.target.files[0]
+                                                            end then
+                                                            if it.type.startsWith('video')
+                                                                put `<video controls class='object-cover mb-2 w-full max-h-[39rem]' src='${window.URL.createObjectURL(it)}'></video>` after previous <img/> then
+                                                                add .hidden to previous <img/>
+                                                            else
+                                                                set {src: window.URL.createObjectURL(it)} on previous <img/>
+                                                            end then
                                                             remove .hidden from me.parentElement.parentElement.querySelectorAll('button') then
                                                             add .hidden to the parentElement of me"
 												/>
@@ -401,23 +410,14 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 														_="on htmx:afterRequest
 														    if event.detail.successful then
 														        set a to first in event.target.parentElement.parentElement.children then
-														        call updateImageFromFetch(a, event.detail.xhr.responseURL)
+														        call updateMediaFromFetch(a, event.detail.xhr.responseURL)
 														    end"
 													>
 														Fetch
 													</button>
 												</div>
 											</div>
-											<button
-												type="button"
-												class="hidden btn btn-sm btn-error btn-outline"
-												_="on click
-                                                    set {value: ''} on me.parentElement.children[0].children[0] then
-                                                    set {src: ''} on previous <img/> then
-                                                    set {value: ''} on the first in (last in me.parentElement.children[0].children) then
-                                                    remove .hidden from the first in me.parentElement.children then
-                                                    add .hidden"
-											>
+											<button type="button" class="hidden btn btn-sm btn-error btn-outline" onclick="deleteMedia(event)">
 												Delete
 											</button>
 										</span>
@@ -489,7 +489,7 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 								</div>
 								<div class="border-gray-700 border-y col-span-6 md:border-t md:border-b-0 md:grid-cols-3 print:border-none">
 									<div class="p-4 flex gap-2 flex-wrap">
-										@recipeKeywordEmpty()
+										@recipeKeywordEmpty(data.Keywords)
 									</div>
 								</div>
 								<div class="grid grid-flow-col col-span-6 border-gray-700 border-y md:grid-cols-2 md:row-span-2">
@@ -888,11 +888,11 @@ templ loadRecipesManualScripts() {
                 });
             });
 
-        function addImage(event) {
-            const images = document.querySelectorAll("#images label");
-            for (let i = 0; i < images.length; i++) {
-                if (images[i].querySelector('input[type="file"]').files.length === 0) {
-                    alert(`Please select an image for 'Image ${i+1}'`);
+        function addMedia(event) {
+            let media = document.querySelectorAll("#media label");
+            for (let i = 0; i < media.length; i++) {
+                if (media[i].querySelector('input[type="file"]').files.length === 0) {
+                    alert(`Please select an image or video for 'Media ${i+1}'`);
                     return;
                 }
             }
@@ -900,17 +900,32 @@ templ loadRecipesManualScripts() {
             const buttons = document.querySelectorAll(".buttons-container button");
             buttons.forEach(el => el.classList.remove("btn-active"));
 
-            const cloneImage = images[images.length-1].cloneNode(true);
-            images.forEach(label => label.classList.add("hidden"));
-            cloneImage.querySelector("input").value = '';
-            cloneImage.id = `image-${images.length+1}`;
-            cloneImage.querySelector("img").src = "";
-            cloneImage.querySelector("div").classList.remove("hidden");
-            cloneImage.querySelector("input[type='url']").value = '';
-            const subButtons = cloneImage.querySelectorAll("button");
+            const cloneMedia = media[media.length-1].cloneNode(true);
+            media.forEach(label => label.classList.add("hidden"));
+            cloneMedia.querySelector("input").value = '';
+            cloneMedia.id = `media-${media.length+1}`;
+
+            let n = cloneMedia.querySelector("img");
+            if (n) {
+                n.src = '';
+            } else {
+                n = cloneMedia.querySelector("video");
+                n .src = '';
+            }
+
+            cloneMedia.querySelector("div").classList.remove("hidden");
+            cloneMedia.querySelector("input[type='url']").value = '';
+            const subButtons = cloneMedia.querySelectorAll("button");
             subButtons[subButtons.length-1].classList.add("hidden");
-            document.querySelector("#images").appendChild(cloneImage);
-            _hyperscript.processNode(cloneImage);
+            document.querySelector("#media").appendChild(cloneMedia);
+            const video = cloneMedia.querySelector('video');
+            if (video) {
+              n.classList.remove("hidden");
+              video.parentNode.removeChild(video);
+            }
+            media = document.querySelectorAll("#media label");
+            media[media.length-1].classList.remove("hidden");
+            _hyperscript.processNode(cloneMedia);
 
             let target = event.target;
             if (["svg", "circle"].includes(target.tagName)) {
@@ -918,13 +933,28 @@ templ loadRecipesManualScripts() {
             }
 
             const cloneButton = target.previousElementSibling.cloneNode(true);
-            cloneButton.id = `image-button-${buttons.length}`;
+            cloneButton.id = `media-button-${buttons.length}`;
             cloneButton.classList.add("btn-active");
-            cloneButton.textContent = `Image ${buttons.length}`;
-            cloneButton.setAttribute("onclick", "switchImage(event)");
+            cloneButton.textContent = `Media ${buttons.length}`;
+            cloneButton.setAttribute("onclick", "switchMedia(event)");
             target.previousElementSibling.parentNode.insertBefore(cloneButton, target);
             _hyperscript.processNode(cloneButton);
-            htmx.process(cloneImage);
+            htmx.process(cloneMedia);
+        }
+
+        function deleteMedia(event) {
+            const parent = event.target.parentElement;
+            parent.children[0].children[0].src = "";
+            parent.children[0].children[0].value = "";
+
+            if (parent.previousElementSibling.tagName === "VIDEO") {
+                parent.previousElementSibling.parentElement.removeChild(parent.previousElementSibling);
+                parent.previousElementSibling.classList.remove("hidden");
+            }
+
+            parent.previousElementSibling.src = "";
+            parent.children[0].classList.remove("hidden");
+            event.target.classList.add("hidden");
         }
 
         function addKeyword(event) {
@@ -948,17 +978,17 @@ templ loadRecipesManualScripts() {
             input.focus();
         }
 
-        function switchImage(event) {
+        function switchMedia(event) {
             let target = event.target;
             if (target.tagName === "svg") {
                 target = event.target.parentElement;
             }
 
-            const images = document.querySelectorAll("#images label");
-            for (let i = 0; i < images.length; i++) {
-                if (images[i].id === target.id.replace("button-", "")) {
-                    images.forEach(label => label.classList.add("hidden"));
-                    images[i].classList.remove("hidden");
+            const media = document.querySelectorAll("#media label");
+            for (let i = 0; i < media.length; i++) {
+                if (media[i].id === target.id.replace("button-", "")) {
+                    media.forEach(label => label.classList.add("hidden"));
+                    media[i].classList.remove("hidden");
                     document.querySelectorAll(".buttons-container button").forEach(el => el.classList.remove("btn-active"));
                     document.getElementById(event.target.id).classList.add("btn-active");
                     return;
@@ -976,18 +1006,21 @@ templ loadRecipesManualScripts() {
             return url.protocol === "http:" || url.protocol === "https:";
         }
 
-        function updateImageFromFetch(input, url) {
+        function updateMediaFromFetch(input, url) {
             if (url === window.location.href) {
                 input.value = '';
                 return;
             }
 
-            const pathRegex = /^\/data\/images\/([\da-z]{8}-([\da-z]{4}-){3}[\da-z]{12}).webp$/;
+            const pathRegexImage = /^\/data\/images\/([\da-z]{8}-([\da-z]{4}-){3}[\da-z]{12}).webp$/;
+            const pathRegexVideo = /^\/data\/videos\/([\da-z]{8}-([\da-z]{4}-){3}[\da-z]{12}).webm$/;
             const urlObject = new URL(url);
 
             let uuid;
-            if (pathRegex.test(urlObject.pathname)) {
-                uuid = urlObject.pathname.match(pathRegex)[1];
+            if (pathRegexImage.test(urlObject.pathname)) {
+                uuid = urlObject.pathname.match(pathRegexImage)[1];
+            } else if (pathRegexVideo.test(urlObject.pathname)) {
+                uuid = urlObject.pathname.match(pathRegexVideo)[1];
             } else {
                 uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
                      const r = Math.random() * 16 | 0;
@@ -995,7 +1028,6 @@ templ loadRecipesManualScripts() {
                      return v.toString(16);
                  });
             }
-
             fetch(url)
                 .then(response => response.blob())
                 .then(blob => {
@@ -1085,56 +1117,65 @@ templ editRecipe(data *templates.ViewRecipeData) {
 					</h2>
 					<div>
 						<div class="grid md:grid-flow-col md:grid-cols-6">
-							<div id="images-container" class="grid grid-flow-col grid-cols-7 w-full text-center border-gray-700 md:grid-cols-6 md:col-span-3 md:border-r">
+							<div id="media-container" class="grid grid-flow-col grid-cols-7 w-full text-center border-gray-700 md:grid-cols-6 md:col-span-3 md:border-r">
 								<div class="buttons-container flex flex-col gap-1 col-span-2 md:col-span-1 p-1">
-									if len(data.Recipe.Images) == 0 {
+									if len(data.Recipe.Images) == 0 && len(data.Recipe.Videos) == 0 {
 										<button
-											id="image-button-1"
+											id="media-button-1"
 											type="button"
 											class="btn btn-sm btn-ghost btn-active"
-											onclick="switchImage(event)"
+											onclick="switchMedia(event)"
 										>
-											Image 1
+											Media 1
 										</button>
 									} else {
-										for i := range data.Recipe.Images {
+										for i := range len(data.Recipe.Images) + len(data.Recipe.Videos) {
 											<button
-												id={ "image-button-" + strconv.Itoa(i+1) }
+												id={ "media-button-" + strconv.Itoa(i+1) }
 												type="button"
 												class={ "btn btn-sm btn-ghost", templ.KV("btn-active", i==0) }
-												onclick="switchImage(event)"
+												onclick="switchMedia(event)"
 											>
-												{ "Image "+strconv.Itoa(i+1) }
+												{ "Media "+strconv.Itoa(i+1) }
 											</button>
 										}
 									}
 									<button
-										id="add-image-button"
+										id="add-media-button"
 										type="button"
 										class="btn btn-sm btn-ghost"
-										onclick="addImage(event)"
+										onclick="addMedia(event)"
 									>
 										@iconPlusCircle()
 										Add
 									</button>
 								</div>
-								<div id="images" class="col-span-5">
-									if len(data.Recipe.Images) == 0 {
-										<label id="image-1">
-											<img src="" alt="Image preview of the recipe." class="object-cover mb-2 w-full max-h-[39rem]"/>
+								<div id="media" class="col-span-5">
+									if len(data.Recipe.Images) == 0 && len(data.Recipe.Videos) == 0 {
+										<label id="media-1">
+											<img src="" alt="" class="object-cover mb-2 w-full max-h-[39rem]"/>
 											<span class="grid gap-1 max-w-sm" style="margin: auto auto 0.25rem;">
 												<div class="mr-1">
 													<input
 														type="file"
-														accept="image/*"
+														accept="image/*,video/*"
 														name="images"
 														class="file-input file-input-sm file-input-bordered w-full max-w-sm"
 														_="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
                                                               on dragleave or drop set the target's style.background to ''
                                                               on drop or change
                                                                 make an FileReader called reader then
-                                                                if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then
-                                                                set {src: window.URL.createObjectURL(it)} on previous <img/> then
+                                                                if event.dataTransfer
+                                                                    get event.dataTransfer.files[0]
+                                                                else
+                                                                    get event.target.files[0]
+                                                                end then
+                                                                if it.type.startsWith('video')
+                                                                    put `<video controls class='object-cover mb-2 w-full max-h-[39rem]' src='${window.URL.createObjectURL(it)}'></video>` after previous <img/> then
+                                                                    add .hidden to previous <img/>
+                                                                else
+                                                                    set {src: window.URL.createObjectURL(it)} on previous <img/>
+                                                                end then
                                                                 remove .hidden from me.parentElement.parentElement.querySelectorAll('button') then
                                                                 add .hidden to the parentElement of me"
 													/>
@@ -1151,35 +1192,26 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															_="on htmx:afterRequest
                                                                 if event.detail.successful then
                                                                     set a to first in event.target.parentElement.parentElement.children then
-                                                                    call updateImageFromFetch(a, event.detail.xhr.responseURL)
+                                                                    call updateMediaFromFetch(a, event.detail.xhr.responseURL)
                                                                 end"
 														>
 															Fetch
 														</button>
 													</div>
 												</div>
-												<button
-													type="button"
-													class="hidden btn btn-sm btn-error btn-outline"
-													_="on click
-                                                        set {value: ''} on me.parentElement.children[0].children[0] then
-                                                        set {src: ''} on previous <img/> then
-                                                        set {value: ''} on the first in (last in me.parentElement.children[0].children) then
-                                                        remove .hidden from the first in me.parentElement.children then
-                                                        add .hidden"
-												>
+												<button type="button" class="hidden btn btn-sm btn-error btn-outline" onclick="deleteMedia(event)">
 													Delete
 												</button>
 											</span>
 										</label>
 									} else {
 										for i, image := range data.Recipe.Images {
-											<label id={ "image-" + strconv.Itoa(i+1) } class={ templ.KV("hidden", i > 0) }>
+											<label id={ "media-" + strconv.Itoa(i+1) } class={ templ.KV("hidden", i > 0) }>
 												<img
-													alt="Image preview of the recipe."
+													alt=""
 													class="object-cover mb-2 w-full max-h-[39rem]"
 													if data.IsImagesExist[i] {
-														src={ fmt.Sprintf("/data/images/%s.webp", image) }
+														src={ "/data/images/" + image.String() + ".webp" }
 													} else {
 														src=""
 													}
@@ -1188,18 +1220,27 @@ templ editRecipe(data *templates.ViewRecipeData) {
 													<div class={ "mr-1", templ.KV("hidden", i > 0) }>
 														<input
 															type="file"
-															accept="image/*"
+															accept="image/*,video/*"
 															name="images"
 															class="file-input file-input-sm file-input-bordered w-full max-w-sm"
-															value={ fmt.Sprintf("/data/images/%s.webp", image) }
+															value={ "/data/images/" + image.String() + ".webp" }
 															_="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
-                                                              on dragleave or drop set the target's style.background to ''
-                                                              on drop or change
-                                                                make an FileReader called reader then
-                                                                if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then
-                                                                set {src: window.URL.createObjectURL(it)} on previous <img/> then
-                                                                remove .hidden from me.parentElement.parentElement.querySelectorAll('button') then
-                                                                add .hidden to the parentElement of me"
+                                                                  on dragleave or drop set the target's style.background to ''
+                                                                  on drop or change
+                                                                    make an FileReader called reader then
+                                                                    if event.dataTransfer
+                                                                        get event.dataTransfer.files[0]
+                                                                    else
+                                                                        get event.target.files[0]
+                                                                    end then
+                                                                    if it.type.startsWith('video')
+                                                                        put `<video controls class='object-cover mb-2 w-full max-h-[39rem]' src='${window.URL.createObjectURL(it)}'></video>` after previous <img/> then
+                                                                        add .hidden to previous <img/>
+                                                                    else
+                                                                        set {src: window.URL.createObjectURL(it)} on previous <img/>
+                                                                    end then
+                                                                    remove .hidden from me.parentElement.parentElement.querySelectorAll('button') then
+                                                                    add .hidden to the parentElement of me"
 														/>
 														<div class="divider">OR</div>
 														<span class="hidden input-error"></span>
@@ -1214,7 +1255,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 																_="on htmx:afterRequest
                                                                     if event.detail.successful then
                                                                         set a to first in event.target.parentElement.parentElement.children then
-                                                                        call updateImageFromFetch(a, event.detail.xhr.responseURL)
+                                                                        call updateMediaFromFetch(a, event.detail.xhr.responseURL)
                                                                     end"
 															>
 																Fetch
@@ -1224,13 +1265,68 @@ templ editRecipe(data *templates.ViewRecipeData) {
 													<button
 														type="button"
 														class={ "btn btn-sm btn-error btn-outline", templ.KV("hidden", !data.IsImagesExist[i]) }
-														_="on click
-                                                            set {value: ''} on me.parentElement.children[0].children[0] then
-                                                            set {src: ''} on previous <img/> then
-                                                            set {value: ''} on the first in (last in me.parentElement.children[0].children) then
-                                                            remove .hidden from the first in me.parentElement.children then
-                                                            add .hidden"
+														onclick="deleteMedia(event)"
 													>
+														Delete
+													</button>
+												</span>
+											</label>
+										}
+										for i, v := range data.Recipe.Videos {
+											<label id={ "media-" + strconv.Itoa(i+1+len(data.Recipe.Images)) } class={ templ.KV("hidden", (i >= 0 && len(data.Recipe.Images) > 0) || i > 0) }>
+												<img src="" alt="" class="mb-2"/>
+												if data.IsVideoExist[i] {
+													<video controls class="mb-2" src={ "/data/videos/" + v.ID.String() + ".webm" } type="video/webm"></video>
+												}
+												<span class="grid gap-1 max-w-sm" style="margin: auto auto 0.25rem;">
+													<div class={ "mr-1", templ.KV("hidden", i >= 0) }>
+														<input
+															type="file"
+															accept="image/*,video/*"
+															name="images"
+															class="file-input file-input-sm file-input-bordered w-full max-w-sm"
+															value={ "/data/videos/" + v.ID.String() + ".webm" }
+															_="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
+                                                                  on dragleave or drop set the target's style.background to ''
+                                                                  on drop or change
+                                                                    make an FileReader called reader then
+                                                                    if event.dataTransfer
+                                                                        get event.dataTransfer.files[0] then
+                                                                    else
+                                                                        get event.target.files[0] then
+                                                                    end then
+                                                                    if it.type.startsWith('video')
+                                                                        if (closest <label/>).querySelector('video') is null
+                                                                            put `<video controls class='object-cover mb-2 w-full max-h-[39rem]' src='${window.URL.createObjectURL(it)}'></video>` after previous <img/>
+                                                                        end then
+                                                                        add .hidden to previous <img/>
+                                                                    else
+                                                                        set {src: window.URL.createObjectURL(it)} on previous <img/>
+                                                                    end then
+                                                                    remove .hidden from me.parentElement.parentElement.querySelectorAll('button') then
+                                                                    add .hidden to the parentElement of me"
+														/>
+														<div class="divider">OR</div>
+														<span class="hidden input-error"></span>
+														<div class="flex">
+															<input type="url" placeholder="Enter the URL of an image" class="input input-bordered input-sm w-full max-w-sm mr-1"/>
+															<button
+																type="button"
+																class="btn btn-sm"
+																hx-get="/fetch"
+																hx-vals="js:{url: event.target.previousElementSibling.value}"
+																hx-swap="none"
+																_="on htmx:afterRequest
+                                                                    if event.detail.successful then
+                                                                        set a to first in event.target.parentElement.parentElement.children then
+                                                                        call updateMediaFromFetch(a, event.detail.xhr.responseURL)
+                                                                    end"
+															>
+																Fetch
+															</button>
+														</div>
+													</div>
+													<button type="button" class="btn btn-sm btn-error btn-outline" onclick="deleteMedia(event)">
 														Delete
 													</button>
 												</span>
@@ -1323,7 +1419,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 												<button type="button" class="btn btn-xs btn-ghost" _="on click remove closest <div/>">X</button>
 											</div>
 										}
-										@recipeKeywordEmpty()
+										@recipeKeywordEmpty(data.Keywords)
 									</div>
 								</div>
 								<div class="grid grid-flow-col col-span-6 border-gray-700 border-y md:grid-cols-2 md:row-span-2">
@@ -1390,6 +1486,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															name="calories"
 															autocomplete="off"
 															placeholder="kcal"
+															placeholder="kcal"
 															class="input input-bordered input-xs max-w-24"
 															value={ data.Recipe.Nutrition.Calories }
 														/>
@@ -1404,6 +1501,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															type="text"
 															name="total-carbohydrates"
 															autocomplete="off"
+															placeholder="g"
 															placeholder="g"
 															class="input input-bordered input-xs max-w-24"
 															value={ data.Recipe.Nutrition.TotalCarbohydrates }
@@ -1420,6 +1518,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															name="sugars"
 															autocomplete="off"
 															placeholder="g"
+															placeholder="g"
 															class="input input-bordered input-xs max-w-24"
 															value={ data.Recipe.Nutrition.Sugars }
 														/>
@@ -1434,6 +1533,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															type="text"
 															name="protein"
 															autocomplete="off"
+															placeholder="g"
 															placeholder="g"
 															class="input input-bordered input-xs max-w-24"
 															value={ data.Recipe.Nutrition.Protein }
@@ -1450,6 +1550,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															name="total-fat"
 															autocomplete="off"
 															placeholder="g"
+															placeholder="g"
 															class="input input-bordered input-xs max-w-24"
 															value={ data.Recipe.Nutrition.TotalFat }
 														/>
@@ -1464,6 +1565,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															type="text"
 															name="saturated-fat"
 															autocomplete="off"
+															placeholder="g"
 															placeholder="g"
 															class="input input-bordered input-xs max-w-24"
 															value={ data.Recipe.Nutrition.SaturatedFat }
@@ -1510,6 +1612,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															name="cholesterol"
 															autocomplete="off"
 															placeholder="mg"
+															placeholder="mg"
 															class="input input-bordered input-xs max-w-24"
 															value={ data.Recipe.Nutrition.Cholesterol }
 														/>
@@ -1525,6 +1628,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															name="sodium"
 															autocomplete="off"
 															placeholder="mg"
+															placeholder="mg"
 															class="input input-bordered input-xs max-w-24"
 															value={ data.Recipe.Nutrition.Sodium }
 														/>
@@ -1539,6 +1643,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															type="text"
 															name="fiber"
 															autocomplete="off"
+															placeholder="g"
 															placeholder="g"
 															class="input input-bordered input-xs max-w-24"
 															value={ data.Recipe.Nutrition.Fiber }
@@ -1616,8 +1721,16 @@ templ editRecipe(data *templates.ViewRecipeData) {
 	@loadRecipesManualScripts()
 	<script defer>
 	    function initEditImages() {
-	        document.querySelectorAll("#images label").forEach(el => {
-                updateImageFromFetch(el.querySelector("input[type='file']"), el.querySelector("img").src);
+	        document.querySelectorAll("#media label").forEach(el => {
+	            const img = el.querySelector("img");
+	            if (img) {
+                    updateMediaFromFetch(el.querySelector("input[type='file']"), img.src);
+	            }
+
+	            const video = el.querySelector("video");
+	            if (video) {
+	                updateMediaFromFetch(el.querySelector("input[type='file']"), video.src);
+	            }
 	        });
 	    }
 
@@ -1704,7 +1817,7 @@ templ ListRecipes(data templates.Data) {
 					<img
 						class="h-28 w-24 object-cover rounded-t-lg sm:h-40 sm:min-w-full sm:w-full"
 						if len(r.Images) > 0 && data.Functions.IsUUIDValid(r.Images[0]) && data.Functions.IsImageExists(r.Images[0]) {
-							src={ fmt.Sprintf("/data/images/thumbnails/%s.webp", r.Images[0]) }
+							src={ "/data/images/thumbnails/" + r.Images[0].String() + ".webp" }
 						} else {
 							src="/static/img/recipes/placeholder.webp"
 						}
@@ -1884,7 +1997,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 					</h2>
 					<div class="grid md:grid-flow-col md:grid-cols-6">
 						<div class="w-[95vw] md:w-full text-center border-b border-gray-700 md:col-span-3 md:border-r md:border-b-0 flex items-center justify-center print:hidden">
-							switch len(data.Recipe.Images) {
+							switch len(data.Recipe.Images) + len(data.Recipe.Videos) {
 								case 0:
 									<img
 										style="object-fit: cover"
@@ -1893,27 +2006,39 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 										src="/static/img/recipes/placeholder.webp"
 									/>
 								case 1:
-									<img
-										id="output"
-										style="object-fit: cover"
-										alt="Image of the recipe"
-										class="w-full max-h-80  md:max-h-[34rem]"
-										if data.IsImagesExist[0] {
-											src={ fmt.Sprintf("/data/images/%s.webp", data.Recipe.Images[0]) }
+									if len(data.Recipe.Images) == 1 {
+										<img
+											id="output"
+											style="object-fit: cover"
+											alt="Image of the recipe"
+											class="w-full max-h-80  md:max-h-[34rem]"
+											if data.IsImagesExist[0] {
+												src={ "/data/images/" + data.Recipe.Images[0].String() + ".webp" }
+											} else {
+												src="/static/img/recipes/placeholder.webp"
+											}
+										/>
+									} else {
+										if data.Recipe.Videos[0].EmbedURL != "" {
+											<iframe src={ data.Recipe.Videos[0].EmbedURL } title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="" style="height: 100%;width: 100%;"></iframe>
+										} else if data.Recipe.Videos[0].ContentURL != "" {
+											<video controls preload="metadata" src={ data.Recipe.Videos[0].ContentURL }></video>
+										} else if data.IsVideoExist[0] {
+											<video controls preload="metadata" src={ "/data/videos/" + data.Recipe.Videos[0].ID.String() + ".webm" } type="video/webm"></video>
 										} else {
-											src="/static/img/recipes/placeholder.webp"
+											<p>Video is currently being processed.<br/>Please refresh the page later.</p>
 										}
-									/>
+									}
 								default:
 									<div class="carousel w-full">
-										for i := 0; i < len(data.Recipe.Images); i++ {
-											<div id={ "image-" + strconv.Itoa(i) } class="carousel-item relative w-full">
+										for i, img := range data.Recipe.Images {
+											<div id={ "media-" + strconv.Itoa(i) } class="carousel-item relative w-full">
 												<img
 													style="object-fit: cover"
 													alt="Image of the recipe"
 													class="w-full max-h-80  md:max-h-[34rem]"
 													if data.IsImagesExist[i] {
-														src={ fmt.Sprintf("/data/images/%s.webp", data.Recipe.Images[i]) }
+														src={ "/data/images/" + img.String() + ".webp" }
 													} else {
 														src="/static/img/recipes/placeholder.webp"
 													}
@@ -1922,17 +2047,45 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 													<a
 														class="btn btn-circle"
 														if i == 0 {
-															href={ templ.URL("#image-" + strconv.Itoa(len(data.Recipe.Images)-1)) }
+															href={ templ.URL("#media-" + strconv.Itoa(len(data.Recipe.Images)+len(data.Recipe.Videos)-1)) }
 														} else {
-															href={ templ.URL("#image-" + strconv.Itoa(i-1)) }
+															href={ templ.URL("#media-" + strconv.Itoa(i-1)) }
 														}
 													>❮</a>
 													<a
 														class="btn btn-circle"
-														if i == len(data.Recipe.Images) - 1 {
-															href="#image-0"
+														if i == len(data.Recipe.Images) + len(data.Recipe.Videos) - 1 {
+															href="#media-0"
 														} else {
-															href={ templ.URL("#image-" + strconv.Itoa(i+1)) }
+															href={ templ.URL("#media-" + strconv.Itoa(i+1)) }
+														}
+													>❯</a>
+												</div>
+											</div>
+										}
+										for i, v := range data.Recipe.Videos {
+											<div id={ "media-" + strconv.Itoa(i+len(data.Recipe.Images)) } class="carousel-item relative w-full">
+												if v.EmbedURL != "" {
+													<iframe src={ v.EmbedURL } title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="" style="height: 100%;width: 100%;"></iframe>
+												} else if v.ContentURL != "" {
+													<video controls preload="metadata" src={ v.ContentURL }></video>
+												} else if data.IsVideoExist[i] {
+													<video controls preload="metadata" src={ "/data/videos/" + v.ID.String() + ".webm" } type="video/webm"></video>
+												} else {
+													<p class="grid place-self-center">
+														Video #{ strconv.Itoa(i+1) } is currently being processed.
+														<br/>
+														Please refresh the page later.
+													</p>
+												}
+												<div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
+													<a class="btn btn-circle" href={ templ.URL("#media-" + strconv.Itoa(i+len(data.Recipe.Images)-1)) }>❮</a>
+													<a
+														class="btn btn-circle"
+														if i == len(data.Recipe.Videos) - 1 {
+															href="#media-0"
+														} else {
+															href={ templ.URL("#media-" + strconv.Itoa(i+len(data.Recipe.Images)+1)) }
 														}
 													>❯</a>
 												</div>
@@ -2059,6 +2212,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 													-
 												} else {
 													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Calories,"Calories") }
+													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Calories,"Calories") }
 												}
 											</td>
 										</tr>
@@ -2068,6 +2222,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 												if data.Recipe.Nutrition.TotalCarbohydrates == "" {
 													-
 												} else {
+													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.TotalCarbohydrates,"Carbohydrates") }
 													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.TotalCarbohydrates,"Carbohydrates") }
 												}
 											</td>
@@ -2079,6 +2234,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 													-
 												} else {
 													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Sugars,"Sugar") }
+													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Sugars,"Sugar") }
 												}
 											</td>
 										</tr>
@@ -2089,6 +2245,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 													-
 												} else {
 													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Protein,"Protein") }
+													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Protein,"Protein") }
 												}
 											</td>
 										</tr>
@@ -2098,6 +2255,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 												if data.Recipe.Nutrition.TotalFat == "" {
 													-
 												} else {
+													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.TotalFat,"Fat") }
 													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.TotalFat,"Fat") }
 												}
 											</td>
@@ -2139,6 +2297,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 													-
 												} else {
 													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Cholesterol,"Cholesterol") }
+													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Cholesterol,"Cholesterol") }
 												}
 											</td>
 										</tr>
@@ -2149,6 +2308,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 													-
 												} else {
 													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Sodium,"Sodium") }
+													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Sodium,"Sodium") }
 												}
 											</td>
 										</tr>
@@ -2158,6 +2318,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 												if data.Recipe.Nutrition.Fiber == "" {
 													-
 												} else {
+													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Fiber,"Fiber") }
 													{ models.EnsureNutritionUnitForString(data.Recipe.Nutrition.Fiber,"Fiber") }
 												}
 											</td>
@@ -2278,7 +2439,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
     </script>
 }
 
-templ recipeKeywordEmpty() {
+templ recipeKeywordEmpty(keywords []string) {
 	<div id="hidden_keyword" class="hidden badge badge-sm badge-neutral p-3 pr-0">
 		<input type="hidden" name="keywords" value=""/>
 		<span class="select-none"></span>
@@ -2290,7 +2451,12 @@ templ recipeKeywordEmpty() {
 		_="on keydown if event.key is 'Enter' halt the event then addKeyword(event)"
 	>
 		<label>
-			<input id="new_keyword" type="text" placeholder="New keyword" class="input input-ghost input-xs w-[16ch] focus:outline-none" autocomplete="off"/>
+			<input id="new_keyword" type="text" placeholder="New keyword" class="input input-ghost input-xs w-[16ch] focus:outline-none" autocomplete="off" list="keywords"/>
+			<datalist id="keywords">
+				for _, k := range keywords {
+					<option>{ k }</option>
+				}
+			</datalist>
 		</label>
 		<button
 			type="button"

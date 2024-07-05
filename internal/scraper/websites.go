@@ -1,9 +1,11 @@
 package scraper
 
 import (
+	"encoding/json"
 	"errors"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
+	"strings"
 )
 
 // ErrNotImplemented is the error used when the website is not supported.
@@ -19,6 +21,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeAh(doc)
 		case "all-clad":
 			return scrapeAllClad(doc)
+		case "angielaeats":
+			return scrapeAngielaEats(doc)
 		case "argiro":
 			return scrapeArgiro(doc)
 		case "archanaskitchen":
@@ -40,6 +44,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeBingingWithBabish(doc)
 		case "blueapron":
 			return scrapeBlueapron(doc)
+		case "bottomlessgreens":
+			return scrapeBottomLessGreens(doc)
 		case "brianlagerstrom":
 			return scrapeBrianLagerstrom(doc)
 		case "briceletbaklava":
@@ -55,8 +61,12 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		switch host {
 		case "cdkitchen":
 			return scrapeCdKitchen(doc)
+		case "cestmafournee":
+			return scrapeCestMaFournee(doc)
 		case "chefnini":
 			return scrapeChefnini(doc)
+		case "chinesecookingdemystified":
+			return scrapeChinesecookingdemystified(doc)
 		case "chuckycruz":
 			return scrapeChuckycruz(doc)
 		case "closetcooking":
@@ -72,6 +82,10 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		}
 	case 'd':
 		switch host {
+		case "dherbs":
+			return scrapeDherbs(doc)
+		case "dish":
+			return scrapeDish(doc)
 		case "dr":
 			return scrapeDk(doc)
 		case "drinkoteket":
@@ -83,6 +97,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		switch host {
 		case "eatwell101":
 			return scrapeEatwell101(doc)
+		case "etenvaneefke":
+			return scrapEetenvaneefke(doc)
 		case "expressen":
 			return scrapeEspressen(doc)
 		default:
@@ -109,12 +125,16 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		}
 	case 'g':
 		switch host {
+		case "gazoakleychef":
+			return scrapeGazoakleychef(doc)
 		case "gesund-aktiv":
 			return scrapeGesundAktiv(doc)
 		case "giallozafferano":
 			return scrapeGiallozafferano(doc)
 		case "globo":
 			return scrapeGlobo(doc)
+		case "goodeatings":
+			return scrapeGoodEatings(doc)
 		case "grandfrais":
 			return scrapeGrandfrais(doc)
 		case "greatbritishchefs":
@@ -132,6 +152,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeHalfBakedHarvest(doc)
 		case "heatherchristo":
 			return scrapeHeatherChristo(doc)
+		case "homebrewanswers":
+			return scrapeHomebrewAnswers(doc)
 		case "homechef":
 			return scrapeHomechef(doc)
 		default:
@@ -139,6 +161,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		}
 	case 'i':
 		switch host {
+		case "instantpot":
+			return scrapeInstantPot(doc)
 		default:
 			return parseWebsite(doc)
 		}
@@ -155,6 +179,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		}
 	case 'k':
 		switch host {
+		case "keepinitkind":
+			return scrapeKeepinItKind(doc)
 		case "kennymcgovern":
 			return scrapeKennyMcGovern(doc)
 		case "kingarthurbaking":
@@ -174,6 +200,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		}
 	case 'l':
 		switch host {
+		case "lahbco":
+			return scrapeLahbco(doc)
 		case "latelierderoxane":
 			return scrapeLatelierderoxane(doc)
 		case "lekkerensimpel":
@@ -182,6 +210,10 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeLidlKochen(doc)
 		case "livingthegreenlife":
 			return scrapeLivingTheGreenLife(doc)
+		case "lithuanianintheusa":
+			return scrapeLithuanianInTheUSA(doc)
+		case "loveandlemons":
+			return scrapeLoveAndLemons(doc)
 		default:
 			return parseWebsite(doc)
 		}
@@ -191,6 +223,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeMaangchi(doc)
 		case "meljoulwan":
 			return scrapeMeljoulwan(doc)
+		case "mexicanmademeatless":
+			return scrapeMexicanMadeMeatless(doc)
 		case "mindmegette":
 			return scrapeMindMegette(doc)
 		case "moulinex":
@@ -226,6 +260,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapePaniniHappy(doc)
 		case "pickuplimes":
 			return scrapePickupLimes(doc)
+		case "plentyvegan":
+			return scrapePlentyVegan(doc)
 		case "ploetzblog":
 			return scrapePloetzblog(doc)
 		case "projectgezond":
@@ -234,6 +270,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapePrzepisy(doc)
 		case "purelypope":
 			return scrapePurelyPope(doc)
+		case "purewow":
+			return scrapePureWow(doc)
 		case "puurgezond":
 			return scrapePuurgezond(doc)
 		default:
@@ -241,6 +279,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		}
 	case 'r':
 		switch host {
+		case "radiofrance":
+			return scrapeRadioFrance(doc)
 		case "recettes":
 			return scrapeRecettesDuQuebec(doc)
 		case "recipecommunity":
@@ -251,6 +291,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeReisHunger(doc)
 		case "rezeptwelt":
 			return scrapeRezeptwelt(doc)
+		case "robinasbell":
+			return scrapeRobinasBell(doc)
 		case "rosannapansino":
 			return scrapeRosannapansino(doc)
 		default:
@@ -266,6 +308,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeSmittenKitchen(doc)
 		case "southerncastiron":
 			return scrapeSoutherncastiron(doc)
+		case "spiceboxtravels":
+			return scrapeSpiceBoxTravels(doc)
 		case "streetkitchen":
 			return scrapeStreetKitchen(doc)
 		case "sunset":
@@ -279,10 +323,18 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeTastyKitchen(doc)
 		case "tesco":
 			return scrapeTesco(doc)
+		case "thatvegandad":
+			return scrapeThatVeganDad(doc)
 		case "thecookingguy":
 			return scrapeTheCookingGuy(doc)
+		case "thefoodflamingo":
+			return scrapeTheFoodFlamingo(doc)
+		case "theguccha":
+			return scrapeTheGuccha(doc)
 		case "thehappyfoodie":
 			return scrapeTheHappyFoodie(doc)
+		case "theheartysoul":
+			return scrapeTheHeartySoul(doc)
 		default:
 			return parseWebsite(doc)
 		}
@@ -299,6 +351,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		switch host {
 		case "valdemarsro":
 			return scrapeValdemarsro(doc)
+		case "vegan-pratique":
+			return scrapeVeganPratique(doc)
 		default:
 			return parseWebsite(doc)
 		}
@@ -342,10 +396,7 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 func parseWebsite(doc *goquery.Document) (models.RecipeSchema, error) {
 	rs, err := parseLdJSON(doc)
 	if err != nil {
-		rs, err = parseGraph(doc)
-		if err != nil {
-			return models.RecipeSchema{}, ErrNotImplemented
-		}
+		return models.RecipeSchema{}, ErrNotImplemented
 	}
 
 	if rs.Yield == nil {
@@ -355,4 +406,47 @@ func parseWebsite(doc *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	return rs, nil
+}
+
+func parseLdJSON(root *goquery.Document) (models.RecipeSchema, error) {
+	for _, node := range root.Find("script[type='application/ld+json']").Nodes {
+		if node.FirstChild == nil {
+			continue
+		}
+
+		var rs = models.NewRecipeSchema()
+		err := json.Unmarshal([]byte(strings.ReplaceAll(node.FirstChild.Data, "\n", "")), &rs)
+
+		var found bool
+		if len(rs.AtGraph) > 0 {
+			for _, schema := range rs.AtGraph {
+				if schema.AtType.Value == "Recipe" {
+					rs = *schema
+					found = true
+					break
+				}
+			}
+		}
+
+		if !found && err != nil || rs.Equal(models.NewRecipeSchema()) {
+			var xrs []models.RecipeSchema
+			err = json.Unmarshal([]byte(node.FirstChild.Data), &xrs)
+			if err != nil {
+				continue
+			}
+
+			for _, rs = range xrs {
+				if rs.AtType != nil && rs.AtType.Value == "Recipe" {
+					return rs, nil
+				}
+			}
+			continue
+		}
+
+		if rs.AtType.Value != "Recipe" {
+			continue
+		}
+		return rs, nil
+	}
+	return models.RecipeSchema{}, ErrNotImplemented
 }

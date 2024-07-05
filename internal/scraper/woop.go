@@ -13,29 +13,14 @@ import (
 func scrapeWoop(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Name, _ = root.Find("meta[name='title']").Attr("content")
-	rs.Keywords.Values, _ = root.Find("meta[name='keywords']").Attr("content")
-	rs.Description.Value, _ = root.Find("meta[property='og:description']").Attr("content")
-	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.Name = getNameContent(root, "title")
+	rs.Keywords.Values = getNameContent(root, "keywords")
+	rs.Description.Value = getPropertyContent(root, "og:description")
+	rs.Image.Value = getPropertyContent(root, "og:image")
 	rs.Yield.Value = findYield(root.Find(".serving-amount").Children().Last().Text())
 
-	nodes := root.Find(".ingredients li")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, s *goquery.Selection) {
-		v := strings.TrimSpace(s.Text())
-		if v != "" {
-			rs.Ingredients.Values = append(rs.Ingredients.Values, v)
-		}
-	})
-
-	nodes = root.Find(".cooking-instructions li")
-	rs.Instructions.Values = make([]models.HowToItem, 0, nodes.Length())
-	nodes.Each(func(_ int, s *goquery.Selection) {
-		v := strings.TrimSpace(s.Text())
-		if v != "" {
-			rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(v))
-		}
-	})
+	getIngredients(&rs, root.Find(".ingredients li"))
+	getInstructions(&rs, root.Find(".cooking-instructions li"))
 
 	var nutrition models.NutritionSchema
 	root.Find(".nutritional-info li").Each(func(_ int, s *goquery.Selection) {

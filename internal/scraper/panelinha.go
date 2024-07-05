@@ -8,7 +8,7 @@ import (
 )
 
 func scrapePanelinha(root *goquery.Document) (models.RecipeSchema, error) {
-	rs, err := parseLdJSON(root)
+	rs, err := parseWebsite(root)
 	if err != nil {
 		return rs, err
 	}
@@ -22,11 +22,7 @@ func scrapePanelinha(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	nodes := root.Find(".blockIngredientListingsctn ul li")
-	rs.Ingredients.Values = make([]string, 0, nodes.Length())
-	nodes.Each(func(_ int, s *goquery.Selection) {
-		rs.Ingredients.Values = append(rs.Ingredients.Values, s.Text())
-	})
-
+	getIngredients(&rs, nodes)
 	if nodes.Parent() != nil && nodes.Parent().Parent() != nil {
 		nodes = root.Find("h5:contains('Modo de preparo')").Parent().Parent().Find("li")
 		instructions := make([]models.HowToItem, 0, nodes.Length())

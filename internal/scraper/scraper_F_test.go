@@ -2,6 +2,7 @@ package scraper_test
 
 import (
 	"testing"
+  "time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -45,9 +46,11 @@ func TestScraper_F(t *testing.T) {
 				},
 				Name:            "Green Shakshuka",
 				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 1},
 				URL:             "https://recipes.farmhousedelivery.com/green-shakshuka/",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -151,10 +154,12 @@ func TestScraper_F(t *testing.T) {
 				Name:            "Lasagna al pistacchio",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "P0DT0H10M0S",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				TotalTime:       "P0DT0H50M0S",
 				Yield:           &models.Yield{Value: 4},
 				URL:             "https://www.fattoincasadabenedetta.it/ricetta/lasagne-al-pistacchio/",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -218,6 +223,18 @@ func TestScraper_F(t *testing.T) {
 				TotalTime: "PT30M",
 				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.feastingathome.com/orecchiette-pasta-with-broccoli-sauce/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/&rdquo;mXhs2DnA&rdquo;.mp4",
+							Description:  "”A",
+							Name:         "”Orecchiette",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/&rdquo;mXhs2DnA&rdquo;-720.jpg"},
+							UploadDate:   time.Date(1970, 1, 1, 0, 0, 0, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -343,6 +360,51 @@ func TestScraper_F(t *testing.T) {
 			},
 		},
 		{
+			name: "findingtimeforcooking.com",
+			in:   "https://findingtimeforcooking.com/drink-recipes/orange-amaretto-white-russian-cocktail/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Drinks: Cocktails & More"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DatePublished: "2022-02-06",
+				Description: &models.Description{
+					Value: "This fascinating Orange Amaretto White Russian is a twist on the classic, and may ruin you for all future ones!  It&#x27;s super easy, indulgent, boozy, fresh, &amp; delicious!",
+				},
+				Keywords: &models.Keywords{},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"2 to 3 (2-inch) orange peels (I like mine orange-y)",
+						"1 ounce of coffee liqueur (e.g. Kahlua)",
+						"3/4 ounce of amaretto liqueur (recommend Disaronno brand; I go a bit heavy here)",
+						"1 1/2 ounces of vodka", "1 dash of Angostura bitters (or any orange bitters)",
+						"3/4 ounce of heavy cream", "Ice for serving (and for shaking)",
+						"Orange peels for garnish",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Add the orange peels to a cocktail shaker. Use a muddler (or the handle of a wooden spoon to gently smash the orange rind until it is really fragrant.", Type: "HowToStep"},
+						{Text: "Fill the shaker with ice and add the coffee liqueur, amaretto, vodka, and bitters.", Type: "HowToStep"},
+						{Text: "Shake vigorously for at least 10 seconds (I go closer to 15) to mix and chill the ingredients. It's always good to taste the mixture at this point to make sure it's balanced to your tastes.", Type: "HowToStep"},
+						{Text: "Strain the mixture into a rocks glass with some ice.", Type: "HowToStep"},
+						{Text: "Drizzle the heavy cream into the glass. Stop and gaze lovingly at the beautiful layers before stirring to combine. Serve immediately, garnished with an orange peel.", Type: "HowToStep"},
+					},
+				},
+				Name:            "Orange Amaretto White Russian Cocktail",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT2M",
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:       "PT2M",
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://findingtimeforcooking.com/drink-recipes/orange-amaretto-white-russian-cocktail/",
+				Video:           &models.Videos{},
+			},
+		},
+		{
 			name: "fitmencook.com",
 			in:   "https://fitmencook.com/rosemary-blue-cheese-turkey-sliders/",
 			want: models.RecipeSchema{
@@ -398,6 +460,7 @@ func TestScraper_F(t *testing.T) {
 				},
 				PrepTime: "PT5M",
 				URL:      "https://fitmencook.com/rosemary-blue-cheese-turkey-sliders/",
+				Yield:    &models.Yield{Value: 1},
 			},
 		},
 		{
@@ -442,6 +505,18 @@ func TestScraper_F(t *testing.T) {
 				TotalTime: "PT15M",
 				Yield:     &models.Yield{Value: 8},
 				URL:       "https://fitslowcookerqueen.com/easy-homemade-breakfast-sausage/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/&rdquo;HzwLU00f&rdquo;.mp4",
+							Description:  "”Air",
+							Name:         "”Air",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/&rdquo;HzwLU00f&rdquo;-720.jpg"},
+							UploadDate:   time.Date(1970, 1, 1, 0, 0, 0, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -499,11 +574,13 @@ func TestScraper_F(t *testing.T) {
 					Sodium:        "1472",
 					Sugar:         "2.7",
 				},
-				PrepTime:  "PT30M",
-				Tools:     &models.Tools{Values: []models.HowToItem{}},
-				TotalTime: "PT36M",
-				URL:       "https://www.food.com/recipe/jim-lahey-s-no-knead-pizza-margherita-382696",
-				Yield:     &models.Yield{Value: 1},
+				PrepTime:     "PT30M",
+				ThumbnailURL: &models.ThumbnailURL{},
+				Tools:        &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:    "PT36M",
+				URL:          "https://www.food.com/recipe/jim-lahey-s-no-knead-pizza-margherita-382696",
+				Video:        &models.Videos{},
+				Yield:        &models.Yield{Value: 1},
 			},
 		},
 		{
@@ -559,9 +636,11 @@ func TestScraper_F(t *testing.T) {
 				Name:            "Orecchiette With Roasted Butternut Squash, Kale, &amp;amp; Caramelized Red Onion",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT0H15M",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 4},
 				URL:             "https://food52.com/recipes/7930-orecchiette-with-roasted-butternut-squash-kale-and-caramelized-red-onion",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -825,9 +904,11 @@ func TestScraper_F(t *testing.T) {
 				Name:            "Waldorf Chicken Boats",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT20M",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 4},
 				URL:             "https://foodnetwork.co.uk/recipes/waldorf-chicken-boats",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -871,9 +952,11 @@ func TestScraper_F(t *testing.T) {
 					},
 				},
 				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{},
 				URL:             "https://www.foodrepublic.com/recipes/hand-cut-burger/",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -945,6 +1028,18 @@ func TestScraper_F(t *testing.T) {
 				TotalTime: "PT40M",
 				Yield:     &models.Yield{Value: 6},
 				URL:       "https://foolproofliving.com/chocolate-chili/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/vOrUM6ik.mp4",
+							Description:  "My Chocolate Chili Recipe is full-bodied, rich, and utterly scrumptious chili recipe that will transform your everyday dinner into a five-star meal. This one-pot recipe builds layers of complex flavors, like warm cumin, deep cocoa powder, and spicy jalapenos into a surprisingly rich one pot meal.",
+							Name:         "Chocolate Chili Recipe Video",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/vOrUM6ik-720.jpg"},
+							UploadDate:   time.Date(2022, 11, 9, 20, 5, 28, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -990,10 +1085,12 @@ func TestScraper_F(t *testing.T) {
 				Name:            "Crispy Buffalo Cauliflower Bites",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT0D0H0M",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				TotalTime:       "PT0D0H35M",
 				Yield:           &models.Yield{Value: 6},
 				URL:             "https://www.forksoverknives.com/recipes/vegan-snacks-appetizers/crispy-buffalo-cauliflower-bites/",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -1083,9 +1180,11 @@ func TestScraper_F(t *testing.T) {
 				Name:            "Vegetarische rode kool stamppot met jus - Francesca Kookt",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT30M",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 4},
 				URL:             "https://www.francescakookt.nl/vegetarische-rode-kool-stamppot-jus",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -1164,10 +1263,12 @@ func TestScraper_F(t *testing.T) {
 				},
 				Name:            "Fyllning",
 				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{Value: "uploads/sites/87/2020/08/knackig-appelpaj-rakram-4.jpg"},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				TotalTime:       "PT60M",
 				Yield:           &models.Yield{Value: 6},
 				URL:             "https://fredriksfika.allas.se/fredriks-pajer/knackig-appelpaj-med-rakram/",
+				Video:           &models.Videos{},
 			},
 		},
 	}

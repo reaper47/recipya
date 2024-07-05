@@ -12,12 +12,12 @@ type HTTPClient interface {
 }
 
 // NewHTTP creates a new HTTP service.
-func NewHTTP(client HTTPClient) *HTTP {
+func NewHTTP(client HTTPClient) HTTP {
 	if client == nil {
 		client = http.DefaultClient
 	}
 
-	return &HTTP{
+	return HTTP{
 		Client: client,
 	}
 }
@@ -27,9 +27,14 @@ type HTTP struct {
 	Client HTTPClient
 }
 
+// Do sends an HTTP request and returns an HTTP response, following policy (such as redirects, cookies, auth) as configured on the client.
+func (h HTTP) Do(req *http.Request) (*http.Response, error) {
+	return h.Client.Do(req)
+}
+
 // PrepareRequestForURL Prepares an HTTP GET request for a given URL.
 // It will apply additional HTTP headers if the host requires it.
-func (h *HTTP) PrepareRequestForURL(url string) (*http.Request, error) {
+func (h HTTP) PrepareRequestForURL(url string) (*http.Request, error) {
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
@@ -39,18 +44,28 @@ func (h *HTTP) PrepareRequestForURL(url string) (*http.Request, error) {
 
 	host := h.GetHost(url)
 	switch host {
-	case "aberlehome", "bettybossi", "chatelaine.com", "downshiftology.com", "marmiton", "natashaskitchen", "puurgezond", "reddit", "thekitchn", "thepalatablelife", "wellplated":
+	case "aberlehome", "bettybossi", "colruyt", "downshiftology", "findingtimeforcooking", "marmiton", "natashaskitchen",
+		"parsleyandparm", "puurgezond", "reddit", "robinasbell", "sarahsveganguide", "thekitchn", "thepalatablelife",
+		"wellplated":
 		req.Header.Set("User-Agent", mozilla)
 	case "ah":
-		req.Header.Set("Accept-Language", "nl")
+		req.Header.Set("Accept-Language", "q=1.0,nl-NL,nl;en-US,en;q=0.8,fr-FR;q=0.5,fr;q=0.3")
 		req.Header.Set("User-Agent", mozilla)
+	case "chatelaine":
+		req.Header.Set("User-Agent", mozilla)
+		req.Header.Set("Pragma", "no-cache")
+		req.Header.Set("DNT", "1")
+		req.Header.Set("Accept-Encoding", "gzip, deflate, br")
+		req.Header.Set("Accept", "*/*")
+		req.Header.Add("Accept-Charset", "utf-8")
+		req.Header.Set("Connection", "keep-alive")
 	}
 
 	return req, err
 }
 
 // GetHost gets the host from the raw URL.
-func (h *HTTP) GetHost(rawURL string) string {
+func (h HTTP) GetHost(rawURL string) string {
 	u, err := url.Parse(rawURL)
 	if err != nil {
 		return ""

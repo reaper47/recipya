@@ -41,7 +41,7 @@ type RepositoryService interface {
 	// AddShareRecipe adds a shared recipe to the user's collection.
 	AddShareRecipe(recipeID, userID int64) (int64, error)
 
-	// Categories gets all categories in the database.
+	// Categories gets all user categories from the database.
 	Categories(userID int64) ([]string, error)
 
 	// CheckUpdate checks whether there is a new release for Recipya.
@@ -94,10 +94,6 @@ type RepositoryService interface {
 	// GetAuthToken gets a non-expired auth token by the selector.
 	GetAuthToken(selector, validator string) (models.AuthToken, error)
 
-	// Images fetches all distinct image UUIDs for recipes.
-	// An empty slice is returned when an error occurred.
-	Images() []string
-
 	// InitAutologin creates a default user for the autologin feature if no users are present.
 	InitAutologin() error
 
@@ -107,8 +103,15 @@ type RepositoryService interface {
 	// IsUserPassword checks whether the password is the user's password.
 	IsUserPassword(id int64, password string) bool
 
+	// Keywords gets all keywords in the database.
+	Keywords() ([]string, error)
+
 	// MeasurementSystems gets the units systems, along with the one the user selected, in the database.
 	MeasurementSystems(userID int64) ([]units.System, models.UserSettings, error)
+
+	// Media fetches all distinct image and video UUIDs for recipes.
+	// An empty slice is returned when an error occurred.
+	Media() (images, videos []string)
 
 	// Nutrients gets the nutrients for the ingredients from the FDC database, along with the total weight.
 	Nutrients(ingredients []string) (models.NutrientsFDC, float64, error)
@@ -171,6 +174,9 @@ type RepositoryService interface {
 
 	// UpdateUserSettingsCookbooksViewMode updates the user's preferred cookbooks viewing mode.
 	UpdateUserSettingsCookbooksViewMode(userID int64, mode models.ViewMode) error
+
+	// UpdateVideo updates a video.
+	UpdateVideo(video uuid.UUID, duration int) error
 
 	// UserID gets the user's id from the email. It returns -1 if user not found.
 	UserID(email string) int64
@@ -249,12 +255,18 @@ type FilesService interface {
 	// UpdateApp updates the application to the latest version.
 	UpdateApp(current semver.Version) error
 
-	// UploadImage uploads an image to the server.
+	// UploadImage uploads an image to the server. The image is converted to WebP.
 	UploadImage(rc io.ReadCloser) (uuid.UUID, error)
+
+	// UploadVideo uploads a video to the server. The video is converted to WebM in the background.
+	UploadVideo(rc io.ReadCloser, repo RepositoryService) (uuid.UUID, error)
 }
 
 // HTTPService is the interface that describes the methods required for preparing and utilizing https requests and responses.
 type HTTPService interface {
+	// Do sends an HTTP request and returns an HTTP response, following policy (such as redirects, cookies, auth) as configured on the client.
+	Do(req *http.Request) (*http.Response, error)
+
 	// PrepareRequestForURL Prepares an HTTP GET request for a given URL.
 	// It will apply additional HTTP headers if the host requires it.
 	PrepareRequestForURL(url string) (*http.Request, error)

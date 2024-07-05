@@ -20,7 +20,7 @@ import (
 // RecipeSchema is a representation of the Recipe schema (https://schema.org/Recipe).
 type RecipeSchema struct {
 	AtContext       string           `json:"@context"`
-	AtGraph         []any            `json:"@graph,omitempty"`
+	AtGraph         []*RecipeSchema  `json:"@graph,omitempty"`
 	AtType          *SchemaType      `json:"@type"`
 	Category        *Category        `json:"recipeCategory,omitempty"`
 	CookTime        string           `json:"cookTime,omitempty"`
@@ -37,10 +37,12 @@ type RecipeSchema struct {
 	Name            string           `json:"name,omitempty"`
 	NutritionSchema *NutritionSchema `json:"nutrition,omitempty"`
 	PrepTime        string           `json:"prepTime,omitempty"`
+	ThumbnailURL    *ThumbnailURL    `json:"thumbnailUrl,omitempty"`
 	Tools           *Tools           `json:"tool,omitempty"`
 	TotalTime       string           `json:"totalTime,omitempty"`
 	Yield           *Yield           `json:"recipeYield,omitempty"`
 	URL             string           `json:"url,omitempty"`
+	Video           *Videos          `json:"video,omitempty"`
 }
 
 // Equal verifies whether a RecipeSchema is equal to the other.
@@ -72,7 +74,7 @@ func NewRecipeSchema() RecipeSchema {
 	return RecipeSchema{
 		AtContext:       "https://schema.org",
 		AtType:          &SchemaType{Value: "Recipe"},
-		Category:        NewCategory(""),
+		Category:        NewCategory("uncategorized"),
 		CookingMethod:   &CookingMethod{},
 		Cuisine:         &Cuisine{},
 		Description:     &Description{},
@@ -81,8 +83,10 @@ func NewRecipeSchema() RecipeSchema {
 		Ingredients:     &Ingredients{Values: make([]string, 0)},
 		Instructions:    &Instructions{Values: make([]HowToItem, 0)},
 		NutritionSchema: &NutritionSchema{},
+		ThumbnailURL:    &ThumbnailURL{},
 		Tools:           &Tools{Values: make([]HowToItem, 0)},
 		Yield:           &Yield{Value: 1},
+		Video:           &Videos{},
 	}
 }
 
@@ -105,7 +109,7 @@ func (h *HowToItem) StringQuantity() string {
 func NewHowToStep(text string, opts ...*HowToItem) HowToItem {
 	v := HowToItem{
 		Type: "HowToStep",
-		Text: text,
+		Text: strings.TrimSpace(text),
 	}
 	for _, opt := range opts {
 		v.Name = opt.Name
@@ -241,6 +245,11 @@ func (r *RecipeSchema) Recipe() (*Recipe, error) {
 		yield = r.Yield.Value
 	}
 
+	var videos []VideoObject
+	if r.Video != nil {
+		videos = r.Video.Values
+	}
+
 	recipe := Recipe{
 		Category:     category,
 		CreatedAt:    createdAt,
@@ -257,6 +266,7 @@ func (r *RecipeSchema) Recipe() (*Recipe, error) {
 		Tools:        tools,
 		UpdatedAt:    updatedAt,
 		URL:          r.URL,
+		Videos:       videos,
 		Yield:        yield,
 	}
 
@@ -441,18 +451,15 @@ func (d *Description) UnmarshalJSON(data []byte) error {
 	}
 
 	s = strings.TrimSpace(s)
-	replace := []struct {
-		old string
-		new string
-	}{
-		{old: "\u202f", new: ""},
-		{old: "\u00a0", new: ""},
-		{old: "&quot;", new: ""},
-		{old: "”", new: `"`},
-		{old: "\u00ad", new: ""},
+	replace := []Replace{
+		{"\u202f", ""},
+		{"\u00a0", ""},
+		{"&quot;", ""},
+		{"”", `"`},
+		{"\u00ad", ""},
 	}
 	for _, r := range replace {
-		s = strings.ReplaceAll(s, r.old, r.new)
+		s = strings.ReplaceAll(s, r.Old, r.New)
 	}
 
 	d.Value = s
@@ -494,7 +501,7 @@ func (k *Keywords) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// Image holds a recipe's image. The JSON fields correspond.
+// Image holds a recipe's image.
 type Image struct {
 	Value string
 }
@@ -528,6 +535,11 @@ func (i *Image) UnmarshalJSON(data []byte) error {
 				u, ok := y["url"]
 				if ok {
 					i.Value = u.(string)
+				}
+
+				img, ok := y["@id"]
+				if ok {
+					i.Value = img.(string)
 				}
 			}
 		}
@@ -574,21 +586,18 @@ func (i *Ingredients) UnmarshalJSON(data []byte) error {
 		xv = v
 	}
 
-	cases := []struct {
-		old string
-		new string
-	}{
-		{old: "  ", new: " "},
-		{old: "\u00a0", new: " "},
-		{old: "&frac12;", new: "½"},
-		{old: "&frac34;", new: "¾"},
-		{old: "&apos;", new: "'"},
-		{old: "&nbsp;", new: ""},
-		{old: "&#224;", new: "à"},
-		{old: "&#8217;", new: "'"},
-		{old: "&#339;", new: "œ"},
-		{old: "&#233;", new: "é"},
-		{old: "&#239;", new: "ï"},
+	cases := []Replace{
+		{"  ", " "},
+		{"\u00a0", " "},
+		{"&frac12;", "½"},
+		{"&frac34;", "¾"},
+		{"&apos;", "'"},
+		{"&nbsp;", ""},
+		{"&#224;", "à"},
+		{"&#8217;", "'"},
+		{"&#339;", "œ"},
+		{"&#233;", "é"},
+		{"&#239;", "ï"},
 	}
 
 	for _, v := range xv {
@@ -599,7 +608,7 @@ func (i *Ingredients) UnmarshalJSON(data []byte) error {
 
 		str = strings.TrimSpace(v.(string))
 		for _, c := range cases {
-			str = strings.ReplaceAll(str, c.old, c.new)
+			str = strings.ReplaceAll(str, c.Old, c.New)
 		}
 		i.Values = append(i.Values, str)
 	}
@@ -802,6 +811,105 @@ func (y *Yield) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// Videos holds a list of VideoObject.
+type Videos struct {
+	Values []VideoObject
+}
+
+// MarshalJSON encodes the value of the yield.
+func (v *Videos) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.Values)
+}
+
+// UnmarshalJSON decodes the Videos according to the schema (https://schema.org/VideoObject).
+func (v *Videos) UnmarshalJSON(data []byte) error {
+	var t any
+	err := json.Unmarshal(data, &t)
+	if err != nil {
+		return err
+	}
+
+	switch x := t.(type) {
+	case map[string]any:
+		tm, ok := x["uploadDate"]
+		if ok {
+			parsed, _ := parseTime(tm.(string))
+			x["uploadDate"] = parsed.Format(time.RFC3339)
+			data, _ = json.Marshal(x)
+		}
+
+		var vid VideoObject
+		err = json.Unmarshal(data, &vid)
+		if err != nil {
+			return err
+		}
+
+		if vid.AtID != "" {
+			vid.EmbedURL = vid.AtID
+			vid.IsIFrame = true
+		}
+
+		v.Values = append(v.Values, vid)
+	case []any:
+		for _, a := range x {
+			tm, ok := a.(map[string]any)["uploadDate"]
+			if ok {
+				parsed, _ := parseTime(tm.(string))
+				a.(map[string]any)["uploadDate"] = parsed.Format(time.RFC3339)
+				data, _ = json.Marshal(x)
+			}
+
+			xb, _ := json.Marshal(a)
+			var vid VideoObject
+			err = json.Unmarshal(xb, &vid)
+			if err != nil {
+				return err
+			}
+
+			if vid.AtID != "" {
+				vid.EmbedURL = vid.AtID
+				vid.IsIFrame = true
+			}
+
+			v.Values = append(v.Values, vid)
+		}
+	}
+	return nil
+}
+
+func parseTime(tm string) (time.Time, error) {
+	var (
+		parsed time.Time
+		err    error
+	)
+
+	layouts := []string{"01-02-2006", time.RFC3339, "2006-01-02T15:04:05.999", "2006/01/02"}
+	for _, layout := range layouts {
+		parsed, err = time.Parse(layout, tm)
+		if err == nil {
+			break
+		}
+	}
+
+	return parsed, err
+}
+
+// VideoObject is a representation of the VideoObject schema (https://schema.org/VideoObject).
+type VideoObject struct {
+	AtID         string        `json:"@id"`
+	AtType       string        `json:"@type"`
+	ContentURL   string        `json:"contentUrl,omitempty"`
+	Description  string        `json:"description,omitempty"`
+	Duration     string        `json:"duration,omitempty"`
+	EmbedURL     string        `json:"embedUrl,omitempty"`
+	Expires      time.Time     `json:"expires,omitempty"`
+	ID           uuid.UUID     `json:"-"`
+	IsIFrame     bool          `json:"_"`
+	Name         string        `json:"name,omitempty"`
+	ThumbnailURL *ThumbnailURL `json:"thumbnailUrl,omitempty"`
+	UploadDate   time.Time     `json:"uploadDate,omitempty"`
+}
+
 // NutritionSchema is a representation of the nutrition schema (https://schema.org/NutritionInformation).
 type NutritionSchema struct {
 	Calories       string `json:"calories,omitempty"`
@@ -871,17 +979,17 @@ func (n *NutritionSchema) UnmarshalJSON(data []byte) error {
 
 	switch x := v.(type) {
 	case map[string]any:
-		n.Calories = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["calories"]), ",", ".", -1))
-		n.Carbohydrates = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["carbohydrateContent"]), ",", ".", -1))
-		n.Cholesterol = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["cholesterolContent"]), ",", ".", -1))
-		n.Fat = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["fatContent"]), ",", ".", -1))
-		n.SaturatedFat = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["saturatedFatContent"]), ",", ".", -1))
-		n.UnsaturatedFat = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["unsaturatedFatContent"]), ",", ".", -1))
-		n.TransFat = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["transFatContent"]), ",", ".", -1))
-		n.Protein = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["proteinContent"]), ",", ".", -1))
-		n.Sugar = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["sugarContent"]), ",", ".", -1))
-		n.Sodium = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["sodiumContent"]), ",", ".", -1))
-		n.Fiber = regex.Digit.FindString(strings.Replace(extensions.ConvertToString(x["fiberContent"]), ",", ".", -1))
+		n.Calories = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["calories"]), ",", "."))
+		n.Carbohydrates = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["carbohydrateContent"]), ",", "."))
+		n.Cholesterol = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["cholesterolContent"]), ",", "."))
+		n.Fat = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["fatContent"]), ",", "."))
+		n.SaturatedFat = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["saturatedFatContent"]), ",", "."))
+		n.UnsaturatedFat = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["unsaturatedFatContent"]), ",", "."))
+		n.TransFat = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["transFatContent"]), ",", "."))
+		n.Protein = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["proteinContent"]), ",", "."))
+		n.Sugar = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["sugarContent"]), ",", "."))
+		n.Sodium = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["sodiumContent"]), ",", "."))
+		n.Fiber = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["fiberContent"]), ",", "."))
 
 		if val := extensions.ConvertToString(x["servingSize"]); val != "" {
 			xs := strings.Split(val, " ")
@@ -906,9 +1014,9 @@ func (n *NutritionSchema) UnmarshalJSON(data []byte) error {
 // EnsureNutritionUnitForString extracts digits from nutritional property and appends metric unit.
 // Returns a string value.
 func EnsureNutritionUnitForString(nutritionValue any, nutritionProperty string) string {
-	var nutritionPropertyLowerCase = strings.ToLower(nutritionProperty)
-	var nutritionString string = extensions.ConvertToString(nutritionValue)
-	var nutritionStringDigits string = regex.Digit.FindString(nutritionString)
+	nutritionPropertyLowerCase := strings.ToLower(nutritionProperty)
+	nutritionString := extensions.ConvertToString(nutritionValue)
+	nutritionStringDigits := regex.Digit.FindString(nutritionString)
 
 	// Early return if no digits could be found
 	if nutritionStringDigits == "" {
@@ -926,6 +1034,38 @@ func EnsureNutritionUnitForString(nutritionValue any, nutritionProperty string) 
 	// If the property is unhandled, e.g. if the schema has received new or updated property names which are not included in the other cases.
 	default:
 		return nutritionString
+	}
+}
+
+// ThumbnailURL holds a recipe's thumbnail.
+type ThumbnailURL struct {
+	Value string
+}
+
+// MarshalJSON encodes the thumbnail URL.
+func (t *ThumbnailURL) MarshalJSON() ([]byte, error) {
+	s := t.Value
+	if s != "" {
+		s = app.Config.Address() + "/data/images/thumbnails/" + s
+	}
+	return json.Marshal(s)
+}
+
+// UnmarshalJSON decodes the thumbnail URL according to the schema (https://schema.org/URL).
+func (t *ThumbnailURL) UnmarshalJSON(data []byte) error {
+	var v any
+	err := json.Unmarshal(data, &v)
+	if err != nil {
+		return err
+	}
+
+	switch x := v.(type) {
+	case string:
+		t.Value = x
+	case []any:
+		if len(x) > 0 {
+			t.Value = x[0].(string)
+		}
 	}
 }
 

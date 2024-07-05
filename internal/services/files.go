@@ -24,10 +24,12 @@ import (
 	"io"
 	"io/fs"
 	"log/slog"
+	"math"
 	"mime/multipart"
 	"net/http"
 	"net/url"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"runtime"
 	"slices"
@@ -47,15 +49,17 @@ const (
 // NewFilesService creates a new Files that satisfies the FilesService interface.
 func NewFilesService() *Files {
 	return &Files{
-		HTTP: NewHTTP(nil),
-		mu:   sync.Mutex{},
+		HTTP:    NewHTTP(nil),
+		mu:      sync.Mutex{},
+		videoMu: sync.Mutex{},
 	}
 }
 
 // Files is the entity that manages the email client.
 type Files struct {
-	HTTP HTTPService
-	mu   sync.Mutex
+	HTTP    HTTPService
+	mu      sync.Mutex
+	videoMu sync.Mutex
 }
 
 type exportData struct {
@@ -466,28 +470,6 @@ func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType, 
 			if err != nil {
 				return nil, err
 			}
-
-			if e.recipeImage != uuid.Nil {
-				filePath := filepath.Join(app.ImagesDir, e.recipeImage.String()+app.ImageExt)
-
-				_, err = os.Stat(filePath)
-				if err == nil {
-					out, err = writer.Create(e.recipeName + "/image.webp")
-					if err != nil {
-						return nil, err
-					}
-
-					data, err := os.ReadFile(filePath)
-					if err != nil {
-						return nil, err
-					}
-
-					_, err = out.Write(data)
-					if err != nil {
-						return nil, err
-					}
-				}
-			}
 		}
 	case models.PDF:
 		processed := make(map[string]struct{})
@@ -578,7 +560,7 @@ func recipeToPDF(r *models.Recipe) []byte {
 }
 
 func addRecipeToPDF(pdf *gofpdf.Fpdf, r *models.Recipe) *gofpdf.Fpdf {
-	viewData := templates.NewViewRecipeData(1, r, nil, true, false)
+	viewData := templates.NewViewRecipeData(1, r, nil, nil, true, false)
 
 	tr := pdf.UnicodeTranslatorFromDescriptor("")
 	marginLeft, marginTop, marginRight, _ := pdf.GetMargins()
@@ -945,13 +927,14 @@ func (f *Files) ScrapeAndStoreImage(rawURL string) (uuid.UUID, error) {
 		return uuid.Nil, nil
 	}
 
-	parsed, err := uuid.Parse(rawURL)
+	localImage := strings.TrimSuffix(filepath.Base(rawURL), app.ImageExt)
+	parsed, err := uuid.Parse(localImage)
 	if err == nil {
-		_, err = os.Stat(filepath.Join(app.ImagesDir, rawURL+app.ImageExt))
-		if errors.Is(err, os.ErrExist) {
-			return parsed, err
+		_, err = os.Stat(filepath.Join(app.ImagesDir, localImage+app.ImageExt))
+		if err != nil {
+			return uuid.Nil, err
 		}
-		return uuid.Nil, nil
+		return parsed, nil
 	}
 
 	req, err := f.HTTP.PrepareRequestForURL(rawURL)
@@ -959,8 +942,7 @@ func (f *Files) ScrapeAndStoreImage(rawURL string) (uuid.UUID, error) {
 		return uuid.Nil, err
 	}
 
-	client := &http.Client{}
-	resImage, err := client.Do(req)
+	resImage, err := f.HTTP.Do(req)
 	if err != nil {
 		_, err = os.Stat(filepath.Join(app.ImagesDir, rawURL+app.ImageExt))
 		if errors.Is(err, os.ErrExist) {
@@ -1264,6 +1246,64 @@ func (f *Files) UploadImage(rc io.ReadCloser) (uuid.UUID, error) {
 	}
 
 	return imageUUID, nil
+}
+
+// UploadVideo uploads a video to the server. The video is converted to WebM in the background.
+func (f *Files) UploadVideo(rc io.ReadCloser, repo RepositoryService) (uuid.UUID, error) {
+	if !app.Info.IsFFmpegInstalled {
+		return uuid.Nil, errors.New("ffmpeg is not installed")
+	}
+
+	mediaUUID := uuid.New()
+
+	temp, err := os.CreateTemp("", "*")
+	if err != nil {
+		return uuid.Nil, err
+	}
+	defer temp.Close()
+
+	n, err := io.Copy(temp, rc)
+	if err != nil {
+		return uuid.Nil, err
+	}
+
+	go func(u uuid.UUID, file string) {
+		f.videoMu.Lock()
+		defer f.videoMu.Unlock()
+		defer os.Remove(file)
+
+		out := filepath.Join(app.VideosDir, u.String()+app.VideoExt)
+		start := time.Now()
+
+		err = exec.Command("ffmpeg", "-i", file, "-c:v", "libvpx", "-b:v", "1M", "-c:a", "libvorbis", out).Run()
+		slog.Info("Converted video to WebM", "file", file, "out", out, "bytes", n, "exec", time.Since(start), "error", err)
+		if err == nil {
+			output, err := exec.Command("ffprobe", "-v", "error", "-show_format", "-of", "json", out).Output()
+			if err != nil {
+				slog.Info("Could not parse FFprobe file", "file", out, "error", err)
+				return
+			}
+
+			var probe models.FFProbe
+			if err := json.Unmarshal(output, &probe); err != nil {
+				slog.Info("Could not unmarshal FFprobe output", "file", out, "error", err)
+				return
+			}
+
+			float, err := strconv.ParseFloat(probe.Format.Duration, 64)
+			if err != nil {
+				slog.Info("Could not parse FFprobe duration", "file", out, "error", err)
+				return
+			}
+
+			err = repo.UpdateVideo(u, int(math.Round(float)))
+			if err != nil {
+				slog.Info("Could not update video", "file", out, "error", err)
+			}
+		}
+	}(mediaUUID, temp.Name())
+
+	return mediaUUID, nil
 }
 
 // UpdateApp updates the application to the latest version.

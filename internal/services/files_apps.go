@@ -339,7 +339,7 @@ func (f *Files) extractJSONRecipes(rd io.Reader) (models.Recipes, error) {
 			return nil, fmt.Errorf("rs.Recipe() err: %w", err)
 		}
 
-		if rs.Image.Value != "" {
+		if rs.Image != nil && rs.Image.Value != "" {
 			img, err := uuid.Parse(filepath.Base(rs.Image.Value))
 			if err != nil {
 				img, _ = f.ScrapeAndStoreImage(rs.Image.Value)

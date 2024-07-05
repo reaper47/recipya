@@ -2,6 +2,7 @@ package scraper_test
 
 import (
 	"testing"
+  "time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -76,6 +77,18 @@ func TestScraper_E(t *testing.T) {
 				TotalTime: "PT175M",
 				Yield:     &models.Yield{Value: 12},
 				URL:       "https://www.eatingbirdfood.com/cinnamon-rolls/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/ZCg18AzV.mp4",
+							Description:  "Make cinnamon rolls from scratch with this easy recipe that's perfect for beginners! They're soft, gooey, and made with bread flour, which gives them the perfect fluffy texture. Overnight instructions included.",
+							Name:         "Fluffy Cinnamon Rolls",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/ZCg18AzV-720.jpg"},
+							UploadDate:   time.Date(2022, 3, 30, 13, 0, 0, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -164,10 +177,12 @@ func TestScraper_E(t *testing.T) {
 				Name:            "Garlicky Beans & Greens",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT90M",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				TotalTime:       "PT94M",
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 3},
 				URL:             "https://www.eatliverun.com/dinner-cheap-garlickly-greens-beans/",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -211,10 +226,12 @@ func TestScraper_E(t *testing.T) {
 				Keywords:        &models.Keywords{},
 				Name:            "Vietnamese Chicken Cabbage Salad",
 				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
 				TotalTime:       "PT40M",
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 4},
 				URL:             "https://eatsmarter.com/recipes/vietnamese-chicken-cabbage-salad",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -253,9 +270,11 @@ func TestScraper_E(t *testing.T) {
 				},
 				Name:            "Olive Garlic Parmesan Marinated Mushrooms",
 				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{},
 				URL:             "https://www.eatwell101.com/garlic-parmesan-marinated-mushrooms-recipe",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -305,10 +324,12 @@ func TestScraper_E(t *testing.T) {
 				Name:            "Diced Chicken with Spicy Chilies 辣子鸡丁",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT10M",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				TotalTime:       "PT30M",
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 1},
 				URL:             "https://eatwhattonight.com/2021/11/diced-chicken-with-spicy-chilies-%e8%be%a3%e5%ad%90%e9%b8%a1%e4%b8%81/#wpzoom-recipe-card",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -377,6 +398,18 @@ func TestScraper_E(t *testing.T) {
 				TotalTime: "PT80M",
 				Yield:     &models.Yield{Value: 6},
 				URL:       "https://elavegan.com/vegan-moussaka-lentils-gluten-free/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/NYxGgMHa.mp4",
+							Description:  "Vegan moussaka with lentils and eggplant! This popular Greek dish can be easily made without meat and still tastes amazing. This healthy casserole is a wonderful comfort meal which is flavorful, satisfying, and very enjoyable. The recipe is plant-based, gluten-free, and fairly easy to make.",
+							Name:         "Vegan Moussaka With Lentils",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/NYxGgMHa-720.jpg"},
+							UploadDate:   time.Date(2020, 4, 13, 16, 38, 49, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -547,11 +580,25 @@ func TestScraper_E(t *testing.T) {
 					TransFat:       "0",
 					UnsaturatedFat: "2",
 				},
-				PrepTime:  "PT45M",
-				Tools:     &models.Tools{Values: []models.HowToItem{}},
-				TotalTime: "PT1H10M",
-				Yield:     &models.Yield{Value: 12},
-				URL:       "https://entertainingwithbeth.com/orange-pecan-crumb-muffins/",
+				PrepTime:     "PT45M",
+				ThumbnailURL: &models.ThumbnailURL{},
+				Tools:        &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:    "PT1H10M",
+				Yield:        &models.Yield{Value: 12},
+				URL:          "https://entertainingwithbeth.com/orange-pecan-crumb-muffins/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://www.youtube.com/watch?v=ZrmJZGvDGxE",
+							Description:  "#entertainingwithbeth #CookingChannel #EasyRecipes\n\nDAD'S IGTV CHANNEL (fun inspiring videos with Dad!) \nhttps://bit.ly/2HlWcbX\n\nMORE INFO ON GIVE ESSENTIAL: https://www.giveessential.org/\n1.) Give Essential was started in April by two Dartmouth College students. \n2.) They are a female-led and student-run nonprofit, and their team is 100% volunteer\n3.) Give Essential is a matching platform that connects essential workers who need household items to donors who are able to provide them; since they started, donors have pledged $1 million in in-kind and cash donations to essential workers in all 50 US-states!\n4.) For every dollar donated to Give Essential, they are able to send packages valued at $200 total\n5.) For the month of September, they are turning Labor Day into Labor Month to celebrate the essential workers that have kept our communities safe and healthy during the pandemic. \n6.)  Their goal is to raise $100,000 so that they can meet the goal of helping 50,000 families by the end of the year!\n\nORANGE PECAN CRUMB MUFFINS\nMakes 12 standard Muffins or 6 Jumbo Muffins \n\nINGREDIENTS:\n2 eggs\n¼ cup (50g) sugar\n¼ cup (45g) brown sugar\n3 tbsp (45ml) maple syrup\n¾ cup (180ml) melted butter\n¼ cup (60ml) of vegetable\n1 tbsp (15ml) orange zest\n½ cup (120ml) orange juice\n½ cup (120ml) water\n2 cups (240g) all-purpose flour\n2 tsp (10ml) baking powder\n½ tsp (2.5ml) salt\n¼ tsp (1.25ml) ground cloves\n½ cup pecans (75g) chopped\n\nFor Crumb Topping:\n3 tbsp (37g) sugar\n3 tbsp (34g) brown sugar\n6 tbsp (90g) flour\n¾ tsp (3.75ml) cinnamon\n4 tbsp (60ml) melted butter\n½ tsp (2.5ml) baking powder\n\nGarnish:\nA dusting of powdered sugar\n\nMETHOD:\nPreheat oven to 400F (200ml).\n\nFor the crumb topping, whisk together the sugars, flour and cinnamon. Add the butter and stir together with a fork until a crumb topping forms. Set aside.\n\nIn a large bowl whisk together the eggs, sugars, maple syrup, butter, vegetable oil, orange zest and juice and water. Set aside.\n\nIn a medium-sized bowl whisk together the flour, baking powder, salt and cloves.\n\nAdd the dry ingredients, in thirds, to the wet ingredients, whisking gently until just combined. Do not overmix.\n\nStir in the pecans.\n\nLine a 12-cup muffin tin with muffin papers (or a jumbo muffin tin with 6 wells) with papers. Fill the batter in the muffin tin about ¾ of the way full. Top with the crumb topping.\n\nBake for 25 minutes. Once cool enough to handle, transfer muffins to a cooling rack and dust lightly with powdered sugar. \n\n\n\nABOUT THIS CHANNEL\nHi! I'm Beth Le Manach and I believe food tastes better when shared. Subscribe to my cooking channel, Entertaining with Beth, to learn holiday recipes, party planning tips and easy recipes for weeknight meals! New recipe videos post every Saturday! SUBSCRIBE HERE! http://bit.ly/BethsEntertaining.",
+							Duration:     "PT29M11S",
+							Name:         "🔴 LIVE! BAKE WITH ME! (Orange Pecan Muffins)",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://i.ytimg.com/vi/ZrmJZGvDGxE/hqdefault.jpg"},
+							UploadDate:   time.Date(2020, 9, 20, 17, 28, 7, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -600,9 +647,13 @@ func TestScraper_E(t *testing.T) {
 				},
 				Name:            "Olive Oil Cake",
 				NutritionSchema: &models.NutritionSchema{},
-				Tools:           &models.Tools{Values: []models.HowToItem{}},
-				Yield:           &models.Yield{Value: 8},
-				URL:             "https://www.bonappetit.com/recipe/olive-oil-cake",
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://assets.epicurious.com/photos/5a05db121a9e232c87581a7f/1:1/w_1225,h_1225,c_limit/olive-oil-cake-recipe-BA-111017.jpg",
+				},
+				Tools: &models.Tools{Values: []models.HowToItem{}},
+				Yield: &models.Yield{Value: 8},
+				URL:   "https://www.bonappetit.com/recipe/olive-oil-cake",
+				Video: &models.Videos{},
 			},
 		},
 		{
@@ -665,6 +716,68 @@ func TestScraper_E(t *testing.T) {
 				TotalTime: "PT125M",
 				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.errenskitchen.com/baked-or-barbecued-sticky-glazed-ribs/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1630268980/tgee2rvnfx21ecxraskn.mp4",
+							Description: "Video showing how to make delightfully sweet and sticky ribs - make sure you have napkins at hand!",
+							Duration:    "PT48S",
+							EmbedURL:    "https://video.mediavine.com/videos/tgee2rvnfx21ecxraskn.js",
+							Name:        "Baked or Barbecued Sticky Glazed Ribs",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://mediavine-res.cloudinary.com/image/upload/s--LMyVRa1i--/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1630268957/t4jwgfbfkg5pmzr04ct8.jpg",
+							},
+							UploadDate: time.Date(2021, 8, 29, 20, 29, 48, 0, time.UTC),
+						},
+					},
+				},
+			},
+		},
+		{
+			name: "etenvaneefke.nl",
+			in:   "http://www.etenvaneefke.nl/pastasalade/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DateModified:  "2014-06-21T18:29:35+00:00",
+				DatePublished: "2014-04-07T07:00:27+00:00",
+				Description:   &models.Description{Value: "Bij de zomer hoort pastasalade. En hoewel het pas april is, kreeg ik door de zomerse temperaturen vorige week spontaan zin in pastasalade. Ik maakte een salade van fusilli, gevuld met gerookte kip, pesto, rucola, zongedroogde tomaatjes, pijnboompitten en een uitje. Ingrediënten (voor 2 à 3 personen) 250 gram pasta 1 zakje rucola 1 gerookte…"},
+				Keywords:      &models.Keywords{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"250 gram pasta",
+						"1 zakje rucola",
+						"1 gerookte kipfilet",
+						"1 ui",
+						"50 gram pijnboompitten",
+						"3 eetlepels pesto",
+						"half potje zongedroogde tomaten",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "Kook de pasta gaar volgens de gebruiksaanwijzing en laat het daarna afkoelen (of spoel af onder de kraan met koud water). Rooster de pijnboompitten bruin in een koekenpan zonder olie of boter. Snijd de kip, ui en zongedroogde tomaten in kleine stukjes. Meng de pasta met de pesto en voeg vervolgens alle andere ingrediënten toe. Breng op smaak met zout en peper.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Een goede maaltijdsalade, maar ook lekker als lunch of bijgerecht bij de BBQ!",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "PASTASALADE KIP-RUCOLA-PESTO-TOMAAT",
+				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "http://www.etenvaneefke.nl/pastasalade/",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -717,8 +830,11 @@ func TestScraper_E(t *testing.T) {
 					},
 				},
 				Keywords: &models.Keywords{Values: "sections/recept"},
-				Yield:    &models.Yield{Value: 22},
-				URL:      "https://alltommat.expressen.se/recept/saftiga-choklad--och-apelsinbullar/",
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://static.cdn-expressen.se/images/45/cd/45cd6c5649004e1fa957e891d581fa49/16x9/original.jpg",
+				},
+				Yield: &models.Yield{Value: 22},
+				URL:   "https://alltommat.expressen.se/recept/saftiga-choklad--och-apelsinbullar/",
 			},
 		},
 	}

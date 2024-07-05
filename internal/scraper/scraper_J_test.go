@@ -2,6 +2,7 @@ package scraper_test
 
 import (
 	"testing"
+  "time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -62,10 +63,25 @@ func TestScraper_J(t *testing.T) {
 					Sodium:        "1.0",
 					Sugar:         "4.2",
 				},
-				Tools:     &models.Tools{Values: []models.HowToItem{}},
-				TotalTime: "PT50M",
-				Yield:     &models.Yield{Value: 6},
-				URL:       "https://www.jamieoliver.com/recipes/chicken-recipes/thai-green-chicken-curry/",
+				ThumbnailURL: &models.ThumbnailURL{},
+				Tools:        &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:    "PT50M",
+				URL:          "https://www.jamieoliver.com/recipes/chicken-recipes/thai-green-chicken-curry/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://www.youtube.com/watch?v=wno_qUB02lM",
+							Description: "This deliciously fragrant Thai green curry really packs a flavour punch.",
+							EmbedURL:    "https://www.youtube.com/embded/wno_qUB02lM",
+							Name:        "Thai green chicken curry",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://cdn.jamieoliver.com/recipe-database/oldImages/xtra_med/1575_2_1437576282.jpg",
+							},
+						},
+					},
+				},
+				Yield: &models.Yield{Value: 6},
 			},
 		},
 		{
@@ -109,10 +125,12 @@ func TestScraper_J(t *testing.T) {
 				Name:            "Sajoer Lodeh - Indonesisch groente recept met tofu",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT40M",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				TotalTime:       "PT40M",
 				Yield:           &models.Yield{Value: 4},
 				URL:             "https://jaimyskitchen.nl/recepten/sajoer-lodeh-indonesisch-groente-recept-met-tofu",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -228,10 +246,12 @@ func TestScraper_J(t *testing.T) {
 					Calories: "389",
 					Servings: "4",
 				},
-				PrepTime: "PT15M",
-				Tools:    &models.Tools{Values: []models.HowToItem{}},
-				Yield:    &models.Yield{Value: 4},
-				URL:      "https://jimcooksfoodgood.com/recipe-weeknight-pad-thai/",
+				PrepTime:     "PT15M",
+				ThumbnailURL: &models.ThumbnailURL{},
+				Tools:        &models.Tools{Values: []models.HowToItem{}},
+				Yield:        &models.Yield{Value: 4},
+				URL:          "https://jimcooksfoodgood.com/recipe-weeknight-pad-thai/",
+				Video:        &models.Videos{},
 			},
 		},
 		{
@@ -286,8 +306,24 @@ func TestScraper_J(t *testing.T) {
 				},
 				PrepTime:  "PT5M",
 				TotalTime: "PT5M",
-				Yield:     &models.Yield{Value: 16},
 				URL:       "https://joyfoodsunshine.com/peanut-butter-frosting/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1642947749/tzdoglhnbiiiup85wmps.mp4",
+							Description: "This peanut butter frosting recipe (peanut butter buttercream) is easy to make in 5 minutes. It's silky smooth, made with more peanut butter than butter and is flavored with vanilla & sea salt. It pipes well and tastes delicious on top of chocolate cupcakes and brownies and chocolate cake.",
+							Duration:    "PT53S",
+							EmbedURL:    "https://video.mediavine.com/videos/tzdoglhnbiiiup85wmps.js",
+							Name:        "Peanut Butter Frosting Recipe",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://mediavine-res.cloudinary.com/image/upload/s--CxD4o5LH--/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1642947695/haqpzgp58bql3ypnhnrv.jpg",
+							},
+							UploadDate: time.Date(2022, 1, 23, 14, 22, 36, 0, time.UTC),
+						},
+					},
+				},
+				Yield: &models.Yield{Value: 16},
 			},
 		},
 		{
@@ -324,9 +360,11 @@ func TestScraper_J(t *testing.T) {
 				},
 				Name:            "White Chocolate and Raspberry Muffins",
 				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 6},
 				URL:             "https://juliegoodwin.com.au/white-chocolate-and-raspberry-muffins/",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -442,9 +480,11 @@ func TestScraper_J(t *testing.T) {
 				},
 				Name:            "A sushi roll bento, plus how to make sushi rolls without a sushi mat",
 				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 10},
 				URL:             "https://justbento.com/handbook/recipe-collection-mains/sushi-roll-bento-make-sushi-rolls-without-sushi-mat",
+				Video:           &models.Videos{},
 			},
 		},
 		{

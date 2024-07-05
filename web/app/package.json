@@ -1,7 +1,7 @@
 {
   "name": "recipya",
   "author": "reaper47",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,13 +9,13 @@
     "build:css": "tailwind -m -i ../static/css/tailwind-custom.css --output ../static/css/tailwind.css",
     "build:mjml": "mjml ../emails/error-admin.mjml -o ../emails/transpiled/error-admin.gohtml --config.minify && mjml ../emails/forgot-password.mjml -o ../emails/transpiled/forgot-password.gohtml --config.minify && mjml ../emails/intro.mjml -o ../emails/transpiled/intro.gohtml --config.minify"
   },
-  "license": "MIT",
+  "license": "GPL-3.0",
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.13",
     "copyfiles": "^2.4.1",
-    "daisyui": "^4.11.1",
-    "esbuild": "^0.21.2",
+    "daisyui": "^4.12.10",
+    "esbuild": "^0.21.5",
     "mjml": "^4.15.3",
-    "tailwindcss": "^3.4.3"
+    "tailwindcss": "^3.4.4"
   }
 }

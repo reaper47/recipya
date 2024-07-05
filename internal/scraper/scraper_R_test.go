@@ -2,6 +2,7 @@ package scraper_test
 
 import (
 	"testing"
+  "time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -58,6 +59,59 @@ func TestScraper_R(t *testing.T) {
 				TotalTime: "PT20M",
 				Yield:     &models.Yield{Value: 2},
 				URL:       "https://rachlmansfield.com/delicious-crispy-rice-salad-gluten-free/",
+			},
+		},
+		{
+			name: "radiofrance.fr",
+			in:   "https://www.radiofrance.fr/franceinter/recette-sauce-cacahuete-tomates-et-piments-3598484",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtGraph:       nil,
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookTime:      "PT5M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DateModified:  "2023-12-01T12:05:14.000Z",
+				DatePublished: "2023-12-01T12:05:14.000Z",
+				Description:   &models.Description{Value: `Aji de mani en version originale, une recette de Juan Arbelaez extraite du livre "Recuerdame, carnet de cuisine de Colombie"`},
+				Keywords:      &models.Keywords{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"2 tomates",
+						"250 g de cacahuètes",
+						"1 cébette",
+						"1 bouquet de coriandre",
+						"1 citron vert (jus)",
+						"½ piment rouge",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "Monder les tomates : former une petite croix sur le dessous des tomates et les plonger dans une grande quantité d’eau bouillante pendant 15 secondes. Les refroidir ensuite dans de l’eau glacée pendant 30 secondes. La peau va ensuite s’enlever facilement.Les hacher grossièrement.Torréfier les cacahuètes quelques minutes dans une poêle jusqu’à obtenir une belle coloration. Mélanger ensuite au blender les cacahuètes, les tomates, la cébette, la coriandre, le jus de citron vert et le piment rouge jusqu’à l’obtention d’une sauce.",
+							Type: "HowToStep",
+						},
+						{Text: "Publicité", Type: "HowToStep"},
+						{
+							Text: "S’il reste quelques morceaux de cacahuètes, ne vous inquiétez pas, ils apportent de la consistance à votre aji !",
+							Type: "HowToStep",
+						},
+						{
+							Text: "►   Recuerdame, carnet de cuisine de Colombie - First Editions",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Sauce cacahuète, tomates et piments",
+				NutritionSchema: &models.NutritionSchema{Servings: "400g"},
+				PrepTime:        "PT30M",
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://www.radiofrance.fr/franceinter/recette-sauce-cacahuete-tomates-et-piments-3598484",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -123,6 +177,18 @@ func TestScraper_R(t *testing.T) {
 				TotalTime: "PT75M",
 				Yield:     &models.Yield{Value: 4},
 				URL:       "https://rainbowplantlife.com/livornese-stewed-beans/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/B8sNtLv6.mp4",
+							Description:  "These Livornese Stewed Beans are the ultimate rustic Italian comfort food! Made with simple pantry-friendly ingredients like onions, garlic, tomato paste and white beans, but it's big on gourmet Italian flavor. It's cozy and indulgent but wholesome, vegan, and gluten-free.",
+							Name:         "Livornese Stewed Beans",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/B8sNtLv6-720.jpg"},
+							UploadDate:   time.Date(2022, 1, 4, 14, 25, 32, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -174,6 +240,19 @@ func TestScraper_R(t *testing.T) {
 				TotalTime: "PT30M",
 				URL:       "https://www.realsimple.com/food-recipes/browse-all-recipes/sheet-pan-chicken-and-sweet-potatoes",
 				Yield:     &models.Yield{Value: 1},
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/xRqzJv32-aODiX4Tu.mp4",
+							Description:  "This easy meal uses just one baking sheet. The chicken comes out with delicious crispy skin, which pairs well with crunchy, peppery watercress and crisp, salty bacon. The roasted sweet potatoes add a bit of sweetness to round out the plate.",
+							Duration:     "PT9M6S",
+							Name:         "Real Simple Cooking School: Sheet Pan Chicken and Sweet Potatoes",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://cdn.jwplayer.com/v2/media/xRqzJv32/poster.jpg?width=720"},
+							UploadDate:   time.Date(2021, 6, 4, 19, 1, 22, 0, time.FixedZone("-4", -4*60*60)),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -272,9 +351,11 @@ func TestScraper_R(t *testing.T) {
 				Name:            "Yakisoba (nouilles sautées à la japonaise)",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT15M",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 4},
 				URL:             "https://www.recettes.qc.ca/recettes/recette/yakisoba-nouille-sautees-a-la-japonaise",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -325,11 +406,13 @@ func TestScraper_R(t *testing.T) {
 					TransFat:       "0",
 					UnsaturatedFat: "0",
 				},
-				PrepTime:  "PT5M",
-				Tools:     &models.Tools{Values: []models.HowToItem{}},
-				TotalTime: "PT15M",
-				Yield:     &models.Yield{Value: 6},
-				URL:       "https://reciperunner.com/cranberry-apple-sauce/",
+				PrepTime:     "PT5M",
+				ThumbnailURL: &models.ThumbnailURL{},
+				Tools:        &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:    "PT15M",
+				Yield:        &models.Yield{Value: 6},
+				URL:          "https://reciperunner.com/cranberry-apple-sauce/",
+				Video:        &models.Videos{},
 			},
 		},
 		{
@@ -442,9 +525,11 @@ func TestScraper_R(t *testing.T) {
 				},
 				Name:            "Spicy Chilli Garlic Prawn Linguine Pasta",
 				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 1},
 				URL:             "https://old.reddit.com/r/recipes/comments/1bhr8se/spicy_chilli_garlic_prawn_linguine_pasta/",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -500,6 +585,20 @@ func TestScraper_R(t *testing.T) {
 				TotalTime: "PT18M",
 				Yield:     &models.Yield{Value: 3},
 				URL:       "https://redhousespice.com/pork-fried-rice/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://www.youtube.com/watch?v=NnenY4eN3VA",
+							Description:  "Skip the take-out and cook this delicious pork fried rice in less than 20 minutes. Enjoy the mix of fluffy rice, tender pork and crunchy veggies coated with umami-filled seasoning.\n🔎 Full written recipe: https://redhousespice.com/pork-fried-rice/\n🎵 Music: Dear Autumn by Ikson: https://youtu.be/k_IbJrIl1go",
+							Duration:     "PT1M26S",
+							EmbedURL:     "https://www.youtube.com/embed/NnenY4eN3VA?feature=oembed",
+							Name:         "Pork Fried Rice | 猪肉炒饭",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://i.ytimg.com/vi/NnenY4eN3VA/hqdefault.jpg"},
+							UploadDate:   time.Date(2022, 3, 26, 17, 48, 44, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -553,10 +652,12 @@ func TestScraper_R(t *testing.T) {
 				},
 				Name:            "Chicken Tikka Masala",
 				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				TotalTime:       "PT60M",
 				Yield:           &models.Yield{Value: 3},
 				URL:             "https://www.reishunger.de/rezepte/rezept/440/chicken-tikka-masala",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -598,6 +699,7 @@ func TestScraper_R(t *testing.T) {
 				Keywords:        &models.Keywords{Values: "einfach,europaisch,spanisch,vorspeise,braten,snack,"},
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT20M",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools: &models.Tools{
 					Values: []models.HowToItem{
 						{Type: "HowToTool", Text: "Spatel", Quantity: 1},
@@ -606,6 +708,7 @@ func TestScraper_R(t *testing.T) {
 				},
 				Yield: &models.Yield{Value: 20},
 				URL:   "https://www.rezeptwelt.de/vorspeisensalate-rezepte/haehnchen-nuggets/y3duba6e-e2d56-608317-cfcd2-vjez4wd6",
+				Video: &models.Videos{},
 			},
 		},
 		{
@@ -636,10 +739,22 @@ func TestScraper_R(t *testing.T) {
 				},
 				Name:            "Pan d'arancio",
 				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				TotalTime:       "PT60M",
 				Yield:           &models.Yield{Value: 6},
 				URL:             "https://ricetta.it/pan-d-arancio",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://cdn.video.ricetta.it/tutorial/320/pan-d-arancio.mp4",
+							Description:  "Il Pan d'arancio è un dolce della tradizione siciliana caratterizzato da un intenso sapore agrumato, dato dall'utilizzo delle arance intere, buccia compresa.",
+							Name:         "Pan d'arancio",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://ricetta.it/Uploads/Imgs/pan-d-arancio_medium.jpg.webp"},
+						},
+					},
+				},
 			},
 		},
 		{
@@ -681,10 +796,54 @@ func TestScraper_R(t *testing.T) {
 				Name:            "Dolcetti mandorle e limone",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT20M",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				TotalTime:       "PT30M",
 				Yield:           &models.Yield{Value: 1},
 				URL:             "https://www.ricetteperbimby.it/ricette/dolcetti-mandorle-e-limone-bimby",
+				Video:           &models.Videos{},
+			},
+		},
+		{
+			name: "robinasbell.com",
+			in:   "https://robinasbell.com/2019/08/make-a-pizza-with-edible-flowers-its-like-eating-summer/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Main Course"},
+				DatePublished: "2019-08-03T16:56:02+00:00",
+				Description: &models.Description{
+					Value: "When it&#x27;s too hot to bake, make this pizza on the grill. My garden provides the tomatoes, basil, and of course, fresh flowers that make this as charming as it is easy to make.",
+				},
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"1/2 cup roasted cherry tomatoes ((see link))", "1 1/2 cup warm water",
+						"2 teaspoons instant yeast", "1 teaspoon sugar", "1 cup bread flour",
+						"2 cups whole wheat flour", "1 teaspoon salt", "4 cups fresh basil leaves",
+						"2 cloves garlic (peeled)",
+						"1/2 cup pine nuts",
+						"1 teaspoon salt",
+						"1/2 cup extra virgin olive oil",
+						"6 nasturtium flowers",
+						"2 squash blossoms",
+						"2 tablespoons broccoli raab flowers",
+						"oil for the grill",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "The day before, place the warm water, yeast and sugar in alarge storage tub and stir to mix. Let stand at room temperature until bubbly,about 10 minutes. Using a wooden spoon, stir in the flours and salt, and mixjust until combined. Use your hands to knead just enough to make it smooth,adding a little flour if it is sticking to your hands. Let the dough stand atroom temperature for about an hour to double in size. Cover the tub andrefrigerate overnight.", Type: "HowToStep"},
+						{Text: "Two hours before dinner, take the dough out of therefrigerator. Divide the dough into two pieces, shape each into an oval, placeon a floured counter and let it come to room temperature.", Type: "HowToStep"},
+						{Text: "Make the pesto: In a food processor, place the basil, garlic, pine nuts and salt. Process, scraping down as needed, until a smooth paste is formed. Drizzle in the olive oil and puree to make a smooth pesto. Transfer to a cup.", Type: "HowToStep"},
+						{Text: "Preheat the grill to high, and pour a little oil in a cup,and crumple a paper towel to use to oil the grate. Get tongs and a large metalspatula, and a large cutting board.", Type: "HowToStep"},
+						{Text: "Flatten and stretch each out to the width of your cutting board, making an oval about 12 x 7 inches. You can fit both on the board. Sprinkle the board with flour and place the shaped dough on it. Using the tongs to hold the paper towel, oil thegrill grate, and carefully place each portion of dough on the grill. Close thegrill and reduce the heat to medium. Cook for three minutes, then uncover and use tongs to peek under the crust, looking for grill marks. When it feels firmaround the edges and is marked, flip the dough. Quickly spread half of the pesto and sprinkle tomatoes on each crust, then cover the grill and let cook for three minutes.", Type: "HowToStep"},
+						{Text: "Arrange the flowers on the pizzas, cut, and serve.", Type: "HowToStep"},
+					},
+				},
+				Name:  "Pesto Pizza with Edible Flowers",
+				Yield: &models.Yield{Value: 4},
+				URL:   "https://robinasbell.com/2019/08/make-a-pizza-with-edible-flowers-its-like-eating-summer/",
 			},
 		},
 		{
@@ -732,9 +891,11 @@ func TestScraper_R(t *testing.T) {
 				},
 				Name:            "Rainbow Treats",
 				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 40},
 				URL:             "https://rosannapansino.com/blogs/recipes/rainbow-treats",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -767,9 +928,11 @@ func TestScraper_R(t *testing.T) {
 				Name:            "Oreo topping van roomkaas",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT12M",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				URL:             "https://rutgerbakt.nl/basisrecepten/oreo-topping-van-roomkaas/",
 				Yield:           &models.Yield{Value: 1},
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -807,17 +970,19 @@ func TestScraper_R(t *testing.T) {
 					Values: []models.HowToItem{
 						{Type: "HowToStep", Text: "Pre-heat oven to 180 degrees C.  Grease and line a 20 cm round cake pan (I used a silicone ring tin)Mix dates and bi-carb soda in boiling water and leave to soak for a few minutes while you do the next step."},
 						{Type: "HowToStep", Text: "Grind almonds for 10 seconds, speed 9.Set aside."},
-						{Type: "HowToStep", Text: "Put dates, water and bi-carb into mixing bowl, and blend for 30 seconds, speed 6.  You may need to stop and scrape the sides a couple of times, and maybe reduce the speed a little after the first few seconds if necessary.   "},
+						{Type: "HowToStep", Text: "Put dates, water and bi-carb into mixing bowl, and blend for 30 seconds, speed 6.  You may need to stop and scrape the sides a couple of times, and maybe reduce the speed a little after the first few seconds if necessary."},
 						{Type: "HowToStep", Text: "Add eggs, oil, vanilla essence and blend for 20 seconds, speed 6.  Scrape down bowl."},
-						{Type: "HowToStep", Text: "Add almonds, baking powder, cocoa and salt and mix for 20 seconds, speed 6.  Scrape down bowl and repeat. "},
-						{Type: "HowToStep", Text: "Pour into prepared cake tin and bake at 180 degrees for 30 minutes, or until a skewer comes out clean.  Leave until cool before turning onto a serving plate. I covered mine with chocolate ganache and served with whipped cream and raspberry coulis.  "},
+						{Type: "HowToStep", Text: "Add almonds, baking powder, cocoa and salt and mix for 20 seconds, speed 6.  Scrape down bowl and repeat."},
+						{Type: "HowToStep", Text: "Pour into prepared cake tin and bake at 180 degrees for 30 minutes, or until a skewer comes out clean.  Leave until cool before turning onto a serving plate. I covered mine with chocolate ganache and served with whipped cream and raspberry coulis."},
 					},
 				},
 				PrepTime:        "PT10M",
 				CookTime:        "PT40M",
 				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				URL:             "https://www.recipecommunity.com.au/baking-sweet-recipes/flourless-refined-sugar-free-chocolate-cake/1te0mta9-5d0d3-705689-cfcd2-7zd1b4nd",
+				Video:           &models.Videos{},
 				Yield:           &models.Yield{Value: 8},
 			},
 		},

@@ -54,6 +54,7 @@ func NewBaseRecipe() Recipe {
 		Instructions: make([]string, 0),
 		Keywords:     make([]string, 0),
 		Tools:        make([]HowToItem, 0),
+		Videos:       make([]VideoObject, 0),
 		Yield:        1,
 	}
 }
@@ -75,6 +76,7 @@ type Recipe struct {
 	Tools        []HowToItem
 	UpdatedAt    time.Time
 	URL          string
+	Videos       []VideoObject
 	Yield        int16
 }
 
@@ -131,6 +133,9 @@ func (r *Recipe) Copy() Recipe {
 	tools := make([]HowToItem, len(r.Tools))
 	copy(tools, r.Tools)
 
+	videos := make([]VideoObject, len(r.Videos))
+	copy(videos, r.Videos)
+
 	return Recipe{
 		Category:     r.Category,
 		CreatedAt:    r.CreatedAt,
@@ -163,6 +168,7 @@ func (r *Recipe) Copy() Recipe {
 		Tools:     tools,
 		UpdatedAt: r.UpdatedAt,
 		URL:       r.URL,
+		Videos:    videos,
 		Yield:     r.Yield,
 	}
 }
@@ -274,6 +280,23 @@ func (r *Recipe) Schema() RecipeSchema {
 		instructions = append(instructions, NewHowToStep(ins))
 	}
 
+	video := &Videos{Values: make([]VideoObject, 0, len(r.Videos))}
+	for i, v := range r.Videos {
+		u := app.Config.Address() + "/data/videos/" + v.ID.String() + app.VideoExt
+
+		video.Values = append(video.Values, VideoObject{
+			AtType:       "VideoObject",
+			Name:         "Video #" + strconv.Itoa(i+1),
+			Description:  "A video showing how to cook " + r.Name,
+			ThumbnailURL: nil,
+			ContentURL:   u,
+			EmbedURL:     u,
+			UploadDate:   v.UploadDate,
+			Duration:     v.Duration,
+			Expires:      time.Now().AddDate(1000, 0, 0),
+		})
+	}
+
 	schema := RecipeSchema{
 		AtContext:       "https://schema.org",
 		AtType:          &SchemaType{Value: "Recipe"},
@@ -292,10 +315,12 @@ func (r *Recipe) Schema() RecipeSchema {
 		Name:            r.Name,
 		NutritionSchema: r.Nutrition.Schema(strconv.Itoa(int(r.Yield))),
 		PrepTime:        formatDuration(r.Times.Prep),
+		ThumbnailURL:    &ThumbnailURL{Value: img},
 		Tools:           &Tools{Values: r.Tools},
 		TotalTime:       formatDuration(r.Times.Total),
 		Yield:           &Yield{Value: r.Yield},
 		URL:             r.URL,
+		Video:           video,
 	}
 
 	if schema.CookingMethod.Value == "" {
@@ -332,6 +357,10 @@ func (r *Recipe) Schema() RecipeSchema {
 
 	if schema.NutritionSchema.Equal(NutritionSchema{}) {
 		schema.NutritionSchema = nil
+	}
+
+	if schema.ThumbnailURL.Value == "" {
+		schema.ThumbnailURL = nil
 	}
 
 	if schema.Yield.Value == 0 {

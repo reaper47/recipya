@@ -12,9 +12,9 @@ import (
 func scrapePuurgezond(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Description.Value, _ = root.Find("meta[name='description']").Attr("content")
-	rs.Keywords.Values, _ = root.Find("meta[name='keywords']").Attr("content")
-	rs.Image.Value, _ = root.Find("meta[property='og:image']").Attr("content")
+	rs.Description.Value = getNameContent(root, "description")
+	rs.Keywords.Values = getNameContent(root, "keywords")
+	rs.Image.Value = getPropertyContent(root, "og:image")
 	rs.Name = root.Find("title").Text()
 
 	var (
@@ -22,7 +22,7 @@ func scrapePuurgezond(root *goquery.Document) (models.RecipeSchema, error) {
 		isInstructions bool
 	)
 
-	root.Find("div[itemprop='articleBody']").Children().Each(func(_ int, sel *goquery.Selection) {
+	root.Find("div[itemprop=articleBody]").Children().Each(func(_ int, sel *goquery.Selection) {
 		s := strings.ToLower(sel.Text())
 		if strings.Contains(s, "person") {
 			for c := sel.Nodes[0].FirstChild; c != nil; c = c.NextSibling {
@@ -73,7 +73,7 @@ func scrapePuurgezond(root *goquery.Document) (models.RecipeSchema, error) {
 			isIngredients = false
 		} else if isInstructions {
 			sel.Find("li").Each(func(_ int, li *goquery.Selection) {
-				rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(strings.TrimSpace(li.Text())))
+				rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(li.Text()))
 			})
 			isInstructions = false
 		}

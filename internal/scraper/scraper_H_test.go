@@ -2,6 +2,7 @@ package scraper_test
 
 import (
 	"testing"
+  "time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -104,8 +105,24 @@ func TestScraper_H(t *testing.T) {
 				Name:      "Peanut Butter Pie",
 				PrepTime:  "PT20M",
 				TotalTime: "PT272M",
-				Yield:     &models.Yield{Value: 8},
 				URL:       "https://handletheheat.com/peanut-butter-pie/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1686750184/iQqyOm2s6.mp4",
+							Description: "This homemade Peanut Butter Pie is made from scratch with just a few easy ingredients and will have everyone coming back for seconds! Tons of amazing chocolate and peanut butter flavor and topped with reese's. The best easy dessert idea to serve for a crowd!",
+							Duration:    "PT59S",
+							EmbedURL:    "https://video.mediavine.com/videos/iQqyOm2s6.js",
+							Name:        "Easy Peanut Butter Pie Recipe",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://mediavine-res.cloudinary.com/image/upload/s--MPjo6Nh3--/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1686750187/lzydttnsifro1sltfxvd.jpg",
+							},
+							UploadDate: time.Date(2022, 3, 31, 22, 59, 19, 0, time.UTC),
+						},
+					},
+				},
+				Yield: &models.Yield{Value: 8},
 			},
 		},
 		{
@@ -167,11 +184,25 @@ func TestScraper_H(t *testing.T) {
 					Fat:      "34",
 					Servings: "1",
 				},
-				PrepTime:  "PT20M",
-				Tools:     &models.Tools{Values: []models.HowToItem{}},
-				TotalTime: "PT30M",
-				Yield:     &models.Yield{Value: 1},
-				URL:       "https://www.hassanchef.com/2022/10/dragon-chicken.html",
+				PrepTime:     "PT20M",
+				ThumbnailURL: &models.ThumbnailURL{},
+				Tools:        &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:    "PT30M",
+				URL:          "https://www.hassanchef.com/2022/10/dragon-chicken.html",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://youtu.be/9yCRMQ7uX24",
+							Description: "Dragon Chicken an appetizer or snacks of Indian Chinese cuisines where deep fried chicken strips are stir fried with a spicy combination of sauces and herbs",
+							Name:        "Dragon Chicken",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjVPyaqbaCDbK5VdlCoe93-7wQjDmM4jVCrnuGlne0QDqUKlwfzat-Z2RS7GSFujClIpZUZIn7Q0-J75jr4LFCkJu_OwOc-YTIw30WnvpC0lH9vhMGjSDE-FmIvvg0m6dv2KlFRo1YcfA804XBHPp1AeOpf0tA0qoMFzWKHo4tSjUtrL_TJ5a7HP24w/s4623/IMG_20220906_222143.webp",
+							},
+						},
+					},
+				},
+				Yield: &models.Yield{Value: 1},
 			},
 		},
 		{
@@ -276,8 +307,24 @@ func TestScraper_H(t *testing.T) {
 				},
 				PrepTime:  "PT20M",
 				TotalTime: "PT40M",
-				Yield:     &models.Yield{Value: 25},
 				URL:       "https://www.healthylittlefoodies.com/broccoli-tots/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1630820374/ltvoszmwvluaw6vyhycl.mp4",
+							Description: "Video showing how to make broccoli tots. Cooked broccoli, egg, almond meal, garlic and cheese are mixed together to form tablespoon-sized tots. They are then baked for 20 mins until golden and crispy.",
+							Duration:    "PT53S",
+							EmbedURL:    "https://video.mediavine.com/videos/ltvoszmwvluaw6vyhycl.js",
+							Name:        "Broccoli Tots",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://mediavine-res.cloudinary.com/image/upload/s--LyyrRVz---/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1630820338/lpr9iq9ohbmxudkjmgua.jpg",
+							},
+							UploadDate: time.Date(2021, 9, 5, 5, 40, 38, 0, time.UTC),
+						},
+					},
+				},
+				Yield: &models.Yield{Value: 25},
 			},
 		},
 		{
@@ -327,9 +374,11 @@ func TestScraper_H(t *testing.T) {
 				Name:            "Lemon Blueberry Scones with Lemon Sugar (Vegan and Gluten-free)",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT15M",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 6},
 				URL:             "https://heatherchristo.com/2020/05/03/13229/",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -385,10 +434,284 @@ func TestScraper_H(t *testing.T) {
 					Sodium:        "880",
 					Sugar:         "9",
 				},
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://img.hellofresh.com/f_auto,fl_lossy,h_300,q_auto,w_450/hellofresh_s3/image/5a8f0fcbae08b52f161b5832-033c9a4a.jpg",
+				},
 				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT20M",
 				Yield:     &models.Yield{Value: 2},
 				URL:       "https://www.hellofresh.com/recipes/creamy-shrimp-tagliatelle-5a8f0fcbae08b52f161b5832",
+				Video:     &models.Videos{},
+			},
+		},
+		{
+			name: "homebrewanswers.com",
+			in:   "https://homebrewanswers.com/banana-wine-recipe",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "wine"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DateModified:  "2019-10-27T00:00:00Z",
+				DatePublished: "2017-11-02T00:00:00Z",
+				Description: &models.Description{
+					Value: "Banana wine might sound odd, believe me, I was unsure of how this wine recipe would taste too but it is definitely worth trying. Bananas are full of sugar and are one of the sweetest fruits available to most people. This sweetness is perfect for winemaking and with just a few additions to balance the […]",
+				},
+				Keywords: &models.Keywords{Values: "banana, wine, brewing"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"4.5 litres Water", "1.4 kg / 3lb Bananas", "900g / 2lb Sugar",
+						"1/4 tsp Tannin", "3 tsp Acid Blend", "1/2 tsp Pectic Enzyme",
+						"1 tsp Yeast Nutrient", "1 Campden Tablet",
+						"1 Sachet Yeast (Lallemand EC-1118 is a good choice but experiment with others)",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "Bring half of the water to a boil in the large stockpot. Whilst the water is heating up slice the bananas including the skins and secure them in the straining bag. Submerge the straining bag in the boiling water and simmer gently for 30 minutes.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "After simmering for 30 minutes remove the pot from the heat. Lift out the straining bag with the bananas and set it to one side for a moment. Pour the liquid from the pot into a sanitised fermenting bucket and then add the straining bag with the bananas as well.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Take the remaining half of the water and add to the stockpot with the sugar. Heat to a boil and stir to dissolve the sugar and prevent it from burning. Simmer for a few minutes, remove from the heat and then add this to the fermenter. Along with this add the acid blend, tannin and yeast nutrients. Allow cooling to room temperature.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Once cooled add the crushed Campden tablet and mix thoroughly, allow to stand for at least 12 hours.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "After at least 12 hours add the pectic enzyme and mix thoroughly. 24 hours after adding the pectic enzyme add the yeast by sprinkling it onto the surface of the must, fit a lid and airlock. Fermentation will begin a few days after this.",
+							Type: "HowToStep",
+						},
+						{
+							Text: `<img decoding="async" width="478" height="640" src="https://homebrewanswers.com/wp-content/uploads/2015/09/1227133.jpg" alt="Wine Additives" class="wp-image-419"/>`,
+							Type: "HowToStep",
+						},
+						{
+							Text: "Allow fermentation to progress for a week stirring daily, after this remove the straining bag and the remains of the banana. Leave for a further 3 days and the fermentation should have died down completely. At this point, you can syphon the banana wine into a demijohn or carboy, fit with a bung and airlock.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Allow the wine to condition in the demijohn for 3 – 4 months racking to a sanitised carboy once or twice after sediment builds up.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "After conditioning, for at least 4 months or up to 6 you are ready to bottle the wine. You may want to sample the banana wine and back sweeten it if you prefer a less dry or sweeter wine. Once bottled I like to set aside a few bottles for a number of months and you will notice the banana wine will keep improving with age up to a couple of years.",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Banana Wine Recipe – A Wine You Need To Try For Yourself",
+				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools: &models.Tools{
+					Values: []models.HowToItem{
+						{Quantity: 1, Text: "Large Stock Pot", Type: "HowToTool"},
+						{Quantity: 1, Text: "Small Fermenting Bucket", Type: "HowToTool"},
+						{Quantity: 1, Text: "Demijohn", Type: "HowToTool"},
+						{Quantity: 1, Text: "Syphon", Type: "HowToTool"},
+						{Quantity: 1, Text: "Fine Straining Bag", Type: "HowToTool"},
+						{Quantity: 1, Text: "Airlock & Bung", Type: "HowToTool"},
+					},
+				},
+				Yield: &models.Yield{Value: 1},
+				URL:   "https://homebrewanswers.com/banana-wine-recipe/",
+			},
+		},
+		{
+			name: "homebrewanswers2.com",
+			in:   "https://homebrewanswers.com/pomegranate-wine-recipe/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "wine"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DateModified:  "2022-03-29T10:57:13+00:00",
+				DatePublished: "2022-03-16T14:13:48+00:00",
+				Description: &models.Description{
+					Value: "Pomegranate is a peculiar fruit and when I was thinking about making a pomegranate wine all I could think about was all those seeds. Fear not, this recipe is really simple to make and results in a great wine that is tannic and refreshing at the same time. The part of the pomegranate you eat […]",
+				},
+				Keywords: &models.Keywords{},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"6 Pomegranates",
+						"4.5 litres Water",
+						"250ml White Grape Concentrate",
+						"800g Sugar",
+						"1 tsp Acid Blend",
+						"1/4 tsp Wine Tannin",
+						"1 tsp Pectic Enzyme",
+						"1 tsp Yeast Nutrient",
+						"1 Campden Tablet",
+						"1 Sachet Wine Yeast\u00a0(see this guide on wine yeasts for a selection)",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "Prepare the pomegranate by slicing in half and hitting the back to knock out the arils and juice into a bowl. See this guide for help preparing the pomegranate.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Take half the quantity of water and combine in a large heavy-based pan with all the sugar. Bring to a boil, stirring to dissolve the sugar and simmer for a few minutes before removing from the heat.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "In the sanitised fermenting vessel, add the straining bag and tip in all the pomegranate arils and juice. Use a potato masher to press the pomegranate and secure the straining bag.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Add the hot sugar syrup to the fermenter and give everything a stir and then add the remaining water to cool everything down. Leave for a few hours to cool.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Add the Campden tablet, wine tannin, acid and yeast nutrient and then stir to combine with a sanitised spoon. Cover the fermenter and leave overnight. Take a hydrometer reading at this point if you wish to know the exact specific gravity.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "The following day add the pectic enzyme and mix then finally sprinkle the yeast over the surface of the must. Cover the fermenter and attach the airlock to the lid and then allow fermentation to start.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Allow to ferment for around 5 – 7 days stirring the straining bag daily to aid extraction. After 5 days remove the straining bag and squeeze gently and the pulp can be discarded. Leave to settle for a day and then rack to a sanitised demijohn and add an airlock.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Allow to ferment in the demijohn. After a few weeks, the wine will have finished fermentation and begin to clear. Sediment will begin to build up and once this happens rack to a clean demijohn. Take a hydrometer reading when racking to get the final gravity.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Leave the pomegranate wine in the demijohn for at least 2 months or until completely cleared before bottling. If you prefer a sweeter wine then look at this guide on back sweetening. The wine can be stabilised and sugar added before bottling. Once bottled the wine will continue to improve with age and will peak after around a year.",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Pomegranate Wine Recipe – Bright, Crisp Red Wine",
+				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools: &models.Tools{
+					Values: []models.HowToItem{
+						{Quantity: 1, Text: "Large Stock Pot", Type: "HowToTool"},
+						{Quantity: 1, Text: "Small Fermenting Bucket", Type: "HowToTool"},
+						{Quantity: 1, Text: "Demijohn", Type: "HowToTool"},
+						{Quantity: 1, Text: "Syphon", Type: "HowToTool"},
+						{Quantity: 1, Text: "Fine Straining Bag", Type: "HowToTool"},
+						{Quantity: 1, Text: "Potato Masher", Type: "HowToTool"},
+						{Quantity: 1, Text: "Airlock & Bung", Type: "HowToTool"},
+					},
+				},
+				Yield: &models.Yield{Value: 1},
+				URL:   "https://homebrewanswers.com/pomegranate-wine-recipe/",
+				Video: &models.Videos{},
+			},
+		},
+		{
+			name: "homebrewanswers3.com",
+			in:   "https://homebrewanswers.com/watermelon-wine-recipe/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtGraph:       nil,
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "wine"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DateModified:  "2021-03-24T19:59:39+00:00",
+				DatePublished: "2021-03-24T19:59:34+00:00",
+				Description: &models.Description{
+					Value: "A watermelon wine is a tricky balancing act. You need to balance the delicate flavour and enhance the aroma that would be lost if the wine is too dry. This watermelon wine recipe has had multiple iterations and will show you how to make the best watermelon wine without losing that subtle flavour. Balancing Flavour […]",
+				},
+				Keywords: &models.Keywords{},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"2kg Watermelon", "4 litres Water", "950g White sugar", "1/4 tsp Wine Tannin",
+						"2tsp Mixed Acid", "1/2 tsp Pectic Enzyme", "1 tsp Yeast Nutrient",
+						"1 Campden Tablet",
+						"1 Sachet Yeast (Lalvin 71B-1122 or Mangrove Jack MA33 is a good choice but experiment with others)",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "Heat up half the water along with the sugar in a heavy based pan. Bring to a boil for a few minutes.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "In the sanitised fermenting bin add the mesh straining bag and tuck the top around the fermenter opening.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Tip the watermelon chunks into the bag and then begin mashing the fruit with the masher to crush it, don’t worry about any chunks, a rough mash is fine. This will break down the fruit and release a lot of juice.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Once the melon is crushed pour over the boiling sugar solution and give a good mix with a sanitised spoon. Then add the remaining water to bring the temperature down.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Add the acid, tanning and yeast nutrient, mix with a sanitised spoon, cover with the lid leave to stand until cooled.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Once cooled to ambient temperature add the Campden tablet, cover and leave to stand overnight or at least 12 hours. A hydrometer reading at this point is good to know the opening gravity.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Add the pectic enzyme and mix thoroughly before adding the yeast to the surface of the must. You don’t need to mix the yeast in. Cover with the lid and airlock and fermentation should start after 48 hours or so.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Once fermentation has begun give the watermelon a stir once or twice a day for 5 days very gently with a sanitised spoon.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "After 7 days of primary fermentation lift out the straining bag with the watermelon in and allow it to drain without squeezing. After drip draining, discard the fruit and recover the fermenting vessel and allow to settle for 2 – 3 days.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "After 2 – 3 days rack the watermelon wine to a sanitised demijohn/carboy and seal with a bung and airlock. The wine will continue to ferment and condition in the demijohn for the next few weeks to a month. After this time you may notice the wine beginning to clear.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Rack the wine to a new demijohn after a considerable amount of sediment has built up and the wine is noticeably clearer. The wine can condition for at least 3 – 4 months or longer in the demijohn.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "After conditioning for a few months take a sample of the wine and consider if you need to back sweeten the wine. This will help balance the alcohol with the watermelon flavour. A full guide to back sweetening can be found here.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "At this point, the wine can be bottle and allow to mature as you see fit. I like to keep the bottles for a number of months and you will find the wine rounds out and the flavours settle. The wine will be good for a few years.",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Watermelon Wine Recipe – Fresh, Fruity & Refreshing",
+				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools: &models.Tools{
+					Values: []models.HowToItem{
+						{Quantity: 1, Text: "Large Stock Pot", Type: "HowToTool"},
+						{Quantity: 1, Text: "Small Fermenting Bucket", Type: "HowToTool"},
+						{Quantity: 1, Text: "Demijohn", Type: "HowToTool"},
+						{Quantity: 1, Text: "Syphon", Type: "HowToTool"},
+						{Quantity: 1, Text: "Fine Straining Bag", Type: "HowToTool"},
+						{Quantity: 1, Text: "Potato Masher", Type: "HowToTool"},
+						{Quantity: 1, Text: "Airlock & Bung", Type: "HowToTool"},
+					},
+				},
+				Yield: &models.Yield{Value: 1},
+				URL:   "https://homebrewanswers.com/watermelon-wine-recipe/",
+				Video: &models.Videos{},
 			},
 		},
 		{
@@ -431,7 +754,9 @@ func TestScraper_H(t *testing.T) {
 					},
 				},
 				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -491,8 +816,20 @@ func TestScraper_H(t *testing.T) {
 				Name:      "Guinness Beef Stew with Cheddar Herb Dumplings",
 				PrepTime:  "PT30M",
 				TotalTime: "PT3H30M",
-				Yield:     &models.Yield{Value: 6},
 				URL:       "https://hostthetoast.com/guinness-beef-stew-with-cheddar-herb-dumplings/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/VctDiVIG.mp4",
+							Description:  "Rich and hearty Guinness Beef Stew is a classic that you'll find at pubs and family dinner tables all across Ireland. This version features ultra-tender meat, deep flavors, and Cheddar Herb Dumplings that will make you swoon. It's the ultimate comfort food.",
+							Name:         "Guinness Beef Stew with Cheddar Herb Dumplings",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/VctDiVIG-720.jpg"},
+							UploadDate:   time.Date(2019, 2, 28, 21, 23, 13, 0, time.UTC),
+						},
+					},
+				},
+				Yield: &models.Yield{Value: 6},
 			},
 		},
 	}

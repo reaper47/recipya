@@ -2,6 +2,7 @@ package scraper_test
 
 import (
 	"testing"
+  "time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -95,9 +96,11 @@ func TestScraper_N(t *testing.T) {
 				Keywords:        &models.Keywords{Values: "Vegetarian, Gluten Free, Nibbly, Impatient, Express, Summer, Dairy Free, Egg Free, Nut Free, Vegan,"},
 				Name:            "Moonblush Tomatoes",
 				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 80},
 				URL:             "https://www.nigella.com/recipes/moonblush-tomatoes",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -173,9 +176,11 @@ func TestScraper_N(t *testing.T) {
 				Name:            "‘Dirt’ & ‘Worm’ Brownies",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT1H",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 16},
 				URL:             "https://ninjatestkitchen.eu/recipe/dirt-worm-brownies",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -268,11 +273,27 @@ func TestScraper_N(t *testing.T) {
 					TransFat:       "",
 					UnsaturatedFat: "",
 				},
-				PrepTime:  "PT20M",
+				PrepTime: "PT20M",
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://image-api.nosalty.hu/nosalty/images/recipes/Fu/LX/kelt-pizzateszta.jpeg?w=64&h=64&fit=crop&s=0fff8f5722bcf7e92685e39cf4898aef",
+				},
 				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT32M",
 				Yield:     &models.Yield{Value: 6},
 				URL:       "https://www.nosalty.hu/recept/kelt-pizzateszta",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://cdn.jwplayer.com/manifests/fM0VLO5e.m3u8",
+							Description: "Az igazi pizzatészta friss élesztőből, BL '00'-ás finomlisztből és extra szűz olívaolajból az igazi. FELIRATKOZÁS: http://bit.ly/NoSalty-feliratkozas Recept: https://www.nosalty.hu/recept/kelt-pizzateszta Nosalty Magazin - http://nosalty.hu Facebook - https://www.facebook.com/NoSalty Instagram - https://www.instagram.com/nosalty Twitter - https://twitter.com/NoSalty Pinterest - https://hu.pinterest.com/nosalty",
+							Duration:    "PT1M13S",
+							EmbedURL:    "https://cdn.jwplayer.com/manifests/fM0VLO5e.m3u8",
+							Name:        "Kelt pizzatészta",
+							UploadDate:  time.Date(2018, 8, 17, 0, 0, 0, 0, time.FixedZone("CEST", 2*60*60)),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -309,8 +330,10 @@ func TestScraper_N(t *testing.T) {
 				},
 				Name:            "Japansk omelett (Tamagoyaki)",
 				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				URL:             "https://www.nrk.no/mat/japansk-omelett-_tamagoyaki_-1.16435297",
+				Video:           &models.Videos{},
 				Yield:           &models.Yield{Value: 1},
 			},
 		},
@@ -442,10 +465,12 @@ func TestScraper_N(t *testing.T) {
 					TransFat:       "0",
 					UnsaturatedFat: "26",
 				},
-				Tools:     &models.Tools{Values: []models.HowToItem{}},
-				TotalTime: "PT20M",
-				Yield:     &models.Yield{Value: 2},
-				URL:       "https://cooking.nytimes.com/recipes/8357-spaghetti-with-fried-eggs",
+				ThumbnailURL: &models.ThumbnailURL{},
+				Tools:        &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:    "PT20M",
+				Yield:        &models.Yield{Value: 2},
+				URL:          "https://cooking.nytimes.com/recipes/8357-spaghetti-with-fried-eggs",
+				Video:        &models.Videos{},
 			},
 		},
 	}

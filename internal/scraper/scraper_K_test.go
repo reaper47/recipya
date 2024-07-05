@@ -2,12 +2,115 @@ package scraper_test
 
 import (
 	"testing"
+  "time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
 
 func TestScraper_K(t *testing.T) {
 	testcases := []testcase{
+		{
+			name: "keepinitkind.com",
+			in:   "https://keepinitkind.com/jackfruit-vietnamese-summer-rolls-with-hoisin-peanut-sauce/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtGraph:       nil,
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DateModified:  "2016-08-21T22:27:30+00:00",
+				DatePublished: "2016-08-25T16:00:38+00:00",
+				Description: &models.Description{
+					Value: "Jackfruit Vietnamese Summer Rolls with Hoisin Peanut Sauce Keepin' It Kind",
+				},
+				Keywords: &models.Keywords{},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"Two 20-ounce cans jackfruit (in brine or water), rinsed and drained",
+						"1/2 cup hoisin sauce (use gluten-free if necessary)",
+						"1/4 cup + 1 tablespoon low-sodium tamari sauce",
+						"1/4 cup rice vinegar",
+						"3 tablespoons maple syrup",
+						"2 tablespoons tomato paste",
+						"1 tablespoon sriracha sauce",
+						"1 tablespoon ume plum vinegar, optional",
+						"2 teaspoons arrowroot powder",
+						"2 tablespoons sesame oil",
+						"5 shallots, diced",
+						"2 garlic cloves, minced",
+						"1 tablespoon minced lemongrass, optional",
+						"1 teaspoon Chinese 5 spice",
+						"14 sheets of rice paper, preferarbly white",
+						"4-ounces rice vermicelli or maifun (very thin rice noodles), cooked according to package instructions and rinsed in cold water",
+						"2 medium carrots, peeled and sliced into thin sticks",
+						"1/2 English cucumber, sliced into thin sticks",
+						"1 head of butter lettuce, leaves chopped into 1-inch strips",
+						"Roughly 1/2 cup cilantro",
+						"whole chives",
+						"1/2 cup smooth, unsalted, unsweetened peanut butter",
+						"3 1/2 tablespoons lime juice",
+						"3 tablespoons water",
+						"2 tablespoons hoisin sauce (use gluten-free if necessary)",
+						"2 tablespoons low-sodium tamari sauce",
+						"1-2 teaspoons sriracha sauce",
+						"1 teaspoon minced fresh ginger",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "After rinsing and draining the jackfruit, use your fingers to tear it into small chunks. Set aside.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Preheat the oven to 400 F and line a baking sheet with parchment paper.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "In a small bowl, whisk together the hoisin sauce, tamari, rice vinegar, maple syrup, tomato paste, sriracha, and ume plum vinegar until smooth. Whisk in the arrowroot powder until fully incorporated. Set aside.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Heat the sesame oil in a large, shallow saucepan over medium heat. Add the shallots and cook, stirring occasionally, until the shallots begin to turn translucent. Add the garlic and lemongrass and cook for a couple more minutes. And the Chinese 5 spice and stir until incorporated.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Add the jackfruit and let cook for about five minutes, stirring occasionally. Once softened a bit, use two forks to tear the jackfruit into smaller, more shredded pieces. Add the reserved hoisin sauce (you may have to give it a quick stir before pouring) and stir until combined. Let cook for a couple minutes before transferring to the prepared baking sheet.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Spread the jackfruit out into an even layer. Place the baking sheet in the oven and bake for about 25 minutes, stirring it and spreading it out again once halfway through. Once done, remove from teh oven and let cool, without stirring, for about 10 minutes.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "While the jackfruit is baking, prepare your peanut sauce. In a medium bowl, whisk together the sauce ingredients until completely smooth. If you desire a thinner sauce, you can add more water a tablespoon at a time until you reach your desired consistency. Chill until ready to use.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "To assemble: fill a wide bowl full of warm water. Dip one of the sheets of rice paper into the water and lay it out on a clean surface. Lay out about 1/4 cup of the jackfruit mixture into a small strip on the half of the rice paper closest to you. Top with a small handful of the rice pasta (about a scant 1/2 cup). Lay out several carrot and cucumber sticks next to the pile of pasta, top with a couple strips of lettuce, and then add a sprig of cilantro.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Fold the edge of rice paper closest to you over the pile. Fold the two side edges towards the center, and then roll the pile over once. Before you've rolled it all the way, add a couple chives, letting them stick out of one end, and then continue rolling until it is completely sealed. Please see this post for similar how-to photos.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Repeat with the remaining rice paper sheets and ingredients until all are completed. If necessary, you can make fewer rolls and refrigerate the rest of the ingredients for a day or two to make the rest of the rolls. If you make all the rolls at once, you can refrigerate the completed rolls overnight and eat it the next day, if you'd like. You should be able to make about 14 rolls total. Enjoy!",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Jackfruit Vietnamese Summer Rolls with Hoisin Peanut Sauce",
+				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 14},
+				URL:             "https://keepinitkind.com/jackfruit-vietnamese-summer-rolls-with-hoisin-peanut-sauce/",
+				Video:           &models.Videos{},
+			},
+		},
 		{
 			name: "kennymcgovern.com",
 			in:   "https://kennymcgovern.com/chicken-noodle-soup",
@@ -227,10 +330,14 @@ func TestScraper_K(t *testing.T) {
 					Protein:       "15",
 					Servings:      "1",
 				},
-				PrepTime:  "PT45M",
+				PrepTime: "PT45M",
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://images.kitchenstories.io/recipeImages/RP02_18_06_valencianPaella_titlePicture.jpg",
+				},
 				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT45M",
 				URL:       "https://www.kitchenstories.com/de/rezepte/valencianische-paella",
+				Video:     &models.Videos{},
 				Yield:     &models.Yield{Value: 4},
 			},
 		},
@@ -281,9 +388,11 @@ func TestScraper_K(t *testing.T) {
 					Protein:       "1.78182",
 					Servings:      "100 g",
 				},
-				Tools: &models.Tools{Values: []models.HowToItem{}},
-				Yield: &models.Yield{Value: 2},
-				URL:   "https://www.kochbar.de/rezept/465773/Spargelsalat-Fruchtig.html",
+				ThumbnailURL: &models.ThumbnailURL{},
+				Tools:        &models.Tools{Values: []models.HowToItem{}},
+				Yield:        &models.Yield{Value: 2},
+				URL:          "https://www.kochbar.de/rezept/465773/Spargelsalat-Fruchtig.html",
+				Video:        &models.Videos{},
 			},
 		},
 		{
@@ -316,9 +425,11 @@ func TestScraper_K(t *testing.T) {
 				},
 				Name:            "Eierlikör – Pralinen",
 				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 1},
 				URL:             "https://kochbucher.com/eierlikor-pralinen/",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -359,8 +470,21 @@ func TestScraper_K(t *testing.T) {
 				},
 				Name:      "Myllymäkis toast skagen",
 				TotalTime: "PT25M",
-				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.koket.se/mitt-kok/tommy-myllymaki/myllymakis-toast-skagen",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://www.tv4play.se/iframe/video/20277435?autoload=true",
+							Description:  "Myllymäkis toast skagen",
+							EmbedURL:     "https://www.tv4play.se/iframe/video/20277435?autoload=true",
+							Name:         "Myllymäkis toast skagen",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://img.koket.se/standard-mega/myllymakis-toast-skagen-2.jpg"},
+							UploadDate:   time.Date(2014, 12, 29, 5, 0, 0, 0, time.UTC),
+						},
+					},
+				},
+				Yield: &models.Yield{Value: 4},
 			},
 		},
 		{
@@ -390,11 +514,13 @@ func TestScraper_K(t *testing.T) {
 						{Type: "HowToStep", Text: "Wrap in cling film and refrigerate."},
 					},
 				},
-				Name:     "Cheese Empanadas with Fresh Tomato Salsa",
-				PrepTime: "PT30M",
-				Tools:    &models.Tools{Values: []models.HowToItem{}},
-				Yield:    &models.Yield{Value: 2},
-				URL:      "https://mobile.kptncook.com/recipe/pinterest/empanadas-mit-wuerziger-tomaten-salsa/3f1e5736",
+				Name:         "Cheese Empanadas with Fresh Tomato Salsa",
+				PrepTime:     "PT30M",
+				ThumbnailURL: &models.ThumbnailURL{},
+				Tools:        &models.Tools{Values: []models.HowToItem{}},
+				Yield:        &models.Yield{Value: 2},
+				URL:          "https://mobile.kptncook.com/recipe/pinterest/empanadas-mit-wuerziger-tomaten-salsa/3f1e5736",
+				Video:        &models.Videos{},
 			},
 		},
 		{
@@ -433,9 +559,11 @@ func TestScraper_K(t *testing.T) {
 				},
 				Name:            "Mizeria",
 				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 4},
 				URL:             "https://www.kuchnia-domowa.pl/przepisy/dodatki-do-dan/548-mizeria",
+				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -484,6 +612,7 @@ func TestScraper_K(t *testing.T) {
 				Name:            "Bravčová roláda so syrom a šunkou",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT1H0M",
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools: &models.Tools{
 					Values: []models.HowToItem{
 						{Type: "HowToTool", Text: "tĺčik na mäso", Quantity: 1},
@@ -494,6 +623,7 @@ func TestScraper_K(t *testing.T) {
 				},
 				Yield: &models.Yield{Value: 5},
 				URL:   "https://kuchynalidla.sk/recepty/bravcova-rolada-so-syrom-a-sunkou",
+				Video: &models.Videos{},
 			},
 		},
 		{
@@ -542,9 +672,11 @@ func TestScraper_K(t *testing.T) {
 				},
 				Name:            "Muffiny czekoladowe z masłem orzechowym",
 				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 15},
 				URL:             "https://www.kwestiasmaku.com/przepis/muffiny-czekoladowe-z-maslem-orzechowym",
+				Video:           &models.Videos{},
 			},
 		},
 	}
