@@ -2,7 +2,7 @@ package scraper_test
 
 import (
 	"testing"
-  "time"
+	"time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -1114,6 +1114,47 @@ func TestScraper_B(t *testing.T) {
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 1},
 				URL:             "https://briceletbaklava.ch/2023/10/taille-au-sel-de-granges-marnand.html",
+				Video:           &models.Videos{},
+			},
+		},
+		{
+			name: "britishbakels.co.uk",
+			in:   "https://www.britishbakels.co.uk/recipes/multiseed-rolls/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Bakery"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DateModified:  "2023-08-28T16:11:19+00:00",
+				Description:   &models.Description{Value: "With a delicious bite and backed as a source of fibre and protein, your customers are sure to come back for more!"},
+				Keywords:      &models.Keywords{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"Group 1",
+						"5.000 KG Wheat flour",
+						"5.000 KG Country Oven® Multiseed Bread Concentrate",
+						"0.250 KG Yeast",
+						"5.000 KG Water",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Place all of the ingredients into a spiral mixing bowl."},
+						{Text: "Mix for 3 minutes on slow speed and 7 minutes on fast speed, until fully developed."},
+						{Text: "Dough temperature should be 24-26℃."},
+						{Text: "Scale at 90g for soft and crusty rolls."},
+						{Text: "Prove for 50 minutes."},
+						{Text: "Bake at 230℃ for 12 minutes (soft rolls: no steam, crusty rolls: with steam)."},
+					},
+				},
+				Name:            "Multiseed Rolls",
+				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://www.britishbakels.co.uk/recipes/multiseed-rolls/",
 				Video:           &models.Videos{},
 			},
 		},

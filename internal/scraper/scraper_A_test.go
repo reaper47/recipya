@@ -2,8 +2,8 @@ package scraper_test
 
 import (
 	"testing"
-  "time"
-  
+	"time"
+
 	"github.com/reaper47/recipya/internal/models"
 )
 
@@ -477,6 +477,71 @@ func TestScraper_A(t *testing.T) {
 			},
 		},
 		{
+			name: "aldi.com.au",
+			in:   "https://www.aldi.com.au/recipes/breakfast-recipes/spinach-crepes-with-smoked-salmon-recipe/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Breakfast"},
+				CookTime:      "PT30M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Description: &models.Description{
+					Value: "Put together using a selection of ALDI’s everyday grocery range, try our Spinach Crepes with Smoked Salmon recipe today and enjoy!",
+				},
+				Keywords: &models.Keywords{},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"150g White Mill plain flour",
+						"2 Lodge Farms free range eggs",
+						"200ml Farmdale milk",
+						"60g The Fresh Salad Co baby spinach leaves",
+						"60g Farmdale sour cream",
+						"1 tbsp lemon juice",
+						"The Olive Tree olive oil spray",
+						"200g The Fishmonger smoked salmon slices",
+						"Handful dill fronds",
+						"1 Lebanese cucumber, cut into ribbons, to garnish",
+						"1 pink lady apple, cored and thinly sliced, to serve",
+						"1 lemon, cut into quarters, to serve",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "Make crepe batter first by placing the flour, eggs, milk and spinach into a blender. Season with a little salt and pepper and blitz until smooth. Set aside to rest for 20 minutes.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "When you’re ready to cook the crepes, mix the sour cream and lemon juice together and season well then set aside.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Place a crepe pan or frying pan over a medium heat and lightly spray with olive oil spray. Pour a little batter into the pan to create a roughly 20cm crepe. Move around the pan if needed. Cook for 1½-2 minutes on each side or until cooked through. Cover with foil, set aside and repeat. You should get 8 pancakes.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Mix the cucumber, apple and half of the dill together and toss with a little of the sour cream dressing.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Top the pancakes with smoked salmon. Add the cucumber and apple slices and a drizzle of\u00a0 dressing on top. Top with more dill and serve with a lemon wedge.",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Spinach Crepes with Smoked Salmon Recipe",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT15M",
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 4},
+				URL:             "https://www.aldi.com.au/recipes/breakfast-recipes/spinach-crepes-with-smoked-salmon-recipe/",
+				Video:           &models.Videos{},
+			},
+		},
+		{
 			name: "allrecipes.com",
 			in:   "https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/",
 			want: models.RecipeSchema{
@@ -856,6 +921,61 @@ func TestScraper_A(t *testing.T) {
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 1},
 				URL:             "https://www.angielaeats.com/recipes/maple-soy-brussels-sprouts",
+				Video:           &models.Videos{},
+			},
+		},
+		{
+			name: "aniagotuje.pl",
+			in:   "https://aniagotuje.pl/przepis/zupa-pomidorowa",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookTime:      "PT2H",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Description:   &models.Description{Value: "Zupa pomidorowa to ulubiona zupa większości dzieci. Domowa pomidorowa jest szybka i prosta do zrobienia. Błyskawiczna pomidorówka z rosołu gości na większości stołach co niedzielę. Zapraszam po mój przepis."},
+				Keywords:      &models.Keywords{Values: "zupa pomidorowa, pomidorowa, zupa pomidorowa przepis, zupa pomidorowa przepisy, pomidorówka przepis, pomidorowa z ryżem"},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"Składniki na bulion do zupy",
+						"1 kg mięsa na rosół: u mnie 2 ćwiartki kurczaka i gicz wołowa z kością*",
+						"2 średnie marchewki - około 280 g",
+						"1 mały korzeń pietruszki - około 90 g",
+						"kawałek korzenia selera - około 80 g",
+						"1 mała cebula - około 100 g",
+						"1500 ml wody - z kranu lub filtrowana",
+						"przyprawy i zioła: 2 ziarna ziela angielskiego; 1 listek laurowy; łyżeczka soli; pół łyżeczki pieprzu",
+						"Pozostałe składniki",
+						"1 mały słoiczek koncentratu pomidorowego - 200 g",
+						"4 łyżki kwaśnej śmietany 18 % - około 80 g",
+						"do podania: natka pietruszki oraz makaron lub ryż",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "Najpierw podam bardzo skróconą wersję przepisu:\n        1 - W jednym garnku umieść razem: około kilograma mięsa (tylko z kurczaka lub z dodatkiem wołowiny z kością); dwie obrane marchewki; korzeń pietruszki; cebulę; kawałek korzenia selera. Dodaj też dwa ziarna ziela angielskiego, listek laurowy, łyżeczkę soli oraz pół łyżeczki pieprzu. Wlej 1500 ml wody. Garnek przykryj przykrywką i zagotuj zupę. Zmniejsz moc palnika do takiej, by zupa tylko mrugała i gotuj ją przez 90 minut - jeśli dodany był tylko kurczak, lub 120 minut - jeśli użyta była też wołowina z kością.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "2 - Po dwóch godzinach z brzegów garnka usuń szumowiny. Przy pomocy cedzaka wyłów z zupy całe mięso, warzywa i przyprawy. Powinno zostać około 1200 ml bulionu. Jeśli odparowało więcej wywaru, to ubytek uzupełnij wrzątkiem. Warzywa i mięso z rosołu można zmielić i wykorzystać do zrobienia pasztetu, czy też jako farsz do pierogów lub naleśników.\u00a0\n        3 - Do bulionu dodaj mały słoik koncentratu pomidorowego o wadze 200 gramów. Zanim pomidorówka zacznie się ponownie gotować wlej cztery łyżki (lub więcej) śmietanki kremówki 30 %. Jeśli używasz śmietany kwaśnej 18 %, to przed dodaniem należy ja zahartować. Zamieszaj zupę i sprawdź jej smak. W razie potrzeby dopraw ją solą, pieprzem, może odrobiną cukru.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "4 - Pomidorową podawaj z ulubionym makaronem lub ryżem oraz ze świeżą natką pietruszki, odrobiną świeżych listków lubczyku ogrodowego lub z koperkiem.",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Zupa pomidorowa",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT30M",
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://aniagotuje.pl/przepis/zupa-pomidorowa",
 				Video:           &models.Videos{},
 			},
 		},

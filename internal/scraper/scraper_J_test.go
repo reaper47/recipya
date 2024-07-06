@@ -2,7 +2,7 @@ package scraper_test
 
 import (
 	"testing"
-  "time"
+	"time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -252,6 +252,77 @@ func TestScraper_J(t *testing.T) {
 				Yield:        &models.Yield{Value: 4},
 				URL:          "https://jimcooksfoodgood.com/recipe-weeknight-pad-thai/",
 				Video:        &models.Videos{},
+			},
+		},
+		{
+			name: "jocooks.com",
+			in:   "https://www.jocooks.com/recipes/korean-fried-chicken/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Dinner"},
+				CookTime:      "PT15M",
+				Cuisine:       &models.Cuisine{Value: "Korean"},
+				DatePublished: "2020-02-16T12:01:50+00:00",
+				Description: &models.Description{
+					Value: "Korean Fried Chicken - juicy, yet crispy pieces of chicken coated in a sweet  and spicy sauce. An easy fried chicken recipe with a fiery kick making for the perfect meal or appetizer. This chicken truly is perfect for any occasion.",
+				},
+				Keywords: &models.Keywords{Values: "fried chicken, korean fried chicken"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"2 pounds chicken breasts (boneless and skinless, cut into 1 inch pieces)",
+						"1 large egg (beaten)", "½ cup cornstarch", "vegetable oil (for frying)",
+						"3 tablespoon butter (unsalted)", "4 cloves garlic (minced)",
+						"1 tablespoon fresh ginger (minced)", "¼ cup honey",
+						"¼ cup brown sugar",
+						"2 tablespoon soy sauce (low sodium)",
+						"1 tablespoon rice vinegar",
+						"1 tablespoon sesame oil",
+						"2 tablespoon gochujang",
+						"green onions",
+						"toasted sesame seeds",
+						"red chilis (sliced)",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Toss the chicken pieces through the egg first, then dredge through cornstarch.", Type: "HowToStep"},
+						{Text: "Add about 3 inches of oil to a heavy bottom pan and heat to 375°F.", Type: "HowToStep"},
+						{Text: "Add chicken to the pan and fry in batches about 3 to 4 minutes per batch. Transfer the chicken to a paper towel lined plate and repeat with remaining chicken.", Type: "HowToStep"},
+						{Text: "Melt the butter in a skillet over medium heat. Add the garlic and ginger and cook for 30 seconds or until aromatic. Stir in the brown sugar and honey and cook for about 1 minute until the brown butter dissolves. Add the soy sauce, rice vinegar, sesame oil and gochujang sauce to the skillet and stir. Cook for 30 seconds then add the chicken to the skillet and toss well with the sauce.", Type: "HowToStep"},
+						{Text: "Serve garnished with green onions, toasted sesame seeds and red chilis.", Type: "HowToStep"},
+					},
+				},
+				Name: "Korean Fried Chicken",
+				NutritionSchema: &models.NutritionSchema{
+					Calories:      "466",
+					Carbohydrates: "33",
+					Cholesterol:   "143",
+					Fat:           "22",
+					Fiber:         "1",
+					Protein:       "34",
+					SaturatedFat:  "13",
+					Servings:      "1",
+					Sodium:        "372",
+					Sugar:         "21",
+				},
+				PrepTime:  "PT15M",
+				TotalTime: "PT30M",
+				Yield:     &models.Yield{Value: 6},
+				URL:       "https://www.jocooks.com/recipes/korean-fried-chicken/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/9GdxrbMj.mp4",
+							Description:  "Korean Fried Chicken - juicy, yet crispy pieces of chicken coated in a sweet  and spicy sauce. An easy fried chicken recipe with a fiery kick making for the perfect meal or appetizer. This chicken truly is perfect for any occasion.",
+							Name:         "Korean Fried Chicken",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/9GdxrbMj-720.jpg"},
+							UploadDate:   time.Date(2020, 2, 16, 17, 52, 11, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{

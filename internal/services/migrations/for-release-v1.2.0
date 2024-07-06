@@ -2,11 +2,14 @@
 INSERT INTO websites (host, url)
 VALUES
     ('ah.be', 'https://www.ah.be'),
+    ('aldi.com.au', 'https://www.aldi.com.au/recipes')
+    ('aniagotuje.pl', 'https://aniagotuje.pl'),
     ('americastestkitchen.com', 'https://www.americastestkitchen.com'),
     ('angielaeats.com', 'https://www.angielaeats.com'),
     ('avocadoskillet.com', 'https://avocadoskillet.com'),
     ('beyondkimchee.com', 'https://beyondkimchee.com'),
     ('bottomlessgreens.com', 'https://bottomlessgreens.com'),
+    ('britishbakels.co.uk', 'https://www.britishbakels.co.uk/recipes'),
     ('chatelaine.com', 'https://chatelaine.com'),
     ('chejorge.com', 'https://chejorge.com'),
     ('chinesecookingdemystified.substack.com', 'https://chinesecookingdemystified.substack.com'),
@@ -28,6 +31,7 @@ VALUES
     ('foolproofliving.com', 'https://foolproofliving.com'),
     ('gastroplant.com', 'https://gastroplant.com'),
     ('gazoakleychef.com', 'https://www.gazoakleychef.com'),
+    ('glutenfreetables.com', 'https://glutenfreetables.com'),
     ('goodeatings.com', 'https://goodeatings.com'),
     ('goodto.com', 'https://goodto.com'),
     ('gousto.co.uk', 'https://www.gousto.co.uk'),
@@ -36,8 +40,10 @@ VALUES
     ('healthylittlefoodies.com', 'https://www.healthylittlefoodies.com'),
     ('hellofresh.se', 'https://www.hellofresh.se/recipes'),
     ('homebrewanswers.com', 'https://homebrewanswers.com'),
+    ('inbloombakery.com', 'https://inbloombakery.com'),
     ('instantpot.com', 'https://instantpot.com'),
     ('jaroflemons.com', 'https://jaroflemons.com'),
+    ('jocooks.com', 'https://www.jocooks.com'),
     ('keepinitkind.com', 'https://keepinitkind.com'),
     ('lahbco.com', 'https://www.lahbco.com'),
     ('lekkerensimpel.com', 'https://www.lekkerensimpel.com/gougeres'),
@@ -67,12 +73,12 @@ VALUES
 -- +goose Down
 DELETE FROM websites
 WHERE host IN (
-    'ah.be', 'americastestkitchen.com', 'angielaeats.com', 'avocadoskillet.com', 'beyondkimchee.com', 'bottomlessgreens.com', 'chatelaine.com', 'chejorge.com',
-    'chinesecookingdemystified.substack.com', 'colruyt.be', 'cuisineandtravel.com', 'daringgourmet.com', 'dherbs.com', 'dish.co.nz', 'dreenaburton.com',
-    'elephantasticvegan.com', 'entertainingwithbeth.com', 'etenvaneefke.nl', 'feastingathome.com', 'findingtimeforcooking.com', 'foodal.com', 'foodbymaria.com',
-    'foodiecrush.com', 'food-guide.canada.ca', 'foolproofliving.com', 'gastroplant.com', 'gazoakleychef.com', 'goodeatings.com', 'goodto.com',
-    'greenevi.com', 'gurki.no', 'gousto.co.uk', 'healthylittlefoodies.com', 'homebrewanswers.com', 'instantpot.com', 'jaroflemons.com', 'keepinitkind.com', 'lahbco.com', 'lekkerensimpel.com',
-    'lithuanianintheusa.com', 'loveandlemons.com', 'mygingergarlickitchen.com', 'natashaskitchen.com', 'madewithlau.com',
+    'ah.be', 'aldi.com.au', 'aniagotuje.pl', 'americastestkitchen.com', 'angielaeats.com', 'avocadoskillet.com', 'beyondkimchee.com', 'bottomlessgreens.com',
+    'britishbakels.co.uk', 'chatelaine.com', 'chejorge.com', 'chinesecookingdemystified.substack.com', 'colruyt.be', 'cuisineandtravel.com', 'daringgourmet.com', 'dherbs.com',
+    'dish.co.nz', 'dreenaburton.com', 'elephantasticvegan.com', 'entertainingwithbeth.com', 'etenvaneefke.nl', 'feastingathome.com', 'findingtimeforcooking.com', 'foodal.com', 'foodbymaria.com',
+    'foodiecrush.com', 'food-guide.canada.ca', 'foolproofliving.com', 'gastroplant.com', 'gazoakleychef.com', 'glutenfreetables.com', 'goodeatings.com', 'goodto.com',
+    'greenevi.com', 'gurki.no', 'gousto.co.uk', 'healthylittlefoodies.com', 'homebrewanswers.com', 'inbloombakery.com', 'instantpot.com', 'jaroflemons.com',
+    'jocooks.com', 'keepinitkind.com', 'lahbco.com', 'lekkerensimpel.com', 'lithuanianintheusa.com', 'loveandlemons.com', 'mygingergarlickitchen.com', 'natashaskitchen.com', 'madewithlau.com',
     'mexicanmademeatless.com', 'nigella.com', 'ohmyveggies.com', 'parsleyandparm.com', 'plentyvegan.com',
     'purewow.com', 'radiofrance.fr', 'robinasbell.com', 'sarahsveganguide.com', 'spiceboxtravels.com',
     'thatvegandad.com', 'thefoodflamingo.com', 'theguccha.com', 'theheartysoul.com', 'twosleevers.com', 'vegan-pratique.fr'

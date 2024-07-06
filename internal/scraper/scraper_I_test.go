@@ -2,7 +2,7 @@ package scraper_test
 
 import (
 	"testing"
-  "time"
+	"time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -103,6 +103,117 @@ func TestScraper_I(t *testing.T) {
 				TotalTime: "PT10M",
 				Yield:     &models.Yield{Value: 8},
 				URL:       "https://im-worthy.com/cranberry-walnut-oatmeal-energy-balls/",
+			},
+		},
+		{
+			name: "inbloombakery.com",
+			in:   "https://inbloombakery.com/the-best-cinnamon-rolls-ever",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtGraph:       nil,
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Appetizer"},
+				CookTime:      "PT30M",
+				CookingMethod: nil,
+				Cuisine:       &models.Cuisine{Value: "American"},
+				DateCreated:   "",
+				DateModified:  "",
+				DatePublished: "2023-08-07T17:07:48+00:00",
+				Description: &models.Description{
+					Value: "These are the best cinnamon rolls EVER. They&#39;re soft and fluffy with a gooey brown sugar cinnamon filling, frosted with cream cheese frosting all while drenched in a rich, buttery brown sugar cinnamon caramel sauce on the bottom.",
+				},
+				Keywords: &models.Keywords{Values: "best cinnamon rolls, cinnamon, cinnamon rolls, cream cheese frosting"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"1 1/4 cups (300 ml) whole milk, warmed to about 110 degrees",
+						"2 1/4 tsp active dry yeast",
+						"1 tsp granulated white sugar (to bloom the yeast)",
+						"4 3/4 cups (593 g) all-purpose flour, spooned and leveled", "1 1/2 tsp salt",
+						"2 tbsp (25 g) granulated white sugar", "2 eggs, whisked", "1 tbsp vanilla",
+						"1/2 cup (112 g) unsalted butter, very softened",
+						"1/2 cup (112 g) unsalted butter, very softened",
+						"1 cup (220 g) light brown sugar, packed",
+						"2 tsp cinnamon",
+						"1/3 cup (116 g) honey",
+						"1/2 tbsp vanilla",
+						"3 tbsp (45 ml) heavy cream",
+						"1/4 tsp salt",
+						"1/2 cup (112 g) unsalted butter, very softened",
+						"1 cup (220 g) light brown sugar, packed",
+						"2 tbsp cinnamon",
+						"1/4 tsp salt",
+						"1/4 cup (60 ml) heavy cream (for pouring in between the rolls)",
+						"6 tbsp (84 g) unsalted butter, very softened",
+						"6 oz (170 g) cream cheese, cold",
+						"3/4 cup (97 g) powdered sugar",
+						"1/2 tbsp vanilla",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "To start, bloom your yeast. Mix your active dry yeast, sugar, and warm milk together and let sit for 10 minutes until foamy on top.", Type: "HowToStep"},
+						{Text: "Next, in a large bowl of a stand mixer with a whisk attachment, mix flour, salt and sugar together.", Type: "HowToStep"},
+						{Text: "To the dry ingredients add the whisked eggs, vanilla and softened butter and mix.", Type: "HowToStep"},
+						{Text: "Add in the yeast mixture and mix until everything is blended. Switch to a dough hook and knead on medium speed for 7-10 minutes until the dough pulls away from the edges of the bowl, forms a ball and springs back when pressed.", Type: "HowToStep"},
+						{Text: "Form the dough into a ball. Place the dough in a large, greased bowl. Cover with plastic wrap or a kitchen towel and place in a warm place to rise, (outside or a cold oven with the light on works well for this), for 1- 1 ½ hours, or until the dough doubles in size.", Type: "HowToStep"},
+						{Text: "While the dough rises, make the sticky caramel sauce for the bottoms of the rolls, by mixing the butter, brown sugar, cinnamon, honey, vanilla, heavy cream and salt together in a medium bowl.", Type: "HowToStep"},
+						{Text: "Grease a 9x13 inch casserole dish. Spread the mixture evenly over the bottom of the pan.", Type: "HowToStep"},
+						{Text: "While the dough rises, also make the filling by mixing the butter, brown sugar, cinnamon and salt together in a small bowl. (If the filling is too firm and not spreadable, add heavy cream a tsp at a time until it&#39;s easily spreadable.)", Type: "HowToStep"},
+						{
+							Text: "Once the dough has had a chance to rise, remove from bowl, punch dough to release the air, and roll out on a lightly floured surface. Roll the dough into about an 18 x 12 inch rectangle. It should be about 1/4 inch thick.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Sprinkle the cinnamon sugar filling over the dough and spread it evenly with an offset spatula.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Roll up the dough tightly into a long log shape starting from the end closest to you. Cut of a bit off the ends to make the log even. Cut 12 rolls about 1 1/2 inches wide using unflavored floss or a very sharp knife.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Place the rolls in the prepared casserole dish with the cinnamon caramel sauce mixture and pour room temperature heavy cream in between each roll. Cover them with plastic wrap and let them proof in a warm spot for about an hour, or until they have doubled in size.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Preheat the oven to 350 degrees about 15 minutes before the rolls are done proofing.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Once the rolls have completed their second rise, bake them for 29-32 minutes until golden brown. (30 minutes is usually perfect!)(Cover with aluminum foil for the last 5 minutes if they&#39;re getting too brown.)",
+							Type: "HowToStep",
+						},
+						{
+							Text: "While they bake, make the cream cheese frosting by adding the softened butter to a medium bowl and mixing it on high speed with an electric mixer until pale and fluffy.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Add in the cream cheese and mix until combined on medium speed.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Sift the powdered sugar into the mixture a little at a time and mix on low speed until all is combined.(You can add more powdered sugar if you want the frosting to be sweeter.)",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Then add in the vanilla and combine on medium speed until the frosting is smooth.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Let the rolls cool for 10 minutes, then cover the warm rolls with the cream cheese icing. Then serve!",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "The Best Cinnamon Rolls Ever",
+				NutritionSchema: nil,
+				PrepTime:        "PT45M",
+				ThumbnailURL:    nil,
+				Tools:           nil,
+				TotalTime:       "PT225M",
+				Yield:           &models.Yield{Value: 12},
+				URL:             "https://inbloombakery.com/the-best-cinnamon-rolls-ever",
 			},
 		},
 		{

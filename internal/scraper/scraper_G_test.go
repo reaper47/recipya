@@ -409,6 +409,81 @@ func TestScraper_G(t *testing.T) {
 			},
 		},
 		{
+			name: "glutenfreetables.com",
+			in:   "https://glutenfreetables.com/recipe/gluten-free-bread-loaf-bread-buns-with-schar-mix-b-flour/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Bread"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DateModified:  "2021-05-12T14:50:18+00:00",
+				Description:   &models.Description{},
+				Keywords: &models.Keywords{
+					Values: "10 ingredients or less,Artisan bread,Bread,Bread buns,Gluten free,No wheat,Recipes,Schar Flour,Schar Mix B Flour",
+				},
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"300 g GF Schar Mix B flour",
+						"6 g fresh yeast I used the cube ones",
+						"1teaspoon honey",
+						"30 g olive oil",
+						"285 g slightly cold water",
+						"1 teaspoon salt Flat",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Name: "Pile the bread flour",
+							Text: "Pile the bread flour into a large mixing bowl.",
+							Type: "HowToStep",
+						},
+						{Name: "Pile the bread flour", Type: "HowToStep"},
+						{
+							Name: "In a separate bowl",
+							Text: "In a separate bowl, mix the yeast, water, and honey until you have a smooth mixture. Let it sit for 10 minutes.",
+							Type: "HowToStep",
+						},
+						{
+							Name: "In a separate bowl",
+							Text: "After 10 minutes, add the yeast mixture to your flour and knead the dough for about 8-10 minutes using the dough hook. After approximately 8 minutes add the olive oil and salt to the dough and knead for another 2 minutes.",
+							Type: "HowToStep",
+						},
+						{
+							Name: "Shape Your dough",
+							Text: "Move your dough to a floured work surface and shape it however you want: bread loaf, bread buns, challah bread. Once you shaped the dough, let it proof for about an hour and a half (Even a little less, depending on your kitchen temperatures).",
+							Type: "HowToStep",
+						},
+						{
+							Name: "Shape Your dough",
+							Text: "Once the dough has doubled its size, brush it with an egg and sprinkles sesame/flax seeds/Nigella/etc.",
+							Type: "HowToStep",
+						},
+						{
+							Name: "Bake your bread/buns",
+							Text: "Preheated the oven to 200c and place a bowl of cold water inside as well.",
+							Type: "HowToStep",
+						},
+						{
+							Name: "Bake your bread/buns",
+							Text: "Bake your bread/buns for about 30-40 minutes (Depends on the oven, start checking your oven after about 25 minutes).",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Gluten-Free Bread Loaf/Bread Buns With Schar Mix B Flour",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT1.5H",
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://glutenfreetables.com/recipe/gluten-free-bread-loaf-bread-buns-with-schar-mix-b-flour/",
+				Video:           &models.Videos{},
+			},
+		},
+		{
 			name: "godt.no",
 			in:   "https://www.godt.no/oppskrifter/kjoett/svin/10849/koteletter-med-paerer-i-langpanne",
 			want: models.RecipeSchema{
