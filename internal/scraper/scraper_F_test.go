@@ -2,13 +2,86 @@ package scraper_test
 
 import (
 	"testing"
-  "time"
+	"time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
 
 func TestScraper_F(t *testing.T) {
 	testcases := []testcase{
+		{
+			name: "familyfoodonthetable.com",
+			in:   "https://www.familyfoodonthetable.com/slow-cooker-honey-garlic-chicken/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Slow Cooker"},
+				CookTime:      "PT2H30M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{Value: "Asian"},
+				DatePublished: "2019-01-15",
+				Description: &models.Description{
+					Value: "Slow cooker honey garlic chicken is just 5 ingredients and minutes to prep and smells amazing as it cooks! You’ll want to drizzle this delicious sauce over your whole plate!",
+				},
+				Keywords: &models.Keywords{
+					Values: "slow cooker chicken recipes, slow cooker honey garlic chicken, easy slow cooker meals, easy slow cooker chicken recipes, slow cooker chicken dinners, easy slow cooker dinners, easy crock pot chicken dinners, crock pot chicken recipes, crock pot honey garlic chicken",
+				},
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"2.5 lbs boneless, skinless chicken thighs", "Salt and black pepper",
+						"1/3 cup honey", "1/3 cup low-sodium soy sauce", "6 cloves garlic, minced",
+						"1/2 teaspoon red pepper flakes (optional, adjust for heat)",
+						"Sliced green onions, chopped peanuts, chopped parsley or cilantro, extra sprinkle of red pepper flakes or a drizzle of sriracha for a spicy kick",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Season chicken thighs lightly with salt and black pepper and add to the insert of your slow cooker.", Type: "HowToStep"},
+						{Text: "Mix remaining ingredients together in a small bowl and pour the sauce over the chicken thighs in the slow cooker.", Type: "HowToStep"},
+						{Text: "Cover and cook on low for 5-6 hours or on high for 2 1/2-3 hours.", Type: "HowToStep"},
+						{Text: "Remove the chicken thighs and either cut it into chunks or shred it with two forks. Mix the chicken back into the sauce in the slow cooker and let sit for at least 5-10 minutes, to help absorb the juices.", Type: "HowToStep"},
+						{Text: "Serve hot with any desired toppings and enjoy!", Type: "HowToStep"},
+					},
+				},
+				Name: "Slow Cooker Honey Garlic Chicken",
+				NutritionSchema: &models.NutritionSchema{
+					Calories:       "385",
+					Carbohydrates:  "18",
+					Cholesterol:    "231",
+					Fat:            "15",
+					Fiber:          "1",
+					Protein:        "48",
+					SaturatedFat:   "5",
+					Servings:       "1",
+					Sodium:         "962",
+					Sugar:          "16",
+					TransFat:       "0",
+					UnsaturatedFat: "10",
+				},
+				PrepTime:     "PT5M",
+				ThumbnailURL: &models.ThumbnailURL{},
+				Tools:        &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:    "PT2H35M",
+				Yield:        &models.Yield{Value: 6},
+				URL:          "https://familyfoodonthetable.com/slow-cooker-honey-garlic-chicken/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://mediavine-res.cloudinary.com/video/upload/skjowe84ud5o0gaq50ge.mp4",
+							Description: "Slow cooker honey garlic chicken is just 5 ingredients and minutes to prep and smells amazing as it cooks! You’ll want to drizzle this delicious sauce over your whole plate!",
+							Duration:    "PT52S",
+							Name:        "Slow Cooker Honey Garlic Chicken",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://mediavine-res.cloudinary.com/image/upload/s--h-RC6iDW--/ar_16:9,c_fill,f_auto,fl_lossy,q_auto/v1586797611/hke2gfkcfyezizntqbmv.jpg",
+							},
+							UploadDate: time.Date(2023, 4, 18, 17, 28, 22, 0, time.UTC),
+						},
+					},
+				},
+			},
+		},
 		{
 			name: "farmhousedelivery.com",
 			in:   "https://recipes.farmhousedelivery.com/green-shakshuka/",

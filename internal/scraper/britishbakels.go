@@ -69,18 +69,27 @@ func scrapeBritishBakels(root *goquery.Document) (models.RecipeSchema, error) {
 		}
 	})
 
-	root.Find("div.card:contains('Method')").Find("ol").Each(func(_ int, sel *goquery.Selection) {
-		name := strings.TrimSpace(sel.Prev().Text())
-		var h models.HowToItem
-		if name != "" {
-			h.Name = name
+	content := root.Find("div.card:contains('Method')")
+	nodes := content.Find("ol")
+	if nodes.Length() == 0 {
+		text := strings.TrimSpace(content.Find(".card-body").Text())
+		for _, s := range strings.Split(text, "\n") {
+			rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
 		}
+	} else {
+		nodes.Each(func(_ int, sel *goquery.Selection) {
+			name := strings.TrimSpace(sel.Prev().Text())
+			var h models.HowToItem
+			if name != "" {
+				h.Name = name
+			}
 
-		sel.Children().Each(func(_ int, li *goquery.Selection) {
-			h.Text = strings.TrimSpace(li.Text())
-			rs.Instructions.Values = append(rs.Instructions.Values, h)
+			sel.Children().Each(func(_ int, li *goquery.Selection) {
+				h.Text = strings.TrimSpace(li.Text())
+				rs.Instructions.Values = append(rs.Instructions.Values, h)
+			})
 		})
-	})
+	}
 
 	return rs, nil
 }

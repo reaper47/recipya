@@ -2,7 +2,7 @@ package scraper_test
 
 import (
 	"testing"
-  "time"
+	"time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -284,6 +284,93 @@ func TestScraper_K(t *testing.T) {
 				TotalTime: "PT40M",
 				Yield:     &models.Yield{Value: 24},
 				URL:       "https://www.kingarthurbaking.com/recipes/fudge-brownies-recipe",
+			},
+		},
+		{
+			name: "kitchenaid.com.au",
+			in:   "https://kitchenaid.com.au/blogs/kitchenthusiast/hot-cross-buns",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Dessert"},
+				CookTime:      "",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DateCreated:   "",
+				DateModified:  "",
+				DatePublished: "2019-04-15T19:41:00Z",
+				Description: &models.Description{
+					Value: "An everyday classic Easter treat! Ben Milbourne shares his recipe for hot cross buns, filled with fruit and spices. Serve fresh with a dollop of butter!\nExplore our Easter dessert and lunch recipe ideas too!",
+				},
+				Keywords: &models.Keywords{},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"4 cups plain flour",
+						"¼ cup caster sugar",
+						"1 tsp cinnamon",
+						"pinch of salt",
+						"¾ cup sultanas",
+						"2 x 7g sachets dried yeast",
+						"3½ teaspoon ground allspice",
+						"3¼ teaspoon grated nutmeg",
+						"¾ cup currants",
+						"300ml milk",
+						"50g butter",
+						"2 eggs",
+						"Crosses",
+						"4 Tbs plain flour",
+						"4 Tbs water",
+						"Glaze",
+						"1/3 cup sugar",
+						"½ cup hot water",
+						"¼ tsp cinnamon",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Pre-heated oven to 220 degrees", Type: "HowToStep"},
+						{
+							Text: "Using the KitchenAid Sifter + Scale Attachment, sift flour, sugar, salt and spices into KitchenAid stand mixer bowl with dough hook attachment.",
+							Type: "HowToStep",
+						},
+						{Text: "Add yeast", Type: "HowToStep"},
+						{
+							Text: "In a saucepan heat the milk over a low temperature, add butter, stir until melted",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Add milk and butter mixture to dry mix and turn stand mixer to level 2 until mixed thoroughly. Add the eggs and then the dried fruit continue mixing for 3-4 minutes until the dough is smooth and no longer sticky.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Remove bowl from mixer, shape dough into a ball and cover with plastic wrap and place in a warm spot to prove for 1 hour or until doubled in size.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Portion dough into 12 equal sized buns, placed closely together on a greased baking tray. Leave to rise for 1 hour",
+							Type: "HowToStep",
+						},
+						{
+							Text: "To make the crosses, mix the flour and water thoroughly to form a thick paste. Spoon into a piping bag and pipe the paste in crosses on the buns",
+							Type: "HowToStep",
+						},
+						{Text: "Bake in oven for 20 minutes or until golden", Type: "HowToStep"},
+						{
+							Text: "Mix glaze ingredients together until sugar has dissolved. Brush glaze over buns while still hot.",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Hot Cross Buns",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT1H20M",
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:       "",
+				Yield:           &models.Yield{Value: 12},
+				URL:             "https://kitchenaid.com.au/blogs/kitchenthusiast/hot-cross-buns",
+				Video:           &models.Videos{},
 			},
 		},
 		{
