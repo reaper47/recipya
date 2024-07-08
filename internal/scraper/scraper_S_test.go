@@ -430,6 +430,83 @@ func TestScraper_S(t *testing.T) {
 			},
 		},
 		{
+			name: "savorynothings.com",
+			in:   "https://www.savorynothings.com/whole-wheat-cinnamon-crunch-banana-bread/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Breakfast"},
+				CookTime:      "PT60M",
+				Cuisine:       &models.Cuisine{Value: "American"},
+				DatePublished: "2020-05-29T07:00:41+00:00",
+				Description: &models.Description{
+					Value: "This is an easy banana bread with a delicious crumb topping and full of warm cinnamon flavors.",
+				},
+				Keywords: &models.Keywords{
+					Values: "banana, banana bread, cinnamon, quick bread, whole wheat, whole wheat banana bread",
+				},
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"2 large eggs", "1 cup mashed bananas",
+						"¾ cup sugar (can reduce to 1/3 - 1/2 cup for a less sweet version)",
+						"⅓ cup oil", "½ cup Greek yogurt",
+						"1 ¾ cups whole wheat flour (see notes for substitutes)",
+						"¼ cup cornstarch (or more whole wheat flour)", "2 teaspoons ground cinnamon",
+						"1 ½ teaspoons baking powder",
+						"¼ teaspoon salt",
+						"½ cup flour (plain or whole wheat)",
+						"½ cup brown sugar",
+						"1 teaspoon cinnamon",
+						"¼ cup butter",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Prep: Heat the oven to 360°F. Grease and line a 9x5 inch loaf pan.", Type: "HowToStep"},
+						{Text: "Make topping: For the crumb topping, place the flour, brown sugar and cinnamon in a medium bowl. Rub in the butter with your fingertips until crumbs form. Refrigerate until ready to use.", Type: "HowToStep"},
+						{Text: "Combine dry ingredients: Add all dry ingredients to a large mixing bowl. Stir together until well combined.", Type: "HowToStep"},
+						{Text: "Combine wet ingredients: Stir together all wet ingredients in a separate large measuring jug until well combined.", Type: "HowToStep"},
+						{Text: "Assemble bread: Pour wet into dry ingredients and fold together just until flour is moistened (a few lumps are fine). Place the batter in the prepared loaf tin and evenly sprinkle with the crumb topping.", Type: "HowToStep"},
+						{Text: "Bake the banana bread: Bake for around 50-60 minutes, or until a toothpick inserted comes out clean. Cool in the pan for 10 minutes, then remove to a wire cooling tray to cool completely (remember to peel off the parchment paper, too!)", Type: "HowToStep"},
+					},
+				},
+				Name: "Whole Wheat Cinnamon Crunch Banana Bread",
+				NutritionSchema: &models.NutritionSchema{
+					Calories:      "291",
+					Carbohydrates: "44",
+					Cholesterol:   "37",
+					Fat:           "11",
+					Fiber:         "2",
+					Protein:       "4",
+					SaturatedFat:  "3",
+					Servings:      "1",
+					Sodium:        "100",
+					Sugar:         "23",
+				},
+				PrepTime:  "PT15M",
+				TotalTime: "PT75M",
+				Yield:     &models.Yield{Value: 12},
+				URL:       "https://www.savorynothings.com/whole-wheat-cinnamon-crunch-banana-bread/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1584798883/vyypqxc9wnl7w8n9ochw.mp4",
+							Description: "Learn how to make the best banana bread recipe on the Internet: This banana bread is made with whole wheat flour and topped with a delicious cinnamon Streusels crumb topping. So good!",
+							Duration:    "PT79S",
+							EmbedURL:    "https://video.mediavine.com/videos/vyypqxc9wnl7w8n9ochw.js",
+							Name:        "How to Make Cinnamon Crunch Banana Bread",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://mediavine-res.cloudinary.com/video/upload/s--JRpcYr5K--/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1584798883/vyypqxc9wnl7w8n9ochw.jpg",
+							},
+							UploadDate: time.Date(2020, 3, 21, 14, 0, 24, 0, time.UTC),
+						},
+					},
+				},
+			},
+		},
+		{
 			name: "seriouseats.com",
 			in:   "https://www.seriouseats.com/miyeok-guk-korean-seaweed-and-brisket-soup",
 			want: models.RecipeSchema{

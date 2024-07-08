@@ -594,6 +594,61 @@ func TestScraper_D(t *testing.T) {
 			},
 		},
 		{
+			name: "donnahay.com.au",
+			in:   "https://www.donnahay.com.au/recipes/desserts-and-baking/apple-and-vanilla-tarte-tatin",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "desserts and baking"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Description:   &models.Description{Value: "This irresistibly sweet French dessert is the perfect ending to any meal."},
+				Keywords:      &models.Keywords{Values: "donna hay, cooking, recipes, food, best tarte tatin recipe, tarte tatin, apple, apple tarte tatin, vanilla, baking, dessert"},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"2 sheets frozen puff pastry, thawed",
+						"¾ cup (165g) caster sugar",
+						"¼ cup (60ml) water",
+						"50g unsalted butter, chopped",
+						"1 teaspoon vanilla bean paste",
+						"4 Granny Smith apples, peeled, cored and quartered",
+						"vanilla ice-cream, to serve (see recipe)",
+						"2 sheets frozen puff pastry, thawed",
+						"¾ cup (165g) caster sugar",
+						"¼ cup (60ml) water",
+						"50g unsalted butter, chopped",
+						"1 teaspoon vanilla bean paste",
+						"4 Granny Smith apples, peeled, cored and quartered",
+						"vanilla ice-cream, to serve (see recipe)",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "Preheat oven to 180°C. Press the pastry sheets together to form one 5mm-thick sheet and, using a plate as a guide, cut out a 23cm round. Set aside.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Place the sugar and water in a 20cm non-stick ovenproof frying pan over low heat and cook, stirring constantly, until the sugar is dissolved. Increase heat to medium and bring to the boil. Cook, without stirring, for 7–9 minutes or until light golden. Carefully add the butter and vanilla and stir until melted and well combined. Remove the pan from the heat and carefully arrange the apple, cut-side up and slightly overlapping, in the caramel. Top the apple with the pastry round and tuck the edges under to secure.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Using a sharp knife, make 3 small cuts in the centre of the pastry. Place the pan on a baking tray and cook for 35 minutes or until the pastry is puffed and golden. Set aside for 2–3 minutes to cool slightly. Loosen the edges with a knife and carefully turn out the tart. Serve warm with the ice-cream. Serves 4.",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Apple And Vanilla Tarte Tatin",
+				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://www.donnahay.com.au/recipes/desserts-and-baking/apple-and-vanilla-tarte-tatin",
+				Video:           &models.Videos{},
+			},
+		},
+		{
 			name: "downshiftology.com",
 			in:   "https://downshiftology.com/recipes/baked-chicken-breasts/",
 			want: models.RecipeSchema{

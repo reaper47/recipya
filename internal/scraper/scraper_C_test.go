@@ -723,7 +723,15 @@ func TestScraper_C(t *testing.T) {
 				ThumbnailURL:    &models.ThumbnailURL{},
 				Yield:           &models.Yield{Value: 1},
 				URL:             "https://chinesecookingdemystified.substack.com/p/lao-gan-ma-fried-rice",
-				Video:           &models.Videos{},
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:   "VideoObject",
+							EmbedURL: "https://youtube.com/embed/2KHAuPqDYyg",
+							IsIFrame: true,
+						},
+					},
+				},
 			},
 		},
 		{
@@ -1483,6 +1491,62 @@ func TestScraper_C(t *testing.T) {
 				URL:             "https://www.cucchiaio.it/ricetta/baccala-in-crosta-senza-glutine/",
 				Video:           &models.Videos{},
 				Yield:           &models.Yield{Value: 1},
+			},
+		},
+		{
+			name: "culy.nl",
+			in:   "https://www.culy.nl/recepten/spinaziesalade-met-feta/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookTime:      "PT5M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DateModified:  "2024-06-24T18:50:51+00:00",
+				Description:   &models.Description{Value: "Deze spinaziesalade met feta is ideaal om van je voorraad spinazie af te komen. We geven de salade een Midden-Oosterse touch door de romige tahindressing."},
+				Keywords:      &models.Keywords{Values: "bijgerecht,culy-homemade,gezonde-lunch,gezonde-recepten,salade,spinazie,vegetarische-recepten,vegetarische-salade,zomerse-salade"},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"150 gram spinazie",
+						"75 gram feta",
+						"75 gram granaatappelpitten",
+						"2 eetlepels tahin",
+						"6 eetlepels water",
+						"1 eetlepel citroensap",
+						"1 eetlepel olijfolie",
+						"1 theelepel honing",
+						"Peper",
+						"Zout",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "Meng met een garde de tahin samen met het water en het citroensap. Meng al roerend de olijfolie door de tahindressing. Voeg dan ook de honing toe en breng op smaak met peper en zout.",
+							Type: "HowToStep",
+						},
+						{Text: "Was de spinazie en verwijder dorre blaadjes.", Type: "HowToStep"},
+						{
+							Text: "Meng de tahindressing met de spinazie en mix alles goed door elkaar heen tot alle blaadjes bedekt zijn (met je handen is ideaal!).",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Verkruimel de feta en verdeel die over de spinaziesalade heen.",
+							Type: "HowToStep",
+						},
+						{Text: "Strooi de granaatappelpitten over de salade.", Type: "HowToStep"},
+					},
+				},
+				Name:            "Culy Homemade: spinaziesalade met feta en tahindressing",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT10M",
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 2},
+				URL:             "https://www.culy.nl/recepten/spinaziesalade-met-feta/",
+				Video:           &models.Videos{},
 			},
 		},
 		{

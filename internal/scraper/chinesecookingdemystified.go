@@ -1,6 +1,7 @@
 package scraper
 
 import (
+	"encoding/json"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/utils/regex"
@@ -30,6 +31,22 @@ func scrapeChinesecookingdemystified(root *goquery.Document) (models.RecipeSchem
 	})
 
 	getInstructions(&rs, root.Find("h3:contains('Process')").NextUntil(":not(p)"))
+
+	video := root.Find(".youtube-wrap").AttrOr("data-attrs", "")
+	if video != "" {
+		var m map[string]string
+		err = json.Unmarshal([]byte(video), &m)
+		if err == nil {
+			v, ok := m["videoId"]
+			if ok {
+				rs.Video.Values = append(rs.Video.Values, models.VideoObject{
+					AtType:   "VideoObject",
+					EmbedURL: "https://youtube.com/embed/" + v,
+					IsIFrame: true,
+				})
+			}
+		}
+	}
 
 	return rs, nil
 }

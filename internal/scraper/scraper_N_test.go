@@ -2,7 +2,7 @@ package scraper_test
 
 import (
 	"testing"
-  "time"
+	"time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -294,6 +294,70 @@ func TestScraper_N(t *testing.T) {
 						},
 					},
 				},
+			},
+		},
+		{
+			name: "notenoughcinnamon.com",
+			in:   "https://www.notenoughcinnamon.com/easy-chicken-shawarma-bowl/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "dinner"},
+				CookTime:      "PT20M",
+				Cuisine:       &models.Cuisine{Value: "Lebanese"},
+				DatePublished: "2020-01-20T10:00:11+00:00",
+				Description: &models.Description{
+					Value: "Juicy Middle Eastern spiced chicken baked to perfection and combined with fresh veggies, hummus, pita chips and a creamy&nbsp;tahini sauce for a delicious easy chicken bowl that’s sure to wow your tastebuds! Included: A Gluten-free, Whole30 &amp; Paleo Option.&nbsp;",
+				},
+				Keywords: &models.Keywords{
+					Values: "chicken bowl recipe, chicken shawarma marinade, chicken shawarma recipe",
+				},
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"6 boneless skinless chicken thighs", "1 large yellow onion (sliced)",
+						"2  tsp  cumin", "2  tsp  paprika", "3/4  tsp  turmeric",
+						"1/4  tsp  garlic powder", "1/4  tsp  cinnamon", "1 pinch of nutmeg",
+						"1  pinch  cayenne",
+						"1/4 tsp salt",
+						"1 tbsp olive oil",
+						"8 cup romaine lettuce (shredded (about two medium heads))",
+						"2 English cucumbers (chopped (or 4 Lebanese cucumbers))",
+						"2 cups cherry tomatoes (cut in half)",
+						"1 small red onion (thinly sliced)",
+						"1 1/2 cup hummus",
+						"1/2 cup tahini sauce",
+						"a few pita chips (optional )",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Pat dry chicken and slice it into strips. Place in a bowl with sliced onion and olive oil. Add spices (cumin, paprika, turmeric, garlic powder, cinnamon, nutmeg and cayenne) and salt. Using your hands or a spoon, stir until well combined and every piece of chicken is well coated with spices.", Type: "HowToStep"},
+						{Text: "If you have time, marinate chicken for one hour and up to overnight. If you don’t, it’ll still be delicious without marinating!", Type: "HowToStep"},
+						{Text: "Preheat oven to 425F / 220C.", Type: "HowToStep"},
+						{Text: "Spray a baking sheet lightly with olive oil and spread the chicken and onion mix.", Type: "HowToStep"},
+						{Text: "Bake for 15 to 20 minutes or until chicken is cooked through (but still juicy).", Type: "HowToStep"},
+						{Text: "While the chicken is cooking, prep the other bowl ingredients (lettuce, cucumber, tomatoes, red onion and tahini sauce).", Type: "HowToStep"},
+						{Text: "When the chicken is done, assemble the bowls. Start with a bed of lettuce then arrange chicken, cucumber, tomatoes, red onion and hummus on top. Drizzle with a couple of tablespoons of tahini sauce and serve.", Type: "HowToStep"},
+					},
+				},
+				Name: "Easy Chicken Shawarma Bowl Recipe",
+				NutritionSchema: &models.NutritionSchema{
+					Calories:      "393",
+					Carbohydrates: "24",
+					Cholesterol:   "107",
+					Fat:           "20",
+					Fiber:         "8",
+					Protein:       "31",
+					SaturatedFat:  "3",
+					Servings:      "1",
+					Sodium:        "453",
+					Sugar:         "5",
+				},
+				PrepTime:  "PT10M",
+				TotalTime: "PT30M",
+				Yield:     &models.Yield{Value: 6},
+				URL:       "https://www.notenoughcinnamon.com/easy-chicken-shawarma-bowl/",
 			},
 		},
 		{

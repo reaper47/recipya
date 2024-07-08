@@ -10,6 +10,143 @@ import (
 func TestScraper_T(t *testing.T) {
 	testcases := []testcase{
 		{
+			name: "tasteatlas.com",
+			in:   "https://www.tasteatlas.com/pastel-de-nata/recipe",
+			want: models.RecipeSchema{
+				AtContext: "https://schema.org",
+				AtType:    &models.SchemaType{Value: "Recipe"},
+				Category:  &models.Category{Value: "Sweet Pastry"},
+				CookTime:  "PT20M",
+				Cuisine:   &models.Cuisine{Value: "Portuguese"},
+				Description: &models.Description{
+					Value: "<p>This traditional pastel de nata recipe gives detailed instructions on the preparation.&nbsp;Because puff pastry needs to stay in the refrigerator for a minimum of a few hours, but ideally overnight, it is best to make the pastry the day before. Also, the amounts listed for custard are enough for 12 tarts, so you can store the other log of puff pastry in the freezer and use within two weeks or double the amount of custard and bake 24 pastel de nata instead of 12.</p>",
+				},
+				Keywords: &models.Keywords{
+					Values: "pastry,eggs,custard,tart,dessert,cinnamon,Portugal,Lisbon,eggcustard,eggyolks,Belém,top100desserts",
+				},
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"FOR THE PASTRY", "290g (10.2 oz) flour", "1/4 tsp salt",
+						"210 ml (3/4 cup + 2 tbsp) water", "240g (8.5 oz) very soft unsalted butter",
+						"extra flour, for dusting", "FOR THE CUSTARD", "40g (1.3 oz) flour",
+						"60 ml (1/4 cup) milk",
+						"165 ml (2/3 cup + 1 tsp) water",
+						"240g (8.5 oz) superfine sugar",
+						"1 cinnamon stick",
+						"another 250 ml (1 cup + 2 tsp) milk",
+						"1/2 tsp vanilla, optional",
+						"6 egg yolks",
+						"TO FINISH",
+						"powdered sugar and cinnamon, for sprinkling",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Add the flour, the salt, and the water to a mixing bowl of a stand-alone mixer fitted with a dough hook. Mix for a few minutes until you get a sticky dough that pulls away from the sides of the bowl.", Type: "HowToStep"},
+						{Text: "Let the dough rest for 10-15 minutes and generously sprinkle your working surface with flour.", Type: "HowToStep"},
+						{Text: "Use a dough scraper to transfer the dough from the bowl onto a floured working surface.", Type: "HowToStep"},
+						{Text: "Push the edges using a dough scraper to give it as much of a rectangular shape as possible — this may be difficult as the dough is very sticky and loose.", Type: "HowToStep"},
+						{Text: "Generously sprinkle the top of the dough with flour, then wrap the dough, with the flour included in cling film. Rest the dough for 10 minutes.", Type: "HowToStep"},
+						{Text: "Heavily flour a large working surface and place the dough in the center. Roll out, using a dusted rolling pin, into a 16x16-inch (40.5x40.5 cm) square.", Type: "HowToStep"},
+						{Text: "Gently brush off the excess flour from the surface of the dough using a soft brush.", Type: "HowToStep"},
+						{Text: "Cover 2/3 of the dough with 1/3 of the butter — evenly arrange it in small dabs first, then spread it gently using an offset spatula, leaving a 1-inch (2.5 cm) outer border unbuttered.", Type: "HowToStep"},
+						{
+							Text: "Before you can fold the dough, you will need to unstick it from the working surface. To do that, help yourself with a dough scraper and lots of flour that you should drive under the dough as you push it with the scraper.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Fold one-third of the dough over the middle part of the dough, then fold the other outer third of the dough over the center of the dough as well.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Now, unstick this folded strip of dough, sprinkle some more flour on the work surface, and turn the dough 90 degrees, so its longer part is facing you. Roll out into a 16x16-inch (40.5x40.5 cm) square.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Brush the flour from its surface and repeat the buttering step.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Roll out to an 18x21-inch (45.5x53.5 cm) rectangle, taking care that the shorter side is facing you.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Trim the edges with a dough scraper to get a neater finish. Brush away the flour and spread the last third of butter over the entire surface of the dough.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Roll into a cylinder, with the help of a dough scraper to unstick the dough, while brushing away the flour with a soft brush. Take care to roll it very tightly, especially in the beginning.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Trim away the edges, then cut the roll in half, so each half makes for 12 1-1.5-inch (2.5-3.75 cm) pieces.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Wrap each roll separately in cling film, and refrigerate for at least a couple of hours, but preferably, overnight.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Mix 60 ml (1/4 cup) of milk and 50g (1.75 oz) of flour in a bowl, then set it aside. To a heavy-bottomed saucepan, add water, sugar, and a cinnamon stick.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Heat over low heat until the temperature reaches 100°C \n(210°F) — keep a digital thermometer at hand to check the temperature, and do not stir, but allow the syrup to dissolve on its own.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Meanwhile, in another pan, boil the milk, and pour it over the milk and flour mixture, while constantly stirring. If desired, you can mix in 1/2 a teaspoon of vanilla.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Once the syrup reaches 100°C (210°F) temperature, take out the cinnamon stick with a pair of thongs, then pour it into the milk and flour mixture, while constantly whisking.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Once the syrup is incorporated, whisk for another 10-15 minutes so the mixture can cool down enough to add the egg yolks — it should be still warm but not hot — then, whisk in the yolks.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Sieve the custard into a jug, so it's easier to measure out when pouring it into pastry shells. Cover the jug with cling film and set it aside for later.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Cut the log from the refrigerator into 12 equal pieces, about 1-1.5 inches (2.5-3.75 cm) each.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Place each piece in 12-hole, regular-sized cupcake pan that you've greased lightly. Leave it to sit for 10-15 minutes so the butter can melt a bit.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Moisten your thumbs with cold water, then press on the center of the pastry to push it down and stretch it a bit.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Then, once the bottom of the hole is covered, draw the dough up its sides, taking care that you do not overstretch it, or the custard might spill out.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Pour custard into each pastry shell, so it's 3/4 full.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Bake in a 280-290°C (540-550°F) oven for eight to nine minutes.",
+							Type: "HowToStep",
+						},
+						{Text: "Eat warm, sprinkled with powdered sugar and cinnamon.", Type: "HowToStep"},
+					},
+				},
+				Name:     "Pastel de nata",
+				PrepTime: "PT1H15M",
+				Tools:    &models.Tools{Values: []models.HowToItem{}},
+				Yield:    &models.Yield{Value: 12},
+				URL:      "https://www.tasteatlas.com/pastel-de-nata/recipe",
+				Video:    &models.Videos{},
+			},
+		},
+		{
 			name: "tasteofhome.com",
 			in:   "https://www.tasteofhome.com/recipes/cast-iron-skillet-steak/",
 			want: models.RecipeSchema{
@@ -581,6 +718,58 @@ func TestScraper_T(t *testing.T) {
 				TotalTime: "PT35M",
 				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.theclevercarrot.com/2021/10/homemade-sourdough-breadcrumbs/",
+			},
+		},
+		{
+			name: "thecookierookie.com",
+			in:   "https://www.thecookierookie.com/blt-guacamole/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Appetizer"},
+				CookTime:      "PT10M",
+				Cuisine:       &models.Cuisine{Value: "American"},
+				DatePublished: "2024-06-30T11:13:57+00:00",
+				Description: &models.Description{
+					Value: "BLT guacamole has all the great flavors of traditional guacamole, plus the crunchy and savory elements of a BLT sandwich. Yum!Step-by-step photos can be seen below the recipe card.",
+				},
+				Keywords: &models.Keywords{Values: "blt guacamole"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"3 slices bacon (cut into lardons)", "3 avocados",
+						"1 cup finely chopped romaine lettuce", "¼ cup finely chopped red onion",
+						"½ cup quartered grape or cherry tomatoes", "½-1 lime (juiced, to taste)",
+						"2 tablespoons chopped fresh cilantro", "1 clove garlic (minced)",
+						"Kosher salt and freshly ground black pepper (to taste)",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "In a large skillet set over medium heat, cook the bacon until crisp. Remove with a slotted spoon to a paper towel-lined plate. If any pieces seem too large, break them up.", Type: "HowToStep"},
+						{Text: "Remove the pits from the avocados and scoop them into a bowl. Glide a knife through the bowl to chop the avocado. Switch to a fork and mash until ¾ of the avocado is broken up. Use your fork with a whisking motion to “whip” the guacamole and make it extra creamy.", Type: "HowToStep"},
+						{Text: "Fold in the lettuce, red onion, tomatoes, lime juice, cilantro, garlic, and cooked bacon. Season with salt and pepper to taste. Stir once more and serve with tortilla chips.", Type: "HowToStep"},
+					},
+				},
+				Name: "BLT Guacamole",
+				NutritionSchema: &models.NutritionSchema{
+					Calories:       "187",
+					Carbohydrates:  "10",
+					Cholesterol:    "4",
+					Fat:            "16",
+					Fiber:          "7",
+					Protein:        "4",
+					SaturatedFat:   "3",
+					Servings:       "1",
+					Sodium:         "464",
+					Sugar:          "1",
+					TransFat:       "0.01",
+					UnsaturatedFat: "12",
+				},
+				PrepTime:  "PT10M",
+				TotalTime: "PT20M",
+				Yield:     &models.Yield{Value: 6},
+				URL:       "https://www.thecookierookie.com/blt-guacamole/",
 			},
 		},
 		{
@@ -1482,6 +1671,71 @@ func TestScraper_T(t *testing.T) {
 							Name:         "Avocado Egg Rolls",
 							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/oe3FAQKI-720.jpg"},
 							UploadDate:   time.Date(2019, 6, 2, 17, 46, 19, 0, time.UTC),
+						},
+					},
+				},
+			},
+		},
+		{
+			name: "thesaltymarshmallow.com",
+			in:   "https://thesaltymarshmallow.com/best-banana-bread-recipe/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Dessert"},
+				CookTime:      "PT50M",
+				Cuisine:       &models.Cuisine{Value: "American"},
+				DatePublished: "2018-11-30T04:00:48+00:00",
+				Description: &models.Description{
+					Value: "Best Banana Bread Recipe is so easy to make and super soft and moist!&nbsp; The very best way to use up overripe bananas this bread is tender and packed full of flavor!",
+				},
+				Keywords: &models.Keywords{Values: "banana bread, banana bread recipe, best banana bread"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"1 Stick (1/2 Cup) Butter", "3 Large Ripe Bananas", "2 Large Eggs",
+						"1 teaspoon Vanilla Extract", "2 Cups All Purpose Flour",
+						"1 Cup Granulated Sugar", "1 teaspoon Baking Soda", "1/2 teaspoon salt",
+						"1/2 teaspoon cinnamon",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Preheat oven to 350 degrees. Spray a loaf pan with non-stick cooking spray or grease with butter and set aside.", Type: "HowToStep"},
+						{Text: "Add the stick of butter to a large bowl and microwave for 1 minute, or until melted.", Type: "HowToStep"},
+						{Text: "Add the bananas to the same bowl and mash with a fork.", Type: "HowToStep"},
+						{Text: "Add the vanilla extract and egg to the bowl and use the same fork to mash and stir until no yellow streaks of egg remain.", Type: "HowToStep"},
+						{Text: "In a second large bowl whisk together the flour, sugar, baking soda, salt, and cinnamon.", Type: "HowToStep"},
+						{Text: "Add the dry ingredients to the wet ingredients and mix together with a spatula just until combined.", Type: "HowToStep"},
+						{Text: "Pour the batter into prepared loaf pan and bake for 45-55 minutes until a toothpick inserted in the center of the bread comes out clean.", Type: "HowToStep"},
+					},
+				},
+				Name: "Best Banana Bread Recipe",
+				NutritionSchema: &models.NutritionSchema{
+					Calories:      "168",
+					Carbohydrates: "40",
+					Cholesterol:   "55",
+					Fat:           "9",
+					Fiber:         "2",
+					Protein:       "4",
+					SaturatedFat:  "5",
+					Servings:      "1",
+					Sodium:        "270",
+					Sugar:         "21",
+				},
+				PrepTime:  "PT15M",
+				TotalTime: "PT65M",
+				Yield:     &models.Yield{Value: 1},
+				URL:       "https://thesaltymarshmallow.com/best-banana-bread-recipe/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/wozzW9Wd.mp4",
+							Description:  "Best Banana Bread Recipe is so easy to make and super soft and moist!  The very best way to use up overripe bananas this bread is tender and packed full of flavor!",
+							Name:         "Best Banana Bread",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/wozzW9Wd-720.jpg"},
+							UploadDate:   time.Date(2019, 8, 31, 20, 37, 25, 0, time.UTC),
 						},
 					},
 				},

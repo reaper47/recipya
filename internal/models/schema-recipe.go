@@ -637,6 +637,7 @@ func (i *Instructions) UnmarshalJSON(data []byte) error {
 	case string:
 		parts := strings.Split(strings.TrimSpace(x), "\n")
 		for _, s := range parts {
+			s = strings.TrimSpace(s)
 			if s != "" {
 				i.Values = append(i.Values, NewHowToStep(strings.TrimSpace(s)))
 			}

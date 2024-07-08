@@ -2,6 +2,7 @@ package scraper_test
 
 import (
 	"testing"
+	"time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -270,6 +271,78 @@ func TestScraper_O(t *testing.T) {
 				TotalTime: "PT30M",
 				Yield:     &models.Yield{Value: 4},
 				URL:       "https://ohmyveggies.com/korean-barbecue-jackfruit-sandwiches/",
+			},
+		},
+		{
+			name: "onesweetappetite.com",
+			in:   "https://onesweetappetite.com/ranch-chicken/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Dinner Recipes"},
+				CookTime:      "PT15M",
+				CookingMethod: nil,
+				Cuisine:       &models.Cuisine{Value: "American"},
+				DatePublished: "2021-08-03T06:00:00+00:00",
+				Description: &models.Description{
+					Value: "This easy ranch chicken recipe is the perfect busy weeknight dinner! Made with only a handful of ingredients and a family favorite recipe!",
+				},
+				Keywords: nil,
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"4 chicken breast halves", "1/2 teaspoon salt", "1/2 teaspoon garlic powder",
+						"1/4 teaspoon pepper", "1/4 cup ranch dressing", "1/2 cup breadcrumbs",
+						"3 tablespoons butter (melted)",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Preheat the oven to 425 degrees.", Type: "HowToStep"},
+						{Text: "Mist a baking tray or 9x13 pan with cooking spray. Set aside.", Type: "HowToStep"},
+						{Text: "Slice the chicken in half lengthwise, or pound to 1/2 inch thickens.", Type: "HowToStep"},
+						{Text: "Place on the prepared baking tray, making sure not to overlap.", Type: "HowToStep"},
+						{Text: "Season the chicken with salt, pepper, and garlic powder.", Type: "HowToStep"},
+						{Text: "Brush 1 tablespoon of ranch dressing onto the top of each chicken piece.", Type: "HowToStep"},
+						{Text: "Mix the bread crumbs with the butter. Spoon over the top of each chicken.", Type: "HowToStep"},
+						{Text: "Bake 15 minutes, or until the chicken reaches an internal temperature of 165 degrees.", Type: "HowToStep"},
+						{Text: "Serve with extra ranch dressing if desired.", Type: "HowToStep"},
+					},
+				},
+				Name: "Ranch Chicken",
+				NutritionSchema: &models.NutritionSchema{
+					Calories:       "394",
+					Carbohydrates:  "11",
+					Cholesterol:    "129",
+					Fat:            "20",
+					Fiber:          "1",
+					Protein:        "39",
+					SaturatedFat:   "8",
+					Servings:       "1 g",
+					Sodium:         "656",
+					Sugar:          "2",
+					UnsaturatedFat: "11",
+				},
+				PrepTime:  "PT5M",
+				TotalTime: "PT20M",
+				Yield:     &models.Yield{Value: 4},
+				URL:       "https://onesweetappetite.com/ranch-chicken/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1627509264/xdz11dpj4z9z6lcjht8u.mp4",
+							Description: "This easy ranch chicken recipe is the perfect busy weeknight dinner! Made with only a handful of ingredients and a family favorite recipe!",
+							Duration:    "PT34S",
+							EmbedURL:    "https://video.mediavine.com/videos/xdz11dpj4z9z6lcjht8u.js",
+							Name:        "Ranch Chicken Recipe",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://mediavine-res.cloudinary.com/image/upload/s--aJelCvd4--/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1627509251/dickjqvjgfyhtufmap4c.jpg",
+							},
+							UploadDate: time.Date(2021, 7, 28, 21, 55, 15, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{

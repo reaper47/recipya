@@ -504,6 +504,57 @@ func TestScraper_J(t *testing.T) {
 			},
 		},
 		{
+			name: "jumbo.com",
+			in:   "https://www.jumbo.com/recepten/perzikenmousse-een-snel-gemakkelijk-en-heerlijk-nagerecht-1491323-7",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "dessert"},
+				CookTime:      "PT15M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Description: &models.Description{
+					Value: "Eenvoudig en snel te maken, deze heerlijke perzikenmousse met vanillesuiker, mon chou en amaretti (of bastognekoek). Garneer met een schijfje perzik en eventueel een amaretti en genieten maar. Ook lekker met een dopje likeur bijv. amaretto.",
+				},
+				Keywords: &models.Keywords{},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"300 g Perzik op sap", "2 Vanillesuiker zakje", "200 g Roomkaas Original",
+						"45 g Perzik sap", "250 g Amaretti", "30 ml Likeur", "1 snufje Zout",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Pureer de perziken met een staafmixer. Hou van de perziken iets over om te garneren.", Type: "HowToStep"},
+						{Text: "Voeg de vanillesuiker, mon chou en perzikenvocht hieraan toe. Pureer dit tot gladde mousse.", Type: "HowToStep"},
+						{Text: "Doe een paar amaretti (of verkruimelde bastognekoek) onderin het glas. Sprenkel er eventueel een dopje likeur over, bijv. amaretto.", Type: "HowToStep"},
+						{Text: "Verdeel de perzikenmousse erover.", Type: "HowToStep"},
+						{Text: "Garneer met een schijfje perziken en eventueel een amaretti.", Type: "HowToStep"},
+					},
+				},
+				Name:            "Perzikenmousse een snel gemakkelijk en heerlijk nagerecht",
+				NutritionSchema: &models.NutritionSchema{Calories: "365"},
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:       "PTNaNM",
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://www.jumbo.com/recepten/perzikenmousse-een-snel-gemakkelijk-en-heerlijk-nagerecht-1491323-7",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							Description: "Eenvoudig en snel te maken, deze heerlijke perzikenmousse met vanillesuiker, mon chou en amaretti (of bastognekoek). Garneer met een schijfje perzik en eventueel een amaretti en genieten maar. Ook lekker met een dopje likeur bijv. amaretto.",
+							Name:        "Perzikenmousse een snel gemakkelijk en heerlijk nagerecht",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://recipe-service.prod.cloud.jumbo.com/recipes/1491323-7/Perzikenmousse-een-snel-gemakkelijk-en-heerlijk-nagerecht_1491323-7-0_560x560",
+							},
+						},
+					},
+				},
+			},
+		},
+		{
 			name: "justataste.com",
 			in:   "https://www.justataste.com/mini-sour-cream-doughnut-muffins-recipe/",
 			want: models.RecipeSchema{

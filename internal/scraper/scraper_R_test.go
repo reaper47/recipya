@@ -2,7 +2,7 @@ package scraper_test
 
 import (
 	"testing"
-  "time"
+	"time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -356,6 +356,56 @@ func TestScraper_R(t *testing.T) {
 				Yield:           &models.Yield{Value: 4},
 				URL:             "https://www.recettes.qc.ca/recettes/recette/yakisoba-nouille-sautees-a-la-japonaise",
 				Video:           &models.Videos{},
+			},
+		},
+		{
+			name: "recipegirl.com",
+			in:   "https://www.recipegirl.com/chili-rubbed-pork-chops-with-grilled-pineapple-salsa/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Main Course"},
+				CookTime:      "PT20M",
+				Cuisine:       &models.Cuisine{Value: "American"},
+				DatePublished: "2024-07-08T07:45:12+00:00",
+				Description:   &models.Description{Value: "A restaurant-quality meal!"},
+				Keywords:      &models.Keywords{Values: "chili rubbed, grilling, pineapple salsa, Pork Chops"},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"1 tablespoon chili powder", "1½ teaspoons packed light brown sugar",
+						"¾ teaspoon garlic powder", "¾ teaspoon onion powder", "½ teaspoon salt",
+						"Four ¾-inch thick (24 ounces) bone-in pork center loin chops, (trimmed)",
+						"Three ½-inch thick slices fresh pineapple, (trimmed)",
+						"1 medium jalapeño, (halved lengthwise (seeds and ribs removed))",
+						"1 tablespoon freshly squeezed lime juice",
+						"salt, (to taste)",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "In a shallow bowl, combine the chili powder, brown sugar, garlic powder, onion powder and salt. Sprinkle both sides of the chops with the spice mixture. Let the chops sit at room temperature while you prepare the salsa.", Type: "HowToStep"},
+						{Text: "Prepare a stovetop or outdoor grill to medium-high heat and lightly oil the grate. Grill the pineapple and jalapeño until lightly charred (2 to 3 minutes per side). Remove from the grill and dice the pineapple and jalapeño. In a medium bowl, combine the pineapple, jalapeño and lime juice. Season to taste with salt.", Type: "HowToStep"},
+						{Text: "Grill the pork until an internal temperature reaches between 145℉ and 160℉ (4 to 5 minutes per side). Serve chops with the grilled salsa on top.", Type: "HowToStep"},
+					},
+				},
+				Name: "Chili Rubbed Pork Chops with Grilled Pineapple Salsa",
+				NutritionSchema: &models.NutritionSchema{
+					Calories:      "294",
+					Carbohydrates: "20",
+					Cholesterol:   "117",
+					Fat:           "7",
+					Fiber:         "3",
+					Protein:       "39",
+					SaturatedFat:  "2",
+					Servings:      "1",
+					Sodium:        "425",
+					Sugar:         "14",
+				},
+				PrepTime:  "PT15M",
+				TotalTime: "PT35M",
+				Yield:     &models.Yield{Value: 4},
+				URL:       "https://www.recipegirl.com/chili-rubbed-pork-chops-with-grilled-pineapple-salsa/",
 			},
 		},
 		{
