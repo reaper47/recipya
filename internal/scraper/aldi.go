@@ -21,16 +21,7 @@ func scrapeAldi(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.Yield.Value = findYield(sidebar.Find("p:contains('Serves')").Text())
 	getIngredients(&rs, sidebar.Find("ul li"))
 	getInstructions(&rs, content.Find("ol li"))
-
-	prep := strings.TrimSpace(sidebar.Find("p:contains('Prep Time')").Text())
-	if prep != "" {
-		rs.PrepTime = "PT" + regex.Digit.FindString(prep)
-		if strings.Contains(prep, "min") {
-			rs.PrepTime += "M"
-		} else {
-			rs.PrepTime += "H"
-		}
-	}
+	getTime(&rs, sidebar.Find("p:contains('Prep Time')"), true)
 
 	cook := strings.TrimSpace(sidebar.Find("p:contains('Cook Time')").Text())
 	if cook != "" {

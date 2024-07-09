@@ -3,6 +3,7 @@ package services
 import (
 	"net/http"
 	"net/url"
+	"slices"
 	"strings"
 )
 
@@ -80,8 +81,8 @@ func (h HTTP) GetHost(rawURL string) string {
 		return parts[1]
 	case 3:
 		s := parts[0]
-		if s == "recipes" || s == "receitas" || s == "cooking" || s == "news" || s == "mobile" ||
-			s == "dashboard" || s == "fr" || s == "blog" || s == "old" {
+		sites := []string{"recipes", "receitas", "recepten", "cooking", "news", "mobile", "dashboard", "fr", "blog", "old"}
+		if slices.Contains(sites, s) {
 			return parts[1]
 		}
 

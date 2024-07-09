@@ -1278,6 +1278,73 @@ func TestScraper_A(t *testing.T) {
 			},
 		},
 		{
+			name: "antilliaans-eten.nl",
+			in:   "https://www.antilliaans-eten.nl/recepten/antilliaanse-pikaballetjes-gehaktballetjes/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookTime:      "PT30M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DateModified:  "2023-10-28T19:59:05+02:00",
+				DatePublished: "2023-10-28T19:59:04+02:00",
+				Description:   &models.Description{Value: "Je maakt deze Antilliaanse pikabal nu zelf met ons recept. De pittige gehaktballetjes stelen de show bij elk feestje. Pikaballetjes op antilliaans-eten.nl"},
+				Keywords:      &models.Keywords{Values: "feest,snack,vlees"},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"500 gram rundgehakt",
+						"1 ui, gesnipperd",
+						"2 madame Jeanette pepers, gesnipperd",
+						"3 paprika’s (liefst in verschillende kleuren!)",
+						"1 blikje tomatenpuree (70 gr)",
+						"1 el suiker",
+						"3 el donkere sojasaus / ketjap manis",
+						"1\u00a0tl komijn",
+						"1 tl gemalen koriander",
+						"1/2 tl zwarte peper",
+						"1 ell azijn",
+						"1 tl zout",
+						"zonnebloemolie",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Bereiding van Antilliaanse pikaballetjes", Type: "HowToStep"},
+						{
+							Text: "Snijd de ui en paprika’s in kleine stukjes en fruit deze daarna ongeveer 5 minuten in zonnebloemolie. (op matig vuur)",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Meng het gehakt vervolgens samen met de helft van het ui/paprika mengsel, 1 eetlepel sojasaus en het zout in een grote kom. Kneed het geheel vervolgens goed door elkaar.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Maak hiervan gehaktballetjes zo groot als een pingpongbal. Verhit de zonnebloemolie (op matig vuur) en bak hier de pikaballetjes even in, totdat ze aan alle kanten zijn dichtgeschroeid. Dit duurt zo’n 10 minuten.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Maak in de tussentijd de saus, door de overige ingrediënten in een klein pannetje te doen samen met zo’n 50 ml water. Doe de saus daarna bij de pikaballetjes in de pan.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Laat de gehaktballetjes zo nog een half uurtje sudderen en dien ze vervolgens samen met de saus op. Dat kan als snack (op een prikkertje!) of gewoon bij ’n bordje rijst of aardappelen. – Eet smakelijk!",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Pikaballetjes – Pittige Antilliaanse gehaktballen",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT45M",
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://www.antilliaans-eten.nl/recepten/antilliaanse-pikaballetjes-gehaktballetjes/",
+				Video:           &models.Videos{},
+			},
+		},
+		{
 			name: "archanaskitchen.com",
 			in:   "https://www.archanaskitchen.com/karnataka-style-orange-peels-curry-recipe",
 			want: models.RecipeSchema{

@@ -24,26 +24,8 @@ func scrapePureWow(root *goquery.Document) (models.RecipeSchema, error) {
 		rs.DatePublished = parsed.Format(time.DateTime)
 	}
 
-	prep := strings.TrimSpace(root.Find(".prep").Text())
-	if prep != "" {
-		rs.PrepTime = "PT" + regex.Digit.FindString(prep)
-		if strings.Contains(prep, "min") {
-			rs.PrepTime += "M"
-		} else {
-			rs.PrepTime += "H"
-		}
-	}
-
-	cook := strings.TrimSpace(root.Find(".cook").Text())
-	if cook != "" {
-		rs.CookTime = "PT" + regex.Digit.FindString(cook)
-		if strings.Contains(cook, "min") {
-			rs.CookTime += "M"
-		} else {
-			rs.CookTime += "H"
-		}
-	}
-
+	getTime(&rs, root.Find(".prep"), true)
+	getTime(&rs, root.Find(".cook"), false)
 	getIngredients(&rs, root.Find("[itemprop=recipeIngredient]"))
 	getInstructions(&rs, root.Find(".recipe-direction"))
 

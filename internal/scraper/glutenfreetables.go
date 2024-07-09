@@ -3,7 +3,6 @@ package scraper
 import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
-	"github.com/reaper47/recipya/internal/utils/regex"
 	"strings"
 )
 
@@ -14,6 +13,7 @@ func scrapeGlutenFreeTables(root *goquery.Document) (models.RecipeSchema, error)
 	rs.Name = strings.TrimSpace(root.Find(".entry-title[itemprop=name]").First().Text())
 	rs.Category.Value = strings.TrimSpace(root.Find("a.qodef-e-category").First().Text())
 	rs.Yield.Value = findYield(root.Find("input.qodef-quantity-input").AttrOr("value", "1"))
+	getTime(&rs, root.Find(".qodef-recipe-prep-time"), true)
 
 	getIngredients(&rs, root.Find(".qodef-ingredients-items"), []models.Replace{
 		{"useFields", ""},
@@ -28,16 +28,6 @@ func scrapeGlutenFreeTables(root *goquery.Document) (models.RecipeSchema, error)
 		}
 	})
 	rs.Keywords.Values = strings.Join(xk, ",")
-
-	prep := strings.TrimSpace(root.Find(".qodef-recipe-prep-time").Text())
-	if prep != "" {
-		rs.PrepTime = "PT" + regex.Digit.FindString(prep)
-		if strings.Contains(strings.ToLower(prep), "hour") {
-			rs.PrepTime += "H"
-		} else {
-			rs.PrepTime += "M"
-		}
-	}
 
 	root.Find(".qodef-direction-inner").Each(func(_ int, sel *goquery.Selection) {
 		name := sel.Find(".qodef-direction-title").Text()

@@ -1258,6 +1258,107 @@ func TestScraper_B(t *testing.T) {
 			},
 		},
 		{
+			name: "brianlagerstrom3.com",
+			in:   "https://www.brianlagerstrom.com/recipes/faster-better-spaghetti-amp-meat-sauce",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DateModified:  "2024-04-26",
+				DatePublished: "2024-04-26",
+				Description: &models.Description{
+					Value: "Chicken and dumplings is a classic comfort food that never fails to hit the spot. I know that some people will argue over what type of dumplings and the contents of the stew but this is what I like. It's the ultimate comfort food that just feels like a big, warm hug in a bowl.",
+				},
+				Keywords: &models.Keywords{},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"6 boneless, skinless chicken thighs",
+						"Salt",
+						"Black pepper (approx. 1 tsp, divided)",
+						"300g (1 large) white onion, medium diced",
+						"150g (3-4 stalks) of celery, medium diced",
+						"150g (3-5 medium) carrots, diced",
+						"150g (1 medium) fennel bulb, chopped",
+						"20g (4-5 cloves) garlic, pressed",
+						"115g (1 stick) butter",
+						"135g (1c) all-purpose flour (or sub with cup for cup gluten free flour)",
+						"100g (1/2c) dry white wine",
+						"1200g (5c) chicken broth",
+						"100g (1/2c) heavy cream (or 400g milk and only 800g of stock if you don’t have cream)",
+						"3-4 sprigs thyme",
+						"2 bay leaves",
+						"2g (3/4t) poultry seasoning",
+						"200g frozen peas",
+						"360g (3c) all-purpose flour",
+						"8g (1 2/3t) coarse salt",
+						"12g (2 1/2T) baking powder",
+						"4g (1 1/2t) black pepper",
+						"75g (5T) unsalted butter, melted",
+						"340g (2 1/4c) whole milk",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Preheat the oven to 400°F (205°C).", Type: "HowToStep"},
+						{
+							Text: "Season both sides of the chicken thighs with salt and black pepper. Roast in the oven for 30 minutes or until fully cooked and fat is rendered.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "While the chicken is roasting, dice onion, celery, carrots, fennel. Press garlic cloves.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "In a large heavy-bottomed pot over medium heat, melt one stick of butter. Add diced vegetables and garlic, a pinch of salt, and sweat for 6-8 minutes, stirring often. I'm using a 6 3/4qt dutch oven.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Stir in all-purpose flour to create a roux. Add wine, scraping the bottom of the pot to deglaze. Cook for about 30 seconds.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Add chicken broth, heavy cream, thyme, bay leaves, and poultry seasoning. Stir well.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Chop the roasted chicken thighs into small bite sized pieces and add to the pot over medium heat along with frozen peas. Stir and simmer on low for 5 minutes to reheat chicken and peas, scraping the bottom of the pot as you go.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "In a separate bowl, mix the dry dumpling ingredients: all-purpose flour, salt, baking powder, black pepper. While mixing, stream in the melted (but not hot) butter, and milk and continue stirring until just barely combined.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Taste the chicken gravy mixture for seasoning and adjust with additional salt if needed.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Back to the dumpling dough, using two teaspoons, quenelle the dumpling dough and drop 12-16 dumplings into the pot.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Lower the heat to low, cover with a lid, and cook for 15 minutes or until the dumplings have expanded and cooked through.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Test a dumpling for doneness by cutting into it; it should be fluffy and cooked through, not gluey.",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Chicken And Dumplings",
+				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{},
+				URL:             "https://www.brianlagerstrom.com/recipes/faster-better-spaghetti-amp-meat-sauce",
+				Video:           &models.Videos{},
+			},
+		},
+		{
 			name: "briceletbaklava.ch",
 			in:   "https://briceletbaklava.ch/2023/10/taille-au-sel-de-granges-marnand.html",
 			want: models.RecipeSchema{

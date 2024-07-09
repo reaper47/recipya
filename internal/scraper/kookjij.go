@@ -3,7 +3,6 @@ package scraper
 import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
-	"github.com/reaper47/recipya/internal/utils/regex"
 	"strings"
 )
 
@@ -21,16 +20,7 @@ func scrapeKookjij(root *goquery.Document) (models.RecipeSchema, error) {
 
 	getIngredients(&rs, root.Find("[itemprop=ingredients]"))
 	getInstructions(&rs, root.Find("[itemprop=recipeInstructions] li"))
-
-	prep := strings.TrimSpace(root.Find("div.details strong:contains('Bereidingstijd')").Parent().Text())
-	if prep != "" {
-		rs.PrepTime = "PT" + regex.Digit.FindString(prep)
-		if strings.Contains(prep, "min") {
-			rs.PrepTime += "M"
-		} else {
-			rs.PrepTime += "H"
-		}
-	}
+	getTime(&rs, root.Find("div.details strong:contains('Bereidingstijd')").Parent(), true)
 
 	nodes := root.Find("div.recipe-accessoires label")
 	rs.Tools.Values = make([]models.HowToItem, 0, nodes.Length())

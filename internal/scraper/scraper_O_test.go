@@ -89,6 +89,58 @@ func TestScraper_O(t *testing.T) {
 			},
 		},
 		{
+			name: "okokorecepten.nl",
+			in:   "https://www.okokorecepten.nl/recept/vlees/chili-con-carne/chili-con-carne-amuse",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "vlees"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Description:   &models.Description{Value: "Recept: Chili con carne (amuse), uit het kookboek 'Culinaire hapjes' van José Maréchal - okoko recepten"},
+				Keywords:      &models.Keywords{Values: "recept, chili con carne, chili, con, carne, amuse, mexicaans, vlees, ui, knoflook, olijfolie, poedersuiker, pimentpoeder, tomaat, tomaten, kidneybonen, ossenhaas, arachideolie"},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"1 ui, gesnipperd",
+						"1 teentje knoflook, fijngehakt",
+						"2 eetlepels olijfolie",
+						"1 theelepel poedersuiker",
+						"½ theelepel pimentpoeder",
+						"1 blikje gepelde tomaten, uitgelekt en in stukken",
+						"1 blikje rode kidneybonen, uitgelekt",
+						"60 g ossenhaas, in kleine stukjes",
+						"1 eetlepel arachideolie",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "Bak de ui en knoflook in een pan in de olijfolie met de suiker, wat zout en peper en het pimentpoeder. Voeg dan de uitgelekte en in stukken gehakte gepelde tomaten toe. Laat onder af en toe omscheppen ongeveer 10 minuten sudderen op laag vuur. Voeg dan de uitgelekte kidneybonen toe. Meng alles goed en neem van het vuur. Zet weg.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Warm de bonen vlak voor het opdienen even op. Schroei in een koekenpan de stukjes vlees snel even aan in de arachideolie. Strooi er wat zout en peper over. Schep wat bonenmengsel in de lepels en verdeel er wat stukjes vlees over. Serveer direct.",
+							Type: "HowToStep",
+						},
+						{Text: "Tip", Type: "HowToStep"},
+						{
+							Text: "Deze chili con carne is ook koud opgediend verrukkelijk.",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Chili con carne (amuse)",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT20M",
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 4},
+				URL:             "https://www.okokorecepten.nl/recept/vlees/chili-con-carne/chili-con-carne-amuse",
+				Video:           &models.Videos{},
+			},
+		},
+		{
 			name: "omnivorescookbook.com",
 			in:   "https://omnivorescookbook.com/chinese-scallion-pancakes/",
 			want: models.RecipeSchema{
