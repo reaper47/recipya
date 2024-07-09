@@ -2,7 +2,7 @@ package scraper_test
 
 import (
 	"testing"
-  "time"
+	"time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -462,6 +462,76 @@ func TestScraper_W(t *testing.T) {
 				Yield:           &models.Yield{Value: 4},
 				URL:             "https://en.m.wikibooks.org/wiki/Cookbook:Creamed_Spinach",
 				Video:           &models.Videos{},
+			},
+		},
+		{
+			name: "womensweeklyfood.com.au",
+			in:   "https://www.womensweeklyfood.com.au/recipe/baking/classic-lamingtons-17017/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookTime:      "PT60M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DatePublished: "2022-05-10T21-00-00",
+				Description:   &models.Description{Value: "It's a bit of a process but so, so worth it!"},
+				Keywords:      &models.Keywords{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"4 eggs", "2/3 cup (150g) caster sugar", "1 cup (150g) self-raising flour",
+						"1/4 cup (35g) cornflour", "25 gram soft butter, chopped",
+						"1/3 cup (80ml) boiling water", "4 cups (270g) desiccated coconut",
+						"Chocolate icing",
+						"4 2/3 cups (750g) icing sugar mixture",
+						"1/2 cup (50g) cocoa powder",
+						"20 grams soft butter",
+						"3/4 cup (180ml) milk",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Preheat the oven to 180°C (160\xc2\xb0C fan-forced). Grease and flour a 20cm x 30cm lamington pan, line base with baking paper.", Type: "HowToStep"},
+						{Text: "Beat eggs in a small bowl with an electric mixer until light in colour. Gradually add sugar; beat for 8 minutes or until the mixture is thick. Mixture should form thick ribbons when the beaters are lifted.", Type: "HowToStep"},
+						{Text: "Meanwhile, sift flour and cornflour together three times. Combine butter and boiling water in a small heatproof bowl.", Type: "HowToStep"},
+						{Text: "Transfer egg mixture to a large bowl. Sift the flour mixture over the egg mixture; using a balloon whisk or a large metal spoon, gently fold the flour into the egg mixture, then fold in the butter mixture.", Type: "HowToStep"},
+						{Text: "Pour mixture into prepared pan. Bake in a moderate oven for about 25 minutes or until sponge springs back when touched lightly in the centre and comes away from side of pan. Turn cake onto a wire rack to cool.", Type: "HowToStep"},
+						{Text: "Cut cake into 20 even pieces", Type: "HowToStep"},
+						{Text: "Meanwhile, to make chocolate icing, sift the icing sugar and cocoa into a large heatproof bowl; add the butter and milk; stir over a medium saucepan of simmering water until icing is smooth and thick enough to coat the back of a spoon. Divide icing mixture into 2 small bowls.", Type: "HowToStep"},
+						{Text: "Place coconut in a shallow bowl.", Type: "HowToStep"},
+						{
+							Text: "Using a large fork, dip each piece of cake briefly into icing until cake is coated in icing. Hold over bowl to drain off any excess. Dip half the cake pieces in one bowl of icing and the other half in the second bowl of icing. (We have separated the icing into two bowls, as cake crumbs will thicken the icing and make it difficult to use.) If the icing becomes too thick, stand it over hot water while dipping, or reheat gently with a little more milk. If necessary, strain the icing into a clean bowl.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Toss cake gently in coconut. Transfer cake to a wire rack; stand until set",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Classic lamingtons",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT0M",
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:       "PT60M",
+				Yield:           &models.Yield{Value: 10},
+				URL:             "https://www.womensweeklyfood.com.au/recipe/baking/classic-lamingtons-17017/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://cdn.jwplayer.com/videos/Olcvb4ER-lUTv4n5l.mp4",
+							Description:  "It's a bit of a process but so, so worth it!",
+							Duration:     "PT647S",
+							EmbedURL:     "https://www.womensweeklyfood.com.au/?jwp-instant-articles=1&#038;player=Eg78ZsHH&#038;mediaURL=Olcvb4ER&#038;image=https://cdn.jwplayer.com/thumbs/Olcvb4ER-720.jpg",
+							Name:         "Women's Weekly Food - Lamingtons",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://cdn.jwplayer.com/v2/media/Olcvb4ER/poster.jpg?width=320"},
+							UploadDate:   time.Date(2019, 1, 24, 6, 33, 2, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{

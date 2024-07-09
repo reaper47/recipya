@@ -2,7 +2,7 @@ package scraper_test
 
 import (
 	"testing"
-  "time"
+	"time"
 
 	"github.com/reaper47/recipya/internal/models"
 )

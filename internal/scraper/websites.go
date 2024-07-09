@@ -19,10 +19,18 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeAfghanKitchen(doc)
 		case "ah":
 			return scrapeAh(doc)
+		case "aldi":
+			return scrapeAldi(doc)
+		case "alittlebityummy":
+			return scrapeALittleBitYummy(doc)
 		case "all-clad":
 			return scrapeAllClad(doc)
 		case "angielaeats":
 			return scrapeAngielaEats(doc)
+		case "aniagotuje":
+			return scrapeAniagotuje(doc)
+		case "antilliaans-eten":
+			return scrapeAntilliaansEten(doc)
 		case "argiro":
 			return scrapeArgiro(doc)
 		case "archanaskitchen":
@@ -32,6 +40,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		}
 	case 'b':
 		switch host {
+		case "bakels":
+			return scrapeBritishBakels(doc)
 		case "barefootcontessa":
 			return scrapeBarefootcontessa(doc)
 		case "bbcgoodfood":
@@ -50,6 +60,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeBrianLagerstrom(doc)
 		case "briceletbaklava":
 			return scrapeBriceletbaklava(doc)
+		case "britishbakels":
+			return scrapeBritishBakels(doc)
 		case "bodybuilding":
 			return scrapeBodybuilding(doc)
 		case "bongeats":
@@ -65,6 +77,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeCestMaFournee(doc)
 		case "chefnini":
 			return scrapeChefnini(doc)
+		case "chetnamakan":
+			return scrapeChetnamakan(doc)
 		case "chinesecookingdemystified":
 			return scrapeChinesecookingdemystified(doc)
 		case "chuckycruz":
@@ -77,6 +91,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeCoop(doc)
 		case "costco":
 			return scrapeCostco(doc)
+		case "culy":
+			return scrapeCuly(doc)
 		default:
 			return parseWebsite(doc)
 		}
@@ -86,6 +102,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeDherbs(doc)
 		case "dish":
 			return scrapeDish(doc)
+		case "donnahay":
+			return scrapeDonnaHay(doc)
 		case "dr":
 			return scrapeDk(doc)
 		case "drinkoteket":
@@ -108,6 +126,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		switch host {
 		case "farmhousedelivery":
 			return scrapeFarmhousedelivery(doc)
+		case "felix":
+			return scrapeFelix(doc)
 		case "fitmencook":
 			return scrapeFitMenCook(doc)
 		case "foodnetwork":
@@ -133,6 +153,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeGiallozafferano(doc)
 		case "globo":
 			return scrapeGlobo(doc)
+		case "glutenfreetables":
+			return scrapeGlutenFreeTables(doc)
 		case "goodeatings":
 			return scrapeGoodEatings(doc)
 		case "grandfrais":
@@ -185,8 +207,12 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeKennyMcGovern(doc)
 		case "kingarthurbaking":
 			return scrapeKingArthurBaking(doc)
+		case "kitchenaid":
+			return scrapeKitchenaid(doc)
 		case "kochbucher":
 			return scrapeKochbucher(doc)
+		case "kookjij":
+			return scrapeKookjij(doc)
 		case "kptncook":
 			return scrapeKptncook(doc)
 		case "kuchnia-domowa":
@@ -206,6 +232,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeLatelierderoxane(doc)
 		case "lekkerensimpel":
 			return scrapeLekkerenSimpel(doc)
+		case "lidl":
+			return scrapeLidl(doc)
 		case "lidl-kochen":
 			return scrapeLidlKochen(doc)
 		case "livingthegreenlife":
@@ -247,6 +275,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		}
 	case 'o':
 		switch host {
+		case "okokorecepten":
+			return scrapeOkokorecepten(doc)
 		case "owen-han":
 			return scrapeOwenhan(doc)
 		default:
@@ -264,6 +294,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapePlentyVegan(doc)
 		case "ploetzblog":
 			return scrapePloetzblog(doc)
+		case "potatorolls":
+			return scrapePotatoRolls(doc)
 		case "projectgezond":
 			return scrapeProjectgezond(doc)
 		case "przepisy":

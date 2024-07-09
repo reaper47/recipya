@@ -109,6 +109,89 @@ func TestScraper_0to9(t *testing.T) {
 			},
 		},
 		{
+			name: "24kitchen.nl",
+			in:   "https://www.24kitchen.nl/recepten/kalkoensandwich-met-waldorfsalade",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Lunchgerecht"},
+				DatePublished: "2024-07-02T16:52:52+0200",
+				Description: &models.Description{
+					Value: "Op zoek naar de perfecte lunch? Zoek niet verder. Deze kalkoensandwich heeft alles wat je wil.",
+				},
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"400 g kalkoenfilet", "kipkruiden", "olijfolie", "5 stengels bleekselderij",
+						"1 appel", "1 rode ui", "1 krop ijsbergsla", "1 bosje peterselie",
+						"1 bosje kervel",
+						"2 el mayonaise",
+						"2 el grove mosterd",
+						"sap van 1 citroen",
+						"100 g walnoten",
+						"zout en peper",
+						"50 g pijnboompitten",
+						"120 g Parmezaanse kaas",
+						"2 bak tuinkers",
+						"1 teen knoflook",
+						"1 grote ciabatta",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Kalkoensandwich met waldorfsalade", Type: "HowToStep"},
+						{Text: "Bestrooi de kalkoenfilets met kipkruiden en olijfolie. Breng op smaak met peper en zout.", Type: "HowToStep"},
+						{
+							Text: "Grill de kalkoenfilets in de grillpan tot er bruine strepen ontstaan. Snijd daarna in reepjes.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Verwijder de draden van de bleekselderij en snijd in kleine stukjes.",
+							Type: "HowToStep",
+						},
+						{Text: "Schil de appel en snijd in dunne reepjes.", Type: "HowToStep"},
+						{
+							Text: "Snipper de ui. Snijd de peterselie, kervel en ijsbergsla fijn.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Meng de gesneden kruiden met de sla, bleekselderij, ui en appel in een grote kom.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Meng de mayonaise en mosterd door de salade. Breng op smaak met peper, zout en klein beetje citroensap.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Hak de walnoten grof door en voeg toe aan de kom. Hussel kort door.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Voeg de pijnboompitten, olijfolie, een beetje citroensap en de Parmezaanse kaas toe aan een blender.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Kneus de knoflook en voeg samen met de tuinkers toe aan de blender. Maal tot een fijne pesto.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Snijd de ciabatta open. Smeer beide kanten met de tuinkerspesto.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Leg de gegrilde kalkoenreepjes over de pesto. Verdeel de waldorfsalade over de sandwich.",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:      "Kalkoensandwich met waldorfsalade",
+				PrepTime:  "P0DT0H15M",
+				TotalTime: "P0DT0H15M",
+				Yield:     &models.Yield{Value: 4},
+				URL:       "https://www.24kitchen.nl/recepten/kalkoensandwich-met-waldorfsalade",
+			},
+		},
+		{
 			name: "750g.com",
 			in:   "https://www.750g.com/carbonara-vegetarienne-r202631.htm",
 			want: models.RecipeSchema{

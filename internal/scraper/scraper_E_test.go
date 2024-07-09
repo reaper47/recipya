@@ -2,7 +2,7 @@ package scraper_test
 
 import (
 	"testing"
-  "time"
+	"time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -835,6 +835,94 @@ func TestScraper_E(t *testing.T) {
 				},
 				Yield: &models.Yield{Value: 22},
 				URL:   "https://alltommat.expressen.se/recept/saftiga-choklad--och-apelsinbullar/",
+			},
+		},
+		{
+			name: "evolvingtable.com",
+			in:   "https://www.evolvingtable.com/lemon-orzo-pasta-salad-with-feta/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtGraph:       nil,
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Main Course"},
+				CookTime:      "PT30M",
+				CookingMethod: nil,
+				Cuisine:       &models.Cuisine{Value: "American"},
+				DateCreated:   "",
+				DateModified:  "",
+				DatePublished: "2024-06-25T22:25:45+00:00",
+				Description: &models.Description{
+					Value: "This Lemon Orzo Pasta Salad is now THE dish I bring to all of our summer get-togethers! Loaded with fresh lemon flavor, tons of herbs, roasted red peppers, summer squash, and tangy feta cheese, it&#039;s secretly simple to prepare and always a crowd-pleaser at every picnic and BBQ!",
+				},
+				Keywords: &models.Keywords{Values: "easy, how to make, lemon vinaigrette, orzo, pasta salad"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"12 oz. orzo pasta", "2 small red bell peppers (seeds and core removed)",
+						"1 zucchini squash (diced)", "1 yellow squash (diced)",
+						"3 Tbsp. olive oil (divided)", "1 tsp. salt (divided, plus more to taste)",
+						"½ tsp. black pepper", "6 oz. crumbled feta cheese",
+						"½ small red onion (thinly sliced)",
+						"½ cup thinly sliced basil",
+						"½ cup olive oil",
+						"1 lemon (juice and zest)",
+						"1 Tbsp. red wine vinegar",
+						"1 Tbsp. honey",
+						"1 garlic clove (finely minced)",
+						"1 tsp. dried oregano",
+						"½ tsp. dried thyme",
+						"¼ tsp. red pepper flakes",
+						"½ tsp. salt (plus more to taste)",
+						"¼ tsp. black pepper",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Preheat air fryer to 400°F.", Type: "HowToStep"},
+						{Text: "Cook pasta according to package directions.", Type: "HowToStep"},
+						{Text: "Slice ½” to the right or left of the bell pepper stems from top to bottom to remove 4 pieces, leaving the core intact. Scrape out and discard any membranes or seeds. Repeat with the other pepper. Drizzle the inside of the pieces with 1 tablespoon oil and sprinkle with ¼ teaspoon salt.", Type: "HowToStep"},
+						{Text: "Place pepper pieces skin-side up in the preheated air fryer basket and cook for 14-15 minutes, or until the skin is blistered. (See recipe note if roasting in the oven.) Once roasted, add peppers to a large bowl and cover with either plastic wrap or a plate so the steam can finish cooking them. Let rest for 15 minutes, or until the peppers are cool enough to touch.", Type: "HowToStep"},
+						{Text: "Meanwhile, add the diced squash to a large bowl along with the remaining 2 tablespoons oil, ¾ teaspoon salt, and ½ teaspoon black pepper. Toss until the squash is well coated. Add to the air fryer basket in a single layer, reduce the heat to 375°F and cook for 12-14 minutes, or until the squash is tender.", Type: "HowToStep"},
+						{Text: "Once the pepper pieces are cooled, peel and remove the skin from each piece of pepper. Reserve 3-4 of the larger pieces of blistered skin. Dice the roasted red peppers into ½” pieces.", Type: "HowToStep"},
+						{Text: "For the Lemony Herb Dressing: In a 16-oz. mason jar, add the olive oil, lemon juice, lemon zest, red wine vinegar, honey, garlic, oregano, thyme, red pepper, salt, and black pepper along with the reserved pieces of roasted red pepper skin. Shake vigorously for 20-30 seconds or until the dressing is emulsified. Set this aside to rest for at least 10 minutes.", Type: "HowToStep"},
+						{Text: "Add the cooled and cooked orzo pasta to a large salad bowl along with the roasted squash, diced roasted bell peppers, feta cheese crumbles, red onion, and basil. Remove the bell pepper skins from the mason jar and shake the salad dressing for another 10-15 seconds to ensure it is emulsified. Drizzle dressing over the salad and toss until well combined. Serve immediately with additional finely chopped fresh parsley or chill for 3-4 hours to serve cold.", Type: "HowToStep"},
+					},
+				},
+				Name: "Lemon Orzo Pasta Salad with Feta",
+				NutritionSchema: &models.NutritionSchema{
+					Calories:       "605",
+					Carbohydrates:  "68",
+					Cholesterol:    "25",
+					Fat:            "33",
+					Fiber:          "7",
+					Protein:        "14",
+					SaturatedFat:   "7",
+					Servings:       "1",
+					Sodium:         "819",
+					Sugar:          "10",
+					TransFat:       "0.03",
+					UnsaturatedFat: "24",
+				},
+				PrepTime:  "PT20M",
+				TotalTime: "PT50M",
+				Yield:     &models.Yield{Value: 6},
+				URL:       "https://www.evolvingtable.com/lemon-orzo-pasta-salad-with-feta/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1718481322/zzzyuagnmciiwxseqmpu.mp4",
+							Description: "This Lemon Orzo Pasta Salad is now THE dish I bring to all of our summer get-togethers! Loaded with fresh lemon flavor, tons of herbs, roasted red peppers, summer squash, and tangy feta cheese, it’s secretly simple to prepare and always a crowd-pleaser at every picnic and BBQ!",
+							Duration:    "PT35S",
+							EmbedURL:    "https://video.mediavine.com/videos/zzzyuagnmciiwxseqmpu.js",
+							Name:        "Summer Orzo Salad",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://mediavine-res.cloudinary.com/video/upload/s--B3SuxlP2--/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1718481322/zzzyuagnmciiwxseqmpu.jpg",
+							},
+							UploadDate: time.Date(2024, 6, 15, 19, 56, 42, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 	}

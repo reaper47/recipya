@@ -2,13 +2,63 @@ package scraper_test
 
 import (
 	"testing"
-  "time"
+	"time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
 
 func TestScraper_D(t *testing.T) {
 	testcases := []testcase{
+		{
+			name: "damndelicious.net",
+			in:   "https://damndelicious.net/2023/04/28/crispy-baked-chicken-tacos/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookTime:      "PT25M",
+				DatePublished: "2023-04-28T21:00:38+00:00",
+				Description: &models.Description{
+					Value: "OH-SO-CRISP, crunchy, cheesy chicken tacos completely baked to absolute PERFECTION. A super easy weeknight meal!",
+				},
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"2 1/2 tablespoons canola oil (divided)", "1 pound ground chicken",
+						"1/2 medium sweet onion (diced)", "3 cloves garlic (minced)",
+						"1 (4.5-ounce) can chopped green chiles", "1 1/2 teaspoons chili powder",
+						"1/2 teaspoon smoked paprika", "1/2 teaspoon dried oregano",
+						"1/2 teaspoon ground cumin",
+						"1/4 cup chopped fresh cilantro leaves",
+						"1 tablespoon freshly squeezed lime juice",
+						"Kosher salt and freshly ground black pepper (to taste)",
+						"1 1/2 cups shredded Mexican cheese blend (divided)",
+						"8 flour or corn tortillas (warmed)",
+						"Pico de gallo",
+						"Guacamole",
+						"Shredded lettuce",
+						"Lime wedges",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Preheat oven to 425 degrees F. Lightly oil a baking sheet or coat with nonstick spray.", Type: "HowToStep"},
+						{Text: "Heat 1 tablespoon canola oil in a large cast iron skillet over medium high heat. Add ground chicken, onion and garlic, and cook until browned, about 3-5 minutes, making sure to crumble the chicken as it cooks; drain excess fat.", Type: "HowToStep"},
+						{Text: "Stir in green chiles, chili powder, paprika, oregano and cumin until fragrant, about 1-2 minutes.", Type: "HowToStep"},
+						{Text: "Remove from heat. Stir in cilantro and lime juice; season with salt and pepper, to taste. Stir in 1 cup cheese until well combined.", Type: "HowToStep"},
+						{Text: "Working one at a time, spread chicken mixture on half of the tortilla; top with 1 tablespoon cheese, folding over to seal. Repeat with remaining tortillas to make 8 tacos.", Type: "HowToStep"},
+						{Text: "Place tacos in a single layer onto the prepared baking sheet. Brush tops with remaining 1 1/2 tablespoons canola oil.", Type: "HowToStep"},
+						{Text: "Place into oven and bake until toasted and crispy, about 12-15 minutes.", Type: "HowToStep"},
+						{Text: "Serve immediately with desired toppings.", Type: "HowToStep"},
+					},
+				},
+				Name:      "Crispy Baked Chicken Tacos",
+				PrepTime:  "PT20M",
+				TotalTime: "PT45M",
+				Yield:     &models.Yield{Value: 4},
+				URL:       "https://damndelicious.net/2023/04/28/crispy-baked-chicken-tacos/",
+			},
+		},
 		{
 			name: "daringgourmet.com",
 			in:   "https://www.daringgourmet.com/homemade-giardiniera/",
@@ -259,6 +309,124 @@ func TestScraper_D(t *testing.T) {
 			},
 		},
 		{
+			name: "dinneratthezoo.com",
+			in:   "https://www.dinneratthezoo.com/hawaiian-chicken-kabobs/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Main Course"},
+				CookTime:      "PT10M",
+				Cuisine:       &models.Cuisine{Value: "American"},
+				DatePublished: "2024-07-02T12:03:00+00:00",
+				Description: &models.Description{
+					Value: "This recipe for Hawaiian Chicken Kabobs is juicy chicken breast, pineapple and vegetables in a sweet and tangy sauce, threaded onto skewers and grilled to perfection. Serve with coconut rice for a taste of the tropics at home!&nbsp;",
+				},
+				Keywords: &models.Keywords{Values: "hawaiian chicken kabobs"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"For the marinade:", "1/4 cup ketchup", "2 tablespoons brown sugar",
+						"1/4 cup soy sauce", "1/4 cup pineapple juice", "1 tablespoon of rice vinegar",
+						"2 teaspoons of finely minced peeled ginger",
+						"2 teaspoons of toasted sesame oil",
+						"Salt and pepper to taste",
+						"To assemble:",
+						"1 1/2 tablespoons of olive oil",
+						"1 pound of boneless skinless chicken breast (cut into 1 and 1/2 inch cubes)",
+						"1 cup of pineapple chunks (Canned is fine, approximately 1 to 1 and 1/2 inches in size)",
+						"1 small red bell pepper (cut into 1 inch pieces)",
+						"1 small green bell pepper (cut into 1 inch pieces)",
+						"1 medium red onion (cut into 1 inch pieces)",
+						"Optional garnishes: chopped cilantro, (lime wedges)",
+						"Optional side dish: coconut rice",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "In a medium bowl combine the ketchup, brown sugar, soy sauce, pineapple juice, rice vinegar, ginger and sesame oil. Season to taste with salt and pepper.", Type: "HowToStep"},
+						{Text: "Place the chicken in a large resealable bag and pour half of the over the chicken; reserve the remaining marinade in the refrigerator. Marinate the chicken for at least 1 hour or up to 4 hours.", Type: "HowToStep"},
+						{Text: "Soak 4 long bamboo skewers in cold water for 20 minutes.", Type: "HowToStep"},
+						{Text: "Heat a grill or grill pan over medium high heat.", Type: "HowToStep"},
+						{Text: "Thread the chicken, pineapple, bell peppers and red onion alternately onto the skewers. Drizzle the skewers with the olive oil and season with salt and pepper.", Type: "HowToStep"},
+						{Text: "Grill for 5 minutes on each side. Brush the marinade all over each kabob and grill for one minute more on each side. Serve immediately, garnish with cilantro and lime wedges if desired.", Type: "HowToStep"},
+					},
+				},
+				Name: "Hawaiian Chicken Kabobs",
+				NutritionSchema: &models.NutritionSchema{
+					Calories:      "362",
+					Carbohydrates: "40",
+					Cholesterol:   "72",
+					Fat:           "10",
+					Fiber:         "3",
+					Protein:       "27",
+					SaturatedFat:  "1",
+					Servings:      "1",
+					Sodium:        "1084",
+					Sugar:         "34",
+				},
+				PrepTime:  "PT60M",
+				TotalTime: "PT70M",
+				Yield:     &models.Yield{Value: 4},
+				URL:       "https://www.dinneratthezoo.com/hawaiian-chicken-kabobs/",
+			},
+		},
+		{
+			name: "dinnerthendessert.com",
+			in:   "https://dinnerthendessert.com/lemon-pepper-chicken/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtGraph:       nil,
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Dinner"},
+				CookTime:      "PT20M",
+				CookingMethod: nil,
+				Cuisine:       &models.Cuisine{Value: "American"},
+				DateCreated:   "",
+				DateModified:  "",
+				DatePublished: "2024-01-15T00:05:00+00:00",
+				Description: &models.Description{
+					Value: "Lemon Pepper Chicken is perfectly tender and juicy seasoned with lemon pepper, garlic powder, and onion powder. Ready in just 30 minutes!",
+				},
+				Keywords: &models.Keywords{Values: "Lemon Pepper Chicken"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"3 chicken breasts (, boneless skinless)", "1/4 cup olive oil",
+						"1 tablespoon lemon pepper seasoning (, (Recipe Above))",
+						"1/2 teaspoon garlic powder", "1/2 teaspoon onion powder",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Preheat oven to 375 degrees.", Type: "HowToStep"},
+						{Text: "Cut the chicken breasts into 6 thin cutlets.", Type: "HowToStep"},
+						{Text: "Season chicken with oil, then sprinkle the lemon pepper seasoning over the chicken.", Type: "HowToStep"},
+						{Text: "Bake for 20-25 minutes until cooked through.", Type: "HowToStep"},
+					},
+				},
+				Name: "Lemon Pepper Chicken",
+				NutritionSchema: &models.NutritionSchema{
+					Calories:      "212",
+					Carbohydrates: "1",
+					Cholesterol:   "72",
+					Fat:           "12",
+					Fiber:         "1",
+					Protein:       "24",
+					SaturatedFat:  "2",
+					Servings:      "1",
+					Sodium:        "132",
+					Sugar:         "1",
+					TransFat:      "1",
+				},
+				PrepTime:     "PT10M",
+				ThumbnailURL: nil,
+				Tools:        nil,
+				TotalTime:    "PT30M",
+				Yield:        &models.Yield{Value: 6},
+				URL:          "https://dinnerthendessert.com/lemon-pepper-chicken/",
+			},
+		},
+		{
 			name: "dish.co.nz",
 			in:   "https://dish.co.nz/recipes/baked-spiced-basmati-rice-and-lentil-pilaf-with-kasundi/",
 			want: models.RecipeSchema{
@@ -423,6 +591,61 @@ func TestScraper_D(t *testing.T) {
 				PrepTime: "PT5M",
 				Yield:    &models.Yield{Value: 1},
 				URL:      "https://domesticate-me.com/10-summer-cocktail-recipes/",
+			},
+		},
+		{
+			name: "donnahay.com.au",
+			in:   "https://www.donnahay.com.au/recipes/desserts-and-baking/apple-and-vanilla-tarte-tatin",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "desserts and baking"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Description:   &models.Description{Value: "This irresistibly sweet French dessert is the perfect ending to any meal."},
+				Keywords:      &models.Keywords{Values: "donna hay, cooking, recipes, food, best tarte tatin recipe, tarte tatin, apple, apple tarte tatin, vanilla, baking, dessert"},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"2 sheets frozen puff pastry, thawed",
+						"¾ cup (165g) caster sugar",
+						"¼ cup (60ml) water",
+						"50g unsalted butter, chopped",
+						"1 teaspoon vanilla bean paste",
+						"4 Granny Smith apples, peeled, cored and quartered",
+						"vanilla ice-cream, to serve (see recipe)",
+						"2 sheets frozen puff pastry, thawed",
+						"¾ cup (165g) caster sugar",
+						"¼ cup (60ml) water",
+						"50g unsalted butter, chopped",
+						"1 teaspoon vanilla bean paste",
+						"4 Granny Smith apples, peeled, cored and quartered",
+						"vanilla ice-cream, to serve (see recipe)",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "Preheat oven to 180°C. Press the pastry sheets together to form one 5mm-thick sheet and, using a plate as a guide, cut out a 23cm round. Set aside.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Place the sugar and water in a 20cm non-stick ovenproof frying pan over low heat and cook, stirring constantly, until the sugar is dissolved. Increase heat to medium and bring to the boil. Cook, without stirring, for 7–9 minutes or until light golden. Carefully add the butter and vanilla and stir until melted and well combined. Remove the pan from the heat and carefully arrange the apple, cut-side up and slightly overlapping, in the caramel. Top the apple with the pastry round and tuck the edges under to secure.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Using a sharp knife, make 3 small cuts in the centre of the pastry. Place the pan on a baking tray and cook for 35 minutes or until the pastry is puffed and golden. Set aside for 2–3 minutes to cool slightly. Loosen the edges with a knife and carefully turn out the tart. Serve warm with the ice-cream. Serves 4.",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Apple And Vanilla Tarte Tatin",
+				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://www.donnahay.com.au/recipes/desserts-and-baking/apple-and-vanilla-tarte-tatin",
+				Video:           &models.Videos{},
 			},
 		},
 		{

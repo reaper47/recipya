@@ -467,6 +467,56 @@ func TestScraper_L(t *testing.T) {
 			},
 		},
 		{
+			name: "lidl.nl",
+			in:   "https://recepten.lidl.nl/recept/prikker-met-watermeloen-rode-ui-olijven-en-feta",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Description:   &models.Description{Value: "Ben je op zoek naar lekkere prikker met watermeloen, rode ui, olijven en feta voor de laagste prijs? Bekijk en proef de recepten van Lidl! Eet smakelijk!"},
+				Keywords:      &models.Keywords{Values: "borrel,groente,fruit,tapas,salade,koolhydraatarm,vegetarisch,Griekenland,zomer"},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"0.25 watermeloen",
+						"150 gfeta",
+						"1 rode ui",
+						"100 golijven",
+						"3 takjesmunt",
+						"5 gtijm",
+						"zout",
+						"peper",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "Verwijder de schil en eventuele pitjes van de watermeloen. Snij de watermeloen in 16 blokjes van ongeveer 2 cm bij 2 cm en snij de feta in 8 blokjes. Snij de rode ui in 8 partjes, ris de blaadjes van de takjes tijm en pluk de blaadjes van de takjes munt.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Rijg twee blokjes watermeloen, 1 groene olijf, 2 blaadjes munt, 1 stukje feta en een partje rode ui aan iedere prikker.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Bestrooi de prikkers met de tijmblaadjes, zout en peper.",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Prikker met watermeloen, rode ui, olijven en feta",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT15M",
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 4},
+				URL:             "https://recepten.lidl.nl/recept/prikker-met-watermeloen-rode-ui-olijven-en-feta",
+				Video:           &models.Videos{},
+			},
+		},
+		{
 			name: "lidl-kochen.de",
 			in:   "https://www.lidl-kochen.de/rezeptwelt/schweinemedaillons-mit-ofenkartoffeln-butterbohnen-und-rosmarinbroeseln-147914",
 			want: models.RecipeSchema{

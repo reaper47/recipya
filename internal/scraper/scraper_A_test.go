@@ -2,8 +2,8 @@ package scraper_test
 
 import (
 	"testing"
-  "time"
-  
+	"time"
+
 	"github.com/reaper47/recipya/internal/models"
 )
 
@@ -299,6 +299,84 @@ func TestScraper_A(t *testing.T) {
 			},
 		},
 		{
+			name: "aflavorjournal.com",
+			in:   "https://aflavorjournal.com/charred-lemon-orzo/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Side Dish"},
+				CookTime:      "PT20M",
+				Cuisine:       &models.Cuisine{Value: "American"},
+				DatePublished: "2023-03-28T12:06:39+00:00",
+				Description: &models.Description{
+					Value: "A small batch orzo recipe with shallots, garlic, and charred lemon juice. A bright, flavorful orzo recipe that is the perfect side dish for any meal!",
+				},
+				Keywords: &models.Keywords{Values: "charred lemon orzo, lemon orzo"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"1 medium-sized Lemon", "1 tsp. Avocado Oil (or neutral oil)",
+						"2 tbsp. Unsalted Butter (divided)",
+						"1 small Shallot (finely chopped (about 1/3 cup))", "1 clove Garlic (minced)",
+						"1/2 cup dry Orzo", "1 cup Vegetable Broth", "1 tsp. Lemon Zest",
+						"1/3 cup grated Parmesan Cheese",
+						"2 tbsp. Half and Half (optional)",
+						"Microgreens or Chives (for garnish)",
+						"1 tsp. Olive Oil",
+						"1/4 cup Panko Breadcrumbs",
+						"1/4 tsp. Italian Seasoning",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "Heat olive oil in a small non-stick pan over medium heat. Once the oil is hot, stir in the breadcrumbs and Italian seasoning until the breadcrumbs are coated in oil. Cook, stirring frequently, for 4-5 minutes until the breadcrumbs turn a dark, golden brown color. Remove from the heat and set aside.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Zest the lemon (you&#39;ll need one teaspoon to stir into the orzo later in the recipe.) Cut the lemon in half.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Heat the avocado oil in a small, non-stick pan over medium-high heat. Once the oil is hot, place the lemon halves cut side down into the pan. Cook, undisturbed, for 4-5 minutes until charred. Remove from the heat and set aside.",
+							Type: "HowToStep",
+						},
+						{Text: "Melt one tablespoon of butter in a medium sauce pan over medium heat. Stir in finely chopped shallots and a pinch of salt. Cook the shallots, stirring occasionally, until softened and slightly charred (about 4-6 minutes.)", Type: "HowToStep"},
+						{Text: "Stir in minced garlic and cook for one minute. Pour in orzo and stir to combine it into the shallots and garlic. Toast the orzo for a couple of minutes.", Type: "HowToStep"},
+						{Text: "Stir in vegetable broth and allow the broth to come to a simmer. Stir frequently so the orzo does not stick to the bottom of the pan.", Type: "HowToStep"},
+						{Text: "Once the broth is simmering, continue stirring frequently until the broth is totally absorbed into the orzo. The orzo should be al dente, and have just the tiniest bite to it.", Type: "HowToStep"},
+						{
+							Text: "Stir in the lemon zest, ¼ cup of grated cheese, another pinch of salt and a crack of black pepper, and the remaining tablespoon of butter. Squeeze the charred lemon halves into the orzo, holding one hand beneath each half as you squeeze to catch any seeds. Stir to combine. If the orzo seems too thick, thin it out with one tablespoon of water at a time until it reaches your desired consistency. For a creamier texture: stir in half and half, one tablespoon at a time, until the orzo is as creamy as you like it.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Divide between two warm bowls and top with crunchy toasted breadcrumbs, remaining grated cheese, and microgreens or chives. Serve warm!",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name: "Charred Lemon Orzo with Toasted Panko Breadcrumbs",
+				NutritionSchema: &models.NutritionSchema{
+					Calories:       "443",
+					Carbohydrates:  "46",
+					Cholesterol:    "51",
+					Fat:            "24",
+					Fiber:          "4",
+					Protein:        "13",
+					SaturatedFat:   "12",
+					Servings:       "1",
+					Sodium:         "833",
+					Sugar:          "6",
+					TransFat:       "0.5",
+					UnsaturatedFat: "10",
+				},
+				PrepTime:  "PT5M",
+				TotalTime: "PT25M",
+				Yield:     &models.Yield{Value: 2},
+				URL:       "https://aflavorjournal.com/charred-lemon-orzo/",
+			},
+		},
+		{
 			name: "ah.nl",
 			in:   "https://www.ah.nl/allerhande/recept/R-R1197438/boeuf-bourguignon-uit-de-oven-met-geroosterde-spruiten",
 			want: models.RecipeSchema{
@@ -430,6 +508,151 @@ func TestScraper_A(t *testing.T) {
 			},
 		},
 		{
+			name: "alexandracooks.com",
+			in:   "https://alexandracooks.com/2018/08/16/very-good-bagels-easy-ish-too/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Bread"},
+				CookTime:      "PT30M",
+				CookingMethod: &models.CookingMethod{Value: "Boil & Bake"},
+				Cuisine:       &models.Cuisine{Value: "American"},
+				DatePublished: "2018-08-16",
+				Description: &models.Description{
+					Value: "Equipment Notes:\r\nAs noted above, I find a scale to be imperative here: I use it to weigh not only the flour but also the water, salt, and yeast.\r\nA large sheet pan is so handy — it fits all 12 bagels at once. If you don't have a large one, use two standard sheet pans, and bake 6 on each. \r\nYou'll need a spider or a slotted spoon to remove the bagels from the boiling water to a sheet pan.\r\nA food processor or stand mixer will allow you to knead the dough quickly and powerfully.  I love my 14-cup Cuisinart.\r\nNote: Watch your food processor closely! If you make the larger amount (12 bagels), it's a lot of dough for even a large food processor. You'll only run the machine for 90 seconds, but it will work hard during those 90 seconds and may jump around a bit — at any sign of the blade jamming, stop the machine and remove the dough. Also, after you add the liquids to the food processor, begin the kneading immediately to prevent the liquid from escaping through the center hole.\r\nIf you don't have a food processor or a stand mixer, knead the dough by hand briefly, using as little additional flour as possible.\r\nIngredient Notes:\r\nMany bread authorities swear by using high-gluten flour. This is something I have yet to try, but I imagine it would only improve the chewiness. But if you don't feel like picking up another product, don't hesitate to use all-purpose flour, which is what I typically use in all of the breads I bake.\r\nBarley malt syrup is hard to find. Shops like Whole Foods Market typically sell it. I order it online. Also, as one commenter noted, beer making supply stores carry barley malt syrup.\r\nFor homemade everything bagel seasoning, combine:\r\n\r\n1/4 cup sesame seeds\r\n1/4 cup poppy seeds\r\n3 tablespoons dried onion flakes\r\n3 tablespoons dried garlic flakes\r\n2 tablespoons flaky sea salt",
+				},
+				Keywords: &models.Keywords{Values: "bagels, everything, sesame, food processor, stand mixer"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"4 cups (512 g) all-purpose flour, plus more for dusting",
+						"2 teaspoons (13 g) Diamond Crystal kosher salt", "1 tsp (4 g) instant yeast",
+						"1 1/4 cups (350 g) lukewarm water",
+						"1 teaspoon barley malt syrup, maple syrup, or honey + more for boiling",
+						"grapeseed or olive or other neutral oil", "6 cups (768 g) all-purpose flour",
+						"3 teaspoons (20 g) kosher salt, I use Diamond Crystal",
+						"1.5 tsp (6 g) instant yeast",
+						"2 cups (454 g) lukewarm water",
+						"1 heaping teaspoon barley malt syrup, maple syrup, or honey + more for boiling",
+						"grapeseed or olive or other neutral oil",
+						"1 egg whisked with 1 tablespoon water",
+						"various toppings: everything bagel seasoning, sesame seeds, dukkah, etc.",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "In the bowl of a food processor fitted with the blade attachment (or in a stand mixer fitted with the dough hook), pulse together the flour, salt and yeast (or, if using a stand mixer, stir on low). In a medium bowl, whisk together the water and the barley malt syrup. Add it to the food processor (or stand mixer) and immediately (see notes above for why) blend for 60-90 seconds, standing nearby the entire time \xe2\x80\x94 at any sign of the blade jamming, stop the machine. (If using a stand mixer, knead on medium speed for 90 seconds.)", Type: "HowToStep"},
+						{Text: "With oiled hands, transfer the dough from the food processor to the bowl. The dough will feel warm and sticky. With oiled hands stretch the dough up, then down toward the center several times to form a ball. (See video for guidance.) Lightly rub some oil over the dough to coat — this will prevent a crust from forming on the dough. Cover with a tea towel, cloth bowl cover or plastic wrap. Transfer bowl to the fridge for 12 hours or longer.", Type: "HowToStep"},
+						{Text: "Place a large pot of water on to boil. When it simmers, add a big glug (about ¼ cup) barley malt syrup. Preheat an oven to 425°F. Line two sheet pans or one large pan one with parchment paper (see notes above). Prepare the egg wash if you haven't already. Place toppings of choice in shallow bowls.", Type: "HowToStep"},
+						{Text: "Remove bowl with dough from fridge. Turn dough out onto a lightly floured work surface. For perfectly even bagels, use your scale to portion the dough into 8 or 12 pieces, depending on the quantity of dough you made—if you weighed your ingredients, each dough ball should weigh about 105 to 110 g. Form each portion into a ball, using the pinky edges of your fingers to create tension. After all of the balls have been formed, dust your hands with flour and use your thumb to poke a hole into the center of each dough ball. Use your hands to stretch the dough into a donut-shape—don’t be afraid to really tug outward and under, almost as if you were going to turn the dough inside out but stop before you do. Note: If you don't pull out and under, the bagels will puff into cone-liked shapes upon baking. Truly: Be aggressive with the shaping. Video guidance here.", Type: "HowToStep"},
+						{Text: "Line a sheet pan with a tea towel. Have a stopwatch (or your phone or a clock) nearby. Drop 4 of the dough rings into the boiling water at one time. Boil 30 seconds on each side. Use a spider or slotted spoon to transfer the boiled rings to the towel-lined pan. Repeat until all of the rings have been boiled.", Type: "HowToStep"},
+						{Text: "Brush each ring with the egg wash. If you are using any toppings, dip the egg-washed bagels into the topping-filled bowls, then transfer to the parchment-lined sheet pan. If you an extra large sheet pan (see notes), you can bake all 12 at once. If you have a smaller pan, bake 6 to 8 at one time.", Type: "HowToStep"},
+						{Text: "Transfer pan or pans to the oven and bake for 20 to 25 minutes or until bagels are evenly golden all around. If you are using two pans, rotate the pans halfway through. Let bagels cool on sheet pans.", Type: "HowToStep"},
+					},
+				},
+				Name:      "Foolproof Homemade Bagels Recipe",
+				PrepTime:  "PT20M",
+				TotalTime: "PT-477847H22M46S",
+				Yield:     &models.Yield{Value: 8},
+				URL:       "https://alexandracooks.com/2018/08/16/very-good-bagels-easy-ish-too/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://www.youtube.com/watch?v=WWl7eTzcQjo",
+							Description:  "Bagels require kneading, shaping, boiling, and egg washing. But they can still be easy-ish. I find these to be just that, kind of fun to make, very tasty, and perfectly chewy. A scale + a stand mixer or food processor makes this recipe foolproof. Do plan ahead: the dough requires an overnight rise in the fridge. I love making the dough for this in the afternoon or evening and letting it rise overnight in the fridge; then I shape, boil, and bake in the morning.\n\nFind the full recipe here: https://alexandracooks.com/2018/08/16/very-good-bagels-easy-ish-too/",
+							Duration:     "PT4M",
+							EmbedURL:     "https://www.youtube.com/embed/WWl7eTzcQjo?feature=oembed",
+							Name:         "Homemade, Foolproof Bagels 🥯🥯🥯",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://i.ytimg.com/vi/WWl7eTzcQjo/hqdefault.jpg"},
+							UploadDate:   time.Date(2020, 5, 15, 11, 6, 11, 0, time.UTC),
+						},
+					},
+				},
+			},
+		},
+		{
+			name: "alittlebityummy.com",
+			in:   "https://alittlebityummy.com/recipe/en-us/low-fodmap-blueberry-crumble-slice/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "snacks, baking, dessert, vegetarian options"},
+				CookTime:      "PT30H",
+				DateCreated:   "2023-05-27T07:34:06+00:00",
+				DateModified:  "2023-02-03T00:00:00+00:00",
+				DatePublished: "2015-08-05T00:00:00+00:00",
+				Description: &models.Description{
+					Value: "This blueberry crumble slice is just so yummy –  no one will be able to tell it’s low FODMAP, gluten and dairy free!",
+				},
+				Keywords: &models.Keywords{
+					Values: "gluten free, low fodmap, dairy free, nut free, fruity options, sweet treats, vegetarian, soy free, all things sweet, protein, eggs, snacks, baking, dessert, vegetarian options, cakes & slices",
+				},
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"Crumble Base",
+						"156 white sugar",
+						"420 gluten free self raising flour*",
+						"0.25 salt",
+						"0.5 ground cinnamon*",
+						"1 guar gum (or xanthan gum) (optional)*",
+						"250 butter or dairy free spread*",
+						"1 large egg",
+						"Crumble Filling",
+						"52 white sugar",
+						"445 blueberries (fresh or frozen)",
+						"3 corn starch*",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "Preheat the oven to 180°C (350ºF) bake function. Grease a 20 x 30cm (7.9 inch by 11.8 inch) baking pan. If you want you can line the pan with baking paper.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Place 3/4 cup of sugar, 3 cups of gluten free self rising flour, salt and ground cinnamon into a medium sized bowl. Mix well. If using guar gum (or xantham) then add it now. The gum will help the mixture be less crumbly but you don't have to use it. Mix the gum through the dry ingredients.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Lightly beat the egg in a small bowl. Place the dairy free spread (olive oil spread or butter) in a bowl and soften slightly in the microwave (you want it soft to touch but not melted). Pour the soft dairy free spread spread and the egg into the dry ingredients. Blend using a fork until the wet ingredients have absorbed into the dry ingredients. Then rub the mixture between your fingers until it turns into quite large moist crumbs.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Pat half of the mixture into the pan. It needs to be pressed in firmly until the dough forms a smooth layer.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Add the blueberries evenly to the baking pan until they cover the dough. In a small bowl mix together the 3 teaspoons of corn starch and 1/4 cup of sugar. Then evenly sprinkle the sugar mixture on top.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Crumble the remaining dough over the blueberry mixture.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Bake in the oven for 30 minutes or until top is slightly golden. Let the slice cool before cutting it into 15 pieces. Serve warm with a side of low FODMAP icecream. This slice also freezes well.",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:     "Low FODMAP Blueberry Crumble Slice",
+				PrepTime: "PT30H",
+				Tools: &models.Tools{
+					Values: []models.HowToItem{
+						{
+							Quantity: 1,
+							Text:     "baking tin 20cm by 30cm (12 inch by 8 inch)",
+							Type:     "HowToTool",
+						},
+					},
+				},
+				Yield: &models.Yield{Value: 15},
+				URL:   "https://alittlebityummy.com/recipe/en-us/low-fodmap-blueberry-crumble-slice/",
+			},
+		},
+		{
 			name: "all-clad.com",
 			in:   "https://www.all-clad.com/blog/post/kellyann-citrus-chicken",
 			want: models.RecipeSchema{
@@ -474,6 +697,146 @@ func TestScraper_A(t *testing.T) {
 				Yield:           &models.Yield{Value: 8},
 				URL:             "https://www.all-clad.com/blog/post/kellyann-citrus-chicken",
 				Video:           &models.Videos{},
+			},
+		},
+		{
+			name: "aldi.com.au",
+			in:   "https://www.aldi.com.au/recipes/breakfast-recipes/spinach-crepes-with-smoked-salmon-recipe/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Breakfast"},
+				CookTime:      "PT30M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Description: &models.Description{
+					Value: "Put together using a selection of ALDI’s everyday grocery range, try our Spinach Crepes with Smoked Salmon recipe today and enjoy!",
+				},
+				Keywords: &models.Keywords{},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"150g White Mill plain flour",
+						"2 Lodge Farms free range eggs",
+						"200ml Farmdale milk",
+						"60g The Fresh Salad Co baby spinach leaves",
+						"60g Farmdale sour cream",
+						"1 tbsp lemon juice",
+						"The Olive Tree olive oil spray",
+						"200g The Fishmonger smoked salmon slices",
+						"Handful dill fronds",
+						"1 Lebanese cucumber, cut into ribbons, to garnish",
+						"1 pink lady apple, cored and thinly sliced, to serve",
+						"1 lemon, cut into quarters, to serve",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "Make crepe batter first by placing the flour, eggs, milk and spinach into a blender. Season with a little salt and pepper and blitz until smooth. Set aside to rest for 20 minutes.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "When you’re ready to cook the crepes, mix the sour cream and lemon juice together and season well then set aside.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Place a crepe pan or frying pan over a medium heat and lightly spray with olive oil spray. Pour a little batter into the pan to create a roughly 20cm crepe. Move around the pan if needed. Cook for 1½-2 minutes on each side or until cooked through. Cover with foil, set aside and repeat. You should get 8 pancakes.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Mix the cucumber, apple and half of the dill together and toss with a little of the sour cream dressing.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Top the pancakes with smoked salmon. Add the cucumber and apple slices and a drizzle of\u00a0 dressing on top. Top with more dill and serve with a lemon wedge.",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Spinach Crepes with Smoked Salmon Recipe",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT15M",
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 4},
+				URL:             "https://www.aldi.com.au/recipes/breakfast-recipes/spinach-crepes-with-smoked-salmon-recipe/",
+				Video:           &models.Videos{},
+			},
+		},
+		{
+			name: "allthehealthythings.com",
+			in:   "https://allthehealthythings.com/healthy-slow-cooker-chili/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Dinner"},
+				CookTime:      "PT8H",
+				CookingMethod: &models.CookingMethod{Value: "Slow Cooker"},
+				Cuisine:       &models.Cuisine{Value: "American"},
+				DatePublished: "2023-03-16",
+				Description: &models.Description{
+					Value: "Healthy slow cooker chili is so cozy and delicious. Packed with protein, this healthy chili simmers for eight hours in the crockpot until it is absolutely perfect. Don't have a slow cooker? No problem, I provide stovetop instructions as well. With just the right amount of spices and so much flavor, this easy fuss-free recipe is one that the whole family will enjoy.",
+				},
+				Keywords: &models.Keywords{
+					Values: "healthy slow cooker chili, slow cooker chili, healthy chili, gluten free chili, chili recipe",
+				},
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"1 tablespoon coconut or olive oil", "1.5 pounds ground beef",
+						"1 medium white onion, diced", "4 cloves garlic, minced",
+						"2 &#8211; 16oz can dark kidney beans",
+						"1 &#8211; 14.5oz can fire roasted diced tomatoes (regular canned diced tomatoes will work too)",
+						"2 &#8211; 4oz can diced green chiles", "1 cup chicken or beef broth",
+						"1 bay leaf",
+						"2 tablespoons chili powder",
+						"1/2 tablespoon cumin",
+						"2 teaspoons salt, plus more to taste",
+						"1 teaspoon dried oregano",
+						"1 teaspoon smoked paprika",
+						"1/2 teaspoon cayenne pepper (optional)",
+						"1/2 teaspoon black pepper, plus more to taste",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Heat a large skillet over medium-high heat. Once the skillet is hot, add in a drizzle of oil and then add the ground beef. Brown the beef, breaking it up as it cooks and then drain any excess fat.", Type: "HowToStep"},
+						{Text: "Add the diced onion and minced garlic and cook for four to six more minutes until the onion is tender.", Type: "HowToStep"},
+						{Text: "Transfer the ground beef mixture to your slow cooker. Add in the kidney beans, diced tomatoes, green chiles, spices, bay leaf, and broth. Stir everything together until well combined.", Type: "HowToStep"},
+						{Text: "Cover and cook the chili on high for five to six hours or on low for seven to eight hours.", Type: "HowToStep"},
+						{Text: "When the chili is finished cooking, give it a taste and season with salt and pepper to taste. Serve the chili immediately garnished with your favorite toppings like sour cream, green onion, avocado, or cheddar cheese.", Type: "HowToStep"},
+					},
+				},
+				Name: "Healthy Slow Cooker Chili",
+				NutritionSchema: &models.NutritionSchema{
+					Calories:      "429",
+					Carbohydrates: "58.9",
+					Cholesterol:   "45.2",
+					Fat:           "6",
+					Fiber:         "16",
+					Protein:       "34.9",
+					SaturatedFat:  "1.7",
+					Sodium:        "1370.7",
+					Sugar:         "6.7",
+					TransFat:      "0.1",
+				},
+				PrepTime:  "PT10M",
+				TotalTime: "PT8H10M",
+				Yield:     &models.Yield{Value: 4},
+				URL:       "https://allthehealthythings.com/healthy-slow-cooker-chili/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/30R1hpw3.mp4",
+							Description:  "This healthy slow cooker chili is so cozy and delicious. Packed with protein, this healthy chili simmers for eight hours in the crockpot until it is absolutely perfect. Don't have a slow cooker? No problem, I provide stovetop instructions as well. With just the right amount of spices and so much flavor, this easy fuss-free recipe is one that the whole family will enjoy. ",
+							Name:         "Healthy Slow Cooker Chili",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/30R1hpw3-720.jpg"},
+							UploadDate:   time.Date(2021, 11, 2, 0, 25, 21, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -856,6 +1219,128 @@ func TestScraper_A(t *testing.T) {
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 1},
 				URL:             "https://www.angielaeats.com/recipes/maple-soy-brussels-sprouts",
+				Video:           &models.Videos{},
+			},
+		},
+		{
+			name: "aniagotuje.pl",
+			in:   "https://aniagotuje.pl/przepis/zupa-pomidorowa",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookTime:      "PT2H",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Description:   &models.Description{Value: "Zupa pomidorowa to ulubiona zupa większości dzieci. Domowa pomidorowa jest szybka i prosta do zrobienia. Błyskawiczna pomidorówka z rosołu gości na większości stołach co niedzielę. Zapraszam po mój przepis."},
+				Keywords:      &models.Keywords{Values: "zupa pomidorowa, pomidorowa, zupa pomidorowa przepis, zupa pomidorowa przepisy, pomidorówka przepis, pomidorowa z ryżem"},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"Składniki na bulion do zupy",
+						"1 kg mięsa na rosół: u mnie 2 ćwiartki kurczaka i gicz wołowa z kością*",
+						"2 średnie marchewki - około 280 g",
+						"1 mały korzeń pietruszki - około 90 g",
+						"kawałek korzenia selera - około 80 g",
+						"1 mała cebula - około 100 g",
+						"1500 ml wody - z kranu lub filtrowana",
+						"przyprawy i zioła: 2 ziarna ziela angielskiego; 1 listek laurowy; łyżeczka soli; pół łyżeczki pieprzu",
+						"Pozostałe składniki",
+						"1 mały słoiczek koncentratu pomidorowego - 200 g",
+						"4 łyżki kwaśnej śmietany 18 % - około 80 g",
+						"do podania: natka pietruszki oraz makaron lub ryż",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "Najpierw podam bardzo skróconą wersję przepisu:\n        1 - W jednym garnku umieść razem: około kilograma mięsa (tylko z kurczaka lub z dodatkiem wołowiny z kością); dwie obrane marchewki; korzeń pietruszki; cebulę; kawałek korzenia selera. Dodaj też dwa ziarna ziela angielskiego, listek laurowy, łyżeczkę soli oraz pół łyżeczki pieprzu. Wlej 1500 ml wody. Garnek przykryj przykrywką i zagotuj zupę. Zmniejsz moc palnika do takiej, by zupa tylko mrugała i gotuj ją przez 90 minut - jeśli dodany był tylko kurczak, lub 120 minut - jeśli użyta była też wołowina z kością.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "2 - Po dwóch godzinach z brzegów garnka usuń szumowiny. Przy pomocy cedzaka wyłów z zupy całe mięso, warzywa i przyprawy. Powinno zostać około 1200 ml bulionu. Jeśli odparowało więcej wywaru, to ubytek uzupełnij wrzątkiem. Warzywa i mięso z rosołu można zmielić i wykorzystać do zrobienia pasztetu, czy też jako farsz do pierogów lub naleśników.\u00a0\n        3 - Do bulionu dodaj mały słoik koncentratu pomidorowego o wadze 200 gramów. Zanim pomidorówka zacznie się ponownie gotować wlej cztery łyżki (lub więcej) śmietanki kremówki 30 %. Jeśli używasz śmietany kwaśnej 18 %, to przed dodaniem należy ja zahartować. Zamieszaj zupę i sprawdź jej smak. W razie potrzeby dopraw ją solą, pieprzem, może odrobiną cukru.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "4 - Pomidorową podawaj z ulubionym makaronem lub ryżem oraz ze świeżą natką pietruszki, odrobiną świeżych listków lubczyku ogrodowego lub z koperkiem.",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Zupa pomidorowa",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT30M",
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://aniagotuje.pl/przepis/zupa-pomidorowa",
+				Video:           &models.Videos{},
+			},
+		},
+		{
+			name: "antilliaans-eten.nl",
+			in:   "https://www.antilliaans-eten.nl/recepten/antilliaanse-pikaballetjes-gehaktballetjes/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookTime:      "PT30M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DateModified:  "2023-10-28T19:59:05+02:00",
+				DatePublished: "2023-10-28T19:59:04+02:00",
+				Description:   &models.Description{Value: "Je maakt deze Antilliaanse pikabal nu zelf met ons recept. De pittige gehaktballetjes stelen de show bij elk feestje. Pikaballetjes op antilliaans-eten.nl"},
+				Keywords:      &models.Keywords{Values: "feest,snack,vlees"},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"500 gram rundgehakt",
+						"1 ui, gesnipperd",
+						"2 madame Jeanette pepers, gesnipperd",
+						"3 paprika’s (liefst in verschillende kleuren!)",
+						"1 blikje tomatenpuree (70 gr)",
+						"1 el suiker",
+						"3 el donkere sojasaus / ketjap manis",
+						"1\u00a0tl komijn",
+						"1 tl gemalen koriander",
+						"1/2 tl zwarte peper",
+						"1 ell azijn",
+						"1 tl zout",
+						"zonnebloemolie",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Bereiding van Antilliaanse pikaballetjes", Type: "HowToStep"},
+						{
+							Text: "Snijd de ui en paprika’s in kleine stukjes en fruit deze daarna ongeveer 5 minuten in zonnebloemolie. (op matig vuur)",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Meng het gehakt vervolgens samen met de helft van het ui/paprika mengsel, 1 eetlepel sojasaus en het zout in een grote kom. Kneed het geheel vervolgens goed door elkaar.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Maak hiervan gehaktballetjes zo groot als een pingpongbal. Verhit de zonnebloemolie (op matig vuur) en bak hier de pikaballetjes even in, totdat ze aan alle kanten zijn dichtgeschroeid. Dit duurt zo’n 10 minuten.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Maak in de tussentijd de saus, door de overige ingrediënten in een klein pannetje te doen samen met zo’n 50 ml water. Doe de saus daarna bij de pikaballetjes in de pan.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Laat de gehaktballetjes zo nog een half uurtje sudderen en dien ze vervolgens samen met de saus op. Dat kan als snack (op een prikkertje!) of gewoon bij ’n bordje rijst of aardappelen. – Eet smakelijk!",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Pikaballetjes – Pittige Antilliaanse gehaktballen",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT45M",
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://www.antilliaans-eten.nl/recepten/antilliaanse-pikaballetjes-gehaktballetjes/",
 				Video:           &models.Videos{},
 			},
 		},

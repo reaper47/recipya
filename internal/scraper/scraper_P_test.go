@@ -839,6 +839,85 @@ func TestScraper_P(t *testing.T) {
 			},
 		},
 		{
+			name: "potatorolls.com",
+			in:   "https://potatorolls.com/recipes/crab-mac-and-cheese-hot-dog/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Description:   &models.Description{},
+				Keywords:      &models.Keywords{},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"1/2 Pound Elbow Macaroni Noodles",
+						"2 Tablespoons Flour",
+						"1/2 Teaspoon Salt",
+						"1/4 Teaspoon Garlic Powder",
+						"2 Tablespoons Salted Butter",
+						"1 Cup Whole Milk",
+						"1/4 Cup Sour Cream",
+						"2 Cups Shredded Cheddar Cheese",
+						"8 Ounces Jumbo Lump Crabmeat",
+						"8 Hot Dogs",
+						"8 Martin’s Long Potato Rolls",
+						"2 Teaspoons Old Bay",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "To make macaroni, start by cooking the noodles according to package directions – they typically take 5-7 minutes in boiling water. Be sure to add a 1/4 teaspoon salt to water used to boil the noodles. Drain and set aside when ready.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "To make the cheese sauce for the macaroni, start by mixing flour, salt, and garlic powder together in a small bowl. Set aside.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "In a medium saucepan over medium heat, melt the butter.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Add flour mixture and whisk to combine. Cook for 1 minute until mixture is slightly brown.",
+							Type: "HowToStep",
+						},
+						{Text: "Add milk and whisk until the mixture is smooth.", Type: "HowToStep"},
+						{
+							Text: "Add sour cream and whisk until smooth. Cook on medium-high heat until the mixture is thickened (about 3-5 minutes). Do not let it boil.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Once mixture is thick, reduce heat to low and add cheese. Whisk until cheese is melted and mixture is smooth.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Add cooked pasta and most of the crab meat to the pot of cheese and stir until sauce is evenly distributed. Set aside to cool.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Cook hot dogs according to your preferred cooking method.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Place each hot dog in a bun and top with mac and cheese, then add a few extra lumps of crab and garnish with old bay.",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Crab Mac and Cheese Hot Dog",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT30M",
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://potatorolls.com/recipes/crab-mac-and-cheese-hot-dog/",
+				Video:           &models.Videos{},
+			},
+		},
+		{
 			name: "practicalselfreliance.com",
 			in:   "https://practicalselfreliance.com/zucchini-relish/",
 			want: models.RecipeSchema{

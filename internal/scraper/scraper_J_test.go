@@ -2,7 +2,7 @@ package scraper_test
 
 import (
 	"testing"
-  "time"
+	"time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -255,6 +255,77 @@ func TestScraper_J(t *testing.T) {
 			},
 		},
 		{
+			name: "jocooks.com",
+			in:   "https://www.jocooks.com/recipes/korean-fried-chicken/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Dinner"},
+				CookTime:      "PT15M",
+				Cuisine:       &models.Cuisine{Value: "Korean"},
+				DatePublished: "2020-02-16T12:01:50+00:00",
+				Description: &models.Description{
+					Value: "Korean Fried Chicken - juicy, yet crispy pieces of chicken coated in a sweet  and spicy sauce. An easy fried chicken recipe with a fiery kick making for the perfect meal or appetizer. This chicken truly is perfect for any occasion.",
+				},
+				Keywords: &models.Keywords{Values: "fried chicken, korean fried chicken"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"2 pounds chicken breasts (boneless and skinless, cut into 1 inch pieces)",
+						"1 large egg (beaten)", "½ cup cornstarch", "vegetable oil (for frying)",
+						"3 tablespoon butter (unsalted)", "4 cloves garlic (minced)",
+						"1 tablespoon fresh ginger (minced)", "¼ cup honey",
+						"¼ cup brown sugar",
+						"2 tablespoon soy sauce (low sodium)",
+						"1 tablespoon rice vinegar",
+						"1 tablespoon sesame oil",
+						"2 tablespoon gochujang",
+						"green onions",
+						"toasted sesame seeds",
+						"red chilis (sliced)",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Toss the chicken pieces through the egg first, then dredge through cornstarch.", Type: "HowToStep"},
+						{Text: "Add about 3 inches of oil to a heavy bottom pan and heat to 375°F.", Type: "HowToStep"},
+						{Text: "Add chicken to the pan and fry in batches about 3 to 4 minutes per batch. Transfer the chicken to a paper towel lined plate and repeat with remaining chicken.", Type: "HowToStep"},
+						{Text: "Melt the butter in a skillet over medium heat. Add the garlic and ginger and cook for 30 seconds or until aromatic. Stir in the brown sugar and honey and cook for about 1 minute until the brown butter dissolves. Add the soy sauce, rice vinegar, sesame oil and gochujang sauce to the skillet and stir. Cook for 30 seconds then add the chicken to the skillet and toss well with the sauce.", Type: "HowToStep"},
+						{Text: "Serve garnished with green onions, toasted sesame seeds and red chilis.", Type: "HowToStep"},
+					},
+				},
+				Name: "Korean Fried Chicken",
+				NutritionSchema: &models.NutritionSchema{
+					Calories:      "466",
+					Carbohydrates: "33",
+					Cholesterol:   "143",
+					Fat:           "22",
+					Fiber:         "1",
+					Protein:       "34",
+					SaturatedFat:  "13",
+					Servings:      "1",
+					Sodium:        "372",
+					Sugar:         "21",
+				},
+				PrepTime:  "PT15M",
+				TotalTime: "PT30M",
+				Yield:     &models.Yield{Value: 6},
+				URL:       "https://www.jocooks.com/recipes/korean-fried-chicken/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/9GdxrbMj.mp4",
+							Description:  "Korean Fried Chicken - juicy, yet crispy pieces of chicken coated in a sweet  and spicy sauce. An easy fried chicken recipe with a fiery kick making for the perfect meal or appetizer. This chicken truly is perfect for any occasion.",
+							Name:         "Korean Fried Chicken",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/9GdxrbMj-720.jpg"},
+							UploadDate:   time.Date(2020, 2, 16, 17, 52, 11, 0, time.UTC),
+						},
+					},
+				},
+			},
+		},
+		{
 			name: "joyfoodsunshine.com",
 			in:   "https://joyfoodsunshine.com/peanut-butter-frosting/",
 			want: models.RecipeSchema{
@@ -327,6 +398,71 @@ func TestScraper_J(t *testing.T) {
 			},
 		},
 		{
+			name: "joythebaker.com",
+			in:   "https://joythebaker.com/2023/01/jambalaya-biscuits/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "breakfast"},
+				CookTime:      "PT20M",
+				CookingMethod: &models.CookingMethod{Value: "baking"},
+				DatePublished: "2023-02-09",
+				Description:   &models.Description{Value: "A tender, savory, and stacked Mardi Gras biscuit!"},
+				Keywords:      &models.Keywords{Values: "jambalaya, biscuits, mardi gras, bell peppers, roasted tomato"},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"1 heaping cup cherry tomatoes, halved and roasted until bubbling with a bit of olive oil, salt, and pepper",
+						"2 tablespoons olive oil", "1/2 cup diced yellow onion",
+						"1/2 cup diced green bell pepper",
+						"7 ounces (1 sausage link) Zatarain’s Cajun-Style Smoke Sausage, sliced into 1/4-inch rounds",
+						"3 cups all-purpose flour", "1 tablespoon granulated sugar",
+						"1 tablespoon plus 1 teaspoon baking powder",
+						"1/2 teaspoon baking soda",
+						"3/4 teaspoon salt",
+						"3/4 cup cold unsalted butter, cut into small chunks",
+						"1 large egg, lightly beaten",
+						"3/4 cup cold buttermilk, plus more for topping the biscuits",
+						"Sea salt and fresh cracked black pepper, for topping",
+						"Melted butter and chopped chives, for topping",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "First make the jambalaya filling. In a medium saucepan, heat oil over medium heat. Add onion and peppers and cook until softened, about 5-7 minutes. Add the sliced sausage and toss to combine, about 1 minute. Transfer to a bowl along with the roasted tomatoes and refrigerate while you make the biscuit dough.", Type: "HowToStep"},
+						{Text: "In a large bowl whisk together flour, sugar, baking powder, baking soda, and salt. Add the cold butter and work into the dry ingredients into smaller butter chunks using fast hands or a pastry blender. Butter will be the size of peas when broken down. Place the mixture in the freezer for 15 minutes to re-chill.", Type: "HowToStep"},
+						{Text: "In a small bowl whisk together egg and cold buttermilk. Keep chilled.", Type: "HowToStep"},
+						{Text: "Take the flour mixture out of the freezer and drizzle in the buttermilk. Stir into a shaggy dough. Add the chilled jambalaya filling and toss to combine. Turn the dough out onto a clean counter and gently knead together into a cohesive rectangle.", Type: "HowToStep"},
+						{Text: "Gently roll the dough into a 1-inch thick rectangle on a lightly floured surface. At the short end of the dough closest to you, fold the dough over until the edge of the dough meets the center of the dough. If it feels like there are chunks of meat everywhere &#8211; yes, that’s right. Fold the top edge of the dough towards the center over the first fold. An envelope fold. Slice the dough in half through the vertical center, stack the two pieces of dough and again gently roll the dough into a 1-inch rectangle and repeat the folding process again. Loosely wrap the envelope of dough in plastic wrap and freeze for 15 minutes.", Type: "HowToStep"},
+						{Text: "Place a rack in the upper third of the oven and preheat oven to 425 degrees F. Line a rimmed baking sheet with parchment paper.", Type: "HowToStep"},
+						{Text: "Remove the dough from the freezer and roll to a generous 1-inch thickness. Use a sharp knife to slice into 8 squares. Place a few inches apart on the prepared baking sheet and brush the top of each biscuit with buttermilk. Sprinkle with salt and pepper.", Type: "HowToStep"},
+						{Text: "Bake for 15-18 minutes until golden brown. Set aside for a few minutes to cool slightly before serving. I like to brush with butter and sprinkle with a bit of chives before serving.", Type: "HowToStep"},
+						{
+							Text: "Biscuits are best enjoyed the day they’re made but keep, well wrapped, in the refrigerator for 2 days. Just wrap in foil and toast in the oven before serving.",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:      "Jambalaya Biscuits",
+				PrepTime:  "PT40M",
+				TotalTime: "PT-477869H29M13S",
+				Yield:     &models.Yield{Value: 8},
+				URL:       "https://joythebaker.com/2023/01/jambalaya-biscuits/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/4aqwOLHz.mp4",
+							Description:  "How to make savory sausage buttermilk biscuits perfect for Mardi Gras. These Jambalaya Biscuits are a crown pleaser! ",
+							Name:         "Zatarain’s Jambalaya Biscuits",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/4aqwOLHz-720.jpg"},
+							UploadDate:   time.Date(2023, 2, 8, 0, 12, 21, 0, time.UTC),
+						},
+					},
+				},
+			},
+		},
+		{
 			name: "juliegoodwin.com.au",
 			in:   "https://juliegoodwin.com.au/white-chocolate-and-raspberry-muffins/",
 			want: models.RecipeSchema{
@@ -365,6 +501,57 @@ func TestScraper_J(t *testing.T) {
 				Yield:           &models.Yield{Value: 6},
 				URL:             "https://juliegoodwin.com.au/white-chocolate-and-raspberry-muffins/",
 				Video:           &models.Videos{},
+			},
+		},
+		{
+			name: "jumbo.com",
+			in:   "https://www.jumbo.com/recepten/perzikenmousse-een-snel-gemakkelijk-en-heerlijk-nagerecht-1491323-7",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "dessert"},
+				CookTime:      "PT15M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Description: &models.Description{
+					Value: "Eenvoudig en snel te maken, deze heerlijke perzikenmousse met vanillesuiker, mon chou en amaretti (of bastognekoek). Garneer met een schijfje perzik en eventueel een amaretti en genieten maar. Ook lekker met een dopje likeur bijv. amaretto.",
+				},
+				Keywords: &models.Keywords{},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"300 g Perzik op sap", "2 Vanillesuiker zakje", "200 g Roomkaas Original",
+						"45 g Perzik sap", "250 g Amaretti", "30 ml Likeur", "1 snufje Zout",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Pureer de perziken met een staafmixer. Hou van de perziken iets over om te garneren.", Type: "HowToStep"},
+						{Text: "Voeg de vanillesuiker, mon chou en perzikenvocht hieraan toe. Pureer dit tot gladde mousse.", Type: "HowToStep"},
+						{Text: "Doe een paar amaretti (of verkruimelde bastognekoek) onderin het glas. Sprenkel er eventueel een dopje likeur over, bijv. amaretto.", Type: "HowToStep"},
+						{Text: "Verdeel de perzikenmousse erover.", Type: "HowToStep"},
+						{Text: "Garneer met een schijfje perziken en eventueel een amaretti.", Type: "HowToStep"},
+					},
+				},
+				Name:            "Perzikenmousse een snel gemakkelijk en heerlijk nagerecht",
+				NutritionSchema: &models.NutritionSchema{Calories: "365"},
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:       "PTNaNM",
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://www.jumbo.com/recepten/perzikenmousse-een-snel-gemakkelijk-en-heerlijk-nagerecht-1491323-7",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							Description: "Eenvoudig en snel te maken, deze heerlijke perzikenmousse met vanillesuiker, mon chou en amaretti (of bastognekoek). Garneer met een schijfje perzik en eventueel een amaretti en genieten maar. Ook lekker met een dopje likeur bijv. amaretto.",
+							Name:        "Perzikenmousse een snel gemakkelijk en heerlijk nagerecht",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://recipe-service.prod.cloud.jumbo.com/recipes/1491323-7/Perzikenmousse-een-snel-gemakkelijk-en-heerlijk-nagerecht_1491323-7-0_560x560",
+							},
+						},
+					},
+				},
 			},
 		},
 		{

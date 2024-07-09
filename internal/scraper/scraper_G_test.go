@@ -2,6 +2,7 @@ package scraper_test
 
 import (
 	"testing"
+	"time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -409,6 +410,81 @@ func TestScraper_G(t *testing.T) {
 			},
 		},
 		{
+			name: "glutenfreetables.com",
+			in:   "https://glutenfreetables.com/recipe/gluten-free-bread-loaf-bread-buns-with-schar-mix-b-flour/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Bread"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DateModified:  "2021-05-12T14:50:18+00:00",
+				Description:   &models.Description{},
+				Keywords: &models.Keywords{
+					Values: "10 ingredients or less,Artisan bread,Bread,Bread buns,Gluten free,No wheat,Recipes,Schar Flour,Schar Mix B Flour",
+				},
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"300 g GF Schar Mix B flour",
+						"6 g fresh yeast I used the cube ones",
+						"1teaspoon honey",
+						"30 g olive oil",
+						"285 g slightly cold water",
+						"1 teaspoon salt Flat",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Name: "Pile the bread flour",
+							Text: "Pile the bread flour into a large mixing bowl.",
+							Type: "HowToStep",
+						},
+						{Name: "Pile the bread flour", Type: "HowToStep"},
+						{
+							Name: "In a separate bowl",
+							Text: "In a separate bowl, mix the yeast, water, and honey until you have a smooth mixture. Let it sit for 10 minutes.",
+							Type: "HowToStep",
+						},
+						{
+							Name: "In a separate bowl",
+							Text: "After 10 minutes, add the yeast mixture to your flour and knead the dough for about 8-10 minutes using the dough hook. After approximately 8 minutes add the olive oil and salt to the dough and knead for another 2 minutes.",
+							Type: "HowToStep",
+						},
+						{
+							Name: "Shape Your dough",
+							Text: "Move your dough to a floured work surface and shape it however you want: bread loaf, bread buns, challah bread. Once you shaped the dough, let it proof for about an hour and a half (Even a little less, depending on your kitchen temperatures).",
+							Type: "HowToStep",
+						},
+						{
+							Name: "Shape Your dough",
+							Text: "Once the dough has doubled its size, brush it with an egg and sprinkles sesame/flax seeds/Nigella/etc.",
+							Type: "HowToStep",
+						},
+						{
+							Name: "Bake your bread/buns",
+							Text: "Preheated the oven to 200c and place a bowl of cold water inside as well.",
+							Type: "HowToStep",
+						},
+						{
+							Name: "Bake your bread/buns",
+							Text: "Bake your bread/buns for about 30-40 minutes (Depends on the oven, start checking your oven after about 25 minutes).",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "Gluten-Free Bread Loaf/Bread Buns With Schar Mix B Flour",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT1.5H",
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://glutenfreetables.com/recipe/gluten-free-bread-loaf-bread-buns-with-schar-mix-b-flour/",
+				Video:           &models.Videos{},
+			},
+		},
+		{
 			name: "godt.no",
 			in:   "https://www.godt.no/oppskrifter/kjoett/svin/10849/koteletter-med-paerer-i-langpanne",
 			want: models.RecipeSchema{
@@ -775,6 +851,66 @@ func TestScraper_G(t *testing.T) {
 				Yield:           &models.Yield{Value: 2},
 				URL:             "https://www.goodto.com/recipes/gousto-joe-wicks-chicken-grain-bowl",
 				Video:           &models.Videos{},
+			},
+		},
+		{
+			name: "gourmettraveller.com.au",
+			in:   "https://www.gourmettraveller.com.au/recipe/chefs-recipes/fried-spaghetti-allassassina/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookTime:      "PT70M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{Value: "Italian"},
+				DatePublished: "2024-06-25T17-21-27",
+				Description: &models.Description{
+					Value: "Dan Johnston of Sydney’s Fontana shares his take on this crisped-up spaghetti dish.",
+				},
+				Keywords: &models.Keywords{},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"400 gm dried spaghetti", "Vegetable oil, for shallow-frying",
+						"Stracciatella and finely grated Pecorino Romano, to serve",
+						"Basil leaves and chilli threads, to serve", "Roast Tomato Sauce",
+						"16 ripe Roma tomatoes", "12 garlic cloves, 8 peeled, 4 finely chopped",
+						"1 tsp caster sugar",
+						"2 ½ tbsp extra-virgin olive oil, plus extra for drizzling",
+						"Pinch of dried chilli flakes",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Preheat oven to 220˚C fan-forced. Place tomatoes in a roasting pan with 8 whole peeled garlic cloves, sugar, drizzle with a little olive oil and season to taste; toss to combine. Roast, tossing tomatoes and garlic occasionally, until tomatoes are lightly blackened, and garlic is golden (30 minutes).", Type: "HowToStep"},
+						{Text: "Cool completely then pass through a mouli or course sieve. Alternatively, pulse in a food processor. Transfer sauce to a bowl and cover until ready to use. Heat a large deep-sided frying pan over medium heat. Add olive oil, garlic and chilli and cook, stirring continuously, until garlic is lightly golden (2-3 minutes). Add roasted tomato sauce and simmer until thickened; season to taste (15 minutes). Set aside.", Type: "HowToStep"},
+						{Text: "Meanwhile, cook spaghetti in a saucepan of boiling salted water according to packet instructions (6-8 minutes). Drain and refresh under cold running water. Divide spaghetti in half and reserve half. Divide the remaining half into 4 bundles and twist to form spaghetti cakes. Pat each spaghetti cake dry with paper towel and flatten.", Type: "HowToStep"},
+						{Text: "Heat 1cm vegetable oil in a large non-stick frying pan over medium-high heat. Cook spaghetti cakes, in batches if necessary, turning halfway, until golden and slightly blackened (2-3 minutes each side). Remove from pan and drain on paper towel.", Type: "HowToStep"},
+						{Text: "Return roasted tomato sauce to the pan over medium heat. Add spaghetti cakes and using a wooden spoon, break up slightly into large pieces. Stir through reserved cooked spaghetti and cook, stirring, until mixture is heated through (2-3 minutes). Season to taste. Divide spaghetti among bowls. Spoon over stracciatella, then scatter with pecorino, chilli threads and basil to serve.", Type: "HowToStep"},
+					},
+				},
+				Name:            "Spaghetti all’assassina",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT25M",
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:       "PT95M",
+				Yield:           &models.Yield{Value: 4},
+				URL:             "https://www.gourmettraveller.com.au/recipe/chefs-recipes/fried-spaghetti-allassassina/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://cdn.jwplayer.com/videos/QkgFO3iV-lUTv4n5l.mp4",
+							Description:  "Dan Johnston of Sydney’s Fontana shares his take on this crisped-up spaghetti dish.",
+							Duration:     "PT48S",
+							EmbedURL:     "https://www.gourmettraveller.com.au/?jwp-instant-articles=1&#038;player=EVgOCtIY&#038;mediaURL=QkgFO3iV&#038;image=https://cdn.jwplayer.com/thumbs/QkgFO3iV-720.jpg",
+							Name:         "Masterclass: How to make spaghetti all'assassina",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://cdn.jwplayer.com/v2/media/QkgFO3iV/poster.jpg?width=320"},
+							UploadDate:   time.Date(2024, 6, 25, 6, 36, 5, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{

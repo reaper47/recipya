@@ -3,6 +3,7 @@ package scraper
 import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/utils/regex"
 	"strconv"
 	"strings"
 )
@@ -74,4 +75,23 @@ func getInstructions(rs *models.RecipeSchema, nodes *goquery.Selection, replaceO
 			rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(s))
 		}
 	})
+}
+
+func getTime(rs *models.RecipeSchema, node *goquery.Selection, isPrepTime bool) {
+	var s string
+	t := strings.TrimSpace(node.Text())
+	if t != "" {
+		s = "PT" + regex.Digit.FindString(t)
+		if strings.Contains(strings.ToLower(t), "min") {
+			s += "M"
+		} else {
+			s += "H"
+		}
+	}
+
+	if isPrepTime {
+		rs.PrepTime = s
+	} else {
+		rs.CookTime = s
+	}
 }

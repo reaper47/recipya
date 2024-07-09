@@ -14,6 +14,8 @@ func scrapeTheFoodFlamingo(root *goquery.Document) (models.RecipeSchema, error) 
 	rs.Image.Value = getPropertyContent(root, "og:image")
 	rs.DatePublished = getPropertyContent(root, "article:published_time")
 	rs.Name = root.Find("#recipe").Next().Find("h2.wp-block-heading").First().Text()
+	getTime(&rs, root.Find("p:contains('Prep Time')"), true)
+	getTime(&rs, root.Find("p:contains('Cook Time')"), false)
 
 	nodes := root.Find("meta[property='article:tag']")
 	xk := make([]string, 0, nodes.Length())
@@ -22,24 +24,6 @@ func scrapeTheFoodFlamingo(root *goquery.Document) (models.RecipeSchema, error) 
 		xk = append(xk, s)
 	})
 	rs.Keywords.Values = strings.Join(xk, ",")
-
-	prep := strings.TrimSpace(root.Find("p:contains('Prep Time')").Text())
-	if prep != "" {
-		unit := "H"
-		if strings.Contains(prep, "min") {
-			unit = "M"
-		}
-		rs.PrepTime = "PT" + regex.Digit.FindString(prep) + unit
-	}
-
-	cook := strings.TrimSpace(root.Find("p:contains('Cook Time')").Text())
-	if cook != "" {
-		unit := "H"
-		if strings.Contains(cook, "min") {
-			unit = "M"
-		}
-		rs.CookTime = "PT" + regex.Digit.FindString(cook) + unit
-	}
 
 	cat := strings.ToLower(strings.TrimSpace(root.Find("p:contains('Course:')").Text()))
 	if cat != "" {

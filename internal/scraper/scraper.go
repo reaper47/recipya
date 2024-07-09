@@ -144,7 +144,7 @@ func (s *Scraper) fetchDocument(url string) (*goquery.Document, error) {
 		if err != nil {
 			return nil, err
 		}
-	case "chatelaine":
+	case "chatelaine", "damndelicious", "dinnerthendessert":
 		original := s.HTTP.Client
 		c, ok := s.HTTP.Client.(*http.Client)
 		if ok {

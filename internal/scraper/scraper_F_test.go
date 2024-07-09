@@ -2,13 +2,86 @@ package scraper_test
 
 import (
 	"testing"
-  "time"
+	"time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
 
 func TestScraper_F(t *testing.T) {
 	testcases := []testcase{
+		{
+			name: "familyfoodonthetable.com",
+			in:   "https://www.familyfoodonthetable.com/slow-cooker-honey-garlic-chicken/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "Slow Cooker"},
+				CookTime:      "PT2H30M",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{Value: "Asian"},
+				DatePublished: "2019-01-15",
+				Description: &models.Description{
+					Value: "Slow cooker honey garlic chicken is just 5 ingredients and minutes to prep and smells amazing as it cooks! You’ll want to drizzle this delicious sauce over your whole plate!",
+				},
+				Keywords: &models.Keywords{
+					Values: "slow cooker chicken recipes, slow cooker honey garlic chicken, easy slow cooker meals, easy slow cooker chicken recipes, slow cooker chicken dinners, easy slow cooker dinners, easy crock pot chicken dinners, crock pot chicken recipes, crock pot honey garlic chicken",
+				},
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"2.5 lbs boneless, skinless chicken thighs", "Salt and black pepper",
+						"1/3 cup honey", "1/3 cup low-sodium soy sauce", "6 cloves garlic, minced",
+						"1/2 teaspoon red pepper flakes (optional, adjust for heat)",
+						"Sliced green onions, chopped peanuts, chopped parsley or cilantro, extra sprinkle of red pepper flakes or a drizzle of sriracha for a spicy kick",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Season chicken thighs lightly with salt and black pepper and add to the insert of your slow cooker.", Type: "HowToStep"},
+						{Text: "Mix remaining ingredients together in a small bowl and pour the sauce over the chicken thighs in the slow cooker.", Type: "HowToStep"},
+						{Text: "Cover and cook on low for 5-6 hours or on high for 2 1/2-3 hours.", Type: "HowToStep"},
+						{Text: "Remove the chicken thighs and either cut it into chunks or shred it with two forks. Mix the chicken back into the sauce in the slow cooker and let sit for at least 5-10 minutes, to help absorb the juices.", Type: "HowToStep"},
+						{Text: "Serve hot with any desired toppings and enjoy!", Type: "HowToStep"},
+					},
+				},
+				Name: "Slow Cooker Honey Garlic Chicken",
+				NutritionSchema: &models.NutritionSchema{
+					Calories:       "385",
+					Carbohydrates:  "18",
+					Cholesterol:    "231",
+					Fat:            "15",
+					Fiber:          "1",
+					Protein:        "48",
+					SaturatedFat:   "5",
+					Servings:       "1",
+					Sodium:         "962",
+					Sugar:          "16",
+					TransFat:       "0",
+					UnsaturatedFat: "10",
+				},
+				PrepTime:     "PT5M",
+				ThumbnailURL: &models.ThumbnailURL{},
+				Tools:        &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:    "PT2H35M",
+				Yield:        &models.Yield{Value: 6},
+				URL:          "https://familyfoodonthetable.com/slow-cooker-honey-garlic-chicken/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://mediavine-res.cloudinary.com/video/upload/skjowe84ud5o0gaq50ge.mp4",
+							Description: "Slow cooker honey garlic chicken is just 5 ingredients and minutes to prep and smells amazing as it cooks! You’ll want to drizzle this delicious sauce over your whole plate!",
+							Duration:    "PT52S",
+							Name:        "Slow Cooker Honey Garlic Chicken",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://mediavine-res.cloudinary.com/image/upload/s--h-RC6iDW--/ar_16:9,c_fill,f_auto,fl_lossy,q_auto/v1586797611/hke2gfkcfyezizntqbmv.jpg",
+							},
+							UploadDate: time.Date(2023, 4, 18, 17, 28, 22, 0, time.UTC),
+						},
+					},
+				},
+			},
+		},
 		{
 			name: "farmhousedelivery.com",
 			in:   "https://recipes.farmhousedelivery.com/green-shakshuka/",
@@ -235,6 +308,135 @@ func TestScraper_F(t *testing.T) {
 						},
 					},
 				},
+			},
+		},
+		{
+			name: "felix.kitchen",
+			in:   "https://felix.kitchen/2019/12/12/haehnchenkeulen-pouletschenkel-mit-whisky-im-ofen/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookTime:      "",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DateCreated:   "",
+				DateModified:  "2022-09-04T07:35:04+00:00",
+				DatePublished: "2019-12-12T01:04:37+00:00",
+				Description:   &models.Description{Value: "Ente oder Huhn? Das ist auch hier eine Frage der Verfügbarkeit. Enten sind in Thailand zwar fast alltäglich – falls man sie bereits gebraten in einem «raan-aahaan» (Restaurant) essen mag. Aber zum …"},
+				Keywords:      &models.Keywords{Values: "ente,festtagstauglich,huhn,schmorgericht,zum vorbereiten"},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"Einkaufsliste zum Ausdrucken",
+						"2 Pouletschenkel (oder Entenkeulen) à ca. 250 g",
+						"ofenfeste Form",
+						"150 ml kräftige Geflügel- oder Gemüsebouillon",
+						"Geflügel-",
+						"Gemüsebouillon",
+						"75 ml Whisky",
+						"150 ml Rotwein",
+						"2 Lorbeerblätter",
+						"2 Nelken",
+						"10 Pfefferkörner, ganz",
+						"2–3 Knoblauchzehen, halbiert",
+						"Salz, Pfeffer aus der Mühle",
+						"1/2 EL Butter, kalt",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "Backofen auf 150 °C (O+U) vorheizen.", Type: "HowToStep"},
+						{
+							Text: "nebeneinander mit der Hautseite nach oben in eine nicht zu grosse,",
+							Type: "HowToStep",
+						},
+						{Text: "mischen, zu den Schenkeln giessen.", Type: "HowToStep"},
+						{Text: "Im Ofen 90 Minuten garen.", Type: "HowToStep"},
+						{Text: "dazugeben, weitere 30 Minuten garen.", Type: "HowToStep"},
+						{
+							Text: "Temperatur auf 180 °C erhöhen, weitere 30 Minuten schmoren.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Dabei können vorbereitete Kartoffelspalten in einer separaten Form mitgegart werden (siehe Tipp).",
+							Type: "HowToStep",
+						},
+						{Text: "Ofen ausschalten.", Type: "HowToStep"},
+						{
+							Text: "Flüssigkeit in ein Saucenpfännchen absieben, Schenkel im nicht ganz geschlossenen Ofen warmhalten.",
+							Type: "HowToStep",
+						},
+						{Text: "Flüssigkeit", Type: "HowToStep"},
+						{Text: "abschmecken.", Type: "HowToStep"},
+						{Text: "darunterschwenken (", Type: "HowToStep"},
+						{Text: "Schenkel mit der Sauce anrichten.", Type: "HowToStep"},
+						{
+							Text: "Dazu passen Kartoffelspalten (siehe Tipp) und ein Gemüsegericht, beispielsweise",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "KÖSTLICHE KEULEN",
+				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "",
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:       "",
+				Yield:           &models.Yield{Value: 2},
+				URL:             "https://felix.kitchen/2019/12/12/haehnchenkeulen-pouletschenkel-mit-whisky-im-ofen/",
+				Video:           &models.Videos{},
+			},
+		},
+		{
+			name: "felix2.kitchen",
+			in:   "https://felix.kitchen/2024/01/31/gruene-kloesse-rohe-kartoffeln-knoedel/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				DateModified:  "2024-01-31T03:05:07+00:00",
+				DatePublished: "2024-01-31T03:05:07+00:00",
+				Description: &models.Description{
+					Value: "Grüne Klösse: entweder man mag sie, oder findet sie abscheulich! Die Konsistenz dieser Knödel aus rohen Kartoffeln ist – nein: «glibberig» trifft nicht wirklich zu! – eher zart-weich oder «chewy», …",
+				},
+				Keywords: &models.Keywords{Values: "beilage,erinnerungen,festtagstauglich,klassiker,zum vorbereiten"},
+				Image:    &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"100 ml Milch",
+						"1 Prise Salz",
+						"12 g feiner Weizengriess oder Hartweizendunst",
+						"500 g Kartoffeln, mehlig kochend",
+						"Salz",
+						"Salzwasser",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "Milch mit Salz aufkochen, Griess einrieseln, auf kleinem Feuer zu einem weichen, nicht zu festen Griessbrei kochen.Zugedeckt abkühlen lassen.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Die Kartoffeln schälen, nicht zu fein reiben [FEL!X: mit der Trommel «für mittelgrobes raspeln», im Bild in der Mitte].In einem Leinentüchlein (oder in einem Sieb) gut auspressen, die Fl\xc3\xbcssigkeit dabei in einer Schüssel auffangen, kurz stehen lassen. Flüssigkeit aus der Schüssel vorsichtig abgiessen, zurück bleibt die Stärke der Kartoffeln. Kartoffelraspel mit dem Griessbrei und der Stärke mischen, salzen.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Zum Garen der Klösse habe ich meinen Reiskocher verwendet: den Topf gut zur Hälfte mit Wasser füllen, mit der «Steam-Funktion» erhitzen, salzen.Vorteil: im Reiskocher bleibt das Wasser stets knapp unter dem Siedepunkt! Einen halbkugelförmigen Glacé-Portionierer von ca. 6 cm ø mit der Masse füllen, das Kugelende in das leicht kochende Salzwasser halten, dann durch Zusammendrücken des Griffs den Kloss lösen.Alternative: mit 2 Esslöffeln Nocken formen und in das leicht kochende Salzwasser gleiten lassen. 4Die Klösse ziehen lassen, wenn sie an die Oberfläche steigen, sind sie gar. Hitzequelle ausschalten, die Klösse im heissen Wasser belassen. Erst zum Anrichten herausnehmen und abtropfen lassen.",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name:            "ERINNERUNGEN: DIE GRÜNEN KLÖSSE MEINER GROSSMUTTER",
+				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 6},
+				URL:             "https://felix.kitchen/2024/01/31/gruene-kloesse-rohe-kartoffeln-knoedel/",
+				Video:           &models.Videos{},
 			},
 		},
 		{

@@ -50,7 +50,7 @@ func scrapeGoodEatings(root *goquery.Document) (models.RecipeSchema, error) {
 		before, after, ok := strings.Cut(yieldStr, "TIME")
 		if ok {
 			yieldStr = before
-			matches := regex.Time.FindStringSubmatch(string(after))
+			matches := regex.Time.FindStringSubmatch(after)
 			if matches != nil {
 				matches = slices.DeleteFunc(regex.Time.FindStringSubmatch(after), func(s string) bool { return s == "" })
 			}
