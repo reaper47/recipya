@@ -90,12 +90,12 @@ func TestScraper_R(t *testing.T) {
 				Instructions: &models.Instructions{
 					Values: []models.HowToItem{
 						{
-							Text: "Monder les tomates : former une petite croix sur le dessous des tomates et les plonger dans une grande quantité d’eau bouillante pendant 15 secondes. Les refroidir ensuite dans de l’eau glacée pendant 30 secondes. La peau va ensuite s’enlever facilement.Les hacher grossièrement.Torréfier les cacahuètes quelques minutes dans une poêle jusqu’à obtenir une belle coloration. Mélanger ensuite au blender les cacahuètes, les tomates, la cébette, la coriandre, le jus de citron vert et le piment rouge jusqu’à l’obtention d’une sauce.",
+							Text: "Monder les tomates\u00a0: former une petite croix sur le dessous des tomates et les plonger dans une grande quantité d’eau bouillante pendant 15 secondes. Les refroidir ensuite dans de l’eau glacée pendant 30 secondes. La peau va ensuite s’enlever facilement.Les hacher grossièrement.Torréfier les cacahuètes quelques minutes dans une poêle jusqu’à obtenir une belle coloration. Mélanger ensuite au blender les cacahuètes, les tomates, la cébette, la coriandre, le jus de citron vert et le piment rouge jusqu’à l’obtention d’une sauce.",
 							Type: "HowToStep",
 						},
 						{Text: "Publicité", Type: "HowToStep"},
 						{
-							Text: "S’il reste quelques morceaux de cacahuètes, ne vous inquiétez pas, ils apportent de la consistance à votre aji !",
+							Text: "S’il reste quelques morceaux de cacahuètes, ne vous inquiétez pas, ils apportent de la consistance à votre aji\u00a0!",
 							Type: "HowToStep",
 						},
 						{
@@ -197,7 +197,8 @@ func TestScraper_R(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        &models.SchemaType{Value: "Recipe"},
-				Category:      &models.Category{Value: "uncategorized"},
+				Category:      &models.Category{Value: "Dinner"},
+				Cuisine:       &models.Cuisine{Value: "American"},
 				DateModified:  "2018-07-05T14:07:52.000-04:00",
 				DatePublished: "2016-12-07T11:48:40.000-05:00",
 				Description: &models.Description{
@@ -239,7 +240,7 @@ func TestScraper_R(t *testing.T) {
 				},
 				TotalTime: "PT30M",
 				URL:       "https://www.realsimple.com/food-recipes/browse-all-recipes/sheet-pan-chicken-and-sweet-potatoes",
-				Yield:     &models.Yield{Value: 1},
+				Yield:     &models.Yield{Value: 4},
 				Video: &models.Videos{
 					Values: []models.VideoObject{
 						{
@@ -269,7 +270,7 @@ func TestScraper_R(t *testing.T) {
 					Value: "Sobremesa com creme de Leite MOÇA, biscoito champanhe, pêssegos em calda e Chocolate GALAK",
 				},
 				Keywords: &models.Keywords{
-					Values: "Family Meals,Café da Tarde,Sobremesa,Local,New Years,Natal,Sem peixe,Sem crustáceos,Sem carne de porco,Pescador,receita com frutos do mar,receita com peixe,receita sem crustaceos,receita sem carne de porco,receita sem peixe,MyMenuPlan,leite moça,pavê,De outros,Fruta,Frio / montagem",
+					Values: "Family Meals,Café da Tarde,Sobremesa,Local,New Years,Natal,Sem peixe,Sem crustáceos,Pouco sal,Sem carne de porco,Pescador,Under 300 kcal,receita com frutos do mar,receita com peixe,receita sem crustaceos,receita sem carne de porco,receita sem peixe,MyMenuPlan,leite moça,pavê,De outros,Fruta,Frio / montagem",
 				},
 				Image: &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
@@ -415,15 +416,14 @@ func TestScraper_R(t *testing.T) {
 				AtContext:     "https://schema.org",
 				AtType:        &models.SchemaType{Value: "Recipe"},
 				Category:      &models.Category{Value: "Side Dishes"},
-				CookingMethod: &models.CookingMethod{},
 				CookTime:      "PT10M",
 				Cuisine:       &models.Cuisine{Value: "American"},
-				DatePublished: "2023-11-13",
+				DatePublished: "2023-11-12T18:31:48+00:00",
 				Description: &models.Description{
 					Value: "Cranberry apple sauce is sweet and tart and a must make side dish for your holiday table!",
 				},
 				Keywords: &models.Keywords{
-					Values: "cranberry apple sauce, cranberry sauce, cranberry applesauce, apple cranberry sauce",
+					Values: "apple cranberry sauce, cranberry apple sauce, cranberry applesauce, cranberry sauce",
 				},
 				Image: &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
@@ -443,26 +443,17 @@ func TestScraper_R(t *testing.T) {
 				},
 				Name: "Cranberry Apple Sauce",
 				NutritionSchema: &models.NutritionSchema{
-					Calories:       "117",
-					Carbohydrates:  "30",
-					Cholesterol:    "0",
-					Fat:            "0",
-					Fiber:          "3",
-					Protein:        "0",
-					SaturatedFat:   "0",
-					Servings:       "1",
-					Sodium:         "48",
-					Sugar:          "23",
-					TransFat:       "0",
-					UnsaturatedFat: "0",
+					Calories:      "117",
+					Carbohydrates: "30",
+					Fiber:         "3",
+					Servings:      "1 g",
+					Sodium:        "48",
+					Sugar:         "23",
 				},
-				PrepTime:     "PT5M",
-				ThumbnailURL: &models.ThumbnailURL{},
-				Tools:        &models.Tools{Values: []models.HowToItem{}},
-				TotalTime:    "PT15M",
-				Yield:        &models.Yield{Value: 6},
-				URL:          "https://reciperunner.com/cranberry-apple-sauce/",
-				Video:        &models.Videos{},
+				PrepTime:  "PT5M",
+				TotalTime: "PT15M",
+				Yield:     &models.Yield{Value: 6},
+				URL:       "https://reciperunner.com/cranberry-apple-sauce/",
 			},
 		},
 		{
@@ -723,7 +714,7 @@ func TestScraper_R(t *testing.T) {
 				DateModified:  "2014-05-28",
 				DatePublished: "2014-05-26",
 				Description: &models.Description{
-					Value: "Hähnchen-Nuggets, ein Rezept der Kategorie Vorspeisen/Salate. Mehr Thermomix ® Rezepte auf www.rezeptwelt.de",
+					Value: "Hähnchen-Nuggets, ein Rezept der Kategorie Vorspeisen/Salate. Mehr Thermomix® Rezepte auf www.rezeptwelt.de",
 				},
 				Image: &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
@@ -1000,7 +991,7 @@ func TestScraper_R(t *testing.T) {
 				Description: &models.Description{
 					Value: "Recipe Flourless refined sugar free chocolate cake by Mixing Adventures, learn to make this recipe easily in your kitchen machine and discover other Thermomix recipes in Baking - sweet.",
 				},
-				Keywords: &models.Keywords{Values: "Baking - sweet, recipes, Dessert, Gluten free, Lactose free, Non-dairy"},
+				Keywords: &models.Keywords{Values: "Dessert, Gluten free, Lactose free, Non-dairy"},
 				Image:    &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
 					Values: []string{
@@ -1018,12 +1009,12 @@ func TestScraper_R(t *testing.T) {
 				},
 				Instructions: &models.Instructions{
 					Values: []models.HowToItem{
-						{Type: "HowToStep", Text: "Pre-heat oven to 180 degrees C.  Grease and line a 20 cm round cake pan (I used a silicone ring tin)Mix dates and bi-carb soda in boiling water and leave to soak for a few minutes while you do the next step."},
+						{Type: "HowToStep", Text: "Pre-heat oven to 180 degrees C. \u00a0Grease and line a 20 cm round cake pan (I used a silicone ring tin)Mix dates and bi-carb soda in boiling water and leave to soak for a few minutes while you do the next step."},
 						{Type: "HowToStep", Text: "Grind almonds for 10 seconds, speed 9.Set aside."},
-						{Type: "HowToStep", Text: "Put dates, water and bi-carb into mixing bowl, and blend for 30 seconds, speed 6.  You may need to stop and scrape the sides a couple of times, and maybe reduce the speed a little after the first few seconds if necessary."},
-						{Type: "HowToStep", Text: "Add eggs, oil, vanilla essence and blend for 20 seconds, speed 6.  Scrape down bowl."},
-						{Type: "HowToStep", Text: "Add almonds, baking powder, cocoa and salt and mix for 20 seconds, speed 6.  Scrape down bowl and repeat."},
-						{Type: "HowToStep", Text: "Pour into prepared cake tin and bake at 180 degrees for 30 minutes, or until a skewer comes out clean.  Leave until cool before turning onto a serving plate. I covered mine with chocolate ganache and served with whipped cream and raspberry coulis."},
+						{Type: "HowToStep", Text: "Put dates, water and bi-carb into mixing bowl, and blend for 30 seconds, speed 6. \u00a0You may need to stop and scrape the sides a couple of times, and maybe reduce the speed a little after the first few seconds if necessary."},
+						{Type: "HowToStep", Text: "Add eggs, oil, vanilla essence and blend for 20 seconds, speed 6. \u00a0Scrape down bowl."},
+						{Type: "HowToStep", Text: "Add almonds, baking powder, cocoa and salt and mix for 20 seconds, speed 6. \u00a0Scrape down bowl and repeat."},
+						{Type: "HowToStep", Text: "Pour into prepared cake tin and bake at 180 degrees for 30 minutes, or until a skewer comes out clean. \u00a0Leave until cool before turning onto a serving plate. I covered mine with chocolate ganache and served with whipped cream and raspberry coulis."},
 					},
 				},
 				PrepTime:        "PT10M",

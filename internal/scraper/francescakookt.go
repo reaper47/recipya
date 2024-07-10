@@ -17,8 +17,10 @@ func scrapeFrancescakookt(root *goquery.Document) (models.RecipeSchema, error) {
 	nodes := root.Find("meta[property='article:tag']")
 	keywords := make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		v, _ := sel.Attr("content")
-		keywords = append(keywords, v)
+		v := sel.AttrOr("content", "")
+		if v != "" {
+			keywords = append(keywords, v)
+		}
 	})
 	rs.Keywords.Values = strings.ToLower(strings.Join(keywords, ","))
 

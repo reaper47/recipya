@@ -22,7 +22,7 @@ func scrapeKuchniadomova(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.Keywords.Values = getNameContent(root, "keywords")
 	rs.Cuisine.Value = root.Find("p[itemprop=recipeCuisine]").Text()
 
-	image, _ := root.Find("#article-img-1").Attr("data-src")
+	image := root.Find("#article-img-1").AttrOr("data-src", "")
 	rs.Image.Value = "https://kuchnia-domowa.pl" + image
 
 	description := root.Find("#recipe-description").Text()

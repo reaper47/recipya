@@ -612,7 +612,7 @@ func TestScraper_F(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        &models.SchemaType{Value: "Recipe"},
-				Category:      &models.Category{Value: "uncategorized"},
+				Category:      &models.Category{Value: "Meal Prep"},
 				CookTime:      "PT20M",
 				DateModified:  "2023-05-16T19:59:35+00:00",
 				DatePublished: "2021-09-05T18:05:31+00:00",
@@ -840,6 +840,7 @@ func TestScraper_F(t *testing.T) {
 				PrepTime:        "PT0H15M",
 				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				TotalTime:       "PT1H15M",
 				Yield:           &models.Yield{Value: 4},
 				URL:             "https://food52.com/recipes/7930-orecchiette-with-roasted-butternut-squash-kale-and-caramelized-red-onion",
 				Video:           &models.Videos{},
@@ -957,7 +958,7 @@ func TestScraper_F(t *testing.T) {
 				Cuisine:       &models.Cuisine{Value: "Vegan"},
 				DatePublished: "2021-07-05T06:08:35+00:00",
 				Description:   &models.Description{},
-				Keywords:      &models.Keywords{Values: "meal prep, vegan, plant-based, summer recipes, moussaka"},
+				Keywords:      &models.Keywords{Values: "vegan, plant-based, summer recipes, moussaka, meal prep"},
 				Image:         &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
 					Values: []string{
@@ -1067,7 +1068,7 @@ func TestScraper_F(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        &models.SchemaType{Value: "Recipe"},
-				Category:      &models.Category{Value: "uncategorized"},
+				Category:      &models.Category{Value: "Starters"},
 				CookingMethod: &models.CookingMethod{},
 				Cuisine:       &models.Cuisine{},
 				CookTime:      "PT10M",
@@ -1398,7 +1399,7 @@ func TestScraper_F(t *testing.T) {
 				Category:      &models.Category{Value: "Alte französische Rezepte"},
 				CookTime:      "PT30M",
 				Cuisine:       &models.Cuisine{Value: "französische Rezepte"},
-				DateModified:  "2022-03-09T15:14:09+02:00 ",
+				DateModified:  "2024-06-11T17:03:01+02:00 ",
 				DatePublished: "2022-03-09T15:14:09+02:00 ",
 				Description:   &models.Description{Value: "Ein einfaches Rezept mit Schritt-für-Schritt-Fotos und vielen Tipps über das Thema: Navettes aus Marseille"},
 				Keywords:      &models.Keywords{Values: "französisch,frankreich,Alte französische Rezepte,Einfachste Rezepte,In der Boulangerie,Kekse &amp; Plätzchen,Provence,Traditionelle Rezepte,Typisch französische Kuchen"},
@@ -1416,7 +1417,7 @@ func TestScraper_F(t *testing.T) {
 				Instructions: &models.Instructions{
 					Values: []models.HowToItem{
 						{Type: "HowToStep", Text: "Das Ei mit dem Honig, Orangenblütenwasser und Olivenöl rühren...."},
-						{Type: "HowToStep", Text: "Kleine Teigkugels (25 bis 30g ) nehmen, wie Knete in die Länge ausrollen. Sie sollten eine ovale Form oder besser eine Schiff-Form bekommen. Die geformten Navette auf einem mit Backpapier belegten Backblech legen. Die Navettes in der Mitte entlang anschneiden."},
+						{Type: "HowToStep", Text: "Kleine Teigkugel (25 bis 30g ) nehmen, wie Knete in die Länge ausrollen. Sie sollten eine ovale Form oder besser eine Schiff-Form bekommen. Die geformten Navettes auf einem mit Backpapier belegten Backblech legen. Die Navettes in der Mitte entlang anschneiden."},
 						{Type: "HowToStep", Text: "Backen: 180°C Umluft für 12 bis 15 Minuten. (es kommt darauf an, ob Ihr eure Navettes brauner mögt wie ich oder lieber hell!)"},
 					},
 				},

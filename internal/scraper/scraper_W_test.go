@@ -391,6 +391,18 @@ func TestScraper_W(t *testing.T) {
 						{Type: "HowToStep", Text: "Mix the flour with the chopped spinach in the pan, and add the milk."},
 						{Type: "HowToStep", Text: "Bring the spinach to the boil, and simmer gently for 3–5 minutes."},
 						{Type: "HowToStep", Text: "Add salt and pepper to taste."},
+						{
+							Text: "It is not uncommon to add a dash of garlic and/or nutmeg to the creamed spinach.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "The proportions of milk/cream to spinach can be varied to produce anything from a rich green color to something similar to a white sauce with spinach in it, all according to taste.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Note that spinach is high in nitrites, which means you may not have to use as much salt as you might think.",
+							Type: "HowToStep",
+						},
 					},
 				},
 				Ingredients: &models.Ingredients{
@@ -440,6 +452,18 @@ func TestScraper_W(t *testing.T) {
 						{Type: "HowToStep", Text: "Mix the flour with the chopped spinach in the pan, and add the milk."},
 						{Type: "HowToStep", Text: "Bring the spinach to the boil, and simmer gently for 3–5 minutes."},
 						{Type: "HowToStep", Text: "Add salt and pepper to taste."},
+						{
+							Text: "It is not uncommon to add a dash of garlic and/or nutmeg to the creamed spinach.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "The proportions of milk/cream to spinach can be varied to produce anything from a rich green color to something similar to a white sauce with spinach in it, all according to taste.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Note that spinach is high in nitrites, which means you may not have to use as much salt as you might think.",
+							Type: "HowToStep",
+						},
 					},
 				},
 				Ingredients: &models.Ingredients{

@@ -37,6 +37,7 @@
 		<meta name="theme-color" content="#E2211C" />
 		<!-- Facebook domain verification -->
 		<meta name="facebook-domain-verification" content="9bqqmy6nl2fn8q19ofn89z9yrxclhe" />
+		<meta name="google-adsense-account" content="ca-pub-7757068703464679">
 
 		<link rel="canonical" href="https://www.saboresajinomoto.com.br/receita/pizza-de-pao-amanhecido" />
 		<link rel="alternate" href="https://www.saboresajinomoto.com.br/receita/pizza-de-pao-amanhecido" hreflang="pt-br" />
@@ -215,7 +216,7 @@
 	},
 	"headline": "PIZZA DE PÃO AMANHECIDO",
 	"description": "",
-	"image": "https://www.saboresajinomoto.com.br/uploads/images/recipes/pizza-de-pao-amanhecido.webp",
+	"image": "/uploads/images/recipes/pizza-de-pao-amanhecido.webp",
 	"author": {
 		"@type": "",
 		"name": "sabores ajinomoto"
@@ -237,7 +238,7 @@
 	"@context": "https://schema.org/",
 	"@type": "Recipe",
 	"name": "PIZZA DE PÃO AMANHECIDO",
-	"image": "https://www.saboresajinomoto.com.br/uploads/images/recipes/pizza-de-pao-amanhecido.webp",
+	"image": "/uploads/images/recipes/pizza-de-pao-amanhecido.webp",
 	"description": "",
 	"keywords": "",
 	"author": {
@@ -260,7 +261,7 @@
 		"ratingValue": "3",
 		"bestRating": "",
 		"worstRating": "",
-		"ratingCount": "0"
+		"ratingCount": "1"
  	}
 }
 </script>
@@ -315,6 +316,39 @@
 					return true;
 				});
 				 _gaq.push(['_trackEvent', 'Cabeçalho', 'Busca', vTermo]);
+			}
+
+			function moengageApiTrackEvent(endpoint, payload){
+				console.log('moengageApiTrackEvent');
+				console.log(endpoint);
+				console.log(payload);
+				var moengageVIntervalCount = 0;
+				var moengageVInterval = setInterval(function(){
+					console.log('trying moengage');
+					if(typeof Moengage != 'undefined') {
+						try {
+							if(typeof Moengage.user.getAttributes().USER_ATTRIBUTE_UNIQUE_ID != 'undefined') {
+								$.ajax({
+									url: '/ajax/moengage-track-event/'+endpoint,
+									method: 'POST',
+									data: {
+										user_id: Moengage.user.getAttributes().USER_ATTRIBUTE_UNIQUE_ID,
+										payload: payload
+									},
+								});
+							}
+							console.log('clearInterval moengageVInterval');
+							clearInterval(moengageVInterval);
+						} catch (e) {
+						}
+					} else {
+						moengageVIntervalCount++;
+					}
+					if(moengageVIntervalCount > 50) {
+						console.log('clearInterval moengageVInterval');
+						clearInterval(moengageVInterval);
+					}
+				}, 50);
 			}
 		</script>
 
@@ -477,12 +511,12 @@
 				<a href="/receita/imprimir/pizza-de-pao-amanhecido" onclick="_gaq.push(['_trackEvent', 'Receitas', 'Imprimir', 'Receita: Pizza de pão amanhecido - Sabores Ajinomoto']);" target="_blank"><i class="fa fa-print" aria-hidden="true"></i> Imprimir Receita</a>
 			</li>
 			
-											<li class="content-type-evaluation" data-avaliacao="0" data-media="3.0000">
+											<li class="content-type-evaluation" data-avaliacao="1" data-media="3.0000">
 												
 												
 									<a href="#modal-login" onclick="_gaq.push(['_trackEvent', 'Login', 'Avaliação', 'Receita: Pizza de pão amanhecido - Sabores Ajinomoto']);" data-fancybox>
 																																				
-							<i class="fa fa-star text-red" data-toggle="tooltip" data-html="true" title="Não gostei" data-avaliacao="1" data-receita="6033" data-usuario=""></i>
+							<i class="fa fa-star text-yellow" data-toggle="tooltip" data-html="true" title="Não gostei" data-avaliacao="1" data-receita="6033" data-usuario=""></i>
 																																											
 							<i class="fa fa-star text-red" data-toggle="tooltip" data-html="true" title="Médio" data-avaliacao="2" data-receita="6033" data-usuario=""></i>
 																																											
@@ -561,11 +595,11 @@
 				<ul class="products">
 											<li class="text-center" data-moengage_payload="{&quot;nome do produto&quot;:&quot;Tempero SAZ\u00d3N\u00ae Laranja&quot;,&quot;id do produto&quot;:86,&quot;link do produto&quot;:&quot;https:\/\/loja.ajinomoto.com.br\/tempero-em-po-sazon-para-massas-60g-ajt-102004\/p?utm_source=site_sabores&amp;utm_medium=cta_comprar&quot;,&quot;marca&quot;:&quot;Tempero SAZ\u00d3N\u00ae&quot;,&quot;categoria do produto&quot;:&quot;&quot;}">
 							<a href="https://loja.ajinomoto.com.br/tempero-em-po-sazon-para-massas-60g-ajt-102004/p?utm_source=site_sabores&amp;utm_medium=cta_comprar" target="_blank">
-								<img src="/uploads/images/products/MASSAS.png" alt="Tempero SAZÓN® Laranja" title="Tempero SAZÓN® Laranja">
+								<img src="/uploads/images/products/MicrosoftTeams_image _27_.png" alt="Tempero SAZÓN® Laranja" title="Tempero SAZÓN® Laranja">
 							</a>
 														<div class="btn-shop">
 								<a href="https://loja.ajinomoto.com.br/tempero-em-po-sazon-para-massas-60g-ajt-102004/p?utm_source=site_sabores&amp;utm_medium=cta_comprar" target="_blank" 
-								onclick="Moengage.track_event('clicou-comprar-loja', {'nome do botão': 'Comprar', 'id do botão': 'btn-shop-now', 'url destino': 'https://loja.ajinomoto.com.br/tempero-em-po-sazon-para-massas-60g-ajt-102004/p?utm_source=site_sabores&amp;utm_medium=cta_comprar'}); dataLayer.push({ 'event': 'gaEvent', 'event_name': 'comprar', 'event_section': 'produtos', 'event_local': 'receita/pizza-de-pao-amanhecido', 'event_text': 'comprar', 'event_action': 'click', 'event_product': 'tempero-sazon-laranja'});" data-ean="7891132019717" class="btn-default btn-action btn-size-l align-center btn-shop-now" data-slug="tempero-sazon-laranja">Comprar</a>
+								onclick="Moengage.track_event('clicou-comprar-loja', {'nome do botão': 'Comprar', 'id do botão': 'btn-shop-now', 'url destino': 'https://loja.ajinomoto.com.br/tempero-em-po-sazon-para-massas-60g-ajt-102004/p?utm_source=site_sabores&amp;utm_medium=cta_comprar'}); moengageApiTrackEvent('botao-comprar', {'nome do botão': 'Comprar', 'id do botão': 'btn-shop-now', 'url destino': 'https://loja.ajinomoto.com.br/tempero-em-po-sazon-para-massas-60g-ajt-102004/p?utm_source=site_sabores&amp;utm_medium=cta_comprar'}); dataLayer.push({ 'event': 'gaEvent', 'event_name': 'comprar', 'event_section': 'produtos', 'event_local': 'receita/pizza-de-pao-amanhecido', 'event_text': 'comprar', 'event_action': 'click', 'event_product': 'tempero-sazon-laranja'});" data-ean="7891132019717" class="btn-default btn-action btn-size-l align-center btn-shop-now" data-slug="tempero-sazon-laranja">Comprar</a>
 							</div>
 													</li>
 									</ul>
@@ -763,7 +797,7 @@
 								<div class="shop-now-product-all">
 									<h2>Tempero SAZÓN® Laranja</h2>
 									<figure>
-										<img src="/uploads/images/products/MASSAS.png" alt="Tempero SAZÓN® Laranja" title="Tempero SAZÓN® Laranja">
+										<img src="/uploads/images/products/MicrosoftTeams_image _27_.png" alt="Tempero SAZÓN® Laranja" title="Tempero SAZÓN® Laranja">
 									</figure>
 								</div>
 							</div>
@@ -879,6 +913,14 @@
 				</div>
 			</div>
 		</footer>
+
+		<div class="whatsapp-chat">
+			<a href="https://api.whatsapp.com/send/?phone=5508007049039&text&type=phone_number&app_absent=0" style="text-decoration: none; !important" target="_blank" class="icon-whats"></a>
+			<a href="https://api.whatsapp.com/send/?phone=5508007049039&text&type=phone_number&app_absent=0" style="text-decoration: none; !important" target="_blank" class="icon-whats-txt-label">
+				Olá, precisa de ajuda?
+			</a>
+		</div>
+
 		</section>
 <!--
 		<section id="cookiesPage">
@@ -1019,7 +1061,7 @@ var moengageRecipePayload = {
 	'nome da receita': 'PIZZA DE PÃO AMANHECIDO',
 	'url da receita': '/receita/pizza-de-pao-amanhecido',
 	'categoria da receita': 'Lanche',
-	'rating da receita': '0',
+	'rating da receita': '1',
 };
 function moengageTrackRecipeRatingEvent() {
 	console.log('moengageTrackRecipeRatingEvent');
@@ -1041,6 +1083,11 @@ const elementIsVisibleInViewport = (el, partiallyVisible = false) => {
 
 $(document).ready(function() {
 	Moengage.track_event('visualizou-receita', moengageRecipePayload);
+	moengageApiTrackEvent('receita-visualizada', {
+		'ID': '6033',
+		'nome da receita': 'PIZZA DE PÃO AMANHECIDO',
+		'categoria da receita': 'Lanche',
+	});
 	var vTimeout;
 	$(window).on('scroll', function(){
 		clearTimeout(vTimeout);
@@ -1111,7 +1158,7 @@ $(document).ready(function() {
 			'nome da receita': 'PIZZA DE PÃO AMANHECIDO',
 			'url da receita': '/receita/pizza-de-pao-amanhecido',
 			'categoria da receita': 'Lanche',
-			'rating da receita': '0',
+			'rating da receita': '1',
 			'nome da coleção': collectionTitle,
 			'descrição da coleção': collectionDescription,
 		};
@@ -1266,12 +1313,15 @@ $(document).ready(function() {
 			type: 'POST',
 			success: function (response) {
 				$.fancybox.open(response);
-				Moengage.track_event('finalizou-inscrição-newsletter', {
-					'tipo de newsletter': 'Newsletter mensal',
-				});
 				Moengage.add_unique_user_id(email).then(function(){
 					Moengage.add_user_attribute('email', email);
 					Moengage.add_user_attribute('inscrito newsletter mensal', true);
+					Moengage.track_event('finalizou-inscrição-newsletter', {
+						'tipo de newsletter': 'Newsletter mensal',
+					});
+					moengageApiTrackEvent('inscreveu-newsletter', {
+						'tipo de newsletter': 'Newsletter mensal',
+					});
 				});
 			},
 			error: function (response) {

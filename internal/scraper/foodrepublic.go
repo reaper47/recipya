@@ -26,7 +26,7 @@ func scrapeFoodRepublic(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 	rs.CookTime = cookTime
 
-	rs.Image.Value, _ = content.Find(".recipe-card-image img").Attr("data-lazy-src")
+	rs.Image.Value = content.Find(".recipe-card-image img").AttrOr("data-lazy-src", "")
 	rs.Description.Value = content.Find(".recipe-card-description").Text()
 
 	getIngredients(&rs, content.Find(".recipe-ingredients li"), []models.Replace{

@@ -9,7 +9,7 @@ import (
 func scrapeDrinkoteket(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Name, _ = root.Find("meta[property='og:title']").Last().Attr("content")
+	rs.Name = root.Find("meta[property='og:title']").Last().AttrOr("content", "")
 	rs.Description.Value = getPropertyContent(root, "og:description")
 	rs.Category.Value = getPropertyContent(root, "article:section")
 	rs.Image.Value = getPropertyContent(root, "og:image")

@@ -9,7 +9,7 @@ import (
 func scrapeYumelise(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Image.Value, _ = root.Find(".wprm-recipe-image").First().Find("img").First().Attr("src")
+	rs.Image.Value = root.Find(".wprm-recipe-image").First().Find("img").First().AttrOr("src", "")
 	rs.Name = root.Find(".wprm-recipe-name").First().Text()
 	rs.Category.Value = root.Find(".wprm-recipe-course-container").First().Children().Last().Text()
 	rs.Cuisine.Value = root.Find(".wprm-recipe-cuisine-container").First().Children().Last().Text()

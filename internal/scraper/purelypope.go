@@ -12,7 +12,7 @@ func scrapePurelyPope(root *goquery.Document) (models.RecipeSchema, error) {
 
 	rs.DateModified = getPropertyContent(root, "article:modified_time")
 	rs.DatePublished = getPropertyContent(root, "article:published_time")
-	image, _ := root.Find("img[itemprop=image]").Attr("src")
+	image := root.Find("img[itemprop=image]").AttrOr("src", "")
 	split := strings.Split(image, "?")
 	if len(split) > 0 {
 		image = split[0]
@@ -22,10 +22,10 @@ func scrapePurelyPope(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.Name = root.Find("h2[itemprop=name]").Text()
 	rs.Yield.Value = findYield(root.Find("span[itemprop=recipeYield]").Text())
 
-	prepTime, _ := root.Find("time[itemprop=prepTime]").Attr("datetime")
+	prepTime := root.Find("time[itemprop=prepTime]").AttrOr("datetime", "")
 	rs.PrepTime = strings.ReplaceAll(prepTime, " ", "")
 
-	cookTime, _ := root.Find("time[itemprop=cookTime]").Attr("datetime")
+	cookTime := root.Find("time[itemprop=cookTime]").AttrOr("datetime", "")
 	rs.CookTime = strings.ReplaceAll(cookTime, " ", "")
 
 	getIngredients(&rs, root.Find("span[itemprop=recipeIngredient]").FilterFunction(func(_ int, s *goquery.Selection) bool {

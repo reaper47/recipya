@@ -201,6 +201,20 @@ func TestScraper_O(t *testing.T) {
 				TotalTime: "PT60M",
 				Yield:     &models.Yield{Value: 12},
 				URL:       "https://omnivorescookbook.com/chinese-scallion-pancakes/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://www.youtube.com/watch?v=GBG1NIlh2oM",
+							Description:  "Super crispy and flaky on the outside and slightly chewy inside, my dim sum favorite, scallion pancakes, make a wonderful snack that you’ll love! {Vegan}. Recipe ➡︎  http://omnivorescookbook.com/chinese-scallion-pancakes/\n\n⬇︎⬇︎⬇︎Click more to see ingredients ⬇︎⬇︎⬇︎\n\nINGREDIENTS\n\nDough\n2 cups (300 g) all-purpose flour\n1/2 teaspoon salt\n1/2 cup boiling water\n1/4 cup cool water\nFilling\n1/4 cup + 2 tablespoons (95 g) all-purpose flour\n1/4 cup peanut oil (or your favorite oil like olive oil, melted coconut oil, melted butter, or melted chicken fat etc.)\n3/4 teaspoon salt\n8 to 10 green onions, split down the middle and chopped (yield 1 cup)\nCooking\nVegetable oil for pan frying\nDipping Sauce (Optional)\n1 1/2 tablespoon soy sauce\n1 tablespoon Chinkiang vinegar (or rice vinegar)\n1/4 teaspoon sugar\n\nCheck out more cooking notes at ➡︎ http://omnivorescookbook.com/chinese-scallion-pancakes/\n\n***\nVisit my blog to get more delicious Chinese recipes!\nhttp://omnivorescookbook.com/\n***\n\n❤︎❤︎❤︎\nFollow Omnivore's Cookbook on\n\nPinterest: http://www.pinterest.com/OmnivorCookbook/\nInstagram: http://instagram.com/omnivorescookbook\nFacebook: http://www.facebook.com/omnivorescookbook\nTwitter: https://twitter.com/omnivorcookbook\n❤︎❤︎❤︎\n\nVIDEO EQUIPMENT\n\nCamera: https://amzn.to/2Q6QBb9\nLens: http://amzn.to/1UUFFai\nTripod: http://amzn.to/1K5Xi6s\nSoftware: Final Cut Pro\n\nMUSIC CREDIT\nhttps://artlist.io",
+							Duration:     "PT11M16S",
+							EmbedURL:     "https://www.youtube.com/embed/GBG1NIlh2oM?feature=oembed",
+							Name:         "How to Make Chinese Scallion Pancakes (recipe) 葱油饼",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://i.ytimg.com/vi/GBG1NIlh2oM/hqdefault.jpg"},
+							UploadDate:   time.Date(2020, 8, 25, 21, 11, 22, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{

@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" class="h-full">
-<head>
+  <head>
 
     <meta charset="UTF-8">
 
@@ -8,164 +8,164 @@
 
     <link rel="shortcut icon" href="https://theheartysoul.com/wp-content/themes/wp-master-theme/favicon.ico" />
 
-
+    
     <!-- Meta -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Connect with your Spirit &amp; live the life destined for you">
 
-
+    
     <!-- DNS Prefetch -->
-
+    
 
 
     <!-- Settings -->
     <script>
-        var settings = {
-            screen: {
-                size: null,
-            },
-            theme: null,
+      var settings = {
+        screen: {
+          size: null,
+        },
+        theme: null,
         };
     </script>
 
-
+    
     <!-- Settings: Monetization -->
     <script>
-        (function() {
-            settings.monetization = {
-                article: true,
-                paragraphs: 6,
-                provider: null,
-            };
+      (function() {
+        settings.monetization = {
+          article: true,
+          paragraphs: 6,
+          provider: null,
+        };
 
-            // const cookies = document.cookie.split(';');
-            // for (var i = 0; i < cookies.length; i++) {
-            //   const cookiePair = cookies[i].split('=');
-            //   if (cookiePair[0].trim() === 'adstack') {
-            //     if (cookiePair[1] === 'a') {
-            //       settings.monetization.provider = 'a';
-            //     } else if (cookiePair[1] === 'b') {
-            //       settings.monetization.provider = 'b';
-            //     } else {
-            //       settings.monetization.provider = 'c';
-            //     }
-            //   }
-            // }
+        // const cookies = document.cookie.split(';');
+        // for (var i = 0; i < cookies.length; i++) {
+        //   const cookiePair = cookies[i].split('=');
+        //   if (cookiePair[0].trim() === 'adstack') {
+        //     if (cookiePair[1] === 'a') {
+        //       settings.monetization.provider = 'a';
+        //     } else if (cookiePair[1] === 'b') {
+        //       settings.monetization.provider = 'b';
+        //     } else {
+        //       settings.monetization.provider = 'c';
+        //     }
+        //   }
+        // }
+        
+        if (settings.monetization.provider == null) {
+          const split = Math.random();
+          if (split >= 0.9) {
+  settings.monetization.provider = 'b';
+} else {
+  settings.monetization.provider = 'c';
+}
+        }
 
-            if (settings.monetization.provider == null) {
-                const split = Math.random();
-                if (split >= 0.9) {
-                    settings.monetization.provider = 'b';
-                } else {
-                    settings.monetization.provider = 'c';
-                }
-            }
-
-            const url = new URL(window.location.toLocaleString());
-            for (let [key, val] of url.searchParams) {
-                if (key === 'adstack' && val === 'a') {
-                    settings.monetization.provider = 'a';
-                    break;
-                }
-                if (key === 'adstack' && val === 'b') {
-                    settings.monetization.provider = 'b';
-                    break;
-                }
-                if (key === 'adstack' && val === 'c') {
-                    settings.monetization.provider = 'c';
-                    break;
-                }
-            }
-        })();
+        const url = new URL(window.location.toLocaleString());
+        for (let [key, val] of url.searchParams) {
+          if (key === 'adstack' && val === 'a') {
+            settings.monetization.provider = 'a';
+            break;
+          }
+          if (key === 'adstack' && val === 'b') {
+            settings.monetization.provider = 'b';
+            break;
+          }
+          if (key === 'adstack' && val === 'c') {
+            settings.monetization.provider = 'c';
+            break;
+          }
+        }
+      })();
     </script>
 
 
-
+    
     <!-- Google Tag Manager -->
     <!-- Data Layer -->
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        if (settings.monetization && settings.monetization.provider) {
-            dataLayer.push({'adstack': settings.monetization.provider});
-        }
-    </script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  if (settings.monetization && settings.monetization.provider) {
+  dataLayer.push({'adstack': settings.monetization.provider});
+  }
+</script>
 
 
 
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-MDS5TM');</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-MDS5TM');</script>
 
-
+    
     <!-- Monetization -->
     <script type="text/javascript">
 
         if (settings.monetization.provider === 'b') {
-            let t = document.createElement('script');
-            t.setAttribute('src', 'https://www.googletagmanager.com/gtag/js?id=G-NZKH3CM6HE');
-            t.setAttribute('async', '');
-            document.head.appendChild(t);
+          let t = document.createElement('script');
+t.setAttribute('src', 'https://www.googletagmanager.com/gtag/js?id=G-NZKH3CM6HE');
+t.setAttribute('async', '');
+document.head.appendChild(t);
 
-            window.ramp = window.ramp || {};
-            window.ramp.que = window.ramp.que || [];
-            if (window.settings.monetization.provider === 'b' && window.settings.monetization.article) {
-                window.ramp.forcePath = 'test-video';
-            }
+window.ramp = window.ramp || {};
+window.ramp.que = window.ramp.que || [];
+if (window.settings.monetization.provider === 'b' && window.settings.monetization.article) {
+  window.ramp.forcePath = 'test-video';
+}
 
-            let tt = document.createElement('script');
-            tt.setAttribute('src', '//cdn.intergient.com/1024889/74279/ramp.js');
-            tt.setAttribute('async', '');
-            document.head.appendChild(tt);
+let tt = document.createElement('script');
+tt.setAttribute('src', '//cdn.intergient.com/1024889/74279/ramp.js');
+tt.setAttribute('async', '');
+document.head.appendChild(tt);
 
-            window._pwGA4PageviewId = ''.concat(Date.now());
-            window.dataLayer = window.dataLayer || [];
-            window.gtag = window.gtag || function () {
-                dataLayer.push(arguments);
-            };
-            gtag('js', new Date());
-            gtag('config', 'G-NZKH3CM6HE', { 'send_page_view': false });
-            gtag(
-                'event',
-                'ramp_js',
-                {
-                    'send_to': 'G-NZKH3CM6HE',
-                    'pageview_id': window._pwGA4PageviewId
-                }
-            );
+window._pwGA4PageviewId = ''.concat(Date.now());
+window.dataLayer = window.dataLayer || [];
+window.gtag = window.gtag || function () { 
+  dataLayer.push(arguments);
+};
+gtag('js', new Date());
+gtag('config', 'G-NZKH3CM6HE', { 'send_page_view': false });
+gtag(
+  'event',
+  'ramp_js',
+  {
+    'send_to': 'G-NZKH3CM6HE',
+    'pageview_id': window._pwGA4PageviewId
+  }
+);
         }
 
         if (settings.monetization.provider === 'c') {
-            let t = document.createElement('script');
-            t.setAttribute('src', 'https://www.googletagmanager.com/gtag/js?id=G-NZKH3CM6HE');
-            t.setAttribute('async', '');
-            document.head.appendChild(t);
+          let t = document.createElement('script');
+t.setAttribute('src', 'https://www.googletagmanager.com/gtag/js?id=G-NZKH3CM6HE');
+t.setAttribute('async', '');
+document.head.appendChild(t);
 
-            window.ramp = window.ramp || {};
-            window.ramp.que = window.ramp.que || [];
+window.ramp = window.ramp || {};
+window.ramp.que = window.ramp.que || [];
 
-            let tt = document.createElement('script');
-            tt.setAttribute('src', '//cdn.intergient.com/1024889/74279/ramp.js');
-            tt.setAttribute('async', '');
-            document.head.appendChild(tt);
+let tt = document.createElement('script');
+tt.setAttribute('src', '//cdn.intergient.com/1024889/74279/ramp.js');
+tt.setAttribute('async', '');
+document.head.appendChild(tt);
 
-            window._pwGA4PageviewId = ''.concat(Date.now());
-            window.dataLayer = window.dataLayer || [];
-            window.gtag = window.gtag || function () {
-                dataLayer.push(arguments);
-            };
-            gtag('js', new Date());
-            gtag('config', 'G-NZKH3CM6HE', { 'send_page_view': false });
-            gtag(
-                'event',
-                'ramp_js',
-                {
-                    'send_to': 'G-NZKH3CM6HE',
-                    'pageview_id': window._pwGA4PageviewId
-                }
-            );
+window._pwGA4PageviewId = ''.concat(Date.now());
+window.dataLayer = window.dataLayer || [];
+window.gtag = window.gtag || function () { 
+  dataLayer.push(arguments);
+};
+gtag('js', new Date());
+gtag('config', 'G-NZKH3CM6HE', { 'send_page_view': false });
+gtag(
+  'event',
+  'ramp_js',
+  {
+    'send_to': 'G-NZKH3CM6HE',
+    'pageview_id': window._pwGA4PageviewId
+  }
+);
         }
     </script>
 
@@ -173,879 +173,879 @@
     <!-- wp -->
     <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
 
-    <!-- This site is optimized with the Yoast SEO Premium plugin v22.4 (Yoast SEO v23.0) - https://yoast.com/wordpress/plugins/seo/ -->
-    <title>Ginger Sweet Potato and Coconut Milk Stew with Lentils &amp; Kale</title>
-    <meta name="description" content="Looking for warming comfort food that&#039;s as nutritious as it is tasty? Check out this wonderful recipe for ginger coconut milk sweet potato stew." />
-    <link rel="canonical" href="https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/" />
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content="Ginger Sweet Potato and Coconut Milk Stew with Lentils &amp; Kale" />
-    <meta property="og:description" content="Gingered sweet potato and coconut milk stew is super flavourful, beautiful, and extra hearty with kale and lentils. Easy and quick vegan recipe!" />
-    <meta property="og:url" content="https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/" />
-    <meta property="og:site_name" content="The Hearty Soul" />
-    <meta property="article:author" content="https://www.facebook.com/TheTasteArchives/" />
-    <meta property="article:published_time" content="2020-06-04T21:46:54+00:00" />
-    <meta property="article:modified_time" content="2021-04-09T18:01:28+00:00" />
-    <meta property="og:image" content="https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22.jpg" />
-    <meta property="og:image:width" content="800" />
-    <meta property="og:image:height" content="419" />
-    <meta property="og:image:type" content="image/jpeg" />
-    <meta name="author" content="Julie Hambleton" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Ginger Sweet Potato and Coconut Milk Stew with Lentils &amp; Kale" />
-    <meta name="twitter:label1" content="Written by" />
-    <meta name="twitter:data1" content="Julie Hambleton" />
-    <meta name="twitter:label2" content="Est. reading time" />
-    <meta name="twitter:data2" content="3 minutes" />
-    <script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"Article","@id":"https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/#article","isPartOf":{"@id":"https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/"},"author":{"name":"Julie Hambleton","@id":"https://theheartysoul.com/#/schema/person/13746d950591b009487c4945d1f51f4c"},"headline":"Ginger Sweet Potato and Coconut Milk Stew with Lentils &#038; Kale","datePublished":"2020-06-04T21:46:54+00:00","dateModified":"2021-04-09T18:01:28+00:00","mainEntityOfPage":{"@id":"https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/"},"wordCount":475,"publisher":{"@id":"https://theheartysoul.com/#organization"},"image":{"@id":"https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/#primaryimage"},"thumbnailUrl":"https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22.jpg","articleSection":["Eat"],"inLanguage":"en-US"},{"@type":"WebPage","@id":"https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/","url":"https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/","name":"Ginger Sweet Potato and Coconut Milk Stew with Lentils & Kale","isPartOf":{"@id":"https://theheartysoul.com/#website"},"primaryImageOfPage":{"@id":"https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/#primaryimage"},"image":{"@id":"https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/#primaryimage"},"thumbnailUrl":"https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22.jpg","datePublished":"2020-06-04T21:46:54+00:00","dateModified":"2021-04-09T18:01:28+00:00","description":"Looking for warming comfort food that's as nutritious as it is tasty? Check out this wonderful recipe for ginger coconut milk sweet potato stew.","breadcrumb":{"@id":"https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/#breadcrumb"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/"]}]},{"@type":"ImageObject","inLanguage":"en-US","@id":"https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/#primaryimage","url":"https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22.jpg","contentUrl":"https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22.jpg","width":800,"height":419,"caption":"Ginger Sweet Potato and Coconut Milk Stew with Lentils & Kale"},{"@type":"BreadcrumbList","@id":"https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://theheartysoul.com/"},{"@type":"ListItem","position":2,"name":"Ginger Sweet Potato and Coconut Milk Stew with Lentils &#038; Kale"}]},{"@type":"WebSite","@id":"https://theheartysoul.com/#website","url":"https://theheartysoul.com/","name":"The Hearty Soul","description":"Connect with your Spirit &amp; live the life destined for you","publisher":{"@id":"https://theheartysoul.com/#organization"},"potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://theheartysoul.com/?s={search_term_string}"},"query-input":"required name=search_term_string"}],"inLanguage":"en-US"},{"@type":"Organization","@id":"https://theheartysoul.com/#organization","name":"The Hearty Soul","url":"https://theheartysoul.com/","logo":{"@type":"ImageObject","inLanguage":"en-US","@id":"https://theheartysoul.com/#/schema/logo/image/","url":"https://theheartysoul.com/wp-content/uploads/2020/06/sidebar-logo.png","contentUrl":"https://theheartysoul.com/wp-content/uploads/2020/06/sidebar-logo.png","width":380,"height":210,"caption":"The Hearty Soul"},"image":{"@id":"https://theheartysoul.com/#/schema/logo/image/"}},{"@type":"Person","@id":"https://theheartysoul.com/#/schema/person/13746d950591b009487c4945d1f51f4c","name":"Julie Hambleton","description":"Julie Hambleton has a BSc in Food and Nutrition from the Western University, Canada, is a former certified personal trainer and a competitive runner. Julie loves food, culture, and health, and enjoys sharing her knowledge to help others make positive changes and live healthier lives.","sameAs":["https://www.facebook.com/TheTasteArchives/"],"url":"https://theheartysoul.com/author/julie-hambleton/"}]}</script>
-    <!-- / Yoast SEO Premium plugin. -->
+	<!-- This site is optimized with the Yoast SEO Premium plugin v22.4 (Yoast SEO v23.0) - https://yoast.com/wordpress/plugins/seo/ -->
+	<title>Ginger Sweet Potato and Coconut Milk Stew with Lentils &amp; Kale</title>
+	<meta name="description" content="Looking for warming comfort food that&#039;s as nutritious as it is tasty? Check out this wonderful recipe for ginger coconut milk sweet potato stew." />
+	<link rel="canonical" href="https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/" />
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="Ginger Sweet Potato and Coconut Milk Stew with Lentils &amp; Kale" />
+	<meta property="og:description" content="Gingered sweet potato and coconut milk stew is super flavourful, beautiful, and extra hearty with kale and lentils. Easy and quick vegan recipe!" />
+	<meta property="og:url" content="https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/" />
+	<meta property="og:site_name" content="The Hearty Soul" />
+	<meta property="article:author" content="https://www.facebook.com/TheTasteArchives/" />
+	<meta property="article:published_time" content="2020-06-04T21:46:54+00:00" />
+	<meta property="article:modified_time" content="2021-04-09T18:01:28+00:00" />
+	<meta property="og:image" content="https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22.jpg" />
+	<meta property="og:image:width" content="800" />
+	<meta property="og:image:height" content="419" />
+	<meta property="og:image:type" content="image/jpeg" />
+	<meta name="author" content="Julie Hambleton" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="Ginger Sweet Potato and Coconut Milk Stew with Lentils &amp; Kale" />
+	<meta name="twitter:label1" content="Written by" />
+	<meta name="twitter:data1" content="Julie Hambleton" />
+	<meta name="twitter:label2" content="Est. reading time" />
+	<meta name="twitter:data2" content="3 minutes" />
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"Article","@id":"https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/#article","isPartOf":{"@id":"https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/"},"author":{"name":"Julie Hambleton","@id":"https://theheartysoul.com/#/schema/person/13746d950591b009487c4945d1f51f4c"},"headline":"Ginger Sweet Potato and Coconut Milk Stew with Lentils &#038; Kale","datePublished":"2020-06-04T21:46:54+00:00","dateModified":"2021-04-09T18:01:28+00:00","mainEntityOfPage":{"@id":"https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/"},"wordCount":475,"publisher":{"@id":"https://theheartysoul.com/#organization"},"image":{"@id":"https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/#primaryimage"},"thumbnailUrl":"https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22.jpg","articleSection":["Eat"],"inLanguage":"en-US"},{"@type":"WebPage","@id":"https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/","url":"https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/","name":"Ginger Sweet Potato and Coconut Milk Stew with Lentils & Kale","isPartOf":{"@id":"https://theheartysoul.com/#website"},"primaryImageOfPage":{"@id":"https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/#primaryimage"},"image":{"@id":"https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/#primaryimage"},"thumbnailUrl":"https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22.jpg","datePublished":"2020-06-04T21:46:54+00:00","dateModified":"2021-04-09T18:01:28+00:00","description":"Looking for warming comfort food that's as nutritious as it is tasty? Check out this wonderful recipe for ginger coconut milk sweet potato stew.","breadcrumb":{"@id":"https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/#breadcrumb"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/"]}]},{"@type":"ImageObject","inLanguage":"en-US","@id":"https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/#primaryimage","url":"https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22.jpg","contentUrl":"https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22.jpg","width":800,"height":419,"caption":"Ginger Sweet Potato and Coconut Milk Stew with Lentils & Kale"},{"@type":"BreadcrumbList","@id":"https://theheartysoul.com/ginger-sweet-potato-and-coconut-milk-stew/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://theheartysoul.com/"},{"@type":"ListItem","position":2,"name":"Ginger Sweet Potato and Coconut Milk Stew with Lentils &#038; Kale"}]},{"@type":"WebSite","@id":"https://theheartysoul.com/#website","url":"https://theheartysoul.com/","name":"The Hearty Soul","description":"Connect with your Spirit &amp; live the life destined for you","publisher":{"@id":"https://theheartysoul.com/#organization"},"potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://theheartysoul.com/?s={search_term_string}"},"query-input":"required name=search_term_string"}],"inLanguage":"en-US"},{"@type":"Organization","@id":"https://theheartysoul.com/#organization","name":"The Hearty Soul","url":"https://theheartysoul.com/","logo":{"@type":"ImageObject","inLanguage":"en-US","@id":"https://theheartysoul.com/#/schema/logo/image/","url":"https://theheartysoul.com/wp-content/uploads/2020/06/sidebar-logo.png","contentUrl":"https://theheartysoul.com/wp-content/uploads/2020/06/sidebar-logo.png","width":380,"height":210,"caption":"The Hearty Soul"},"image":{"@id":"https://theheartysoul.com/#/schema/logo/image/"}},{"@type":"Person","@id":"https://theheartysoul.com/#/schema/person/13746d950591b009487c4945d1f51f4c","name":"Julie Hambleton","description":"Julie Hambleton has a BSc in Food and Nutrition from the Western University, Canada, is a former certified personal trainer and a competitive runner. Julie loves food, culture, and health, and enjoys sharing her knowledge to help others make positive changes and live healthier lives.","sameAs":["https://www.facebook.com/TheTasteArchives/"],"url":"https://theheartysoul.com/author/julie-hambleton/"}]}</script>
+	<!-- / Yoast SEO Premium plugin. -->
 
 
-    <link rel='stylesheet' id='wp-block-library-css' href='https://theheartysoul.com/wp-includes/css/dist/block-library/style.min.css?ver=6.5.5' type='text/css' media='all' />
-    <style id='classic-theme-styles-inline-css' type='text/css'>
-        /*! This file is auto-generated */
-        .wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
-    </style>
-    <style id='global-styles-inline-css' type='text/css'>
-        body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}body .is-layout-flex{flex-wrap: wrap;align-items: center;}body .is-layout-flex > *{margin: 0;}body .is-layout-grid{display: grid;}body .is-layout-grid > *{margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
-        .wp-block-navigation a:where(:not(.wp-element-button)){color: inherit;}
-        :where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}
-        :where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
-        .wp-block-pullquote{font-size: 1.5em;line-height: 1.6;}
-    </style>
-    <link rel='stylesheet' id='base-theme-style-css' href='https://theheartysoul.com/wp-content/themes/wp-master-theme/public/dist/css/styles.css?id=8aeceeda9c1b4f0ab4d2d484d943e46f&#038;ver=6.5.5' type='text/css' media='all' />
-    <script type="text/javascript" src="https://theheartysoul.com/wp-includes/js/jquery/jquery.min.js?ver=3.7.1" id="jquery-core-js"></script>
-    <script type="text/javascript" src="https://theheartysoul.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1" id="jquery-migrate-js"></script>
-    <script type="text/javascript" src="https://theheartysoul.com/wp-content/themes/wp-master-theme/public/dist/js/bundle-header.js?id=f4da70e9205d59c7656d1b54ee6117b2&amp;ver=6.5.5" id="base_theme_header_scripts-js"></script>
-    <link rel="https://api.w.org/" href="https://theheartysoul.com/wp-json/" /><link rel="alternate" type="application/json" href="https://theheartysoul.com/wp-json/wp/v2/posts/98251" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://theheartysoul.com/xmlrpc.php?rsd" />
-    <meta name="generator" content="WordPress 6.5.5" />
-    <link rel='shortlink' href='https://theheartysoul.com/?p=98251' />
-    <link rel="alternate" type="application/json+oembed" href="https://theheartysoul.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Ftheheartysoul.com%2Fginger-sweet-potato-and-coconut-milk-stew%2F" />
-    <link rel="alternate" type="text/xml+oembed" href="https://theheartysoul.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Ftheheartysoul.com%2Fginger-sweet-potato-and-coconut-milk-stew%2F&#038;format=xml" />
-    <link rel="icon" href="https://theheartysoul.com/wp-content/uploads/2023/04/cropped-site-icon-1-32x32.png" sizes="32x32" />
-    <link rel="icon" href="https://theheartysoul.com/wp-content/uploads/2023/04/cropped-site-icon-1-192x192.png" sizes="192x192" />
-    <link rel="apple-touch-icon" href="https://theheartysoul.com/wp-content/uploads/2023/04/cropped-site-icon-1-180x180.png" />
-    <meta name="msapplication-TileImage" content="https://theheartysoul.com/wp-content/uploads/2023/04/cropped-site-icon-1-270x270.png" />
+<link rel='stylesheet' id='wp-block-library-css' href='https://theheartysoul.com/wp-includes/css/dist/block-library/style.min.css?ver=6.5.5' type='text/css' media='all' />
+<style id='classic-theme-styles-inline-css' type='text/css'>
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+</style>
+<style id='global-styles-inline-css' type='text/css'>
+body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}body .is-layout-flex{flex-wrap: wrap;align-items: center;}body .is-layout-flex > *{margin: 0;}body .is-layout-grid{display: grid;}body .is-layout-grid > *{margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+.wp-block-navigation a:where(:not(.wp-element-button)){color: inherit;}
+:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
+.wp-block-pullquote{font-size: 1.5em;line-height: 1.6;}
+</style>
+<link rel='stylesheet' id='base-theme-style-css' href='https://theheartysoul.com/wp-content/themes/wp-master-theme/public/dist/css/styles.css?id=8aeceeda9c1b4f0ab4d2d484d943e46f&#038;ver=6.5.5' type='text/css' media='all' />
+<script type="text/javascript" src="https://theheartysoul.com/wp-includes/js/jquery/jquery.min.js?ver=3.7.1" id="jquery-core-js"></script>
+<script type="text/javascript" src="https://theheartysoul.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1" id="jquery-migrate-js"></script>
+<script type="text/javascript" src="https://theheartysoul.com/wp-content/themes/wp-master-theme/public/dist/js/bundle-header.js?id=f4da70e9205d59c7656d1b54ee6117b2&amp;ver=6.5.5" id="base_theme_header_scripts-js"></script>
+<link rel="https://api.w.org/" href="https://theheartysoul.com/wp-json/" /><link rel="alternate" type="application/json" href="https://theheartysoul.com/wp-json/wp/v2/posts/98251" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://theheartysoul.com/xmlrpc.php?rsd" />
+<meta name="generator" content="WordPress 6.5.5" />
+<link rel='shortlink' href='https://theheartysoul.com/?p=98251' />
+<link rel="alternate" type="application/json+oembed" href="https://theheartysoul.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Ftheheartysoul.com%2Fginger-sweet-potato-and-coconut-milk-stew%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://theheartysoul.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Ftheheartysoul.com%2Fginger-sweet-potato-and-coconut-milk-stew%2F&#038;format=xml" />
+<link rel="icon" href="https://theheartysoul.com/wp-content/uploads/2023/04/cropped-site-icon-1-32x32.png" sizes="32x32" />
+<link rel="icon" href="https://theheartysoul.com/wp-content/uploads/2023/04/cropped-site-icon-1-192x192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://theheartysoul.com/wp-content/uploads/2023/04/cropped-site-icon-1-180x180.png" />
+<meta name="msapplication-TileImage" content="https://theheartysoul.com/wp-content/uploads/2023/04/cropped-site-icon-1-270x270.png" />
 
     <style>
-        .site-bg { background-color: #f9fafb };
+      .site-bg { background-color: #f9fafb };
     </style>
-</head>
+  </head>
 
-<body class="antialiased relative site-bg dark:bg-gray-900 text-gray-700 dark:text-gray-300 h-full">
-
-<header id="site-header"
+  <body class="antialiased relative site-bg dark:bg-gray-900 text-gray-700 dark:text-gray-300 h-full">
+    
+    <header id="site-header"
         class="fixed w-full top-0 z-10 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 transition-colors duration-300"
         role="banner"
         x-data="headerApp()"
         x-on:resized.window="resized()"
         x-cloak>
-
-    <div class="h-16 mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8">
-
+    
+      <div class="h-16 mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8">
+        
         <template x-if="screenSize == 'sm'">
-            <div class="flex items-center h-12">
-                <label class="sr-only">Open search dialog</label>
-                <button type="button"
-                        role="button"
-                        class="group p-2 rounded-lg bg-gray-50 dark:bg-gray-700"
-                        @click="openSearch($dispatch)">
+        <div class="flex items-center h-12">
+  <label class="sr-only">Open search dialog</label>
+  <button type="button"
+          role="button"
+          class="group p-2 rounded-lg bg-gray-50 dark:bg-gray-700"
+          @click="openSearch($dispatch)">
 
-                    <svg class="w-6 h-6 fill-gray-400 group-hover:fill-indigo-400"
-                         fill="currentColor"
-                         viewBox="0 0 20 20"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                              d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
-                              clip-rule="evenodd" />
-                    </svg>
+    <svg class="w-6 h-6 fill-gray-400 group-hover:fill-indigo-400"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd"
+            d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+            clip-rule="evenodd" />
+    </svg>
 
-                </button>
-            </div>        </template>
+  </button>
+</div>        </template>
 
         <a class="flex-none"
-           href="https://theheartysoul.com">
-
+    href="https://theheartysoul.com">
+  
   <span class="display:inline dark:hidden">
           <img class="h-12 w-auto"
-               src="https://theheartysoul.com/wp-content/uploads/2024/01/logo-header-light.svg" />
+           src="https://theheartysoul.com/wp-content/uploads/2024/01/logo-header-light.svg" />
       </span>
-
-            <span class="hidden dark:inline">
+  
+  <span class="hidden dark:inline">
           <img class="h-12 w-auto"
-               src="https://theheartysoul.com/wp-content/uploads/2024/01/logo-header-dark.svg" />
+           src="https://theheartysoul.com/wp-content/uploads/2024/01/logo-header-dark.svg" />
       </span>
 
-        </a>
+</a>
         <template x-if="screenSize !== 'sm'">
-            <div class="flex items-center space-x-6">
-                <nav>
-                    <ul class="flex space-x-6 font-medium">
-                        <li>
-                            <a href="https://theheartysoul.com/category/eat/"
-                               class="text-base font-medium text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
-                                Eat      </a>
-                        </li>
-                        <li>
-                            <a href="https://theheartysoul.com/category/heal/"
-                               class="text-base font-medium text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
-                                Heal      </a>
-                        </li>
-                        <li>
-                            <a href="https://theheartysoul.com/category/learn/"
-                               class="text-base font-medium text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
-                                Learn      </a>
-                        </li>
-                        <li>
-                            <a href="https://theheartysoul.com/category/make/"
-                               class="text-base font-medium text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
-                                Make      </a>
-                        </li>
-                        <li>
-                            <a href="https://theheartysoul.com/category/move/"
-                               class="text-base font-medium text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
-                                Move      </a>
-                        </li>
-                        <li>
-                            <a href="https://theheartysoul.com/category/parenting/"
-                               class="text-base font-medium text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
-                                Parenting      </a>
-                        </li>
-                        <li>
-                            <a href="https://theheartysoul.com/category/planet/"
-                               class="text-base font-medium text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
-                                Planet      </a>
-                        </li>
-                        <li>
-                            <a href="https://theheartysoul.com/category/relationship/"
-                               class="text-base font-medium text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
-                                Relationship      </a>
-                        </li>
-                    </ul>
-                </nav>
-                <div class="flex items-center space-x-2">
-                    <div class="flex items-center h-12">
-                        <label class="sr-only">Day and night theme toggle</label>
-                        <button type="button"
-                                role="button"
-                                class="group p-2 rounded-lg bg-gray-50 dark:bg-gray-700"
-                                @click="toggleTheme($dispatch)">
+          <div class="flex items-center space-x-6">
+            <nav>
+  <ul class="flex space-x-6 font-medium">
+        <li>
+      <a href="https://theheartysoul.com/category/eat/"
+         class="text-base font-medium text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
+        Eat      </a>
+    </li>
+        <li>
+      <a href="https://theheartysoul.com/category/heal/"
+         class="text-base font-medium text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
+        Heal      </a>
+    </li>
+        <li>
+      <a href="https://theheartysoul.com/category/learn/"
+         class="text-base font-medium text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
+        Learn      </a>
+    </li>
+        <li>
+      <a href="https://theheartysoul.com/category/make/"
+         class="text-base font-medium text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
+        Make      </a>
+    </li>
+        <li>
+      <a href="https://theheartysoul.com/category/move/"
+         class="text-base font-medium text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
+        Move      </a>
+    </li>
+        <li>
+      <a href="https://theheartysoul.com/category/parenting/"
+         class="text-base font-medium text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
+        Parenting      </a>
+    </li>
+        <li>
+      <a href="https://theheartysoul.com/category/planet/"
+         class="text-base font-medium text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
+        Planet      </a>
+    </li>
+        <li>
+      <a href="https://theheartysoul.com/category/relationship/"
+         class="text-base font-medium text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
+        Relationship      </a>
+    </li>
+      </ul>
+</nav>
+            <div class="flex items-center space-x-2">
+              <div class="flex items-center h-12">  
+  <label class="sr-only">Day and night theme toggle</label>
+  <button type="button"
+          role="button"
+          class="group p-2 rounded-lg bg-gray-50 dark:bg-gray-700"
+          @click="toggleTheme($dispatch)">
 
     <span class="display:inline dark:hidden">
       <svg class="w-6 h-6 fill-gray-400 group-hover:fill-indigo-400"
-           fill="currentColor"
-           viewBox="0 0 20 20"
-           xmlns="http://www.w3.org/2000/svg">
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg">
         <path d="M10 2a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 2zM10 15a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 15zM10 7a3 3 0 100 6 3 3 0 000-6zM15.657 5.404a.75.75 0 10-1.06-1.06l-1.061 1.06a.75.75 0 001.06 1.06l1.06-1.06zM6.464 14.596a.75.75 0 10-1.06-1.06l-1.06 1.06a.75.75 0 001.06 1.06l1.06-1.06zM18 10a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0118 10zM5 10a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 015 10zM14.596 15.657a.75.75 0 001.06-1.06l-1.06-1.061a.75.75 0 10-1.06 1.06l1.06 1.06zM5.404 6.464a.75.75 0 001.06-1.06l-1.06-1.06a.75.75 0 10-1.061 1.06l1.06 1.06z" />
       </svg>
     </span>
 
-                            <span class="hidden dark:inline">
+    <span class="hidden dark:inline">
       <svg class="w-6 h-6 fill-gray-400 group-hover:fill-indigo-400"
-           fill="currentColor"
-           viewBox="0 0 20 20"
-           xmlns="http://www.w3.org/2000/svg">
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd"
               d="M7.455 2.004a.75.75 0 01.26.77 7 7 0 009.958 7.967.75.75 0 011.067.853A8.5 8.5 0 116.647 1.921a.75.75 0 01.808.083z"
               clip-rule="evenodd" />
       </svg>
     </span>
 
-                        </button>
-                    </div>              <div class="flex items-center h-12">
-                    <label class="sr-only">Open search dialog</label>
-                    <button type="button"
-                            role="button"
-                            class="group p-2 rounded-lg bg-gray-50 dark:bg-gray-700"
-                            @click="openSearch($dispatch)">
+  </button>
+</div>              <div class="flex items-center h-12">
+  <label class="sr-only">Open search dialog</label>
+  <button type="button"
+          role="button"
+          class="group p-2 rounded-lg bg-gray-50 dark:bg-gray-700"
+          @click="openSearch($dispatch)">
 
-                        <svg class="w-6 h-6 fill-gray-400 group-hover:fill-indigo-400"
-                             fill="currentColor"
-                             viewBox="0 0 20 20"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                  d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
-                                  clip-rule="evenodd" />
-                        </svg>
+    <svg class="w-6 h-6 fill-gray-400 group-hover:fill-indigo-400"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd"
+            d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+            clip-rule="evenodd" />
+    </svg>
 
-                    </button>
-                </div>            </div>
-            </div>
+  </button>
+</div>            </div>
+          </div>
         </template>
-
-
+        
+        
         <template x-if="screenSize === 'sm'">
-            <div class="flex items-center h-12">
-                <label class="sr-only">Open mobile navigation</label>
-                <button type="button"
-                        role="button"
-                        class="group p-2 rounded-lg bg-gray-50 dark:bg-gray-700"
-                        @click="openMobileNavigation($dispatch)">
+  <div class="flex items-center h-12">
+    <label class="sr-only">Open mobile navigation</label>
+    <button type="button"
+            role="button"
+            class="group p-2 rounded-lg bg-gray-50 dark:bg-gray-700"
+            @click="openMobileNavigation($dispatch)">
 
-                    <svg class="w-6 h-6 fill-gray-400 group-hover:fill-indigo-400"
-                         fill="currentColor"
-                         viewBox="0 0 20 20"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                              d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10zm0 5.25a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75a.75.75 0 01-.75-.75z"
-                              clip-rule="evenodd" />
-                    </svg>
-                </button>
-            </div>
-        </template>
-    </div>
+      <svg class="w-6 h-6 fill-gray-400 group-hover:fill-indigo-400"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd"
+              d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10zm0 5.25a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75a.75.75 0 01-.75-.75z"
+              clip-rule="evenodd" />
+      </svg>
+    </button>
+  </div>
+</template>
+      </div>
 
 </header>
 <script>
-    function headerApp() {
-        return {
-            screenSize: window.settings.screen.size,
-            resized() {
-                this.screenSize = window.settings.screen.size;
-            },
-            toggleTheme($dispatch) {
-                $dispatch('toggle-theme');
-            },
-            openMobileNavigation($dispatch) {
-                $dispatch('open-mobile-navigation');
-            },
-            openSearch($dispatch) {
-                $dispatch('open-search');
-            }
-        }
+  function headerApp() {
+    return {
+      screenSize: window.settings.screen.size,
+      resized() {
+        this.screenSize = window.settings.screen.size;
+      },
+      toggleTheme($dispatch) {
+        $dispatch('toggle-theme');
+      },
+      openMobileNavigation($dispatch) {
+        $dispatch('open-mobile-navigation');
+      },
+      openSearch($dispatch) {
+        $dispatch('open-search');
+      }
     }
+  }
 </script><main class="pt-16 mx-auto max-w-[1100px] sm:px-6 lg:px-8 site-bg dark:bg-gray-900"
-               role="main"
-               aria-label="Content">
+      role="main"
+      aria-label="Content">
 
-    <script>
-        settings.articles = [];
-    </script>
+  <script>
+    settings.articles = [];
+  </script>
+  
+  <script>
+  settings.articles.push({
+    id: '98251',
+    title: 'Ginger Sweet Potato and Coconut Milk Stew with Lentils &#038; Kale',
+    slug: 'ginger-sweet-potato-and-coconut-milk-stew',
+  });
+</script>
 
-    <script>
-        settings.articles.push({
-            id: '98251',
-            title: 'Ginger Sweet Potato and Coconut Milk Stew with Lentils &#038; Kale',
-            slug: 'ginger-sweet-potato-and-coconut-milk-stew',
-        });
-    </script>
+<div id="header_sticky_ad" class="site-bg dark:bg-gray-900 text-gray-700 dark:text-gray-300">
+      </div>
 
-    <div id="header_sticky_ad" class="site-bg dark:bg-gray-900 text-gray-700 dark:text-gray-300">
+<article id="article-98251" class="" role="article">
+
+  <header id="article-header" class="mt-8">
+
+                      <div id="article-featured-image" class="sm:rounded-2xl overflow-hidden">
+          <img width="800" height="419" src="https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22.jpg" class="w-full h-auto wp-post-image" alt="Ginger Sweet Potato and Coconut Milk Stew with Lentils &amp; Kale" decoding="async" fetchpriority="high" srcset="https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22.jpg 800w, https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22-300x157.jpg 300w, https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22-768x402.jpg 768w, https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22-798x418.jpg 798w, https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22-600x314.jpg 600w, https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22-480x251.jpg 480w, https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22-390x204.jpg 390w" sizes="(max-width: 800px) 100vw, 800px" />        </div>
+              
+        <div id="ld-1299-7153"></div>
+<script>(function(w,d,s,i){w.ldAdInit=w.ldAdInit||[];w.ldAdInit.push({slot:17088663574225766,size:[0, 0],id:"ld-1299-7153"});if(!d.getElementById(i)){var j=d.createElement(s),p=d.getElementsByTagName(s)[0];j.async=true;j.src="//cdn2.decide.dev/_js/ajs.js";j.id=i;p.parentNode.insertBefore(j,p);}})(window,document,"script","ld-ajs");</script>    
+        <div id="article-meta" class="mt-6 px-4 sm:px-0">
+      <div class="flex items-center space-x-3">
+        <img src="https://theheartysoul.com/wp-content/uploads/2020/10/contributor-julie-hambleton-1517503317.jpg"
+             class="w-12 h-12 rounded-full"
+             alt="Julie Hambleton" />
+        <div>
+          <a class="font-medium leading-5 tracking-tight dark:text-white"
+             href="https://theheartysoul.com/author/julie-hambleton/">
+            Julie Hambleton          </a>
+          <div class="text-sm tracking-tight text-gray-500 dark:text-gray-400">
+            June 4, 2020&nbsp;·&nbsp;
+            2&nbsp;min read
+          </div>
+        </div>
+      </div>
     </div>
 
-    <article id="article-98251" class="" role="article">
-
-        <header id="article-header" class="mt-8">
-
-            <div id="article-featured-image" class="sm:rounded-2xl overflow-hidden">
-                <img width="800" height="419" src="https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22.jpg" class="w-full h-auto wp-post-image" alt="Ginger Sweet Potato and Coconut Milk Stew with Lentils &amp; Kale" decoding="async" fetchpriority="high" srcset="https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22.jpg 800w, https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22-300x157.jpg 300w, https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22-768x402.jpg 768w, https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22-798x418.jpg 798w, https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22-600x314.jpg 600w, https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22-480x251.jpg 480w, https://theheartysoul.com/wp-content/uploads/2020/06/jun01_part04_22-390x204.jpg 390w" sizes="(max-width: 800px) 100vw, 800px" />        </div>
-
-            <div id="ld-1299-7153"></div>
-            <script>(function(w,d,s,i){w.ldAdInit=w.ldAdInit||[];w.ldAdInit.push({slot:17088663574225766,size:[0, 0],id:"ld-1299-7153"});if(!d.getElementById(i)){var j=d.createElement(s),p=d.getElementsByTagName(s)[0];j.async=true;j.src="//cdn2.decide.dev/_js/ajs.js";j.id=i;p.parentNode.insertBefore(j,p);}})(window,document,"script","ld-ajs");</script>
-            <div id="article-meta" class="mt-6 px-4 sm:px-0">
-                <div class="flex items-center space-x-3">
-                    <img src="https://theheartysoul.com/wp-content/uploads/2020/10/contributor-julie-hambleton-1517503317.jpg"
-                         class="w-12 h-12 rounded-full"
-                         alt="Julie Hambleton" />
-                    <div>
-                        <a class="font-medium leading-5 tracking-tight dark:text-white"
-                           href="https://theheartysoul.com/author/julie-hambleton/">
-                            Julie Hambleton          </a>
-                        <div class="text-sm tracking-tight text-gray-500 dark:text-gray-400">
-                            June 4, 2020&nbsp;·&nbsp;
-                            2&nbsp;min read
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="article-title" class="mt-6 px-4 sm:px-0">
-                <h1 class="text-4xl font-extrabold text-gray-900 dark:text-white">
-                    Ginger Sweet Potato and Coconut Milk Stew with Lentils &#038; Kale      </h1>
-            </div>
-
-        </header>
+        <div id="article-title" class="mt-6 px-4 sm:px-0">
+      <h1 class="text-4xl font-extrabold text-gray-900 dark:text-white">
+        Ginger Sweet Potato and Coconut Milk Stew with Lentils &#038; Kale      </h1>
+    </div>
+
+  </header>
+
+  <div id="article-content" class="mt-6 mb-12 px-4 sm:px-0 prose dark:prose-invert max-w-none overflow-hidden">
+    
+<p>It’s hard to beat a good stew. A classic comfort food, warm, hearty stews fill our bellies and make us feel good. Perhaps they remind us of childhood, or perhaps they are just satisfying to tuck into after a long day. The best&nbsp; part about stew is that it is easy to make them nutritional powerhouses. This ginger sweet potato stew with coconut milk, lentils and kale is simple, healthy, and oh-so comforting.</p><div id="ad-anchor-34">
 
-        <div id="article-content" class="mt-6 mb-12 px-4 sm:px-0 prose dark:prose-invert max-w-none overflow-hidden">
+    <script type="text/javascript">
+    if (window.settings.monetization.provider === 'c') {
+      let anchor = document.getElementById('ad-anchor-34');
+      let labelContainer = document.createElement('div');
+      labelContainer.classList.add('mt-1', 'mb-2', 'text-sm', 'text-gray-400');
+      labelContainer.textContent += "Advertisement";
+      anchor.appendChild(labelContainer);
+    }
+  </script>
+  
+    <script type="text/javascript">
+    if (window.settings.monetization.provider === 'c') {
+      let anchor = document.getElementById('ad-anchor-34');
+      let mmContainer = document.createElement('div');
+      mmContainer.setAttribute('id', 'minute-media');
+      let mmScript = document.createElement('script');
+      mmScript.setAttribute('type', 'text/javascript');
+      mmScript.setAttribute('defer', 'true');
+      mmScript.setAttribute('src', 'https://players.voltaxservices.io/players/01h64dbqck2j/code');
+      anchor.appendChild(mmContainer);
+      anchor.appendChild(mmScript);
+    }
+  </script>
+  
+    <script type="text/javascript">
+    if (window.settings.monetization.provider === 'c') {
+      let anchor = document.getElementById('ad-anchor-34');
+      let whizzcoContainer = document.createElement('div');
+      whizzcoContainer.classList.add('ads_container');
+      whizzcoContainer.setAttribute('website_id', '2447');
+      whizzcoContainer.setAttribute('widget_id', '6432');
+      let wizzcoScript = document.createElement('script');
+      wizzcoScript.setAttribute('type', 'text/javascript');
+      wizzcoScript.setAttribute('src', 'https://cdn.whizzco.com/scripts/widget/widget_v3.js');
+      wizzcoScript.setAttribute('async', '');
+      anchor.appendChild(whizzcoContainer);
+      anchor.appendChild(wizzcoScript);
+    }
+  </script>
 
-            <p>It’s hard to beat a good stew. A classic comfort food, warm, hearty stews fill our bellies and make us feel good. Perhaps they remind us of childhood, or perhaps they are just satisfying to tuck into after a long day. The best&nbsp; part about stew is that it is easy to make them nutritional powerhouses. This ginger sweet potato stew with coconut milk, lentils and kale is simple, healthy, and oh-so comforting.</p><div id="ad-anchor-34">
+</div>
 
-            <script type="text/javascript">
-                if (window.settings.monetization.provider === 'c') {
-                    let anchor = document.getElementById('ad-anchor-34');
-                    let labelContainer = document.createElement('div');
-                    labelContainer.classList.add('mt-1', 'mb-2', 'text-sm', 'text-gray-400');
-                    labelContainer.textContent += "Advertisement";
-                    anchor.appendChild(labelContainer);
-                }
-            </script>
+<div id="ad-anchor-18">
 
-            <script type="text/javascript">
-                if (window.settings.monetization.provider === 'c') {
-                    let anchor = document.getElementById('ad-anchor-34');
-                    let mmContainer = document.createElement('div');
-                    mmContainer.setAttribute('id', 'minute-media');
-                    let mmScript = document.createElement('script');
-                    mmScript.setAttribute('type', 'text/javascript');
-                    mmScript.setAttribute('defer', 'true');
-                    mmScript.setAttribute('src', 'https://players.voltaxservices.io/players/01h64dbqck2j/code');
-                    anchor.appendChild(mmContainer);
-                    anchor.appendChild(mmScript);
-                }
-            </script>
+    <script type="text/javascript">
+    if (window.settings.monetization.provider === 'b') {
+      let l = document.createElement('div');
+      l.classList.add('mt-1', 'mb-2', 'text-sm', 'text-gray-400');
+      l.textContent += "Advertisement";
+      let a = document.getElementById('ad-anchor-18');
+      a.appendChild(l);
+    }
+  </script>
+  
+    <script type="text/javascript">
+    if (window.settings.monetization.provider === 'b') {
+      let a = document.getElementById('ad-anchor-18');
 
-            <script type="text/javascript">
-                if (window.settings.monetization.provider === 'c') {
-                    let anchor = document.getElementById('ad-anchor-34');
-                    let whizzcoContainer = document.createElement('div');
-                    whizzcoContainer.classList.add('ads_container');
-                    whizzcoContainer.setAttribute('website_id', '2447');
-                    whizzcoContainer.setAttribute('widget_id', '6432');
-                    let wizzcoScript = document.createElement('script');
-                    wizzcoScript.setAttribute('type', 'text/javascript');
-                    wizzcoScript.setAttribute('src', 'https://cdn.whizzco.com/scripts/widget/widget_v3.js');
-                    wizzcoScript.setAttribute('async', '');
-                    anchor.appendChild(whizzcoContainer);
-                    anchor.appendChild(wizzcoScript);
-                }
-            </script>
+      let w = document.createElement('div');
+      w.classList.add('ads_container');
+      w.setAttribute('website_id', '2447');
+      w.setAttribute('widget_id', '6432');
+      a.appendChild(w);
+      
+      let ws = document.createElement('script');
+      ws.setAttribute('type', 'text/javascript');
+      ws.setAttribute('src', 'https://cdn.whizzco.com/scripts/widget/widget_v3.js');
+      ws.setAttribute('async', '');
+      a.appendChild(ws);
+    }
+  </script>
 
-        </div>
+</div>
 
-            <div id="ad-anchor-18">
 
-                <script type="text/javascript">
-                    if (window.settings.monetization.provider === 'b') {
-                        let l = document.createElement('div');
-                        l.classList.add('mt-1', 'mb-2', 'text-sm', 'text-gray-400');
-                        l.textContent += "Advertisement";
-                        let a = document.getElementById('ad-anchor-18');
-                        a.appendChild(l);
-                    }
-                </script>
 
-                <script type="text/javascript">
-                    if (window.settings.monetization.provider === 'b') {
-                        let a = document.getElementById('ad-anchor-18');
+<h2 class="wp-block-heading"><strong>Ginger Coconut Sweet Potato Stew with Kale and Lentils</strong></h2>
 
-                        let w = document.createElement('div');
-                        w.classList.add('ads_container');
-                        w.setAttribute('website_id', '2447');
-                        w.setAttribute('widget_id', '6432');
-                        a.appendChild(w);
 
-                        let ws = document.createElement('script');
-                        ws.setAttribute('type', 'text/javascript');
-                        ws.setAttribute('src', 'https://cdn.whizzco.com/scripts/widget/widget_v3.js');
-                        ws.setAttribute('async', '');
-                        a.appendChild(ws);
-                    }
-                </script>
 
-            </div>
+<p>What’s not to love about this sweet potato stew recipe? It’s bright orange color with gorgeous bursts of green kale make it as easy on the eyes as its creamy texture with a hint of spice does on the taste buds.</p>
 
 
 
-            <h2 class="wp-block-heading"><strong>Ginger Coconut Sweet Potato Stew with Kale and Lentils</strong></h2>
+<p>Nutritionally, it’s a 10 out of 10. Some healthy ingredients to highlight are:</p>
 
 
 
-            <p>What’s not to love about this sweet potato stew recipe? It’s bright orange color with gorgeous bursts of green kale make it as easy on the eyes as its creamy texture with a hint of spice does on the taste buds.</p>
+<ul><li>Sweet potatoes</li><li>Ginger</li><li>Turmeric</li><li>Kale</li><li>Lentils</li><li>Garlic</li><li>Coconut Milk</li><li></li></ul>
 
 
 
-            <p>Nutritionally, it’s a 10 out of 10. Some healthy ingredients to highlight are:</p>
+<h2 class="wp-block-heading"><strong>The Recipe</strong></h2>
 
 
 
-            <ul><li>Sweet potatoes</li><li>Ginger</li><li>Turmeric</li><li>Kale</li><li>Lentils</li><li>Garlic</li><li>Coconut Milk</li><li></li></ul>
+<p>This sweet potato stew is easily adaptable in terms of spice level and what greens you put in. Feel free to adjust the recipe so that it suits your taste.</p>
 
 
 
-            <h2 class="wp-block-heading"><strong>The Recipe</strong></h2>
+<h2 class="wp-block-heading">Ingredients:</h2>
 
 
 
-            <p>This sweet potato stew is easily adaptable in terms of spice level and what greens you put in. Feel free to adjust the recipe so that it suits your taste.</p>
+<ul><li>1 tablespoon coconut oil</li><li>1 medium level onion, diced</li><li>½ &#8211; 1 teaspoon dried chili flakes</li><li>½ teaspoon ground coriander</li><li>½ teaspoon ground cumin</li><li>½ teaspoon ground turmeric</li><li>2-inch piece of fresh ginger, peeled and minced</li><li>3 cloves of garlic, minced</li><li>Sea salt to taste</li><li>Black pepper to taste</li><li>2 medium sweet potatoes, diced into 2-inch cubes (you can peel if you’d like)</li><li>½ cup brown lentils</li><li>4 cups vegetable stock</li><li>13.5 ounce (400 ml) can full-fat coconut milk</li><li>1 small bunch of kale, washed, stems removed, chopped</li></ul>
 
 
 
-            <h2 class="wp-block-heading">Ingredients:</h2>
+<p><strong><em>Garnish (optional)</em></strong>:</p>
 
 
 
-            <ul><li>1 tablespoon coconut oil</li><li>1 medium level onion, diced</li><li>½ &#8211; 1 teaspoon dried chili flakes</li><li>½ teaspoon ground coriander</li><li>½ teaspoon ground cumin</li><li>½ teaspoon ground turmeric</li><li>2-inch piece of fresh ginger, peeled and minced</li><li>3 cloves of garlic, minced</li><li>Sea salt to taste</li><li>Black pepper to taste</li><li>2 medium sweet potatoes, diced into 2-inch cubes (you can peel if you’d like)</li><li>½ cup brown lentils</li><li>4 cups vegetable stock</li><li>13.5 ounce (400 ml) can full-fat coconut milk</li><li>1 small bunch of kale, washed, stems removed, chopped</li></ul>
+<ul><li>Chili flakes</li><li>Lime wedges</li><li>Chopped cilantro</li><li>Nigella seeds (aka Black Seed)</li></ul>
 
 
 
-            <p><strong><em>Garnish (optional)</em></strong>:</p>
+<h3 class="wp-block-heading">Directions:</h3>
 
 
 
-            <ul><li>Chili flakes</li><li>Lime wedges</li><li>Chopped cilantro</li><li>Nigella seeds (aka Black Seed)</li></ul>
+<ul><li>Heat a large soup pot over medium heat and melt coconut oil.</li><li>Saute the onions until translucent, about 5 minutes.</li><li>Add the spices and stir until fragrant, about 1 minute.</li><li>Add ginger and garlic and stir for another minute.</li><li>Stir in salt and pepper.</li><li>Add in the sweet potatoes and lentils and stir until everything is coated.&nbsp;</li><li>Season again with salt and pepper.</li><li>Add the vegetable stock and stir thoroughly, so everything is mixed well (no dry clumps).</li><li>Put the lid on the pot and bring the soup to a boil.</li><li>Lower the heat to a simmer with the lid slightly off the pot to allow for steam to escape.</li><li>Simmer for about 30 minutes, until the sweet potatoes and lentils are both soft and tender.</li><li>Stir in the coconut milk and kale. Put the lid back on and simmer until the kale is wilted, about 3 or 4 minutes.</li><li>Check for seasoning and add more salt, pepper, or chilies, as desired.</li></ul>
 
 
 
-            <h3 class="wp-block-heading">Directions:</h3>
+<p>Thank you to <a rel="noreferrer noopener" href="https://thefirstmess.com/2020/02/19/sweet-potato-coconut-milk-stew/?fbclid=IwAR1vYIUVPXucz0nlKnKW0WAZS3OtFJ-QhVLDlahIe1wmn-HMz_8TPIop0eg" target="_blank">The First Mess</a> for this easy, delicious one-pot sweet potato stew that’s ready to eat in less than an hour! <br><br><strong>Keep Reading: <a href="https://theheartysoul.com/32-anti-inflammatory-breakfast-recipes-worth-waking-up-to/?utm_source=readmore">32 Anti-Inflammatory Breakfast Recipes Worth Waking Up To</a></strong></p>
 
 
 
-            <ul><li>Heat a large soup pot over medium heat and melt coconut oil.</li><li>Saute the onions until translucent, about 5 minutes.</li><li>Add the spices and stir until fragrant, about 1 minute.</li><li>Add ginger and garlic and stir for another minute.</li><li>Stir in salt and pepper.</li><li>Add in the sweet potatoes and lentils and stir until everything is coated.&nbsp;</li><li>Season again with salt and pepper.</li><li>Add the vegetable stock and stir thoroughly, so everything is mixed well (no dry clumps).</li><li>Put the lid on the pot and bring the soup to a boil.</li><li>Lower the heat to a simmer with the lid slightly off the pot to allow for steam to escape.</li><li>Simmer for about 30 minutes, until the sweet potatoes and lentils are both soft and tender.</li><li>Stir in the coconut milk and kale. Put the lid back on and simmer until the kale is wilted, about 3 or 4 minutes.</li><li>Check for seasoning and add more salt, pepper, or chilies, as desired.</li></ul>
+<figure class="wp-block-image size-large"><img decoding="async" width="512" height="1024" src="https://theheartysoul.com/wp-content/uploads/2020/09/sept8-Ginger-Sweet-Potato-512x1024.jpg" alt="" class="wp-image-111811" srcset="https://theheartysoul.com/wp-content/uploads/2020/09/sept8-Ginger-Sweet-Potato-512x1024.jpg 512w, https://theheartysoul.com/wp-content/uploads/2020/09/sept8-Ginger-Sweet-Potato-150x300.jpg 150w, https://theheartysoul.com/wp-content/uploads/2020/09/sept8-Ginger-Sweet-Potato.jpg 600w" sizes="(max-width: 512px) 100vw, 512px" /></figure>
 
 
 
-            <p>Thank you to <a rel="noreferrer noopener" href="https://thefirstmess.com/2020/02/19/sweet-potato-coconut-milk-stew/?fbclid=IwAR1vYIUVPXucz0nlKnKW0WAZS3OtFJ-QhVLDlahIe1wmn-HMz_8TPIop0eg" target="_blank">The First Mess</a> for this easy, delicious one-pot sweet potato stew that’s ready to eat in less than an hour! <br><br><strong>Keep Reading: <a href="https://theheartysoul.com/32-anti-inflammatory-breakfast-recipes-worth-waking-up-to/?utm_source=readmore">32 Anti-Inflammatory Breakfast Recipes Worth Waking Up To</a></strong></p>
-
-
-
-            <figure class="wp-block-image size-large"><img decoding="async" width="512" height="1024" src="https://theheartysoul.com/wp-content/uploads/2020/09/sept8-Ginger-Sweet-Potato-512x1024.jpg" alt="" class="wp-image-111811" srcset="https://theheartysoul.com/wp-content/uploads/2020/09/sept8-Ginger-Sweet-Potato-512x1024.jpg 512w, https://theheartysoul.com/wp-content/uploads/2020/09/sept8-Ginger-Sweet-Potato-150x300.jpg 150w, https://theheartysoul.com/wp-content/uploads/2020/09/sept8-Ginger-Sweet-Potato.jpg 600w" sizes="(max-width: 512px) 100vw, 512px" /></figure>
-
-
-
-            <div class="ths-collapse-style">
-                https://thefirstmess.com/2020/02/19/sweet-potato-coconut-milk-stew/
-            </div>
-            <div id="ad-anchor-23">
-
-                <script type="text/javascript">
-                    if (window.settings.monetization.provider === 'b') {
-                        let l = document.createElement('div');
-                        l.classList.add('mt-1', 'mb-2', 'text-sm', 'text-gray-400');
-                        l.textContent += "Advertisement";
-                        let a = document.getElementById('ad-anchor-23');
-                        a.appendChild(l);
-                    }
-                </script>
-
-                <script type="text/javascript">
-                    if (window.settings.monetization.provider === 'b') {
-                        let a = document.getElementById('ad-anchor-23');
-
-                        let plwd = document.createElement('div');
-                        plwd.setAttribute('id', 'pwDeskMedRectBtf5');
-                        plwd.setAttribute('data-pw-desk', 'med_rect_btf');
-                        a.appendChild(plwd);
-                        window.ramp.que.push(function () {
-                            window.ramp.addTag("pwDeskMedRectBtf5");
-                        });
-
-                        let plwm = document.createElement('div');
-                        plwm.setAttribute('id', 'pwMobiMedRectBtf5');
-                        plwm.setAttribute('data-pw-mobi', 'med_rect_btf');
-                        a.appendChild(plwm);
-                        window.ramp.que.push(function () {
-                            window.ramp.addTag("pwMobiMedRectBtf5");
-                        });
-                    }
-                </script>
-
-                <script type="text/javascript">
-                    if (window.settings.monetization.provider === 'b') {
-
-                        let a = document.getElementById('ad-anchor-23');
-
-                        let w = document.createElement('div');
-                        w.classList.add('ads_container');
-                        w.setAttribute('website_id', '2447');
-                        w.setAttribute('widget_id', '6275');
-                        a.appendChild(w);
-
-                        let ws = document.createElement('script');
-                        ws.setAttribute('type', 'text/javascript');
-                        ws.setAttribute('src', 'https://cdn.whizzco.com/scripts/widget/widget_v3.js');
-                        ws.setAttribute('async', '');
-                        a.appendChild(ws);
-
-                    }
-                </script>
-
-            </div><div id="ad-anchor-39">
-
-            <script type="text/javascript">
-                if (window.settings.monetization.provider === 'c') {
-                    let l = document.createElement('div');
-                    l.classList.add('mt-1', 'mb-2', 'text-sm', 'text-gray-400');
-                    l.textContent += "Advertisement";
-                    let a = document.getElementById('ad-anchor-39');
-                    a.appendChild(l);
-                }
-            </script>
-
-            <script type="text/javascript">
-                if (window.settings.monetization.provider === 'c') {
-                    let a = document.getElementById('ad-anchor-39');
-
-                    let plwd = document.createElement('div');
-                    plwd.setAttribute('id', 'pwDeskMedRectBtf5');
-                    plwd.setAttribute('data-pw-desk', 'med_rect_btf');
-                    a.appendChild(plwd);
-                    window.ramp.que.push(function () {
-                        window.ramp.addTag("pwDeskMedRectBtf5");
-                    });
-
-                    let plwm = document.createElement('div');
-                    plwm.setAttribute('id', 'pwMobiMedRectBtf5');
-                    plwm.setAttribute('data-pw-mobi', 'med_rect_btf');
-                    a.appendChild(plwm);
-                    window.ramp.que.push(function () {
-                        window.ramp.addTag("pwMobiMedRectBtf5");
-                    });
-                }
-            </script>
-
-            <script type="text/javascript">
-                if (window.settings.monetization.provider === 'c') {
-
-                    let a = document.getElementById('ad-anchor-39');
-
-                    let w = document.createElement('div');
-                    w.classList.add('ads_container');
-                    w.setAttribute('website_id', '2447');
-                    w.setAttribute('widget_id', '6275');
-                    a.appendChild(w);
-
-                    let ws = document.createElement('script');
-                    ws.setAttribute('type', 'text/javascript');
-                    ws.setAttribute('src', 'https://cdn.whizzco.com/scripts/widget/widget_v3.js');
-                    ws.setAttribute('async', '');
-                    a.appendChild(ws);
-
-                }
-            </script>
-
-        </div><!-- CONTENT END 1 -->
-        </div>
-
-    </article>
+<div class="ths-collapse-style">
+https://thefirstmess.com/2020/02/19/sweet-potato-coconut-milk-stew/
+</div>
+<div id="ad-anchor-23">
+  
+    <script type="text/javascript">
+    if (window.settings.monetization.provider === 'b') {
+      let l = document.createElement('div');
+      l.classList.add('mt-1', 'mb-2', 'text-sm', 'text-gray-400');
+      l.textContent += "Advertisement";
+      let a = document.getElementById('ad-anchor-23');
+      a.appendChild(l);
+    }
+  </script>
+  
+    <script type="text/javascript">
+    if (window.settings.monetization.provider === 'b') {
+      let a = document.getElementById('ad-anchor-23');
+      
+      let plwd = document.createElement('div');
+      plwd.setAttribute('id', 'pwDeskMedRectBtf5');
+      plwd.setAttribute('data-pw-desk', 'med_rect_btf');
+      a.appendChild(plwd);
+      window.ramp.que.push(function () {
+        window.ramp.addTag("pwDeskMedRectBtf5");
+      });
+
+      let plwm = document.createElement('div');
+      plwm.setAttribute('id', 'pwMobiMedRectBtf5');
+      plwm.setAttribute('data-pw-mobi', 'med_rect_btf');
+      a.appendChild(plwm);
+      window.ramp.que.push(function () {
+        window.ramp.addTag("pwMobiMedRectBtf5");
+      });
+    }
+  </script>
+  
+    <script type="text/javascript">
+    if (window.settings.monetization.provider === 'b') {
+      
+      let a = document.getElementById('ad-anchor-23');
+      
+      let w = document.createElement('div');
+      w.classList.add('ads_container');
+      w.setAttribute('website_id', '2447');
+      w.setAttribute('widget_id', '6275');
+      a.appendChild(w);
+      
+      let ws = document.createElement('script');
+      ws.setAttribute('type', 'text/javascript');
+      ws.setAttribute('src', 'https://cdn.whizzco.com/scripts/widget/widget_v3.js');
+      ws.setAttribute('async', '');
+      a.appendChild(ws);
+
+    }
+  </script>
+  
+</div><div id="ad-anchor-39">
+  
+    <script type="text/javascript">
+    if (window.settings.monetization.provider === 'c') {
+      let l = document.createElement('div');
+      l.classList.add('mt-1', 'mb-2', 'text-sm', 'text-gray-400');
+      l.textContent += "Advertisement";
+      let a = document.getElementById('ad-anchor-39');
+      a.appendChild(l);
+    }
+  </script>
+  
+    <script type="text/javascript">
+    if (window.settings.monetization.provider === 'c') {
+      let a = document.getElementById('ad-anchor-39');
+      
+      let plwd = document.createElement('div');
+      plwd.setAttribute('id', 'pwDeskMedRectBtf5');
+      plwd.setAttribute('data-pw-desk', 'med_rect_btf');
+      a.appendChild(plwd);
+      window.ramp.que.push(function () {
+        window.ramp.addTag("pwDeskMedRectBtf5");
+      });
+
+      let plwm = document.createElement('div');
+      plwm.setAttribute('id', 'pwMobiMedRectBtf5');
+      plwm.setAttribute('data-pw-mobi', 'med_rect_btf');
+      a.appendChild(plwm);
+      window.ramp.que.push(function () {
+        window.ramp.addTag("pwMobiMedRectBtf5");
+      });
+    }
+  </script>
+  
+    <script type="text/javascript">
+    if (window.settings.monetization.provider === 'c') {
+      
+      let a = document.getElementById('ad-anchor-39');
+      
+      let w = document.createElement('div');
+      w.classList.add('ads_container');
+      w.setAttribute('website_id', '2447');
+      w.setAttribute('widget_id', '6275');
+      a.appendChild(w);
+      
+      let ws = document.createElement('script');
+      ws.setAttribute('type', 'text/javascript');
+      ws.setAttribute('src', 'https://cdn.whizzco.com/scripts/widget/widget_v3.js');
+      ws.setAttribute('async', '');
+      a.appendChild(ws);
+
+    }
+  </script>
+  
+</div><!-- CONTENT END 1 -->
+  </div>
+
+</article>
 
 </main>            <footer id="site-footer"
-                           class="bg-gray-900 border-t border-transparent dark:border-gray-800 bp-16 md:pb-28">
-    <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
+        class="bg-gray-900 border-t border-transparent dark:border-gray-800 bp-16 md:pb-28">
+  <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
 
-        <div class="flex justify-center">
-            <a href="https://theheartysoul.com">
-                <img class="h-16 w-auto"
-                     src="https://theheartysoul.com/wp-content/uploads/2024/01/logo-header-dark.svg" />
-            </a>
-        </div>    <p class="mt-4 text-gray-400 text-center">
-        Connect with your Spirit &amp; live the life destined for you</p>
+    <div class="flex justify-center">
+  <a href="https://theheartysoul.com">
+          <img class="h-16 w-auto"
+           src="https://theheartysoul.com/wp-content/uploads/2024/01/logo-header-dark.svg" />
+      </a>
+</div>    <p class="mt-4 text-gray-400 text-center">
+  Connect with your Spirit &amp; live the life destined for you</p>
         <ul class="flex flex-wrap justify-center items-center mt-2 text-white">
-            <li>
-                <a href="https://theheartysoul.com/about/" class="mr-4 hover:underline md:mr-6 ">About Us</a>
-            </li>
-            <li>
-                <a href="https://theheartysoul.com/dmca-policy/" class="mr-4 hover:underline md:mr-6 ">DMCA Policy</a>
-            </li>
-            <li>
-                <a href="https://theheartysoul.com/privacy-policy/" class="mr-4 hover:underline md:mr-6 ">Privacy Policy</a>
-            </li>
-            <li>
-                <a href="https://theheartysoul.com/terms-of-service/" class="mr-4 hover:underline md:mr-6 ">Terms of Service</a>
-            </li>
-        </ul>
+              <li>
+          <a href="https://theheartysoul.com/about/" class="mr-4 hover:underline md:mr-6 ">About Us</a>
+        </li>
+              <li>
+          <a href="https://theheartysoul.com/dmca-policy/" class="mr-4 hover:underline md:mr-6 ">DMCA Policy</a>
+        </li>
+              <li>
+          <a href="https://theheartysoul.com/privacy-policy/" class="mr-4 hover:underline md:mr-6 ">Privacy Policy</a>
+        </li>
+              <li>
+          <a href="https://theheartysoul.com/terms-of-service/" class="mr-4 hover:underline md:mr-6 ">Terms of Service</a>
+        </li>
+          </ul>
 
-        <div class="text-sm text-center text-gray-500 mt-2">
-            © 2014-2023 The Hearty Soul. All Rights Reserved.</div>
+      <div class="text-sm text-center text-gray-500 mt-2">
+  © 2014-2023 The Hearty Soul. All Rights Reserved.</div>
 
-    </div>
-</footer>
+  </div>
+</footer>   
 
-<seaction id="site-seach"
+        <seaction id="site-seach"
           x-data="siteSearch()"
           x-on:open-search.window="open()"
           x-cloak>
-    <div class="relative z-20"
-         aria-labelledby="modal-title"
-         role="dialog"
-         aria-modal="true"
-         x-show="isOpen">
-        <div x-transition:enter="ease-out duration-300"
-             x-transition:enter-start="opacity-0"
-             x-transition:enter-end="opacity-100"
-             x-transition:leave="ease-in duration-200"
-             x-transition:leave-start="opacity-100"
-             x-transition:leave-end="opacity-0"
-             class="fixed inset-0 bg-gray-700 bg-opacity-70 dark:bg-opacity-80 transition-opacity"></div>
+  <div class="relative z-20"
+       aria-labelledby="modal-title"
+       role="dialog"
+       aria-modal="true"
+       x-show="isOpen">
+    <div x-transition:enter="ease-out duration-300"
+         x-transition:enter-start="opacity-0" 
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="ease-in duration-200"
+         x-transition:leave-start="opacity-100" 
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 bg-gray-700 bg-opacity-70 dark:bg-opacity-80 transition-opacity"></div>
 
-        <div class="fixed inset-0 z-10 overflow-y-auto">
+    <div class="fixed inset-0 z-10 overflow-y-auto">
 
-            <div x-transition:enter="ease-out duration-300"
-                 x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                 x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-                 x-transition:leave="ease-in duration-200"
-                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                 class="flex min-h-full items-center justify-center p-4">
+      <div x-transition:enter="ease-out duration-300"
+           x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+           x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+           x-transition:leave="ease-in duration-200"
+           x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
+           x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+           class="flex min-h-full items-center justify-center p-4">
 
-                <div class="relative w-full max-w-md bg-white dark:bg-gray-900 rounded-lg shadow-xl transform transition-all overflow-hidden px-4 pt-5 pb-4"
-                     x-on:click.outside="close()">
-
+        <div class="relative w-full max-w-md bg-white dark:bg-gray-900 rounded-lg shadow-xl transform transition-all overflow-hidden px-4 pt-5 pb-4"
+             x-on:click.outside="close()">
+          
                     <div class="absolute top-0 right-0 hidden pt-4 pr-4 sm:block">
-                        <button type="button"
-                                class="group rounded-md bg-white dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                                x-on:click="close()">
-                            <span class="sr-only">Close</span>
-                            <svg class="w-6 h-6 fill-gray-400 group-hover:fill-indigo-400"
-                                 viewBox="0 0 24 24"
-                                 fill="currentColor"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                    </div>
+            <button type="button"
+                    class="group rounded-md bg-white dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    x-on:click="close()">
+              <span class="sr-only">Close</span>
+              <svg class="w-6 h-6 fill-gray-400 group-hover:fill-indigo-400"
+                   viewBox="0 0 24 24"
+                   fill="currentColor"
+                   xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
 
                     <div class="flex justify-center">
             <span class="display:block dark:hidden">
                               <span class="text-lg font-semibold text-gray-700">The Hearty Soul</span>
                           </span>
-
-                        <span class="hidden dark:block">
+    
+            <span class="hidden dark:block">
                           <span class="text-lg font-semibold text-white">The Hearty Soul</span>
                         </span>
-                    </div>
+          </div>
 
                     <h3 class="mt-2 text-xl font-semibold text-gray-900 dark:text-white text-center">Search for anything</h3>
 
                     <form class="mt-2"
-                          method="get"
-                          action="https://theheartysoul.com">
-                        <div role="search">
-                            <label for="search" class="sr-only">Search</label>
-                            <input class="block w-full bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 rounded-md shadow-sm text-gray-900 dark:text-gray-400 placeholder:text-gray-600 dark:placeholder:text-gray-500 focus:ring-1 focus:ring-indigo-600 sm:text-sm sm:leading-6 py-2"
-                                   type="text"
-                                   name="s"
-                                   aria-label="Search site for:"
-                                   placeholder="To search, type and hit enter">
-                        </div>
-                    </form>
-
-                </div>
+                method="get"
+                action="https://theheartysoul.com">
+	          <div role="search">
+              <label for="search" class="sr-only">Search</label>
+              <input class="block w-full bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 rounded-md shadow-sm text-gray-900 dark:text-gray-400 placeholder:text-gray-600 dark:placeholder:text-gray-500 focus:ring-1 focus:ring-indigo-600 sm:text-sm sm:leading-6 py-2"
+                     type="text"
+                     name="s"
+                     aria-label="Search site for:"
+                     placeholder="To search, type and hit enter">
             </div>
+          </form>
+
         </div>
+      </div>
     </div>
-    </section>
-    <script>
-        function siteSearch() {
-            return {
-                isOpen: false,
-                open() {
-                    document.body.classList.add(`overflow-hidden`);
-                    this.isOpen = true;
-                },
-                close() {
-                    document.body.classList.remove(`overflow-hidden`);
-                    this.isOpen = false;
-                },
-            }
-        }
-    </script>    <div id="mobile-navigation"
-                      x-data="mobileNavigation()"
-                      x-on:open-mobile-navigation.window="open()"
-                      x-cloak>
-    <div x-show="isOpen"
-         x-transition:enter="transition ease-out duration-300 transform"
-         x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-         x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-         x-transition:leave="transition ease-in duration-200 transform"
-         x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-         x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-         class="fixed inset-0 z-50 flex grow flex-col gap-y-5 overflow-y-auto bg-white dark:bg-gray-900"
-         aria-label="Mobile Navigation"
-         role="dialog">
+  </div>
+</section>
+<script>
+  function siteSearch() {
+    return {
+      isOpen: false,
+      open() {
+        document.body.classList.add(`overflow-hidden`);
+        this.isOpen = true;
+      },
+      close() {
+        document.body.classList.remove(`overflow-hidden`);
+        this.isOpen = false;
+      },
+    }
+  }
+</script>    <div id="mobile-navigation"
+     x-data="mobileNavigation()"
+     x-on:open-mobile-navigation.window="open()"
+     x-cloak>
+  <div x-show="isOpen"
+       x-transition:enter="transition ease-out duration-300 transform"
+       x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+       x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+       x-transition:leave="transition ease-in duration-200 transform"
+       x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
+       x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+       class="fixed inset-0 z-50 flex grow flex-col gap-y-5 overflow-y-auto bg-white dark:bg-gray-900"
+       aria-label="Mobile Navigation"
+       role="dialog">
+    
+    <div class="absolute top-4 right-4">
+  <button type="button"
+          class="group rounded-md bg-white dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          x-on:click="close()">
+    <span class="sr-only">Close</span>
+    <svg class="w-6 h-6 fill-gray-400 group-hover:fill-indigo-400"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+    </svg>
+  </button>
+</div>    <div class="flex shrink-0 justify-center border-b border-gray-200 dark:border-gray-700 p-6">
+  <a href="https://theheartysoul.com">
+    <div class="pt-16">
 
-        <div class="absolute top-4 right-4">
-            <button type="button"
-                    class="group rounded-md bg-white dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                    x-on:click="close()">
-                <span class="sr-only">Close</span>
-                <svg class="w-6 h-6 fill-gray-400 group-hover:fill-indigo-400"
-                     viewBox="0 0 24 24"
-                     fill="currentColor"
-                     xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
-                </svg>
-            </button>
-        </div>    <div class="flex shrink-0 justify-center border-b border-gray-200 dark:border-gray-700 p-6">
-        <a href="https://theheartysoul.com">
-            <div class="pt-16">
+      <div class="dark:hidden">
+                  <img class="h-16 w-16"
+              src="https://theheartysoul.com/wp-content/uploads/2024/01/logo-header-light.svg" />
+              </div>
+  
+      <div class="hidden dark:block">
+                  <img class="h-16 w-16"
+              src="https://theheartysoul.com/wp-content/uploads/2024/01/logo-header-dark.svg" />
+              </div>
+    </div>
+  </a>
+</div>    <nav class="grow overflow-y-auto">
+  <ul class="space-y-2">
+          <li>
+        <a href="https://theheartysoul.com/category/eat/"
+           class="group flex items-center gap-x-3 text-gray-600 dark:text-gray-400 rounded-md p-2 text-base leading-6 font-semibold">
 
-                <div class="dark:hidden">
-                    <img class="h-16 w-16"
-                         src="https://theheartysoul.com/wp-content/uploads/2024/01/logo-header-light.svg" />
-                </div>
+          <svg class="w-4 h-4 shrink-0"
+               viewBox="0 0 24 24"
+               fill="currentColor"
+               xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z" clip-rule="evenodd" />
+          </svg>
 
-                <div class="hidden dark:block">
-                    <img class="h-16 w-16"
-                         src="https://theheartysoul.com/wp-content/uploads/2024/01/logo-header-dark.svg" />
-                </div>
-            </div>
+          <div>Eat</div>
+
         </a>
-    </div>    <nav class="grow overflow-y-auto">
-        <ul class="space-y-2">
-            <li>
-                <a href="https://theheartysoul.com/category/eat/"
-                   class="group flex items-center gap-x-3 text-gray-600 dark:text-gray-400 rounded-md p-2 text-base leading-6 font-semibold">
+      </li>
+          <li>
+        <a href="https://theheartysoul.com/category/heal/"
+           class="group flex items-center gap-x-3 text-gray-600 dark:text-gray-400 rounded-md p-2 text-base leading-6 font-semibold">
 
-                    <svg class="w-4 h-4 shrink-0"
-                         viewBox="0 0 24 24"
-                         fill="currentColor"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z" clip-rule="evenodd" />
-                    </svg>
+          <svg class="w-4 h-4 shrink-0"
+               viewBox="0 0 24 24"
+               fill="currentColor"
+               xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z" clip-rule="evenodd" />
+          </svg>
 
-                    <div>Eat</div>
+          <div>Heal</div>
 
-                </a>
-            </li>
-            <li>
-                <a href="https://theheartysoul.com/category/heal/"
-                   class="group flex items-center gap-x-3 text-gray-600 dark:text-gray-400 rounded-md p-2 text-base leading-6 font-semibold">
+        </a>
+      </li>
+          <li>
+        <a href="https://theheartysoul.com/category/learn/"
+           class="group flex items-center gap-x-3 text-gray-600 dark:text-gray-400 rounded-md p-2 text-base leading-6 font-semibold">
 
-                    <svg class="w-4 h-4 shrink-0"
-                         viewBox="0 0 24 24"
-                         fill="currentColor"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z" clip-rule="evenodd" />
-                    </svg>
+          <svg class="w-4 h-4 shrink-0"
+               viewBox="0 0 24 24"
+               fill="currentColor"
+               xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z" clip-rule="evenodd" />
+          </svg>
 
-                    <div>Heal</div>
+          <div>Learn</div>
 
-                </a>
-            </li>
-            <li>
-                <a href="https://theheartysoul.com/category/learn/"
-                   class="group flex items-center gap-x-3 text-gray-600 dark:text-gray-400 rounded-md p-2 text-base leading-6 font-semibold">
+        </a>
+      </li>
+          <li>
+        <a href="https://theheartysoul.com/category/make/"
+           class="group flex items-center gap-x-3 text-gray-600 dark:text-gray-400 rounded-md p-2 text-base leading-6 font-semibold">
 
-                    <svg class="w-4 h-4 shrink-0"
-                         viewBox="0 0 24 24"
-                         fill="currentColor"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z" clip-rule="evenodd" />
-                    </svg>
+          <svg class="w-4 h-4 shrink-0"
+               viewBox="0 0 24 24"
+               fill="currentColor"
+               xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z" clip-rule="evenodd" />
+          </svg>
 
-                    <div>Learn</div>
+          <div>Make</div>
 
-                </a>
-            </li>
-            <li>
-                <a href="https://theheartysoul.com/category/make/"
-                   class="group flex items-center gap-x-3 text-gray-600 dark:text-gray-400 rounded-md p-2 text-base leading-6 font-semibold">
+        </a>
+      </li>
+          <li>
+        <a href="https://theheartysoul.com/category/move/"
+           class="group flex items-center gap-x-3 text-gray-600 dark:text-gray-400 rounded-md p-2 text-base leading-6 font-semibold">
 
-                    <svg class="w-4 h-4 shrink-0"
-                         viewBox="0 0 24 24"
-                         fill="currentColor"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z" clip-rule="evenodd" />
-                    </svg>
+          <svg class="w-4 h-4 shrink-0"
+               viewBox="0 0 24 24"
+               fill="currentColor"
+               xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z" clip-rule="evenodd" />
+          </svg>
 
-                    <div>Make</div>
+          <div>Move</div>
 
-                </a>
-            </li>
-            <li>
-                <a href="https://theheartysoul.com/category/move/"
-                   class="group flex items-center gap-x-3 text-gray-600 dark:text-gray-400 rounded-md p-2 text-base leading-6 font-semibold">
+        </a>
+      </li>
+          <li>
+        <a href="https://theheartysoul.com/category/parenting/"
+           class="group flex items-center gap-x-3 text-gray-600 dark:text-gray-400 rounded-md p-2 text-base leading-6 font-semibold">
 
-                    <svg class="w-4 h-4 shrink-0"
-                         viewBox="0 0 24 24"
-                         fill="currentColor"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z" clip-rule="evenodd" />
-                    </svg>
+          <svg class="w-4 h-4 shrink-0"
+               viewBox="0 0 24 24"
+               fill="currentColor"
+               xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z" clip-rule="evenodd" />
+          </svg>
 
-                    <div>Move</div>
+          <div>Parenting</div>
 
-                </a>
-            </li>
-            <li>
-                <a href="https://theheartysoul.com/category/parenting/"
-                   class="group flex items-center gap-x-3 text-gray-600 dark:text-gray-400 rounded-md p-2 text-base leading-6 font-semibold">
+        </a>
+      </li>
+          <li>
+        <a href="https://theheartysoul.com/category/planet/"
+           class="group flex items-center gap-x-3 text-gray-600 dark:text-gray-400 rounded-md p-2 text-base leading-6 font-semibold">
 
-                    <svg class="w-4 h-4 shrink-0"
-                         viewBox="0 0 24 24"
-                         fill="currentColor"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z" clip-rule="evenodd" />
-                    </svg>
+          <svg class="w-4 h-4 shrink-0"
+               viewBox="0 0 24 24"
+               fill="currentColor"
+               xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z" clip-rule="evenodd" />
+          </svg>
 
-                    <div>Parenting</div>
+          <div>Planet</div>
 
-                </a>
-            </li>
-            <li>
-                <a href="https://theheartysoul.com/category/planet/"
-                   class="group flex items-center gap-x-3 text-gray-600 dark:text-gray-400 rounded-md p-2 text-base leading-6 font-semibold">
+        </a>
+      </li>
+          <li>
+        <a href="https://theheartysoul.com/category/relationship/"
+           class="group flex items-center gap-x-3 text-gray-600 dark:text-gray-400 rounded-md p-2 text-base leading-6 font-semibold">
 
-                    <svg class="w-4 h-4 shrink-0"
-                         viewBox="0 0 24 24"
-                         fill="currentColor"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z" clip-rule="evenodd" />
-                    </svg>
+          <svg class="w-4 h-4 shrink-0"
+               viewBox="0 0 24 24"
+               fill="currentColor"
+               xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z" clip-rule="evenodd" />
+          </svg>
 
-                    <div>Planet</div>
+          <div>Relationship</div>
 
-                </a>
-            </li>
-            <li>
-                <a href="https://theheartysoul.com/category/relationship/"
-                   class="group flex items-center gap-x-3 text-gray-600 dark:text-gray-400 rounded-md p-2 text-base leading-6 font-semibold">
-
-                    <svg class="w-4 h-4 shrink-0"
-                         viewBox="0 0 24 24"
-                         fill="currentColor"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z" clip-rule="evenodd" />
-                    </svg>
-
-                    <div>Relationship</div>
-
-                </a>
-            </li>
-        </ul>
-    </nav>
-        <div class="shrink-0">
-            <div class="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 px-6 py-2">
-                <label class="relative inline-flex items-center cursor-pointer mt-1">
-                    <input type="checkbox"
-                           value="dark"
-                           class="sr-only peer"
-                           x-model="theme"
-                           x-on:change.debounce="toggleTheme($dispatch)">
-                    <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-0 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>
-                    <span class="ml-3 text-sm font-medium text-gray-500 dark:text-gray-300">Dark mode</span>
-                </label>
-            </div>
-        </div>
-    </div>
+        </a>
+      </li>
+      </ul>
+</nav>
+    <div class="shrink-0">
+  <div class="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 px-6 py-2">
+    <label class="relative inline-flex items-center cursor-pointer mt-1">
+  <input type="checkbox"
+         value="dark"
+         class="sr-only peer"
+         x-model="theme"
+         x-on:change.debounce="toggleTheme($dispatch)">
+  <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-0 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>
+  <span class="ml-3 text-sm font-medium text-gray-500 dark:text-gray-300">Dark mode</span>
+</label>
+  </div>
+</div>
+  </div>
 </div>
 
-    <script>
-        function mobileNavigation() {
-            return {
-                isOpen: false,
-                theme: null,
-                setTheme() {
-                    this.theme = [];
-                    this.theme.push(window.settings.theme);
-                },
-                open() {
-                    document.body.classList.add(`overflow-hidden`);
-                    this.setTheme();
-                    this.isOpen = true;
-                },
-                close() {
-                    document.body.classList.remove(`overflow-hidden`);
-                    this.isOpen = false;
-                },
-                toggleTheme($dispatch) {
-                    $dispatch('toggle-theme');
-                },
-            }
-        }
-    </script>
-    <!-- Scripts -->
-    <script type="text/javascript" src="https://theheartysoul.com/wp-content/themes/wp-master-theme/public/dist/js/bundle-footer.js?id=6a62253e8935898ab6cda30a6c9d736c&amp;ver=6.5.5" id="base_theme_footer_scripts-js"></script>
+<script>
+  function mobileNavigation() {
+    return {
+      isOpen: false,
+      theme: null,
+      setTheme() {
+        this.theme = [];
+        this.theme.push(window.settings.theme);
+      },
+      open() {
+        document.body.classList.add(`overflow-hidden`);
+        this.setTheme();
+        this.isOpen = true;
+      },
+      close() {
+        document.body.classList.remove(`overflow-hidden`);
+        this.isOpen = false;
+      },
+      toggleTheme($dispatch) {
+        $dispatch('toggle-theme');
+      },
+    }
+  }
+</script>
+        <!-- Scripts -->
+		<script type="text/javascript" src="https://theheartysoul.com/wp-content/themes/wp-master-theme/public/dist/js/bundle-footer.js?id=6a62253e8935898ab6cda30a6c9d736c&amp;ver=6.5.5" id="base_theme_footer_scripts-js"></script>
 
-</body>
+	</body>
 </html>

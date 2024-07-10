@@ -796,6 +796,7 @@ func TestScraper_B(t *testing.T) {
 				},
 			},
 		},
+		/* Removed because the website now requires membership to view recipes.
 		{
 			name: "bingingwithbabish.com",
 			in:   "https://www.bingingwithbabish.com/recipes/peachs-cake-mario-64",
@@ -808,7 +809,7 @@ func TestScraper_B(t *testing.T) {
 				DateModified:  "2023-05-12T11:28:56-0500",
 				DatePublished: "2023-04-17T14:51:26-0500",
 				Description: &models.Description{
-					Value: "There’s only one way to thank someone who has saved your life and kingdom; and of course, it’s with a cake.&nbsp;",
+					Value: "Peach's Cake inspired by Mario 64 by Babish:\n\nThere’s only one way to thank someone who has saved your life and kingdom; and of course, it’s with a cake.",
 				},
 				Image: &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
@@ -895,7 +896,7 @@ func TestScraper_B(t *testing.T) {
 				URL:             "https://www.bingingwithbabish.com/recipes/peachs-cake-mario-64",
 				Video:           &models.Videos{},
 			},
-		},
+		},*/
 		{
 			name: "blueapron.com",
 			in:   "https://www.blueapron.com/recipes/sweet-spicy-pork-belly-fried-rice-with-kimchi-fried-eggs-71501763-72c6-4cc2-86d5-de2bc14d6b7b",
@@ -1150,14 +1151,32 @@ func TestScraper_B(t *testing.T) {
 				},
 				Instructions: &models.Instructions{
 					Values: []models.HowToItem{
-						{Type: "HowToStep", Text: "Heat a dutch oven or large heavy bottomed pot over medium high. Add a bit of oil, the ground beef, and sausage, breaking the meat apart into small pieces as it cooks - i use a meat smasher for this."},
-						{Type: "HowToStep", Text: "When the meat begins to brown and is well broken down, stir in the onion, garlic, and a pinch of salt, making sure to scrape up any meat fond stuck to the bottom of the pot. Cover and cook for 5 minutes."},
-						{Type: "HowToStep", Text: "Now is a good time to preheat your oven to 425F/220C."},
-						{Type: "HowToStep", Text: "After 5 minutes of cooking, stir in oregano, chile flake, and tomato paste and cook for a minute or so until tomato paste is well incorporated."},
-						{Type: "HowToStep", Text: "Stir in bouillon and can of crushed tomatoes, water, 6-8g/1.5tsp salt, 7-8g/2tsp sugar and bring to a simmer."},
-						{Type: "HowToStep", Text: "Stir in basil. Add in spaghetti and gently stir and press down to submerge noodles. Simmer for about 60 seconds."},
-						{Type: "HowToStep", Text: "Carefully stir noodles again to fully submerge noodles. Transfer the pot to the oven to cook, uncovered for 16-18 min, gently stirring and submerging at 5 and 10 minutes into cooking. Taste for doneness and seasoning and adjust if necessary. Stir in grated parm."},
-						{Type: "HowToStep", Text: "Garnish with additional parm."},
+						{
+							Text: "Heat a dutch oven or large heavy bottomed pot over medium high. Add a bit of oil, the ground beef, and sausage, breaking the meat apart into small pieces as it cooks - i use a meat smasher for this.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "When the meat begins to brown and is well broken down, stir in the onion, garlic, and a pinch of salt, making sure to scrape up any meat fond stuck to the bottom of the pot. Cover and cook for 5 minutes.",
+							Type: "HowToStep",
+						},
+						{Text: "Now is a good time to preheat your oven to 425F/220C.", Type: "HowToStep"},
+						{
+							Text: "After 5 minutes of cooking, stir in oregano, chile flake, and tomato paste and cook for a minute or so until tomato paste is well incorporated.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Stir in bouillon and can of crushed tomatoes, water, 6-8g/1.5tsp salt, 7-8g/2tsp sugar and bring to a simmer.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Stir in basil. Add in spaghetti and gently stir and press down to submerge noodles. Simmer for about 60 seconds.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Carefully stir noodles again to fully submerge noodles. Transfer the pot to the oven to cook, uncovered for 16-18 min, gently stirring and submerging at 5 and 10 minutes into cooking. Taste for doneness and seasoning and adjust if necessary. Stir in grated parm.",
+							Type: "HowToStep",
+						},
+						{Text: "Garnish with additional parm.", Type: "HowToStep"},
 					},
 				},
 				Name:            "Faster, Better, Spaghetti &amp; Meat Sauce",
@@ -1255,107 +1274,6 @@ func TestScraper_B(t *testing.T) {
 				URL:             "https://www.brianlagerstrom.com/recipes/grilled-pizza",
 				Video:           &models.Videos{},
 				Yield:           &models.Yield{},
-			},
-		},
-		{
-			name: "brianlagerstrom3.com",
-			in:   "https://www.brianlagerstrom.com/recipes/faster-better-spaghetti-amp-meat-sauce",
-			want: models.RecipeSchema{
-				AtContext:     "https://schema.org",
-				AtType:        &models.SchemaType{Value: "Recipe"},
-				Category:      &models.Category{Value: "uncategorized"},
-				CookingMethod: &models.CookingMethod{},
-				Cuisine:       &models.Cuisine{},
-				DateModified:  "2024-04-26",
-				DatePublished: "2024-04-26",
-				Description: &models.Description{
-					Value: "Chicken and dumplings is a classic comfort food that never fails to hit the spot. I know that some people will argue over what type of dumplings and the contents of the stew but this is what I like. It's the ultimate comfort food that just feels like a big, warm hug in a bowl.",
-				},
-				Keywords: &models.Keywords{},
-				Image:    &models.Image{Value: anUploadedImage.String()},
-				Ingredients: &models.Ingredients{
-					Values: []string{
-						"6 boneless, skinless chicken thighs",
-						"Salt",
-						"Black pepper (approx. 1 tsp, divided)",
-						"300g (1 large) white onion, medium diced",
-						"150g (3-4 stalks) of celery, medium diced",
-						"150g (3-5 medium) carrots, diced",
-						"150g (1 medium) fennel bulb, chopped",
-						"20g (4-5 cloves) garlic, pressed",
-						"115g (1 stick) butter",
-						"135g (1c) all-purpose flour (or sub with cup for cup gluten free flour)",
-						"100g (1/2c) dry white wine",
-						"1200g (5c) chicken broth",
-						"100g (1/2c) heavy cream (or 400g milk and only 800g of stock if you don’t have cream)",
-						"3-4 sprigs thyme",
-						"2 bay leaves",
-						"2g (3/4t) poultry seasoning",
-						"200g frozen peas",
-						"360g (3c) all-purpose flour",
-						"8g (1 2/3t) coarse salt",
-						"12g (2 1/2T) baking powder",
-						"4g (1 1/2t) black pepper",
-						"75g (5T) unsalted butter, melted",
-						"340g (2 1/4c) whole milk",
-					},
-				},
-				Instructions: &models.Instructions{
-					Values: []models.HowToItem{
-						{Text: "Preheat the oven to 400°F (205°C).", Type: "HowToStep"},
-						{
-							Text: "Season both sides of the chicken thighs with salt and black pepper. Roast in the oven for 30 minutes or until fully cooked and fat is rendered.",
-							Type: "HowToStep",
-						},
-						{
-							Text: "While the chicken is roasting, dice onion, celery, carrots, fennel. Press garlic cloves.",
-							Type: "HowToStep",
-						},
-						{
-							Text: "In a large heavy-bottomed pot over medium heat, melt one stick of butter. Add diced vegetables and garlic, a pinch of salt, and sweat for 6-8 minutes, stirring often. I'm using a 6 3/4qt dutch oven.",
-							Type: "HowToStep",
-						},
-						{
-							Text: "Stir in all-purpose flour to create a roux. Add wine, scraping the bottom of the pot to deglaze. Cook for about 30 seconds.",
-							Type: "HowToStep",
-						},
-						{
-							Text: "Add chicken broth, heavy cream, thyme, bay leaves, and poultry seasoning. Stir well.",
-							Type: "HowToStep",
-						},
-						{
-							Text: "Chop the roasted chicken thighs into small bite sized pieces and add to the pot over medium heat along with frozen peas. Stir and simmer on low for 5 minutes to reheat chicken and peas, scraping the bottom of the pot as you go.",
-							Type: "HowToStep",
-						},
-						{
-							Text: "In a separate bowl, mix the dry dumpling ingredients: all-purpose flour, salt, baking powder, black pepper. While mixing, stream in the melted (but not hot) butter, and milk and continue stirring until just barely combined.",
-							Type: "HowToStep",
-						},
-						{
-							Text: "Taste the chicken gravy mixture for seasoning and adjust with additional salt if needed.",
-							Type: "HowToStep",
-						},
-						{
-							Text: "Back to the dumpling dough, using two teaspoons, quenelle the dumpling dough and drop 12-16 dumplings into the pot.",
-							Type: "HowToStep",
-						},
-						{
-							Text: "Lower the heat to low, cover with a lid, and cook for 15 minutes or until the dumplings have expanded and cooked through.",
-							Type: "HowToStep",
-						},
-						{
-							Text: "Test a dumpling for doneness by cutting into it; it should be fluffy and cooked through, not gluey.",
-							Type: "HowToStep",
-						},
-					},
-				},
-				Name:            "Chicken And Dumplings",
-				NutritionSchema: &models.NutritionSchema{},
-				ThumbnailURL:    &models.ThumbnailURL{},
-				Tools:           &models.Tools{Values: []models.HowToItem{}},
-				Yield:           &models.Yield{},
-				URL:             "https://www.brianlagerstrom.com/recipes/faster-better-spaghetti-amp-meat-sauce",
-				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -1646,7 +1564,7 @@ func TestScraper_B(t *testing.T) {
 							EmbedURL:    "https://youtu.be/HHdDtftfA-U",
 							Name:        "Chicken Lollipop / Drums of Heaven",
 							ThumbnailURL: &models.ThumbnailURL{
-								Value: "https://assets-global.website-files.com/60d34b8627f6e735cf28df18/62a95eaacb8d206406f1d296_Chicken%20Lollipop%20Hero%204.3.jpg",
+								Value: "https://cdn.prod.website-files.com/60d34b8627f6e735cf28df18/62a95eaacb8d206406f1d296_Chicken%20Lollipop%20Hero%204.3.webp",
 							},
 						},
 					},

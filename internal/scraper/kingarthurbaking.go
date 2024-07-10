@@ -24,7 +24,7 @@ func scrapeKingArthurBaking(root *goquery.Document) (models.RecipeSchema, error)
 
 	var cat string
 	root.Find("nav.breadcrumb").First().Find("a").Each(func(_ int, sel *goquery.Selection) {
-		href, _ := sel.Attr("href")
+		href := sel.AttrOr("href", "")
 		if href == "/recipes" {
 			return
 		}

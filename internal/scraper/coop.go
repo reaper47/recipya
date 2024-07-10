@@ -26,8 +26,7 @@ func scrapeCoop(root *goquery.Document) (models.RecipeSchema, error) {
 		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(sel.Text()))
 	})
 
-	image, _ := root.Find("picture img").First().Attr("src")
-	rs.Image.Value = strings.TrimPrefix(image, "//")
+	rs.Image.Value = strings.TrimPrefix(root.Find("picture img").First().AttrOr("src", ""), "//")
 	rs.Yield.Value = findYield(root.Find("span:contains('portioner')").Text())
 
 	return rs, nil

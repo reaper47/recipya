@@ -20,8 +20,10 @@ func scrapeTheFoodFlamingo(root *goquery.Document) (models.RecipeSchema, error) 
 	nodes := root.Find("meta[property='article:tag']")
 	xk := make([]string, 0, nodes.Length())
 	nodes.Each(func(_ int, sel *goquery.Selection) {
-		s, _ := sel.Attr("content")
-		xk = append(xk, s)
+		s := sel.AttrOr("content", "")
+		if s != "" {
+			xk = append(xk, s)
+		}
 	})
 	rs.Keywords.Values = strings.Join(xk, ",")
 

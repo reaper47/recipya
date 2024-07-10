@@ -148,29 +148,28 @@ func TestScraper_S(t *testing.T) {
 						"225 g Zwieback",
 						"1 l Milch",
 						"80 g Zucker",
-						"2 TL Vanilleextrakt",
+						"2 TL  Vanilleextrakt",
 						"90 g Speisestärke",
-						"100 g Kokosraspeln",
+						"100 g Kokosraspel / Kokosraspeln",
 						"1 TL Zimt",
 						"400 g Sahne",
-						"1 TL Vanilleextrakt",
-						"4 TL San-apart",
-						"30 g Pistazien",
-						"100 g Himbeeren (frisch oder TK)",
-						"100 g Heidelbeeren (frisch oder TK)",
+						"1 TL  Vanilleextrakt",
+						"4 TL  San-apart",
+						"30 g Pistazie / Pistazien",
+						"100 g Himbeere / Himbeeren (frisch oder TK)",
+						"100 g Heidelbeere / Heidelbeeren (frisch oder TK)",
 					},
 				},
 				Instructions: &models.Instructions{
 					Values: []models.HowToItem{
 						{Type: "HowToStep", Text: "Gib den Zucker in einen Topf, erhitze ihn, bis er leicht karamellisiert und gieße ihn mit dem Wasser auf. Koche den Sirup kurz auf, bis sich das Karamell gelöst hat und er ganz leicht dickflüssig wird und nimm ihn dann vom Herd. Verteile den Zwieback in einer Ofenform oder einem Backrahmen und gieße den warmen Sirup darüber, wende dabei die Zweibackscheiben, so kann der Sirup von allen Seiten einziehen."},
 						{Type: "HowToStep", Text: "Verrühre die Milch mit dem Zucker, Vanilleextrakt und der Stärke in einem Topf und lasse den Pudding aufkochen. Koche ihn für etwa 2 Minuten und gieße ihn dann ebenfalls über den Zwieback. Lasse die Masse abkühlen."},
-						{Type: "HowToStep", Text: "Tipp: Streiche den Pudding durch ein Haarsieb, um mögliche Klümpchen zu entfernen."},
 						{Type: "HowToStep", Text: "Röste die Kokosraspeln in einer Pfanne ohne Fett an, bis sie leicht Farbe annehmen, verrühre sie mit dem Zimt und lasse sie auf einem Teller abkühlen. Schlage die Sahne mit Vanilleextrakt und Sanapart steif und streiche sie auf dem Pudding glatt. Hacke die Pistazien klein und streue sie gemeinsam mit den Kokosraspeln über die Sahne. Stelle das Dessert für mindestens 4 Stunden oder über Nacht in den Kühlschrank. Dekoriere das Dessert zum Servieren mit den frischen Beeren. Viel Spaß beim Nachmachen, eure Sally!"},
 					},
 				},
 				Name:            "zwieback dessert / etimek tatlisi / no bake ramadan rezept",
 				NutritionSchema: &models.NutritionSchema{},
-				PrepTime:        "30",
+				PrepTime:        "PT30M",
 				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 1},
@@ -234,7 +233,7 @@ func TestScraper_S(t *testing.T) {
 		},
 		{
 			name: "saltpepperskillet.com",
-			in:   "https://saltpepperskillet.com/recipes/creamy-mashed-potatoes/",
+			in:   "https://saltpepperskillet.com/creamy-mashed-potatoes/",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
 				AtType:        &models.SchemaType{Value: "Recipe"},
@@ -268,7 +267,7 @@ func TestScraper_S(t *testing.T) {
 				PrepTime:  "PT5M",
 				TotalTime: "PT45M",
 				Yield:     &models.Yield{Value: 6},
-				URL:       "https://saltpepperskillet.com/recipes/creamy-mashed-potatoes/",
+				URL:       "https://saltpepperskillet.com/creamy-mashed-potatoes/",
 				Video: &models.Videos{
 					Values: []models.VideoObject{
 						{
@@ -628,12 +627,12 @@ func TestScraper_S(t *testing.T) {
 				Cuisine:       &models.Cuisine{Value: "Southern"},
 				DatePublished: "2021-05-14",
 				Description: &models.Description{
-					Value: "With only 7 ingredients this flavorful vegan blackberry cobbler is a great way to use up the season's abundance of blackberries.",
+					Value: "With only 7 ingredients, this flavorful vegan blackberry cobbler is a great way to use up the season's abundance of blackberries!",
 				},
 				Image: &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
 					Values: []string{
-						"1 cup flour", "1/2 cup sugar", "1 heaped teaspoon baking powder",
+						"1 cup unbleached all-purpose flour", "1/2 cup sugar", "1 heaped teaspoon baking powder",
 						"1/4 teaspoon cinnamon",
 						"1 cup unsweetened vanilla plant milk, warmed if using coconut oil",
 						"1/3 cup coconut oil or vegan butter/margarine, warmed to liquid state",
@@ -642,13 +641,28 @@ func TestScraper_S(t *testing.T) {
 				},
 				Instructions: &models.Instructions{
 					Values: []models.HowToItem{
-						{Type: "HowToStep", Text: "Preheat oven to 350 degrees F."},
-						{Type: "HowToStep", Text: "Batter: In a medium bowl, whisk together the flour, sugar, baking powder, and cinnamon. Be sure to warm your milk if using coconut oil before using or it will harden the coconut oil when combined. Add milk and mix well. Add oil/butter, mix well again."},
-						{Type: "HowToStep", Text: "Assemble: Pour batter into an 8-inch baking dish. Drop blackberries into the batter, distributing evenly all over. Push down some of the blackberries into the batter, then add more over top. Sprinkle a little pure cane sugar over top if you like. I would refrain from using coconut sugar as it may burn. If you want to add coconut sugar, sprinkle some at least halfway through baking time."},
-						{Type: "HowToStep", Text: "Bake: Place in oven on the middle rack and bake for 40 &#8211; 45 minutes. Let cool a few minutes and serve."},
-						{Type: "HowToStep", Text: "Serve: Pair with a scoop of non-dairy vanilla ice cream for dessert and a scoop of vanilla non-dairy yogurt for breakfast (yes, this would be a fine way to start your day!)"},
-						{Type: "HowToStep", Text: "Serves 6"},
-						{Type: "HowToStep", Text: "Leftovers can be stored in the refrigerator for up to 5 days. Warm serving portions in the microwave or oven set to 350 for 10 &#8211; 15 minutes."},
+						{Text: "Preheat oven to 350 degrees F.", Type: "HowToStep"},
+						{
+							Text: "Batter: In a medium bowl, whisk together the flour, sugar, baking powder, and cinnamon. If using coconut oil, be sure to warm the milk before using it, or it will harden the coconut oil when combined. Add milk and mix well. Add oil/butter and mix well again.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Assemble: Pour batter into an 8-inch baking dish. Drop blackberries into the batter, distributing them evenly. Push down some of the blackberries into the batter, then add more over top. Sprinkle a little pure cane sugar over top if you like. I would refrain from using coconut sugar, as it may burn. If you want to add coconut sugar, sprinkle it halfway through baking.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Bake: Place in oven on the middle rack and bake for 40 &#8211; 45 minutes. Let cool a few minutes and serve.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Serve: Pair with a scoop of non-dairy vanilla ice cream for dessert and a scoop of vanilla non-dairy yogurt for breakfast (yes, this would be a fine way to start your day!)",
+							Type: "HowToStep",
+						},
+						{Text: "Serves 6", Type: "HowToStep"},
+						{
+							Text: "Leftovers can be stored in the refrigerator for up to 5 days. Warm serving portions in the microwave or oven set to 350 for 10 &#8211; 15 minutes.",
+							Type: "HowToStep",
+						},
 					},
 				},
 				Name: "Southern Blackberry Cobbler (Vegan + Easy)",
@@ -998,7 +1012,7 @@ func TestScraper_S(t *testing.T) {
 				Category:      &models.Category{Value: "uncategorized"},
 				CookingMethod: &models.CookingMethod{},
 				Cuisine:       &models.Cuisine{},
-				DateModified:  "2024-04-18T20:11:53-05:00",
+				DateModified:  "2024-06-04T16:33:09-05:00",
 				DatePublished: "2024-04-03T09:52:47-05:00",
 				Description:   &models.Description{Value: "Hasn’t it always been too long since your last slice of profoundly perfect crumb cake? You know, the kind that’s a hefty square with at least as much height from big brown sugar and cinnamon crumbs as from a golden, buttery, sour cream-enriched and vanilla-scented cake? Yes, me too. I didn’t expect to be back here so soon, though. I truly believed I’d finished my Crumb Cake Degree in 2021 with the still-perfect-in-every-way Big Apple Crumb Cake. But sometimes, perfection is a process."},
 				Keywords:      &models.Keywords{},
@@ -1242,10 +1256,13 @@ func TestScraper_S(t *testing.T) {
 				Name:          "Oven-Roasted Corn On The Cob",
 				Category:      &models.Category{Value: "Side Dish"},
 				Cuisine:       &models.Cuisine{Value: "American"},
-				DateModified:  "2023-11-05T21:00:17.338-05:00",
+				DateModified:  "2024-03-30T14:05:32.125-04:00",
 				DatePublished: "2019-05-14T09:02:49.000-04:00",
 				Description: &models.Description{
 					Value: "Great corn doesn&#39;t get much easier than our Oven-Roasted Corn on the Cob recipe. The trick? Flavored butter and foil. See how to bake corn on the cob in the oven.",
+				},
+				Keywords: &models.Keywords{
+					Values: "oven roasted corn on the cob, corn on the cob, corn on the cob in the oven",
 				},
 				Yield: &models.Yield{Value: 4},
 				Image: &models.Image{Value: anUploadedImage.String()},
@@ -1371,7 +1388,7 @@ func TestScraper_S(t *testing.T) {
 				DateCreated:   "",
 				DateModified:  "2013-12-14T04:04:56+00:00",
 				DatePublished: "2013-12-13T14:00:55+00:00",
-				Description:   &models.Description{Value: "This is my contribution for this month’s #LetsLunch, a virtual monthly potluck on Twitter.  The theme this month is “edible decorations for the festive season.”   I love the idea …"},
+				Description:   &models.Description{Value: "This is my contribution for this month’s #LetsLunch, a virtual monthly potluck on Twitter. \u00a0The theme this month is “edible decorations for the festive season.” \u00a0 I love the idea …"},
 				Keywords:      &models.Keywords{Values: "eggplant,middle eastern,Ottolenghi,Plenty,pomegranate,recipe,roasted,tahini,vegan,vegetarian"},
 				Image:         &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
@@ -1396,11 +1413,11 @@ func TestScraper_S(t *testing.T) {
 					Values: []models.HowToItem{
 						{Text: "Preheat oven to 300 F.", Type: "HowToStep"},
 						{
-							Text: "Wash and dry eggplants.  Cut in half lengthwise and place, cut side up, onto a parchment paper-lined baking sheet.  Use a paring knife to cut deep diagonal slices into the flesh, but not through the skin, of the eggplant halves.  Repeat at a 45 degree angle in the other direction until you have diamonds.",
+							Text: "Wash and dry eggplants. \u00a0Cut in half lengthwise and place, cut side up, onto a parchment paper-lined baking sheet. \u00a0Use a paring knife to cut deep diagonal slices into the flesh, but not through the skin, of the eggplant halves. \u00a0Repeat at a 45 degree angle in the other direction until you have diamonds.",
 							Type: "HowToStep",
 						},
 						{
-							Text: "Brush each eggplant half with a few tablespoons of olive oil.  Sprinkle on a bit of salt and freshly ground black pepper.",
+							Text: "Brush each eggplant half with a few tablespoons of olive oil. \u00a0Sprinkle on a bit of salt and freshly ground black pepper.",
 							Type: "HowToStep",
 						},
 						{
@@ -1408,7 +1425,7 @@ func TestScraper_S(t *testing.T) {
 							Type: "HowToStep",
 						},
 						{
-							Text: "Meanwhile, make the sauce by combining the tahini, garlic and lemon juice.  Add salt to taste.",
+							Text: "Meanwhile, make the sauce by combining the tahini, garlic and lemon juice. \u00a0Add salt to taste.",
 							Type: "HowToStep",
 						},
 						{
@@ -1416,7 +1433,7 @@ func TestScraper_S(t *testing.T) {
 							Type: "HowToStep",
 						},
 						{
-							Text: "Serve with triangles of pita, pita chips,  or toasts.",
+							Text: "Serve with triangles of pita, pita chips, \u00a0or toasts.",
 							Type: "HowToStep",
 						},
 					},

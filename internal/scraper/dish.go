@@ -44,9 +44,12 @@ func scrapeDish(root *goquery.Document) (models.RecipeSchema, error) {
 
 	rs.DatePublished = getPropertyContent(root, "article:published_time")
 	rs.Name = strings.TrimSpace(root.Find("h1[itemprop=name]").Text())
-	img, _ := root.Find("img[itemprop='image']").First().Attr("src")
-	rs.Image.Value = "https://dish.co.nz/" + img
 	rs.Yield.Value = findYield(root.Find("h2.serve").First().Text())
+
+	img := root.Find("img[itemprop='image']").First().AttrOr("src", "")
+	if img != "" {
+		rs.Image.Value = "https://dish.co.nz/" + img
+	}
 
 	root.Find("div[itemprop='ingredients']").First().Find("p").Each(func(_ int, node *goquery.Selection) {
 		for c := node.Nodes[0].FirstChild; c != nil; c = c.NextSibling {

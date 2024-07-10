@@ -15,7 +15,8 @@ func scrapeKitchenaid(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 
 	summary := root.Find(".blogRecipe-summary")
-	rs.Yield.Value = findYield(summary.Find("li:contains('Makes')").Text())
+	str := strings.TrimSpace(summary.Find("li:contains('Makes')").Text())
+	rs.Yield.Value = findYield(strings.ReplaceAll(str, "\n", " "))
 
 	prep := strings.TrimSpace(summary.Find("li:contains('Time')").Text())
 	if prep != "" {

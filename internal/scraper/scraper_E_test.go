@@ -37,9 +37,9 @@ func TestScraper_E(t *testing.T) {
 						"1 Tablespoon ground cinnamon",
 						"¼ cup unsalted butter (softened)",
 						"4 oz cream cheese (full fat, softened to room temperature)",
-						"¼ cup Greek yogurt (I used plain full fat)",
-						"2 Tablespoons maple syrup",
-						"1 teaspoon vanilla extract",
+						"3 Tablespoons unsalted butter (softened to room temperature)",
+						"¼ teaspoon vanilla extract",
+						"1 cup powdered sugar",
 					},
 				},
 				Instructions: &models.Instructions{
@@ -55,7 +55,7 @@ func TestScraper_E(t *testing.T) {
 						{Type: "HowToStep", Text: "Starting at the top, roll the dough toward you into a large log, moving back and forth down the line of dough (in a “typewriter” motion) and always rolling toward you. Roll it tightly as you go so the rolls will be nice and neat. When it’s all rolled, pinch the seam closed and turn the roll over so that the seam is facing down. Cut roll crosswise into 12 1-inch-thick pieces and place on prepared baking pan."},
 						{Type: "HowToStep", Text: "Cover, and let rise in warm place 45 minutes, or until doubled in size."},
 						{Type: "HowToStep", Text: "Preheat oven to 350°F. Bake cinnamon rolls for 20-25 minutes, or until golden brown, cooked through and no longer doughy. I baked mine for 22 minutes."},
-						{Type: "HowToStep", Text: "While cinnamon rolls are cooling, make cream cheese frosting by adding cream cheese, greek yogurt, maple syrup and vanilla to a large mixing bowl. Using a hand mixer on medium speed, whip all the ingredients together until smooth and fluffy, scraping down the sides as needed. Alternatively, you can use a stand mixer."},
+						{Type: "HowToStep", Text: "While cinnamon rolls are cooling, make cream cheese frosting by adding softened cream cheese and butter and vanilla to a mixing bowl. Using a hand mixer or stand mixer on medium speed, whip the ingredients together until smooth and fluffy, scraping down the sides as needed. Then, add the powdered sugar ¼ cup at a time, mixing in between, until fully combined and smooth."},
 						{Type: "HowToStep", Text: "Spread frosting over warm cinnamon rolls and serve."},
 					},
 				},
@@ -98,7 +98,7 @@ func TestScraper_E(t *testing.T) {
 				AtContext:     atContext,
 				AtType:        &models.SchemaType{Value: "Recipe"},
 				Category:      &models.Category{Value: "uncategorized"},
-				DateModified:  "2023-09-19T12:07:24.154-04:00",
+				DateModified:  "2024-04-18T13:12:56.664-04:00",
 				DatePublished: "2021-02-04T15:20:10.000-05:00",
 				Description: &models.Description{
 					Value: "This chicken piccata recipe has a bright, briny flavor, is made from ingredients you likely have on hand, and goes with everything from chicken to tofu to scallops. Bonus: It&#39;s lower in calories than a lot of other pan sauces.",
@@ -719,16 +719,12 @@ func TestScraper_E(t *testing.T) {
 				Video: &models.Videos{
 					Values: []models.VideoObject{
 						{
-							AtType:      "VideoObject",
-							ContentURL:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1630268980/tgee2rvnfx21ecxraskn.mp4",
-							Description: "Video showing how to make delightfully sweet and sticky ribs - make sure you have napkins at hand!",
-							Duration:    "PT48S",
-							EmbedURL:    "https://video.mediavine.com/videos/tgee2rvnfx21ecxraskn.js",
-							Name:        "Baked or Barbecued Sticky Glazed Ribs",
-							ThumbnailURL: &models.ThumbnailURL{
-								Value: "https://mediavine-res.cloudinary.com/image/upload/s--LMyVRa1i--/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1630268957/t4jwgfbfkg5pmzr04ct8.jpg",
-							},
-							UploadDate: time.Date(2021, 8, 29, 20, 29, 48, 0, time.UTC),
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/rOM98iNi.mp4",
+							Description:  "Video showing how to make delightfully sweet and sticky ribs - make sure you have napkins at hand!",
+							Name:         "Baked or Barbecued Sticky Glazed Ribs",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/rOM98iNi-720.jpg"},
+							UploadDate:   time.Date(2021, 8, 29, 0, 0, 0, 0, time.UTC),
 						},
 					},
 				},
@@ -831,7 +827,7 @@ func TestScraper_E(t *testing.T) {
 				},
 				Keywords: &models.Keywords{Values: "sections/recept"},
 				ThumbnailURL: &models.ThumbnailURL{
-					Value: "https://static.cdn-expressen.se/images/45/cd/45cd6c5649004e1fa957e891d581fa49/16x9/original.jpg",
+					Value: "https://static.bonniernews.se/images/45/cd/45cd6c5649004e1fa957e891d581fa49/16x9/original.jpg",
 				},
 				Yield: &models.Yield{Value: 22},
 				URL:   "https://alltommat.expressen.se/recept/saftiga-choklad--och-apelsinbullar/",

@@ -208,7 +208,7 @@ func TestScraper_J(t *testing.T) {
 				CookingMethod: &models.CookingMethod{},
 				CookTime:      "PT15M",
 				Cuisine:       &models.Cuisine{Value: "American"},
-				DatePublished: "2023-05-09T12:58:13+00:00",
+				DatePublished: "2024-05-20T12:58:13+00:00",
 				Description:   &models.Description{Value: "Quick easy and delicious"},
 				Keywords:      &models.Keywords{Values: "#healthyrecipe"},
 				Image:         &models.Image{Value: anUploadedImage.String()},
@@ -445,7 +445,7 @@ func TestScraper_J(t *testing.T) {
 				},
 				Name:      "Jambalaya Biscuits",
 				PrepTime:  "PT40M",
-				TotalTime: "PT-477869H29M13S",
+				TotalTime: "PT-477923H54M4S",
 				Yield:     &models.Yield{Value: 8},
 				URL:       "https://joythebaker.com/2023/01/jambalaya-biscuits/",
 				Video: &models.Videos{
@@ -742,6 +742,20 @@ func TestScraper_J(t *testing.T) {
 				TotalTime: "PT60M",
 				Yield:     &models.Yield{Value: 2},
 				URL:       "https://www.justonecookbook.com/teriyaki-tofu-bowl/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://www.youtube.com/watch?v=VfdAc2S_H2s",
+							Description:  "Smothered with sweet-savory homemade teriyaki sauce, this Pan-Fried Teriyaki Tofu Bowl is amazingly easy and delicious! It’s also a great way to incorporate tofu into your weeknight dinner rotation. Bonus: I’ll show you the best way to cook crispy tofu.\n\nRECIPE: https://www.justonecookbook.com/teriyaki-tofu-bowl/\n\nIngredients:\n\n14 oz medium-firm tofu (momen tofu) (1 block for 2 servings)\n⅓ cup (60 g) potato starch or cornstarch\n3 Tbsp neutral-flavored oil (vegetable, rice bran, canola, etc.) (divided)\n\nFor the Teriyaki Sauce\n¼ cup sake\n¼ cup mirin\n¼ cup soy sauce\n4 tsp sugar\n\nFor the Garnish\n1 green onion/scallion\n½ tsp toasted white sesame seeds",
+							Duration:     "PT1M",
+							EmbedURL:     "https://www.youtube.com/embed/VfdAc2S_H2s?feature=oembed",
+							Name:         "Pan-Fried Teriyaki Tofu Bowl 照り焼き豆腐丼",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://i.ytimg.com/vi/VfdAc2S_H2s/hqdefault.jpg"},
+							UploadDate:   time.Date(2022, 3, 22, 20, 43, 10, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 	}

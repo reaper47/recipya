@@ -14,7 +14,7 @@ func scrapeAllClad(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.Description.Value = getNameContent(root, "description")
 	rs.Keywords.Values = getNameContent(root, "description")
 	rs.Image.Value = getPropertyContent(root, "og:image")
-	rs.Category.Value, _ = root.Find(".post-categories a").First().Attr("title")
+	rs.Category.Value = root.Find(".post-categories a").First().AttrOr("title", "")
 	getIngredients(&rs, root.Find("h2:contains('Ingredients')").Next().Find("ul li"))
 	getInstructions(&rs, root.Find("h2:contains('Directions')").Next().Find("ol li"))
 

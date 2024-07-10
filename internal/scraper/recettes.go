@@ -71,7 +71,7 @@ func scrapeRecettesDuQuebec(root *goquery.Document) (models.RecipeSchema, error)
 
 	getInstructions(&rs, root.Find(".method p"))
 
-	image, _ := root.Find("picture img").Attr("srcset")
+	image := root.Find("picture img").AttrOr("srcset", "")
 	split := strings.Split(image, "?")
 	if len(split) > 0 {
 		rs.Image.Value = split[0]

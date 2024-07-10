@@ -20,17 +20,17 @@ func findYield(s string) int16 {
 }
 
 func getItempropContent(doc *goquery.Document, name string) string {
-	s, _ := doc.Find("meta[itemprop='" + name + "']").Attr("content")
+	s := doc.Find("meta[itemprop='"+name+"']").AttrOr("content", "")
 	return strings.TrimSpace(s)
 }
 
 func getNameContent(doc *goquery.Document, name string) string {
-	s, _ := doc.Find("meta[name='" + name + "']").Attr("content")
+	s := doc.Find("meta[name='"+name+"']").AttrOr("content", "")
 	return strings.TrimSpace(s)
 }
 
 func getPropertyContent(doc *goquery.Document, name string) string {
-	s, _ := doc.Find("meta[property='" + name + "']").Attr("content")
+	s := doc.Find("meta[property='"+name+"']").AttrOr("content", "")
 	return strings.TrimSpace(s)
 }
 

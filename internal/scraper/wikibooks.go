@@ -30,7 +30,7 @@ func scrapeWikiBooks(root *goquery.Document) (models.RecipeSchema, error) {
 
 	rs.Category.Value = root.Find("th:contains('Category')").Next().Text()
 
-	image, _ := root.Find(".infobox-image img").First().Attr("src")
+	image := root.Find(".infobox-image img").First().AttrOr("src", "")
 	if image != "" {
 		image = "https:" + image
 	}

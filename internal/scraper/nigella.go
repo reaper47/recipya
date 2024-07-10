@@ -23,8 +23,7 @@ func scrapeNigella(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.Description.Value = description
 	rs.Image.Value = getPropertyContent(root, "og:image")
 
-	keywords, _ := root.Find("meta[itemprop=keywords]").Attr("content")
-	rs.Keywords.Values = keywords
+	rs.Keywords.Values = root.Find("meta[itemprop=keywords]").AttrOr("content", "")
 
 	getIngredients(&rs, root.Find("li[itemprop=recipeIngredient]"))
 	getInstructions(&rs, root.Find("div[itemprop=recipeInstructions]").First().Find("ol li"))

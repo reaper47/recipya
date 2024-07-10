@@ -161,7 +161,7 @@ func TestScraper_I(t *testing.T) {
 						{Text: "Grease a 9x13 inch casserole dish. Spread the mixture evenly over the bottom of the pan.", Type: "HowToStep"},
 						{Text: "While the dough rises, also make the filling by mixing the butter, brown sugar, cinnamon and salt together in a small bowl. (If the filling is too firm and not spreadable, add heavy cream a tsp at a time until it&#39;s easily spreadable.)", Type: "HowToStep"},
 						{
-							Text: "Once the dough has had a chance to rise, remove from bowl, punch dough to release the air, and roll out on a lightly floured surface. Roll the dough into about an 18 x 12 inch rectangle. It should be about 1/4 inch thick.",
+							Text: "Once the dough has had a chance to rise, remove from bowl, punch dough to release the air, and roll out on alightly floured surface. Roll the dough into about an 18 x 12 inch rectangle. It should be about 1/4 inch thick.",
 							Type: "HowToStep",
 						},
 						{
@@ -475,7 +475,7 @@ func TestScraper_I(t *testing.T) {
 					Value: "Instant® is a well-known brand of kitchen and home appliances. Find pressure cookers, air purifiers, air fryers & cookware. Ships to USA and Canada.",
 				},
 				Keywords: &models.Keywords{
-					Values: "15-30min,cilantro,easy,limes,pressurecook,rice,sidedish,vegetarian,water",
+					Values: "15-30min,cilantro,easy,InstantBrandsCulinaryTeam,limes,pressurecook,rice,sidedish,vegetarian,water",
 				},
 				Image:       &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{Values: []string{"3 cups rice", "3 cups Water", "3  limes", "1/4 cup cilantro"}},

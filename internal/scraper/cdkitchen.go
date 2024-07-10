@@ -31,7 +31,7 @@ func scrapeCdKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 		rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(line))
 	}
 
-	yieldStr, _ := content.Find(".change-servs-input").Attr("value")
+	yieldStr := content.Find(".change-servs-input").AttrOr("value", "")
 	yield, _ := strconv.ParseInt(yieldStr, 10, 16)
 	rs.Yield.Value = int16(yield)
 

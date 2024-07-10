@@ -11,9 +11,11 @@ func scrapeKookjij(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.Description.Value = getNameContent(root, "description")
 	rs.Name = strings.TrimSpace(root.Find("h1.recipe-name").Text())
 	rs.Image.Value = root.Find("a.photo").First().Find("img").AttrOr("src", "")
-	rs.Yield.Value = findYield(root.Find("div.details strong:contains('Personen')").Parent().Text())
 	rs.Cuisine.Value = root.Find("div.details strong:contains('Herkomst')").Next().Text()
 	rs.DatePublished = root.Find("time").First().AttrOr("datetime", "")
+
+	str := strings.TrimSpace(root.Find("div.details strong:contains('Personen')").Parent().Text())
+	rs.Yield.Value = findYield(strings.ReplaceAll(str, "\n", " "))
 
 	cat := root.Find("li[itemprop=recipeCategory]").First().Text()
 	rs.Category.Value = strings.TrimSpace(strings.TrimPrefix(cat, ">"))

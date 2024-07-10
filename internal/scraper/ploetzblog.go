@@ -12,7 +12,8 @@ func scrapePloetzblog(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
 	rs.Name = getPropertyContent(root, "og:title")
-	rs.Image.Value, _ = root.Find("img.we2p-pb-recipe__thumbnail-image").Attr("src")
+	rs.Image.Value = root.Find("img.we2p-pb-recipe__thumbnail-image").AttrOr("src", "")
+	rs.Yield.Value = findYield(root.Find("#recipePieceCount").AttrOr("value", ""))
 
 	var description strings.Builder
 	root.Find("div.we2p-pb-recipe__description p").Each(func(_ int, sel *goquery.Selection) {
@@ -31,9 +32,6 @@ func scrapePloetzblog(root *goquery.Document) (models.RecipeSchema, error) {
 		s := strings.Join(parts, " ")
 		rs.Ingredients.Values = append(rs.Ingredients.Values, strings.TrimSpace(s))
 	})
-
-	yield, _ := root.Find("#recipePieceCount").Attr("value")
-	rs.Yield.Value = findYield(yield)
 
 	total := strings.ToLower(root.Find("span:contains('Gesamtzubereitungszeit')").Parent().Children().Last().Text())
 	before, after, ok := strings.Cut(total, "stunden")

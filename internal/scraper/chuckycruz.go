@@ -13,7 +13,7 @@ func scrapeChuckycruz(root *goquery.Document) (models.RecipeSchema, error) {
 
 	rs.Name = getPropertyContent(root, "og:title")
 	rs.Description.Value = getPropertyContent(root, "og:description")
-	rs.Image.Value, _ = root.Find("picture img").First().Attr("src")
+	rs.Image.Value = root.Find("picture img").First().AttrOr("src", "")
 
 	parse, err := time.Parse("Jan 01, 2006", root.Find(".pencraft.pc-display-flex.pc-gap-4.pc-reset").Last().Text())
 	if err == nil {

@@ -172,10 +172,11 @@ func TestScraper_D(t *testing.T) {
 				AtContext:     atContext,
 				AtType:        &models.SchemaType{Value: "Recipe"},
 				Category:      &models.Category{Value: "weeknight meals"},
+				CookingMethod: &models.CookingMethod{},
 				CookTime:      "PT0S",
 				Cuisine:       &models.Cuisine{Value: "American"},
-				DateModified:  "2023-06-26T17:34:00Z EST",
-				DatePublished: "2018-11-06T17:45:06.218596Z EST",
+				DateModified:  "2023-06-26T17:34:00 EDT",
+				DatePublished: "2018-11-06T17:45:06.218596 EST",
 				Description: &models.Description{
 					Value: "A classic Chinese-American dish with thinly sliced, velveted flank steak in a rich brown sauce with tender-crisp broccoli.",
 				},
@@ -231,6 +232,7 @@ func TestScraper_D(t *testing.T) {
 				ThumbnailURL: &models.ThumbnailURL{
 					Value: "https://hips.hearstapps.com/hmg-prod/images/delish-230510-beef-broccoli-613-rv-index-646bca228a2b3.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=100:*",
 				},
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT40M",
 				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.delish.com/cooking/recipe-ideas/a24489879/beef-and-broccoli-recipe/",

@@ -14,8 +14,7 @@ func scrapeFitMenCook(root *goquery.Document) (models.RecipeSchema, error) {
 		return rs, err
 	}
 
-	image, _ := root.Find("picture > img").Attr("data-lazy-src")
-	rs.Image = &models.Image{Value: image}
+	rs.Image = &models.Image{Value: root.Find("picture > img").AttrOr("data-lazy-src", "")}
 
 	nodes := root.Find("a[rel='tag']")
 	keywords := make([]string, 0, nodes.Length())

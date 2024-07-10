@@ -9,7 +9,6 @@ import (
 
 func scrapeSallysblog(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
-
 	rs.Description.Value = getNameContent(root, "description")
 	rs.Name = strings.ToLower(root.Find("h1").First().Text())
 
@@ -24,8 +23,9 @@ func scrapeSallysblog(root *goquery.Document) (models.RecipeSchema, error) {
 	}
 	rs.PrepTime = prep
 
-	getIngredients(&rs, root.Find(".recipe-description").Next().Find(".hidden").First().Prev().Find("div.text-lg"))
-	getInstructions(&rs, root.Find(".recipe-description div p"))
+	getTime(&rs, root.Find("span:contains('Zubereitungszeit')"), true)
+	getIngredients(&rs, root.Find(".shop-studio-recipes-recipe-detail-tabs-description-ingredients__content__ingredient-list__ingredient"))
+	getInstructions(&rs, root.Find(".shop-studio-recipes-recipe-detail-tabs-description-preparations__content__preparation__text"))
 
 	return rs, nil
 }

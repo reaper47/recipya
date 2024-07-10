@@ -294,6 +294,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapePlentyVegan(doc)
 		case "ploetzblog":
 			return scrapePloetzblog(doc)
+		case "popsugar":
+			return scrapePopsugar(doc)
 		case "potatorolls":
 			return scrapePotatoRolls(doc)
 		case "projectgezond":

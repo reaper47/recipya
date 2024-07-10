@@ -492,9 +492,15 @@ func (k *Keywords) UnmarshalJSON(data []byte) error {
 	case []any:
 		var xs []string
 		for _, v := range x {
-			xs = append(xs, v.(string))
+			str := v.(string)
+			if len(strings.Split(str, ": ")) == 2 {
+				continue
+			}
+			xs = append(xs, str)
 		}
 		k.Values = strings.TrimSpace(strings.Join(xs, ","))
+	case map[string]any:
+		fmt.Println("fuck")
 	}
 
 	k.Values = strings.TrimRight(k.Values, ",")
