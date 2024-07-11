@@ -34,3 +34,21 @@ The scaling feature currently only scales ingredients, leaving instructions unto
 means that if an instruction mentions a specific amount of an ingredient, then that amount will
 not be scaled. This limitation will be addressed in the future.
 {{< /callout >}}
+
+## Videos
+
+It is possible to attach videos to recipes. Every video will be converted to the
+[WebM](https://en.wikipedia.org/wiki/WebM) audiovisual media file format using [FFmpeg](https://en.wikipedia.org/wiki/FFmpeg).
+
+FFmpeg is included in the Docker build. 
+
+Otherwise:
+- If you use Windows, the setup will attempt to install it using [winget](https://learn.microsoft.com/en-us/windows/package-manager/winget/).
+- If you use Linux, you should install it yourself by executing the appropriate command for your distro.
+- If you use macOS, you should install it yourself by executing `brew install ffmpeg`.
+
+Video conversion might be slow. Therefore, the video might not be immediately available for viewing after you attach it to a recipe.
+
+Recipes from websites sometimes include videos, e.g. [this one](https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/).
+They will be extracted automatically and will be displayed in the image carousel. They are not downloaded locally nor
+are they converted to WebM using FFmpeg. They are kept in their original format.

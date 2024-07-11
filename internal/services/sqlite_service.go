@@ -1631,6 +1631,7 @@ func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 		instructions   string
 		isPerServing   int64
 		keywords       sql.NullString
+		transFat       sql.NullString
 		tools          sql.NullString
 		videos         sql.NullString
 		count          int64
@@ -1646,12 +1647,16 @@ func scanRecipe(sc scanner, isSearch bool) (*models.Recipe, error) {
 		err = sc.Scan(
 			&r.ID, &r.Name, &r.Description, &mainImage, &otherImagesStr, &r.URL, &r.Yield, &r.CreatedAt, &r.UpdatedAt, &r.Category, &r.Cuisine,
 			&ingredients, &instructions, &keywords, &tools, &r.Nutrition.Calories, &r.Nutrition.TotalCarbohydrates,
-			&r.Nutrition.Sugars, &r.Nutrition.Protein, &r.Nutrition.TotalFat, &r.Nutrition.SaturatedFat, &r.Nutrition.UnsaturatedFat, &r.Nutrition.TransFat,
+			&r.Nutrition.Sugars, &r.Nutrition.Protein, &r.Nutrition.TotalFat, &r.Nutrition.SaturatedFat, &r.Nutrition.UnsaturatedFat, &transFat,
 			&r.Nutrition.Cholesterol, &r.Nutrition.Sodium, &r.Nutrition.Fiber, &isPerServing, &r.Times.Prep, &r.Times.Cook, &r.Times.Total,
 			&videos, &count,
 		)
 		if err != nil {
 			return nil, err
+		}
+
+		if transFat.Valid {
+			r.Nutrition.TransFat = transFat.String
 		}
 
 		r.Ingredients = strings.Split(ingredients, "<!---->")

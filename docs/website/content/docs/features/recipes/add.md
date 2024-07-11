@@ -86,9 +86,130 @@ will be ignored during processing. Here is an [example](https://sea.musicavis.ca
 how such zip may look like.
 
 You may also upload exported recipes from the following applications:
+- AccuChef
+- ChefTap
+- Crouton
+- Easy Recipe Deluxe
+- Kalorio
 - MasterCook
+- Mealie
 - Paprika
 - Recipe Keeper
+- RecipeSage
+- Saffron
+- Tandoor
+
+#### AccuChef
+
+Follow these steps to import your recipes from AccuChef:
+
+1. Export your recipes in `AccuChef`.
+2. Within Recipya, click the `Add recipe` button.
+3. Click the `Import` button.
+4. Select the exported `.txt` file.
+5. Click `Submit`.
+
+#### ChefTap
+
+Follow these steps to import your recipes from ChefTap:
+
+1. From the `ChefTap` mobile application, export your recipes in the text format.
+2. Within Recipya, click the `Add recipe` button.
+3. Click the `Import` button.
+4. Select the exported `.zip` file.
+5. Click `Submit`.
+
+#### Crouton
+
+Follow these steps to import your recipes from Crouton:
+
+1. Export your recipes in `Crouton`.
+2. Within Recipya, click the `Add recipe` button.
+3. Click the `Import` button.
+4. Select the exported `.zip` file.
+5. Click `Submit`.
+
+#### Easy Recipe Deluxe
+
+Follow these steps to import your recipes from Easy Recipe Deluxe:
+
+1. Export your recipes in `Easy Recipe Deluxe`: Publish -> Text.
+2. Within Recipya, click the `Add recipe` button.
+3. Click the `Import` button.
+4. Select the exported `.txt` file.
+5. Click `Submit`.
+
+#### Kalorio
+
+Follow these steps to import recipes from Kalorio.
+
+1. Export your [Kalorio](https://www.kalorio.de/index.php?Mod=Ka&Cap=EI&SCa=kal_export) recipes in the `CookML` format.
+2. Within Recipya, click the `Add recipe` button.
+3. Click the `Import` button.
+4. Select the exported file.
+5. Click `Submit`.
+
+#### Mealie
+
+Follow these steps to import your recipes from a Mealie instance:
+
+1. Go to the **Integrations** setting and select the **Mealie** option.
+2. Click the button adjacent to the menu of options.
+3. In the dialog that appears, enter the URL and credentials of a Mealie instance.
+4. Click the **Import** button.
+
+#### Paprika
+
+Follow these steps to import recipes from Paprika.
+
+1. [Export](https://www.paprikaapp.com/help/windows/#exportrecipes) your Paprika recipes in the `Paprika Recipe Format`.
+2. Within Recipya, click the `Add recipe` button.
+3. Click the `Import` button.
+4. Select your `.paprikarecipes` file. You may also zip many `.paprikarecipes` together and select the resulting file.
+5. Click `Submit`.
+
+#### Recipe Keeper
+
+Follow these steps to import recipes from Recipe Keeper.
+
+1. Access the settings within Recipe Keeper.
+2. Go to the `Import/Export` tab.
+3. Click the `Recipe Keeper .zip file` button at the top.
+4. Save the file.
+5. Within Recipya, click the `Add recipe` button.
+6. Click the `Import` button.
+7. Select the zip file you saved.
+8. Click `Submit`.
+
+#### RecipeSage
+
+Follow these steps to import recipes from RecipeSage.
+
+1. Export your [RecipeSage](https://docs.recipesage.com/docs/tutorials/settings/export/) recipes in the `JSON-LD` format.
+2. Within Recipya, click the `Add recipe` button.
+3. Click the `Import` button.
+4. Select the exported file.
+5. Click `Submit`.
+
+#### Saffron
+
+Follow these steps to import recipes from Saffron.
+
+1. Export your [Saffron](https://www.mysaffronapp.com/account) recipes.
+2. Within Recipya, click the `Add recipe` button.
+3. Click the `Import` button.
+4. Select the exported `.zip` file.
+5. Click `Submit`.
+
+#### Tandoor
+
+Follow these steps to import your recipes from a Tandoor instance:
+
+1. Go to the **Integrations** setting and select the **Tandoor** option.
+2. Click the adjacent button.
+3. In the dialog that appears, enter the URL and credentials of a Tandoor instance.
+4. Click the **Import** button.
+
 
 #### Recipya Bookmarklet
 
