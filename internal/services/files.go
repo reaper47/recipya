@@ -216,8 +216,8 @@ func (f *Files) backupUserData(repo RepositoryService, userID int64) error {
 	target := filepath.Join(app.BackupPath, "users", userIDStr, name)
 
 	_, err := os.Stat(target)
-	if err == nil {
-		return nil
+	if err != nil {
+		return err
 	}
 
 	err = os.MkdirAll(filepath.Dir(target), os.ModePerm)
@@ -1135,17 +1135,20 @@ func (f *Files) ExtractUserBackup(date string, userID int64) (*models.UserBackup
 	}
 	_ = rc.Close()
 
-	rc, err = insertsSQLFile.Open()
-	if err != nil {
-		return nil, err
-	}
+	var inserts []byte
+	if insertsSQLFile != nil {
+		rc, err = insertsSQLFile.Open()
+		if err != nil {
+			return nil, err
+		}
 
-	inserts, err := io.ReadAll(rc)
-	if err != nil {
+		inserts, err = io.ReadAll(rc)
+		if err != nil {
+			_ = rc.Close()
+			return nil, err
+		}
 		_ = rc.Close()
-		return nil, err
 	}
-	_ = rc.Close()
 
 	rc, err = recipesFile.Open()
 	if err != nil {

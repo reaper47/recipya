@@ -1294,11 +1294,13 @@ func (s *SQLiteService) RecipesAll(userID int64) models.Recipes {
 
 	rows, err := s.DB.QueryContext(ctx, statements.SelectRecipesAll, userID)
 	if err != nil {
+		slog.Error("Failed to select all recipes", "error", err, "userID", userID)
 		return nil
 	}
 
 	recipes, err := scanRecipes(rows, false)
 	if err != nil {
+		slog.Error("Failed to scan recipes", "error", err, "userID", userID)
 		return nil
 	}
 
