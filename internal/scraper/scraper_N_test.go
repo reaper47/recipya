@@ -104,6 +104,51 @@ func TestScraper_N(t *testing.T) {
 			},
 		},
 		{
+			name: "nigella2.com",
+			in:   "https://www.nigella.com/recipes/guests/coffee-baklava-with-dried-figs",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Description:   &models.Description{Value: "The figs give this baklava a natural sweetness, but if you don’t have any, simply replace them with the same amount of extra nuts."},
+				Keywords: &models.Keywords{
+					Values: "Birthdays, Christmas, Partytime, Comfort, Fun, Indulgent, Nibbly, Sociable, Sweet, Baking, Guest Recipe,",
+				},
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"150 grams shelled pistachios (toasted, plus extra to serve)",
+						"200 grams walnuts (toasted)", "100 grams soft dried figs (ﬁnely chopped)",
+						"1 teaspoon ground cinnamon", "80 grams caster sugar", "375 grams filo pastry",
+						"150 grams unsalted butter (melted)",
+						"2 tablespoons Oasis Greek coffee or other Greek or Turkish finely ground coffee",
+						"175 grams honey",
+						"230 grams caster sugar",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Text: "For the Greek coffee honey syrup, combine the ingredients and 150 ml (5 ﬂ oz) of water in a small saucepan over high heat. Bring to a simmer, then reduce the heat to medium and cook, stirring occasionally, for 8–10 minutes, until the sugar dissolves. Set aside to cool.", Type: "HowToStep"},
+						{Text: "Preheat the oven to 180°C (350°F). Grease the base and sides of a 20 cm × 30 cm (8 in × 12 in) baking tin and line with baking paper.", Type: "HowToStep"},
+						{Text: "Pulse the nuts in a food processor until ﬁnely chopped (take care not to overprocess the nuts, otherwise you’ll end up with nut paste). Transfer the nuts to a bowl and stir through the ﬁg, cinnamon and sugar.", Type: "HowToStep"},
+						{Text: "Carefully lay the ﬁlo pastry sheets on a chopping board and trim the sheets to ﬁt the size of the prepared pan or tin. Discard any pastry offcuts. Cover the ﬁlo pastry with a clean, slightly damp tea towel, to prevent the sheets from drying out.", Type: "HowToStep"},
+						{Text: "Brush one ﬁlo pastry sheet with butter, then place in the prepared tin. Repeat with another seven sheets of ﬁlo pastry, buttering each layer. Scatter over one-third of the nut mixture and top with another four ﬁlo sheets, brushing each layer with butter. Repeat this process twice more. Gently press the ﬁnal ﬁlo layer to compress the baklava slightly. Brush generously with the remaining butter.", Type: "HowToStep"},
+						{Text: "Using a small sharp knife, score the top ﬁlo layer into 24 squares. Bake for 25–30 minutes, until the pastry is golden and crispy.", Type: "HowToStep"},
+						{Text: "Pour the cooled coffee honey syrup over the hot baklava and stand for 1 hour or until the baklava is cool. Using a sharp knife, cut the baklava into pieces along the score marks and serve.", Type: "HowToStep"},
+					},
+				},
+				Name:            "Coffee Baklava With Dried Figs",
+				NutritionSchema: &models.NutritionSchema{},
+				ThumbnailURL:    &models.ThumbnailURL{},
+				Tools:           &models.Tools{Values: []models.HowToItem{}},
+				Yield:           &models.Yield{Value: 24},
+				URL:             "https://www.nigella.com/recipes/guests/coffee-baklava-with-dried-figs",
+				Video:           &models.Videos{},
+			},
+		},
+		{
 			name: "ninjatestkitchen.eu",
 			in:   "https://ninjatestkitchen.eu/recipe/dirt-worm-brownies",
 			want: models.RecipeSchema{
