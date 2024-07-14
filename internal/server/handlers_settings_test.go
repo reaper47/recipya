@@ -117,7 +117,7 @@ func TestHandlers_Settings(t *testing.T) {
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertStringsInHTML(t, getBodyHTML(rr), []string{
-			`<div><p class="font-semibold">Recipya Version</p><p class="text-sm mt-2">v1.2.0 (update available)</p><p class="text-xs">Last checked: 0001-01-01<br>Last updated: 0001-01-01<br><br>Read the <a class="link" href="https://recipes.musicavis.ca/guide/about/changelog/v1.2.0" target="_blank">release notes</a></p></div><button class="btn btn-sm" hx-get="/update" hx-swap="none" hx-indicator="#fullscreen-loader">Update</button></div></div>`,
+			`<div><p class="font-semibold">Recipya Version</p><p class="text-sm mt-2">v1.2.0 (update available)</p><p class="text-xs">Last checked: 0001-01-01<br>Last updated: 0001-01-01<br><br>Read the <a class="link" href="https://recipes.musicavis.ca/guide/about/changelog/v1.2.0" target="_blank">release notes</a></p></div><div class="flex flex-row self-start"><button class="btn btn-sm" hx-get="/update" hx-swap="none" hx-indicator="#fullscreen-loader">Update</button></div></div>`,
 		})
 	})
 

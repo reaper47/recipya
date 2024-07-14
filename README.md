@@ -23,7 +23,7 @@ It is focused on simplicity for the whole family to enjoy.
 - Import recipes from around the web
 - Digitize paper recipes
 - Organize your recipes into cookbooks
-- Works seamlessly with [Nextcloud Cookbook](https://apps.nextcloud.com/apps/cookbook)
+- Easily migrate your recipes from [Mealie](https://mealie.io), [Tandoor](https://tandoor.dev) and [Nextcloud Cookbook](https://apps.nextcloud.com/apps/cookbook)
 - Automatic conversion to your preferred measurement system (imperial/metric)
 - Calculate nutritional information automatically
 - Print any recipe in your collection
@@ -49,7 +49,23 @@ Follow these steps to build the project yourself:
 
 Alternatively, you may use the [development container](https://recipes.musicavis.ca/guide/docs/development/devcontainer/).
 Recipya's Docker [container](https://github.com/reaper47/recipya/tree/main/.devcontainer) includes all the necessary tools and dependencies 
-you need to start writing code quickly. 
+you need to start writing code quickly.
+
+### Updating
+
+#### Docker
+
+Please follow these [instructions](https://recipes.musicavis.ca/guide/docs/installation/docker/#updating-your-container-1) 
+to update your Docker instance.
+
+#### Release build
+
+If you installed a release build of Recipya, i.e. v1.0.0, then the software will notify you once an update is available. 
+You can [self-update](https://recipes.musicavis.ca/guide/docs/features/updater) the application from the settings dialog.
+
+Let's explain the mechanism developers. Basically, a cron job is run [every three days]((https://github.com/reaper47/recipya/blob/main/internal/jobs/jobs.go#L70-L82))
+to check whether there is a new GitHub release. If so, the update indicators in the UI will be enabled. Once the user presses 
+the "Update" button, the latest release is fetched, unpacked and the application restarted.
 
 ## Contributing
 

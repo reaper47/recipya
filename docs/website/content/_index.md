@@ -24,59 +24,64 @@ layout: hextra-home
 
 {{< hextra/feature-grid >}}
 {{< hextra/feature-card
-title="Curate Recipes"
-subtitle="Effortlessly import your favorite recipes from around the web, digitize paper recipes, and add recipes manually."
-class="aspect-auto md:aspect-[1.1/1] max-md:min-h-[340px]"
-image="/images/curate.webp"
-imageClass="small w-[180%] left-[36px] sm:w-[110%] dark:opacity-80"
-style="background: radial-gradient(ellipse at 50% 80%,rgba(194,97,254,0.15),hsla(0,0%,100%,0));"
->}}
+    title="Curate Recipes"
+    subtitle="Effortlessly import your favorite recipes from around the web, digitize paper recipes, and add recipes manually."
+    class="aspect-auto md:aspect-[1.1/1] max-md:min-h-[340px]"
+    image="/images/curate.webp"
+    imageClass="small w-[180%] left-[36px] sm:w-[110%] dark:opacity-80"
+    style="background: radial-gradient(ellipse at 50% 80%,rgba(194,97,254,0.15),hsla(0,0%,100%,0));"
+    >}}
 {{< hextra/feature-card
-title="One Measurement System"
-subtitle="All your recipes can be converted to your preferred measurement system. Say goodbye to imperial or metric."
-class="aspect-auto md:aspect-[1.1/1] max-lg:min-h-[340px]"
-image="/images/view-recipe.webp"
-imageClass="small w-[110%] sm:w-[110%] dark:opacity-80"
-icon="globe"
-style="background: radial-gradient(ellipse at 50% 80%,rgba(142,53,74,0.15),hsla(0,0%,100%,0));"
->}}
+    title="One Measurement System"
+    subtitle="All your recipes can be converted to your preferred measurement system. Say goodbye to imperial or metric."
+    class="aspect-auto md:aspect-[1.1/1] max-lg:min-h-[340px]"
+    image="/images/view-recipe.webp"
+    imageClass="small w-[110%] sm:w-[110%] dark:opacity-80"
+    icon="globe"
+    style="background: radial-gradient(ellipse at 50% 80%,rgba(142,53,74,0.15),hsla(0,0%,100%,0));"
+    >}}
 {{< hextra/feature-card
-title="Self-Hostable"
-subtitle="Easily self-host the software on your server with Docker."
-icon="desktop-computer"
-class="aspect-auto md:aspect-[1.1/1] max-md:min-h-[340px]"
-image="/images/devices.svg"
-imageClass="small w-[110%] sm:w-[110%] dark:opacity-80"
-style="background: radial-gradient(ellipse at 50% 80%,rgba(221,210,59,0.15),hsla(0,0%,100%,0));"
->}}
+    title="Self-Hostable"
+    subtitle="Easily self-host the software on your server with Docker."
+    icon="desktop-computer"
+    class="aspect-auto md:aspect-[1.1/1] max-md:min-h-[340px]"
+    image="/images/devices.svg"
+    imageClass="small w-[110%] sm:w-[110%] dark:opacity-80"
+    style="background: radial-gradient(ellipse at 50% 80%,rgba(221,210,59,0.15),hsla(0,0%,100%,0));"
+    >}}
 {{< hextra/feature-card
-title="Nutrition Facts"
-icon="information-circle"
-subtitle="Let the software calculate nutritional information automatically when adding recipes."
->}}
+    title="Nutrition Facts"
+    icon="information-circle"
+    subtitle="Let the software calculate nutritional information automatically when adding recipes."
+    >}}
 {{< hextra/feature-card
-title="Integrations"
-icon="chip"
-subtitle="Import recipes from different solutions. Thus far, you can import recipes from Nextcloud Cookbook and MasterCook."
->}}
+    title="Integrations"
+    icon="chip"
+    subtitle="Import your recipes from different solutions, such as Mealie, Tandoor, Nextcloud Cookbook, MasterCook, and Paprika."
+    >}}
 {{< hextra/feature-card
-title="Wakelock"
-icon="light-bulb"
-subtitle="Prevent your device from going to sleep while viewing a recipe."
->}}
+    title="Wakelock"
+    icon="light-bulb"
+    subtitle="Prevent your device from going to sleep while viewing a recipe."
+    >}}
 {{< hextra/feature-card
-title="Print"
-icon="printer"
-subtitle="Print any recipe or cookbook in your collection."
->}}
+    title="Print"
+    icon="printer"
+    subtitle="Print any recipe or cookbook in your collection."
+    >}}
 {{< hextra/feature-card
-title="Responsive"
-icon="device-mobile"
-subtitle="Looks great on different screen sizes. Follows your system's theme."
->}}
+    title="Responsive"
+    icon="device-mobile"
+    subtitle="Looks great on different screen sizes. Follows your system's theme."
+    >}}
 {{< hextra/feature-card
-title="And Much More..."
-icon="sparkles"
-subtitle="Please make sure not to overlook the features tour in the documentation for more!"
->}}
+    title="Cross-compiled"
+    icon="chip"
+    subtitle="Can be installed on Windows, Linux, and macOS."
+    >}}
+{{< hextra/feature-card
+    title="And Much More..."
+    icon="sparkles"
+    subtitle="Please make sure not to overlook the features tour in the documentation for more!"
+    >}}
 {{< /hextra/feature-grid >}}
