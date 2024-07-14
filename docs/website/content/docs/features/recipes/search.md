@@ -22,6 +22,7 @@ recipes belonging to you:
 - Instructions
 - Keywords
 - Source
+- Tools
 
 The results will be ranked based on their relevance to the search terms.
 
@@ -55,5 +56,13 @@ The following table provide examples of how to perform various searches. You may
 | Multiple instructions        | ins:preheat oven 350,melt butter                       |
 | By keyword                   | tag:biscuits                                           |
 | Multiple keywords            | tag:biscuits,mardi gras                                |
+| By Tool                      | tool:frying pan                                        |
+| Multiple tools               | tool:frying pan,wok                                    |
 | By source                    | src:allrecipes.com                                     |
 | Multiple sources             | src:allrecipes.com,tasteofhome.com                     |
+
+### Help
+
+You may access the advanced search help dialog by clicking the info button to the far left of the search bar.
+
+![](images/recipes-search-help.webp)

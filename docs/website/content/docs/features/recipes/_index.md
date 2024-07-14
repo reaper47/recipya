@@ -40,4 +40,8 @@ You can add, view, edit, and delete any recipe in your collection.
             title="Wakelock"
             subtitle="Learn how to keep your device awake while cooking."
             icon="newspaper" >}}
+    {{< card link="/guide/docs/features/recipes/categories"
+        title="Categories"
+        subtitle="Learn how to manage your recipe categories."
+        icon="newspaper" >}}
 {{< /cards >}}

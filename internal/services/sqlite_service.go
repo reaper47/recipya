@@ -654,7 +654,7 @@ func (s *SQLiteService) calculateNutrition(userID int64, recipes []int64, settin
 			n := recipe.Nutrition
 
 			s.Mutex.Lock()
-			_, err = s.DB.ExecContext(ctx, statements.UpdateNutrition, n.Calories, n.TotalCarbohydrates, n.Sugars, n.Protein, n.TotalFat, n.SaturatedFat, n.UnsaturatedFat, n.Cholesterol, n.Sodium, n.Fiber, n.IsPerServing, id)
+			_, err = s.DB.ExecContext(ctx, statements.UpdateNutrition, n.Calories, n.TotalCarbohydrates, n.Sugars, n.Protein, n.TotalFat, n.SaturatedFat, n.UnsaturatedFat, n.TransFat, n.Cholesterol, n.Sodium, n.Fiber, n.IsPerServing, id)
 			if err != nil {
 				slog.Error("CalculateNutrition.UpdateNutrition failed", "error", err)
 			}

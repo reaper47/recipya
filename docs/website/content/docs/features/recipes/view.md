@@ -3,7 +3,7 @@ title: View
 weight: 2
 ---
 
-To view a recipe, you first need to view your collection of recipes.
+To view a recipe, you first need to click the `View` button or the image of a recipe under your collection of recipes.
 
 ![](images/view-recipe-enter.webp)
 
@@ -22,10 +22,10 @@ and instructions to cross them out.
 To scale a recipe, use the number input in the yield square to select the number of servings you want to make.
 
 If you want to make more servings, enter a higher number.
-If you want to make fewer servings, enter a lower number.
+If you want to make fewer, enter a lower number.
 
-For example, the recipe above yields 6 servings. To double the recipe, set the number of servings to 12.
-The recipe will then be automatically scaled to make 12 servings of oven roasted potatoes, as shown below.
+For example, the recipe above yields 4 servings. To double the recipe, set the number of servings to 8.
+The recipe will then be automatically scaled to make 8 servings of shiitake and chicken rice, as shown below.
 
 ![](images/view-recipe-scale.webp)
 
