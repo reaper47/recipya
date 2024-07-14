@@ -16,7 +16,7 @@ services:
       RECIPYA_SERVER_PORT: 8078
       RECIPYA_SERVER_URL: "http://0.0.0.0"
     ports:
-      - "<host-port>:8125"
+      - "<host-port>:8078"
     volumes:
       - "recipya-data:/root/.config/Recipya"
 
